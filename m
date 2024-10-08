@@ -2,80 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEB9993BF0
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 02:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFB9993C11
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:18:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyQn-0007Lb-Qv; Mon, 07 Oct 2024 20:50:30 -0400
+	id 1sxype-00042t-2c; Mon, 07 Oct 2024 21:16:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sxyQe-0007Hg-Fb; Mon, 07 Oct 2024 20:50:21 -0400
-Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sxyQc-0005eF-Vy; Mon, 07 Oct 2024 20:50:20 -0400
-Received: by mail-vk1-xa2e.google.com with SMTP id
- 71dfb90a1353d-50ac0c8cd48so1479047e0c.1; 
- Mon, 07 Oct 2024 17:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728348617; x=1728953417; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/aOAazVGZzuUQuCoiM6TIgT8pILzareCk0Lqih6zbHM=;
- b=QdovmfLdMxYP8Bm5ey6gL6WmobNBnNVQwfOvgJhWmyQnexm0q/4eeUfO6xAGkRsATa
- KlY/EFTla0AEUqUk7LRbiOLaSqchAkS7kiZueauU2okkJmnBiRCaed5SHFgOYHONEOgI
- uCkiu+kl8esLToctWiOnrWi7DFLOVFswUg1m+uITr27Dur6unjsOBzCIejaH90PjAmg9
- VJjSftULKrfhhUhMlOeaO+9j0PGT8YM+4A4pKHDvEhWIrf/pG4K9LaspkFuZrOwdz6pn
- XxHrtxNUV0BZI/OzXVcAg4iHX1Mjzn7gfLS4SYkWkRmA8WmIm1mjhAi7+P6f3gVmNg61
- Nhfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728348617; x=1728953417;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/aOAazVGZzuUQuCoiM6TIgT8pILzareCk0Lqih6zbHM=;
- b=iKvQ5vX05SuC5dJ2W+Fwao3rrly9OlpDnoyZnPn8wZK8bM2Fdynb+wzpUSsVlhVhlR
- KT59kP7Fparo9xqwnx8PGlb/lPr48TXR9l1EZvR/9Y1gdtopBeAdYaUvduYONX1Qlz/J
- eUzjRmX5rMs7+qvE+b71ZymdPEcrBVxVJ95kx6NymGWglBQFqANGZQ42u6uK1IKYtc0s
- tJBdK+5a89KpZ9JZ1A9W36oZsAsG1VY8x+sXkf9kOc6P09X0mHe5vDif02+xpxx0aLak
- LEXO71WkJKDW7+QhkRA3U+IJxI7Lh9LaeaaHwEeM7DtKhfK3GDeDVmGGg85W0+bdkCGd
- 1l/w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXQoSoItYnWCdLKTBd43J9JrkNJIO/lqR6Ork2YVaprvh8Rhx5surjfuzpgzNZ86Cy3ZJPxa/jUxodL@nongnu.org
-X-Gm-Message-State: AOJu0Yxz8ba7vWTyIzeiTPa9WECSdnnavsfk24bbQY69xURIzjb5aHF5
- LjLddJcxIQtSXyoorf0D3aatNvAU6S2/NzV9nR1jbnLmCxargtZXVyRYZX6PzxpgVDHvzLMdsEF
- ilhXbEMuwAm4wOVXO+kSc0/XjLgA=
-X-Google-Smtp-Source: AGHT+IHOxoa3jgDuMwUPp1P4elaIQ5pUNLDGLnSjafEnUbztGs1p3RoIl8Fh7orWx3o/z1Ex0YTXSp7ZsQUrGU1Ugvc=
-X-Received: by 2002:a05:6102:f0b:b0:49b:f255:179a with SMTP id
- ada2fe7eead31-4a405749686mr12091143137.5.1728348617559; Mon, 07 Oct 2024
- 17:50:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1sxypb-00041O-8n; Mon, 07 Oct 2024 21:16:07 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1sxypX-0008C2-0Z; Mon, 07 Oct 2024 21:16:06 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4980o2P7008562;
+ Tue, 8 Oct 2024 01:15:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=0LJxQcjoQjQyDR1seKFxlP/9eN
+ IzLa41G+HMhjIyBXc=; b=QI06N5+wEP9Q43iI0SBKyFdtnabArO9QK3ME+Ha7HP
+ UfaHWBgsc8pOBMJ6f6qRTMRsutbWu5aFP0Z3tMpP1dvpudGE5w9oU1ie9DeH1Dty
+ lhXyWhBQ1Z/qhFA6u6kxFV/nHb3sgg6LDRyLIcR/FfKH7cQKmJl5Siuq4azPNbeD
+ SL1ESqUr6Ng+q6Pu1xCgbkpdyy7mW5DIahIAZsLNxf0J1djxe7waCB6/FQL/6/NU
+ T9erk/NkwMR48RIquxBSnE8CLYJ4o7IryTxldhuQ3+V+Whxc1XgDp5nSM0qNLHFU
+ y3GohfnWzlJTCDt7ibL2QqqqwSWE/6ywRzn93l6VisFQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424thq02hw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Oct 2024 01:15:58 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4981Fwr1026668;
+ Tue, 8 Oct 2024 01:15:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424thq02hu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Oct 2024 01:15:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49816PCm011521;
+ Tue, 8 Oct 2024 01:15:57 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423g5xhpus-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Oct 2024 01:15:57 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4981FuXh47645168
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Oct 2024 01:15:56 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6BA8058055;
+ Tue,  8 Oct 2024 01:15:56 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E875258043;
+ Tue,  8 Oct 2024 01:15:55 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.51.58])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  8 Oct 2024 01:15:55 +0000 (GMT)
+From: jrossi@linux.ibm.com
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
+Subject: [PATCH v3 00/19] s390x: Add Full Boot Order Support
+Date: Mon,  7 Oct 2024 21:15:33 -0400
+Message-ID: <20241008011552.2645520-1-jrossi@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-References: <20240919055048.562-1-zhiwei_liu@linux.alibaba.com>
- <20240919055048.562-9-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20240919055048.562-9-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 8 Oct 2024 10:49:51 +1000
-Message-ID: <CAKmqyKNhS6zLPNLN4=-v_t01aOL4e9qK3BiYX7cMLAvhooGNjA@mail.gmail.com>
-Subject: Re: [PATCH v7 8/8] tests/avocado: Boot Linux for RV32 cpu on RV64 QEMU
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
- bmeng.cn@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2Ie49rSyhTOszPuTZSiZxyJve2UiqbA3
+X-Proofpoint-GUID: 9-dXWziNr-mwha34dtA1ByMU7pbMP0BY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-07_16,2024-10-07_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410080006
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,56 +108,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 3:57=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibab=
-a.com> wrote:
->
-> make check-avocado AVOCADO_TESTS=3Dtests/avocado/tuxrun_baselines.py: \
-> TuxRunBaselineTest:test_riscv64_rv32
->
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Jared Rossi <jrossi@linux.ibm.com>
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Version 3 fixes ISO IPL and restores the ability to probe for boot devices when
+no primary b0ot device has been specified.
 
-Alistair
+Two automated qtests are added, one that tests a cdrom device as the only
+fallback device after the primary boot target fails and one that that defines
+the seven failing devices before one that succeeds.
 
-> ---
->  tests/avocado/tuxrun_baselines.py | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_bas=
-elines.py
-> index 736e4aa289..589c7f254b 100644
-> --- a/tests/avocado/tuxrun_baselines.py
-> +++ b/tests/avocado/tuxrun_baselines.py
-> @@ -533,6 +533,22 @@ def test_riscv64_maxcpu(self):
->
->          self.common_tuxrun(csums=3Dsums)
->
-> +    def test_riscv64_rv32(self):
-> +        """
-> +        :avocado: tags=3Darch:riscv64
-> +        :avocado: tags=3Dmachine:virt
-> +        :avocado: tags=3Dtuxboot:riscv32
-> +        :avocado: tags=3Dcpu:rv32
-> +        """
-> +        sums =3D { "Image" :
-> +                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a=
-3d6deccbd5",
-> +                 "fw_jump.elf" :
-> +                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b1=
-8936676985",
-> +                 "rootfs.ext4.zst" :
-> +                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31=
-bb13108cba" }
-> +
-> +        self.common_tuxrun(csums=3Dsums)
-> +
->      def test_s390(self):
->          """
->          :avocado: tags=3Darch:s390x
-> --
-> 2.43.0
->
->
+Note: Although the qtest with multiple invalid IPL devices passes, it may
+generate a log message about zero sized buffers. This message does not appear
+to be directly related to the IPLB chaining or loading process, and it also
+does not appear to cause any unexpected behavior during IPL. The log message
+seems to be triggered when multiple virtio-scsi devices fail to IPL in
+succession, but the exact cause is still unclear.
+
+changes v2 -> v3:
+
+- Fix return code mismatch in ISO IPL path
+- Introduce a new RC for loading ECKD segments rather than rely on block 0
+- Fix bug causing false negative in some SCSI device error cases
+- Terminate entire IPL on bad PBT instead of trying next device
+- Simplify routine for building IPLB chain
+- Restore device probing
+- Add qtests
+- Minor stylistic clean-ups and comment clarifications
+
+Changes v1 -> v2:
+
+- Use the libc from SLOF and replace sclp_print calls with put/printf
+- Merge netboot into the main s390-ccw.img
+- Rework pc-bios to return on error instead of panic
+- Handle non-archetected IPLB types (QEMU SCSI) from DIAG308
+- Remove code jumps and instead restart the IPL using a traditional loop
+
+Jared Rossi (19):
+  hw/s390x/ipl: Provide more memory to the s390-ccw.img firmware
+  pc-bios/s390-ccw: Use the libc from SLOF and remove sclp prints
+  pc-bios/s390-ccw: Link the netboot code into the main s390-ccw.img
+    binary
+  hw/s390x: Remove the possibility to load the s390-netboot.img binary
+  pc-bios/s390-ccw: Merge netboot.mak into the main Makefile
+  docs/system/s390x/bootdevices: Update the documentation about network
+    booting
+  pc-bios/s390-ccw: Remove panics from ISO IPL path
+  pc-bios/s390-ccw: Remove panics from ECKD IPL path
+  pc-bios/s390-ccw: Remove panics from SCSI IPL path
+  pc-bios/s390-ccw: Remove panics from DASD IPL path
+  pc-bios/s390-ccw: Remove panics from Netboot IPL path
+  pc-bios/s390-ccw: Enable failed IPL to return after error
+  include/hw/s390x: Add include files for common IPL structs
+  s390x: Add individual loadparm assignment to CCW device
+  hw/s390x: Build an IPLB for each boot device
+  s390x: Rebuild IPLB for SCSI device directly from DIAG308
+  pc-bios/s390x: Enable multi-device boot loop
+  docs/system: Update documentation for s390x IPL
+  tests/qtest: Add s390x boot order tests to cdrom-test.c
+
+ docs/system/bootindex.rst         |   7 +-
+ docs/system/s390x/bootdevices.rst |  29 +-
+ pc-bios/s390-ccw/netboot.mak      |  62 -----
+ hw/s390x/ccw-device.h             |   2 +
+ hw/s390x/ipl.h                    | 123 +--------
+ include/hw/s390x/ipl/qipl.h       | 126 +++++++++
+ pc-bios/s390-ccw/bootmap.h        |  19 +-
+ pc-bios/s390-ccw/cio.h            |   2 +
+ pc-bios/s390-ccw/dasd-ipl.h       |   2 +-
+ pc-bios/s390-ccw/iplb.h           | 107 ++------
+ pc-bios/s390-ccw/libc.h           |  89 ------
+ pc-bios/s390-ccw/s390-ccw.h       |  37 +--
+ pc-bios/s390-ccw/virtio.h         |   3 +-
+ hw/s390x/ccw-device.c             |  46 ++++
+ hw/s390x/ipl.c                    | 279 +++++++++----------
+ hw/s390x/s390-virtio-ccw.c        |  28 +-
+ hw/s390x/sclp.c                   |   3 +-
+ pc-bios/s390-ccw/bootmap.c        | 442 ++++++++++++++++++++----------
+ pc-bios/s390-ccw/cio.c            |  81 +++---
+ pc-bios/s390-ccw/dasd-ipl.c       |  71 ++---
+ pc-bios/s390-ccw/jump2ipl.c       |  23 +-
+ pc-bios/s390-ccw/libc.c           |  88 ------
+ pc-bios/s390-ccw/main.c           | 100 ++++---
+ pc-bios/s390-ccw/menu.c           |  51 ++--
+ pc-bios/s390-ccw/netmain.c        |  39 ++-
+ pc-bios/s390-ccw/sclp.c           |   7 +-
+ pc-bios/s390-ccw/virtio-blkdev.c  |  14 +-
+ pc-bios/s390-ccw/virtio-net.c     |   7 +-
+ pc-bios/s390-ccw/virtio-scsi.c    | 165 +++++++----
+ pc-bios/s390-ccw/virtio.c         |  67 +++--
+ target/s390x/diag.c               |   9 +-
+ tests/qtest/cdrom-test.c          |  24 ++
+ pc-bios/meson.build               |   1 -
+ pc-bios/s390-ccw/Makefile         |  69 ++++-
+ pc-bios/s390-netboot.img          | Bin 67232 -> 0 bytes
+ 35 files changed, 1150 insertions(+), 1072 deletions(-)
+ delete mode 100644 pc-bios/s390-ccw/netboot.mak
+ create mode 100644 include/hw/s390x/ipl/qipl.h
+ delete mode 100644 pc-bios/s390-ccw/libc.h
+ delete mode 100644 pc-bios/s390-ccw/libc.c
+ delete mode 100644 pc-bios/s390-netboot.img
+
+-- 
+2.45.1
+
 
