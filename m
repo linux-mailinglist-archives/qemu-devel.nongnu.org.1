@@ -2,84 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490AB993D06
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 04:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928E9993D4A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 05:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy0DV-0005FX-OS; Mon, 07 Oct 2024 22:44:53 -0400
+	id 1sy0Vy-0003Z9-Si; Mon, 07 Oct 2024 23:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sy0DT-0005F2-Ii; Mon, 07 Oct 2024 22:44:51 -0400
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sy0DR-0008IA-Uc; Mon, 07 Oct 2024 22:44:51 -0400
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-84e857bc0feso2826371241.0; 
- Mon, 07 Oct 2024 19:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728355488; x=1728960288; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vmtwzfYVvKE9wfoCiqlAQ9b9b0NA7/bDfk1kM+8FZsw=;
- b=H+UntRtGYcNBle+WcBmdk0ASKYlXErtaan0kFS90CC7nqSN3e5bJDwgy6HZJPl4ovm
- r2ckveOytDAWhda7s+U7isZcFD6I7Unn3nT0eXOV8788bWC23mjy/LG66diY/l9Uor94
- /ewNB8VdmFOc+HfuGjNX9dXyC7hnaT1apgQMOKMDGVaVU/VwCAzAEtFivkxStfewie4b
- XwMa/ZBuCRO3lV7WV4iM1vZ82bq1D6IEJ6M24puiIaMtfPmLIoJgWzIjxVSz3lKAfYGJ
- qOzWJ3DZlZrsie5gMpx5Q+ks5MhYE4iUR/mU0amFMEPNutrkW2o0D86Aq/zgrQnjCzQi
- SRQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728355488; x=1728960288;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vmtwzfYVvKE9wfoCiqlAQ9b9b0NA7/bDfk1kM+8FZsw=;
- b=mZ5xtju9FsI9S8D1oMlKA3tEjPvK/CtyF+Ix1fobHCCf9r94bRFTTQzu7cC1P0rGh/
- YHoHJRzkBQLiWksExInraYUvDUEFWSzKJjHPxEvErtt9dmgcKhYfXGp/cIg6ebD7I7wx
- 3rM3ttfCqOgxT56lpXcvQwbCUurRzxa7rhpcIPSAogmWMqIYPfeWUKFXPLxZiRa/t62O
- hrZ/Rc4U0uEvQVuMt+aDi9QD7Jp1zE9UT9hgB2OToTsbOeg+knVYNVP70FKNCvBezVGh
- 2SBmRJBT0jdtnnBC8JCOLK5wKghbTW5uRVGUBnK6j8BFWQwE4be1w8AyS+bA/9KbjqCN
- f6xQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVGEFDwmbrcxWC5/pGo3voy7USVGeFIaeHA6nVVIt1i/jq3eTtykW6qDL/KR2MjixYms6JT4Sh4LbIY@nongnu.org
-X-Gm-Message-State: AOJu0YweWFFMfoK0ffNGYsa7JnOAPyP4vDYeSNyBb6Xr9inuRgn/J+sQ
- Qa5BdI+Ki4GiznQD/uZ7j6VMiUo9AURnXpTDl3+ik2xc38hnNL4iaqqsqfGspNQ/sshwSdy/s6d
- 4STdu5lJpUWyGxg38GGUik7mlG64=
-X-Google-Smtp-Source: AGHT+IEZfN7mHBOMGL+ac6ZCWvnUpoqoGIUWCsDhjycR89+2/9WrjF8ApGTY76I4iWA94UuznbDSnS/oym9vzOtOpew=
-X-Received: by 2002:a05:6102:f0b:b0:4a3:d4bd:258b with SMTP id
- ada2fe7eead31-4a43890a036mr1552660137.8.1728355488211; Mon, 07 Oct 2024
- 19:44:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1sy0Vv-0003X7-SI
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 23:03:55 -0400
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1sy0Vs-0001SU-Q2
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 23:03:55 -0400
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
+Thread-Topic: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
+Thread-Index: AQHbD8m2GzzAu7a83kSSJ9vdQ5PkZLJ8OV4A
+Date: Tue, 8 Oct 2024 02:47:54 +0000
+Message-ID: <0EDECA68-F61C-4668-83F0-B8F5E8219196@baidu.com>
+References: <20240926040808.9158-1-gaoshiyuan@baidu.com>
+In-Reply-To: <20240926040808.9158-1-gaoshiyuan@baidu.com>
+Accept-Language: en-US, zh-CN
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.154]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AD1849B55D93F34AB28D5B5998D9BE78@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20241004104649.13129-1-yongxuan.wang@sifive.com>
-In-Reply-To: <20241004104649.13129-1-yongxuan.wang@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 8 Oct 2024 12:44:22 +1000
-Message-ID: <CAKmqyKOGNohPoZHdxNAW15bcR7SsCpupjf0i3A3XLoxDjqibTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] hw/intc/riscv_aplic: Check and update pending when
- write sourcecfg
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
- vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x930.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-FEAS-Client-IP: 10.127.64.13
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,128 +60,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 4, 2024 at 8:47=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifive=
-.com> wrote:
->
-> The section 4.5.2 of the RISC-V AIA specification says that any write
-> to a sourcecfg register of an APLIC might (or might not) cause the
-> corresponding interrupt-pending bit to be set to one if the rectified
-> input value is high (=3D 1) under the new source mode.
->
-> If an interrupt is asserted before the driver configs its interrupt
-> type to APLIC, it's pending bit will not be set except a relevant
-> write to a setip or setipnum register. When we write the interrupt
-> type to sourcecfg register, if the APLIC device doesn't check
-> rectified input value and update the pending bit, this interrupt
-> might never becomes pending.
->
-> For APLIC.m, we can manully set pending by setip or setipnum
-> registers in driver. But for APLIC.w, the pending status totally
-> depends on the rectified input value, we can't control the pending
-> status via mmio registers. In this case, hw should check and update
-> pending status for us when writing sourcecfg registers.
->
-> Update QEMU emulation to handle "pre-existing" interrupts.
->
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-
-Thanks!
-
-Applied to riscv-to-apply.next
-
-Alistair
-
->
-> ---
-> v2:
-> - fix checkpatch warning
-> ---
->  hw/intc/riscv_aplic.c | 51 ++++++++++++++++++++++++++++---------------
->  1 file changed, 33 insertions(+), 18 deletions(-)
->
-> diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-> index 32edd6d07bb3..4a262c82f078 100644
-> --- a/hw/intc/riscv_aplic.c
-> +++ b/hw/intc/riscv_aplic.c
-> @@ -159,31 +159,42 @@ static bool is_kvm_aia(bool msimode)
->      return kvm_irqchip_in_kernel() && msimode;
->  }
->
-> +static bool riscv_aplic_irq_rectified_val(RISCVAPLICState *aplic,
-> +                                          uint32_t irq)
-> +{
-> +    uint32_t sourcecfg, sm, raw_input, irq_inverted;
-> +
-> +    if (!irq || aplic->num_irqs <=3D irq) {
-> +        return false;
-> +    }
-> +
-> +    sourcecfg =3D aplic->sourcecfg[irq];
-> +    if (sourcecfg & APLIC_SOURCECFG_D) {
-> +        return false;
-> +    }
-> +
-> +    sm =3D sourcecfg & APLIC_SOURCECFG_SM_MASK;
-> +    if (sm =3D=3D APLIC_SOURCECFG_SM_INACTIVE) {
-> +        return false;
-> +    }
-> +
-> +    raw_input =3D (aplic->state[irq] & APLIC_ISTATE_INPUT) ? 1 : 0;
-> +    irq_inverted =3D (sm =3D=3D APLIC_SOURCECFG_SM_LEVEL_LOW ||
-> +                    sm =3D=3D APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
-> +
-> +    return !!(raw_input ^ irq_inverted);
-> +}
-> +
->  static uint32_t riscv_aplic_read_input_word(RISCVAPLICState *aplic,
->                                              uint32_t word)
->  {
-> -    uint32_t i, irq, sourcecfg, sm, raw_input, irq_inverted, ret =3D 0;
-> +    uint32_t i, irq, rectified_val, ret =3D 0;
->
->      for (i =3D 0; i < 32; i++) {
->          irq =3D word * 32 + i;
-> -        if (!irq || aplic->num_irqs <=3D irq) {
-> -            continue;
-> -        }
->
-> -        sourcecfg =3D aplic->sourcecfg[irq];
-> -        if (sourcecfg & APLIC_SOURCECFG_D) {
-> -            continue;
-> -        }
-> -
-> -        sm =3D sourcecfg & APLIC_SOURCECFG_SM_MASK;
-> -        if (sm =3D=3D APLIC_SOURCECFG_SM_INACTIVE) {
-> -            continue;
-> -        }
-> -
-> -        raw_input =3D (aplic->state[irq] & APLIC_ISTATE_INPUT) ? 1 : 0;
-> -        irq_inverted =3D (sm =3D=3D APLIC_SOURCECFG_SM_LEVEL_LOW ||
-> -                        sm =3D=3D APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
-> -        ret |=3D (raw_input ^ irq_inverted) << i;
-> +        rectified_val =3D riscv_aplic_irq_rectified_val(aplic, irq);
-> +        ret |=3D rectified_val << i;
->      }
->
->      return ret;
-> @@ -702,6 +713,10 @@ static void riscv_aplic_write(void *opaque, hwaddr a=
-ddr, uint64_t value,
->              (aplic->sourcecfg[irq] =3D=3D 0)) {
->              riscv_aplic_set_pending_raw(aplic, irq, false);
->              riscv_aplic_set_enabled_raw(aplic, irq, false);
-> +        } else {
-> +            if (riscv_aplic_irq_rectified_val(aplic, irq)) {
-> +                riscv_aplic_set_pending_raw(aplic, irq, true);
-> +            }
->          }
->      } else if (aplic->mmode && aplic->msimode &&
->                 (addr =3D=3D APLIC_MMSICFGADDR)) {
-> --
-> 2.17.1
->
->
+UGluZy4NCg0KPiBLVk0gY29tbWl0IDE5MWM4MTM3YTkzOSAoIng4Ni9rdm06IEltcGxlbWVudCBI
+V0NSIHN1cHBvcnQiKQ0KPiBpbnRyb2R1Y2VkIHN1cHBvcnQgZm9yIGVtdWxhdGluZyBIV0NSIE1T
+Ui4NCj4NCj4gQWRkIHN1cHBvcnQgZm9yIFFFTVUgdG8gc2F2ZS9sb2FkIHRoaXMgTVNSIGZvciBt
+aWdyYXRpb24gcHVycG9zZXMuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEdhbyBTaGl5dWFuIDxnYW9z
+aGl5dWFuQGJhaWR1LmNvbT4NCj4gLS0tDQo+IHRhcmdldC9pMzg2L2NwdS5jICAgICB8ICAxICsN
+Cj4gdGFyZ2V0L2kzODYvY3B1LmggICAgIHwgIDUgKysrKysNCj4gdGFyZ2V0L2kzODYva3ZtL2t2
+bS5jIHwgMTIgKysrKysrKysrKysrDQo+IHRhcmdldC9pMzg2L21hY2hpbmUuYyB8IDIwICsrKysr
+KysrKysrKysrKysrKysrDQo+IDQgZmlsZXMgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKQ0KPg0K
+PiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L2kzODYvY3B1LmMgYi90YXJnZXQvaTM4Ni9jcHUuYw0KPiBp
+bmRleCA4NWVmNzQ1MmMwLi4zMzkxMzFhMzlhIDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvaTM4Ni9j
+cHUuYw0KPiArKysgYi90YXJnZXQvaTM4Ni9jcHUuYw0KPiBAQCAtNzA5Myw2ICs3MDkzLDcgQEAg
+c3RhdGljIHZvaWQgeDg2X2NwdV9yZXNldF9ob2xkKE9iamVjdCAqb2JqLCBSZXNldFR5cGUgdHlw
+ZSkNCj4gICAgICBlbnYtPmEyMF9tYXNrID0gfjB4MDsNCj4gICAgICBlbnYtPnNtYmFzZSA9IDB4
+MzAwMDA7DQo+ICAgICAgZW52LT5tc3Jfc21pX2NvdW50ID0gMDsNCj4gKyAgICBlbnYtPmh3Y3Ig
+PSAwOw0KPg0KPiAgICAgIGVudi0+aWR0LmxpbWl0ID0gMHhmZmZmOw0KPiAgICAgIGVudi0+Z2R0
+LmxpbWl0ID0gMHhmZmZmOw0KPiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L2kzODYvY3B1LmggYi90YXJn
+ZXQvaTM4Ni9jcHUuaA0KPiBpbmRleCAxNGVkZDU3YTM3Li5hMTliMWNlZGE0IDEwMDY0NA0KPiAt
+LS0gYS90YXJnZXQvaTM4Ni9jcHUuaA0KPiArKysgYi90YXJnZXQvaTM4Ni9jcHUuaA0KPiBAQCAt
+NTM5LDYgKzUzOSw4IEBAIHR5cGVkZWYgZW51bSBYODZTZWcgew0KPg0KPiAjZGVmaW5lIE1TUl9B
+TUQ2NF9UU0NfUkFUSU9fREVGQVVMVCAgICAgMHgxMDAwMDAwMDBVTEwNCj4NCj4gKyNkZWZpbmUg
+TVNSX0s3X0hXQ1IgICAgICAgICAgICAgICAgICAgICAweGMwMDEwMDE1DQo+ICsNCj4gI2RlZmlu
+ZSBNU1JfVk1fSFNBVkVfUEEgICAgICAgICAgICAgICAgIDB4YzAwMTAxMTcNCj4NCj4gI2RlZmlu
+ZSBNU1JfSUEzMl9YRkQgICAgICAgICAgICAgICAgICAgIDB4MDAwMDAxYzQNCj4gQEAgLTE4NTks
+NiArMTg2MSw5IEBAIHR5cGVkZWYgc3RydWN0IENQVUFyY2hTdGF0ZSB7DQo+ICAgICAgdWludDY0
+X3QgbXNyX2xicl9kZXB0aDsNCj4gICAgICBMQlJFbnRyeSBsYnJfcmVjb3Jkc1tBUkNIX0xCUl9O
+Ul9FTlRSSUVTXTsNCj4NCj4gKyAgICAvKiBIYXJkd2FyZSBDb25maWd1cmF0aW9uIE1TUiAqLw0K
+PiArICAgIHVpbnQ2NF90IGh3Y3I7DQo+ICsNCj4gICAgICAvKiBleGNlcHRpb24vaW50ZXJydXB0
+IGhhbmRsaW5nICovDQo+ICAgICAgaW50IGVycm9yX2NvZGU7DQo+ICAgICAgaW50IGV4Y2VwdGlv
+bl9pc19pbnQ7DQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9rdm0va3ZtLmMgYi90YXJnZXQv
+aTM4Ni9rdm0va3ZtLmMNCj4gaW5kZXggYWRhNTgxYzVkNi4uMjE1YzEzZWIxMyAxMDA2NDQNCj4g
+LS0tIGEvdGFyZ2V0L2kzODYva3ZtL2t2bS5jDQo+ICsrKyBiL3RhcmdldC9pMzg2L2t2bS9rdm0u
+Yw0KPiBAQCAtMTQ1LDYgKzE0NSw3IEBAIHN0YXRpYyBib29sIGhhc19tc3JfdWNvZGVfcmV2Ow0K
+PiBzdGF0aWMgYm9vbCBoYXNfbXNyX3ZteF9wcm9jYmFzZWRfY3RsczI7DQo+IHN0YXRpYyBib29s
+IGhhc19tc3JfcGVyZl9jYXBhYnM7DQo+IHN0YXRpYyBib29sIGhhc19tc3JfcGtyczsNCj4gK3N0
+YXRpYyBib29sIGhhc19tc3JfaHdjcjsNCj4NCj4gc3RhdGljIHVpbnQzMl90IGhhc19hcmNoaXRl
+Y3R1cmFsX3BtdV92ZXJzaW9uOw0KPiBzdGF0aWMgdWludDMyX3QgbnVtX2FyY2hpdGVjdHVyYWxf
+cG11X2dwX2NvdW50ZXJzOw0KPiBAQCAtMjU1NCw2ICsyNTU1LDggQEAgc3RhdGljIGludCBrdm1f
+Z2V0X3N1cHBvcnRlZF9tc3JzKEtWTVN0YXRlICpzKQ0KPiAgICAgICAgICAgICAgY2FzZSBNU1Jf
+SUEzMl9QS1JTOg0KPiAgICAgICAgICAgICAgICAgIGhhc19tc3JfcGtycyA9IHRydWU7DQo+ICAg
+ICAgICAgICAgICAgICAgYnJlYWs7DQo+ICsgICAgICAgICAgICBjYXNlIE1TUl9LN19IV0NSOg0K
+PiArICAgICAgICAgICAgICAgIGhhc19tc3JfaHdjciA9IHRydWU7DQo+ICAgICAgICAgICAgICB9
+DQo+ICAgICAgICAgIH0NCj4gICAgICB9DQo+IEBAIC0zODI0LDYgKzM4MjcsOSBAQCBzdGF0aWMg
+aW50IGt2bV9wdXRfbXNycyhYODZDUFUgKmNwdSwgaW50IGxldmVsKQ0KPiAgICAgIGlmIChoYXNf
+bXNyX3ZpcnRfc3NiZCkgew0KPiAgICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9W
+SVJUX1NTQkQsIGVudi0+dmlydF9zc2JkKTsNCj4gICAgICB9DQo+ICsgICAgaWYgKGhhc19tc3Jf
+aHdjcikgew0KPiArICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9LN19IV0NSLCBl
+bnYtPmh3Y3IpOw0KPiArICAgIH0NCj4NCj4gI2lmZGVmIFRBUkdFVF9YODZfNjQNCj4gICAgICBp
+ZiAobG1fY2FwYWJsZV9rZXJuZWwpIHsNCj4gQEAgLTQzMDgsNiArNDMxNCw5IEBAIHN0YXRpYyBp
+bnQga3ZtX2dldF9tc3JzKFg4NkNQVSAqY3B1KQ0KPiAgICAgICAgICBrdm1fbXNyX2VudHJ5X2Fk
+ZChjcHUsIE1TUl9JQTMyX1RTQywgMCk7DQo+ICAgICAgICAgIGVudi0+dHNjX3ZhbGlkID0gIXJ1
+bnN0YXRlX2lzX3J1bm5pbmcoKTsNCj4gICAgICB9DQo+ICsgICAgaWYgKGhhc19tc3JfaHdjcikg
+ew0KPiArICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9LN19IV0NSLCAwKTsNCj4g
+KyAgICB9DQo+DQo+ICNpZmRlZiBUQVJHRVRfWDg2XzY0DQo+ICAgICAgaWYgKGxtX2NhcGFibGVf
+a2VybmVsKSB7DQo+IEBAIC00ODI3LDYgKzQ4MzYsOSBAQCBzdGF0aWMgaW50IGt2bV9nZXRfbXNy
+cyhYODZDUFUgKmNwdSkNCj4gICAgICAgICAgY2FzZSBNU1JfQVJDSF9MQlJfSU5GT18wIC4uLiBN
+U1JfQVJDSF9MQlJfSU5GT18wICsgMzE6DQo+ICAgICAgICAgICAgICBlbnYtPmxicl9yZWNvcmRz
+W2luZGV4IC0gTVNSX0FSQ0hfTEJSX0lORk9fMF0uaW5mbyA9IG1zcnNbaV0uZGF0YTsNCj4gICAg
+ICAgICAgICAgIGJyZWFrOw0KPiArICAgICAgICBjYXNlIE1TUl9LN19IV0NSOg0KPiArICAgICAg
+ICAgICAgZW52LT5od2NyID0gbXNyc1tpXS5kYXRhOw0KPiArICAgICAgICAgICAgYnJlYWs7DQo+
+ICAgICAgICAgIH0NCj4gICAgICB9DQo+DQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9tYWNo
+aW5lLmMgYi90YXJnZXQvaTM4Ni9tYWNoaW5lLmMNCj4gaW5kZXggMzlmODI5NGYyNy4uMmRiODNh
+Y2FmYSAxMDA2NDQNCj4gLS0tIGEvdGFyZ2V0L2kzODYvbWFjaGluZS5jDQo+ICsrKyBiL3Rhcmdl
+dC9pMzg2L21hY2hpbmUuYw0KPiBAQCAtMTU0Myw2ICsxNTQzLDI1IEBAIHN0YXRpYyBjb25zdCBW
+TVN0YXRlRGVzY3JpcHRpb24gdm1zdGF0ZV9tc3JfeGZkID0gew0KPiAgICAgIH0NCj4gfTsNCj4N
+Cj4gK3N0YXRpYyBib29sIG1zcl9od2NyX25lZWRlZCh2b2lkICpvcGFxdWUpDQo+ICt7DQo+ICsg
+ICAgWDg2Q1BVICpjcHUgPSBvcGFxdWU7DQo+ICsgICAgQ1BVWDg2U3RhdGUgKmVudiA9ICZjcHUt
+PmVudjsNCj4gKw0KPiArICAgIHJldHVybiBlbnYtPmh3Y3IgIT0gMDsNCj4gK30NCj4gKw0KPiAr
+c3RhdGljIGNvbnN0IFZNU3RhdGVEZXNjcmlwdGlvbiB2bXN0YXRlX21zcl9od2NyID0gew0KPiAr
+ICAgIC5uYW1lID0gImNwdS9tc3JfaHdjciIsDQo+ICsgICAgLnZlcnNpb25faWQgPSAxLA0KPiAr
+ICAgIC5taW5pbXVtX3ZlcnNpb25faWQgPSAxLA0KPiArICAgIC5uZWVkZWQgPSBtc3JfaHdjcl9u
+ZWVkZWQsDQo+ICsgICAgLmZpZWxkcyA9IChWTVN0YXRlRmllbGRbXSkgew0KPiArICAgICAgICBW
+TVNUQVRFX1VJTlQ2NChlbnYuaHdjciwgWDg2Q1BVKSwNCj4gKyAgICAgICAgVk1TVEFURV9FTkRf
+T0ZfTElTVCgpDQo+ICsgICAgfQ0KPiArfTsNCj4gKw0KPiAjaWZkZWYgVEFSR0VUX1g4Nl82NA0K
+PiBzdGF0aWMgYm9vbCBpbnRlbF9mcmVkX21zcnNfbmVlZGVkKHZvaWQgKm9wYXF1ZSkNCj4gew0K
+PiBAQCAtMTc3Myw2ICsxNzkyLDcgQEAgY29uc3QgVk1TdGF0ZURlc2NyaXB0aW9uIHZtc3RhdGVf
+eDg2X2NwdSA9IHsNCj4gICAgICAgICAgJnZtc3RhdGVfbXNyX2ludGVsX3NneCwNCj4gICAgICAg
+ICAgJnZtc3RhdGVfcGRwdHJzLA0KPiAgICAgICAgICAmdm1zdGF0ZV9tc3JfeGZkLA0KPiArICAg
+ICAgICAmdm1zdGF0ZV9tc3JfaHdjciwNCj4gI2lmZGVmIFRBUkdFVF9YODZfNjQNCj4gICAgICAg
+ICAgJnZtc3RhdGVfbXNyX2ZyZWQsDQo+ICAgICAgICAgICZ2bXN0YXRlX2FteF94dGlsZSwNCj4g
+LS0NCj4gMi4zNC4xDQoNCg==
 
