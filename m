@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E46C995379
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 17:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C4499537B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 17:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syCF5-0003Ib-38; Tue, 08 Oct 2024 11:35:19 -0400
+	id 1syCGi-0004tu-6h; Tue, 08 Oct 2024 11:37:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syCF3-0003IF-6y
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 11:35:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syCGg-0004tj-DA
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 11:36:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syCF0-0002Bz-0V
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 11:35:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syCGf-0002QV-1h
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 11:36:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728401710;
+ s=mimecast20190719; t=1728401815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ASd1KIkybKLAhuXAlAKpNWDB/Sj2ApGxiy9lArfsIFw=;
- b=KmBpA7WI3D9T2RFxpgE4eJWgFaTy77gUW/nzuPo56M/CiWMinrpvb/5SUTqkwHKamqc+k+
- ZAI6qbBrB40RX8IixIIaA4tffJRuayxBhbd0jcvNcEFz2lRojmhzy4TwYS5bQmoWFyONFn
- /HxYWMPNRfnxueYgopWCJEpKmZOPUII=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SeAOtVxsxe5DgoivNpzbMICWKIG1igNj6NDUzY0aGTk=;
+ b=Xd7YxRPtYwjIVcfr3Lm4fTbtnojnxLzVuyOj6ADCuQgRyc2FqzmfxGah+AaT6B3zTlIEgk
+ 2IZ1m1y+rLgYo0PKW/HzoOlzgKRexIMHz2vKZ0a6ATM9wnNGsOcqfXpECAYc4qiG+sLJ2X
+ zuZcneDHnfQ5bpa/w7f7+fzng+JZMyU=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-cyfNxPtpOOWda1bATGNbUQ-1; Tue, 08 Oct 2024 11:35:09 -0400
-X-MC-Unique: cyfNxPtpOOWda1bATGNbUQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7ac9b08cb77so1162154385a.1
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 08:35:09 -0700 (PDT)
+ us-mta-384-j63qmynDOT2F-sY7BhqweQ-1; Tue, 08 Oct 2024 11:36:54 -0400
+X-MC-Unique: j63qmynDOT2F-sY7BhqweQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-45d94168de2so122082911cf.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 08:36:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728401709; x=1729006509;
+ d=1e100.net; s=20230601; t=1728401814; x=1729006614;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ASd1KIkybKLAhuXAlAKpNWDB/Sj2ApGxiy9lArfsIFw=;
- b=kK9n2+lTwr5XwRedGk9MhUOANSZOsWcIEENa5+jFqbwKKkOqf3ZGOjxY0rw7SmcHGf
- HzXyz2a4MNDJlJf+k7IULLnuLczWSKtonXTh0ZMtTkDpm3HlBPCchjAcG1QuXgz4MsVT
- AZQTVoUXQpCuYK4Trmbvk8Q3irAZHWYqWkQr/hkyDFwMqHfSDqFznBA2Ej3eNkTPy79g
- j8I19UqlvIgsSOODJIypsvF6pg/zTJpKyhpumqun1ye0lP8la4NR5GVYZ9SpAHiqbIHz
- sF+/Q1zBubajVOWhtoajpUf7aJfdJ7MbC1pQRemeTtCjLgJsA9vvXwu3dnG0+zyd0N5v
- D7Vw==
-X-Gm-Message-State: AOJu0Yykz8TulTLXuyEd9FpGGoanLzlTDNJxClgAll1Y43geBEJfmT+h
- amH6h7jnDRlU5VrqcYDaNUg+YU5IhRqUMPPFTqUev9KWtXNhfJOuyZqmRwlJZ59XmLEi33hvorI
- cdgwHO47zLNMHorwA2igG2SNBN/RhyDF9CjwNKXls/n/C3kClmCrw
-X-Received: by 2002:a05:620a:1aa0:b0:7ac:b3bf:c30c with SMTP id
- af79cd13be357-7ae6f48ae1fmr2338432485a.45.1728401708645; 
- Tue, 08 Oct 2024 08:35:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQHFGWc0UMCOgVSVuTWGoubSyW21qk2jjrmJ9CONQUf3lawaRfiMnWJ+3nnSSCo8Tzy4306Q==
-X-Received: by 2002:a05:620a:1aa0:b0:7ac:b3bf:c30c with SMTP id
- af79cd13be357-7ae6f48ae1fmr2338428585a.45.1728401708227; 
- Tue, 08 Oct 2024 08:35:08 -0700 (PDT)
+ bh=SeAOtVxsxe5DgoivNpzbMICWKIG1igNj6NDUzY0aGTk=;
+ b=MzEzJscomCveC8bI2Irhks/QHIIUsQTS4731YdsrE5Eza2XWZiibT5bdRoBRdjo3x8
+ BtDsK/sGop67iHF7qeKBYNIr4xNWTTjN0O9PJAbLJ1iMhOpPUA/zKKmR6XpRKP2+UWbK
+ 9J3Hj7qoVgrhfq9rT7eY4zoY4+AdLNcmo1j/pjWLKaYOtG82OBLaxTDnB5FHg7pNHKn3
+ vB+uKU1pXTmTr1uJtaj1uryTtLoMC3EjBiNEy2b6Qj/AWoJvyOLKG/AbecmD2e56rYSv
+ PXiAHXaadJ9K7lwOJUs9/4W18l9/xsG/9r423boAdgQ4ztGOuKguzIEUZ75qZy6HhmnO
+ RaUw==
+X-Gm-Message-State: AOJu0Yya0g9tl5aXdOMCkCNAeKOtEyxZ9LBMFLLyTdef3JpU/malwD/Z
+ EbfDLBjFzvTwvETCIdIYumAWpkOUPhyKlva2NMf+kVSJ2xVdoGDKeZ8nQ016kkJJisI429LcXOY
+ D/2vSg7lu4FMn7QlveG1rGRKRkq8izQMIhIF8iiwo/jBV+DHnPALk
+X-Received: by 2002:a05:622a:5b8e:b0:45e:f2df:2eca with SMTP id
+ d75a77b69052e-45ef2df2f5fmr41351781cf.32.1728401814213; 
+ Tue, 08 Oct 2024 08:36:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQ8CWNR72aUK0W7m8X0Bg4OcOLrH7K30sNlrS/Z5lbWM4uKWraKK0KUltOOtX3zfV8HEi/ZA==
+X-Received: by 2002:a05:622a:5b8e:b0:45e:f2df:2eca with SMTP id
+ d75a77b69052e-45ef2df2f5fmr41351511cf.32.1728401813886; 
+ Tue, 08 Oct 2024 08:36:53 -0700 (PDT)
 Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7ae756613c8sm361601385a.87.2024.10.08.08.35.06
+ d75a77b69052e-45da75ed4e8sm37250651cf.64.2024.10.08.08.36.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 08:35:07 -0700 (PDT)
-Date: Tue, 8 Oct 2024 11:35:04 -0400
+ Tue, 08 Oct 2024 08:36:53 -0700 (PDT)
+Date: Tue, 8 Oct 2024 11:36:51 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Steven Sistare <steven.sistare@oracle.com>
 Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
@@ -71,17 +71,17 @@ Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 04/13] migration: stop vm earlier for cpr
-Message-ID: <ZwVRKKMYnfB1OqFQ@x1n>
+Subject: Re: [PATCH V2 09/13] migration: cpr-transfer save and load
+Message-ID: <ZwVRkzYyHpYPodNF@x1n>
 References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
- <1727725244-105198-5-git-send-email-steven.sistare@oracle.com>
- <ZwP9ynimqzlmJ3uT@x1n>
- <17296eae-6d66-44c9-8355-39ad6a517a87@oracle.com>
+ <1727725244-105198-10-git-send-email-steven.sistare@oracle.com>
+ <ZwQQlFkguUCp7UH1@x1n>
+ <4ddfebeb-a1ec-44c4-9f73-a1618427a61d@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <17296eae-6d66-44c9-8355-39ad6a517a87@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <4ddfebeb-a1ec-44c4-9f73-a1618427a61d@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -106,42 +106,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 07, 2024 at 04:52:43PM -0400, Steven Sistare wrote:
-> On 10/7/2024 11:27 AM, Peter Xu wrote:
-> > On Mon, Sep 30, 2024 at 12:40:35PM -0700, Steve Sistare wrote:
-> > > Stop the vm earlier for cpr, to guarantee consistent device state when
-> > > CPR state is saved.
+On Mon, Oct 07, 2024 at 03:31:18PM -0400, Steven Sistare wrote:
+> On 10/7/2024 12:47 PM, Peter Xu wrote:
+> > On Mon, Sep 30, 2024 at 12:40:40PM -0700, Steve Sistare wrote:
+> > > Add functions to create a QEMUFile based on a unix URI, for saving or
+> > > loading, for use by cpr-transfer mode to preserve CPR state.
+> > > 
+> > > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > > 
-> > Could you add some more info on why this order matters?
+> > Reviewed-by: Peter Xu <peterx@redhat.com>
 > > 
-> > E.g., qmp_migrate should switch migration state machine to SETUP, while
-> > this path holds BQL, I think it means there's no way devices got hot added
-> > concurrently of the whole process.
-> > 
-> > Would other things change in the cpr states (name, fd, etc.)?  It'll be
-> > great to mention these details in the commit message.
+> > There're a few extra newlines below, though, which could be removed.
 > 
-> Because of the new cpr-state save operation needed by this mode,
-> I created this patch to be future proof.  Performing a save operation while
-> the machine is running is asking for trouble.  But right now, I am not aware
-> of any specific issues.
-> 
-> Later in the "tap and vhost" series there is another reason to stop the vm here and
-> save cpr state, because the devices must be stopped in old qemu before they
-> are initialized in new qemu.  If you are curious, see the 2 patches I attached
-> to the email at
->   https://lore.kernel.org/qemu-devel/fa95c40d-b5e5-41eb-bba7-7842bca2f73e@oracle.com/
-> But, that has nothing to do with the contents of cpr state.
+> I added the extra lines for readability.  They separate multi-line conditional
+> expressions from the body that follows, and separate one if-then-else body
+> from the next body.
 
-Then I suggest we leave this patch to the vhost/tap series, then please
-document clearly in the commit mesasge on why this is needed.  Linking to
-that discussion thread could work too.
-
-Side note: I saw you have MIG_EVENT_PRECOPY_CPR_SETUP in you own tree, I
-wonder whether we could reuse MIG_EVENT_PRECOPY_SETUP by moving it earlier
-in qmp_migrate().  After all CPR-* notifiers are already registered
-separately with the list of migration_state_notifiers[], so I suppose it'll
-service the same purpose.  But we can discuss that later.
+I think that's not what we normally do in QEMU's code base, but that's
+still OK if you prefer; I don't think we have strong requirement on such
+format yet.
 
 -- 
 Peter Xu
