@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0779954D5
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 18:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7450A9954DF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 18:51:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syDMj-0003C3-3I; Tue, 08 Oct 2024 12:47:17 -0400
+	id 1syDQF-0007Tg-2L; Tue, 08 Oct 2024 12:50:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syDMh-0003B2-HQ
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 12:47:15 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syDMf-000390-Js
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 12:47:15 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-37d1eda8c7cso1638444f8f.3
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 09:47:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728406032; x=1729010832; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EY6w9wvwlC/cLOufBH+NAUI4yIvgWqgEs7u9iu6gMAw=;
- b=YNQGE7Zbz67MiS/QVL2ytaCx7GyldhJe9dMQ4s+pcCAokwb4hgUGFzHC4c58bnDn0J
- JZ+vGUfjKr4quuIP7F7QGs0JBliSRSZRhNS4g2KVb2nLLVgt3A2mo+Va1hkgvZREABXU
- TqChSGruzc1mZcGwektoSC7tETQqX8uUVce7Mi33RIhbNnWadEqZVjj1BJoEAAeUWuIS
- VNwjQaWmvBPbimVXtPUDFtgp8sfNGE+RY8JtIkzCwB7AgWncV6dbn/YDuteZSPBBA7i6
- h0gh/PvrUShHuwSBM6blqeQrstS8iH0mXk/grisn0z0QmuFyiJQ5htC5RAW91G4Qelxb
- DSsw==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1syDQ8-0007T3-5n
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 12:50:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1syDQ5-0003qU-B8
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 12:50:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728406242;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8N0a6zpkIEoby3R/NddoQweXNNf5JiWwyS0NVESqE5g=;
+ b=GC/rRUSiZwlKzX4lgUZYd2A66knkWxJThVsDE1A2f99wNs+z5RLPVPc9d6GrMVhcCz3ZMF
+ KkY2oQ4KNYaypj3xcaxuH2ujNGoplBXVer8gcpVe3dqdZM7qzJZ8eQlcIrk/KFE9XWRMK2
+ mqQJhQ3aB5tSiFFjprLtw55pmHD3+IM=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-OEPWsZssN9K3KY7shNf12Q-1; Tue, 08 Oct 2024 12:50:40 -0400
+X-MC-Unique: OEPWsZssN9K3KY7shNf12Q-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-7d4fc1a2bb7so5424476a12.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 09:50:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728406032; x=1729010832;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EY6w9wvwlC/cLOufBH+NAUI4yIvgWqgEs7u9iu6gMAw=;
- b=WKiIFgJsAIRA2q2oktAMYkQTSqAOEQKhc5q7GCWMv3oHD+u1b03ujGzvjZAfzMCjrv
- oDZJwQ44tkev9Sd1sd/ICDeFoqAml9Vcvf9c61pzaZs3JpYp/FLEOnHMooM0FFoIv4go
- MAPg2Ki3RAxOM8pQXKZp1kGWCDCjgAkEpf77b0UcdUJQF0W9llOkdYBrt7tzx9xmUAH0
- s1QMW4bnb+Zwu+MtGZJklIlPNHYgDFeYUb5vvXHwP11Zc0woj2AlJkj1rV5lV2hiT+k1
- 9nILD7Nxht5buOGym24WyNW15jf33sQ5azmzoV5jHHnWQCruZxKshIxKC7Tff6616Mys
- 5LuA==
-X-Gm-Message-State: AOJu0YzyF4EBorzAEBPDkz0xnKwmFvxV5SfKxaU+K9aogA9DhCO1Kd/G
- LxcHSJbBdSZY0DAkXDp5Miji7veC2GnmauovZof/JQ4eH0cBgi4xDg2ORC0NZU6QhQcTc/LiEBK
- O
-X-Google-Smtp-Source: AGHT+IE/7mGJ0SI9ElRd7nFLqPgrK5XhK1FU/N12bNUDzZnqQ3K/a4bAqEBKzOUN1BqDwtvEVhGjdQ==
-X-Received: by 2002:a5d:5c87:0:b0:37d:2e78:8875 with SMTP id
- ffacd0b85a97d-37d2e78a2a4mr1470394f8f.56.1728406032104; 
- Tue, 08 Oct 2024 09:47:12 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d32ea1d98sm1490936f8f.68.2024.10.08.09.47.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 09:47:11 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH v2 4/4] block/vdi.c: Make SECTOR_SIZE constant 64-bits
-Date: Tue,  8 Oct 2024 17:47:08 +0100
-Message-Id: <20241008164708.2966400-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241008164708.2966400-1-peter.maydell@linaro.org>
-References: <20241008164708.2966400-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1728406239; x=1729011039;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8N0a6zpkIEoby3R/NddoQweXNNf5JiWwyS0NVESqE5g=;
+ b=YCLiloL5rjJCvn6chG3wn4YEM+VzNZ9uGOl7SgWk+Wq1QXFB4638K7q2D1dqUb0neE
+ qZsyn62hRF0jJz7yx+wgSg3QSkwTNKY54p3KEQ85dbfmy5V5CSGTui740x+kKjdme+0Y
+ OpkT0bKQUoIQQrwI7xJjNXoBjEccJ2Wev7W7J147RGe3dqeHb+Z+p3e2GLbfsQfTG8op
+ zywojplKRa+v/3evb+xTufFbutdb+QZJQyCVip2p2q1K5t+Rrrn9dF77ZQnAMw8MUAOI
+ 2qJvsMIaIy4q3+Qk/xcrnenOKIvsxI/Cay2wREqelpgOZmrFrcB7M8iqfERpEDoSsXVA
+ 55Rg==
+X-Gm-Message-State: AOJu0YwHY0WzOAgMOifSRwxjDsQCwrxAoBzsF/H+Q44dClnBpbFd9pfA
+ BrNUsuAcFB3vOqqlVZw/6TD3yCQZ0d7blkr9agxW0i6kyMk90bC8TDC5nrkQGtJI7YwgXfhkctl
+ h8JUpss5y1IXQGAyS8MSptoZDr6YNOjNEBHFv1bB//4Jy/f/qSosjzkbBjGpFAdSb//gxBLbEXg
+ KOe/TGSo1LZL8aCAX0Hmd0QB75DT0=
+X-Received: by 2002:a17:902:f650:b0:20b:5b1a:209 with SMTP id
+ d9443c01a7336-20bfe022a28mr207515045ad.9.1728406239658; 
+ Tue, 08 Oct 2024 09:50:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrXJlm4Z+W+GlaGQ7XU+Wr2MzgbgBRSApnrcTCyKLy5x2pfEXt7rB+UOWbp7f0QaDwrlpf56u82V3DANzSL4s=
+X-Received: by 2002:a17:902:f650:b0:20b:5b1a:209 with SMTP id
+ d9443c01a7336-20bfe022a28mr207514745ad.9.1728406239291; Tue, 08 Oct 2024
+ 09:50:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <CAFEAcA_y6xYLyK_qEjngtCm+Y5-Yuw-rqK2Qm0UhVAFHtp610w@mail.gmail.com>
+In-Reply-To: <CAFEAcA_y6xYLyK_qEjngtCm+Y5-Yuw-rqK2Qm0UhVAFHtp610w@mail.gmail.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 8 Oct 2024 12:50:26 -0400
+Message-ID: <CAFn=p-ZU8sDP6xEN=AD6gN-OLCOgSOZ=WxfHZeCmzJVgwcYpcQ@mail.gmail.com>
+Subject: Re: qemu-iotests test 297 tries to run python linters on editor
+ backup files
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Qemu-block <qemu-block@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000ebca9a0623f9ef9f"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,57 +93,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the VDI SECTOR_SIZE define be a 64-bit constant; this matches
-how we define BDRV_SECTOR_SIZE.  The benefit is that it means that we
-don't need to carefully cast to 64-bits when doing operations like
-"n_sectors * SECTOR_SIZE" to avoid doing a 32x32->32 multiply, which
-might overflow, and which Coverity and other static analysers tend to
-warn about.
+--000000000000ebca9a0623f9ef9f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The specific potential overflow Coverity is highlighting is the one
-at the end of vdi_co_pwritev() where we write out n_sectors sectors
-to the block map.  This is very unlikely to actually overflow, since
-the block map has 4 bytes per block and the maximum number of blocks
-in the image must fit into a 32-bit integer.  So this commit is not
-fixing a real-world bug.
+On Tue, Oct 8, 2024, 12:31=E2=80=AFPM Peter Maydell <peter.maydell@linaro.o=
+rg>
+wrote:
 
-An inspection of all the places currently using SECTOR_SIZE in the
-file shows none which care about the change in its type, except for
-one call to error_setg() which needs the format string adjusting.
+> I made some changes to a block backend so I wanted to run the iotests.
+> I ran into an unrelated failure of iotest 297. The bulk of this
+> seems to be because the iotest tries to run on all files
+> in qemu-iotests, even on editor backups like in this case "040~"
+> (which is an old editor backup of 040). But there are also
+> some warnings about files that do exist in the tree and which
+> I haven't modified:
+>
+> +tests/migrate-bitmaps-test:63:4: R0201: Method could be a function
+> (no-self-use)
+> +tests/mirror-change-copy-mode:109:4: R0201: Method could be a
+> function (no-self-use)
+> +fat16.py:239:4: R0201: Method could be a function (no-self-use)
+>
+> Q1: can we make this test not run the linters on editor backup files?
+>
 
-Resolves: Coverity CID 1508076
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
----
-v1->v2: v1 just added the (uint64_t) cast for the specific
-issue that Coverity was warning about; v2 is entirely different
-and takes the approach Kevin suggested in review on v1.
----
- block/vdi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Shouldn't be a problem. AFAIK we decide what to lint based on looking for
+the shebang in the file and exclude a known-bad list, but we can exclude
+the emacs confetti files too.
 
-diff --git a/block/vdi.c b/block/vdi.c
-index 149e15c8314..26f7638f1fc 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -87,7 +87,7 @@
- /* Command line option for static images. */
- #define BLOCK_OPT_STATIC "static"
- 
--#define SECTOR_SIZE 512
-+#define SECTOR_SIZE 512ULL
- #define DEFAULT_CLUSTER_SIZE 1048576
- /* Note: can't use 1 * MiB, because it's passed to stringify() */
- 
-@@ -442,7 +442,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
-         goto fail;
-     } else if (header.sector_size != SECTOR_SIZE) {
-         error_setg(errp, "unsupported VDI image (sector size %" PRIu32
--                   " is not %u)", header.sector_size, SECTOR_SIZE);
-+                   " is not %llu)", header.sector_size, SECTOR_SIZE);
-         ret = -ENOTSUP;
-         goto fail;
-     } else if (header.block_size != DEFAULT_CLUSTER_SIZE) {
--- 
-2.34.1
+I'll fix it.
+
+(Guess I haven't been editing the tests for a while... and nobody else has
+mentioned it. oops.)
+
+Q2: why do I see the errors above but they aren't in the reference file
+> output?
+>
+
+You mean, why are there errors in files you haven't modified?
+
+Very likely: pylint version differences. I've been meaning to remove iotest
+297 for a long time, but when you run it directly through iotests (i.e. not
+through the python directory tests, the ones that run on gitlab ci), the
+linter versions are not controlled for. It's a remaining ugly spot of the
+python consistency work. (sparing you the details on why but it's a known
+thing I need to fix.)
+
+In this case I bet "check-python-tox" (an optionally run, may-fail job) is
+also failing on gitlab and I didn't notice yet.
+
+for now (assuming my guesses above are right): I'll fix 297 to tolerate the
+newest versions. As soon as I'm done my sphinx work, I'll pivot back to
+finally adding a "check python" subtest to "make check" that *does* control
+linter versions, and delete iotest 297.
+
+Just in case my guesses are wrong, can you please go to your QEMU build
+directory (post-configure) and type:
+
+> source pyvenv/bin/activate.[whatever shell suffix you use]
+> pylint --version
+> deactivate
+
+and let me know what version of pylint you have in the qemu build
+environment?
+
+
+>
+> e104462:jammy:qemu-iotests$ ./check 297
+> QEMU          --
+>
+> "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-system-x8=
+6_64"
+> -nodefaults -display none -accel qtest
+> QEMU_IMG      --
+> "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-img"
+> QEMU_IO       --
+> "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-io"
+> --cache writeback --aio threads -f raw
+> QEMU_NBD      --
+> "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-nbd"
+> IMGFMT        -- raw
+> IMGPROTO      -- file
+> PLATFORM      -- Linux/x86_64 e104462 5.15.0-89-generic
+> TEST_DIR      --
+>
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tests/qemu-iote=
+sts/scratch
+> SOCK_DIR      -- /tmp/qemu-iotests-0c1ft_vw
+> GDB_OPTIONS   --
+> VALGRIND_QEMU --
+> PRINT_QEMU_OUTPUT --
+>
+> 297   fail       [17:26:10] [17:26:23]   13.1s                output
+> mismatch (see
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tests/qemu-iote=
+sts/scratch/raw-file-297/297.out.bad)
+>     [case not run] 'mypy' not found
+>
+> --- /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/qemu-iotests/297.out
+> +++
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tests/qemu-iote=
+sts/scratch/raw-file-297/297.out.bad
+> @@ -1,2 +1,74 @@
+>  =3D=3D=3D pylint =3D=3D=3D
+> +************* Module migrate-bitmaps-test
+> +tests/migrate-bitmaps-test:63:4: R0201: Method could be a function
+> (no-self-use)
+> +************* Module mirror-change-copy-mode
+> +tests/mirror-change-copy-mode:109:4: R0201: Method could be a
+> function (no-self-use)
+> +************* Module fat16
+> +fat16.py:239:4: R0201: Method could be a function (no-self-use)
+> +************* Module 040~
+> +040~:50:0: C0301: Line too long (85/79) (line-too-long)
+> +040~:64:0: C0301: Line too long (86/79) (line-too-long)
+> +040~:91:0: C0301: Line too long (138/79) (line-too-long)
+> [PMM: deleted a lot more warnings about this editor backup file]
+>  =3D=3D=3D mypy =3D=3D=3D
+> Some cases not run in:
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/qemu-iotests/297
+> Failures: 297
+> Failed 1 of 1 iotests
+>
+> thanks
+> -- PMM
+>
+
+Thanks for the report.
+--js
+
+>
+
+--000000000000ebca9a0623f9ef9f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Oct 8, 2024, 12:31=E2=80=AFPM Peter Maydell &l=
+t;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&=
+gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
+ .8ex;border-left:1px #ccc solid;padding-left:1ex">I made some changes to a=
+ block backend so I wanted to run the iotests.<br>
+I ran into an unrelated failure of iotest 297. The bulk of this<br>
+seems to be because the iotest tries to run on all files<br>
+in qemu-iotests, even on editor backups like in this case &quot;040~&quot;<=
+br>
+(which is an old editor backup of 040). But there are also<br>
+some warnings about files that do exist in the tree and which<br>
+I haven&#39;t modified:<br>
+<br>
++tests/migrate-bitmaps-test:63:4: R0201: Method could be a function<br>
+(no-self-use)<br>
++tests/mirror-change-copy-mode:109:4: R0201: Method could be a<br>
+function (no-self-use)<br>
++fat16.py:239:4: R0201: Method could be a function (no-self-use)<br>
+<br>
+Q1: can we make this test not run the linters on editor backup files?<br></=
+blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Should=
+n&#39;t be a problem. AFAIK we decide what to lint based on looking for the=
+ shebang in the file and exclude a known-bad list, but we can exclude the e=
+macs confetti files too.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
+>I&#39;ll fix it.</div><div dir=3D"auto"><br></div><div dir=3D"auto">(Guess=
+ I haven&#39;t been editing the tests for a while... and nobody else has me=
+ntioned it. oops.)</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div =
+class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
+ 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+Q2: why do I see the errors above but they aren&#39;t in the reference file=
+<br>
+output?<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D=
+"auto">You mean, why are there errors in files you haven&#39;t modified?</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">Very likely: pylint versio=
+n differences. I&#39;ve been meaning to remove iotest 297 for a long time, =
+but when you run it directly through iotests (i.e. not through the python d=
+irectory tests, the ones that run on gitlab ci), the linter versions are no=
+t controlled for. It&#39;s a remaining ugly spot of the python consistency =
+work. (sparing you the details on why but it&#39;s a known thing I need to =
+fix.)</div><div dir=3D"auto"><br></div><div dir=3D"auto">In this case I bet=
+ &quot;check-python-tox&quot; (an optionally run, may-fail job) is also fai=
+ling on gitlab and I didn&#39;t notice yet.</div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto">for now (assuming my guesses above are right): I&#39;ll=
+ fix 297 to tolerate the newest versions. As soon as I&#39;m done my sphinx=
+ work, I&#39;ll pivot back to finally adding a &quot;check python&quot; sub=
+test to &quot;make check&quot; that *does* control linter versions, and del=
+ete iotest 297.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Just in =
+case my guesses are wrong, can you please go to your QEMU build directory (=
+post-configure) and type:</div><div dir=3D"auto"><br></div><div dir=3D"auto=
+">&gt; source pyvenv/bin/activate.[whatever shell suffix you use]</div><div=
+ dir=3D"auto">&gt; pylint --version</div><div dir=3D"auto">&gt; deactivate<=
+/div><div dir=3D"auto"><br></div><div dir=3D"auto">and let me know what ver=
+sion of pylint you have in the qemu build environment?</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
+=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
+ing-left:1ex">
+<br>
+<br>
+e104462:jammy:qemu-iotests$ ./check 297<br>
+QEMU=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 --<br>
+&quot;/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-system=
+-x86_64&quot;<br>
+-nodefaults -display none -accel qtest<br>
+QEMU_IMG=C2=A0 =C2=A0 =C2=A0 --<br>
+&quot;/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-img&qu=
+ot;<br>
+QEMU_IO=C2=A0 =C2=A0 =C2=A0 =C2=A0--<br>
+&quot;/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-io&quo=
+t;<br>
+--cache writeback --aio threads -f raw<br>
+QEMU_NBD=C2=A0 =C2=A0 =C2=A0 --<br>
+&quot;/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/qemu-nbd&qu=
+ot;<br>
+IMGFMT=C2=A0 =C2=A0 =C2=A0 =C2=A0 -- raw<br>
+IMGPROTO=C2=A0 =C2=A0 =C2=A0 -- file<br>
+PLATFORM=C2=A0 =C2=A0 =C2=A0 -- Linux/x86_64 e104462 5.15.0-89-generic<br>
+TEST_DIR=C2=A0 =C2=A0 =C2=A0 --<br>
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tests/qemu-iotest=
+s/scratch<br>
+SOCK_DIR=C2=A0 =C2=A0 =C2=A0 -- /tmp/qemu-iotests-0c1ft_vw<br>
+GDB_OPTIONS=C2=A0 =C2=A0--<br>
+VALGRIND_QEMU --<br>
+PRINT_QEMU_OUTPUT --<br>
+<br>
+297=C2=A0 =C2=A0fail=C2=A0 =C2=A0 =C2=A0 =C2=A0[17:26:10] [17:26:23]=C2=A0 =
+=C2=A013.1s=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 output<b=
+r>
+mismatch (see /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tes=
+ts/qemu-iotests/scratch/raw-file-297/297.out.bad)<br>
+=C2=A0 =C2=A0 [case not run] &#39;mypy&#39; not found<br>
+<br>
+--- /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/qemu-iotests/297.out<b=
+r>
++++ /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/tests/qemu-io=
+tests/scratch/raw-file-297/297.out.bad<br>
+@@ -1,2 +1,74 @@<br>
+=C2=A0=3D=3D=3D pylint =3D=3D=3D<br>
++************* Module migrate-bitmaps-test<br>
++tests/migrate-bitmaps-test:63:4: R0201: Method could be a function<br>
+(no-self-use)<br>
++************* Module mirror-change-copy-mode<br>
++tests/mirror-change-copy-mode:109:4: R0201: Method could be a<br>
+function (no-self-use)<br>
++************* Module fat16<br>
++fat16.py:239:4: R0201: Method could be a function (no-self-use)<br>
++************* Module 040~<br>
++040~:50:0: C0301: Line too long (85/79) (line-too-long)<br>
++040~:64:0: C0301: Line too long (86/79) (line-too-long)<br>
++040~:91:0: C0301: Line too long (138/79) (line-too-long)<br>
+[PMM: deleted a lot more warnings about this editor backup file]<br>
+=C2=A0=3D=3D=3D mypy =3D=3D=3D<br>
+Some cases not run in:<br>
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/qemu-iotests/297<br>
+Failures: 297<br>
+Failed 1 of 1 iotests<br>
+<br>
+thanks<br>
+-- PMM<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">Thanks for the report.</div><div dir=3D"auto">--js</div><div dir=3D"a=
+uto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"=
+margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000ebca9a0623f9ef9f--
 
 
