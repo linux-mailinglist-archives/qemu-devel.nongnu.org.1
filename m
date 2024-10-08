@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19115993D14
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 04:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE56D993D00
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 04:40:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy0LL-0007Dx-PV; Mon, 07 Oct 2024 22:52:59 -0400
+	id 1sy083-0003wX-BJ; Mon, 07 Oct 2024 22:39:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sy0LJ-0007DP-K2; Mon, 07 Oct 2024 22:52:57 -0400
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sy0LH-0000Zo-VW; Mon, 07 Oct 2024 22:52:57 -0400
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-84e857bc0feso2829939241.0; 
- Mon, 07 Oct 2024 19:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728355974; x=1728960774; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FX9JGiMDxOlwd/M6UUiIW5RV5yq4JFKHzR5ivOEV+I0=;
- b=g9THTMmXIvbZGKwHqhbSQhubRgcQf3S78MwERhJ78PdLZd5son8lU7dbH+46d35vIK
- CKC4oQoKsBiPd48KAQ3C5dqiKlXN8O58jejDCFejyuzgg1xGPZ11zHS+7XIVjkqXN4od
- Qp1QAfAxXwOWaPMIYy3rGf5JxFdV5lwN+mWFjvGX417p/Z8t+hvlsAGAiWAhRF/RA6iT
- bzEi5Tl+gohZzo0qIBs4ewOfadLyyCqlKuICd3l9Ce4lWbkx29qisjdpbrrr9WfqhOyj
- +oabq0CkQUxI31BYsarAtWFiwv6h2KeYBSX7JNApufdkfLCQayKGesSASK9camiSStr4
- TJ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728355974; x=1728960774;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FX9JGiMDxOlwd/M6UUiIW5RV5yq4JFKHzR5ivOEV+I0=;
- b=O6qsIpZLs6hwM8fFyYWhUjxeUQySduqJEdeI25brnl0UQMPq+6alG/VKhmphO8ZXPG
- Bt4uq0KNUn7wuc2crhx+0A/V2PnYvKBl8kKFVfsrZi6CVzfeJjjj9SQtjjGox/td0xjz
- nDSss3oxvmOVci44Sf0XXELkvbTvjS8n21f42Arb5tHPfUIE7slscKP2k8yBK9bENIPf
- /92B3vRyEJEeOHEH2rGE+hgc/f7nz8TTUL1L2p2SkkyhtsA6/s6FnE8FYJbXZckwc+Ga
- ISVhH9eDkf8ihwoqJWrnRmmg1QBK440lRrGFGDRUCgVeurixb1oEjuwZApDCcEQhRdxW
- VOrg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlJ0PHTYjTnEv8JXG4eE5N+EJuL+8dZ4L//sfP8dnCK9kPcx9Gc8wfFMXnLJkY4TXBNuRVZQct+eWi@nongnu.org,
- AJvYcCX1T2qDotONP2Tkk58feioTQrz+fnqOhVvxImOp2PwNaOo5eAjxpht28SBg/2L0A0oGK0zf0DJcvqWpLA==@nongnu.org
-X-Gm-Message-State: AOJu0YzP62iAq5459okIdU6cTDUVlH/svvjmpGqzAYd4vLN1SGqmGskp
- DmibQW7H1yy6mPYUX26zMn8q65JErLCgCT8SgoABGinKZxEnhmqqwxgvFnZST7v5u+MqfPriLaL
- LqMSb/HchFr21BuJjvtOcMXxh10Y=
-X-Google-Smtp-Source: AGHT+IH63q7nW84ndmyAZxkrLkifyxhhuKMT4Xfu3nJn2Z6z/YUlMRJIaN3uc6n4CUNrwmK63GgnfJJ7UmZbmgyRXWU=
-X-Received: by 2002:a05:6102:50a7:b0:4a3:c912:6707 with SMTP id
- ada2fe7eead31-4a43890a020mr1378611137.7.1728355973884; Mon, 07 Oct 2024
- 19:52:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sy080-0003vx-Qj; Mon, 07 Oct 2024 22:39:13 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sy07z-0007f8-5o; Mon, 07 Oct 2024 22:39:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728355151; x=1759891151;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=h/4KWn9V7cIjP5cDR1TS7MiUChbx6T5U2FcDlheaVt8=;
+ b=EgPz4OcyTarscBFkXYPVCOdsTo0wRRI35SSc3oPYyPCN25NAGwxOcSss
+ bViphDzPwQR5siJHfvZ/8SK4RP/cPSNa7E2pNLP/susW0beGeGexLD9ku
+ axsdCN/3s4JKX5hQ8+Am0t2lx6m8u1VlATmAu+3RB6/tthcYk1x5XpGvR
+ nrO5gDvH8n2/lS7XRFl+FIEC0ltXWicK0HWZDwwSWgAepk81uaD/oJGOe
+ FORnKuljmo6/regEln2RnrC+bKqbG3pQGQX7UX0+17zzZd4T0TQovsP6c
+ NofYYlSDZLj+EXx2Cu6slzK6K9naiE5FOinNcdbL6fIpIu9wtYiMcnRFu w==;
+X-CSE-ConnectionGUID: pk28RzSIS0+cKfpXXZsFaw==
+X-CSE-MsgGUID: SgWFZrDlQkq3unWsG0tL/w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="27612025"
+X-IronPort-AV: E=Sophos;i="6.11,185,1725346800"; d="scan'208";a="27612025"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 19:39:07 -0700
+X-CSE-ConnectionGUID: ydLZjjDwTnyX5wr3ApkTrw==
+X-CSE-MsgGUID: AfcGwOnVSNGBRoDsN9uwew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,185,1725346800"; d="scan'208";a="75682478"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 07 Oct 2024 19:39:05 -0700
+Date: Tue, 8 Oct 2024 10:55:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Chuang Xu <xuchuangxclwt@bytedance.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
+ xieyongji@bytedance.com, chaiwen.cc@bytedance.com,
+ qemu-stable@nongnu.org, Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>
+Subject: Re: [PATCH v4] i386/cpu: fixup number of addressable IDs for logical
+ processors in the physical package
+Message-ID: <ZwSfFNUYQNs/X74u@intel.com>
+References: <20241007081344.10907-1-xuchuangxclwt@bytedance.com>
 MIME-Version: 1.0
-References: <20240910174747.148141-1-alexei.filippov@syntacore.com>
-In-Reply-To: <20240910174747.148141-1-alexei.filippov@syntacore.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 8 Oct 2024 12:52:27 +1000
-Message-ID: <CAKmqyKPH33Lf5YdNrdHEQ9K0ZLrnJmvcGi9DjsP6gKNQZYAxaA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] target/riscv: Add support for machine specific
- pmu's events
-To: Alexei Filippov <alexei.filippov@syntacore.com>,
- Atish Patra <atishp@rivosinc.com>
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241007081344.10907-1-xuchuangxclwt@bytedance.com>
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,82 +82,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11, 2024 at 3:49=E2=80=AFAM Alexei Filippov
-<alexei.filippov@syntacore.com> wrote:
->
-> Following original patch [1] here's a patch with support of machine
-> specific pmu events and PoC with initial support for sifive_u's HPM.
+Hi Chuang.
 
-Thanks for the patch.
+Look fine for me, and only some minor nits:
 
-I'm hesitate to support these callback functions as I feel they
-(callbacks in the CPU to the machine in general) are clunky.
+On Mon, Oct 07, 2024 at 04:13:44PM +0800, Chuang Xu wrote:
+> Date: Mon,  7 Oct 2024 16:13:44 +0800
+> From: Chuang Xu <xuchuangxclwt@bytedance.com>
+> Subject: [PATCH v4] i386/cpu: fixup number of addressable IDs for logical
+>  processors in the physical package
+> X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+> 
+> When QEMU is started with:
+> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
+> -smp 180,sockets=2,dies=1,cores=45,threads=2
+> 
+> Try to execute "cpuid -1 -l 1 -r" in guest, we'll obtain a value of 90 for
+> CPUID.01H.EBX[23:16], while the expected value is 128. And Try to
+> execute "cpuid -1 -l 4 -r" in guest, we'll obtain a value of 63 for
+> CPUID.04H.EAX[31:26] as expected.
 
-I think the cover letter, code and commit messages need more details here.
+I polished the sentences a bit:
 
-First can you link to the exact spec you are trying to implement
-(RISC-V has a habit of creating multiple "ratified" specs that are all
-incompatible). It's really handy to point to the exact PDF in the
-cover letter or commit message to just be really clear what you are
-supporting.
+When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
+CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
+executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
+CPUID.04H.EAX[31:26], which matches the expected result.
 
-Secondly, can you describe why this is useful? What is the point of
-machine specific PMU events? Why do we want to support this in QEMU?
+> As (1+CPUID.04H.EAX[31:26]) round up to the nearest power-of-2 integer,
 
-The callbacks should also have some documentation in the code base so
-others can implement the functionality.
+s/round/rounds/
 
-It might also be helpful to split this patch up a little bit more. A
-quick read through and it seems like the patches could be a little
-smaller, making it easier to review.
+> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
+> integer too. Otherwise we may encounter unexpected results in guest.
+> 
+> For example, when QEMU is started with CLI above and xtopology is disabled,
 
-Finally, for the next version CC @Atish Patra  who has ended up being
-the PMU person :)
+What's xtopology?
 
-Alistair
+> guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
+> calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
+> as the result, even though theads-per-core should actually be 2.
 
+s/theads-per-core/threads-per-core/
+ 
+> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
+> to solve the unexpected result.
+> 
+> In addition, we introduce max_thread_number_in_package() instead of
+> using pow2ceil() to be compatible with smp and hybrid.
 >
-> =3D=3D Test scenarios =3D=3D
->
-> So, I tested this patches on current Linux master with perf.
-> something like `perf stat -e branch-misses perf bench mem memcpy` works
-> just fine, also 'perf record -e branch-misses perf bench mem memcpy'
-> collect samples just fine and `perf report` works.
->
-> =3D=3D ToDos / Limitations =3D=3D
->
-> Second patch is only inital sifive_u's HPM support, without any
-> filtering, events combining features or differrent counting
-> algorithm for different events. There are also no tests, but if you
-> have any suggestions about where I need to look to implement them, please
-> point me to.
->
-> =3D=3D Changes since original patch =3D=3D
->
-> - Rebased to current master
->
-> [1] https://lore.kernel.org/all/20240625144643.34733-1-alexei.filippov@sy=
-ntacore.com/
->
-> Alexei Filippov (2):
->   target/riscv: Add support for machine specific pmu's events
->   hw/riscv/sifive_u.c: Add initial HPM support
->
->  hw/misc/meson.build            |   1 +
->  hw/misc/sifive_u_pmu.c         | 384 +++++++++++++++++++++++++++++++++
->  hw/riscv/sifive_u.c            |  14 ++
->  include/hw/misc/sifive_u_pmu.h |  24 +++
->  target/riscv/cpu.c             |  20 +-
->  target/riscv/cpu.h             |   9 +
->  target/riscv/csr.c             |  93 +++++---
->  target/riscv/pmu.c             | 138 ++++++------
->  target/riscv/pmu.h             |  19 +-
->  9 files changed, 599 insertions(+), 103 deletions(-)
->  create mode 100644 hw/misc/sifive_u_pmu.c
->  create mode 100644 include/hw/misc/sifive_u_pmu.h
->
-> --
-> 2.34.1
->
->
+> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
+> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+> ---
+>  target/i386/cpu.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 85ef7452c0..1b4e3b6931 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -261,6 +261,12 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
+>      return num_ids - 1;
+>  }
+>  
+> +static uint32_t max_thread_number_in_package(X86CPUTopoInfo *topo_info)
+> +{
+> +    uint32_t num_threads = 1 << apicid_pkg_offset(topo_info);
+> +    return num_threads;
+> +}
+> +
+>  static uint32_t max_core_ids_in_package(X86CPUTopoInfo *topo_info)
+>  {
+>      uint32_t num_cores = 1 << (apicid_pkg_offset(topo_info) -
+> @@ -6462,7 +6468,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          }
+>          *edx = env->features[FEAT_1_EDX];
+>          if (threads_per_pkg > 1) {
+> -            *ebx |= threads_per_pkg << 16;
+> +            *ebx |= max_thread_number_in_package(&topo_info) << 16;
+
+This helper has only 1 caller and its name doesn't distinguish the
+addressable ID, so it's not necessary. I feel it's better to shift
+the bits directly here:
+
+*ebx |= 1 << apicid_pkg_offset(topo_info) << 16;
+
+>              *edx |= CPUID_HT;
+>          }
+>          if (!cpu->enable_pmu) {
+> -- 
+> 2.20.1
+> 
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
