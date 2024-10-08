@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BCB994026
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 09:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C4C994041
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 10:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy56h-0008F2-Iu; Tue, 08 Oct 2024 03:58:11 -0400
+	id 1sy56j-0008Fn-Dm; Tue, 08 Oct 2024 03:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56e-0008EP-Kz
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56f-0008Et-MC
  for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56d-0005eE-2i
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:08 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56e-0005ec-5y
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728374284;
+ s=mimecast20190719; t=1728374287;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S4Lu4CvXepcnqDYYoSSfGxHOKQsYCMn2p7GVV7BxCVQ=;
- b=enJMJwwB7o3/w2zceK1wX1vVrwgCbkfPoTqqfwFjiwakzRnhJO1TIqvW9K+XxoEC2yjERf
- mjpa3YemOJSliqqmUrK2t47PWEaAMUxOCJ42N//7NfSELJtK1Sv4KkDOkXGTH/sUzxg6J/
- RYlMxQd+woglj5APltbpZeh7nEZ/YpU=
+ bh=o1YxODqgX9phHsoWI2d0/5dq9DT+PbUd7UfSwgxY6rU=;
+ b=OtdKYb1nPZ+E9RQ5lfY0uRWows8AD9T7vIPvwj5I3dCfc8gmdOS7fWlw6oK3f4LOlv4Bas
+ zklV1KzzhJIelMKfnHNfPHcz2DM7DdxT9mhXgvHoZWJW6w9a99tgF92+4kIaloyr8H43Vd
+ IYDdgzFsk2/uN+g/K0s5vGAi93wVtsU=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-272-MKAT5ZJ-Oj69n2ZXFLr2KQ-1; Tue,
- 08 Oct 2024 03:58:01 -0400
-X-MC-Unique: MKAT5ZJ-Oj69n2ZXFLr2KQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-x4VOedCQNbGHUUjT_ykj1g-1; Tue,
+ 08 Oct 2024 03:58:04 -0400
+X-MC-Unique: x4VOedCQNbGHUUjT_ykj1g-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C55AE19560A7; Tue,  8 Oct 2024 07:57:59 +0000 (UTC)
+ id AE2BC1955D9B; Tue,  8 Oct 2024 07:58:02 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.61])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 31276300018D; Tue,  8 Oct 2024 07:57:56 +0000 (UTC)
+ id 3DCCF300018D; Tue,  8 Oct 2024 07:58:00 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	berrange@redhat.com
@@ -49,9 +49,9 @@ Cc: kris.conklin@seagate.com, jonathan.henze@seagate.com,
  evan.burgess@seagate.com, peter.maydell@linaro.org,
  Alejandro Zeise <alejandro.zeise@seagate.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 11/16] crypto/hash-gcrypt: Remove old hash API functions
-Date: Tue,  8 Oct 2024 09:57:18 +0200
-Message-ID: <20241008075724.2772149-12-clg@redhat.com>
+Subject: [PATCH v5 12/16] crypto/hash-gnutls: Remove old hash API functions
+Date: Tue,  8 Oct 2024 09:57:19 +0200
+Message-ID: <20241008075724.2772149-13-clg@redhat.com>
 In-Reply-To: <20241008075724.2772149-1-clg@redhat.com>
 References: <20241008075724.2772149-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,27 +85,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Zeise <alejandro.zeise@seagate.com>
 
-Removes old hash implementation in the gcrypt hash driver.
+Removes old hash implementation in the gnutls hash driver.
 
 Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 [ clg: - Fixed spelling in commit log ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- crypto/hash-gcrypt.c | 67 --------------------------------------------
- 1 file changed, 67 deletions(-)
+ crypto/hash-gnutls.c | 47 --------------------------------------------
+ 1 file changed, 47 deletions(-)
 
-diff --git a/crypto/hash-gcrypt.c b/crypto/hash-gcrypt.c
-index cb2cb37f25ed..ccc3cce3f8ab 100644
---- a/crypto/hash-gcrypt.c
-+++ b/crypto/hash-gcrypt.c
-@@ -45,72 +45,6 @@ gboolean qcrypto_hash_supports(QCryptoHashAlgo alg)
+diff --git a/crypto/hash-gnutls.c b/crypto/hash-gnutls.c
+index 8b0327be82cf..34a63994c9ff 100644
+--- a/crypto/hash-gnutls.c
++++ b/crypto/hash-gnutls.c
+@@ -53,52 +53,6 @@ gboolean qcrypto_hash_supports(QCryptoHashAlgo alg)
      return false;
  }
  
 -
 -static int
--qcrypto_gcrypt_hash_bytesv(QCryptoHashAlgo alg,
+-qcrypto_gnutls_hash_bytesv(QCryptoHashAlgo alg,
 -                           const struct iovec *iov,
 -                           size_t niov,
 -                           uint8_t **result,
@@ -113,8 +113,7 @@ index cb2cb37f25ed..ccc3cce3f8ab 100644
 -                           Error **errp)
 -{
 -    int i, ret;
--    gcry_md_hd_t md;
--    unsigned char *digest;
+-    gnutls_hash_hd_t hash;
 -
 -    if (!qcrypto_hash_supports(alg)) {
 -        error_setg(errp,
@@ -123,26 +122,7 @@ index cb2cb37f25ed..ccc3cce3f8ab 100644
 -        return -1;
 -    }
 -
--    ret = gcry_md_open(&md, qcrypto_hash_alg_map[alg], 0);
--
--    if (ret < 0) {
--        error_setg(errp,
--                   "Unable to initialize hash algorithm: %s",
--                   gcry_strerror(ret));
--        return -1;
--    }
--
--    for (i = 0; i < niov; i++) {
--        gcry_md_write(md, iov[i].iov_base, iov[i].iov_len);
--    }
--
--    ret = gcry_md_get_algo_dlen(qcrypto_hash_alg_map[alg]);
--    if (ret <= 0) {
--        error_setg(errp,
--                   "Unable to get hash length: %s",
--                   gcry_strerror(ret));
--        goto error;
--    }
+-    ret = gnutls_hash_get_len(qcrypto_hash_alg_map[alg]);
 -    if (*resultlen == 0) {
 -        *resultlen = ret;
 -        *result = g_new0(uint8_t, *resultlen);
@@ -150,36 +130,36 @@ index cb2cb37f25ed..ccc3cce3f8ab 100644
 -        error_setg(errp,
 -                   "Result buffer size %zu is smaller than hash %d",
 -                   *resultlen, ret);
--        goto error;
+-        return -1;
 -    }
 -
--    digest = gcry_md_read(md, 0);
--    if (!digest) {
+-    ret = gnutls_hash_init(&hash, qcrypto_hash_alg_map[alg]);
+-    if (ret < 0) {
 -        error_setg(errp,
--                   "No digest produced");
--        goto error;
+-                   "Unable to initialize hash algorithm: %s",
+-                   gnutls_strerror(ret));
+-        return -1;
 -    }
--    memcpy(*result, digest, *resultlen);
 -
--    gcry_md_close(md);
+-    for (i = 0; i < niov; i++) {
+-        gnutls_hash(hash, iov[i].iov_base, iov[i].iov_len);
+-    }
+-
+-    gnutls_hash_deinit(hash, *result);
 -    return 0;
--
-- error:
--    gcry_md_close(md);
--    return -1;
 -}
 -
  static
- QCryptoHash *qcrypto_gcrypt_hash_new(QCryptoHashAlgo alg, Error **errp)
+ QCryptoHash *qcrypto_gnutls_hash_new(QCryptoHashAlgo alg, Error **errp)
  {
-@@ -187,7 +121,6 @@ int qcrypto_gcrypt_hash_finalize(QCryptoHash *hash,
+@@ -174,7 +128,6 @@ int qcrypto_gnutls_hash_finalize(QCryptoHash *hash,
  }
  
  QCryptoHashDriver qcrypto_hash_lib_driver = {
--    .hash_bytesv = qcrypto_gcrypt_hash_bytesv,
-     .hash_new      = qcrypto_gcrypt_hash_new,
-     .hash_update   = qcrypto_gcrypt_hash_update,
-     .hash_finalize = qcrypto_gcrypt_hash_finalize,
+-    .hash_bytesv = qcrypto_gnutls_hash_bytesv,
+     .hash_new      = qcrypto_gnutls_hash_new,
+     .hash_update   = qcrypto_gnutls_hash_update,
+     .hash_finalize = qcrypto_gnutls_hash_finalize,
 -- 
 2.46.2
 
