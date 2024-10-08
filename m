@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4918D994C82
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8996994C4A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy9hm-0000fK-Ea; Tue, 08 Oct 2024 08:52:51 -0400
+	id 1sy9hJ-00006I-IN; Tue, 08 Oct 2024 08:52:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9gq-00089J-4H
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:52 -0400
+ id 1sy9gw-0008DC-8C
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9go-0002Vm-Ly
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:47 -0400
+ id 1sy9gu-0002W8-RR
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728391906;
+ s=mimecast20190719; t=1728391912;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gEXCv6l/wwyomShCZr4Pvr/4wmt658G7GplHXJdK/vs=;
- b=d3L6/h/H6LeKgTbRXHwYWq3CJ8NvaXTlaJUVYdUn2c89SPmPGYvwp8lfuc1XXdaiTbJiJ7
- Erp4+QQ71QYGxHGdXQmtf5W4djXdDL25D19NAEI8V3Adr7Q7UhhCVoCBV48EftmG1b12sE
- 3VRqo4unYce5F9mewTsyw1jd2FWB0qU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=EzurPQl5m1lilpX1ArJB/4rYtKQYxF5IgBh/E+TFZfQ=;
+ b=TPMXj/SaLT2h1IvOoxyeciWDzU4zDr2lbxf8hzz21WuKyY4RgsjsK712foDqb+UtjwFc3e
+ hnZWUpkTE4WOj7vmAKYI0HpWzm06iFGz2nSIVeUWtvoF2271db0Lb1HYOzpE8Ahbhllljh
+ e4G4dYHrg3l8pnAawKlFiq4OuwfmJXo=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-p_f8YqvEMJGqdA_qQB_3uQ-1; Tue,
- 08 Oct 2024 08:51:42 -0400
-X-MC-Unique: p_f8YqvEMJGqdA_qQB_3uQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-IbUtj6p5MzuiOD6m3j6rLQ-1; Tue,
+ 08 Oct 2024 08:51:47 -0400
+X-MC-Unique: IbUtj6p5MzuiOD6m3j6rLQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BFA8B1954224; Tue,  8 Oct 2024 12:51:41 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BBDD119560AF; Tue,  8 Oct 2024 12:51:46 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D87931956056; Tue,  8 Oct 2024 12:51:39 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7D3551956089; Tue,  8 Oct 2024 12:51:45 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -54,15 +54,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 13/19] meson: find_program('gdbus-codegen') directly
-Date: Tue,  8 Oct 2024 16:50:22 +0400
-Message-ID: <20241008125028.1177932-14-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 14/19] ui/dbus: make Listener.Win32.Map win32-specific
+Date: Tue,  8 Oct 2024 16:50:23 +0400
+Message-ID: <20241008125028.1177932-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 References: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,34 +91,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-gio.pc variable is a bit bogus in context of cross-compilation, since it
-contains an absolute path, relative to the sysroot directory. On Fedora, it ends
-up as:
-/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/usr/bin/gdbus-codegen
-path which does not exist because it is not shipped by Fedora mingw
-packages.
-
-Instead, we can rely on meson find_program() behaviour to do a better
-job based on its search order and capabilities.
+There are no types specific to Windows, so the code compiles on other
+platforms, but its useless on !Windows.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/dbus-display1.xml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index 33954b3eba..5072f4a8e9 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1012,7 +1012,7 @@ if not get_option('gio').auto() or have_system
-     gio = not_found
-   endif
-   if gio.found()
--    gdbus_codegen = find_program(gio.get_variable('gdbus_codegen'),
-+    gdbus_codegen = find_program('gdbus-codegen',
-                                  required: get_option('gio'))
-     gio_unix = dependency('gio-unix-2.0', required: get_option('gio'),
-                           method: 'pkg-config')
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index ce35d64eea..d5bb279698 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -476,6 +476,7 @@
+       org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for Windows
+       specific shared memory scanouts.
+   -->
++  <?if $(env.HOST_OS) == windows?>
+   <interface name="org.qemu.Display1.Listener.Win32.Map">
+     <!--
+         ScanoutMap:
+@@ -513,6 +514,7 @@
+       <arg type="i" name="height" direction="in"/>
+     </method>
+   </interface>
++  <?endif?>
+ 
+   <!--
+       org.qemu.Display1.Listener.Win32.D3d11:
 -- 
 2.47.0
 
