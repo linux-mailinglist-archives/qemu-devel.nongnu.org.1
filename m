@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D1A9945E3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2189945E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:57:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy7tX-0001qV-0Y; Tue, 08 Oct 2024 06:56:52 -0400
+	id 1sy7to-0002pH-7s; Tue, 08 Oct 2024 06:57:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sm-0001Vo-3x
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sm-0001Vn-3x
  for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:56:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sh-0001hI-TK
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:58 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sj-0001hQ-1A
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728384949;
+ s=mimecast20190719; t=1728384950;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M7QMvTsPftoKG+QTqsTw1mgotPDejidgbpsMvywl6gM=;
- b=YnPdVE5N5bvWbPESaH3l0Mj3+TtfFazkBn9T/KXD2c3Q1SO8P89OJmcxk3irsfjY5v4VFk
- csGVIGrgrwXpFsIFzVASit0TATQgdfkLHCvDY1Q7F3zxBEpUcRj0dSjEM8d8AoLk1ayF1t
- HftGED7bqvIL85/3+YEB09DOMYEWzf8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=9ptUoL5ViI+klHpO6WnvgtLo1vPdIs4CY5BwVWYDacA=;
+ b=TVNT4pckD4Fu36TJj0AjSrNDBgBGwiJbxgBu0JBqdk8XcSqUGjZnlfJGFuxtoeEZz3JP/C
+ 2yNzanKU0tWq2YX0HKGWNHtwnY7kCsrZxn2nilVcZ5hxaLLq4fA5YDv0kp3HExSE1g7Kt7
+ GbsgvyYsGV2ip4LM4SALMmM/aK3azkA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-132-12eYDCRINIiWdanpch7QWQ-1; Tue,
- 08 Oct 2024 06:55:43 -0400
-X-MC-Unique: 12eYDCRINIiWdanpch7QWQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-386-7V9DwEWmOBmUFnHyFexdhQ-1; Tue,
+ 08 Oct 2024 06:55:49 -0400
+X-MC-Unique: 7V9DwEWmOBmUFnHyFexdhQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 368721955BC6; Tue,  8 Oct 2024 10:55:42 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 807C71955D62; Tue,  8 Oct 2024 10:55:47 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.16.102])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 12D4C19560A3; Tue,  8 Oct 2024 10:55:36 +0000 (UTC)
+ id B9CD119560A3; Tue,  8 Oct 2024 10:55:42 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -54,9 +54,10 @@ Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  Heiko Carstens <hca@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v2 07/14] s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT
-Date: Tue,  8 Oct 2024 12:54:48 +0200
-Message-ID: <20241008105455.2302628-8-david@redhat.com>
+Subject: [PATCH v2 08/14] s390x/s390-stattrib-kvm: prepare for memory devices
+ and sparse memory layouts
+Date: Tue,  8 Oct 2024 12:54:49 +0200
+Message-ID: <20241008105455.2302628-9-david@redhat.com>
 In-Reply-To: <20241008105455.2302628-1-david@redhat.com>
 References: <20241008105455.2302628-1-david@redhat.com>
 MIME-Version: 1.0
@@ -87,87 +88,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A guest OS that supports memory hotplug / memory devices must during
-boot be aware of the maximum possible physical memory address that it might
-have to handle at a later stage during its runtime.
+With memory devices, we will have storage attributes for memory that
+exceeds the initial ram size. Further, we can easily have memory holes,
+for which there (currently) are no storage attributes.
 
-For example, the maximum possible memory address might be required to
-prepare the kernel virtual address space accordingly (e.g., select page
-table hierarchy depth).
+In particular, with memory holes, KVM_S390_SET_CMMA_BITS will fail to set
+some storage attributes.
 
-On s390x there is currently no such mechanism that is compatible with
-paravirtualized memory devices, because the whole SCLP interface was
-designed around the idea of "storage increments" and "standby memory".
-Paravirtualized memory devices we want to support, such as virtio-mem, have
-no intersection with any of that, but could co-exist with them in the
-future if ever needed.
+So let's do it like we handle storage keys migration, relying on
+guest_phys_blocks_append(). However, in contrast to storage key
+migration, we will handle it on the migration destination.
 
-In particular, a guest OS must never detect and use device memory
-without the help of a proper device driver. Device memory must not be
-exposed in any firmware-provided memory map (SCLP or diag260 on s390x).
-For this reason, these memory devices will be places in memory *above*
-the "maximum storage increment" exposed via SCLP.
+This is a preparation for virtio-mem support. Note that ever since the
+"early migration" feature was added (x-early-migration), the state
+of device blocks (plugged/unplugged) is migrated early such that
+guest_phys_blocks_append() will properly consider all currently plugged
+memory blocks and skip any unplugged ones.
 
-Let's provide a new diag500 subcode to query the memory limit determined in
-s390_memory_init().
+In the future, we should try getting rid of the large temporary buffer
+and also not send any attributes for any memory holes, just so they
+get ignored on the destination.
 
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/s390x/s390-hypercall.c | 12 +++++++++++-
- hw/s390x/s390-hypercall.h |  1 +
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ hw/s390x/s390-stattrib-kvm.c | 67 +++++++++++++++++++++++-------------
+ 1 file changed, 43 insertions(+), 24 deletions(-)
 
-diff --git a/hw/s390x/s390-hypercall.c b/hw/s390x/s390-hypercall.c
-index f816c2b1ef..ac1b08b2cd 100644
---- a/hw/s390x/s390-hypercall.c
-+++ b/hw/s390x/s390-hypercall.c
-@@ -11,7 +11,7 @@
+diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
+index eeaa811098..33ec91422a 100644
+--- a/hw/s390x/s390-stattrib-kvm.c
++++ b/hw/s390x/s390-stattrib-kvm.c
+@@ -10,11 +10,12 @@
+  */
  
  #include "qemu/osdep.h"
- #include "cpu.h"
 -#include "hw/boards.h"
 +#include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/s390-hypercall.h"
- #include "hw/s390x/ioinst.h"
- #include "hw/s390x/css.h"
-@@ -57,6 +57,13 @@ static int handle_virtio_ccw_notify(uint64_t subch_id, uint64_t data)
-     return 0;
+ #include "migration/qemu-file.h"
+ #include "hw/s390x/storage-attributes.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/kvm.h"
++#include "sysemu/memory_mapping.h"
+ #include "exec/ram_addr.h"
+ #include "kvm/kvm_s390x.h"
+ #include "qapi/error.h"
+@@ -84,8 +85,8 @@ static int kvm_s390_stattrib_set_stattr(S390StAttribState *sa,
+                                         uint8_t *values)
+ {
+     KVMS390StAttribState *sas = KVM_S390_STATTRIB(sa);
+-    MachineState *machine = MACHINE(qdev_get_machine());
+-    unsigned long max = machine->ram_size / TARGET_PAGE_SIZE;
++    S390CcwMachineState *s390ms = S390_CCW_MACHINE(qdev_get_machine());
++    unsigned long max = s390_get_memory_limit(s390ms) / TARGET_PAGE_SIZE;
+ 
+     if (start_gfn + count > max) {
+         error_report("Out of memory bounds when setting storage attributes");
+@@ -103,39 +104,57 @@ static int kvm_s390_stattrib_set_stattr(S390StAttribState *sa,
+ static void kvm_s390_stattrib_synchronize(S390StAttribState *sa)
+ {
+     KVMS390StAttribState *sas = KVM_S390_STATTRIB(sa);
+-    MachineState *machine = MACHINE(qdev_get_machine());
+-    unsigned long max = machine->ram_size / TARGET_PAGE_SIZE;
+-    /* We do not need to reach the maximum buffer size allowed */
+-    unsigned long cx, len = KVM_S390_SKEYS_MAX / 2;
++    S390CcwMachineState *s390ms = S390_CCW_MACHINE(qdev_get_machine());
++    unsigned long max = s390_get_memory_limit(s390ms) / TARGET_PAGE_SIZE;
++    unsigned long start_gfn, end_gfn, pages;
++    GuestPhysBlockList guest_phys_blocks;
++    GuestPhysBlock *block;
+     int r;
+     struct kvm_s390_cmma_log clog = {
+         .flags = 0,
+         .mask = ~0ULL,
+     };
+ 
+-    if (sas->incoming_buffer) {
+-        for (cx = 0; cx + len <= max; cx += len) {
+-            clog.start_gfn = cx;
+-            clog.count = len;
+-            clog.values = (uint64_t)(sas->incoming_buffer + cx);
+-            r = kvm_vm_ioctl(kvm_state, KVM_S390_SET_CMMA_BITS, &clog);
+-            if (r) {
+-                error_report("KVM_S390_SET_CMMA_BITS failed: %s", strerror(-r));
+-                return;
+-            }
+-        }
+-        if (cx < max) {
+-            clog.start_gfn = cx;
+-            clog.count = max - cx;
+-            clog.values = (uint64_t)(sas->incoming_buffer + cx);
++    if (!sas->incoming_buffer) {
++        return;
++    }
++    guest_phys_blocks_init(&guest_phys_blocks);
++    guest_phys_blocks_append(&guest_phys_blocks);
++
++    QTAILQ_FOREACH(block, &guest_phys_blocks.head, next) {
++        assert(QEMU_IS_ALIGNED(block->target_start, TARGET_PAGE_SIZE));
++        assert(QEMU_IS_ALIGNED(block->target_end, TARGET_PAGE_SIZE));
++
++        start_gfn = block->target_start / TARGET_PAGE_SIZE;
++        end_gfn = block->target_end / TARGET_PAGE_SIZE;
++
++        while (start_gfn < end_gfn) {
++            /* Don't exceed the maximum buffer size. */
++            pages = MIN(end_gfn - start_gfn, KVM_S390_SKEYS_MAX / 2);
++
++            /*
++             * If we ever get guest physical memory beyond the configured
++             * memory limit, something went very wrong.
++             */
++            assert(start_gfn + pages <= max);
++
++            clog.start_gfn = start_gfn;
++            clog.count = pages;
++            clog.values = (uint64_t)(sas->incoming_buffer + start_gfn);
+             r = kvm_vm_ioctl(kvm_state, KVM_S390_SET_CMMA_BITS, &clog);
+             if (r) {
+                 error_report("KVM_S390_SET_CMMA_BITS failed: %s", strerror(-r));
++                goto out;
+             }
++
++            start_gfn += pages;
+         }
+-        g_free(sas->incoming_buffer);
+-        sas->incoming_buffer = NULL;
+     }
++
++out:
++    guest_phys_blocks_free(&guest_phys_blocks);
++    g_free(sas->incoming_buffer);
++    sas->incoming_buffer = NULL;
  }
  
-+static uint64_t handle_storage_limit(void)
-+{
-+    S390CcwMachineState *s390ms = S390_CCW_MACHINE(qdev_get_machine());
-+
-+    return s390_get_memory_limit(s390ms) - 1;
-+}
-+
- void handle_diag_500(S390CPU *cpu, uintptr_t ra)
- {
-     CPUS390XState *env = &cpu->env;
-@@ -69,6 +76,9 @@ void handle_diag_500(S390CPU *cpu, uintptr_t ra)
-     case DIAG500_VIRTIO_CCW_NOTIFY:
-         env->regs[2] = handle_virtio_ccw_notify(env->regs[2], env->regs[3]);
-         break;
-+    case DIAG500_STORAGE_LIMIT:
-+        env->regs[2] = handle_storage_limit();
-+        break;
-     default:
-         s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-     }
-diff --git a/hw/s390x/s390-hypercall.h b/hw/s390x/s390-hypercall.h
-index 2fa81dbfdd..4f07209128 100644
---- a/hw/s390x/s390-hypercall.h
-+++ b/hw/s390x/s390-hypercall.h
-@@ -18,6 +18,7 @@
- #define DIAG500_VIRTIO_RESET            1 /* legacy */
- #define DIAG500_VIRTIO_SET_STATUS       2 /* legacy */
- #define DIAG500_VIRTIO_CCW_NOTIFY       3 /* KVM_S390_VIRTIO_CCW_NOTIFY */
-+#define DIAG500_STORAGE_LIMIT           4
- 
- void handle_diag_500(S390CPU *cpu, uintptr_t ra);
- 
+ static int kvm_s390_stattrib_set_migrationmode(S390StAttribState *sa, bool val,
 -- 
 2.46.1
 
