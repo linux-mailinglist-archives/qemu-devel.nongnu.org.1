@@ -2,61 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A23C9945A2
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1429945DF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:56:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy7eN-0007Rm-SO; Tue, 08 Oct 2024 06:41:07 -0400
+	id 1sy7s3-0001Gq-5y; Tue, 08 Oct 2024 06:55:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sy7eM-0007Rb-Ey
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:41:06 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7ry-0001Fv-4A
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sy7eK-0000DT-QN
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:41:06 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7rv-0001bv-Ot
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728384063;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=8Pr0LIgmYA2NXhvnN8tWzGXEjfVVDDmp1nZwSIdPdl0=;
- b=KCXQyDw+le0rDx0ccCzn7zAPb9loLX3n4L0km9kzV5c+vB4x76hHSyM+id/BrpX9Nl3oqe
- IZwHG5z53TAK7HXT18BtSqc2tsM3UpSj1ZPCjg1+EZfBRTZYgGMutCV82j0Rxww4MSuBEF
- yJNPiVD8Rw/tSyrk//rGWAU7YNDjPkI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1728384906;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OwG1I1Ns7Ph1SI9mpHX2AoEQeigyPjnlb2ofDe6A9cY=;
+ b=flhjXVcG8wiav72SBi/Dj+fp5rMd2ZeqvD8GRwZCXPuQL4urYev0PRJQpp2XD+bvx8RgdR
+ H/2b5AUQCPGiF4cg2Hl+YOO7i+kDKmIBU1vThPC7ZTW5kCprgnXnFri1Ntfvb4404aRTru
+ nGUOUnDTWgpf5HP5Zpf/HO0N54dRKtE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-9vETlG0nNhO8Cxjy65qU1w-1; Tue,
- 08 Oct 2024 06:41:01 -0400
-X-MC-Unique: 9vETlG0nNhO8Cxjy65qU1w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-dD5JFP7mN7Gvg9ENhCBzRw-1; Tue,
+ 08 Oct 2024 06:55:04 -0400
+X-MC-Unique: dD5JFP7mN7Gvg9ENhCBzRw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E8EC61955EE7; Tue,  8 Oct 2024 10:41:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.111])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CA3A219560A3; Tue,  8 Oct 2024 10:40:58 +0000 (UTC)
-Date: Tue, 8 Oct 2024 11:40:55 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Tejus GK <tejus.gk@nutanix.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, marcel.apfelbaum@gmail.com
-Subject: Re: pcie-root-port limits for q35?
-Message-ID: <ZwUMN6P40sVwcmm-@redhat.com>
-References: <9d0e5db9-aaf9-4536-ad9f-2f5c86523627@nutanix.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DB8C81955D4D; Tue,  8 Oct 2024 10:55:02 +0000 (UTC)
+Received: from t14s.fritz.box (unknown [10.22.16.102])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5933119560A3; Tue,  8 Oct 2024 10:54:56 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH v2 00/14] s390x: virtio-mem support
+Date: Tue,  8 Oct 2024 12:54:41 +0200
+Message-ID: <20241008105455.2302628-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9d0e5db9-aaf9-4536-ad9f-2f5c86523627@nutanix.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -78,41 +81,143 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 08, 2024 at 03:44:33PM +0530, Tejus GK wrote:
-> Hi, recently I was trying to play with the PCIe limits on the q35 machine
-> type. I see that docs/pcie.txt mentions:
-> 
-> > The IO space is very limited, to 65536 byte-wide IO ports, and may
-> > even be fragmented by fixed IO ports owned by platform devices
-> > resulting in at most 10 PCI Express Root Ports or PCI Express
-> > Downstream Ports per system if devices with IO BARs are used in the
-> > PCI Express hierarchy
-> 
-> But in my own experimental setup, I was able to successfully create and
-> power on a VM with 232 pcie-root-ports, with each root port hosting a
-> virtio-net device on it. The root ports, and the network devices end up
-> appearing inside the VM's PCI enumeration as well. So I'm left wondering
-> where this limit exactly come from? And I'm not sure if I am missing
-> something here, since I'm able to go way above the limit mentioned above.
+Based on current master.
 
-Note the very last part of the text you quoted:
+There is really not much left to do on s390x, because virtio-mem already
+implements most things we need today (e.g., early-migration,
+unplugged-inaccessible). The biggest part of this series is just doing what
+we do with virtio-pci, wiring it up in the machine hotplug handler and ...
+well, messing with the physical memory layout where we can now exceed
+initial RAM size and have sparsity (memory holes).
 
-   ..if devices with IO BARs are used..
+I tested a lot of things, including:
+ * Memory hotplug/unplug
+ * Device hotplug/unplug
+ * System resets / reboots
+ * Migrate to/from file (including storage attributes under KVM)
+ * Basic live migration
+ * Basic postcopy live migration
 
-     ^^
+More details on how to use it on s390x -- which is pretty much how
+we use it on other architectures, except
+s/virtio-mem-pci/virtio-mem-ccw/ --- is in the last patch.
 
-AFAIK, the virtio devices (at least in modern mode) don't use IO BARs,
-thus avoiding the mentioned limit.
+This series introduces a new diag(500) "STORAGE LIMIT" subcode that will
+be documented in the kernel and at [2] once this+kernel part go upstream.
 
-With regards,
-Daniel
+There are not many s390x-specific virtio-mem future work items, except:
+* Storage attribute migration might be improved
+* We might want to reset storage attributes of unplugged memory
+  (might or might not be required for upcoming page table reclaim in
+   Linux; TBD)
+
+The Linux driver is available at [3].
+
+[1] https://lkml.kernel.org/r/20240906101658.514470-1-pbonzini@redhat.com
+[2] https://gitlab.com/davidhildenbrand/s390x-os-virt-spec
+[3] https://lkml.kernel.org/r/20240910191541.2179655-6-david@redhat.com
+
+v1 -> v2:
+* "s390x/s390-virtio-hcall: prepare for more diag500 hypercalls"
+ - Turn handle_diag_500() into a void function
+ - Inject PGM_SPECIFICATION from handle_diag_500() directly
+* "s390x/s390-virtio-ccw: move setting the maximum guest size from sclp to
+   machine code"
+ - Move code to a new function to make further changes easier
+ - Adjust s390_pv_vm_try_disable_async() to stay in sync with the
+   maxram->ram change
+* "s390x: introduce s390_get_memory_limit()"
+ - Store limit in machine
+ - Move s390_set_memory_limit() from target code into machine code
+* "s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT"
+ - Move handling into a separate function now that we lookup the machine
+* "s390x/s390-stattrib-kvm: prepare for memory devices and sparse memory
+   layouts"
+ - Adjust to s390_get_memory_limit() changes
+* "s390x/s390-skeys: prepare for memory devices"
+ - Adjust to s390_get_memory_limit() changes
+* "s390x/pv: prepare for memory devices"
+ - Use s390_get_memory_limit()
+* "s390x: remember the maximum page size"
+ - Store it in the machine
+ - Move s390_set_max_pagesize() from target code into machine code
+ - No need for s390_get_max_pagesize()
+* "s390x/virtio-ccw: add support for virtio based memory devices"
+ - Move machine wire-up code from virtio-mem patch into this patch
+ - Add stubs to make compilation without virtio-mem work
+* "s390x: virtio-mem support"
+ - Move machine write-up code to previous patch
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Eric Farman <farman@linux.ibm.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>
+
+David Hildenbrand (14):
+  s390x/s390-virtio-ccw: don't crash on weird RAM sizes
+  s390x/s390-virtio-hcall: remove hypercall registration mechanism
+  s390x/s390-virtio-hcall: prepare for more diag500 hypercalls
+  s390x: rename s390-virtio-hcall* to s390-hypercall*
+  s390x/s390-virtio-ccw: move setting the maximum guest size from sclp
+    to machine code
+  s390x: introduce s390_get_memory_limit()
+  s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT
+  s390x/s390-stattrib-kvm: prepare for memory devices and sparse memory
+    layouts
+  s390x/s390-skeys: prepare for memory devices
+  s390x/s390-virtio-ccw: prepare for memory devices
+  s390x/pv: prepare for memory devices
+  s390x: remember the maximum page size
+  s390x/virtio-ccw: add support for virtio based memory devices
+  s390x: virtio-mem support
+
+ MAINTAINERS                        |   5 +
+ hw/s390x/Kconfig                   |   1 +
+ hw/s390x/meson.build               |   6 +-
+ hw/s390x/s390-hypercall.c          |  85 +++++++++++
+ hw/s390x/s390-hypercall.h          |  25 ++++
+ hw/s390x/s390-skeys.c              |   6 +-
+ hw/s390x/s390-stattrib-kvm.c       |  67 ++++++---
+ hw/s390x/s390-virtio-ccw.c         | 165 ++++++++++++++-------
+ hw/s390x/s390-virtio-hcall.c       |  41 ------
+ hw/s390x/s390-virtio-hcall.h       |  25 ----
+ hw/s390x/sclp.c                    |  17 +--
+ hw/s390x/virtio-ccw-md-stubs.c     |  24 +++
+ hw/s390x/virtio-ccw-md.c           | 153 +++++++++++++++++++
+ hw/s390x/virtio-ccw-md.h           |  44 ++++++
+ hw/s390x/virtio-ccw-mem.c          | 226 +++++++++++++++++++++++++++++
+ hw/s390x/virtio-ccw-mem.h          |  34 +++++
+ hw/virtio/Kconfig                  |   1 +
+ hw/virtio/virtio-mem.c             |   4 +-
+ include/hw/s390x/s390-virtio-ccw.h |   4 +
+ target/s390x/cpu-sysemu.c          |  15 --
+ target/s390x/cpu.h                 |   2 -
+ target/s390x/kvm/kvm.c             |  18 +--
+ target/s390x/kvm/pv.c              |   2 +-
+ target/s390x/tcg/misc_helper.c     |   7 +-
+ 24 files changed, 782 insertions(+), 195 deletions(-)
+ create mode 100644 hw/s390x/s390-hypercall.c
+ create mode 100644 hw/s390x/s390-hypercall.h
+ delete mode 100644 hw/s390x/s390-virtio-hcall.c
+ delete mode 100644 hw/s390x/s390-virtio-hcall.h
+ create mode 100644 hw/s390x/virtio-ccw-md-stubs.c
+ create mode 100644 hw/s390x/virtio-ccw-md.c
+ create mode 100644 hw/s390x/virtio-ccw-md.h
+ create mode 100644 hw/s390x/virtio-ccw-mem.c
+ create mode 100644 hw/s390x/virtio-ccw-mem.h
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.46.1
 
 
