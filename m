@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EF199404C
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 10:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F39994039
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 09:59:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy56f-0008EH-Q5; Tue, 08 Oct 2024 03:58:09 -0400
+	id 1sy56Z-0008Dq-6D; Tue, 08 Oct 2024 03:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56X-0008Di-80
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56W-0008Da-J1
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56V-0005dm-JW
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy56V-0005dg-5V
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:58:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728374279;
+ s=mimecast20190719; t=1728374278;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qG27T+g3U6Yp7fsVwDGPNBU8KssZgStbQTbkt259FB4=;
- b=NnkA/0AxH24JVwGq9O3g9wYtbHdVpGuX/lAxdBsUDZy0nZg7zMfp/NqEjS3VvzWzrFllX8
- OTIwK78GpTgECpMef+xHVEDjJSlZyC2/TlsSb1BVdYiTvIii9xt07+YsLUNtXj4pxNVBML
- OUOuOe2czjshpfJZjsOAm/aTOk9cyJs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=S5ZBYoXwkkM/UZtkbBXkrBJL7Uz5J4M57e6yKY+YW2U=;
+ b=KCr5V7kg8nEA/uvQIX+Zy4G2SwgKlwNZ/mb3eDLKUPZrMfaEVAh1ntL/sj7UiwMy1n1Csl
+ vTyDYazsTXHfbQ37xY+nTYd2pDgb1NQZdGLNqMEM97NEp5FtURZQljXfsAieK6xQdMEmsM
+ j9MwKoChXVKRRzPjwR7Qg31adMGn3TE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-f4x-3Q0ANVKEJ5glcXc3lg-1; Tue,
- 08 Oct 2024 03:57:53 -0400
-X-MC-Unique: f4x-3Q0ANVKEJ5glcXc3lg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-lbiXZRYHPwm-2Be1T57Vaw-1; Tue,
+ 08 Oct 2024 03:57:55 -0400
+X-MC-Unique: lbiXZRYHPwm-2Be1T57Vaw-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 382AE19560BD; Tue,  8 Oct 2024 07:57:51 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F1B751956069; Tue,  8 Oct 2024 07:57:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.61])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DDB0A300019F; Tue,  8 Oct 2024 07:57:48 +0000 (UTC)
+ id A3D0D300018D; Tue,  8 Oct 2024 07:57:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	berrange@redhat.com
@@ -49,9 +49,9 @@ Cc: kris.conklin@seagate.com, jonathan.henze@seagate.com,
  evan.burgess@seagate.com, peter.maydell@linaro.org,
  Alejandro Zeise <alejandro.zeise@seagate.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 08/16] crypto/hash: Implement and use new hash API
-Date: Tue,  8 Oct 2024 09:57:15 +0200
-Message-ID: <20241008075724.2772149-9-clg@redhat.com>
+Subject: [PATCH v5 09/16] tests/unit/test-crypto-hash: accumulative hashing
+Date: Tue,  8 Oct 2024 09:57:16 +0200
+Message-ID: <20241008075724.2772149-10-clg@redhat.com>
 In-Reply-To: <20241008075724.2772149-1-clg@redhat.com>
 References: <20241008075724.2772149-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,35 +85,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Zeise <alejandro.zeise@seagate.com>
 
-Changes the public hash API implementation to support accumulative hashing.
-
-Implementations for the public functions are added to call the new
-driver functions that implement context creation, updating,
-finalization, and destruction.
-
-Additionally changes the "shortcut" functions to use these 4 new core
-functions.
+Added an accumulative hashing test. Checks for functionality of
+the new hash create, update, finalize and free functions.
 
 Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
-[ clg: - Reworked qcrypto_hash_bytesv() error handling
-       - Used hash->driver int qcrypto_hash_new(), qcrypto_hash_free()
-         qcrypto_hash_updatev()
-       - Introduced qcrypto_hash_supports() check in
-         qcrypto_hash_new()
-       - Introduced g_autofree variables in qcrypto_hash_finalize_digest()
-         and qcrypto_hash_finalize_base64()
-       - Re-arrranged code in qcrypto_hash_digestv() and
-         qcrypto_hash_digest()
-       - Checkpatch fixes ]
+[ clg: - Improved test_hash_accumulate() with g_autofree variables ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- crypto/hash.c | 161 ++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 131 insertions(+), 30 deletions(-)
+ tests/unit/test-crypto-hash.c | 46 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/crypto/hash.c b/crypto/hash.c
-index 4a265582b80a..0c8548c5683c 100644
---- a/crypto/hash.c
-+++ b/crypto/hash.c
+diff --git a/tests/unit/test-crypto-hash.c b/tests/unit/test-crypto-hash.c
+index 124d204485d8..e5829ca766dc 100644
+--- a/tests/unit/test-crypto-hash.c
++++ b/tests/unit/test-crypto-hash.c
 @@ -1,6 +1,7 @@
  /*
   * QEMU Crypto hash algorithms
@@ -122,213 +107,64 @@ index 4a265582b80a..0c8548c5683c 100644
   * Copyright (c) 2015 Red Hat, Inc.
   *
   * This library is free software; you can redistribute it and/or
-@@ -19,6 +20,8 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi-types-crypto.h"
- #include "crypto/hash.h"
- #include "hashpriv.h"
- 
-@@ -45,23 +48,18 @@ int qcrypto_hash_bytesv(QCryptoHashAlgo alg,
-                         size_t *resultlen,
-                         Error **errp)
- {
--#ifdef CONFIG_AF_ALG
--    int ret;
--    /*
--     * TODO:
--     * Maybe we should treat some afalg errors as fatal
--     */
--    ret = qcrypto_hash_afalg_driver.hash_bytesv(alg, iov, niov,
--                                                result, resultlen,
--                                                NULL);
--    if (ret == 0) {
--        return ret;
-+    g_autoptr(QCryptoHash) ctx = qcrypto_hash_new(alg, errp);
-+
-+    if (!ctx) {
-+        return -1;
-+    }
-+
-+    if (qcrypto_hash_updatev(ctx, iov, niov, errp) < 0 ||
-+        qcrypto_hash_finalize_bytes(ctx, result, resultlen, errp) < 0) {
-+        return -1;
+@@ -241,6 +242,50 @@ static void test_hash_base64(void)
      }
--#endif
- 
--    return qcrypto_hash_lib_driver.hash_bytesv(alg, iov, niov,
--                                               result, resultlen,
--                                               errp);
-+    return 0;
  }
  
- 
-@@ -77,29 +75,130 @@ int qcrypto_hash_bytes(QCryptoHashAlgo alg,
-     return qcrypto_hash_bytesv(alg, &iov, 1, result, resultlen, errp);
- }
- 
-+int qcrypto_hash_updatev(QCryptoHash *hash,
-+                         const struct iovec *iov,
-+                         size_t niov,
-+                         Error **errp)
++static void test_hash_accumulate(void)
 +{
-+    QCryptoHashDriver *drv = hash->driver;
-+
-+    return drv->hash_update(hash, iov, niov, errp);
-+}
-+
-+int qcrypto_hash_update(QCryptoHash *hash,
-+                        const char *buf,
-+                        size_t len,
-+                        Error **errp)
-+{
-+    struct iovec iov = { .iov_base = (char *)buf, .iov_len = len };
-+
-+    return qcrypto_hash_updatev(hash, &iov, 1, errp);
-+}
-+
-+QCryptoHash *qcrypto_hash_new(QCryptoHashAlgo alg, Error **errp)
-+{
-+    QCryptoHash *hash = NULL;
-+
-+    if (!qcrypto_hash_supports(alg)) {
-+        error_setg(errp, "Unsupported hash algorithm %s",
-+                   QCryptoHashAlgo_str(alg));
-+        return NULL;
-+   }
-+
-+#ifdef CONFIG_AF_ALG
-+    hash = qcrypto_hash_afalg_driver.hash_new(alg, NULL);
-+    if (hash) {
-+        hash->driver = &qcrypto_hash_afalg_driver;
-+        return hash;
-+    }
-+#endif
-+
-+    hash = qcrypto_hash_lib_driver.hash_new(alg, errp);
-+    if (!hash) {
-+        return NULL;
-+    }
-+
-+    hash->driver = &qcrypto_hash_lib_driver;
-+    return hash;
-+}
-+
-+void qcrypto_hash_free(QCryptoHash *hash)
-+{
-+   QCryptoHashDriver *drv;
-+
-+    if (hash) {
-+        drv = hash->driver;
-+        drv->hash_free(hash);
-+    }
-+}
-+
-+int qcrypto_hash_finalize_bytes(QCryptoHash *hash,
-+                                uint8_t **result,
-+                                size_t *result_len,
-+                                Error **errp)
-+{
-+    QCryptoHashDriver *drv = hash->driver;
-+
-+    return drv->hash_finalize(hash, result, result_len, errp);
-+}
-+
- static const char hex[] = "0123456789abcdef";
- 
-+int qcrypto_hash_finalize_digest(QCryptoHash *hash,
-+                                 char **digest,
-+                                 Error **errp)
-+{
-+    int ret;
-+    g_autofree uint8_t *result = NULL;
-+    size_t resultlen = 0;
 +    size_t i;
 +
-+    ret = qcrypto_hash_finalize_bytes(hash, &result, &resultlen, errp);
-+    if (ret == 0) {
-+        *digest = g_new0(char, (resultlen * 2) + 1);
-+        for (i = 0 ; i < resultlen ; i++) {
-+            (*digest)[(i * 2)] = hex[(result[i] >> 4) & 0xf];
-+            (*digest)[(i * 2) + 1] = hex[result[i] & 0xf];
++    for (i = 0; i < G_N_ELEMENTS(expected_outputs) ; i++) {
++        g_autoptr(QCryptoHash) hash = NULL;
++        struct iovec iov[] = {
++            { .iov_base = (char *)INPUT_TEXT1, .iov_len = strlen(INPUT_TEXT1) },
++            { .iov_base = (char *)INPUT_TEXT2, .iov_len = strlen(INPUT_TEXT2) },
++            { .iov_base = (char *)INPUT_TEXT3, .iov_len = strlen(INPUT_TEXT3) },
++        };
++        g_autofree uint8_t *result = NULL;
++        size_t resultlen = 0;
++        int ret;
++        size_t j;
++
++        if (!qcrypto_hash_supports(i)) {
++            continue;
 +        }
-+        (*digest)[resultlen * 2] = '\0';
-+    }
 +
-+    return ret;
++        hash = qcrypto_hash_new(i, &error_fatal);
++        g_assert(hash != NULL);
++
++        /* Add each iovec to the hash context separately */
++        for (j = 0; j < G_N_ELEMENTS(iov); j++) {
++            ret = qcrypto_hash_updatev(hash,
++                                      &iov[j], 1,
++                                      &error_fatal);
++
++            g_assert(ret == 0);
++        }
++
++        ret = qcrypto_hash_finalize_bytes(hash, &result, &resultlen,
++                                          &error_fatal);
++
++        g_assert(ret == 0);
++        g_assert(resultlen == expected_lens[i]);
++        for (j = 0; j < resultlen; j++) {
++            g_assert(expected_outputs[i][j * 2] == hex[(result[j] >> 4) & 0xf]);
++            g_assert(expected_outputs[i][j * 2 + 1] == hex[result[j] & 0xf]);
++        }
++    }
 +}
 +
-+int qcrypto_hash_finalize_base64(QCryptoHash *hash,
-+                                 char **base64,
-+                                 Error **errp)
-+{
-+    int ret;
-+    g_autofree uint8_t *result = NULL;
-+    size_t resultlen = 0;
-+
-+    ret = qcrypto_hash_finalize_bytes(hash, &result, &resultlen, errp);
-+    if (ret == 0) {
-+        *base64 = g_base64_encode(result, resultlen);
-+    }
-+
-+    return ret;
-+}
-+
- int qcrypto_hash_digestv(QCryptoHashAlgo alg,
-                          const struct iovec *iov,
-                          size_t niov,
-                          char **digest,
-                          Error **errp)
+ int main(int argc, char **argv)
  {
--    uint8_t *result = NULL;
--    size_t resultlen = 0;
--    size_t i;
-+    g_autoptr(QCryptoHash) ctx = qcrypto_hash_new(alg, errp);
- 
--    if (qcrypto_hash_bytesv(alg, iov, niov, &result, &resultlen, errp) < 0) {
-+    if (!ctx) {
-         return -1;
-     }
- 
--    *digest = g_new0(char, (resultlen * 2) + 1);
--    for (i = 0 ; i < resultlen ; i++) {
--        (*digest)[(i * 2)] = hex[(result[i] >> 4) & 0xf];
--        (*digest)[(i * 2) + 1] = hex[result[i] & 0xf];
-+    if (qcrypto_hash_updatev(ctx, iov, niov, errp) < 0 ||
-+        qcrypto_hash_finalize_digest(ctx, digest, errp) < 0) {
-+        return -1;
-     }
--    (*digest)[resultlen * 2] = '\0';
--    g_free(result);
-+
-     return 0;
+     int ret = qcrypto_init(&error_fatal);
+@@ -252,5 +297,6 @@ int main(int argc, char **argv)
+     g_test_add_func("/crypto/hash/prealloc", test_hash_prealloc);
+     g_test_add_func("/crypto/hash/digest", test_hash_digest);
+     g_test_add_func("/crypto/hash/base64", test_hash_base64);
++    g_test_add_func("/crypto/hash/accumulate", test_hash_accumulate);
+     return g_test_run();
  }
- 
-@@ -120,15 +219,17 @@ int qcrypto_hash_base64v(QCryptoHashAlgo alg,
-                          char **base64,
-                          Error **errp)
- {
--    uint8_t *result = NULL;
--    size_t resultlen = 0;
-+    g_autoptr(QCryptoHash) ctx = qcrypto_hash_new(alg, errp);
-+
-+    if (!ctx) {
-+        return -1;
-+    }
- 
--    if (qcrypto_hash_bytesv(alg, iov, niov, &result, &resultlen, errp) < 0) {
-+    if (qcrypto_hash_updatev(ctx, iov, niov, errp) < 0 ||
-+        qcrypto_hash_finalize_base64(ctx, base64, errp) < 0) {
-         return -1;
-     }
- 
--    *base64 = g_base64_encode(result, resultlen);
--    g_free(result);
-     return 0;
- }
- 
 -- 
 2.46.2
 
