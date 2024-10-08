@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCFE993C26
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F0C993C20
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyth-0002zq-HK; Mon, 07 Oct 2024 21:20:23 -0400
+	id 1sxyt7-0000Sy-Dk; Mon, 07 Oct 2024 21:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3kIgEZwUKCvEmTobiZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--tavip.bounces.google.com>)
- id 1sxysp-0007zm-OZ
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:29 -0400
-Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
+ <3kYgEZwUKCvInUpcjaiiafY.WigkYgo-XYpYfhihaho.ila@flex--tavip.bounces.google.com>)
+ id 1sxysi-0007rU-TT
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:21 -0400
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3kIgEZwUKCvEmTobiZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--tavip.bounces.google.com>)
- id 1sxysf-0000A7-Sb
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:24 -0400
-Received: by mail-pf1-x449.google.com with SMTP id
- d2e1a72fcca58-71dfa361499so2100343b3a.0
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:14 -0700 (PDT)
+ <3kYgEZwUKCvInUpcjaiiafY.WigkYgo-XYpYfhihaho.ila@flex--tavip.bounces.google.com>)
+ id 1sxyse-0000AH-3C
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:20 -0400
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-e28690bc290so7535228276.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1728350353; x=1728955153; darn=nongnu.org;
+ d=google.com; s=20230601; t=1728350354; x=1728955154; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=h0g2XEqh5TFAysQ/4BwAuoGhpRYdqAqx4UCuVxyPc+Q=;
- b=BWB2Afny75Rb0luKXPj/Z3aE7bLX6KYxuUTSFvJ7HRHxF9UZaj+zJnI55M88rD+VUe
- dSNji5xYX+9n6ZrXv8ra0AkVbpKOu9/cSRIeyw+HCBmQ6aQlYSvXQqRJyoBLRLmgb3l+
- OdGB8X9E9uKFbXnW7s7Dja7jzj8tMDi34PQAdTOdyzefcebOtQcUVverPPoY/RP2jwAN
- 8ZQYoyYRXySh/u6jLaJ3E1i+Rr61RZqAsVRlRuahGWg2DsbmaIsbQN8u2jRMsQh6Gsr6
- a4FfrYqavMp6rHv/rjawNJii7DCYa9SOh06Fmq3Uc4uIG1EB+E6hinegJDCsVsZ3dzR7
- jPTg==
+ bh=0eZ20KWycrpoAWSK7v7xZhJPuQ4t9+MXTd5omboFwxE=;
+ b=ayqP1iztqATkPL7eEDLYvjwruRwu8EIZADTsb8Uu3uppQUfSasSdSx/U007jqitfgg
+ F470M+sif/tftqGUB7EBgHTBpEgO/sBDAmqns+quTtDsdyYqiM677VUAoLKVRXP6RYUc
+ VSho5mQ5ocVB29boFRnMe+1hGQkGxaORyKluhGeh1e9+xm14+7Dh22cnWvYdHnqo1JL0
+ kqPhngvF6q5a7Wkd9+yMadV1/b4UZYzFzq7PKdU0ufb7ywX504WVUDun0GOiSGJ1R4y5
+ voL/fRGalzNp9zcK5qJ5B0u5tQdlYQPN0m9oEZ69piqKTr1VKylEouEUKk/fomRr+bV7
+ tFpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728350353; x=1728955153;
+ d=1e100.net; s=20230601; t=1728350354; x=1728955154;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h0g2XEqh5TFAysQ/4BwAuoGhpRYdqAqx4UCuVxyPc+Q=;
- b=CjQQajGiCt2hOKja+sKAjx0lYZALqwr13oueE+EbtrR+88uV5IpMTg5n8121zlmhCQ
- Pi98GxguByRPyzIvut/8lvaDbwJf0QXc/0eIbNuCQxX8N1buJGA2/9dwEkwrkvBH1CqK
- 29Bn+C5cE5/vBdTp3m96Q/75WCnqOUdnsBrgUh/B4RDISVdNY/R0qQQfzJtWaIe0w70m
- y/IuIB/jaaYyev+hCPnN22ixuMl75/qB6Hluyj1jlGuo6eFhyhfFQLGC+4DUIcoQ5vrw
- cCQ+ZvOCbxNIz0lrWZzri8R+AnNy2RIh35I8yVbaK9K6QTz+4topabosFdtYflcniiqu
- uC+g==
-X-Gm-Message-State: AOJu0Yyko5ovDbanV1rLzcN2wtnzIoKT8wqdL0PSdgWutG3TWWMICMyL
- NqT7KhFwjbUhBez6jBGi0O6B7DZ1OZVM98l0PygLBl8RhVCezDv7nyMvFDNoCtpGUaNJdmbW7xV
- mLmPxIR8L5po26S8p1DAla0f/X+ulv5uI0xhheQqXxyweuN+3cee6ih45wHodizT/rj+NEPgfl6
- 4eeqnWlkktE52u36BDkGYu/h5rhQ==
-X-Google-Smtp-Source: AGHT+IH2ojZoS4xw100tm4xI4XQvhwctpObQyFtqT+tL5TSw0PUe+TwGlkFXiGZ6lPViV1qB2g5VhYD54w==
+ bh=0eZ20KWycrpoAWSK7v7xZhJPuQ4t9+MXTd5omboFwxE=;
+ b=P7+me+SYRX7LFkJPQqZIwTiJnXT3zI7H22Htz8Q+u8xCQjbVs9oSgwcCQFNIp1Ax9f
+ thG9pgXBtjfkYKqdINdFug2Mw0UiukEJpZd77WAEHwmG3lbGQ7hcyM5ONwgoErCkTFYZ
+ CI6r6+cs4jsJtk5eZqpZec6A5FC0nMScHIa/t4KqrZ155M8P/q/hTGz3PGoWPoIxJ0SD
+ BQRoPfcZcRRoZ1+Ka3A4rFuG4BITAZjmAfv8RueUJWgq9/PSJX/aSsqQsB6M//Vff3Gr
+ r1ecSWUZ+iyddGMfoIO1zD9UENO99M1Vhbe/TqUZufm58mXBkRBfLSzR6bAnVwc+ow9R
+ 7BTA==
+X-Gm-Message-State: AOJu0YyG1BBNSplQs526F/+ewEPL0WvDdhQWq6TSpKacVnnWjujp018B
+ JC49nEN3ZEtfMbILVPLG+3L0Ja0F/ACp7vuGizjkews4Xbrku6MhjlU7lTxiNoC7KlsTM529dar
+ bXx/LIc2iLwc9fVgQAgD+Gmoy2IMRQGq5NE9O0Cg6+w9bxpAAnohnVb8dgwxvgW+MjtOsv59md3
+ +k+sa6asmWZBMI9rqKCO8BSzXH2w==
+X-Google-Smtp-Source: AGHT+IHSUmcJnw1C/+86tM9pY+DBOVdB9rYfekCN7zWgSpmD4h6ImtNtH8wO9EKcNCt9vM3jVhBUP7duBg==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:6a00:7687:b0:71d:fb06:e79b
- with SMTP id
- d2e1a72fcca58-71dfb06ea3amr14557b3a.0.1728350352051; Mon, 07 Oct 2024
- 18:19:12 -0700 (PDT)
-Date: Mon,  7 Oct 2024 18:18:36 -0700
+ (user=tavip job=sendgmr) by 2002:a25:a444:0:b0:e13:e11c:507 with
+ SMTP id
+ 3f1490d57ef6-e28936d614bmr11062276.3.1728350353966; Mon, 07 Oct 2024 18:19:13
+ -0700 (PDT)
+Date: Mon,  7 Oct 2024 18:18:37 -0700
 In-Reply-To: <20241008011852.1439154-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20241008011852.1439154-1-tavip@google.com>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241008011852.1439154-11-tavip@google.com>
-Subject: [PATCH v2 10/25] hw/misc: add support for RT500's clock controller
+Message-ID: <20241008011852.1439154-12-tavip@google.com>
+Subject: [PATCH v2 11/25] hw/ssi: add support for flexspi
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -70,16 +70,16 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, thuth@redhat.com, philmd@linaro.org, jsnow@redhat.com, 
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
- envelope-from=3kIgEZwUKCvEmTobiZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--tavip.bounces.google.com;
- helo=mail-pf1-x449.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3kYgEZwUKCvInUpcjaiiafY.WigkYgo-XYpYfhihaho.ila@flex--tavip.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.024,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,45 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It supports system and audio PLL initialization and SYSTICK and
-OSTIMER clock source selection.
+This is mostly a stub which completes SPI transactions as noops
+by masking out the error interrupts and never clearing the IPCMDDONE
+interrupt.
 
-The patch includes automatically generated headers which contains the
-register layout and helpers.
+Although incomplete, this allows software that uses NXP's mcuxpresso
+SDK to run the SDK board initialization functions.
 
-The headers can be regenerated with the svd-rt500-clkctl0 and
-svd-rt500-clkctl1 targets when the build is configured with
---enable-mcux-soc-svd.
+It also supports AHB memory access, aka XIP, for now as simple RAM
+memory regions.
+
+The patch includes an automatically generated header which contains
+the register layout and helpers.
+
+The header can be regenerated with the svd-flexspi target when the
+build is configured with --enable-mcux-soc-svd.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- include/hw/arm/svd/rt500_clkctl0.h | 509 ++++++++++++++++++++++
- include/hw/arm/svd/rt500_clkctl1.h | 675 +++++++++++++++++++++++++++++
- include/hw/misc/rt500_clk_freqs.h  |  18 +
- include/hw/misc/rt500_clkctl0.h    |  35 ++
- include/hw/misc/rt500_clkctl1.h    |  36 ++
- hw/misc/rt500_clkctl0.c            | 253 +++++++++++
- hw/misc/rt500_clkctl1.c            | 238 ++++++++++
- hw/arm/Kconfig                     |   5 +
- hw/arm/svd/meson.build             |   8 +
- hw/misc/Kconfig                    |   3 +
- hw/misc/meson.build                |   1 +
- hw/misc/trace-events               |   8 +
- 12 files changed, 1789 insertions(+)
- create mode 100644 include/hw/arm/svd/rt500_clkctl0.h
- create mode 100644 include/hw/arm/svd/rt500_clkctl1.h
- create mode 100644 include/hw/misc/rt500_clk_freqs.h
- create mode 100644 include/hw/misc/rt500_clkctl0.h
- create mode 100644 include/hw/misc/rt500_clkctl1.h
- create mode 100644 hw/misc/rt500_clkctl0.c
- create mode 100644 hw/misc/rt500_clkctl1.c
+ include/hw/arm/svd/flexspi.h | 1085 ++++++++++++++++++++++++++++++++++
+ include/hw/ssi/flexspi.h     |   31 +
+ hw/ssi/flexspi.c             |  181 ++++++
+ hw/arm/svd/meson.build       |    4 +
+ hw/ssi/Kconfig               |    4 +
+ hw/ssi/meson.build           |    1 +
+ hw/ssi/trace-events          |    4 +
+ 7 files changed, 1310 insertions(+)
+ create mode 100644 include/hw/arm/svd/flexspi.h
+ create mode 100644 include/hw/ssi/flexspi.h
+ create mode 100644 hw/ssi/flexspi.c
 
-diff --git a/include/hw/arm/svd/rt500_clkctl0.h b/include/hw/arm/svd/rt500_clkctl0.h
+diff --git a/include/hw/arm/svd/flexspi.h b/include/hw/arm/svd/flexspi.h
 new file mode 100644
-index 0000000000..89be8ff5fb
+index 0000000000..6e7e715d51
 --- /dev/null
-+++ b/include/hw/arm/svd/rt500_clkctl0.h
-@@ -0,0 +1,509 @@
++++ b/include/hw/arm/svd/flexspi.h
+@@ -0,0 +1,1085 @@
 +/*
 + * Copyright 2016-2023 NXP SPDX-License-Identifier: BSD-3-Clause
 + *
@@ -143,1195 +140,1090 @@ index 0000000000..89be8ff5fb
 +
 +#include "hw/register.h"
 +
-+/* Clock Controller 0 */
-+#define RT500_CLKCTL0_REGS_NO (490)
++/* FlexSPI */
++#define FLEXSPI_REGS_NO (267)
 +
-+/* Clock Control 0 */
-+REG32(RT500_CLKCTL0_PSCCTL0, 0x10);
-+/* DSP clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, ROM_CTRLR_CLK, 2, 1);
++/* Module Control Register 0 */
++REG32(FLEXSPI_MCR0, 0x0);
++/* Software Reset */
++FIELD(FLEXSPI_MCR0, SWRESET, 0, 1);
 +
-+/* Clock Control 1 */
-+REG32(RT500_CLKCTL0_PSCCTL1, 0x14);
++/* Interrupt Register */
++REG32(FLEXSPI_INTR, 0x14);
++/*
++ * IP triggered Command Sequences Execution finished interrupt. This interrupt
++ * is also generated when there is IPCMDGE or IPCMDERR interrupt generated.
++ */
++FIELD(FLEXSPI_INTR, IPCMDDONE, 0, 1);
 +
-+/* Clock Control 2 */
-+REG32(RT500_CLKCTL0_PSCCTL2, 0x18);
-+
-+/* Clock Control 0 Set */
-+REG32(RT500_CLKCTL0_PSCCTL0_SET, 0x40);
-+/* DSP clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, ROM_CTRLR_CLK, 2, 1);
-+
-+/* Clock Control 1 Set */
-+REG32(RT500_CLKCTL0_PSCCTL1_SET, 0x44);
-+
-+/* Clock Control 2 Set */
-+REG32(RT500_CLKCTL0_PSCCTL2_SET, 0x48);
-+
-+/* Clock Control 0 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL0_CLR, 0x70);
-+/* DSP clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, ROM_CTRLR_CLK, 2, 1);
-+
-+/* Clock Control 1 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL1_CLR, 0x74);
-+
-+/* Clock Control 2 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL2_CLR, 0x78);
-+
-+/* FRO Clock Status */
-+REG32(RT500_CLKCTL0_FROCLKSTATUS, 0x10C);
-+
-+/* System PLL0 PFD */
-+REG32(RT500_CLKCTL0_SYSPLL0PFD, 0x218);
-+/* PLL Fractional Divider 0 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0, 0, 6);
-+/* PFD0 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0_CLKRDY, 6, 1);
-+/* PFD0 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0_CLKGATE, 7, 1);
-+/* PLL Fractional Divider 1 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1, 8, 6);
-+/* PFD1 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1_CLKRDY, 14, 1);
-+/* PFD1 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1_CLKGATE, 15, 1);
-+/* PLL Fractional Divider 2 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2, 16, 6);
-+/* PFD2 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2_CLKRDY, 22, 1);
-+/* PFD2 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2_CLKGATE, 23, 1);
-+/* PLL Fractional Divider 3 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3, 24, 6);
-+/* PFD3 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3_CLKRDY, 30, 1);
-+/* PFD3 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3_CLKGATE, 31, 1);
-+
-+/* SYSTICK Functional Clock Select */
-+REG32(RT500_CLKCTL0_SYSTICKFCLKSEL, 0x760);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKSEL, SEL, 0, 3);
-+/* Systick Divider Output Clock */
-+#define RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_SYSTICK_DIV_OUTPUT 0
-+/* Low Power Oscillator Clock (LPOSC) */
-+#define RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_LPOSC 1
-+/* 32 KHz RTC Clock */
-+#define RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_A32KHZ_RTC 2
-+/* None; this may be selected to reduce power when no output is needed. */
-+#define RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_NONE 7
-+
-+/* SYSTICK Functional Clock Divider */
-+REG32(RT500_CLKCTL0_SYSTICKFCLKDIV, 0x764);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, REQFLAG, 31, 1);
++/* Status Register 0 */
++REG32(FLEXSPI_STS0, 0xE0);
++/*
++ * This status bit indicates the state machine in SEQ_CTL is idle and there is
++ * command sequence executing on FlexSPI interface.
++ */
++FIELD(FLEXSPI_STS0, SEQIDLE, 0, 1);
 +
 +
-+#define RT500_CLKCTL0_REGISTER_ACCESS_INFO_ARRAY(_name) \
-+    struct RegisterAccessInfo _name[RT500_CLKCTL0_REGS_NO] = { \
-+        [0 ... RT500_CLKCTL0_REGS_NO - 1] = { \
++#define FLEXSPI_REGISTER_ACCESS_INFO_ARRAY(_name) \
++    struct RegisterAccessInfo _name[FLEXSPI_REGS_NO] = { \
++        [0 ... FLEXSPI_REGS_NO - 1] = { \
 +            .name = "", \
 +            .addr = -1, \
 +        }, \
++        [0x0] = { \
++            .name = "MCR0", \
++            .addr = 0x0, \
++            .ro = 0x20CC, \
++            .reset = 0xFFFF80C2, \
++        }, \
++        [0x1] = { \
++            .name = "MCR1", \
++            .addr = 0x4, \
++            .ro = 0x0, \
++            .reset = 0xFFFFFFFF, \
++        }, \
++        [0x2] = { \
++            .name = "MCR2", \
++            .addr = 0x8, \
++            .ro = 0xFF37FF, \
++            .reset = 0x200081F7, \
++        }, \
++        [0x3] = { \
++            .name = "AHBCR", \
++            .addr = 0xC, \
++            .ro = 0xFFFFFB02, \
++            .reset = 0x18, \
++        }, \
 +        [0x4] = { \
-+            .name = "PSCCTL0", \
++            .name = "INTEN", \
 +            .addr = 0x10, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x5, \
++            .ro = 0xFFFFC000, \
++            .reset = 0x0, \
 +        }, \
 +        [0x5] = { \
-+            .name = "PSCCTL1", \
++            .name = "INTR", \
 +            .addr = 0x14, \
-+            .ro = 0xFEFE7FF3, \
++            .ro = 0xFFFFE000, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x6] = { \
-+            .name = "PSCCTL2", \
++            .name = "LUTKEY", \
 +            .addr = 0x18, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x5AF05AF0, \
 +        }, \
-+        [0x10] = { \
-+            .name = "PSCCTL0_SET", \
-+            .addr = 0x40, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x0, \
++        [0x7] = { \
++            .name = "LUTCR", \
++            .addr = 0x1C, \
++            .ro = 0xFFFFFFFC, \
++            .reset = 0x2, \
 +        }, \
-+        [0x11] = { \
-+            .name = "PSCCTL1_SET", \
-+            .addr = 0x44, \
-+            .ro = 0xFEFE7FF3, \
-+            .reset = 0x0, \
++        [0x8] = { \
++            .name = "AHBRXBUF0CR0", \
++            .addr = 0x20, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80000010, \
 +        }, \
-+        [0x12] = { \
-+            .name = "PSCCTL2_SET", \
-+            .addr = 0x48, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++        [0x9] = { \
++            .name = "AHBRXBUF1CR0", \
++            .addr = 0x24, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80010010, \
++        }, \
++        [0xA] = { \
++            .name = "AHBRXBUF2CR0", \
++            .addr = 0x28, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80020010, \
++        }, \
++        [0xB] = { \
++            .name = "AHBRXBUF3CR0", \
++            .addr = 0x2C, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80030010, \
++        }, \
++        [0xC] = { \
++            .name = "AHBRXBUF4CR0", \
++            .addr = 0x30, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80040010, \
++        }, \
++        [0xD] = { \
++            .name = "AHBRXBUF5CR0", \
++            .addr = 0x34, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80050010, \
++        }, \
++        [0xE] = { \
++            .name = "AHBRXBUF6CR0", \
++            .addr = 0x38, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80060010, \
++        }, \
++        [0xF] = { \
++            .name = "AHBRXBUF7CR0", \
++            .addr = 0x3C, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80070010, \
++        }, \
++        [0x18] = { \
++            .name = "FLSHA1CR0", \
++            .addr = 0x60, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [0x19] = { \
++            .name = "FLSHA2CR0", \
++            .addr = 0x64, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [0x1A] = { \
++            .name = "FLSHB1CR0", \
++            .addr = 0x68, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [0x1B] = { \
++            .name = "FLSHB2CR0", \
++            .addr = 0x6C, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
 +        }, \
 +        [0x1C] = { \
-+            .name = "PSCCTL0_CLR", \
++            .name = "FLSHCR1A1", \
 +            .addr = 0x70, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
 +        [0x1D] = { \
-+            .name = "PSCCTL1_CLR", \
++            .name = "FLSHCR1A2", \
 +            .addr = 0x74, \
-+            .ro = 0xFEFE7FF3, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
 +        [0x1E] = { \
-+            .name = "PSCCTL2_CLR", \
++            .name = "FLSHCR1B1", \
 +            .addr = 0x78, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
++        }, \
++        [0x1F] = { \
++            .name = "FLSHCR1B2", \
++            .addr = 0x7C, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
 +        [0x20] = { \
-+            .name = "FRO_CONTROL", \
++            .name = "FLSHCR2A1", \
 +            .addr = 0x80, \
-+            .ro = 0x7C000000, \
++            .ro = 0x1010, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x21] = { \
-+            .name = "FRO_CAPVAL", \
++            .name = "FLSHCR2A2", \
 +            .addr = 0x84, \
-+            .ro = 0xFFFFFFFF, \
++            .ro = 0x1010, \
++            .reset = 0x0, \
++        }, \
++        [0x22] = { \
++            .name = "FLSHCR2B1", \
++            .addr = 0x88, \
++            .ro = 0x1010, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x23] = { \
-+            .name = "FRO_RDTRIM", \
++            .name = "FLSHCR2B2", \
 +            .addr = 0x8C, \
-+            .ro = 0xFFFFF800, \
-+            .reset = 0x3BF, \
++            .ro = 0x1010, \
++            .reset = 0x0, \
 +        }, \
-+        [0x24] = { \
-+            .name = "FRO_SCTRIM", \
-+            .addr = 0x90, \
-+            .ro = 0xFFFFFFC0, \
-+            .reset = 0x20, \
++        [0x25] = { \
++            .name = "FLSHCR4", \
++            .addr = 0x94, \
++            .ro = 0xFFFFFFFA, \
++            .reset = 0x0, \
++        }, \
++        [0x28] = { \
++            .name = "IPCR0", \
++            .addr = 0xA0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x29] = { \
++            .name = "IPCR1", \
++            .addr = 0xA4, \
++            .ro = 0x78F00000, \
++            .reset = 0x0, \
++        }, \
++        [0x2C] = { \
++            .name = "IPCMD", \
++            .addr = 0xB0, \
++            .ro = 0xFFFFFFFE, \
++            .reset = 0x0, \
++        }, \
++        [0x2D] = { \
++            .name = "DLPR", \
++            .addr = 0xB4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x2E] = { \
++            .name = "IPRXFCR", \
++            .addr = 0xB8, \
++            .ro = 0xFFFFFE00, \
++            .reset = 0x0, \
++        }, \
++        [0x2F] = { \
++            .name = "IPTXFCR", \
++            .addr = 0xBC, \
++            .ro = 0xFFFFFE00, \
++            .reset = 0x0, \
++        }, \
++        [0x30] = { \
++            .name = "DLLCRA", \
++            .addr = 0xC0, \
++            .ro = 0xFFFF8084, \
++            .reset = 0x100, \
++        }, \
++        [0x31] = { \
++            .name = "DLLCRB", \
++            .addr = 0xC4, \
++            .ro = 0xFFFF8084, \
++            .reset = 0x100, \
++        }, \
++        [0x38] = { \
++            .name = "STS0", \
++            .addr = 0xE0, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x2, \
++        }, \
++        [0x39] = { \
++            .name = "STS1", \
++            .addr = 0xE4, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x3A] = { \
++            .name = "STS2", \
++            .addr = 0xE8, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x1000100, \
++        }, \
++        [0x3B] = { \
++            .name = "AHBSPNDSTS", \
++            .addr = 0xEC, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x3C] = { \
++            .name = "IPRXFSTS", \
++            .addr = 0xF0, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x3D] = { \
++            .name = "IPTXFSTS", \
++            .addr = 0xF4, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x40] = { \
++            .name = "RFDR0", \
++            .addr = 0x100, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x41] = { \
++            .name = "RFDR1", \
++            .addr = 0x104, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
 +        }, \
 +        [0x42] = { \
-+            .name = "FRODIVSEL", \
++            .name = "RFDR2", \
 +            .addr = 0x108, \
-+            .ro = 0xFFFFFFFC, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x43] = { \
-+            .name = "FROCLKSTATUS", \
++            .name = "RFDR3", \
 +            .addr = 0x10C, \
 +            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x44] = { \
-+            .name = "FRODIVOEN", \
++            .name = "RFDR4", \
 +            .addr = 0x110, \
-+            .ro = 0xFFFFFFE0, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x45] = { \
++            .name = "RFDR5", \
++            .addr = 0x114, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x46] = { \
++            .name = "RFDR6", \
++            .addr = 0x118, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x47] = { \
++            .name = "RFDR7", \
++            .addr = 0x11C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x48] = { \
++            .name = "RFDR8", \
++            .addr = 0x120, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x49] = { \
++            .name = "RFDR9", \
++            .addr = 0x124, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x4A] = { \
++            .name = "RFDR10", \
++            .addr = 0x128, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x4B] = { \
++            .name = "RFDR11", \
++            .addr = 0x12C, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x4C] = { \
-+            .name = "LOWFREQCLKDIV", \
++            .name = "RFDR12", \
 +            .addr = 0x130, \
-+            .ro = 0x1FFFFF00, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x4D] = { \
++            .name = "RFDR13", \
++            .addr = 0x134, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x4E] = { \
++            .name = "RFDR14", \
++            .addr = 0x138, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x4F] = { \
++            .name = "RFDR15", \
++            .addr = 0x13C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x50] = { \
++            .name = "RFDR16", \
++            .addr = 0x140, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x51] = { \
++            .name = "RFDR17", \
++            .addr = 0x144, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x52] = { \
++            .name = "RFDR18", \
++            .addr = 0x148, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x53] = { \
++            .name = "RFDR19", \
++            .addr = 0x14C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x54] = { \
++            .name = "RFDR20", \
++            .addr = 0x150, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x55] = { \
++            .name = "RFDR21", \
++            .addr = 0x154, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x56] = { \
++            .name = "RFDR22", \
++            .addr = 0x158, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x57] = { \
++            .name = "RFDR23", \
++            .addr = 0x15C, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x58] = { \
-+            .name = "SYSOSCCTL0", \
++            .name = "RFDR24", \
 +            .addr = 0x160, \
-+            .ro = 0xFFFFFFFC, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x59] = { \
++            .name = "RFDR25", \
++            .addr = 0x164, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x5A] = { \
-+            .name = "SYSOSCBYPASS", \
++            .name = "RFDR26", \
 +            .addr = 0x168, \
-+            .ro = 0xFFFFFFF8, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x5B] = { \
++            .name = "RFDR27", \
++            .addr = 0x16C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x5C] = { \
++            .name = "RFDR28", \
++            .addr = 0x170, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x5D] = { \
++            .name = "RFDR29", \
++            .addr = 0x174, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x5E] = { \
++            .name = "RFDR30", \
++            .addr = 0x178, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x5F] = { \
++            .name = "RFDR31", \
++            .addr = 0x17C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x60] = { \
++            .name = "TFDR0", \
++            .addr = 0x180, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x61] = { \
++            .name = "TFDR1", \
++            .addr = 0x184, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x62] = { \
++            .name = "TFDR2", \
++            .addr = 0x188, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x63] = { \
++            .name = "TFDR3", \
++            .addr = 0x18C, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x64] = { \
-+            .name = "LPOSCCTL0", \
++            .name = "TFDR4", \
 +            .addr = 0x190, \
-+            .ro = 0x7FFFFFFF, \
-+            .reset = 0x807BC4D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x65] = { \
++            .name = "TFDR5", \
++            .addr = 0x194, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x66] = { \
++            .name = "TFDR6", \
++            .addr = 0x198, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x67] = { \
++            .name = "TFDR7", \
++            .addr = 0x19C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x68] = { \
++            .name = "TFDR8", \
++            .addr = 0x1A0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x69] = { \
++            .name = "TFDR9", \
++            .addr = 0x1A4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6A] = { \
++            .name = "TFDR10", \
++            .addr = 0x1A8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6B] = { \
++            .name = "TFDR11", \
++            .addr = 0x1AC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6C] = { \
++            .name = "TFDR12", \
++            .addr = 0x1B0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6D] = { \
++            .name = "TFDR13", \
++            .addr = 0x1B4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6E] = { \
++            .name = "TFDR14", \
++            .addr = 0x1B8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x6F] = { \
++            .name = "TFDR15", \
++            .addr = 0x1BC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x70] = { \
-+            .name = "OSC32KHZCTL0", \
++            .name = "TFDR16", \
 +            .addr = 0x1C0, \
-+            .ro = 0xFFFFFFFE, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x71] = { \
++            .name = "TFDR17", \
++            .addr = 0x1C4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x72] = { \
++            .name = "TFDR18", \
++            .addr = 0x1C8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x73] = { \
++            .name = "TFDR19", \
++            .addr = 0x1CC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x74] = { \
++            .name = "TFDR20", \
++            .addr = 0x1D0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x75] = { \
++            .name = "TFDR21", \
++            .addr = 0x1D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x76] = { \
++            .name = "TFDR22", \
++            .addr = 0x1D8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x77] = { \
++            .name = "TFDR23", \
++            .addr = 0x1DC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x78] = { \
++            .name = "TFDR24", \
++            .addr = 0x1E0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x79] = { \
++            .name = "TFDR25", \
++            .addr = 0x1E4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7A] = { \
++            .name = "TFDR26", \
++            .addr = 0x1E8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7B] = { \
++            .name = "TFDR27", \
++            .addr = 0x1EC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7C] = { \
++            .name = "TFDR28", \
++            .addr = 0x1F0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7D] = { \
++            .name = "TFDR29", \
++            .addr = 0x1F4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7E] = { \
++            .name = "TFDR30", \
++            .addr = 0x1F8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x7F] = { \
++            .name = "TFDR31", \
++            .addr = 0x1FC, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x80] = { \
-+            .name = "SYSPLL0CLKSEL", \
++            .name = "LUT0", \
 +            .addr = 0x200, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x81] = { \
-+            .name = "SYSPLL0CTL0", \
++            .name = "LUT1", \
 +            .addr = 0x204, \
-+            .ro = 0xFF00DFFC, \
-+            .reset = 0x160002, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x82] = { \
++            .name = "LUT2", \
++            .addr = 0x208, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x83] = { \
-+            .name = "SYSPLL0LOCKTIMEDIV2", \
++            .name = "LUT3", \
 +            .addr = 0x20C, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xCAFE, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x84] = { \
-+            .name = "SYSPLL0NUM", \
++            .name = "LUT4", \
 +            .addr = 0x210, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x4DD2F15, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x85] = { \
-+            .name = "SYSPLL0DENOM", \
++            .name = "LUT5", \
 +            .addr = 0x214, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x1FFFFFDB, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x86] = { \
-+            .name = "SYSPLL0PFD", \
++            .name = "LUT6", \
 +            .addr = 0x218, \
 +            .ro = 0x0, \
-+            .reset = 0x80808080, \
++            .reset = 0x0, \
++        }, \
++        [0x87] = { \
++            .name = "LUT7", \
++            .addr = 0x21C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x88] = { \
++            .name = "LUT8", \
++            .addr = 0x220, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x89] = { \
++            .name = "LUT9", \
++            .addr = 0x224, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8A] = { \
++            .name = "LUT10", \
++            .addr = 0x228, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8B] = { \
++            .name = "LUT11", \
++            .addr = 0x22C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8C] = { \
++            .name = "LUT12", \
++            .addr = 0x230, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8D] = { \
++            .name = "LUT13", \
++            .addr = 0x234, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8E] = { \
++            .name = "LUT14", \
++            .addr = 0x238, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x8F] = { \
++            .name = "LUT15", \
++            .addr = 0x23C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
 +        [0x90] = { \
-+            .name = "MAINPLLCLKDIV", \
++            .name = "LUT16", \
 +            .addr = 0x240, \
-+            .ro = 0x1FFFFF00, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x91] = { \
-+            .name = "DSPPLLCLKDIV", \
++            .name = "LUT17", \
 +            .addr = 0x244, \
-+            .ro = 0x1FFFFF00, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x92] = { \
-+            .name = "AUX0PLLCLKDIV", \
++            .name = "LUT18", \
 +            .addr = 0x248, \
-+            .ro = 0x1FFFFF00, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
 +        [0x93] = { \
-+            .name = "AUX1PLLCLKDIV", \
++            .name = "LUT19", \
 +            .addr = 0x24C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x100] = { \
-+            .name = "SYSCPUAHBCLKDIV", \
-+            .addr = 0x400, \
-+            .ro = 0x7FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x10C] = { \
-+            .name = "MAINCLKSELA", \
-+            .addr = 0x430, \
-+            .ro = 0xFFFFFFFC, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x10D] = { \
-+            .name = "MAINCLKSELB", \
-+            .addr = 0x434, \
-+            .ro = 0xFFFFFFFC, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x140] = { \
-+            .name = "PFC0DIV", \
-+            .addr = 0x500, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x141] = { \
-+            .name = "PFC1DIV", \
-+            .addr = 0x504, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x188] = { \
-+            .name = "FLEXSPI0FCLKSEL", \
-+            .addr = 0x620, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x189] = { \
-+            .name = "FLEXSPI0FCLKDIV", \
-+            .addr = 0x624, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x18C] = { \
-+            .name = "FLEXSPI1FCLKSEL", \
-+            .addr = 0x630, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x18D] = { \
-+            .name = "FLEXSPI1FCLKDIV", \
-+            .addr = 0x634, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x190] = { \
-+            .name = "SCTFCLKSEL", \
-+            .addr = 0x640, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x191] = { \
-+            .name = "SCTIN7CLKDIV", \
-+            .addr = 0x644, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x198] = { \
-+            .name = "USBHSFCLKSEL", \
-+            .addr = 0x660, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x199] = { \
-+            .name = "USBHSFCLKDIV", \
-+            .addr = 0x664, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1A0] = { \
-+            .name = "SDIO0FCLKSEL", \
-+            .addr = 0x680, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A1] = { \
-+            .name = "SDIO0FCLKDIV", \
-+            .addr = 0x684, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1A4] = { \
-+            .name = "SDIO1FCLKSEL", \
-+            .addr = 0x690, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A5] = { \
-+            .name = "SDIO1FCLKDIV", \
-+            .addr = 0x694, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1B4] = { \
-+            .name = "ADC0FCLKSEL0", \
-+            .addr = 0x6D0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B5] = { \
-+            .name = "ADC0FCLKSEL1", \
-+            .addr = 0x6D4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B6] = { \
-+            .name = "ADC0FCLKDIV", \
-+            .addr = 0x6D8, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1C0] = { \
-+            .name = "UTICKFCLKSEL", \
-+            .addr = 0x700, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1C8] = { \
-+            .name = "WDT0FCLKSEL", \
-+            .addr = 0x720, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x1CC] = { \
-+            .name = "A32KHZWAKECLKSEL", \
-+            .addr = 0x730, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x1, \
-+        }, \
-+        [0x1CD] = { \
-+            .name = "A32KHZWAKECLKDIV", \
-+            .addr = 0x734, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x1F, \
-+        }, \
-+        [0x1D8] = { \
-+            .name = "SYSTICKFCLKSEL", \
-+            .addr = 0x760, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1D9] = { \
-+            .name = "SYSTICKFCLKDIV", \
-+            .addr = 0x764, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1DC] = { \
-+            .name = "DPHYCLKSEL", \
-+            .addr = 0x770, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1DD] = { \
-+            .name = "DPHYCLKDIV", \
-+            .addr = 0x774, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1DE] = { \
-+            .name = "DPHYESCCLKSEL", \
-+            .addr = 0x778, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1DF] = { \
-+            .name = "DPHYESCRXCLKDIV", \
-+            .addr = 0x77C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000010, \
-+        }, \
-+        [0x1E0] = { \
-+            .name = "DPHYESCTXCLKDIV", \
-+            .addr = 0x780, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000011, \
-+        }, \
-+        [0x1E4] = { \
-+            .name = "GPUCLKSEL", \
-+            .addr = 0x790, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1E5] = { \
-+            .name = "GPUCLKDIV", \
-+            .addr = 0x794, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1E8] = { \
-+            .name = "DCPIXELCLKSEL", \
-+            .addr = 0x7A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1E9] = { \
-+            .name = "DCPIXELCLKDIV", \
-+            .addr = 0x7A4, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+    }
-diff --git a/include/hw/arm/svd/rt500_clkctl1.h b/include/hw/arm/svd/rt500_clkctl1.h
-new file mode 100644
-index 0000000000..baa24eb0fd
---- /dev/null
-+++ b/include/hw/arm/svd/rt500_clkctl1.h
-@@ -0,0 +1,675 @@
-+/*
-+ * Copyright 2016-2023 NXP SPDX-License-Identifier: BSD-3-Clause
-+ *
-+ * Automatically generated by svd-gen-header.py from MIMXRT595S_cm33.xml
-+ */
-+#pragma once
-+
-+#include "hw/register.h"
-+
-+/* Clock Controller 1 */
-+#define RT500_CLKCTL1_REGS_NO (526)
-+
-+/* Clock Control 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0, 0x10);
-+/* FlexIO clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FlexIO, 29, 1);
-+
-+/* Clock Control 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1, 0x14);
-+
-+/* Clock Control 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2, 0x18);
-+
-+/* Clock Set 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0_SET, 0x40);
-+/* FlexIO clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FlexIO, 29, 1);
-+
-+/* Clock Set 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1_SET, 0x44);
-+
-+/* Clock Set 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2_SET, 0x48);
-+
-+/* Clock Clear 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0_CLR, 0x70);
-+/* FlexIO clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FlexIO, 29, 1);
-+
-+/* Clock Clear 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1_CLR, 0x74);
-+
-+/* Clock Clear 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2_CLR, 0x78);
-+
-+/* Audio PLL0 PFD */
-+REG32(RT500_CLKCTL1_AUDIOPLL0PFD, 0x218);
-+/* PLL Fractional Divider 0 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0, 0, 6);
-+/* PFD0 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0_CLKRDY, 6, 1);
-+/* PFD0 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0_CLKGATE, 7, 1);
-+/* PLL Fractional Divider 1 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1, 8, 6);
-+/* PFD1 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1_CLKRDY, 14, 1);
-+/* PFD1 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1_CLKGATE, 15, 1);
-+/* PLL Fractional Divider 2 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2, 16, 6);
-+/* PFD2 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2_CLKRDY, 22, 1);
-+/* PFD2 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2_CLKGATE, 23, 1);
-+/* PLL Fractional Divider 3 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3, 24, 6);
-+/* PFD3 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3_CLKRDY, 30, 1);
-+/* PFD3 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3_CLKGATE, 31, 1);
-+
-+/* OS Event Timer Functional Clock Select */
-+REG32(RT500_CLKCTL1_OSEVENTTFCLKSEL, 0x480);
-+/* OS Event Timer Functional Clock Source */
-+FIELD(RT500_CLKCTL1_OSEVENTTFCLKSEL, SEL, 0, 3);
-+/* Low Power Oscillator Clock (LPOSC) */
-+#define RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_LPOSC 0
-+/* RTC 32 KHz Clock */
-+#define RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_RTC_32KHZ 1
-+/* HCLK Free-Running Clock (Global Time Stamping) */
-+#define RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_TEAL 2
-+/* None, output gated to reduce power */
-+#define RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_NONE 7
-+
-+
-+#define RT500_CLKCTL1_REGISTER_ACCESS_INFO_ARRAY(_name) \
-+    struct RegisterAccessInfo _name[RT500_CLKCTL1_REGS_NO] = { \
-+        [0 ... RT500_CLKCTL1_REGS_NO - 1] = { \
-+            .name = "", \
-+            .addr = -1, \
-+        }, \
-+        [0x4] = { \
-+            .name = "PSCCTL0", \
-+            .addr = 0x10, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x5] = { \
-+            .name = "PSCCTL1", \
-+            .addr = 0x14, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x6] = { \
-+            .name = "PSCCTL2", \
-+            .addr = 0x18, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x10] = { \
-+            .name = "PSCCTL0_SET", \
-+            .addr = 0x40, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x11] = { \
-+            .name = "PSCCTL1_SET", \
-+            .addr = 0x44, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x12] = { \
-+            .name = "PSCCTL2_SET", \
-+            .addr = 0x48, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x1C] = { \
-+            .name = "PSCCTL0_CLR", \
-+            .addr = 0x70, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x1D] = { \
-+            .name = "PSCCTL1_CLR", \
-+            .addr = 0x74, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x1E] = { \
-+            .name = "PSCCTL2_CLR", \
-+            .addr = 0x78, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [0x80] = { \
-+            .name = "AUDIOPLL0CLKSEL", \
-+            .addr = 0x200, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x81] = { \
-+            .name = "AUDIOPLL0CTL0", \
-+            .addr = 0x204, \
-+            .ro = 0xFF00DFFC, \
-+            .reset = 0x160002, \
-+        }, \
-+        [0x83] = { \
-+            .name = "AUDIOPLL0LOCKTIMEDIV2", \
-+            .addr = 0x20C, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xCAFE, \
-+        }, \
-+        [0x84] = { \
-+            .name = "AUDIOPLL0NUM", \
-+            .addr = 0x210, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x4DD2F15, \
-+        }, \
-+        [0x85] = { \
-+            .name = "AUDIOPLL0DENOM", \
-+            .addr = 0x214, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x1FFFFFDB, \
-+        }, \
-+        [0x86] = { \
-+            .name = "AUDIOPLL0PFD", \
-+            .addr = 0x218, \
 +            .ro = 0x0, \
-+            .reset = 0x80808080, \
-+        }, \
-+        [0x90] = { \
-+            .name = "AUDIOPLLCLKDIV", \
-+            .addr = 0x240, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x100] = { \
-+            .name = "DSPCPUCLKDIV", \
-+            .addr = 0x400, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x10C] = { \
-+            .name = "DSPCPUCLKSELA", \
-+            .addr = 0x430, \
-+            .ro = 0xFFFFFFFC, \
 +            .reset = 0x0, \
 +        }, \
-+        [0x10D] = { \
-+            .name = "DSPCPUCLKSELB", \
-+            .addr = 0x434, \
-+            .ro = 0xFFFFFFFC, \
++        [0x94] = { \
++            .name = "LUT20", \
++            .addr = 0x250, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [0x120] = { \
-+            .name = "OSEVENTTFCLKSEL", \
-+            .addr = 0x480, \
-+            .ro = 0xFFFFFFF8, \
++        [0x95] = { \
++            .name = "LUT21", \
++            .addr = 0x254, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [0x140] = { \
-+            .name = "FRG0CLKSEL", \
-+            .addr = 0x500, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x141] = { \
-+            .name = "FRG0CTL", \
-+            .addr = 0x504, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x142] = { \
-+            .name = "FC0FCLKSEL", \
-+            .addr = 0x508, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x148] = { \
-+            .name = "FRG1CLKSEL", \
-+            .addr = 0x520, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x149] = { \
-+            .name = "FRG1CTL", \
-+            .addr = 0x524, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x14A] = { \
-+            .name = "FC1FCLKSEL", \
-+            .addr = 0x528, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x150] = { \
-+            .name = "FRG2CLKSEL", \
-+            .addr = 0x540, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x151] = { \
-+            .name = "FRG2CTL", \
-+            .addr = 0x544, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x152] = { \
-+            .name = "FC2FCLKSEL", \
-+            .addr = 0x548, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x158] = { \
-+            .name = "FRG3CLKSEL", \
-+            .addr = 0x560, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x159] = { \
-+            .name = "FRG3CTL", \
-+            .addr = 0x564, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x15A] = { \
-+            .name = "FC3FCLKSEL", \
-+            .addr = 0x568, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x160] = { \
-+            .name = "FRG4CLKSEL", \
-+            .addr = 0x580, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x161] = { \
-+            .name = "FRG4CTL", \
-+            .addr = 0x584, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x162] = { \
-+            .name = "FC4FCLKSEL", \
-+            .addr = 0x588, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x168] = { \
-+            .name = "FRG5CLKSEL", \
-+            .addr = 0x5A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x169] = { \
-+            .name = "FRG5CTL", \
-+            .addr = 0x5A4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x16A] = { \
-+            .name = "FC5FCLKSEL", \
-+            .addr = 0x5A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x170] = { \
-+            .name = "FRG6CLKSEL", \
-+            .addr = 0x5C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x171] = { \
-+            .name = "FRG6CTL", \
-+            .addr = 0x5C4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x172] = { \
-+            .name = "FC6FCLKSEL", \
-+            .addr = 0x5C8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x178] = { \
-+            .name = "FRG7CLKSEL", \
-+            .addr = 0x5E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x179] = { \
-+            .name = "FRG7CTL", \
-+            .addr = 0x5E4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x17A] = { \
-+            .name = "FC7FCLKSEL", \
-+            .addr = 0x5E8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x180] = { \
-+            .name = "FRG8CLKSEL", \
-+            .addr = 0x600, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x181] = { \
-+            .name = "FRG8CTL", \
-+            .addr = 0x604, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x182] = { \
-+            .name = "FC8FCLKSEL", \
-+            .addr = 0x608, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x188] = { \
-+            .name = "FRG9CLKSEL", \
-+            .addr = 0x620, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x189] = { \
-+            .name = "FRG9CTL", \
-+            .addr = 0x624, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x18A] = { \
-+            .name = "FC9FCLKSEL", \
-+            .addr = 0x628, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x190] = { \
-+            .name = "FRG10CLKSEL", \
-+            .addr = 0x640, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x191] = { \
-+            .name = "FRG10CTL", \
-+            .addr = 0x644, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x192] = { \
-+            .name = "FC10FCLKSEL", \
-+            .addr = 0x648, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x198] = { \
-+            .name = "FRG11CLKSEL", \
-+            .addr = 0x660, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x199] = { \
-+            .name = "FRG11CTL", \
-+            .addr = 0x664, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x19A] = { \
-+            .name = "FC11FCLKSEL", \
-+            .addr = 0x668, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A0] = { \
-+            .name = "FRG12CLKSEL", \
-+            .addr = 0x680, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A1] = { \
-+            .name = "FRG12CTL", \
-+            .addr = 0x684, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1A2] = { \
-+            .name = "FC12FCLKSEL", \
-+            .addr = 0x688, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A8] = { \
-+            .name = "FRG13CLKSEL", \
-+            .addr = 0x6A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1A9] = { \
-+            .name = "FRG13CTL", \
-+            .addr = 0x6A4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1AA] = { \
-+            .name = "FC13FCLKSEL", \
-+            .addr = 0x6A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B0] = { \
-+            .name = "FRG14CLKSEL", \
-+            .addr = 0x6C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B1] = { \
-+            .name = "FRG14CTL", \
-+            .addr = 0x6C4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1B2] = { \
-+            .name = "FC14FCLKSEL", \
-+            .addr = 0x6C8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B8] = { \
-+            .name = "FRG15CLKSEL", \
-+            .addr = 0x6E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1B9] = { \
-+            .name = "FRG15CTL", \
-+            .addr = 0x6E4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1BA] = { \
-+            .name = "FC15FCLKSEL", \
-+            .addr = 0x6E8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1C0] = { \
-+            .name = "FRG16CLKSEL", \
-+            .addr = 0x700, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1C1] = { \
-+            .name = "FRG16CTL", \
-+            .addr = 0x704, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1C2] = { \
-+            .name = "FC16FCLKSEL", \
-+            .addr = 0x708, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1C8] = { \
-+            .name = "FRG17CLKSEL", \
-+            .addr = 0x720, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1C9] = { \
-+            .name = "FRG17CTL", \
-+            .addr = 0x724, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [0x1CA] = { \
-+            .name = "FLEXIOCLKSEL", \
-+            .addr = 0x728, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1D0] = { \
-+            .name = "FLEXIOCLKDIV", \
-+            .addr = 0x740, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1D8] = { \
-+            .name = "FRGPLLCLKDIV", \
-+            .addr = 0x760, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1E0] = { \
-+            .name = "DMIC0FCLKSEL", \
-+            .addr = 0x780, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1E1] = { \
-+            .name = "DMIC0FCLKDIV", \
-+            .addr = 0x784, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1E8] = { \
-+            .name = "CT32BITFCLKSEL0", \
-+            .addr = 0x7A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1E9] = { \
-+            .name = "CT32BITFCLKSEL1", \
-+            .addr = 0x7A4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1EA] = { \
-+            .name = "CT32BITFCLKSEL2", \
-+            .addr = 0x7A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1EB] = { \
-+            .name = "CT32BITFCLKSEL3", \
-+            .addr = 0x7AC, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1EC] = { \
-+            .name = "CT32BITFCLKSEL4", \
-+            .addr = 0x7B0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1F0] = { \
-+            .name = "AUDIOMCLKSEL", \
-+            .addr = 0x7C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1F1] = { \
-+            .name = "AUDIOMCLKDIV", \
-+            .addr = 0x7C4, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x1F8] = { \
-+            .name = "CLKOUTSEL0", \
-+            .addr = 0x7E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1F9] = { \
-+            .name = "CLKOUTSEL1", \
-+            .addr = 0x7E4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x1FA] = { \
-+            .name = "CLKOUTFCLKDIV", \
-+            .addr = 0x7E8, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x200] = { \
-+            .name = "I3C01FCLKSEL", \
-+            .addr = 0x800, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x201] = { \
-+            .name = "I3C01FCLKSTCSEL", \
-+            .addr = 0x804, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [0x202] = { \
-+            .name = "I3C01FCLKSTCDIV", \
-+            .addr = 0x808, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x203] = { \
-+            .name = "I3C01FCLKSDIV", \
-+            .addr = 0x80C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x204] = { \
-+            .name = "I3C01FCLKDIV", \
-+            .addr = 0x810, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [0x205] = { \
-+            .name = "I3C01FCLKSTSTCLKSEL", \
-+            .addr = 0x814, \
-+            .ro = 0xFFFFFFF8, \
++        [0x96] = { \
++            .name = "LUT22", \
++            .addr = 0x258, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [0x208] = { \
-+            .name = "WDT1FCLKSEL", \
-+            .addr = 0x820, \
-+            .ro = 0xFFFFFFF8, \
++        [0x97] = { \
++            .name = "LUT23", \
++            .addr = 0x25C, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [0x20C] = { \
-+            .name = "ACMP0FCLKSEL", \
-+            .addr = 0x830, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
++        [0x98] = { \
++            .name = "LUT24", \
++            .addr = 0x260, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [0x20D] = { \
-+            .name = "ACMP0FCLKDIV", \
-+            .addr = 0x834, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
++        [0x99] = { \
++            .name = "LUT25", \
++            .addr = 0x264, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9A] = { \
++            .name = "LUT26", \
++            .addr = 0x268, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9B] = { \
++            .name = "LUT27", \
++            .addr = 0x26C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9C] = { \
++            .name = "LUT28", \
++            .addr = 0x270, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9D] = { \
++            .name = "LUT29", \
++            .addr = 0x274, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9E] = { \
++            .name = "LUT30", \
++            .addr = 0x278, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x9F] = { \
++            .name = "LUT31", \
++            .addr = 0x27C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA0] = { \
++            .name = "LUT32", \
++            .addr = 0x280, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA1] = { \
++            .name = "LUT33", \
++            .addr = 0x284, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA2] = { \
++            .name = "LUT34", \
++            .addr = 0x288, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA3] = { \
++            .name = "LUT35", \
++            .addr = 0x28C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA4] = { \
++            .name = "LUT36", \
++            .addr = 0x290, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA5] = { \
++            .name = "LUT37", \
++            .addr = 0x294, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA6] = { \
++            .name = "LUT38", \
++            .addr = 0x298, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA7] = { \
++            .name = "LUT39", \
++            .addr = 0x29C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA8] = { \
++            .name = "LUT40", \
++            .addr = 0x2A0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xA9] = { \
++            .name = "LUT41", \
++            .addr = 0x2A4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAA] = { \
++            .name = "LUT42", \
++            .addr = 0x2A8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAB] = { \
++            .name = "LUT43", \
++            .addr = 0x2AC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAC] = { \
++            .name = "LUT44", \
++            .addr = 0x2B0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAD] = { \
++            .name = "LUT45", \
++            .addr = 0x2B4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAE] = { \
++            .name = "LUT46", \
++            .addr = 0x2B8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xAF] = { \
++            .name = "LUT47", \
++            .addr = 0x2BC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB0] = { \
++            .name = "LUT48", \
++            .addr = 0x2C0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB1] = { \
++            .name = "LUT49", \
++            .addr = 0x2C4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB2] = { \
++            .name = "LUT50", \
++            .addr = 0x2C8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB3] = { \
++            .name = "LUT51", \
++            .addr = 0x2CC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB4] = { \
++            .name = "LUT52", \
++            .addr = 0x2D0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB5] = { \
++            .name = "LUT53", \
++            .addr = 0x2D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB6] = { \
++            .name = "LUT54", \
++            .addr = 0x2D8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB7] = { \
++            .name = "LUT55", \
++            .addr = 0x2DC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB8] = { \
++            .name = "LUT56", \
++            .addr = 0x2E0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xB9] = { \
++            .name = "LUT57", \
++            .addr = 0x2E4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBA] = { \
++            .name = "LUT58", \
++            .addr = 0x2E8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBB] = { \
++            .name = "LUT59", \
++            .addr = 0x2EC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBC] = { \
++            .name = "LUT60", \
++            .addr = 0x2F0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBD] = { \
++            .name = "LUT61", \
++            .addr = 0x2F4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBE] = { \
++            .name = "LUT62", \
++            .addr = 0x2F8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0xBF] = { \
++            .name = "LUT63", \
++            .addr = 0x2FC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [0x108] = { \
++            .name = "HADDRSTART", \
++            .addr = 0x420, \
++            .ro = 0xFFE, \
++            .reset = 0x0, \
++        }, \
++        [0x109] = { \
++            .name = "HADDREND", \
++            .addr = 0x424, \
++            .ro = 0xFFF, \
++            .reset = 0x0, \
++        }, \
++        [0x10A] = { \
++            .name = "HADDROFFSET", \
++            .addr = 0x428, \
++            .ro = 0xFFF, \
++            .reset = 0x0, \
 +        }, \
 +    }
-diff --git a/include/hw/misc/rt500_clk_freqs.h b/include/hw/misc/rt500_clk_freqs.h
+diff --git a/include/hw/ssi/flexspi.h b/include/hw/ssi/flexspi.h
 new file mode 100644
-index 0000000000..1e366d4967
+index 0000000000..51699e1ceb
 --- /dev/null
-+++ b/include/hw/misc/rt500_clk_freqs.h
-@@ -0,0 +1,18 @@
++++ b/include/hw/ssi/flexspi.h
+@@ -0,0 +1,31 @@
 +/*
-+ * QEMU model for RT500 Clock Controller
++ * QEMU model for FLEXSPI
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -1341,104 +1233,34 @@ index 0000000000..1e366d4967
 + * See the COPYING file in the top-level directory.
 + */
 +
-+#ifndef HW_MISC_RT500_CLK_FREQS_H
-+#define HW_MISC_RT500_CLK_FREQS_H
++#ifndef HW_RT500_FLEXSPI_H
++#define HW_RT500_FLEXSPI_H
 +
-+#define RTC32KHZ_CLK_HZ 32000
-+#define LPOSC_CLK_HZ 1000000
-+
-+#endif /* HW_MISC_RT500_CLK_FREQS_H */
-diff --git a/include/hw/misc/rt500_clkctl0.h b/include/hw/misc/rt500_clkctl0.h
-new file mode 100644
-index 0000000000..890743a2ce
---- /dev/null
-+++ b/include/hw/misc/rt500_clkctl0.h
-@@ -0,0 +1,35 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef HW_MISC_RT500_CLKCTL0_H
-+#define HW_MISC_RT500_CLKCTL0_H
-+
-+#include "hw/arm/svd/rt500_clkctl0.h"
 +#include "hw/sysbus.h"
++#include "hw/ssi/ssi.h"
++#include "hw/arm/svd/flexspi.h"
 +
-+#define TYPE_RT500_CLKCTL0 "rt500-clkctl0"
-+#define RT500_CLKCTL0(o) OBJECT_CHECK(RT500ClkCtl0State, o, TYPE_RT500_CLKCTL0)
-+
-+#define SYSTICKFCLKSEL_DIVOUT 0
-+#define SYSTICKFCLKSEL_LPOSC 1
-+#define SYSTICKFCLKSEL_32KHZRTC 2
-+#define SYSTICKFCLKSEL_NONE 7
++#define TYPE_FLEXSPI "flexspi"
++#define FLEXSPI(obj) OBJECT_CHECK(FlexSpiState, (obj), TYPE_FLEXSPI)
 +
 +typedef struct {
 +    SysBusDevice parent_obj;
 +
 +    MemoryRegion mmio;
-+    uint32_t regs[RT500_CLKCTL0_REGS_NO];
-+    Clock *systick_clk;
-+    Clock *sysclk;
-+} RT500ClkCtl0State;
++    uint32_t regs[FLEXSPI_REGS_NO];
++    MemoryRegion mem;
++    uint64_t mmap_size;
++} FlexSpiState;
 +
-+#endif /* HW_MISC_RT500_CLKCTL0_H */
-diff --git a/include/hw/misc/rt500_clkctl1.h b/include/hw/misc/rt500_clkctl1.h
++#endif /* HW_RT500_FLEXSPI_H */
+diff --git a/hw/ssi/flexspi.c b/hw/ssi/flexspi.c
 new file mode 100644
-index 0000000000..8b012b1357
+index 0000000000..d5d9e4f098
 --- /dev/null
-+++ b/include/hw/misc/rt500_clkctl1.h
-@@ -0,0 +1,36 @@
++++ b/hw/ssi/flexspi.c
+@@ -0,0 +1,181 @@
 +/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+
-+#ifndef HW_MISC_RT500_CLKCTL1_H
-+#define HW_MISC_RT500_CLKCTL1_H
-+
-+#include "hw/arm/svd/rt500_clkctl1.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_RT500_CLKCTL1 "rt500-clkctl1"
-+#define RT500_CLKCTL1(o) OBJECT_CHECK(RT500ClkCtl1State, o, TYPE_RT500_CLKCTL1)
-+
-+#define OSEVENTTFCLKSEL_LPOSC 0
-+#define OSEVENTTFCLKSEL_32KHZRTC 1
-+#define OSEVENTTFCLKSEL_HCLK 2
-+#define OSEVENTTFCLKSEL_NONE 7
-+
-+typedef struct {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mmio;
-+    uint32_t regs[RT500_CLKCTL1_REGS_NO];
-+    Clock *sysclk;
-+    Clock *ostimer_clk;
-+} RT500ClkCtl1State;
-+
-+#endif /* HW_MISC_RT500_CLKCTL1_H */
-diff --git a/hw/misc/rt500_clkctl0.c b/hw/misc/rt500_clkctl0.c
-new file mode 100644
-index 0000000000..7e7b176719
---- /dev/null
-+++ b/hw/misc/rt500_clkctl0.c
-@@ -0,0 +1,253 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
++ * QEMU model for FLEXSPI
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -1449,187 +1271,33 @@ index 0000000000..7e7b176719
 + */
 +
 +#include "qemu/osdep.h"
-+#include "hw/clock.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/qdev-properties.h"
++#include "qemu/mmap-alloc.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "exec/address-spaces.h"
++#include "qemu/units.h"
++#include "hw/irq.h"
++#include "hw/qdev-properties.h"
++#include "hw/qdev-properties-system.h"
 +#include "migration/vmstate.h"
-+#include "hw/misc/rt500_clkctl0.h"
-+#include "hw/misc/rt500_clk_freqs.h"
++#include "exec/address-spaces.h"
++#include "hw/ssi/flexspi.h"
++#include "hw/arm/svd/flexspi.h"
 +
 +#include "trace.h"
 +
-+#define REG(s, reg) (s->regs[R_RT500_CLKCTL0_##reg])
-+#define RF_RD(s, reg, field) \
-+    ARRAY_FIELD_EX32(s->regs, RT500_CLKCTL0_##reg, field)
++#define REG(s, reg) (s->regs[R_FLEXSPI_##reg])
 +#define RF_WR(s, reg, field, val) \
-+    ARRAY_FIELD_DP32(s->regs, RT500_CLKCTL0_##reg, field, val)
++    ARRAY_FIELD_DP32(s->regs, FLEXSPI_##reg, field, val)
++#define RF_RD(s, reg, field) \
++    ARRAY_FIELD_EX32(s->regs, FLEXSPI_##reg, field)
 +
-+static const RT500_CLKCTL0_REGISTER_ACCESS_INFO_ARRAY(reg_info);
++static FLEXSPI_REGISTER_ACCESS_INFO_ARRAY(reg_info);
 +
-+static MemTxResult rt500_clkctl0_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
++static void flexspi_reset_enter(Object *obj, ResetType type)
 +{
-+    RT500ClkCtl0State *s = opaque;
-+    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
++    FlexSpiState *s = FLEXSPI(obj);
 +
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_PSCCTL0_SET:
-+    case A_RT500_CLKCTL0_PSCCTL1_SET:
-+    case A_RT500_CLKCTL0_PSCCTL2_SET:
-+    case A_RT500_CLKCTL0_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL2_CLR:
-+        /* write only registers */
-+        return MEMTX_ERROR;
-+    default:
-+        *data = s->regs[addr / 4];
-+        break;
-+    }
-+
-+    trace_rt500_clkctl0_reg_read(rai->name, addr, *data);
-+    return MEMTX_OK;
-+}
-+
-+static inline void set_systick_clk_from_div(RT500ClkCtl0State *s)
-+{
-+    uint32_t div = RF_RD(s, SYSTICKFCLKDIV, DIV) + 1;
-+    uint32_t rate = clock_get_hz(s->sysclk);
-+
-+    clock_set_hz(s->systick_clk, rate / div);
-+}
-+
-+static MemTxResult rt500_clkctl0_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
-+{
-+    RT500ClkCtl0State *s = opaque;
-+    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
-+    struct RegisterInfo ri = {
-+        .data = &s->regs[addr / 4],
-+        .data_size = 4,
-+        .access = rai,
-+    };
-+
-+    trace_rt500_clkctl0_reg_write(rai->name, addr, value);
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_PSCCTL0:
-+    case A_RT500_CLKCTL0_PSCCTL1:
-+    case A_RT500_CLKCTL0_PSCCTL2:
-+    {
-+        register_write(&ri, value, ~0, NULL, false);
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_PSCCTL0_SET:
-+    case A_RT500_CLKCTL0_PSCCTL1_SET:
-+    case A_RT500_CLKCTL0_PSCCTL2_SET:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL0_PSCCTL0 + (addr - A_RT500_CLKCTL0_PSCCTL0_SET);
-+        s->regs[tmp / 4] |= value;
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL2_CLR:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL0_PSCCTL0 + (addr - A_RT500_CLKCTL0_PSCCTL0_CLR);
-+        s->regs[tmp / 4] &= ~value;
-+        break;
-+    }
-+    default:
-+        register_write(&ri, value, ~0, NULL, false);
-+    }
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_SYSPLL0PFD:
-+    {
-+        if (!RF_RD(s, SYSPLL0PFD, PFD0_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD0_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD0_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD1_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD1_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD1_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD2_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD2_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD2_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD3_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD3_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD3_CLKRDY, 0);
-+        }
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_SYSTICKFCLKSEL:
-+    {
-+        switch (RF_RD(s, SYSTICKFCLKSEL, SEL)) {
-+        case SYSTICKFCLKSEL_DIVOUT:
-+        {
-+            set_systick_clk_from_div(s);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->systick_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->systick_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->systick_clk, 0);
-+            break;
-+        }
-+        }
-+        clock_propagate(s->systick_clk);
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_SYSTICKFCLKDIV:
-+    {
-+        if (RF_RD(s, SYSTICKFCLKSEL, SEL) == SYSTICKFCLKSEL_DIVOUT) {
-+            set_systick_clk_from_div(s);
-+            clock_propagate(s->systick_clk);
-+        }
-+        break;
-+    }
-+    }
-+
-+    return MEMTX_OK;
-+}
-+
-+static const MemoryRegionOps rt500_clkctl0_ops = {
-+    .read_with_attrs = rt500_clkctl0_read,
-+    .write_with_attrs = rt500_clkctl0_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+        .unaligned = false,
-+    },
-+};
-+
-+static void rt500_clkctl0_reset_enter(Object *obj, ResetType type)
-+{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(obj);
-+
-+    for (int i = 0; i < RT500_CLKCTL0_REGS_NO; i++) {
++    for (int i = 0; i < FLEXSPI_REGS_NO; i++) {
 +        hwaddr addr = reg_info[i].addr;
 +
 +        if (addr != -1) {
@@ -1643,124 +1311,34 @@ index 0000000000..7e7b176719
 +        }
 +    }
 +
-+    /* clock OK immediately after reset */
-+    REG(s, FROCLKSTATUS) = 0x00000001;
++    /* idle immediately after reset */
++    RF_WR(s, STS0, SEQIDLE, 1);
 +}
 +
-+static void rt500_clkctl0_init(Object *obj)
++static MemTxResult flexspi_read(void *opaque, hwaddr addr,
++                                     uint64_t *data, unsigned size,
++                                     MemTxAttrs attrs)
 +{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl0_ops, s,
-+                          TYPE_RT500_CLKCTL0, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->systick_clk = qdev_init_clock_out(DEVICE(s), "systick_clk");
-+}
-+
-+static const VMStateDescription vmstate_rt500_clkctl0 = {
-+    .name = "rt500-clkctl0",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, RT500ClkCtl0State, RT500_CLKCTL0_REGS_NO),
-+        VMSTATE_CLOCK(systick_clk, RT500ClkCtl0State),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void rt500_clkctl0_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    rc->phases.enter = rt500_clkctl0_reset_enter;
-+    dc->vmsd = &vmstate_rt500_clkctl0;
-+}
-+
-+static const TypeInfo rt500_clkctl0_types[] = {
-+    {
-+        .name          = TYPE_RT500_CLKCTL0,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(RT500ClkCtl0State),
-+        .instance_init = rt500_clkctl0_init,
-+        .class_init    = rt500_clkctl0_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(rt500_clkctl0_types);
-+
-diff --git a/hw/misc/rt500_clkctl1.c b/hw/misc/rt500_clkctl1.c
-new file mode 100644
-index 0000000000..ed234ce0f6
---- /dev/null
-+++ b/hw/misc/rt500_clkctl1.c
-@@ -0,0 +1,238 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/clock.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/qdev-properties.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "exec/address-spaces.h"
-+#include "migration/vmstate.h"
-+#include "hw/misc/rt500_clkctl1.h"
-+#include "hw/misc/rt500_clk_freqs.h"
-+
-+#include "trace.h"
-+
-+#define REG(s, reg) (s->regs[R_RT500_CLKCTL1_##reg])
-+#define RF_RD(s, reg, field) \
-+    ARRAY_FIELD_EX32(s->regs, RT500_CLKCTL1_##reg, field)
-+#define RF_WR(s, reg, field, val) \
-+    ARRAY_FIELD_DP32(s->regs, RT500_CLKCTL1_##reg, field, val)
-+
-+static RT500_CLKCTL1_REGISTER_ACCESS_INFO_ARRAY(reg_info);
-+
-+static MemTxResult rt500_clkctl1_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
-+{
-+    RT500ClkCtl1State *s = opaque;
++    FlexSpiState *s = opaque;
 +    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
 +    MemTxResult ret = MEMTX_OK;
 +
 +    switch (addr) {
-+    case A_RT500_CLKCTL1_PSCCTL0_SET:
-+    case A_RT500_CLKCTL1_PSCCTL1_SET:
-+    case A_RT500_CLKCTL1_PSCCTL2_SET:
-+    case A_RT500_CLKCTL1_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL2_CLR:
-+        /* write only registers */
-+        ret = MEMTX_ERROR;
-+        break;
 +    default:
 +        *data = s->regs[addr / 4];
 +        break;
 +    }
 +
-+    trace_rt500_clkctl1_reg_read(rai->name, addr, *data);
++    trace_flexspi_reg_read(DEVICE(s)->id, rai->name, addr, *data);
 +    return ret;
 +}
 +
-+static MemTxResult rt500_clkctl1_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
++
++static MemTxResult flexspi_write(void *opaque, hwaddr addr,
++                                      uint64_t value, unsigned size,
++                                      MemTxAttrs attrs)
 +{
-+    RT500ClkCtl1State *s = opaque;
++    FlexSpiState *s = opaque;
 +    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
 +    struct RegisterInfo ri = {
 +        .data = &s->regs[addr / 4],
@@ -1768,239 +1346,146 @@ index 0000000000..ed234ce0f6
 +        .access = rai,
 +    };
 +
-+    trace_rt500_clkctl1_reg_write(rai->name, addr, value);
++    trace_flexspi_reg_write(DEVICE(s)->id, rai->name, addr, value);
 +
 +    switch (addr) {
-+    case A_RT500_CLKCTL1_PSCCTL0:
-+    case A_RT500_CLKCTL1_PSCCTL1:
-+    case A_RT500_CLKCTL1_PSCCTL2:
++    case A_FLEXSPI_MCR0:
 +    {
-+        s->regs[addr / 4] = value | s->regs[addr / 4];
++        register_write(&ri, value, ~0, NULL, false);
++
++        if (RF_RD(s, MCR0, SWRESET)) {
++            RF_WR(s, MCR0, SWRESET, 0);
++        }
 +        break;
 +    }
-+    case A_RT500_CLKCTL1_PSCCTL0_SET:
-+    case A_RT500_CLKCTL1_PSCCTL1_SET:
-+    case A_RT500_CLKCTL1_PSCCTL2_SET:
++    case A_FLEXSPI_INTR:
 +    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL1_PSCCTL0 + (addr - A_RT500_CLKCTL1_PSCCTL0_SET);
-+        s->regs[tmp / 4] |= value;
-+        break;
-+    }
-+    case A_RT500_CLKCTL1_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL2_CLR:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL1_PSCCTL0 + (addr - A_RT500_CLKCTL1_PSCCTL0_CLR);
-+        s->regs[tmp / 4] &= ~value;
++        /* fake SPI transfer completion */
++        RF_WR(s, INTR, IPCMDDONE, 1);
 +        break;
 +    }
 +    default:
 +        register_write(&ri, value, ~0, NULL, false);
-+    }
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL1_AUDIOPLL0PFD:
-+    {
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD0_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD0_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD0_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD1_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD1_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD1_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD2_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD2_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD2_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD3_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD3_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD3_CLKRDY, 0);
-+        }
 +        break;
-+    }
-+    case A_RT500_CLKCTL1_OSEVENTTFCLKSEL:
-+    {
-+        switch (RF_RD(s, OSEVENTTFCLKSEL, SEL)) {
-+        case OSEVENTTFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->ostimer_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->ostimer_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_HCLK:
-+        {
-+            clock_set_hz(s->ostimer_clk, clock_get_hz(s->sysclk));
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->ostimer_clk, 0);
-+            break;
-+        }
-+        }
-+
-+        clock_propagate(s->ostimer_clk);
-+        break;
-+    }
 +    }
 +
 +    return MEMTX_OK;
 +}
 +
-+
-+static const MemoryRegionOps rt500_clkctl1_ops = {
-+    .read_with_attrs = rt500_clkctl1_read,
-+    .write_with_attrs = rt500_clkctl1_write,
++static const MemoryRegionOps flexspi_ops = {
++    .read_with_attrs = flexspi_read,
++    .write_with_attrs = flexspi_write,
 +    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .valid = {
-+        .min_access_size = 4,
++        .min_access_size = 1,
 +        .max_access_size = 4,
 +        .unaligned = false,
 +    },
 +};
 +
-+static void rt500_clkctl1_reset(Object *obj, ResetType type)
++static Property flexspi_properties[] = {
++    DEFINE_PROP_UINT64("mmap_size", FlexSpiState, mmap_size, 0),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void flexspi_init(Object *obj)
 +{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(obj);
++    FlexSpiState *s = FLEXSPI(obj);
 +
-+    for (int i = 0; i < RT500_CLKCTL1_REGS_NO; i++) {
-+        hwaddr addr = reg_info[i].addr;
++    memory_region_init_io(&s->mmio, obj, &flexspi_ops, s, TYPE_FLEXSPI,
++                          sizeof(s->regs));
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++}
 +
-+        if (addr != -1) {
-+            struct RegisterInfo ri = {
-+                .data = &s->regs[addr / 4],
-+                .data_size = 4,
-+                .access = &reg_info[i],
-+            };
++static void flexspi_realize(DeviceState *dev, Error **errp)
++{
++    FlexSpiState *s = FLEXSPI(dev);
 +
-+            register_reset(&ri);
-+        }
++    if (s->mmap_size) {
++        memory_region_init_ram(&s->mem, OBJECT(s), DEVICE(s)->id, s->mmap_size,
++                               NULL);
++        sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->mem);
 +    }
 +}
 +
-+static void rt500_clkctl1_init(Object *obj)
-+{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl1_ops, s,
-+                          TYPE_RT500_CLKCTL1, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->ostimer_clk = qdev_init_clock_out(DEVICE(s), "ostimer_clk");
-+}
-+
-+static const VMStateDescription vmstate_rt500_clkctl1 = {
-+    .name = "rt500-clkctl1",
++static const VMStateDescription vmstate_flexspi = {
++    .name = "flexspi",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, RT500ClkCtl1State, RT500_CLKCTL1_REGS_NO),
-+        VMSTATE_CLOCK(ostimer_clk, RT500ClkCtl1State),
++        VMSTATE_UINT32_ARRAY(regs, FlexSpiState, FLEXSPI_REGS_NO),
 +        VMSTATE_END_OF_LIST()
 +    }
 +};
 +
-+static void rt500_clkctl1_class_init(ObjectClass *klass, void *data)
++static void flexspi_class_init(ObjectClass *klass, void *data)
 +{
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +
-+    rc->phases.enter = rt500_clkctl1_reset;
-+    dc->vmsd = &vmstate_rt500_clkctl1;
-+
++    rc->phases.enter = flexspi_reset_enter;
++    dc->realize = flexspi_realize;
++    dc->vmsd = &vmstate_flexspi;
++    device_class_set_props(dc, flexspi_properties);
 +}
 +
-+static const TypeInfo rt500_clkctl1_types[] = {
++static const TypeInfo flexspi_types[] = {
 +    {
-+        .name          = TYPE_RT500_CLKCTL1,
++        .name          = TYPE_FLEXSPI,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(RT500ClkCtl1State),
-+        .instance_init = rt500_clkctl1_init,
-+        .class_init    = rt500_clkctl1_class_init,
-+    }
++        .instance_size = sizeof(FlexSpiState),
++        .instance_init = flexspi_init,
++        .class_init    = flexspi_class_init,
++    },
 +};
 +
-+DEFINE_TYPES(rt500_clkctl1_types);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index eac5070514..658af0dace 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -629,3 +629,8 @@ config ARMSSE
-     select UNIMP
-     select SSE_COUNTER
-     select SSE_TIMER
-+
-+config RT500
-+    bool
-+    select FLEXCOMM
-+    select RT500_CLKCTL
++DEFINE_TYPES(flexspi_types);
 diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
-index e7d62a7f35..9c458b314c 100644
+index 9c458b314c..adf0f8327a 100644
 --- a/hw/arm/svd/meson.build
 +++ b/hw/arm/svd/meson.build
-@@ -16,4 +16,12 @@ if get_option('mcux-soc-svd')
-     [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/flexcomm_spi.h',
-       '-p', 'SPI0', '-t', 'FLEXCOMM_SPI',
-       '--fields', 'CFG FIFOCFG:ENABLE*,EMPTY* FIFO*:* INT*: STAT'])
-+  run_target('svd-rt500-clkctl0', command: svd_gen_header +
-+    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl0.h',
-+      '-p', 'CLKCTL0', '-t', 'RT500_CLKCTL0',
-+      '--fields', 'PSCCTL*:ROM_CTRLR_CLK,DSP_CLK SYSPLL0PFD SYSTICKFCLKSEL SYSTICKFCLKDIV FROCLKSTATUS:'])
-+  run_target('svd-rt500-clkctl1', command: svd_gen_header +
-+    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl1.h',
-+      '-p', 'CLKCTL1', '-t', 'RT500_CLKCTL1',
-+      '--fields', 'PSCCTL*:FlexIO AUDIOPLL0PFD OSEVENTTFCLKSEL'])
+@@ -24,4 +24,8 @@ if get_option('mcux-soc-svd')
+     [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl1.h',
+       '-p', 'CLKCTL1', '-t', 'RT500_CLKCTL1',
+       '--fields', 'PSCCTL*:FlexIO AUDIOPLL0PFD OSEVENTTFCLKSEL'])
++  run_target('svd-flexspi', command: svd_gen_header +
++    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/flexspi.h',
++      '-p', 'FLEXSPI0', '-t', 'FLEXSPI',
++      '--fields', 'STS0:SEQIDLE MCR0:SWRESET INTR:IPCMDDONE'])
  endif
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index b373e651e1..02feb93840 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -218,4 +218,7 @@ config FLEXCOMM
-     select I2C
+diff --git a/hw/ssi/Kconfig b/hw/ssi/Kconfig
+index 8d180de7cf..e3de40e6b6 100644
+--- a/hw/ssi/Kconfig
++++ b/hw/ssi/Kconfig
+@@ -28,3 +28,7 @@ config BCM2835_SPI
+ config PNV_SPI
+     bool
      select SSI
- 
-+config RT500_CLKCTL
++
++config FLEXSPI
 +    bool
++    select SSI
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index 58e0d14b37..31a2618d52 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -13,3 +13,4 @@ system_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_spi_host.c'))
+ system_ss.add(when: 'CONFIG_BCM2835_SPI', if_true: files('bcm2835_spi.c'))
+ system_ss.add(when: 'CONFIG_PNV_SPI', if_true: files('pnv_spi.c'))
+ system_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm_spi.c'))
++system_ss.add(when: 'CONFIG_FLEXSPI', if_true: files('flexspi.c'))
+diff --git a/hw/ssi/trace-events b/hw/ssi/trace-events
+index f849f1f8be..dd2f04cb22 100644
+--- a/hw/ssi/trace-events
++++ b/hw/ssi/trace-events
+@@ -58,3 +58,7 @@ pnv_spi_RDR_match(const char* result) "%s"
+ flexcomm_spi_reg_read(const char *id, const char *reg_name, uint32_t addr, uint32_t val) " %s: %s[0x%04x] -> 0x%08x"
+ flexcomm_spi_reg_write(const char *id, const char *reg_name, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
+ flexcomm_spi_irq(const char *id, bool irq, bool fifoirqs, bool perirqs, bool enabled) "%s: %d %d %d %d"
 +
- source macio/Kconfig
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 0d901b9c65..15f9153be4 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -153,3 +153,4 @@ system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
- system_ss.add(when: 'CONFIG_LASI', if_true: files('lasi.c'))
- 
- system_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm.c'))
-+system_ss.add(when: 'CONFIG_RT500_CLKCTL', if_true: files('rt500_clkctl0.c', 'rt500_clkctl1.c'))
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index dc245905dc..b19393dd36 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -368,3 +368,11 @@ flexcomm_irq(const char *id, uint8_t irq) "%s %d"
- flexcomm_reg_read(const char *devname, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] -> 0x%08x"
- flexcomm_reg_write(const char *dename, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
- flexcomm_fifostat(const char *id, uint32_t fifostat, uint32_t fifoinstat) "%s: %08x %08x"
-+
-+# rt500_clkctl0.c
-+rt500_clkctl0_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl0_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
-+
-+# rt500_clkctl1.c
-+rt500_clkctl1_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl1_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
++# flexspi.c
++flexspi_reg_read(const char *id, const char *reg_name, uint32_t addr, uint32_t val) " %s: %s[0x%04x] -> 0x%08x"
++flexspi_reg_write(const char *id, const char *reg_name, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
