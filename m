@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012EE993C3C
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7D0993C39
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyu4-0003cR-OY; Mon, 07 Oct 2024 21:20:45 -0400
+	id 1sxyuD-0004eG-FM; Mon, 07 Oct 2024 21:20:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3l4gEZwUKCvgyf0nulttlqj.htrvjrz-ij0jqstslsz.twl@flex--tavip.bounces.google.com>)
- id 1sxysr-00080y-J2
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:31 -0400
+ <3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
+ id 1sxysx-0008CI-J4
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:36 -0400
 Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3l4gEZwUKCvgyf0nulttlqj.htrvjrz-ij0jqstslsz.twl@flex--tavip.bounces.google.com>)
- id 1sxysp-0000BZ-Fj
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:28 -0400
+ <3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
+ id 1sxyss-0000CG-Ps
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:33 -0400
 Received: by mail-pf1-x449.google.com with SMTP id
- d2e1a72fcca58-71e026caf8bso2116850b3a.2
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:21 -0700 (PDT)
+ d2e1a72fcca58-71dfeda9ac0so1866077b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1728350361; x=1728955161; darn=nongnu.org;
+ d=google.com; s=20230601; t=1728350363; x=1728955163; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=PbhHf80sfK7VkwcTgOuxP6owcvc4suokU3ESxbdaOWI=;
- b=p3nmD6YyOLnCh8I7N+pee3b7RdHGVDUmDIRf502IYwADTz7FUyYvVoq/UJOrJj2xyU
- ySGGGpm6HhHDxYSFYuHHRiOvMRKPY7jzt+9DQ922dS34CmzZoomBKZ6YzaBKffw5fTMy
- AbXWdBGl3qYoQ90brls7UJeFtWvqyQ+IFY9qwa1vWTKOUMmnfDVnDpNF1QQWpaEfXjap
- /0QAdOJzi5jURBDy6lJqkFtoy+5R4x4X7ccEKBygeJ+QvTAwDJjw7Stm3WCo7/1Ve8es
- M9FFJccNxxswdxP9oCyzeci7eKPsV8PiPTgT5phcStkjIUeMveLVPB/yv6P1K73i2vWg
- IH3Q==
+ bh=ohI0GInatBpkkVc6LlITBXAa2f8u1GNul4wGD6o5kbw=;
+ b=0rSL9sYhIKVm/xcP036gFjJ38oSIMXgXDHlZUNXIz4M2K8wHivHlEp7LRBarCHzD4J
+ OmoVRMD/qJEn8rqnEkwfQa0f3kigbBBVKY4CMbiB++JSdEAVoCBMkbtxiVtXEPgWF0NO
+ tqswvX8g9jeNPnuBNA84sNC0oOepRWggVs8jz2twPcGpmsZZ1vH+BGyu9RF4zjMyCzHr
+ vAj5zWJk87Q6wysAhYRolVZWvt70s59I9csy0VI0oezUw8WndS1WsXvMhkTGIMPkmspp
+ ZL9J8OoGrCKlVJ4dFxmfqghuF54CUlKbLHIMR4ZVOEiNW+exs+LGDhqVTrR0RVGVR0i4
+ lWEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728350361; x=1728955161;
+ d=1e100.net; s=20230601; t=1728350363; x=1728955163;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PbhHf80sfK7VkwcTgOuxP6owcvc4suokU3ESxbdaOWI=;
- b=n/k4SKkAUdCrKwgdhE2wucr2Ra8xTsEnnWTRXBoz545M8Tb7RsGCgOWe+1i5THf+en
- fhjaZwpQqMYhlIWHbWffkroyALKOzcKAGAJEdYLL8sVDm9bgjcTM17XYy0L2siqrhaIi
- 6LolKas0F7BBTLLF+qInon1KMGWXcz09fgw2Ml5Xvhqrqe1RlzBg3rIPif56n5+7zB6X
- niIV2Zg+0WAl8u/8LLfNMKgiAOxrULCRanKvf/BJlcL5iY56PsX9A6VBuEUyYC552UaC
- 8njdbo33MmCmGH4GJYLmcvF++QrmEeLesxqCa1myoc6xLI0NUcfUSlBrutrIfQwXSF89
- bdIA==
-X-Gm-Message-State: AOJu0Yxj31/ADEgjt5dg9h+21ol/uMdykHkuy2W6IokIcBq7Wv/kOC76
- FTX7UVPRxcdiPVhU9nqrbzBJO8htn8+0TFQ+2EGKZcv6oy9cdwJEBmWkwNIHmOSzSpKEvnyS0MJ
- kU5zkVtTxjRH4ZWhJFldLM8ThZ5X/GYp26+stjy2XSRJ0DCtn2SnHA1wDuIm1qm9ymtiLJG1FxT
- QUrOSWiaJW/3AponEK4SOeufdnoA==
-X-Google-Smtp-Source: AGHT+IGgWk8SsfLPaKZ6EeNQEn7lqPAjr3nNGIfVhoWq8dK9fBgwYbuZn6HlAwnrjRMlMn/Um+WXHuNkwA==
+ bh=ohI0GInatBpkkVc6LlITBXAa2f8u1GNul4wGD6o5kbw=;
+ b=UEKRgPMkBAaTYG/t85t2s1bqIW/u/rJZDxmYjIkDfE/eOs/bc9uRF+dhter8txpQPL
+ ky1ud0w4+60KRpy8J6Z2yhjai1VN5XY2U2hLkCC9dD0dMfW33MmBcSPhM8qs50Ui4BJx
+ zNNMOgDmuC6T/4Uy64LQfJ5Zdr3Jefqmq1CyWqu5u0Om1MdHj0jh11AapXOphKCm2XZ1
+ I1gNRFcS+5LsIgXMVTUzqFqJ0IlWnQRJXKKYubwVMX4V6QRXBCcJcmcVe6+PP5dcmM61
+ iIPDYqEpB12OvEeyqPjaNa+L8nU2SbrpYRCWmmAHZsMVPa2NZ2c2XygnBYP7dnfhlOt7
+ d8Vg==
+X-Gm-Message-State: AOJu0Yy/LegDmbSxLNCq4XSYXjJmTCO8FkF0MmVYiQIaA8GtlsERmsPZ
+ JMRgq3VAeuN3YO0yAlkF9NT23kS347DAuPgqHlEbODHNwtd43dtpfIYNnkIx2f+oXE1FveefbNI
+ /MF1e42I2D8Vs3jDDkXJl2F/0mq0EQA1by2R1QeXhn4rz8ZTMUjhI5fhCEruuBqIHv32pMiovJA
+ Mw6F/DNTKsAdVfzTJZMHHuDuUSbg==
+X-Google-Smtp-Source: AGHT+IHfJoafZ1Gh1mSTL3YA6IgQyHpvaYVZtycBjAalruHqjj2i1J3dSMeXAFCXYRQlu7eKJ3STxUEy6Q==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:6a00:7687:b0:71d:fb06:e79b
+ (user=tavip job=sendgmr) by 2002:a05:6a00:91db:b0:71e:401:6580
  with SMTP id
- d2e1a72fcca58-71dfb06ea3amr14561b3a.0.1728350359669; Mon, 07 Oct 2024
- 18:19:19 -0700 (PDT)
-Date: Mon,  7 Oct 2024 18:18:40 -0700
+ d2e1a72fcca58-71e040166f7mr10095b3a.6.1728350361548; Mon, 07 Oct 2024
+ 18:19:21 -0700 (PDT)
+Date: Mon,  7 Oct 2024 18:18:41 -0700
 In-Reply-To: <20241008011852.1439154-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20241008011852.1439154-1-tavip@google.com>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241008011852.1439154-15-tavip@google.com>
-Subject: [PATCH v2 14/25] hw/arm: add RT595-EVK board
+Message-ID: <20241008011852.1439154-16-tavip@google.com>
+Subject: [PATCH v2 15/25] tests/qtest: add register access macros and functions
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -71,7 +71,7 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
- envelope-from=3l4gEZwUKCvgyf0nulttlqj.htrvjrz-ij0jqstslsz.twl@flex--tavip.bounces.google.com;
+ envelope-from=3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com;
  helo=mail-pf1-x449.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -95,112 +95,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add basic support for the RT595-EVK board, enough to be able to run
-the NXP's microXpresso SDK hello world example.
+Add utility macros for accessing register or register bit fields in
+tests, e.g.:
+
+  REG32_WRITE(FLEXCOMM, PSELID, persel);
+  g_assert(REG32_READ_FIELD(FLEXCOMM, PSELID, PERSEL) == persel);
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- hw/arm/rt595-evk.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++
- hw/arm/Kconfig     |  5 ++++
- hw/arm/meson.build |  1 +
- 3 files changed, 70 insertions(+)
- create mode 100644 hw/arm/rt595-evk.c
+ tests/qtest/reg-utils.h | 70 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+ create mode 100644 tests/qtest/reg-utils.h
 
-diff --git a/hw/arm/rt595-evk.c b/hw/arm/rt595-evk.c
+diff --git a/tests/qtest/reg-utils.h b/tests/qtest/reg-utils.h
 new file mode 100644
-index 0000000000..4f875a0b12
+index 0000000000..e09aaf3333
 --- /dev/null
-+++ b/hw/arm/rt595-evk.c
-@@ -0,0 +1,64 @@
++++ b/tests/qtest/reg-utils.h
+@@ -0,0 +1,70 @@
 +/*
-+ * i.MX RT595 EVK
++ * Register access utilities for device tests.
 + *
-+ * Copyright (c) 2024 Google LLC
++ * Copyright (C) 2024 Google LLC
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
 + * This work is licensed under the terms of the GNU GPL, version 2 or later.
 + * See the COPYING file in the top-level directory.
 + */
++#ifndef _REG_UTILS_H
++#define _REG_UTILS_H
 +
-+#include "qemu/osdep.h"
-+#include "elf.h"
-+#include "exec/address-spaces.h"
-+#include "hw/loader.h"
-+#include "hw/sysbus.h"
-+#include "hw/boards.h"
-+#include "qemu/log.h"
-+#include "hw/arm/armv7m.h"
-+#include "hw/arm/boot.h"
-+#include "qapi/error.h"
-+#include "hw/arm/rt500.h"
-+#include "hw/qdev-clock.h"
-+#include "sysemu/reset.h"
++#include "libqtest-single.h"
++#include "hw/registerfields.h"
 +
-+static void rt595_evk_reset(MachineState *ms, ResetType reason)
-+{
-+    /*
-+     * CPU reset is not done by default, we need to do it manually when the
-+     * machine is reset.
-+     */
-+    cpu_reset(first_cpu);
++#ifdef DEBUG_REG
++#define debug(fmt, args...) fprintf(stderr, fmt, ## args)
++#else
++#define debug(fmt, args...)
++#endif
 +
-+    qemu_devices_reset(reason);
-+}
++#define _REG_OFF(mod, reg) (A_##mod##_##reg)
 +
-+static void rt595_evk_init(MachineState *ms)
-+{
-+    RT500State *s;
-+    Clock *sysclk;
++#define REG32_READ(mod, reg)                                            \
++    ({                                                                  \
++        uint32_t value;                                                 \
++        value = readl(mod##_BASE + _REG_OFF(mod, reg));                 \
++        debug("[%s] -> %08x\n", #reg, value);                           \
++        value;                                                          \
++    })
 +
-+    sysclk = clock_new(OBJECT(ms), "SYSCLK");
-+    clock_set_hz(sysclk, 200000000);
++#define REG32_WRITE(mod, reg, value)                                    \
++    do {                                                                \
++        debug("[%s] <- %08x\n", #reg, value);                           \
++        writel(mod##_BASE + _REG_OFF(mod, reg), value);                 \
++    } while (0)
 +
-+    s = RT500(object_new(TYPE_RT500));
-+    qdev_connect_clock_in(DEVICE(s), "sysclk", sysclk);
-+    object_property_add_child(OBJECT(ms), "soc", OBJECT(s));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(s), &error_fatal);
++#define REG_FIELD_VAL(v, mod, reg, field)                               \
++    FIELD_EX32(v, mod##_##reg, field)                                   \
 +
-+    if (ms->kernel_filename) {
-+        armv7m_load_kernel(ARM_CPU(first_cpu), ms->kernel_filename, 0, 0);
-+    }
-+}
++#define REG32_READ_FIELD(mod, reg, field)                   \
++    REG_FIELD_VAL(REG32_READ(mod, reg), mod, reg, field)
 +
-+static void rt595_evk_machine_init(MachineClass *mc)
-+{
-+    mc->desc  = "RT595 EVK Machine (ARM Cortex-M33)";
-+    mc->init  = rt595_evk_init;
-+    mc->reset = rt595_evk_reset;
++#define REG32_WRITE_FIELD(mod, reg, field, val)                         \
++    do {                                                                \
++        uint32_t _tmp = REG32_READ(mod, reg);                           \
++        _tmp = FIELD_DP32(_tmp, mod##_##reg, field, val);               \
++        REG32_WRITE(mod, reg, _tmp);                                    \
++    } while (0)
 +
-+    mc->ignore_memory_transaction_failures = true;
-+}
++#define REG32_WRITE_FIELD_NOUPDATE(mod, reg, field, val)                \
++    do {                                                                \
++        uint32_t _tmp = FIELD_DP32(0, mod##_##reg, field, val);         \
++        REG32_WRITE(mod, reg, _tmp);                                    \
++    } while (0)
 +
-+DEFINE_MACHINE("rt595-evk", rt595_evk_machine_init);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 5bc9438945..86d704cf1b 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -636,3 +636,8 @@ config RT500
-     select RT500_CLKCTL
-     select FLEXSPI
-     select RT500_RSTCTL
++#define WAIT_REG32_FIELD(ns, mod, reg, field, val)                      \
++    do {                                                                \
++        clock_step(ns);                                                 \
++        g_assert_cmpuint(REG32_READ_FIELD(mod, reg, field), ==, val);   \
++    } while (0)
 +
-+config RT595_EVK
-+    bool
-+    default y
-+    select RT500
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index a2b20617c9..48ae30acef 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -61,6 +61,7 @@ arm_ss.add(when: 'CONFIG_XEN', if_true: files(
-   'xen-pvh.c',
- ))
- arm_ss.add(when: 'CONFIG_RT500', if_true: files('rt500.c'))
-+arm_ss.add(when: 'CONFIG_RT595_EVK', if_true: files('rt595-evk.c'))
- 
- system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
- system_ss.add(when: 'CONFIG_COLLIE', if_true: files('collie.c'))
++#define REG32_READ_FAIL(mod, reg) \
++    readl_fail(mod##_BASE + _REG_OFF(mod, reg))
++
++#define REG32_WRITE_FAIL(mod, reg, value) \
++    writel_fail(mod##_BASE + _REG_OFF(mod, reg), value)
++
++#endif /* _REG_UTILS_H */
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
