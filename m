@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760F799572B
+	by mail.lfdr.de (Postfix) with ESMTPS id D96CF99572D
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 20:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syFJU-0007T7-Uo; Tue, 08 Oct 2024 14:52:04 -0400
+	id 1syFJa-0007Tg-RK; Tue, 08 Oct 2024 14:52:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syFJP-0007Qq-Qr
+ id 1syFJP-0007Qr-R3
  for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:52:00 -0400
-Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syFJL-0002S3-Ak
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:51:57 -0400
-Received: by mail-il1-x129.google.com with SMTP id
- e9e14a558f8ab-3a377534e00so16743075ab.3
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 11:51:45 -0700 (PDT)
+ id 1syFJL-0002S8-AZ
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:51:58 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20b833f9b35so52365595ad.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 11:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728413504; x=1729018304; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728413505; x=1729018305; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K+Rj8O/QK6Pa3filkPJ4FZfJms9lNPKqXWSFkDZyfyA=;
- b=SCFevais/ptMBAgP0n7GyvOII57QeabaSMjUDe2/PvDwe8YphxjsokK0o5XXlMccN6
- yrVQs4eZpPxqqHdBbwdgSJqse5yRNUCyKGSsbjswaBYzFy2oPZN85w+IwzMwoqGVTUv4
- O1bMLybWOo6j3z9aYqkQTgFk0FJ7oIDIE30Q1z3FEngdKBJ5dVJ0Ach/ubD0mELmRySN
- StfRwNz3rz0yqwIMUErX68RtDga1Qp8G/JTzAopTRziAj+jtXZgeWGH8chu18jxcg7j4
- Am9bvFimR6SmvJiz0l8Tllz7NfAtRxSODANcggzLueYltSIPT/U8QreC2KjHDTNvYfIB
- 9ayA==
+ bh=TOn9FQKnsFqqK8dvmrqts9k4e/ZA/rwyYeo2+pg72XQ=;
+ b=YlVD4yWS0Adj4ke/Vz2TCJVjSDPbZ0DWWjhmUzhLIjGy28b9IgbUNpYfZChn4RAwSi
+ nz/SF/NWB2EqXrwdKL3al0Rwo/Yp/2Xwdk1FJiry0ejWA3yM0iKPXwD1dl+pmRUhJuUB
+ F9qaTOQ/b85hiKIlAV3P9vmPGGvH2eSHdfRqSP/kO9Q/oQu/3I391sxkw3hzDC2+nG58
+ 4FyPJqbpq0aE6q6jGTFkeM76LKPuVK0xQzhbgFOB+LItLAfLUR+sutzz5CuU3mlXiJkm
+ eezbCt8U4v5WyDpAn+M0JtMmZLxav8iSvSB50lo9RDs8VrVVkMKehYYiwPTtpfxP6B0r
+ XI6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728413504; x=1729018304;
+ d=1e100.net; s=20230601; t=1728413505; x=1729018305;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K+Rj8O/QK6Pa3filkPJ4FZfJms9lNPKqXWSFkDZyfyA=;
- b=QTvc/vFoNIcx3NK3IfNU+B4zdk7kKaxY12jHrhWO64qlPpsLzHYeGLRXZA3BIAE8nr
- 2UUb/RYcXut6xozo/M8+GilKTbTboVbTz8JFvd3FKBPCBU+vPkVIw1VvIRziGWzbfq1Q
- FSKQtp4vTn66SrNIaxIdAofZnnO6gqi+HlFa1gn3MpqGrwNZf+EEIJ1Gp/7S+UuSrvUB
- q+1aNKRISVzL+YalvkdTsdg1dFLlBtBmUbu7Z+E7CuwgogyrJkSaUej7FizDpesMy/lf
- wZ28SITypz8L1a1kYKYRbwGNetDf1U9TZX52SDEM05N0XUwJr4kA2nlsc0zDK1+Ya3x9
- 56lw==
-X-Gm-Message-State: AOJu0YwRIbHJopK0H6bBlmWPMBC5dESuwxhh5/FFMLdDN0rnmxJo8DnX
- FXZPBAY3BMHGP81W+c9ET6NOs7XOrFRGkcOYSbBSZPKnahb1g0rrmuXBPz7JUO8BPZfc0cOsAQl
- c
-X-Google-Smtp-Source: AGHT+IHCzTw4pxxpz67MpMwnYyjzmcO385GXk7lEvLewN1gwovRXyJSjNb0ZP+aQPtPfT84Sm5TnmA==
-X-Received: by 2002:a05:6e02:20e2:b0:3a3:4221:b0d3 with SMTP id
- e9e14a558f8ab-3a3757c8506mr174156735ab.0.1728413504238; 
- Tue, 08 Oct 2024 11:51:44 -0700 (PDT)
+ bh=TOn9FQKnsFqqK8dvmrqts9k4e/ZA/rwyYeo2+pg72XQ=;
+ b=QtnVdHj+//FGJN06mCeydEPhnA7HI0IoaK5K2haRyCl3s1q3mtGmZXL/9/itDFaeVC
+ 9bOqfWKBiJxdaXfkZwOy/Y3JnkItGNzzFPf7rAjhpHX/zVEcdKw+GvohRYXjbg8tioEr
+ PDoJufADBDZQpJVaClpuTgQhhbS5YFCY5KGTIKo8GIKFP0pkGTHLoDm2pkHpXRmiVLF1
+ 6QfUpfBQboFcHZwgRjMvJR/OnUXXQywNSL1GnJGSMrEcIMyBJZrTtSj2d+U9kwT2gS19
+ c8MWY1n/Ktk5402EScnCDcEbqYMQJecvAuVKRC6+J5ySlcIBI2xPoRCvo4ZDJBL15zEF
+ kAAg==
+X-Gm-Message-State: AOJu0YzvnDR/u6PXN1ncUVZdnPoEo2pfQ5+TbVJeSaOmWQ3K7iMkad1/
+ XXSISp1AAyI32xTBuW5BaUMfoXd24LzDgVi9XuE5eBoQHT/svghCwiif7icvCCPvn0WznRZrLeM
+ q
+X-Google-Smtp-Source: AGHT+IFOv8diGM21FYv9YDwizxS5s028Hi+fU2TCwgadH+mZHg6bnJk/BU1A3/rPydAYDPtDqSLVPQ==
+X-Received: by 2002:a17:903:2289:b0:20c:61f8:f45d with SMTP id
+ d9443c01a7336-20c61f8f6admr6163045ad.22.1728413505243; 
+ Tue, 08 Oct 2024 11:51:45 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7e9f6821c32sm7186818a12.33.2024.10.08.11.51.43
+ 41be03b00d2f7-7e9f6821c32sm7186818a12.33.2024.10.08.11.51.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 11:51:43 -0700 (PDT)
+ Tue, 08 Oct 2024 11:51:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/14] linux-user/flatload: Take mmap_lock in load_flt_binary()
-Date: Tue,  8 Oct 2024 11:51:28 -0700
-Message-ID: <20241008185141.20057-2-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 02/14] linux-user: Fix parse_elf_properties GNU0_MAGIC check
+Date: Tue,  8 Oct 2024 11:51:29 -0700
+Message-ID: <20241008185141.20057-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241008185141.20057-1-richard.henderson@linaro.org>
 References: <20241008185141.20057-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,45 +95,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Comparing a string of 4 bytes only works in little-endian.
 
-load_flt_binary() calls load_flat_file() -> page_set_flags().
+Adjust bulk bswap to only apply to the note payload.
+Perform swapping of the note header manually; the magic
+is defined so that it does not need a runtime swap.
 
-page_set_flags() must be called with the mmap_lock held,
-otherwise it aborts:
-
-  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
-  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
-  Aborted (core dumped)
-
-Fix by taking the lock in load_flt_binary().
-
-Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Fixes: 83f990eb5adb ("linux-user/elfload: Parse NT_GNU_PROPERTY_TYPE_0 notes")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2596
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/flatload.c | 3 +++
- 1 file changed, 3 insertions(+)
+ linux-user/elfload.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 04d8138d12..0e4be5bf44 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -487,7 +487,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
-     stack_len += (bprm->envc + 1) * 4; /* the envp array */
- 
- 
-+    mmap_lock();
-     res = load_flat_file(bprm, libinfo, 0, &stack_len);
-+    mmap_unlock();
-+
-     if (is_error(res)) {
-             return res;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 0678c9d506..52c88a68a9 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3121,11 +3121,11 @@ static bool parse_elf_properties(const ImageSource *src,
      }
+ 
+     /*
+-     * The contents of a valid PT_GNU_PROPERTY is a sequence
+-     * of uint32_t -- swap them all now.
++     * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
++     * Swap most of them now, beyond the header and namesz.
+      */
+ #ifdef BSWAP_NEEDED
+-    for (int i = 0; i < n / 4; i++) {
++    for (int i = 4; i < n / 4; i++) {
+         bswap32s(note.data + i);
+     }
+ #endif
+@@ -3135,15 +3135,15 @@ static bool parse_elf_properties(const ImageSource *src,
+      * immediately follows nhdr and is thus at the 4th word.  Further, all
+      * of the inputs to the kernel's round_up are multiples of 4.
+      */
+-    if (note.nhdr.n_type != NT_GNU_PROPERTY_TYPE_0 ||
+-        note.nhdr.n_namesz != NOTE_NAME_SZ ||
++    if (tswap32(note.nhdr.n_type) != NT_GNU_PROPERTY_TYPE_0 ||
++        tswap32(note.nhdr.n_namesz) != NOTE_NAME_SZ ||
+         note.data[3] != GNU0_MAGIC) {
+         error_setg(errp, "Invalid note in PT_GNU_PROPERTY");
+         return false;
+     }
+     off = sizeof(note.nhdr) + NOTE_NAME_SZ;
+ 
+-    datasz = note.nhdr.n_descsz + off;
++    datasz = tswap32(note.nhdr.n_descsz) + off;
+     if (datasz > n) {
+         error_setg(errp, "Invalid note size in PT_GNU_PROPERTY");
+         return false;
 -- 
 2.43.0
 
