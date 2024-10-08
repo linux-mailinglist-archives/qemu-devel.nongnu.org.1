@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D7A9957DB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 21:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5EB995882
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 22:33:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syGCJ-0000yL-0K; Tue, 08 Oct 2024 15:48:43 -0400
+	id 1syGtP-0000NR-9E; Tue, 08 Oct 2024 16:33:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syGCG-0000xy-Q3
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 15:48:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syGCF-0008HJ-3e
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 15:48:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728416917;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RXpaIx73q5I/74lpDfzRABCWO05/NlrPljfcc3PtkuE=;
- b=hpJNMuTbseh/tBOMCRXlTYja8igp9ymH94oYgvPKNF8IwFPJdukKxugNZarM/BlB9TD4uI
- xms2EQiYI4h+szuwEGwkZGn6XDkM4p3l8B3X+ymzzwjYTidXrAHx9cXKUeiLql5cuz16A/
- mEP+Vx8YzpsyLC0mai65c5jkP+vZGKM=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-AA-_HGoWN2SY82xBRNFccA-1; Tue, 08 Oct 2024 15:48:36 -0400
-X-MC-Unique: AA-_HGoWN2SY82xBRNFccA-1
-Received: by mail-il1-f198.google.com with SMTP id
- e9e14a558f8ab-3a1a8a4174dso57827025ab.1
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 12:48:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1syGtM-0000JI-PN; Tue, 08 Oct 2024 16:33:12 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1syGtL-00047M-1K; Tue, 08 Oct 2024 16:33:12 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a9932aa108cso589827066b.2; 
+ Tue, 08 Oct 2024 13:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1728419589; x=1729024389; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WKHQqAVQXP8yXPg4plZGZRCJIY5OBCA4ZjFI7GYtxcM=;
+ b=Ab4sh4aZLkASNt4rMO9wf/VkyeJLz1NbgFeQ1XYdxlqkTTISQmIg3gKbitVk4niDDW
+ nBKAeV0usnSyx/eVP1HPnKX7f2BdKkLs8FOhQlEgJpl4PKBwGPkGXaGeJEeU5MoShCEx
+ PUR1F7oxbEwiTvu7WTz6UTYDc+xzDTevbjJSunkCXHfnej66ogo2tnElXyFvJTt57vix
+ ZXFR3aUMCCBDExHH9FPQjRWzT0CPPLNmXglpPnTEAR0NhwGaa4gGYcY4+yPnI5NXZtm0
+ EVSs3e3wBaUWN9fUHaZnUap0uhP0aolnPLSop3p8qYZvtygw5h46vPH4DV/hUN0cF2ag
+ XFOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728416915; x=1729021715;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RXpaIx73q5I/74lpDfzRABCWO05/NlrPljfcc3PtkuE=;
- b=ruvODGA0J8p+1j674v3wEnR/OUbJySaUKiFOv1OdAp//Y2MVCg25/J8PqnPLgvmBpi
- g/Wr1BHlp6Esr+fvft1kqRbiHlILAzAoQLI/JASVdLn3ysVPPyymqnb9bwYl0qBd07tM
- /Iqcwfej6gqN2KjnQ+T2DMfrIXG2AeXdBhxrAKKgSN9XDAkDtXwFbvuiM6yK82eqIR6a
- YjyX11mh+uLQli9PTJYg3mHPjZjbQLlwPipSwi8OZrLxfRVRkmmODDzePPPmiWenMGj5
- xDFqyY11O3upb53KgK6Jb/Ok2xP05HsPMGya1uXZWjurq5uXR3IMo9+tTXcJyP+xfHDj
- /IvA==
+ d=1e100.net; s=20230601; t=1728419589; x=1729024389;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WKHQqAVQXP8yXPg4plZGZRCJIY5OBCA4ZjFI7GYtxcM=;
+ b=otR5Y1rU0AsyT5j2Vuew3iiLlJPBx3E6XGgmxTgBMPyRbiy9daexcqgZ+7q8KEfGq5
+ byG2di+EI4gm/J9WDQACHFD6XeOdy1ef+57zNmBp0VGd0GtuIuT+10EiCuT1sg/Rdc0z
+ uSX7wDE/WR6Y3/LlGICv0MkCsg0DF/7/ptUqfcmU3jAXbHJ7W9x4B5nDyaOD42phhZui
+ 2KUtMZ4PksR1SqkVTmVNzmKOQRviuEniP34y8JgtGtjIgx4+d3Qhfy9Vz2euuuQTVv3u
+ Fy+i4bGcEiOWAek1zETLUxrcAQ44NGRR6yjyma70prjcdfi2cOn7aPkVY8AKPCum+5aO
+ KXKA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUoNkH5rlJoqf0iVfnDWOy2uezj6Jhs69HTM5t4lgyEXGpeONUB6sYVf3FHytS3+kd6fog0WIHTiCgq@nongnu.org
-X-Gm-Message-State: AOJu0YwnYhev9IsGbkrXQ544TEf0qr1zuhQdho6zlnFQexyffDamP+q3
- jFJgcUUaeJnngpvL4/2mZCx+jIW3UuCg9TC2FJ+fzfVAQPEuYtzHqdKg2PfhbWYASV7eybotzmY
- egtriW6Ce3uVk02JO8hMwbgKARLsd+d1nibiBLc8rH0JkX+ug1wPP
-X-Received: by 2002:a05:6e02:20c3:b0:39f:5abe:ec25 with SMTP id
- e9e14a558f8ab-3a397d10756mr195585ab.19.1728416915466; 
- Tue, 08 Oct 2024 12:48:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0jYJJ4NwsEeKpgkb2xkATPZsNxfmJsfiYYRgkY3hHjbLtJhQ4G0GY0ciQJwZVZTnFuJwShQ==
-X-Received: by 2002:a05:6e02:20c3:b0:39f:5abe:ec25 with SMTP id
- e9e14a558f8ab-3a397d10756mr195395ab.19.1728416915171; 
- Tue, 08 Oct 2024 12:48:35 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3a37a808befsm20008325ab.42.2024.10.08.12.48.33
+ AJvYcCW2+ifS9dBIk56D8TWL15Hwyh1Zx9/MSHD7TQXHAoMZp69OpbN/EumY4AITwRWX5QVHh+TJ8J9LYNnSNw==@nongnu.org
+X-Gm-Message-State: AOJu0YzbkGLpfecP6C9xkPHxghJD94lijQ5y/+tmOhsKJY0NlGhWMRKK
+ Rdkce26PmE9oPyw5K1YKxAZ0WeUCm38U8+LzhBgvgVt9EFyePB0VDUCHuQ==
+X-Google-Smtp-Source: AGHT+IHtZBpyVevvy8d9P+jCWMtRJW6xZEvCS5ed+TQinGaOWa164L+7m6MuTx1F3hifT14bls+QqA==
+X-Received: by 2002:a17:907:724a:b0:a77:f2c5:84b3 with SMTP id
+ a640c23a62f3a-a998d1a0015mr2088966b.22.1728419588317; 
+ Tue, 08 Oct 2024 13:33:08 -0700 (PDT)
+Received: from archlinux.. (dynamic-077-183-017-071.77.183.pool.telefonica.de.
+ [77.183.17.71]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a996167411csm213503366b.14.2024.10.08.13.33.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 12:48:34 -0700 (PDT)
-Date: Tue, 8 Oct 2024 15:48:31 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 13/13] migration: cpr-transfer mode
-Message-ID: <ZwWMj4FYYpOSnPbe@x1n>
-References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
- <1727725244-105198-14-git-send-email-steven.sistare@oracle.com>
- <ZwQ6GbVCmitlills@x1n>
- <eb41bce1-a776-4bb2-adb8-23fdc7cff1fb@oracle.com>
- <87ed4qtpo1.fsf@suse.de> <ZwV-NRICDNTajTRq@x1n>
- <877caitno5.fsf@suse.de>
+ Tue, 08 Oct 2024 13:33:07 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-stable@nongnu.org
+Subject: [PATCH v2] net/tap-win32: Fix gcc 14 format truncation errors
+Date: Tue,  8 Oct 2024 22:28:42 +0200
+Message-ID: <20241008202842.4478-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <877caitno5.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,35 +89,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 08, 2024 at 04:11:38PM -0300, Fabiano Rosas wrote:
-> As of half an hour ago =) We could put a feature branch up and work
-> together, if you have more concrete thoughts on how this would look like
-> let me know.
+The patch fixes the following errors generated by GCC 14.2:
 
-[I'll hijack this thread with one more email, as this is not cpr-relevant]
+../src/net/tap-win32.c:343:19: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 176 [-Werror=format-truncation=]
+  343 |              "%s\\%s\\Connection",
+      |                   ^~
+  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+      |                                       ~~~~~~~~~
 
-I think I listed all the things I can think of in the wiki, so please go
-ahead.
+../src/net/tap-win32.c:341:9: note: 'snprintf' output between 92 and 347 bytes into a destination of size 256
+  341 |         snprintf(connection_string,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  342 |              sizeof(connection_string),
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  343 |              "%s\\%s\\Connection",
+      |              ~~~~~~~~~~~~~~~~~~~~~
+  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-One trivial suggestion is we can start from the very simple, which is the
-handshake itself, with a self-bootstrap protocol, probably feature-bit
-based or whatever you prefer.  Then we set bit 0 saying "this QEMU knows
-how to handshake".
+../src/net/tap-win32.c:242:58: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 178 [-Werror=format-truncation=]
+  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+      |                                                          ^~
+  243 |                   ADAPTER_KEY, enum_name);
+      |                                ~~~~~~~~~
 
-Comparing to the rest requirement, IMHO we can make the channel
-establishment the 1st feature, then it's already good for merging, having
-feature bit 1 saying "this qemu understands named channel establishment".
+../src/net/tap-win32.c:242:9: note: 'snprintf' output between 79 and 334 bytes into a destination of size 256
+  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  243 |                   ADAPTER_KEY, enum_name);
+      |                   ~~~~~~~~~~~~~~~~~~~~~~~
 
-Then we add new feature bits on top of the handshake feature, by adding
-more feature bits.  Both QEMUs should first handshake on the feature bits
-they support and enable only the subset that all support.
+../src/net/tap-win32.c:620:52: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 245 [-Werror=format-truncation=]
+  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+      |                                                    ^~
+  621 |               USERMODEDEVICEDIR,
+  622 |               device_guid,
+      |               ~~~~~~~~~~~
+../src/net/tap-win32.c:620:5: note: 'snprintf' output between 16 and 271 bytes into a destination of size 256
+  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  621 |               USERMODEDEVICEDIR,
+      |               ~~~~~~~~~~~~~~~~~~
+  622 |               device_guid,
+      |               ~~~~~~~~~~~~
+  623 |               TAPSUFFIX);
+      |               ~~~~~~~~~~
 
-Or instead of bit, feature strings, etc. would all work which you
-prefer. Just to say we don't need to impl all the ideas there, as some of
-them might take more time (e.g. device tree check), and that list is
-probably not complete anyway.
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2607
+Cc: qemu-stable@nongnu.org
 
+--
+
+This patch was just compile-tested (which fixes my issue). Testing TAP
+networking under Windows apparently requires extra drivers which I don't want to
+install (not my computer). So it would be nice if someone could give this patch
+a test ride. Thanks!
+
+Changes since v1:
+* Use g_autofree and g_strdup_printf() rather than fixed size arrays (Peter)
+---
+ net/tap-win32.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/net/tap-win32.c b/net/tap-win32.c
+index 7edbd71633..671dee970f 100644
+--- a/net/tap-win32.c
++++ b/net/tap-win32.c
+@@ -214,7 +214,7 @@ static int is_tap_win32_dev(const char *guid)
+ 
+     for (;;) {
+         char enum_name[256];
+-        char unit_string[256];
++        g_autofree char *unit_string = NULL;
+         HKEY unit_key;
+         char component_id_string[] = "ComponentId";
+         char component_id[256];
+@@ -239,8 +239,7 @@ static int is_tap_win32_dev(const char *guid)
+             return FALSE;
+         }
+ 
+-        snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+-                  ADAPTER_KEY, enum_name);
++        unit_string = g_strdup_printf("%s\\%s", ADAPTER_KEY, enum_name);
+ 
+         status = RegOpenKeyEx(
+             HKEY_LOCAL_MACHINE,
+@@ -315,7 +314,7 @@ static int get_device_guid(
+     while (!stop)
+     {
+         char enum_name[256];
+-        char connection_string[256];
++        g_autofree char *connection_string = NULL;
+         HKEY connection_key;
+         char name_data[256];
+         DWORD name_type;
+@@ -338,9 +337,7 @@ static int get_device_guid(
+             return -1;
+         }
+ 
+-        snprintf(connection_string,
+-             sizeof(connection_string),
+-             "%s\\%s\\Connection",
++        connection_string = g_strdup_printf("%s\\%s\\Connection",
+              NETWORK_CONNECTIONS_KEY, enum_name);
+ 
+         status = RegOpenKeyEx(
+@@ -595,7 +592,7 @@ static void tap_win32_free_buffer(tap_win32_overlapped_t *overlapped,
+ static int tap_win32_open(tap_win32_overlapped_t **phandle,
+                           const char *preferred_name)
+ {
+-    char device_path[256];
++    g_autofree char *device_path = NULL;
+     char device_guid[0x100];
+     int rc;
+     HANDLE handle;
+@@ -617,7 +614,7 @@ static int tap_win32_open(tap_win32_overlapped_t **phandle,
+     if (rc)
+         return -1;
+ 
+-    snprintf (device_path, sizeof(device_path), "%s%s%s",
++    device_path = g_strdup_printf("%s%s%s",
+               USERMODEDEVICEDIR,
+               device_guid,
+               TAPSUFFIX);
 -- 
-Peter Xu
+2.47.0
 
 
