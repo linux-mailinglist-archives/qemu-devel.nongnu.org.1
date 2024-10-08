@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0850E9945E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7549945E0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 12:57:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy7sM-0001OT-UD; Tue, 08 Oct 2024 06:55:34 -0400
+	id 1sy7t1-0001WZ-Hh; Tue, 08 Oct 2024 06:56:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sL-0001NB-6r
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:33 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sT-0001Qa-Os
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sJ-0001fA-G5
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:32 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sy7sM-0001fZ-9o
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 06:55:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728384930;
+ s=mimecast20190719; t=1728384933;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jtLJqklyQa2GF3ENhOHyU716km6/Ea5m6EVGzUWX/BE=;
- b=b7t2J+2dRfof9s+CnNqaS2Iyyp6fQt7s/aQY2WiwiBmRTePYI35KhdnIFEn/IQ26Pkz09d
- xrO3gnkXDGVmor6aO1v4kKXOD86HmpQKd2PcwgrQoAwsdJa5+aNMqapX3v+VEIELgMrit/
- Wn9WPIQmtAc3inpN5VXKoVGIj4kPcWM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7nbvv/EzKjF6TygpGepePY6Bd6hGXC8yUwfGazr6G6c=;
+ b=cvQ+W6haue1y5sTwpeRm5mOgzjayEJLEwEBeVMHPIuphe1kenK2Ha4D3yO3FRf2kHf2Rt+
+ Hg4W6vgEUx4Y1Jp/qQK/watVYNyL4YfYPu4QJLF5wtl8UyzgEzjE53MGv+cbxxfu3V/tHS
+ IQ3fcDIIo8ADmJayOn4JWcJ4hvz/e8E=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-2NI1YwAoOqWNWgK11Rp3Lg-1; Tue,
- 08 Oct 2024 06:55:27 -0400
-X-MC-Unique: 2NI1YwAoOqWNWgK11Rp3Lg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-by4KUbElNHyN5e_QT2IEWw-1; Tue,
+ 08 Oct 2024 06:55:32 -0400
+X-MC-Unique: by4KUbElNHyN5e_QT2IEWw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CD7191955E80; Tue,  8 Oct 2024 10:55:25 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D105A1956064; Tue,  8 Oct 2024 10:55:30 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.16.102])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AAB6F19560A3; Tue,  8 Oct 2024 10:55:20 +0000 (UTC)
+ id 4860F19560A3; Tue,  8 Oct 2024 10:55:26 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -54,9 +54,10 @@ Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  Heiko Carstens <hca@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v2 04/14] s390x: rename s390-virtio-hcall* to s390-hypercall*
-Date: Tue,  8 Oct 2024 12:54:45 +0200
-Message-ID: <20241008105455.2302628-5-david@redhat.com>
+Subject: [PATCH v2 05/14] s390x/s390-virtio-ccw: move setting the maximum
+ guest size from sclp to machine code
+Date: Tue,  8 Oct 2024 12:54:46 +0200
+Message-ID: <20241008105455.2302628-6-david@redhat.com>
 In-Reply-To: <20241008105455.2302628-1-david@redhat.com>
 References: <20241008105455.2302628-1-david@redhat.com>
 MIME-Version: 1.0
@@ -87,101 +88,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's make it clearer that we are talking about general
-QEMU/KVM-specific hypercalls.
+Nowadays, it feels more natural to have that code located in
+s390_memory_init(), where we also have direct access to the machine
+object.
+
+While at it, use the actual RAM size, not the maximum RAM size which
+cannot currently be reached without support for any memory devices.
+Consequently update s390_pv_vm_try_disable_async() to rely on the RAM size
+as well, to avoid temporary issues while we further rework that
+handling.
+
+set_memory_limit() is temporary, we'll merge it with
+s390_set_memory_limit() next.
 
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/s390x/meson.build                               | 2 +-
- hw/s390x/{s390-virtio-hcall.c => s390-hypercall.c} | 2 +-
- hw/s390x/{s390-virtio-hcall.h => s390-hypercall.h} | 6 +++---
- target/s390x/kvm/kvm.c                             | 2 +-
- target/s390x/tcg/misc_helper.c                     | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
- rename hw/s390x/{s390-virtio-hcall.c => s390-hypercall.c} (97%)
- rename hw/s390x/{s390-virtio-hcall.h => s390-hypercall.h} (86%)
+ hw/s390x/s390-virtio-ccw.c | 28 ++++++++++++++++++++++++----
+ hw/s390x/sclp.c            | 11 -----------
+ target/s390x/kvm/pv.c      |  2 +-
+ 3 files changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 482fd13420..71ec747f4c 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -12,7 +12,7 @@ s390x_ss.add(files(
-   's390-pci-inst.c',
-   's390-skeys.c',
-   's390-stattrib.c',
--  's390-virtio-hcall.c',
-+  's390-hypercall.c',
-   'sclp.c',
-   'sclpcpu.c',
-   'sclpquiesce.c',
-diff --git a/hw/s390x/s390-virtio-hcall.c b/hw/s390x/s390-hypercall.c
-similarity index 97%
-rename from hw/s390x/s390-virtio-hcall.c
-rename to hw/s390x/s390-hypercall.c
-index 5fb78a719e..f816c2b1ef 100644
---- a/hw/s390x/s390-virtio-hcall.c
-+++ b/hw/s390x/s390-hypercall.c
-@@ -12,7 +12,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "hw/boards.h"
--#include "hw/s390x/s390-virtio-hcall.h"
-+#include "hw/s390x/s390-hypercall.h"
- #include "hw/s390x/ioinst.h"
- #include "hw/s390x/css.h"
- #include "virtio-ccw.h"
-diff --git a/hw/s390x/s390-virtio-hcall.h b/hw/s390x/s390-hypercall.h
-similarity index 86%
-rename from hw/s390x/s390-virtio-hcall.h
-rename to hw/s390x/s390-hypercall.h
-index dca456b926..2fa81dbfdd 100644
---- a/hw/s390x/s390-virtio-hcall.h
-+++ b/hw/s390x/s390-hypercall.h
-@@ -9,8 +9,8 @@
-  * directory.
-  */
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 77f5d22203..f4c4433b23 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -121,11 +121,29 @@ static void subsystem_reset(void)
+     }
+ }
  
--#ifndef HW_S390_VIRTIO_HCALL_H
--#define HW_S390_VIRTIO_HCALL_H
-+#ifndef HW_S390_HYPERCALL_H
-+#define HW_S390_HYPERCALL_H
+-static void s390_memory_init(MemoryRegion *ram)
++static void set_memory_limit(uint64_t new_limit)
++{
++    uint64_t hw_limit;
++    int ret;
++
++    ret = s390_set_memory_limit(new_limit, &hw_limit);
++    if (ret == -E2BIG) {
++        error_report("host supports a maximum of %" PRIu64 " GB",
++                     hw_limit / GiB);
++        exit(EXIT_FAILURE);
++    } else if (ret) {
++        error_report("setting the guest size failed");
++        exit(EXIT_FAILURE);
++    }
++}
++
++static void s390_memory_init(MachineState *machine)
+ {
+     MemoryRegion *sysmem = get_system_memory();
++    MemoryRegion *ram = machine->ram;
++    uint64_t ram_size = memory_region_size(ram);
  
- #include "cpu.h"
+-    if (!QEMU_IS_ALIGNED(memory_region_size(ram), 1 * MiB)) {
++    if (!QEMU_IS_ALIGNED(ram_size, 1 * MiB)) {
+         /*
+          * SCLP cannot possibly expose smaller granularity right now and KVM
+          * cannot handle smaller granularity. As we don't support NUMA, the
+@@ -136,7 +154,9 @@ static void s390_memory_init(MemoryRegion *ram)
+         exit(EXIT_FAILURE);
+     }
  
-@@ -21,4 +21,4 @@
+-    /* allocate RAM for core */
++    set_memory_limit(ram_size);
++
++    /* Map the initial memory. Must happen after setting the memory limit. */
+     memory_region_add_subregion(sysmem, 0, ram);
  
- void handle_diag_500(S390CPU *cpu, uintptr_t ra);
+     /*
+@@ -217,7 +237,7 @@ static void ccw_init(MachineState *machine)
+     qdev_realize_and_unref(DEVICE(ms->sclp), NULL, &error_fatal);
  
--#endif /* HW_S390_VIRTIO_HCALL_H */
-+#endif /* HW_S390_HYPERCALL_H */
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index a8cbc0e2eb..734d2b9b78 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -49,7 +49,7 @@
- #include "hw/s390x/ebcdic.h"
- #include "exec/memattrs.h"
- #include "hw/s390x/s390-virtio-ccw.h"
--#include "hw/s390x/s390-virtio-hcall.h"
-+#include "hw/s390x/s390-hypercall.h"
- #include "target/s390x/kvm/pv.h"
+     /* init memory + setup max page size. Required for the CPU model */
+-    s390_memory_init(machine->ram);
++    s390_memory_init(machine);
  
- #define kvm_vm_check_mem_attr(s, attr) \
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index 0ab2bf36cf..3732d79185 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -36,7 +36,7 @@
- #include "sysemu/cpus.h"
- #include "sysemu/sysemu.h"
- #include "hw/s390x/ebcdic.h"
--#include "hw/s390x/s390-virtio-hcall.h"
-+#include "hw/s390x/s390-hypercall.h"
- #include "hw/s390x/sclp.h"
- #include "hw/s390x/s390_flic.h"
- #include "hw/s390x/ioinst.h"
+     /* init CPUs (incl. CPU model) early so s390_has_feature() works */
+     s390_init_cpus(machine);
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index e725dcd5fd..fac09816bf 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -381,10 +381,7 @@ void sclp_service_interrupt(uint32_t sccb)
+ /* qemu object creation and initialization functions */
+ static void sclp_realize(DeviceState *dev, Error **errp)
+ {
+-    MachineState *machine = MACHINE(qdev_get_machine());
+     SCLPDevice *sclp = SCLP(dev);
+-    uint64_t hw_limit;
+-    int ret;
+ 
+     /*
+      * qdev_device_add searches the sysbus for TYPE_SCLP_EVENTS_BUS. As long
+@@ -394,14 +391,6 @@ static void sclp_realize(DeviceState *dev, Error **errp)
+     if (!sysbus_realize(SYS_BUS_DEVICE(sclp->event_facility), errp)) {
+         return;
+     }
+-
+-    ret = s390_set_memory_limit(machine->maxram_size, &hw_limit);
+-    if (ret == -E2BIG) {
+-        error_setg(errp, "host supports a maximum of %" PRIu64 " GB",
+-                   hw_limit / GiB);
+-    } else if (ret) {
+-        error_setg(errp, "setting the guest size failed");
+-    }
+ }
+ 
+ static void sclp_memory_init(SCLPDevice *sclp)
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index dde836d21a..424cce75ca 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -133,7 +133,7 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
+      * If the feature is not present or if the VM is not larger than 2 GiB,
+      * KVM_PV_ASYNC_CLEANUP_PREPARE fill fail; no point in attempting it.
+      */
+-    if ((MACHINE(ms)->maxram_size <= 2 * GiB) ||
++    if ((MACHINE(ms)->ram_size <= 2 * GiB) ||
+         !kvm_check_extension(kvm_state, KVM_CAP_S390_PROTECTED_ASYNC_DISABLE)) {
+         return false;
+     }
 -- 
 2.46.1
 
