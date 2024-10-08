@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038D7993C22
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CD2993C2B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:22:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyt1-0008Cd-Jd; Mon, 07 Oct 2024 21:19:39 -0400
+	id 1sxyt4-0008PT-25; Mon, 07 Oct 2024 21:19:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3gYgEZwUKCuIXEZMTKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--tavip.bounces.google.com>)
- id 1sxysQ-0007br-5l
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:03 -0400
+ <3g4gEZwUKCuQZGbOVMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--tavip.bounces.google.com>)
+ id 1sxysT-0007ho-MG
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:06 -0400
 Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3gYgEZwUKCuIXEZMTKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--tavip.bounces.google.com>)
- id 1sxysO-00006w-FD
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:01 -0400
+ <3g4gEZwUKCuQZGbOVMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--tavip.bounces.google.com>)
+ id 1sxysR-00007M-8F
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:05 -0400
 Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-6e30cf0cf1bso16065357b3.0
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:18:58 -0700 (PDT)
+ 00721157ae682-690404fd230so29853237b3.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1728350338; x=1728955138; darn=nongnu.org;
+ d=google.com; s=20230601; t=1728350340; x=1728955140; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=wyZg7kxpkNCds2EZflCHxHMwXfcdXxrO/ZcaHcLL39s=;
- b=sUmZs6x50LQ/pe4Gez4ZK7t8kjzZvn/cx2qAoJC/7Y4F68dzQ2xvg5k45/wjdGXgo3
- hFQf/wA/gJMDCEmbwjZvVkLT1pCF9CcYNQz50G99FM2uXCZx57Db8ZQLDjWvdLu9qFQT
- ovBzXs1neqv3tzxBZce9oLOY7tmfUHv2RgCc3RbJlZH4rsWqQLF/aT7ccrIFGNrnYufX
- jIMQ9zzLKMsc57TWkNSR/qvyorhy+F9gQ3Jj93KlQJzgiVw2qwdwNDlQzNIpd1ps0MaM
- ZfsQsRSiBCoTu1ogZkiFizMVw9hIB36Ew55tHEq013wHhq03py+2Mj/uno8nxwVXKBIa
- ueKQ==
+ bh=mOjYfJjVDbekrSS0dJ0e0WrdZI53XB9lrt52zwVXgdE=;
+ b=sGyscZBvjMn8mHYUvroZ7MhL/wGAbDcDA8xQP0KsuzCzGssc8MWlpeZuqCyR68uh4r
+ R3S0cJ8GYlzqbXdMFuNTtvOhUIwfFEZrYxV2yiNhHTG62qBdDCwspzAczEpotJPYjh7/
+ 0N7Bmss8EDN4AO9sdWPgVWFd52g+LQsZkMIGhoWvjYnddexxcfMit2A/jzdzrQ1+XW5M
+ W86TRatIO5v3B97PpGLn8Ah85vb53O8+//MCYIGr7iRSvLQsIx8HWG7QGFusvS6b9C5j
+ 8o1fxuiGAyvcHreJuhBpk3ePcPAwxpDbmNm5sWMWzzZUfTCUU3YmclQp5L5PzIiJmYms
+ X2VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728350338; x=1728955138;
+ d=1e100.net; s=20230601; t=1728350340; x=1728955140;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wyZg7kxpkNCds2EZflCHxHMwXfcdXxrO/ZcaHcLL39s=;
- b=oiE3LkJ3p75jGNwaF01xmFwjh718Hq5GsvpSZnLxLlwlLE0xCEt/7nbKSJSAA1IiiV
- EArxJDTWfmJKQ76KHEXLGw4awBb62z0T+94EYgwyQKhOR8IIEVMUIlkKjmcYSKeH4U9M
- gc9M30CMyq+HrPVAATxUw/hp8cIZ7Alqo51EjjW++W6jKy7BKzUKAUCwylfZlspmGEBZ
- JbI6XtKkXZJgi2CGR+BcvuimcswVN40kHl8pRtwMxU5PD3fHFVaoEs7P6OfSVigj/EP9
- nYUgCB7W/1TG1cCJSKO0qD2ILJFN6TkE0IpCoCuoquNRaYkUVjKCPWeYPXzCBVk/m4EG
- gOTw==
-X-Gm-Message-State: AOJu0YymgggF4pwxu9UxSNvjHATwKkv4aLitwurhwsJ3lQluZN1sZrDd
- 8RjrgHoiWQ/LUmNnwiAWr70n4jx/VODidx0RG+iprZCM+GQnsn3Skfbx9rjfleLKVlk9RBZ/jbI
- vlMzmxV+xkRBItm+BxTJ4ITe/bb4X8liu5qsGB+cDgcsku26pGwK3Qav+55vnLT8ZgEQs1xwbNI
- T3tBHS28fJpxNz9cX8PL7cjwuIKw==
-X-Google-Smtp-Source: AGHT+IE3/W9CgSMU393ZW56+VU+vEEAMQd6ttBYHzgtNP0gr2mWHRr9OJi2xXWSJjWwG7FxSWygOJf1nyg==
+ bh=mOjYfJjVDbekrSS0dJ0e0WrdZI53XB9lrt52zwVXgdE=;
+ b=TWF8zr2/Xq2SrYMYOPoXYoXiqqKWfKrX14BZaKvqu0i3IE3GE7cLHY6iBnzSuNkK1O
+ EIIPRlNw1gYrFB5iuLPsKnWzrdPNCUKW3abB0YH8ijRpO+jRmLRjtVUTMK9z7v87ekCv
+ oW1GIvP1+Au6GtbzwiBMt3HlGtZ7xMBEJU2iLuN7MOviNsUtkjTJg2H0EMmw/rk5w7bp
+ sP0yxO7mwnY70BYlDFQVU5HXX1husETpnRq5mXlWcqCHzP6qERfgUekwVrk0hnjX2nrM
+ cP+N9AV46amOP5CBeI1DBfgIYJ70Ey8Ry3im3xjuwT1aKJe3eXRIAvZKkQ16f/xEPt7p
+ 0/sQ==
+X-Gm-Message-State: AOJu0YwitT7ibLwZyJB6kgVDfrg99W3SWSb110ChW2gw4MtGP3MEQvIG
+ Usoil5FpyFmG7A2fYqLWn+wIIF6vvpVuxcZ9yc+Kld8NfjnMNdW6tauqmRZg4etCfiCN7ymEYbF
+ av6uvTSTYFE9yUIdeIXUAlX9yexFvtGo/5M66pciynHeUPLdSEUdhg0WcLhp5talBun5VlQ1Eb4
+ SjLRzmns/cTwA2l7QZSE+QRWGIYA==
+X-Google-Smtp-Source: AGHT+IFXNoRKMbcr5g2Ch81E0fEb4jgg81eW3pnVWasxIKvPPjCZ2FzJEeKEMLdRIVBw6AvbjS4oRQIz9g==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a81:b513:0:b0:6e3:eab:18b1 with
+ (user=tavip job=sendgmr) by 2002:a25:68ca:0:b0:e28:8f2c:73e6 with
  SMTP id
- 00721157ae682-6e30eab1934mr52557b3.1.1728350337999; Mon, 07 Oct 2024 18:18:57
+ 3f1490d57ef6-e289391ea39mr8605276.7.1728350339603; Mon, 07 Oct 2024 18:18:59
  -0700 (PDT)
-Date: Mon,  7 Oct 2024 18:18:28 -0700
+Date: Mon,  7 Oct 2024 18:18:29 -0700
 In-Reply-To: <20241008011852.1439154-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20241008011852.1439154-1-tavip@google.com>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241008011852.1439154-3-tavip@google.com>
-Subject: [PATCH v2 02/25] tests/unit: add fifo32 tests
+Message-ID: <20241008011852.1439154-4-tavip@google.com>
+Subject: [PATCH v2 03/25] scripts: add script to generate C header files from
+ SVD XML files
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -71,7 +72,7 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3gYgEZwUKCuIXEZMTKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--tavip.bounces.google.com;
+ envelope-from=3g4gEZwUKCuQZGbOVMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--tavip.bounces.google.com;
  helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -79,7 +80,7 @@ X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.024,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,87 +96,525 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add push/pop and peek tests for fifo32.
+From: Stefan Stanacar <stefanst@google.com>
 
+The CMSIS System View Description format(CMSIS-SVD) is an XML based
+description of Arm Cortex-M microcontrollers provided and maintained
+by sillicon vendors. It includes details such as peripherals registers
+(down to bitfields), peripheral register block addresses, reset
+values, etc.
+
+This script uses this information to create header files that makes it
+easier to emulate peripherals.
+
+The script can be used to create either peripheral specific headers or
+board / system specific information.
+
+Peripheral specific headers contains information such as register
+layout (using the qemu register fields infrastructure), register
+names, register write masks and register reset values, the latter
+using RegisterAccessInfo.
+
+Here is an excerpt from a generated header:
+
+  #pragma once
+
+  #include "hw/registerfields.h"
+
+  /* Flexcomm */
+  #define FLEXCOMM_REGS_NO (1024)
+
+  /* Peripheral Select and Flexcomm module ID */
+  REG32(FLEXCOMM_PSELID, 4088);
+  /* Peripheral Select */
+  FIELD(FLEXCOMM_PSELID, PERSEL, 0, 3);
+  /* No peripheral selected. */
+  #define FLEXCOMM_PSELID_PERSEL_NO_PERIPH_SELECTED 0
+  /* USART function selected */
+  #define FLEXCOMM_PSELID_PERSEL_USART 1
+  /* SPI function selected */
+  #define FLEXCOMM_PSELID_PERSEL_SPI 2
+  /* I2C */
+  #define FLEXCOMM_PSELID_PERSEL_I2C 3
+  /* I2S Transmit */
+  #define FLEXCOMM_PSELID_PERSEL_I2S_TRANSMIT 4
+  /* I2S Receive */
+  #define FLEXCOMM_PSELID_PERSEL_I2S_RECEIVE 5
+  ...
+
+  #define FLEXCOMM_REGISTER_ACCESS_INFO_ARRAY(_name) \
+    struct RegisterAccessInfo _name[FLEXCOMM_REGS_NO] = { \
+      [0 ... FLEXCOMM_REGS_NO -1] = { \
+        .name = "", \
+        .addr = -1, \
+      }, \
+      [0x3FE] = { \
+        .name = "PSELID", \
+        .addr = 0xFF8, \
+        .ro = 0xFFFFFFF0, \
+        .reset = 0x101000, \
+      }, \
+      [0x3FF] = { \
+        .name = "PID", \
+        .addr = 0xFFC, \
+        .ro = 0xFFFFFFFF, \
+        .reset = 0x0, \
+      }, \
+    }
+
+The script has options to control which registers and fields should be
+generated.
+
+Board specific headers contains information about peripheral base
+register addresses.
+
+Signed-off-by: Stefan Stanacar <stefanst@google.com>
+[tavip: pylint fixes, generate layout with qemu register fields
+instead of bitfields, generate register names, romask and reset values,
+add options to control which register and fields are generated]
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- tests/unit/test-fifo.c | 50 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ meson.build               |   4 +
+ scripts/svd-gen-header.py | 415 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 419 insertions(+)
+ create mode 100755 scripts/svd-gen-header.py
 
-diff --git a/tests/unit/test-fifo.c b/tests/unit/test-fifo.c
-index 14153c41fa..d0e05ba95c 100644
---- a/tests/unit/test-fifo.c
-+++ b/tests/unit/test-fifo.c
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "migration/vmstate.h"
- #include "qemu/fifo8.h"
-+#include "qemu/fifo32.h"
+diff --git a/meson.build b/meson.build
+index 33954b3eba..5127e67d93 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3330,6 +3330,10 @@ tracetool_depends = files(
+   'scripts/tracetool/__init__.py',
+ )
  
- const VMStateInfo vmstate_info_uint32;
- const VMStateInfo vmstate_info_buffer;
-@@ -432,6 +433,53 @@ static void test_fifo8_pushpop(void)
-     fifo8_destroy(&fifo);
- }
- 
-+static void test_fifo32_pushpop(void)
-+{
-+    Fifo32 fifo;
-+    uint32_t e;
++svd_gen_header = [
++  python, files('scripts/svd-gen-header.py')
++]
 +
-+    fifo32_create(&fifo, 2);
-+    fifo32_push(&fifo, 0x11121314);
-+    fifo32_push(&fifo, 0x21222324);
-+    g_assert(fifo32_num_used(&fifo) == 2);
+ qemu_version_cmd = [find_program('scripts/qemu-version.sh'),
+                     meson.current_source_dir(),
+                     get_option('pkgversion'), meson.project_version()]
+diff --git a/scripts/svd-gen-header.py b/scripts/svd-gen-header.py
+new file mode 100755
+index 0000000000..7befa75421
+--- /dev/null
++++ b/scripts/svd-gen-header.py
+@@ -0,0 +1,415 @@
++#!/usr/bin/env python3
 +
-+    e = fifo32_pop(&fifo);
-+    g_assert(e == 0x11121314);
-+    g_assert(fifo32_num_used(&fifo) == 1);
++# Copyright 2024 Google LLC
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
++#
++# Use this script to generate a C header file from an SVD xml
++#
++# Two mode of operations are supported: peripheral and system.
++#
++# When running in peripheral mode a header for a specific peripheral
++# is going to be generated. It will define a type and structure with
++# all of the available registers at the bitfield level. An array that
++# contains the reigster names indexed by address is also going to be
++# generated as well as a function to initialize registers to their
++# reset values.
++#
++# Invocation example:
++#
++# svd_gen_header -i MIMXRT595S_cm33.xml -o flexcomm.h -p FLEXCOMM0 -t FLEXCOMM
++#
++# When running in system mode a header for a specific system /
++# platform will be generated. It will define register base addresses
++# and interrupt numbers for selected peripherals.
++#
++# Invocation example:
++#
++# svd_gen_header -i MIMXRT595S_cm33.xml -o rt500.h -s RT500 -p FLEXCOMM0 \
++#                -p CLKCTL0 -p CLKCTL1
++#
 +
-+    e = fifo32_peek(&fifo);
-+    g_assert(e == 0x21222324);
++import argparse
++import fnmatch
++import re
++import os
++import sys
++import xml.etree.ElementTree
++import pysvd
 +
-+    g_assert(fifo32_num_used(&fifo) == 1);
-+    fifo32_destroy(&fifo);
++data_type_by_bits = {
++    8: "uint8_t",
++    16: "uint16_t",
++    32: "uint32_t",
 +}
 +
-+static void test_fifo32_peek(void)
-+{
-+    Fifo32 fifo;
-+    uint32_t e;
 +
-+    fifo32_create(&fifo, 2);
-+    fifo32_push(&fifo, 0x11121314);
-+    fifo32_push(&fifo, 0x21222324);
-+    g_assert(fifo32_num_used(&fifo) == 2);
++def get_register_array_name_and_size(reg):
++    """Return register name and register array size.
 +
-+    e = fifo32_peek(&fifo);
-+    g_assert(e == 0x11121314);
-+    g_assert(fifo32_num_used(&fifo) == 2);
++    The SVD can define register arrays and pysvd encodes the whole set
++    as as regular register with their name prepended by [<array size>].
 +
-+    e = fifo32_pop(&fifo);
-+    g_assert(e == 0x11121314);
-+    g_assert(fifo32_num_used(&fifo) == 1);
++    Returns a tuple with the register name and the size of the array or
++    zero if this is not a register set.
 +
-+    e = fifo32_peek(&fifo);
-+    g_assert(e == 0x21222324);
-+    g_assert(fifo32_num_used(&fifo) == 1);
++    """
 +
-+    fifo32_destroy(&fifo);
-+}
++    split = re.split(r"[\[\]]", reg.name)
++    return (split[0], int(split[1]) if len(split) > 1 else 0)
 +
 +
- int main(int argc, char *argv[])
- {
-     g_test_init(&argc, &argv, NULL);
-@@ -445,5 +493,7 @@ int main(int argc, char *argv[])
-     g_test_add_func("/fifo8/peek_bufptr_wrap", test_fifo8_peek_bufptr_wrap);
-     g_test_add_func("/fifo8/pop_bufptr", test_fifo8_pop_bufptr);
-     g_test_add_func("/fifo8/pop_bufptr_wrap", test_fifo8_pop_bufptr_wrap);
-+    g_test_add_func("/fifo32/pushpop", test_fifo32_pushpop);
-+    g_test_add_func("/fifo32/peek", test_fifo32_peek);
-     return g_test_run();
- }
++def generate_comment(indent, text):
++    """Generate a comment block with for the given text with the given
++    indentation level.
++
++    If possible, use a single line /* */ comment block, otherwise use
++    a multiline comment block.
++
++    Newlines are preseved but tabs are not.
++
++    """
++
++    # preserve new lines
++    text = text.replace("\n", " \n ")
++    text = text.replace("  ", " ")
++
++    if len(text) + len("/*  */") + len(" " * indent) <= 80 and "\n" not in text:
++        return f"{' '* indent}/* {text} */\n"
++
++    out = " " * indent + "/*\n"
++    line = " " * indent + " *"
++    for word in re.split(r"[ ]", text):
++        if len(line) + len(word) >= 79 or word == "\n":
++            out += line + "\n"
++            line = " " * indent + " *"
++            if word != "\n":
++                line += " " + word
++        else:
++            line += " " + word
++
++    out += line + "\n"
++
++    out += " " * indent + " */\n"
++    return out
++
++
++def get_fields(reg, dictionary):
++    """Return a list of fields from a register indexed dictionary.
++
++    The dictionary keys may contain wildcards.
++
++    """
++
++    for key in dictionary.keys():
++        if fnmatch.fnmatch(reg, key):
++            return dictionary[key]
++    return None
++
++
++def generate_reg(reg, dictionary):
++    """Check if the register should be generated"""
++
++    if get_fields(reg, dictionary):
++        return True
++    return False
++
++
++def skip_reg(reg, dictionary):
++    """Check if the register should be skipped"""
++
++    for key in dictionary.keys():
++        if fnmatch.fnmatch(reg, key) and dictionary[key] is None:
++            return True
++    return False
++
++
++def match_field(reg, field, dictionary):
++    """Match a register and field in a dictionary indexed by registers
++    that contains a list of fields.
++
++    Both the dictionary keys and the list of fields may contain wildcards.
++
++    """
++    fields = get_fields(reg, dictionary)
++    if not fields:
++        return False
++    for f in fields:
++        if fnmatch.fnmatch(field, f):
++            return True
++    return False
++
++
++def generate_field(name, reg_name, field, shared):
++    """Generate register field."""
++
++    out = generate_comment(0, field.description)
++    if shared:
++        out += "SHARED_"
++    out += f"FIELD({name}_{reg_name}, {field.name}, "
++    out += f"{field.bitOffset}, {field.bitWidth});\n"
++    if hasattr(field, "enumeratedValues") and field.bitWidth > 1:
++        for enum in field.enumeratedValues.enumeratedValues:
++            enum_name = f"{name}_{reg_name}_{field.name}_{enum.name}"
++            out += generate_comment(0, enum.description)
++            out += f"#define {enum_name} {enum.value}\n"
++    return out
++
++
++def generate_registers(name, periph, generate, skip):
++    """Generate register offsets and fields
++
++    Use registerfield macros to define register offsets and fields for
++    a given peripheral.
++
++    """
++
++    regs = sorted(periph.registers, key=lambda reg: reg.addressOffset)
++    out = generate_comment(0, periph.description)
++    out += f"#define {name}_REGS_NO ({regs[-1].addressOffset // 4 + 1})\n\n"
++    for reg in regs:
++        reg_name, reg_array_size = get_register_array_name_and_size(reg)
++        if not generate_reg(reg_name, generate):
++            continue
++        if skip_reg(reg_name, skip):
++            continue
++        out += generate_comment(0, reg.description)
++        if reg_array_size > 1:
++            for idx in range(0, reg_array_size):
++                addr = reg.addressOffset + idx * reg.size // 8
++                out += f"REG32({name}_{reg_name}{idx}, 0x{addr:X});\n"
++        else:
++            addr = reg.addressOffset
++            out += f"REG32({name}_{reg_name}, 0x{addr:X});\n"
++        for field in reg.fields:
++            if not match_field(reg_name, field.name, generate):
++                continue
++            if match_field(reg_name, field.name, skip):
++                continue
++            out += generate_field(
++                name, reg_name, field, True if reg_array_size > 1 else False
++            )
++        out += "\n"
++
++    return out
++
++
++def create_wmask(reg):
++    """Generate write mask for a register.
++
++    Generate a mask with all bits that are writable set to 1
++    """
++
++    wmask = 0
++    fields = sorted(reg.fields, key=lambda field: field.bitOffset)
++    if len(fields) > 0:
++        for field in fields:
++            if field.access != pysvd.type.access.read_only:
++                wmask |= ((1 << field.bitWidth) - 1) << field.bitOffset
++    else:
++        if reg.access != pysvd.type.access.read_only:
++            wmask = 0xFFFFFFFF
++    return wmask
++
++
++def create_romask(reg):
++    """Generate write mask for a register.
++
++    Generate a mask with all bits that are readonly set to 1
++    """
++
++    return ~create_wmask(reg) & 0xFFFFFFFF
++
++
++def generate_register_access_info(name, periph):
++    """Generate RegisterAccessInfo array macro"""
++
++    out = f"\n#define {name}_REGISTER_ACCESS_INFO_ARRAY(_name) \\\n"
++    out += f"    struct RegisterAccessInfo _name[{name}_REGS_NO] = {{ \\\n"
++    out += f"        [0 ... {name}_REGS_NO - 1] = {{ \\\n"
++    out += '            .name = "", \\\n'
++    out += "            .addr = -1, \\\n"
++    out += "        }, \\\n"
++    for reg in periph.registers:
++        reg_name, reg_array_size = get_register_array_name_and_size(reg)
++        if reg_array_size > 1:
++            for idx in range(0, reg_array_size):
++                addr = reg.addressOffset + idx * reg.size // 8
++                out += f"        [0x{addr // 4:X}] = {{ \\\n"
++                out += f'            .name = "{reg_name}{idx}", \\\n'
++                out += f"            .addr = 0x{addr:X}, \\\n"
++                out += f"            .ro = 0x{create_romask(reg):X}, \\\n"
++                out += f"            .reset = 0x{reg.resetValue:X}, \\\n"
++                out += "        }, \\\n"
++        else:
++            out += f"        [0x{reg.addressOffset // 4:X}] = {{ \\\n"
++            out += f'            .name = "{reg_name}", \\\n'
++            out += f"            .addr = 0x{reg.addressOffset:X}, \\\n"
++            out += f"            .ro = 0x{create_romask(reg):X}, \\\n"
++            out += f"            .reset = 0x{reg.resetValue:X}, \\\n"
++            out += "        }, \\\n"
++    out += "    }\n"
++
++    return out
++
++
++def generate_peripheral_header(periph, name, args):
++    """Generate peripheral header
++
++    The following information is generated:
++
++    * typedef with all of the available registers and register fields,
++    position and mask defines for register fields.
++
++    * enum values that encode register fields options.
++
++    * a macro that defines the register names indexed by the relative
++    address of the register.
++
++    * a function that sets the registers to their reset values
++
++    """
++
++    generate = {}
++    for reg in args.fields.split():
++        if reg.find(":") > 0:
++            reg, fields = reg.split(":")
++            generate[reg] = fields.split(",")
++        else:
++            generate[reg] = ["*"]
++
++    skip = {}
++    for reg in args.no_fields.split():
++        if reg.find(":") > 0:
++            reg, fields = reg.split(":")
++            skip[reg] = fields.split(",")
++        else:
++            skip[reg] = None
++
++    out = generate_registers(name, periph, generate, skip)
++
++    out += generate_register_access_info(name, periph)
++
++    return out
++
++
++def get_same_class_peripherals(svd, periph):
++    """Get a list of peripherals that are instances of the same class."""
++
++    return [periph] + [
++        p
++        for p in svd.peripherals
++        if p.derivedFrom and p.derivedFrom.name == periph.name
++    ]
++
++
++def generate_system_header(system, svd, periph):
++    """Generate base and irq defines for given list of peripherals"""
++
++    out = ""
++
++    for p in get_same_class_peripherals(svd, periph):
++        out += f"#define {system}_{p.name}_BASE 0x{p.baseAddress:X}UL\n"
++    out += "\n"
++
++    for p in get_same_class_peripherals(svd, periph):
++        for irq in p.interrupts:
++            out += f"#define {system}_{irq.name}_IRQn 0x{irq.value}UL\n"
++    out += "\n"
++
++    return out
++
++
++def main():
++    """Script to generate C header file from an SVD file"""
++
++    parser = argparse.ArgumentParser()
++    parser.add_argument(
++        "-i", "--input", type=str, help="Input SVD file", required=True
++    )
++    parser.add_argument(
++        "-o", "--output", type=str, help="Output .h file", required=True
++    )
++    parser.add_argument(
++        "-p",
++        "--peripheral",
++        action="append",
++        help="peripheral name from the SVD file",
++        required=True,
++    )
++    parser.add_argument(
++        "-t",
++        "--type-name",
++        type=str,
++        help="name to be used for peripheral definitions",
++        required=False,
++    )
++    parser.add_argument(
++        "-s",
++        "--system",
++        type=str,
++        help="name to be used for the system definitions",
++        required=False,
++    )
++    parser.add_argument(
++        "--fields",
++        help="list of registers and fields that should be generated "
++        "in the following format 'REG[:FIELDS] ...' "
++        "where FIELDS is a list of comma separated fields that can be "
++        "empty; both regsiters and fields can be matched with wildcards; "
++        "'REG' is an alias for 'REG:*';",
++        required=False,
++        default="*:*",
++    )
++    parser.add_argument(
++        "--no-fields",
++        type=str,
++        help="list of register and fields that should not be generated "
++        "in the following format 'REG[:FIELDS] ...' "
++        "where FIELDS is a list of comma separated fields that can be "
++        "empty; both regsiters and fields can be matched with wildcards; "
++        "note that 'REG' will not generate neither the register nor its "
++        "fields while REG: will generate the register but none of its fields",
++        required=False,
++        default=":",
++    )
++
++    args = parser.parse_args()
++
++    node = xml.etree.ElementTree.parse(args.input).getroot()
++    svd = pysvd.element.Device(node)
++
++    # Write license header
++    header = svd.licenseText.strip()
++    header += f"\n\nAutomatically generated by {os.path.basename(__file__)} "
++    header += f"from {os.path.basename(args.input)}"
++    out = generate_comment(0, header)
++
++    # Write some generic defines
++    out += "#pragma once\n\n"
++
++    for name in args.peripheral:
++        periph = svd.find(name)
++        if periph:
++            if args.system:
++                out += generate_system_header(args.system, svd, periph)
++            else:
++                out += '#include "hw/register.h"\n\n'
++                out += generate_peripheral_header(
++                    periph,
++                    args.type_name if args.type_name else periph.name,
++                    args,
++                )
++        else:
++            print(f"No such peripheral: {name}")
++            return 1
++
++    with open(args.output, "w", encoding="ascii") as output:
++        output.write(out)
++
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
