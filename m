@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A21995734
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 20:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 760F799572B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 20:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syFJT-0007Qh-03; Tue, 08 Oct 2024 14:52:03 -0400
+	id 1syFJU-0007T7-Uo; Tue, 08 Oct 2024 14:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syFJM-0007QM-5G
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:51:56 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1syFJP-0007Qq-Qr
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:52:00 -0400
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syFJJ-0002Ry-Tq
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:51:55 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7ea03ecf191so2312313a12.0
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 11:51:44 -0700 (PDT)
+ id 1syFJL-0002S3-Ak
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 14:51:57 -0400
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-3a377534e00so16743075ab.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 11:51:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728413503; x=1729018303; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0r34YH/mokkCrpkMkmNPCTEaSZRmckSr1gIGHxh8kqw=;
- b=ZLRGR9sJeb5/oa5ouR/btkQMQLFQzPe8D7evMBr0i629Zdv4zBs0RlAsCX21g3w4P3
- 1kzxoUypgCOSN9nYzeIs4HppQR899FfxIg2+qKDFCg7zcG6OI4yaSOLmEdUAm1EkM6US
- F9+UEsUC2X7jeahotHC7XRqZ+gD/+DxQWTGzcWNifCSIVE72shy7sSch5KFeG9uXOx3a
- 5Qdv2DbOxpAAhC6HB0godxRww8vIwtZUr3poq18KtRGDu2JEqk04wMRm8Ng8eRI8RpEp
- iKwE/xENLsf+jnSqq/MMXvScq1rdUiojWGiVybqkW2VzaV4ho6vJoW8XeMsaV3UDb5rv
- wc5A==
+ d=linaro.org; s=google; t=1728413504; x=1729018304; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K+Rj8O/QK6Pa3filkPJ4FZfJms9lNPKqXWSFkDZyfyA=;
+ b=SCFevais/ptMBAgP0n7GyvOII57QeabaSMjUDe2/PvDwe8YphxjsokK0o5XXlMccN6
+ yrVQs4eZpPxqqHdBbwdgSJqse5yRNUCyKGSsbjswaBYzFy2oPZN85w+IwzMwoqGVTUv4
+ O1bMLybWOo6j3z9aYqkQTgFk0FJ7oIDIE30Q1z3FEngdKBJ5dVJ0Ach/ubD0mELmRySN
+ StfRwNz3rz0yqwIMUErX68RtDga1Qp8G/JTzAopTRziAj+jtXZgeWGH8chu18jxcg7j4
+ Am9bvFimR6SmvJiz0l8Tllz7NfAtRxSODANcggzLueYltSIPT/U8QreC2KjHDTNvYfIB
+ 9ayA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728413503; x=1729018303;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0r34YH/mokkCrpkMkmNPCTEaSZRmckSr1gIGHxh8kqw=;
- b=XbnxaESvkeVWjHNI/Mrnz+fp/xvr+sY2gdVhYT3zBMw2Dz4xh9KsJZ79/Bz/2HJf8+
- rRjNhf0KJwYPWAKZ50UsBL3USGcUSxi34QYKoWmJ6LNS6VmxHqmjNdTMqB0O+H2DLqVb
- jZ7GNmrE1V94Oo1FpYSOOLpX5kYZPKlUhxGcw/7jxFi7T1ITKGr1GtcwjA82PKdQGEwY
- b5mxyruMmu7Psj6llMPUJPRgUu2BrcfmKMirmPNLTcusugiJHSZOjciaPczoXi7jzCdP
- dv1ToJm1BTelo1xO4qpDqhBlLlkdW3bdoejWBVt8v/0DrHtWeE2pSlvV5JONAVrSv0Pc
- tLqQ==
-X-Gm-Message-State: AOJu0Yx2UNz/VRY/cTpfQ370idQCc8jLuU3KXcRhd8DuXJ6jwjXqToZn
- 6xSajbWpC+46dXltWvFlgEviBr1RuaUk6V03GU41vRdQ82Rz+k3SG1+JQAGeGuuMdjVQZjLDjdO
- k
-X-Google-Smtp-Source: AGHT+IH4fHjPUgB4P0SyWWKrXbJKyp14R6CRnM7B8PypNIA3tArjgliR5CNLOmsg+ei52nI2n56LNw==
-X-Received: by 2002:a05:6a21:3983:b0:1d6:236d:ea29 with SMTP id
- adf61e73a8af0-1d6df727d0fmr26394474637.0.1728413503328; 
- Tue, 08 Oct 2024 11:51:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728413504; x=1729018304;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=K+Rj8O/QK6Pa3filkPJ4FZfJms9lNPKqXWSFkDZyfyA=;
+ b=QTvc/vFoNIcx3NK3IfNU+B4zdk7kKaxY12jHrhWO64qlPpsLzHYeGLRXZA3BIAE8nr
+ 2UUb/RYcXut6xozo/M8+GilKTbTboVbTz8JFvd3FKBPCBU+vPkVIw1VvIRziGWzbfq1Q
+ FSKQtp4vTn66SrNIaxIdAofZnnO6gqi+HlFa1gn3MpqGrwNZf+EEIJ1Gp/7S+UuSrvUB
+ q+1aNKRISVzL+YalvkdTsdg1dFLlBtBmUbu7Z+E7CuwgogyrJkSaUej7FizDpesMy/lf
+ wZ28SITypz8L1a1kYKYRbwGNetDf1U9TZX52SDEM05N0XUwJr4kA2nlsc0zDK1+Ya3x9
+ 56lw==
+X-Gm-Message-State: AOJu0YwRIbHJopK0H6bBlmWPMBC5dESuwxhh5/FFMLdDN0rnmxJo8DnX
+ FXZPBAY3BMHGP81W+c9ET6NOs7XOrFRGkcOYSbBSZPKnahb1g0rrmuXBPz7JUO8BPZfc0cOsAQl
+ c
+X-Google-Smtp-Source: AGHT+IHCzTw4pxxpz67MpMwnYyjzmcO385GXk7lEvLewN1gwovRXyJSjNb0ZP+aQPtPfT84Sm5TnmA==
+X-Received: by 2002:a05:6e02:20e2:b0:3a3:4221:b0d3 with SMTP id
+ e9e14a558f8ab-3a3757c8506mr174156735ab.0.1728413504238; 
+ Tue, 08 Oct 2024 11:51:44 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7e9f6821c32sm7186818a12.33.2024.10.08.11.51.42
+ 41be03b00d2f7-7e9f6821c32sm7186818a12.33.2024.10.08.11.51.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 11:51:42 -0700 (PDT)
+ Tue, 08 Oct 2024 11:51:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 00/14] tcg + linux-user patch queue
-Date: Tue,  8 Oct 2024 11:51:27 -0700
-Message-ID: <20241008185141.20057-1-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/14] linux-user/flatload: Take mmap_lock in load_flt_binary()
+Date: Tue,  8 Oct 2024 11:51:28 -0700
+Message-ID: <20241008185141.20057-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241008185141.20057-1-richard.henderson@linaro.org>
+References: <20241008185141.20057-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,62 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 2af37e791906cfda42cb9604a16d218e56994bb1:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  Merge tag 'pull-request-2024-10-07' of https://gitlab.com/thuth/qemu into staging (2024-10-07 12:55:02 +0100)
+load_flt_binary() calls load_flat_file() -> page_set_flags().
 
-are available in the Git repository at:
+page_set_flags() must be called with the mmap_lock held,
+otherwise it aborts:
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241008
+  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
+  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
+  Aborted (core dumped)
 
-for you to fetch changes up to 25f4e71722417db1f7d5140847849197053b23dd:
+Fix by taking the lock in load_flt_binary().
 
-  accel/tcg: Make page_set_flags() documentation public (2024-10-08 06:40:31 -0700)
+Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/flatload.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-----------------------------------------------------------------
-linux-user: Fix parse_elf_properties GNU0_MAGIC check
-linux-user: Various improvements to strace
-linux-user: Add openat2 support
-linux-user/flatload: Take mmap_lock in load_flt_binary()
-accel/tcg: Make page_set_flags() documentation public
-tcg/ppc: Use TCG_REG_TMP2 for scratch tcg_out_qemu_st
-tcg/ppc: Use TCG_REG_TMP2 for scratch index in prepare_host_addr
-target/m68k: Always return a temporary from gen_lea_mode
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 04d8138d12..0e4be5bf44 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -487,7 +487,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     stack_len += (bprm->envc + 1) * 4; /* the envp array */
+ 
+ 
++    mmap_lock();
+     res = load_flat_file(bprm, libinfo, 0, &stack_len);
++    mmap_unlock();
++
+     if (is_error(res)) {
+             return res;
+     }
+-- 
+2.43.0
 
-----------------------------------------------------------------
-Ilya Leoshkevich (1):
-      linux-user: Trace wait4()'s and waitpid()'s wstatus
-
-Michael Vogt (2):
-      linux-user: add openat2 support in linux-user
-      linux-user: add strace support for openat2
-
-Philippe Mathieu-Daudé (7):
-      linux-user/flatload: Take mmap_lock in load_flt_binary()
-      linux-user: Correct print_sockaddr() format
-      linux-user: Display sockaddr buffer as pointer
-      linux-user: Factor print_buf_len() out
-      linux-user: Add strace for sendto()
-      linux-user: Add strace for recvfrom()
-      accel/tcg: Make page_set_flags() documentation public
-
-Richard Henderson (4):
-      linux-user: Fix parse_elf_properties GNU0_MAGIC check
-      tcg/ppc: Use TCG_REG_TMP2 for scratch tcg_out_qemu_st
-      tcg/ppc: Use TCG_REG_TMP2 for scratch index in prepare_host_addr
-      target/m68k: Always return a temporary from gen_lea_mode
-
- include/exec/cpu-all.h    |  13 ++++
- linux-user/qemu.h         |   9 +++
- linux-user/syscall_defs.h |  18 +++++
- accel/tcg/user-exec.c     |   5 --
- linux-user/elfload.c      |  12 ++--
- linux-user/flatload.c     |   3 +
- linux-user/strace.c       | 163 ++++++++++++++++++++++++++++++++++++++++++----
- linux-user/syscall.c      |  99 +++++++++++++++++++++++++++-
- target/m68k/translate.c   |  13 ++--
- linux-user/strace.list    |  13 ++--
- meson.build               |   1 +
- tcg/ppc/tcg-target.c.inc  |   8 +--
- 12 files changed, 321 insertions(+), 36 deletions(-)
 
