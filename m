@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A16C993EE6
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 08:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F138D993EEA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 08:51:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy43Q-0000AB-Dy; Tue, 08 Oct 2024 02:50:44 -0400
+	id 1sy43t-00018P-VQ; Tue, 08 Oct 2024 02:51:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sy43K-0008P3-2w; Tue, 08 Oct 2024 02:50:40 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sy43s-00017z-97
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 02:51:12 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sy43I-0006R8-BW; Tue, 08 Oct 2024 02:50:37 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-20b7a4336easo38744025ad.3; 
- Mon, 07 Oct 2024 23:50:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sy43o-0006S4-Ox
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 02:51:12 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e077a4b8c0so3727732a91.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 23:51:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728370234; x=1728975034; darn=nongnu.org;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TEABRXBOncnxF6j2IinF2gXc0DZNRsdjm/W1FMle5a4=;
- b=HOi2ESTnaGyoE0YjNXE8vi/osCJafAigYEt1604DDiF7EOFGIakYpmBnMyGYE77Wa3
- 8Q+QX/u5WGknI+hiOxHyGpfT2fxqFm3VQPlB5NyQMRClJdHsoWxm/ifljqEHxPtOEz16
- SvztrF8Z84WlevKyKKW0lyJi+ADrUqzutE4pQGoG8VsfA/QI1lNWJwCrYvil2atTnIdG
- 7LpGryB/QJs2q9N4TgbRoYRr9YlF77ZTniSg4T7LHs4NgjYDX/tNg3XOIIdPYLEyyWXt
- HCY+J8H5BGlkZc/gVDKKD1HucipNoMCM66TVyuZzGnMn1LsCMw3SihCAaTkDeect+CmS
- Gj4w==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1728370267; x=1728975067;
+ darn=nongnu.org; 
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=z8H1l1RnezQQYsp1g3XxYvGFbv/mtFIUiqzu3ZLJuso=;
+ b=gxnbaIOpc2OSV3kF3EcBuBx4WZegWsSmAqfmX07rr/Mh65tpL2T5XH805/QKNXZjWY
+ 3DC27rxPGGbJpPKMdGnOsSY06YKmxLSKjRshQl1EsNR87yNUHnhmZStxrn8qE1Bdxg+j
+ mCbIjqtPVeu5yxGcfl7LESv01jkQ2X8bmGX9cXuPYGY9C5o4FBQJv6txFLazDox9vBq1
+ vNL79EIXDkvcO04IusC0UjB3nZFEg00esEClSRvNKj/POgf98wsSnezMlfzkHLEgHzhk
+ uNy4cZhiS0RnyYwjPpKQ579irz88L9fTp9RKUiobPrGQkcnlGcjf+/QdhADOj6gLsGvz
+ TUSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728370234; x=1728975034;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=TEABRXBOncnxF6j2IinF2gXc0DZNRsdjm/W1FMle5a4=;
- b=ahZ31B+uRqTo07YE0bJhPlHmqkMrOgOd85OSLzUdBemGrEhMmdEV+mTZi36X+972gy
- cF3E6u0JgMfbRCyGr8EmjcyBA1Vy419mNElMzvZ5vyvnFBvoYGagj7/VkiWngUpNWwAC
- dTCZQ9pjVI54bHN5dZXENCxPxNm8ztpjvxBiE6djYTkVwkQe6dNcD93lrxhsy7+B/mX3
- 7CRUvfUAvTciUR6DN94dE/b80zYWwuqd0nwp7shjEcXJqyyP2c1cpUxew+Wown2De7o7
- g6ii4+W1ah+6TYZVZQqGbm9DDe//OnaZq6yAh6Kdh0auSXmPw2AvYbXS/7xx8Y2G2Iec
- AHEg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW7E7JcR91imrRNQ6v5mqF0gwfvZhg9QpnQbde5COZCOQv0sQydmX/6pDmpHKseTY/1/7zhpye2e4uq@nongnu.org,
- AJvYcCWg0KQvKY3iJQdAOjPa3wJ1rIs8Y01p1/8bI+kxsOpJ9fgXvwJoGPvC1bJgsjiN85byggp2aSXIMYc=@nongnu.org
-X-Gm-Message-State: AOJu0YxIp4cx7xn0EZ9PC7TcJnQqQnX7qjGn1bqz93eVooUikpKDfJ8F
- ye8sbJXopHk7bvVh0WjZCJOZa5c9NHQShz0hxJ4UG1M0GX7e7b/v
-X-Google-Smtp-Source: AGHT+IH4Y+x46bw7HSOBFc2Tq3qWg8yGAAx8JIKlHoj97MjhdESrRYaAc63AvaBhbyK2uOhLRPKNEQ==
-X-Received: by 2002:a17:90a:71c8:b0:2d8:ea11:1c68 with SMTP id
- 98e67ed59e1d1-2e1e635434cmr16364774a91.31.1728370234530; 
- Mon, 07 Oct 2024 23:50:34 -0700 (PDT)
-Received: from localhost ([118.210.103.101]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e1e86a96e3sm8423920a91.49.2024.10.07.23.50.32
+ d=1e100.net; s=20230601; t=1728370267; x=1728975067;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=z8H1l1RnezQQYsp1g3XxYvGFbv/mtFIUiqzu3ZLJuso=;
+ b=QORclG/FeV5OZlLI2x4/HHbX1pnWeSE4qFUanb6lBIQPfnjURch2GSPsme38pOSD62
+ kBHNBpWRnSjTJkExtukekYm1sUIKCt7W+syJruZv/5OJU1vGOt5QjaGU1pRirH5Zn5ne
+ nbnT6H5jiCeLmRkDjYNGXzf999eix1S8meHKdkUg5PPFmuiUREuki8mQJORpxiIGEj/6
+ 1MkvJpDiH+MthENnEnpDoWN2Ga7+STOKywfkCNpJxW4rW4ZzJwxYlGd8uTuMcVlw9FcX
+ ExYJOG2tsWzg/Kw+nep2hPGZfSPb1UDoHatLEr0jYOtvpAUDlLTX/HQkbvHPrxK4b6zI
+ 1Ujw==
+X-Gm-Message-State: AOJu0YwefhcgPxqw/iCKMbl1X1lVXpPGcn89uH6UVdlCr4m14XYX1WSX
+ NrmweuB0it8S9CDW6YraqTxf6OFoxv7oOpJck2tzrxTYOMdP/7nSDvWEIbgyCr8=
+X-Google-Smtp-Source: AGHT+IF1uRsTZpbSRzJGDujPWK360hNR7PCiLG8WHc9tN5rLqC/mG5YR9tuUYqQ7M7q/Yg2b5uIeMw==
+X-Received: by 2002:a17:90a:17ad:b0:2e0:7580:6853 with SMTP id
+ 98e67ed59e1d1-2e27df0ce96mr3252964a91.17.1728370267009; 
+ Mon, 07 Oct 2024 23:51:07 -0700 (PDT)
+Received: from localhost ([157.82.207.107])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 98e67ed59e1d1-2e20aebc40csm6732940a91.23.2024.10.07.23.51.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Oct 2024 23:50:34 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Oct 2024 16:50:30 +1000
-Message-Id: <D4Q842CHNY4T.3V3CG4KQFZF9Y@gmail.com>
-Subject: Re: [PATCH v3 08/10] target/ppc: optimize p7 exception handling
- routines
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>,
- <qemu-devel@nongnu.org>
-Cc: <balaton@eik.bme.hu>, <danielhb413@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20240913041337.912876-1-harshpb@linux.ibm.com>
- <20240913041337.912876-9-harshpb@linux.ibm.com>
-In-Reply-To: <20240913041337.912876-9-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ Mon, 07 Oct 2024 23:51:06 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Date: Tue, 08 Oct 2024 15:51:03 +0900
+Subject: [PATCH] virtio-net: Avoid indirection_table_mask overflow
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241008-mask-v1-1-679ae2720bd5@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAFbWBGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDAwML3dzE4mxdE3OL1BSztFRTYzNTJaDSgqLUtMwKsDHRsbW1ANX5A+V
+ WAAAA
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,134 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Sep 13, 2024 at 2:13 PM AEST, Harsh Prateek Bora wrote:
-> Like p8 and p9, simplifying p7 exception handling rotuines to avoid
-> un-necessary multiple indirect accesses to env->pending_interrupts and
-> env->spr[SPR_LPCR].
+We computes indirections_len by adding 1 to indirection_table_mask, but
+it may overflow indirection_table_mask is UINT16_MAX. Check if
+indirection_table_mask is small enough before adding 1.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Fixes: 590790297c0d ("virtio-net: implement RSS configuration command")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ hw/net/virtio-net.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
->
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> ---
->  target/ppc/excp_helper.c | 46 ++++++++++++++++++++++------------------
->  1 file changed, 25 insertions(+), 21 deletions(-)
->
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index c0828aac88..d0e0f609a0 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -1683,51 +1683,54 @@ void ppc_cpu_do_interrupt(CPUState *cs)
->       PPC_INTERRUPT_PIT | PPC_INTERRUPT_DOORBELL | PPC_INTERRUPT_HDOORBEL=
-L | \
->       PPC_INTERRUPT_THERM | PPC_INTERRUPT_EBB)
-> =20
-> -static int p7_interrupt_powersave(CPUPPCState *env)
-> +static int p7_interrupt_powersave(uint32_t pending_interrupts,
-> +                                  target_ulong lpcr)
->  {
-> -    if ((env->pending_interrupts & PPC_INTERRUPT_EXT) &&
-> -        (env->spr[SPR_LPCR] & LPCR_P7_PECE0)) {
-> +    if ((pending_interrupts & PPC_INTERRUPT_EXT) &&
-> +        (lpcr & LPCR_P7_PECE0)) {
->          return PPC_INTERRUPT_EXT;
->      }
-> -    if ((env->pending_interrupts & PPC_INTERRUPT_DECR) &&
-> -        (env->spr[SPR_LPCR] & LPCR_P7_PECE1)) {
-> +    if ((pending_interrupts & PPC_INTERRUPT_DECR) &&
-> +        (lpcr & LPCR_P7_PECE1)) {
->          return PPC_INTERRUPT_DECR;
->      }
-> -    if ((env->pending_interrupts & PPC_INTERRUPT_MCK) &&
-> -        (env->spr[SPR_LPCR] & LPCR_P7_PECE2)) {
-> +    if ((pending_interrupts & PPC_INTERRUPT_MCK) &&
-> +        (lpcr & LPCR_P7_PECE2)) {
->          return PPC_INTERRUPT_MCK;
->      }
-> -    if ((env->pending_interrupts & PPC_INTERRUPT_HMI) &&
-> -        (env->spr[SPR_LPCR] & LPCR_P7_PECE2)) {
-> +    if ((pending_interrupts & PPC_INTERRUPT_HMI) &&
-> +        (lpcr & LPCR_P7_PECE2)) {
->          return PPC_INTERRUPT_HMI;
->      }
-> -    if (env->pending_interrupts & PPC_INTERRUPT_RESET) {
-> +    if (pending_interrupts & PPC_INTERRUPT_RESET) {
->          return PPC_INTERRUPT_RESET;
->      }
->      return 0;
->  }
-> =20
-> -static int p7_next_unmasked_interrupt(CPUPPCState *env)
-> +static int p7_next_unmasked_interrupt(CPUPPCState *env,
-> +                                      uint32_t pending_interrupts,
-> +                                      target_ulong lpcr)
->  {
->      CPUState *cs =3D env_cpu(env);
-> =20
->      /* Ignore MSR[EE] when coming out of some power management states */
->      bool msr_ee =3D FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sres=
-et;
-> =20
-> -    assert((env->pending_interrupts & P7_UNUSED_INTERRUPTS) =3D=3D 0);
-> +    assert((pending_interrupts & P7_UNUSED_INTERRUPTS) =3D=3D 0);
-> =20
->      if (cs->halted) {
->          /* LPCR[PECE] controls which interrupts can exit power-saving mo=
-de */
-> -        return p7_interrupt_powersave(env);
-> +        return p7_interrupt_powersave(pending_interrupts, lpcr);
->      }
-> =20
->      /* Machine check exception */
-> -    if (env->pending_interrupts & PPC_INTERRUPT_MCK) {
-> +    if (pending_interrupts & PPC_INTERRUPT_MCK) {
->          return PPC_INTERRUPT_MCK;
->      }
-> =20
->      /* Hypervisor decrementer exception */
-> -    if (env->pending_interrupts & PPC_INTERRUPT_HDECR) {
-> +    if (pending_interrupts & PPC_INTERRUPT_HDECR) {
->          /* LPCR will be clear when not supported so this will work */
->          bool hdice =3D !!(env->spr[SPR_LPCR] & LPCR_HDICE);
->          if ((msr_ee || !FIELD_EX64_HV(env->msr)) && hdice) {
-> @@ -1737,9 +1740,9 @@ static int p7_next_unmasked_interrupt(CPUPPCState *=
-env)
->      }
-> =20
->      /* External interrupt can ignore MSR:EE under some circumstances */
-> -    if (env->pending_interrupts & PPC_INTERRUPT_EXT) {
-> -        bool lpes0 =3D !!(env->spr[SPR_LPCR] & LPCR_LPES0);
-> -        bool heic =3D !!(env->spr[SPR_LPCR] & LPCR_HEIC);
-> +    if (pending_interrupts & PPC_INTERRUPT_EXT) {
-> +        bool lpes0 =3D !!(lpcr & LPCR_LPES0);
-> +        bool heic =3D !!(lpcr & LPCR_HEIC);
->          /* HEIC blocks delivery to the hypervisor */
->          if ((msr_ee && !(heic && FIELD_EX64_HV(env->msr) &&
->              !FIELD_EX64(env->msr, MSR, PR))) ||
-> @@ -1749,10 +1752,10 @@ static int p7_next_unmasked_interrupt(CPUPPCState=
- *env)
->      }
->      if (msr_ee !=3D 0) {
->          /* Decrementer exception */
-> -        if (env->pending_interrupts & PPC_INTERRUPT_DECR) {
-> +        if (pending_interrupts & PPC_INTERRUPT_DECR) {
->              return PPC_INTERRUPT_DECR;
->          }
-> -        if (env->pending_interrupts & PPC_INTERRUPT_PERFM) {
-> +        if (pending_interrupts & PPC_INTERRUPT_PERFM) {
->              return PPC_INTERRUPT_PERFM;
->          }
->      }
-> @@ -2022,7 +2025,8 @@ static int ppc_next_unmasked_interrupt(CPUPPCState =
-*env)
->  #ifdef TARGET_PPC64
->      switch (env->excp_model) {
->      case POWERPC_EXCP_POWER7:
-> -        return p7_next_unmasked_interrupt(env);
-> +        return p7_next_unmasked_interrupt(env, env->pending_interrupts,
-> +                                          env->spr[SPR_LPCR]);
->      case POWERPC_EXCP_POWER8:
->          return p8_next_unmasked_interrupt(env, env->pending_interrupts,
->                                            env->spr[SPR_LPCR]);
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 8f3097270869..625852a590ea 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1400,17 +1400,17 @@ static uint16_t virtio_net_handle_rss(VirtIONet *n,
+     n->rss_data.hash_types = virtio_ldl_p(vdev, &cfg.hash_types);
+     n->rss_data.indirections_len =
+         virtio_lduw_p(vdev, &cfg.indirection_table_mask);
+-    n->rss_data.indirections_len++;
+     if (!do_rss) {
+-        n->rss_data.indirections_len = 1;
++        n->rss_data.indirections_len = 0;
+     }
+-    if (!is_power_of_2(n->rss_data.indirections_len)) {
+-        err_msg = "Invalid size of indirection table";
++    if (n->rss_data.indirections_len >= VIRTIO_NET_RSS_MAX_TABLE_LEN) {
++        err_msg = "Too large indirection table";
+         err_value = n->rss_data.indirections_len;
+         goto error;
+     }
+-    if (n->rss_data.indirections_len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
+-        err_msg = "Too large indirection table";
++    n->rss_data.indirections_len++;
++    if (!is_power_of_2(n->rss_data.indirections_len)) {
++        err_msg = "Invalid size of indirection table";
+         err_value = n->rss_data.indirections_len;
+         goto error;
+     }
+
+---
+base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
+change-id: 20241008-mask-478ed6fe5365
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
