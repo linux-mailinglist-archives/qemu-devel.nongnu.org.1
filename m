@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87465994C48
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BCC994C7B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:54:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy9gQ-0007RV-WF; Tue, 08 Oct 2024 08:51:23 -0400
+	id 1sy9gc-0007U4-NI; Tue, 08 Oct 2024 08:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9g2-0007PN-Rc
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:00 -0400
+ id 1sy9g6-0007Ps-4d
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9fz-0002OA-61
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:50:56 -0400
+ id 1sy9g4-0002P9-Gb
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728391853;
+ s=mimecast20190719; t=1728391859;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gV+h/XCBxJLptrILhL+I9YDEeHwDstY+oYq6Q1Z6tts=;
- b=f1aeBWLurPL1fqe93zYlOXidnmrpayucEEqbyhwo3PSKQShJuwuDExeIV8WL08eSchdwHI
- mKjeGYcnDfwKw9W/JvIebS7j64lASuG/gBJjtC/vGT0QQPylmzLFOnvNVZ76qKI3yoOA3W
- 5b44njw1pwFsF8kR6vsujSFJpRQOc2A=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=046YfOtJri3zgonnETM2oiJ4nc0S31bluJRjY5Vm+0U=;
+ b=RyxnP6Rh2updV3bgcaIyTxr7agTPvGsC77jPk6DlgnLL6Hx4meBi+rVN8xSjqQ6TyhWWF4
+ UQFVweLE0/+eqNq0202z+0qzK9hycz0Ru659oGcy6q7BB3UlDeWBNF5KFONmb9AEkogzJd
+ y6wevNJxiVL471qHOaBmc96ET3PQ3tw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-I9RgE40QP3-g3MDJNA8mXQ-1; Tue,
- 08 Oct 2024 08:50:49 -0400
-X-MC-Unique: I9RgE40QP3-g3MDJNA8mXQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-EvR8gBTCOTeEJoBgj5Lp1g-1; Tue,
+ 08 Oct 2024 08:50:57 -0400
+X-MC-Unique: EvR8gBTCOTeEJoBgj5Lp1g-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E4C44190ECD5; Tue,  8 Oct 2024 12:50:47 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1B5D41919612; Tue,  8 Oct 2024 12:50:53 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 065A819560A2; Tue,  8 Oct 2024 12:50:46 +0000 (UTC)
+ id 9FA8019560AE; Tue,  8 Oct 2024 12:50:51 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -54,9 +54,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 03/19] ui/dbus: fix leak on message filtering
-Date: Tue,  8 Oct 2024 16:50:12 +0400
-Message-ID: <20241008125028.1177932-4-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 04/19] ui/win32: fix potential use-after-free with dbus
+ shared memory
+Date: Tue,  8 Oct 2024 16:50:13 +0400
+Message-ID: <20241008125028.1177932-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 References: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -91,28 +92,157 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-A filter function that wants to drop a message should return NULL, in
-which case it must also unref the message itself.
+DisplaySurface may be free before the pixman image is freed, since the
+image is refcounted and used by different objects, including pending
+dbus messages.
 
-Fixes: fa88b85de ("ui/dbus: filter out pending messages when scanout")
+Furthermore, setting the destroy function in
+create_displaysurface_from() isn't appropriate, as it may not be used,
+and may be overriden as in ramfb.
+
+Set the destroy function when the shared handle is set, use the HANDLE
+directly for destroy data, using a single common helper
+qemu_pixman_win32_image_destroy().
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/dbus-listener.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/ui/qemu-pixman.h |  2 ++
+ hw/display/virtio-gpu.c  | 14 ++------------
+ ui/console.c             | 24 ++----------------------
+ ui/qemu-pixman.c         | 15 +++++++++++++++
+ 4 files changed, 21 insertions(+), 34 deletions(-)
 
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index a54123acea..434bd608f2 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -1001,6 +1001,7 @@ dbus_filter(GDBusConnection *connection,
-     serial = g_dbus_message_get_serial(message);
-     if (serial <= ddl->out_serial_to_discard) {
-         trace_dbus_filter(serial, ddl->out_serial_to_discard);
-+        g_object_unref(message);
-         return NULL;
-     }
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index ef13a8210c..e3dd72b9e3 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -97,6 +97,8 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
  
+ void qemu_pixman_image_unref(pixman_image_t *image);
+ 
++void qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data);
++
+ G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
+ 
+ #endif /* QEMU_PIXMAN_H */
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 3281842bfe..017a0f170c 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -238,16 +238,6 @@ static uint32_t calc_image_hostmem(pixman_format_code_t pformat,
+     return height * stride;
+ }
+ 
+-#ifdef WIN32
+-static void
+-win32_pixman_image_destroy(pixman_image_t *image, void *data)
+-{
+-    HANDLE handle = data;
+-
+-    qemu_win32_map_free(pixman_image_get_data(image), handle, &error_warn);
+-}
+-#endif
+-
+ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
+                                           struct virtio_gpu_ctrl_command *cmd)
+ {
+@@ -308,7 +298,7 @@ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
+             bits, c2d.height ? res->hostmem / c2d.height : 0);
+ #ifdef WIN32
+         if (res->image) {
+-            pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
++            pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
+         }
+ #endif
+     }
+@@ -1327,7 +1317,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+             return -EINVAL;
+         }
+ #ifdef WIN32
+-        pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
++        pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
+ #endif
+ 
+         res->addrs = g_new(uint64_t, res->iov_cnt);
+diff --git a/ui/console.c b/ui/console.c
+index 105a0e2c70..8f416ff0b9 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -461,24 +461,6 @@ void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
+     surface->handle = h;
+     surface->handle_offset = offset;
+ }
+-
+-static void
+-win32_pixman_image_destroy(pixman_image_t *image, void *data)
+-{
+-    DisplaySurface *surface = data;
+-
+-    if (!surface->handle) {
+-        return;
+-    }
+-
+-    assert(surface->handle_offset == 0);
+-
+-    qemu_win32_map_free(
+-        pixman_image_get_data(surface->image),
+-        surface->handle,
+-        &error_warn
+-    );
+-}
+ #endif
+ 
+ DisplaySurface *qemu_create_displaysurface(int width, int height)
+@@ -504,6 +486,8 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
+ 
+ #ifdef WIN32
+     qemu_displaysurface_win32_set_handle(surface, handle, 0);
++    pixman_image_set_destroy_function(surface->image,
++                                      qemu_pixman_win32_image_destroy, handle);
+ #endif
+     return surface;
+ }
+@@ -519,10 +503,6 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
+                                               width, height,
+                                               (void *)data, linesize);
+     assert(surface->image != NULL);
+-#ifdef WIN32
+-    pixman_image_set_destroy_function(surface->image,
+-                                      win32_pixman_image_destroy, surface);
+-#endif
+ 
+     return surface;
+ }
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 6cada8b45e..3870e1a215 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "ui/console.h"
+ #include "standard-headers/drm/drm_fourcc.h"
+ #include "trace.h"
+@@ -267,3 +268,17 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+     pixman_image_unref(ibg);
+ }
+ #endif /* CONFIG_PIXMAN */
++
++#ifdef WIN32
++void
++qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data)
++{
++    HANDLE handle = data;
++
++    qemu_win32_map_free(
++        pixman_image_get_data(image),
++        handle,
++        &error_warn
++    );
++}
++#endif
 -- 
 2.47.0
 
