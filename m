@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8996994C4A
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A178994C7A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 14:54:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy9hJ-00006I-IN; Tue, 08 Oct 2024 08:52:18 -0400
+	id 1sy9iS-00015e-JD; Tue, 08 Oct 2024 08:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9gw-0008DC-8C
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:56 -0400
+ id 1sy9gx-0008Gv-VG
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sy9gu-0002W8-RR
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:54 -0400
+ id 1sy9gw-0002WD-CG
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 08:51:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728391912;
+ s=mimecast20190719; t=1728391913;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EzurPQl5m1lilpX1ArJB/4rYtKQYxF5IgBh/E+TFZfQ=;
- b=TPMXj/SaLT2h1IvOoxyeciWDzU4zDr2lbxf8hzz21WuKyY4RgsjsK712foDqb+UtjwFc3e
- hnZWUpkTE4WOj7vmAKYI0HpWzm06iFGz2nSIVeUWtvoF2271db0Lb1HYOzpE8Ahbhllljh
- e4G4dYHrg3l8pnAawKlFiq4OuwfmJXo=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=+hoW0x/cO0MOljb6+bL2hS7ylUz/S8iQ2lg+EOEUOXU=;
+ b=FCn7YhePuTvto7KNRKU7X/E+WjYMoCoI1KWUlQscD0I0iTDxWejA0hWu3fe+veieDolnQZ
+ stNZmR23quyF9uf5Gt6BTFz+7ydpidh29L3elOGPVYYwrHAzn4sH+eLuUfKwP6SeDMN7iM
+ R/09BH1xrKfS4MFwu2uyqlNic4WMcbY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-IbUtj6p5MzuiOD6m3j6rLQ-1; Tue,
- 08 Oct 2024 08:51:47 -0400
-X-MC-Unique: IbUtj6p5MzuiOD6m3j6rLQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-rv_lUhT7Oimje3lWFq9XPw-1; Tue,
+ 08 Oct 2024 08:51:52 -0400
+X-MC-Unique: rv_lUhT7Oimje3lWFq9XPw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BBDD119560AF; Tue,  8 Oct 2024 12:51:46 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BBD5D1944A95; Tue,  8 Oct 2024 12:51:51 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7D3551956089; Tue,  8 Oct 2024 12:51:45 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8283219560AA; Tue,  8 Oct 2024 12:51:50 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -54,15 +54,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 14/19] ui/dbus: make Listener.Win32.Map win32-specific
-Date: Tue,  8 Oct 2024 16:50:23 +0400
-Message-ID: <20241008125028.1177932-15-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 15/19] ui/dbus: add Listener.Unix.Map interface XML
+Date: Tue,  8 Oct 2024 16:50:24 +0400
+Message-ID: <20241008125028.1177932-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 References: <20241008125028.1177932-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,34 +91,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-There are no types specific to Windows, so the code compiles on other
-platforms, but its useless on !Windows.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/dbus-display1.xml | 2 ++
- 1 file changed, 2 insertions(+)
+ ui/dbus-display1.xml | 47 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
 diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
-index ce35d64eea..d5bb279698 100644
+index d5bb279698..e70f2848b7 100644
 --- a/ui/dbus-display1.xml
 +++ b/ui/dbus-display1.xml
-@@ -476,6 +476,7 @@
-       org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for Windows
-       specific shared memory scanouts.
-   -->
-+  <?if $(env.HOST_OS) == windows?>
-   <interface name="org.qemu.Display1.Listener.Win32.Map">
-     <!--
-         ScanoutMap:
-@@ -513,6 +514,7 @@
-       <arg type="i" name="height" direction="in"/>
-     </method>
+@@ -469,6 +469,53 @@
+     <property name="Interfaces" type="as" access="read"/>
    </interface>
-+  <?endif?>
  
++  <!--
++      org.qemu.Display1.Listener.Unix.Map:
++
++      This optional client-side interface can complement
++      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for
++      Unix-specific shared memory scanouts.
++  -->
++  <?if $(env.HOST_OS) != windows?>
++  <interface name="org.qemu.Display1.Listener.Unix.Map">
++    <!--
++        ScanoutMap:
++        @handle: the shared map FD.
++        @offset: mapping offset, in bytes.
++        @width: display width, in pixels.
++        @height: display height, in pixels.
++        @stride: stride, in bytes.
++        @pixman_format: image format (ex: ``PIXMAN_X8R8G8B8``).
++
++        Resize and update the display content with a shared map.
++    -->
++    <method name="ScanoutMap">
++      <arg type="h" name="handle" direction="in"/>
++      <arg type="u" name="offset" direction="in"/>
++      <arg type="u" name="width" direction="in"/>
++      <arg type="u" name="height" direction="in"/>
++      <arg type="u" name="stride" direction="in"/>
++      <arg type="u" name="pixman_format" direction="in"/>
++    </method>
++
++    <!--
++        UpdateMap:
++        @x: the X update position, in pixels.
++        @y: the Y update position, in pixels.
++        @width: the update width, in pixels.
++        @height: the update height, in pixels.
++
++        Update the display content with the current shared map and the given region.
++    -->
++    <method name="UpdateMap">
++      <arg type="i" name="x" direction="in"/>
++      <arg type="i" name="y" direction="in"/>
++      <arg type="i" name="width" direction="in"/>
++      <arg type="i" name="height" direction="in"/>
++    </method>
++  </interface>
++  <?endif?>
++
    <!--
-       org.qemu.Display1.Listener.Win32.D3d11:
+       org.qemu.Display1.Listener.Win32.Map:
+ 
 -- 
 2.47.0
 
