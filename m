@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B32993C16
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC83C993C2C
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyrT-0005nO-9x; Mon, 07 Oct 2024 21:18:05 -0400
+	id 1sxysy-0007lO-3h; Mon, 07 Oct 2024 21:19:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sxyr7-0005Xr-JM; Mon, 07 Oct 2024 21:17:42 -0400
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
+ (Exim 4.90_1) (envelope-from
+ <3fogEZwUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com>)
+ id 1sxysM-0007Vj-Tg
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:18:59 -0400
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sxyr5-0008TH-7W; Mon, 07 Oct 2024 21:17:40 -0400
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-84f29f2547fso1299169241.0; 
- Mon, 07 Oct 2024 18:17:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <3fogEZwUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com>)
+ id 1sxysK-00006c-F6
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:18:58 -0400
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-6e251ba2243so63851307b3.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728350256; x=1728955056; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H7XcROQHzaMp4c2pQ5mw9PeqZzqv/Ez36cA9tpdGmts=;
- b=K4fveUZD3Ownoz2Hp8W4uafTCuSyz773qghmSwniEHnRu5K+INIpg9E//PaDf9Hq3c
- UXxBc/RMOqXB3kI8ZZ5MMN+tQdplu5gJOEjVc/6pOgvjn5zypI5iyFXvTpDT8ZhmWdgO
- miVxutxnBKuf2uJRAeQNSMZCCcrWcC0gahorNgTEzw4d8GcVOGzzEJGUMgUwL2ZCDr8v
- +LvKgqQp5R0fF4Fxq2+hz92PHM7++ZO3zDmvq/tP2M2gJPYy7GkJKGl50jm0LRtc0BGQ
- Fv6yrk2MBaLMbdL1RZjdYH/RXFs1FAzf80rMJgqZzwdhbj1jhD5Y0jekp7MVMt/UyhJY
- cNow==
+ d=google.com; s=20230601; t=1728350335; x=1728955135; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=e/sYozCpm0AUnUMW26eV/Tr3M4dtso2PXNjHQLd3lMs=;
+ b=m8YTIvDvsRWUeP7TuZNYFBSgZriIU5cqXJRhQiudWHe/pgRXQAxbGGKr5w6eZ0JD5J
+ Na7cuFRCbDcIklxkbGFIoqRj1N4TE337hQfN5F/RCSqknavt0FsRoU4Mmszbk3e2qODU
+ TlavzN51rqJlNXMNxMTLv1XGG8IOUFI5hX/5z5Erckg3Iyxpg0EkfOQUnbsxs5KZ/OIh
+ 0pYwNbUx1zGa0fHNZEkpC+/4VzqpVHrTu+mEHZVn2B9ZwqvqjzzKPWRVp7gJxA3ZVkgD
+ ylJgdnAqYaoFeoqXrU7HdhgR5mHwWHh1Ffa9DO5gmpE0VxfHc0gRqnU0VdL7V4Z7G+ee
+ ArtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728350256; x=1728955056;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H7XcROQHzaMp4c2pQ5mw9PeqZzqv/Ez36cA9tpdGmts=;
- b=jd4iBBAa7Gwl8qzUw+qoZsTPwmxKMGLMC+BCK/LeM0cvyQSZHiMxRoYROXKD4Sk/B0
- eg9Wk9Jl8UP6B3hlG2DpG3qOWI3YSavApJkNxJPssuB73E2RpIWjWBcxDsM3x4AD+AGT
- 8KTQMMJVE8wi5qb9Ibvb/O5FKH5AZDGNiDd1QVwgzmqFG7F0NXep91w66ludTqtCe17G
- RJ7+KlZqq3GO6MgV8AlPHJHjVEzjdrV7BCxKQxibVcVywxLkXscW7ehXqmG67Zj+bph5
- h9XZKiXGgYmACAijjRrPq2Q+97Mufizkbni/ucfeazH3n9E9QWPpd3cFPFZIHeC6bh/3
- nCeQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOco5m+TvsCdQMQfBDzpJrFnp9dCGlYta9BHdhgMb0K/Q11vS3i2ZLxTX5nBQArdVjdsQs6DbV/vrr@nongnu.org
-X-Gm-Message-State: AOJu0YxTBXopQDyKD2y2WVpkWrWiQzxPk0fWVothqQuWH/YnwhJP2+n1
- 6vKiynLEOXFtZm80cDprbT4jXwCpf37R4kdY56V5SA9Aho/A/cKt+JvwkefBD1yEIvpGW5rnxNO
- TgwwxvvV7wR1fYlYM5DB1+R0nx3k=
-X-Google-Smtp-Source: AGHT+IEOLPrkggHEBAx19gWSsT9KlLjPJMUVyFnd0spGUs/FgRm9s0B7W9n/afgGJ600gGpCv62LkRGItKTF5NVrMas=
-X-Received: by 2002:a05:6102:b07:b0:4a3:a0b1:b94 with SMTP id
- ada2fe7eead31-4a4057620eemr8833563137.9.1728350256662; Mon, 07 Oct 2024
- 18:17:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240919055048.562-1-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20240919055048.562-1-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 8 Oct 2024 11:17:10 +1000
-Message-ID: <CAKmqyKOAnhskgqw1RU-3cSkUUCVRj7B614QT3RWn5t-pD=CziQ@mail.gmail.com>
-Subject: Re: [PATCH v7 0/8] target/riscv: Expose RV32 cpu to RV64 QEMU
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
- bmeng.cn@gmail.com, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+ d=1e100.net; s=20230601; t=1728350335; x=1728955135;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e/sYozCpm0AUnUMW26eV/Tr3M4dtso2PXNjHQLd3lMs=;
+ b=Q8piRkWe9kDPeOIuq0eWe+yEpGQM8Qw740jdJ1+IQ1Aokd+Qub8r4hX+AtsSkHPq5h
+ OvHaRLPjKMAI0L5n97EEK5d7/Yv3jTCiPctoEHWnzJTfLo3dfirmDGNmhLoADHaeLcAu
+ TNw8pSI29hL0cF3znwEx9vYIDcaigsUZe8Rwu6gt9A8u5nIP0l928Alrmx+C9s0bW3QO
+ PA50DhnEbebCRAfYJ1TgHvTKuBrSuAz3LYsbVtmLU/bK5jd0XlyM2UTkzswP21kQriPF
+ jIqsI0Jb7vbsgULdRRNoLtLg7aTGT/uAvnNWnPQ4/UghNyUnTeZAS4uAQMQvB14gWX71
+ UQuQ==
+X-Gm-Message-State: AOJu0YzSwtheirGaysV/Xz9S7tcGvuuGNjJU9mrNuAU71qXoghtCe87a
+ XydREUyacdd37+ii0S7uvWXDpBxtTsLMWwXUK9oSjba03DyNbH26I/lnSdosbEF2ThDXFL0RynU
+ j1JANGtMBZimM8EK60vKoyQqsRw/j22psYd2VRj6gYkqYeFlNmO23wC2HQvTbZSPjX0U//1QvMA
+ 2jnmlUF680wjiVM/bK8jLnEQKOIA==
+X-Google-Smtp-Source: AGHT+IE3GycGPOK7hbEi2gcW7gNqIjpl0yWA5uXvt3wxwOvmw7K06001dQa21RlWYRWXkyuA1WI6c0FMLA==
+X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
+ (user=tavip job=sendgmr) by 2002:a05:690c:5a09:b0:6e2:c1c7:ec27
+ with SMTP id
+ 00721157ae682-6e30de949dbmr27107b3.1.1728350334199; Mon, 07 Oct 2024 18:18:54
+ -0700 (PDT)
+Date: Mon,  7 Oct 2024 18:18:26 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+Message-ID: <20241008011852.1439154-1-tavip@google.com>
+Subject: [PATCH v2 00/25] NXP i.MX RT595
+From: Octavian Purdila <tavip@google.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
+ peter.maydell@linaro.org, marcandre.lureau@redhat.com, berrange@redhat.com, 
+ eduardo@habkost.net, luc@lmichel.fr, damien.hedde@dahe.fr, 
+ alistair@alistair23.me, thuth@redhat.com, philmd@linaro.org, jsnow@redhat.com, 
+ crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x930.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3fogEZwUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.024,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,75 +93,260 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 3:53=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibab=
-a.com> wrote:
->
-> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
->
-> This patch set aims to expose 32-bit RISC-V cpu to RV64 QEMU. Thus
-> qemu-system-riscv64 can directly boot a RV32 Linux.
->
-> This patch set has been tested with 6.9.0 Linux Image.
-> And add an avocado tuxrun test in tests/avocado.
->
-> v7:
->   Remove cpu of "any".
->
-> v6:
->   Use TUXRUN test case instead of boot_linux_console
->   Add any32 and max32 cpu for RV64 QEMU
->
-> v5:
->   Rebase to master and add tags
->
-> v4:
->   Drop UL completely in PATCH v3 2/7, 4/7, 5/7.
->   Avocado: Add "if=3Dnone" to "-drive" option in QEMU command line
->
-> v3:
->   Rebase to the master branch
->
-> v2:
->   Remove the line that was inadvertently left in PATCH v1 4/6.
->   Add an avocado test.
->
-> v1:
->   https://mail.gnu.org/archive/html/qemu-riscv/2024-06/msg00501.html
->
-> LIU Zhiwei (2):
->   target/riscv: Add max32 CPU for RV64 QEMU
->   tests/avocado: Boot Linux for RV32 cpu on RV64 QEMU
->
-> TANG Tiancheng (6):
->   target/riscv: Add fw_dynamic_info32 for booting RV32 OpenSBI
->   target/riscv: Adjust PMP size for no-MMU RV64 QEMU running RV32
->   target/riscv: Correct SXL return value for RV32 in RV64 QEMU
->   target/riscv: Detect sxl to set bit width for RV32 in RV64
->   target/riscv: Correct mcause/scause bit width for RV32 in RV64 QEMU
->   target/riscv: Enable RV32 CPU support in RV64 QEMU
+This patch set adds support for NXP's RT500 MCU [1] and the RT595
+EVK[2]. More RT500 device models will be submitted in future patch sets.
 
-Thanks!
+This is a minimal patch set that allows running the NXP MCU SDK hello
+world example[4].
 
-Applied to riscv-to-apply.next
+The patch set introduces a (python) tool that generates C header files
+from ARM SVD files[3]. This significantly reduces the effort to write
+a new device model by automatically generating: register definitions
+and layout (including bit fields), register names for easier debugging
+and tracing, reset register values, register write masks, etc.
 
-Alistair
+The generated files are commited and not generated at compile
+time. Build targets are created so that they can be easily regenerated
+if needed.
 
->
->  configs/targets/riscv64-softmmu.mak |  2 +-
->  hw/riscv/boot.c                     | 35 +++++++++++++++++++----------
->  hw/riscv/sifive_u.c                 |  3 ++-
->  include/hw/riscv/boot.h             |  4 +++-
->  include/hw/riscv/boot_opensbi.h     | 29 ++++++++++++++++++++++++
->  target/riscv/cpu-qom.h              |  1 +
->  target/riscv/cpu.c                  | 28 ++++++++++++++++-------
->  target/riscv/cpu.h                  |  5 ++++-
->  target/riscv/cpu_helper.c           | 25 +++++++++++++++------
->  target/riscv/pmp.c                  |  2 +-
->  tests/avocado/tuxrun_baselines.py   | 16 +++++++++++++
->  11 files changed, 118 insertions(+), 32 deletions(-)
->
-> --
-> 2.43.0
->
->
+Changes since v1:
+
+ * svd_gen_header: remove field values generation for 1 bit fields,
+   add options to control which registers and fields to be generated,
+   switch to using defines instead of enums for field values with more
+   than 1 bit
+ * i2c-tester: document the rationale and basic functionality in the
+   header
+
+Changes since RFC v3:
+ * rewrite the flexcomm devices to take advantage of QEMU's object
+   model / class inheritance and overlapped memory region and remove
+   the adhoc flexcomm APIs
+ * remove code duplication by using common fifo functions for USART
+   and SPI
+ * fix copyright in one of the headers
+ * remove hw/registerfields.h from generated headers as hw/register.h
+   is already included
+ * fix signed off email address for the qtests API patches
+ * fix description (tests/unit -> tests/qtest) for RT500 clock
+   controller tests
+ * convert devices to use the Resettable interfaces
+ * add support for migration
+ * rework the fifo32 tests on top of Mark's and Phillippe's work
+
+Changes since RFC v2:
+ * convert tests from unit to qtest
+ * move i2c and spi testers from unit tests to hw/misc devices
+ * switch to using RegisterAccessInfo to generate register information
+   like register names, reset values, or read-only mask
+ * use register_write instead of adding a new reg32_write API
+ * remove reg32_aligned_access completly and rely on memops access
+   constraints and size of access for alignment checks
+ * add qtest APIs for checking memory access faulires
+ * add qtest APIs for accessing the device clock frequency
+ * fix bugs detected by address sanitizers
+
+Changes since RFC v1:
+ * setup scripts/git.orderfile
+ * svd_gen_header: add support for multi line comments
+ * svd_gen_header: use qemu register fields instead of bitfields
+ * svd_gen_header: generate register write mask array
+ * add mcux-soc-svd as a subproject instead of commiting the rt595 SVD
+   file directly
+ * svd generated headers: don't generate them at compile time, instead
+   commit the generated headers and create compile targets so that it is
+   easy to regenerate them
+ * remove pysvd dependency; developers who need to (re)generate svd
+   headers need to have it installed on the host machine
+ * use DEFINE_TYPES where possible
+ * use g_strdup_printf where possible
+ * reduce iterator variables scopes
+ * hard code rt500 to use the cortex-m33
+ * use static for local arrays initializers
+ * remove rt500 properties as they are not yet used
+ * drop private/public comments
+ * remove unused headers
+ * free rt500 mem regions in rt500_unrealize() instead of
+   rt500_finalize
+ * use memops access constraints where possible instead of
+   reg32_aligned_access
+ * flexspi: use 64bit properties for mmap_size property
+ * rstctl: use a generic abstract type and remove the  "num" property
+ * flexspi: don't call get_system_memory() directly and remove
+   mmap_base property
+
+[1] https://www.nxp.com/docs/en/data-sheet/IMXRT500EC.pdf
+[2] https://www.nxp.com/webapp/Download?colCode=MIMXRT595EVKHUG
+[3] https://arm-software.github.io/CMSIS_5/SVD/html/index.html
+[4] Building and running the NXP MCU SDK hello world example
+
+    Clone the following git repos:
+
+    https://github.com/nxp-mcuxpresso/cmsis.git,
+    https://github.com/nxp-mcuxpresso/mcux-sdk.git
+    https://github.com/nxp-mcuxpresso/mcux-sdk-examples.git
+
+    in the following directories: CMSIS, core, examples.
+
+    cd examples/evkmimxrt595/demo_apps/hello_world/armgcc
+
+    ARMGCC_DIR=/usr CFLAGS=-I../../../../../CMSIS/CMSIS/Core/Include \
+      sh build_flash_debug.sh
+
+    qemu-system-arm --machine rt595-evk -kernel flash_debug/hello_world.elf \
+      -global armv7m.init-nsvtor=0x08001000 -global armv7m.init-svtor=0x08001000 \
+      -chardev stdio,id=flexcomm0
+
+Octavian Purdila (22):
+  fifo32: add peek function
+  tests/unit: add fifo32 tests
+  Add mcux-soc-svd subproject
+  hw/misc: add support for flexcomm
+  hw/misc/flexcomm.c: add common fifo functionality
+  hw/char: add support for flexcomm usart
+  hw/i2c: add support for flexcomm i2c
+  hw/misc: add support for RT500's clock controller
+  hw/ssi: add support for flexspi
+  hw/misc: add support for RT500's reset controller
+  hw/arm: add basic support for the RT500 SoC
+  hw/arm: add RT595-EVK board
+  tests/qtest: add register access macros and functions
+  system/qtest: add APIS to check for memory access failures
+  tests/qtest: add flexcomm tests
+  tests/qtest: add flexcomm usart tests
+  hw/misc: add i2c-tester
+  tests/qtest: add tests for flexcomm i2c
+  hw/ssi: allow NULL realize callbacks for peripherals
+  hw/misc: add spi-tester
+  systems/qtest: add device clock APIs
+  tests/qtest: add tests for RT500's clock controller
+
+Sebastian Ene (2):
+  hw/ssi: add support for flexcomm spi
+  tests/qtest: add tests for flexcomm spi
+
+Stefan Stanacar (1):
+  scripts: add script to generate C header files from SVD XML files
+
+ meson.build                                   |    4 +
+ include/hw/arm/rt500.h                        |   44 +
+ include/hw/arm/svd/flexcomm.h                 |   70 ++
+ include/hw/arm/svd/flexcomm_i2c.h             |  229 ++++
+ include/hw/arm/svd/flexcomm_spi.h             |  327 +++++
+ include/hw/arm/svd/flexcomm_usart.h           |  294 +++++
+ include/hw/arm/svd/flexspi.h                  | 1085 +++++++++++++++++
+ include/hw/arm/svd/rt500.h                    |   63 +
+ include/hw/arm/svd/rt500_clkctl0.h            |  509 ++++++++
+ include/hw/arm/svd/rt500_clkctl1.h            |  675 ++++++++++
+ include/hw/arm/svd/rt500_rstctl0.h            |  110 ++
+ include/hw/arm/svd/rt500_rstctl1.h            |  110 ++
+ include/hw/char/flexcomm_usart.h              |   33 +
+ include/hw/i2c/flexcomm_i2c.h                 |   40 +
+ include/hw/misc/flexcomm.h                    |   57 +
+ include/hw/misc/flexcomm_function.h           |   55 +
+ include/hw/misc/i2c_tester.h                  |   43 +
+ include/hw/misc/rt500_clk_freqs.h             |   18 +
+ include/hw/misc/rt500_clkctl0.h               |   35 +
+ include/hw/misc/rt500_clkctl1.h               |   36 +
+ include/hw/misc/rt500_rstctl.h                |   32 +
+ include/hw/misc/spi_tester.h                  |   32 +
+ include/hw/qdev-clock.h                       |   10 +
+ include/hw/ssi/flexcomm_spi.h                 |   36 +
+ include/hw/ssi/flexspi.h                      |   31 +
+ include/qemu/fifo32.h                         |   28 +
+ tests/qtest/libqtest-single.h                 |  116 ++
+ tests/qtest/libqtest.h                        |   98 ++
+ tests/qtest/reg-utils.h                       |   70 ++
+ hw/arm/rt500.c                                |  329 +++++
+ hw/arm/rt595-evk.c                            |   64 +
+ hw/char/flexcomm_usart.c                      |  288 +++++
+ hw/core/qdev-clock.c                          |    2 +-
+ hw/i2c/flexcomm_i2c.c                         |  250 ++++
+ hw/misc/flexcomm.c                            |  411 +++++++
+ hw/misc/i2c_tester.c                          |  109 ++
+ hw/misc/rt500_clkctl0.c                       |  253 ++++
+ hw/misc/rt500_clkctl1.c                       |  238 ++++
+ hw/misc/rt500_rstctl.c                        |  258 ++++
+ hw/misc/spi_tester.c                          |   67 +
+ hw/ssi/flexcomm_spi.c                         |  422 +++++++
+ hw/ssi/flexspi.c                              |  181 +++
+ hw/ssi/ssi.c                                  |    4 +-
+ system/qtest.c                                |   95 +-
+ tests/qtest/flexcomm-i2c-test.c               |  170 +++
+ tests/qtest/flexcomm-spi-test.c               |  145 +++
+ tests/qtest/flexcomm-test.c                   |   82 ++
+ tests/qtest/flexcomm-usart-test.c             |  316 +++++
+ tests/qtest/libqtest.c                        |  102 +-
+ tests/qtest/rt500-clkctl-test.c               |  195 +++
+ tests/unit/test-fifo.c                        |   50 +
+ hw/arm/Kconfig                                |   12 +
+ hw/arm/meson.build                            |    4 +
+ hw/arm/svd/meson.build                        |   43 +
+ hw/char/meson.build                           |    1 +
+ hw/char/trace-events                          |    8 +
+ hw/i2c/meson.build                            |    1 +
+ hw/i2c/trace-events                           |   10 +
+ hw/misc/Kconfig                               |   21 +
+ hw/misc/meson.build                           |    7 +
+ hw/misc/trace-events                          |   18 +
+ hw/ssi/Kconfig                                |    4 +
+ hw/ssi/meson.build                            |    2 +
+ hw/ssi/trace-events                           |    9 +
+ meson_options.txt                             |    3 +
+ scripts/meson-buildoptions.sh                 |    4 +
+ scripts/svd-gen-header.py                     |  415 +++++++
+ subprojects/.gitignore                        |    1 +
+ subprojects/mcux-soc-svd.wrap                 |    5 +
+ .../packagefiles/mcux-soc-svd/meson.build     |    5 +
+ tests/qtest/meson.build                       |    3 +
+ 71 files changed, 8875 insertions(+), 22 deletions(-)
+ create mode 100644 include/hw/arm/rt500.h
+ create mode 100644 include/hw/arm/svd/flexcomm.h
+ create mode 100644 include/hw/arm/svd/flexcomm_i2c.h
+ create mode 100644 include/hw/arm/svd/flexcomm_spi.h
+ create mode 100644 include/hw/arm/svd/flexcomm_usart.h
+ create mode 100644 include/hw/arm/svd/flexspi.h
+ create mode 100644 include/hw/arm/svd/rt500.h
+ create mode 100644 include/hw/arm/svd/rt500_clkctl0.h
+ create mode 100644 include/hw/arm/svd/rt500_clkctl1.h
+ create mode 100644 include/hw/arm/svd/rt500_rstctl0.h
+ create mode 100644 include/hw/arm/svd/rt500_rstctl1.h
+ create mode 100644 include/hw/char/flexcomm_usart.h
+ create mode 100644 include/hw/i2c/flexcomm_i2c.h
+ create mode 100644 include/hw/misc/flexcomm.h
+ create mode 100644 include/hw/misc/flexcomm_function.h
+ create mode 100644 include/hw/misc/i2c_tester.h
+ create mode 100644 include/hw/misc/rt500_clk_freqs.h
+ create mode 100644 include/hw/misc/rt500_clkctl0.h
+ create mode 100644 include/hw/misc/rt500_clkctl1.h
+ create mode 100644 include/hw/misc/rt500_rstctl.h
+ create mode 100644 include/hw/misc/spi_tester.h
+ create mode 100644 include/hw/ssi/flexcomm_spi.h
+ create mode 100644 include/hw/ssi/flexspi.h
+ create mode 100644 tests/qtest/reg-utils.h
+ create mode 100644 hw/arm/rt500.c
+ create mode 100644 hw/arm/rt595-evk.c
+ create mode 100644 hw/char/flexcomm_usart.c
+ create mode 100644 hw/i2c/flexcomm_i2c.c
+ create mode 100644 hw/misc/flexcomm.c
+ create mode 100644 hw/misc/i2c_tester.c
+ create mode 100644 hw/misc/rt500_clkctl0.c
+ create mode 100644 hw/misc/rt500_clkctl1.c
+ create mode 100644 hw/misc/rt500_rstctl.c
+ create mode 100644 hw/misc/spi_tester.c
+ create mode 100644 hw/ssi/flexcomm_spi.c
+ create mode 100644 hw/ssi/flexspi.c
+ create mode 100644 tests/qtest/flexcomm-i2c-test.c
+ create mode 100644 tests/qtest/flexcomm-spi-test.c
+ create mode 100644 tests/qtest/flexcomm-test.c
+ create mode 100644 tests/qtest/flexcomm-usart-test.c
+ create mode 100644 tests/qtest/rt500-clkctl-test.c
+ create mode 100644 hw/arm/svd/meson.build
+ create mode 100755 scripts/svd-gen-header.py
+ create mode 100644 subprojects/mcux-soc-svd.wrap
+ create mode 100644 subprojects/packagefiles/mcux-soc-svd/meson.build
+
+-- 
+2.47.0.rc0.187.ge670bccf7e-goog
+
 
