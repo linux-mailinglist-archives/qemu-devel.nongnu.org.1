@@ -2,76 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49EC995105
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 16:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FC4995104
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 16:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syAqG-0001ve-Vr; Tue, 08 Oct 2024 10:05:37 -0400
+	id 1syAqB-0001nc-C8; Tue, 08 Oct 2024 10:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syAqC-0001uM-Qa
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:05:33 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syAqB-0005qs-An
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:05:32 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2fac60ab585so59724241fa.0
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 07:05:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728396329; x=1729001129; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2l3ZDx6KfEzG9FBRNLYNkBYdxJ2VQK7XfM57EJm+wcg=;
- b=v5lSHOR4aPKE6Cb/44ryrXwFVlpqvSsgJ06w4WGJiIhXnNlbN6FbqBsAJW7ngijDVc
- 3houyl1p53OqFL2jNJAyGiWVQlz8zZHsgHw3loBnn45fPLE+5P9C//D7W2d2ou7/Blag
- y4SIuc0i0PZ2VIBx3Vdfq1XP7wW/uBTiCiIcubiMQ7P/U0jH1e9ipp/PtXw/enybIAnE
- 4ykJJVaOaZy4eTuV5IJv70WmH+lZs7YLCnuULXplw+msHX8mzUTzRepeBcqxKtNqVz9a
- ijNRcIdCDin7oldvB99H+f+g/0fXgLOobnXzMMjtxlUss4xub3A/BFmwqsjx5JOiqAch
- 4jOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728396329; x=1729001129;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2l3ZDx6KfEzG9FBRNLYNkBYdxJ2VQK7XfM57EJm+wcg=;
- b=Nm8fGSwqx8fe5bH61bW02LFjJedvyU4vck1rGT1xnv8QCDN3GoIRk53qjdFdPVU8My
- XmKUSJYK7xtkM/66dsxM4/AuGgx5Kd4S/HVgkG5yxWfrH0yzR2BxEcydOyodrbodHXJy
- /25epCPKoNp4dbOY2qGYelHIkV2Q7V/K1GtXlpKR2aWdljsb+um9iw22DSJjRwwCC+UC
- y54yhJ+wUb1dWMp4Lp4c2lU6mot4ZLGVzmHzhmgtyyvaIgyhAOeuUY0M4Alg0+CGCFUl
- jIPEzOXS1m3EO9/5Y9gvGOmWhZ+IaUvVTo7Kgi/m820p62c1M5bpmGxhUYx3av1dtf/8
- x2EQ==
-X-Gm-Message-State: AOJu0YyDo3b83X9ozalKIolnJZQuzHD1nHglE70xBHIBOApf3Zt0+JIp
- +tvUNsR22JhBm4xReM6ZbQ6J5U99HsnDFcDr+VMrX5j53DsmiOsJ1DhxfpVw480IvJiU/QrFlb9
- jSLnTiN63gQsv7+z/BIWeJOWjH9PQjCNw9e37AgU5fDL/dkSd
-X-Google-Smtp-Source: AGHT+IHBZUuuXGIdrsRP+B4qX5P0Sr0NlGymNkJEVP1ALv2MaP/eBYA9REXK0nzhHDZeS8C0X8vz1WSBjTAJppTqxcI=
-X-Received: by 2002:a05:651c:19a0:b0:2fa:c49b:d14f with SMTP id
- 38308e7fff4ca-2faf3c509a5mr79361221fa.2.1728396329406; Tue, 08 Oct 2024
- 07:05:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1syAq7-0001dO-6Z; Tue, 08 Oct 2024 10:05:27 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1syAq4-0005p8-Na; Tue, 08 Oct 2024 10:05:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728396325; x=1759932325;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=TFp0mPpSxqq/2y2H4/2NEB/BNEhUBDeWC98LUzcdMXY=;
+ b=S3Es8VfriZtcqHgdzq/Eej1iwAfaWKDGCoSXa2pXEtWO4oPQK74lqc8g
+ sfs1yyfUvY1oLh94IQxwg7QQ1BtifAaK3kt2F9VjjAlkipdxKlNG19+WF
+ oIgbGYdEvDpXGFBhIjqJi54xRGdIbTpTcbQOsxYQYsf/MwFLOUwD2Hm/2
+ tb15zmuQAx8/UDgQyFueAHyYXmJbTlMyspVoBLIL8dne8j6c+Yc3CrTrR
+ 6otkW1QoYCKTdt8vuIhSiGpjw5dkEeeaM2tICdLY/37eHT2Rn+kFUmEH2
+ QBCJeRkIPiUVFMMxGOroTOErVwqIpRxNew9yVC7uLygqAQ2LhR4k7Eqyp g==;
+X-CSE-ConnectionGUID: yEtLIBHQR+O3ChLSCNIHtw==
+X-CSE-MsgGUID: IBiiE+TWSRCqTe7tsCd+Bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="45118654"
+X-IronPort-AV: E=Sophos;i="6.11,187,1725346800"; d="scan'208";a="45118654"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 07:05:18 -0700
+X-CSE-ConnectionGUID: ujiwutJaSy2tW/9h+ckrQw==
+X-CSE-MsgGUID: FJeN987NRpWN/e4jY6hsiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,187,1725346800"; d="scan'208";a="80686769"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 08 Oct 2024 07:05:16 -0700
+Date: Tue, 8 Oct 2024 22:21:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Chuang Xu <xuchuangxclwt@bytedance.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
+ xieyongji@bytedance.com, chaiwen.cc@bytedance.com,
+ qemu-stable@nongnu.org, Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>, Babu Moger <babu.moger@amd.com>
+Subject: Re: [PATCH v5] i386/cpu: fixup number of addressable IDs for logical
+ processors in the physical package
+Message-ID: <ZwU/5yGEuwFlsMLJ@intel.com>
+References: <20241008133326.26767-1-xuchuangxclwt@bytedance.com>
 MIME-Version: 1.0
-References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-6-richard.henderson@linaro.org>
-In-Reply-To: <20241005200600.493604-6-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 8 Oct 2024 15:05:18 +0100
-Message-ID: <CAFEAcA9V5-hbQm6iDP80cH9LQi3zcCp4kHZDp4MG2y25SP_PZw@mail.gmail.com>
-Subject: Re: [PATCH v2 05/21] include/exec/memop: Introduce
- memop_atomicity_bits
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
- linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241008133326.26767-1-xuchuangxclwt@bytedance.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,15 +82,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 5 Oct 2024 at 21:06, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Split out of mmu_lookup.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Hi Chuang,
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Many thanks for the quick action! But we still need some more patience
+to consider AMD case. (Cc Babu)
 
-thanks
--- PMM
+I just realized AMD and Intel have different definitions for this field...
+
+On Tue, Oct 08, 2024 at 09:33:26PM +0800, Chuang Xu wrote:
+> Date: Tue,  8 Oct 2024 21:33:26 +0800
+> From: Chuang Xu <xuchuangxclwt@bytedance.com>
+> Subject: [PATCH v5] i386/cpu: fixup number of addressable IDs for logical
+>  processors in the physical package
+> X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+> 
+> When QEMU is started with:
+> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
+> -smp 180,sockets=2,dies=1,cores=45,threads=2
+> 
+> When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
+> CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
+> executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
+> CPUID.04H.EAX[31:26], which matches the expected result.
+> 
+> As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
+> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
+> integer too. Otherwise we may encounter unexpected results in guest.
+> 
+> For example, when QEMU is started with CLI above and xtopology is disabled,
+> guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
+> calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
+> as the result, even though threads-per-core should actually be 2.
+> 
+> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
+> to solve the unexpected result.
+> 
+> In addition, we introduce max_thread_number_in_package() instead of
+> using pow2ceil() to be compatible with smp and hybrid.
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Acked-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
+> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+> ---
+>  target/i386/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index ff227a8c5c..0749efc52c 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -6462,7 +6462,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          }
+>          *edx = env->features[FEAT_1_EDX];
+>          if (threads_per_pkg > 1) {
+> -            *ebx |= threads_per_pkg << 16;
+> +            *ebx |= 1 << apicid_pkg_offset(&topo_info) << 16;
+
+... I checked AMD's APM: for AMD, this field is "Logical processor
+count", not max addressable IDs number (pls refer APM, vol 3, E.3.2 and
+E.5.1).
+
+Then we need to check the vender here, like this (with a note of
+explanation):
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index ff227a8c5c87..1f144b30e98e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6462,7 +6462,15 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         }
+         *edx = env->features[FEAT_1_EDX];
+         if (threads_per_pkg > 1) {
+-            *ebx |= threads_per_pkg << 16;
++            /*
++             * AMD requires logical processor count, but Intel needs maximum
++             * number of addressable IDs for logical processors per package.
++             */
++            if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
++                *ebx |= threads_per_pkg << 16;
++            } else {
++                *ebx |= 1 << apicid_pkg_offset(&topo_info) << 16;
++            }
++
+             *edx |= CPUID_HT;
+         }
+         if (!cpu->enable_pmu) {
+
+In addition, it's necessary to briefly mention the differences between
+AMD and Intel for this field in the commit message, similar to my comment
+example, and mention that the case you're comparing is on an Intel platform.
+
+Thanks,
+Zhao
+
 
