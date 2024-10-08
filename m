@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957BD995106
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 16:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD529950FC
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 16:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syApV-0001M8-U8; Tue, 08 Oct 2024 10:04:49 -0400
+	id 1syApa-0001O6-R3; Tue, 08 Oct 2024 10:04:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syApP-0001LI-94
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:04:43 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1syApZ-0001Nb-7A
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:04:53 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syApM-0005Xa-Ta
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:04:43 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2f75c56f16aso58581571fa.0
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 07:04:40 -0700 (PDT)
+ id 1syApX-0005aj-PW
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 10:04:52 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2f7657f9f62so56769361fa.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 07:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728396279; x=1729001079; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728396290; x=1729001090; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=o1qSDScTeeLaAzPcPpZKLPt/co+VeoQz2jK30EZXs6M=;
- b=Q+pjcRm/5YXF+m8i1mAZ8G5ZnArGcMlscwVtMf6jibS3ZeBIgKkSPNx6GpzLj32qy+
- GKnoFF3NfopMuRtvq4S8YMbWCIO9cXbGdioMsf4VzA5cdJUgNXpfC0t8YCLY1QuY6zwt
- E+i6pzRMWjYrt0mpdqntf4hq+RQyJk4iDOFX1ZLZVP+cz0H0/XIXEFBy/QPGOfqrzH9F
- WodSScnGJTunJRH7JwEv55HQgIitfLd4rG23vhonutdwoM9qrthAgcwljQXwGdKsHrhx
- JVLt/IYqbCKLiiv+K2oW23kuXUA6cCON3AqGQ9fU1k4xw4G0Z2Qz5DpFb82uFEPfhqIP
- 9F3w==
+ bh=qlZ7kynNNkwRnX79N2/XULKM6T4JjrNnGdfb2QLSUeM=;
+ b=hIlWASSEHSQSgy1PFdJsW1W/IBS+aej5XwI+5eqISghv/yBcsJQsyKFcnK5MqbYAEW
+ qf62sLQro7t/UnLrv1l47RV5SWwQ2jKkyfaPDPErwP8MSA0IAzL77eRQHGmFhIXuddAB
+ vzXGgBu1FbyEuu3kkSbN/L0a3MqxZojghLiYmCZpluVKI5NKnihF3JHAb520W+eJ/9MS
+ p90TT2wHgljg8ZVWtQdIkt8czUrEPS3QQqVWXaVvWcMmdeMYUPAPzsA1wKdGgT9N4D4k
+ zUMmpxkkFoSyQGmXAfuwpiKAI4V6N1VaJtEYYfWurtZibi7HMGWDve/gXUONzY20Rimd
+ jStg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728396279; x=1729001079;
+ d=1e100.net; s=20230601; t=1728396290; x=1729001090;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=o1qSDScTeeLaAzPcPpZKLPt/co+VeoQz2jK30EZXs6M=;
- b=pcZMjHm4x6Gkghi78MOWSBPrXGH0JblkaxzNUFli8snZJxYw7EKGYvrrdhowFRBs6p
- sAftfvtQeEKKR/3ASSMR/bdBu+t7lg8tMZqw0D7q260NSeNdpTiTV5OSYFAk3e1Zu7XN
- JS85u2Jp12g1kwzf+VeybXGeFPsrggZUqGvBeOZv7usP9JVGgBnnkRlWed48s+UB9Uba
- NWggNWKoiVs5ARMd+Mmmy50Iluq7xpYU8vqCVtO840GW8kQ+2ofnG+P4MPlblxp3bfYC
- r9BEymw493ZeFogdo42u1C5cUrZUSVHz3ldujT+/eQ51g4XJrzwnasV9xVNxckAvoo7A
- W/GA==
-X-Gm-Message-State: AOJu0YzbbHWm53Ve87ABl7or7KsH1iBCExLsTjK6fbReQseDP42V2giu
- o7gdn9yhq0FQjoHAnv7+QiHoDnJd2jqCbSn64Xnl0JTXJc4yYOoDK0Gb2GlX+0MsETENUvHQ54x
- Z8NvkeXScW1QPbb0r8NP7gFgIWIs5bSTTk+rTNw==
-X-Google-Smtp-Source: AGHT+IEoUVUPWTcIHGH0LtYVq6h9WCiS/hR9j+IQy7BDdEdvR0uKHoGPapc5HDxL6pSCVaVZMo7DnZ+d7Y0OjB6uDXE=
-X-Received: by 2002:a05:651c:b10:b0:2fa:d1f9:9fb8 with SMTP id
- 38308e7fff4ca-2faf3c0c4cbmr80108671fa.8.1728396277172; Tue, 08 Oct 2024
- 07:04:37 -0700 (PDT)
+ bh=qlZ7kynNNkwRnX79N2/XULKM6T4JjrNnGdfb2QLSUeM=;
+ b=GOKc7LDb753b1/eYlZ+iItYeu012Wtws22YWpO3vrpTDU3ki6MAk8MqITr01fsUtjf
+ emAAFa7ufiQvz2HucFDWrKxiXNVpnzieQPI0SoN8twboyHNrcF3BERW2yfrukzdxTSPs
+ ugBmJh1t+OYeyOMTvPV50BBEN7YD0V8R1m4P7rTT93yPlRaLxJufCo465fhQhkNSnIeP
+ uTiY6mbljwMtjY8OJggkGyRBTkbloJnkSn6ZLRfQxj9UaA5At/8bJ+IE8bdNDl0KnlHf
+ hVCAKY2pAFe7zEaiemvDoFoN06nouZOaP8DK7jVdXFvw8DxjcEiujrGIGFR5E4mg5/y1
+ frYA==
+X-Gm-Message-State: AOJu0Ywi2XquUbPwCZp/dw22Ugbf6CWNjANz6XwlyRq4PNsWUfW5WPK8
+ cSvtZKTSVgKy0dlxJwmoSF8ntXM0JabeY5+8mi3DusblXAR8IgKpyAv+Vu45WgyjSiriXOvSOr2
+ jTClPnh+elncoRSB114YmdayJQsLXCzkzjuD3ng==
+X-Google-Smtp-Source: AGHT+IG5RlYXNeodhVLGDi/7fTEdmhf55OOWgTnAe+5B6xjOHVP5BpVmse45R1Lu4UuYqVvHbs+dftA15Kb4+IdNUoo=
+X-Received: by 2002:a2e:a584:0:b0:2fa:fc3f:d606 with SMTP id
+ 38308e7fff4ca-2fafc3fd7b4mr57722201fa.22.1728396289753; Tue, 08 Oct 2024
+ 07:04:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-2-richard.henderson@linaro.org>
-In-Reply-To: <20241005200600.493604-2-richard.henderson@linaro.org>
+ <20241005200600.493604-3-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-3-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 8 Oct 2024 15:04:25 +0100
-Message-ID: <CAFEAcA-++cf9jxuihQxkdPhXRVHs+HnngPdyXh=ibh1xv3Bvyg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/21] accel/tcg: Assert noreturn from write-only page
- for atomics
+Date: Tue, 8 Oct 2024 15:04:38 +0100
+Message-ID: <CAFEAcA-RP3ap-ofbxFZbLuy0CXeDJQPYSvv2SAkJ-1LvtAQEWw@mail.gmail.com>
+Subject: Re: [PATCH v2 02/21] accel/tcg: Expand tlb_fill for 3 callers
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,31 +90,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Sat, 5 Oct 2024 at 21:06, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> There should be no "just in case"; the page is already
-> in the tlb, and known to be not readable.
->
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  accel/tcg/cputlb.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  accel/tcg/cputlb.c | 33 ++++++++++-----------------------
+>  1 file changed, 10 insertions(+), 23 deletions(-)
 >
-> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index 117b516739..fd6459b695 100644
-> --- a/accel/tcg/cputlb.c
-> +++ b/accel/tcg/cputlb.c
-> @@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
->          /*
->           * Since we don't support reads and writes to different
->           * addresses, and we do have the proper page loaded for
-> -         * write, this shouldn't ever return.  But just in case,
-> -         * handle via stop-the-world.
-> +         * write, this shouldn't ever return.
->           */
-> -        goto stop_the_world;
-> +        g_assert_not_reached();
->      }
->      /* Collect tlb flags for read. */
->      tlb_addr |= tlbe->addr_read;
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
