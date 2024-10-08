@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7D0993C39
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F2A993C36
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:24:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyuD-0004eG-FM; Mon, 07 Oct 2024 21:20:54 -0400
+	id 1sxyuH-0005Jt-9W; Mon, 07 Oct 2024 21:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
- id 1sxysx-0008CI-J4
+ <3m4gEZwUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com>)
+ id 1sxysx-0008CE-JD
  for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:36 -0400
-Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
- id 1sxyss-0000CG-Ps
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:33 -0400
-Received: by mail-pf1-x449.google.com with SMTP id
- d2e1a72fcca58-71dfeda9ac0so1866077b3a.1
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:23 -0700 (PDT)
+ <3m4gEZwUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com>)
+ id 1sxyst-0000CW-74
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 21:19:34 -0400
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-6e2b049b64aso81158297b3.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 18:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1728350363; x=1728955163; darn=nongnu.org;
+ d=google.com; s=20230601; t=1728350364; x=1728955164; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=ohI0GInatBpkkVc6LlITBXAa2f8u1GNul4wGD6o5kbw=;
- b=0rSL9sYhIKVm/xcP036gFjJ38oSIMXgXDHlZUNXIz4M2K8wHivHlEp7LRBarCHzD4J
- OmoVRMD/qJEn8rqnEkwfQa0f3kigbBBVKY4CMbiB++JSdEAVoCBMkbtxiVtXEPgWF0NO
- tqswvX8g9jeNPnuBNA84sNC0oOepRWggVs8jz2twPcGpmsZZ1vH+BGyu9RF4zjMyCzHr
- vAj5zWJk87Q6wysAhYRolVZWvt70s59I9csy0VI0oezUw8WndS1WsXvMhkTGIMPkmspp
- ZL9J8OoGrCKlVJ4dFxmfqghuF54CUlKbLHIMR4ZVOEiNW+exs+LGDhqVTrR0RVGVR0i4
- lWEg==
+ bh=UWggVGt8pbE9ZLsUZv4jH44X5yOt44e5jHCMlGNjp7Y=;
+ b=a7goeXj4xpd6QVZucbFLqeoo/qPRNmaftLcNPO5RqWa4dtcwb5fvbAOo/gFAuj1eI8
+ yTqXbWYK5kULLpevzOiSJCy8RTEKyXi1vOw+k/9c9u4ChJTA41b+fuXAaVk8PZCGjCe9
+ Z6dCam6aESV/eqE8L/a0RvwPlAZrgKpC+SNemGQA7wJAHol0r3R/B/YNyDrAS2/NXMiM
+ 1Q3uY3+F4dRSf+OSSBeyDpJR7ztZb+3gzaXttRYqoYxFv4CQ+3LdPhtStBTOu1md9Oui
+ 1VgEYaekDdL1auVUopeUaVbrUDpGk6s9IoAbnQMUXqH5tsNXyvpsVvHK1PRJ/tIT9ylI
+ Gi6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728350363; x=1728955163;
+ d=1e100.net; s=20230601; t=1728350364; x=1728955164;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ohI0GInatBpkkVc6LlITBXAa2f8u1GNul4wGD6o5kbw=;
- b=UEKRgPMkBAaTYG/t85t2s1bqIW/u/rJZDxmYjIkDfE/eOs/bc9uRF+dhter8txpQPL
- ky1ud0w4+60KRpy8J6Z2yhjai1VN5XY2U2hLkCC9dD0dMfW33MmBcSPhM8qs50Ui4BJx
- zNNMOgDmuC6T/4Uy64LQfJ5Zdr3Jefqmq1CyWqu5u0Om1MdHj0jh11AapXOphKCm2XZ1
- I1gNRFcS+5LsIgXMVTUzqFqJ0IlWnQRJXKKYubwVMX4V6QRXBCcJcmcVe6+PP5dcmM61
- iIPDYqEpB12OvEeyqPjaNa+L8nU2SbrpYRCWmmAHZsMVPa2NZ2c2XygnBYP7dnfhlOt7
- d8Vg==
-X-Gm-Message-State: AOJu0Yy/LegDmbSxLNCq4XSYXjJmTCO8FkF0MmVYiQIaA8GtlsERmsPZ
- JMRgq3VAeuN3YO0yAlkF9NT23kS347DAuPgqHlEbODHNwtd43dtpfIYNnkIx2f+oXE1FveefbNI
- /MF1e42I2D8Vs3jDDkXJl2F/0mq0EQA1by2R1QeXhn4rz8ZTMUjhI5fhCEruuBqIHv32pMiovJA
- Mw6F/DNTKsAdVfzTJZMHHuDuUSbg==
-X-Google-Smtp-Source: AGHT+IHfJoafZ1Gh1mSTL3YA6IgQyHpvaYVZtycBjAalruHqjj2i1J3dSMeXAFCXYRQlu7eKJ3STxUEy6Q==
+ bh=UWggVGt8pbE9ZLsUZv4jH44X5yOt44e5jHCMlGNjp7Y=;
+ b=mZ+Yz8s1krXk77laXY97zVaKm9+WD7gIgTDatbze/B2QZnod5q9vCnzekqB0rO5/QF
+ H9GMF2HAeEu7nJvHNyySIqQDjvtsN9OhNU0J0M5dcCTq9MkcaGlw00AjIeOrFgiUtuPX
+ E9+7s6XkayJGYAMfqBPsmjd4vL3xOrkNk3DJGewZ14X43v4LLePCinUbhy9kSHe81YMk
+ xH0VqhmkHuoRJC5FNUMIHsPHHCgWBSHGgH+6KBzknPa8c+ncTc91JyUza8/yJUGvCfmH
+ RqUZ/weEtJSrkS204OkgFqjiwyMl1RNXHqMUkPhV4M71CEsimhHkBhpBrKGMSxdbMoIb
+ huFg==
+X-Gm-Message-State: AOJu0YzGkHnS7f6a2VuKYVDhnr6wyBBs+CyPJpsCwioV1BubJ2d+dBQ4
+ FC9epnrthHjVOM5fTOOoaup9BFsWHR/zsX1wefwzKHB97DviRGli8cRh825MLFelAJ9uWyOtW9r
+ +zFkqqsowIn7QcJq1FuBm+tRtvOh0FB8gMkCoNH6TutT+lhRPjQ6/fooKO5+I8tTwfB8urc0esK
+ jz26cEWfZiWZBQfgKXMp2KyyIhpQ==
+X-Google-Smtp-Source: AGHT+IEnKoproXBmyAwcgsF2f2+HISyD0A+czH81es2a+FVh2KqZfn9xb+61J5CW4nGtkj6QDLnqUisx7g==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:6a00:91db:b0:71e:401:6580
- with SMTP id
- d2e1a72fcca58-71e040166f7mr10095b3a.6.1728350361548; Mon, 07 Oct 2024
- 18:19:21 -0700 (PDT)
-Date: Mon,  7 Oct 2024 18:18:41 -0700
+ (user=tavip job=sendgmr) by 2002:a25:26d0:0:b0:e17:8e73:866c with
+ SMTP id
+ 3f1490d57ef6-e2893945130mr35092276.10.1728350363413; Mon, 07 Oct 2024
+ 18:19:23 -0700 (PDT)
+Date: Mon,  7 Oct 2024 18:18:42 -0700
 In-Reply-To: <20241008011852.1439154-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20241008011852.1439154-1-tavip@google.com>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241008011852.1439154-16-tavip@google.com>
-Subject: [PATCH v2 15/25] tests/qtest: add register access macros and functions
+Message-ID: <20241008011852.1439154-17-tavip@google.com>
+Subject: [PATCH v2 16/25] system/qtest: add APIS to check for memory access
+ failures
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -70,9 +71,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, thuth@redhat.com, philmd@linaro.org, jsnow@redhat.com, 
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
- envelope-from=3mYgEZwUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com;
- helo=mail-pf1-x449.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3m4gEZwUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -95,94 +96,423 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add utility macros for accessing register or register bit fields in
-tests, e.g.:
-
-  REG32_WRITE(FLEXCOMM, PSELID, persel);
-  g_assert(REG32_READ_FIELD(FLEXCOMM, PSELID, PERSEL) == persel);
+Add read*/write*_fail qtest APIs to check for memory access failures.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- tests/qtest/reg-utils.h | 70 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
- create mode 100644 tests/qtest/reg-utils.h
+ tests/qtest/libqtest-single.h | 92 +++++++++++++++++++++++++++++++++++
+ tests/qtest/libqtest.h        | 76 +++++++++++++++++++++++++++++
+ system/qtest.c                | 44 ++++++++++-------
+ tests/qtest/libqtest.c        | 73 ++++++++++++++++++++++++++-
+ 4 files changed, 265 insertions(+), 20 deletions(-)
 
-diff --git a/tests/qtest/reg-utils.h b/tests/qtest/reg-utils.h
-new file mode 100644
-index 0000000000..e09aaf3333
---- /dev/null
-+++ b/tests/qtest/reg-utils.h
-@@ -0,0 +1,70 @@
-+/*
-+ * Register access utilities for device tests.
+diff --git a/tests/qtest/libqtest-single.h b/tests/qtest/libqtest-single.h
+index 851724cbcb..c22037c8b2 100644
+--- a/tests/qtest/libqtest-single.h
++++ b/tests/qtest/libqtest-single.h
+@@ -265,6 +265,98 @@ static inline uint64_t readq(uint64_t addr)
+     return qtest_readq(global_qtest, addr);
+ }
+ 
++/**
++ * writeb_fail:
++ * @addr: Guest address to write to.
++ * @value: Value being written.
 + *
-+ * Copyright (C) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
++ * Writes an 8-bit value to memory expecting a failure.
 + */
-+#ifndef _REG_UTILS_H
-+#define _REG_UTILS_H
++static inline void writeb_fail(uint64_t addr, uint8_t value)
++{
++    qtest_writeb_fail(global_qtest, addr, value);
++}
 +
-+#include "libqtest-single.h"
-+#include "hw/registerfields.h"
++/**
++ * writew_fail:
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 16-bit value to memory expecting a failure.
++ */
++static inline void writew_fail(uint64_t addr, uint16_t value)
++{
++    qtest_writew_fail(global_qtest, addr, value);
++}
 +
-+#ifdef DEBUG_REG
-+#define debug(fmt, args...) fprintf(stderr, fmt, ## args)
-+#else
-+#define debug(fmt, args...)
-+#endif
++/**
++ * writel_fail:
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 32-bit value to memory expecting a failure.
++ */
++static inline void writel_fail(uint64_t addr, uint32_t value)
++{
++    qtest_writel_fail(global_qtest, addr, value);
++}
 +
-+#define _REG_OFF(mod, reg) (A_##mod##_##reg)
++/**
++ * writeq_fail:
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 64-bit value to memory expecting a failure.
++ */
++static inline void writeq_fail(uint64_t addr, uint64_t value)
++{
++    qtest_writeq_fail(global_qtest, addr, value);
++}
 +
-+#define REG32_READ(mod, reg)                                            \
-+    ({                                                                  \
-+        uint32_t value;                                                 \
-+        value = readl(mod##_BASE + _REG_OFF(mod, reg));                 \
-+        debug("[%s] -> %08x\n", #reg, value);                           \
-+        value;                                                          \
-+    })
++/**
++ * readb_fail:
++ * @addr: Guest address to read from.
++ *
++ * Reads an 8-bit value from memory expecting a failure.
++ */
++static inline void readb_fail(uint64_t addr)
++{
++    qtest_readb_fail(global_qtest, addr);
++}
 +
-+#define REG32_WRITE(mod, reg, value)                                    \
-+    do {                                                                \
-+        debug("[%s] <- %08x\n", #reg, value);                           \
-+        writel(mod##_BASE + _REG_OFF(mod, reg), value);                 \
-+    } while (0)
++/**
++ * readw_fail:
++ * @addr: Guest address to read from.
++ *
++ * Reads a 16-bit value from memory expecting a failure.
++ */
++static inline void readw_fail(uint64_t addr)
++{
++    qtest_readw_fail(global_qtest, addr);
++}
 +
-+#define REG_FIELD_VAL(v, mod, reg, field)                               \
-+    FIELD_EX32(v, mod##_##reg, field)                                   \
++/**
++ * readl_fail:
++ * @addr: Guest address to read from.
++ *
++ * Reads a 32-bit value from memory expecting a failure.
++ */
++static inline void readl_fail(uint64_t addr)
++{
++    qtest_readl_fail(global_qtest, addr);
++}
 +
-+#define REG32_READ_FIELD(mod, reg, field)                   \
-+    REG_FIELD_VAL(REG32_READ(mod, reg), mod, reg, field)
++/**
++ * readq_fail:
++ * @addr: Guest address to read from.
++ *
++ * Reads a 64-bit value from memory expecting a failure.
++ */
++static inline void readq_fail(uint64_t addr)
++{
++    qtest_readq_fail(global_qtest, addr);
++}
 +
-+#define REG32_WRITE_FIELD(mod, reg, field, val)                         \
-+    do {                                                                \
-+        uint32_t _tmp = REG32_READ(mod, reg);                           \
-+        _tmp = FIELD_DP32(_tmp, mod##_##reg, field, val);               \
-+        REG32_WRITE(mod, reg, _tmp);                                    \
-+    } while (0)
+ /**
+  * memread:
+  * @addr: Guest address to read from.
+diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+index beb96b18eb..f9bbeb2e60 100644
+--- a/tests/qtest/libqtest.h
++++ b/tests/qtest/libqtest.h
+@@ -549,6 +549,82 @@ uint32_t qtest_readl(QTestState *s, uint64_t addr);
+  */
+ uint64_t qtest_readq(QTestState *s, uint64_t addr);
+ 
++/**
++ * qtest_writeb_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes an 8-bit value to memory expecting a failure.
++ */
++void qtest_writeb_fail(QTestState *s, uint64_t addr, uint8_t value);
 +
-+#define REG32_WRITE_FIELD_NOUPDATE(mod, reg, field, val)                \
-+    do {                                                                \
-+        uint32_t _tmp = FIELD_DP32(0, mod##_##reg, field, val);         \
-+        REG32_WRITE(mod, reg, _tmp);                                    \
-+    } while (0)
++/**
++ * qtest_writew_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 16-bit value to memory expecting a failure.
++ */
++void qtest_writew_fail(QTestState *s, uint64_t addr, uint16_t value);
 +
-+#define WAIT_REG32_FIELD(ns, mod, reg, field, val)                      \
-+    do {                                                                \
-+        clock_step(ns);                                                 \
-+        g_assert_cmpuint(REG32_READ_FIELD(mod, reg, field), ==, val);   \
-+    } while (0)
++/**
++ * qtest_writel_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 32-bit value to memory expecting a failure.
++ */
++void qtest_writel_fail(QTestState *s, uint64_t addr, uint32_t value);
 +
-+#define REG32_READ_FAIL(mod, reg) \
-+    readl_fail(mod##_BASE + _REG_OFF(mod, reg))
++/**
++ * qtest_writeq_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to write to.
++ * @value: Value being written.
++ *
++ * Writes a 64-bit value to memory expecting a failure.
++ */
++void qtest_writeq_fail(QTestState *s, uint64_t addr, uint64_t value);
 +
-+#define REG32_WRITE_FAIL(mod, reg, value) \
-+    writel_fail(mod##_BASE + _REG_OFF(mod, reg), value)
++/**
++ * qtest_readb_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to read from.
++ *
++ * Reads an 8-bit value from memory expecting a failure.
++ */
++void qtest_readb_fail(QTestState *s, uint64_t addr);
 +
-+#endif /* _REG_UTILS_H */
++/**
++ * qtest_readw_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to read from.
++ *
++ * Reads a 16-bit value from memory expecting a failure.
++ */
++void qtest_readw_fail(QTestState *s, uint64_t addr);
++
++/**
++ * qtest_readl_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to read from.
++ *
++ * Reads a 32-bit value from memory expecting a failure.
++ */
++void qtest_readl_fail(QTestState *s, uint64_t addr);
++
++/**
++ * qtest_readq_fail:
++ * @s: #QTestState instance to operate on.
++ * @addr: Guest address to read from.
++ *
++ * Reads a 64-bit value from memory expecting a failure.
++ */
++void qtest_readq_fail(QTestState *s, uint64_t addr);
++
+ /**
+  * qtest_memread:
+  * @s: #QTestState instance to operate on.
+diff --git a/system/qtest.c b/system/qtest.c
+index 12703a2045..95bb80a2bc 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -514,26 +514,30 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+ 
+         if (words[0][5] == 'b') {
+             uint8_t data = value;
+-            address_space_write(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                                &data, 1);
++            ret = address_space_write(first_cpu->as, addr,
++                                      MEMTXATTRS_UNSPECIFIED, &data, 1);
+         } else if (words[0][5] == 'w') {
+             uint16_t data = value;
+             tswap16s(&data);
+-            address_space_write(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                                &data, 2);
++            ret = address_space_write(first_cpu->as, addr,
++                                      MEMTXATTRS_UNSPECIFIED, &data, 2);
+         } else if (words[0][5] == 'l') {
+             uint32_t data = value;
+             tswap32s(&data);
+-            address_space_write(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                                &data, 4);
++            ret = address_space_write(first_cpu->as, addr,
++                                      MEMTXATTRS_UNSPECIFIED, &data, 4);
+         } else if (words[0][5] == 'q') {
+             uint64_t data = value;
+             tswap64s(&data);
+-            address_space_write(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                                &data, 8);
++            ret = address_space_write(first_cpu->as, addr,
++                                      MEMTXATTRS_UNSPECIFIED, &data, 8);
+         }
+         qtest_send_prefix(chr);
+-        qtest_send(chr, "OK\n");
++        if (ret == MEMTX_OK) {
++            qtest_send(chr, "OK\n");
++        } else {
++            qtest_send(chr, "FAIL\n");
++        }
+     } else if (strcmp(words[0], "readb") == 0 ||
+                strcmp(words[0], "readw") == 0 ||
+                strcmp(words[0], "readl") == 0 ||
+@@ -548,26 +552,30 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+ 
+         if (words[0][4] == 'b') {
+             uint8_t data;
+-            address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                               &data, 1);
++            ret = address_space_read(first_cpu->as, addr,
++                                     MEMTXATTRS_UNSPECIFIED, &data, 1);
+             value = data;
+         } else if (words[0][4] == 'w') {
+             uint16_t data;
+-            address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                               &data, 2);
++            ret = address_space_read(first_cpu->as, addr,
++                                     MEMTXATTRS_UNSPECIFIED, &data, 2);
+             value = tswap16(data);
+         } else if (words[0][4] == 'l') {
+             uint32_t data;
+-            address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                               &data, 4);
++            ret = address_space_read(first_cpu->as, addr,
++                                     MEMTXATTRS_UNSPECIFIED, &data, 4);
+             value = tswap32(data);
+         } else if (words[0][4] == 'q') {
+-            address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+-                               &value, 8);
++            ret = address_space_read(first_cpu->as, addr,
++                                     MEMTXATTRS_UNSPECIFIED, &value, 8);
+             tswap64s(&value);
+         }
+         qtest_send_prefix(chr);
+-        qtest_sendf(chr, "OK 0x%016" PRIx64 "\n", value);
++        if (ret == MEMTX_OK) {
++            qtest_sendf(chr, "OK 0x%016" PRIx64 "\n", value);
++        } else {
++            qtest_sendf(chr, "FAIL\n");
++        }
+     } else if (strcmp(words[0], "read") == 0) {
+         g_autoptr(GString) enc = NULL;
+         uint64_t addr, len;
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index 9d07de1fbd..4055d6b953 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -666,7 +666,7 @@ static GString *qtest_client_socket_recv_line(QTestState *s)
+     return line;
+ }
+ 
+-static gchar **qtest_rsp_args(QTestState *s, int expected_args)
++static gchar **_qtest_rsp_args(QTestState *s, int expected_args, bool fail)
+ {
+     GString *line;
+     gchar **words;
+@@ -700,7 +700,11 @@ redo:
+     }
+ 
+     g_assert(words[0] != NULL);
+-    g_assert_cmpstr(words[0], ==, "OK");
++    if (fail) {
++        g_assert_cmpstr(words[0], ==, "FAIL");
++    } else {
++        g_assert_cmpstr(words[0], ==, "OK");
++    }
+ 
+     for (i = 0; i < expected_args; i++) {
+         g_assert(words[i] != NULL);
+@@ -709,6 +713,11 @@ redo:
+     return words;
+ }
+ 
++static gchar **qtest_rsp_args(QTestState *s, int expected_args)
++{
++    return _qtest_rsp_args(s, expected_args, false);
++}
++
+ static void qtest_rsp(QTestState *s)
+ {
+     gchar **words = qtest_rsp_args(s, 0);
+@@ -716,6 +725,13 @@ static void qtest_rsp(QTestState *s)
+     g_strfreev(words);
+ }
+ 
++static void qtest_rsp_fail(QTestState *s)
++{
++    gchar **words = _qtest_rsp_args(s, 0, true);
++
++    g_strfreev(words);
++}
++
+ static int qtest_query_target_endianness(QTestState *s)
+ {
+     gchar **args;
+@@ -1103,6 +1119,13 @@ static void qtest_write(QTestState *s, const char *cmd, uint64_t addr,
+     qtest_rsp(s);
+ }
+ 
++static void qtest_write_fail(QTestState *s, const char *cmd, uint64_t addr,
++                             uint64_t value)
++{
++    qtest_sendf(s, "%s 0x%" PRIx64 " 0x%" PRIx64 "\n", cmd, addr, value);
++    qtest_rsp_fail(s);
++}
++
+ void qtest_writeb(QTestState *s, uint64_t addr, uint8_t value)
+ {
+     qtest_write(s, "writeb", addr, value);
+@@ -1123,6 +1146,26 @@ void qtest_writeq(QTestState *s, uint64_t addr, uint64_t value)
+     qtest_write(s, "writeq", addr, value);
+ }
+ 
++void qtest_writeb_fail(QTestState *s, uint64_t addr, uint8_t value)
++{
++    qtest_write_fail(s, "writeb", addr, value);
++}
++
++void qtest_writew_fail(QTestState *s, uint64_t addr, uint16_t value)
++{
++    qtest_write_fail(s, "writew", addr, value);
++}
++
++void qtest_writel_fail(QTestState *s, uint64_t addr, uint32_t value)
++{
++    qtest_write_fail(s, "writel", addr, value);
++}
++
++void qtest_writeq_fail(QTestState *s, uint64_t addr, uint64_t value)
++{
++    qtest_write_fail(s, "writeq", addr, value);
++}
++
+ static uint64_t qtest_read(QTestState *s, const char *cmd, uint64_t addr)
+ {
+     gchar **args;
+@@ -1138,6 +1181,12 @@ static uint64_t qtest_read(QTestState *s, const char *cmd, uint64_t addr)
+     return value;
+ }
+ 
++static void qtest_read_fail(QTestState *s, const char *cmd, uint64_t addr)
++{
++    qtest_sendf(s, "%s 0x%" PRIx64 "\n", cmd, addr);
++    qtest_rsp_fail(s);
++}
++
+ uint8_t qtest_readb(QTestState *s, uint64_t addr)
+ {
+     return qtest_read(s, "readb", addr);
+@@ -1158,6 +1207,26 @@ uint64_t qtest_readq(QTestState *s, uint64_t addr)
+     return qtest_read(s, "readq", addr);
+ }
+ 
++void qtest_readb_fail(QTestState *s, uint64_t addr)
++{
++    qtest_read_fail(s, "readb", addr);
++}
++
++void qtest_readw_fail(QTestState *s, uint64_t addr)
++{
++    qtest_read_fail(s, "readw", addr);
++}
++
++void qtest_readl_fail(QTestState *s, uint64_t addr)
++{
++    qtest_read_fail(s, "readl", addr);
++}
++
++void qtest_readq_fail(QTestState *s, uint64_t addr)
++{
++    qtest_read(s, "readq", addr);
++}
++
+ static int hex2nib(char ch)
+ {
+     if (ch >= '0' && ch <= '9') {
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
