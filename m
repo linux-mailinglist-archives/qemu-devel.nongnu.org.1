@@ -2,85 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E78B993FE9
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 09:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FC2994020
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 09:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy4tU-0005ih-R0; Tue, 08 Oct 2024 03:44:32 -0400
+	id 1sy56B-0008AI-TX; Tue, 08 Oct 2024 03:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sy4tR-0005bx-Ez; Tue, 08 Oct 2024 03:44:29 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sy4tG-0004A9-KW; Tue, 08 Oct 2024 03:44:29 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-20c593d6b1cso2495245ad.0; 
- Tue, 08 Oct 2024 00:44:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728373455; x=1728978255; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6fvPiUFqeTwsIjYhM+dD6WWD6sdYIbwRbf+mb8y/PZ4=;
- b=fuA4CJ1nVqe0jd/j6o/xtPN4jMWpNeVosK5mXxqYcME73OY0KROr/vnFKEluSLl4Aq
- VbvuZySX+81LV1RxaK3rAijRx7pShSyNf2Bs/5Rkoxaf/LZcHTfL9vo1cB10T5kcAUBS
- vGwqYi0+TSSegXasmeHBdYJxVTBAK/oijbXww1F/QjlO7lqb3CdR6e8N2zwA2XY7pU3v
- BZJp3/DkkfEf//o8znXZ1pucyiM+PfoUVYLBsK3JbSdyQcBVYitZ7xtg+OGSxwynZwXH
- QQvJiH8D1+q4h3nvopt7lWA4/iHTF+mPfbdB8vNIZxF+oWFtnwGX+SFLpltwgSb1hFc4
- vgDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728373455; x=1728978255;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=6fvPiUFqeTwsIjYhM+dD6WWD6sdYIbwRbf+mb8y/PZ4=;
- b=BMNGQWRE+TdGfTn7oy5ffxG/9Iz2EUCA3nYj9QffIq6ybvZm6ij/l8tVcK/tBmeEPo
- 5JsjxMdH+Emdwa2IHBxRsFl0gpAnbKqj7TCcGgdxIVeIBwX9RsRtwmOyCfbdqewVn7TG
- dmurPyLC9npiwIBVfZNcO8roha4nEuQecIocTdg0Xu01fcspoIeNNE0tN75GjAUXWUjg
- ihNBsKyKGtunfgrbJXUSgMTGkInO8TimO3vLG8Hv2O004OaEVjFxrp/2OV6gxaDeuORG
- 8uTg2LXu2hSi2m4P8aqCyg8B9R7Vex6JkPtgr/Y0iKteB/3jkxoiBwwOSDnHFFek1mNR
- L5nA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDgRvG2kJfujdX+yf6kCq2FK4CB9wapDAfVZRAQozIfxvQYH7ePzzxYoQTqSFr9Akdf7zvSLuHV8qz@nongnu.org
-X-Gm-Message-State: AOJu0Yy0ShwV+13s3aTPwhzMzhMojzFoibgxN0+2HiGUTSe55A4VrMkG
- yYofNqzwuJ8jEFM64+hszU4slTbAT+HCaTMJDsYSh1KsgM5IU1fF
-X-Google-Smtp-Source: AGHT+IEEZkj0P7044ctWPwXSHiDxqJyMSfRoMLQCSYSAAweL4upvDnN84AcVyWWhtqULROonJ58DKQ==
-X-Received: by 2002:a17:902:ebcd:b0:203:a030:d0a1 with SMTP id
- d9443c01a7336-20bff18cadfmr278881505ad.58.1728373455279; 
- Tue, 08 Oct 2024 00:44:15 -0700 (PDT)
-Received: from localhost ([118.210.103.101]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c5bea1e94sm776865ad.92.2024.10.08.00.44.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Oct 2024 00:44:14 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy569-00089Z-Ne
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:57:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sy567-0005bf-WA
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 03:57:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728374254;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=549Tiy8Y+tC10lhcSwCbkO0irpCNNvJ+QcGsoT9yqw8=;
+ b=Zg9IgOUDRGdHiLz50JViWuacWkTkSgviQA3smDmFOra3VteNjhLlOS+KKbjz+qz/6UHE6N
+ X9k/GLNqly6mSgMs0cQp/o4EMF9edovnGgBBrm5E0sqZeYj2oF8/JRqxbdVLYhF8naMP2Z
+ roNSQQJBX5zjVkBZ4qGoKa+1OlNl4vU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-nnDn-o5WOuSOjmPdSJfniA-1; Tue,
+ 08 Oct 2024 03:57:29 -0400
+X-MC-Unique: nnDn-o5WOuSOjmPdSJfniA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D81119560A3; Tue,  8 Oct 2024 07:57:28 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.61])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1DC5B300018D; Tue,  8 Oct 2024 07:57:25 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org,
+	berrange@redhat.com
+Cc: kris.conklin@seagate.com, jonathan.henze@seagate.com,
+ evan.burgess@seagate.com, peter.maydell@linaro.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v5 00/16] hw/misc/aspeed_hace: Fix SG Accumulative Hash
+ Calculations
+Date: Tue,  8 Oct 2024 09:57:07 +0200
+Message-ID: <20241008075724.2772149-1-clg@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Oct 2024 17:44:08 +1000
-Message-Id: <D4Q994U5GSYV.2BL8PTP7YQZTG@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <clg@kaod.org>,
- <calebs@linux.ibm.com>, <chalapathi.v@ibm.com>, <saif.abrar@linux.ibm.com>,
- <dantan@linux.vnet.ibm.com>, <milesg@linux.ibm.com>, <philmd@linaro.org>,
- <alistair@alistair23.me>
-Subject: Re: [PATCH v3 1/3] MAINTAINERS: Cover PowerPC SPI model in PowerNV
- section
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Chalapathi V" <chalapathi.v@linux.ibm.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.18.2
-References: <20240918165045.21298-1-chalapathi.v@linux.ibm.com>
- <20240918165045.21298-2-chalapathi.v@linux.ibm.com>
-In-Reply-To: <20240918165045.21298-2-chalapathi.v@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,41 +80,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Sep 19, 2024 at 2:50 AM AEST, Chalapathi V wrote:
-> From: "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org>
->
-> It is unfair to let the PowerNV SPI model to the SSI
-> maintainers. Also include the PowerNV ones.
->
-> Fixes: 29318db133 ("hw/ssi: Add SPI model")
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-> ---
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ffacd60f40..b11c4edaf0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1541,8 +1541,10 @@ F: hw/ppc/pnv*
->  F: hw/intc/pnv*
->  F: hw/intc/xics_pnv.c
->  F: hw/pci-host/pnv*
-> +F: hw/ssi/pnv_spi.c
->  F: include/hw/ppc/pnv*
->  F: include/hw/pci-host/pnv*
-> +F: hw/ssi/pnv_spi*
+Hello,
 
-Should be include/hw/ssi/pnv_spi*
+This is a resping of Alejandro's series fixing SG Accumulative Hash
+Calculations. See [1] for more details. 
 
-Otherwise,
+The goal of this patch series is to fix accumulative hashing support
+in the Aspeed HACE module. The issue that stemmed this patch was a
+failure to boot an OpenBMC image using the "ast2600-evb" machine. The
+U-boot 2019.04 loader failed to verify image hashes.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+These incorrect image hashes given by the HACE to the U-boot guest are
+due to an oversight in the HACE module. Previously when operating in
+scatter-gather accumulative mode, the HACE would cache the address
+provided by the guest which contained the source data. However, there
+was no deep copy, so when HACE generated the digest upon the reception
+of the final accumulative chunk the digest was incorrect, as the
+addresses provided had their regions overwritten by that time.
 
->  F: pc-bios/skiboot.lid
->  F: tests/qtest/pnv*
->  F: tests/functional/test_ppc64_powernv.py
+This fix consists of two main steps:
+* Add an accumulative hashing function to the qcrypto library
+* Modify the HACE module to use the accumulative hashing functions
+
+All the crypto library backends (nettle, gnutls, etc.) support
+accumulative hashing, so it was trivial to create wrappers for those
+functions.
+
+Changes in v5 (clg):
+
+ - Changed documentation "non-zero on error" -> "-1 on error" 
+ - Dropped qcrypto_hash_supports() in qcrypto_glib_hash_new()
+ - Removed superfluous cast (GChecksum *) in qcrypto_glib_hash_free()
+ - Reworked qcrypto_glib_hash_finalize() 
+ - Dropped qcrypto_hash_supports() in qcrypto_gcrypt_hash_new()
+ - Reworked qcrypto_gcrypt_hash_finalize()
+ - Handled gcry_md_open() errors in qcrypto_gcrypt_hash_new()
+ - Dropped qcrypto_hash_supports() in qcrypto_gnutls_hash_new()
+ - Reworked qcrypto_gnutls_hash_finalize()
+ - Handled gnutls_hash_init() errors in qcrypto_gnutls_hash_new()
+ - Replaced gnutls_hash_deinit() by gnutls_hash_output() in
+   qcrypto_gnutls_hash_finalize()
+ - Freed resources with gnutls_hash_deinit() in qcrypto_gnutls_hash_free() 
+ - Dropped qcrypto_hash_supports() in qcrypto_nettle_hash_new() 
+ - Split iov changes from original patch
+ - Handled qcrypto_afalg_hash_ctx_new() errors in qcrypto_afalg_hash_new()
+ - Freed alg_name in qcrypto_afalg_hash_new()
+ - Reworked qcrypto_afalg_recv_from_kernel()
+ - Split iov changes from original patch 
+ - Reworked qcrypto_hash_bytesv() error handling
+ - Used hash->driver int qcrypto_hash_new(), qcrypto_hash_free() qcrypto_hash_updatev()
+ - Introduced qcrypto_hash_supports() check in  qcrypto_hash_new()
+ - Introduced g_autofree variables in qcrypto_hash_finalize_digest()
+   and qcrypto_hash_finalize_base64()
+ - Re-arrranged code in qcrypto_hash_digestv() and qcrypto_hash_digest()
+ - Improved test_hash_accumulate() with g_autofree variables 
+ - Fixed spelling in commit log 
+ - Checkpatch fixes 
+
+Changes in V4:
+* Restructured patches so unit tests pass for each independently.
+* Freeing hash context is now a void function.
+* Added autoptr cleanup function definition for qcrypto_hash_free.
+* Separated qcrypto_hash_update into qcrypto_hash_update and
+  qcrypto_hash_updatev.
+* Changed public hash functions to use afalg implementation correctly if support
+  is enabled.
+* Fixed accumulative hashing in afalg driver (pass MSG_MORE socket flag).
+
+Changes in V3:
+* Reworked crypto hash API with comments from Daniel
+  * Creation/Deletion of contexts, updating, and finalizing
+  * Modified existing API functions to use the new 4 main core functions
+  * Added test for accumulative hashing
+  * Added afalg driver implementation
+* Fixed bug in HACE module where hash context fails to allocate,
+  causing the HACE internal state to be incorrect and segfault.
+
+Changes in V2:
+* Fixed error checking bug in libgcrypt crypto backend of
+  accumulate_bytesv
+
+Alejandro Zeise (16):
+  crypto: accumulative hashing API
+  crypto/hash-glib: Implement new hash API
+  crypto/hash-gcrypt: Implement new hash API
+  crypto/hash-gnutls: Implement new hash API
+  crypto/hash-nettle: Implement new hash API
+  util/iov: Introduce iov_send_recv_with_flags()
+  crypto/hash-afalg: Implement new hash API
+  crypto/hash: Implement and use new hash API
+  tests/unit/test-crypto-hash: accumulative hashing
+  crypto/hash-glib: Remove old hash API functions
+  crypto/hash-gcrypt: Remove old hash API functions
+  crypto/hash-gnutls: Remove old hash API functions
+  crypto/hash-nettle: Remove old hash API functions
+  crypto/hash-afalg: Remove old hash API functions
+  crypto/hashpriv: Remove old hash API function
+  hw/misc/aspeed_hace: Fix SG Accumulative hashing
+
+ crypto/hashpriv.h             |  13 ++-
+ include/crypto/hash.h         | 119 ++++++++++++++++++++++++
+ include/hw/misc/aspeed_hace.h |   4 +
+ include/qemu/iov.h            |  27 ++++++
+ crypto/hash-afalg.c           | 167 ++++++++++++++++++++++++----------
+ crypto/hash-gcrypt.c          | 112 +++++++++++++----------
+ crypto/hash-glib.c            |  92 +++++++++++--------
+ crypto/hash-gnutls.c          |  97 +++++++++++++-------
+ crypto/hash-nettle.c          |  81 ++++++++++-------
+ crypto/hash.c                 | 161 ++++++++++++++++++++++++++------
+ hw/misc/aspeed_hace.c         |  96 ++++++++++---------
+ tests/unit/test-crypto-hash.c |  46 ++++++++++
+ util/iov.c                    |  25 +++--
+ 13 files changed, 756 insertions(+), 284 deletions(-)
+
+-- 
+2.46.2
 
 
