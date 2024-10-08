@@ -2,52 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928E9993D4A
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 05:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19115993D14
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 04:54:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sy0Vy-0003Z9-Si; Mon, 07 Oct 2024 23:03:58 -0400
+	id 1sy0LL-0007Dx-PV; Mon, 07 Oct 2024 22:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sy0Vv-0003X7-SI
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 23:03:55 -0400
-Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sy0Vs-0001SU-Q2
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 23:03:55 -0400
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-Thread-Topic: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-Thread-Index: AQHbD8m2GzzAu7a83kSSJ9vdQ5PkZLJ8OV4A
-Date: Tue, 8 Oct 2024 02:47:54 +0000
-Message-ID: <0EDECA68-F61C-4668-83F0-B8F5E8219196@baidu.com>
-References: <20240926040808.9158-1-gaoshiyuan@baidu.com>
-In-Reply-To: <20240926040808.9158-1-gaoshiyuan@baidu.com>
-Accept-Language: en-US, zh-CN
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.192.154]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AD1849B55D93F34AB28D5B5998D9BE78@internal.baidu.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sy0LJ-0007DP-K2; Mon, 07 Oct 2024 22:52:57 -0400
+Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sy0LH-0000Zo-VW; Mon, 07 Oct 2024 22:52:57 -0400
+Received: by mail-ua1-x92a.google.com with SMTP id
+ a1e0cc1a2514c-84e857bc0feso2829939241.0; 
+ Mon, 07 Oct 2024 19:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1728355974; x=1728960774; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FX9JGiMDxOlwd/M6UUiIW5RV5yq4JFKHzR5ivOEV+I0=;
+ b=g9THTMmXIvbZGKwHqhbSQhubRgcQf3S78MwERhJ78PdLZd5son8lU7dbH+46d35vIK
+ CKC4oQoKsBiPd48KAQ3C5dqiKlXN8O58jejDCFejyuzgg1xGPZ11zHS+7XIVjkqXN4od
+ Qp1QAfAxXwOWaPMIYy3rGf5JxFdV5lwN+mWFjvGX417p/Z8t+hvlsAGAiWAhRF/RA6iT
+ bzEi5Tl+gohZzo0qIBs4ewOfadLyyCqlKuICd3l9Ce4lWbkx29qisjdpbrrr9WfqhOyj
+ +oabq0CkQUxI31BYsarAtWFiwv6h2KeYBSX7JNApufdkfLCQayKGesSASK9camiSStr4
+ TJ4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728355974; x=1728960774;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FX9JGiMDxOlwd/M6UUiIW5RV5yq4JFKHzR5ivOEV+I0=;
+ b=O6qsIpZLs6hwM8fFyYWhUjxeUQySduqJEdeI25brnl0UQMPq+6alG/VKhmphO8ZXPG
+ Bt4uq0KNUn7wuc2crhx+0A/V2PnYvKBl8kKFVfsrZi6CVzfeJjjj9SQtjjGox/td0xjz
+ nDSss3oxvmOVci44Sf0XXELkvbTvjS8n21f42Arb5tHPfUIE7slscKP2k8yBK9bENIPf
+ /92B3vRyEJEeOHEH2rGE+hgc/f7nz8TTUL1L2p2SkkyhtsA6/s6FnE8FYJbXZckwc+Ga
+ ISVhH9eDkf8ihwoqJWrnRmmg1QBK440lRrGFGDRUCgVeurixb1oEjuwZApDCcEQhRdxW
+ VOrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUlJ0PHTYjTnEv8JXG4eE5N+EJuL+8dZ4L//sfP8dnCK9kPcx9Gc8wfFMXnLJkY4TXBNuRVZQct+eWi@nongnu.org,
+ AJvYcCX1T2qDotONP2Tkk58feioTQrz+fnqOhVvxImOp2PwNaOo5eAjxpht28SBg/2L0A0oGK0zf0DJcvqWpLA==@nongnu.org
+X-Gm-Message-State: AOJu0YzP62iAq5459okIdU6cTDUVlH/svvjmpGqzAYd4vLN1SGqmGskp
+ DmibQW7H1yy6mPYUX26zMn8q65JErLCgCT8SgoABGinKZxEnhmqqwxgvFnZST7v5u+MqfPriLaL
+ LqMSb/HchFr21BuJjvtOcMXxh10Y=
+X-Google-Smtp-Source: AGHT+IH63q7nW84ndmyAZxkrLkifyxhhuKMT4Xfu3nJn2Z6z/YUlMRJIaN3uc6n4CUNrwmK63GgnfJJ7UmZbmgyRXWU=
+X-Received: by 2002:a05:6102:50a7:b0:4a3:c912:6707 with SMTP id
+ ada2fe7eead31-4a43890a020mr1378611137.7.1728355973884; Mon, 07 Oct 2024
+ 19:52:53 -0700 (PDT)
 MIME-Version: 1.0
-X-FEAS-Client-IP: 10.127.64.13
-X-FE-Last-Public-Client-IP: 100.100.100.60
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=111.206.215.185;
- envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240910174747.148141-1-alexei.filippov@syntacore.com>
+In-Reply-To: <20240910174747.148141-1-alexei.filippov@syntacore.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 8 Oct 2024 12:52:27 +1000
+Message-ID: <CAKmqyKPH33Lf5YdNrdHEQ9K0ZLrnJmvcGi9DjsP6gKNQZYAxaA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] target/riscv: Add support for machine specific
+ pmu's events
+To: Alexei Filippov <alexei.filippov@syntacore.com>,
+ Atish Patra <atishp@rivosinc.com>
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,89 +90,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-UGluZy4NCg0KPiBLVk0gY29tbWl0IDE5MWM4MTM3YTkzOSAoIng4Ni9rdm06IEltcGxlbWVudCBI
-V0NSIHN1cHBvcnQiKQ0KPiBpbnRyb2R1Y2VkIHN1cHBvcnQgZm9yIGVtdWxhdGluZyBIV0NSIE1T
-Ui4NCj4NCj4gQWRkIHN1cHBvcnQgZm9yIFFFTVUgdG8gc2F2ZS9sb2FkIHRoaXMgTVNSIGZvciBt
-aWdyYXRpb24gcHVycG9zZXMuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEdhbyBTaGl5dWFuIDxnYW9z
-aGl5dWFuQGJhaWR1LmNvbT4NCj4gLS0tDQo+IHRhcmdldC9pMzg2L2NwdS5jICAgICB8ICAxICsN
-Cj4gdGFyZ2V0L2kzODYvY3B1LmggICAgIHwgIDUgKysrKysNCj4gdGFyZ2V0L2kzODYva3ZtL2t2
-bS5jIHwgMTIgKysrKysrKysrKysrDQo+IHRhcmdldC9pMzg2L21hY2hpbmUuYyB8IDIwICsrKysr
-KysrKysrKysrKysrKysrDQo+IDQgZmlsZXMgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKQ0KPg0K
-PiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L2kzODYvY3B1LmMgYi90YXJnZXQvaTM4Ni9jcHUuYw0KPiBp
-bmRleCA4NWVmNzQ1MmMwLi4zMzkxMzFhMzlhIDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvaTM4Ni9j
-cHUuYw0KPiArKysgYi90YXJnZXQvaTM4Ni9jcHUuYw0KPiBAQCAtNzA5Myw2ICs3MDkzLDcgQEAg
-c3RhdGljIHZvaWQgeDg2X2NwdV9yZXNldF9ob2xkKE9iamVjdCAqb2JqLCBSZXNldFR5cGUgdHlw
-ZSkNCj4gICAgICBlbnYtPmEyMF9tYXNrID0gfjB4MDsNCj4gICAgICBlbnYtPnNtYmFzZSA9IDB4
-MzAwMDA7DQo+ICAgICAgZW52LT5tc3Jfc21pX2NvdW50ID0gMDsNCj4gKyAgICBlbnYtPmh3Y3Ig
-PSAwOw0KPg0KPiAgICAgIGVudi0+aWR0LmxpbWl0ID0gMHhmZmZmOw0KPiAgICAgIGVudi0+Z2R0
-LmxpbWl0ID0gMHhmZmZmOw0KPiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L2kzODYvY3B1LmggYi90YXJn
-ZXQvaTM4Ni9jcHUuaA0KPiBpbmRleCAxNGVkZDU3YTM3Li5hMTliMWNlZGE0IDEwMDY0NA0KPiAt
-LS0gYS90YXJnZXQvaTM4Ni9jcHUuaA0KPiArKysgYi90YXJnZXQvaTM4Ni9jcHUuaA0KPiBAQCAt
-NTM5LDYgKzUzOSw4IEBAIHR5cGVkZWYgZW51bSBYODZTZWcgew0KPg0KPiAjZGVmaW5lIE1TUl9B
-TUQ2NF9UU0NfUkFUSU9fREVGQVVMVCAgICAgMHgxMDAwMDAwMDBVTEwNCj4NCj4gKyNkZWZpbmUg
-TVNSX0s3X0hXQ1IgICAgICAgICAgICAgICAgICAgICAweGMwMDEwMDE1DQo+ICsNCj4gI2RlZmlu
-ZSBNU1JfVk1fSFNBVkVfUEEgICAgICAgICAgICAgICAgIDB4YzAwMTAxMTcNCj4NCj4gI2RlZmlu
-ZSBNU1JfSUEzMl9YRkQgICAgICAgICAgICAgICAgICAgIDB4MDAwMDAxYzQNCj4gQEAgLTE4NTks
-NiArMTg2MSw5IEBAIHR5cGVkZWYgc3RydWN0IENQVUFyY2hTdGF0ZSB7DQo+ICAgICAgdWludDY0
-X3QgbXNyX2xicl9kZXB0aDsNCj4gICAgICBMQlJFbnRyeSBsYnJfcmVjb3Jkc1tBUkNIX0xCUl9O
-Ul9FTlRSSUVTXTsNCj4NCj4gKyAgICAvKiBIYXJkd2FyZSBDb25maWd1cmF0aW9uIE1TUiAqLw0K
-PiArICAgIHVpbnQ2NF90IGh3Y3I7DQo+ICsNCj4gICAgICAvKiBleGNlcHRpb24vaW50ZXJydXB0
-IGhhbmRsaW5nICovDQo+ICAgICAgaW50IGVycm9yX2NvZGU7DQo+ICAgICAgaW50IGV4Y2VwdGlv
-bl9pc19pbnQ7DQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9rdm0va3ZtLmMgYi90YXJnZXQv
-aTM4Ni9rdm0va3ZtLmMNCj4gaW5kZXggYWRhNTgxYzVkNi4uMjE1YzEzZWIxMyAxMDA2NDQNCj4g
-LS0tIGEvdGFyZ2V0L2kzODYva3ZtL2t2bS5jDQo+ICsrKyBiL3RhcmdldC9pMzg2L2t2bS9rdm0u
-Yw0KPiBAQCAtMTQ1LDYgKzE0NSw3IEBAIHN0YXRpYyBib29sIGhhc19tc3JfdWNvZGVfcmV2Ow0K
-PiBzdGF0aWMgYm9vbCBoYXNfbXNyX3ZteF9wcm9jYmFzZWRfY3RsczI7DQo+IHN0YXRpYyBib29s
-IGhhc19tc3JfcGVyZl9jYXBhYnM7DQo+IHN0YXRpYyBib29sIGhhc19tc3JfcGtyczsNCj4gK3N0
-YXRpYyBib29sIGhhc19tc3JfaHdjcjsNCj4NCj4gc3RhdGljIHVpbnQzMl90IGhhc19hcmNoaXRl
-Y3R1cmFsX3BtdV92ZXJzaW9uOw0KPiBzdGF0aWMgdWludDMyX3QgbnVtX2FyY2hpdGVjdHVyYWxf
-cG11X2dwX2NvdW50ZXJzOw0KPiBAQCAtMjU1NCw2ICsyNTU1LDggQEAgc3RhdGljIGludCBrdm1f
-Z2V0X3N1cHBvcnRlZF9tc3JzKEtWTVN0YXRlICpzKQ0KPiAgICAgICAgICAgICAgY2FzZSBNU1Jf
-SUEzMl9QS1JTOg0KPiAgICAgICAgICAgICAgICAgIGhhc19tc3JfcGtycyA9IHRydWU7DQo+ICAg
-ICAgICAgICAgICAgICAgYnJlYWs7DQo+ICsgICAgICAgICAgICBjYXNlIE1TUl9LN19IV0NSOg0K
-PiArICAgICAgICAgICAgICAgIGhhc19tc3JfaHdjciA9IHRydWU7DQo+ICAgICAgICAgICAgICB9
-DQo+ICAgICAgICAgIH0NCj4gICAgICB9DQo+IEBAIC0zODI0LDYgKzM4MjcsOSBAQCBzdGF0aWMg
-aW50IGt2bV9wdXRfbXNycyhYODZDUFUgKmNwdSwgaW50IGxldmVsKQ0KPiAgICAgIGlmIChoYXNf
-bXNyX3ZpcnRfc3NiZCkgew0KPiAgICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9W
-SVJUX1NTQkQsIGVudi0+dmlydF9zc2JkKTsNCj4gICAgICB9DQo+ICsgICAgaWYgKGhhc19tc3Jf
-aHdjcikgew0KPiArICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9LN19IV0NSLCBl
-bnYtPmh3Y3IpOw0KPiArICAgIH0NCj4NCj4gI2lmZGVmIFRBUkdFVF9YODZfNjQNCj4gICAgICBp
-ZiAobG1fY2FwYWJsZV9rZXJuZWwpIHsNCj4gQEAgLTQzMDgsNiArNDMxNCw5IEBAIHN0YXRpYyBp
-bnQga3ZtX2dldF9tc3JzKFg4NkNQVSAqY3B1KQ0KPiAgICAgICAgICBrdm1fbXNyX2VudHJ5X2Fk
-ZChjcHUsIE1TUl9JQTMyX1RTQywgMCk7DQo+ICAgICAgICAgIGVudi0+dHNjX3ZhbGlkID0gIXJ1
-bnN0YXRlX2lzX3J1bm5pbmcoKTsNCj4gICAgICB9DQo+ICsgICAgaWYgKGhhc19tc3JfaHdjcikg
-ew0KPiArICAgICAgICBrdm1fbXNyX2VudHJ5X2FkZChjcHUsIE1TUl9LN19IV0NSLCAwKTsNCj4g
-KyAgICB9DQo+DQo+ICNpZmRlZiBUQVJHRVRfWDg2XzY0DQo+ICAgICAgaWYgKGxtX2NhcGFibGVf
-a2VybmVsKSB7DQo+IEBAIC00ODI3LDYgKzQ4MzYsOSBAQCBzdGF0aWMgaW50IGt2bV9nZXRfbXNy
-cyhYODZDUFUgKmNwdSkNCj4gICAgICAgICAgY2FzZSBNU1JfQVJDSF9MQlJfSU5GT18wIC4uLiBN
-U1JfQVJDSF9MQlJfSU5GT18wICsgMzE6DQo+ICAgICAgICAgICAgICBlbnYtPmxicl9yZWNvcmRz
-W2luZGV4IC0gTVNSX0FSQ0hfTEJSX0lORk9fMF0uaW5mbyA9IG1zcnNbaV0uZGF0YTsNCj4gICAg
-ICAgICAgICAgIGJyZWFrOw0KPiArICAgICAgICBjYXNlIE1TUl9LN19IV0NSOg0KPiArICAgICAg
-ICAgICAgZW52LT5od2NyID0gbXNyc1tpXS5kYXRhOw0KPiArICAgICAgICAgICAgYnJlYWs7DQo+
-ICAgICAgICAgIH0NCj4gICAgICB9DQo+DQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9tYWNo
-aW5lLmMgYi90YXJnZXQvaTM4Ni9tYWNoaW5lLmMNCj4gaW5kZXggMzlmODI5NGYyNy4uMmRiODNh
-Y2FmYSAxMDA2NDQNCj4gLS0tIGEvdGFyZ2V0L2kzODYvbWFjaGluZS5jDQo+ICsrKyBiL3Rhcmdl
-dC9pMzg2L21hY2hpbmUuYw0KPiBAQCAtMTU0Myw2ICsxNTQzLDI1IEBAIHN0YXRpYyBjb25zdCBW
-TVN0YXRlRGVzY3JpcHRpb24gdm1zdGF0ZV9tc3JfeGZkID0gew0KPiAgICAgIH0NCj4gfTsNCj4N
-Cj4gK3N0YXRpYyBib29sIG1zcl9od2NyX25lZWRlZCh2b2lkICpvcGFxdWUpDQo+ICt7DQo+ICsg
-ICAgWDg2Q1BVICpjcHUgPSBvcGFxdWU7DQo+ICsgICAgQ1BVWDg2U3RhdGUgKmVudiA9ICZjcHUt
-PmVudjsNCj4gKw0KPiArICAgIHJldHVybiBlbnYtPmh3Y3IgIT0gMDsNCj4gK30NCj4gKw0KPiAr
-c3RhdGljIGNvbnN0IFZNU3RhdGVEZXNjcmlwdGlvbiB2bXN0YXRlX21zcl9od2NyID0gew0KPiAr
-ICAgIC5uYW1lID0gImNwdS9tc3JfaHdjciIsDQo+ICsgICAgLnZlcnNpb25faWQgPSAxLA0KPiAr
-ICAgIC5taW5pbXVtX3ZlcnNpb25faWQgPSAxLA0KPiArICAgIC5uZWVkZWQgPSBtc3JfaHdjcl9u
-ZWVkZWQsDQo+ICsgICAgLmZpZWxkcyA9IChWTVN0YXRlRmllbGRbXSkgew0KPiArICAgICAgICBW
-TVNUQVRFX1VJTlQ2NChlbnYuaHdjciwgWDg2Q1BVKSwNCj4gKyAgICAgICAgVk1TVEFURV9FTkRf
-T0ZfTElTVCgpDQo+ICsgICAgfQ0KPiArfTsNCj4gKw0KPiAjaWZkZWYgVEFSR0VUX1g4Nl82NA0K
-PiBzdGF0aWMgYm9vbCBpbnRlbF9mcmVkX21zcnNfbmVlZGVkKHZvaWQgKm9wYXF1ZSkNCj4gew0K
-PiBAQCAtMTc3Myw2ICsxNzkyLDcgQEAgY29uc3QgVk1TdGF0ZURlc2NyaXB0aW9uIHZtc3RhdGVf
-eDg2X2NwdSA9IHsNCj4gICAgICAgICAgJnZtc3RhdGVfbXNyX2ludGVsX3NneCwNCj4gICAgICAg
-ICAgJnZtc3RhdGVfcGRwdHJzLA0KPiAgICAgICAgICAmdm1zdGF0ZV9tc3JfeGZkLA0KPiArICAg
-ICAgICAmdm1zdGF0ZV9tc3JfaHdjciwNCj4gI2lmZGVmIFRBUkdFVF9YODZfNjQNCj4gICAgICAg
-ICAgJnZtc3RhdGVfbXNyX2ZyZWQsDQo+ICAgICAgICAgICZ2bXN0YXRlX2FteF94dGlsZSwNCj4g
-LS0NCj4gMi4zNC4xDQoNCg==
+On Wed, Sep 11, 2024 at 3:49=E2=80=AFAM Alexei Filippov
+<alexei.filippov@syntacore.com> wrote:
+>
+> Following original patch [1] here's a patch with support of machine
+> specific pmu events and PoC with initial support for sifive_u's HPM.
+
+Thanks for the patch.
+
+I'm hesitate to support these callback functions as I feel they
+(callbacks in the CPU to the machine in general) are clunky.
+
+I think the cover letter, code and commit messages need more details here.
+
+First can you link to the exact spec you are trying to implement
+(RISC-V has a habit of creating multiple "ratified" specs that are all
+incompatible). It's really handy to point to the exact PDF in the
+cover letter or commit message to just be really clear what you are
+supporting.
+
+Secondly, can you describe why this is useful? What is the point of
+machine specific PMU events? Why do we want to support this in QEMU?
+
+The callbacks should also have some documentation in the code base so
+others can implement the functionality.
+
+It might also be helpful to split this patch up a little bit more. A
+quick read through and it seems like the patches could be a little
+smaller, making it easier to review.
+
+Finally, for the next version CC @Atish Patra  who has ended up being
+the PMU person :)
+
+Alistair
+
+>
+> =3D=3D Test scenarios =3D=3D
+>
+> So, I tested this patches on current Linux master with perf.
+> something like `perf stat -e branch-misses perf bench mem memcpy` works
+> just fine, also 'perf record -e branch-misses perf bench mem memcpy'
+> collect samples just fine and `perf report` works.
+>
+> =3D=3D ToDos / Limitations =3D=3D
+>
+> Second patch is only inital sifive_u's HPM support, without any
+> filtering, events combining features or differrent counting
+> algorithm for different events. There are also no tests, but if you
+> have any suggestions about where I need to look to implement them, please
+> point me to.
+>
+> =3D=3D Changes since original patch =3D=3D
+>
+> - Rebased to current master
+>
+> [1] https://lore.kernel.org/all/20240625144643.34733-1-alexei.filippov@sy=
+ntacore.com/
+>
+> Alexei Filippov (2):
+>   target/riscv: Add support for machine specific pmu's events
+>   hw/riscv/sifive_u.c: Add initial HPM support
+>
+>  hw/misc/meson.build            |   1 +
+>  hw/misc/sifive_u_pmu.c         | 384 +++++++++++++++++++++++++++++++++
+>  hw/riscv/sifive_u.c            |  14 ++
+>  include/hw/misc/sifive_u_pmu.h |  24 +++
+>  target/riscv/cpu.c             |  20 +-
+>  target/riscv/cpu.h             |   9 +
+>  target/riscv/csr.c             |  93 +++++---
+>  target/riscv/pmu.c             | 138 ++++++------
+>  target/riscv/pmu.h             |  19 +-
+>  9 files changed, 599 insertions(+), 103 deletions(-)
+>  create mode 100644 hw/misc/sifive_u_pmu.c
+>  create mode 100644 include/hw/misc/sifive_u_pmu.h
+>
+> --
+> 2.34.1
+>
+>
 
