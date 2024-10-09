@@ -2,51 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4201996450
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D962599645B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:03:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sySYB-0007XX-0V; Wed, 09 Oct 2024 05:00:07 -0400
+	id 1sySa7-0008NN-KV; Wed, 09 Oct 2024 05:02:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sySXu-0007XG-1U
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:59:50 -0400
-Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sySa2-0008N6-Hz
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:02:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sySXp-0003SG-NK
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:59:49 -0400
-To: Zhao Liu <zhao1.liu@intel.com>
-CC: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-Thread-Topic: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-Thread-Index: AQHbGimJGzzAu7a83kSSJ9vdQ5PkZA==
-Date: Wed, 9 Oct 2024 08:59:24 +0000
-Message-ID: <7AEC3E01-EDA4-4507-8FD8-E14CA59A9D45@baidu.com>
-Accept-Language: en-US, zh-CN
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.192.154]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3C793F23FC709542AE759AC8321A4B61@internal.baidu.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sySa0-0003kW-9b
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:02:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728464517;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LeVx8I+B4NFs2ZrZ1ln7eBVKczwOnCUorl2+8X5K3hY=;
+ b=ECX+nOIhiXd0AHqbtX7QehsMzgwCuGzuMY9hvNw+2LkF/08hyoMvVX16NxPS22l7j9lKIz
+ mmEwzXunLJU4eA6ZzrR6YcoSnrpjn2az838MWsCFiehCIvVA/THtqsIyU9CXNqS1VSljHC
+ BTBxWdCqcWt6PUTUU/EHYVEbQBzlRLE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-OZqGqHipMQydPmnF9GwbTQ-1; Wed, 09 Oct 2024 05:01:56 -0400
+X-MC-Unique: OZqGqHipMQydPmnF9GwbTQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42cb080ab53so54162115e9.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:01:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728464515; x=1729069315;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LeVx8I+B4NFs2ZrZ1ln7eBVKczwOnCUorl2+8X5K3hY=;
+ b=boOQexwGYmwTSv/DS0od7QIlk6s+gi6KykgMLqMzU+dUycSYbba37of4zbzZk2WQLm
+ jIeTNiRS2wZVCTAjf+8IC8pJiZBesBl7C6Yowk2qmTaUtqFk09EVFNwg++b6sKp/XfcT
+ hcBdyBivTrnq+xLpqtGA28pU/4iuK1igMy000WpoNr98KxqT+1XyAS8/mBKe9POhYLBQ
+ HeCcebhH1giyAM2Kx/K8SmEIrie1NRjlqePZzBap9+/fDSbw+WpqqyxMHFdu1KyxhOTg
+ qUT05ksTwVI9rd3BL6cR/1odS1r1+cT0w3hG3pkuMNZkWaXrzkFsEfF0MlJMA3jcc/KC
+ Vl5A==
+X-Gm-Message-State: AOJu0Yy//7LKDyG9S3CRDG2dop3OUPOMnJ8Smj2EUySA+JZxnbs9Av+L
+ 3619P9Uikc2wcC+9B2JDwTPgEMVFZEwae19me4t2NFZSKlW4PL88qQhKbaTyHQVsC6tr6H36/Al
+ CFUOs6hcXzlPOtCgpuvCF8L9edz9+nbjIxMlTAaC9ME0kN2jP4VJ16n1a2dFUJp+lvpgwulCx+I
+ T2n9wtaJHQCwwlfyomJANSPuHAZqJA3dwjmJnoGgc=
+X-Received: by 2002:a05:600c:450a:b0:42c:b843:792b with SMTP id
+ 5b1f17b1804b1-430ccf08101mr12904375e9.2.1728464514882; 
+ Wed, 09 Oct 2024 02:01:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEL27e39kiANhqDoDS7HAvpcjX9WYCQgz2w0PyhEtOfi9RahxQpDoSv7mGEE2QEp8zyOvlMjQ==
+X-Received: by 2002:a05:600c:450a:b0:42c:b843:792b with SMTP id
+ 5b1f17b1804b1-430ccf08101mr12904115e9.2.1728464514382; 
+ Wed, 09 Oct 2024 02:01:54 -0700 (PDT)
+Received: from avogadro.local ([151.62.111.131])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-430d70b444csm13737355e9.33.2024.10.09.02.01.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Oct 2024 02:01:53 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/2] dockerfiles, gitlab-ci: add CI job using nightly Rust
+Date: Wed,  9 Oct 2024 11:01:48 +0200
+Message-ID: <20241009090151.1643088-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.2
 MIME-Version: 1.0
-X-FEAS-Client-IP: 172.31.51.14
-X-FE-Last-Public-Client-IP: 100.100.100.60
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=220.181.50.185; envelope-from=gaoshiyuan@baidu.com;
- helo=baidu.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,31 +96,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiA+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9jcHUuYyBiL3RhcmdldC9pMzg2L2NwdS5jDQo+
-ID4gaW5kZXggODVlZjc0NTJjMC4uMzM5MTMxYTM5YSAxMDA2NDQNCj4gPiAtLS0gYS90YXJnZXQv
-aTM4Ni9jcHUuYw0KPiA+ICsrKyBiL3RhcmdldC9pMzg2L2NwdS5jDQo+ID4gQEAgLTcwOTMsNiAr
-NzA5Myw3IEBAIHN0YXRpYyB2b2lkIHg4Nl9jcHVfcmVzZXRfaG9sZChPYmplY3QgKm9iaiwgUmVz
-ZXRUeXBlIHR5cGUpDQo+ID4gZW52LT5hMjBfbWFzayA9IH4weDA7DQo+ID4gZW52LT5zbWJhc2Ug
-PSAweDMwMDAwOw0KPiA+IGVudi0+bXNyX3NtaV9jb3VudCA9IDA7DQo+ID4gKyBlbnYtPmh3Y3Ig
-PSAwOw0KPg0KPg0KPiBXaHkgd2UgbmVlZCB0byBjbGVhciBpdCBoZXJlPyBUaGlzIG5lZWRzIHRv
-IGJlIGV4cGxhaW5lZCBpbiB0aGUgY29tbWl0DQo+IG1lc3NhZ2UuDQoNCkkgbWlzdW5kZXJzdG9v
-ZCwgdGhlcmXigJlzIG5vIG5lZWQgdG8gY2xlYXIgaGVyZS4NCg0KPiA+DQo+ID4gKyNkZWZpbmUg
-TVNSX0s3X0hXQ1IgMHhjMDAxMDAxNQ0KPiA+ICsNCj4gPiAjZGVmaW5lIE1TUl9WTV9IU0FWRV9Q
-QSAweGMwMDEwMTE3DQo+ID4NCj4gPiAjZGVmaW5lIE1TUl9JQTMyX1hGRCAweDAwMDAwMWM0DQo+
-ID4gQEAgLTE4NTksNiArMTg2MSw5IEBAIHR5cGVkZWYgc3RydWN0IENQVUFyY2hTdGF0ZSB7DQo+
-ID4gdWludDY0X3QgbXNyX2xicl9kZXB0aDsNCj4gPiBMQlJFbnRyeSBsYnJfcmVjb3Jkc1tBUkNI
-X0xCUl9OUl9FTlRSSUVTXTsNCj4gPg0KPiA+ICsgLyogSGFyZHdhcmUgQ29uZmlndXJhdGlvbiBN
-U1IgKi8NCj4NCj4NCj4gV2UgY2FuIGtlZXAgdGhlIHNhbWUgY29tbWVudCBhcyBtc3JfaHdjciBp
-biBLVk0gdG8gZW1waGFzaXplIHRoaXMgaXMgYW4NCj4gQU1ELXNwZWNpZmljIE1TUiwgaS5lLiwN
-Cj4NCj4NCj4gLyogQU1EIE1TUkMwMDFfMDAxNSBIYXJkd2FyZSBDb25maWd1cmF0aW9uICovDQo+
-DQo+DQo+ID4gKyB1aW50NjRfdCBod2NyOw0KPg0KPg0KPiBBZGQgdGhlIG1zcl8gcHJlZml4IHRv
-IGluZGljYXRlIHRoYXQgdGhpcyB2YWx1ZSBpcyBvbmx5IGludGVuZGVkIHRvDQo+IHN0b3JlIHRo
-ZSBNU1IuIEN1cnJlbnRseSwgZm9yIHNpbWlsYXIgbWVtYmVycywgc29tZSBoYXZlIHRoZSBtc3Jf
-IHByZWZpeA0KPiBhbmQgc29tZSBkbyBub3QsIGJ1dCBpdCBpcyBiZXR0ZXIgdG8gaGF2ZSBpdCBm
-b3IgY2xhcml0eS4NCj4NCg0KVGhhbmtzLCBJIHdpbGwgbW9kaWZ5IGl0Lg0KDQo=
+Right now only Fedora 39 and 40 (with updates) are able to compile
+QEMU with Rust enabled. Full CI enablement requires further work to
+reduce the minimum supported version of the compiler, and is not a
+requirement until Rust is turned on by default.
+
+Since a CI job based on nightly Rust will be needed later on, to
+integrate clippy and have a heads-up on future clippy warnings,
+adjust QEMU's 'refresh' script to customize a Fedora 40 dockerfile
+with trailing text that installs nightly Rust and compiles the
+latest bindgen.  A matching CI job, using --enable-rust, ensures
+that the toolchain is installed correctly by the Dockerfile and
+that QEMU builds with Rust enabled on at least one platform.
+
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Based-on: <cover.1727961605.git.manos.pitsidianakis@linaro.org>
+
+v1->v2: remove unnecessary CONFIGURE_ARGS
+        add "nightly" to name of container and job
+
+Paolo Bonzini (2):
+  dockerfiles: add a Dockerfile using a nightly Rust toolchain
+  gitlab-ci: add Rust-enabled CI job
+
+ .gitlab-ci.d/buildtest.yml                    |  13 ++
+ .gitlab-ci.d/containers.yml                   |   6 +
+ .../dockerfiles/fedora-rust-nightly.docker    | 173 ++++++++++++++++++
+ tests/lcitool/refresh                         |  26 +++
+ 4 files changed, 218 insertions(+)
+ create mode 100644 tests/docker/dockerfiles/fedora-rust-nightly.docker
+
+-- 
+2.46.2
+
 
