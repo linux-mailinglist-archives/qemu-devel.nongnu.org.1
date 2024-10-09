@@ -2,57 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7B89962E4
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB5099631D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syS9g-0000Gh-1y; Wed, 09 Oct 2024 04:34:48 -0400
+	id 1sySEY-0002ta-ON; Wed, 09 Oct 2024 04:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1syS9b-00008T-8Q
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:34:43 -0400
-Received: from apollo.dupie.be ([51.159.20.238])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1sySEX-0002tS-JS
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:39:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1syS9X-0000iw-BP
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:34:42 -0400
-Received: from [IPV6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c] (unknown
- [IPv6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c])
- by apollo.dupie.be (Postfix) with ESMTPSA id 3EEB11520F1F;
- Wed,  9 Oct 2024 10:34:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1728462873;
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1sySEV-0001JS-PW
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:39:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728463185;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ep2hhwI6KvfY4AUamjkazDBhUwe+I5bt8VjEdrVWla0=;
- b=h2v9m0Fx2FQzHWZ/c4KxfJdXfk1qr9FBS0eqR84g21c4Xb3QUajL+gWFuQY0i74gDulSKE
- oOuhM4XAirIS4EYUmgxXQ7+MLgXHroX4ritfOs27HHuzCJaiUTVStKBVhSRIC50S1ZD3CL
- iawmif3nmyK4Sc+ddUJ5WCFiNJfAw4mSYQCySVSsTnT31XCpe1u0eRUL2Kr+J/bYoEkjWY
- 9u99CoP5u8ObQPom5CbTX2bQsFD6fzzmFWP4tT6dWlLEJ2/VyG1qJp6YWndn+yabv7uFCj
- DXQB4NNa+bcCk478d6TNHux/w+I8rkSFjwmtb03wRoLo4sOyVtsjir9KckOs+g==
-Message-ID: <b0a518bc-a600-4d0d-b1c9-5b43f95c90b9@dupond.be>
-Date: Wed, 9 Oct 2024 10:34:33 +0200
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PLLPhh6HTSu0AqwVb1vgVWNJ3vb1YIQnEFeXJTdL0mQ=;
+ b=blEUljGNBOzSpQEUA8qsV1iE2DChV0nBw73Of70nw3cN++4TS5XO2p3LBLf2lbN5XXp/L9
+ yk5uiSgiXf3xj7P6OahQ+OPmw+TDsce4NC8Pwpst0ctlGzic8qmzSLrVPy79I1WxqS4lv5
+ jP1khE2iD+1/oijhyxGb6acsV6G/bXQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-eLhT_UtuPIe3VxC0SoZv8w-1; Wed,
+ 09 Oct 2024 04:39:44 -0400
+X-MC-Unique: eLhT_UtuPIe3VxC0SoZv8w-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1E82F195F12F; Wed,  9 Oct 2024 08:39:43 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.46])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B1E7F1956052; Wed,  9 Oct 2024 08:39:41 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+ peter.maydell@linaro.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 0/2] chardev patches
+Date: Wed,  9 Oct 2024 12:39:36 +0400
+Message-ID: <20241009083938.1504695-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH] qga: skip bind mounts in fs list
-To: qemu-devel@nongnu.org, michael.roth@amd.com, kkostiuk@redhat.com
-References: <20241002100634.162499-2-jean-louis@dupond.be>
-Content-Language: en-US
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <20241002100634.162499-2-jean-louis@dupond.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
- helo=apollo.dupie.be
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -70,85 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/10/2024 12:06, Jean-Louis Dupond wrote:
-> The filesystem list in build_fs_mount_list should skip bind mounts.
-> This because we end up in locking situations when doing fsFreeze. Like
-> mentioned in [1] and [2].
->
-> Next to that, the build_fs_mount_list call did a fallback via
-> build_fs_mount_list_from_mtab if mountinfo did not exist.
-> There it skipped bind mounts, but this is broken for newer OS.
-> This as mounts does not return the path of the bind mount but the
-> underlying dev/partition, so S_ISDIR will never return true in
-> dev_major_minor call.
->
-> This patch simply checks the existing devmajor:devminor tuple in the
-> mounts, and if it already exists, this means we have the same devices
-> mounted again, a bind mount. So skip this.
->
-> Same approach is used in open-vm-tools [3].
->
-> [1]: https://gitlab.com/qemu-project/qemu/-/issues/592
-> [2]: https://gitlab.com/qemu-project/qemu/-/issues/520
-> [3]: https://github.com/vmware/open-vm-tools/commit/d58847b497e212737007958c945af1df22a8ab58
->
-> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
-> ---
->   qga/commands-linux.c | 25 +++++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
->
-> diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-> index 51d5e3d927..426b040ab8 100644
-> --- a/qga/commands-linux.c
-> +++ b/qga/commands-linux.c
-> @@ -59,6 +59,22 @@ static int dev_major_minor(const char *devpath,
->       return -1;
->   }
->   
-> +/*
-> + * Check if we already have the devmajor:devminor in the mounts
-> + * If thats the case return true.
-> + */
-> +static bool dev_exists(FsMountList *mounts, unsigned int devmajor, unsigned int devminor)
-> +{
-> +    FsMount *mount;
-> +
-> +    QTAILQ_FOREACH(mount, mounts, next) {
-> +        if (mount->devmajor == devmajor && mount->devminor == devminor) {
-> +            return true;
-> +        }
-> +    }
-> +    return false;
-> +}
-> +
->   static bool build_fs_mount_list_from_mtab(FsMountList *mounts, Error **errp)
->   {
->       struct mntent *ment;
-> @@ -89,6 +105,10 @@ static bool build_fs_mount_list_from_mtab(FsMountList *mounts, Error **errp)
->               /* Skip bind mounts */
->               continue;
->           }
-> +        if (dev_exists(mounts, devmajor, devminor)) {
-> +            /* Skip already existing devices (bind mounts) */
-> +            continue;
-> +        }
->   
->           mount = g_new0(FsMount, 1);
->           mount->dirname = g_strdup(ment->mnt_dir);
-> @@ -172,6 +192,11 @@ bool build_fs_mount_list(FsMountList *mounts, Error **errp)
->               }
->           }
->   
-> +        if (dev_exists(mounts, devmajor, devminor)) {
-> +            /* Skip already existing devices (bind mounts) */
-> +            continue;
-> +        }
-> +
->           mount = g_new0(FsMount, 1);
->           mount->dirname = g_strdup(line + dir_s);
->           mount->devtype = g_strdup(dash + type_s);
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+The following changes since commit 2af37e791906cfda42cb9604a16d218e56994bb1:
 
-Ping + add kkostiuk@redhat.com as I missed him in the initial mail.
+  Merge tag 'pull-request-2024-10-07' of https://gitlab.com/thuth/qemu into staging (2024-10-07 12:55:02 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/marcandre.lureau/qemu.git tags/chr-pull-request
+
+for you to fetch changes up to b74cb8761c68275240af0826086590a03a1f419d:
+
+  chardev: add path option for pty backend (2024-10-09 12:13:05 +0400)
+
+----------------------------------------------------------------
+chardev: introduce 'reconnect-ms' and deprecate 'reconnect'
+chardev: add path option for pty backend
+
+----------------------------------------------------------------
+
+Daniil Tatianin (1):
+  chardev: introduce 'reconnect-ms' and deprecate 'reconnect'
+
+Octavian Purdila (1):
+  chardev: add path option for pty backend
+
+ docs/about/deprecated.rst     |  6 +++++
+ qapi/char.json                | 44 ++++++++++++++++++++++++++++++++---
+ include/chardev/char-socket.h |  2 +-
+ chardev/char-pty.c            | 33 ++++++++++++++++++++++++++
+ chardev/char-socket.c         | 33 +++++++++++++++++++-------
+ chardev/char.c                |  8 +++++++
+ qemu-options.hx               | 33 +++++++++++++++++++++-----
+ 7 files changed, 140 insertions(+), 19 deletions(-)
+
+-- 
+2.47.0
 
 
