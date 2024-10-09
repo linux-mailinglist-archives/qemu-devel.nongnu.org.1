@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20553995C1B
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1E9995C0B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syKCK-0004AM-Ib; Tue, 08 Oct 2024 20:05:00 -0400
+	id 1syKCM-0004Ba-RY; Tue, 08 Oct 2024 20:05:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCI-00049x-Qc
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:04:58 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1syKCJ-0004A9-DY
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:04:59 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCH-0002dW-3P
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:04:58 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-20b0b2528d8so70926965ad.2
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:04:56 -0700 (PDT)
+ id 1syKCH-0002di-Ri
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:04:59 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-20c56b816faso12428875ad.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728432295; x=1729037095; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=47Pe1MH9gsNOxZkdWXv/PZJTALTB63WGwPGX9cZVdVo=;
- b=s5g3ZdfDRfaR56dgFx5ByrWzqJb9zq/5v6Md5y3hHJFqNsj15hQ2BMmfPNtFjbmApF
- ghAhFqDlTqU60xf4cpPsg465oZqgHRcMECUysVybGjDSpK3Mr5vBKC8PUDAq+QBzX0uQ
- T3qFAD0/v4hVuy12VQLO8+mKgQv0hnbM5OdqutEa2Llov/ym1cE3wKQqkgXRmyWEnKwA
- i7z+mIWrXakH6N5fFrEpypBvQIMDB4UwEPE+V2wbth3yXgxiqrrsDs7WLI6CoWimrRxe
- PEbIoPs+6ytMOs0O20qQ2FtysuzIBK+NoXHLQZnPFwn5ANFQvsoGp5Kh39iwqBLmxF+K
- M+nw==
+ d=linaro.org; s=google; t=1728432296; x=1729037096; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5sM2rASXzZfAaByCSG4X7yOvvA/fFZaOvGmejFsljDo=;
+ b=nZv6tFi4WdYRsBEvStKzqOAg0typjQrlacmlxt7xUML2/TmWLU4TibE5wB5SE9AW6W
+ tZdhQRufXAw4yCGUhmXoE8A1DS4VhhGWoBaO3O2MoQclktPU0IGTgxm8NczbV+IVtYZ9
+ aPtheu1Y0a2vJKnghysimaj454JmmclgNh09YYYF46U2TJUzc3LesvZeZtEctIWHMO/+
+ 8a+rbPkreTq81q490I24GMOp1NFzcsOdXXJPA0uGKe2PTm/AoO+iYGNfMrIAiFvN0wIk
+ iRhi3ksOJYJibWJYSoXzvu7hP2ZNvnaN0EQiatWHJ93EvwyaTP1ZNVNag/3h9yauOCmg
+ 8q+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728432295; x=1729037095;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=47Pe1MH9gsNOxZkdWXv/PZJTALTB63WGwPGX9cZVdVo=;
- b=s7sTrM2wjp32gk6zkxSBpEL00pAwYCR6A5Eg67VJXFrjrNR+Oz/8mX2DJWWaZTFZ/G
- YInmtGlv+6XCylUqXyRQe/h2ujaarE6CqvWvZ2B32IMtrQqukbIEdd0HtgzmiSJFHUmf
- gKHfzSQRMxstCkLpuHIIRZCWJ33VwTVjVl6QrDe2daIiMp3coQaUXPZzKzVmrxOAWv9P
- oJ/xefJoE0BZXOjdsk/yG5rYDLWCXGk8heaJT8bVgC4WGZ8eepWt54Y0oWPlQtjm6aI5
- I8kMi5k2FXWTv53APPPzTQmdt6dY50I7FixQUfxKlj+RaYyfybtJTv0nWBksYwrJ43NA
- uCaQ==
-X-Gm-Message-State: AOJu0YxC1f1MdBO6zvziBpRoTiTPIrZl+yOLUrmBtQyKYWB0hDPL3Rrq
- 2W4Vf+70BaNskzlp/QWBp2uUfrtILRDTSPKldt09lfAfEyQUS7yK9AsGEYXoqer3DTUvufI+S6r
- T
-X-Google-Smtp-Source: AGHT+IF7W3tFDq7NjDPWGL7RHkyhiahUq6Tk0gHdPQurTadTzr8V3g0hgvREtTGmqziBBmE6YVcFgg==
-X-Received: by 2002:a17:902:d2cf:b0:202:4b65:65af with SMTP id
- d9443c01a7336-20c6378ea43mr10853195ad.52.1728432295419; 
- Tue, 08 Oct 2024 17:04:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728432296; x=1729037096;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5sM2rASXzZfAaByCSG4X7yOvvA/fFZaOvGmejFsljDo=;
+ b=jvCrEZi+pfAb2GWj22OA9GUDBUNq2tfnNJyP4hi+Hq3CrsztB160Q/sYyHH3Xqf1yX
+ py1Y5mHIm9Q7MlvPU/hq0x6TeAo0iQ5Zh3l99gmb5Dp07ojtJMe8ln9BKg8AhCqyT85T
+ mzX5odJgBD6zyRXXrRz0f9mP55dw3RQIybIHN5trVu0qO0Wy2KLwGeRCPZQOmmt8DXI6
+ V383hPHSUa3k6YSuJijsc2fxT6STnR7A6+NETwa5kowzZAUB3JEp/0znAb19/4wNqvqP
+ JxZiKC2yyeq2z75+ywMoSaCb2430IGEDk3jYY/uvDshzDseIZW+Q6LUGz0wqnYghLwAb
+ wDrg==
+X-Gm-Message-State: AOJu0Yx74jMig4UC4ZtszAscXRR9VKcF7HLPCIEe2N1N7kkEXmn8TPUi
+ Nyy3fkq60M0aEMLS+XSdFpPFQYA4V3aluQfrYvKVfVLlSKHjkBFpz/BPja0k+5rElR8QeLfmlNU
+ 5
+X-Google-Smtp-Source: AGHT+IH2ZvMU4bGuSg+tDG+ztb5xg61iiZPQqytdtvNBcTuZ+zmK3VvxDZbtlEMK7wthugBWGqHljQ==
+X-Received: by 2002:a17:902:f685:b0:20c:5c37:e2c6 with SMTP id
+ d9443c01a7336-20c6375b1ecmr12035995ad.11.1728432296270; 
+ Tue, 08 Oct 2024 17:04:56 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.54
+ d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 17:04:54 -0700 (PDT)
+ Tue, 08 Oct 2024 17:04:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
- linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v3 00/20] accel/tcg: Introduce tlb_fill_align hook
-Date: Tue,  8 Oct 2024 17:04:33 -0700
-Message-ID: <20241009000453.315652-1-richard.henderson@linaro.org>
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 01/20] accel/tcg: Assert noreturn from write-only page for
+ atomics
+Date: Tue,  8 Oct 2024 17:04:34 -0700
+Message-ID: <20241009000453.315652-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241009000453.315652-1-richard.henderson@linaro.org>
+References: <20241009000453.315652-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,80 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This new hook will allow targets to recognize an alignment
-fault with the correct priority with respect to other faults
-that can be raised by paging.
+There should be no "just in case"; the page is already
+in the tlb, and known to be not readable.
 
-This should fix several hppa fault priority issues, most
-importantly that access permissions come before alignment.
+Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cputlb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-This should fix the documented error in the Arm alignment
-fault due to memory type.
-
-Changes for v3:
-  - Change the tlb_fill_hook to return data into provided
-    CPUTLBEntryFull, instead of calling tlb_set_page*.
-  - I have dropped some r-b, correspondingly.
-
-Patches needing review:
-  05-accel-tcg-Add-TCGCPUOps.tlb_fill_align.patch
-  06-accel-tcg-Use-the-alignment-test-in-tlb_fill_alig.patch
-  11-target-hppa-Implement-TCGCPUOps.tlb_fill_align.patch
-  19-target-arm-Implement-TCGCPUOps.tlb_fill_align.patch
-
-
-r~
-
-
-Richard Henderson (20):
-  accel/tcg: Assert noreturn from write-only page for atomics
-  include/exec/memop: Move get_alignment_bits from tcg.h
-  include/exec/memop: Rename get_alignment_bits
-  include/exec/memop: Introduce memop_atomicity_bits
-  accel/tcg: Add TCGCPUOps.tlb_fill_align
-  accel/tcg: Use the alignment test in tlb_fill_align
-  target/hppa: Add MemOp argument to hppa_get_physical_address
-  target/hppa: Perform access rights before protection id check
-  target/hppa: Fix priority of T, D, and B page faults
-  target/hppa: Handle alignment faults in hppa_get_physical_address
-  target/hppa: Implement TCGCPUOps.tlb_fill_align
-  target/arm: Pass MemOp to get_phys_addr
-  target/arm: Pass MemOp to get_phys_addr_with_space_nogpc
-  target/arm: Pass MemOp to get_phys_addr_gpc
-  target/arm: Pass MemOp to get_phys_addr_nogpc
-  target/arm: Pass MemOp through get_phys_addr_twostage
-  target/arm: Pass MemOp to get_phys_addr_lpae
-  target/arm: Move device detection earlier in get_phys_addr_lpae
-  target/arm: Implement TCGCPUOps.tlb_fill_align
-  target/arm: Fix alignment fault priority in get_phys_addr_lpae
-
- include/exec/memop.h           |  47 ++++++++++
- include/hw/core/cpu.h          |   4 +-
- include/hw/core/tcg-cpu-ops.h  |  26 ++++++
- include/qemu/typedefs.h        |   1 +
- include/tcg/tcg.h              |  23 -----
- target/arm/internals.h         |  12 +--
- target/hppa/cpu.h              |   8 +-
- accel/tcg/cputlb.c             | 160 +++++++++++++++++----------------
- accel/tcg/user-exec.c          |   4 +-
- target/arm/cpu.c               |   2 +-
- target/arm/helper.c            |   9 +-
- target/arm/ptw.c               | 141 ++++++++++++++++-------------
- target/arm/tcg/cpu-v7m.c       |   2 +-
- target/arm/tcg/m_helper.c      |   8 +-
- target/arm/tcg/tlb_helper.c    |  49 ++++------
- target/arm/tcg/translate-a64.c |   4 +-
- target/hppa/cpu.c              |   2 +-
- target/hppa/int_helper.c       |   2 +-
- target/hppa/mem_helper.c       |  55 +++++++-----
- target/hppa/op_helper.c        |   2 +-
- target/xtensa/translate.c      |   2 +-
- tcg/tcg-op-ldst.c              |   6 +-
- tcg/tcg.c                      |   2 +-
- tcg/arm/tcg-target.c.inc       |   4 +-
- tcg/sparc64/tcg-target.c.inc   |   2 +-
- 25 files changed, 326 insertions(+), 251 deletions(-)
-
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 117b516739..fd6459b695 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         /*
+          * Since we don't support reads and writes to different
+          * addresses, and we do have the proper page loaded for
+-         * write, this shouldn't ever return.  But just in case,
+-         * handle via stop-the-world.
++         * write, this shouldn't ever return.
+          */
+-        goto stop_the_world;
++        g_assert_not_reached();
+     }
+     /* Collect tlb flags for read. */
+     tlb_addr |= tlbe->addr_read;
 -- 
 2.43.0
 
