@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2379965D0
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EDC9965ED
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syTHx-0001aZ-8P; Wed, 09 Oct 2024 05:47:25 -0400
+	id 1syTHt-0001SC-VS; Wed, 09 Oct 2024 05:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syTHn-0001LS-I4
+ id 1syTHp-0001Mq-Gp
  for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syTHj-0008V1-E5
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:14 -0400
+ id 1syTHm-0008Vt-OK
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728467230;
+ s=mimecast20190719; t=1728467233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UO920/vU3UVu5Z0ktPqv8vRtCWnYQqPNoMlASL2Ii24=;
- b=RJDxTyN05xQ4Vv1VykVL1vGH89f+hIEvOv0vfQ/gOj9GgwR0LHM9Z64PXr1VRsWX39tsLx
- A+s9G2JDH1s8MjjhRE9/gtcuM3/00xPVClqYOVhi6r0l83cQAQhesoSGsMGzKe78IdmyaE
- t1fOmF+z7IPInKRU+xIS/A8fh/q24/Q=
+ bh=hT7inLHllM8RZKBYIy8Fuo0A70HrgCapOAuw2sK/64c=;
+ b=QBTBAduxlMHe9QVyWsCaFqDO2ahCZQl8bwSVN6nrcyGPEbSpIFUASKXSnrrBBoarNwa8CO
+ U4xFUnIOsxuQtTsfkNECtwuCRBgY9tUbxoNIW5sOGx3TOd0bSZxsxzoz2wBLwdHTalw9UD
+ 3SyGkpqaR6sZy2yU5eR1EOgQxejIMQ0=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-ZW5osFTWPYOqAB5S3nUwrg-1; Wed, 09 Oct 2024 05:47:08 -0400
-X-MC-Unique: ZW5osFTWPYOqAB5S3nUwrg-1
+ us-mta-576-gvgfd7m1Oku63pQfotOwpA-1; Wed, 09 Oct 2024 05:47:11 -0400
+X-MC-Unique: gvgfd7m1Oku63pQfotOwpA-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d458087c0so58384f8f.1
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:47:08 -0700 (PDT)
+ ffacd0b85a97d-37d39bf2277so283757f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:47:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728467227; x=1729072027;
+ d=1e100.net; s=20230601; t=1728467230; x=1729072030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UO920/vU3UVu5Z0ktPqv8vRtCWnYQqPNoMlASL2Ii24=;
- b=d4FTQctGJX/VR0ae1rT8adDOyVQakkgbOyVrC5eIImJaWAQirK6DZhQRdelIftRwQI
- BsZgdRMMaT1x2x+NmsCKGJ9gABJHNiFtf6QSMFk0tKoH1iZhGPOMvo2OZQUePF2+A1Oh
- Gy8AGCzBF37Ce2vzA9UrW9ybap9aD57aBWOt4M7yAL5/ITDZ+BcK8evHw3szLlGdKCk5
- B4RzXlgRuE0D5MUbR97nZRkFdBww5Ow0239jRbhRTWK0YCaouKkfgeUdQ4mKyphqADNq
- oLFcgoVpemNYfXCzvzrb8aW53pGzZPB8mnaoU1d/CsYO5DG1cmCgUtQhHb8ZkRnIMivD
- siZA==
-X-Gm-Message-State: AOJu0YyIqDf6QH1WVIDtlR/zKUsj4wAwBBo8d/X3I0iuvEjUc1KIiDcQ
- xxyAnHXT0iLcMrSyxKauGpemdIH1MIvyfW0mHjedKSTUMKWyik+eA8AnofISUKhxai7DPYHkrNt
- wzM84qfzBahQdfx/RXXDGQ32yL8DPyQ+wToPhIdcvKmTlH98+LzkEWcaFjCVUGr0l0V1PxdCmjf
- OK89Cu4pwHGSPD5Z3CcnPyDw/BoLZjIT2Vrvqt1lE=
-X-Received: by 2002:a5d:6742:0:b0:374:c4c2:5ad5 with SMTP id
- ffacd0b85a97d-37d3a5480cemr1344835f8f.27.1728467226873; 
- Wed, 09 Oct 2024 02:47:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFmeo+yqvDnPSMPl4MheFhXZLbPNadkwnN5b9l8VJs0ssm7rL39IpSQAiEapXzPd196pjxRMg==
-X-Received: by 2002:a5d:6742:0:b0:374:c4c2:5ad5 with SMTP id
- ffacd0b85a97d-37d3a5480cemr1344809f8f.27.1728467226334; 
- Wed, 09 Oct 2024 02:47:06 -0700 (PDT)
+ bh=hT7inLHllM8RZKBYIy8Fuo0A70HrgCapOAuw2sK/64c=;
+ b=I0NaKG7hWFrcM3S+9leA5qDVpb65r2OSduF2zgJ5L/pdsgNWLvsCFI64NlWehzoRRX
+ NvgZLUWBkPkgToj9CBUN1E+PAES0dO22tJq33nMKMAKZsCAEIV9Y23jsy+SMW0OgFaQq
+ 9ivLdaZ/K+ASgqgA3vkWQ4Is6YmUOyIIoYgbf7cg4w8OrDV3Pht8F58H2dHGO3hOJeGu
+ 9cV4zISGB+LrEWd9XdCrBESWOG8MNslPiQZ8+et8gZFo/xYg4wAxdaKuMHf81LKbxV2g
+ b+sNsAaLYGYmxg0sO21he3AUPyd9NsUGQlDvDNNTLJlcmndNfdZsJKAcK5cyOcdxB9Ua
+ eXLA==
+X-Gm-Message-State: AOJu0Yz/EVs6bgA4XQU1iUFKJlVF8OaeXyigDQn6ELrxqQCz7R6faIYV
+ KiEctXdrJJPS5zum9xUvxp+X5E8rGq6BgMF8CP7ycr1+b2DTIAxrVcNGcn/00ch6kM/NzkP5O/f
+ xiWMT2D6ACQOVLiLuQuyVjnxYPjEWWSGl+Gk5VQmhbkRT/zi16WGEN93fdEoU6wRwJIxzCw7HZQ
+ rGcSR46ViDMuMlPbVDOyq45sAXS2IqE+onCmlCVVc=
+X-Received: by 2002:adf:f4ce:0:b0:374:c05f:231d with SMTP id
+ ffacd0b85a97d-37d3a90f205mr1197864f8f.0.1728467229881; 
+ Wed, 09 Oct 2024 02:47:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGNhXeoiRd66MfNAD3JiWo4gUy40jBxoe+1J0A0mKg85eNCHDWb1CEGjyB2qm4YBVIsJnhbQ==
+X-Received: by 2002:adf:f4ce:0:b0:374:c05f:231d with SMTP id
+ ffacd0b85a97d-37d3a90f205mr1197849f8f.0.1728467229437; 
+ Wed, 09 Oct 2024 02:47:09 -0700 (PDT)
 Received: from avogadro.local ([151.62.111.131])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d39cb1358sm1470753f8f.25.2024.10.09.02.47.05
+ ffacd0b85a97d-37d1690f265sm9924889f8f.19.2024.10.09.02.47.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 02:47:05 -0700 (PDT)
+ Wed, 09 Oct 2024 02:47:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, qemu-stable@nongnu.org
-Subject: [PULL 12/14] meson: ensure -mcx16 is passed when detecting ATOMIC128
-Date: Wed,  9 Oct 2024 11:46:13 +0200
-Message-ID: <20241009094616.1648511-13-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 13/14] dockerfiles: add a Dockerfile using a nightly Rust
+ toolchain
+Date: Wed,  9 Oct 2024 11:46:14 +0200
+Message-ID: <20241009094616.1648511-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241009094616.1648511-1-pbonzini@redhat.com>
 References: <20241009094616.1648511-1-pbonzini@redhat.com>
@@ -102,65 +102,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Moving -mcx16 out of CPU_CFLAGS caused the detection of ATOMIC128 to
-fail, because flags have to be specified by hand in cc.compiles and
-cc.links invocations (why oh why??).
+This will be useful in order to test QEMU's Rust code with nightly
+clippy.  It can also be used to check that the code builds, until the
+minimum supported Rust version is lowered enough to allow enabling Rust
+in other Dockerfiles too.
 
-Ensure that these tests enable all the instruction set extensions that
-will be used to build the emulators.
+Use a separate container, instead of the Fedora one, to avoid that
+CI breaks for everyone if for some reason the rustup build turns out
+to be shaky.
 
-Fixes: c2bf2ccb266 ("configure: move -mcx16 flag out of CPU_CFLAGS", 2024-05-24)
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: qemu-stable@nongnu.org
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../dockerfiles/fedora-rust-nightly.docker    | 173 ++++++++++++++++++
+ tests/lcitool/refresh                         |  26 +++
+ 2 files changed, 199 insertions(+)
+ create mode 100644 tests/docker/dockerfiles/fedora-rust-nightly.docker
 
-diff --git a/meson.build b/meson.build
-index 65ea45cef03..e4b2af138da 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2831,7 +2831,7 @@ config_host_data.set('CONFIG_ATOMIC64', cc.links('''
-     __atomic_exchange_n(&x, y, __ATOMIC_RELAXED);
-     __atomic_fetch_add(&x, y, __ATOMIC_RELAXED);
-     return 0;
--  }'''))
-+  }''', args: qemu_isa_flags))
+diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+new file mode 100644
+index 00000000000..e642db163c7
+--- /dev/null
++++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+@@ -0,0 +1,173 @@
++# THIS FILE WAS AUTO-GENERATED
++#
++#  $ lcitool dockerfile --layers all fedora-40 qemu
++#
++# https://gitlab.com/libvirt/libvirt-ci
++
++FROM registry.fedoraproject.org/fedora:40
++
++RUN dnf install -y nosync && \
++    printf '#!/bin/sh\n\
++if test -d /usr/lib64\n\
++then\n\
++    export LD_PRELOAD=/usr/lib64/nosync/nosync.so\n\
++else\n\
++    export LD_PRELOAD=/usr/lib/nosync/nosync.so\n\
++fi\n\
++exec "$@"\n' > /usr/bin/nosync && \
++    chmod +x /usr/bin/nosync && \
++    nosync dnf update -y && \
++    nosync dnf install -y \
++               SDL2-devel \
++               SDL2_image-devel \
++               alsa-lib-devel \
++               bash \
++               bc \
++               bison \
++               brlapi-devel \
++               bzip2 \
++               bzip2-devel \
++               ca-certificates \
++               capstone-devel \
++               ccache \
++               clang \
++               ctags \
++               cyrus-sasl-devel \
++               daxctl-devel \
++               dbus-daemon \
++               device-mapper-multipath-devel \
++               diffutils \
++               findutils \
++               flex \
++               fuse3-devel \
++               gcc \
++               gcovr \
++               gettext \
++               git \
++               glib2-devel \
++               glib2-static \
++               glibc-langpack-en \
++               glibc-static \
++               glusterfs-api-devel \
++               gnutls-devel \
++               gtk-vnc2-devel \
++               gtk3-devel \
++               hostname \
++               jemalloc-devel \
++               json-c-devel \
++               libaio-devel \
++               libasan \
++               libattr-devel \
++               libbpf-devel \
++               libcacard-devel \
++               libcap-ng-devel \
++               libcmocka-devel \
++               libcurl-devel \
++               libdrm-devel \
++               libepoxy-devel \
++               libfdt-devel \
++               libffi-devel \
++               libgcrypt-devel \
++               libiscsi-devel \
++               libjpeg-devel \
++               libnfs-devel \
++               libpmem-devel \
++               libpng-devel \
++               librbd-devel \
++               libseccomp-devel \
++               libselinux-devel \
++               libslirp-devel \
++               libssh-devel \
++               libtasn1-devel \
++               libubsan \
++               liburing-devel \
++               libusbx-devel \
++               libxdp-devel \
++               libzstd-devel \
++               llvm \
++               lttng-ust-devel \
++               lzo-devel \
++               make \
++               mesa-libgbm-devel \
++               meson \
++               mtools \
++               ncurses-devel \
++               nettle-devel \
++               ninja-build \
++               nmap-ncat \
++               numactl-devel \
++               openssh-clients \
++               pam-devel \
++               pcre-static \
++               pipewire-devel \
++               pixman-devel \
++               pkgconfig \
++               pulseaudio-libs-devel \
++               python3 \
++               python3-PyYAML \
++               python3-numpy \
++               python3-opencv \
++               python3-pillow \
++               python3-pip \
++               python3-sphinx \
++               python3-sphinx_rtd_theme \
++               python3-zombie-imp \
++               rdma-core-devel \
++               sed \
++               snappy-devel \
++               socat \
++               sparse \
++               spice-protocol \
++               spice-server-devel \
++               swtpm \
++               systemd-devel \
++               systemtap-sdt-devel \
++               tar \
++               tesseract \
++               tesseract-langpack-eng \
++               usbredir-devel \
++               util-linux \
++               virglrenderer-devel \
++               vte291-devel \
++               which \
++               xen-devel \
++               xorriso \
++               zlib-devel \
++               zlib-static \
++               zstd && \
++    nosync dnf autoremove -y && \
++    nosync dnf clean all -y && \
++    rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
++    rpm -qa | sort > /packages.txt && \
++    mkdir -p /usr/libexec/ccache-wrappers && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
++
++ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
++ENV LANG "en_US.UTF-8"
++ENV MAKE "/usr/bin/make"
++ENV NINJA "/usr/bin/ninja"
++ENV PYTHON "/usr/bin/python3"
++RUN dnf install -y wget
++ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
++ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc
++RUN set -eux && \
++  rustArch='x86_64-unknown-linux-gnu' && \
++  rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \
++  url="https://static.rust-lang.org/rustup/archive/1.27.1/${rustArch}/rustup-init" && \
++  wget "$url" && \
++  echo "${rustupSha256} *rustup-init" | sha256sum -c - && \
++  chmod +x rustup-init && \
++  ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \
++  chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \
++  /usr/local/cargo/bin/rustup --version && \
++  /usr/local/cargo/bin/rustup run nightly rustc --version && \
++  test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"
++ENV PATH=$CARGO_HOME/bin:$PATH
++RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli
++# As a final step configure the user (if env is defined)
++ARG USER
++ARG UID
++RUN if [ "${USER}" ]; then \
++  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index a78219f7bc5..1ae0962f04c 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -116,6 +116,26 @@ debian12_extras = [
+     "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
+ ]
  
- has_int128_type = cc.compiles('''
-   __int128_t a;
-@@ -2865,7 +2865,7 @@ if has_int128_type
-       __atomic_compare_exchange_n(&p[4], &p[5], p[6], 0, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
-       return 0;
-     }'''
--  has_atomic128 = cc.links(atomic_test_128)
-+  has_atomic128 = cc.links(atomic_test_128, args: qemu_isa_flags)
++# Based on the hub.docker.com/library/rust Dockerfiles
++fedora_rustup_nightly_extras = [
++    "RUN dnf install -y wget\n",
++    "ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo\n",
++    "ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc\n",
++    "RUN set -eux && \\\n",
++    "  rustArch='x86_64-unknown-linux-gnu' && \\\n",
++    "  rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \\\n",
++    '  url="https://static.rust-lang.org/rustup/archive/1.27.1/${rustArch}/rustup-init" && \\\n',
++    '  wget "$url" && \\\n',
++    '  echo "${rustupSha256} *rustup-init" | sha256sum -c - && \\\n',
++    "  chmod +x rustup-init && \\\n",
++    "  ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \\\n",
++    "  chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \\\n",
++    "  /usr/local/cargo/bin/rustup --version && \\\n",
++    "  /usr/local/cargo/bin/rustup run nightly rustc --version && \\\n",
++    '  test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"\n',
++    'ENV PATH=$CARGO_HOME/bin:$PATH\n',
++    'RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli\n',
++]
  
-   config_host_data.set('CONFIG_ATOMIC128', has_atomic128)
+ def cross_build(prefix, targets):
+     conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
+@@ -139,6 +159,12 @@ try:
+     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
+     generate_dockerfile("ubuntu2204", "ubuntu-2204")
  
-@@ -2874,7 +2874,8 @@ if has_int128_type
-     # without optimization enabled.  Try again with optimizations locally
-     # enabled for the function.  See
-     #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
--    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128)
-+    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128,
-+                                 args: qemu_isa_flags)
-     config_host_data.set('CONFIG_ATOMIC128_OPT', has_atomic128_opt)
- 
-     if not has_atomic128_opt
-@@ -2885,7 +2886,7 @@ if has_int128_type
-           __sync_val_compare_and_swap_16(&x, y, x);
-           return 0;
-         }
--      '''))
-+      ''', args: qemu_isa_flags))
-     endif
-   endif
- endif
++    #
++    # Non-fatal Rust-enabled build
++    #
++    generate_dockerfile("fedora-rust-nightly", "fedora-40",
++                        trailer="".join(fedora_rustup_nightly_extras))
++
+     #
+     # Cross compiling builds
+     #
 -- 
 2.46.2
 
