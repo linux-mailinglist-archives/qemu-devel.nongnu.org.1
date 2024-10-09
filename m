@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B3B996A52
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C76996A65
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syW1n-0004iv-HL; Wed, 09 Oct 2024 08:42:55 -0400
+	id 1syW1n-0004iu-DR; Wed, 09 Oct 2024 08:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1k-0004iV-6A
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:52 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1l-0004ik-MV
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1i-0005Rc-Lf
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:51 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1k-0005Ru-5n
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728477770;
+ s=mimecast20190719; t=1728477771;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jSrTZ5PyIp+y/7h2oJbsCMlzTXaX6rgV2rodQaLvIWo=;
- b=LfP0FNGKwqIdzeu09z2AS4p0ZoYtJOQ3hC6n3RZmtr9loCO6FnuDOayRD2x68ha5d17331
- 7nhq/rkBRH0Prf9OQLexAWTq8LrQAxUlg+qdjI545/pFbh2JRRuefcRlDFIe4SLYfxe87g
- piFFC76Z3fyK4Ct7ExIYYC7tzvdfHjc=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iNbystHyQfpG9zdYMm/IbZBExIkcr+7+jlbR55DWaDg=;
+ b=bgGa3+edro5C/7V3cxoACOZl4tNlptbfnELZhySUEAvCOSNRRovQmW/we0fHlMoB1Xxg/o
+ ENM8x5Ab5u38UfwvkhuXc73v/4L3Tu/joc9yupT6zvnK4gkrnr0DzDQz5RI49CriP1lShu
+ 6h7klgnOa7KsAHg568J0+QuNI9BaoZQ=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-woXH5DhPOkK0YNbAKJSl_Q-1; Wed, 09 Oct 2024 08:42:48 -0400
-X-MC-Unique: woXH5DhPOkK0YNbAKJSl_Q-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-8353d85fc5bso90994139f.1
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:47 -0700 (PDT)
+ us-mta-563-Vwbz1t1qPsOfcjSys4hjCQ-1; Wed, 09 Oct 2024 08:42:50 -0400
+X-MC-Unique: Vwbz1t1qPsOfcjSys4hjCQ-1
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-835439ecbd3so37324639f.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728477767; x=1729082567;
+ d=1e100.net; s=20230601; t=1728477768; x=1729082568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jSrTZ5PyIp+y/7h2oJbsCMlzTXaX6rgV2rodQaLvIWo=;
- b=Km4IrLx5Znxp7FwYH+g6934TujLYmcQ5e8J/LhZg7HeHGhixdfRb65Wbc0ZnMOt5kX
- 5WbJT3XHQvGdFU7Dp2mNqG1HBfAXpgQnLmUxiPr1+dtG2wntrDFsldhqD6TL2mO2cHLZ
- yhO60O9O1XhiFpOHafNIIBODvSirdFNeJGxD9MTLnKIpEJRDMP/33j8OnumIRsHmrJRu
- SRHeEEc6MX2ChAFYeA2QL/L6G9xHnPV0M0X7+Fv7XWpr3bYSvD2m8nU9sAfDCW/Sj3UK
- YjY40NWDd3gME5nm/X7Avk69M/CQaDTkvxilLdZtj0qOlWXDRA9meGVdrvmDMMp33IC1
- Z+aw==
-X-Gm-Message-State: AOJu0Yzgf0uSFJ5YxqRLOgNyPdteCdxu5eDgB7ftHHoRBO7wt4TrEPqH
- l4IQkVwP0O4DZgOe78nb6ri61EyJaVfrVoRGCw+9WzxR9YAngWB5/2Z5P1BXOBYanVGapPhhA51
- MjRlZm+s5601uDZ3L8Q9v0UNFHynZeYNgnfySKiwQclWb4cnvVDpkMIWsUzN6L9uGWHZnRYyl5a
- y6+AAruL3GaIxXtOPTA/c+BXxQEcOthsyKtA==
-X-Received: by 2002:a05:6602:1595:b0:82c:bdec:1c0e with SMTP id
- ca18e2360f4ac-8353d378d0cmr246749739f.2.1728477766793; 
- Wed, 09 Oct 2024 05:42:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpypbmveO/15wJzQiiV5f8btY+IXUL1ItykcAGCz313DXu/lwvl5Vl1GBnfVOI9x47LbpLaQ==
-X-Received: by 2002:a05:6602:1595:b0:82c:bdec:1c0e with SMTP id
- ca18e2360f4ac-8353d378d0cmr246747039f.2.1728477766274; 
- Wed, 09 Oct 2024 05:42:46 -0700 (PDT)
+ bh=iNbystHyQfpG9zdYMm/IbZBExIkcr+7+jlbR55DWaDg=;
+ b=vvUFQHrvZzM3Wbq0NCWuv0VivtbqhQnyfj/JQTo0zM9RUI17jrfuB1k7lIi76RitGm
+ 7MEkXAjpMiyi4ZjMD9BekkI9JOasf1/mcJJiWI/Ah/1QkU+XZ6BeNXAlcKWwv0Is7wVU
+ 8RAsJ/5lPzKOx8JZDzo89x9IaMQc9qNdYzeD8j+cKqIG9kt7yBGBu7GHANTmTJGFdyxQ
+ Aus8qDPyHrpZy1flYBPWn7uCpuNmMEmXJstAmH9jvbRUf0FDRtFkKb2KIGKzIljvQhHZ
+ Tsf697qp8ujHvaos3Ib27gXcCjwnJILFiqftleQ4sGBiKeCVpV/o0pG5UBqZHvqt7vhH
+ JC9w==
+X-Gm-Message-State: AOJu0YzKnxCNQd0OP23+QsssiTNcethazWGRdAuitmQmZlzvOIFK2Wb+
+ BKsTgv4wS4axfhqWyxtxGbXIQOipzvT8UfKucVG5QS38QdR2nty1YgGogtkFiZEti1+llTyybs2
+ DhwVDL2x2wXgEsM3yiVA4ozOBQ91ugXzxSUUpwhvigslHotuD1G8qm3SnBmSRs6EcbuNFayj8Aa
+ JezRD2LgzZclUU3BGFFsLIVI3akLIdfQuTOQ==
+X-Received: by 2002:a05:6602:148d:b0:81f:75bf:6570 with SMTP id
+ ca18e2360f4ac-8353d4a3b07mr228901939f.5.1728477768375; 
+ Wed, 09 Oct 2024 05:42:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENlNaV1R1A1VuGrBVbAxUhZF4hpbLmYToSTtwgeVsAdY+lrDV+0KUmwe0au+/CrpyEeXnQ8g==
+X-Received: by 2002:a05:6602:148d:b0:81f:75bf:6570 with SMTP id
+ ca18e2360f4ac-8353d4a3b07mr228897639f.5.1728477767895; 
+ Wed, 09 Oct 2024 05:42:47 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.44
+ ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 05:42:45 -0700 (PDT)
+ Wed, 09 Oct 2024 05:42:47 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 03/12] migration: Remove migrate_cap_set
-Date: Wed,  9 Oct 2024 08:42:29 -0400
-Message-ID: <20241009124238.371084-4-peterx@redhat.com>
+Subject: [PULL 04/12] migration: Remove unused migrate_zero_blocks
+Date: Wed,  9 Oct 2024 08:42:30 -0400
+Message-ID: <20241009124238.371084-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241009124238.371084-1-peterx@redhat.com>
 References: <20241009124238.371084-1-peterx@redhat.com>
@@ -101,63 +101,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-migrate_cap_set has been unused since
-  18d154f575 ("migration: Remove 'blk/-b' option from migrate commands")
+migrate_zero_blocks is unused since
+  eef0bae3a7 ("migration: Remove block migration")
 
 Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240919134626.166183-2-dave@treblig.org
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20240919134626.166183-3-dave@treblig.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.h |  1 -
- migration/options.c | 20 --------------------
- 2 files changed, 21 deletions(-)
+ migration/options.h | 1 -
+ migration/options.c | 7 -------
+ 2 files changed, 8 deletions(-)
 
 diff --git a/migration/options.h b/migration/options.h
-index a0bd6edc06..36e7b3723f 100644
+index 36e7b3723f..79084eed0d 100644
 --- a/migration/options.h
 +++ b/migration/options.h
-@@ -58,7 +58,6 @@ bool migrate_tls(void);
- /* capabilities helpers */
+@@ -40,7 +40,6 @@ bool migrate_release_ram(void);
+ bool migrate_return_path(void);
+ bool migrate_validate_uuid(void);
+ bool migrate_xbzrle(void);
+-bool migrate_zero_blocks(void);
+ bool migrate_zero_copy_send(void);
  
- bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
--bool migrate_cap_set(int cap, bool value, Error **errp);
- 
- /* parameters */
- 
+ /*
 diff --git a/migration/options.c b/migration/options.c
-index 147cd2b8fd..9460c5dee9 100644
+index 9460c5dee9..6f549984cb 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -605,26 +605,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-     return true;
+@@ -339,13 +339,6 @@ bool migrate_xbzrle(void)
+     return s->capabilities[MIGRATION_CAPABILITY_XBZRLE];
  }
  
--bool migrate_cap_set(int cap, bool value, Error **errp)
+-bool migrate_zero_blocks(void)
 -{
 -    MigrationState *s = migrate_get_current();
--    bool new_caps[MIGRATION_CAPABILITY__MAX];
 -
--    if (migration_is_running()) {
--        error_setg(errp, "There's a migration process in progress");
--        return false;
--    }
--
--    memcpy(new_caps, s->capabilities, sizeof(new_caps));
--    new_caps[cap] = value;
--
--    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
--        return false;
--    }
--    s->capabilities[cap] = value;
--    return true;
+-    return s->capabilities[MIGRATION_CAPABILITY_ZERO_BLOCKS];
 -}
 -
- MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
+ bool migrate_zero_copy_send(void)
  {
-     MigrationCapabilityStatusList *head = NULL, **tail = &head;
+     MigrationState *s = migrate_get_current();
 -- 
 2.45.0
 
