@@ -2,71 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5349962F1
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4201996450
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:01:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sySBY-0001xX-RJ; Wed, 09 Oct 2024 04:36:44 -0400
+	id 1sySYB-0007XX-0V; Wed, 09 Oct 2024 05:00:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sySBW-0001xJ-P9
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:36:42 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1sySXu-0007XG-1U
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:59:50 -0400
+Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sySBT-00014j-PU
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:36:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728463000; x=1759999000;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=puO2yolwMmXZ4+1/AaWo0WiUXGvYXZVPtqYsDlpyI2g=;
- b=SIu9CUAWvipbPxcMIYm12vHTRxeK+8F+6s0HS1dtHN+kbdxcuhw630kX
- XElaFrQpFn8UFCI/1BSs62OFt8WuOx6EswcwgYaiwR6Fy5TEKntsi+813
- hRTHfRcLMlfnj01MEa5ivmzc/1I7jLZdmYK9W4eO+FNlc/BC2Y+vHguX5
- L7NwHHCQQ6PQ8RsDLlZ53GEQ1iBVKhNp4cpGqskcJqwC6FVd5QiecocmS
- WHhoFBbsZESQ3p2UGQyZj8kzZKuMazx8r+0ebA9gdEQdA3qrwdVL7lmSP
- ubUln4k1J4M3RnOxOQdpEKENGFWbiUMwGfNmz0mEcNKKZLQRbQ5uji/4J g==;
-X-CSE-ConnectionGUID: SziPB5l9Rpi6L0Mq5zgOLA==
-X-CSE-MsgGUID: S2mKf4uzQ7yRfd9IQTz2qw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27639446"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="27639446"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 01:36:36 -0700
-X-CSE-ConnectionGUID: fWS+miooRGaMtvJG25pO9g==
-X-CSE-MsgGUID: HRCGbfD0TnGkXyc1GgsmiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="75764406"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 09 Oct 2024 01:36:35 -0700
-Date: Wed, 9 Oct 2024 16:52:47 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Gao Shiyuan <gaoshiyuan@baidu.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1sySXp-0003SG-NK
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:59:49 -0400
+To: Zhao Liu <zhao1.liu@intel.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
 Subject: Re: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-Message-ID: <ZwZEXyRvZeb4eO6q@intel.com>
-References: <20240926040808.9158-1-gaoshiyuan@baidu.com>
+Thread-Topic: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
+Thread-Index: AQHbGimJGzzAu7a83kSSJ9vdQ5PkZA==
+Date: Wed, 9 Oct 2024 08:59:24 +0000
+Message-ID: <7AEC3E01-EDA4-4507-8FD8-E14CA59A9D45@baidu.com>
+Accept-Language: en-US, zh-CN
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.154]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3C793F23FC709542AE759AC8321A4B61@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240926040808.9158-1-gaoshiyuan@baidu.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-FEAS-Client-IP: 172.31.51.14
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=220.181.50.185; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,80 +59,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shiyuan,
-
-On Thu, Sep 26, 2024 at 12:08:08PM +0800, Gao Shiyuan via wrote:
-> Date: Thu, 26 Sep 2024 12:08:08 +0800
-> From: Gao Shiyuan via <qemu-devel@nongnu.org>
-> Subject: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
-> X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-> 
-> KVM commit 191c8137a939 ("x86/kvm: Implement HWCR support")
-> introduced support for emulating HWCR MSR.
-> 
-> Add support for QEMU to save/load this MSR for migration purposes.
-> 
-> Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-> ---
->  target/i386/cpu.c     |  1 +
->  target/i386/cpu.h     |  5 +++++
->  target/i386/kvm/kvm.c | 12 ++++++++++++
->  target/i386/machine.c | 20 ++++++++++++++++++++
->  4 files changed, 38 insertions(+)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 85ef7452c0..339131a39a 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7093,6 +7093,7 @@ static void x86_cpu_reset_hold(Object *obj, ResetType type)
->      env->a20_mask = ~0x0;
->      env->smbase = 0x30000;
->      env->msr_smi_count = 0;
-> +    env->hwcr = 0;
-
-Why we need to clear it here? This needs to be explained in the commit
-message.
-
->      env->idt.limit = 0xffff;
->      env->gdt.limit = 0xffff;
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 14edd57a37..a19b1ceda4 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -539,6 +539,8 @@ typedef enum X86Seg {
->  
->  #define MSR_AMD64_TSC_RATIO_DEFAULT     0x100000000ULL
->  
-> +#define MSR_K7_HWCR                     0xc0010015
-> +
->  #define MSR_VM_HSAVE_PA                 0xc0010117
->  
->  #define MSR_IA32_XFD                    0x000001c4
-> @@ -1859,6 +1861,9 @@ typedef struct CPUArchState {
->      uint64_t msr_lbr_depth;
->      LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
->  
-> +    /* Hardware Configuration MSR */
-
-We can keep the same comment as msr_hwcr in KVM to emphasize this is an
-AMD-specific MSR, i.e.,
-
-/* AMD MSRC001_0015 Hardware Configuration */
-
-> +    uint64_t hwcr;
-
-Add the msr_ prefix to indicate that this value is only intended to
-store the MSR. Currently, for similar members, some have the msr_ prefix
-and some do not, but it is better to have it for clarity.
-
-> +
->      /* exception/interrupt handling */
->      int error_code;
->      int exception_is_int;
-
--Zhao
-
+PiA+IGRpZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9jcHUuYyBiL3RhcmdldC9pMzg2L2NwdS5jDQo+
+ID4gaW5kZXggODVlZjc0NTJjMC4uMzM5MTMxYTM5YSAxMDA2NDQNCj4gPiAtLS0gYS90YXJnZXQv
+aTM4Ni9jcHUuYw0KPiA+ICsrKyBiL3RhcmdldC9pMzg2L2NwdS5jDQo+ID4gQEAgLTcwOTMsNiAr
+NzA5Myw3IEBAIHN0YXRpYyB2b2lkIHg4Nl9jcHVfcmVzZXRfaG9sZChPYmplY3QgKm9iaiwgUmVz
+ZXRUeXBlIHR5cGUpDQo+ID4gZW52LT5hMjBfbWFzayA9IH4weDA7DQo+ID4gZW52LT5zbWJhc2Ug
+PSAweDMwMDAwOw0KPiA+IGVudi0+bXNyX3NtaV9jb3VudCA9IDA7DQo+ID4gKyBlbnYtPmh3Y3Ig
+PSAwOw0KPg0KPg0KPiBXaHkgd2UgbmVlZCB0byBjbGVhciBpdCBoZXJlPyBUaGlzIG5lZWRzIHRv
+IGJlIGV4cGxhaW5lZCBpbiB0aGUgY29tbWl0DQo+IG1lc3NhZ2UuDQoNCkkgbWlzdW5kZXJzdG9v
+ZCwgdGhlcmXigJlzIG5vIG5lZWQgdG8gY2xlYXIgaGVyZS4NCg0KPiA+DQo+ID4gKyNkZWZpbmUg
+TVNSX0s3X0hXQ1IgMHhjMDAxMDAxNQ0KPiA+ICsNCj4gPiAjZGVmaW5lIE1TUl9WTV9IU0FWRV9Q
+QSAweGMwMDEwMTE3DQo+ID4NCj4gPiAjZGVmaW5lIE1TUl9JQTMyX1hGRCAweDAwMDAwMWM0DQo+
+ID4gQEAgLTE4NTksNiArMTg2MSw5IEBAIHR5cGVkZWYgc3RydWN0IENQVUFyY2hTdGF0ZSB7DQo+
+ID4gdWludDY0X3QgbXNyX2xicl9kZXB0aDsNCj4gPiBMQlJFbnRyeSBsYnJfcmVjb3Jkc1tBUkNI
+X0xCUl9OUl9FTlRSSUVTXTsNCj4gPg0KPiA+ICsgLyogSGFyZHdhcmUgQ29uZmlndXJhdGlvbiBN
+U1IgKi8NCj4NCj4NCj4gV2UgY2FuIGtlZXAgdGhlIHNhbWUgY29tbWVudCBhcyBtc3JfaHdjciBp
+biBLVk0gdG8gZW1waGFzaXplIHRoaXMgaXMgYW4NCj4gQU1ELXNwZWNpZmljIE1TUiwgaS5lLiwN
+Cj4NCj4NCj4gLyogQU1EIE1TUkMwMDFfMDAxNSBIYXJkd2FyZSBDb25maWd1cmF0aW9uICovDQo+
+DQo+DQo+ID4gKyB1aW50NjRfdCBod2NyOw0KPg0KPg0KPiBBZGQgdGhlIG1zcl8gcHJlZml4IHRv
+IGluZGljYXRlIHRoYXQgdGhpcyB2YWx1ZSBpcyBvbmx5IGludGVuZGVkIHRvDQo+IHN0b3JlIHRo
+ZSBNU1IuIEN1cnJlbnRseSwgZm9yIHNpbWlsYXIgbWVtYmVycywgc29tZSBoYXZlIHRoZSBtc3Jf
+IHByZWZpeA0KPiBhbmQgc29tZSBkbyBub3QsIGJ1dCBpdCBpcyBiZXR0ZXIgdG8gaGF2ZSBpdCBm
+b3IgY2xhcml0eS4NCj4NCg0KVGhhbmtzLCBJIHdpbGwgbW9kaWZ5IGl0Lg0KDQo=
 
