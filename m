@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309E4996A5B
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BE2996A63
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syW1q-0004jV-DI; Wed, 09 Oct 2024 08:42:58 -0400
+	id 1syW1u-0004kw-SQ; Wed, 09 Oct 2024 08:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1p-0004jN-4A
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1r-0004kB-Up
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:43:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1n-0005Sd-2y
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1q-0005TU-52
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728477774;
+ s=mimecast20190719; t=1728477777;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y/0kDNEZEHcHY+mJQf631i4X5DtZp/zqgZgP9eV3P4g=;
- b=NQ5YuJUQQUMnlDZB3U8pVe9iuqvBZqnh7hkPYKYJxO5wFcYBz6JG4Pn05AfOzbbuVKLov6
- Dy9GiIpAnkKcjD45m1a72YEK+S66QEnTxTWSbNwpOdIyfmtT0ZnFJf/IotkrpWGoI9/9du
- PwCDsvc/1uDyHXOT7rx/pOVbUPsGw6s=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EPwjO7n6gAxf8tb/k3NaSmBNEtRkZrTncHigcs6P44U=;
+ b=c0zplawT36t1l84y/EZFVWLT4cUp6KUebMMkh60N140gcjPFS+m6jlJqpSn5aXGkSiKCyY
+ AAawi3+kpRjrPYo5TGkzEGYGmqeV5MwDah09zOg7ugacZlgsLfW9lVEY3YrBTvYHozk/ja
+ 9Xnf7dKJJxNCsTX0eIfe4z7AIUsbzUg=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-6TsXy6sfOBa6X7zAQjtOmw-1; Wed, 09 Oct 2024 08:42:53 -0400
-X-MC-Unique: 6TsXy6sfOBa6X7zAQjtOmw-1
-Received: by mail-io1-f72.google.com with SMTP id
- ca18e2360f4ac-82ced069d94so638574639f.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:53 -0700 (PDT)
+ us-mta-13-vRqT1UQSMoCRoKoz0ZaA1Q-1; Wed, 09 Oct 2024 08:42:56 -0400
+X-MC-Unique: vRqT1UQSMoCRoKoz0ZaA1Q-1
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-83544f524ebso33396839f.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728477772; x=1729082572;
+ d=1e100.net; s=20230601; t=1728477774; x=1729082574;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y/0kDNEZEHcHY+mJQf631i4X5DtZp/zqgZgP9eV3P4g=;
- b=lQJ3jpAfbJnDWJLYrkHrCWwMWPV5EE9aqaAB06+hEkEv424rXk3nif+8jn1tYBtR7C
- EJjh8EPpBLG/Gqs5fpO2yYZQlHguVAQdpoS4N9H/NArHoyUmNN+kqh63ZyKNbA523fzc
- /rDrl31IK/JCY+uMAR/2YUWneTzMclkoQjvdGv/9z0BSOoY1MoT2McAr/iLL+9vQ0skA
- DX6+W18V0fTVMLcZhQ3dBF7sNZmXjU8vphqn9XCXkKp0dwLxGIetgIEHKBtJyHD8tWx4
- 8+f041UhZIqfG77fmRb93bAXhMCkJtkD7Lx79TkLniY7d3Xlc4itFv5+TbC9/5aPdyt2
- XG7w==
-X-Gm-Message-State: AOJu0YxT0fbLtYLCjd7+gzYM3IOWaOKP6AoGLlK7NHHXsKILKYUeKra9
- COAZt9UOv4kq9CykJciiM+flHCq4iuJyeNhNzktGPY2wprlkJIPIuI5hfoLqhnaHwKrl64h/Y9A
- H56X6m3Y30/Pp5UzSbGGLbkQFci2XPUkci6v7ais6rFrK5veNTwPmLje3QvuPYFyBoc36YI5kwX
- AXdVcQ/vtNjueZ8fokIZ2DZdBHv5Oa2+kXUw==
-X-Received: by 2002:a05:6602:2b83:b0:834:f744:d067 with SMTP id
- ca18e2360f4ac-8353d4a7cdamr298917939f.8.1728477772430; 
- Wed, 09 Oct 2024 05:42:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6H/uWXP97Zaa7s2yDrynU93ec9ZX+eQE1V3QcJlP4ZilTQQlWrAhVddifAnr37JCd0+MmJg==
-X-Received: by 2002:a05:6602:2b83:b0:834:f744:d067 with SMTP id
- ca18e2360f4ac-8353d4a7cdamr298914939f.8.1728477772015; 
- Wed, 09 Oct 2024 05:42:52 -0700 (PDT)
+ bh=EPwjO7n6gAxf8tb/k3NaSmBNEtRkZrTncHigcs6P44U=;
+ b=GQYAhRU7EEU5aZpTAk0JB6FyVFOuqcZ300AKNzdAvBYBwHhWv3GmxKhs0TGb8bnMkw
+ pZj+HYbtCGQOnxORJkcuqrsPsXGyV2IuVDSjcC/m5VgONH6Eb1G1gwDIoxyRx8HrQiS8
+ fOGBaAXz0ci61bUsDh4LwHYeYp2NQknPBF8gYlplRGFKFWqoFV/wG4pg/koZrm3ImJaS
+ kQmvgRbWsMfmoM9vqfyhXlFZSpuGkTfsVIkpFzRt7CCih0ZFZDK8iX25wluG8uYqP5zA
+ YNtxlMW3qLbfMyzgChDVdCwztwg9hXkxg1Azl+casMqZ9QeSUedkelyi3eu5LI6LpvVd
+ PttQ==
+X-Gm-Message-State: AOJu0YxZEHPRS6DoP2XVipUkWKeQlign7QUEQKpcv7eKYDhfnM0QWZiQ
+ Ox6L4AxgX66mekpYFkxzcMNjh84CzTczAKZstbDK+uoh/46eQlzt54eT8NIwkcB3WQEQA6X5DAd
+ 2LKMhTq/AHZnJQVIJgkhYfaqmJU5TL6tGkVPIVLrlOEYhDpxK36eON/6pa/FfnWFvLj8FcPMlRJ
+ ERrsZxkPQfwRgahX5v6MCAZ2rTmmmxWGzHpQ==
+X-Received: by 2002:a05:6602:1554:b0:82c:f30d:fc72 with SMTP id
+ ca18e2360f4ac-8353d4824demr181280239f.2.1728477774476; 
+ Wed, 09 Oct 2024 05:42:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtG12tdST9qX1w8USus5SfYTeOHD396wropQBAOzggQ9fkcTVcO4uKZYA6o/8ZcLVJV5WS3A==
+X-Received: by 2002:a05:6602:1554:b0:82c:f30d:fc72 with SMTP id
+ ca18e2360f4ac-8353d4824demr181276639f.2.1728477773863; 
+ Wed, 09 Oct 2024 05:42:53 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.50
+ ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 05:42:51 -0700 (PDT)
+ Wed, 09 Oct 2024 05:42:52 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 06/12] migration: Remove unused socket_send_channel_create_sync
-Date: Wed,  9 Oct 2024 08:42:32 -0400
-Message-ID: <20241009124238.371084-7-peterx@redhat.com>
+Subject: [PULL 07/12] util/userfaultfd: Return -errno on error
+Date: Wed,  9 Oct 2024 08:42:33 -0400
+Message-ID: <20241009124238.371084-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241009124238.371084-1-peterx@redhat.com>
 References: <20241009124238.371084-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,61 +101,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-socket_send_channel_create_sync only use was removed by
-  d0edb8a173 ("migration: Create the postcopy preempt channel asynchronously")
+Convert (the currently unused) uffd_wakeup, uffd_copy_page and
+uffd_zero_page to return -errno on error rather than -1.
 
-Remove it.
+That will make it easier to reuse in postcopy.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240919134626.166183-5-dave@treblig.org
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20240919134626.166183-6-dave@treblig.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/socket.h |  1 -
- migration/socket.c | 18 ------------------
- 2 files changed, 19 deletions(-)
+ util/userfaultfd.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/migration/socket.h b/migration/socket.h
-index 46c233ecd2..04ebbe95a1 100644
---- a/migration/socket.h
-+++ b/migration/socket.h
-@@ -22,7 +22,6 @@
- #include "qemu/sockets.h"
+diff --git a/util/userfaultfd.c b/util/userfaultfd.c
+index 1b2fa949d4..518d5c3586 100644
+--- a/util/userfaultfd.c
++++ b/util/userfaultfd.c
+@@ -240,7 +240,7 @@ int uffd_change_protection(int uffd_fd, void *addr, uint64_t length,
+  * Copy range of source pages to the destination to resolve
+  * missing page fault somewhere in the destination range.
+  *
+- * Returns 0 on success, negative value in case of an error
++ * Returns 0 on success, -errno in case of an error
+  *
+  * @uffd_fd: UFFD file descriptor
+  * @dst_addr: destination base address
+@@ -259,10 +259,11 @@ int uffd_copy_page(int uffd_fd, void *dst_addr, void *src_addr,
+     uffd_copy.mode = dont_wake ? UFFDIO_COPY_MODE_DONTWAKE : 0;
  
- void socket_send_channel_create(QIOTaskFunc f, void *data);
--QIOChannel *socket_send_channel_create_sync(Error **errp);
+     if (ioctl(uffd_fd, UFFDIO_COPY, &uffd_copy)) {
++        int e = errno;
+         error_report("uffd_copy_page() failed: dst_addr=%p src_addr=%p length=%" PRIu64
+                 " mode=%" PRIx64 " errno=%i", dst_addr, src_addr,
+-                length, (uint64_t) uffd_copy.mode, errno);
+-        return -1;
++                length, (uint64_t) uffd_copy.mode, e);
++        return -e;
+     }
  
- void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
+     return 0;
+@@ -273,7 +274,7 @@ int uffd_copy_page(int uffd_fd, void *dst_addr, void *src_addr,
+  *
+  * Fill range pages with zeroes to resolve missing page fault within the range.
+  *
+- * Returns 0 on success, negative value in case of an error
++ * Returns 0 on success, -errno in case of an error
+  *
+  * @uffd_fd: UFFD file descriptor
+  * @addr: base address
+@@ -289,10 +290,11 @@ int uffd_zero_page(int uffd_fd, void *addr, uint64_t length, bool dont_wake)
+     uffd_zeropage.mode = dont_wake ? UFFDIO_ZEROPAGE_MODE_DONTWAKE : 0;
  
-diff --git a/migration/socket.c b/migration/socket.c
-index 9ab89b1e08..5ec65b8c03 100644
---- a/migration/socket.c
-+++ b/migration/socket.c
-@@ -42,24 +42,6 @@ void socket_send_channel_create(QIOTaskFunc f, void *data)
-                                      f, data, NULL, NULL);
- }
+     if (ioctl(uffd_fd, UFFDIO_ZEROPAGE, &uffd_zeropage)) {
++        int e = errno;
+         error_report("uffd_zero_page() failed: addr=%p length=%" PRIu64
+                 " mode=%" PRIx64 " errno=%i", addr, length,
+-                (uint64_t) uffd_zeropage.mode, errno);
+-        return -1;
++                (uint64_t) uffd_zeropage.mode, e);
++        return -e;
+     }
  
--QIOChannel *socket_send_channel_create_sync(Error **errp)
--{
--    QIOChannelSocket *sioc = qio_channel_socket_new();
--
--    if (!outgoing_args.saddr) {
--        object_unref(OBJECT(sioc));
--        error_setg(errp, "Initial sock address not set!");
--        return NULL;
--    }
--
--    if (qio_channel_socket_connect_sync(sioc, outgoing_args.saddr, errp) < 0) {
--        object_unref(OBJECT(sioc));
--        return NULL;
--    }
--
--    return QIO_CHANNEL(sioc);
--}
--
- struct SocketConnectData {
-     MigrationState *s;
-     char *hostname;
+     return 0;
+@@ -306,7 +308,7 @@ int uffd_zero_page(int uffd_fd, void *addr, uint64_t length, bool dont_wake)
+  * via UFFD-IO IOCTLs with MODE_DONTWAKE flag set, then after that all waits
+  * for the whole memory range are satisfied in a single call to uffd_wakeup().
+  *
+- * Returns 0 on success, negative value in case of an error
++ * Returns 0 on success, -errno in case of an error
+  *
+  * @uffd_fd: UFFD file descriptor
+  * @addr: base address
+@@ -320,9 +322,10 @@ int uffd_wakeup(int uffd_fd, void *addr, uint64_t length)
+     uffd_range.len = length;
+ 
+     if (ioctl(uffd_fd, UFFDIO_WAKE, &uffd_range)) {
++        int e = errno;
+         error_report("uffd_wakeup() failed: addr=%p length=%" PRIu64 " errno=%i",
+-                addr, length, errno);
+-        return -1;
++                addr, length, e);
++        return -e;
+     }
+ 
+     return 0;
 -- 
 2.45.0
 
