@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C43999625F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF8F996299
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:29:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syRzd-0003TN-7P; Wed, 09 Oct 2024 04:24:25 -0400
+	id 1syS3z-0004qm-QK; Wed, 09 Oct 2024 04:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1syRza-0003Sv-Ul
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:24:23 -0400
+ id 1syS3x-0004qX-Jf
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:28:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1syRzY-0007qS-Ra
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:24:22 -0400
+ id 1syS3v-0008P8-V6
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:28:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728462258;
+ s=mimecast20190719; t=1728462530;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6gkl7mDwkqFiYrVoNRjfzEn2Pl0T4oFjZDBkmHGEKgE=;
- b=FH2pTa5extm7umTLC8Hz5rAR6xsyItaQ1qGZAt7ETq64pArVMXf3CcxOmeh7KYaVujWKdt
- 6LGwpoGGsa+e8O+9MvSPGUbiPrFkKDFaf3G2an3l/iN1kWwBg6fusqCBp4Sqop90x+fXWt
- c5+bezaKm7GfvmYdlQz7F/gmL3sQRTk=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qVAGNi3B+zaqDsLtRotXeOeufFoRjHnbuO1Ir4cRYYQ=;
+ b=A1KVrpLotmIJL6x+jNUfhcYSKGw3gbtjcl/6kxgoX+Hm0rHPEkrjkN48wocYa1XUNcOSL9
+ atsj6ucMWf6DPclmaHDYGVcd5Yy/Y6bz6YGkuNV4oIgzi/Q90JoQpZY1CdE5+HJzgc808H
+ aGg6ybaAATT+fMV+0eF7S4SsDZsa9aM=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-kdCiDvcfMia7_KpLX3XwRA-1; Wed, 09 Oct 2024 04:24:16 -0400
-X-MC-Unique: kdCiDvcfMia7_KpLX3XwRA-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2e294096a90so1461268a91.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 01:24:15 -0700 (PDT)
+ us-mta-13-d4zIX_YHOgujzjZF-n85sA-1; Wed, 09 Oct 2024 04:28:48 -0400
+X-MC-Unique: d4zIX_YHOgujzjZF-n85sA-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2e28d7928d8so1754860a91.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 01:28:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728462250; x=1729067050;
+ d=1e100.net; s=20230601; t=1728462527; x=1729067327;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6gkl7mDwkqFiYrVoNRjfzEn2Pl0T4oFjZDBkmHGEKgE=;
- b=r3Nqq9AVhejNZn49z8R+k0MK2c67NL9vdJPsybHifwFUmttwwhQp15HWgr4Jviu/UG
- sVXYMqD6bTSOOlGwQVKPFJjf3jl4HM2QgBOnj7nCx9x2KZj0ZvnmAYhr02i3/haz2OZr
- DztWjjfx4S35Mr/8vvI0LfsSzNnnodtDfbVYQDXvqjQRZ1hnpP+68o+3Mk9DoIKBIN7h
- S23bdIwF1I/tzgssgAcUKotoHQvvvWgqYM40uZlv/3C/6Yz11pbIWlHT3gijgNOjC7mC
- N+ltSK+Ju+zEFIjnYUVNtKd5spmQ+qepsSz8q4+Nr6sRJkdVYHhBcMnnGwVJmWGcKa1+
- bsug==
-X-Gm-Message-State: AOJu0YzUeXy3pgjKBN86AB1B/ORueZ8yXj8KFu8l6KqsPypg3FpCViBu
- fZp9OkRyEztiZDmsKhkYqhmz/T6VNJJVkCEm21rk+4EqiZbTKXgr3Y9k5QWaZgdRs/IwZI1/xkO
- kCupsOzmH+ZAiLSvCallGFaIQdBXC2jdyIsYUw6xUkAUPb0U6HJJxM8yMdBtAT7fvhYcMrSy4hN
- gr4A9D1p/iGVb0akFVZCl2YUWTkvY=
-X-Received: by 2002:a17:90a:f013:b0:2e2:a029:3b4b with SMTP id
- 98e67ed59e1d1-2e2a2525133mr2283310a91.28.1728462250035; 
- Wed, 09 Oct 2024 01:24:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgECB22MegdoBixY79pLyhqVK45VQjLn5UwVnMWfpHzEKQ0TcfukyGdZ74vinY7/+/dZWxFX1kGRIIC8ulKw8=
-X-Received: by 2002:a17:90a:f013:b0:2e2:a029:3b4b with SMTP id
- 98e67ed59e1d1-2e2a2525133mr2283281a91.28.1728462249529; Wed, 09 Oct 2024
- 01:24:09 -0700 (PDT)
+ bh=qVAGNi3B+zaqDsLtRotXeOeufFoRjHnbuO1Ir4cRYYQ=;
+ b=MvHfEqmuUcN8lqse6HL2ImJ6Ev6k7zeDnAzG3kCSI7tbbYlD+0laifoAj4u1F3R77G
+ Bv/R6f0cYJrJYEMLV14Aiu02+oZPAdMn8EptLXEXVeIfxCd+Ex8fBrib4gQ3YVTYwIA1
+ BtzVKDpMi6p3mTYrXkENzAZ7A8JucuD+u/b7OJ+OU8glIaSuyLbc0WVATbiNyWfE6p3i
+ sK7j/ZeNsZoIITG1eYjIIzYGFke0FNsxH2SuRl75lhwbhbrNsgBiTkkhqJQR6NOiEk9w
+ +spjtx9iEV2cjJmghWlIlwKXUXP9CtqrJ1cSL/QWlhZIl/qL3ij60yOghkjz7JKHj4y1
+ y1eA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXLP4VMZJnEyKQA9POOG3cmhM0Py+VCizv2q4D3phsltNoklpgTP0JLgq4R3uBn7lFnEujVqbfgmXNP@nongnu.org
+X-Gm-Message-State: AOJu0YxrWBBFZrHvNyUCvEsiFfv1Ss4Rz09XxIha3e1gTYX6WqO7tjxz
+ bygAVr4YeucbI0PelHTgpgQp3jPDRtIx7zHPFbWjBIH7ej4v3bBVpDAFt974yfdkdp28W9oIWpA
+ UPm46B3mLL3jkMYMGKhc9zbgsbqBbySmwIEPmKMzcHYGdkxgsbKBCq3ZcFe9Qo7QKsCilbU4vRl
+ SPp+sunThuReUlJNADgslMgcISNlHRNcn2H04V5Q==
+X-Received: by 2002:a17:90b:23d2:b0:2e0:9160:1842 with SMTP id
+ 98e67ed59e1d1-2e2a21e7c97mr2278376a91.1.1728462527677; 
+ Wed, 09 Oct 2024 01:28:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaYw052rn7hGGSKjBdHha8J9jonvL8PCmkQ6+x5Uhyu0CNP3+HvDGw/ldblWJrgWF+0zZcBlS459r5wjUgZ+o=
+X-Received: by 2002:a17:90b:23d2:b0:2e0:9160:1842 with SMTP id
+ 98e67ed59e1d1-2e2a21e7c97mr2278355a91.1.1728462527258; Wed, 09 Oct 2024
+ 01:28:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240930065245.2993767-1-zhenzhong.duan@intel.com>
-In-Reply-To: <20240930065245.2993767-1-zhenzhong.duan@intel.com>
+References: <20240929160045.2133423-1-lulu@redhat.com>
+ <20240929160045.2133423-2-lulu@redhat.com>
+In-Reply-To: <20240929160045.2133423-2-lulu@redhat.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 9 Oct 2024 16:23:58 +0800
-Message-ID: <CACGkMEuN0A8i1N2S8j+m1vx+Noy9Yxvt5TxHD3NYL2hHQKcRKA@mail.gmail.com>
-Subject: Re: [PATCH] intel_iommu: Remove Transient Mapping (TM) field from
- second-level page-tables
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: qemu-devel@nongnu.org, chao.p.peng@intel.com, Yi Liu <yi.l.liu@intel.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?UTF-8?Q?Cl=C3=A9ment_Mathieu=2D=2DDrif?= <clement.mathieu--drif@eviden.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
+Date: Wed, 9 Oct 2024 16:28:34 +0800
+Message-ID: <CACGkMEvMndysLRjsBdxov+RQ4YJvSmPNgAev9HP0tnM-rb71eg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] virtio_net: Add the check for vdpa's mac address
+To: Cindy Lu <lulu@redhat.com>
+Cc: mst@redhat.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
@@ -102,116 +98,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 30, 2024 at 2:56=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
-l.com> wrote:
+On Mon, Sep 30, 2024 at 12:01=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrote:
 >
-> VT-d spec removed Transient Mapping (TM) field from second-level page-tab=
-les
-> and treat the field as Reserved(0) since revision 3.2. Update code to mat=
-ch
-> spec.
+> When using a VDPA device, it is important to ensure that the MAC
+> address is correctly set. The MAC address in the hardware should
+> match the MAC address from the QEMU command line. This is a recommended
+> configuration and will allow the system to boot.
 
-Some questions:
+Would there be a case that the system can boot even without the
+suggested setting here? Can we even know about that?
 
-1) Is there a version register for vtd so driver can know? Otherwise
-we may break migration compatibility silently.
-2) Is there any user for that field in the past? If yes, we probably
-need a new parameter for this.
+I'm asking since if there's one, we break them. At least we can have a
+new parameter for strict checking.
 
 Thanks
-
->
-> This doesn't impact function of vIOMMU as there was no logic to emulate
-> Transient Mapping.
->
-> Suggested-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  hw/i386/intel_iommu_internal.h | 13 +++----------
->  hw/i386/intel_iommu.c          | 11 +++--------
->  2 files changed, 6 insertions(+), 18 deletions(-)
->
-> diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_interna=
-l.h
-> index 13d5d129ae..c818c819fe 100644
-> --- a/hw/i386/intel_iommu_internal.h
-> +++ b/hw/i386/intel_iommu_internal.h
-> @@ -412,9 +412,7 @@ typedef union VTDInvDesc VTDInvDesc;
->  /* Rsvd field masks for spte */
->  #define VTD_SPTE_SNP 0x800ULL
->
-> -#define VTD_SPTE_PAGE_L1_RSVD_MASK(aw, dt_supported) \
-> -        dt_supported ? \
-> -        (0x800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM | VTD_SL_TM)) : =
-\
-> +#define VTD_SPTE_PAGE_L1_RSVD_MASK(aw) \
->          (0x800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
->  #define VTD_SPTE_PAGE_L2_RSVD_MASK(aw) \
->          (0x800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
-> @@ -423,13 +421,9 @@ typedef union VTDInvDesc VTDInvDesc;
->  #define VTD_SPTE_PAGE_L4_RSVD_MASK(aw) \
->          (0x880ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
->
-> -#define VTD_SPTE_LPAGE_L2_RSVD_MASK(aw, dt_supported) \
-> -        dt_supported ? \
-> -        (0x1ff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM | VTD_SL_TM))=
- : \
-> +#define VTD_SPTE_LPAGE_L2_RSVD_MASK(aw) \
->          (0x1ff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
-> -#define VTD_SPTE_LPAGE_L3_RSVD_MASK(aw, dt_supported) \
-> -        dt_supported ? \
-> -        (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM | VTD_SL_TM=
-)) : \
-> +#define VTD_SPTE_LPAGE_L3_RSVD_MASK(aw) \
->          (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
->
->  /* Information about page-selective IOTLB invalidate */
-> @@ -536,6 +530,5 @@ typedef struct VTDRootEntry VTDRootEntry;
->  #define VTD_SL_W                    (1ULL << 1)
->  #define VTD_SL_PT_BASE_ADDR_MASK(aw) (~(VTD_PAGE_SIZE - 1) & VTD_HAW_MAS=
-K(aw))
->  #define VTD_SL_IGN_COM              0xbff0000000000000ULL
-> -#define VTD_SL_TM                   (1ULL << 62)
->
->  #endif
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index 08fe218935..eb5aa2b2d5 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -4111,8 +4111,6 @@ static void vtd_cap_init(IntelIOMMUState *s)
->   */
->  static void vtd_init(IntelIOMMUState *s)
->  {
-> -    X86IOMMUState *x86_iommu =3D X86_IOMMU_DEVICE(s);
-> -
->      memset(s->csr, 0, DMAR_REG_SIZE);
->      memset(s->wmask, 0, DMAR_REG_SIZE);
->      memset(s->w1cmask, 0, DMAR_REG_SIZE);
-> @@ -4137,16 +4135,13 @@ static void vtd_init(IntelIOMMUState *s)
->       * Rsvd field masks for spte
->       */
->      vtd_spte_rsvd[0] =3D ~0ULL;
-> -    vtd_spte_rsvd[1] =3D VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits,
-> -                                                  x86_iommu->dt_supporte=
-d);
-> +    vtd_spte_rsvd[1] =3D VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits);
->      vtd_spte_rsvd[2] =3D VTD_SPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
->      vtd_spte_rsvd[3] =3D VTD_SPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
->      vtd_spte_rsvd[4] =3D VTD_SPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
->
-> -    vtd_spte_rsvd_large[2] =3D VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits,
-> -                                                    x86_iommu->dt_suppor=
-ted);
-> -    vtd_spte_rsvd_large[3] =3D VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
-> -                                                    x86_iommu->dt_suppor=
-ted);
-> +    vtd_spte_rsvd_large[2] =3D VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits);
-> +    vtd_spte_rsvd_large[3] =3D VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits);
->
->      if (s->scalable_mode || s->snoop_control) {
->          vtd_spte_rsvd[1] &=3D ~VTD_SPTE_SNP;
-> --
-> 2.34.1
->
 
 
