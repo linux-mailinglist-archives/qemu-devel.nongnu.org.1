@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DB9996A4E
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309E4996A5B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syW1p-0004jM-21; Wed, 09 Oct 2024 08:42:57 -0400
+	id 1syW1q-0004jV-DI; Wed, 09 Oct 2024 08:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1n-0004jB-Lw
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1p-0004jN-4A
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1l-0005SI-Uf
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:55 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1n-0005Sd-2y
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:42:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728477773;
+ s=mimecast20190719; t=1728477774;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jk0pKj9VCu3al6N68FkKLk/v4exRbcGJT+XXNWXH8Sw=;
- b=C5xjV+l83RMiEfqfjLBIFIUlY/SRRyIga6QI5pOgYfGV29+pUPKRg6C/V2gcEKk0nYTMmt
- PwLNoKSl8YyOyjtxwxPRwZO+jI+h2DDvZZoEzql6o+lAAQwQDwosBuW4yisvj9FwqxsdN9
- s70bVk77Rc2ejtmOExe40emHVzeazco=
+ bh=y/0kDNEZEHcHY+mJQf631i4X5DtZp/zqgZgP9eV3P4g=;
+ b=NQ5YuJUQQUMnlDZB3U8pVe9iuqvBZqnh7hkPYKYJxO5wFcYBz6JG4Pn05AfOzbbuVKLov6
+ Dy9GiIpAnkKcjD45m1a72YEK+S66QEnTxTWSbNwpOdIyfmtT0ZnFJf/IotkrpWGoI9/9du
+ PwCDsvc/1uDyHXOT7rx/pOVbUPsGw6s=
 Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
  [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-9w0rMEd-OMic_2vnroH6cA-1; Wed, 09 Oct 2024 08:42:52 -0400
-X-MC-Unique: 9w0rMEd-OMic_2vnroH6cA-1
+ us-mta-428-6TsXy6sfOBa6X7zAQjtOmw-1; Wed, 09 Oct 2024 08:42:53 -0400
+X-MC-Unique: 6TsXy6sfOBa6X7zAQjtOmw-1
 Received: by mail-io1-f72.google.com with SMTP id
- ca18e2360f4ac-82cdb749559so1175908439f.2
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:51 -0700 (PDT)
+ ca18e2360f4ac-82ced069d94so638574639f.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:42:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728477770; x=1729082570;
+ d=1e100.net; s=20230601; t=1728477772; x=1729082572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jk0pKj9VCu3al6N68FkKLk/v4exRbcGJT+XXNWXH8Sw=;
- b=VzBgTCSMmpQwHpjBrIB8MNFapAfacIBU63/F8Gzvi4PR+cD4xO3IaxGAxQL207HKW+
- S0PWwvPuwycMvoT2DC/KZscgL4oGRPEIJQIX7gPkcf3vylapJzYGst/9VQ9Rh0WcNeiU
- 8baBAc11zEBq2j5vD+0qRiBjt4YrXuuqH7LvLgKREE8bsuUwkuiqDIZ1TnRhjvle+K49
- Pu82fgFWTqVs0pT2iZLEwq3OrCsknv3iQ8UhQuAe4D5xFH68nJ7MAqUMHbDscfvrZG+p
- CotSG3IxPZKi8r8AVaKwQ0b3upBQbn/wAnS5mE3BxBqPCcUL4wLAd2FTz/fAb9jsm5uF
- dIJQ==
-X-Gm-Message-State: AOJu0YwmcfAZM98/zBSToX2IOqWeLmd7fa4pdBsEK0MoS9ba5HHaS8Z9
- yoYjypGkAD5N3oLJfqVThT07pcuIL0rdD3wr3BNBhyYVmQwvcYoV7ZOuG1QIcyMNnKoz05+tW6S
- H840j1OhoMmsU18fIQouXgAjWDNlldvAW408zgP60kMG32CKiUY/+tlO4FJ5Q3Be2xNC6xqtYm8
- WmQAOYNBihR2VZK2RGbKaak/5o68+5yBZtiA==
-X-Received: by 2002:a05:6602:6c04:b0:835:42ce:933d with SMTP id
- ca18e2360f4ac-83542ce9439mr127156239f.1.1728477770594; 
- Wed, 09 Oct 2024 05:42:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPihQ1fnKB662fomcWUObYdo/c2JzIDukLZHlNaqfEiNJJ63s+y5HaNwDhBeNP+6VanGR2mQ==
-X-Received: by 2002:a05:6602:6c04:b0:835:42ce:933d with SMTP id
- ca18e2360f4ac-83542ce9439mr127152639f.1.1728477770098; 
- Wed, 09 Oct 2024 05:42:50 -0700 (PDT)
+ bh=y/0kDNEZEHcHY+mJQf631i4X5DtZp/zqgZgP9eV3P4g=;
+ b=lQJ3jpAfbJnDWJLYrkHrCWwMWPV5EE9aqaAB06+hEkEv424rXk3nif+8jn1tYBtR7C
+ EJjh8EPpBLG/Gqs5fpO2yYZQlHguVAQdpoS4N9H/NArHoyUmNN+kqh63ZyKNbA523fzc
+ /rDrl31IK/JCY+uMAR/2YUWneTzMclkoQjvdGv/9z0BSOoY1MoT2McAr/iLL+9vQ0skA
+ DX6+W18V0fTVMLcZhQ3dBF7sNZmXjU8vphqn9XCXkKp0dwLxGIetgIEHKBtJyHD8tWx4
+ 8+f041UhZIqfG77fmRb93bAXhMCkJtkD7Lx79TkLniY7d3Xlc4itFv5+TbC9/5aPdyt2
+ XG7w==
+X-Gm-Message-State: AOJu0YxT0fbLtYLCjd7+gzYM3IOWaOKP6AoGLlK7NHHXsKILKYUeKra9
+ COAZt9UOv4kq9CykJciiM+flHCq4iuJyeNhNzktGPY2wprlkJIPIuI5hfoLqhnaHwKrl64h/Y9A
+ H56X6m3Y30/Pp5UzSbGGLbkQFci2XPUkci6v7ais6rFrK5veNTwPmLje3QvuPYFyBoc36YI5kwX
+ AXdVcQ/vtNjueZ8fokIZ2DZdBHv5Oa2+kXUw==
+X-Received: by 2002:a05:6602:2b83:b0:834:f744:d067 with SMTP id
+ ca18e2360f4ac-8353d4a7cdamr298917939f.8.1728477772430; 
+ Wed, 09 Oct 2024 05:42:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6H/uWXP97Zaa7s2yDrynU93ec9ZX+eQE1V3QcJlP4ZilTQQlWrAhVddifAnr37JCd0+MmJg==
+X-Received: by 2002:a05:6602:2b83:b0:834:f744:d067 with SMTP id
+ ca18e2360f4ac-8353d4a7cdamr298914939f.8.1728477772015; 
+ Wed, 09 Oct 2024 05:42:52 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.48
+ ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.42.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 05:42:48 -0700 (PDT)
+ Wed, 09 Oct 2024 05:42:51 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- peterx@redhat.com
-Subject: [PULL 05/12] migration: Deprecate zero-blocks capability
-Date: Wed,  9 Oct 2024 08:42:31 -0400
-Message-ID: <20241009124238.371084-6-peterx@redhat.com>
+ peterx@redhat.com, "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PULL 06/12] migration: Remove unused socket_send_channel_create_sync
+Date: Wed,  9 Oct 2024 08:42:32 -0400
+Message-ID: <20241009124238.371084-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241009124238.371084-1-peterx@redhat.com>
 References: <20241009124238.371084-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -99,75 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-The zero-blocks capability was meant to be used along with the block
-migration, which has been removed already in commit eef0bae3a7
-("migration: Remove block migration").
+socket_send_channel_create_sync only use was removed by
+  d0edb8a173 ("migration: Create the postcopy preempt channel asynchronously")
 
-Setting zero-blocks is currently a noop, but the outright removal of
-the capability would cause and error in case some users are still
-setting it. Put the capability through the deprecation process.
+Remove it.
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240919134626.166183-4-dave@treblig.org
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20240919134626.166183-5-dave@treblig.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- docs/about/deprecated.rst | 6 ++++++
- qapi/migration.json       | 5 ++++-
- migration/options.c       | 4 ++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ migration/socket.h |  1 -
+ migration/socket.c | 18 ------------------
+ 2 files changed, 19 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index c02bbb66f7..33ce4f9536 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -467,3 +467,9 @@ usage of providing a file descriptor to a plain file has been
- deprecated in favor of explicitly using the ``file:`` URI with the
- file descriptor being passed as an ``fdset``. Refer to the ``add-fd``
- command documentation for details on the ``fdset`` usage.
-+
-+``zero-blocks`` capability (since 9.2)
-+''''''''''''''''''''''''''''''''''''''
-+
-+The ``zero-blocks`` capability was part of the block migration which
-+doesn't exist anymore since it was removed in QEMU v9.1.
-diff --git a/qapi/migration.json b/qapi/migration.json
-index b66cccf107..3af6aa1740 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -479,11 +479,14 @@
- # Features:
- #
- # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-+# @deprecated: Member @zero-blocks is deprecated as being part of
-+#     block migration which was already removed.
- #
- # Since: 1.2
- ##
- { 'enum': 'MigrationCapability',
--  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
-+  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge',
-+           { 'name': 'zero-blocks', 'features': [ 'deprecated' ] },
-            'events', 'postcopy-ram',
-            { 'name': 'x-colo', 'features': [ 'unstable' ] },
-            'release-ram',
-diff --git a/migration/options.c b/migration/options.c
-index 6f549984cb..ad8d6989a8 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -450,6 +450,10 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-     ERRP_GUARD();
-     MigrationIncomingState *mis = migration_incoming_get_current();
+diff --git a/migration/socket.h b/migration/socket.h
+index 46c233ecd2..04ebbe95a1 100644
+--- a/migration/socket.h
++++ b/migration/socket.h
+@@ -22,7 +22,6 @@
+ #include "qemu/sockets.h"
  
-+    if (new_caps[MIGRATION_CAPABILITY_ZERO_BLOCKS]) {
-+        warn_report("zero-blocks capability is deprecated");
-+    }
-+
- #ifndef CONFIG_REPLICATION
-     if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
-         error_setg(errp, "QEMU compiled without replication module"
+ void socket_send_channel_create(QIOTaskFunc f, void *data);
+-QIOChannel *socket_send_channel_create_sync(Error **errp);
+ 
+ void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
+ 
+diff --git a/migration/socket.c b/migration/socket.c
+index 9ab89b1e08..5ec65b8c03 100644
+--- a/migration/socket.c
++++ b/migration/socket.c
+@@ -42,24 +42,6 @@ void socket_send_channel_create(QIOTaskFunc f, void *data)
+                                      f, data, NULL, NULL);
+ }
+ 
+-QIOChannel *socket_send_channel_create_sync(Error **errp)
+-{
+-    QIOChannelSocket *sioc = qio_channel_socket_new();
+-
+-    if (!outgoing_args.saddr) {
+-        object_unref(OBJECT(sioc));
+-        error_setg(errp, "Initial sock address not set!");
+-        return NULL;
+-    }
+-
+-    if (qio_channel_socket_connect_sync(sioc, outgoing_args.saddr, errp) < 0) {
+-        object_unref(OBJECT(sioc));
+-        return NULL;
+-    }
+-
+-    return QIO_CHANNEL(sioc);
+-}
+-
+ struct SocketConnectData {
+     MigrationState *s;
+     char *hostname;
 -- 
 2.45.0
 
