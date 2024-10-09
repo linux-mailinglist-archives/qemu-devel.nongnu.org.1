@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8A79965E8
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2379965D0
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syTHs-0001Pk-8W; Wed, 09 Oct 2024 05:47:20 -0400
+	id 1syTHx-0001aZ-8P; Wed, 09 Oct 2024 05:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syTHl-0001KE-Ml
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:14 -0400
+ id 1syTHn-0001LS-I4
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syTHh-0008Ud-GX
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:12 -0400
+ id 1syTHj-0008V1-E5
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:47:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728467227;
+ s=mimecast20190719; t=1728467230;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dl6dcOfhmNp3NrxHyKacGU/S0XBvVsXoKUJy7DRsnQc=;
- b=CqSeWvNzt+yHBWywf1G9ltLqyCqQaaLeY86yY+12DUWPx9W+mrjE+In6JhWDnZdE3hkG//
- CmejZ+Z/Pl48sTePiJlYw/wNiHwAfA+CC52g6DauElXefxfqzQXT3fEe/aOpihbc/31edh
- hP1rMDPvlneYMV2HyOYaulSdcoHc4EQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UO920/vU3UVu5Z0ktPqv8vRtCWnYQqPNoMlASL2Ii24=;
+ b=RJDxTyN05xQ4Vv1VykVL1vGH89f+hIEvOv0vfQ/gOj9GgwR0LHM9Z64PXr1VRsWX39tsLx
+ A+s9G2JDH1s8MjjhRE9/gtcuM3/00xPVClqYOVhi6r0l83cQAQhesoSGsMGzKe78IdmyaE
+ t1fOmF+z7IPInKRU+xIS/A8fh/q24/Q=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-c4IRnI9HNCydMtMiXW0W4w-1; Wed, 09 Oct 2024 05:47:06 -0400
-X-MC-Unique: c4IRnI9HNCydMtMiXW0W4w-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42cb808e9fcso42771805e9.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:47:05 -0700 (PDT)
+ us-mta-592-ZW5osFTWPYOqAB5S3nUwrg-1; Wed, 09 Oct 2024 05:47:08 -0400
+X-MC-Unique: ZW5osFTWPYOqAB5S3nUwrg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d458087c0so58384f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:47:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728467224; x=1729072024;
+ d=1e100.net; s=20230601; t=1728467227; x=1729072027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dl6dcOfhmNp3NrxHyKacGU/S0XBvVsXoKUJy7DRsnQc=;
- b=oasSWL4HpIQRPNJGq6OIO6cDuoJW7eHkSX8zLbUVIXs3MBTeXRlX7M40OI2QFUc51D
- kxR1GKVigdvYKXSHYyRbQAFe+JD4kXDfTIgB9YmZEHCzfvJk0jdvmxmavFoPpRvjqZM7
- +7o/Hxtd1XkOZW/UNuwunJyTsn0cDZwFe8rqQRQzn6GyVN6nlJCRi4o28WYOO05Q5f+F
- iRx+yDC9Je6NaHh7cj/UsweVcaXxGkaFe18dqyjwB/DWqeU1h2OU0A0OseFLCYKZ4Mxc
- gODo2cRC2uBx/cHhPg3kTDBUmoynInHeiM0dwRSlKMKgdnH0++GzNe7Uo8zcnYkVoVyn
- OIXg==
-X-Gm-Message-State: AOJu0YzgmAkztvCJZ0D1HTF/xODhI8tgk0NUCasztzJUJ44ILJN/rbQh
- m0BYWoi9T03aHoudtVfbLLd49Lpb6KLKgpMQBG0mDlz4h7ZFXy+o99cnuyMFOMjW7Y/XN6d2/hU
- BrzKS95fu18mESm5ISLnYOTH6fl6S+zaqXO7YwSBjSTYKZyVoiHLhSNCOfHRsDNUYzUPUkIPiYm
- 7ydDaJxXT5dRkkcEzk1FWocWMG6JDdnkUaEDwNqWc=
-X-Received: by 2002:a05:600c:1c29:b0:42f:8515:e479 with SMTP id
- 5b1f17b1804b1-430ccf1b06bmr10736795e9.4.1728467223708; 
- Wed, 09 Oct 2024 02:47:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHL7vls5kcNVvdId8ftDZ1XKreLngtwEKOPDmF1mk0TamZefma8bmLVF91+D0wDkTwdiTC0XA==
-X-Received: by 2002:a05:600c:1c29:b0:42f:8515:e479 with SMTP id
- 5b1f17b1804b1-430ccf1b06bmr10736585e9.4.1728467223226; 
- Wed, 09 Oct 2024 02:47:03 -0700 (PDT)
+ bh=UO920/vU3UVu5Z0ktPqv8vRtCWnYQqPNoMlASL2Ii24=;
+ b=d4FTQctGJX/VR0ae1rT8adDOyVQakkgbOyVrC5eIImJaWAQirK6DZhQRdelIftRwQI
+ BsZgdRMMaT1x2x+NmsCKGJ9gABJHNiFtf6QSMFk0tKoH1iZhGPOMvo2OZQUePF2+A1Oh
+ Gy8AGCzBF37Ce2vzA9UrW9ybap9aD57aBWOt4M7yAL5/ITDZ+BcK8evHw3szLlGdKCk5
+ B4RzXlgRuE0D5MUbR97nZRkFdBww5Ow0239jRbhRTWK0YCaouKkfgeUdQ4mKyphqADNq
+ oLFcgoVpemNYfXCzvzrb8aW53pGzZPB8mnaoU1d/CsYO5DG1cmCgUtQhHb8ZkRnIMivD
+ siZA==
+X-Gm-Message-State: AOJu0YyIqDf6QH1WVIDtlR/zKUsj4wAwBBo8d/X3I0iuvEjUc1KIiDcQ
+ xxyAnHXT0iLcMrSyxKauGpemdIH1MIvyfW0mHjedKSTUMKWyik+eA8AnofISUKhxai7DPYHkrNt
+ wzM84qfzBahQdfx/RXXDGQ32yL8DPyQ+wToPhIdcvKmTlH98+LzkEWcaFjCVUGr0l0V1PxdCmjf
+ OK89Cu4pwHGSPD5Z3CcnPyDw/BoLZjIT2Vrvqt1lE=
+X-Received: by 2002:a5d:6742:0:b0:374:c4c2:5ad5 with SMTP id
+ ffacd0b85a97d-37d3a5480cemr1344835f8f.27.1728467226873; 
+ Wed, 09 Oct 2024 02:47:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFmeo+yqvDnPSMPl4MheFhXZLbPNadkwnN5b9l8VJs0ssm7rL39IpSQAiEapXzPd196pjxRMg==
+X-Received: by 2002:a5d:6742:0:b0:374:c4c2:5ad5 with SMTP id
+ ffacd0b85a97d-37d3a5480cemr1344809f8f.27.1728467226334; 
+ Wed, 09 Oct 2024 02:47:06 -0700 (PDT)
 Received: from avogadro.local ([151.62.111.131])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43096601152sm16362115e9.0.2024.10.09.02.47.02
+ ffacd0b85a97d-37d39cb1358sm1470753f8f.25.2024.10.09.02.47.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 02:47:02 -0700 (PDT)
+ Wed, 09 Oct 2024 02:47:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-stable@nongnu.org
-Subject: [PULL 11/14] meson: define qemu_isa_flags
-Date: Wed,  9 Oct 2024 11:46:12 +0200
-Message-ID: <20241009094616.1648511-12-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, qemu-stable@nongnu.org
+Subject: [PULL 12/14] meson: ensure -mcx16 is passed when detecting ATOMIC128
+Date: Wed,  9 Oct 2024 11:46:13 +0200
+Message-ID: <20241009094616.1648511-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241009094616.1648511-1-pbonzini@redhat.com>
 References: <20241009094616.1648511-1-pbonzini@redhat.com>
@@ -104,87 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a separate variable for compiler flags that enable
-specific instruction set extensions, so that they can be used with
-cc.compiles/cc.links.
+Moving -mcx16 out of CPU_CFLAGS caused the detection of ATOMIC128 to
+fail, because flags have to be specified by hand in cc.compiles and
+cc.links invocations (why oh why??).
 
-Note that -mfpmath=sse is a code generation option but it does not
-enable new instructions, therefore I did not make it part of
-qemu_isa_flags.
+Ensure that these tests enable all the instruction set extensions that
+will be used to build the emulators.
 
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Fixes: c2bf2ccb266 ("configure: move -mcx16 flag out of CPU_CFLAGS", 2024-05-24)
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ meson.build | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 76335bb2a51..65ea45cef03 100644
+index 65ea45cef03..e4b2af138da 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -335,6 +335,10 @@ elif host_os == 'windows'
-   endif
- endif
+@@ -2831,7 +2831,7 @@ config_host_data.set('CONFIG_ATOMIC64', cc.links('''
+     __atomic_exchange_n(&x, y, __ATOMIC_RELAXED);
+     __atomic_fetch_add(&x, y, __ATOMIC_RELAXED);
+     return 0;
+-  }'''))
++  }''', args: qemu_isa_flags))
  
-+# Choose instruction set (currently x86-only)
-+
-+qemu_isa_flags = []
-+
- # __sync_fetch_and_and requires at least -march=i486. Many toolchains
- # use i686 as default anyway, but for those that don't, an explicit
- # specification is necessary
-@@ -351,7 +355,7 @@ if host_arch == 'i386' and not cc.links('''
-     sfaa(&val);
-     return val;
-   }''')
--  qemu_common_flags = ['-march=i486'] + qemu_common_flags
-+  qemu_isa_flags += ['-march=i486']
- endif
+ has_int128_type = cc.compiles('''
+   __int128_t a;
+@@ -2865,7 +2865,7 @@ if has_int128_type
+       __atomic_compare_exchange_n(&p[4], &p[5], p[6], 0, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+       return 0;
+     }'''
+-  has_atomic128 = cc.links(atomic_test_128)
++  has_atomic128 = cc.links(atomic_test_128, args: qemu_isa_flags)
  
- # Pick x86-64 baseline version
-@@ -367,29 +371,31 @@ if host_arch in ['i386', 'x86_64']
-     else
-       # present on basically all processors but technically not part of
-       # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
--      qemu_common_flags = ['-mcx16'] + qemu_common_flags
-+      qemu_isa_flags += ['-mcx16']
+   config_host_data.set('CONFIG_ATOMIC128', has_atomic128)
+ 
+@@ -2874,7 +2874,8 @@ if has_int128_type
+     # without optimization enabled.  Try again with optimizations locally
+     # enabled for the function.  See
+     #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
+-    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128)
++    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128,
++                                 args: qemu_isa_flags)
+     config_host_data.set('CONFIG_ATOMIC128_OPT', has_atomic128_opt)
+ 
+     if not has_atomic128_opt
+@@ -2885,7 +2886,7 @@ if has_int128_type
+           __sync_val_compare_and_swap_16(&x, y, x);
+           return 0;
+         }
+-      '''))
++      ''', args: qemu_isa_flags))
      endif
    endif
-   if get_option('x86_version') >= '2'
--    qemu_common_flags = ['-mpopcnt'] + qemu_common_flags
--    qemu_common_flags = cc.get_supported_arguments('-mneeded') + qemu_common_flags
-+    qemu_isa_flags += ['-mpopcnt']
-+    qemu_isa_flags += cc.get_supported_arguments('-mneeded')
-   endif
-   if get_option('x86_version') >= '3'
--    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
-+    qemu_isa_flags += ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c']
-   endif
- 
-   # add required vector instruction set (each level implies those below)
-   if get_option('x86_version') == '1'
--    qemu_common_flags = ['-msse2'] + qemu_common_flags
-+    qemu_isa_flags += ['-msse2']
-   elif get_option('x86_version') == '2'
--    qemu_common_flags = ['-msse4.2'] + qemu_common_flags
-+    qemu_isa_flags += ['-msse4.2']
-   elif get_option('x86_version') == '3'
--    qemu_common_flags = ['-mavx2'] + qemu_common_flags
-+    qemu_isa_flags += ['-mavx2']
-   elif get_option('x86_version') == '4'
--    qemu_common_flags = ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl'] + qemu_common_flags
-+    qemu_isa_flags += ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl']
-   endif
- endif
- 
-+qemu_common_flags = qemu_isa_flags + qemu_common_flags
-+
- if get_option('prefer_static')
-   qemu_ldflags += get_option('b_pie') ? '-static-pie' : '-static'
  endif
 -- 
 2.46.2
