@@ -2,76 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF04996CA0
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 15:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EECF996D03
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 16:01:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syX2v-0002zG-Na; Wed, 09 Oct 2024 09:48:09 -0400
+	id 1syXFO-0006U0-Ix; Wed, 09 Oct 2024 10:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syX2o-0002yi-SM
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 09:48:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1syXFJ-0006TY-K0; Wed, 09 Oct 2024 10:00:57 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syX2n-00059u-6k
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 09:48:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728481678;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kjH/P/g2QKpC8+ixdPp3xnRGLyP1oTyCqIlBOSjcPAQ=;
- b=YgUQm06ZRFgiRuBCjRDeUmPTntylshfGV/4VSFyakv2uTX4NwEDsSvPn04St+nD75R0Iwq
- 2YDyEx1xg/5hM5To6+2cOyb0Kpx04R+7AjxIORv0IRpUyXkQ3kl8RB15tBotYoHR0pd3sj
- oz+Tetdq6a/HaskdjNWY841pyuJpOIo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-I4T5K-KuPdmMtE2eIcmDmw-1; Wed,
- 09 Oct 2024 09:47:57 -0400
-X-MC-Unique: I4T5K-KuPdmMtE2eIcmDmw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCC671956077; Wed,  9 Oct 2024 13:47:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.112])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C08619560AA; Wed,  9 Oct 2024 13:47:52 +0000 (UTC)
-Date: Wed, 9 Oct 2024 14:47:49 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: x86 CPU properties "family", "model", "stepping", "tsc-freq"
-Message-ID: <ZwaJheBeqrOC5BAv@redhat.com>
-References: <87wmihr14b.fsf@pond.sub.org> <ZwZqfniI9UlHHXVG@redhat.com>
- <871q0ppf0m.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1syXFH-0006YG-3k; Wed, 09 Oct 2024 10:00:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+ Content-Type; bh=TfYLdrvKYAXnUX53NJ0IkTTTspmHx1drZrKFGujD1So=; b=xmPzVx3oqD+D
+ XgmaaMdnsumGrMlRhoSZndcLEi4rOh4/d2Lv1c2sMKR5WbQZNaDsLQDHBFoFA7tSRymHDAib3BnVq
+ vap3eK8w4jsLBoDQ/w6Tkx0TGtXNrdT/L6twGLnDbdwxCuPlUYWoudOx/weIPd/vehxPOZEFpu1lg
+ kENIRKrygYO4zfsBc7ue/+s5c1lp+mTOg5pmOABdCx5Sv1lJUFfRpFCsV5tYY0uIYhdY6opD++M5x
+ wBEX7j3gGXi+NWmfZLbIQeHYAWo3DewaD385wCcZT8nhXY8JpzBLjtrRHwWobE3RBjaY1EuvVrg7O
+ jB93Qp17Uonwrhpy3W9fTA==;
+Received: from [130.117.225.1] (helo=dev007.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <den@openvz.org>) id 1syXBf-00AR1a-2M;
+ Wed, 09 Oct 2024 16:00:38 +0200
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, "Denis V . Lunev" <den@openvz.org>,
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH 0/2] block/preallocate: fix image truncation logic
+Date: Wed,  9 Oct 2024 16:58:49 +0300
+Message-ID: <20241009140051.771660-1-den@openvz.org>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <871q0ppf0m.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
+ helo=relay.virtuozzo.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,81 +60,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  "Denis V. Lunev" <den@openvz.org>
+From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 09, 2024 at 03:44:25PM +0200, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Wed, Oct 09, 2024 at 01:01:40PM +0200, Markus Armbruster wrote:
-> >> QOM properties serve several purposes: initial configuration (external
-> >> interface), run time control and monitoring (external interface), and
-> >> internal purposes like versioning.  Which purpose(s) a property serves
-> >> is often unclear.
-> 
-> [...]
-> 
-> >> Property "tsc-freq" seems not to be used internally.  I figure changing
-> >> it at run time makes no sense.  Looks like it is be meant to be set by
-> >> the user: x86_cpu_parse_featurestr() seems to parse it from the argument
-> >> of -cpu.  Correct?  Note that -cpu help doesn't mention it.
-> >
-> > "tsc-freq" is a back compat alias for 'tsc-frequency' AFAICT, and
-> > we need the latter if you want to guarantee fixed TSC freq across
-> > migration. eg commit 561dbb41b1d752098249128d8462aaadc56fd15d
-> 
-> Looking more closely...
-> 
-> "tsc-freq" wraps around "tsc-frequency" except the value is converted
-> with qemu_strtosz_metric().
-> 
-> "tsc-frequency" accepts values between 0 and INT64_MAX.  The unit is Hz.
-> However, the frequency is internally stored in kHz, in CPUArchState
-> member tsc_khz, and the conversion from the value "tsc-frequency"
-> silently truncates.  Ugh!  See x86_cpuid_set_tsc_freq().
-> 
-> kvm_arch_set_tsc_khz() passes the kHz value to the kernel like this:
-> 
->     kvm_vcpu_ioctl(cs, KVM_SET_TSC_KHZ, env->tsc_khz)
-> 
-> I believe the kernel code consuming the value is in arch/x86/kvm/x86.c's
-> kvm_arch_vcpu_ioctl().  It appears to silently truncate the value to 32
-> bit unsigned:
-> 
-> 	case KVM_SET_TSC_KHZ: {
-> 		u32 user_tsc_khz;
-> 
-> 		r = -EINVAL;
-> --->		user_tsc_khz = (u32)arg;
-> 
-> 		if (kvm_caps.has_tsc_control &&
-> 		    user_tsc_khz >= kvm_caps.max_guest_tsc_khz)
-> 			goto out;
-> 
-> 		if (user_tsc_khz == 0)
-> 			user_tsc_khz = tsc_khz;
-> 
-> 		if (!kvm_set_tsc_khz(vcpu, user_tsc_khz))
-> 			r = 0;
-> 
-> 		goto out;
-> 	}
-> 
-> Ugh again!
-> 
-> Should we reject values exceeding UINT32_MAX kHz in QEMU?
+Recent QEMU changes around preallocate_set_perm mandates that it is not
+possible to poll on aio_context inside this function anymore. Thus
+truncate operation has been moved inside bottom half. This bottom half
+is scheduled from preallocate_set_perm() and that is all.
 
-Sounds like a reasonable idea to me, as I don't think it is very likely
-that someone is passing a number greater than UINT32_MAX and relying
-on truncation.
+This approach proven to be problematic in a lot of places once
+additional operations are executed over preallocate filter in
+production. The code validates that permissions have been really changed
+just after the call to the set operation.
 
+All permissions operations or block driver graph changes are performed
+inside the quiscent state in terms of the block layer. This means that
+there are no in-flight packets which is guaranteed by the passing
+through bdrv_drain() section.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+The idea is that we should effectively disable preallocate filter inside
+bdrv_drain() and unblock permission changes. This section is definitely
+not on the hot path and additional single truncate operation will not
+hurt.
 
+Unfortunately bdrv_drain_begin() callback according to the documentation
+also disallow waiting inside. Thus original approach with the bottom
+half is not changed. bdrv_drain_begin() schedules the operation and in
+order to ensure that it has been really executed before completion of
+the section increments the amount of in-flight requests.
+
+In addition to this we should disable lifting WRITE permission when
+truncate() operation is not fully completed yet.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+CC: Kevin Wolf <kwolf@redhat.com>
 
