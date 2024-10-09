@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AFD995C11
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00EB995C08
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syKCO-0004DN-D7; Tue, 08 Oct 2024 20:05:04 -0400
+	id 1syKCQ-0004Gf-Tt; Tue, 08 Oct 2024 20:05:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCM-0004Cf-Jy
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:02 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1syKCN-0004DY-Ps
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:03 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCK-0002es-K2
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:02 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7ae3d7222d4so5232425a12.3
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:05:00 -0700 (PDT)
+ id 1syKCL-0002fG-Hp
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:03 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-20c5a7b2908so9763565ad.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:05:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728432299; x=1729037099; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728432300; x=1729037100; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hoQpjuwa20HwjACHrMlYHXe57YCg2K0w30eV5HVGvRc=;
- b=SYMsuIHGwC3Jq0/0Pvmcsj3PZYiJvofyiTMeXa6wy1V4+xxh0iiVUrT5x9nn/v0Ku4
- ppDaVI/KHL1NyHPEIDt6ohL4heMcs/GpggyciFeTocF59b4RGdaQTJlnmY82WW/UGx+X
- A2M6MYoWfFqKrrz1O0A11iliqbKEvQoHcIow3OulRB6qBzUt32zGwi2xCyJYrvxZniDG
- sSYoDastUSdctof8CANvFalV5LIAwKQNIcFB4aqFy+rPXkmMRoHVuKdDa8X6e9F1I544
- QY4d7OwaJgRw7ew9OjedISxQpI1CKhe0U5y48z/ZqdvhnEDBOwCQJleqBova2n6YTyo2
- btbg==
+ bh=KRlC3mms3e9Sb+Qb/UGEoW53IughvKHiILVrUessrrs=;
+ b=Cq0JQAO1GBTJ0yQ/WQW6q0qXX0jv04gk0dKDdyo6qhz5pBfEysoqDDBIvhtPnJ8ZUc
+ WOEggWFVZsEsC4wpVhrp9RLZRXZAti6JG0ZVi7rCC7T+mYxHK+BIB5uKrctWsy/OI+HO
+ cXrqia7Z5/yNTxeWsmaXm5i6f4ff2QlHn6zcmvS2OBt0XZdjDx8mtTC+5IQYnjr0ke7T
+ kF72lKbCPW4eUJGuhcaCmxp3DbYcexZi3QWE974swsmdZiZwaOEZGxiPfrjslFbMQm0Y
+ O5evQku6P5cMWM6PGs6Lo8WrGaEbA+cWnYErTWaWlKRvDwwurS4dq4tziLfZxcbfo+Dt
+ K5Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728432299; x=1729037099;
+ d=1e100.net; s=20230601; t=1728432300; x=1729037100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hoQpjuwa20HwjACHrMlYHXe57YCg2K0w30eV5HVGvRc=;
- b=T40pB3/0ggjazjzR1GSLLtdsigSXxuxtyxI5t8NXYrn9D1rjZ83NDvQmL969y0aIwg
- C1qjGXI6bLXpetmbFDVbfcB2lohoGn5nodXuHR1MhRw5IdfMTc78StHTfbmI30saGFmf
- WZN4unQKQHykON1AnsQma8M03nb+XzdlNMpaVA14LEXX4Nofqh8nOg563QbokGWsLbff
- Nmr3yq4XbWMMiYAnbv7uf9ypti2O2lFQ320/EZIjdAEBvXf3kGZgzb5Gf8pl8N002uE5
- 8PU6cpMX/FnKTHm5B9coRYeXU9x3f1Qo7n5toU86IStEgkfxyRWc/TyHET1TrLSsPgoE
- ZPng==
-X-Gm-Message-State: AOJu0YxtyoN4zlQ7oVC6M3uxHb8iUdyX3rIp7HZAN+JgybytIx8XgJUO
- uwApPIpevQUDOictMEP1M6Ym4XpNuWcdjTKHcuMfslp8YS8oYJckk9A7IFqu69oho3SNNo1yQql
- s
-X-Google-Smtp-Source: AGHT+IEeu9+lnXWIBhz7pgvstBsOBX6KI79/ZD6KPp8fSOXLhjN4UEVyBQB1oHIG/Wwjwoi0un6x8Q==
-X-Received: by 2002:a17:903:2b05:b0:20b:6d8c:463 with SMTP id
- d9443c01a7336-20c637557d0mr12308135ad.35.1728432299121; 
+ bh=KRlC3mms3e9Sb+Qb/UGEoW53IughvKHiILVrUessrrs=;
+ b=d/Y1oc6ohYwZR467uAFIn+QvBDKl0YoTt7GQasfhwUij9z48EGE57OcWn6GVgwaeiD
+ sO/MkjZ4pPK9nRR5rdWiTykBkgwj3omFLxDF9zF+PwFSqjf88qB60202FSBZTkmr67sr
+ VJDKDkkMcP5yLYJlXxO9k3a5dgLZhKkilZl1gKJxuus9EM8xBpywAQi86Rvol21jVe2q
+ eySLPDEN0P3Cn8kp37bJAH+sNbfX4h2v5JEhxp+rl+DoAnlh/CiqRviLPI1liwm3Cyq8
+ CpXB5kzZmvROG2Yk32qbbfiksxhcshhxMkll82Yao/6+CpyHnMgvhR+Kc+IO9rosSx1w
+ 614Q==
+X-Gm-Message-State: AOJu0Yxb4M3NVd2mRVmjmyAOiK5iQ2uF0y1bzeFIxKoJhfMRjAjtYcCV
+ eRdBuNubBJmc7DCZBaQQbrxSPjyamqsVE+A2ffAk5RvOBWDdufnjtRy01/uteatiZL/AQobEMdC
+ C
+X-Google-Smtp-Source: AGHT+IFCFvVKxRyLlvfGXYLtSu9ozN9PdneS174Hz9Cj7lMpmt/cbo6+LfjS0UmFUu6tz4mWEHkH6A==
+X-Received: by 2002:a17:903:98b:b0:208:b468:db21 with SMTP id
+ d9443c01a7336-20c63748357mr13630815ad.30.1728432299990; 
  Tue, 08 Oct 2024 17:04:59 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.58
+ d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 17:04:58 -0700 (PDT)
+ Tue, 08 Oct 2024 17:04:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
- linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH v3 04/20] include/exec/memop: Introduce memop_atomicity_bits
-Date: Tue,  8 Oct 2024 17:04:37 -0700
-Message-ID: <20241009000453.315652-5-richard.henderson@linaro.org>
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
+Subject: [PATCH v3 05/20] accel/tcg: Add TCGCPUOps.tlb_fill_align
+Date: Tue,  8 Oct 2024 17:04:38 -0700
+Message-ID: <20241009000453.315652-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009000453.315652-1-richard.henderson@linaro.org>
 References: <20241009000453.315652-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,76 +93,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out of mmu_lookup.
+Add a new callback to handle softmmu paging.  Return the page
+details directly, instead of passing them indirectly to
+tlb_set_page.  Handle alignment simultaneously with paging so
+that faults are handled with target-specific priority.
 
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Route all calls the two hooks through a tlb_fill_align
+function local to cputlb.c.
+
+As yet no targets implement the new hook.
+As yet cputlb.c does not use the new alignment check.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memop.h | 24 ++++++++++++++++++++++++
- accel/tcg/cputlb.c   | 16 ++--------------
- 2 files changed, 26 insertions(+), 14 deletions(-)
+ include/hw/core/cpu.h         |  4 +--
+ include/hw/core/tcg-cpu-ops.h | 26 +++++++++++++++
+ include/qemu/typedefs.h       |  1 +
+ accel/tcg/cputlb.c            | 61 ++++++++++++++++++++++-------------
+ 4 files changed, 67 insertions(+), 25 deletions(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index f53bf618c6..b699bf7688 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -193,4 +193,28 @@ static inline unsigned memop_alignment_bits(MemOp memop)
-     return a;
- }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 04e9ad4996..d21a24c82f 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -205,7 +205,7 @@ struct CPUClass {
+  * so the layout is not as critical as that of CPUTLBEntry. This is
+  * also why we don't want to combine the two structs.
+  */
+-typedef struct CPUTLBEntryFull {
++struct CPUTLBEntryFull {
+     /*
+      * @xlat_section contains:
+      *  - in the lower TARGET_PAGE_BITS, a physical section number
+@@ -261,7 +261,7 @@ typedef struct CPUTLBEntryFull {
+             bool guarded;
+         } arm;
+     } extra;
+-} CPUTLBEntryFull;
++};
  
-+/*
-+ * memop_atomicity_bits:
-+ * @memop: MemOp value
-+ *
-+ * Extract the atomicity size from the memop.
-+ */
-+static inline unsigned memop_atomicity_bits(MemOp memop)
-+{
-+    unsigned size = memop & MO_SIZE;
-+
-+    switch (memop & MO_ATOM_MASK) {
-+    case MO_ATOM_NONE:
-+        size = MO_8;
-+        break;
-+    case MO_ATOM_IFALIGN_PAIR:
-+    case MO_ATOM_WITHIN16_PAIR:
-+        size = size ? size - 1 : 0;
-+        break;
-+    default:
-+        break;
-+    }
-+    return size;
-+}
-+
- #endif
+ /*
+  * Data elements that are per MMU mode, minus the bits accessed by
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 34318cf0e6..c932690621 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -13,6 +13,7 @@
+ #include "exec/breakpoint.h"
+ #include "exec/hwaddr.h"
+ #include "exec/memattrs.h"
++#include "exec/memop.h"
+ #include "exec/mmu-access-type.h"
+ #include "exec/vaddr.h"
+ 
+@@ -131,6 +132,31 @@ struct TCGCPUOps {
+      * same function signature.
+      */
+     bool (*cpu_exec_halt)(CPUState *cpu);
++    /**
++     * @tlb_fill_align: Handle a softmmu tlb miss
++     * @cpu: cpu context
++     * @out: output page properties
++     * @addr: virtual address
++     * @access_type: read, write or execute
++     * @mmu_idx: mmu context
++     * @memop: memory operation for the access
++     * @size: memory access size, or 0 for whole page
++     * @probe: test only, no fault
++     * @ra: host return address for exception unwind
++     *
++     * If the access is valid, fill in @out and return true.
++     * Otherwise if probe is true, return false.
++     * Otherwise raise and exception and do not return.
++     *
++     * The alignment check for the access is deferred to this hook,
++     * so that the target can determine the priority of any alignment
++     * fault with respect to other potential faults from paging.
++     * Zero may be passed for @memop to skip any alignment check
++     * for non-memory-access operations such as probing.
++     */
++    bool (*tlb_fill_align)(CPUState *cpu, CPUTLBEntryFull *out, vaddr addr,
++                           MMUAccessType access_type, int mmu_idx,
++                           MemOp memop, int size, bool probe, uintptr_t ra);
+     /**
+      * @tlb_fill: Handle a softmmu tlb miss
+      *
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 9d222dc376..3d84efcac4 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -40,6 +40,7 @@ typedef struct ConfidentialGuestSupport ConfidentialGuestSupport;
+ typedef struct CPUArchState CPUArchState;
+ typedef struct CPUPluginState CPUPluginState;
+ typedef struct CPUState CPUState;
++typedef struct CPUTLBEntryFull CPUTLBEntryFull;
+ typedef struct DeviceState DeviceState;
+ typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
+ typedef struct DisasContextBase DisasContextBase;
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index a975fe5f89..35cda1e2b0 100644
+index 35cda1e2b0..d72f454e9e 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1767,20 +1767,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * Device memory type require alignment.
-      */
-     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
--        MemOp size = l->memop & MO_SIZE;
--
--        switch (l->memop & MO_ATOM_MASK) {
--        case MO_ATOM_NONE:
--            size = MO_8;
--            break;
--        case MO_ATOM_IFALIGN_PAIR:
--        case MO_ATOM_WITHIN16_PAIR:
--            size = size ? size - 1 : 0;
--            break;
--        default:
--            break;
--        }
--        if (addr & ((1 << size) - 1)) {
-+        a_bits = memop_atomicity_bits(l->memop);
-+        if (addr & ((1 << a_bits) - 1)) {
-             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
+@@ -1221,22 +1221,35 @@ void tlb_set_page(CPUState *cpu, vaddr addr,
+ }
+ 
+ /*
+- * Note: tlb_fill() can trigger a resize of the TLB. This means that all of the
+- * caller's prior references to the TLB table (e.g. CPUTLBEntry pointers) must
+- * be discarded and looked up again (e.g. via tlb_entry()).
++ * Note: tlb_fill_align() can trigger a resize of the TLB.
++ * This means that all of the caller's prior references to the TLB table
++ * (e.g. CPUTLBEntry pointers) must be discarded and looked up again
++ * (e.g. via tlb_entry()).
+  */
+-static void tlb_fill(CPUState *cpu, vaddr addr, int size,
+-                     MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
++static bool tlb_fill_align(CPUState *cpu, vaddr addr, MMUAccessType type,
++                           int mmu_idx, MemOp memop, int size,
++                           bool probe, uintptr_t ra)
+ {
+-    bool ok;
++    const TCGCPUOps *ops = cpu->cc->tcg_ops;
++    CPUTLBEntryFull full;
+ 
+-    /*
+-     * This is not a probe, so only valid return is success; failure
+-     * should result in exception + longjmp to the cpu loop.
+-     */
+-    ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+-                                    access_type, mmu_idx, false, retaddr);
+-    assert(ok);
++    if (ops->tlb_fill_align) {
++        if (ops->tlb_fill_align(cpu, &full, addr, type, mmu_idx,
++                                memop, size, probe, ra)) {
++            tlb_set_page_full(cpu, mmu_idx, addr, &full);
++            return true;
++        }
++    } else {
++        /* Legacy behaviour is alignment before paging. */
++        if (addr & ((1u << memop_alignment_bits(memop)) - 1)) {
++            ops->do_unaligned_access(cpu, addr, type, mmu_idx, ra);
++        }
++        if (ops->tlb_fill(cpu, addr, size, type, mmu_idx, probe, ra)) {
++            return true;
++        }
++    }
++    assert(probe);
++    return false;
+ }
+ 
+ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+@@ -1351,22 +1364,22 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
+ 
+     if (!tlb_hit_page(tlb_addr, page_addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type, page_addr)) {
+-            if (!cpu->cc->tcg_ops->tlb_fill(cpu, addr, fault_size, access_type,
+-                                            mmu_idx, nonfault, retaddr)) {
++            if (!tlb_fill_align(cpu, addr, access_type, mmu_idx,
++                                0, fault_size, nonfault, retaddr)) {
+                 /* Non-faulting page table read failed.  */
+                 *phost = NULL;
+                 *pfull = NULL;
+                 return TLB_INVALID_MASK;
+             }
+ 
+-            /* TLB resize via tlb_fill may have moved the entry.  */
++            /* TLB resize via tlb_fill_align may have moved the entry.  */
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
+ 
+             /*
+              * With PAGE_WRITE_INV, we set TLB_INVALID_MASK immediately,
+-             * to force the next access through tlb_fill.  We've just
+-             * called tlb_fill, so we know that this entry *is* valid.
++             * to force the next access through tlb_fill_align.  We've just
++             * called tlb_fill_align, so we know that this entry *is* valid.
+              */
+             flags &= ~TLB_INVALID_MASK;
          }
-     }
+@@ -1613,7 +1626,7 @@ typedef struct MMULookupLocals {
+  *
+  * Resolve the translation for the one page at @data.addr, filling in
+  * the rest of @data with the results.  If the translation fails,
+- * tlb_fill will longjmp out.  Return true if the softmmu tlb for
++ * tlb_fill_align will longjmp out.  Return true if the softmmu tlb for
+  * @mmu_idx may have resized.
+  */
+ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+@@ -1631,7 +1644,8 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, data->size, access_type, mmu_idx, ra);
++            tlb_fill_align(cpu, addr, access_type, mmu_idx,
++                           0, data->size, false, ra);
+             maybe_resized = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
+@@ -1821,8 +1835,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, size,
+-                     MMU_DATA_STORE, mmu_idx, retaddr);
++            tlb_fill_align(cpu, addr, MMU_DATA_STORE, mmu_idx,
++                           0, size, false, retaddr);
+             index = tlb_index(cpu, mmu_idx, addr);
+             tlbe = tlb_entry(cpu, mmu_idx, addr);
+         }
+@@ -1836,7 +1850,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * but addr_read will only be -1 if PAGE_READ was unset.
+      */
+     if (unlikely(tlbe->addr_read == -1)) {
+-        tlb_fill(cpu, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
++        tlb_fill_align(cpu, addr, MMU_DATA_LOAD, mmu_idx,
++                       0, size, false, retaddr);
+         /*
+          * Since we don't support reads and writes to different
+          * addresses, and we do have the proper page loaded for
 -- 
 2.43.0
 
