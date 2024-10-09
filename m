@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE3699794D
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E28997957
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:51:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sygQ5-0003Hj-Id; Wed, 09 Oct 2024 19:48:41 -0400
+	id 1sygS3-0007oK-QN; Wed, 09 Oct 2024 19:50:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPb-00036H-HF
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:48:16 -0400
-Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sygRy-0007WB-08
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:50:38 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPZ-0006gD-Vz
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:48:11 -0400
-Received: by mail-qv1-xf31.google.com with SMTP id
- 6a1803df08f44-6cbceb48613so2467836d6.2
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:48:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sygRw-00077S-4x
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:50:37 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-71df4620966so329317b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:50:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1728517689; x=1729122489; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Yby7vSJjPVA9a3PElfIZJQ0FPWIMr9xtoFf7KH5DZnk=;
- b=G5UMqpjjdTPyQNbHBiqk4cp2L02Tlf8WaD0vFK0hpLI3q57NJ/F1BL57QkttCMgZlM
- WKQmD2kDQJ27wxZCxeYWpW8u9LS9msgGuYDVts4kMUTLVnlLEFlLu0K72DRUmQr9zeqS
- 7jBsHnoWOPGHFkWc/5rJz38TcQePLNYyf8VC0e8wkzrV9hzKqUU7klERhxfIwNg/1KYc
- dudpIbPXXsWSLrNd4SR9Mk5GC7hNz5iYd5YChmG/BFjwZVYFuCSna0ANKtQskZgF2D/y
- UFF+ZyP5q4flxprUYFrW6G+78IiSEeQODYgy+iNvDpHVdlBflkTtV6PbWkShuPWb1pzJ
- DFnA==
+ d=linaro.org; s=google; t=1728517834; x=1729122634; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=heeqIyBUYzKot/2ufWWlBpB2QyLn1HJOz+zp1zGZ4DQ=;
+ b=PWKEFbZy27iP5MBLyTXGt0cmYdQblkVtGzgXEHQliDrJjze0dS3ilsDPZ9U6ONLffn
+ ap76oCELmvioRBFthv0jhe0KGw132xbTaAMAmxqCg5VdstZDZm6TvSPms9y8vsZK2OUr
+ MBF+UBypaaAXQAETOox3EYwXDh0hI0dWDJxS2jwZTMldIihn4zrTyMT4T5HXO7QyYwbm
+ cE6PN9seEvagTx3ntMZSABOsAENoH6++SwI6adNfjKL6irn+eRNmmXjy4nE2itdnAj5K
+ 8ing9bQDL+WGo+PAxOgIh2O9lU/tK+AaHtWzLvKqfsYJsPWI8NefOikcxUzAF9wMwiBv
+ TbQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728517689; x=1729122489;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Yby7vSJjPVA9a3PElfIZJQ0FPWIMr9xtoFf7KH5DZnk=;
- b=vXs9zxbXFQ3QpOwDA2vNFc1ikklE07xVjZKuIuVSYIVjIfTCT7CZgcUEsJARob5U70
- ju/me4wifLNeGss5KPf64MKhReJe1BdCOLILn+8Fv0O/3tz7OabV8szB8IEJKFTo8q6q
- jxYjqy6ffYauAm7ZxLCDusxqVLys8TZLXF38wGqT4XAssduG0x6mHOafe4p5WWEd+qjK
- RUmNAoejCBU7Z3ZnwAD8cYx8JAK0btPOjT4gHxjDUnLSLoIO8tEAuOpXYhDmWskh+Z+D
- ZtagEMvOuCvY4lYGszUp5/Drr7q0n4aTPDsicQFmWvPF21NZcAHYbiHKPT6QcBqEMDSm
- Mf/w==
+ d=1e100.net; s=20230601; t=1728517834; x=1729122634;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=heeqIyBUYzKot/2ufWWlBpB2QyLn1HJOz+zp1zGZ4DQ=;
+ b=c1hkiOHT1xosjGY5gqYxHp9H1+Sl7qQdL0YloOv9fo+auS6YQNiMXeKkiPtTazz9z3
+ GJjSUPWp+GpQpdhYHVJ7UUQIcL7PzwmfLMC1xJre/qGHlYeJIAW+FR9gYQWgIekl3y6V
+ LVNOlSc6bYgqpHcibMw+Na7xU70Vwbv3rpgPQoT4626ZviVTB27dX5qMmN8SwqOPABT1
+ E9u/Z7tHajEgTTns/ldUabr4lBnDbIr5HZ8EMOJi+up+n+/DeLOoe7jnPCAL1eMy9po0
+ T03ZDk9E13VjuCSg3uNq+6cZY1I2719YgLHMlgO68nubZMKfJHbhASTm4q6oijb/LUz0
+ U80w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVUY9IYQIWHIkbYcQcSJeaSruwbwBTwV9byvQ5wfOFpXF4v9uet8unskYdfDPM/VTpoctk5zKJcHHec@nongnu.org
-X-Gm-Message-State: AOJu0Ywzx7VqUovMtrF8iU8/HlfMS7UECtqoou1eBRyS9eFFb2pya+Mj
- EtqWOchIkNtoZnU2wfOJ4Tdf5tZVdG+isdcu9LHFjRyF6vtZqF8HKdw404a8jZk=
-X-Google-Smtp-Source: AGHT+IGXWAF3cktR536cbh8bgJlIcfWGBEX+1dbf84Bnu/XDLJKLYB5eosBs6C2jlEjDrgvAKt3WaA==
-X-Received: by 2002:a05:6214:5d0c:b0:6cb:8282:d02f with SMTP id
- 6a1803df08f44-6cbe4a2be52mr28755176d6.6.1728517688982; 
- Wed, 09 Oct 2024 16:48:08 -0700 (PDT)
-Received: from DY4X0N7X05.bytedance.net ([2605:a7c0:0:301::44])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6cbe85d856fsm264386d6.72.2024.10.09.16.48.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 09 Oct 2024 16:48:08 -0700 (PDT)
-From: Yichen Wang <yichen.wang@bytedance.com>
-To: "Dr. David Alan Gilbert" <dave@treblig.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- qemu-devel@nongnu.org
-Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- "Shivam Kumar" <shivam.kumar1@nutanix.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PATCH v6 12/12] migration/multifd: Add integration tests for multifd
- with Intel DSA offloading.
-Date: Wed,  9 Oct 2024 16:46:10 -0700
-Message-Id: <20241009234610.27039-13-yichen.wang@bytedance.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241009234610.27039-1-yichen.wang@bytedance.com>
-References: <20241009234610.27039-1-yichen.wang@bytedance.com>
+ AJvYcCX9hFrMZWDT1UwbXQKgrIvF8yfaeE4K3gTWt4SYopcldLCxlDrht89hhbQ/kHp+bjwVFbSVH1BdhR3r@nongnu.org
+X-Gm-Message-State: AOJu0YzodqKyOetuQdK1IHZtj6t4GkQrgWCy8AKg0Xlaaxgrppu01+zU
+ 3qFMQLI5Fwo63OPuWxFHLHFE9JAq7ecjwxLvTuYeIfxeVIAY0/y4CcoGP03lbN0=
+X-Google-Smtp-Source: AGHT+IFBpmm3EoWZVr1EVl6xA1qNBaWysAOMW+fw8UdKo5PSYdQtkwPwdKLmf4J6l7LT2ZiRW0zS1Q==
+X-Received: by 2002:a05:6a21:9102:b0:1d2:e81c:adc0 with SMTP id
+ adf61e73a8af0-1d8a3cb1d99mr8965696637.46.1728517834511; 
+ Wed, 09 Oct 2024 16:50:34 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71df0d622fcsm8603582b3a.143.2024.10.09.16.50.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 09 Oct 2024 16:50:34 -0700 (PDT)
+Message-ID: <4d3478bb-ffdb-4296-83f2-1cb0968d443d@linaro.org>
+Date: Wed, 9 Oct 2024 16:50:33 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf31.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/23] accel/tcg: Populate IntervalTree in
+ tlb_set_page_full
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20241009150855.804605-1-richard.henderson@linaro.org>
+ <20241009150855.804605-10-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241009150855.804605-10-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,147 +96,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hao Xiang <hao.xiang@linux.dev>
+On 10/9/24 08:08, Richard Henderson wrote:
+> Add or replace an entry in the IntervalTree for each
+> page installed into softmmu.  We do not yet use the
+> tree for anything else.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/tcg/cputlb.c | 34 ++++++++++++++++++++++++++++------
+>   1 file changed, 28 insertions(+), 6 deletions(-)
+> 
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index 435c2dc132..d964e1b2e8 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -305,6 +305,17 @@ static void tlbfast_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
+>       memset(fast->table, -1, sizeof_tlb(fast));
+>   }
+>   
+> +static CPUTLBEntryTree *tlbtree_lookup_range(CPUTLBDesc *desc, vaddr s, vaddr l)
+> +{
+> +    IntervalTreeNode *i = interval_tree_iter_first(&desc->iroot, s, l);
+> +    return i ? container_of(i, CPUTLBEntryTree, itree) : NULL;
+> +}
+> +
+> +static CPUTLBEntryTree *tlbtree_lookup_addr(CPUTLBDesc *desc, vaddr addr)
+> +{
+> +    return tlbtree_lookup_range(desc, addr, addr);
+> +}
+> +
+>   static void tlb_mmu_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
+>   {
+>       tlbfast_flush_locked(desc, fast);
+> @@ -1086,7 +1097,8 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+>       MemoryRegionSection *section;
+>       unsigned int index, read_flags, write_flags;
+>       uintptr_t addend;
+> -    CPUTLBEntry *te, tn;
+> +    CPUTLBEntry *te;
+> +    CPUTLBEntryTree *node;
+>       hwaddr iotlb, xlat, sz, paddr_page;
+>       vaddr addr_page;
+>       int asidx, wp_flags, prot;
+> @@ -1194,6 +1206,15 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+>           tlb_n_used_entries_dec(cpu, mmu_idx);
+>       }
+>   
+> +    /* Replace an old IntervalTree entry, or create a new one. */
+> +    node = tlbtree_lookup_addr(desc, addr_page);
+> +    if (!node) {
+> +        node = g_new(CPUTLBEntryTree, 1);
+> +        node->itree.start = addr_page;
+> +        node->itree.last = addr_page + TARGET_PAGE_SIZE - 1;
+> +        interval_tree_insert(&node->itree, &desc->iroot);
+> +    }
+> +
+>       /* refill the tlb */
+>       /*
+>        * When memory region is ram, iotlb contains a TARGET_PAGE_BITS
+> @@ -1215,15 +1236,15 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+>       full->phys_addr = paddr_page;
+>   
+>       /* Now calculate the new entry */
+> -    tn.addend = addend - addr_page;
+> +    node->copy.addend = addend - addr_page;
+>   
+> -    tlb_set_compare(full, &tn, addr_page, read_flags,
+> +    tlb_set_compare(full, &node->copy, addr_page, read_flags,
+>                       MMU_INST_FETCH, prot & PAGE_EXEC);
+>   
+>       if (wp_flags & BP_MEM_READ) {
+>           read_flags |= TLB_WATCHPOINT;
+>       }
+> -    tlb_set_compare(full, &tn, addr_page, read_flags,
+> +    tlb_set_compare(full, &node->copy, addr_page, read_flags,
+>                       MMU_DATA_LOAD, prot & PAGE_READ);
+>   
+>       if (prot & PAGE_WRITE_INV) {
+> @@ -1232,10 +1253,11 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+>       if (wp_flags & BP_MEM_WRITE) {
+>           write_flags |= TLB_WATCHPOINT;
+>       }
+> -    tlb_set_compare(full, &tn, addr_page, write_flags,
+> +    tlb_set_compare(full, &node->copy, addr_page, write_flags,
+>                       MMU_DATA_STORE, prot & PAGE_WRITE);
+>   
+> -    copy_tlb_helper_locked(te, &tn);
+> +    node->full = *full;
+> +    copy_tlb_helper_locked(te, &node->copy);
+>       tlb_n_used_entries_inc(cpu, mmu_idx);
+>       qemu_spin_unlock(&tlb->c.lock);
+>   }
 
-* Add test case to start and complete multifd live migration with DSA
-offloading enabled.
-* Add test case to start and cancel multifd live migration with DSA
-offloading enabled.
-
-Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
----
- tests/qtest/migration-test.c | 80 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 814ec109a6..47a9dd8c50 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -611,6 +611,13 @@ typedef struct {
-     bool suspend_me;
- } MigrateStart;
- 
-+/*
-+ * It requires separate steps to configure and enable DSA device.
-+ * This test assumes that the configuration is done already.
-+ */
-+static const char *dsa_dev_path_p = "['/dev/dsa/wq4.0']";
-+static const char *dsa_dev_path = "/dev/dsa/wq4.0";
-+
- /*
-  * A hook that runs after the src and dst QEMUs have been
-  * created, but before the migration is started. This can
-@@ -3230,7 +3237,7 @@ static void test_multifd_tcp_tls_x509_reject_anon_client(void)
-  *
-  *  And see that it works
-  */
--static void test_multifd_tcp_cancel(void)
-+static void test_multifd_tcp_cancel_common(bool use_dsa)
- {
-     MigrateStart args = {
-         .hide_stderr = true,
-@@ -3250,6 +3257,11 @@ static void test_multifd_tcp_cancel(void)
-     migrate_set_capability(from, "multifd", true);
-     migrate_set_capability(to, "multifd", true);
- 
-+    if (use_dsa) {
-+        migrate_set_parameter_str(from, "zero-page-detection", "dsa-accel");
-+        migrate_set_parameter_str(from, "dsa-accel-path", dsa_dev_path_p);
-+    }
-+
-     /* Start incoming migration from the 1st socket */
-     migrate_incoming_qmp(to, "tcp:127.0.0.1:0", "{}");
- 
-@@ -3300,6 +3312,49 @@ static void test_multifd_tcp_cancel(void)
-     test_migrate_end(from, to2, true);
- }
- 
-+/*
-+ * This test does:
-+ *  source               target
-+ *                       migrate_incoming
-+ *     migrate
-+ *     migrate_cancel
-+ *                       launch another target
-+ *     migrate
-+ *
-+ *  And see that it works
-+ */
-+static void test_multifd_tcp_cancel(void)
-+{
-+    test_multifd_tcp_cancel_common(false);
-+}
-+
-+#ifdef CONFIG_DSA_OPT
-+
-+static void *test_migrate_precopy_tcp_multifd_start_dsa(QTestState *from,
-+                                                        QTestState *to)
-+{
-+    migrate_set_parameter_str(from, "zero-page-detection", "dsa-accel");
-+    migrate_set_parameter_str(from, "dsa-accel-path", dsa_dev_path_p);
-+    return test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
-+}
-+
-+static void test_multifd_tcp_zero_page_dsa(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_start_dsa,
-+    };
-+
-+    test_precopy_common(&args);
-+}
-+
-+static void test_multifd_tcp_cancel_dsa(void)
-+{
-+    test_multifd_tcp_cancel_common(true);
-+}
-+
-+#endif
-+
- static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
- {
-     qtest_qmp_assert_success(who,
-@@ -3727,6 +3782,19 @@ static bool kvm_dirty_ring_supported(void)
- #endif
- }
- 
-+#ifdef CONFIG_DSA_OPT
-+static int test_dsa_setup(void)
-+{
-+    int fd;
-+    fd = open(dsa_dev_path, O_RDWR);
-+    if (fd < 0) {
-+        return -1;
-+    }
-+    close(fd);
-+    return 0;
-+}
-+#endif
-+
- int main(int argc, char **argv)
- {
-     bool has_kvm, has_tcg;
-@@ -3939,6 +4007,16 @@ int main(int argc, char **argv)
-                        test_multifd_tcp_zero_page_legacy);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
-                        test_multifd_tcp_no_zero_page);
-+
-+#ifdef CONFIG_DSA_OPT
-+    if (g_str_equal(arch, "x86_64") && test_dsa_setup() == 0) {
-+        migration_test_add("/migration/multifd/tcp/plain/zero-page/dsa",
-+                       test_multifd_tcp_zero_page_dsa);
-+        migration_test_add("/migration/multifd/tcp/plain/cancel/dsa",
-+                       test_multifd_tcp_cancel_dsa);
-+    }
-+#endif
-+
-     migration_test_add("/migration/multifd/tcp/plain/cancel",
-                        test_multifd_tcp_cancel);
-     migration_test_add("/migration/multifd/tcp/plain/zlib",
--- 
-Yichen Wang
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
