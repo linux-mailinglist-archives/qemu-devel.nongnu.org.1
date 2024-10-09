@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB131995C12
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E47E6995C18
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syKCW-0004NT-QU; Tue, 08 Oct 2024 20:05:12 -0400
+	id 1syKCa-0004Rj-RI; Tue, 08 Oct 2024 20:05:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCS-0004Ik-A0
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:08 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1syKCW-0004OV-9N
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:12 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCP-0002rr-UR
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:07 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-20b0b2528d8so70928005ad.2
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:05:05 -0700 (PDT)
+ id 1syKCQ-0002sM-Jh
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:11 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-20b86298710so53279755ad.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728432304; x=1729037104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728432305; x=1729037105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8E2Z9ZSy95UZsg9Y2N2fIiaRxpU5aj12TR1V9ijHxjM=;
- b=QG1nPvj4zfH7GnQRIAAQz9SpYqyAdJ5/aBqi8aSG/EaefoDDj7yWs6OFacxEwDP2ai
- tR9ershpLoFZxu1NkILKtVfj1X1cK/T7SAcI+2kziJOwd3MG4YFOxbWIL0ZqK5djDCes
- ewTgma/GjFGN9TU2gOwg9GXTR9tc1z/RJS2Szt5So7YMTsMcLDvIzsUsDEK0NTz3UtVC
- 7N1NpBwFwNUTP6wE7lYy11M/FkSVYFVuv9VjCbzuNpLbFMCIDkuTQvGxdBBE0PS4iQcY
- obsNdtMY5tQmOEMwkAI+cO2Z/jD7wmN+0YJtxPurj3FYEU4tKbiEFCwPKfTrv0NY+hC0
- ANzw==
+ bh=xQhK8NjjgW/kNvx5X1m22TpA6VVxTZtyOqTVcWaZJho=;
+ b=Dmn9fQ2vtmubV1jQOcXh1e9bPMTS5lnAx37z3EXDNsWO2iPFArUgTDphSvJ1uWphO/
+ 4GPrAf4UrwYZ7GDhEGM+ap92L+vb46127Rdzr/ttm6yAw5ta5ntlaqs5N+fYz66002rA
+ gm0PZZQQaCKQ2aR//2dGEuRfl1DFjZlZZGztb13PNE8JFjKPlNLbm0ulL1iL8tJabbQD
+ XmdGF36vYr5xEjiiHWMPAyWn1VCqEed2OHmjCCk8Zntw6HkMaEggjGa/ClPKLonCiz8E
+ 7LmkiQ210jXScJkds7krDJph6LoRROZ43vRoN3Sxv+6dhgtQAPcZ3yPzpMsqjoQOmYAn
+ G4VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728432304; x=1729037104;
+ d=1e100.net; s=20230601; t=1728432305; x=1729037105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8E2Z9ZSy95UZsg9Y2N2fIiaRxpU5aj12TR1V9ijHxjM=;
- b=ldLWUMJUO713iHwXJsTuem63Z3i1WbTRU02hS68egDcRUZCHQVWlDixrxMfnZdN7tM
- YnnY6tnoVIjc66bedybeAwHhch0OrBw4emSX2cP0eEHSh1hnBYEf5F4W9Iq0JNIQOK44
- VGui7wU/+cWokYCwx1ny8AtjL+nqvkmdU5y82y7sedBd8mXM0QQamQtjLfmI8lyVNSH3
- 2dRLT+zB9aWR8zTxLNBRoqmaxXjcy/y6oAnUrvPqplFb2nu3PPlDTgMeM4lxjIUkHrA+
- GUSYaU1aiVF0DiYyMMvw3FF4qyU0V1Gq5jVhfDr8j7gSggc12Z1ZYz/SLuEvuRctv28D
- fZBA==
-X-Gm-Message-State: AOJu0YyIfQsxlApBeXxlzJRMk9bp5hiZMEdwbO4h9R8H1IAI/J7S2h5Y
- ouvRSjufYMRN+G+MtxwRRVyYjZyU6uiy8YqWsmHgXpIN7oj5+VoLbEdO1kpA5Om3l4PFb15k8et
- Q
-X-Google-Smtp-Source: AGHT+IF0ZLww/QirXn6eqf2utM1nSiZwyzsJ3soHtkS1Z0DxnmXSBaV1UhTlgasVQznyDC1QSh7zOg==
-X-Received: by 2002:a17:902:dac7:b0:206:fd9d:b88d with SMTP id
- d9443c01a7336-20c637986d4mr11253965ad.61.1728432304454; 
- Tue, 08 Oct 2024 17:05:04 -0700 (PDT)
+ bh=xQhK8NjjgW/kNvx5X1m22TpA6VVxTZtyOqTVcWaZJho=;
+ b=k007mwMK15WJWrMOqkmyySfDwzjamZKCqf5sa7jBdBlU40FLJJyA1/eEcxi/Yh7px6
+ 6YsuEOckrHm7P4CTNTxGHxP24bv1bzirh1++iOhPZ7vP/I9PW6Caam+Nk+imr0p551Yz
+ jOLu//dNOidpJYx8olZhzrCH1QFKylmPBTho4LkHaJhGF2WlRJHcf9euIIwMi/IZh133
+ 43sWcCCuMAhgoV0xjHQg4rjrnuQZcKRZ9I3zmMb8lO7r/XWTf0PMvvNSnWdDNcsK0U3j
+ jUs6UMamvThigRbmpWH7mXav/42slrgJ6VIGakN2maoWfRboDIgd5tWfb4n3s2WSVYZ8
+ Yitw==
+X-Gm-Message-State: AOJu0Yz7e/JfVIqvLrqxGUwVTky9rxp7fwingSvjZ1USLHX0vPVwwoM9
+ sM+CMH9FHfvq3SGMv+qU4dJFRU6vy+8DbumUK0Q+8X4+HG0UVeL2BGsKPWf3YCMEbc2kbxyMc/b
+ G
+X-Google-Smtp-Source: AGHT+IGk0V3WqNWZpuoKiyjHCbvkavwK7mPvzoRJ0f7iYAkKJh77UVywliO2AjnwG+Rua0FM3sG5Mg==
+X-Received: by 2002:a17:903:2309:b0:20b:51c2:d789 with SMTP id
+ d9443c01a7336-20c63711761mr12234395ad.16.1728432305301; 
+ Tue, 08 Oct 2024 17:05:05 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.05.03
+ d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.05.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 08 Oct 2024 17:05:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
- Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 09/20] target/hppa: Fix priority of T, D, and B page faults
-Date: Tue,  8 Oct 2024 17:04:42 -0700
-Message-ID: <20241009000453.315652-10-richard.henderson@linaro.org>
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 10/20] target/hppa: Handle alignment faults in
+ hppa_get_physical_address
+Date: Tue,  8 Oct 2024 17:04:43 -0700
+Message-ID: <20241009000453.315652-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009000453.315652-1-richard.henderson@linaro.org>
 References: <20241009000453.315652-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,48 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop the 'else' so that ret is overridden with the
-highest priority fault.
+In Chapter 5, Interruptions, the group 3 exceptions lists
+"Unaligned data reference trap" has higher priority than
+"Data memory break trap".
 
-Fixes: d8bc1381250 ("target/hppa: Implement PSW_X")
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/mem_helper.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ target/hppa/mem_helper.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index f027c494e2..f71cedd7a9 100644
+index f71cedd7a9..d38054da8a 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -288,7 +288,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+@@ -221,7 +221,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+             g_assert_not_reached();
+         }
+         prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-        goto egress;
++        goto egress_align;
      }
  
-     /*
--     * In priority order, check for conditions which raise faults.
-+     * In reverse priority order, check for conditions which raise faults.
-      * Remove PROT bits that cover the condition we want to check,
-      * so that the resulting PROT will force a re-check of the
-      * architectural TLB entry for the next access.
-@@ -299,13 +299,15 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-             /* The T bit is set -- Page Reference Fault.  */
-             ret = EXCP_PAGE_REF;
+     /* Find a valid tlb entry that matches the virtual address.  */
+@@ -323,6 +323,11 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
          }
--    } else if (!ent->d) {
+     }
+ 
++ egress_align:
++    if (addr & ((1u << memop_alignment_bits(mop)) - 1)) {
++        ret = EXCP_UNALIGN;
 +    }
-+    if (unlikely(!ent->d)) {
-         prot &= PAGE_READ | PAGE_EXEC;
-         if (type & PAGE_WRITE) {
-             /* The D bit is not set -- TLB Dirty Bit Fault.  */
-             ret = EXCP_TLB_DIRTY;
-         }
--    } else if (unlikely(ent->b)) {
-+    }
-+    if (unlikely(ent->b)) {
-         prot &= PAGE_READ | PAGE_EXEC;
-         if (type & PAGE_WRITE) {
-             /*
++
+  egress:
+     *pphys = phys;
+     *pprot = prot;
 -- 
 2.43.0
 
