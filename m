@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F338099655E
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEE99965D1
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syT0w-00071P-8h; Wed, 09 Oct 2024 05:29:50 -0400
+	id 1syTHB-00011d-II; Wed, 09 Oct 2024 05:46:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1syT0t-00071G-MW
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:29:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1syTH9-00011V-NK
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:46:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1syT0r-0006d8-JG
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:29:47 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1syTH2-0008O3-5L
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:46:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728466183;
+ s=mimecast20190719; t=1728467183;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jfvWZTAGY5/W3+gJ2SO3IHWZzB25DuYdJiYXYElDDT8=;
- b=dxzophcM3SBXlp4DFPU1h5ZCV5jxwX6XzDOACpYVs9AiuYqA0hM9pgqRYtIlzkuc8qyV7P
- WaS7Gk8pGRSuIbhNf5kYiYFnkMamh8yud8KvX6HjjEgnaNPG6MLU2VQhc78OLkl31PIFmT
- VZYVTm0K4E1l4rgOKwtEJzW6rRvtyNc=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=upTJFESi6s3M2ikjJTWoXl0uVdD0+7/PKJNyEQuwSzM=;
+ b=CBMQFKAOCB1CtVjcGSrRhcQpKqY/j/kc5ESCNZimSifxX8BX0/LVNQRSl+jbEsFMnn5ycK
+ kAuNJZFd34DLNUR9qlwqqC24na5e7pUCV37NVrSA6xa7J+HOlx/na5vJnJrH1bcd5j/y7R
+ fm18oODXY28eG8PI28k0GrAN9DxhfCo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-Ys0AV3A5MO6C_r_xTWgmxQ-1; Wed, 09 Oct 2024 05:29:42 -0400
-X-MC-Unique: Ys0AV3A5MO6C_r_xTWgmxQ-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-6e2d1860a62so69715917b3.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:29:42 -0700 (PDT)
+ us-mta-325-wrrDGlCsOtqYPf63XiCJxQ-1; Wed, 09 Oct 2024 05:46:21 -0400
+X-MC-Unique: wrrDGlCsOtqYPf63XiCJxQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d3256c0a2so854084f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:46:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728466181; x=1729070981;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jfvWZTAGY5/W3+gJ2SO3IHWZzB25DuYdJiYXYElDDT8=;
- b=kQtU0UnFvOK2kGhhpqod/C6fcfpS7tz5zbeTATyi8+Z5EmEDh2dVSe09flQ+F76vMe
- +o7V3bncfuQzumaDszaKKNEbdjRKB2NXQ4cEYPOR4Z2moevAWbiejRlj03psm9CdYsMp
- Epi9XYSIqH781f8FKuLeRaUwTNwdlXtc8D6sEjv26EjIm84cidLh3DYlOFF4n05xeIeZ
- W7oZczecvw520P4ax3zHasDI5ZuyFtV+Uy+aZps+DuPmQd8XAJKM/NZ+i3rCIJ4tkKgC
- 9ZRG4SQQCVx3+y81Ov6mZzUPVLqZZeHHzdOslLmNuqWN9Su9pgJxbJyJJiBeWMBQzePq
- 9L0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVAiW280R4czdRgY2Eky7NfWPyudW08fmYYm15jLZBB5KgJs1dNeUPUqmY9uQT6pCfPhpSnih/g4XBK@nongnu.org
-X-Gm-Message-State: AOJu0YyFMWvqaJ/Fb+koA/4XrYnmkNWYeskjWw20fsi5kE4whvUNUOmW
- VBDb3aH2/xel7Z+S5rO+HQP6EW1wu9oIx0rmLnnpEhgvXHhi20GYle+Fk6EegN/dDYN0lZxrY27
- 2bFBn53n8ZJkPl+M0WAiZ/aTQuTQGFzmk0OIg4kh6ZjfuW5lc1qUaI3hD66lpxtHvIaT9NtiDwu
- yZoF1HF+lGzJ52SZ+LVj++eB+jyLs=
-X-Received: by 2002:a05:690c:6a0b:b0:6be:92c7:a27e with SMTP id
- 00721157ae682-6e32217d00emr15983377b3.28.1728466181465; 
- Wed, 09 Oct 2024 02:29:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcAXU0f2K53qOoFBZS6CNuFRUyT51+ISpiHiLnCXa3m6lhc1MlJb3cBRFaDmMcuS7nQ5ZQl7ZF037kEC9k19k=
-X-Received: by 2002:a05:690c:6a0b:b0:6be:92c7:a27e with SMTP id
- 00721157ae682-6e32217d00emr15983217b3.28.1728466181138; Wed, 09 Oct 2024
- 02:29:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728467180; x=1729071980;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=upTJFESi6s3M2ikjJTWoXl0uVdD0+7/PKJNyEQuwSzM=;
+ b=shqmr9AFXqkndlujT2qK774hz1LofdHADdLqxOpYUy2RzgFtGF92nq/G8XkO77Bld/
+ OpikxElkINTS6RNmEj/PjWy++5oVfjLgeVefJgLHlX/zUyrACmnJY3GkXUCFpYw3oUba
+ eZ7Xqoupqp8nJWvwCczUQDSjJ6j7ClEqZ7WsRk0Ym6F/ytLogNeRAd7H9FDXX481gwju
+ oVod6sbJ+jX+D/yRYkWkZKO4sS6jNrTYwFDBKJe3TLTHj8j5hfTzOKvFd3Wqz8ChhRlY
+ tFotO3aEuoJD9kfOCyIwTB7VWyUzrm/wTNTEFEJbrN0cOg+zHay75TdRzXpHkC+iPJET
+ 7xfA==
+X-Gm-Message-State: AOJu0YxQFHgdL7vwTv1pSd3kor4pYwmf/eHPkzM/5cxqfblimKst+clN
+ 6nN2I4JJRoKCmPp8FoC2Bxh4zQw8ZTiKckCRJ4h9QdC4MOEWNqommvi/0M0hIlV2VO4hGzYXPAO
+ dwRZmcUaZfc/yKAfSvomSLIREKsu9K6oe0yoKXOscAHR+RXYUjF1AqSNFGwu7c7Fd48rl9Nc+X1
+ ZUvGstzO4jpgrm7bT3MGz5oF+Kf+EBKRGA8DIIVoE=
+X-Received: by 2002:a05:6000:1007:b0:374:be10:3eb7 with SMTP id
+ ffacd0b85a97d-37d3aa840ddmr1177539f8f.38.1728467180176; 
+ Wed, 09 Oct 2024 02:46:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+vipz0UwNJqjl/h11yKUaGQNiDLP43TTrkkCx8hFwp96YGuAIylcHdVjf8brIV9+h6oyxtQ==
+X-Received: by 2002:a05:6000:1007:b0:374:be10:3eb7 with SMTP id
+ ffacd0b85a97d-37d3aa840ddmr1177516f8f.38.1728467179607; 
+ Wed, 09 Oct 2024 02:46:19 -0700 (PDT)
+Received: from avogadro.local ([151.62.111.131])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37d3af05948sm1152320f8f.33.2024.10.09.02.46.18
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Oct 2024 02:46:19 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/14] Rust initial PoC + meson changes for 2024-10-07
+Date: Wed,  9 Oct 2024 11:46:01 +0200
+Message-ID: <20241009094616.1648511-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.2
 MIME-Version: 1.0
-References: <20241004124445.3802090-1-jonah.palmer@oracle.com>
- <20241004124445.3802090-2-jonah.palmer@oracle.com>
- <CAJaqyWd7c6ZU_4Hk_Wo79Ghw_LRxxjmvXUvZrASKE6WSWZcytg@mail.gmail.com>
- <e3108f34-f951-47d6-ac41-cbbc045a7bd1@oracle.com>
- <CAJaqyWcmjnPaAFGvE5=2e19wuAxOr2=AHX1y-dj70+49sdQh7Q@mail.gmail.com>
- <a1711695-9d0c-44f4-b799-1879404581d9@oracle.com>
- <CAJaqyWfYvD0nEYU9UgKzYgUo5JzuFu3PBKNEkDrM0BE0Ek5LfA@mail.gmail.com>
- <5ebfd766-c8b5-4fb3-86ad-17a74212ef5e@oracle.com>
- <c0983e7c-b857-46fa-a6ec-82215829bbc7@oracle.com>
-In-Reply-To: <c0983e7c-b857-46fa-a6ec-82215829bbc7@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 9 Oct 2024 11:29:05 +0200
-Message-ID: <CAJaqyWcP8EyE+nyCF1JBouhQp8Lgi5RwoK7SCJe8QKoshDfbhg@mail.gmail.com>
-Subject: Re: [RFC v2 1/2] vhost-vdpa: Implement IOVA->GPA tree
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: Jonah Palmer <jonah.palmer@oracle.com>, qemu-devel@nongnu.org,
- mst@redhat.com, 
- leiyang@redhat.com, peterx@redhat.com, dtatulea@nvidia.com, 
- jasowang@redhat.com, boris.ostrovsky@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,272 +97,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 8, 2024 at 10:30=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> =
-wrote:
->
->
->
-> On 10/8/2024 8:40 AM, Jonah Palmer wrote:
-> >
-> >
-> > On 10/8/24 2:51 AM, Eugenio Perez Martin wrote:
-> >> On Tue, Oct 8, 2024 at 2:14=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.c=
-om> wrote:
-> >>>
-> >>>
-> >>>
-> >>> On 10/7/2024 6:51 AM, Eugenio Perez Martin wrote:
-> >>>> On Fri, Oct 4, 2024 at 8:48=E2=80=AFPM Jonah Palmer
-> >>>> <jonah.palmer@oracle.com> wrote:
-> >>>>>
-> >>>>>
-> >>>>> On 10/4/24 11:17 AM, Eugenio Perez Martin wrote:
-> >>>>>> On Fri, Oct 4, 2024 at 2:45=E2=80=AFPM Jonah Palmer
-> >>>>>> <jonah.palmer@oracle.com> wrote:
-> >>>>>>> Implements the IOVA->GPA tree for handling mapping, unmapping, an=
-d
-> >>>>>>> translations for guest memory regions.
-> >>>>>>>
-> >>>>>>> When the guest has overlapping memory regions, an HVA to IOVA
-> >>>>>>> translation
-> >>>>>>> may return an incorrect IOVA when searching the IOVA->HVA tree.
-> >>>>>>> This is
-> >>>>>>> due to one HVA range being contained (overlapping) in another
-> >>>>>>> HVA range
-> >>>>>>> in the IOVA->HVA tree. By creating an IOVA->GPA tree, we can use
-> >>>>>>> GPAs to
-> >>>>>>> translate and find the correct IOVA for guest memory regions.
-> >>>>>>>
-> >>>>>> Yes, this first patch is super close to what I meant, just one iss=
-ue
-> >>>>>> and a pair of nits here and there.
-> >>>>>>
-> >>>>>> I'd leave the second patch as an optimization on top, if the numbe=
-rs
-> >>>>>> prove that adding the code is worth it.
-> >>>>>>
-> >>>>> Ah okay, gotcha. I also wasn't sure if what you mentioned below on
-> >>>>> the
-> >>>>> previous series you also wanted implemented or if these would also =
-be
-> >>>>> optimizations on top.
-> >>>>>
-> >>>>> [Adding code to the vhost_iova_tree layer for handling multiple
-> >>>>> buffers
-> >>>>> returned from translation for the memory area where each iovec
-> >>>>> covers]:
-> >>>>> -------------------------------------------------------------------=
-----
-> >>>>>
-> >>>>> "Let's say that SVQ wants to translate the HVA range
-> >>>>> 0xfeda0000-0xfedd0000. So it makes available for the device two
-> >>>>> chained buffers: One with addr=3D0x1000 len=3D0x20000 and the other=
- one
-> >>>>> with addr=3D(0x20000c1000 len=3D0x10000).
-> >>>>>
-> >>>>> The VirtIO device should be able to translate these two buffers in
-> >>>>> isolation and chain them. Not optimal but it helps to keep QEMU
-> >>>>> source
-> >>>>> clean, as the device already must support it."
-> >>>>>
-> >>>> This is 100% in the device and QEMU is already able to split the
-> >>>> buffers that way, so we don't need any change in QEMU.
-> >>> Noted that if working with the full HVA tree directly, the internal
-> >>> iova
-> >>> tree linear iterator iova_tree_find_address_iterator() today doesn't
-> >>> guarantee the iova range returned can cover the entire length of the
-> >>> iov, so things could happen like that the aliased range with smaller
-> >>> size (than the requested) happens to be hit first in the linear searc=
-h
-> >>> and be returned, the fragmentation of which can't be guarded against =
-by
-> >>> the VirtIO device or the DMA API mentioned above.
-> >>>
-> >>> The second patch in this series kind of mitigated this side effect by
-> >>> sorting out the backing ram_block with the help of
-> >>> qemu_ram_block_from_host() in case of guest memory backed iov, so it
-> >>> doesn't really count on vhost_iova_gpa_tree_find_iova() to find the
-> >>> matching IOVA, but instead (somehow implicitly) avoids the
-> >>> fragmentation
-> >>> side effect as mentioned above would never happen. Not saying I like
-> >>> the
-> >>> way how it is implemented, but just wanted to point out the implicati=
-on
-> >>> if the second patch has to be removed - either add special handling
-> >>> code
-> >>> to the iova-tree iterator sizing the range (same as how range selecti=
-on
-> >>> based upon permission will be done), or add special code in SVQ
-> >>> layer to
-> >>> deal with fragmented IOVA ranges due to aliasing.
-> >>>
-> >>
-> >> This special code in SVQ is already there. And it will be needed even
-> >> if we look for the buffers by GPA instead of by vaddr, the same way
-> >> virtqueue_map_desc needs to handle it even if it works with GPA.
-> >> Continuous GPA does not imply continuous vaddr.
-> >>
-> >
-> > My apologies if I misunderstood something here regarding size &
-> > permission matching, but I attempted to implement both the size and
-> > permission check to iova_tree_find_address_iterator(), however,
-> > there's a sizing mismatch in the vhost_svq_translate_addr() code path
-> > that's causing vhost-net to fail to start.
-> >
-> > qemu-system-x86_64: unable to start vhost net: 22: falling back on
-> > userspace virtio
-> >
-> > More specifically, in vhost_svq_add_split(), the first call to
-> > vhost_svq_vring_write_descs() returns false:
-> >
-> >     ok =3D vhost_svq_vring_write_descs(svq, sgs, out_sg, out_num, in_nu=
-m >
-> >                                      0, false);
-> >     if (unlikely(!ok)) {
-> >         return false;
-> >     }
-> >
-> > Maybe I misunderstood the proposal, but in
-> > iova_tree_find_address_iterator I'm checking for an exact match for
-> > sizes:
-> >
-> >     if (map->size !=3D needle->size || map->perm !=3D needle->perm) {
-> >         return false;
-> >     }
-> The permission needs to exact match,
+The following changes since commit b5ab62b3c0050612c7f9b0b4baeb44ebab42775a:
 
-Care with this, read only buffers can live in the guest's RW memory. I
-think the only actual condition is that if the buffer is writable, the
-memory area must be writable. If they don't match, we should keep
-looking for the right area.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-04 19:28:37 +0100)
 
+are available in the Git repository at:
 
-> while the size doesn't have to. The
-> current iova_tree_find_address_iterator() has the following check:
->
->      if (map->translated_addr + map->size < needle->translated_addr ||
->          needle->translated_addr + needle->size < map->translated_addr) {
->          return false;
->      }
->
-> So essentially it does make sure the starting translated_addr on the
-> needle is greater than or equal to the starting translated_addr on the
-> map, and the first match of the map range in an ordered linear search
-> will be returned, but it doesn't guarantee the ending address on the
-> needle (needle->translated_addr + needle->size) will be covered by the
-> ending address on the map (map->translated_addr + map->size), so this
-> implementation is subjected to fragmented iova ranges with contiguous
-> HVA address. I don't see the current SVQ handles this well, and the
-> reason of iova fragmentation is due to overlapped region or memory
-> aliasing (unlike the GPA tree implementation, we have no additional info
-> to help us identify the exact IOVA when two or more overlapped HVA
-> ranges are given), which is orthogonal to the HVA fragmentation (with
-> contiguous GPA) handling in virtqueue_map_desc().
->
-> How to handle this situation? Well, I guess Eugenio may have different
-> opinion, but to me the only way seems to continue to search till a
-> well-covered IOVA range can be found, or we may have to return multiple
-> IOVA ranges splitting a contiguous HVA buffer...
->
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-Not sure if I followed this 100%, but we must be capable of returning
-multiple IOVA ranges if we trust in SVQ to do the translation anyway.
+for you to fetch changes up to 5011e4c2aca4831204aea15223359d29af9a853e:
 
-When SVQ starts, the guest memory listener already gives the GPA ->
-HVA translations fragmented and unordered, as QEMU can hotplug memory
-for example. Let me put a simple example:
+  gitlab-ci: add Rust-enabled CI job (2024-10-09 11:37:51 +0200)
 
-GPA [0, 0x1000) -> HVA [0x10000, 0x10100)
-GPA [0x1000, 0x2000) -> HVA [0x20000, 0x20100)
+----------------------------------------------------------------
+* first commit for Rust support
+* add CI job using Fedora + Rust nightly
+* fix detection of ATOMIC128 on x86_64
 
-Now we send the IOVA to the device this way:
-IOVA [0x2000, 0x3000) -> HVA [0x20000, 0x20100)
-IOVA [0x3000, 0x4000) -> HVA [0x10000, 0x10100)
+----------------------------------------------------------------
+Manos Pitsidianakis (7):
+      build-sys: Add rust feature option
+      rust: add bindgen step as a meson dependency
+      .gitattributes: add Rust diff and merge attributes
+      meson.build: add HAVE_GLIB_WITH_ALIGNED_ALLOC flag
+      rust: add crate to expose bindings and interfaces
+      rust: add utility procedural macro crate
+      rust: add PL011 device model
 
-So we have this translation tree (assuming we already store them as GPA->IO=
-VA):
-GPA [0, 0x1000) -> IOVA [0x3000, 0x4000)
-GPA [0x1000, 0x2000) -> IOVA [0x2000, 0x3000)
+Paolo Bonzini (6):
+      Require meson version 1.5.0
+      configure, meson: detect Rust toolchain
+      meson: define qemu_isa_flags
+      meson: ensure -mcx16 is passed when detecting ATOMIC128
+      dockerfiles: add a Dockerfile using a nightly Rust toolchain
+      gitlab-ci: add Rust-enabled CI job
 
-Now the guest sends this single buffer in a single descriptor:
-GPA 0x500, len 0x1000.
+Pierrick Bouvier (1):
+      meson: fix machine option for x86_version
 
-We need to split it into two descriptors anyway. Without memory
-aliases we're covered at this moment, as virtqueue_pop already solves
-these splits for us in virtqueue_map_desc.
-
-Now I realize that SVQ may not be able to cover these splits with
-aliases, as we might need to return more addresses than MAX(out_num,
-in_num) in vhost_svq_vring_write_descs. So maybe we need to allocate
-the translated addresses array in vhost_svq_vring_write_descs and
-return it, or allow it to grow.
-
-Having said that, I'd keep the plan as building something simple that
-works first, re-prioritize if we want to focus on reducing the
-downtime or in increasing the SVQ throughput, and then act in
-consequence by profiling the advantages of the changes. I'm really
-looking forward to the switching to (GPA|HVA)->IOVA tree, as I'm sure
-it will increase the performance of the solution, but to review all of
-it in one shot is out of my bandwith capabilities at the moment.
-
-> Regards,
-> -Siwei
->
->
->
-> >
-> > During the device setup phase, vhost_svq_add_split() ->
-> > vhost_svq_vring_write_descs() -> vhost_svq_translate_addr() ->
-> > vhost_iova_tree_find_iova() -> iova_tree_find_iova() is called, but in
-> > iova_tree_find_address_iterator() map->size & needle->size mismatch. I
-> > inserted some printf's to give more information:
-> >
-> > ...
-> > [    8.019672] ahci 0000:00:1f.2: 6/6 ports implemented (port mask 0x3f=
-)
-> > [    8.020694] ahci 0000:00:1f.2: flags: 64bit ncq only
-> > [    8.022403] scsi host0: ahci
-> > [    8.023511] scsi host1: ahci
-> > [    8.024446] scsi host2: ahci
-> > [    8.025308
-> > vhost_svq_translate_addr: iovec[i].iov_len =3D 0x8
-> > iova_tree_find_address_iterator: mismatched sizes
-> > map->size: 0xfff, needle->size: 0x8
-> > map->perm: 1, needle->perm: 1
-> > vhost_svq_add_split: _write_descs fail, sgs: 0x7fd85018ea80, out_sg:
-> > 0x7ff8649fbb50, out_num: 1, in_sg: 0x7ff8649fbb60, in_num: 1,
-> > more_descs: true, write: false
-> > vhost_vdpa_svq_unmap_ring
-> > vhost_vdpa_svq_unmap_ring
-> > vhost_vdpa_listener_region_del
-> > vhost_vdpa_listener_region_del
-> > vhost_vdpa_listener_region_del
-> > vhost_vdpa_listener_region_del
-> > vhost_vdpa_listener_region_del
-> > vhost_vdpa_svq_unmap_ring
-> > vhost_vdpa_svq_unmap_ring
-> > vhost_vdpa_svq_unmap_ring
-> > vhost_vdpa_svq_unmap_ring
-> > 2024-10-08T15:12:22.184902Z qemu-system-x86_64: unable to start vhost
-> > net: 22: falling back on userspace virtio
-> > ] scsi host3: ahci
-> > [   10.921733] scsi host4: ahci
-> > [   10.922946] scsi host5: ahci
-> > [   10.923486] virtio_net virtio1 enp0s2: renamed from eth0
-> > ...
-> >
-> > This is with similar Qemu args as Si-Wei's from way back when:
-> >
-> > -m size=3D128G,slots=3D8,maxmem=3D256G
-> >
-> > There are also some error catches with just the permission check but
-> > it appears the vhost-net device is still able to start up (when not
-> > matching sizes also).
->
-
-I think this is because of the forced check for equal sizes, but let
-me know if it is not caused by that!
-
-Thanks!
+ MAINTAINERS                                        |  21 +
+ configure                                          | 170 +++++-
+ meson.build                                        | 158 +++++-
+ rust/wrapper.h                                     |  47 ++
+ .gitattributes                                     |   3 +
+ .gitlab-ci.d/buildtest.yml                         |  13 +
+ .gitlab-ci.d/containers.yml                        |   6 +
+ Kconfig                                            |   1 +
+ Kconfig.host                                       |   3 +
+ hw/arm/Kconfig                                     |  30 +-
+ meson_options.txt                                  |   3 +
+ python/scripts/vendor.py                           |   4 +-
+ python/wheels/meson-1.2.3-py3-none-any.whl         | Bin 964928 -> 0 bytes
+ python/wheels/meson-1.5.0-py3-none-any.whl         | Bin 0 -> 959846 bytes
+ pythondeps.toml                                    |   2 +-
+ rust/.gitignore                                    |   3 +
+ rust/Kconfig                                       |   1 +
+ rust/hw/Kconfig                                    |   2 +
+ rust/hw/char/Kconfig                               |   3 +
+ rust/hw/char/meson.build                           |   1 +
+ rust/hw/char/pl011/.gitignore                      |   2 +
+ rust/hw/char/pl011/Cargo.lock                      | 134 +++++
+ rust/hw/char/pl011/Cargo.toml                      |  26 +
+ rust/hw/char/pl011/README.md                       |  31 ++
+ rust/hw/char/pl011/meson.build                     |  26 +
+ rust/hw/char/pl011/src/device.rs                   | 599 +++++++++++++++++++++
+ rust/hw/char/pl011/src/device_class.rs             |  70 +++
+ rust/hw/char/pl011/src/lib.rs                      | 586 ++++++++++++++++++++
+ rust/hw/char/pl011/src/memory_ops.rs               |  59 ++
+ rust/hw/meson.build                                |   1 +
+ rust/meson.build                                   |   4 +
+ rust/qemu-api-macros/Cargo.lock                    |  47 ++
+ rust/qemu-api-macros/Cargo.toml                    |  25 +
+ rust/qemu-api-macros/README.md                     |   1 +
+ rust/qemu-api-macros/meson.build                   |  25 +
+ rust/qemu-api-macros/src/lib.rs                    |  43 ++
+ rust/qemu-api/.gitignore                           |   2 +
+ rust/qemu-api/Cargo.lock                           |   7 +
+ rust/qemu-api/Cargo.toml                           |  26 +
+ rust/qemu-api/README.md                            |  17 +
+ rust/qemu-api/build.rs                             |  14 +
+ rust/qemu-api/meson.build                          |  24 +
+ rust/qemu-api/src/definitions.rs                   |  97 ++++
+ rust/qemu-api/src/device_class.rs                  | 128 +++++
+ rust/qemu-api/src/lib.rs                           | 166 ++++++
+ rust/qemu-api/src/tests.rs                         |  49 ++
+ rust/rustfmt.toml                                  |   7 +
+ scripts/archive-source.sh                          |   6 +-
+ scripts/make-release                               |   5 +-
+ scripts/meson-buildoptions.sh                      |   3 +
+ scripts/rust/rust_root_crate.sh                    |  13 +
+ scripts/rust/rustc_args.py                         |  84 +++
+ subprojects/.gitignore                             |  11 +
+ subprojects/arbitrary-int-1-rs.wrap                |   7 +
+ subprojects/bilge-0.2-rs.wrap                      |   7 +
+ subprojects/bilge-impl-0.2-rs.wrap                 |   7 +
+ subprojects/either-1-rs.wrap                       |   7 +
+ subprojects/itertools-0.11-rs.wrap                 |   7 +
+ .../packagefiles/arbitrary-int-1-rs/meson.build    |  19 +
+ subprojects/packagefiles/bilge-0.2-rs/meson.build  |  29 +
+ .../packagefiles/bilge-impl-0.2-rs/meson.build     |  45 ++
+ subprojects/packagefiles/either-1-rs/meson.build   |  24 +
+ .../packagefiles/itertools-0.11-rs/meson.build     |  30 ++
+ .../packagefiles/proc-macro-error-1-rs/meson.build |  40 ++
+ .../proc-macro-error-attr-1-rs/meson.build         |  32 ++
+ .../packagefiles/proc-macro2-1-rs/meson.build      |  31 ++
+ subprojects/packagefiles/quote-1-rs/meson.build    |  29 +
+ subprojects/packagefiles/syn-2-rs/meson.build      |  40 ++
+ .../packagefiles/unicode-ident-1-rs/meson.build    |  20 +
+ subprojects/proc-macro-error-1-rs.wrap             |   7 +
+ subprojects/proc-macro-error-attr-1-rs.wrap        |   7 +
+ subprojects/proc-macro2-1-rs.wrap                  |   7 +
+ subprojects/quote-1-rs.wrap                        |   7 +
+ subprojects/syn-2-rs.wrap                          |   7 +
+ subprojects/unicode-ident-1-rs.wrap                |   7 +
+ subprojects/unicode-ident-1-rs/meson.build         |  20 +
+ .../docker/dockerfiles/fedora-rust-nightly.docker  | 173 ++++++
+ tests/docker/dockerfiles/opensuse-leap.docker      |   2 +-
+ tests/lcitool/mappings.yml                         |   2 +-
+ tests/lcitool/refresh                              |  26 +
+ 80 files changed, 3413 insertions(+), 35 deletions(-)
+ create mode 100644 rust/wrapper.h
+ delete mode 100644 python/wheels/meson-1.2.3-py3-none-any.whl
+ create mode 100644 python/wheels/meson-1.5.0-py3-none-any.whl
+ create mode 100644 rust/.gitignore
+ create mode 100644 rust/Kconfig
+ create mode 100644 rust/hw/Kconfig
+ create mode 100644 rust/hw/char/Kconfig
+ create mode 100644 rust/hw/char/meson.build
+ create mode 100644 rust/hw/char/pl011/.gitignore
+ create mode 100644 rust/hw/char/pl011/Cargo.lock
+ create mode 100644 rust/hw/char/pl011/Cargo.toml
+ create mode 100644 rust/hw/char/pl011/README.md
+ create mode 100644 rust/hw/char/pl011/meson.build
+ create mode 100644 rust/hw/char/pl011/src/device.rs
+ create mode 100644 rust/hw/char/pl011/src/device_class.rs
+ create mode 100644 rust/hw/char/pl011/src/lib.rs
+ create mode 100644 rust/hw/char/pl011/src/memory_ops.rs
+ create mode 100644 rust/hw/meson.build
+ create mode 100644 rust/meson.build
+ create mode 100644 rust/qemu-api-macros/Cargo.lock
+ create mode 100644 rust/qemu-api-macros/Cargo.toml
+ create mode 100644 rust/qemu-api-macros/README.md
+ create mode 100644 rust/qemu-api-macros/meson.build
+ create mode 100644 rust/qemu-api-macros/src/lib.rs
+ create mode 100644 rust/qemu-api/.gitignore
+ create mode 100644 rust/qemu-api/Cargo.lock
+ create mode 100644 rust/qemu-api/Cargo.toml
+ create mode 100644 rust/qemu-api/README.md
+ create mode 100644 rust/qemu-api/build.rs
+ create mode 100644 rust/qemu-api/meson.build
+ create mode 100644 rust/qemu-api/src/definitions.rs
+ create mode 100644 rust/qemu-api/src/device_class.rs
+ create mode 100644 rust/qemu-api/src/lib.rs
+ create mode 100644 rust/qemu-api/src/tests.rs
+ create mode 100644 rust/rustfmt.toml
+ create mode 100755 scripts/rust/rust_root_crate.sh
+ create mode 100644 scripts/rust/rustc_args.py
+ create mode 100644 subprojects/arbitrary-int-1-rs.wrap
+ create mode 100644 subprojects/bilge-0.2-rs.wrap
+ create mode 100644 subprojects/bilge-impl-0.2-rs.wrap
+ create mode 100644 subprojects/either-1-rs.wrap
+ create mode 100644 subprojects/itertools-0.11-rs.wrap
+ create mode 100644 subprojects/packagefiles/arbitrary-int-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/bilge-0.2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/bilge-impl-0.2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/either-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/itertools-0.11-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro-error-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro2-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/quote-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/syn-2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/unicode-ident-1-rs/meson.build
+ create mode 100644 subprojects/proc-macro-error-1-rs.wrap
+ create mode 100644 subprojects/proc-macro-error-attr-1-rs.wrap
+ create mode 100644 subprojects/proc-macro2-1-rs.wrap
+ create mode 100644 subprojects/quote-1-rs.wrap
+ create mode 100644 subprojects/syn-2-rs.wrap
+ create mode 100644 subprojects/unicode-ident-1-rs.wrap
+ create mode 100644 subprojects/unicode-ident-1-rs/meson.build
+ create mode 100644 tests/docker/dockerfiles/fedora-rust-nightly.docker
+-- 
+2.46.2
 
 
