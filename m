@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620EB995E37
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA44995E39
 	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 05:39:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syNX3-0001Oc-36; Tue, 08 Oct 2024 23:38:37 -0400
+	id 1syNX5-0001P0-1L; Tue, 08 Oct 2024 23:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1syNWg-0001M3-0R; Tue, 08 Oct 2024 23:38:14 -0400
+ id 1syNWz-0001Nj-O9; Tue, 08 Oct 2024 23:38:34 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1syNWe-0006Ly-Dr; Tue, 08 Oct 2024 23:38:13 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XNdrK1XBmz6K9Gg;
- Wed,  9 Oct 2024 11:37:53 +0800 (CST)
+ id 1syNWy-0006Mq-7S; Tue, 08 Oct 2024 23:38:33 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XNdm23Sybz6LDBf;
+ Wed,  9 Oct 2024 11:34:10 +0800 (CST)
 Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
- by mail.maildlp.com (Postfix) with ESMTPS id DBEDE140B3C;
- Wed,  9 Oct 2024 11:38:09 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 352F7140447;
+ Wed,  9 Oct 2024 11:38:29 +0800 (CST)
 Received: from 00293818-MRGF.huawei.com (10.126.173.89) by
  frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 9 Oct 2024 05:37:50 +0200
+ 15.1.2507.39; Wed, 9 Oct 2024 05:38:10 +0200
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <mst@redhat.com>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -43,17 +43,17 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <shahuang@redhat.com>, <zhao1.liu@intel.com>, <linuxarm@huawei.com>,
  <gustavo.romero@linaro.org>
-Subject: [PATCH RFC V4 31/33] target/arm/kvm: Write vCPU's state back to KVM
- on cold-reset
-Date: Wed, 9 Oct 2024 04:37:02 +0100
-Message-ID: <20241009033704.250287-2-salil.mehta@huawei.com>
+Subject: [PATCH RFC V4 32/33] hw/intc/arm_gicv3_kvm: Pause all vCPU to ensure
+ locking in KVM of resetting vCPU
+Date: Wed, 9 Oct 2024 04:37:03 +0100
+Message-ID: <20241009033704.250287-3-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241009033704.250287-1-salil.mehta@huawei.com>
 References: <20241009031815.250096-1-salil.mehta@huawei.com>
  <20241009033704.250287-1-salil.mehta@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.126.173.89]
 X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
  frapeml500007.china.huawei.com (7.182.85.172)
@@ -83,51 +83,45 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+vCPU reset can result in device access to VGIC CPU system registers using the
+`IOCTL KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS` interface. When accessing these
+registers in the KVM host, it is necessary to acquire a lock on all vCPUs during
+the `vgic_v3_attr_regs_access()` operation.
 
-Previously, all `PSCI_CPU_{ON, OFF}` calls were handled directly by KVM.
-However, with the introduction of vCPU hotplug, these hypervisor calls are now
-trapped to QEMU for policy checks. This shift can lead to inconsistent vCPU
-states between KVM and QEMU, particularly when the vCPU has been recently
-plugged in and is transitioning from the unparked state in QOM. Therefore, it is
-crucial to synchronize the vCPU state with KVM, especially in the context of a
-cold reset of the QOM vCPU.
+This operation may fail if KVM is unable to acquire the necessary locks on all
+vCPUs. Therefore, to ensure proper locking of the vCPU being reset and prevent
+failures, we need to *pause all vCPUs* during this operation to facilitate
+successful locking within the host.
 
-To ensure this synchronization, mark the QOM vCPU as "dirty" to trigger a call
-to `kvm_arch_put_registers()`. This guarantees that KVM’s `MP_STATE` is updated
-accordingly, forcing synchronization of the `mp_state` between QEMU and KVM.
-
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- target/arm/kvm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/intc/arm_gicv3_kvm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 9a51249a42..a3c98fa213 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1038,6 +1038,7 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu)
- void kvm_arm_reset_vcpu(ARMCPU *cpu)
- {
-     int ret;
-+    CPUState *cs = CPU(cpu);
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 3e1e97d830..bcdbf83897 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -714,10 +714,19 @@ static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo *ri)
+         return;
+     }
  
-     /* Re-init VCPU so that all registers are set to
-      * their respective reset values.
-@@ -1059,6 +1060,12 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
-      * for the same reason we do so in kvm_arch_get_registers().
-      */
-     write_list_to_cpustate(cpu);
-+
 +    /*
-+     * Ensure we call kvm_arch_put_registers(). The vCPU isn't marked dirty if
-+     * it was parked in KVM and is now booting from a PSCI CPU_ON call.
++     * This shall be called even when vcpu is being hotplugged or onlined and
++     * other vcpus might be running. Host kernel KVM code to handle device
++     * access of IOCTLs KVM_{GET|SET}_DEVICE_ATTR might fail due to inability to
++     * grab vcpu locks for all the vcpus. Hence, we need to pause all vcpus to
++     * facilitate locking within host.
 +     */
-+    cs->vcpu_dirty = true;
- }
++    pause_all_vcpus();
+     /* Initialize to actual HW supported configuration */
+     kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
+                       KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
+                       &c->icc_ctlr_el1[GICV3_NS], false, &error_abort);
++    resume_all_vcpus();
  
- void kvm_arm_create_host_vcpu(ARMCPU *cpu)
+     c->icc_ctlr_el1[GICV3_S] = c->icc_ctlr_el1[GICV3_NS];
+ }
 -- 
 2.34.1
 
