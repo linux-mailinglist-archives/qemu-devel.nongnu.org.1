@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2937E996A58
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2044996A5D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 14:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syW2K-000530-GL; Wed, 09 Oct 2024 08:43:28 -0400
+	id 1syW2K-0004vX-2b; Wed, 09 Oct 2024 08:43:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW21-0004sf-EK
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW22-0004si-G3
  for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:43:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1y-0005Vu-Mh
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:43:08 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syW1z-0005WI-U9
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 08:43:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728477785;
+ s=mimecast20190719; t=1728477787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ufhUOpepsGW4qLY30+zYqQtKIYZv17OEXI7XMvauCAU=;
- b=Xpt0lAzE64vOpO6vYI9hRMnsHd0iIjXAA4OE8RPdf+7qiAnFQmDtj0a9T6yU1IJ6XgP5kf
- hQtS4CHncuatrc3YdKFzLCDy1+/XVfD0ln/06cZoadC0BqXHsTQAs/U4/q/caMQClu/iBc
- c8lX1UXUR9w//AdLYBzbRiV2m8NtGgg=
+ bh=FjMBCXJg2PmGEwp55y/1gkUv3OpESanW4HCUWzVhmPI=;
+ b=fRsBt1nrDfcK8UJmzYMm/XDjh/dNNciUrAZ4wdI+AWonhDPdjGK7lkY61SaGzTkjRlPhle
+ eNJD4kS9w9N1T9bLKF2B1giIA2VFrZiwj6MJoAoQUXzzvzLPSqJcT48Iz+6ESCcfRldV9r
+ fnd3nt94I6nBl+PUqhilSp2BkFYdHbE=
 Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
  [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-8-u5byBmSxN-Ow4g2Wsg2qHg-1; Wed, 09 Oct 2024 08:43:04 -0400
-X-MC-Unique: u5byBmSxN-Ow4g2Wsg2qHg-1
+ us-mta-372-Z0nW3H_yNUuwVb9c619QwA-1; Wed, 09 Oct 2024 08:43:06 -0400
+X-MC-Unique: Z0nW3H_yNUuwVb9c619QwA-1
 Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-82aa8af04feso684811939f.1
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:43:04 -0700 (PDT)
+ ca18e2360f4ac-8353d85fc5bso91031239f.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 05:43:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728477783; x=1729082583;
+ d=1e100.net; s=20230601; t=1728477785; x=1729082585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ufhUOpepsGW4qLY30+zYqQtKIYZv17OEXI7XMvauCAU=;
- b=BqzmABID9934gg5juxlKmfy+IeucOJ39IS+9eZodfcGPzrcZ8AedGDbUz3mfVE3xg4
- w6hC0x6KV6PbEHkcCZSvjoXLoSnq8UQkIXrYR6DnBzr9W4Dd944+J9+147JVQQ/ahABt
- L54agPwzfcAO9kONIBfovm3yE08mFkYkzamjB872p+lqSYlOh+IFQHrATdoeYJS648Ic
- OnExLB0+TOe1jz/kMxDlSsTgYSpEArty1qCrN+D5S8+nprhYamA6PLMfv+r7l9towU5k
- RvU/noOgcg2lJZr3OxseU1aueM+sA0MoZBwQE7nHmW3IcoUnVYKlHE9S/vq4cHqs9+b8
- bZrg==
-X-Gm-Message-State: AOJu0Yz3WifO4mlDoYqENTvoVWBXZYeFc4HF6XxQmxMwBojq2Lk9MUUm
- VM8g1+2i0EuGbqt/n4T9mvjTglhuzDDxHd6aE4ZHGzm82p+FxgeDqNtKHxg+uz66YwWiftySCLp
- ryTCk2X6j5gcnbTmdJYdcWI6XwRjxwcDDwyXkuW2nVLrl80T9LWPktic6uLECSAzQ0AyiWcndap
- qz02RW1ZBScK69I/gDFJj6h76F2uMexEJcwg==
-X-Received: by 2002:a05:6602:6101:b0:82a:4c58:e1e0 with SMTP id
- ca18e2360f4ac-8353d4f11d4mr249867439f.12.1728477782840; 
- Wed, 09 Oct 2024 05:43:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHn5VvcapvqGxQ50KmhJFVnEWT/3/GQA3GxrhLud8Pl+7z+b3QnS8vH1AFWBM5F2i3qzn2l2g==
-X-Received: by 2002:a05:6602:6101:b0:82a:4c58:e1e0 with SMTP id
- ca18e2360f4ac-8353d4f11d4mr249862639f.12.1728477782174; 
- Wed, 09 Oct 2024 05:43:02 -0700 (PDT)
+ bh=FjMBCXJg2PmGEwp55y/1gkUv3OpESanW4HCUWzVhmPI=;
+ b=F+QYL6uZ0U6ig/gqsV7y5D9L3Kt22EZTYF4iUoN4mAm9CSIF5t16kr7fQP5cY/VutW
+ iypoNSyruqqgP+/cUya4maD4mNtNo0QqIHIrdQ4xU24tULWAwu5CsuTQElx+sKzlxtcl
+ 8L9vm1YKFS/+XO7FoLUllt54rECgeBp8w8sMVHtdDeIfr7Ac5SSx+z6/+IwQq+QD0Qoi
+ oGU+Eq6AUI5b0ssstdHXxJ6zabux9rkNzjLAvGgQ5AraW6s/FPRKzFaYEzVUJ+EsyOVH
+ LbpxHVGqxbyPY4tBYZJVALua6ym9J86fKOQs+GsPwclSUPJZlfg9o2MH8oxRSwlJ51qW
+ Hv7Q==
+X-Gm-Message-State: AOJu0Yzv2ofmq2z6xjiqYJhb9ohd679jAWE1vka9yUVaJDkAwKaCDfRM
+ nqUwpa03+YU3CT7AmFh9pdMXTul+UCheAQbJslvXMxsWx+/b0Ljonk8GRcysvaWTwq/zhHr3xQ4
+ PHuFHqyQ+i5FpZvQnQ3WBXgw8ry9xE4rjHGc0pjaHVYXjiJRU4uxTVdpMDi8E1Kb+oAWuxh8FSy
+ HbM4DL7QXOd7hKT7ZtMNX7r+K7V6UY986nAg==
+X-Received: by 2002:a05:6602:2d8a:b0:834:d9ff:123e with SMTP id
+ ca18e2360f4ac-8353d50ff39mr319810839f.13.1728477784705; 
+ Wed, 09 Oct 2024 05:43:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHIvCXosOt8xAP5lvYldX30CzxM+QGXfDlfoei28oII77deoT7qgign8XXMW5pxmurpkadA0g==
+X-Received: by 2002:a05:6602:2d8a:b0:834:d9ff:123e with SMTP id
+ ca18e2360f4ac-8353d50ff39mr319807439f.13.1728477784267; 
+ Wed, 09 Oct 2024 05:43:04 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.43.00
+ ca18e2360f4ac-83503aacb18sm220272039f.30.2024.10.09.05.43.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 05:43:01 -0700 (PDT)
+ Wed, 09 Oct 2024 05:43:03 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- peterx@redhat.com, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 11/12] util/iova-tree: Remove deadcode
-Date: Wed,  9 Oct 2024 08:42:37 -0400
-Message-ID: <20241009124238.371084-12-peterx@redhat.com>
+ peterx@redhat.com, Yuan Liu <yuan1.liu@intel.com>
+Subject: [PULL 12/12] migration/multifd: fix build error when qpl compression
+ is enabled
+Date: Wed,  9 Oct 2024 08:42:38 -0400
+Message-ID: <20241009124238.371084-13-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241009124238.371084-1-peterx@redhat.com>
 References: <20241009124238.371084-1-peterx@redhat.com>
@@ -100,101 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+From: Yuan Liu <yuan1.liu@intel.com>
 
-iova_tree_find_address, and iova_tree_foreach have never been
-used since the code was originally added by:
-  eecf5eedbd ("util: implement simple iova tree")
+The page_size member has been removed from the MultiFDSendParams
+and MultiFDRecvParams. The function multifd_ram_page_size is used to
+provide the page size in the multifd compressor.
 
-Remove them.
-
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/r/20240918142515.153074-1-dave@treblig.org
+Fixes: 90fa121c6c ("migration/multifd: Inline page_size and page_count")
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+Link: https://lore.kernel.org/r/20241008104527.3516755-1-yuan1.liu@intel.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/qemu/iova-tree.h | 25 -------------------------
- util/iova-tree.c         | 23 -----------------------
- 2 files changed, 48 deletions(-)
+ migration/multifd-qpl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/iova-tree.h b/include/qemu/iova-tree.h
-index 2a10a7052e..44a45931d5 100644
---- a/include/qemu/iova-tree.h
-+++ b/include/qemu/iova-tree.h
-@@ -111,31 +111,6 @@ const DMAMap *iova_tree_find(const IOVATree *tree, const DMAMap *map);
-  */
- const DMAMap *iova_tree_find_iova(const IOVATree *tree, const DMAMap *map);
- 
--/**
-- * iova_tree_find_address:
-- *
-- * @tree: the iova tree to search from
-- * @iova: the iova address to find
-- *
-- * Similar to iova_tree_find(), but it tries to find mapping with
-- * range iova=iova & size=0.
-- *
-- * Return: same as iova_tree_find().
-- */
--const DMAMap *iova_tree_find_address(const IOVATree *tree, hwaddr iova);
--
--/**
-- * iova_tree_foreach:
-- *
-- * @tree: the iova tree to iterate on
-- * @iterator: the iterator for the mappings, return true to stop
-- *
-- * Iterate over the iova tree.
-- *
-- * Return: 1 if found any overlap, 0 if not, <0 if error.
-- */
--void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator);
--
- /**
-  * iova_tree_alloc_map:
-  *
-diff --git a/util/iova-tree.c b/util/iova-tree.c
-index 536789797e..06295e2755 100644
---- a/util/iova-tree.c
-+++ b/util/iova-tree.c
-@@ -115,13 +115,6 @@ const DMAMap *iova_tree_find_iova(const IOVATree *tree, const DMAMap *map)
-     return args.result;
- }
- 
--const DMAMap *iova_tree_find_address(const IOVATree *tree, hwaddr iova)
--{
--    const DMAMap map = { .iova = iova, .size = 0 };
--
--    return iova_tree_find(tree, &map);
--}
--
- static inline void iova_tree_insert_internal(GTree *gtree, DMAMap *range)
+diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+index b0f1e2ba46..bbe466617f 100644
+--- a/migration/multifd-qpl.c
++++ b/migration/multifd-qpl.c
+@@ -389,7 +389,7 @@ static void multifd_qpl_compress_pages_slow_path(MultiFDSendParams *p)
  {
-     /* Key and value are sharing the same range data */
-@@ -148,22 +141,6 @@ int iova_tree_insert(IOVATree *tree, const DMAMap *map)
-     return IOVA_OK;
- }
- 
--static gboolean iova_tree_traverse(gpointer key, gpointer value,
--                                gpointer data)
--{
--    iova_tree_iterator iterator = data;
--    DMAMap *map = key;
--
--    g_assert(key == value);
--
--    return iterator(map);
--}
--
--void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator)
--{
--    g_tree_foreach(tree->tree, iova_tree_traverse, iterator);
--}
--
- void iova_tree_remove(IOVATree *tree, DMAMap map)
+     QplData *qpl = p->compress_data;
+     MultiFDPages_t *pages = &p->data->u.ram;
+-    uint32_t size = p->page_size;
++    uint32_t size = multifd_ram_page_size();
+     qpl_job *job = qpl->sw_job;
+     uint8_t *zbuf = qpl->zbuf;
+     uint8_t *buf;
+@@ -420,7 +420,7 @@ static void multifd_qpl_compress_pages(MultiFDSendParams *p)
  {
-     const DMAMap *overlap;
+     QplData *qpl = p->compress_data;
+     MultiFDPages_t *pages = &p->data->u.ram;
+-    uint32_t size = p->page_size;
++    uint32_t size = multifd_ram_page_size();
+     QplHwJob *hw_job;
+     uint8_t *buf;
+     uint8_t *zbuf;
+@@ -560,7 +560,7 @@ static int multifd_qpl_decompress_pages_slow_path(MultiFDRecvParams *p,
+                                                   Error **errp)
+ {
+     QplData *qpl = p->compress_data;
+-    uint32_t size = p->page_size;
++    uint32_t size = multifd_ram_page_size();
+     qpl_job *job = qpl->sw_job;
+     uint8_t *zbuf = qpl->zbuf;
+     uint8_t *addr;
+@@ -598,7 +598,7 @@ static int multifd_qpl_decompress_pages_slow_path(MultiFDRecvParams *p,
+ static int multifd_qpl_decompress_pages(MultiFDRecvParams *p, Error **errp)
+ {
+     QplData *qpl = p->compress_data;
+-    uint32_t size = p->page_size;
++    uint32_t size = multifd_ram_page_size();
+     uint8_t *zbuf = qpl->zbuf;
+     uint8_t *addr;
+     uint32_t len;
+@@ -677,7 +677,7 @@ static int multifd_qpl_recv(MultiFDRecvParams *p, Error **errp)
+     }
+     for (int i = 0; i < p->normal_num; i++) {
+         qpl->zlen[i] = be32_to_cpu(qpl->zlen[i]);
+-        assert(qpl->zlen[i] <= p->page_size);
++        assert(qpl->zlen[i] <= multifd_ram_page_size());
+         zbuf_len += qpl->zlen[i];
+     }
+ 
 -- 
 2.45.0
 
