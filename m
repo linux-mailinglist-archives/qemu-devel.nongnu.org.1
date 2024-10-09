@@ -2,163 +2,164 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6884996EDA
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 16:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FEB996EED
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 16:58:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syY5K-0003d7-7O; Wed, 09 Oct 2024 10:54:42 -0400
+	id 1syY8y-0006Br-Ge; Wed, 09 Oct 2024 10:58:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1syY5H-0003cN-O7; Wed, 09 Oct 2024 10:54:39 -0400
-Received: from mail-am6eur05on20709.outbound.protection.outlook.com
- ([2a01:111:f403:2612::709]
- helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1syY8t-0006BT-DQ; Wed, 09 Oct 2024 10:58:23 -0400
+Received: from mail-db8eur05on2114.outbound.protection.outlook.com
+ ([40.107.20.114] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1syY5F-0006Pk-Ry; Wed, 09 Oct 2024 10:54:39 -0400
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1syY8r-0006ki-Rm; Wed, 09 Oct 2024 10:58:23 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HQT+/aojThCSpl8yHaK+FgoUo2pV8P570eAfQ6hfwBL/VGwr12xrERmO+NxOIGbwfrF3rPxfQVJJ2WL3J7HtkEq1ucx2bYG+JrLoWtRovVOcRV1K/pMMplREVgyihz9QbnIGYdjDwdEdWtEdVS31R3re+8Y/7ij7nrGvXJPACpbGNYu7tZJj96AVujffIkifXU2/w1L7HN4ctRK6VPdbwDzBO6bTDhBMxZMVCWRIMfOnAINao87o9G6Dj+NtE03w2jOn6h9G1bubV/M5GEkhac5+wXNtMjMm77y01NMb0WxxGtuA643cMiapoa/QZ7zWx8v9vXAcpRBgkbwAFCCPTQ==
+ b=ZZMs2wU4yIb/gYo0qbXPo++gvRJ9GcGcdrMGuFthwA/bZF8VqHoWx2hb3mTGD7SIyQGN5DmG/75mCyzW6ZefWiy3fedhFVGkH1NsQMVfNddpZRJGX75hrS/XwfvslAYqDnRagm7g+kEc2nbp4Ye1dzYwieDR+zbOP4rXJhJFtfjOTiIEM9A2Ymw9g+jeWsmBWaFFGOCGZZpvw924es+Gzv0V0VxGPKSurkB/GwyjBekCam2BE5MPiApNDFClPnXbRh0dsBIneRlxmB+Gag1rqpn3WWv18B8xelFYOjw1iJ9NC/MpWT3gZpJSxzg1yqpQpz3mP0ighc747CWPZsfh5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=04hO7nVAdHzTRuNvVx8V3HFPdbDHcLAQrAQeJCdLBQg=;
- b=kgPxGiE7Fa3ckvQuKpvtGnVdKeT1nyVsFcxxi4/KiCWeefCKnd7TeVM4Z87iZHlC2C64dPx7irkDD3CT25/9KNNaX8WnjuvWLBPPxONFdxFhZJYMgtShs+W5ho6YndfkHYEHpPxX7iWFAHoIVBxYuAfps7er42lUvMU9xBIBdM4sbaSI3yRY8GdeMUxYaHVbd3/iIWehfZqBll4cWu7fMjB6Pj9kaRUWZth7TN4QX10cWyUzQxv/RTI/xuhy2lJ30wHIMIHaUjrcB0np2byfjzhExGtJrteAShhi6WAQVuvxBQ7RFtEB9xxfCq5Hu6LMDQD7H0mtKoXGW4L6z85dFg==
+ bh=8l0fNVRlEW1eWz7WiP0HXSNKwgaj2vnN0N24g2dKgBw=;
+ b=VfyL8bsgQEnP1r7/VhXYem+e0rDRahSSqLyWsCIQ/aMwMeGmVCwnDa5GzvZK9UeyLBOTpp6x6VU+UMdNEi1krWCaONbZTzJsnfCrOdIbk5jLF8eI0vaBi7NT6LLqe6f9PoQRA59sRfY8h6V1a71/MldFKdgHzU4mrHZ2ctAivoT24eUzjWLrwtUk39etbSuORqwWSbNT3m1BStsxc/eCAi6VCQe4tu90gSTWT6rdJrF48EkC3xCH0V542RQZu6lu8mvTvWnGm0Mc6XZAwOg3VTfS+AXXYKG+yl/RUICYIE+/zjB6rXd+VoafzGS6fUUZC41HE8bIdpr07uPe8yr3Qg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=04hO7nVAdHzTRuNvVx8V3HFPdbDHcLAQrAQeJCdLBQg=;
- b=KZUIkOigJtcepAXr/Pi7c/+HEuvYKNp9Sl98Y5wuhI+CuE7WXcbueItEXpAlVEw+5L/uJCZ1Tsysb9ppP5yMmy6i7+HlRPav/SLG0faNwPAzN2+pPPM1LyjJysMso9n9GmyuCGH0tNlg59zvTMHi52vuUKB2b7xnlc1fNFcLSxeUYdIUgredY4g+Sey/wXodMDEWr0U30fVj7hW5npGsDvoL63cWiwb1KhcjkbucQXco30v+Et8dYZRmQkzpIr9xRZMbJ0Z8NZTD1aRMhQyQH4Dwk+XWPbzLHBhXMryY7aFWdMduFLJne2pkpOGqaFSt5Aapp+zhOoF3aeZVk7Gfng==
+ bh=8l0fNVRlEW1eWz7WiP0HXSNKwgaj2vnN0N24g2dKgBw=;
+ b=ddyVdKdmZQM9NN+n/HqgHoleYXnbjVd8bHuYRBsJ+ILTDLI6fevIDxPc7XVwZ9Qn+loFJJBCs4ut7j/MNgb2K658fSdUecYKJ8Gwzlwg2/9eZsgM2wBgiyvDU/YOLW81LDEmF71DLXxaCXs1I+vmltnWiYCcLWpX/ThEPhnoub9JMjelYvOCrw3/Jq/QTLJBAHe77f5DDkLfySV4r5VLj8ufFc7h+MVDRLsncv6KRgr3l02iCyPkYSO9d9+QrpVlQmU1h26fB7zBzXxrKFnvcXUzlM57ZgoDQW769Fmqc3SiLkoB/vKpZnjppKY42U8OjiorOqAFX/sdHE2VuKUCOQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by PAXPR08MB6333.eurprd08.prod.outlook.com (2603:10a6:102:15b::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Wed, 9 Oct
- 2024 14:54:32 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::59be:830c:8078:65d1]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::59be:830c:8078:65d1%6]) with mapi id 15.20.8048.013; Wed, 9 Oct 2024
- 14:54:32 +0000
-Message-ID: <fa460a32-77c7-455a-b339-b741f301ee57@virtuozzo.com>
-Date: Wed, 9 Oct 2024 16:54:31 +0200
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by PAVPR08MB9882.eurprd08.prod.outlook.com
+ (2603:10a6:102:32a::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
+ 2024 14:53:14 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::7f30:b6c:9887:74a7]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::7f30:b6c:9887:74a7%4]) with mapi id 15.20.8026.020; Wed, 9 Oct 2024
+ 14:53:14 +0000
+Message-ID: <8a5a14a0-365e-4854-a39f-2de5134ab0cb@virtuozzo.com>
+Date: Wed, 9 Oct 2024 17:54:32 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] block/preallocate: fix image truncation logic
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/2] preallocate: do not allow to change BDS permission
+ improperly
+To: "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Kevin Wolf <kwolf@redhat.com>
 References: <20241009140051.771660-1-den@openvz.org>
- <20241009140051.771660-3-den@openvz.org>
- <9167b2bf-723f-4ad0-a525-8776ad9e69c3@virtuozzo.com>
+ <20241009140051.771660-2-den@openvz.org>
 Content-Language: en-US
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <9167b2bf-723f-4ad0-a525-8776ad9e69c3@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20241009140051.771660-2-den@openvz.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR09CA0115.eurprd09.prod.outlook.com
- (2603:10a6:803:78::38) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+X-ClientProxiedBy: FR0P281CA0194.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ab::18) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|PAXPR08MB6333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 627c7ccb-4ec8-443f-129f-08dce87248d9
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PAVPR08MB9882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bd33036-c2e5-4d15-9919-08dce87219dc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SlU4NFd2UUQzK3pTS3pxd2NaVWVoRE9GTzFLa0NKajNBemtnSlc2QXE1N2xZ?=
- =?utf-8?B?YzBCYlVYTmFFWHRNM0srQXBhbG5PTkFkV0VvMjE3WmgvV2RicG1nL0k5TmZm?=
- =?utf-8?B?ZVBaek1Zcnhrd0pTWjlma1RFY095ejI0WDArZ2poRWtXNTlWWXo2TU5BaGJJ?=
- =?utf-8?B?MjBROUpMamdNTnc0VE9BWG8yTjIzTlNsdndKekFHWkp3eDFuWjB6UkVFVnNp?=
- =?utf-8?B?ZHFjMXJlQ3dRaUZvb0VvMXg0bDRCRjVQZnRWZUx3b3dZVC9kaGtzY01CTE9N?=
- =?utf-8?B?cC95Mk9JaGhrTXg3VHJjVFRhRlZJdTVKWmU5WWVjb2NKZE9WbUxkZHlabDRU?=
- =?utf-8?B?SnpUbW54YncvQVk5dEo2QzVYVnpFUHEzRVBySE50YTZwZ1YwWEZXQ29lU2dG?=
- =?utf-8?B?U3RNTVM5b1FUQzVmYlp1Sm9VZTMyekZjMVpVQ3B5eVpnc2R2WDRwR2tYTi81?=
- =?utf-8?B?TmxrYVRhVkZmSFhWMVRrTDFEb2J6V0dmUWVtL2Fudk5pNWx1U0ZsYXRWUW40?=
- =?utf-8?B?WWJwV3lUZXN6UStHU3Q5MnBaOHRESnhEaWJnZ2t0R2dZSE9uNTZuNEt6NGY5?=
- =?utf-8?B?N1dTKzhKTXRSYkIvbndGQW94U05XZ3NjUkJxSkxhMTQ0VkxzVmxrZ2lXRGJ4?=
- =?utf-8?B?WS82eExnVG03TFd4Y2pmNlhZQ2ZkeUN4M0ZtNitINU9MYmVIeUhnZ0ZTUzBB?=
- =?utf-8?B?SUpMQS9FYm1BMUNJMWk0cTY5blhQSHJMbk1rdlZQZDM1K1hGNVhqNTJNZjhE?=
- =?utf-8?B?NUdqVGlRQTdWQklrL0lrQ3RSalBYTjlKbWVMTGViUndnR2RSSHNYRDRzc3BD?=
- =?utf-8?B?UlFHRmRlRHYrSGtpVXZ6QUR6eURPZ0xmc2hZZFBoZGxvYitQUkhVTkkzczc3?=
- =?utf-8?B?eXZ4T29BcGJuTlhQMFFUNXVBVWhQRXd6ZGVOS1pxQjVPT2pJTnNTU0lpZjVy?=
- =?utf-8?B?TllGTldzNjFXUGYrWWNoOEk4c2dTTXVMbDFJZm1yNFM5eVRMQklTejJnc3hM?=
- =?utf-8?B?bTJtcnFHZGdMcmRLYWt6TktFVWxFMDRZWkU5U24vcmlUNFRKMG5XL2VhTGsy?=
- =?utf-8?B?UVpEZU1hNGdJZXFRQ0ZGQk5RMUhXeWhCOEFmU0QyQmU2Zmc1VE5XN3BxOTFN?=
- =?utf-8?B?Tm80UGZrZ0V2WnpIWlZDVjluRHhzbk94QUsxSHk3R1pSQ3lGdFpWRFZvVmRm?=
- =?utf-8?B?KzY1Zm0xZTZVVzdjMXhEQjFLVTNvcDVrNm8yK2VMdVBkdVBwMEt5S1N6Tmtr?=
- =?utf-8?B?eHFWdkkveXljc214WWJhWXB0YXJHYVBrTHRYVURIV0JuRGFQdThOdS9HWlFu?=
- =?utf-8?B?dmRoR3d1V0JaNE0rM3pPOFloWm8rbjdNY2F4QTliak01L012UjB3Yi9sNXBF?=
- =?utf-8?B?NVRFaDJzTVJkYWhib1ExVEZaWVl3dmpTMmdjSEZ4aFFQbFVlbDJscXM1N2FX?=
- =?utf-8?B?T1NFMXRkc3Y1MEYxUXM5MDlkUnVpUHZ2OU9NOTVOOEd0T2k1RXRQNGJPNnhQ?=
- =?utf-8?B?K3RhSkRUcEk2MTVudVo5cmo3VzlMWEtNQVByYmxZTzFVZnlGdWtmdXM1ait0?=
- =?utf-8?B?Y05hQW5iNW9pQ2licG1kOVVkYUxGcTRSaEttS3dsUXhtcnVtTFNYeTRZOUhN?=
- =?utf-8?B?M09XaWxHcE1TaGxZTWNMTDJJdFF4RGFHNFVNenRZSFZmNU45Y0ppYVpQWnJV?=
- =?utf-8?B?OElUNWwzVlMyZlErQ0lJdTJLb3BWTC9TSGI1R0t2VExFUHh0VXJYTC93PT0=?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RlJoUHRiQ2N4b2lmZVdyR3RzUm5Wa3gvUGRjaWpjVVE3YTE2dWNNL0VjYjl0?=
+ =?utf-8?B?RGRkV1Roc3BvcEZNbCt2dkdkUWtQMS9Kc3dqckdqeHlwUk1zSTNmb2Y2Q2tS?=
+ =?utf-8?B?c1MyS2pmUkZZYXpWMDZybGFyVEtJa2xZWTk1TEo5SjFhdDRwRTIxUHg5dHRk?=
+ =?utf-8?B?SDRxUzE4Qk13RjN5WmxDbTV1Wkt1aGEzMmp0NU5XQTNhTTF6L2tUMnVhR0JQ?=
+ =?utf-8?B?aFRNNmFzRkpWM2owV09GUEFzWldycUY0M2NJNTFwbFhBYlZxK2trQmM0dk9l?=
+ =?utf-8?B?aG04Y2Nya3dJa1VINEFHYjUrSEorbUUwT3VQWEVvN2dyNHkzeTEvM3BlQWZK?=
+ =?utf-8?B?b1NDbU1XdUpTT0xCS1VSYUN6S2tBK2VXbHFuelJ0aUJhK2VxVGJrR2JydnIr?=
+ =?utf-8?B?d0lyanoyTzlZZlBEUkVsV09NVkNpYitlVzBzRHRKQ0hVZ3J0TjJxYk5uQkRT?=
+ =?utf-8?B?cSt1UmI2enZzVTRZazIyTm8rZklRZzJuMlVMWDJ0NTFjVWlJdHAvTzdEQjJP?=
+ =?utf-8?B?TG1rdXJaUVRadUpyb3pqL203NW5QOVFCMkFHRGoxZEZKMjh6YUhhN29Cekkw?=
+ =?utf-8?B?QXFIZXo5N3Q0Zmp3SkZJZEQ3aFZiWXJuUXNDRU4zQWR2ckVUVXEzTVF2c3Vt?=
+ =?utf-8?B?N2ZFeldGS2tjMEdWby9TeE1PZmZXbmFEcWtaR29uOGJwQ1BmTld1MWtDTWp4?=
+ =?utf-8?B?R0tZcGdjMVplVDBLWDFoU1JoSHM5cTRjV3hJL2VSVE0xL3M4YXpiV2I5aE1I?=
+ =?utf-8?B?MVdOcDRyZmhIRll0Ym03R3p4eXBsZzF5SzRMZncxRVdYMk00Ukd2UlRyVkhC?=
+ =?utf-8?B?SU5ROGhPa2JuazliZWJSSm1KMnUyRG14YWJMdk9CUXg4SFI2cUthcXdDNG43?=
+ =?utf-8?B?QzZUSVgvRXo5Zk9kVGZ4bWJNUEF2RVRsdFdrbEZTWnNxSnV0a0l2QUtUZWNN?=
+ =?utf-8?B?RC9SOVdEWFFiUXZtQ056UjlqMGsrd0JWR2VheFJJZ0o4YVdLZlcxWTQ1SzBq?=
+ =?utf-8?B?T0tOTngvTkVBN2NkSlpzWExUT3hBSXg3bDk5MlBqcW5HK25qN29tNnZZYWJn?=
+ =?utf-8?B?bmZ2eDE1VTZiV3M0aCtZK3pLZEtPcmJoTWdDRDIyNTN3R0UwVW9xMG1FZmo5?=
+ =?utf-8?B?THR1TEVDZmZpekk3TUl6Wkh5YnVrWHhNR0hHdld4RmY1RG9CRGk4OVphcURt?=
+ =?utf-8?B?VTI4MzFLdTNoTFp1ZlljNGZ1VTZTaGRvUGdhY3U0SjRkZGg0ZHplRDluWkVk?=
+ =?utf-8?B?UUo3SVlzb0hNZEVmeVNrZUNQUUJQcUp1MnFGbEIyd2ZDSkNRYk05S1VOZUY2?=
+ =?utf-8?B?RzhCTGJPcmpxVUNPcmYwc29ReXU1dTRGc29keGQxN0psdStxNFZkUWl1OGlv?=
+ =?utf-8?B?TDRRcmN3amovUXVvKzVtSzFvOTRXTkVSQ3JnRTczdStBS0NkTFZrZXFiT3E0?=
+ =?utf-8?B?RzVlM1AxKzhOMGpYbW5Wd0RwWFpSS21HQ2NxSnlvNUtZTVZYMnp5MW9hTWtK?=
+ =?utf-8?B?aHM2R2VMSXp3dzBwTkZBTmlBOGRtcnMrQWVxdGlSdGFST2lGVUh4T2k2dndM?=
+ =?utf-8?B?aHN0N2VOYTNiT0JORkdwU2F2Vm5oQlV2SFNqd2gvOW1Va1hHRHROL21KMHll?=
+ =?utf-8?B?UjdrK0svSDYzekdkRHRCSTlDcFdKaDJxODRXck9lVXg5SWR2YmZOMkc2UlZn?=
+ =?utf-8?B?NTIyNHhocWptallYU01TZmpiL3habWZMWXI1b01KVWZvTWtFSGNGN1FRPT0=?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1102; 
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U05KdU9kWW1MdnNTNFdLSHpHRGtJYnl2VjFEU3oxMkdoWmxPdVAzNk9Xdk5C?=
- =?utf-8?B?WHZBSWRmcFJtdW9maXpGYzJoamQ5S2FGekx0WWhDc0trR1JEMXU4bEljbld5?=
- =?utf-8?B?YVdBU3p5eUZPamFtK25uVk5qeDVnV3VzVVAvVmF6Zkp5SVJzd2N0WE0xSXV4?=
- =?utf-8?B?WkxqSTlTS3ZXRHpKRW5Ob1AvRjcyN29LYU5xSHZNY1lYU3FneWtEdVowcCtx?=
- =?utf-8?B?OEtqRUhiMDJheDNxWVViZ1A5WTF1RjQxenIyZ1ZMN2Z3RllzNjljMDhORGVR?=
- =?utf-8?B?eHZIZ2JMYnYzUVpGc2tScVRpQ3U1cC9kbWxybU84RzRGN1IrU2xLYjRKUkNU?=
- =?utf-8?B?U05pRlhTZUliMUVCbFNQVG1pOEQrWDVWZ3NNeU91QXFMZ05SNThMa2dneGVD?=
- =?utf-8?B?S0FxVjV5TTNhdUY2VGhjQTAwS1YvZ1RUN053bWJ6RjBTZVE0V2tHSCtBeHk2?=
- =?utf-8?B?Y284dmRUUHI3UUcrd0R5eGVlMDJqK2RoR3JsaFBwa1laNUU5UFlMZmtZczI2?=
- =?utf-8?B?L25lSEpoVytBVTlXdTVFWSs0NEZNWFY5RURqME5xckMwTlE5NHV1YWtvcy8z?=
- =?utf-8?B?R3VGQVJkbkNmTU5DeGpKUFh5TkpZNEdkeXNjNW1FRmdpSCtZeXg0T2Y5WStP?=
- =?utf-8?B?b3ZWVUFDOXU5ZVQ2NDVUZFdmMGMyNHIySXZtcDFUaDk2VnlGdzRBVy8vR3RL?=
- =?utf-8?B?N2dwaXoxOHhoUUEzb0tmVVY5amtrRDlCT0hkVDE2Nk9nY0Q5SFJmelVGSTUz?=
- =?utf-8?B?YjJKUjhqeFlUWGpyY3I5eWhhc0lEYS8xcXlQK0NhZk95eW8rQ0FiZ3cvVXMw?=
- =?utf-8?B?S0ZmVnZsWXNTOFE5WGd0eWhNaU95OFJBaTU0ZkcyTExWSWFZZFhvUUQ3OGtW?=
- =?utf-8?B?ZXREbXIyUFZMK0NyVFMyZkJMN05EdDRLYVFoMHdJTjBvSkhOUS8xVzJjcStM?=
- =?utf-8?B?VklCdHd1QzFCNlJ6ZXU2ZFpGcWxXb1NFRUNqOVRPRnd4V0JnTVFYT2h4ejJs?=
- =?utf-8?B?ajFNai9QdEtyRm14TFRjd1RPSkhNR3h0NHlla1JhZjZPbnQrZkRHRzFzOFN2?=
- =?utf-8?B?aXlOOXJ3WGhPdnpNQXRCalBiTXlwNk9VRHJqbm0xSDIzQVpyOTlaQlVyd1d5?=
- =?utf-8?B?Nm1Od0p0elZIYnk1UWtqbERXU0ZFNTM0bVB3SlphL00zZ0tZcXg5UXNYZE96?=
- =?utf-8?B?ZjF5VVRRcVcrM1pwRW5zZjZoUzY2Y1Z0VmNQb0E5dkhpWjJEdE1tcjJmek1H?=
- =?utf-8?B?Nm1wTnY2RkdUcjF1T2VLQVlZamN1KzdHQlVTM1gxRzkveWo5VldXNnNqTitP?=
- =?utf-8?B?K2M4MjAvSklQRGhsT0VwSmJTa3pzSWp6Umo2cTFLcmREQllmNmI1aFEyaVVp?=
- =?utf-8?B?UXluWjJuN1VXejhhczZNUDNDK05WV2JOY0FnYnhNZWxaNEZ2cDhmQWFpRFhs?=
- =?utf-8?B?TnpnL2xMMjdMNXZyWHNOdUVFUVoxMk9oVFpqNm9GRTlnTkRraTVLZTNreE45?=
- =?utf-8?B?TEMwVWxkaWFlak5nUGtrZnc4ZUdUZllIT2gxV2hSd09XMmRCdXB0Mzc1aFBW?=
- =?utf-8?B?eFhxZ2lESUR4eVhEcUtKdVFkODZMcnVQSkZXVTErdEtRYXphdE1mQ0VNUHBz?=
- =?utf-8?B?NllWTVpXM3B4L3VLdklZUmRIZVRqNC9UelVFQVFWOVpQdFZWS1JOUkZvdk9Q?=
- =?utf-8?B?eENLKzVUVUZDL2VQSEJXYjZWZnhkVFpIWkE2cHBXUndZVEJMUzJpejIybFVm?=
- =?utf-8?B?UTBGc21HNkp6NkZjbTdCbVh6SWJ6dnVXTVBZSzBLekVWSEs5amVtbU1PM2Vk?=
- =?utf-8?B?S0dkaUw1WWR1TTVLc0d3NHZ3blZmZ3QwVzZFdS9BdENaU1dVOEFEd1FRditr?=
- =?utf-8?B?WmFtK0Y2VnE1enhUbytyOHBIR3JLa2ZiUmJqdVZUOG9peDNndE5oazZkMTN3?=
- =?utf-8?B?MlkxaGZzQ0pXRDhNd3pyMjJUS3NTZVVQTnIxbzYxeTRZckRkUTVKeTd0OFNr?=
- =?utf-8?B?MEpSVGRFMGozWERVbnVQNkdVeXBvYnlOSzVxTGxLbmUvaWtKMis2c0tUM0cx?=
- =?utf-8?B?aWt0cGorczVOVXR1VGtndkhianczNzE0ZklRcHo4N085TmxzdXlqVmliZEZJ?=
- =?utf-8?Q?75YoR/t0669rcJvlyp5aN1RCk?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b012MFBSR0FiVkVwWDB6bVpHMnpjZjMwSzJaa01TbUl6dmRnT0UydFpkdFh6?=
+ =?utf-8?B?WG91NkxOUDhPYU5pUGVubVl5dDBKcEFzUHFKRTNVU0gzZmlSSkxVUGFyYk1u?=
+ =?utf-8?B?RWl5aDE5TDFGaW1acS9LNUk2NFczMEQ1cXhMVEx1UFRaQkdiVVVHeEUxemVy?=
+ =?utf-8?B?dDRjODJXZHhQT09kZnNyMytyL29BY0ZuTng4K1BIUkNvcTQxY1I5QkppMUdQ?=
+ =?utf-8?B?eEZpOTUvQS9FZXRyNHYraGplQjhaNTA4RjBxaXpXWHNNZWxnM05ZVy8xYVI0?=
+ =?utf-8?B?QlNHMlpZTmsvd3h6alBkZlpLTndlTGFMVzYwb1VUSUtucGtJb0QydC9TYlNx?=
+ =?utf-8?B?RmkvL2ZieUN2dU9OdzZkUnBGSDdTU1dFWmR3b1R3MFBLQ3IwcjV1UnZINzgr?=
+ =?utf-8?B?MlFGVUdBZ0JMdkhiS3piNjB6V1BEMHlOYnI0WWprUHo0NmhSZWJTcnRnVFIr?=
+ =?utf-8?B?aGVndUdQaGVtZUc1RkRoRkdtbHV3d2pGYkZucTl2TDBLbWhZQStra0JuZXZm?=
+ =?utf-8?B?Q3NTeTZpS1ljNWlOK3E4amZ1OU45YjF2R29yOVpZV0ZaQ1FSZkJKZkZJTXJn?=
+ =?utf-8?B?bGUxVnkxemF4ODlTcm5wekZrOW4rSWRQYXJkQndFb09wSms4SjVFV3ZSZWdi?=
+ =?utf-8?B?UW5yZlFhT2c1S0dTdG5iSUlUeG5jak1sZy93NGZQRGZraU1NMHFacG1xU0do?=
+ =?utf-8?B?WitQNjFUQ3V3UUhmd1JUb0pkd0F0dFJsTUV1S1VTNFNKT3Z5Y1kxd0ZoZm1V?=
+ =?utf-8?B?RWdTK0gvNlZ4QlpzWFdlTDR1Mm82cS9QazR3dXd5WlJUTVhvOS9veG52Y3FL?=
+ =?utf-8?B?dnpZWjJXRFNwUUoyUlk1NElKR0xxRzhIVmV3SC9SZXozL05GcjlaNDl6NHps?=
+ =?utf-8?B?UEpDY25FL1ZsQXk1WjNnc2NqdTIyMUNZeTk1aXZseVhjY1NBL1lGM3lIOXZM?=
+ =?utf-8?B?OUJxcWdmTitJWG1LbHdhUys3UFkvMFVhVUcwUk50S0N1ODV6SEZxR0s5L3Q0?=
+ =?utf-8?B?c1lNRUNaVFk1VVk1YndsL044c0FwZlJ4MXhvRnZhZmlSYUNJSWZPeDVJNEp2?=
+ =?utf-8?B?SThKRTRQeUNiSzJpemJNYnlVSElYNjBxeWdqcTJ6aHo5RGVwdmo3alV1RHVx?=
+ =?utf-8?B?ZnBZUXV1cHdtV1dIdXExZTlxaWdYcVlvK1VvaGlKaFNRci9EVVdpN2JYUGJK?=
+ =?utf-8?B?Y1hoQ3QzUE5VaENwaDhIRTRNeDhxRTB6eis1QU93cmFzc2J5U0lObHZaNTdV?=
+ =?utf-8?B?NjVKYlJFMXA0ajBLcnk2K0hkL2RIWmxEU3Via2hFMG5COVEybVBWUHJORU9j?=
+ =?utf-8?B?OUtOZC81SlVXV1hYaVNVaW80MTVFWVFnUnhXci90SlRpYWw4aDJtQkUxUnB0?=
+ =?utf-8?B?eTE0d3NyNVRvWDJlajBMd25BUnY2WGN3dEhoa2V0eUFTcWFMRUxiRzZLeUVt?=
+ =?utf-8?B?RnhGbVJDSmg5QzdWS2w0aGs4RTkydVAvY2F2dTAxbFlkUlBEYjZUMDg1V01M?=
+ =?utf-8?B?ZWdBak9KcmJOVWd4bmdtS2JocUF0czRPNnNaM05rSDdpckxsUm13eTFCK2Er?=
+ =?utf-8?B?SXR1RmtIRTRPTkp6R1Z5SzgzSVBZOVlVeFpIbjRKM3dOWWNraDZZTHh6WmRr?=
+ =?utf-8?B?S2l2MlVMb3paZ0tZRzRvbnBSMGhpWTU0NTNpS3lmVTZSMmthb1VTS2NIQWlq?=
+ =?utf-8?B?K2FpN1hVL0FaQ1QxZXZycW04QzdnTUFIczNONmo2NjJuY0x1L2NmTm51ZDRv?=
+ =?utf-8?B?ckxxTUxxTHFtRU54L1M3OG9CTEMwNG5jWjhldjVyTFEvd2QzZDVoays4ME90?=
+ =?utf-8?B?Q1F4YVB4VGkxRUNJRXg4Um4xSUdwWFdOeGoxQW54aDNIMElUVDZVbGp6eGJU?=
+ =?utf-8?B?cE1DYlNqZFB4QnZ6OGl1WHNvRjBtakVVai9aUHA1WUpvY09qY0VuL0J1Z0Ni?=
+ =?utf-8?B?akcya0drYmc0TlptMWNDV1pidFNNZnpGb0ltS0s3TG5VWmdLUFczNmpUTStv?=
+ =?utf-8?B?U25oT0Z2NlhsSEFoaUpxdGlkK01IaDV5ckRJVytseGtzWURxUTlocWxSaWZm?=
+ =?utf-8?B?MStMUEVLWGwrZ284Y0Z1djJ6SmYrbmxKRUw1TTMxTWtWSHFxZ3ZrWnJ3Mnpw?=
+ =?utf-8?B?Z0lBNWZWTkpvcEkya1hCZEt6ZERUbG10TnFjR2VCMU5iaUN4ak8rVnBMYmVV?=
+ =?utf-8?B?YUE9PQ==?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 627c7ccb-4ec8-443f-129f-08dce87248d9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bd33036-c2e5-4d15-9919-08dce87219dc
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 14:54:32.7226 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 14:53:13.9091 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xyt1BOipjjGcdn49oj2fLopA52HOpe2kcmDxt8wLRyeADQvAuEar8ZjQUPvr7IIySyoIQ5FlL94Zcm3L0/9G5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6333
-Received-SPF: pass client-ip=2a01:111:f403:2612::709;
- envelope-from=den@virtuozzo.com;
- helo=EUR05-AM6-obe.outbound.protection.outlook.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: u92fcH16axMC3p8dHo4aWbJ32Y+LnBHviA+8TCy23XojQxlyXXbTBvCvRppR8+3a8LXQ6N94EoaL+NrUYI7R1DY6l2Cr5BXiC1dvORcym9w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9882
+Received-SPF: pass client-ip=40.107.20.114;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -174,171 +175,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/24 16:54, Andrey Drobyshev wrote:
-> On 10/9/24 4:58 PM, Denis V. Lunev wrote:
->> Recent QEMU changes around preallocate_set_perm mandates that it is not
->> possible to poll on aio_context inside this function anymore. Thus
->> truncate operation has been moved inside bottom half. This bottom half
->> is scheduled from preallocate_set_perm() and that is all.
->>
->> This approach proven to be problematic in a lot of places once
->> additional operations are executed over preallocate filter in
->> production. The code validates that permissions have been really changed
->> just after the call to the set operation.
->>
->> All permissions operations or block driver graph changes are performed
->> inside the quiscent state in terms of the block layer. This means that
->> there are no in-flight packets which is guaranteed by the passing
->> through bdrv_drain() section.
->>
->> The idea is that we should effectively disable preallocate filter inside
->> bdrv_drain() and unblock permission changes. This section is definitely
->> not on the hot path and additional single truncate operation will not
->> hurt.
->>
->> Unfortunately bdrv_drain_begin() callback according to the documentation
->> also disallow waiting inside. Thus original approach with the bottom
->> half is not changed. bdrv_drain_begin() schedules the operation and in
->> order to ensure that it has been really executed before completion of
->> the section increments the amount of in-flight requests.
->>
->> Signed-off-by: Denis V. Lunev <den@openvz.org>
->> CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> CC: Kevin Wolf <kwolf@redhat.com>
->> ---
->>   block/preallocate.c    | 38 ++++++++++++++++++++++++++++++++++----
->>   tests/qemu-iotests/298 |  6 ++++--
->>   2 files changed, 38 insertions(+), 6 deletions(-)
->>
->> diff --git a/block/preallocate.c b/block/preallocate.c
->> index 1cf854966c..d78ef0b045 100644
->> --- a/block/preallocate.c
->> +++ b/block/preallocate.c
->> @@ -78,6 +78,7 @@ typedef struct BDRVPreallocateState {
->>   
->>       /* Gives up the resize permission on children when parents don't need it */
->>       QEMUBH *drop_resize_bh;
->> +    bool    drop_resize_armed;
->>   } BDRVPreallocateState;
->>   
->>   static int preallocate_drop_resize(BlockDriverState *bs, Error **errp);
->> @@ -149,6 +150,7 @@ static int preallocate_open(BlockDriverState *bs, QDict *options, int flags,
->>        */
->>       s->file_end = s->zero_start = s->data_end = -EINVAL;
->>       s->drop_resize_bh = qemu_bh_new(preallocate_drop_resize_bh, bs);
->> +    s->drop_resize_armed = false;
->>   
->>       ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
->>       if (ret < 0) {
->> @@ -200,7 +202,7 @@ static void preallocate_close(BlockDriverState *bs)
->>   {
->>       BDRVPreallocateState *s = bs->opaque;
->>   
->> -    qemu_bh_cancel(s->drop_resize_bh);
->> +    assert(!s->drop_resize_armed);
->>       qemu_bh_delete(s->drop_resize_bh);
->>   
->>       if (s->data_end >= 0) {
->> @@ -504,6 +506,8 @@ static int preallocate_drop_resize(BlockDriverState *bs, Error **errp)
->>       BDRVPreallocateState *s = bs->opaque;
->>       int ret;
->>   
->> +    s->drop_resize_armed = false;
->> +
->>       if (s->data_end < 0) {
->>           return 0;
->>       }
->> @@ -534,11 +538,15 @@ static int preallocate_drop_resize(BlockDriverState *bs, Error **errp)
->>   
->>   static void preallocate_drop_resize_bh(void *opaque)
->>   {
->> +    BlockDriverState *bs = opaque;
->> +
->>       /*
->>        * In case of errors, we'll simply keep the exclusive lock on the image
->>        * indefinitely.
->>        */
->> -    preallocate_drop_resize(opaque, NULL);
->> +    preallocate_drop_resize(bs, NULL);
->> +
->> +    bdrv_dec_in_flight(bs);
->>   }
->>   
->>   static void preallocate_set_perm(BlockDriverState *bs,
->> @@ -547,13 +555,13 @@ static void preallocate_set_perm(BlockDriverState *bs,
->>       BDRVPreallocateState *s = bs->opaque;
->>   
->>       if (can_write_resize(perm)) {
->> -        qemu_bh_cancel(s->drop_resize_bh);
->>           if (s->data_end < 0) {
->>               s->data_end = s->file_end = s->zero_start =
->>                   bs->file->bs->total_sectors * BDRV_SECTOR_SIZE;
->>           }
->>       } else {
->> -        qemu_bh_schedule(s->drop_resize_bh);
->> +        assert(!s->drop_resize_armed);
->> +        assert(s->data_end < 0);
->>       }
->>   }
->>   
->> @@ -592,6 +600,26 @@ static int preallocate_check_perm(BlockDriverState *bs, uint64_t perm,
->>       return 0;
->>   }
->>   
->> +static void preallocate_drain_begin(BlockDriverState *bs)
->> +{
->> +    BDRVPreallocateState *s = bs->opaque;
->> +
->> +    if (s->data_end < 0) {
->> +        return;
->> +    }
->> +    if (s->drop_resize_armed) {
->> +        return;
->> +    }
->> +    if (s->data_end == s->file_end) {
->> +        s->file_end = s->zero_start = s->data_end = -EINVAL;
->> +        return;
->> +    }
->> +
->> +    s->drop_resize_armed = true;
->> +    bdrv_inc_in_flight(bs);
->> +    qemu_bh_schedule(s->drop_resize_bh);
->> +}
->> +
->>   static BlockDriver bdrv_preallocate_filter = {
->>       .format_name = "preallocate",
->>       .instance_size = sizeof(BDRVPreallocateState),
->> @@ -600,6 +628,8 @@ static BlockDriver bdrv_preallocate_filter = {
->>       .bdrv_open            = preallocate_open,
->>       .bdrv_close           = preallocate_close,
->>   
->> +    .bdrv_drain_begin     = preallocate_drain_begin,
->> +
->>       .bdrv_reopen_prepare  = preallocate_reopen_prepare,
->>       .bdrv_reopen_commit   = preallocate_reopen_commit,
->>       .bdrv_reopen_abort    = preallocate_reopen_abort,
->> diff --git a/tests/qemu-iotests/298 b/tests/qemu-iotests/298
->> index 9e75ac6975..41f12685a7 100755
->> --- a/tests/qemu-iotests/298
->> +++ b/tests/qemu-iotests/298
->> @@ -94,8 +94,10 @@ class TestPreallocateFilter(TestPreallocateBase):
->>           self.assert_qmp(result, 'return', {})
->>           self.complete_and_wait()
->>   
->> -        # commit of new megabyte should trigger preallocation
->> -        self.check_big()
->> +        # commit of new megabyte should trigger preallocation, but drain
->> +        # will make file smaller
->> +        self.check_small()
->> +
->>   
->>       def test_reopen_opts(self):
->>           result = self.vm.qmp('blockdev-reopen', options=[{
-> This patch doesn't seem to be applying cleanly to the current master branch
-this is my fault. Thanks.
+On 10/9/24 4:58 PM, Denis V. Lunev wrote:
+> RW permissions could not be lifted from the preallocation filter if
+> truncate operation has not been finished. In the other case this would
+> mean WRITE operation (image truncate) called after the return from
+> inactivate call. This is definitely a contract violation.
+> 
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> CC: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/preallocate.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/block/preallocate.c b/block/preallocate.c
+> index bfb638d8b1..1cf854966c 100644
+> --- a/block/preallocate.c
+> +++ b/block/preallocate.c
+> @@ -581,6 +581,17 @@ static void preallocate_child_perm(BlockDriverState *bs, BdrvChild *c,
+>      }
+>  }
+>  
+> +static int preallocate_check_perm(BlockDriverState *bs, uint64_t perm,
+> +                                  uint64_t shared, Error **errp)
+> +{
+> +    BDRVPreallocateState *s = bs->opaque;
+> +    if (!can_write_resize(perm) && s->data_end != -EINVAL) {
+> +        error_setg_errno(errp, EPERM, "Write access is required for truncate");
+> +        return -EPERM;
+> +    }
+> +    return 0;
+> +}
+> +
+>  static BlockDriver bdrv_preallocate_filter = {
+>      .format_name = "preallocate",
+>      .instance_size = sizeof(BDRVPreallocateState),
+> @@ -602,6 +613,7 @@ static BlockDriver bdrv_preallocate_filter = {
+>  
+>      .bdrv_set_perm = preallocate_set_perm,
+>      .bdrv_child_perm = preallocate_child_perm,
+> +    .bdrv_check_perm = preallocate_check_perm,
+>  
+>      .is_filter = true,
+>  };
 
-I will resend.
-
-Den
+Reviewed-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
