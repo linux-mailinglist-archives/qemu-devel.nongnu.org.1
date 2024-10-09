@@ -2,53 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14763996D05
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 16:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1ECB996CF9
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 16:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syXFR-0006WT-Hp; Wed, 09 Oct 2024 10:01:05 -0400
+	id 1syXDr-0005TL-70; Wed, 09 Oct 2024 09:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1syXFK-0006Tw-V9; Wed, 09 Oct 2024 10:00:59 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1syXFH-0006YE-It; Wed, 09 Oct 2024 10:00:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=3lCwDCp/69XrjEpJp5Xm7GYxAJDmZ8sU/+5EThUB5lc=; b=yawCulgDnwTZ
- aIXhTGR5LLg6LUbCO3SEbexUsKy67yBCEnz33o85/2AAqr71QNTv54eXPPnHGMxeWj8bvNgIlXyNX
- sOjYKpj1kkwL8JTBPIZPyiMEACkSXORQVSBF/zaHLBH0QP3cYxU5QA3L2lZ2/650P3MLnGiq7kBl8
- ldcy1PEWt7u6ls5M1xxaQeTzb2UT/sJjkGY6kPGN6sqmC1D6z67NBYKQtphH94HSc84xZaGMIjWWG
- YoWPGvQcOSiUH3d/FFSa9BDcM8pyqJXuitRlRV3jvY9soiJozCuF/ywOC1ja7MjIJLDO8NlIY1OPS
- cySdJD6gcx7qeia8LV/PEw==;
-Received: from [130.117.225.1] (helo=dev007.ch-qa.vzint.dev)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1syXBf-00AR1a-2c;
- Wed, 09 Oct 2024 16:00:38 +0200
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 2/2] block/preallocate: fix image truncation logic
-Date: Wed,  9 Oct 2024 16:58:51 +0300
-Message-ID: <20241009140051.771660-3-den@openvz.org>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241009140051.771660-1-den@openvz.org>
-References: <20241009140051.771660-1-den@openvz.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1syXDp-0005TC-Hf
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 09:59:25 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1syXDn-0006Du-Mz
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 09:59:25 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5c721803a89so9089390a12.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 06:59:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728482362; x=1729087162; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=l0I3hgXYskFaM1WPaQBMv7Pv3MdsYJHuri7ua6DX/GE=;
+ b=v/V1Ska6G6bg5TNRf90QQ4GFAmqfWDPchWhI0UsOBIglrouheboHIoyt6X8nOZRzA3
+ z3I12c8uqMjrcCMfwb1GDGZMtvICOe+tBo077QvPWOamUezttbsaohZZkcRM0/5P/2sH
+ 137RyhmByxLl7fDXVdDZUIxqbeY/YxPH3FijBvPMCebSXWjVskoCCE/+TsYFVp2xo3V2
+ PHoryxs7oAZnkYQ9lL7VwLLpn1hO78ZvKn8vkv8+Xo18nj+WQ/cBKsJycPQqARKNZN5k
+ Gfbk24ru9eQdD30ZOwnUhjkgZtB6/aGjnsDGUI/pu6RYW5EuKxiJpMgPmYg7r0ihM95Q
+ tKzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728482362; x=1729087162;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l0I3hgXYskFaM1WPaQBMv7Pv3MdsYJHuri7ua6DX/GE=;
+ b=e2XxhHNGVsllBJT1WZ/1YwS87rxFFBQ2lR51OZs9ijAk1mA2LbmYr/QnzQuHyKgvEB
+ TEtTgsN7EC8c+7VsiibcEM8EVe4STVE+sHtdn4Oi++Ksb6mIkoxhW5cwckCHQZfJDFEs
+ q34RjWn7mSStmmOL6euROE3sWJZmO9oX4/FGi963/HjxyBT53q4etvnRS2wuMQ9YFeyX
+ w4PS3sQF6zJIsOitv5ehPuKB15jUWce4A+1+2TT564CRBXHKBmXf5MIrNANjlSRZ8P2y
+ XnFNzqOLK3ou5mLFfeNpgMR7JaYc9mx+ZTrCFSMRli5HBUqltXMmM5QnfxpXGjTbBwg2
+ v/Zw==
+X-Gm-Message-State: AOJu0YzUHO000C9+tf1NCx6C5pNzVYa63YSlQdfJDuVt9PAFZpNdWXQh
+ ntoUercPevdtj1zx0FjvHJE0/T3X0daeecIdcN+4mpz1uRjsxnD9ck133OyEQKao/0WRnurw7WG
+ DuIOjvLT0M4Z37WgeElfwWvfkqfoHKgQWroi3Iw==
+X-Google-Smtp-Source: AGHT+IFcaDAmv5R+/Xh7CHX50o4jgaS6RwlGJuW4592TQfJL+6zctEsY3T1VEpWaMxyXf+D46/DImjU/Acw+HiHxBUI=
+X-Received: by 2002:a05:6402:2813:b0:5c2:6d16:ad5e with SMTP id
+ 4fb4d7f45d1cf-5c91d63e0e4mr2429095a12.19.1728482361560; Wed, 09 Oct 2024
+ 06:59:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
- helo=relay.virtuozzo.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241005200600.493604-1-richard.henderson@linaro.org>
+ <20241005200600.493604-14-richard.henderson@linaro.org>
+ <CAFEAcA_jXTuB6c8oVcXmi66zcXn5-PYM7W9z1wf7-fzXg7_Oiw@mail.gmail.com>
+ <5c33b223-10cc-4ad6-a3e8-15082266b31d@linaro.org>
+In-Reply-To: <5c33b223-10cc-4ad6-a3e8-15082266b31d@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 9 Oct 2024 14:59:10 +0100
+Message-ID: <CAFEAcA9jwsD3p3Voj=q1Tcv0CZ7u2mADdfo6oQrGXr5FfFQQBg@mail.gmail.com>
+Subject: Re: [PATCH v2 13/21] target/arm: Pass MemOp to get_phys_addr
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,171 +86,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Denis V. Lunev" <den@openvz.org>
-From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recent QEMU changes around preallocate_set_perm mandates that it is not
-possible to poll on aio_context inside this function anymore. Thus
-truncate operation has been moved inside bottom half. This bottom half
-is scheduled from preallocate_set_perm() and that is all.
+On Tue, 8 Oct 2024 at 18:32, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 10/8/24 07:45, Peter Maydell wrote:
+> > On Sat, 5 Oct 2024 at 21:06, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> Zero is the safe do-nothing value for callers to use.
+> >>
+> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> >> ---
+> >>   target/arm/internals.h      | 3 ++-
+> >>   target/arm/ptw.c            | 2 +-
+> >>   target/arm/tcg/m_helper.c   | 8 ++++----
+> >>   target/arm/tcg/tlb_helper.c | 2 +-
+> >>   4 files changed, 8 insertions(+), 7 deletions(-)
+> >
+> >> diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+> >> index 23d7f73035..f7354f3c6e 100644
+> >> --- a/target/arm/tcg/m_helper.c
+> >> +++ b/target/arm/tcg/m_helper.c
+> >> @@ -222,7 +222,7 @@ static bool v7m_stack_write(ARMCPU *cpu, uint32_t addr, uint32_t value,
+> >>       int exc;
+> >>       bool exc_secure;
+> >>
+> >> -    if (get_phys_addr(env, addr, MMU_DATA_STORE, mmu_idx, &res, &fi)) {
+> >> +    if (get_phys_addr(env, addr, MMU_DATA_STORE, 0, mmu_idx, &res, &fi)) {
+> >>           /* MPU/SAU lookup failed */
+> >>           if (fi.type == ARMFault_QEMU_SFault) {
+> >>               if (mode == STACK_LAZYFP) {
+> >> @@ -311,7 +311,7 @@ static bool v7m_stack_read(ARMCPU *cpu, uint32_t *dest, uint32_t addr,
+> >>       bool exc_secure;
+> >>       uint32_t value;
+> >>
+> >> -    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
+> >> +    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
+> >>           /* MPU/SAU lookup failed */
+> >>           if (fi.type == ARMFault_QEMU_SFault) {
+> >>               qemu_log_mask(CPU_LOG_INT,
+> >
+> > We do actually know what kind of memory operation we're doing here:
+> > it's a 4-byte access. (It should never be unaligned because an M-profile
+> > SP can't ever be un-4-aligned, though I forget whether our implementation
+> > really enforces that.)
+> >
+> >> @@ -2009,7 +2009,7 @@ static bool v7m_read_half_insn(ARMCPU *cpu, ARMMMUIdx mmu_idx, bool secure,
+> >>                         "...really SecureFault with SFSR.INVEP\n");
+> >>           return false;
+> >>       }
+> >> -    if (get_phys_addr(env, addr, MMU_INST_FETCH, mmu_idx, &res, &fi)) {
+> >> +    if (get_phys_addr(env, addr, MMU_INST_FETCH, 0, mmu_idx, &res, &fi)) {
+> >>           /* the MPU lookup failed */
+> >>           env->v7m.cfsr[env->v7m.secure] |= R_V7M_CFSR_IACCVIOL_MASK;
+> >>           armv7m_nvic_set_pending(env->nvic, ARMV7M_EXCP_MEM, env->v7m.secure);
+> >
+> > Similarly this is a 16-bit load that in theory should never
+> > be possible to be unaligned.
+> >
+> >> @@ -2045,7 +2045,7 @@ static bool v7m_read_sg_stack_word(ARMCPU *cpu, ARMMMUIdx mmu_idx,
+> >>       ARMMMUFaultInfo fi = {};
+> >>       uint32_t value;
+> >>
+> >> -    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
+> >> +    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
+> >>           /* MPU/SAU lookup failed */
+> >>           if (fi.type == ARMFault_QEMU_SFault) {
+> >>               qemu_log_mask(CPU_LOG_INT,
+> >
+> > and this is another 4-byte load via sp.
+> >
+> >> diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+> >> index 885bf4ec14..1d8b7bcaa2 100644
+> >> --- a/target/arm/tcg/tlb_helper.c
+> >> +++ b/target/arm/tcg/tlb_helper.c
+> >> @@ -344,7 +344,7 @@ bool arm_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+> >>        * return false.  Otherwise populate fsr with ARM DFSR/IFSR fault
+> >>        * register format, and signal the fault.
+> >>        */
+> >> -    ret = get_phys_addr(&cpu->env, address, access_type,
+> >> +    ret = get_phys_addr(&cpu->env, address, access_type, 0,
+> >>                           core_to_arm_mmu_idx(&cpu->env, mmu_idx),
+> >>                           &res, fi);
+> >>       if (likely(!ret)) {
+>
+> The question is: if it should be impossible for them to be misaligned, should we pass an
+> argument that checks alignment and then (!) potentially raise a guest exception.
+>
+> I suspect the answer is no.
+>
+> If it should be impossible, no alignment fault is ever visible to the guest in this
+> context, then we should at most assert(), otherwise do nothing.
+>
+> We *can* pass, e.g. MO_32 or MO_16 for documentation purposes, if you like.  Without
+> additional adornment, this does not imply alignment enforcement (i.e. MO_ALIGN).  But this
+> would be functionally indistinguishable from 0 (which I imperfectly documented with "or 0"
+> in the function block comments).
 
-This approach proven to be problematic in a lot of places once
-additional operations are executed over preallocate filter in
-production. The code validates that permissions have been really changed
-just after the call to the set operation.
+Mmm. I think I thought when I started reviewing this series that we might
+have a bigger set of "we put in 0 here but is that the right thing?"
+callsites. But I think in working through it it turns out there aren't
+very many and for all of those "don't check alignment" is the right thing.
 
-All permissions operations or block driver graph changes are performed
-inside the quiscent state in terms of the block layer. This means that
-there are no in-flight packets which is guaranteed by the passing
-through bdrv_drain() section.
-
-The idea is that we should effectively disable preallocate filter inside
-bdrv_drain() and unblock permission changes. This section is definitely
-not on the hot path and additional single truncate operation will not
-hurt.
-
-Unfortunately bdrv_drain_begin() callback according to the documentation
-also disallow waiting inside. Thus original approach with the bottom
-half is not changed. bdrv_drain_begin() schedules the operation and in
-order to ensure that it has been really executed before completion of
-the section increments the amount of in-flight requests.
-
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: Kevin Wolf <kwolf@redhat.com>
----
- block/preallocate.c    | 38 ++++++++++++++++++++++++++++++++++----
- tests/qemu-iotests/298 |  6 ++++--
- 2 files changed, 38 insertions(+), 6 deletions(-)
-
-diff --git a/block/preallocate.c b/block/preallocate.c
-index 1cf854966c..d78ef0b045 100644
---- a/block/preallocate.c
-+++ b/block/preallocate.c
-@@ -78,6 +78,7 @@ typedef struct BDRVPreallocateState {
- 
-     /* Gives up the resize permission on children when parents don't need it */
-     QEMUBH *drop_resize_bh;
-+    bool    drop_resize_armed;
- } BDRVPreallocateState;
- 
- static int preallocate_drop_resize(BlockDriverState *bs, Error **errp);
-@@ -149,6 +150,7 @@ static int preallocate_open(BlockDriverState *bs, QDict *options, int flags,
-      */
-     s->file_end = s->zero_start = s->data_end = -EINVAL;
-     s->drop_resize_bh = qemu_bh_new(preallocate_drop_resize_bh, bs);
-+    s->drop_resize_armed = false;
- 
-     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
-     if (ret < 0) {
-@@ -200,7 +202,7 @@ static void preallocate_close(BlockDriverState *bs)
- {
-     BDRVPreallocateState *s = bs->opaque;
- 
--    qemu_bh_cancel(s->drop_resize_bh);
-+    assert(!s->drop_resize_armed);
-     qemu_bh_delete(s->drop_resize_bh);
- 
-     if (s->data_end >= 0) {
-@@ -504,6 +506,8 @@ static int preallocate_drop_resize(BlockDriverState *bs, Error **errp)
-     BDRVPreallocateState *s = bs->opaque;
-     int ret;
- 
-+    s->drop_resize_armed = false;
-+
-     if (s->data_end < 0) {
-         return 0;
-     }
-@@ -534,11 +538,15 @@ static int preallocate_drop_resize(BlockDriverState *bs, Error **errp)
- 
- static void preallocate_drop_resize_bh(void *opaque)
- {
-+    BlockDriverState *bs = opaque;
-+
-     /*
-      * In case of errors, we'll simply keep the exclusive lock on the image
-      * indefinitely.
-      */
--    preallocate_drop_resize(opaque, NULL);
-+    preallocate_drop_resize(bs, NULL);
-+
-+    bdrv_dec_in_flight(bs);
- }
- 
- static void preallocate_set_perm(BlockDriverState *bs,
-@@ -547,13 +555,13 @@ static void preallocate_set_perm(BlockDriverState *bs,
-     BDRVPreallocateState *s = bs->opaque;
- 
-     if (can_write_resize(perm)) {
--        qemu_bh_cancel(s->drop_resize_bh);
-         if (s->data_end < 0) {
-             s->data_end = s->file_end = s->zero_start =
-                 bs->file->bs->total_sectors * BDRV_SECTOR_SIZE;
-         }
-     } else {
--        qemu_bh_schedule(s->drop_resize_bh);
-+        assert(!s->drop_resize_armed);
-+        assert(s->data_end < 0);
-     }
- }
- 
-@@ -592,6 +600,26 @@ static int preallocate_check_perm(BlockDriverState *bs, uint64_t perm,
-     return 0;
- }
- 
-+static void preallocate_drain_begin(BlockDriverState *bs)
-+{
-+    BDRVPreallocateState *s = bs->opaque;
-+
-+    if (s->data_end < 0) {
-+        return;
-+    }
-+    if (s->drop_resize_armed) {
-+        return;
-+    }
-+    if (s->data_end == s->file_end) {
-+        s->file_end = s->zero_start = s->data_end = -EINVAL;
-+        return;
-+    }
-+
-+    s->drop_resize_armed = true;
-+    bdrv_inc_in_flight(bs);
-+    qemu_bh_schedule(s->drop_resize_bh);
-+}
-+
- static BlockDriver bdrv_preallocate_filter = {
-     .format_name = "preallocate",
-     .instance_size = sizeof(BDRVPreallocateState),
-@@ -600,6 +628,8 @@ static BlockDriver bdrv_preallocate_filter = {
-     .bdrv_open            = preallocate_open,
-     .bdrv_close           = preallocate_close,
- 
-+    .bdrv_drain_begin     = preallocate_drain_begin,
-+
-     .bdrv_reopen_prepare  = preallocate_reopen_prepare,
-     .bdrv_reopen_commit   = preallocate_reopen_commit,
-     .bdrv_reopen_abort    = preallocate_reopen_abort,
-diff --git a/tests/qemu-iotests/298 b/tests/qemu-iotests/298
-index 9e75ac6975..41f12685a7 100755
---- a/tests/qemu-iotests/298
-+++ b/tests/qemu-iotests/298
-@@ -94,8 +94,10 @@ class TestPreallocateFilter(TestPreallocateBase):
-         self.assert_qmp(result, 'return', {})
-         self.complete_and_wait()
- 
--        # commit of new megabyte should trigger preallocation
--        self.check_big()
-+        # commit of new megabyte should trigger preallocation, but drain
-+        # will make file smaller
-+        self.check_small()
-+
- 
-     def test_reopen_opts(self):
-         result = self.vm.qmp('blockdev-reopen', options=[{
--- 
-2.43.5
-
+thanks
+-- PMM
 
