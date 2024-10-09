@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6BE997949
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919EC99794A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:49:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sygQ6-0003PB-4r; Wed, 09 Oct 2024 19:48:42 -0400
+	id 1sygQB-0003e6-12; Wed, 09 Oct 2024 19:48:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPP-00035F-1q
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:48:03 -0400
-Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ id 1sygPX-000361-IP
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:48:14 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPN-0006em-0Y
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:47:58 -0400
-Received: by mail-qv1-xf31.google.com with SMTP id
- 6a1803df08f44-6cbd1a4217dso3951606d6.2
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:47:56 -0700 (PDT)
+ id 1sygPU-0006fP-GL
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:48:07 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-6cbcd49b833so2802106d6.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1728517676; x=1729122476; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1728517683; x=1729122483; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XlYEPr5EXzua/WZWQ/aIB6wAzegCRf16oOTlmRliNYk=;
- b=ObGJZHKKYgdrfAdi43cTCGzlqGroxmwFLAB2IXilrv3+88/IaaJPjer+4+khVsqdZa
- pGndsPEJBLiPIWrEnTKHOxwTGhntlfys/knzJvi/J/kz55L0mKWNFrlshkgS5ep8wxct
- vHqqX24RnEbnJSwbpBdwR7YiOFK2/CNGk+94OxPeZ7gyoQt7xWk/+7LnKyVRQvA2B21X
- 5Sza5fD/S7BkC4jz3q41KKxq/voMWHLbxVysxD3lHPufxh+67lnhmYGb0sC+osG9bqoV
- OnCTc6VFfLe22NJvuoPnQUOsqDv8qHfa4SqgQ9BI91fo5s4qyZh76yXpm9W/9fkrOiPu
- HjAg==
+ bh=9Ig7VZtud++DwJTDivnw0CFSKCXooNbIa4fqqdu6Buo=;
+ b=deYBkI0m6Zey0hUef88RKCPRdKRq38/8SEyFTA8Ex9Ii5CzZEs/VbCqaWPL+nNKtJw
+ /fG1yt73uQZyL80q7gC3R/H7OrX/NuJRzdCSIGJLlWc3fZ4bIJ7Kef6XuH/xhdDkCZxZ
+ yC8kvyK9K8bLJ+Jh65WeZY2He8BK1Gxf0aumlZCgpLmOkBgHZOc1lvJ3WHNp3ZbkimYN
+ Bq5dRdhYxdta9vDwiSBSzXjfHIB4D7V9C9fTLDvCCSLe/LeV5RrtLJVjSs5393jXlw6+
+ iQwHzZfe3dgPc+9F17lUNYH4JRWQtLEhVYi2gzUMtbeMziDTDtqM7WagHaU0H27RISzA
+ 9YBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728517676; x=1729122476;
+ d=1e100.net; s=20230601; t=1728517683; x=1729122483;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XlYEPr5EXzua/WZWQ/aIB6wAzegCRf16oOTlmRliNYk=;
- b=X8Bk1OI+HdWhze6DrdVtyZ7lVmDL/RVaqr3cIqGXWJcpC8qaGBQXpJK6FUkyeBvX/X
- Cqnm4U/RfFnReii3fHloMp9LT4glmxGezeL9xVFMeHWM3kajgfsqQQn8IZSvGrtBg68m
- 4zW8lvksPRjgnb2gIk1VeDS1xgxXaJK12TEiljW5TLyrXjIgFKi3jKbYihf5P1b1wEHF
- z50xjGOqscQFex21L2mXBoKO0+xY+2T6NBV0nBLkkIkj0Jo+GSGiWvBBlURmumFR7HKU
- jArtblW0qCho/POr+4zNRZzCSb0nDCpnlpEMxmTjKXuiBKmrMUh/2uC/6WtTVeIYPIww
- Nhpw==
+ bh=9Ig7VZtud++DwJTDivnw0CFSKCXooNbIa4fqqdu6Buo=;
+ b=DSHRia0fKlc3iXrCx003+O7E7A6IQFWhn1M2E5aStEtuan6RwSSVaGTKUjDkStaKP3
+ SfE4Q2mg6LtaDe+CgMNsbdp+Zd+nhPtZ4enqX9wgsmu+31Kc1jfLTklQSLlurE30FznS
+ aMeYafOFJaGy7yz7Pb4i/KHT4I8ETcpblCMSRLEJ8jGL6vI1J5Emj9zymhydY0QKXK4W
+ C4f9zL9Daxh/RIEH0/WhfDJsvJVPee5p/2K+0bXyS07U0wsreDEw0yrAPhCqkJUKhcNH
+ NvTccYHJR/tyH5PkzbNIMBPHCeWig5rxm9RSUPcb9RKneqweJ8XwDelM7nAhpfXVfY4Z
+ SmAw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJWL2+EayD1sRM9V+z14wTy/rgwIwCcQWqoyOQ5teY7D0e2OhzEyGjX3QpkkZcGZcL7DaDS+QN14A/@nongnu.org
-X-Gm-Message-State: AOJu0YxfKx2G2qio7CM1ZFCRyb8GXzwRVkaNfixRj5Zb2lcLGqRLUBY4
- R5Kbm+7oDPCfHJw0kzqz0yPrOtAPyE9m46cVQU1NTCDQisKDhFD5QlDCFyyy9JQ=
-X-Google-Smtp-Source: AGHT+IGHI2l0RZMfI4/bgExczjxcWjkpzeWqZYTlDzfMuipTKy45fYIU7ZwYDsrDM7i5HsHX363YxA==
-X-Received: by 2002:a05:6214:5d0c:b0:6cb:e409:8d9a with SMTP id
- 6a1803df08f44-6cbe4098dc3mr33563426d6.8.1728517675763; 
- Wed, 09 Oct 2024 16:47:55 -0700 (PDT)
+ AJvYcCUBoYda4YyIodhyjezWbq3ZqVHXqX46TBI7K5PeZ8vI0L+rLYOnhM9UeSILWVOSRwvJYz3IdlxznxoD@nongnu.org
+X-Gm-Message-State: AOJu0YzFQ5bvNYa6XYyRnzKC6usFPw0UIR+D4eg5SH9vJC8FGBK4qoH1
+ tMUIqlTKl+WaDQ9YBSEiQjqG/wGGu4Ut69Iznc63HaamcgrR7nUaqjRfy5nm/24=
+X-Google-Smtp-Source: AGHT+IFlQJUWyvPQBJToiabA9PHYz8GJfsaCBbRMVAZyPSbdhI9yUR8Ew93pBYXklAZjwYn1KbjVhA==
+X-Received: by 2002:ad4:46d2:0:b0:6cb:cda0:df6 with SMTP id
+ 6a1803df08f44-6cbcda00f67mr45735206d6.3.1728517683378; 
+ Wed, 09 Oct 2024 16:48:03 -0700 (PDT)
 Received: from DY4X0N7X05.bytedance.net ([2605:a7c0:0:301::44])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6cbe85d856fsm264386d6.72.2024.10.09.16.47.53
+ 6a1803df08f44-6cbe85d856fsm264386d6.72.2024.10.09.16.48.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 09 Oct 2024 16:47:55 -0700 (PDT)
+ Wed, 09 Oct 2024 16:48:02 -0700 (PDT)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -72,17 +72,17 @@ Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Shivam Kumar" <shivam.kumar1@nutanix.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
  "Yichen Wang" <yichen.wang@bytedance.com>
-Subject: [PATCH v6 09/12] migration/multifd: Enable DSA offloading in multifd
- sender path.
-Date: Wed,  9 Oct 2024 16:46:07 -0700
-Message-Id: <20241009234610.27039-10-yichen.wang@bytedance.com>
+Subject: [PATCH v6 10/12] migration/multifd: Add migration option set packet
+ size.
+Date: Wed,  9 Oct 2024 16:46:08 -0700
+Message-Id: <20241009234610.27039-11-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241009234610.27039-1-yichen.wang@bytedance.com>
 References: <20241009234610.27039-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,320 +107,309 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Xiang <hao.xiang@linux.dev>
 
-Multifd sender path gets an array of pages queued by the migration
-thread. It performs zero page checking on every page in the array.
-The pages are classfied as either a zero page or a normal page. This
-change uses Intel DSA to offload the zero page checking from CPU to
-the DSA accelerator. The sender thread submits a batch of pages to DSA
-hardware and waits for the DSA completion thread to signal for work
-completion.
+During live migration, if the latency between sender and receiver is
+high and bandwidth is also high (a long and fat pipe), using a bigger
+packet size can help reduce migration total time. The current multifd
+packet size is 128 * 4kb. In addition, Intel DSA offloading performs
+better with a large batch task.
+
+This change adds an option to set the packet size, which is also useful
+for performance tuning. Both sender and receiver needs to set the same
+packet size for things to work.
+
+Set the option:
+migrate_set_parameter multifd-packet-size 4190208
 
 Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
 Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
 ---
- migration/multifd-zero-page.c | 133 ++++++++++++++++++++++++++++++----
- migration/multifd.c           |  19 ++++-
- migration/multifd.h           |   5 ++
- 3 files changed, 141 insertions(+), 16 deletions(-)
+ migration/migration-hmp-cmds.c |  7 ++++++
+ migration/multifd-zlib.c       |  6 ++++--
+ migration/multifd-zstd.c       |  6 ++++--
+ migration/options.c            | 39 ++++++++++++++++++++++++++++++++++
+ migration/options.h            |  1 +
+ qapi/migration.json            | 21 +++++++++++++++---
+ 6 files changed, 73 insertions(+), 7 deletions(-)
 
-diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-page.c
-index f1e988a959..e4bfff23a4 100644
---- a/migration/multifd-zero-page.c
-+++ b/migration/multifd-zero-page.c
-@@ -21,7 +21,9 @@
- 
- static bool multifd_zero_page_enabled(void)
- {
--    return migrate_zero_page_detection() == ZERO_PAGE_DETECTION_MULTIFD;
-+    ZeroPageDetection curMethod = migrate_zero_page_detection();
-+    return (curMethod == ZERO_PAGE_DETECTION_MULTIFD ||
-+            curMethod == ZERO_PAGE_DETECTION_DSA_ACCEL);
- }
- 
- static void swap_page_offset(ram_addr_t *pages_offset, int a, int b)
-@@ -37,26 +39,49 @@ static void swap_page_offset(ram_addr_t *pages_offset, int a, int b)
-     pages_offset[b] = temp;
- }
- 
-+#ifdef CONFIG_DSA_OPT
-+
-+static void swap_result(bool *results, int a, int b)
-+{
-+    bool temp;
-+
-+    if (a == b) {
-+        return;
-+    }
-+
-+    temp = results[a];
-+    results[a] = results[b];
-+    results[b] = temp;
-+}
-+
- /**
-- * multifd_send_zero_page_detect: Perform zero page detection on all pages.
-+ * zero_page_detect_dsa: Perform zero page detection using
-+ * Intel Data Streaming Accelerator (DSA).
-  *
-- * Sorts normal pages before zero pages in p->pages->offset and updates
-- * p->pages->normal_num.
-+ * Sorts normal pages before zero pages in pages->offset and updates
-+ * pages->normal_num.
-  *
-  * @param p A pointer to the send params.
-  */
--void multifd_send_zero_page_detect(MultiFDSendParams *p)
-+static void zero_page_detect_dsa(MultiFDSendParams *p)
- {
-     MultiFDPages_t *pages = &p->data->u.ram;
-     RAMBlock *rb = pages->block;
--    int i = 0;
--    int j = pages->num - 1;
-+    bool *results = p->dsa_batch_task->results;
- 
--    if (!multifd_zero_page_enabled()) {
--        pages->normal_num = pages->num;
--        goto out;
-+    for (int i = 0; i < pages->num; i++) {
-+        p->dsa_batch_task->addr[i] =
-+            (ram_addr_t)(rb->host + pages->offset[i]);
-     }
- 
-+    buffer_is_zero_dsa_batch_sync(p->dsa_batch_task,
-+                                  (const void **)p->dsa_batch_task->addr,
-+                                  pages->num,
-+                                  multifd_ram_page_size());
-+
-+    int i = 0;
-+    int j = pages->num - 1;
-+
-     /*
-      * Sort the page offset array by moving all normal pages to
-      * the left and all zero pages to the right of the array.
-@@ -64,23 +89,39 @@ void multifd_send_zero_page_detect(MultiFDSendParams *p)
-     while (i <= j) {
-         uint64_t offset = pages->offset[i];
- 
--        if (!buffer_is_zero(rb->host + offset, multifd_ram_page_size())) {
-+        if (!results[i]) {
-             i++;
-             continue;
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 983f13b73c..561ed45250 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -292,6 +292,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %u ms\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_X_CHECKPOINT_DELAY),
+             params->x_checkpoint_delay);
++        monitor_printf(mon, "%s: %" PRIu64 "\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_PACKET_SIZE),
++            params->multifd_packet_size);
+         monitor_printf(mon, "%s: %u\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_CHANNELS),
+             params->multifd_channels);
+@@ -580,6 +583,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+             QAPI_LIST_APPEND(tail, strv[i]);
          }
+         break;
++    case MIGRATION_PARAMETER_MULTIFD_PACKET_SIZE:
++        p->has_multifd_packet_size = true;
++        visit_type_size(v, param, &p->multifd_packet_size, &err);
++        break;
+     case MIGRATION_PARAMETER_MULTIFD_CHANNELS:
+         p->has_multifd_channels = true;
+         visit_type_uint8(v, param, &p->multifd_channels, &err);
+diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
+index 8cf8a26bb4..58c278533a 100644
+--- a/migration/multifd-zlib.c
++++ b/migration/multifd-zlib.c
+@@ -39,6 +39,7 @@ static int multifd_zlib_send_setup(MultiFDSendParams *p, Error **errp)
+     struct zlib_data *z = g_new0(struct zlib_data, 1);
+     z_stream *zs = &z->zs;
+     const char *err_msg;
++    uint64_t multifd_packet_size = migrate_multifd_packet_size();
  
-+        swap_result(results, i, j);
-         swap_page_offset(pages->offset, i, j);
-         ram_release_page(rb->idstr, offset);
-         j--;
+     zs->zalloc = Z_NULL;
+     zs->zfree = Z_NULL;
+@@ -48,7 +49,7 @@ static int multifd_zlib_send_setup(MultiFDSendParams *p, Error **errp)
+         goto err_free_z;
      }
+     /* This is the maximum size of the compressed buffer */
+-    z->zbuff_len = compressBound(MULTIFD_PACKET_SIZE);
++    z->zbuff_len = compressBound(multifd_packet_size);
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+         err_msg = "out of memory for zbuff";
+@@ -162,6 +163,7 @@ out:
  
-     pages->normal_num = i;
-+}
- 
--out:
--    stat64_add(&mig_stats.normal_pages, pages->normal_num);
--    stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
-+void multifd_dsa_cleanup(void)
-+{
-+    qemu_dsa_cleanup();
-+}
-+
-+#else
-+
-+static void zero_page_detect_dsa(MultiFDSendParams *p)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void multifd_dsa_cleanup(void)
-+{
-+    g_assert_not_reached();
- }
- 
-+#endif
-+
- void multifd_recv_zero_page_process(MultiFDRecvParams *p)
+ static int multifd_zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
  {
-     for (int i = 0; i < p->zero_num; i++) {
-@@ -92,3 +133,67 @@ void multifd_recv_zero_page_process(MultiFDRecvParams *p)
-         }
++    uint64_t multifd_packet_size = migrate_multifd_packet_size();
+     struct zlib_data *z = g_new0(struct zlib_data, 1);
+     z_stream *zs = &z->zs;
+ 
+@@ -176,7 +178,7 @@ static int multifd_zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
+         return -1;
      }
- }
-+
-+/**
-+ * zero_page_detect_cpu: Perform zero page detection using CPU.
-+ *
-+ * Sorts normal pages before zero pages in p->pages->offset and updates
-+ * p->pages->normal_num.
-+ *
-+ * @param p A pointer to the send params.
+     /* To be safe, we reserve twice the size of the packet */
+-    z->zbuff_len = MULTIFD_PACKET_SIZE * 2;
++    z->zbuff_len = multifd_packet_size * 2;
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+         inflateEnd(zs);
+diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
+index abed140855..1f97a5417c 100644
+--- a/migration/multifd-zstd.c
++++ b/migration/multifd-zstd.c
+@@ -39,6 +39,7 @@ struct zstd_data {
+ 
+ static int multifd_zstd_send_setup(MultiFDSendParams *p, Error **errp)
+ {
++    uint64_t multifd_packet_size = migrate_multifd_packet_size();
+     struct zstd_data *z = g_new0(struct zstd_data, 1);
+     int res;
+ 
+@@ -58,7 +59,7 @@ static int multifd_zstd_send_setup(MultiFDSendParams *p, Error **errp)
+         return -1;
+     }
+     /* This is the maximum size of the compressed buffer */
+-    z->zbuff_len = ZSTD_compressBound(MULTIFD_PACKET_SIZE);
++    z->zbuff_len = ZSTD_compressBound(multifd_packet_size);
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+         ZSTD_freeCStream(z->zcs);
+@@ -149,6 +150,7 @@ out:
+ 
+ static int multifd_zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
+ {
++    uint64_t multifd_packet_size = migrate_multifd_packet_size();
+     struct zstd_data *z = g_new0(struct zstd_data, 1);
+     int ret;
+ 
+@@ -170,7 +172,7 @@ static int multifd_zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
+     }
+ 
+     /* To be safe, we reserve twice the size of the packet */
+-    z->zbuff_len = MULTIFD_PACKET_SIZE * 2;
++    z->zbuff_len = multifd_packet_size * 2;
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+         ZSTD_freeDStream(z->zds);
+diff --git a/migration/options.c b/migration/options.c
+index a0b3a7d291..b1eaf1c095 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -80,6 +80,13 @@
+ #define DEFAULT_MIGRATE_ANNOUNCE_ROUNDS    5
+ #define DEFAULT_MIGRATE_ANNOUNCE_STEP    100
+ 
++/*
++ * Parameter for multifd packet size.
 + */
-+static void zero_page_detect_cpu(MultiFDSendParams *p)
++#define DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE (128 * 4 * 1024)
++/* DSA device supports up to 1024 batches, i.e. 1024 * 4K pages */
++#define MAX_MIGRATE_MULTIFD_PACKET_SIZE (1024 * 4 * 1024)
++
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+ 
+@@ -173,6 +180,9 @@ Property migration_properties[] = {
+     DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationState,
+                        parameters.zero_page_detection,
+                        ZERO_PAGE_DETECTION_MULTIFD),
++    DEFINE_PROP_SIZE("multifd-packet-size", MigrationState,
++                     parameters.multifd_packet_size,
++                     DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE),
+ 
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+@@ -783,6 +793,13 @@ int migrate_multifd_channels(void)
+     return s->parameters.multifd_channels;
+ }
+ 
++uint64_t migrate_multifd_packet_size(void)
 +{
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+    RAMBlock *rb = pages->block;
-+    int i = 0;
-+    int j = pages->num - 1;
++    MigrationState *s = migrate_get_current();
 +
-+    if (!multifd_zero_page_enabled()) {
-+        pages->normal_num = pages->num;
-+        return;
-+    }
-+
-+    /*
-+     * Sort the page offset array by moving all normal pages to
-+     * the left and all zero pages to the right of the array.
-+     */
-+    while (i <= j) {
-+        uint64_t offset = pages->offset[i];
-+
-+        if (!buffer_is_zero(rb->host + offset, multifd_ram_page_size())) {
-+            i++;
-+            continue;
-+        }
-+
-+        swap_page_offset(pages->offset, i, j);
-+        ram_release_page(rb->idstr, offset);
-+        j--;
-+    }
-+
-+    pages->normal_num = i;
++    return s->parameters.multifd_packet_size;
 +}
 +
-+/**
-+ * multifd_send_zero_page_detect: Perform zero page detection on all pages.
-+ *
-+ * @param p A pointer to the send params.
-+ */
-+void multifd_send_zero_page_detect(MultiFDSendParams *p)
-+{
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+
-+    if (!multifd_zero_page_enabled()) {
-+        pages->normal_num = pages->num;
-+        return;
-+    }
-+
-+    if (qemu_dsa_is_running()) {
-+        zero_page_detect_dsa(p);
-+    } else {
-+        zero_page_detect_cpu(p);
-+    }
-+
-+    stat64_add(&mig_stats.normal_pages, pages->normal_num);
-+    stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
-+}
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 9b200f4ad9..e255ccf0c7 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/rcu.h"
-+#include "qemu/dsa.h"
- #include "exec/target_page.h"
- #include "sysemu/sysemu.h"
- #include "exec/ramblock.h"
-@@ -462,6 +463,8 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
-     p->name = NULL;
-     g_free(p->data);
-     p->data = NULL;
-+    buffer_zero_batch_task_destroy(p->dsa_batch_task);
-+    p->dsa_batch_task = NULL;
-     p->packet_len = 0;
-     g_free(p->packet);
-     p->packet = NULL;
-@@ -493,6 +496,8 @@ void multifd_send_shutdown(void)
- 
-     multifd_send_terminate_threads();
- 
-+    multifd_dsa_cleanup();
-+
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-         Error *local_err = NULL;
-@@ -814,11 +819,21 @@ bool multifd_send_setup(void)
-     uint32_t page_count = multifd_ram_page_count();
-     bool use_packets = multifd_use_packets();
-     uint8_t i;
-+    Error *local_err = NULL;
- 
-     if (!migrate_multifd()) {
-         return true;
-     }
- 
-+    if (s &&
-+        s->parameters.zero_page_detection == ZERO_PAGE_DETECTION_DSA_ACCEL) {
-+        const strList *dsa_parameter = migrate_dsa_accel_path();
-+        if (qemu_dsa_init(dsa_parameter, &local_err)) {
-+            return false;
-+        }
-+        qemu_dsa_start();
-+    }
-+
-     thread_count = migrate_multifd_channels();
-     multifd_send_state = g_malloc0(sizeof(*multifd_send_state));
-     multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
-@@ -829,12 +844,12 @@ bool multifd_send_setup(void)
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
--        Error *local_err = NULL;
- 
-         qemu_sem_init(&p->sem, 0);
-         qemu_sem_init(&p->sem_sync, 0);
-         p->id = i;
-         p->data = multifd_send_data_alloc();
-+        p->dsa_batch_task = buffer_zero_batch_task_init(page_count);
- 
-         if (use_packets) {
-             p->packet_len = sizeof(MultiFDPacket_t)
-@@ -865,7 +880,6 @@ bool multifd_send_setup(void)
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
--        Error *local_err = NULL;
- 
-         ret = multifd_send_state->ops->send_setup(p, &local_err);
-         if (ret) {
-@@ -1047,6 +1061,7 @@ void multifd_recv_cleanup(void)
-             qemu_thread_join(&p->thread);
-         }
-     }
-+    multifd_dsa_cleanup();
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         multifd_recv_cleanup_channel(&multifd_recv_state->params[i]);
-     }
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 50d58c0c9c..e293ddbc1d 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -15,6 +15,7 @@
- 
- #include "exec/target_page.h"
- #include "ram.h"
-+#include "qemu/dsa.h"
- 
- typedef struct MultiFDRecvData MultiFDRecvData;
- typedef struct MultiFDSendData MultiFDSendData;
-@@ -155,6 +156,9 @@ typedef struct {
-     bool pending_sync;
-     MultiFDSendData *data;
- 
-+    /* Zero page checking batch task */
-+    QemuDsaBatchTask *dsa_batch_task;
-+
-     /* thread local variables. No locking required */
- 
-     /* pointer to the packet */
-@@ -313,6 +317,7 @@ void multifd_send_fill_packet(MultiFDSendParams *p);
- bool multifd_send_prepare_common(MultiFDSendParams *p);
- void multifd_send_zero_page_detect(MultiFDSendParams *p);
- void multifd_recv_zero_page_process(MultiFDRecvParams *p);
-+void multifd_dsa_cleanup(void);
- 
- static inline void multifd_send_prepare_header(MultiFDSendParams *p)
+ MultiFDCompression migrate_multifd_compression(void)
  {
+     MigrationState *s = migrate_get_current();
+@@ -911,6 +928,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->downtime_limit = s->parameters.downtime_limit;
+     params->has_x_checkpoint_delay = true;
+     params->x_checkpoint_delay = s->parameters.x_checkpoint_delay;
++    params->has_multifd_packet_size = true;
++    params->multifd_packet_size = s->parameters.multifd_packet_size;
+     params->has_multifd_channels = true;
+     params->multifd_channels = s->parameters.multifd_channels;
+     params->has_multifd_compression = true;
+@@ -973,6 +992,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_max_bandwidth = true;
+     params->has_downtime_limit = true;
+     params->has_x_checkpoint_delay = true;
++    params->has_multifd_packet_size = true;
+     params->has_multifd_channels = true;
+     params->has_multifd_compression = true;
+     params->has_multifd_zlib_level = true;
+@@ -1055,6 +1075,19 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+ 
+     /* x_checkpoint_delay is now always positive */
+ 
++    if (params->has_multifd_packet_size &&
++        ((params->multifd_packet_size < DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE) ||
++            (params->multifd_packet_size >  MAX_MIGRATE_MULTIFD_PACKET_SIZE) ||
++            (params->multifd_packet_size % qemu_target_page_size() != 0))) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
++                    "multifd_packet_size",
++                    "an integer in the range of "
++                    stringify(DEFAULT_MIGRATE_MULTIFD_PACKET_SIZE)
++                    " to "stringify(MAX_MIGRATE_MULTIFD_PACKET_SIZE)", "
++                    "and must be a multiple of guest VM's page size.");
++        return false;
++    }
++
+     if (params->has_multifd_channels && (params->multifd_channels < 1)) {
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+                    "multifd_channels",
+@@ -1236,6 +1269,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->x_checkpoint_delay = params->x_checkpoint_delay;
+     }
+ 
++    if (params->has_multifd_packet_size) {
++        dest->multifd_packet_size = params->multifd_packet_size;
++    }
+     if (params->has_multifd_channels) {
+         dest->multifd_channels = params->multifd_channels;
+     }
+@@ -1364,6 +1400,9 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+         colo_checkpoint_delay_set();
+     }
+ 
++    if (params->has_multifd_packet_size) {
++        s->parameters.multifd_packet_size = params->multifd_packet_size;
++    }
+     if (params->has_multifd_channels) {
+         s->parameters.multifd_channels = params->multifd_channels;
+     }
+diff --git a/migration/options.h b/migration/options.h
+index 8198b220bd..8158d4879d 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -87,6 +87,7 @@ const char *migrate_tls_hostname(void);
+ uint64_t migrate_xbzrle_cache_size(void);
+ ZeroPageDetection migrate_zero_page_detection(void);
+ const strList *migrate_dsa_accel_path(void);
++uint64_t migrate_multifd_packet_size(void);
+ 
+ /* parameters helpers */
+ 
+diff --git a/qapi/migration.json b/qapi/migration.json
+index d8b42ceae6..1d14d8e82f 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -851,6 +851,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest page size.
++#     The default value is 524288 and max value is 4190208.  (Since 9.2)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -877,7 +881,8 @@
+            'vcpu-dirty-limit',
+            'mode',
+            'zero-page-detection',
+-           'direct-io'] }
++           'direct-io',
++           'multifd-packet-size'] }
+ 
+ ##
+ # @MigrateSetParameters:
+@@ -1038,6 +1043,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest page size.
++#     The default value is 524288 and max value is 4190208.  (Since 9.2)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -1080,7 +1089,8 @@
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+             '*direct-io': 'bool',
+-            '*dsa-accel-path': [ 'str' ] } }
++            '*dsa-accel-path': [ 'str' ],
++            '*multifd-packet-size' : 'uint64'} }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1255,6 +1265,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @multifd-packet-size: Packet size in bytes used to migrate data.
++#     The value needs to be a multiple of guest page size.
++#     The default value is 524288 and max value is 4190208.  (Since 9.2)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -1294,7 +1308,8 @@
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+             '*direct-io': 'bool',
+-            '*dsa-accel-path': [ 'str' ] } }
++            '*dsa-accel-path': [ 'str' ],
++            '*multifd-packet-size': 'uint64' } }
+ 
+ ##
+ # @query-migrate-parameters:
 -- 
 Yichen Wang
 
