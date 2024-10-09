@@ -2,134 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEB09965D3
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE569965F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 11:51:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syTHZ-000179-J4; Wed, 09 Oct 2024 05:47:03 -0400
+	id 1syTM5-0002hC-Nx; Wed, 09 Oct 2024 05:51:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1syTHN-00013h-HF
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:46:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1syTM1-0002gi-FJ
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:51:38 -0400
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1syTHK-0008QL-UI
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:46:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728467206;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=rao/h3uwP6dsDVfqZilTa994liven7KE5ZLfTav9oDM=;
- b=e4413+GvDVoKhIjGg+BNnE/4/vpzbczBAdYKxTznYlfinqQuSf7Vae+JjuPt+KOwVKeF/K
- Z2d9T5szc7B1xqksoxsCEekMdmy3aoN5cVaZNFA/4WdPWkraXZfDr13CJlU7zNRrBDCveq
- 0ftrgD+biVesX5b8K+p5c8V6nMJTmro=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-fjhoUqZGPCmSreSLkMNmaw-1; Wed, 09 Oct 2024 05:46:44 -0400
-X-MC-Unique: fjhoUqZGPCmSreSLkMNmaw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43052e05c8fso12807525e9.2
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 02:46:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728467203; x=1729072003;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rao/h3uwP6dsDVfqZilTa994liven7KE5ZLfTav9oDM=;
- b=vYBEgnXUpMh+ktoArR7e6GPrA7num5dyczRnOyMNQULFgOz8pFk2EgBHSSNhQb0YeN
- 54xy5DUSIsbqE7EG7fG+dYS/RbX8/SQ1tJ0g1wBO1CejgIqbCyJt8+nhdO4l9FdAwk32
- d916lp3yhqsSHTAB/SC/ymZYNwQNfz7rOwM3Msl1crPV28ttqcGnzyEVgxJbPlhI298y
- GUnMuJ842CAA4Vqx170STzPC9887kOS+TyaOA0N5M1CpOoFshBYEH83TST5aJcm39hVu
- yKX4R9ZGZxidUPi6s6IiCkr+p6vZJaUTjWvM213J+JOdCeVwG1pikXIgPx380584Em3X
- o1RQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWQSz6B2ddbq9mHrcTw/gYM0WTlwl7ygyWXoXoZ4xkEKAhZ00jqHF9jq+tKLRBdfH8jEn0Z+6OuWr1W@nongnu.org
-X-Gm-Message-State: AOJu0YxUA0RZqpDRu5H1xbRhZ/0W+9hmgSkXDhUkEqSLsz+GsKmXtoGc
- ZDeWdp+cvdUFPZLcIWRPzIW8hO+oDbfqVuee8WktSKUsIAPyngExoC/bO4JvWdrjaqWXetwRoYa
- 0Czdr8o9EbP9vNUgWMiMD8mwzHCzbK0KvgL+/IcHY7orIqJ74/YVdhOOi1mmyQRk=
-X-Received: by 2002:a05:600c:3593:b0:42f:5ca3:d784 with SMTP id
- 5b1f17b1804b1-430ccf20504mr15616205e9.14.1728467203509; 
- Wed, 09 Oct 2024 02:46:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCOWrNhHdpvsIXdIuoOw6QcGQbhewoO2T8lsPfM17ixSyeA+zqFN5zhhn3/hMg5UcS5+nGjw==
-X-Received: by 2002:a05:600c:3593:b0:42f:5ca3:d784 with SMTP id
- 5b1f17b1804b1-430ccf20504mr15616005e9.14.1728467203039; 
- Wed, 09 Oct 2024 02:46:43 -0700 (PDT)
-Received: from [10.33.192.239] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-430ccf45dacsm14876125e9.16.2024.10.09.02.46.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Oct 2024 02:46:42 -0700 (PDT)
-Message-ID: <afc6ae81-6a17-4172-a00b-90e4790af6b1@redhat.com>
-Date: Wed, 9 Oct 2024 11:46:41 +0200
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1syTLv-0000YM-S3
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 05:51:37 -0400
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <gaoshiyuan@baidu.com>,
+ <wangliang44@baidu.com>
+Subject: [PATCH v2 1/1] x86: Add support save/load HWCR MSR
+Date: Wed, 9 Oct 2024 17:51:09 +0800
+Message-ID: <20241009095109.66843-1-gaoshiyuan@baidu.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/19] pc-bios/s390-ccw: Remove panics from ISO IPL path
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com
-References: <20241008011552.2645520-1-jrossi@linux.ibm.com>
- <20241008011552.2645520-8-jrossi@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241008011552.2645520-8-jrossi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.127.73.8]
+X-ClientProxiedBy: BC-Mail-EX07.internal.baidu.com (172.31.51.47) To
+ bjkjy-mail-ex26.internal.baidu.com (172.31.50.42)
+X-FEAS-Client-IP: 172.31.51.54
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -142,53 +54,141 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Gao Shiyuan <gaoshiyuan@baidu.com>
+From:  Gao Shiyuan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/10/2024 03.15, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> Remove panic-on-error from IPL ISO El Torito specific functions so that error
-> recovery may be possible in the future.
-> 
-> Functions that would previously panic now provide a return code.
-> 
-> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-> ---
-...
-> diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
-> index 414c3f1b47..7984de62fe 100644
-> --- a/pc-bios/s390-ccw/bootmap.c
-> +++ b/pc-bios/s390-ccw/bootmap.c
-> @@ -678,8 +678,10 @@ static bool is_iso_bc_entry_compatible(IsoBcSection *s)
->       if (s->unused || !s->sector_count) {
->           return false;
->       }
-> -    read_iso_sector(bswap32(s->load_rba), magic_sec,
-> -                    "Failed to read image sector 0");
-> +    if (virtio_read(bswap32(s->load_rba), magic_sec)) {
-> +        puts("Failed to read image sector 0");
-> +        return false;
-> +    }
->   
->       /* Checking bytes 8 - 32 for S390 Linux magic */
->       return !memcmp(magic_sec + 8, linux_s390_magic, 24);
-> @@ -699,21 +701,28 @@ static inline uint32_t iso_get_file_size(uint32_t load_rba)
->       uint8_t *temp = sec + ISO_SECTOR_SIZE;
->       int level = 0;
->   
-> -    read_iso_sector(ISO_PRIMARY_VD_SECTOR, sec,
-> -                    "Failed to read ISO primary descriptor");
-> +    if (virtio_read(ISO_PRIMARY_VD_SECTOR, sec)) {
-> +        puts("Failed to read ISO primary descriptor");
-> +        return -EIO;
-> +    }
+KVM commit 191c8137a939 ("x86/kvm: Implement HWCR support")
+introduced support for emulating HWCR MSR.
 
-iso_get_file_size() seems to return an uint32_t value, so returning a 
-negative error code won't work here. I think you either have to change the 
-return type to signed "long" and fix the caller site, too, or return 0 for 
-errors here?
+Add support for QEMU to save/load this MSR for migration purposes.
 
-  Thomas
+Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
+Signed-off-by: Wang Liang <wangliang44@baidu.com>
+---
+ target/i386/cpu.h     |  5 +++++
+ target/i386/kvm/kvm.c | 12 ++++++++++++
+ target/i386/machine.c | 20 ++++++++++++++++++++
+ 3 files changed, 37 insertions(+)
+
+v1 -> v2:
+* Rename hwcr to msr_hwcr
+* Remove msr_hwcr reset from x86_cpu_reset_hold
+
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 9c39384ac0..4b6245dc15 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -533,6 +533,8 @@ typedef enum X86Seg {
+ 
+ #define MSR_AMD64_TSC_RATIO_DEFAULT     0x100000000ULL
+ 
++#define MSR_K7_HWCR                     0xc0010015
++
+ #define MSR_VM_HSAVE_PA                 0xc0010117
+ 
+ #define MSR_IA32_XFD                    0x000001c4
+@@ -1854,6 +1856,9 @@ typedef struct CPUArchState {
+     uint64_t msr_lbr_depth;
+     LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
+ 
++    /* AMD MSRC001_0015 Hardware Configuration */
++    uint64_t msr_hwcr;
++
+     /* exception/interrupt handling */
+     int error_code;
+     int exception_is_int;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index e6f94900f3..c83b46f4b7 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -165,6 +165,7 @@ static bool has_msr_ucode_rev;
+ static bool has_msr_vmx_procbased_ctls2;
+ static bool has_msr_perf_capabs;
+ static bool has_msr_pkrs;
++static bool has_msr_hwcr;
+ 
+ static uint32_t has_architectural_pmu_version;
+ static uint32_t num_architectural_pmu_gp_counters;
+@@ -2574,6 +2575,8 @@ static int kvm_get_supported_msrs(KVMState *s)
+             case MSR_IA32_PKRS:
+                 has_msr_pkrs = true;
+                 break;
++            case MSR_K7_HWCR:
++                has_msr_hwcr = true;
+             }
+         }
+     }
+@@ -3916,6 +3919,9 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+     if (has_msr_virt_ssbd) {
+         kvm_msr_entry_add(cpu, MSR_VIRT_SSBD, env->virt_ssbd);
+     }
++    if (has_msr_hwcr) {
++        kvm_msr_entry_add(cpu, MSR_K7_HWCR, env->msr_hwcr);
++    }
+ 
+ #ifdef TARGET_X86_64
+     if (lm_capable_kernel) {
+@@ -4400,6 +4406,9 @@ static int kvm_get_msrs(X86CPU *cpu)
+         kvm_msr_entry_add(cpu, MSR_IA32_TSC, 0);
+         env->tsc_valid = !runstate_is_running();
+     }
++    if (has_msr_hwcr) {
++        kvm_msr_entry_add(cpu, MSR_K7_HWCR, 0);
++    }
+ 
+ #ifdef TARGET_X86_64
+     if (lm_capable_kernel) {
+@@ -4919,6 +4928,9 @@ static int kvm_get_msrs(X86CPU *cpu)
+         case MSR_ARCH_LBR_INFO_0 ... MSR_ARCH_LBR_INFO_0 + 31:
+             env->lbr_records[index - MSR_ARCH_LBR_INFO_0].info = msrs[i].data;
+             break;
++        case MSR_K7_HWCR:
++            env->msr_hwcr = msrs[i].data;
++            break;
+         }
+     }
+ 
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index 39f8294f27..b4610325aa 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -1543,6 +1543,25 @@ static const VMStateDescription vmstate_msr_xfd = {
+     }
+ };
+ 
++static bool msr_hwcr_needed(void *opaque)
++{
++    X86CPU *cpu = opaque;
++    CPUX86State *env = &cpu->env;
++
++    return env->msr_hwcr != 0;
++}
++
++static const VMStateDescription vmstate_msr_hwcr = {
++    .name = "cpu/msr_hwcr",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = msr_hwcr_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(env.msr_hwcr, X86CPU),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ #ifdef TARGET_X86_64
+ static bool intel_fred_msrs_needed(void *opaque)
+ {
+@@ -1773,6 +1792,7 @@ const VMStateDescription vmstate_x86_cpu = {
+         &vmstate_msr_intel_sgx,
+         &vmstate_pdptrs,
+         &vmstate_msr_xfd,
++        &vmstate_msr_hwcr,
+ #ifdef TARGET_X86_64
+         &vmstate_msr_fred,
+         &vmstate_amx_xtile,
+-- 
+2.34.1
 
 
