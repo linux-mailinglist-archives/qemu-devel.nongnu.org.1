@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB4B995F95
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 08:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF4995FDE
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 08:36:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syQ0S-0005sI-L2; Wed, 09 Oct 2024 02:17:08 -0400
+	id 1syQI3-0001oA-Rz; Wed, 09 Oct 2024 02:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1syQ0E-0005pE-Ga; Wed, 09 Oct 2024 02:16:54 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ id 1syQI0-0001nN-Sv; Wed, 09 Oct 2024 02:35:17 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1syQ0B-0007vn-4L; Wed, 09 Oct 2024 02:16:54 -0400
+ id 1syQHx-0002R1-BQ; Wed, 09 Oct 2024 02:35:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728454611; x=1759990611;
+ t=1728455714; x=1759991714;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Lt669vuESF+NLlyNvW3nMfB5lZgQCn13KNvjj5g2nMs=;
- b=DdQzNPVJgeXIE7CWeig9kHBVROBiQPi0M3+OVdzjz3z6uoky9QLDmDdu
- 4CdaGpGzVlRq/aAuT/2kmbNVIbZxFkT06EehkHNyoEeUI3zHBOs3AZCqT
- +tV54mPLaiRStXDHsU3zRuPTz70pQNE8M1tINpsZl+8/l1/f+DxTFZ6Fw
- e0Au0l/+j794MI03EwJwo6DgBYYe+c8Z9lW3OYWeEPH3morC3rpcOX4eg
- jlOyOd5flkC6X0tD6w6EVgyE+zS7GSbrbQCN/Ng3riBK0OgSjPuJU+Ans
- T0NeWwpJn69MhuJ+FSkKQpGsfaW0MyXC0mgOz6/nBG78IYyf1P86aWIez Q==;
-X-CSE-ConnectionGUID: V+wZ9EyLSAmOQ7IE0iHauw==
-X-CSE-MsgGUID: KonyTcI/RSm0DLu8l//VLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="31513105"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="31513105"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2024 23:15:25 -0700
-X-CSE-ConnectionGUID: UnMqb4StSIaCs9/73yv3Vw==
-X-CSE-MsgGUID: kiLaGcXURCyU7A1OBQ9Q7Q==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=oQRmH+fcm9FTEP+iuu4nyOE/JFb61Get/pyjqeqHQAM=;
+ b=GoObVkNb0gTf9oi/27PX0Q7P+Ck0uQpwqLYp28ICH9rBoV8AQdtDDVNC
+ nHg5VhRnRT0Nx/tw/TNSgFxGhFtO9jO1lSkSWNPIYGzEDgNdb809CWRIz
+ 68DNTt9AjAYynK1QgowiEsndUncbso9k5OatoKm1rdnw1oVUWDnLx0GvR
+ v49j2FipYd7jCCkL2c/8SJNOFHsqGvzN2ru+ERl5C2PrtPp/GDM8AF13O
+ irvftTOt32rCKBIj4vD8UBjXlId6Kt9nwVCMe5XQK6yn8tWbhndIJ0zpF
+ JXsPzOLqPAbJVbuefCz/kLx/3dKk/h1oeSMbvgcBX6/p2H3pAGNyDwXup g==;
+X-CSE-ConnectionGUID: SiWV6HS7QbCsz994CSzAUA==
+X-CSE-MsgGUID: DlZjjXo8QPa83/tUx+p6rQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="39127640"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="39127640"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 23:35:10 -0700
+X-CSE-ConnectionGUID: J/jUx0I6T+GzB++A/NzQIA==
+X-CSE-MsgGUID: 8hMyCA4ZRMmAb30/h4sbSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="106901495"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="76152091"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 08 Oct 2024 23:15:20 -0700
-Date: Wed, 9 Oct 2024 14:31:31 +0800
+ by fmviesa009.fm.intel.com with ESMTP; 08 Oct 2024 23:35:04 -0700
+Date: Wed, 9 Oct 2024 14:51:16 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
@@ -64,17 +64,17 @@ Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC v2 03/12] system/vl: Create CPU topology devices from CLI
- early
-Message-ID: <ZwYjQ2mEa2OP5r//@intel.com>
+Subject: Re: [RFC v2 00/12] Introduce Hybrid CPU Topology via Custom Topology
+ Tree
+Message-ID: <ZwYn5ETRdd6dxfXU@intel.com>
 References: <20240919061128.769139-1-zhao1.liu@intel.com>
- <20240919061128.769139-4-zhao1.liu@intel.com>
- <20241008105053.000059ee@Huawei.com>
+ <20241008113038.00007ee4@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <20241008105053.000059ee@Huawei.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241008113038.00007ee4@Huawei.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -99,36 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 08, 2024 at 10:50:53AM +0100, Jonathan Cameron wrote:
-> Date: Tue, 8 Oct 2024 10:50:53 +0100
+Hi Jonathan,
+
+On Tue, Oct 08, 2024 at 11:30:38AM +0100, Jonathan Cameron wrote:
+> Date: Tue, 8 Oct 2024 11:30:38 +0100
 > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Subject: Re: [RFC v2 03/12] system/vl: Create CPU topology devices from CLI
->  early
+> Subject: Re: [RFC v2 00/12] Introduce Hybrid CPU Topology via Custom
+>  Topology Tree
 > X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 > 
-> On Thu, 19 Sep 2024 14:11:19 +0800
+> On Thu, 19 Sep 2024 14:11:16 +0800
 > Zhao Liu <zhao1.liu@intel.com> wrote:
 > 
-> > Custom topology will allow user to build CPU topology from CLI totally,
-> > and this replaces machine's default CPU creation process (*_init_cpus()
-> > in MachineClass.init()).
-> > 
-> > For the machine's initialization, there may be CPU dependencies in the
-> > remaining initialization after the CPU creation.
-> > 
-> > To address such dependencies, create the CPU topology device (including
-> > CPU devices) from the CLI earlier, so that the latter part of machine
-> > initialization can be separated after qemu_add_cli_devices_early().
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Other than question of type of category from previous patch this looks
-> fine to me.
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> However, needs review from others more familiar with this code!
+> > -smp maxsockets=1,maxdies=1,maxmodules=2,maxcores=2,maxthreads=2
+> > -machine pc,custom-topo=on \
+> > -device cpu-socket,id=sock0 \
+> > -device cpu-die,id=die0,bus=sock0 \
+> > -device cpu-module,id=mod0,bus=die0 \
+> > -device cpu-module,id=mod1,bus=die0 \
+> > -device x86-intel-core,id=core0,bus=mod0 \
+> > -device x86-intel-atom,id=core1,bus=mod1 \
+> > -device x86-intel-atom,id=core2,bus=mod1 \
+> > -device host-x86_64-cpu,id=cpu0,socket-id=0,die-id=0,module-id=0,core-id=0,thread-id=0 \
+> > -device host-x86_64-cpu,id=cpu1,socket-id=0,die-id=0,module-id=0,core-id=0,thread-id=1 \
+> > -device host-x86_64-cpu,id=cpu2,socket-id=0,die-id=0,module-id=1,core-id=0,thread-id=0 \
+> > -device host-x86_64-cpu,id=cpu3,socket-id=0,die-id=0,module-id=1,core-id=1,thread-id=0
+> 
+> I quite like this as a way of doing the configuration but that needs
+> some review from others.
+> 
+> Peter, Alex, do you think this scheme is flexible enough to ultimately
+> allow us to support this for arm? 
 
-Thanks!
+BTW, this series requires a preliminary RFC [*] to first convert all the
+topology layers into devices.
 
--Zhao
+If you¡¯re interested as well, welcome your comments. :)
+
+[*]: [RFC v2 00/15] qom-topo: Abstract CPU Topology Level to Topology Device
+     https://lore.kernel.org/qemu-devel/20240919015533.766754-1-zhao1.liu@intel.com/
+
+Regards,
+Zhao
 
 
