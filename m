@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CA0996F39
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 17:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76238996F47
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 17:11:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syYJJ-0001Nc-Su; Wed, 09 Oct 2024 11:09:10 -0400
+	id 1syYJL-0001PF-VN; Wed, 09 Oct 2024 11:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syYJH-0001La-NE
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:07 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1syYJI-0001Ly-AR
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:08 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syYJG-0007x4-2d
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:07 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-71dea49e808so4428432b3a.1
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 08:09:05 -0700 (PDT)
+ id 1syYJG-0007xD-Jr
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:08 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-71de9e1f431so4400093b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 08:09:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728486544; x=1729091344; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728486545; x=1729091345; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DYfuoBzid/U1ZJhrVaORza7JwLn2M4M2h5sPBcvVQ5Q=;
- b=MnMLmH4PKyp4aNGdTTRhPf9H1AUlSITQQI+qwwbgQViu160uufnf9wZQPdOSp9s/9z
- aIUsG7/aS/Nc07whLauXZ3dpY+EfYHuAjO8NGdV86RZNcn4qmJSLSACQNB/ytwdMvq5S
- eoL49CFgDn3sKNB5pKnE0lGSYwckreZpIxAAOS0xt0UT8Wm9M2AjjMj7x4BzNAYWoCjA
- h7r2C/E8kEeAZrfynbrEq4DwbxpsjbhxaBdr9dwlmxp1HQ62k6AaydkPgHu2NZ9MqWon
- LWCnVamcNsA0ZYkGkgT0cjnzDGGhAGp5yndwhJ+DeSRy+/XZMjDJz5V0f57mRoKe20FY
- LPRg==
+ :reply-to; bh=+DRNYHg5CeN//65T5XbeaPm5JgKwHf9cf4eBzefEY3o=;
+ b=hIvCefCKvAs+vRHwovjvah8iTDjFAwEgLgmX/F785MGKkgU7mF2SJ1sIeqarmBY69Q
+ D3ABz/cIYGDt1EGjf7YSn9HTH5xLnQ+4i1c7gE5YB4mcg/uJmpvXFf26PFKwZdnko0G7
+ YlMv7owmyQ+kN1kfV0N18d26chRUAgpfBtDZAY/jNJxPvqsWHjMYf+E1Fr8ssFBGYLM7
+ NSg2G9WOT8Ossq7QAezgIkZFpzTtaHtcveiWwzHCCo4Ppsym/XtXlamYYy/BHRLHBmTU
+ klEUmIykaBcNmeVsaXpe+g96pMLuNZX+Qz0+oM9tPZmQ7Xxru/Qh3hhSlju14KKW8VGp
+ b5bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728486544; x=1729091344;
+ d=1e100.net; s=20230601; t=1728486545; x=1729091345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DYfuoBzid/U1ZJhrVaORza7JwLn2M4M2h5sPBcvVQ5Q=;
- b=C69ycnIApu+vscYrxHXcf2i7ya+XHfjzW2tH86oMV6OZD+vWL+WRpyiTtuIAASu1zM
- voT16/l5zOfJLQFsW/9pvrvQvP01xM+WJAbnPO9iLQIjcmC4uXJTChck1WexczR60L20
- 579U+FLBeDs2+EXWZetELQfHR/Oq63SV5ZyaRCXSuM1/xvcmfWsGq99corEX9eHy8DDX
- WqvNx3bm8cRyuPMJz8H9OYPI9/KWO+hw+sb719OZ/j1JQTmVzHFpjdThGbNBzfOX/7Dz
- fxZGdIk+w9SzwS9G5T9PdPWf/g9my5Cvu5lshFVQygAmGfrhdSrGsjRnI92ER1DyHILQ
- rlDA==
-X-Gm-Message-State: AOJu0Yxi0a4xl7I9EjWAj35wAjJp0PIbDfgCJJXAQfdHNRRB1uI9D2rz
- aW1957PF7VWkaaLFslgrY4+1d1sN97Ry1nT4UHiNcJ9B56AAUD1VJK4b3E6IWkl75l5WUQWP1NH
- p
-X-Google-Smtp-Source: AGHT+IEJLGpA39Vv+ilmNwxnUt3wkUQQWTQpabEuIbV19gB1Qm2wNwpL6xTFVKy73Tjo3n0sV+W6Bg==
-X-Received: by 2002:a05:6a00:1307:b0:71e:1201:636a with SMTP id
- d2e1a72fcca58-71e1db6ecd6mr4760730b3a.1.1728486544248; 
- Wed, 09 Oct 2024 08:09:04 -0700 (PDT)
+ bh=+DRNYHg5CeN//65T5XbeaPm5JgKwHf9cf4eBzefEY3o=;
+ b=YZPRGSLCAA9fvZ4ZxdVJixuxe2BHY8GjcNbJtzJRZD/p+kzrMGFAPk9UhF/0zlrbcv
+ NWWCCT7qMwV1f+Iyv4Js1earbxpovE6pfyL19FTd/ISbiQ1pvTU5f299LctkM6eRMGw/
+ 4v4jKvy6AsUAwUfOWYc6fUaA7ae9JO3HOzgn3PUBfO3e3aCWMsbGiz9v6eDbut+OeiU+
+ iWr6qoOFsi4OAIMegT2uZwOHApFHXN0pMDel7UWPHn8RkvV3qJ/6/4c2bmnr/pih5fKr
+ 0qCQ7X4hltD9S60XN7FLC47Y026eLSq9lw7DuDChr/smM1VYcHqajduhhOgpYxD1CLlp
+ iiFw==
+X-Gm-Message-State: AOJu0Yx/6PR3wwhFm6pC/NMiiwluykKD5Lni/SbJHQsqyyF3+Dz5rp7S
+ ChlGl3maE+AzUoekLAtgHHaBI7zF+Yj9fjcIvJkeT52JJWiKGyvjUWbes7cejLWrjtQAtRPXhTV
+ u
+X-Google-Smtp-Source: AGHT+IFsMmrbSg+cuSARvgU1CIe/+EUBsQhE8Mr2v1NwLoPUuIyLmBqfjenJdJzA1f/aDSkEN84ifg==
+X-Received: by 2002:a05:6a21:4006:b0:1d7:f4f:9868 with SMTP id
+ adf61e73a8af0-1d8a3c4b90cmr5172963637.37.1728486545116; 
+ Wed, 09 Oct 2024 08:09:05 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71df0d65278sm7881094b3a.160.2024.10.09.08.09.03
+ d2e1a72fcca58-71df0d65278sm7881094b3a.160.2024.10.09.08.09.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 08:09:03 -0700 (PDT)
+ Wed, 09 Oct 2024 08:09:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/23] accel/tcg: Add IntervalTreeRoot to CPUTLBDesc
-Date: Wed,  9 Oct 2024 08:08:40 -0700
-Message-ID: <20241009150855.804605-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/23] accel/tcg: Populate IntervalTree in tlb_set_page_full
+Date: Wed,  9 Oct 2024 08:08:41 -0700
+Message-ID: <20241009150855.804605-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009150855.804605-1-richard.henderson@linaro.org>
 References: <20241009150855.804605-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,80 +91,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the data structures for tracking softmmu pages via
-a balanced interval tree.  So far, only initialize and
-destroy the data structure.
+Add or replace an entry in the IntervalTree for each
+page installed into softmmu.  We do not yet use the
+tree for anything else.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h |  3 +++
- accel/tcg/cputlb.c    | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ accel/tcg/cputlb.c | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index d21a24c82f..b567abe3e2 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -34,6 +34,7 @@
- #include "qemu/rcu_queue.h"
- #include "qemu/queue.h"
- #include "qemu/thread.h"
-+#include "qemu/interval-tree.h"
- #include "qom/object.h"
- 
- typedef int (*WriteCoreDumpFunction)(const void *buf, size_t size,
-@@ -287,6 +288,8 @@ typedef struct CPUTLBDesc {
-     CPUTLBEntry vtable[CPU_VTLB_SIZE];
-     CPUTLBEntryFull vfulltlb[CPU_VTLB_SIZE];
-     CPUTLBEntryFull *fulltlb;
-+    /* All active tlb entries for this address space. */
-+    IntervalTreeRoot iroot;
- } CPUTLBDesc;
- 
- /*
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 8affa25db3..435c2dc132 100644
+index 435c2dc132..d964e1b2e8 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -89,6 +89,13 @@ QEMU_BUILD_BUG_ON(sizeof(vaddr) > sizeof(run_on_cpu_data));
- QEMU_BUILD_BUG_ON(NB_MMU_MODES > 16);
- #define ALL_MMUIDX_BITS ((1 << NB_MMU_MODES) - 1)
+@@ -305,6 +305,17 @@ static void tlbfast_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
+     memset(fast->table, -1, sizeof_tlb(fast));
+ }
  
-+/* Extra data required to manage CPUTLBEntryFull within an interval tree. */
-+typedef struct CPUTLBEntryTree {
-+    IntervalTreeNode itree;
-+    CPUTLBEntry copy;
-+    CPUTLBEntryFull full;
-+} CPUTLBEntryTree;
++static CPUTLBEntryTree *tlbtree_lookup_range(CPUTLBDesc *desc, vaddr s, vaddr l)
++{
++    IntervalTreeNode *i = interval_tree_iter_first(&desc->iroot, s, l);
++    return i ? container_of(i, CPUTLBEntryTree, itree) : NULL;
++}
 +
- static inline size_t tlb_n_entries(CPUTLBDescFast *fast)
++static CPUTLBEntryTree *tlbtree_lookup_addr(CPUTLBDesc *desc, vaddr addr)
++{
++    return tlbtree_lookup_range(desc, addr, addr);
++}
++
+ static void tlb_mmu_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
  {
-     return (fast->mask >> CPU_TLB_ENTRY_BITS) + 1;
-@@ -305,6 +312,7 @@ static void tlb_mmu_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
-     desc->large_page_mask = -1;
-     desc->vindex = 0;
-     memset(desc->vtable, -1, sizeof(desc->vtable));
-+    interval_tree_free_nodes(&desc->iroot, offsetof(CPUTLBEntryTree, itree));
- }
- 
- static void tlb_flush_one_mmuidx_locked(CPUState *cpu, int mmu_idx,
-@@ -326,6 +334,7 @@ static void tlb_mmu_init(CPUTLBDesc *desc, CPUTLBDescFast *fast, int64_t now)
-     fast->mask = (n_entries - 1) << CPU_TLB_ENTRY_BITS;
-     fast->table = g_new(CPUTLBEntry, n_entries);
-     desc->fulltlb = g_new(CPUTLBEntryFull, n_entries);
-+    memset(&desc->iroot, 0, sizeof(desc->iroot));
-     tlb_mmu_flush_locked(desc, fast);
- }
- 
-@@ -365,6 +374,8 @@ void tlb_destroy(CPUState *cpu)
- 
-         g_free(fast->table);
-         g_free(desc->fulltlb);
-+        interval_tree_free_nodes(&cpu->neg.tlb.d[i].iroot,
-+                                 offsetof(CPUTLBEntryTree, itree));
+     tlbfast_flush_locked(desc, fast);
+@@ -1086,7 +1097,8 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     MemoryRegionSection *section;
+     unsigned int index, read_flags, write_flags;
+     uintptr_t addend;
+-    CPUTLBEntry *te, tn;
++    CPUTLBEntry *te;
++    CPUTLBEntryTree *node;
+     hwaddr iotlb, xlat, sz, paddr_page;
+     vaddr addr_page;
+     int asidx, wp_flags, prot;
+@@ -1194,6 +1206,15 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+         tlb_n_used_entries_dec(cpu, mmu_idx);
      }
- }
  
++    /* Replace an old IntervalTree entry, or create a new one. */
++    node = tlbtree_lookup_addr(desc, addr_page);
++    if (!node) {
++        node = g_new(CPUTLBEntryTree, 1);
++        node->itree.start = addr_page;
++        node->itree.last = addr_page + TARGET_PAGE_SIZE - 1;
++        interval_tree_insert(&node->itree, &desc->iroot);
++    }
++
+     /* refill the tlb */
+     /*
+      * When memory region is ram, iotlb contains a TARGET_PAGE_BITS
+@@ -1215,15 +1236,15 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     full->phys_addr = paddr_page;
+ 
+     /* Now calculate the new entry */
+-    tn.addend = addend - addr_page;
++    node->copy.addend = addend - addr_page;
+ 
+-    tlb_set_compare(full, &tn, addr_page, read_flags,
++    tlb_set_compare(full, &node->copy, addr_page, read_flags,
+                     MMU_INST_FETCH, prot & PAGE_EXEC);
+ 
+     if (wp_flags & BP_MEM_READ) {
+         read_flags |= TLB_WATCHPOINT;
+     }
+-    tlb_set_compare(full, &tn, addr_page, read_flags,
++    tlb_set_compare(full, &node->copy, addr_page, read_flags,
+                     MMU_DATA_LOAD, prot & PAGE_READ);
+ 
+     if (prot & PAGE_WRITE_INV) {
+@@ -1232,10 +1253,11 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     if (wp_flags & BP_MEM_WRITE) {
+         write_flags |= TLB_WATCHPOINT;
+     }
+-    tlb_set_compare(full, &tn, addr_page, write_flags,
++    tlb_set_compare(full, &node->copy, addr_page, write_flags,
+                     MMU_DATA_STORE, prot & PAGE_WRITE);
+ 
+-    copy_tlb_helper_locked(te, &tn);
++    node->full = *full;
++    copy_tlb_helper_locked(te, &node->copy);
+     tlb_n_used_entries_inc(cpu, mmu_idx);
+     qemu_spin_unlock(&tlb->c.lock);
+ }
 -- 
 2.43.0
 
