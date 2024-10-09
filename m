@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15350996F3C
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 17:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F30F4996F36
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 17:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syYJI-0001LP-J1; Wed, 09 Oct 2024 11:09:08 -0400
+	id 1syYJJ-0001NE-B8; Wed, 09 Oct 2024 11:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syYJC-0001JG-ND
+ id 1syYJC-0001JH-PN
  for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:02 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syYJ9-0007w3-M5
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:01 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-71dfc78d6ddso3666726b3a.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 08:08:59 -0700 (PDT)
+ id 1syYJA-0007wA-IR
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 11:09:02 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-71e050190ddso2546056b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 08:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728486538; x=1729091338; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728486539; x=1729091339; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gGugcia7xIHYiO2oiJjHlSRtV4JGvYxNcTYF4XQ4e4A=;
- b=yGUhcHC+isQy/pN+U8znOlD8csXL0NThVlnORNwIZuiqKCJjTL5Mdb8cKxS6pmgVeC
- pBfXSamVxeAUI2ttvat4nwlAalR9cKqL1goEfh59K5BSkvu1uIcpVNID3VOj5jHDRQgQ
- cWNeHQyURMZi3WLvRRgnkXqgCc5sfq3HaIT3/MOZUNzAszBtIWaLU8GZxLg6f8LyhLj3
- KRaD1IIP14L1tbap1FWt9LBKRmZE0TJ+Lr7IS17LYnVsTJBXjVv6YzogeHAk4XSpv8Ec
- wxrvaYUrlwV47NRP3dmmqGn/HDx33nARC8eZIFcdVMTTdQ5wMGCf+mvgD1g2DHwSKb8a
- +mag==
+ :reply-to; bh=EYQWI5p9vUhtvQFXm2oStjAmXC4f4vQZGym/5HmIo8g=;
+ b=Iao1Wkfu2M8xasCmE/DzKD/uKaGXsrXmrwEp3Bj8fyKIk7FoD+UEtFggCSF0iuiTmk
+ OomA1Bx5GYXZWEXOUEZvx7BBBFj/hGIFo4B9vLxyqKkMyQtz0cDn9NRqEeDQWcuPtPNR
+ Ptxubl5rn8oQI9F4TVr7mFc2Ar6LBfjTMyW1f3uT3ZC0EGo9zq572DDpPE9jj8lgV+E5
+ Htz1D8mS4DZHAz+1J67X21Ch+zzT9v8q7mRTpZBAroj0I3apQlhOBbbJjA29XEobQ7eM
+ w2hn8ZvDHladdQAylhd257DbnKKy02MJ7nCWyXR14jO05wX3RJCYRUc3xo8gxMOPBPvv
+ OsWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728486538; x=1729091338;
+ d=1e100.net; s=20230601; t=1728486539; x=1729091339;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gGugcia7xIHYiO2oiJjHlSRtV4JGvYxNcTYF4XQ4e4A=;
- b=vUt5zToOMihuNgnhBflFLraWqxRNKVKg85CL7b5bZXM27dbDKByaCeTMem/CRcNDsz
- WYE1Q0n5XYXBrfhEZYo+HNNpnukBFN1WZ8/jxxf8mjArAVICfWMOfyxwZkeWJt4zC0Rx
- 7VLgJbsrlCxsnNqClrFGnKIVnj6ilVjnPELm2O6lWQVPT3GXE4hKdKeK7cMuAOKWwgoN
- iU81XZa7u72dSKYozcrz7pjH2s1HN6yz/tTPcchFRw3qvb2/2b+R51PLN5L7rGU45vYp
- oPVXXief3ccYqyfJS6ydp8Kw9xZv8ts8ycOhznW9/Gb6KDVCFNpakvSC4Lo8LTxdLHMc
- d9Mg==
-X-Gm-Message-State: AOJu0YwjF2WeKhriAQC2fOOR4Ksa9m4NcXG936x40FNibuZd74Q1nr8N
- cE8oAVFBf3qT606HFv0nhfe+j+0YQn7QASMpBpfJ9YejvlP7R8VkKmlJV3t7UcZC7nvm+U8dIQQ
- r
-X-Google-Smtp-Source: AGHT+IHTsP/44AfTBj9tBPEteHYobH5wP5qyYZEOM5DId2QpTc/CUusVD/yPrklj6PidnhzLzIG3zg==
-X-Received: by 2002:a05:6a00:928a:b0:71e:104d:6316 with SMTP id
- d2e1a72fcca58-71e1dbc20c0mr4894864b3a.21.1728486538095; 
- Wed, 09 Oct 2024 08:08:58 -0700 (PDT)
+ bh=EYQWI5p9vUhtvQFXm2oStjAmXC4f4vQZGym/5HmIo8g=;
+ b=ClFs8EqlATh5OmiqCrSQFOqHrGAWzltokudX8AgbBUFUoPDFIGwoZwnfyUA93Xr1TJ
+ X5KT6aJQRHymWYhVA4bulls3hbw4fryaAVxrUpSRaWjnpPRuunsFlApr5oqmYWwehFY9
+ YTeRQRgnNLXwD1QEsvPeAXdN9Qs0wW7xrmtd12722Ih7Sbl3gwBAp8ySpbcy2fdwOGL7
+ HcpTW/CFcofheylCjNPvQJ3A3tKGj+PIj8OngrszGbqCEe06Wtbl3nKigvxH4mYNciXJ
+ p+FVK9XJyPoj6a5Zh2sClemhm9fDReJ5Ksws5McNotchraEt4ZilJN+NQbcygEDnfGdJ
+ EcjQ==
+X-Gm-Message-State: AOJu0YwS9qc0cbJ9DpHcXfWrzYJtNNOA4GuhNRQl/1HB9tJwRHFPBq9x
+ eYTN9bI4D88h2RmwLQ3lbTpU8DnsHd3CgG5L/zyTehZnQEvpe3c1oQlU7X04u/4nnLaLAvtBgMy
+ p
+X-Google-Smtp-Source: AGHT+IFQVDWjqNKg3SS2WqohmyaQE9gv0goDMBxuaYFfHbX5oWTOHysYXJEKXuEP/SUeGvWSwk527w==
+X-Received: by 2002:a05:6a00:1810:b0:71e:f14:869c with SMTP id
+ d2e1a72fcca58-71e1db673ffmr4519349b3a.6.1728486539163; 
+ Wed, 09 Oct 2024 08:08:59 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71df0d65278sm7881094b3a.160.2024.10.09.08.08.57
+ d2e1a72fcca58-71df0d65278sm7881094b3a.160.2024.10.09.08.08.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 08:08:57 -0700 (PDT)
+ Wed, 09 Oct 2024 08:08:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 01/23] util/interval-tree: Introduce interval_tree_free_nodes
-Date: Wed,  9 Oct 2024 08:08:33 -0700
-Message-ID: <20241009150855.804605-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/23] accel/tcg: Split out tlbfast_flush_locked
+Date: Wed,  9 Oct 2024 08:08:34 -0700
+Message-ID: <20241009150855.804605-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009150855.804605-1-richard.henderson@linaro.org>
 References: <20241009150855.804605-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,103 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide a general-purpose release-all-nodes operation, that allows
-for the IntervalTreeNode to be embeded within a larger structure.
+We will have a need to flush only the "fast" portion
+of the tlb, allowing re-fill from the "full" portion.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/interval-tree.h | 11 +++++++++++
- util/interval-tree.c         | 20 ++++++++++++++++++++
- util/selfmap.c               | 13 +------------
- 3 files changed, 32 insertions(+), 12 deletions(-)
+ accel/tcg/cputlb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/qemu/interval-tree.h b/include/qemu/interval-tree.h
-index 25006debe8..d90ea6d17f 100644
---- a/include/qemu/interval-tree.h
-+++ b/include/qemu/interval-tree.h
-@@ -96,4 +96,15 @@ IntervalTreeNode *interval_tree_iter_first(IntervalTreeRoot *root,
- IntervalTreeNode *interval_tree_iter_next(IntervalTreeNode *node,
-                                           uint64_t start, uint64_t last);
- 
-+/**
-+ * interval_tree_free_nodes:
-+ * @root: root of the tree
-+ * @it_offset: offset from outermost type to IntervalTreeNode
-+ *
-+ * Free, via g_free, all nodes under @root.  IntervalTreeNode may
-+ * not be the true type of the nodes allocated; @it_offset gives
-+ * the offset from the outermost type to the IntervalTreeNode member.
-+ */
-+void interval_tree_free_nodes(IntervalTreeRoot *root, size_t it_offset);
-+
- #endif /* QEMU_INTERVAL_TREE_H */
-diff --git a/util/interval-tree.c b/util/interval-tree.c
-index 53465182e6..663d3ec222 100644
---- a/util/interval-tree.c
-+++ b/util/interval-tree.c
-@@ -639,6 +639,16 @@ static void rb_erase_augmented_cached(RBNode *node, RBRootLeftCached *root,
-     rb_erase_augmented(node, &root->rb_root, augment);
- }
- 
-+static void rb_node_free(RBNode *rb, size_t rb_offset)
-+{
-+    if (rb->rb_left) {
-+        rb_node_free(rb->rb_left, rb_offset);
-+    }
-+    if (rb->rb_right) {
-+        rb_node_free(rb->rb_right, rb_offset);
-+    }
-+    g_free((void *)rb - rb_offset);
-+}
- 
- /*
-  * Interval trees.
-@@ -870,6 +880,16 @@ IntervalTreeNode *interval_tree_iter_next(IntervalTreeNode *node,
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index b76a4eac4e..c1838412e8 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -284,13 +284,18 @@ static void tlb_mmu_resize_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
      }
  }
  
-+void interval_tree_free_nodes(IntervalTreeRoot *root, size_t it_offset)
-+{
-+    if (root && root->rb_root.rb_node) {
-+        rb_node_free(root->rb_root.rb_node,
-+                     it_offset + offsetof(IntervalTreeNode, rb));
-+        root->rb_root.rb_node = NULL;
-+        root->rb_leftmost = NULL;
-+    }
-+}
-+
- /* Occasionally useful for calling from within the debugger. */
- #if 0
- static void debug_interval_tree_int(IntervalTreeNode *node,
-diff --git a/util/selfmap.c b/util/selfmap.c
-index 483cb617e2..d2b86da301 100644
---- a/util/selfmap.c
-+++ b/util/selfmap.c
-@@ -87,23 +87,12 @@ IntervalTreeRoot *read_self_maps(void)
-  * @root: an interval tree
-  *
-  * Free a tree of MapInfo structures.
-- * Since we allocated each MapInfo in one chunk, we need not consider the
-- * contents and can simply free each RBNode.
-  */
- 
--static void free_rbnode(RBNode *n)
--{
--    if (n) {
--        free_rbnode(n->rb_left);
--        free_rbnode(n->rb_right);
--        g_free(n);
--    }
--}
--
- void free_self_maps(IntervalTreeRoot *root)
+-static void tlb_mmu_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
++static void tlbfast_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
  {
-     if (root) {
--        free_rbnode(root->rb_root.rb_node);
-+        interval_tree_free_nodes(root, offsetof(MapInfo, itree));
-         g_free(root);
-     }
+     desc->n_used_entries = 0;
++    memset(fast->table, -1, sizeof_tlb(fast));
++}
++
++static void tlb_mmu_flush_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast)
++{
++    tlbfast_flush_locked(desc, fast);
+     desc->large_page_addr = -1;
+     desc->large_page_mask = -1;
+     desc->vindex = 0;
+-    memset(fast->table, -1, sizeof_tlb(fast));
+     memset(desc->vtable, -1, sizeof(desc->vtable));
  }
+ 
 -- 
 2.43.0
 
