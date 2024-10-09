@@ -2,94 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865C8996339
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5349962F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 10:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sySG8-0004sC-Uv; Wed, 09 Oct 2024 04:41:28 -0400
+	id 1sySBY-0001xX-RJ; Wed, 09 Oct 2024 04:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sySG3-0004rl-2f; Wed, 09 Oct 2024 04:41:23 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sySBW-0001xJ-P9
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:36:42 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sySG1-0001gc-M2; Wed, 09 Oct 2024 04:41:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=SQJmJ7gCi0nmN7oos+CcdHoJLAwgIy/4udl7e5kb3IE=; b=quhDT7suu0/KBt+gwLJZT0iXKI
- 4oyT641+LMTqMBMY9S8wWhiA2Vtb9jvSKZP2wRnduvDTu0AmE66k1PZru7rcodOTU7FYBdKmpEUdG
- UVYnQaOQkwARVbB0HcqYBOyG/5mJ/ElJWswwGDkUfvcDfh88+IGsZXolrjLpMzVu+/Ylah5LEiabf
- KnFmeiX4+sFwr4BtHUZ129ZEzR7Ymp1wdLc3jQaki5AWzYrgd0kswuzCtypq7k+chC5XRycmHFaSP
- I8wcWbPTdtoGLr/vTdchcPLJmfRiSl8Mbjb4N3sm993iKwgTIcxC1sDZNOfRtlOg42mjs0PWf/STg
- VDwS3sj5hBXVS4kzVQUIATrzZhW0i6TsQD0sBGslOhMll27UEaFOJlCcYyjkHhONq6SaRxJ39xhef
- wxh3rYINQjdjmX84wLHMpW5bHuHsXriOul9X8qVXrX++bnFWmuC0gNkMwvKg+ze/7VuMdJ4dbP6Du
- U7H8B3imJaf+BcS5UHoHcu8+YsjAX8rEHoErYtbczhvzGk5MbjqpGxzxsVxXTAfZqNDIK8T8bxehL
- 5iWRLuhhJZ3B2UU/q3JGAWRRBUrwkA0EO4hSc3lY1Hf8XdNnBfDJAxS9dBCrNUs9kXU+1MEIMtAM1
- 7zpA7lJQRqaAYvslHSW7feSjIJ/a8XJbAF/0bWk20=;
-Received: from [2a00:23c4:8bb8:7000:6d0:70a6:da7e:f9a3]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sySFk-00098L-IJ; Wed, 09 Oct 2024 09:41:08 +0100
-Message-ID: <ea96f1e9-8bb2-4547-8835-a8ed2d0ab298@ilande.co.uk>
-Date: Wed, 9 Oct 2024 09:41:11 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sySBT-00014j-PU
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 04:36:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728463000; x=1759999000;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=puO2yolwMmXZ4+1/AaWo0WiUXGvYXZVPtqYsDlpyI2g=;
+ b=SIu9CUAWvipbPxcMIYm12vHTRxeK+8F+6s0HS1dtHN+kbdxcuhw630kX
+ XElaFrQpFn8UFCI/1BSs62OFt8WuOx6EswcwgYaiwR6Fy5TEKntsi+813
+ hRTHfRcLMlfnj01MEa5ivmzc/1I7jLZdmYK9W4eO+FNlc/BC2Y+vHguX5
+ L7NwHHCQQ6PQ8RsDLlZ53GEQ1iBVKhNp4cpGqskcJqwC6FVd5QiecocmS
+ WHhoFBbsZESQ3p2UGQyZj8kzZKuMazx8r+0ebA9gdEQdA3qrwdVL7lmSP
+ ubUln4k1J4M3RnOxOQdpEKENGFWbiUMwGfNmz0mEcNKKZLQRbQ5uji/4J g==;
+X-CSE-ConnectionGUID: SziPB5l9Rpi6L0Mq5zgOLA==
+X-CSE-MsgGUID: S2mKf4uzQ7yRfd9IQTz2qw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27639446"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="27639446"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 01:36:36 -0700
+X-CSE-ConnectionGUID: fWS+miooRGaMtvJG25pO9g==
+X-CSE-MsgGUID: HRCGbfD0TnGkXyc1GgsmiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="75764406"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa006.fm.intel.com with ESMTP; 09 Oct 2024 01:36:35 -0700
+Date: Wed, 9 Oct 2024 16:52:47 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Gao Shiyuan <gaoshiyuan@baidu.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
+Message-ID: <ZwZEXyRvZeb4eO6q@intel.com>
+References: <20240926040808.9158-1-gaoshiyuan@baidu.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Octavian Purdila <tavip@google.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, stefanst@google.com,
- pbonzini@redhat.com, peter.maydell@linaro.org, marcandre.lureau@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, luc@lmichel.fr,
- damien.hedde@dahe.fr, alistair@alistair23.me, thuth@redhat.com,
- philmd@linaro.org, jsnow@redhat.com, crosa@redhat.com, lvivier@redhat.com
-References: <20241008011852.1439154-1-tavip@google.com>
- <20241008011852.1439154-2-tavip@google.com>
- <7994769f-efed-4eff-aac7-aa3828f603b7@ilande.co.uk>
- <CAGWr4cT=UWvk_v=908bhdbrg61tz8pgpa14_K+vps0d0sTZTJQ@mail.gmail.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <CAGWr4cT=UWvk_v=908bhdbrg61tz8pgpa14_K+vps0d0sTZTJQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:7000:6d0:70a6:da7e:f9a3
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 01/25] fifo32: add peek function
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240926040808.9158-1-gaoshiyuan@baidu.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,73 +82,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/10/2024 18:25, Octavian Purdila wrote:
+Hi Shiyuan,
 
-> On Tue, Oct 8, 2024 at 4:27 AM Mark Cave-Ayland
-> <mark.cave-ayland@ilande.co.uk> wrote:
->>
->> On 08/10/2024 02:18, Octavian Purdila wrote:
->>
->>> Add fifo32_peek() that returns the first element from the queue
->>> without popping it.
->>>
->>> Signed-off-by: Octavian Purdila <tavip@google.com>
->>> ---
->>>    include/qemu/fifo32.h | 28 ++++++++++++++++++++++++++++
->>>    1 file changed, 28 insertions(+)
->>>
->>> diff --git a/include/qemu/fifo32.h b/include/qemu/fifo32.h
->>> index 4e9fd1b5ef..9de1807375 100644
->>> --- a/include/qemu/fifo32.h
->>> +++ b/include/qemu/fifo32.h
->>> @@ -140,6 +140,34 @@ static inline uint32_t fifo32_pop(Fifo32 *fifo)
->>>        return ret;
->>>    }
->>>
->>> +/**
->>> + * fifo32_peek:
->>> + * @fifo: fifo to peek at
->>> + *
->>> + * Returns the value from the FIFO's head without poping it. Behaviour
->>> + * is undefined if the FIFO is empty. Clients are responsible for
->>> + * checking for emptiness using fifo32_is_empty().
->>> + *
->>> + * Returns: the value from the FIFO's head
->>> + */
->>> +
->>> +static inline uint32_t fifo32_peek(Fifo32 *fifo)
->>> +{
->>> +    uint32_t ret = 0, num;
->>> +    const uint8_t *buf;
->>> +
->>> +    buf = fifo8_peek_bufptr(&fifo->fifo, 4, &num);
->>
->> Are you sure that you want to use fifo8_peek_bufptr() as opposed to fifo8_peek_buf()
->> here? The reason for using the latter function (and why fifo8_*_bufptr() functions
->> are not generally recommended) is that they will correctly handle the FIFO wraparound
->> caused by the drifting head pointer which can occur if you don't empty the entire
->> FIFO contents in a single *_pop() or *_pop_buf() operation.
->>
+On Thu, Sep 26, 2024 at 12:08:08PM +0800, Gao Shiyuan via wrote:
+> Date: Thu, 26 Sep 2024 12:08:08 +0800
+> From: Gao Shiyuan via <qemu-devel@nongnu.org>
+> Subject: [PATCH v1 1/1] x86: Add support save/load HWCR MSR
+> X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 > 
-> I don't think that it matters in this case because the size of the
-> FIFO is always going to be a multiple of 4 and all push and pop
-> operations happen with 4 bytes as well. Am I missing something?
+> KVM commit 191c8137a939 ("x86/kvm: Implement HWCR support")
+> introduced support for emulating HWCR MSR.
 > 
-> In any case, if it makes things more clear / consistent I can switch
-> to fifo8_peek_buf.
+> Add support for QEMU to save/load this MSR for migration purposes.
+> 
+> Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
+> ---
+>  target/i386/cpu.c     |  1 +
+>  target/i386/cpu.h     |  5 +++++
+>  target/i386/kvm/kvm.c | 12 ++++++++++++
+>  target/i386/machine.c | 20 ++++++++++++++++++++
+>  4 files changed, 38 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 85ef7452c0..339131a39a 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7093,6 +7093,7 @@ static void x86_cpu_reset_hold(Object *obj, ResetType type)
+>      env->a20_mask = ~0x0;
+>      env->smbase = 0x30000;
+>      env->msr_smi_count = 0;
+> +    env->hwcr = 0;
 
-I'm guess I'm just a little bit wary of the Fifo32 API since it appears that 
-fifo32_num_used(), fifo32_num_free() and fifo32_is_full() are written in a way that 
-suggests unaligned accesses can occur.
+Why we need to clear it here? This needs to be explained in the commit
+message.
 
-Given that fifo8_push() and fifo8_pop() should assert() upon failure I don't think 
-that's possible for Fifo32, but then all my test cases use Fifo8.
+>      env->idt.limit = 0xffff;
+>      env->gdt.limit = 0xffff;
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 14edd57a37..a19b1ceda4 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -539,6 +539,8 @@ typedef enum X86Seg {
+>  
+>  #define MSR_AMD64_TSC_RATIO_DEFAULT     0x100000000ULL
+>  
+> +#define MSR_K7_HWCR                     0xc0010015
+> +
+>  #define MSR_VM_HSAVE_PA                 0xc0010117
+>  
+>  #define MSR_IA32_XFD                    0x000001c4
+> @@ -1859,6 +1861,9 @@ typedef struct CPUArchState {
+>      uint64_t msr_lbr_depth;
+>      LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
+>  
+> +    /* Hardware Configuration MSR */
 
-If you're confident from your tests that this can't happen then we can leave it as-is.
+We can keep the same comment as msr_hwcr in KVM to emphasize this is an
+AMD-specific MSR, i.e.,
 
+/* AMD MSRC001_0015 Hardware Configuration */
 
-ATB,
+> +    uint64_t hwcr;
 
-Mark.
+Add the msr_ prefix to indicate that this value is only intended to
+store the MSR. Currently, for similar members, some have the msr_ prefix
+and some do not, but it is better to have it for clarity.
+
+> +
+>      /* exception/interrupt handling */
+>      int error_code;
+>      int exception_is_int;
+
+-Zhao
 
 
