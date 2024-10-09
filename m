@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED669978EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 240AF9978E6
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syfo5-0006v3-By; Wed, 09 Oct 2024 19:09:25 -0400
+	id 1syfo6-000704-Rz; Wed, 09 Oct 2024 19:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1syfnw-0006qA-HE
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:09:16 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1syfny-0006qj-0v
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:09:18 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1syfnu-0000l1-U7
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:09:16 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2e2bd347124so265080a91.1
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:09:14 -0700 (PDT)
+ id 1syfnv-0000la-Qq
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:09:17 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-7db637d1e4eso212617a12.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1728515353; x=1729120153;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1728515354; x=1729120154;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6d6JNNpqypFV+9JaSGoihlcnT/RjodexqM4x572K+eU=;
- b=zxw2m0HNCPVTxYepjPt5dyECnWpjUupcGNGAUnVnIBHAH4EY6gO1r9270H1ftFD/RD
- z7Qyob62o01PMBGF1Lopjz0djGF2w9JNShFVJaJqJ09gbNxK59qqgHpPG+c+aQjhpvfV
- xD/QeW5wCvHF47wbttOTRHScdNjwyXQJ3S+uKMF0IB2tpixFXRuJKuF+RkZzH/tLod8Z
- hvp0b2RsNSN6vXycSZAL+LmL0Xr/p3CaRNhIZEM+0a3RjLs4R5h1Vdl8jILq1XoUa1sS
- CCyNIHvSoxeJkgevT77x1kJNX/cbnvakztbuiXDT+0isPPEhdXNeeo2lLriGcllpUkEI
- zBOQ==
+ :reply-to; bh=L8GR17FkA/J/rE0TeH3ijOLU5RFbHn5ig8szCuUWCXw=;
+ b=0/bWMC6PhJIZAFlBBG3S+/gnIqEAK8JfPRqz8gO1WF1IaZ736Uw1aFcJIsem9QFXo9
+ T0T9RiqOrD1IojgG94EkaFAYeVuAITvfuIuqXujwEP5QlOBpjV6g1GN38AT8h45e8+rG
+ XQvQoERT08752l3sdRynHg6wbSXKLCLS2bJNSucMnPO3uQKApcABHv9HVZA+gbJwZzT/
+ v47En+XxSi7pp5sXWpwzQdspv5jw5rik0ncerEkWvHd9C3ErD8TTOD1j+5zzz2fSZwFZ
+ bwoWw7MDxwr1J3u5Bb5txvU1giFOq2vIbJCCg8809sdHMg2uAtzQ4GRyHwYBllw9Zx1Q
+ J7Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728515353; x=1729120153;
+ d=1e100.net; s=20230601; t=1728515354; x=1729120154;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6d6JNNpqypFV+9JaSGoihlcnT/RjodexqM4x572K+eU=;
- b=m+gAYCzwbA/DnJd1hRF0Ko/q8W66rO5hTJ5McnKZ2YroHVhrCdHshMaEYojSI9cIGo
- YetTcm9g2zH/t08tKb79qsO9ruu82fC4PhL8Kh3xP1194ffzG/bk0llRsnVYC/pkdgJs
- JfYlcEzNAsMm8cGAqbDf0AMrcIMdJ/bmEKib54UfRuGcyXISdBhvGtQmkDyYf0cHCwHH
- 5mDWcyoGuyfDSzUytKUKULyGHn8EOH83Szv1aBAaX8Q1C7bUn7Q2tP7uVQtN1v9Fye1q
- DlemSJRg2wVv/zxWk+jr24XqOcnTBg1wLRAYip9FPvTU1HwU0wLecFJzDQaaO41RLJDv
- OgsQ==
+ bh=L8GR17FkA/J/rE0TeH3ijOLU5RFbHn5ig8szCuUWCXw=;
+ b=aMLeKrrtLfaGOEqPdN28i55RfTfSFUqJofawBXIDeZO+7GnBO6uAlPIkAKMC2fsAfV
+ ug08mGsthB04ZwQfNvAtMkGW0VVRsaSl52gvBW2VZIOTlyesuj2Q6ZXODj/lWx6vTJd3
+ EZGwzA62MUxn0J5BKgAFkB4wVL1WJVvRclDpZpQ81lXWZnZ+KHiTAIMpNRRp0/BmiASu
+ usI3x9K2IrpUqT2YR1VdEJOchK822L2/Hd48pQ/Ae7naxsPfIdwdngnQIwyPHQ+pD57X
+ vJu4/El9uznNfNN6OKlienEwkHhyQcwYu70neOT2pm7yuJ9AWpB0X6HLP6cxDwpcrHr1
+ sY9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuKN3LiFDa9CMD+QWdixydJiEsliGvomDsNJSCeUGiUDNICs2ynv/Etgu0TrwBHheQkBheLojqHqdj@nongnu.org
-X-Gm-Message-State: AOJu0YwiXdFrWyXAsHR1yKQowxSYLok0hBCxMIe7ncoS6RRkk02xB8ys
- jV+bvszcZJHiTDMzgD8TDsWVxX+JFth9ok3o/yUOXMlf5dPjlWiE10B/xPrn6xU=
-X-Google-Smtp-Source: AGHT+IFWLLJRVm0Y+Uydiha3gGooMyMtA97UJ/mikC4+VrsGfl89XCOGMb1vzqA8x/bwreMUO4/31g==
-X-Received: by 2002:a17:90a:bc92:b0:2e2:8d82:df13 with SMTP id
- 98e67ed59e1d1-2e2a21e6d03mr4557518a91.8.1728515353355; 
- Wed, 09 Oct 2024 16:09:13 -0700 (PDT)
+ AJvYcCUkaySYqaC1vJhnc3OhOJ1GAhe1tMdQsSwwQUM521elWwsDS7qNaQKgFwwdpZFrb5u/lmO3Nws1CDj3@nongnu.org
+X-Gm-Message-State: AOJu0YycNiOn4Cuc1UVTfHGrZeICKpg3LE7InI8oC26i2G9wmrwV0wnp
+ VtFLwOPdYk9HcFBPJ+GvPV7O8UPCp0Jd3ROtVXy5oTP8rfKl11G17yZ0Q3VVv3M=
+X-Google-Smtp-Source: AGHT+IHFAMKMTnnh/U4UHESQK6oc/WZEZOVnpf1VVRMpXWVSlJD3Um1gLpxj94jXPehRT9G6t6bU7w==
+X-Received: by 2002:a17:90a:c481:b0:2d8:82a2:b093 with SMTP id
+ 98e67ed59e1d1-2e2a23303bdmr5244579a91.13.1728515354513; 
+ Wed, 09 Oct 2024 16:09:14 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2a55f9855sm2271902a91.2.2024.10.09.16.09.12
+ 98e67ed59e1d1-2e2a55f9855sm2271902a91.2.2024.10.09.16.09.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Oct 2024 16:09:13 -0700 (PDT)
+ Wed, 09 Oct 2024 16:09:14 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
-Date: Wed, 09 Oct 2024 16:09:07 -0700
-Subject: [PATCH RFC 09/10] target/riscv : Use the new tlb fill event functions
+Date: Wed, 09 Oct 2024 16:09:08 -0700
+Subject: [PATCH RFC 10/10] hw/riscv/virt.c: Generate the PMU node from the
+ machine
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241009-pmu_event_machine-v1-9-dcbd7a60e3ba@rivosinc.com>
+Message-Id: <20241009-pmu_event_machine-v1-10-dcbd7a60e3ba@rivosinc.com>
 References: <20241009-pmu_event_machine-v1-0-dcbd7a60e3ba@rivosinc.com>
 In-Reply-To: <20241009-pmu_event_machine-v1-0-dcbd7a60e3ba@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
@@ -72,8 +73,8 @@ Cc: alexei.filippov@syntacore.com, Atish Patra <atishp@rivosinc.com>,
  palmer@dabbelt.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
  bin.meng@windriver.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
 X-Mailer: b4 0.15-dev-13183
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=atishp@rivosinc.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=atishp@rivosinc.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,79 +96,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have TLB related event call back available now. Invoke
-them from generic cpu helper code so that other machines can
-implement those as well in the future. The virt machine is
-the only user for now though.
+The virt machine implementation relies on the SBI PMU extension.
+The OpenSBI implementation requires a PMU specific DT node that
+is currently encodes the counter and PMU events mapping.
+As the PMU DT node encodes the platform specific event encodings,
+it should be implement in platform specific code instead of generic
+PMU code.
+
+Move the PMU DT node generation code from virt.c from common pmu
+code.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- target/riscv/cpu_helper.c | 21 +++++++--------------
- target/riscv/pmu.c        |  2 +-
- target/riscv/pmu.h        |  2 +-
- 3 files changed, 9 insertions(+), 16 deletions(-)
+ hw/riscv/virt.c    | 21 +++++++++++++++++++--
+ target/riscv/pmu.c | 36 ------------------------------------
+ target/riscv/pmu.h |  1 -
+ 3 files changed, 19 insertions(+), 39 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 0f1655a221bd..5161fc86dbfe 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1295,23 +1295,16 @@ void riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
- 
- static void pmu_tlb_fill_incr_ctr(RISCVCPU *cpu, MMUAccessType access_type)
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index ffda6d65d673..056afe6a6ceb 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -792,11 +792,28 @@ static void create_fdt_pmu(RISCVVirtState *s)
  {
--    enum virt_pmu_event_idx pmu_event_type;
-+    uint64_t event_type = ULONG_MAX;
-+    CPURISCVState *env = &cpu->env;
+     g_autofree char *pmu_name = g_strdup_printf("/pmu");
+     MachineState *ms = MACHINE(s);
+-    RISCVCPU hart = s->soc[0].harts[0];
++    uint32_t fdt_event_ctr_map[15] = {};
++    int i;
  
--    switch (access_type) {
--    case MMU_INST_FETCH:
--        pmu_event_type = VIRT_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS;
--        break;
--    case MMU_DATA_LOAD:
--        pmu_event_type = VIRT_PMU_EVENT_CACHE_DTLB_READ_MISS;
--        break;
--    case MMU_DATA_STORE:
--        pmu_event_type = VIRT_PMU_EVENT_CACHE_DTLB_WRITE_MISS;
--        break;
--    default:
--        return;
-+    if (env->pmu_efuncs.get_tlb_access_id) {
-+        event_type = env->pmu_efuncs.get_tlb_access_id(cpu, access_type);
-     }
- 
--    riscv_pmu_incr_ctr(cpu, pmu_event_type);
-+    if (event_type != ULONG_MAX) {
-+        riscv_pmu_incr_ctr(cpu, event_type);
+     qemu_fdt_add_subnode(ms->fdt, pmu_name);
+     qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
+-    riscv_pmu_generate_fdt_node(ms->fdt, hart.pmu_avail_ctrs, pmu_name);
++
++    /*
++     * To keep it simple, any event can be mapped to any programmable counters
++     * in QEMU. The generic cycle & instruction count events can also be
++     * monitored using programmable counters. In that case, mcycle & minstret
++     * must continue to provide the correct value as well. Heterogeneous PMU per
++     * hart is not supported yet. Thus, number of counters are same across all
++     * harts.
++     */
++    for (i = 0; i < ARRAY_SIZE(pmu_events_arr); i++) {
++        fdt_event_ctr_map[0 + i * 3] = cpu_to_be32(pmu_events_arr[i].event_id);
++        fdt_event_ctr_map[1 + i * 3] = cpu_to_be32(pmu_events_arr[i].event_id);
++        fdt_event_ctr_map[2 + i * 3] = cpu_to_be32(pmu_events_arr[i].counter_mask);
 +    }
++    /* This a OpenSBI specific DT property documented in OpenSBI docs */
++    qemu_fdt_setprop(ms->fdt, pmu_name, "riscv,event-to-mhpmcounters",
++                     fdt_event_ctr_map, sizeof(fdt_event_ctr_map));
  }
  
- bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
 diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 24c2fe82c247..e80f0f911fa3 100644
+index e80f0f911fa3..dd0a18ae3dc1 100644
 --- a/target/riscv/pmu.c
 +++ b/target/riscv/pmu.c
-@@ -274,7 +274,7 @@ void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-     riscv_pmu_icount_update_priv(env, newpriv, new_virt);
- }
+@@ -27,42 +27,6 @@
  
--int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum virt_pmu_event_idx event_idx)
-+int riscv_pmu_incr_ctr(RISCVCPU *cpu, uint64_t event_idx)
+ #define RISCV_TIMEBASE_FREQ 1000000000 /* 1Ghz */
+ 
+-/*
+- * To keep it simple, any event can be mapped to any programmable counters in
+- * QEMU. The generic cycle & instruction count events can also be monitored
+- * using programmable counters. In that case, mcycle & minstret must continue
+- * to provide the correct value as well. Heterogeneous PMU per hart is not
+- * supported yet. Thus, number of counters are same across all harts.
+- */
+-void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name)
+-{
+-    uint32_t fdt_event_ctr_map[15] = {};
+-
+-   fdt_event_ctr_map[0] = cpu_to_be32(VIRT_PMU_EVENT_HW_CPU_CYCLES);
+-   fdt_event_ctr_map[1] = cpu_to_be32(VIRT_PMU_EVENT_HW_CPU_CYCLES);
+-   fdt_event_ctr_map[2] = cpu_to_be32(cmask | 1 << 0);
+-
+-   fdt_event_ctr_map[3] = cpu_to_be32(VIRT_PMU_EVENT_HW_INSTRUCTIONS);
+-   fdt_event_ctr_map[4] = cpu_to_be32(VIRT_PMU_EVENT_HW_INSTRUCTIONS);
+-   fdt_event_ctr_map[5] = cpu_to_be32(cmask | 1 << 2);
+-
+-   fdt_event_ctr_map[6] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_DTLB_READ_MISS);
+-   fdt_event_ctr_map[7] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_DTLB_READ_MISS);
+-   fdt_event_ctr_map[8] = cpu_to_be32(cmask);
+-
+-   fdt_event_ctr_map[9] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_DTLB_WRITE_MISS);
+-   fdt_event_ctr_map[10] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_DTLB_WRITE_MISS);
+-   fdt_event_ctr_map[11] = cpu_to_be32(cmask);
+-
+-   fdt_event_ctr_map[12] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS);
+-   fdt_event_ctr_map[13] = cpu_to_be32(VIRT_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS);
+-   fdt_event_ctr_map[14] = cpu_to_be32(cmask);
+-
+-   /* This a OpenSBI specific DT property documented in OpenSBI docs */
+-   qemu_fdt_setprop(fdt, pmu_name, "riscv,event-to-mhpmcounters",
+-                    fdt_event_ctr_map, sizeof(fdt_event_ctr_map));
+-}
+-
+ static bool riscv_pmu_counter_valid(RISCVCPU *cpu, uint32_t ctr_idx)
  {
-     uint32_t ctr_idx;
-     int ret;
+     if (ctr_idx < 3 || ctr_idx >= RV_MAX_MHPMCOUNTERS ||
 diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 75a22d596b69..810ac2fae797 100644
+index 810ac2fae797..10505040d9e5 100644
 --- a/target/riscv/pmu.h
 +++ b/target/riscv/pmu.h
-@@ -30,7 +30,7 @@ void riscv_pmu_timer_cb(void *priv);
- void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
+@@ -31,7 +31,6 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
  int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
                                 uint32_t ctr_idx);
--int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum virt_pmu_event_idx event_idx);
-+int riscv_pmu_incr_ctr(RISCVCPU *cpu, uint64_t event_idx);
- void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
+ int riscv_pmu_incr_ctr(RISCVCPU *cpu, uint64_t event_idx);
+-void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
  int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
                            uint32_t ctr_idx);
+ void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
 
 -- 
 2.34.1
