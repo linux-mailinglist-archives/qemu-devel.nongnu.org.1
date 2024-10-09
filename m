@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22366995C13
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AFD995C11
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Oct 2024 02:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syKCP-0004ES-06; Tue, 08 Oct 2024 20:05:05 -0400
+	id 1syKCO-0004DN-D7; Tue, 08 Oct 2024 20:05:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCL-0004BZ-FC
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:01 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1syKCM-0004Cf-Jy
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:02 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1syKCJ-0002eK-FT
- for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:01 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-20c544d345cso2599225ad.1
- for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:04:59 -0700 (PDT)
+ id 1syKCK-0002es-K2
+ for qemu-devel@nongnu.org; Tue, 08 Oct 2024 20:05:02 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-7ae3d7222d4so5232425a12.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Oct 2024 17:05:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728432298; x=1729037098; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728432299; x=1729037099; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9LebsJbt4uExwr4Anb+4jbY7Oq0PbwNNghgu5qGnqlk=;
- b=esXxkkH3GgEWyPfW504SwtOcO9jaKgOgjveWvGPCxUOi5V1DphIuNrIbTkFI2to/Vn
- 9HTogTE3my8nVP0WHXgKPh2Y+wPdXj7KWZgR6ajm2jQnRInBXNfEafc/ZUAZ7pb0gUGP
- p+NJoXGIiiUGFZU3SxQIISf/ETHNUKboUyDsd0T2+HfNTBq1jqkkWlGf+x8iGwMYa1vK
- qlKmZX8IKDwpFzsWPO2HP47Ad19lBgHzQPALtRuAd4Qk9+8VWAYrVYgv0xJ97jElL/v7
- v62c2zcYhkCt4hbGGAgeJNHgSu6L88PA8sqcJN+nWyw6W4lcpG5C6QCOn4kV8gDlBz6J
- SubQ==
+ bh=hoQpjuwa20HwjACHrMlYHXe57YCg2K0w30eV5HVGvRc=;
+ b=SYMsuIHGwC3Jq0/0Pvmcsj3PZYiJvofyiTMeXa6wy1V4+xxh0iiVUrT5x9nn/v0Ku4
+ ppDaVI/KHL1NyHPEIDt6ohL4heMcs/GpggyciFeTocF59b4RGdaQTJlnmY82WW/UGx+X
+ A2M6MYoWfFqKrrz1O0A11iliqbKEvQoHcIow3OulRB6qBzUt32zGwi2xCyJYrvxZniDG
+ sSYoDastUSdctof8CANvFalV5LIAwKQNIcFB4aqFy+rPXkmMRoHVuKdDa8X6e9F1I544
+ QY4d7OwaJgRw7ew9OjedISxQpI1CKhe0U5y48z/ZqdvhnEDBOwCQJleqBova2n6YTyo2
+ btbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728432298; x=1729037098;
+ d=1e100.net; s=20230601; t=1728432299; x=1729037099;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9LebsJbt4uExwr4Anb+4jbY7Oq0PbwNNghgu5qGnqlk=;
- b=nVZOp+BBB2NPa3Ed6Isg4/G0Gm7h1PTFmf+rjzJK3oW+q8reMED0YVk+Da37Dq+sW3
- JYgdpyQMy8ABL3sp/ORsKZy91mAabIActGogsTPD4BWyGc8HyU2TfaRJs4yx7Cai1iow
- 66h9X8tc8vB26Uu2UdMK9YSqt0t4OSuizYh1bhfe3EQTPHWNkVouYyYvjmdqQ4jVsGT/
- gCTNCVWTC2YjCm/pT22miD/KGRk8vXNh3ApsCxBVFQONkWW8x26noErovQzO+HS42YQc
- KFZSJAKj2FlTbvLqM5ZMdxAVjiFe3Ov5zNiV3ExXma7Uih8YoIqPO9oT2GfN+wes7/No
- JT3Q==
-X-Gm-Message-State: AOJu0YyKlqIwpM+Mf7LPYqP1jpcQf2/pD4JK33OfOnL8/fRIQMivAPyq
- LYRWADqCCpuOV3dP9WSAs5rhhzkIKgOvQ3gBVXtZxjIIi2BVQPBMhdtKbqkjSadOucEU4utkQ/h
- H
-X-Google-Smtp-Source: AGHT+IFrjf/KG6jW0dXe87Xq6SyttisiiLp3ocVOdfABD+rqesa5TS+vrbt3d454eeR29R+9AWd9wA==
-X-Received: by 2002:a17:903:41cc:b0:206:b5b8:25dd with SMTP id
- d9443c01a7336-20c6352cdd6mr12193455ad.23.1728432298141; 
- Tue, 08 Oct 2024 17:04:58 -0700 (PDT)
+ bh=hoQpjuwa20HwjACHrMlYHXe57YCg2K0w30eV5HVGvRc=;
+ b=T40pB3/0ggjazjzR1GSLLtdsigSXxuxtyxI5t8NXYrn9D1rjZ83NDvQmL969y0aIwg
+ C1qjGXI6bLXpetmbFDVbfcB2lohoGn5nodXuHR1MhRw5IdfMTc78StHTfbmI30saGFmf
+ WZN4unQKQHykON1AnsQma8M03nb+XzdlNMpaVA14LEXX4Nofqh8nOg563QbokGWsLbff
+ Nmr3yq4XbWMMiYAnbv7uf9ypti2O2lFQ320/EZIjdAEBvXf3kGZgzb5Gf8pl8N002uE5
+ 8PU6cpMX/FnKTHm5B9coRYeXU9x3f1Qo7n5toU86IStEgkfxyRWc/TyHET1TrLSsPgoE
+ ZPng==
+X-Gm-Message-State: AOJu0YxtyoN4zlQ7oVC6M3uxHb8iUdyX3rIp7HZAN+JgybytIx8XgJUO
+ uwApPIpevQUDOictMEP1M6Ym4XpNuWcdjTKHcuMfslp8YS8oYJckk9A7IFqu69oho3SNNo1yQql
+ s
+X-Google-Smtp-Source: AGHT+IEeu9+lnXWIBhz7pgvstBsOBX6KI79/ZD6KPp8fSOXLhjN4UEVyBQB1oHIG/Wwjwoi0un6x8Q==
+X-Received: by 2002:a17:903:2b05:b0:20b:6d8c:463 with SMTP id
+ d9443c01a7336-20c637557d0mr12308135ad.35.1728432299121; 
+ Tue, 08 Oct 2024 17:04:59 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.57
+ d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.04.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Oct 2024 17:04:57 -0700 (PDT)
+ Tue, 08 Oct 2024 17:04:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
- Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 03/20] include/exec/memop: Rename get_alignment_bits
-Date: Tue,  8 Oct 2024 17:04:36 -0700
-Message-ID: <20241009000453.315652-4-richard.henderson@linaro.org>
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 04/20] include/exec/memop: Introduce memop_atomicity_bits
+Date: Tue,  8 Oct 2024 17:04:37 -0700
+Message-ID: <20241009000453.315652-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009000453.315652-1-richard.henderson@linaro.org>
 References: <20241009000453.315652-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,202 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename to use "memop_" prefix, like other functions
-that operate on MemOp.
+Split out of mmu_lookup.
 
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memop.h           | 4 ++--
- accel/tcg/cputlb.c             | 4 ++--
- accel/tcg/user-exec.c          | 4 ++--
- target/arm/tcg/translate-a64.c | 4 ++--
- target/xtensa/translate.c      | 2 +-
- tcg/tcg-op-ldst.c              | 6 +++---
- tcg/tcg.c                      | 2 +-
- tcg/arm/tcg-target.c.inc       | 4 ++--
- tcg/sparc64/tcg-target.c.inc   | 2 +-
- 9 files changed, 16 insertions(+), 16 deletions(-)
+ include/exec/memop.h | 24 ++++++++++++++++++++++++
+ accel/tcg/cputlb.c   | 16 ++--------------
+ 2 files changed, 26 insertions(+), 14 deletions(-)
 
 diff --git a/include/exec/memop.h b/include/exec/memop.h
-index 97720a8ee7..f53bf618c6 100644
+index f53bf618c6..b699bf7688 100644
 --- a/include/exec/memop.h
 +++ b/include/exec/memop.h
-@@ -171,12 +171,12 @@ static inline bool memop_big_endian(MemOp op)
+@@ -193,4 +193,28 @@ static inline unsigned memop_alignment_bits(MemOp memop)
+     return a;
  }
  
- /**
-- * get_alignment_bits
-+ * memop_alignment_bits:
-  * @memop: MemOp value
-  *
-  * Extract the alignment size from the memop.
-  */
--static inline unsigned get_alignment_bits(MemOp memop)
-+static inline unsigned memop_alignment_bits(MemOp memop)
- {
-     unsigned a = memop & MO_AMASK;
- 
++/*
++ * memop_atomicity_bits:
++ * @memop: MemOp value
++ *
++ * Extract the atomicity size from the memop.
++ */
++static inline unsigned memop_atomicity_bits(MemOp memop)
++{
++    unsigned size = memop & MO_SIZE;
++
++    switch (memop & MO_ATOM_MASK) {
++    case MO_ATOM_NONE:
++        size = MO_8;
++        break;
++    case MO_ATOM_IFALIGN_PAIR:
++    case MO_ATOM_WITHIN16_PAIR:
++        size = size ? size - 1 : 0;
++        break;
++    default:
++        break;
++    }
++    return size;
++}
++
+ #endif
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index fd6459b695..a975fe5f89 100644
+index a975fe5f89..35cda1e2b0 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1709,7 +1709,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     tcg_debug_assert(l->mmu_idx < NB_MMU_MODES);
- 
-     /* Handle CPU specific unaligned behaviour */
--    a_bits = get_alignment_bits(l->memop);
-+    a_bits = memop_alignment_bits(l->memop);
-     if (addr & ((1 << a_bits) - 1)) {
-         cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
-     }
-@@ -1797,7 +1797,7 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     uintptr_t index;
-     CPUTLBEntry *tlbe;
-     vaddr tlb_addr;
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 7ddc47b0ba..08a6df9987 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -959,7 +959,7 @@ void page_reset_target_data(target_ulong start, target_ulong last) { }
- static void *cpu_mmu_lookup(CPUState *cpu, vaddr addr,
-                             MemOp mop, uintptr_t ra, MMUAccessType type)
- {
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     void *ret;
- 
-     /* Enforce guest required alignment.  */
-@@ -1241,7 +1241,7 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                                int size, uintptr_t retaddr)
- {
-     MemOp mop = get_memop(oi);
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     void *ret;
- 
-     /* Enforce guest required alignment.  */
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 071b6349fc..ec0b1ee252 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -294,7 +294,7 @@ static TCGv_i64 gen_mte_check1_mmuidx(DisasContext *s, TCGv_i64 addr,
-         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
-         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
-         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
--        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(memop));
-+        desc = FIELD_DP32(desc, MTEDESC, ALIGN, memop_alignment_bits(memop));
-         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, memop_size(memop) - 1);
- 
-         ret = tcg_temp_new_i64();
-@@ -326,7 +326,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
-         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
-         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
-         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
--        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(single_mop));
-+        desc = FIELD_DP32(desc, MTEDESC, ALIGN, memop_alignment_bits(single_mop));
-         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, total_size - 1);
- 
-         ret = tcg_temp_new_i64();
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index 75b7bfda4c..f4da4a40f9 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -521,7 +521,7 @@ static MemOp gen_load_store_alignment(DisasContext *dc, MemOp mop,
-         mop |= MO_ALIGN;
-     }
-     if (!option_enabled(dc, XTENSA_OPTION_UNALIGNED_EXCEPTION)) {
--        tcg_gen_andi_i32(addr, addr, ~0 << get_alignment_bits(mop));
-+        tcg_gen_andi_i32(addr, addr, ~0 << memop_alignment_bits(mop));
-     }
-     return mop;
- }
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 23dc807f11..a318011229 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -45,7 +45,7 @@ static void check_max_alignment(unsigned a_bits)
- 
- static MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
- {
--    unsigned a_bits = get_alignment_bits(op);
-+    unsigned a_bits = memop_alignment_bits(op);
- 
-     check_max_alignment(a_bits);
- 
-@@ -559,7 +559,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
-     TCGv_i64 ext_addr = NULL;
-     TCGOpcode opc;
- 
--    check_max_alignment(get_alignment_bits(memop));
-+    check_max_alignment(memop_alignment_bits(memop));
-     tcg_gen_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
- 
-     /* In serial mode, reduce atomicity. */
-@@ -676,7 +676,7 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
-     TCGv_i64 ext_addr = NULL;
-     TCGOpcode opc;
- 
--    check_max_alignment(get_alignment_bits(memop));
-+    check_max_alignment(memop_alignment_bits(memop));
-     tcg_gen_req_mo(TCG_MO_ST_LD | TCG_MO_ST_ST);
- 
-     /* In serial mode, reduce atomicity. */
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 34e3056380..5decd83cf4 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -5506,7 +5506,7 @@ static void tcg_reg_alloc_call(TCGContext *s, TCGOp *op)
- static TCGAtomAlign atom_and_align_for_opc(TCGContext *s, MemOp opc,
-                                            MemOp host_atom, bool allow_two_ops)
- {
--    MemOp align = get_alignment_bits(opc);
-+    MemOp align = memop_alignment_bits(opc);
-     MemOp size = opc & MO_SIZE;
-     MemOp half = size ? size - 1 : 0;
-     MemOp atom = opc & MO_ATOM_MASK;
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 3de5f50b62..56072d89a2 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -1587,7 +1587,7 @@ static void tcg_out_qemu_ld_direct(TCGContext *s, MemOp opc, TCGReg datalo,
-         tcg_debug_assert((datalo & 1) == 0);
-         tcg_debug_assert(datahi == datalo + 1);
-         /* LDRD requires alignment; double-check that. */
--        if (get_alignment_bits(opc) >= MO_64) {
-+        if (memop_alignment_bits(opc) >= MO_64) {
-             if (h.index < 0) {
-                 tcg_out_ldrd_8(s, h.cond, datalo, h.base, 0);
-                 break;
-@@ -1691,7 +1691,7 @@ static void tcg_out_qemu_st_direct(TCGContext *s, MemOp opc, TCGReg datalo,
-         tcg_debug_assert((datalo & 1) == 0);
-         tcg_debug_assert(datahi == datalo + 1);
-         /* STRD requires alignment; double-check that. */
--        if (get_alignment_bits(opc) >= MO_64) {
-+        if (memop_alignment_bits(opc) >= MO_64) {
-             if (h.index < 0) {
-                 tcg_out_strd_8(s, h.cond, datalo, h.base, 0);
-             } else {
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 176c98740b..32f9ec24b5 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1133,7 +1133,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-      * Otherwise, test for at least natural alignment and defer
-      * everything else to the helper functions.
+@@ -1767,20 +1767,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * Device memory type require alignment.
       */
--    if (s_bits != get_alignment_bits(opc)) {
-+    if (s_bits != memop_alignment_bits(opc)) {
-         tcg_debug_assert(check_fit_tl(a_mask, 13));
-         tcg_out_arithi(s, TCG_REG_G0, addr_reg, a_mask, ARITH_ANDCC);
- 
+     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
+-        MemOp size = l->memop & MO_SIZE;
+-
+-        switch (l->memop & MO_ATOM_MASK) {
+-        case MO_ATOM_NONE:
+-            size = MO_8;
+-            break;
+-        case MO_ATOM_IFALIGN_PAIR:
+-        case MO_ATOM_WITHIN16_PAIR:
+-            size = size ? size - 1 : 0;
+-            break;
+-        default:
+-            break;
+-        }
+-        if (addr & ((1 << size) - 1)) {
++        a_bits = memop_atomicity_bits(l->memop);
++        if (addr & ((1 << a_bits) - 1)) {
+             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
+         }
+     }
 -- 
 2.43.0
 
