@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B29997945
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 126B699794E
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 01:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sygPO-000340-Sw; Wed, 09 Oct 2024 19:48:03 -0400
+	id 1sygQ5-0003Ks-Hx; Wed, 09 Oct 2024 19:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPK-00033H-5H
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:47:54 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ id 1sygPM-00034p-Bl
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:47:56 -0400
+Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sygPI-0006e6-CG
- for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:47:53 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-460414d5250so1071111cf.0
- for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:47:51 -0700 (PDT)
+ id 1sygPK-0006eQ-3M
+ for qemu-devel@nongnu.org; Wed, 09 Oct 2024 19:47:56 -0400
+Received: by mail-qv1-xf2c.google.com with SMTP id
+ 6a1803df08f44-6cbd57cc35bso6901176d6.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Oct 2024 16:47:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1728517670; x=1729122470; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1728517673; x=1729122473; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=smtARH6HYgdJtrl2FWYeE5W3midpBOU+64GAZEvxYdY=;
- b=Mw69cmn6ybdHl7v6R4X8fqy8IViaB6bouOopSLJl0hFcn0LMHxwrOQDkSZcEJuxGmr
- Y1EMBCKkQGtNU9BrGwihb08/+mBYubbnkOe4aUFZGIE+03KjszqOPmDqeoj7cYFQnhQI
- jKhr9s4N6Vu2Wp98aRxDbRDEk/BeCRvn8UjWf87pHIhBE2Ei/LKkUUiaEjLfldFLFaeC
- HDBWOTJKYjBDW/wM3edu9oJeaHhDV8DF12j8jrZWboU08P5EGr8aIiyqhccKDHJ0g+Dl
- hWfPMtkcdfIG/Uu7hHfKxhZSZm9Oy3bgbIEd41/97xUPAPPquCHZ1ijfLXQB7wbp/ta8
- uYPg==
+ bh=6rh4iSF4JcVdFm8rItOAee3jMjOlBonh6C/ENTJRWd4=;
+ b=XEfvbbOZHss6JWlThT/TvcdCCy6eO/fPS3Z+f29cai+qdH0dEuNQ2WDsPd+rZ3Gr4D
+ o1aAQqiMiBzzb3Q+AD+Wi8qrLPm3TJ0bm3o5HR0PCDbacuUPuHa1JDKpeF1kpepoIPor
+ RBLbaEZsqIZqsmaEVGLh3I+aJmxv+0ZV2hywbarJs1XisnhphxJCqS4CIs9Itm5AhsaR
+ Z17n3sdb+1vBcF45tVDDOShXIxdnzac9pL5BVGnlHLI7whss4QaVg2RIYZZ3sMkNZGHi
+ GyfFN4n282/KXtU098rTr+WSU/a8OT9+foxBqV9IZaEE0daTLaBE2JwUgWi+w6weoPoz
+ 6UXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728517670; x=1729122470;
+ d=1e100.net; s=20230601; t=1728517673; x=1729122473;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=smtARH6HYgdJtrl2FWYeE5W3midpBOU+64GAZEvxYdY=;
- b=myQ9dBld9uIfoSqnmBKMs54W3o3aEpKEEvm6qOqACCG+6Kvv6zTGWKDmCcLTjDzkHV
- XganzjcgpkcdNCB+3bkXDm8tPNcjAD4XbyWaYlx9oB5cYHHiELU0LDTghwDj/HY1Kmpi
- d/A4XCDXb/7hBpuefhol8jl/0Op+Zfnk3ZyN8DdoYjySan1AOwA3w/L8m4smO4kfZYOm
- 0SwcpaXNmVzMrpL37mZAYHHYcD7z/qAR8UlLAx4k6cexAeSRxx6P/Cv4S8CTzskWGg5I
- yM/ak11k+ILumouAoKIftzdZOHABH/iqkcvUjc2aRcqxYyz4RMFLec3863YH7q3aHLxq
- 7v/g==
+ bh=6rh4iSF4JcVdFm8rItOAee3jMjOlBonh6C/ENTJRWd4=;
+ b=ghWjvIrO7Gu8HrcyawpcPE7bm+JvAnkYIOb9wQ89lGzVzxkMe4yvobXZO0nAvZ8WGB
+ AWucE16SjV2r4Snu5B7YE9V7ZimyRM57uYwIJcQ5k+YGWcePtGPMkMVOWankkxANbvKp
+ i/KaVvIjyJ/iQlDKEBqpdWvUGwNZSYQ5PQz5+OO8vhLykBBuwV/Lfap5YGayGXh1jYOg
+ frgA+3jsGS0WHOKqtUqblAoblFBjGKVfw5EUECAHj/hTHbvEu678TVyxpLi2kTA5gvan
+ 7pLWNMPn9lOMEGThAzNzTTVBf1arJQKiuOyxQdqeaiF4yVxc4Ivb4olbK1Yk0rS5ORJ5
+ /bDA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDkFfkzV7FvAt8vsY1EXo339iZpM8rHcZFkJHWXj7iO0ZY3rcI8KwPEW6T3uNqYyuaAd4Hr8Oqpa7W@nongnu.org
-X-Gm-Message-State: AOJu0YxQgT+GVfxo8G864d1JLplPsVL0D01CUFVuVjcf7ExMfX6CRPIP
- WwQNCu6R5/YhNYVcJsMMbi9/dU7M57Cb3OlTIEYwVcQkB8hD88bEg4mW8DlO7aU=
-X-Google-Smtp-Source: AGHT+IHkfDL8BsEP2++RGoxorCQCEq++h1PQWkbsHGkQnPI+avOSYCFxCEsB3+HgNU9BvN0VHUx8Kg==
-X-Received: by 2002:a05:6214:5d8b:b0:6cb:8267:e285 with SMTP id
- 6a1803df08f44-6cbc91f4d0dmr44132516d6.0.1728517670382; 
- Wed, 09 Oct 2024 16:47:50 -0700 (PDT)
+ AJvYcCW65bbESjdQ6xPDMjpd9ZT6OpdfL3EH6oWqJczEU7QuQSU2Z7WAJjQx658869rpEU08+LJkZWFi+NKW@nongnu.org
+X-Gm-Message-State: AOJu0YxssSXrAzd65LompWbg7Eaesx4mRtUG2aW1y+YXyvYH96rJR4K9
+ CLKrhWDCBHrVlgUs8eze7lkpq+ehi0654TXXdh28Z+rIrX1sxVYhnmSrj65JeDI=
+X-Google-Smtp-Source: AGHT+IEKMgMaN1oKXDZ4B5dJ1c1frQ5fvuc7hbHG52TAHGsxjFdHYK8kyaf5doskNvebH6Lll4Mp2g==
+X-Received: by 2002:a05:6214:2e44:b0:6cb:bf0d:a56d with SMTP id
+ 6a1803df08f44-6cbe521e0a9mr23184856d6.10.1728517673028; 
+ Wed, 09 Oct 2024 16:47:53 -0700 (PDT)
 Received: from DY4X0N7X05.bytedance.net ([2605:a7c0:0:301::44])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6cbe85d856fsm264386d6.72.2024.10.09.16.47.48
+ 6a1803df08f44-6cbe85d856fsm264386d6.72.2024.10.09.16.47.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 09 Oct 2024 16:47:50 -0700 (PDT)
+ Wed, 09 Oct 2024 16:47:52 -0700 (PDT)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,19 +71,18 @@ To: "Dr. David Alan Gilbert" <dave@treblig.org>,
 Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Shivam Kumar" <shivam.kumar1@nutanix.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PATCH v6 07/12] util/dsa: Implement DSA task asynchronous submission
- and wait for completion.
-Date: Wed,  9 Oct 2024 16:46:05 -0700
-Message-Id: <20241009234610.27039-8-yichen.wang@bytedance.com>
+ "Yichen Wang" <yichen.wang@bytedance.com>
+Subject: [PATCH v6 08/12] migration/multifd: Add new migration option for
+ multifd DSA offloading.
+Date: Wed,  9 Oct 2024 16:46:06 -0700
+Message-Id: <20241009234610.27039-9-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241009234610.27039-1-yichen.wang@bytedance.com>
 References: <20241009234610.27039-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qt1-x830.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,219 +107,340 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Xiang <hao.xiang@linux.dev>
 
-* Add a DSA task completion callback.
-* DSA completion thread will call the tasks's completion callback
-on every task/batch task completion.
-* DSA submission path to wait for completion.
-* Implement CPU fallback if DSA is not able to complete the task.
+Intel DSA offloading is an optional feature that turns on if
+proper hardware and software stack is available. To turn on
+DSA offloading in multifd live migration by setting:
+
+zero-page-detection=dsa-accel
+dsa-accel-path=[dsa_dev_path1] [dsa_dev_path2] ... [dsa_dev_pathX]
+
+This feature is turned off by default.
 
 Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
 ---
- include/qemu/dsa.h |  14 +++++
- util/dsa.c         | 125 +++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 135 insertions(+), 4 deletions(-)
+ hmp-commands.hx                |  2 +-
+ include/qemu/dsa.h             | 13 +++++++++++++
+ migration/migration-hmp-cmds.c | 19 ++++++++++++++++++-
+ migration/options.c            | 30 ++++++++++++++++++++++++++++++
+ migration/options.h            |  1 +
+ qapi/migration.json            | 32 ++++++++++++++++++++++++++++----
+ util/dsa.c                     | 31 +++++++++++++++++++++++++++++++
+ 7 files changed, 122 insertions(+), 6 deletions(-)
 
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 06746f0afc..0e04eac7c7 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1009,7 +1009,7 @@ ERST
+ 
+     {
+         .name       = "migrate_set_parameter",
+-        .args_type  = "parameter:s,value:s",
++        .args_type  = "parameter:s,value:S",
+         .params     = "parameter value",
+         .help       = "Set the parameter for migration",
+         .cmd        = hmp_migrate_set_parameter,
 diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
-index 89841a6ffa..a3b502ee41 100644
+index a3b502ee41..b1bb6daad2 100644
 --- a/include/qemu/dsa.h
 +++ b/include/qemu/dsa.h
-@@ -123,6 +123,20 @@ buffer_zero_batch_task_init(int batch_size);
+@@ -100,6 +100,13 @@ void qemu_dsa_stop(void);
   */
- void buffer_zero_batch_task_destroy(QemuDsaBatchTask *task);
+ void qemu_dsa_cleanup(void);
  
 +/**
-+ * @brief Performs buffer zero comparison on a DSA batch task synchronously.
++ * @brief Check if DSA is supported.
 + *
-+ * @param batch_task A pointer to the batch task.
-+ * @param buf An array of memory buffers.
-+ * @param count The number of buffers in the array.
-+ * @param len The buffer length.
-+ *
-+ * @return Zero if successful, otherwise non-zero.
++ * @return True if DSA is supported, otherwise false.
 + */
-+int
-+buffer_is_zero_dsa_batch_sync(QemuDsaBatchTask *batch_task,
-+                              const void **buf, size_t count, size_t len);
++bool qemu_dsa_is_supported(void);
 +
- #else
+ /**
+  * @brief Check if DSA is running.
+  *
+@@ -141,6 +148,12 @@ buffer_is_zero_dsa_batch_sync(QemuDsaBatchTask *batch_task,
  
  typedef struct QemuDsaBatchTask {} QemuDsaBatchTask;
+ 
++static inline bool qemu_dsa_is_supported(void)
++{
++    return false;
++}
++
++
+ static inline bool qemu_dsa_is_running(void)
+ {
+     return false;
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 20d1a6e219..983f13b73c 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -312,7 +312,16 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: '%s'\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
+             params->tls_authz);
+-
++        if (params->has_dsa_accel_path) {
++            strList *dsa_accel_path = params->dsa_accel_path;
++            monitor_printf(mon, "%s:",
++                MigrationParameter_str(MIGRATION_PARAMETER_DSA_ACCEL_PATH));
++            while (dsa_accel_path) {
++                monitor_printf(mon, " '%s'", dsa_accel_path->value);
++                dsa_accel_path = dsa_accel_path->next;
++            }
++            monitor_printf(mon, "\n");
++        }
+         if (params->has_block_bitmap_mapping) {
+             const BitmapMigrationNodeAliasList *bmnal;
+ 
+@@ -563,6 +572,14 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_x_checkpoint_delay = true;
+         visit_type_uint32(v, param, &p->x_checkpoint_delay, &err);
+         break;
++    case MIGRATION_PARAMETER_DSA_ACCEL_PATH:
++        p->has_dsa_accel_path = true;
++        g_autofree char **strv = g_strsplit(valuestr ? : "", " ", -1);
++        strList **tail = &p->dsa_accel_path;
++        for (int i = 0; strv[i]; i++) {
++            QAPI_LIST_APPEND(tail, strv[i]);
++        }
++        break;
+     case MIGRATION_PARAMETER_MULTIFD_CHANNELS:
+         p->has_multifd_channels = true;
+         visit_type_uint8(v, param, &p->multifd_channels, &err);
+diff --git a/migration/options.c b/migration/options.c
+index 147cd2b8fd..a0b3a7d291 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -13,6 +13,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qemu/dsa.h"
+ #include "exec/target_page.h"
+ #include "qapi/clone-visitor.h"
+ #include "qapi/error.h"
+@@ -832,6 +833,13 @@ const char *migrate_tls_creds(void)
+     return s->parameters.tls_creds;
+ }
+ 
++const strList *migrate_dsa_accel_path(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->parameters.dsa_accel_path;
++}
++
+ const char *migrate_tls_hostname(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -945,6 +953,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->zero_page_detection = s->parameters.zero_page_detection;
+     params->has_direct_io = true;
+     params->direct_io = s->parameters.direct_io;
++    params->has_dsa_accel_path = true;
++    params->dsa_accel_path = QAPI_CLONE(strList, s->parameters.dsa_accel_path);
+ 
+     return params;
+ }
+@@ -953,6 +963,7 @@ void migrate_params_init(MigrationParameters *params)
+ {
+     params->tls_hostname = g_strdup("");
+     params->tls_creds = g_strdup("");
++    params->dsa_accel_path = NULL;
+ 
+     /* Set has_* up only for parameter checks */
+     params->has_throttle_trigger_threshold = true;
+@@ -1165,6 +1176,14 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+         return false;
+     }
+ 
++    if (params->has_zero_page_detection &&
++        params->zero_page_detection == ZERO_PAGE_DETECTION_DSA_ACCEL) {
++        if (!qemu_dsa_is_supported()) {
++            error_setg(errp, "DSA acceleration is not supported.");
++            return false;
++        }
++    }
++
+     return true;
+ }
+ 
+@@ -1278,6 +1297,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_direct_io) {
+         dest->direct_io = params->direct_io;
+     }
++
++    if (params->has_dsa_accel_path) {
++        dest->has_dsa_accel_path = true;
++        dest->dsa_accel_path = params->dsa_accel_path;
++    }
+ }
+ 
+ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+@@ -1410,6 +1434,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_direct_io) {
+         s->parameters.direct_io = params->direct_io;
+     }
++    if (params->has_dsa_accel_path) {
++        qapi_free_strList(s->parameters.dsa_accel_path);
++        s->parameters.has_dsa_accel_path = true;
++        s->parameters.dsa_accel_path =
++            QAPI_CLONE(strList, params->dsa_accel_path);
++    }
+ }
+ 
+ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+diff --git a/migration/options.h b/migration/options.h
+index a0bd6edc06..8198b220bd 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -86,6 +86,7 @@ const char *migrate_tls_creds(void);
+ const char *migrate_tls_hostname(void);
+ uint64_t migrate_xbzrle_cache_size(void);
+ ZeroPageDetection migrate_zero_page_detection(void);
++const strList *migrate_dsa_accel_path(void);
+ 
+ /* parameters helpers */
+ 
+diff --git a/qapi/migration.json b/qapi/migration.json
+index b66cccf107..d8b42ceae6 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -626,10 +626,14 @@
+ #     multifd migration is enabled, else in the main migration thread
+ #     as for @legacy.
+ #
++# @dsa-accel: Perform zero page checking with the DSA accelerator
++#     offloading in multifd sender thread if multifd migration is
++#     enabled, else in the main migration thread as for @legacy.
++#
+ # Since: 9.0
+ ##
+ { 'enum': 'ZeroPageDetection',
+-  'data': [ 'none', 'legacy', 'multifd' ] }
++  'data': [ 'none', 'legacy', 'multifd', 'dsa-accel' ] }
+ 
+ ##
+ # @BitmapMigrationBitmapAliasTransform:
+@@ -837,6 +841,12 @@
+ #     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
++# @dsa-accel-path: If enabled, use DSA accelerator offloading for
++#     certain memory operations. Enable DSA accelerator for zero
++#     page detection offloading by setting the @zero-page-detection
++#     to dsa-accel. This parameter defines the dsa device path, and
++#     defaults to an empty list.  (Since 9.2)
++#
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+@@ -855,7 +865,7 @@
+            'cpu-throttle-initial', 'cpu-throttle-increment',
+            'cpu-throttle-tailslow',
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+-           'avail-switchover-bandwidth', 'downtime-limit',
++           'avail-switchover-bandwidth', 'downtime-limit', 'dsa-accel-path',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+@@ -1018,6 +1028,12 @@
+ #     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
++# @dsa-accel-path: If enabled, use DSA accelerator offloading for
++#     certain memory operations. Enable DSA accelerator for zero
++#     page detection offloading by setting the @zero-page-detection
++#     to dsa-accel. This parameter defines the dsa device path, and
++#     defaults to an empty list.  (Since 9.2)
++#
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+@@ -1063,7 +1079,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+-            '*direct-io': 'bool' } }
++            '*direct-io': 'bool',
++            '*dsa-accel-path': [ 'str' ] } }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1228,6 +1245,12 @@
+ #     See description in @ZeroPageDetection.  Default is 'multifd'.
+ #     (since 9.0)
+ #
++# @dsa-accel-path: If enabled, use DSA accelerator offloading for
++#     certain memory operations. Enable DSA accelerator for zero
++#     page detection offloading by setting the @zero-page-detection
++#     to dsa-accel. This parameter defines the dsa device path, and
++#     defaults to an empty list.  (Since 9.2)
++#
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+@@ -1270,7 +1293,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+-            '*direct-io': 'bool' } }
++            '*direct-io': 'bool',
++            '*dsa-accel-path': [ 'str' ] } }
+ 
+ ##
+ # @query-migrate-parameters:
 diff --git a/util/dsa.c b/util/dsa.c
-index d9c066ff00..cbaa47c360 100644
+index cbaa47c360..eeede3c0c7 100644
 --- a/util/dsa.c
 +++ b/util/dsa.c
-@@ -435,6 +435,42 @@ poll_completion(struct dsa_completion_record *completion,
-     return 0;
+@@ -23,6 +23,7 @@
+ #include "qemu/bswap.h"
+ #include "qemu/error-report.h"
+ #include "qemu/rcu.h"
++#include <cpuid.h>
+ 
+ #pragma GCC push_options
+ #pragma GCC target("enqcmd")
+@@ -691,6 +692,36 @@ static void dsa_completion_thread_stop(void *opaque)
+     qemu_sem_destroy(&thread_context->sem_init_done);
  }
  
 +/**
-+ * @brief Helper function to use CPU to complete a single
-+ *        zero page checking task.
++ * @brief Check if DSA is supported.
 + *
-+ * @param completion A pointer to a DSA task completion record.
-+ * @param descriptor A pointer to a DSA task descriptor.
-+ * @param result A pointer to the result of a zero page checking.
++ * @return True if DSA is supported, otherwise false.
 + */
-+static void
-+task_cpu_fallback_int(struct dsa_completion_record *completion,
-+                      struct dsa_hw_desc *descriptor, bool *result)
++bool qemu_dsa_is_supported(void)
 +{
-+    const uint8_t *buf;
-+    size_t len;
-+
-+    if (completion->status == DSA_COMP_SUCCESS) {
-+        return;
-+    }
-+
 +    /*
-+     * DSA was able to partially complete the operation. Check the
-+     * result. If we already know this is not a zero page, we can
-+     * return now.
++     * movdir64b is indicated by bit 28 of ecx in CPUID leaf 7, subleaf 0.
++     * enqcmd is indicated by bit 29 of ecx in CPUID leaf 7, subleaf 0.
++     * Doc: https://cdrdv2-public.intel.com/819680/architecture-instruction-\
++     *      set-extensions-programming-reference.pdf
 +     */
-+    if (completion->bytes_completed != 0 && completion->result != 0) {
-+        *result = false;
-+        return;
++    uint32_t eax, ebx, ecx, edx;
++    bool movedirb_enabled;
++    bool enqcmd_enabled;
++
++    __get_cpuid_count(7, 0, &eax, &ebx, &ecx, &edx);
++    movedirb_enabled = (ecx >> 28) & 0x1;
++    if (!movedirb_enabled) {
++        return false;
++    }
++    enqcmd_enabled = (ecx >> 29) & 0x1;
++    if (!enqcmd_enabled) {
++        return false;
 +    }
 +
-+    /* Let's fallback to use CPU to complete it. */
-+    buf = (const uint8_t *)descriptor->src_addr;
-+    len = descriptor->xfer_size;
-+    *result = buffer_is_zero(buf + completion->bytes_completed,
-+                             len - completion->bytes_completed);
++    return true;
 +}
 +
  /**
-  * @brief Complete a single DSA task in the batch task.
+  * @brief Check if DSA is running.
   *
-@@ -563,7 +599,7 @@ dsa_completion_loop(void *opaque)
-         (QemuDsaCompletionThread *)opaque;
-     QemuDsaBatchTask *batch_task;
-     QemuDsaDeviceGroup *group = thread_context->group;
--    int ret;
-+    int ret = 0;
- 
-     rcu_register_thread();
- 
-@@ -831,7 +867,6 @@ buffer_zero_batch_task_set(QemuDsaBatchTask *batch_task,
-  *
-  * @return int Zero if successful, otherwise an appropriate error code.
-  */
--__attribute__((unused))
- static int
- buffer_zero_dsa_async(QemuDsaBatchTask *task,
-                       const void *buf, size_t len)
-@@ -850,7 +885,6 @@ buffer_zero_dsa_async(QemuDsaBatchTask *task,
-  * @param count The number of buffers.
-  * @param len The buffer length.
-  */
--__attribute__((unused))
- static int
- buffer_zero_dsa_batch_async(QemuDsaBatchTask *batch_task,
-                             const void **buf, size_t count, size_t len)
-@@ -881,13 +915,61 @@ buffer_zero_dsa_completion(void *context)
-  *
-  * @param batch_task A pointer to the buffer zero comparison batch task.
-  */
--__attribute__((unused))
- static void
- buffer_zero_dsa_wait(QemuDsaBatchTask *batch_task)
- {
-     qemu_sem_wait(&batch_task->sem_task_complete);
- }
- 
-+/**
-+ * @brief Use CPU to complete the zero page checking task if DSA
-+ *        is not able to complete it.
-+ *
-+ * @param batch_task A pointer to the batch task.
-+ */
-+static void
-+buffer_zero_cpu_fallback(QemuDsaBatchTask *batch_task)
-+{
-+    if (batch_task->task_type == QEMU_DSA_TASK) {
-+        if (batch_task->completions[0].status == DSA_COMP_SUCCESS) {
-+            return;
-+        }
-+        task_cpu_fallback_int(&batch_task->completions[0],
-+                              &batch_task->descriptors[0],
-+                              &batch_task->results[0]);
-+    } else if (batch_task->task_type == QEMU_DSA_BATCH_TASK) {
-+        struct dsa_completion_record *batch_completion =
-+            &batch_task->batch_completion;
-+        struct dsa_completion_record *completion;
-+        uint8_t status;
-+        bool *results = batch_task->results;
-+        uint32_t count = batch_task->batch_descriptor.desc_count;
-+
-+        /* DSA is able to complete the entire batch task. */
-+        if (batch_completion->status == DSA_COMP_SUCCESS) {
-+            assert(count == batch_completion->bytes_completed);
-+            return;
-+        }
-+
-+        /*
-+         * DSA encounters some error and is not able to complete
-+         * the entire batch task. Use CPU fallback.
-+         */
-+        for (int i = 0; i < count; i++) {
-+
-+            completion = &batch_task->completions[i];
-+            status = completion->status;
-+
-+            assert(status == DSA_COMP_SUCCESS ||
-+                status == DSA_COMP_PAGE_FAULT_NOBOF);
-+
-+            task_cpu_fallback_int(completion,
-+                                  &batch_task->descriptors[i],
-+                                  &results[i]);
-+        }
-+    }
-+}
-+
- /**
-  * @brief Initializes a buffer zero comparison DSA task.
-  *
-@@ -964,3 +1046,38 @@ buffer_zero_batch_task_destroy(QemuDsaBatchTask *task)
-     qemu_sem_destroy(&task->sem_task_complete);
-     qemu_vfree(task);
- }
-+
-+/**
-+ * @brief Performs buffer zero comparison on a DSA batch task synchronously.
-+ *
-+ * @param batch_task A pointer to the batch task.
-+ * @param buf An array of memory buffers.
-+ * @param count The number of buffers in the array.
-+ * @param len The buffer length.
-+ *
-+ * @return Zero if successful, otherwise non-zero.
-+ */
-+int
-+buffer_is_zero_dsa_batch_sync(QemuDsaBatchTask *batch_task,
-+                              const void **buf, size_t count, size_t len)
-+{
-+    if (count <= 0 || count > batch_task->batch_size) {
-+        return -1;
-+    }
-+
-+    assert(batch_task != NULL);
-+    assert(len != 0);
-+    assert(buf != NULL);
-+
-+    if (count == 1) {
-+        /* DSA doesn't take batch operation with only 1 task. */
-+        buffer_zero_dsa_async(batch_task, buf[0], len);
-+    } else {
-+        buffer_zero_dsa_batch_async(batch_task, buf, count, len);
-+    }
-+
-+    buffer_zero_dsa_wait(batch_task);
-+    buffer_zero_cpu_fallback(batch_task);
-+
-+    return 0;
-+}
 -- 
 Yichen Wang
 
