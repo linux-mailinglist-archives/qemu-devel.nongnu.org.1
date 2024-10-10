@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E83997A32
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 03:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD18997A34
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 03:39:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syi7z-0002xb-EF; Wed, 09 Oct 2024 21:38:07 -0400
+	id 1syi9P-00057N-2T; Wed, 09 Oct 2024 21:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1syi7x-0002wz-NR; Wed, 09 Oct 2024 21:38:05 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1syi9E-0004wC-09; Wed, 09 Oct 2024 21:39:24 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1syi7w-0007XB-7a; Wed, 09 Oct 2024 21:38:05 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A1IHBP004688;
- Thu, 10 Oct 2024 01:38:03 GMT
+ id 1syi9C-0007f7-Fs; Wed, 09 Oct 2024 21:39:23 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A0SvHZ020808;
+ Thu, 10 Oct 2024 01:39:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
  message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=K
- QjUH2/LZ1OOFwRFAlKl/Cofos10RIlQoFRo55Bpxeo=; b=Nh0bu9OSfJj5n97NV
- 6OKx7vtoPb51qoZSmVK+Hvwhjh0TWhp89b8xmk1Q+otCbYSxMzwyVxZ1Xt3QihR3
- retHzwsQrWn5GQUoDOg8h7/oDTU0EspVONlzBaqWC8w79Kf4N6kJqR6AT7dcF9Le
- w/rkSbGylXsUdNx2DLm7S6C60+aaMck0QGpz9jypOaakOBje6QNOIU3cLmbvvaxp
- 5anLf6QO5QCXQayg1QNiTy3id1J2j0jzAkjF4Au097RQug6IXGmrEE5HjSActTtp
- WUeqipp0QxJF9HMvV/2P9IoFS/Xzy/8MTJceTdL8gp+eortTdPg8usqbXPuKbhFi
- r5uMA==
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=i
+ 4ItyDhpKmNvENSrdYDbYPdmIrrorxM2XQ2Gha5Phgc=; b=Kn3ec+MNkiGtMZsnA
+ FEeFQOk5cagJPKxnXO6Yy16sVRl3Hu4l8RRZsTRSskHk8b3pVbN7H6r1HZUQBNiF
+ Y0Jhuid00IICcudVQdo4wK3cwFYU5+bub/buYH6E8uM06uIG8ADp21lcLuIpx/Dx
+ Xiy7zujw2SbMA9ml7iLhNCiNXcynUXS7lW5nGQ+Bt/m2d4A/BTVyr7IG4S/nUqYi
+ Oo6LJ0pfrhRWYMzJx2letzkYkQ3ipa185CKWf1apDOSrvSxeyXEEqexpxYua8A8y
+ XuVm+hVjOfn6ggCswr3+NCtp9jsf4uiRM4YLl2qdeaMfmy7WtowhIpyoXrqoTF9j
+ oz8og==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42653qg1e8-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4264dv870f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2024 01:38:02 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49A1c2VU008287;
- Thu, 10 Oct 2024 01:38:02 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42653qg1e6-1
+ Thu, 10 Oct 2024 01:39:20 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49A1dKTa024882;
+ Thu, 10 Oct 2024 01:39:20 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4264dv86y9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2024 01:38:02 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 499MfYg8022856;
- Thu, 10 Oct 2024 01:38:01 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423h9k52xt-1
+ Thu, 10 Oct 2024 01:39:20 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49A0qDK4011512;
+ Thu, 10 Oct 2024 01:38:38 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423g5xwac4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2024 01:38:01 +0000
+ Thu, 10 Oct 2024 01:38:38 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49A1c16u16056928
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49A1cc5u37159280
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Oct 2024 01:38:01 GMT
+ Thu, 10 Oct 2024 01:38:38 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 084975805E;
- Thu, 10 Oct 2024 01:38:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2664558063;
+ Thu, 10 Oct 2024 01:38:38 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F75F58056;
- Thu, 10 Oct 2024 01:38:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AB9495805A;
+ Thu, 10 Oct 2024 01:38:37 +0000 (GMT)
 Received: from [9.61.177.235] (unknown [9.61.177.235])
  by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 10 Oct 2024 01:38:00 +0000 (GMT)
-Message-ID: <7211ed56-4b62-4cec-8a88-13ee60842406@linux.ibm.com>
-Date: Wed, 9 Oct 2024 21:37:59 -0400
+ Thu, 10 Oct 2024 01:38:37 +0000 (GMT)
+Message-ID: <0798345d-fba7-4a01-8f8e-c77dfa2010ca@linux.ibm.com>
+Date: Wed, 9 Oct 2024 21:38:36 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/19] pc-bios/s390-ccw: Remove panics from SCSI IPL
- path
+Subject: Re: [PATCH v3 07/19] pc-bios/s390-ccw: Remove panics from ISO IPL path
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  qemu-s390x@nongnu.org
 Cc: frankja@linux.ibm.com
 References: <20241008011552.2645520-1-jrossi@linux.ibm.com>
- <20241008011552.2645520-10-jrossi@linux.ibm.com>
- <911b4020-c60e-4a74-a61d-3ce370a3a878@redhat.com>
+ <20241008011552.2645520-8-jrossi@linux.ibm.com>
+ <afc6ae81-6a17-4172-a00b-90e4790af6b1@redhat.com>
 Content-Language: en-US
 From: Jared Rossi <jrossi@linux.ibm.com>
-In-Reply-To: <911b4020-c60e-4a74-a61d-3ce370a3a878@redhat.com>
+In-Reply-To: <afc6ae81-6a17-4172-a00b-90e4790af6b1@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3Q6PxwNSoEG4-hh0cjM-BnnqTzaDphQx
-X-Proofpoint-GUID: X5BqT_tT0vugIgV5lOcFPR_SgnXFvKKJ
+X-Proofpoint-GUID: hH6el8wBTld-2UZ8vU94n_PSp6X_-Dx4
+X-Proofpoint-ORIG-GUID: YjWFzKIv2wV9_YErdETG3kUf-lQTW3a_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-09_22,2024-10-09_02,2024-09-30_01
+ definitions=2024-10-09_23,2024-10-09_02,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- spamscore=0 malwarescore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410100005
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ adultscore=0 impostorscore=0
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ phishscore=0 priorityscore=1501 spamscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410100009
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -119,80 +118,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 10/9/24 7:18 AM, Thomas Huth wrote:
+On 10/9/24 5:46 AM, Thomas Huth wrote:
 > On 08/10/2024 03.15, jrossi@linux.ibm.com wrote:
->> +    if (!vs_io_assert(virtio_run(vdev, VR_REQUEST, cmd) == 0, title)) {
->> +        puts(title);
->
-> Should there be a "return" with a non-0 value here? ...
->
->> +    }
->> +
->> +    return 0;
->>   }
->>     /* SCSI protocol implementation routines */
->>   -static bool scsi_inquiry(VDev *vdev, uint8_t evpd, uint8_t page,
->> +static int scsi_inquiry(VDev *vdev, uint8_t evpd, uint8_t page,
->>                            void *data, uint32_t data_size)
->>   {
->>       ScsiCdbInquiry cdb = {
->> @@ -110,12 +122,13 @@ static bool scsi_inquiry(VDev *vdev, uint8_t 
->> evpd, uint8_t page,
->>           { data, data_size, VRING_DESC_F_WRITE },
->>       };
->>   -    vs_run("inquiry", inquiry, vdev, &cdb, sizeof(cdb), data, 
->> data_size);
->> +    int cc = vs_run("inquiry", inquiry,
->> +            vdev, &cdb, sizeof(cdb), data, data_size);
->
-> ... since the caller site now obviously checks for a non-zero value!
->
->> -    return virtio_scsi_response_ok(&resp);
->> +    return cc ? cc : virtio_scsi_response_ok(&resp);
->>   }
+>> From: Jared Rossi <jrossi@linux.ibm.com>
+>>
+>> Remove panic-on-error from IPL ISO El Torito specific functions so 
+>> that error
+>> recovery may be possible in the future.
+>>
+>> Functions that would previously panic now provide a return code.
+>>
+>> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
+>> ---
 > ...
->> @@ -207,7 +221,7 @@ static int virtio_scsi_locate_device(VDev *vdev)
->>       static uint8_t data[16 + 8 * 63];
->>       ScsiLunReport *r = (void *) data;
->>       ScsiDevice *sdev = vdev->scsi_device;
->> -    int i, luns;
->> +    int i, cc, luns;
->>         /* QEMU has hardcoded channel #0 in many places.
->>        * If this hardcoded value is ever changed, we'll need to add 
->> code for
->> @@ -233,13 +247,21 @@ static int virtio_scsi_locate_device(VDev *vdev)
->>           sdev->channel = channel;
->>           sdev->target = target;
->>           sdev->lun = 0;          /* LUN has to be 0 for REPORT LUNS */
->> -        if (!scsi_report_luns(vdev, data, sizeof(data))) {
->> +        cc = scsi_report_luns(vdev, data, sizeof(data));
->> +        if (cc < 0) {
->> +            return cc;
->> +        }
+>> diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
+>> index 414c3f1b47..7984de62fe 100644
+>> --- a/pc-bios/s390-ccw/bootmap.c
+>> +++ b/pc-bios/s390-ccw/bootmap.c
+>> @@ -678,8 +678,10 @@ static bool 
+>> is_iso_bc_entry_compatible(IsoBcSection *s)
+>>       if (s->unused || !s->sector_count) {
+>>           return false;
+>>       }
+>> -    read_iso_sector(bswap32(s->load_rba), magic_sec,
+>> -                    "Failed to read image sector 0");
+>> +    if (virtio_read(bswap32(s->load_rba), magic_sec)) {
+>> +        puts("Failed to read image sector 0");
+>> +        return false;
+>> +    }
+>>         /* Checking bytes 8 - 32 for S390 Linux magic */
+>>       return !memcmp(magic_sec + 8, linux_s390_magic, 24);
+>> @@ -699,21 +701,28 @@ static inline uint32_t 
+>> iso_get_file_size(uint32_t load_rba)
+>>       uint8_t *temp = sec + ISO_SECTOR_SIZE;
+>>       int level = 0;
+>>   -    read_iso_sector(ISO_PRIMARY_VD_SECTOR, sec,
+>> -                    "Failed to read ISO primary descriptor");
+>> +    if (virtio_read(ISO_PRIMARY_VD_SECTOR, sec)) {
+>> +        puts("Failed to read ISO primary descriptor");
+>> +        return -EIO;
+>> +    }
 >
-> By the way, calling a variable "cc" reminds me of the CC of the PSW, 
-> so I'd expect values from 0 to 3 for this variable. Obviously this was 
-> meant to convey negative error codes instead, so I'd like to suggest 
-> to rename that variable to "ret" or something similar instead.
->
->> +        else if (cc == 0) {
->>               if (resp.response == VIRTIO_SCSI_S_BAD_TARGET) {
->>                   continue;
->>               }
->>               printf("target 0x%X", target);
->> -            virtio_scsi_verify_response(&resp, "SCSI cannot report 
->> LUNs");
->> +            if (!virtio_scsi_verify_response(&resp, "SCSI cannot 
->> report LUNs")) {
->> +                return -EIO;
->> +            }
->>           }
+> iso_get_file_size() seems to return an uint32_t value, so returning a 
+> negative error code won't work here. I think you either have to change 
+> the return type to signed "long" and fix the caller site, too, or 
+> return 0 for errors here?
 >
 >  Thomas
 >
 
-Fixed the missing return and also changed the variable to "ret" instead 
-of "cc" as suggested.
+Fixed by using "long" as suggested.  Also found and fixed an error with 
+real_size < 0 not being handled correctly in a later part of the code 
+that used "if (real_size)"
 
      Jared
 
