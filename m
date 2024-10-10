@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F3B999146
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 20:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F094B9991AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 21:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syyGI-0004ER-VU; Thu, 10 Oct 2024 14:51:47 -0400
+	id 1syyRx-0005zG-LT; Thu, 10 Oct 2024 15:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syyGG-0004EF-VF
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 14:51:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1syyGF-0003gh-Gj
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 14:51:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728586300;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nW0XKUIWCNnLdJj0Ed36P9ApOxrvYcmAJ0gr78DP0UI=;
- b=a4xsctCs5FK3yJP9vxqf6VjcyEExEjMz/2jtnD2q8P6qWKlVYflbp5Zla2KOl0voxFWx4/
- +RpJqdDyVz7xVx0JUBbFFIsrQ6w93wIApXF5PZCRlhqJYCkHodwkQNQJnnRzBaxV6VPZe+
- xLmo1moxQceisn1XL0LeuGyrznjapWI=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-326-oUZChwhcOeugii-HEmGwUQ-1; Thu, 10 Oct 2024 14:51:39 -0400
-X-MC-Unique: oUZChwhcOeugii-HEmGwUQ-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-45b5cdfbc89so24184711cf.3
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 11:51:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1syyRv-0005yw-BS
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:47 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1syyRt-0004hr-LL
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:47 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71df2b0a2f7so1179438b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 12:03:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1728587023; x=1729191823; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IFDUPAg7+Ha1HbltQ+giarNdx3k1AVCHB/9UGZf3J68=;
+ b=ml5DpcQYO5RLOZgu0CeNbVIEeOUoml3enYa1QWmPyKFWntIIB7PFZml57pljVVJQx+
+ 2Xlcymsu4MHFQgYA2XPL0av6I+IPH8rOp3HLUiC0uP1hwuvQ8eqDpAVvfBpdkSoaTKdF
+ cgABettZE7MTAbem9+KNUqSgl7pqpDbB6Icyz/w9dRbyPHh2dkiF/ZHFxB5ggsEvog/9
+ 5vsmfiwwxvf1qO/XlB/UPjQEhxYQZTps7nXczQYyPzMYGLnWCw73EgFGnOYXzD/ZYaxr
+ Hb0RBZwYjTZxzwWyYctAWdNX37y2bGXYVv2nQlNL7zRUOQofbv4CW0os3/RZumNiEfMP
+ RgQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728586298; x=1729191098;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nW0XKUIWCNnLdJj0Ed36P9ApOxrvYcmAJ0gr78DP0UI=;
- b=dKC2ZdpJuvS2k5xYUAENVbowa/l+1N51tXbDyEaCqc83x/6C9qNlH3rulnPWGngSWK
- vtBPpTrNXKQ9jJg5PIodkSkEtax5rn+hACy7Hh7/ST85tXWbcnnaxiDfSVXVXGJLQAh8
- SUfz9h+l6LGghrC71sAKOZmbg3DLE0ByAkJGeqLCKg8OMbssWA16TT182t0GmCRN15+B
- xnhg0MhoktniaXIIEO25xHSujEi1FAUpyt/kESr68cOUIBjOmwE/OluLyrCT4hN5EebZ
- fxthiDkAiNfChMGjR9U9c8TZeIhXIAvkRaeepGyN5HPP3NCLtiR5+rrlsQlWGAyeh9mm
- HQbQ==
-X-Gm-Message-State: AOJu0YwAi9yp8cdaQczbViH3408dZwqV8xJidh7LciqCARMmkvqj/8+N
- W3t2fuV7w4sUc2E2LYNq6zjwth+hY3X62Dg195qvjbUwBN7ydnjz7UBzQZg6EmnNrmQNUc0c0aP
- ZqF8rxLeG3+eAW/ts7D2vbeXiOFRAWdkLdz2Uk1qbkngtd32/0EuNukwJgGU9Gu3TiDkc7cfZTD
- U1WmO252ProQCmQwwF/k5JuxpWdl9HtjK/og==
-X-Received: by 2002:a05:622a:c1:b0:458:156f:965c with SMTP id
- d75a77b69052e-45fa5ef4de9mr112814051cf.22.1728586298155; 
- Thu, 10 Oct 2024 11:51:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJWIGHZ8mSidXXXPO9ElFHRsEud/BahTtEwilKHZC0AeuluFCgmpw5iBL2nZveRUyIR0UZMQ==
-X-Received: by 2002:a05:622a:c1:b0:458:156f:965c with SMTP id
- d75a77b69052e-45fa5ef4de9mr112813721cf.22.1728586297702; 
- Thu, 10 Oct 2024 11:51:37 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46042808619sm7828431cf.55.2024.10.10.11.51.35
+ d=1e100.net; s=20230601; t=1728587023; x=1729191823;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IFDUPAg7+Ha1HbltQ+giarNdx3k1AVCHB/9UGZf3J68=;
+ b=sd2Zekx2FvhixLr3Js+lH/6DAdBk6lWvXqsFAPPG1FGVsVfCyWvisGeiZUapmGRLCd
+ xwZKuU9MakcdtZ0fS1vZnywdZSx9fPdRa8JJlDrng3gO27eMCCBx6R1yz4fJw5tUtvbq
+ zXtyt4dMgOMkxeBdAWzsFX1I4bs9Tn/Hm/dbOfU69P88dOiTgjHA5VxTvFiz8K7Ruq9c
+ 6GwsE/e+Fr7o0sOVx8NSg2qwl4RpjJQOhn27pevP6WBfrd1/Nj0xN9wvs4DqUw7i402W
+ fM2OHivCFsCMFaLJxs+/HdHzStbu5zYFajHOYMBVo7oAF4oVqcYdVYPLc7Uv9S+9fKIh
+ Lz0Q==
+X-Gm-Message-State: AOJu0YzvuE5asj6AiKIQgdmJLTXJaMtUsTiwpPHNqT17/Bkr2cJgSFfn
+ JETaGXKIoOa0aYo1RHgd2qLKMe9Q/dXQx3cuNWWd4d73ADkXAswCg//0KacvpYpW137KCRXjBWQ
+ t
+X-Google-Smtp-Source: AGHT+IFdR7RIHRmG9tLI3GLZ5umz+ubiobAvQLb4Y2NTC5khIHEc38JYIxLFaqqTn5zOSaXG2gfC0Q==
+X-Received: by 2002:a05:6a00:1252:b0:714:1bce:913a with SMTP id
+ d2e1a72fcca58-71e37f56a3bmr65347b3a.21.1728587023088; 
+ Thu, 10 Oct 2024 12:03:43 -0700 (PDT)
+Received: from grind.. (201-68-240-198.dsl.telesp.net.br. [201.68.240.198])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71e2a9f5263sm1354532b3a.62.2024.10.10.12.03.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 11:51:36 -0700 (PDT)
-Date: Thu, 10 Oct 2024 14:51:35 -0400
-From: Peter Xu <peterx@redhat.com>
+ Thu, 10 Oct 2024 12:03:42 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH] migration: Cleanup migrate_fd_cleanup() on accessing
- to_dst_file
-Message-ID: <ZwgiN3Jv7aOnC1oB@x1n>
-References: <20240919163042.116767-1-peterx@redhat.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/8] riscv: AIA userspace irqchip_split support
+Date: Thu, 10 Oct 2024 16:03:29 -0300
+Message-ID: <20241010190337.376987-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240919163042.116767-1-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,25 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 12:30:42PM -0400, Peter Xu wrote:
-> The cleanup function can in many cases needs cleanup on its own.
-> 
-> The major thing we want to do here is not referencing to_dst_file when
-> without the file mutex.  When at it, touch things elsewhere too to make it
-> look slightly better in general.
-> 
-> One thing to mention is, migration_thread has its own "running" boolean, so
-> it doesn't need to rely on to_dst_file being non-NULL.  Multifd has a
-> dependency so it needs to be skipped if to_dst_file is not yet set; add a
-> richer comment for such reason.
-> 
-> Resolves: Coverity CID 1527402
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+Hi,
 
-queued.
+This series adds AIA irqchip_split support, effective when using AIA
+with aia=aplic-imsic and -accel kvm,kernel-irqchip=split. 
+
+The main difference between what we currently have and irqchip_split()
+mode is that, when using split mode, QEMU will emulate the APLIC
+controller instead of using the in-kernel APLIC controller provided by
+KVM.
+
+After this series this is the matrix of which interrupt controllers
+we're emulating based on 'virt' machine configuration and accelerator
+properties:
+
+Accel Accel props   AIA type    APLIC-m IMSIC-m APLIC-s   IMSIC-s
+tcg      ----       aplic       emul    n/a     emul      n/a
+tcg      ----       aplic-imsic emul    emul    emul      emul
+kvm      ----       aplic       n/a     n/a     emul      n/a
+kvm      none       aplic-imsic n/a     n/a     in-kernel in-kernel
+kvm   irqchip=split aplic-imsic n/a     n/a     emul      in-kernel
+
+
+Patches based on alistair/riscv-to-apply.next.
+
+Daniel Henrique Barboza (8):
+  hw/intc/riscv_aplic: rename is_kvm_aia()
+  hw/riscv/virt.c: reduce virt_use_kvm_aia() usage
+  hw/riscv/virt.c: rename helper to virt_use_kvm_aia_aplic_imsic()
+  target/riscv/kvm: consider irqchip_split() in aia_create()
+  hw/riscv/virt.c, riscv_aplic.c: add 'emulated_aplic' helpers
+  hw/intc/riscv_aplic: add kvm_msicfgaddr for split mode aplic-imsic
+  target/riscv/kvm: remove irqchip_split() restriction
+  docs: update riscv/virt.rst with kernel-irqchip=split support
+
+ docs/specs/index.rst          |  1 +
+ docs/specs/riscv-aia.rst      | 83 +++++++++++++++++++++++++++++++++++
+ docs/system/riscv/virt.rst    |  7 +++
+ hw/intc/riscv_aplic.c         | 68 ++++++++++++++++++++++------
+ hw/riscv/virt.c               | 38 +++++++++++-----
+ include/hw/intc/riscv_aplic.h |  8 ++++
+ target/riscv/kvm/kvm-cpu.c    | 41 +++++++++--------
+ 7 files changed, 202 insertions(+), 44 deletions(-)
+ create mode 100644 docs/specs/riscv-aia.rst
 
 -- 
-Peter Xu
+2.45.2
 
 
