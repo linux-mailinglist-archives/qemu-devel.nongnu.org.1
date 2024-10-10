@@ -2,73 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3FF998364
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 12:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 099F4998374
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 12:22:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syqHD-0006LI-C3; Thu, 10 Oct 2024 06:20:11 -0400
+	id 1syqHf-0006S2-UR; Thu, 10 Oct 2024 06:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1syqHB-0006K2-ED
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 06:20:09 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1syqHd-0006Qi-0B
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 06:20:37 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1syqH8-0003Tg-LK
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 06:20:09 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-46041d86566so3376201cf.3
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 03:20:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1syqHa-0003Xl-DZ
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 06:20:36 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5c42e7adbddso882591a12.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 03:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728555605; x=1729160405; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/2k0y3LaJZ+N4GOiZeGr18q3sGaDuASYM4iLUC6otDk=;
- b=WDa1n9a+DeSpv3rj8u3fQqr8oiL0BAIJ1yek0GvrDZ0Ka2BYQCCE0Mi2i3gJ4LvZ4H
- WC++PcW0PNY9kVH1CCBUP9xGSoTGFfuNgrRTy2L5IC6MTsySkPDGSCIzznKAEUjvEvh/
- ad224ajtjx+KsLA8Rs7uN1rEeAybbfi1sICzXQHrUsk+E3SdW4HmAjbURHNKuoowB55u
- HYsNRPYk9796xESZwCch4oW11djAoX7nfsVLaX9jZPRcm8vdbePTFEDApdQ+ilAVr8+m
- Qn9FgWTsIm/Jq4w6oSCShWHpKTPWuKGfvVetTcl+MWZXvTMzPTOdLza2eP1iO870f8E2
- lcog==
+ d=linaro.org; s=google; t=1728555633; x=1729160433; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CbtJNlh/4kU+uT8XlT+C+4NJ05bnQ2F+DNUZIKZyGBs=;
+ b=HcuWs1h2XG6rZRvuZuqLl0rp9PDJMFurROihz0xflWSstrMxNIMON7G+hzeeQ+FN7L
+ sR7J+mM3suqajH1XsLx9ReT6Q+eqkmhG4kMHV8r3F3HjivOL/xQxch8ARG1Y6M9A8Drb
+ xGUmXSL51zypEaydCZyLW7oNn7YcemAAh+grsSoXRSpPvakn6OEQ31G4e+H3Dzu/Nnob
+ PapZ1PQ8nvw7HL0pgZbEGz0uswTHTlsduw0EAjylGvCeJF16FEZOH0YPb28OxBXE0uSt
+ wvbQHsJs3zAe02t9D2yCZWvkUMPOY2VC73o+w0VxUvdYTWepsHSu3jk+dvj5I1PVroDl
+ xPrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728555605; x=1729160405;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/2k0y3LaJZ+N4GOiZeGr18q3sGaDuASYM4iLUC6otDk=;
- b=HAwvluZpOySsrBiXxb52Q8jlg+hEkXoBMWRB33GYBvPeAsdqmL5eycSLSWuXpeGIZn
- XZXLkNuqn3IAMX9tRRR5yeOmZD3h+UaaZjUMXO3zDH7irFXZcaIdlvdwtYKI0qBWdJyG
- khV58AwYDuAxR6SoqD9twQkkZXQZlkIXirL/8XjWNXofw/RmgCD8pEt5LpXweiYoNOPX
- E4MHuuWIWuHnndD7mT4N/gRdutTrvjxWFOVPKHmRQkQIMCxdNM9leh5ZRXWVLPdr1RG/
- JOscxHMnV3yUEBPHvZ4wCVRoG84jo5qbuQglF+HErNKtr2UD+yKe9BcVmg5/YrWHYDXI
- jG/g==
-X-Gm-Message-State: AOJu0YxN6XV36gCZULgeVIM+X+87ICfKLKRwBBm9UAVnoBLEM2FaiZDQ
- V1KI26OtkoCBGWSQTnDsqo1WnVTgmMCixZwoM8JUgWIXHq/jaSsh7gf9ZbmiDoOWdlZHjo82uO5
- R9RK2XhQucRh5lZYyxfHeBIOdFhU=
-X-Google-Smtp-Source: AGHT+IHh6uuIsXVYjEOyQMnFeuxjMaAM7e8f1rnS7ugUa5XhimDMYEzcwN2+ja3PdmDrFvjGydc6eOwsDQ861dO9+Zc=
-X-Received: by 2002:a05:622a:528d:b0:45d:9689:9de4 with SMTP id
- d75a77b69052e-45fb0e53552mr78433381cf.43.1728555605154; Thu, 10 Oct 2024
- 03:20:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728555633; x=1729160433;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CbtJNlh/4kU+uT8XlT+C+4NJ05bnQ2F+DNUZIKZyGBs=;
+ b=B41jfi8y6QvOwF10CxRgZHTu+jns/rtFs7zHo8pqaDf8xunpsHpQnKq7Flr83f1Sxk
+ b30EMqlgjIgRqb/1Ll7YhauPMyKUr1wGYlOeuM5MG+aX1Nk04DccaqX4UQHIp3LrEHWn
+ NQ1wwSO4QpkY/IWAyLMl/0xVCUQ2szTPvuODNdA2ugRG+onzMGjIjZi9lTwaAUoAbv2Z
+ OKrpLj5QWj5mYOooTuZHDLHYC7HONao0/uuHpGPcKyRgQdyyboGFjzZDw+U+pwaIC2CO
+ u6VQ78Z4EUIt2BnoqmDWYBGc59oDKJBhdzGomJOAd9dZHMfGMa8v+aqTzo6xlcMRmlnm
+ kSyQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXuKFyhF+/BSYMPRqARsddYLx5UfF7JKYqi5LgqzN4wIzXrDF/xyHOPJ4ttmvufBlj4/9QbBIQMFjEV@nongnu.org
+X-Gm-Message-State: AOJu0YwzepYz83YefEfjNOq4CGjpTica1IgucqfDrySRArc4ilMMx0ST
+ MzdaM/lPKdtlq1TyU7v4MaVQcGQL/cAQTzBQFOMDcPxNLFrmm0le8RV39B25OdH9RZH1c0o3dRk
+ 1IPgKOioKbZfHYOo+JSQZaxfvrwajfRgrzUDXdg==
+X-Google-Smtp-Source: AGHT+IFGBascQtGIyEfu5Mn2dacaqhjfsvlBOjYQgl6LDLV668i+mMlKHf9f0WT6QmD4DnC8jmgFcqIM7fPFRHIUOQQ=
+X-Received: by 2002:a05:6402:4411:b0:5c4:a6f:9be7 with SMTP id
+ 4fb4d7f45d1cf-5c91d57f4a4mr5480758a12.8.1728555632724; Thu, 10 Oct 2024
+ 03:20:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241010092619.323489-1-r.peniaev@gmail.com>
-In-Reply-To: <20241010092619.323489-1-r.peniaev@gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 10 Oct 2024 14:19:53 +0400
-Message-ID: <CAJ+F1CL8VPo64DVty94FY4KyKr1h8_dbmrqLfy06VuMzoNyYYA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] chardev/char: fix qemu_chr_is_busy() check
-To: Roman Penyaev <r.peniaev@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000d1e29506241cb6e5"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
+References: <20240927150738.57786-1-rcardenas.rod@gmail.com>
+ <20240927150738.57786-3-rcardenas.rod@gmail.com>
+ <CAFEAcA-QUAKPuzcjLafU8U_=wk2HWhHbxx76WgwN+Cgdec_kGQ@mail.gmail.com>
+ <63F1DC02-ECC8-44C8-91BB-337DDC9420D8@gmail.com>
+In-Reply-To: <63F1DC02-ECC8-44C8-91BB-337DDC9420D8@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Oct 2024 11:20:21 +0100
+Message-ID: <CAFEAcA89FVucYjnJpMzUg4mewX4F8rhq-b9nnMzDcP5omzMU9w@mail.gmail.com>
+Subject: Re: [PATCH 3/4] STM32: new GPIO device
+To: =?UTF-8?B?Um9tw6FuIEPDoXJkZW5hcyBSb2Ryw61ndWV6?= <rcardenas.rod@gmail.com>
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,114 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d1e29506241cb6e5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Roman
-
-On Thu, Oct 10, 2024 at 1:28=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.com>=
- wrote:
-
-> `mux_cnt` struct member never goes negative or decrements,
-> so mux chardev can be !busy only when there are no
-> frontends attached. This patch fixes the always-true
-> check.
+On Wed, 9 Oct 2024 at 15:32, Rom=C3=A1n C=C3=A1rdenas Rodr=C3=ADguez
+<rcardenas.rod@gmail.com> wrote:
 >
-> Fixes: a4afa548fc6d ("char: move front end handlers in CharBackend")
-> Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-> Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
-> Cc: qemu-devel@nongnu.org
+> Looks like the stm32l4x5 is quite similar to my implementation. It didn=
+=E2=80=99t exist when I started with my implementation . I will take a clos=
+er look and work on improving/extending the stm32l4x5 GPIO with my proposal=
+. Is it OK if I rename it to stm32_gpio? so it is clearer that the implemen=
+tation is generic and can fit almost any STM32 target.
 
+Yes, renaming would be OK. (Do that in a patch of its own
+that does the rename and nothing else.)
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Sorry about the issues with the patches, I am not familiar with this meth=
+odology of working with git.
+> Could you guide me on how to send with you a revised version of patches 3=
+ and 4?
 
-That would be worth some new tests for chardev removal. It seems to be
-lacking. And mux probably need extra fixing. I can take a look if you don't=
-.
+So I've taken your patches 1 and 2 into my git tree; they
+will appear upstream probably either end of this week
+or beginning of next week. If that happens before you're
+ready to send out a version 2 of this series, you can
+rebase your patches on head-of-git and then send
+out a new series with patches 3 and 4 in it. If you're
+ready to send v2 before the other patches land in upstream
+git, just send out v2 with the whole 4-patch set in it.
 
 thanks
-
-
-> ---
->  chardev/char.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/chardev/char.c b/chardev/char.c
-> index c0cc52824b48..f54dc3a86286 100644
-> --- a/chardev/char.c
-> +++ b/chardev/char.c
-> @@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)
->  {
->      if (CHARDEV_IS_MUX(s)) {
->          MuxChardev *d =3D MUX_CHARDEV(s);
-> -        return d->mux_cnt >=3D 0;
-> +        return d->mux_cnt > 0;
->      } else {
->          return s->be !=3D NULL;
->      }
-> --
-> 2.34.1
->
->
->
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---000000000000d1e29506241cb6e5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Roman<br></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 10, 2024 at 1:28=
-=E2=80=AFPM Roman Penyaev &lt;<a href=3D"mailto:r.peniaev@gmail.com">r.peni=
-aev@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">`mux_cnt` struct member never goes negative or decrements,<br>
-so mux chardev can be !busy only when there are no<br>
-frontends attached. This patch fixes the always-true<br>
-check.<br>
-<br>
-Fixes: a4afa548fc6d (&quot;char: move front end handlers in CharBackend&quo=
-t;)<br>
-Signed-off-by: Roman Penyaev &lt;<a href=3D"mailto:r.peniaev@gmail.com" tar=
-get=3D"_blank">r.peniaev@gmail.com</a>&gt;<br>
-Cc: &quot;Marc-Andr=C3=A9 Lureau&quot; &lt;<a href=3D"mailto:marcandre.lure=
-au@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-Cc: <a href=3D"mailto:qemu-devel@nongnu.org" target=3D"_blank">qemu-devel@n=
-ongnu.org</a></blockquote><div><br></div><div>Reviewed-by: Marc-Andr=C3=A9 =
-Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@=
-redhat.com</a>&gt;</div><div><br></div><div>That would be worth some new te=
-sts for chardev removal. It seems to be lacking. And mux probably need extr=
-a fixing. I can take a look if you don&#39;t.</div><div><br></div><div>than=
-ks<br></div><div><br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-"><br>
----<br>
-=C2=A0chardev/char.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-<br>
-diff --git a/chardev/char.c b/chardev/char.c<br>
-index c0cc52824b48..f54dc3a86286 100644<br>
---- a/chardev/char.c<br>
-+++ b/chardev/char.c<br>
-@@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0if (CHARDEV_IS_MUX(s)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARDEV(s);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 return d-&gt;mux_cnt &gt;=3D 0;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return d-&gt;mux_cnt &gt; 0;<br>
-=C2=A0 =C2=A0 =C2=A0} else {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return s-&gt;be !=3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--- <br>
-2.34.1<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---000000000000d1e29506241cb6e5--
+-- PMM
 
