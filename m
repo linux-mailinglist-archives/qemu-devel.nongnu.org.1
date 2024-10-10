@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8786E998D31
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B12998D32
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 18:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syvvU-0006sp-5Q; Thu, 10 Oct 2024 12:22:08 -0400
+	id 1syvvb-0006we-B2; Thu, 10 Oct 2024 12:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvvO-0006s0-UZ
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:02 -0400
+ id 1syvvU-0006uP-Np
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvvL-0004N3-2U
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:01 -0400
+ id 1syvvM-0004NS-Pn
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728577317;
+ s=mimecast20190719; t=1728577320;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3/Ujk28h3t0U7aG40LPkW3Li5ZxLrwJpIzHS8qO4M5I=;
- b=Agfc7XpyzWsQotxSbj3QrKjEOn2aaJk61QWHJz+T5W1owqDwnYmjuVg8RmgsBItp8BJuyN
- 33Vkp9CHHiDSypHkRVreSzMd3EjkckEMTa2doskkYoSAa1sT6RBeaBfD7S68j6wD0qHQPX
- 6BUIDLi4EFgkSpCGSNiqq0pin9cGyT8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=YpwiYJ3ZLO7kpZscaCRsl7Q4vjEbbQmMK9aN6p9w8H8=;
+ b=bY+8TksV2JPb2sHIQx7QELMJTIobDgEvrTVIEeBLK+Q+s4gBYpuv1diqxTKtN+/3dTApEA
+ bYXZwnGjwgFC+SyCUGl4z2iyjdX7+rEUkoeq6PSoOugPTjaoPPML0UD32E8DtXQ9DF9wKe
+ m3/4cW9HsEEsrJbqw+A4/P9G8mFYy1E=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-9l0WdswoMhmbcM3ici8Adg-1; Thu,
- 10 Oct 2024 12:21:56 -0400
-X-MC-Unique: 9l0WdswoMhmbcM3ici8Adg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-qcXeTvuGORqDueWITSV8gg-1; Thu,
+ 10 Oct 2024 12:21:58 -0400
+X-MC-Unique: qcXeTvuGORqDueWITSV8gg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2CFCD1954B07; Thu, 10 Oct 2024 16:21:55 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 838631955F25; Thu, 10 Oct 2024 16:21:57 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.110])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0CB8830001A2; Thu, 10 Oct 2024 16:21:52 +0000 (UTC)
+ id AC0E0300019E; Thu, 10 Oct 2024 16:21:55 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kunwu <chentao@kylinos.cn>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alejandro Zeise <alejandro.zeise@seagate.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 01/17] crypto: accumulative hashing API
-Date: Thu, 10 Oct 2024 17:20:08 +0100
-Message-ID: <20241010162024.988284-2-berrange@redhat.com>
+Subject: [PULL 02/17] crypto/hash-glib: Implement new hash API
+Date: Thu, 10 Oct 2024 17:20:09 +0100
+Message-ID: <20241010162024.988284-3-berrange@redhat.com>
 In-Reply-To: <20241010162024.988284-1-berrange@redhat.com>
 References: <20241010162024.988284-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,206 +86,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Zeise <alejandro.zeise@seagate.com>
 
-Changes the hash API to support accumulative hashing.
-Hash objects are created with "qcrypto_hash_new",
-updated with data with "qcrypto_hash_update", and
-the hash obtained with "qcrypto_hash_finalize".
-
-These changes bring the hashing API more in line with the
-hmac API.
+Implements the new hashing API in the GLib hash driver.
+Supports creating/destroying a context, updating the context
+with input data and obtaining an output hash.
 
 Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
-[ clg: - Changed documentation "non-zero on error" -> "-1 on error" ]
+[ clg: - Dropped qcrypto_hash_supports() in qcrypto_glib_hash_new()
+       - Removed superfluous cast (GChecksum *) in qcrypto_glib_hash_free()
+       - Reworked qcrypto_glib_hash_finalize() ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/hashpriv.h     |  13 +++++
- include/crypto/hash.h | 119 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 132 insertions(+)
+ crypto/hash-glib.c | 67 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/crypto/hashpriv.h b/crypto/hashpriv.h
-index 47daec3f7a..dcb3ba6cfb 100644
---- a/crypto/hashpriv.h
-+++ b/crypto/hashpriv.h
-@@ -1,6 +1,7 @@
- /*
-  * QEMU Crypto hash driver supports
-  *
-+ * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
-  * Copyright (c) 2017 HUAWEI TECHNOLOGIES CO., LTD.
-  *
-  * Authors:
-@@ -15,6 +16,8 @@
- #ifndef QCRYPTO_HASHPRIV_H
- #define QCRYPTO_HASHPRIV_H
- 
-+#include "crypto/hash.h"
-+
- typedef struct QCryptoHashDriver QCryptoHashDriver;
- 
- struct QCryptoHashDriver {
-@@ -24,6 +27,16 @@ struct QCryptoHashDriver {
-                        uint8_t **result,
-                        size_t *resultlen,
-                        Error **errp);
-+    QCryptoHash *(*hash_new)(QCryptoHashAlgo alg, Error **errp);
-+    int (*hash_update)(QCryptoHash *hash,
-+                       const struct iovec *iov,
-+                       size_t niov,
-+                       Error **errp);
-+    int (*hash_finalize)(QCryptoHash *hash,
-+                         uint8_t **result,
-+                         size_t *resultlen,
-+                         Error **errp);
-+    void (*hash_free)(QCryptoHash *hash);
- };
- 
- extern QCryptoHashDriver qcrypto_hash_lib_driver;
-diff --git a/include/crypto/hash.h b/include/crypto/hash.h
-index 6038a52d0e..b791ca92a4 100644
---- a/include/crypto/hash.h
-+++ b/include/crypto/hash.h
+diff --git a/crypto/hash-glib.c b/crypto/hash-glib.c
+index a5a2949333..783283facc 100644
+--- a/crypto/hash-glib.c
++++ b/crypto/hash-glib.c
 @@ -1,6 +1,7 @@
  /*
   * QEMU Crypto hash algorithms
   *
 + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
-  * Copyright (c) 2015 Red Hat, Inc.
+  * Copyright (c) 2016 Red Hat, Inc.
   *
   * This library is free software; you can redistribute it and/or
-@@ -33,6 +34,13 @@
+@@ -95,6 +96,72 @@ qcrypto_glib_hash_bytesv(QCryptoHashAlgo alg,
+ }
  
- /* See also "QCryptoHashAlgo" defined in qapi/crypto.json */
  
-+typedef struct QCryptoHash QCryptoHash;
-+struct QCryptoHash {
-+    QCryptoHashAlgo alg;
-+    void *opaque;
-+    void *driver;
-+};
++static
++QCryptoHash *qcrypto_glib_hash_new(QCryptoHashAlgo alg,
++                                   Error **errp)
++{
++    QCryptoHash *hash;
 +
- /**
-  * qcrypto_hash_supports:
-  * @alg: the hash algorithm
-@@ -128,6 +136,117 @@ int qcrypto_hash_digestv(QCryptoHashAlgo alg,
-                          char **digest,
-                          Error **errp);
- 
-+/**
-+ * qcrypto_hash_updatev:
-+ * @hash: hash object from qcrypto_hash_new
-+ * @iov: the array of memory regions to hash
-+ * @niov: the length of @iov
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Updates the given hash object with all the memory regions
-+ * present in @iov.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_updatev(QCryptoHash *hash,
-+                         const struct iovec *iov,
-+                         size_t niov,
-+                         Error **errp);
-+/**
-+ * qcrypto_hash_update:
-+ * @hash: hash object from qcrypto_hash_new
-+ * @buf: the memory region to hash
-+ * @len: the length of @buf
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Updates the given hash object with the data from
-+ * the given buffer.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_update(QCryptoHash *hash,
-+                        const char *buf,
-+                        size_t len,
-+                        Error **errp);
++    hash = g_new(QCryptoHash, 1);
++    hash->alg = alg;
++    hash->opaque = g_checksum_new(qcrypto_hash_alg_map[alg]);
 +
-+/**
-+ * qcrypto_hash_finalize_digest:
-+ * @hash: the hash object to finalize
-+ * @digest: pointer to hold output hash
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have its data updated from the qcrypto_hash_update function.
-+ * The @digest pointer will be filled with the printable hex digest of the
-+ * computed hash, which will be terminated by '\0'. The memory pointer
-+ * in @digest must be released with a call to g_free() when
-+ * no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_digest(QCryptoHash *hash,
-+                                 char **digest,
-+                                 Error **errp);
++    return hash;
++}
 +
-+/**
-+ * qcrypto_hash_finalize_base64:
-+ * @hash_ctx: hash object to finalize
-+ * @base64: pointer to store the hash result in
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have it's data updated from the qcrypto_hash_update function.
-+ * The @base64 pointer will be filled with the base64 encoding of the computed
-+ * hash, which will be terminated by '\0'. The memory pointer in @base64
-+ * must be released with a call to g_free() when no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_base64(QCryptoHash *hash,
-+                                 char **base64,
-+                                 Error **errp);
++static
++void qcrypto_glib_hash_free(QCryptoHash *hash)
++{
++    if (hash->opaque) {
++        g_checksum_free(hash->opaque);
++    }
 +
-+/**
-+ * qcrypto_hash_finalize_bytes:
-+ * @hash_ctx: hash object to finalize
-+ * @result: pointer to store the hash result in
-+ * @result_len: Pointer to store the length of the result in
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have it's data updated from the qcrypto_hash_update function.
-+ * The memory pointer in @result must be released with a call to g_free()
-+ * when no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_bytes(QCryptoHash *hash,
-+                                uint8_t **result,
-+                                size_t *result_len,
-+                                Error **errp);
++    g_free(hash);
++}
 +
-+/**
-+ * qcrypto_hash_new:
-+ * @alg: the hash algorithm
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Creates a new hashing context for the chosen algorithm for
-+ * usage with qcrypto_hash_update.
-+ *
-+ * Returns: New hash object with the given algorithm, or NULL on error.
-+ */
-+QCryptoHash *qcrypto_hash_new(QCryptoHashAlgo alg, Error **errp);
 +
-+/**
-+ * qcrypto_hash_free:
-+ * @hash: hash object to free
-+ *
-+ * Frees a hashing context for the chosen algorithm.
-+ */
-+void qcrypto_hash_free(QCryptoHash *hash);
++static
++int qcrypto_glib_hash_update(QCryptoHash *hash,
++                             const struct iovec *iov,
++                             size_t niov,
++                             Error **errp)
++{
++    GChecksum *ctx = hash->opaque;
 +
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(QCryptoHash, qcrypto_hash_free)
++    for (int i = 0; i < niov; i++) {
++        g_checksum_update(ctx, iov[i].iov_base, iov[i].iov_len);
++    }
 +
- /**
-  * qcrypto_hash_digest:
-  * @alg: the hash algorithm
++    return 0;
++}
++
++static
++int qcrypto_glib_hash_finalize(QCryptoHash *hash,
++                               uint8_t **result,
++                               size_t *result_len,
++                               Error **errp)
++{
++    int ret;
++    GChecksum *ctx = hash->opaque;
++
++    ret = g_checksum_type_get_length(qcrypto_hash_alg_map[hash->alg]);
++    if (ret < 0) {
++        error_setg(errp, "Unable to get hash length");
++        *result_len = 0;
++        return -1;
++    }
++
++    *result_len = ret;
++    *result = g_new(uint8_t, *result_len);
++
++    g_checksum_get_digest(ctx, *result, result_len);
++    return 0;
++}
++
+ QCryptoHashDriver qcrypto_hash_lib_driver = {
+     .hash_bytesv = qcrypto_glib_hash_bytesv,
++    .hash_new      = qcrypto_glib_hash_new,
++    .hash_update   = qcrypto_glib_hash_update,
++    .hash_finalize = qcrypto_glib_hash_finalize,
++    .hash_free     = qcrypto_glib_hash_free,
+ };
 -- 
 2.46.0
 
