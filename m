@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82119991AA
+	by mail.lfdr.de (Postfix) with ESMTPS id B701B9991A9
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 21:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syyRz-00060B-U2; Thu, 10 Oct 2024 15:03:51 -0400
+	id 1syyS3-00061s-FO; Thu, 10 Oct 2024 15:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1syyRx-0005zu-Ts
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:49 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1syyS0-00060t-Nv
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:52 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1syyRw-0004iA-92
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:49 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-71dfccba177so1968351b3a.0
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 12:03:47 -0700 (PDT)
+ id 1syyRz-0004id-79
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 15:03:52 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-71df04d3cd1so1137927b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 12:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1728587026; x=1729191826; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1728587029; x=1729191829; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kYV54R/BWSeQo+PImwTWN+iYLjqQw2lOGsyCKuolLjM=;
- b=ZwieFGyBcHpShKoQUhpViIWdC0qkpDiNOT5ha4swRTBhWUbus3XCpIoX/DEX1UF5zR
- BeNkf2CrBLgPTPeRprm+yw3TqYu2gnbokdDbMW9WRQHXSJWtSGKHqOP5hbWBn6hAnIGB
- 8Xxx8JUs/yQuaxOAoakKzBWtjllLdVq96SKU+AqXbS7LnvRV6hysmqtdLghrBbYcQZe2
- XpR2nA01JVtl+qNnM63FDJMemgAsB95sBHlMGjD111iPWmHMNeRgKM63oVCfhWhGEPIF
- ZGocB75rIaTzGNbtwT4cFhtWgh64bEJwCiv4Df2G8TT5a1wx/lhRIQL4cjcr+ozUmtIb
- DiUQ==
+ bh=ufMG5AryEKYzOO3Km5eLPU0tnyg9cuTgKk08ESQiSrk=;
+ b=dbcDyVhy51ognIYL1+mpRXFe54BAEni2A9776QGpItlXPnuCSxy7qvwxLZiW0nh7Ab
+ 1I/23RlsgHIQTIwrMEyiiFXF6mJ4oWUNNpocIS/4BS17/YJZ4Arml7TaBAifkL8pbsCP
+ D8kFYbkxTu4VXDTS93TKNho1atG8iS2akTygdbB6Vqb/3nQL0OC+1nOFd94Wo1Tq3ex+
+ T05TFzhEgSVRp7Hnm585lTfGaILbNPFJnhHO+eitOpxbAmQEKlF6ygqPb+8NxpFEqxJe
+ RUaMZZTrVv56xWSZ612PWlT7qgVnM/Hv+p2F5FOxicCH6d9fMoY2v0FF4RWTJej3JXI2
+ wz2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728587026; x=1729191826;
+ d=1e100.net; s=20230601; t=1728587029; x=1729191829;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kYV54R/BWSeQo+PImwTWN+iYLjqQw2lOGsyCKuolLjM=;
- b=uoa9vvlQh0nk45PceJ5o6RJ9wRtL16Kcd91Qon45YyFAQGzhkTbypGJUZYfwHI/8EX
- HnyHXPKuUUO399rWyeizhTjpeqzsCxrrd9zFMzK6tqFfhdgNYBphDFjFHghewYRNpWD/
- +Ol81Na2Bo6B8YLSuBInhIxE7CxRl8PcYeni4aJMVI5HoAxm5GqniHRiNgBniBxCyAkI
- n2u8ujJZ0kXejjdU+ta2UKQCD9x9+TxL7keeR0fabirJHvcGpKz+CmIHkOsOek6iTD8+
- 0Xda4pwiSWzj5patf4N+sqpk0CTwySginkl42aCxO4rHbxihghMZ+PRb63RpEy8ylbnH
- cPgQ==
-X-Gm-Message-State: AOJu0YzXYhQZXu0iv2PSP8i7Dckzk3I67R2//OvEKqRCwjYOamZwh+6e
- ESpy9uoX5t/eG4yqlBJDZZUkLtDa2MM8A+YEnGEyArEHeccfWv+BBNpmaljvXvzduJcv2HdO+B3
- 9
-X-Google-Smtp-Source: AGHT+IFe7kEQ6lQo3H3809DUzKA3DTiH1uv/PA+/BII/GunzoKdUuLo8qg210ZqyIQ2RjL/j0mNHSw==
-X-Received: by 2002:a05:6a21:1796:b0:1d2:fad2:a537 with SMTP id
- adf61e73a8af0-1d8bc95b4b0mr202164637.18.1728587026341; 
- Thu, 10 Oct 2024 12:03:46 -0700 (PDT)
+ bh=ufMG5AryEKYzOO3Km5eLPU0tnyg9cuTgKk08ESQiSrk=;
+ b=Q+yyKcM+kDdHfwdeEk4bJcC6WEr059iVqDAfbZWqWpfSxmlmpImpCHq8pFA0HP9wMN
+ NAcgAgDwf360g5Cwssucblpb+BJ1fU9whz9pPU42JqCdBtL4sMmnEVzDNoxy+Dm7n9y9
+ SpwKwGWxbUwb+MffdAovoJhKwM7KdNmtrIaUIsp/6dLBTuz7NZoGQEow7MzbqG8m1MCQ
+ Im35C1G823r435n0F7zolTtJEdam1d/vZAHVJfmFBMeakHX0+tOan79VGYFoX6WHtDIy
+ 5tMCs6CKPbnuKfTNnTTtKmbJPZArHWd2Qt/Q+hNlgD0DjtPag2U6eN9GtbIMUyzE33sH
+ IkBQ==
+X-Gm-Message-State: AOJu0Yxo0dYJbokKFjEhWJSqtcPBgz9c1WUf0MiOxl8zSeg20/ZOg+nd
+ KM/aHKnRzJ9viQsnK6zYiE50AtM7uoSImBhVP5RiojYnfBApXLv+nLSGHFKvXm4neAU/KoGUAuu
+ s
+X-Google-Smtp-Source: AGHT+IFhGyQ9W9YcSmlCXMp3KuCr7lrYcg387ctaAmgKstqQNyVIcHZR59AmI90Ta0RAGTsH3Qhbmw==
+X-Received: by 2002:a05:6a00:2da7:b0:71d:f0dc:ce94 with SMTP id
+ d2e1a72fcca58-71e37f5e498mr75416b3a.20.1728587029407; 
+ Thu, 10 Oct 2024 12:03:49 -0700 (PDT)
 Received: from grind.. (201-68-240-198.dsl.telesp.net.br. [201.68.240.198])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e2a9f5263sm1354532b3a.62.2024.10.10.12.03.43
+ d2e1a72fcca58-71e2a9f5263sm1354532b3a.62.2024.10.10.12.03.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 12:03:46 -0700 (PDT)
+ Thu, 10 Oct 2024 12:03:49 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 1/8] hw/intc/riscv_aplic: rename is_kvm_aia()
-Date: Thu, 10 Oct 2024 16:03:30 -0300
-Message-ID: <20241010190337.376987-2-dbarboza@ventanamicro.com>
+Subject: [PATCH 2/8] hw/riscv/virt.c: reduce virt_use_kvm_aia() usage
+Date: Thu, 10 Oct 2024 16:03:31 -0300
+Message-ID: <20241010190337.376987-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241010190337.376987-1-dbarboza@ventanamicro.com>
 References: <20241010190337.376987-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,73 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The helper is_kvm_aia() is checking not only for AIA, but for
-aplic-imsic (i.e. "aia=aplic-imsic" in 'virt' RISC-V machine) with an
-in-kernel chip present.
+In create_fdt_sockets() we have the following pattern:
 
-Rename it to be a bit clear what the helper is doing since we'll add
-more AIA helpers in the next patches.
+    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+        (... do stuff ...)
+    } else {
+        (... do other stuff ...)
+    }
+    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+        (... do more stuff ...)
+    } else {
+        (... do more other stuff)
+    }
 
-Make the helper public because the 'virt' machine will use it as well.
+Do everything in a single if/else clause to reduce the usage of
+virt_use_kvm_aia() helper and to make the code a bit less repetitive.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- hw/intc/riscv_aplic.c         | 8 ++++----
- include/hw/intc/riscv_aplic.h | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ hw/riscv/virt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 4a262c82f0..20de8c63a2 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -154,7 +154,7 @@
-  * KVM AIA only supports APLIC MSI, fallback to QEMU emulation if we want to use
-  * APLIC Wired.
-  */
--static bool is_kvm_aia(bool msimode)
-+bool riscv_is_kvm_aia_aplic_imsic(bool msimode)
- {
-     return kvm_irqchip_in_kernel() && msimode;
- }
-@@ -853,7 +853,7 @@ static void riscv_aplic_realize(DeviceState *dev, Error **errp)
-     uint32_t i;
-     RISCVAPLICState *aplic = RISCV_APLIC(dev);
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index ee3129f3b3..b5bdbb34e0 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -780,6 +780,10 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+                                 msi_m_phandle, msi_s_phandle, phandle,
+                                 &intc_phandles[0], xplic_phandles,
+                                 ms->smp.cpus);
++
++        *irq_mmio_phandle = xplic_phandles[0];
++        *irq_virtio_phandle = xplic_phandles[0];
++        *irq_pcie_phandle = xplic_phandles[0];
+     } else {
+         phandle_pos = ms->smp.cpus;
+         for (socket = (socket_count - 1); socket >= 0; socket--) {
+@@ -797,13 +801,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+                                         s->soc[socket].num_harts);
+             }
+         }
+-    }
  
--    if (!is_kvm_aia(aplic->msimode)) {
-+    if (!riscv_is_kvm_aia_aplic_imsic(aplic->msimode)) {
-         aplic->bitfield_words = (aplic->num_irqs + 31) >> 5;
-         aplic->sourcecfg = g_new0(uint32_t, aplic->num_irqs);
-         aplic->state = g_new0(uint32_t, aplic->num_irqs);
-@@ -877,7 +877,7 @@ static void riscv_aplic_realize(DeviceState *dev, Error **errp)
-      * have IRQ lines delegated by their parent APLIC.
-      */
-     if (!aplic->parent) {
--        if (kvm_enabled() && is_kvm_aia(aplic->msimode)) {
-+        if (kvm_enabled() && riscv_is_kvm_aia_aplic_imsic(aplic->msimode)) {
-             qdev_init_gpio_in(dev, riscv_kvm_aplic_request, aplic->num_irqs);
-         } else {
-             qdev_init_gpio_in(dev, riscv_aplic_request, aplic->num_irqs);
-@@ -1021,7 +1021,7 @@ DeviceState *riscv_aplic_create(hwaddr addr, hwaddr size,
- 
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
--    if (!is_kvm_aia(msimode)) {
-+    if (!riscv_is_kvm_aia_aplic_imsic(msimode)) {
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
-     }
- 
-diff --git a/include/hw/intc/riscv_aplic.h b/include/hw/intc/riscv_aplic.h
-index de8532fbc3..fd0e6427d9 100644
---- a/include/hw/intc/riscv_aplic.h
-+++ b/include/hw/intc/riscv_aplic.h
-@@ -71,6 +71,7 @@ struct RISCVAPLICState {
- };
- 
- void riscv_aplic_add_child(DeviceState *parent, DeviceState *child);
-+bool riscv_is_kvm_aia_aplic_imsic(bool msimode);
- 
- DeviceState *riscv_aplic_create(hwaddr addr, hwaddr size,
-     uint32_t hartid_base, uint32_t num_harts, uint32_t num_sources,
+-    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+-        *irq_mmio_phandle = xplic_phandles[0];
+-        *irq_virtio_phandle = xplic_phandles[0];
+-        *irq_pcie_phandle = xplic_phandles[0];
+-    } else {
+         for (socket = 0; socket < socket_count; socket++) {
+             if (socket == 0) {
+                 *irq_mmio_phandle = xplic_phandles[socket];
 -- 
 2.45.2
 
