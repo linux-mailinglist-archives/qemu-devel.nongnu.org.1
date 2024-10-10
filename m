@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3411F9994B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 23:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEB2999599
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 01:10:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sz15K-0004Kn-KL; Thu, 10 Oct 2024 17:52:44 -0400
+	id 1sz2HQ-0000Xq-TY; Thu, 10 Oct 2024 19:09:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz15E-00042B-7d
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:52:32 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1sz2HO-0000Xf-7N
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 19:09:10 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz15C-0004sC-Ho
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:52:32 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20b49ee353cso12103605ad.2
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 14:52:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1sz2HL-0003mO-S1
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 19:09:09 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71dfccba177so2097951b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 16:09:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728597149; x=1729201949; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CwCdSOYqDmyr07OGLbU3nyx0DMxm2R388CoaeBSWCr8=;
- b=uhlmVA3zYcjPrRUpQUfi2l39laKU+C6WgMfBzkI28PG5RWktCvcZyQ816pv9XqDiD5
- 5huiaIm0U+YQymFHkBm4rdnQmTesOFoHDtXjFB2TwLBQICqIT95mGTc/IpDHr04CSjU9
- OkK4qanGaQ8ONP98wzU2K3ikmc1dh5R4KPz2PwYSwMlQ2sN6Boj9eMzlbtH6JQOX2eo+
- AOUn1YDOaIMahbEif2TjVjzvad47Bgb2TV4jEM93W1JNWnBrq1o1S8XyxN0yFb98gOiy
- G+AM7dZIwQl8SO8253+IAtNYIivnnzQfxbzvVoB+F3uDmk6MQHx5BayAZMAIySpXpB2T
- U2MQ==
+ d=gmail.com; s=20230601; t=1728601745; x=1729206545; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eoOIefwcl2zyGqbInaCBGQitWpP7kAS3EJcvu7ps+iU=;
+ b=ljwjVZDyhdXgezmPbowMKe4JzM8j9eYBfylDwWmmZQ4bUxzEMzA8t/r2qgZpT3wFgQ
+ E5NbE4+TOHap3plgpDIyl8HmLVXiDfE9leB1exY58DTG0lAABVFW+eRzLrTjBjvltuQX
+ S/RMZp2Ltvsw3dEnvL5iRGcREX6y61nKfQnDmOOLCd4V5RMwwQVHs+RyAcFeSOGf2nTT
+ 6vnPDEhFi9g6oDjLWJr9QU3eOw/NxMBze4KdMvFx0sesuFYxBsJa71cn8IIy5/aRkzV/
+ QoGqDqAmJdddpvDOCh1sPQABrgfrAWgXir7GNfHeCxzuYv5btLD/uBjcztyWKQEk2N31
+ mp8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728597149; x=1729201949;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CwCdSOYqDmyr07OGLbU3nyx0DMxm2R388CoaeBSWCr8=;
- b=I4+jsVPmwOKi16tUCgnJXdlkEINiYeg6KA7frLGlWGbHGZ5K2DmwZZH2A1o6FMb/uY
- 2uZ8xbWgBEkaVy45AWvF/HyGZH5115iGdUgQpx5c9gF2pzOyhtKg3hXubvioAb1l7zHe
- nk93g4igccT7HN/3xp5cdv4URlT/3fq1vD4sRAy9M9LqFwTA82/d9iO93Ef7sl0i/Jn1
- 8WsC95fdgbrlqeDeTXw8Q5NgyR0KSW1m0icpwtxOaulsj8kstfWSiWhcfklyL3Vw2Hl0
- tP0s39nUN2QIdEmPDsUWojEuX9vzKI4KQ8t9UZo20JO5hccpT+BeaKzPEPdJ/woSsTt6
- ExTw==
-X-Gm-Message-State: AOJu0Yy6d/K+WK0xTLyazmj7gRLqIF4i5+fSYXFITmXIld1A+aOJN1Ss
- 7LzhfTy05uulVJK1Q85DzFs6B/zi3cpAhFvwkRj/8UO0RSRKDPfLhAr9sAHlUuqWRzO18BgDNF8
- 5
-X-Google-Smtp-Source: AGHT+IGc5rINJP4Jc+C1zvlo5KWFFvFaOTLjmK2uzDHLMHXJNnOz+3raom/zBETcPAoeGRqp9wVVzw==
-X-Received: by 2002:a17:902:ce89:b0:205:5d12:3f24 with SMTP id
- d9443c01a7336-20ca14625femr4727595ad.20.1728597149078; 
- Thu, 10 Oct 2024 14:52:29 -0700 (PDT)
-Received: from localhost.localdomain ([45.176.89.169])
+ d=1e100.net; s=20230601; t=1728601745; x=1729206545;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eoOIefwcl2zyGqbInaCBGQitWpP7kAS3EJcvu7ps+iU=;
+ b=q4murfEMPiVtb4wAofkYVEH57801J3SKP+aGGVT3JIP9EZY4qgcxTQolmmBTRB77yU
+ 4GQ/jMCFaQbjUbdIVB7encW0g6ZX14bTLhIB5OHFGkcM9YBmTSoU2mw65cbEikb7cFTv
+ augT3UcGFO/A4ngGeJfN7+V4b1PcwMxs4U1iYTSNd+MRaWlmjVAO0xDngEfTozMEtbET
+ F+XT1ASb5yeYQabYpCXBAC9D4tdH9G8aIiZswIk9iVbgn8qznEm3LyzZsVdjhBXG7rXj
+ 5b8yuRW8XdzwVt6iEzv4d9IQrJIwzs3kLPw8q0y5UBXzL8HV1yfmihVv7EOqAfa/KIJa
+ x6QA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX4XvM5LkAyKytrKgNXbj+aqP9i4AKg9X9wC3/jAnUyAdfrBL35OAyN2xteH2BivHjbairllwe7+poM@nongnu.org
+X-Gm-Message-State: AOJu0YxCElC5KXTY/RQIyDUADlHsIM0uS4fuayDio63hTjvpG+lTLT89
+ hgiLWV53SQcHEkuQZgaVvxFYaXFpDIoG6/FZE97nq7VJ+Y2qXBaN
+X-Google-Smtp-Source: AGHT+IEnssj6iLPq8FvP3tyJbWCzWYVHNFcOJBhMOpVp2twnK6mEBduZuY76xG+FeTMmbAdxBpA6uA==
+X-Received: by 2002:a05:6a20:7f9f:b0:1d7:86c:189e with SMTP id
+ adf61e73a8af0-1d8ae0cfe7amr7855544637.12.1728601745487; 
+ Thu, 10 Oct 2024 16:09:05 -0700 (PDT)
+Received: from fan ([2601:646:8f03:9fee:c165:c800:4280:d79b])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c8bad341dsm13739105ad.44.2024.10.10.14.52.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 10 Oct 2024 14:52:28 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v2 16/16] hw/mips: Have mips_cpu_create_with_clock() take an
- endianness argument
-Date: Thu, 10 Oct 2024 18:50:14 -0300
-Message-ID: <20241010215015.44326-17-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241010215015.44326-1-philmd@linaro.org>
-References: <20241010215015.44326-1-philmd@linaro.org>
+ 41be03b00d2f7-7ea44907c42sm1531066a12.39.2024.10.10.16.09.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Oct 2024 16:09:05 -0700 (PDT)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Thu, 10 Oct 2024 16:08:51 -0700
+To: Davidlohr Bueso <dave@stgolabs.net>
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH -qemu] hw/cxl: Support get/set mctp response payload size
+Message-ID: <Zwheg1hFMG_MYggX@fan>
+References: <20241010014157.175548-1-dave@stgolabs.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010014157.175548-1-dave@stgolabs.net>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,130 +94,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mips_cpu_create_with_clock() creates a vCPU. Pass it the vCPU
-endianness requested by argument. Update the board call sites.
+On Wed, Oct 09, 2024 at 06:41:57PM -0700, Davidlohr Bueso wrote:
+> Add Get/Set Response Message Limit commands.
+> 
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- target/mips/cpu.h        | 4 +++-
- hw/mips/fuloong2e.c      | 2 +-
- hw/mips/jazz.c           | 2 +-
- hw/mips/loongson3_virt.c | 2 +-
- hw/mips/malta.c          | 3 ++-
- hw/mips/mipssim.c        | 2 +-
- target/mips/cpu.c        | 5 ++++-
- 7 files changed, 13 insertions(+), 7 deletions(-)
+The commit log may include the cxl spec reference. Otherwise,
 
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index 070e11fe0da..a4a46ebbe98 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -1376,12 +1376,14 @@ static inline void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
-  * mips_cpu_create_with_clock:
-  * @typename: a MIPS CPU type.
-  * @cpu_refclk: this cpu input clock (an output clock of another device)
-+ * @is_big_endian: whether this CPU is configured in big endianness
-  *
-  * Instantiates a MIPS CPU, set the input clock of the CPU to @cpu_refclk,
-  * then realizes the CPU.
-  *
-  * Returns: A #CPUState or %NULL if an error occurred.
-  */
--MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk);
-+MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk,
-+                                    bool is_big_endian);
- 
- #endif /* MIPS_CPU_H */
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index 6e4303ba473..7fd8296ccb6 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -229,7 +229,7 @@ static void mips_fuloong2e_init(MachineState *machine)
-     clock_set_hz(cpuclk, 533080000); /* ~533 MHz */
- 
-     /* init CPUs */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, false);
-     env = &cpu->env;
- 
-     qemu_register_reset(main_cpu_reset, cpu);
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 33ce51fb09c..d6bc698ef17 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -212,7 +212,7 @@ static void mips_jazz_init(MachineState *machine,
-                          * ext_clk[jazz_model].pll_mult);
- 
-     /* init CPUs */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, TARGET_BIG_ENDIAN);
-     env = &cpu->env;
-     qemu_register_reset(main_cpu_reset, cpu);
- 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index a2db98665df..f3b6326cc59 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -567,7 +567,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         int ip;
- 
-         /* init CPUs */
--        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, false);
- 
-         /* Init internal devices */
-         cpu_mips_irq_init_cpu(cpu);
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 964d3592da7..198da5ba3d4 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -1034,7 +1034,8 @@ static void create_cpu_without_cps(MachineState *ms, MaltaState *s,
-     int i;
- 
-     for (i = 0; i < ms->smp.cpus; i++) {
--        cpu = mips_cpu_create_with_clock(ms->cpu_type, s->cpuclk);
-+        cpu = mips_cpu_create_with_clock(ms->cpu_type, s->cpuclk,
-+                                         TARGET_BIG_ENDIAN);
- 
-         /* Init internal devices */
-         cpu_mips_irq_init_cpu(cpu);
-diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
-index a07732d3dc5..54cdcd61724 100644
---- a/hw/mips/mipssim.c
-+++ b/hw/mips/mipssim.c
-@@ -160,7 +160,7 @@ mips_mipssim_init(MachineState *machine)
- #endif
- 
-     /* Init CPUs. */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, TARGET_BIG_ENDIAN);
-     env = &cpu->env;
- 
-     reset_info = g_new0(ResetData, 1);
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 04bf4b11db2..9724e71a5e0 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -643,12 +643,15 @@ static void mips_cpu_register_types(void)
- type_init(mips_cpu_register_types)
- 
- /* Could be used by generic CPU object */
--MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
-+MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk,
-+                                    bool is_big_endian)
- {
-     DeviceState *cpu;
- 
-     cpu = DEVICE(object_new(cpu_type));
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-+    object_property_set_bool(OBJECT(cpu), "big-endian", is_big_endian,
-+                             &error_abort);
-     qdev_realize(cpu, NULL, &error_abort);
- 
-     return MIPS_CPU(cpu);
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+
+
+> ---
+>  hw/cxl/cxl-mailbox-utils.c | 68 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 65 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index c2d776bc96eb..98416af794bb 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -7,6 +7,8 @@
+>   * COPYING file in the top-level directory.
+>   */
+>  
+> +#include <math.h>
+> +
+>  #include "qemu/osdep.h"
+>  #include "hw/pci/msi.h"
+>  #include "hw/pci/msix.h"
+> @@ -56,6 +58,8 @@ enum {
+>      INFOSTAT    = 0x00,
+>          #define IS_IDENTIFY   0x1
+>          #define BACKGROUND_OPERATION_STATUS    0x2
+> +        #define GET_RESPONSE_MSG_LIMIT   0x3
+> +        #define SET_RESPONSE_MSG_LIMIT   0x4
+>      EVENTS      = 0x01,
+>          #define GET_RECORDS   0x0
+>          #define CLEAR_RECORDS   0x1
+> @@ -393,7 +397,7 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
+>          uint16_t pcie_subsys_vid;
+>          uint16_t pcie_subsys_id;
+>          uint64_t sn;
+> -    uint8_t max_message_size;
+> +        uint8_t max_message_size;
+>          uint8_t component_type;
+>      } QEMU_PACKED *is_identify;
+>      QEMU_BUILD_BUG_ON(sizeof(*is_identify) != 18);
+> @@ -422,12 +426,58 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
+>          is_identify->component_type = 0x3; /* Type 3 */
+>      }
+>  
+> -    /* TODO: Allow this to vary across different CCIs */
+> -    is_identify->max_message_size = 9; /* 512 bytes - MCTP_CXL_MAILBOX_BYTES */
+> +    is_identify->max_message_size = (uint8_t)log2(cci->payload_max);
+>      *len_out = sizeof(*is_identify);
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +/* CXL r3.1 section 8.2.9.1.3: Get Response Message Limit (Opcode 0003h) */
+> +static CXLRetCode cmd_get_response_msg_limit(const struct cxl_cmd *cmd,
+> +                                             uint8_t *payload_in,
+> +                                             size_t len_in,
+> +                                             uint8_t *payload_out,
+> +                                             size_t *len_out,
+> +                                             CXLCCI *cci)
+> +{
+> +    struct {
+> +        uint8_t rsp_limit;
+> +    } QEMU_PACKED *get_rsp_msg_limit = (void *)payload_out;
+> +    QEMU_BUILD_BUG_ON(sizeof(*get_rsp_msg_limit) != 1);
+> +
+> +    get_rsp_msg_limit->rsp_limit = (uint8_t)log2(cci->payload_max);
+> +
+> +    *len_out = sizeof(*get_rsp_msg_limit);
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+> +/* CXL r3.1 section 8.2.9.1.4: Set Response Message Limit (Opcode 0004h) */
+> +static CXLRetCode cmd_set_response_msg_limit(const struct cxl_cmd *cmd,
+> +                                             uint8_t *payload_in,
+> +                                             size_t len_in,
+> +                                             uint8_t *payload_out,
+> +                                             size_t *len_out,
+> +                                             CXLCCI *cci)
+> +{
+> +    struct {
+> +        uint8_t rsp_limit;
+> +    } QEMU_PACKED *in = (void *)payload_in;
+> +    QEMU_BUILD_BUG_ON(sizeof(*in) != 1);
+> +    struct {
+> +        uint8_t rsp_limit;
+> +    } QEMU_PACKED *out = (void *)payload_out;
+> +    QEMU_BUILD_BUG_ON(sizeof(*out) != 1);
+> +
+> +    if (in->rsp_limit < 8 || in->rsp_limit > 10) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    cci->payload_max = 1 << in->rsp_limit;
+> +    out->rsp_limit = in->rsp_limit;
+> +
+> +    *len_out = sizeof(*out);
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  static void cxl_set_dsp_active_bm(PCIBus *b, PCIDevice *d,
+>                                    void *private)
+>  {
+> @@ -3000,6 +3050,10 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
+>  
+>  static const struct cxl_cmd cxl_cmd_set_t3_mctp[256][256] = {
+>      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
+> +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_get_response_msg_limit, 0, 0 },
+> +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_set_response_msg_limit, 1, 0 },
+>      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+>      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
+>                                0 },
+> @@ -3035,6 +3089,10 @@ void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
+>  
+>  static const struct cxl_cmd cxl_cmd_set_t3_fm_owned_ld_mctp[256][256] = {
+>      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0,  0},
+> +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_get_response_msg_limit, 0, 0 },
+> +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_set_response_msg_limit, 1, 0 },
+>      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
+>                                0 },
+>      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+> @@ -3055,6 +3113,10 @@ void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
+>  
+>  static const struct cxl_cmd cxl_cmd_set_usp_mctp[256][256] = {
+>      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
+> +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_get_response_msg_limit, 0, 0 },
+> +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
+> +                                           cmd_set_response_msg_limit, 1, 0 },
+>      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
+>                                0, 0 },
+>      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+> -- 
+> 2.46.1
+> 
+
 -- 
-2.45.2
-
+Fan Ni
 
