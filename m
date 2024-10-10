@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 971BB998027
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 10:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF15998141
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 11:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syofN-0006D6-Rq; Thu, 10 Oct 2024 04:37:02 -0400
+	id 1syp12-0001nG-DV; Thu, 10 Oct 2024 04:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syofE-0006Bu-4m
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 04:36:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1syp0v-0001mx-Td
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 04:59:18 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1syofC-00075n-IG
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 04:36:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728549408;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Y6ZhgI9A/PPL66uKE+bRh7ed0Z2uBOmJSzMOo3Ul9p0=;
- b=D5vCj/Hhi3NZAZ/D0UOO4jVVBWJj5e30DuOKKCfNs/L3oPIU+pdHW7sq1xylKclBHFYqJl
- 6sRXVLxaYsJPxKeG9R6SXPO/KkiFXtC2yc7+uUkdGlSLNr+qmJ3nD7Hu9rhl5TAslhJP4W
- 0FeoygMVpE9aekVNAcR2F7CXy2HwjQ4=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-bxOlJhrxPAG1obiZKwE9Uw-1; Thu, 10 Oct 2024 04:36:46 -0400
-X-MC-Unique: bxOlJhrxPAG1obiZKwE9Uw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5c938ae4152so346683a12.1
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 01:36:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728549405; x=1729154205;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y6ZhgI9A/PPL66uKE+bRh7ed0Z2uBOmJSzMOo3Ul9p0=;
- b=exWGoCRnco+gyis8Fbota6joD9As5iQqqVlzpLoEC0i34vG98nOHs4PVg4aICCxRUG
- eSbyd9NSyZX7pCXcT/Vpi4hd7ru7BdMMCcpYUv7Q5/HxcnTfnKEwRT0F2vkWEMCIi1dX
- 2jGL2Byx0Kh4kpngVRSaMsRpztQDIVTjXzNR+v0FDEVqjME38OcjcSVZ5NAAKZZemiVk
- 68lA+vsU2TthQJU/lniyI2gFmDDRa5orDyGABF5YeiHKDMsOZ4D92QqFaslL1OPUxvTs
- v39yg9NuGJybLjXSEO/hyKw9hZKAbGwGSH2pGZVbr4ebe8g3vyG0KY1+eLElEUcWCKKd
- 47XQ==
-X-Gm-Message-State: AOJu0Yyph3oc6JHlyf179PI9MAomF87ghF69f8GHEaYTCW7pjdCHncg+
- qfyhIZP90NcG+4gl4juQWHsUS/ED2Zs1B7rhQOPHh3pG9FZG8bV0vOoeoDrPYYUxCPSaKt1Myvd
- SLjYg94sfWr8X6c2ryy4M/7V2pIruMkOU7TFrzyKpL99uhLt9hptiLzBdqVnuI5Erurq8AsmEmb
- q1zsyS+i/aTCo6vGxnQw0TdAqFIA8VEHe1xTgtk6Y=
-X-Received: by 2002:a05:6402:35d3:b0:5c9:35bc:81a2 with SMTP id
- 4fb4d7f45d1cf-5c935bc88d4mr1528541a12.6.1728549404999; 
- Thu, 10 Oct 2024 01:36:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8cLf8tnANgDA4Kpwis70Rruqwq+RYFwQeDwDvplN20RpRTZYvdIQjx9UbERy3k+WD77BtKg==
-X-Received: by 2002:a05:6402:35d3:b0:5c9:35bc:81a2 with SMTP id
- 4fb4d7f45d1cf-5c935bc88d4mr1528484a12.6.1728549404202; 
- Thu, 10 Oct 2024 01:36:44 -0700 (PDT)
-Received: from avogadro.local ([151.81.124.37])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c937260a9asm464026a12.67.2024.10.10.01.36.43
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 01:36:43 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] tcg: remove singlestep_enabled from DisasContextBase
-Date: Thu, 10 Oct 2024 10:36:41 +0200
-Message-ID: <20241010083641.1785069-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1syp0t-0000lJ-R9
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 04:59:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A3q0Dm010535;
+ Thu, 10 Oct 2024 08:59:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=0k/90225PfmsawXvOrc4u45sff
+ LLNM+hO3b+T8MZoCE=; b=Cx/tb2IBuI6V3sN+m8220HH7fkcDWzbiIGANETpToV
+ nsvJBE6dlPpjPOp20lEpuhNrGaCbj4bvFfhvjIakXSng1eWBrOk8lE4l3OCxrGdr
+ ZQ41OYSlhsu1jwMLn17kkbLr1FJfC+zUjUMkUs7bY/MzT0ZloeocTOPIy+4z34lG
+ eK/uJvVslBUynERLwoiW3c0pYuLv9o761rZVL+ogcLMPvT0zcS9u56WRfXZgo2qE
+ NpVK8VDDEYTJIpOufg6UuCYDpwRxHnJQAuLdopiD5ZclWOfQWD/Wvis1iJhKzLdX
+ 5zONMRg1Fl7pMxM62lmoVbX5CE8gllkbTgq3pebgOhEw==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4267cmsde9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Oct 2024 08:59:12 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49A8tGlx013833;
+ Thu, 10 Oct 2024 08:59:11 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fsseyy6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Oct 2024 08:59:11 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49A8x77p53149974
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Oct 2024 08:59:07 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C4FA2004E;
+ Thu, 10 Oct 2024 08:59:07 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5A8CC20040;
+ Thu, 10 Oct 2024 08:59:07 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.88.135])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Oct 2024 08:59:07 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH] tests/tcg: Do not use inttypes.h in multiarch/system/memory.c
+Date: Thu, 10 Oct 2024 10:58:55 +0200
+Message-ID: <20241010085906.226249-1-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zcSvPXeL6-1uo30zgKK91f6CtIHwzN-K
+X-Proofpoint-GUID: zcSvPXeL6-1uo30zgKK91f6CtIHwzN-K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-10_05,2024-10-09_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=964 mlxscore=0 spamscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410100056
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,70 +101,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is used in a couple of places only, both within the same target.  Those can
-use the cflags just as well, so remove the separate field.
+make check-tcg fails on Fedora with the following error message:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    alpha-linux-gnu-gcc [...] qemu/tests/tcg/multiarch/system/memory.c -o memory [...]
+    qemu/tests/tcg/multiarch/system/memory.c:17:10: fatal error: inttypes.h: No such file or directory
+       17 | #include <inttypes.h>
+          |          ^~~~~~~~~~~~
+    compilation terminated.
+
+The reason is that Fedora has cross-compilers, but no cross-glibc
+headers. Fix by hardcoding the format specifiers and dropping the
+include.
+
+An alternative fix would be to introduce a configure check for
+inttypes.h. But this would make it impossible to use Fedora
+cross-compilers for softmmu tests, which used to work so far.
+
+Fixes: ecbcc9ead2f8 ("tests/tcg: add a system test to check memory instrumentation")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- include/exec/translator.h   | 2 --
- accel/tcg/translator.c      | 1 -
- target/mips/tcg/translate.c | 5 +++--
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ tests/tcg/multiarch/system/memory.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 25004dfb76e..d8dcb77b5f4 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -71,7 +71,6 @@ typedef enum DisasJumpType {
-  * @is_jmp: What instruction to disassemble next.
-  * @num_insns: Number of translated instructions (including current).
-  * @max_insns: Maximum number of instructions to be translated in this TB.
-- * @singlestep_enabled: "Hardware" single stepping enabled.
-  * @plugin_enabled: TCG plugin enabled in this TB.
-  * @fake_insn: True if translator_fake_ldb used.
-  * @insn_start: The last op emitted by the insn_start hook,
-@@ -86,7 +85,6 @@ struct DisasContextBase {
-     DisasJumpType is_jmp;
-     int num_insns;
-     int max_insns;
--    bool singlestep_enabled;
-     bool plugin_enabled;
-     bool fake_insn;
-     struct TCGOp *insn_start;
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 113edcffe35..cbad00a5172 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -129,7 +129,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     db->is_jmp = DISAS_NEXT;
-     db->num_insns = 0;
-     db->max_insns = *max_insns;
--    db->singlestep_enabled = cflags & CF_SINGLE_STEP;
-     db->insn_start = NULL;
-     db->fake_insn = false;
-     db->host_addr[0] = host_pc;
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 333469b268e..50d8537a3b3 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -15362,7 +15362,8 @@ static void mips_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-      * hardware does (e.g. if a delay slot instruction faults, the
-      * reported PC is the PC of the branch).
-      */
--    if (ctx->base.singlestep_enabled && (ctx->hflags & MIPS_HFLAG_BMASK)) {
-+    if ((tb_cflags(ctx->base.tb) & CF_SINGLE_STEP) &&
-+        (ctx->hflags & MIPS_HFLAG_BMASK)) {
-         ctx->base.max_insns = 2;
+diff --git a/tests/tcg/multiarch/system/memory.c b/tests/tcg/multiarch/system/memory.c
+index 65a6038a241..7508f6b916d 100644
+--- a/tests/tcg/multiarch/system/memory.c
++++ b/tests/tcg/multiarch/system/memory.c
+@@ -14,7 +14,6 @@
+ 
+ #include <stdint.h>
+ #include <stdbool.h>
+-#include <inttypes.h>
+ #include <minilib.h>
+ 
+ #ifndef CHECK_UNALIGNED
+@@ -511,8 +510,8 @@ int main(void)
+     int i;
+     bool ok = true;
+ 
+-    ml_printf("Test data start: 0x%"PRIxPTR"\n", &test_data[0]);
+-    ml_printf("Test data end: 0x%"PRIxPTR"\n", &test_data[TEST_SIZE]);
++    ml_printf("Test data start: 0x%lx\n", (unsigned long)&test_data[0]);
++    ml_printf("Test data end: 0x%lx\n", (unsigned long)&test_data[TEST_SIZE]);
+ 
+     /* Run through the unsigned tests first */
+     for (i = 0; i < ARRAY_SIZE(init_ufns) && ok; i++) {
+@@ -529,8 +528,8 @@ int main(void)
+         ok = do_signed_reads(true);
      }
  
-@@ -15445,7 +15446,7 @@ static void mips_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-      * together with its delay slot.
-      */
-     if (ctx->base.pc_next - ctx->page_start >= TARGET_PAGE_SIZE
--        && !ctx->base.singlestep_enabled) {
-+        && !(tb_cflags(ctx->base.tb) & CF_SINGLE_STEP)) {
-         ctx->base.is_jmp = DISAS_TOO_MANY;
-     }
+-    ml_printf("Test data read: %"PRId32"\n", test_read_count);
+-    ml_printf("Test data write: %"PRId32"\n", test_write_count);
++    ml_printf("Test data read: %lu\n", (unsigned long)test_read_count);
++    ml_printf("Test data write: %lu\n", (unsigned long)test_write_count);
+     ml_printf("Test complete: %s\n", ok ? "PASSED" : "FAILED");
+     return ok ? 0 : -1;
  }
 -- 
 2.46.2
