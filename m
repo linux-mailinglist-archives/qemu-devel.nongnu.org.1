@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD4F9994B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 23:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE319994AD
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 23:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sz13t-0007XM-VN; Thu, 10 Oct 2024 17:51:10 -0400
+	id 1sz13w-0007ek-9B; Thu, 10 Oct 2024 17:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz13j-0007Nt-6N
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz13p-0007QE-Ji
  for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:51:05 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz13g-0004fA-Dg
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:50:58 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-20c56b816faso13723975ad.2
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 14:50:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz13m-0004fb-Is
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:51:05 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-20c71603217so12527905ad.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 14:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728597051; x=1729201851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728597059; x=1729201859; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L/eEZSTQpqPfWDWhUcjUtkLny/Dd9OUObCuW9KXLFI8=;
- b=br9n6WMsLMrU7+oW01NcgOPs24xavYBIzuHxErplGv4Dd2QKL00f+ed4uI6aj6VLRL
- yvu6uGBiw3/cTF40uBXsL7tkeW3PMvzKx2Ah2vNg2jDVXYqHnzgkA1MNarnWw9XGKbe7
- MDM6peznIU9I2utGhI6Zs5CLxF3fZIn3JIrxZKnneMIHponMw+9JspUpGIs39oRNy1VK
- hEVJSmxiTzEf0MAKHzirjeQQVuvjtHkFinW576SWl4JZBp6Cyt3OnifGyz7DfIAb5qQA
- 6Zut+9CA9TqGcJu54bW0VSJlybE1Q3td9w3QcB5Q8jUURdlwzQiaIlH/5vL1rck1NJ+4
- es1g==
+ bh=EOOJxTdMLVXErkbjYWqNoVc3nM10oJqf8XDD2AIWBko=;
+ b=EmS5H0pCr7+IYy0IJeNRl9eHtHcHaCMX4c48A5vbdSB2XaT40KEj06AyZWetlCWrEm
+ e9ZWLCQsjbU0xEI/4R6svxRKZ6QwdrfdZX+Sk0NUq+qww7xL16H9GfPMOI2DC38eJIml
+ L1/4pZBQbNtS7ghYx/XbXF90qn3oPSyq5blnf6++DDxbGseaLjzYDhAlo3nL+3WoGHDx
+ mESVD6zkrYVBqCv9y0JeUvJ1bKki+yycgvjlDG66iIfRdr7izw+JUmrUKkP0KvWBpFtk
+ 0G84YwNR7LrtcGsLQVzJHuVWUmco03c4QNnEiucbobjTN9gXdrl5aUEuhoqjvc/Y8aAN
+ HCzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728597051; x=1729201851;
+ d=1e100.net; s=20230601; t=1728597059; x=1729201859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L/eEZSTQpqPfWDWhUcjUtkLny/Dd9OUObCuW9KXLFI8=;
- b=twXVgttXiYSDTrCSDUcVrY/NmTl45eZHB/SO4zXLkA0kA55TVCjujAlIBqUn0DjR2G
- Ebe4syMFvCFJ4NoJk9t6UCRjB3GKeFnMskOYOTN0jsMCdtGqqwfPCFNIEH00B1Z2H0vS
- TOUQ+y0XfZ95kUDyn8tCw53C/LTqyTJD7SSM0GeOhLBxOqujpGaxdUHpLY2KTiWMKqVv
- mM4LfeA/nrQt79wLRzLKcZsiAmLxe5AzbiTJ9AKX4RsDY4pcwiPV7LU39rIu+cUIanIl
- Wwa0aO5wlgRcdoMuMBUMQkSDXGPL18tbKHVeN2+PtCuRMvUhHKpJZLvsQY6TzEM2kIh5
- hRUg==
-X-Gm-Message-State: AOJu0YxLBnfzNwCl73X9+20bYxt38S9/G4hBHriGVQPO9vzV8XMig5PU
- yeqTD+JKjuyQLCMAOpvBKNpDIzmQf66+m73azSSbDtvE6s49wFauuBH+Nq649wmsgQ+Dci9w2EE
- n
-X-Google-Smtp-Source: AGHT+IFOrjRSzt5g9GCOZU/lFWpJZ0gBZ/5amXdYzd649oGkGX4kdcftaxz5qBKqpFBAS3xnR/lc3Q==
-X-Received: by 2002:a17:902:d490:b0:20b:a9f3:7996 with SMTP id
- d9443c01a7336-20ca16b6a37mr4695565ad.51.1728597051601; 
- Thu, 10 Oct 2024 14:50:51 -0700 (PDT)
+ bh=EOOJxTdMLVXErkbjYWqNoVc3nM10oJqf8XDD2AIWBko=;
+ b=RHSuglNNFxbhRQzQ4jAND8hLGPEHmYWS9toRjdZk7Ha3nUTG4kFXhgXu9Az3cJjU8I
+ +zdhMdQJZP53HPY0Ig8BNLxGuDlPJGotqYBP6li5MpVD9C8JqXaSAmQXfvkEQm7yZO3Z
+ aaXW4jOtml48LEi/LZlz16jBgvBjezPckeOCf6WB18tOPVXTS3IRQAKnOBARxHC69/cx
+ c2v5USJQlf2LUEhBghOIjiEEj6WfWAEAttFxuxIbaiSOuVRknTHs95yqmJVEA9Tk6P/8
+ k1U+gmRG61V/OElFyuHP9qT2/fQi63RzhAJVtOBQEsyQm57NwPpxYkO4AhWoPc+Kl0uJ
+ 6XQA==
+X-Gm-Message-State: AOJu0Yyep7yW8ju+enATZ0TM4BeyH9Y7O7GDmWVv64nB9P6jVr/LOgpj
+ Ck2eVPJ+SlqXesSalE5I4KV4DUsP3joLDoqs303K4oQi2ShjtuFYNQp+QIQsT5AbRf+ur4JDa+q
+ a
+X-Google-Smtp-Source: AGHT+IFiYJaSjhH7i6lctKbazZAj82fii/s/d2aqMiBaqdNSJO5YGvm9SR55+fFLiNLfbN/Tpv6fvw==
+X-Received: by 2002:a17:902:e845:b0:20b:449c:8978 with SMTP id
+ d9443c01a7336-20ca147a5b6mr4811645ad.31.1728597059570; 
+ Thu, 10 Oct 2024 14:50:59 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.89.169])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c8c348a05sm13714415ad.282.2024.10.10.14.50.49
+ d9443c01a7336-20c8c345e46sm13587675ad.271.2024.10.10.14.50.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 10 Oct 2024 14:50:51 -0700 (PDT)
+ Thu, 10 Oct 2024 14:50:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Huacai Chen <chenhuacai@kernel.org>,
@@ -62,19 +62,20 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Aleksandar Rikalo <arikalo@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v2 04/16] target/mips: Replace MO_TE by mo_endian_env() in
- get_pte()
-Date: Thu, 10 Oct 2024 18:50:02 -0300
-Message-ID: <20241010215015.44326-5-philmd@linaro.org>
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 05/16] target/mips: Convert mips16e decr_and_load/store()
+ macros to functions
+Date: Thu, 10 Oct 2024 18:50:03 -0300
+Message-ID: <20241010215015.44326-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241010215015.44326-1-philmd@linaro.org>
 References: <20241010215015.44326-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -97,29 +98,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace compile-time MO_TE evaluation by runtime mo_endian_env()
-one, which expand target endianness from vCPU env.
+Functions are easier to rework than macros. Besides,
+there is no gain here in inlining these.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/mips/tcg/sysemu/tlb_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/mips/tcg/mips16e_translate.c.inc | 101 +++++++++++++-----------
+ 1 file changed, 53 insertions(+), 48 deletions(-)
 
-diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-index 3836137750e..e98bb959517 100644
---- a/target/mips/tcg/sysemu/tlb_helper.c
-+++ b/target/mips/tcg/sysemu/tlb_helper.c
-@@ -601,7 +601,7 @@ static bool get_pte(CPUMIPSState *env, uint64_t vaddr, MemOp op,
-         return false;
+diff --git a/target/mips/tcg/mips16e_translate.c.inc b/target/mips/tcg/mips16e_translate.c.inc
+index 5cffe0e412d..31bc14f9ca6 100644
+--- a/target/mips/tcg/mips16e_translate.c.inc
++++ b/target/mips/tcg/mips16e_translate.c.inc
+@@ -122,11 +122,23 @@ enum {
+ 
+ static int xlat(int r)
+ {
+-  static int map[] = { 16, 17, 2, 3, 4, 5, 6, 7 };
++  static const int map[] = { 16, 17, 2, 3, 4, 5, 6, 7 };
+ 
+   return map[r];
+ }
+ 
++static void decr_and_store(DisasContext *ctx, unsigned regidx, TCGv t0)
++{
++    TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
++
++    tcg_gen_movi_tl(t2, -4);
++    gen_op_addr_add(ctx, t0, t0, t2);
++    gen_load_gpr(t1, regidx);
++    tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, MO_TEUL |
++                       ctx->default_tcg_memop_mask);
++}
++
+ static void gen_mips16_save(DisasContext *ctx,
+                             int xsregs, int aregs,
+                             int do_ra, int do_s0, int do_s1,
+@@ -196,46 +208,38 @@ static void gen_mips16_save(DisasContext *ctx,
+ 
+     gen_load_gpr(t0, 29);
+ 
+-#define DECR_AND_STORE(reg) do {                                 \
+-        tcg_gen_movi_tl(t2, -4);                                 \
+-        gen_op_addr_add(ctx, t0, t0, t2);                        \
+-        gen_load_gpr(t1, reg);                                   \
+-        tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, MO_TEUL |       \
+-                           ctx->default_tcg_memop_mask);         \
+-    } while (0)
+-
+     if (do_ra) {
+-        DECR_AND_STORE(31);
++        decr_and_store(ctx, 31, t0);
      }
  
--    oi = make_memop_idx(op | MO_TE, ptw_mmu_idx);
-+    oi = make_memop_idx(op | mo_endian_env(env), ptw_mmu_idx);
-     if (op == MO_64) {
-         *pte = cpu_ldq_mmu(env, vaddr, oi, 0);
-     } else {
+     switch (xsregs) {
+     case 7:
+-        DECR_AND_STORE(30);
++        decr_and_store(ctx, 30, t0);
+         /* Fall through */
+     case 6:
+-        DECR_AND_STORE(23);
++        decr_and_store(ctx, 23, t0);
+         /* Fall through */
+     case 5:
+-        DECR_AND_STORE(22);
++        decr_and_store(ctx, 22, t0);
+         /* Fall through */
+     case 4:
+-        DECR_AND_STORE(21);
++        decr_and_store(ctx, 21, t0);
+         /* Fall through */
+     case 3:
+-        DECR_AND_STORE(20);
++        decr_and_store(ctx, 20, t0);
+         /* Fall through */
+     case 2:
+-        DECR_AND_STORE(19);
++        decr_and_store(ctx, 19, t0);
+         /* Fall through */
+     case 1:
+-        DECR_AND_STORE(18);
++        decr_and_store(ctx, 18, t0);
+     }
+ 
+     if (do_s1) {
+-        DECR_AND_STORE(17);
++        decr_and_store(ctx, 17, t0);
+     }
+     if (do_s0) {
+-        DECR_AND_STORE(16);
++        decr_and_store(ctx, 16, t0);
+     }
+ 
+     switch (aregs) {
+@@ -270,23 +274,34 @@ static void gen_mips16_save(DisasContext *ctx,
+     }
+ 
+     if (astatic > 0) {
+-        DECR_AND_STORE(7);
++        decr_and_store(ctx, 7, t0);
+         if (astatic > 1) {
+-            DECR_AND_STORE(6);
++        decr_and_store(ctx, 6, t0);
+             if (astatic > 2) {
+-                DECR_AND_STORE(5);
++                decr_and_store(ctx, 5, t0);
+                 if (astatic > 3) {
+-                    DECR_AND_STORE(4);
++                    decr_and_store(ctx, 4, t0);
+                 }
+             }
+         }
+     }
+-#undef DECR_AND_STORE
+ 
+     tcg_gen_movi_tl(t2, -framesize);
+     gen_op_addr_add(ctx, cpu_gpr[29], cpu_gpr[29], t2);
+ }
+ 
++static void decr_and_load(DisasContext *ctx, unsigned regidx, TCGv t0)
++{
++    TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
++
++    tcg_gen_movi_tl(t2, -4);
++    gen_op_addr_add(ctx, t0, t0, t2);
++    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, MO_TESL |
++                       ctx->default_tcg_memop_mask);
++    gen_store_gpr(t1, regidx);
++}
++
+ static void gen_mips16_restore(DisasContext *ctx,
+                                int xsregs, int aregs,
+                                int do_ra, int do_s0, int do_s1,
+@@ -294,52 +309,43 @@ static void gen_mips16_restore(DisasContext *ctx,
+ {
+     int astatic;
+     TCGv t0 = tcg_temp_new();
+-    TCGv t1 = tcg_temp_new();
+     TCGv t2 = tcg_temp_new();
+ 
+     tcg_gen_movi_tl(t2, framesize);
+     gen_op_addr_add(ctx, t0, cpu_gpr[29], t2);
+ 
+-#define DECR_AND_LOAD(reg) do {                            \
+-        tcg_gen_movi_tl(t2, -4);                           \
+-        gen_op_addr_add(ctx, t0, t0, t2);                  \
+-        tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, MO_TESL | \
+-                           ctx->default_tcg_memop_mask);   \
+-        gen_store_gpr(t1, reg);                            \
+-    } while (0)
+-
+     if (do_ra) {
+-        DECR_AND_LOAD(31);
++        decr_and_load(ctx, 31, t0);
+     }
+ 
+     switch (xsregs) {
+     case 7:
+-        DECR_AND_LOAD(30);
++        decr_and_load(ctx, 30, t0);
+         /* Fall through */
+     case 6:
+-        DECR_AND_LOAD(23);
++        decr_and_load(ctx, 23, t0);
+         /* Fall through */
+     case 5:
+-        DECR_AND_LOAD(22);
++        decr_and_load(ctx, 22, t0);
+         /* Fall through */
+     case 4:
+-        DECR_AND_LOAD(21);
++        decr_and_load(ctx, 21, t0);
+         /* Fall through */
+     case 3:
+-        DECR_AND_LOAD(20);
++        decr_and_load(ctx, 20, t0);
+         /* Fall through */
+     case 2:
+-        DECR_AND_LOAD(19);
++        decr_and_load(ctx, 19, t0);
+         /* Fall through */
+     case 1:
+-        DECR_AND_LOAD(18);
++        decr_and_load(ctx, 18, t0);
+     }
+ 
+     if (do_s1) {
+-        DECR_AND_LOAD(17);
++        decr_and_load(ctx, 17, t0);
+     }
+     if (do_s0) {
+-        DECR_AND_LOAD(16);
++        decr_and_load(ctx, 16, t0);
+     }
+ 
+     switch (aregs) {
+@@ -374,18 +380,17 @@ static void gen_mips16_restore(DisasContext *ctx,
+     }
+ 
+     if (astatic > 0) {
+-        DECR_AND_LOAD(7);
++        decr_and_load(ctx, 7, t0);
+         if (astatic > 1) {
+-            DECR_AND_LOAD(6);
++            decr_and_load(ctx, 6, t0);
+             if (astatic > 2) {
+-                DECR_AND_LOAD(5);
++                decr_and_load(ctx, 5, t0);
+                 if (astatic > 3) {
+-                    DECR_AND_LOAD(4);
++                    decr_and_load(ctx, 4, t0);
+                 }
+             }
+         }
+     }
+-#undef DECR_AND_LOAD
+ 
+     tcg_gen_movi_tl(t2, framesize);
+     gen_op_addr_add(ctx, cpu_gpr[29], cpu_gpr[29], t2);
 -- 
 2.45.2
 
