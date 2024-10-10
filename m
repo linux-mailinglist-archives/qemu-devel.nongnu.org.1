@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC0F998227
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 11:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F9199823B
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 11:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sypT4-00019H-TZ; Thu, 10 Oct 2024 05:28:22 -0400
+	id 1sypUZ-0001l4-19; Thu, 10 Oct 2024 05:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1sypT3-000198-Ht
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 05:28:21 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1sypT1-0003vb-1i
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 05:28:21 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5c924667851so814888a12.3
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 02:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728552497; x=1729157297; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QaYY9X9pUCStJ66Iupj9x96nWBsnt7lR9iGUBryB4Dk=;
- b=PgUQ68IsnjaWae4xeiIm1Bvup0JLqKnz9ztxU1an0gsbZdRmKm9rRRI31WIUL9UNl7
- FEth5Z2MtDL/C9gl4eJ0jvertXDK6P3IGHeeRYP8P8x7O7f3YArSpFtlVqdQsz51w3M6
- zfEEcnrtpr+9foQLHijWSNYulGuOZc12nrihaV7L9yMLZQtiQcRmlJ85lvSGkRFoFgzn
- 0sQeneatVqYB5V/211aZSfFNIYIBYQXx12ijrzQqs7nIB2+boyET4vOpUol0II+v97qx
- oBBdtwqJWLa2Mf+DANeORqoXrsut6DHF/vWt7mBwFc3cAIk9s7QwdZfPcm5IK+jfESbO
- K4wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728552497; x=1729157297;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QaYY9X9pUCStJ66Iupj9x96nWBsnt7lR9iGUBryB4Dk=;
- b=iOv51bbqwjkeF9FN0DXQuCLl9e/rtmLdUcZIOjUT6XtB9Z/k2VS4q1McDXX4Vu+YgE
- rjhpZn6EEWzoh0/PA+ZkmVfsW9i2g02YfPGn/pogvS8qeujzd+v/V1JeJx0my/nnGiIB
- 9GDaGDYqlSOv904JKuu5eV0qjn6xhiza+9OEqNjpS+r7h5KE6l2XBtpD8t6vuT9yUb37
- H/yx+hIR6Ht6tYp+WbGpqGI80rPkqg5VYef8MtRMf6t1NIpFC4xq1D7SmQj4he4YFO71
- HMmgDHO8w/4gILUiEkXkm0j6HR6U4l9ni/FK5TpawVD5L9oYPpFrS0Tg9gSwQ07N42E7
- EzdQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUzMaSNrXyQiKvUd3NQQg+30WhVbFPchv3CVK+vLh73DKmOKUmjql3Udm3GAOzii6F0ebipHNdt1xJp@nongnu.org
-X-Gm-Message-State: AOJu0YzATjIAQqzLi9e0VuJmy7JuI+tJ++4psOpSK501KGGYUacSTVGX
- /BbxAhXHrfaFHaE10nGfAVxeFyZDHyM7JlgePm4LdIOwMBEEykBqV8FY1A==
-X-Google-Smtp-Source: AGHT+IG2jOKCngOz4u+2GABtvu0Ro+GRGFLB7fO0aJJv1V0/8b//4/AwJcuvRr9gCpAdULb0CCtWog==
-X-Received: by 2002:a17:906:7309:b0:a99:4dc1:b931 with SMTP id
- a640c23a62f3a-a999e8f728cmr289576566b.64.1728552497043; 
- Thu, 10 Oct 2024 02:28:17 -0700 (PDT)
-Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99a80dc5easm62490866b.170.2024.10.10.02.28.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 02:28:16 -0700 (PDT)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH 1/1] chardev/char: fix qemu_chr_is_busy() check
-Date: Thu, 10 Oct 2024 11:26:19 +0200
-Message-Id: <20241010092619.323489-1-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sypUV-0001k4-AQ
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 05:29:51 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sypUT-00041S-22
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 05:29:50 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A3qxcE011707;
+ Thu, 10 Oct 2024 09:29:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:content-transfer-encoding
+ :mime-version; s=pp1; bh=PyQT/oON0CIBQsDzxfOSpbK4wTUFZw2XZff7ttM
+ FM/E=; b=QH5McQPJ3Ge9d/2FOSM7uLB9yfG71OPhDyBI+HhNZjhTGjbFdZasAd7
+ XLRMFbxgxSPk4sB2ibZbjONCyWYiLGxYDfk6eKub7TqCfNvzR+DTTRax1Eng/ERc
+ szOB9lfm2sBWcP37tSiVSPvDi7Ei4V4Acyaa8TZNmZRDgxzmatuvfjiL5J0EuH9s
+ 44gXqpmDB84Yjix46pr/k/OXbF+yQ5djloU7JP7kp0Rsl6hH4Uhkb/yQ43eYNxpP
+ I74NyGvI8zbhi7K3ImF03793k2+EwmhS9ikqD6fq8SRJOjSSwhnY7ziqnArMfiBR
+ 3FbDyDf2BDGsnU1zq772eokfn7+27aQ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4267cmshqy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Oct 2024 09:29:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49A71Fvu010718;
+ Thu, 10 Oct 2024 09:29:44 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 423j0jpr23-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Oct 2024 09:29:44 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49A9Thgs54853916
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Oct 2024 09:29:43 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 023F62004E;
+ Thu, 10 Oct 2024 09:29:43 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9FD792004B;
+ Thu, 10 Oct 2024 09:29:42 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.88.135])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Oct 2024 09:29:42 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/4] Minor gdbstub cleanups
+Date: Thu, 10 Oct 2024 11:26:55 +0200
+Message-ID: <20241010092938.226868-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.46.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AP99U4kX15ve2Mn8q1HBLd_hYlXI6eBy
+X-Proofpoint-GUID: AP99U4kX15ve2Mn8q1HBLd_hYlXI6eBy
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-10_05,2024-10-09_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=502 mlxscore=0 spamscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410100062
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,33 +104,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`mux_cnt` struct member never goes negative or decrements,
-so mux chardev can be !busy only when there are no
-frontends attached. This patch fixes the always-true
-check.
+Hi,
 
-Fixes: a4afa548fc6d ("char: move front end handlers in CharBackend")
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- chardev/char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+These four patches are from the [1] series, which will probably take a
+while. But IMHO they make sense on their own, so I'm sending them as a
+separate series.
 
-diff --git a/chardev/char.c b/chardev/char.c
-index c0cc52824b48..f54dc3a86286 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)
- {
-     if (CHARDEV_IS_MUX(s)) {
-         MuxChardev *d = MUX_CHARDEV(s);
--        return d->mux_cnt >= 0;
-+        return d->mux_cnt > 0;
-     } else {
-         return s->be != NULL;
-     }
+[1] https://lore.kernel.org/qemu-devel/20240923162208.90745-1-iii@linux.ibm.com/
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (4):
+  gdbstub: Make gdb_get_char() static
+  gdbstub: Move phy_memory_mode to GDBSystemState
+  gdbstub: Move gdb_syscall_mode to GDBSyscallState
+  gdbstub: Factor out gdb_try_stop()
+
+ gdbstub/gdbstub.c   | 15 +++++++++++----
+ gdbstub/internals.h |  4 ++--
+ gdbstub/syscalls.c  | 20 ++++++++++----------
+ gdbstub/system.c    | 18 ++++++++----------
+ gdbstub/user.c      | 13 +++++--------
+ 5 files changed, 36 insertions(+), 34 deletions(-)
+
 -- 
-2.34.1
+2.46.2
 
 
