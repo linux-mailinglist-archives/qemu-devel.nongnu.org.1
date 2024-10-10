@@ -2,78 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699A899876A
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 15:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025CB998775
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 15:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syt3c-0007qx-UH; Thu, 10 Oct 2024 09:18:21 -0400
+	id 1syt3s-00087O-UL; Thu, 10 Oct 2024 09:18:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syt3O-0007jQ-RN
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 09:18:07 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1syt3M-0008P3-Ej
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 09:18:06 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5398fb1a871so992982e87.3
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 06:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728566282; x=1729171082; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ylbu5jo0GWWpRbcIXJid3gmoRXQZOn8CJVhgXWT4S28=;
- b=ZL/3XUIGlhGBnQ252Jwu+LaWpBMl8ED2j6CkNwwnBWQtZA0p4zNgfTFdeukOsImI1M
- AXq1+9U26a88OcsfiIi7yyf0qdZkNry9JkmxvshlM8D32QOhtkCPXMC1dwQEDedYSNhk
- /h9OxGiAgbYDuURrshl+TavFSutkIXNx4LDG3ojoAKAz0tPhYxU6DiSt0IUnkgjdyJ/6
- jTWxVBT6Ech7nApZeL0QJN2YiGv+G8X807tZ0PhYmfemmesUbpOAnisCKO/J119yv1eT
- OPRkiihLZLMWyJTjnJf6na79up/zboUiiAK9e63lgdKkw5+KKORuQ1La3N4lUJuD15gY
- 0JhQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1syt3k-0007zo-G3
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 09:18:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1syt3i-0008RE-Fi
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 09:18:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728566305;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=BXUahZT8g9gR8x9+Vz0UnP16Y2DgXFxT1b5SUrtjUaZJ4SX6k+gmqa/jF2PBLZhV00ciy7
+ 1rihGTRPh4LI2IQtUK9q0sc/ZAf8hvJ4Nf19DexG2rwJQi8xz6rpErbd5zjxyXG2oMK6kB
+ yXQtgIJ8jAKKPydA/l0yqEBFgp5GZ8I=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-15-sF-wq1ZPOfuyGQSV4DRHYw-1; Thu, 10 Oct 2024 09:18:22 -0400
+X-MC-Unique: sF-wq1ZPOfuyGQSV4DRHYw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9127ea1c4so591647a12.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 06:18:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728566282; x=1729171082;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ylbu5jo0GWWpRbcIXJid3gmoRXQZOn8CJVhgXWT4S28=;
- b=sqffFpJxhpjwvQNakriKw3usSi5ZaZ5kIiITlPR74C7g0kYnhTt695IU8/nMljqb7U
- OKm+YZ5BK4ZW1NeHvKj6ZkYHiJzaU0yeSsRPP7nLh3NxiqjcxveHS7vaXj7oTSlkCL2j
- z1EYdiiuR3ZdSnjNFzptW9/QTNfjaQGK++GMJbHiL0e9C9WNpss9byqcKX4bNKBRB4Dr
- 4h8k5QkTMxzJiu4nNGk5TcTMwp7X0eeMi86SFMn/wjWFtR+bYxy0pEdngpBBNOanCfN+
- lP3Tg4gHe5tay/KmJYHkF5YMqNxNzoG5vuWLv/5c5U5vkSXHy5SI8+g48r79Dc6icjOp
- svDQ==
-X-Gm-Message-State: AOJu0YwYJWEDTCFoPG/r3eyzNwTNnsflUF0na5TcDEXtxtlvKK9y91jq
- f38/5PqDwhDDNmLlxoNrhgz9doKryNlqVG9fCiyDGtzjobLkRzQvtOb9E0uH3zISVVP+58eg2HA
- W
-X-Google-Smtp-Source: AGHT+IHQqMFQkLTXEFpJVeZun85V4jl8Hk+qf+l/JLcKgiP7UHQQr+u8IBoOJtHzq0oKDpCSbidukg==
-X-Received: by 2002:ac2:4c45:0:b0:52c:fd46:bf07 with SMTP id
- 2adb3069b0e04-539c4970facmr3925972e87.49.1728566282069; 
- Thu, 10 Oct 2024 06:18:02 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1728566301; x=1729171101;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=s2Id7wOBxd4+mCpbGYMliavT+uYJ8UZYfqI9yEAoLvFKaf6HH+usOtSX545WTRR0pX
+ PRiSpPsvPqhz8OQieG7L7sC6zYPfmRjEtCZ58gQvpsNErO9i8qOT+uN3w2zAhfPVKxep
+ H0z2zd9/5duZcF0cQ+Y8CXsp0AqFs6kuZYSHvBkdsRPVQr6vAuCbMoegV8qNsl0vVCMG
+ UYhVEOoafotB9TeIhUE4S8edTHFPCMVyOjvBCAiiuhbIFR6afZ1Nvs+/84x/yzdN5H/P
+ xz3d21jH8n42+bfoV1CrqqSSx98iqR5e9j7DTuEQ2Xyuap1rvmT+zsgNM87cdakqungK
+ cUtw==
+X-Gm-Message-State: AOJu0YzDDFv4i8238P98bm+uYkFYBsbJkFsGCIJo/U7J4GAPbSaLaurl
+ cW+LXbWaLBQNRyiZooiH9BIqcNN1b8hOCMIi5TcDJymQRY3leadsyrDyiyVhswLu1GUl1KJ1sM6
+ dOzQX9U3c1wLp6LCxfvMsqNd9NT8WAVxOaTfaj51jIbNIpGmtyg4x
+X-Received: by 2002:a05:6402:210e:b0:5c8:8322:b154 with SMTP id
+ 4fb4d7f45d1cf-5c91d634834mr6239242a12.16.1728566300633; 
+ Thu, 10 Oct 2024 06:18:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcKfCY2t/xEzHt4lbJrpOWa7fJw6nigUOXotbLilUDEINHJAoWCR8ImJWaacbEp0MlF/UQVA==
+X-Received: by 2002:a05:6402:210e:b0:5c8:8322:b154 with SMTP id
+ 4fb4d7f45d1cf-5c91d634834mr6239207a12.16.1728566300225; 
+ Thu, 10 Oct 2024 06:18:20 -0700 (PDT)
+Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d4b79fa0asm1538544f8f.83.2024.10.10.06.18.01
+ 4fb4d7f45d1cf-5c9372632a4sm768705a12.78.2024.10.10.06.18.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 06:18:01 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH v2] docs/system/cpu-hotplug: Update example's socket-id/core-id
-Date: Thu, 10 Oct 2024 14:18:00 +0100
-Message-Id: <20241010131800.3210161-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Thu, 10 Oct 2024 06:18:19 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, jmattson@google.com,
+ pawan.kumar.gupta@linux.intel.com, jon@nutanix.com
+Subject: Re: [PATCH] target/i386: Add more features enumerated by CPUID.7.2.EDX
+Date: Thu, 10 Oct 2024 15:18:14 +0200
+Message-ID: <20241010131814.1804306-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20240919051011.118309-1-chao.gao@intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,151 +100,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The example of how to do vCPU hotplug and hot-unlpug in the
-cpu-hotplug documentation no longer works, because the way we
-allocate socket-id and core-id to CPUs by default has changed at some
-point.  The output also no longer matches what current QEMU produces
-in some more cosmetic ways.
+Queued, thanks.
 
-Update the example to match current QEMU. The differences are:
- * the second CPU is now socket-id=0 core-id=1,
-   not socket-id=1 core-id=0
- * the order of fields in QMP responses is now in alphabetical order
- * the "arch" member is no longer present in the query-cpus-fast
-   output (it was removed in QEMU 6.0)
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Message-id: 20240819144303.37852-1-peter.maydell@linaro.org
----
-v1->v2:
- * update device_add command line to use right socket-id/core-id
- * expand commit message to mention that "arch" field has gone
----
- docs/system/cpu-hotplug.rst | 56 ++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 29 deletions(-)
-
-diff --git a/docs/system/cpu-hotplug.rst b/docs/system/cpu-hotplug.rst
-index 015ce2b6ec3..cc50937c36c 100644
---- a/docs/system/cpu-hotplug.rst
-+++ b/docs/system/cpu-hotplug.rst
-@@ -33,23 +33,23 @@ vCPU hotplug
-       {
-           "return": [
-               {
--                  "type": "IvyBridge-IBRS-x86_64-cpu",
--                  "vcpus-count": 1,
-                   "props": {
--                      "socket-id": 1,
--                      "core-id": 0,
-+                      "core-id": 1,
-+                      "socket-id": 0,
-                       "thread-id": 0
--                  }
-+                  },
-+                  "type": "IvyBridge-IBRS-x86_64-cpu",
-+                  "vcpus-count": 1
-               },
-               {
-+                  "props": {
-+                      "core-id": 0,
-+                      "socket-id": 0,
-+                      "thread-id": 0
-+                  },
-                   "qom-path": "/machine/unattached/device[0]",
-                   "type": "IvyBridge-IBRS-x86_64-cpu",
--                  "vcpus-count": 1,
--                  "props": {
--                      "socket-id": 0,
--                      "core-id": 0,
--                      "thread-id": 0
--                  }
-+                  "vcpus-count": 1
-               }
-           ]
-       }
-@@ -58,18 +58,18 @@ vCPU hotplug
- (4) The ``query-hotpluggable-cpus`` command returns an object for CPUs
-     that are present (containing a "qom-path" member) or which may be
-     hot-plugged (no "qom-path" member).  From its output in step (3), we
--    can see that ``IvyBridge-IBRS-x86_64-cpu`` is present in socket 0,
--    while hot-plugging a CPU into socket 1 requires passing the listed
-+    can see that ``IvyBridge-IBRS-x86_64-cpu`` is present in socket 0 core 0,
-+    while hot-plugging a CPU into socket 0 core 1 requires passing the listed
-     properties to QMP ``device_add``::
- 
--      (QEMU) device_add id=cpu-2 driver=IvyBridge-IBRS-x86_64-cpu socket-id=1 core-id=0 thread-id=0
-+      (QEMU) device_add id=cpu-2 driver=IvyBridge-IBRS-x86_64-cpu socket-id=0 core-id=1 thread-id=0
-       {
-           "execute": "device_add",
-           "arguments": {
--              "socket-id": 1,
-+              "core-id": 1,
-               "driver": "IvyBridge-IBRS-x86_64-cpu",
-               "id": "cpu-2",
--              "core-id": 0,
-+              "socket-id": 0,
-               "thread-id": 0
-           }
-       }
-@@ -83,34 +83,32 @@ vCPU hotplug
- 
-       (QEMU) query-cpus-fast
-       {
--          "execute": "query-cpus-fast",
-           "arguments": {}
-+          "execute": "query-cpus-fast",
-       }
-       {
-           "return": [
-               {
--                  "qom-path": "/machine/unattached/device[0]",
--                  "target": "x86_64",
--                  "thread-id": 11534,
-                   "cpu-index": 0,
-                   "props": {
--                      "socket-id": 0,
-                       "core-id": 0,
-+                      "socket-id": 0,
-                       "thread-id": 0
-                   },
--                  "arch": "x86"
-+                  "qom-path": "/machine/unattached/device[0]",
-+                  "target": "x86_64",
-+                  "thread-id": 28957
-               },
-               {
--                  "qom-path": "/machine/peripheral/cpu-2",
--                  "target": "x86_64",
--                  "thread-id": 12106,
-                   "cpu-index": 1,
-                   "props": {
--                      "socket-id": 1,
--                      "core-id": 0,
-+                      "core-id": 1,
-+                      "socket-id": 0,
-                       "thread-id": 0
-                   },
--                  "arch": "x86"
-+                  "qom-path": "/machine/peripheral/cpu-2",
-+                  "target": "x86_64",
-+                  "thread-id": 29095
-               }
-           ]
-       }
-@@ -123,10 +121,10 @@ From the 'qmp-shell', invoke the QMP ``device_del`` command::
- 
-       (QEMU) device_del id=cpu-2
-       {
--          "execute": "device_del",
-           "arguments": {
-               "id": "cpu-2"
-           }
-+          "execute": "device_del",
-       }
-       {
-           "return": {}
--- 
-2.34.1
+Paolo
 
 
