@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A1C998EE3
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAC2998EE2
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 19:54:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syxLT-00087Z-NL; Thu, 10 Oct 2024 13:53:03 -0400
+	id 1syxLc-00089b-94; Thu, 10 Oct 2024 13:53:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLR-00086z-Ld
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:53:01 -0400
-Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLZ-00089K-CV
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:53:09 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLQ-00069g-9P
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:53:01 -0400
-Received: by mail-io1-xd36.google.com with SMTP id
- ca18e2360f4ac-8354d853f91so34231939f.0
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 10:52:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLY-0006AB-06
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:53:09 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2e2ed2230d8so119320a91.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 10:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728582779; x=1729187579; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728582786; x=1729187586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i5NiMMM7LPvrXfhCGuaMN/pJhmT1Ybuu5mX8F9LLrXQ=;
- b=bRFMaUwK4fq9cchfgRxR6Ae1Ng6KLl1KLc0tkApBHkLoN+kSZI/LUiKEih7qreqHJq
- 9Cv9wIxvhYHfRmViaEu/JEc0ZvjgCj+gVjevlhufiCwS6s+VgtdMnlinWtucap1TpvQC
- wknwKe/7PVu75sxM034q1GqzAKIJPel/O1RUM1qNHk4E39b7coNaN1U8+fvURlYqHlHD
- EisRBpt39+aOnjVcHMirBuuLwlqVA7ANHmPYCxOllZ8usJhT7tJYlsEIqw6b7t9zUNg/
- jRy+sV/3F0XmhGLjXd2W8D/pHfb0yILUAvPbb+H9hWbwR+644E3wKocbWLmEjmT8PNzk
- ZguA==
+ bh=cfkygRXpawl3aiNihHO54bIZT5dFbF68heyJhlSC/TE=;
+ b=F9EjxndnJv7I7YGM45y9CmiCLRcWqH4uVf1RFxcVOE4zvlE4LSWa3n/Q35RWXt7oKG
+ 7jxetgYnbF9F6wi9OCRQ8Jn4NYMDGGiJlclyTecBXZ6+EQgS6gCW1GkGClZjItEBwfZ0
+ RWW0HcNwzLw3dfGx2kTC0NegCkDcjJ3oyiLxoGo/PhvKTe3bg4W46yqA8iw0pm6zAEf0
+ lDX9v60j2alXwPXSMp/nft1P607LgLsw+5SLiTvpXBAHBScJLbS7lOH9XaTLn2gFIrTL
+ OrQC2sG4sgb3GlReZfcLomQbeEETHn84yVcG297TyUXFTqSSb8gvbp4yibnk9DFhZPLM
+ Zwtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728582779; x=1729187579;
+ d=1e100.net; s=20230601; t=1728582786; x=1729187586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i5NiMMM7LPvrXfhCGuaMN/pJhmT1Ybuu5mX8F9LLrXQ=;
- b=ij1/e0+6L9t1QL6kFYM9Xg5JMyEW6HDbpNvQDzbMApvdiAA5Pi+Z8z507ouvg0Rxxk
- ox346QNPlvI1yyI35MeXqnfh0mx+6Grd5LWyZt/sIA3fyts9Gk4W57BkTClfPEq1brCL
- AxD0U2uIDNoJmyKjE8TnuF8Nnqeb9MW0iTGX+799LjaE64zz//61xGe4+QFlS+eS9j0R
- 50DyR912D19O9FnAH4drnmiSIdhmKZpBJX5Ms3bcTCrkLZTdhZ186Qv46qq8dp2Wdfgt
- JnbUWTZz3ww5ciy6mdMoUdBDCcyzEIZ/x30mduNTDLlUvXv9YUF43lc8UrLTolCngOmC
- 9d8w==
-X-Gm-Message-State: AOJu0YyO+6wpLYCuKxCK/peZUokiNPjlhpi2+BlhlT7Iafu82S4FNEhN
- wA2RID2YffC3iHePSNG/ROTuR5LzfRLBl7HtNA7940X3v1ZMbi6eD6YxAFxSlwL+lrskmRHHRyO
- k
-X-Google-Smtp-Source: AGHT+IGqyF3zpfYb/s6dyQxMHHimn6aYZhz8Ie+PnwXcWGSjbjU6eVYCFcI3pcgtU5dlXWCiVwzgUg==
-X-Received: by 2002:a92:c544:0:b0:3a3:6b20:5e33 with SMTP id
- e9e14a558f8ab-3a3b51bca60mr3441285ab.12.1728582778659; 
- Thu, 10 Oct 2024 10:52:58 -0700 (PDT)
+ bh=cfkygRXpawl3aiNihHO54bIZT5dFbF68heyJhlSC/TE=;
+ b=ul+kltywgPtZj38oLxLmy0bmFc/ODrOc9mmUwrJzSa/fgUyVIAhWQq0FD09rtL26CS
+ U0thAT3xUH5qt6YB2m9qZ/5LFt/Fqa5JlPxS2bhw1RhAYTDmL30BCw0CBquiRurPEo8r
+ cPNOOqObGHrGbf9RzWLbaBthbVJY/KVbN6R2gaYSyROEX5ibbyJoClBlSHDjxZIcx0yu
+ K40qHopCxtupgXu/ieUCfm+bZFfJs08oMQZJInMcG2ZUsc3ZO4yqQX8Jo6BqqejYBeMa
+ M+1P6bGImgO1IY9alxZeNgez6hKzIV63zi0lwCCRg+HCe/5V+FdsduOPhLoMWNSQqC1S
+ NT/g==
+X-Gm-Message-State: AOJu0YyjoCuGPGkDuQ0KQuOsnt6UXPI7DPfUdHX0Br4zg+QYzfPZlz4/
+ e1z/Ry3WKQTIUnK2+PLqFK8L1P02rRaxwqI/B7q7TIUyNB958mGrgzkjGysU1xh81ZWQvLxZdgl
+ 7
+X-Google-Smtp-Source: AGHT+IG2H0fi7YpSXFj+/UAc/Z/5kmee2YyfY8IUgE6WT840VXLYyIJOm4J2k2bxtENgYJRNHY3g4Q==
+X-Received: by 2002:a17:90b:f04:b0:2c8:647:1600 with SMTP id
+ 98e67ed59e1d1-2e2a2320c28mr7978063a91.9.1728582786331; 
+ Thu, 10 Oct 2024 10:53:06 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.89.169])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ea44909bd7sm1285679a12.50.2024.10.10.10.52.56
+ 98e67ed59e1d1-2e2a5aacf3csm3919559a91.41.2024.10.10.10.53.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 10 Oct 2024 10:52:58 -0700 (PDT)
+ Thu, 10 Oct 2024 10:53:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -62,17 +62,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 1/2] exec/tswap: Massage target_needs_bswap() definition
-Date: Thu, 10 Oct 2024 14:52:45 -0300
-Message-ID: <20241010175246.15779-2-philmd@linaro.org>
+Subject: [PATCH v3 2/2] gdbstub/helpers: Introduce ldtul_$endian_p() helpers
+Date: Thu, 10 Oct 2024 14:52:46 -0300
+Message-ID: <20241010175246.15779-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241010175246.15779-1-philmd@linaro.org>
 References: <20241010175246.15779-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
- envelope-from=philmd@linaro.org; helo=mail-io1-xd36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=philmd@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -95,28 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invert target_needs_bswap() comparison to match the
-COMPILING_PER_TARGET definition (2 lines upper).
+Introduce ldtul_le_p() and ldtul_be_p() to use directly
+in place of ldtul_p() when a target endianness is fixed.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20241004162118.84570-2-philmd@linaro.org>
 ---
- include/exec/tswap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/gdbstub/helpers.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/exec/tswap.h b/include/exec/tswap.h
-index b7a41913475..ecd4faef015 100644
---- a/include/exec/tswap.h
-+++ b/include/exec/tswap.h
-@@ -28,7 +28,7 @@ bool target_words_bigendian(void);
- #ifdef COMPILING_PER_TARGET
- #define target_needs_bswap()  (HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN)
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index 26140ef1ac0..6f7cc48adcb 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -95,9 +95,13 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
+ #if TARGET_LONG_BITS == 64
+ #define gdb_get_regl(buf, val) gdb_get_reg64(buf, val)
+ #define ldtul_p(addr) ldq_p(addr)
++#define ldtul_le_p(addr) ldq_le_p(addr)
++#define ldtul_be_p(addr) ldq_be_p(addr)
  #else
--#define target_needs_bswap()  (target_words_bigendian() != HOST_BIG_ENDIAN)
-+#define target_needs_bswap()  (HOST_BIG_ENDIAN != target_words_bigendian())
- #endif /* COMPILING_PER_TARGET */
+ #define gdb_get_regl(buf, val) gdb_get_reg32(buf, val)
+ #define ldtul_p(addr) ldl_p(addr)
++#define ldtul_le_p(addr) ldl_le_p(addr)
++#define ldtul_be_p(addr) ldl_be_p(addr)
+ #endif
  
- static inline uint16_t tswap16(uint16_t s)
+ #endif /* _GDBSTUB_HELPERS_H_ */
 -- 
 2.45.2
 
