@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8877B998D41
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 18:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622B8998D3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 18:23:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syvvz-0007RU-7u; Thu, 10 Oct 2024 12:22:39 -0400
+	id 1syvvz-0007Rq-D1; Thu, 10 Oct 2024 12:22:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvvw-0007NP-DX
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1syvvy-0007Qu-1l
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvvv-0004Sj-0E
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:36 -0400
+ id 1syvvw-0004T4-L1
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728577353;
+ s=mimecast20190719; t=1728577356;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=71uaZAVxed2j73esQn+ELmkq4ReV6bG/nUPeWerSj+A=;
- b=a2vHr1UeHoRSYYC35pl9BuwgtHvzrZNFQatr9rixGReIX/8eybkTuyKv+kL6c0ruJyoFhO
- 8jdTNGL9xp4vSEECrOeZYPP9oR1yL++NRaGEuNF8dceNQHDDFnM87Dx3hPgRKPPF5HJ9g5
- HBpikwLrlhM+BgRtwkwVhTUmmFhiUWY=
+ bh=5VWloR28x5LlrrjeHXM5rNK/TmM9ut1vbut5rV1y9TI=;
+ b=E+hjDdcU+nhaXIXhjuIGmU67scS7djBMVLwdO4oLZck7teiOkj/RHAyYwDMIaWIp2+Q/mP
+ WLkH98nfDLu3CnGhlpWk68XTG69rES0G4o6pWDqp6yynMEnW6AX3CeGwdIVOTW7srOhkQh
+ vXBSV8DIt7ySMBnLQ1wnqY6NiwKrd6g=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-_NB2KSWcPVeNu2L2ES5-9Q-1; Thu,
- 10 Oct 2024 12:22:31 -0400
-X-MC-Unique: _NB2KSWcPVeNu2L2ES5-9Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-TO1zahhzMzK7hEhE_eXDrw-1; Thu,
+ 10 Oct 2024 12:22:33 -0400
+X-MC-Unique: TO1zahhzMzK7hEhE_eXDrw-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 97BDB1955F40; Thu, 10 Oct 2024 16:22:30 +0000 (UTC)
+ id D3DF51955BC9; Thu, 10 Oct 2024 16:22:32 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.110])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CFB0930001A2; Thu, 10 Oct 2024 16:22:28 +0000 (UTC)
+ id 17D4D300019E; Thu, 10 Oct 2024 16:22:30 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kunwu <chentao@kylinos.cn>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 16/17] crypto: drop obsolete back compat logic for old nettle
-Date: Thu, 10 Oct 2024 17:20:23 +0100
-Message-ID: <20241010162024.988284-17-berrange@redhat.com>
+Subject: [PULL 17/17] tests/unit: Add a assert for
+ test_io_channel_unix_listen_cleanup
+Date: Thu, 10 Oct 2024 17:20:24 +0100
+Message-ID: <20241010162024.988284-18-berrange@redhat.com>
 In-Reply-To: <20241010162024.988284-1-berrange@redhat.com>
 References: <20241010162024.988284-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,45 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The nettle 2.x series declared all the hash functions with 'int' for
-the data size. Since we dropped support for anything older than 3.4
-we can assume nettle is using 'size_t' and thus avoid the back compat
-looping logic.
+From: Kunwu <chentao@kylinos.cn>
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Calling bind without checking return value. Add a assert for it.
+
+Signed-off-by: Kunwu <chentao@kylinos.cn>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/hash-nettle.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ tests/unit/test-io-channel-socket.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/hash-nettle.c b/crypto/hash-nettle.c
-index 570ce8a645..3b847aa60e 100644
---- a/crypto/hash-nettle.c
-+++ b/crypto/hash-nettle.c
-@@ -135,20 +135,9 @@ int qcrypto_nettle_hash_update(QCryptoHash *hash,
-     union qcrypto_hash_ctx *ctx = hash->opaque;
+diff --git a/tests/unit/test-io-channel-socket.c b/tests/unit/test-io-channel-socket.c
+index b964bb202d..dc7be96e9c 100644
+--- a/tests/unit/test-io-channel-socket.c
++++ b/tests/unit/test-io-channel-socket.c
+@@ -506,7 +506,7 @@ static void test_io_channel_unix_listen_cleanup(void)
+ {
+     QIOChannelSocket *ioc;
+     struct sockaddr_un un;
+-    int sock;
++    int sock, ret = 0;
  
-     for (int i = 0; i < niov; i++) {
--        /*
--         * Some versions of nettle have functions
--         * declared with 'int' instead of 'size_t'
--         * so to be safe avoid writing more than
--         * UINT_MAX bytes at a time
--         */
--        size_t len = iov[i].iov_len;
--        uint8_t *base = iov[i].iov_base;
--        while (len) {
--            size_t shortlen = MIN(len, UINT_MAX);
--            qcrypto_hash_alg_map[hash->alg].write(ctx, len, base);
--            len -= shortlen;
--            base += len;
--        }
-+        qcrypto_hash_alg_map[hash->alg].write(ctx,
-+                                              iov[i].iov_len,
-+                                              iov[i].iov_base);
-     }
+ #define TEST_SOCKET "test-io-channel-socket.sock"
  
-     return 0;
+@@ -519,7 +519,9 @@ static void test_io_channel_unix_listen_cleanup(void)
+     un.sun_family = AF_UNIX;
+     snprintf(un.sun_path, sizeof(un.sun_path), "%s", TEST_SOCKET);
+     unlink(TEST_SOCKET);
+-    bind(sock, (struct sockaddr *)&un, sizeof(un));
++    ret = bind(sock, (struct sockaddr *)&un, sizeof(un));
++    g_assert_cmpint(ret, ==, 0);
++
+     ioc->fd = sock;
+     ioc->localAddrLen = sizeof(ioc->localAddr);
+     getsockname(sock, (struct sockaddr *)&ioc->localAddr,
 -- 
 2.46.0
 
