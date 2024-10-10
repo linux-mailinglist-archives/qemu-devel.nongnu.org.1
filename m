@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD55799949F
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 23:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E199994A9
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 23:51:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sz11A-0006TL-2q; Thu, 10 Oct 2024 17:48:20 -0400
+	id 1sz13L-0007HU-NA; Thu, 10 Oct 2024 17:50:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sz110-0006T1-TS
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:48:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sz10y-0004MS-Ue
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:48:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728596888;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0MGwbJOf62A8hZORjm8ir0dIkgzjBn+WAP2ZIByACa8=;
- b=T1KX2ooAlPk9bac5fvPHrkr2JZsRnWbAaqItmo6CLTHyT2xxlZiPyLcqOIu6+3ssSJInJ3
- 4plta2QYFDr4WdG6fdRkYFzDN79Tjf7FPvxqYQ8gxQYq8OVhwcD7QiaGo7/e8PqYAjMquH
- rOcC9j0asGx5BGdbTbAGrv5Fvtg5gAo=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-Zp2ST932PBKLB9WJwDczwg-1; Thu, 10 Oct 2024 17:48:06 -0400
-X-MC-Unique: Zp2ST932PBKLB9WJwDczwg-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7ac9b08cb77so239851185a.1
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 14:48:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz13C-0007Fk-0G
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:50:27 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sz139-0004cr-MP
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 17:50:25 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-20b7eb9e81eso14387205ad.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 14:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728597019; x=1729201819; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=y6VDUacv/t+N2b53bBz4BEo9jleuzzWeufmM8SdWIsc=;
+ b=Io4BV64IFiS8+AafVqwrCs6Tu0UW1+bWfKIRM+/CSHscTba6q6zlnQfH/I7GcYpss8
+ wjuGvLNFUs6BviGMq5jSIBzzC45mAOzbhrEIQTFIZFsfOcslVbJkLVmdvWIMJDvKwajG
+ rXMRSe9lYLDR/yv1GacZ+9RGg3VZEgVzj6PFByUYCQ86u/35MW4CgKmJk21ByWcIclOP
+ ecgcN18oRdZ3xnpxV8eN6rNq77M40N2qaLCI8R4tynx9A692HBgXQ6cmkl32GdD6d9Fx
+ iFcVEhOahXvtk2qm2nPI+rcuii/srWichWAV7Wr4av8anmONrtVvH5XwzSAbbGs1kUNs
+ zlBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728596886; x=1729201686;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0MGwbJOf62A8hZORjm8ir0dIkgzjBn+WAP2ZIByACa8=;
- b=bCWXLSA8+m6kafKU3DmTrKSUwzWVd/3EdkYGXeGCXXw0ZuU4JbXF+UgmeFAi1jFtcT
- lE+iGqNkOW1IvHGBoHiGS/jqPx/uN4tbB3MVcCoMkTn+5ic+EQE9zcpJ38hohNIA7wqr
- sdPUw0uHmUqwS4U/LGVSMTq+U0VZ/hWRbCep1enCsFkjCMbwFcQt5pCQ0r/46uPv/6P0
- t3pAhw6eMXziEAlTTCltKpgJfc4tdvFjGj+11yPcII7Wcae8MjFlfoGVVHh21UBVdpjR
- iRraiRNYbDe1qhRYbgnZiOubrl7LEbzfFd49ag1l1vQ/norD3EtfKCrzex8iVZn1oAtp
- pOyQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhrNH/hVnWhO6Dl0+JBmV/Ug61bBrFawV98n8jUkBCzPGhn3MduEnmTk1b5PnX/6B875wQXLwPeLHn@nongnu.org
-X-Gm-Message-State: AOJu0YwL2go8FAc7Nk8JgexS1T7IDBM/p8TY0NDltSpgOlV1Ezq5ACXz
- pGuUmMP+qeqk0gBC1vc/6STY+EwyGc8eNOfG1fd33fAh/GAaYDJzMIFwFrR0CU5Ys3VPrY8JixN
- Cl8NmhE/seoW0FGMBEQqofja4YbzWSR9cwpI0BdFTuoKIlgnhKXRk
-X-Received: by 2002:a05:620a:4105:b0:7a9:c04a:f5a with SMTP id
- af79cd13be357-7b11a36d503mr73596885a.31.1728596886098; 
- Thu, 10 Oct 2024 14:48:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzyn6II4uk4Vl5GirKWPdzKaaSOD4HGBDsBZuwr9a6vuH01Jt9g4JJmUb/wj9aQA/FqpVmxQ==
-X-Received: by 2002:a05:620a:4105:b0:7a9:c04a:f5a with SMTP id
- af79cd13be357-7b11a36d503mr73594985a.31.1728596885737; 
- Thu, 10 Oct 2024 14:48:05 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b11497ae39sm78903085a.109.2024.10.10.14.48.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2024 14:48:04 -0700 (PDT)
-Date: Thu, 10 Oct 2024 17:48:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Steven Sistare <steven.sistare@oracle.com>,
- Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Subject: Re: precreate phase
-Message-ID: <ZwhLkiGZZNypGb3P@x1n>
-References: <b57f8eda-d0ec-469f-8ac2-635f3c8d238b@oracle.com>
- <670f63b6-529d-42ca-9a9f-acc6f3f07c18@redhat.com>
+ d=1e100.net; s=20230601; t=1728597019; x=1729201819;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=y6VDUacv/t+N2b53bBz4BEo9jleuzzWeufmM8SdWIsc=;
+ b=JT2LeX3rCqLkTIzZTNY6MKT2Q7qEqy9H6RbwSy9khEA27GfEE4OjSElJy73mw8TLlb
+ WFR261yJzYmqGeWUHyIdbCKv5MDYRsopvhPe6LYPkGkcx3E5bEOIvai6Xgt/aQcvWdn/
+ TQXelfIH3XatHjxovKFWlLxjenqQhNuQQ4moxBUsOmij42nGAs8TAACu42RCXl/4GYvX
+ 9MdRYZEgjyR9QZ5qbcK9sZFCn2AdSwDm9YBQ0agBLGpOD23CVJQDTMtQ0w7nOmFUPrwb
+ jW/Zae7Gjbl0Xm1X5Gg7k7Wc1fMbQgFr7RZexOmWigpnPUGitayvImhXFGMJHmEr2aMR
+ ED7A==
+X-Gm-Message-State: AOJu0YzimRz96g225yFITmdhuZQ6iga4hS66yAm/WDwuyAzFXxuc2Iu3
+ Lqqna3oVFqW2tnO5XMIZxOlOhM3ZCEqGfdi520Gb+EX2O00z05OqLguHqIx9O0mdJjhTey9OVJI
+ j
+X-Google-Smtp-Source: AGHT+IEGVEekTTvprkC9EOXfNjW3PFCtDSfcE2s0oVrWDUvjyb8RYGhHx69eAxilBhn8WakV2uCYrQ==
+X-Received: by 2002:a17:903:2b0c:b0:20b:9379:f1f7 with SMTP id
+ d9443c01a7336-20ca169e6b5mr4236645ad.40.1728597019591; 
+ Thu, 10 Oct 2024 14:50:19 -0700 (PDT)
+Received: from localhost.localdomain ([45.176.89.169])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20c8bad344asm13777225ad.19.2024.10.10.14.50.17
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 10 Oct 2024 14:50:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <arikalo@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>
+Subject: [PATCH v2 00/16] target/mips: Remove target-specific endianness
+ knowledge
+Date: Thu, 10 Oct 2024 18:49:58 -0300
+Message-ID: <20241010215015.44326-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <670f63b6-529d-42ca-9a9f-acc6f3f07c18@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,14 +94,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 10, 2024 at 11:19:15PM +0200, Paolo Bonzini wrote:
-> Moving migration_object_init() earlier sounds like a good idea anyway!
+Since v1:
+- Addressed rth review comment (adding new patches)
 
-I take the last sentence back of my other reply - I believe I
-underestimated the potential reviewers of the upcoming precreate
-patchset.. :)
+Get vCPU endianness from CP0::BE bit.
+Propagate endianness at the board level, using QOM property.
+Remove target-specific endianness knowledge from target/.
+
+Philippe Mathieu-Daudé (16):
+  target/mips: Declare mips_env_is_bigendian() in 'internal.h'
+  target/mips: Rename cpu_is_bigendian() -> disas_is_bigendian()
+  target/mips: Introduce mo_endian_env() helper
+  target/mips: Replace MO_TE by  mo_endian_env() in get_pte()
+  target/mips: Convert mips16e decr_and_load/store() macros to functions
+  target/mips: Factor mo_endian_rev() out of MXU code
+  target/mips: Explode MO_TExx -> MO_TE | MO_xx
+  target/mips: Rename unused sysemu argument of OP_LD_ATOMIC()
+  target/mips: Introduce mo_endian() helper
+  target/mips: Replace MO_TE by mo_endian()
+  target/mips: Have gen_addiupc() expand $pc during translation
+  target/mips: Use gen_op_addr_addi() when possible
+  target/mips: Use tcg_constant_tl() instead of tcg_gen_movi_tl()
+  target/mips: Expose MIPSCPU::is_big_endian property
+  hw/mips/cps: Set the vCPU 'cpu-big-endian' property
+  hw/mips: Have mips_cpu_create_with_clock() take an endianness argument
+
+ include/hw/mips/cps.h                     |   1 +
+ target/mips/cpu.h                         |   7 +-
+ target/mips/internal.h                    |  10 ++
+ target/mips/tcg/translate.h               |  13 +-
+ hw/mips/cps.c                             |   4 +
+ hw/mips/fuloong2e.c                       |   2 +-
+ hw/mips/jazz.c                            |   2 +-
+ hw/mips/loongson3_virt.c                  |   2 +-
+ hw/mips/malta.c                           |   5 +-
+ hw/mips/mipssim.c                         |   2 +-
+ target/mips/cpu.c                         |  17 +-
+ target/mips/tcg/ldst_helper.c             |  15 +-
+ target/mips/tcg/msa_helper.c              |   2 +-
+ target/mips/tcg/mxu_translate.c           |  18 +-
+ target/mips/tcg/sysemu/tlb_helper.c       |   2 +-
+ target/mips/tcg/translate.c               | 193 ++++++++++------------
+ target/mips/tcg/tx79_translate.c          |   8 +-
+ target/mips/tcg/micromips_translate.c.inc |  34 ++--
+ target/mips/tcg/mips16e_translate.c.inc   | 118 +++++++------
+ target/mips/tcg/nanomips_translate.c.inc  | 150 +++++++----------
+ 20 files changed, 293 insertions(+), 312 deletions(-)
 
 -- 
-Peter Xu
+2.45.2
 
 
