@@ -2,63 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66556998ACC
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 17:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B80A998ACF
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 17:02:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syufz-0000VJ-ES; Thu, 10 Oct 2024 11:02:03 -0400
+	id 1syug0-0000Vg-7x; Thu, 10 Oct 2024 11:02:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syufw-0000Sr-Ce
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:02:00 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1syufx-0000UG-SZ
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:02:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syufu-0003Gn-Of
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:02:00 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1syufv-0003H7-Cj
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:02:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728572517;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1728572518;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PVEUJyQZMZrL03B4GG214+HyOIS9oNeVffRSjCBO6R8=;
- b=DzALqG1sTisFSat3LifIC3RZf8rEoyLSWgq60HFNPzQjWEp41Bv6eXFJCQ47sH7ykDL1R0
- +rpMrvgNRrlj2eim8WVeNTHQycVvn7z6y+aBPUeLliUcZnZ60psoVE7UzWinjZcJI01sjd
- /ZGfcRWx3LWImsDHuer5nw5qY446XWE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vZt4Dd3LqTpgwx9DBVhF3dGEkd/idUZIN+u8mRAj5Lg=;
+ b=LTb6fiE3O8xLynEO9fK338QkmlKlmGxIMUjurK1hhokGfM/yJBc/2GrQ8oL2/qhmo8lwas
+ mMNuaXPsWR6vHYUDZ07Sosf3f9SZP4WDGnNRDnjzadzAuvN+rJS+QA6qTrrNTQN1OaCell
+ sBmlC0lF4QQ506hEhcziJU5+3LC02HA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-Lc-woig3PpuU3vn5fhXb5A-1; Thu,
- 10 Oct 2024 11:01:53 -0400
-X-MC-Unique: Lc-woig3PpuU3vn5fhXb5A-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-wGrd1y6nM-uUdfPzgSzIyg-1; Thu,
+ 10 Oct 2024 11:01:56 -0400
+X-MC-Unique: wGrd1y6nM-uUdfPzgSzIyg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A49E11956046; Thu, 10 Oct 2024 15:01:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 49C40195607C; Thu, 10 Oct 2024 15:01:47 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2065121E6939; Thu, 10 Oct 2024 17:01:44 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: xieyongji@bytedance.com, kwolf@redhat.com, hreitz@redhat.com,
- Coiby.Xu@gmail.com, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, mark.cave-ayland@ilande.co.uk, michael.roth@amd.com,
- kkostiuk@redhat.com, qemu-block@nongnu.org, philmd@linaro.org
-Subject: [PATCH v2 3/7] block: Adjust check_block_size() signature
-Date: Thu, 10 Oct 2024 17:01:40 +0200
-Message-ID: <20241010150144.986655-4-armbru@redhat.com>
-In-Reply-To: <20241010150144.986655-1-armbru@redhat.com>
-References: <20241010150144.986655-1-armbru@redhat.com>
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 405B31955F42; Thu, 10 Oct 2024 15:01:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.110])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3323119560AA; Thu, 10 Oct 2024 15:01:46 +0000 (UTC)
+Date: Thu, 10 Oct 2024 16:01:40 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, xieyongji@bytedance.com, kwolf@redhat.com,
+ hreitz@redhat.com, Coiby.Xu@gmail.com, pbonzini@redhat.com,
+ eduardo@habkost.net, mark.cave-ayland@ilande.co.uk,
+ michael.roth@amd.com, kkostiuk@redhat.com, qemu-block@nongnu.org
+Subject: Re: [PATCH 1/7] error: Drop superfluous #include "qapi/qmp/qerror.h"
+Message-ID: <ZwfsVOG8IkSzuKp0@redhat.com>
+References: <20241010145630.985335-1-armbru@redhat.com>
+ <20241010145630.985335-2-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+In-Reply-To: <20241010145630.985335-2-armbru@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -67,7 +72,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,146 +85,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Parameter @id is no longer used, drop.  Return a bool to indicate
-success / failure, as recommended by qapi/error.h.
+On Thu, Oct 10, 2024 at 04:56:24PM +0200, Markus Armbruster wrote:
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  qga/commands-bsd.c   | 1 -
+>  qga/commands-linux.c | 1 -
+>  qga/commands-posix.c | 1 -
+>  3 files changed, 3 deletions(-)
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- util/block-helpers.h                 |  3 +--
- block/export/vduse-blk.c             |  7 ++-----
- block/export/vhost-user-blk-server.c |  6 +-----
- hw/core/qdev-properties-system.c     |  6 +-----
- util/block-helpers.c                 | 10 ++++++----
- 5 files changed, 11 insertions(+), 21 deletions(-)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-diff --git a/util/block-helpers.h b/util/block-helpers.h
-index b53295a529..838b0825f6 100644
---- a/util/block-helpers.h
-+++ b/util/block-helpers.h
-@@ -13,7 +13,6 @@
- #define MAX_BLOCK_SIZE          (2 * MiB)
- #define MAX_BLOCK_SIZE_STR      "2 MiB"
- 
--void check_block_size(const char *id, const char *name, int64_t value,
--                      Error **errp);
-+bool check_block_size(const char *name, int64_t value, Error **errp);
- 
- #endif /* BLOCK_HELPERS_H */
-diff --git a/block/export/vduse-blk.c b/block/export/vduse-blk.c
-index 172f73cef4..bd852e538d 100644
---- a/block/export/vduse-blk.c
-+++ b/block/export/vduse-blk.c
-@@ -273,7 +273,6 @@ static int vduse_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
-     uint64_t logical_block_size = VIRTIO_BLK_SECTOR_SIZE;
-     uint16_t num_queues = VDUSE_DEFAULT_NUM_QUEUE;
-     uint16_t queue_size = VDUSE_DEFAULT_QUEUE_SIZE;
--    Error *local_err = NULL;
-     struct virtio_blk_config config = { 0 };
-     uint64_t features;
-     int i, ret;
-@@ -297,10 +296,8 @@ static int vduse_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
- 
-     if (vblk_opts->has_logical_block_size) {
-         logical_block_size = vblk_opts->logical_block_size;
--        check_block_size(exp->id, "logical-block-size", logical_block_size,
--                         &local_err);
--        if (local_err) {
--            error_propagate(errp, local_err);
-+        if (!check_block_size("logical-block-size", logical_block_size,
-+                              errp)) {
-             return -EINVAL;
-         }
-     }
-diff --git a/block/export/vhost-user-blk-server.c b/block/export/vhost-user-blk-server.c
-index 50c358e8cd..d9d2014d9b 100644
---- a/block/export/vhost-user-blk-server.c
-+++ b/block/export/vhost-user-blk-server.c
-@@ -319,7 +319,6 @@ static int vu_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
- {
-     VuBlkExport *vexp = container_of(exp, VuBlkExport, export);
-     BlockExportOptionsVhostUserBlk *vu_opts = &opts->u.vhost_user_blk;
--    Error *local_err = NULL;
-     uint64_t logical_block_size;
-     uint16_t num_queues = VHOST_USER_BLK_NUM_QUEUES_DEFAULT;
- 
-@@ -330,10 +329,7 @@ static int vu_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
-     } else {
-         logical_block_size = VIRTIO_BLK_SECTOR_SIZE;
-     }
--    check_block_size(exp->id, "logical-block-size", logical_block_size,
--                     &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!check_block_size("logical-block-size", logical_block_size, errp)) {
-         return -EINVAL;
-     }
- 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 60bcd821de..35deef05f3 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -588,18 +588,14 @@ const PropertyInfo qdev_prop_losttickpolicy = {
- static void set_blocksize(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
--    DeviceState *dev = DEVICE(obj);
-     Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
-     uint64_t value;
--    Error *local_err = NULL;
- 
-     if (!visit_type_size(v, name, &value, errp)) {
-         return;
-     }
--    check_block_size(dev->id ? : "", name, value, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!check_block_size(name, value, errp)) {
-         return;
-     }
-     *ptr = value;
-diff --git a/util/block-helpers.c b/util/block-helpers.c
-index fb5de348e2..052b4e1476 100644
---- a/util/block-helpers.c
-+++ b/util/block-helpers.c
-@@ -14,7 +14,6 @@
- 
- /**
-  * check_block_size:
-- * @id: The unique ID of the object
-  * @name: The name of the property being validated
-  * @value: The block size in bytes
-  * @errp: A pointer to an area to store an error
-@@ -23,13 +22,14 @@
-  * 1. At least MIN_BLOCK_SIZE
-  * 2. No larger than MAX_BLOCK_SIZE
-  * 3. A power of 2
-+ *
-+ * Returns: true on success, false on failure
-  */
--void check_block_size(const char *id, const char *name, int64_t value,
--                      Error **errp)
-+bool check_block_size(const char *name, int64_t value, Error **errp)
- {
-     if (!value) {
-         /* unset */
--        return;
-+        return true;
-     }
- 
-     if (value < MIN_BLOCK_SIZE || value > MAX_BLOCK_SIZE
-@@ -38,5 +38,7 @@ void check_block_size(const char *id, const char *name, int64_t value,
-                    "parameter %s must be a power of 2 between %" PRId64
-                    " and %" PRId64,
-                    name, MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
-+        return false;
-     }
-+    return true;
- }
+
+With regards,
+Daniel
 -- 
-2.46.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
