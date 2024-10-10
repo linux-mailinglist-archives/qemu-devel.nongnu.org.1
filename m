@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6B5998AA5
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 16:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E19FD998AC0
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 17:01:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syuav-0002yC-VV; Thu, 10 Oct 2024 10:56:50 -0400
+	id 1syuf4-0008H2-34; Thu, 10 Oct 2024 11:01:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuat-0002xM-CE
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuf2-0008Gm-TW
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:01:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuar-0002kT-FL
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:47 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuf1-0003Cu-EJ
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 11:01:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728572204;
+ s=mimecast20190719; t=1728572461;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4bjmF6CYmZjE9cPmoyqAUls739GZG2d/1BmyjWCH8Tg=;
- b=ZP6OPjzEysohsXmZbZ3ddjRdsyaFpgbNZOPrxHIKdngq6nvn2+CeYx/VF7771/qIVTnL+N
- QbhLchT3L+1TzrDatt3Vx7MLNO9yodwt1EeUGeTc4vz1EiFiv7gwUn5wt5q7PkYEi3L3sL
- eb30c+w6fGn6EccpffPL7sqT7DztToc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Uzx76QUCdsyWgWgd/CEFfJcff5FqYyThq1MtnwPE7/s=;
+ b=bevSQW7IGHtZl6Wc/mop0q04aUTzv8VcEEN3n0jxc55IIbiNdajufJWHaBRciuNRsrRbBM
+ 1cX0qO7F4k/Gg2ptXFjgT9GfQDqssbn3Qd4w57kdgQ8EvFIyDQUpjUpzAe38euVQQVhmP6
+ T35DIiSMe5aiAZ+fCSuJjAeYnqjG0sg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-GZk7sbpUNziDwe617KwSTg-1; Thu,
- 10 Oct 2024 10:56:41 -0400
-X-MC-Unique: GZk7sbpUNziDwe617KwSTg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-zCDk7HNpNOiOX7dthbUNjA-1; Thu,
+ 10 Oct 2024 10:59:16 -0400
+X-MC-Unique: zCDk7HNpNOiOX7dthbUNjA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 681161955D9B; Thu, 10 Oct 2024 14:56:40 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6DB3519560A1; Thu, 10 Oct 2024 14:59:15 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 26349195607C; Thu, 10 Oct 2024 14:56:40 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2CB3719560A2; Thu, 10 Oct 2024 14:59:15 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 60F7921E68B2; Thu, 10 Oct 2024 16:56:30 +0200 (CEST)
+ id 0D69A21E6A28; Thu, 10 Oct 2024 16:59:13 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: xieyongji@bytedance.com, kwolf@redhat.com, hreitz@redhat.com,
- Coiby.Xu@gmail.com, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, mark.cave-ayland@ilande.co.uk, michael.roth@amd.com,
- kkostiuk@redhat.com, qemu-block@nongnu.org
-Subject: [PATCH 7/7] qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer
- used, drop
-Date: Thu, 10 Oct 2024 16:56:30 +0200
-Message-ID: <20241010145630.985335-8-armbru@redhat.com>
-In-Reply-To: <20241010145630.985335-1-armbru@redhat.com>
+Cc: xieyongji@bytedance.com,  kwolf@redhat.com,  hreitz@redhat.com,
+ Coiby.Xu@gmail.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ eduardo@habkost.net,  mark.cave-ayland@ilande.co.uk,
+ michael.roth@amd.com,  kkostiuk@redhat.com,  qemu-block@nongnu.org
+Subject: Re: [PATCH 0/7] error: Eliminate QERR_PROPERTY_VALUE_OUT_OF_RANGE
+In-Reply-To: <20241010145630.985335-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Thu, 10 Oct 2024 16:56:23 +0200")
 References: <20241010145630.985335-1-armbru@redhat.com>
+Date: Thu, 10 Oct 2024 16:59:13 +0200
+Message-ID: <87plo8hum6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -84,24 +84,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- include/qapi/qmp/qerror.h | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 101c1141b9..d1db6f18cd 100644
---- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -23,7 +23,4 @@
- #define QERR_MISSING_PARAMETER \
-     "Parameter '%s' is missing"
- 
--#define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
--    "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
--
- #endif /* QERROR_H */
--- 
-2.46.0
+Please ignore this one, wrong version, I'll resend.
 
 
