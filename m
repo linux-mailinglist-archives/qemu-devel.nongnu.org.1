@@ -2,65 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635F6998CDB
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 18:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB00F998D33
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 18:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syvhs-0003Z8-VW; Thu, 10 Oct 2024 12:08:04 -0400
+	id 1syvvX-0006uI-CB; Thu, 10 Oct 2024 12:22:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvhr-0003Yg-4j
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:08:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1syvvP-0006sy-Su
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1syvhp-0002oq-LQ
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:08:02 -0400
+ id 1syvvM-0004N2-Hb
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 12:22:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728576478;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Y2XM6ZYDIf0Ugd0eLlcwBvRC8zWcHByKQseSlil2UUI=;
- b=Aq24EyBTnzvT8Xjf2Kul2X+xNLIlZGkBsUevRXgRmjGNYp0ANzmH4/pfdAk7/OnHNxT5b8
- 57rkiQrxw0Sy08vMNrLkQkPyhfovaTh+CaEm+thHngl7slkb2jWs5tQlIEmjweW7IfhirX
- I0E+nrbNqKoJBZUjjv/b+lVU3GqCbIs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1728577317;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=W1VnErksa+PLpB6HrokKStF1bcmhwH2sddh4YxgzDLM=;
+ b=S2eMlx1Fr528eSumb70rEocZHjOutwMz2x50lhFfL24QOcRaNCka2ZAUlNZUc7Hwl51h9U
+ zjErKdYrkXsabxFzgmV9bphoZB5vxtY3Qzn5+d5oHy/hPjOZK/wb3nbtXbiYKZNJO/srQb
+ dMm5Turp3RwoDZAfUX8+n/xQryp7TJY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-XTDHAICPPgSmwM1ERM1esA-1; Thu,
- 10 Oct 2024 12:07:55 -0400
-X-MC-Unique: XTDHAICPPgSmwM1ERM1esA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-jE4POAJxMge-EpRgVxtHbg-1; Thu,
+ 10 Oct 2024 12:21:53 -0400
+X-MC-Unique: jE4POAJxMge-EpRgVxtHbg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03AF51955F09; Thu, 10 Oct 2024 16:07:54 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.110])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AB8419560AA; Thu, 10 Oct 2024 16:07:49 +0000 (UTC)
-Date: Thu, 10 Oct 2024 17:07:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, xieyongji@bytedance.com, kwolf@redhat.com,
- hreitz@redhat.com, Coiby.Xu@gmail.com, pbonzini@redhat.com,
- eduardo@habkost.net, mark.cave-ayland@ilande.co.uk,
- michael.roth@amd.com, kkostiuk@redhat.com, qemu-block@nongnu.org
-Subject: Re: [PATCH 0/7] error: Eliminate QERR_PROPERTY_VALUE_OUT_OF_RANGE
-Message-ID: <Zwf70dTEMU6PEJ8T@redhat.com>
-References: <20241010145630.985335-1-armbru@redhat.com>
- <87plo8hum6.fsf@pond.sub.org>
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 96B261955D60; Thu, 10 Oct 2024 16:21:52 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.110])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E93FD30001A5; Thu, 10 Oct 2024 16:20:25 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kunwu <chentao@kylinos.cn>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 00/17] Crypto fixes patches
+Date: Thu, 10 Oct 2024 17:20:07 +0100
+Message-ID: <20241010162024.988284-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87plo8hum6.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -69,7 +64,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,21 +77,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 10, 2024 at 04:59:13PM +0200, Markus Armbruster wrote:
-> Please ignore this one, wrong version, I'll resend.
+The following changes since commit 838fc0a8769d7cc6edfe50451ba4e3368395f5c1:
 
-Unless I'm missing something subtle, your v2 was only commit message tweaks,
-so feel free to apply my R-bs as is.
+  Merge tag 'chr-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-10-09 15:06:56 +0100)
 
-With regards,
-Daniel
+are available in the Git repository at:
+
+  https://gitlab.com/berrange/qemu tags/crypto-fixes-pull-request
+
+for you to fetch changes up to 08e702043fbee7b366d1d27c1b6682090c46c0d6:
+
+  tests/unit: Add a assert for test_io_channel_unix_listen_cleanup (2024-10-10 13:41:45 +0100)
+
+----------------------------------------------------------------
+Introduce new cryptography hashing APIs
+
+----------------------------------------------------------------
+
+Alejandro Zeise (15):
+  crypto: accumulative hashing API
+  crypto/hash-glib: Implement new hash API
+  crypto/hash-gcrypt: Implement new hash API
+  crypto/hash-gnutls: Implement new hash API
+  crypto/hash-nettle: Implement new hash API
+  util/iov: Introduce iov_send_recv_with_flags()
+  crypto/hash-afalg: Implement new hash API
+  crypto/hash: Implement and use new hash API
+  tests/unit/test-crypto-hash: accumulative hashing
+  crypto/hash-glib: Remove old hash API functions
+  crypto/hash-gcrypt: Remove old hash API functions
+  crypto/hash-gnutls: Remove old hash API functions
+  crypto/hash-nettle: Remove old hash API functions
+  crypto/hash-afalg: Remove old hash API functions
+  crypto/hashpriv: Remove old hash API function
+
+Daniel P. Berrangé (1):
+  crypto: drop obsolete back compat logic for old nettle
+
+Kunwu (1):
+  tests/unit: Add a assert for test_io_channel_unix_listen_cleanup
+
+ crypto/hash-afalg.c                 | 167 ++++++++++++++++++++--------
+ crypto/hash-gcrypt.c                | 112 ++++++++++---------
+ crypto/hash-glib.c                  |  92 ++++++++-------
+ crypto/hash-gnutls.c                |  97 ++++++++++------
+ crypto/hash-nettle.c                |  94 ++++++++--------
+ crypto/hash.c                       | 161 ++++++++++++++++++++++-----
+ crypto/hashpriv.h                   |  13 ++-
+ include/crypto/hash.h               | 119 ++++++++++++++++++++
+ include/qemu/iov.h                  |  27 +++++
+ tests/unit/test-crypto-hash.c       |  46 ++++++++
+ tests/unit/test-io-channel-socket.c |   6 +-
+ util/iov.c                          |  25 +++--
+ 12 files changed, 705 insertions(+), 254 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.46.0
 
 
