@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2811997DAA
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C56FD997DA7
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syn32-00018x-O7; Thu, 10 Oct 2024 02:53:20 -0400
+	id 1syn35-00019b-GU; Thu, 10 Oct 2024 02:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1syn30-000183-Ch
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:18 -0400
+ id 1syn31-00018L-DI
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:19 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1syn2y-00040t-BZ
+ (envelope-from <gaosong@loongson.cn>) id 1syn2y-00040s-Nt
  for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:18 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxUejUeQdn8eIRAA--.25707S3;
- Thu, 10 Oct 2024 14:53:08 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxeXLVeQdn8uIRAA--.25841S3;
+ Thu, 10 Oct 2024 14:53:09 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S4;
+ by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S5;
  Thu, 10 Oct 2024 14:53:08 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn,
 	philmd@linaro.org
-Subject: [PATCH v2 2/5] target/loongarch: Add do_lddir/ldpte()
-Date: Thu, 10 Oct 2024 14:35:33 +0800
-Message-Id: <20241010063536.2276871-3-gaosong@loongson.cn>
+Subject: [PATCH v2 3/5] target/loongarch: Add do_fill_tlb_entry()
+Date: Thu, 10 Oct 2024 14:35:34 +0800
+Message-Id: <20241010063536.2276871-4-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20241010063536.2276871-1-gaosong@loongson.cn>
 References: <20241010063536.2276871-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S4
+X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S5
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,120 +64,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do_lddir is used for accessing directory entries during page table
-walking, do_ldpte is used for page table entry accesses during page
-table walking.
+do_fill_tlb_entry is used to fill a tlb entry.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/tcg/tlb_helper.c | 53 ++++++++++++++++++++-----------
- 1 file changed, 34 insertions(+), 19 deletions(-)
+ target/loongarch/tcg/tlb_helper.c | 43 ++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
 diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 97f38fc391..3c3452b316 100644
+index 3c3452b316..bc6d708484 100644
 --- a/target/loongarch/tcg/tlb_helper.c
 +++ b/target/loongarch/tcg/tlb_helper.c
-@@ -507,11 +507,11 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     cpu_loop_exit_restore(cs, retaddr);
+@@ -160,11 +160,33 @@ static void invalidate_tlb(CPULoongArchState *env, int index)
+     invalidate_tlb_entry(env, index);
  }
  
--target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
--                          target_ulong level, uint32_t mem_idx)
-+static target_ulong do_lddir(CPULoongArchState *env, target_ulong base,
-+                             target_ulong badvaddr, target_ulong level)
+-static void fill_tlb_entry(CPULoongArchState *env, int index)
++static void do_fill_tlb_entry(CPULoongArchState *env, uint64_t vppn,
++                              uint64_t lo0, uint64_t lo1, int index, uint8_t ps)
  {
-     CPUState *cs = env_cpu(env);
--    target_ulong badvaddr, index, phys, ret;
-+    target_ulong index, phys, ret;
-     int shift;
-     uint64_t dir_base, dir_width;
+     LoongArchTLB *tlb = &env->tlb[index];
++    uint16_t asid;
++
++    if (ps == 0) {
++        qemu_log_mask(CPU_LOG_MMU, "page size is 0\n");
++    }
++
++    /* Only MTLB has the ps fields */
++    if (index >= LOONGARCH_STLB) {
++        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, ps);
++    }
++
++    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, vppn);
++    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
++    asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
++    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, ASID, asid);
++
++    tlb->tlb_entry0 = lo0;
++    tlb->tlb_entry1 = lo1;
++}
++
++static void fill_tlb_entry(CPULoongArchState *env, int index)
++{
+     uint64_t lo0, lo1, csr_vppn;
+-    uint16_t csr_asid;
+     uint8_t csr_ps;
  
-@@ -535,7 +535,6 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
-         }
+     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+@@ -187,22 +209,7 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+         lo1 = env->CSR_TLBELO1;
      }
  
--    badvaddr = env->CSR_TLBRBADV;
-     base = base & TARGET_PHYS_MASK;
- 
-     /* 0:64bit, 1:128bit, 2:192bit, 3:256bit */
-@@ -549,11 +548,18 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
-     return ret;
+-    if (csr_ps == 0) {
+-        qemu_log_mask(CPU_LOG_MMU, "page size is 0\n");
+-    }
+-
+-    /* Only MTLB has the ps fields */
+-    if (index >= LOONGARCH_STLB) {
+-        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
+-    }
+-
+-    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, csr_vppn);
+-    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
+-    csr_asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
+-    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, ASID, csr_asid);
+-
+-    tlb->tlb_entry0 = lo0;
+-    tlb->tlb_entry1 = lo1;
++    do_fill_tlb_entry(env, csr_vppn, lo0, lo1, index, csr_ps);
  }
  
--void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
--                  uint32_t mem_idx)
-+target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
-+                          target_ulong level, uint32_t mem_idx)
-+{
-+    return do_lddir(env, base, env->CSR_TLBRBADV, level);
-+}
-+
-+static void do_ldpte(CPULoongArchState *env, target_ulong base,
-+                     target_ulong badvaddr, target_ulong *ptval0,
-+                     target_ulong *ptval1, target_ulong *ps)
- {
-     CPUState *cs = env_cpu(env);
--    target_ulong phys, tmp0, ptindex, ptoffset0, ptoffset1, ps, badv;
-+    target_ulong  ptindex, ptoffset0, ptoffset1, phys0, phys1;
-     int shift;
-     uint64_t ptbase = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
-     uint64_t ptwidth = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
-@@ -584,34 +590,43 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-             base = FIELD_DP64(base, TLBENTRY, G, 1);
-         }
- 
--        ps = dir_base + dir_width - 1;
-+        *ps = dir_base + dir_width - 1;
-         /*
-          * Huge pages are evenly split into parity pages
-          * when loaded into the tlb,
-          * so the tlb page size needs to be divided by 2.
-          */
--        tmp0 = base;
--        if (odd) {
--            tmp0 += MAKE_64BIT_MASK(ps, 1);
--        }
-+        *ptval0 = base;
-+        *ptval1 = base + MAKE_64BIT_MASK(*ps, 1);
-     } else {
-         /* 0:64bit, 1:128bit, 2:192bit, 3:256bit */
-         shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
-         shift = (shift + 1) * 3;
--        badv = env->CSR_TLBRBADV;
- 
--        ptindex = (badv >> ptbase) & ((1 << ptwidth) - 1);
--        ptindex = ptindex & ~0x1;   /* clear bit 0 */
-+        ptindex = (badvaddr >> ptbase) & ((1 << ptwidth) - 1);
-+        ptindex = ptindex & ~0x1;  /* clear bit 0 */
-         ptoffset0 = ptindex << shift;
-         ptoffset1 = (ptindex + 1) << shift;
- 
--        phys = base | (odd ? ptoffset1 : ptoffset0);
--        tmp0 = ldq_phys(cs->as, phys) & TARGET_PHYS_MASK;
--        ps = ptbase;
-+        phys0 = base | ptoffset0;
-+        phys1 = base | ptoffset1;
-+        *ptval0 = ldq_phys(cs->as, phys0) & TARGET_PHYS_MASK;
-+        *ptval1 = ldq_phys(cs->as, phys1) & TARGET_PHYS_MASK;
-+        *ps = ptbase;
-     }
- 
-+    return;
-+}
-+
-+void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-+                  uint32_t mem_idx)
-+{
-+    target_ulong tmp0, tmp1, ps;
-+
-+    do_ldpte(env, base, env->CSR_TLBRBADV, &tmp0, &tmp1, &ps);
-+
-     if (odd) {
--        env->CSR_TLBRELO1 = tmp0;
-+        env->CSR_TLBRELO1 = tmp1;
-     } else {
-         env->CSR_TLBRELO0 = tmp0;
-     }
+ /* Return an random value between low and high */
 -- 
 2.33.0
 
