@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56FD997DA7
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B8B997DB9
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syn35-00019b-GU; Thu, 10 Oct 2024 02:53:23 -0400
+	id 1syn32-00018D-Hq; Thu, 10 Oct 2024 02:53:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1syn31-00018L-DI
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:19 -0400
+ id 1syn2z-00017h-Vy
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:18 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1syn2y-00040s-Nt
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:18 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1syn2w-00040b-5N
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:17 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxeXLVeQdn8uIRAA--.25841S3;
+ by gateway (Coremail) with SMTP id _____8AxjnPVeQdn9OIRAA--.25757S3;
  Thu, 10 Oct 2024 14:53:09 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S5;
- Thu, 10 Oct 2024 14:53:08 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S6;
+ Thu, 10 Oct 2024 14:53:09 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn,
 	philmd@linaro.org
-Subject: [PATCH v2 3/5] target/loongarch: Add do_fill_tlb_entry()
-Date: Thu, 10 Oct 2024 14:35:34 +0800
-Message-Id: <20241010063536.2276871-4-gaosong@loongson.cn>
+Subject: [PATCH v2 4/5] target/loongarch: Add get_random_tlb_index()
+Date: Thu, 10 Oct 2024 14:35:35 +0800
+Message-Id: <20241010063536.2276871-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20241010063536.2276871-1-gaosong@loongson.cn>
 References: <20241010063536.2276871-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S5
+X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,77 +64,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do_fill_tlb_entry is used to fill a tlb entry.
+get_random_tlb_index() is used to get a random tlb index.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/tcg/tlb_helper.c | 43 ++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ target/loongarch/tcg/tlb_helper.c | 34 +++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
 diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 3c3452b316..bc6d708484 100644
+index bc6d708484..463e9be7f2 100644
 --- a/target/loongarch/tcg/tlb_helper.c
 +++ b/target/loongarch/tcg/tlb_helper.c
-@@ -160,11 +160,33 @@ static void invalidate_tlb(CPULoongArchState *env, int index)
-     invalidate_tlb_entry(env, index);
+@@ -291,19 +291,12 @@ void helper_tlbwr(CPULoongArchState *env)
+     fill_tlb_entry(env, index);
  }
  
--static void fill_tlb_entry(CPULoongArchState *env, int index)
-+static void do_fill_tlb_entry(CPULoongArchState *env, uint64_t vppn,
-+                              uint64_t lo0, uint64_t lo1, int index, uint8_t ps)
+-void helper_tlbfill(CPULoongArchState *env)
++static int get_random_tlb_index(CPULoongArchState *env,
++                                uint64_t entryhi, uint16_t pagesize)
  {
-     LoongArchTLB *tlb = &env->tlb[index];
-+    uint16_t asid;
-+
-+    if (ps == 0) {
-+        qemu_log_mask(CPU_LOG_MMU, "page size is 0\n");
-+    }
-+
-+    /* Only MTLB has the ps fields */
-+    if (index >= LOONGARCH_STLB) {
-+        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, ps);
-+    }
-+
-+    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, vppn);
-+    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
-+    asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
-+    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, ASID, asid);
-+
-+    tlb->tlb_entry0 = lo0;
-+    tlb->tlb_entry1 = lo1;
-+}
-+
-+static void fill_tlb_entry(CPULoongArchState *env, int index)
-+{
-     uint64_t lo0, lo1, csr_vppn;
--    uint16_t csr_asid;
-     uint8_t csr_ps;
+-    uint64_t address, entryhi;
++    uint64_t address;
++    uint16_t stlb_ps;
+     int index, set, stlb_idx;
+-    uint16_t pagesize, stlb_ps;
+-
+-    if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+-        entryhi = env->CSR_TLBREHI;
+-        pagesize = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+-    } else {
+-        entryhi = env->CSR_TLBEHI;
+-        pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+-    }
  
-     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
-@@ -187,22 +209,7 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
-         lo1 = env->CSR_TLBELO1;
+     stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
+ 
+@@ -323,6 +316,25 @@ void helper_tlbfill(CPULoongArchState *env)
+         index = get_random_tlb(LOONGARCH_STLB, LOONGARCH_TLB_MAX - 1);
      }
  
--    if (csr_ps == 0) {
--        qemu_log_mask(CPU_LOG_MMU, "page size is 0\n");
--    }
--
--    /* Only MTLB has the ps fields */
--    if (index >= LOONGARCH_STLB) {
--        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
--    }
--
--    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, csr_vppn);
--    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
--    csr_asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
--    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, ASID, csr_asid);
--
--    tlb->tlb_entry0 = lo0;
--    tlb->tlb_entry1 = lo1;
-+    do_fill_tlb_entry(env, csr_vppn, lo0, lo1, index, csr_ps);
++    return index;
++}
++
++void helper_tlbfill(CPULoongArchState *env)
++{
++    uint64_t entryhi;
++    uint16_t pagesize;
++    int index;
++
++    if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
++        entryhi = env->CSR_TLBREHI;
++        pagesize = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
++    } else {
++        entryhi = env->CSR_TLBEHI;
++        pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
++    }
++
++    index = get_random_tlb_index(env, entryhi, pagesize);
++
+     invalidate_tlb(env, index);
+     fill_tlb_entry(env, index);
  }
- 
- /* Return an random value between low and high */
 -- 
 2.33.0
 
