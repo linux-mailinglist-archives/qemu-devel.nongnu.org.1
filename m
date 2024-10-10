@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA32998E7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 19:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B99998EE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 19:54:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syxAE-0003Up-Rv; Thu, 10 Oct 2024 13:41:26 -0400
+	id 1syxLM-00083n-HE; Thu, 10 Oct 2024 13:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxAB-0003O8-Jw
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:41:23 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLJ-00081r-Vs
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:52:53 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxAA-000564-6m
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:41:23 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7cd8803fe0aso858774a12.0
- for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 10:41:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1syxLI-00069H-BV
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 13:52:53 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-208cf673b8dso12725575ad.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Oct 2024 10:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728582080; x=1729186880; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cOZ1uKnvWJeCSrq1couF6Ea5U7vU5+JkoVJnZcJ3R2g=;
- b=xcC7Ia7933AYINbrnKALLCfFj49a0MdwJ8ycnVEYdBgaiAyRySTk5au9/598aa8n2p
- IhfaFaP9FtVCCPVY9w5fjtD5q6LO2M1smaeNi19g/iVFZWWFzosWCkkufk9xOSfrEnao
- s6QqFVoPca9C4j08hGMs+u1J9HZX6PV/k8lAovUi+4X0sPbfKP9h58KPav4KJfh3ZVXD
- cQnyTFl8vmukunTcyDaBPok0z8q7k3ECKaXULpMXVR0X8eDbMGKtxduJDrVRzbsyivLq
- J5Iorz3xbfmYMlLZE1ywB1KO57vrTbhlNCk2l8Amasv4/XGpQ6QRd9ltVaBClGh5mqt/
- llfA==
+ d=linaro.org; s=google; t=1728582770; x=1729187570; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JwLuQdwsSDwOG55iCrMJljY0m0DoEqEMJx/2Ai50hcY=;
+ b=Sg7H/xuiwMKJtvT3VbNY/81lD7fcQmPKAq4B28eqW9Fq8ALq744sXM+8Oo91N1rtMq
+ c1Iqew3vhaAyrDX6uSmFucHL+t+j6/NwjWtWFj76dADhQVEFs21xFKEcojhJ1+EhWBdn
+ uYI3LA0VuBOIFLB+dOlla/Ub4K/O5yAoXJ3XAljthk31ym+vACBW4NMmN93+xtlUyRk9
+ gO86rAhw4+uUAolm9vvypl297RFRTKwBciWjNQKao3cKyOkLmRs4YpLwefZr0SbrtAUV
+ LC+kuWr6Jfidvb+lGTatTK672Ibvt9KHCgNaVTOhLyeH0Q+qO0ftXGvBQEoQ4oh6hNYB
+ Q7dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728582080; x=1729186880;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cOZ1uKnvWJeCSrq1couF6Ea5U7vU5+JkoVJnZcJ3R2g=;
- b=g0icT/HdGsnZShqPIKgP/Ot7RAxCif25UVffvAHXAJTQ8iQbuMJYU5wNEK1QSrHb8O
- ZcFW61SOiF7VVuaeYupZ5EoqulxU8GvNmLSZlpKZa45lSyJ9X2azn8hVFTE3+ZznVCLP
- IqzRBXfogJkG2dRYemAGSc545I3YyeKyO/JjSsHHSr6qXICv4xUNVzl5kki1nhp5OIK0
- aeaeW0S0QtJhkAi1y+jUxYwzJbUkG0xRm8WLiAgOmS+UfYZkHleuNXjQ27UN4G7PHQm0
- FLFwv/FwIFy46LnLBaM4IjLerQMfgPYq0wEUt4iKwFGMAOH379wLRTYL3gYNM6RdZDwa
- wPHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFKISmT+6oW1CpGyOGpb2IpPfKRMzhoSHffqq5jsYOxZdCtZyt1BC2AqqzGw1Llx7w/7EDIMCrNfWw@nongnu.org
-X-Gm-Message-State: AOJu0Yyw9kr6pecJOK08i4DpuA2pIDrcI6pOYq74JcUzDH/1z/hyF8O/
- Dxe/MtmPpCuXt9VB3l5Swzp329uaqjZcLIu8zTIjMFhb3OkCi+7Kw7UAdulslSw=
-X-Google-Smtp-Source: AGHT+IGY4SO5oXg/iKHF+xDwQzd1l4ENIlPD+wfpqJaDDklaJ3lUA1hZasPcC7K9TjeJpQd9RVL5JQ==
-X-Received: by 2002:a17:90b:1943:b0:2e2:8349:239d with SMTP id
- 98e67ed59e1d1-2e2c63aa8b9mr4507982a91.28.1728582080439; 
- Thu, 10 Oct 2024 10:41:20 -0700 (PDT)
-Received: from [192.168.100.35] ([45.176.89.169])
+ d=1e100.net; s=20230601; t=1728582770; x=1729187570;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JwLuQdwsSDwOG55iCrMJljY0m0DoEqEMJx/2Ai50hcY=;
+ b=HL0kYubrwalk4ZIWiEgRifq9y8xys9D4HhfWiFK5jd4syua32YgFF+IJ2DN492R1vo
+ U3e3Je5Pfz9gSFrYuVzldW3dAjDyUXtR1OAPsux0PkuxB59GzCZv7j5H441ZSvW7WLzk
+ Vlc6Ox8m3E3/ZHTHg2rOPMBitx8lHDZXtXXNHBYtHo57guyhPakPgooNs0AAoItlFIzT
+ yDPG4igfiH5LOuiRy3QX3IQ0bKjwDWpjnsB8N7VK6HBPG0rD1qRy1uXX/PrseJU/NTyX
+ szAkfsWEZELA47fWPPFRPvHBxYdyFcLUHBWtMaK85xwWvdCW2Lc3DVrEjyWhD0zC3qgS
+ sM6A==
+X-Gm-Message-State: AOJu0YzBHC+kqQVbAMutVDlbBrZ9O9Tnbd8tbFQLgOxzTrT0Ex7rRdaC
+ OQHH70JsWGR7wWS66c42SPXlwUR0N9R9MEEH9xf+y9Pkwhc1tsJxbz2sJrGL7kxeGzH3rOj4UyZ
+ x
+X-Google-Smtp-Source: AGHT+IGN4vmugcZ94yOE13qJeV71x9gnP7KVGuZbWXWhu2oKMHMBkmetybl5yFYwrTwuHSclVs3gzQ==
+X-Received: by 2002:a17:902:d48c:b0:20c:8c0f:f971 with SMTP id
+ d9443c01a7336-20c8c0ffb0bmr42369475ad.40.1728582770449; 
+ Thu, 10 Oct 2024 10:52:50 -0700 (PDT)
+Received: from localhost.localdomain ([45.176.89.169])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2a5712814sm3909375a91.30.2024.10.10.10.41.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Oct 2024 10:41:20 -0700 (PDT)
-Message-ID: <a844e829-24c5-4bf4-8bed-d000e1c0e73d@linaro.org>
-Date: Thu, 10 Oct 2024 14:41:15 -0300
+ d9443c01a7336-20c8bc1a17fsm11920055ad.70.2024.10.10.10.52.48
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 10 Oct 2024 10:52:50 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v3 0/2] gdbstub: Introduce ldtul_$endian_p() helpers
+Date: Thu, 10 Oct 2024 14:52:44 -0300
+Message-ID: <20241010175246.15779-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no
- longer used, drop
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: xieyongji@bytedance.com, kwolf@redhat.com, hreitz@redhat.com,
- Coiby.Xu@gmail.com, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, mark.cave-ayland@ilande.co.uk, michael.roth@amd.com,
- kkostiuk@redhat.com, qemu-block@nongnu.org
-References: <20241010150144.986655-1-armbru@redhat.com>
- <20241010150144.986655-8-armbru@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241010150144.986655-8-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -98,13 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/24 12:01, Markus Armbruster wrote:
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   include/qapi/qmp/qerror.h | 3 ---
->   1 file changed, 3 deletions(-)
+Only unreviewed patches from v2:
+https://lore.kernel.org/qemu-devel/20241004163042.85922-1-philmd@linaro.org/
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Philippe Mathieu-Daudé (2):
+  exec/tswap: Massage target_needs_bswap() definition
+  gdbstub/helpers: Introduce ldtul_$endian_p() helpers
 
+ include/exec/tswap.h      | 2 +-
+ include/gdbstub/helpers.h | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+-- 
+2.45.2
 
 
