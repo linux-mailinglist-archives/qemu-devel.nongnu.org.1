@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D0F998AA7
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 16:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6B5998AA5
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 16:58:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syuay-000312-Ov; Thu, 10 Oct 2024 10:56:52 -0400
+	id 1syuav-0002yC-VV; Thu, 10 Oct 2024 10:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuau-0002xz-9t
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuat-0002xM-CE
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuas-0002l5-JO
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1syuar-0002kT-FL
+ for qemu-devel@nongnu.org; Thu, 10 Oct 2024 10:56:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728572205;
+ s=mimecast20190719; t=1728572204;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C7FaVE6EH7XBkqNtCES1SEsciaiaJFdQ2HrRn+cpnCI=;
- b=feX5gCw71G5fDq3vyj/+fiOoD7JADWoYEoM6tXzZoyNA8tiLam/4FO6ZL/NBa6uyVcAoC5
- HDqDXHvEJDDq5UF4LRCDde7VdHqnbdKkPTuw8Sy2y5eCffZBAjfEsMx+fO3ArEud9H2RXc
- wNwX9VT29GR6j1tDSc2SMkmimOGU63o=
+ bh=4bjmF6CYmZjE9cPmoyqAUls739GZG2d/1BmyjWCH8Tg=;
+ b=ZP6OPjzEysohsXmZbZ3ddjRdsyaFpgbNZOPrxHIKdngq6nvn2+CeYx/VF7771/qIVTnL+N
+ QbhLchT3L+1TzrDatt3Vx7MLNO9yodwt1EeUGeTc4vz1EiFiv7gwUn5wt5q7PkYEi3L3sL
+ eb30c+w6fGn6EccpffPL7sqT7DztToc=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-M3_oXUhNO36Q7tdffFsZxA-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-GZk7sbpUNziDwe617KwSTg-1; Thu,
  10 Oct 2024 10:56:41 -0400
-X-MC-Unique: M3_oXUhNO36Q7tdffFsZxA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+X-MC-Unique: GZk7sbpUNziDwe617KwSTg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 36E5E1956096; Thu, 10 Oct 2024 14:56:40 +0000 (UTC)
+ id 681161955D9B; Thu, 10 Oct 2024 14:56:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F2F0D19560A3; Thu, 10 Oct 2024 14:56:37 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26349195607C; Thu, 10 Oct 2024 14:56:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5DCDC21E6891; Thu, 10 Oct 2024 16:56:30 +0200 (CEST)
+ id 60F7921E68B2; Thu, 10 Oct 2024 16:56:30 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xieyongji@bytedance.com, kwolf@redhat.com, hreitz@redhat.com,
  Coiby.Xu@gmail.com, pbonzini@redhat.com, berrange@redhat.com,
  eduardo@habkost.net, mark.cave-ayland@ilande.co.uk, michael.roth@amd.com,
  kkostiuk@redhat.com, qemu-block@nongnu.org
-Subject: [PATCH 6/7] hw/intc/openpic: Improve errors for out of bounds
- property values
-Date: Thu, 10 Oct 2024 16:56:29 +0200
-Message-ID: <20241010145630.985335-7-armbru@redhat.com>
+Subject: [PATCH 7/7] qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer
+ used, drop
+Date: Thu, 10 Oct 2024 16:56:30 +0200
+Message-ID: <20241010145630.985335-8-armbru@redhat.com>
 In-Reply-To: <20241010145630.985335-1-armbru@redhat.com>
 References: <20241010145630.985335-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -84,39 +84,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message doesn't matter much, as the "openpic" device isn't
-user-creatable.  But it's the last use of
-QERR_PROPERTY_VALUE_OUT_OF_RANGE, which has to go.  Change the message
-just like the previous commit did for x86 CPUs.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/intc/openpic.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ include/qapi/qmp/qerror.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
-index 32bd880dfa..cd3d87768e 100644
---- a/hw/intc/openpic.c
-+++ b/hw/intc/openpic.c
-@@ -41,7 +41,6 @@
- #include "hw/pci/msi.h"
- #include "qapi/error.h"
- #include "qemu/bitops.h"
--#include "qapi/qmp/qerror.h"
- #include "qemu/module.h"
- #include "qemu/timer.h"
- #include "qemu/error-report.h"
-@@ -1535,9 +1534,7 @@ static void openpic_realize(DeviceState *dev, Error **errp)
-     };
+diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+index 101c1141b9..d1db6f18cd 100644
+--- a/include/qapi/qmp/qerror.h
++++ b/include/qapi/qmp/qerror.h
+@@ -23,7 +23,4 @@
+ #define QERR_MISSING_PARAMETER \
+     "Parameter '%s' is missing"
  
-     if (opp->nb_cpus > MAX_CPU) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
--                   TYPE_OPENPIC, "nb_cpus", (uint64_t)opp->nb_cpus,
--                   (uint64_t)0, (uint64_t)MAX_CPU);
-+        error_setg(errp, "property 'nb_cpus' can be at most %d", MAX_CPU);
-         return;
-     }
- 
+-#define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
+-    "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
+-
+ #endif /* QERROR_H */
 -- 
 2.46.0
 
