@@ -2,52 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7BE997DA8
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5845E997D97
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:50:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syn32-00018I-NZ; Thu, 10 Oct 2024 02:53:20 -0400
+	id 1symyf-0007RR-3M; Thu, 10 Oct 2024 02:48:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1syn2z-00017Y-45
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:17 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1syn2w-00040c-0f
- for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:16 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxnnPWeQdn9+IRAA--.26015S3;
- Thu, 10 Oct 2024 14:53:10 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S7;
- Thu, 10 Oct 2024 14:53:09 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	maobibo@loongson.cn,
-	philmd@linaro.org
-Subject: [PATCH v2 5/5] target/loongarch/tcg: Add hardware page table walker
- support
-Date: Thu, 10 Oct 2024 14:35:36 +0800
-Message-Id: <20241010063536.2276871-6-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20241010063536.2276871-1-gaosong@loongson.cn>
-References: <20241010063536.2276871-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1symya-0007QZ-Ud; Thu, 10 Oct 2024 02:48:45 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1symyX-0003RK-BT; Thu, 10 Oct 2024 02:48:44 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:248d:0:640:e1bc:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id C42E560B97;
+ Thu, 10 Oct 2024 09:48:32 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:6417::1:1f] (unknown
+ [2a02:6b8:b081:6417::1:1f])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id UmcHhK0IbiE0-Omc8zvRS; Thu, 10 Oct 2024 09:48:31 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1728542911;
+ bh=rRIsvBzrejYiXoKlKAQVr6gRbwZiW3RbUJG2b1uFA54=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=kS0YEj5/+ZkLxhzL167m8j7u11MzWh4p8QzEYmu1kUR6b6B4qacSUostYkwTx7P2u
+ bI2wiAY8W1W8j1+K/wLdkWRv5YdbvTFyFeydKHV3v8fKLy3p872wIOsodpI6rfbV/Y
+ t/v87SKYcPCio8+RASNKKbbBzy+mb50a53S8bJI4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <17d7959e-d643-4fd2-9e57-81de2728fa3e@yandex-team.ru>
+Date: Thu, 10 Oct 2024 09:48:30 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S7
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Bug Report][RFC PATCH 1/1] block: fix failing assert on paused
+ VM migration
+To: Fabiano Rosas <farosas@suse.de>,
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ eesposit@redhat.com, den@virtuozzo.com, Peter Xu <peterx@redhat.com>
+References: <20240924125611.664315-1-andrey.drobyshev@virtuozzo.com>
+ <20240924125611.664315-2-andrey.drobyshev@virtuozzo.com>
+ <6fb3340a-f685-422f-acaf-ad968e854847@yandex-team.ru>
+ <0faf2b77-0cda-4823-8c3f-986be7d6964c@virtuozzo.com>
+ <29cd78e2-be26-41a4-92c4-a327efe76177@yandex-team.ru>
+ <87set5roao.fsf@suse.de>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87set5roao.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Yandex-Filter: 1
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -65,310 +82,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add hardware page table walker (HPTW) feature for la664.
-Set CPUCFG2.HPTW = 1 to indicate that HPTW is implemented on this CPU.
-Set PWCH.HPTW_EN = 1 to enable HPTW.
+On 09.10.24 23:53, Fabiano Rosas wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+> 
+>> On 30.09.24 17:07, Andrey Drobyshev wrote:
+>>> On 9/30/24 12:25 PM, Vladimir Sementsov-Ogievskiy wrote:
+>>>> [add migration maintainers]
+>>>>
+>>>> On 24.09.24 15:56, Andrey Drobyshev wrote:
+>>>>> [...]
+>>>>
+>>>> I doubt that this a correct way to go.
+>>>>
+>>>> As far as I understand, "inactive" actually means that "storage is not
+>>>> belong to qemu, but to someone else (another qemu process for example),
+>>>> and may be changed transparently". In turn this means that Qemu should
+>>>> do nothing with inactive disks. So the problem is that nobody called
+>>>> bdrv_activate_all on target, and we shouldn't ignore that.
+>>>>
+>>>> Hmm, I see in process_incoming_migration_bh() we do call
+>>>> bdrv_activate_all(), but only in some scenarios. May be, the condition
+>>>> should be less strict here.
+>>>>
+>>>> Why we need any condition here at all? Don't we want to activate
+>>>> block-layer on target after migration anyway?
+>>>>
+>>>
+>>> Hmm I'm not sure about the unconditional activation, since we at least
+>>> have to honor LATE_BLOCK_ACTIVATE cap if it's set (and probably delay it
+>>> in such a case).  In current libvirt upstream I see such code:
+>>>
+>>>> /* Migration capabilities which should always be enabled as long as they
+>>>>    * are supported by QEMU. If the capability is supposed to be enabled on both
+>>>>    * sides of migration, it won't be enabled unless both sides support it.
+>>>>    */
+>>>> static const qemuMigrationParamsAlwaysOnItem qemuMigrationParamsAlwaysOn[] = {
+>>>>       {QEMU_MIGRATION_CAP_PAUSE_BEFORE_SWITCHOVER,
+>>>>        QEMU_MIGRATION_SOURCE},
+>>>>                                                                                   
+>>>>       {QEMU_MIGRATION_CAP_LATE_BLOCK_ACTIVATE,
+>>>>        QEMU_MIGRATION_DESTINATION},
+>>>> };
+>>>
+>>> which means that libvirt always wants LATE_BLOCK_ACTIVATE to be set.
+>>>
+>>> The code from process_incoming_migration_bh() you're referring to:
+>>>
+>>>>       /* If capability late_block_activate is set:
+>>>>        * Only fire up the block code now if we're going to restart the
+>>>>        * VM, else 'cont' will do it.
+>>>>        * This causes file locking to happen; so we don't want it to happen
+>>>>        * unless we really are starting the VM.
+>>>>        */
+>>>>       if (!migrate_late_block_activate() ||
+>>>>            (autostart && (!global_state_received() ||
+>>>>               runstate_is_live(global_state_get_runstate())))) {
+>>>>           /* Make sure all file formats throw away their mutable metadata.
+>>>>            * If we get an error here, just don't restart the VM yet. */
+>>>>           bdrv_activate_all(&local_err);
+>>>>           if (local_err) {
+>>>>               error_report_err(local_err);
+>>>>               local_err = NULL;
+>>>>               autostart = false;
+>>>>           }
+>>>>       }
+>>>
+>>> It states explicitly that we're either going to start VM right at this
+>>> point if (autostart == true), or we wait till "cont" command happens.
+>>> None of this is going to happen if we start another migration while
+>>> still being in PAUSED state.  So I think it seems reasonable to take
+>>> such case into account.  For instance, this patch does prevent the crash:
+>>>
+>>>> diff --git a/migration/migration.c b/migration/migration.c
+>>>> index ae2be31557..3222f6745b 100644
+>>>> --- a/migration/migration.c
+>>>> +++ b/migration/migration.c
+>>>> @@ -733,7 +733,8 @@ static void process_incoming_migration_bh(void *opaque)
+>>>>         */
+>>>>        if (!migrate_late_block_activate() ||
+>>>>             (autostart && (!global_state_received() ||
+>>>> -            runstate_is_live(global_state_get_runstate())))) {
+>>>> +            runstate_is_live(global_state_get_runstate()))) ||
+>>>> +         (!autostart && global_state_get_runstate() == RUN_STATE_PAUSED)) {
+>>>>            /* Make sure all file formats throw away their mutable metadata.
+>>>>             * If we get an error here, just don't restart the VM yet. */
+>>>>            bdrv_activate_all(&local_err);
+>>>
+>>> What are your thoughts on it?
+>>>
+> 
+> This bug is the same as https://gitlab.com/qemu-project/qemu/-/issues/2395
+> 
+>>
+>> Hmmm... Don't we violate "late-block-activate" contract by this?
+>>
+>> Me go and check:
+>>
+>> # @late-block-activate: If enabled, the destination will not activate
+>> #     block devices (and thus take locks) immediately at the end of
+>> #     migration.  (since 3.0)
+>>
+>> Yes, we'll violate it by this patch. So, for now the only exception is
+>> when autostart is enabled, but libvirt correctly use
+>> late-block-activate + !autostart.
+>>
+>> Interesting, when block layer is assumed to be activated.. Aha, only in qmp_cont().
+>>
+>>
+>> So, what to do with this all:
+>>
+>> Either libvirt should not use late-block-activate for migration of
+>> stopped vm. This way target would be automatically activated
+>>
+>> Or if libvirt still need postponed activation (I assume, for correctly
+>> switching shared disks, etc), Libvirt should do some additional QMP
+>> call. It can't be "cont", if we don't want to run the VM. So,
+>> probably, we need additional "block-activate" QMP command for this.
+> 
+> A third option might be to unconditionally activate in qmp_migrate:
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu-csr.h        |   3 +
- target/loongarch/cpu.c            |   1 +
- target/loongarch/cpu.h            |   1 +
- target/loongarch/cpu_helper.c     |  26 +++++-
- target/loongarch/internals.h      |   4 +-
- target/loongarch/tcg/tlb_helper.c | 147 +++++++++++++++++++++++++++++-
- 6 files changed, 176 insertions(+), 6 deletions(-)
+Yes. But is migration the only operation with vm which requires block layer be activated? I think actually a lot of operation require that.. Any block-layer releated qmp command actually. And do automatic activation in all of them I think is a wrong way.
 
-diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-index 0834e91f30..1aa015dc44 100644
---- a/target/loongarch/cpu-csr.h
-+++ b/target/loongarch/cpu-csr.h
-@@ -68,6 +68,8 @@ FIELD(TLBENTRY, PLV, 2, 2)
- FIELD(TLBENTRY, MAT, 4, 2)
- FIELD(TLBENTRY, G, 6, 1)
- FIELD(TLBENTRY, HUGE, 6, 1)
-+FIELD(TLBENTRY, PRESENT, 7, 1)
-+FIELD(TLBENTRY, WRITE, 8, 1)
- FIELD(TLBENTRY, HGLOBAL, 12, 1)
- FIELD(TLBENTRY, LEVEL, 13, 2)
- FIELD(TLBENTRY_32, PPN, 8, 24)
-@@ -103,6 +105,7 @@ FIELD(CSR_PWCH, DIR3_BASE, 0, 6)
- FIELD(CSR_PWCH, DIR3_WIDTH, 6, 6)
- FIELD(CSR_PWCH, DIR4_BASE, 12, 6)
- FIELD(CSR_PWCH, DIR4_WIDTH, 18, 6)
-+FIELD(CSR_PWCH, HPTW_EN, 24, 1)
- 
- #define LOONGARCH_CSR_STLBPS         0x1e /* Stlb page size */
- FIELD(CSR_STLBPS, PS, 0, 5)
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index d55b4110a9..9dbf2ce67b 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -476,6 +476,7 @@ static void loongarch_la664_initfn(Object *obj)
-     env->cpucfg[0] = 0x14d000; /* PRID */
- 
-     loongarch_common_initfn(env, obj);
-+    env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, HPTW, 1);
- }
- 
- static void loongarch_la464_initfn(Object *obj)
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 6c41fafb70..84f92507d6 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -155,6 +155,7 @@ FIELD(CPUCFG2, LBT_ARM, 19, 1)
- FIELD(CPUCFG2, LBT_MIPS, 20, 1)
- FIELD(CPUCFG2, LSPW, 21, 1)
- FIELD(CPUCFG2, LAM, 22, 1)
-+FIELD(CPUCFG2, HPTW, 24, 1)
- 
- /* cpucfg[3] bits */
- FIELD(CPUCFG3, CCDMA, 0, 1)
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index 580362ac3e..35c95e9a27 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -178,10 +178,11 @@ static hwaddr dmw_va2pa(CPULoongArchState *env, target_ulong va,
- 
- int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-                          int *prot, target_ulong address,
--                         MMUAccessType access_type, int mmu_idx)
-+                         MMUAccessType access_type, int mmu_idx, bool is_debug)
- {
-     int user_mode = mmu_idx == MMU_USER_IDX;
-     int kernel_mode = mmu_idx == MMU_KERNEL_IDX;
-+    int ret;
-     uint32_t plv, base_c, base_v;
-     int64_t addr_high;
-     uint8_t da = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, DA);
-@@ -221,8 +222,25 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-     }
- 
-     /* Mapped address */
--    return loongarch_map_address(env, physical, prot, address,
--                                 access_type, mmu_idx);
-+    ret = loongarch_map_address(env, physical, prot, address,
-+                                access_type, mmu_idx);
-+#ifdef CONFIG_TCG
-+    if (!FIELD_EX32(env->cpucfg[2], CPUCFG2, HPTW)) {
-+        return ret;
-+    }
-+
-+    if (!FIELD_EX32(env->CSR_PWCH, CSR_PWCH, HPTW_EN)) {
-+        return ret;
-+    }
-+
-+    if (do_page_walk(env, address, access_type, ret, physical, is_debug)) {
-+        if (!is_debug) {
-+            ret = loongarch_map_address(env, physical, prot, address,
-+                                        access_type, mmu_idx);
-+        }
-+    }
-+#endif
-+    return ret;
- }
- 
- hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-@@ -232,7 +250,7 @@ hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-     int prot;
- 
-     if (get_physical_address(env, &phys_addr, &prot, addr, MMU_DATA_LOAD,
--                             cpu_mmu_index(cs, false)) != 0) {
-+                             cpu_mmu_index(cs, false), true) != 0) {
-         return -1;
-     }
-     return phys_addr;
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 1a02427627..fc8357914b 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -56,13 +56,15 @@ bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
-                           int *index);
- int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-                          int *prot, target_ulong address,
--                         MMUAccessType access_type, int mmu_idx);
-+                         MMUAccessType access_type, int mmu_idx, bool is_debug);
- hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
- 
- #ifdef CONFIG_TCG
- bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                             MMUAccessType access_type, int mmu_idx,
-                             bool probe, uintptr_t retaddr);
-+bool do_page_walk(CPULoongArchState *env, vaddr address,
-+                  MMUAccessType, int tlb_error, hwaddr *physical, bool is_debug);
- #endif
- #endif /* !CONFIG_USER_ONLY */
- 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 463e9be7f2..cecffde56e 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -8,6 +8,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/guest-random.h"
-+#include "qemu/atomic.h"
- 
- #include "cpu.h"
- #include "internals.h"
-@@ -504,7 +505,7 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- 
-     /* Data access */
-     ret = get_physical_address(env, &physical, &prot, address,
--                               access_type, mmu_idx);
-+                               access_type, mmu_idx, false);
- 
-     if (ret == TLBRET_MATCH) {
-         tlb_set_page(cs, address & TARGET_PAGE_MASK,
-@@ -651,3 +652,147 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-     }
-     env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, PS, ps);
- }
-+
-+static target_ulong get_pte_base(CPULoongArchState *env, vaddr address)
-+{
-+    uint64_t dir_base, dir_width;
-+    target_ulong base;
-+    int i;
-+
-+    /* Get PGD */
-+    base = ((address >> 63) & 0x1) ? env->CSR_PGDH : env->CSR_PGDL;
-+
-+    for (i = 4; i > 0; i--) {
-+        get_dir_base_width(env, &dir_base, &dir_width, i);
-+        /*
-+         * LDDIR: level = 2 corresponds to Dir1 in PWCL.
-+         * PWCL/PWCH: dir >= 1 && dir_width == 0 means no such level.
-+         */
-+        if (i >= 2 && dir_width == 0) {
-+            continue;
-+        }
-+        base = do_lddir(env, base, address, i);
-+    }
-+
-+    return base;
-+}
-+
-+bool do_page_walk(CPULoongArchState *env, vaddr address,
-+                  MMUAccessType access_type, int tlb_error,
-+                  hwaddr *physical, bool is_debug)
-+{
-+    CPUState *cs = env_cpu(env);
-+    target_ulong base, ps, tmp0, tmp1, ptindex, ptoffset, cur_val, new_val, old_val;
-+    uint64_t entrylo0, entrylo1, tlbehi, vppn;
-+    uint64_t ptbase = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
-+    uint64_t ptwidth = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
-+    int index, shift;
-+    bool ret = false;
-+
-+    /*
-+     * tlb error map :
-+     * TLBRET_NOMATCH : tlb fill
-+     * TLBRET_INVALID : access_type = 0/2  tlb_load
-+     *                : access_type = 1    tlb_store
-+     * TLBRET_DIRTY   : tlb_modify
-+     */
-+    switch (tlb_error) {
-+    case TLBRET_NOMATCH:
-+        base = get_pte_base(env, address);
-+        if (base == 0) {
-+            return ret;
-+        }
-+        do_ldpte(env, base, address, &tmp0, &tmp1, &ps);
-+        entrylo0 = tmp0;
-+        entrylo1 = tmp1;
-+        tlbehi = address & (TARGET_PAGE_MASK << 1);
-+        vppn = FIELD_EX64(tlbehi, CSR_TLBEHI_64, VPPN);
-+        if (is_debug) {
-+            uint64_t tlb_ppn, tlb_entry;
-+            uint8_t n;
-+            n = (address >> ps) & 0x1;/* Odd or even */
-+
-+            tlb_entry = n ? entrylo1: entrylo1;
-+            tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY_64, PPN);
-+            /* Remove sw bit between bit12 -- bit PS */
-+            tlb_ppn = tlb_ppn & ~(((0x1UL << (ps - 12)) -1));
-+            *physical = (tlb_ppn << R_TLBENTRY_64_PPN_SHIFT) |
-+                        (address & MAKE_64BIT_MASK(0, ps));
-+        } else {
-+            index = get_random_tlb_index(env, tlbehi, ps);
-+            invalidate_tlb(env, index);
-+            do_fill_tlb_entry(env, vppn, entrylo0, entrylo1, index, ps);
-+        }
-+
-+        ret = true;
-+        break;
-+    case TLBRET_DIRTY:
-+    case TLBRET_INVALID:
-+        base = get_pte_base(env, address);
-+
-+        /* 0:64bit, 1:128bit, 2:192bit, 3:256bit */
-+        shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
-+        shift = (shift + 1) * 3;
-+        ptindex = (address >> ptbase) & ((1 << ptwidth) -1);
-+        ptoffset = ptindex << shift;
-+        tmp0 = base | ptoffset;
-+      retry:
-+        old_val = ldq_phys(cs->as, tmp0) & TARGET_PHYS_MASK;
-+
-+        if (old_val == 0) {
-+            return ret;
-+        }
-+
-+        new_val = old_val;
-+        /* Check pte val, and do tlb modify. */
-+        if ((tlb_error == TLBRET_INVALID) &&
-+            (access_type == MMU_INST_FETCH )) {
-+            if (!(FIELD_EX64(new_val, TLBENTRY, PRESENT))) {
-+                break;
-+            }
-+            new_val = FIELD_DP64(new_val, TLBENTRY, V, 1);
-+        } else if ((tlb_error == TLBRET_INVALID) &&
-+                   access_type == MMU_DATA_STORE) {
-+            if (!((FIELD_EX64(new_val, TLBENTRY, PRESENT) &&
-+                  (FIELD_EX64(new_val, TLBENTRY, WRITE))))){
-+                break;
-+            }
-+            new_val = FIELD_DP64(new_val, TLBENTRY, V, 1);
-+        } else if (tlb_error ==  TLBRET_DIRTY) {
-+            if (!(FIELD_EX64(new_val, TLBENTRY, PRESENT) &&
-+                 (FIELD_EX64(new_val, TLBENTRY, WRITE)))) {
-+                break;
-+            }
-+            new_val = FIELD_DP64(new_val, TLBENTRY, V, 1);
-+        }
-+
-+        if (old_val != new_val) {
-+            cur_val = qatomic_cmpxchg((uint64_t *)tmp0, old_val, new_val);
-+            if (cur_val == old_val) {
-+                goto retry;
-+            }
-+        }
-+
-+        tmp0 = tmp0 & (~0x8);
-+        entrylo0 = ldq_phys(cs->as, tmp0) & TARGET_PHYS_MASK;
-+        entrylo1 = ldq_phys(cs->as, tmp0 | 0x8) & TARGET_PHYS_MASK;
-+        tlbehi = address & (TARGET_PAGE_MASK << 1);
-+        ps = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
-+        vppn = FIELD_EX64(tlbehi, CSR_TLBEHI_64, VPPN);
-+
-+        /*
-+         * srch tlb index with tlb entryhi
-+         * if no match, we use get_random_tlb_index() to get random index.
-+         */
-+        if (!loongarch_tlb_search(env, tlbehi, &index)) {
-+            index = get_random_tlb_index(env, tlbehi, ps);
-+        }
-+        invalidate_tlb(env, index);
-+        do_fill_tlb_entry(env, vppn, entrylo0, entrylo1, index, ps);
-+        ret = true;
-+        break;
-+    default:
-+        ;
-+    }
-+    return ret;
-+}
+Moreover, if we have explicit possibility to "postpone activation", we should provide a way to "activate by hand".
+
+So I still think correct fix is reporting error from qmp_migrate when block-layer is inactive, and add some possibility to activate through QMP.
+
+> 
+> -- >8 --
+>  From 1890c7989e951a2702735f933d1567e48fa464a5 Mon Sep 17 00:00:00 2001
+> From: Fabiano Rosas <farosas@suse.de>
+> Date: Wed, 9 Oct 2024 17:51:57 -0300
+> Subject: [PATCH] tmp
+> 
+> ---
+>   migration/migration.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 021faee2f3..6bf1f039d1 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -2068,6 +2068,16 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
+>           return false;
+>       }
+>   
+> +    /*
+> +     * The VM might have been target of a previous migration. If it
+> +     * was in the paused state then nothing will have required the
+> +     * block layer to be activated. Do it now to ensure this QEMU
+> +     * instance owns the disk locks.
+> +     */
+> +    if (!resume && runstate_check(RUN_STATE_PAUSED)) {
+> +        bdrv_activate_all(errp);
+> +    }
+> +
+>       return true;
+>   }
+>   
+
 -- 
-2.33.0
+Best regards,
+Vladimir
 
 
