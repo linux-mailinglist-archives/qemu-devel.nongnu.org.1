@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF47997DA9
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D5E997DA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Oct 2024 08:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1syn33-00019W-Sv; Thu, 10 Oct 2024 02:53:21 -0400
+	id 1syn33-00019M-CF; Thu, 10 Oct 2024 02:53:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1syn30-00017k-3l
+ id 1syn30-00017i-2M
  for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:18 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1syn2y-00040v-8a
+ (envelope-from <gaosong@loongson.cn>) id 1syn2w-00040a-5Z
  for qemu-devel@nongnu.org; Thu, 10 Oct 2024 02:53:17 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cx44jTeQdn7OIRAA--.26034S3;
- Thu, 10 Oct 2024 14:53:07 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxqrHUeQdn7+IRAA--.25543S3;
+ Thu, 10 Oct 2024 14:53:08 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S2;
+ by front1 (Coremail) with SMTP id qMiowMBxXuTTeQdnBiAiAA--.41709S3;
  Thu, 10 Oct 2024 14:53:07 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn,
 	philmd@linaro.org
-Subject: [PATCH v2 0/5] LoongArch/tcg: Add hardware page table walker support
-Date: Thu, 10 Oct 2024 14:35:31 +0800
-Message-Id: <20241010063536.2276871-1-gaosong@loongson.cn>
+Subject: [PATCH v2 1/5] target/loongarch: Add a new cpu_type la664
+Date: Thu, 10 Oct 2024 14:35:32 +0800
+Message-Id: <20241010063536.2276871-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20241010063536.2276871-1-gaosong@loongson.cn>
+References: <20241010063536.2276871-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S2
+X-CM-TRANSID: qMiowMBxXuTTeQdnBiAiAA--.41709S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,30 +64,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Loongson-3A6000 and newer processors have hardware page table walker
-(PTW) support. PTW can handle all fastpaths of PIL/PIS/PIF/PIE
-exceptions by hardware.
+Add a new LoongArch cpu type la664. The la664 has many new features,
+such as new atomic instructions, hardware page table walk, etc.
+We will implement them later.
 
-V2:
-- Remove the '21' magic value, patch1;
-- Add a flag is_debug for debug access, patch5;
-- Use qatomic_cmpxchg to change the new pte_val, patch5.
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/cpu.c | 50 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 15 deletions(-)
 
-Song Gao (5):
-  target/loongarch: Add a new cpu_type la664
-  target/loongarch: Add do_lddir/ldpte()
-  target/loongarch: Add do_fill_tlb_entry()
-  target/loongarch: Add get_random_tlb_index()
-  target/loongarch/tcg: Add hardware page table walker support
-
- target/loongarch/cpu-csr.h        |   3 +
- target/loongarch/cpu.c            |  51 ++++--
- target/loongarch/cpu.h            |   1 +
- target/loongarch/cpu_helper.c     |  26 ++-
- target/loongarch/internals.h      |   4 +-
- target/loongarch/tcg/tlb_helper.c | 277 ++++++++++++++++++++++++------
- 6 files changed, 293 insertions(+), 69 deletions(-)
-
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 7212fb5f8f..d55b4110a9 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -374,20 +374,11 @@ static int loongarch_cpu_mmu_index(CPUState *cs, bool ifetch)
+     return MMU_DA_IDX;
+ }
+ 
+-static void loongarch_la464_initfn(Object *obj)
++static void loongarch_common_initfn(CPULoongArchState *env, Object *obj)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+-    CPULoongArchState *env = &cpu->env;
+-    int i;
+-
+-    for (i = 0; i < 21; i++) {
+-        env->cpucfg[i] = 0x0;
+-    }
+-
+-    cpu->dtb_compatible = "loongarch,Loongson-3A5000";
+-    env->cpucfg[0] = 0x14c010;  /* PRID */
++    uint32_t data;
+ 
+-    uint32_t data = 0;
++    data = 0;
+     data = FIELD_DP32(data, CPUCFG1, ARCH, 2);
+     data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
+     data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
+@@ -472,14 +463,42 @@ static void loongarch_la464_initfn(Object *obj)
+     loongarch_cpu_post_init(obj);
+ }
+ 
+-static void loongarch_la132_initfn(Object *obj)
++static void loongarch_la664_initfn(Object *obj)
+ {
+     LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+     CPULoongArchState *env = &cpu->env;
+ 
+-    int i;
++    for (unsigned i = 0; i < ARRAY_SIZE(env->cpucfg); i++) {
++        env->cpucfg[i] = 0x0;
++    }
++
++    cpu->dtb_compatible = "loongarch,Loongson-3A6000";
++    env->cpucfg[0] = 0x14d000; /* PRID */
++
++    loongarch_common_initfn(env, obj);
++}
++
++static void loongarch_la464_initfn(Object *obj)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    CPULoongArchState *env = &cpu->env;
++
++    for (unsigned i = 0; i < ARRAY_SIZE(env->cpucfg); i++) {
++        env->cpucfg[i] = 0x0;
++    }
++
++    cpu->dtb_compatible = "loongarch,Loongson-3A5000";
++    env->cpucfg[0] = 0x14c010;  /* PRID */
++
++    loongarch_common_initfn(env, obj);
++}
++
++static void loongarch_la132_initfn(Object *obj)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    CPULoongArchState *env = &cpu->env;
+ 
+-    for (i = 0; i < 21; i++) {
++    for (unsigned i = 0; i < ARRAY_SIZE(env->cpucfg); i++) {
+         env->cpucfg[i] = 0x0;
+     }
+ 
+@@ -872,6 +891,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .abstract = true,
+         .class_init = loongarch64_cpu_class_init,
+     },
++    DEFINE_LOONGARCH_CPU_TYPE(64, "la664", loongarch_la664_initfn),
+     DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+     DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
+     DEFINE_LOONGARCH_CPU_TYPE(64, "max", loongarch_max_initfn),
 -- 
 2.33.0
 
