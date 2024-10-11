@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297ED99A9DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE6299A9DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ41-0000ky-VL; Fri, 11 Oct 2024 13:04:29 -0400
+	id 1szJJi-0005aO-Tx; Fri, 11 Oct 2024 13:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1szJ3z-0000hu-45
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:27 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1szIu0-0000Ot-J1
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 12:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=Ny+BSiVefvk0ZMxyxY5jJ/ox0PnbAIotPo5Wo2LKZTs=; b=A+gz1v79zbYY8F2z
- GIoA5M4hlx3+UQfnBxbtaJFeUnuHTz9/kKSUtayM6WazHwSf0QfQQ+XxYmUirY6v4y8x379ObIAvb
- jAnnBuA6qC8oIcjdeKvlUVFRoaiJSfgybsF0QGQqP/6kvdnn+J3tfCKx6sxnbu5kq0WSsapyIq++N
- yT4FeNmCqANyeD/aC01BPuEaBDIH1O1vwluPL5LdVnIe5Mqawc7sd+jakPRZi6wiIK8bs48r5d0ey
- ztR7XfcEpXONdQJa4/NgMkDZCX9ySg071DwXGPKAFb1sbGzvJz47rQ96zgaMdysw9C/tjXyqU4TfA
- gBQIVhwnEeagAicTGA==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1szIto-00AZ2q-2i;
- Fri, 11 Oct 2024 16:53:56 +0000
-Date: Fri, 11 Oct 2024 16:53:56 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: Yichen Wang <yichen.wang@bytedance.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, qemu-devel@nongnu.org,
- Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- Shivam Kumar <shivam.kumar1@nutanix.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Subject: Re: [PATCH v6 00/12] Use Intel DSA accelerator to offload zero page
- checking in multifd live migration.
-Message-ID: <ZwlYJCpoNB_TkIBR@gallifrey>
-References: <20241009234610.27039-1-yichen.wang@bytedance.com>
- <ZwlTCgqjbFbJduyI@x1n>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1szJ9K-0007ge-Cz
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:10:02 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1szJ9I-0003MA-UH
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:09:58 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7ea53eaf604so694405a12.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 10:09:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728666595; x=1729271395; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bmgflE2zoSkPjlqlCWN52X+hS0qvFXB4kKy+1n6oiE0=;
+ b=x94VaIBfvHeVCWhIsGjfH7CDaOCa3UqxurKuKlWv1AMY0J1EMt8RnoXEnaT92VvtsR
+ QZWTKz9etWXUQ0zbCGKOUDAVQ1S3V1FbowoK6HU2Zq6bgbJOnOsvaxOwdChCMAzyKK0j
+ wsfaZ5h6sT7cbZE5jSUU49wm1L0aQCy3LE0dQyHSjRUIF3EkGRfK/pdqUdZMCZIdtF67
+ ZMRzZuUfqArVgg1rw+RDS1go1lYM2r2qHvVLP6WRhKTwsJfAoKKlr4uRjZd00gJGzckQ
+ V0oR47bg4k7jspvH7m7KbmQw06+IOfD7oSR/fsE8p56AHtipyFXCGdxV4j2GJbUWCMz9
+ axCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728666595; x=1729271395;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bmgflE2zoSkPjlqlCWN52X+hS0qvFXB4kKy+1n6oiE0=;
+ b=S9BSMOXHpKaBPeOcyUBy0SsuQ9vLGwGjvcyWiv0JVAdR8higsRzfBLZpm44uxFgGTI
+ L8ekO/B1SA0i0Ou9iAnRXjFpGaRaq2wsEvDJMHDFr8ZMzRO5vkZ6zT8WU/mSvhCXBaAj
+ Ib9Wcn2aut7X99Ei1q/e2vM2ONI77veiCXW6lwJ+LMT1TUTVX5N8bOfMyLpIHuUrd5LK
+ 7MTo36oAngFQ7I6ssaVJEexw610mbv4s6eHykpxG+uv3B4HRtXb+ZY/+DRFM2mBA2zkl
+ XKWQ2QKKsi7106YqlXxl0z2hFIw6bMGK3wkTdNHPQvYqqgoOWGSpxuXtcqSDeEk07YoS
+ cSUQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDWpOJjtJN2PprlhlqBnOPb1LxcnYKgCCdP81QIPa+SmzsfnOHuKVNgDp2tE/q3nSky8j/RSb1wE4W@nongnu.org
+X-Gm-Message-State: AOJu0Yw46cIUL1E7Dow5Dnkti3nyIHhVFkfau71KlVJLfJ1ilvhcZHiO
+ P2/p7d7jfSASO9/752WbYnAS05UiorBktBVof5cCoD73G4QMn72L00fPB42kOP8=
+X-Google-Smtp-Source: AGHT+IGRuP/rzU6XRPaLAZ3t/rLp27bfPr6nXvr7IFX6HsI99CuuZkMoh4TL+ybYqfMszbQowcdT7g==
+X-Received: by 2002:a05:6a21:e8b:b0:1d8:a759:5265 with SMTP id
+ adf61e73a8af0-1d8bcfa571bmr3911131637.37.1728666594903; 
+ Fri, 11 Oct 2024 10:09:54 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71e2a9f6c0dsm2807172b3a.51.2024.10.11.10.09.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Oct 2024 10:09:54 -0700 (PDT)
+Message-ID: <4df7a020-2eae-404f-bd2d-93a4c6dba66e@linaro.org>
+Date: Fri, 11 Oct 2024 10:09:53 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <ZwlTCgqjbFbJduyI@x1n>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 16:52:40 up 156 days,  4:06,  1 user,  load average: 0.03, 0.03, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/23] accel/tcg: Split out tlbfast_flush_range_locked
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20241009150855.804605-1-richard.henderson@linaro.org>
+ <20241009150855.804605-5-richard.henderson@linaro.org>
+ <8bbac2bf-704a-4c4c-ae7a-996f5a04038f@linaro.org>
+ <2daacd1c-1efb-4990-852b-a7e6ae1bd1d4@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <2daacd1c-1efb-4990-852b-a7e6ae1bd1d4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,39 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Peter Xu (peterx@redhat.com) wrote:
-
-> The doc update is still missing under docs/, we may need that for a final
-> merge.
-> 
-> Are you using this in production?  How it performs in real life?  What is
-> the major issue to solve for you?  Is it "zero detect eats cpu too much",
-> or "migration too slow", or "we're doing experiment with the new hardwares,
-> and see how it goes if we apply it on top of migrations"?
-> 
-> There're a lot of new code added for dsa just for this optimization on zero
-> page detection.  We'd better understand the major benefits, and also
-> whether that's applicable to other part of qemu or migration-only.  I
-> actually wonder if we're going to support enqcmd whether migration is the
-> best starting point (rather than other places where we emulate tons of
-> devices, and maybe some backends can speedup IOs with enqcmd in some
-> form?).. but it's more of a pure question.
-
-The other thing that worries me here is that there's not much abstraction,
-I'm sure there's a whole bunch of offload cards that could do tricks like
-this; how do we avoid having this much extra code for each one?
-
-Dave
-
-> 
-> Thanks,
-> 
-> -- 
-> Peter Xu
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+T24gMTAvOS8yNCAxODoyMCwgUmljaGFyZCBIZW5kZXJzb24gd3JvdGU6DQo+IE9uIDEwLzkv
+MjQgMTY6MDUsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+Pj4gQEAgLTcyMCwxMyArNzI4
+LDEwIEBAIHN0YXRpYyB2b2lkIHRsYl9mbHVzaF9yYW5nZV9sb2NrZWQoQ1BVU3RhdGUgKmNw
+dSwgaW50IG1pZHgsDQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm47DQo+Pj4gIMKg
+wqDCoMKgwqAgfQ0KPj4+ICvCoMKgwqAgdGxiZmFzdF9mbHVzaF9yYW5nZV9sb2NrZWQoZCwg
+ZiwgYWRkciwgbGVuLCBtYXNrKTsNCj4+PiArDQo+Pj4gIMKgwqDCoMKgwqAgZm9yICh2YWRk
+ciBpID0gMDsgaSA8IGxlbjsgaSArPSBUQVJHRVRfUEFHRV9TSVpFKSB7DQo+Pj4gIMKgwqDC
+oMKgwqDCoMKgwqDCoCB2YWRkciBwYWdlID0gYWRkciArIGk7DQo+Pj4gLcKgwqDCoMKgwqDC
+oMKgIENQVVRMQkVudHJ5ICplbnRyeSA9IHRsYl9lbnRyeShjcHUsIG1pZHgsIHBhZ2UpOw0K
+Pj4+IC0NCj4+PiAtwqDCoMKgwqDCoMKgwqAgaWYgKHRsYl9mbHVzaF9lbnRyeV9tYXNrX2xv
+Y2tlZChlbnRyeSwgcGFnZSwgbWFzaykpIHsNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCB0bGJfbl91c2VkX2VudHJpZXNfZGVjKGNwdSwgbWlkeCk7DQo+Pj4gLcKgwqDCoMKgwqDC
+oMKgIH0NCj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgIHRsYl9mbHVzaF92dGxiX3BhZ2VfbWFz
+a19sb2NrZWQoY3B1LCBtaWR4LCBwYWdlLCBtYXNrKTsNCj4+PiAgwqDCoMKgwqDCoCB9DQo+
+Pj4gIMKgIH0NCj4+DQo+PiBXaHkgZG9uJ3Qgd2UgaGF2ZSB0aGUgc2FtZSBraW5kIG9mIGNo
+YW5nZSBmb3IgdGxiX2ZsdXNoX3Z0bGJfcGFnZV9tYXNrX2xvY2tlZD8NCj4+DQo+PiBXZSBr
+bm93IGhhdmUgdHdvIGxvb3BzIChmb3IgZW50cnkgbWFzaywgYW5kIGZvciBwYWdlIG1hc2sp
+Lg0KPiANCj4gSXQgZ29lcyBhd2F5IGluIHBhdGNoIDE1Lg0KPiANCj4gcn4NCg0KUmlnaHQs
+IGxvb2tzIGdvb2QuDQpSZXZpZXdlZC1ieTogUGllcnJpY2sgQm91dmllciA8cGllcnJpY2su
+Ym91dmllckBsaW5hcm8ub3JnPg0K
 
