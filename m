@@ -2,86 +2,161 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CF799A9B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 904F299AA36
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:34:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJGm-0007SE-SF; Fri, 11 Oct 2024 13:17:40 -0400
+	id 1szJJY-0004hH-C6; Fri, 11 Oct 2024 13:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1szJ8U-0004CO-7C
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:09:07 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1szDfw-0007rg-7U
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:19:18 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-71e053cf1f3so1804965b3a.2
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1728645554; x=1729250354; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=t97p9zZl9/jmYPyVqbjQ4fbIa0dYpZbhd5CdMHNe5A0=;
- b=IA4jtYvvC2DtYvgldY0Cd+xNX9p3UfoMz+GNkP2pek9Z0GHBVcc31IX5tMSdHINBac
- 9ovKsBv7wRfE/pshngVxxueqybPw8+cDaMfyp1QdpEeNFi5+/Ggvf8dSX6b+sxUePtUY
- nFBszZF3vBf60XR03w7rP3vSwrUTzy29Sy5pgVxpZn9hFcykrPbyHmNqpB25wTJIELPj
- lfO9hJDDdNYIroIuXDRl1S2TpeZMlcgLRwhoLzbi7ZzGjefGhA6+4Gcn1aCaAzWwMkJF
- QbRxdXKwS2JRYoKJt44EsJgjzGsPDJJsrhWcnlCeN43n+fJ2N/u9BwjNVsHy9QAkMHEt
- 9H+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728645554; x=1729250354;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t97p9zZl9/jmYPyVqbjQ4fbIa0dYpZbhd5CdMHNe5A0=;
- b=q4nBentc6Tq38yA4NGacTws2/VaczTK9lRVdJU2liTtNIh9w40Dk/7uXZ+32V/XsV6
- 1YucUFZbj5ycdQdU2L18jveB4Pt5klc9o1fVG7eAMzPRSz/i5W8oJkOWLEQI6R/8iovM
- An91W90/j6WWyli3dPoJ3XDV9nyQWS8eH2/X3lkUQWcE5u/zD9bGqJ6R7cAC0e1HpYiV
- BROEhXcKjaCzQ6fb0bbcFjLFBTU18uoYbvOFEMU3ejVTSPFqL6zaJS9YxqhQksuXTeeR
- OBOzaukJ2oI4P9oNL+ImGhRkW/aSBkrEEcnT/NoA3KYtYZBKyD7L8QKfLyBFjiajzOp6
- kRWQ==
-X-Gm-Message-State: AOJu0YxHbKw0gqlOR2SDS3pAY0sI7lTklfPL87YYbAY/gjqZLUaK+1EY
- bS+nwulACeVeEMY9QXaBAY40Bhl3WiAK8DOXRHt5SBsusPZA/CxRCNc9TfcGZTY=
-X-Google-Smtp-Source: AGHT+IHKNDheTB7yfXWt13ICE59DdO3XHt7Sg4EeFgg22+YZahJIwkR+l0rB1hbQ18VB/TpKpKyIZQ==
-X-Received: by 2002:a05:6a21:1796:b0:1d7:2249:67a with SMTP id
- adf61e73a8af0-1d8bcf9f071mr3477871637.36.1728645554319; 
- Fri, 11 Oct 2024 04:19:14 -0700 (PDT)
-Received: from [192.168.68.110] (201-68-240-198.dsl.telesp.net.br.
- [201.68.240.198]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e2aa938aesm2381903b3a.133.2024.10.11.04.19.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Oct 2024 04:19:13 -0700 (PDT)
-Message-ID: <b7271701-195a-461d-ba64-e2a02c634177@ventanamicro.com>
-Date: Fri, 11 Oct 2024 08:19:09 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] target/riscv/kvm: add kvm-aia bools props
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, ajones@ventanamicro.com
-References: <20240924124407.766495-1-dbarboza@ventanamicro.com>
- <20240924124407.766495-4-dbarboza@ventanamicro.com>
- <CAKmqyKMMRCFvWYa1GjwkbJsBh8q_OgtA2UVdaNEJsr=N66hvkQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
+ id 1szJ8Q-0000wP-F9
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:09:05 -0400
+Received: from mail-co1nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2416::600]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
+ id 1szDq7-0000JE-VH
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:29:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RWP324PG7aT9MGnUYNbxNDBq4F7F/BUXn3pQTi+oB2yi0oNA0nGnTxlOptMJNOBFNbtuNoN3EzGj7wrdrNTOGbGMDl5icuSQDomp6Zj5IwODwiEGnqC2juj2H0UwA3SzC7cdRxVtiBdpoDC9j+WDtD26dUte87sU9NjPYvTdkuilh+9wiP+vz7CS2+AK3nk92VW4LQUUsOkeccZwDZr9cwhvZZxdXTLuB5Tg+KRUKBh+EuNiKKx02denPX1qf5GYfns4CofUZmKZrL/FRkYSWMYadF/gVy8dHzAozKalpjkNv+yV9fxLgt3IgkERdLp4R0Rgzpffr96OukxpT9Ye/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UjTN7LrK7c5m+uh/IeHbaU++HSPM1uTv0ghAVgZnT1g=;
+ b=e+QsDxzwrQgv4c8CCdmMq0jlMKqmibc5p3n0TDeWMtsrB25g7rUegSvGrhhmw71biz0Xv0w0+O/tuoHYzsE508pC+vyIYE1O5w5wM2ejqpTh+wrxcudENWcppL8OyS2mZHiWMs3qztBRzQJ+HQZcVU8fC6wgcExlI+n0XxZIvt0nfI6c9Fb3GXLa/rQ+99sTGxsAKr+1i6dU8TvtVvGxC0lILUnl86qElJA/NLViGAvkVnwiP814bQc4R05HrFufoaZD0MVJIUunp1nS/5jrQlN9fUNL3KNEYgfgACUNuJelOdGPuwaO/ziEVyOAsf8NKdO2+r/ireg8AXCqNTYGSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UjTN7LrK7c5m+uh/IeHbaU++HSPM1uTv0ghAVgZnT1g=;
+ b=cEyl+m8cFKQ+ww7VhC4JLXX/x7J+HovaNzMFKSqng2pxDaAhXmqeB+OXtvBx9vr3tBJ9OG74NNe5AhZIaQgQV9ZkY0Qjic60ZgsPwW/2D/lRMlcgoykZpwudtXWHSkxTtZM9PoAJeHNjkgxbUgjFxV8WlIPPvuokB314fvRg4sc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com (2603:10b6:208:3f0::13)
+ by DS0PR12MB8071.namprd12.prod.outlook.com (2603:10b6:8:df::5) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8048.19; Fri, 11 Oct 2024 11:29:40 +0000
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48]) by IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48%6]) with mapi id 15.20.8048.017; Fri, 11 Oct 2024
+ 11:29:40 +0000
+Message-ID: <9e4161ef-222a-0d4f-caf6-41c9c6830f0c@amd.com>
+Date: Fri, 11 Oct 2024 13:29:36 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] accel/kvm: check for KVM_CAP_MEMORY_ATTRIBUTES on vm
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKMMRCFvWYa1GjwkbJsBh8q_OgtA2UVdaNEJsr=N66hvkQ@mail.gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: erbse.13@gmx.de
+References: <20241011085944.25815-1-pbonzini@redhat.com>
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <20241011085944.25815-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0003.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1d::22) To IA1PR12MB8189.namprd12.prod.outlook.com
+ (2603:10b6:208:3f0::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8189:EE_|DS0PR12MB8071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a369782-ee27-481b-ef3e-08dce9e7ff03
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K0svS2RZZFdLUHlDN3JFOGVlZWl1MXIzaW42K0Q1WkdNck5ROVlvbzdMTmlk?=
+ =?utf-8?B?YmlGSDExN3hsSWhuVm1VSmw1c1g4NE5TdnNWSUV6VlBwVUxvdFljYWVaTU9v?=
+ =?utf-8?B?bG11Q3FNVllqeTNFdVVGNnFKVjhkTDl6VktoWEIvb3RXSE8wbmpDdzNFbURJ?=
+ =?utf-8?B?cTRkQ0tEVlkwbjJPMkoyeE5Md3dTWWdHYm40OTVuVk12Sk0vMzJnWWtIRlpJ?=
+ =?utf-8?B?UllOWmttYmJxYnJNN1k2Q0VyNjNLbGthQ0ViT3JJZFFlUXNRZzVuckFjV1Bn?=
+ =?utf-8?B?blhzM21CNWJ0Y1A3dFdFMldUbVEzZUdzUEFIV3UzRUJpNCswYkxWb3B3ZEpQ?=
+ =?utf-8?B?cFVJUWRGMnlNVlhyVGwzN2JlVHJ1QWlRdmJLUDMrN3JXR1RzVFUxVUZFOTBI?=
+ =?utf-8?B?UkhhVGhHL2dXY0ltZ3kzTmRvbGJqN3JJZWd0b2Q3czh4RHd4anQ2dUJEeGl4?=
+ =?utf-8?B?L2dpaVcvUW4zZ3JTYXNkT1drRzRjTzJvUE5DWVl2TVV2REF6VTdUNnQ5WGY3?=
+ =?utf-8?B?MGZBN3k4MjNNazZFeFVEaFNRaTVxNXAxOEZTamVhMW1KcGFpZzFsdXRzQmxt?=
+ =?utf-8?B?VThNdTM5aFg3NUxuNnlsUlVQeFhsRzVSODNCblZiWmFoeWVxbWM0NFFrZGFX?=
+ =?utf-8?B?VWV3d3Q5NHpxWEo0SEZibkFqM1R5S2ZRMDdJaERUcjFZRVROci82UkcwL2N6?=
+ =?utf-8?B?NmhySDloLy82bkQ5V3pvbjJKM3FSTWgrekJaamZhejFTdTlaSXl3ZExBWnRO?=
+ =?utf-8?B?T1huK25naS9NUlRpRHBJSDF5cVFhVUxuY3YvcktTTHA5OFJaUlhKMmUreDF1?=
+ =?utf-8?B?bm9WYWVpYVJNN3Uzb0pmMFU5TjVZbFRpaGdFM0NXQ1JjYWFUSllHTDhJWlBK?=
+ =?utf-8?B?cFBLaEVBRmlpS1hraFNOaXExdndBMUNKK3BTbGdDK3Vvem5oQVlQMXlRRElN?=
+ =?utf-8?B?SlJMNU8vUDhxdndnamJNWFhmWVBMR2FRMXhCaE9UUUFWK0cwWlFnSEdiN3N6?=
+ =?utf-8?B?WkZRSGNOOGdDZjRzalg0NFgwVHJYWkwxNHg0bVJ0UEdyRmlKbytXQnJDR0RC?=
+ =?utf-8?B?dHRtZnR4MWFVWW1xa1RuVkJ4aEVvU0R4Y1BUL3N1elBUTVRIa1JGdHZTRlpY?=
+ =?utf-8?B?YnNRZTRESko5TVNhcGVQYWJKQ2VwL2tnSXVBVXJ3azFOdENzNTd3RHduRkZk?=
+ =?utf-8?B?NDBtbWd4Q3NGemt2MTBpOXBrUVVsQThwTVB5cUxHeW5wTTVjb3h6czJBcUM4?=
+ =?utf-8?B?cTBrM2xlK1VsOXhuR3JQelgrTVJHSTIwUmxNWFdyUUIwQmNRU2M5bVhUZXNU?=
+ =?utf-8?B?NWxoUlVRdUZiYUt4bW1Pa1Rxc2NLU1RIcm44THFFYlRwZHRKZjJnOTk1S0Jy?=
+ =?utf-8?B?VCttTmJWMGtQeER1ZlJhdUhHdHh3b2JKbXFGaEo5aHN1azI3c2paUnQ0cjZX?=
+ =?utf-8?B?UWhrYnR5UUxBNCtUWXJ0NmgrbExTU3I4QlNUZFZQOEEvbmZiTnE5ellXNERh?=
+ =?utf-8?B?NnNHZ21XanQ1MHZjVkhxK1RWeVI0SnU0MzA5b2JVL2JmQzZGSkpnSGlFU09s?=
+ =?utf-8?B?a282UURxOUttcUp0VTY3WnZSNzU5LzhBUmhyRTJzQkZzRk56OTdxQzUrNUMx?=
+ =?utf-8?B?dHB3Q3RuaHVzZkNRc0R6cmVOTGswVEQvbnRDVTVnWjlEZUV2WUdrczdWeE81?=
+ =?utf-8?B?TzdZQ3lyT3RzeUk2UUhyN3p1cUJ5WVpGV3hEU29nNnZDOUxFK2tTdk9BPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB8189.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MkdNd0s0Ly9YL0h3eUt5OGgxQXVsdVdlbDFsWHJ2M1ZNVnhXU2Y2NnhMREdH?=
+ =?utf-8?B?MzlJN3N2WjNMWXhabUlZZ1Z1cDBURGZqYkJ1NVNwS3l1cFYyTFVMNE01TDJx?=
+ =?utf-8?B?K2pnQVRyUlh5K1JZcWlzT0pNc05rZUpodWx6bWp5Mll4Qmx3QmJWYmNDd2M2?=
+ =?utf-8?B?dnFmclRIRVZCSmhxT3RSa0xlL3lHWnBuSW5zZWdERkpSb1NvWUVSelJ2aE5w?=
+ =?utf-8?B?ZllLWklWZFRuRkhFT3VjUFIvclI2cXBBRnRhVERPQ0tDd3ljWVBObUlKUGxv?=
+ =?utf-8?B?R3EvMVR5UmFSeDBwVDUveWRqTEJiaDRlbXBMMHlIR285UzFyV2k2c1FEc1pC?=
+ =?utf-8?B?QnBzd2lweEpHYVU3czlkcGlXQ1JlUVNsM2xPM0lKMnZicVRzR2lJeXhLaDZP?=
+ =?utf-8?B?MjRxb1p0ZHlPVGtKN001a2k2ZERkMnJ3TyszU1BRUmpyMGk2T3VxSkVHQklu?=
+ =?utf-8?B?TnRWNWlncE92Q2VOZFk5ZmV2SlJQc25HaFFLVUFlbEhpM2dTakh0bEtKUVV3?=
+ =?utf-8?B?NUthZlpubG4yTzZHZDZPRVlqUW1HMngxWU16RGhtQ0xHalI5ME5lMk1IWlBD?=
+ =?utf-8?B?allHN1ozYzhWRnFGak01Q05uS0xhdHVIdkM0VVJkL1FCOWdYaG9xUW5nZGcz?=
+ =?utf-8?B?cHl0a204TTIvK1psZVhIaExITlpWOHArSzY4YjlkNTlFYXBOemxuL1pFM2dL?=
+ =?utf-8?B?bFc5RmJiN1A1TUtjdXpkWnY5QzZUR0xWSC9TS1ZPLzRkdHJZSER1aGIzR2ZL?=
+ =?utf-8?B?OWVrL3RUcG42dXNnbnFNN3FpU3d4WGl4VXZ6ZTdrMU4yNzltbjhFM1IrK3pF?=
+ =?utf-8?B?eUpFYzByY3lXcWZTdGJrUk9UMlVTWm1OZStoRm1ycE5MSlhiM2tCbnkwYjg4?=
+ =?utf-8?B?UGNxMnRSVlMwaUs5TGoxVERmT2FYMlVRYlYvYkxnbWp0M3ppSm1neW9PK1Vz?=
+ =?utf-8?B?M2Fpa1MxZHQzcjhRMTdoTFQxSVlNVnB4L29uVVRONWhqbE5BR2ZyWEFMa3Na?=
+ =?utf-8?B?a2Z3Q2Q5bEsrZG0vRld6WnJHelJZKzEyOWhTa3hjdUxVelBCOWRGeVRITjBH?=
+ =?utf-8?B?MDcrNUFwVHlEcjkydW50SG1menVneXBYbGdBR1FMTTZlTmUwVlQzeW9hdDhx?=
+ =?utf-8?B?aC9VYmNrSm9WYm94U2dpLzRQVFNEa0EyQTFrMUVSQ1pjTWg4bTVzS09udzJB?=
+ =?utf-8?B?RHM0UkVFa2RKM2hnVzhKaG9BT2RGMWtTZWNodWEvZ2lLRXd3OG94YlVjb29K?=
+ =?utf-8?B?M3pKSXVENDJ0OVpmM3pOTythMks2akQzaXlvRHhsWU4yNTdoZFNwb1FRdTlk?=
+ =?utf-8?B?WCt3aGhuclhreGwzUmNtOTl5bXdGeUhUMzZjcEd2bHB0QjRJQ1VQOG9aT25D?=
+ =?utf-8?B?TndYYlhLeFJZZkpBOWtoMTVZbS8xV01jUnBWRlRWc3VHVXprUjJyVCtQUG1v?=
+ =?utf-8?B?MkovajQwWHNkR0lLQ2cwZWVLVE1oeVNialJNZFJ4NUkxcTUxWTRiYnp3Z1pM?=
+ =?utf-8?B?TVQwK0ptNVh2TVpQMmltUHlzSVZ5T1RkSEJsYVIyZnNoRmV4VTlNcUVrbXNw?=
+ =?utf-8?B?bm1KNmxLS2pSYXRXVzNVWldkR1hocHJ1NmJ5WmxYVnkwbWxXUER2L1BablBR?=
+ =?utf-8?B?Vkc5dzNyTHp1eUpyaFZ4SjVPS2lEeWRnS1A4dFVTWlEyOWhGbzA2d3VrUnAv?=
+ =?utf-8?B?d0tBODR5ZzhrV1VJNEtCN2ZSZzAxSzV2OGFnM1NLbnFvQVF1VjNDNTJHYXRO?=
+ =?utf-8?B?SmIzbWVEcmpHMzZXWW02L0IrbUQ4NE1xaUZzUVZQa21uTG94cUI0a2pSODd0?=
+ =?utf-8?B?SXVRR09ndkR2OW9BSXRLTEQrcFRSdXZLL0dhZTNnamxxNkRUQUI3TkVMTHBI?=
+ =?utf-8?B?V3EyeGFPajd0bE10N2Q4ZXJwOHJLTHVPRlVoc1RyNnRaRkI4aGtHWkR1TXFx?=
+ =?utf-8?B?OEhDY3kzWXVWY2FESzVKN3ZTT3VEZU5JeEF5SEQ1UEV2QW14N29xT29qOHJD?=
+ =?utf-8?B?ZDhuL0gwNkUwUnkzVTJDRmtlS0NHelRUMVN1S0F4dHFxSjg1b0FRbUJicVc2?=
+ =?utf-8?B?Q1N3Ylo1L3RkNU1YMEFlTS9USzVLdDg0RGtkdUZuYzNkL1prQ2xPUE5XV2pj?=
+ =?utf-8?Q?udq7k9p9QAE1VlepMJIlxgvQp?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a369782-ee27-481b-ef3e-08dce9e7ff03
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 11:29:40.6532 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wSdE8gkWiYlRgs7vBfc4ZwaBe+HGRSS30VqzAQDk2M33P4TwM3ERr+fnIE/ILzc8NAotwz1A4Ne8bTxfVjZHFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8071
+Received-SPF: permerror client-ip=2a01:111:f403:2416::600;
+ envelope-from=Pankaj.Gupta@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.342, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,160 +172,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/10/24 10:57 PM, Alistair Francis wrote:
-> On Tue, Sep 24, 2024 at 10:46 PM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->> Boolean properties are preferrable in comparision to string properties
->> since they don't require a string parsing.
->>
->> Add three bools that represents the available kvm-aia mode:
->> riscv-aia-emul, riscv-aia-hwaccel, riscv-aia-auto. They work like the
->> existing riscv-aia string property, i.e. if no bool is set we'll default
->> to riscv-aia-auto, if the host supports it.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/kvm/kvm-cpu.c | 77 ++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 77 insertions(+)
->>
->> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
->> index 32f3dd6a43..e256e3fc48 100644
->> --- a/target/riscv/kvm/kvm-cpu.c
->> +++ b/target/riscv/kvm/kvm-cpu.c
->> @@ -1671,6 +1671,62 @@ static void riscv_set_kvm_aia(Object *obj, const char *val, Error **errp)
->>       }
->>   }
->>
->> +static void riscv_set_kvm_aia_bool(uint32_t aia_bool, bool val)
->> +{
->> +    bool default_aia_mode = KVM_DEV_RISCV_AIA_MODE_AUTO;
->> +
->> +    g_assert(aia_bool <= KVM_DEV_RISCV_AIA_MODE_AUTO);
->> +
->> +    if (val) {
->> +        aia_mode = aia_bool;
->> +        return;
->> +    }
->> +
->> +    /*
->> +     * Setting an aia_bool to 'false' does nothing if
->> +     * aia_mode isn't set to aia_bool.
->> +     */
->> +    if (aia_mode != aia_bool) {
->> +        return;
->> +    }
->> +
->> +    /*
->> +     * Return to default value if we're disabling the
->> +     * current set aia_mode.
->> +     */
->> +    aia_mode = default_aia_mode;
->> +}
->> +
->> +static bool riscv_get_kvm_aia_emul(Object *obj, Error **errp)
->> +{
->> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_EMUL;
->> +}
->> +
->> +static void riscv_set_kvm_aia_emul(Object *obj,  bool val, Error **errp)
->> +{
->> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_EMUL, val);
->> +}
->> +
->> +static bool riscv_get_kvm_aia_hwaccel(Object *obj, Error **errp)
->> +{
->> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_HWACCEL;
->> +}
->> +
->> +static void riscv_set_kvm_aia_hwaccel(Object *obj,  bool val, Error **errp)
->> +{
->> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_HWACCEL, val);
->> +}
->> +
->> +static bool riscv_get_kvm_aia_auto(Object *obj, Error **errp)
->> +{
->> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_AUTO;
->> +}
->> +
->> +static void riscv_set_kvm_aia_auto(Object *obj,  bool val, Error **errp)
->> +{
->> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_AUTO, val);
->> +}
->> +
->>   void kvm_arch_accel_class_init(ObjectClass *oc)
->>   {
->>       object_class_property_add_str(oc, "riscv-aia", riscv_get_kvm_aia,
->> @@ -1681,6 +1737,27 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
->>           "if the host supports it");
->>       object_property_set_default_str(object_class_property_find(oc, "riscv-aia"),
->>                                       "auto");
->> +
->> +    object_class_property_add_bool(oc, "riscv-aia-emul",
->> +                                   riscv_get_kvm_aia_emul,
->> +                                   riscv_set_kvm_aia_emul);
->> +    object_class_property_set_description(oc, "riscv-aia-emul",
->> +        "Set KVM AIA mode to 'emul'. Changing KVM AIA modes relies on host "
->> +        "support. Default mode is 'auto' if the host supports it");
->> +
->> +    object_class_property_add_bool(oc, "riscv-aia-hwaccel",
->> +                                   riscv_get_kvm_aia_hwaccel,
->> +                                   riscv_set_kvm_aia_hwaccel);
->> +    object_class_property_set_description(oc, "riscv-aia-hwaccel",
->> +        "Set KVM AIA mode to 'hwaccel'. Changing KVM AIA modes relies on host "
->> +        "support. Default mode is 'auto' if the host supports it");
->> +
->> +    object_class_property_add_bool(oc, "riscv-aia-auto",
->> +                                   riscv_get_kvm_aia_auto,
->> +                                   riscv_set_kvm_aia_auto);
->> +    object_class_property_set_description(oc, "riscv-aia-auto",
->> +        "Set KVM AIA mode to 'auto'. Changing KVM AIA modes "
->> +        "relies on host support");
+On 10/11/2024 10:59 AM, Paolo Bonzini wrote:
+> The exact set of available memory attributes can vary by VM.  In the
+> future it might vary depending on enabled capabilities, too.  Query the
+> extension on the VM level instead of on the KVM level, and only after
+> architecture-specific initialization.
 > 
-> This seems more confusing. What should happen if a user sets multiple to true?
-
-It'll work like most options in QEMU: the last setting will overwrite the previous
-ones. "-accel kvm,riscv-aia-hwaccel=true,riscv-aia-emul=true" will set the mode
-to 'emul'. This is the same behavior that we have with the existing 'riscv-aia'
-string option.
-
-In case someone tries it out with multiple -accel options, this doesn't work. Only
-the first '-accel <type>' are parsed. This happens due to a known command line
-parsing/accel globals issue that I tried to fix in [1] and [2].
-
-For now, using the existing 'riscv-aia' string option:
-
--accel kvm,riscv-aia=emul -accel kvm,riscv-aia=hwaccel -accel kvm,riscv-aia=auto
-
-This will set riscv-aia to "emul" because all other "-accel kvm" options aren't
-being parsed. You can do silly stuff like:
-
--accel kvm,riscv-aia=emul -accel kvm,riscv-aia=this_is_not_an_option
-
-And the guest will boot normally, setting riscv-aia to 'emul'.
-
-
-Thanks,
-
-Daniel
-
-
-[1] "[PATCH 0/2] system/vl.c: parse all '-accel' opts"
-     https://lore.kernel.org/qemu-devel/20240701133038.1489043-1-dbarboza@ventanamicro.com/
-[2] "[PATCH v2 0/2] object,accel-system: allow Accel type globals"
-     https://lore.kernel.org/qemu-devel/20240703204149.1957136-1-dbarboza@ventanamicro.com/
-
-
+> Inspired by an analogous patch by Tom Dohrmann.
 > 
-> Alistair
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+
+> ---
+>   accel/kvm/kvm-all.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 > 
->>   }
->>
->>   void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
->> --
->> 2.45.2
->>
->>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 4287e254df8..482c5b24cf6 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2604,12 +2604,6 @@ static int kvm_init(MachineState *ms)
+>           goto err;
+>       }
+>   
+> -    kvm_supported_memory_attributes = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+> -    kvm_guest_memfd_supported =
+> -        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> -        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+> -        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> -
+>       kvm_immediate_exit = kvm_check_extension(s, KVM_CAP_IMMEDIATE_EXIT);
+>       s->nr_slots_max = kvm_check_extension(s, KVM_CAP_NR_MEMSLOTS);
+>   
+> @@ -2723,6 +2717,12 @@ static int kvm_init(MachineState *ms)
+>           goto err;
+>       }
+>   
+> +    kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+> +    kvm_guest_memfd_supported =
+> +        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> +        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+> +        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +
+>       if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
+>           s->kernel_irqchip_split = mc->default_kernel_irqchip_split ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
+>       }
+
 
