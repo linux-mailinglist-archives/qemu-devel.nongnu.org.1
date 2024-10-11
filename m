@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5841899A9EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C0E99A9C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJEZ-0002Ph-5P; Fri, 11 Oct 2024 13:15:23 -0400
+	id 1szJHe-00008T-FN; Fri, 11 Oct 2024 13:18:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1szJ7c-0000hD-QQ
+ id 1szJ7c-0004Pd-PR
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:08:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1szEgC-000611-Dw
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 08:23:38 -0400
+ id 1szEhQ-00063x-6A
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 08:24:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728649415;
+ s=mimecast20190719; t=1728649491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FwsG+zxJqCfI/+5mXoG0H64OBzq0JIZt/J5pk33CWe8=;
- b=BGOF5SBEdnEYehBe9Bl+Xn8opEYs6TNgux8AD6Eh8OxJwb7plNizJXSTkJsk/joqtU3NiW
- XK7oDqHNnWsQdq5uqrR3DoFTLpUGjnYtergz4RgWw4Nwgc6Qak47E7K3mseHPlcadolD42
- RgsU1x8G+9Dz+RwYHfoiCE4GF6Sp89s=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g+dX2FUQtzWNhwkn3zWaTuHUJbYQoJ6Z1NqaF2V0yzc=;
+ b=MqLrBNmxhF+5H6wAdDn7fncr9UZdRaBLPrX7WeFf4xSo7p848knsQaGExIqwbR/S2OSo25
+ U+jePJv8M9MHlp5cEuKxJKbB8suRQN6OeP8wU+SnWbLyonrrycPhKLpvx2XhCf5mImhpQn
+ xc8AvqjQo7jcUtuiGeaoHt/+ANThefQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-Q6xzzbVnPGea_nV6GTK4Qw-1; Fri, 11 Oct 2024 08:23:33 -0400
-X-MC-Unique: Q6xzzbVnPGea_nV6GTK4Qw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43114c47615so9925645e9.0
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 05:23:33 -0700 (PDT)
+ us-mta-596-AksBAiMbOV-YNTUkmYG2OA-1; Fri, 11 Oct 2024 08:24:48 -0400
+X-MC-Unique: AksBAiMbOV-YNTUkmYG2OA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d563a1af4so213974f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 05:24:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728649413; x=1729254213;
+ d=1e100.net; s=20230601; t=1728649487; x=1729254287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FwsG+zxJqCfI/+5mXoG0H64OBzq0JIZt/J5pk33CWe8=;
- b=sicQupzafAkC+AO2UaYTqa2DRrTItHPjyv/TmqcTT/IFjajuyBCEJyPshn6BHvSRYu
- 3jCOXTl6dmrzGPBjQ7IP8LqtKC0u9sWgzd1MsplGMBEtuA2pD3yOmMJUPzx+HRbmY2nV
- 794ZV6aywNijLOwvq+8kb8IOW6RD4J3LUEfS94dA06cHuW7Z5ByvX7acNdb9X9tSBaNx
- B34wQXlShRc3yxFLTyS4NqjZhAmt/kEdM9MiiIHOwBNWSHouiEy1iQ5ZNzbXyKFO+hsg
- 02ctl4EgUBt+XFGWJYT3Qp1kwJQROK1EP1vxsIk/G898BYCNwg6zP04J7/vV2nInTEsc
- yqNA==
-X-Gm-Message-State: AOJu0Yz95fEp+OgHpyp/FrJZSHD6EJGLoPaBtq0I/upgjxGkjRviuw2b
- t7l8JeCOtMScb8WSAEiLkZHTnWMp/y0O/Nygi7D13dtaRbRRFjT0mgxBETtDFsK3pLrPHLir/sg
- 4lyhLljM64TdXxwXI2w1o9eKtD0XNQFfxmHcBmFY5a0+0jkkbgmzt
-X-Received: by 2002:a05:600c:4fd4:b0:431:144e:4f2f with SMTP id
- 5b1f17b1804b1-4311deec326mr17164135e9.19.1728649412574; 
- Fri, 11 Oct 2024 05:23:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSJ0eE6VxkcFykeDIKAKfczSgDkoNfMUZh3sgx8qgeploBwPezjZ1Wtfn0yih7rZoWPJ+F3Q==
-X-Received: by 2002:a05:600c:4fd4:b0:431:144e:4f2f with SMTP id
- 5b1f17b1804b1-4311deec326mr17163855e9.19.1728649412097; 
- Fri, 11 Oct 2024 05:23:32 -0700 (PDT)
+ bh=g+dX2FUQtzWNhwkn3zWaTuHUJbYQoJ6Z1NqaF2V0yzc=;
+ b=v4ju05wqmrvzm3xxfjI9kjT3jKHLSpNQnjwOCrWmdZH4+H+CIluEbNbREyZKuwBITJ
+ Gr9YO+H9AcA4v3dEJ1KtF59Vy1ADu13Ou793u2OPwq5dG6NdFXPmDR+kLLihywD89gSN
+ 2NdpK7DhlNg8W+8WY/fiNlFZtbcUp+pSPrl6yMmZ3QQVapzGAAorNj8r9E2zDY6z6iuT
+ IF7H+GsBehwLMfiDcNfTILtaBacYH5LGRDB7giVYyKs0Z7DqGGV2wuNa0R/um0DWuUsm
+ kyhUoz9EjNLCllTWYL8LLxVsEiJqEZHwt97gux+RMU6pUzujX+xZjKQdpnYRW4QDDJge
+ /2AQ==
+X-Gm-Message-State: AOJu0YzRFxKkhKcuCAqeqojdOXPKU+84QXrW/rVcAYoJ9HeVqVsqGWYh
+ mTOAe/Y2eNnHvXFFljAQlHMhnfixsASj94DMnNdpxt5qPU+nJYHh24Lq37WlhZ4sogJfN1XxaXC
+ MbXjHxvZlbcdCluOVMn9GHl+Nz9ka2sRvB4CNUT695yIj/FCY4o22
+X-Received: by 2002:a5d:6911:0:b0:37d:37e4:f904 with SMTP id
+ ffacd0b85a97d-37d552ee4fbmr1628537f8f.36.1728649486751; 
+ Fri, 11 Oct 2024 05:24:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUMsjgaUwxDujgtiYLBB6tvDkRVbyvU8RkZXSyq/UML0G6450MmDV3uFSqhIPG1VvYaKgJVg==
+X-Received: by 2002:a5d:6911:0:b0:37d:37e4:f904 with SMTP id
+ ffacd0b85a97d-37d552ee4fbmr1628524f8f.36.1728649486289; 
+ Fri, 11 Oct 2024 05:24:46 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431183062b5sm40718705e9.26.2024.10.11.05.23.31
+ ffacd0b85a97d-37d4b9190dfsm3773645f8f.116.2024.10.11.05.24.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 05:23:31 -0700 (PDT)
-Date: Fri, 11 Oct 2024 14:23:30 +0200
+ Fri, 11 Oct 2024 05:24:45 -0700 (PDT)
+Date: Fri, 11 Oct 2024 14:24:44 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, xieyongji@bytedance.com, kwolf@redhat.com,
@@ -71,17 +71,17 @@ Cc: qemu-devel@nongnu.org, xieyongji@bytedance.com, kwolf@redhat.com,
  berrange@redhat.com, eduardo@habkost.net, mark.cave-ayland@ilande.co.uk,
  michael.roth@amd.com, kkostiuk@redhat.com, qemu-block@nongnu.org,
  philmd@linaro.org
-Subject: Re: [PATCH v2 4/7] target/i386/cpu: Avoid mixing signed and
- unsigned in property setters
-Message-ID: <20241011142330.4d0bf59c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20241010150144.986655-5-armbru@redhat.com>
+Subject: Re: [PATCH v2 5/7] target/i386/cpu: Improve errors for out of
+ bounds property values
+Message-ID: <20241011142444.03f04d81@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20241010150144.986655-6-armbru@redhat.com>
 References: <20241010150144.986655-1-armbru@redhat.com>
- <20241010150144.986655-5-armbru@redhat.com>
+ <20241010150144.986655-6-armbru@redhat.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -90,7 +90,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,143 +106,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Oct 2024 17:01:41 +0200
+On Thu, 10 Oct 2024 17:01:42 +0200
 Markus Armbruster <armbru@redhat.com> wrote:
 
-> Properties "family", "model", and "stepping" are visited as signed
-> integers.  They are backed by bits in CPUX86State member
-> @cpuid_version.  The code to extract and insert these bits mixes
-> signed and unsigned.  Not actually wrong, but avoiding such mixing is
-> good practice.
+> The error message for a "stepping" value that is out of bounds is a
+> bit odd:
 > 
-> Visit them as unsigned integers instead.
+>     $ qemu-system-x86_64 -cpu qemu64,stepping=16
+>     qemu-system-x86_64: can't apply global qemu64-x86_64-cpu.stepping=16: Property .stepping doesn't take value 16 (minimum: 0, maximum: 15)
 > 
-> This adds a few mildly ugly cast in arguments of error_setg().  The
-> next commit will get rid of them again.
+> The "can't apply global" part is an unfortunate artifact of -cpu's
+> implementation.  Left for another day.
 > 
-> Property "tsc-frequency" is also visited as signed integer.  The value
-> ultimately flows into the kernel, where it is 31 bits unsigned.  The
-> QEMU code freely mixes int, uint32_t, int64_t.  I elect not to attempt
-> draining this swamp today.
+> The remainder feels overly verbose.  Change it to
+> 
+>     qemu64-x86_64-cpu: can't apply global qemu64-x86_64-cpu.stepping=16: parameter 'stepping' can be at most 15
+> 
+> Likewise for "family", "model", and "tsc-frequency".
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
 > ---
->  target/i386/cpu.c | 45 +++++++++++++++++++++------------------------
->  1 file changed, 21 insertions(+), 24 deletions(-)
+>  target/i386/cpu.c | 20 +++++++++-----------
+>  1 file changed, 9 insertions(+), 11 deletions(-)
 > 
 > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index ff227a8c5c..4f8fa60432 100644
+> index 4f8fa60432..de2c7041c5 100644
 > --- a/target/i386/cpu.c
 > +++ b/target/i386/cpu.c
-> @@ -5433,13 +5433,13 @@ static void x86_cpuid_version_get_family(Object *obj, Visitor *v,
->  {
->      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
-> -    int64_t value;
-> +    uint64_t value;
->  
->      value = (env->cpuid_version >> 8) & 0xf;
->      if (value == 0xf) {
->          value += (env->cpuid_version >> 20) & 0xff;
+> @@ -31,7 +31,6 @@
+>  #include "qapi/error.h"
+>  #include "qemu/error-report.h"
+>  #include "qapi/qapi-visit-machine.h"
+> -#include "qapi/qmp/qerror.h"
+>  #include "standard-headers/asm-x86/kvm_para.h"
+>  #include "hw/qdev-properties.h"
+>  #include "hw/i386/topology.h"
+> @@ -5455,8 +5454,8 @@ static void x86_cpuid_version_set_family(Object *obj, Visitor *v,
+>          return;
 >      }
-> -    visit_type_int(v, name, &value, errp);
-> +    visit_type_uint64(v, name, &value, errp);
->  }
+>      if (value > max) {
+> -        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
+> -                   name ? name : "null", value, (int64_t)0, (int64_t)max);
+> +        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
+> +                   name ? name : "null", max);
+>          return;
+>      }
 >  
->  static void x86_cpuid_version_set_family(Object *obj, Visitor *v,
-> @@ -5448,16 +5448,15 @@ static void x86_cpuid_version_set_family(Object *obj, Visitor *v,
+> @@ -5494,8 +5493,8 @@ static void x86_cpuid_version_set_model(Object *obj, Visitor *v,
+>          return;
+>      }
+>      if (value > max) {
+> -        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
+> -                   name ? name : "null", value, (int64_t)0, (int64_t)max);
+> +        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
+> +                   name ? name : "null", max);
+>          return;
+>      }
+>  
+> @@ -5528,8 +5527,8 @@ static void x86_cpuid_version_set_stepping(Object *obj, Visitor *v,
+>          return;
+>      }
+>      if (value > max) {
+> -        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
+> -                   name ? name : "null", value, (int64_t)0, (int64_t)max);
+> +        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
+> +                   name ? name : "null", max);
+>          return;
+>      }
+>  
+> @@ -5623,16 +5622,15 @@ static void x86_cpuid_set_tsc_freq(Object *obj, Visitor *v, const char *name,
+>                                     void *opaque, Error **errp)
 >  {
 >      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
 > -    const int64_t min = 0;
-> -    const int64_t max = 0xff + 0xf;
-> -    int64_t value;
-> +    const uint64_t max = 0xff + 0xf;
-> +    uint64_t value;
+>      const int64_t max = INT64_MAX;
+>      int64_t value;
 >  
-> -    if (!visit_type_int(v, name, &value, errp)) {
-> +    if (!visit_type_uint64(v, name, &value, errp)) {
+>      if (!visit_type_int(v, name, &value, errp)) {
 >          return;
 >      }
 > -    if (value < min || value > max) {
-> +    if (value > max) {
->          error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
+> -        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
 > -                   name ? name : "null", value, min, max);
-> +                   name ? name : "null", value, (int64_t)0, (int64_t)max);
->          return;
->      }
->  
-> @@ -5475,11 +5474,11 @@ static void x86_cpuid_version_get_model(Object *obj, Visitor *v,
->  {
->      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
-> -    int64_t value;
-> +    uint64_t value;
->  
->      value = (env->cpuid_version >> 4) & 0xf;
->      value |= ((env->cpuid_version >> 16) & 0xf) << 4;
-> -    visit_type_int(v, name, &value, errp);
-> +    visit_type_uint64(v, name, &value, errp);
->  }
->  
->  static void x86_cpuid_version_set_model(Object *obj, Visitor *v,
-> @@ -5488,16 +5487,15 @@ static void x86_cpuid_version_set_model(Object *obj, Visitor *v,
->  {
->      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
-> -    const int64_t min = 0;
-> -    const int64_t max = 0xff;
-> -    int64_t value;
-> +    const uint64_t max = 0xff;
-> +    uint64_t value;
->  
-> -    if (!visit_type_int(v, name, &value, errp)) {
-> +    if (!visit_type_uint64(v, name, &value, errp)) {
->          return;
->      }
-> -    if (value < min || value > max) {
-> +    if (value > max) {
->          error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
-> -                   name ? name : "null", value, min, max);
-> +                   name ? name : "null", value, (int64_t)0, (int64_t)max);
->          return;
->      }
->  
-> @@ -5511,10 +5509,10 @@ static void x86_cpuid_version_get_stepping(Object *obj, Visitor *v,
->  {
->      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
-> -    int64_t value;
-> +    uint64_t value;
->  
->      value = env->cpuid_version & 0xf;
-> -    visit_type_int(v, name, &value, errp);
-> +    visit_type_uint64(v, name, &value, errp);
->  }
->  
->  static void x86_cpuid_version_set_stepping(Object *obj, Visitor *v,
-> @@ -5523,16 +5521,15 @@ static void x86_cpuid_version_set_stepping(Object *obj, Visitor *v,
->  {
->      X86CPU *cpu = X86_CPU(obj);
->      CPUX86State *env = &cpu->env;
-> -    const int64_t min = 0;
-> -    const int64_t max = 0xf;
-> -    int64_t value;
-> +    const uint64_t max = 0xf;
-> +    uint64_t value;
->  
-> -    if (!visit_type_int(v, name, &value, errp)) {
-> +    if (!visit_type_uint64(v, name, &value, errp)) {
->          return;
->      }
-> -    if (value < min || value > max) {
-> +    if (value > max) {
->          error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
-> -                   name ? name : "null", value, min, max);
-> +                   name ? name : "null", value, (int64_t)0, (int64_t)max);
+> +    if (value < 0 || value > max) {
+> +        error_setg(errp, "parameter '%s' can be at most %" PRId64,
+> +                   name ? name : "null", max);
 >          return;
 >      }
 >  
