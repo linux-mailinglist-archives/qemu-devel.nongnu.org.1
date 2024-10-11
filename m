@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B6D99A972
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D0299A9F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:26:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ6j-0003TH-Hd; Fri, 11 Oct 2024 13:07:23 -0400
+	id 1szJ77-00042F-Am; Fri, 11 Oct 2024 13:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szJ4U-0000wP-4a
+ id 1szJ4U-0000hD-3Z
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szHdT-0007D7-Hl
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:00 -0400
+ id 1szHdX-0007DQ-Im
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728660778;
+ s=mimecast20190719; t=1728660782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s8vlBtfYk/aY00V5/AIvQmHcz5MFzLsYtflzR7ilOtw=;
- b=hPRZAMMC5tyIiGbVJLt9EyB38riHGzJTGdGk+pWhtqnlCS9lKgbiSpECTpJz68MBtOZ1IG
- UIrl/RUIsz64ZZPkmsvODjSiwHX0w9KWNPBmdkKjFTxl14hBVoMTLzPDdmfdZnGQlWvwrK
- oo9M0AzgqIg8Ak5rAAdE9Ojgv85p5lg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6DbehZlttuAvRWwiYZMnj8a7+ZQoZJPyuQGCQjndPlg=;
+ b=GLT8TaFnksScPdM6/Rl9KX1M0vpAjRR/tx4Ht7MB5rbCdgsnQ7zhMWkEkrniGSFFPoY7/c
+ ALPWfZo+9IHa/PePgYiXWN6FP24gzLZztCGJGwJYBQygqYVXmZ3Rxj4RYIDIjQ+epknoB0
+ kzhLFt797B1sTgU5WG43Ot4SAIkETFQ=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-7UJ1kSIxOjmrhyYkmbs3kw-1; Fri, 11 Oct 2024 11:32:57 -0400
-X-MC-Unique: 7UJ1kSIxOjmrhyYkmbs3kw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5c9452d6344so790328a12.3
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:32:57 -0700 (PDT)
+ us-mta-331-YRpffWhYMVa2hLL6YqNgKg-1; Fri, 11 Oct 2024 11:33:01 -0400
+X-MC-Unique: YRpffWhYMVa2hLL6YqNgKg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a9959df649aso160986766b.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:33:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728660776; x=1729265576;
+ d=1e100.net; s=20230601; t=1728660779; x=1729265579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s8vlBtfYk/aY00V5/AIvQmHcz5MFzLsYtflzR7ilOtw=;
- b=MWvPvG2jQlTUZMyRufBJ3Qdrr5IKIFCzHmiNq/QgOJlqbylb2lqFYAVJtIfUhgkS4a
- UYRfdN5e4HNRwdfTp8XlXGOOzx4ym7i/6nV2VPnnEeIj7HO8DNyttdRUKdDSxiCCF7NJ
- 0xDlxqqKS0nbxzQwgxzSFYVluBRInBkff8LsYC4PkRTHgPSWJnDDgUo2bcDV6Wr3PSTc
- YuaLGE5kGytZd6yFqQTIzfcpFmGkcx4tlx/1HeFwvoq/xDCdawNg7FwWmAYZz3Tqcl0r
- 0g4chFf6gREoi8ABu1WWpi1Q2KtSFtk1ugXZK/JdDNDbv++6TCoT5XZ3e9uU1xAvbdyg
- FBHA==
-X-Gm-Message-State: AOJu0Yx6Objnty0nj2dqqUcSn/8WjvN0dFIXxGe+7SmUH7ICMmZ376hD
- c0dO5Ynm/jYdbQSMDRI6Uzy+yvqkPfTeOsVeBB8vNGo5QWKP+7H5XulDBWKj3fKOnzPKi8OjcQ3
- jt6xPLRcAE84jGKrpto9RdgJc+Ko1w1R5AlR3Jy0zfckJnapmdffSSipx3Ek8+iFZw32AWu4YJn
- CD1M2YBQHFAz9w5LCIdRg9INw7CLPgwzIADsTTKZ4=
-X-Received: by 2002:a05:6402:42c9:b0:5c8:8d5e:18ad with SMTP id
- 4fb4d7f45d1cf-5c948cca082mr2365920a12.18.1728660775701; 
- Fri, 11 Oct 2024 08:32:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHwwT/irIzAfs9HVk8sJFzGgXcXsOLjEEbSRkN9I51QlvXi+doaU6KTmaezxnrldUik5KruQ==
-X-Received: by 2002:a05:6402:42c9:b0:5c8:8d5e:18ad with SMTP id
- 4fb4d7f45d1cf-5c948cca082mr2365879a12.18.1728660775114; 
- Fri, 11 Oct 2024 08:32:55 -0700 (PDT)
+ bh=6DbehZlttuAvRWwiYZMnj8a7+ZQoZJPyuQGCQjndPlg=;
+ b=igVCv+04sIey12XzTsrf4Tm0empC0uIBh+9XG4kRxIz64c+sTaL67otvz4gZHIPYCV
+ eU9NEepDiO1jZBLiZI9c/aiIQ+dqbOv7ZGkMkvBBSv3H1FZdJy2gl5qcT+CCJZ/EJCTD
+ DIHbCOXxxNX5jHKp9m1CiNozMocC8Gcc5sLXq11EynCF4cSE5WJ7M6GhQtDn/V6ZAKGd
+ C14Ql3aNhwQlK7WNGOG89413/NYNQEo3qLdMjW66VzW5vQJQST5qYZfF3Snkgbtm4G29
+ Sng+6j5d2ZIZUKIlzlIo1WIekxFY1zKFXvYjWVEfTypfmBRG6iEusBYNqRLlbBc5q7UR
+ FsHw==
+X-Gm-Message-State: AOJu0YwUw1LSiKrSggDVV53VsCzJWn4nJOPIA1SNXkO+lvBvBoAel3M+
+ X9R5G0vHkZFOg4lGFccD7k+SpeEjRETgaU2T0ODmItlXt2KFYG0FvPBqixqLgp6c5QUtGYsqfvP
+ 1uNWKrQ6ClAa8VmD70jWWp+FUSJpEDojZQNvD9++NbrNFGHm2rx9Z7xf9pobYZKvs9+EzFPPjeB
+ rqrote3Ok/RdxgKnH9JLPiH7i0sTOXC7AvN5pUskg=
+X-Received: by 2002:a17:907:7ea0:b0:a99:4e35:9a25 with SMTP id
+ a640c23a62f3a-a99e3e448b8mr4951666b.44.1728660778992; 
+ Fri, 11 Oct 2024 08:32:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEd6dKcEVQeXImMg6X2cIvVnP9H1eSwNVOvD6ZxjT4wnGLbhw8L2jOuH0AQyoTiwzBFpJXa4w==
+X-Received: by 2002:a17:907:7ea0:b0:a99:4e35:9a25 with SMTP id
+ a640c23a62f3a-a99e3e448b8mr4948266b.44.1728660778444; 
+ Fri, 11 Oct 2024 08:32:58 -0700 (PDT)
 Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c9370d3795sm2031803a12.9.2024.10.11.08.32.52
+ a640c23a62f3a-a99a80dcdc3sm226799066b.172.2024.10.11.08.32.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 08:32:54 -0700 (PDT)
+ Fri, 11 Oct 2024 08:32:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL v3 05/18] .gitattributes: add Rust diff and merge attributes
-Date: Fri, 11 Oct 2024 17:32:13 +0200
-Message-ID: <20241011153227.81770-6-pbonzini@redhat.com>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v3 06/18] meson.build: add HAVE_GLIB_WITH_ALIGNED_ALLOC flag
+Date: Fri, 11 Oct 2024 17:32:14 +0200
+Message-ID: <20241011153227.81770-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241011153227.81770-1-pbonzini@redhat.com>
 References: <20241011153227.81770-1-pbonzini@redhat.com>
@@ -105,30 +104,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Set rust source code to diff=rust (built-in with new git versions)
-and merge=binary for Cargo.lock files (they should not be merged but
-auto-generated by cargo)
+Rust crates, introduced from the next commit onwards, can optionally use
+the glib allocator API and need to know whether g_aligned_alloc etc are
+available.
+
+This commit adds a define in config_host_data that depends on glib
+version >= 2.72.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Link: https://lore.kernel.org/r/278e3878b40ecc7c424dec1ed978eedf21469f52.1727961605.git.manos.pitsidianakis@linaro.org
+Link: https://lore.kernel.org/r/23f7b0cc9801d315f5d7835e30d775e133ec2fb9.1727961605.git.manos.pitsidianakis@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitattributes | 3 +++
- 1 file changed, 3 insertions(+)
+ meson.build | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/.gitattributes b/.gitattributes
-index a217cb7bfe9..6dc6383d3d1 100644
---- a/.gitattributes
-+++ b/.gitattributes
-@@ -2,3 +2,6 @@
- *.h.inc         diff=c
- *.m             diff=objc
- *.py            diff=python
-+*.rs            diff=rust
-+*.rs.inc        diff=rust
-+Cargo.lock      diff=toml merge=binary
+diff --git a/meson.build b/meson.build
+index b9a83dfc744..aea419a8317 100644
+--- a/meson.build
++++ b/meson.build
+@@ -948,7 +948,9 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
+ ################
+ 
+ # When bumping glib minimum version, please check also whether to increase
+-# the _WIN32_WINNT setting in osdep.h according to the value from glib
++# the _WIN32_WINNT setting in osdep.h according to the value from glib.
++# You should also check if any of the glib.version() checks
++# below can also be removed.
+ glib_req_ver = '>=2.66.0'
+ glib_pc = dependency('glib-2.0', version: glib_req_ver, required: true,
+                     method: 'pkg-config')
+@@ -998,6 +1000,9 @@ glib = declare_dependency(dependencies: [glib_pc, gmodule],
+ # TODO: remove this check and the corresponding workaround (qtree) when
+ # the minimum supported glib is >= 2.75.3
+ glib_has_gslice = glib.version().version_compare('<2.75.3')
++# Check whether glib has the aligned_alloc family of functions.
++# <https://docs.gtk.org/glib/func.aligned_alloc.html>
++glib_has_aligned_alloc = glib.version().version_compare('>=2.72.0')
+ 
+ # override glib dep to include the above refinements
+ meson.override_dependency('glib-2.0', glib)
+@@ -2529,6 +2534,7 @@ config_host_data.set('CONFIG_TIMERFD', cc.has_function('timerfd_create'))
+ config_host_data.set('HAVE_COPY_FILE_RANGE', cc.has_function('copy_file_range'))
+ config_host_data.set('HAVE_GETIFADDRS', cc.has_function('getifaddrs'))
+ config_host_data.set('HAVE_GLIB_WITH_SLICE_ALLOCATOR', glib_has_gslice)
++config_host_data.set('HAVE_GLIB_WITH_ALIGNED_ALLOC', glib_has_aligned_alloc)
+ config_host_data.set('HAVE_OPENPTY', cc.has_function('openpty', dependencies: util))
+ config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul'))
+ config_host_data.set('HAVE_SYSTEM_FUNCTION', cc.has_function('system', prefix: '#include <stdlib.h>'))
 -- 
 2.46.2
 
