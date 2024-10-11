@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB6F99A289
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 13:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B6099A286
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 13:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szDZv-00075h-Fl; Fri, 11 Oct 2024 07:13:03 -0400
+	id 1szDa0-00076O-3U; Fri, 11 Oct 2024 07:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szDZt-00075F-8v
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:01 -0400
+ id 1szDZy-00076A-Do
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szDZr-00073J-FF
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:01 -0400
+ id 1szDZu-00073g-IU
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728645178;
+ s=mimecast20190719; t=1728645181;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
- b=EqFjej8wij5fOERvAmPLV4kiUrkxdnR2elNr6JO0nLSgBfbLHNYz9WskCwbpA35TThwhX0
- hbemNUVQxLqW2uH6enG05mbxh64qRhj2GDlZt2RQfFt4MCbc4FiLM84diVpwS89m/OZ99e
- NkPsqQHruvlUnNomFmtI1azhIXxnNu4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C47oi+p/U14aTwO300CpbdGtBMf6xzPszQtxxdH6ifk=;
+ b=MpEMMcgqta/dh57BfrsCib+LeiYbl+ox/P9rfzoMY8Nh22Gsps04pReg4r0k/VwyzWa/yS
+ iaLMdcOnF07hgDxRwddtdYlskzEKn3aCXjMcbZD3YdICTOGG4VqUTN5NaTAE/uuzHEUe4j
+ 3vJGMzv16aVVmgZvABGyztnq93ryDvk=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-SUoo_Yb-MjmtNkJQDuAPuQ-1; Fri, 11 Oct 2024 07:12:57 -0400
-X-MC-Unique: SUoo_Yb-MjmtNkJQDuAPuQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-53995187384so1977429e87.2
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:12:56 -0700 (PDT)
+ us-mta-6-aIZQ0jLWPU23UNk7ltdGXw-1; Fri, 11 Oct 2024 07:13:00 -0400
+X-MC-Unique: aIZQ0jLWPU23UNk7ltdGXw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2fb3110b82aso4866441fa.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:13:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728645175; x=1729249975;
+ d=1e100.net; s=20230601; t=1728645178; x=1729249978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
- b=QNQxxTesfQFnRqe547O0W3OTZP38GIoWOrVZOc4yrTC1EEyLersf2uN+L/ugx6K7eZ
- S6RCNKwp0QpkuZBZ+5jQeWHaj7bLy9laPphyaq37B40EvSvdAwAgYC4NXTwxTkIR8+K+
- b4/3nUDnzb3AesX/IKMd8Jx5fEgmAoiWfuv+hdECS5UQc0I19VZBP2JGklnGeGW+dhVM
- 5bxbv1pCZr0YqcA88TwKHOU2lezJRkY01Q2WC2UU+gz4+i2Arf6phT+SXsQFbLc5PZxu
- RG1iznrGiGGPGD/mrH99S5GFKOoypWp0cgO+kPKtZ+hDSa3KT5Kd2ICj7DAMUo72fCVg
- CY3Q==
-X-Gm-Message-State: AOJu0YxUUycGOgxeq5t1Wx+0ZTm1GGZKn48uV1iFYrTv+MXSuH4Gx1Ij
- ubVSXrHLAAjw6bm06+OMsL3h5DkmZfdwcQ0js185yh4n527jm8r0ZNgfkHqycr8gu0DlyHEd0SZ
- nr6x7jUKxGo77JmO4Ue0G+UoDPvhyFG6ucZ/EQNAOEBtz2CDlGqRIFkg62Bpny178RztFB1Gimb
- gPWAK3J3OiDwh0zWnd9TG1reMxqkEnqTABDJCe5r8=
-X-Received: by 2002:a05:6512:1294:b0:530:e323:b1d0 with SMTP id
- 2adb3069b0e04-539da3b232dmr1273420e87.9.1728645174766; 
- Fri, 11 Oct 2024 04:12:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFg0BVVUSvO7ImebThXrgD3dj5iyd2irE3IDVTdNnmGwkitieGlxuOMug/FWa/EWyysZZWErw==
-X-Received: by 2002:a05:6512:1294:b0:530:e323:b1d0 with SMTP id
- 2adb3069b0e04-539da3b232dmr1273392e87.9.1728645174173; 
- Fri, 11 Oct 2024 04:12:54 -0700 (PDT)
+ bh=C47oi+p/U14aTwO300CpbdGtBMf6xzPszQtxxdH6ifk=;
+ b=kLZ0cSp+HPVM9olV3A/tcnTdm8PiWwI8tW45mtX2nzRt3+xIBTdereO8WGZ+43B7HU
+ 5y7XVAQI0B/UpXbqTKGw4VMP8zzD7sN0y02VBVQAI7wxjOsb3EiwwlZgzEzCV3X6kWwI
+ g6JB6NrDpaQ5glSME2aaiS0hqvW4nDJ1ARDMT2IJYHEML4ULoZnubfBgK6oOMErnLKXa
+ TfOOEuHQAKr+QdW1Ab0tEo7UG4Ssy8QkvkXe39+vVHM5MawoZ21B3m/7SBkaBepjwoOQ
+ WMqa2wGSGcYN99z1N1n0KikqUtUXuy0mjCra6iiOjFAiZI5uYGK5k+FAFfd52CnrRP70
+ X8yw==
+X-Gm-Message-State: AOJu0YyuE0Mk1PZL0bdnXL6Yo97ri4PArX3/nW1hRzno2dZwbw2c+A1K
+ qr4vG6zaJFlnG1hTVwBWsujNGwqNRSVZ+FURUuVS+J/reOrBKC5lJXERPtvP3vi9GOKyGHAu3ug
+ dKgbXkEWTXB878MojnlCL2mJXTD8/rBr5RUWNuHSfDiRhi5m5ue0Po3pamSfvtUpIjeoY0fJm6Q
+ D3ZvwaYZSLdDIwtcLkKwvdRZgvFpSKo5ZgytNCEP8=
+X-Received: by 2002:a05:651c:551:b0:2f3:f4e2:869c with SMTP id
+ 38308e7fff4ca-2fb32b242ddmr12744961fa.44.1728645177917; 
+ Fri, 11 Oct 2024 04:12:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1COeZhZy9aOy7ENEf+NpEn8qbRm08p8dbK7DAwkdrN3hVBqaf+fPJNGwx1lFZmMTMWvuDYw==
+X-Received: by 2002:a05:651c:551:b0:2f3:f4e2:869c with SMTP id
+ 38308e7fff4ca-2fb32b242ddmr12744651fa.44.1728645177272; 
+ Fri, 11 Oct 2024 04:12:57 -0700 (PDT)
 Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99a80c0133sm200054166b.114.2024.10.11.04.12.52
+ 4fb4d7f45d1cf-5c937293d10sm1819484a12.79.2024.10.11.04.12.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 04:12:52 -0700 (PDT)
+ Fri, 11 Oct 2024 04:12:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 1/3] docs: fix invalid footnote syntax
-Date: Fri, 11 Oct 2024 13:12:47 +0200
-Message-ID: <20241011111249.47530-2-pbonzini@redhat.com>
+Subject: [PATCH v2 2/3] docs: avoid footnotes consisting of just URLs
+Date: Fri, 11 Oct 2024 13:12:48 +0200
+Message-ID: <20241011111249.47530-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241011111249.47530-1-pbonzini@redhat.com>
 References: <20241011111249.47530-1-pbonzini@redhat.com>
@@ -100,55 +100,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All footnotes must come after a separator in reStructuredText.  Fix the
-two files in which this does not happen.
+Replace the footnotes with inline links whenever the footnote text
+consists of nothing but the URL.  While at it, make the link texts
+consistent in the surrounding areas, for example avoiding usage of
+"here" for the link's text.
 
-This mistake causes the link to be rendered literally:
+In the case of acpi-bits.rst this fixes a build failure with Sphinx
+8.1.0, because the FOSDEM link was duplicated in the paragraph and the
+new version is a lot stricter about unreferenced footnotes.
 
-   ...from the venv itself[#distlib]_. If no...
-
-and is caught by Sphinx 8.1.0 as an unreferenced footnote.
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/atomics.rst      | 2 +-
- docs/devel/build-system.rst | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ docs/devel/testing/acpi-bits.rst | 26 +++++++++++++-------------
+ docs/specs/rapl-msr.rst          | 25 ++++++++++++-------------
+ 2 files changed, 25 insertions(+), 26 deletions(-)
 
-diff --git a/docs/devel/atomics.rst b/docs/devel/atomics.rst
-index b77c6e13e18..6bf032f9005 100644
---- a/docs/devel/atomics.rst
-+++ b/docs/devel/atomics.rst
-@@ -204,7 +204,7 @@ They come in six kinds:
-   before the second with respect to the other components of the system.
-   Therefore, unlike ``smp_rmb()`` or ``qatomic_load_acquire()``,
-   ``smp_read_barrier_depends()`` can be just a compiler barrier on
--  weakly-ordered architectures such as Arm or PPC[#]_.
-+  weakly-ordered architectures such as Arm or PPC\ [#]_.
+diff --git a/docs/devel/testing/acpi-bits.rst b/docs/devel/testing/acpi-bits.rst
+index 78aeb6aa3c4..764e0ef51a5 100644
+--- a/docs/devel/testing/acpi-bits.rst
++++ b/docs/devel/testing/acpi-bits.rst
+@@ -30,15 +30,20 @@ OS modules are generally written using low level languages such as C and
+ low level assembly machine language. Writing test routines in a low level
+ language makes things more cumbersome. These and other reasons makes using
+ bios-bits very attractive for testing bioses. More details on the inspiration
+-for developing biosbits and its real life uses can be found in [#a]_ and [#b]_.
++for developing biosbits and its real life uses were presented `at Plumbers
++in 2011 <Plumbers_>`__ and `at Linux.conf.au in 2012 <Linux.conf.au_>`__.
  
-   Note that the first load really has to have a _data_ dependency and not
-   a control dependency.  If the address for the second load is dependent
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 79eceb179de..fa1c59d9fd8 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -145,13 +145,13 @@ was installed in the ``site-packages`` directory of another interpreter,
- or with the wrong ``pip`` program.
+-For QEMU, we maintain a fork of bios bits in gitlab along with all the
+-dependent submodules `here <https://gitlab.com/qemu-project/biosbits-bits>`__.
+-This fork contains numerous fixes, a newer acpica and changes specific to
+-running these functional QEMU tests using bits. The author of this document
+-is the sole maintainer of the QEMU fork of bios bits repository. For more
+-information, please see author's `FOSDEM talk on this bios-bits based test
+-framework <https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/>`__.
++For QEMU, we maintain a fork of bios bits in `gitlab`_, along with all
++the dependent submodules.  This fork contains numerous fixes, a newer
++acpica and changes specific to running these functional QEMU tests using
++bits. The author of this document is the current maintainer of the QEMU
++fork of bios bits repository. For more information, please see `the
++author's FOSDEM presentation <FOSDEM_>`__ on this bios-bits based test framework.
++
++.. _Plumbers: https://blog.linuxplumbersconf.org/2011/ocw/system/presentations/867/original/bits.pdf
++.. _Linux.conf.au: https://www.youtube.com/watch?v=36QIepyUuhg
++.. _gitlab: https://gitlab.com/qemu-project/biosbits-bits
++.. _FOSDEM: https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/
  
- If a package is available for the chosen interpreter, ``configure``
--prepares a small script that invokes it from the venv itself[#distlib]_.
-+prepares a small script that invokes it from the venv itself\ [#distlib]_.
- If not, ``configure`` can also optionally install dependencies in the
- virtual environment with ``pip``, either from wheels in ``python/wheels``
- or by downloading the package with PyPI.  Downloading can be disabled with
- ``--disable-download``; and anyway, it only happens when a ``configure``
- option (currently, only ``--enable-docs``) is explicitly enabled but
--the dependencies are not present[#pip]_.
-+the dependencies are not present\ [#pip]_.
+ *********************************
+ Description of the test framework
+@@ -148,8 +153,3 @@ Under ``tests/functional/`` as the root we have:
  
- .. [#distlib] The scripts are created based on the package's metadata,
-               specifically the ``console_script`` entry points.  This is the
+ Author: Ani Sinha <anisinha@redhat.com>
+ 
+-References:
+------------
+-.. [#a] https://blog.linuxplumbersconf.org/2011/ocw/system/presentations/867/original/bits.pdf
+-.. [#b] https://www.youtube.com/watch?v=36QIepyUuhg
+-.. [#c] https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/
+diff --git a/docs/specs/rapl-msr.rst b/docs/specs/rapl-msr.rst
+index 1202ee89bee..aaf0db9f91b 100644
+--- a/docs/specs/rapl-msr.rst
++++ b/docs/specs/rapl-msr.rst
+@@ -9,11 +9,12 @@ The consumption is reported via MSRs (model specific registers) like
+ MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are 64 bits
+ registers that represent the accumulated energy consumption in micro Joules.
+ 
+-Thanks to the MSR Filtering patch [#a]_ not all MSRs are handled by KVM. Some
+-of them can now be handled by the userspace (QEMU). It uses a mechanism called
+-"MSR filtering" where a list of MSRs is given at init time of a VM to KVM so
+-that a callback is put in place. The design of this patch uses only this
+-mechanism for handling the MSRs between guest/host.
++Thanks to KVM's `MSR filtering <msr-filter-patch_>`__ functionality,
++not all MSRs are handled by KVM. Some of them can now be handled by the
++userspace (QEMU); a list of MSRs is given at VM creation time to KVM, and
++a userspace exit occurs when they are accessed.
++
++.. _msr-filter-patch: https://patchwork.kernel.org/project/kvm/patch/20200916202951.23760-7-graf@amazon.com/
+ 
+ At the moment the following MSRs are involved:
+ 
+@@ -92,9 +93,12 @@ found by the sysconf system call. A typical value of clock ticks per second is
+ package has 4 cores, 400 ticks maximum can be scheduled on all the cores
+ of the package for a period of 1 second.
+ 
+-The /proc/[pid]/stat [#b]_ is a sysfs file that can give the executed time of a
+-process with the [pid] as the process ID. It gives the amount of ticks the
+-process has been scheduled in userspace (utime) and kernel space (stime).
++`/proc/[pid]/stat <stat_>`__ is a procfs file that can give the executed
++time of a process with the [pid] as the process ID. It gives the amount
++of ticks the process has been scheduled in userspace (utime) and kernel
++space (stime).
++
++.. _stat: https://man7.org/linux/man-pages/man5/proc.5.html
+ 
+ By reading those metrics for a thread, one can calculate the ratio of time the
+ package has spent executing the thread.
+@@ -148,8 +152,3 @@ Current Limitations
+ - Only the Package Power-Plane (MSR_PKG_ENERGY_STATUS) is reported at the
+   moment.
+ 
+-References
+-----------
+-
+-.. [#a] https://patchwork.kernel.org/project/kvm/patch/20200916202951.23760-7-graf@amazon.com/
+-.. [#b] https://man7.org/linux/man-pages/man5/proc.5.html
 -- 
 2.46.2
 
