@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4092899A9AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8213B99A9BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:18:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJDB-0007fW-Dq; Fri, 11 Oct 2024 13:13:57 -0400
+	id 1szJDE-0007sd-0P; Fri, 11 Oct 2024 13:14:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szJ78-0000hD-Lm
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szJ78-0003Vw-Kb
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:07:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szFZb-0004RQ-HQ
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szFZc-0004RZ-1y
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 09:20:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1728652851;
@@ -22,26 +22,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mbcLhTN/YYKZlf/qtxpugDzhSlARKP0MISPf3J+SyrI=;
- b=bYhr51+k5JW5op30qTOjgIkWcd/TXSAyFpj5B80aHrzdz2k6Vb3fFgk4MRCn/XweZrR3qR
- UTVWsJ5M6Q7j0+xaIBF+B2q6rPGtHx5MrED8WSRYUF4bN/wMfX62oi5k4OPP727x+EXqnu
- 5lGbOW9Yk2Ii+uEFh0xMOZcgSUgWWYg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=hKLNXEIbaQ2WWuifBj7MYKH9Xy1I+/rrjIxbz8im7+Y=;
+ b=EoxCr553V+AoTO4aWVK8OZn5n5S6fdfgpkKIGnUjoIuQvxZeJHaAwUrgp9xYE7qDncrliL
+ CYVAaAUSHdj2soeCV2AutyYiJmqL6jUS/7iykiZNR+7ViFyN/wPu/mFnolRJFkIwpbGsz4
+ qMb7oAwon63WooLLbGDlDPfCZb5BFug=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-8xScTZD5NMOwB-cnZRG32w-1; Fri,
- 11 Oct 2024 09:20:41 -0400
-X-MC-Unique: 8xScTZD5NMOwB-cnZRG32w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-txhUQfpsOeOpbsWfEdADhw-1; Fri,
+ 11 Oct 2024 09:20:45 -0400
+X-MC-Unique: txhUQfpsOeOpbsWfEdADhw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 34BC91955F3F; Fri, 11 Oct 2024 13:20:40 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D75981955D56; Fri, 11 Oct 2024 13:20:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.77])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2D73E1956052; Fri, 11 Oct 2024 13:20:36 +0000 (UTC)
+ id C369A1955E8F; Fri, 11 Oct 2024 13:20:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -50,16 +50,16 @@ Cc: Guenter Roeck <linux@roeck-us.net>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Magnus Damm <magnus.damm@gmail.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 11/17] tests/functional: Convert the Avocado mips tuxrun test
-Date: Fri, 11 Oct 2024 15:19:28 +0200
-Message-ID: <20241011131937.377223-12-thuth@redhat.com>
+Subject: [PATCH 12/17] tests/functional: Convert the Avocado mipsel tuxrun test
+Date: Fri, 11 Oct 2024 15:19:29 +0200
+Message-ID: <20241011131937.377223-13-thuth@redhat.com>
 In-Reply-To: <20241011131937.377223-1-thuth@redhat.com>
 References: <20241011131937.377223-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -68,7 +68,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,62 +85,61 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Move the test into a new file so that it can be run via
-qemu-system-mips in the functional framework.
+qemu-system-mipsel in the functional framework.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/tuxrun_baselines.py    | 18 --------------
- tests/functional/meson.build         |  1 +
- tests/functional/test_mips_tuxrun.py | 36 ++++++++++++++++++++++++++++
- 3 files changed, 37 insertions(+), 18 deletions(-)
- create mode 100755 tests/functional/test_mips_tuxrun.py
+ tests/avocado/tuxrun_baselines.py      | 17 ------------
+ tests/functional/meson.build           |  1 +
+ tests/functional/test_mipsel_tuxrun.py | 36 ++++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+), 17 deletions(-)
+ create mode 100755 tests/functional/test_mipsel_tuxrun.py
 
 diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index 6d00b06713..8593d204b7 100644
+index 8593d204b7..d45c2ce35e 100644
 --- a/tests/avocado/tuxrun_baselines.py
 +++ b/tests/avocado/tuxrun_baselines.py
-@@ -192,24 +192,6 @@ def common_tuxrun(self,
+@@ -192,23 +192,6 @@ def common_tuxrun(self,
      #        --kernel https://storage.tuxboot.com/{TUXBOOT}/{IMAGE}
      #
  
--    def test_mips32(self):
+-    def test_mips32el(self):
 -        """
--        :avocado: tags=arch:mips
+-        :avocado: tags=arch:mipsel
 -        :avocado: tags=machine:malta
 -        :avocado: tags=cpu:mips32r6-generic
--        :avocado: tags=endian:big
--        :avocado: tags=tuxboot:mips32
+-        :avocado: tags=tuxboot:mips32el
 -        :avocado: tags=image:vmlinux
 -        :avocado: tags=root:sda
 -        :avocado: tags=shutdown:nowait
 -        """
 -        sums = { "rootfs.ext4.zst" :
--                 "fc3da0b4c2f38d74c6d705123bb0f633c76ed953128f9d0859378c328a6d11a0",
+-                 "e799768e289fd69209c21f4dacffa11baea7543d5db101e8ce27e3bc2c41d90e",
 -                 "vmlinux" :
--                 "bfd2172f8b17fb32970ca0c8c58f59c5a4ca38aa5855d920be3a69b5d16e52f0" }
+-                 "8573867c68a8443db8de6d08bb33fb291c189ca2ca671471d3973a3e712096a3" }
 -
 -        self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
 -
-     def test_mips32el(self):
+     def test_mips64(self):
          """
-         :avocado: tags=arch:mipsel
+         :avocado: tags=arch:mips64
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 84012810f7..4a78c5f8b6 100644
+index 4a78c5f8b6..813237e412 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -92,6 +92,7 @@ tests_microblazeel_system_thorough = [
- 
- tests_mips_system_thorough = [
-   'mips_malta',
-+  'mips_tuxrun',
- ]
+@@ -97,6 +97,7 @@ tests_mips_system_thorough = [
  
  tests_mipsel_system_thorough = [
-diff --git a/tests/functional/test_mips_tuxrun.py b/tests/functional/test_mips_tuxrun.py
+   'mipsel_malta',
++  'mipsel_tuxrun',
+ ]
+ 
+ tests_mips64el_system_thorough = [
+diff --git a/tests/functional/test_mipsel_tuxrun.py b/tests/functional/test_mipsel_tuxrun.py
 new file mode 100755
-index 0000000000..6fec44c2bf
+index 0000000000..2965bbd913
 --- /dev/null
-+++ b/tests/functional/test_mips_tuxrun.py
++++ b/tests/functional/test_mipsel_tuxrun.py
 @@ -0,0 +1,36 @@
 +#!/usr/bin/env python3
 +#
@@ -158,22 +157,22 @@ index 0000000000..6fec44c2bf
 +from qemu_test import Asset
 +from qemu_test.tuxruntest import TuxRunBaselineTest
 +
-+class TuxRunMipsTest(TuxRunBaselineTest):
++class TuxRunMipsELTest(TuxRunBaselineTest):
 +
-+    ASSET_MIPS_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/mips32/vmlinux',
-+        'bfd2172f8b17fb32970ca0c8c58f59c5a4ca38aa5855d920be3a69b5d16e52f0')
-+    ASSET_MIPS_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/mips32/rootfs.ext4.zst',
-+        'fc3da0b4c2f38d74c6d705123bb0f633c76ed953128f9d0859378c328a6d11a0')
++    ASSET_MIPSEL_KERNEL = Asset(
++        'https://storage.tuxboot.com/20230331/mips32el/vmlinux',
++        '8573867c68a8443db8de6d08bb33fb291c189ca2ca671471d3973a3e712096a3')
++    ASSET_MIPSEL_ROOTFS = Asset(
++        'https://storage.tuxboot.com/20230331/mips32el/rootfs.ext4.zst',
++        'e799768e289fd69209c21f4dacffa11baea7543d5db101e8ce27e3bc2c41d90e')
 +
-+    def test_mips32(self):
++    def test_mips32el(self):
 +        self.set_machine('malta')
 +        self.cpu="mips32r6-generic"
 +        self.root="sda"
 +        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_MIPS_KERNEL,
-+                           rootfs_asset=self.ASSET_MIPS_ROOTFS,
++        self.common_tuxrun(kernel_asset=self.ASSET_MIPSEL_KERNEL,
++                           rootfs_asset=self.ASSET_MIPSEL_ROOTFS,
 +                           drive="driver=ide-hd,bus=ide.0,unit=0")
 +
 +if __name__ == '__main__':
