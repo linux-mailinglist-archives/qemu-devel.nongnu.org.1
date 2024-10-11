@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A6799A96E
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B8C99A96D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:07:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ4c-0001Fq-A3; Fri, 11 Oct 2024 13:05:06 -0400
+	id 1szJ4e-0001JC-0N; Fri, 11 Oct 2024 13:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szJ4S-0000wP-24
+ id 1szJ4S-0000hD-2E
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szHdt-0007FC-Sy
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:27 -0400
+ id 1szHdy-0007FV-Nj
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728660805;
+ s=mimecast20190719; t=1728660810;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I1CI3G168F3cDdpDRHRzVTftyK0R2VTAU16G+izB978=;
- b=NpQp3vJ9lexH3YMHGZFDwnuafLH8dr8xupe8uiMxPFevDVkFuwetX/OkcUHzOEib6V5hzw
- jng/q1vgnyS+cTJyTEPUpCG4GuNrRujVPJgiTk9CcAtfAlpk61TkulbifjTIjYNf/S85W3
- Hk+VsoZHlGjPRMKAUWSdlF86yj0799Q=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dl6dcOfhmNp3NrxHyKacGU/S0XBvVsXoKUJy7DRsnQc=;
+ b=OKgzqj6y7VCRCJp8ljgFr7vjDmES9nW4A7M70kS+i/t4J5kJps0jHXciKUM0kWxI7nFtkm
+ hGs2trYv0MRc4TmXnjOhdb4qoorWxG4jlokcBMLQnmHhhR/Ebxw/9ddyz06k+hhs+M6H/l
+ F64hF/SYAJbJJdIuNHZYlKRMl8o1pX8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-7_4ZJp4dMryiteM0txn-xA-1; Fri, 11 Oct 2024 11:33:24 -0400
-X-MC-Unique: 7_4ZJp4dMryiteM0txn-xA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a9953ddfa4fso171386566b.1
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:33:24 -0700 (PDT)
+ us-mta-433-bh0bVuhdMBuoAa5BFWppjA-1; Fri, 11 Oct 2024 11:33:28 -0400
+X-MC-Unique: bh0bVuhdMBuoAa5BFWppjA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9465e3547so741150a12.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:33:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728660801; x=1729265601;
+ d=1e100.net; s=20230601; t=1728660806; x=1729265606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I1CI3G168F3cDdpDRHRzVTftyK0R2VTAU16G+izB978=;
- b=W1UCRtbnu8Faadj3vQJN1Qj7h/OrNuXmsYtjVCPs73BdbA/hVxRQx9owOFUVW6lg+J
- m/UpMWhD3YfQkzAV4tpYbusJC3sfwprrezdvbXZhPwmkAWQ4jAQsDXrYbwZG9NQg3kqb
- FOBoCWlXk18j7IuqKGCbmiMSmUoMGt1YHUbPOyCyiTaLRi7lWhF6nCy1JwTtZsegMKgn
- /lRGpZWs20Nk+3j99j2y+N2XhNbEbhX8qbatyOv8fsallrq+ZA8auJ9n5gO1Eey9VLHZ
- vUjw713DweQEqjBRhCgJJ+QlsakeUhld8WOexOJqnDnrJN0BVhWc3MnCUVdWBq6SyOoD
- lGjw==
-X-Gm-Message-State: AOJu0YxQfE2RAbLoz4HJy5irsmJjM09fhC5qRnyuOiEerds0DBAniHhU
- 5eKto4MPbY6CyqLj7OZYj2oJKCdmPkgEExgRtWYNmqEt91Ym29w3W7K+IjX01GMPgg1OzOIro1D
- pyZqvvJCgM6pbipKL/KsbF8dSkCKT96MI/W7eA8N7FHzOY+0IsnA5i/xdciS8QXaRbPIf69qeYv
- wF5OHkQX9Nss72RnEL5ztK7DyJZS7BRF9TAZQm9R4=
-X-Received: by 2002:a17:907:940c:b0:a8d:29b7:ecf3 with SMTP id
- a640c23a62f3a-a99b930e9d1mr246662566b.13.1728660801108; 
- Fri, 11 Oct 2024 08:33:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkP1+4bvqxexjBw67VG4ebB/NujhnJL4e9wuXRZclQYpvUwZCvBEmIvnC73c863713ieHwfw==
-X-Received: by 2002:a17:907:940c:b0:a8d:29b7:ecf3 with SMTP id
- a640c23a62f3a-a99b930e9d1mr246659966b.13.1728660800682; 
- Fri, 11 Oct 2024 08:33:20 -0700 (PDT)
+ bh=dl6dcOfhmNp3NrxHyKacGU/S0XBvVsXoKUJy7DRsnQc=;
+ b=cSL7pknbJCnSBQLh8VUTUz/TZTryC+/KiFia0ansDCczw9V3F/IxlRXgpocrOsMf6r
+ jtj+nDbmhb7CdpZYsXC2XVRI/Kes1LRh9ZNMkBhxw/DWcCDQr1j903+SqAUVh6aNmwaA
+ rw+DMKx5YXss1XjJy9sUV2CTl2cyJtrKDIhYUEB2YSane5J4XkM2syRZuEP6xEYqPYMm
+ y7dxlj1w2Ey05NoPyvIYgcOK+5xQLWMxwcAI/vR8XuvGiXlcUj3mrj9Jwz+1Z0+TU2+p
+ KOLz3zxExzotF7DsikqgZtaTM92PkPJPT9T+Y+sLYwANYwG7FFTazRftxm4MgOQtT8Cr
+ VmcA==
+X-Gm-Message-State: AOJu0Ywr8IOi/TQWiMs+OCbSMuw8fmGCbAIP+X0slECAzBv4lVJJRaRM
+ 1XsCfcu70grJoAqhQ7uH73JOSW9/1C7JnyvLgHkdmPPHEu9k+uKuYTvdTr9Z49MHHYQnEq3oQW+
+ mpvrSoigUhbXh3bBmVrYf+DkbzntanFe17JSXSQSlSIAWn/vgQrZi0Je2CaCbsv/P5K19MHs+Vi
+ qgqdB9R0k2MVmtw5vpuOfKV/lVH8FfUUSCvs1n5IQ=
+X-Received: by 2002:a05:6402:26cf:b0:5c5:c059:63c6 with SMTP id
+ 4fb4d7f45d1cf-5c948c88336mr2251755a12.2.1728660806046; 
+ Fri, 11 Oct 2024 08:33:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSXtniGKImJ8V8RYL40QFNziA/aVy/eusWDt39Efn6WOwREBlD134jmzrQ7q8+f7lht8TzSw==
+X-Received: by 2002:a05:6402:26cf:b0:5c5:c059:63c6 with SMTP id
+ 4fb4d7f45d1cf-5c948c88336mr2251729a12.2.1728660805526; 
+ Fri, 11 Oct 2024 08:33:25 -0700 (PDT)
 Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99c0c89bfasm57964666b.162.2024.10.11.08.33.19
+ 4fb4d7f45d1cf-5c9372ae701sm2012038a12.85.2024.10.11.08.33.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 08:33:20 -0700 (PDT)
+ Fri, 11 Oct 2024 08:33:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL v3 11/18] meson: fix machine option for x86_version
-Date: Fri, 11 Oct 2024 17:32:19 +0200
-Message-ID: <20241011153227.81770-12-pbonzini@redhat.com>
+ qemu-stable@nongnu.org
+Subject: [PULL v3 12/18] meson: define qemu_isa_flags
+Date: Fri, 11 Oct 2024 17:32:20 +0200
+Message-ID: <20241011153227.81770-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241011153227.81770-1-pbonzini@redhat.com>
 References: <20241011153227.81770-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,38 +104,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Create a separate variable for compiler flags that enable
+specific instruction set extensions, so that they can be used with
+cc.compiles/cc.links.
 
-s/mbmi1/mbmi/
+Note that -mfpmath=sse is a code generation option but it does not
+enable new instructions, therefore I did not make it part of
+qemu_isa_flags.
 
-When configuring with -Dx86_version >= 3, meson step works, but
-compilation fails because option -mbmi1 is unknown.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Link: https://lore.kernel.org/r/20241004223715.1275428-1-pierrick.bouvier@linaro.org
 Cc: qemu-stable@nongnu.org
-Fixes: ef7d1adfa85 ("meson: allow configuring the x86-64 baseline", 2024-06-28)
-Revieved-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index b91863736ea..76335bb2a51 100644
+index 76335bb2a51..65ea45cef03 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -375,7 +375,7 @@ if host_arch in ['i386', 'x86_64']
-     qemu_common_flags = cc.get_supported_arguments('-mneeded') + qemu_common_flags
+@@ -335,6 +335,10 @@ elif host_os == 'windows'
+   endif
+ endif
+ 
++# Choose instruction set (currently x86-only)
++
++qemu_isa_flags = []
++
+ # __sync_fetch_and_and requires at least -march=i486. Many toolchains
+ # use i686 as default anyway, but for those that don't, an explicit
+ # specification is necessary
+@@ -351,7 +355,7 @@ if host_arch == 'i386' and not cc.links('''
+     sfaa(&val);
+     return val;
+   }''')
+-  qemu_common_flags = ['-march=i486'] + qemu_common_flags
++  qemu_isa_flags += ['-march=i486']
+ endif
+ 
+ # Pick x86-64 baseline version
+@@ -367,29 +371,31 @@ if host_arch in ['i386', 'x86_64']
+     else
+       # present on basically all processors but technically not part of
+       # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
+-      qemu_common_flags = ['-mcx16'] + qemu_common_flags
++      qemu_isa_flags += ['-mcx16']
+     endif
+   endif
+   if get_option('x86_version') >= '2'
+-    qemu_common_flags = ['-mpopcnt'] + qemu_common_flags
+-    qemu_common_flags = cc.get_supported_arguments('-mneeded') + qemu_common_flags
++    qemu_isa_flags += ['-mpopcnt']
++    qemu_isa_flags += cc.get_supported_arguments('-mneeded')
    endif
    if get_option('x86_version') >= '3'
--    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi1', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
-+    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
+-    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
++    qemu_isa_flags += ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c']
    endif
  
    # add required vector instruction set (each level implies those below)
+   if get_option('x86_version') == '1'
+-    qemu_common_flags = ['-msse2'] + qemu_common_flags
++    qemu_isa_flags += ['-msse2']
+   elif get_option('x86_version') == '2'
+-    qemu_common_flags = ['-msse4.2'] + qemu_common_flags
++    qemu_isa_flags += ['-msse4.2']
+   elif get_option('x86_version') == '3'
+-    qemu_common_flags = ['-mavx2'] + qemu_common_flags
++    qemu_isa_flags += ['-mavx2']
+   elif get_option('x86_version') == '4'
+-    qemu_common_flags = ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl'] + qemu_common_flags
++    qemu_isa_flags += ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl']
+   endif
+ endif
+ 
++qemu_common_flags = qemu_isa_flags + qemu_common_flags
++
+ if get_option('prefer_static')
+   qemu_ldflags += get_option('b_pie') ? '-static-pie' : '-static'
+ endif
 -- 
 2.46.2
 
