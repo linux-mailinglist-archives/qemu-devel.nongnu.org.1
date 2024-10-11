@@ -2,64 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B119F99A98E
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460D499A97C
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:09:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ4I-0000wa-Lz; Fri, 11 Oct 2024 13:04:47 -0400
+	id 1szJ4L-0000zE-04; Fri, 11 Oct 2024 13:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szJ4D-0000hu-3z
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szILz-0004xq-Kg
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 12:19:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728663534;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=0xq9oS9Q8pSgDX6vHbWASCKcp4gd4kByVEIjsyz6pf8=;
- b=DeUinpEUdzhXmNWIkMvMk9YxURLon97kt3SFeh4dQpB9iBOjgxGIpxDkVPIftaa8ByX22Z
- FUBqeBWNsK8vro5B8RrUKn5Tsax9oILHY7quFVjbEB1Qiau71ehVt/szrhwcaWHOg3MWvO
- rtCIFVN5ER044tk6FI329NpdS7Icy/I=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-V63sUWriPu64JHNXQBOcWg-1; Fri,
- 11 Oct 2024 12:18:51 -0400
-X-MC-Unique: V63sUWriPu64JHNXQBOcWg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D370819560AA; Fri, 11 Oct 2024 16:18:49 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.77])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5998219560AA; Fri, 11 Oct 2024 16:18:47 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: dave@treblig.org, qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-trivial@nongnu.org
-Subject: [PATCH] linux-user/vm86: Fix compilation with Clang
-Date: Fri, 11 Oct 2024 18:18:45 +0200
-Message-ID: <20241011161845.417342-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1szJ4A-0000hD-Ed
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:38 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1szIR1-0005MI-7v
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 12:24:13 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43124843b04so1878355e9.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 09:24:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728663843; x=1729268643; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wPtx33mvG8VtPQ9MBY7S8REDb6WwxNsoEmMfYW+ba1A=;
+ b=Nv+x+uDY7jUAExnCx3k74XG/vjJ8+rIWMeTOz71ntMD6X1qeWxHXF4wx38ZC2A98p+
+ ZW3PgkSfuOxm7Pub7Y+kkcOdIGcqwYwbmAgNGQd8jftIv+D/AkJbb2EDMNVqFuabHQWc
+ cYeWWZp/D7YXQ2AZvkW9AFjhvxHgYMRC+RoUEMMycPIGSyKZGviqXIOLtB0RxWVqc2z8
+ WuzHa0q6O7khEqkScPIstSf9F1em4a1IzowLVbkcq6QS1VBlXyFC2veMvMCaYUEWxDQx
+ FJUKTFSwpqu3WVhlxDyWt7qgJGZ9nO4WUlFFy0hCsTB7MMR0w2QNACE/VjoPxLCcfuL0
+ KfDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728663843; x=1729268643;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wPtx33mvG8VtPQ9MBY7S8REDb6WwxNsoEmMfYW+ba1A=;
+ b=d3N9lpeir5ICmDpWU9gha/fTMF225udg7o9mr/4Ehe6uvi3PeBOAdAJK7ylyY738g+
+ Rznwm2k5CUDoCpc8iX3IRFMJRWGnrWbtDSfScFPsJulwmqEECz1bwa7RuJIGXkU6nVOQ
+ U81tLrCNwmZBRnBg3d7X3eCcgZIicIyufdO9CGI59shE8n34bcwrIEdumQYFtLKVWVGZ
+ y/SGS4TA1rOBWpot0LPqZD/onPiQUfPzw55S67AyFaZKLXQDgPWssBrQEPZwMLxFRVsA
+ VqA6a17GU43Mjwy6hsimCkZEkJaSx3p5aAtfRb5KrfOIPjYVZbQ/0XKPU3L80g1LsX/+
+ lunw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUL4BrYoqb7FwORRe0505G58McVhgwHQCWDhYb6fTxNYakBLplvIbz54+D8qxLQTC/5D6yxPIA6vEOS@nongnu.org
+X-Gm-Message-State: AOJu0Yyqe4W704qsVZaOUgjEf922PcoJ5L9P5OweG2MyuWOg+2kD4zhE
+ 0z08o8EqZAkIpecaynKYiBwuA1R6SZ0+1lXv77ySDB8yrc4RE4ytAmJ3csTm0Wo=
+X-Google-Smtp-Source: AGHT+IEaoRCoi4bh0mzhqNfqEBZIP9numZBOpaj0CTPNYVcv9Bk8jtAeGTYdBNAxzcP7RZ3v8pux5Q==
+X-Received: by 2002:a05:600c:c0d:b0:42c:b80e:5e50 with SMTP id
+ 5b1f17b1804b1-4311ddffb8dmr27484995e9.0.1728663842929; 
+ Fri, 11 Oct 2024 09:24:02 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-431182d7929sm46461885e9.4.2024.10.11.09.24.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Oct 2024 09:24:02 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] target/arm: Store FPSR cumulative exception bits in
+ env->vfp.fpsr
+Date: Fri, 11 Oct 2024 17:24:01 +0100
+Message-Id: <20241011162401.3672735-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,109 +92,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
-a bunch of other "static inline" function are now unused, too. Clang
-warns about such unused "static inline" functions in .c files, so the
-build currently breaks when compiling with "--enable-werror". Remove
-the unused functions to get it going again.
+Currently we store the FPSR cumulative exception bits in the
+float_status fields, and use env->vfp.fpsr only for the NZCV bits.
+(The QC bit is stored in env->vfp.qc[].)
 
-Fixes: 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+This works for TCG, but if QEMU was built without CONFIG_TCG (i.e.
+with KVM support only) then we use the stub versions of
+vfp_get_fpsr_from_host() and vfp_set_fpsr_to_host() which do nothing,
+throwing away the cumulative exception bit state.  The effect is that
+if the FPSR state is round-tripped from KVM to QEMU then we lose the
+cumulative exception bits.  In particular, this will happen if the VM
+is migrated.  There is no user-visible bug when using KVM with a QEMU
+binary that was built with CONFIG_TCG.
+
+Fix this by always storing the cumulative exception bits in
+env->vfp.fpsr.  If we are using TCG then we may also keep pending
+cumulative exception information in the float_status fields, so we
+continue to fold that in on reads.
+
+This change will also be helpful for implementing FEAT_AFP later,
+because that includes a feature where in some situations we want to
+cause input denormals to be flushed to zero without affecting the
+existing state of the FPSR.IDC bit, so we need a place to store IDC
+which is distinct from the various float_status fields.
+
+(Note for stable backports: the bug goes back to 4a15527c9fee but
+this code was refactored in commits ea8618382aba..a8ab8706d4cc461, so
+fixing it in branches without those refactorings will mean either
+backporting the refactor or else implementing a conceptually similar
+fix for the old code.)
+
+Cc: qemu-stable@nongnu.org
+Fixes: 4a15527c9fee ("target/arm/vfp_helper: Restrict the SoftFloat use to TCG")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- linux-user/vm86.c | 65 -----------------------------------------------
- 1 file changed, 65 deletions(-)
+ target/arm/vfp_helper.c | 56 ++++++++++++-----------------------------
+ 1 file changed, 16 insertions(+), 40 deletions(-)
 
-diff --git a/linux-user/vm86.c b/linux-user/vm86.c
-index 31a2d707cf..5091d53fb8 100644
---- a/linux-user/vm86.c
-+++ b/linux-user/vm86.c
-@@ -47,30 +47,6 @@ static inline void vm_putw(CPUX86State *env, uint32_t segptr,
-     cpu_stw_data(env, segptr + (reg16 & 0xffff), val);
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 203d37303bd..62638d2b1f9 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -59,32 +59,6 @@ static inline int vfp_exceptbits_from_host(int host_bits)
+     return target_bits;
  }
  
--static inline void vm_putl(CPUX86State *env, uint32_t segptr,
--                           unsigned int reg16, unsigned int val)
+-/* Convert vfp exception flags to target form.  */
+-static inline int vfp_exceptbits_to_host(int target_bits)
 -{
--    cpu_stl_data(env, segptr + (reg16 & 0xffff), val);
--}
+-    int host_bits = 0;
 -
--static inline unsigned int vm_getb(CPUX86State *env,
--                                   uint32_t segptr, unsigned int reg16)
--{
--    return cpu_ldub_data(env, segptr + (reg16 & 0xffff));
--}
--
--static inline unsigned int vm_getw(CPUX86State *env,
--                                   uint32_t segptr, unsigned int reg16)
--{
--    return cpu_lduw_data(env, segptr + (reg16 & 0xffff));
--}
--
--static inline unsigned int vm_getl(CPUX86State *env,
--                                   uint32_t segptr, unsigned int reg16)
--{
--    return cpu_ldl_data(env, segptr + (reg16 & 0xffff));
--}
--
- void save_v86_state(CPUX86State *env)
- {
-     CPUState *cs = env_cpu(env);
-@@ -131,19 +107,6 @@ static inline void return_to_32bit(CPUX86State *env, int retval)
-     env->regs[R_EAX] = retval;
- }
- 
--static inline int set_IF(CPUX86State *env)
--{
--    CPUState *cs = env_cpu(env);
--    TaskState *ts = get_task_state(cs);
--
--    ts->v86flags |= VIF_MASK;
--    if (ts->v86flags & VIP_MASK) {
--        return_to_32bit(env, TARGET_VM86_STI);
--        return 1;
+-    if (target_bits & 1) {
+-        host_bits |= float_flag_invalid;
 -    }
--    return 0;
+-    if (target_bits & 2) {
+-        host_bits |= float_flag_divbyzero;
+-    }
+-    if (target_bits & 4) {
+-        host_bits |= float_flag_overflow;
+-    }
+-    if (target_bits & 8) {
+-        host_bits |= float_flag_underflow;
+-    }
+-    if (target_bits & 0x10) {
+-        host_bits |= float_flag_inexact;
+-    }
+-    if (target_bits & 0x80) {
+-        host_bits |= float_flag_input_denormal;
+-    }
+-    return host_bits;
 -}
 -
- static inline void clear_IF(CPUX86State *env)
+ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
  {
-     CPUState *cs = env_cpu(env);
-@@ -162,34 +125,6 @@ static inline void clear_AC(CPUX86State *env)
-     env->eflags &= ~AC_MASK;
+     uint32_t i;
+@@ -99,15 +73,14 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+     return vfp_exceptbits_from_host(i);
  }
  
--static inline int set_vflags_long(unsigned long eflags, CPUX86State *env)
--{
--    CPUState *cs = env_cpu(env);
--    TaskState *ts = get_task_state(cs);
--
--    set_flags(ts->v86flags, eflags, ts->v86mask);
--    set_flags(env->eflags, eflags, SAFE_MASK);
--    if (eflags & IF_MASK)
--        return set_IF(env);
--    else
--        clear_IF(env);
--    return 0;
--}
--
--static inline int set_vflags_short(unsigned short flags, CPUX86State *env)
--{
--    CPUState *cs = env_cpu(env);
--    TaskState *ts = get_task_state(cs);
--
--    set_flags(ts->v86flags, flags, ts->v86mask & 0xffff);
--    set_flags(env->eflags, flags, SAFE_MASK);
--    if (flags & IF_MASK)
--        return set_IF(env);
--    else
--        clear_IF(env);
--    return 0;
--}
--
- static inline unsigned int get_vflags(CPUX86State *env)
+-static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
++static void vfp_clear_float_status_exc_flags(CPUARMState *env)
  {
-     CPUState *cs = env_cpu(env);
+     /*
+-     * The exception flags are ORed together when we read fpscr so we
+-     * only need to preserve the current state in one of our
+-     * float_status values.
++     * Clear out all the exception-flag information in the float_status
++     * values. The caller should have arranged for env->vfp.fpsr to
++     * be the architecturally up-to-date exception flag information first.
+      */
+-    int i = vfp_exceptbits_to_host(val);
+-    set_float_exception_flags(i, &env->vfp.fp_status);
++    set_float_exception_flags(0, &env->vfp.fp_status);
+     set_float_exception_flags(0, &env->vfp.fp_status_f16);
+     set_float_exception_flags(0, &env->vfp.standard_fp_status);
+     set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
+@@ -164,7 +137,7 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+     return 0;
+ }
+ 
+-static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
++static void vfp_clear_float_status_exc_flags(CPUARMState *env)
+ {
+ }
+ 
+@@ -216,8 +189,6 @@ void vfp_set_fpsr(CPUARMState *env, uint32_t val)
+ {
+     ARMCPU *cpu = env_archcpu(env);
+ 
+-    vfp_set_fpsr_to_host(env, val);
+-
+     if (arm_feature(env, ARM_FEATURE_NEON) ||
+         cpu_isar_feature(aa32_mve, cpu)) {
+         /*
+@@ -231,13 +202,18 @@ void vfp_set_fpsr(CPUARMState *env, uint32_t val)
+     }
+ 
+     /*
+-     * The only FPSR bits we keep in vfp.fpsr are NZCV:
+-     * the exception flags IOC|DZC|OFC|UFC|IXC|IDC are stored in
+-     * fp_status, and QC is in vfp.qc[]. Store the NZCV bits there,
+-     * and zero any of the other FPSR bits.
++     * NZCV lives only in env->vfp.fpsr. The cumulative exception flags
++     * IOC|DZC|OFC|UFC|IXC|IDC also live in env->vfp.fpsr, with possible
++     * extra pending exception information that hasn't yet been folded in
++     * living in the float_status values (for TCG).
++     * Since this FPSR write gives us the up to date values of the exception
++     * flags, we want to store into vfp.fpsr the NZCV and CEXC bits, zeroing
++     * anything else. We also need to clear out the float_status exception
++     * information so that the next vfp_get_fpsr does not fold in stale data.
+      */
+-    val &= FPSR_NZCV_MASK;
++    val &= FPSR_NZCV_MASK | FPSR_CEXC_MASK;
+     env->vfp.fpsr = val;
++    vfp_clear_float_status_exc_flags(env);
+ }
+ 
+ static void vfp_set_fpcr_masked(CPUARMState *env, uint32_t val, uint32_t mask)
 -- 
-2.46.1
+2.34.1
 
 
