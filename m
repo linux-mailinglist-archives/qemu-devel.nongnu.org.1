@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17EC99A9B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B83F99A981
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:09:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ4V-0001AL-2m; Fri, 11 Oct 2024 13:04:59 -0400
+	id 1szJ4a-0001De-Nz; Fri, 11 Oct 2024 13:05:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szJ4R-0000hD-0j
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:55 -0400
+ id 1szJ4Q-0000hu-Fy
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szHe8-0007Gs-2g
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:41 -0400
+ id 1szHeD-0007HK-M5
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:33:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728660819;
+ s=mimecast20190719; t=1728660825;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZQtmuw2xMVAabxXMNCF1evpW+a0kJgwO3J3KK4HJSHE=;
- b=JzU/tPQvLQCNbDrIHYUMtf27bSAhT77sW1LDHzsayrtNPGOccid7JsJE+hQgCjIQiVERKW
- JZ9bqYtJLv5zdDccGDl9PdHiP1XOQ+4l5mpeqENH49UpZVKjAmJouzwIyj1dea3LmIKjSx
- vuCzln3HkrPPhAA43UUDoM1kNmDdg2A=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
+ b=XjbaFeMoL2I1He7l5byNoTu9WSx4vQLdwD2a3AS6SCVWDilNGf7nKuuxtitd3wFft86a0s
+ 2WYfCRva0FzAgVhAdNYBPNkDjASWJQDtNRf0AoR8JsElSqPb8/yf995iAsqLH0YhHbgQUu
+ BzeDwWzEsfBLNoxUeLBp8MEgEZxtpYA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-Bt7RkumMOoW_wKQoLKH_9w-1; Fri, 11 Oct 2024 11:33:38 -0400
-X-MC-Unique: Bt7RkumMOoW_wKQoLKH_9w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a99d1730c26so21792566b.0
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:33:38 -0700 (PDT)
+ us-mta-266-NQZgpW_qMUqpYIYx8KpB4A-1; Fri, 11 Oct 2024 11:33:43 -0400
+X-MC-Unique: NQZgpW_qMUqpYIYx8KpB4A-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5c92e8b8101so1361522a12.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:33:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728660817; x=1729265617;
+ d=1e100.net; s=20230601; t=1728660821; x=1729265621;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZQtmuw2xMVAabxXMNCF1evpW+a0kJgwO3J3KK4HJSHE=;
- b=Z6bpvfc3Pc6JQ6eRkJo/YQoJ7HcZGjSmhUrPrLDJCUOnpfOwjIL+Sk3I/gai49Ityk
- rXmjNCJgSydLjamXgpyqxCVY7Fhble7ytUzQpCKqP53+uqpnUBsM1LdJPvz9VagE6Gob
- zoRNU7v1CWxkVE+Sr+JZxkHmiRMCVyP+TYYTsj1T4jpl7D/CUI3dft8K0927LdOUx5sE
- VNg66fCJPRH6CBbz388tuqovJkw0cCeuS/vQCyHwdmd5Lz/I4XRXWQ8tZGb2ZKIXfSUY
- rJH9EC6i/0sl3XIGKdaiOVlSX6AXDY9IdkEhMB4uuoVwkGC+6IRM6gsZQlXbgUE157aH
- 05WA==
-X-Gm-Message-State: AOJu0YwkKiHUu0OWZN2WOYytgMuOiddPbNwT6rpCczKV2p1GVNTnadpS
- NL3d6tiQpy9jiGbNuoSpx5Q1mhl+KfdSdLbCBBJA1Mb4SJhNqa3P4XQiW4xwDHSKN4u5rsPMGv8
- VyxZkx/hoNP2CUsBWIKYER4CpyxG5S01lm0twn1erEGwJdeaIR40JsaAbZKVNiRi1KihHxE2cQL
- sOjQwhdGuIB3KDNIIXa1Br+KJ3P6AuxHFEsVYZMpc=
-X-Received: by 2002:a17:907:7ea1:b0:a8d:250a:52a8 with SMTP id
- a640c23a62f3a-a99b93a8506mr240095166b.3.1728660816732; 
- Fri, 11 Oct 2024 08:33:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhy0k8oQ+ywfujnrXt/UJo2cW2dY0m+WYz+ikTS6WVY/CFqAaIXXwS1Jx7CSIRiQy3TTJ4/Q==
-X-Received: by 2002:a17:907:7ea1:b0:a8d:250a:52a8 with SMTP id
- a640c23a62f3a-a99b93a8506mr240092766b.3.1728660816224; 
- Fri, 11 Oct 2024 08:33:36 -0700 (PDT)
+ bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
+ b=w0aVp80hh/Hpzy1Ui/t7Ve3HXgbfSFk0QxGi9++2GeP00M1Y98bBRhqF7Zz2BLqiHO
+ VlDyaOoxpTdKsahisv0vrk60fSmzeReTQoqMN2WZR/KiRQgn/yzO0aNHjYcC+l9uerDF
+ 4Fi/R5r0QzkSr/4YE8FRuaq1KKyrY11LMW2jO/ERVxWeRP5m52Q0EjgaYafKzAsbilK6
+ HbcHYn9X0iPnyqtIS/3kFvwLjlseWUpHs8YpxnEOO2Hg1Dm3TQ6wB27UrIr8IkVyGMr4
+ b3N3xAFwoe0YFev/bVGk+joZ6WQ42Ylk7b0MH6feuSm/rVdqx77ZongeW95oP/pCnKaT
+ 6Jnw==
+X-Gm-Message-State: AOJu0Yz56/DxCSc5IDKDIASEPAlMp6qm2lcJutsQyIOBS/gAxXodj4N1
+ 3L87argmdOGkjW+RsPsRfPtqtCIisyOo8eewCOUvwidC88IGUW9tZwXy8+/NQO6Uh2SNGxM7BH3
+ MWoszIELORTWxZ703LKEqEPHwquXOmZSXX9v3geBC8X7lxjxbj2fqNK4WYLMZju9TR+0glrnryl
+ imaMnX6OnaJHizJo7Q2+Is+g22YAusulrTZUw1C8E=
+X-Received: by 2002:a17:907:c7d6:b0:a99:5629:b3ac with SMTP id
+ a640c23a62f3a-a99b957e3b1mr262460366b.26.1728660821125; 
+ Fri, 11 Oct 2024 08:33:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGolNN6TBVqw1Sg0aWcAp2PM9aWGSVjwwyVB7HZv8r9QKMVXpHj6J3w5dxisH1n+nnd/1WjPA==
+X-Received: by 2002:a17:907:c7d6:b0:a99:5629:b3ac with SMTP id
+ a640c23a62f3a-a99b957e3b1mr262457766b.26.1728660820550; 
+ Fri, 11 Oct 2024 08:33:40 -0700 (PDT)
 Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99a80dcdc3sm226855066b.172.2024.10.11.08.33.34
+ a640c23a62f3a-a99a7f25411sm222853866b.67.2024.10.11.08.33.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 08:33:34 -0700 (PDT)
+ Fri, 11 Oct 2024 08:33:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v3 15/18] gitlab-ci: add Rust-enabled CI job
-Date: Fri, 11 Oct 2024 17:32:23 +0200
-Message-ID: <20241011153227.81770-16-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL v3 16/18] docs: fix invalid footnote syntax
+Date: Fri, 11 Oct 2024 17:32:24 +0200
+Message-ID: <20241011153227.81770-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241011153227.81770-1-pbonzini@redhat.com>
 References: <20241011153227.81770-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -102,57 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a job using --enable-rust, to ensure that the toolchain is installed
-correctly by the Dockerfile and that QEMU builds with Rust enabled on
-at least one platform.
+All footnotes must come after a separator in reStructuredText.  Fix the
+two files in which this does not happen.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
+This mistake causes the link to be rendered literally:
+
+   ...from the venv itself[#distlib]_. If no...
+
+and is caught by Sphinx 8.1.0 as an unreferenced footnote.
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml  | 13 +++++++++++++
- .gitlab-ci.d/containers.yml |  6 ++++++
- 2 files changed, 19 insertions(+)
+ docs/devel/atomics.rst      | 2 +-
+ docs/devel/build-system.rst | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 669c980c4b4..6af7920b355 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -120,6 +120,19 @@ build-system-fedora:
-       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
-     MAKE_CHECK_ARGS: check-build
+diff --git a/docs/devel/atomics.rst b/docs/devel/atomics.rst
+index b77c6e13e18..6bf032f9005 100644
+--- a/docs/devel/atomics.rst
++++ b/docs/devel/atomics.rst
+@@ -204,7 +204,7 @@ They come in six kinds:
+   before the second with respect to the other components of the system.
+   Therefore, unlike ``smp_rmb()`` or ``qatomic_load_acquire()``,
+   ``smp_read_barrier_depends()`` can be just a compiler barrier on
+-  weakly-ordered architectures such as Arm or PPC[#]_.
++  weakly-ordered architectures such as Arm or PPC\ [#]_.
  
-+build-system-fedora-rust-nightly:
-+  extends:
-+    - .native_build_job_template
-+    - .native_build_artifact_template
-+  needs:
-+    job: amd64-fedora-rust-nightly-container
-+  variables:
-+    IMAGE: fedora-rust-nightly
-+    CONFIGURE_ARGS: --disable-docs --enable-rust
-+    TARGETS: aarch64-softmmu
-+    MAKE_CHECK_ARGS: check-build
-+  allow_failure: true
-+
- check-system-fedora:
-   extends: .native_test_job_template
-   needs:
-diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
-index ae79d4c58bc..db9b4d5e57f 100644
---- a/.gitlab-ci.d/containers.yml
-+++ b/.gitlab-ci.d/containers.yml
-@@ -27,3 +27,9 @@ python-container:
-   extends: .container_job_template
-   variables:
-     NAME: python
-+
-+amd64-fedora-rust-nightly-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: fedora-rust-nightly
-+  allow_failure: true
+   Note that the first load really has to have a _data_ dependency and not
+   a control dependency.  If the address for the second load is dependent
+diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+index 79eceb179de..fa1c59d9fd8 100644
+--- a/docs/devel/build-system.rst
++++ b/docs/devel/build-system.rst
+@@ -145,13 +145,13 @@ was installed in the ``site-packages`` directory of another interpreter,
+ or with the wrong ``pip`` program.
+ 
+ If a package is available for the chosen interpreter, ``configure``
+-prepares a small script that invokes it from the venv itself[#distlib]_.
++prepares a small script that invokes it from the venv itself\ [#distlib]_.
+ If not, ``configure`` can also optionally install dependencies in the
+ virtual environment with ``pip``, either from wheels in ``python/wheels``
+ or by downloading the package with PyPI.  Downloading can be disabled with
+ ``--disable-download``; and anyway, it only happens when a ``configure``
+ option (currently, only ``--enable-docs``) is explicitly enabled but
+-the dependencies are not present[#pip]_.
++the dependencies are not present\ [#pip]_.
+ 
+ .. [#distlib] The scripts are created based on the package's metadata,
+               specifically the ``console_script`` entry points.  This is the
 -- 
 2.46.2
 
