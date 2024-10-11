@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D192799A993
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BCF99A9DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ8M-0005fv-PQ; Fri, 11 Oct 2024 13:09:04 -0400
+	id 1szJ5A-0001ob-39; Fri, 11 Oct 2024 13:05:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1szJ4X-0000wP-VE
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:05:02 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1szHTj-0005sV-Tp
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:22:57 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-20c803787abso15159725ad.0
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:22:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728660174; x=1729264974; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1CogMR7I7WuqqzE6cNx48xEoXofErOXlHnvljTI0ZmU=;
- b=vYIg4B3GEeJQQppUtlecq2fVGVtvUZz/O+yYJ4+l+u55BxWWhFo4v2uj09ueV30CZn
- Ixcaqg5KnAAJH1SGFvTFlYWPihcX3EAJBjXuZb5yexJPPUZKJVW1nr+b/K3dWqSqIrK4
- eAM9kQjbmdmDybtqDFzkA8ORs9k5wLc0TMxe/1T3hpwyCrYXey1MtRvc2zHDBJsJMYTh
- 8/nQF5UIWpzHUPNh4zSbCAslGPtrLLrYsKGc0HTXF0uh0wlHOMlOt2UFawpwSfsR2G6w
- QtbIRjIrryBZ/xVY+8YWa4deEKT2i5zgYYsmFTf3BV3inrH7UQr7YIm8v/kZWaU1Gp9p
- Q8Yg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1szJ4U-0000hD-PM
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1szHd6-0007Bb-Pu
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 11:32:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728660754;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PDI/Jyc7U0oyvHlOl2zTUGj1FkMab/cE0ZBkgHXlfOc=;
+ b=J6TRa4kl1D2oh9u8VJxGcQPVKFRdatpuTOFJJUWOZs50m4CMKjg9idpboLuegfWo3s/OOk
+ iGoQSUsvPYSgEWYJx9CCSgkyaALu370Moc3f1Fn6lfmYnjmAs2F3WXhlm+WjGQmc+f+EcN
+ BqeZBwlRE8rlu7CxVoabF8JhKIZg4zg=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-ElapTMr_NQexuPWfKwGcIg-1; Fri, 11 Oct 2024 11:32:32 -0400
+X-MC-Unique: ElapTMr_NQexuPWfKwGcIg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9338a16cdso2372772a12.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 08:32:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728660174; x=1729264974;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1CogMR7I7WuqqzE6cNx48xEoXofErOXlHnvljTI0ZmU=;
- b=KIIlANwb7UBFtJrW3Bm3MQEgwBpGmDo38RSSW6NqnFfQCjlZRQZmnxvnMemTOhAMZ4
- uAkVNO6+YyydhjbBlIdPa0ZIVZuzDJgX3TrxbgB4iZoNLHLd6ML/bDcWRaKHmln8cG8B
- cKYy2tv3jPtsr+ZfiGNFMsE7hBEVCc7LjR+35XkRCQg2GqeWg8pMz/fxW8KHOhJNdLqx
- dwcymrY6BgyiKdzTYLg7G6ChP56NwUEfYW4GBXS9UbZ2+m0JBBB4AXoPDV0q8A+xoiN8
- EJkOWJnr8EYaEgAM6LJlx7LFDdF2dhpytp61xmoqJfhoyqbV0sIdJlB2f84nPvbuTEPp
- rGhQ==
-X-Gm-Message-State: AOJu0Yx3522eTuh6p1u58Njoufy9UEeADpodHvValW4gq920ZZZfq6BY
- wcfXM/GVmyzRLfx3HBVdDrEG+cy6ZZfOVBzkX4uj+pYIVCmKX4zeoNWbGi6sY4efaSoml3/D9xo
- d
-X-Google-Smtp-Source: AGHT+IGtuBfJ5Y8/O99TVzmcr+ylQwPmRJHu4yyYUgnd8FAVtIUhSM+5WEIdXBhH7Jp50Bxnudz0dA==
-X-Received: by 2002:a17:902:e88a:b0:20b:5e34:1842 with SMTP id
- d9443c01a7336-20ca03ff886mr53673925ad.25.1728660174181; 
- Fri, 11 Oct 2024 08:22:54 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ d=1e100.net; s=20230601; t=1728660751; x=1729265551;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PDI/Jyc7U0oyvHlOl2zTUGj1FkMab/cE0ZBkgHXlfOc=;
+ b=nxoYUSfvmU3m3bQi3FSw3nMTvonNhtK3nQViZB8r1/6t5uBQNTtl1X4FM5EI3lpANk
+ SHfUG906Vx55JrqltEHhNV5Kg65jjddO0kY7+wbs6lr9GYSdPCcLCKuMVTV8Ca9JXSs6
+ kSVPowIbj4zsosa/QYvl1SJut+qt+Xcvh8h43/PLnBnZlDcDav4IArSyH3ZbHqx2jMmD
+ qSf/zeW8qBeDvWZX8Lsi2HxvxHw19iqSUY08P8w1kEwlmq1bYvBzwqLptdUCDJIQfs8c
+ XOPKQ0zlCPnxzvRyanK6Bh0k00N85YkA+CJm9n4OPbIUD8laq1TN9ugSFiFashpa9Vrb
+ PuVQ==
+X-Gm-Message-State: AOJu0YykhIarjKlgF3ezgJABCTxX5hjsb5+7g1vnAIskqZZW7C2Mrbcf
+ g3+udwq1Jp3JVEnltr5tpDlvqbsvTZ8G7YpEs0Q7B2cPks98gKa+EugSzBe4LvcrXqpiSXhWLmV
+ TOwr9r32n7xj5h8LOgMXYSZlBbNXJ5AnjPQSFi+WUgg2gXwYcA6/aRfbIEPzqhTdHpDkSVdcnY2
+ lqJKS7eX67uCzKnEhrfPrs63b9DfBMPhOuQhS1J9g=
+X-Received: by 2002:a05:6402:1d48:b0:5c5:cb7f:e56a with SMTP id
+ 4fb4d7f45d1cf-5c93353c96fmr7068473a12.1.1728660751113; 
+ Fri, 11 Oct 2024 08:32:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXPG0bNtyxLYAHlROzDfH901ArxuPiQg8UkezZWsGVC/Sr2xF/nOKCRc8rtxPJlthtWgNrvg==
+X-Received: by 2002:a05:6402:1d48:b0:5c5:cb7f:e56a with SMTP id
+ 4fb4d7f45d1cf-5c93353c96fmr7068437a12.1.1728660750360; 
+ Fri, 11 Oct 2024 08:32:30 -0700 (PDT)
+Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c8c348986sm24499055ad.258.2024.10.11.08.22.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Oct 2024 08:22:53 -0700 (PDT)
-Message-ID: <b5bf5d17-2451-4d6e-9a4e-6fb4e94ad308@linaro.org>
-Date: Fri, 11 Oct 2024 08:22:51 -0700
+ 4fb4d7f45d1cf-5c93711ab3asm2038475a12.30.2024.10.11.08.32.29
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Oct 2024 08:32:29 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL v3 00/18] Rust initial PoC + meson changes for 2024-10-07
+Date: Fri, 11 Oct 2024 17:32:08 +0200
+Message-ID: <20241011153227.81770-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/20] accel/tcg: Use the alignment test in
- tlb_fill_align
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org,
- linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-References: <20241009000453.315652-1-richard.henderson@linaro.org>
- <20241009000453.315652-7-richard.henderson@linaro.org>
- <CAFEAcA-mSsFgjoBWi13dXqZUbys2N81YVXLD_ZfuuGo+Xfy-gQ@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA-mSsFgjoBWi13dXqZUbys2N81YVXLD_ZfuuGo+Xfy-gQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,51 +97,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/24 03:44, Peter Maydell wrote:
-> On Wed, 9 Oct 2024 at 01:05, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> When we have a tlb miss, defer the alignment check to
->> the new tlb_fill_align hook.  Move the existing alignment
->> check so that we only perform it with a tlb hit.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> 
->> @@ -1754,8 +1767,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
->>            * Lookup both pages, recognizing exceptions from either.  If the
->>            * second lookup potentially resized, refresh first CPUTLBEntryFull.
->>            */
->> -        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
->> -        if (mmu_lookup1(cpu, &l->page[1], l->mmu_idx, type, ra)) {
->> +        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
->> +        if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
-> 
-> Is 0 the right thing here ? Given that alignment-requirements can
-> differ per-page, what happens for the case of an unaligned access
-> that crosses a page boundary where the first page is "memory that
-> doesn't care about alignment" and the second page is "memory that
-> does enforce alignment" ?
+The following changes since commit b5ab62b3c0050612c7f9b0b4baeb44ebab42775a:
 
-I can't think of anything else that makes sense.  The access to the second page is 
-"aligned" in the sense that it begins at offset 0.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-04 19:28:37 +0100)
 
-Anyway, alignment as a page property is unique to Arm and...
+are available in the Git repository at:
 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-> For Arm this is moot, because an access that crosses a page
-> boundary into something with different memory attributes is
-> CONSTRAINED UNPREDICTABLE (per Arm ARM rev K.a B2.15.3), but
-> maybe other architectures are less flexible.
+for you to fetch changes up to 381d2c36e1242f849a55f4622e50b9a69cb92842:
 
-... as you say.
+  docs: use consistent markup for footnotes (2024-10-11 13:08:32 +0200)
 
-> Also, the comment does say "recognizing exceptions from either",
-> and we aren't going to do that for alignment issues in page 2,
-> so if we're OK with ignoring this we should update the comment.
+v2->v3: new patches
+- scripts/archive-source: find directory name for subprojects
+- docs: fix invalid footnote syntax
+- docs: avoid footnotes consisting of just URLs
+- docs: use consistent markup for footnotes
 
-The second page can still raise page faults.  How would you re-word this?
+----------------------------------------------------------------
+* first commit for Rust support
+* add CI job using Fedora + Rust nightly
+* fix detection of ATOMIC128 on x86_64
+* fix compilation with Sphinx 8.1.0
 
+----------------------------------------------------------------
+Manos Pitsidianakis (6):
+      build-sys: Add rust feature option
+      rust: add bindgen step as a meson dependency
+      .gitattributes: add Rust diff and merge attributes
+      meson.build: add HAVE_GLIB_WITH_ALIGNED_ALLOC flag
+      rust: add crate to expose bindings and interfaces
+      rust: add utility procedural macro crate
 
-r~
+Paolo Bonzini (11):
+      Require meson version 1.5.0
+      configure, meson: detect Rust toolchain
+      scripts/archive-source: find directory name for subprojects
+      rust: add PL011 device model
+      meson: define qemu_isa_flags
+      meson: ensure -mcx16 is passed when detecting ATOMIC128
+      dockerfiles: add a Dockerfile using a nightly Rust toolchain
+      gitlab-ci: add Rust-enabled CI job
+      docs: fix invalid footnote syntax
+      docs: avoid footnotes consisting of just URLs
+      docs: use consistent markup for footnotes
+
+Pierrick Bouvier (1):
+      meson: fix machine option for x86_version
+
+ MAINTAINERS                                        |  21 +
+ docs/devel/atomics.rst                             |   6 +-
+ docs/devel/build-system.rst                        |   6 +-
+ docs/devel/loads-stores.rst                        |   2 +-
+ docs/devel/maintainers.rst                         |   4 +-
+ docs/devel/migration/mapped-ram.rst                |   4 +-
+ docs/devel/testing/acpi-bits.rst                   |  26 +-
+ docs/specs/fw_cfg.rst                              |   4 +-
+ docs/specs/rapl-msr.rst                            |  25 +-
+ configure                                          | 170 +++++-
+ meson.build                                        | 158 +++++-
+ rust/wrapper.h                                     |  47 ++
+ .gitattributes                                     |   3 +
+ .gitlab-ci.d/buildtest.yml                         |  13 +
+ .gitlab-ci.d/containers.yml                        |   6 +
+ Kconfig                                            |   1 +
+ Kconfig.host                                       |   3 +
+ hw/arm/Kconfig                                     |  30 +-
+ meson_options.txt                                  |   3 +
+ python/scripts/vendor.py                           |   4 +-
+ python/wheels/meson-1.2.3-py3-none-any.whl         | Bin 964928 -> 0 bytes
+ python/wheels/meson-1.5.0-py3-none-any.whl         | Bin 0 -> 959846 bytes
+ pythondeps.toml                                    |   2 +-
+ rust/.gitignore                                    |   3 +
+ rust/Kconfig                                       |   1 +
+ rust/hw/Kconfig                                    |   2 +
+ rust/hw/char/Kconfig                               |   3 +
+ rust/hw/char/meson.build                           |   1 +
+ rust/hw/char/pl011/.gitignore                      |   2 +
+ rust/hw/char/pl011/Cargo.lock                      | 134 +++++
+ rust/hw/char/pl011/Cargo.toml                      |  26 +
+ rust/hw/char/pl011/README.md                       |  31 ++
+ rust/hw/char/pl011/meson.build                     |  26 +
+ rust/hw/char/pl011/src/device.rs                   | 599 +++++++++++++++++++++
+ rust/hw/char/pl011/src/device_class.rs             |  70 +++
+ rust/hw/char/pl011/src/lib.rs                      | 586 ++++++++++++++++++++
+ rust/hw/char/pl011/src/memory_ops.rs               |  59 ++
+ rust/hw/meson.build                                |   1 +
+ rust/meson.build                                   |   4 +
+ rust/qemu-api-macros/Cargo.lock                    |  47 ++
+ rust/qemu-api-macros/Cargo.toml                    |  25 +
+ rust/qemu-api-macros/README.md                     |   1 +
+ rust/qemu-api-macros/meson.build                   |  25 +
+ rust/qemu-api-macros/src/lib.rs                    |  43 ++
+ rust/qemu-api/.gitignore                           |   2 +
+ rust/qemu-api/Cargo.lock                           |   7 +
+ rust/qemu-api/Cargo.toml                           |  26 +
+ rust/qemu-api/README.md                            |  17 +
+ rust/qemu-api/build.rs                             |  14 +
+ rust/qemu-api/meson.build                          |  24 +
+ rust/qemu-api/src/definitions.rs                   |  97 ++++
+ rust/qemu-api/src/device_class.rs                  | 128 +++++
+ rust/qemu-api/src/lib.rs                           | 166 ++++++
+ rust/qemu-api/src/tests.rs                         |  49 ++
+ rust/rustfmt.toml                                  |   7 +
+ scripts/archive-source.sh                          |  29 +-
+ scripts/make-release                               |   6 +-
+ scripts/meson-buildoptions.sh                      |   3 +
+ scripts/rust/rust_root_crate.sh                    |  13 +
+ scripts/rust/rustc_args.py                         |  84 +++
+ subprojects/.gitignore                             |  11 +
+ subprojects/arbitrary-int-1-rs.wrap                |   7 +
+ subprojects/bilge-0.2-rs.wrap                      |   7 +
+ subprojects/bilge-impl-0.2-rs.wrap                 |   7 +
+ subprojects/either-1-rs.wrap                       |   7 +
+ subprojects/itertools-0.11-rs.wrap                 |   7 +
+ .../packagefiles/arbitrary-int-1-rs/meson.build    |  19 +
+ subprojects/packagefiles/bilge-0.2-rs/meson.build  |  29 +
+ .../packagefiles/bilge-impl-0.2-rs/meson.build     |  45 ++
+ subprojects/packagefiles/either-1-rs/meson.build   |  24 +
+ .../packagefiles/itertools-0.11-rs/meson.build     |  30 ++
+ .../packagefiles/proc-macro-error-1-rs/meson.build |  40 ++
+ .../proc-macro-error-attr-1-rs/meson.build         |  32 ++
+ .../packagefiles/proc-macro2-1-rs/meson.build      |  31 ++
+ subprojects/packagefiles/quote-1-rs/meson.build    |  29 +
+ subprojects/packagefiles/syn-2-rs/meson.build      |  40 ++
+ .../packagefiles/unicode-ident-1-rs/meson.build    |  20 +
+ subprojects/proc-macro-error-1-rs.wrap             |   7 +
+ subprojects/proc-macro-error-attr-1-rs.wrap        |   7 +
+ subprojects/proc-macro2-1-rs.wrap                  |   7 +
+ subprojects/quote-1-rs.wrap                        |   7 +
+ subprojects/syn-2-rs.wrap                          |   7 +
+ subprojects/unicode-ident-1-rs.wrap                |   7 +
+ subprojects/unicode-ident-1-rs/meson.build         |  20 +
+ .../docker/dockerfiles/fedora-rust-nightly.docker  | 173 ++++++
+ tests/docker/dockerfiles/opensuse-leap.docker      |   2 +-
+ tests/lcitool/mappings.yml                         |   2 +-
+ tests/lcitool/refresh                              |  26 +
+ 88 files changed, 3474 insertions(+), 75 deletions(-)
+ create mode 100644 rust/wrapper.h
+ delete mode 100644 python/wheels/meson-1.2.3-py3-none-any.whl
+ create mode 100644 python/wheels/meson-1.5.0-py3-none-any.whl
+ create mode 100644 rust/.gitignore
+ create mode 100644 rust/Kconfig
+ create mode 100644 rust/hw/Kconfig
+ create mode 100644 rust/hw/char/Kconfig
+ create mode 100644 rust/hw/char/meson.build
+ create mode 100644 rust/hw/char/pl011/.gitignore
+ create mode 100644 rust/hw/char/pl011/Cargo.lock
+ create mode 100644 rust/hw/char/pl011/Cargo.toml
+ create mode 100644 rust/hw/char/pl011/README.md
+ create mode 100644 rust/hw/char/pl011/meson.build
+ create mode 100644 rust/hw/char/pl011/src/device.rs
+ create mode 100644 rust/hw/char/pl011/src/device_class.rs
+ create mode 100644 rust/hw/char/pl011/src/lib.rs
+ create mode 100644 rust/hw/char/pl011/src/memory_ops.rs
+ create mode 100644 rust/hw/meson.build
+ create mode 100644 rust/meson.build
+ create mode 100644 rust/qemu-api-macros/Cargo.lock
+ create mode 100644 rust/qemu-api-macros/Cargo.toml
+ create mode 100644 rust/qemu-api-macros/README.md
+ create mode 100644 rust/qemu-api-macros/meson.build
+ create mode 100644 rust/qemu-api-macros/src/lib.rs
+ create mode 100644 rust/qemu-api/.gitignore
+ create mode 100644 rust/qemu-api/Cargo.lock
+ create mode 100644 rust/qemu-api/Cargo.toml
+ create mode 100644 rust/qemu-api/README.md
+ create mode 100644 rust/qemu-api/build.rs
+ create mode 100644 rust/qemu-api/meson.build
+ create mode 100644 rust/qemu-api/src/definitions.rs
+ create mode 100644 rust/qemu-api/src/device_class.rs
+ create mode 100644 rust/qemu-api/src/lib.rs
+ create mode 100644 rust/qemu-api/src/tests.rs
+ create mode 100644 rust/rustfmt.toml
+ create mode 100755 scripts/rust/rust_root_crate.sh
+ create mode 100644 scripts/rust/rustc_args.py
+ create mode 100644 subprojects/arbitrary-int-1-rs.wrap
+ create mode 100644 subprojects/bilge-0.2-rs.wrap
+ create mode 100644 subprojects/bilge-impl-0.2-rs.wrap
+ create mode 100644 subprojects/either-1-rs.wrap
+ create mode 100644 subprojects/itertools-0.11-rs.wrap
+ create mode 100644 subprojects/packagefiles/arbitrary-int-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/bilge-0.2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/bilge-impl-0.2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/either-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/itertools-0.11-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro-error-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/proc-macro2-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/quote-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/syn-2-rs/meson.build
+ create mode 100644 subprojects/packagefiles/unicode-ident-1-rs/meson.build
+ create mode 100644 subprojects/proc-macro-error-1-rs.wrap
+ create mode 100644 subprojects/proc-macro-error-attr-1-rs.wrap
+ create mode 100644 subprojects/proc-macro2-1-rs.wrap
+ create mode 100644 subprojects/quote-1-rs.wrap
+ create mode 100644 subprojects/syn-2-rs.wrap
+ create mode 100644 subprojects/unicode-ident-1-rs.wrap
+ create mode 100644 subprojects/unicode-ident-1-rs/meson.build
+ create mode 100644 tests/docker/dockerfiles/fedora-rust-nightly.docker
+-- 
+2.46.2
+
 
