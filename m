@@ -2,103 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE0499AA48
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3439799AA22
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:33:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJSf-0008Kh-Au; Fri, 11 Oct 2024 13:30:00 -0400
+	id 1szJVJ-00032n-RZ; Fri, 11 Oct 2024 13:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1szJRv-00089T-Ig
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:29:14 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1szJVD-0002n1-PU
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:32:35 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1szJRu-0006FB-16
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:29:11 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 514B521A9A;
- Fri, 11 Oct 2024 17:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1728667748; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=97rDNKO5Hkg7bspbSWVuqyDTVHtATm436zImSqKJ8WI=;
- b=PK3HJlHQrBEtqG/Y1z3hb8yPKiWeVDCssHwnJeNCSSEEg/pCQHk1dKp5UrNnX6IANeM0WF
- fZy5PSc99C7GJF2NbiaTKb46DAfObMbBfc/sRA1aoC3pz1sqReD5t6CWUK2h5Gm4NxcqCm
- xit0nhdHSwENgfibMTE8S5P9x0lNSkg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1728667748;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=97rDNKO5Hkg7bspbSWVuqyDTVHtATm436zImSqKJ8WI=;
- b=9GNvMTXXbyaj05YzkL6FX+sEsV0IYDNiXLkz45glfihoLIiGJ9oUdr2QtbbOUl43Q2luBT
- a6kZm4KKfV0nCUCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1728667747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=97rDNKO5Hkg7bspbSWVuqyDTVHtATm436zImSqKJ8WI=;
- b=Dd+c8bstOTnf7uRIYoHeDYPRnBEMDfzGR2MEW/AuH94W7jQRlra4W/zJGo3+nk7Ib24MaQ
- SpuIw1IARWtpcgami42lZKGNKk+i1aZZzcY5f0m9p9yo5aiE8ATq55fe0WLO4QkKXyALcr
- 7sr9bmdfFaF0lgUn3OFsk/TpdCKaTuU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1728667747;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=97rDNKO5Hkg7bspbSWVuqyDTVHtATm436zImSqKJ8WI=;
- b=MqdIOCIn7xHNGxWl0xdDuemQFjggG2hN/R9VqRTX5ngWqh9D6FJRZOZ3Xv86fGRXNOgO7J
- h9WLEo6BjOCV6aBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CBAEB1370C;
- Fri, 11 Oct 2024 17:29:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 3mOhJGJgCWfPSwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Oct 2024 17:29:06 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Yong Huang <yong.huang@smartx.com>, Hailiang Zhang
- <zhanghailiang@xfusion.com>
-Subject: Re: [PATCH] migration: Put thread names together with macros
-In-Reply-To: <20241011153652.517440-1-peterx@redhat.com>
-References: <20241011153652.517440-1-peterx@redhat.com>
-Date: Fri, 11 Oct 2024 14:29:04 -0300
-Message-ID: <87v7xyr1jz.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1szJVB-0006nd-MW
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:32:35 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-20cb47387ceso3779435ad.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 10:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728667952; x=1729272752; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i5UB0IS8EtRnVbRF1ECxgjtk2pBnzhjPLZ/sGzwq3sY=;
+ b=gEUu7IOJS8sbNcdI/E5dRVkKzdQpAmhaDTa5gxlxg8HRuY5VnOtyNDsWPVBsQjtUtl
+ c+kP4RaLwv1eKE2VyIo3Z6KzM45K7kZJUey8ORGRd2gFZTfW3ftEr5QNikh7QnqpAbGg
+ Z5O3OKI3b/21w03Lzx2j0UIxguT7LOqZ7IUrWIGYQPFwISNtjGNhqRqX8rY6kgTtqX3Y
+ pxqTRCAIp21RDYFwgL5KaNtQsmKKErardhW+WxJyjsciOJx10byBO0afMDykZfAvcqTq
+ lGExQlN/09eljynjBVnrwG7DOxte4pmn5gl5fU5IvtQFhz9nqDelSrJIuvZOacMoL+fo
+ 4BIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728667952; x=1729272752;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i5UB0IS8EtRnVbRF1ECxgjtk2pBnzhjPLZ/sGzwq3sY=;
+ b=rg83pb/IZyhQNPtBB20j4WWU+OKKb2bGC+YhMGqzqhbx8Bdl7LFS5VdhFbooNSUbDx
+ MG1pBlpcpsw6B1GUzWJgm88bko8w8JIROSMJ15ffsJMgyEDqVKx7yUNw3PBJi/EqjP0r
+ +AE0jeTM9ZOj0rVcuEWdbIfTypXXrwzxT81sw7Boe8KBx2bDmUkv9U//rLmJHU/xK5yo
+ ug553byj9r+syPXSxYpgA/Qs3Ry76jrNSPOZA2UhkoV3XZFT8Xzo290fItpq5hRDMf25
+ xwMvlFoKSD8jqBmAV8GFyubvD0xIm3CCCywgzvfiHnHKt7oRiOQBeHFzbCgtQP+VLoAZ
+ WK6w==
+X-Gm-Message-State: AOJu0YxvaQZfVDCfjwqRrDOOxpxvANZACWLFHOOG927JVLjGv7IX2vBo
+ X0NzQ/Cgf3Isjzpnmbt0fwKu4bvaJX2DZqBSkBcvKRQ7u4ey5uuNfLw571ZDqJU=
+X-Google-Smtp-Source: AGHT+IH9lD1GXhvGNI0bfHyuoYYmfMIqaFoKR69JF+K3MNogqsvJnXbI2KRKtwnLSIaPt88IuBDnQA==
+X-Received: by 2002:a17:902:d544:b0:20c:5e86:9b5e with SMTP id
+ d9443c01a7336-20ca14253f7mr47605955ad.3.1728667951956; 
+ Fri, 11 Oct 2024 10:32:31 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20c8badc3b2sm25679375ad.12.2024.10.11.10.32.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Oct 2024 10:32:31 -0700 (PDT)
+Message-ID: <596073dd-3d02-41b2-a03a-3041d2d01057@linaro.org>
+Date: Fri, 11 Oct 2024 10:32:29 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00]; BAYES_HAM(-2.99)[99.97%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
- imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: drop --enable-avx* options
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20241010091322.1790604-1-pbonzini@redhat.com>
+ <ZwedYPrdBaOz0n2U@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZwedYPrdBaOz0n2U@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,22 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 10/10/24 02:24, Daniel P. Berrangé wrote:
+> On Thu, Oct 10, 2024 at 11:13:22AM +0200, Paolo Bonzini wrote:
+>> Just detect compiler support and always enable the optimizations if
+>> it is avilable; warn if the user did request AVX2/AVX512 use via
+>> -Dx86_version= but the intrinsics are not available.
+>>
+>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>>   meson.build                   | 30 +++++++++++++++++++-----------
+>>   meson_options.txt             |  4 ----
+>>   scripts/meson-buildoptions.sh |  6 ------
+>>   3 files changed, 19 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/meson.build b/meson.build
+>> index e4b2af138da..b4418d54e0a 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -2955,22 +2955,16 @@ config_host_data.set('CONFIG_ASM_HWPROBE_H',
+>>                        cc.has_header_symbol('asm/hwprobe.h',
+>>                                             'RISCV_HWPROBE_EXT_ZBA'))
+>>   
+>> -config_host_data.set('CONFIG_AVX2_OPT', get_option('avx2') \
+>> -  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX2') \
+>> -  .require(cc.links('''
+>> -    #include <cpuid.h>
+>> +if have_cpuid_h
+>> +  have_avx2 = cc.links('''
+>>       #include <immintrin.h>
+>>       static int __attribute__((target("avx2"))) bar(void *a) {
+>>         __m256i x = *(__m256i *)a;
+>>         return _mm256_testz_si256(x, x);
+>>       }
+>>       int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
+>> -  '''), error_message: 'AVX2 not available').allowed())
+>> -
+>> -config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+>> -  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX512BW') \
+>> -  .require(cc.links('''
+>> -    #include <cpuid.h>
+>> +  ''')
+>> +  have_avx512bw = cc.links('''
+>>       #include <immintrin.h>
+>>       static int __attribute__((target("avx512bw"))) bar(void *a) {
+>>         __m512i *x = a;
+>> @@ -2978,7 +2972,21 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+>>         return res[1];
+>>       }
+>>       int main(int argc, char *argv[]) { return bar(argv[0]); }
+>> -  '''), error_message: 'AVX512BW not available').allowed())
+>> +  ''')
+>> +  if get_option('x86_version') >= '3' and not have_avx2
+>> +    warning('Cannot enable AVX optimizations due to missing intrinsics')
+>> +  elif get_option('x86_version') >= '4' and not have_avx512bw
+>> +    warning('Cannot enable AVX512 optimizations due to missing intrinsics')
+>> +  endif
+> 
+> Should these perhaps be error() rather than warning() ?
+> 
+> We only support GCC & CLang. If both GCC 7.4.0 and CLang 10.0 (our
+> min versions) have the intrinsics, then I'd say this is an impossible
+> scenario if x86_version is large, and thus would deserve error()
+Agreed.  Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> Keep migration thread names together, so it's easier to see a list of all
-> possible migration threads.
->
-> Still two functional changes below besides the macro defintions:
->
->   - There's one dirty rate thread that we overlooked before, now we add
->   that too and name it as "mig/dirtyrate" following the old rules.
->
->   - The old name "mig/src/rp-thr" has "-thr" but it may not be useful if
->   it's a thread name anyway, while "rp" can be slightly hard to read.
->   Taking this chance to rename it to "mig/src/return", hopefully a better
->   name.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+r~
 
