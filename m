@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867AD99AA62
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CF799A9B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJGj-0007GB-UC; Fri, 11 Oct 2024 13:17:38 -0400
+	id 1szJGm-0007SE-SF; Fri, 11 Oct 2024 13:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szJ8U-0000hD-Az
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1szJ8U-0004CO-7C
  for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:09:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szDeG-0007nV-Ec
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:17:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728645450;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bmN8Qgj4Kgf7zGRW5zmo0Pd2c+XiAVNrp2QHMBev/oI=;
- b=V/bifNWook8tEZz7//7N5igPyPAwxN73ayhviXF67NuDomwInAZOsKByfNYBk/MT9GI48l
- sm5wdJZtYLuFRSPcoSQZ3EfwkRp8fEnbchVkFf8XzoMSE9g8mq103qH4SaCMQWJ8OotP20
- sINBBIWKubae/ckXlDcfSnkUSxUKOiE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-7sbJS-UjM1CZRHBzmAEa5w-1; Fri, 11 Oct 2024 07:17:28 -0400
-X-MC-Unique: 7sbJS-UjM1CZRHBzmAEa5w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-431123a6eb4so14107735e9.0
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:17:28 -0700 (PDT)
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1szDfw-0007rg-7U
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:19:18 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71e053cf1f3so1804965b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1728645554; x=1729250354; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=t97p9zZl9/jmYPyVqbjQ4fbIa0dYpZbhd5CdMHNe5A0=;
+ b=IA4jtYvvC2DtYvgldY0Cd+xNX9p3UfoMz+GNkP2pek9Z0GHBVcc31IX5tMSdHINBac
+ 9ovKsBv7wRfE/pshngVxxueqybPw8+cDaMfyp1QdpEeNFi5+/Ggvf8dSX6b+sxUePtUY
+ nFBszZF3vBf60XR03w7rP3vSwrUTzy29Sy5pgVxpZn9hFcykrPbyHmNqpB25wTJIELPj
+ lfO9hJDDdNYIroIuXDRl1S2TpeZMlcgLRwhoLzbi7ZzGjefGhA6+4Gcn1aCaAzWwMkJF
+ QbRxdXKwS2JRYoKJt44EsJgjzGsPDJJsrhWcnlCeN43n+fJ2N/u9BwjNVsHy9QAkMHEt
+ 9H+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728645448; x=1729250248;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bmN8Qgj4Kgf7zGRW5zmo0Pd2c+XiAVNrp2QHMBev/oI=;
- b=ewvvIAdeDUNYJ+b0/G5on5/uN3YZo1Q6mpWyWOsShIUECpqbeKeX9/HRERVr1r51YU
- 5u8L1PcTMvPhesEq7P9Oc991NtlVovU5rTgx8Fi6iyP6a/O0ceixNQrkVh3xG6vfZU7q
- kuSAcDtESyPIi6EwkRcyeNKmwOobPn7Pku1P2fPxKyDrPPhmWjmV7nRY4xIvGp6eU6Ca
- rnnJFqH1AsWEejXshksibT3bBbtu2yLyDaEQni3Qiy6pIpPHPsT276ccHcPPHtsHFQTK
- qLxIiDidHQq1KsaNZnPMJzTTk2XKOtLstZrMCfGbwCSxwkbPtW2hz81b7uc2IJ39QLHi
- snXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV1up++B75e7dI0vDwfI19dNlP8xMjy+HXTOr8a69p2PmXTv/gPV4pdgtdZH0SMLlBSRLR5LbQVEsUb@nongnu.org
-X-Gm-Message-State: AOJu0YzoiKXWxt3ftzey3gI4elhSj5kqxiC1NWcpT2rXpSmTVw8tFZB1
- Z3UCOZDZP0ckqCWwnnGRx9qzzDOcPdRnEBE/ClODmAYGBBr39adI479ZZS+V8WIpCutsgoezdPu
- 2khSnJJnY8ZPvQfRepCLqnkHuWGGA5DYLOz+8d/jtX2cZ7nquHAdN3EM1nPJ8Kggr0zTcxjPZbS
- RkhQTDHYHcuqryZuH5PCzelycOCdE=
-X-Received: by 2002:a5d:58fc:0:b0:37c:fdc8:77ab with SMTP id
- ffacd0b85a97d-37d481650acmr4952955f8f.7.1728645447684; 
- Fri, 11 Oct 2024 04:17:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqrHqkcbBAFvuEIb85FlM98OBhCCo9MlF/p+WfpNxwyQN+e7xxtGpcUVErUHrc3QYezA04LUV68OmIagf76PE=
-X-Received: by 2002:a5d:58fc:0:b0:37c:fdc8:77ab with SMTP id
- ffacd0b85a97d-37d481650acmr4952945f8f.7.1728645447310; Fri, 11 Oct 2024
- 04:17:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728645554; x=1729250354;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t97p9zZl9/jmYPyVqbjQ4fbIa0dYpZbhd5CdMHNe5A0=;
+ b=q4nBentc6Tq38yA4NGacTws2/VaczTK9lRVdJU2liTtNIh9w40Dk/7uXZ+32V/XsV6
+ 1YucUFZbj5ycdQdU2L18jveB4Pt5klc9o1fVG7eAMzPRSz/i5W8oJkOWLEQI6R/8iovM
+ An91W90/j6WWyli3dPoJ3XDV9nyQWS8eH2/X3lkUQWcE5u/zD9bGqJ6R7cAC0e1HpYiV
+ BROEhXcKjaCzQ6fb0bbcFjLFBTU18uoYbvOFEMU3ejVTSPFqL6zaJS9YxqhQksuXTeeR
+ OBOzaukJ2oI4P9oNL+ImGhRkW/aSBkrEEcnT/NoA3KYtYZBKyD7L8QKfLyBFjiajzOp6
+ kRWQ==
+X-Gm-Message-State: AOJu0YxHbKw0gqlOR2SDS3pAY0sI7lTklfPL87YYbAY/gjqZLUaK+1EY
+ bS+nwulACeVeEMY9QXaBAY40Bhl3WiAK8DOXRHt5SBsusPZA/CxRCNc9TfcGZTY=
+X-Google-Smtp-Source: AGHT+IHKNDheTB7yfXWt13ICE59DdO3XHt7Sg4EeFgg22+YZahJIwkR+l0rB1hbQ18VB/TpKpKyIZQ==
+X-Received: by 2002:a05:6a21:1796:b0:1d7:2249:67a with SMTP id
+ adf61e73a8af0-1d8bcf9f071mr3477871637.36.1728645554319; 
+ Fri, 11 Oct 2024 04:19:14 -0700 (PDT)
+Received: from [192.168.68.110] (201-68-240-198.dsl.telesp.net.br.
+ [201.68.240.198]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71e2aa938aesm2381903b3a.133.2024.10.11.04.19.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Oct 2024 04:19:13 -0700 (PDT)
+Message-ID: <b7271701-195a-461d-ba64-e2a02c634177@ventanamicro.com>
+Date: Fri, 11 Oct 2024 08:19:09 -0300
 MIME-Version: 1.0
-References: <20241011054806.1014276-1-raj.khem@gmail.com>
- <2a543dd0-11e7-4357-97d9-31979a1a87ff@redhat.com>
- <7a2892b6-c0e3-43d5-93e2-30e72cbf9897@vivier.eu>
-In-Reply-To: <7a2892b6-c0e3-43d5-93e2-30e72cbf9897@vivier.eu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 11 Oct 2024 13:17:15 +0200
-Message-ID: <CABgObfaMqMvuQLavCUYxrHm8oQ993oANUC9Qi5hyxsLvFAWENw@mail.gmail.com>
-Subject: Re: [PATCH] sched_attr: Do not define for glibc >= 2.41
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: Khem Raj <raj.khem@gmail.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] target/riscv/kvm: add kvm-aia bools props
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, ajones@ventanamicro.com
+References: <20240924124407.766495-1-dbarboza@ventanamicro.com>
+ <20240924124407.766495-4-dbarboza@ventanamicro.com>
+ <CAKmqyKMMRCFvWYa1GjwkbJsBh8q_OgtA2UVdaNEJsr=N66hvkQ@mail.gmail.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAKmqyKMMRCFvWYa1GjwkbJsBh8q_OgtA2UVdaNEJsr=N66hvkQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,35 +97,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 11, 2024 at 11:15=E2=80=AFAM Laurent Vivier <laurent@vivier.eu>=
- wrote:
->
-> Le 11/10/2024 =C3=A0 11:08, Paolo Bonzini a =C3=A9crit :
-> > On 10/11/24 07:48, Khem Raj wrote:
-> >> glibc 2.41+ has added [1] definitions for sched_setattr and sched_geta=
-ttr functions
-> >> and struct sched_attr. Therefore, it needs to be checked for here as w=
-ell before
-> >> defining sched_attr
-> >>
-> >> Fixes builds with glibc/trunk
-> >>
-> >> [1] https://sourceware.org/git/?
-> >> p=3Dglibc.git;a=3Dcommitdiff;h=3D21571ca0d70302909cf72707b2a7736cf1219=
-0a0;hp=3D298bc488fdc047da37482f4003023cb9adef78f8
-> >>
-> >> Signed-off-by: Khem Raj <raj.khem@gmail.com>
-> >> Cc: Laurent Vivier <laurent@vivier.eu> (m
-> >
-> > Hi, I think it would be better to test in meson.build (with cc.has_type=
-), as is already done in
-> > several other places in linux-user/syscall.c.
->
-> We can also test if SCHED_ATTR_SIZE_VER0 exists as it is defined when the=
- structure is defined..
 
-Yes, that works too.
 
-Paolo
+On 10/10/24 10:57 PM, Alistair Francis wrote:
+> On Tue, Sep 24, 2024 at 10:46 PM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>> Boolean properties are preferrable in comparision to string properties
+>> since they don't require a string parsing.
+>>
+>> Add three bools that represents the available kvm-aia mode:
+>> riscv-aia-emul, riscv-aia-hwaccel, riscv-aia-auto. They work like the
+>> existing riscv-aia string property, i.e. if no bool is set we'll default
+>> to riscv-aia-auto, if the host supports it.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/kvm/kvm-cpu.c | 77 ++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 77 insertions(+)
+>>
+>> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+>> index 32f3dd6a43..e256e3fc48 100644
+>> --- a/target/riscv/kvm/kvm-cpu.c
+>> +++ b/target/riscv/kvm/kvm-cpu.c
+>> @@ -1671,6 +1671,62 @@ static void riscv_set_kvm_aia(Object *obj, const char *val, Error **errp)
+>>       }
+>>   }
+>>
+>> +static void riscv_set_kvm_aia_bool(uint32_t aia_bool, bool val)
+>> +{
+>> +    bool default_aia_mode = KVM_DEV_RISCV_AIA_MODE_AUTO;
+>> +
+>> +    g_assert(aia_bool <= KVM_DEV_RISCV_AIA_MODE_AUTO);
+>> +
+>> +    if (val) {
+>> +        aia_mode = aia_bool;
+>> +        return;
+>> +    }
+>> +
+>> +    /*
+>> +     * Setting an aia_bool to 'false' does nothing if
+>> +     * aia_mode isn't set to aia_bool.
+>> +     */
+>> +    if (aia_mode != aia_bool) {
+>> +        return;
+>> +    }
+>> +
+>> +    /*
+>> +     * Return to default value if we're disabling the
+>> +     * current set aia_mode.
+>> +     */
+>> +    aia_mode = default_aia_mode;
+>> +}
+>> +
+>> +static bool riscv_get_kvm_aia_emul(Object *obj, Error **errp)
+>> +{
+>> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_EMUL;
+>> +}
+>> +
+>> +static void riscv_set_kvm_aia_emul(Object *obj,  bool val, Error **errp)
+>> +{
+>> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_EMUL, val);
+>> +}
+>> +
+>> +static bool riscv_get_kvm_aia_hwaccel(Object *obj, Error **errp)
+>> +{
+>> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_HWACCEL;
+>> +}
+>> +
+>> +static void riscv_set_kvm_aia_hwaccel(Object *obj,  bool val, Error **errp)
+>> +{
+>> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_HWACCEL, val);
+>> +}
+>> +
+>> +static bool riscv_get_kvm_aia_auto(Object *obj, Error **errp)
+>> +{
+>> +    return aia_mode == KVM_DEV_RISCV_AIA_MODE_AUTO;
+>> +}
+>> +
+>> +static void riscv_set_kvm_aia_auto(Object *obj,  bool val, Error **errp)
+>> +{
+>> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_AUTO, val);
+>> +}
+>> +
+>>   void kvm_arch_accel_class_init(ObjectClass *oc)
+>>   {
+>>       object_class_property_add_str(oc, "riscv-aia", riscv_get_kvm_aia,
+>> @@ -1681,6 +1737,27 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
+>>           "if the host supports it");
+>>       object_property_set_default_str(object_class_property_find(oc, "riscv-aia"),
+>>                                       "auto");
+>> +
+>> +    object_class_property_add_bool(oc, "riscv-aia-emul",
+>> +                                   riscv_get_kvm_aia_emul,
+>> +                                   riscv_set_kvm_aia_emul);
+>> +    object_class_property_set_description(oc, "riscv-aia-emul",
+>> +        "Set KVM AIA mode to 'emul'. Changing KVM AIA modes relies on host "
+>> +        "support. Default mode is 'auto' if the host supports it");
+>> +
+>> +    object_class_property_add_bool(oc, "riscv-aia-hwaccel",
+>> +                                   riscv_get_kvm_aia_hwaccel,
+>> +                                   riscv_set_kvm_aia_hwaccel);
+>> +    object_class_property_set_description(oc, "riscv-aia-hwaccel",
+>> +        "Set KVM AIA mode to 'hwaccel'. Changing KVM AIA modes relies on host "
+>> +        "support. Default mode is 'auto' if the host supports it");
+>> +
+>> +    object_class_property_add_bool(oc, "riscv-aia-auto",
+>> +                                   riscv_get_kvm_aia_auto,
+>> +                                   riscv_set_kvm_aia_auto);
+>> +    object_class_property_set_description(oc, "riscv-aia-auto",
+>> +        "Set KVM AIA mode to 'auto'. Changing KVM AIA modes "
+>> +        "relies on host support");
+> 
+> This seems more confusing. What should happen if a user sets multiple to true?
 
+It'll work like most options in QEMU: the last setting will overwrite the previous
+ones. "-accel kvm,riscv-aia-hwaccel=true,riscv-aia-emul=true" will set the mode
+to 'emul'. This is the same behavior that we have with the existing 'riscv-aia'
+string option.
+
+In case someone tries it out with multiple -accel options, this doesn't work. Only
+the first '-accel <type>' are parsed. This happens due to a known command line
+parsing/accel globals issue that I tried to fix in [1] and [2].
+
+For now, using the existing 'riscv-aia' string option:
+
+-accel kvm,riscv-aia=emul -accel kvm,riscv-aia=hwaccel -accel kvm,riscv-aia=auto
+
+This will set riscv-aia to "emul" because all other "-accel kvm" options aren't
+being parsed. You can do silly stuff like:
+
+-accel kvm,riscv-aia=emul -accel kvm,riscv-aia=this_is_not_an_option
+
+And the guest will boot normally, setting riscv-aia to 'emul'.
+
+
+Thanks,
+
+Daniel
+
+
+[1] "[PATCH 0/2] system/vl.c: parse all '-accel' opts"
+     https://lore.kernel.org/qemu-devel/20240701133038.1489043-1-dbarboza@ventanamicro.com/
+[2] "[PATCH v2 0/2] object,accel-system: allow Accel type globals"
+     https://lore.kernel.org/qemu-devel/20240703204149.1957136-1-dbarboza@ventanamicro.com/
+
+
+> 
+> Alistair
+> 
+>>   }
+>>
+>>   void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+>> --
+>> 2.45.2
+>>
+>>
 
