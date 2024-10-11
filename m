@@ -2,75 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24BE99AA59
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 633AA99A9E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:25:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJIP-0000Vk-EE; Fri, 11 Oct 2024 13:19:26 -0400
+	id 1szJJC-0003b9-PA; Fri, 11 Oct 2024 13:20:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1szJ8A-0000hu-8v
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:08:51 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1szE50-0001qp-SE
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:45:13 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-539908f238fso2368489e87.2
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728647108; x=1729251908; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KoYJqYzV3j89I9O0Y4E7Gf3d9b4b/PDmrkIe7rqz+BU=;
- b=IcQKZU14QtfbmnBaCUIMErVezcvCmDVusKcmwJxtWLQAHbRvSNLuKIuJzKO5PuesrQ
- 3UQ8BIW/sImZVJzpi64Rnp/7SIHFkL7wvKyDWau4d+YPaBhh6QXwW/x+oWCWQIgt8X8o
- scVCBY0dWlfPQYnlmW/SLKKtSWEXjSEi9jabNE2g+eELjCpwewQKLMMZdljCv0NTgyYF
- X6SmPByjOW92ArgM72YjI0H7j5oOriojCFPRjLsE1T/ql5/UgnD2IHMdndVi0UWaH7me
- dsZGYHy2xnDMPmcpoivHrSYjLZ1q0oTiu/+6qu/4oRlyMg5+NiT0ejEJSzpnBycWiGG3
- zmzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728647108; x=1729251908;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KoYJqYzV3j89I9O0Y4E7Gf3d9b4b/PDmrkIe7rqz+BU=;
- b=hL3wzhbV9yCzcqE/cvI1upQIyPKRCu4M8Hkwr//bgG+UzwbRbQVdaXc7UGaJjGX7Jw
- WoV0y8snwct5ko8OQNU4jtX1V4A98HMgMXglZjmqs7hckXiclSQUsdu9hn61uIJmP/XR
- tJbvqalR/CwUe+jf2OsYTB5i+ER4RXjL51K445/HSN23HWUABfLtWWieIu5XY7F0orlP
- 0xsfWVVbmjaDvejWKhsFtOExGOBpaWaxF/+p4L0Q6rKSE2fzZlE+66JiWe4/78NhEX5D
- 8jsO7tcP3dutccei0s4t31WavPXi0JLhn3lFAj+tCjEm02qP2t3XZrf6d2u3PlG2lYzT
- lEMQ==
-X-Gm-Message-State: AOJu0YwdQEVsjM3+KxL0+gE4enYS7IZonuXow40GrDlpsRCtuF5+8kmF
- 8F12ZBuGh+saslQHnAC4ve5qB1aH3Nvi0qgO0F4aBN5gxf2KDQKNYHFO5nK4jPljm53n9dbG+MZ
- FJ8NXUa5//Z34U/rU00XvSx74NQKMeeGqvCMFcw==
-X-Google-Smtp-Source: AGHT+IGfrJjVckAUdrcSZMJZoxFSI0UGe1MclMlmdmBkvlrlvQ6djuD3nJMM+gBF2OqDwf9mUReJcHXgTbo0vSgUF/E=
-X-Received: by 2002:a05:6512:3f28:b0:539:951f:27c2 with SMTP id
- 2adb3069b0e04-539da59b9cemr1089226e87.61.1728647108001; Fri, 11 Oct 2024
- 04:45:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1szJ86-0000wP-GZ
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:08:43 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1szE80-00020e-ET
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:48:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1728647285; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=LhvAQZVq6zQugAdDltO5fIFd+w4LbVTw1bsZ6HniKjHj/NEZxuueztbr2J3o7XmdlsSZXvXkWfutBYLP251hT/dqnxUKmr6JpYgkfcKVXlzGk4c3xf/cDKF2imPjDHYn1WMdSW9/y5fMbuV7tLXbjZLQMAuNHeRuDpAMpxKsXfM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1728647285;
+ h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc;
+ bh=5sFyEQoNNfTMnrZMF9tqgJD3gpPzf6HZ6Qu2TFjkOfw=; 
+ b=mg5eSFOHEbMJNhvL4zcXpKxTrfazTjOO+EM+fNWIDgmsCYuOU9+T9Vxz4DbsmLNXQvoevZm9Wl/h9jYaV/CGbbE4Sdu4adQENbtOjJPTCYGL/3uz0SxAdtl+SBxy8sEEcxLYmRoxWBsl6nLBtNhXdLK7ngjzWQr+phXptJjH01Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728647285; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+ bh=5sFyEQoNNfTMnrZMF9tqgJD3gpPzf6HZ6Qu2TFjkOfw=;
+ b=ED5+4AIHsC7E2fAxCDaFi5uFq394+h5+nY1+ICnPAh+1BVHF80hnBlnEun3Zl0Uh
+ NwgJLn6ux2RsdR63S0SMnODgcYIeKTMrSJCHsH56g2SmEtAzwWKBQrgfs4NpcrMP6H7
+ peUb6uDUIDOgDTc5CfX/IGjcbiPfR11eFkTWmdKg=
+Received: by mx.zohomail.com with SMTPS id 1728647284424419.6132558453404;
+ Fri, 11 Oct 2024 04:48:04 -0700 (PDT)
+Message-ID: <e5180507-82e0-4bd2-8418-15bb831130e2@collabora.com>
+Date: Fri, 11 Oct 2024 14:48:01 +0300
 MIME-Version: 1.0
-References: <20241011111249.47530-1-pbonzini@redhat.com>
- <20241011111249.47530-3-pbonzini@redhat.com>
-In-Reply-To: <20241011111249.47530-3-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Oct 2024 12:44:56 +0100
-Message-ID: <CAFEAcA-ZkWDMMVYW8N_WspmBnM1e=41wmPeCOxbNQz=YhHuKsg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] docs: avoid footnotes consisting of just URLs
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 00/13] Support blob memory and venus on qemu
+To: Akihiro Suda <suda.kyoto@gmail.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>
+References: <CAG8fp8Rbh6a+asyt1iowS2U=HE_qicxUGZC1vz8wHdtB0OtNmQ@mail.gmail.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAG8fp8Rbh6a+asyt1iowS2U=HE_qicxUGZC1vz8wHdtB0OtNmQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,21 +79,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Oct 2024 at 12:13, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> Replace the footnotes with inline links whenever the footnote text
-> consists of nothing but the URL.  While at it, make the link texts
-> consistent in the surrounding areas, for example avoiding usage of
-> "here" for the link's text.
->
-> In the case of acpi-bits.rst this fixes a build failure with Sphinx
-> 8.1.0, because the FOSDEM link was duplicated in the paragraph and the
-> new version is a lot stricter about unreferenced footnotes.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On 10/10/24 03:59, Akihiro Suda wrote:
+>> And I think this series is ready to merge once the tree re-opens.
+> 
+> Hi, is there any remaining blocker toward merging the patch set?
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+There is no blocker. Patches will be merged once Michael will do it.
 
-thanks
--- PMM
+Michael, please feel free to apply the patches to staging. Thanks in
+advance!
+
+-- 
+Best regards,
+Dmitry
+
 
