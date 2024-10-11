@@ -2,47 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1883099A967
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297ED99A9DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:23:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJ49-0000qN-Ko; Fri, 11 Oct 2024 13:04:38 -0400
+	id 1szJ41-0000ky-VL; Fri, 11 Oct 2024 13:04:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1szJ43-0000hD-Dp; Fri, 11 Oct 2024 13:04:31 -0400
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1szJ3z-0000hu-45
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:04:27 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1szIhv-0007Hs-4o; Fri, 11 Oct 2024 12:41:41 -0400
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1szIu0-0000Ot-J1
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 12:54:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=0zqa5tnDqkjjfS8FhzEtcztGzsWJG65KY93UHFJK5fo=; b=VMpoc7pKBrS/mCqk
- TWuNOyOzamuuTJ6UI6YtqpfdzasAUJS/EPiC4aGXrekv516kF5hLBOPVH8Qy1oZOrW0Pb2sQ+qr05
- RaDWBMS73abzJkaGHxSUpnnJfNRVBkC8opakvkCANUyarIZT5Ju4JgWx1tMyE5Dj4xtlr3XWwvWae
- lk6rP1jn4wN/sBDd48/+aIF4RckIH2HqQLdmM37Bp6W47UxT5jWd9lZx9z1UgOZ/oL4/YQzuMkD56
- S2PBPIgeQDdP4x5ZkDHDzfGX+RvhqhgQPX5WANPfVKDOKP3lPYyuHfuSXSvR3am51OkLfZR97QlKb
- 9clAtXaCRH7rowW1Kg==;
+ :Subject; bh=Ny+BSiVefvk0ZMxyxY5jJ/ox0PnbAIotPo5Wo2LKZTs=; b=A+gz1v79zbYY8F2z
+ GIoA5M4hlx3+UQfnBxbtaJFeUnuHTz9/kKSUtayM6WazHwSf0QfQQ+XxYmUirY6v4y8x379ObIAvb
+ jAnnBuA6qC8oIcjdeKvlUVFRoaiJSfgybsF0QGQqP/6kvdnn+J3tfCKx6sxnbu5kq0WSsapyIq++N
+ yT4FeNmCqANyeD/aC01BPuEaBDIH1O1vwluPL5LdVnIe5Mqawc7sd+jakPRZi6wiIK8bs48r5d0ey
+ ztR7XfcEpXONdQJa4/NgMkDZCX9ySg071DwXGPKAFb1sbGzvJz47rQ96zgaMdysw9C/tjXyqU4TfA
+ gBQIVhwnEeagAicTGA==;
 Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1szIhc-00AYxy-3C;
- Fri, 11 Oct 2024 16:41:20 +0000
-Date: Fri, 11 Oct 2024 16:41:20 +0000
+ (envelope-from <dg@treblig.org>) id 1szIto-00AZ2q-2i;
+ Fri, 11 Oct 2024 16:53:56 +0000
+Date: Fri, 11 Oct 2024 16:53:56 +0000
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH] linux-user/vm86: Fix compilation with Clang
-Message-ID: <ZwlVMKJG3adNfNTR@gallifrey>
-References: <20241011161845.417342-1-thuth@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Yichen Wang <yichen.wang@bytedance.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, qemu-devel@nongnu.org,
+ Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ Shivam Kumar <shivam.kumar1@nutanix.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Subject: Re: [PATCH v6 00/12] Use Intel DSA accelerator to offload zero page
+ checking in multifd live migration.
+Message-ID: <ZwlYJCpoNB_TkIBR@gallifrey>
+References: <20241009234610.27039-1-yichen.wang@bytedance.com>
+ <ZwlTCgqjbFbJduyI@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20241011161845.417342-1-thuth@redhat.com>
+In-Reply-To: <ZwlTCgqjbFbJduyI@x1n>
 X-Chocolate: 70 percent or better cocoa solids preferably
 X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 16:41:03 up 156 days,  3:55,  1 user,  load average: 0.00, 0.01, 0.00
+X-Uptime: 16:52:40 up 156 days,  4:06,  1 user,  load average: 0.03, 0.03, 0.00
 User-Agent: Mutt/2.2.12 (2023-09-09)
 Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
  helo=mx.treblig.org
@@ -67,116 +79,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Thomas Huth (thuth@redhat.com) wrote:
-> Since commit 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
-> a bunch of other "static inline" function are now unused, too. Clang
-> warns about such unused "static inline" functions in .c files, so the
-> build currently breaks when compiling with "--enable-werror". Remove
-> the unused functions to get it going again.
+* Peter Xu (peterx@redhat.com) wrote:
+
+> The doc update is still missing under docs/, we may need that for a final
+> merge.
 > 
-> Fixes: 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-Sorry about that - thanks for the fix!
-
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-
-> ---
->  linux-user/vm86.c | 65 -----------------------------------------------
->  1 file changed, 65 deletions(-)
+> Are you using this in production?  How it performs in real life?  What is
+> the major issue to solve for you?  Is it "zero detect eats cpu too much",
+> or "migration too slow", or "we're doing experiment with the new hardwares,
+> and see how it goes if we apply it on top of migrations"?
 > 
-> diff --git a/linux-user/vm86.c b/linux-user/vm86.c
-> index 31a2d707cf..5091d53fb8 100644
-> --- a/linux-user/vm86.c
-> +++ b/linux-user/vm86.c
-> @@ -47,30 +47,6 @@ static inline void vm_putw(CPUX86State *env, uint32_t segptr,
->      cpu_stw_data(env, segptr + (reg16 & 0xffff), val);
->  }
->  
-> -static inline void vm_putl(CPUX86State *env, uint32_t segptr,
-> -                           unsigned int reg16, unsigned int val)
-> -{
-> -    cpu_stl_data(env, segptr + (reg16 & 0xffff), val);
-> -}
-> -
-> -static inline unsigned int vm_getb(CPUX86State *env,
-> -                                   uint32_t segptr, unsigned int reg16)
-> -{
-> -    return cpu_ldub_data(env, segptr + (reg16 & 0xffff));
-> -}
-> -
-> -static inline unsigned int vm_getw(CPUX86State *env,
-> -                                   uint32_t segptr, unsigned int reg16)
-> -{
-> -    return cpu_lduw_data(env, segptr + (reg16 & 0xffff));
-> -}
-> -
-> -static inline unsigned int vm_getl(CPUX86State *env,
-> -                                   uint32_t segptr, unsigned int reg16)
-> -{
-> -    return cpu_ldl_data(env, segptr + (reg16 & 0xffff));
-> -}
-> -
->  void save_v86_state(CPUX86State *env)
->  {
->      CPUState *cs = env_cpu(env);
-> @@ -131,19 +107,6 @@ static inline void return_to_32bit(CPUX86State *env, int retval)
->      env->regs[R_EAX] = retval;
->  }
->  
-> -static inline int set_IF(CPUX86State *env)
-> -{
-> -    CPUState *cs = env_cpu(env);
-> -    TaskState *ts = get_task_state(cs);
-> -
-> -    ts->v86flags |= VIF_MASK;
-> -    if (ts->v86flags & VIP_MASK) {
-> -        return_to_32bit(env, TARGET_VM86_STI);
-> -        return 1;
-> -    }
-> -    return 0;
-> -}
-> -
->  static inline void clear_IF(CPUX86State *env)
->  {
->      CPUState *cs = env_cpu(env);
-> @@ -162,34 +125,6 @@ static inline void clear_AC(CPUX86State *env)
->      env->eflags &= ~AC_MASK;
->  }
->  
-> -static inline int set_vflags_long(unsigned long eflags, CPUX86State *env)
-> -{
-> -    CPUState *cs = env_cpu(env);
-> -    TaskState *ts = get_task_state(cs);
-> -
-> -    set_flags(ts->v86flags, eflags, ts->v86mask);
-> -    set_flags(env->eflags, eflags, SAFE_MASK);
-> -    if (eflags & IF_MASK)
-> -        return set_IF(env);
-> -    else
-> -        clear_IF(env);
-> -    return 0;
-> -}
-> -
-> -static inline int set_vflags_short(unsigned short flags, CPUX86State *env)
-> -{
-> -    CPUState *cs = env_cpu(env);
-> -    TaskState *ts = get_task_state(cs);
-> -
-> -    set_flags(ts->v86flags, flags, ts->v86mask & 0xffff);
-> -    set_flags(env->eflags, flags, SAFE_MASK);
-> -    if (flags & IF_MASK)
-> -        return set_IF(env);
-> -    else
-> -        clear_IF(env);
-> -    return 0;
-> -}
-> -
->  static inline unsigned int get_vflags(CPUX86State *env)
->  {
->      CPUState *cs = env_cpu(env);
+> There're a lot of new code added for dsa just for this optimization on zero
+> page detection.  We'd better understand the major benefits, and also
+> whether that's applicable to other part of qemu or migration-only.  I
+> actually wonder if we're going to support enqcmd whether migration is the
+> best starting point (rather than other places where we emulate tons of
+> devices, and maybe some backends can speedup IOs with enqcmd in some
+> form?).. but it's more of a pure question.
+
+The other thing that worries me here is that there's not much abstraction,
+I'm sure there's a whole bunch of offload cards that could do tricks like
+this; how do we avoid having this much extra code for each one?
+
+Dave
+
+> 
+> Thanks,
+> 
 > -- 
-> 2.46.1
+> Peter Xu
 > 
 -- 
  -----Open up your eyes, open up your mind, open up your code -------   
