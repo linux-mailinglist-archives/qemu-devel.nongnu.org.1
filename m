@@ -2,89 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE0299AE89
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 00:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA33499AEBC
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 00:37:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szNrD-0008Rw-Oq; Fri, 11 Oct 2024 18:11:35 -0400
+	id 1szOFE-0003Q0-0j; Fri, 11 Oct 2024 18:36:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1szNrC-0008QK-7s
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 18:11:34 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1szNr9-0003F3-6c
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 18:11:34 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5398996acbeso2935721e87.1
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 15:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728684689; x=1729289489; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=unsVltNUFL0Z5VZfJot5DeP2qCj7b8KICAcuxr+k0Ho=;
- b=O4J2oMn90wT5BDkjPzQsX+bx4h4PWYQKpGnTN4khjQrGU1CBt8f1gJ2f1D35WYKM8V
- N1YTjpDrz7DA+f2ps1/qSEb8a5lyAg6CsydrTZOS6TFPVk/uQMFijZfKSIATJ5MgU61+
- roV9rnrS/RfADvnczFKSf+pwn5z+B65Lv3MOaU1G+HxUGZRyrAHYNz9IoidujgFsJ5f4
- x5FO/t9FnjbEzetBQnzYDIknY3W4q3g7ueILdWEX7nFRGqFqsIgWI3PyGP4X0atCgFw/
- cfeADAEHgCZS7j8IY/HDYojk1JRFMb4lXAk4S7M05zy72up+XzPNiAxH0cQlAMX2XWp8
- fxvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728684689; x=1729289489;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=unsVltNUFL0Z5VZfJot5DeP2qCj7b8KICAcuxr+k0Ho=;
- b=SOJX4rM1boc61/JxxQgB4nVkZ+2Wj1F7+UfzqjgVvPind1lDTYSxN3dYMViKVbeiLw
- EpTdjOsmHriCOqQFEiW9PERtYz4yb3xWo1qLVInquatNBr97h/hMhKKkWD7eqygKOV3y
- GYsaHz3kEsVbSjSQhyE2FjiEGHduqFeBUzpqpWDE3XcgvFhuHoqIAdUNSmGE2FFxHpVK
- agSuiwlPCC949hXgY7NPrlT2BCArDyNMZIAdoEBauPNUxjLj2IJSUN1/GMJNwAFiUqBY
- QSQZr9jg6Ede91LTqR+G7FnkdDeUw6B2qXFBbd1Zka1Zo+OKjJ6cOIbVVuID4y3c9Udq
- 6Krg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWLgR9uEmpoXERt0CUVABTvOT/IIXUSrJr8DvgFYbqwM8QBvgApmmv4k5sjaJ56OTNsMhD8/44lm0td@nongnu.org
-X-Gm-Message-State: AOJu0YzAS1TAc25a9L8fOMa7/mgbB0/gwYPu6UYTnObPlDpWdPrcBL8o
- +qIisxkjJ18q6/uZ4lOmBAG3fkumpcezE66EsC2HEZXYOOXGjbpIrdbT8tIZBeA=
-X-Google-Smtp-Source: AGHT+IFgIoJ4CkpH8RuXzjuazmltGBuysSoTzuwOOHYI3PxOue+8FcHxZTHiJ1eTFOJid8U8PVvxRg==
-X-Received: by 2002:a05:6512:6606:b0:539:dc87:fd3a with SMTP id
- 2adb3069b0e04-539dc87ff49mr1897228e87.6.1728684688527; 
- Fri, 11 Oct 2024 15:11:28 -0700 (PDT)
-Received: from [192.168.222.92] ([91.209.212.130])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539dc70b8d9sm324712e87.125.2024.10.11.15.11.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Oct 2024 15:11:27 -0700 (PDT)
-Message-ID: <a7aa5078-0787-4fa5-95d4-62dbd9a89ac9@linaro.org>
-Date: Fri, 11 Oct 2024 19:11:18 -0300
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1szOFC-0003Pn-JE
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 18:36:22 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1szOFB-0006Br-2m
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 18:36:22 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49BJ41tJ009937
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 22:36:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=x/rWXMHNlc3s+JR0goVrKLvvRU
+ 8jVM3k1TwJNwPMfGI=; b=FymeIL7JJ9GX+Ro8nOlyhsCfI7U/NRWeBxV9tmTLJk
+ peB159Z9Lvf6Z+fGWLJXcFjq5jXNC4cYjrRR8bj+ZfxfyJWw4VhntJSt8jwlfSOY
+ RYQEYdocsixfWi7C+x2SxPAGN0M1cO6xH5Xue2Liof3X+hf+mx7TBJZykipC7pIJ
+ CCPEEANc6EIvTCRld465mJ2pf8CFcqWJ4qHbFyW+bnWfu6lr4DwRoLlzeTvgGjSb
+ Ogo5OhGnRDEPIV/Cldjq3QHo3A9buXnkhYdoJxqgSljvTR5jGQ3oeu32MQ+joSmn
+ nzXMmKm6dTy1UBSNCzUOw/uJRtWL9XQBW7Jd2hVm5qoA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4279uernkj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 22:36:09 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49BMXcpC021996
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 22:36:08 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4279uernkg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Oct 2024 22:36:08 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49BKKDbF013790;
+ Fri, 11 Oct 2024 22:36:08 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fssr4bm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Oct 2024 22:36:08 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49BMa7nv51052848
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Oct 2024 22:36:07 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67C5558053;
+ Fri, 11 Oct 2024 22:36:07 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D41425805F;
+ Fri, 11 Oct 2024 22:36:06 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Oct 2024 22:36:06 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, marcandre.lureau@gmail.com,
+ Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH 0/2] tpm: Resolve potential blocking forever issue
+Date: Fri, 11 Oct 2024 18:35:54 -0400
+Message-ID: <20241011223556.2953808-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.46.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/11] hw: Strengthen SysBus & QBus API
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Zhao Liu <zhao1.liu@linux.intel.com>, qemu-block@nongnu.org,
- John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>
-References: <20240208181245.96617-1-philmd@linaro.org>
- <2758986e-72f4-4706-a3d3-c63c6283af86@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <2758986e-72f4-4706-a3d3-c63c6283af86@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4kbZUeUnQzZyL79HZ5uq3yYJcAgu4WMS
+X-Proofpoint-GUID: 4HIT7T8OEsy_71pHz-3kB4N1xi0WCXls
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-11_19,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 mlxlogscore=582 bulkscore=0
+ spamscore=0 malwarescore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410110157
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,68 +111,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/24 05:56, Paolo Bonzini wrote:
-> On 2/8/24 19:12, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> This series ensure following is called *before* a
->> device is realized:
->> - qbus_new()
->> - sysbus_init_mmio()
->> - qdev_init_gpio_in_named_with_opaque()
->>
->> and these are called *after* it is:
->> - sysbus_mmio_map()
->> - sysbus_connect_irq(),
->> - qdev_connect_gpio_out()
->> - qdev_connect_gpio_out_named()
-> 
-> This series is missing a _why_.  The original vision for qdev was that 
-> the whole machine would be realized at once from vl.c, and therefore 
-> there would be no need for realizing subcomponents by hand.
-> 
-> This probably will never happen, but it is still worth explaining why 
-> it's now considered so conceptually wrong, that it is (or will be) 
-> enforced by the API.
+In case swtpm was to return a control channel message with an error code it
+would only return 4 bytes. However, some of the commands expect a response
+with more bytes and QEMU would get stuck in qemu_chr_fe_read_all() waiting
+for bytes following the error code. Therefore, read the response in 2
+passes stopping if an error code is received in the first 4 bytes to avoid
+getting stuck.
 
-When looking at a roadmap toward "dynamic machines" with Markus we
-needed to clarify the QOM life cycle before thinking about possible
-DSL to declare machines and components. See:
+   Stefan
 
-= Problem 4: The /machine/unattached/ orphanage =
-= Problem 5: QOM lacks a clear life cycle =
-= Problem 7: Design of the machine specification DSL =
-in https://lore.kernel.org/qemu-devel/87o7d1i7ky.fsf@pond.sub.org/,
-in particular:
+Stefan Berger (2):
+  tpm: Use new ptm_cap_n structure for PTM_GET_CAPABILITY
+  tpm_emulator: Read control channel response in 2 passes
 
-     '''
-     We need to manage a state transition from "object created,
-     but not ready for use" to "object configured and ready for
-     use".  In what order do the objects change state?
-     '''
+ backends/tpm/tpm_emulator.c | 39 +++++++++++++++++++++++++++++--------
+ backends/tpm/tpm_ioctl.h    | 13 ++++++++++++-
+ backends/tpm/trace-events   |  2 +-
+ 3 files changed, 44 insertions(+), 10 deletions(-)
 
-and:
-
-     '''
-     Ideally, a composite object's components go through the life
-     cycle together.  First, create all the components and assign
-     parents.  This also creates all the properties.  Then configure
-     the object by setting property values.  Finally, complete / realize
-     all components.
-     '''
-
-We need a better QOM documentation, "Device Life-cycle" in
-docs/devel/qom.rst doesn't reallyr describe the life cycle, and
-doesn't mention the "realization" API contract.
-Since you have more experience and historical view on the APIs,
-I wouldn't mind if you want to clarify that; otherwise I'll try
-to do it.
-
-Regards,
-
-Phil.
-
-
-> Paolo
+-- 
+2.46.2
 
 
