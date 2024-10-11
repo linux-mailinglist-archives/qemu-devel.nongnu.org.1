@@ -2,74 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B12699AA5B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A9B99AA15
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 19:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szJGp-0007Z8-4P; Fri, 11 Oct 2024 13:17:43 -0400
+	id 1szJDQ-0000hq-6J; Fri, 11 Oct 2024 13:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1szJ7c-0000wP-AZ
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:08:12 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1szEk1-0006Md-Gl
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 08:27:34 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5c8784e3bc8so2582771a12.1
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 05:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728649651; x=1729254451; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=so01qP/5pXwY3S9DexgRYUl7xLaihnKYbpO0b2ej86U=;
- b=GtErz6qcVftdEtBeD3fXjNIVGwVEkduL5iOVAYmrWVB03YvO1/xFECuUv0C9XU7dNM
- JOifvzqAPg5SeKy4VuM7YMpbAm8Ekfm/NfNFgxQ8YghN8BR/NjwgXriPpK46gegm43V5
- e1nThO8N7EtUxwrrJ0Gf2u7SXeHWlVhL0NtB9KcppSe5hK+B5ARgjz/garkX3KgwsHgN
- lfN6gVzVsCcfhtHBlJjH2yGBSroWxZLAizyZ9diwpYQavgn/A+WK4QGpw19cPABkehh+
- YAT9MREeK+9W+g8bD32bLVrS06D8Uz0MRNSrBbeDI7GSgAMU6z5sY2jWE9vOPi190Vz8
- FClw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728649651; x=1729254451;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=so01qP/5pXwY3S9DexgRYUl7xLaihnKYbpO0b2ej86U=;
- b=ktE3ESMITf3I2LUKOl/JEeBF7HvEWlFucWlxXiW4LXL7yooHjL/+jTWzZuowuKBy3z
- d9Gve557RE1O4g52cOg5pTX22/IKZWyJGUfNhRdaxCkpscvBJaHVzu7ZLUpruwP58tq5
- 2olEAcysTt9Ergz2UceHx3NcKxiJmYyL7r6RGukn6sJiCIdp2M9Vr2Rio8NIDis7fN+S
- pb3+MLyvMME7KFkF7ovW4+kZEQaPQ+E+IMB6USR07k7yIp0pXgfsWVdwnph8itYWWVSw
- zyxnSzWaeLV5AxUj4r23pLtJ1W0Zy3nYOfdNsgDxgbCy6e1nf+C2+r1sQzcaJc35FYfh
- z+Cg==
-X-Gm-Message-State: AOJu0YwmIWg3ns225k2lhYrvVOreoOSXdIEIgP56favxxkV6RFPrqUUT
- iKMBPk6l/Qt7R9En3VwoaFP7QCkyfW5NyijT7IJ8hN1jCdvRzBy5ZEtPOp//KPX8rvgCtCGVS/L
- yS5JGJjnwROHMxZ1srfPWpINkM3bC/UspmHRchZtKyA4r0/4i
-X-Google-Smtp-Source: AGHT+IHkiKkW0fqG6GLzzZCixKWU7Wf0y10AmUPGbJn7BeMwtLOi0u1k/Vnbbx8qI0sffuWy6t9qOYDB/IqTYnWJfEw=
-X-Received: by 2002:a05:6402:3513:b0:5c9:57bd:e9d with SMTP id
- 4fb4d7f45d1cf-5c957bd0fc9mr330433a12.19.1728649651037; Fri, 11 Oct 2024
- 05:27:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szJ7H-0003l6-B6
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 13:07:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1szFYw-0004J9-0Y
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 09:20:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728652806;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CNSii7eH6rvQ/DnqAg5OAeuOExPoRZI2a/mLPSF7WCo=;
+ b=ZUpjHDuQIgvUk4DkXuioAyJBSM0T1E7Y7YOMRmtQK2TDcvDLH6rFxvqUxKO/fsYwzQcmSy
+ PeOwsSWYmpyg341EmSZglXNu0uHtcKGRAOYlplVFeLQUxyNdduQz6fker0S1qy5hclHYZB
+ AWtTcswnJGd/M3KjdhCSU1ffUgoJJrY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-NLo6iy8EMTO_dYKIdZyhQA-1; Fri,
+ 11 Oct 2024 09:20:01 -0400
+X-MC-Unique: NLo6iy8EMTO_dYKIdZyhQA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 868C319560BD; Fri, 11 Oct 2024 13:19:59 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.77])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 894381956052; Fri, 11 Oct 2024 13:19:55 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 00/17] Convert the Avocado tuxrun tests into new functional
+ tests
+Date: Fri, 11 Oct 2024 15:19:17 +0200
+Message-ID: <20241011131937.377223-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20241011111249.47530-1-pbonzini@redhat.com>
-In-Reply-To: <20241011111249.47530-1-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Oct 2024 13:27:20 +0100
-Message-ID: <CAFEAcA-vwCaKhdmcPUubiFQe93z3=7Y3aLo4u6ZbessKzwNDKQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] docs: fix and cleanup footnotes
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Oct 2024 at 12:12, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> Sphinx 8.1.0 got a lot better at detecting unreferenced footnotes, and
-> we have three of them---which causes the build to fail when the latest
-> version of sphinx is installed from Pip.
+This patch series converts the tests/avocado/tuxrun_baselines.py
+to the new functional test framework. While converting the sh4 test,
+I noticed that the Avocado test was completely broken, so I included
+a fix (revert) for that problem in this series, too.
 
-In particular we hit this on the macos14 CI job now:
+Thomas Huth (17):
+  tests/functional: Add a base class for the TuxRun tests
+  tests/functional: Convert the Avocado ppc64 tuxrun tests
+  tests/functional: Convert the Avocado aarch64 tuxrun tests
+  tests/functional: Convert the Avocado sparc64 tuxrun test
+  tests/functional: Convert the Avocado s390x tuxrun test
+  tests/functional: Convert the Avocado arm tuxrun tests
+  tests/functional: Convert the Avocado riscv32 tuxrun tests
+  tests/functional: Convert the Avocado riscv64 tuxrun tests
+  tests/functional: Convert the Avocado i386 tuxrun test
+  tests/functional: Convert the Avocado x86_64 tuxrun test
+  tests/functional: Convert the Avocado mips tuxrun test
+  tests/functional: Convert the Avocado mipsel tuxrun test
+  tests/functional: Convert the Avocado mips64 tuxrun test
+  tests/functional: Convert the Avocado mips64el tuxrun test
+  tests/functional: Convert the Avocado ppc32 tuxrun test
+  Revert "hw/sh4/r2d: Realize IDE controller before accessing it"
+  tests/functional: Convert the Avocado sh4 tuxrun test
 
-https://gitlab.com/qemu-project/qemu/-/jobs/8054823697
+ MAINTAINERS                              |   4 +-
+ hw/sh4/r2d.c                             |   2 +-
+ tests/avocado/tuxrun_baselines.py        | 620 -----------------------
+ tests/functional/meson.build             |  28 +
+ tests/functional/qemu_test/tuxruntest.py | 158 ++++++
+ tests/functional/test_aarch64_tuxrun.py  |  50 ++
+ tests/functional/test_arm_tuxrun.py      |  70 +++
+ tests/functional/test_i386_tuxrun.py     |  35 ++
+ tests/functional/test_mips64_tuxrun.py   |  35 ++
+ tests/functional/test_mips64el_tuxrun.py |  35 ++
+ tests/functional/test_mips_tuxrun.py     |  36 ++
+ tests/functional/test_mipsel_tuxrun.py   |  36 ++
+ tests/functional/test_ppc64_tuxrun.py    | 110 ++++
+ tests/functional/test_ppc_tuxrun.py      |  35 ++
+ tests/functional/test_riscv32_tuxrun.py  |  38 ++
+ tests/functional/test_riscv64_tuxrun.py  |  38 ++
+ tests/functional/test_s390x_tuxrun.py    |  34 ++
+ tests/functional/test_sh4_tuxrun.py      |  57 +++
+ tests/functional/test_sparc64_tuxrun.py  |  34 ++
+ tests/functional/test_x86_64_tuxrun.py   |  36 ++
+ 20 files changed, 869 insertions(+), 622 deletions(-)
+ delete mode 100644 tests/avocado/tuxrun_baselines.py
+ create mode 100644 tests/functional/qemu_test/tuxruntest.py
+ create mode 100755 tests/functional/test_aarch64_tuxrun.py
+ create mode 100755 tests/functional/test_arm_tuxrun.py
+ create mode 100755 tests/functional/test_i386_tuxrun.py
+ create mode 100755 tests/functional/test_mips64_tuxrun.py
+ create mode 100755 tests/functional/test_mips64el_tuxrun.py
+ create mode 100755 tests/functional/test_mips_tuxrun.py
+ create mode 100755 tests/functional/test_mipsel_tuxrun.py
+ create mode 100755 tests/functional/test_ppc64_tuxrun.py
+ create mode 100755 tests/functional/test_ppc_tuxrun.py
+ create mode 100755 tests/functional/test_riscv32_tuxrun.py
+ create mode 100755 tests/functional/test_riscv64_tuxrun.py
+ create mode 100755 tests/functional/test_s390x_tuxrun.py
+ create mode 100755 tests/functional/test_sh4_tuxrun.py
+ create mode 100755 tests/functional/test_sparc64_tuxrun.py
+ create mode 100755 tests/functional/test_x86_64_tuxrun.py
 
-I'll give this a bit more time on-list for review from
-others if they want to, but I plan to apply this directly
-to fix that CI job on Monday.
+-- 
+2.46.1
 
--- PMM
 
