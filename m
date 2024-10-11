@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49BA99A288
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 13:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB6F99A289
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Oct 2024 13:14:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szDZt-00075D-VS; Fri, 11 Oct 2024 07:13:01 -0400
+	id 1szDZv-00075h-Fl; Fri, 11 Oct 2024 07:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szDZr-00074r-By
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:12:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1szDZt-00075F-8v
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1szDZp-00072z-10
- for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:12:59 -0400
+ id 1szDZr-00073J-FF
+ for qemu-devel@nongnu.org; Fri, 11 Oct 2024 07:13:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728645175;
+ s=mimecast20190719; t=1728645178;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=C7795scU7vtKCbsuPVwHMyUhl2bKbn6KPGgWjok5Ldw=;
- b=ivgHATQc9qZjLJ/ixaZ+c9cjwCmTnrqT0DrPaidvYJJsKFpeuV1IBK8m2b4PU7u49G3M5Q
- Gv8cwBhKztL2eidRDl6TI9fMNLiQUTAOuw6Qc1lOE8qm3auDEWB7L/zLEVqVQIuHvYYF0l
- 68t3LseTE6XT4nNhomTFgPtc1OmWfoI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
+ b=EqFjej8wij5fOERvAmPLV4kiUrkxdnR2elNr6JO0nLSgBfbLHNYz9WskCwbpA35TThwhX0
+ hbemNUVQxLqW2uH6enG05mbxh64qRhj2GDlZt2RQfFt4MCbc4FiLM84diVpwS89m/OZ99e
+ NkPsqQHruvlUnNomFmtI1azhIXxnNu4=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-dJaBh8tuOHWr4wtIkOzlzg-1; Fri, 11 Oct 2024 07:12:53 -0400
-X-MC-Unique: dJaBh8tuOHWr4wtIkOzlzg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a9959657eb9so132180666b.0
- for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:12:53 -0700 (PDT)
+ us-mta-588-SUoo_Yb-MjmtNkJQDuAPuQ-1; Fri, 11 Oct 2024 07:12:57 -0400
+X-MC-Unique: SUoo_Yb-MjmtNkJQDuAPuQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-53995187384so1977429e87.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Oct 2024 04:12:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728645172; x=1729249972;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=C7795scU7vtKCbsuPVwHMyUhl2bKbn6KPGgWjok5Ldw=;
- b=DEhCFM+NDZhDgnxNJOO1arva1kbu/Iya2yKg2O6Vv1vylx8bYaNQtiiiaQuyjUN/J1
- YQT7Tef84IJU7A2jN4U+nfSvJtd1cBFXgX4OQz44f+AuzxBk1x60hCgLqiQSjukWhtzm
- n2D1s86CUCFKjkp/0i2/KmgJODB5SSYoQbzX6bwnXBh39TkS6cWS4ExPDqkkDYlNTNp7
- 9bv+es7gonAt01HjpuY6zOPt0pNjGIV6ELxyKukwQHXlzRzDaqfbgB+56AaOpe9y0KmL
- Sy/PtUlGvqkL2X7vPFG48RoGdDp3sB3lTZugZSBLbjJ+0ml5tulszS+FBAkf2JK7Xj6p
- Cbkw==
-X-Gm-Message-State: AOJu0YzMQ6GU7Z1yjF5kSgFC2Ca8XFo49+sBIki/xD1/6wQgeHqONDtO
- 9Hn+/XtuiihUAEfHrROOJes+gr82dFolX+aP1KQTuBzdFkjycnPBiKKGsVjqiMtN9We64v1V/ZB
- TGoLWIfBXTy7UtZhQsmSYkl6hn8F0GeOdwZad//M3osETb0Zm0US6vymt27DRjT5daX6y7uq224
- DiV9ThsjAXveAHpI4z1vk5GxqTEeilFxEZU4I9KTA=
-X-Received: by 2002:a17:907:f1a8:b0:a99:4567:9205 with SMTP id
- a640c23a62f3a-a99b93cb801mr184561166b.35.1728645171743; 
- Fri, 11 Oct 2024 04:12:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGV2yUAKBLtxB+vLMcOF/IOGkEoSKR8VHlYqCx0l8e7BQo0EB+f/pSYn9KHetTsyqNO4C86lw==
-X-Received: by 2002:a17:907:f1a8:b0:a99:4567:9205 with SMTP id
- a640c23a62f3a-a99b93cb801mr184558666b.35.1728645171225; 
- Fri, 11 Oct 2024 04:12:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728645175; x=1729249975;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sNkkdnViJzmwPUrPyUoXMSX7pAPJHiwhmuc02vFfZIA=;
+ b=QNQxxTesfQFnRqe547O0W3OTZP38GIoWOrVZOc4yrTC1EEyLersf2uN+L/ugx6K7eZ
+ S6RCNKwp0QpkuZBZ+5jQeWHaj7bLy9laPphyaq37B40EvSvdAwAgYC4NXTwxTkIR8+K+
+ b4/3nUDnzb3AesX/IKMd8Jx5fEgmAoiWfuv+hdECS5UQc0I19VZBP2JGklnGeGW+dhVM
+ 5bxbv1pCZr0YqcA88TwKHOU2lezJRkY01Q2WC2UU+gz4+i2Arf6phT+SXsQFbLc5PZxu
+ RG1iznrGiGGPGD/mrH99S5GFKOoypWp0cgO+kPKtZ+hDSa3KT5Kd2ICj7DAMUo72fCVg
+ CY3Q==
+X-Gm-Message-State: AOJu0YxUUycGOgxeq5t1Wx+0ZTm1GGZKn48uV1iFYrTv+MXSuH4Gx1Ij
+ ubVSXrHLAAjw6bm06+OMsL3h5DkmZfdwcQ0js185yh4n527jm8r0ZNgfkHqycr8gu0DlyHEd0SZ
+ nr6x7jUKxGo77JmO4Ue0G+UoDPvhyFG6ucZ/EQNAOEBtz2CDlGqRIFkg62Bpny178RztFB1Gimb
+ gPWAK3J3OiDwh0zWnd9TG1reMxqkEnqTABDJCe5r8=
+X-Received: by 2002:a05:6512:1294:b0:530:e323:b1d0 with SMTP id
+ 2adb3069b0e04-539da3b232dmr1273420e87.9.1728645174766; 
+ Fri, 11 Oct 2024 04:12:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFg0BVVUSvO7ImebThXrgD3dj5iyd2irE3IDVTdNnmGwkitieGlxuOMug/FWa/EWyysZZWErw==
+X-Received: by 2002:a05:6512:1294:b0:530:e323:b1d0 with SMTP id
+ 2adb3069b0e04-539da3b232dmr1273392e87.9.1728645174173; 
+ Fri, 11 Oct 2024 04:12:54 -0700 (PDT)
 Received: from avogadro.local ([151.81.124.37])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99a80f29cdsm200315866b.210.2024.10.11.04.12.50
+ a640c23a62f3a-a99a80c0133sm200054166b.114.2024.10.11.04.12.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Oct 2024 04:12:50 -0700 (PDT)
+ Fri, 11 Oct 2024 04:12:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 0/3] docs: fix and cleanup footnotes
-Date: Fri, 11 Oct 2024 13:12:46 +0200
-Message-ID: <20241011111249.47530-1-pbonzini@redhat.com>
+Subject: [PATCH v2 1/3] docs: fix invalid footnote syntax
+Date: Fri, 11 Oct 2024 13:12:47 +0200
+Message-ID: <20241011111249.47530-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241011111249.47530-1-pbonzini@redhat.com>
+References: <20241011111249.47530-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -97,37 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sphinx 8.1.0 got a lot better at detecting unreferenced footnotes, and
-we have three of them---which causes the build to fail when the latest
-version of sphinx is installed from Pip.
+All footnotes must come after a separator in reStructuredText.  Fix the
+two files in which this does not happen.
 
-Patches 1 and 2 fix them, while the third is a general improvement in
-the appearance of the rendered footnotes and the consistency of the
-rST syntax.
+This mistake causes the link to be rendered literally:
 
-An example of a failing job is https://gitlab.com/bonzini/qemu/-/jobs/8060240732.
+   ...from the venv itself[#distlib]_. If no...
 
-Paolo
+and is caught by Sphinx 8.1.0 as an unreferenced footnote.
 
-v1->v2: improve commit messages
-        replace patch 2, absorbing the rapl-msr.rst changes into it
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/devel/atomics.rst      | 2 +-
+ docs/devel/build-system.rst | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-
-Paolo Bonzini (3):
-  docs: fix invalid footnote syntax
-  docs: avoid footnotes consisting of just URLs
-  docs: use consistent markup for footnotes
-
- docs/devel/atomics.rst              |  6 +++---
- docs/devel/build-system.rst         |  6 +++---
- docs/devel/loads-stores.rst         |  2 +-
- docs/devel/maintainers.rst          |  4 ++--
- docs/devel/migration/mapped-ram.rst |  4 ++--
- docs/devel/testing/acpi-bits.rst    | 26 +++++++++++++-------------
- docs/specs/fw_cfg.rst               |  4 ++--
- docs/specs/rapl-msr.rst             | 25 ++++++++++++-------------
- 8 files changed, 38 insertions(+), 39 deletions(-)
-
+diff --git a/docs/devel/atomics.rst b/docs/devel/atomics.rst
+index b77c6e13e18..6bf032f9005 100644
+--- a/docs/devel/atomics.rst
++++ b/docs/devel/atomics.rst
+@@ -204,7 +204,7 @@ They come in six kinds:
+   before the second with respect to the other components of the system.
+   Therefore, unlike ``smp_rmb()`` or ``qatomic_load_acquire()``,
+   ``smp_read_barrier_depends()`` can be just a compiler barrier on
+-  weakly-ordered architectures such as Arm or PPC[#]_.
++  weakly-ordered architectures such as Arm or PPC\ [#]_.
+ 
+   Note that the first load really has to have a _data_ dependency and not
+   a control dependency.  If the address for the second load is dependent
+diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+index 79eceb179de..fa1c59d9fd8 100644
+--- a/docs/devel/build-system.rst
++++ b/docs/devel/build-system.rst
+@@ -145,13 +145,13 @@ was installed in the ``site-packages`` directory of another interpreter,
+ or with the wrong ``pip`` program.
+ 
+ If a package is available for the chosen interpreter, ``configure``
+-prepares a small script that invokes it from the venv itself[#distlib]_.
++prepares a small script that invokes it from the venv itself\ [#distlib]_.
+ If not, ``configure`` can also optionally install dependencies in the
+ virtual environment with ``pip``, either from wheels in ``python/wheels``
+ or by downloading the package with PyPI.  Downloading can be disabled with
+ ``--disable-download``; and anyway, it only happens when a ``configure``
+ option (currently, only ``--enable-docs``) is explicitly enabled but
+-the dependencies are not present[#pip]_.
++the dependencies are not present\ [#pip]_.
+ 
+ .. [#distlib] The scripts are created based on the package's metadata,
+               specifically the ``console_script`` entry points.  This is the
 -- 
 2.46.2
 
