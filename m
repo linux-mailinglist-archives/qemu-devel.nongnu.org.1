@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FA399B311
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 12:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851C399B32D
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 12:56:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szZN6-00048i-P3; Sat, 12 Oct 2024 06:29:16 -0400
+	id 1szZm6-0005Li-F8; Sat, 12 Oct 2024 06:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szZN4-000462-1w; Sat, 12 Oct 2024 06:29:14 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szZN2-0007EI-BH; Sat, 12 Oct 2024 06:29:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728728952; x=1760264952;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=i+35KcqWfRxigU2EIhaJxKdHSfXUSTicv5fw/oXO2lw=;
- b=Hg1adh+D2ZnAE62s5ucZGEZyNf3b1vMPZHKV7xpdzASKdpj9P4lxTJjN
- Y0q0ZzgxFMqMXQDA/fm7n7ZmingAL80eeSKRoOtdohZe3OLVSW/WAeGYL
- 9mBvSps2z7rZ9FxXeS1v8zh5ejfwYM3uiEk34bXmEdx9ibyuloK+HrUHD
- 8FFOkvc9Az01PJDcbqC3MVJetdMzSthP2W6OzFoNKOpXu1rdVcEOuGftM
- YLks3K9L/uD0DtQo+eZ4uBC5W+Bq0xBxXTR3sir0OsVOUUTOPiqILA3Xj
- ddyRb+vPg7+klDTyYbOjGJKHIC3qmsR5h51l0igE6GugwsKRSjPvRMVYz A==;
-X-CSE-ConnectionGUID: kTJweIsASxiXljiWZ6y6Zg==
-X-CSE-MsgGUID: ZcAUiWd8QO+rMf8ZasCQ7Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45634956"
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="45634956"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2024 03:29:11 -0700
-X-CSE-ConnectionGUID: iSUSYFKcSyyEaLI1013xMA==
-X-CSE-MsgGUID: WLmQSF1tQ+WlPwsdfAOydQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="77050877"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 12 Oct 2024 03:29:05 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 7/7] i386/cpu: add has_caches flag to check smp_cache
- configuration
-Date: Sat, 12 Oct 2024 18:44:29 +0800
-Message-Id: <20241012104429.1048908-8-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241012104429.1048908-1-zhao1.liu@intel.com>
-References: <20241012104429.1048908-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1szZm4-0005La-HD
+ for qemu-devel@nongnu.org; Sat, 12 Oct 2024 06:55:04 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1szZm2-0001ij-9y
+ for qemu-devel@nongnu.org; Sat, 12 Oct 2024 06:55:04 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a998a5ca499so401234666b.0
+ for <qemu-devel@nongnu.org>; Sat, 12 Oct 2024 03:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728730499; x=1729335299; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=o6t6Tm426l81ydUf84ZAgZr0/FePQjAIUCmNaJBJ74I=;
+ b=BqKJZH4584CxkzJUvKaJ1X59Z0XlvMLgJ1JgF4Vf3XsLPE38dfj252wdoUrvSsYWXb
+ R2eQjOEcMxR6NnPM5hOpsebHLLYnGlW4JWNPbh3pP+3tG5kUY+4NRZqq+9nzkkTtExc0
+ TnxZ7jdVT2qPIzoMeeR9npdyZ0L7l57UfpvvmjZr3tuCUcYjHF2/jQasLkQTIVBxXjcI
+ VMX9+id1s6q1ZHx63lA1+a7Sr0el1M8LZXjWCVTZKNfO/wTNjeW04MZhRAJeW0NLzTTJ
+ std0JozkEqKvTgRE/hTkHO1OqzM8QsaVp0/rwSwFCDOz52EFfu37hzK4hi7DogRSaK0L
+ Bw8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728730499; x=1729335299;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o6t6Tm426l81ydUf84ZAgZr0/FePQjAIUCmNaJBJ74I=;
+ b=wmfoKZYGAPylqrnAt12IyH2urbCNF6ryibBQfBi3DVlUlvIhaGofva1p/2DcrvM5Tk
+ CbhoT4mM3aq8EbqzC8x2+GVUaAQvGigL/u42xVIEu1N0aQZlSvcMbsCu1fkUBFHsgBkH
+ iJ8Lttz2wnshJ7gsF7wJQJoBAomvT9d5lMPH0ndoQU8K5CPUbEXcmqpTynvmFPTPwqOM
+ u909SO2BRN5w/c+1JKsw8bWV79ubMzhTcHSnq/AK3uekZnQ68R4XVz2I1YjjdAbgxxb0
+ FaXxLU6wpmrAyQ0PPV2jK3+6Lxbvuv47z/Rvl83gH/JB+zcwU7hdpE6L0KRrpYekGAhR
+ L2fA==
+X-Gm-Message-State: AOJu0Yw2+7sjtcUyIITtgD+uafx1KqI4Qspc9vcPIrZ4/lvoVfnJCyk4
+ QkHVi5zUfjlgXECYd25Eo2HISNq0cso9t8xuknvV6HBDyNZKifs416uuWyhX/iLxK9MexQcpIHM
+ /iJnUvuhiB4cdXk7s4nqyXHt2gmHMSEwGwJ35AA==
+X-Google-Smtp-Source: AGHT+IFYB39MqubqnSYxkevCThBLeBD7gVuBFIK+VlH5oUT7BfbGx/ekxofPhsZ3M8HZYj5scpRSXEOjXeyJlxMw0V0=
+X-Received: by 2002:a17:906:da83:b0:a99:77f0:51f7 with SMTP id
+ a640c23a62f3a-a99e3e9c139mr217286066b.61.1728730498684; Sat, 12 Oct 2024
+ 03:54:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241011153227.81770-1-pbonzini@redhat.com>
+In-Reply-To: <20241011153227.81770-1-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 12 Oct 2024 11:54:47 +0100
+Message-ID: <CAFEAcA88y9gV-YMNxvQPdGR2tA-sjsaFYr_TiG=GmQGr8+QkKA@mail.gmail.com>
+Subject: Re: [PULL v3 00/18] Rust initial PoC + meson changes for 2024-10-07
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,85 +85,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On Fri, 11 Oct 2024 at 18:13, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> The following changes since commit b5ab62b3c0050612c7f9b0b4baeb44ebab42775a:
+>
+>   Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-04 19:28:37 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+>
+> for you to fetch changes up to 381d2c36e1242f849a55f4622e50b9a69cb92842:
+>
+>   docs: use consistent markup for footnotes (2024-10-11 13:08:32 +0200)
+>
+> v2->v3: new patches
+> - scripts/archive-source: find directory name for subprojects
+> - docs: fix invalid footnote syntax
+> - docs: avoid footnotes consisting of just URLs
+> - docs: use consistent markup for footnotes
+>
+> ----------------------------------------------------------------
+> * first commit for Rust support
+> * add CI job using Fedora + Rust nightly
+> * fix detection of ATOMIC128 on x86_64
+> * fix compilation with Sphinx 8.1.0
+>
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
+Hi; 'make vm-build-openbsd' seems to still fail. It looks
+like the wrap file subprojects/unicode-ident-1-rs.wrap says
+"directory = unicode-ident-1.0.12" and the script correctly
+parses that out of the file, but the directory is actually
+named "unicode-ident-1-rs" (differently from the other rust ones),
+so we don't find it.
 
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c | 2 ++
- include/hw/boards.h   | 3 +++
- target/i386/cpu.c     | 9 ++++-----
- 3 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index f3edbded2e7b..16e456678cb6 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -367,6 +367,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-         return false;
-     }
- 
-+    mc->smp_props.has_caches = true;
-+
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index e4a1035e3fa1..af62b09c89d1 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -153,6 +153,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -163,6 +165,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c8a04faf3764..6f711e98b527 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7853,12 +7853,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless Updates
--     * if user didn't set smp_cache.
--     */
--    x86_cpu_update_smp_cache_topo(ms, cpu);
-+    if (mc->smp_props.has_caches) {
-+        x86_cpu_update_smp_cache_topo(ms, cpu);
-+    }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
- 
--- 
-2.34.1
+make: Entering directory '/home/peter.maydell/qemu-openbsd/build'
+/home/peter.maydell/qemu-openbsd/build/pyvenv/bin/meson introspect
+--targets --tests --benchmarks |
+/home/peter.maydell/qemu-openbsd/build/pyvenv/bin/python3 -B
+scripts/mtest2make.py > Makefile.mtest
+{ \
+  echo 'ninja-targets = \'; \
+  /usr/bin/ninja -t targets all | sed 's/:.*//; $!s/$/ \\/'; \
+  echo 'build-files = \'; \
+  /usr/bin/ninja -t query build.ninja | sed -n '1,/^  input:/d; /^
+outputs:/q; s/$/ \\/p'; \
+} > Makefile.ninja.tmp && mv Makefile.ninja.tmp Makefile.ninja
+/home/peter.maydell/qemu-openbsd/build/pyvenv/bin/python3 -B
+/home/peter.maydell/qemu-openbsd/tests/vm/openbsd  --debug
+--genisoimage /usr/bin/genisoimage    --source-path
+/home/peter.maydell/qemu-openbsd --image
+"/home/peter.maydell/.cache/qemu-vm/images/openbsd.img"  --build-image
+/home/peter.maydell/.cache/qemu-vm/images/openbsd.img
+Image file exists, skipping build:
+/home/peter.maydell/.cache/qemu-vm/images/openbsd.img
+Use --force option to overwrite
+/home/peter.maydell/qemu-openbsd/build/pyvenv/bin/python3 -B
+/home/peter.maydell/qemu-openbsd/tests/vm/openbsd  --debug  --jobs 8
+--verbose    --image
+"/home/peter.maydell/.cache/qemu-vm/images/openbsd.img"  --snapshot
+--build-qemu /home/peter.maydell/qemu-openbsd --
+DEBUG:root:Creating archive
+/home/peter.maydell/qemu-openbsd/build/vm-test-w7gx56ds.tmp/data-993a1.tar
+for src_dir dir: /home/peter.maydell/qemu-openbsd
+Download keycodemapdb...
+  -> Already downloaded
+Download libvfio-user...
+  -> Already downloaded
+Download berkeley-softfloat-3...
+  -> Already downloaded
+Download berkeley-testfloat-3...
+  -> Already downloaded
+Download arbitrary-int-1-rs...
+  -> Already downloaded
+Download bilge-0.2-rs...
+  -> Already downloaded
+Download bilge-impl-0.2-rs...
+  -> Already downloaded
+Download either-1-rs...
+  -> Already downloaded
+Download itertools-0.11-rs...
+  -> Already downloaded
+Download proc-macro2-1-rs...
+  -> Already downloaded
+Download proc-macro-error-1-rs...
+  -> Already downloaded
+Download proc-macro-error-attr-1-rs...
+  -> Already downloaded
+Download quote-1-rs...
+  -> Already downloaded
+Download syn-2-rs...
+  -> Already downloaded
+Download unicode-ident-1-rs...
+  -> Already downloaded
+tar: subprojects/unicode-ident-1.0.12: Cannot stat: No such file or directory
+tar: Exiting with failure status due to previous errors
+failed to append subproject unicode-ident-1-rs to
+/home/peter.maydell/qemu-openbsd/build/vm-test-w7gx56ds.tmp/data-993a1.tar
+Failed to prepare guest environment
+Traceback (most recent call last):
+  File "/home/peter.maydell/qemu-openbsd/tests/vm/basevm.py", line 654, in main
+    vm.add_source_dir(args.build_qemu)
+  File "/home/peter.maydell/qemu-openbsd/tests/vm/basevm.py", line
+277, in add_source_dir
+    subprocess.check_call(["./scripts/archive-source.sh", tarfile],
+  File "/usr/lib/python3.10/subprocess.py", line 369, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command
+'['./scripts/archive-source.sh',
+'/home/peter.maydell/qemu-openbsd/build/vm-test-w7gx56ds.tmp/data-993a1.tar']'
+returned non-zero exit status 1.
+make: *** [/home/peter.maydell/qemu-openbsd/tests/vm/Makefile.include:110:
+vm-build-openbsd] Error 2
+make: Leaving directory '/home/peter.maydell/qemu-openbsd/build'
 
+-- PMM
 
