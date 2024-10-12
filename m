@@ -2,74 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1016899B271
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 11:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B729B99B296
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 11:36:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szYAp-00069I-AP; Sat, 12 Oct 2024 05:12:31 -0400
+	id 1szYXk-0002d1-8w; Sat, 12 Oct 2024 05:36:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szYAn-000692-JS; Sat, 12 Oct 2024 05:12:29 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szYAk-0006BR-NC; Sat, 12 Oct 2024 05:12:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728724347; x=1760260347;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Mltib4iAQsYkU6j1CTj6sO6Rv+aGuPHCxB0PFfJcUb8=;
- b=BkjgGrF4ljDke/Ns+AvymQVlCKKwDfOtPzecPsk0Rj4XT/Y5WUyRDGI1
- PoPOJnl0ki5ToFzduWVaXZNy8xFvxdjD9XHCf0KmnAk4tvAGmo9TYRa4e
- 4VSoXEYkQ5lTJI6Rl45S7NKb8tpfhNGVNS8ELHdLEQ2PGDmEkPU0n8cWK
- 9oKaYG7ziOTO93OlOIApKVymGqk1ChiXGeuXIeVDtNG2IV4HAo0SdOu1w
- mmKrHntgs9iWzsJ1Bke2YduqKWIFRzbYj02Kz/YURNWL7xjlMZTdn9ZMm
- f9nVBpW671mF2LGu1Ts6hGsWwCgHZzQe1Jxkf5d8CCE8xQBjlX6hwcNvI w==;
-X-CSE-ConnectionGUID: cPYXtIsyTYuK8wHTEbrATg==
-X-CSE-MsgGUID: pt2DU9DpSLWDN6kz9kvKjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28258904"
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="28258904"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2024 02:12:24 -0700
-X-CSE-ConnectionGUID: zF163UddRaqxkXFV7sdHmA==
-X-CSE-MsgGUID: 0KQWhQCsThO+jxkE0pAG/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="114586340"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 12 Oct 2024 02:12:20 -0700
-Date: Sat, 12 Oct 2024 17:28:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, imammedo@redhat.com, xieyongji@bytedance.com,
- chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1szYXh-0002cs-SE
+ for qemu-devel@nongnu.org; Sat, 12 Oct 2024 05:36:09 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1szYXd-0000R0-LZ
+ for qemu-devel@nongnu.org; Sat, 12 Oct 2024 05:36:09 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-71dec1cf48fso2482779b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 12 Oct 2024 02:36:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1728725764; x=1729330564; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F3lLqCYDHvM5V+9sKirBSH/hOX9eu6JdVML0bFl2Trc=;
+ b=gHRAZrHDON/oYKLYQUBAvgk7iXya2KlLz1/wL1ah22bFv6Ltc3c8sVpq4vOF6pOoGC
+ z558juehBFSaqxDeoC7Y4FI1QZMcmNT1mQ9azgjuwGBHJdcAVeRJ1IiBGW9nQkmUVR+U
+ /1lRnGfVp8tBrW7p1IEmARCzesRDoU1Vn8zhv/76bowk7J/rwUd8r04yYJGBe0S2e41B
+ flTnFm5G4cnlo99Qcg4AfrFWD2yxW1HrPE8FJQLH+F8K/UsxMTE8CYsItWz8MpmuIxVr
+ gu3IyWsQiF+2bv21jgCwS3SBy23zonwGuphKs/OEsxyaRNm9lAfSCvIhpJFezv2CIdco
+ WtEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728725764; x=1729330564;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=F3lLqCYDHvM5V+9sKirBSH/hOX9eu6JdVML0bFl2Trc=;
+ b=wOOm3H5555t11eeFNgdqqINUBL1SLZnRJcwJYWW1bgbt3W0m9KbgQnqUz7IpIgL3J0
+ DhploKYNgDTb2MYIgxkbG3H34gsX2zSEntKnvUko5obHg45M0xu5RsG6qoEpCRXD8+Rp
+ pB+55OTgOm8tXJDjOFec9eSps1xgicLmvaqKu+tn386HS2YildgkyVZ7gRkDq6Hoq3ie
+ 0bcCZHqbIbXhUTz88N81NrphbFve8M9rVov+0CKDtORqtexCP7SGlmeDndlL62l5n7yE
+ a+YdeAtWfrSkSPAHfTDUsKHNij2ycpd6O12hU5T8BT7To5jN0bXFbtw5ENekuxdvkWz3
+ GnkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWG7bNMq1Iy9KO52xnD2UoLBwXwXg3pVIuf+wAJAdkowC8mubmvQ1bC/k0Hn1cx+qmxsf9LCgnDRw+r@nongnu.org
+X-Gm-Message-State: AOJu0YwpVU7HTqSkedPZiK8vhxm3RtfunIqor/06EQIjz1Qy81QgMSmq
+ 5oxqbLIBTN9PgCnKWFJhhow7joYCdUFLrrCWkv5GAJZt15QGDsqcTPaSiC3SK3M=
+X-Google-Smtp-Source: AGHT+IHgf09xtqKxqEajh31jH1PATZOwp4/EeFSv9ACZT9OiupHIxq+fNdTgHPCcjZhkv/CLdB74gw==
+X-Received: by 2002:a05:6a21:1643:b0:1d8:acec:f5c4 with SMTP id
+ adf61e73a8af0-1d8bcfa7be6mr7974014637.38.1728725763943; 
+ Sat, 12 Oct 2024 02:36:03 -0700 (PDT)
+Received: from [10.84.144.194] ([203.208.167.148])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71e2aab5e20sm3970395b3a.141.2024.10.12.02.36.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 12 Oct 2024 02:36:03 -0700 (PDT)
+Message-ID: <2f6b952d-4c21-4db5-9a8a-84a0c10feca8@bytedance.com>
+Date: Sat, 12 Oct 2024 17:35:58 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
  processors in the physical package
-Message-ID: <ZwpBQrx4w4h9v1ah@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: pbonzini@redhat.com, imammedo@redhat.com, xieyongji@bytedance.com,
+ chaiwen.cc@bytedance.com, zhao1.liu@intel.com, qemu-stable@nongnu.org,
+ Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>, qemu-devel@nongnu.org
 References: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
  <cc83fc31-7a77-4e32-a861-3c1dc8592a04@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+From: Chuang Xu <xuchuangxclwt@bytedance.com>
 In-Reply-To: <cc83fc31-7a77-4e32-a861-3c1dc8592a04@intel.com>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.15,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=xuchuangxclwt@bytedance.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.649,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,16 +100,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> This also is consistency with the SDM, where the comment for bit 23-16 of
-> CPUID.1:EBX is:
-> 
->   The nearest power-of-2 integer that is not smaller than EBX[23:16] is
->   the number of unique initial APIC IDs reserved for addressing
->   different logical processors in a physical package.
-> 
-> What I read from this is, the nearest power-of-2 integer that is not smaller
-> than EBX[23:16] is a different thing than EBX[23:16]. i.e.,
 
-��not smaller�� means ��greater than or equal to�� (��).
+On 10/12/24 下午4:21, Xiaoyao Li wrote:
+> On 10/9/2024 11:56 AM, Chuang Xu wrote:
+>> When QEMU is started with:
+>> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
+>> -smp 180,sockets=2,dies=1,cores=45,threads=2
+>>
+>> On Intel platform:
+>> CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
+>> logical processors in the physical package".
+>>
+>> When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 
+>> 90 for
+>> CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
+>> executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
+>> CPUID.04H.EAX[31:26], which matches the expected result.
+>>
+>> As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
+>> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
+>> integer too. Otherwise we may encounter unexpected results in guest.
+>>
+>> For example, when QEMU is started with CLI above and xtopology is 
+>> disabled,
+>> guest kernel 5.15.120 uses 
+>> CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
+>> calculate threads-per-core in detect_ht(). Then guest will get 
+>> "90/(1+63)=1"
+>> as the result, even though threads-per-core should actually be 2.
+>
+> It's kernel's bug instead.
+>
+> In 1.5.3 "Sub ID Extraction Parameters for initial APIC ID" of "Intel 
+> 64 Architecture Processor Topology Enumeration" [1], it is
+>
+>   - SMT_Mask_Width = Log2(RoundToNearestPof2(CPUID.1:EBX[23:16])/ 
+> (CPUID.(EAX=4,ECX=0):EAX[31:26]) + 1))
+>
+> The value of CPUID.1:EBX[23:16] needs to be *rounded* to the neartest 
+> power-of-two integer instead of itself being the power-of-two.
+>
+> This also is consistency with the SDM, where the comment for bit 23-16 
+> of CPUID.1:EBX is:
+>
+>   The nearest power-of-2 integer that is not smaller than EBX[23:16] is
+>   the number of unique initial APIC IDs reserved for addressing
+>   different logical processors in a physical package.
+>
+> What I read from this is, the nearest power-of-2 integer that is not 
+> smaller than EBX[23:16] is a different thing than EBX[23:16]. i.e.,
 
+Yes, when I read sdm, I also thought it was a kernel bug. But on my 
+192ht spr host, the value of CPUID.1:EBX[23:16] was indeed rounded up
+
+to the nearest power of 2 by the hardware. After communicating with 
+Intel technical support staff, we thought that perhaps the description 
+in sdm
+
+is not so accurate, and rounding up CPUID.1:EBX[23:16] to the power of 2 
+in qemu may be more in line with the hardware behavior.
+
+>
+> - EBX[23:16]: Maximum number of addressable IDs for logical processors
+>   in this physical package
+>
+> - pow2ceil(EBX[23:16]): the number of unique initial APIC IDs reserved
+>   for addressing different logical processors in a physical package.
+>
+> [1] 
+> https://cdrdv2-public.intel.com/759067/intel-64-architecture-processor-topology-enumeration.pdf
+>
+>> And on AMD platform:
+>> CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
+>> result meets our expectation.
+>>
+>> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 
+>> integer
+>> only for Intel platform to solve the unexpected result.
+>>
+>> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>> Acked-by: Igor Mammedov <imammedo@redhat.com>
+>> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+>> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
+>> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+>> ---
+>>   target/i386/cpu.c | 10 +++++++++-
+>>   1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index ff227a8c5c..641d4577b0 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -6462,7 +6462,15 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t 
+>> index, uint32_t count,
+>>           }
+>>           *edx = env->features[FEAT_1_EDX];
+>>           if (threads_per_pkg > 1) {
+>> -            *ebx |= threads_per_pkg << 16;
+>> +            /*
+>> +             * AMD requires logical processor count, but Intel needs 
+>> maximum
+>> +             * number of addressable IDs for logical processors per 
+>> package.
+>> +             */
+>> +            if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
+>> +                *ebx |= threads_per_pkg << 16;
+>> +            } else {
+>> +                *ebx |= 1 << apicid_pkg_offset(&topo_info) << 16;
+>> +            }
+>>               *edx |= CPUID_HT;
+>>           }
+>>           if (!cpu->enable_pmu) {
+>
 
