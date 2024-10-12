@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EF499B313
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 12:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FA399B311
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Oct 2024 12:31:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1szZN1-0003zJ-P1; Sat, 12 Oct 2024 06:29:12 -0400
+	id 1szZN6-00048i-P3; Sat, 12 Oct 2024 06:29:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szZMy-0003w4-GV; Sat, 12 Oct 2024 06:29:08 -0400
+ id 1szZN4-000462-1w; Sat, 12 Oct 2024 06:29:14 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1szZMw-0007EI-R0; Sat, 12 Oct 2024 06:29:08 -0400
+ id 1szZN2-0007EI-BH; Sat, 12 Oct 2024 06:29:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728728947; x=1760264947;
+ t=1728728952; x=1760264952;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uqz0CxeEMFYodgXeRDwdMplzhXLtp/KziGXuIPivbUo=;
- b=fpiW9fxtgqK6xP1u1spfgqu9Nlh474HFs4ouLEiNmUec5E6TrbxLFN3D
- B62CFYHDOaM3jz9/jmy4wz/IVeXN4DYceOssZ/GRZy57Ex0GcZJnIHrpO
- ViKjRj9rHf4a0ykft/xOtEgaEsTCZCTbqlDYVw7BVE+aIbX/sAbzNGMkq
- dEQfUMrluBYLBPFQ/rATtr1XCTyzSgXs+kAdDgxn1jdoFvMKxWB3aic4l
- 39ABxyBbaI8UpNnB49UjvNmlXjbo6FYpdXz2660nCa4mkS0FBkGeAEjJs
- 3QCJf9SVkwgbDaIJuRthRjGsrZqD7OEFNucdNGMu/SXiNvZw96Hs15QFX g==;
-X-CSE-ConnectionGUID: sS7snSsdRoWjhfZlAFpvog==
-X-CSE-MsgGUID: OmEJkGhRSbmzB4nCBguA2w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45634943"
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="45634943"
+ bh=i+35KcqWfRxigU2EIhaJxKdHSfXUSTicv5fw/oXO2lw=;
+ b=Hg1adh+D2ZnAE62s5ucZGEZyNf3b1vMPZHKV7xpdzASKdpj9P4lxTJjN
+ Y0q0ZzgxFMqMXQDA/fm7n7ZmingAL80eeSKRoOtdohZe3OLVSW/WAeGYL
+ 9mBvSps2z7rZ9FxXeS1v8zh5ejfwYM3uiEk34bXmEdx9ibyuloK+HrUHD
+ 8FFOkvc9Az01PJDcbqC3MVJetdMzSthP2W6OzFoNKOpXu1rdVcEOuGftM
+ YLks3K9L/uD0DtQo+eZ4uBC5W+Bq0xBxXTR3sir0OsVOUUTOPiqILA3Xj
+ ddyRb+vPg7+klDTyYbOjGJKHIC3qmsR5h51l0igE6GugwsKRSjPvRMVYz A==;
+X-CSE-ConnectionGUID: kTJweIsASxiXljiWZ6y6Zg==
+X-CSE-MsgGUID: ZcAUiWd8QO+rMf8ZasCQ7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45634956"
+X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="45634956"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2024 03:29:05 -0700
-X-CSE-ConnectionGUID: zpEiaCQ/TIq2/9zNkRBHqQ==
-X-CSE-MsgGUID: 3VXD5jpMQOiVZMGySxNoPw==
+ 12 Oct 2024 03:29:11 -0700
+X-CSE-ConnectionGUID: iSUSYFKcSyyEaLI1013xMA==
+X-CSE-MsgGUID: WLmQSF1tQ+WlPwsdfAOydQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="77050867"
+X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; d="scan'208";a="77050877"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 12 Oct 2024 03:29:00 -0700
+ by orviesa010.jf.intel.com with ESMTP; 12 Oct 2024 03:29:05 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -59,12 +59,11 @@ To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Alireza Sanaee <alireza.sanaee@huawei.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: [PATCH v3 6/7] i386/pc: Support cache topology in -machine for PC
- machine
-Date: Sat, 12 Oct 2024 18:44:28 +0800
-Message-Id: <20241012104429.1048908-7-zhao1.liu@intel.com>
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 7/7] i386/cpu: add has_caches flag to check smp_cache
+ configuration
+Date: Sat, 12 Oct 2024 18:44:29 +0800
+Message-Id: <20241012104429.1048908-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241012104429.1048908-1-zhao1.liu@intel.com>
 References: <20241012104429.1048908-1-zhao1.liu@intel.com>
@@ -95,88 +94,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow user to configure l1d, l1i, l2 and l3 cache topologies for PC
-machine.
+From: Alireza Sanaee <alireza.sanaee@huawei.com>
 
-Additionally, add the document of "-machine smp-cache" in
-qemu-options.hx.
+Add has_caches flag to SMPCompatProps, which helps in avoiding
+extra checks for every single layer of caches in x86 (and ARM in
+future).
 
+Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+Note: Picked from Alireza's series with the changes:
+ * Moved the flag to SMPCompatProps with a new name "has_caches".
+   This way, it remains consistent with the function and style of
+   "has_clusters" in SMPCompatProps.
+ * Dropped my previous TODO with the new flag.
 ---
 Changes since Patch v2:
- * Polished the document. (Jonathan)
-
-Changes since Patch v1:
- * Merged document into this patch. (Markus)
-
-Changes since RFC v2:
- * Used cache_supported array.
+ * Picked a new patch frome Alireza's ARM smp-cache series.
 ---
- hw/i386/pc.c    |  4 ++++
- qemu-options.hx | 26 +++++++++++++++++++++++++-
- 2 files changed, 29 insertions(+), 1 deletion(-)
+ hw/core/machine-smp.c | 2 ++
+ include/hw/boards.h   | 3 +++
+ target/i386/cpu.c     | 9 ++++-----
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2047633e4cf7..8aea2308dcb9 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1791,6 +1791,10 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     mc->nvdimm_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->smp_props.modules_supported = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1D] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1I] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L2] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L3] = true;
-     mc->default_ram_id = "pc.ram";
-     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index f3edbded2e7b..16e456678cb6 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -367,6 +367,8 @@ bool machine_parse_smp_cache(MachineState *ms,
+         return false;
+     }
  
-diff --git a/qemu-options.hx b/qemu-options.hx
-index d5afefe5b63c..8a0cd7393f34 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -39,7 +39,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
-     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
--    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
-+    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
-+    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-machine [type=]name[,prop=value[,...]]``
-@@ -159,6 +160,29 @@ SRST
-         ::
++    mc->smp_props.has_caches = true;
++
+     return true;
+ }
  
-             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
-+
-+    ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
-+        Define cache properties for SMP system.
-+
-+        ``cache=cachename`` specifies the cache that the properties will be
-+        applied on. This field is the combination of cache level and cache
-+        type. It supports ``l1d`` (L1 data cache), ``l1i`` (L1 instruction
-+        cache), ``l2`` (L2 unified cache) and ``l3`` (L3 unified cache).
-+
-+        ``topology=topologylevel`` sets the cache topology level. It accepts
-+        CPU topology levels including ``thread``, ``core``, ``module``,
-+        ``cluster``, ``die``, ``socket``, ``book``, ``drawer`` and a special
-+        value ``default``. If ``default`` is set, then the cache topology will
-+        follow the architecture's default cache topology model. If another
-+        topology level is set, the cache will be shared at corresponding CPU
-+        topology level. For example, ``topology=core`` makes the cache shared
-+        by all threads within a core.
-+
-+        Example:
-+
-+        ::
-+
-+            -machine smp-cache.0.cache=l1d,smp-cache.0.topology=core,smp-cache.1.cache=l1i,smp-cache.1.topology=core
- ERST
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index e4a1035e3fa1..af62b09c89d1 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -153,6 +153,8 @@ typedef struct {
+  * @modules_supported - whether modules are supported by the machine
+  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
+  *                    supported by the machine
++ * @has_caches - whether cache properties are explicitly specified in the
++ *               user provided smp-cache configuration
+  */
+ typedef struct {
+     bool prefer_sockets;
+@@ -163,6 +165,7 @@ typedef struct {
+     bool drawers_supported;
+     bool modules_supported;
+     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
++    bool has_caches;
+ } SMPCompatProps;
  
- DEF("M", HAS_ARG, QEMU_OPTION_M,
+ /**
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index c8a04faf3764..6f711e98b527 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7853,12 +7853,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+ #ifndef CONFIG_USER_ONLY
+     MachineState *ms = MACHINE(qdev_get_machine());
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
+ 
+-    /*
+-     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless Updates
+-     * if user didn't set smp_cache.
+-     */
+-    x86_cpu_update_smp_cache_topo(ms, cpu);
++    if (mc->smp_props.has_caches) {
++        x86_cpu_update_smp_cache_topo(ms, cpu);
++    }
+ 
+     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
+ 
 -- 
 2.34.1
 
