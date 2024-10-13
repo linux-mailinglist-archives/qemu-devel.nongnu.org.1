@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA0D99BC7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E46B99BC90
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06q2-0007HF-1N; Sun, 13 Oct 2024 18:13:22 -0400
+	id 1t06pO-00075z-NT; Sun, 13 Oct 2024 18:12:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pg-0007CP-Ok
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:01 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1t06pM-00075c-RV
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:40 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pf-0000xB-B2
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:00 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2e2a97c2681so2633640a91.2
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:58 -0700 (PDT)
+ id 1t06pL-0000tJ-7s
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:40 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e2eba31d3aso1725591a91.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857578; x=1729462378; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857557; x=1729462357; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nPsGlRApUHllpr7HECmYu85LwKI3gq1PeB/gQzKhtMY=;
- b=a5eVqYWvGSmnfNWZMVOyApLbkdqJSqPmd1kq8lKCw8RJ4d15JR6JnZHiByyvEDEmXf
- N7768V2wn5RPh4kH0A0JLJSIskaQb+K9jUnHTscJTbDzmdTQ6UALuThB/GQ+8K7lrHti
- gcELCjrtYRmZuLhCbzCr+/bwfoWZfBm33wBXJhiMqfkdwHXQEnHq55AcPh6SsoNv+K6P
- 0YB7KCX4zAF1u4Wi6NmwZwaGrfXFBXXtq3fMluyaTjNjZYklKF7RWBJIh0rlrTXM4gYt
- /dg9MXsXkIDdt5sIK7jGfzlLo8bKiXJMS3BSG3cc1MVFVyhhcV4KdljPShLjm5PGqi/F
- o0aQ==
+ bh=S3nhJScpyOxwK6cYED3CCWJGrT05YK1NUQh3o/GeSgc=;
+ b=ZRkXYAATbzk5Z/ls0O8pt41gPwPhD8HTRwldmJDy90KhT57aqOih1BNdt9GLcdX9EN
+ nxyr8G3q4ieuoeB5Oo0eKZ3ySo6W7D9YvYO7zX7CAUxYFq6D5s3WsjLqG99Zm/wyO/vx
+ +7DaXp0nKO2jr8PeHLwB5jEIqrc2h/yvtDQXJI6j0imH6RoHtxjpi2Q36DmdVb0CyayY
+ Auzklo8IzQTMMoCV/weMYwSXH7OCT6HlyDGX/cAzB0e62/HfHEV4OIa3kOsZxzI03QYW
+ Tw4h/SZiffCjfG9E+D7c3sXsvogl9+Nos7FgYE3LjXVcwYb4NejhfS/1YKRjYuGcimvW
+ 5pPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857578; x=1729462378;
+ d=1e100.net; s=20230601; t=1728857557; x=1729462357;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nPsGlRApUHllpr7HECmYu85LwKI3gq1PeB/gQzKhtMY=;
- b=W0u99OF+JTpmJQsZU2Uta0EVddGCtGudoEHxeMq/Ujz0IrxUqS1e/mxDoSUucf+YlG
- qH2+ouI1QvFZ8YonRKmePTxw7lSU1+hgw+gUYdBbCb1MACJ1rAlpUNBVzYfRK1Rru16R
- NDoCh/8qGZeaaRNnWpgrj1Q9SoGnAqB6uQ9EhFTf/J20WQi+CGzsvi9Gl3J/bkNCVC9Y
- Pi2lBeqsFuCZqZiBvEyhIpcNnvXi9BJXronFAKFyY/cQb2NffZXK74TJhgrbSLQD/DpX
- PL9O2mb+cX1v01mRjDxmNuzDYPYJSUccH70S8zMPKJsu4AAMZa60A7oW3BDoMzvTb934
- Qt3A==
-X-Gm-Message-State: AOJu0YxnsKyxVS0jV/e0ZpBWWrZha6Zqo+PgoZPaR7TcGW/QY4XbALnq
- ycXwjXPfIVYiV+HARxqJu2dW0e3MDPm+YWXCypOBT9V1toBzHUlfVqEfLgsJ2uBpzPWNIpXS3a+
- A
-X-Google-Smtp-Source: AGHT+IE4nIwz6w08ekeXRdEwDegLKka9MgNchvoOvimoEiuvQBp8xoACW+i9qBtGCwecY+miEzU6/w==
-X-Received: by 2002:a17:90b:1056:b0:2e0:db81:4f79 with SMTP id
- 98e67ed59e1d1-2e2f0a2fb2cmr11105444a91.2.1728857578022; 
- Sun, 13 Oct 2024 15:12:58 -0700 (PDT)
+ bh=S3nhJScpyOxwK6cYED3CCWJGrT05YK1NUQh3o/GeSgc=;
+ b=gOtxc5neBUZ3WuW2xJPo8DqvYxampjpYLyChIIM5g7+iMP0af6kKNxZ9mP1SghFAaa
+ yE/Pk+TZs6B1h7fKjzbvcFBK2PvCT8936hjtyZ2Uh/yDIupJc4F1W9e9Ds7VAAuAVcUT
+ uRriOpI2H0uyryri3vEKljgS16C46ggzSqkqlKU9k8P/0F8ao2OMc9qVcVAfGXVySR4J
+ 34xm1gE6eAPP2vEDlnMt7ggcs4aIyW8PrrZe351TEGS1bnfUSb2H/vLt/iaxKihVUeoL
+ Z7xS90N4VZC5NhWeAdP5OxEqxrpLzf9mZzs2de10VRVHIRQL9yjHtSS953zX5wvBH05c
+ DzvA==
+X-Gm-Message-State: AOJu0YyqYGsRtqAba1L9T6ggC/qEU1hDB1nV1hpSevpEc5CNqnQdowVQ
+ 4u+cO7zcDCyFrsoNihSJfkEVlfPAe5NqY3rd4cskoA8ppAzm2fhJ8/X5ZDrT0CnQ2FNFaTOKmpM
+ H
+X-Google-Smtp-Source: AGHT+IEXQyFHIY9JFPHVYpiYRRu0cES1eWI2ueT2X08k0LPuxzR3Bh2Ut2TUHWXYxoxX3tBCsUTZag==
+X-Received: by 2002:a17:90b:46d4:b0:2e2:cef9:8f68 with SMTP id
+ 98e67ed59e1d1-2e2f09ee5cemr12735384a91.4.1728857557511; 
+ Sun, 13 Oct 2024 15:12:37 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.57
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:57 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 23/27] target/arm: Pass MemOp through get_phys_addr_twostage
-Date: Sun, 13 Oct 2024 15:12:31 -0700
-Message-ID: <20241013221235.1585193-24-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 01/27] tcg: remove singlestep_enabled from DisasContextBase
+Date: Sun, 13 Oct 2024 15:12:09 -0700
+Message-ID: <20241013221235.1585193-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,59 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass memop through get_phys_addr_twostage with its
-recursion with get_phys_addr_nogpc.
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+It is used in a couple of places only, both within the same target.
+Those can use the cflags just as well, so remove the separate field.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241010083641.1785069-1-pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/exec/translator.h   | 2 --
+ accel/tcg/translator.c      | 1 -
+ target/mips/tcg/translate.c | 5 +++--
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 0445c3ccf3..f1fca086a4 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3301,7 +3301,7 @@ static bool get_phys_addr_disabled(CPUARMState *env,
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 25004dfb76..d8dcb77b5f 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -71,7 +71,6 @@ typedef enum DisasJumpType {
+  * @is_jmp: What instruction to disassemble next.
+  * @num_insns: Number of translated instructions (including current).
+  * @max_insns: Maximum number of instructions to be translated in this TB.
+- * @singlestep_enabled: "Hardware" single stepping enabled.
+  * @plugin_enabled: TCG plugin enabled in this TB.
+  * @fake_insn: True if translator_fake_ldb used.
+  * @insn_start: The last op emitted by the insn_start hook,
+@@ -86,7 +85,6 @@ struct DisasContextBase {
+     DisasJumpType is_jmp;
+     int num_insns;
+     int max_insns;
+-    bool singlestep_enabled;
+     bool plugin_enabled;
+     bool fake_insn;
+     struct TCGOp *insn_start;
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 113edcffe3..cbad00a517 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -129,7 +129,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     db->is_jmp = DISAS_NEXT;
+     db->num_insns = 0;
+     db->max_insns = *max_insns;
+-    db->singlestep_enabled = cflags & CF_SINGLE_STEP;
+     db->insn_start = NULL;
+     db->fake_insn = false;
+     db->host_addr[0] = host_pc;
+diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+index 333469b268..50d8537a3b 100644
+--- a/target/mips/tcg/translate.c
++++ b/target/mips/tcg/translate.c
+@@ -15362,7 +15362,8 @@ static void mips_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+      * hardware does (e.g. if a delay slot instruction faults, the
+      * reported PC is the PC of the branch).
+      */
+-    if (ctx->base.singlestep_enabled && (ctx->hflags & MIPS_HFLAG_BMASK)) {
++    if ((tb_cflags(ctx->base.tb) & CF_SINGLE_STEP) &&
++        (ctx->hflags & MIPS_HFLAG_BMASK)) {
+         ctx->base.max_insns = 2;
+     }
  
- static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-                                    vaddr address,
--                                   MMUAccessType access_type,
-+                                   MMUAccessType access_type, MemOp memop,
-                                    GetPhysAddrResult *result,
-                                    ARMMMUFaultInfo *fi)
- {
-@@ -3313,7 +3313,8 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     ARMSecuritySpace ipa_space;
-     uint64_t hcr;
- 
--    ret = get_phys_addr_nogpc(env, ptw, address, access_type, 0, result, fi);
-+    ret = get_phys_addr_nogpc(env, ptw, address, access_type,
-+                              memop, result, fi);
- 
-     /* If S1 fails, return early.  */
-     if (ret) {
-@@ -3339,7 +3340,8 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     cacheattrs1 = result->cacheattrs;
-     memset(result, 0, sizeof(*result));
- 
--    ret = get_phys_addr_nogpc(env, ptw, ipa, access_type, 0, result, fi);
-+    ret = get_phys_addr_nogpc(env, ptw, ipa, access_type,
-+                              memop, result, fi);
-     fi->s2addr = ipa;
- 
-     /* Combine the S1 and S2 perms.  */
-@@ -3469,7 +3471,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
-         if (arm_feature(env, ARM_FEATURE_EL2) &&
-             !regime_translation_disabled(env, ARMMMUIdx_Stage2, ptw->in_space)) {
-             return get_phys_addr_twostage(env, ptw, address, access_type,
--                                          result, fi);
-+                                          memop, result, fi);
-         }
-         /* fall through */
- 
+@@ -15445,7 +15446,7 @@ static void mips_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+      * together with its delay slot.
+      */
+     if (ctx->base.pc_next - ctx->page_start >= TARGET_PAGE_SIZE
+-        && !ctx->base.singlestep_enabled) {
++        && !(tb_cflags(ctx->base.tb) & CF_SINGLE_STEP)) {
+         ctx->base.is_jmp = DISAS_TOO_MANY;
+     }
+ }
 -- 
 2.43.0
 
