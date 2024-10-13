@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6614299BC83
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAD999BC87
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06q3-0007Hb-Aj; Sun, 13 Oct 2024 18:13:23 -0400
+	id 1t06pz-0007Fi-4R; Sun, 13 Oct 2024 18:13:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06ph-0007Ce-Pq
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:02 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1t06pj-0007DC-2S
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:04 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pg-0000xO-5A
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:01 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2e2ad9825a7so2480641a91.0
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:59 -0700 (PDT)
+ id 1t06ph-0000xd-9H
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:13:02 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2e2a97c2681so2633649a91.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:13:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857579; x=1729462379; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857580; x=1729462380; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zDNpltdoK5BIHBCpA0bLYhC/fVRvo8Z+4KE41wqkR3g=;
- b=A5xhuLMD5Tood3W5PdqLDsO5jGUdvunXfyte6dXi7/OMMEe2RDmbvVVa4GUjDgWy0p
- 9XrrUubZf++zN8lCnJYaktIx2mri71oNPUgRwqqMcYP4fgn+EYcyhKnBc0AGlgP+K+7H
- hw0buD0V2B7o1zCJpk8SwzNjl1gWU7Rdzis11S2IkX2vHgU8HLUmrE7z8wrBc66qF+0Z
- vmXxDfvq4L5LJfxXnpQ+RphquBtYduJXlN1HYqpOrvHL17+nF5FV3Wd9qktmYj0fez6f
- j+ydzszzlfsTPclsjiw1c/XW/5tT37HMwBj8g5h5bxQcOSrwZSwYTRsQWhaOkWTAbLzT
- 6Wyw==
+ bh=oOELs1GBJLtlq8nQGFT7BbF8Y02om3aScvqBsVkX7+Q=;
+ b=t1H7PVN6m8eHoMXNAjpjy/tQ8bk4o7HLTHpxddvugB3HQPMP2Mq8g6jHVv3/BJHc7+
+ eWeXZM8KocZS538p/VDxpuMnbRG+bonTLKSDVizWsz1g1OAaU96W1Hzx6veysmLOoZzI
+ rNWzzYG26m5AypyZszrmA+rfHoyZneOD5rrD0q0MNzD1Sb4Q6iNHJl9m+dz7UszaDPbV
+ xWFZFxIVZGgBA9bbdtZAlFg1pudAtZM1aUnyul/QYw4MCw5h9RwFZXmk2H3aI5Urv9Aw
+ nF0MpyGk+USkYm3zD9vV94VXNGQeovyJqCHwFwot0lyr4OrZdukt37qJeD3CbTmIhyfI
+ 3Z9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857579; x=1729462379;
+ d=1e100.net; s=20230601; t=1728857580; x=1729462380;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zDNpltdoK5BIHBCpA0bLYhC/fVRvo8Z+4KE41wqkR3g=;
- b=NhV+d/n8HhcR6SCA+Zx8yLtai+i9AwUjz6NzpGzemsXwbMgcujYPwmb8RMtr07OzA9
- LRVoTg7NKRuYYvEbNtWJXxzphbcLyBHARO290jx0FANoll6Y5jbpTaRaAEnOOWUycZFE
- 55Dwg1Gho6AXeUBB3wYguJS6dV9p7UF2pjw7czEaJ+WlxLeIG8zBrOCsG1Fc+MuOOT44
- PbmENYzuCFq1yXqBfKFQB4fVahbujFbUf8sn/A8AsNnLVAfSuDOYV1V4S1aetWN0Ne5R
- u/NBxOtpNh2I7M73UgMVDLH0G/1eN1ujxqfVilWPTWzceO80Wudt+2QjPaVZ9PI9tLS/
- o2hQ==
-X-Gm-Message-State: AOJu0Yz4qttA0/tywgbFIQcrCDHbmEoxeUpdOiEhpzM0HD5tzLeuiztD
- QmMoe/Dednga6N4+BvYgOgbmLosCC5XMY2RUaD+wTk+sBb8UzAd7oSAIJdAbZSvbbW849Zswuz3
- i
-X-Google-Smtp-Source: AGHT+IHQhpFnqbb7myorjPUSvjw1PQblrlzAOqaM2r9BRe6AvBH4FsPVJaWYqALyTW8PkJ1X3QoywA==
-X-Received: by 2002:a17:90a:e00e:b0:2e2:ede0:91c with SMTP id
- 98e67ed59e1d1-2e2f0dc2e8cmr13128374a91.36.1728857578911; 
- Sun, 13 Oct 2024 15:12:58 -0700 (PDT)
+ bh=oOELs1GBJLtlq8nQGFT7BbF8Y02om3aScvqBsVkX7+Q=;
+ b=PbRshuBM9p1rFctqMK+uu1wN7ZH8psHfwhQqeRd0QPpNciTzJSmBBgNCiZ4Ze6+taR
+ yW6W6RM0NP4v1MY0OP9IurYVy5MjAfNp/Qr4KFP+76XPL6OA6kUti9j3r8HS0249PX17
+ xhomq9uArInV0TI5W05RjwQfbAWPbhrBbBdx+IBScTolGi6rL2PwlGPRiwtRS4VU+Kaq
+ RygeULf7845YsmuOTR3BKdtaB5XbvYzg8WKudplfysZYME4gaMGy84hLL4DTmqq6sVsa
+ C0efJPtM/ezYEeyV1tk36cGg8iEQ50aiWI8UKuIEASxZS3Hmg8x9TrZlIkl1akNCJo18
+ 2VPg==
+X-Gm-Message-State: AOJu0YwyEMepyGH/olrI4XIbDX8Hjwz8FaVRQCz5OwjrdsoyF73PWxfs
+ 5Tq0ZutblXfoOebEQHl4TN+AoJ2iMB6jFzoQNG5MgLsLYuEwwfipL7Ek0AjIgGdGDguwQr/EMGD
+ /
+X-Google-Smtp-Source: AGHT+IGvF2YTqWLWFscInM+uhdd/nr1DtHKoPW8/pCJ3G3EGGnqFEvq0YbYJn8nIsX1MzrsqXiPPyA==
+X-Received: by 2002:a17:90b:2242:b0:2e2:a667:1a10 with SMTP id
+ 98e67ed59e1d1-2e2f0f08c2emr11229279a91.38.1728857579842; 
+ Sun, 13 Oct 2024 15:12:59 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.58
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:58 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 24/27] target/arm: Pass MemOp to get_phys_addr_lpae
-Date: Sun, 13 Oct 2024 15:12:32 -0700
-Message-ID: <20241013221235.1585193-25-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 25/27] target/arm: Move device detection earlier in
+ get_phys_addr_lpae
+Date: Sun, 13 Oct 2024 15:12:33 -0700
+Message-ID: <20241013221235.1585193-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,45 +93,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass the value through from get_phys_addr_nogpc.
+Determine cache attributes, and thence Device vs Normal memory,
+earlier in the function.  We have an existing regime_is_stage2
+if block into which this can be slotted.
 
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/arm/ptw.c | 49 ++++++++++++++++++++++++------------------------
+ 1 file changed, 25 insertions(+), 24 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index f1fca086a4..238b2c92a9 100644
+index 238b2c92a9..0a1a820362 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -1684,12 +1684,13 @@ static bool nv_nv1_enabled(CPUARMState *env, S1Translate *ptw)
-  * @ptw: Current and next stage parameters for the walk.
-  * @address: virtual address to get physical address for
-  * @access_type: MMU_DATA_LOAD, MMU_DATA_STORE or MMU_INST_FETCH
-+ * @memop: memory operation feeding this access, or 0 for none
-  * @result: set on translation success,
-  * @fi: set to fault info if the translation fails
-  */
- static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-                                uint64_t address,
--                               MMUAccessType access_type,
-+                               MMUAccessType access_type, MemOp memop,
-                                GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
- {
-     ARMCPU *cpu = env_archcpu(env);
-@@ -3534,7 +3535,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+@@ -2029,8 +2029,20 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+             xn = extract64(attrs, 53, 2);
+             result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
+         }
++
++        result->cacheattrs.is_s2_format = true;
++        result->cacheattrs.attrs = extract32(attrs, 2, 4);
++        /*
++         * Security state does not really affect HCR_EL2.FWB;
++         * we only need to filter FWB for aa32 or other FEAT.
++         */
++        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
++                                     result->cacheattrs.attrs);
+     } else {
+         int nse, ns = extract32(attrs, 5, 1);
++        uint8_t attrindx;
++        uint64_t mair;
++
+         switch (out_space) {
+         case ARMSS_Root:
+             /*
+@@ -2102,6 +2114,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+          */
+         result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
+                                     result->f.attrs.space, out_space);
++
++        /* Index into MAIR registers for cache attributes */
++        attrindx = extract32(attrs, 2, 3);
++        mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
++        assert(attrindx <= 7);
++        result->cacheattrs.is_s2_format = false;
++        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
++
++        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
++        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
++            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
++        }
++        device = S1_attrs_are_device(result->cacheattrs.attrs);
      }
  
-     if (regime_using_lpae_format(env, mmu_idx)) {
--        return get_phys_addr_lpae(env, ptw, address, access_type, result, fi);
-+        return get_phys_addr_lpae(env, ptw, address, access_type,
-+                                  memop, result, fi);
-     } else if (arm_feature(env, ARM_FEATURE_V7) ||
-                regime_sctlr(env, mmu_idx) & SCTLR_XP) {
-         return get_phys_addr_v6(env, ptw, address, access_type, result, fi);
+     if (!(result->f.prot & (1 << access_type))) {
+@@ -2131,30 +2156,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     result->f.attrs.space = out_space;
+     result->f.attrs.secure = arm_space_is_secure(out_space);
+ 
+-    if (regime_is_stage2(mmu_idx)) {
+-        result->cacheattrs.is_s2_format = true;
+-        result->cacheattrs.attrs = extract32(attrs, 2, 4);
+-        /*
+-         * Security state does not really affect HCR_EL2.FWB;
+-         * we only need to filter FWB for aa32 or other FEAT.
+-         */
+-        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
+-                                     result->cacheattrs.attrs);
+-    } else {
+-        /* Index into MAIR registers for cache attributes */
+-        uint8_t attrindx = extract32(attrs, 2, 3);
+-        uint64_t mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
+-        assert(attrindx <= 7);
+-        result->cacheattrs.is_s2_format = false;
+-        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
+-
+-        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
+-        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
+-            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
+-        }
+-        device = S1_attrs_are_device(result->cacheattrs.attrs);
+-    }
+-
+     /*
+      * Enable alignment checks on Device memory.
+      *
 -- 
 2.43.0
 
