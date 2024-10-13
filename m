@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD27899BC8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B9599BC82
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:16:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pc-0007BC-Ts; Sun, 13 Oct 2024 18:12:56 -0400
+	id 1t06pe-0007BE-6a; Sun, 13 Oct 2024 18:12:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pX-00079v-Ap
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:53 -0400
+ id 1t06pY-00079x-W0
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:54 -0400
 Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pU-0000ux-Q4
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:50 -0400
+ id 1t06pW-0000vG-RC
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:52 -0400
 Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7ea8c4ce232so174252a12.0
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:47 -0700 (PDT)
+ 41be03b00d2f7-7db637d1e4eso2474319a12.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857567; x=1729462367; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857568; x=1729462368; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VxQQDPF3XbwGQMMjEi8JT0LcRz4F5ymP0/tmO2RuJRo=;
- b=ONaBSjLgrd13zmFhvVFjMYqZjGYQTn4nKm1prv+AZq5H9lWeAJI+8Ptr/Cx/N4lKaa
- QKT6NNClF4vKZy57ptqjiEG0YsjH6pH1GMc3U8M7NaQ1apyxA6tXme9+xPXDVapqG3wi
- 22I15AmdkBqB1M4kmPTj0MQ3PFluCLVHsZt4ut5yWxZP1lcaC84XWRf467WRoFDclbPT
- d3mrEiW6Duw+jUSjSZvjaWAYl+R8Z9rM3WKCB2rpB8xU2z1B3sBPHVKwLRAdxqU3kD7w
- +Nx48QID0hltwSiIc5gyg+hUJ7sk8NO6mt9ApAjSx4FVhCXEDzt5/unJ5UCPVXvN1+g5
- LquA==
+ bh=RgjF9MWTX9WVkUUJb/RiYkmVHDzeAEtDtYq3Lai+k+w=;
+ b=vnJuaoA2IDm0kzoxKpCpuFWkoTe5F2Fek3+Plm0lu/o6uGhELFau2bA5axqsyc5yqe
+ znFcaUifBZlc9cw7Xk+PUkDf3khFxRfYY7RKguWWcqROIi5tuLDVjafphd31TIauukwn
+ 0NN5whNLUNBKCORTSPo9nVR/AcEycw1lR4wZ60Mr4okc6aW8kphpX1VXVW7XMx6mK8tL
+ ThRGvD+6dmZOvntBrUQJdd3+20hrJtiLjHq2KnyKXSnTa8CXm6HuSseEJ0WOKH+heKO1
+ od8wtkpKuQ430AwOLLMsdNlaA0yP/obADWF2AJC6CE7gE7Ju1nW9pgTJ/emk40XaBunQ
+ tPfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857567; x=1729462367;
+ d=1e100.net; s=20230601; t=1728857568; x=1729462368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VxQQDPF3XbwGQMMjEi8JT0LcRz4F5ymP0/tmO2RuJRo=;
- b=PIdwKH8vOLiWA4xNVr8WWPhWYQ8ohtObsm6HErUNSkZfC+Ols0mxeMMkeuCMYw0Es3
- 71ghtRSWrpgYQ5DEcTaC8W1ziiUAaoA0027uYNcMMromMPQFEKRz3EXvWQka0RHp4tUL
- 69J3Am8k6EJh1ldeNAGyA/h0jv3QIsVDRwE3944W3KmnQRpsLEzRviLsUWpJ5FdIrUHF
- nq/MAF6shHSTee4Wzc+pfIhMcE4c32EFMo/5jhy+J4By86hwIChVomtrHYdRmr6MG0jR
- SpojIfaCJCdqGsUnSHn7r6FSAklf6WPYa84wM/bgwR9ri/5pzdo9KfGAh6UNvT1qI6p9
- LAow==
-X-Gm-Message-State: AOJu0Yz3lqJn2YOOc0xgfTghDePW2JJ/UWnTLecWEo99eMswwixlYD02
- lF0UUludpafNMLWpdSGpiAzteVlHXvHSkFsz7DZmECQWSzW1IPL+FqkUflgDiy2boSPjcEbLtcH
- e
-X-Google-Smtp-Source: AGHT+IGPowYwaoawTjLXnJZj2jmig5ndMdIDsq5xhuFS5wUQFAJxS1q3dz2/FIs3frfa+ikQsVamwQ==
-X-Received: by 2002:a17:90b:1005:b0:2e2:e0c1:4452 with SMTP id
- 98e67ed59e1d1-2e31539036fmr7425969a91.41.1728857566627; 
- Sun, 13 Oct 2024 15:12:46 -0700 (PDT)
+ bh=RgjF9MWTX9WVkUUJb/RiYkmVHDzeAEtDtYq3Lai+k+w=;
+ b=V/daUymmCmhdvdJjMZC62li8iAaAZKzgxYDf6GfU3KABaj7BvkLJuirtjfz7LEChkd
+ DFkgzxrJhLx5wcE6Zm4vtwFvE9yWETkjITyaNp89nGsv6yQzEVvQTAjmicVoRHdtSSv7
+ Kvqwt/ubsJxt2XFBQxUfIJCG0/xVW3msU9N6qEJLCa0OVEmkPY1AxtAprKarWLiTl6Dq
+ Y1oUrT2eD0ZE41NShmKplvoZLmVXl9KJhqkQYaeoVzhEf3zDH996DziZn3II8TIMDS9P
+ 6NBnTbibVD0uZNrgJnAEi77GJenvU+V4jszQtFzxbSodJdyRHOmbuAOJWdY6MXiH/L3k
+ SPKA==
+X-Gm-Message-State: AOJu0Yze1e53G7tnDf5XzF/OoHeYyUYx4cLqea4CxTvjyjWiwnSGJtLk
+ 0F+c+7xEdwI3asrIe9GOhXeRx4AhNaOhi/9FYaKzcJrdTE38W/BQaUaLoaqaSf+9MNvfMq0u/rG
+ 9
+X-Google-Smtp-Source: AGHT+IFuAgqUImcufDPhNQv4l0lS9jLsvCkAbNeL7sItYiaU+WXXHRdP1eKYBPCU0eWoPkve+O+3Fg==
+X-Received: by 2002:a17:90b:f16:b0:2e2:a850:6921 with SMTP id
+ 98e67ed59e1d1-2e2f0a49228mr12723574a91.1.1728857568482; 
+ Sun, 13 Oct 2024 15:12:48 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.45
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:46 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 10/27] include/exec/memop: Rename get_alignment_bits
-Date: Sun, 13 Oct 2024 15:12:18 -0700
-Message-ID: <20241013221235.1585193-11-richard.henderson@linaro.org>
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 12/27] accel/tcg: Add TCGCPUOps.tlb_fill_align
+Date: Sun, 13 Oct 2024 15:12:20 -0700
+Message-ID: <20241013221235.1585193-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
  envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
@@ -95,202 +93,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename to use "memop_" prefix, like other functions
-that operate on MemOp.
+Add a new callback to handle softmmu paging.  Return the page
+details directly, instead of passing them indirectly to
+tlb_set_page.  Handle alignment simultaneously with paging so
+that faults are handled with target-specific priority.
+
+Route all calls of the two hooks through a tlb_fill_align
+function local to cputlb.c.
+
+As yet no targets implement the new hook.
+As yet cputlb.c does not use the new alignment check.
 
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memop.h           | 4 ++--
- accel/tcg/cputlb.c             | 4 ++--
- accel/tcg/user-exec.c          | 4 ++--
- target/arm/tcg/translate-a64.c | 4 ++--
- target/xtensa/translate.c      | 2 +-
- tcg/tcg-op-ldst.c              | 6 +++---
- tcg/tcg.c                      | 2 +-
- tcg/arm/tcg-target.c.inc       | 4 ++--
- tcg/sparc64/tcg-target.c.inc   | 2 +-
- 9 files changed, 16 insertions(+), 16 deletions(-)
+ include/hw/core/cpu.h         |  4 +--
+ include/hw/core/tcg-cpu-ops.h | 26 +++++++++++++++
+ include/qemu/typedefs.h       |  1 +
+ accel/tcg/cputlb.c            | 61 ++++++++++++++++++++++-------------
+ 4 files changed, 67 insertions(+), 25 deletions(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index 97720a8ee7..f53bf618c6 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -171,12 +171,12 @@ static inline bool memop_big_endian(MemOp op)
- }
- 
- /**
-- * get_alignment_bits
-+ * memop_alignment_bits:
-  * @memop: MemOp value
-  *
-  * Extract the alignment size from the memop.
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 04e9ad4996..d21a24c82f 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -205,7 +205,7 @@ struct CPUClass {
+  * so the layout is not as critical as that of CPUTLBEntry. This is
+  * also why we don't want to combine the two structs.
   */
--static inline unsigned get_alignment_bits(MemOp memop)
-+static inline unsigned memop_alignment_bits(MemOp memop)
- {
-     unsigned a = memop & MO_AMASK;
+-typedef struct CPUTLBEntryFull {
++struct CPUTLBEntryFull {
+     /*
+      * @xlat_section contains:
+      *  - in the lower TARGET_PAGE_BITS, a physical section number
+@@ -261,7 +261,7 @@ typedef struct CPUTLBEntryFull {
+             bool guarded;
+         } arm;
+     } extra;
+-} CPUTLBEntryFull;
++};
  
+ /*
+  * Data elements that are per MMU mode, minus the bits accessed by
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 34318cf0e6..663efb9133 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -13,6 +13,7 @@
+ #include "exec/breakpoint.h"
+ #include "exec/hwaddr.h"
+ #include "exec/memattrs.h"
++#include "exec/memop.h"
+ #include "exec/mmu-access-type.h"
+ #include "exec/vaddr.h"
+ 
+@@ -131,6 +132,31 @@ struct TCGCPUOps {
+      * same function signature.
+      */
+     bool (*cpu_exec_halt)(CPUState *cpu);
++    /**
++     * @tlb_fill_align: Handle a softmmu tlb miss
++     * @cpu: cpu context
++     * @out: output page properties
++     * @addr: virtual address
++     * @access_type: read, write or execute
++     * @mmu_idx: mmu context
++     * @memop: memory operation for the access
++     * @size: memory access size, or 0 for whole page
++     * @probe: test only, no fault
++     * @ra: host return address for exception unwind
++     *
++     * If the access is valid, fill in @out and return true.
++     * Otherwise if probe is true, return false.
++     * Otherwise raise an exception and do not return.
++     *
++     * The alignment check for the access is deferred to this hook,
++     * so that the target can determine the priority of any alignment
++     * fault with respect to other potential faults from paging.
++     * Zero may be passed for @memop to skip any alignment check
++     * for non-memory-access operations such as probing.
++     */
++    bool (*tlb_fill_align)(CPUState *cpu, CPUTLBEntryFull *out, vaddr addr,
++                           MMUAccessType access_type, int mmu_idx,
++                           MemOp memop, int size, bool probe, uintptr_t ra);
+     /**
+      * @tlb_fill: Handle a softmmu tlb miss
+      *
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 9d222dc376..3d84efcac4 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -40,6 +40,7 @@ typedef struct ConfidentialGuestSupport ConfidentialGuestSupport;
+ typedef struct CPUArchState CPUArchState;
+ typedef struct CPUPluginState CPUPluginState;
+ typedef struct CPUState CPUState;
++typedef struct CPUTLBEntryFull CPUTLBEntryFull;
+ typedef struct DeviceState DeviceState;
+ typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
+ typedef struct DisasContextBase DisasContextBase;
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index fd6459b695..a975fe5f89 100644
+index 35cda1e2b0..d72f454e9e 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1709,7 +1709,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     tcg_debug_assert(l->mmu_idx < NB_MMU_MODES);
- 
-     /* Handle CPU specific unaligned behaviour */
--    a_bits = get_alignment_bits(l->memop);
-+    a_bits = memop_alignment_bits(l->memop);
-     if (addr & ((1 << a_bits) - 1)) {
-         cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
-     }
-@@ -1797,7 +1797,7 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     uintptr_t index;
-     CPUTLBEntry *tlbe;
-     vaddr tlb_addr;
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 11b6d45e90..51b2c16dbe 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -954,7 +954,7 @@ void page_reset_target_data(target_ulong start, target_ulong last) { }
- static void *cpu_mmu_lookup(CPUState *cpu, vaddr addr,
-                             MemOp mop, uintptr_t ra, MMUAccessType type)
- {
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     void *ret;
- 
-     /* Enforce guest required alignment.  */
-@@ -1236,7 +1236,7 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                                int size, uintptr_t retaddr)
- {
-     MemOp mop = get_memop(oi);
--    int a_bits = get_alignment_bits(mop);
-+    int a_bits = memop_alignment_bits(mop);
-     void *ret;
- 
-     /* Enforce guest required alignment.  */
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 071b6349fc..ec0b1ee252 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -294,7 +294,7 @@ static TCGv_i64 gen_mte_check1_mmuidx(DisasContext *s, TCGv_i64 addr,
-         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
-         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
-         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
--        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(memop));
-+        desc = FIELD_DP32(desc, MTEDESC, ALIGN, memop_alignment_bits(memop));
-         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, memop_size(memop) - 1);
- 
-         ret = tcg_temp_new_i64();
-@@ -326,7 +326,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
-         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
-         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
-         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
--        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(single_mop));
-+        desc = FIELD_DP32(desc, MTEDESC, ALIGN, memop_alignment_bits(single_mop));
-         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, total_size - 1);
- 
-         ret = tcg_temp_new_i64();
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index 75b7bfda4c..f4da4a40f9 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -521,7 +521,7 @@ static MemOp gen_load_store_alignment(DisasContext *dc, MemOp mop,
-         mop |= MO_ALIGN;
-     }
-     if (!option_enabled(dc, XTENSA_OPTION_UNALIGNED_EXCEPTION)) {
--        tcg_gen_andi_i32(addr, addr, ~0 << get_alignment_bits(mop));
-+        tcg_gen_andi_i32(addr, addr, ~0 << memop_alignment_bits(mop));
-     }
-     return mop;
+@@ -1221,22 +1221,35 @@ void tlb_set_page(CPUState *cpu, vaddr addr,
  }
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 23dc807f11..a318011229 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -45,7 +45,7 @@ static void check_max_alignment(unsigned a_bits)
  
- static MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
+ /*
+- * Note: tlb_fill() can trigger a resize of the TLB. This means that all of the
+- * caller's prior references to the TLB table (e.g. CPUTLBEntry pointers) must
+- * be discarded and looked up again (e.g. via tlb_entry()).
++ * Note: tlb_fill_align() can trigger a resize of the TLB.
++ * This means that all of the caller's prior references to the TLB table
++ * (e.g. CPUTLBEntry pointers) must be discarded and looked up again
++ * (e.g. via tlb_entry()).
+  */
+-static void tlb_fill(CPUState *cpu, vaddr addr, int size,
+-                     MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
++static bool tlb_fill_align(CPUState *cpu, vaddr addr, MMUAccessType type,
++                           int mmu_idx, MemOp memop, int size,
++                           bool probe, uintptr_t ra)
  {
--    unsigned a_bits = get_alignment_bits(op);
-+    unsigned a_bits = memop_alignment_bits(op);
+-    bool ok;
++    const TCGCPUOps *ops = cpu->cc->tcg_ops;
++    CPUTLBEntryFull full;
  
-     check_max_alignment(a_bits);
+-    /*
+-     * This is not a probe, so only valid return is success; failure
+-     * should result in exception + longjmp to the cpu loop.
+-     */
+-    ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+-                                    access_type, mmu_idx, false, retaddr);
+-    assert(ok);
++    if (ops->tlb_fill_align) {
++        if (ops->tlb_fill_align(cpu, &full, addr, type, mmu_idx,
++                                memop, size, probe, ra)) {
++            tlb_set_page_full(cpu, mmu_idx, addr, &full);
++            return true;
++        }
++    } else {
++        /* Legacy behaviour is alignment before paging. */
++        if (addr & ((1u << memop_alignment_bits(memop)) - 1)) {
++            ops->do_unaligned_access(cpu, addr, type, mmu_idx, ra);
++        }
++        if (ops->tlb_fill(cpu, addr, size, type, mmu_idx, probe, ra)) {
++            return true;
++        }
++    }
++    assert(probe);
++    return false;
+ }
  
-@@ -559,7 +559,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
-     TCGv_i64 ext_addr = NULL;
-     TCGOpcode opc;
+ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+@@ -1351,22 +1364,22 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
  
--    check_max_alignment(get_alignment_bits(memop));
-+    check_max_alignment(memop_alignment_bits(memop));
-     tcg_gen_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
+     if (!tlb_hit_page(tlb_addr, page_addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type, page_addr)) {
+-            if (!cpu->cc->tcg_ops->tlb_fill(cpu, addr, fault_size, access_type,
+-                                            mmu_idx, nonfault, retaddr)) {
++            if (!tlb_fill_align(cpu, addr, access_type, mmu_idx,
++                                0, fault_size, nonfault, retaddr)) {
+                 /* Non-faulting page table read failed.  */
+                 *phost = NULL;
+                 *pfull = NULL;
+                 return TLB_INVALID_MASK;
+             }
  
-     /* In serial mode, reduce atomicity. */
-@@ -676,7 +676,7 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
-     TCGv_i64 ext_addr = NULL;
-     TCGOpcode opc;
+-            /* TLB resize via tlb_fill may have moved the entry.  */
++            /* TLB resize via tlb_fill_align may have moved the entry.  */
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
  
--    check_max_alignment(get_alignment_bits(memop));
-+    check_max_alignment(memop_alignment_bits(memop));
-     tcg_gen_req_mo(TCG_MO_ST_LD | TCG_MO_ST_ST);
- 
-     /* In serial mode, reduce atomicity. */
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 34e3056380..5decd83cf4 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -5506,7 +5506,7 @@ static void tcg_reg_alloc_call(TCGContext *s, TCGOp *op)
- static TCGAtomAlign atom_and_align_for_opc(TCGContext *s, MemOp opc,
-                                            MemOp host_atom, bool allow_two_ops)
- {
--    MemOp align = get_alignment_bits(opc);
-+    MemOp align = memop_alignment_bits(opc);
-     MemOp size = opc & MO_SIZE;
-     MemOp half = size ? size - 1 : 0;
-     MemOp atom = opc & MO_ATOM_MASK;
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 3de5f50b62..56072d89a2 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -1587,7 +1587,7 @@ static void tcg_out_qemu_ld_direct(TCGContext *s, MemOp opc, TCGReg datalo,
-         tcg_debug_assert((datalo & 1) == 0);
-         tcg_debug_assert(datahi == datalo + 1);
-         /* LDRD requires alignment; double-check that. */
--        if (get_alignment_bits(opc) >= MO_64) {
-+        if (memop_alignment_bits(opc) >= MO_64) {
-             if (h.index < 0) {
-                 tcg_out_ldrd_8(s, h.cond, datalo, h.base, 0);
-                 break;
-@@ -1691,7 +1691,7 @@ static void tcg_out_qemu_st_direct(TCGContext *s, MemOp opc, TCGReg datalo,
-         tcg_debug_assert((datalo & 1) == 0);
-         tcg_debug_assert(datahi == datalo + 1);
-         /* STRD requires alignment; double-check that. */
--        if (get_alignment_bits(opc) >= MO_64) {
-+        if (memop_alignment_bits(opc) >= MO_64) {
-             if (h.index < 0) {
-                 tcg_out_strd_8(s, h.cond, datalo, h.base, 0);
-             } else {
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 176c98740b..32f9ec24b5 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1133,7 +1133,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-      * Otherwise, test for at least natural alignment and defer
-      * everything else to the helper functions.
+             /*
+              * With PAGE_WRITE_INV, we set TLB_INVALID_MASK immediately,
+-             * to force the next access through tlb_fill.  We've just
+-             * called tlb_fill, so we know that this entry *is* valid.
++             * to force the next access through tlb_fill_align.  We've just
++             * called tlb_fill_align, so we know that this entry *is* valid.
+              */
+             flags &= ~TLB_INVALID_MASK;
+         }
+@@ -1613,7 +1626,7 @@ typedef struct MMULookupLocals {
+  *
+  * Resolve the translation for the one page at @data.addr, filling in
+  * the rest of @data with the results.  If the translation fails,
+- * tlb_fill will longjmp out.  Return true if the softmmu tlb for
++ * tlb_fill_align will longjmp out.  Return true if the softmmu tlb for
+  * @mmu_idx may have resized.
+  */
+ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+@@ -1631,7 +1644,8 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, data->size, access_type, mmu_idx, ra);
++            tlb_fill_align(cpu, addr, access_type, mmu_idx,
++                           0, data->size, false, ra);
+             maybe_resized = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
+@@ -1821,8 +1835,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, size,
+-                     MMU_DATA_STORE, mmu_idx, retaddr);
++            tlb_fill_align(cpu, addr, MMU_DATA_STORE, mmu_idx,
++                           0, size, false, retaddr);
+             index = tlb_index(cpu, mmu_idx, addr);
+             tlbe = tlb_entry(cpu, mmu_idx, addr);
+         }
+@@ -1836,7 +1850,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * but addr_read will only be -1 if PAGE_READ was unset.
       */
--    if (s_bits != get_alignment_bits(opc)) {
-+    if (s_bits != memop_alignment_bits(opc)) {
-         tcg_debug_assert(check_fit_tl(a_mask, 13));
-         tcg_out_arithi(s, TCG_REG_G0, addr_reg, a_mask, ARITH_ANDCC);
- 
+     if (unlikely(tlbe->addr_read == -1)) {
+-        tlb_fill(cpu, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
++        tlb_fill_align(cpu, addr, MMU_DATA_LOAD, mmu_idx,
++                       0, size, false, retaddr);
+         /*
+          * Since we don't support reads and writes to different
+          * addresses, and we do have the proper page loaded for
 -- 
 2.43.0
 
