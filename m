@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA7999BC7D
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D3499BC78
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pT-00078N-8H; Sun, 13 Oct 2024 18:12:47 -0400
+	id 1t06pU-00078O-3e; Sun, 13 Oct 2024 18:12:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pQ-00077i-Tc
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:44 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1t06pR-00077w-NU
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:45 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pP-0000u8-Dv
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:44 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2e2ed2230d8so1716381a91.0
+ id 1t06pQ-0000uH-2M
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:45 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2e3010478e6so1785551a91.1
  for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857562; x=1729462362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857563; x=1729462363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3HOyhUsp26UJ2J8SI14m1Cw+uj1HUsjO2JpGhjMl70Y=;
- b=w5qjoMbXLUujZY1mYVUgnAHv2RtTWQpsoZBMdsLIQhkVkNg7mGOII+798J9D/vX3Ji
- wrtydsBjJeWxhmjnzcJ3xT5LQx0o68Zsy1Imr1b2oDYeE5HkWt9hxWUSSs4OvwXkeNa3
- cu604Fr2eITPWydKeXbXonRCx+jDeyJOqEdEZfetpZgaMLpaUKsMj5AhIqhDT5BHam37
- 3Y+zfmeDy+UrioqAGgQsNkOPVYmJvHI11pM2OJT+NiR+Jvo8ULB5yiz1hZ0fet+zCG6j
- HRY6FrnLn+rtw3BPhjqQYXSdP9xynHAWo5UMQwsXWS45bygY2ZcCMGF01/mm0Eaig+Wm
- xpQg==
+ bh=VpiQ0uRviqHvIpHCmWWiDcmFLJXAKpr3mqpGqdFoplg=;
+ b=G86hBLNpYpnqMRtqHvlKnQ//HyKlqxG/3z9vmFE5wy6nZMVeYqKlbUt6+ddasW+qiG
+ 9V0uqDomRnPSRwILdaO5nEjQUufoapRkTJ4lYSjHg/11b+pW/U+WLDVQHTI5uYW1v8W3
+ ORM3T+iQii4iY5D5aQd+i7jxPXvuPrlh1Iy5E5RLvnFrCkfAuvYOlny/C7CXUOMqPFNu
+ NNBDKvqqmuOy91f+23nrzeA3zZCcuOq4U3opSuE4kC1jEN8USnEEEUI6urTSYzE+sFbR
+ hPHcRJhW6fAzhY/xbmF33ZKgfyKDRa4rvH/+AuU3f1nw54/VLCW7dgHWNX7IUHfJYxbA
+ 5ACQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857562; x=1729462362;
+ d=1e100.net; s=20230601; t=1728857563; x=1729462363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3HOyhUsp26UJ2J8SI14m1Cw+uj1HUsjO2JpGhjMl70Y=;
- b=QyCQfjgS4izj7NNoNL94g2XHAHfXgqGQFsreFhJ4AYMJpgZdPKnoQHK2qXniW2vfXk
- S1ydEvQngfivcaT0ep9+uVQeGhs15FtyQRmnt+D5a4uXvppF9hIb3tr+/ZBp8LpqZuHk
- krOUNizb+ozzxCKbDy8/CHud7lN16tcYol4SP/PsX5+6hUnImBUkj4cxa3QPTIKom9bW
- Eol9hi4Q0GySU4PhINhZOPNpWQfioeBOQraA8r/5utxMWEQNM/O5A4KdW9uiAOi0Ti3v
- GSDyK8gjPTJiOGBB1Q8SUKnNgpckfTh+CETtvx3QmT2VQl9LeMI3MlW4wKksSpWB9j76
- oEAg==
-X-Gm-Message-State: AOJu0YzAVuRVcyLNJ7M60yYB/MPGTFJpY6mPgvzINvYJuQbKWnoz0SXD
- HeWFo2gRDNOS5V0phdS6XRHwO9zYzSuk/+edr1BPvPOWXpvVLnOYLrPx5GW5HKT6pWNReaBi9e/
- 0
-X-Google-Smtp-Source: AGHT+IFlPncfg6JqrJUW8elanZXQlO0zL5/swqfalZAOpHj2x/fZlpjZ5kKYbQulAnTbLG6PyL6rsg==
-X-Received: by 2002:a17:90b:4c03:b0:2e2:ba35:356e with SMTP id
- 98e67ed59e1d1-2e3152e1be8mr8183825a91.17.1728857562030; 
+ bh=VpiQ0uRviqHvIpHCmWWiDcmFLJXAKpr3mqpGqdFoplg=;
+ b=C0Hgg+gTkURi1gB9cq4Kwe/oeA6Ru5S/qXuRqP6b9hU+YOm6hOQHpXTaIBFPSPBnHX
+ ZdjMWowzrf1PKVJBhMFCFeEkuE8uYzBGUr8VdQKDFg3LzIquw5JYsOvfRbt0yviSaOR+
+ iVlpLHUz9bzQNMroGezFn2NxbmE6bnR20zhvkN0orgP4kzNtULTte/ls/4uRS8u5kL8F
+ 6o7tNYkW4yTt5QiQ2pXhHGcEkhuB/G3YK5zsKbcPuzdYVxI60BSQNBfasGuJaJ8KNGxT
+ 1JtIsJW3xaXQriLvYNQYavL0chCNgl1/R2PGhmHJPSG488f43SQqIBokZrTJcLThFLgx
+ VSHg==
+X-Gm-Message-State: AOJu0Yx42U+Silbk9EYq1gu8w5/z4eAzKF/noBwg4KcodQS+r/SVVX8u
+ PG2KE1Z7FYfJ/LvW5cp2L6JCKAkl08xEXr+oYw7idm9MVKxylNg4omZ2cm7uPX8UHLB2IXb5jo3
+ w
+X-Google-Smtp-Source: AGHT+IHvYIIJ1ucmCyt6EFJnUaMwH4fYafR4/sOHH3qTlUisimDefrvul389alAQeWksbl5X+tWZng==
+X-Received: by 2002:a17:90b:4a89:b0:2e2:d33b:cc with SMTP id
+ 98e67ed59e1d1-2e3152e76admr8643704a91.21.1728857562747; 
  Sun, 13 Oct 2024 15:12:42 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.41
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:41 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 06/27] tests/tcg: Run test-proc-mappings.py on i386
-Date: Sun, 13 Oct 2024 15:12:14 -0700
-Message-ID: <20241013221235.1585193-7-richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: [PULL 07/27] linux-user/vm86: Fix compilation with Clang
+Date: Sun, 13 Oct 2024 15:12:15 -0700
+Message-ID: <20241013221235.1585193-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,48 +93,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
 
-Now that orig_ax is exposed and GDB is happy, don't skip
-test-proc-mappings.py on i386. In fact, it's broken only on
-m68k now, so skip only this architecture.
+Since commit 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
+a bunch of other "static inline" function are now unused, too. Clang
+warns about such unused "static inline" functions in .c files, so the
+build currently breaks when compiling with "--enable-werror". Remove
+the unused functions to get it going again.
 
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20240912093012.402366-6-iii@linux.ibm.com>
+Fixes: 95b9c27c81 ("linux-user: Remove unused handle_vm86_fault")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Message-ID: <20241011161845.417342-1-thuth@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- .../tcg/multiarch/gdbstub/test-proc-mappings.py | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ linux-user/vm86.c | 65 -----------------------------------------------
+ 1 file changed, 65 deletions(-)
 
-diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-index 564613fabf..0f687f3284 100644
---- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-+++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-@@ -8,17 +8,12 @@
+diff --git a/linux-user/vm86.c b/linux-user/vm86.c
+index 31a2d707cf..5091d53fb8 100644
+--- a/linux-user/vm86.c
++++ b/linux-user/vm86.c
+@@ -47,30 +47,6 @@ static inline void vm_putw(CPUX86State *env, uint32_t segptr,
+     cpu_stw_data(env, segptr + (reg16 & 0xffff), val);
+ }
  
- def run_test():
-     """Run through the tests one by one"""
--    try:
--        mappings = gdb.execute("info proc mappings", False, True)
--    except gdb.error as exc:
--        exc_str = str(exc)
--        if "Not supported on this target." in exc_str:
--            # Detect failures due to an outstanding issue with how GDB handles
--            # the x86_64 QEMU's target.xml, which does not contain the
--            # definition of orig_rax. Skip the test in this case.
--            print("SKIP: {}".format(exc_str))
--            return
--        raise
-+    if gdb.selected_inferior().architecture().name() == "m68k":
-+        # m68k GDB supports only GDB_OSABI_SVR4, but GDB_OSABI_LINUX is
-+        # required for the info proc support (see set_gdbarch_info_proc()).
-+        print("SKIP: m68k GDB does not support GDB_OSABI_LINUX")
-+        exit(0)
-+    mappings = gdb.execute("info proc mappings", False, True)
-     report(isinstance(mappings, str), "Fetched the mappings from the inferior")
-     # Broken with host page size > guest page size
-     # report("/sha1" in mappings, "Found the test binary name in the mappings")
+-static inline void vm_putl(CPUX86State *env, uint32_t segptr,
+-                           unsigned int reg16, unsigned int val)
+-{
+-    cpu_stl_data(env, segptr + (reg16 & 0xffff), val);
+-}
+-
+-static inline unsigned int vm_getb(CPUX86State *env,
+-                                   uint32_t segptr, unsigned int reg16)
+-{
+-    return cpu_ldub_data(env, segptr + (reg16 & 0xffff));
+-}
+-
+-static inline unsigned int vm_getw(CPUX86State *env,
+-                                   uint32_t segptr, unsigned int reg16)
+-{
+-    return cpu_lduw_data(env, segptr + (reg16 & 0xffff));
+-}
+-
+-static inline unsigned int vm_getl(CPUX86State *env,
+-                                   uint32_t segptr, unsigned int reg16)
+-{
+-    return cpu_ldl_data(env, segptr + (reg16 & 0xffff));
+-}
+-
+ void save_v86_state(CPUX86State *env)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -131,19 +107,6 @@ static inline void return_to_32bit(CPUX86State *env, int retval)
+     env->regs[R_EAX] = retval;
+ }
+ 
+-static inline int set_IF(CPUX86State *env)
+-{
+-    CPUState *cs = env_cpu(env);
+-    TaskState *ts = get_task_state(cs);
+-
+-    ts->v86flags |= VIF_MASK;
+-    if (ts->v86flags & VIP_MASK) {
+-        return_to_32bit(env, TARGET_VM86_STI);
+-        return 1;
+-    }
+-    return 0;
+-}
+-
+ static inline void clear_IF(CPUX86State *env)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -162,34 +125,6 @@ static inline void clear_AC(CPUX86State *env)
+     env->eflags &= ~AC_MASK;
+ }
+ 
+-static inline int set_vflags_long(unsigned long eflags, CPUX86State *env)
+-{
+-    CPUState *cs = env_cpu(env);
+-    TaskState *ts = get_task_state(cs);
+-
+-    set_flags(ts->v86flags, eflags, ts->v86mask);
+-    set_flags(env->eflags, eflags, SAFE_MASK);
+-    if (eflags & IF_MASK)
+-        return set_IF(env);
+-    else
+-        clear_IF(env);
+-    return 0;
+-}
+-
+-static inline int set_vflags_short(unsigned short flags, CPUX86State *env)
+-{
+-    CPUState *cs = env_cpu(env);
+-    TaskState *ts = get_task_state(cs);
+-
+-    set_flags(ts->v86flags, flags, ts->v86mask & 0xffff);
+-    set_flags(env->eflags, flags, SAFE_MASK);
+-    if (flags & IF_MASK)
+-        return set_IF(env);
+-    else
+-        clear_IF(env);
+-    return 0;
+-}
+-
+ static inline unsigned int get_vflags(CPUX86State *env)
+ {
+     CPUState *cs = env_cpu(env);
 -- 
 2.43.0
 
