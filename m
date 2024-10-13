@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9C899BC77
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA7999BC7D
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pO-00075t-IA; Sun, 13 Oct 2024 18:12:42 -0400
+	id 1t06pT-00078N-8H; Sun, 13 Oct 2024 18:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pM-00075T-Ew
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:40 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1t06pQ-00077i-Tc
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:44 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pK-0000tF-EN
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:40 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2e3010478e6so1785512a91.1
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:37 -0700 (PDT)
+ id 1t06pP-0000u8-Dv
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:44 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2e2ed2230d8so1716381a91.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857557; x=1729462357; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=BUcNlrrEXrylRs7XbYRo7ccSUmqH8RPpjzZAaA0vSgw=;
- b=TRPJcviYM+1knba8368N+qaXN6TbsTLbHlffLOlBftloc3inh8+nbWbt0JWU7dzMuT
- 41wb9YY1BApfWvlsxsfOCjI48kbqGLnp9V4nsIhLdvPl4jL1FvdBfTkGujLIH5JSs7k+
- j/sDQH+MJ1xxu00VXRrNGuMBZbleOrP8uCQr8HejHIPz+y6/berlpiIzgtjdzAZYETlY
- w8t/eFXrzJ0THzzU8AfrsREeffNssSXXVA/XkoeOzGGljW0Q8LUCUB+HEfdYp87BDQsF
- X/IPe//mh7Y/ynrZ9omOO7LbamWte0JWZ8AD0bD2GUU4qvNlKLvrTYSpgF3+fNt7Dllv
- XbWQ==
+ d=linaro.org; s=google; t=1728857562; x=1729462362; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3HOyhUsp26UJ2J8SI14m1Cw+uj1HUsjO2JpGhjMl70Y=;
+ b=w5qjoMbXLUujZY1mYVUgnAHv2RtTWQpsoZBMdsLIQhkVkNg7mGOII+798J9D/vX3Ji
+ wrtydsBjJeWxhmjnzcJ3xT5LQx0o68Zsy1Imr1b2oDYeE5HkWt9hxWUSSs4OvwXkeNa3
+ cu604Fr2eITPWydKeXbXonRCx+jDeyJOqEdEZfetpZgaMLpaUKsMj5AhIqhDT5BHam37
+ 3Y+zfmeDy+UrioqAGgQsNkOPVYmJvHI11pM2OJT+NiR+Jvo8ULB5yiz1hZ0fet+zCG6j
+ HRY6FrnLn+rtw3BPhjqQYXSdP9xynHAWo5UMQwsXWS45bygY2ZcCMGF01/mm0Eaig+Wm
+ xpQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857557; x=1729462357;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BUcNlrrEXrylRs7XbYRo7ccSUmqH8RPpjzZAaA0vSgw=;
- b=nkLFIDySWFXIsiOO3gTu8GKe5e0ud/VgN5BTCehdif30zrgsoIA7uDC4NmaPGEcKM2
- 4AcCjxxPUZC3zbd+YQGofxYHvIk6VcTboxBd+DySyyFjxQdWwF4J7wlC+9Lc7qpfrZ6O
- yfx8NAzTxIiRuo2Z6rxttNvgFRX9IazzI3w05xx1YV1DPKG6GrBt5bBEyv+G2IrwhhXP
- yovheVtfzMdTn5Ja7YzK97ReU34agfa7zJjEA/MmM0ruDS+E5zJjinkiIgO6XnX4vx6B
- g3Zg0xt+Kr3JMxOIPOJgJn2WK9ygI0Z+ESze5c3aTMO1Kx5lyEd/RjnJluurrsXPow5l
- GucA==
-X-Gm-Message-State: AOJu0YwkmdsNDMqhtDJThlFJYUwc4SqZr3z7aOriGL32uSNRRw5hWH4E
- xkvJ7tIT+iN8lCs+OuXK5x6NvX70f1cp7RVZYEj4iN14dew9jCGyxSsyi0a9HfipTznV009+dxG
- z
-X-Google-Smtp-Source: AGHT+IE278RlKHRJhGA3vmPMbhCEik7+CWYYXTUs6NR2Bo/K++j9BKSK7WYXCIn2fCmxMhEP+YsZ9A==
-X-Received: by 2002:a17:90a:ba84:b0:2e2:cc6d:e724 with SMTP id
- 98e67ed59e1d1-2e3152c8238mr7580884a91.14.1728857556646; 
- Sun, 13 Oct 2024 15:12:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728857562; x=1729462362;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3HOyhUsp26UJ2J8SI14m1Cw+uj1HUsjO2JpGhjMl70Y=;
+ b=QyCQfjgS4izj7NNoNL94g2XHAHfXgqGQFsreFhJ4AYMJpgZdPKnoQHK2qXniW2vfXk
+ S1ydEvQngfivcaT0ep9+uVQeGhs15FtyQRmnt+D5a4uXvppF9hIb3tr+/ZBp8LpqZuHk
+ krOUNizb+ozzxCKbDy8/CHud7lN16tcYol4SP/PsX5+6hUnImBUkj4cxa3QPTIKom9bW
+ Eol9hi4Q0GySU4PhINhZOPNpWQfioeBOQraA8r/5utxMWEQNM/O5A4KdW9uiAOi0Ti3v
+ GSDyK8gjPTJiOGBB1Q8SUKnNgpckfTh+CETtvx3QmT2VQl9LeMI3MlW4wKksSpWB9j76
+ oEAg==
+X-Gm-Message-State: AOJu0YzAVuRVcyLNJ7M60yYB/MPGTFJpY6mPgvzINvYJuQbKWnoz0SXD
+ HeWFo2gRDNOS5V0phdS6XRHwO9zYzSuk/+edr1BPvPOWXpvVLnOYLrPx5GW5HKT6pWNReaBi9e/
+ 0
+X-Google-Smtp-Source: AGHT+IFlPncfg6JqrJUW8elanZXQlO0zL5/swqfalZAOpHj2x/fZlpjZ5kKYbQulAnTbLG6PyL6rsg==
+X-Received: by 2002:a17:90b:4c03:b0:2e2:ba35:356e with SMTP id
+ 98e67ed59e1d1-2e3152e1be8mr8183825a91.17.1728857562030; 
+ Sun, 13 Oct 2024 15:12:42 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.36
- for <qemu-devel@nongnu.org>
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:36 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/27] tcg + linux patch queue
-Date: Sun, 13 Oct 2024 15:12:08 -0700
-Message-ID: <20241013221235.1585193-1-richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 06/27] tests/tcg: Run test-proc-mappings.py on i386
+Date: Sun, 13 Oct 2024 15:12:14 -0700
+Message-ID: <20241013221235.1585193-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
+References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,104 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7e3b6d8063f245d27eecce5aabe624b5785f2a77:
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-  Merge tag 'crypto-fixes-pull-request' of https://gitlab.com/berrange/qemu into staging (2024-10-10 18:05:43 +0100)
+Now that orig_ax is exposed and GDB is happy, don't skip
+test-proc-mappings.py on i386. In fact, it's broken only on
+m68k now, so skip only this architecture.
 
-are available in the Git repository at:
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <20240912093012.402366-6-iii@linux.ibm.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ .../tcg/multiarch/gdbstub/test-proc-mappings.py | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241013
+diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+index 564613fabf..0f687f3284 100644
+--- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
++++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+@@ -8,17 +8,12 @@
+ 
+ def run_test():
+     """Run through the tests one by one"""
+-    try:
+-        mappings = gdb.execute("info proc mappings", False, True)
+-    except gdb.error as exc:
+-        exc_str = str(exc)
+-        if "Not supported on this target." in exc_str:
+-            # Detect failures due to an outstanding issue with how GDB handles
+-            # the x86_64 QEMU's target.xml, which does not contain the
+-            # definition of orig_rax. Skip the test in this case.
+-            print("SKIP: {}".format(exc_str))
+-            return
+-        raise
++    if gdb.selected_inferior().architecture().name() == "m68k":
++        # m68k GDB supports only GDB_OSABI_SVR4, but GDB_OSABI_LINUX is
++        # required for the info proc support (see set_gdbarch_info_proc()).
++        print("SKIP: m68k GDB does not support GDB_OSABI_LINUX")
++        exit(0)
++    mappings = gdb.execute("info proc mappings", False, True)
+     report(isinstance(mappings, str), "Fetched the mappings from the inferior")
+     # Broken with host page size > guest page size
+     # report("/sha1" in mappings, "Found the test binary name in the mappings")
+-- 
+2.43.0
 
-for you to fetch changes up to e530581ee06573fcf48c7f7a6c3f8ec6e5809243:
-
-  target/arm: Fix alignment fault priority in get_phys_addr_lpae (2024-10-13 11:27:06 -0700)
-
-----------------------------------------------------------------
-linux-user/i386: Emulate orig_ax
-linux-user/vm86: Fix compilation with Clang
-tcg: remove singlestep_enabled from DisasContextBase
-accel/tcg: Add TCGCPUOps.tlb_fill_align
-target/hppa: Handle alignment faults in hppa_get_physical_address
-target/arm: Fix alignment fault priority in get_phys_addr_lpae
-
-----------------------------------------------------------------
-Ilya Leoshkevich (5):
-      include/exec: Introduce env_cpu_const()
-      linux-user/i386: Emulate orig_ax
-      target/i386/gdbstub: Factor out gdb_get_reg() and gdb_write_reg()
-      target/i386/gdbstub: Expose orig_ax
-      tests/tcg: Run test-proc-mappings.py on i386
-
-Paolo Bonzini (1):
-      tcg: remove singlestep_enabled from DisasContextBase
-
-Richard Henderson (20):
-      accel/tcg: Assert noreturn from write-only page for atomics
-      include/exec/memop: Move get_alignment_bits from tcg.h
-      include/exec/memop: Rename get_alignment_bits
-      include/exec/memop: Introduce memop_atomicity_bits
-      accel/tcg: Add TCGCPUOps.tlb_fill_align
-      accel/tcg: Use the alignment test in tlb_fill_align
-      target/hppa: Add MemOp argument to hppa_get_physical_address
-      target/hppa: Perform access rights before protection id check
-      target/hppa: Fix priority of T, D, and B page faults
-      target/hppa: Handle alignment faults in hppa_get_physical_address
-      target/hppa: Implement TCGCPUOps.tlb_fill_align
-      target/arm: Pass MemOp to get_phys_addr
-      target/arm: Pass MemOp to get_phys_addr_with_space_nogpc
-      target/arm: Pass MemOp to get_phys_addr_gpc
-      target/arm: Pass MemOp to get_phys_addr_nogpc
-      target/arm: Pass MemOp through get_phys_addr_twostage
-      target/arm: Pass MemOp to get_phys_addr_lpae
-      target/arm: Move device detection earlier in get_phys_addr_lpae
-      target/arm: Implement TCGCPUOps.tlb_fill_align
-      target/arm: Fix alignment fault priority in get_phys_addr_lpae
-
-Thomas Huth (1):
-      linux-user/vm86: Fix compilation with Clang
-
- include/exec/cpu-common.h                         |  13 +-
- include/exec/memop.h                              |  47 +++++++
- include/exec/translator.h                         |   2 -
- include/hw/core/cpu.h                             |   4 +-
- include/hw/core/tcg-cpu-ops.h                     |  26 ++++
- include/qemu/typedefs.h                           |   1 +
- include/tcg/tcg.h                                 |  23 ----
- linux-user/qemu.h                                 |   4 +
- target/arm/internals.h                            |  12 +-
- target/hppa/cpu.h                                 |   8 +-
- target/i386/cpu.h                                 |   1 +
- accel/tcg/cputlb.c                                | 160 +++++++++++-----------
- accel/tcg/translator.c                            |   1 -
- accel/tcg/user-exec.c                             |   4 +-
- linux-user/elfload.c                              |   6 +-
- linux-user/i386/cpu_loop.c                        |   3 +
- linux-user/vm86.c                                 |  65 ---------
- target/arm/cpu.c                                  |   2 +-
- target/arm/helper.c                               |   9 +-
- target/arm/ptw.c                                  | 141 ++++++++++---------
- target/arm/tcg/cpu-v7m.c                          |   2 +-
- target/arm/tcg/m_helper.c                         |   8 +-
- target/arm/tcg/tlb_helper.c                       |  49 +++----
- target/arm/tcg/translate-a64.c                    |   4 +-
- target/hppa/cpu.c                                 |   2 +-
- target/hppa/int_helper.c                          |   2 +-
- target/hppa/mem_helper.c                          |  55 +++++---
- target/hppa/op_helper.c                           |   2 +-
- target/i386/cpu.c                                 |   1 +
- target/i386/gdbstub.c                             | 102 +++++++++++---
- target/mips/tcg/translate.c                       |   5 +-
- target/xtensa/translate.c                         |   2 +-
- tcg/tcg-op-ldst.c                                 |   6 +-
- tcg/tcg.c                                         |   2 +-
- configs/targets/i386-linux-user.mak               |   2 +-
- configs/targets/x86_64-linux-user.mak             |   2 +-
- gdb-xml/i386-32bit-linux.xml                      |  11 ++
- gdb-xml/i386-64bit-linux.xml                      |  11 ++
- tcg/arm/tcg-target.c.inc                          |   4 +-
- tcg/sparc64/tcg-target.c.inc                      |   2 +-
- tests/tcg/multiarch/gdbstub/test-proc-mappings.py |  17 +--
- 41 files changed, 464 insertions(+), 359 deletions(-)
- create mode 100644 gdb-xml/i386-32bit-linux.xml
- create mode 100644 gdb-xml/i386-64bit-linux.xml
 
