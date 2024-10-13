@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A9B99BC79
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B64F99BC7E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pk-0007Bk-LY; Sun, 13 Oct 2024 18:13:06 -0400
+	id 1t06pv-0007EG-GK; Sun, 13 Oct 2024 18:13:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pX-00079u-AO
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:52 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1t06pa-0007A5-84
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:54 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pU-0000v6-Rg
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:50 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2e30db524c2so1117338a91.1
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:48 -0700 (PDT)
+ id 1t06pX-0000vS-Gl
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:54 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2e2a999b287so2851014a91.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857567; x=1729462367; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857570; x=1729462370; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H6LoCevcYPwKGPsieGU+G82S8Cv4YZiZPQ3U7O/YR2o=;
- b=TJDEQQDgYv6ZUfEW9vKlPf9Oa4h55QPu1NcZP/GuQBD9CaXVhrAxOa45F5zNJD2ISZ
- 9TsVCXEdD5Q7BNQVhPDkZfO4VQ4l2Usv1vycjZu4+44p7+XKCxodQeT7D9DiItZ0/3oT
- 53kI9o89KeB9DUnn6/JJMOgjJwtXSFPFTX+ZFmwqyDY7fLY9cznJPrw3+gYD1nmWrWxf
- bZ6Wf2QO2ZS51LvkDJ0bEEQ2TSIRW+5FGn6hzT/9Xp8uxVqsoQ3Tnz52jEkENWGMgKbD
- JU7X1cGDTR6CBJg9IEyl6QQP8+hu0Y91J87aeK6+DScvcRETsK7uuxN86N1/yPgl1qUQ
- uGNg==
+ bh=ZMaSkZRoz5YPXdGi4Fagk1yb2WqLYDqE0+TVeXDEoMY=;
+ b=kgGX6F6ssMk35mDaCkohqGEJcxeX5pX5GsDM5PdmuWZCPMD/AONgTMlRnoOUmP5lDU
+ vBAkg3gXWmN3+5vUzswQJg8oRKs3JhJh4pkV4lb/KrqyM2qNcI2JEdxRZVG1BJGAogyT
+ 1Hz23YfRZjjk4cyCiFm2CWUEk/TzFcSl3hxtS8WoQ+TN4hefX3c5NoKncNtvNv00RTUu
+ D3Nu1bd0wfT6LmW6nYVWAqelyGc0GwS8By3iKSF+itfqag+h0UgUky2wnwS5EHOzKLOc
+ UEFbKHctScndKg349jeAvuOLBLWrA3gA9KFih8ypCN/ZYM5Pwvd/7W5VG57D4+DtEjNg
+ Vstw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857567; x=1729462367;
+ d=1e100.net; s=20230601; t=1728857570; x=1729462370;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H6LoCevcYPwKGPsieGU+G82S8Cv4YZiZPQ3U7O/YR2o=;
- b=xHd0ze6OGZRPngftxGG5Kxb1vJkh0zQL8aDekEteTKxMR1Je+4K1U0i2xEEg4wale1
- cB7E98uDLV+gXhXpFAMGNd9csHIkz88XO6jh2dnLJroatqVoy888HE2L8I2YBsKngSSA
- SXpR4Fj7PZ8Ncr1i5s4bXUVj1isxX/pkkkgIAwb347vtacOwz7Qt597a+dAN8bMfb6Ng
- /vgy3cfZy9qDkpEgu3HIOSGfQZymvmBLP7iIsfsim/Iwh+kWkQSofmCPGd7A3AWoPqrM
- 9cu7dSJqPDZeGOoW7qEBco45RMfMYaW2Dez1O9M+2MKH8NGMGPdXs7RZZRKrFgqSLAxa
- bpwg==
-X-Gm-Message-State: AOJu0YzGYoRZNluRxK64s9iwgZqyJe3sgKY51HPQaB1ON8bZz5Wk4+W/
- OyqqlKdmRsj68GqIwRjCD0mTYQ4b3EfR+cCcsNVRuhw1L+s+tpMbZaSY6JsOetzetLfllLTuRiJ
- F
-X-Google-Smtp-Source: AGHT+IFRwXQjbMEs2HpQZp3lgM9RpJ2g3mcFpaWb3rwdL4JCq9PacQviB8p0BKzR7ue2qZK+Ecrz5A==
-X-Received: by 2002:a17:90a:bd8d:b0:2e2:ebab:792d with SMTP id
- 98e67ed59e1d1-2e31538f0dbmr7407496a91.41.1728857567462; 
- Sun, 13 Oct 2024 15:12:47 -0700 (PDT)
+ bh=ZMaSkZRoz5YPXdGi4Fagk1yb2WqLYDqE0+TVeXDEoMY=;
+ b=APNcwKjvO5sI7X4uet1yo4bJYFjyHifFrVuzFADfzd2LyIZplbYrqn9R6E2qzZIPi5
+ dbYKVRXLdGjeAl7an67/BBbnQvYAPXLWR2ULTHE/InX6EimmGG77MP7qI2Fvn7u6nbrq
+ P/5/aE7mMza+elnVhNP/DQGqVx4SpU7jp5kPzIOwxQf21SmiFuNLXSBg4qrb5YsR7gAi
+ 4hGjxqHY+LXlFfsF9Yi8GRb7omYH4hNRP7SIcRZtjEklWMNNtzGW6HJJ6/VKlDNN6+hM
+ bosT0njnsipL19F6QebGhfESXeGn8GROtBL8Mr5sKmCU9WB3zIdpWQnmCf4PcugTnjkP
+ 6neg==
+X-Gm-Message-State: AOJu0YxwhueDad4nyjCSJY4veFeOCV9AsJ/1T/HqkUzbMeT/SRtBFEAW
+ IWzUK0AwzH4wD3wfHKbBaodfttzUSTHOrdq/Won7J4whyzKFszr60bLkisTkzhVlVZRHarZ77zY
+ a
+X-Google-Smtp-Source: AGHT+IGo7pss9kMdZe+q2Ka85FEDnS0gaetUuqIpkcmxME23Tv1LooQV/Bps5z1Bz1NwpQsBFEogZw==
+X-Received: by 2002:a17:90a:8cc:b0:2e2:c64c:a1c9 with SMTP id
+ 98e67ed59e1d1-2e2f0b2b844mr11646356a91.24.1728857570248; 
+ Sun, 13 Oct 2024 15:12:50 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.46
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:47 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Peter Maydell <peter.maydell@linaro.org>,
+Cc: Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/27] include/exec/memop: Introduce memop_atomicity_bits
-Date: Sun, 13 Oct 2024 15:12:19 -0700
-Message-ID: <20241013221235.1585193-12-richard.henderson@linaro.org>
+Subject: [PULL 14/27] target/hppa: Add MemOp argument to
+ hppa_get_physical_address
+Date: Sun, 13 Oct 2024 15:12:22 -0700
+Message-ID: <20241013221235.1585193-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,77 +95,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out of mmu_lookup.
+Just add the argument, unused at this point.
+Zero is the safe do-nothing value for all callers.
 
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memop.h | 24 ++++++++++++++++++++++++
- accel/tcg/cputlb.c   | 16 ++--------------
- 2 files changed, 26 insertions(+), 14 deletions(-)
+ target/hppa/cpu.h        | 2 +-
+ target/hppa/int_helper.c | 2 +-
+ target/hppa/mem_helper.c | 9 +++++----
+ target/hppa/op_helper.c  | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index f53bf618c6..b699bf7688 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -193,4 +193,28 @@ static inline unsigned memop_alignment_bits(MemOp memop)
-     return a;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index f4e051f176..526855f982 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -369,7 +369,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ void hppa_cpu_do_interrupt(CPUState *cpu);
+ bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+-                              int type, hwaddr *pphys, int *pprot);
++                              int type, MemOp mop, hwaddr *pphys, int *pprot);
+ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+                                      vaddr addr, unsigned size,
+                                      MMUAccessType access_type,
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 391f32f27d..58695def82 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -167,7 +167,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+ 
+                     vaddr = hppa_form_gva_psw(old_psw, env->iasq_f, vaddr);
+                     t = hppa_get_physical_address(env, vaddr, MMU_KERNEL_IDX,
+-                                                  0, &paddr, &prot);
++                                                  0, 0, &paddr, &prot);
+                     if (t >= 0) {
+                         /* We can't re-load the instruction.  */
+                         env->cr[CR_IIR] = 0;
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index b984f730aa..a386c80fa4 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -197,7 +197,7 @@ static int match_prot_id64(CPUHPPAState *env, uint32_t access_id)
  }
  
-+/*
-+ * memop_atomicity_bits:
-+ * @memop: MemOp value
-+ *
-+ * Extract the atomicity size from the memop.
-+ */
-+static inline unsigned memop_atomicity_bits(MemOp memop)
-+{
-+    unsigned size = memop & MO_SIZE;
-+
-+    switch (memop & MO_ATOM_MASK) {
-+    case MO_ATOM_NONE:
-+        size = MO_8;
-+        break;
-+    case MO_ATOM_IFALIGN_PAIR:
-+    case MO_ATOM_WITHIN16_PAIR:
-+        size = size ? size - 1 : 0;
-+        break;
-+    default:
-+        break;
-+    }
-+    return size;
-+}
-+
- #endif
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index a975fe5f89..35cda1e2b0 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1767,20 +1767,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * Device memory type require alignment.
-      */
-     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
--        MemOp size = l->memop & MO_SIZE;
--
--        switch (l->memop & MO_ATOM_MASK) {
--        case MO_ATOM_NONE:
--            size = MO_8;
--            break;
--        case MO_ATOM_IFALIGN_PAIR:
--        case MO_ATOM_WITHIN16_PAIR:
--            size = size ? size - 1 : 0;
--            break;
--        default:
--            break;
--        }
--        if (addr & ((1 << size) - 1)) {
-+        a_bits = memop_atomicity_bits(l->memop);
-+        if (addr & ((1 << a_bits) - 1)) {
-             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
-         }
+ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+-                              int type, hwaddr *pphys, int *pprot)
++                              int type, MemOp mop, hwaddr *pphys, int *pprot)
+ {
+     hwaddr phys;
+     int prot, r_prot, w_prot, x_prot, priv;
+@@ -340,7 +340,7 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     mmu_idx = (cpu->env.psw & PSW_D ? MMU_KERNEL_IDX :
+                cpu->env.psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
+ 
+-    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0,
++    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0, 0,
+                                      &phys, &prot);
+ 
+     /* Since we're translating for debugging, the only error that is a
+@@ -438,7 +438,8 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+         break;
      }
+ 
+-    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, &phys, &prot);
++    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, 0,
++                                     &phys, &prot);
+     if (unlikely(excp >= 0)) {
+         if (probe) {
+             return false;
+@@ -678,7 +679,7 @@ target_ulong HELPER(lpa)(CPUHPPAState *env, target_ulong addr)
+     hwaddr phys;
+     int prot, excp;
+ 
+-    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0,
++    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0, 0,
+                                      &phys, &prot);
+     if (excp >= 0) {
+         if (excp == EXCP_DTLB_MISS) {
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 7f79196fff..744325969f 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -334,7 +334,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
+     }
+ 
+     mmu_idx = PRIV_P_TO_MMU_IDX(level, env->psw & PSW_P);
+-    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys, &prot);
++    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, 0, &phys, &prot);
+     if (excp >= 0) {
+         cpu_restore_state(env_cpu(env), GETPC());
+         hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
 -- 
 2.43.0
 
