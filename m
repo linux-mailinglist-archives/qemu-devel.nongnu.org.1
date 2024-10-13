@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2B499BC84
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2A399BC8E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:18:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pQ-00076x-BY; Sun, 13 Oct 2024 18:12:44 -0400
+	id 1t06pQ-00076v-A2; Sun, 13 Oct 2024 18:12:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pN-00075l-Nc
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:41 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1t06pO-00075y-7Z
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:42 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pL-0000tP-TH
+ id 1t06pM-0000tU-KT
  for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:41 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2e28b75dbd6so2583705a91.0
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:39 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2e2ed2230d8so1716369a91.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857558; x=1729462358; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857559; x=1729462359; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nYSXn25U/DdvMWs7SvnxnC83hyNQjHsWrN+gaiP3cZI=;
- b=UV4A9fMgJH/jdrRHSRj8PwGHaoW3ecn5UDdiGCMiutCQ24/5si8HLA44cPyiDPxScT
- B9Q/3Hy2y2gaOV+WKee6YjWCfKVRm5JRJCUnFQ/YUvKqGF5TurWhO+tVpsq6JKJDoQjX
- 1JaEdXW3MWeaKv7A7bTh03Ql0BkDlmU1386qiBANR69g50Sfezqzt8VT18/jhmkvOH7V
- jv6yvzLp6r5bYQTdednxGLGwAsvmiZWhGZsE0tdnaUO2GKRAZsKzmQILrwWbSVkTUTZG
- cKRd5rzZjBTXxO7d7Gqv5oYvqd/F+GbsToxmiqiejLfMcG5QF0aVWuTO27H4p2/De1o0
- 20kA==
+ bh=P8UtO3iFeY9lIilr4u+dWsz4U2zyzDHMfO1R07G1hdY=;
+ b=jRs7SHdqvx1EQKj0LQpWGCKvLcEyGNNTShyaLCjpyHi50E/OYZjTKxZucs302MTIux
+ 8lPvYFhwo97usz6m3n56DgdW7swXWqYoar7s8ZhlpG2j/RjneFNablGy7CgIAoUewZsS
+ S5jQV1V9FHZwsUE5GaXIfrc9lKWUNSTYHmxSN6Go71YDKrl3du7oPQeS1IwkiNIBYMOF
+ RuLv0NVQTYahtt2BbIA1Tjfd/8VV2Su6yEqcNaRTv/l70dnYQHZVXwFU8W556YPHYe7I
+ qYt/0TLpS7M11JY6Fov66kjjvzOYZf90wJEKqaWu/4Q0J1dA8B35gR8fPVmoaRjApb9/
+ a81A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857558; x=1729462358;
+ d=1e100.net; s=20230601; t=1728857559; x=1729462359;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nYSXn25U/DdvMWs7SvnxnC83hyNQjHsWrN+gaiP3cZI=;
- b=XhYb1MS/GdrnIiAEsj/s1KJTt5Rf35pQN1mNbIFTDKimXF06gL/GXPsKEy8nIoW2G9
- AjqcWDCuQGruWnpt9kKEKWRS2jXtqq+eJikCzCvzS/t/fXldF4U8DOioBrFuoDZegNci
- C2RtAqDPX5wtScd7fWpmefahJEejf4+b0w4MFW38PLoTpCtxgtPQRVtk2lQyjptJ6yQR
- ynJgcPjrc+ihJE59lAfNClCKJpPd3PcDzorr2xzb2l04js1ZGnJCeStmgLF9WPLV1uRS
- o91sbcQUVYzR74850Ae4qkcuYTOLxa+soAdxEG9UWr6oB6/vJT4o6NQQDz+VZthS77/C
- 0Nfg==
-X-Gm-Message-State: AOJu0YwPROWWoPLIyrtTO5/n+SYcJWysBR97jufphgyxWlloCGl41TCe
- WkRmY1Y887TToXlet9IMmItYjPHZUKX03EiNEEmO7udNAw0MNjHtWcyevwZgW+Ed17UeJTML0yS
- 0
-X-Google-Smtp-Source: AGHT+IE5+Grwiy+ST/5h5mjr6hl+1ON7WEkhh/uMXn2/NHYZUHnpujPHANZdm17PKAtec5QmcVtdmw==
-X-Received: by 2002:a17:90b:390a:b0:2e2:af0b:8f2d with SMTP id
- 98e67ed59e1d1-2e31536de5dmr7803911a91.26.1728857558447; 
- Sun, 13 Oct 2024 15:12:38 -0700 (PDT)
+ bh=P8UtO3iFeY9lIilr4u+dWsz4U2zyzDHMfO1R07G1hdY=;
+ b=D/OjQYlqwTjNIc1AyGHaKuihXzOBDjLNBviEZvvpcmPEtTG8XWanUTKil07D+EDUZp
+ k7znVXiqGCgeubw706u/Vngg4DB5ZaBj34sTvBK4lwqvvRIbdqkutKOfbzFFDTGlxt+o
+ +rYzmW0cZPcHR1HP3wIouvhQLabOgrihK02u6Ynv/0BrnnYLDHCOMGnZ4UltT/SNQmdy
+ t3oxZBoo43aj5fr57nqFcij0LQUe6kKSdViSluXHw9zTBqfWBPYmZ+4oRunFwhuWwsYq
+ LoPHdIkjoDTb/Emz9zMeSamfyNtLkhoi/aINxtNs8u2AIk/2Ie3THPzOHjSzTkW1xy7T
+ OKXQ==
+X-Gm-Message-State: AOJu0YzpUBhxVM3GeNOwBstR7TVfQfVptbtcFbL5DQwOs88UFaqK8MV8
+ PkXZjwYHRPp50iIJ9PorUvKolcxbH3XngDtm6VmQLrpaGt94HrL9xbvxBZJh8jVgR5wlKKHhWvx
+ T
+X-Google-Smtp-Source: AGHT+IGwAmG/FeJEzj828OJZ49kZ2mPr27NKZkudX36VAC1y4TS3nbdbRZ8jGUnUvzUQzmoVLmBSLA==
+X-Received: by 2002:a17:90a:7402:b0:2e2:b513:d534 with SMTP id
+ 98e67ed59e1d1-2e31536f287mr8547619a91.37.1728857559254; 
+ Sun, 13 Oct 2024 15:12:39 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.37
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 13 Oct 2024 15:12:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 02/27] include/exec: Introduce env_cpu_const()
-Date: Sun, 13 Oct 2024 15:12:10 -0700
-Message-ID: <20241013221235.1585193-3-richard.henderson@linaro.org>
+Subject: [PULL 03/27] linux-user/i386: Emulate orig_ax
+Date: Sun, 13 Oct 2024 15:12:11 -0700
+Message-ID: <20241013221235.1585193-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,61 +94,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-It's the same as env_cpu(), but for const objects.
+The kernel uses orig_rax/orig_eax to store the syscall number before
+a syscall. One can see this value in core dumps and ptrace.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20240912093012.402366-2-iii@linux.ibm.com>
+Message-ID: <20240912093012.402366-3-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 13 ++++++++++++-
- linux-user/elfload.c      |  2 +-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ linux-user/qemu.h          | 4 ++++
+ linux-user/elfload.c       | 4 ++--
+ linux-user/i386/cpu_loop.c | 3 +++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 2e1b499cb7..638dc806a5 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -238,6 +238,17 @@ static inline ArchCPU *env_archcpu(CPUArchState *env)
-     return (void *)env - sizeof(CPUState);
- }
- 
-+/**
-+ * env_cpu_const(env)
-+ * @env: The architecture environment
-+ *
-+ * Return the CPUState associated with the environment.
-+ */
-+static inline const CPUState *env_cpu_const(const CPUArchState *env)
-+{
-+    return (void *)env - sizeof(CPUState);
-+}
-+
- /**
-  * env_cpu(env)
-  * @env: The architecture environment
-@@ -246,7 +257,7 @@ static inline ArchCPU *env_archcpu(CPUArchState *env)
-  */
- static inline CPUState *env_cpu(CPUArchState *env)
- {
--    return (void *)env - sizeof(CPUState);
-+    return (CPUState *)env_cpu_const(env);
- }
- 
- #ifndef CONFIG_USER_ONLY
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 98ad848ab2..895bdd722a 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -113,6 +113,10 @@ struct TaskState {
+     struct target_vm86plus_struct vm86plus;
+     uint32_t v86flags;
+     uint32_t v86mask;
++#endif
++#if defined(TARGET_I386)
++    /* Last syscall number. */
++    target_ulong orig_ax;
+ #endif
+     abi_ulong child_tidptr;
+ #ifdef TARGET_M68K
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 52c88a68a9..352960b771 100644
+index 352960b771..6cef8db3b5 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4314,7 +4314,7 @@ static int wmr_write_region(void *opaque, target_ulong start,
-  */
- static int elf_core_dump(int signr, const CPUArchState *env)
- {
--    const CPUState *cpu = env_cpu((CPUArchState *)env);
-+    const CPUState *cpu = env_cpu_const(env);
-     const TaskState *ts = (const TaskState *)get_task_state((CPUState *)cpu);
-     struct rlimit dumpsize;
-     CountAndSizeRegions css;
+@@ -203,7 +203,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+     (*regs)[12] = tswapreg(env->regs[R_EDX]);
+     (*regs)[13] = tswapreg(env->regs[R_ESI]);
+     (*regs)[14] = tswapreg(env->regs[R_EDI]);
+-    (*regs)[15] = tswapreg(env->regs[R_EAX]); /* XXX */
++    (*regs)[15] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
+     (*regs)[16] = tswapreg(env->eip);
+     (*regs)[17] = tswapreg(env->segs[R_CS].selector & 0xffff);
+     (*regs)[18] = tswapreg(env->eflags);
+@@ -306,7 +306,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+     (*regs)[8] = tswapreg(env->segs[R_ES].selector & 0xffff);
+     (*regs)[9] = tswapreg(env->segs[R_FS].selector & 0xffff);
+     (*regs)[10] = tswapreg(env->segs[R_GS].selector & 0xffff);
+-    (*regs)[11] = tswapreg(env->regs[R_EAX]); /* XXX */
++    (*regs)[11] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
+     (*regs)[12] = tswapreg(env->eip);
+     (*regs)[13] = tswapreg(env->segs[R_CS].selector & 0xffff);
+     (*regs)[14] = tswapreg(env->eflags);
+diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
+index 92beb6830c..7a35215278 100644
+--- a/linux-user/i386/cpu_loop.c
++++ b/linux-user/i386/cpu_loop.c
+@@ -172,6 +172,7 @@ static void emulate_vsyscall(CPUX86State *env)
+     /*
+      * Perform the syscall.  None of the vsyscalls should need restarting.
+      */
++    get_task_state(env_cpu(env))->orig_ax = syscall;
+     ret = do_syscall(env, syscall, env->regs[R_EDI], env->regs[R_ESI],
+                      env->regs[R_EDX], env->regs[10], env->regs[8],
+                      env->regs[9], 0, 0);
+@@ -221,6 +222,7 @@ void cpu_loop(CPUX86State *env)
+         case EXCP_SYSCALL:
+ #endif
+             /* linux syscall from int $0x80 */
++            get_task_state(cs)->orig_ax = env->regs[R_EAX];
+             ret = do_syscall(env,
+                              env->regs[R_EAX],
+                              env->regs[R_EBX],
+@@ -239,6 +241,7 @@ void cpu_loop(CPUX86State *env)
+ #ifdef TARGET_X86_64
+         case EXCP_SYSCALL:
+             /* linux syscall from syscall instruction.  */
++            get_task_state(cs)->orig_ax = env->regs[R_EAX];
+             ret = do_syscall(env,
+                              env->regs[R_EAX],
+                              env->regs[R_EDI],
 -- 
 2.43.0
 
