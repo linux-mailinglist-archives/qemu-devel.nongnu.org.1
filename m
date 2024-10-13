@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B64F99BC7E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0211999BC81
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 00:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t06pv-0007EG-GK; Sun, 13 Oct 2024 18:13:15 -0400
+	id 1t06pw-0007FK-6B; Sun, 13 Oct 2024 18:13:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pa-0007A5-84
+ id 1t06pa-0007A4-4V
  for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:54 -0400
 Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t06pX-0000vS-Gl
- for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:54 -0400
+ id 1t06pY-0000vf-EN
+ for qemu-devel@nongnu.org; Sun, 13 Oct 2024 18:12:53 -0400
 Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2e2a999b287so2851014a91.0
- for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:51 -0700 (PDT)
+ 98e67ed59e1d1-2e2dcf4b153so2229771a91.1
+ for <qemu-devel@nongnu.org>; Sun, 13 Oct 2024 15:12:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728857570; x=1729462370; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728857571; x=1729462371; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZMaSkZRoz5YPXdGi4Fagk1yb2WqLYDqE0+TVeXDEoMY=;
- b=kgGX6F6ssMk35mDaCkohqGEJcxeX5pX5GsDM5PdmuWZCPMD/AONgTMlRnoOUmP5lDU
- vBAkg3gXWmN3+5vUzswQJg8oRKs3JhJh4pkV4lb/KrqyM2qNcI2JEdxRZVG1BJGAogyT
- 1Hz23YfRZjjk4cyCiFm2CWUEk/TzFcSl3hxtS8WoQ+TN4hefX3c5NoKncNtvNv00RTUu
- D3Nu1bd0wfT6LmW6nYVWAqelyGc0GwS8By3iKSF+itfqag+h0UgUky2wnwS5EHOzKLOc
- UEFbKHctScndKg349jeAvuOLBLWrA3gA9KFih8ypCN/ZYM5Pwvd/7W5VG57D4+DtEjNg
- Vstw==
+ bh=jvwlrMz3Fk2P5q43/JWG8Wh7xLnVWB9wP6XAmMUyGN8=;
+ b=JSCedkKGgDGHqgNK74jdohI0C8V8sya4nAevMefTFc50RjPnlRxakv3Eg30hqfrkKQ
+ iGZvwVjDdbmxLm5lpe3nkVaShs/th6XA9j72nnYBFnj3gmYW24HEMZ07isNXKiqPTx23
+ 7r5YYAU3lVGzFM9wmkAOnBSQGinuq2+LSWRAffmg2TOx7bxkgFTfuq58KijYSjxuAppT
+ KN4nmXWzMiSI5TPpiFCuDJ2Vf1t+pNaCPN9v8xHa7b82yWrwBrE8Fw/aoVqMrXuykAnl
+ /D6gr6Vfod7kQ72QB06A2FD0tMo0ZW11Wf8WB+lzqtQkvy2hcM26PaIp8JHLYYm5RZoh
+ hD7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728857570; x=1729462370;
+ d=1e100.net; s=20230601; t=1728857571; x=1729462371;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZMaSkZRoz5YPXdGi4Fagk1yb2WqLYDqE0+TVeXDEoMY=;
- b=APNcwKjvO5sI7X4uet1yo4bJYFjyHifFrVuzFADfzd2LyIZplbYrqn9R6E2qzZIPi5
- dbYKVRXLdGjeAl7an67/BBbnQvYAPXLWR2ULTHE/InX6EimmGG77MP7qI2Fvn7u6nbrq
- P/5/aE7mMza+elnVhNP/DQGqVx4SpU7jp5kPzIOwxQf21SmiFuNLXSBg4qrb5YsR7gAi
- 4hGjxqHY+LXlFfsF9Yi8GRb7omYH4hNRP7SIcRZtjEklWMNNtzGW6HJJ6/VKlDNN6+hM
- bosT0njnsipL19F6QebGhfESXeGn8GROtBL8Mr5sKmCU9WB3zIdpWQnmCf4PcugTnjkP
- 6neg==
-X-Gm-Message-State: AOJu0YxwhueDad4nyjCSJY4veFeOCV9AsJ/1T/HqkUzbMeT/SRtBFEAW
- IWzUK0AwzH4wD3wfHKbBaodfttzUSTHOrdq/Won7J4whyzKFszr60bLkisTkzhVlVZRHarZ77zY
- a
-X-Google-Smtp-Source: AGHT+IGo7pss9kMdZe+q2Ka85FEDnS0gaetUuqIpkcmxME23Tv1LooQV/Bps5z1Bz1NwpQsBFEogZw==
-X-Received: by 2002:a17:90a:8cc:b0:2e2:c64c:a1c9 with SMTP id
- 98e67ed59e1d1-2e2f0b2b844mr11646356a91.24.1728857570248; 
- Sun, 13 Oct 2024 15:12:50 -0700 (PDT)
+ bh=jvwlrMz3Fk2P5q43/JWG8Wh7xLnVWB9wP6XAmMUyGN8=;
+ b=WcYsh71katJoaB35Xxgs6H6LfRS3Zr8k+1fugMYcnaJn1iSFogKIR/lnnL+bjDdFpc
+ GTYJFViZA0wdev7z1HhnJ+z6Y5B8CFp2aP675+ByTfYv0X/E8CH49BnBQIHGwhp6aWxc
+ PpsWTl61cVj2+34xutra/kGBLYedr4+VCMHjgnXBtGHtbttImHw6yTg+2HLkXIrvLdI5
+ X+TQdiNvC6bsRY+YQMU/boJRywwTXPJG3bdf20dnxM3e2mxXQgdIav9BgSOwZgcF0Ntt
+ 7n4I9fBx0Ll/SEgHXpVNwlfTzNpV98dlMb0kfcRJ5434IGRfMf0Mvtg+7dpo/nENkpui
+ g5lQ==
+X-Gm-Message-State: AOJu0YxAZP5zaI85wNgfk4vfaV0LQjTjbE13N3U0d86HQoeXGv5l7RV5
+ Y6YuYcwBQSurtT5VTsVmtj9KaIIGHyoBrKE2fym7xFhvSdwfzLCQ3tLbLw8nOP/vfCuSpSetKBz
+ u
+X-Google-Smtp-Source: AGHT+IECTx8ryhMseFkj2tvyby8ENbkgmNVnh6fxEfbgPFbgAKOiVb2YSgmFlVGe65WZ1thAQ1tS6w==
+X-Received: by 2002:a17:90a:ee8f:b0:2d8:dd14:79ed with SMTP id
+ 98e67ed59e1d1-2e2f0d7aa18mr11741015a91.31.1728857571226; 
+ Sun, 13 Oct 2024 15:12:51 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.49
+ 98e67ed59e1d1-2e2d5df1eebsm7271958a91.17.2024.10.13.15.12.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Oct 2024 15:12:49 -0700 (PDT)
+ Sun, 13 Oct 2024 15:12:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/27] target/hppa: Add MemOp argument to
- hppa_get_physical_address
-Date: Sun, 13 Oct 2024 15:12:22 -0700
-Message-ID: <20241013221235.1585193-15-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 15/27] target/hppa: Perform access rights before protection id
+ check
+Date: Sun, 13 Oct 2024 15:12:23 -0700
+Message-ID: <20241013221235.1585193-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241013221235.1585193-1-richard.henderson@linaro.org>
 References: <20241013221235.1585193-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
  envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
@@ -95,99 +93,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just add the argument, unused at this point.
-Zero is the safe do-nothing value for all callers.
+In Chapter 5, Interruptions, the group 3 exceptions lists
+"Data memory access rights trap" in priority order ahead of
+"Data memory protection ID trap".
+
+Swap these checks in hppa_get_physical_address.
 
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        | 2 +-
- target/hppa/int_helper.c | 2 +-
- target/hppa/mem_helper.c | 9 +++++----
- target/hppa/op_helper.c  | 2 +-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ target/hppa/mem_helper.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index f4e051f176..526855f982 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -369,7 +369,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- void hppa_cpu_do_interrupt(CPUState *cpu);
- bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
--                              int type, hwaddr *pphys, int *pprot);
-+                              int type, MemOp mop, hwaddr *pphys, int *pprot);
- void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-                                      vaddr addr, unsigned size,
-                                      MMUAccessType access_type,
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index 391f32f27d..58695def82 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -167,7 +167,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
- 
-                     vaddr = hppa_form_gva_psw(old_psw, env->iasq_f, vaddr);
-                     t = hppa_get_physical_address(env, vaddr, MMU_KERNEL_IDX,
--                                                  0, &paddr, &prot);
-+                                                  0, 0, &paddr, &prot);
-                     if (t >= 0) {
-                         /* We can't re-load the instruction.  */
-                         env->cr[CR_IIR] = 0;
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index b984f730aa..a386c80fa4 100644
+index a386c80fa4..f027c494e2 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -197,7 +197,7 @@ static int match_prot_id64(CPUHPPAState *env, uint32_t access_id)
- }
- 
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
--                              int type, hwaddr *pphys, int *pprot)
-+                              int type, MemOp mop, hwaddr *pphys, int *pprot)
- {
-     hwaddr phys;
-     int prot, r_prot, w_prot, x_prot, priv;
-@@ -340,7 +340,7 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-     mmu_idx = (cpu->env.psw & PSW_D ? MMU_KERNEL_IDX :
-                cpu->env.psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
- 
--    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0,
-+    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0, 0,
-                                      &phys, &prot);
- 
-     /* Since we're translating for debugging, the only error that is a
-@@ -438,7 +438,8 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-         break;
+@@ -267,6 +267,12 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         goto egress;
      }
  
--    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, &phys, &prot);
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, 0,
-+                                     &phys, &prot);
-     if (unlikely(excp >= 0)) {
-         if (probe) {
-             return false;
-@@ -678,7 +679,7 @@ target_ulong HELPER(lpa)(CPUHPPAState *env, target_ulong addr)
-     hwaddr phys;
-     int prot, excp;
- 
--    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0,
-+    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0, 0,
-                                      &phys, &prot);
-     if (excp >= 0) {
-         if (excp == EXCP_DTLB_MISS) {
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 7f79196fff..744325969f 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -334,7 +334,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
++    if (unlikely(!(prot & type))) {
++        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
++        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
++        goto egress;
++    }
++
+     /* access_id == 0 means public page and no check is performed */
+     if (ent->access_id && MMU_IDX_TO_P(mmu_idx)) {
+         int access_prot = (hppa_is_pa20(env)
+@@ -281,12 +287,6 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         prot &= access_prot;
      }
  
-     mmu_idx = PRIV_P_TO_MMU_IDX(level, env->psw & PSW_P);
--    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys, &prot);
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, 0, &phys, &prot);
-     if (excp >= 0) {
-         cpu_restore_state(env_cpu(env), GETPC());
-         hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
+-    if (unlikely(!(prot & type))) {
+-        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
+-        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
+-        goto egress;
+-    }
+-
+     /*
+      * In priority order, check for conditions which raise faults.
+      * Remove PROT bits that cover the condition we want to check,
 -- 
 2.43.0
 
