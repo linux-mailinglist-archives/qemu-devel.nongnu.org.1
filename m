@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9411799D994
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 00:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C3A99D9AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 00:10:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0T8k-0003jr-Sn; Mon, 14 Oct 2024 18:02:10 -0400
+	id 1t0TFq-0006Ez-3U; Mon, 14 Oct 2024 18:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1t0T8i-0003iV-5r
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:02:08 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0TFn-0006Eb-QW
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:09:27 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1t0T8e-0006Ug-BK
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:02:06 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43117ed8adbso52637755e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 15:02:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0TFm-0007Q5-E9
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:09:27 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-20c803787abso31605005ad.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 15:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1728943321; x=1729548121; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mser6RZhK+UJgovuFS53xmD+fZjgdUZFZOhfivY7xVc=;
- b=LX/+24ix0D4W3oocD5fG2olF7XSbMboNQ5yVXPjjMOPsYIEoy1J8AMVYoqwPhlldrA
- /xwSBQ8BBZ6I+Kirq5s1vdTcUZqrxLm0pMGaHUL7o5hqAyDm5Y/kQx0kiHCu4T+FK+ON
- xAftkilkF77mu0oK6Sb29jC+R4dpJOM2LpL5xwXiZZx5Smuu9uXvWuvkiCotaBKgbJS+
- u25YpXQOEQp7gEboerEZzQrxmhPHFCNwXf2En40J036jIjFbD4C5Atl51Q/k0GDZnWs4
- zFF6sccgeblkyMCK0Ec5X9DFf8VCguMjm4o1vYqMd6cJW+19jyR0MstofX4HmOUIHDL+
- F1JA==
+ d=linaro.org; s=google; t=1728943763; x=1729548563; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=zb7cyEiKcqQ5X5/PCi+xvEfgTJqXZGZBRJmR3ylgvJY=;
+ b=FiutCx6C8UJYbalUEHwNNIFHodbY+Pcwp+egSFEN2veaF6ynoJhX1pxPEs8D/aH27X
+ f9jE0yKkn+y33JBqeZef2CPFx+BE1DIwwQvBB7R+SQ0ECyG8a99gUJS4ZUtIhOWWZkG/
+ f4fR4f0t/AIyQC4gtUVmM4HlLtt0l7V5B6EPELiNMPqSQbXWRP/nbN4PeobuSHp4YHgt
+ N6MHnVassUxXB3KBfTipoxj1HoDo2wQaOLzZry8gxT4iizYb8sZ5lZl5fUQIPWSj+t5G
+ DZ2AGqhIz7XPX9waP8WnnTPA1Op6anziPevGFvcv+32pa/5gxdt717gFX2kpg3Cr3ZOI
+ uHWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728943321; x=1729548121;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mser6RZhK+UJgovuFS53xmD+fZjgdUZFZOhfivY7xVc=;
- b=ULCCsPQQ4BbMjq2aUKCAiSkrzX6xgI4eKlr7ys/dRinwS0DIwK3IKrg/2o1gx1aEnR
- BWgNmH1puDYjrUm5meO/qXz7DLJ+vUhc/w1tttZ6Uc/8GppU0qQrEMSPCeKfK53jYXEs
- Ktpu/CDTMMFfxJrLiWRjXbL1gCKrSV02peMskFspiSuX6eR0prV/o4AC45cLa+moaEle
- 2NNPxCOPsl+IxMsZgYtH39xc/kTTSp2La8NzMTFF4Oky2fYON0m3Mkb2jwa3QpLcDxeo
- 2+82r4oQiEd6pfqIrrznweHdWckzAomjQ3x0phM00MW9MSBeUNQTSZKXPhuKB3wEiF6A
- ToZA==
-X-Gm-Message-State: AOJu0YxYlRAnCzWGqsSPOkEcdTdO7UN39kKNnxJLSDI7vduMfCSfSEIY
- JrhSfxOpodFukdZ2aSaY1JdNSV1Op7VKara3VBP8XIfUvpHMw07Gk2Yl5pm8OI8kySdHOiAPkQE
- RwFU=
-X-Google-Smtp-Source: AGHT+IF5GaZsCA3nlIKyhWDHMvHB7PEWXyCbgCGS+DjwxoXCR1wCmaZZeIia4R7MH3F4p6dcIDUgiQ==
-X-Received: by 2002:a05:600c:1d0b:b0:42b:ac3d:3abc with SMTP id
- 5b1f17b1804b1-43125607986mr121583225e9.24.1728943321196; 
- Mon, 14 Oct 2024 15:02:01 -0700 (PDT)
-Received: from paolo-laptop-amd.. ([2a0e:cb01:d3:f100:8971:afed:16dc:a06f])
+ d=1e100.net; s=20230601; t=1728943763; x=1729548563;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zb7cyEiKcqQ5X5/PCi+xvEfgTJqXZGZBRJmR3ylgvJY=;
+ b=NuY/u8dzLWzUiVK1MsWcISNBQLoffoEitoAFXniagKxbJX5qIw8z4mybToXN+FlSHu
+ vEuVSdjlnGBjtH3BeU+9dCEpgVCiNcz/Qn2ydnJH1E8IRkyobtnXUqvucdYhptUDQL3Y
+ IcxmZ8LNHXzAa/fJEWKPg13gZUdTXkjrg4z+zmr3/jBz4erV/EmczjuODi+9e8x0S52/
+ iZLpUjq2C4vZ2ighsYsXMCzMzNcPojLNFgnHmZwRX9HXUhpfh+igK17qMYQBKRvYNMK5
+ aytJjYHoajvYASgL++Gu1JQVsXGQSJBaEB37wXrZ7fN64IULO5jZ9jjtKQLpwuohb6o3
+ TZkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWQqyqM7vuriR3+0CjpkRAgr/g+m2eSjVsjcuvU3HCdGpCth3hn/Fi8DFJAErUQmq5YlNkfcaBX283h@nongnu.org
+X-Gm-Message-State: AOJu0YxHTsmNNs1qb3RII+bnipkUvgIKNiKPI8DYlXXvEUjeZhRXCC/J
+ XTAU7M8YbUnskp+xYoAqdmQepW5pvxN/tOi2wnrE6Dhcq/Jqfb8M3l2ibgvl144=
+X-Google-Smtp-Source: AGHT+IFRlNBn6hEnVT+VBZ73Cg9rvzNTCZAk+d07rGDa+nfZVGRS/XUA0BC7gLZ5ukNUKV/EUg1nMQ==
+X-Received: by 2002:a17:902:dac8:b0:20c:e898:c88a with SMTP id
+ d9443c01a7336-20ce898cb53mr68937075ad.0.1728943763367; 
+ Mon, 14 Oct 2024 15:09:23 -0700 (PDT)
+Received: from [192.168.100.35] ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a09dsm22769f8f.23.2024.10.14.15.02.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 15:02:00 -0700 (PDT)
-From: Paolo Savini <paolo.savini@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Paolo Savini <paolo.savini@embecosm.com>,
- Richard Handerson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>
-Subject: [RFC v3 2/2] target/riscv: rvv: improve performance of RISC-V vector
- loads and stores on large amounts of data.
-Date: Mon, 14 Oct 2024 23:01:53 +0100
-Message-ID: <20241014220153.196183-3-paolo.savini@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241014220153.196183-1-paolo.savini@embecosm.com>
-References: <20241014220153.196183-1-paolo.savini@embecosm.com>
+ d9443c01a7336-20d1805ba92sm82675ad.255.2024.10.14.15.09.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Oct 2024 15:09:22 -0700 (PDT)
+Message-ID: <f0493b9d-f2b1-4330-9cc6-b1f7cfc77c67@linaro.org>
+Date: Mon, 14 Oct 2024 19:09:20 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg: remove singlestep_enabled from DisasContextBase
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20241010083641.1785069-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241010083641.1785069-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=paolo.savini@embecosm.com; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,46 +92,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch optimizes the emulation of unit-stride load/store RVV instructions
-when the data being loaded/stored per iteration amounts to 64 bytes or more.
-The optimization consists of calling __builtin_memcpy on chunks of data of 128
-bytes between the memory address of the simulated vector register and the
-destination memory address and vice versa.
-This is done only if we have direct access to the RAM of the host machine,
-if the host is little endiand and if it supports atomic 128 bit memory
-operations.
+On 10/10/24 05:36, Paolo Bonzini wrote:
+> It is used in a couple of places only, both within the same target.  Those can
+> use the cflags just as well, so remove the separate field.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/exec/translator.h   | 2 --
+>   accel/tcg/translator.c      | 1 -
+>   target/mips/tcg/translate.c | 5 +++--
+>   3 files changed, 3 insertions(+), 5 deletions(-)
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
----
- target/riscv/vector_helper.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 75c24653f0..b3d0be8e39 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -488,7 +488,19 @@ vext_group_ldst_host(CPURISCVState *env, void *vd, uint32_t byte_end,
-     }
- 
-     fn = fns[is_load][group_size];
--    fn(vd, byte_offset, host + byte_offset);
-+
-+    /* x86 and AMD processors provide strong guarantees of atomicity for
-+     * 16-byte memory operations if the memory operands are 16-byte aligned */
-+    if (!HOST_BIG_ENDIAN && (byte_offset + 16 < byte_end) && ((byte_offset % 16) == 0) &&
-+        ((cpuinfo & (CPUINFO_ATOMIC_VMOVDQA | CPUINFO_ATOMIC_VMOVDQU)) != 0)) {
-+      group_size = MO_128;
-+      if (is_load)
-+        __builtin_memcpy((uint8_t *)(vd + byte_offset), (uint8_t *)(host + byte_offset), 16);
-+      else
-+        __builtin_memcpy((uint8_t *)(host + byte_offset), (uint8_t *)(vd + byte_offset), 16);
-+    } else {
-+      fn(vd, byte_offset, host + byte_offset);
-+    }
- 
-     return 1 << group_size;
- }
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
