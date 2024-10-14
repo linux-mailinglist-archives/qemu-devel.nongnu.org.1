@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF59099D28B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B9199D437
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 18:06:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Mxq-0006IR-FA; Mon, 14 Oct 2024 11:26:30 -0400
+	id 1t0NZ6-0002Dl-DI; Mon, 14 Oct 2024 12:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxk-0006Fo-Hs
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:24 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0NYs-0002Ct-0s
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:04:47 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxh-0000vw-KA
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:24 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-539e1543ab8so4276404e87.2
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0NYn-0005gZ-8t
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:04:42 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9625cfe4dso3158051a12.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 09:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728919577; x=1729524377; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Twyv6YldhETnLvxZDkBVahrdEIkG4B6Hw1qzwu/nBjU=;
- b=ao+ZrR8KweE/5YbZQbnoQf1z48TBhH4vSKIWLCN6KCMnFrs1xtukgKz7At4/ieItVj
- vxaQhKiT9tRjNsusHGzXBZviOyejBrTJFyzEYVtq9eiT1B27nGioBhNFY4KjK/FWBmgD
- 15iwt8NPEvjNcwiI6OR81TQzNx+O7qIh6mASae4zIqitDWQnhNPcvhoBM7zIbvFjfsik
- Cl5xS9n8C8vi9IGij3Q6iAdDas+TBwIMTCiH3bmVsrLVHphAAtzso+p3GM9DxBhC4oHi
- rPo9Cd07r/KUQjDmTpoNGeuSUfTgQWjQraRXphmGt0xPC3PX8aEoNNbXE618W1/RlIiS
- WAAA==
+ d=linaro.org; s=google; t=1728921878; x=1729526678; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WXXoG0ooP8NCZGwSsVydSt1QCz7l6JRtzYFrC+yHzD0=;
+ b=V88uYV0bssPSjl3ILQF5YhTLWpD9T4jlEQumvhG+ruJFWU3nl632jUhh+o9jQu6FlZ
+ dX9yOMKpizFKcgCLnKb6pEEk8ChPtt3bxS2dbwbJOFwD9jGDOb40rjminMR408VrHtbQ
+ F/y1a8EAcpTrgNBbfJmfq3OoxlJ21E4OAoooGMJsgyX6z19cH6CRQg/DAHTfEAhY72Pl
+ W9ddj98ImL32cau43X2Ett6dUeN9xPYcHWur+7+H0V2xR8VKIUa3cSnbL8FbBRw+i9UP
+ qmQBHKzSkPvz11ONnvtMCh1Az01T2QLq8xuhy05XYMUJ+WgyUagZojdm4+zVNDPZnvKA
+ oVNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728919577; x=1729524377;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Twyv6YldhETnLvxZDkBVahrdEIkG4B6Hw1qzwu/nBjU=;
- b=QjcPXa0ezVzefnmyaX90ibZbPcfPMAxVXe4ifB1LwbSHDyhXL9sYYGkZ3IVGE+cXGX
- bmn3m09zDIZv6DZYN8NpepeWhzh8079CNp5NgNFv4La6LHRk/audN6oU6z7sGcxiEBR3
- wOO0WKJTwXNliVSfWF7tw+mjkNkDnvkSswXf8cVYP3Akv+9tUv/le4XSFLUIzTwmdkVA
- piAI5A3D1P1BKJOFA52SxwQLw3hmGWkWZv9PfZSEWqzAZLjQ2AdX0sm2gRiQCHz5oyBO
- 0V1tpkVh9joCJN6a14asUbEXnxj9XvnH/im80uM/3j2RnMYupiUKXe6amaFwdu/w17sA
- vqOA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWftznYq7lLY084GEx5WTWVrMDFNzzAxhuOyjCQT75i5QILRQIQ3la8Tb99QdI0UdRDaNt66oTGt2am@nongnu.org
-X-Gm-Message-State: AOJu0YwkTXLiWr23Nv+EyzCPG461msNduDabfIsyKXbYbDz6OIX/84K2
- gve58MDWlIfohfn6ii3P5pslTyj7hadpW95EvgInPuG9I3SQKnsW9w2m4Q==
-X-Google-Smtp-Source: AGHT+IHCOPZH9o0oJOAmtTOxYL3dSlzfMHZ27dFbAyKyjaSYxeLcfQa2M04Ak1OI8w4o5mtHu/0adA==
-X-Received: by 2002:a05:6512:3ba5:b0:52e:936e:a237 with SMTP id
- 2adb3069b0e04-539e54e74f6mr4398904e87.16.1728919576245; 
- Mon, 14 Oct 2024 08:26:16 -0700 (PDT)
-Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 08:26:15 -0700 (PDT)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH v2 8/8] tests/unit/test-char: implement a few mux remove test
- cases
-Date: Mon, 14 Oct 2024 17:24:08 +0200
-Message-Id: <20241014152408.427700-9-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241014152408.427700-1-r.peniaev@gmail.com>
-References: <20241014152408.427700-1-r.peniaev@gmail.com>
+ d=1e100.net; s=20230601; t=1728921878; x=1729526678;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WXXoG0ooP8NCZGwSsVydSt1QCz7l6JRtzYFrC+yHzD0=;
+ b=tdNEgpvBnybYGFNNW+TKykJl7DfIzaMYXSdVvnnKBVoVaKbiRvh1owNGe3eERH1EIu
+ i8QjthqX6uEglQMqEXvtYZUBRKANsEL+tjytTF5UODTE9MPXacEbF0jS6rOM5ip+z8+/
+ FfT6WilTPEZSUGubxzGJm+406L40lQwm7yBuARYu9M2jPjzkpLw4bfyOLurPb/XTZ02r
+ vXala5v49kUfc42D2NE2vQNcB7elF4ir26EzfTXpNWBaeiuczpsfv5zQYRpg3DZzfE3E
+ 5VngXsnQL24tFub2gafOEKZeY4Dzvu24BxJNsS9FTIpxTRhYXLmJutW+vE2bAD0yaQhL
+ lduQ==
+X-Gm-Message-State: AOJu0YwK9sMYYBCs1fJgpCB/arVgGEFHcBGIYUWxEfzmQIPMmMTzlOHC
+ KDq+Yue3A+Rp2j20vAI9fg4CLleMuil06GFWkhGUDtp3Th9I4+F48Ae89+FgnCp27BgCguDtGKk
+ RvEKVfC2q4EF0XyvIeYtkdG59SfAgyExFGWnLYQ==
+X-Google-Smtp-Source: AGHT+IGJJ85rpEmct88Zi9+AscL+YkSb4PhArnZiLCBx0xjbpw5ilC85+WTgfHQV4NQ0a8yaMp/TsVVKGMZreRBom2c=
+X-Received: by 2002:a50:cbcd:0:b0:5bf:1bd:adb3 with SMTP id
+ 4fb4d7f45d1cf-5c95ac0dbb9mr5803965a12.14.1728921878223; Mon, 14 Oct 2024
+ 09:04:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=r.peniaev@gmail.com; helo=mail-lf1-x132.google.com
+References: <20241014143640.196735-1-pbonzini@redhat.com>
+In-Reply-To: <20241014143640.196735-1-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 14 Oct 2024 17:04:26 +0100
+Message-ID: <CAFEAcA8n81hFE0ZpuXEBUnWFmH1L0WPde9t17D6vqtwup3Aqkg@mail.gmail.com>
+Subject: Re: [PATCH] meson: check in main meson.build for native Rust compiler
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,69 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch tests:
+On Mon, 14 Oct 2024 at 15:36, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> A working native Rust compiler is always needed in order to compile Rust
+> code, even when cross compiling, in order to build the procedural macros
+> that QEMU uses.
+>
+> Right now, the check is done in rust/qemu-api-macros/meson.build, but this
+> has two disadvantages.  First, it makes the build fail when the Meson "rust"
+> option is set to "auto" (instead, Rust support should be disabled).  Second,
+> add_languages() is one of the few functions that are executed even by
+> "meson introspect", except that "meson introspect" executes both branches
+> of "if" statements!  Therefore, "meson introspect" tries to look for a
+> Rust compiler even if the option is disabled---and then fails because
+> the compiler is required by rust/qemu-api-macros/meson.build.  This is
+> visible for example if the compilation host has a stale
+> scripts/meson-buildoptions.sh and no rustc installed.
+>
+> Both issues can be fixed by moving the check to the main meson.build,
+> together with the check for the cross compiler.
+>
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
 
-1. feasibility of removing mux which does not have frontends attached
-   or frontends were prior detached.
-2. inability to remove mux which has frontends attached (mux is "busy")
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- tests/unit/test-char.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+Applied directly to git, thanks.
 
-diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
-index f273ce522612..2837dbb863a8 100644
---- a/tests/unit/test-char.c
-+++ b/tests/unit/test-char.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include <glib/gstdio.h>
- 
-+#include "qapi/error.h"
- #include "qemu/config-file.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
-@@ -184,6 +185,21 @@ static void char_mux_test(void)
-     char *data;
-     FeHandler h1 = { 0, false, 0, false, }, h2 = { 0, false, 0, false, };
-     CharBackend chr_be1, chr_be2;
-+    Error *error = NULL;
-+
-+    /* Create mux and chardev to be immediately removed */
-+    opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
-+                            1, &error_abort);
-+    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
-+    qemu_opt_set(opts, "size", "128", &error_abort);
-+    qemu_opt_set(opts, "mux", "on", &error_abort);
-+    chr = qemu_chr_new_from_opts(opts, NULL, &error_abort);
-+    g_assert_nonnull(chr);
-+    qemu_opts_del(opts);
-+
-+    /* Remove just created mux and chardev */
-+    qmp_chardev_remove("mux-label", &error_abort);
-+    qmp_chardev_remove("mux-label-base", &error_abort);
- 
-     opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
-                             1, &error_abort);
-@@ -334,7 +350,13 @@ static void char_mux_test(void)
-     g_free(data);
- 
-     qemu_chr_fe_deinit(&chr_be1, false);
--    qemu_chr_fe_deinit(&chr_be2, true);
-+
-+    error = NULL;
-+    qmp_chardev_remove("mux-label", &error);
-+    g_assert_cmpstr(error_get_pretty(error), ==, "Chardev 'mux-label' is busy");
-+
-+    qemu_chr_fe_deinit(&chr_be2, false);
-+    qmp_chardev_remove("mux-label", &error_abort);
- }
- 
- 
--- 
-2.34.1
-
+-- PMM
 
