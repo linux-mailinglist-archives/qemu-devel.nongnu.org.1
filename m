@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2505499D28E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E29799D294
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Mxl-0006G5-GH; Mon, 14 Oct 2024 11:26:25 -0400
+	id 1t0Mxl-0006G2-Ej; Mon, 14 Oct 2024 11:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxb-0006EV-VY
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:17 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1t0Mxh-0006Ez-Qd
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:23 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0MxZ-0000vB-2E
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:14 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a9a1b71d7ffso85833366b.1
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:12 -0700 (PDT)
+ id 1t0MxZ-0000vE-RS
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:16 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37d4ac91d97so3823346f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728919571; x=1729524371; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728919572; x=1729524372; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QaYY9X9pUCStJ66Iupj9x96nWBsnt7lR9iGUBryB4Dk=;
- b=FbX3/CUWJXb07XxPUSz0qAYWJ4C/mAjdr3fE8509XcYtqv1tXU2kJvEZA/5gfIBo6Y
- +QTZVc/Kmlyn9nMgoLudRWeTh3x8eqP+drjKggpIjtPzyd0R7fsz0hM05O1iuUQjdMe4
- Ga7Ky5e6088uGUtie6YXE1ppJk2dUVSfvXWiSFMV/AfvJSFqTq6H/ErMxP7yMYw7CsM8
- Ayel2IKcTmmF7iZ+X0fiaQECH/ICChWgjgyrCblvMlOVxGTj7HkGkmh2H3dcTU1Jk1/A
- lOisBVTBA/tDuGZweBNbui9NwG6UQTl3rM4uDD30jOUFzKouJ9bUJmEci6Gip3JXM3rw
- MyRg==
+ bh=7qO/4HKWHrVuc6GQ36ulz/Nn1mmzauBCzpX9YAoGCMM=;
+ b=CtarFoZbgg2jyd1mPrDYklVrhA3Mp1hIU2xqNvGKmzCY+Pag2Uk8Z2blO0fID7pRyI
+ 8bQLTaYvbkVd+MjUKXZI5UaN6EuXNJ+KP8AboCnkJkWeUphAb8fC+eBKJCfPN98WoBo2
+ +h2UzpP8ad/OsDdhp+u7ldZMJ6cRKze8cKIzkFuaIBszMEsk+Ak3HeoYq6WpNzS2+5Ys
+ BSIiIg+mv3Et33sO+OVAihczwasPKXulaezHn3Mj04lGLsSVgu6zo4XHiBkT+3WQ2MND
+ tBUNGEiR1Mb6MvkTmnc/AxYHrdiitMwKbknYLw1U9+ncgadsYftw1CMtDRPnthmQh0SU
+ 6LHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728919571; x=1729524371;
+ d=1e100.net; s=20230601; t=1728919572; x=1729524372;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QaYY9X9pUCStJ66Iupj9x96nWBsnt7lR9iGUBryB4Dk=;
- b=KW1Vedcsq50Hl+1xhl9cGHi3gp4DU3OUoLUxIGS/3jNV4WlgS7FAPLPsJNaQXfsBJk
- Izwuk7/fyfBtHMyvv2iS9M+gz4kBqv63tWggnocSzaPWQfk36qUuMPB+tx1CQCRzQkCt
- MsZq70PFeLiB7o3NT0OWYWdEP7aTgJ9ior6U5bhUfzqOYQGaYOsvw3dU0eGiEg/uG8L5
- v3n/nZPbaGhcl6weyHjeBklSfPZo23ao6XXWd4UalCQ0DFJq0qEt77gZgb1bKUdxJL+e
- fRHFyZrTYgkD8sN3V350BtGklmVJU28/myZnaLkEpt8g6X33QgIyqIZr/cdSSfNOJFix
- kJmQ==
+ bh=7qO/4HKWHrVuc6GQ36ulz/Nn1mmzauBCzpX9YAoGCMM=;
+ b=G+gKKcnE1HhyS51ua7rNF7fYBZ2pvYHYcEmhnPSaUGcyLdfsITtwtFjHGNC9NUFU4P
+ hNaUDH1IhjemjYQ3UjK7dH84nlQYVhkbnq3kd82KUfjigXw38+eD3hOo7IX0/KrxZxop
+ da7hx7uLQylxHXlrePUxLIhfxAVvnVr5Ye4spNI39xHDdLuT6WE2OLI0MTN3AdUhpTO9
+ wgRYf/T05uwDtIQaKr0K4Td8tmgAOIBtwI1wqvhC61mkW0w9MISNDJ889ZHLCHW0DDgo
+ T3iYHClqLrlaa9UdZx5WqsIE2hUdDXB3mHUJ85zPmg0jB0ObR7pEiqYwTUPAPj4kxW0O
+ FyJQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXpiGzhYorlXMsEqhPovHpuJDWHy/ket/njGdUt9hrYUmyfpePw6mGp2+3Ev0GHmmO4uVYu2i7p+5IE@nongnu.org
-X-Gm-Message-State: AOJu0YxrJ4k3NPzp7RxD+eA6/AGS6mdzVCs+15AZv/B43JcaAX5wKOdP
- 0bzum/V9Tmwu2BSj4gALDsAm4BkCH3o0LyZLnFcLZX/cC0urVO1DWakP6g==
-X-Google-Smtp-Source: AGHT+IHhinpAKBW8vGpg7qbPB9tX9QFXI2Kt7wpctCW6olsndY28fNtMmaG3cAD0OYHvuVjlUtrSqw==
-X-Received: by 2002:a17:907:9806:b0:a99:497f:317 with SMTP id
- a640c23a62f3a-a99b95fb02bmr976014266b.62.1728919571168; 
+ AJvYcCUIK3CYkfj9Wlr+PUYq4h7fX0FKl4Vs7IVfN0nhycu07TGO0AUaY57JPrRAwkwGCWfLSGjlgDP3OxnZ@nongnu.org
+X-Gm-Message-State: AOJu0Yxq+/XvmdT0coS0KpnoFnD2ki6oQM8Rtb1Otfnz4lEoLPP76Ohh
+ 5XqAvlY0A2tEtR2BnTThKC2ztAYyrXUubSqwzq2sNs9U+ct2+yrN
+X-Google-Smtp-Source: AGHT+IF+ivIgMofxyM1n+FLoNmRJtFRgrfpTFcdNKheNl4E3/jec6DDMLCdx7DTj3ctmPebozXnIUA==
+X-Received: by 2002:adf:ecca:0:b0:37d:2ea4:bfcc with SMTP id
+ ffacd0b85a97d-37d5ff4abc9mr7451308f8f.13.1728919571672; 
  Mon, 14 Oct 2024 08:26:11 -0700 (PDT)
 Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.10
+ a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 08:26:10 -0700 (PDT)
+ Mon, 14 Oct 2024 08:26:11 -0700 (PDT)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 1/8] chardev/char: fix qemu_chr_is_busy() check
-Date: Mon, 14 Oct 2024 17:24:01 +0200
-Message-Id: <20241014152408.427700-2-r.peniaev@gmail.com>
+Subject: [PATCH v2 2/8] chardev/chardev-internal: remove unused `max_size`
+ struct member
+Date: Mon, 14 Oct 2024 17:24:02 +0200
+Message-Id: <20241014152408.427700-3-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241014152408.427700-1-r.peniaev@gmail.com>
 References: <20241014152408.427700-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=r.peniaev@gmail.com; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`mux_cnt` struct member never goes negative or decrements,
-so mux chardev can be !busy only when there are no
-frontends attached. This patch fixes the always-true
-check.
+Clean up forgotten leftovers.
 
-Fixes: a4afa548fc6d ("char: move front end handlers in CharBackend")
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- chardev/char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ chardev/chardev-internal.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/chardev/char.c b/chardev/char.c
-index c0cc52824b48..f54dc3a86286 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)
- {
-     if (CHARDEV_IS_MUX(s)) {
-         MuxChardev *d = MUX_CHARDEV(s);
--        return d->mux_cnt >= 0;
-+        return d->mux_cnt > 0;
-     } else {
-         return s->be != NULL;
-     }
+diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
+index 4e03af31476c..c3024b51fdda 100644
+--- a/chardev/chardev-internal.h
++++ b/chardev/chardev-internal.h
+@@ -40,7 +40,6 @@ struct MuxChardev {
+     int focus;
+     int mux_cnt;
+     int term_got_escape;
+-    int max_size;
+     /* Intermediate input buffer catches escape sequences even if the
+        currently active device is not accepting any input - but only until it
+        is full as well. */
 -- 
 2.34.1
 
