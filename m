@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8570F99D30B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FE699D25B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:24:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0N3r-00048H-01; Mon, 14 Oct 2024 11:32:43 -0400
+	id 1t0Muk-0005Nq-MF; Mon, 14 Oct 2024 11:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pm_bounces@pm-bounces.nedprod.com>)
- id 1t0N3n-00047k-9G
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:32:39 -0400
-Received: from sc-ord-mta126.mtasv.net ([50.31.156.126])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pm_bounces@pm-bounces.nedprod.com>)
- id 1t0N3l-0001fl-Iu
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:32:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=pm20241004;
- d=pm.mtasv.net; 
- h=From:Date:Subject:Message-Id:To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Date:From:Message-ID:Reply-To:Sender:Subject:To:CC; 
- t=1728919957; x=1729006357;
- bh=0Oz9ClTsKCZOXGJePFgW8GyvU6fLPgSk6sUrEy/2bB4=;
- b=dgroa9B6zUn/m78IE0OfF6UnyfrseFrMK00m4Q0DgPBB6GbHjAOIOas4I0QtuCnkd9iMUtXK1fMk
- jw7uzeiAJGABGJXe+BRBlGlmbntWGchReJ4fg9oLz2waFx+N7jV6fNg4w3F56c1iGUFGXx6VkqBE
- ZLDuT5axxl0v95fU73McNxHoOyskyhto7a/4UiR66Q0LLjsBIN0tlcdLiLJEpE7q0eS+mfUF37tx
- YWjh3FxIh/m2iGiTPNQzyxW95PdxB4WDkHNMC+/eyYqrUgxDGV9e/1iBsxjwSmMn1h70WgbLwvGh
- s9029MruLxUYR+jFK4XNkC4UfkUUcuMgyDE1MQ==
-Received: by sc-ord-mta126.mtasv.net id h1ksp83864oo for
- <qemu-devel@nongnu.org>;
- Mon, 14 Oct 2024 11:22:35 -0400 (envelope-from
- <pm_bounces@pm-bounces.nedprod.com>)
-X-PM-IP: 50.31.156.126
-X-IADB-IP: 50.31.156.126
-X-IADB-IP-REVERSE: 126.156.31.50
-DKIM-Signature: v=1; a=rsa-sha256; d=nedprod.com; s=20210726175555pm;
- c=relaxed/relaxed; i=s_sourceforge@nedprod.com; t=1728919355; x=1729092155;
- h=date:date:from:from:message-id:reply-to:sender:subject:subject:to:to:cc:
- feedback-id:mime-version:content-type:content-transfer-encoding;
- bh=0Oz9ClTsKCZOXGJePFgW8GyvU6fLPgSk6sUrEy/2bB4=;
- b=exlQ0WU6p4TNEAvQc3DHNDW0i1gfCG98KJV5P8ZivoGApWtBYogBF2XfMp0tcW1f5v01/6PAbmA
- l7xYEAYWiFkHyUNth88rcwUV0wMsHHDNw7I/CBxovxQOILpVrRYW7nYykCNAHjNouDOSfjBtQBIcy
- VDYY8pxr8PFq9Kf0Yco=
-Date: Mon, 14 Oct 2024 15:22:35 +0000
-Subject: Patch for GDB to aid debugging qemu coroutines
-Message-Id: <f0ebccca-7a17-4da8-ac4a-71cf6d69abc3@mtasv.net>
-To: qemu-devel@nongnu.org
-User-Agent: Mozilla Thunderbird
-Feedback-ID: s8148012-_:s8148012:a214946:postmark
-X-Complaints-To: abuse@postmarkapp.com
-X-PM-Message-Id: f0ebccca-7a17-4da8-ac4a-71cf6d69abc3
-X-PM-RCPT: |bTB8MjE0OTQ2fDgxNDgwMTJ8cWVtdS1kZXZlbEBub25nbnUub3Jn|
-X-PM-Message-Options: v1;
- 1.6-V0DNsY91f21xZbjynqyA.rOOL5NB6MZIhdcFC42PwvIW8w_f7HPxGFQIvyjqjyrRNhIODlmO1u-XH32I-ZonfucwKoUGSsUePRNwle4oEF92DsYBIcADWOzRG1kcDrQnArNAtBHHkAdntNI4waL-kyDuE3SzEtARCGq_K7FB8VkoOGIM-g8ZzisB4xftRDMOmdfBizS_DgPe70jTidIIV
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0Muh-0005NX-Um
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:23:16 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0Muf-0000ZL-F2
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:23:14 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2fb584a8f81so6421961fa.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728919391; x=1729524191; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jEM2uZFTmdRnqruMIBrYlCea4q3pgxZeI9+zAfXhnJM=;
+ b=JecI9NQ81zfpRzOm0R1syN/vXPRS8deClslXvicciqXOXAzPGNJPZhwDOgxsi4zMS/
+ xdr7DpLRGDatbmbgUY3rPuG13YGkDNSPw7clB+eWU+h1pF3JA4QNaHYNVQNiiFLPzxNG
+ ewoxXKX4EtFMSzlqWHWoO7Z1/VBjJzNDeUqPbtOndVPIfGoaRjlPsffOFE3TF5p5ZmG8
+ /qZDNHrm8sSAj8C48Gn8szJCCxy0joUyvvZj4/pIUXtuyK5SDwwwWy65GtYv8VaLmgyo
+ ql9/XGEZllhJCGcD6ZbetNOULT6x/+yvXl8y8D4rULHFIhozXj/QVv5mhtZdd0uMVHn3
+ l9mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728919391; x=1729524191;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jEM2uZFTmdRnqruMIBrYlCea4q3pgxZeI9+zAfXhnJM=;
+ b=QyCnD5ZGF4dNhdNFuwmuQcvC2Ub3VfD1Zs3EMWsAoeNmcNCBsMp1bAy3kC+Kc+xtkx
+ sT+FRGyzPCo9jq12nBmODD1/eBwPU7eAXuRSGoT1hOcOlI5TAgM50i0+ZGG2gxPkjU74
+ BDOIIsqD13E9Ji2bZGdqXHym72uttI7iV6BkyORMcvQ/k7aX+oBsLljR3SM2Uh1i7LOw
+ MaXfJM980ZJtq6mIzxZu4qoRhBijeJNOZUfJGbBO262G6KIoaMIqPG31sjux6iPlAcbQ
+ /PB0g4dU3tbU8NcEEvRHqU2k9Tc5ZDtQnv2Eg7Qt7oZ0OD2un2BZnzhnBzzTJVROBggr
+ 0BVA==
+X-Gm-Message-State: AOJu0YyYaANF0S7AVM1snGL6JXnP8fwE4o2htapEmcAMrcwXwvTdUp40
+ I92rdSgSpFW3AK2/BhyNTXvdx/rO1h+seqhgTZazQd82gYvTJyx/MO6TAN+++27HOxtwhiToLlZ
+ EyYZQjj3TrusI0epxiSOeYOALNsfvt8PK7w/2WEoDf9y6rUBV
+X-Google-Smtp-Source: AGHT+IEIovIrw375SGChivPFIhGSwXhsiGiSQaV4Bt/AKEybGPdFeYwTWgQWoX6ijZda2DCP+vjbC5TV+XISaEY8irM=
+X-Received: by 2002:a2e:a98a:0:b0:2fa:d31a:1b84 with SMTP id
+ 38308e7fff4ca-2fb3b84622fmr37840291fa.9.1728919391245; Mon, 14 Oct 2024
+ 08:23:11 -0700 (PDT)
 MIME-Version: 1.0
-X-PM-MTA-Pool: transactional-1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=50.31.156.126;
- envelope-from=pm_bounces@pm-bounces.nedprod.com; helo=sc-ord-mta126.mtasv.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <cover.1728299530.git.chao.liu@yeah.net>
+In-Reply-To: <cover.1728299530.git.chao.liu@yeah.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 14 Oct 2024 16:23:00 +0100
+Message-ID: <CAFEAcA8Bp7GtrTmfa5acxzxy9mTK7tSOCmtjZBJjpsPWALfmsQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] Drop ignore_memory_transaction_failures for
+ xilink_zynq
+To: Chao Liu <chao.liu@yeah.net>
+Cc: qemu-devel@nongnu.org, bin.meng@windriver.com, edgar.iglesias@gmail.com, 
+ alistair@alistair23.me
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.076,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,37 +84,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Niall Douglas <s_sourceforge@nedprod.com>
-From:  Niall Douglas via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Mon, 7 Oct 2024 at 12:25, Chao Liu <chao.liu@yeah.net> wrote:
+>
+> Hi, maintainer,
+>
+> Following the reference from the chip manualug585-Zynq-7000-TRM manual
+> B.3 (Module Summary), placeholders have been added for all unimplemented
+> devices, including the AXI and AMBA bus controllers that interact with
+> the FPGA.
+>
+> We can check against the manual by printing the address space of the
+> zynq board with the following qemu command:
+>     ${QEMU_PATH}/qemu-system-aarch64 \
+>     -M xilinx-zynq-a9 \
+>     -display none \
+>     -monitor stdio -s
+>     (qemu) info mtree -f
+>
+> The testing methodology previously discussed in earlier email exchanges
+> will not be repeated here.
+>
+> Chao Liu (3):
+>   xilink_zynq: Add various missing unimplemented devices
+>   xilink-zynq-devcfg: Fix up for memory address range size not set
+>     correctly
+>   xilink-zynq-devcfg: Avoid disabling devcfg memory region during
+>     initialization
 
-A couple of weeks ago I posted a patch to GDB adding support to the=20
-Linux backend for user space threads such as qemu's coroutines:
+I've left comments for patches 2 and 3. I have taken patch 1
+into target-arm.next, with the ignore_memory_transaction_failures
+line reinstated.
 
-https://sourceware.org/pipermail/gdb-patches/2024-September/212028.html
+I'm all in favour of our being able to get rid of that
+legacy flag setting for this board, but as I've said on
+previous versions of this patchset, we need to have
+confidence that it's not going to break existing guest
+code, which means the patch removing it needs to come
+with a description of the testing that's been done
+(which should be more than "Linux still boots").
 
-Within the patch is an example of how to maintain data structures within=20
-userspace for GDB's custom libthread_db.so backend to parse, and indeed=20
-the creation of a custom libthread_db.so.
-
-In our codebase here, we measure approx a 3 nanosecond overhead added to=20
-context switching using setjmp/longjmp. If one uses a faster=20
-implementation such as Boost.Context, 5 nanoseconds is added. This is=20
-probably low enough it can be left turned on even in release binaries.
-
-With a suitable GDB, a suitable custom libthread_db.so and an inferior=20
-emitting the right data structures, qemu coroutines would appear in=20
-GDB's `info threads`. You can switch into their currently suspended=20
-state, examine their backtraces and current local variables etc.
-
-I'll stay subscribed here for a few weeks in case anybody has any=20
-questions, but I figured you guys might find this support as useful as=20
-we have so I ought to let you know of its existence.
-
-Regards,
-Niall Douglas
-
+thanks
+-- PMM
 
