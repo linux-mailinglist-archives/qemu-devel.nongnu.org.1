@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CF699D293
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A709399D284
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Mxn-0006Gm-62; Mon, 14 Oct 2024 11:26:27 -0400
+	id 1t0Mxl-0006GT-VJ; Mon, 14 Oct 2024 11:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxj-0006FG-9o
+ id 1t0Mxj-0006FH-9b
  for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:23 -0400
 Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxc-0000vO-EZ
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:18 -0400
+ id 1t0Mxc-0000vP-Eg
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:20 -0400
 Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a9a0ef5179dso167698766b.1
+ a640c23a62f3a-a99f3a5a44cso230216566b.3
  for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728919573; x=1729524373; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728919574; x=1729524374; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p4v/fGpWXC16nH9NFmBVigHbrDSRKiF2Owvw6nK5eQE=;
- b=BlAXfwq0bKM7PW6MaK14P+kt2FWZdsv7CRfyariz+zKePLKPCyLf/R60ie8u1w2woQ
- aj2WQUxgew0mLVMb1cypbhfFkJEVM1kCFFAT8Y5Fk/sO4EPtN+8zy3qvyDNEpm7Qtq2+
- fP7COyZxzOzpsk/gBYexpXufktnueRY15e2zzjigsoox9SI+T3qa/OpYpY4Gd0ycgoEh
- VlPDgELZg4zGUfasGNjRggTzVV6Vf2HhITMM/4SKxrjYbsm5B3bjcXFhuYEKa6Pt9lPT
- ny5YajJjVaFc/6QoeUcLmHA8QNvj7vdYZuA2FcZf1qdDfnz0kcqgyrWifdICcewhwTuE
- /dVA==
+ bh=D9lTfUtZ9ffHIdlW/Te4mim8Q2HJoGfSrfyIQQdPKJM=;
+ b=BLjua+tOeIv7E0RaGwObuGqs4j05WF+hm8pmAjwxhpmDlXDNHOZJ5vCya3/qH8yPHS
+ kYSyKAwAS6kCGlMWNdCWO6NoP07V+3Axl2M3vQ6nGrCeAUpRb3u9cHrOQTWD1cXn0Scq
+ nnwe4KHHPEgbgtSd1UNy2I7hwdTh/4U5wXbZ6suNn1KBE/6i9WQjJe4+IDcFOepCe0WT
+ acaFQf7JblpMgxoyFlbCoEuaATjQOHe7iYFm27ajEUlD3I3H8aul4Dz+jFjvQIBdS2ja
+ 4WIZS5V/vL5hstGyfN/yOGM+/Bbv1HPLcKr7afmMurSaSgyvlt3bKw3u95PMkfRX3RHf
+ wU5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728919573; x=1729524373;
+ d=1e100.net; s=20230601; t=1728919574; x=1729524374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p4v/fGpWXC16nH9NFmBVigHbrDSRKiF2Owvw6nK5eQE=;
- b=VcxSzraylr0TJxCvuCSnIhGtoGghs7Bc1v1Jf7n0lj6yqOwb9LI2zH9tgiLl2ixLoS
- cAl3EiimgNGSUq3UbuMIbYy33Aq61HCaETFsNbJMhqsmxOIkXLHAKsMqsKQXl4SI+mVk
- crBaynmgZel4y01j47TQqDOfNYOZBHiX29BDZW+VIaSkgDwJGlYat10xsNPie4ZzAASb
- a1bKR4WiM2moV11ku2fwntl8/d+YVBulFv2ZU1v2kjgX7CLBZbtcQTDAc1mhc8DnD71l
- 4UZ4z3glXZ5YEeVlLyyc4+I6JB2GXuL4ykqm51u6Yd2LgchKk5eNUGixFbycRF2eG4CV
- 9tgw==
+ bh=D9lTfUtZ9ffHIdlW/Te4mim8Q2HJoGfSrfyIQQdPKJM=;
+ b=WelJGTGhkxZILD9YzFHPdzR+mNIdQ9weQoCkZYkD15+IHf5i3GHSjfT7wHB/zWifNw
+ pqUaWztEDbXEtbyYjkQZyWT2skYwZwO6aEbc+vXBzJjtWDpgKxF9vvo3cdxVLYnbW85+
+ r0kbuJxoqEkgIqDOHm/T4t9mQko500wsnGDFSG/p0iL+BINNH7Woyo4JDooFtw5QBaqt
+ dIOmZclmdCpAx7YG5yzerFbCHodYOAcnLS8p10TjfjAENAtqc8Rd2KlM8oXoUW+GOZHM
+ kORnsMFrp8rvuF+6A6x74n8+/WU9H+sUQFfpnGWaMennwRfaaq/1OKSyhax8NA4sZ+WW
+ 3B7g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUb6UWwXq+oEEHMwH9ukygdnVqPqjQja1UqQb/5SnKqaJT1rXX9j7RGledThB/5/lDGiPfai43wUqh0@nongnu.org
-X-Gm-Message-State: AOJu0YyQUfR/BoPRsQlXMCZAG+Dqyv7NI8wWw9eKlEMr0y0d2Htqn140
- VwJixzrcx8asUUydHjC9Qk3YmNabyLDSqsfWiBUzdd5E4qelTI54yHsLcA==
-X-Google-Smtp-Source: AGHT+IH6xZspJLTMXg0JJ2OXjDRqc9eNq2O9vblLh71wlHqNiGq6yzsrHvnmljocaRvPwFhONjvX2w==
-X-Received: by 2002:a17:907:7206:b0:a99:509b:f524 with SMTP id
- a640c23a62f3a-a99b95af331mr1159730266b.57.1728919572908; 
- Mon, 14 Oct 2024 08:26:12 -0700 (PDT)
+ AJvYcCWs0X5lypZOaavbsCYaVSNs04iT3r8d7jJtaYtpEl/9O8qcnmEzMpJyskzQe6yjuMddX9UC0gzf5NEc@nongnu.org
+X-Gm-Message-State: AOJu0YwxikNop3+mCQ2LPzCye+pk11hF+MY0qj4mPABfENVltdTd4PZT
+ +2UV4yNEOLteOk75gQoF6B4b988hKf82O2zqVsQUvb7vdxzJISWE
+X-Google-Smtp-Source: AGHT+IEjynpc7uLVbU+yD65ufXEqkRz1AyV7qgrSVykOCB69OQxFw23zt3nWmRr/RKVZYsCHirtodg==
+X-Received: by 2002:a17:907:7296:b0:a99:e4a2:1cda with SMTP id
+ a640c23a62f3a-a99e4a21d75mr803489266b.56.1728919573710; 
+ Mon, 14 Oct 2024 08:26:13 -0700 (PDT)
 Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.12
+ a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 08:26:12 -0700 (PDT)
+ Mon, 14 Oct 2024 08:26:13 -0700 (PDT)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 4/8] chardev/mux: convert size members to unsigned int
-Date: Mon, 14 Oct 2024 17:24:04 +0200
-Message-Id: <20241014152408.427700-5-r.peniaev@gmail.com>
+Subject: [PATCH v2 5/8] chardev/mux: introduce `mux_chr_attach_frontend() call
+Date: Mon, 14 Oct 2024 17:24:05 +0200
+Message-Id: <20241014152408.427700-6-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241014152408.427700-1-r.peniaev@gmail.com>
 References: <20241014152408.427700-1-r.peniaev@gmail.com>
@@ -96,124 +96,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no sense to keep `focus`, `mux_cnt`, `prod`, `cons`
-and `tag` variables as signed, those represent either size,
-either position in array, which both are unsigned.
+Move away logic which attaches frontend device to a mux
+from `char-fe.c` to actual `char-mux.c` implementation
+and make it a separate function.
 
-`focus` member of `MuxChardev` is kept signed, because initially
-set to -1.
+No logic changes are made.
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- chardev/char-fe.c          |  2 +-
- chardev/char-mux.c         | 10 +++++-----
- chardev/chardev-internal.h |  8 ++++----
- include/chardev/char-fe.h  |  2 +-
- 4 files changed, 11 insertions(+), 11 deletions(-)
+ chardev/char-fe.c          |  9 +--------
+ chardev/char-mux.c         | 17 +++++++++++++++++
+ chardev/chardev-internal.h |  2 ++
+ 3 files changed, 20 insertions(+), 8 deletions(-)
 
 diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-index b214ba3802b1..69b47d16bdfa 100644
+index 69b47d16bdfa..3b8771ca2ac4 100644
 --- a/chardev/char-fe.c
 +++ b/chardev/char-fe.c
-@@ -191,7 +191,7 @@ bool qemu_chr_fe_backend_open(CharBackend *be)
- 
- bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
- {
--    int tag = 0;
-+    unsigned int tag = 0;
- 
-     if (s) {
+@@ -197,16 +197,9 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
          if (CHARDEV_IS_MUX(s)) {
+             MuxChardev *d = MUX_CHARDEV(s);
+ 
+-            if (d->mux_cnt >= MAX_MUX) {
+-                error_setg(errp,
+-                           "too many uses of multiplexed chardev '%s'"
+-                           " (maximum is " stringify(MAX_MUX) ")",
+-                           s->label);
++            if (!mux_chr_attach_frontend(d, b, &tag, errp)) {
+                 return false;
+             }
+-
+-            d->backends[d->mux_cnt] = b;
+-            tag = d->mux_cnt++;
+         } else if (s->be) {
+             error_setg(errp, "chardev '%s' is already in use", s->label);
+             return false;
 diff --git a/chardev/char-mux.c b/chardev/char-mux.c
-index 728596c6f346..b2d7abf2fc01 100644
+index b2d7abf2fc01..9294f955462e 100644
 --- a/chardev/char-mux.c
 +++ b/chardev/char-mux.c
-@@ -124,7 +124,8 @@ static void mux_print_help(Chardev *chr)
-     }
- }
- 
--static void mux_chr_send_event(MuxChardev *d, int mux_nr, QEMUChrEvent event)
-+static void mux_chr_send_event(MuxChardev *d, unsigned int mux_nr,
-+                               QEMUChrEvent event)
- {
-     CharBackend *be = d->backends[mux_nr];
- 
-@@ -242,7 +243,7 @@ static void mux_chr_read(void *opaque, const uint8_t *buf, int size)
- void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event)
- {
-     MuxChardev *d = MUX_CHARDEV(chr);
--    int i;
-+    unsigned int i;
- 
-     if (!muxes_opened) {
-         return;
-@@ -275,7 +276,7 @@ static GSource *mux_chr_add_watch(Chardev *s, GIOCondition cond)
- static void char_mux_finalize(Object *obj)
- {
-     MuxChardev *d = MUX_CHARDEV(obj);
--    int i;
-+    unsigned int i;
- 
-     for (i = 0; i < d->mux_cnt; i++) {
-         CharBackend *be = d->backends[i];
-@@ -300,11 +301,10 @@ static void mux_chr_update_read_handlers(Chardev *chr)
+@@ -301,6 +301,23 @@ static void mux_chr_update_read_handlers(Chardev *chr)
                                    chr->gcontext, true, false);
  }
  
--void mux_set_focus(Chardev *chr, int focus)
-+void mux_set_focus(Chardev *chr, unsigned int focus)
++bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
++                             unsigned int *tag, Error **errp)
++{
++    if (d->mux_cnt >= MAX_MUX) {
++        error_setg(errp,
++                   "too many uses of multiplexed chardev '%s'"
++                   " (maximum is " stringify(MAX_MUX) ")",
++                   d->parent.label);
++        return false;
++    }
++
++    d->backends[d->mux_cnt] = b;
++    *tag = d->mux_cnt++;
++
++    return true;
++}
++
+ void mux_set_focus(Chardev *chr, unsigned int focus)
  {
      MuxChardev *d = MUX_CHARDEV(chr);
- 
--    assert(focus >= 0);
-     assert(focus < d->mux_cnt);
- 
-     if (d->focus != -1) {
 diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
-index 975c16de803e..ab93f6ea1720 100644
+index ab93f6ea1720..8126ce180690 100644
 --- a/chardev/chardev-internal.h
 +++ b/chardev/chardev-internal.h
-@@ -38,14 +38,14 @@ struct MuxChardev {
-     CharBackend *backends[MAX_MUX];
-     CharBackend chr;
-     int focus;
--    int mux_cnt;
-+    unsigned int mux_cnt;
-     bool term_got_escape;
-     /* Intermediate input buffer catches escape sequences even if the
-        currently active device is not accepting any input - but only until it
-        is full as well. */
-     unsigned char buffer[MAX_MUX][MUX_BUFFER_SIZE];
--    int prod[MAX_MUX];
--    int cons[MAX_MUX];
-+    unsigned int prod[MAX_MUX];
-+    unsigned int cons[MAX_MUX];
-     int timestamps;
- 
-     /* Protected by the Chardev chr_write_lock.  */
-@@ -59,7 +59,7 @@ DECLARE_INSTANCE_CHECKER(MuxChardev, MUX_CHARDEV,
+@@ -59,6 +59,8 @@ DECLARE_INSTANCE_CHECKER(MuxChardev, MUX_CHARDEV,
  #define CHARDEV_IS_MUX(chr)                             \
      object_dynamic_cast(OBJECT(chr), TYPE_CHARDEV_MUX)
  
--void mux_set_focus(Chardev *chr, int focus);
-+void mux_set_focus(Chardev *chr, unsigned int focus);
++bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
++                             unsigned int *tag, Error **errp);
+ void mux_set_focus(Chardev *chr, unsigned int focus);
  void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event);
- 
- Object *get_chardevs_root(void);
-diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-index 3310449eaf03..8ef05b3dd095 100644
---- a/include/chardev/char-fe.h
-+++ b/include/chardev/char-fe.h
-@@ -20,7 +20,7 @@ struct CharBackend {
-     IOReadHandler *chr_read;
-     BackendChangeHandler *chr_be_change;
-     void *opaque;
--    int tag;
-+    unsigned int tag;
-     bool fe_is_open;
- };
  
 -- 
 2.34.1
