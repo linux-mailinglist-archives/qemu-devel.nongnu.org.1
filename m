@@ -2,92 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642E299D850
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 22:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3726999D993
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 00:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0RmK-0000hN-Bf; Mon, 14 Oct 2024 16:34:56 -0400
+	id 1t0T8l-0003jt-27; Mon, 14 Oct 2024 18:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t0RmH-0000gn-Dn; Mon, 14 Oct 2024 16:34:53 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t0RmF-0004dQ-JP; Mon, 14 Oct 2024 16:34:53 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EJBqnF023357;
- Mon, 14 Oct 2024 20:34:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=pp1; bh=de+lJbdXTLaIXfMMfHlSuAT1cH
- RlcjPpUelMEsqgAeE=; b=V03YzFdaPWJHKpwUE4soaTUZ20uuA5lrHbNxs3Sbja
- 57P0xmBkZYTGjgtnbO2HHEC3p5t2XVOgPYslIv01IGn91bOPe+71NM0HfhX4j0ew
- 5TFwmfU+Swo47x3FzFsAiateepD0ysdN1eyw5FIMoHYUKxIyX7yFaLkIRXQsk25f
- ++Hnf2ZVqQyX0+h/pGHFLaFnmk8EVkymyDBN7AVwtOtroAuawiZ5kH2E2h22xi/x
- gaKW2EXRm1L2JJp0DVPZ9tdGlmXACFeYX7MDItqO+ymkMjPcLPADvWfbWxzaO12D
- tm5ICg0/VBKcFcJFY0NDswlrAHQE2cDJbNiVCqcZL7Lw==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429929gb7e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 20:34:46 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49EHtic7002473;
- Mon, 14 Oct 2024 20:34:45 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284emgdjc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 20:34:45 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49EKYhH147382944
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Oct 2024 20:34:43 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 777B92004B;
- Mon, 14 Oct 2024 20:34:43 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20AEB20040;
- Mon, 14 Oct 2024 20:34:43 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.20.73])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 14 Oct 2024 20:34:43 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- qemu-stable@nongnu.org
-Subject: [PATCH] linux-user: Emulate /proc/self/maps under mmap_lock
-Date: Mon, 14 Oct 2024 22:34:21 +0200
-Message-ID: <20241014203441.387560-1-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1t0T8g-0003iQ-It
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:02:07 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1t0T8c-0006Tw-7C
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 18:02:06 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37d49ffaba6so3021061f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 15:01:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=embecosm.com; s=google; t=1728943317; x=1729548117; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KX+TeoqTj4F6vMuRUJ01fObu2ASRAunxY4faVD0HXGE=;
+ b=FWhuySjf1KyrXiHnmKHiSgKm9pil1IACunbmP7BrsRQU79Fl1rmeWbCDiu3T57mXZ9
+ R9mbjyIoSTKWl3m4Xfqdn803jhpeCHGHbAOdSt5loYm5jv1sk/rXjdfMmtS7vawV+nxm
+ XlG6dhc33ZpDTOkp8o8EH9dmRTAzK7qpQ/6x4imuF3eviWBzBnam8ncFdPHofW7+NEi/
+ OHLfgeDLHZLcNTCLxuwN+rzJdqo5icF7N/gQdODzNDtDfMRdr1ENI1ojqN74VFg5GB9R
+ LUwMCEaiT0+IuXE+11v5MSYwHkdknV/cMjwZQXpVmUMtjWkruNI+l4Edk7iARETHRvwi
+ BWgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728943317; x=1729548117;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KX+TeoqTj4F6vMuRUJ01fObu2ASRAunxY4faVD0HXGE=;
+ b=BM1a9saQBFvqSJfH+6v1xc/xBX7YDvFhlCE1QWqF+CEJVbcSfmRX5ff5grAl1qIziF
+ nNQpWzxZAzNsukDsnnedorEav70fZ+PJhTWJC5uEFUf3grAfh3thmwkH9Jb+kKxIqUDF
+ Qg7nDmZOMfDXQyyUL0MOOiGYLr6y6l/iVJ92tQ2yUIuXxC1UYD+UmisDjZ4OXqDDl6Ty
+ 4P1y7c9vEcE4WPtF+u4g/4cdquaic/7oKjKEycCsU8PgGwIKBv1cqlRGsaJUGLL7KM8q
+ Ls5ph5ye/hgadFQZ14nFFwWbuRhWluDJAgN4SZ0qFP90RhijhrTRfTMI/S+AYejqc9K1
+ GO0Q==
+X-Gm-Message-State: AOJu0Yxbz3TMVknxY28j67hPvhR1DZy+pnG7DOgKFqKJ3YoDmxgYiUVR
+ 4BsMWiinhXj1EUbEMW2cp5s3eyZdfcLzSDqanPHJPcEWhOo+BuFvrGgXXryVhm13sjakzc82zos
+ F3Ng=
+X-Google-Smtp-Source: AGHT+IHHZV2QbkNq/QkxO3XXo5PgdlgpYtNOTqcP7Ua7C5fuji3kloWUhah7lBlNFYA2WKwy2JTU3Q==
+X-Received: by 2002:a5d:530a:0:b0:37d:377d:c7b0 with SMTP id
+ ffacd0b85a97d-37d5519d618mr9325291f8f.18.1728943316554; 
+ Mon, 14 Oct 2024 15:01:56 -0700 (PDT)
+Received: from paolo-laptop-amd.. ([2a0e:cb01:d3:f100:8971:afed:16dc:a06f])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37d7fa7a09dsm22769f8f.23.2024.10.14.15.01.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2024 15:01:55 -0700 (PDT)
+From: Paolo Savini <paolo.savini@embecosm.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Savini <paolo.savini@embecosm.com>,
+ Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>
+Subject: [RFC v3 0/2] target/riscv: add endianness checks and atomicity
+ guarantees.
+Date: Mon, 14 Oct 2024 23:01:51 +0100
+Message-ID: <20241014220153.196183-1-paolo.savini@embecosm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5aSKScscJxd_hVjsM7-I04v-fbltkn5j
-X-Proofpoint-GUID: 5aSKScscJxd_hVjsM7-I04v-fbltkn5j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-14_14,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 mlxlogscore=999
- adultscore=0 suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410140146
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=paolo.savini@embecosm.com; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,44 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If one thread modifies the mappings and another thread prints them,
-a situation may occur that the printer thread sees a guest mapping
-without a corresponding host mapping, leading to a crash in
-open_self_maps_2().
+This version 3 of the patch adds endianness safety to both the optimizations
+brought by the patch set.
+It also adds some conditions that allow the __builtin_memcpy to be executed
+on chunks of 16 bytes with guarantee of atomicity.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 7b7a3366e142 ("linux-user: Use walk_memory_regions for open_self_maps")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- linux-user/syscall.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes from V2:
+- patch 1:
+  - add condition for the host not to be big endian.
+- patch 2:
+  - add condition for the host not to be big endian.
+  - add condition for the host to support 16-byte atomic memory operations.
+  - limit the large loads and stores to 16 byte chunks in order to guarantee
+    atomicity on a larger range of processors.
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1354e756941..dd2ec0712b8 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8151,17 +8151,19 @@ static int open_self_maps_1(CPUArchState *env, int fd, bool smaps)
- {
-     struct open_self_maps_data d = {
-         .ts = get_task_state(env_cpu(env)),
--        .host_maps = read_self_maps(),
-         .fd = fd,
-         .smaps = smaps
-     };
- 
-+    mmap_lock();
-+    d.host_maps = read_self_maps();
-     if (d.host_maps) {
-         walk_memory_regions(&d, open_self_maps_2);
-         free_self_maps(d.host_maps);
-     } else {
-         walk_memory_regions(&d, open_self_maps_3);
-     }
-+    mmap_unlock();
-     return 0;
- }
- 
+Cc: Richard Handerson <richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Helene Chelin <helene.chelin@embecosm.com>
+Cc: Nathan Egge <negge@google.com>
+Cc: Max Chou <max.chou@sifive.com>
+
+Helene CHELIN (1):
+  target/riscv: rvv: reduce the overhead for simple RISC-V vector
+    unit-stride loads and stores
+
+Paolo Savini (1):
+  target/riscv: rvv: improve performance of RISC-V vector loads and
+    stores on large amounts of data.
+
+ target/riscv/vector_helper.c | 61 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
 -- 
-2.47.0
-
+2.34.1
 
