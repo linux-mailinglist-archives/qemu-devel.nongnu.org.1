@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4D999C4AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 11:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 670A899C4BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 11:07:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0H0w-00060E-Hp; Mon, 14 Oct 2024 05:05:18 -0400
+	id 1t0H2Z-0007SJ-Jj; Mon, 14 Oct 2024 05:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1t0H0j-0005vu-QO
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 05:05:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1t0H0h-0002Rf-PJ
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 05:05:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728896699;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QTMfZRCJOIL2NoWmUxRWYQxPyttb9kDTXib0osKSwiM=;
- b=RJ5gCHKuo0y+LPainMANgB6mlGQhSOOMN8Q5kbs+ePsj2DDMuXs4e7fiXy2oPVkXY503Ya
- OcPRV+9pckTZ+LDZGoNvPEJUH2jinis/eORzlZrvzZ8atwgmiB9k9mWYsa7m2PdauVAIb4
- CO4eianhTXidmS6NZOxV2X0YL0xqZoQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-Jevscm7_Pg6HW5X5YBHhJQ-1; Mon, 14 Oct 2024 05:04:56 -0400
-X-MC-Unique: Jevscm7_Pg6HW5X5YBHhJQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4311c681dfcso20612965e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 02:04:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0H2B-0007Pz-Rb
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 05:06:36 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0H2A-0002qB-4H
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 05:06:35 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9693dc739so2143050a12.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 02:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728896791; x=1729501591; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=SY5qG+TiL/yKi41D3yTwJ1dG9plAHC1/64Uh34vWdrc=;
+ b=jecmgTv1E9rLt/UCKzKbN7rdNH69B6iOj7qG4iFfn5bpC0WoYhID0H627Gh/dxhgOy
+ 82OC29rWsrZqggr/MyqrzaMAarSTlr8Avaqg88dATegq7lg4guW6T0+5DOYj5GOvhDwk
+ w2iqWlZjADUxYJq33SCkqI7UhA4629jA6FMRVfNQbCwNurOyPw4tTraB3tiatqJkk39H
+ 1DdN1dKD9aq1n5QJ6hGLPlA53MgSejO9vkNSReWiowjmR5sjTJlLjkz4zAwAF1zSgtlJ
+ nXiJPnXsRTas8XoXw538oRVqF3MKMyzBEHxDy/n99kQ4iMdKyoyqNnJooI6Cnq737Bj9
+ RToA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728896695; x=1729501495;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QTMfZRCJOIL2NoWmUxRWYQxPyttb9kDTXib0osKSwiM=;
- b=sP9t2AjA/JmB1ERrowAbpEyzWbTuVO4D/mRk/DnPpCMRQjDx8RC7BLIC/FtntgYLRF
- p5vKNTrDjRgCWf4oeqN5a/dxtkk/n5LhcYc+usXQ7ThfycK9sZQRs9OHbs6bB3kiqTeu
- GNDu81jcgHKg/EIjLxzL5o48krpvHyW3d7XHN7tH2+OVfMnjIAZM5ULnn8JziWkSp2ry
- jce5xs91J6VvKj2+VJAYR75LiLzMXeOSzxRMooM7CPNglk1sRy8xtoFHNSWooZpPJmOc
- VqyEH9jiaQjh4YQC43lqG2xFym/5SJDM/v0QYDMB7as3AyLLjKrvdfT86xJ1MS8xowYM
- S+lQ==
-X-Gm-Message-State: AOJu0Ywv02M4dD2DZvV4SzeYbbzFSgr1eMysItLloAKUIXAKwr479qCv
- v5Q7Qx3K7bBEm/UyY14jSQcl5bNK8ohqQetm1KAIvUypd2olWnS8AIVNYUbYzIbW5AYXDwdSQm7
- Rcm9QY9OwgfEL4bQ6IbHPUjkpEyiZd9NFyBF2ld0vMhkLHDWltVE875NSSQ3rWtuFzNosQ7Gcod
- 8mAIRAkCw9J+1hFoCAhSB56zwoKec3cVrtkMCv
-X-Received: by 2002:a05:600c:468b:b0:42c:ba1f:5482 with SMTP id
- 5b1f17b1804b1-4311df56381mr81806015e9.35.1728896694852; 
- Mon, 14 Oct 2024 02:04:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHy8VsCa7toXQBtbXpH7TGIQns4USVMOjXOSATBDYQ5qKDC5Lnq0cUzIpfm0DmmE49/ZBIw7w==
-X-Received: by 2002:a05:600c:468b:b0:42c:ba1f:5482 with SMTP id
- 5b1f17b1804b1-4311df56381mr81805785e9.35.1728896694420; 
- Mon, 14 Oct 2024 02:04:54 -0700 (PDT)
-Received: from fedora (g2.ign.cz. [91.219.240.8])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-430ccf51753sm146437325e9.23.2024.10.14.02.04.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 02:04:53 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH RESEND v4 0/4] target/i386: Various Hyper-V related fixes
-In-Reply-To: <87y139jlcz.fsf@redhat.com>
-References: <20240917160051.2637594-1-vkuznets@redhat.com>
- <87y139jlcz.fsf@redhat.com>
-Date: Mon, 14 Oct 2024 11:04:53 +0200
-Message-ID: <87plo3f422.fsf@redhat.com>
+ d=1e100.net; s=20230601; t=1728896791; x=1729501591;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SY5qG+TiL/yKi41D3yTwJ1dG9plAHC1/64Uh34vWdrc=;
+ b=Bdr7kC1AcpcFh49/NqlQp3Hj7XSuLpWk3mCroUgKQmRjyaFzFsa3huFej6syBX5KwB
+ HAGfAh4U8/nO7Hhg6rxujTj+Vabza0AyKN6BUwyw6GqAQZaTRuZclWxxi0FVpdV4oghm
+ 2PQrlTEv5hq/eU3whv7CtqDzgylRyfrxwYFu8RO31rPbWZEnUVAOwGgsyULhrlLUYd91
+ gMeRe83agMgiKY4y18+N5QVDbO8LDi41b6kc/BQcMKtQYK1NIaIlD1tqR05XnW28BS1f
+ ZKeHvrERCVBdXa0Qr2GhTEfaukiDmFjmO5AjTOXG7oPSWinXOszJGSpTCLDt8RCZ0UiF
+ G26A==
+X-Gm-Message-State: AOJu0YyebRYX9gfG0cqKixAcW9osS2+Wtn88MttEfNVrucKJpCQY74qm
+ uMAxAVkNR+0HUgFJrxpqPcwpoGNI404ThNIpllfhunsimu9v9SAyoj6cBmWNIUW386QFO1Gz1ma
+ v4UD6PsWBNj1IS4rco/+Doaf5jtEOH94L7t1JcWwIrT+JCiTQ
+X-Google-Smtp-Source: AGHT+IELsUe7KPyRt+rDxxb/Qm2GHxsIRAW5BqDtsqqnckI1sc4foG6GgsSqJ/qmbMDl8+2juB5GK32/gY7lV23OmGw=
+X-Received: by 2002:a05:6402:270f:b0:5c9:85dc:5b9f with SMTP id
+ 4fb4d7f45d1cf-5c985dc5d75mr287741a12.2.1728896790726; Mon, 14 Oct 2024
+ 02:06:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <CA+rFky6nRpHj8xKa7Wnw_coe_gbJoSXn61fc87-w0Z_7V-aBPw@mail.gmail.com>
+In-Reply-To: <CA+rFky6nRpHj8xKa7Wnw_coe_gbJoSXn61fc87-w0Z_7V-aBPw@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 14 Oct 2024 10:06:19 +0100
+Message-ID: <CAFEAcA_-ncUdRTO+CpFCf44OY6toTBWw8-5y5zbnr3PSfn2sGA@mail.gmail.com>
+Subject: Re: ALSA support in qemu-user?
+To: Andrew Randrianasulu <randrianasulu@gmail.com>
+Cc: QEMU <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.028,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,37 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vitaly Kuznetsov <vkuznets@redhat.com> writes:
-
-> Vitaly Kuznetsov <vkuznets@redhat.com> writes:
+On Mon, 14 Oct 2024 at 02:13, Andrew Randrianasulu
+<randrianasulu@gmail.com> wrote:
 >
->> Changes since '[PATCH RESEND v3 0/3] i386: Fix Hyper-V Gen1 guests stuck 
->> on boot with 'hv-passthrough':
->>
->> - Added "target/i386: Make sure SynIC state is really updated before KVM_RUN" 
->>   to the set.
->>  
->> This is a long pending collection of fixes for various Hyper-V related 
->> issues, mostly detected by tests. On top of that, the patchset updates
->> Hyper-V related documentation adding recommendations.
->>
->> Vitaly Kuznetsov (4):
->>   target/i386: Fix conditional CONFIG_SYNDBG enablement
->>   target/i386: Exclude 'hv-syndbg' from 'hv-passthrough'
->>   target/i386: Make sure SynIC state is really updated before KVM_RUN
->>   docs/system: Add recommendations to Hyper-V enlightenments doc
->>
->>  docs/system/i386/hyperv.rst | 43 +++++++++++++++++++++++++++++++++----
->>  target/i386/cpu.c           |  2 ++
->>  target/i386/kvm/hyperv.c    |  1 +
->>  target/i386/kvm/kvm.c       | 18 ++++++++++------
->>  4 files changed, 54 insertions(+), 10 deletions(-)
+> some 8 years ago this patch was sent  to qemu-devel:
 >
-> Ping) Some of these patches are really getting old :-)
+> https://lists.gnu.org/archive/html/qemu-devel/2016-06/msg05333.html
+> "[Qemu-devel] [PATCH 7/7] Add ALSA ioctls"
+>
+> I wonder why it was rejected, may be as part of series?
 
-Ping)
+Hard to say from this distance, but looking at the patch
+I think it probably was just that it was on the end of
+a series that did a bunch of other things and the earlier
+patches in the series had issues.
 
--- 
-Vitaly
-
+thanks
+-- PMM
 
