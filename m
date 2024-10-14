@@ -2,60 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE4E99C8D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BCB99C931
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:45:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0JAl-0006xf-Dv; Mon, 14 Oct 2024 07:23:35 -0400
+	id 1t0JUb-0006dH-0A; Mon, 14 Oct 2024 07:44:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t0JAh-0006wz-FV
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:23:31 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t0JAe-0002h6-V6
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:23:31 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XRvwY1842z6J9hQ;
- Mon, 14 Oct 2024 19:22:53 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id A4CF3140C98;
- Mon, 14 Oct 2024 19:23:24 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 14 Oct
- 2024 13:23:24 +0200
-Date: Mon, 14 Oct 2024 12:23:22 +0100
-To: <nifan.cxl@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
- <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
- <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
- Fan Ni <fan.ni@samsung.com>
-Subject: Re: [QEMU RFC] hw/mem/cxl_type3: add guard to avoid event log
- overflow during a DC extent add/release request
-Message-ID: <20241014122322.00001ad4@Huawei.com>
-In-Reply-To: <20241011202929.11611-2-nifan.cxl@gmail.com>
-References: <20241011202929.11611-2-nifan.cxl@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t0JUU-0006cP-Uy
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:43:59 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t0JUI-00056J-Ru
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:43:49 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5c96936065dso2029741a12.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 04:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1728906224; x=1729511024; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=T8GPnrIClqHUeqhHxscAgWLKxqQlmLCT983D47kZpU4=;
+ b=T8z5+tmFVJ1EfjOzUlA3rqQxIC4gdCPRs8BYERGBqyAZuPz9SIseBPKnpsgALFpsjS
+ mFavk76MBTFEIgdo9N1VV8fFcw59FzMBiPvvTrjs39QzzYpWWk024uo0mjpaWsNHjkBg
+ tibnb4ygHcKz3KNA1KruOdh01XsSlQbksjNg3d2XEwApJ9VmL+GyoaifN3jeeIlbqdu0
+ sngDd5s9GYr/FDtKCXMr75BbAwTQFKiatIi2+0huAGk1UBotPv/8pHg/nCirpo7hcb/s
+ 2uo5R497Hsa13SzBR7yf0vrx4npKWnhoEPTT6IvNy8m+kOCn7FHKp/I1FUdkHSoIX0NE
+ p/1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728906224; x=1729511024;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=T8GPnrIClqHUeqhHxscAgWLKxqQlmLCT983D47kZpU4=;
+ b=CtJ2wuXB/uolSUNJ9dTIirLUsczjibC8Wez6VzvzhLPJq9vKtWLJFJCnl2pjfFPlaP
+ TxroGThBCNns3/rdeFW669Vd1H2/N+NCOARVYxcZDnQ2Ek4vhXEPFS7WwhmPWCnHYElE
+ 7VWhN6ey4Us97LuP/iuVeKBmxOIj2RRLmPcHnxWMA1Rv/harGnCOH8MjQr1o1591Ck6j
+ wbVF+wxM5GZiZkSyoIEY/4+WdF3Hx+cHIwrudWECu/OVQeOW+5HxCEtmZlkOLQYctlk/
+ Vst190q/jGAbbc/91gjvIcLkc/EW5wvdy7jVPeQeN59Za9FjH1/2LXuAe+LnBrBR/On7
+ UyXA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUX0dOp8ycFhyzpOr4o1euicNCbKmOVlXX/NE4BudPb9YRGBRwGoIfuaM/uhemO4awtEELiIf8pfIwe@nongnu.org
+X-Gm-Message-State: AOJu0Yz1m3VPqyBl3AqxGYyVzYMZxKqbJinU3eDvHsG1t4LMKKAyRIuQ
+ DLTOukR6hQRTak7RgQRZz6RpjZkcWLaRL/3Ld8AW0vbVSY8K1YpA
+X-Google-Smtp-Source: AGHT+IHJU3eAdWanpMrVMHH365JiGRfDgii+XOzT8gEC0kmwo229/4g84lyZ9k9qtQbsNqThikFNkg==
+X-Received: by 2002:a17:907:60cd:b0:a99:fff3:2eb0 with SMTP id
+ a640c23a62f3a-a99fff332aemr500573466b.40.1728906224183; 
+ Mon, 14 Oct 2024 04:43:44 -0700 (PDT)
+Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a99fcb2765asm247764666b.64.2024.10.14.04.43.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2024 04:43:43 -0700 (PDT)
+From: Roman Penyaev <r.peniaev@gmail.com>
+To: 
+Cc: Roman Penyaev <r.peniaev@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/8] chardev/mux: implement frontend detach
+Date: Mon, 14 Oct 2024 13:41:27 +0200
+Message-Id: <20241014114135.389766-1-r.peniaev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,107 +90,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Oct 2024 13:24:50 -0700
-nifan.cxl@gmail.com wrote:
+Frontend device can be detached in run-time, which can lead to a
+"Chardev 'MUX' is busy" error (see the last patch with the test case
+implementation). This series implements frontend detach for the
+multiplexer based on bitset, which provides the ability to attach or
+detach frontend devices in any order.
 
-> From: Fan Ni <fan.ni@samsung.com>
-> 
-> One DC extent add/release request can take multiple DC extents.
-> For each extent in the request, one DC event record will be generated and
-> isnerted into the event log. All the event records for the request will be
-> grouped with the More flag (see CXL spec r3.1, Table 8-168 and 8-170).
-> If an overflow happens during the process, the yet-to-insert records will
-> get lost, leaving the device in a situation where it notifies the host
-> only part of the extents involved, and the host never surfacing the
-> extents received and waiting for the remaining extents.
+Also first patches do some refactoring the purpose of which is to make
+integer unsigned where possible (such as sizes or lengths).
 
-Interesting corner.  For other 'events' an overflow is natural because
-they can be out of the control of the device. This artificial limit
-was to trigger the overflow handling in those cases. For this one I'd expect
-the device to push back on the fabric management commands, or handle the
-event log filling so overflow doesn't happen.
+Roman Penyaev (8):
+  chardev/char: fix qemu_chr_is_busy() check
+  chardev/chardev-internal: remove unused `max_size` struct member
+  chardev/mux: use bool type for `linestart` and `term_got_escape`
+  chardev/mux: convert size members to unsigned int
+  chardev/mux: introduce `mux_chr_attach_frontend() call
+  chardev/mux: switch mux frontends management to bitset
+  chardev/mux: implement detach of frontends from mux
+  tests/unit/test-char: implement a few mux remove test cases
 
-> 
-> Add a check in qmp_cxl_process_dynamic_capacity_prescriptive and ensure
-> the event log does not overflow during the process.
-> 
-> Currently we check the number of extents involved with the event
-> overflow threshold, do we need to tight the check and compare with
-> the remaining spot available in the event log?
+ chardev/char-fe.c          | 13 ++----
+ chardev/char-mux.c         | 88 ++++++++++++++++++++++++++++----------
+ chardev/char.c             |  2 +-
+ chardev/chardev-internal.h | 16 ++++---
+ include/chardev/char-fe.h  |  2 +-
+ tests/unit/test-char.c     | 24 ++++++++++-
+ 6 files changed, 103 insertions(+), 42 deletions(-)
 
-Yes. I think we need to prevent other outstanding events causing us trouble.
+Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org
 
-Is it useful to support the case where we have more than one
-group of extents outstanding?  If not we could simply fail the add whenever
-that happens.  Maybe that is a reasonable stop gap until we have a reason
-to care about that case. We probably care when we have FM-API hooked up
-to this and want to test more advanced fabric management stuff, or poke
-a corner of the kernel code perhaps?
-
-I guess from a 'would it be right if a device did this' the answer may be
-yes, but that doesn't mean Linux is going to support such a device
-(at least not until we know they really exist).  Ira, what do you think
-about this corner case?  Maybe detect and scream if we aren't already?
-
-Jonathan
-
-> 
-> Signed-off-by: Fan Ni <fan.ni@samsung.com>
-> ---
->  hw/cxl/cxl-events.c         | 2 --
->  hw/mem/cxl_type3.c          | 7 +++++++
->  include/hw/cxl/cxl_events.h | 3 +++
->  3 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
-> index 12dee2e467..05d8aae627 100644
-> --- a/hw/cxl/cxl-events.c
-> +++ b/hw/cxl/cxl-events.c
-> @@ -16,8 +16,6 @@
->  #include "hw/cxl/cxl.h"
->  #include "hw/cxl/cxl_events.h"
->  
-> -/* Artificial limit on the number of events a log can hold */
-> -#define CXL_TEST_EVENT_OVERFLOW 8
->  
->  static void reset_overflow(CXLEventLog *log)
->  {
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index 3d7289fa84..32668df365 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -2015,6 +2015,13 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
->          num_extents++;
->      }
->  
-> +    if (num_extents > CXL_TEST_EVENT_OVERFLOW) {
-> +        error_setg(errp,
-> +                   "at most %d extents allowed in one add/release request",
-> +                   CXL_TEST_EVENT_OVERFLOW);
-> +       return;
-> +    }
-> +
->      /* Create extent list for event being passed to host */
->      i = 0;
->      list = records;
-> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-> index 38cadaa0f3..2a6b57e3e6 100644
-> --- a/include/hw/cxl/cxl_events.h
-> +++ b/include/hw/cxl/cxl_events.h
-> @@ -12,6 +12,9 @@
->  
->  #include "qemu/uuid.h"
->  
-> +/* Artificial limit on the number of events a log can hold */
-> +#define CXL_TEST_EVENT_OVERFLOW 8
-> +
->  /*
->   * CXL r3.1 section 8.2.9.2.2: Get Event Records (Opcode 0100h); Table 8-52
->   *
+-- 
+2.34.1
 
 
