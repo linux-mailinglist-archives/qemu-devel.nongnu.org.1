@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E7B99CC05
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B7999CC0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:58:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0LXV-0000aX-BR; Mon, 14 Oct 2024 09:55:13 -0400
+	id 1t0Lai-0001il-8i; Mon, 14 Oct 2024 09:58:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0LXS-0000Yo-Uw
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:55:10 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t0LaY-0001af-Ar
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:58:26 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0LXR-0005xG-4g
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:55:10 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5c903f5bd0eso6467387a12.3
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 06:55:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t0LaU-0006Pd-Vr
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:58:20 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2fb3ce15172so20093341fa.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 06:58:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728914107; x=1729518907; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728914297; x=1729519097; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mIh1tvXJS8eOG3Xl0S3ukK+nnDMSKc+no7JJrKlUCGQ=;
- b=CB19mX0ddDB/R+ZPJAaidAry+j0DPIOlDTqIYebaUsn6hXPq7CmKA2cQHWLFaQwAF2
- gl4gHg+RFoS/nJjs2G+MUWZbDns3ipZFXQmY3RQyIKPJpBlCClKJXWcFVrUTm1F76kh2
- UkMGFBVOFStxKfvIvTAQUDvuExTxGrr5dwhWa8OJ8GM9T7N/4RQncNapyda2980OBe+2
- LRlYx4dXpSfpXj771QmDzky/BcItQ+9xTqq8b65Xum9sTWZyVO1xWqW03S+Y48XYE7lH
- jROInDUXl4ltfNzkDFr6MtenrRdn0nJ0FtPligFZ1riQOtzG3Hu9OyPBMce3wuO9QbOW
- kvNQ==
+ bh=qS0ietNQqfeiIChhKIrK0X2O7VvPdhcYbfFtiPLNbFE=;
+ b=BMxZEdgTSeFMSILNOyufsPcqC9Yvg/wDq97WsjtvXAEEtthWD4ZN4MZQk2X0Cym26W
+ WTL7QGELRKAnoAfCBMcxyZrPbynAFKwaiLX+bZyKw9qrDHwDr0u0Prwimj/GiFeu+q0g
+ 1Hzp3tTYUlyzhXMSm+avxkZfu92CROt5vaMgrlniwQJP+1gmuGWMonSRNIg33bfAiJVc
+ HxU58VZ3z52NWH4s6EdvpdNj1LKyvW76/EP1E6MXDFudkMTV0V20O2UybhdQmLP0qy6w
+ jqvqx1/mjzS6+chvYF8k7UVNzyWrNQv/kDhfXBFrBZPPqCFkdEYJPqBw4r/wZyZ7JWiE
+ mAPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728914107; x=1729518907;
+ d=1e100.net; s=20230601; t=1728914297; x=1729519097;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mIh1tvXJS8eOG3Xl0S3ukK+nnDMSKc+no7JJrKlUCGQ=;
- b=tIZI5mW/3dh3B/eqlx54jros4H/AWWE3Hr7nsUnKZFh8Owf4E9hlBHUEUQulwVckRC
- iIGnOpZ4l5eEuRw25iosfV1HctWtjI2iIKHNP6NU6MkljrLPLBLVHWfuECbpHsrj2PTT
- SWGPCffsno/4boHA/dewqssOBe+HZCoyzdAe2NFLJzZqbA/+88JtJ1OzR7IIBwctQQEM
- iYxNaIg+Y1arIaVej6jvhUiaVnw79qwqukAinf4KFt1nLs180e41a8/VZUwpWZhOf3si
- uEHjusn7/r9kZWhxVmfYWsm1lYLjEKHPNODN/BlGVyPO4+3RQRNMw+BkvzyVRTM2nJo/
- u3PQ==
-X-Gm-Message-State: AOJu0YzHD6tuD4JM3h7HE50K+fd9MzSiefeq0DW3HRcXlP7n37s6yKAP
- vbYYG++UdWRVa00PbgtGs095d95ek7Cq1KEXPMSfreXaV52+fTImPo/DyhkjcEMlS66S7PMQJkx
- sgjI0j2Pj/D6gKGykxeNJ9OMIDcc7BOKerIY0pub4RBOFG6M5
-X-Google-Smtp-Source: AGHT+IEar5XS48qlERsTQgD21+98rhTv8j5E3NooTZuctZf16kKzgXPfQ3eWLSK96tb4DDYIMPB2gpA+eH/sojRSzB4=
-X-Received: by 2002:a05:6402:5188:b0:5c9:59e6:e908 with SMTP id
- 4fb4d7f45d1cf-5c959e6f56amr7109237a12.6.1728914107522; Mon, 14 Oct 2024
- 06:55:07 -0700 (PDT)
+ bh=qS0ietNQqfeiIChhKIrK0X2O7VvPdhcYbfFtiPLNbFE=;
+ b=DR23EoV49MCujcSheI5VR3Mc3ieHbptVos8qezM27P+RkTMZNvOQ34GEKxQ0kF1bYP
+ uKCd0S20gXeW3FZAtyi4i4mCA2G6EniYZ5BvRWBvW/7QjxlFzWIjSw7/JWfT96bDICpX
+ ZHL35V+YdKXhZAKz2pkO3fWxodfxGKKSMYbXt4t2KCCK4CRXNrtuKxVmZPnZHC4TTNBx
+ S+mnTiMlz7vfdypEpxDvuh7hA9h38EXW+w0yK2GuTGrrqq56F/H+smLK+Gt//wZRQoXa
+ BHIIyPGi+MI13fmndjbHeZ1shWy/cZL3Jv1YEUoFR6t9+uGrSvbcnzsD1xxtSeyza4VZ
+ pa5g==
+X-Gm-Message-State: AOJu0YyzE3C2xdG1ZE9c7nD/I8ZMCxbMXRspUb59HQpLLzWEWmdHvj/D
+ hkoWp6nIGQXFM+zqJEVksjrHsouEIB5eAM0zpfrWXkNrNN+EaE7aMNknSt8fXM8XQ4DM10r7uhN
+ vMnZmoqJOYyA+Zc0Xw+FyPw2n5aU=
+X-Google-Smtp-Source: AGHT+IES7c3e/oHPC80synhDYscz/HEXCIki5ycMv3b6NuWOsfRP7d6u6Xjlw0sXBgfMASj1iHKFdwJsR9w0FlOnIpw=
+X-Received: by 2002:a05:6512:689:b0:539:fc9a:12e1 with SMTP id
+ 2adb3069b0e04-539fc9a1473mr351282e87.27.1728914296726; Mon, 14 Oct 2024
+ 06:58:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241014110113.173946-1-pbonzini@redhat.com>
- <CAFEAcA-8wdDV4fziAj5FqfR2isjdAvLxXZHvqN0=GewDNS9iLA@mail.gmail.com>
- <CAFEAcA_vUxNXRNnWtDd1DeWmC8dDT64VwvB8yswnjp5QzyOt0w@mail.gmail.com>
-In-Reply-To: <CAFEAcA_vUxNXRNnWtDd1DeWmC8dDT64VwvB8yswnjp5QzyOt0w@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 14 Oct 2024 14:54:55 +0100
-Message-ID: <CAFEAcA8h-ahm2_dO3b+KV+MdqtN4N6E0-C9jKS7B0n8L+3jS+A@mail.gmail.com>
-Subject: Re: [PATCH] configure, meson: synchronize defaults for configure and
- Meson Rust options
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20241014114135.389766-1-r.peniaev@gmail.com>
+ <20241014114135.389766-7-r.peniaev@gmail.com>
+ <CAJ+F1CLwNjxT=OogC=4ujzrSHVZRA8mGqK21khUUKe-OxMoTGA@mail.gmail.com>
+In-Reply-To: <CAJ+F1CLwNjxT=OogC=4ujzrSHVZRA8mGqK21khUUKe-OxMoTGA@mail.gmail.com>
+From: Roman Penyaev <r.peniaev@gmail.com>
+Date: Mon, 14 Oct 2024 15:56:12 +0200
+Message-ID: <CACZ9PQV+-ZjKZUxJOb2g80zTMKXMizWMwzW3bsi16BPs1YnMBQ@mail.gmail.com>
+Subject: Re: [PATCH 6/8] chardev/mux: switch mux frontends management to bitset
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,94 +89,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 14 Oct 2024 at 13:09, Peter Maydell <peter.maydell@linaro.org> wrot=
-e:
+On Mon, Oct 14, 2024 at 3:20=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@gmail.com> wrote:
 >
-> On Mon, 14 Oct 2024 at 12:45, Peter Maydell <peter.maydell@linaro.org> wr=
-ote:
-> >
-> > On Mon, 14 Oct 2024 at 12:01, Paolo Bonzini <pbonzini@redhat.com> wrote=
-:
-> > >
-> > > If the defaults for --enable-rust ($rust in configure) and Meson's ru=
-st
-> > > option are out of sync, incremental builds will pick Meson's default.
-> > >
-> > > This happens because, on an incremental build, configure does not run
-> > > Meson, Make does instead.  Meson then gets the command line options
-> > > from either coredata.dat (which has everything cached in Python's pic=
-kle
-> > > format) or cmd_line.txt (slow path when Meson version is upgraded), b=
-ut
-> > > neither knows about the rust option, and the meson_options.txt defaul=
-t
-> > > is used.
-> > >
-> > > This will cause have_rust to be true if rustc is available; and the b=
-uild
-> > > to fail because configure did not put a RUST_TARGET_TRIPLE in config-=
-host.mak.
-> > >
-> > > When in the Rust pull request I changed the $rust default from auto
-> > > to disabled, I should have made the same change to meson_options.txt;
-> > > do it now.
-> > >
-> > > Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> > > Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> > > Reported-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> >
-> > This fixes the issue I was seeing with my local
-> > incremental rebuild.
-> >
-> > Tested-by: Peter Maydell <peter.maydell@linaro.org>
 >
-> ...but this change broke 'make vm-build-openbsd', because
-> meson-buildoptions.py fell over with an error from the JSON
-> decoder:
 >
-> make: Entering directory '/home/peter.maydell/qemu-openbsd/build'
-> /home/peter.maydell/qemu-openbsd/build/pyvenv/bin/meson introspect
-> --buildoptions /home/peter.maydell/qemu-openbsd/meson.build |
-> /home/peter.maydell/qemu-openbsd/build/pyvenv/bin/python3 -B \
->   scripts/meson-buildoptions.py >
-> /home/peter.maydell/qemu-openbsd/scripts/meson-buildoptions.sh.tmp &&
-> mv /home/peter.maydell/qemu-openbsd/scripts/meson-buildoptions.sh.tmp
-> /home/peter.maydell/qemu-openbsd/scripts/meson-buildoptions.sh
-> Trying to enter hw/core which has already been visited --> Skipping
-> Unable to evaluate subdir([]) in AstInterpreter --> Skipping
-> Traceback (most recent call last):
->   File "/home/peter.maydell/qemu-openbsd/build/scripts/meson-buildoptions=
-.py",
-> line 245, in <module>
->     options =3D load_options(json.load(sys.stdin))
->   File "/usr/lib/python3.10/json/__init__.py", line 293, in load
->     return loads(fp.read(),
->   File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
->     return _default_decoder.decode(s)
->   File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
->     obj, end =3D self.raw_decode(s, idx=3D_w(s, 0).end())
->   File "/usr/lib/python3.10/json/decoder.py", line 355, in raw_decode
->     raise JSONDecodeError("Expecting value", s, err.value) from None
-> json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
-> make: *** No rule to make target
-> '/home/peter.maydell/qemu-openbsd/scripts/meson-buildoptions.sh',
-> needed by 'config-host.mak'.  Stop.
-> make: Leaving directory '/home/peter.maydell/qemu-openbsd/build'
+> On Mon, Oct 14, 2024 at 3:45=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.co=
+m> wrote:
+>>
+>> Frontends can be attached and detached during run-time (although detach
+>> is not implemented, but will follow). Counter variable of muxes is not
+>> enough for proper attach/detach management, so this patch implements
+>> bitset: if bit is set for the `mux_bitset` variable, then frontend
+>> device can be found in the `backend` array (yes, huge confusion with
+>> backend and frontends names).
+>>
+>> Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+>> Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
+>> Cc: qemu-devel@nongnu.org
+>> ---
+>>  chardev/char-mux.c         | 41 +++++++++++++++++++++++++-------------
+>>  chardev/char.c             |  2 +-
+>>  chardev/chardev-internal.h |  2 +-
+>>  3 files changed, 29 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/chardev/char-mux.c b/chardev/char-mux.c
+>> index 9294f955462e..9c3cacb2fecd 100644
+>> --- a/chardev/char-mux.c
+>> +++ b/chardev/char-mux.c
+>> @@ -26,6 +26,7 @@
+>>  #include "qapi/error.h"
+>>  #include "qemu/module.h"
+>>  #include "qemu/option.h"
+>> +#include "qemu/bitops.h"
+>>  #include "chardev/char.h"
+>>  #include "sysemu/block-backend.h"
+>>  #include "qapi/qapi-commands-control.h"
+>> @@ -168,12 +169,19 @@ static int mux_proc_byte(Chardev *chr, MuxChardev =
+*d, int ch)
+>>          case 'b':
+>>              qemu_chr_be_event(chr, CHR_EVENT_BREAK);
+>>              break;
+>> -        case 'c':
+>> -            assert(d->mux_cnt > 0); /* handler registered with first fe=
+ */
+>> +        case 'c': {
+>> +            unsigned int bit;
+>> +
+>> +            /* Handler registered with first fe */
+>> +            assert(d->mux_bitset !=3D 0);
+>>              /* Switch to the next registered device */
+>> -            mux_set_focus(chr, (d->focus + 1) % d->mux_cnt);
+>> +            bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, d->focus + 1=
+);
+>> +            if (bit >=3D MAX_MUX) {
+>> +                bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, 0);
+>> +            }
+>> +            mux_set_focus(chr, bit);
+>>              break;
+>> -        case 't':
+>> +        } case 't':
+>>              d->timestamps =3D !d->timestamps;
+>>              d->timestamps_start =3D -1;
+>>              d->linestart =3D false;
+>> @@ -243,15 +250,16 @@ static void mux_chr_read(void *opaque, const uint8=
+_t *buf, int size)
+>>  void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event)
+>>  {
+>>      MuxChardev *d =3D MUX_CHARDEV(chr);
+>> -    unsigned int i;
+>> +    int bit;
+>>
+>>      if (!muxes_opened) {
+>>          return;
+>>      }
+>>
+>>      /* Send the event to all registered listeners */
+>> -    for (i =3D 0; i < d->mux_cnt; i++) {
+>> -        mux_chr_send_event(d, i, event);
+>> +    bit =3D -1;
+>> +    while ((bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, bit + 1)) < =
+MAX_MUX) {
+>> +        mux_chr_send_event(d, bit, event);
+>>      }
+>>  }
+>>
+>> @@ -276,10 +284,11 @@ static GSource *mux_chr_add_watch(Chardev *s, GIOC=
+ondition cond)
+>>  static void char_mux_finalize(Object *obj)
+>>  {
+>>      MuxChardev *d =3D MUX_CHARDEV(obj);
+>> -    unsigned int i;
+>> +    int bit;
+>>
+>> -    for (i =3D 0; i < d->mux_cnt; i++) {
+>> -        CharBackend *be =3D d->backends[i];
+>> +    bit =3D -1;
+>> +    while ((bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, bit + 1)) < =
+MAX_MUX) {
+>> +        CharBackend *be =3D d->backends[bit];
+>>          if (be) {
+>>              be->chr =3D NULL;
+>>          }
+>> @@ -304,7 +313,10 @@ static void mux_chr_update_read_handlers(Chardev *c=
+hr)
+>>  bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
+>>                               unsigned int *tag, Error **errp)
+>>  {
+>> -    if (d->mux_cnt >=3D MAX_MUX) {
+>> +    unsigned int bit;
+>> +
+>> +    bit =3D find_next_zero_bit(&d->mux_bitset, MAX_MUX, 0);
+>> +    if (bit >=3D MAX_MUX) {
+>>          error_setg(errp,
+>>                     "too many uses of multiplexed chardev '%s'"
+>>                     " (maximum is " stringify(MAX_MUX) ")",
+>> @@ -312,8 +324,9 @@ bool mux_chr_attach_frontend(MuxChardev *d, CharBack=
+end *b,
+>>          return false;
+>>      }
+>>
+>> -    d->backends[d->mux_cnt] =3D b;
+>> -    *tag =3D d->mux_cnt++;
+>> +    d->mux_bitset |=3D (1 << bit);
+>> +    d->backends[bit] =3D b;
+>> +    *tag =3D bit;
+>>
+>>      return true;
+>>  }
+>> @@ -322,7 +335,7 @@ void mux_set_focus(Chardev *chr, unsigned int focus)
+>>  {
+>>      MuxChardev *d =3D MUX_CHARDEV(chr);
+>>
+>> -    assert(focus < d->mux_cnt);
+>> +    assert(find_next_bit(&d->mux_bitset, MAX_MUX, focus) < MAX_MUX);
+>
+>
+> Wouldn't this be more correct?
+>
+> +    assert(find_next_bit(&d->mux_bitset, MAX_MUX, focus) =3D=3D focus);
+>
 
-Trying to debug this I tried running 'meson introspect --buildoptions'
-by hand on that machine, which falls over like this:
+Yes, makes sense. Thanks.
 
-~/qemu-openbsd/build$ ./pyvenv/bin/meson introspect --buildoptions
-../meson.build
-Trying to enter hw/core which has already been visited --> Skipping
-Unable to evaluate subdir([]) in AstInterpreter --> Skipping
+Do you want the whole patchset to be resend,
+or only changed patches with "v2" prefix in subject?
 
-../rust/qemu-api-macros/meson.build:1:0: ERROR: Unknown compiler(s): [['rus=
-tc']]
-The following exception(s) were encountered:
-Running `rustc --version` gave "[Errno 2] No such file or directory: 'rustc=
-'"
-
--- PMM
+--
+Roman
 
