@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A5D99D5A5
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 19:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3420999D618
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 20:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Oyz-0002Dz-Ua; Mon, 14 Oct 2024 13:35:49 -0400
+	id 1t0PPL-0007wA-R5; Mon, 14 Oct 2024 14:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1t0Oyv-0002Da-AW
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 13:35:45 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1t0Oyt-00008q-MG
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 13:35:45 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-71e6f085715so633429b3a.2
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 10:35:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728927342; x=1729532142; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=LR64Rkd4C2I1cnkL6K9XtFcIqqau7Qe1OYDNRb1eO0c=;
- b=jpE99YTZXmlc9udf1tW/LIl5oelEJxc5oPES77V89tCNnOBEBMDrhaa2wqWjEtvE0v
- E4GggrGUkxbLBM0i9W93CE0eprpBC8uEp2Bam81RIRosY40F3zs+6Ws1QwuO6OvIBM0g
- eYpd7VwdQWoga62BxOjuVo4FRUNUqjlgeM1VI4miKjVpcOt74hNOYirYkFPJzULFqPMc
- W2ALfaiTR6ERUB4QnTH1pMFt5c4pes93gZFwMfaFRRWRtE4BztfNLHDEgZyDOD+phuGT
- qR2vPhrmedDFZtuTdaQUI2efVJHGTg4kgs1WibRI/dgzLq+Cp9BriiQBEAaXuzkL/bYP
- a4EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728927342; x=1729532142;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LR64Rkd4C2I1cnkL6K9XtFcIqqau7Qe1OYDNRb1eO0c=;
- b=nPo/sYjjkB/mtZVu7cguhXWVKxJlu5W81mvyl2QUZTFpwazs+Xu0Ow5mucMaOmECNc
- Zi4F6YkE6iBrPaKRYUPyYpeChhEl3GatcqS/YDNR+k6mi7yW7FLGj2wTO1a5pFfphMt+
- aFJ6NTjCgSMkz5NoV2PhDLJ771tiVJczkRPX6DRZz/AdcG3VFwBrdgIpxDmSNFhk5RdR
- WxrNg/2IZG7t9Tw8tcsAjdasn1aETLylqQ6OolQVDSDlxeDDQ8F38lDXK1Y0OZBdunnu
- N4p2CFs3Q0/L+H69vI+pQbZwKIIc7FEvmVFaRI73uIRDlQBgDR+sfGVA9BjUnD0+0qWk
- NBFA==
-X-Gm-Message-State: AOJu0YzFO6kd9ZrPYmpBeWFOiH2NW2Y0UE2XjcJF62JZkkDbIJEzvZFx
- 9XBENdXMzX0Q6imsE6Uaz6n+KFnC3OmTkpeJNkJuO/1W7Y6uAGbCGpefwIBvjTKCR6jd4lLY5Tg
- 6
-X-Google-Smtp-Source: AGHT+IEB2Lkw18YIDkiNcMHUgYgjOCRWiE1oIozaY8UI0ddwmsm75H1asLEkmXnRIlkqnkjEUklIVA==
-X-Received: by 2002:a05:6a00:a93:b0:71e:b8:1930 with SMTP id
- d2e1a72fcca58-71e4c17bb0dmr14777095b3a.16.1728927341947; 
- Mon, 14 Oct 2024 10:35:41 -0700 (PDT)
-Received: from [192.168.0.102] ([191.205.39.21])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e4640772csm5813528b3a.63.2024.10.14.10.35.40
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Oct 2024 10:35:41 -0700 (PDT)
-Message-ID: <d4a61045-5ddd-477c-a78b-5892c7d79ea2@linaro.org>
-Date: Mon, 14 Oct 2024 14:35:39 -0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t0PPI-0007vr-4V; Mon, 14 Oct 2024 14:03:00 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t0PPG-0003LH-CE; Mon, 14 Oct 2024 14:02:59 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0AA63983CC;
+ Mon, 14 Oct 2024 21:02:36 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id C7F61154645;
+ Mon, 14 Oct 2024 21:02:51 +0300 (MSK)
+Message-ID: <4810ac6d-cbdc-4f04-a2fa-895e78cf2fcb@tls.msk.ru>
+Date: Mon, 14 Oct 2024 21:02:51 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 4/4] tests/tcg/aarch64: add system test for FEAT_XS
-To: qemu-devel@nongnu.org
-References: <20241014-arm-feat-xs-v1-0-42bb714d6b11@linaro.org>
- <20241014-arm-feat-xs-v1-4-42bb714d6b11@linaro.org>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <20241014-arm-feat-xs-v1-4-42bb714d6b11@linaro.org>
+Subject: Re: [PATCH v3 09/20] target/hppa: Fix priority of T, D, and B page
+ faults
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
+ Helge Deller <deller@gmx.de>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20241009000453.315652-1-richard.henderson@linaro.org>
+ <20241009000453.315652-10-richard.henderson@linaro.org>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20241009000453.315652-10-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,58 +106,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Manos,
-
-On 10/14/24 07:48, Manos Pitsidianakis wrote:
-> Add system test to make sure FEAT_XS is enabled for max cpu emulation
-> and that QEMU doesn't crash when encountering an NXS instruction
-> variant.
+On 09.10.2024 03:04, Richard Henderson wrote:
+> Drop the 'else' so that ret is overridden with the
+> highest priority fault.
 > 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->   tests/tcg/aarch64/system/feat-xs.c | 27 +++++++++++++++++++++++++++
->   1 file changed, 27 insertions(+)
-> 
-> diff --git a/tests/tcg/aarch64/system/feat-xs.c b/tests/tcg/aarch64/system/feat-xs.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..52a481c577f9420fa2f6d6a794c1f26772cb4bff
-> --- /dev/null
-> +++ b/tests/tcg/aarch64/system/feat-xs.c
-> @@ -0,0 +1,27 @@
-> +/*
-> + * FEAT_XS Test
-> + *
-> + * Copyright (c) 2024 Linaro Ltd
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include <minilib.h>
-> +#include <stdint.h>
-> +
-> +int main(void)
-> +{
-> +    uint64_t isar1;
-> +
-> +    asm volatile ("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
-> +    if (((isar1 >> 56) & (0xff)) != 1) {
+> Fixes: d8bc1381250 ("target/hppa: Implement PSW_X")
+> Reviewed-by: Helge Deller <deller@gmx.de>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-XS field is 4 bits, so & against 0xF instead of 0xFF?
+Is this a qemu-stable material?  For now I assume yes, please
+let me know if it is not.
 
+Thanks,
 
-Cheers,
-Gustavo
-
-> +        ml_printf("FEAT_XS not supported by CPU");
-> +        return 1;
-> +    }
-> +    /* VMALLE1NXS */
-> +    asm volatile (".inst 0xd508971f");
-> +    /* VMALLE1OSNXS */
-> +    asm volatile (".inst 0xd508911f");
-> +
-> +    return 0;
-> +}
-> 
-
+/mjt
 
