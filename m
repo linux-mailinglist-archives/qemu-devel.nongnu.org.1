@@ -2,94 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3CA99C78E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 12:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D02699C7B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 12:55:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0If5-00042r-KL; Mon, 14 Oct 2024 06:50:51 -0400
+	id 1t0IjT-0008Il-K0; Mon, 14 Oct 2024 06:55:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t0Ier-0003zh-SW
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:50:39 -0400
+ id 1t0IjR-0008IU-9z
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:55:21 -0400
 Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t0Ieq-0006V3-Bs
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:50:37 -0400
+ id 1t0IjP-00076G-C6
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:55:20 -0400
 Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a9a0ec0a94fso119620166b.1
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 03:50:35 -0700 (PDT)
+ a640c23a62f3a-a99ebb390a5so312386566b.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 03:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728903035; x=1729507835; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ME8nUhQFFvx2jCgImr+jNjdB7rn6Qorc/P0rb7qligk=;
- b=E6GDPOtu68gXxR5HessRrSZzcJyBSiNsO4LUNFN+fG6h8JDEqXJSO8CGV2Mw063+TN
- GX7xOSI0kAlOUJdJ7gAVQmxez+is5UotB1Rg1ICH9xukzdNhfa94LOKW2XD89lnF5A6g
- TNd56dBJNKjHM/r0QUsqJOboUE6i5DEdZYJVvEwZzQMUgOyn6l2YdXrbLE5RT0QMp681
- yjNQnG3J/zSY88NVyEUU+ykl/b6hQKrQbF010e1ZeF4QY5o8aoWNY2h3xvv4sglXkkqw
- OTAV4777GYh+CD9L1bg+e2csP7UJOvfQP1hORzsZ4sqWNlQhjNEb15mDlqk+4x9JAfXr
- ODRw==
+ d=linaro.org; s=google; t=1728903316; x=1729508116; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=u9rGVTNoNbab8SZPsqzjrWU1GiF+nKdIQyvQOWuRifI=;
+ b=qVsBesfW1Fj9U7G0tGIkLeWVThPCcx2oaWvD25dvGFtAbVXOoQzE2ZagIFxH2+ZnXJ
+ CBcvXBWN1k6frs64vxuYqtNZfAJYBqpF72aqZHDZ9kSE9vfMf5g3KMQT9IBMCyBzAzKS
+ TMfJiV+pFHqwY2EkLy2TfFOo+4LLubk7DKYCUa/dYo6n2FHivsa4XySsa1uCrvBqkleD
+ pZ0F4MB1309NWUxFNQK5Rn1LmpAj6+Zah7s9LVHE9lasGtlrSzoIZ4E22aJ0PKMmP/zy
+ GBOh7a7tpugCtkIzxlu6lGatg7BYnMKHjCSbQDaxOPhDM2gxLp37slOH9ATw4jyUh9wY
+ THnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728903035; x=1729507835;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ME8nUhQFFvx2jCgImr+jNjdB7rn6Qorc/P0rb7qligk=;
- b=ZWrB470iN+x3bVs1B3hMDJMHK41DxH10H85Fv4HvKeAQxPvUQE309JFazLXRa+TO3X
- ELeRfy/2IjHonoOUGh4lGmLXUjms3efVZYyd3g7GlmEhZtjhesqA2RphjockB7COlrVA
- XErYrZev89ih1PYnicGwQ4vug6kw15UjtMo3Fe/xRTbAkzQseNHkE1a8RtWsPBuNY6vx
- 8hZKmOcZVe5cEYGrnbrY4GYn4HPu454HihAU185ujf6gKG+PYxDn7dKUT76GlU1odTiI
- pkiIO5mmVlG1OvC+IODZWvfhJN9f4zTr1pCjdUMZWvPrg2Et0V4jHXELTA9g8Iya0dPJ
- vliQ==
-X-Gm-Message-State: AOJu0YzukjAX6HMtCDRgt5tBOlEzvT9HaJvafYmpp4wtRbrFiHP8owOP
- kvbjMZqjAbHdF2gKvFucRCNOC549G4K7dTSNlL+hoIm51cV8o09sJyQn+uVR7X8=
-X-Google-Smtp-Source: AGHT+IEuPA2PSLfQ8dUckatJkrgMwb66oocQ8GY4yqQzEfFTPWUKszghnVcr16Il892bYnfgmaMywg==
-X-Received: by 2002:a17:906:df46:b0:a9a:1565:1051 with SMTP id
- a640c23a62f3a-a9a15651340mr92319966b.10.1728903034620; 
- Mon, 14 Oct 2024 03:50:34 -0700 (PDT)
-Received: from [127.0.1.1] (adsl-161.109.242.225.tellas.gr. [109.242.225.161])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a0b25226esm165504466b.59.2024.10.14.03.50.33
+ d=1e100.net; s=20230601; t=1728903316; x=1729508116;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=u9rGVTNoNbab8SZPsqzjrWU1GiF+nKdIQyvQOWuRifI=;
+ b=JeyycvKZNSXVbPs9item4gd/Exw7h+x7wri+8CA0bQiZChv6cv3k5IueN/cZEUWJK3
+ OH7Kj3XMLNXdRQez5wi+I8+zl6keB1gv6RIMYg7AI2vcULcL/Axc9ZKw0r1Coi29ywwL
+ EwhvSarxuUWgp2ecQK4jsHgPIE4hCC74grYxRmfAhDKLRSzs1cpRi3SEe3AKT8aN69Hs
+ X7HzCfA2MJOBKv5TZaunAmuN/XsApWqreKpPoKN3q1aYwakebkamWJpGBNhYP4vTHHNZ
+ 8huysZRKdb/NKvrCPVB3suKKzHHiHAAsCYl6NaLLBb+B5tdZ6mHv2TOQHixqCZFjQM51
+ FZdA==
+X-Gm-Message-State: AOJu0Yw4nvdWwV2Lr+3o6x7B9jKGqNdzcL2LH7V9rXmJthojtiV34UXl
+ LunPFkAwsIeeDHvCRawa3mAkgibuw2yPAVPa0bIR2ZOGZwhOZN2ALC4mULLl6AU=
+X-Google-Smtp-Source: AGHT+IFXN247jKTp2MQQL5Byd5VRnCYNXlg5k8XQHsx+ZDtoAYbmFc7zYelymZzG6QBth5XH7De8nw==
+X-Received: by 2002:a17:907:96a0:b0:a99:f298:c235 with SMTP id
+ a640c23a62f3a-a99f298f43amr477680066b.7.1728903316327; 
+ Mon, 14 Oct 2024 03:55:16 -0700 (PDT)
+Received: from meli-email.org (adsl-161.109.242.225.tellas.gr.
+ [109.242.225.161]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a1016c370sm124148866b.86.2024.10.14.03.55.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 03:50:34 -0700 (PDT)
+ Mon, 14 Oct 2024 03:55:16 -0700 (PDT)
+Date: Mon, 14 Oct 2024 13:54:04 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Mon, 14 Oct 2024 13:48:58 +0300
-Subject: [RFC PATCH 4/4] tests/tcg/aarch64: add system test for FEAT_XS
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL v3 00/18] Rust initial PoC + meson changes for 2024-10-07
+User-Agent: meli 0.8.7
+References: <20241011153227.81770-1-pbonzini@redhat.com>
+ <CAFEAcA-2dR26AvpbV0dRob-Gc=wbN0Mh9rYYB19WH4Yr6ugXHQ@mail.gmail.com>
+ <CAFEAcA-hhdXwfD6Bn5yR6by3h-SkYaNd6dsj8d7J-zc2zK7E8Q@mail.gmail.com>
+In-Reply-To: <CAFEAcA-hhdXwfD6Bn5yR6by3h-SkYaNd6dsj8d7J-zc2zK7E8Q@mail.gmail.com>
+Message-ID: <lcec3.dfw38kpupgt@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-arm-feat-xs-v1-4-42bb714d6b11@linaro.org>
-References: <20241014-arm-feat-xs-v1-0-42bb714d6b11@linaro.org>
-In-Reply-To: <20241014-arm-feat-xs-v1-0-42bb714d6b11@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-X-Mailer: b4 0.15-dev-12fc5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1176;
- i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=QB6WISUQTDQIjWCsNTK3m3cj1QzjVAB89NST/LSlIlc=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm5EUGQxWjJzRXNhWGJWWVNoYUh4YWNOWTBZZ3ZOCjVDZ3kvVVMwK0FGcTR3RllL
- VDJKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnd6M2RRQUt
- DUkIzS2Nkd2YzNEowTDEzRC8wVnFYTFhWWEVmc1FuQXcwVll6YXp6bm5HM0s0RmEyZmM5WEhBRQ
- ozVUYwYWJaNmQxbTFGYTNjWlZEUXFXbThBT1Q2UHJuLzk3amRrMnROeDA2czMwS2c5bHd1NkxPe
- DFobzZHSWhNCk12NWt1eWRnYmZiTE5FUEQ0OG41UXhiRTRLb3NvYlAyZjlLa3hraHNxTUNYRDB5
- dXJEb25TMVhpSEtYcEczZjIKb2RYMWhBbEtySXBFSDFFbjQwaU9LOGkxRUx4aTBqV1hOcmdSVFV
- NRGwwa3RNL1gyeWtBVW83SEMyNVdwZy8rdgpBVU9PQmtIbVF0MGM2b1FINExuY0VIVTltYXpMcD
- NDYkx1RkFaeTQ3R0tXM3pRbnIydURQelByRmNoN1VIZ0VUCmhpRzkwTlNXZUE4dnZOTTYxaTdaS
- GVZUFBhUllCWitMNnBJVXFaeDlLZ0x1S3lmVlRZRWNLcWNEYmpCemdJL2wKSTBKd1IrRlBRSFZ2
- VWJSRGZ5NG1jaEtIY2R5QWN3T2psOTNDWFprTE1USWk2YWhCalVtcVVnazhhKzNwek5PQgpsTmp
- iZk05Y0ZmK1FWWDloOE5vN3piRTV2TFJDNnlldG5kTU85Z2VuQ1U5cldCbDBXQTZ2VDBjOEZtTS
- tXWGdxClUyaXJacmduSURUR0gzUmF0VjdXZFhtaStOaHAySjlDOUJ3VEx1WHVIN2NCeDg5VWEze
- TRhYkVaR1kxT3ZXTjgKUWdKYXpPVnBJR1dVMVJUNFRMVWJyN2VSU1ZrTml2aXhkMzdMaXAvQ2cx
- dnE2NFpCai9LUHZ0MW9wc3EzTnJ4awpXNFNNTE9vcjNBTWNSZCtKUGN0NS95K0lERjd2WVc2dmp
- WclFhQlVPRU5lTXh2L2cxRWV1T1h5bkNLTjlLMmdlCldDY0JtUT09Cj13eDJmCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
- fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
 Received-SPF: pass client-ip=2a00:1450:4864:20::635;
  envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
@@ -114,50 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add system test to make sure FEAT_XS is enabled for max cpu emulation
-and that QEMU doesn't crash when encountering an NXS instruction
-variant.
+On Mon, 14 Oct 2024 13:40, Peter Maydell <peter.maydell@linaro.org> wrote:
+>On Mon, 14 Oct 2024 at 11:12, Peter Maydell <peter.maydell@linaro.org> wrote:
+>>
+>> On Fri, 11 Oct 2024 at 18:13, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>> > v2->v3: new patches
+>> > - scripts/archive-source: find directory name for subprojects
+>> > - docs: fix invalid footnote syntax
+>> > - docs: avoid footnotes consisting of just URLs
+>> > - docs: use consistent markup for footnotes
+>> >
+>> > ----------------------------------------------------------------
+>> > * first commit for Rust support
+>> > * add CI job using Fedora + Rust nightly
+>> > * fix detection of ATOMIC128 on x86_64
+>> > * fix compilation with Sphinx 8.1.0
+>
+>> Applied, thanks.
+>
+>With this applied, I find that on one of my personal
+>local dev branches an incremental rebuild fails, because
+>meson complains about not finding a new enough bindgen,
+>even though I did not --enable-rust. Meson also complains
+>about a bogus coredata.dat and we end up running meson
+>three times before it eventually decides the error is fatal.
+>
+>It looks like meson is incorrectly defaulting to "rust
+>enabled" rather than "rust disabled" here ?
+>
+>[trimmed]
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- tests/tcg/aarch64/system/feat-xs.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+In this pull request, meson_options.txt has:
 
-diff --git a/tests/tcg/aarch64/system/feat-xs.c b/tests/tcg/aarch64/system/feat-xs.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..52a481c577f9420fa2f6d6a794c1f26772cb4bff
---- /dev/null
-+++ b/tests/tcg/aarch64/system/feat-xs.c
-@@ -0,0 +1,27 @@
-+/*
-+ * FEAT_XS Test
-+ *
-+ * Copyright (c) 2024 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <minilib.h>
-+#include <stdint.h>
-+
-+int main(void)
-+{
-+    uint64_t isar1;
-+
-+    asm volatile ("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
-+    if (((isar1 >> 56) & (0xff)) != 1) {
-+        ml_printf("FEAT_XS not supported by CPU");
-+        return 1;
-+    }
-+    /* VMALLE1NXS */
-+    asm volatile (".inst 0xd508971f");
-+    /* VMALLE1OSNXS */
-+    asm volatile (".inst 0xd508911f");
-+
-+    return 0;
-+}
+ +option('rust', type: 'feature', value: 'auto',
 
--- 
-2.45.2
-
+So it's not disabled by default. It sounds like meson enables the Rust 
+feature because it found the rustc binary.
 
