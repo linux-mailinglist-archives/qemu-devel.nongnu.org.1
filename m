@@ -2,108 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F0D99CB4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDC299CB7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:21:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0KtK-0000GG-2G; Mon, 14 Oct 2024 09:13:42 -0400
+	id 1t0L03-0002GW-O1; Mon, 14 Oct 2024 09:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t0KtB-0000Fw-9P; Mon, 14 Oct 2024 09:13:33 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t0Kt5-0008Cc-MP; Mon, 14 Oct 2024 09:13:31 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EBsBEJ023945;
- Mon, 14 Oct 2024 13:13:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- BTxloI0zcx56wqXnr5Jfh3VNtQb2f5a4bBtV/f3so7g=; b=Kf80C02qGvniIgSC
- RMRJ+DAouVzTwtoW+pznK5vx1LMhf4wPzGvmKHhqySYBkS2YBrL3M06WchGGzTDP
- H4YfYlLaGeTdm8lWgqhmdWH4EDDSQ1jOWt434a55cWMEjFBaaJS2vOY4EJWGz+iN
- 2So/i76Fcm9H8xt+ze3j2Q5z/4/07ba4MynK6QKDfNjTyb1dkAaOHzukVYmN6WzL
- HkY5y/Hqa/SYv1pF6bCBLEidKDr+8pnnri4NsDo7WubBEUojGkNMylZjiE0p/Rye
- l1DUFKoflzDmUJQy91P19xTxMB/XzXcVOqdlajTRvI5nZQHo5BxDX2HFRfCnN3Pu
- aEhYcA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4292tygddw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 13:13:17 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49EDDHsd029096;
- Mon, 14 Oct 2024 13:13:17 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4292tygddq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 13:13:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49EBFgtA001940;
- Mon, 14 Oct 2024 13:13:16 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284emenvm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 13:13:16 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49EDDFSP27001356
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Oct 2024 13:13:15 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2408A58056;
- Mon, 14 Oct 2024 13:13:15 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7321E5803F;
- Mon, 14 Oct 2024 13:13:14 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 14 Oct 2024 13:13:14 +0000 (GMT)
-Message-ID: <51fc56b4-4db3-4eea-a44f-56c822b19b84@linux.ibm.com>
-Date: Mon, 14 Oct 2024 09:13:13 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ppc/pnv: Add support for TPM with SPI interface
-To: dan tan <dantan@linux.ibm.com>
-Cc: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, pbonzini@redhat.com, stefanb@linux.vnet.ibm.com,
- thuth@redhat.com, lvivier@redhat.com, clg@kaod.org, npiggin@gmail.com,
- fbarrat@linux.ibm.com
-References: <20240912160959.25885-1-dantan@linux.vnet.ibm.com>
- <e85c17d6-296c-47b4-b2f3-63a674713dc4@linux.ibm.com>
- <3fbc6ddcb0b1c72930918095ce9f8df8@linux.ibm.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <3fbc6ddcb0b1c72930918095ce9f8df8@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OlmhW7wsgzcyqa4pyXpQwAwrDjOAvR9S
-X-Proofpoint-ORIG-GUID: VVAQ9VyZPxLzb8UuQ1NBQ7zHs_v5_z3i
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1t0L02-0002E1-5e
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:20:38 -0400
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1t0L00-0000j0-3V
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:20:37 -0400
+Received: by mail-qt1-x82e.google.com with SMTP id
+ d75a77b69052e-4604d8f1622so17910551cf.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 06:20:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1728912034; x=1729516834; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=FV+u43pN0/GaK2R0u7qyK0Rc+Cvp5PzPv/O7LDOqhEc=;
+ b=ZR+4ffXi4A8OQtZgpd0Qx5E+zRPLFju4vN6Y825qX3z3m7ZvQpzE+KJvnncdhKfXdJ
+ 0H3PBTu6NA2enmicyX27pangyP+8yiNOKCGK7LlktImXWlihtrziPIhBDLkAI8Br1MTt
+ p7sEi39oGbU1VVIoGIYI4vSLtHkEg1abCqPfMGq+4IJczSSVssWHLn9vC2wfq3oMeywI
+ enJVIJGsdkbImZcJyHwdDByOpMKG37HhYhrxIOFXw4r6hg8cBLnH2JbnA0TTW6heRYvG
+ 7YS1zp9lPFJXTDAmkrnNixtDUljGkIFdaVeYTi4Rq0u7w5HsqKhahXqI8wAl/phhfl88
+ HJ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728912034; x=1729516834;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FV+u43pN0/GaK2R0u7qyK0Rc+Cvp5PzPv/O7LDOqhEc=;
+ b=DokBnfwGvznx/XqNwYK+T3SCDpWicqXNMQr3L1s4vtasP7Mg1BmFGOkb0jN+dytWV9
+ LkRQVvbkRJAL7zqokgx5r+zGA6BICJ8KUDV0fgbRz/1nQA/ejXsPZ1p070p+988ylxMA
+ u5o/HkKaKQZ4d7iQ67LASEcybdveKmODceK1wahNY+S0QK7M5fpMsyLXjEvpqQvW4XSg
+ fCseNx6mntz5hR+dX26EZikMvJiM1GU+TXuyfSZaBgWDIhRhK/xsVx/JqiUDB3G5dUUw
+ DEqEI4IGpX06iTMEmyxZf3GXupcG+HTP6wEJ2VhwXtmwC6sXx8F6S81mQlgLSy8ZYmmX
+ FR0A==
+X-Gm-Message-State: AOJu0YxupfDyQwZtajKfjGKKdNeZlBuiFqaqeKd/1k4HHGHaLEiHrWDm
+ mUA/bdGf6drb2vfg1s+igtQnxq7608ahS7Eojg94WTI06qrB8eS19XtUxz3/MH3q8Wt7GfY89K8
+ LYVv/zb9Gh9j/b1mUwHG1VZZ/uPkJh816aXE=
+X-Google-Smtp-Source: AGHT+IHz+QV7BlI1Ue5vcMdRf/oLXflVzFWR4Zr42/M+TF9TK9FYV5CmqMuUUVhyA0RF/Xvm/cNZdFPUQJMAGsJ0MuM=
+X-Received: by 2002:ac8:57d0:0:b0:45e:ff4c:6378 with SMTP id
+ d75a77b69052e-4604bb9477emr161216821cf.3.1728912034356; Mon, 14 Oct 2024
+ 06:20:34 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-14_10,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1011
- lowpriorityscore=0 malwarescore=0 spamscore=0 phishscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410140094
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20241014114135.389766-1-r.peniaev@gmail.com>
+ <20241014114135.389766-7-r.peniaev@gmail.com>
+In-Reply-To: <20241014114135.389766-7-r.peniaev@gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 14 Oct 2024 17:20:22 +0400
+Message-ID: <CAJ+F1CLwNjxT=OogC=4ujzrSHVZRA8mGqK21khUUKe-OxMoTGA@mail.gmail.com>
+Subject: Re: [PATCH 6/8] chardev/mux: switch mux frontends management to bitset
+To: Roman Penyaev <r.peniaev@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000a7e61306246fb387"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,595 +86,387 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000a7e61306246fb387
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Oct 14, 2024 at 3:45=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.com>=
+ wrote:
 
-On 10/13/24 10:36 PM, dan tan wrote:
-> Hi Stefan,
-> 
-> Thank you for the review comments! Please see my response below.
-> 
-> thank you,
+> Frontends can be attached and detached during run-time (although detach
+> is not implemented, but will follow). Counter variable of muxes is not
+> enough for proper attach/detach management, so this patch implements
+> bitset: if bit is set for the `mux_bitset` variable, then frontend
+> device can be found in the `backend` array (yes, huge confusion with
+> backend and frontends names).
+>
+> Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+> Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
+> Cc: qemu-devel@nongnu.org
 > ---
-> dan tan
-> power simulation
-> phone:+1.7373.099.138
-> email:dantan@linux.ibm.com
-> 
-> 
-> On 2024-09-12 13:02, Stefan Berger wrote:
->> On 9/12/24 12:09 PM, dan tan wrote:
->>> From: dan tan <dantan@linux.ibm.com>
->>>
->>> SPI interface to TPM TIS implementation via swtpm
->>
->> Apart from Cedric's comments:
->>
->> Can you say a bit more about the specs you followed and details how
->> many localities are supported etc. Is this device pnv-specific or can
->> it be used on other platforms as well? If it can then the 'pnv'
->> prefix/suffix should probably disappear from functions in the test
->> code because we could probably start an aarch or x86_64 VM then and
->> call them as well.
->>
->> Also, an entry in docs/specs/tpm.rst would be great.
->>
-> 
-> This addition to the TPM device support is part of a bigger project
-> to support an IBM hypervisor stack. In this system, IBM uses Nuvoton
-> Technology's TPM. Per Nuvoton's documentation, the NPCT7/6/5/4xx devices
-> implement all TCG commands and functionality, as defined in the following
-> TCG specifications:
-> - [TPM2.0] Trusted Platform Module Library Specification, Family “2.0”, 
-> Level 00, Revision 01.59
-> - Trusted Platform Module Library Specification, Family "2.0", Level 00, 
-> Revision 01.38
-> - Trusted Platform Module Library Specification, Family “2.0”, Level 00, 
-> Revision 01.16
-> https://trustedcomputinggroup.org/resource/tpm-library-specification/
-> 
-> The hypervisor only uses locality 0, thus, is the implementation as well
-> as the qtest.
+>  chardev/char-mux.c         | 41 +++++++++++++++++++++++++-------------
+>  chardev/char.c             |  2 +-
+>  chardev/chardev-internal.h |  2 +-
+>  3 files changed, 29 insertions(+), 16 deletions(-)
+>
+> diff --git a/chardev/char-mux.c b/chardev/char-mux.c
+> index 9294f955462e..9c3cacb2fecd 100644
+> --- a/chardev/char-mux.c
+> +++ b/chardev/char-mux.c
+> @@ -26,6 +26,7 @@
+>  #include "qapi/error.h"
+>  #include "qemu/module.h"
+>  #include "qemu/option.h"
+> +#include "qemu/bitops.h"
+>  #include "chardev/char.h"
+>  #include "sysemu/block-backend.h"
+>  #include "qapi/qapi-commands-control.h"
+> @@ -168,12 +169,19 @@ static int mux_proc_byte(Chardev *chr, MuxChardev
+> *d, int ch)
+>          case 'b':
+>              qemu_chr_be_event(chr, CHR_EVENT_BREAK);
+>              break;
+> -        case 'c':
+> -            assert(d->mux_cnt > 0); /* handler registered with first fe =
+*/
+> +        case 'c': {
+> +            unsigned int bit;
+> +
+> +            /* Handler registered with first fe */
+> +            assert(d->mux_bitset !=3D 0);
+>              /* Switch to the next registered device */
+> -            mux_set_focus(chr, (d->focus + 1) % d->mux_cnt);
+> +            bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, d->focus + 1)=
+;
+> +            if (bit >=3D MAX_MUX) {
+> +                bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, 0);
+> +            }
+> +            mux_set_focus(chr, bit);
+>              break;
+> -        case 't':
+> +        } case 't':
+>              d->timestamps =3D !d->timestamps;
+>              d->timestamps_start =3D -1;
+>              d->linestart =3D false;
+> @@ -243,15 +250,16 @@ static void mux_chr_read(void *opaque, const uint8_=
+t
+> *buf, int size)
+>  void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event)
+>  {
+>      MuxChardev *d =3D MUX_CHARDEV(chr);
+> -    unsigned int i;
+> +    int bit;
+>
+>      if (!muxes_opened) {
+>          return;
+>      }
+>
+>      /* Send the event to all registered listeners */
+> -    for (i =3D 0; i < d->mux_cnt; i++) {
+> -        mux_chr_send_event(d, i, event);
+> +    bit =3D -1;
+> +    while ((bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, bit + 1)) <
+> MAX_MUX) {
+> +        mux_chr_send_event(d, bit, event);
+>      }
+>  }
+>
+> @@ -276,10 +284,11 @@ static GSource *mux_chr_add_watch(Chardev *s,
+> GIOCondition cond)
+>  static void char_mux_finalize(Object *obj)
+>  {
+>      MuxChardev *d =3D MUX_CHARDEV(obj);
+> -    unsigned int i;
+> +    int bit;
+>
+> -    for (i =3D 0; i < d->mux_cnt; i++) {
+> -        CharBackend *be =3D d->backends[i];
+> +    bit =3D -1;
+> +    while ((bit =3D find_next_bit(&d->mux_bitset, MAX_MUX, bit + 1)) <
+> MAX_MUX) {
+> +        CharBackend *be =3D d->backends[bit];
+>          if (be) {
+>              be->chr =3D NULL;
+>          }
+> @@ -304,7 +313,10 @@ static void mux_chr_update_read_handlers(Chardev *ch=
+r)
+>  bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
+>                               unsigned int *tag, Error **errp)
+>  {
+> -    if (d->mux_cnt >=3D MAX_MUX) {
+> +    unsigned int bit;
+> +
+> +    bit =3D find_next_zero_bit(&d->mux_bitset, MAX_MUX, 0);
+> +    if (bit >=3D MAX_MUX) {
+>          error_setg(errp,
+>                     "too many uses of multiplexed chardev '%s'"
+>                     " (maximum is " stringify(MAX_MUX) ")",
+> @@ -312,8 +324,9 @@ bool mux_chr_attach_frontend(MuxChardev *d,
+> CharBackend *b,
+>          return false;
+>      }
+>
+> -    d->backends[d->mux_cnt] =3D b;
+> -    *tag =3D d->mux_cnt++;
+> +    d->mux_bitset |=3D (1 << bit);
+> +    d->backends[bit] =3D b;
+> +    *tag =3D bit;
+>
+>      return true;
+>  }
+> @@ -322,7 +335,7 @@ void mux_set_focus(Chardev *chr, unsigned int focus)
+>  {
+>      MuxChardev *d =3D MUX_CHARDEV(chr);
+>
+> -    assert(focus < d->mux_cnt);
+> +    assert(find_next_bit(&d->mux_bitset, MAX_MUX, focus) < MAX_MUX);
+>
 
-If the device supports other localities, and I think it does/should, 
-then those should be tested as well. It should be easy to implement them 
-since tests already exist from which the SPI tests can be derived.
+Wouldn't this be more correct?
 
-> 
-> The interface via SSI SPI is only implemented on the PowerNV platform.
-> 
-> I will add a section in docs/specs/tpm.rst to describe this support
-> 
->>>
->>> Signed-off-by: dan tan <dantan@linux.ibm.com>
->>> ---
->>>   include/sysemu/tpm.h               |   3 +
->>>   hw/tpm/tpm_tis_spi.c               | 347 +++++++++++++++++++++++++++++
->>>   tests/qtest/pnv-tpm-tis-spi-test.c | 223 ++++++++++++++++++
->>>   hw/ppc/Kconfig                     |   1 +
->>>   hw/tpm/Kconfig                     |   6 +
->>>   hw/tpm/meson.build                 |   1 +
->>>   tests/qtest/meson.build            |   2 +
->>>   7 files changed, 583 insertions(+)
->>>   create mode 100644 hw/tpm/tpm_tis_spi.c
->>>   create mode 100644 tests/qtest/pnv-tpm-tis-spi-test.c
->>>
->>> diff --git a/include/sysemu/tpm.h b/include/sysemu/tpm.h
->>> index 1ee568b3b6..22b05110e2 100644
->>> --- a/include/sysemu/tpm.h
->>> +++ b/include/sysemu/tpm.h
->>> @@ -49,6 +49,7 @@ struct TPMIfClass {
->>>   #define TYPE_TPM_CRB                "tpm-crb"
->>>   #define TYPE_TPM_SPAPR              "tpm-spapr"
->>>   #define TYPE_TPM_TIS_I2C            "tpm-tis-i2c"
->>> +#define TYPE_TPM_TIS_SPI            "tpm-tis-spi"
->>>     #define TPM_IS_TIS_ISA(chr)                         \
->>>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_ISA)
->>> @@ -60,6 +61,8 @@ struct TPMIfClass {
->>>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_SPAPR)
->>>   #define TPM_IS_TIS_I2C(chr)                      \
->>>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_I2C)
->>> +#define TPM_IS_TIS_SPI(chr)                      \
->>> +    object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_SPI)
->>>     /* returns NULL unless there is exactly one TPM device */
->>>   static inline TPMIf *tpm_find(void)
->>> diff --git a/hw/tpm/tpm_tis_spi.c b/hw/tpm/tpm_tis_spi.c
->>> new file mode 100644
->>> index 0000000000..6e7f42b2db
->>> --- /dev/null
->>> +++ b/hw/tpm/tpm_tis_spi.c
->>> @@ -0,0 +1,347 @@
->>> +/*
->>> + * QEMU PowerPC SPI TPM 2.0 model
->>> + *
->>> + * Copyright (c) 2024, IBM Corporation.
->>> + *
->>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>> + */
->>> +
->>> +#include "qemu/osdep.h"
->>> +#include "qemu/log.h"
->>> +#include "hw/sysbus.h"
->>> +#include "hw/pci/pci_ids.h"
->>> +#include "hw/acpi/tpm.h"
->>> +#include "tpm_prop.h"
->>> +#include "qemu/log.h"
->>> +#include "tpm_tis.h"
->>> +#include "hw/ssi/ssi.h"
->>> +
->>> +typedef struct TPMStateSPI {
->>> +    /*< private >*/
->>> +    SSIPeripheral parent_object;
->>> +
->>> +    uint8_t     offset;       /* offset into data[] */
->>> +    uint8_t     spi_state;    /* READ / WRITE / IDLE */
->>> +#define SPI_STATE_IDLE   0
->>> +#define SPI_STATE_WRITE  1
->>> +#define SPI_STATE_READ   2
->>> +
->>> +    bool        command;
->>> +
->>> +    uint8_t     loc_sel;      /* Current locality */
->>> +    uint32_t    tis_addr;     /* tis address including locty */
->>> +
->>> +    /*< public >*/
->>> +    TPMState    tpm_state; /* not a QOM object */
->>> +
->>> +} TPMStateSPI;
->>> +
->>> +typedef struct xfer_buffer xfer_buffer;
->>> +
->>> +#ifdef SPI_DEBUG_ENABLED
->>> +#define SPI_DEBUG(x) (x)
->>> +#else
->>> +#define SPI_DEBUG(x)
->>> +#endif
->>> +
->>> +DECLARE_INSTANCE_CHECKER(TPMStateSPI, TPM_TIS_SPI, TYPE_TPM_TIS_SPI)
->>> +
->>> +static inline void tpm_tis_spi_clear_data(TPMStateSPI *spist)
->>> +{
->>> +    spist->spi_state = 0;
->>> +    spist->offset = 0;
->>> +    spist->tis_addr = 0xffffffff;
->>> +
->>> +    return;
->>> +}
->>> +
->>> +/* Callback from TPM to indicate that response is copied */
->>> +static void tpm_tis_spi_request_completed(TPMIf *ti, int ret)
->>> +{
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(ti);
->>> +    TPMState *s = &spist->tpm_state;
->>> +
->>> +    /* Inform the common code. */
->>> +    tpm_tis_request_completed(s, ret);
->>> +}
->>> +
->>> +static enum TPMVersion tpm_tis_spi_get_tpm_version(TPMIf *ti)
->>> +{
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(ti);
->>> +    TPMState *s = &spist->tpm_state;
->>> +
->>> +    return tpm_tis_get_tpm_version(s);
->>> +}
->>> +
->>> +/*
->>> + * TCG PC Client Platform TPM Profile Specification for TPM 2.0 ver 
->>> 1.05 rev 14
->>> + *
->>> + * For system Software, the TPM has a 64-bit address of 
->>> 0x0000_0000_FED4_xxxx.
->>> + * On SPI, the chipset passes the least significant 24 bits to the TPM.
->>> + * The upper bytes will be used by the chipset to select the TPM’s 
->>> SPI CS#
->>> + * signal. Table 9 shows the locality based on the 16 least 
->>> significant address
->>> + * bits and assume that either the LPC TPM sync or SPI TPM CS# is used.
->>> + *
->>> + */
->>> +static void tpm_tis_spi_write(TPMStateSPI *spist, uint32_t addr, 
->>> uint8_t val)
->>> +{
->>> +    SPI_DEBUG(qemu_log("tpm_tis_spi_write addr:0x%8.8x, value:%2.2x\n",
->>> +                       addr, val));
->>> +    TPMState *tpm_st = &spist->tpm_state;
->>
->> First variable declation then empty line and then the SPI_DEBUG.
->>
-> 
-> Not sure how this happened, good catch! I will correct it.
-> 
->>> +    tpm_tis_write_data(tpm_st, addr, val, 1);
->>> +}
->>> +
->>> +static uint8_t tpm_tis_spi_read(TPMStateSPI *spist, uint32_t addr)
->>> +{
->>> +    uint16_t offset = addr & 0xffc;
->>> +    TPMState *tpm_st = &spist->tpm_state;
->>> +    uint8_t data;
->>> +    uint32_t did_vid;
->>> +
->>> +    SPI_DEBUG(qemu_log("tpm_tis_spi_read addr:0x%8.8x .... ", addr));
->>> +    if (offset == TPM_TIS_REG_DID_VID) {
->>> +        did_vid = (TPM_TIS_TPM_DID << 16) | TPM_TIS_TPM_VID;
->>> +        data = (did_vid >> ((addr & 0x3) * 8)) & 0xff;
->>
->> Why does this register need special handling? This function could just
->> be a 'return tpm_tis_read_data(tpm_st, addr, 1);' at this point, no?
->>
-> 
-> Yes, you are right!
-> This is the code segment leftover from the hypervisor specific support.
-> Although it is an IBM Power platform, the TPM does have a different
-> vendor ID and device ID than IBM's. If we didn't intercept this request,
-> tpm_tis_read_data() would return IBM's vendor ID, and the validation in
-> the hypervisor would fail.
-> 
-> I will remove the _if_ block and verify the results.
-> 
->>> +    } else {
->>> +        data = tpm_tis_read_data(tpm_st, addr, 1);
->>> +    }
->>> +
->>> +    return data;
->>> +}
->>> +
->>> +static Property tpm_tis_spi_properties[] = {
->>> +    DEFINE_PROP_TPMBE("tpmdev", TPMStateSPI, tpm_state.be_driver),
->>> +    DEFINE_PROP_UINT32("irq", TPMStateSPI, tpm_state.irq_num, 0),
->>> +    DEFINE_PROP_END_OF_LIST(),
->>> +};
->>> +
->>> +static void tpm_tis_spi_reset(DeviceState *dev)
->>> +{
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(dev);
->>> +    TPMState *s = &spist->tpm_state;
->>> +
->>> +    tpm_tis_spi_clear_data(spist);
->>> +
->>> +    spist->loc_sel = 0x00;
->>> +
->>> +    return tpm_tis_reset(s);
->>> +}
->>> +
->>> +static uint32_t tpm_transfer(SSIPeripheral *ss, uint32_t tx)
->>> +{
->>> +    uint32_t rx = 0;
->>> +    /* static variables are automatically initialized to zero */
->>> +    static uint8_t byte_offset;       /* byte offset in transfer */
->>> +    static uint8_t wait_state_count;  /* wait state counter */
->>> +    static uint8_t xfer_size;         /* data size of transfer */
->>> +    static uint32_t reg_addr;         /* register address of 
->>> transfer */
->>
->> Shouldn't these statics be part of the TPMStateSPI so that they can be
->> saved if the VM was to suspend in the middle of a transfer. If this
->> cannot happen because you will always get all bytes passed to this
->> function then why are these static's?
-> 
-> You are absolutely right! I will move them to the TPMStateSPI struct.
-> 
->>> +
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(ss);
->>> +
->>> +    uint8_t byte;       /* reversed byte value */
->>> +    uint8_t offset = 0; /* offset of byte in payload */
->>> +    uint8_t index;      /* index of data byte in transfer */
->>> +
->>> +    SPI_DEBUG(qemu_log("TPM SPI request from controller\n"));
->>> +
->>> +    /* new transfer or not */
->>> +    if (spist->command) {   /* new transfer start */
->>> +        if (spist->spi_state != SPI_STATE_IDLE) {
->>> +            qemu_log_mask(LOG_GUEST_ERROR, "unexpected new 
->>> transfer\n");
->>> +        }
->>> +        byte_offset = 0;
->>> +        wait_state_count = 0;
->>> +    }
->>> +    /*
->>> +     * Explanation of wait_state:
->>> +     * The original TPM model did not have wait state or "flow 
->>> control" support
->>> +     * built in.  If you wanted to read a TPM register through SPI 
->>> you sent
->>> +     * the first byte with the read/write bit and size, then three 
->>> address bytes
->>> +     * and any additional bytes after that were don't care bytes for 
->>> reads and
->>> +     * the model would begin returning byte data to the SPI reader 
->>> from the
->>> +     * register address provided.  In the real world this would mean 
->>> that a
->>> +     * TPM device had only the time between the 31st clock and the 
->>> 32nd clock
->>> +     * to fetch the register data that it had to provide to SPI MISO 
->>> starting
->>> +     * with the 32nd clock.
->>> +     *
->>> +     * In reality the TPM begins introducing a wait state at the 
->>> 31st clock
->>> +     * by holding MISO low.  This is how it controls the "flow" of the
->>> +     * operation. Once the data the TPM needs to return is ready it 
->>> will
->>> +     * select bit 31 + (8*N) to send back a 1 which indicates that 
->>> it will
->>> +     * now start returning data on MISO.
->>> +     *
->>> +     * The same wait states are applied to writes.  In either the 
->>> read or write
->>> +     * case the wait state occurs between the command+address (4 
->>> bytes) and the
->>> +     * data (1-n bytes) sections of the SPI frame.  The code below 
->>> introduces
->>> +     * the support for a 32 bit wait state for P10.  All reads and 
->>> writes
->>> +     * through the SPI interface MUST now be aware of the need to do 
->>> flow
->>> +     * control in order to use the TPM via SPI.
->>> +     *
->>> +     * In conjunction with these changes there were changes made to 
->>> the SPIM
->>> +     * engine that was introduced in P10 to support the 6x op code 
->>> which is
->>> +     * used to receive wait state 0s on the MISO line until it sees 
->>> the b'1'
->>> +     * come back before continuing to read real data from the SPI 
->>> device(TPM).
->>> +     */
->>> +
->>> +    SPI_DEBUG(qemu_log("Processing new payload current 
->>> byte_offset=%d\n",
->>> +                            byte_offset));
->>> +    /* process payload data */
->>> +    while (offset < 4) {
->>> +        spist->command = false;
->>> +        byte = (tx >> (24 - 8 * offset)) & 0xFF;
->>> +        SPI_DEBUG(qemu_log("Extracted byte=0x%2.2x from payload 
->>> offset=%d\n",
->>> +                  byte, offset));
->>> +        switch (byte_offset) {
->>> +        case 0:    /* command byte */
->>> +            if ((byte >> 7) == 0) {    /* bit-7 */
->>
->> I think checking for bit 7 would be better like this:
->>
->> #define CMD_BYTE_WRITE (1 << 7)
->> if ((byte & CMD_BYTE_WRITE) == 0)
-> 
-> Yes, that does look more readable. I will make the change.
-> 
->>> +                spist->spi_state = SPI_STATE_WRITE;
->>> +                SPI_DEBUG(qemu_log("spi write\n"));
->>> +            } else {
->>> +                spist->spi_state = SPI_STATE_READ;
->>> +                SPI_DEBUG(qemu_log("spi read\n"));
->>> +            }
->>
->> # define CMD_BYTE_XFER_SZ_MASK  0x1f
->> xfter_size = (byte & CMD_BYTE_XFER_SZ_MASK)
-> 
-> ditto!
-> 
->>> +            xfer_size = (byte & 0x1f) + 1;  /* bits 5:0 */
->>> +            SPI_DEBUG(qemu_log("xfer_size=%d\n", xfer_size));
->>> +            break;
->>> +        case 1:     /* 1st address byte */
->>
->> This is the from the TIS address 0fe >d4< 00 00.
-> 
-> Correct. I will add a comment
-> 
->>> +            if (byte != 0xd4) {
->>> +                qemu_log_mask(LOG_GUEST_ERROR, "incorrect high 
->>> address 0x%x\n",
->>> +                              byte);
->>> +            }
->>> +            reg_addr = byte << 16;
->>> +            SPI_DEBUG(qemu_log("first addr byte=0x%x, reg_addr now 
->>> 0x%8.8x\n",
->>> +                      byte, reg_addr));
->>> +            break;
->>> +        case 2:     /* 2nd address byte */
->>> +            reg_addr |= byte << 8;
->>> +            SPI_DEBUG(qemu_log("second addr byte=0x%x, reg_addr now 
->>> 0x%8.8x\n",
->>> +                      byte, reg_addr));
->>> +            break;
->>> +        case 3:     /* 3rd address byte */
->>> +            reg_addr |= byte;
->>> +            SPI_DEBUG(qemu_log("third addr byte=0x%x, reg_addr now 
->>> 0x%8.8x\n",
->>> +                      byte, reg_addr));
->>> +            break;
->>> +        default:    /* data bytes */
->>> +            if (wait_state_count < 4) {
->>> +                wait_state_count++;
->>> +                if (wait_state_count == 4) {
->>> +                    SPI_DEBUG(qemu_log("wait complete, 
->>> wait_state_count=0x%x\n",
->>> +                              wait_state_count));
->>> +                    rx = rx | (0x01 << (24 - offset * 8));
->>> +                    return rx;
->>> +                } else {
->>> +                    SPI_DEBUG(qemu_log("in wait state, 
->>> wait_state_count=0x%x\n",
->>> +                              wait_state_count));
->>> +                    rx = 0;
->>> +                }
->>> +            } else {
->>> +                index = byte_offset - 4;
->>> +                SPI_DEBUG(qemu_log("data byte=0x%x for index=%d, "
->>> +                                    "reg_addr now 0x%8.8x\n",
->>> +                                    byte, index, reg_addr));
->>> +
->>> +                if (index >= xfer_size) {
->>> +                    /*
->>> +                     * SPI SSI framework limits both rx and tx
->>> +                     * to fixed 4-byte with each xfer
->>
->> Per the setting of xfer_size above it can be up to 32 bytes?
-> 
-> This comment is made by the SPI SSI implementer. I believe this
-> is the SSI framework statement. The SPI max transfer size is much
-> smaller
-> 
->>> +                     */
->>> +                    SPI_DEBUG(qemu_log("data exceeds expected amount 
->>> %u\n",
->>> +                              xfer_size));
->>> +                    return rx;
->>> +                }
->>> +                spist->tis_addr = reg_addr + (index % 4);
->>> +                if (spist->spi_state == SPI_STATE_WRITE) {
->>> +                    tpm_tis_spi_write(spist, spist->tis_addr, byte);
->>> +                } else {
->>> +                    byte = tpm_tis_spi_read(spist, spist->tis_addr);
->>> +                    rx = rx | (byte << (24 - offset * 8));
->>> +                    SPI_DEBUG(qemu_log("added byte=0x%2.2x to 
->>> response payload"
->>> +                             " at offset=%d\n", byte, offset));
->>> +                }
->>> +            }
->>> +            break;
->>> +        }
->>> +        if ((wait_state_count == 0) || (wait_state_count == 4)) {
->>
->> Is there not a more obvious relationship between having to increase
->> offset and byte_offset other than making this depend on the
->> wait_states? Like make it depend on the byte_offset.
-> 
-> A wait state in a Serial Peripheral Interface (SPI) occurs when the main
-> must wait before issuing clock cycles to allow for a required waiting 
-> period.
-> It does not have direct relationships with the byte_offset. With real 
-> hardware,
-> a good example would be that if an analog-to-digital conversion is 
-> required,
-> the main must wait for the conversion to complete before issuing clock 
-> cycles.
-> 
->> /*
->>  * advance offsets while handling command and address bytes and once
->>  * 4 wait states have been reached.
->>  */
->> if (byte_offset <= 3 || wait_state_count == 4)
->>
->>> +            offset++;
->>> +            byte_offset++;
->>> +        } else {
->>> +            break;
->>> +        }
->>> +    }
->>> +    return rx;
->>> +}
->>> +
->>> +static int tpm_cs(SSIPeripheral *ss, bool select)
->>> +{
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(ss);
->>
->> add empty line
->>
-> 
-> yes, sir.
++    assert(find_next_bit(&d->mux_bitset, MAX_MUX, focus) =3D=3D focus);
 
-use ' ./scripts/checkpatch.pl *.patch '  to check your patches.
 
-> 
->>> +    if (select) {
->>> +        spist->command = false;
->>> +        spist->spi_state = SPI_STATE_IDLE;
->>> +    } else {
->>> +        spist->command = true;
->>> +    }
->>> +    return 0;
->>> +}
->>> +
->>> +
->> one too many empty lines
->>
->>> +static void tpm_realize(SSIPeripheral *dev, Error **errp)
->>> +{
->>> +    TPMStateSPI *spist = TPM_TIS_SPI(dev);
->>> +    TPMState *s = &spist->tpm_state;
->>> +
->>> +    spist->command = true;
->>> +    spist->spi_state = SPI_STATE_IDLE;
->>> +
->>> +    if (!tpm_find()) {
->>> +        error_setg(errp, "at most one TPM device is permitted");
->>> +        return;
->>> +    }
->>> +
->>> +    s->be_driver = qemu_find_tpm_be("tpm0");
->>> +
->>> +    if (!s->be_driver) {
->>> +        error_setg(errp, "unable to find tpm backend device");
->>> +        return;
->>> +    }
->>> +}
->>> +
->>> +static void tpm_tis_spi_class_init(ObjectClass *klass, void *data)
->>> +{
->>> +    DeviceClass *dc = DEVICE_CLASS(klass);
->>> +    TPMIfClass *tc = TPM_IF_CLASS(klass);
->>> +    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
->>> +
->>> +    k->transfer = tpm_transfer;
->>> +    k->realize = tpm_realize;
->>> +    k->set_cs = tpm_cs;
->>> +    k->cs_polarity = SSI_CS_LOW;
->>> +
->>> +    dc->reset = tpm_tis_spi_reset;
->>> +    device_class_set_props(dc, tpm_tis_spi_properties);
->>> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->>> +
->>> +    dc->desc = "PowerNV SPI TPM";
->>
->> Is it really a PowerNV specific device?
-> 
-> At current time, it is, as it relies on PNV_SPI
+>
+>      if (d->focus !=3D -1) {
+>          mux_chr_send_event(d, d->focus, CHR_EVENT_MUX_OUT);
+> diff --git a/chardev/char.c b/chardev/char.c
+> index f54dc3a86286..a1722aa076d9 100644
+> --- a/chardev/char.c
+> +++ b/chardev/char.c
+> @@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)
+>  {
+>      if (CHARDEV_IS_MUX(s)) {
+>          MuxChardev *d =3D MUX_CHARDEV(s);
+> -        return d->mux_cnt > 0;
+> +        return d->mux_bitset !=3D 0;
+>      } else {
+>          return s->be !=3D NULL;
+>      }
+> diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
+> index 8126ce180690..b89aada5413b 100644
+> --- a/chardev/chardev-internal.h
+> +++ b/chardev/chardev-internal.h
+> @@ -37,8 +37,8 @@ struct MuxChardev {
+>      Chardev parent;
+>      CharBackend *backends[MAX_MUX];
+>      CharBackend chr;
+> +    unsigned long mux_bitset;
+>      int focus;
+> -    unsigned int mux_cnt;
+>      bool term_got_escape;
+>      /* Intermediate input buffer catches escape sequences even if the
+>         currently active device is not accepting any input - but only
+> until it
+> --
+> 2.34.1
+>
+>
+>
 
-Though it follows a non-Power specific spec, so IMO it should be "SPI TPM"
+--=20
+Marc-Andr=C3=A9 Lureau
 
-> 
->>> +
->>> +    tc->model = TPM_MODEL_TPM_TIS;
->>> +    tc->request_completed = tpm_tis_spi_request_completed;
->>> +    tc->get_version = tpm_tis_spi_get_tpm_version;
->>> +}
->>> +
->>> +static const TypeInfo tpm_tis_spi_info = {
->>> +    .name          = TYPE_TPM_TIS_SPI,
->>> +    .parent        = TYPE_SSI_PERIPHERAL,
->>> +    .instance_size = sizeof(TPMStateSPI),
->>> +    .class_init    = tpm_tis_spi_class_init,
->>> +    .interfaces    = (InterfaceInfo[]) {
->>> +        { TYPE_TPM_IF },
->>> +        { }
->>> +    }
->>> +};
->>> +
->>> +static void tpm_tis_spi_register_types(void)
->>> +{
->>> +    type_register_static(&tpm_tis_spi_info);
->>> +}
->>> +
->>> +type_init(tpm_tis_spi_register_types)
->>> diff --git a/tests/qtest/pnv-tpm-tis-spi-test.c 
->>> b/tests/qtest/pnv-tpm-tis-spi-test.c
->>> new file mode 100644
->>> index 0000000000..395c944044
->>> --- /dev/null
->>> +++ b/tests/qtest/pnv-tpm-tis-spi-test.c
->>
->> Call it tpm-tis-spi-pnv-test.c ? with functions in namespace
->> tpm_tis_spi_pnv_...  If this device is not PNV specific you should
->> probably drop pnv from the name.
-> 
-> It is PNV specific. It is only implemented and runs on PowerNV platform.
-> Given that, should I keep the pnv-tpm-tis-spi-test.c name, or change it
-> to tpm-tis-spi-pnv-test.c?
+--000000000000a7e61306246fb387
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The latter is probaby better.
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 14, 2024 at 3:45=E2=80=AF=
+PM Roman Penyaev &lt;<a href=3D"mailto:r.peniaev@gmail.com">r.peniaev@gmail=
+.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex">Frontends can be attached and detached during run-time (although detach=
+<br>
+is not implemented, but will follow). Counter variable of muxes is not<br>
+enough for proper attach/detach management, so this patch implements<br>
+bitset: if bit is set for the `mux_bitset` variable, then frontend<br>
+device can be found in the `backend` array (yes, huge confusion with<br>
+backend and frontends names).<br>
+<br>
+Signed-off-by: Roman Penyaev &lt;<a href=3D"mailto:r.peniaev@gmail.com" tar=
+get=3D"_blank">r.peniaev@gmail.com</a>&gt;<br>
+Cc: &quot;Marc-Andr=C3=A9 Lureau&quot; &lt;<a href=3D"mailto:marcandre.lure=
+au@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+Cc: <a href=3D"mailto:qemu-devel@nongnu.org" target=3D"_blank">qemu-devel@n=
+ongnu.org</a><br>
+---<br>
+=C2=A0chardev/char-mux.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 41 ++++++++++++=
++++++++++++++-------------<br>
+=C2=A0chardev/char.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0=
+ 2 +-<br>
+=C2=A0chardev/chardev-internal.h |=C2=A0 2 +-<br>
+=C2=A03 files changed, 29 insertions(+), 16 deletions(-)<br>
+<br>
+diff --git a/chardev/char-mux.c b/chardev/char-mux.c<br>
+index 9294f955462e..9c3cacb2fecd 100644<br>
+--- a/chardev/char-mux.c<br>
++++ b/chardev/char-mux.c<br>
+@@ -26,6 +26,7 @@<br>
+=C2=A0#include &quot;qapi/error.h&quot;<br>
+=C2=A0#include &quot;qemu/module.h&quot;<br>
+=C2=A0#include &quot;qemu/option.h&quot;<br>
++#include &quot;qemu/bitops.h&quot;<br>
+=C2=A0#include &quot;chardev/char.h&quot;<br>
+=C2=A0#include &quot;sysemu/block-backend.h&quot;<br>
+=C2=A0#include &quot;qapi/qapi-commands-control.h&quot;<br>
+@@ -168,12 +169,19 @@ static int mux_proc_byte(Chardev *chr, MuxChardev *d,=
+ int ch)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case &#39;b&#39;:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qemu_chr_be_event(chr, CHR_=
+EVENT_BREAK);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 case &#39;c&#39;:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(d-&gt;mux_cnt &gt; 0); /*=
+ handler registered with first fe */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 case &#39;c&#39;: {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned int bit;<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Handler registered with first=
+ fe */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(d-&gt;mux_bitset !=3D 0);=
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Switch to the next regis=
+tered device */<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mux_set_focus(chr, (d-&gt;focus =
++ 1) % d-&gt;mux_cnt);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bit =3D find_next_bit(&amp;d-&gt=
+;mux_bitset, MAX_MUX, d-&gt;focus + 1);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (bit &gt;=3D MAX_MUX) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bit =3D find_next_=
+bit(&amp;d-&gt;mux_bitset, MAX_MUX, 0);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mux_set_focus(chr, bit);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 case &#39;t&#39;:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 } case &#39;t&#39;:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0d-&gt;timestamps =3D !d-&gt=
+;timestamps;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0d-&gt;timestamps_start =3D =
+-1;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0d-&gt;linestart =3D false;<=
+br>
+@@ -243,15 +250,16 @@ static void mux_chr_read(void *opaque, const uint8_t =
+*buf, int size)<br>
+=C2=A0void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARDEV(chr);<br>
+-=C2=A0 =C2=A0 unsigned int i;<br>
++=C2=A0 =C2=A0 int bit;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (!muxes_opened) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0/* Send the event to all registered listeners */<br>
+-=C2=A0 =C2=A0 for (i =3D 0; i &lt; d-&gt;mux_cnt; i++) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 mux_chr_send_event(d, i, event);<br>
++=C2=A0 =C2=A0 bit =3D -1;<br>
++=C2=A0 =C2=A0 while ((bit =3D find_next_bit(&amp;d-&gt;mux_bitset, MAX_MUX=
+, bit + 1)) &lt; MAX_MUX) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 mux_chr_send_event(d, bit, event);<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0}<br>
+<br>
+@@ -276,10 +284,11 @@ static GSource *mux_chr_add_watch(Chardev *s, GIOCond=
+ition cond)<br>
+=C2=A0static void char_mux_finalize(Object *obj)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARDEV(obj);<br>
+-=C2=A0 =C2=A0 unsigned int i;<br>
++=C2=A0 =C2=A0 int bit;<br>
+<br>
+-=C2=A0 =C2=A0 for (i =3D 0; i &lt; d-&gt;mux_cnt; i++) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 CharBackend *be =3D d-&gt;backends[i];<br>
++=C2=A0 =C2=A0 bit =3D -1;<br>
++=C2=A0 =C2=A0 while ((bit =3D find_next_bit(&amp;d-&gt;mux_bitset, MAX_MUX=
+, bit + 1)) &lt; MAX_MUX) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 CharBackend *be =3D d-&gt;backends[bit];<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (be) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0be-&gt;chr =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+@@ -304,7 +313,10 @@ static void mux_chr_update_read_handlers(Chardev *chr)=
+<br>
+=C2=A0bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned int *tag, Error **errp)<br>
+=C2=A0{<br>
+-=C2=A0 =C2=A0 if (d-&gt;mux_cnt &gt;=3D MAX_MUX) {<br>
++=C2=A0 =C2=A0 unsigned int bit;<br>
++<br>
++=C2=A0 =C2=A0 bit =3D find_next_zero_bit(&amp;d-&gt;mux_bitset, MAX_MUX, 0=
+);<br>
++=C2=A0 =C2=A0 if (bit &gt;=3D MAX_MUX) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_setg(errp,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot=
+;too many uses of multiplexed chardev &#39;%s&#39;&quot;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot=
+; (maximum is &quot; stringify(MAX_MUX) &quot;)&quot;,<br>
+@@ -312,8 +324,9 @@ bool mux_chr_attach_frontend(MuxChardev *d, CharBackend=
+ *b,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+-=C2=A0 =C2=A0 d-&gt;backends[d-&gt;mux_cnt] =3D b;<br>
+-=C2=A0 =C2=A0 *tag =3D d-&gt;mux_cnt++;<br>
++=C2=A0 =C2=A0 d-&gt;mux_bitset |=3D (1 &lt;&lt; bit);<br>
++=C2=A0 =C2=A0 d-&gt;backends[bit] =3D b;<br>
++=C2=A0 =C2=A0 *tag =3D bit;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0return true;<br>
+=C2=A0}<br>
+@@ -322,7 +335,7 @@ void mux_set_focus(Chardev *chr, unsigned int focus)<br=
+>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARDEV(chr);<br>
+<br>
+-=C2=A0 =C2=A0 assert(focus &lt; d-&gt;mux_cnt);<br>
++=C2=A0 =C2=A0 assert(find_next_bit(&amp;d-&gt;mux_bitset, MAX_MUX, focus) =
+&lt; MAX_MUX);<br></blockquote><div><br></div><div>Wouldn&#39;t this be mor=
+e correct?<br></div><div><br></div><div>+ =C2=A0 =C2=A0assert(find_next_bit=
+(&amp;d-&gt;mux_bitset, MAX_MUX, focus) =3D=3D focus);<br>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+=C2=A0 =C2=A0 =C2=A0if (d-&gt;focus !=3D -1) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0mux_chr_send_event(d, d-&gt;focus, CHR_EV=
+ENT_MUX_OUT);<br>
+diff --git a/chardev/char.c b/chardev/char.c<br>
+index f54dc3a86286..a1722aa076d9 100644<br>
+--- a/chardev/char.c<br>
++++ b/chardev/char.c<br>
+@@ -333,7 +333,7 @@ static bool qemu_chr_is_busy(Chardev *s)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0if (CHARDEV_IS_MUX(s)) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARDEV(s);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 return d-&gt;mux_cnt &gt; 0;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return d-&gt;mux_bitset !=3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0} else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return s-&gt;be !=3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h<br>
+index 8126ce180690..b89aada5413b 100644<br>
+--- a/chardev/chardev-internal.h<br>
++++ b/chardev/chardev-internal.h<br>
+@@ -37,8 +37,8 @@ struct MuxChardev {<br>
+=C2=A0 =C2=A0 =C2=A0Chardev parent;<br>
+=C2=A0 =C2=A0 =C2=A0CharBackend *backends[MAX_MUX];<br>
+=C2=A0 =C2=A0 =C2=A0CharBackend chr;<br>
++=C2=A0 =C2=A0 unsigned long mux_bitset;<br>
+=C2=A0 =C2=A0 =C2=A0int focus;<br>
+-=C2=A0 =C2=A0 unsigned int mux_cnt;<br>
+=C2=A0 =C2=A0 =C2=A0bool term_got_escape;<br>
+=C2=A0 =C2=A0 =C2=A0/* Intermediate input buffer catches escape sequences e=
+ven if the<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 currently active device is not accepting any in=
+put - but only until it<br>
+-- <br>
+2.34.1<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--000000000000a7e61306246fb387--
 
