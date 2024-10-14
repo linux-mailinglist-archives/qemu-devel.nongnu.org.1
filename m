@@ -2,57 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CA799C83E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C001599C8D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:26:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Iy2-0004Ck-G4; Mon, 14 Oct 2024 07:10:26 -0400
+	id 1t0J9u-0006WY-BN; Mon, 14 Oct 2024 07:22:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t0Ixz-0004C8-LR
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:10:23 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t0Ixx-0000tN-73
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:10:23 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XRvXr3C8Mz6LCln;
- Mon, 14 Oct 2024 19:05:48 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 773211401F4;
- Mon, 14 Oct 2024 19:10:15 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 14 Oct
- 2024 13:10:15 +0200
-Date: Mon, 14 Oct 2024 12:10:13 +0100
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: Davidlohr Bueso <dave@stgolabs.net>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH -qemu] hw/cxl: Support get/set mctp response payload size
-Message-ID: <20241014121013.000062c3@Huawei.com>
-In-Reply-To: <Zwheg1hFMG_MYggX@fan>
-References: <20241010014157.175548-1-dave@stgolabs.net> <Zwheg1hFMG_MYggX@fan>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1t0J9r-0006VC-3y
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:22:39 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1t0J9m-0002bn-JW
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:22:38 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-430f6bc9ca6so32348675e9.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 04:22:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1728904952; x=1729509752;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6FFFkkrJOQdk1ckC5Al/c/hJKAwdon+oWpgJEZD2524=;
+ b=CVTGeBnkVIzHRPMTZqneWUPz3HFTEUFufcqcXGw+N4L9GYm2VJYrGFz24+Bj4LSVlo
+ P2QGv5H3k6iQrGom0NLQEgtgRHLgVwqNdUlAI7jzbO1Gchs0STChWQVjmh5F7LUv0/wG
+ DRTreiZKwh2diYn6z1PRyOcpCWdfK0WNGfOGaMMO/2V8XwgK+i1Jn+XSwPlGoiboUaon
+ A7eEY2tapn5SfajPjCkWgsOlOk3xKRSrSLBEodwN/ZP3Wly4uDiL/iC0XqgzEhJU2Oc8
+ k14LJDuw9PWEF405BtwRYbW3BipkUaItPopw/BhNj28gJd7wTXyMYa0DC/n8S/Lbpdid
+ k84w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728904952; x=1729509752;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6FFFkkrJOQdk1ckC5Al/c/hJKAwdon+oWpgJEZD2524=;
+ b=TZmWu5w3ZgSvQPnEHA6wx0V76YvaUVlExEgQkQ2xMdB9PRwhkrJAIuEtgnkPBlfnoY
+ JbV4POu/OhyvwWiz3we3w+8wml52m9CKMi8/wOeaRrqroTfgL4DCh2chlPW6PSk//3uS
+ z8PR6twF3LjfHyOueaKCMesWuWePu65aHlC7lP9A72llzXu/25A+c0y4814MdJjQyq4V
+ B3IJefE8NzKSuBs9jzorXIxtSbeKHXnUcBfQv4TmaMahqXArumOuoviFIWRIAokZe1Mf
+ QEARZIzQBNSJRM1XtR0MkxiuCJrXbed2AEz6ytVMGsszcD+u4CgoP5An7Bfd/3ZKjZC4
+ W2iA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX+zih9/dyj8mOHXaK5D0ZTze+B7bhWRSHc63Kvt3xXZud4EbMYd2ISxslWdc7ScP8lCg4gdGmHq2ow@nongnu.org
+X-Gm-Message-State: AOJu0YyPy5vQbbr/s4MO1rGcW2Kpvm6xaIvZjvfKafecjRoLUS69JqBt
+ /rbpxTAkcHBTTC3rp3dliQyv0xRI/VbMMNdDEie3X09G3JK5dwxt72wLQYsHbLI=
+X-Google-Smtp-Source: AGHT+IGCqIr5ZyQBJoGCNlWdVTHFDzmBcyCCEoD6iWLvhXLQS3ZwKvxxg9fniUN/5E2G/BUFUZrq0g==
+X-Received: by 2002:a05:600c:1c09:b0:42f:68e8:d874 with SMTP id
+ 5b1f17b1804b1-4312561a63emr62570125e9.31.1728904951583; 
+ Mon, 14 Oct 2024 04:22:31 -0700 (PDT)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37d4b6bd382sm11117303f8f.43.2024.10.14.04.22.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2024 04:22:31 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH v3 0/8] target/riscv: Add support for Smdbltrp and Ssdbltrp
+ extensions
+Date: Mon, 14 Oct 2024 13:22:10 +0200
+Message-ID: <20241014112225.90297-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=cleger@rivosinc.com; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,184 +96,183 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Oct 2024 16:08:51 -0700
-Fan Ni <nifan.cxl@gmail.com> wrote:
+A double trap typically arises during a sensitive phase in trap handling
+operations — when an exception or interrupt occurs while the trap
+handler (the component responsible for managing these events) is in a
+non-reentrant state. This non-reentrancy usually occurs in the early
+phase of trap handling, wherein the trap handler has not yet preserved
+the necessary state to handle and resume from the trap. The occurrence
+of such event is unlikely but can happen when dealing with hardware
+errors.
 
-> On Wed, Oct 09, 2024 at 06:41:57PM -0700, Davidlohr Bueso wrote:
-> > Add Get/Set Response Message Limit commands.
-> > 
-> > Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>  
-> 
-> The commit log may include the cxl spec reference. Otherwise,
-> 
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
-> 
-> 
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c | 68 ++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 65 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index c2d776bc96eb..98416af794bb 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -7,6 +7,8 @@
-> >   * COPYING file in the top-level directory.
-> >   */
-> >  
-> > +#include <math.h>
-> > +
-> >  #include "qemu/osdep.h"
-> >  #include "hw/pci/msi.h"
-> >  #include "hw/pci/msix.h"
-> > @@ -56,6 +58,8 @@ enum {
-> >      INFOSTAT    = 0x00,
-> >          #define IS_IDENTIFY   0x1
-> >          #define BACKGROUND_OPERATION_STATUS    0x2
-> > +        #define GET_RESPONSE_MSG_LIMIT   0x3
-> > +        #define SET_RESPONSE_MSG_LIMIT   0x4
-> >      EVENTS      = 0x01,
-> >          #define GET_RECORDS   0x0
-> >          #define CLEAR_RECORDS   0x1
-> > @@ -393,7 +397,7 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
-> >          uint16_t pcie_subsys_vid;
-> >          uint16_t pcie_subsys_id;
-> >          uint64_t sn;
-> > -    uint8_t max_message_size;
-> > +        uint8_t max_message_size;
-Huh.  I wonder how that misalignment got in.
+This series adds support for Ssdbltrp and Smdbltrp ratified ISA
+extensions [1]. It is based on the Smrnmi series [6].
 
-I'll spin a separate tidy up patch to deal with that and
-include it in a trivial series I'm sending later today.
+Ssdbltrp can be tested using qemu[2], opensbi[3], linux[4] and
+kvm-unit-tests[5]. Assuming you have a riscv environment available and
+configured (CROSS_COMPILE), it can be built for riscv64 using the
+following instructions:
 
-> >          uint8_t component_type;
-> >      } QEMU_PACKED *is_identify;
-> >      QEMU_BUILD_BUG_ON(sizeof(*is_identify) != 18);
-> > @@ -422,12 +426,58 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
-> >          is_identify->component_type = 0x3; /* Type 3 */
-> >      }
-> >  
-> > -    /* TODO: Allow this to vary across different CCIs */
-> > -    is_identify->max_message_size = 9; /* 512 bytes - MCTP_CXL_MAILBOX_BYTES */
-> > +    is_identify->max_message_size = (uint8_t)log2(cci->payload_max);
-> >      *len_out = sizeof(*is_identify);
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> >  
-> > +/* CXL r3.1 section 8.2.9.1.3: Get Response Message Limit (Opcode 0003h) */
-> > +static CXLRetCode cmd_get_response_msg_limit(const struct cxl_cmd *cmd,
-> > +                                             uint8_t *payload_in,
-> > +                                             size_t len_in,
-> > +                                             uint8_t *payload_out,
-> > +                                             size_t *len_out,
-> > +                                             CXLCCI *cci)
-> > +{
-> > +    struct {
-> > +        uint8_t rsp_limit;
-> > +    } QEMU_PACKED *get_rsp_msg_limit = (void *)payload_out;
-> > +    QEMU_BUILD_BUG_ON(sizeof(*get_rsp_msg_limit) != 1);
-> > +
-> > +    get_rsp_msg_limit->rsp_limit = (uint8_t)log2(cci->payload_max);
-> > +
-> > +    *len_out = sizeof(*get_rsp_msg_limit);
-> > +    return CXL_MBOX_SUCCESS;
-> > +}
-> > +
-> > +/* CXL r3.1 section 8.2.9.1.4: Set Response Message Limit (Opcode 0004h) */
-> > +static CXLRetCode cmd_set_response_msg_limit(const struct cxl_cmd *cmd,
-> > +                                             uint8_t *payload_in,
-> > +                                             size_t len_in,
-> > +                                             uint8_t *payload_out,
-> > +                                             size_t *len_out,
-> > +                                             CXLCCI *cci)
-> > +{
-> > +    struct {
-> > +        uint8_t rsp_limit;
-> > +    } QEMU_PACKED *in = (void *)payload_in;
-> > +    QEMU_BUILD_BUG_ON(sizeof(*in) != 1);
-> > +    struct {
-> > +        uint8_t rsp_limit;
-> > +    } QEMU_PACKED *out = (void *)payload_out;
-> > +    QEMU_BUILD_BUG_ON(sizeof(*out) != 1);
-> > +
-> > +    if (in->rsp_limit < 8 || in->rsp_limit > 10) {
+Qemu:
+  $ git clone https://github.com/rivosinc/qemu.git
+  $ cd qemu
+  $ git switch -C dbltrp_v3 dev/cleger/dbltrp_v3
+  $ mkdir build && cd build
+  $ ../configure --target-list=riscv64-softmmu
+  $ make
 
-Good to document why these values - possibly using defines.
-I think 8 is the minimum the spec allows, but is the 10 based on
-anything specific?
+OpenSBI:
+  $ git clone https://github.com/rivosinc/opensbi.git
+  $ cd opensbi
+  $ git switch -C dbltrp_v3 dev/cleger/dbltrp_v3
+  $ make O=build PLATFORM_RISCV_XLEN=64 PLATFORM=generic
 
-I'll carry this on my gitlab staging branch but want to
-tidy this up before suggesting Michael picks it up.
+Linux:
+  $ git clone https://github.com/rivosinc/linux.git
+  $ cd linux
+  $ git switch -C dbltrp_v1 dev/cleger/dbltrp_v1
+  $ export ARCH=riscv
+  $ make O=build defconfig
+  $ ./script/config --file build/.config --enable RISCV_DBLTRP
+  $ make O=build
 
-I'll end up splitting this up a little though as only one of
-the MCTP mailboxes on that tree is not dependent on the i2c mctp
-stuff that is queued up behind Klaus' series.  So I'll drag
-the guts of this to near the top of my tree and include the extra
-commands where that i2c_mctp is added.
+kvm-unit-tests:
+  $ git clone https://github.com/clementleger/kvm-unit-tests.git
+  $ cd kvm-unit-tests
+  $ git switch -C dbltrp_v1 dev/cleger/dbltrp_v1
+  $ ./configure --arch=riscv64 --cross-prefix=$CROSS_COMPILE
+  $ make
 
-hw/cxl/i2c_mctp_cxl: Initial device emulation
+You will also need kvmtool in your rootfs.
 
-I'll push a new gitlab.com/jic23/qemu tree out later today with this
-done.
+Run with kvm-unit-test test as kernel:
+  $ qemu-system-riscv64 \
+    -M virt \
+    -cpu rv64,ssdbltrp=true,smdbltrp=true \
+    -nographic \
+    -serial mon:stdio \
+    -bios opensbi/build/platform/generic/firmware/fw_jump.bin \
+    -kernel kvm-unit-tests-dbltrp/riscv/sbi_dbltrp.flat
+  ...
+  [OpenSBI boot partially elided]
+  Boot HART ISA Extensions  : sscofpmf,sstc,zicntr,zihpm,zicboz,zicbom,sdtrig,svadu,ssdbltrp
+  ...
+  ##########################################################################
+  #    kvm-unit-tests
+  ##########################################################################
 
-Thanks,
+  PASS: sbi: fwft: FWFT extension probing no error
+  PASS: sbi: fwft: FWFT extension is present
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Double trap disabled, trap first time ok
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Trapped twice allowed ok
+  INFO: sbi: fwft: dbltrp: Should generate a double trap and crash !
 
-Jonathan
+  sbi_trap_error: hart0: trap0: double trap handler failed (error -10)
 
-> > +        return CXL_MBOX_INVALID_INPUT;
-> > +    }
-> > +
-> > +    cci->payload_max = 1 << in->rsp_limit;
-> > +    out->rsp_limit = in->rsp_limit;
-> > +
-> > +    *len_out = sizeof(*out);
-> > +    return CXL_MBOX_SUCCESS;
-> > +}
-> > +
-> >  static void cxl_set_dsp_active_bm(PCIBus *b, PCIDevice *d,
-> >                                    void *private)
-> >  {
-> > @@ -3000,6 +3050,10 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
-> >  
-> >  static const struct cxl_cmd cxl_cmd_set_t3_mctp[256][256] = {
-> >      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
-> > +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_get_response_msg_limit, 0, 0 },
-> > +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_set_response_msg_limit, 1, 0 },
-> >      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-> >      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
-> >                                0 },
-> > @@ -3035,6 +3089,10 @@ void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
-> >  
-> >  static const struct cxl_cmd cxl_cmd_set_t3_fm_owned_ld_mctp[256][256] = {
-> >      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0,  0},
-> > +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_get_response_msg_limit, 0, 0 },
-> > +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_set_response_msg_limit, 1, 0 },
-> >      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
-> >                                0 },
-> >      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-> > @@ -3055,6 +3113,10 @@ void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
-> >  
-> >  static const struct cxl_cmd cxl_cmd_set_usp_mctp[256][256] = {
-> >      [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
-> > +    [INFOSTAT][GET_RESPONSE_MSG_LIMIT] = { "GET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_get_response_msg_limit, 0, 0 },
-> > +    [INFOSTAT][SET_RESPONSE_MSG_LIMIT] = { "SET_RESPONSE_MSG_LIMIT",
-> > +                                           cmd_set_response_msg_limit, 1, 0 },
-> >      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
-> >                                0, 0 },
-> >      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-> > -- 
-> > 2.46.1
-> >   
-> 
+  sbi_trap_error: hart0: trap0: mcause=0x0000000000000010 mtval=0x0000000000000000
+  sbi_trap_error: hart0: trap0: mtval2=0x0000000000000003 mtinst=0x0000000000000000
+  sbi_trap_error: hart0: trap0: mepc=0x00000000802000d8 mstatus=0x8000000a01006900
+  sbi_trap_error: hart0: trap0: ra=0x00000000802001fc sp=0x0000000080213e70
+  sbi_trap_error: hart0: trap0: gp=0x0000000000000000 tp=0x0000000080088000
+  sbi_trap_error: hart0: trap0: s0=0x0000000080213e80 s1=0x0000000000000001
+  sbi_trap_error: hart0: trap0: a0=0x0000000080213e80 a1=0x0000000080208193
+  sbi_trap_error: hart0: trap0: a2=0x000000008020dc20 a3=0x000000000000000f
+  sbi_trap_error: hart0: trap0: a4=0x0000000080210cd8 a5=0x00000000802110d0
+  sbi_trap_error: hart0: trap0: a6=0x00000000802136e4 a7=0x0000000046574654
+  sbi_trap_error: hart0: trap0: s2=0x0000000080210cd9 s3=0x0000000000000000
+  sbi_trap_error: hart0: trap0: s4=0x0000000000000000 s5=0x0000000000000000
+  sbi_trap_error: hart0: trap0: s6=0x0000000000000000 s7=0x0000000000000001
+  sbi_trap_error: hart0: trap0: s8=0x0000000000002000 s9=0x0000000080083700
+  sbi_trap_error: hart0: trap0: s10=0x0000000000000000 s11=0x0000000000000000
+  sbi_trap_error: hart0: trap0: t0=0x0000000000000000 t1=0x0000000080213ed8
+  sbi_trap_error: hart0: trap0: t2=0x0000000000001000 t3=0x0000000080213ee0
+  sbi_trap_error: hart0: trap0: t4=0x0000000000000000 t5=0x000000008020f8d0
+  sbi_trap_error: hart0: trap0: t6=0x0000000000000000
+
+Run with linux and kvm-unit-test test in kvm (testing VS-mode):
+  $ qemu-system-riscv64 \
+    -M virt \
+    -cpu rv64,ssdbltrp=true,smdbltrp=true \
+    -nographic \
+    -serial mon:stdio \
+    -bios opensbi/build/platform/generic/firmware/fw_jump.bin \
+    -kernel linux/build/arch/riscv/boot/Image
+  ...
+  [Linux boot partially elided]
+  [    0.735079] riscv-dbltrp: Double trap handling registered
+  ...
+
+  $ lkvm run -k sbi_dbltrp.flat -m 128 -c 2
+  ##########################################################################
+  #    kvm-unit-tests
+  ##########################################################################
+
+  PASS: sbi: fwft: FWFT extension probing no error
+  PASS: sbi: fwft: FWFT extension is present
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Double trap disabled, trap first time ok
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Trapped twice allowed ok
+  INFO: sbi: fwft: dbltrp: Should generate a double trap and crash !
+  [   51.939077] Guest double trap
+  [   51.939323] kvm [93]: VCPU exit error -95
+  [   51.939683] kvm [93]: SEPC=0x802000d8 SSTATUS=0x200004520 HSTATUS=0x200200180
+  [   51.939947] kvm [93]: SCAUSE=0x10 STVAL=0x0 HTVAL=0x3 HTINST=0x0
+  KVM_RUN failed: Operation not supported
+  $
+
+Testing Smbdbltrp can be done using gdb and trigger some trap. For
+instance, interrupt M-mode firmware at some point, set mstatus.mdt = 1
+and corrupt some register to generate a NULL pointer exception.
+
+Link: https://github.com/riscv/riscv-isa-manual/commit/52a5742d5ab5a0792019033631b2035a493ad981 [1]
+Link: https://github.com/rivosinc/qemu/tree/dev/cleger/dbltrp_v3 [2]
+Link: https://github.com/rivosinc/opensbi/tree/dev/cleger/dbltrp_v3 [3]
+Link: https://github.com/rivosinc/linux/tree/dev/cleger/dbltrp_v1 [4]
+Link: https://github.com/clementleger/kvm-unit-tests/tree/dev/cleger/dbltrp_v1 [5]
+Link: https://lore.kernel.org/all/CAKmqyKO9k93OLX_pxtkHcUAvC=NUNxtp6mDCb2J2ZWHMnfbNYQ@mail.gmail.com/T/ [6]
+
+---
+V3:
+ - Fix spec version from 1.12 to 1.13 for Smdbltrp and Ssdbltrp
+ - Add better comments for dte/sdt computation in
+   riscv_cpu_do_interrupt().
+ - Move some CSR related changes to the CSRs related commits.
+
+V2:
+ - Squashed commits that added ext_s{s|m}dbltrp as suggested by Daniel
+
+Clément Léger (8):
+  target/riscv: Add Ssdbltrp CSRs handling
+  target/riscv: Implement Ssdbltrp sret, mret and mnret behavior
+  target/riscv: Implement Ssdbltrp exception handling
+  target/riscv: Add Ssdbltrp ISA extension enable switch
+  target/riscv: Add Smdbltrp CSRs handling
+  target/riscv: Implement Smdbltrp sret, mret and mnret behavior
+  target/riscv: Implement Smdbltrp behavior
+  target/riscv: Add Smdbltrp ISA extension enable switch
+
+ target/riscv/cpu.c        |  9 +++-
+ target/riscv/cpu.h        |  1 +
+ target/riscv/cpu_bits.h   |  8 ++++
+ target/riscv/cpu_cfg.h    |  2 +
+ target/riscv/cpu_helper.c | 97 +++++++++++++++++++++++++++++++++------
+ target/riscv/csr.c        | 60 ++++++++++++++++++++----
+ target/riscv/op_helper.c  | 47 ++++++++++++++++++-
+ 7 files changed, 198 insertions(+), 26 deletions(-)
+
+-- 
+2.45.2
 
 
