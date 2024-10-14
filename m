@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8193D99CBB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE7799CBB8
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 15:41:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0LIb-0000Zk-E6; Mon, 14 Oct 2024 09:39:49 -0400
+	id 1t0LIi-0000bc-SZ; Mon, 14 Oct 2024 09:40:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1t0LIZ-0000ZB-VW
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:39:47 -0400
+ id 1t0LIg-0000bL-Cv
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:39:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1t0LIY-0003bJ-BZ
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:39:47 -0400
+ id 1t0LIf-0003bh-36
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 09:39:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728913184;
+ s=mimecast20190719; t=1728913191;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=w617wUgTbXtxtuoUR2uNefdmB3J0uSRbGffjps8S74w=;
- b=ZfWP0fMPTHyYm2Synba6aNgOM4Cv3+NdQMWBU8ADVZ6X7j2800oOtbGEV+fS1XR2FANbq7
- IrUuq9XB9xQ7ttOFbNcAt6NZdiUD4+badCLU5f4HOQgsnMEUfQWm/b3s9/q4LIBxO3xJS+
- FXnK/IZTm0C0x/s1IAyNQFZTA7g3T2Y=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0XYBhezV8ICaxkklWVa1IANiJe8ZXPyeCmgDrHusSOk=;
+ b=VOYPv+98Z5yXGJ4ABxWSVOaV+i/rYDWokairKZoet/Bn56lu8vXQbYU8QL/lODK+Md2B8R
+ jWWBEDS5bzk0yqZw5Y/RxMaMOvVNeB2C5fSo/HTGiEQp2P3bzK1x7Hyw6sYs2NfvtbNPkX
+ LaRxbPT7igB+paYlG1gCDmR6kb/ynBo=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-H_srHPVoP72yqcLsjztrvQ-1; Mon,
- 14 Oct 2024 09:39:43 -0400
-X-MC-Unique: H_srHPVoP72yqcLsjztrvQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-286-chFqT-O3MRSNeen2hJc3ng-1; Mon,
+ 14 Oct 2024 09:39:47 -0400
+X-MC-Unique: chFqT-O3MRSNeen2hJc3ng-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2558D19560B4; Mon, 14 Oct 2024 13:39:41 +0000 (UTC)
+ id EB17619560B1; Mon, 14 Oct 2024 13:39:46 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.12])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C04FB1956088; Mon, 14 Oct 2024 13:39:38 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 12AC919560AA; Mon, 14 Oct 2024 13:39:44 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 00/20] UI patches
-Date: Mon, 14 Oct 2024 17:39:15 +0400
-Message-ID: <20241014133935.470709-1-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 01/20] hw/audio/hda: free timer on exit
+Date: Mon, 14 Oct 2024 17:39:16 +0400
+Message-ID: <20241014133935.470709-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20241014133935.470709-1-marcandre.lureau@redhat.com>
+References: <20241014133935.470709-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -83,64 +87,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The following changes since commit 3860a2a8de56fad71db42f4ad120eb7eff03b51f:
+Fixes: 280c1e1cd ("audio/hda: create millisecond timers that handle IO")
 
-  Merge tag 'pull-tcg-20241013' of https://gitlab.com/rth7680/qemu into staging (2024-10-14 11:12:34 +0100)
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-ID: <20241008125028.1177932-2-marcandre.lureau@redhat.com>
+---
+ hw/audio/hda-codec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
-
-for you to fetch changes up to 4cd78a3db2478d3c1527905a26c9d3fbee83ccac:
-
-  audio/pw: Report more accurate error when connecting to PipeWire fails (2024-10-14 17:35:24 +0400)
-
-----------------------------------------------------------------
-UI-related fixes & shareable 2d memory with -display dbus
-
-----------------------------------------------------------------
-
-Marc-André Lureau (19):
-  hw/audio/hda: free timer on exit
-  hw/audio/hda: fix memory leak on audio setup
-  ui/dbus: fix leak on message filtering
-  ui/win32: fix potential use-after-free with dbus shared memory
-  ui/dbus: fix filtering all update messages
-  ui/dbus: discard display messages on disable
-  ui/dbus: discard pending CursorDefine on new one
-  util/memfd: report potential errors on free
-  ui/pixman: generalize shared_image_destroy
-  ui/dbus: do not limit to one listener per connection / bus name
-  ui/dbus: add trace for can_share_map
-  ui/surface: allocate shared memory on !win32
-  meson: find_program('gdbus-codegen') directly
-  ui/dbus: make Listener.Win32.Map win32-specific
-  ui/dbus: add Listener.Unix.Map interface XML
-  ui/dbus: implement Unix.Map
-  virtio-gpu: allocate shareable 2d resources on !win32
-  ui: refactor using a common qemu_pixman_shareable
-  tests: add basic -display dbus Map.Unix test
-
-Michal Privoznik (1):
-  audio/pw: Report more accurate error when connecting to PipeWire fails
-
- meson.build                     |   2 +-
- include/hw/virtio/virtio-gpu.h  |   4 +-
- include/ui/qemu-pixman.h        |  24 +++++
- include/ui/surface.h            |  14 ++-
- audio/pwaudio.c                 |   8 +-
- hw/audio/hda-codec.c            |  33 ++++---
- hw/display/virtio-gpu.c         |  69 ++++----------
- tests/qtest/dbus-display-test.c |  72 ++++++++++++++-
- ui/console.c                    |  78 ++++++----------
- ui/dbus-console.c               |  23 +----
- ui/dbus-listener.c              | 159 ++++++++++++++++++++++++++++----
- ui/qemu-pixman.c                |  71 ++++++++++++++
- util/memfd.c                    |   9 +-
- ui/dbus-display1.xml            |  49 ++++++++++
- ui/trace-events                 |   1 +
- 15 files changed, 444 insertions(+), 172 deletions(-)
-
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index b40eec9604..74c0292284 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -751,7 +751,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
+             continue;
+         }
+         if (a->use_timer) {
+-            timer_del(st->buft);
++            timer_free(st->buft);
+         }
+         if (st->output) {
+             AUD_close_out(&a->card, st->voice.out);
 -- 
 2.47.0
 
