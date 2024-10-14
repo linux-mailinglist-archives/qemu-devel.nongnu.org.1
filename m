@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AFD99D74C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 21:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F084E99D74E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 21:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0QfG-0001vZ-Oc; Mon, 14 Oct 2024 15:23:34 -0400
+	id 1t0Qfc-0002vY-Ol; Mon, 14 Oct 2024 15:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t0QfE-0001v0-M4; Mon, 14 Oct 2024 15:23:32 -0400
+ id 1t0QfX-0002pW-Kp; Mon, 14 Oct 2024 15:23:51 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t0QfD-00051A-2z; Mon, 14 Oct 2024 15:23:32 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XS6YD2CLrz6K6lC;
- Tue, 15 Oct 2024 03:21:52 +0800 (CST)
+ id 1t0QfV-00052f-Hg; Mon, 14 Oct 2024 15:23:51 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XS6VJ1h0gz6L755;
+ Tue, 15 Oct 2024 03:19:20 +0800 (CST)
 Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
- by mail.maildlp.com (Postfix) with ESMTPS id A643D1400D9;
- Tue, 15 Oct 2024 03:23:27 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C0EE71400D9;
+ Tue, 15 Oct 2024 03:23:47 +0800 (CST)
 Received: from 00293818-MRGF.huawei.com (10.48.146.149) by
  frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 14 Oct 2024 21:23:08 +0200
+ 15.1.2507.39; Mon, 14 Oct 2024 21:23:28 +0200
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <mst@redhat.com>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -43,10 +43,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <shahuang@redhat.com>, <zhao1.liu@intel.com>, <linuxarm@huawei.com>,
  <gustavo.romero@linaro.org>
-Subject: [PATCH V1 2/4] hw/acpi: Update ACPI CPU Status `is_{present,
- enabled}` during vCPU hot(un)plug
-Date: Mon, 14 Oct 2024 20:22:03 +0100
-Message-ID: <20241014192205.253479-3-salil.mehta@huawei.com>
+Subject: [PATCH V1 3/4] hw/acpi: Reflect ACPI vCPU {present,
+ enabled} states in ACPI _STA.{PRES, ENA} Bits
+Date: Mon, 14 Oct 2024 20:22:04 +0100
+Message-ID: <20241014192205.253479-4-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241014192205.253479-1-salil.mehta@huawei.com>
 References: <20241014192205.253479-1-salil.mehta@huawei.com>
@@ -82,40 +82,91 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the `AcpiCpuStatus` for `is_enabled` and `is_present` accordingly when
-vCPUs are hot-plugged or hot-unplugged, taking into account the *persistence*
-of the vCPUs.
+Reflect the ACPI CPU hotplug `is_{present, enabled}` states in the `_STA.PRES`
+(presence) and `_STA.ENA` (enabled) bits when the guest kernel evaluates the
+ACPI `_STA` method during initialization, as well as when vCPUs are hot-plugged
+or hot-unplugged. The presence of unplugged vCPUs may need to be deliberately
+*simulated* at the ACPI level to maintain a *persistent* view of vCPUs for the
+guest kernel.
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/acpi/cpu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/acpi/cpu.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
 diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 083c4010c2..700aa855e9 100644
+index 700aa855e9..23ea2b9c70 100644
 --- a/hw/acpi/cpu.c
 +++ b/hw/acpi/cpu.c
-@@ -291,6 +291,8 @@ void acpi_cpu_plug_cb(HotplugHandler *hotplug_dev,
-     }
+@@ -63,10 +63,11 @@ static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
+     cdev = &cpu_st->devs[cpu_st->selector];
+     switch (addr) {
+     case ACPI_CPU_FLAGS_OFFSET_RW: /* pack and return is_* fields */
+-        val |= cdev->cpu ? 1 : 0;
++        val |= cdev->is_enabled ? 1 : 0;
+         val |= cdev->is_inserting ? 2 : 0;
+         val |= cdev->is_removing  ? 4 : 0;
+         val |= cdev->fw_remove  ? 16 : 0;
++        val |= cdev->is_present ? 32 : 0;
+         trace_cpuhp_acpi_read_flags(cpu_st->selector, val);
+         break;
+     case ACPI_CPU_CMD_DATA_OFFSET_RW:
+@@ -376,6 +377,7 @@ const VMStateDescription vmstate_cpu_hotplug = {
+ #define CPU_REMOVE_EVENT  "CRMV"
+ #define CPU_EJECT_EVENT   "CEJ0"
+ #define CPU_FW_EJECT_EVENT "CEJF"
++#define CPU_PRESENT       "CPRS"
  
-     cdev->cpu = CPU(dev);
-+    cdev->is_present = true;
-+    cdev->is_enabled = true;
-     if (dev->hotplugged) {
-         cdev->is_inserting = true;
-         acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
-@@ -322,6 +324,11 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
-         return;
-     }
+ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+                     build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+@@ -436,7 +438,9 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         aml_append(field, aml_named_field(CPU_EJECT_EVENT, 1));
+         /* tell firmware to do device eject, write only */
+         aml_append(field, aml_named_field(CPU_FW_EJECT_EVENT, 1));
+-        aml_append(field, aml_reserved_field(3));
++        /* 1 if present, read only */
++        aml_append(field, aml_named_field(CPU_PRESENT, 1));
++        aml_append(field, aml_reserved_field(2));
+         aml_append(field, aml_named_field(CPU_COMMAND, 8));
+         aml_append(cpu_ctrl_dev, field);
  
-+    cdev->is_enabled = false;
-+    if (!acpi_persistent_cpu(CPU(dev))) {
-+        cdev->is_present = false;
-+    }
-+
-     cdev->cpu = NULL;
- }
+@@ -466,6 +470,7 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         Aml *ctrl_lock = aml_name("%s.%s", cphp_res_path, CPU_LOCK);
+         Aml *cpu_selector = aml_name("%s.%s", cphp_res_path, CPU_SELECTOR);
+         Aml *is_enabled = aml_name("%s.%s", cphp_res_path, CPU_ENABLED);
++        Aml *is_present = aml_name("%s.%s", cphp_res_path, CPU_PRESENT);
+         Aml *cpu_cmd = aml_name("%s.%s", cphp_res_path, CPU_COMMAND);
+         Aml *cpu_data = aml_name("%s.%s", cphp_res_path, CPU_DATA);
+         Aml *ins_evt = aml_name("%s.%s", cphp_res_path, CPU_INSERT_EVENT);
+@@ -494,13 +499,26 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         {
+             Aml *idx = aml_arg(0);
+             Aml *sta = aml_local(0);
++            Aml *ifctx2;
++            Aml *else_ctx;
  
+             aml_append(method, aml_acquire(ctrl_lock, 0xFFFF));
+             aml_append(method, aml_store(idx, cpu_selector));
+             aml_append(method, aml_store(zero, sta));
+-            ifctx = aml_if(aml_equal(is_enabled, one));
++            ifctx = aml_if(aml_equal(is_present, one));
+             {
+-                aml_append(ifctx, aml_store(aml_int(0xF), sta));
++                ifctx2 = aml_if(aml_equal(is_enabled, one));
++                {
++                    /* cpu is present and enabled */
++                    aml_append(ifctx2, aml_store(aml_int(0xF), sta));
++                }
++                aml_append(ifctx, ifctx2);
++                else_ctx = aml_else();
++                {
++                    /* cpu is present but disabled */
++                    aml_append(else_ctx, aml_store(aml_int(0xD), sta));
++                }
++                aml_append(ifctx, else_ctx);
+             }
+             aml_append(method, ifctx);
+             aml_append(method, aml_release(ctrl_lock));
 -- 
 2.34.1
 
