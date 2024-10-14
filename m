@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E29799D294
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F1899D28A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:27:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Mxl-0006G2-Ej; Mon, 14 Oct 2024 11:26:25 -0400
+	id 1t0Mxk-0006Fn-Vh; Mon, 14 Oct 2024 11:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0Mxh-0006Ez-Qd
+ id 1t0Mxj-0006FF-8y
  for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:23 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0MxZ-0000vE-RS
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:16 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-37d4ac91d97so3823346f8f.2
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:13 -0700 (PDT)
+ id 1t0Mxb-0000vM-Nw
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:26:17 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-539e1543ab8so4276286e87.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728919572; x=1729524372; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728919573; x=1729524373; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7qO/4HKWHrVuc6GQ36ulz/Nn1mmzauBCzpX9YAoGCMM=;
- b=CtarFoZbgg2jyd1mPrDYklVrhA3Mp1hIU2xqNvGKmzCY+Pag2Uk8Z2blO0fID7pRyI
- 8bQLTaYvbkVd+MjUKXZI5UaN6EuXNJ+KP8AboCnkJkWeUphAb8fC+eBKJCfPN98WoBo2
- +h2UzpP8ad/OsDdhp+u7ldZMJ6cRKze8cKIzkFuaIBszMEsk+Ak3HeoYq6WpNzS2+5Ys
- BSIiIg+mv3Et33sO+OVAihczwasPKXulaezHn3Mj04lGLsSVgu6zo4XHiBkT+3WQ2MND
- tBUNGEiR1Mb6MvkTmnc/AxYHrdiitMwKbknYLw1U9+ncgadsYftw1CMtDRPnthmQh0SU
- 6LHg==
+ bh=QKeU6Sst3mOvcdt2OZL+D4LtHqpR806Hah+uBtunjhM=;
+ b=iXwL8QzXU653ORChLABm6U8ob9MLpPYcGPdYao4B6txAVd9WYJ4b/DfqCHLmTRTh1e
+ l3ryTbB7IkgURb8cU1cb1FCXulP06pTRYgJNY0lug4UQcLB2trV2Vib5frueg1WKI3Fe
+ eyMm1w/aEC8YPz+btBxtuH4IDJz9NuQie7EsRWXco2SFKnxFMWRTGlzxmAiGrWDWXxHl
+ EhmpEsrZEJmJfvvgT4hSpgXk+qEJJNR+Nuwzo4XAbBzG0G5bYb/Hcf5DdDHWijXm81kS
+ iANyu1IaLXbfLqOrfJUsCspzRrqG69n/9EHUm5PLVpX5jAyuaHyZzplfYPyU9Spl/X+C
+ xKqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728919572; x=1729524372;
+ d=1e100.net; s=20230601; t=1728919573; x=1729524373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7qO/4HKWHrVuc6GQ36ulz/Nn1mmzauBCzpX9YAoGCMM=;
- b=G+gKKcnE1HhyS51ua7rNF7fYBZ2pvYHYcEmhnPSaUGcyLdfsITtwtFjHGNC9NUFU4P
- hNaUDH1IhjemjYQ3UjK7dH84nlQYVhkbnq3kd82KUfjigXw38+eD3hOo7IX0/KrxZxop
- da7hx7uLQylxHXlrePUxLIhfxAVvnVr5Ye4spNI39xHDdLuT6WE2OLI0MTN3AdUhpTO9
- wgRYf/T05uwDtIQaKr0K4Td8tmgAOIBtwI1wqvhC61mkW0w9MISNDJ889ZHLCHW0DDgo
- T3iYHClqLrlaa9UdZx5WqsIE2hUdDXB3mHUJ85zPmg0jB0ObR7pEiqYwTUPAPj4kxW0O
- FyJQ==
+ bh=QKeU6Sst3mOvcdt2OZL+D4LtHqpR806Hah+uBtunjhM=;
+ b=a7igiki5qNmHMoIECMPkmdxRNCw9814EyqVYh1bT/Qg69fQkC8fYwDkJw66mUDBGoX
+ MJtE/WxRCmQV2VSQh0pVFhri5xslHiNZoCF+cpuAt9E+Lr9k95nRSXIVdarpirXS+bMm
+ +9cxEKov/jsS1+QCqMyUPh0grUOYJg2aL8HVVcN3AcG7Zcu4o/65Oq6cew9Q7fyyNjft
+ Fehd0cWjr5KdgrTM4viuPTw3vl05QnlmWK2Vg5dxCNLXwxGSjwEXIae8Rg+VNj/ShKm3
+ D/ee5lKNlZOg5n4NELQw6a46PXAnuPYhxG/aAPDBPMQ/hoBFoW+OMThXaZSFCpSw9FbY
+ 5S0g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUIK3CYkfj9Wlr+PUYq4h7fX0FKl4Vs7IVfN0nhycu07TGO0AUaY57JPrRAwkwGCWfLSGjlgDP3OxnZ@nongnu.org
-X-Gm-Message-State: AOJu0Yxq+/XvmdT0coS0KpnoFnD2ki6oQM8Rtb1Otfnz4lEoLPP76Ohh
- 5XqAvlY0A2tEtR2BnTThKC2ztAYyrXUubSqwzq2sNs9U+ct2+yrN
-X-Google-Smtp-Source: AGHT+IF+ivIgMofxyM1n+FLoNmRJtFRgrfpTFcdNKheNl4E3/jec6DDMLCdx7DTj3ctmPebozXnIUA==
-X-Received: by 2002:adf:ecca:0:b0:37d:2ea4:bfcc with SMTP id
- ffacd0b85a97d-37d5ff4abc9mr7451308f8f.13.1728919571672; 
- Mon, 14 Oct 2024 08:26:11 -0700 (PDT)
+ AJvYcCUQlA7uuSxtcszXjAgmN3UKIMvE8JZXD9SKcxo6odqNyUeaGJaX7HZI19Z/et2oKyXDVXf7MKg5IZHz@nongnu.org
+X-Gm-Message-State: AOJu0Ywd03wN+PvSex8v3Y2iFQG/8F3MDyPZoX9ITOdljZWFWeFIvKu+
+ WzNmu01UzH0vzLA62CFh9zZFMVTeRBnfY8DeB2AEEYDV6mc/jjQN
+X-Google-Smtp-Source: AGHT+IE4ciKO/NO3MojLJ1CjA0IiED4eFypqBKo96jGXOkBCU95BAuF/yVtTjSpONmh7THlS58IcwA==
+X-Received: by 2002:a05:6512:33cd:b0:538:96ce:f2ed with SMTP id
+ 2adb3069b0e04-539e54d7759mr4127106e87.10.1728919572324; 
+ Mon, 14 Oct 2024 08:26:12 -0700 (PDT)
 Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
  by smtp.gmail.com with ESMTPSA id
  a640c23a62f3a-a9a13396603sm133689966b.169.2024.10.14.08.26.11
@@ -63,18 +63,18 @@ To:
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 2/8] chardev/chardev-internal: remove unused `max_size`
- struct member
-Date: Mon, 14 Oct 2024 17:24:02 +0200
-Message-Id: <20241014152408.427700-3-r.peniaev@gmail.com>
+Subject: [PATCH v2 3/8] chardev/mux: use bool type for `linestart` and
+ `term_got_escape`
+Date: Mon, 14 Oct 2024 17:24:03 +0200
+Message-Id: <20241014152408.427700-4-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241014152408.427700-1-r.peniaev@gmail.com>
 References: <20241014152408.427700-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=r.peniaev@gmail.com; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,27 +97,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clean up forgotten leftovers.
+Those are boolean variables, not signed integers.
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- chardev/chardev-internal.h | 1 -
- 1 file changed, 1 deletion(-)
+ chardev/char-mux.c         | 10 +++++-----
+ chardev/chardev-internal.h |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/chardev/char-mux.c b/chardev/char-mux.c
+index ee2d47b20d9b..728596c6f346 100644
+--- a/chardev/char-mux.c
++++ b/chardev/char-mux.c
+@@ -73,11 +73,11 @@ static int mux_chr_write(Chardev *chr, const uint8_t *buf, int len)
+                  * qemu_chr_fe_write and background I/O callbacks */
+                 qemu_chr_fe_write_all(&d->chr,
+                                       (uint8_t *)buf1, strlen(buf1));
+-                d->linestart = 0;
++                d->linestart = false;
+             }
+             ret += qemu_chr_fe_write(&d->chr, buf + i, 1);
+             if (buf[i] == '\n') {
+-                d->linestart = 1;
++                d->linestart = true;
+             }
+         }
+     }
+@@ -145,7 +145,7 @@ static void mux_chr_be_event(Chardev *chr, QEMUChrEvent event)
+ static int mux_proc_byte(Chardev *chr, MuxChardev *d, int ch)
+ {
+     if (d->term_got_escape) {
+-        d->term_got_escape = 0;
++        d->term_got_escape = false;
+         if (ch == term_escape_char) {
+             goto send_char;
+         }
+@@ -175,11 +175,11 @@ static int mux_proc_byte(Chardev *chr, MuxChardev *d, int ch)
+         case 't':
+             d->timestamps = !d->timestamps;
+             d->timestamps_start = -1;
+-            d->linestart = 0;
++            d->linestart = false;
+             break;
+         }
+     } else if (ch == term_escape_char) {
+-        d->term_got_escape = 1;
++        d->term_got_escape = true;
+     } else {
+     send_char:
+         return 1;
 diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
-index 4e03af31476c..c3024b51fdda 100644
+index c3024b51fdda..975c16de803e 100644
 --- a/chardev/chardev-internal.h
 +++ b/chardev/chardev-internal.h
-@@ -40,7 +40,6 @@ struct MuxChardev {
+@@ -39,7 +39,7 @@ struct MuxChardev {
+     CharBackend chr;
      int focus;
      int mux_cnt;
-     int term_got_escape;
--    int max_size;
+-    int term_got_escape;
++    bool term_got_escape;
      /* Intermediate input buffer catches escape sequences even if the
         currently active device is not accepting any input - but only until it
         is full as well. */
+@@ -49,7 +49,7 @@ struct MuxChardev {
+     int timestamps;
+ 
+     /* Protected by the Chardev chr_write_lock.  */
+-    int linestart;
++    bool linestart;
+     int64_t timestamps_start;
+ };
+ typedef struct MuxChardev MuxChardev;
 -- 
 2.34.1
 
