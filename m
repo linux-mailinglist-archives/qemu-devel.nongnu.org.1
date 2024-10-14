@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D6B99D6C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 20:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D8399D748
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 21:24:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Q8b-00049y-HL; Mon, 14 Oct 2024 14:49:49 -0400
+	id 1t0Qel-0001na-3c; Mon, 14 Oct 2024 15:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3wmcNZwYKCgcyvx1lonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--roqueh.bounces.google.com>)
- id 1t0Q8W-00049a-MW
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 14:49:45 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3wmcNZwYKCgcyvx1lonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--roqueh.bounces.google.com>)
- id 1t0Q8V-00018u-1R
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 14:49:44 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-6e3705b2883so25355907b3.3
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 11:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1728931779; x=1729536579; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=7pv8SMLoX58p+TYu8hQfpm8uqfTPRLQQB77L4yBbjds=;
- b=2AaDhlG2aZ1QQ0H+c5GAvSLby7jCF5z9cOWVWCEBimIeLcnmqXd28QzSRfL+2EIDnY
- c6W2E1qvcdnEAWYR3TEn3HRC9V2rOqFJlUD6t4e719xaFAL6co0DE8dsaiqqBIkDGPlv
- DtsGqNZtureu43XibhKV4oIc7Lyx3817Fa6944u1dsxRqYOa8zoj2U2a1M1mUMJyg38G
- NcI/eJYrvk14Ub+FdygotZqqUEH5ehFeGUVVPNAI49CrZAtzo9zKqh6WfoJwzbIh59S9
- IepSUzAbKGIamp5blG33xF1OFPfRhz7g8ZNedSJJ3vNrQO2DZmZlh7OaWfWSKVTLRwqo
- on5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728931779; x=1729536579;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7pv8SMLoX58p+TYu8hQfpm8uqfTPRLQQB77L4yBbjds=;
- b=koVbbEf52+AlXxf2G2abyV2RT+b6IX/s4ScHCl7fzm3PSwnDA2KRC6fRk2YVf7yFwX
- mfZ6GZhYPuWaJC/1HGdrgrQrH4C5Zflbj+fyISPBOfi2hoX5dQXXADQ037Y8iYO8rZnd
- yFy5k3T07FLG6ICyEWl8LK9rWa7DizsN67V6LgOxQCWv1PDdYO49aHkHG92g1wx95A21
- qF4J1Mcp+lr3IccrUB0IZLN+iFcePSGt7RePOazamlUa0cQAIWjAXQt7wP4Z0kgw08uq
- AJ3bLxmKDVjqSNm9zyYdAKAHV7m9u394lDQ+XHJKiLHpZVFUWwldzCPFr2SLLGwIcbZU
- ee2w==
-X-Gm-Message-State: AOJu0YyRNuk8dvpH4XNKYA4HfDcEcC3v/8OSNEeH+ezIf8I0m5cyCM/0
- sW5OqjuoV1aNanOiME2EjFaO3FqZkaT84gx2tL8jmlvTqG0+Nt6K/CuU8B50RUaZ6gYGmJfMdvS
- OrA==
-X-Google-Smtp-Source: AGHT+IGPyN/FmByTmA6/vgVvdLhbqQ21fnTd521VFrsxMlEDfSP7Mh/OJycrM1QPaoXZanyghCWeT/uTJkk=
-X-Received: from roqueh.c.googlers.com ([fda3:e722:ac3:cc00:4e:3bc9:ac1c:1ab])
- (user=roqueh job=sendgmr) by 2002:a05:690c:61c8:b0:6e3:345e:5f89
- with SMTP id
- 00721157ae682-6e3471eebbbmr1900857b3.0.1728931778975; Mon, 14 Oct 2024
- 11:49:38 -0700 (PDT)
-Date: Mon, 14 Oct 2024 18:48:46 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241014184847.1594056-1-roqueh@google.com>
-Subject: [PATCH] hw/net: Changing log error to trace message
-From: Roque Arcudia Hernandez <roqueh@google.com>
-To: kfting@nuvoton.com, wuhaotsh@google.com, jasowang@redhat.com, 
- qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Nabih Estefan <nabihestefan@google.com>, 
- Roque Arcudia Hernandez <roqueh@google.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1t0Qei-0001n0-Sh; Mon, 14 Oct 2024 15:23:00 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1t0Qef-0004xx-UK; Mon, 14 Oct 2024 15:23:00 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XS6T85J7gz6L7DK;
+ Tue, 15 Oct 2024 03:18:20 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+ by mail.maildlp.com (Postfix) with ESMTPS id 471E71400D9;
+ Tue, 15 Oct 2024 03:22:48 +0800 (CST)
+Received: from 00293818-MRGF.huawei.com (10.48.146.149) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 14 Oct 2024 21:22:28 +0200
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <mst@redhat.com>
+CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
+ <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
+ <philmd@linaro.org>, <eric.auger@redhat.com>, <will@kernel.org>,
+ <ardb@kernel.org>, <oliver.upton@linux.dev>, <pbonzini@redhat.com>,
+ <gshan@redhat.com>, <rafael@kernel.org>, <borntraeger@linux.ibm.com>,
+ <alex.bennee@linaro.org>, <npiggin@gmail.com>, <harshpb@linux.ibm.com>,
+ <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
+ <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
+ <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
+ <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
+ <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
+ <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
+ <shahuang@redhat.com>, <zhao1.liu@intel.com>, <linuxarm@huawei.com>,
+ <gustavo.romero@linaro.org>
+Subject: [PATCH V1 0/4] Arch agnostic ACPI changes to support vCPU Hotplug (on
+ Archs like ARM)
+Date: Mon, 14 Oct 2024 20:22:01 +0100
+Message-ID: <20241014192205.253479-1-salil.mehta@huawei.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3wmcNZwYKCgcyvx1lonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--roqueh.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.48.146.149]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ frapeml500007.china.huawei.com (7.182.85.172)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,50 +75,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+Certain CPU architecture specifications [1][2][3] prohibit changes to the CPUs
+*presence* after the kernel has booted. This is because many system
+initializations depend on the exact CPU count at boot time and do not expect it
+to change afterward. For example, components like interrupt controllers that are
+closely coupled with CPUs, or various per-CPU features, may not support
+configuration changes once the kernel has been initialized.
 
-Converting error to trace message to avoid spamming of message when
-there is nothing to transmit.
+This requirement poses a challenge for virtualization features like vCPU
+hotplug. To address this, changes to the ACPI AML are necessary to update the
+`_STA.PRES` (presence) and `_STA.ENA` (enabled) bits accordingly during guest
+initialization, as well as when vCPUs are hot-plugged or hot-unplugged. The
+presence of unplugged vCPUs may need to be deliberately *simulated* at the ACPI
+level to maintain a *persistent* view of vCPUs for the guest kernel.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
----
- hw/net/npcm_gmac.c  | 5 ++---
- hw/net/trace-events | 1 +
- 2 files changed, 3 insertions(+), 3 deletions(-)
+This patch set introduces the following features:
 
-diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index 6fa6bece61..685905f9e2 100644
---- a/hw/net/npcm_gmac.c
-+++ b/hw/net/npcm_gmac.c
-@@ -546,9 +546,8 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
- 
-         /* 1 = DMA Owned, 0 = Software Owned */
-         if (!(tx_desc.tdes0 & TX_DESC_TDES0_OWN)) {
--            qemu_log_mask(LOG_GUEST_ERROR,
--                          "TX Descriptor @ 0x%x is owned by software\n",
--                          desc_addr);
-+            trace_npcm_gmac_tx_desc_owner(DEVICE(gmac)->canonical_path,
-+                                          desc_addr);
-             gmac->regs[R_NPCM_DMA_STATUS] |= NPCM_DMA_STATUS_TU;
-             gmac_dma_set_state(gmac, NPCM_DMA_STATUS_TX_PROCESS_STATE_SHIFT,
-                 NPCM_DMA_STATUS_TX_SUSPENDED_STATE);
-diff --git a/hw/net/trace-events b/hw/net/trace-events
-index 4c6687923e..bb8f59cf23 100644
---- a/hw/net/trace-events
-+++ b/hw/net/trace-events
-@@ -476,6 +476,7 @@ npcm_gmac_packet_received(const char* name, uint32_t len) "%s: Reception finishe
- npcm_gmac_packet_sent(const char* name, uint16_t len) "%s: TX packet sent!, length: 0x%04" PRIX16
- npcm_gmac_debug_desc_data(const char* name, void* addr, uint32_t des0, uint32_t des1, uint32_t des2, uint32_t des3)"%s: Address: %p Descriptor 0: 0x%04" PRIX32 " Descriptor 1: 0x%04" PRIX32 "Descriptor 2: 0x%04" PRIX32 " Descriptor 3: 0x%04" PRIX32
- npcm_gmac_packet_tx_desc_data(const char* name, uint32_t tdes0, uint32_t tdes1) "%s: Tdes0: 0x%04" PRIX32 " Tdes1: 0x%04" PRIX32
-+npcm_gmac_tx_desc_owner(const char* name, uint32_t desc_addr) "%s: TX Descriptor @0x%04" PRIX32 " is owned by software"
- 
- # npcm_pcs.c
- npcm_pcs_reg_read(const char *name, uint16_t indirect_access_baes, uint64_t offset, uint16_t value) "%s: IND: 0x%02" PRIx16 " offset: 0x%04" PRIx64 " value: 0x%04" PRIx16
+1. ACPI Interface with Explicit PRESENT and ENABLED CPU States: It allows the
+   guest kernel to evaluate these states using the `_STA` ACPI method.
+   
+2. Initialization of ACPI CPU States: These states are initialized during
+   `machvirt_init` and when vCPUs are hot-(un)plugged. This enables hotpluggable
+   vCPUs to be exposed to the guest kernel via ACPI.
+
+3. Support for Migrating ACPI CPU States: The patch set ensures the migration of
+   the newly introduced `is_{present,enabled}` ACPI CPU states to the
+   destination VM.
+
+The approach is flexible enough to accommodate ARM-like architectures that
+intend to implement vCPU hotplug functionality. It is suitable for architectures
+facing similar constraints to ARM or those that plan to implement vCPU
+hotplugging independently of hardware support (if available).
+
+This patch set is derived from the ARM-specific vCPU hotplug implementation [4]
+and includes migration components adaptable to other architectures, following
+suggestions [5] made by Igor Mammedov <imammedo@redhat.com>.
+
+It can be applied independently, ensuring compatibility with existing hotplug
+support in other architectures. I have tested this patch set in conjunction with
+the ARM-specific vCPU hotplug changes (included in the upcoming RFC V5 [6]), and
+everything worked as expected. I kindly request maintainers of other
+architectures to provide a "Tested-by" after running their respective regression
+tests.
+
+Many thanks!
+
+
+References:
+[1] KVMForum 2023 Presentation: Challenges Revisited in Supporting Virt CPU Hotplug on
+    architectures that don’t Support CPU Hotplug (like ARM64)
+    a. Kernel Link: https://kvm-forum.qemu.org/2023/KVM-forum-cpu-hotplug_7OJ1YyJ.pdf
+    b. Qemu Link:  https://kvm-forum.qemu.org/2023/Challenges_Revisited_in_Supporting_Virt_CPU_Hotplug_-__ii0iNb3.pdf
+[2] KVMForum 2020 Presentation: Challenges in Supporting Virtual CPU Hotplug on
+    SoC Based Systems (like ARM64)
+    Link: https://kvmforum2020.sched.com/event/eE4m
+[3] Check comment 5 in the bugzilla entry
+    Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4481#c5
+[4] [PATCH RFC V4 00/33] Support of Virtual CPU Hotplug for ARMv8 Arch
+    Link: https://lore.kernel.org/qemu-devel/20241009031815.250096-1-salil.mehta@huawei.com/T/#mf32be203baa568a871dc625b732f666a4c4f1e68
+[5] Architecture agnostic ACPI VMSD state migration (Discussion)
+    Link: https://lore.kernel.org/qemu-devel/20240715155436.577d34c5@imammedo.users.ipa.redhat.com/
+[6] Upcoming RFC V5, Support of Virtual CPU Hotplug for ARMv8 Arch
+    Link: https://github.com/salil-mehta/qemu/commits/virt-cpuhp-armv8/rfc-v5
+
+Salil Mehta (4):
+  hw/acpi: Initialize ACPI Hotplug CPU Status with Support for vCPU
+    `Persistence`
+  hw/acpi: Update ACPI CPU Status `is_{present, enabled}` during vCPU
+    hot(un)plug
+  hw/acpi: Reflect ACPI vCPU {present,enabled} states in ACPI
+    _STA.{PRES,ENA} Bits
+  hw/acpi: Populate vCPU Hotplug VMSD to migrate `is_{present,enabled}`
+    states
+
+ cpu-target.c         patches.vcpuhp.rfc-v5.arch.agnostic.acpi          |  1 +
+ hw/acpi/cpu.c                  | 70 +++++++++++++++++++++++++++++++---
+ hw/acpi/generic_event_device.c | 11 ++++++
+ include/hw/acpi/cpu.h          | 21 ++++++++++
+ include/hw/core/cpu.h          | 21 ++++++++++
+ 5 files changed, 119 insertions(+), 5 deletions(-)
+
 -- 
-2.47.0.rc1.288.g06298d1525-goog
+2.34.1
 
 
