@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A438699D1AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8570F99D30B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 17:33:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0MqW-0003mY-4e; Mon, 14 Oct 2024 11:18:56 -0400
+	id 1t0N3r-00048H-01; Mon, 14 Oct 2024 11:32:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0MqL-0003kX-M8
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:18:45 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0MqK-00006M-3A
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:18:45 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5c9428152c0so5484676a12.1
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 08:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728919122; x=1729523922; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2ixBpo5E4UD6mW/MDwWlu7q2/zraG8h16eYt9r0GoG0=;
- b=rw9q6E4pz6CXlp2+GNTE5ye13HyGqmkbD/i/jbjmCyaoh1dGtkSckbMyiFF5VnO0FN
- 3NeqOceBQ2uFZDLcGSD9YT4jZJ9keERVaTE8DSMYWjnVhF9+5PvAH9Skc4ZTog6GYnY5
- jRCghsNzkqtHfdbfWbwWd4juVaGRojjrTBXY2Yp+rY//+1v3Z83niXqKUXjwUP62VH3u
- 6QoaaALZcaUigFSNjeILigL9QXRr8HStti8YzQCyx17fxul7B6sLfo/yQeuGgnFnv5Xg
- Q63ZyxVX0+TMuahgnWPuyfgj93jouFTKPl0+q5EtMn+f5hliJe6dVxIEkO2gwkXjlyxR
- 91Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728919122; x=1729523922;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2ixBpo5E4UD6mW/MDwWlu7q2/zraG8h16eYt9r0GoG0=;
- b=fCAnjusGc2h0aQFd5iqiZGjX7BbQFW8Pz6/kMQs+rIYOmTHVghwLvGgyi+2HhJTZ9Z
- EaF7bKG7nOGUnlrMJ+J3SY0NvAhYLHroywBf8CfV9yGSd1A+F4MX7KyPOBg37DbwWTOa
- Ppmm8WiG3xDCDmzDsbZpUX1EuUvyLNhQz1MsIR6Ja++Lg8Zxq+XNnZnhbOZlamF4NFPB
- rp2tJ/LdQYAM4tUKHrbfFbkWSz/DKRkCBkPa4XTqNKaY789Z1WkObWlC6bYcSULJJ+Tk
- ml6XDa1Dy6DFgNy7wPZLPNbxWZUujoUsAc+Nb4e74mRxLCsclXQm+cee4q2zZEorpPEI
- 7Auw==
-X-Gm-Message-State: AOJu0YxikVjK5LO9v0tpgrX15lFv2SJfhhSeZsogG+CbhgRFkWm+C/BM
- V9n9G8L6EowZzy8HS6JizJIQWugdyxxfPVBUmyY2MtOWa8LHHKZOrhu/nX4Fx2Sx4oXLSVkCUcS
- 2lDhOQ5eF0y90Xj+o1MAYD5esMz8Z88Af2A5xIg==
-X-Google-Smtp-Source: AGHT+IETeuODDF4k7x6b0xLFoMJZlxMFJCQXSO7JH6cguRoQbYpeulqQChRPimCiZTtR/q65SjIJVSH9sWUBZianJZo=
-X-Received: by 2002:a05:6402:3487:b0:5c9:2cf8:6a34 with SMTP id
- 4fb4d7f45d1cf-5c948c728a2mr8381239a12.1.1728919122230; Mon, 14 Oct 2024
- 08:18:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pm_bounces@pm-bounces.nedprod.com>)
+ id 1t0N3n-00047k-9G
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:32:39 -0400
+Received: from sc-ord-mta126.mtasv.net ([50.31.156.126])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pm_bounces@pm-bounces.nedprod.com>)
+ id 1t0N3l-0001fl-Iu
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 11:32:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=pm20241004;
+ d=pm.mtasv.net; 
+ h=From:Date:Subject:Message-Id:To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Date:From:Message-ID:Reply-To:Sender:Subject:To:CC; 
+ t=1728919957; x=1729006357;
+ bh=0Oz9ClTsKCZOXGJePFgW8GyvU6fLPgSk6sUrEy/2bB4=;
+ b=dgroa9B6zUn/m78IE0OfF6UnyfrseFrMK00m4Q0DgPBB6GbHjAOIOas4I0QtuCnkd9iMUtXK1fMk
+ jw7uzeiAJGABGJXe+BRBlGlmbntWGchReJ4fg9oLz2waFx+N7jV6fNg4w3F56c1iGUFGXx6VkqBE
+ ZLDuT5axxl0v95fU73McNxHoOyskyhto7a/4UiR66Q0LLjsBIN0tlcdLiLJEpE7q0eS+mfUF37tx
+ YWjh3FxIh/m2iGiTPNQzyxW95PdxB4WDkHNMC+/eyYqrUgxDGV9e/1iBsxjwSmMn1h70WgbLwvGh
+ s9029MruLxUYR+jFK4XNkC4UfkUUcuMgyDE1MQ==
+Received: by sc-ord-mta126.mtasv.net id h1ksp83864oo for
+ <qemu-devel@nongnu.org>;
+ Mon, 14 Oct 2024 11:22:35 -0400 (envelope-from
+ <pm_bounces@pm-bounces.nedprod.com>)
+X-PM-IP: 50.31.156.126
+X-IADB-IP: 50.31.156.126
+X-IADB-IP-REVERSE: 126.156.31.50
+DKIM-Signature: v=1; a=rsa-sha256; d=nedprod.com; s=20210726175555pm;
+ c=relaxed/relaxed; i=s_sourceforge@nedprod.com; t=1728919355; x=1729092155;
+ h=date:date:from:from:message-id:reply-to:sender:subject:subject:to:to:cc:
+ feedback-id:mime-version:content-type:content-transfer-encoding;
+ bh=0Oz9ClTsKCZOXGJePFgW8GyvU6fLPgSk6sUrEy/2bB4=;
+ b=exlQ0WU6p4TNEAvQc3DHNDW0i1gfCG98KJV5P8ZivoGApWtBYogBF2XfMp0tcW1f5v01/6PAbmA
+ l7xYEAYWiFkHyUNth88rcwUV0wMsHHDNw7I/CBxovxQOILpVrRYW7nYykCNAHjNouDOSfjBtQBIcy
+ VDYY8pxr8PFq9Kf0Yco=
+Date: Mon, 14 Oct 2024 15:22:35 +0000
+Subject: Patch for GDB to aid debugging qemu coroutines
+Message-Id: <f0ebccca-7a17-4da8-ac4a-71cf6d69abc3@mtasv.net>
+To: qemu-devel@nongnu.org
+User-Agent: Mozilla Thunderbird
+Feedback-ID: s8148012-_:s8148012:a214946:postmark
+X-Complaints-To: abuse@postmarkapp.com
+X-PM-Message-Id: f0ebccca-7a17-4da8-ac4a-71cf6d69abc3
+X-PM-RCPT: |bTB8MjE0OTQ2fDgxNDgwMTJ8cWVtdS1kZXZlbEBub25nbnUub3Jn|
+X-PM-Message-Options: v1;
+ 1.6-V0DNsY91f21xZbjynqyA.rOOL5NB6MZIhdcFC42PwvIW8w_f7HPxGFQIvyjqjyrRNhIODlmO1u-XH32I-ZonfucwKoUGSsUePRNwle4oEF92DsYBIcADWOzRG1kcDrQnArNAtBHHkAdntNI4waL-kyDuE3SzEtARCGq_K7FB8VkoOGIM-g8ZzisB4xftRDMOmdfBizS_DgPe70jTidIIV
 MIME-Version: 1.0
-References: <cover.1728299530.git.chao.liu@yeah.net>
- <211e7645ae2c04c361345514655c1ba0d4e10488.1728299530.git.chao.liu@yeah.net>
-In-Reply-To: <211e7645ae2c04c361345514655c1ba0d4e10488.1728299530.git.chao.liu@yeah.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 14 Oct 2024 16:18:31 +0100
-Message-ID: <CAFEAcA9vmvoyjq=grmNEMHPtWGws50RbXJq=qcoPiHgmVYgPBw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] xilink_zynq: Add various missing unimplemented
- devices
-To: Chao Liu <chao.liu@yeah.net>
-Cc: qemu-devel@nongnu.org, bin.meng@windriver.com, edgar.iglesias@gmail.com, 
- alistair@alistair23.me
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-PM-MTA-Pool: transactional-1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=50.31.156.126;
+ envelope-from=pm_bounces@pm-bounces.nedprod.com; helo=sc-ord-mta126.mtasv.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.076,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,32 +81,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Niall Douglas <s_sourceforge@nedprod.com>
+From:  Niall Douglas via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 7 Oct 2024 at 12:25, Chao Liu <chao.liu@yeah.net> wrote:
->
-> Add xilinx zynq board memory mapping is implemented in the device.
->
-> Remove a ignore_memory_transaction_failures concurrently.
->
-> See: ug585-Zynq-7000-TRM manual B.3 (Module Summary)
-> Signed-off-by: Chao Liu <chao.liu@yeah.net>
+Hi,
 
-The list of new unimplemented devices looks good. However
-we do not want to remove ignore_memory_transaction_failures
-in this patch:
- (1) patch 3 says it fixes a breakage if we stop ignoring
-     memory transaction failures, so we mustn't turn off
-     the flag until after that point, or we break bisection
- (2) if we discover a problem with turning off the flag,
-     it's easier to detect and revert if that is done in
-     its own patch, not together with the addition of all
-     the unimplemented-device devices
- (3) turning off the flag needs to come with a description
-     of all the testing we've done that makes us confident
-     we can do it
+A couple of weeks ago I posted a patch to GDB adding support to the=20
+Linux backend for user space threads such as qemu's coroutines:
 
-thanks
--- PMM
+https://sourceware.org/pipermail/gdb-patches/2024-September/212028.html
+
+Within the patch is an example of how to maintain data structures within=20
+userspace for GDB's custom libthread_db.so backend to parse, and indeed=20
+the creation of a custom libthread_db.so.
+
+In our codebase here, we measure approx a 3 nanosecond overhead added to=20
+context switching using setjmp/longjmp. If one uses a faster=20
+implementation such as Boost.Context, 5 nanoseconds is added. This is=20
+probably low enough it can be left turned on even in release binaries.
+
+With a suitable GDB, a suitable custom libthread_db.so and an inferior=20
+emitting the right data structures, qemu coroutines would appear in=20
+GDB's `info threads`. You can switch into their currently suspended=20
+state, examine their backtraces and current local variables etc.
+
+I'll stay subscribed here for a few weeks in case anybody has any=20
+questions, but I figured you guys might find this support as useful as=20
+we have so I ought to let you know of its existence.
+
+Regards,
+Niall Douglas
+
 
