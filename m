@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E3E99D438
+	by mail.lfdr.de (Postfix) with ESMTPS id 087D299D436
 	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 18:06:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0NZG-0002Fj-Fs; Mon, 14 Oct 2024 12:05:10 -0400
+	id 1t0NZf-0002S3-T3; Mon, 14 Oct 2024 12:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0NZB-0002FK-6E
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:05:05 -0400
+ id 1t0NZT-0002Mg-VG
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:05:26 -0400
 Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0NZ9-0005o5-5R
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:05:04 -0400
+ id 1t0NZS-00062W-HD
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 12:05:23 -0400
 Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5c9428152c0so5549407a12.1
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 09:05:02 -0700 (PDT)
+ 4fb4d7f45d1cf-5c94dd7e1c0so4293311a12.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 09:05:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728921901; x=1729526701; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728921920; x=1729526720; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ky22RCFgM0Nc2p6QyFiFMExDvc6HXcAKbJd9BtAfrsU=;
- b=wmstAVwb6YcVWnVtA+gig0jjPcmhOZ6ueppo05112Rc9vCC0Ra89RAtfYRTdiCICB0
- hOUTg3EJXDdLwa8Prf5lnQVXRg4lrI5oBQ5kR1NW6sWensqYgyg/hdc5K0cL+dmDwQvv
- emnClqt6akh6+UeTDPQdmiDtDB5w3Cyo4vJVAbR29YvePA2TQrfOIpfH9CQhYUN+f7vg
- uJz7m4ttE+VpEevjSl6cdmhUfUq3JR2MLg1psVXC9II8izTl/wePqmWQtv/J/+FpAOIh
- GfbtBB7ZnO6fAyMbH2hYcfJkECpxhhr/VOVHz5qOS0KTngqZTiWBmQCY+w9r722zF7vJ
- IIqA==
+ bh=Z4xrmNJdLU4j9twvy8409RlqJVZ28DrTnbGJt/4aQ5s=;
+ b=jEad3WPVKaCtWWyrsbj1yEl2MIBtaXsOnsAOQcHY3jwZlFIZmxBzIBisBtcD1itkZ+
+ KQ2G1ov8heuLz6H5tM6MfucxNSuDnju8aV35u0qR3U8VIDmgSIeIt1WxnPUkFQxXMDAQ
+ T1wArrlR9RJM/AKgpiZdnt10nNXgORL5LIRBk+dd4/GPv1xnlrNyzDD357sPEcZZT5Mz
+ npYK+yom7Ju2qSfxB/qP2AjwuwF56jy0fhjgTjjDlRIVZjUWqn2ZqddSAhCQkq4PkeDb
+ 7RiT0SDYtpnavAhAHSopvWaQeYG8owDRPUqJtwadCTiZV13ePqhAl5rJYY/S6aJ2rdQ7
+ 4LGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728921901; x=1729526701;
+ d=1e100.net; s=20230601; t=1728921920; x=1729526720;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ky22RCFgM0Nc2p6QyFiFMExDvc6HXcAKbJd9BtAfrsU=;
- b=EJTgHxNfjdinDo8yilzP+bvv8xEVIhL9syEdxEgtrXIz3TUcrVX79uzKlpS2GSS3+f
- ZorV99uhgZCNA9rPn+oyMeA/LR5XiqrOUWwUajnkJ5/iVuAHbeozXe8DhFVY/d48RG8C
- qx0XtzQQDeHKTG2ti/M7ErT8KZGsgUcNyB92qBQTpdMOiKbgCI0ZIKn+HcdgK4fpyhD8
- y5F99a6Iqj1JfhIYdiz61U+OgFGBOggRbde3BrbhqDgCkngArqv5IyKgo2Pdh/a8vUGg
- LUbofcud70QCDSuQmq1HoQV0H8A3wD2N71NOXnhauR58w3m+cFc+UtMHWMh6U8nXVBSr
- vAwA==
-X-Gm-Message-State: AOJu0YwvRpjHGSbhCv3uSsG/OPrt/6BKVUq5gJoBqr3jQJmqa8xiuM0+
- ytDBi1jIcsIvSBHd8awXOLQLtnZ6OMytkkKGUZ/FC3+0WIMCUug4Ers8xUJz5uJv7Rh3pesmS0c
- 162yEpQ0me5LDtaStxvKkLT1ScaAQXeGdJ0YVJw==
-X-Google-Smtp-Source: AGHT+IHsiFV3ieP8my/SlS47ZFlZdicUZteTzT0Gm/6QSj2FkPgwdiVV3cOc7Uz05AfN0XopaxBU0QC2Iyezo8VskSc=
-X-Received: by 2002:a05:6402:13d1:b0:5c9:3fe:c7b9 with SMTP id
- 4fb4d7f45d1cf-5c948ad1dd4mr8791543a12.0.1728921901106; Mon, 14 Oct 2024
- 09:05:01 -0700 (PDT)
+ bh=Z4xrmNJdLU4j9twvy8409RlqJVZ28DrTnbGJt/4aQ5s=;
+ b=YU4KOacaY1mKFbRmWSfm4wOF7PwOZZiHAdj2SIWzcCVH7Z+z7fab6dOK67vHv9p/lv
+ au140xdqgBtQXR4FcUmkTCJvm1fEVoxjQEOZrAV+5QOPt7N9IwuBPZdHaLHCqrTe9SFn
+ qF4DdWGragMEWNzO7sfa+LN/v63FO61SoFjP4SuIBvhCgCj96EYZJYr84qLY8GhzYc3Q
+ 9+/OmtZdHHNDsKpxwGQtXIW0o8YeL0RyeLbGla/D/X916uOXxDFUflb7ruKTdyoRTdRe
+ 0KCFM7wcbQa40fSKFEUE/PG9egLsG6AQj0luUMuX3x9N6+/ka3VAjtqpE0fywu9iw27q
+ 85bQ==
+X-Gm-Message-State: AOJu0YzeCp++lPT1RlrxaidZs8CBPNXl4JTLoRTusLpsk6aOrLNarfem
+ KoesXw4xV5V/KC5gP13PQ2FvevvIO9iKfmVGkFTkWmSq4w9mQrwMWfEhYcC930Es27Vj4gr2fEQ
+ 8RC/xVoiyWqExgWj0LGt/HkmaCNTWdQ/mYKvYKQ==
+X-Google-Smtp-Source: AGHT+IGzSNT0hYfN+pfoSU3lxkvXHMOdv3oCzveHpYuaQivbGKEs3AilEODrDa3L++VY2Au6yZzMSaxGO631f08Fzj0=
+X-Received: by 2002:a50:c907:0:b0:5c9:f49:fbc6 with SMTP id
+ 4fb4d7f45d1cf-5c95ac610b8mr4697608a12.34.1728921920300; Mon, 14 Oct 2024
+ 09:05:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241014110113.173946-1-pbonzini@redhat.com>
-In-Reply-To: <20241014110113.173946-1-pbonzini@redhat.com>
+References: <20241014130255.10119-1-berrange@redhat.com>
+In-Reply-To: <20241014130255.10119-1-berrange@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 14 Oct 2024 17:04:49 +0100
-Message-ID: <CAFEAcA__ONney4-nSweZQ3EfCzku9o=ktiGEeRYwjnT_7FB-qg@mail.gmail.com>
-Subject: Re: [PATCH] configure, meson: synchronize defaults for configure and
- Meson Rust options
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Date: Mon, 14 Oct 2024 17:05:09 +0100
+Message-ID: <CAFEAcA9KdbcijsPDcHH0j+Ow85HbGzDRySm4dbNevhEV=psCSw@mail.gmail.com>
+Subject: Re: [PATCH] tests: update lcitool to fix freebsd py311-yaml rename
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Ed Maste <emaste@freebsd.org>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=2a00:1450:4864:20::532;
@@ -90,32 +91,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 14 Oct 2024 at 12:01, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, 14 Oct 2024 at 14:03, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
 >
-> If the defaults for --enable-rust ($rust in configure) and Meson's rust
-> option are out of sync, incremental builds will pick Meson's default.
+> This addresses the py311-yaml -> py311-pyyaml rename in FreeBSD.
 >
-> This happens because, on an incremental build, configure does not run
-> Meson, Make does instead.  Meson then gets the command line options
-> from either coredata.dat (which has everything cached in Python's pickle
-> format) or cmd_line.txt (slow path when Meson version is upgraded), but
-> neither knows about the rust option, and the meson_options.txt default
-> is used.
+> The change to the OpenSUSE dockerfile is something that will allow
+> QEMU to access rust bindgen in future.
 >
-> This will cause have_rust to be true if rustc is available; and the build
-> to fail because configure did not put a RUST_TARGET_TRIPLE in config-host=
-.mak.
->
-> When in the Rust pull request I changed the $rust default from auto
-> to disabled, I should have made the same change to meson_options.txt;
-> do it now.
->
-> Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Reported-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
 
-Applied directly to git, thanks.
+Applied directly to git to fix the ci job; thanks.
 
 -- PMM
 
