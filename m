@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85E699C92E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2902D99C94B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 13:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0JUo-0006hB-M2; Mon, 14 Oct 2024 07:44:18 -0400
+	id 1t0JXZ-0002YG-Po; Mon, 14 Oct 2024 07:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0JUY-0006dD-31
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:44:02 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1t0JX3-0002EL-D3
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:46:39 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t0JUU-00057Y-Qi
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:44:01 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5c94dd7e1c0so3907004a12.0
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 04:43:52 -0700 (PDT)
+ id 1t0JX0-0005WH-NK
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 07:46:36 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2fb501492ccso6765281fa.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 04:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728906232; x=1729511032; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1728906393; x=1729511193; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Twyv6YldhETnLvxZDkBVahrdEIkG4B6Hw1qzwu/nBjU=;
- b=Vz3CAVBo8BxFALYD/1nC0nE1F9RJqR3UuIgO8lZOfs50tld28l46K4Z8GKKr5eyMdU
- t2qe8Vzp3FlHaBH3/qh17xndMN/D0KVwEVL6y1Za/+Cpx1cQnRdd+VbAgspnn/8LEkX+
- pVSJs4IqsNXd8B5ZmJ/zHsDCQzUMUn5VYxggKC3+u/4yOyPhGHC/8U+6WS1V08E5qOLO
- 7XdBYw2D1zxHpNqbiigelPEpavo0ZilQWGIqWyv16orGzyYIqewsEtDay1pWIHTWs7B1
- Fie4BRrMVPkEfOEKUPqPdqbA/MhRZGp5fv1UrjKKQYvGxQOop4ikR4zyhVge9pfMwgWD
- E9YA==
+ bh=4c2mZtnGfIGb1RGiTOLtPKx0pewl5f1rapee38uwDf0=;
+ b=MG46x/pqURx7/xANuz0zCMU2Xb4MAf4slXx1zNbj+CTdSzzdO7g7ASFJRgghDHcw4R
+ Cti/TUA9ku0VcWeckD37qA4bmkriDDZ7tA/ckj8YzdNkinaasiz+VYdQv9tDhup0OJwh
+ 4IFJ1+fsq2vWP67/076DNU6LUs4l8yGEfVG6UK/mc/bstpmGe9G9qPs0oamSHCl13jNv
+ lNScNf/Xo7Gz8cO+Ts4kR2te/a3wyROC/uOwgSwx2036yisuyhp87v/JTWmHDpa4k5h0
+ 39RPzx/EV799ntmL/0WdRTb1Bs841T1O13fq3HVf9yrx3ACDmsRHkUcbZyK21YScvjM3
+ xlxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728906232; x=1729511032;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1728906393; x=1729511193;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Twyv6YldhETnLvxZDkBVahrdEIkG4B6Hw1qzwu/nBjU=;
- b=XW6lLcOsrw57cvW5wSvfvDxsUE2QDJ4bG33KdbL2VkKX6zBpVkM7m4MZfciS5jm/Gi
- RQADF1IXwAN96vFN/GBl4EapdiwKZhf25a9p1o6k+0IgbrhMPo6a9/w4aLbIiV4XI4GG
- jyJ8+6ik8Rgp8HCvxBSUSNBdm4bm+BwXOZ65gzRuoLv58A1p5/NTrUtZN+i924P/ZJ9o
- 9jQNzvU7OZdyn5pSmY5SgvTUfxontiUG9slgWEDcIHoNW8HKzEjDg+tkw5px0rYDdvmM
- yST5FcLfq6Be3xT6EpiJgrlsv2S6UogjktE06AFhOYo/+rHVOTEiChGejGfhZKSDonP7
- tHsg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV6yWibw/BQgvmUlpDD7umwNzkSLXa4LmrtHtxpl+zLVN+fEHb7IbyJi3QSXcJPrMsax8Vst8TBOMxb@nongnu.org
-X-Gm-Message-State: AOJu0YyKMQVzociLNEAun7W6VSewniGh7fRj8uHpR1J7UCGPgfho+Xi4
- lhUDVdKt8JqlmLwjDVALlLkBbFlQkXyI4K5UWE8Uf38dddQy+j7S
-X-Google-Smtp-Source: AGHT+IHMxOLYo5Hs9T1CLmrtnrsaqrE3a+Ue2Oc6y0E0YO1QVi6rszYnCN5rzQYiizMBrwPjjJxjZA==
-X-Received: by 2002:a17:907:e6cc:b0:a86:94e2:2a47 with SMTP id
- a640c23a62f3a-a99e3b5a86dmr683236066b.15.1728906231750; 
- Mon, 14 Oct 2024 04:43:51 -0700 (PDT)
-Received: from finn.fritz.box ([2a02:8109:8384:1400:eb7f:8fd0:f96c:766b])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a99fcb2765asm247764666b.64.2024.10.14.04.43.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2024 04:43:51 -0700 (PDT)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH 8/8] tests/unit/test-char: implement a few mux remove test
- cases
-Date: Mon, 14 Oct 2024 13:41:35 +0200
-Message-Id: <20241014114135.389766-9-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241014114135.389766-1-r.peniaev@gmail.com>
-References: <20241014114135.389766-1-r.peniaev@gmail.com>
+ bh=4c2mZtnGfIGb1RGiTOLtPKx0pewl5f1rapee38uwDf0=;
+ b=ctK8LqNRFGeRd/jYf3wVkzCQWB+MIV+azWToAbWnhy5VU5GCDWQJQ6UiWXHlOGq5Sy
+ tovunFbMeqxZlFJpOtvc1LPv6zxK6NXsI255bf37jtGWMLRK+BP61hy7wjeqUSmJOgxh
+ pZ8UoVFr8erACipNd8TfOh5e1v9XxRHb1WKvLiT6SG+gNlyqbP/KKGEGxI+AtaDAnV/D
+ bjtiUmcOz5myULGwW6fLFAF00h7LQhMUWZz0wcd5AzDi4CIUS3Vy0alJeX9kNnouyYNx
+ 0TCNItB/g4yDjVHMyrwLyIXiwGVldAk7NmlgE2HCCIRJ5NnXpvR9UNmNtyh91MUtlgnD
+ ATag==
+X-Gm-Message-State: AOJu0YwKV9VAV9deS43mfweJWP39ngSAwUdIIaxnX8ld7OdtVGTUqpQ3
+ MTV8XLDzAZMjgU94Bbfqg1jFRkA2BVckn/MtjuFar3GNcbNMAoOrYf4ssRlKRZdE402W+wHiHpF
+ 2kc61mnX2RX8gAOtQm+MicGPNLhc8WQ==
+X-Google-Smtp-Source: AGHT+IG9zdXrsonsSInaCRAQ6E0BR9WF7AQIQ9enm+QZ0gpS3o+4Qju4qlqhGG7K1nUaUiIrELvcLro62oj9fetjCNc=
+X-Received: by 2002:a2e:be27:0:b0:2fb:4b40:1e1c with SMTP id
+ 38308e7fff4ca-2fb4b4021e8mr15581631fa.36.1728906392528; Mon, 14 Oct 2024
+ 04:46:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x533.google.com
+References: <20241010092619.323489-1-r.peniaev@gmail.com>
+ <CAJ+F1CL8VPo64DVty94FY4KyKr1h8_dbmrqLfy06VuMzoNyYYA@mail.gmail.com>
+In-Reply-To: <CAJ+F1CL8VPo64DVty94FY4KyKr1h8_dbmrqLfy06VuMzoNyYYA@mail.gmail.com>
+From: Roman Penyaev <r.peniaev@gmail.com>
+Date: Mon, 14 Oct 2024 13:44:26 +0200
+Message-ID: <CACZ9PQW8QUvg9oDMy9iMx05++Pn9e+XNthtG5HtaSURWXpwJHA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] chardev/char: fix qemu_chr_is_busy() check
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,69 +88,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch tests:
+Hi Marc-Andr=C3=A9,
 
-1. feasibility of removing mux which does not have frontends attached
-   or frontends were prior detached.
-2. inability to remove mux which has frontends attached (mux is "busy")
+On Thu, Oct 10, 2024 at 12:20=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@gmail.com> wrote:
+>
+> Hi Roman
+>
+> On Thu, Oct 10, 2024 at 1:28=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.co=
+m> wrote:
+>>
+>> `mux_cnt` struct member never goes negative or decrements,
+>> so mux chardev can be !busy only when there are no
+>> frontends attached. This patch fixes the always-true
+>> check.
+>>
+>> Fixes: a4afa548fc6d ("char: move front end handlers in CharBackend")
+>> Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+>> Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
+>> Cc: qemu-devel@nongnu.org
+>
+>
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> That would be worth some new tests for chardev removal. It seems to be la=
+cking. And mux probably need extra fixing. I can take a look if you don't.
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- tests/unit/test-char.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+I've just sent an attempt to fix the removal of frontends, plus some test c=
+ases.
+Please take a look.
 
-diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
-index f273ce522612..2837dbb863a8 100644
---- a/tests/unit/test-char.c
-+++ b/tests/unit/test-char.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include <glib/gstdio.h>
- 
-+#include "qapi/error.h"
- #include "qemu/config-file.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
-@@ -184,6 +185,21 @@ static void char_mux_test(void)
-     char *data;
-     FeHandler h1 = { 0, false, 0, false, }, h2 = { 0, false, 0, false, };
-     CharBackend chr_be1, chr_be2;
-+    Error *error = NULL;
-+
-+    /* Create mux and chardev to be immediately removed */
-+    opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
-+                            1, &error_abort);
-+    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
-+    qemu_opt_set(opts, "size", "128", &error_abort);
-+    qemu_opt_set(opts, "mux", "on", &error_abort);
-+    chr = qemu_chr_new_from_opts(opts, NULL, &error_abort);
-+    g_assert_nonnull(chr);
-+    qemu_opts_del(opts);
-+
-+    /* Remove just created mux and chardev */
-+    qmp_chardev_remove("mux-label", &error_abort);
-+    qmp_chardev_remove("mux-label-base", &error_abort);
- 
-     opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
-                             1, &error_abort);
-@@ -334,7 +350,13 @@ static void char_mux_test(void)
-     g_free(data);
- 
-     qemu_chr_fe_deinit(&chr_be1, false);
--    qemu_chr_fe_deinit(&chr_be2, true);
-+
-+    error = NULL;
-+    qmp_chardev_remove("mux-label", &error);
-+    g_assert_cmpstr(error_get_pretty(error), ==, "Chardev 'mux-label' is busy");
-+
-+    qemu_chr_fe_deinit(&chr_be2, false);
-+    qmp_chardev_remove("mux-label", &error_abort);
- }
- 
- 
--- 
-2.34.1
+Thanks.
 
+--
+Roman
 
