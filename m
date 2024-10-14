@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3420999D618
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 20:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9220A99D659
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 20:21:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0PPL-0007wA-R5; Mon, 14 Oct 2024 14:03:03 -0400
+	id 1t0Pfw-0002QF-Mq; Mon, 14 Oct 2024 14:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t0PPI-0007vr-4V; Mon, 14 Oct 2024 14:03:00 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t0PPG-0003LH-CE; Mon, 14 Oct 2024 14:02:59 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0AA63983CC;
- Mon, 14 Oct 2024 21:02:36 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C7F61154645;
- Mon, 14 Oct 2024 21:02:51 +0300 (MSK)
-Message-ID: <4810ac6d-cbdc-4f04-a2fa-895e78cf2fcb@tls.msk.ru>
-Date: Mon, 14 Oct 2024 21:02:51 +0300
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1t0Pfn-0002PA-Bd
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 14:20:03 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1t0Pfl-0005Di-7y
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 14:20:03 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20cdda5cfb6so14325215ad.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 11:20:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1728929999; x=1729534799; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mne/G8bf+gLdMpNrpPoleB2sZqjhOm7PxMIHH7EkWrQ=;
+ b=mE6lNFsR7Qb4qai7QIn0UsZTz6sOIhpFXF77gZnwJjqmnoJrrM9ZtBJDFMmbW4SP5Y
+ FGU9nY/sRKef4dLggwdRCz9vQlXQ2mdTYxxk+CNrWR8fzuEDmvYB5xVNE2/DmZQOCPB0
+ WUauzKXe7CQAxnXuz7RX7HeHogT9oDMCGjFg507xuRNGRTX+o3fNVTBL93m1jmf7Tr1R
+ qhE9V8d5UAHZgSC7EoM+5TS0PYONSFW6KrsbeLjMp3q5ufevkyAMmrk+Kk/umpfRQYo0
+ k4iv6st/5szov2p/fsYk2eqcGGTeEVTCVQhn722mzAZQpQEu5flSZC9/Qh2Bb8JsWX5g
+ zRoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728929999; x=1729534799;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mne/G8bf+gLdMpNrpPoleB2sZqjhOm7PxMIHH7EkWrQ=;
+ b=Ghv0YFxxaGvv8dwiFft2E5SR292qJvbE9ACjF508v8Ik9WCxoChmJi56JGSbeXVTWr
+ MGoRfEFELgUesx8EccZ8hTLt88zp/SLycY2GJmq/k8Y9HTJVJaEwUVjy+AByjWX3IpGT
+ Ge1cOtyWbSRyqcvIuurNjoFKUpc/y/9fFi1iT9P5X3NcTVWxw0mhKxOkq/baRzmTsVXE
+ 3lYiZe7vxW/T5dKPGp2KBn9J6WdiNovEenKxsFH25esZh4eJCeunnbNP50vw1OGVFdD7
+ mGTSyhHkBp4zzb27F2yvEVcXt+IIHNR1UR+skwjRAvs/OQPbRF8GTE8f8+g06wVtz+jl
+ vDzA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV9SOVbw5qiCu3KltoZ5zT8F8hSEoWXqjlOw0zivc1LlBpnhzjAkB9bmrYPEM2D2Ho/LqBeltKZH2h3@nongnu.org
+X-Gm-Message-State: AOJu0YzYK70CMfkng0CERdCEAMcnk7a8h/EkefjcNjHSV/k8yeTtqxa1
+ hAyjahvdWfQYGiwbJ3CENmTCh8kwrmjKP15ScQIXlIxIS/WelA+K6uByVkJg8yg=
+X-Google-Smtp-Source: AGHT+IGnDoqVp3b/PZjcfOaqrLRJzltFV5f2GqbmGhkSArBzYb7/BJM2gazKFNKQhmKp5XTMZbw9dw==
+X-Received: by 2002:a17:902:db0e:b0:20c:7720:59b8 with SMTP id
+ d9443c01a7336-20ca142a448mr178759685ad.6.1728929999400; 
+ Mon, 14 Oct 2024 11:19:59 -0700 (PDT)
+Received: from fchang-1826.. (1-169-245-242.dynamic-ip.hinet.net.
+ [1.169.245.242]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20c8c375d0csm68964525ad.304.2024.10.14.11.19.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2024 11:19:58 -0700 (PDT)
+From: frank.chang@sifive.com
+To: 
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ qemu-devel@nongnu.org (open list:All patches CC here),
+ Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH v7 0/5] Add Smrnmi support
+Date: Tue, 15 Oct 2024 02:19:43 +0800
+Message-Id: <20241014181948.1974405-1-frank.chang@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/20] target/hppa: Fix priority of T, D, and B page
- faults
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
- linux-parisc@vger.kernel.org, qemu-arm@nongnu.org,
- Helge Deller <deller@gmx.de>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20241009000453.315652-1-richard.henderson@linaro.org>
- <20241009000453.315652-10-richard.henderson@linaro.org>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20241009000453.315652-10-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=frank.chang@sifive.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,19 +98,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.10.2024 03:04, Richard Henderson wrote:
-> Drop the 'else' so that ret is overridden with the
-> highest priority fault.
-> 
-> Fixes: d8bc1381250 ("target/hppa: Implement PSW_X")
-> Reviewed-by: Helge Deller <deller@gmx.de>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+From: Frank Chang <frank.chang@sifive.com>
 
-Is this a qemu-stable material?  For now I assume yes, please
-let me know if it is not.
+This patchset added support for Smrnmi Extension in RISC-V.
 
-Thanks,
+There are four new CSRs and one new instruction added to allow NMI to be
+resumable in RISC-V, which are:
 
-/mjt
+=============================================================
+  * mnscratch (0x740)
+  * mnepc     (0x741)
+  * mncause   (0x742)
+  * mnstatus  (0x744)
+=============================================================
+  * mnret: To return from RNMI interrupt/exception handler.
+=============================================================
+
+RNMI also has higher priority than any other interrupts or exceptions
+and cannot be disabled by software.
+
+RNMI may be used to route to other devices such as Bus Error Unit or
+Watchdog Timer in the future.
+
+The interrupt/exception trap handler addresses of RNMI are
+implementation defined.
+
+If anyone wants to test the patches, we can use the customized OpenSBI[1],
+and the customized QEMU[2].
+
+We implemented a PoC RNMI trap handler in the customized OpenSBI.
+In the customized QEMU, we use the Smrnmi patches and the patch from
+Damien Hedde[3]. The patch from Damien Hedde can be used to inject
+the RNMI signal with the qmp command.
+
+[1] https://github.com/TommyWu-fdgkhdkgh/opensbi/tree/dev/twu/master
+[2] https://github.com/sifive/qemu/tree/upstream-smrnmi-v7
+[3] https://lists.gnu.org/archive/html/qemu-devel/2019-06/msg06232.html
+
+Test commands :
+$ ./build/qemu-system-riscv64 -M virt -cpu rv64,smrnmi=true,
+rnmi-interrupt-vector={Offset of the RNMI handler in the customized
+OpenSBI.} -m 4G -smp 2 -serial mon:stdio -serial null -nographic
+-bios fw_jump.elf -kernel Image -initrd rootfs.cpio
+-qmp unix:/tmp/qmp-sock,server,wait=off
+
+Use qmp command to inject the RNMI.
+
+Assert RNMI:
+$ ./scripts/qmp/qmp-shell /tmp/qmp-sock
+(QEMU) gpio-set path=/machine/soc0/harts[0] gpio=riscv.cpu.rnmi number=0 value=true
+
+De-assert RNMI:
+(QEMU) gpio-set path=/machine/soc0/harts[0] gpio=riscv.cpu.rnmi number=0 value=false
+
+Changelog:
+
+v7
+  * Rename 'nmi_execp' to 'nnmi_excep' and refactor RNMI exception
+    checking codes.
+  (Thanks to Clément for the suggestions.)
+  * Add the missing REQUIRE_SMRNMI() check and remove the redundant
+    check in 'helper_mnret'.
+  * Rebase to riscv-to-apply.next.
+  (Thanks to Alistair for the suggestions.)
+
+v6
+  * Delete the redundant code in 'riscv_cpu_do_interrupt'.
+  (Thank Alvin for the suggestion.)
+  * Split the shared code in 'helper_mret' and 'helper_mnret' into a
+    helper function 'check_ret_from_m_mode'.
+  (Thank Alistair for the suggestion.)
+
+v5
+  * Move the patch that adds the Smrnmi extension to the last patch.
+  (Thank Alistair for the suggestion.)
+  * Implement an M-mode software PoC for this with implemented handlers.
+  (Thank Andrew Jones for the suggestion.)
+  * Add a commit message to all patches of the series.
+  (Thank Andrew Jones for the suggestion.)
+
+v4
+  * Fix some coding style issues.
+  (Thank Daniel for the suggestions.)
+
+v3
+  * Update to the newest version of Smrnmi extension specification.
+
+v2
+  * split up the series into more commits for convenience of review.
+  * add missing rnmi_irqvec and rnmi_excpvec properties to riscv_harts.
+
+Tommy Wu (5):
+  target/riscv: Add 'ext_smrnmi' in the RISCVCPUConfig
+  target/riscv: Handle Smrnmi interrupt and exception
+  target/riscv: Add Smrnmi CSRs
+  target/riscv: Add Smrnmi mnret instruction
+  target/riscv: Add Smrnmi cpu extension
+
+ hw/riscv/riscv_hart.c                         | 18 ++++
+ include/hw/riscv/riscv_hart.h                 |  4 +
+ target/riscv/cpu.c                            | 18 ++++
+ target/riscv/cpu.h                            | 10 +++
+ target/riscv/cpu_bits.h                       | 23 ++++++
+ target/riscv/cpu_cfg.h                        |  1 +
+ target/riscv/cpu_helper.c                     | 79 ++++++++++++++++--
+ target/riscv/csr.c                            | 82 +++++++++++++++++++
+ target/riscv/helper.h                         |  1 +
+ target/riscv/insn32.decode                    |  3 +
+ .../riscv/insn_trans/trans_privileged.c.inc   | 20 +++++
+ target/riscv/op_helper.c                      | 45 ++++++++--
+ 12 files changed, 294 insertions(+), 10 deletions(-)
+
+--
+2.34.1
+
 
