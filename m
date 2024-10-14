@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C142799CC9F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 16:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D9E99CCAC
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 16:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0Ltw-00024Y-IK; Mon, 14 Oct 2024 10:18:24 -0400
+	id 1t0Lxq-00052W-VQ; Mon, 14 Oct 2024 10:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0Ltp-000240-Lf
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 10:18:17 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1t0Lxe-00051D-Gh
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 10:22:16 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0Ltn-0000oS-Qg
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 10:18:17 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5c9362c26d8so7268103a12.1
- for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 07:18:15 -0700 (PDT)
+ id 1t0Lxd-0001iA-0i
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 10:22:14 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2fb58980711so4462831fa.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 07:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728915494; x=1729520294; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728915729; x=1729520529; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Y8lpZS89dbV6Rm2YfqOiFZtdzz1XdHaAYDs6QXhGZ2E=;
- b=fGN5UL1IdLkZYV1rkZHSnNCGQp5/euuPFBVKdPN9JNxLuwGUhmzcpI/04EqKuakQer
- h/q3BhXVB6q8ffB20i7h8Gvyejqg6TuFj+Igf3Hvy3/QFD6jczm4kX2WHWzBQezvYUvl
- Wzadysm8Kr3UyAMjC0HKoZozwD9x7OY26Q76ALV7UOR42Uaa2cgdEI1SxY+/b3b7HcNa
- Mp5Bj24aoWHq6QPLO/ioZ0tsxQm6Sdlux1phSAqBUg+qfCO4AczLiW4v/xLuedI59ORk
- wdPoDIdQgLuLEzjAlEmuF1cQTz/6aqfXwwYCkQY8a5mCKlpANqD0QwdDGThhd/9/eumg
- mWnw==
+ bh=x7GETirBdYyPvkQiRgoRWo5OYM5llh8/PEjqqq4D8Ck=;
+ b=xo5MiuocxMXSJC8iAyshXbR2OgDkntXuH2PXkJI6AXdeDt9zeBNBpRX0pgq2g1DzMJ
+ ZxosjkaYc2hHTYGQRTeaqvA9832IjgfYgbWLriealMAGtO7ivbCQ4w2JzMJrlrtLXWlU
+ 6KWf6gEBnT+bI1yVVrRFPfABBOPQDHU1gIfDgMlp3IRS4I72ubPi+9Sur29qyuDY1h9n
+ ZngzSdnQzdhzbYFPmbKnmmrx6GdcS0SgPPANHkfeGTfwjQQ+Y/sSb0KnKrHl59CAIaGD
+ 8wfC4Vh20oIXXHrTauRG5A9rdGJ63I/Mgr+eCJy8JhQii11JR2hDqtpR6ANBzIADqb5z
+ cM6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728915494; x=1729520294;
+ d=1e100.net; s=20230601; t=1728915729; x=1729520529;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Y8lpZS89dbV6Rm2YfqOiFZtdzz1XdHaAYDs6QXhGZ2E=;
- b=h+osZRAZrcgyDcBv75kDr5h6hxS32XRNYmd4apiWd2jc2+QbVBAujDypqHdfeY2vO4
- YjZQxaUBoxkKBgQq3AXujYae69xpzGrSWn5wQpf6cxsO8oVD+OFI5fhzKFh6HWnwm51i
- GuUZoQDdbsKcIJpAsMRo20sg3y766ztwP2SIdDEAeULIM7ELRzcofaXnFnYBTBgo/gRa
- NZaJxV8kWcfl9OyK6KyrKelvlY2pxsquqSWlbtPnHi1AuYoY0PqMhsBX03tW3NWgMfn3
- h7K1JgfuZlu9AxdCCbJW921Aku8tg8c9TlBokskLboG7pudSc+IcwkteSYPLwnD7ABRg
- 2QLg==
-X-Gm-Message-State: AOJu0YzAy0zL7/CDVdw4UgbWhHUrBxxQwVRVdrTR921tuv66HGx6pZOI
- lYP1JUUUvUa0cNY9PHCspEoZYmN2Bybst6BCN8fhsD0C8AGXMFiO41QffyLM1TayICPpS2pLoK6
- AoWNN6AuV/G5QdIbBu6zsgBZUn8XR6tEY+1WXgw==
-X-Google-Smtp-Source: AGHT+IExVm2Z9bZ9gyi0jgfslqxLfBCzzzUpVp6F5kMftLkv3tSL01l0x7oXuVh7xbKqH/dccg+99/tPzQ2W2EwPskM=
-X-Received: by 2002:a05:6402:434b:b0:5c9:4548:eb32 with SMTP id
- 4fb4d7f45d1cf-5c94548ec76mr11302975a12.3.1728915493815; Mon, 14 Oct 2024
- 07:18:13 -0700 (PDT)
+ bh=x7GETirBdYyPvkQiRgoRWo5OYM5llh8/PEjqqq4D8Ck=;
+ b=bwKfW1sv8Xf+TUQrV38NEMXg6MhNmCA+oZhi8tFsq/nFpkkKQKK/y2HXQN9KT0fSHk
+ dx+frHmNt+GqX0CBky+DxlnZRkhHfVaGzRjnCX4eLzY3B5w9raYoTh4cr21UJqJfDxrn
+ Z8mGV3DnmRHXxpP26HaQpqi9zrw4cSYu6nEQzGkwFneQdlYBookg9b+cQ/zdlzK9V17E
+ lnyx7hPExIuju5aNPUe+WDbchU3NoLPoSPM1Cg7BsYvB3748nlltWiEo6us3fytRvCzc
+ PECaKuljItxh78dGtIE8M+blowd3rzzKeK9s31AEh1Vf/5gtcFpRmnJdwYPcrFjznjad
+ zskQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUQ8n2pNrk0lmK/GJY9r59tCTmT5nBY2KFaR2TF/glzOkuP6K3fltdD9HNf/qlfNFROxFMLDLTFcKiy@nongnu.org
+X-Gm-Message-State: AOJu0YwSDQyhXbBrwY8XogYQLt9HoHzoQ9fHeW2+sScySG2M/Zq9iGoc
+ GhcIRv0qZYlmEbJu2BCLRQ9TsMRj2d/5q4pu46WVvivgLSJ51huR302gjivnw0tKLshqEzdL+y0
+ paO+61fDi5+3xVONTAACodwDGKRy5Bqiwh3NVrQ==
+X-Google-Smtp-Source: AGHT+IEUNSznxQQaH+EES4LB0m1TEyCXV8XL8fMZ8BKN4ZKYnTkXOSIhMgC9m3U0RhgGdgrsPj3Q7Yoz1tEMgrcXuE4=
+X-Received: by 2002:a05:651c:210c:b0:2fa:cf5b:1e96 with SMTP id
+ 38308e7fff4ca-2fb325d8b65mr49934101fa.0.1728915728940; Mon, 14 Oct 2024
+ 07:22:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1728232526.git.balaton@eik.bme.hu>
- <0f5949d8ece522e30f990d25981f79965bf05bbf.1728232526.git.balaton@eik.bme.hu>
-In-Reply-To: <0f5949d8ece522e30f990d25981f79965bf05bbf.1728232526.git.balaton@eik.bme.hu>
+References: <20241012-dma-v2-1-6afddf5f3c8d@daynix.com>
+In-Reply-To: <20241012-dma-v2-1-6afddf5f3c8d@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 14 Oct 2024 15:18:02 +0100
-Message-ID: <CAFEAcA_1ejDprH6H=EPoP59jweUkuaZR_mcuNhhGFmDiQBNKMg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] log: Suggest using -d guest_error,memaccess instead
- of guest_errors
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
+Date: Mon, 14 Oct 2024 15:21:58 +0100
+Message-ID: <CAFEAcA8kyEGx63dAv52ekGG8t+BZQ5r4qdLz4Zri80c=Mhr5RQ@mail.gmail.com>
+Subject: Re: [PATCH v2] dma: Fix function names in documentation
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,29 +90,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 6 Oct 2024 at 17:49, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Sat, 12 Oct 2024 at 07:50, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> Rename guest_errors to guest_error to match the log constant
-
-I don't think this is a good reason to change the user-facing
-behaviour. Also, I don't think the existing names are so bad:
-
- -d guest_errors
-   this is plural because we are asking to log all guest errors
- qemu_log_mask(LOG_GUEST_ERROR, ...)
-   this is singular because we are logging a single error here.
-
-If we do want to change things for consistency, we should decide
-on what the user-facing option name ought to be (and I think
-plural is fine), and then change the internal define to match
-that, not vice versa.
-
-> and print
-> a warning for -d guest_errors to remind using guest_error,memaccess
-> instead but preserve previous behaviour for convenience.
+> Ensure the function names match.
 >
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-thanks
+
+
+Applied to target-arm.next, thanks.
+
 -- PMM
 
