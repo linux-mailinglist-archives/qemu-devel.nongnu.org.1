@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA2E99CA11
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 14:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B196F99CA13
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 14:28:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0KAs-0008Ss-Op; Mon, 14 Oct 2024 08:27:46 -0400
+	id 1t0KBU-0000Lr-Ja; Mon, 14 Oct 2024 08:28:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1t0KAp-0008SS-Bp; Mon, 14 Oct 2024 08:27:43 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1t0KBB-00008E-QJ; Mon, 14 Oct 2024 08:28:06 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1t0KAn-0002N4-79; Mon, 14 Oct 2024 08:27:43 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EAKrVw018878;
- Mon, 14 Oct 2024 12:27:36 GMT
+ id 1t0KB3-0002OU-Gt; Mon, 14 Oct 2024 08:28:00 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49ECNwuJ002626;
+ Mon, 14 Oct 2024 12:27:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:content-type
- :content-transfer-encoding:mime-version; s=pp1; bh=wFYO1ZzNxKFap
- a/BkLrj/a2ikVZ2KkasRTklykwM8do=; b=NVisiFl9+UxHPeSX6uQSp0Nh/xOuF
- tk7F7f2r7lwu/zG7NitXKgF1uD0YxIbHgWx2D+cX3YOgOEecYaTuM6Ov0BMafhno
- A6LJC+6Waq5CDVZCxno7n9bxKArRB6st3B6OAOKyWwrDESPQGCLSMUgQZA3LlHh8
- bY5XvmnWDarh8S5t48k+WR7XCh6swINM0VMcuUHY3BPsJ+T6sCv1vrZMcx3LKjZf
- H89/OkEoBITVM1+ZlMDbLytwQSLBYVcxJ7+EAiF8bfozIx7mCimqxXglB8Mv8zu0
- C/XsB7FI943P8tkXFbM6zzSaBA21AZy1aqDASTNQIziJ5o3vmaSmwauOg==
+ :to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+ 9bILM+ajOn4ZmA8j++WZz/jUN9VoQndIz+V3LVRILp8=; b=L5axbBDaCKJxVaup
+ 0TCIjQdG6xUNaOxsy1YckaGkIt/Uu4l1wYgTO+ZpLoPqS5kgJcU+oF+li+eUW4SD
+ h/sUbxfcRwlVKEb+E175nUP+k3T4Y04LEE3tRozN5ADydGm64lgwOeBkMk6R1Q4D
+ SsdrCHS8Uj7lP4rXbpI8M7fU9Dvgnhj5xYxBGs62HMVL6l6d/PdByiq5pS3qIzHy
+ 9yzDwM/yK2LBLlu4JejmtM5u7RYF4fN35LWaSylQIdn1bVhBCZcVxE6qhSGMISSJ
+ 9hPZ0fagvW8B4o6c/ik5lqA531MB9TDRhdutoMyPYUmxNLF5MdFeCoHqaqK5xC3i
+ 4wXhcg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4291f88k80-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42939080hh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 12:27:36 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49ECRZ0H011577;
- Mon, 14 Oct 2024 12:27:35 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4291f88k7x-1
+ Mon, 14 Oct 2024 12:27:47 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49ECRlts010470;
+ Mon, 14 Oct 2024 12:27:47 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42939080hf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 12:27:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49EAYSF5027452;
- Mon, 14 Oct 2024 12:27:35 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4283txejx1-1
+ Mon, 14 Oct 2024 12:27:47 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49EB1xrE002426;
+ Mon, 14 Oct 2024 12:27:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284emeff8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Oct 2024 12:27:34 +0000
+ Mon, 14 Oct 2024 12:27:45 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49ECRXCr56557840
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49ECRilE41288082
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Oct 2024 12:27:33 GMT
+ Mon, 14 Oct 2024 12:27:44 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D81020043;
- Mon, 14 Oct 2024 12:27:33 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E59072004B;
+ Mon, 14 Oct 2024 12:27:43 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2501320040;
- Mon, 14 Oct 2024 12:27:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0921D20040;
+ Mon, 14 Oct 2024 12:27:43 +0000 (GMT)
 Received: from ltcrain34-lp1.aus.stglabs.ibm.com (unknown [9.3.101.40])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 14 Oct 2024 12:27:31 +0000 (GMT)
+ Mon, 14 Oct 2024 12:27:42 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
 Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org
-Subject: [PATCH v4 00/13] ppc/spapr: remove deprecated machines specific code
-Date: Mon, 14 Oct 2024 17:57:16 +0530
-Message-ID: <20241014122729.1136809-1-harshpb@linux.ibm.com>
+Subject: [PATCH v4 01/13] ppc/spapr: remove deprecated machine pseries-2.1
+Date: Mon, 14 Oct 2024 17:57:17 +0530
+Message-ID: <20241014122729.1136809-2-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6hfgfD5RKPW4Lc3LHfLr8Jv3NRYBXcK1
-X-Proofpoint-ORIG-GUID: 0JutnH2bqPY7CvH58-i5xuatqT7yGMKb
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20241014122729.1136809-1-harshpb@linux.ibm.com>
+References: <20241014122729.1136809-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vWf8SOSN9OKyAk52p0T7WmAM-yQ3qPq3
+X-Proofpoint-ORIG-GUID: jw2wY41VMbu3pSFlm1kRlWawIfmgfys7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-14_10,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 phishscore=0 mlxlogscore=711 malwarescore=0 impostorscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ bulkscore=0 suspectscore=0 adultscore=0 mlxlogscore=669 phishscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410140089
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -110,56 +112,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per Qemu's deprecation policy [1], and the legacy pseries machines
-being marked as deprecated in earlier commits, this patchset aims at
-removing the respective code for machines which are now deprecated.
+Commit 1392617d3576 intended to tag pseries-2.1 - 2.11 machines as
+deprecated with reasons mentioned in its commit log.
+Removing pseries-2.1 specific code with this patch for now.
 
-[1] https://www.qemu.org/docs/master/about/deprecated.html
+Suggested-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+---
+ include/hw/boards.h |  3 ---
+ hw/core/machine.c   | 11 -----------
+ hw/ppc/spapr.c      | 11 -----------
+ 3 files changed, 25 deletions(-)
 
-v4: Removed hw_compat_2_{1,2,3}[_len] in patches 1,2,3 (Philippe)
-    Removed DEFINE_SPAPR_MACHINE_TAGGED in patch 12 (Cedric)
-    Updated version_id to 2 for vmstate_slb in patch 13 (Cedric)
-    Dropped removal of pseries-3.0 patch 14 (Cedric)
-    Added R-bys from Cedric in patch 3, 4 and 5
-    Patches awaiting R-bys: 12, 13.
-v3: Addressed review comments from Cedric on v2 patchset
-    Removed some more pre-2.10 migration hacks in patch 9/14
-    Removed pseries-2.12 and pseries-3.10 also as due for removal.
-
-v2: <20241001092910.1030913-1-harshpb@linux.ibm.com>
-v1: <20240917060300.943496-1-harshpb@linux.ibm.com>
-
-Harsh Prateek Bora (13):
-  ppc/spapr: remove deprecated machine pseries-2.1
-  ppc/spapr: remove deprecated machine pseries-2.2
-  ppc/spapr: remove deprecated machine pseries-2.3
-  ppc/spapr: remove deprecated machine pseries-2.4
-  ppc/spapr: remove deprecated machine pseries-2.5
-  ppc/spapr: remove deprecated machine pseries-2.6
-  ppc/spapr: remove deprecated machine pseries-2.7
-  ppc/spapr: remove deprecated machine pseries-2.8
-  ppc/spapr: remove deprecated machine pseries-2.9
-  ppc/spapr: remove deprecated machine pseries-2.10
-  ppc/spapr: remove deprecated machine pseries-2.11
-  ppc/spapr: remove deprecated machine pseries-2.12-sxxm
-  ppc/spapr: remove deprecated machine pseries-2.12
-
- docs/about/deprecated.rst       |   8 -
- include/hw/boards.h             |   9 -
- include/hw/pci-host/spapr.h     |   5 -
- include/hw/ppc/spapr.h          |   3 -
- include/hw/ppc/spapr_cpu_core.h |   1 -
- target/ppc/cpu.h                |  10 -
- hw/core/machine.c               |  27 ---
- hw/intc/xics.c                  |  16 --
- hw/ppc/spapr.c                  | 387 +-------------------------------
- hw/ppc/spapr_cpu_core.c         |  12 +-
- hw/ppc/spapr_pci.c              |  92 +-------
- migration/savevm.c              |  19 --
- target/ppc/cpu_init.c           |   6 +-
- target/ppc/machine.c            |  72 +-----
- 14 files changed, 18 insertions(+), 649 deletions(-)
-
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 5966069baa..44d19e1ffc 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -828,7 +828,4 @@ extern const size_t hw_compat_2_3_len;
+ extern GlobalProperty hw_compat_2_2[];
+ extern const size_t hw_compat_2_2_len;
+ 
+-extern GlobalProperty hw_compat_2_1[];
+-extern const size_t hw_compat_2_1_len;
+-
+ #endif
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17eba..a41d1dbe26 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -297,17 +297,6 @@ const size_t hw_compat_2_3_len = G_N_ELEMENTS(hw_compat_2_3);
+ GlobalProperty hw_compat_2_2[] = {};
+ const size_t hw_compat_2_2_len = G_N_ELEMENTS(hw_compat_2_2);
+ 
+-GlobalProperty hw_compat_2_1[] = {
+-    { "intel-hda", "old_msi_addr", "on" },
+-    { "VGA", "qemu-extended-regs", "off" },
+-    { "secondary-vga", "qemu-extended-regs", "off" },
+-    { "virtio-scsi-pci", "any_layout", "off" },
+-    { "usb-mouse", "usb_version", "1" },
+-    { "usb-kbd", "usb_version", "1" },
+-    { "virtio-pci", "virtio-pci-bus-master-bug-migration", "on" },
+-};
+-const size_t hw_compat_2_1_len = G_N_ELEMENTS(hw_compat_2_1);
+-
+ MachineState *current_machine;
+ 
+ static char *machine_get_kernel(Object *obj, Error **errp)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 2c10a70a48..e9518ff8b3 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -5381,17 +5381,6 @@ static void spapr_machine_2_2_class_options(MachineClass *mc)
+ }
+ DEFINE_SPAPR_MACHINE(2, 2);
+ 
+-/*
+- * pseries-2.1
+- */
+-
+-static void spapr_machine_2_1_class_options(MachineClass *mc)
+-{
+-    spapr_machine_2_2_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_1, hw_compat_2_1_len);
+-}
+-DEFINE_SPAPR_MACHINE(2, 1);
+-
+ static void spapr_machine_register_types(void)
+ {
+     type_register_static(&spapr_machine_info);
 -- 
 2.45.2
 
