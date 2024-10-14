@@ -2,154 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F4699C7A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 12:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FB199C783
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Oct 2024 12:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0IiI-0007SX-U8; Mon, 14 Oct 2024 06:54:10 -0400
+	id 1t0If1-00040G-JW; Mon, 14 Oct 2024 06:50:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajay.opensrc@micron.com>)
- id 1t0IiG-0007SK-R2
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:54:08 -0400
-Received: from mail-co1nam11on2059.outbound.protection.outlook.com
- ([40.107.220.59] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajay.opensrc@micron.com>)
- id 1t0IiF-0006rM-82
- for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:54:08 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GOy/pyjTj9PlLtxMR2lbJUjo9q/aQ9hGWuj+do241GDfmZGnf5IFDgBlkxzy0Rb/AzolmHs/P8iZcrJD+QvcRFGC6gxc3B6uYCsDH2l0LUMMncgVmDHOpfIypYBx48deLJGa+AyBN+N7lZddNlTsb7iaE+Si+/R6gMkB/bllcqJWQilUDnGlGnp+KTvA1C4CUMIs5bzRafo12iT85FWOZ71cWweBsQrva34AOjeYGel9CyYv8y6+orwTJUi5MAYiGWddGj5JZdYrlsUre9fq7QNAbKUhcHIXDaJ3FhKvd/IzEqpCC51KssW2TCkr1z4OAoJJFeNLIDNCuvnFL7bnjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ST/P8q7hkpC02+JORl2ayKESxPgc6mrrFv9n56gmXwM=;
- b=k1L9o7eQJjwuyIbQxNDmglk3vBLTT4h2BahkE4Pw+umdIgiFWekXLTdt3XCo6Q1brwKm91HxopMndjxvd0jnx4uu8mSBidclnmlXzrs8xKMNJsALCiJCYxJacRNSMFjfFEUaN1tSlpAiPCtnGblKQTzHqkd/oJsXWolEUcGUYAIWjvJFthGAfsmP24oL0CaoOT1whMp+IJJHmNxDOm6wIu2GYggIHsF6iEW2xzfX1azg+GTYtQmOfINfFD+ydHJ+jpqYwrkOV1iUxkBzVCcIyQMCDhyhKkyIWf4O9L6nJgEFsWQZgEH/WQOFhrXFD6OOgZmcE4Q712u3Hlc7vld1MQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.201.242.130) smtp.rcpttodomain=redhat.com smtp.mailfrom=micron.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=micron.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=micron.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ST/P8q7hkpC02+JORl2ayKESxPgc6mrrFv9n56gmXwM=;
- b=JmZZNOE0L84U4ep2wwtzitEe2DwfhyOjtpt/Wy69Ctilt+raQn7P51/Lhlx48vIyRyKXsQSl1kFkDiwX2PhsnLHzYhu9Z6m0TWEwyeDwSYK1biK2CeBXp31YSlqEoplSlk0szruTEshk/zPnuXCi1DKL/QHqm+i6lCuJBFtYIA5Fv+avBuQGzWxAebQdmp9FT0U4x5++b314fpduQzUkB/EP5dETdgTNu3CxnAgp9jH0SpGgieGgF1gHzw+x7tkijZSelSk9dVIHJCxFFfLgM5QtbtXpjq3NxUkxTYMyYO76cMXaFhTqP4olVnNGAFF/YUhr1Sd+dPOhny4CafZy3w==
-Received: from SJ0PR13CA0175.namprd13.prod.outlook.com (2603:10b6:a03:2c7::30)
- by SA2PR08MB6587.namprd08.prod.outlook.com (2603:10b6:806:11b::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Mon, 14 Oct
- 2024 10:48:57 +0000
-Received: from MWH0EPF000971E2.namprd02.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::22) by SJ0PR13CA0175.outlook.office365.com
- (2603:10b6:a03:2c7::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.16 via Frontend
- Transport; Mon, 14 Oct 2024 10:48:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 137.201.242.130)
- smtp.mailfrom=micron.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=micron.com;
-Received-SPF: Pass (protection.outlook.com: domain of micron.com designates
- 137.201.242.130 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.201.242.130; helo=mail.micron.com; pr=C
-Received: from mail.micron.com (137.201.242.130) by
- MWH0EPF000971E2.mail.protection.outlook.com (10.167.243.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8048.13 via Frontend Transport; Mon, 14 Oct 2024 10:48:56 +0000
-Received: from BOW17EX19B.micron.com (137.201.21.219) by BOW17EX19B.micron.com
- (137.201.21.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Oct
- 2024 04:48:54 -0600
-Received: from BOW17EX19B.micron.com ([fe80::1c0a:12aa:1e25:d8a3]) by
- BOW17EX19B.micron.com ([fe80::1c0a:12aa:1e25:d8a3%6]) with mapi id
- 15.02.1544.011; Mon, 14 Oct 2024 04:48:54 -0600
-From: ajay.opensrc <ajay.opensrc@micron.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "mst@redhat.com" <mst@redhat.com>, "john@jagalactic.com"
- <john@jagalactic.com>, Eishan Mirakhur <emirakhur@micron.com>, Ajay Joshi
- <ajayjoshi@micron.com>, Srinivasulu Thanneeru <sthanneeru@micron.com>, "Ravis
- OpenSrc" <Ravis.OpenSrc@micron.com>, Aravind Ramesh <arramesh@micron.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>
-Subject: Re: [EXT] Re: [PATCH v1] hw/cxl: Fix background completion percentage
- calculation
-Thread-Topic: [EXT] Re: [PATCH v1] hw/cxl: Fix background completion
- percentage calculation
-Thread-Index: AQHbBpg3y5v2dlN91E23qENSwuUYUrKGmnsA//+k9+M=
-Date: Mon, 14 Oct 2024 10:48:54 +0000
-Message-ID: <b0f8fb6d88bd4d9ba5b369babb94a423@micron.com>
-References: <20240914112021.2730383-1-ajay.opensrc@micron.com>,
- <20241014111216.000014c2@Huawei.com>
-In-Reply-To: <20241014111216.000014c2@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.201.84.68]
-x-mt-whitelisted: matched
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t0Iep-0003yt-3z
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:50:35 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t0Iem-0006U2-Vc
+ for qemu-devel@nongnu.org; Mon, 14 Oct 2024 06:50:34 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5c973697b52so1472384a12.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Oct 2024 03:50:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728903030; x=1729507830; darn=nongnu.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=b6bafoQ4AEmroXUTOf4RMDPzol5f3xKj5qcmoPEW4WI=;
+ b=q3b5woZC1CIIRnSaEf19MINkXBEZmCe9hHuzCS8mLnrt3uAOa4XldDZ7fb/iCMAWhX
+ UyGrUl8MKBdgRg8z+rC7lD2eIqICR0oZ30q35dSxEDqyhNcSaurma53rRxwPJc9vei8I
+ uOeggp33QnPSGgyoB6Jz/2AIA786yxdDkoAq7wKrirnIPZ823EQD/SPQBETCoS7ZU+yS
+ 1cUVTVT9P2TVl/aUW6E5rKs7frA5ci5GR0aG5/fR2Y3IQr/h8kQepKLq8VIWqxM/EDUu
+ QFQQj4fPVkRJRZljLPFmLlODqgZr1kAWpo2a4IzWeEPv5+Ka30pBsH8KNwBXS7MtgK45
+ 1N/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728903030; x=1729507830;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=b6bafoQ4AEmroXUTOf4RMDPzol5f3xKj5qcmoPEW4WI=;
+ b=a/kKIrN/K6xdGzSAJ1tR1OkM6bJyHOyjzYNY7kFYvVwpe5WGKMzSByvEivh8q4AsRa
+ gt9GxBEtcUeODCOEefNW+xzdmVVeGFfOzutgJa7tpj/X/wTggyUZAvOh0cJQ0H8pq9sP
+ 1Dwfqa2h59kXipIiu8NLfxW7LeUBpBSOaYvFkaofMP9Ja6WPDO9iiwbNVSTvlVzaoUkA
+ 8djBz+JDuEhSc9QLNuR+adXZlL9iBXnO7/SKECuvj9Z2o3C8iQ6bSdovqWCyDtpRhUXs
+ +xuTWP0v3YEv1rA3asPAI4nQ8vdj/7aoNSYU05HIvHOMkHNqWRj3FMX6tb0VWlInNfWj
+ TLMA==
+X-Gm-Message-State: AOJu0YxSwQq3eq1ZMRQ5sNxEYjugTYMo0UkcIyDfwNVmCY0eRayGff+U
+ ZXOQF6QGDiZhc4IBedus7LuYWLhFC74g2oRuJT8DH3SAMnPECFLd/H2pVS01mWg=
+X-Google-Smtp-Source: AGHT+IHEq+IXWN+UL05J0PR2GuoGIrY6O9CXXhOZ8K3tR0R6x1iSbzEfnVMHWkSxiOIHwcSIuq54Ww==
+X-Received: by 2002:a17:907:7242:b0:a99:ff43:ca83 with SMTP id
+ a640c23a62f3a-a99ff43d09dmr434786266b.14.1728903030245; 
+ Mon, 14 Oct 2024 03:50:30 -0700 (PDT)
+Received: from [127.0.1.1] (adsl-161.109.242.225.tellas.gr. [109.242.225.161])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a0b25226esm165504466b.59.2024.10.14.03.50.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2024 03:50:30 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [RFC PATCH 0/4] No-op support for Arm FEAT_XS, feedback needed
+Date: Mon, 14 Oct 2024 13:48:54 +0300
+Message-Id: <20241014-arm-feat-xs-v1-0-42bb714d6b11@linaro.org>
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E2:EE_|SA2PR08MB6587:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e18bc60-b650-4d5f-4373-08dcec3dcda2
-X-EXT-ByPass: 1
-X-MT-RULE-Whitelisted: Triggered
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?dpRW2SMFByZ36uvN/sTfaLRbz6qPV8Ht7AfSbGBfE+IPHQRNQN5QaaeHru?=
- =?iso-8859-1?Q?V7WZik3LmifcYg96mGiyXpESW3qxJdVzRQVriK3v8McRqTs415R/lTbje8?=
- =?iso-8859-1?Q?gWOyXzXgsuL/CUjDVrqP36BIFjxAIo8iPoZpKEmA0ZD1qlIp02jjkJj1Va?=
- =?iso-8859-1?Q?xJSAWDSFVDntMGKLUdfNgKRYDLTEvzTGw9swTohmiYBadYP0kJn3AETGBG?=
- =?iso-8859-1?Q?QYLL7uRt4ucSrbFKAHNMox5PsaCc7EOcyo6JiE9QjTR6pkirEbH6oQAnOg?=
- =?iso-8859-1?Q?hFTeGl3bpuDwsEEyN+sxn4hqxPOa+H9Yp6y/ssiya6u2JQ5IVlR6BC6p0L?=
- =?iso-8859-1?Q?+aH2+n/ANZwpmll67c9eWP+00g2LuPsNyRu6ULSc6NAPVFPRDqQujpfURq?=
- =?iso-8859-1?Q?qSaFtWmPHkszL/QP63/lNBCR3DG7rz7lcqqAaCfneLFJ3enBLaTCuNbkWi?=
- =?iso-8859-1?Q?Ly2EyDicd4XqzIdfkM0NK7WEYdxQG+1Trj8cKzhMczmjp3oU6KrOF1xqKG?=
- =?iso-8859-1?Q?l2BbwZ2oy0Ib6Pi627g+8zws6DqB7IlAQsww5S1wEOYzMct9kJN65UxlOi?=
- =?iso-8859-1?Q?HCHs6OjNqHEE3gLXuHMfj/baBwg+AW6zIFM/1tAerdgnuscX03S60rDDcW?=
- =?iso-8859-1?Q?NCe/tIIGL5SCCPgq8DkrPK8gyq+WvEBYHlBeym7ttruIBtnULB5FPZu7Fd?=
- =?iso-8859-1?Q?GV5pmSMG0ipJ4CaZ1wJ0qVo7zsfv2B+0CJeIG5kVALR//dbUWKNjBUHVTp?=
- =?iso-8859-1?Q?pmJGEBwN0BQYD25wAIE+ZpBgFoJ6SISlYg3Ll2mquKqpyXzTFyH53YhYF+?=
- =?iso-8859-1?Q?jgtKiucp4z8tZpbY63BW7c89OlUjllzuW0zuKcoH29vIXbADjxbhVjcmBE?=
- =?iso-8859-1?Q?wOp0q1AhEmevClVWq1M2gZ4JHRgRE02B/JQLRcyiAJklKdxgTnGleF2FJz?=
- =?iso-8859-1?Q?FulDSRr4HeIZ+6GUWweaPBNf/75/qwrcd9qs8MpB9NQ38C5MGvcX7C/H5d?=
- =?iso-8859-1?Q?WM60k+zdhcyfoy4eFEFqZpCNTZeWChD4cMezK2p1hkAm048HYDrN9arL13?=
- =?iso-8859-1?Q?1d6isrmDE5v7QHLNiJ6+RgqtzULSwPDNRR9XLjGGRqwdIMdcvY3pzYo7Wk?=
- =?iso-8859-1?Q?iuCLFfYgs5yUIlHdbUt1g+FwvjfSoW6VaTmrvcYEEK0JO7cJ3muUPpAWn+?=
- =?iso-8859-1?Q?1iggcwl3GKahsD+hnFyEKJWdY7p8T3Jz3RGbD3V4zRC33o2U9qeRQFmUn3?=
- =?iso-8859-1?Q?zQU/t3TuYRpdoib23Q7P03T+za04x26wm0ooRCb1UStvMG7O0GBygdqnAa?=
- =?iso-8859-1?Q?56a0VBCJyvWYwGJD8XfanK/z4JtnKF6TEzM5zj1AAhrPoMS4/Lsec/UR0R?=
- =?iso-8859-1?Q?OPCAoAA7jmMJ0Ke4Fr67J2xzpD0lYXJSUbhaafhu5SIa2gbaDWBbruEwMt?=
- =?iso-8859-1?Q?RMN7sjBK37KBIvrm?=
-X-Forefront-Antispam-Report: CIP:137.201.242.130; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.micron.com; PTR:masquerade.micron.com; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: micron.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 10:48:56.6110 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e18bc60-b650-4d5f-4373-08dcec3dcda2
-X-MS-Exchange-CrossTenant-Id: f38a5ecd-2813-4862-b11b-ac1d563c806f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f38a5ecd-2813-4862-b11b-ac1d563c806f; Ip=[137.201.242.130];
- Helo=[mail.micron.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E2.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR08MB6587
-Received-SPF: pass client-ip=40.107.220.59;
- envelope-from=ajay.opensrc@micron.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABb3DGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDS0NL3cSiXN201MQS3YpiXXPj1NSUJCPjFEtjcyWgjoKi1LTMCrBp0bG
+ 1tQAet9eFXQAAAA==
+X-Change-ID: 20240919-arm-feat-xs-73eedb23d937
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+X-Mailer: b4 0.15-dev-12fc5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1827;
+ i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
+ bh=n3V+VVQvSEXeK/GAnYRkazxno+QILIS5TUpLyNPBbMk=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQm5EUGQwZXZWMmhRNFRvbFFsa1J1REVjZnFCeVhDCmxmb29JSmhTeWtYejM5b1NE
+ WkNKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnd6M2RBQUt
+ DUkIzS2Nkd2YzNEowS3dDRC85OXJCcTZWK3NqSTBKaW1QRS9IeVd3NmlNWjJkVHpEcEJHTkErZw
+ pJOFVzM1lXbktneUc0eXZvK08veFFjdHNYclBQa2FkTFJZeHZBa2hQQWFZRm5mOE9SM0swMG9pS
+ lpOenpkTHdwClFqT3lEMlJUSm85bFZzV1FPSkRYNjF0Q01Bd3ZzaDNQNHBxcGZtaU9DY0MvWXVi
+ RTduU2c0Ky9Bc0lWQjZhUUoKazhvM1ppT1phM01RTDM1SnNQY0E4NnhWc1FCMTBpZmNlVTBGNTB
+ EUTZONG5VUTFjUll3cnBYSDY4YWNSU0grNwprOVhleVlVcnZQQndLN1pYRi8yUXNNRXRqNnRhc3
+ RqZjNHU3NuMkVVOVR6aWxsbGhRWDJGTDJraVkvWWQyU3VtCm4wTGFER0Y2Q3ZBNlErUWEwTHZxT
+ nhiekZVTmJKK2drY3dETmJyeGx2WWRSdlgzc2N1NTRRQXpqd09RQVZlZ1MKMm1FYjB1RHNxYy9i
+ eG5GUXhVUXRZbmMxbHpwaVdqcGpOV0dyMm9ORDhWU1hRWkhSSVhlREtyNGsvNmhjR3kwcwpNTlR
+ lS21UV1laZ2ZVc1VRUkRkdUZsMVRPMVhTKzdFQVBJQUJ6K2ozS3cyTzJpSUFCQUY1Nnd5SVhWNk
+ ZYaFVtCmZWN2ZKL2ZoWEpDTGdRZlNocXgraktzNFJnWDVPVUh2U2NHbDZoVlJ6S0E4b3NQNHpSW
+ nUxcHVmQ0VsRzRycnQKRUd0NzdjR29kdCtpUzNLUHVRVE1SSm5NOXQxOGZLa2UwOWRNTXNXNzlr
+ MEZUUTJKcWs5eHU0VlFQbGVKK1pMNApiZDZOR0lWbCtrckRFb2crSTBqSmRpanFJWmFhQXBoYmo
+ yZm8vUlArSmczVCtKZEFmWlRXd2FhZ2hDMTFJVXk4CndTZ2owZz09Cj1YNkdnCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-1.252, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -166,61 +116,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->On Mon, 14 Oct 2024 10:32 +0530=20
-><Jonathan.Cameron@Huawei.com> wrote:
->
->On Sat, 14 Sep 2024 16:50:21 +0530
-><ajay.opensrc@micron.com> wrote:
->
->> From: Ajay Joshi <ajayjoshi@micron.com>
->>
->> The current completion percentage calculation
->> does not account for the relative time since
->> the start of the background activity, this leads
->> to showing incorrect start percentage vs what has
->> actually been completed.
->>
->> This patch calculates the percentage based on the actual
->> elapsed time since the start of the operation.
->>
->> Fixes: 221d2cfbdb ("hw/cxl/mbox: Add support for background operations")
->>
->I'll include this is a fixes series I send to Michael + list later
->today.  However for future reference, no line break between tags in
->the tags block as it breaks some scripting.  I'll tidy that up.
->Note I think you missed Michael's point about this on the first version.
->+ as a second version, even without changes, this should have been v2.
->
+This series is an initial incomplete attempt at adding support for the
+FEAT_XS feature in aarch64 TCG. This feature was introduced in ARMv8.7:
+it adds a new memory attribute XS which indicates that a memory access
+could take longer than usual to complete and also adds instruction
+variants for TLBI maintenance and DSB.
 
-Thanks Jonathan! Got it.
-Sorry missed the versioning, will be more careful about it.
+These variants are implemented as no-ops, since QEMU TCG doesn't
+implement caching.
 
->
->Thanks
->
->Jonathan
->
->> Signed-off-by: Ajay Joshi <ajay.opensrc@micron.com>
->> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
->> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> ---
->>  hw/cxl/cxl-mailbox-utils.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
->> index c2ed251bb3..873d60c069 100644
->> --- a/hw/cxl/cxl-mailbox-utils.c
->> +++ b/hw/cxl/cxl-mailbox-utils.c
->> @@ -2708,7 +2708,8 @@ static void bg_timercb(void *opaque)
->>          }
->>      } else {
->>          /* estimate only */
->> -        cci->bg.complete_pct =3D 100 * now / total_time;
->> +        cci->bg.complete_pct =3D
->> +            100 * (now - cci->bg.starttime) / cci->bg.runtime;
->>          timer_mod(cci->bg.timer, now + CXL_MBOX_BG_UPDATE_FREQ);
->>      }
->>
+This is my first foray into TCG and certain things weren't clear to me:
 
-    =
+1. How to make sure the feature is implemented properly. Since we model
+   cache maintenance as no-ops my understanding is the only
+   functionality we need to provide is to expose the FEAT_XS feature bit
+   and also make sure the nXS variants trap properly if configured with
+   fine-grained traps.
+2. Is there a point in adding a TCG test? If I read the manual
+   correctly, the nXS variants should trap to the undefined instruction
+   vector if unimplemented.
+
+These patches lack support for FGT for now.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
+Manos Pitsidianakis (4):
+      arm: Add FEAT_XS's TLBI NXS variants
+      arm/tcg: add decodetree entry for DSB nXS variant
+      arm/tcg/cpu64: add FEAT_XS feat in max cpu
+      tests/tcg/aarch64: add system test for FEAT_XS
+
+ target/arm/cpu-features.h          |   5 +
+ target/arm/helper.c                | 366 +++++++++++++++++++++----------------
+ target/arm/tcg/a64.decode          |   3 +
+ target/arm/tcg/cpu64.c             |   1 +
+ target/arm/tcg/translate-a64.c     |   6 +
+ tests/tcg/aarch64/system/feat-xs.c |  27 +++
+ 6 files changed, 255 insertions(+), 153 deletions(-)
+---
+base-commit: 7e3b6d8063f245d27eecce5aabe624b5785f2a77
+change-id: 20240919-arm-feat-xs-73eedb23d937
+
+--
+γαῖα πυρί μιχθήτω
+
 
