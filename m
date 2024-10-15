@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568EE99E43E
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B2F99E442
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewt-0006k2-SX; Tue, 15 Oct 2024 06:38:43 -0400
+	id 1t0eww-0006lk-1j; Tue, 15 Oct 2024 06:38:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewb-0006hR-Np
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:28 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1t0ewc-0006hT-8J
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:29 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewZ-0005z4-BB
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:24 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-37d55f0cf85so2492304f8f.3
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:22 -0700 (PDT)
+ id 1t0ewa-0005zN-CH
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:26 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-539e8607c2aso3084170e87.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988701; x=1729593501; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988702; x=1729593502; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mHFb28H8fgPDxISHxl0zh7MOKojU7kn29hs6Fm1zhd8=;
- b=I5/+gbPnZQsvkgLNPGKMTh2rdtYdp5BfZq+gE4kT1mBDatsDipKhZCSHtuyEI0N8vu
- 8B991XTjzYZRcoRDu8BVlxghvknnTqD/oCOgANu2bgK62jUdjXeU8fLKDVgnmd+PvjYO
- 7QhEJlQuZQo8qmWWncbpKjTQSt9OqccC5iA4o7VqWCqwxRADIezotCgfOrtxX3c1RamL
- Io0tzaDPUXkePS18b/Pdd5KtK9hxunQKKvlQ+oBp+VVavCICFVEQn9hf7VDSanx1IwpM
- 3jaVFL6ubI1zfobU+qi6HYOqrkRvEf7MVqGYoK4T0IVltVaggwB4vhcj2m4DXTB8S7oe
- paSg==
+ :reply-to; bh=SuKeHu5aGsauClJdqFbtB6s+iWJAKGmWZvqIPvzOUdY=;
+ b=n2lIHXZinWaHRPeebfeNX+Lzh2h8GCF9dEA2fvy/keYcXxc8rLb2LFI6TXOn6UtS83
+ LpKPcz9eVNEA/mVnEp/xma+Pv7kKac0Y+6B4gITYDe1IN8uag4wX8nTNFC0CDYjlafnN
+ B+E7WrBzRh7F2ba35Ca/+Z/8G0yP0/IQks7yhFpTmLfaAVHvj83+yl6klSsLJv8tX2VM
+ S/u/Ytj47E1exlJh8x8FC6kvhFThoyHsP5EV14N3KHmbTdHCvtrBSO8vsJNLKIc0fQVI
+ wZCZVJxa4HZMYwsYwRnNjz+R5pexwDFWuh8+Hxe0R+IVn0LCWFtqQJylpOTuJKA5rL5M
+ 68pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988701; x=1729593501;
+ d=1e100.net; s=20230601; t=1728988702; x=1729593502;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mHFb28H8fgPDxISHxl0zh7MOKojU7kn29hs6Fm1zhd8=;
- b=p4HvAKoVVmK4Ru2M2B1VhhFoVuXjpEIgVzxwam+dn8sHE9CAvc0K2bbwRm8EOQo/1e
- z+p1RqUwpGbv+PcN6NDav8OuxU07lXMBmfExtvZ1nfBroksvzClE8y3oSG+q1Zse5O+6
- HlitDJSfxLzvgb9l8Ya986efr9G787MGvTwyyAfbDLBqfjCm9Ck2xA9p050Lf0pbTMrp
- 4aJN8iVkAh54KxODmUOocEocjtzas6Wv7M4+RUWZMSVGmpvfaBrkSDHEKwSZ6KVsfvHy
- oRyos2dFdhQTyWTTms29Zt3u7idkpMzvXjLcA85RlCqJIUHIxiiLFcHaRc5FmpF2vTrZ
- Tjdg==
-X-Gm-Message-State: AOJu0YwH5U+EgGmdfoVQTphX9cqdOAZjA7ihInwO1PS40WKkeRxG7U3b
- WQaJRGHICtr7o87HhJVrHSUasMoGEWV+C3o4rUllc3xcJAT89IWkDo5IEDGtG3EoROdm7DA7vZZ
- W
-X-Google-Smtp-Source: AGHT+IEU4iiwqDR/itzbvZCX6MRhGwkVIHe07Kpsx+yuwar7AbSnCY7hEbM1WvZ23rZcWtZkz+9Njg==
-X-Received: by 2002:a5d:654b:0:b0:37d:4647:155a with SMTP id
- ffacd0b85a97d-37d54e0a606mr10354159f8f.0.1728988701406; 
+ bh=SuKeHu5aGsauClJdqFbtB6s+iWJAKGmWZvqIPvzOUdY=;
+ b=KSoAqi3STTsHveGWT4GuKPdpYUMx+H+nWJkWevoCVsULi1PySskmEEAMqFr01O0iUX
+ W1SRLPLRUz+Z9WnCEIMAgEKKoVPdWfGFxjjfHAcEIAeaNn7pMAM45d39Z4LLPtjOW9P1
+ I1OiIXol1hQ0zMaxlfxRruvQpDxQ9BqaDHnHCTed7cJiNK1ZnGuc5aFfOIrJqecF1N+h
+ Yat+gQQrJlodCPMmcU78fyVX+K8HHMYcra0hX8CQ0wl5UjBAKJ8Dt736yXwnFLoXCTEk
+ XDCZiCyPDMgiIY43mFF/FOAL6r8WDW8WbUP1IMbVJUaoqWlTBZ/IN5ua1uY/wIMPugMm
+ c8Kg==
+X-Gm-Message-State: AOJu0Yx843BBqFuUXKTgkEpjjoScNMSuo7rButrYNkqvEucnmEJYvP2f
+ goEmVjxtA9OkagqnwhfqTGLqF5624It7LzhMjt6GVTlg4LKY/B+1/HeElBetNJ99sU66JpiH/uE
+ Y
+X-Google-Smtp-Source: AGHT+IG1Bx6gUfJcdHn8vkO7aXqMJpPRLTeLJxs84FcvD0impPjnkuSVmntrDcPCYqRN7c+jwgKwjg==
+X-Received: by 2002:ac2:4c52:0:b0:52c:fd46:bf07 with SMTP id
+ 2adb3069b0e04-539da56b5d1mr6512936e87.49.1728988701912; 
  Tue, 15 Oct 2024 03:38:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 15 Oct 2024 03:38:21 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/28] hw: Remove PCMCIA subsystem
-Date: Tue, 15 Oct 2024 11:38:04 +0100
-Message-Id: <20241015103808.133024-25-peter.maydell@linaro.org>
+Subject: [PULL 25/28] hw/block: Remove ecc
+Date: Tue, 15 Oct 2024 11:38:05 +0100
+Message-Id: <20241015103808.133024-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,172 +92,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only PCMCIA subsystem was the PXA2xx SoC and the machines
-using it, which have now been removed. Although in theory
-we have a few machine types which have PCMCIA (e.g. kzm,
-the strongarm machines, sh4's sh7750), none of those machines
-implement their PCMCIA controller, and they're all old and
-no longer very interesting machine types.
+The ecc.c code was used only by the PXA2xx and OMAP2 SoC devices,
+which we have removed, so it is now completely unused.
 
-Rather than keeping all the PCMCIA code in-tree without any
-active users of it, delete it. If we need PCMCIA in future
-we can always resurrect it.
+Note that hw/misc/eccmemctl.c does not in fact use any of the
+code frome ecc.c, so that KConfig dependency was incorrect.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241003140010.1653808-5-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241003140010.1653808-6-peter.maydell@linaro.org
 ---
- include/hw/pcmcia.h   | 63 -------------------------------------------
- hw/pcmcia/pcmcia.c    | 24 -----------------
- hw/Kconfig            |  1 -
- hw/meson.build        |  1 -
- hw/pcmcia/Kconfig     |  2 --
- hw/pcmcia/meson.build |  1 -
- 6 files changed, 92 deletions(-)
- delete mode 100644 include/hw/pcmcia.h
- delete mode 100644 hw/pcmcia/pcmcia.c
- delete mode 100644 hw/pcmcia/Kconfig
- delete mode 100644 hw/pcmcia/meson.build
+ include/hw/block/flash.h | 11 -----
+ hw/block/ecc.c           | 91 ----------------------------------------
+ hw/arm/Kconfig           |  1 -
+ hw/block/Kconfig         |  3 --
+ hw/block/meson.build     |  1 -
+ hw/misc/Kconfig          |  1 -
+ 6 files changed, 108 deletions(-)
+ delete mode 100644 hw/block/ecc.c
 
-diff --git a/include/hw/pcmcia.h b/include/hw/pcmcia.h
+diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+index b985c825a01..5fd67f5bb79 100644
+--- a/include/hw/block/flash.h
++++ b/include/hw/block/flash.h
+@@ -62,17 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
+ #define NAND_MFR_HYNIX      0xad
+ #define NAND_MFR_MICRON     0x2c
+ 
+-/* ecc.c */
+-typedef struct {
+-    uint8_t cp;     /* Column parity */
+-    uint16_t lp[2]; /* Line parity */
+-    uint16_t count;
+-} ECCState;
+-
+-uint8_t ecc_digest(ECCState *s, uint8_t sample);
+-void ecc_reset(ECCState *s);
+-extern const VMStateDescription vmstate_ecc_state;
+-
+ /* m25p80.c */
+ 
+ #define TYPE_M25P80 "m25p80-generic"
+diff --git a/hw/block/ecc.c b/hw/block/ecc.c
 deleted file mode 100644
-index 6c08ad616a5..00000000000
---- a/include/hw/pcmcia.h
+index ed889a4184f..00000000000
+--- a/hw/block/ecc.c
 +++ /dev/null
-@@ -1,63 +0,0 @@
--#ifndef HW_PCMCIA_H
--#define HW_PCMCIA_H
--
--/* PCMCIA/Cardbus */
--
--#include "hw/qdev-core.h"
--#include "qom/object.h"
--
--typedef struct PCMCIASocket {
--    qemu_irq irq;
--    bool attached;
--} PCMCIASocket;
--
--#define TYPE_PCMCIA_CARD "pcmcia-card"
--OBJECT_DECLARE_TYPE(PCMCIACardState, PCMCIACardClass, PCMCIA_CARD)
--
--struct PCMCIACardState {
--    /*< private >*/
--    DeviceState parent_obj;
--    /*< public >*/
--
--    PCMCIASocket *slot;
--};
--
--struct PCMCIACardClass {
--    /*< private >*/
--    DeviceClass parent_class;
--    /*< public >*/
--
--    int (*attach)(PCMCIACardState *state);
--    int (*detach)(PCMCIACardState *state);
--
--    const uint8_t *cis;
--    int cis_len;
--
--    /* Only valid if attached */
--    uint8_t (*attr_read)(PCMCIACardState *card, uint32_t address);
--    void (*attr_write)(PCMCIACardState *card, uint32_t address, uint8_t value);
--    uint16_t (*common_read)(PCMCIACardState *card, uint32_t address);
--    void (*common_write)(PCMCIACardState *card,
--                         uint32_t address, uint16_t value);
--    uint16_t (*io_read)(PCMCIACardState *card, uint32_t address);
--    void (*io_write)(PCMCIACardState *card, uint32_t address, uint16_t value);
--};
--
--#define CISTPL_DEVICE         0x01  /* 5V Device Information Tuple */
--#define CISTPL_NO_LINK        0x14  /* No Link Tuple */
--#define CISTPL_VERS_1         0x15  /* Level 1 Version Tuple */
--#define CISTPL_JEDEC_C        0x18  /* JEDEC ID Tuple */
--#define CISTPL_JEDEC_A        0x19  /* JEDEC ID Tuple */
--#define CISTPL_CONFIG         0x1a  /* Configuration Tuple */
--#define CISTPL_CFTABLE_ENTRY  0x1b  /* 16-bit PCCard Configuration */
--#define CISTPL_DEVICE_OC      0x1c  /* Additional Device Information */
--#define CISTPL_DEVICE_OA      0x1d  /* Additional Device Information */
--#define CISTPL_DEVICE_GEO     0x1e  /* Additional Device Information */
--#define CISTPL_DEVICE_GEO_A   0x1f  /* Additional Device Information */
--#define CISTPL_MANFID         0x20  /* Manufacture ID Tuple */
--#define CISTPL_FUNCID         0x21  /* Function ID Tuple */
--#define CISTPL_FUNCE          0x22  /* Function Extension Tuple */
--#define CISTPL_END            0xff  /* Tuple End */
--#define CISTPL_ENDMARK        0xff
--
--#endif
-diff --git a/hw/pcmcia/pcmcia.c b/hw/pcmcia/pcmcia.c
-deleted file mode 100644
-index 03d13e7d670..00000000000
---- a/hw/pcmcia/pcmcia.c
-+++ /dev/null
-@@ -1,24 +0,0 @@
+@@ -1,91 +0,0 @@
 -/*
-- * PCMCIA emulation
+- * Calculate Error-correcting Codes. Used by NAND Flash controllers
+- * (not by NAND chips).
 - *
-- * Copyright 2013 SUSE LINUX Products GmbH
+- * Copyright (c) 2006 Openedhand Ltd.
+- * Written by Andrzej Zaborowski <balrog@zabor.org>
+- *
+- * This code is licensed under the GNU GPL v2.
+- *
+- * Contributions after 2012-01-13 are licensed under the terms of the
+- * GNU GPL, version 2 or (at your option) any later version.
 - */
 -
 -#include "qemu/osdep.h"
--#include "qemu/module.h"
--#include "hw/pcmcia.h"
+-#include "migration/vmstate.h"
+-#include "hw/block/flash.h"
 -
--static const TypeInfo pcmcia_card_type_info = {
--    .name = TYPE_PCMCIA_CARD,
--    .parent = TYPE_DEVICE,
--    .instance_size = sizeof(PCMCIACardState),
--    .abstract = true,
--    .class_size = sizeof(PCMCIACardClass),
+-/*
+- * Pre-calculated 256-way 1 byte column parity.  Table borrowed from Linux.
+- */
+-static const uint8_t nand_ecc_precalc_table[] = {
+-    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
+-    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
+-    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
+-    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
+-    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
+-    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
+-    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
+-    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
+-    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
+-    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
+-    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
+-    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
+-    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
+-    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
+-    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
+-    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
+-    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
+-    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
 -};
 -
--static void pcmcia_register_types(void)
+-/* Update ECC parity count.  */
+-uint8_t ecc_digest(ECCState *s, uint8_t sample)
 -{
--    type_register_static(&pcmcia_card_type_info);
+-    uint8_t idx = nand_ecc_precalc_table[sample];
+-
+-    s->cp ^= idx & 0x3f;
+-    if (idx & 0x40) {
+-        s->lp[0] ^= ~s->count;
+-        s->lp[1] ^= s->count;
+-    }
+-    s->count ++;
+-
+-    return sample;
 -}
 -
--type_init(pcmcia_register_types)
-diff --git a/hw/Kconfig b/hw/Kconfig
-index 6fdaff1b1be..1b4e9bb07f7 100644
---- a/hw/Kconfig
-+++ b/hw/Kconfig
-@@ -27,7 +27,6 @@ source nvme/Kconfig
- source nvram/Kconfig
- source pci-bridge/Kconfig
- source pci-host/Kconfig
--source pcmcia/Kconfig
- source pci/Kconfig
- source remote/Kconfig
- source rtc/Kconfig
-diff --git a/hw/meson.build b/hw/meson.build
-index e86badc5417..b827c82c5d7 100644
---- a/hw/meson.build
-+++ b/hw/meson.build
-@@ -27,7 +27,6 @@ subdir('nvram')
- subdir('pci')
- subdir('pci-bridge')
- subdir('pci-host')
--subdir('pcmcia')
- subdir('rtc')
- subdir('scsi')
- subdir('sd')
-diff --git a/hw/pcmcia/Kconfig b/hw/pcmcia/Kconfig
-deleted file mode 100644
-index 41f2df91366..00000000000
---- a/hw/pcmcia/Kconfig
-+++ /dev/null
-@@ -1,2 +0,0 @@
--config PCMCIA
+-/* Reinitialise the counters.  */
+-void ecc_reset(ECCState *s)
+-{
+-    s->lp[0] = 0x0000;
+-    s->lp[1] = 0x0000;
+-    s->cp = 0x00;
+-    s->count = 0;
+-}
+-
+-/* Save/restore */
+-const VMStateDescription vmstate_ecc_state = {
+-    .name = "ecc-state",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_UINT8(cp, ECCState),
+-        VMSTATE_UINT16_ARRAY(lp, ECCState, 2),
+-        VMSTATE_UINT16(count, ECCState),
+-        VMSTATE_END_OF_LIST(),
+-    },
+-};
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 0d658ead093..e7fd9338d11 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -150,7 +150,6 @@ config OMAP
+     bool
+     select FRAMEBUFFER
+     select I2C
+-    select ECC
+     select NAND
+     select PFLASH_CFI01
+     select SD
+diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+index e67a6fd8af7..a898e04f03b 100644
+--- a/hw/block/Kconfig
++++ b/hw/block/Kconfig
+@@ -22,9 +22,6 @@ config PFLASH_CFI01
+ config PFLASH_CFI02
+     bool
+ 
+-config ECC
 -    bool
-diff --git a/hw/pcmcia/meson.build b/hw/pcmcia/meson.build
-deleted file mode 100644
-index edcb7f5d263..00000000000
---- a/hw/pcmcia/meson.build
-+++ /dev/null
-@@ -1 +0,0 @@
--system_ss.add(when: 'CONFIG_PCMCIA', if_true: files('pcmcia.c'))
+-
+ config VIRTIO_BLK
+     bool
+     default y
+diff --git a/hw/block/meson.build b/hw/block/meson.build
+index 999a93d900f..16a51bf8e21 100644
+--- a/hw/block/meson.build
++++ b/hw/block/meson.build
+@@ -3,7 +3,6 @@ system_ss.add(files(
+   'cdrom.c',
+   'hd-geometry.c'
+ ))
+-system_ss.add(when: 'CONFIG_ECC', if_true: files('ecc.c'))
+ system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
+ system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
+ system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 6bdc77cbe5d..1f1baa5dde9 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -74,7 +74,6 @@ config IVSHMEM_DEVICE
+ 
+ config ECCMEMCTL
+     bool
+-    select ECC
+ 
+ config IMX
+     bool
 -- 
 2.34.1
 
