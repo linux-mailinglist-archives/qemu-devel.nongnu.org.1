@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AE599E34F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 853B899E34C
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:03:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0eMr-00087w-H5; Tue, 15 Oct 2024 06:01:29 -0400
+	id 1t0eND-0008BW-D9; Tue, 15 Oct 2024 06:01:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t0eMp-00087e-Ow; Tue, 15 Oct 2024 06:01:27 -0400
+ id 1t0eNA-0008AO-PK; Tue, 15 Oct 2024 06:01:48 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t0eMo-0000pG-1k; Tue, 15 Oct 2024 06:01:27 -0400
+ id 1t0eN9-0000qH-26; Tue, 15 Oct 2024 06:01:48 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XSTyv2qdFz6D9Sl;
- Tue, 15 Oct 2024 17:56:55 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XSV3n57Yzz6K98d;
+ Tue, 15 Oct 2024 18:01:09 +0800 (CST)
 Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
- by mail.maildlp.com (Postfix) with ESMTPS id B47E9140AA7;
- Tue, 15 Oct 2024 18:01:23 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id D298A140CF4;
+ Tue, 15 Oct 2024 18:01:43 +0800 (CST)
 Received: from 00293818-MRGF.huawei.com (10.48.146.149) by
  frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 15 Oct 2024 12:01:03 +0200
+ 15.1.2507.39; Tue, 15 Oct 2024 12:01:24 +0200
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <mst@redhat.com>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -43,10 +43,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <shahuang@redhat.com>, <zhao1.liu@intel.com>, <linuxarm@huawei.com>,
  <gustavo.romero@linaro.org>
-Subject: [PATCH RFC V5 01/30] arm/virt, target/arm: Add new ARMCPU {socket,
- cluster, core, thread}-id property
-Date: Tue, 15 Oct 2024 10:59:43 +0100
-Message-ID: <20241015100012.254223-2-salil.mehta@huawei.com>
+Subject: [PATCH RFC V5 02/30] hw/arm/virt: Disable vCPU hotplug for
+ *unsupported* Accel or GIC Type
+Date: Tue, 15 Oct 2024 10:59:44 +0100
+Message-ID: <20241015100012.254223-3-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015100012.254223-1-salil.mehta@huawei.com>
 References: <20241015100012.254223-1-salil.mehta@huawei.com>
@@ -82,122 +82,114 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This shall be used to store user specified topology{socket,cluster,core,thread}
-and shall be converted to a unique 'vcpu-id' which is used as slot-index during
-hot(un)plug of vCPU.
+For unsupported acceleration types and GIC versions, explicitly disable vCPU
+hotplug support and limit the number of possible vCPUs to those available at
+boot time (i.e., SMP CPUs). This flag will be referenced at various points in
+the code to verify the presence of vCPU hotplug functionality on this machine.
 
-Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/virt.c         | 10 ++++++++++
- include/hw/arm/virt.h | 28 ++++++++++++++++++++++++++++
- target/arm/cpu.c      |  4 ++++
- target/arm/cpu.h      |  4 ++++
- 4 files changed, 46 insertions(+)
+ hw/arm/virt.c | 66 +++++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 28 deletions(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 8b2b991d97..8ff7e109dd 100644
+index 8ff7e109dd..827a796ed6 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -2242,6 +2242,14 @@ static void machvirt_init(MachineState *machine)
-                           &error_fatal);
+@@ -2108,8 +2108,6 @@ static void machvirt_init(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     unsigned int max_cpus = machine->smp.max_cpus;
  
-         aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
-+        object_property_set_int(cpuobj, "socket-id",
-+                                virt_get_socket_id(machine, n), NULL);
-+        object_property_set_int(cpuobj, "cluster-id",
-+                                virt_get_cluster_id(machine, n), NULL);
-+        object_property_set_int(cpuobj, "core-id",
-+                                virt_get_core_id(machine, n), NULL);
-+        object_property_set_int(cpuobj, "thread-id",
-+                                virt_get_thread_id(machine, n), NULL);
+-    possible_cpus = mc->possible_cpu_arch_ids(machine);
+-
+     /*
+      * In accelerated mode, the memory map is computed earlier in kvm_type()
+      * for Linux, or hvf_get_physical_address_range() for macOS to create a
+@@ -2125,7 +2123,7 @@ static void machvirt_init(MachineState *machine)
+          * we are about to deal with. Once this is done, get rid of
+          * the object.
+          */
+-        cpuobj = object_new(possible_cpus->cpus[0].type);
++        cpuobj = object_new(machine->cpu_type);
+         armcpu = ARM_CPU(cpuobj);
  
-         if (!vms->secure) {
-             object_property_set_bool(cpuobj, "has_el3", false, NULL);
-@@ -2765,6 +2773,7 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
- {
-     int n;
-     unsigned int max_cpus = ms->smp.max_cpus;
-+    unsigned int smp_threads = ms->smp.threads;
-     VirtMachineState *vms = VIRT_MACHINE(ms);
-     MachineClass *mc = MACHINE_GET_CLASS(vms);
+         pa_bits = arm_pamax(armcpu);
+@@ -2140,6 +2138,43 @@ static void machvirt_init(MachineState *machine)
+      */
+     finalize_gic_version(vms);
  
-@@ -2778,6 +2787,7 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
-     ms->possible_cpus->len = max_cpus;
-     for (n = 0; n < ms->possible_cpus->len; n++) {
-         ms->possible_cpus->cpus[n].type = ms->cpu_type;
-+        ms->possible_cpus->cpus[n].vcpus_count = smp_threads;
-         ms->possible_cpus->cpus[n].arch_id =
-             virt_cpu_mp_affinity(vms, n);
++    /*
++     * The maximum number of CPUs depends on the GIC version, or on how
++     * many redistributors we can fit into the memory map (which in turn
++     * depends on whether this is a GICv3 or v4).
++     */
++    if (vms->gic_version == VIRT_GIC_VERSION_2) {
++        virt_max_cpus = GIC_NCPU;
++    } else {
++        virt_max_cpus = virt_redist_capacity(vms, VIRT_GIC_REDIST);
++        if (vms->highmem_redists) {
++            virt_max_cpus += virt_redist_capacity(vms, VIRT_HIGH_GIC_REDIST2);
++        }
++    }
++
++    if ((tcg_enabled() && !qemu_tcg_mttcg_enabled()) || hvf_enabled() ||
++        qtest_enabled() || (vms->gic_version < VIRT_GIC_VERSION_3)) {
++        max_cpus = machine->smp.max_cpus = smp_cpus;
++        mc->has_hotpluggable_cpus = false;
++        if (vms->gic_version >= VIRT_GIC_VERSION_3) {
++            warn_report("cpu hotplug feature has been disabled");
++        }
++    }
++
++    if (max_cpus > virt_max_cpus) {
++        error_report("Number of SMP CPUs requested (%d) exceeds max CPUs "
++                     "supported by machine 'mach-virt' (%d)",
++                     max_cpus, virt_max_cpus);
++        if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->highmem_redists) {
++            error_printf("Try 'highmem-redists=on' for more CPUs\n");
++        }
++
++        exit(1);
++    }
++
++    /* uses smp.max_cpus to initialize all possible vCPUs */
++    possible_cpus = mc->possible_cpu_arch_ids(machine);
++
+     if (vms->secure) {
+         /*
+          * The Secure view of the world is the same as the NonSecure,
+@@ -2174,31 +2209,6 @@ static void machvirt_init(MachineState *machine)
+         vms->psci_conduit = QEMU_PSCI_CONDUIT_HVC;
+     }
  
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index aca4f8061b..db3e2aebb9 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -214,4 +214,32 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
-             vms->highmem_redists) ? 2 : 1;
- }
- 
-+static inline int virt_get_socket_id(const MachineState *ms, int cpu_index)
-+{
-+    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-+
-+    return ms->possible_cpus->cpus[cpu_index].props.socket_id;
-+}
-+
-+static inline int virt_get_cluster_id(const MachineState *ms, int cpu_index)
-+{
-+    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-+
-+    return ms->possible_cpus->cpus[cpu_index].props.cluster_id;
-+}
-+
-+static inline int virt_get_core_id(const MachineState *ms, int cpu_index)
-+{
-+    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-+
-+    return ms->possible_cpus->cpus[cpu_index].props.core_id;
-+}
-+
-+static inline int virt_get_thread_id(const MachineState *ms, int cpu_index)
-+{
-+    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-+
-+    return ms->possible_cpus->cpus[cpu_index].props.thread_id;
-+}
-+
- #endif /* QEMU_ARM_VIRT_H */
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 19191c2391..bda95366d1 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2622,6 +2622,10 @@ static Property arm_cpu_properties[] = {
-     DEFINE_PROP_UINT64("mp-affinity", ARMCPU,
-                         mp_affinity, ARM64_AFFINITY_INVALID),
-     DEFINE_PROP_INT32("node-id", ARMCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
-+    DEFINE_PROP_INT32("socket-id", ARMCPU, socket_id, 0),
-+    DEFINE_PROP_INT32("cluster-id", ARMCPU, cluster_id, 0),
-+    DEFINE_PROP_INT32("core-id", ARMCPU, core_id, 0),
-+    DEFINE_PROP_INT32("thread-id", ARMCPU, thread_id, 0),
-     DEFINE_PROP_INT32("core-count", ARMCPU, core_count, -1),
-     /* True to default to the backward-compat old CNTFRQ rather than 1Ghz */
-     DEFINE_PROP_BOOL("backcompat-cntfrq", ARMCPU, backcompat_cntfrq, false),
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index f065756c5c..1277a0ddfc 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1086,6 +1086,10 @@ struct ArchCPU {
-     QLIST_HEAD(, ARMELChangeHook) el_change_hooks;
- 
-     int32_t node_id; /* NUMA node this CPU belongs to */
-+    int32_t socket_id;
-+    int32_t cluster_id;
-+    int32_t core_id;
-+    int32_t thread_id;
- 
-     /* Used to synchronize KVM and QEMU in-kernel device levels */
-     uint8_t device_irq_level;
+-    /*
+-     * The maximum number of CPUs depends on the GIC version, or on how
+-     * many redistributors we can fit into the memory map (which in turn
+-     * depends on whether this is a GICv3 or v4).
+-     */
+-    if (vms->gic_version == VIRT_GIC_VERSION_2) {
+-        virt_max_cpus = GIC_NCPU;
+-    } else {
+-        virt_max_cpus = virt_redist_capacity(vms, VIRT_GIC_REDIST);
+-        if (vms->highmem_redists) {
+-            virt_max_cpus += virt_redist_capacity(vms, VIRT_HIGH_GIC_REDIST2);
+-        }
+-    }
+-
+-    if (max_cpus > virt_max_cpus) {
+-        error_report("Number of SMP CPUs requested (%d) exceeds max CPUs "
+-                     "supported by machine 'mach-virt' (%d)",
+-                     max_cpus, virt_max_cpus);
+-        if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->highmem_redists) {
+-            error_printf("Try 'highmem-redists=on' for more CPUs\n");
+-        }
+-
+-        exit(1);
+-    }
+-
+     if (vms->secure && (kvm_enabled() || hvf_enabled())) {
+         error_report("mach-virt: %s does not support providing "
+                      "Security extensions (TrustZone) to the guest CPU",
 -- 
 2.34.1
 
