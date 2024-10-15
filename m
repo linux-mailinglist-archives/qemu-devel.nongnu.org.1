@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B486199EF3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D66DB99EF4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iNv-0008Lx-HZ; Tue, 15 Oct 2024 10:18:51 -0400
+	id 1t0iNv-0008M9-H8; Tue, 15 Oct 2024 10:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNh-0007gU-VI
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:39 -0400
+ id 1t0iNe-0007eH-2q
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNa-0003Nu-B0
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:37 -0400
+ id 1t0iNb-0003Ny-Ei
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001909;
+ s=mimecast20190719; t=1729001910;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OYQ70JFBQ0ncTVmPjLYfygopz5A4fwPgOHvHyL+yuPc=;
- b=GwZXgPj5oIAvjyBA+qX0ZPmJxMsuvGjSs/ZIINgpaqUQ/INm0IjckKMlwA/aP9vRbGwE5V
- j0h6VHbD1BoBEZK4HCT4hn7xofh9k97tZEjRU27GUCT3m5WJNPxiA4ncE4GYfTjS8CaKeJ
- tEbWj5hDR7PQMnsM3TZN4JU4lSKwTYU=
+ bh=pffMq5HlyyQSLR32u36d0WlErfpMZsApxMOlecv7nh0=;
+ b=TOm/wJtSlR4rS82ruG3BfXtTMl8N9Fa4/TDVME6nQOOkul+vNEPmRfyNSR95a6BHDV+uRB
+ wAi8P+gnKeV3H/I0dr7WHrvVSYRxahH+q46OsYuVvZSnv5gXoMO9aIhXOY3jxNaBYC7ykK
+ rI8P1PWoKA/npLVOqlRmaPOHtjz20YY=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-RTKSN3R_Oe6aRPkrxTMaUA-1; Tue, 15 Oct 2024 10:18:27 -0400
-X-MC-Unique: RTKSN3R_Oe6aRPkrxTMaUA-1
+ us-mta-124-00TvkT8DMaOkx_Xb3GmFvg-1; Tue, 15 Oct 2024 10:18:29 -0400
+X-MC-Unique: 00TvkT8DMaOkx_Xb3GmFvg-1
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d589138a9so1876006f8f.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:27 -0700 (PDT)
+ ffacd0b85a97d-37d4a211177so2743337f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001905; x=1729606705;
+ d=1e100.net; s=20230601; t=1729001908; x=1729606708;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OYQ70JFBQ0ncTVmPjLYfygopz5A4fwPgOHvHyL+yuPc=;
- b=LQ19ZCu8VBqGZEDyorxxfbgxoLwP2Yf8PrNiLZMSJoyMVutUIP7aSddEBur+b9c36L
- 03JDFDMkSp45zyrWnW8pdhmxLsj//3Ubk7WFNTn/PSQAhV5qBKf1LXAx3JyqXaYNSdhi
- x6Q+JSZb6b3De1WNlw+lnhrcAGIN3KAmuhcjOW+EysRp40THBmRtpcNSOtkUJhwF/zyV
- 1arg3vi/vy3E0SBd4KAZq1ivOhWuTzau+pi131ezIDw4ShndZprWUSdKqONuwUR/ds1I
- 0doOn7ff6rQ0Yvjj6sTKGX2+p+1WXV24lCiT5cv6th6fxJaEoAZ7gFl/AFX8zXlP3Oi2
- bBdQ==
-X-Gm-Message-State: AOJu0YzL2pKxKMPCRSwf3Cm1ZOp7/UQGQp+2b3I/YrCOZ/Ucidzq9oZR
- qYDKDF6QQAsyyIE9l28sXquN5Dbel2P6bjYuIq1kBiCJDRz7PnUvTc6nNIlCxMW0yfDE+AppA68
- JYbq6zCnKLRW9zddtnRaj3ncb9W9Xa31GX88sR5eDFKK9i9fedqe5hqPIIVwsgXY36Yi9/baQve
- 97crpyWR4KHlx3DaGK+zIZUbsxOwiQz+WO0Sv4KC4=
-X-Received: by 2002:adf:f547:0:b0:37d:4894:6895 with SMTP id
- ffacd0b85a97d-37d86bd4276mr451238f8f.15.1729001905065; 
- Tue, 15 Oct 2024 07:18:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOnxPVAgTrj6gK6rDXZkJUb2hXbZ4XI6kaRC5CS0ncJvwgSxdNEzF1Qwi8/1L85Zz7GbmHKQ==
-X-Received: by 2002:adf:f547:0:b0:37d:4894:6895 with SMTP id
- ffacd0b85a97d-37d86bd4276mr451214f8f.15.1729001904574; 
- Tue, 15 Oct 2024 07:18:24 -0700 (PDT)
+ bh=pffMq5HlyyQSLR32u36d0WlErfpMZsApxMOlecv7nh0=;
+ b=vdo2Ip7HntmfuG9r4x+N7mSYJKvhJ9QDf8Dc0RXt5WA/sor8tuxyGrSCq17gTJQ9VO
+ nrk0M1zoOE0c45mp+g94OhNpLiEqRIrWOzo5mUPT99bUTsVoksZ3i8Wv491Ue7nPuYQ5
+ 93kf80PwIwAUJuW+zE0NDHF1nk5FAaVHn0B5Nf6+U3DmLgEms02bOJIHh0J0UJkhnto/
+ VkXwfpVVY8k+dw5n5HriUQNNIeE51wiY4tEX2cSt6y2fWXE7UGqCamEMAq4OltyafLHW
+ 76U2fijuwxX+sbcQBzkyQ0oz6nsIq9T7srCj8t4GuU/SHbGEmiumPM2l+C5o00lPctXt
+ AiAg==
+X-Gm-Message-State: AOJu0YxJFRcaMmiO6f6YpeMvwzR5xLKpY0bLvkLhdE5CAygxWxAw5biK
+ IjFkV+liPftnTuchlz55mwgcHpXpmtY9pS9xnVZsttn6B7p935xcdUrAsSpCxfbi5lNxWmgsJgB
+ 63He4gPJWVV+Zja5/GSSuLuNl1oM6//cR8EWTl8sn5vyLo5sO3RKSnC2KxGWZAzmSrDZZZKG8ws
+ /skOjQU1P0QpppTLgmjuzf4z+cUAEzn9pmmva3h88=
+X-Received: by 2002:adf:f810:0:b0:37d:5026:f787 with SMTP id
+ ffacd0b85a97d-37d86d55306mr310481f8f.38.1729001908081; 
+ Tue, 15 Oct 2024 07:18:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTBsI8Ng4EX8YHdcxhIWcEYt4Z36CfPGgFTUIAV9qOPSKVTATLt6XzP26/IrbIfC2H41xjVQ==
+X-Received: by 2002:adf:f810:0:b0:37d:5026:f787 with SMTP id
+ ffacd0b85a97d-37d86d55306mr310462f8f.38.1729001907569; 
+ Tue, 15 Oct 2024 07:18:27 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4313f569933sm19467235e9.13.2024.10.15.07.18.23
+ 5b1f17b1804b1-4313f56eaa7sm19056745e9.26.2024.10.15.07.18.26
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:18:24 -0700 (PDT)
+ Tue, 15 Oct 2024 07:18:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Robert R. Henry" <rrh.henry@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/25] target/i386/tcg: Use DPL-level accesses for interrupts
- and call gates
-Date: Tue, 15 Oct 2024 16:17:07 +0200
-Message-ID: <20241015141711.528342-22-pbonzini@redhat.com>
+Subject: [PULL 22/25] accel/kvm: check for KVM_CAP_MULTI_ADDRESS_SPACE on vm
+Date: Tue, 15 Oct 2024 16:17:08 +0200
+Message-ID: <20241015141711.528342-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
@@ -102,116 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stack accesses should be explicit and use the privilege level of the
-target stack.  This ensures that SMAP is not applied when the target
-stack is in ring 3.
+KVM_CAP_MULTI_ADDRESS_SPACE used to be a global capability, but with the
+introduction of AMD SEV-SNP confidential VMs, the number of address spaces
+can vary by VM type.
 
-This fixes a bug wherein i386/tcg assumed that an interrupt return, or a
-far call using the CALL or JMP instruction, was always going from kernel
-or user mode to kernel mode when using a call gate. This assumption is
-violated if the call gate has a DPL that is greater than 0.
+Query the extension on the VM level instead of on the KVM level.
 
-Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Inspired by an analogous patch by Tom Dohrmann.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ accel/kvm/kvm-all.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 3b8fd827e1f..02ae6a0d1fc 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -695,7 +695,6 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
- 
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
- 
-     if (type == 5) {
-         /* task gate */
-@@ -705,7 +704,9 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-         }
-         shift = switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
-         if (has_error_code) {
--            /* push the error code */
-+            /* push the error code on the destination stack */
-+            cpl = env->hflags & HF_CPL_MASK;
-+            sa.mmu_index = x86_mmu_index_pl(env, cpl);
-             if (env->segs[R_SS].flags & DESC_B_MASK) {
-                 sa.sp_mask = 0xffffffff;
-             } else {
-@@ -750,6 +751,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-     if (e2 & DESC_C_MASK) {
-         dpl = cpl;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 8be731cfeed..4287e254df8 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2618,12 +2618,6 @@ static int kvm_init(MachineState *ms)
+         s->nr_slots_max = KVM_MEMSLOTS_NR_MAX_DEFAULT;
      }
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
-     if (dpl < cpl) {
-         /* to inner privilege */
-         uint32_t esp;
-@@ -1001,7 +1003,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
  
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
-     sa.sp_mask = -1;
-     sa.ss_base = 0;
-     if (dpl < cpl || ist != 0) {
-@@ -1135,7 +1137,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = 0xffff;
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
+-    s->nr_as = kvm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
+-    if (s->nr_as <= 1) {
+-        s->nr_as = 1;
+-    }
+-    s->as = g_new0(struct KVMAs, s->nr_as);
+-
+     type = find_kvm_machine_type(ms);
+     if (type < 0) {
+         ret = -EINVAL;
+@@ -2637,6 +2631,12 @@ static int kvm_init(MachineState *ms)
  
-     if (is_int) {
-         old_eip = next_eip;
-@@ -1599,7 +1601,7 @@ void helper_lcall_real(CPUX86State *env, uint32_t new_cs, uint32_t new_eip,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
+     s->vmfd = ret;
  
-     if (shift) {
-         pushl(&sa, env->segs[R_CS].selector);
-@@ -1639,9 +1641,9 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
- 
-     sa.env = env;
-     sa.ra = GETPC();
--    sa.mmu_index = cpu_mmu_index_kernel(env);
- 
-     if (e2 & DESC_S_MASK) {
-+        /* "normal" far call, no stack switch possible */
-         if (!(e2 & DESC_CS_MASK)) {
-             raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, GETPC());
-         }
-@@ -1665,6 +1667,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-             raise_exception_err_ra(env, EXCP0B_NOSEG, new_cs & 0xfffc, GETPC());
-         }
- 
-+        sa.mmu_index = x86_mmu_index_pl(env, cpl);
- #ifdef TARGET_X86_64
-         /* XXX: check 16/32 bit cases in long mode */
-         if (shift == 2) {
-@@ -1792,6 +1795,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
- 
-         if (!(e2 & DESC_C_MASK) && dpl < cpl) {
-             /* to inner privilege */
-+            sa.mmu_index = x86_mmu_index_pl(env, dpl);
- #ifdef TARGET_X86_64
-             if (shift == 2) {
-                 ss = dpl;  /* SS = NULL selector with RPL = new CPL */
-@@ -1870,6 +1874,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-             new_stack = 1;
-         } else {
-             /* to same privilege */
-+            sa.mmu_index = x86_mmu_index_pl(env, cpl);
-             sa.sp = env->regs[R_ESP];
-             sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
-             sa.ss_base = env->segs[R_SS].base;
++    s->nr_as = kvm_vm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
++    if (s->nr_as <= 1) {
++        s->nr_as = 1;
++    }
++    s->as = g_new0(struct KVMAs, s->nr_as);
++
+     /* check the vcpu limits */
+     soft_vcpus_limit = kvm_recommended_vcpus(s);
+     hard_vcpus_limit = kvm_max_vcpus(s);
 -- 
 2.46.2
 
