@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43BC99E462
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4DD99E438
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewt-0006jy-7P; Tue, 15 Oct 2024 06:38:43 -0400
+	id 1t0ewr-0006jr-LG; Tue, 15 Oct 2024 06:38:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewV-0006dm-Ek
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:19 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1t0ewX-0006fK-0W
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:21 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewT-0005wd-4u
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:19 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-37d41894a32so3479928f8f.1
+ id 1t0ewT-0005wz-Jq
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:20 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43115b31366so47863945e9.3
  for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988695; x=1729593495; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988696; x=1729593496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rL5/U4uh9bv7IicrualfqLWImO4ti0x7c8RykzNbskk=;
- b=bbhq79P+2Qe+a76FdrM1k4tbQ20J0wd9Vzk23INmLTEb5lVLgyjdLhwIbIMZOxs4YF
- w0brqTRtoTj6ifHqeoeKMMN/NQNEpQAvIiCEy3PtznuYnIWDC6eIJkW38AR1jQAb0Wt3
- elJ1rKhsBsykhzdxf1NWg1+o442IoYOauGmWHYt/ugLX8xOs/kGGs+rSii5COqiBOvNS
- pvSr6dNwtw1HUT4kHqY69TZvPse1E9G+vt7hr8Myfh82GzV5C70NtDytzCXpEDrFzGTi
- hDdPBHSqcVnua7nfsExb0KK1fAzdipAb5BFlvgk7NN9KuQ+1mBwg+09lpR3QEwrDxM2o
- rxDg==
+ :reply-to; bh=LcdUzjHr2c6vrOngrhri7Hj4mk4jIf0iNM4JVtguHnI=;
+ b=F+g9sTI1J1lvSywbO5qSNkvQ4HJpoqBFlTyfU3wUWhxkA3PSZbG0GiymfKlZjC5pBy
+ OS7FLMoAmr2P7go4lc66d6xfHBxRfNSFA5fKK3ch7IPhG/QQvt9HyFj9JHAF9QiYrvDN
+ YJbCE6GhmQ0o+PIy6x4m3FnZVqzfm93Hcz5tUPE3X6xrga7PmHrmWRJtJnmE8nUSrgdl
+ MhGMTXTtUMu67sarfR9qCFHYX0bF/vwzTVrsvh2YWj+cqbjQcltCe5BpKq1i7mtjXqDl
+ tnIzneBs/7Ep/6KEsm1+Vwk6hzzUTR+YjeSTzCmK6QFy2oVDuRQLxxI8EkOW8pKb4Svy
+ lJWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988695; x=1729593495;
+ d=1e100.net; s=20230601; t=1728988696; x=1729593496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rL5/U4uh9bv7IicrualfqLWImO4ti0x7c8RykzNbskk=;
- b=JryUUt8pL/6Qfznv27olgtfAORdnyzQFpAKeBEewS0tqMpPNnyxy5HtT/pNhVN+tCY
- pRBDDDLOh36jzT+ibQsaIIkyWU9pd/xoE2lcLZrLFdWYNxIM0CeS828xLgbN6usEgjCZ
- WRrZagv/PH6I2GUDC4kUr5Y6ps7IUGYkqCq1kCyHGhrBPY63631HsKGkQHXPH4/GYVrx
- dLZowqsH2J/ek9tFlmzmgl2kZHBquMpYdpV2LaAQ5zxAexxwfwEm/A5OarUpoqi/IgAA
- 4xVCAmlOq6Q7/BAKsuiSXZwq+od9lfg875X+Nuz1QTNPpRYaqiPfXXRMhZh8MyD4kYFv
- TOXw==
-X-Gm-Message-State: AOJu0YwZZNdsjtXcdSWVXo8vbZVuSiULGJzxXlF/QrrrnUtvoLLMQJj+
- v1apPscQg08f+v+l4n2AJDxPiRF/4hxbAN7Qs2W+78d094fMyWDIps1d/cqE41WVotx/LaDpKFb
- a
-X-Google-Smtp-Source: AGHT+IE+TebzO9ZVz4nPBXJ21FOwtzXNpMpB5+BsPkVM8g3R7mtaWRrCc3/Er8eF616vdJ6S45feFg==
-X-Received: by 2002:adf:ecc4:0:b0:374:adf1:9232 with SMTP id
- ffacd0b85a97d-37d551fe43emr11843270f8f.19.1728988695490; 
+ bh=LcdUzjHr2c6vrOngrhri7Hj4mk4jIf0iNM4JVtguHnI=;
+ b=nVZ4iDGJfwqF9e009z0LcKcd4UiRQl8rShErtiIwbpcJvxBpFsND2BBW2h150W3R7/
+ 6diGzC3xYWMwBjOgHpfLFyKFnRLfGbJP+6SKYk+r9d1Xq47nErhop3GRr3vLwT/vfhPO
+ gyWagR53VMG3PkZa6Zt2mq/l+lltwGlsKuOhS+INPgaHbphKdhHhOEX+Ok+rnWGsFNJJ
+ ota5CfQHjMObvagUGyKR92+sEjon3Z4sqeFV1fBQdZ31RcE9iNrQIqtDWdDHHOjpLpfU
+ trVzF/CoO+GdjJjNeGV4fAls1SWaJm+hIajdy7rCoU2SOi8MDOeAahIl/qwUpZH++4wy
+ yQ9Q==
+X-Gm-Message-State: AOJu0YyUZEGO5G/YIPeUIhkGtUamqbKs0pd93aPTVHYEm4xNgnZ7fiEb
+ 1obwTJ6s+0krsINfMmtMh6JvbUh5S6YxXZAYinR7lW+WDm0WfeYpeT2JWA7gzA4/g4EWhBEpVhx
+ 2
+X-Google-Smtp-Source: AGHT+IHR6QralSpsUAru8H/lXX9m5QQjE95NAdbnqpMy8Yxf3E9lVXr8UcLyKo6vbLW/KSUsDcXDrA==
+X-Received: by 2002:a05:600c:1c81:b0:42c:c003:edd1 with SMTP id
+ 5b1f17b1804b1-4314a2b7b5emr340475e9.10.1728988695986; 
  Tue, 15 Oct 2024 03:38:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 15 Oct 2024 03:38:15 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/28] hw/intc/omap_intc: Remove now-unnecessary abstract base
- class
-Date: Tue, 15 Oct 2024 11:37:52 +0100
-Message-Id: <20241015103808.133024-13-peter.maydell@linaro.org>
+Subject: [PULL 13/28] hw/char/pl011: Use correct masks for IBRD and FBRD
+Date: Tue, 15 Oct 2024 11:37:53 +0100
+Message-Id: <20241015103808.133024-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,64 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OMAP interrupt controller code used to have an omap-intc
-class and an omap2-intc class, which shared common code via
-the abstract class common-omap-intc. Now we have deleted
-omap2-intc, we don't need the separate abstract base class;
-fold int into omap-intc.
+In commit b88cfee90268cad we defined masks for the IBRD and FBRD
+integer and fractional baud rate divider registers, to prevent the
+guest from writing invalid values which could cause division-by-zero.
+Unfortunately we got the mask values the wrong way around: the FBRD
+register is six bits and the IBRD register is 16 bits, not
+vice-versa.
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+You would only run into this bug if you programmed the UART to a baud
+rate of less than 9600, because for 9600 baud and above the IBRD
+value will fit into 6 bits, as per the table in
+ https://developer.arm.com/documentation/ddi0183/g/programmers-model/register-descriptions/fractional-baud-rate-register--uartfbrd
+
+The only visible effects would be that the value read back from
+the register by the guest would be truncated, and we would
+print an incorrect baud rate in the debug logs.
+
+Cc: qemu-stable@nongnu.org
+Fixes: b88cfee90268 ("hw/char/pl011: Avoid division-by-zero in pl011_get_baudrate()")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2610
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241003135323.1653230-1-peter.maydell@linaro.org
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Message-id: 20241007144732.2491331-1-peter.maydell@linaro.org
 ---
- include/hw/arm/omap.h |  2 +-
- hw/intc/omap_intc.c   | 13 +++----------
- 2 files changed, 4 insertions(+), 11 deletions(-)
+ hw/char/pl011.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index e1b6a7cdd93..420ed1d5735 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -59,7 +59,7 @@ int64_t omap_clk_getrate(omap_clk clk);
- void omap_clk_reparent(omap_clk clk, omap_clk parent);
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 15df7c1e1ca..0fd1334fab4 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -90,10 +90,10 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ #define CR_UARTEN   (1 << 0)
  
- /* omap_intc.c */
--#define TYPE_OMAP_INTC "common-omap-intc"
-+#define TYPE_OMAP_INTC "omap-intc"
- typedef struct OMAPIntcState OMAPIntcState;
- DECLARE_INSTANCE_CHECKER(OMAPIntcState, OMAP_INTC, TYPE_OMAP_INTC)
+ /* Integer Baud Rate Divider, UARTIBRD */
+-#define IBRD_MASK 0x3f
++#define IBRD_MASK 0xffff
  
-diff --git a/hw/intc/omap_intc.c b/hw/intc/omap_intc.c
-index a48e6fcd6d3..a98358d92e2 100644
---- a/hw/intc/omap_intc.c
-+++ b/hw/intc/omap_intc.c
-@@ -392,22 +392,15 @@ static void omap_intc_class_init(ObjectClass *klass, void *data)
- }
+ /* Fractional Baud Rate Divider, UARTFBRD */
+-#define FBRD_MASK 0xffff
++#define FBRD_MASK 0x3f
  
- static const TypeInfo omap_intc_info = {
--    .name          = "omap-intc",
--    .parent        = TYPE_OMAP_INTC,
-+    .name          = TYPE_OMAP_INTC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(OMAPIntcState),
-     .instance_init = omap_intc_init,
-     .class_init    = omap_intc_class_init,
- };
- 
--static const TypeInfo omap_intc_type_info = {
--    .name          = TYPE_OMAP_INTC,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(OMAPIntcState),
--    .abstract      = true,
--};
--
- static void omap_intc_register_types(void)
- {
--    type_register_static(&omap_intc_type_info);
-     type_register_static(&omap_intc_info);
- }
- 
+ static const unsigned char pl011_id_arm[8] =
+   { 0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1 };
 -- 
 2.34.1
 
