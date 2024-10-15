@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF5199F1E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C37BC99F1F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jmw-0001qC-J4; Tue, 15 Oct 2024 11:48:48 -0400
+	id 1t0jmv-0001rB-7U; Tue, 15 Oct 2024 11:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmN-0001R1-J8
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:12 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmT-0001Yi-Ld
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:21 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmM-00014w-1q
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:11 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-71e4e481692so3061738b3a.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:48:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmR-00015U-No
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:17 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-20cb89a4e4cso24774645ad.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:48:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007287; x=1729612087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007294; x=1729612094; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NP/jQdl3vCj51cE4P9kHFWkOQjoBpIwLQmMBNAGca+s=;
- b=P0xnVIykjJvmMwrw8e4CESzUI0BZYmTpBTxnF8SVOE05KQ4fHNUy+iilIyDz1M7z/S
- zTLdtnIyw0nu9DW64YKqviCTTTG0WdK/t51DPLq46EKxbcnmqzWJloeLrymJRBkXuYj+
- IAa/8MxLiFN8c6cYoLFsVlvW8ZsjmvFV0Qjug/5q/GmgkBaeawZg7kJ6lE3sqlASBe8o
- SHIuGYh2sRWm7ZO03lKRnF1YWEwIsb27Gvf07lb3u5na5j/nNRLGHqHxYR+Kw/PhUTrD
- r0oL7HkH9LXElHPSluxOnZq9hXPFTclJHLC+6XV7pLmMymT0Ee7jDBlTDfw4ROIPifGL
- +C1Q==
+ bh=ggpFvPFEzmcakXrNsZshdbMpubg1VkOtzGZJPItwWGk=;
+ b=Zw3IHMEh5IEHsAyVHG4xdxtOVmz+adXhxshAtUPitpnAjBIWfwNsZVyJrH64TFFq9u
+ r99Lqfm997WwGcLPwc4Uz7kJbqX3IJhrct248U7sL0Qg+gMj4VSXdqZiGpff//BcGEqH
+ 2tfG0bg24P21PXHKVw2PNLa19xwFr8EPPwbVg8PMbEc8nJeeMt3qVQKIJmzG8a3xbAza
+ 9hCU/zl1BTmfHbUsN1FId11GfKKKdErTbS0Ipconhj3Zuif5e0sHKyreY61xMJo52Nww
+ ikT0gM9pERj0cQlUJHmMmN5TioBBYvwYgA+syVi9JH1NUiuXMluonjMVPWgCK9Fz5DmO
+ Qr+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007287; x=1729612087;
+ d=1e100.net; s=20230601; t=1729007294; x=1729612094;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NP/jQdl3vCj51cE4P9kHFWkOQjoBpIwLQmMBNAGca+s=;
- b=lx+wiccTguFuUEO/glLSTbroiqcKRWWXceTIP4qd2qqwI10NaFp6gCcX7h2dJQMu5w
- FJQW8P5oatIrNGn/ESBhRQIEvvKeVgyE8NsVtRLVQv8Bjf7L34CA7C+fVnef3AwG9fo5
- QjyTZnLUXIGnjVDm+MoZHmneHp5XBF/9DCe4zuLudObx3wKCHKCOGDdBG3VNeaeOIBS+
- 7poDlZrz1YTBr5k68e+YshXM2zC3kxPyDTCN6bntFJP1Stin+Z6Xq+XI+8Gb4FG7uETw
- 1JHJTixpXUeIFzj6cggPnsqOXn+zR2yA+S0MjTb43bbQHWsRY9PE/BAsqnnIPX8Cwgak
- iXyg==
-X-Gm-Message-State: AOJu0YwKaurMYS77hIwcmHtm5/6wrBCyb6DW2XNaEmU4ojtAnYb7lFJO
- kG52erRD+yql5LFao6pglO3HfWUYkSHS+FtiO2wQItIoh4UqiFNlszqWTyoXBdFgfh3XmcSXwEZ
- 7
-X-Google-Smtp-Source: AGHT+IEBflXUUGZlRXWI2uD3pydZPOG/qpmoJV/2xBKZ0+M4zImhndUoRc7zDY+Ad9LD9uqsvwBAyw==
-X-Received: by 2002:a05:6a00:10c3:b0:71d:f012:6de7 with SMTP id
- d2e1a72fcca58-71e4c1cfd6fmr19522313b3a.27.1729007287043; 
- Tue, 15 Oct 2024 08:48:07 -0700 (PDT)
+ bh=ggpFvPFEzmcakXrNsZshdbMpubg1VkOtzGZJPItwWGk=;
+ b=OBmWo/dSYWPQ2hAii79HV0YXXeMbxCBRK7aGfXEp2g6dvh6e7Doi0HeCQCffDEqGFP
+ KM1Aa/iRrlyaOun7WwVCmy68CM38aGxFMd8tiJEQyWcw54aradjuio+SR0ISM2XRkxH9
+ R5j2t8c3CjaIyWLu9iGb3bpFz7fue6PxK7rVij6Vud6hUCL+eR7tt162rg8jK6v+HL3R
+ j/BlsP67nUhP45pwK//4YugYxB12RLJe5FWAQwujllX5S4PYDysMLXrE12JNPswQ6Wx9
+ ywxGnYmYrLU2LKZ7zepxYxc5hMUw0Coid9rbbG3OEQx+cqsphx7Hsk/72IK83hs5gAVs
+ sm0w==
+X-Gm-Message-State: AOJu0YyjBPoXhkrRFkAzMs6lgLwHblKV5gzUfbzZaRSKkCL6Ygre/PtV
+ a608yvGySxXfw0n9MXowNbLuof0rB9Y215gxCd0etEXdQuUauAtQxVoJ2NFTQqJkY9vdowUfAXu
+ g
+X-Google-Smtp-Source: AGHT+IEIVGLWbUplPYqX3sgC+vSP8FZ9SCuL2Qdg10EsnJd9uISXkDuL+SMjPgxhIThKMLkO5ZNh7g==
+X-Received: by 2002:a17:902:d50d:b0:20b:a6f5:2780 with SMTP id
+ d9443c01a7336-20d27e8c3b5mr8980945ad.17.1729007293988; 
+ Tue, 15 Oct 2024 08:48:13 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e773a3c39sm1418099b3a.73.2024.10.15.08.48.05
+ d9443c01a7336-20d18036748sm13611745ad.166.2024.10.15.08.48.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:48:06 -0700 (PDT)
+ Tue, 15 Oct 2024 08:48:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 28/33] target/mips: Have gen_addiupc() expand $pc during
- translation
-Date: Tue, 15 Oct 2024 12:44:37 -0300
-Message-ID: <20241015154443.71763-29-philmd@linaro.org>
+Subject: [PULL 29/33] target/mips: Use gen_op_addr_addi() when possible
+Date: Tue, 15 Oct 2024 12:44:38 -0300
+Message-ID: <20241015154443.71763-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -93,43 +92,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Replace tcg_gen_movi_tl() + gen_op_addr_add() by a single
+gen_op_addr_addi() call.
+
+gen_op_addr_addi() calls tcg_gen_addi_tl() which might
+optimize if the immediate is zero.
+
 Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241010215015.44326-12-philmd@linaro.org>
+Message-Id: <20241010215015.44326-13-philmd@linaro.org>
 ---
- target/mips/tcg/translate.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ target/mips/tcg/translate.h               |  1 +
+ target/mips/tcg/translate.c               |  6 ++----
+ target/mips/tcg/micromips_translate.c.inc | 12 ++++--------
+ target/mips/tcg/mips16e_translate.c.inc   | 15 ++++-----------
+ target/mips/tcg/nanomips_translate.c.inc  |  4 +---
+ 5 files changed, 12 insertions(+), 26 deletions(-)
 
+diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+index 49ff6b8cd80..5d196e69ac4 100644
+--- a/target/mips/tcg/translate.h
++++ b/target/mips/tcg/translate.h
+@@ -176,6 +176,7 @@ void gen_addiupc(DisasContext *ctx, int rx, int imm,
+  * Address Computation and Large Constant Instructions
+  */
+ void gen_op_addr_add(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1);
++void gen_op_addr_addi(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs);
+ bool gen_lsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
+ bool gen_dlsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
+ 
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index c0b97539a29..0ccf32d185e 100644
+index 0ccf32d185e..53a0cbf92be 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -11428,20 +11428,18 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
- void gen_addiupc(DisasContext *ctx, int rx, int imm,
-                  int is_64_bit, int extended)
- {
--    TCGv t0;
-+    target_ulong npc;
- 
-     if (extended && (ctx->hflags & MIPS_HFLAG_BMASK)) {
-         gen_reserved_instruction(ctx);
-         return;
-     }
- 
--    t0 = tcg_temp_new();
--
--    tcg_gen_movi_tl(t0, pc_relative_pc(ctx));
--    tcg_gen_addi_tl(cpu_gpr[rx], t0, imm);
-+    npc = pc_relative_pc(ctx) + imm;
-     if (!is_64_bit) {
--        tcg_gen_ext32s_tl(cpu_gpr[rx], cpu_gpr[rx]);
-+        npc = (int32_t)npc;
-     }
-+    tcg_gen_movi_tl(cpu_gpr[rx], npc);
+@@ -1456,8 +1456,7 @@ void gen_op_addr_add(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1)
+ #endif
  }
  
- static void gen_cache_operation(DisasContext *ctx, uint32_t op, int base,
+-static inline void gen_op_addr_addi(DisasContext *ctx, TCGv ret, TCGv base,
+-                                    target_long ofs)
++void gen_op_addr_addi(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs)
+ {
+     tcg_gen_addi_tl(ret, base, ofs);
+ 
+@@ -11265,10 +11264,9 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
+         } else {
+             /* OPC_JIC, OPC_JIALC */
+             TCGv tbase = tcg_temp_new();
+-            TCGv toffset = tcg_constant_tl(offset);
+ 
+             gen_load_gpr(tbase, rt);
+-            gen_op_addr_add(ctx, btarget, tbase, toffset);
++            gen_op_addr_addi(ctx, btarget, tbase, offset);
+         }
+         break;
+     default:
+diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
+index 171508f7deb..3cbf53bf2b3 100644
+--- a/target/mips/tcg/micromips_translate.c.inc
++++ b/target/mips/tcg/micromips_translate.c.inc
+@@ -980,8 +980,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr(t1, rd);
+-        tcg_gen_movi_tl(t1, 4);
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_addi(ctx, t0, t0, 4);
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr(t1, rd + 1);
+@@ -990,8 +989,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         gen_load_gpr(t1, rd);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                            ctx->default_tcg_memop_mask);
+-        tcg_gen_movi_tl(t1, 4);
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_addi(ctx, t0, t0, 4);
+         gen_load_gpr(t1, rd + 1);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                            ctx->default_tcg_memop_mask);
+@@ -1005,8 +1003,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr(t1, rd);
+-        tcg_gen_movi_tl(t1, 8);
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_addi(ctx, t0, t0, 8);
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr(t1, rd + 1);
+@@ -1015,8 +1012,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         gen_load_gpr(t1, rd);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+-        tcg_gen_movi_tl(t1, 8);
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_addi(ctx, t0, t0, 8);
+         gen_load_gpr(t1, rd + 1);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+diff --git a/target/mips/tcg/mips16e_translate.c.inc b/target/mips/tcg/mips16e_translate.c.inc
+index ef7a0ec0d38..a9af8f1e74a 100644
+--- a/target/mips/tcg/mips16e_translate.c.inc
++++ b/target/mips/tcg/mips16e_translate.c.inc
+@@ -130,10 +130,8 @@ static int xlat(int r)
+ static void decr_and_store(DisasContext *ctx, unsigned regidx, TCGv t0)
+ {
+     TCGv t1 = tcg_temp_new();
+-    TCGv t2 = tcg_temp_new();
+ 
+-    tcg_gen_movi_tl(t2, -4);
+-    gen_op_addr_add(ctx, t0, t0, t2);
++    gen_op_addr_addi(ctx, t0, t0, -4);
+     gen_load_gpr(t1, regidx);
+     tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                        ctx->default_tcg_memop_mask);
+@@ -146,7 +144,6 @@ static void gen_mips16_save(DisasContext *ctx,
+ {
+     TCGv t0 = tcg_temp_new();
+     TCGv t1 = tcg_temp_new();
+-    TCGv t2 = tcg_temp_new();
+     int args, astatic;
+ 
+     switch (aregs) {
+@@ -286,8 +283,7 @@ static void gen_mips16_save(DisasContext *ctx,
+         }
+     }
+ 
+-    tcg_gen_movi_tl(t2, -framesize);
+-    gen_op_addr_add(ctx, cpu_gpr[29], cpu_gpr[29], t2);
++    gen_op_addr_addi(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
+ }
+ 
+ static void decr_and_load(DisasContext *ctx, unsigned regidx, TCGv t0)
+@@ -309,10 +305,8 @@ static void gen_mips16_restore(DisasContext *ctx,
+ {
+     int astatic;
+     TCGv t0 = tcg_temp_new();
+-    TCGv t2 = tcg_temp_new();
+ 
+-    tcg_gen_movi_tl(t2, framesize);
+-    gen_op_addr_add(ctx, t0, cpu_gpr[29], t2);
++    gen_op_addr_addi(ctx, t0, cpu_gpr[29], -framesize);
+ 
+     if (do_ra) {
+         decr_and_load(ctx, 31, t0);
+@@ -392,8 +386,7 @@ static void gen_mips16_restore(DisasContext *ctx,
+         }
+     }
+ 
+-    tcg_gen_movi_tl(t2, framesize);
+-    gen_op_addr_add(ctx, cpu_gpr[29], cpu_gpr[29], t2);
++    gen_op_addr_addi(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
+ }
+ 
+ #if defined(TARGET_MIPS64)
+diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
+index d462173348f..8e05a36b545 100644
+--- a/target/mips/tcg/nanomips_translate.c.inc
++++ b/target/mips/tcg/nanomips_translate.c.inc
+@@ -2470,11 +2470,9 @@ static void gen_compute_compact_branch_nm(DisasContext *ctx, uint32_t opc,
+         } else {
+             /* OPC_JIC, OPC_JIALC */
+             TCGv tbase = tcg_temp_new();
+-            TCGv toffset = tcg_temp_new();
+ 
+             gen_load_gpr(tbase, rt);
+-            tcg_gen_movi_tl(toffset, offset);
+-            gen_op_addr_add(ctx, btarget, tbase, toffset);
++            gen_op_addr_addi(ctx, btarget, tbase, offset);
+         }
+         break;
+     default:
 -- 
 2.45.2
 
