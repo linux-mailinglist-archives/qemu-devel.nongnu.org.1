@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B747099E1AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 10:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FA199E1A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 10:52:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0dIE-00075b-SC; Tue, 15 Oct 2024 04:52:38 -0400
+	id 1t0dII-000769-I8; Tue, 15 Oct 2024 04:52:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1t0dID-00075S-5v
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 04:52:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t0dIG-00075v-Np
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 04:52:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1t0dIB-0008BS-M2
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 04:52:36 -0400
+ id 1t0dIF-0008CG-75
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 04:52:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728982354;
+ s=mimecast20190719; t=1728982358;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=elooLbY7k2M6MVGuTlkYRMqNz5nxbtsoK5pOiPAY6jg=;
- b=bfWw620qKar/eVp7HXF/77MDhN3ExxALUzcpZzGEAXC0T0PW6EOvwEunj3s+5PLs9PAnBm
- RaOKClvFjVnSQO8XeiG/FtJDAmxILfY20CSLcu3VD8pWn7Qrn/qQcppCEMEJ0aQ1k49yAV
- WJ10AE4Y2Vycrsx6HHQxyC/vubLMo28=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=5Q5K6BeJaiZ2Fm44mfbHcepRRyNraqfAuk63pnZL6Ug=;
+ b=L2DnFjaReDKpncjd+73dO6YyX3n7IuwYFjFAAaK0ItGBJ1IXlLdeTByTQMNJKNGAkhmwBy
+ LI2nyFYlX9RPHFtSB4egPKk4AH8f8508GI60f6Et2Uwh8OQxBHmUdQz4RQXFRfRLXgeTfS
+ XOgP0c2i7J0nssRaYqr9Y6FVS3RsQPM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-NStpHPb-OY2FBPKHYgefZQ-1; Tue,
- 15 Oct 2024 04:52:30 -0400
-X-MC-Unique: NStpHPb-OY2FBPKHYgefZQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-o5g9fm_XMA6Y9Rnac2iW-A-1; Tue,
+ 15 Oct 2024 04:52:35 -0400
+X-MC-Unique: o5g9fm_XMA6Y9Rnac2iW-A-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EC6281955D5D; Tue, 15 Oct 2024 08:52:29 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B10FA1955F0B; Tue, 15 Oct 2024 08:52:34 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.15])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E55C03000198; Tue, 15 Oct 2024 08:52:27 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8AB7B1956056; Tue, 15 Oct 2024 08:52:33 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 7/8] chardev/mux: implement detach of frontends from mux
-Date: Tue, 15 Oct 2024 12:51:49 +0400
-Message-ID: <20241015085150.219486-8-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 8/8] tests/unit/test-char: implement a few mux remove test cases
+Date: Tue, 15 Oct 2024 12:51:50 +0400
+Message-ID: <20241015085150.219486-9-marcandre.lureau@redhat.com>
 In-Reply-To: <20241015085150.219486-1-marcandre.lureau@redhat.com>
 References: <20241015085150.219486-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
@@ -87,85 +86,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roman Penyaev <r.peniaev@gmail.com>
 
-With bitset management now it becomes feasible to implement
-the logic of detaching frontends from multiplexer.
+This patch tests:
+
+1. feasibility of removing mux which does not have frontends attached
+   or frontends were prior detached.
+2. inability to remove mux which has frontends attached (mux is "busy")
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
+[ fixed *error leak ]
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20241014152408.427700-8-r.peniaev@gmail.com>
+Message-ID: <20241014152408.427700-9-r.peniaev@gmail.com>
 ---
- chardev/chardev-internal.h |  1 +
- chardev/char-fe.c          |  2 +-
- chardev/char-mux.c         | 21 ++++++++++++++++++---
- 3 files changed, 20 insertions(+), 4 deletions(-)
+ tests/unit/test-char.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
-index b89aada541..853807f3cb 100644
---- a/chardev/chardev-internal.h
-+++ b/chardev/chardev-internal.h
-@@ -61,6 +61,7 @@ DECLARE_INSTANCE_CHECKER(MuxChardev, MUX_CHARDEV,
+diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
+index f273ce5226..a1c6bb874c 100644
+--- a/tests/unit/test-char.c
++++ b/tests/unit/test-char.c
+@@ -1,6 +1,7 @@
+ #include "qemu/osdep.h"
+ #include <glib/gstdio.h>
  
- bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
-                              unsigned int *tag, Error **errp);
-+bool mux_chr_detach_frontend(MuxChardev *d, unsigned int tag);
- void mux_set_focus(Chardev *chr, unsigned int focus);
- void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event);
++#include "qapi/error.h"
+ #include "qemu/config-file.h"
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+@@ -184,6 +185,21 @@ static void char_mux_test(void)
+     char *data;
+     FeHandler h1 = { 0, false, 0, false, }, h2 = { 0, false, 0, false, };
+     CharBackend chr_be1, chr_be2;
++    Error *error = NULL;
++
++    /* Create mux and chardev to be immediately removed */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++    qemu_opt_set(opts, "size", "128", &error_abort);
++    qemu_opt_set(opts, "mux", "on", &error_abort);
++    chr = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++    g_assert_nonnull(chr);
++    qemu_opts_del(opts);
++
++    /* Remove just created mux and chardev */
++    qmp_chardev_remove("mux-label", &error_abort);
++    qmp_chardev_remove("mux-label-base", &error_abort);
  
-diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-index 3b8771ca2a..8ac6bebb6f 100644
---- a/chardev/char-fe.c
-+++ b/chardev/char-fe.c
-@@ -225,7 +225,7 @@ void qemu_chr_fe_deinit(CharBackend *b, bool del)
-         }
-         if (CHARDEV_IS_MUX(b->chr)) {
-             MuxChardev *d = MUX_CHARDEV(b->chr);
--            d->backends[b->tag] = NULL;
-+            mux_chr_detach_frontend(d, b->tag);
-         }
-         if (del) {
-             Object *obj = OBJECT(b->chr);
-diff --git a/chardev/char-mux.c b/chardev/char-mux.c
-index 4fc619b2da..bda5c45e60 100644
---- a/chardev/char-mux.c
-+++ b/chardev/char-mux.c
-@@ -290,10 +290,10 @@ static void char_mux_finalize(Object *obj)
-     bit = -1;
-     while ((bit = find_next_bit(&d->mux_bitset, MAX_MUX, bit + 1)) < MAX_MUX) {
-         CharBackend *be = d->backends[bit];
--        if (be) {
--            be->chr = NULL;
--        }
-+        be->chr = NULL;
-+        d->backends[bit] = NULL;
-     }
-+    d->mux_bitset = 0;
-     qemu_chr_fe_deinit(&d->chr, false);
+     opts = qemu_opts_create(qemu_find_opts("chardev"), "mux-label",
+                             1, &error_abort);
+@@ -334,7 +350,13 @@ static void char_mux_test(void)
+     g_free(data);
+ 
+     qemu_chr_fe_deinit(&chr_be1, false);
+-    qemu_chr_fe_deinit(&chr_be2, true);
++
++    qmp_chardev_remove("mux-label", &error);
++    g_assert_cmpstr(error_get_pretty(error), ==, "Chardev 'mux-label' is busy");
++    error_free(error);
++
++    qemu_chr_fe_deinit(&chr_be2, false);
++    qmp_chardev_remove("mux-label", &error_abort);
  }
  
-@@ -332,6 +332,21 @@ bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
-     return true;
- }
  
-+bool mux_chr_detach_frontend(MuxChardev *d, unsigned int tag)
-+{
-+    unsigned int bit;
-+
-+    bit = find_next_bit(&d->mux_bitset, MAX_MUX, tag);
-+    if (bit != tag) {
-+        return false;
-+    }
-+
-+    d->mux_bitset &= ~(1 << bit);
-+    d->backends[bit] = NULL;
-+
-+    return true;
-+}
-+
- void mux_set_focus(Chardev *chr, unsigned int focus)
- {
-     MuxChardev *d = MUX_CHARDEV(chr);
 -- 
 2.47.0
 
