@@ -2,58 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992B999E9EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 14:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFCF99EAB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 14:57:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0gjE-0005wR-Uq; Tue, 15 Oct 2024 08:32:44 -0400
+	id 1t0h6Q-0002rr-Il; Tue, 15 Oct 2024 08:56:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
- id 1t0gjB-0005vb-Mx; Tue, 15 Oct 2024 08:32:41 -0400
-Received: from forward101a.mail.yandex.net ([2a02:6b8:c0e:500:1:45:d181:d101])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t0h6N-0002rM-3v
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 08:56:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
- id 1t0gj9-0003kw-PH; Tue, 15 Oct 2024 08:32:41 -0400
-Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2a:1c1:0:640:adc:0])
- by forward101a.mail.yandex.net (Yandex) with ESMTPS id 49D9260B23;
- Tue, 15 Oct 2024 15:32:30 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net
- (smtp/Yandex) with ESMTPSA id TWKivoTLgqM0-lvptCVPA; 
- Tue, 15 Oct 2024 15:32:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail;
- t=1728995549; bh=Pcu/U9hXaVEo7TpmW3Ouf8WsQ18wNvWQaSn26AsJ8as=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=FhloQWyODQPGm1OCl4Mqo2MHWBruLpYqKcUTZOmEyDVZSIvN4WYf99mJ7ERWXLKYD
- lU69PqepWj6xVrc8nXjXD0FdaZLQP1QGPK/gHn1+ZaznyhaYiupzWZL8Fqc/8WvPNE
- +Jd3zqm9d6dFgSVqt2uQSQwHXY35nxDvNIhFhWig=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net;
- dkim=pass header.i=@maquefel.me
-From: Nikita Shubin <nikita.shubin@maquefel.me>
-To: Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Cc: linux@yadro.com, Nikita Shubin <n.shubin@yadro.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] hw/block: m25p80: support RDID_90 for Winbond
-Date: Tue, 15 Oct 2024 15:32:28 +0300
-Message-ID: <20241015123228.18692-1-nikita.shubin@maquefel.me>
-X-Mailer: git-send-email 2.43.2
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t0h6L-0006pN-Nn
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 08:56:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728996995;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=woBAZlD92Y3cyLf16O7E/BgdVx23F7cKdwYe9rgPUag=;
+ b=WRSijHRLDxbI1rmg/BpbkdTrxHrJX3tDaVvdHi3Eyl95sK278d4A+uJ6C2ie1znPup0+nl
+ pElSvj/7c0y6HuYonUAS+INDfXC0yEV6DPpbfZh/C7izqC7yuVUYCfOWmyOqA3ehsLJiFY
+ Lb+QofmhtrW/s4PD76HAdysfrOkPNXI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-ZgfAHURfP-emLp2I185-pQ-1; Tue,
+ 15 Oct 2024 08:56:33 -0400
+X-MC-Unique: ZgfAHURfP-emLp2I185-pQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C6FC919560AB
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 12:56:32 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.118])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 73CF23000198; Tue, 15 Oct 2024 12:56:30 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/2] crypto: fix regression in hash result buffer handling
+Date: Tue, 15 Oct 2024 13:56:27 +0100
+Message-ID: <20241015125629.301367-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:d101;
- envelope-from=nikita.shubin@maquefel.me; helo=forward101a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,38 +80,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikita Shubin <n.shubin@yadro.com>
 
-Make Winbond support RDID_90 as all winbond SPI NOR Flashes
-support Read Manufacturer/Device ID (90h) command.
 
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
----
- hw/block/m25p80.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Daniel P. Berrangé (2):
+  crypto/hash: avoid overwriting user supplied result pointer
+  tests: correctly validate result buffer in hash/hmac tests
 
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index f7123f9e68..27f0cd0487 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -829,6 +829,16 @@ static void complete_collecting_data(Flash *s)
-         s->enh_volatile_cfg = s->data[0];
-         break;
-     case RDID_90:
-+        if (get_man(s) == MAN_WINBOND) {
-+            s->data[0] = s->pi->id[0];
-+            s->data[1] = s->pi->id[2];
-+            s->pos = 0;
-+            s->len = 2;
-+            s->data_read_loop = true;
-+            s->state = STATE_READING_DATA;
-+            break;
-+        }
-+        /* fallthrough */
-     case RDID_AB:
-         if (get_man(s) == MAN_SST) {
-             if (s->cur_addr <= 1) {
+ crypto/hash-gcrypt.c          | 15 ++++++++++++---
+ crypto/hash-glib.c            | 11 +++++++++--
+ crypto/hash-gnutls.c          | 16 +++++++++++++---
+ crypto/hash-nettle.c          | 14 +++++++++++---
+ tests/unit/test-crypto-hash.c |  7 ++++---
+ tests/unit/test-crypto-hmac.c |  6 ++++--
+ 6 files changed, 53 insertions(+), 16 deletions(-)
+
 -- 
-2.43.2
+2.46.0
 
 
