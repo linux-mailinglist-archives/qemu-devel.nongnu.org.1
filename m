@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9385D99F1CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB3A99F1EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:49:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jlJ-00039A-1a; Tue, 15 Oct 2024 11:47:06 -0400
+	id 1t0jlM-0003dJ-V5; Tue, 15 Oct 2024 11:47:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jki-0001Ij-Vw
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:29 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkp-0001W6-7y
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:35 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkh-0000qq-AR
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:28 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-20cb89a4e4cso24755355ad.3
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkn-0000s7-Iw
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:34 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-288642376bcso2446575fac.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007185; x=1729611985; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007192; x=1729611992; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WPZ3O54SfWAZW6QbB+o6pdTzqrBR+joOSB0w++8bQOE=;
- b=rC1Whf0i32nTidP7DBpmvre+0GG7GZSoOxE+BazDM0/seSH0iUTx3tVti4wB2/MWqT
- ZZOe/BHbNFK2OFSHIPHH7e0+NHY+fsKEnd1A6H/lNDR5HEMgt/+UcEgN8DMswKHNXZTY
- sfBCtHn6Gf9wQzh0/2n0Un3matLBCADSy3bZcGhJMbohfZufVGZiW4pShMk4HKdpVG7Q
- gmizJ59LD912ko97pukBVydgvRcu/2nQUvjts3NtzKzYiWprnxGajQoTh0hIuRmF9/ii
- 4YCYM+aOAFpxMdixKeWrwvdPmIvKz0c1iml+lyCC3xbrFD6u1EP6kX0+BdUdESWrJcKB
- rUHg==
+ bh=h/M6ZeKd6OjvAtfWG6gTR4wPDGVzgIAmQPnpr57Wj6k=;
+ b=OKCYJoBcDSK0ksovcO9hj+f8IGeLK5T3YIULW30rQ9qObfHkMVSnTSF+mPZK1U9oZm
+ CRQHaa+OcZUBPw+KVsnfJuoLtmfsPxPd9gOOcA3LBjTS/tmpMqhGFxWHJFS0Z4k00vMP
+ rrhEH9Tg63aEG508DAYrG2jA+Jg7/b4cB2aJX3Elpt0okWTGNYVDOFYHFMYtEJTWabT4
+ cyTeOB3lrGyQBzwXCX1+GqPw0LTX3WMTR+v/FkjTE+AKjUS1OdjRkTaA3/shJSdFEIXt
+ Isd60DMwjVMRLcJcf9N6Rs/lTAKKz+UfkhaTEcg6AU1MWVjmtgyGIqR5zlJhQKoiUUgz
+ VpFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007185; x=1729611985;
+ d=1e100.net; s=20230601; t=1729007192; x=1729611992;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WPZ3O54SfWAZW6QbB+o6pdTzqrBR+joOSB0w++8bQOE=;
- b=WT+1Ob/piHgG8FnOGyN/Kle4+/Y//cCAZAFvuWL5fMEC05bc0UJ2m04qPqcDFdQxdR
- YE3uvcyhHM/ibFZoI93/yJGA0C+W3Fhp000rj++WKj+VkXQUYNbc+gZmU1zYtvwjI9Mm
- r3N+ZdSixMYw2NN2oM5UmtsdLH7v7ajS5vvFKqhrpTvYRKrkH3VgtrtSmMWlfHv3jC2R
- I/jjbZaAIGsvH6veaxOUEakGqqKBhALnwYu92SVeHu4MKoRPre0iyjrJNYa7IQJUWZx+
- 9u5nIbQpFrHKkEjyNaNQlzGR1jtU/n5kMXzBsCnHdWfv/mDGZUfqZrcDAuXZ+0L/VxI3
- 4uDA==
-X-Gm-Message-State: AOJu0YzlIcbVw7F4bP7+c9ujx0LQe9QJWZEjlNjucXlKYYa8p67rjH7b
- HsD1WRUB/K/12BIK1k1s8r1dHFNTqpsblnG/I25rzzCk0hd0GriOOdu0O0U/LW1bXfgefNCHwEi
- A
-X-Google-Smtp-Source: AGHT+IHNrH5aeLxab4iEA0Gx5smKxNHh95eveecRpONFnpmScd38jOAlZOvb67Qwpkr06672VLvCtA==
-X-Received: by 2002:a17:902:d584:b0:20c:9d79:cf85 with SMTP id
- d9443c01a7336-20d27f2805fmr9244255ad.54.1729007185052; 
- Tue, 15 Oct 2024 08:46:25 -0700 (PDT)
+ bh=h/M6ZeKd6OjvAtfWG6gTR4wPDGVzgIAmQPnpr57Wj6k=;
+ b=n7fZLtzIbM/zZByAAzvUoCpmCKsW6E+EEfHMofWa9Pn8pJvGMv4iuPo/HaMPlL+Zfj
+ xAn4RxxFORB8jyIfogwFe/sETT6rWXHrL24art4hdNB/HjhVRhm60S5AFD/18AVTjXyW
+ Dh+E24ooaLUiuv0W9RTTPc7bLo2hB1dxdERLVgvSvLWyvIXsM5B6YIyij/A+Aaxdfxv5
+ +5eHZFgwF9XXXWJXtm+5hDa28bcheJkwzOiiqzm6IuWkuoFacVztIHaiPHFdRqG7krUJ
+ JEGlP2kHuRLzzeX8TyZH9ZeHfVRDrG8F0J9FhDASsEuH45prJuNJx866p6+EBVD6rzj2
+ dQqA==
+X-Gm-Message-State: AOJu0Yy8XC0pjzzvsCvIbdVbx5BjKLTmmssdsKQkFykLurPKBnzo0uFi
+ xPoft3iir3O/xrOlrvLItXBe92Kb0Lbn01IslSHrxMtQ+EOvfv+6NNKICzS5V97SrHkZm5XsJlt
+ I
+X-Google-Smtp-Source: AGHT+IEz7m3HFPxuW9kgXku+KQ4th/nTbLtPWGSpqvoJJzPsNUesHc8oLcS4d6+UI2mN3KDXR3c4WQ==
+X-Received: by 2002:a05:6870:c111:b0:288:60d6:f183 with SMTP id
+ 586e51a60fabf-28887478de5mr6900285fac.38.1729007191877; 
+ Tue, 15 Oct 2024 08:46:31 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20d1806c6a9sm13489765ad.302.2024.10.15.08.46.23
+ 41be03b00d2f7-7ea9c71a8aesm1509253a12.81.2024.10.15.08.46.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:46:24 -0700 (PDT)
+ Tue, 15 Oct 2024 08:46:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/33] target/tricore: Use tcg_constant_tl() instead of
+Subject: [PULL 15/33] target/ppc: Use tcg_constant_tl() instead of
  tcg_gen_movi_tl()
-Date: Tue, 15 Oct 2024 12:44:23 -0300
-Message-ID: <20241015154443.71763-15-philmd@linaro.org>
+Date: Tue, 15 Oct 2024 12:44:24 -0300
+Message-ID: <20241015154443.71763-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=philmd@linaro.org; helo=mail-oa1-x33.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -94,30 +94,51 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Directly use tcg_constant_tl() for constant integer,
-this save a call to tcg_gen_movi_tl().
+this save a call to tcg_gen_movi_tl() and a temp register.
 
 Inspired-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241004202621.4321-3-philmd@linaro.org>
+Message-Id: <20241004202621.4321-4-philmd@linaro.org>
 ---
- target/tricore/translate.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ target/ppc/translate.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index a46a03e1fd8..4a12d2ca191 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -2732,8 +2732,7 @@ static inline void gen_insert(TCGv ret, TCGv r1, TCGv r2, TCGv width, TCGv pos)
-     TCGv temp = tcg_temp_new();
-     TCGv temp2 = tcg_temp_new();
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 71513ba9646..7689b2ac2e1 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1588,16 +1588,13 @@ static opc_handler_t invalid_handler = {
+ static inline void gen_op_cmp(TCGv arg0, TCGv arg1, int s, int crf)
+ {
+     TCGv t0 = tcg_temp_new();
+-    TCGv t1 = tcg_temp_new();
+     TCGv_i32 t = tcg_temp_new_i32();
  
--    tcg_gen_movi_tl(mask, 1);
--    tcg_gen_shl_tl(mask, mask, width);
-+    tcg_gen_shl_tl(mask, tcg_constant_tl(1), width);
-     tcg_gen_subi_tl(mask, mask, 1);
-     tcg_gen_shl_tl(mask, mask, pos);
+-    tcg_gen_movi_tl(t0, CRF_EQ);
+-    tcg_gen_movi_tl(t1, CRF_LT);
+     tcg_gen_movcond_tl((s ? TCG_COND_LT : TCG_COND_LTU),
+-                       t0, arg0, arg1, t1, t0);
+-    tcg_gen_movi_tl(t1, CRF_GT);
++                       t0, arg0, arg1,
++                       tcg_constant_tl(CRF_LT), tcg_constant_tl(CRF_EQ));
+     tcg_gen_movcond_tl((s ? TCG_COND_GT : TCG_COND_GTU),
+-                       t0, arg0, arg1, t1, t0);
++                       t0, arg0, arg1, tcg_constant_tl(CRF_GT), t0);
  
+     tcg_gen_trunc_tl_i32(t, t0);
+     tcg_gen_trunc_tl_i32(cpu_crf[crf], cpu_so);
+@@ -2974,8 +2971,8 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
+     tcg_gen_qemu_st_tl(u, EA, ctx->mem_idx, memop);
+ 
+     /* RT = (t != t2 ? t : u = 1<<(s*8-1)) */
+-    tcg_gen_movi_tl(u, 1 << (memop_size(memop) * 8 - 1));
+-    tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t, u);
++    tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t,
++                       tcg_constant_tl(1 << (memop_size(memop) * 8 - 1)));
+ }
+ 
+ static void gen_ld_atomic(DisasContext *ctx, MemOp memop)
 -- 
 2.45.2
 
