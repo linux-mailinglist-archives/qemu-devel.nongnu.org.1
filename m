@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE9799F6A5
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 20:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6219599F6BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 21:06:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0mkY-0000dp-TB; Tue, 15 Oct 2024 14:58:30 -0400
+	id 1t0mrx-0002Jz-CF; Tue, 15 Oct 2024 15:06:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t0mkV-0000dg-VO
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 14:58:28 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t0mru-0002JD-GJ
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 15:06:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t0mkT-0007kh-Ss
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 14:58:27 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FIp1Pg030623;
- Tue, 15 Oct 2024 18:58:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=9q07z3
- M2I2HkZ/xWaoiMSEgiaGvIB1fC2kvNtH8zJkk=; b=ZqHkFrF2mGcN1MLP9sW3wc
- 4p1JQzPEX9q5XO8KG9pQz+L9O1DZQzjR1DgNW5WeEslG4gFCgjxJ/bGD1WwWOq2e
- 1vF8IgoKXsrtpWWzme2+U8u2ZhBnatV3puPyw1Ha9u25Ttm93BO8T1uq0FLqCew8
- FyRmw+Uj87ZFiyyhHdbN+Qda0XV/kleDXkcIezpARlVQTLX7or/CvEiLPhdEX7G+
- 3U/BdqEz83A/Zl0diNBGZPIaIjgzff6uLonfAz1KmWB2zdD50A5cRoXrpNkqTAsN
- VR3HS7tXiU0N9o8xEw//OsbZwX9kTK483ON6uAs/IHoioFjFlnczvQTR4aeyENcw
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429x17g133-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 18:58:23 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FI6W3m006757;
- Tue, 15 Oct 2024 18:58:22 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xk5cfd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 18:58:22 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49FIwMBH44630412
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Oct 2024 18:58:22 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ED1F65803F;
- Tue, 15 Oct 2024 18:58:21 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EF91758056;
- Tue, 15 Oct 2024 18:58:16 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 15 Oct 2024 18:58:16 +0000 (GMT)
-Message-ID: <077cee03-efd0-4716-865a-b9990afb91a3@linux.ibm.com>
-Date: Tue, 15 Oct 2024 14:58:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t0mrr-00005s-JJ
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 15:06:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729019162;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QTV5trzBUQpukdF+cuE9QPTllqiIeU4/b6EtuxirOZk=;
+ b=dFDD2z8hteB4kwBJQ2NgxrbHxVYj1xbxibSORjsKwByTI6KBVm39QpQ4YbB6xd/HKgSWDe
+ wKNR9Mj6PRY/MuKU4Ov1KbnA8mhb7c/M6W9/iLXniEMAdMKems9lT5FaQc0yv8pET2KEF8
+ JIk9u8hyM1s+y2SDCIJUfDKokpemBzQ=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-538-BzAHuz8jOo-ktlkSekan1A-1; Tue, 15 Oct 2024 15:05:59 -0400
+X-MC-Unique: BzAHuz8jOo-ktlkSekan1A-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6cbebfc1725so122682716d6.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 12:05:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729019159; x=1729623959;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QTV5trzBUQpukdF+cuE9QPTllqiIeU4/b6EtuxirOZk=;
+ b=i4ksrQKwtowHNqewp8cr/Su76l8qEENw+k2uNBo1eFGuYm4yvAHBXc/QTCenxUZ2RN
+ 7a9Q7GRVvTpVL2nGRD/S0S4xGP8pmn8ZjttyfFyLlcYUhJmW7Xlw/A+wqDfmcElnNJ7H
+ ThBOz0xIpJH87J38FwaUb5H7pdbWd1QMQCul78abAlFyChJF8b/IwWaNhJn8gR2s8z93
+ GAYARatqCX87s5ZylV30rZjHZ0eTJihjsjtJIDMvxyTVuDyjnqApmhDpXhn6gVBjjgC9
+ koHQZxtyTEaP8wW+1Gq5eLfa9s/9F5g4YB27D/dRGAtLkZz9Q2S1aDPHhFN9PAo9Ggti
+ 3rmA==
+X-Gm-Message-State: AOJu0YxPk+7i8FT3jlaJZN+617PLVa7/nUv6M1OZzlv+GWWwcQKmHJW7
+ hdF5ACtM+uLmSgUg+CuFrldF1iSQIHBa71W9IK6veWTXbYJ1VBE1HJmHOXKu9woHM2NYoLH/I92
+ 3UqjXjI55DRsFVaLpjDuUqVleQUyPSBrIcqHmZnhRKRpHAoFavnIU
+X-Received: by 2002:a05:6214:3990:b0:6cb:f6ff:f5dc with SMTP id
+ 6a1803df08f44-6cbf9cb2efdmr243944646d6.6.1729019158848; 
+ Tue, 15 Oct 2024 12:05:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHse5loyAG7M1dqaz0+N5ZVkHf5nOsIOqvXVIbybe0Z67W9aL3+n/hZJkGcesVZW2t5jX8hvw==
+X-Received: by 2002:a05:6214:3990:b0:6cb:f6ff:f5dc with SMTP id
+ 6a1803df08f44-6cbf9cb2efdmr243944376d6.6.1729019158416; 
+ Tue, 15 Oct 2024 12:05:58 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6cc2295af43sm9859916d6.98.2024.10.15.12.05.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Oct 2024 12:05:57 -0700 (PDT)
+Date: Tue, 15 Oct 2024 15:05:55 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH v2] migration: Ensure vmstate_save() sets errp
+Message-ID: <Zw69E9nvy8wQjrGZ@x1n>
+References: <20241015170437.310358-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: tpm-tis-device-swtpm-test timeout
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-References: <87jze9qlrp.fsf@suse.de>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <87jze9qlrp.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: o4Jo56U3OKex7BjqDRQvCR7IOX50OB1r
-X-Proofpoint-GUID: o4Jo56U3OKex7BjqDRQvCR7IOX50OB1r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 clxscore=1011
- adultscore=0 spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410150126
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241015170437.310358-1-hreitz@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,119 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/15/24 2:11 PM, Fabiano Rosas wrote:
-> Hi Stefan,
+On Tue, Oct 15, 2024 at 07:04:37PM +0200, Hanna Czenczek wrote:
+> migration/savevm.c contains some calls to vmstate_save() that are
+> followed by migrate_set_error() if the integer return value indicates an
+> error.  migrate_set_error() requires that the `Error *` object passed to
+> it is set.  Therefore, vmstate_save() is assumed to always set *errp on
+> error.
 > 
-> I see the tpm-tis-device-swtpm test timing out, could you take a look?
+> Right now, that assumption is not met: vmstate_save_state_v() (called
+> internally by vmstate_save()) will not set *errp if
+> vmstate_subsection_save() or vmsd->post_save() fail.  Fix that by adding
+> an *errp parameter to vmstate_subsection_save(), and by generating a
+> generic error in case post_save() fails (as is already done for
+> pre_save()).
 > 
-> qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-tis-device-swtpm-test time out (After 60.0 seconds)
-> 135/138 qemu:qtest+qtest-aarch64 /
-> qtest-aarch64/tpm-tis-device-swtpm-test TIMEOUT 60.01s killed by signal 11 SIGSEGV
-
-Is this something new or been happening for a while? Does it happen 
-consistently? I just build the master branch and ran the tests on a very 
-old machine, I mean 13 years old. The host runs Fedora 40 with 
-libtpms-0.96-6 + swtpm-0.9.0 from the distro:
-
-104/473 qemu:qtest+qtest-aarch64 / 
-qtest-aarch64/tpm-tis-device-swtpm-test           OK               2.32s 
-   2 subtests passed
-
-I see some other non-TPM tests timing out but not this one. Same result 
-for TIS test on 2nd run.
-
-104/473 qemu:qtest+qtest-aarch64 / 
-qtest-aarch64/tpm-tis-device-swtpm-test           OK               2.51s 
-   2 subtests passed
-
-3rd run:
-
-104/473 qemu:qtest+qtest-aarch64 / 
-qtest-aarch64/tpm-tis-device-swtpm-test           OK               2.37s 
-   2 subtests passed
-
-4th run:
-
-104/473 qemu:qtest+qtest-aarch64 / 
-qtest-aarch64/tpm-tis-device-swtpm-test           OK               2.63s 
-   2 subtests passed
-
-
-
-If I run it as a single test on the command line like this then it 
-consistently works here - I ran it >10 times now.
-
-$ QTEST_QEMU_BINARY=build/qemu-system-aarch64 
-./build/tests/qtest/tpm-tis-device-swtpm-test
-TAP version 13
-# random seed: R02S8155b3cf024c2696e895e5f548396138
-1..2
-# Start of aarch64 tests
-# Start of tpm tests
-# Start of tis-swtpm tests
-# starting QEMU: exec build/qemu-system-aarch64 -qtest 
-unix:/tmp/qtest-3738308.sock -qtest-log /dev/null -chardev 
-socket,path=/tmp/qtest-3738308.qmp,id=char0 -mon 
-chardev=char0,mode=control -display none -audio none -machine 
-virt,gic-version=max -accel tcg -chardev 
-socket,id=chr,path=/tmp/qemu-tpm-tis-device-swtpm-test.YEUOV2/sock 
--tpmdev emulator,id=dev,chardev=chr -device tpm-tis-device,tpmdev=dev 
--accel qtest
-ok 1 /aarch64/tpm/tis-swtpm/test
-# slow test /aarch64/tpm/tis-swtpm/test executed in 0.66 secs
-# End of tis-swtpm tests
-# Start of tis-swtpm-migration tests
-# starting QEMU: exec build/qemu-system-aarch64 -qtest 
-unix:/tmp/qtest-3738308.sock -qtest-log /dev/null -chardev 
-socket,path=/tmp/qtest-3738308.qmp,id=char0 -mon 
-chardev=char0,mode=control -display none -audio none -machine 
-virt,gic-version=max -accel tcg -chardev 
-socket,id=chr,path=/tmp/qemu-tpm-tis-device-swtpm-test.YEUOV2/sock 
--tpmdev emulator,id=dev,chardev=chr -device tpm-tis-device,tpmdev=dev 
--accel qtest
-# starting QEMU: exec build/qemu-system-aarch64 -qtest 
-unix:/tmp/qtest-3738308.sock -qtest-log /dev/null -chardev 
-socket,path=/tmp/qtest-3738308.qmp,id=char0 -mon 
-chardev=char0,mode=control -display none -audio none -machine 
-virt,gic-version=max -accel tcg -chardev 
-socket,id=chr,path=/tmp/qemu-tpm-tis-device-swtpm-test.V9TOV2/sock 
--tpmdev emulator,id=dev,chardev=chr -device tpm-tis-device,tpmdev=dev 
--incoming unix:/tmp/qemu-tpm-tis-device-swtpm-test.YEUOV2/migsocket 
--accel qtest
-ok 2 /aarch64/tpm/tis-swtpm-migration/test
-# slow test /aarch64/tpm/tis-swtpm-migration/test executed in 1.10 secs
-# End of tis-swtpm-migration tests
-# End of tpm tests
-# End of aarch64 tests
-
-
-
-
+> Without this patch, qemu will crash after vmstate_subsection_save() or
+> post_save() have failed inside of a vmstate_save() call (unless
+> migrate_set_error() then happen to discard the new error because
+> s->error is already set).  This happens e.g. when receiving the state
+> from a virtio-fs back-end (virtiofsd) fails.
 > 
-> (gdb) bt
-> #0 0x00005654e7ac4872 in tpm_tis_transfer (s=0x5654e7dec570, req=0x5654e7b42410 <tpm_pcrread> "\200\001", req_size=21, rsp=0x7ffd2295ca00 '\377' <repeats 200 times>..., rsp_size=1024) at ../tests/qtest/tpm-tis-util.c:490
-> #1 0x00005654e7ac1879 in tpm_util_pcrread (s=0x5654e7dec570, tx=0x5654e7ac467a <tpm_tis_transfer>, exp_resp=0x5654e7b42620 <tpm_pcrread_resp> "\200\001", exp_resp_size=63) at ../tests/qtest/tpm-util.c:96
-> #2 0xffffffffffffffff in ?? ()
-> ...
-> 
-> (gdb) l
-> 485         sts = qtest_readl(s, TIS_REG(0, TPM_TIS_REG_STS));
-> 486         bcount = (sts >> 8) & 0xffff;
-> 487
-> 488         memset(rsp, 0, rsp_size);
-> 489         for (i = 0; i < bcount; i++) {
-> 490             rsp[i] = qtest_readb(s, TIS_REG(0, TPM_TIS_REG_DATA_FIFO));
-> 491         }
-> 492
-> 493         /* relinquish use of locality 0 */
-> 494         qtest_writeb(s, TIS_REG(0, TPM_TIS_REG_ACCESS),
-> (gdb) p rsp_size
-> $5 = 1024
-> (gdb) p bcount
-> $6 = 65535
-> 
-> Thanks!
-> 
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+> v2: As suggested by Peter, after vmsd->post_save(), change the condition
+>     from `if (!ret)` to `if (!ret && ps_ret)` so we will not create an
+>     error object in case of success (that would then be leaked, most
+>     likely).
+> ---
+>  migration/vmstate.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+
+queued, thanks!
+
+-- 
+Peter Xu
+
 
