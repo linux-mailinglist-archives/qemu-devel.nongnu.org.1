@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5046F99EC7B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1121899EC76
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hRA-00025S-AP; Tue, 15 Oct 2024 09:18:08 -0400
+	id 1t0hRD-00025k-NM; Tue, 15 Oct 2024 09:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hR5-00024D-Ga
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t0hRA-00025V-3N
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hR4-0001EU-3g
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:03 -0400
+ id 1t0hR6-0001Ev-Kb
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728998281;
+ s=mimecast20190719; t=1728998284;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=59Gpr3pRmXw/Bed6+2Hl7KYTM3heYGiGwIXaAgGlVZY=;
- b=KftV6OFMSenHuX1HGkThk0KlsKuiBnJnfLc5TvQUcde7LK7P0uJG+IqLbwmLvMThIK8k1x
- +KK2E+Ui2iVUVGWEjwBqrJgj2jl3W+kpLjyk21Xd1f/dLx5sRshKvHtN3upB9AetDlSejG
- +KNTk091dT1Ru7spT6NQ8SgO4JQ10q0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uvbOSOk5pfxwFgryTrkHWpnMMDPavUiusynCI97arAs=;
+ b=IbSZ1Nxgq6d5JdSeE8GOcaxzZ+vEvXt6unSa5AuEX+Whs7lrVK6cAG2ORvJdrHZ8mzA3bu
+ mVmneuJo4x0sGT/d8WQHz+BxMFsV0awnpJcQmGKseKqeDf3n4fG51OR49v/FHI/PQjQjC3
+ +oVtWev9mgSkOIdEVDaVCq/Mn4V2TmM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-jQv9aF-oOumVOSp3n7n-gA-1; Tue, 15 Oct 2024 09:17:59 -0400
-X-MC-Unique: jQv9aF-oOumVOSp3n7n-gA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4311407ae76so28011395e9.3
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:17:59 -0700 (PDT)
+ us-mta-558-x3QoPD4yNK2YHEfsM-bTqw-1; Tue, 15 Oct 2024 09:18:02 -0400
+X-MC-Unique: x3QoPD4yNK2YHEfsM-bTqw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43113dab986so47352725e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:18:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728998277; x=1729603077;
+ d=1e100.net; s=20230601; t=1728998281; x=1729603081;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=59Gpr3pRmXw/Bed6+2Hl7KYTM3heYGiGwIXaAgGlVZY=;
- b=mIJQMPb9yxR02rJ1Lmp9Ws2HlojedBE+oSWN6RsjdGfs7GQbwms7ceHSY9+pkXToYF
- 9D+qpBvXPhzU3fyMzEIr4Fr0QTnedpuznNusghYPJlTc2EtPLyei65SYxYYLmymJoViV
- POZz7Kn1c82zntLeSQ7xUz0vPUkBlGJsC5bVRxUrh1HsSNaaM6hvykc5/sNJJWsH3ZDS
- BQgR7gOeZfqIoKsw5Pft95EwN2RNCV2ILdGwlgSQ2nVcK1bAt7AF0JgTfXWGatwGnXxv
- 7qTXnle0tqj4K/jwQ6+J6AsECOELikVW5GP+5mse5MaBSZwV/Wv0YafN23lGOfcxohqI
- 33Hw==
-X-Gm-Message-State: AOJu0Yx4rrsroXfLWYhCodPGyXwxASN50zf6K2J35A83L2bZFXx7qakp
- JN0BeqiZ23T7phIfz/0CPDgLR/GUNl65xNNb8fvAqV0+614x5BdiSXW2fsiRkxvfhQ5uOsM6uoZ
- bmnyzX1kJWrPIky/5sHIQiUYgNRl5Zy4cq6jyVkeFYoGx6lZVTviOV2/MRTxE2/QfK2686O9DcH
- bHHXGbDHaO2rlucALo1f41yP/47oo82LLMTRx6iLU=
-X-Received: by 2002:a05:600c:4514:b0:426:60b8:d8ba with SMTP id
- 5b1f17b1804b1-4314a362525mr4815335e9.28.1728998277615; 
- Tue, 15 Oct 2024 06:17:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFs5g1AvsA+4+WeKzUhVAypQfc5xYgEBTUPN48ZEbBfTAU/1Hk5Japv5k6VQRJ5kJ/q276/WQ==
-X-Received: by 2002:a05:600c:4514:b0:426:60b8:d8ba with SMTP id
- 5b1f17b1804b1-4314a362525mr4814995e9.28.1728998277047; 
- Tue, 15 Oct 2024 06:17:57 -0700 (PDT)
+ bh=uvbOSOk5pfxwFgryTrkHWpnMMDPavUiusynCI97arAs=;
+ b=istSOAztPEQzwC34M71zKFJjkFcrKl634SwnXVrGpDmLIu9iJApWJcmPH4HSki1S/I
+ sNFwMJ6UILcWVkFxz55lTE+XvUV0wUrTqF0bpLFBCeRxcfHfV2pCGfzYMZzISVFeeEKG
+ jkDPR1xDwjGEW9nTkC7Nto7YphqbiJ1veBb3AORGiZvcp5Gjy5XMlUEIyNbhiO9PQB0m
+ SH8PWRLCorYLz+JulYDFzlHr1QY/fTXU7jSkzDUlkb5jdN3lnqUiYsIRxWk1tAolsvOH
+ 5lEs+GpmGYJjPZAsncCir/GDOaJyImopXUMOGBc58mu0zspfLI4RyzP6/xAxkrXnXn6S
+ x0ZA==
+X-Gm-Message-State: AOJu0YyJBXjQxGkEoFFdnP67uV0nowBIeb9IQK2SxaCdWZT/JPGlIrWl
+ YCIqKPreIWpXeGlKBiw2x0Mfo1pPmWoixFfXZdENGC1qZv8jBFyiHf7UsybOblrP9XFpB+Ha7Wd
+ rt9y++Oj0wiqDKT23mSYV4qnQXx7uNCTj1RMZW7cn/TgxmWqSdbVDfMVcVFpWh1I5rHIALrVlCi
+ UeDuK6gaMIvI87dr56gOf84pZnJCIR9q0+YKQCXeM=
+X-Received: by 2002:a05:600c:4e13:b0:42c:b9a5:bd95 with SMTP id
+ 5b1f17b1804b1-43125560014mr130515195e9.0.1728998280658; 
+ Tue, 15 Oct 2024 06:18:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlmy/97pNN32C4ACF2lH9mHWUol1cxRb/hxz3W279ACGfCLzTyoSQ7YR637aKz8xp02KXV7g==
+X-Received: by 2002:a05:600c:4e13:b0:42c:b9a5:bd95 with SMTP id
+ 5b1f17b1804b1-43125560014mr130514715e9.0.1728998279962; 
+ Tue, 15 Oct 2024 06:17:59 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4314209688dsm15198585e9.14.2024.10.15.06.17.56
+ 5b1f17b1804b1-4314a829abbsm2665635e9.17.2024.10.15.06.17.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 06:17:56 -0700 (PDT)
+ Tue, 15 Oct 2024 06:17:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 06/16] rust: do not use OnceLock for properties
-Date: Tue, 15 Oct 2024 15:17:24 +0200
-Message-ID: <20241015131735.518771-7-pbonzini@redhat.com>
+Subject: [PATCH 07/16] rust: use std::os::raw instead of core::ffi
+Date: Tue, 15 Oct 2024 15:17:25 +0200
+Message-ID: <20241015131735.518771-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015131735.518771-1-pbonzini@redhat.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,64 +100,258 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Properties are initialized lazily but always accessed within the big QEMU l=
-ock.
-
-There is no need to have a OnceLock around them, and also OnceCell/OnceLock
-were only stabilized in 1.70.0; so remove it.
+core::ffi::c_* types were introduced in Rust 1.64.0.  Use the older types
+in std::os::raw, which are now aliases of the types in core::ffi.  There is
+no need to compile QEMU as no_std, so this is acceptable as long as we supp=
+ort
+a version of Debian with Rust 1.63.0.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/device_class.rs | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ meson.build                          |  3 +--
+ rust/hw/char/pl011/src/device.rs     | 20 +++++++++++---------
+ rust/hw/char/pl011/src/lib.rs        |  2 +-
+ rust/hw/char/pl011/src/memory_ops.rs | 10 ++++++----
+ rust/qemu-api/src/definitions.rs     |  4 +++-
+ rust/qemu-api/src/device_class.rs    |  8 ++++----
+ rust/qemu-api/src/lib.rs             |  8 +++++---
+ 7 files changed, 31 insertions(+), 24 deletions(-)
 
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
-lass.rs
-index b6b68cf9ce2..87892b50c63 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -2,8 +2,6 @@
+diff --git a/meson.build b/meson.build
+index 2545185014e..175b8d82228 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3923,14 +3923,13 @@ if have_rust and have_system
+   bindgen_args =3D [
+     '--disable-header-comment',
+     '--raw-line', '// @generated',
+-    '--ctypes-prefix', 'core::ffi',
++    '--ctypes-prefix', 'std::os::raw',
+     '--formatter', 'rustfmt',
+     '--generate-block',
+     '--generate-cstr',
+     '--impl-debug',
+     '--merge-extern-blocks',
+     '--no-doc-comments',
+-    '--use-core',
+     '--with-derive-default',
+     '--no-size_t-is-usize',
+     '--no-layout-tests',
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
+ce.rs
+index c7193b41bee..cd4c01c2336 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -2,9 +2,11 @@
  // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
  // SPDX-License-Identifier: GPL-2.0-or-later
 =20
--use std::sync::OnceLock;
--
- use crate::bindings::Property;
+-use core::{
+-    ffi::{c_int, c_uchar, c_uint, c_void, CStr},
+-    ptr::{addr_of, addr_of_mut, NonNull},
++use core::ptr::{addr_of, addr_of_mut, NonNull};
++
++use std::{
++    ffi::CStr,
++    os::raw::{c_int, c_uchar, c_uint, c_void}
+ };
 =20
- #[macro_export]
-@@ -73,12 +71,15 @@ macro_rules! define_property {
+ use qemu_api::{
+@@ -89,10 +91,10 @@ pub struct PL011Class {
+=20
+ impl qemu_api::definitions::Class for PL011Class {
+     const CLASS_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
++        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+     > =3D Some(crate::device_class::pl011_class_init);
+     const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
++        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+     > =3D None;
  }
 =20
- #[repr(C)]
--pub struct Properties<const N: usize>(pub OnceLock<[Property; N]>, pub fn(=
-) -> [Property; N]);
-+pub struct Properties<const N: usize>(pub Option<[Property; N]>, pub fn() =
--> [Property; N]);
+@@ -151,7 +153,7 @@ pub unsafe fn init(&mut self) {
+     pub fn read(
+         &mut self,
+         offset: hwaddr,
+-        _size: core::ffi::c_uint,
++        _size: c_uint,
+     ) -> std::ops::ControlFlow<u64, u64> {
+         use RegisterOffset::*;
 =20
- impl<const N: usize> Properties<N> {
-     pub fn as_mut_ptr(&mut self) -> *mut Property {
--        _ =3D self.0.get_or_init(self.1);
--        self.0.get_mut().unwrap().as_mut_ptr()
-+        match self.0 {
-+            None =3D> { self.0 =3D Some(self.1()); },
-+            Some(_) =3D> {},
-+        }
-+        self.0.as_mut().unwrap().as_mut_ptr()
-     }
- }
+@@ -532,9 +534,9 @@ pub fn update(&self) {
+ /// The buffer and size arguments must also be valid.
+ #[no_mangle]
+ pub unsafe extern "C" fn pl011_receive(
+-    opaque: *mut core::ffi::c_void,
++    opaque: *mut c_void,
+     buf: *const u8,
+-    size: core::ffi::c_int,
++    size: c_int,
+ ) {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+@@ -555,7 +557,7 @@ pub fn update(&self) {
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+ #[no_mangle]
+-pub unsafe extern "C" fn pl011_event(opaque: *mut core::ffi::c_void, event=
+: QEMUChrEvent) {
++pub unsafe extern "C" fn pl011_event(opaque: *mut c_void, event: QEMUChrEv=
+ent) {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+         let mut state =3D NonNull::new_unchecked(opaque.cast::<PL011State>=
+());
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index 2939ee50c99..2b157868b0f 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -45,7 +45,7 @@
+ pub mod device_class;
+ pub mod memory_ops;
 =20
-@@ -104,7 +105,7 @@ const fn _calc_prop_len() -> usize {
-         }
+-pub const TYPE_PL011: &::core::ffi::CStr =3D c"pl011";
++pub const TYPE_PL011: &::std::ffi::CStr =3D c"pl011";
 =20
+ /// Offset of each register from the base memory address of the device.
+ ///
+diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/=
+memory_ops.rs
+index 8d066ebf6d0..2c664fd45ed 100644
+--- a/rust/hw/char/pl011/src/memory_ops.rs
++++ b/rust/hw/char/pl011/src/memory_ops.rs
+@@ -4,6 +4,8 @@
+=20
+ use core::{mem::MaybeUninit, ptr::NonNull};
+=20
++use std::os::raw::{c_uint, c_void};
++
+ use qemu_api::bindings::*;
+=20
+ use crate::device::PL011State;
+@@ -24,9 +26,9 @@
+=20
+ #[no_mangle]
+ unsafe extern "C" fn pl011_read(
+-    opaque: *mut core::ffi::c_void,
++    opaque: *mut c_void,
+     addr: hwaddr,
+-    size: core::ffi::c_uint,
++    size: c_uint,
+ ) -> u64 {
+     assert!(!opaque.is_null());
+     let mut state =3D unsafe { NonNull::new_unchecked(opaque.cast::<PL011S=
+tate>()) };
+@@ -46,10 +48,10 @@
+=20
+ #[no_mangle]
+ unsafe extern "C" fn pl011_write(
+-    opaque: *mut core::ffi::c_void,
++    opaque: *mut c_void,
+     addr: hwaddr,
+     data: u64,
+-    _size: core::ffi::c_uint,
++    _size: c_uint,
+ ) {
+     unsafe {
+         assert!(!opaque.is_null());
+diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitio=
+ns.rs
+index 60bd3f8aaa6..aa7cdd69c99 100644
+--- a/rust/qemu-api/src/definitions.rs
++++ b/rust/qemu-api/src/definitions.rs
+@@ -4,7 +4,9 @@
+=20
+ //! Definitions required by QEMU when registering a device.
+=20
+-use ::core::ffi::{c_void, CStr};
++use std::ffi::CStr;
++
++use std::os::raw::c_void;
+=20
+ use crate::bindings::{Object, ObjectClass, TypeInfo};
+=20
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
+lass.rs
+index 87892b50c63..871063d4a92 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -10,7 +10,7 @@ macro_rules! device_class_init {
          #[no_mangle]
--        pub static mut $ident: $crate::device_class::Properties<PROP_LEN> =
-=3D $crate::device_class::Properties(::std::sync::OnceLock::new(), _make_pr=
-operties);
-+        pub static mut $ident: $crate::device_class::Properties<PROP_LEN> =
-=3D $crate::device_class::Properties(None, _make_properties);
-     };
+         pub unsafe extern "C" fn $func(
+             klass: *mut $crate::bindings::ObjectClass,
+-            _: *mut ::core::ffi::c_void,
++            _: *mut ::std::os::raw::c_void,
+         ) {
+             let mut dc =3D
+                 ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::D=
+eviceClass>()).unwrap();
+@@ -30,7 +30,7 @@ macro_rules! define_property {
+         $crate::bindings::Property {
+             name: {
+                 #[used]
+-                static _TEMP: &::core::ffi::CStr =3D $name;
++                static _TEMP: &::std::ffi::CStr =3D $name;
+                 _TEMP.as_ptr()
+             },
+             info: $prop,
+@@ -51,7 +51,7 @@ macro_rules! define_property {
+         $crate::bindings::Property {
+             name: {
+                 #[used]
+-                static _TEMP: &::core::ffi::CStr =3D $name;
++                static _TEMP: &::std::ffi::CStr =3D $name;
+                 _TEMP.as_ptr()
+             },
+             info: $prop,
+@@ -121,7 +121,7 @@ macro_rules! vm_state_description {
+         pub static $name: $crate::bindings::VMStateDescription =3D $crate:=
+:bindings::VMStateDescription {
+             $(name: {
+                 #[used]
+-                static VMSTATE_NAME: &::core::ffi::CStr =3D $vname;
++                static VMSTATE_NAME: &::std::ffi::CStr =3D $vname;
+                 $vname.as_ptr()
+             },)*
+             unmigratable: true,
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index e72fb4b4bb1..c2f60ac4727 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -35,6 +35,8 @@ unsafe impl Sync for bindings::VMStateDescription {}
+=20
+ use std::alloc::{GlobalAlloc, Layout};
+=20
++use std::os::raw::c_void;
++
+ #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
+ extern "C" {
+     fn g_aligned_alloc0(
+@@ -47,8 +49,8 @@ fn g_aligned_alloc0(
+=20
+ #[cfg(not(HAVE_GLIB_WITH_ALIGNED_ALLOC))]
+ extern "C" {
+-    fn qemu_memalign(alignment: usize, size: usize) -> *mut ::core::ffi::c=
+_void;
+-    fn qemu_vfree(ptr: *mut ::core::ffi::c_void);
++    fn qemu_memalign(alignment: usize, size: usize) -> *mut c_void;
++    fn qemu_vfree(ptr: *mut c_void);
  }
 =20
+ extern "C" {
+@@ -113,7 +115,7 @@ fn default() -> Self {
+ }
+=20
+ // Sanity check.
+-const _: [(); 8] =3D [(); ::core::mem::size_of::<*mut ::core::ffi::c_void>=
+()];
++const _: [(); 8] =3D [(); ::core::mem::size_of::<*mut c_void>()];
+=20
+ unsafe impl GlobalAlloc for QemuAllocator {
+     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
 --=20
 2.46.2
 
