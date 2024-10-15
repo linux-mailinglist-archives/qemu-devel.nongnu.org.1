@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB3A99F1EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A58B399F1D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:47:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jlM-0003dJ-V5; Tue, 15 Oct 2024 11:47:09 -0400
+	id 1t0jlO-00040e-Nw; Tue, 15 Oct 2024 11:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkp-0001W6-7y
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:35 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jky-00023Q-9n
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:52 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkn-0000s7-Iw
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:34 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-288642376bcso2446575fac.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkw-0000sy-1K
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:43 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-20cd76c513cso22067705ad.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007192; x=1729611992; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007200; x=1729612000; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h/M6ZeKd6OjvAtfWG6gTR4wPDGVzgIAmQPnpr57Wj6k=;
- b=OKCYJoBcDSK0ksovcO9hj+f8IGeLK5T3YIULW30rQ9qObfHkMVSnTSF+mPZK1U9oZm
- CRQHaa+OcZUBPw+KVsnfJuoLtmfsPxPd9gOOcA3LBjTS/tmpMqhGFxWHJFS0Z4k00vMP
- rrhEH9Tg63aEG508DAYrG2jA+Jg7/b4cB2aJX3Elpt0okWTGNYVDOFYHFMYtEJTWabT4
- cyTeOB3lrGyQBzwXCX1+GqPw0LTX3WMTR+v/FkjTE+AKjUS1OdjRkTaA3/shJSdFEIXt
- Isd60DMwjVMRLcJcf9N6Rs/lTAKKz+UfkhaTEcg6AU1MWVjmtgyGIqR5zlJhQKoiUUgz
- VpFw==
+ bh=O3CwF/pvrtCvTLmBwFN1fDWOJO8U19FSddrcPe726vo=;
+ b=SYOxRiWCU3NIq6MAmQMIyIleLr8lYENJ7BVX9E1ijHPbVJim4Ekq3TBUJnMvrAPpyu
+ XOFN9AN0DaI6wu04n8mEHr3u+QV6xfc54fPn+byLKRON8jd7mpZX7Xw6wi1sifgmAIHG
+ EGZnpK0bjbVbPK/bMemCTvBLKUMZWL12xsjXcBZR619VIcSeeyj+XDkZWOTZ+ZqVOiVS
+ JNyxU9SmBG9rwd0BlmFYTuYv0ESq7zCDBot1lU1hgXaEfkmTrzC2FbulpcrwLyAtjchg
+ YvL8K/Gj0g7vPfvS9C/U2Hc+b5kF4Ax6sdHLseC1kVCyWBETXwKzDSbUPdtAmomrq7CZ
+ 2emQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007192; x=1729611992;
+ d=1e100.net; s=20230601; t=1729007200; x=1729612000;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h/M6ZeKd6OjvAtfWG6gTR4wPDGVzgIAmQPnpr57Wj6k=;
- b=n7fZLtzIbM/zZByAAzvUoCpmCKsW6E+EEfHMofWa9Pn8pJvGMv4iuPo/HaMPlL+Zfj
- xAn4RxxFORB8jyIfogwFe/sETT6rWXHrL24art4hdNB/HjhVRhm60S5AFD/18AVTjXyW
- Dh+E24ooaLUiuv0W9RTTPc7bLo2hB1dxdERLVgvSvLWyvIXsM5B6YIyij/A+Aaxdfxv5
- +5eHZFgwF9XXXWJXtm+5hDa28bcheJkwzOiiqzm6IuWkuoFacVztIHaiPHFdRqG7krUJ
- JEGlP2kHuRLzzeX8TyZH9ZeHfVRDrG8F0J9FhDASsEuH45prJuNJx866p6+EBVD6rzj2
- dQqA==
-X-Gm-Message-State: AOJu0Yy8XC0pjzzvsCvIbdVbx5BjKLTmmssdsKQkFykLurPKBnzo0uFi
- xPoft3iir3O/xrOlrvLItXBe92Kb0Lbn01IslSHrxMtQ+EOvfv+6NNKICzS5V97SrHkZm5XsJlt
- I
-X-Google-Smtp-Source: AGHT+IEz7m3HFPxuW9kgXku+KQ4th/nTbLtPWGSpqvoJJzPsNUesHc8oLcS4d6+UI2mN3KDXR3c4WQ==
-X-Received: by 2002:a05:6870:c111:b0:288:60d6:f183 with SMTP id
- 586e51a60fabf-28887478de5mr6900285fac.38.1729007191877; 
- Tue, 15 Oct 2024 08:46:31 -0700 (PDT)
+ bh=O3CwF/pvrtCvTLmBwFN1fDWOJO8U19FSddrcPe726vo=;
+ b=HzklblwHmuKc0QbL0hmZxE2LOi/PAr1bhHi3zMTzKHAySfaKdafmM5EsAqHyhbal8X
+ Mj+MHHlSEKDIW84/GsHBSrbbrBG982YdO313xX/FmRrI2Ltt+QXa+v8UuqT0Q5Y/3sHr
+ IWPj5+MO6Kd1DIi+p8saLDsT3tAwQOdVKoHjv9akVZM/4iP3hVQL4Z/aHIIU8AYNbY9Q
+ zwFkjSZcovEZUbT77DPwy9lIY3vJIHIa6WMvmnHBtX0NZ+B5MAQWEqL7DuY+zjNB049S
+ zDMahGXDX2PLMdpQ0AziVo+BRNTcBpFjpyPNyOp0bkZR4ZLDzFYD8g5/p2nj8bxOgZcR
+ irBg==
+X-Gm-Message-State: AOJu0YxSyCC+h6BnhClsVLfCU8LRmAzSyEcvB+XDruNINeer5lOI7V5j
+ Ua1pmDOSzLQ9ttnHtL18uHb6SQrC1hbHTsfxQaISmFHWgU+0LCeRfzFcuORuwuumy2+lEk8xt/S
+ w
+X-Google-Smtp-Source: AGHT+IE3mxs8F8RQfXvk/UzQ7THNli/ACGhumpWbPhRQVmaCgaZImax8PDXgVtm4G7yy5ifxjtbU6g==
+X-Received: by 2002:a17:902:db12:b0:20b:c1e4:2d70 with SMTP id
+ d9443c01a7336-20ca147e89bmr214989295ad.23.1729007198962; 
+ Tue, 15 Oct 2024 08:46:38 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ea9c71a8aesm1509253a12.81.2024.10.15.08.46.30
+ d9443c01a7336-20d18036593sm13536675ad.164.2024.10.15.08.46.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:46:31 -0700 (PDT)
+ Tue, 15 Oct 2024 08:46:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/33] target/ppc: Use tcg_constant_tl() instead of
- tcg_gen_movi_tl()
-Date: Tue, 15 Oct 2024 12:44:24 -0300
-Message-ID: <20241015154443.71763-16-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 16/33] hw/xtensa/xtfpga: Remove TARGET_BIG_ENDIAN #ifdef'ry
+Date: Tue, 15 Oct 2024 12:44:25 -0300
+Message-ID: <20241015154443.71763-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=philmd@linaro.org; helo=mail-oa1-x33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -93,52 +93,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Directly use tcg_constant_tl() for constant integer,
-this save a call to tcg_gen_movi_tl() and a temp register.
+Move code evaluation from preprocessor to compiler so
+both if() ladders are processed. Mostly style change.
 
-Inspired-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241004202621.4321-4-philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240930073450.33195-8-philmd@linaro.org>
 ---
- target/ppc/translate.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ hw/xtensa/xtfpga.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 71513ba9646..7689b2ac2e1 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1588,16 +1588,13 @@ static opc_handler_t invalid_handler = {
- static inline void gen_op_cmp(TCGv arg0, TCGv arg1, int s, int crf)
- {
-     TCGv t0 = tcg_temp_new();
--    TCGv t1 = tcg_temp_new();
-     TCGv_i32 t = tcg_temp_new_i32();
+diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
+index 45b29d3b4e8..398e6256e1d 100644
+--- a/hw/xtensa/xtfpga.c
++++ b/hw/xtensa/xtfpga.c
+@@ -415,8 +415,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+             }
+         }
+         if (entry_point != env->pc) {
+-            uint8_t boot[] = {
+-#if TARGET_BIG_ENDIAN
++            uint8_t boot_be[] = {
+                 0x60, 0x00, 0x08,       /* j    1f */
+                 0x00,                   /* .literal_position */
+                 0x00, 0x00, 0x00, 0x00, /* .literal entry_pc */
+@@ -425,7 +424,8 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+                 0x10, 0xff, 0xfe,       /* l32r a0, entry_pc */
+                 0x12, 0xff, 0xfe,       /* l32r a2, entry_a2 */
+                 0x0a, 0x00, 0x00,       /* jx   a0 */
+-#else
++            };
++            uint8_t boot_le[] = {
+                 0x06, 0x02, 0x00,       /* j    1f */
+                 0x00,                   /* .literal_position */
+                 0x00, 0x00, 0x00, 0x00, /* .literal entry_pc */
+@@ -434,14 +434,16 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+                 0x01, 0xfe, 0xff,       /* l32r a0, entry_pc */
+                 0x21, 0xfe, 0xff,       /* l32r a2, entry_a2 */
+                 0xa0, 0x00, 0x00,       /* jx   a0 */
+-#endif
+             };
++            const size_t boot_sz = TARGET_BIG_ENDIAN ? sizeof(boot_be)
++                                                     : sizeof(boot_le);
++            uint8_t *boot = TARGET_BIG_ENDIAN ? boot_be : boot_le;
+             uint32_t entry_pc = tswap32(entry_point);
+             uint32_t entry_a2 = tswap32(tagptr);
  
--    tcg_gen_movi_tl(t0, CRF_EQ);
--    tcg_gen_movi_tl(t1, CRF_LT);
-     tcg_gen_movcond_tl((s ? TCG_COND_LT : TCG_COND_LTU),
--                       t0, arg0, arg1, t1, t0);
--    tcg_gen_movi_tl(t1, CRF_GT);
-+                       t0, arg0, arg1,
-+                       tcg_constant_tl(CRF_LT), tcg_constant_tl(CRF_EQ));
-     tcg_gen_movcond_tl((s ? TCG_COND_GT : TCG_COND_GTU),
--                       t0, arg0, arg1, t1, t0);
-+                       t0, arg0, arg1, tcg_constant_tl(CRF_GT), t0);
- 
-     tcg_gen_trunc_tl_i32(t, t0);
-     tcg_gen_trunc_tl_i32(cpu_crf[crf], cpu_so);
-@@ -2974,8 +2971,8 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
-     tcg_gen_qemu_st_tl(u, EA, ctx->mem_idx, memop);
- 
-     /* RT = (t != t2 ? t : u = 1<<(s*8-1)) */
--    tcg_gen_movi_tl(u, 1 << (memop_size(memop) * 8 - 1));
--    tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t, u);
-+    tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t,
-+                       tcg_constant_tl(1 << (memop_size(memop) * 8 - 1)));
- }
- 
- static void gen_ld_atomic(DisasContext *ctx, MemOp memop)
+             memcpy(boot + 4, &entry_pc, sizeof(entry_pc));
+             memcpy(boot + 8, &entry_a2, sizeof(entry_a2));
+-            cpu_physical_memory_write(env->pc, boot, sizeof(boot));
++            cpu_physical_memory_write(env->pc, boot, boot_sz);
+         }
+     } else {
+         if (flash) {
 -- 
 2.45.2
 
