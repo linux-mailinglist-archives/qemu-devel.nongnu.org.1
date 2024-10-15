@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E84E99EF52
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ABF99EF58
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iNx-00009t-3W; Tue, 15 Oct 2024 10:18:53 -0400
+	id 1t0iNI-0006Hc-IY; Tue, 15 Oct 2024 10:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNn-000838-BU
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNl-0003P2-II
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001920;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jtLc0lpCek67EOsSAqPMkd8exLr9Xv05gXgeBpMusKM=;
- b=gvBQfyHrE19Io1zpYTfjz3xYLkSLbYancoOmonaWZ09G9SKhshBEA+DyNEn76cYuHeKV/g
- 3VPXSIZn6GdUQ+SaslspaZcuLfqLSKe7ps3NlPHyHNn/q2SqQlTACTRvHBlNUKIL7PoOmF
- fBdw6ILHs3UVFgYeQARqYpGtqO53MLM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-iC5cgFSyO4qxx4lcWMuhvg-1; Tue, 15 Oct 2024 10:18:38 -0400
-X-MC-Unique: iC5cgFSyO4qxx4lcWMuhvg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d59ad50f3so1419894f8f.0
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0iNG-0006GN-6y
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:10 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0iND-0003Lv-UC
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:09 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-5366fd6fdf1so6379259e87.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729001886; x=1729606686; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FPxZ0LqhlfsOxnjmkzANkLr5CvMmY/5FJhmvaw3Bdz8=;
+ b=mQJhAV1Fg2LZarTtJF6tgQfl14eFZ0K3z4T9e930q7UybEqMZdxm9aPkXq0NZtxgOA
+ lsOOAveWOavB6HyYbJpVcfetV0dwF2D85c5rvqeYtxKQl1DrUNS7Ps66D4Nqk3GEtcAa
+ y425hfSAaBdbANXC226UqpLMkKNU4eBmUxZ7mkFICGahlW9CxFzqU7dpMn3JYWLsTJO/
+ NJDgN0uvvQDfWXg3EOtExt7X5cJN4wcQ6cPH773wjLH4q8W7AdrZ0e+A4qP2TdFMh3Q9
+ Fq1O8WzJ8FewQhxXqGWC76QqHMpQ1KzNZShWCwR2dEFVEs/dOI5jazZ/xq3IA6mNONC6
+ OIgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001917; x=1729606717;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jtLc0lpCek67EOsSAqPMkd8exLr9Xv05gXgeBpMusKM=;
- b=RMMFEV0Q3qOvxJxJGaYYfl83hQmpxx0lIfO684ZgntMIwULVVyLYJWB6dnQgT8hk/S
- hTHeJLEKMnZDirMBSTc8GWCZw8vDKBAvKdwbHJ2Kk2Msdra7c1OYNFrK4TDD039hWf1C
- 1vQo4zyDSe0zgHE5Wo7s3PCgEvl6UUIgCQSOkpG8VYlkPlSTAeUoYSJAJ2AUsm6uJd3m
- MVmxHRGOxtQeJpg9mEAV9W3UX9/4zwEJmvTBZaAp95TNZT5JGwMoQvRSZayQ6TX/F7m5
- EGz1vU6qoVHLuyorWo2vmiI+kOQXv9ayrfG3vpvygoTwswaKmnav/Ux68c5SDAr3cKwR
- 8knQ==
-X-Gm-Message-State: AOJu0Yz65OYZAJrgNhHJAnKLqcJFzTZ8arjfL9uDqRJHOIR6Nh1FZZMq
- n2So0lnGbBsfu96Z1TtFaiHOG5b9o/jON3kX5nJQz9HELnwI2N/hhXkXGo8QI+GQZ58u+N+DDbH
- TmNQnytoTyK9cPGdxCmd6nwomg0Tx/t5Pn8cuLH7Hx5eJIvF8IOFpEPedWON8W+8QB/o+lqWRdz
- PcLPBdRzjGy4c1Bo0VJhuDZ6e0GHltw6JmHw16ODQ=
-X-Received: by 2002:a05:6000:50f:b0:37d:43ad:14eb with SMTP id
- ffacd0b85a97d-37d86bb9d5cmr324987f8f.14.1729001917142; 
- Tue, 15 Oct 2024 07:18:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqjd7jK3FEnN5XOqDf/MH0Wu9l+2PseHaXybhc3uTtDnGpNSvJW+fbJoaN9dBoD4Z/ntYrKw==
-X-Received: by 2002:a05:6000:50f:b0:37d:43ad:14eb with SMTP id
- ffacd0b85a97d-37d86bb9d5cmr324972f8f.14.1729001916740; 
- Tue, 15 Oct 2024 07:18:36 -0700 (PDT)
-Received: from avogadro.local ([151.95.144.54])
+ d=1e100.net; s=20230601; t=1729001886; x=1729606686;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FPxZ0LqhlfsOxnjmkzANkLr5CvMmY/5FJhmvaw3Bdz8=;
+ b=PsOae52BNanm3V0vLqXUYJI+oF4B6AFtOeJGG9+JAt2h2IBiMXSVYqDWI/09PNkBQL
+ SSH6DgwEcSclFgo/BkWp1WNbNXL8HknEya0AISA2DwDieNssXUZ0l9S0qqE8qHLJyN4B
+ bMdERptK3hk1wZUb72rnNrCOFT37J/MHfKNCX681b6rSL70sx6+jtMUiCzH6/AwEOWUi
+ XvHzLir4t4HIiKgxY5GhuhPkA6h3FL5s442ImxfyMy1hXaCGP+3mooBkYoFhsoZSWAr0
+ QT4RpTnIuAIPKuuOrFdmSyCpMk/4gXFXr3fDsFeyGW1xuNn4u70PTt/SzD6KlAV/8URw
+ wMYA==
+X-Gm-Message-State: AOJu0Yx7Ab901GrG8p/FQxqyHJV8/wPp9+yFol80eRfLZeNgAsUB9TXF
+ N8OfbSlwB8II9j/uR7xdKTNAXEF8WlhPLdx7Ut1HW1C/fqVj+WiF6xjg/ou1YGGuSItsfiX+rug
+ 6
+X-Google-Smtp-Source: AGHT+IGCiyvW3mRlfjM9EO36cGvqxp5zAe1dfdEPmql8EGbf94UCXehnzv9Bq49lWUk5TihcH9nVtA==
+X-Received: by 2002:a05:6512:350f:b0:539:fed8:321 with SMTP id
+ 2adb3069b0e04-53a03f81a42mr325464e87.51.1729001885548; 
+ Tue, 15 Oct 2024 07:18:05 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa87c44sm1683541f8f.33.2024.10.15.07.18.35
+ 5b1f17b1804b1-4313f56eaa7sm19048075e9.26.2024.10.15.07.18.05
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:18:35 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ Tue, 15 Oct 2024 07:18:05 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-stable@nongnu.org
-Subject: [PULL 25/25] target/i386: Use only 16 and 32-bit operands for IN/OUT
-Date: Tue, 15 Oct 2024 16:17:11 +0200
-Message-ID: <20241015141711.528342-26-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
-References: <20241015141711.528342-1-pbonzini@redhat.com>
+Subject: [PULL v2 00/28] target-arm queue
+Date: Tue, 15 Oct 2024 15:18:04 +0100
+Message-Id: <20241015141804.294447-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,49 +89,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+v2: added missing qtest_quit() call to the new STM32L4x5 qtest,
+which was causing the test to hang on OpenBSD.
 
-The REX.W prefix is ignored for these instructions.
-Mirror the solution already used for INS/OUTS: X86_SIZE_z.
+-- PMM
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2581
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-stable@nongnu.org
-Link: https://lore.kernel.org/r/20241015004144.2111817-1-richard.henderson@linaro.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/decode-new.c.inc | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The following changes since commit 35152940b78e478b97051a799cb6275ced03192e:
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 487c376032f..1f193716468 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1706,9 +1706,9 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xE2] = X86_OP_ENTRYr(LOOP,   J,b), /* implicit: CX with aflag size */
-     [0xE3] = X86_OP_ENTRYr(JCXZ,   J,b), /* implicit: CX with aflag size */
-     [0xE4] = X86_OP_ENTRYwr(IN,    0,b, I_unsigned,b), /* AL */
--    [0xE5] = X86_OP_ENTRYwr(IN,    0,v, I_unsigned,b), /* AX/EAX */
-+    [0xE5] = X86_OP_ENTRYwr(IN,    0,z, I_unsigned,b), /* AX/EAX */
-     [0xE6] = X86_OP_ENTRYrr(OUT,   0,b, I_unsigned,b), /* AL */
--    [0xE7] = X86_OP_ENTRYrr(OUT,   0,v, I_unsigned,b), /* AX/EAX */
-+    [0xE7] = X86_OP_ENTRYrr(OUT,   0,z, I_unsigned,b), /* AX/EAX */
- 
-     [0xF1] = X86_OP_ENTRY0(INT1,   svm(ICEBP)),
-     [0xF4] = X86_OP_ENTRY0(HLT,    chk(cpl0) svm(HLT)),
-@@ -1853,9 +1853,9 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xEA] = X86_OP_ENTRYrr(JMPF,  I_unsigned,p, I_unsigned,w, chk(i64)),
-     [0xEB] = X86_OP_ENTRYr(JMP,    J,b),
-     [0xEC] = X86_OP_ENTRYwr(IN,    0,b, 2,w), /* AL, DX */
--    [0xED] = X86_OP_ENTRYwr(IN,    0,v, 2,w), /* AX/EAX, DX */
-+    [0xED] = X86_OP_ENTRYwr(IN,    0,z, 2,w), /* AX/EAX, DX */
-     [0xEE] = X86_OP_ENTRYrr(OUT,   0,b, 2,w), /* DX, AL */
--    [0xEF] = X86_OP_ENTRYrr(OUT,   0,v, 2,w), /* DX, AX/EAX */
-+    [0xEF] = X86_OP_ENTRYrr(OUT,   0,z, 2,w), /* DX, AX/EAX */
- 
-     [0xF8] = X86_OP_ENTRY0(CLC),
-     [0xF9] = X86_OP_ENTRY0(STC),
--- 
-2.46.2
+  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-10-14 17:05:25 +0100)
 
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241015-1
+
+for you to fetch changes up to f160a4f8d0ef322377db3519c0aa088ccd99edf1:
+
+  hw/arm/xilinx_zynq: Add various missing unimplemented devices (2024-10-15 15:16:17 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/arm/omap1: Remove unused omap_uwire_attach() method
+ * stm32f405: Add RCC device to stm32f405 SoC
+ * arm/gicv3: add missing casts
+ * hw/misc: Create STM32L4x5 SYSCFG clock
+ * hw/arm: Add SPI to Allwinner A10
+ * hw/intc/omap_intc: Remove now-unnecessary abstract base class
+ * hw/char/pl011: Use correct masks for IBRD and FBRD
+ * docs/devel: Convert txt files to rST
+ * Remove MAX111X, MAX7310, DSCM-1XXXX, pcmcia devices (used only
+   by now-removed omap/pxa2xx boards)
+ * vl.c: Remove pxa2xx-specific -portrait and -rotate options
+ * dma: Fix function names in documentation
+ * hw/arm/xilinx_zynq: Add various missing unimplemented devices
+
+----------------------------------------------------------------
+Akihiko Odaki (1):
+      dma: Fix function names in documentation
+
+Alexandra Diupina (3):
+      hw/intc/arm_gicv3: Add cast to match the documentation
+      hw/intc/arm_gicv3: Add cast to match the documentation
+      hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
+
+Chao Liu (1):
+      hw/arm/xilinx_zynq: Add various missing unimplemented devices
+
+Inès Varhol (3):
+      hw/misc: Create STM32L4x5 SYSCFG clock
+      hw/clock: Expose 'qtest-clock-period' QOM property for QTests
+      tests/qtest: Check STM32L4x5 clock connections
+
+Peter Maydell (15):
+      hw/intc/omap_intc: Remove now-unnecessary abstract base class
+      hw/char/pl011: Use correct masks for IBRD and FBRD
+      docs/devel/blkdebug: Convert to rST format
+      docs/devel/blkverify: Convert to rST format
+      docs/devel/lockcnt: Convert to rST format
+      docs/devel/multiple-iothreads: Convert to rST format
+      docs/devel/rcu: Convert to rST format
+      include: Move QemuLockCnt APIs to their own header
+      docs/devel/lockcnt: Include kernel-doc API documentation
+      hw/adc: Remove MAX111X device
+      hw/gpio: Remove MAX7310 device
+      hw/ide: Remove DSCM-1XXXX microdrive device model
+      hw: Remove PCMCIA subsystem
+      hw/block: Remove ecc
+      vl.c: Remove pxa2xx-specific -portrait and -rotate options
+
+Philippe Mathieu-Daudé (1):
+      hw/arm/omap1: Remove unused omap_uwire_attach() method
+
+Román Cárdenas Rodríguez (2):
+      hw/misc/stm32_rcc: Implement RCC device for STM32F4 SoCs
+      hw/arm/stm32f405: Add RCC device to stm32f405 SoC
+
+Strahinja Jankovic (2):
+      hw/ssi: Allwinner A10 SPI emulation
+      hw/arm: Add SPI to Allwinner A10
+
+ MAINTAINERS                                        |  10 +-
+ docs/about/removed-features.rst                    |  23 +
+ docs/devel/blkdebug.txt                            | 162 ------
+ docs/devel/clocks.rst                              |   6 +
+ docs/devel/index-api.rst                           |   1 +
+ docs/devel/index-internals.rst                     |   2 +
+ docs/devel/{lockcnt.txt => lockcnt.rst}            |  89 +--
+ docs/devel/multiple-iothreads.rst                  | 139 +++++
+ docs/devel/multiple-iothreads.txt                  | 130 -----
+ docs/devel/{rcu.txt => rcu.rst}                    | 172 +++---
+ docs/devel/testing/blkdebug.rst                    | 177 ++++++
+ .../devel/{blkverify.txt => testing/blkverify.rst} |  30 +-
+ docs/devel/testing/index.rst                       |   2 +
+ docs/system/arm/cubieboard.rst                     |   1 +
+ docs/system/arm/stm32.rst                          |   3 +-
+ include/block/aio.h                                |   1 +
+ include/hw/adc/max111x.h                           |  56 --
+ include/hw/arm/allwinner-a10.h                     |   2 +
+ include/hw/arm/omap.h                              |  10 +-
+ include/hw/arm/stm32f405_soc.h                     |   2 +
+ include/hw/block/flash.h                           |  11 -
+ include/hw/core/cpu.h                              |   1 +
+ include/hw/misc/stm32_rcc.h                        |  91 +++
+ include/hw/misc/stm32l4x5_syscfg.h                 |   1 +
+ include/hw/pcmcia.h                                |  66 ---
+ include/hw/ssi/allwinner-a10-spi.h                 |  57 ++
+ include/qemu/lockcnt.h                             | 130 +++++
+ include/qemu/thread.h                              | 111 ----
+ include/sysemu/dma.h                               |  11 +-
+ include/sysemu/sysemu.h                            |   1 -
+ tests/qtest/stm32l4x5.h                            |  42 ++
+ accel/accel-blocker.c                              |   1 +
+ hw/adc/max111x.c                                   | 236 --------
+ hw/arm/allwinner-a10.c                             |   8 +
+ hw/arm/omap1.c                                     |  29 +-
+ hw/arm/stm32f405_soc.c                             |  12 +-
+ hw/arm/stm32l4x5_soc.c                             |   2 +
+ hw/arm/xilinx_zynq.c                               |  70 +++
+ hw/block/ecc.c                                     |  91 ---
+ hw/char/pl011.c                                    |   4 +-
+ hw/core/clock.c                                    |  16 +
+ hw/core/cpu-common.c                               |   1 +
+ hw/gpio/max7310.c                                  | 217 -------
+ hw/ide/microdrive.c                                | 644 ---------------------
+ hw/intc/arm_gicv3_cpuif.c                          |   6 +-
+ hw/intc/omap_intc.c                                |  13 +-
+ hw/misc/stm32_rcc.c                                | 162 ++++++
+ hw/misc/stm32l4x5_syscfg.c                         |  19 +-
+ hw/pcmcia/pcmcia.c                                 |  24 -
+ hw/ssi/allwinner-a10-spi.c                         | 561 ++++++++++++++++++
+ system/globals.c                                   |   1 -
+ system/vl.c                                        |  11 -
+ tests/qtest/stm32l4x5_gpio-test.c                  |  23 +
+ tests/qtest/stm32l4x5_syscfg-test.c                |  20 +-
+ tests/qtest/stm32l4x5_usart-test.c                 |  28 +
+ ui/input.c                                         |  36 --
+ util/aio-posix.c                                   |   1 +
+ util/aio-win32.c                                   |   1 +
+ util/async.c                                       |   1 +
+ util/fdmon-epoll.c                                 |   1 +
+ util/lockcnt.c                                     |   1 +
+ hw/Kconfig                                         |   1 -
+ hw/adc/Kconfig                                     |   3 -
+ hw/adc/meson.build                                 |   1 -
+ hw/arm/Kconfig                                     |   3 +-
+ hw/block/Kconfig                                   |   3 -
+ hw/block/meson.build                               |   1 -
+ hw/gpio/Kconfig                                    |   4 -
+ hw/gpio/meson.build                                |   1 -
+ hw/ide/Kconfig                                     |   6 -
+ hw/ide/meson.build                                 |   1 -
+ hw/meson.build                                     |   1 -
+ hw/misc/Kconfig                                    |   4 +-
+ hw/misc/meson.build                                |   1 +
+ hw/misc/trace-events                               |   6 +
+ hw/pcmcia/Kconfig                                  |   2 -
+ hw/pcmcia/meson.build                              |   1 -
+ hw/ssi/Kconfig                                     |   4 +
+ hw/ssi/meson.build                                 |   1 +
+ hw/ssi/trace-events                                |  10 +
+ qemu-options.hx                                    |  16 -
+ 81 files changed, 1802 insertions(+), 2048 deletions(-)
+ delete mode 100644 docs/devel/blkdebug.txt
+ rename docs/devel/{lockcnt.txt => lockcnt.rst} (75%)
+ create mode 100644 docs/devel/multiple-iothreads.rst
+ delete mode 100644 docs/devel/multiple-iothreads.txt
+ rename docs/devel/{rcu.txt => rcu.rst} (73%)
+ create mode 100644 docs/devel/testing/blkdebug.rst
+ rename docs/devel/{blkverify.txt => testing/blkverify.rst} (77%)
+ delete mode 100644 include/hw/adc/max111x.h
+ create mode 100644 include/hw/misc/stm32_rcc.h
+ delete mode 100644 include/hw/pcmcia.h
+ create mode 100644 include/hw/ssi/allwinner-a10-spi.h
+ create mode 100644 include/qemu/lockcnt.h
+ create mode 100644 tests/qtest/stm32l4x5.h
+ delete mode 100644 hw/adc/max111x.c
+ delete mode 100644 hw/block/ecc.c
+ delete mode 100644 hw/gpio/max7310.c
+ delete mode 100644 hw/ide/microdrive.c
+ create mode 100644 hw/misc/stm32_rcc.c
+ delete mode 100644 hw/pcmcia/pcmcia.c
+ create mode 100644 hw/ssi/allwinner-a10-spi.c
+ delete mode 100644 hw/pcmcia/Kconfig
+ delete mode 100644 hw/pcmcia/meson.build
 
