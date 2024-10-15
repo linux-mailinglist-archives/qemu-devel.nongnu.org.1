@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB53399E441
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DB099E454
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:41:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewr-0006ho-1e; Tue, 15 Oct 2024 06:38:41 -0400
+	id 1t0ews-0006jv-Dz; Tue, 15 Oct 2024 06:38:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewX-0006gC-RX
+ id 1t0ewX-0006fx-E8
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:21 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewV-0005xl-To
+ id 1t0ewU-0005xS-VN
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:21 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-37d49a7207cso3355998f8f.0
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:19 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43123368ea9so27057035e9.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988698; x=1729593498; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988697; x=1729593497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=t1cGmO53mZ9iNqSL2eF/CAirgGUIZeKIwH4XCXTjDe0=;
- b=W09w4z7bvy+2eYH51dIry1c99h+6D+cCZrv4wT87iDT7FiL2XJVOjjxRAgWGX3DDmX
- RmBY3OGRxr4+YBiyQOEcR0nGs88WHmIcq4mvSI0JQcWT05ARCpdnTXMCZy+Mx/ruMp1w
- s3rHQff3cVNfgctkJITVI7K/8WeNELvLtHO2UiFfAouoJP+raar55vVotSTRcqcd3LHw
- CWa7Qbf1kXTE9/+oBk9we8nQqdmE2fnyn3ewL0lN+FaXtBtl7pJuzNauMccLqW/tD2+F
- XPn5IPB9Zyo4e5Yl8SpoIcWOphRvpn/KLE58LSpvI9Z8NIKM3rTS24yGM1LFsxKp4lcr
- mh5w==
+ :reply-to; bh=avrcLLwmrHbwgP9CnagNbS7sp/K+JpDV1npJXNy3DpM=;
+ b=LR4JGIAgzUC5F1yw3XHUgxZsfkMdYCj/XW2XrppkOEqp4O9yaVn8JB8Jd8gJSwUdPZ
+ H9aGiLkRV7pk4JhlyHVT7Jy/Qj8rg9UTxS0TyoBQtMhvpprxWdudjhG9xsOluLvDg9Ia
+ V3JVcbMSKz3cCJo4jXdTLphZJEM3nLtkY/rb+aJ/UDO1xp9P+riXtMJYIVylMSDNtgCp
+ jF1mrbQSCoWi3Qx6fPfRAzTNymmC6OQByU5mpBOmsUzjgQ4ZrIBKkgSuNA68KSbmwp9o
+ DcxZcgnC+T7UyQg9P/j3jSzEI1ffQH+qoTO1CnTHjld4u/5yO2xBZJmqzH6cMEGuguND
+ jZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988698; x=1729593498;
+ d=1e100.net; s=20230601; t=1728988697; x=1729593497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t1cGmO53mZ9iNqSL2eF/CAirgGUIZeKIwH4XCXTjDe0=;
- b=MyCnYMWtLppqMGvbMj7B5EDzF4dqIge+exCLwer3P0QVt/TXgA31zyYQdoF4pKjjbF
- 0fgcdZI08NLIwAMMZqYNBonOVqo4kLDQKj2Hz38KXcCGA8qhLUtuvGGfdJkUWUQflQfF
- hJeydwqXmXTg2+XCjtT+jNcfeGWZPi5NmJnTQHVuPkEugwG13eks3c56yBFYwB+BhHA1
- ah9iygatpUiS95sPsdgKIWiuDTQnjtkbZTQ+OhNGLhEAwT7v1pH8CTC0I9BomcgWEZQX
- rQ7uJpwthd9ttag3FC7yL34rRpzLh5YwIPIkiG5yGyHKRxdCjvlwDKAC+d6uChFdOekf
- jB6A==
-X-Gm-Message-State: AOJu0YyL9RlEXKfTSA8zvTkeA219O+3I4v8HBAySWar5XWLVgdVB4kQ0
- 9/dnQCyOyKztCcdt2oB/tN0Zf5R+4aHojs90t+T3nVT9mRQpPQG8mSCMkirawrLFxE+nFCKW2Dr
- 3
-X-Google-Smtp-Source: AGHT+IEJXYv1+CyvajGjIW1NZrBgRTvcVYH9YghKW9Se8TMt9uNTmKbbJW4uyaP3eN/83iLYWaQbuw==
-X-Received: by 2002:a5d:4742:0:b0:374:fa0a:773c with SMTP id
- ffacd0b85a97d-37d5ffc1a53mr8284397f8f.47.1728988696962; 
- Tue, 15 Oct 2024 03:38:16 -0700 (PDT)
+ bh=avrcLLwmrHbwgP9CnagNbS7sp/K+JpDV1npJXNy3DpM=;
+ b=u/t9am5Ae1+zHlQCyXnVPeqXjSkFMtt0HlBV9ILDAhjzzmLL8fz/rlLyJXUdgSV8Hv
+ tgwZYuHhC5YSmtvTZn9F6skwQVblENQep7I/6sNDUYPcjoNbw49mjxEq6/IK58HkAVC+
+ t4KQ9b3j77SsOtbLfRYe0yPegMFkYmqF6fPdTFz5N5W4D8lUgoHkZl+z3NF1Gbscxo9D
+ mm7zly4wFMJePRRqHG8Fwc6w0w9zsGu69WOoHBYbXpzw0EUIA3YTNjrDo0URZ5qMfkxs
+ TuLboarA6zt8cC0vN1UjbPeixYyj5hOoFmIFtQmPvb3iRLjGeXmKytK7NXnIbzrFMj11
+ 8d+g==
+X-Gm-Message-State: AOJu0Yzim/cV+UBfqeauYVOOqrhMyTs/qo+/JH7g/UihD3Y74pT51fmj
+ UWNOwrwKLXseyzbHyiHGeyzg2euuQDAYToeXKLzQKSDne1dd98OjLlzTyTXzgKPAvbvi9d+xRvo
+ k
+X-Google-Smtp-Source: AGHT+IHRgrVraHJg0lz6iKlWmVWoT1GlC3CAEh+ND9OtGx4s8eTjnAdf4ZgQuVLFA6DInYfNowWM2A==
+X-Received: by 2002:a05:600c:3496:b0:42c:b22e:fbfa with SMTP id
+ 5b1f17b1804b1-431255e765amr101321975e9.21.1728988697411; 
+ Tue, 15 Oct 2024 03:38:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.16
+ ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 03:38:16 -0700 (PDT)
+ Tue, 15 Oct 2024 03:38:17 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/28] docs/devel/blkverify: Convert to rST format
-Date: Tue, 15 Oct 2024 11:37:55 +0100
-Message-Id: <20241015103808.133024-16-peter.maydell@linaro.org>
+Subject: [PULL 16/28] docs/devel/lockcnt: Convert to rST format
+Date: Tue, 15 Oct 2024 11:37:56 +0100
+Message-Id: <20241015103808.133024-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,125 +91,278 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert blkverify.txt to rST format.
+Convert docs/devel/lockcnt.txt to rST format.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240816132212.3602106-3-peter.maydell@linaro.org
+Message-id: 20240816132212.3602106-4-peter.maydell@linaro.org
 ---
- MAINTAINERS                                   |  1 +
- .../{blkverify.txt => testing/blkverify.rst}  | 30 +++++++++++--------
- docs/devel/testing/index.rst                  |  1 +
- 3 files changed, 19 insertions(+), 13 deletions(-)
- rename docs/devel/{blkverify.txt => testing/blkverify.rst} (77%)
+ MAINTAINERS                             |  2 +-
+ docs/devel/index-api.rst                |  1 +
+ docs/devel/{lockcnt.txt => lockcnt.rst} | 89 +++++++++++++------------
+ 3 files changed, 47 insertions(+), 45 deletions(-)
+ rename docs/devel/{lockcnt.txt => lockcnt.rst} (74%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d4eb221b88c..22cc98bbfee 100644
+index 22cc98bbfee..c622433983d 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3890,6 +3890,7 @@ M: Stefan Hajnoczi <stefanha@redhat.com>
- L: qemu-block@nongnu.org
- S: Supported
- F: block/blkverify.c
-+F: docs/devel/blkverify.rst
+@@ -3058,7 +3058,7 @@ F: qapi/run-state.json
+ Read, Copy, Update (RCU)
+ M: Paolo Bonzini <pbonzini@redhat.com>
+ S: Maintained
+-F: docs/devel/lockcnt.txt
++F: docs/devel/lockcnt.rst
+ F: docs/devel/rcu.txt
+ F: include/qemu/rcu*.h
+ F: tests/unit/rcutorture.c
+diff --git a/docs/devel/index-api.rst b/docs/devel/index-api.rst
+index fe01b2b488d..1c487c152ab 100644
+--- a/docs/devel/index-api.rst
++++ b/docs/devel/index-api.rst
+@@ -9,6 +9,7 @@ generated from in-code annotations to function prototypes.
  
- bochs
- M: Stefan Hajnoczi <stefanha@redhat.com>
-diff --git a/docs/devel/blkverify.txt b/docs/devel/testing/blkverify.rst
-similarity index 77%
-rename from docs/devel/blkverify.txt
-rename to docs/devel/testing/blkverify.rst
-index aca826c51cc..2a71778b5e3 100644
---- a/docs/devel/blkverify.txt
-+++ b/docs/devel/testing/blkverify.rst
-@@ -1,8 +1,10 @@
--= Block driver correctness testing with blkverify =
-+Block driver correctness testing with ``blkverify``
-+===================================================
+    bitops
+    loads-stores
++   lockcnt
+    memory
+    modules
+    pci
+diff --git a/docs/devel/lockcnt.txt b/docs/devel/lockcnt.rst
+similarity index 74%
+rename from docs/devel/lockcnt.txt
+rename to docs/devel/lockcnt.rst
+index a3fb3bc5d8d..994aeb57151 100644
+--- a/docs/devel/lockcnt.txt
++++ b/docs/devel/lockcnt.rst
+@@ -1,9 +1,9 @@
+-DOCUMENTATION FOR LOCKED COUNTERS (aka QemuLockCnt)
+-===================================================
++Locked Counters (aka ``QemuLockCnt``)
++=====================================
  
--== Introduction ==
-+Introduction
-+------------
+ QEMU often uses reference counts to track data structures that are being
+ accessed and should not be freed.  For example, a loop that invoke
+-callbacks like this is not safe:
++callbacks like this is not safe::
  
--This document describes how to use the blkverify protocol to test that a block
-+This document describes how to use the ``blkverify`` protocol to test that a block
- driver is operating correctly.
+     QLIST_FOREACH_SAFE(ioh, &io_handlers, next, pioh) {
+         if (ioh->revents & G_IO_OUT) {
+@@ -11,11 +11,11 @@ callbacks like this is not safe:
+         }
+     }
  
- It is difficult to test and debug block drivers against real guests.  Often
-@@ -11,12 +13,13 @@ of the executable.  Other times obscure errors are raised by a program inside
- the guest.  These issues are extremely hard to trace back to bugs in the block
- driver.
+-QLIST_FOREACH_SAFE protects against deletion of the current node (ioh)
+-by stashing away its "next" pointer.  However, ioh->fd_write could
++``QLIST_FOREACH_SAFE`` protects against deletion of the current node (``ioh``)
++by stashing away its ``next`` pointer.  However, ``ioh->fd_write`` could
+ actually delete the next node from the list.  The simplest way to
+ avoid this is to mark the node as deleted, and remove it from the
+-list in the above loop:
++list in the above loop::
  
--Blkverify solves this problem by catching data corruption inside QEMU the first
-+``blkverify`` solves this problem by catching data corruption inside QEMU the first
- time bad data is read and reporting the disk sector that is corrupted.
+     QLIST_FOREACH_SAFE(ioh, &io_handlers, next, pioh) {
+         if (ioh->deleted) {
+@@ -29,7 +29,7 @@ list in the above loop:
+     }
  
--== How it works ==
-+How it works
-+------------
+ If however this loop must also be reentrant, i.e. it is possible that
+-ioh->fd_write invokes the loop again, some kind of counting is needed:
++``ioh->fd_write`` invokes the loop again, some kind of counting is needed::
  
--The blkverify protocol has two child block devices, the "test" device and the
-+The ``blkverify`` protocol has two child block devices, the "test" device and the
- "raw" device.  Read/write operations are mirrored to both devices so their
- state should always be in sync.
+     walking_handlers++;
+     QLIST_FOREACH_SAFE(ioh, &io_handlers, next, pioh) {
+@@ -46,8 +46,8 @@ ioh->fd_write invokes the loop again, some kind of counting is needed:
+     }
+     walking_handlers--;
  
-@@ -25,13 +28,14 @@ contents to the "test" image.  The idea is that the "raw" device will handle
- read/write operations correctly and not corrupt data.  It can be used as a
- reference for comparison against the "test" device.
+-One may think of using the RCU primitives, rcu_read_lock() and
+-rcu_read_unlock(); effectively, the RCU nesting count would take
++One may think of using the RCU primitives, ``rcu_read_lock()`` and
++``rcu_read_unlock()``; effectively, the RCU nesting count would take
+ the place of the walking_handlers global variable.  Indeed,
+ reference counting and RCU have similar purposes, but their usage in
+ general is complementary:
+@@ -70,14 +70,14 @@ general is complementary:
+   this can improve performance, but also delay reclamation undesirably.
+   With reference counting, reclamation is deterministic.
  
--After a mirrored read operation completes, blkverify will compare the data and
-+After a mirrored read operation completes, ``blkverify`` will compare the data and
- raise an error if it is not identical.  This makes it possible to catch the
- first instance where corrupt data is read.
+-This file documents QemuLockCnt, an abstraction for using reference
++This file documents ``QemuLockCnt``, an abstraction for using reference
+ counting in code that has to be both thread-safe and reentrant.
  
--== Example ==
-+Example
-+-------
  
--Imagine raw.img has 0xcd repeated throughout its first sector:
-+Imagine raw.img has 0xcd repeated throughout its first sector::
+-QemuLockCnt concepts
+---------------------
++``QemuLockCnt`` concepts
++------------------------
  
-     $ ./qemu-io -c 'read -v 0 512' raw.img
-     00000000:  cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd  ................
-@@ -42,7 +46,7 @@ Imagine raw.img has 0xcd repeated throughout its first sector:
-     read 512/512 bytes at offset 0
-     512.000000 bytes, 1 ops; 0.0000 sec (97.656 MiB/sec and 200000.0000 ops/sec)
+-A QemuLockCnt comprises both a counter and a mutex; it has primitives
++A ``QemuLockCnt`` comprises both a counter and a mutex; it has primitives
+ to increment and decrement the counter, and to take and release the
+ mutex.  The counter notes how many visits to the data structures are
+ taking place (the visits could be from different threads, or there could
+@@ -95,13 +95,14 @@ not just frees, though there could be cases where this is not necessary.
  
--And test.img is corrupt, its first sector is zeroed when it shouldn't be:
-+And test.img is corrupt, its first sector is zeroed when it shouldn't be::
+ Reads, instead, can be done without taking the mutex, as long as the
+ readers and writers use the same macros that are used for RCU, for
+-example qatomic_rcu_read, qatomic_rcu_set, QLIST_FOREACH_RCU, etc.  This is
+-because the reads are done outside a lock and a set or QLIST_INSERT_HEAD
++example ``qatomic_rcu_read``, ``qatomic_rcu_set``, ``QLIST_FOREACH_RCU``,
++etc.  This is because the reads are done outside a lock and a set
++or ``QLIST_INSERT_HEAD``
+ can happen concurrently with the read.  The RCU API ensures that the
+ processor and the compiler see all required memory barriers.
  
-     $ ./qemu-io -c 'read -v 0 512' test.img
-     00000000:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-@@ -53,17 +57,17 @@ And test.img is corrupt, its first sector is zeroed when it shouldn't be:
-     read 512/512 bytes at offset 0
-     512.000000 bytes, 1 ops; 0.0000 sec (81.380 MiB/sec and 166666.6667 ops/sec)
+ This could be implemented simply by protecting the counter with the
+-mutex, for example:
++mutex, for example::
  
--This error is caught by blkverify:
-+This error is caught by ``blkverify``::
+     // (1)
+     qemu_mutex_lock(&walking_handlers_mutex);
+@@ -125,33 +126,33 @@ mutex, for example:
+ Here, no frees can happen in the code represented by the ellipsis.
+ If another thread is executing critical section (2), that part of
+ the code cannot be entered, because the thread will not be able
+-to increment the walking_handlers variable.  And of course
++to increment the ``walking_handlers`` variable.  And of course
+ during the visit any other thread will see a nonzero value for
+-walking_handlers, as in the single-threaded code.
++``walking_handlers``, as in the single-threaded code.
  
-     $ ./qemu-io -c 'read 0 512' blkverify:a.img:b.img
-     blkverify: read sector_num=0 nb_sectors=4 contents mismatch in sector 0
+ Note that it is possible for multiple concurrent accesses to delay
+-the cleanup arbitrarily; in other words, for the walking_handlers
++the cleanup arbitrarily; in other words, for the ``walking_handlers``
+ counter to never become zero.  For this reason, this technique is
+ more easily applicable if concurrent access to the structure is rare.
  
--A more realistic scenario is verifying the installation of a guest OS:
-+A more realistic scenario is verifying the installation of a guest OS::
+ However, critical sections are easy to forget since you have to do
+-them for each modification of the counter.  QemuLockCnt ensures that
++them for each modification of the counter.  ``QemuLockCnt`` ensures that
+ all modifications of the counter take the lock appropriately, and it
+ can also be more efficient in two ways:
  
-     $ ./qemu-img create raw.img 16G
-     $ ./qemu-img create -f qcow2 test.qcow2 16G
-     $ ./qemu-system-x86_64 -cdrom debian.iso \
-           -drive file=blkverify:raw.img:test.qcow2
+ - it avoids taking the lock for many operations (for example
+   incrementing the counter while it is non-zero);
  
--If the installation is aborted when blkverify detects corruption, use qemu-io
-+If the installation is aborted when ``blkverify`` detects corruption, use ``qemu-io``
- to explore the contents of the disk image at the sector in question.
-diff --git a/docs/devel/testing/index.rst b/docs/devel/testing/index.rst
-index 9e772c7fd1d..1171f7db8f0 100644
---- a/docs/devel/testing/index.rst
-+++ b/docs/devel/testing/index.rst
-@@ -15,3 +15,4 @@ testing infrastructure.
-    ci
-    fuzzing
-    blkdebug
-+   blkverify
+-- on some platforms, one can implement QemuLockCnt to hold the lock
++- on some platforms, one can implement ``QemuLockCnt`` to hold the lock
+   and the mutex in a single word, making the fast path no more expensive
+   than simply managing a counter using atomic operations (see
+-  docs/devel/atomics.rst).  This can be very helpful if concurrent access to
++  :doc:`atomics`).  This can be very helpful if concurrent access to
+   the data structure is expected to be rare.
+ 
+ 
+ Using the same mutex for frees and writes can still incur some small
+ inefficiencies; for example, a visit can never start if the counter is
+-zero and the mutex is taken---even if the mutex is taken by a write,
++zero and the mutex is taken -- even if the mutex is taken by a write,
+ which in principle need not block a visit of the data structure.
+ However, these are usually not a problem if any of the following
+ assumptions are valid:
+@@ -163,27 +164,27 @@ assumptions are valid:
+ - writes are frequent, but this kind of write (e.g. appending to a
+   list) has a very small critical section.
+ 
+-For example, QEMU uses QemuLockCnt to manage an AioContext's list of
++For example, QEMU uses ``QemuLockCnt`` to manage an ``AioContext``'s list of
+ bottom halves and file descriptor handlers.  Modifications to the list
+ of file descriptor handlers are rare.  Creation of a new bottom half is
+ frequent and can happen on a fast path; however: 1) it is almost never
+ concurrent with a visit to the list of bottom halves; 2) it only has
+-three instructions in the critical path, two assignments and a smp_wmb().
++three instructions in the critical path, two assignments and a ``smp_wmb()``.
+ 
+ 
+-QemuLockCnt API
+----------------
++``QemuLockCnt`` API
++-------------------
+ 
+-The QemuLockCnt API is described in include/qemu/thread.h.
++The ``QemuLockCnt`` API is described in ``include/qemu/thread.h``.
+ 
+ 
+-QemuLockCnt usage
+------------------
++``QemuLockCnt`` usage
++---------------------
+ 
+-This section explains the typical usage patterns for QemuLockCnt functions.
++This section explains the typical usage patterns for ``QemuLockCnt`` functions.
+ 
+ Setting a variable to a non-NULL value can be done between
+-qemu_lockcnt_lock and qemu_lockcnt_unlock:
++``qemu_lockcnt_lock`` and ``qemu_lockcnt_unlock``::
+ 
+     qemu_lockcnt_lock(&xyz_lockcnt);
+     if (!xyz) {
+@@ -193,8 +194,8 @@ qemu_lockcnt_lock and qemu_lockcnt_unlock:
+     }
+     qemu_lockcnt_unlock(&xyz_lockcnt);
+ 
+-Accessing the value can be done between qemu_lockcnt_inc and
+-qemu_lockcnt_dec:
++Accessing the value can be done between ``qemu_lockcnt_inc`` and
++``qemu_lockcnt_dec``::
+ 
+     qemu_lockcnt_inc(&xyz_lockcnt);
+     if (xyz) {
+@@ -204,11 +205,11 @@ qemu_lockcnt_dec:
+     }
+     qemu_lockcnt_dec(&xyz_lockcnt);
+ 
+-Freeing the object can similarly use qemu_lockcnt_lock and
+-qemu_lockcnt_unlock, but you also need to ensure that the count
+-is zero (i.e. there is no concurrent visit).  Because qemu_lockcnt_inc
+-takes the QemuLockCnt's lock, the count cannot become non-zero while
+-the object is being freed.  Freeing an object looks like this:
++Freeing the object can similarly use ``qemu_lockcnt_lock`` and
++``qemu_lockcnt_unlock``, but you also need to ensure that the count
++is zero (i.e. there is no concurrent visit).  Because ``qemu_lockcnt_inc``
++takes the ``QemuLockCnt``'s lock, the count cannot become non-zero while
++the object is being freed.  Freeing an object looks like this::
+ 
+     qemu_lockcnt_lock(&xyz_lockcnt);
+     if (!qemu_lockcnt_count(&xyz_lockcnt)) {
+@@ -218,7 +219,7 @@ the object is being freed.  Freeing an object looks like this:
+     qemu_lockcnt_unlock(&xyz_lockcnt);
+ 
+ If an object has to be freed right after a visit, you can combine
+-the decrement, the locking and the check on count as follows:
++the decrement, the locking and the check on count as follows::
+ 
+     qemu_lockcnt_inc(&xyz_lockcnt);
+     if (xyz) {
+@@ -232,7 +233,7 @@ the decrement, the locking and the check on count as follows:
+         qemu_lockcnt_unlock(&xyz_lockcnt);
+     }
+ 
+-QemuLockCnt can also be used to access a list as follows:
++``QemuLockCnt`` can also be used to access a list as follows::
+ 
+     qemu_lockcnt_inc(&io_handlers_lockcnt);
+     QLIST_FOREACH_RCU(ioh, &io_handlers, pioh) {
+@@ -252,10 +253,10 @@ QemuLockCnt can also be used to access a list as follows:
+     }
+ 
+ Again, the RCU primitives are used because new items can be added to the
+-list during the walk.  QLIST_FOREACH_RCU ensures that the processor and
++list during the walk.  ``QLIST_FOREACH_RCU`` ensures that the processor and
+ the compiler see the appropriate memory barriers.
+ 
+-An alternative pattern uses qemu_lockcnt_dec_if_lock:
++An alternative pattern uses ``qemu_lockcnt_dec_if_lock``::
+ 
+     qemu_lockcnt_inc(&io_handlers_lockcnt);
+     QLIST_FOREACH_SAFE_RCU(ioh, &io_handlers, next, pioh) {
+@@ -273,5 +274,5 @@ An alternative pattern uses qemu_lockcnt_dec_if_lock:
+     }
+     qemu_lockcnt_dec(&io_handlers_lockcnt);
+ 
+-Here you can use qemu_lockcnt_dec instead of qemu_lockcnt_dec_and_lock,
++Here you can use ``qemu_lockcnt_dec`` instead of ``qemu_lockcnt_dec_and_lock``,
+ because there is no special task to do if the count goes from 1 to 0.
 -- 
 2.34.1
 
