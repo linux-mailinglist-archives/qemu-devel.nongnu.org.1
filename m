@@ -2,110 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E07399E8B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 14:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738F499EA02
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 14:40:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0gLQ-0000zs-8G; Tue, 15 Oct 2024 08:08:08 -0400
+	id 1t0gpr-00087N-J0; Tue, 15 Oct 2024 08:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t0gLO-0000z9-6f
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 08:08:06 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t0gLM-00012z-CU
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 08:08:05 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a86e9db75b9so768386466b.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 05:08:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728994082; x=1729598882; darn=nongnu.org;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YMaAi26qcD0yRIS9JL2pxoifDAI0jDo3jYIVsqXWjJY=;
- b=BfyHdwYBRjKSrI/4FcbMSCgQEyhL7sHdHKCR3OMsjwrQjS1Oni+E9rXcbY9K9m52ZC
- 2XlSngJRQU/IDLKLCdrTi/WP0Z72ZU8AWe0c61OmU0Vn+oq3Z3ebHVgcUhRupcQsG6aT
- e3ks/OiTlYtH4hVHEuC2CDYukfBwrPxR6mUV5lCqc9Heftzq0FCwjUu97Vl4QNo1xMf6
- CUkheEvnmKIFLIrpJdXA/24Q4ehWBZ5oCRt8OKXDw9FD2A7JctO1xkP7YmNHBd/rDi/l
- fp+6R+lCz6bFuMPvCJYYbIjB0V5AIjL1ipwJ0stfYpjez30tIy4oxcTpzxxPI+y1UDwZ
- FcnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728994082; x=1729598882;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YMaAi26qcD0yRIS9JL2pxoifDAI0jDo3jYIVsqXWjJY=;
- b=dP1GfD+A5EQf9ng99jcSF6Cum6a9ZG2ZeU8zBP51XVwkTdDLlPCq9PVpv+vMo7zRm6
- cy2oyxfq27hR4+tybysSa5r/s4pv350clQhWwhYVTr6hEP1+T3dcmdfDykXVDWJqbZyu
- vKj6z6q7sIkJmm3IooIZ069WhI+OJOmgK5FxmCQYJnjOpekRuRA9+2ttg9BjeAKgijBt
- i39gt67qc/h0QjY1rdcwf3mNK6nEu4fWEJg9bAYn48lOSC6153GDjiFc0CJUw0IbHuKl
- n8kTTzD6PeqhOQqQjEQpJCx2uhvG8O8nzDsReBw31Vu0Z1HIvJqX/3JpAoUsumEBmkyn
- Ai7g==
-X-Gm-Message-State: AOJu0YzRE7pPYNkTSXWNoIfdOfESPEthQXDUFHiHoYuhgnDj7ilOjRKi
- 91qMaidB4K34BlWi5q896z26D3Tm2MiI4Wk0Dnqm8Q58Gpngv9BZFfoVbWOqHJw=
-X-Google-Smtp-Source: AGHT+IG9qa4ngQcpZkHZhoYB3m34IuiXOmHvop8iLoTQW+urBEDiUnH5hku1dyTZvM3IxDpaMBOa7A==
-X-Received: by 2002:a17:907:d30d:b0:a9a:1437:3175 with SMTP id
- a640c23a62f3a-a9a1437347bmr425438866b.51.1728994081481; 
- Tue, 15 Oct 2024 05:08:01 -0700 (PDT)
-Received: from [127.0.1.1] (adsl-113.37.6.2.tellas.gr. [37.6.2.113])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a29817fb3sm64112466b.119.2024.10.15.05.08.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 05:08:00 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Tue, 15 Oct 2024 15:07:36 +0300
-Subject: [PATCH] rust/wrapper.h: define memory_order enum
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241015-rust-wrapper-stdatomic-v1-1-f22c0bd31140@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAdbDmcC/x3MQQqEMAxA0atI1gZsVHDmKoOL0kYni9GSdFQQ7
- 25x+Rb/n2Cswgbv6gTlTUzWpcDVFYSvX2ZGicVADXWucT3q3zLu6lNiRcvR5/UnAd0Q+4FeFKh
- rocRJeZLjGX/G67oBRX2eKGgAAAA=
-X-Change-ID: 20241015-rust-wrapper-stdatomic-18d58292c243
+ (Exim 4.90_1) (envelope-from <midnight@trainwit.ch>)
+ id 1t0esx-0006IX-DR; Tue, 15 Oct 2024 06:34:39 -0400
+Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <midnight@trainwit.ch>)
+ id 1t0esv-0005RM-HM; Tue, 15 Oct 2024 06:34:39 -0400
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal
+ [10.202.2.41])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id CFFD71140241;
+ Tue, 15 Oct 2024 06:34:33 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-01.internal (MEProxy); Tue, 15 Oct 2024 06:34:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=trainwit.ch; h=
+ cc:cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to; s=fm2; t=1728988473; x=1729074873; bh=lpvhcljY0QB4hqtbjg1qA
+ FgkzMmbRH13sxLLRGmorEo=; b=gQRabz1DEnh9UgzmkwU5ZxYW2MrnyYgTPAIYr
+ UKbiR7ApbhD+JarX34mmLJCyHZQMIs2QQgwlmx7GhQWP7hsTtpjWFIisCzbRuz2T
+ 3ITMF5lMHJCWxFS41gkBiPbucP+adrTxOo84L7s7o6n0+RlWA1jK2U08bkM88VgH
+ nxwyvwwiSKkJs6QTzaDVXXUq3iF2NgDZRUUt14tClkfESzLPSstUyNbXaZvES8hy
+ ft7in0pqxPVUh9lJ4IfM5CSaC540YqqDnHUukkG+SFq0IvAklOcjbryqh3xIukKR
+ xdzdd+c9FuAjvs7w6HVbusbM0SVBZeV6YFe/eqpN1zlB7WNKQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; t=1728988473; x=1729074873; bh=lpvhcljY0QB4hqtbjg1qAFgkzMmb
+ RH13sxLLRGmorEo=; b=mbe5FGiXK/IZz/Ttt4ovC5wfIrpM3I1TesKpInNOcpCM
+ jEPQefcu+QyMd+WEmTXjOZsGSSwgTgjtHbyAo0EDY8/P7dx32JIQgO9PmdoAQAqR
+ otUgT4hF2aVDPNIlWKzRdBDGYbl99E7ZMHoBKo60HCnMKB0WHnJXeTsMNUvemUHH
+ PbpSSDoPEwmTNMUbfdIomyUdOwMWM2fP8T2nQLAxgsg+GVCMQ/vmRqp/3vqFBCUz
+ MC/Ghft3qeqkqKJXlXH6GcAeckxtImS4qHRA679hM687fpLzNh2Eobl8Y5J2tOjs
+ I+Gjdl8lEWhZhWBlXrXkh4xEs4jSLH37r9LQdCYedQ==
+X-ME-Sender: <xms:OEUOZ6-WBUmVlr-awc1NLp1CLG854vNCWR_JDRO_zw-Z5m3ostjOmg>
+ <xme:OEUOZ6t-DBAAyI7mHZM7CcCCjLHx06qb0DwipUkkq7gQQc1xGalt87aCng-s4ccLI
+ c_ErkHfySRHJaWOm9Y>
+X-ME-Received: <xmr:OEUOZwDpIxZIgAEz6eVn73AZ-MIURK92Q0Ax4_USgNAZN0MZT53y1jLWC8UPehaxvkrzRjOtd6w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedgfedtucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
+ rhhomhepjhhulhhirgcuoehmihgunhhighhhthesthhrrghinhifihhtrdgthheqnecugg
+ ftrfgrthhtvghrnhepvdffjeelieehgeetfeetiefffeetteehlefgveehgeekteelgfff
+ teehkeeivedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+ homhepmhhiughnihhghhhtsehtrhgrihhnfihithdrtghhpdhnsggprhgtphhtthhopeek
+ pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonh
+ hgnhhurdhorhhgpdhrtghpthhtohepmhhiughnihhghhhtsehtrhgrihhnfihithdrtghh
+ pdhrtghpthhtohepkhgsuhhstghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehith
+ hssehirhhrvghlvghvrghnthdrughkpdhrtghpthhtohepfhhoshhsseguvghfmhgrtghr
+ ohdrihhtpdhrtghpthhtohepmhhsthesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmh
+ grrhgtvghlrdgrphhfvghlsggruhhmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepqhgv
+ mhhuqdgslhhotghksehnohhnghhnuhdrohhrgh
+X-ME-Proxy: <xmx:OEUOZyehg8GNTKCE-hk4Ontf97WtPBasMiL_z-Wj0R4qcTZn4nCPLA>
+ <xmx:OEUOZ_NrDEZWiLT7onao0C8Yvsii1VbcBomGgLUFnm9zpo-xcq646Q>
+ <xmx:OEUOZ8nkMLuBGcgdQ-KqpVJnAExLULB23bxylcn5YMsbdHCa5PxPEA>
+ <xmx:OEUOZxuRR0tyEvejGoibCQlgFQGEP8JVhEwo_rHmNPKwGz-ufgJn6Q>
+ <xmx:OUUOZ4gRn7K8Iurf44viwdP4y8KFDsCO0BqtnIkN72OJynbCcI4KhGbd>
+Feedback-ID: ic5914928:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 15 Oct 2024 06:34:29 -0400 (EDT)
+From: julia <midnight@trainwit.ch>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: b4 0.15-dev-12fc5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4710;
- i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=FlpLRQ7vL7z8MnMcYb0Iw7EMyuukYv7xDzwj30y9JWk=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm5EbHNmdFEyV1l6UCtrU0RVaGtQVlh3K2dBMEpKCmFCakg4WjZac05MVE1Ycitz
- cG1KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnc1Ykh3QUt
- DUkIzS2Nkd2YzNEowSVluRC85K0Fqb05uakxtKzk5T2JYYlZhYkpOSWR0OUcralp4OW9IWlMzSw
- p2c2JRaGYyVWZLY0kxWTBOY2NMWDFENzBGQldWOGpSSFBPN2c5WThQTmpRNTFRU0Z6enUxTVdGN
- XQyMnM3LzA2CldTS3ZSR2k0ejdYTXRpbnFNWUErY2hNVXViblpuUjNXUkNia2QwdGtWdEUvaVNl
- Nmo0V1dsR2dnd2ZldVEyM0EKOWJOZFNrUWpTWlhWOEZ3YnRPeDA4MGFySnF2VUlqVW51SzJia1h
- aQ2ZNb3gwaWM2d3grWjhVZTZRSkIxRy9pTwpSZ1NSNFN0UU92amRPODE4dkp2UEpvTUJMKzBYZG
- Z6emFqMTdJVzlxVHAwMVNKckxjOVY1ejRPYW9GMU9uZ3RCCklIQUo0cURWSzhpd2lvclU0WUNTW
- EVoeWJXdjcrZ1dOQnZKd2pIa2o5K2xBeHBTOTFLSUZjY005VGRodTArSTkKelo0TXZBY2NXK3BZ
- V21FeGpzbXdnM2hJNmFhQi84VGNlVFQyT3FMelU4U1ZDTVBQNExKdlVWbFpNRUxOTFBSRwprWGN
- Hd1pBRGMwb2swL3crbUxrZEhuS2wreW5sYTFHRGxMYVBVdkY0dmswcVh1SUhHRnZnWVVaZms0Zj
- ZQbmVaCnZtb3ViWG5BcGNpV1RrV0dSRStMdHZGd3VyN0UrMCtQQjhhbFc5Qy9kT2l4bXo3T1ljb
- E0zY0NVQ3pNcXFBMXcKNXRCK0h2dXlId2UyRTRhRlhLZFVrY1BNVkpCRjJvRC9ocU9QSFZFWlhW
- UFdFbEMrVTdTTUdreCtCaFJpbFNTLwpwOUpjTmt5SndBenlFQjJmYU1HdFZidlB3VHluTVJnMjJ
- mdkc2alp2SzJxYzBiSlA5L1RnRGJOdmY2S3p3NmVmClpWbVl3Zz09Cj1WRzhKCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
- fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: julia <midnight@trainwit.ch>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-block@nongnu.org (open list:nvme)
+Subject: [PATCH] hw/nvme: Remove references to PCI IRQ "pulsing" when asserting
+Date: Tue, 15 Oct 2024 21:33:48 +1100
+Message-ID: <20241015103351.688803-1-midnight@trainwit.ch>
+X-Mailer: git-send-email 2.44.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=103.168.172.157;
+ envelope-from=midnight@trainwit.ch; helo=fhigh-a6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 15 Oct 2024 08:39:33 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,115 +110,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add stub definition of memory_order enum in wrapper.h.
+The NVMe subsystem logs "pulsing IRQ pin" when it is asserting the PCI(e)
+IRQ. This is confusing as it implies a short pulse, not the level-triggered
+interrupts PCI(e) uses.
 
-Creating Rust bindings from C code is done by passing the wrapper.h
-header to `bindgen`. This fails when library dependencies that use
-compiler headers are enabled, and the libclang that bindgen detects does
-not match the expected clang version. So far this has only been observed
-with the memory_order enum symbols from stdatomic.h. If we add the enum
-definition to wrapper.h ourselves, the error does not happen.
+Also remove the pci_irq_pulse() function marked with FIXME as it is no
+longer used by any calls.
 
-Before this commit, if the mismatch happened the following error could
-come up:
-
-  /usr/include/liburing/barrier.h:72:10: error: use of undeclared identifier 'memory_order_release'
-  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
-  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
-  /usr/include/liburing/barrier.h:68:9: error: use of undeclared identifier 'memory_order_relaxed'
-  /usr/include/liburing/barrier.h:65:17: error: use of undeclared identifier 'memory_order_relaxed'
-  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
-  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
-  /usr/include/liburing/barrier.h:72:10: error: use of undeclared identifier 'memory_order_release'
-  panicked at [..]/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bindgen-cli-0.70.1/main.rs:45:36:
-  Unable to generate bindings
-
-To fix this (on my system) I would have to export CLANG_PATH and
-LIBCLANG_PATH:
-
-  export CLANG_PATH=/bin/clang-17
-  export LIBCLANG_PATH=/usr/lib/llvm-17/lib
-
-With these changes applied, bindgen is successful with both the
-environment variables set and unset.
-
-Since we're not using those symbols in the bindings (they are only used
-by dependencies) this does not affect the generated bindings in any way.
-
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: julia <midnight@trainwit.ch>
 ---
- configure      |  7 -------
- meson.build    |  7 -------
- rust/wrapper.h | 17 +++++++++++++++++
- 3 files changed, 17 insertions(+), 14 deletions(-)
+ hw/nvme/trace-events |  2 +-
+ include/hw/pci/pci.h | 10 ----------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/configure b/configure
-index 72d1a94225051ff6e9da9e9256fc8c30aa728f67..83c7636c9a9711e3a1c860e0aac52249a909eaaf 100755
---- a/configure
-+++ b/configure
-@@ -2060,10 +2060,3 @@ echo ' "$@"' >>config.status
- chmod +x config.status
+diff --git a/hw/nvme/trace-events b/hw/nvme/trace-events
+index 3a67680c6a..5d96d622ff 100644
+--- a/hw/nvme/trace-events
++++ b/hw/nvme/trace-events
+@@ -1,6 +1,6 @@
+ # successful events
+ pci_nvme_irq_msix(uint32_t vector) "raising MSI-X IRQ vector %u"
+-pci_nvme_irq_pin(void) "pulsing IRQ pin"
++pci_nvme_irq_pin(void) "asserting IRQ pin"
+ pci_nvme_irq_masked(void) "IRQ is masked"
+ pci_nvme_dma_read(uint64_t prp1, uint64_t prp2) "DMA read, prp1=0x%"PRIx64" prp2=0x%"PRIx64""
+ pci_nvme_dbbuf_config(uint64_t dbs_addr, uint64_t eis_addr) "dbs_addr=0x%"PRIx64" eis_addr=0x%"PRIx64""
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index eb26cac810..863aab0b80 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -667,16 +667,6 @@ static inline void pci_irq_deassert(PCIDevice *pci_dev)
+     pci_set_irq(pci_dev, 0);
+ }
  
- rm -r "$TMPDIR1"
+-/*
+- * FIXME: PCI does not work this way.
+- * All the callers to this method should be fixed.
+- */
+-static inline void pci_irq_pulse(PCIDevice *pci_dev)
+-{
+-    pci_irq_assert(pci_dev);
+-    pci_irq_deassert(pci_dev);
+-}
 -
--if test "$rust" != disabled; then
--  echo '\nINFO: Rust bindings generation with `bindgen` might fail in some cases where'
--  echo 'the detected `libclang` does not match the expected `clang` version/target. In'
--  echo 'this case you must pass the path to `clang` and `libclang` to your build'
--  echo 'command invocation using the environment variables CLANG_PATH and LIBCLANG_PATH'
--fi
-diff --git a/meson.build b/meson.build
-index d26690ce204016d43848d8a73a2d4351a620c5c2..dd4908501037e23c4c6ab165c5809f623c93360b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3956,13 +3956,6 @@ if have_rust and have_system
-     bindgen_args += ['--bitfield-enum', enum]
-   endforeach
+ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
+ void pci_set_power(PCIDevice *pci_dev, bool state);
  
--  # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
--  #
--  # Rust bindings generation with `bindgen` might fail in some cases where the
--  # detected `libclang` does not match the expected `clang` version/target. In
--  # this case you must pass the path to `clang` and `libclang` to your build
--  # command invocation using the environment variables CLANG_PATH and
--  # LIBCLANG_PATH
-   bindings_rs = import('rust').bindgen(
-     input: 'rust/wrapper.h',
-     dependencies: common_ss.all_dependencies(),
-diff --git a/rust/wrapper.h b/rust/wrapper.h
-index 77e40213efb686d23f6b768b78602e4337623280..285d0eb6ad01e227a82f13e17c79390b4c34d37e 100644
---- a/rust/wrapper.h
-+++ b/rust/wrapper.h
-@@ -30,6 +30,23 @@
-  * in order to generate C FFI compatible Rust bindings.
-  */
- 
-+#ifndef __CLANG_STDATOMIC_H
-+#define __CLANG_STDATOMIC_H
-+/*
-+ * Fix potential missing stdatomic.h error in case bindgen does not insert the
-+ * correct libclang header paths on its own. We do not use stdatomic.h symbols
-+ * in QEMU code, so it's fine to declare dummy types instead.
-+ */
-+typedef enum memory_order {
-+  memory_order_relaxed,
-+  memory_order_consume,
-+  memory_order_acquire,
-+  memory_order_release,
-+  memory_order_acq_rel,
-+  memory_order_seq_cst,
-+} memory_order;
-+#endif /* __CLANG_STDATOMIC_H */
-+
- #include "qemu/osdep.h"
- #include "qemu/module.h"
- #include "qemu-io.h"
-
----
-base-commit: c155d13167c6ace099e351e28125f9eb3694ae27
-change-id: 20241015-rust-wrapper-stdatomic-18d58292c243
-
---
-γαῖα πυρί μιχθήτω
+-- 
+2.44.1
 
 
