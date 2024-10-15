@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB5399EC83
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBE099EC7A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hR7-00024A-S4; Tue, 15 Oct 2024 09:18:05 -0400
+	id 1t0hR8-00024o-SR; Tue, 15 Oct 2024 09:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hR2-00023l-NA
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:00 -0400
+ id 1t0hR6-00024E-Vn
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hR0-0001Dm-Tk
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:00 -0400
+ id 1t0hR3-0001EQ-Sl
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728998277;
+ s=mimecast20190719; t=1728998281;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=20vvSyFpZURhPY07pvl6EKKD9oQ8iAAak08m0L+pzSY=;
- b=V3qBAUZBEfpt+IlYQwfOR2fEPKkLPaXy9OsAWPiDTobVl5cxJr75Iua3TojJCJh0i3RSZX
- b+LIEHlepCmlCLtXN9xiOzvT8L5qleFVfkLbtFx/zn2WtkLToRlK1Fevq1f3UG0T8kqaD4
- cZcEsjsim5GNOrCQv5hcrg04brRylQA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=u45iLCwaL6UDPFZFrxkclA/Jz3UXse/PWIiVqr58mZQ=;
+ b=Vbpjts/KDSpUg9e3zbqDwwH3PjkcXVTynvL4RMUSYhCiRX6DJvvDlD+IHdyPNMNVNNZYFB
+ qP0KMhWD+YSd8MET8iZfGdF3+w+ZmQkwScCOefB6Oj6eO0zIthnMeeziyf26VD3BLsDZHT
+ f6k/ZHkWGtz6MiQEwkCuAwd198RXmpI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-wZbqc7OkOUSKCqq96gXbFg-1; Tue, 15 Oct 2024 09:17:55 -0400
-X-MC-Unique: wZbqc7OkOUSKCqq96gXbFg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d67f4bf98so1440819f8f.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:17:53 -0700 (PDT)
+ us-mta-201-zbt9zO1fPlifDZX_27JrHg-1; Tue, 15 Oct 2024 09:17:56 -0400
+X-MC-Unique: zbt9zO1fPlifDZX_27JrHg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d609ef9f7so1322918f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:17:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728998272; x=1729603072;
+ d=1e100.net; s=20230601; t=1728998275; x=1729603075;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=20vvSyFpZURhPY07pvl6EKKD9oQ8iAAak08m0L+pzSY=;
- b=YDflC7Pq+QLooRKtKOHAs53nzHit7VP6eKjHcNarHM55oNr2hq4I4oB562uKJh/jQI
- WINo3/v0bVFFHgrgKva/cpQ93l3R1cuXOOHgGXPvwY5ZP2oF5kZrhil/6/GBwvqX9veG
- S+gdij6S9eYuo+iiEfOj6PdslXcr6pS852yOZQ+L8FMnocZqs+eNfmEZ1Nws5kboIMa8
- wFh1OaWxRFSngJETIy8FrcI7SSIjzR1sSdmbjovXK7eK52zG2X24fb2DeDA7itPf4aBw
- v9+ss+Px5Kgz0IitpekCI40U30TaZv/JlnJz5v6Hi3UCPA9jNIJbobNsyf0muyecP5Se
- f8IQ==
-X-Gm-Message-State: AOJu0YxChvc0k+fP+PoBAk58nGnsdafhgg8TSbIgEOnBgvVdjfNNGlg0
- Zc+Qon6HYbRnhoY8zfn2Ps6vLHN+jxZin0IcX5cuDZZ5RINT1yJaBR5fgM9Eo2CoiqfHFMy4V5t
- 9xkN5eH5KEfBk73vLxr1Z4k0Rmb6m64tWkZeEJRYf/D6FyJDwABDv6C959afUQPzqPwAH3aDenR
- jrrRibf1YZ3Q69VWqFbFvfrHq5RSjntfpURDXIUUA=
-X-Received: by 2002:a05:6000:1568:b0:37d:476d:2d58 with SMTP id
- ffacd0b85a97d-37d86d50563mr246503f8f.45.1728998272140; 
- Tue, 15 Oct 2024 06:17:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG4mddPrdb45gV5NBoEKhlQc+PATGqGnWPTKEfPL9FP1OuhPMgYp/iDN/rmLsvcjcxMWlmaNw==
-X-Received: by 2002:a05:6000:1568:b0:37d:476d:2d58 with SMTP id
- ffacd0b85a97d-37d86d50563mr246470f8f.45.1728998271556; 
- Tue, 15 Oct 2024 06:17:51 -0700 (PDT)
+ bh=u45iLCwaL6UDPFZFrxkclA/Jz3UXse/PWIiVqr58mZQ=;
+ b=doCxPlKJLCmrMpvTck6WyThV2zf+4mo7P3CVQqoqzi2xyGnekepKIiK65KsLsH7jhi
+ StvgUIrNcHNu4brpEX35hq3bpQ7GkuN+MT+GpRBsHM246T/7bXhLD0rLSOfHm10koW+c
+ MgSpNbrWh0ZcMWPMw/D7K5PfHt06Q4tmbfSxwjhhu9BYuirWyNLOuPLDzoEC+Xwy6X8+
+ qmUEvP4W9GO1FJumFXZMhBom6qVRndOPwU0c39Mw2hO2MiC5GDvCQnD2/NWiEgfF+fqt
+ yrRpJ9ptyKkmat4jcfOksoyej/cfsZ5eCNudd2tvU6JD53nzvsD54ix03bv+huuf7fZT
+ ksJw==
+X-Gm-Message-State: AOJu0YxKf6P6ZGdVcc4h6PLbSMuleHNjl9hbioe0xC/+Iu2ZfEDhD3zc
+ xdLJhuF3Dk6CGnAYs9TsNj4QWyW+yP3gDocB4N5YxlpP/FvFDbhJbfbai9p6mINxNNZLanC3LP9
+ PxH1FhWE3671O19a8N9Db8/1iHGCoMoA8tVun+EsHeTboelN21PuId7LmQIF9Si0ct1C60I2GMs
+ ghOnscDi9ZpqpEB2cJYfW5PPnYVZKuHcMIFef3PnM=
+X-Received: by 2002:a5d:5351:0:b0:37d:4870:dedf with SMTP id
+ ffacd0b85a97d-37d551d3fc5mr11031840f8f.19.1728998274797; 
+ Tue, 15 Oct 2024 06:17:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVJzhrJlEsj0CCAZU0VlG8SQnJzHqtk7pSGA2WJiTolJ7kHzSRDCGLC3IkWU5eqlMVenSSHw==
+X-Received: by 2002:a5d:5351:0:b0:37d:4870:dedf with SMTP id
+ ffacd0b85a97d-37d551d3fc5mr11031816f8f.19.1728998274288; 
+ Tue, 15 Oct 2024 06:17:54 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fbf81b4sm1560697f8f.79.2024.10.15.06.17.50
+ ffacd0b85a97d-37d7fa89c55sm1564662f8f.46.2024.10.15.06.17.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 06:17:51 -0700 (PDT)
+ Tue, 15 Oct 2024 06:17:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/16] rust: patch bilge-impl to allow compilation with 1.63.0
-Date: Tue, 15 Oct 2024 15:17:22 +0200
-Message-ID: <20241015131735.518771-5-pbonzini@redhat.com>
+Subject: [PATCH 05/16] rust: fix cfgs of proc-macro2 for 1.63.0
+Date: Tue, 15 Oct 2024 15:17:23 +0200
+Message-ID: <20241015131735.518771-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015131735.518771-1-pbonzini@redhat.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
@@ -100,102 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apply a patch that removes "let ... else" constructs, replacing them with
-"if let ... else" or "let ... =3D match ...".  "let ... else" was stabilize=
-d in
-Rust 1.65.0.
+Replay the configuration that would be computed by build.rs when compiling
+on a 1.63.0 compiler.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitattributes                                |  2 +
- subprojects/bilge-impl-0.2-rs.wrap            |  1 +
- .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
- 3 files changed, 48 insertions(+)
- create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+ subprojects/packagefiles/proc-macro2-1-rs/meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/.gitattributes b/.gitattributes
-index 6dc6383d3d1..9ce7a19581a 100644
---- a/.gitattributes
-+++ b/.gitattributes
-@@ -5,3 +5,5 @@
- *.rs            diff=3Drust
- *.rs.inc        diff=3Drust
- Cargo.lock      diff=3Dtoml merge=3Dbinary
-+
-+*.patch         -text -whitespace
-diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.=
-2-rs.wrap
-index eefb10c36c2..b24c34a9043 100644
---- a/subprojects/bilge-impl-0.2-rs.wrap
-+++ b/subprojects/bilge-impl-0.2-rs.wrap
-@@ -5,3 +5,4 @@ source_filename =3D bilge-impl-0.2.0.tar.gz
- source_hash =3D feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000=
-adb2d8
- #method =3D cargo
- patch_directory =3D bilge-impl-0.2-rs
-+diff_files =3D bilge-impl-1.63.0.patch
-diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects=
-/packagefiles/bilge-impl-1.63.0.patch
-new file mode 100644
-index 00000000000..987428a6d65
---- /dev/null
-+++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
-@@ -0,0 +1,45 @@
-+--- a/src/shared/discriminant_assigner.rs
-++++ b/src/shared/discriminant_assigner.rs
-+@@ -26,20 +26,20 @@
-+         let discriminant_expr =3D &discriminant.1;
-+         let variant_name =3D &variant.ident;
-+=20
-+-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discriminan=
-t_expr else {
-++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discrimi=
-nant_expr {
-++            let discriminant_value: u128 =3D int.base10_parse().unwrap_or=
-_else(unreachable);
-++            if discriminant_value > self.max_value() {
-++                abort!(variant, "Value of variant exceeds the given numbe=
-r of bits")
-++            }
-++
-++            Some(discriminant_value)
-++        } else {
-+             abort!(
-+                 discriminant_expr,
-+                 "variant `{}` is not a number", variant_name;
-+                 help =3D "only literal integers currently supported"
-+             )
-+-        };
-+-
-+-        let discriminant_value: u128 =3D int.base10_parse().unwrap_or_els=
-e(unreachable);
-+-        if discriminant_value > self.max_value() {
-+-            abort!(variant, "Value of variant exceeds the given number of=
- bits")
-+         }
-+-
-+-        Some(discriminant_value)
-+     }
-+=20
-+     fn assign(&mut self, variant: &Variant) -> u128 {
-+--- a/src/shared/fallback.rs
-++++ b/src/shared/fallback.rs
-+@@ -22,8 +22,9 @@
-+             }
-+             Unnamed(fields) =3D> {
-+                 let variant_fields =3D fields.unnamed.iter();
-+-                let Ok(fallback_value) =3D variant_fields.exactly_one() e=
-lse {
-+-                    abort!(variant, "fallback variant must have exactly o=
-ne field"; help =3D "use only one field or change to a unit variant")
-++                let fallback_value =3D match variant_fields.exactly_one()=
- {
-++                    Ok(ok) =3D> ok,
-++                    _ =3D> abort!(variant, "fallback variant must have ex=
-actly one field"; help =3D "use only one field or change to a unit variant")
-+                 };
-+=20
-+                 if !is_last_variant {
+diff --git a/subprojects/packagefiles/proc-macro2-1-rs/meson.build b/subpro=
+jects/packagefiles/proc-macro2-1-rs/meson.build
+index 818ec59336b..8e601b50ccc 100644
+--- a/subprojects/packagefiles/proc-macro2-1-rs/meson.build
++++ b/subprojects/packagefiles/proc-macro2-1-rs/meson.build
+@@ -15,7 +15,9 @@ _proc_macro2_rs =3D static_library(
+   rust_abi: 'rust',
+   rust_args: [
+     '--cfg', 'feature=3D"proc-macro"',
+-    '--cfg', 'span_locations',
++    '--cfg', 'no_literal_byte_character',
++    '--cfg', 'no_literal_c_string',
++    '--cfg', 'no_source_text',
+     '--cfg', 'wrap_proc_macro',
+   ],
+   dependencies: [
 --=20
 2.46.2
 
