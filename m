@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E75C99E43F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875FD99E439
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewY-0006fw-CR; Tue, 15 Oct 2024 06:38:22 -0400
+	id 1t0ewX-0006ee-8h; Tue, 15 Oct 2024 06:38:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewS-0006cR-Fl
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:16 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1t0ewU-0006d5-6N
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:18 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewQ-0005vf-DB
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43055b43604so50119785e9.3
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
+ id 1t0ewS-0005w9-AG
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:17 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43140a2f7f7so4048685e9.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988693; x=1729593493; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988695; x=1729593495; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uMQQ7fdyXd07jMQ0rVrq7jETk7cjRhNibU6XZ/lFh88=;
- b=PGMCd8GXUKSRl5AqD8c3+g+UnmEqSNzq6MDTqCmTSTipsgtKx6k5pbXifQ+tO2d+y5
- v+BO2SNwngBqsH84URDZ9mFg1HWYVlcxNgMaWj+v6gFDkY+TBREohzkL5xe1S4hlnk2g
- LxB3FIbxxU0FYu+3r4WgJy5GTLnX68peS0/Dqb/n3tDD/82AHp03x9AKLSkmF9OpcLex
- JpbzChPmJsovlQ+dtkGCEuaMc+uU/+/Majk/9hKNL0HWnHPc/fk5KsKwnA8xrTIeagnz
- 5KnbYXRQOT4xa4u4zSqHqci+DWczhlwIaUyQffKyxuEK+x9hUS0Y5k+WgDO9o3tqfEVg
- Abpg==
+ :reply-to; bh=2oogUcyfz+E85mumq1xXQjOwEjwwahsOY55NASPbeB4=;
+ b=a1hHL5TqM8PacI/37G3FwaUufNruEojCg8yeb2l9+GXvx4k4z2m2dXrlrJz0+yE2K0
+ Bl10O1xTOo6maiLOh097TAbMewj1/r4yYhJKGJmCEFJP2ZKbGw8ZzoALFOGnoc7Be8Oi
+ DVH9GeA/K4TZOORSzRI2R8I6kYpPJfHNvCM1waiJL9Q0I8DfYVtq1GhZ472OOzefizms
+ eMXRgPw5UuHPgpcAcT5k+k+ThpslFgjGc89LjxTtTplAATwahB387+AymOuxbAGayPBe
+ q53Fp0foXF79IHBsRPoA+X7dKutuVqoZEMiVkTRcsGIfn3S6xQ7lZSHKMsOnK344aJfO
+ DQSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988693; x=1729593493;
+ d=1e100.net; s=20230601; t=1728988695; x=1729593495;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uMQQ7fdyXd07jMQ0rVrq7jETk7cjRhNibU6XZ/lFh88=;
- b=e4lBxfQ3tznX70giO+OHZk8SlnXBhgUsI6Oprn8QB0Ga1DZLVqp56GUG3dBfNKtB57
- +F/yaiAv+8CbSSUlO6TSn8KDh1zXWX9p1xu2Rwv+klf7FAPLET263d7zV8KgqMrEAxRM
- aiIhL1y24Iq8Di1NEiGGYeB9CARkKAca0uabH0dnA67svIkUhrMMAKAuC0AHe5h4cbzY
- MhUmUYxym6xes/1vuE9l0Nl4zgfWUeRL1DR7OspoRNquyfDGg4Hal5pN2PTcgwnLfLo2
- I/yjCUnCqFXCUQCxVw2GCRyHspYflxcR77HLtnRmhfecF44AL1HHeJbGf7gHuehpIZvp
- /K3Q==
-X-Gm-Message-State: AOJu0YxFfGQVXm5nJOOm/52XN4mbtVSI8DiRPk4hh7RGqxMwA4wmYKnD
- kyc4P/bCzfaYC07j5SXGeoiYLYJLJg5aH8lNu2uvKpzHN3RGDIG9kyiXti20n53K2luN3hBFEXW
- N
-X-Google-Smtp-Source: AGHT+IH/t4pjRBLvgpjtys5YCCNmPZEUd4N+E1omAikdRTF6o0Dq3HazMun3CU6aps+swMMUbx8PXg==
-X-Received: by 2002:a5d:6591:0:b0:37c:cdb6:6a9e with SMTP id
- ffacd0b85a97d-37d5518e759mr9495410f8f.9.1728988692609; 
- Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
+ bh=2oogUcyfz+E85mumq1xXQjOwEjwwahsOY55NASPbeB4=;
+ b=VarsGzSa27OckbDwLEkd0W9zUpWVCmN0ZOksocJvqLggdjLpsHQsx7kNic+v10Crea
+ T1G9RsSS+W5XnXEzF0iHViCqpxfvsje6J7rNptxHpwfzlaM+Cn3VCZsN+0UX0IgBlL13
+ NDmIWGpk7oX99kPkMcqtDAFqovTdutZgovVuSCANugu4KMARNIaW1BsTy34JJ7O17SX3
+ hR9LgHEcpPfGsbH/r6m1kddG32pS2uE/IJXWXQBNEomkZJVPzKbweCeo3HFhIAKF/Zw9
+ i1oontXAz4LxJcCUcKY1oy8YbSqIK1NHBACKX+nR6y11XuJ0BbAHTPqEgtOC5Xuj5oa6
+ OXtw==
+X-Gm-Message-State: AOJu0Yy1orSHK+aU91kXXi+KGXHY17HXZyWsBlrwMdVr7i1J5ZtLRmQv
+ s/b+kezWk+ZINSMvsISYHOfJv3N1wCkq80ay7BNXx+x/Hx8pfiPqCiCs55flosNdQb0FizMPfUT
+ U
+X-Google-Smtp-Source: AGHT+IHCmRjr0UCrdolkaLluQWZz7RsNELY+g+DbI8uGVBRjYAXvt61EF/4mpPKFv15KhLuOXO2nig==
+X-Received: by 2002:a5d:570b:0:b0:37d:51f8:46fd with SMTP id
+ ffacd0b85a97d-37d5520571dmr9529677f8f.22.1728988693087; 
+ Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.12
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/28] hw/intc/arm_gicv3_cpuif: Add cast to match the
- documentation
-Date: Tue, 15 Oct 2024 11:37:46 +0100
-Message-Id: <20241015103808.133024-7-peter.maydell@linaro.org>
+Subject: [PULL 07/28] hw/misc: Create STM32L4x5 SYSCFG clock
+Date: Tue, 15 Oct 2024 11:37:47 +0100
+Message-Id: <20241015103808.133024-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
-When cast to uint64_t (for further bitwise OR), the 32 most
-significant bits will be filled with 1s. However, the documentation
-states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
+This commit creates a clock in STM32L4x5 SYSCFG and wires it up to the
+corresponding clock from STM32L4x5 RCC.
 
-Add an explicit cast to match the documentation.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: qemu-stable@nongnu.org
-Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Luc Michel <luc@lmichel.fr>
+Message-id: 20241003081105.40836-2-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/arm_gicv3_cpuif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/misc/stm32l4x5_syscfg.h |  1 +
+ hw/arm/stm32l4x5_soc.c             |  2 ++
+ hw/misc/stm32l4x5_syscfg.c         | 19 +++++++++++++++++--
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 89359db7004..ea1d1b34551 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -793,7 +793,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
-     int regno = aprbit / 32;
-     int regbit = aprbit % 32;
+diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4x5_syscfg.h
+index 23bb5641507..c450df2b9ea 100644
+--- a/include/hw/misc/stm32l4x5_syscfg.h
++++ b/include/hw/misc/stm32l4x5_syscfg.h
+@@ -48,6 +48,7 @@ struct Stm32l4x5SyscfgState {
+     uint32_t swpr2;
  
--    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
-+    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
-     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
+     qemu_irq gpio_out[GPIO_NUM_PINS];
++    Clock *clk;
+ };
+ 
+ #endif
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index fac83d349c8..16e3505dcb8 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -236,6 +236,8 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+ 
+     /* System configuration controller */
+     busdev = SYS_BUS_DEVICE(&s->syscfg);
++    qdev_connect_clock_in(DEVICE(&s->syscfg), "clk",
++        qdev_get_clock_out(DEVICE(&(s->rcc)), "syscfg-out"));
+     if (!sysbus_realize(busdev, errp)) {
+         return;
+     }
+diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
+index a5a1ce26804..a947a9e036b 100644
+--- a/hw/misc/stm32l4x5_syscfg.c
++++ b/hw/misc/stm32l4x5_syscfg.c
+@@ -26,6 +26,9 @@
+ #include "trace.h"
+ #include "hw/irq.h"
+ #include "migration/vmstate.h"
++#include "hw/clock.h"
++#include "hw/qdev-clock.h"
++#include "qapi/error.h"
+ #include "hw/misc/stm32l4x5_syscfg.h"
+ #include "hw/gpio/stm32l4x5_gpio.h"
+ 
+@@ -225,12 +228,22 @@ static void stm32l4x5_syscfg_init(Object *obj)
+     qdev_init_gpio_in(DEVICE(obj), stm32l4x5_syscfg_set_irq,
+                       GPIO_NUM_PINS * NUM_GPIOS);
+     qdev_init_gpio_out(DEVICE(obj), s->gpio_out, GPIO_NUM_PINS);
++    s->clk = qdev_init_clock_in(DEVICE(s), "clk", NULL, s, 0);
++}
++
++static void stm32l4x5_syscfg_realize(DeviceState *dev, Error **errp)
++{
++    Stm32l4x5SyscfgState *s = STM32L4X5_SYSCFG(dev);
++    if (!clock_has_source(s->clk)) {
++        error_setg(errp, "SYSCFG: clk input must be connected");
++        return;
++    }
+ }
+ 
+ static const VMStateDescription vmstate_stm32l4x5_syscfg = {
+     .name = TYPE_STM32L4X5_SYSCFG,
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT32(memrmp, Stm32l4x5SyscfgState),
+         VMSTATE_UINT32(cfgr1, Stm32l4x5SyscfgState),
+@@ -241,6 +254,7 @@ static const VMStateDescription vmstate_stm32l4x5_syscfg = {
+         VMSTATE_UINT32(swpr, Stm32l4x5SyscfgState),
+         VMSTATE_UINT32(skr, Stm32l4x5SyscfgState),
+         VMSTATE_UINT32(swpr2, Stm32l4x5SyscfgState),
++        VMSTATE_CLOCK(clk, Stm32l4x5SyscfgState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -251,6 +265,7 @@ static void stm32l4x5_syscfg_class_init(ObjectClass *klass, void *data)
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     dc->vmsd = &vmstate_stm32l4x5_syscfg;
++    dc->realize = stm32l4x5_syscfg_realize;
+     rc->phases.hold = stm32l4x5_syscfg_hold_reset;
  }
  
 -- 
