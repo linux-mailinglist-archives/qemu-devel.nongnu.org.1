@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504CB99ED6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E5299EDF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:41:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hZS-00043l-D6; Tue, 15 Oct 2024 09:26:42 -0400
+	id 1t0hmF-0005xu-V3; Tue, 15 Oct 2024 09:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1t0hZP-00043A-FM; Tue, 15 Oct 2024 09:26:39 -0400
-Received: from mail-bn8nam11on2061b.outbound.protection.outlook.com
- ([2a01:111:f403:2414::61b]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ id 1t0hm7-0005w3-Tp; Tue, 15 Oct 2024 09:39:48 -0400
+Received: from mail-mw2nam12on20631.outbound.protection.outlook.com
+ ([2a01:111:f403:200a::631]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1t0hZN-0002Rz-83; Tue, 15 Oct 2024 09:26:39 -0400
+ id 1t0hm4-0003wr-AE; Tue, 15 Oct 2024 09:39:47 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PCjwDsHkpEmwr6CZwWJ9h9rOxmNkBIyEDUGl9X0xzuqo0wjyuNHoiu+BPkhPb7k3aw/1ndxlJQ7clLZ1OQNs+LUbuadBHR4zs/TvYu3SHQo3w25S3oM2e8DW5kaSZv/Y889o6TQpV9kPajXKGcqsiKcvNSgTN60d5CjzIB0IGVMN5AinGe6GNHclfaqAgb+W6P10Uc0ET7BjyXgk03YabbZm5oJ3THCg8/O4zdVcwSh/EVe4opofFzlaYmf2VJFweQPYTTd5ozmS/pR+ocvaS0NxWXBi7mGYrB5vnF+OdBwlbnJd4+tUqOubnX3eQi+xLNiT7/4FeI0SF2Q8biG9KQ==
+ b=gAQQ2WN/XwKlImmMb4BeGVhRWmKZfcS4JlC8r3MoHBR113jCNw5gacMSvVE+bhEqRS72GC8YHShrcVHIBo0SVsVfgtmv4hjFmJ70MRpNmiHQZBNZIsQkTtbNqEI7ehDzmM/2OUlI50hsbCCsiArxRQPb9bERO2hb9vOCLSRxp652wzdlgPIhzAasmeyu4EquuwKvgOkHk6XVL21I4VeN+AubjTMZj+AU5bWQao6ADxmwqrgW5geQxkbKIHIH4S5KJD7evYbpfWpvRW4syPxC5+laVAS7fHnvwisvuKHv0kdHozVlu/A/20gd9pMeWBn1gZ3xorzrrq6EUrqmUXSDvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iRzH9j94V4sn35+LKq4qSOjDpH2+taA5FLAIRPlunng=;
- b=jmv5AfzJ4GzVBOA5JUp9xmodMeP/ohTxqtLuHABypm+eLwxDUlBCJOS8gkOpt6vkBe/W2sXDvOGwrNln912nHZDhjguZdwQuGcqMCqY5UmbW/eYoLRKrXRvzHNyyroPm196+J4caluJKALX/zEl7cj72nJZX7D+JkpLvV4Q36u+P0rFbouGYR5C1Jk+yHbsqeuyTemdArFJ2wkEovLmoY+5uHv4XykT7/UBtCVfQW9bVaMl5maX0z9/WK5KRZGB5wCvqtMfysgm7czy5CVjLaMaRw1FXVfQ2cDXnu0soJVD04kbrzTz8aYYcF9mt9eEs2DHo7RRz/9sQaGz/jYtggg==
+ bh=IuUHIsajy3UyMOh8zuIfjtktqaoask+O2gIpgL3gEq0=;
+ b=XONMuNSXe+/5lRPH+48eXFdqDs+K4TJqXJoO0MvHtmrhOxeuH4ErsLt/Bi5wlQqHnc5dq3QR7qNKOP+KUoczzu7q8WUPxj85yoRRYiMWnh95QbCoEcVXX3H5goJSWp5kFqyOj79hm2v0a+thJ7ghxdlyQwN2XqHt663h0khQcOba1ZTNz85AW5EUWfIFL6wsK5VHXdS5ItL2PYntwcSpVcBCr/mqVmM5xcD8jGNFNUUBd9X538fEoXUcmDDjzYW3Nc5jna/OND6U1HsFI97bc5FXlIMne5jw+Ub4ZW1WixW1wcjhlMlggdCFvqdt9NW4hecIzNqQuRxdquaKFjTx4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iRzH9j94V4sn35+LKq4qSOjDpH2+taA5FLAIRPlunng=;
- b=3gaUiSKZnMOjqsTw4Ld+wn9uyGTDrM5i9mxmmc5qxLMGkafFWW5TZmMNGaguU8R2jLn6ep6L6aCZ17ZyyaMi4LYTMCaNJnPhCeYI7BcDvKzoPIWYR8bxbY43JiHF7d3JL2LTyCPqP63skCEWfx/kgyqXXFtDnO8Y3Cfbf8ozFEw=
-Received: from PH8PR07CA0017.namprd07.prod.outlook.com (2603:10b6:510:2cd::28)
- by IA0PR12MB7650.namprd12.prod.outlook.com (2603:10b6:208:436::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.29; Tue, 15 Oct
- 2024 13:26:29 +0000
-Received: from MWH0EPF000A6734.namprd04.prod.outlook.com
- (2603:10b6:510:2cd:cafe::b4) by PH8PR07CA0017.outlook.office365.com
- (2603:10b6:510:2cd::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17 via Frontend
- Transport; Tue, 15 Oct 2024 13:26:29 +0000
+ bh=IuUHIsajy3UyMOh8zuIfjtktqaoask+O2gIpgL3gEq0=;
+ b=A+MS+KA/axsanzKg+SHwfp4KGIUrVR1kmW8k4qz9UMv428iumgnXymzIFYN6zxUk6uNlEqobjYhiMrCRr39koFOeslqlEyfY2pzbSTVKpFrnOBB3HsIB3PxBsk0+TblTNQPPsAsGonvRanuTw85RqV3MT5178A+CdlRR3840Snw=
+Received: from MW4PR03CA0304.namprd03.prod.outlook.com (2603:10b6:303:dd::9)
+ by SJ1PR12MB6051.namprd12.prod.outlook.com (2603:10b6:a03:48a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
+ 2024 13:39:32 +0000
+Received: from MWH0EPF000A672F.namprd04.prod.outlook.com
+ (2603:10b6:303:dd:cafe::5a) by MW4PR03CA0304.outlook.office365.com
+ (2603:10b6:303:dd::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26 via Frontend
+ Transport; Tue, 15 Oct 2024 13:39:32 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,86 +50,98 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000A6734.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ MWH0EPF000A672F.mail.protection.outlook.com (10.167.249.21) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8069.17 via Frontend Transport; Tue, 15 Oct 2024 13:26:28 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ 15.20.8069.17 via Frontend Transport; Tue, 15 Oct 2024 13:39:31 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Oct
- 2024 08:26:28 -0500
-Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via
- Frontend Transport; Tue, 15 Oct 2024 08:26:26 -0500
+ 2024 08:39:30 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Oct
+ 2024 08:39:30 -0500
+Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via
+ Frontend Transport; Tue, 15 Oct 2024 08:39:27 -0500
 From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Alistair Francis
- <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, "Jason
- Wang" <jasowang@redhat.com>, Francisco Iglesias <francisco.iglesias@amd.com>
-Subject: [PATCH] hw/net: Extend ethernetlite driver with PHY layer
-Date: Tue, 15 Oct 2024 18:56:22 +0530
-Message-ID: <20241015132622.3468066-1-sai.pavan.boddu@amd.com>
+To: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Michal Simek <michal.simek@amd.com>, <sai.pavan.boddu@amd.com>
+Subject: [PATCH] hw/riscv: Add Microblaze V 32bit virt board
+Date: Tue, 15 Oct 2024 19:09:21 +0530
+Message-ID: <20241015133921.3470901-1-sai.pavan.boddu@amd.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: sai.pavan.boddu@amd.com does not
- designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6734:EE_|IA0PR12MB7650:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b0f80fe-bb6d-4291-34e1-08dced1cfa0b
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A672F:EE_|SJ1PR12MB6051:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb6afb03-8412-4ac8-bf2d-08dced1eccad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?AKaDQDkXLEjwxBXdz7Jno+BsPOi7l/d8dtW/zdTWLZr0Tbg4Cz322EQeE9l9?=
- =?us-ascii?Q?s/i0HhcRS+R6X/bxZk0xoGIAK43OLCOsA32l/8z0SAwfnK0tdgYqoIV+FFwh?=
- =?us-ascii?Q?eeAI389Q/btbiDuYjrMlpu4gd32tQMpbIowCwSaxdrTekp+tKLsAHHknnxAu?=
- =?us-ascii?Q?f+W295SlOWKNInveoBVJu8oO91ZWl4yp6J+K9P71czFQZfmgZfX+xnC7b/dQ?=
- =?us-ascii?Q?OioXI1at76JEgd4IvnjobJAuyjsucMOKFJrgUd9ijkT767ObyS07p4UNlnHW?=
- =?us-ascii?Q?fz0zwwBx4IYOdV6AZIwmFwKLmlEu3pdS9sBEn/+u77ME+kXO24th9K/EWlCV?=
- =?us-ascii?Q?JrnoRpkmF4fsM4RIV0r/FC1CGGCCE0SURgnWkhuTQ1Ouo4ytuRm1ZVLlP2Vv?=
- =?us-ascii?Q?RVzD+DT2AGrJJkUOP+SEwwGwaxp1fqbFzMgu21fnn/UFG5iIMolai4y2bpj1?=
- =?us-ascii?Q?LEqoD5Umumkv4zwfsTIQz+TEfWtHB2QMQvI0Qww8Rvt9vqVV6AIj106FF538?=
- =?us-ascii?Q?h91JEDqTQ5CFCOJhEMC2C6mL2UX8PAs4gXZcnWHJkvMTclP1HCkeHAIjEkUb?=
- =?us-ascii?Q?20aUsQSCEaolV1XlLcf8cs7TAcOpg82C7eWvqUg2PYMAyu5NYKZvyxpKSbbN?=
- =?us-ascii?Q?LZPB/70fCD0fFX+pMCN8Y4ltpKd8yXiwPbI/FTP3GpcrNOidxN3aUPvkVaz/?=
- =?us-ascii?Q?WcJOcOCJU0AK6y4ImroEE9k6h/btT3rrHHpaX9RyV+UklnpGdtfVDqk5fAiG?=
- =?us-ascii?Q?Bs3i2mxznKcB1tEEXHCr4154jFTsJNAwyepIAdQh93oi0o29vs3zeryy5R5y?=
- =?us-ascii?Q?Ov3JyE15ai3e/m/SJPyNPxksDDpbVx3rXBVFgnTVp5uFiz5MNluIkz2GVqUT?=
- =?us-ascii?Q?5bP4ud9Wlih4w5Lh5kguz+YNE2s6yKzkg/tug+qcQnHpFTBvn4TeqvRUa9pw?=
- =?us-ascii?Q?nrgplHqn9XR6tT+D6ja+k5DgbU/PrCTT8Ox3U10GtMEByeehuATWCPoyERr5?=
- =?us-ascii?Q?0qoLzhi5Q3gGst9qYzD2H8QKFRbWu74lQqfNsBG0cggkSvMIHx1lfl4EHvC3?=
- =?us-ascii?Q?shX77fWTH6HXBJrbPiunt67KfvhyiI8CfnMnYPupJc6+1LQBhyR55RliUI+D?=
- =?us-ascii?Q?fNdXPrEX8BA8XPs5iyJsh4BUQg9Z4KdTrJ1KE96RtAEHMp23rSrdpelRt+zK?=
- =?us-ascii?Q?xX4eEYOrNgb90CUxb5u7uKOUNK4cDXTyjUe8G1VA8a7VJM7pCS2XpMsPMKqb?=
- =?us-ascii?Q?hxoQDUbt75VxFNN5+uAlLtlnFQcHNYi7yaznTQMLCegO6AVlXe0tEFgrxGyH?=
- =?us-ascii?Q?xJvLzk6+AmR36DDe6QIS5/Na7u4xDLC1CnXhHaLUHyVVXbFLKrsMA8qgbgiR?=
- =?us-ascii?Q?dsjIqJKwHxhSUxZa2QOPe/PRtmZF?=
+ ARA:13230040|82310400026|36860700013|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YzBFZlFzR1VYNy9NSlFrVitmekpNUEdxK3pjQXd1WTMxYVNXVVhMZEs3ZXJJ?=
+ =?utf-8?B?aHlHVzM1SXQzajc1MmdOUEZiMjAxaEZVSVRtTTBxbjRRaFh1amtXNzB1YlVs?=
+ =?utf-8?B?UGQwcENJZlhLM1huTm9DQzQ5M2x4T090RGp4VG52SGIwUFdVaFVZYWwwWWVK?=
+ =?utf-8?B?V21oY0JWRXpvRDdjL1RDTndnUm9hYXF3b05US01nS1VxSTQzVGVXYXpDRTZJ?=
+ =?utf-8?B?ci8rSkt4dEsvQUQvUXZrcUpiS2lra2kvWjdRbzBMV1ZiVHRlODNFWnFOU2E1?=
+ =?utf-8?B?VWs2OGNaUUFZTWlmeUFOUUZ0NmRoSEZxR05GU25RVjlXczVnS3BQV0huYThp?=
+ =?utf-8?B?YlFXMWd2VnFYOTRVVUltd2hBcnBNNGFqVkFvSktsN2d0cUpyQjJObWFRcHhp?=
+ =?utf-8?B?bVZFdUVqSWdmQVF6alUzRnFHVkhOZEJ5RVZNTnNucThHQzNrZWMxd05jOHpw?=
+ =?utf-8?B?cGhia1FGcEYydVpXNjRNdDRsT0NSZWNZSkVKUlE5ekZLVlMyZU5MRVliTDJt?=
+ =?utf-8?B?TFhyYS9FcHdONFNZUUczMTIyT2hsV0IyeWxHdUJyR2JhWkk5a0RPYjR6aXc1?=
+ =?utf-8?B?VndMWVRjRkE3a2tEdXJ3ZFd0SmFua2VEZEJ2QUcwb3dEaXJOZ1RVTUUyQ2t0?=
+ =?utf-8?B?UjNlZVhSeHBXZVE3clRDSmhsSkNrdmlCWXZFb2VDMmZwVHl4VjBOK1oyTTZS?=
+ =?utf-8?B?bHpkS29UR3dPTlFibmdFZTQ2ZHI3b3UycWlvUjJHZDlrejlTNTdLaXU1N1E5?=
+ =?utf-8?B?S1gyWUFFd210bE9xUmdVblpUR095Y3FJaDBZQ0tXTkdtL3YzVTNCVVVlOGVo?=
+ =?utf-8?B?SlRUdndMT2x2WnlDbHg0TXJpZytRVjNRWW5ObWNXeTJ3a1dBU2xGQWJPSE5y?=
+ =?utf-8?B?RVZOeVZOUGE3bmUyaVdWdlZkZVRxSjhlWnV4YldVYUVLV2Y3NjQwdXpUVTdq?=
+ =?utf-8?B?YUxrV281cktFMEVOOVFjc1FHeGdndXV2RkQybWdFN3JYc3VtcnRvMWJLU0wr?=
+ =?utf-8?B?OXJwNmo5NThMc21MaGdlV2lqQUk1dEJmeHp0K2xYSnZrYkUxTktvaWNDeXdz?=
+ =?utf-8?B?NWgycjlsUUVJSTA0M3BYZkRNVjh3RVBndCtSYmtxcnpDejk0d0M0WDhDaWY4?=
+ =?utf-8?B?UmIya1UyV1poMzhnQ0svS0d2SFJneVUzUHlWdkVick1TUWhGL3VwaHZwa3ls?=
+ =?utf-8?B?YWhVd25CUEFIOXZDZEpZcEQxZXRIdTc4ZHpMMW5ja09hTTFIdDhtemNRcnB3?=
+ =?utf-8?B?Y01YQ3E5UzZ5WmtoSll1SFMreGM1SWpBVnhOSTNENWdFaWFsQU5ra1JzL2JB?=
+ =?utf-8?B?QnllQzRPYTJlV0hHQ2VZZm9DeDI1alFFU2dEK1NwRGRnM3dJemFlY1Bma08v?=
+ =?utf-8?B?YnkwN2xrQk1xeGwrSWVmVzdxR0xYaDB0VlJDMExrY0FQWEVPTW0vQzVPQ0RP?=
+ =?utf-8?B?cjJjN2JFc3FiQy9DNDZIcTJHSzVEWkR5OTU1aEZPVnFldk9pWVp1WTJ1UG05?=
+ =?utf-8?B?RUwzNWx5VlpMQUtmVmIvMHIrZWkvd1QxcXRQY3lIZlhUbTlNU1l3clNaMHJI?=
+ =?utf-8?B?V0pvbjhGeGh1NjVHR3N3WUVJK1lBSEZ5NmtRdzhhaG5kbzB5dDNZNEQzbHFY?=
+ =?utf-8?B?d3hvY1lscUY5MjhEc2R5b0V4T0JPREs1aFE5TDBIZWlLbnV5RDlIMHdBMlFE?=
+ =?utf-8?B?djVldDk3QmxZdGlFMDJndUkranNNYVVuVTNLcmQ3MHlEenQ5eml1U2oxbDNE?=
+ =?utf-8?B?bHBDbDV5aXRVeHBINlRJQXljY0dvUkpJbmtFa1U3Z3E1cWNQczRkRG45V2pY?=
+ =?utf-8?B?UkxxRm1HME5WTWkzNWVUNVVrTU1uMjlHakltSkpBT09leWJHTjZvUnhiSUxs?=
+ =?utf-8?Q?Gl+R14j5l/DSS?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
+ SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 13:26:28.8110 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b0f80fe-bb6d-4291-34e1-08dced1cfa0b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 13:39:31.6633 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb6afb03-8412-4ac8-bf2d-08dced1eccad
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A6734.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A672F.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7650
-Received-SPF: permerror client-ip=2a01:111:f403:2414::61b;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6051
+Received-SPF: permerror client-ip=2a01:111:f403:200a::631;
  envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: 3
 X-Spam_score: 0.3
 X-Spam_bar: /
 X-Spam_report: (0.3 / 5.0 requ) AC_FROM_MANY_DOTS=2.499, BAYES_00=-1.9,
  DKIMWL_WL_HIGH=-0.063, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ WEIRD_QUOTING=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,307 +157,323 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michal Simek <michal.simek@amd.com>
+Add a basic board with interrupt controller (intc), timer, serial
+(uartlite), small memory called LMB@0 (128kB) and DDR@0x80000000
+(configured via command line eg. -m 2g).
+This is basic configuration which matches HW generated out of AMD Vivado
+(design tools). But initial configuration is going beyond what it is
+configured by default because validation should be done on other
+configurations too. That's why wire also additional uart16500, axi
+ethernet(with axi dma).
+GPIOs, i2c and qspi is also listed for completeness.
 
-Add missing optional MDIO lines. Without it U-Boot is not working.
+IRQ map is: (addr)
+0 - timer (0x41c00000)
+1 - uartlite (0x40600000)
+2 - i2c (0x40800000)
+3 - qspi (0x44a00000)
+4 - uart16550 (0x44a10000)
+5 - emaclite (0x40e00000)
+6 - timer2 (0x41c10000)
+7 - axi emac (0x40c00000)
+8 - axi dma (0x41e00000)
+9 - axi dma
+10 - gpio (0x40000000)
+11 - gpio2 (0x40010000)
+12 - gpio3 (0x40020000)
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 Signed-off-by: Michal Simek <michal.simek@amd.com>
 ---
- hw/net/xilinx_ethlite.c | 240 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 240 insertions(+)
+ MAINTAINERS                             |   6 +
+ docs/system/riscv/microblaze-v-virt.rst |  39 +++++
+ hw/riscv/microblaze-v-virt.c            | 182 ++++++++++++++++++++++++
+ hw/riscv/Kconfig                        |   8 ++
+ hw/riscv/meson.build                    |   1 +
+ 5 files changed, 236 insertions(+)
+ create mode 100644 docs/system/riscv/microblaze-v-virt.rst
+ create mode 100644 hw/riscv/microblaze-v-virt.c
 
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index bd812908085..5b129ca7e4e 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -56,6 +56,215 @@
- DECLARE_INSTANCE_CHECKER(struct xlx_ethlite, XILINX_ETHLITE,
-                          TYPE_XILINX_ETHLITE)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d7a11fe6017..b104b6d0f7f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1274,6 +1274,12 @@ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+ S: Maintained
+ F: hw/microblaze/petalogix_ml605_mmu.c
  
-+#define R_MDIOADDR (0x07E4 / 4)  /* MDIO Address Register */
-+#define R_MDIOWR (0x07E8 / 4)    /* MDIO Write Data Register */
-+#define R_MDIORD (0x07EC / 4)    /* MDIO Read Data Register */
-+#define R_MDIOCTRL (0x07F0 / 4)  /* MDIO Control Register */
++amd-microblaze-v-virt
++M: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
++S: Maintained
++F: hw/riscv/microblaze-v-virt.c
++F: docs/system/riscv/microblaze-v-virt.rst
 +
-+/* MDIO Address Register Bit Masks */
-+#define R_MDIOADDR_REGADR_MASK  0x0000001F  /* Register Address */
-+#define R_MDIOADDR_PHYADR_MASK  0x000003E0  /* PHY Address */
-+#define R_MDIOADDR_PHYADR_SHIFT 5
-+#define R_MDIOADDR_OP_MASK      0x00000400    /* RD/WR Operation */
+ MIPS Machines
+ -------------
+ Overall MIPS Machines
+diff --git a/docs/system/riscv/microblaze-v-virt.rst b/docs/system/riscv/microblaze-v-virt.rst
+new file mode 100644
+index 00000000000..42cac9ac475
+--- /dev/null
++++ b/docs/system/riscv/microblaze-v-virt.rst
+@@ -0,0 +1,39 @@
++microblaze-v virt board (``amd-microblaze-v-virt``)
++===================================================
++The AMD MicroBlaze™ V processor is a soft-core RISC-V processor IP for AMD adaptive SoCs and FPGAs.
++The MicroBlaze V processor is based on a 32-bit RISC-V instruction set architecture (ISA).
 +
-+/* MDIO Write Data Register Bit Masks */
-+#define R_MDIOWR_WRDATA_MASK    0x0000FFFF /* Data to be Written */
++More details here:
++https://docs.amd.com/r/en-US/ug1629-microblaze-v-user-guide/MicroBlaze-V-Architecture
 +
-+/* MDIO Read Data Register Bit Masks */
-+#define R_MDIORD_RDDATA_MASK    0x0000FFFF /* Data to be Read */
++The microblaze-v virt board in QEMU is a virtual board with
++following supported devices
 +
-+/* MDIO Control Register Bit Masks */
-+#define R_MDIOCTRL_MDIOSTS_MASK 0x00000001   /* MDIO Status Mask */
-+#define R_MDIOCTRL_MDIOEN_MASK  0x00000008   /* MDIO Enable */
++Implemented CPU cores:
 +
-+/* Advertisement control register. */
-+#define ADVERTISE_10HALF        0x0020  /* Try for 10mbps half-duplex  */
-+#define ADVERTISE_10FULL        0x0040  /* Try for 10mbps full-duplex  */
-+#define ADVERTISE_100HALF       0x0080  /* Try for 100mbps half-duplex */
-+#define ADVERTISE_100FULL       0x0100  /* Try for 100mbps full-duplex */
++1 RISCV32 core
 +
-+#define DPHY(x)
++Implemented devices:
 +
-+struct PHY {
-+    uint32_t regs[32];
++    - timer
++    - uartlite
++    - uart16550
++    - emaclite
++    - timer2
++    - axi emac
++    - axi dma
 +
-+    int link;
++Running
++"""""""
++Running U-boot
 +
-+    unsigned int (*read)(struct PHY *phy, unsigned int req);
-+    void (*write)(struct PHY *phy, unsigned int req,
-+                  unsigned int data);
-+};
++.. code-block:: bash
 +
-+static unsigned int tdk_read(struct PHY *phy, unsigned int req)
++
++   $ qemu-system-riscv32 -M amd-microblaze-v-virt \
++     -display none \
++     -device loader,addr=0x80000000,file=u-boot-spl.bin,cpu-num=0 \
++     -device loader,addr=0x80200000,file=u-boot.img \
++     -serial mon:stdio \
++     -device loader,addr=0x83000000,file=system.dtb \
++     -m 2g
+diff --git a/hw/riscv/microblaze-v-virt.c b/hw/riscv/microblaze-v-virt.c
+new file mode 100644
+index 00000000000..d9cdfe39857
+--- /dev/null
++++ b/hw/riscv/microblaze-v-virt.c
+@@ -0,0 +1,182 @@
++/*
++ * QEMU model of Microblaze V (32bit version)
++ *
++ * based on hw/microblaze/petalogix_ml605_mmu.c
++ *
++ * Copyright (c) 2011 Michal Simek <monstr@monstr.eu>
++ * Copyright (c) 2011 PetaLogix
++ * Copyright (c) 2009 Edgar E. Iglesias.
++ * Copyright (C) 2024, Advanced Micro Devices, Inc.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Written by Sai Pavan Boddu <sai.pavan.boddu@amd.com>
++ *     and by Michal Simek <michal.simek@amd.com>.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/units.h"
++#include "qapi/error.h"
++#include "cpu.h"
++#include "hw/sysbus.h"
++#include "sysemu/sysemu.h"
++#include "net/net.h"
++#include "hw/boards.h"
++#include "hw/char/serial-mm.h"
++#include "exec/address-spaces.h"
++#include "hw/char/xilinx_uartlite.h"
++#include "hw/misc/unimp.h"
++
++#define LMB_BRAM_SIZE (128 * KiB)
++#define MEMORY_BASEADDR 0x80000000
++#define INTC_BASEADDR 0x41200000
++#define TIMER_BASEADDR 0x41c00000
++#define TIMER_BASEADDR2 0x41c10000
++#define UARTLITE_BASEADDR 0x40600000
++#define ETHLITE_BASEADDR 0x40e00000
++#define UART16550_BASEADDR 0x44a10000
++#define AXIENET_BASEADDR 0x40c00000
++#define AXIDMA_BASEADDR 0x41e00000
++#define GPIO_BASEADDR 0x40000000
++#define GPIO_BASEADDR2 0x40010000
++#define GPIO_BASEADDR3 0x40020000
++#define I2C_BASEADDR 0x40800000
++#define QSPI_BASEADDR 0x44a00000
++
++#define TIMER_IRQ           0
++#define UARTLITE_IRQ        1
++#define UART16550_IRQ       4
++#define ETHLITE_IRQ         5
++#define TIMER_IRQ2          6
++#define AXIENET_IRQ         7
++#define AXIDMA_IRQ1         8
++#define AXIDMA_IRQ0         9
++
++static void mb_v_virt_init(MachineState *machine)
 +{
-+    int regnum;
-+    unsigned r = 0;
++    ram_addr_t ram_size = machine->ram_size;
++    DeviceState *dev, *dma, *eth0;
++    Object *ds, *cs;
++    int i;
++    RISCVCPU *cpu;
++    hwaddr ddr_base = MEMORY_BASEADDR;
++    MemoryRegion *phys_lmb_bram = g_new(MemoryRegion, 1);
++    MemoryRegion *phys_ram = g_new(MemoryRegion, 1);
++    qemu_irq irq[32];
++    MemoryRegion *sysmem = get_system_memory();
 +
-+    regnum = req & 0x1f;
++    cpu = RISCV_CPU(object_new(TYPE_RISCV_CPU_BASE32));
++    object_property_set_bool(OBJECT(cpu), "i", true, NULL);
++    object_property_set_bool(OBJECT(cpu), "m", true, NULL);
++    object_property_set_bool(OBJECT(cpu), "a", true, NULL);
++    object_property_set_bool(OBJECT(cpu), "c", true, NULL);
++    qdev_realize(DEVICE(cpu), NULL, &error_abort);
++    /* Attach emulated BRAM through the LMB.  */
++    memory_region_init_ram(phys_lmb_bram, NULL,
++                           "mb_v.lmb_bram", LMB_BRAM_SIZE,
++                           &error_fatal);
++    memory_region_add_subregion(sysmem, 0x00000000, phys_lmb_bram);
 +
-+    switch (regnum) {
-+    case 1:
-+        if (!phy->link) {
-+            break;
-+        }
-+        /* MR1.  */
-+        /* Speeds and modes.  */
-+        r |= (1 << 13) | (1 << 14);
-+        r |= (1 << 11) | (1 << 12);
-+        r |= (1 << 5); /* Autoneg complete.  */
-+        r |= (1 << 3); /* Autoneg able.  */
-+        r |= (1 << 2); /* link.  */
-+        r |= (1 << 1); /* link.  */
-+        break;
-+    case 5:
-+        /*
-+         * Link partner ability.
-+         * We are kind; always agree with whatever best mode
-+         * the guest advertises.
-+         */
-+        r = 1 << 14; /* Success.  */
-+        /* Copy advertised modes.  */
-+        r |= phy->regs[4] & (15 << 5);
-+        /* Autoneg support.  */
-+        r |= 1;
-+        break;
-+    case 17:
-+        /* Marvel PHY on many xilinx boards.  */
-+        r = 0x4c00; /* 100Mb  */
-+        break;
-+    case 18:
-+        {
-+            /* Diagnostics reg.  */
-+            int duplex = 0;
-+            int speed_100 = 0;
-+            if (!phy->link) {
-+                break;
-+            }
-+            /* Are we advertising 100 half or 100 duplex ? */
-+            speed_100 = !!(phy->regs[4] & ADVERTISE_100HALF);
-+            speed_100 |= !!(phy->regs[4] & ADVERTISE_100FULL);
-+            /* Are we advertising 10 duplex or 100 duplex ? */
-+            duplex = !!(phy->regs[4] & ADVERTISE_100FULL);
-+            duplex |= !!(phy->regs[4] & ADVERTISE_10FULL);
-+            r = (speed_100 << 10) | (duplex << 11);
-+        }
-+        break;
++    memory_region_init_ram(phys_ram, NULL, "mb_v.ram",
++                           ram_size, &error_fatal);
++    memory_region_add_subregion(sysmem, ddr_base, phys_ram);
 +
-+    default:
-+        r = phy->regs[regnum];
-+        break;
++    dev = qdev_new("xlnx.xps-intc");
++    qdev_prop_set_uint32(dev, "kind-of-intr",
++                         1 << UARTLITE_IRQ);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, INTC_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
++                       qdev_get_gpio_in(DEVICE(cpu), 11));
++    for (i = 0; i < 32; i++) {
++        irq[i] = qdev_get_gpio_in(dev, i);
 +    }
-+    DPHY(qemu_log("\n%s %x = reg[%d]\n", __func__, r, regnum));
-+    return r;
++
++    /* Uartlite */
++    dev = qdev_new(TYPE_XILINX_UARTLITE);
++    qdev_prop_set_chr(dev, "chardev", serial_hd(0));
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, UARTLITE_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[UARTLITE_IRQ]);
++
++    /* Full uart */
++    serial_mm_init(sysmem, UART16550_BASEADDR + 0x1000, 2,
++                   irq[UART16550_IRQ], 115200, serial_hd(1),
++                   DEVICE_LITTLE_ENDIAN);
++
++    /* 2 timers at irq 0 @ 100 Mhz.  */
++    dev = qdev_new("xlnx.xps-timer");
++    qdev_prop_set_uint32(dev, "one-timer-only", 0);
++    qdev_prop_set_uint32(dev, "clock-frequency", 100000000);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, TIMER_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
++
++    /* 2 timers at irq 3 @ 100 Mhz.  */
++    dev = qdev_new("xlnx.xps-timer");
++    qdev_prop_set_uint32(dev, "one-timer-only", 0);
++    qdev_prop_set_uint32(dev, "clock-frequency", 100000000);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, TIMER_BASEADDR2);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ2]);
++
++    /* Emaclite */
++    dev = qdev_new("xlnx.xps-ethernetlite");
++    qemu_configure_nic_device(dev, true, NULL);
++    qdev_prop_set_uint32(dev, "tx-ping-pong", 0);
++    qdev_prop_set_uint32(dev, "rx-ping-pong", 0);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, ETHLITE_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[ETHLITE_IRQ]);
++
++    /* axi ethernet and dma initialization. */
++    eth0 = qdev_new("xlnx.axi-ethernet");
++    dma = qdev_new("xlnx.axi-dma");
++
++    /* FIXME: attach to the sysbus instead */
++    object_property_add_child(qdev_get_machine(), "xilinx-eth", OBJECT(eth0));
++    object_property_add_child(qdev_get_machine(), "xilinx-dma", OBJECT(dma));
++
++    ds = object_property_get_link(OBJECT(dma),
++                                  "axistream-connected-target", NULL);
++    cs = object_property_get_link(OBJECT(dma),
++                                  "axistream-control-connected-target", NULL);
++    qemu_configure_nic_device(eth0, true, NULL);
++    qdev_prop_set_uint32(eth0, "rxmem", 0x1000);
++    qdev_prop_set_uint32(eth0, "txmem", 0x1000);
++    object_property_set_link(OBJECT(eth0), "axistream-connected", ds,
++                             &error_abort);
++    object_property_set_link(OBJECT(eth0), "axistream-control-connected", cs,
++                             &error_abort);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(eth0), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(eth0), 0, AXIENET_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(eth0), 0, irq[AXIENET_IRQ]);
++
++    ds = object_property_get_link(OBJECT(eth0),
++                                  "axistream-connected-target", NULL);
++    cs = object_property_get_link(OBJECT(eth0),
++                                  "axistream-control-connected-target", NULL);
++    qdev_prop_set_uint32(dma, "freqhz", 100000000);
++    object_property_set_link(OBJECT(dma), "axistream-connected", ds,
++                             &error_abort);
++    object_property_set_link(OBJECT(dma), "axistream-control-connected", cs,
++                             &error_abort);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dma), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dma), 0, AXIDMA_BASEADDR);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dma), 0, irq[AXIDMA_IRQ0]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dma), 1, irq[AXIDMA_IRQ1]);
++
++    /* unimplemented devices */
++    create_unimplemented_device("gpio", GPIO_BASEADDR, 0x10000);
++    create_unimplemented_device("gpio2", GPIO_BASEADDR2, 0x10000);
++    create_unimplemented_device("gpio3", GPIO_BASEADDR3, 0x10000);
++    create_unimplemented_device("i2c", I2C_BASEADDR, 0x10000);
++    create_unimplemented_device("qspi", QSPI_BASEADDR, 0x10000);
 +}
 +
-+static void
-+tdk_write(struct PHY *phy, unsigned int req, unsigned int data)
++static void mb_v_virt_machine_init(MachineClass *mc)
 +{
-+    int regnum;
-+
-+    regnum = req & 0x1f;
-+    DPHY(qemu_log("%s reg[%d] = %x\n", __func__, regnum, data));
-+    switch (regnum) {
-+    default:
-+        phy->regs[regnum] = data;
-+        break;
-+    }
-+
-+    /* Unconditionally clear regs[BMCR][BMCR_RESET] */
-+    phy->regs[0] &= ~0x8000;
++    mc->desc = "AMD Microblaze-V Virt platform";
++    mc->init = mb_v_virt_init;
++    mc->is_default = true;
 +}
 +
-+static void
-+tdk_init(struct PHY *phy)
-+{
-+    phy->regs[0] = 0x3100;
-+    /* PHY Id.  */
-+    phy->regs[2] = 0x0141;
-+    phy->regs[3] = 0x0cc2;
-+    /* Autonegotiation advertisement reg.  */
-+    phy->regs[4] = 0x01E1;
-+    phy->link = 1;
-+
-+    phy->read = tdk_read;
-+    phy->write = tdk_write;
-+}
-+
-+struct MDIOBus {
-+    /* bus.  */
-+    int mdc;
-+    int mdio;
-+
-+    /* decoder.  */
-+    enum {
-+        PREAMBLE,
-+        SOF,
-+        OPC,
-+        ADDR,
-+        REQ,
-+        TURNAROUND,
-+        DATA
-+    } state;
-+    unsigned int drive;
-+
-+    unsigned int cnt;
-+    unsigned int addr;
-+    unsigned int opc;
-+    unsigned int req;
-+    unsigned int data;
-+
-+    struct PHY *devs[32];
-+};
-+
-+static void
-+mdio_attach(struct MDIOBus *bus, struct PHY *phy, unsigned int addr)
-+{
-+    bus->devs[addr & 0x1f] = phy;
-+}
-+
-+#ifdef USE_THIS_DEAD_CODE
-+static void
-+mdio_detach(struct MDIOBus *bus, struct PHY *phy, unsigned int addr)
-+{
-+    bus->devs[addr & 0x1f] = NULL;
-+}
-+#endif
-+
-+static uint16_t mdio_read_req(struct MDIOBus *bus, unsigned int addr,
-+                  unsigned int reg)
-+{
-+    struct PHY *phy;
-+    uint16_t data;
-+
-+    phy = bus->devs[addr];
-+    if (phy && phy->read) {
-+        data = phy->read(phy, reg);
-+    } else {
-+        data = 0xffff;
-+    }
-+    DPHY(qemu_log("%s addr=%d reg=%d data=%x\n", __func__, addr, reg, data));
-+    return data;
-+}
-+
-+static void mdio_write_req(struct MDIOBus *bus, unsigned int addr,
-+               unsigned int reg, uint16_t data)
-+{
-+    struct PHY *phy;
-+
-+    DPHY(qemu_log("%s addr=%d reg=%d data=%x\n", __func__, addr, reg, data));
-+    phy = bus->devs[addr];
-+    if (phy && phy->write) {
-+        phy->write(phy, reg, data);
-+    }
-+}
-+
-+struct TEMAC  {
-+    struct MDIOBus mdio_bus;
-+    struct PHY phy;
-+
-+    void *parent;
-+};
-+
- struct xlx_ethlite
- {
-     SysBusDevice parent_obj;
-@@ -70,6 +279,9 @@ struct xlx_ethlite
-     unsigned int txbuf;
-     unsigned int rxbuf;
++DEFINE_MACHINE("amd-microblaze-v-virt", mb_v_virt_machine_init)
+diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+index 44695ff9f2c..5424803a82e 100644
+--- a/hw/riscv/Kconfig
++++ b/hw/riscv/Kconfig
+@@ -22,6 +22,14 @@ config MICROCHIP_PFSOC
+     select SIFIVE_PLIC
+     select UNIMP
  
-+uint32_t c_phyaddr;
-+    struct TEMAC TEMAC;
++config MICROBLAZE_V
++    bool
++    default y
++    depends on RISCV32
++    select XILINX
++    select XILINX_AXI
++    select XILINX_ETHLITE
 +
-     uint32_t regs[R_MAX];
- };
+ config OPENTITAN
+     bool
+     default y
+diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
+index f872674093a..8ea0412a376 100644
+--- a/hw/riscv/meson.build
++++ b/hw/riscv/meson.build
+@@ -10,5 +10,6 @@ riscv_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('sifive_u.c'))
+ riscv_ss.add(when: 'CONFIG_SPIKE', if_true: files('spike.c'))
+ riscv_ss.add(when: 'CONFIG_MICROCHIP_PFSOC', if_true: files('microchip_pfsoc.c'))
+ riscv_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
++riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-virt.c'))
  
-@@ -101,11 +313,15 @@ eth_read(void *opaque, hwaddr addr, unsigned int size)
-             r = s->regs[addr];
-             D(qemu_log("%s " HWADDR_FMT_plx "=%x\n", __func__, addr * 4, r));
-             break;
-+        case R_MDIOCTRL:
-+            r = s->regs[addr] & (~R_MDIOCTRL_MDIOSTS_MASK); /* Always ready.  */
-+            break;
- 
-         default:
-             r = tswap32(s->regs[addr]);
-             break;
-     }
-+    D(qemu_log("%s " HWADDR_FMT_plx "=%x\n", __func__, addr * 4, r));
-     return r;
- }
- 
-@@ -159,6 +375,26 @@ eth_write(void *opaque, hwaddr addr,
-                        __func__, addr * 4, value));
-             s->regs[addr] = value;
-             break;
-+        case R_MDIOCTRL:
-+            if (((unsigned int)value & R_MDIOCTRL_MDIOSTS_MASK) != 0) {
-+                struct TEMAC *t = &s->TEMAC;
-+                unsigned int op = s->regs[R_MDIOADDR] & R_MDIOADDR_OP_MASK;
-+                unsigned int phyaddr = (s->regs[R_MDIOADDR] &
-+                    R_MDIOADDR_PHYADR_MASK) >> R_MDIOADDR_PHYADR_SHIFT;
-+                unsigned int regaddr = s->regs[R_MDIOADDR] &
-+                    R_MDIOADDR_REGADR_MASK;
-+                if (op) {
-+                    /* read PHY registers */
-+                    s->regs[R_MDIORD] = mdio_read_req(
-+                        &t->mdio_bus, phyaddr, regaddr);
-+                } else {
-+                    /* write PHY registers */
-+                    mdio_write_req(&t->mdio_bus, phyaddr, regaddr,
-+                        s->regs[R_MDIOWR]);
-+                }
-+            }
-+            s->regs[addr] = value;
-+            break;
- 
-         default:
-             s->regs[addr] = tswap32(value);
-@@ -238,6 +474,9 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-                           object_get_typename(OBJECT(dev)), dev->id,
-                           &dev->mem_reentrancy_guard, s);
-     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
-+
-+    tdk_init(&s->TEMAC.phy);
-+    mdio_attach(&s->TEMAC.mdio_bus, &s->TEMAC.phy, s->c_phyaddr);
- }
- 
- static void xilinx_ethlite_init(Object *obj)
-@@ -252,6 +491,7 @@ static void xilinx_ethlite_init(Object *obj)
- }
- 
- static Property xilinx_ethlite_properties[] = {
-+    DEFINE_PROP_UINT32("phyaddr", struct xlx_ethlite, c_phyaddr, 7),
-     DEFINE_PROP_UINT32("tx-ping-pong", struct xlx_ethlite, c_tx_pingpong, 1),
-     DEFINE_PROP_UINT32("rx-ping-pong", struct xlx_ethlite, c_rx_pingpong, 1),
-     DEFINE_NIC_PROPERTIES(struct xlx_ethlite, conf),
+ hw_arch += {'riscv': riscv_ss}
 -- 
 2.34.1
 
