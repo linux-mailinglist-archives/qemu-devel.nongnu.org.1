@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0175E99EF53
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CD299EF49
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iN5-0005rU-UD; Tue, 15 Oct 2024 10:18:00 -0400
+	id 1t0iMx-0005f1-Uh; Tue, 15 Oct 2024 10:17:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iN1-0005me-Ny
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t0iMj-0005Zj-4T
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iMi-0003Iq-Eb
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:37 -0400
+ id 1t0iMh-0003Id-Dc
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001855;
+ s=mimecast20190719; t=1729001854;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y+sWyoWzl7OLbzMSWkeo43oPGLPNthU9tY/ZPrpiBTU=;
- b=i8Vxy/hbR4dJncsFVvaaYTgfmvxVpWb3gJTq0CIaxtu8EpjMrxjCzPRlinriq0Jw26aJeE
- zX4ZfI+0VnYgG1JxRngUIPdJ+/RUdci7i/1+Xq6TJ7ELZvU52DeHO2tbHDFBJ3hDER2v9d
- uFmcwM8KpvyYRKGuTP1Wx04zyxmiOS0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7mCbkqnavCwlsR7zpYlSM7glzfmtMNxLyPCch+Pjdqc=;
+ b=XxDYkrqJCfp8IH9OmfC8+o5EW38FQTwZg3WKORzNdYSnPmLfX8/ksZMhfVLN5r2OrKO38z
+ Q8k1NWxEc6xy7fuNPNIDxubMLYJ05GycJic+Jd7ID1/+y/hvt++O/+ZWyp5iD0weUZ3cSo
+ AFFyXUNGoVnRruRBc7qx3uTH4Q7E/pA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-1qIxDB9iOOanH-HLxoJ2pA-1; Tue, 15 Oct 2024 10:17:30 -0400
-X-MC-Unique: 1qIxDB9iOOanH-HLxoJ2pA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d3e8dccc9so2724190f8f.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:17:30 -0700 (PDT)
+ us-mta-646-dS89bwXvPZyhoKcwdjrsKA-1; Tue, 15 Oct 2024 10:17:33 -0400
+X-MC-Unique: dS89bwXvPZyhoKcwdjrsKA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43113dab986so47944305e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:17:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001848; x=1729606648;
+ d=1e100.net; s=20230601; t=1729001851; x=1729606651;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y+sWyoWzl7OLbzMSWkeo43oPGLPNthU9tY/ZPrpiBTU=;
- b=PdLSMvpXM/5j2R49DysqjLXZ4s83CI0cuJb6/V7o51RKN/yZFX3XJNJKKWMK71FJp3
- dqwD7Ehvb5IhzTkinHUWAirwWOhyAFQtZWRqNmn56xGlB4bn9ltqL9H96CFiWMxlCiWH
- wu4s1xO1Fwn8Dd4xyfZzZxKqJ0sGX5hZ/ZUwCBE06Li3iqJ4dXkLXfF3LjqYYViQyy3j
- /3IhDTmDA/AMYlmKkh1lBflIFAfT5xNP1wVnA6soDtDo9Jei9vYl44j+8it3pdXFth+E
- AVJcLzILSyrxRNG1p9ozA6lsfqtu+dsjfThyyGsnqi6HMFAXAq5hMM0OzUVpIRxzzcrN
- XIIQ==
-X-Gm-Message-State: AOJu0YzInqEWHyu4NhH1RrR4zd8WMYJ1CB7h0E6nFFvnqsruCgUp1q7N
- Pb1KqqShpiSVKJCqZ8v8aWCMiSFQiynXLGTQJIP+b52vMKRP6aknopRyy5fBsNXrxHQ7J557Zjp
- FDGqolsSMo3woRQL4Yq16S3ePbEmvnyPzbZHo1tumV5EW5QXD2+Z5t4lWnL2Ydyx349y/EeaC2S
- 9vZqTyrrqcqFqwQy/Af7bEQIoNVPLLNBGqsiqAQMs=
-X-Received: by 2002:a05:6000:e52:b0:37d:50e1:a2c1 with SMTP id
- ffacd0b85a97d-37d5529d2d2mr10586691f8f.46.1729001848608; 
- Tue, 15 Oct 2024 07:17:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFHn98+33rhfygEHkkLOjgan1wXMqLK5zIkFNwnGiub6p1TsXgecO5xnXaS4Ld0kpgIk0mO2g==
-X-Received: by 2002:a05:6000:e52:b0:37d:50e1:a2c1 with SMTP id
- ffacd0b85a97d-37d5529d2d2mr10586670f8f.46.1729001848118; 
- Tue, 15 Oct 2024 07:17:28 -0700 (PDT)
+ bh=7mCbkqnavCwlsR7zpYlSM7glzfmtMNxLyPCch+Pjdqc=;
+ b=oInlvIHWMkLgLbsIIplJ0JaqxJK1GuagvJ4ohpDiJygKInutFV2c9BNxSB642uCGMY
+ 4hfFEPGxQSWb6/cPjHHZXhDU00FjtwUFx5GinJYy1KNf1WXf7RrFCxvgiwIw6mb/JkJU
+ og2eiZx8U/pTEhXqrVJ+E+UGtHkxcwygidYOEFtK2qxQrmqoD0/QGmyuZqSbJdA+Hw7V
+ HCBJUPZ5kPZWw8eWdvTcDVvrdvGJ7YabIs8jKYZJpUpdPQP/A1O4EwQvU57ydfcvWIdy
+ ckTSG7cZvNIbaOOD3I/YXTZIMtz1p0aqEqhd6QVTzn8Xk5HVhLHFs0oAf9QAM4liDgpU
+ Afrg==
+X-Gm-Message-State: AOJu0YwoNt4M8iAcpZ4Ld+scAOZVr2u99ZAvcZb3ovpfbC4dHqm1SNGl
+ hd1wMI2C3dUFDSRUNG4MILTJtroE2VUTGVKBEo68/kTjkVONyLIqT1jdkDvJdAUPUTJy1WNxP2y
+ A6i7bbHf8X5wIi6xqoohu9hYuH/yCJbQB/4v1hHmfDuOsit3LGyEyN6mtK/GeZa5v2Uv69xp042
+ qbK/aAfGEVCtzV3bcEK3QCgj/OpxUYLI2efOreLeU=
+X-Received: by 2002:a05:600c:c15:b0:42f:6878:a683 with SMTP id
+ 5b1f17b1804b1-43125607853mr128479105e9.22.1729001851534; 
+ Tue, 15 Oct 2024 07:17:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGUsIt7B3QWxyESwg2EYrsMLygHfkaByJ68+EB6jpYJNd4wR9w2zX8Qn24H/R97UGr2sktxA==
+X-Received: by 2002:a05:600c:c15:b0:42f:6878:a683 with SMTP id
+ 5b1f17b1804b1-43125607853mr128478795e9.22.1729001851071; 
+ Tue, 15 Oct 2024 07:17:31 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a23csm1705482f8f.18.2024.10.15.07.17.27
+ 5b1f17b1804b1-4313f55e002sm19499725e9.10.2024.10.15.07.17.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:17:27 -0700 (PDT)
+ Tue, 15 Oct 2024 07:17:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 04/25] target/i386: Make invtsc migratable when user sets
- tsc-khz explicitly
-Date: Tue, 15 Oct 2024 16:16:50 +0200
-Message-ID: <20241015141711.528342-5-pbonzini@redhat.com>
+Cc: Chao Gao <chao.gao@intel.com>
+Subject: [PULL 05/25] target/i386: Add more features enumerated by
+ CPUID.7.2.EDX
+Date: Tue, 15 Oct 2024 16:16:51 +0200
+Message-ID: <20241015141711.528342-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,60 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Chao Gao <chao.gao@intel.com>
 
-When user sets tsc-frequency explicitly, the invtsc feature is actually
-migratable because the tsc-frequency is supposed to be fixed during the
-migration.
+Following 5 bits in CPUID.7.2.EDX are supported by KVM. Add their
+supports in QEMU. Each of them indicates certain bits of IA32_SPEC_CTRL
+are supported. Those bits can control CPU speculation behavior which can
+be used to defend against side-channel attacks.
 
-See commit d99569d9d856 ("kvm: Allow invtsc migration if tsc-khz
-is set explicitly") for referrence.
+bit0: intel-psfd
+  if 1, indicates bit 7 of the IA32_SPEC_CTRL MSR is supported. Bit 7 of
+  this MSR disables Fast Store Forwarding Predictor without disabling
+  Speculative Store Bypass
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20240814075431.339209-10-xiaoyao.li@intel.com
+bit1: ipred-ctrl
+  If 1, indicates bits 3 and 4 of the IA32_SPEC_CTRL MSR are supported.
+  Bit 3 of this MSR enables IPRED_DIS control for CPL3. Bit 4 of this
+  MSR enables IPRED_DIS control for CPL0/1/2
+
+bit2: rrsba-ctrl
+  If 1, indicates bits 5 and 6 of the IA32_SPEC_CTRL MSR are supported.
+  Bit 5 of this MSR disables RRSBA behavior for CPL3. Bit 6 of this MSR
+  disables RRSBA behavior for CPL0/1/2
+
+bit3: ddpd-u
+  If 1, indicates bit 8 of the IA32_SPEC_CTRL MSR is supported. Bit 8 of
+  this MSR disables Data Dependent Prefetcher.
+
+bit4: bhi-ctrl
+  if 1, indicates bit 10 of the IA32_SPEC_CTRL MSR is supported. Bit 10
+  of this MSR enables BHI_DIS_S behavior.
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20240919051011.118309-1-chao.gao@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 089b651591b..5535f4e6ab4 100644
+index 5535f4e6ab4..9a6b9e9e51b 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1865,9 +1865,10 @@ static inline uint64_t x86_cpu_xsave_xss_components(X86CPU *cpu)
-  * Returns the set of feature flags that are supported and migratable by
-  * QEMU, for a given FeatureWord.
-  */
--static uint64_t x86_cpu_get_migratable_flags(FeatureWord w)
-+static uint64_t x86_cpu_get_migratable_flags(X86CPU *cpu, FeatureWord w)
- {
-     FeatureWordInfo *wi = &feature_word_info[w];
-+    CPUX86State *env = &cpu->env;
-     uint64_t r = 0;
-     int i;
- 
-@@ -1881,6 +1882,12 @@ static uint64_t x86_cpu_get_migratable_flags(FeatureWord w)
-             r |= f;
-         }
-     }
-+
-+    /* when tsc-khz is set explicitly, invtsc is migratable */
-+    if ((w == FEAT_8000_0007_EDX) && env->user_tsc_khz) {
-+        r |= CPUID_APM_INVTSC;
-+    }
-+
-     return r;
- }
- 
-@@ -6124,7 +6131,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
- 
-     r &= ~unavail;
-     if (cpu && cpu->migratable) {
--        r &= x86_cpu_get_migratable_flags(w);
-+        r &= x86_cpu_get_migratable_flags(cpu, w);
-     }
-     return r;
- }
+@@ -1148,8 +1148,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+     [FEAT_7_2_EDX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, "mcdt-no", NULL, NULL,
++            "intel-psfd", "ipred-ctrl", "rrsba-ctrl", "ddpd-u",
++            "bhi-ctrl", "mcdt-no", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 -- 
 2.46.2
 
