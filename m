@@ -2,103 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2482E99FAD1
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 00:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB4E99FADE
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 00:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0pdG-0003Mc-CR; Tue, 15 Oct 2024 18:03:10 -0400
+	id 1t0pfb-0004ms-Jb; Tue, 15 Oct 2024 18:05:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t0pdC-0003MO-HN
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 18:03:06 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1t0pfY-0004mX-Gu
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 18:05:32 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t0pdA-0005or-Nv
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 18:03:06 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 3842B1F841;
- Tue, 15 Oct 2024 22:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729029781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WmEljaesCAXSFWxoaR8mZa0GWiXqX7BqAA+QEOqqOKE=;
- b=mPM4avsl29SU8gKJem7LRoPm5n6CYzOESVj4pYIdPI7aQbbNhFdljO1C40NKG0qv9lBr7L
- 5ib8tbeFh0kdkEMxRZ9z8MTNOkJWQLQe1y1vHwy/FucRuTYjhGBc+ARjWtI34LcRBXWqp+
- aqCnXRh1kGXRnxKmHfgkzo54/t/s/8k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729029781;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WmEljaesCAXSFWxoaR8mZa0GWiXqX7BqAA+QEOqqOKE=;
- b=xbUpawxTZSudzu1Qwvhnm7RJ/lzNlA4JClxBC/vm2Gpl0DvifzHP+AxrATHOV7KZdS24w5
- ijy/HWEySAudHpDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729029781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WmEljaesCAXSFWxoaR8mZa0GWiXqX7BqAA+QEOqqOKE=;
- b=mPM4avsl29SU8gKJem7LRoPm5n6CYzOESVj4pYIdPI7aQbbNhFdljO1C40NKG0qv9lBr7L
- 5ib8tbeFh0kdkEMxRZ9z8MTNOkJWQLQe1y1vHwy/FucRuTYjhGBc+ARjWtI34LcRBXWqp+
- aqCnXRh1kGXRnxKmHfgkzo54/t/s/8k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729029781;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WmEljaesCAXSFWxoaR8mZa0GWiXqX7BqAA+QEOqqOKE=;
- b=xbUpawxTZSudzu1Qwvhnm7RJ/lzNlA4JClxBC/vm2Gpl0DvifzHP+AxrATHOV7KZdS24w5
- ijy/HWEySAudHpDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA64713A53;
- Tue, 15 Oct 2024 22:03:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id RGpVHJTmDmdOBAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 15 Oct 2024 22:03:00 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: Re: tpm-tis-device-swtpm-test timeout
-In-Reply-To: <d9b18dc6-994b-4fdb-8f6c-5cb9bd11eb64@linux.ibm.com>
-References: <87jze9qlrp.fsf@suse.de>
- <077cee03-efd0-4716-865a-b9990afb91a3@linux.ibm.com>
- <87h69dqigg.fsf@suse.de>
- <865424c1-f79c-44ad-b70f-8bf3e455e025@linux.ibm.com>
- <87ed4hqgvl.fsf@suse.de>
- <d9b18dc6-994b-4fdb-8f6c-5cb9bd11eb64@linux.ibm.com>
-Date: Tue, 15 Oct 2024 19:02:58 -0300
-Message-ID: <87ed4hgh2l.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1t0pfW-0006NF-H0
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 18:05:32 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-6e3a97a6010so25415157b3.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 15:05:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1729029929; x=1729634729; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=B6ao+1lr+NlCNFROx1SFZxEJrgWLdXXe4yefsv9G2BY=;
+ b=DWpUlhRX0MdeD7IYYZCwS4aSA+LihDGw9yzFPBJaxmO5xM62wSzE5IJE+eZdzr9srY
+ 8r3DHy+3fnkefqdF5rGPdIPpPuaFbJdUqlg4PBbe5mCNJdkOCkaK1dhUXWjE0pCLqABQ
+ jfaz8r1QBZO+mkjXN3MSdAR2GOt2Q8bb0VpfU7bev3OgC+d2ZICkdb0XXWBcVELiKgeo
+ rEIYZnYR2RYQL12sARI2nGtXT2FYmqXZWzrrvBdMLmzVaIvbkmBmJeI4AyZH5h8iOGED
+ w+ljxQjbxN6BXOxxVc6dOgzD73cDMSOdCVYX9n9U3vTUByfsn91Ax+2J95qZdtOquw4z
+ hljA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729029929; x=1729634729;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B6ao+1lr+NlCNFROx1SFZxEJrgWLdXXe4yefsv9G2BY=;
+ b=GBMjcheUJ5b+vQt4FIH816INh26/4uL5JcI7O6ONYgqAMj9vXrM+LcG9lTbzqBDpiI
+ U+U/c33VdhEfB0Ihv9kvb8D1Uj+rYMe+kTeY46/4RUJguFRDDgXrQP4kzuwj1MaII1/X
+ CE0wsoJZ/TZ2e+lh7Bt+cKH9b+9zn9zaizXksA9dbnry7uJ/2dHoz1qkzRU5GD58FybZ
+ Muk5wTByBG4GUO4L5Iu28g5/vgVq60VfBryKHMd0FltBlN+rKHtXelHwfvyTRqlVqaXX
+ 1BWEmTmmgwqfp/Q4vfOdnWqQJqbJuMNhoW02iykub8NZcahZw/ii5/m1H9is03xOeCea
+ DWkw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFyy1dUuaGeRRhoeKySkT81jDQ+MdWLsU95bt/QGeIILNOAPonqLZxzMrrtb5ZzCGUJDwB0Xz4Devo@nongnu.org
+X-Gm-Message-State: AOJu0YwCUBanUrQJ/YWUDa/UdwEWsllUuiVGFtpHPWMS51YAc9jIluf5
+ 8HI29KqJ9HpbmJMfSIZkHmJBmzTGQx67xx9ut3K3ULWD5RNYCFpC4MH3fh1tg9iKVOPS23GFGaQ
+ LmhNwb3fvBzZYz8HQTYhYoGv05d7J/EkIX2Bx3g==
+X-Google-Smtp-Source: AGHT+IErOEqj+JfCCq7JY3pQdmaHnfLJZY8UoXjm0OVQOpDBgGyd1IJAlrUFH5omVAMgTYk3vV+yyWdd5O/jEW4Mwtc=
+X-Received: by 2002:a05:690c:4d03:b0:6db:db7b:891c with SMTP id
+ 00721157ae682-6e3d40a0294mr25512817b3.14.1729029929408; Tue, 15 Oct 2024
+ 15:05:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.993]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+References: <20241009234610.27039-1-yichen.wang@bytedance.com>
+ <874j5isp5k.fsf@suse.de>
+In-Reply-To: <874j5isp5k.fsf@suse.de>
+From: Yichen Wang <yichen.wang@bytedance.com>
+Date: Tue, 15 Oct 2024 15:05:18 -0700
+Message-ID: <CAHObMVZx4Nz+pgcDE0dZ30t7_c0Rud92ND5gzrS6jchDKFsfNw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v6 00/12] Use Intel DSA accelerator to
+ offload zero page checking in multifd live migration.
+To: Fabiano Rosas <farosas@suse.de>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, 
+ qemu-devel@nongnu.org, Hao Xiang <hao.xiang@linux.dev>, 
+ "Liu, Yuan1" <yuan1.liu@intel.com>, Shivam Kumar <shivam.kumar1@nutanix.com>, 
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,40 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Berger <stefanb@linux.ibm.com> writes:
+On Fri, Oct 11, 2024 at 7:14=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
+te:
+>
+> Yichen Wang <yichen.wang@bytedance.com> writes:
+>
+>
+> Still doesn't build without DSA:
+>
+> qemu/include/qemu/dsa.h: In function
+> =E2=80=98buffer_is_zero_dsa_batch_sync=E2=80=99:
+> /home/fabiano/kvm/qemu/include/qemu/dsa.h:183:16: error: =E2=80=98errp=E2=
+=80=99
+> undeclared (first use in this function); did you mean =E2=80=98errno=E2=
+=80=99?
+>
+>      error_setg(errp, "DSA accelerator is not enabled.");
+>                 ^
+> qemu/include/qapi/error.h:318:26: note: in definition of macro =E2=80=98e=
+rror_setg=E2=80=99
+>      error_setg_internal((errp), __FILE__, __LINE__, __func__,   \
+>                           ^~~~
+> qemu/include/qemu/dsa.h:183:16: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+>      error_setg(errp, "DSA accelerator is not enabled.");
+>                 ^
+> qemu/include/qapi/error.h:318:26: note: in definition of macro =E2=80=98e=
+rror_setg=E2=80=99
+>      error_setg_internal((errp), __FILE__, __LINE__, __func__,   \
+>                           ^~~~
 
-> On 10/15/24 3:57 PM, Fabiano Rosas wrote:
->> Stefan Berger <stefanb@linux.ibm.com> writes:
->> 
->
->>>
->>> So this here is failing for you every time?
->>>
->>> QTEST_QEMU_BINARY=build/qemu-system-aarch64
->>> ./build/tests/qtest/tpm-tis-device-swtpm-test
->> 
->> Sorry, I was unclear. No, that runs for about 30 iterations before it
->> fails. I just ran each of these in a terminal window:
->> 
->> $ for i in $(seq 1 999); do echo "$i =============";  QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/tpm-tis-device-swtpm-test || break ; done
->
-> On my Fedora 40 host this command line here alone has been running for 
-> 250 loop iterations now and is still continuing.
->
->> $ make -j$(nproc) check
->
-> So this needs to be run in parallel to the above command line to cause 
-> the failure?
->
-
-Yes, I've been using that method to reproduce live migration race
-conditions as well. It's quite effective.
-
-If you don't think you'll be able to find the root cause due to the
-unreproducibility on your side, maybe we could at least add an assert
-that bcount is not larger than rsp_size. I think that would at least
-give an explicit error instead of a buffer overflow.
-
-I can also try to dig deeper into this when I get some time. At the
-moment I know nothing about the tpm device emulation.
+Sorry for that, I will make sure I test both for my last version
+before git send-mail...
 
