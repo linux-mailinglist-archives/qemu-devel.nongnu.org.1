@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ABC799EF59
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A5999EF44
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:19:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iNt-0007xU-8C; Tue, 15 Oct 2024 10:18:49 -0400
+	id 1t0iNv-0008M7-Gi; Tue, 15 Oct 2024 10:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNg-0007f7-WF
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t0iNj-0007h4-1F
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNf-0003OO-Jg
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:36 -0400
+ id 1t0iNh-0003Oc-KW
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001914;
+ s=mimecast20190719; t=1729001917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XeVedSaUox6qACtW8EJ28JkUgbK5wJIqAzjoh6ebcek=;
- b=APlVjvTEGJXccC/Gf6Z9DzzrjInwlm7v+ANJ0DmGyf/AWFXO6ZcumXS5q3o5t26n8gPKLA
- 9/KtqNj6vbhpPW7kP7HrCCk9OYv2wDQmhh6zhzaIq9Il1c47FjalqvEGLQSuxXv5aYTrNe
- 8PBp4lasPhM+MRH/hTQdN8FaIzlKD7U=
+ bh=OgoG8JgwXVz3g5onUJt7t2xCU8/TZqbsVMYU5eI+0xg=;
+ b=DmcpNhwxrbD9YjyiroaRS39zS63G9F5noWP/NbnChksvEI4sVIFyyXEq0r28HUni+qL+g6
+ VbUgIQpqHmEzQNLk83076hADH8c77CsXifMS+jPOu5pJqXC6FLzNVJAPQ2mkm4Jp2+Fkit
+ ED/EnY8/npiui8HI1upiE7ZluxzMyNY=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-3dvW4gGTNLSnd-VH4FBHOA-1; Tue, 15 Oct 2024 10:18:32 -0400
-X-MC-Unique: 3dvW4gGTNLSnd-VH4FBHOA-1
+ us-mta-528-D3BdAknAPrKtaULEc0x86w-1; Tue, 15 Oct 2024 10:18:35 -0400
+X-MC-Unique: D3BdAknAPrKtaULEc0x86w-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d589138a9so1876054f8f.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:32 -0700 (PDT)
+ ffacd0b85a97d-37d5ca192b8so2049175f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001911; x=1729606711;
+ d=1e100.net; s=20230601; t=1729001914; x=1729606714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XeVedSaUox6qACtW8EJ28JkUgbK5wJIqAzjoh6ebcek=;
- b=VmgC9zHtIH2ji8JYf++JkBdPMC7SL5f9wAADv0FgSv/IqVfW3OkzuqX/xTqyMbRNj7
- fpU1TGUStxUDwMp8HT7XaLWlYfE2hx5wVC3ljOqmy/8aVngGlhRLLuZt8ZLekE8U3TJU
- NW9tVisg/cFVt3Cqio6WGdPNg3JUykOLE9jjsFXUuOlDqesue0mjLWZXlYRt+1fbcDMH
- 6IkYvsInlM5M8EivhxqYgQoO6/Y1lEhJ/KXNnTVKidOv2sUkIqcv7mkAn5IUoItJ5/6s
- Zzt70siOs4+P3MmJapqwwn7Pw2tKjuZ4RHIWwB0wjB6s8FQFG+6eyIaiSiMCL43N5DM3
- ZTPQ==
-X-Gm-Message-State: AOJu0Yw50WzeI3KkQC0/cBpJkB9w9pNKQ1ucGnn6rJHrn7lvXt/3EZjn
- /kMdOfKiJtHgeRrz3D4fZW0oTxmQ8tWNY02+K2lmK2EBOngtLG4nOzO5+1LaI+w9njK+ddExnj2
- YazYaWG06DIW4ks86ix2loestv9JwTKUuhpGpO+K98LbYeo3pH85hU59J6JpKZrqUIq6gcgJ/x3
- 55S2L1fFhqNEL4VZR55MASUUyjxUvrqvo+Jc1/yYY=
-X-Received: by 2002:adf:eb11:0:b0:37d:53a7:a635 with SMTP id
- ffacd0b85a97d-37d86d6f26bmr364177f8f.51.1729001911053; 
- Tue, 15 Oct 2024 07:18:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHe2Y9IyefHzCuHiZoRS/NTtqO5M1M6IZ/m9ab222ydF7y6UolyPpxcXfh0RMKlYlVIvDaXJw==
-X-Received: by 2002:adf:eb11:0:b0:37d:53a7:a635 with SMTP id
- ffacd0b85a97d-37d86d6f26bmr364157f8f.51.1729001910511; 
- Tue, 15 Oct 2024 07:18:30 -0700 (PDT)
+ bh=OgoG8JgwXVz3g5onUJt7t2xCU8/TZqbsVMYU5eI+0xg=;
+ b=k0tUJjIRvodTMNp1J+HKwkeBCGEDwUIOoYablKtHrkOe/DXz0GWa0EQM/4PJja8gad
+ VGaYvGx0Eh1fFXBf8S+4gy/iLRgzxw54wmohxbfV5Maz2MtRm4Dgm0s521cwNBKlaZ9F
+ vabApy3dmkvMUxxghs/dsn4jzTaGaazmtd+14YyxWKlBJQV4VO9i5S0senfwZ1YW2GKQ
+ HsanEwCF8Rdb2iiMfXrrGtGaOxclI4Lp/NKb1ppN/vpoFbSqGYSvRzLHg0esyIFcRA/B
+ t0WLfa4Yaman9y0UcXMU1rK9hQvRtqR+emkh3ecFdeE4rUO/eld3mUpCVjy2vP51Nvcs
+ TQ9w==
+X-Gm-Message-State: AOJu0YxBKKjr2OL5D0NzX0yPrmqXPSxOAUYaAu+gjzoCpJk5c60P04x+
+ iZf95cjj7LX65HmlxXxoXcDXbYygnuzTTmgcRJOaouI+yv8dNz0giLWQWFgYqXu6JwQB5HTl9Te
+ FPKO9DmKSP3oiqb6AhJOgLYZl/bB4wIdBIO4fwCNfMf1EV7Y5BuPWGuHU5/JEBpa07OzuT3Xb0w
+ Wpq6iMDvtLOuieT+3T0o98r1wsaqyA+GCc3VmAuJI=
+X-Received: by 2002:a5d:6a0a:0:b0:37c:c9bc:1be6 with SMTP id
+ ffacd0b85a97d-37d862af94bmr658811f8f.16.1729001914119; 
+ Tue, 15 Oct 2024 07:18:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHk9TFbIos2gJKEbPoEEInjBDQpLuD7YsloSf8srkWSH6yzDN9tYpbCbvkyJVzcACkRHnogw==
+X-Received: by 2002:a5d:6a0a:0:b0:37c:c9bc:1be6 with SMTP id
+ ffacd0b85a97d-37d862af94bmr658778f8f.16.1729001913618; 
+ Tue, 15 Oct 2024 07:18:33 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4313f6b3362sm19086145e9.38.2024.10.15.07.18.29
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-37d7fc12023sm1687469f8f.91.2024.10.15.07.18.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:18:30 -0700 (PDT)
+ Tue, 15 Oct 2024 07:18:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/25] accel/kvm: check for KVM_CAP_MEMORY_ATTRIBUTES on vm
-Date: Tue, 15 Oct 2024 16:17:09 +0200
-Message-ID: <20241015141711.528342-24-pbonzini@redhat.com>
+Cc: Tom Dohrmann <erbse.13@gmx.de>
+Subject: [PULL 24/25] accel/kvm: check for KVM_CAP_READONLY_MEM on VM
+Date: Tue, 15 Oct 2024 16:17:10 +0200
+Message-ID: <20241015141711.528342-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,48 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The exact set of available memory attributes can vary by VM.  In the
-future it might vary depending on enabled capabilities, too.  Query the
-extension on the VM level instead of on the KVM level, and only after
-architecture-specific initialization.
+From: Tom Dohrmann <erbse.13@gmx.de>
 
-Inspired by an analogous patch by Tom Dohrmann.
+KVM_CAP_READONLY_MEM used to be a global capability, but with the
+introduction of AMD SEV-SNP confidential VMs, this extension is not
+always available on all VM types [1,2].
 
+Query the extension on the VM level instead of on the KVM level.
+
+[1] https://patchwork.kernel.org/project/kvm/patch/20240809190319.1710470-2-seanjc@google.com/
+[2] https://patchwork.kernel.org/project/kvm/patch/20240902144219.3716974-1-erbse.13@gmx.de/
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Tom Dohrmann <erbse.13@gmx.de>
+Link: https://lore.kernel.org/r/20240903062953.3926498-1-erbse.13@gmx.de
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ accel/kvm/kvm-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 4287e254df8..482c5b24cf6 100644
+index 482c5b24cf6..801cff16a5a 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2604,12 +2604,6 @@ static int kvm_init(MachineState *ms)
-         goto err;
+@@ -2683,7 +2683,7 @@ static int kvm_init(MachineState *ms)
      }
  
--    kvm_supported_memory_attributes = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
--    kvm_guest_memfd_supported =
--        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
--        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
--        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
--
-     kvm_immediate_exit = kvm_check_extension(s, KVM_CAP_IMMEDIATE_EXIT);
-     s->nr_slots_max = kvm_check_extension(s, KVM_CAP_NR_MEMSLOTS);
+     kvm_readonly_mem_allowed =
+-        (kvm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
++        (kvm_vm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
  
-@@ -2723,6 +2717,12 @@ static int kvm_init(MachineState *ms)
-         goto err;
-     }
- 
-+    kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
-+    kvm_guest_memfd_supported =
-+        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
-+        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
-+        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+
-     if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
-         s->kernel_irqchip_split = mc->default_kernel_irqchip_split ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
+     kvm_resamplefds_allowed =
+         (kvm_check_extension(s, KVM_CAP_IRQFD_RESAMPLE) > 0);
 -- 
 2.46.2
 
