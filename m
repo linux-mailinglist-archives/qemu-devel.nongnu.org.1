@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDC799DCD7
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 05:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B258B99DD33
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 06:37:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0YHD-0007lk-R8; Mon, 14 Oct 2024 23:31:15 -0400
+	id 1t0ZHq-0007iP-Gm; Tue, 15 Oct 2024 00:35:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t0YHA-0007lX-DY; Mon, 14 Oct 2024 23:31:12 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>)
- id 1t0YH7-0000A9-Ma; Mon, 14 Oct 2024 23:31:12 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8Bx34v14Q1nLJscAA--.41041S3;
- Tue, 15 Oct 2024 11:31:01 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBxXuTs4Q1nYVwqAA--.8786S3;
- Tue, 15 Oct 2024 11:30:53 +0800 (CST)
-Subject: Re: [PATCH V1 0/4] Arch agnostic ACPI changes to support vCPU Hotplug
- (on Archs like ARM)
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
- ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
- gshan@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
- alex.bennee@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
- jiakernel2@gmail.com, lixianglai@loongson.cn, shahuang@redhat.com,
- zhao1.liu@intel.com, linuxarm@huawei.com, gustavo.romero@linaro.org
-References: <20241014192205.253479-1-salil.mehta@huawei.com>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <3b0b1033-36eb-6180-1363-f76083a32ce0@loongson.cn>
-Date: Tue, 15 Oct 2024 11:30:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1t0ZHj-0007hw-HE
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 00:35:51 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1t0ZHh-0007JX-7W
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 00:35:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1728966934; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=MHJpp+GEvvlN74DaDE944ror+87m+oWm6fhC5KdYqcuREg90Ue0O2DMybSfUqe636ybMfEOAfCrRC5IzG/6Kpsdd+DkUton05fGGRH6fwVS8gogN9n6dFm3mDyTDGrnd2eCpQs41OzLtAVJZtQrYhn0hZjRkdtQ+dfi0okc1acc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1728966934;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=J51UsyGc/Wo+7M6aKk8MtuECWqegj1aHN3U0dVqu4wQ=; 
+ b=m2hjiuQ0pi1A4zlw5RDB4EPyj3r74NePeoG8nxAgbMa60jeYdYrBAw1D58RzRNxU2JcQCssehW9+nbx6GpBAeQirqSYkrOVfBE0hW6FFtNHqStZO4cEdkGXjOGlvQd15/jQDaCfp49E3/7//s2KdVYds+ps54AbqLAy/i3S/xSQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728966934; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=J51UsyGc/Wo+7M6aKk8MtuECWqegj1aHN3U0dVqu4wQ=;
+ b=MFsTttRZb2d2anRrPdiRJFwy9XPlsWVtuWiCd6AmgL3G9ixPdowmGeSGcisEakEe
+ rQDtPW+QfOknomMz4ujva87q7zlZ/9WAv33tMjLMs3byQsGTKDlUPlHuybc/107Y4kF
+ 9B7CBO+QOIJhu9FHfJxu0Dew+Yz5enk5cAKr1p94=
+Received: by mx.zohomail.com with SMTPS id 1728966932446365.4135544660204;
+ Mon, 14 Oct 2024 21:35:32 -0700 (PDT)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
+Subject: [PATCH v2 0/6] Support virtio-gpu DRM native context
+Date: Tue, 15 Oct 2024 07:32:32 +0300
+Message-ID: <20241015043238.114034-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-In-Reply-To: <20241014192205.253479-1-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTs4Q1nYVwqAA--.8786S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWryxur1DWrW3ZF43WF48uFX_yoWrtFyrpF
- WIka1FqrWDtr1xGw4ftwnxWw1Y9a4rGF43Grn3ur18u3Z8tF1vyF1Skr4UXF13AF9a9F1x
- ZFn0vr1Uu34DZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
- xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
- 6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
- 1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxG
- rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
- v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIY
- rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
- v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
- JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUaTa0DU
- UUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.396,
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,92 +89,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With cpu-add/cpu-del command tested on LoongArch system, no migration 
-tested. There is no negative influence with LoongArch cpu hotplug.
+This patchset adds DRM native context support to VirtIO-GPU on Qemu.
+It's based on the pending Venus v17 patches [1] that bring host blobs
+support to virtio-gpu-gl device.
 
-Regards
-Bibo Mao
+Based-on: 20240822185110.1757429-1-dmitry.osipenko@collabora.com
 
-On 2024/10/15 上午3:22, Salil Mehta via wrote:
-> Certain CPU architecture specifications [1][2][3] prohibit changes to the CPUs
-> *presence* after the kernel has booted. This is because many system
-> initializations depend on the exact CPU count at boot time and do not expect it
-> to change afterward. For example, components like interrupt controllers that are
-> closely coupled with CPUs, or various per-CPU features, may not support
-> configuration changes once the kernel has been initialized.
-> 
-> This requirement poses a challenge for virtualization features like vCPU
-> hotplug. To address this, changes to the ACPI AML are necessary to update the
-> `_STA.PRES` (presence) and `_STA.ENA` (enabled) bits accordingly during guest
-> initialization, as well as when vCPUs are hot-plugged or hot-unplugged. The
-> presence of unplugged vCPUs may need to be deliberately *simulated* at the ACPI
-> level to maintain a *persistent* view of vCPUs for the guest kernel.
-> 
-> This patch set introduces the following features:
-> 
-> 1. ACPI Interface with Explicit PRESENT and ENABLED CPU States: It allows the
->     guest kernel to evaluate these states using the `_STA` ACPI method.
->     
-> 2. Initialization of ACPI CPU States: These states are initialized during
->     `machvirt_init` and when vCPUs are hot-(un)plugged. This enables hotpluggable
->     vCPUs to be exposed to the guest kernel via ACPI.
-> 
-> 3. Support for Migrating ACPI CPU States: The patch set ensures the migration of
->     the newly introduced `is_{present,enabled}` ACPI CPU states to the
->     destination VM.
-> 
-> The approach is flexible enough to accommodate ARM-like architectures that
-> intend to implement vCPU hotplug functionality. It is suitable for architectures
-> facing similar constraints to ARM or those that plan to implement vCPU
-> hotplugging independently of hardware support (if available).
-> 
-> This patch set is derived from the ARM-specific vCPU hotplug implementation [4]
-> and includes migration components adaptable to other architectures, following
-> suggestions [5] made by Igor Mammedov <imammedo@redhat.com>.
-> 
-> It can be applied independently, ensuring compatibility with existing hotplug
-> support in other architectures. I have tested this patch set in conjunction with
-> the ARM-specific vCPU hotplug changes (included in the upcoming RFC V5 [6]), and
-> everything worked as expected. I kindly request maintainers of other
-> architectures to provide a "Tested-by" after running their respective regression
-> tests.
-> 
-> Many thanks!
-> 
-> 
-> References:
-> [1] KVMForum 2023 Presentation: Challenges Revisited in Supporting Virt CPU Hotplug on
->      architectures that don’t Support CPU Hotplug (like ARM64)
->      a. Kernel Link: https://kvm-forum.qemu.org/2023/KVM-forum-cpu-hotplug_7OJ1YyJ.pdf
->      b. Qemu Link:  https://kvm-forum.qemu.org/2023/Challenges_Revisited_in_Supporting_Virt_CPU_Hotplug_-__ii0iNb3.pdf
-> [2] KVMForum 2020 Presentation: Challenges in Supporting Virtual CPU Hotplug on
->      SoC Based Systems (like ARM64)
->      Link: https://kvmforum2020.sched.com/event/eE4m
-> [3] Check comment 5 in the bugzilla entry
->      Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4481#c5
-> [4] [PATCH RFC V4 00/33] Support of Virtual CPU Hotplug for ARMv8 Arch
->      Link: https://lore.kernel.org/qemu-devel/20241009031815.250096-1-salil.mehta@huawei.com/T/#mf32be203baa568a871dc625b732f666a4c4f1e68
-> [5] Architecture agnostic ACPI VMSD state migration (Discussion)
->      Link: https://lore.kernel.org/qemu-devel/20240715155436.577d34c5@imammedo.users.ipa.redhat.com/
-> [6] Upcoming RFC V5, Support of Virtual CPU Hotplug for ARMv8 Arch
->      Link: https://github.com/salil-mehta/qemu/commits/virt-cpuhp-armv8/rfc-v5
-> 
-> Salil Mehta (4):
->    hw/acpi: Initialize ACPI Hotplug CPU Status with Support for vCPU
->      `Persistence`
->    hw/acpi: Update ACPI CPU Status `is_{present, enabled}` during vCPU
->      hot(un)plug
->    hw/acpi: Reflect ACPI vCPU {present,enabled} states in ACPI
->      _STA.{PRES,ENA} Bits
->    hw/acpi: Populate vCPU Hotplug VMSD to migrate `is_{present,enabled}`
->      states
-> 
->   cpu-target.c         patches.vcpuhp.rfc-v5.arch.agnostic.acpi          |  1 +
->   hw/acpi/cpu.c                  | 70 +++++++++++++++++++++++++++++++---
->   hw/acpi/generic_event_device.c | 11 ++++++
->   include/hw/acpi/cpu.h          | 21 ++++++++++
->   include/hw/core/cpu.h          | 21 ++++++++++
->   5 files changed, 119 insertions(+), 5 deletions(-)
-> 
+[1] https://lore.kernel.org/qemu-devel/20240822185110.1757429-1-dmitry.osipenko@collabora.com/
+
+Contarary to Virgl and Venus contexts which mediate high level GFX APIs,
+DRM native context [2] mediates lower level kernel driver UAPI, which
+reflects in a less CPU overhead and less/simpler code needed to support it.
+DRM context consists of a host and guest parts that have to be implemented
+for each GPU driver. On a guest side, DRM context presents a virtual GPU as
+a real/native host GPU device for GL/VK applications.
+
+[2] https://www.youtube.com/watch?v=9sFP_yddLLQ
+
+Today there are four known DRM native context drivers existing in a wild:
+
+  - Freedreno (Qualcomm SoC GPUs), completely upstreamed
+  - AMDGPU, mostly merged into upstreams
+  - Intel (i915), merge requests are opened
+  - Asahi (Apple SoC GPUs), WIP status
+
+
+# How to try out DRM context:
+
+1. Like Venus and Virgl context, DRM context requires applying WIP
+KVM patches [3] to host kernel, otherwise mapping of GPU memory blobs
+will likely fail.
+
+[3] https://lore.kernel.org/all/20240726235234.228822-1-seanjc@google.com/
+
+2. Use latest libvirglrenderer from upstream git/main for Freedreno
+and AMDGPU native contexts. For Intel use patches [4].
+
+[4] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1384
+
+3. On guest, use latest Mesa version for Freedreno. For AMDGPU use
+Mesa patches [5], for Intel [6].
+
+[5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21658
+[6] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29870
+
+4. On guest, use latest Linux kernel v6.6+.
+
+Example Qemu cmdline that enables DRM context:
+
+  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm=on \
+      -machine q35,accel=kvm,memory-backend=mem1 \
+      -object memory-backend-memfd,id=mem1,size=8G -m 8G
+
+
+# Note about known performance problem in Qemu:
+
+DRM contexts are mapping host blobs extensively and these mapping
+operations work slowly in Qemu. Exact reason is unknown. Mappings work
+fast on Crosvm For DRM contexts this problem is more visible than for
+Venus/Virgl.
+
+Changelog:
+
+v2: - Updated SDL2-dmabuf patch by making use of error_report() and
+      checking presense of X11+EGL in the system before making SDL2
+      to prefer EGL backend over GLX, suggested by Akihiko Odaki.
+
+    - Improved SDL2's dmabuf-presence check that wasn't done properly
+      in v1, where EGL was set up only after first console was fully
+      inited, and thus, SDL's display .has_dmabuf callback didn't work
+      for the first console. Now dmabuf support status is pre-checked
+      before console is registered.
+
+    - Updated commit description of the patch that fixes SDL2's context
+      switching logic with a more detailed explanation of the problem.
+      Suggested by Akihiko Odaki.
+
+    - Corrected rebase typo in the async-fencing patch and switched
+      async-fencing to use a sigle-linked list instead of the double,
+      as was suggested by Akihiko Odaki.
+
+    - Replaced "=true" with "=on" in the DRM native context documentation
+      example and made virtio_gpu_virgl_init() to fail with a error message
+      if DRM context can't be initialized instead of giving a warning
+      message, as was suggested by Akihiko Odaki.
+
+    - Added patchew's dependecy tag to the cover letter as was suggested by
+      Akihiko Odaki.
+
+Dmitry Osipenko (5):
+  ui/sdl2: Restore original context after new context creation
+  linux-headers: Update to Linux v6.12-rc1
+  virtio-gpu: Handle virgl fence creation errors
+  virtio-gpu: Support asynchronous fencing
+  virtio-gpu: Support DRM native context
+
+Pierre-Eric Pelloux-Prayer (1):
+  ui/sdl2: Implement dpy dmabuf functions
+
+ docs/system/devices/virtio-gpu.rst            |  11 +
+ hw/display/virtio-gpu-gl.c                    |   5 +
+ hw/display/virtio-gpu-virgl.c                 | 154 ++++++++++--
+ hw/display/virtio-gpu.c                       |  15 ++
+ include/hw/virtio/virtio-gpu.h                |  17 ++
+ include/standard-headers/drm/drm_fourcc.h     |  43 ++++
+ include/standard-headers/linux/const.h        |  17 ++
+ include/standard-headers/linux/ethtool.h      | 226 ++++++++++++++++++
+ include/standard-headers/linux/fuse.h         |  22 +-
+ .../linux/input-event-codes.h                 |   2 +
+ include/standard-headers/linux/pci_regs.h     |  41 +++-
+ .../standard-headers/linux/virtio_balloon.h   |  16 +-
+ include/standard-headers/linux/virtio_gpu.h   |   1 +
+ include/ui/sdl2.h                             |   7 +
+ linux-headers/asm-arm64/mman.h                |   9 +
+ linux-headers/asm-arm64/unistd.h              |  25 +-
+ linux-headers/asm-generic/unistd.h            |   6 +-
+ linux-headers/asm-loongarch/kvm.h             |  24 ++
+ linux-headers/asm-loongarch/unistd.h          |   4 +-
+ linux-headers/asm-riscv/kvm.h                 |   7 +
+ linux-headers/asm-riscv/unistd.h              |  41 +---
+ linux-headers/asm-x86/kvm.h                   |   2 +
+ linux-headers/asm-x86/unistd_64.h             |   1 +
+ linux-headers/asm-x86/unistd_x32.h            |   1 +
+ linux-headers/linux/bits.h                    |   3 +
+ linux-headers/linux/const.h                   |  17 ++
+ linux-headers/linux/iommufd.h                 | 143 +++++++++--
+ linux-headers/linux/kvm.h                     |  23 +-
+ linux-headers/linux/mman.h                    |   1 +
+ linux-headers/linux/psp-sev.h                 |  28 +++
+ ui/sdl2-gl.c                                  |  66 +++++
+ ui/sdl2.c                                     |  31 +++
+ 32 files changed, 902 insertions(+), 107 deletions(-)
+
+-- 
+2.47.0
 
 
