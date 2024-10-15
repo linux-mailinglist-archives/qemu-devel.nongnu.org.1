@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F51C99F1CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665DB99F1C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:45:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jjI-0008Vz-CO; Tue, 15 Oct 2024 11:45:00 -0400
+	id 1t0jjQ-00005i-5w; Tue, 15 Oct 2024 11:45:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjF-0008VT-To
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:44:57 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjM-00005C-RW
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:05 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjD-0000Tl-AQ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:44:57 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-20caccadbeeso41621205ad.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:44:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjL-0000VD-9d
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:04 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-20c70abba48so37332185ad.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007093; x=1729611893; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007101; x=1729611901; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JaR1kDH2Bf+l69hgvZCXqIUYxGHmIwLgfUQ5KPkPEPs=;
- b=wX2lUx/ss+LkpkiPbceI85npjakfpQo1R1XqIBGReXoIB2cznkF6grostbpUe+K1kH
- iQeLdnffsbbSC4rCoHITAN6wCA8vV22Nx+xv+V0qBhdVvsTDgy+Pl9AXfjlluV4dHUn+
- X5ZbNPDTkttKLl3UtCU2jutimSeMyvsouXwaLUlRwvGW2L2tnjvcwF9fJ1Ceth4xo5Gq
- oVVmDXYjiQTz6CT/sDaXCl1x+B8dUvhPhpbi2bl9NGH5lGTUkUUBdMXD9RyW4sJATRxW
- nXI3t9QJRdLCfhmLmigVkiOoZGeMm4vYJEQvUHy/dyPDULKWgFuctXQ/1c6GE6oohOV5
- s3VA==
+ bh=rYfx3nszSCCIo154zwSkhn548PKsWfltylmZM2l6IU8=;
+ b=z43i/pXn60a2tXQIizLFQ6uKCtMvWhw3hWFTFKRC9V7hdVB+3IJw9TL0p5k7Hy8+Iz
+ QmzQxE+aDIKCXcS5tp1xwx8VQkmmfxXMULoSZ6vwHGm1Lq5erZUNt3k0JPq02+EGN/9U
+ rY12pT62rVRlrGY0uKehyQvA0vmhKRlCAMAyV4H9TyBMvUlSrZTAr2cX7ZVLCE2XEw/S
+ yc0gOzWxS80GpMP3SBZmoVfvh/KkTt8I2xu5FJ8dRR2TKVmVX5f+1dtfV/2Mn9Q5v/j+
+ w93uDu5Inf6oYRpnI4xePVHDLVYxk4zjYe44uAs5cpBMWUHEdhmqtBmJUO7RoogQoZbD
+ jeEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007093; x=1729611893;
+ d=1e100.net; s=20230601; t=1729007101; x=1729611901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JaR1kDH2Bf+l69hgvZCXqIUYxGHmIwLgfUQ5KPkPEPs=;
- b=Hn1HzAt8NXz4oY4G0C61cd7d/U0oH+xCOhS4xQ5PwXjrVsY09ffmcysJ1Vx4NRFdpH
- TSdU0S0NNhU0bteLif4gSNhyLCWcqxTaT1aq47gXsuG9ntVuDLPK35IwyV70ns+hN8LD
- 9yOMk48CXYRJV/0b+g9Pl6HkxjeWGhkUu3VU+8wneBbxxHPq1GLBciH//NTQOgAbyFWK
- dQqrOqMdxqhyZi5JteZoUxeHTiNpednZTYFM5IH8Yes7FiPQgbjiJ+vOD6WKkfro8PUd
- 0cO7KvYjuTVyyvzkJHmRzTi/jfK4K6DNn3Hg6GO66u02kVPqLLsTTrw9fuLkhoLaKaf9
- 8PgA==
-X-Gm-Message-State: AOJu0YxNv9FWzPwEQX42ZRvdVNiXE4bFc8ACt/8/O3aSLgCyGCVzef2N
- hfF6TOPBlta+42BCAcdVza3p0hDPxhsXoZN1DusOWPJGUUUhiwV8FbqXM+u334Cno2RAxlEE7Te
- c
-X-Google-Smtp-Source: AGHT+IGKcLoA1fzV1i2vd0BYFIhCf5eW8oz28clBDDmuWcA5pYS+J+GtFWNAX2+LyzrmWAwMLgC0aw==
-X-Received: by 2002:a17:902:d552:b0:20b:7ed8:3978 with SMTP id
- d9443c01a7336-20ca147e967mr224903405ad.26.1729007093610; 
- Tue, 15 Oct 2024 08:44:53 -0700 (PDT)
+ bh=rYfx3nszSCCIo154zwSkhn548PKsWfltylmZM2l6IU8=;
+ b=LknlnCSkevgboPUAg3uTzgmNNBf9FqqyMA3uGRVYpvsbfiSM3bDS79e18BLpsmoXnu
+ nFyvlkak2taitf34ZEkj46jXjUlvf3JX6f6JQWM5I25fAIPQBprJA+Bg2EXywJYSmlNu
+ jNup9U4oKCPqQcORbXOJ6xzqY8yS+oCrwOT0XwHFvZ6/5vL/w6KQBVlHDojbjpfItjc4
+ oC5DEvPxMy3Bqee6yJ8VoR6Un9eBNwc+I/+SPUeEzg2pMhnTWTv4wzoL1ZHGAE1k6Ma7
+ jRYebGReSquzTJT3WSxgjBL1SE8yQGs2jNjrMI0cO98l1OmtMLPt1IhITc3qC2Zk2qVp
+ ZVEQ==
+X-Gm-Message-State: AOJu0Yx40zFIN1XTmSfdqPyhfjUB0sVx6QEkTYDI390ayK8BcSAjh+da
+ vrVcMF3LEhqSWYcK0JNDT3AebwM0wFKb7qX/mT0XK+dDIMaIatlbSCA4/WYaK02OyZxyGugCjnl
+ v
+X-Google-Smtp-Source: AGHT+IGQfO59wdUy1L+JsGGdLxqtB27G80TOZycY5g2moZMJ+Qools8B9SzvO7sF+CScPDOhFaYOfg==
+X-Received: by 2002:a17:90a:ff0e:b0:2e2:d3ab:2d77 with SMTP id
+ 98e67ed59e1d1-2e31538f3edmr14405032a91.39.1729007101493; 
+ Tue, 15 Oct 2024 08:45:01 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20d17f828adsm13463945ad.41.2024.10.15.08.44.52
+ 98e67ed59e1d1-2e392f753b4sm1940460a91.49.2024.10.15.08.44.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:44:53 -0700 (PDT)
+ Tue, 15 Oct 2024 08:45:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 01/33] qemu/bswap: Undefine CPU_CONVERT() once done
-Date: Tue, 15 Oct 2024 12:44:10 -0300
-Message-ID: <20241015154443.71763-2-philmd@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/33] exec/tswap: Massage target_needs_bswap() definition
+Date: Tue, 15 Oct 2024 12:44:11 -0300
+Message-ID: <20241015154443.71763-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,29 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Better undefined macros once we are done with them,
-like we do few lines later with DO_STN_LDN_P().
+Invert target_needs_bswap() comparison to match the
+COMPILING_PER_TARGET definition (2 lines upper).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241003234211.53644-2-philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20241010175246.15779-2-philmd@linaro.org>
 ---
- include/qemu/bswap.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/exec/tswap.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index ad22910a5d1..b915835bead 100644
---- a/include/qemu/bswap.h
-+++ b/include/qemu/bswap.h
-@@ -140,6 +140,8 @@ CPU_CONVERT(le, 16, uint16_t)
- CPU_CONVERT(le, 32, uint32_t)
- CPU_CONVERT(le, 64, uint64_t)
+diff --git a/include/exec/tswap.h b/include/exec/tswap.h
+index b7a41913475..ecd4faef015 100644
+--- a/include/exec/tswap.h
++++ b/include/exec/tswap.h
+@@ -28,7 +28,7 @@ bool target_words_bigendian(void);
+ #ifdef COMPILING_PER_TARGET
+ #define target_needs_bswap()  (HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN)
+ #else
+-#define target_needs_bswap()  (target_words_bigendian() != HOST_BIG_ENDIAN)
++#define target_needs_bswap()  (HOST_BIG_ENDIAN != target_words_bigendian())
+ #endif /* COMPILING_PER_TARGET */
  
-+#undef CPU_CONVERT
-+
- /*
-  * Same as cpu_to_le{16,32,64}, except that gcc will figure the result is
-  * a compile-time constant if you pass in a constant.  So this can be
+ static inline uint16_t tswap16(uint16_t s)
 -- 
 2.45.2
 
