@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7438399EC66
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB5399EC83
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:20:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hR0-00023K-T6; Tue, 15 Oct 2024 09:17:58 -0400
+	id 1t0hR7-00024A-S4; Tue, 15 Oct 2024 09:18:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hQy-00022w-QM
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:17:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t0hR2-00023l-NA
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hQx-0001Dc-Aw
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:17:56 -0400
+ id 1t0hR0-0001Dm-Tk
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728998274;
+ s=mimecast20190719; t=1728998277;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jAbsj1TUYq+4pfKeL2OaEWTmSq8KVDWcMjyzGlJmWtQ=;
- b=LdtoWY/+9j1/tx7U+NycL3538jENzZPwo0aFkzBoCzO6Lt5qMu4cQfBbnQJi5J2RuzzLUT
- Jz05J2VTlYJtoG6RuaMg1dRMmwl4/o94SyiVEKaK/FbQmWe94iDEtGbanx09vIWIhcHrxj
- y8Ck4yjtW+kLtkKTV+BFVbmLc55fWPc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=20vvSyFpZURhPY07pvl6EKKD9oQ8iAAak08m0L+pzSY=;
+ b=V3qBAUZBEfpt+IlYQwfOR2fEPKkLPaXy9OsAWPiDTobVl5cxJr75Iua3TojJCJh0i3RSZX
+ b+LIEHlepCmlCLtXN9xiOzvT8L5qleFVfkLbtFx/zn2WtkLToRlK1Fevq1f3UG0T8kqaD4
+ cZcEsjsim5GNOrCQv5hcrg04brRylQA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-L7V3psWsN-iYySyLny8H5g-1; Tue, 15 Oct 2024 09:17:52 -0400
-X-MC-Unique: L7V3psWsN-iYySyLny8H5g-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d4854fa0eso2681377f8f.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:17:50 -0700 (PDT)
+ us-mta-605-wZbqc7OkOUSKCqq96gXbFg-1; Tue, 15 Oct 2024 09:17:55 -0400
+X-MC-Unique: wZbqc7OkOUSKCqq96gXbFg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d67f4bf98so1440819f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:17:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728998269; x=1729603069;
+ d=1e100.net; s=20230601; t=1728998272; x=1729603072;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jAbsj1TUYq+4pfKeL2OaEWTmSq8KVDWcMjyzGlJmWtQ=;
- b=d2kLrGPk6eNELHaL+KzL0FSe1v7K1hG93PzAWD0Q+j6kDSmv3sQEIU6N8qZi9P9fjo
- hWdubbfNgpNHGc9nI/DpB2jMU1msPgzdlGxMxATEJ8ainBbjbYAQDrXwxwnT9T65k6TR
- q7Cq9BzKbxrXbIxFNMkwOHJgxcnHiBYmGFQultFyY644e4yJeNpOg6KyTKRSYL5JCn3i
- 6Eoi3iSXHU7u3oV3qEuhMMK2sy5guQegRWIt35d7OS/Mgo8M5EVdFY8cUI37tZbeaZ6P
- 37KTOaoCRiBa5HBq2te15EfSG5iyOV7nqDlpddHGRuLrsLuA1/PhynkUJO+2hpJTkNgP
- S/eg==
-X-Gm-Message-State: AOJu0Yy3Nvo1biLryPilN2yAOI85lpidyTIpavI+xPqqvs06PBLn9/VZ
- uOR1rPe2LbcIf3+GQvtZwjkrTWE6ZEJIbmYNNh9Gf6pvDidky7hhBP8b23oi8qMdrdy23wjGDZx
- y6bhKUPN8vFRm3tuW8bcRJ9n99pnPhtwFAHipXNO0XbnW7Wayw2yp5ThhVykxX1meydx0rXmdGf
- 0o2UmfX6ssLPxkXv1yDg+SnKvUd6Bn/vRfHSNkDtQ=
-X-Received: by 2002:a5d:570e:0:b0:37d:4a16:81d6 with SMTP id
- ffacd0b85a97d-37d86bfcc85mr205280f8f.24.1728998269155; 
- Tue, 15 Oct 2024 06:17:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvBh4qY087oOAqphQj1l23YTgfFYlxk/niS/5xlWx08gth0mFZRgS2oKzPjfeJL/G7uwM0vw==
-X-Received: by 2002:a5d:570e:0:b0:37d:4a16:81d6 with SMTP id
- ffacd0b85a97d-37d86bfcc85mr205248f8f.24.1728998268583; 
- Tue, 15 Oct 2024 06:17:48 -0700 (PDT)
+ bh=20vvSyFpZURhPY07pvl6EKKD9oQ8iAAak08m0L+pzSY=;
+ b=YDflC7Pq+QLooRKtKOHAs53nzHit7VP6eKjHcNarHM55oNr2hq4I4oB562uKJh/jQI
+ WINo3/v0bVFFHgrgKva/cpQ93l3R1cuXOOHgGXPvwY5ZP2oF5kZrhil/6/GBwvqX9veG
+ S+gdij6S9eYuo+iiEfOj6PdslXcr6pS852yOZQ+L8FMnocZqs+eNfmEZ1Nws5kboIMa8
+ wFh1OaWxRFSngJETIy8FrcI7SSIjzR1sSdmbjovXK7eK52zG2X24fb2DeDA7itPf4aBw
+ v9+ss+Px5Kgz0IitpekCI40U30TaZv/JlnJz5v6Hi3UCPA9jNIJbobNsyf0muyecP5Se
+ f8IQ==
+X-Gm-Message-State: AOJu0YxChvc0k+fP+PoBAk58nGnsdafhgg8TSbIgEOnBgvVdjfNNGlg0
+ Zc+Qon6HYbRnhoY8zfn2Ps6vLHN+jxZin0IcX5cuDZZ5RINT1yJaBR5fgM9Eo2CoiqfHFMy4V5t
+ 9xkN5eH5KEfBk73vLxr1Z4k0Rmb6m64tWkZeEJRYf/D6FyJDwABDv6C959afUQPzqPwAH3aDenR
+ jrrRibf1YZ3Q69VWqFbFvfrHq5RSjntfpURDXIUUA=
+X-Received: by 2002:a05:6000:1568:b0:37d:476d:2d58 with SMTP id
+ ffacd0b85a97d-37d86d50563mr246503f8f.45.1728998272140; 
+ Tue, 15 Oct 2024 06:17:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4mddPrdb45gV5NBoEKhlQc+PATGqGnWPTKEfPL9FP1OuhPMgYp/iDN/rmLsvcjcxMWlmaNw==
+X-Received: by 2002:a05:6000:1568:b0:37d:476d:2d58 with SMTP id
+ ffacd0b85a97d-37d86d50563mr246470f8f.45.1728998271556; 
+ Tue, 15 Oct 2024 06:17:51 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4313f569933sm17909365e9.13.2024.10.15.06.17.48
+ ffacd0b85a97d-37d7fbf81b4sm1560697f8f.79.2024.10.15.06.17.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 06:17:48 -0700 (PDT)
+ Tue, 15 Oct 2024 06:17:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/16] rust: pass rustc_args when building all crates
-Date: Tue, 15 Oct 2024 15:17:21 +0200
-Message-ID: <20241015131735.518771-4-pbonzini@redhat.com>
+Subject: [PATCH 04/16] rust: patch bilge-impl to allow compilation with 1.63.0
+Date: Tue, 15 Oct 2024 15:17:22 +0200
+Message-ID: <20241015131735.518771-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015131735.518771-1-pbonzini@redhat.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,102 +100,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rustc_args is needed to smooth the difference in warnings between the vario=
-us
-versions of rustc.  Always include those arguments.
+Apply a patch that removes "let ... else" constructs, replacing them with
+"if let ... else" or "let ... =3D match ...".  "let ... else" was stabilize=
+d in
+Rust 1.65.0.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                       | 18 +++++++++++-------
- rust/qemu-api/meson.build         |  2 +-
- rust/qemu-api/src/device_class.rs | 10 ++++++----
- 3 files changed, 18 insertions(+), 12 deletions(-)
+ .gitattributes                                |  2 +
+ subprojects/bilge-impl-0.2-rs.wrap            |  1 +
+ .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
 
-diff --git a/meson.build b/meson.build
-index 37f94ab32aa..2545185014e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3317,6 +3317,17 @@ endif
-=20
- genh +=3D configure_file(output: 'config-host.h', configuration: config_ho=
-st_data)
-=20
-+if have_rust and have_system
-+  rustc_args =3D run_command(
-+    find_program('scripts/rust/rustc_args.py'),
-+    '--config-headers', meson.project_build_root() / 'config-host.h',
-+    capture : true,
-+    check: true).stdout().strip().split()
-+  rustc_args +=3D ['-D', 'unsafe_op_in_unsafe_fn']
-+  add_project_arguments(rustc_args, native: false, language: 'rust')
-+  add_project_arguments(rustc_args, native: true, language: 'rust')
-+endif
+diff --git a/.gitattributes b/.gitattributes
+index 6dc6383d3d1..9ce7a19581a 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -5,3 +5,5 @@
+ *.rs            diff=3Drust
+ *.rs.inc        diff=3Drust
+ Cargo.lock      diff=3Dtoml merge=3Dbinary
 +
- hxtool =3D find_program('scripts/hxtool')
- shaderinclude =3D find_program('scripts/shaderinclude.py')
- qapi_gen =3D find_program('scripts/qapi-gen.py')
-@@ -3909,12 +3920,6 @@ common_all =3D static_library('common',
-                             dependencies: common_ss.all_dependencies())
-=20
- if have_rust and have_system
--  rustc_args =3D run_command(
--    find_program('scripts/rust/rustc_args.py'),
--    '--config-headers', meson.project_build_root() / 'config-host.h',
--    capture : true,
--    check: true).stdout().strip().split()
--  rustc_args +=3D ['-D', 'unsafe_op_in_unsafe_fn']
-   bindgen_args =3D [
-     '--disable-header-comment',
-     '--raw-line', '// @generated',
-@@ -4087,7 +4092,6 @@ foreach target : target_dirs
-                             rlib_rs,
-                             dependencies: target_rust.dependencies(),
-                             override_options: ['rust_std=3D2021', 'build.r=
-ust_std=3D2021'],
--                            rust_args: rustc_args,
-                             rust_abi: 'c')
-       arch_deps +=3D declare_dependency(link_whole: [rlib])
-     endif
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index c72d34b607d..42ea815fa5a 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -10,7 +10,7 @@ _qemu_api_rs =3D static_library(
-   ),
-   override_options: ['rust_std=3D2021', 'build.rust_std=3D2021'],
-   rust_abi: 'rust',
--  rust_args: rustc_args + [
-+  rust_args: [
-     '--cfg', 'MESON',
-     # '--cfg', 'feature=3D"allocator"',
-   ],
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
-lass.rs
-index 1ea95beb78d..b6b68cf9ce2 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -16,10 +16,12 @@ macro_rules! device_class_init {
-         ) {
-             let mut dc =3D
-                 ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::D=
-eviceClass>()).unwrap();
--            dc.as_mut().realize =3D $realize_fn;
--            dc.as_mut().vmsd =3D &$vmsd;
--            $crate::bindings::device_class_set_legacy_reset(dc.as_mut(), $=
-legacy_reset_fn);
--            $crate::bindings::device_class_set_props(dc.as_mut(), $props.a=
-s_mut_ptr());
-+            unsafe {
-+                dc.as_mut().realize =3D $realize_fn;
-+                dc.as_mut().vmsd =3D &$vmsd;
-+                $crate::bindings::device_class_set_legacy_reset(dc.as_mut(=
-), $legacy_reset_fn);
-+                $crate::bindings::device_class_set_props(dc.as_mut(), $pro=
-ps.as_mut_ptr());
-+            }
-         }
-     };
- }
++*.patch         -text -whitespace
+diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.=
+2-rs.wrap
+index eefb10c36c2..b24c34a9043 100644
+--- a/subprojects/bilge-impl-0.2-rs.wrap
++++ b/subprojects/bilge-impl-0.2-rs.wrap
+@@ -5,3 +5,4 @@ source_filename =3D bilge-impl-0.2.0.tar.gz
+ source_hash =3D feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000=
+adb2d8
+ #method =3D cargo
+ patch_directory =3D bilge-impl-0.2-rs
++diff_files =3D bilge-impl-1.63.0.patch
+diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects=
+/packagefiles/bilge-impl-1.63.0.patch
+new file mode 100644
+index 00000000000..987428a6d65
+--- /dev/null
++++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
+@@ -0,0 +1,45 @@
++--- a/src/shared/discriminant_assigner.rs
+++++ b/src/shared/discriminant_assigner.rs
++@@ -26,20 +26,20 @@
++         let discriminant_expr =3D &discriminant.1;
++         let variant_name =3D &variant.ident;
++=20
++-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discriminan=
+t_expr else {
+++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discrimi=
+nant_expr {
+++            let discriminant_value: u128 =3D int.base10_parse().unwrap_or=
+_else(unreachable);
+++            if discriminant_value > self.max_value() {
+++                abort!(variant, "Value of variant exceeds the given numbe=
+r of bits")
+++            }
+++
+++            Some(discriminant_value)
+++        } else {
++             abort!(
++                 discriminant_expr,
++                 "variant `{}` is not a number", variant_name;
++                 help =3D "only literal integers currently supported"
++             )
++-        };
++-
++-        let discriminant_value: u128 =3D int.base10_parse().unwrap_or_els=
+e(unreachable);
++-        if discriminant_value > self.max_value() {
++-            abort!(variant, "Value of variant exceeds the given number of=
+ bits")
++         }
++-
++-        Some(discriminant_value)
++     }
++=20
++     fn assign(&mut self, variant: &Variant) -> u128 {
++--- a/src/shared/fallback.rs
+++++ b/src/shared/fallback.rs
++@@ -22,8 +22,9 @@
++             }
++             Unnamed(fields) =3D> {
++                 let variant_fields =3D fields.unnamed.iter();
++-                let Ok(fallback_value) =3D variant_fields.exactly_one() e=
+lse {
++-                    abort!(variant, "fallback variant must have exactly o=
+ne field"; help =3D "use only one field or change to a unit variant")
+++                let fallback_value =3D match variant_fields.exactly_one()=
+ {
+++                    Ok(ok) =3D> ok,
+++                    _ =3D> abort!(variant, "fallback variant must have ex=
+actly one field"; help =3D "use only one field or change to a unit variant")
++                 };
++=20
++                 if !is_last_variant {
 --=20
 2.46.2
 
