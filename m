@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E74199F1D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3556D99F1D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:47:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jlz-0006nd-GR; Tue, 15 Oct 2024 11:47:47 -0400
+	id 1t0jm4-0007Tp-Mp; Tue, 15 Oct 2024 11:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jlr-0006c5-B5
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:47:40 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jlz-00075x-6u
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:47:47 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jlp-00012P-OJ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:47:39 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20caccadbeeso41651395ad.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:47:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jlx-00013Q-EU
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:47:46 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-208cf673b8dso58407425ad.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:47:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007256; x=1729612056; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007264; x=1729612064; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TLrx6EmGTvRMia9SJl0yo7FPDa0fQJjS3ptDOLc8dGQ=;
- b=qP3P2GJ3F0nVU/+2ahcZtarhQ6JASmY4Ff4T5poJ+Km4+fkCyjJmZfbMuTpF0Mrltr
- b/8vMfNzRM5w9wVnpm0k0rbR9SDWzsruz5JJ90rK/UO30MFNEfSWWp8nJC5zSkPgXDe3
- HGMxBCv8SknXDoNG3X5L1sJaj13TGQpq/mdfJD9OKeQjuX3YKQH7ZrOGmSQHSqRU8tnN
- rerxy9oXozUH9zqM7T5xx1EVkiw/bUqjDwS/S+qQxw57aiDilNZ6HiDymsZiLBlYnbz7
- RsxDXA87MxNUj1qf9b4dAYrKnRjsnkrHRICk7uepLLwH23ZXvweCSKHRrDJyiwPxhrU5
- J+Kw==
+ bh=FYXizewLL7ilBr1Rp+xOggMM2d6Y9oiIIvLHYNQfqQw=;
+ b=x41xV7DTaoM2zY3/4Ud01/O6eacrikT+Q6C+CTNcRjfugEtiAZyEHeC+lTfNPwPbBi
+ 1dpWJr4DTNHlIuCCt8gAh/BoH5OhVqfDI6VjUQ5UQlQHXq/nD/xSZ18msl/8+c4y51v9
+ WSifYhda8AZv6b8AEtlUviY2qJbNcjugu7HYxDpW4YSkoX9mLqnIilN51XAzuaQtPB61
+ etvDpGzKgWN6pU8hVzJFv42rxEOhNIbAtY9Rv1HixfjZIBUQqKwO6lyxtPgWcpA7Qejt
+ 2HI47O5BLyzBqjmSi4LRhJCQFVWsvSygx61qkch8YAILOA6TifDU6DDeQ89sotqxGAxQ
+ xyRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007256; x=1729612056;
+ d=1e100.net; s=20230601; t=1729007264; x=1729612064;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TLrx6EmGTvRMia9SJl0yo7FPDa0fQJjS3ptDOLc8dGQ=;
- b=Kj6ZgalO1mxjUnSmNK/p1YsC956nuEvCaLQ90n8ypM4ZSdkYwGmDwXZ1V/qjrtg3zw
- GiyNjp1YRBgV+gfBDIL6lsjlTOIy1QRYSwTVa6lURwc30fBO/gdLokB++KdRcaJItwXj
- KYu44R7lnxL4AGv4eHFoSr2zQIu/7WpajjAEKPYjUuuBKobidndrUgdJYmXNzKs3PUY0
- PihclYZkgDV7Fevg7AHtRZVM51oiP3ft585CJdpxVxl6+gvH9ev0UmwiTK0X4E+VkEfB
- HSf/1MypPNNg+0XfCZX0wmzWyzsWOcgRQx6V0sNOCZ5NvhfNj9EKw/YnOfy5BgCEYsgy
- XJOA==
-X-Gm-Message-State: AOJu0YyjOewy038aLpzaTWau950iuJsonksjaKd29GeQeAojKzy6rUl7
- wa5axDAaggx/eN/JWqj2EJ6vE9g+SvVtFF9Vt1/dehcKsGV7USCyKBo1ff4sXKFn4aG9jK8P75d
- f
-X-Google-Smtp-Source: AGHT+IEPYGVhaHR3UOQ0OYfQPJLREiwux6vCRx1U5/EnPsydQBhqCiPNjzM7XOamrxVLZAjlUwBlug==
-X-Received: by 2002:a17:902:ea0e:b0:20c:bcf1:c70e with SMTP id
- d9443c01a7336-20cbcf1f8a1mr148488305ad.13.1729007256109; 
- Tue, 15 Oct 2024 08:47:36 -0700 (PDT)
+ bh=FYXizewLL7ilBr1Rp+xOggMM2d6Y9oiIIvLHYNQfqQw=;
+ b=hP89Za9yfp1FxbIqMo9R+YvX7tZ+6gbXLgAY1NaX2OS2rsg6OBE8DOISWDK6i9v8pr
+ A5tYI3qQoc3kwZx/WfgTwdx+deM454VtTH+kodo7pooPnsT2W0/cR/LBDHDohj2/3tTv
+ 6Hrp6oO8dW4ikveHQYLMO2xaoNvF0CNFi7LKtdcNawFEdKc/pjVeAH3VE84i/ZjGSj37
+ ObTJXRgtXisP9YB0zHGPbB+PhxtenP2Ftp//f1r9PYkQtalOqqFVgQOyQyKVIevimShM
+ HhDOafoQHSMa5jElBB7vZj/UObk2lsZRVLYlh371QTv31h5EEQIjRCnh1sYIIMBm+AiF
+ lMkw==
+X-Gm-Message-State: AOJu0YwBOgx6izToHBGDO4Q4XR3VFQaOomt8EqB4/XefCEFCefcjUj/B
+ pyt0Z8V3Wl0nFX9S39J48KHCc3YMkvZC3zSXxfpaF7IfCLd1/gv3qDK3psjl5FEmh9gMkD6gHiC
+ l
+X-Google-Smtp-Source: AGHT+IGqQhLi7dQ4HbQJlSiDRI9jBRrGCC06AFCm1HbYQiBGP6ghDXTPSmL3g3zM6lT2bPijwL3J/g==
+X-Received: by 2002:a17:902:f78b:b0:206:aac4:b844 with SMTP id
+ d9443c01a7336-20d27e59c0bmr12439765ad.6.1729007263737; 
+ Tue, 15 Oct 2024 08:47:43 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20d1804b5e5sm13561495ad.197.2024.10.15.08.47.34
+ d9443c01a7336-20d1807100asm13470765ad.304.2024.10.15.08.47.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:47:35 -0700 (PDT)
+ Tue, 15 Oct 2024 08:47:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 24/33] target/mips: Rename unused sysemu argument of
- OP_LD_ATOMIC()
-Date: Tue, 15 Oct 2024 12:44:33 -0300
-Message-ID: <20241015154443.71763-25-philmd@linaro.org>
+Subject: [PULL 25/33] target/mips: Remove unused MEMOP_IDX() macro
+Date: Tue, 15 Oct 2024 12:44:34 -0300
+Message-ID: <20241015154443.71763-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -93,31 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 6d0cad12594 ("target/mips: Finish conversion to
-tcg_gen_qemu_{ld,st}_*") we renamed the argument of the user
-definition. Rename the system part for coherency. Since the
-argument is ignored, prefix with 'ignored_'.
+MEMOP_IDX() is unused since commit 948f88661c6 ("target/mips:
+Use cpu_*_data_ra for msa load/store"), remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241010215015.44326-9-philmd@linaro.org>
+Message-Id: <20241014232235.51988-1-philmd@linaro.org>
 ---
- target/mips/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/mips/tcg/msa_helper.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 6f047d6069a..6ba8371658c 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -1957,7 +1957,7 @@ static inline void op_ld_##insn(TCGv ret, TCGv arg1, int mem_idx,          \
-     tcg_gen_st_tl(ret, tcg_env, offsetof(CPUMIPSState, llval));            \
- }
- #else
--#define OP_LD_ATOMIC(insn, fname)                                          \
-+#define OP_LD_ATOMIC(insn, ignored_memop)                                  \
- static inline void op_ld_##insn(TCGv ret, TCGv arg1, int mem_idx,          \
-                                 DisasContext *ctx)                         \
- {                                                                          \
+diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
+index d2181763e72..1d40383ca4f 100644
+--- a/target/mips/tcg/msa_helper.c
++++ b/target/mips/tcg/msa_helper.c
+@@ -8211,14 +8211,6 @@ void helper_msa_ffint_u_df(CPUMIPSState *env, uint32_t df, uint32_t wd,
+ /* Element-by-element access macros */
+ #define DF_ELEMENTS(df) (MSA_WRLEN / DF_BITS(df))
+ 
+-#if !defined(CONFIG_USER_ONLY)
+-#define MEMOP_IDX(DF)                                                   \
+-    MemOpIdx oi = make_memop_idx(MO_TE | DF | MO_UNALN,                 \
+-                                 mips_env_mmu_index(env));
+-#else
+-#define MEMOP_IDX(DF)
+-#endif
+-
+ #if TARGET_BIG_ENDIAN
+ static inline uint64_t bswap16x4(uint64_t x)
+ {
 -- 
 2.45.2
 
