@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66DB99EF4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABC799EF59
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iNv-0008M9-H8; Tue, 15 Oct 2024 10:18:51 -0400
+	id 1t0iNt-0007xU-8C; Tue, 15 Oct 2024 10:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNe-0007eH-2q
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t0iNg-0007f7-WF
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNb-0003Ny-Ei
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:33 -0400
+ id 1t0iNf-0003OO-Jg
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001910;
+ s=mimecast20190719; t=1729001914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pffMq5HlyyQSLR32u36d0WlErfpMZsApxMOlecv7nh0=;
- b=TOm/wJtSlR4rS82ruG3BfXtTMl8N9Fa4/TDVME6nQOOkul+vNEPmRfyNSR95a6BHDV+uRB
- wAi8P+gnKeV3H/I0dr7WHrvVSYRxahH+q46OsYuVvZSnv5gXoMO9aIhXOY3jxNaBYC7ykK
- rI8P1PWoKA/npLVOqlRmaPOHtjz20YY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XeVedSaUox6qACtW8EJ28JkUgbK5wJIqAzjoh6ebcek=;
+ b=APlVjvTEGJXccC/Gf6Z9DzzrjInwlm7v+ANJ0DmGyf/AWFXO6ZcumXS5q3o5t26n8gPKLA
+ 9/KtqNj6vbhpPW7kP7HrCCk9OYv2wDQmhh6zhzaIq9Il1c47FjalqvEGLQSuxXv5aYTrNe
+ 8PBp4lasPhM+MRH/hTQdN8FaIzlKD7U=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-00TvkT8DMaOkx_Xb3GmFvg-1; Tue, 15 Oct 2024 10:18:29 -0400
-X-MC-Unique: 00TvkT8DMaOkx_Xb3GmFvg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d4a211177so2743337f8f.0
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:29 -0700 (PDT)
+ us-mta-639-3dvW4gGTNLSnd-VH4FBHOA-1; Tue, 15 Oct 2024 10:18:32 -0400
+X-MC-Unique: 3dvW4gGTNLSnd-VH4FBHOA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d589138a9so1876054f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001908; x=1729606708;
+ d=1e100.net; s=20230601; t=1729001911; x=1729606711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pffMq5HlyyQSLR32u36d0WlErfpMZsApxMOlecv7nh0=;
- b=vdo2Ip7HntmfuG9r4x+N7mSYJKvhJ9QDf8Dc0RXt5WA/sor8tuxyGrSCq17gTJQ9VO
- nrk0M1zoOE0c45mp+g94OhNpLiEqRIrWOzo5mUPT99bUTsVoksZ3i8Wv491Ue7nPuYQ5
- 93kf80PwIwAUJuW+zE0NDHF1nk5FAaVHn0B5Nf6+U3DmLgEms02bOJIHh0J0UJkhnto/
- VkXwfpVVY8k+dw5n5HriUQNNIeE51wiY4tEX2cSt6y2fWXE7UGqCamEMAq4OltyafLHW
- 76U2fijuwxX+sbcQBzkyQ0oz6nsIq9T7srCj8t4GuU/SHbGEmiumPM2l+C5o00lPctXt
- AiAg==
-X-Gm-Message-State: AOJu0YxJFRcaMmiO6f6YpeMvwzR5xLKpY0bLvkLhdE5CAygxWxAw5biK
- IjFkV+liPftnTuchlz55mwgcHpXpmtY9pS9xnVZsttn6B7p935xcdUrAsSpCxfbi5lNxWmgsJgB
- 63He4gPJWVV+Zja5/GSSuLuNl1oM6//cR8EWTl8sn5vyLo5sO3RKSnC2KxGWZAzmSrDZZZKG8ws
- /skOjQU1P0QpppTLgmjuzf4z+cUAEzn9pmmva3h88=
-X-Received: by 2002:adf:f810:0:b0:37d:5026:f787 with SMTP id
- ffacd0b85a97d-37d86d55306mr310481f8f.38.1729001908081; 
- Tue, 15 Oct 2024 07:18:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTBsI8Ng4EX8YHdcxhIWcEYt4Z36CfPGgFTUIAV9qOPSKVTATLt6XzP26/IrbIfC2H41xjVQ==
-X-Received: by 2002:adf:f810:0:b0:37d:5026:f787 with SMTP id
- ffacd0b85a97d-37d86d55306mr310462f8f.38.1729001907569; 
- Tue, 15 Oct 2024 07:18:27 -0700 (PDT)
+ bh=XeVedSaUox6qACtW8EJ28JkUgbK5wJIqAzjoh6ebcek=;
+ b=VmgC9zHtIH2ji8JYf++JkBdPMC7SL5f9wAADv0FgSv/IqVfW3OkzuqX/xTqyMbRNj7
+ fpU1TGUStxUDwMp8HT7XaLWlYfE2hx5wVC3ljOqmy/8aVngGlhRLLuZt8ZLekE8U3TJU
+ NW9tVisg/cFVt3Cqio6WGdPNg3JUykOLE9jjsFXUuOlDqesue0mjLWZXlYRt+1fbcDMH
+ 6IkYvsInlM5M8EivhxqYgQoO6/Y1lEhJ/KXNnTVKidOv2sUkIqcv7mkAn5IUoItJ5/6s
+ Zzt70siOs4+P3MmJapqwwn7Pw2tKjuZ4RHIWwB0wjB6s8FQFG+6eyIaiSiMCL43N5DM3
+ ZTPQ==
+X-Gm-Message-State: AOJu0Yw50WzeI3KkQC0/cBpJkB9w9pNKQ1ucGnn6rJHrn7lvXt/3EZjn
+ /kMdOfKiJtHgeRrz3D4fZW0oTxmQ8tWNY02+K2lmK2EBOngtLG4nOzO5+1LaI+w9njK+ddExnj2
+ YazYaWG06DIW4ks86ix2loestv9JwTKUuhpGpO+K98LbYeo3pH85hU59J6JpKZrqUIq6gcgJ/x3
+ 55S2L1fFhqNEL4VZR55MASUUyjxUvrqvo+Jc1/yYY=
+X-Received: by 2002:adf:eb11:0:b0:37d:53a7:a635 with SMTP id
+ ffacd0b85a97d-37d86d6f26bmr364177f8f.51.1729001911053; 
+ Tue, 15 Oct 2024 07:18:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHe2Y9IyefHzCuHiZoRS/NTtqO5M1M6IZ/m9ab222ydF7y6UolyPpxcXfh0RMKlYlVIvDaXJw==
+X-Received: by 2002:adf:eb11:0:b0:37d:53a7:a635 with SMTP id
+ ffacd0b85a97d-37d86d6f26bmr364157f8f.51.1729001910511; 
+ Tue, 15 Oct 2024 07:18:30 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4313f56eaa7sm19056745e9.26.2024.10.15.07.18.26
+ 5b1f17b1804b1-4313f6b3362sm19086145e9.38.2024.10.15.07.18.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:18:27 -0700 (PDT)
+ Tue, 15 Oct 2024 07:18:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/25] accel/kvm: check for KVM_CAP_MULTI_ADDRESS_SPACE on vm
-Date: Tue, 15 Oct 2024 16:17:08 +0200
-Message-ID: <20241015141711.528342-23-pbonzini@redhat.com>
+Subject: [PULL 23/25] accel/kvm: check for KVM_CAP_MEMORY_ATTRIBUTES on vm
+Date: Tue, 15 Oct 2024 16:17:09 +0200
+Message-ID: <20241015141711.528342-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,11 +100,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM_CAP_MULTI_ADDRESS_SPACE used to be a global capability, but with the
-introduction of AMD SEV-SNP confidential VMs, the number of address spaces
-can vary by VM type.
-
-Query the extension on the VM level instead of on the KVM level.
+The exact set of available memory attributes can vary by VM.  In the
+future it might vary depending on enabled capabilities, too.  Query the
+extension on the VM level instead of on the KVM level, and only after
+architecture-specific initialization.
 
 Inspired by an analogous patch by Tom Dohrmann.
 
@@ -114,35 +113,35 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 8be731cfeed..4287e254df8 100644
+index 4287e254df8..482c5b24cf6 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2618,12 +2618,6 @@ static int kvm_init(MachineState *ms)
-         s->nr_slots_max = KVM_MEMSLOTS_NR_MAX_DEFAULT;
+@@ -2604,12 +2604,6 @@ static int kvm_init(MachineState *ms)
+         goto err;
      }
  
--    s->nr_as = kvm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
--    if (s->nr_as <= 1) {
--        s->nr_as = 1;
--    }
--    s->as = g_new0(struct KVMAs, s->nr_as);
+-    kvm_supported_memory_attributes = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+-    kvm_guest_memfd_supported =
+-        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+-        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+-        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
 -
-     type = find_kvm_machine_type(ms);
-     if (type < 0) {
-         ret = -EINVAL;
-@@ -2637,6 +2631,12 @@ static int kvm_init(MachineState *ms)
+     kvm_immediate_exit = kvm_check_extension(s, KVM_CAP_IMMEDIATE_EXIT);
+     s->nr_slots_max = kvm_check_extension(s, KVM_CAP_NR_MEMSLOTS);
  
-     s->vmfd = ret;
+@@ -2723,6 +2717,12 @@ static int kvm_init(MachineState *ms)
+         goto err;
+     }
  
-+    s->nr_as = kvm_vm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
-+    if (s->nr_as <= 1) {
-+        s->nr_as = 1;
-+    }
-+    s->as = g_new0(struct KVMAs, s->nr_as);
++    kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
++    kvm_guest_memfd_supported =
++        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
++        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
++        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
 +
-     /* check the vcpu limits */
-     soft_vcpus_limit = kvm_recommended_vcpus(s);
-     hard_vcpus_limit = kvm_max_vcpus(s);
+     if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
+         s->kernel_irqchip_split = mc->default_kernel_irqchip_split ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
+     }
 -- 
 2.46.2
 
