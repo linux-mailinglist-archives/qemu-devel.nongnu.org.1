@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A3999EF4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2238599EF46
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:19:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iNE-0006D1-Mt; Tue, 15 Oct 2024 10:18:08 -0400
+	id 1t0iNH-0006GL-B5; Tue, 15 Oct 2024 10:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iNB-00066Z-5y
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:05 -0400
+ id 1t0iNE-0006Dx-8V
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iN8-0003L6-Hb
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:04 -0400
+ id 1t0iNC-0003Lq-Mc
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:18:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001881;
+ s=mimecast20190719; t=1729001886;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Njqow1COxQlZq2FlnaMErpxe9av0hiOrAD9QY9giCZ4=;
- b=CgyGvDn4gEJoq9s3UQKZ2E7FH34BP7/HbL3JIVe1qEnCqNHzxNzLTftHDLcgCTg8bn/cWJ
- ZmKLTMGzz6nHxQRsj6VPQXfsPSqz0t1qBFORxI7UNf5nOtBAjBoAOVg6W7KpalgprikD2Y
- HM139u1jb15QNm7v7D3nL99BCH7gFoQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=I5+M/LXHMzLCA/Rz9fG4sCDfrEoeocpuKFsAteejmB0=;
+ b=IC1lrVanhUgE1cl4UJGCnYu5UqVc/rTe9TdMdy07fcrSbBmnsI7na+oHFgtSXWsKWDrwP6
+ Ds7/k9kadbzQ/P6BjfA4KdKtjrbISOiY5dSCwYjHFZUoWBaayZDnWvaMRENnkOiCO38iky
+ 8znD11P/WJCGiJ3azcNIyn0+SVgQnv0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-fwqKczEOPNSS4Fn4XhCVag-1; Tue, 15 Oct 2024 10:18:00 -0400
-X-MC-Unique: fwqKczEOPNSS4Fn4XhCVag-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d56061a4cso2166727f8f.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:00 -0700 (PDT)
+ us-mta-501-aZzT6hqtM6ikloea9xszWQ-1; Tue, 15 Oct 2024 10:18:04 -0400
+X-MC-Unique: aZzT6hqtM6ikloea9xszWQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d45f1e935so1640797f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:18:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001879; x=1729606679;
+ d=1e100.net; s=20230601; t=1729001883; x=1729606683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Njqow1COxQlZq2FlnaMErpxe9av0hiOrAD9QY9giCZ4=;
- b=bKo84tlL5gsIDYDZhXSMHGD+B0Py2XsYXAMQyXoWW+IfK+eIP7XaUdHJwezNUR3dfp
- oaM2cVDfFFzWF41d8sgNBwzQCpKij3BgaN+TDzgZADqJhV8auxVCwj031YxjUe+4Y0Cx
- w4rfMljiV7blg9bf+uTjyCb2E5K31obN1ydpq7yuNGHxw11UI//5U3kDsTUuOJkAxk1y
- UYD09KppeHuUk40fY3PyKp6u48LyqxQOFCnKxopFWgxKuMCYNNYlN1BLKB8yw5cc8yNP
- qtPZcfPSbUdpsMX8FkkcuZiRaucksosvE2nWcwQDh5dz/fiE/KsmHeJ2DFKYCFRFw7hg
- cqpQ==
-X-Gm-Message-State: AOJu0YwE6CvtHoDOOyWj2Bdc4AxctDrf+1XvHqawoWJgkCMwU4bLLltu
- ME0NmD5Tv8LNeaICYgkgid1iH7DlCLmEp34cRXix9Wg4rU3Tc2J/B0Vw6jiiVbYjGzA67v6LWgn
- usEFxq/e5+YyBuuVTZznf8Lp18UOSEsWk5eyOyeIr2FSB2HapbOpE5rPZZEDz2hUPVse/SO9tqN
- 4bN8rIOx/pd2+vZLU0RG/lryShjo4h2ytNn0A06Z0=
-X-Received: by 2002:a5d:53cd:0:b0:37c:c4bc:181c with SMTP id
- ffacd0b85a97d-37d55184de1mr10850308f8f.11.1729001878642; 
- Tue, 15 Oct 2024 07:17:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSJBANSQZKvzj5AteuYyZfZG3AhFjWJybVStLEmVcfLVkg7iV2yVLA8qPFLl8s4D3mrQAu4g==
-X-Received: by 2002:a5d:53cd:0:b0:37c:c4bc:181c with SMTP id
- ffacd0b85a97d-37d55184de1mr10850283f8f.11.1729001878107; 
- Tue, 15 Oct 2024 07:17:58 -0700 (PDT)
+ bh=I5+M/LXHMzLCA/Rz9fG4sCDfrEoeocpuKFsAteejmB0=;
+ b=iUK702sXLPw5unZ3RLUeNlnistaFuTbbj1sMSZe1+fTv2EESn67onMeprNgSpW9WVD
+ fIZnzsVXT2xodoT3KkUM8/hoQT8BeKgXIVKUpYDmE3xwaBjZB4YI6a5/YZ1+ySfZ4maI
+ tI7L+sjxaFWvNvhKwNLhcg9/AVkqo9mqg1F2eIjx8hkABMPYg2APJrFBmH+PmVLdYgzn
+ TibMoal//5FFsHduyJXMwhJOfxELNYrNc2XvrlIvzG4SqlDQQW8VB3N9nzgP+JYLuan8
+ XIX9eAgBhJIGfPuPkvfjc3FQtEXgK3JIaL8KzYj6BvcfMLBfOr9M9pM4QHINSWsXrYFY
+ zTkw==
+X-Gm-Message-State: AOJu0Ywpa03ZyCVL7hfyp4DY8zesNr2s22VG85P2sbqnjCNnpWq3e9LE
+ x6h6vN7L9RE5m6EgY8E8Pnt1BBKPZh2z/0xw997MjULxBEPNRQus7r06A7tRDyeMGEmY4/vgUto
+ ew9h+6PRLfrnS8kkPHkZ/YbH+MytZNSKf9J/v/ubhs9awWjBtHoF713H5H46O7ug1cms5DoMtfH
+ APGuoOrmVMTj/H0kxadTDH9OQB9ww9Bhp7rg8JGpE=
+X-Received: by 2002:adf:f9c8:0:b0:37d:415c:f27c with SMTP id
+ ffacd0b85a97d-37d5ffb9969mr7650767f8f.38.1729001882779; 
+ Tue, 15 Oct 2024 07:18:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH90VasnVgsCclkSA9KLRJBHRflatwX3GVoWtZZtXAe4DeYWi+4Sisxacn1Rku8AQJUY1Xg8w==
+X-Received: by 2002:adf:f9c8:0:b0:37d:415c:f27c with SMTP id
+ ffacd0b85a97d-37d5ffb9969mr7650745f8f.38.1729001882188; 
+ Tue, 15 Oct 2024 07:18:02 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a06dsm1716160f8f.5.2024.10.15.07.17.57
+ ffacd0b85a97d-37d7fbf82b1sm1710908f8f.72.2024.10.15.07.18.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:17:57 -0700 (PDT)
+ Tue, 15 Oct 2024 07:18:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/25] target/i386: convert CMPXCHG8B/CMPXCHG16B to new decoder
-Date: Tue, 15 Oct 2024 16:16:59 +0200
-Message-ID: <20241015141711.528342-14-pbonzini@redhat.com>
+Subject: [PULL 14/25] target/i386: do not check PREFIX_LOCK in old-style
+ decoder
+Date: Tue, 15 Oct 2024 16:17:00 +0200
+Message-ID: <20241015141711.528342-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
@@ -100,352 +101,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The gen_cmpxchg8b and gen_cmpxchg16b functions even have the correct
-prototype already; the only thing that needs to be done is removing the
-gen_lea_modrm() call.
-
-This moves the last LOCK-enabled instructions to the new decoder.  It is
-now possible to assume that gen_multi0F is called only after checking
-that PREFIX_LOCK was not specified.
+It is already checked before getting there.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.h     |   2 +
- target/i386/tcg/translate.c      | 121 +------------------------------
- target/i386/tcg/decode-new.c.inc |  34 ++++++---
- target/i386/tcg/emit.c.inc       |  96 ++++++++++++++++++++++++
- 4 files changed, 124 insertions(+), 129 deletions(-)
+ target/i386/tcg/translate.c | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index bebc77bd54b..7f23d373ea7 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -114,6 +114,8 @@ typedef enum X86CPUIDFeature {
-     X86_FEAT_CLWB,
-     X86_FEAT_CMOV,
-     X86_FEAT_CMPCCXADD,
-+    X86_FEAT_CX8,
-+    X86_FEAT_CX16,
-     X86_FEAT_F16C,
-     X86_FEAT_FMA,
-     X86_FEAT_FSGSBASE,
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index be68cde1baa..1d3b5f35c39 100644
+index 1d3b5f35c39..f4bffef9e28 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2289,104 +2289,6 @@ static void gen_sty_env_A0(DisasContext *s, int offset, bool align)
-     tcg_gen_qemu_st_i128(t, s->tmp0, mem_index, mop);
- }
- 
--static void gen_cmpxchg8b(DisasContext *s, X86DecodedInsn *decode)
--{
--    TCGv_i64 cmp, val, old;
--    TCGv Z;
--
--    gen_lea_modrm(s, decode);
--
--    cmp = tcg_temp_new_i64();
--    val = tcg_temp_new_i64();
--    old = tcg_temp_new_i64();
--
--    /* Construct the comparison values from the register pair. */
--    tcg_gen_concat_tl_i64(cmp, cpu_regs[R_EAX], cpu_regs[R_EDX]);
--    tcg_gen_concat_tl_i64(val, cpu_regs[R_EBX], cpu_regs[R_ECX]);
--
--    /* Only require atomic with LOCK; non-parallel handled in generator. */
--    if (s->prefix & PREFIX_LOCK) {
--        tcg_gen_atomic_cmpxchg_i64(old, s->A0, cmp, val, s->mem_index, MO_TEUQ);
--    } else {
--        tcg_gen_nonatomic_cmpxchg_i64(old, s->A0, cmp, val,
--                                      s->mem_index, MO_TEUQ);
--    }
--
--    /* Set tmp0 to match the required value of Z. */
--    tcg_gen_setcond_i64(TCG_COND_EQ, cmp, old, cmp);
--    Z = tcg_temp_new();
--    tcg_gen_trunc_i64_tl(Z, cmp);
--
--    /*
--     * Extract the result values for the register pair.
--     * For 32-bit, we may do this unconditionally, because on success (Z=1),
--     * the old value matches the previous value in EDX:EAX.  For x86_64,
--     * the store must be conditional, because we must leave the source
--     * registers unchanged on success, and zero-extend the writeback
--     * on failure (Z=0).
--     */
--    if (TARGET_LONG_BITS == 32) {
--        tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], old);
--    } else {
--        TCGv zero = tcg_constant_tl(0);
--
--        tcg_gen_extr_i64_tl(s->T0, s->T1, old);
--        tcg_gen_movcond_tl(TCG_COND_EQ, cpu_regs[R_EAX], Z, zero,
--                           s->T0, cpu_regs[R_EAX]);
--        tcg_gen_movcond_tl(TCG_COND_EQ, cpu_regs[R_EDX], Z, zero,
--                           s->T1, cpu_regs[R_EDX]);
--    }
--
--    /* Update Z. */
--    gen_compute_eflags(s);
--    tcg_gen_deposit_tl(cpu_cc_src, cpu_cc_src, Z, ctz32(CC_Z), 1);
--}
--
--#ifdef TARGET_X86_64
--static void gen_cmpxchg16b(DisasContext *s, X86DecodedInsn *decode)
--{
--    MemOp mop = MO_TE | MO_128 | MO_ALIGN;
--    TCGv_i64 t0, t1;
--    TCGv_i128 cmp, val;
--
--    gen_lea_modrm(s, decode);
--
--    cmp = tcg_temp_new_i128();
--    val = tcg_temp_new_i128();
--    tcg_gen_concat_i64_i128(cmp, cpu_regs[R_EAX], cpu_regs[R_EDX]);
--    tcg_gen_concat_i64_i128(val, cpu_regs[R_EBX], cpu_regs[R_ECX]);
--
--    /* Only require atomic with LOCK; non-parallel handled in generator. */
--    if (s->prefix & PREFIX_LOCK) {
--        tcg_gen_atomic_cmpxchg_i128(val, s->A0, cmp, val, s->mem_index, mop);
--    } else {
--        tcg_gen_nonatomic_cmpxchg_i128(val, s->A0, cmp, val, s->mem_index, mop);
--    }
--
--    tcg_gen_extr_i128_i64(s->T0, s->T1, val);
--
--    /* Determine success after the fact. */
--    t0 = tcg_temp_new_i64();
--    t1 = tcg_temp_new_i64();
--    tcg_gen_xor_i64(t0, s->T0, cpu_regs[R_EAX]);
--    tcg_gen_xor_i64(t1, s->T1, cpu_regs[R_EDX]);
--    tcg_gen_or_i64(t0, t0, t1);
--
--    /* Update Z. */
--    gen_compute_eflags(s);
--    tcg_gen_setcondi_i64(TCG_COND_EQ, t0, t0, 0);
--    tcg_gen_deposit_tl(cpu_cc_src, cpu_cc_src, t0, ctz32(CC_Z), 1);
--
--    /*
--     * Extract the result values for the register pair.  We may do this
--     * unconditionally, because on success (Z=1), the old value matches
--     * the previous value in RDX:RAX.
--     */
--    tcg_gen_mov_i64(cpu_regs[R_EAX], s->T0);
--    tcg_gen_mov_i64(cpu_regs[R_EDX], s->T1);
--}
--#endif
--
- #include "emit.c.inc"
- 
- static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
-@@ -2962,29 +2864,10 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
- 
-     /* now check op code */
-     switch (b) {
--    case 0x1c7: /* cmpxchg8b */
-+    case 0x1c7: /* RDSEED, RDPID with f3 prefix */
-         mod = (modrm >> 6) & 3;
+@@ -2869,7 +2869,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
          switch ((modrm >> 3) & 7) {
--        case 1: /* CMPXCHG8, CMPXCHG16 */
--            if (mod == 3) {
--                goto illegal_op;
--            }
--#ifdef TARGET_X86_64
--            if (dflag == MO_64) {
--                if (!(s->cpuid_ext_features & CPUID_EXT_CX16)) {
--                    goto illegal_op;
--                }
--                gen_cmpxchg16b(s, decode);
--                break;
--            }
--#endif
--            if (!(s->cpuid_features & CPUID_CX8)) {
--                goto illegal_op;
--            }
--            gen_cmpxchg8b(s, decode);
--            break;
--
--        case 7: /* RDSEED, RDPID with f3 prefix */
-+        case 7:
+         case 7:
              if (mod != 3 ||
-                 (s->prefix & (PREFIX_LOCK | PREFIX_REPNZ))) {
+-                (s->prefix & (PREFIX_LOCK | PREFIX_REPNZ))) {
++                (s->prefix & PREFIX_REPNZ)) {
                  goto illegal_op;
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index ee3ba16116e..fe3bfed147a 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -288,6 +288,25 @@ static void decode_group8(DisasContext *s, CPUX86State *env, X86OpEntry *entry,
-     }
- }
+             }
+             if (s->prefix & PREFIX_REPZ) {
+@@ -2889,7 +2889,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
  
-+static void decode_group9(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-+{
-+    static const X86OpEntry group9_reg =
-+        X86_OP_ENTRY0(multi0F);  /* unconverted */
-+    static const X86OpEntry cmpxchg8b =
-+        X86_OP_ENTRY1(CMPXCHG8B,  M,q,  lock p_00 cpuid(CX8));
-+    static const X86OpEntry cmpxchg16b =
-+        X86_OP_ENTRY1(CMPXCHG16B, M,dq, lock p_00 cpuid(CX16));
-+
-+    int modrm = get_modrm(s, env);
-+    int op = (modrm >> 3) & 7;
-+
-+    if ((modrm >> 6) == 3) {
-+        *entry = group9_reg;
-+    } else if (op == 1) {
-+        *entry = REX_W(s) ? cmpxchg16b : cmpxchg8b;
-+    }
-+}
-+
- static void decode_group15(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
- {
-     static const X86OpEntry group15_reg[8] = {
-@@ -1203,7 +1222,7 @@ static const X86OpEntry opcodes_0F[256] = {
-     [0xc4] = X86_OP_ENTRY4(PINSRW,     V,dq,H,dq,E,w,       vex5 mmx p_00_66),
-     [0xc5] = X86_OP_ENTRY3(PEXTRW,     G,d, U,dq,I,b,       vex5 mmx p_00_66),
-     [0xc6] = X86_OP_ENTRY4(VSHUF,      V,x, H,x, W,x,       vex4 p_00_66),
--    [0xc7] = X86_OP_ENTRY1(multi0F,    nop,v,               nolea), /* unconverted */
-+    [0xc7] = X86_OP_GROUP0(group9),
+         case 6: /* RDRAND */
+             if (mod != 3 ||
+-                (s->prefix & (PREFIX_LOCK | PREFIX_REPZ | PREFIX_REPNZ)) ||
++                (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) ||
+                 !(s->cpuid_ext_features & CPUID_EXT_RDRAND)) {
+                 goto illegal_op;
+             }
+@@ -3049,8 +3049,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
  
-     [0xd0] = X86_OP_ENTRY3(VADDSUB,   V,x, H,x, W,x,        vex2 cpuid(SSE3) p_66_f2),
-     [0xd1] = X86_OP_ENTRY3(PSRLW_r,   V,x, H,x, W,x,        vex4 mmx avx2_256 p_00_66),
-@@ -2245,8 +2264,12 @@ static bool has_cpuid_feature(DisasContext *s, X86CPUIDFeature cpuid)
-         return (s->cpuid_features & CPUID_CMOV);
-     case X86_FEAT_CLFLUSH:
-         return (s->cpuid_features & CPUID_CLFLUSH);
-+    case X86_FEAT_CX8:
-+        return (s->cpuid_features & CPUID_CX8);
-     case X86_FEAT_FXSR:
-         return (s->cpuid_features & CPUID_FXSR);
-+    case X86_FEAT_CX16:
-+        return (s->cpuid_ext_features & CPUID_EXT_CX16);
-     case X86_FEAT_F16C:
-         return (s->cpuid_ext_features & CPUID_EXT_F16C);
-     case X86_FEAT_FMA:
-@@ -2726,15 +2749,6 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-         break;
-     }
+         case 0xd0: /* xgetbv */
+             if ((s->cpuid_ext_features & CPUID_EXT_XSAVE) == 0
+-                || (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                                 | PREFIX_REPZ | PREFIX_REPNZ))) {
++                || (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ))) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3060,8 +3059,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
  
--    /*
--     * hack for old decoder: 0F C7 has both instructions that accept LOCK
--     * and instructions that don't, but also needs X86_SPECIAL_NoLoadEA.
--     * Keep this here until CMPXCHG8B/CMPXCHG16B is separated from the
--     * other unconverted opcodes.
--     */
--    if (decode.e.gen == gen_multi0F) {
--        accept_lock = true;
--    }
-     if ((s->prefix & PREFIX_LOCK) && !accept_lock) {
-         goto illegal_op;
-     }
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 29de8bba6f7..fd17a9b1eca 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1788,6 +1788,102 @@ static void gen_CMPXCHG(DisasContext *s, X86DecodedInsn *decode)
-     decode->cc_op = CC_OP_SUBB + ot;
- }
- 
-+static void gen_CMPXCHG16B(DisasContext *s, X86DecodedInsn *decode)
-+{
-+#ifdef TARGET_X86_64
-+    MemOp mop = MO_TE | MO_128 | MO_ALIGN;
-+    TCGv_i64 t0, t1;
-+    TCGv_i128 cmp, val;
-+
-+    cmp = tcg_temp_new_i128();
-+    val = tcg_temp_new_i128();
-+    tcg_gen_concat_i64_i128(cmp, cpu_regs[R_EAX], cpu_regs[R_EDX]);
-+    tcg_gen_concat_i64_i128(val, cpu_regs[R_EBX], cpu_regs[R_ECX]);
-+
-+    /* Only require atomic with LOCK; non-parallel handled in generator. */
-+    if (s->prefix & PREFIX_LOCK) {
-+        tcg_gen_atomic_cmpxchg_i128(val, s->A0, cmp, val, s->mem_index, mop);
-+    } else {
-+        tcg_gen_nonatomic_cmpxchg_i128(val, s->A0, cmp, val, s->mem_index, mop);
-+    }
-+
-+    tcg_gen_extr_i128_i64(s->T0, s->T1, val);
-+
-+    /* Determine success after the fact. */
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    tcg_gen_xor_i64(t0, s->T0, cpu_regs[R_EAX]);
-+    tcg_gen_xor_i64(t1, s->T1, cpu_regs[R_EDX]);
-+    tcg_gen_or_i64(t0, t0, t1);
-+
-+    /* Update Z. */
-+    gen_compute_eflags(s);
-+    tcg_gen_setcondi_i64(TCG_COND_EQ, t0, t0, 0);
-+    tcg_gen_deposit_tl(cpu_cc_src, cpu_cc_src, t0, ctz32(CC_Z), 1);
-+
-+    /*
-+     * Extract the result values for the register pair.  We may do this
-+     * unconditionally, because on success (Z=1), the old value matches
-+     * the previous value in RDX:RAX.
-+     */
-+    tcg_gen_mov_i64(cpu_regs[R_EAX], s->T0);
-+    tcg_gen_mov_i64(cpu_regs[R_EDX], s->T1);
-+#else
-+    abort();
-+#endif
-+}
-+
-+static void gen_CMPXCHG8B(DisasContext *s, X86DecodedInsn *decode)
-+{
-+    TCGv_i64 cmp, val, old;
-+    TCGv Z;
-+
-+    cmp = tcg_temp_new_i64();
-+    val = tcg_temp_new_i64();
-+    old = tcg_temp_new_i64();
-+
-+    /* Construct the comparison values from the register pair. */
-+    tcg_gen_concat_tl_i64(cmp, cpu_regs[R_EAX], cpu_regs[R_EDX]);
-+    tcg_gen_concat_tl_i64(val, cpu_regs[R_EBX], cpu_regs[R_ECX]);
-+
-+    /* Only require atomic with LOCK; non-parallel handled in generator. */
-+    if (s->prefix & PREFIX_LOCK) {
-+        tcg_gen_atomic_cmpxchg_i64(old, s->A0, cmp, val, s->mem_index, MO_TEUQ);
-+    } else {
-+        tcg_gen_nonatomic_cmpxchg_i64(old, s->A0, cmp, val,
-+                                      s->mem_index, MO_TEUQ);
-+    }
-+
-+    /* Set tmp0 to match the required value of Z. */
-+    tcg_gen_setcond_i64(TCG_COND_EQ, cmp, old, cmp);
-+    Z = tcg_temp_new();
-+    tcg_gen_trunc_i64_tl(Z, cmp);
-+
-+    /*
-+     * Extract the result values for the register pair.
-+     * For 32-bit, we may do this unconditionally, because on success (Z=1),
-+     * the old value matches the previous value in EDX:EAX.  For x86_64,
-+     * the store must be conditional, because we must leave the source
-+     * registers unchanged on success, and zero-extend the writeback
-+     * on failure (Z=0).
-+     */
-+    if (TARGET_LONG_BITS == 32) {
-+        tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], old);
-+    } else {
-+        TCGv zero = tcg_constant_tl(0);
-+
-+        tcg_gen_extr_i64_tl(s->T0, s->T1, old);
-+        tcg_gen_movcond_tl(TCG_COND_EQ, cpu_regs[R_EAX], Z, zero,
-+                           s->T0, cpu_regs[R_EAX]);
-+        tcg_gen_movcond_tl(TCG_COND_EQ, cpu_regs[R_EDX], Z, zero,
-+                           s->T1, cpu_regs[R_EDX]);
-+    }
-+
-+    /* Update Z. */
-+    gen_compute_eflags(s);
-+    tcg_gen_deposit_tl(cpu_cc_src, cpu_cc_src, Z, ctz32(CC_Z), 1);
-+}
-+
- static void gen_CPUID(DisasContext *s, X86DecodedInsn *decode)
- {
-     gen_update_cc_op(s);
+         case 0xd1: /* xsetbv */
+             if ((s->cpuid_ext_features & CPUID_EXT_XSAVE) == 0
+-                || (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                                 | PREFIX_REPZ | PREFIX_REPNZ))) {
++                || (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ))) {
+                 goto illegal_op;
+             }
+             gen_svm_check_intercept(s, SVM_EXIT_XSETBV);
+@@ -3228,8 +3226,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             gen_st_modrm(s, decode, ot);
+             break;
+         case 0xee: /* rdpkru */
+-            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                             | PREFIX_REPZ | PREFIX_REPNZ)) {
++            if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3237,8 +3234,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
+             break;
+         case 0xef: /* wrpkru */
+-            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                             | PREFIX_REPZ | PREFIX_REPNZ)) {
++            if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
+@@ -3314,7 +3310,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (prefixes & PREFIX_REPZ) {
+                 /* bndcl */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3322,7 +3317,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             } else if (prefixes & PREFIX_REPNZ) {
+                 /* bndcu */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3336,7 +3330,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 }
+                 if (mod == 3) {
+                     int reg2 = (modrm & 7) | REX_B(s);
+-                    if (reg2 >= 4 || (prefixes & PREFIX_LOCK)) {
++                    if (reg2 >= 4) {
+                         goto illegal_op;
+                     }
+                     if (s->flags & HF_MPX_IU_MASK) {
+@@ -3365,7 +3359,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 /* bndldx */
+                 AddressParts a = decode->mem;
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+                     || a.base < -1) {
+                     goto illegal_op;
+@@ -3401,7 +3394,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (mod != 3 && (prefixes & PREFIX_REPZ)) {
+                 /* bndmk */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3429,7 +3421,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             } else if (prefixes & PREFIX_REPNZ) {
+                 /* bndcn */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3441,7 +3432,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 }
+                 if (mod == 3) {
+                     int reg2 = (modrm & 7) | REX_B(s);
+-                    if (reg2 >= 4 || (prefixes & PREFIX_LOCK)) {
++                    if (reg2 >= 4) {
+                         goto illegal_op;
+                     }
+                     if (s->flags & HF_MPX_IU_MASK) {
+@@ -3468,7 +3459,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 /* bndstx */
+                 AddressParts a = decode->mem;
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+                     || a.base < -1) {
+                     goto illegal_op;
 -- 
 2.46.2
 
