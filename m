@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBED99F8E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DC899F8CB
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0org-0003kr-Sb; Tue, 15 Oct 2024 17:14:00 -0400
+	id 1t0orf-0003k6-Jz; Tue, 15 Oct 2024 17:13:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1t0ord-0003iy-6E; Tue, 15 Oct 2024 17:13:57 -0400
+ id 1t0ord-0003iz-6F; Tue, 15 Oct 2024 17:13:57 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1t0orb-0000NQ-Jk; Tue, 15 Oct 2024 17:13:56 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FKo4G8009177;
- Tue, 15 Oct 2024 21:13:42 GMT
+ id 1t0ora-0000NS-Tc; Tue, 15 Oct 2024 17:13:56 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJY63k030288;
+ Tue, 15 Oct 2024 21:13:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=8lJ4a+QbSsLYEjEVSkSj7llX3/JHamFl3OqZ9E+r/
- I8=; b=hqL/t5pEG/46JzcMPccZk/l8OM1MSSoC95a8JoZpgsvpEY1aFSEZVTKrm
- dfKykvC4MAVIkWMVAp7cXBJVKp0tpS+EePArolEEZ+3Tsm7+552jckawRGF5qoOx
- S7sHorpkBXzGKNdmJ5jriWWKdw0TCzLHy4Hmii1BxCJVK5zs4QKTHi/ZyHOiNSgv
- HVEA6OJ8PdIOmy9gcodJ9GoyRPzXe1YJTVb9lc/iySlYAqkqAGHOWqI/gCY0Qpog
- x7WiR/BjX/oaW7QEDzrCVBxzR6ucPHUGrUtWNzH6jQARUMtH2GxQNrJMxzZjOrA2
- 3xzpN5gegk702zr/7/LL7BFNFzstg==
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=C+YqxDfKR9zNebasP
+ VESqbOAs8dN8sSMjb5oSEWfYVE=; b=db9zXcdQQDMBKS0vYLkuYo2zRU5MLnkY+
+ Wu75WvwJIrQdnQSUfsawn1O9gJAxi8CwW3PXcVtX9hZuebdvA/bLD5uLNUOfggJb
+ DeVu1qA1276iuHRX9+clDjK9bc+RjrIhGQ8bDlwbaDjOvf5wDAihbobIClW9HKal
+ jqwT4HFj75vr5oOd9cwRbQ7Y+ZqIi2NX6r8iuU1W9JdzGgDUX0sqp/85OdSfk5gt
+ aiBD8Oo/fVSwSImSZszumM8fqgcOx2uvxg2QSha3vWdnMq4mAYdsnqfZwwvSTR9g
+ JUCf1WpiHpe7g4ApK0BeXxypG82RZzwH0HvjHZI8B0nyHN47gOs4w==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429ysbr27t-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429x17ggyj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:13:42 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FLDf0t021272;
- Tue, 15 Oct 2024 21:13:41 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429ysbr27p-1
+ Tue, 15 Oct 2024 21:13:45 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FLDiiO009162;
+ Tue, 15 Oct 2024 21:13:44 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429x17ggyd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:13:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJQWt8006338;
- Tue, 15 Oct 2024 21:13:40 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428650wkxj-1
+ Tue, 15 Oct 2024 21:13:44 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FI6Wbv006757;
+ Tue, 15 Oct 2024 21:13:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xk5v8u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:13:40 +0000
+ Tue, 15 Oct 2024 21:13:43 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49FLDbdd54198776
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49FLDdbs51773736
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Oct 2024 21:13:37 GMT
+ Tue, 15 Oct 2024 21:13:40 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64C222004B;
+ by IMSVA (Postfix) with ESMTP id C8F962004B;
+ Tue, 15 Oct 2024 21:13:39 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AC47B20043;
  Tue, 15 Oct 2024 21:13:37 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4740E20043;
- Tue, 15 Oct 2024 21:13:35 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 15 Oct 2024 21:13:35 +0000 (GMT)
+ Tue, 15 Oct 2024 21:13:37 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com, danielhb413@gmail.com,
  david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
  lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH 00/14] XIVE2 changes to support Group and Crowd operations
-Date: Tue, 15 Oct 2024 16:13:15 -0500
-Message-Id: <20241015211329.21113-1-kowal@linux.ibm.com>
+Subject: [PATCH 01/14] ppc/xive2: Update NVP save/restore for group attributes
+Date: Tue, 15 Oct 2024 16:13:16 -0500
+Message-Id: <20241015211329.21113-2-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241015211329.21113-1-kowal@linux.ibm.com>
+References: <20241015211329.21113-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UXv-a2SMKFrR3IMrbrSVZBnj47pg7-lC
-X-Proofpoint-ORIG-GUID: JPFjBF0VSNY215Jzv5cOTE6ixkKE1soc
+X-Proofpoint-ORIG-GUID: UyvKiZD6TVZ6QAMJ70aWyu3xYdfXafvz
+X-Proofpoint-GUID: PCTuyCA76AtwpafKwd8MELY4ZdWyym4A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=556 clxscore=1011 spamscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410150140
+ impostorscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=714 phishscore=0 clxscore=1015
+ adultscore=0 spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410150140
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -111,55 +113,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XIVE2 has the concepts of a Group of interrupts and a Crowd of interrupts
-(where a crowd is a group of Groups). These patch sets are associated with:
- - NVGC tables
- - Group/Crowd level notification
- - Incrementing backlog countets
- - Backlog processing
- - NVPG and NVC Bar MMIO operations
- - Group/Crowd testing
- - ESB Escalation
- - Pool interrupt testing
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
+If the 'H' attribute is set on the NVP structure, the hardware
+automatically saves and restores some attributes from the TIMA in the
+NVP structure.
+The group-specific attributes LSMFB, LGS and T have an extra flag to
+individually control what is saved/restored.
 
-Frederic Barrat (10):
-  ppc/xive2: Update NVP save/restore for group attributes
-  ppc/xive2: Add grouping level to notification
-  ppc/xive2: Support group-matching when looking for target
-  ppc/xive2: Add undelivered group interrupt to backlog
-  ppc/xive2: Process group backlog when pushing an OS context
-  ppc/xive2: Process group backlog when updating the CPPR
-  qtest/xive: Add group-interrupt test
-  Add support for MMIO operations on the  NVPG/NVC BAR
-  ppc/xive2: Support crowd-matching when looking for target
-  ppc/xive2: Check crowd backlog when scanning group backlog
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+---
+ include/hw/ppc/xive2_regs.h |  5 +++++
+ hw/intc/xive2.c             | 18 ++++++++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
-Glenn Miles (4):
-  pnv/xive: Only support crowd size of 0, 2, 4 and 16
-  pnv/xive: Support ESB Escalation
-  pnv/xive: Fix problem with treating NVGC as a NVP
-  qtest/xive: Add test of pool interrupts
-
- include/hw/ppc/xive.h            |  35 +-
- include/hw/ppc/xive2.h           |  19 +-
- include/hw/ppc/xive2_regs.h      |  25 +-
- include/hw/ppc/xive_regs.h       |  20 +-
- tests/qtest/pnv-xive2-common.h   |   1 +
- hw/intc/pnv_xive.c               |   5 +-
- hw/intc/pnv_xive2.c              | 161 +++++--
- hw/intc/spapr_xive.c             |   3 +-
- hw/intc/xive.c                   | 182 +++++---
- hw/intc/xive2.c                  | 741 +++++++++++++++++++++++++++----
- hw/ppc/pnv.c                     |  31 +-
- hw/ppc/spapr.c                   |   4 +-
- tests/qtest/pnv-xive2-nvpg_bar.c | 154 +++++++
- tests/qtest/pnv-xive2-test.c     | 240 ++++++++++
- hw/intc/trace-events             |   6 +-
- tests/qtest/meson.build          |   3 +-
- 16 files changed, 1440 insertions(+), 190 deletions(-)
- create mode 100644 tests/qtest/pnv-xive2-nvpg_bar.c
-
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index 1d00c8df64..30868e8e09 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -152,6 +152,9 @@ typedef struct Xive2Nvp {
+         uint32_t       w0;
+ #define NVP2_W0_VALID              PPC_BIT32(0)
+ #define NVP2_W0_HW                 PPC_BIT32(7)
++#define NVP2_W0_L                  PPC_BIT32(8)
++#define NVP2_W0_G                  PPC_BIT32(9)
++#define NVP2_W0_T                  PPC_BIT32(10)
+ #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
+ #define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
+         uint32_t       w1;
+@@ -163,6 +166,8 @@ typedef struct Xive2Nvp {
+ #define NVP2_W2_CPPR               PPC_BITMASK32(0, 7)
+ #define NVP2_W2_IPB                PPC_BITMASK32(8, 15)
+ #define NVP2_W2_LSMFB              PPC_BITMASK32(16, 23)
++#define NVP2_W2_T                  PPC_BIT32(27)
++#define NVP2_W2_LGS                PPC_BITMASK32(28, 31)
+         uint32_t       w3;
+         uint32_t       w4;
+ #define NVP2_W4_ESC_ESB_BLOCK      PPC_BITMASK32(0, 3)  /* N:0 */
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index d1df35e9b3..4adc3b6950 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -313,7 +313,19 @@ static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+ 
+     nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, regs[TM_IPB]);
+     nvp.w2 = xive_set_field32(NVP2_W2_CPPR, nvp.w2, regs[TM_CPPR]);
+-    nvp.w2 = xive_set_field32(NVP2_W2_LSMFB, nvp.w2, regs[TM_LSMFB]);
++    if (nvp.w0 & NVP2_W0_L) {
++        /*
++         * Typically not used. If LSMFB is restored with 0, it will
++         * force a backlog rescan
++         */
++        nvp.w2 = xive_set_field32(NVP2_W2_LSMFB, nvp.w2, regs[TM_LSMFB]);
++    }
++    if (nvp.w0 & NVP2_W0_G) {
++        nvp.w2 = xive_set_field32(NVP2_W2_LGS, nvp.w2, regs[TM_LGS]);
++    }
++    if (nvp.w0 & NVP2_W0_T) {
++        nvp.w2 = xive_set_field32(NVP2_W2_T, nvp.w2, regs[TM_T]);
++    }
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
+ 
+     nvp.w1 = xive_set_field32(NVP2_W1_CO, nvp.w1, 0);
+@@ -527,7 +539,9 @@ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, nvp, 2);
+ 
+     tctx->regs[TM_QW1_OS + TM_CPPR] = cppr;
+-    /* we don't model LSMFB */
++    tctx->regs[TM_QW1_OS + TM_LSMFB] = xive_get_field32(NVP2_W2_LSMFB, nvp->w2);
++    tctx->regs[TM_QW1_OS + TM_LGS] = xive_get_field32(NVP2_W2_LGS, nvp->w2);
++    tctx->regs[TM_QW1_OS + TM_T] = xive_get_field32(NVP2_W2_T, nvp->w2);
+ 
+     nvp->w1 = xive_set_field32(NVP2_W1_CO, nvp->w1, 1);
+     nvp->w1 = xive_set_field32(NVP2_W1_CO_THRID_VALID, nvp->w1, 1);
 -- 
 2.43.0
 
