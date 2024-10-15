@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD90A99F1C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C58999F1C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:45:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jjX-00008v-8t; Tue, 15 Oct 2024 11:45:15 -0400
+	id 1t0jji-0000I3-Ia; Tue, 15 Oct 2024 11:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjT-00006l-Db
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:11 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jja-0000GE-LE
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:18 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjS-0000hp-1m
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:11 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2e06acff261so3678285a91.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:45:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jjY-0000j3-Qw
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:45:18 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2e188185365so4282474a91.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:45:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007108; x=1729611908; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007115; x=1729611915; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OHZo240/MKAErrBWgP22VqVce6gGXpeJw8VH+45Ycx8=;
- b=bF5XwocGiiIMkaND/mOr78bBQnuvMgxcoT/khKVInmDBm+XhH/zJ9n/1DPaaNz1JFN
- XTarrBCL67lA0Z+nX743vN7onYTdsdxdqbpd0OjPLsXv75s8Bo6Zp2iizUIr7o4+2PlD
- 7PClDzBRsIQ/loXeqGjHScaIFBJQwzkFkagt4lsH2M6QiL47S6KYnPuc9eD3NzheM11M
- /cDMAO0MZba8qYs1W//fxaZ7AMVmVJrEw78yitFEucmctujLWUOIULGqWrUrgo9vybNP
- Gl/8DYztW/9oRB1TgglXN9q/pLBSZhuIV60vVOoNPZb8//PgYRjltmPV+ya0BSSR0XpO
- QAYQ==
+ bh=9XkclaxhDgiPYIH/QNOgI/sKQUHpGlRZU54F7qGZHXg=;
+ b=b1HFCV3dpbcWQHKDfoaQerhWKsjbNAz2yYuNe/6MDoeoM24kBvL+x0QPOnFVqYtGUO
+ IOC9HCU7UmKarGsgggoGtLD4VPuXv3RB6qoD9zWTQCHtEh372/5gz+TMEynQTZNaL9X5
+ A9YcByNUP5PB4iTFrhWfjVR0gjtV/CO0iwurFzeGJPXsYcWDOx1RM341bGSw3/vFxQnq
+ n/N+CmmRuBOBTONqF6YG7eYjNkm46gg6fenXK4WgLERJzalE1DB2a/dkRb2hOwA+lEV8
+ Y0ndYCuJEjSIJnhI+wa+Gol0+M6DX5+fj4/BfEzCbb17CIXi2zG3H6WV/3leeWzP3v8F
+ xMjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007108; x=1729611908;
+ d=1e100.net; s=20230601; t=1729007115; x=1729611915;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OHZo240/MKAErrBWgP22VqVce6gGXpeJw8VH+45Ycx8=;
- b=rn9cUZ5tWmiK+hmxDGTc1+vyyF856DW8JsCq8haXc7vswpDz85GIO9l2JCZnbWtVO6
- E9Y7Zw1nS3TeLYWCQHTvrls4Z3QzOsORNn2Mz015y+FzwUqGA9FPHg0bD2tUkROiv8Ds
- UrSzOUF3Gy1sgLNiPj4AOq0XU5QK8CIBH94rfIRYw+BoscCuemhKeqCw8uQLzcp2juAc
- h6gnbS13OpE2YxhyZ9wdQsD7LiRYLBCJrk6fryRcqecXXMEna90KsUHLL9KRlgXSezS9
- 9girt8w+Rz6Sw5y0h3VepXFF9nExt2QPyyGWJgNmDR9kcag7JpdTqdrhukBZlxmnN8f8
- UgZQ==
-X-Gm-Message-State: AOJu0Yy1D6Ueu1SddwRxab69CuoLPtm4MXlfKg+WrJj2NyZ4XZRC5OmB
- 7LxdX5eoGH4oQNXlEvI1ljZbwzKQPmAJioFOepcdtSSrYB2eSn9odUa0+HKPVe0FnDZnzUtaOzb
- T
-X-Google-Smtp-Source: AGHT+IGXlQoL40ZaflYaRzMdlDI5rCeFVNJtXlZbSR7n5Hkr4o1y9AewTgLOHp9SmfkesWAE9VDWEQ==
-X-Received: by 2002:a17:90a:2d8e:b0:2e2:b513:fdca with SMTP id
- 98e67ed59e1d1-2e3ab820d96mr747060a91.20.1729007108327; 
- Tue, 15 Oct 2024 08:45:08 -0700 (PDT)
+ bh=9XkclaxhDgiPYIH/QNOgI/sKQUHpGlRZU54F7qGZHXg=;
+ b=rvlKo/74R8KrK2BQN90SNx5SrPR7grNx9v3dVVf7wSYHVjGHOtYs7FCD8JXg+2nekV
+ PGwUuu4Y1H7lDScsv71KPFyfmOyy7wEHEWTUYPadcpO71OMkjhiZcK7TGwnZfNUSaOpZ
+ u7V+6Sxr9IXAsC20KAUo5WX0Tp+DVJtIsHlQGJJ9eWfq+oWsr3vt7ok9tVvun0FpXarm
+ HIq/f0G1rzDi0PFEojzd568aLcsLn42Imi4nntZY41xYU4iieFjlCkeZ9gGJYFow76Uc
+ R1D9iK6tcxkkDsgyHAWsEmoBlw7pR7UY2Yp0XSj35bR+exkhXs2pTWYYFObvc/1YVLxa
+ 9Vjw==
+X-Gm-Message-State: AOJu0Yym6vb8WaLTwWHDP6i/1nBMq36FCf7BreRAbuDY0tpvea+GgdiE
+ Idh9EkmsS3Zr8iQk0rh5fh5XRvKLSZ3BecF0j22hEA1RF+FnMeKcNqaXFOimJXh2lOkjJHRwLdB
+ 6
+X-Google-Smtp-Source: AGHT+IFH7SQ2Jwfjk7m/lYRL9wsdXQWI6YTxXSa9KDKC26f3L9q3siWb5i0gHJHk2IfhXAp34dPCPQ==
+X-Received: by 2002:a17:90b:2242:b0:2e2:e743:7501 with SMTP id
+ 98e67ed59e1d1-2e2f0a52ef5mr15627861a91.8.1729007115158; 
+ Tue, 15 Oct 2024 08:45:15 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e392ed396asm1971278a91.21.2024.10.15.08.45.06
+ 98e67ed59e1d1-2e392f60480sm1957290a91.40.2024.10.15.08.45.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:45:08 -0700 (PDT)
+ Tue, 15 Oct 2024 08:45:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 03/33] exec/memop: Remove unused memop_big_endian() helper
-Date: Tue, 15 Oct 2024 12:44:12 -0300
-Message-ID: <20241015154443.71763-4-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 04/33] target/hexagon: Replace ldtul_p() -> ldl_p()
+Date: Tue, 15 Oct 2024 12:44:13 -0300
+Message-ID: <20241015154443.71763-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=philmd@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,33 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Last use of memop_big_endian() was removed in commit 592134617c9
-("accel/tcg: Reorg system mode store helpers").
+The Hexagon target is only built for 32-bit.
+Using ldtul_p() is pointless, replace by ldl_p().
+
+Mechanical change doing:
+
+  $ sed -i -e 's/ldtul_p/ldl_p/' \
+      $(git grep -wl ldtul_p target/hexagon/)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241003234211.53644-3-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20241004163042.85922-3-philmd@linaro.org>
 ---
- include/exec/memop.h | 6 ------
- 1 file changed, 6 deletions(-)
+ target/hexagon/gdbstub.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index b699bf76886..acdb40a9b3b 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -164,12 +164,6 @@ static inline MemOp size_memop(unsigned size)
-     return (MemOp)ctz32(size);
- }
+diff --git a/target/hexagon/gdbstub.c b/target/hexagon/gdbstub.c
+index 94e1db8ef8d..557b3029785 100644
+--- a/target/hexagon/gdbstub.c
++++ b/target/hexagon/gdbstub.c
+@@ -52,7 +52,7 @@ int hexagon_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     CPUHexagonState *env = cpu_env(cs);
  
--/* Big endianness from MemOp.  */
--static inline bool memop_big_endian(MemOp op)
--{
--    return (op & MO_BSWAP) == MO_BE;
--}
--
- /**
-  * memop_alignment_bits:
-  * @memop: MemOp value
+     if (n == HEX_REG_P3_0_ALIASED) {
+-        uint32_t p3_0 = ldtul_p(mem_buf);
++        uint32_t p3_0 = ldl_p(mem_buf);
+         for (int i = 0; i < NUM_PREGS; i++) {
+             env->pred[i] = extract32(p3_0, i * 8, 8);
+         }
+@@ -60,14 +60,14 @@ int hexagon_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     }
+ 
+     if (n < TOTAL_PER_THREAD_REGS) {
+-        env->gpr[n] = ldtul_p(mem_buf);
++        env->gpr[n] = ldl_p(mem_buf);
+         return sizeof(target_ulong);
+     }
+ 
+     n -= TOTAL_PER_THREAD_REGS;
+ 
+     if (n < NUM_PREGS) {
+-        env->pred[n] = ldtul_p(mem_buf) & 0xff;
++        env->pred[n] = ldl_p(mem_buf) & 0xff;
+         return sizeof(uint8_t);
+     }
+ 
+@@ -117,7 +117,7 @@ static int gdb_put_vreg(CPUHexagonState *env, uint8_t *mem_buf, int n)
+ {
+     int i;
+     for (i = 0; i < ARRAY_SIZE(env->VRegs[n].uw); i++) {
+-        env->VRegs[n].uw[i] = ldtul_p(mem_buf);
++        env->VRegs[n].uw[i] = ldl_p(mem_buf);
+         mem_buf += 4;
+     }
+     return MAX_VEC_SIZE_BYTES;
+@@ -127,7 +127,7 @@ static int gdb_put_qreg(CPUHexagonState *env, uint8_t *mem_buf, int n)
+ {
+     int i;
+     for (i = 0; i < ARRAY_SIZE(env->QRegs[n].uw); i++) {
+-        env->QRegs[n].uw[i] = ldtul_p(mem_buf);
++        env->QRegs[n].uw[i] = ldl_p(mem_buf);
+         mem_buf += 4;
+     }
+     return MAX_VEC_SIZE_BYTES / 8;
 -- 
 2.45.2
 
