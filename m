@@ -2,96 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FE199F8CC
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBED99F8E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:16:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0or6-0003Ha-5Z; Tue, 15 Oct 2024 17:13:24 -0400
+	id 1t0org-0003kr-Sb; Tue, 15 Oct 2024 17:14:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t0oqx-0003Gw-L9
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 17:13:15 -0400
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1t0ord-0003iy-6E; Tue, 15 Oct 2024 17:13:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t0oqv-0000Lq-71
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 17:13:15 -0400
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t0oqg-00000000d6G-02Fn; Tue, 15 Oct 2024 23:12:58 +0200
-Message-ID: <998cd556-27f0-4d3f-a026-1637e6b4eadb@maciej.szmigiero.name>
-Date: Tue, 15 Oct 2024 23:12:52 +0200
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1t0orb-0000NQ-Jk; Tue, 15 Oct 2024 17:13:56 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FKo4G8009177;
+ Tue, 15 Oct 2024 21:13:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=8lJ4a+QbSsLYEjEVSkSj7llX3/JHamFl3OqZ9E+r/
+ I8=; b=hqL/t5pEG/46JzcMPccZk/l8OM1MSSoC95a8JoZpgsvpEY1aFSEZVTKrm
+ dfKykvC4MAVIkWMVAp7cXBJVKp0tpS+EePArolEEZ+3Tsm7+552jckawRGF5qoOx
+ S7sHorpkBXzGKNdmJ5jriWWKdw0TCzLHy4Hmii1BxCJVK5zs4QKTHi/ZyHOiNSgv
+ HVEA6OJ8PdIOmy9gcodJ9GoyRPzXe1YJTVb9lc/iySlYAqkqAGHOWqI/gCY0Qpog
+ x7WiR/BjX/oaW7QEDzrCVBxzR6ucPHUGrUtWNzH6jQARUMtH2GxQNrJMxzZjOrA2
+ 3xzpN5gegk702zr/7/LL7BFNFzstg==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429ysbr27t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Oct 2024 21:13:42 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FLDf0t021272;
+ Tue, 15 Oct 2024 21:13:41 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429ysbr27p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Oct 2024 21:13:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJQWt8006338;
+ Tue, 15 Oct 2024 21:13:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428650wkxj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Oct 2024 21:13:40 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49FLDbdd54198776
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Oct 2024 21:13:37 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 64C222004B;
+ Tue, 15 Oct 2024 21:13:37 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4740E20043;
+ Tue, 15 Oct 2024 21:13:35 +0000 (GMT)
+Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Oct 2024 21:13:35 +0000 (GMT)
+From: Michael Kowal <kowal@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
+ npiggin@gmail.com, milesg@linux.ibm.com, danielhb413@gmail.com,
+ david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
+ lvivier@redhat.com, pbonzini@redhat.com
+Subject: [PATCH 00/14] XIVE2 changes to support Group and Crowd operations
+Date: Tue, 15 Oct 2024 16:13:15 -0500
+Message-Id: <20241015211329.21113-1-kowal@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v2_00/17=5D_Multifd_=F0=9F=94=80_device_st?=
- =?UTF-8?Q?ate_transfer_support_with_VFIO_consumer?=
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <2d73cfad-50b7-4d21-b3c3-e4d6635bf80d@redhat.com>
-Content-Language: en-US, pl-PL
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <2d73cfad-50b7-4d21-b3c3-e4d6635bf80d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UXv-a2SMKFrR3IMrbrSVZBnj47pg7-lC
+X-Proofpoint-ORIG-GUID: JPFjBF0VSNY215Jzv5cOTE6ixkKE1soc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=556 clxscore=1011 spamscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2410150140
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,100 +111,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+XIVE2 has the concepts of a Group of interrupts and a Crowd of interrupts
+(where a crowd is a group of Groups). These patch sets are associated with:
+ - NVGC tables
+ - Group/Crowd level notification
+ - Incrementing backlog countets
+ - Backlog processing
+ - NVPG and NVC Bar MMIO operations
+ - Group/Crowd testing
+ - ESB Escalation
+ - Pool interrupt testing
 
-On 11.10.2024 15:58, Cédric Le Goater wrote:
-> Hello Maciej,
-> 
-> On 8/27/24 19:54, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> This is an updated v2 patch series of the v1 series located here:
->> https://lore.kernel.org/qemu-devel/cover.1718717584.git.maciej.szmigiero@oracle.com/
->>
->> Changes from v1:
->> * Extended the QEMU thread-pool with non-AIO (generic) pool support,
->> implemented automatic memory management support for its work element
->> function argument.
->>
->> * Introduced a multifd device state save thread pool, ported the VFIO
->> multifd device state save implementation to use this thread pool instead
->> of VFIO internally managed individual threads.
->>
->> * Re-implemented on top of Fabiano's v4 multifd sender refactor patch set from
->> https://lore.kernel.org/qemu-devel/20240823173911.6712-1-farosas@suse.de/
->>
->> * Moved device state related multifd code to new multifd-device-state.c
->> file where it made sense.
->>
->> * Implemented a max in-flight VFIO device state buffer count limit to
->> allow capping the maximum recipient memory usage.
->>
->> * Removed unnecessary explicit memory barriers from multifd_send().
->>
->> * A few small changes like updated comments, code formatting,
->> fixed zero-copy RAM multifd bytes transferred counter under-counting, etc.
->>
->>
->> For convenience, this patch set is also available as a git tree:
->> https://github.com/maciejsszmigiero/qemu/tree/multifd-device-state-transfer-vfio
->>
->> Based-on: <20240823173911.6712-1-farosas@suse.de>
-> 
-> 
-> I must admit, I’m a bit lost in all the discussions. Could you please
-> resend a v3 on top of the master branch, incorporating the points
-> discussed and agreed upon ? Many thanks to Peter for leading the
-> discussion, his expertise in this area is invaluable.
-> 
-> Please include a summary of the proposed design (and alternatives) in
-> the cover letter. Diagrams of the communication flows between src/dest
-> threads would be a plus to understand better the proposal. Such level
-> of details should go under docs/devel/migration at end. So, it might
-> good to invest some time for that.
-> 
-> Performance figures would be good to have in the cover. The ones from
-> your presentation at KVM forum 2024 should be fine unless you have
-> changed the design since.
-> 
->  From there, we can test and stress to evaluate the benefits of the
-> changes for mlx5 VF and vGPU migration. Once we have the results,
-> we can determine how to upstream the changes, either all at once
-> or splitting the series.
-> 
-> 
-> Quoting Peter,
-> 
->    "I am sorry to ask for this, Fabiano already blames me for this,
->    but.. logically it'll be best we use no new thread in the series,
->    then one patch on top with your new thread solution to justify its
->    performance benefits and worthwhile to having those threads at all."
-> 
-> I fully support this step-by-step approach. VFIO migration is a recent
-> feature. It can be stressed in a complex environment and is not fully
-> optimized for certain workloads. However, I would prefer to introduce
-> changes progressively to ensure stability is maintained. It is now
-> acceptable to introduce experimental knobs to explore alternative
-> solutions.
-> 
-> Also, quoting again Peter,
-> 
->    "PS: I'd suggest if you really need those threads it should still be
->     managed by migration framework like the src thread pool. "
-> 
-> yes, I would prefer to see the VFIO subsystem rely on common QEMU APIs
-> and in this case, a QEMU multifd API too.
 
-I am preparing a v3 right now with the review comments (hopefully)
-addressed.
+Frederic Barrat (10):
+  ppc/xive2: Update NVP save/restore for group attributes
+  ppc/xive2: Add grouping level to notification
+  ppc/xive2: Support group-matching when looking for target
+  ppc/xive2: Add undelivered group interrupt to backlog
+  ppc/xive2: Process group backlog when pushing an OS context
+  ppc/xive2: Process group backlog when updating the CPPR
+  qtest/xive: Add group-interrupt test
+  Add support for MMIO operations on the  NVPG/NVC BAR
+  ppc/xive2: Support crowd-matching when looking for target
+  ppc/xive2: Check crowd backlog when scanning group backlog
 
-The updated patch set will be based on the current QEMU git master
-since I see that Fabiano's patches have been already merged there.
+Glenn Miles (4):
+  pnv/xive: Only support crowd size of 0, 2, 4 and 16
+  pnv/xive: Support ESB Escalation
+  pnv/xive: Fix problem with treating NVGC as a NVP
+  qtest/xive: Add test of pool interrupts
 
-> Thanks,
-> 
-> C.
+ include/hw/ppc/xive.h            |  35 +-
+ include/hw/ppc/xive2.h           |  19 +-
+ include/hw/ppc/xive2_regs.h      |  25 +-
+ include/hw/ppc/xive_regs.h       |  20 +-
+ tests/qtest/pnv-xive2-common.h   |   1 +
+ hw/intc/pnv_xive.c               |   5 +-
+ hw/intc/pnv_xive2.c              | 161 +++++--
+ hw/intc/spapr_xive.c             |   3 +-
+ hw/intc/xive.c                   | 182 +++++---
+ hw/intc/xive2.c                  | 741 +++++++++++++++++++++++++++----
+ hw/ppc/pnv.c                     |  31 +-
+ hw/ppc/spapr.c                   |   4 +-
+ tests/qtest/pnv-xive2-nvpg_bar.c | 154 +++++++
+ tests/qtest/pnv-xive2-test.c     | 240 ++++++++++
+ hw/intc/trace-events             |   6 +-
+ tests/qtest/meson.build          |   3 +-
+ 16 files changed, 1440 insertions(+), 190 deletions(-)
+ create mode 100644 tests/qtest/pnv-xive2-nvpg_bar.c
 
-Thanks,
-Maciej
+-- 
+2.43.0
+
 
