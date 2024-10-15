@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982A499F1E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2951499F1DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:48:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jlD-0002T8-Ac; Tue, 15 Oct 2024 11:46:59 -0400
+	id 1t0jlG-0002sE-Cb; Tue, 15 Oct 2024 11:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkU-00012m-NJ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:17 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkc-00014T-4W
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:27 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jkS-0000p9-VZ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:14 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7ea7e2ff5ceso1792256a12.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jka-0000q9-2B
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:46:21 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7e6d04f74faso3572872a12.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:46:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007171; x=1729611971; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729007178; x=1729611978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Snu/XbO5DWXIOAW758ZcEcsN6Qt6EdTKtVraeirV4SA=;
- b=VtnSe7yOTyK9LIpZCZcYzsn8evD8gMpr9i7hBSmJIJFJDmXzdFgMy+bak4FxkZ+hmD
- fwuuYB3Wn8IGdj7NA3tNwPn1GlretOAC+Bl0TAbzApFe+4xFpaBM2M1wk7kqY1VCMe4e
- jUI+sYlqLuHCFpij+Fy8zmRCWJKKITEKQy6m4GUFvoOD4B80t72GupBGaO+gTaQZ7fRh
- chQOb9O8fwi2qXls6Rl5dujQoOTiXF5jj9nFF6qeBjb2j0fqR83cedvXi6wuw1aX1no+
- DlXVgXqxSjiXLMHGgMXeHuCQ+dOlspEHZEFRykY8s89bbPUCSx3UTM3ejYMgEIPWT6Nw
- H6RA==
+ bh=TJ9wROiE5L2FprbXeD8aDG0nJOd3bETYw217/JvIATA=;
+ b=HONkcfJCpWMGGUqKH/DlPPbbBhN8HB3vYF6JAhzGRvg3TTZtVCHJY/R1bu7kqDLp3P
+ TxpQm9/k/J/Hb0peJhUU6PPu1EM/rpc4V9HvrsP1YwEN5c4pOu6Jp0DsXuZLEYX5slrO
+ Q7LCdjZnRyEd6DmbYq1ZmOpotJ0pFavgwDX9WQqsRhMpsP09uls8nljfrZLOWVfWGF3j
+ OjhuXBM1Bhe5/6yG6ifabNzRApkj09dse5zB+Whbw2sGZDTvCi6VQ9dBiYkvZokCZfdV
+ kYO3HX2pWhWwlR3/D7geP1Z9xDcftR58EDgefctRka0fui+/BpDT8lylOZD7+fsm6gyw
+ vzGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007171; x=1729611971;
+ d=1e100.net; s=20230601; t=1729007178; x=1729611978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Snu/XbO5DWXIOAW758ZcEcsN6Qt6EdTKtVraeirV4SA=;
- b=gmEnVB4+x/ie1s+dmwoSOeVEuFo0wtWXgWTpQT3ji57Z1WnzCXD6iJbSW2XSnNpPv3
- qToqFM5uj1+HikJ272C+qqAS6oBBfTFgIVA3s3gwUFy6qgNSAlvSYhMMLb84/EEryDkQ
- hGYDEd+9LEe2d94k+WoT4R59JvWmlEZPewgalhKbTR8SRs6Vd8zi29c+TBfzztAeOPJM
- 1U5YfnfnncO60FuyynoOFW5xgwNNxaUCJLTCg13KLM9xJJMESrsQldMIAJlgrJCVbOBO
- 37Qc8QCGiRP5GP1jP2+4BDe3grCXoNv7h8CliUwU3n71OZQB2mhfUM48omxTXyNE+NAf
- nqMg==
-X-Gm-Message-State: AOJu0YylrW/Rgn0pSR/ffmZoTHk1qktcXKYMnpJEpbq0lEwHBdTROinE
- KBBlC73GfVs7SsMO/W8hoZ7fOoszHBNVmhHm8hOn3cKxLUChSk18jlx2i2VykeUWXYG9p/ERRLD
- 9
-X-Google-Smtp-Source: AGHT+IHZqN4p43cCqYs2KuLdeVSQnz0NRMQlJ+DbSHB9oVkD3ZTjUfbi3c0E0azFSdrJQW/wEpow1w==
-X-Received: by 2002:a05:6a21:168e:b0:1d7:7ea:2f36 with SMTP id
- adf61e73a8af0-1d8bcefde33mr21415030637.4.1729007171317; 
- Tue, 15 Oct 2024 08:46:11 -0700 (PDT)
+ bh=TJ9wROiE5L2FprbXeD8aDG0nJOd3bETYw217/JvIATA=;
+ b=w/bIDNVp089lPdyjM6RxIizwckarc9nzr/OLNWJuZL2LslJ7BnvYg5gqFNQFgZa4Z/
+ uqEo8heRW/5pNUHLJheQU6SMqNB6MX5bC/arDXhBRyDM1cKP3/Vg2zJ6woYRIMcxQKvm
+ yL25rpuCbNRwSkXkA4k7u/58SyFrs2ZcAOk42kgmz/vVf4RRfTFZhZrzZEDBNnGHbqWS
+ X4Qblg+Mj+HPmulfk2wu7P94cMPQzJMpfckMkNePeYlyknpL7lw5/v+icjt/p9lxgxu8
+ QlasZvOBiOZyKKtQ5ebPSvN4yM6mY11OGLcByrcTUlMu7PLPzIP5rQsBW0ontfoYIZbk
+ 96vA==
+X-Gm-Message-State: AOJu0YxeAaOkxSd0Cd6icPfWXUT206fiQYhCZ3kYFzHb8Gy6YQUgwJTn
+ oMyk2iQ/x87Sm1GNUJ/SUGk1PjiVJQk3H5fPBwuABistTigfSyDrvOAwSBTddRj4Eub0mF+2Kco
+ y
+X-Google-Smtp-Source: AGHT+IE61FUE6FkXT6kb2g1gsbTca+OBIGuMOx2CC2b/viDnw7r71KZWgwBu0LDgxkfqf8oPk8/+JQ==
+X-Received: by 2002:a05:6a21:390:b0:1d7:1288:8338 with SMTP id
+ adf61e73a8af0-1d8bc8126a5mr23516679637.8.1729007178180; 
+ Tue, 15 Oct 2024 08:46:18 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.167])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e7750a524sm1402861b3a.200.2024.10.15.08.46.09
+ d2e1a72fcca58-71e774a28d5sm1413705b3a.103.2024.10.15.08.46.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:46:11 -0700 (PDT)
+ Tue, 15 Oct 2024 08:46:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/33] target/loongarch: Use explicit little-endian LD/ST API
-Date: Tue, 15 Oct 2024 12:44:21 -0300
-Message-ID: <20241015154443.71763-13-philmd@linaro.org>
+Subject: [PULL 13/33] target/tricore: Use explicit little-endian LD/ST API
+Date: Tue, 15 Oct 2024 12:44:22 -0300
+Message-ID: <20241015154443.71763-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
 References: <20241015154443.71763-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,8 +92,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The LoongArch architecture uses little endianness. Directly
-use the little-endian LD/ST API.
+The TriCore architecture uses little endianness. Directly use
+the little-endian LD/ST API.
 
 Mechanical change using:
 
@@ -101,49 +101,29 @@ Mechanical change using:
     for acc in uw w l q tul; do \
       sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
              -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
-        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/loongarch/); \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/tricore/); \
     done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241004163042.85922-13-philmd@linaro.org>
+Message-Id: <20241004163042.85922-15-philmd@linaro.org>
 ---
- target/loongarch/gdbstub.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/tricore/gdbstub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 3a03cf9cba9..dafa4feb75d 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -67,10 +67,10 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     int length = 0;
+diff --git a/target/tricore/gdbstub.c b/target/tricore/gdbstub.c
+index 29a70051ffe..0b73b1280e0 100644
+--- a/target/tricore/gdbstub.c
++++ b/target/tricore/gdbstub.c
+@@ -124,7 +124,7 @@ int tricore_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     CPUTriCoreState *env = cpu_env(cs);
+     uint32_t tmp;
  
-     if (is_la64(env)) {
--        tmp = ldq_p(mem_buf);
-+        tmp = ldq_le_p(mem_buf);
-         read_length = 8;
-     } else {
--        tmp = ldl_p(mem_buf);
-+        tmp = ldl_le_p(mem_buf);
-         read_length = 4;
-     }
+-    tmp = ldl_p(mem_buf);
++    tmp = ldl_le_p(mem_buf);
  
-@@ -106,13 +106,13 @@ static int loongarch_gdb_set_fpu(CPUState *cs, uint8_t *mem_buf, int n)
-     int length = 0;
- 
-     if (0 <= n && n < 32) {
--        env->fpr[n].vreg.D(0) = ldq_p(mem_buf);
-+        env->fpr[n].vreg.D(0) = ldq_le_p(mem_buf);
-         length = 8;
-     } else if (32 <= n && n < 40) {
-         env->cf[n - 32] = ldub_p(mem_buf);
-         length = 1;
-     } else if (n == 40) {
--        env->fcsr0 = ldl_p(mem_buf);
-+        env->fcsr0 = ldl_le_p(mem_buf);
-         length = 4;
-     }
-     return length;
+     if (n < 16) { /* data registers */
+         env->gpr_d[n] = tmp;
 -- 
 2.45.2
 
