@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F79199F1F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DDB99F1EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jn9-0002xf-Ik; Tue, 15 Oct 2024 11:48:59 -0400
+	id 1t0jnn-00041X-AU; Tue, 15 Oct 2024 11:49:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmw-00025r-FJ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:48 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0jnJ-0003fH-Ju
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:49:14 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t0jmu-00017g-Ol
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:48:46 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5eb54257e5eso194527eaf.0
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:48:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t0jnF-00019T-TA
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:49:09 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a991fedbd04so527498666b.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:49:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007323; x=1729612123; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hIJ9Az3wLYpKYtaTDQQbceKa5J8Ss6VqLkd1zjwnLbI=;
- b=Dl0sV07MnpbFdj8vm2OAemLOT6gnAMbJxjDjNp5StN81k/4Pk1qwtDkOtU5/n9xj3x
- 2LdaOIE4+zYM0at/2DuDeEdB7SH8Bwk1BV9x3xD1eYg/79ESmn3zodifaN5I39gGLQHZ
- OFIa/tvtnUgwk9Fd+fl0jj44LmZjcVyO2X1arHitg9h5RtyFugPRaEWFqFSPj+JqwhhM
- TqGXdQE1i6Efv6HuXbqpm5odjLMUTR8adGDBGeq5E287JLhDpP0vwKAfJqpXAX4kNAYy
- shNTZCd93AjheqckeCOH6mQivzfWYJV+hXjaRCeV01TG+qrTIG6frLVEg7NqyN+N+zzx
- kELA==
+ d=linaro.org; s=google; t=1729007344; x=1729612144; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=h8yxg9y4vv4qI/jrS4Ln3/iEtaNWndxMD91mSBaNHWg=;
+ b=KYLd4d70jvnRPGrswRJPT5Ywcab3SfFvUFFI81czG7Mx2aIFo4V1ptLhaP0OsVfvDy
+ Xj+iMXRMQb6ypneuLcg6YnadKvC4/lvkx1trpoQY9uEHEuBiE5P5Of0X7srYq6me9PXy
+ TjGcdaEgUUD7N1hIJ/4OKVGP6GuG88B2Biv5qzBkuQZvaWWkInTonEucVewR7kRHS5cC
+ EWMtExBp2LC1HD13EPFoeCU7P6LlToVgUZnT8orA+xsehXLkyw42wjNxfuaDi3lZi9BV
+ o2ksd/Ine+5q9OSLmmsgvtJWg6dlnHUVO1Bc0qZE/lODbFaWN3IBZ8nB286MARL4Vmok
+ Y0mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007323; x=1729612123;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hIJ9Az3wLYpKYtaTDQQbceKa5J8Ss6VqLkd1zjwnLbI=;
- b=tEhi230ihWLYcIAANKIBcgJilnsB99NLInwtT3e3Q+vloY2El+lp5oQDPG+cWmnLLN
- EtPBrW6+xAz1Z9pXTqDP3KtbLdXLr2NPzvcAOSiH09HREcFm5x0ppU7A7a9Sd0JquBiv
- n5uRxgVheDLKA7MrlFpm/jyXCFe9zYOfXo4MCfEnMl+Mv+rdd4+ZbERD3lVMmpUFY7iI
- i98JrPlya68tXITO0D3HxkzXaWyqfhZBFtYIBBNgyOUkZSS8YoL6pkmvMd3SlIrQySa/
- Q/G7vncqJDPjZ+Y+tHlgkg1YCLXrRy+cda0Ml1l8MRSdCPtoOuS7JxfXYEVzqMXBvvF6
- Q8cg==
-X-Gm-Message-State: AOJu0Yz+gyxSYS68PLtvW+YVrgliUR/EbY7s2HKYum5Mwjj1UcqXLmwc
- EzzDj0veZdtTCVqdKJ2MxRzI5ervIBmRvWw5PtdsS12x1phW4d9nJJpQHIlTSS8HGk3m6R7FopZ
- c
-X-Google-Smtp-Source: AGHT+IEfpWbm8xp6NkMeVg1ikdNGVjj9PshjLQusHYWC6O0n3kU2fMRJu4kJgQK/LCSVr3XcWCKPqw==
-X-Received: by 2002:a05:6358:60ce:b0:1be:bb29:95a0 with SMTP id
- e5c5f4694b2df-1c32bad6770mr810017855d.13.1729007322866; 
- Tue, 15 Oct 2024 08:48:42 -0700 (PDT)
-Received: from localhost.localdomain ([45.176.88.167])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ea9c7068afsm1516866a12.57.2024.10.15.08.48.41
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Oct 2024 08:48:42 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 33/33] hw/mips: Have mips_cpu_create_with_clock() take an
- endianness argument
-Date: Tue, 15 Oct 2024 12:44:42 -0300
-Message-ID: <20241015154443.71763-34-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241015154443.71763-1-philmd@linaro.org>
-References: <20241015154443.71763-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1729007344; x=1729612144;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h8yxg9y4vv4qI/jrS4Ln3/iEtaNWndxMD91mSBaNHWg=;
+ b=NPVIjcn32UlHNHSwM6NB1+CjvRAdATtYkYkp8dcNInAmNBU35XIKXWqDZnRPOCen/j
+ u31rbpgQpvUu3Z+R0X+2tMRtZDdg3EDtQmLaADm9FNCbrdHGhjip2EXcMchnQWCDH8Ez
+ 8IuxQ1+x71E9FvFZbqy13p7X5zgFomiwLcwmZXzRzY4n2d+zTKyo052VUg5iiC9/tEPb
+ e5i0QkSNfQNWN8z2xhH2dJnCcTSWF0lARN60XtsUXxk+ANczb5WhzHXI4AW+mvM3MTar
+ MA/NRs4uCySHCkSb0S8RfZFyYQP4Gvx1arRmMjYImR7BabFHGWIuR4Sc8K9P+JX2h3jO
+ yJ5Q==
+X-Gm-Message-State: AOJu0Yyt6jyLSdrv9R1b+G0OCeLr/VgFHFHtxTkNiLGeCWgEHyUZ8KQw
+ FMDGYj2jhuBu9YKJX00TcmHJSHcXdSRd37ZG6p6E0uRQmV3A2cWyjh7pkp3NNIwkt32eXecfV2O
+ 148YHgAa7/mvsNLAOW8qF/1PxK2Vvz/wfkgAsFrAINHIuNumd
+X-Google-Smtp-Source: AGHT+IGM+9DkcJCDY0v8KzXQN1mjBRHsMhiLKQ67esltuWKeS9wUl99GIzv2WOXAoUW9XnHmNR9UXfB4tl8Tdo5bHOw=
+X-Received: by 2002:a05:6402:8c3:b0:5c9:55aa:4285 with SMTP id
+ 4fb4d7f45d1cf-5c95ac63c95mr15472562a12.34.1729007343878; Tue, 15 Oct 2024
+ 08:49:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=philmd@linaro.org; helo=mail-oo1-xc32.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 15 Oct 2024 16:48:53 +0100
+Message-ID: <CAFEAcA9CthdJz+QM=_q2NxPbdCyyf+YBGE+qDVYs7VbqWT+aqw@mail.gmail.com>
+Subject: patchew no longer pushing patches to git branches
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <famz@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,134 +82,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mips_cpu_create_with_clock() creates a vCPU. Pass it the vCPU
-endianness requested by argument. Update the board call sites.
+It looks like since a few months back patchew stopped pushing patches
+to git branches: eg
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241010215015.44326-17-philmd@linaro.org>
----
- target/mips/cpu.h        | 4 +++-
- hw/mips/fuloong2e.c      | 2 +-
- hw/mips/jazz.c           | 3 ++-
- hw/mips/loongson3_virt.c | 2 +-
- hw/mips/malta.c          | 3 ++-
- hw/mips/mipssim.c        | 3 ++-
- target/mips/cpu.c        | 5 ++++-
- 7 files changed, 15 insertions(+), 7 deletions(-)
+https://patchew.org/QEMU/20240526204551.553282-1-richard.henderson@linaro.org/
+from four months ago had a git branch created for it, but more
+recent patches in patchew's UI don't seem to have that.
 
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index 070e11fe0da..a4a46ebbe98 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -1376,12 +1376,14 @@ static inline void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
-  * mips_cpu_create_with_clock:
-  * @typename: a MIPS CPU type.
-  * @cpu_refclk: this cpu input clock (an output clock of another device)
-+ * @is_big_endian: whether this CPU is configured in big endianness
-  *
-  * Instantiates a MIPS CPU, set the input clock of the CPU to @cpu_refclk,
-  * then realizes the CPU.
-  *
-  * Returns: A #CPUState or %NULL if an error occurred.
-  */
--MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk);
-+MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk,
-+                                    bool is_big_endian);
- 
- #endif /* MIPS_CPU_H */
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index 6e4303ba473..7fd8296ccb6 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -229,7 +229,7 @@ static void mips_fuloong2e_init(MachineState *machine)
-     clock_set_hz(cpuclk, 533080000); /* ~533 MHz */
- 
-     /* init CPUs */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, false);
-     env = &cpu->env;
- 
-     qemu_register_reset(main_cpu_reset, cpu);
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 33ce51fb09c..0e43c9f0bac 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -212,7 +212,8 @@ static void mips_jazz_init(MachineState *machine,
-                          * ext_clk[jazz_model].pll_mult);
- 
-     /* init CPUs */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk,
-+                                     TARGET_BIG_ENDIAN);
-     env = &cpu->env;
-     qemu_register_reset(main_cpu_reset, cpu);
- 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index a2db98665df..f3b6326cc59 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -567,7 +567,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         int ip;
- 
-         /* init CPUs */
--        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, false);
- 
-         /* Init internal devices */
-         cpu_mips_irq_init_cpu(cpu);
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 964d3592da7..198da5ba3d4 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -1034,7 +1034,8 @@ static void create_cpu_without_cps(MachineState *ms, MaltaState *s,
-     int i;
- 
-     for (i = 0; i < ms->smp.cpus; i++) {
--        cpu = mips_cpu_create_with_clock(ms->cpu_type, s->cpuclk);
-+        cpu = mips_cpu_create_with_clock(ms->cpu_type, s->cpuclk,
-+                                         TARGET_BIG_ENDIAN);
- 
-         /* Init internal devices */
-         cpu_mips_irq_init_cpu(cpu);
-diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
-index a07732d3dc5..5f4835a38de 100644
---- a/hw/mips/mipssim.c
-+++ b/hw/mips/mipssim.c
-@@ -160,7 +160,8 @@ mips_mipssim_init(MachineState *machine)
- #endif
- 
-     /* Init CPUs. */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk,
-+                                     TARGET_BIG_ENDIAN);
-     env = &cpu->env;
- 
-     reset_info = g_new0(ResetData, 1);
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 04bf4b11db2..9724e71a5e0 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -643,12 +643,15 @@ static void mips_cpu_register_types(void)
- type_init(mips_cpu_register_types)
- 
- /* Could be used by generic CPU object */
--MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
-+MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk,
-+                                    bool is_big_endian)
- {
-     DeviceState *cpu;
- 
-     cpu = DEVICE(object_new(cpu_type));
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-+    object_property_set_bool(OBJECT(cpu), "big-endian", is_big_endian,
-+                             &error_abort);
-     qdev_realize(cpu, NULL, &error_abort);
- 
-     return MIPS_CPU(cpu);
--- 
-2.45.2
+Did this get accidentally lost when patchew moved server, or
+was it deliberately disabled?
 
+thanks
+-- PMM
 
