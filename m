@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C6C99E433
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E75C99E43F
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewU-0006d7-US; Tue, 15 Oct 2024 06:38:19 -0400
+	id 1t0ewY-0006fw-CR; Tue, 15 Oct 2024 06:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewR-0006c9-RJ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1t0ewS-0006cR-Fl
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:16 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewP-0005vd-Mi
+ id 1t0ewQ-0005vf-DB
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-37d5aedd177so2585620f8f.1
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43055b43604so50119785e9.3
  for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988692; x=1729593492; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988693; x=1729593493; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UyEnUeAM+pUK11zjhSfvBnjHBcNllMJBTEH4fBRhhwM=;
- b=EUv34Mnfyb7yogpcULZDy+KPMVVfV/ITsoQDYzPqZKLHfym0HdqnW5Fsw1GwVw+GoC
- 5FZD22djo+nvVR8gm6yLY9B/GotvX70PNQx+dRSf7yhsuwGvvmXci9rqJ7uixFljRdHb
- 9ZwTSthN1siXaZc7p8Alg9f7xRej6ZuHbD7jHmWeHW98DmV4Xr6pZlHmCe8C857FO58Q
- zqiw1i/fdZHcXHp+IqM8ynFs6EuApJr4TfbW5AJ3w8dJiRPkmPOz9D2yIlP4JqP8BAjX
- a2W5bGuVR2HLFHqErxXjL3CwhBHuTZ0asncUpJRFcN/snouOrjtAdLngFT1O8Np0VWZt
- IVKw==
+ :reply-to; bh=uMQQ7fdyXd07jMQ0rVrq7jETk7cjRhNibU6XZ/lFh88=;
+ b=PGMCd8GXUKSRl5AqD8c3+g+UnmEqSNzq6MDTqCmTSTipsgtKx6k5pbXifQ+tO2d+y5
+ v+BO2SNwngBqsH84URDZ9mFg1HWYVlcxNgMaWj+v6gFDkY+TBREohzkL5xe1S4hlnk2g
+ LxB3FIbxxU0FYu+3r4WgJy5GTLnX68peS0/Dqb/n3tDD/82AHp03x9AKLSkmF9OpcLex
+ JpbzChPmJsovlQ+dtkGCEuaMc+uU/+/Majk/9hKNL0HWnHPc/fk5KsKwnA8xrTIeagnz
+ 5KnbYXRQOT4xa4u4zSqHqci+DWczhlwIaUyQffKyxuEK+x9hUS0Y5k+WgDO9o3tqfEVg
+ Abpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988692; x=1729593492;
+ d=1e100.net; s=20230601; t=1728988693; x=1729593493;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UyEnUeAM+pUK11zjhSfvBnjHBcNllMJBTEH4fBRhhwM=;
- b=a1QHjfjGLILMlCyGSDdbVP6N7J79uwZj+Pyr//wK1WtHhP6tZNLUxyDbZKNOI3IPaO
- 2u3ccnrnVCFBwnk53iGOSRxSo3gIFuU2JxJK9INcrH6o2LKidMcpv9oyJss0TCYfT0Fa
- pseEYkc3h9H8IIQHwM7Xrbfl8H5yRgiV/ZMyTmjCl37FW0ru10oA+Fprr+jZ9VocSS0e
- 7tngKUQvd1OvOKanpptvVjj5le0rZNaEjuEpG6XAKW5FoxP8Rvk8DBQJ6roeTFx+gY2m
- uSXg839P/5yaeL0wsUAoQxnnCVZHHK0G4xwsSKkDlbxzSxTct8tNhxGcotN3+b2DNBrS
- JcHA==
-X-Gm-Message-State: AOJu0YxLFONDQg6sDLkVaG/SicE1msSwfhHvFcdPXee1J9Od1DA8lDU0
- TeAF1OlBwzGdkjd1c+777ksk+0TL151ebLq79lJno3IVVG8SjBlkTWu8THt0HM/bR83eie5/w4G
- U
-X-Google-Smtp-Source: AGHT+IH/554agvvG3mPPjVfMgordC5v9h1O8onvTnOKMHpj3lbJYmNLNUin5U+RkgeuPzzS/624/aQ==
-X-Received: by 2002:adf:f805:0:b0:374:c911:7756 with SMTP id
- ffacd0b85a97d-37d5529ad42mr9550368f8f.38.1728988692128; 
+ bh=uMQQ7fdyXd07jMQ0rVrq7jETk7cjRhNibU6XZ/lFh88=;
+ b=e4lBxfQ3tznX70giO+OHZk8SlnXBhgUsI6Oprn8QB0Ga1DZLVqp56GUG3dBfNKtB57
+ +F/yaiAv+8CbSSUlO6TSn8KDh1zXWX9p1xu2Rwv+klf7FAPLET263d7zV8KgqMrEAxRM
+ aiIhL1y24Iq8Di1NEiGGYeB9CARkKAca0uabH0dnA67svIkUhrMMAKAuC0AHe5h4cbzY
+ MhUmUYxym6xes/1vuE9l0Nl4zgfWUeRL1DR7OspoRNquyfDGg4Hal5pN2PTcgwnLfLo2
+ I/yjCUnCqFXCUQCxVw2GCRyHspYflxcR77HLtnRmhfecF44AL1HHeJbGf7gHuehpIZvp
+ /K3Q==
+X-Gm-Message-State: AOJu0YxFfGQVXm5nJOOm/52XN4mbtVSI8DiRPk4hh7RGqxMwA4wmYKnD
+ kyc4P/bCzfaYC07j5SXGeoiYLYJLJg5aH8lNu2uvKpzHN3RGDIG9kyiXti20n53K2luN3hBFEXW
+ N
+X-Google-Smtp-Source: AGHT+IH/t4pjRBLvgpjtys5YCCNmPZEUd4N+E1omAikdRTF6o0Dq3HazMun3CU6aps+swMMUbx8PXg==
+X-Received: by 2002:a5d:6591:0:b0:37c:cdb6:6a9e with SMTP id
+ ffacd0b85a97d-37d5518e759mr9495410f8f.9.1728988692609; 
  Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.11
+ ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 03:38:11 -0700 (PDT)
+ Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/28] hw/intc/arm_gicv3: Add cast to match the documentation
-Date: Tue, 15 Oct 2024 11:37:45 +0100
-Message-Id: <20241015103808.133024-6-peter.maydell@linaro.org>
+Subject: [PULL 06/28] hw/intc/arm_gicv3_cpuif: Add cast to match the
+ documentation
+Date: Tue, 15 Oct 2024 11:37:46 +0100
+Message-Id: <20241015103808.133024-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,14 +97,14 @@ From: Alexandra Diupina <adiupina@astralinux.ru>
 The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
 When cast to uint64_t (for further bitwise OR), the 32 most
 significant bits will be filled with 1s. However, the documentation
-states that the upper 32 bits of ICC_AP[0/1]R<n>_EL2 are reserved.
+states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
 
 Add an explicit cast to match the documentation.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 28cca59c46 ("hw/intc/arm_gicv3: Add NMI handling CPU interface registers")
+Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
 Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
@@ -112,18 +113,18 @@ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index ebad7aaea18..89359db7004 100644
+index 89359db7004..ea1d1b34551 100644
 --- a/hw/intc/arm_gicv3_cpuif.c
 +++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -1170,7 +1170,7 @@ static void icc_activate_irq(GICv3CPUState *cs, int irq)
-     if (nmi) {
-         cs->icc_apr[cs->hppi.grp][regno] |= ICC_AP1R_EL1_NMI;
-     } else {
--        cs->icc_apr[cs->hppi.grp][regno] |= (1 << regbit);
-+        cs->icc_apr[cs->hppi.grp][regno] |= (1U << regbit);
-     }
+@@ -793,7 +793,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
+     int regno = aprbit / 32;
+     int regbit = aprbit % 32;
  
-     if (irq < GIC_INTERNAL) {
+-    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
++    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
+     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
+ }
+ 
 -- 
 2.34.1
 
