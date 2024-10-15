@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D955699EC80
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D0899EC79
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hRQ-00027U-2f; Tue, 15 Oct 2024 09:18:24 -0400
+	id 1t0hRS-00027i-2Q; Tue, 15 Oct 2024 09:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hRO-00027C-Ms
+ id 1t0hRO-00027D-NA
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hRJ-0001J8-OL
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:20 -0400
+ id 1t0hRK-0001Kq-Qx
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728998294;
+ s=mimecast20190719; t=1728998298;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=phALTCJWI1ZZcq7L1OJeDibGPB+sOPLHD87meXDFea4=;
- b=iIFRPaV47KZnMxQlk75FZl8K9efjlRreC3IEoxvH9i+o6XvPclD/U7uOFql0bjN1y+fXYE
- 8k6oo7Ur/LNYKIv225H3HL32enbau6+gocKUfoamRPE4h7uQy+FFYmOPsfjPk4GbITWfD1
- sxXbLncAPttZ8ZEz0TOsL99OIovVf0g=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NkEvuhMOPAMN7lnR0ouyDabIAyuNADYTX1dRMur0+m0=;
+ b=MczpqMTH8lkvleT899oXyeL7paDRT1hkew90AMV6zJzAFAKT9Qc8ICAj4FZW+6DfJRhY/K
+ 1POK7CX6y8g5+KsYmvM93imzjffDswRDCHlSHzXdB5ncCQ4FIJzy3v1Rc/fk7bjVpyjykK
+ TNx8bdk6Y0T9UT3fivd5qnLw6BN4Gn8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-qw5qd6aVPCSpdfZ38tuC3w-1; Tue, 15 Oct 2024 09:18:12 -0400
-X-MC-Unique: qw5qd6aVPCSpdfZ38tuC3w-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4314a22ed8bso1073885e9.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:18:12 -0700 (PDT)
+ us-mta-346-jYEpXeqBPheLbgMg6Q2qQg-1; Tue, 15 Oct 2024 09:18:15 -0400
+X-MC-Unique: jYEpXeqBPheLbgMg6Q2qQg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d603515cfso1317228f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:18:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728998291; x=1729603091;
+ d=1e100.net; s=20230601; t=1728998294; x=1729603094;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=phALTCJWI1ZZcq7L1OJeDibGPB+sOPLHD87meXDFea4=;
- b=KN3joz8Y3gsRaSiIuSpK+uB2+azWeJ1wzbZK7Cmj7JQcQh/zD8lDnnU4roEX7iMqdX
- t6MBZjeBNf+LjBq+PX9U8+PhZwybg5sDILpdryfF6A3u0H4fbtELAx35fDoUw5qduQqV
- iKr7pNz+DY2KdpG5qDgsi/a9B5rok7JykR3JnspSUVfbw8v7hAmRZviX4nBppt9EyD/O
- /fHOe0FGo06KHcLcdyjH7RJ3OkxmqAozl0Dm/G6J8uvDaBiyZZCUGTQTbV6xYU6vIT6F
- AGpOiK5tkbyoHE7lN8RIuCUMxm86Njng26qitwB8ycRBdxY6KwL7zPw1nLRFUW+jBRhl
- eHFw==
-X-Gm-Message-State: AOJu0Yygy+4x2klEfGrvuIPNu4GAIqcJh2KyQoj8s4SEbO/dh2mXDfBg
- Mqy5YGaMky8SYOp9e1+FiJDf7jYxdjJHhuyGZu0PQ5nAwRjbDlUZO+gdRfyLwQ5uBYfswlLhSmo
- JqbafZX9SzrSn3OgJ/i/ber1U6S6iyejSCJirnIIDS7q+oSZWlM+8veVopHfvzR14WD5XGA7swF
- /ev6BQNyQQJx/93oJr28Itr8cKAeDh3wODlVdTQzo=
-X-Received: by 2002:a05:600c:4f88:b0:431:416e:2612 with SMTP id
- 5b1f17b1804b1-431416e2919mr18797945e9.32.1728998290736; 
- Tue, 15 Oct 2024 06:18:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyfp6Hy1zQItJ5AqjaWJI7zZoccMsoLfeRXEFBRUhJ6k2+v/4EY2zeywqyyvbjGkXgEZxuAQ==
-X-Received: by 2002:a05:600c:4f88:b0:431:416e:2612 with SMTP id
- 5b1f17b1804b1-431416e2919mr18797535e9.32.1728998289969; 
- Tue, 15 Oct 2024 06:18:09 -0700 (PDT)
+ bh=NkEvuhMOPAMN7lnR0ouyDabIAyuNADYTX1dRMur0+m0=;
+ b=m1WexgKn49eZc6QehmDOppVH5DlQAGMY3myOqcoXABGBdhLjglRLHG4CZ8FEIzDziq
+ TIV3hamZg77x49jyNWGCoO6rbG38m3HEikmNEDiAqbfoHfiFCrv/FVXj66CiwXExj+no
+ MTtQdOTRLzTurTXjuO0U7B2PuhyHN5a08kpFHDQVInW40ElFYpofZFCaPHASwZ9XgH2E
+ h2HWVxlDFNjHuItVRI69fkYyB+xZkSGDc/ZiXPZGXS53qYGK6FpFnf/fhF4QcJISUm8F
+ fGT30Ja7q31NZEMYWR2RF0ShjDGJs30H9vXvZtjBJWVoB3DWi/SIGk+Yc4mXl5Ej9zym
+ QRzw==
+X-Gm-Message-State: AOJu0YzaGkvmOHUKqSTYetLLIVvkVBVOdpXvg1nZC0PI6oTNmOwoxdD3
+ 7dxuvgpb26fRS9OkJJhpQU9UD7zw9iebEDi87omIHtpF7PG4sXJNn3OdHMvEDWWQ8HnMJJ8rkBN
+ oZovnadcxME0nR+sIKvC/akE/OYODxLEZquZ6fj/6XkdyXIEMtlLpK9Shq/um/dUr8CgEqwkkGI
+ a1KHASnpTDyxxSD0WUVS3OmpUxoRj7nHQg0BF/Voc=
+X-Received: by 2002:a5d:4f84:0:b0:37d:377f:51e6 with SMTP id
+ ffacd0b85a97d-37d5ffb3611mr8124421f8f.56.1728998293654; 
+ Tue, 15 Oct 2024 06:18:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEaG95vug18FDwMQ5amOXCt7Hv7dIHE8q0TMIPOeaEbftqGGEr0FJC0Ub4VldF2tiHOkp0WeA==
+X-Received: by 2002:a5d:4f84:0:b0:37d:377f:51e6 with SMTP id
+ ffacd0b85a97d-37d5ffb3611mr8124393f8f.56.1728998293108; 
+ Tue, 15 Oct 2024 06:18:13 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa87c44sm1557662f8f.33.2024.10.15.06.18.08
+ ffacd0b85a97d-37d7fa9090asm1565509f8f.57.2024.10.15.06.18.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 06:18:08 -0700 (PDT)
+ Tue, 15 Oct 2024 06:18:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/16] rust: introduce alternative implementation of offset_of!
-Date: Tue, 15 Oct 2024 15:17:28 +0200
-Message-ID: <20241015131735.518771-11-pbonzini@redhat.com>
+Subject: [PATCH 11/16] rust: do not use MaybeUninit::zeroed()
+Date: Tue, 15 Oct 2024 15:17:29 +0200
+Message-ID: <20241015131735.518771-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015131735.518771-1-pbonzini@redhat.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,377 +100,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-offset_of! was stabilized in Rust 1.77.0.  Use an alternative implemenation
-that was found on the Rust forums, and whose author agreed to license as
-MIT for use in QEMU.
+MaybeUninit::zeroed() is handy, but it introduces unsafe (and has a pretty =
+heavy
+syntax in general) and anyway it is not available as a "const" function unt=
+il
+Rust 1.75.0.
 
-The alternative allows only one level of field access, but apart
-from this can be used just by replacing core::mem::offset_of! with
-qemu_api::offset_of!.
+Introduce a trait that provides the same functionality while staying within
+safe Rust.  In the future we may want to add automatic derivation and
+implementation of the trait, once we can assume Rust 1.75.0; for now the
+implementation is manual.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs  |  91 ++++++++++++-------------
- rust/qemu-api/meson.build         |  12 ++--
- rust/qemu-api/src/device_class.rs |   8 +--
- rust/qemu-api/src/lib.rs          |   4 ++
- rust/qemu-api/src/offset_of.rs    | 106 ++++++++++++++++++++++++++++++
- rust/qemu-api/src/tests.rs        |  11 ++--
- 6 files changed, 176 insertions(+), 56 deletions(-)
- create mode 100644 rust/qemu-api/src/offset_of.rs
+ rust/hw/char/pl011/src/device_class.rs |  5 +-
+ rust/hw/char/pl011/src/memory_ops.rs   | 11 ++--
+ rust/qemu-api/meson.build              |  1 +
+ rust/qemu-api/src/device_class.rs      |  4 +-
+ rust/qemu-api/src/lib.rs               |  1 +
+ rust/qemu-api/src/zeroable.rs          | 75 ++++++++++++++++++++++++++
+ 6 files changed, 89 insertions(+), 8 deletions(-)
+ create mode 100644 rust/qemu-api/src/zeroable.rs
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
-ce.rs
-index 55d933ee5e9..f331a13b5f1 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -13,6 +13,7 @@
-     bindings::{self, *},
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/sr=
+c/device_class.rs
+index a3d1b1e929a..37bbf6d36cc 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -7,7 +7,8 @@
+ use qemu_api::{
+     bindings::*,
      c_str,
-     definitions::ObjectImpl,
-+    with_offsets,
+-    definitions::ObjectImpl
++    definitions::ObjectImpl,
++    zeroable::Zeroable,
  };
 =20
- use crate::{
-@@ -28,50 +29,52 @@
- /// QEMU sourced constant.
- pub const PL011_FIFO_DEPTH: usize =3D 16_usize;
+ use crate::device::PL011State;
+@@ -16,7 +17,7 @@
+ pub static VMSTATE_PL011: VMStateDescription =3D VMStateDescription {
+     name: PL011State::TYPE_INFO.name,
+     unmigratable: true,
+-    ..unsafe { ::core::mem::MaybeUninit::<VMStateDescription>::zeroed().as=
+sume_init() }
++    ..Zeroable::ZERO
+ };
 =20
--#[repr(C)]
--#[derive(Debug, qemu_api_macros::Object)]
--/// PL011 Device Model in QEMU
--pub struct PL011State {
--    pub parent_obj: SysBusDevice,
--    pub iomem: MemoryRegion,
--    #[doc(alias =3D "fr")]
--    pub flags: registers::Flags,
--    #[doc(alias =3D "lcr")]
--    pub line_control: registers::LineControl,
--    #[doc(alias =3D "rsr")]
--    pub receive_status_error_clear: registers::ReceiveStatusErrorClear,
--    #[doc(alias =3D "cr")]
--    pub control: registers::Control,
--    pub dmacr: u32,
--    pub int_enabled: u32,
--    pub int_level: u32,
--    pub read_fifo: [u32; PL011_FIFO_DEPTH],
--    pub ilpr: u32,
--    pub ibrd: u32,
--    pub fbrd: u32,
--    pub ifl: u32,
--    pub read_pos: usize,
--    pub read_count: usize,
--    pub read_trigger: usize,
--    #[doc(alias =3D "chr")]
--    pub char_backend: CharBackend,
--    /// QEMU interrupts
--    ///
--    /// ```text
--    ///  * sysbus MMIO region 0: device registers
--    ///  * sysbus IRQ 0: `UARTINTR` (combined interrupt line)
--    ///  * sysbus IRQ 1: `UARTRXINTR` (receive FIFO interrupt line)
--    ///  * sysbus IRQ 2: `UARTTXINTR` (transmit FIFO interrupt line)
--    ///  * sysbus IRQ 3: `UARTRTINTR` (receive timeout interrupt line)
--    ///  * sysbus IRQ 4: `UARTMSINTR` (momem status interrupt line)
--    ///  * sysbus IRQ 5: `UARTEINTR` (error interrupt line)
--    /// ```
--    #[doc(alias =3D "irq")]
--    pub interrupts: [qemu_irq; 6usize],
--    #[doc(alias =3D "clk")]
--    pub clock: NonNull<Clock>,
--    #[doc(alias =3D "migrate_clk")]
--    pub migrate_clock: bool,
-+with_offsets! {
-+    #[repr(C)]
-+    #[derive(Debug, qemu_api_macros::Object)]
-+    /// PL011 Device Model in QEMU
-+    pub struct PL011State {
-+        pub parent_obj: SysBusDevice,
-+        pub iomem: MemoryRegion,
-+        #[doc(alias =3D "fr")]
-+        pub flags: registers::Flags,
-+        #[doc(alias =3D "lcr")]
-+        pub line_control: registers::LineControl,
-+        #[doc(alias =3D "rsr")]
-+        pub receive_status_error_clear: registers::ReceiveStatusErrorClear,
-+        #[doc(alias =3D "cr")]
-+        pub control: registers::Control,
-+        pub dmacr: u32,
-+        pub int_enabled: u32,
-+        pub int_level: u32,
-+        pub read_fifo: [u32; PL011_FIFO_DEPTH],
-+        pub ilpr: u32,
-+        pub ibrd: u32,
-+        pub fbrd: u32,
-+        pub ifl: u32,
-+        pub read_pos: usize,
-+        pub read_count: usize,
-+        pub read_trigger: usize,
-+        #[doc(alias =3D "chr")]
-+        pub char_backend: CharBackend,
-+        /// QEMU interrupts
-+        ///
-+        /// ```text
-+        ///  * sysbus MMIO region 0: device registers
-+        ///  * sysbus IRQ 0: `UARTINTR` (combined interrupt line)
-+        ///  * sysbus IRQ 1: `UARTRXINTR` (receive FIFO interrupt line)
-+        ///  * sysbus IRQ 2: `UARTTXINTR` (transmit FIFO interrupt line)
-+        ///  * sysbus IRQ 3: `UARTRTINTR` (receive timeout interrupt line)
-+        ///  * sysbus IRQ 4: `UARTMSINTR` (momem status interrupt line)
-+        ///  * sysbus IRQ 5: `UARTEINTR` (error interrupt line)
-+        /// ```
-+        #[doc(alias =3D "irq")]
-+        pub interrupts: [qemu_irq; 6usize],
-+        #[doc(alias =3D "clk")]
-+        pub clock: NonNull<Clock>,
-+        #[doc(alias =3D "migrate_clk")]
-+        pub migrate_clock: bool,
-+    }
- }
+ qemu_api::declare_properties! {
+diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/=
+memory_ops.rs
+index 2c664fd45ed..88d17ec2e3a 100644
+--- a/rust/hw/char/pl011/src/memory_ops.rs
++++ b/rust/hw/char/pl011/src/memory_ops.rs
+@@ -2,11 +2,14 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
 =20
- impl ObjectImpl for PL011State {
+-use core::{mem::MaybeUninit, ptr::NonNull};
++use core::ptr::NonNull;
+=20
+ use std::os::raw::{c_uint, c_void};
+=20
+-use qemu_api::bindings::*;
++use qemu_api::{
++    bindings::*,
++    zeroable::Zeroable
++};
+=20
+ use crate::device::PL011State;
+=20
+@@ -16,11 +19,11 @@
+     read_with_attrs: None,
+     write_with_attrs: None,
+     endianness: device_endian::DEVICE_NATIVE_ENDIAN,
+-    valid: unsafe { MaybeUninit::<MemoryRegionOps__bindgen_ty_1>::zeroed()=
+.assume_init() },
++    valid: Zeroable::ZERO,
+     impl_: MemoryRegionOps__bindgen_ty_2 {
+         min_access_size: 4,
+         max_access_size: 4,
+-        ..unsafe { MaybeUninit::<MemoryRegionOps__bindgen_ty_2>::zeroed().=
+assume_init() }
++        ..Zeroable::ZERO
+     },
+ };
+=20
 diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index b55931c6490..57f813fc8f9 100644
+index 57f813fc8f9..547fc5caa3a 100644
 --- a/rust/qemu-api/meson.build
 +++ b/rust/qemu-api/meson.build
-@@ -1,3 +1,9 @@
-+_qemu_api_cfg =3D ['--cfg', 'MESON']
-+# _qemu_api_cfg +=3D ['--cfg', 'feature=3D"allocator"']
-+if rustc.version().version_compare('>=3D1.77.0')
-+  _qemu_api_cfg +=3D ['--cfg', 'has_offset_of']
-+endif
-+
- _qemu_api_rs =3D static_library(
-   'qemu_api',
-   structured_sources(
-@@ -6,16 +12,14 @@ _qemu_api_rs =3D static_library(
-       'src/c_str.rs',
-       'src/definitions.rs',
+@@ -14,6 +14,7 @@ _qemu_api_rs =3D static_library(
        'src/device_class.rs',
-+      'src/offset_of.rs',
+       'src/offset_of.rs',
        'src/tests.rs',
++      'src/zeroable.rs',
      ],
      {'.' : bindings_rs},
    ),
-   override_options: ['rust_std=3D2021', 'build.rust_std=3D2021'],
-   rust_abi: 'rust',
--  rust_args: [
--    '--cfg', 'MESON',
--    # '--cfg', 'feature=3D"allocator"',
--  ],
-+  rust_args: _qemu_api_cfg,
-   dependencies: [
-     qemu_api_macros,
-   ],
 diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
 lass.rs
-index 871063d4a92..d4fa544df39 100644
+index d4fa544df39..d2535125c48 100644
 --- a/rust/qemu-api/src/device_class.rs
 +++ b/rust/qemu-api/src/device_class.rs
-@@ -26,7 +26,7 @@ macro_rules! device_class_init {
-=20
- #[macro_export]
- macro_rules! define_property {
--    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default =
-=3D $defval:expr$(,)*) =3D> {
-+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr, default =
-=3D $defval:expr$(,)*) =3D> {
-         $crate::bindings::Property {
-             name: {
-                 #[used]
-@@ -34,7 +34,7 @@ macro_rules! define_property {
-                 _TEMP.as_ptr()
-             },
-             info: $prop,
--            offset: ::core::mem::offset_of!($state, $field)
-+            offset: $crate::offset_of!($state, $field)
-                 .try_into()
-                 .expect("Could not fit offset value to type"),
-             bitnr: 0,
-@@ -47,7 +47,7 @@ macro_rules! define_property {
-             link_type: ::core::ptr::null(),
+@@ -100,7 +100,7 @@ const fn _calc_prop_len() -> usize {
+         fn _make_properties() -> [$crate::bindings::Property; PROP_LEN] {
+             [
+                 $($prop),*,
+-                    unsafe { ::core::mem::MaybeUninit::<$crate::bindings::=
+Property>::zeroed().assume_init() },
++                $crate::zeroable::Zeroable::ZERO,
+             ]
          }
-     };
--    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr$(,)*) =3D>=
- {
-+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr$(,)*) =3D=
-> {
-         $crate::bindings::Property {
-             name: {
-                 #[used]
-@@ -55,7 +55,7 @@ macro_rules! define_property {
-                 _TEMP.as_ptr()
-             },
-             info: $prop,
--            offset: ::core::mem::offset_of!($state, $field)
-+            offset: $crate::offset_of!($state, $field)
-                 .try_into()
-                 .expect("Could not fit offset value to type"),
-             bitnr: 0,
+=20
+@@ -125,7 +125,7 @@ macro_rules! vm_state_description {
+                 $vname.as_ptr()
+             },)*
+             unmigratable: true,
+-            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::VMStat=
+eDescription>::zeroed().assume_init() }
++            ..$crate::zeroable::Zeroable::ZERO
+         };
+     }
+ }
 diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-index 9b2483fbfa3..082f1addb10 100644
+index 082f1addb10..50951d20e14 100644
 --- a/rust/qemu-api/src/lib.rs
 +++ b/rust/qemu-api/src/lib.rs
-@@ -30,6 +30,7 @@ unsafe impl Sync for bindings::VMStateDescription {}
- pub mod c_str;
+@@ -31,6 +31,7 @@ unsafe impl Sync for bindings::VMStateDescription {}
  pub mod definitions;
  pub mod device_class;
-+pub mod offset_of;
+ pub mod offset_of;
++pub mod zeroable;
 =20
  #[cfg(test)]
  mod tests;
-@@ -167,3 +168,6 @@ unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-         }
-     }
- }
-+
-+#[cfg(has_offset_of)]
-+pub use std::mem::offset_of;
-diff --git a/rust/qemu-api/src/offset_of.rs b/rust/qemu-api/src/offset_of.rs
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
 new file mode 100644
-index 00000000000..4e1de373674
+index 00000000000..faa93d1fb33
 --- /dev/null
-+++ b/rust/qemu-api/src/offset_of.rs
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: MIT
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+/// This macro provides the same functionality as `core::mem::offset_of`,
-+/// except that only one level of field access is supported.  The declarat=
-ion
-+/// of the struct must be wrapped with `with_offsets! { }`.
++use std::ptr;
++
++/// This trait provides a replacement for core::mem::zeroed() that can be
++/// used as a `const fn` prior to Rust 1.75.0.  As an added bonus it remov=
+es
++/// usage of `unsafe` blocks.
 +///
-+/// It is needed because `offset_of!` was only stabilized in Rust 1.77.
-+#[cfg(not(has_offset_of))]
-+#[macro_export]
-+macro_rules! offset_of {
-+    ($Container:ty, $field:ident) =3D> {
-+        <$Container>::offset_to.$field
++/// Unlike other Zeroable traits found in other crates (e.g.
++/// [`pinned_init`](https://docs.rs/pinned-init/latest/pinned_init/trait.Z=
+eroable.html))
++/// this is a safe trait because the value `ZERO` constant has to be writt=
+en by
++/// hand.  The `pinned_init` crate instead makes the trait unsafe, but it
++/// provides a `#[derive(Zeroable)]` macro to define it with compile-time
++/// safety checks. Once we can assume Rust 1.75.0 is available, we could
++/// switch to their idea, and use `core::mem::zeroed()` to provide a blank=
+ed
++/// implementation of the `ZERO` constant.
++pub trait Zeroable: Default {
++    const ZERO: Self;
++}
++
++impl Zeroable for crate::bindings::Property__bindgen_ty_1 {
++    const ZERO: Self =3D Self { i: 0 };
++}
++
++impl Zeroable for crate::bindings::Property {
++    const ZERO: Self =3D Self {
++        name: ptr::null(),
++        info: ptr::null(),
++        offset: 0,
++        bitnr: 0,
++        bitmask: 0,
++        set_default: false,
++        defval: Zeroable::ZERO,
++        arrayoffset: 0,
++        arrayinfo: ptr::null(),
++        arrayfieldsize: 0,
++        link_type: ptr::null(),
 +    };
 +}
 +
-+/// A wrapper for struct declarations, that allows using `offset_of!` in
-+/// versions of Rust prior to 1.77
-+#[macro_export]
-+macro_rules! with_offsets {
-+    // source: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&e=
-dition=3D2018&gist=3D10a22a9b8393abd7b541d8fc844bc0df
-+    // used under MIT license with permission of Yandros aka Daniel Henry-=
-Mantilla
-+    (
-+        #[repr(C)]
-+        $(#[$struct_meta:meta])*
-+        $struct_vis:vis
-+        struct $StructName:ident {
-+            $(
-+                $(#[$field_meta:meta])*
-+                $field_vis:vis
-+                $field_name:ident : $field_ty:ty
-+            ),*
-+            $(,)?
-+        }
-+    ) =3D> (
-+        #[repr(C)]
-+        $(#[$struct_meta])*
-+        $struct_vis
-+        struct $StructName {
-+            $(
-+                $(#[$field_meta])*
-+                $field_vis
-+                $field_name : $field_ty ,
-+            )*
-+        }
-+
-+        #[cfg(not(has_offset_of))]
-+        #[allow(nonstandard_style)]
-+        const _: () =3D {
-+            pub
-+            struct StructOffsets {
-+                $(
-+                    $field_vis
-+                    $field_name: usize,
-+                )*
-+            }
-+            struct Helper;
-+            impl $StructName {
-+                pub
-+                const offset_to: StructOffsets =3D StructOffsets {
-+                    $(
-+                        $field_name: Helper::$field_name,
-+                    )*
-+                };
-+            }
-+            const END_OF_PREV_FIELD: usize =3D 0;
-+            $crate::with_offsets! {
-+                @names [ $($field_name)* ]
-+                @tys [ $($field_ty ,)*]
-+            }
-+        };
-+    );
-+
-+    (
-+        @names []
-+        @tys []
-+    ) =3D> ();
-+
-+    (
-+        @names [$field_name:ident $($other_names:tt)*]
-+        @tys [$field_ty:ty , $($other_tys:tt)*]
-+    ) =3D> (
-+        impl Helper {
-+            const $field_name: usize =3D {
-+                let align =3D
-+                    std::mem::align_of::<$field_ty>()
-+                ;
-+                let trail =3D
-+                    END_OF_PREV_FIELD % align
-+                ;
-+                0   + END_OF_PREV_FIELD
-+                    + (align - trail)
-+                        * [1, 0][(trail =3D=3D 0) as usize]
-+            };
-+        }
-+        const _: () =3D {
-+            const END_OF_PREV_FIELD: usize =3D
-+                Helper::$field_name +
-+                std::mem::size_of::<$field_ty>()
-+            ;
-+            $crate::with_offsets! {
-+                @names [$($other_names)*]
-+                @tys [$($other_tys)*]
-+            }
-+        };
-+    );
++impl Zeroable for crate::bindings::VMStateDescription {
++    const ZERO: Self =3D Self {
++        name: ptr::null(),
++        unmigratable: false,
++        early_setup: false,
++        version_id: 0,
++        minimum_version_id: 0,
++        priority: crate::bindings::MigrationPriority::MIG_PRI_DEFAULT,
++        pre_load: None,
++        post_load: None,
++        pre_save: None,
++        post_save: None,
++        needed: None,
++        dev_unplug_pending: None,
++        fields: ptr::null(),
++        subsections: ptr::null(),
++    };
 +}
-diff --git a/rust/qemu-api/src/tests.rs b/rust/qemu-api/src/tests.rs
-index d34b8d24187..b582f27baa1 100644
---- a/rust/qemu-api/src/tests.rs
-+++ b/rust/qemu-api/src/tests.rs
-@@ -4,6 +4,7 @@
-=20
- use crate::{
-     bindings::*, c_str, declare_properties, define_property, device_class_=
-init, vm_state_description,
-+    with_offsets,
- };
-=20
- #[test]
-@@ -15,10 +16,12 @@ fn test_device_decl_macros() {
-         unmigratable: true,
-     }
-=20
--    #[repr(C)]
--    pub struct DummyState {
--        pub char_backend: CharBackend,
--        pub migrate_clock: bool,
-+    with_offsets! {
-+        #[repr(C)]
-+        pub struct DummyState {
-+            pub char_backend: CharBackend,
-+            pub migrate_clock: bool,
-+        }
-     }
-=20
-     declare_properties! {
++
++impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {
++    const ZERO: Self =3D Self {
++        min_access_size: 0,
++        max_access_size: 0,
++        unaligned: false,
++        accepts: None,
++    };
++}
++
++impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {
++    const ZERO: Self =3D Self {
++        min_access_size: 0,
++        max_access_size: 0,
++        unaligned: false,
++    };
++}
 --=20
 2.46.2
 
