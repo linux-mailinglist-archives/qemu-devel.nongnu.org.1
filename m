@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E7499E43C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561AB99E444
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewW-0006dj-9b; Tue, 15 Oct 2024 06:38:20 -0400
+	id 1t0ewU-0006d1-TL; Tue, 15 Oct 2024 06:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewR-0006cA-T1
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1t0ewS-0006cP-EU
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:16 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewO-0005vU-Mx
+ id 1t0ewQ-0005vc-CC
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-37d518f9abcso2868200f8f.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-539f1292a9bso2638128e87.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988691; x=1729593491; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988692; x=1729593492; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=M8ybSySdBrTfoTyOvuNiOXF0pf6l+kJWpSoUB+F85eg=;
- b=X4rGLBNsTbqic3h1iXLqpkQRvxwjEH/MW80EdH7FPzU7c+Lq9IBQPBhMbCMb3NXNbI
- 0QJMPJiXpKimkZwfRc2xaKk8E4YytClb4fOIuxE0rldrwjjWIeZFuO/KdAjVb4zzFC3Y
- XekotZ8cnzjj1opqHH78+IV1pIl0pbiW6dM4Ahe7YimUQ3m+GlCX0xOeEEyRda0vFBVe
- 9vHUSIK0Mgnj2s7ykcE9698YJ8tVGVBLX/CZCYiyB6dtujggL/JeRvEuGT2Q9BxPpFuU
- /DNy6gdaaCdXa0yDGnWgAZPiGwAPlAz18mk1j8TiZBnnrWT+/XGpplzKa5Zi3oobfFw7
- P2JQ==
+ :reply-to; bh=DpVjyeCW+BZmlGUD07St+L+sXb8OqynaasaoJirP3bE=;
+ b=cF93caeBQ2lBocu8mzRFgwOGpmfhB66AOpdpLvMmLBQDNczs5tHsnFU4l/QU55L6pD
+ dMXxjiQGIGaKqjlXlZlrb4JmFuFcKc6/cLgLkwnUuIrS8UJoBjDFRtB90khs0mecu+w8
+ nowWgRs2uj8oeJOO8axDtBQCtO9lVwJt/bschALjt4ZWCxf7Z6QrEHtt9gshD+LXaK/1
+ tfLmhPlePyGH7Ru3LLYH+7hAIqItChwoAT2EmEYDuu1qPdutPizO05pO+ZcBKCs0kQyd
+ k2FtzbsBpyL3KV4yyq6LJvD/lTvvHv5OMIv+8jACrXVvzvFJ/zzTUSo9n4PlGrxb9XIJ
+ iWVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988691; x=1729593491;
+ d=1e100.net; s=20230601; t=1728988692; x=1729593492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M8ybSySdBrTfoTyOvuNiOXF0pf6l+kJWpSoUB+F85eg=;
- b=rLybIxeJ0gjxW+bAnZFSx0S0In3dZbESTUc8FFhcFl0iuqdR04h7NOHZDk+tsKY4i2
- gFzRQ7NZ1eVKw+mniegUTGaz1ry5oqt7kpoiiXrAWu8FnSNQslIPFrYx5dUp1HIIPKgO
- xIx2BBeRsxZgpRnZFXX7zwRut6uHgSNkRJoHleMfF/vqiNb7oiOcFxGtQZhLYqSNUteE
- +oCozJ2IGAB05WvFCcOyqk61d5Ql4vcfzh7fLyPLd8ImBIdJXSfmjcw+g3BsJUwMvPd8
- abzzKJoO3AT9z0YDZyM0y2MnFMG24WorAiEOt8e4jYZO8zupLm2KOVGFswZhv7voBJK8
- OG/w==
-X-Gm-Message-State: AOJu0YwrsP34vCCz/M27UzyBMz6ucHNDBIACJrtK0hIX0IafNuIv3ZuY
- 70yqvlpUuppXIBn2Rn4LKpphyq2qUtonjvKJW8sn/1khYXgnRuz+Wr9roO+wN/McSrtFCeYjNm7
- L
-X-Google-Smtp-Source: AGHT+IGsrKFXwjv1eFj9i5LlS5b17Oxlv1IL1kjR35+bDDJdb7MDOES10JugcSXN+DRoPb9Gt5em2w==
-X-Received: by 2002:a05:6000:b10:b0:37d:4846:42c3 with SMTP id
- ffacd0b85a97d-37d551b6ee1mr8241723f8f.22.1728988691167; 
+ bh=DpVjyeCW+BZmlGUD07St+L+sXb8OqynaasaoJirP3bE=;
+ b=vpEgPnooIOSI0Zq8fBltBZEsoR/7SE42CgLDrE1dQNXjZdOoe6XnnBTCgg5JFuKfXk
+ qs9CsmWE8VyTVyMjimpCoC/1MD//N23qJdYe5CftRZVw67e8ogx7X5w+jJg9VS1uRlNA
+ osmJmJbL4cAhcFHxUmMeU1n9Kgfuamj9WtWRDVGR9CM5QMoeEmtdekqaaHpGcavhh2Oj
+ NMbGvVaPahqmNe5vMPQpTjAAGAEwgMPtSLOVKdQwefUFzJtrP/mABPxAESXnYtZo5rOf
+ 8Wgl/u7xGGy7RGgXdncmGQYkE8IJKzSXgSUcfcUFd2I3oGS8lDywfeLXkbwzJ9aBLBbh
+ 43kQ==
+X-Gm-Message-State: AOJu0Yz0rtK/gbnSFiaTv96Z4DO3c5B3Efq+FTCi3WBoL2a1nMKM2PeQ
+ lcauzJeE/DQUKn9ZVGCNZ2xRt+xpcmyoNO7lbgJSsIHUMKSLW7SStXZo/qauf9xTyGGxCEA64jA
+ X
+X-Google-Smtp-Source: AGHT+IGCD3KvRE+ICy35hmJjCj5eEyr7MsNfCliEGxCcEMjvF1n4cY2ZwBeVOfdKRd8XaaSGQ7U1cA==
+X-Received: by 2002:a05:6512:b96:b0:539:edf4:68b4 with SMTP id
+ 2adb3069b0e04-539edf46b73mr4539090e87.57.1728988691618; 
  Tue, 15 Oct 2024 03:38:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.10
+ ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 03:38:10 -0700 (PDT)
+ Tue, 15 Oct 2024 03:38:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/28] hw/arm/stm32f405: Add RCC device to stm32f405 SoC
-Date: Tue, 15 Oct 2024 11:37:43 +0100
-Message-Id: <20241015103808.133024-4-peter.maydell@linaro.org>
+Subject: [PULL 04/28] hw/intc/arm_gicv3: Add cast to match the documentation
+Date: Tue, 15 Oct 2024 11:37:44 +0100
+Message-Id: <20241015103808.133024-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,117 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Román Cárdenas Rodríguez <rcardenas.rod@gmail.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-Add the reset and clock controller device to the stm32f405 SoC.
+The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
+When cast to uint64_t (for further bitwise OR), the 32 most
+significant bits will be filled with 1s. However, the documentation
+states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
 
-Signed-off-by: Roman Cardenas Rodriguez <rcardenas.rod@gmail.com>
-[PMM: tweak commit message]
+Add an explicit cast to match the documentation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d2c0c6aab6 ("hw/intc/arm_gicv3: Handle icv_nmiar1_read() for icc_nmiar1_read()")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/stm32.rst      |  3 ++-
- include/hw/arm/stm32f405_soc.h |  2 ++
- hw/arm/stm32f405_soc.c         | 12 +++++++++++-
- hw/arm/Kconfig                 |  1 +
- 4 files changed, 16 insertions(+), 2 deletions(-)
+ hw/intc/arm_gicv3_cpuif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
-index 3b640f3ee07..ca7a55841b4 100644
---- a/docs/system/arm/stm32.rst
-+++ b/docs/system/arm/stm32.rst
-@@ -36,6 +36,7 @@ Supported devices
-  * SPI controller
-  * System configuration (SYSCFG)
-  * Timer controller (TIMER)
-+ * Reset and Clock Controller (RCC) (STM32F4 only, reset and enable only)
- 
- Missing devices
- ---------------
-@@ -53,7 +54,7 @@ Missing devices
-  * Power supply configuration (PWR)
-  * Random Number Generator (RNG)
-  * Real-Time Clock (RTC) controller
-- * Reset and Clock Controller (RCC)
-+ * Reset and Clock Controller (RCC) (other features than reset and enable)
-  * Secure Digital Input/Output (SDIO) interface
-  * USB OTG
-  * Watchdog controller (IWDG, WWDG)
-diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_soc.h
-index d15c03c4b5d..2eeada64ded 100644
---- a/include/hw/arm/stm32f405_soc.h
-+++ b/include/hw/arm/stm32f405_soc.h
-@@ -25,6 +25,7 @@
- #ifndef HW_ARM_STM32F405_SOC_H
- #define HW_ARM_STM32F405_SOC_H
- 
-+#include "hw/misc/stm32_rcc.h"
- #include "hw/misc/stm32f4xx_syscfg.h"
- #include "hw/timer/stm32f2xx_timer.h"
- #include "hw/char/stm32f2xx_usart.h"
-@@ -55,6 +56,7 @@ struct STM32F405State {
- 
-     ARMv7MState armv7m;
- 
-+    STM32RccState rcc;
-     STM32F4xxSyscfgState syscfg;
-     STM32F4xxExtiState exti;
-     STM32F2XXUsartState usart[STM_NUM_USARTS];
-diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
-index 2ad5b79a069..72ae62156f3 100644
---- a/hw/arm/stm32f405_soc.c
-+++ b/hw/arm/stm32f405_soc.c
-@@ -30,6 +30,7 @@
- #include "hw/qdev-clock.h"
- #include "hw/misc/unimp.h"
- 
-+#define RCC_ADDR                       0x40023800
- #define SYSCFG_ADD                     0x40013800
- static const uint32_t usart_addr[] = { 0x40011000, 0x40004400, 0x40004800,
-                                        0x40004C00, 0x40005000, 0x40011400,
-@@ -59,6 +60,8 @@ static void stm32f405_soc_initfn(Object *obj)
- 
-     object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
- 
-+    object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32_RCC);
-+
-     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32F4XX_SYSCFG);
- 
-     for (i = 0; i < STM_NUM_USARTS; i++) {
-@@ -160,6 +163,14 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
-         return;
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index bdb13b00e98..ebad7aaea18 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -781,7 +781,7 @@ static void icv_activate_irq(GICv3CPUState *cs, int idx, int grp)
+     if (nmi) {
+         cs->ich_apr[grp][regno] |= ICV_AP1R_EL1_NMI;
+     } else {
+-        cs->ich_apr[grp][regno] |= (1 << regbit);
++        cs->ich_apr[grp][regno] |= (1U << regbit);
      }
- 
-+    /* Reset and clock controller */
-+    dev = DEVICE(&s->rcc);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->rcc), errp)) {
-+        return;
-+    }
-+    busdev = SYS_BUS_DEVICE(dev);
-+    sysbus_mmio_map(busdev, 0, RCC_ADDR);
-+
-     /* System configuration controller */
-     dev = DEVICE(&s->syscfg);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->syscfg), errp)) {
-@@ -276,7 +287,6 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
-     create_unimplemented_device("GPIOH",       0x40021C00, 0x400);
-     create_unimplemented_device("GPIOI",       0x40022000, 0x400);
-     create_unimplemented_device("CRC",         0x40023000, 0x400);
--    create_unimplemented_device("RCC",         0x40023800, 0x400);
-     create_unimplemented_device("Flash Int",   0x40023C00, 0x400);
-     create_unimplemented_device("BKPSRAM",     0x40024000, 0x400);
-     create_unimplemented_device("DMA1",        0x40026000, 0x400);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index e7b9cfb59c0..f1e981622a1 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -397,6 +397,7 @@ config STM32F405_SOC
-     bool
-     select ARM_V7M
-     select OR_IRQ
-+    select STM32_RCC
-     select STM32F4XX_SYSCFG
-     select STM32F4XX_EXTI
+ }
  
 -- 
 2.34.1
