@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A8299E434
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D10699E456
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewY-0006g9-OZ; Tue, 15 Oct 2024 06:38:22 -0400
+	id 1t0ews-0006jx-MM; Tue, 15 Oct 2024 06:38:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewU-0006d4-6c
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:18 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1t0ewX-0006fL-0E
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:21 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewR-0005w2-Pp
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:17 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43111cff9d3so39035565e9.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:15 -0700 (PDT)
+ id 1t0ewS-0005wG-O6
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:20 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-539f76a6f0dso1687208e87.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988694; x=1729593494; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988695; x=1729593495; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=T/8MhemOTljPnrKxsD/elwfdUS+UpSgEuo6SU7bdXqc=;
- b=StWJIp6wYoDR3pn4xnxzp+F5RnqJwLE8GK/GOvRnScBklH9XJmmol/T6/kicn/MqsE
- zgLURScrDwCSe44vldvnf8di84rRTrib9lmv1swigFwLRxCMFIJKWv3jXo4JsSpz3nJ6
- k8KsctBj/hxZxzq3/Jkwe0domh2/AAuVr/QT6retjDEN/qEtsqh5blcJGRvd47PsdjSu
- urJ9fDPTqCpMTgbcKtifAXx30GUcGJmC/WEgqwkQNXBVu5z6iP/3iR1lQqz4sP0+sbl5
- VZG4Uf7At8R9cy3awqAaHFFN3etdIvr+PjYoPzgq+dtLllKr71Oz6CtazBwzpTyQwx0m
- YTSA==
+ :reply-to; bh=NV8FrfPKy1rST641Beu5x0DD2xYERXJgKbZNb3mL5SE=;
+ b=cHUCnObe5nuGW5vZjnt3cG3I83ZZ6goWUMJd8cEJKjDHoTcRBO2Cfba2U5L417ryLJ
+ tjbRX+WG+pKJpdlafRNhhxsRgLU8v3vcbtQ2T6+I7ZSMGbwQJb6rSreovMXzqZoVZVli
+ TrXR05f+BtKCcDMUiLKzUAAOEGnB3VK+UHbuluh8Of9fSdnJoNFZl8YMWCsVW388PLQD
+ 66KbhcxM3u8RbeEbtHA9UxLCaVHUs3xQ714BhakQNAuPV0J9/rn+t6DH1EbBq71RoJBG
+ b5dfXLq72ZdTJ1adKiBrsjnLpClvebThD5GqvjP7+UaZskgdsleTJccgJt20CBKCe0F1
+ beHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988694; x=1729593494;
+ d=1e100.net; s=20230601; t=1728988695; x=1729593495;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T/8MhemOTljPnrKxsD/elwfdUS+UpSgEuo6SU7bdXqc=;
- b=NM2uFJik46F0S5KXj3R2p9CQByXhaMV5V90hAr4CLrYL06OAGIf/o55WvByK2B3GVQ
- BVaxKBDAnBGWURbwek6X+GIwlFn0g/Mn3g7ciZGDZXho30fQdpk2QNxFvgU88X+W7aHc
- nCgiI+5q50Tizv2e9udSC9TxQ4mvJolyG/KqWUDwKnnNEMuGEHrytLtip54AfqJW3AXZ
- 4dhdKs+fCjezM0vilz/7AO0EGPU7Dxli2BSSQ7/TV1a/DN9NaYTPpJYVihHItbWBxpTN
- fSkvuy3uqlFBhUbt8Qwu178SMGjho0fg4D/wEwcrethEaywpMI/Wao7G9Xgv9ROqYtn0
- eijQ==
-X-Gm-Message-State: AOJu0YwCFF7y8SwVvWDbKGndFI2j0W+bTa4+dWj7vOxWgP0ityk1XymS
- fao8feeZzkn9SFbkbwSYpJGVppORF3vrQpSZSVHIctEkttpbbkIVO4jXOCxG94YF2GYe8AZ/jhz
- 1
-X-Google-Smtp-Source: AGHT+IFdcKp5HJzddTCUjS9tfz7zBA+EgrOh7T2My2DTFNrWmO31CBW896Gr8x4pLRIBNqWVDLjTbw==
-X-Received: by 2002:a5d:5708:0:b0:37d:4fe9:b6a6 with SMTP id
- ffacd0b85a97d-37d551f2dbfmr8918582f8f.29.1728988694070; 
+ bh=NV8FrfPKy1rST641Beu5x0DD2xYERXJgKbZNb3mL5SE=;
+ b=lGCNUzd8afz+f9VJnsQBv1Xc1edq3XtKWjqgUL9jlQgpV+uUJmvPkQnkSIptg2azbV
+ cqAQeqOiF0bNukt2OmaX1763oN9JgneFdiRedYkY0lkWfelI+OB54qEdws8pxLom1KBL
+ Ln8txZVZ5r9OBUlA0qTd70o1beyO0B9Tn5PBC/hbDZRJuJCCsWZaYMRlNjC8vJrYdtgF
+ z2F1OazpntWGAJ6TmUX0ULbfLv7cHB6WA6KdOPkr7RGFtImjdsY0BSD9UcfK4L3GbgXg
+ ILtALQsuNXWlOM3N4JVRhM8WqSij1EVRfetorQK7lQx03c5xcj/VstOXClBzK1cPY2up
+ D9tg==
+X-Gm-Message-State: AOJu0YxcjR06xXN7uPprSsNn6N31CRQKDJqvpNif+4Y03rg16v6eXW6P
+ Br6u0PkZJgffVBQmLIrPmV4v/UKyYSJss/c4Vf5qO0kD7D1O2CZ1P7vz8wrWJTnCId4z5jEZUmv
+ T
+X-Google-Smtp-Source: AGHT+IGAZcvNlm04dAFIccP2+zNWjPZmX0XiBqr0T05vrrOtjJ4yLYA8mAUwSeh9b73dA1nxfuL0xw==
+X-Received: by 2002:a05:6512:685:b0:539:d1d4:9c3b with SMTP id
+ 2adb3069b0e04-539da3c5e45mr6801501e87.14.1728988694555; 
  Tue, 15 Oct 2024 03:38:14 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.13
+ ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
+ Tue, 15 Oct 2024 03:38:14 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/28] tests/qtest: Check STM32L4x5 clock connections
-Date: Tue, 15 Oct 2024 11:37:49 +0100
-Message-Id: <20241015103808.133024-10-peter.maydell@linaro.org>
+Subject: [PULL 10/28] hw/ssi: Allwinner A10 SPI emulation
+Date: Tue, 15 Oct 2024 11:37:50 +0100
+Message-Id: <20241015103808.133024-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,231 +91,700 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Inès Varhol <ines.varhol@telecom-paris.fr>
+From: Strahinja Jankovic <strahinjapjankovic@gmail.com>
 
-For USART, GPIO and SYSCFG devices, check that clock frequency before
-and after enabling the peripheral clock in RCC is correct.
+This patch implements Allwinner A10 SPI controller emulation.
+Only master-mode functionality is implemented.
 
-Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Since U-Boot and Linux SPI drivers for Allwinner A10 perform only
+byte-wide CPU access (no DMA) to the transmit and receive registers of
+the peripheral, the emulated controller does not implement DMA control,
+and supports only byte-wide access to transmit and receive registers
+(half-word and word accesses will be treated as byte accesses).
+
+Signed-off-by: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+Message-id: 20241001221349.8319-2-strahinja.p.jankovic@gmail.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Luc Michel <luc@lmichel.fr>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241003081105.40836-4-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/stm32l4x5.h             | 42 +++++++++++++++++++++++++++++
- tests/qtest/stm32l4x5_gpio-test.c   | 23 ++++++++++++++++
- tests/qtest/stm32l4x5_syscfg-test.c | 20 ++++++++++++--
- tests/qtest/stm32l4x5_usart-test.c  | 26 ++++++++++++++++++
- 4 files changed, 109 insertions(+), 2 deletions(-)
- create mode 100644 tests/qtest/stm32l4x5.h
+ include/hw/ssi/allwinner-a10-spi.h |  57 +++
+ hw/ssi/allwinner-a10-spi.c         | 561 +++++++++++++++++++++++++++++
+ hw/ssi/Kconfig                     |   4 +
+ hw/ssi/meson.build                 |   1 +
+ hw/ssi/trace-events                |  10 +
+ 5 files changed, 633 insertions(+)
+ create mode 100644 include/hw/ssi/allwinner-a10-spi.h
+ create mode 100644 hw/ssi/allwinner-a10-spi.c
 
-diff --git a/tests/qtest/stm32l4x5.h b/tests/qtest/stm32l4x5.h
+diff --git a/include/hw/ssi/allwinner-a10-spi.h b/include/hw/ssi/allwinner-a10-spi.h
 new file mode 100644
-index 00000000000..2d21cc666cc
+index 00000000000..da46e29a278
 --- /dev/null
-+++ b/tests/qtest/stm32l4x5.h
-@@ -0,0 +1,42 @@
++++ b/include/hw/ssi/allwinner-a10-spi.h
+@@ -0,0 +1,57 @@
 +/*
-+ * QTest testcase header for STM32L4X5 :
-+ * used for consolidating common objects in stm32l4x5_*-test.c
++ *  Allwinner SPI Bus Serial Interface registers definition
 + *
-+ * Copyright (c) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2024 Inès Varhol <ines.varhol@telecom-paris.fr>
++ *  Copyright (C) 2024 Strahinja Jankovic. <strahinja.p.jankovic@gmail.com>
 + *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, see <http://www.gnu.org/licenses/>.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#include "libqtest.h"
++#ifndef ALLWINNER_A10_SPI_H
++#define ALLWINNER_A10_SPI_H
 +
-+/* copied from clock.h */
-+#define CLOCK_PERIOD_1SEC (1000000000llu << 32)
-+#define CLOCK_PERIOD_FROM_HZ(hz) (((hz) != 0) ? CLOCK_PERIOD_1SEC / (hz) : 0u)
++#include "hw/ssi/ssi.h"
++#include "hw/sysbus.h"
++#include "qemu/fifo8.h"
++#include "qom/object.h"
++
++/** Size of register I/O address space used by SPI device */
++#define AW_A10_SPI_IOSIZE (0x1000)
++
++/** Total number of known registers */
++#define AW_A10_SPI_REGS_NUM    (AW_A10_SPI_IOSIZE / sizeof(uint32_t))
++#define AW_A10_SPI_FIFO_SIZE   (64)
++#define AW_A10_SPI_CS_LINES_NR (4)
++
++#define TYPE_AW_A10_SPI        "allwinner.spi"
++OBJECT_DECLARE_SIMPLE_TYPE(AWA10SPIState, AW_A10_SPI)
++
++struct AWA10SPIState {
++    /*< private >*/
++    SysBusDevice parent_obj;
++
++    /*< public >*/
++    MemoryRegion iomem;
++    SSIBus *bus;
++    qemu_irq irq;
++    qemu_irq cs_lines[AW_A10_SPI_CS_LINES_NR];
++
++    uint32_t regs[AW_A10_SPI_REGS_NUM];
++
++    Fifo8 rx_fifo;
++    Fifo8 tx_fifo;
++};
++
++#endif /* ALLWINNER_A10_SPI_H */
+diff --git a/hw/ssi/allwinner-a10-spi.c b/hw/ssi/allwinner-a10-spi.c
+new file mode 100644
+index 00000000000..3eb50b44ac5
+--- /dev/null
++++ b/hw/ssi/allwinner-a10-spi.c
+@@ -0,0 +1,561 @@
 +/*
-+ * MSI (4 MHz) is used as system clock source after startup
-+ * from Reset.
-+ * AHB, APB1 and APB2 prescalers are set to 1 at reset.
++ *  Allwinner SPI Bus Serial Interface Emulation
++ *
++ *  Copyright (C) 2024 Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, see <http://www.gnu.org/licenses/>.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#define SYSCLK_PERIOD CLOCK_PERIOD_FROM_HZ(4000000)
-+#define RCC_AHB2ENR 0x4002104C
-+#define RCC_APB1ENR1 0x40021058
-+#define RCC_APB1ENR2 0x4002105C
-+#define RCC_APB2ENR 0x40021060
++
++#include "qemu/osdep.h"
++#include "hw/irq.h"
++#include "hw/ssi/allwinner-a10-spi.h"
++#include "migration/vmstate.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "trace.h"
++
++/* Allwinner SPI memory map */
++#define SPI_RXDATA_REG   0x00 /* receive data register */
++#define SPI_TXDATA_REG   0x04 /* transmit data register */
++#define SPI_CTL_REG      0x08 /* control register */
++#define SPI_INTCTL_REG   0x0c /* interrupt control register */
++#define SPI_INT_STA_REG  0x10 /* interrupt status register */
++#define SPI_DMACTL_REG   0x14 /* DMA control register */
++#define SPI_WAIT_REG     0x18 /* wait clock counter register */
++#define SPI_CCTL_REG     0x1c /* clock rate control register */
++#define SPI_BC_REG       0x20 /* burst control register */
++#define SPI_TC_REG       0x24 /* transmit counter register */
++#define SPI_FIFO_STA_REG 0x28 /* FIFO status register */
++
++/* Data register */
++#define SPI_DATA_RESET 0
++
++/* Control register */
++#define SPI_CTL_SDC      (1 << 19)
++#define SPI_CTL_TP_EN    (1 << 18)
++#define SPI_CTL_SS_LEVEL (1 << 17)
++#define SPI_CTL_SS_CTRL  (1 << 16)
++#define SPI_CTL_DHB      (1 << 15)
++#define SPI_CTL_DDB      (1 << 14)
++#define SPI_CTL_SS       (3 << 12)
++#define SPI_CTL_SS_SHIFT 12
++#define SPI_CTL_RPSM     (1 << 11)
++#define SPI_CTL_XCH      (1 << 10)
++#define SPI_CTL_RF_RST   (1 << 9)
++#define SPI_CTL_TF_RST   (1 << 8)
++#define SPI_CTL_SSCTL    (1 << 7)
++#define SPI_CTL_LMTF     (1 << 6)
++#define SPI_CTL_DMAMC    (1 << 5)
++#define SPI_CTL_SSPOL    (1 << 4)
++#define SPI_CTL_POL      (1 << 3)
++#define SPI_CTL_PHA      (1 << 2)
++#define SPI_CTL_MODE     (1 << 1)
++#define SPI_CTL_EN       (1 << 0)
++#define SPI_CTL_MASK     0xFFFFFu
++#define SPI_CTL_RESET    0x0002001Cu
++
++/* Interrupt control register */
++#define SPI_INTCTL_SS_INT_EN          (1 << 17)
++#define SPI_INTCTL_TX_INT_EN          (1 << 16)
++#define SPI_INTCTL_TF_UR_INT_EN       (1 << 14)
++#define SPI_INTCTL_TF_OF_INT_EN       (1 << 13)
++#define SPI_INTCTL_TF_E34_INT_EN      (1 << 12)
++#define SPI_INTCTL_TF_E14_INT_EN      (1 << 11)
++#define SPI_INTCTL_TF_FL_INT_EN       (1 << 10)
++#define SPI_INTCTL_TF_HALF_EMP_INT_EN (1 << 9)
++#define SPI_INTCTL_TF_EMP_INT_EN      (1 << 8)
++#define SPI_INTCTL_RF_UR_INT_EN       (1 << 6)
++#define SPI_INTCTL_RF_OF_INT_EN       (1 << 5)
++#define SPI_INTCTL_RF_E34_INT_EN      (1 << 4)
++#define SPI_INTCTL_RF_E14_INT_EN      (1 << 3)
++#define SPI_INTCTL_RF_FU_INT_EN       (1 << 2)
++#define SPI_INTCTL_RF_HALF_FU_INT_EN  (1 << 1)
++#define SPI_INTCTL_RF_RDY_INT_EN      (1 << 0)
++#define SPI_INTCTL_MASK               0x37F7Fu
++#define SPI_INTCTL_RESET              0
++
++/* Interrupt status register */
++#define SPI_INT_STA_INT_CBF (1 << 31)
++#define SPI_INT_STA_SSI     (1 << 17)
++#define SPI_INT_STA_TC      (1 << 16)
++#define SPI_INT_STA_TU      (1 << 14)
++#define SPI_INT_STA_TO      (1 << 13)
++#define SPI_INT_STA_TE34    (1 << 12)
++#define SPI_INT_STA_TE14    (1 << 11)
++#define SPI_INT_STA_TF      (1 << 10)
++#define SPI_INT_STA_THE     (1 << 9)
++#define SPI_INT_STA_TE      (1 << 8)
++#define SPI_INT_STA_RU      (1 << 6)
++#define SPI_INT_STA_RO      (1 << 5)
++#define SPI_INT_STA_RF34    (1 << 4)
++#define SPI_INT_STA_RF14    (1 << 3)
++#define SPI_INT_STA_RF      (1 << 2)
++#define SPI_INT_STA_RHF     (1 << 1)
++#define SPI_INT_STA_RR      (1 << 0)
++#define SPI_INT_STA_MASK    0x80037F7Fu
++#define SPI_INT_STA_RESET   0x00001B00u
++
++/* DMA control register - not implemented */
++#define SPI_DMACTL_RESET 0
++
++/* Wait clock register */
++#define SPI_WAIT_REG_WCC_MASK 0xFFFFu
++#define SPI_WAIT_RESET        0
++
++/* Clock control register - not implemented */
++#define SPI_CCTL_RESET 2
++
++/* Burst count register */
++#define SPI_BC_BC_MASK 0xFFFFFFu
++#define SPI_BC_RESET   0
++
++/* Transmi counter register */
++#define SPI_TC_WTC_MASK 0xFFFFFFu
++#define SPI_TC_RESET    0
++
++/* FIFO status register */
++#define SPI_FIFO_STA_CNT_MASK     0x7F
++#define SPI_FIFO_STA_TF_CNT_SHIFT 16
++#define SPI_FIFO_STA_RF_CNT_SHIFT 0
++#define SPI_FIFO_STA_RESET        0
++
++#define REG_INDEX(offset)         (offset / sizeof(uint32_t))
 +
 +
-+static inline uint64_t get_clock_period(QTestState *qts, const char *path)
++static const char *allwinner_a10_spi_get_regname(unsigned offset)
 +{
-+    uint64_t clock_period = 0;
-+    QDict *r;
-+
-+    r = qtest_qmp(qts, "{ 'execute': 'qom-get', 'arguments':"
-+        " { 'path': %s, 'property': 'qtest-clock-period'} }", path);
-+    g_assert_false(qdict_haskey(r, "error"));
-+    clock_period = qdict_get_int(r, "return");
-+    qobject_unref(r);
-+    return clock_period;
-+}
-+
-+
-diff --git a/tests/qtest/stm32l4x5_gpio-test.c b/tests/qtest/stm32l4x5_gpio-test.c
-index 72a78234066..c0686c7b306 100644
---- a/tests/qtest/stm32l4x5_gpio-test.c
-+++ b/tests/qtest/stm32l4x5_gpio-test.c
-@@ -10,6 +10,7 @@
- 
- #include "qemu/osdep.h"
- #include "libqtest-single.h"
-+#include "stm32l4x5.h"
- 
- #define GPIO_BASE_ADDR 0x48000000
- #define GPIO_SIZE      0x400
-@@ -505,6 +506,26 @@ static void test_bsrr_brr(const void *data)
-     gpio_writel(gpio, ODR, reset(gpio, ODR));
- }
- 
-+static void test_clock_enable(void)
-+{
-+    /*
-+     * For each GPIO, enable its clock in RCC
-+     * and check that its clock period changes to SYSCLK_PERIOD
-+     */
-+    unsigned int gpio_id;
-+
-+    for (uint32_t gpio = GPIO_A; gpio <= GPIO_H; gpio += GPIO_B - GPIO_A) {
-+        gpio_id = get_gpio_id(gpio);
-+        g_autofree char *path = g_strdup_printf("/machine/soc/gpio%c/clk",
-+                                                gpio_id + 'a');
-+        g_assert_cmpuint(get_clock_period(global_qtest, path), ==, 0);
-+        /* Enable the gpio clock */
-+        writel(RCC_AHB2ENR, readl(RCC_AHB2ENR) | (0x1 << gpio_id));
-+        g_assert_cmpuint(get_clock_period(global_qtest, path), ==,
-+                         SYSCLK_PERIOD);
++    switch (offset) {
++    case SPI_RXDATA_REG:
++        return "RXDATA";
++    case SPI_TXDATA_REG:
++        return "TXDATA";
++    case SPI_CTL_REG:
++        return "CTL";
++    case SPI_INTCTL_REG:
++        return "INTCTL";
++    case SPI_INT_STA_REG:
++        return "INT_STA";
++    case SPI_DMACTL_REG:
++        return "DMACTL";
++    case SPI_WAIT_REG:
++        return "WAIT";
++    case SPI_CCTL_REG:
++        return "CCTL";
++    case SPI_BC_REG:
++        return "BC";
++    case SPI_TC_REG:
++        return "TC";
++    case SPI_FIFO_STA_REG:
++        return "FIFO_STA";
++    default:
++        return "[?]";
 +    }
 +}
 +
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -556,6 +577,8 @@ int main(int argc, char **argv)
-     qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr2",
-                         test_data(GPIO_D, 0),
-                         test_bsrr_brr);
-+    qtest_add_func("stm32l4x5/gpio/test_clock_enable",
-+                   test_clock_enable);
- 
-     qtest_start("-machine b-l475e-iot01a");
-     ret = g_test_run();
-diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_syscfg-test.c
-index 258417cd889..d5c71e2c0e7 100644
---- a/tests/qtest/stm32l4x5_syscfg-test.c
-+++ b/tests/qtest/stm32l4x5_syscfg-test.c
-@@ -10,6 +10,7 @@
- 
- #include "qemu/osdep.h"
- #include "libqtest-single.h"
-+#include "stm32l4x5.h"
- 
- #define SYSCFG_BASE_ADDR 0x40010000
- #define SYSCFG_MEMRMP 0x00
-@@ -26,7 +27,9 @@
- #define INVALID_ADDR 0x2C
- 
- /* SoC forwards GPIOs to SysCfg */
--#define SYSCFG "/machine/soc"
-+#define SOC "/machine/soc"
-+#define SYSCFG "/machine/soc/syscfg"
-+#define SYSCFG_CLK "/machine/soc/syscfg/clk"
- #define EXTI "/machine/soc/exti"
- 
- static void syscfg_writel(unsigned int offset, uint32_t value)
-@@ -41,7 +44,7 @@ static uint32_t syscfg_readl(unsigned int offset)
- 
- static void syscfg_set_irq(int num, int level)
- {
--   qtest_set_irq_in(global_qtest, SYSCFG, NULL, num, level);
-+   qtest_set_irq_in(global_qtest, SOC, NULL, num, level);
- }
- 
- static void system_reset(void)
-@@ -301,6 +304,17 @@ static void test_irq_gpio_multiplexer(void)
-     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
- }
- 
-+static void test_clock_enable(void)
++static bool allwinner_a10_spi_is_enabled(AWA10SPIState *s)
 +{
-+    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), ==, 0);
-+
-+    /* Enable SYSCFG clock */
-+    writel(RCC_APB2ENR, readl(RCC_APB2ENR) | (0x1 << 0));
-+
-+    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), ==,
-+                                       SYSCLK_PERIOD);
++    return s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_EN;
 +}
 +
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -325,6 +339,8 @@ int main(int argc, char **argv)
-                    test_irq_pin_multiplexer);
-     qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
-                    test_irq_gpio_multiplexer);
-+    qtest_add_func("stm32l4x5/syscfg/test_clock_enable",
-+                   test_clock_enable);
- 
-     qtest_start("-machine b-l475e-iot01a");
-     ret = g_test_run();
-diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
-index 64cebda60f0..315bcee0042 100644
---- a/tests/qtest/stm32l4x5_usart-test.c
-+++ b/tests/qtest/stm32l4x5_usart-test.c
-@@ -12,6 +12,7 @@
- #include "libqtest.h"
- #include "hw/misc/stm32l4x5_rcc_internals.h"
- #include "hw/registerfields.h"
-+#include "stm32l4x5.h"
- 
- #define RCC_BASE_ADDR 0x40021000
- /* Use USART 1 ADDR, assume the others work the same */
-@@ -331,6 +332,30 @@ static void test_ack(void)
-     qtest_quit(qts);
- }
- 
-+static void check_clock(QTestState *qts, const char *path, uint32_t rcc_reg,
-+                        uint32_t reg_offset)
++static void allwinner_a10_spi_txfifo_reset(AWA10SPIState *s)
 +{
-+    g_assert_cmpuint(get_clock_period(qts, path), ==, 0);
-+    qtest_writel(qts, rcc_reg, qtest_readl(qts, rcc_reg) | (0x1 << reg_offset));
-+    g_assert_cmpuint(get_clock_period(qts, path), ==, SYSCLK_PERIOD);
++    fifo8_reset(&s->tx_fifo);
++    s->regs[REG_INDEX(SPI_INT_STA_REG)] |= (SPI_INT_STA_TE | SPI_INT_STA_TE14 |
++                                            SPI_INT_STA_THE | SPI_INT_STA_TE34);
++    s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~(SPI_INT_STA_TU | SPI_INT_STA_TO);
 +}
 +
-+static void test_clock_enable(void)
++static void allwinner_a10_spi_rxfifo_reset(AWA10SPIState *s)
 +{
-+    /*
-+     * For each USART device, enable its clock in RCC
-+     * and check that its clock frequency is SYSCLK_PERIOD
-+     */
-+    QTestState *qts = qtest_init("-M b-l475e-iot01a");
-+
-+    check_clock(qts, "machine/soc/usart[0]/clk", RCC_APB2ENR, 14);
-+    check_clock(qts, "machine/soc/usart[1]/clk", RCC_APB1ENR1, 17);
-+    check_clock(qts, "machine/soc/usart[2]/clk", RCC_APB1ENR1, 18);
-+    check_clock(qts, "machine/soc/uart[0]/clk", RCC_APB1ENR1, 19);
-+    check_clock(qts, "machine/soc/uart[1]/clk", RCC_APB1ENR1, 20);
-+    check_clock(qts, "machine/soc/lpuart1/clk", RCC_APB1ENR2, 0);
++    fifo8_reset(&s->rx_fifo);
++    s->regs[REG_INDEX(SPI_INT_STA_REG)] &=
++        ~(SPI_INT_STA_RU | SPI_INT_STA_RO | SPI_INT_STA_RF | SPI_INT_STA_RR |
++          SPI_INT_STA_RHF | SPI_INT_STA_RF14 | SPI_INT_STA_RF34);
 +}
 +
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -344,6 +369,7 @@ int main(int argc, char **argv)
-     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
-     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
-     qtest_add_func("stm32l4x5/usart/ack", test_ack);
-+    qtest_add_func("stm32l4x5/usart/clock_enable", test_clock_enable);
-     ret = g_test_run();
- 
-     return ret;
++static uint8_t allwinner_a10_spi_selected_channel(AWA10SPIState *s)
++{
++    return (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_SS) >> SPI_CTL_SS_SHIFT;
++}
++
++static void allwinner_a10_spi_reset_hold(Object *obj, ResetType type)
++{
++    AWA10SPIState *s = AW_A10_SPI(obj);
++
++    s->regs[REG_INDEX(SPI_RXDATA_REG)] = SPI_DATA_RESET;
++    s->regs[REG_INDEX(SPI_TXDATA_REG)] = SPI_DATA_RESET;
++    s->regs[REG_INDEX(SPI_CTL_REG)] = SPI_CTL_RESET;
++    s->regs[REG_INDEX(SPI_INTCTL_REG)] = SPI_INTCTL_RESET;
++    s->regs[REG_INDEX(SPI_INT_STA_REG)] = SPI_INT_STA_RESET;
++    s->regs[REG_INDEX(SPI_DMACTL_REG)] = SPI_DMACTL_RESET;
++    s->regs[REG_INDEX(SPI_WAIT_REG)] = SPI_WAIT_RESET;
++    s->regs[REG_INDEX(SPI_CCTL_REG)] = SPI_CCTL_RESET;
++    s->regs[REG_INDEX(SPI_BC_REG)] = SPI_BC_RESET;
++    s->regs[REG_INDEX(SPI_TC_REG)] = SPI_TC_RESET;
++    s->regs[REG_INDEX(SPI_FIFO_STA_REG)] = SPI_FIFO_STA_RESET;
++
++    allwinner_a10_spi_txfifo_reset(s);
++    allwinner_a10_spi_rxfifo_reset(s);
++}
++
++static void allwinner_a10_spi_update_irq(AWA10SPIState *s)
++{
++    bool level;
++
++    if (fifo8_is_empty(&s->rx_fifo)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_RR;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RR;
++    }
++
++    if (fifo8_num_used(&s->rx_fifo) >= (AW_A10_SPI_FIFO_SIZE >> 2)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RF14;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_RF14;
++    }
++
++    if (fifo8_num_used(&s->rx_fifo) >= (AW_A10_SPI_FIFO_SIZE >> 1)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RHF;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_RHF;
++    }
++
++    if (fifo8_num_free(&s->rx_fifo) <= (AW_A10_SPI_FIFO_SIZE >> 2)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RF34;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_RF34;
++    }
++
++    if (fifo8_is_full(&s->rx_fifo)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RF;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_RF;
++    }
++
++    if (fifo8_is_empty(&s->tx_fifo)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TE;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_TE;
++    }
++
++    if (fifo8_num_free(&s->tx_fifo) >= (AW_A10_SPI_FIFO_SIZE >> 2)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TE14;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_TE14;
++    }
++
++    if (fifo8_num_free(&s->tx_fifo) >= (AW_A10_SPI_FIFO_SIZE >> 1)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_THE;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_THE;
++    }
++
++    if (fifo8_num_used(&s->tx_fifo) <= (AW_A10_SPI_FIFO_SIZE >> 2)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TE34;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_TE34;
++    }
++
++    if (fifo8_is_full(&s->rx_fifo)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TF;
++    } else {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~SPI_INT_STA_TF;
++    }
++
++    level = (s->regs[REG_INDEX(SPI_INT_STA_REG)] &
++             s->regs[REG_INDEX(SPI_INTCTL_REG)]) != 0;
++
++    qemu_set_irq(s->irq, level);
++
++    trace_allwinner_a10_spi_update_irq(level);
++}
++
++static void allwinner_a10_spi_flush_txfifo(AWA10SPIState *s)
++{
++    uint32_t burst_count = s->regs[REG_INDEX(SPI_BC_REG)];
++    uint32_t tx_burst = s->regs[REG_INDEX(SPI_TC_REG)];
++    trace_allwinner_a10_spi_burst_length(tx_burst);
++
++    trace_allwinner_a10_spi_flush_txfifo_begin(fifo8_num_used(&s->tx_fifo),
++                                               fifo8_num_used(&s->rx_fifo));
++
++    while (!fifo8_is_empty(&s->tx_fifo)) {
++        uint8_t tx = fifo8_pop(&s->tx_fifo);
++        uint8_t rx = 0;
++        bool fill_rx = true;
++
++        trace_allwinner_a10_spi_tx(tx);
++
++        /* Write one byte at a time */
++        rx = ssi_transfer(s->bus, tx);
++
++        trace_allwinner_a10_spi_rx(rx);
++
++        /* Check DHB here to determine if RX bytes should be stored */
++        if (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_DHB) {
++            /* Store rx bytes only after WTC transfers */
++            if (tx_burst > 0u) {
++                fill_rx = false;
++                tx_burst--;
++            }
++        }
++
++        if (fill_rx) {
++            if (fifo8_is_full(&s->rx_fifo)) {
++                s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_RF;
++            } else {
++                fifo8_push(&s->rx_fifo, rx);
++            }
++        }
++
++        allwinner_a10_spi_update_irq(s);
++
++        burst_count--;
++
++        if (burst_count == 0) {
++            s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TC;
++            s->regs[REG_INDEX(SPI_CTL_REG)] &= ~SPI_CTL_XCH;
++            break;
++        }
++    }
++
++    if (fifo8_is_empty(&s->tx_fifo)) {
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] |= SPI_INT_STA_TC;
++        s->regs[REG_INDEX(SPI_CTL_REG)] &= ~SPI_CTL_XCH;
++    }
++
++    trace_allwinner_a10_spi_flush_txfifo_end(fifo8_num_used(&s->tx_fifo),
++                                             fifo8_num_used(&s->rx_fifo));
++}
++
++static uint64_t allwinner_a10_spi_read(void *opaque, hwaddr offset,
++                                       unsigned size)
++{
++    uint32_t value = 0;
++    AWA10SPIState *s = opaque;
++    uint32_t index = offset >> 2;
++
++    if (offset > SPI_FIFO_STA_REG) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "[%s]%s: Bad register at offset 0x%" HWADDR_PRIx "\n",
++                      TYPE_AW_A10_SPI, __func__, offset);
++        return 0;
++    }
++
++    value = s->regs[index];
++
++    if (allwinner_a10_spi_is_enabled(s)) {
++        switch (offset) {
++        case SPI_RXDATA_REG:
++            if (fifo8_is_empty(&s->rx_fifo)) {
++                /* value is undefined */
++                value = 0xdeadbeef;
++            } else {
++                /* read from the RX FIFO */
++                value = fifo8_pop(&s->rx_fifo);
++            }
++            break;
++        case SPI_TXDATA_REG:
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "[%s]%s: Trying to read from TX FIFO\n",
++                          TYPE_AW_A10_SPI, __func__);
++
++            /* Reading from TXDATA gives 0 */
++            break;
++        case SPI_FIFO_STA_REG:
++            /* Read current tx/rx fifo data count */
++            value = fifo8_num_used(&s->tx_fifo) << SPI_FIFO_STA_TF_CNT_SHIFT |
++                    fifo8_num_used(&s->rx_fifo) << SPI_FIFO_STA_RF_CNT_SHIFT;
++            break;
++        case SPI_CTL_REG:
++        case SPI_INTCTL_REG:
++        case SPI_INT_STA_REG:
++        case SPI_DMACTL_REG:
++        case SPI_WAIT_REG:
++        case SPI_CCTL_REG:
++        case SPI_BC_REG:
++        case SPI_TC_REG:
++            break;
++        default:
++            qemu_log_mask(LOG_GUEST_ERROR,
++                    "%s: bad offset 0x%x\n", __func__,
++                    (uint32_t)offset);
++            break;
++        }
++
++        allwinner_a10_spi_update_irq(s);
++    }
++    trace_allwinner_a10_spi_read(allwinner_a10_spi_get_regname(offset), value);
++
++    return value;
++}
++
++static bool allwinner_a10_spi_update_cs_level(AWA10SPIState *s, int cs_line_nr)
++{
++    if (cs_line_nr == allwinner_a10_spi_selected_channel(s)) {
++        return (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_SS_LEVEL) != 0;
++    } else {
++        return (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_SSPOL) != 0;
++    }
++}
++
++static void allwinner_a10_spi_write(void *opaque, hwaddr offset, uint64_t value,
++                                    unsigned size)
++{
++    AWA10SPIState *s = opaque;
++    uint32_t index = offset >> 2;
++    int i = 0;
++
++    if (offset > SPI_FIFO_STA_REG) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "[%s]%s: Bad register at offset 0x%" HWADDR_PRIx "\n",
++                      TYPE_AW_A10_SPI, __func__, offset);
++        return;
++    }
++
++    trace_allwinner_a10_spi_write(allwinner_a10_spi_get_regname(offset),
++                                  (uint32_t)value);
++
++    if (!allwinner_a10_spi_is_enabled(s)) {
++        /* Block is disabled */
++        if (offset != SPI_CTL_REG) {
++            /* Ignore access */
++            return;
++        }
++    }
++
++    switch (offset) {
++    case SPI_RXDATA_REG:
++        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Trying to write to RX FIFO\n",
++                      TYPE_AW_A10_SPI, __func__);
++        break;
++    case SPI_TXDATA_REG:
++        if (fifo8_is_full(&s->tx_fifo)) {
++            /* Ignore writes if queue is full */
++            break;
++        }
++
++        fifo8_push(&s->tx_fifo, (uint8_t)value);
++
++        break;
++    case SPI_INT_STA_REG:
++        /* Handle W1C bits - everything except SPI_INT_STA_INT_CBF. */
++        value &= ~SPI_INT_STA_INT_CBF;
++        s->regs[REG_INDEX(SPI_INT_STA_REG)] &= ~(value & SPI_INT_STA_MASK);
++        break;
++    case SPI_CTL_REG:
++        s->regs[REG_INDEX(SPI_CTL_REG)] = value;
++
++        for (i = 0; i < AW_A10_SPI_CS_LINES_NR; i++) {
++            qemu_set_irq(
++                s->cs_lines[i],
++                allwinner_a10_spi_update_cs_level(s, i));
++        }
++
++        if (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_XCH) {
++            /* Request to start emitting */
++            allwinner_a10_spi_flush_txfifo(s);
++        }
++        if (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_TF_RST) {
++            allwinner_a10_spi_txfifo_reset(s);
++            s->regs[REG_INDEX(SPI_CTL_REG)] &= ~SPI_CTL_TF_RST;
++        }
++        if (s->regs[REG_INDEX(SPI_CTL_REG)] & SPI_CTL_RF_RST) {
++            allwinner_a10_spi_rxfifo_reset(s);
++            s->regs[REG_INDEX(SPI_CTL_REG)] &= ~SPI_CTL_RF_RST;
++        }
++        break;
++    case SPI_INTCTL_REG:
++    case SPI_DMACTL_REG:
++    case SPI_WAIT_REG:
++    case SPI_CCTL_REG:
++    case SPI_BC_REG:
++    case SPI_TC_REG:
++    case SPI_FIFO_STA_REG:
++        s->regs[index] = value;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++            "%s: bad offset 0x%x\n", __func__,
++            (uint32_t)offset);
++        break;
++    }
++
++    allwinner_a10_spi_update_irq(s);
++}
++
++static const MemoryRegionOps allwinner_a10_spi_ops = {
++    .read = allwinner_a10_spi_read,
++    .write = allwinner_a10_spi_write,
++    .valid.min_access_size = 1,
++    .valid.max_access_size = 4,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++};
++
++static const VMStateDescription allwinner_a10_spi_vmstate = {
++    .name = TYPE_AW_A10_SPI,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_FIFO8(tx_fifo, AWA10SPIState),
++        VMSTATE_FIFO8(rx_fifo, AWA10SPIState),
++        VMSTATE_UINT32_ARRAY(regs, AWA10SPIState, AW_A10_SPI_REGS_NUM),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void allwinner_a10_spi_realize(DeviceState *dev, Error **errp)
++{
++    AWA10SPIState *s = AW_A10_SPI(dev);
++    int i = 0;
++
++    memory_region_init_io(&s->iomem, OBJECT(s), &allwinner_a10_spi_ops, s,
++                          TYPE_AW_A10_SPI, AW_A10_SPI_IOSIZE);
++    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
++    sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq);
++
++    s->bus = ssi_create_bus(dev, "spi");
++    for (i = 0; i < AW_A10_SPI_CS_LINES_NR; i++) {
++        sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->cs_lines[i]);
++    }
++    fifo8_create(&s->tx_fifo, AW_A10_SPI_FIFO_SIZE);
++    fifo8_create(&s->rx_fifo, AW_A10_SPI_FIFO_SIZE);
++}
++
++static void allwinner_a10_spi_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    rc->phases.hold = allwinner_a10_spi_reset_hold;
++    dc->vmsd = &allwinner_a10_spi_vmstate;
++    dc->realize = allwinner_a10_spi_realize;
++    dc->desc = "Allwinner A10 SPI Controller";
++}
++
++static const TypeInfo allwinner_a10_spi_type_info = {
++    .name = TYPE_AW_A10_SPI,
++    .parent = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(AWA10SPIState),
++    .class_init = allwinner_a10_spi_class_init,
++};
++
++static void allwinner_a10_spi_register_types(void)
++{
++    type_register_static(&allwinner_a10_spi_type_info);
++}
++
++type_init(allwinner_a10_spi_register_types)
+diff --git a/hw/ssi/Kconfig b/hw/ssi/Kconfig
+index 8d180de7cf2..1bd56463c1e 100644
+--- a/hw/ssi/Kconfig
++++ b/hw/ssi/Kconfig
+@@ -28,3 +28,7 @@ config BCM2835_SPI
+ config PNV_SPI
+     bool
+     select SSI
++
++config ALLWINNER_A10_SPI
++    bool
++    select SSI
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index 23cd425ab00..6afb1ea2001 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -1,3 +1,4 @@
++system_ss.add(when: 'CONFIG_ALLWINNER_A10_SPI', if_true: files('allwinner-a10-spi.c'))
+ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_smc.c'))
+ system_ss.add(when: 'CONFIG_MSF2', if_true: files('mss-spi.c'))
+ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_fiu.c', 'npcm_pspi.c'))
+diff --git a/hw/ssi/trace-events b/hw/ssi/trace-events
+index 089d269994a..2f36cf96b8b 100644
+--- a/hw/ssi/trace-events
++++ b/hw/ssi/trace-events
+@@ -53,3 +53,13 @@ pnv_spi_rx_read_N2frame(void) ""
+ pnv_spi_shift_rx(uint8_t byte, uint32_t index) "byte = 0x%2.2x into RDR from payload index %d"
+ pnv_spi_sequencer_stop_requested(const char* reason) "due to %s"
+ pnv_spi_RDR_match(const char* result) "%s"
++
++# allwinner_a10_spi.c
++allwinner_a10_spi_update_irq(uint32_t level) "IRQ level is %d"
++allwinner_a10_spi_flush_txfifo_begin(uint32_t tx, uint32_t rx) "Begin: TX Fifo Size = %d, RX Fifo Size = %d"
++allwinner_a10_spi_flush_txfifo_end(uint32_t tx, uint32_t rx) "End: TX Fifo Size = %d, RX Fifo Size = %d"
++allwinner_a10_spi_burst_length(uint32_t len) "Burst length = %d"
++allwinner_a10_spi_tx(uint8_t byte) "write 0x%02x"
++allwinner_a10_spi_rx(uint8_t byte) "read 0x%02x"
++allwinner_a10_spi_read(const char* regname, uint32_t value) "reg[%s] => 0x%08x"
++allwinner_a10_spi_write(const char* regname, uint32_t value) "reg[%s] <= 0x%08x"
 -- 
 2.34.1
 
