@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD2599F8DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BB699F8CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 23:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0os3-0004iU-Q8; Tue, 15 Oct 2024 17:14:23 -0400
+	id 1t0osF-000532-6b; Tue, 15 Oct 2024 17:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1t0os2-0004g1-Ad; Tue, 15 Oct 2024 17:14:22 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1t0os8-0004vL-4x; Tue, 15 Oct 2024 17:14:29 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1t0os0-0000R4-AC; Tue, 15 Oct 2024 17:14:22 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FKsoI1005634;
- Tue, 15 Oct 2024 21:14:14 GMT
+ id 1t0os6-0000RR-Bt; Tue, 15 Oct 2024 17:14:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJu6eT002682;
+ Tue, 15 Oct 2024 21:14:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=/mT1cbEScz7D/Q/TK
- ztwqyR3ENNMowBPo+2jzLFWcRg=; b=fNUhr0Uw8O4GvrZGUivqc7Y2ZsNgICQKd
- Vrh2n2RVAEolgNtLkJENblFZYg0BMLBVGEhCzWG0STf+Wvri19/nUM3N5ulddx71
- /YR4U+4//rjrhIds424jc5Ue0gg0cFotCT7kzJOEF0yYIrNE0vYOzDhQS1slcDQB
- UzFCYs1laL+9euf1s6OrnNoKEVsTGk7jaXTjCaLTYT/IZ7vYg2c+WMMABjhS9Enr
- Xw1jswjnSCv+lIeOIOMUzY1nEswu24QaD4/OjpJ7WdYJXVtUVWbyqJksQqE1ieIE
- P4qoX7Rr/Eo6gXPDLsITHDpiScq83gDpusD0ZF/4fJVppaE6v7Niw==
+ :mime-version:references:subject:to; s=pp1; bh=/DBhHEQue6m2kIXKt
+ c0Fa1uIdhy1To8+56w5CU0nnME=; b=LQYrFXq6JsaS7dCc9YdWo/0yR03aKChHU
+ exhg/rO3isQF8JfO/DOrzZzaQWnzuaVxp2GY4mPFB7ik6ChPgbcLhi0YieLztvb1
+ I2fkRy+SmnEHAykOzJ2iOGmumTbnT+x6oPWTwu57SRLN+++zcbLKF5/2phyRvOPu
+ PkiJEA+Fk935WIJqTc0mDYHGtYxAQIQwdmI1PlRPpzRgaN9+JfNOPPICmrIrb1T3
+ c+7RS2s93d1LIwJgo3tQRdAazGoljPbGMkJq3BSjN8SNfxjIvW4pp6Ew4mgB6sKa
+ 2K4cz1OI15/DaWrIfZrwuYE6Kk+vOa519GZHXlOLYqSLC58tANK0g==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429yun81yh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429xywr91e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:14:14 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FLDDLI007748;
- Tue, 15 Oct 2024 21:14:13 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429yun81yc-1
+ Tue, 15 Oct 2024 21:14:16 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FLAPOQ022718;
+ Tue, 15 Oct 2024 21:14:15 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429xywr918-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:14:13 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FHpSRS001982;
- Tue, 15 Oct 2024 21:14:12 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284emnyug-1
+ Tue, 15 Oct 2024 21:14:15 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJ0oRu005965;
+ Tue, 15 Oct 2024 21:14:14 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428650wkyw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Oct 2024 21:14:12 +0000
+ Tue, 15 Oct 2024 21:14:14 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49FLE8LO52691292
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49FLEBKC42860908
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Oct 2024 21:14:08 GMT
+ Tue, 15 Oct 2024 21:14:11 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E8272004D;
+ by IMSVA (Postfix) with ESMTP id 0C4532004D;
+ Tue, 15 Oct 2024 21:14:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E652820043;
  Tue, 15 Oct 2024 21:14:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 84B6B20043;
- Tue, 15 Oct 2024 21:14:06 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 15 Oct 2024 21:14:06 +0000 (GMT)
+ Tue, 15 Oct 2024 21:14:08 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com, danielhb413@gmail.com,
  david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
  lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH 13/14] pnv/xive: Fix problem with treating NVGC as a NVP
-Date: Tue, 15 Oct 2024 16:13:28 -0500
-Message-Id: <20241015211329.21113-14-kowal@linux.ibm.com>
+Subject: [PATCH 14/14] qtest/xive: Add test of pool interrupts
+Date: Tue, 15 Oct 2024 16:13:29 -0500
+Message-Id: <20241015211329.21113-15-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241015211329.21113-1-kowal@linux.ibm.com>
 References: <20241015211329.21113-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cvBzA-Ovkn_CkOt9B6MB3K9QAaxnmmKe
-X-Proofpoint-GUID: Yg6MIo9N9TE_o0RtPeUVeeejVQ_RM-ke
+X-Proofpoint-ORIG-GUID: nsSDH1Wg4HClfMbo-wb4QEMI2M55dGoO
+X-Proofpoint-GUID: 4bNBXyqOAiAh2UuLhkasw9hAsQEGk6pz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- spamscore=0 mlxscore=0 adultscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 phishscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410150140
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ malwarescore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410150140
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -115,197 +115,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.ibm.com>
 
-When booting with PHYP, the blk/index for a NVGC was being
-mistakenly treated as the blk/index for a NVP.  Renamed
-nvp_blk/nvp_idx throughout the code to nvx_blk/nvx_idx to prevent
-confusion in the future and now we delay loading the NVP until
-the point where we know that the block and index actually point to
-a NVP.
+Added new test for pool interrupts.
 
-Suggested-by: Michael Kowal <kowal@us.ibm.com>
-Fixes: 6d4c4f70262 ("ppc/xive2: Support crowd-matching when looking for target")
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 ---
- hw/intc/xive2.c | 78 ++++++++++++++++++++++++-------------------------
- 1 file changed, 39 insertions(+), 39 deletions(-)
+ tests/qtest/pnv-xive2-test.c | 77 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index f812ba9624..8abccd2f4b 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -226,8 +226,8 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-     uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
-     uint32_t qentries = 1 << (qsize + 10);
- 
--    uint32_t nvp_blk = xive_get_field32(END2_W6_VP_BLOCK, end->w6);
--    uint32_t nvp_idx = xive_get_field32(END2_W6_VP_OFFSET, end->w6);
-+    uint32_t nvx_blk = xive_get_field32(END2_W6_VP_BLOCK, end->w6);
-+    uint32_t nvx_idx = xive_get_field32(END2_W6_VP_OFFSET, end->w6);
-     uint8_t priority = xive_get_field32(END2_W7_F0_PRIORITY, end->w7);
-     uint8_t pq;
- 
-@@ -256,7 +256,7 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-                            xive2_end_is_firmware2(end)   ? 'F' : '-',
-                            xive2_end_is_ignore(end) ? 'i' : '-',
-                            xive2_end_is_crowd(end)  ? 'c' : '-',
--                           priority, nvp_blk, nvp_idx);
-+                           priority, nvx_blk, nvx_idx);
- 
-     if (qaddr_base) {
-         g_string_append_printf(buf, " eq:@%08"PRIx64"% 6d/%5d ^%d",
-@@ -401,7 +401,7 @@ static void xive2_pgofnext(uint8_t *nvgc_blk, uint32_t *nvgc_idx,
-  * level of pending group interrupts.
-  */
- static uint8_t xive2_presenter_backlog_check(XivePresenter *xptr,
--                                             uint8_t nvp_blk, uint32_t nvp_idx,
-+                                             uint8_t nvx_blk, uint32_t nvx_idx,
-                                              uint8_t first_group,
-                                              uint8_t *out_level)
- {
-@@ -413,8 +413,8 @@ static uint8_t xive2_presenter_backlog_check(XivePresenter *xptr,
- 
-     for (prio = 0; prio <= XIVE_PRIORITY_MAX; prio++) {
-         current_level = first_group & 0x3F;
--        nvgc_blk = nvp_blk;
--        nvgc_idx = nvp_idx;
-+        nvgc_blk = nvx_blk;
-+        nvgc_idx = nvx_idx;
- 
-         while (current_level) {
-             xive2_pgofnext(&nvgc_blk, &nvgc_idx, current_level);
-@@ -443,7 +443,7 @@ static uint8_t xive2_presenter_backlog_check(XivePresenter *xptr,
+diff --git a/tests/qtest/pnv-xive2-test.c b/tests/qtest/pnv-xive2-test.c
+index a6008bc053..6e7e7f0d9b 100644
+--- a/tests/qtest/pnv-xive2-test.c
++++ b/tests/qtest/pnv-xive2-test.c
+@@ -4,6 +4,7 @@
+  *  - Test 'Pull Thread Context to Odd Thread Reporting Line'
+  *  - Test irq to hardware group
+  *  - Test irq to hardware group going through backlog
++ *  - Test irq to pool thread
+  *
+  * Copyright (c) 2024, IBM Corporation.
+  *
+@@ -267,6 +268,79 @@ static void test_hw_irq(QTestState *qts)
+     g_assert_cmphex(cppr, ==, 0xFF);
  }
  
- static void xive2_presenter_backlog_decr(XivePresenter *xptr,
--                                         uint8_t nvp_blk, uint32_t nvp_idx,
-+                                         uint8_t nvx_blk, uint32_t nvx_idx,
-                                          uint8_t group_prio,
-                                          uint8_t group_level)
++static void test_pool_irq(QTestState *qts)
++{
++    uint32_t irq = 2;
++    uint32_t irq_data = 0x600d0d06;
++    uint32_t end_index = 5;
++    uint32_t target_pir = 1;
++    uint32_t target_nvp = 0x100 + target_pir;
++    uint8_t priority = 5;
++    uint32_t reg32;
++    uint16_t reg16;
++    uint8_t pq, nsr, cppr, ipb;
++
++    printf("# ============================================================\n");
++    printf("# Testing irq %d to pool thread %d\n", irq, target_pir);
++
++    /* irq config */
++    set_eas(qts, irq, end_index, irq_data);
++    set_end(qts, end_index, target_nvp, priority, false /* group */);
++
++    /* enable and trigger irq */
++    get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_SET_PQ_00);
++    set_esb(qts, irq, XIVE_TRIGGER_PAGE, 0, 0);
++
++    /* check irq is raised on cpu */
++    pq = get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
++    g_assert_cmpuint(pq, ==, XIVE_ESB_PENDING);
++
++    /* check TIMA values in the PHYS ring (shared by POOL ring) */
++    reg32 = get_tima32(qts, target_pir, TM_QW3_HV_PHYS + TM_WORD0);
++    nsr = reg32 >> 24;
++    cppr = (reg32 >> 16) & 0xFF;
++    g_assert_cmphex(nsr, ==, 0x40);
++    g_assert_cmphex(cppr, ==, 0xFF);
++
++    /* check TIMA values in the POOL ring */
++    reg32 = get_tima32(qts, target_pir, TM_QW2_HV_POOL + TM_WORD0);
++    nsr = reg32 >> 24;
++    cppr = (reg32 >> 16) & 0xFF;
++    ipb = (reg32 >> 8) & 0xFF;
++    g_assert_cmphex(nsr, ==, 0);
++    g_assert_cmphex(cppr, ==, 0);
++    g_assert_cmphex(ipb, ==, 0x80 >> priority);
++
++    /* ack the irq */
++    reg16 = get_tima16(qts, target_pir, TM_SPC_ACK_HV_REG);
++    nsr = reg16 >> 8;
++    cppr = reg16 & 0xFF;
++    g_assert_cmphex(nsr, ==, 0x40);
++    g_assert_cmphex(cppr, ==, priority);
++
++    /* check irq data is what was configured */
++    reg32 = qtest_readl(qts, xive_get_queue_addr(end_index));
++    g_assert_cmphex((reg32 & 0x7fffffff), ==, (irq_data & 0x7fffffff));
++
++    /* check IPB is cleared in the POOL ring */
++    reg32 = get_tima32(qts, target_pir, TM_QW2_HV_POOL + TM_WORD0);
++    ipb = (reg32 >> 8) & 0xFF;
++    g_assert_cmphex(ipb, ==, 0);
++
++    /* End Of Interrupt */
++    set_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_STORE_EOI, 0);
++    pq = get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
++    g_assert_cmpuint(pq, ==, XIVE_ESB_RESET);
++
++    /* reset CPPR */
++    set_tima8(qts, target_pir, TM_QW3_HV_PHYS + TM_CPPR, 0xFF);
++    reg32 = get_tima32(qts, target_pir, TM_QW3_HV_PHYS + TM_WORD0);
++    nsr = reg32 >> 24;
++    cppr = (reg32 >> 16) & 0xFF;
++    g_assert_cmphex(nsr, ==, 0x00);
++    g_assert_cmphex(cppr, ==, 0xFF);
++}
++
+ #define XIVE_ODD_CL 0x80
+ static void test_pull_thread_ctx_to_odd_thread_cl(QTestState *qts)
  {
-@@ -452,8 +452,8 @@ static void xive2_presenter_backlog_decr(XivePresenter *xptr,
-     uint8_t nvgc_blk;
-     Xive2Nvgc nvgc;
+@@ -485,6 +559,9 @@ static void test_xive(void)
+     /* omit reset_state here and use settings from test_hw_irq */
+     test_pull_thread_ctx_to_odd_thread_cl(qts);
  
--    nvgc_blk = nvp_blk;
--    nvgc_idx = nvp_idx;
-+    nvgc_blk = nvx_blk;
-+    nvgc_idx = nvx_idx;
-     xive2_pgofnext(&nvgc_blk, &nvgc_idx, group_level);
- 
-     if (xive2_router_get_nvgc(xrtr, NVx_CROWD_LVL(group_level),
-@@ -1317,9 +1317,8 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-     uint8_t priority;
-     uint8_t format;
-     bool found, precluded;
--    Xive2Nvp nvp;
--    uint8_t nvp_blk;
--    uint32_t nvp_idx;
-+    uint8_t nvx_blk;
-+    uint32_t nvx_idx;
- 
-     /* END cache lookup */
-     if (xive2_router_get_end(xrtr, end_blk, end_idx, &end)) {
-@@ -1384,23 +1383,10 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-     /*
-      * Follows IVPE notification
-      */
--    nvp_blk = xive_get_field32(END2_W6_VP_BLOCK, end.w6);
--    nvp_idx = xive_get_field32(END2_W6_VP_OFFSET, end.w6);
--
--    /* NVP cache lookup */
--    if (xive2_router_get_nvp(xrtr, nvp_blk, nvp_idx, &nvp)) {
--        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: no NVP %x/%x\n",
--                      nvp_blk, nvp_idx);
--        return;
--    }
--
--    if (!xive2_nvp_is_valid(&nvp)) {
--        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: NVP %x/%x is invalid\n",
--                      nvp_blk, nvp_idx);
--        return;
--    }
-+    nvx_blk = xive_get_field32(END2_W6_VP_BLOCK, end.w6);
-+    nvx_idx = xive_get_field32(END2_W6_VP_OFFSET, end.w6);
- 
--    found = xive_presenter_notify(xrtr->xfb, format, nvp_blk, nvp_idx,
-+    found = xive_presenter_notify(xrtr->xfb, format, nvx_blk, nvx_idx,
-                           xive2_end_is_crowd(&end), xive2_end_is_ignore(&end),
-                           priority,
-                           xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7),
-@@ -1428,6 +1414,21 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
- 
-         if (!xive2_end_is_ignore(&end)) {
-             uint8_t ipb;
-+            Xive2Nvp nvp;
++    reset_state(qts);
++    test_pool_irq(qts);
 +
-+            /* NVP cache lookup */
-+            if (xive2_router_get_nvp(xrtr, nvx_blk, nvx_idx, &nvp)) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: no NVP %x/%x\n",
-+                              nvx_blk, nvx_idx);
-+                return;
-+            }
-+
-+            if (!xive2_nvp_is_valid(&nvp)) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: NVP %x/%x is invalid\n",
-+                              nvx_blk, nvx_idx);
-+                return;
-+            }
-+
-             /*
-              * Record the IPB in the associated NVP structure for later
-              * use. The presenter will resend the interrupt when the vCPU
-@@ -1436,7 +1437,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-             ipb = xive_get_field32(NVP2_W2_IPB, nvp.w2) |
-                 xive_priority_to_ipb(priority);
-             nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, ipb);
--            xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
-+            xive2_router_write_nvp(xrtr, nvx_blk, nvx_idx, &nvp, 2);
-         } else {
-             Xive2Nvgc nvgc;
-             uint32_t backlog;
-@@ -1449,32 +1450,31 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-              * counters are stored in the NVG/NVC structures
-              */
-             if (xive2_router_get_nvgc(xrtr, crowd,
--                                      nvp_blk, nvp_idx, &nvgc)) {
-+                                      nvx_blk, nvx_idx, &nvgc)) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "XIVE: no %s %x/%x\n",
--                              crowd ? "NVC" : "NVG", nvp_blk, nvp_idx);
-+                              crowd ? "NVC" : "NVG", nvx_blk, nvx_idx);
-                 return;
-             }
+     reset_state(qts);
+     test_hw_group_irq(qts);
  
-             if (!xive2_nvgc_is_valid(&nvgc)) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "XIVE: NVG %x/%x is invalid\n",
--                              nvp_blk, nvp_idx);
-+                              nvx_blk, nvx_idx);
-                 return;
-             }
- 
-             /*
-              * Increment the backlog counter for that priority.
--             * For the precluded case, we only call broadcast the
--             * first time the counter is incremented. broadcast will
--             * set the LSMFB field of the TIMA of relevant threads so
--             * that they know an interrupt is pending.
-+             * We only call broadcast the first time the counter is
-+             * incremented. broadcast will set the LSMFB field of the TIMA of
-+             * relevant threads so that they know an interrupt is pending.
-              */
-             backlog = xive2_nvgc_get_backlog(&nvgc, priority) + 1;
-             xive2_nvgc_set_backlog(&nvgc, priority, backlog);
--            xive2_router_write_nvgc(xrtr, crowd, nvp_blk, nvp_idx, &nvgc);
-+            xive2_router_write_nvgc(xrtr, crowd, nvx_blk, nvx_idx, &nvgc);
- 
--            if (precluded && backlog == 1) {
-+            if (backlog == 1) {
-                 XiveFabricClass *xfc = XIVE_FABRIC_GET_CLASS(xrtr->xfb);
--                xfc->broadcast(xrtr->xfb, nvp_blk, nvp_idx,
-+                xfc->broadcast(xrtr->xfb, nvx_blk, nvx_idx,
-                                xive2_end_is_crowd(&end),
-                                xive2_end_is_ignore(&end),
-                                priority);
 -- 
 2.43.0
 
