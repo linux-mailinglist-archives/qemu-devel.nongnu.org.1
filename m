@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4AC99E447
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8184899E44E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:41:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewu-0006l6-Ee; Tue, 15 Oct 2024 06:38:44 -0400
+	id 1t0ewv-0006lU-KJ; Tue, 15 Oct 2024 06:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewa-0006hQ-SK
+ id 1t0ewa-0006hP-Mo
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:28 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewX-0005yR-UN
+ id 1t0ewX-0005ye-UR
  for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:24 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-5366fd6fdf1so6044232e87.0
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-37d4fd00574so3174398f8f.0
  for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1728988700; x=1729593500; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HTH3ZTP2q9EAGImxjAoBB6MX0ZZqVuGqcSPtMYukrbs=;
- b=jFDIf0rElD/ZuT8ChUEh7Hhr/3Qzd6mYpqJUMzI5r4GLlkoUX0nT9q74LbA2Y6XVPe
- csNF8JfhQZpmGXzjHZEdTME4xTif9LZ+5Mlv8I7SLZjWc1lSAd0DEZlhpKE+PhtWFOop
- +X1mV5U7aJX31EmWIgj1p+iTQtfi3+se1eCMNtI4ulc0wmXjRTshYn9tIhVVIhpyClpN
- pd8Hw89//XUxbQvDH41UGjglDOlVFyQrKH1jSA/Tms2XfGRIvCqtI+0r2ukc+AlscD1L
- JhMh2vITcR/lBsn0tpvG831eZjijFNTmB0VTGB2v2Q4/gB6d/EDZynhQpBqASY8MQERX
- jqrg==
+ :reply-to; bh=/3GHUipPzvi4A2i69xuufVZyjr3Qe+7m285e1Wp6leM=;
+ b=Mmnc3OwECjMnOb7O5r56sCxw9L30+PvPcLE0zO8m2vu2Xeciu4nE69KeeLDGn47Z8t
+ AfzcoAFsm7d7B7EuqC934WR/CCxVVdnkpDVta8m/4htQsm4Ugib/XU2b/82LnY6a7zaz
+ 38mpDZoFSOgULVeRnD47N1pucVAWH09mUUpYt5jJRqRWbOyE2nRKvGs+/XbTYzcJuMmQ
+ u4GQXornq28TihsmRwg0qlGzV3teCVnyMuX3sCFlw/4NQZTzAHFH4wCVyOAsaw/Hq7Ku
+ ck6w+8Nlu5OtMCixYESbMs3oI2gGlSHoDN718sxZRJGbKvsTq8h5SQfQsSjsG9n/y3Cl
+ T72g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1728988700; x=1729593500;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HTH3ZTP2q9EAGImxjAoBB6MX0ZZqVuGqcSPtMYukrbs=;
- b=bWtjONirFV0ksGX6wiRNI1wdpnhttnIW8RqOnuaX/1+nL5lVybhzVXBE4vtKTS36fw
- vB0iaQu2paxCKk3hlJj9/kUXJavjq7lMsnb9bY589Y40Hhv2tNrRWfCTcN0brCz6/RGT
- kQqXowe4I0mQ3BYmeMac7HgFzZMHqS3NKyeQjh4GFOjWF87+d4pvhbIN4gDohconvjDn
- PGUO588yjyyqTj6ju6yTP4nIq5OtYCJkcvGJolxfG2H5NI6Dlblq4QbSrNgNEFannoQn
- Bb2h9gvgI9cSqB5X2zezM6GgqPv3dcmSHEEqi1xHn4JGibx4V+zoyRU7Ks4AN91kEVrX
- YjNQ==
-X-Gm-Message-State: AOJu0YxjFUs+lXmSi8DIr9Vh+8MtcnOq8NNzjiN3G1I0SZeVYhoJqVMb
- XczFTdCKhq+RmBAVeHYIz2o2/GRLMcZKzhlY94QEWgdrwJmF6AzCyLFe5CU/MsBNR3i0NmJdVrR
- d
-X-Google-Smtp-Source: AGHT+IHorqVI1fDqaOSWliOYt+FgY7BLs7RLfY7S1lI0M5kgOfytLK7gyE/D1E2a68eC037wRz3MAg==
-X-Received: by 2002:a05:6512:3d0a:b0:539:ea12:d629 with SMTP id
- 2adb3069b0e04-539ea136a8emr4366423e87.8.1728988699791; 
- Tue, 15 Oct 2024 03:38:19 -0700 (PDT)
+ bh=/3GHUipPzvi4A2i69xuufVZyjr3Qe+7m285e1Wp6leM=;
+ b=gjbv4zjxt7tjkPf3X1xR9aPzrbPLD6S6oDsPPrwyGr4M+kyK13bZBHHdyVB7Rsr5rj
+ 7V4A5NMP6VRoD5DTPBdi83TUDlMQG4hQQUp2JnmrAmDLOIQYMl2i12V/kTr0EeiNZYy2
+ EhOFQ/GsxJ9zBa3nCIb7wzHVy5zPd7oAkIggf4Lx8+hXJaZW0xJTPt6cbgTbR2CK+LZH
+ FCcuXs1f5aIvrt8RQoru4s3plDFb+aGdV54dWl74fBMK0teaacrKXNKEV/Ein7ocDjBX
+ eTOf2wSY1l2Phmc4YdMoh6tL/ZnMrg7RQt3GCyEfdmbzSZysXCyrI9jzPtPfO66u6iRQ
+ o4uw==
+X-Gm-Message-State: AOJu0Yz6JfoZD4FCSwczFqiG/LSskTexF6Z1n98kRGnourcdqTSUhJ0x
+ Q6QUtaMZWqbHJExPUMh+IQ42hhPwYIWU7o4Bey1+zyPjENoDodnGIfZlsIW2MXmFqKTE/mt5R9m
+ P
+X-Google-Smtp-Source: AGHT+IHQyWflPOiB1gZBzJVyiTU0tPj5GjqcDpuOHQw26wZ3UCYvUE7/2jOfblM62mQbZI/LWN9XVg==
+X-Received: by 2002:a5d:5105:0:b0:37c:ffdd:6d5a with SMTP id
+ ffacd0b85a97d-37d5519df73mr12249238f8f.6.1728988700394; 
+ Tue, 15 Oct 2024 03:38:20 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 03:38:19 -0700 (PDT)
+ Tue, 15 Oct 2024 03:38:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/28] hw/adc: Remove MAX111X device
-Date: Tue, 15 Oct 2024 11:38:01 +0100
-Message-Id: <20241015103808.133024-22-peter.maydell@linaro.org>
+Subject: [PULL 22/28] hw/gpio: Remove MAX7310 device
+Date: Tue, 15 Oct 2024 11:38:02 +0100
+Message-Id: <20241015103808.133024-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,358 +92,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MAX111X ADC device was used only by the XScale-based
-Zaurus machine types. Now they have all been removed, we can
-drop this device model too.
+The MAX7310 GPIO controller was used only by the XScale-based Zaurus
+machine types.  Now they have been removed we can remove this device
+model as well.
 
-Because this device is an SSI device, in theory it could be created
-by users on the command line for boards with a different SSI
+Because this device is an I2C device, in theory it could be created
+by users on the command line for boards with a different I2c
 controller, but we don't believe users are doing this -- it would be
-impossible on the command line to connect up the GPIO inputs which
-correspond to ADC inputs, or the GPIO output which is an interrupt
-line.  The only example a web search produces for "device max1111" or
-"device max1110" is our own bug report
-  https://gitlab.com/qemu-project/qemu/-/issues/2228
-where it's used as an example of a bogus command that causes an
-assertion in an aspeed machine type that wasn't expecting anything
-other than flash devices on its SMC bus.
+impossible on the command line to connect up the GPIO inputs/outputs.
+The only example a web search produces for "device max7310" is a user
+trying to create this because they didn't realize that there was no
+way to manipulate the GPIO lines.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241003140010.1653808-2-peter.maydell@linaro.org
+Message-id: 20241003140010.1653808-3-peter.maydell@linaro.org
 ---
- include/hw/adc/max111x.h |  56 ----------
- hw/adc/max111x.c         | 236 ---------------------------------------
- hw/adc/Kconfig           |   3 -
- hw/adc/meson.build       |   1 -
- 4 files changed, 296 deletions(-)
- delete mode 100644 include/hw/adc/max111x.h
- delete mode 100644 hw/adc/max111x.c
+ hw/gpio/max7310.c   | 217 --------------------------------------------
+ hw/gpio/Kconfig     |   4 -
+ hw/gpio/meson.build |   1 -
+ 3 files changed, 222 deletions(-)
+ delete mode 100644 hw/gpio/max7310.c
 
-diff --git a/include/hw/adc/max111x.h b/include/hw/adc/max111x.h
+diff --git a/hw/gpio/max7310.c b/hw/gpio/max7310.c
 deleted file mode 100644
-index beff59c815d..00000000000
---- a/include/hw/adc/max111x.h
+index 43a92b8db97..00000000000
+--- a/hw/gpio/max7310.c
 +++ /dev/null
-@@ -1,56 +0,0 @@
+@@ -1,217 +0,0 @@
 -/*
-- * Maxim MAX1110/1111 ADC chip emulation.
+- * MAX7310 8-port GPIO expansion chip.
 - *
 - * Copyright (c) 2006 Openedhand Ltd.
 - * Written by Andrzej Zaborowski <balrog@zabor.org>
 - *
-- * This code is licensed under the GNU GPLv2.
-- *
-- * Contributions after 2012-01-13 are licensed under the terms of the
-- * GNU GPL, version 2 or (at your option) any later version.
-- */
--
--#ifndef HW_MISC_MAX111X_H
--#define HW_MISC_MAX111X_H
--
--#include "hw/ssi/ssi.h"
--#include "qom/object.h"
--
--/*
-- * This is a model of the Maxim MAX1110/1111 ADC chip, which for QEMU
-- * is an SSI slave device. It has either 4 (max1110) or 8 (max1111)
-- * 8-bit ADC channels.
-- *
-- * QEMU interface:
-- *  + GPIO inputs 0..3 (for max1110) or 0..7 (for max1111): set the value
-- *    of each ADC input, as an unsigned 8-bit value
-- *  + GPIO output 0: interrupt line
-- *  + Properties "input0" to "input3" (max1110) or "input0" to "input7"
-- *    (max1111): initial reset values for ADC inputs.
-- *
-- * Known bugs:
-- *  + the interrupt line is not correctly implemented, and will never
-- *    be lowered once it has been asserted.
-- */
--struct MAX111xState {
--    SSIPeripheral parent_obj;
--
--    qemu_irq interrupt;
--    /* Values of inputs at system reset (settable by QOM property) */
--    uint8_t reset_input[8];
--
--    uint8_t tb1, rb2, rb3;
--    int cycle;
--
--    uint8_t input[8];
--    int inputs, com;
--};
--
--#define TYPE_MAX_111X "max111x"
--
--OBJECT_DECLARE_SIMPLE_TYPE(MAX111xState, MAX_111X)
--
--#define TYPE_MAX_1110 "max1110"
--#define TYPE_MAX_1111 "max1111"
--
--#endif
-diff --git a/hw/adc/max111x.c b/hw/adc/max111x.c
-deleted file mode 100644
-index aa51e47245d..00000000000
---- a/hw/adc/max111x.c
-+++ /dev/null
-@@ -1,236 +0,0 @@
--/*
-- * Maxim MAX1110/1111 ADC chip emulation.
-- *
-- * Copyright (c) 2006 Openedhand Ltd.
-- * Written by Andrzej Zaborowski <balrog@zabor.org>
-- *
-- * This code is licensed under the GNU GPLv2.
-- *
-- * Contributions after 2012-01-13 are licensed under the terms of the
-- * GNU GPL, version 2 or (at your option) any later version.
+- * This file is licensed under GNU GPL.
 - */
 -
 -#include "qemu/osdep.h"
--#include "hw/adc/max111x.h"
+-#include "hw/i2c/i2c.h"
 -#include "hw/irq.h"
 -#include "migration/vmstate.h"
+-#include "qemu/log.h"
 -#include "qemu/module.h"
--#include "hw/qdev-properties.h"
+-#include "qom/object.h"
 -
--/* Control-byte bitfields */
--#define CB_PD0		(1 << 0)
--#define CB_PD1		(1 << 1)
--#define CB_SGL		(1 << 2)
--#define CB_UNI		(1 << 3)
--#define CB_SEL0		(1 << 4)
--#define CB_SEL1		(1 << 5)
--#define CB_SEL2		(1 << 6)
--#define CB_START	(1 << 7)
+-#define TYPE_MAX7310 "max7310"
+-OBJECT_DECLARE_SIMPLE_TYPE(MAX7310State, MAX7310)
 -
--#define CHANNEL_NUM(v, b0, b1, b2)	\
--                        ((((v) >> (2 + (b0))) & 4) |	\
--                         (((v) >> (3 + (b1))) & 2) |	\
--                         (((v) >> (4 + (b2))) & 1))
+-struct MAX7310State {
+-    I2CSlave parent_obj;
 -
--static uint32_t max111x_read(MAX111xState *s)
+-    int i2c_command_byte;
+-    int len;
+-
+-    uint8_t level;
+-    uint8_t direction;
+-    uint8_t polarity;
+-    uint8_t status;
+-    uint8_t command;
+-    qemu_irq handler[8];
+-    qemu_irq *gpio_in;
+-};
+-
+-static void max7310_reset(DeviceState *dev)
 -{
--    if (!s->tb1)
--        return 0;
+-    MAX7310State *s = MAX7310(dev);
 -
--    switch (s->cycle ++) {
--    case 1:
--        return s->rb2;
--    case 2:
--        return s->rb3;
+-    s->level &= s->direction;
+-    s->direction = 0xff;
+-    s->polarity = 0xf0;
+-    s->status = 0x01;
+-    s->command = 0x00;
+-}
+-
+-static uint8_t max7310_rx(I2CSlave *i2c)
+-{
+-    MAX7310State *s = MAX7310(i2c);
+-
+-    switch (s->command) {
+-    case 0x00:  /* Input port */
+-        return s->level ^ s->polarity;
+-
+-    case 0x01:  /* Output port */
+-        return s->level & ~s->direction;
+-
+-    case 0x02:  /* Polarity inversion */
+-        return s->polarity;
+-
+-    case 0x03:  /* Configuration */
+-        return s->direction;
+-
+-    case 0x04:  /* Timeout */
+-        return s->status;
+-
+-    case 0xff:  /* Reserved */
+-        return 0xff;
+-
+-    default:
+-        qemu_log_mask(LOG_UNIMP, "%s: Unsupported register 0x02%" PRIx8 "\n",
+-                      __func__, s->command);
+-        break;
+-    }
+-    return 0xff;
+-}
+-
+-static int max7310_tx(I2CSlave *i2c, uint8_t data)
+-{
+-    MAX7310State *s = MAX7310(i2c);
+-    uint8_t diff;
+-    int line;
+-
+-    if (s->len ++ > 1) {
+-#ifdef VERBOSE
+-        printf("%s: message too long (%i bytes)\n", __func__, s->len);
+-#endif
+-        return 1;
+-    }
+-
+-    if (s->i2c_command_byte) {
+-        s->command = data;
+-        s->i2c_command_byte = 0;
+-        return 0;
+-    }
+-
+-    switch (s->command) {
+-    case 0x01:  /* Output port */
+-        for (diff = (data ^ s->level) & ~s->direction; diff;
+-                        diff &= ~(1 << line)) {
+-            line = ctz32(diff);
+-            if (s->handler[line])
+-                qemu_set_irq(s->handler[line], (data >> line) & 1);
+-        }
+-        s->level = (s->level & s->direction) | (data & ~s->direction);
+-        break;
+-
+-    case 0x02:  /* Polarity inversion */
+-        s->polarity = data;
+-        break;
+-
+-    case 0x03:  /* Configuration */
+-        s->level &= ~(s->direction ^ data);
+-        s->direction = data;
+-        break;
+-
+-    case 0x04:  /* Timeout */
+-        s->status = data;
+-        break;
+-
+-    case 0x00:  /* Input port - ignore writes */
+-        break;
+-    default:
+-        qemu_log_mask(LOG_UNIMP, "%s: Unsupported register 0x02%" PRIx8 "\n",
+-                      __func__, s->command);
+-        return 1;
 -    }
 -
 -    return 0;
 -}
 -
--/* Interpret a control-byte */
--static void max111x_write(MAX111xState *s, uint32_t value)
+-static int max7310_event(I2CSlave *i2c, enum i2c_event event)
 -{
--    int measure, chan;
+-    MAX7310State *s = MAX7310(i2c);
+-    s->len = 0;
 -
--    /* Ignore the value if START bit is zero */
--    if (!(value & CB_START))
--        return;
--
--    s->cycle = 0;
--
--    if (!(value & CB_PD1)) {
--        s->tb1 = 0;
--        return;
+-    switch (event) {
+-    case I2C_START_SEND:
+-        s->i2c_command_byte = 1;
+-        break;
+-    case I2C_FINISH:
+-#ifdef VERBOSE
+-        if (s->len == 1)
+-            printf("%s: message too short (%i bytes)\n", __func__, s->len);
+-#endif
+-        break;
+-    default:
+-        break;
 -    }
 -
--    s->tb1 = value;
--
--    if (s->inputs == 8)
--        chan = CHANNEL_NUM(value, 1, 0, 2);
--    else
--        chan = CHANNEL_NUM(value & ~CB_SEL0, 0, 1, 2);
--
--    if (value & CB_SGL)
--        measure = s->input[chan] - s->com;
--    else
--        measure = s->input[chan] - s->input[chan ^ 1];
--
--    if (!(value & CB_UNI))
--        measure ^= 0x80;
--
--    s->rb2 = (measure >> 2) & 0x3f;
--    s->rb3 = (measure << 6) & 0xc0;
--
--    /* FIXME: When should the IRQ be lowered?  */
--    qemu_irq_raise(s->interrupt);
+-    return 0;
 -}
 -
--static uint32_t max111x_transfer(SSIPeripheral *dev, uint32_t value)
--{
--    MAX111xState *s = MAX_111X(dev);
--    max111x_write(s, value);
--    return max111x_read(s);
--}
--
--static const VMStateDescription vmstate_max111x = {
--    .name = "max111x",
--    .version_id = 1,
--    .minimum_version_id = 1,
+-static const VMStateDescription vmstate_max7310 = {
+-    .name = "max7310",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
 -    .fields = (const VMStateField[]) {
--        VMSTATE_SSI_PERIPHERAL(parent_obj, MAX111xState),
--        VMSTATE_UINT8(tb1, MAX111xState),
--        VMSTATE_UINT8(rb2, MAX111xState),
--        VMSTATE_UINT8(rb3, MAX111xState),
--        VMSTATE_INT32_EQUAL(inputs, MAX111xState, NULL),
--        VMSTATE_INT32(com, MAX111xState),
--        VMSTATE_ARRAY_INT32_UNSAFE(input, MAX111xState, inputs,
--                                   vmstate_info_uint8, uint8_t),
+-        VMSTATE_INT32(i2c_command_byte, MAX7310State),
+-        VMSTATE_INT32(len, MAX7310State),
+-        VMSTATE_UINT8(level, MAX7310State),
+-        VMSTATE_UINT8(direction, MAX7310State),
+-        VMSTATE_UINT8(polarity, MAX7310State),
+-        VMSTATE_UINT8(status, MAX7310State),
+-        VMSTATE_UINT8(command, MAX7310State),
+-        VMSTATE_I2C_SLAVE(parent_obj, MAX7310State),
 -        VMSTATE_END_OF_LIST()
 -    }
 -};
 -
--static void max111x_input_set(void *opaque, int line, int value)
+-static void max7310_gpio_set(void *opaque, int line, int level)
 -{
--    MAX111xState *s = MAX_111X(opaque);
+-    MAX7310State *s = (MAX7310State *) opaque;
+-    assert(line >= 0 && line < ARRAY_SIZE(s->handler));
 -
--    assert(line >= 0 && line < s->inputs);
--    s->input[line] = value;
+-    if (level)
+-        s->level |= s->direction & (1 << line);
+-    else
+-        s->level &= ~(s->direction & (1 << line));
 -}
 -
--static int max111x_init(SSIPeripheral *d, int inputs)
+-/* MAX7310 is SMBus-compatible (can be used with only SMBus protocols),
+- * but also accepts sequences that are not SMBus so return an I2C device.  */
+-static void max7310_realize(DeviceState *dev, Error **errp)
 -{
--    DeviceState *dev = DEVICE(d);
--    MAX111xState *s = MAX_111X(dev);
+-    MAX7310State *s = MAX7310(dev);
 -
--    qdev_init_gpio_out(dev, &s->interrupt, 1);
--    qdev_init_gpio_in(dev, max111x_input_set, inputs);
--
--    s->inputs = inputs;
--
--    return 0;
+-    qdev_init_gpio_in(dev, max7310_gpio_set, ARRAY_SIZE(s->handler));
+-    qdev_init_gpio_out(dev, s->handler, ARRAY_SIZE(s->handler));
 -}
 -
--static void max1110_realize(SSIPeripheral *dev, Error **errp)
+-static void max7310_class_init(ObjectClass *klass, void *data)
 -{
--    max111x_init(dev, 8);
--}
--
--static void max1111_realize(SSIPeripheral *dev, Error **errp)
--{
--    max111x_init(dev, 4);
--}
--
--static void max111x_reset(DeviceState *dev)
--{
--    MAX111xState *s = MAX_111X(dev);
--    int i;
--
--    for (i = 0; i < s->inputs; i++) {
--        s->input[i] = s->reset_input[i];
--    }
--    s->com = 0;
--    s->tb1 = 0;
--    s->rb2 = 0;
--    s->rb3 = 0;
--    s->cycle = 0;
--}
--
--static Property max1110_properties[] = {
--    /* Reset values for ADC inputs */
--    DEFINE_PROP_UINT8("input0", MAX111xState, reset_input[0], 0xf0),
--    DEFINE_PROP_UINT8("input1", MAX111xState, reset_input[1], 0xe0),
--    DEFINE_PROP_UINT8("input2", MAX111xState, reset_input[2], 0xd0),
--    DEFINE_PROP_UINT8("input3", MAX111xState, reset_input[3], 0xc0),
--    DEFINE_PROP_END_OF_LIST(),
--};
--
--static Property max1111_properties[] = {
--    /* Reset values for ADC inputs */
--    DEFINE_PROP_UINT8("input0", MAX111xState, reset_input[0], 0xf0),
--    DEFINE_PROP_UINT8("input1", MAX111xState, reset_input[1], 0xe0),
--    DEFINE_PROP_UINT8("input2", MAX111xState, reset_input[2], 0xd0),
--    DEFINE_PROP_UINT8("input3", MAX111xState, reset_input[3], 0xc0),
--    DEFINE_PROP_UINT8("input4", MAX111xState, reset_input[4], 0xb0),
--    DEFINE_PROP_UINT8("input5", MAX111xState, reset_input[5], 0xa0),
--    DEFINE_PROP_UINT8("input6", MAX111xState, reset_input[6], 0x90),
--    DEFINE_PROP_UINT8("input7", MAX111xState, reset_input[7], 0x80),
--    DEFINE_PROP_END_OF_LIST(),
--};
--
--static void max111x_class_init(ObjectClass *klass, void *data)
--{
--    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
 -    DeviceClass *dc = DEVICE_CLASS(klass);
+-    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
 -
--    k->transfer = max111x_transfer;
--    device_class_set_legacy_reset(dc, max111x_reset);
--    dc->vmsd = &vmstate_max111x;
--    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+-    dc->realize = max7310_realize;
+-    k->event = max7310_event;
+-    k->recv = max7310_rx;
+-    k->send = max7310_tx;
+-    device_class_set_legacy_reset(dc, max7310_reset);
+-    dc->vmsd = &vmstate_max7310;
 -}
 -
--static const TypeInfo max111x_info = {
--    .name          = TYPE_MAX_111X,
--    .parent        = TYPE_SSI_PERIPHERAL,
--    .instance_size = sizeof(MAX111xState),
--    .class_init    = max111x_class_init,
--    .abstract      = true,
+-static const TypeInfo max7310_info = {
+-    .name          = TYPE_MAX7310,
+-    .parent        = TYPE_I2C_SLAVE,
+-    .instance_size = sizeof(MAX7310State),
+-    .class_init    = max7310_class_init,
 -};
 -
--static void max1110_class_init(ObjectClass *klass, void *data)
+-static void max7310_register_types(void)
 -{
--    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
--    DeviceClass *dc = DEVICE_CLASS(klass);
--
--    k->realize = max1110_realize;
--    device_class_set_props(dc, max1110_properties);
+-    type_register_static(&max7310_info);
 -}
 -
--static const TypeInfo max1110_info = {
--    .name          = TYPE_MAX_1110,
--    .parent        = TYPE_MAX_111X,
--    .class_init    = max1110_class_init,
--};
--
--static void max1111_class_init(ObjectClass *klass, void *data)
--{
--    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
--    DeviceClass *dc = DEVICE_CLASS(klass);
--
--    k->realize = max1111_realize;
--    device_class_set_props(dc, max1111_properties);
--}
--
--static const TypeInfo max1111_info = {
--    .name          = TYPE_MAX_1111,
--    .parent        = TYPE_MAX_111X,
--    .class_init    = max1111_class_init,
--};
--
--static void max111x_register_types(void)
--{
--    type_register_static(&max111x_info);
--    type_register_static(&max1110_info);
--    type_register_static(&max1111_info);
--}
--
--type_init(max111x_register_types)
-diff --git a/hw/adc/Kconfig b/hw/adc/Kconfig
-index a825bd3d343..25d2229fb83 100644
---- a/hw/adc/Kconfig
-+++ b/hw/adc/Kconfig
-@@ -1,5 +1,2 @@
- config STM32F2XX_ADC
-     bool
--
--config MAX111X
+-type_init(max7310_register_types)
+diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
+index 843630d4f5f..c423e10f59f 100644
+--- a/hw/gpio/Kconfig
++++ b/hw/gpio/Kconfig
+@@ -1,7 +1,3 @@
+-config MAX7310
 -    bool
-diff --git a/hw/adc/meson.build b/hw/adc/meson.build
-index a4f85b7d468..7f7acc16196 100644
---- a/hw/adc/meson.build
-+++ b/hw/adc/meson.build
-@@ -2,4 +2,3 @@ system_ss.add(when: 'CONFIG_STM32F2XX_ADC', if_true: files('stm32f2xx_adc.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_adc.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_adc.c'))
- system_ss.add(when: 'CONFIG_ZYNQ', if_true: files('zynq-xadc.c'))
--system_ss.add(when: 'CONFIG_MAX111X', if_true: files('max111x.c'))
+-    depends on I2C
+-
+ config PL061
+     bool
+ 
+diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
+index 089b24802ef..74840619c01 100644
+--- a/hw/gpio/meson.build
++++ b/hw/gpio/meson.build
+@@ -1,7 +1,6 @@
+ system_ss.add(when: 'CONFIG_GPIO_KEY', if_true: files('gpio_key.c'))
+ system_ss.add(when: 'CONFIG_GPIO_MPC8XXX', if_true: files('mpc8xxx.c'))
+ system_ss.add(when: 'CONFIG_GPIO_PWR', if_true: files('gpio_pwr.c'))
+-system_ss.add(when: 'CONFIG_MAX7310', if_true: files('max7310.c'))
+ system_ss.add(when: 'CONFIG_PCA9552', if_true: files('pca9552.c'))
+ system_ss.add(when: 'CONFIG_PCA9554', if_true: files('pca9554.c'))
+ system_ss.add(when: 'CONFIG_PL061', if_true: files('pl061.c'))
 -- 
 2.34.1
 
