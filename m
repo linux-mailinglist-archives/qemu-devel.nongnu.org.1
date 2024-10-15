@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A7899EF28
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0175E99EF53
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 16:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0iMf-0005Yu-HO; Tue, 15 Oct 2024 10:17:33 -0400
+	id 1t0iN5-0005rU-UD; Tue, 15 Oct 2024 10:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iMd-0005Vk-FZ
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:31 -0400
+ id 1t0iN1-0005me-Ny
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0iMb-0003IK-VI
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:31 -0400
+ id 1t0iMi-0003Iq-Eb
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 10:17:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729001849;
+ s=mimecast20190719; t=1729001855;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JUmSACYKcbnATfGmH+SmfS6XDaw+I+gZmfDAyJvyAIA=;
- b=jE45lLwKcD6jqmDQ5M45jFflW2SDG8NITlpjL8KSq6P523rWaFEqy1JYOAFnKirE7pDEHv
- TWrNecdE0+9m+blEwajG/VlHyzJoT313CxNjjTzys6n/SQvQR/vVp+Gum4nBVisqKI/Hyp
- Lw7hvGDtpDYDvKXBZ8jBX0TjWwtlJFA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y+sWyoWzl7OLbzMSWkeo43oPGLPNthU9tY/ZPrpiBTU=;
+ b=i8Vxy/hbR4dJncsFVvaaYTgfmvxVpWb3gJTq0CIaxtu8EpjMrxjCzPRlinriq0Jw26aJeE
+ zX4ZfI+0VnYgG1JxRngUIPdJ+/RUdci7i/1+Xq6TJ7ELZvU52DeHO2tbHDFBJ3hDER2v9d
+ uFmcwM8KpvyYRKGuTP1Wx04zyxmiOS0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-tddnMHsPPYeMZE60OXfY_w-1; Tue, 15 Oct 2024 10:17:28 -0400
-X-MC-Unique: tddnMHsPPYeMZE60OXfY_w-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-431207426e3so18284335e9.1
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:17:27 -0700 (PDT)
+ us-mta-513-1qIxDB9iOOanH-HLxoJ2pA-1; Tue, 15 Oct 2024 10:17:30 -0400
+X-MC-Unique: 1qIxDB9iOOanH-HLxoJ2pA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d3e8dccc9so2724190f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 07:17:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729001846; x=1729606646;
+ d=1e100.net; s=20230601; t=1729001848; x=1729606648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JUmSACYKcbnATfGmH+SmfS6XDaw+I+gZmfDAyJvyAIA=;
- b=Uqhb0Qc8mAXFzYkAKgGnfnFJr/wrr7Wcqx0bBC5ccn2rFgEbja5x4F5iKkS3Swfbzj
- HFwcYDF2qcZZFZeYXcqcnLymyMo7bLl3CchyiHO6ACFJQJfExeDsOoHSFpVRLMIf7iQE
- 4MCKTSAOPNKOkDfBZuFhYZ8x7tmLX+1wa2Qk2o2kEyoFQdMqYGoNOBS7Bg34Ged3FGEx
- EpJ6pS3WmhrmzPAlGy5Zk/Rp/bo8cCF3S2hR+4UpHiBFgXGrfwFUF2tUZxifcUHr/nAm
- Eni7131XX6ha93LIFPs4PhcyiU+OHppktJzY0sXpm6zDwubhWl4T88xWkanWsTz4YhH/
- 8PPA==
-X-Gm-Message-State: AOJu0YxbD7uyxQBkan33PW2LEvkAtoeebyd/aslU+lbyqRpTip5WlHa8
- orNdEFuHIHclowKUAwIYHMu3RWbI2Wgzt7IlKUBwfvdJgmegqDgdzpMAds27h7dRu81ArYQumJh
- 8zBSU8pYim6vTaxVgiu01P1M1RnxGMePhSdpBALS2yoOaN8D4xFlF03IQy+ZPZ4zCFQ0H6IrVSI
- hl6+qLUGHOgadYB5m2OQfxLoj1ho3cP+gjkDobrkI=
-X-Received: by 2002:a5d:5105:0:b0:37c:ffdd:6d5a with SMTP id
- ffacd0b85a97d-37d5519df73mr13014928f8f.6.1729001845701; 
- Tue, 15 Oct 2024 07:17:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgeGSee1sIIMSD78GslpSAUiSMJZ3temoaPBTikEdS6CCmx2/XdLWOkFUTon+UDwj8oLo83g==
-X-Received: by 2002:a5d:5105:0:b0:37c:ffdd:6d5a with SMTP id
- ffacd0b85a97d-37d5519df73mr13014894f8f.6.1729001845148; 
- Tue, 15 Oct 2024 07:17:25 -0700 (PDT)
+ bh=Y+sWyoWzl7OLbzMSWkeo43oPGLPNthU9tY/ZPrpiBTU=;
+ b=PdLSMvpXM/5j2R49DysqjLXZ4s83CI0cuJb6/V7o51RKN/yZFX3XJNJKKWMK71FJp3
+ dqwD7Ehvb5IhzTkinHUWAirwWOhyAFQtZWRqNmn56xGlB4bn9ltqL9H96CFiWMxlCiWH
+ wu4s1xO1Fwn8Dd4xyfZzZxKqJ0sGX5hZ/ZUwCBE06Li3iqJ4dXkLXfF3LjqYYViQyy3j
+ /3IhDTmDA/AMYlmKkh1lBflIFAfT5xNP1wVnA6soDtDo9Jei9vYl44j+8it3pdXFth+E
+ AVJcLzILSyrxRNG1p9ozA6lsfqtu+dsjfThyyGsnqi6HMFAXAq5hMM0OzUVpIRxzzcrN
+ XIIQ==
+X-Gm-Message-State: AOJu0YzInqEWHyu4NhH1RrR4zd8WMYJ1CB7h0E6nFFvnqsruCgUp1q7N
+ Pb1KqqShpiSVKJCqZ8v8aWCMiSFQiynXLGTQJIP+b52vMKRP6aknopRyy5fBsNXrxHQ7J557Zjp
+ FDGqolsSMo3woRQL4Yq16S3ePbEmvnyPzbZHo1tumV5EW5QXD2+Z5t4lWnL2Ydyx349y/EeaC2S
+ 9vZqTyrrqcqFqwQy/Af7bEQIoNVPLLNBGqsiqAQMs=
+X-Received: by 2002:a05:6000:e52:b0:37d:50e1:a2c1 with SMTP id
+ ffacd0b85a97d-37d5529d2d2mr10586691f8f.46.1729001848608; 
+ Tue, 15 Oct 2024 07:17:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHn98+33rhfygEHkkLOjgan1wXMqLK5zIkFNwnGiub6p1TsXgecO5xnXaS4Ld0kpgIk0mO2g==
+X-Received: by 2002:a05:6000:e52:b0:37d:50e1:a2c1 with SMTP id
+ ffacd0b85a97d-37d5529d2d2mr10586670f8f.46.1729001848118; 
+ Tue, 15 Oct 2024 07:17:28 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fbf8416sm1685083f8f.77.2024.10.15.07.17.23
+ ffacd0b85a97d-37d7fa7a23csm1705482f8f.18.2024.10.15.07.17.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 07:17:23 -0700 (PDT)
+ Tue, 15 Oct 2024 07:17:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 03/25] target/i386: Construct CPUID 2 as stateful iff times > 1
-Date: Tue, 15 Oct 2024 16:16:49 +0200
-Message-ID: <20241015141711.528342-4-pbonzini@redhat.com>
+Subject: [PULL 04/25] target/i386: Make invtsc migratable when user sets
+ tsc-khz explicitly
+Date: Tue, 15 Oct 2024 16:16:50 +0200
+Message-ID: <20241015141711.528342-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015141711.528342-1-pbonzini@redhat.com>
 References: <20241015141711.528342-1-pbonzini@redhat.com>
@@ -102,34 +103,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-When times == 1, the CPUID leaf 2 is not stateful.
+When user sets tsc-frequency explicitly, the invtsc feature is actually
+migratable because the tsc-frequency is supposed to be fixed during the
+migration.
+
+See commit d99569d9d856 ("kvm: Allow invtsc migration if tsc-khz
+is set explicitly") for referrence.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20240814075431.339209-6-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20240814075431.339209-10-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6f6301460d4..77e88165707 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1838,10 +1838,12 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
-             int times;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 089b651591b..5535f4e6ab4 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1865,9 +1865,10 @@ static inline uint64_t x86_cpu_xsave_xss_components(X86CPU *cpu)
+  * Returns the set of feature flags that are supported and migratable by
+  * QEMU, for a given FeatureWord.
+  */
+-static uint64_t x86_cpu_get_migratable_flags(FeatureWord w)
++static uint64_t x86_cpu_get_migratable_flags(X86CPU *cpu, FeatureWord w)
+ {
+     FeatureWordInfo *wi = &feature_word_info[w];
++    CPUX86State *env = &cpu->env;
+     uint64_t r = 0;
+     int i;
  
-             c->function = i;
--            c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
--                       KVM_CPUID_FLAG_STATE_READ_NEXT;
-             cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-             times = c->eax & 0xff;
-+            if (times > 1) {
-+                c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
-+                           KVM_CPUID_FLAG_STATE_READ_NEXT;
-+            }
+@@ -1881,6 +1882,12 @@ static uint64_t x86_cpu_get_migratable_flags(FeatureWord w)
+             r |= f;
+         }
+     }
++
++    /* when tsc-khz is set explicitly, invtsc is migratable */
++    if ((w == FEAT_8000_0007_EDX) && env->user_tsc_khz) {
++        r |= CPUID_APM_INVTSC;
++    }
++
+     return r;
+ }
  
-             for (j = 1; j < times; ++j) {
-                 if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
+@@ -6124,7 +6131,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+ 
+     r &= ~unavail;
+     if (cpu && cpu->migratable) {
+-        r &= x86_cpu_get_migratable_flags(w);
++        r &= x86_cpu_get_migratable_flags(cpu, w);
+     }
+     return r;
+ }
 -- 
 2.46.2
 
