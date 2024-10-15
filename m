@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DDB99F1EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 17:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB97099F24E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 18:08:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0jnn-00041X-AU; Tue, 15 Oct 2024 11:49:39 -0400
+	id 1t0k4k-0008D7-NY; Tue, 15 Oct 2024 12:07:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0jnJ-0003fH-Ju
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:49:14 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0jnF-00019T-TA
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 11:49:09 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a991fedbd04so527498666b.3
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 08:49:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729007344; x=1729612144; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=h8yxg9y4vv4qI/jrS4Ln3/iEtaNWndxMD91mSBaNHWg=;
- b=KYLd4d70jvnRPGrswRJPT5Ywcab3SfFvUFFI81czG7Mx2aIFo4V1ptLhaP0OsVfvDy
- Xj+iMXRMQb6ypneuLcg6YnadKvC4/lvkx1trpoQY9uEHEuBiE5P5Of0X7srYq6me9PXy
- TjGcdaEgUUD7N1hIJ/4OKVGP6GuG88B2Biv5qzBkuQZvaWWkInTonEucVewR7kRHS5cC
- EWMtExBp2LC1HD13EPFoeCU7P6LlToVgUZnT8orA+xsehXLkyw42wjNxfuaDi3lZi9BV
- o2ksd/Ine+5q9OSLmmsgvtJWg6dlnHUVO1Bc0qZE/lODbFaWN3IBZ8nB286MARL4Vmok
- Y0mg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t0k4I-0008CE-Ce
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 12:06:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t0k4F-0003pc-3S
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 12:06:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729008397;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=gK6xoO0U8OgwkwERg1fRthXuoEip1CP9vLdL7OWRgf0=;
+ b=RTBvDIrs1Zaa6F843uR/HFWud31ZjGa7uboVTgUk2kTVQ9xfTR9rd1dwp6W+If/YBIRMiB
+ LzGCQsDLYKOpJdEo0SVxoKYs25K0d1Co30t0UbgHgrosgwWHWo2JNyCFfm983788WA0aJZ
+ d8+TRioYSDDgRvIPrZ50pUuJl/NVAyQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-n-KDRVmxMcmO0H6b75ptEg-1; Tue, 15 Oct 2024 12:06:35 -0400
+X-MC-Unique: n-KDRVmxMcmO0H6b75ptEg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6cbe4a123fdso94119816d6.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 09:06:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729007344; x=1729612144;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=h8yxg9y4vv4qI/jrS4Ln3/iEtaNWndxMD91mSBaNHWg=;
- b=NPVIjcn32UlHNHSwM6NB1+CjvRAdATtYkYkp8dcNInAmNBU35XIKXWqDZnRPOCen/j
- u31rbpgQpvUu3Z+R0X+2tMRtZDdg3EDtQmLaADm9FNCbrdHGhjip2EXcMchnQWCDH8Ez
- 8IuxQ1+x71E9FvFZbqy13p7X5zgFomiwLcwmZXzRzY4n2d+zTKyo052VUg5iiC9/tEPb
- e5i0QkSNfQNWN8z2xhH2dJnCcTSWF0lARN60XtsUXxk+ANczb5WhzHXI4AW+mvM3MTar
- MA/NRs4uCySHCkSb0S8RfZFyYQP4Gvx1arRmMjYImR7BabFHGWIuR4Sc8K9P+JX2h3jO
- yJ5Q==
-X-Gm-Message-State: AOJu0Yyt6jyLSdrv9R1b+G0OCeLr/VgFHFHtxTkNiLGeCWgEHyUZ8KQw
- FMDGYj2jhuBu9YKJX00TcmHJSHcXdSRd37ZG6p6E0uRQmV3A2cWyjh7pkp3NNIwkt32eXecfV2O
- 148YHgAa7/mvsNLAOW8qF/1PxK2Vvz/wfkgAsFrAINHIuNumd
-X-Google-Smtp-Source: AGHT+IGM+9DkcJCDY0v8KzXQN1mjBRHsMhiLKQ67esltuWKeS9wUl99GIzv2WOXAoUW9XnHmNR9UXfB4tl8Tdo5bHOw=
-X-Received: by 2002:a05:6402:8c3:b0:5c9:55aa:4285 with SMTP id
- 4fb4d7f45d1cf-5c95ac63c95mr15472562a12.34.1729007343878; Tue, 15 Oct 2024
- 08:49:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729008394; x=1729613194;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gK6xoO0U8OgwkwERg1fRthXuoEip1CP9vLdL7OWRgf0=;
+ b=ByNin6IkX0gJgMPhZfv+qmSSpMNwi14gXajlOWCjwB0qrGDZdueLFHCfnvmQsKKnvZ
+ 28ouQhCJ2RKKj+ZGn8ic2bduMZAnBCJwFQweEYbvdCTmW0UHp5R/qD+D7pVlpghvMyK7
+ 0PpcsWqt1VFue3gbGn0NQkuJVlo6VkdpZGwK/kLWXD2oS3CZ/ZM4mTyX9CHEH/4qeuzk
+ Z47wa5Ss0JSCTlyK1BthKdqZlIZcr2LeK/ITDkkZ0LxYQ6PHGWsCfKy6nm463iVUVCgZ
+ V3vhmv0e5MpOUtGYDcfTwN+JYDnenJggvyxiGDCZ+sI2GG+HdCe4CmdICHnFZwm3tIQU
+ i3WQ==
+X-Gm-Message-State: AOJu0YxttVBblP4R0bbN8c9I48yth/++SImyld7iyxL6JjN8Gt1F7mEA
+ NaC7cDNuiCF50sOmALHim7ws1N1lUtLRtioUxztRjY3fhqgBlOdcLIaU2NeqKRXUWhqNe6rgFEN
+ qTdw9Nr1MRQ175TKp0sNJZFoYIfZY/LTEHqVt9/0WtchyohvsZkTN
+X-Received: by 2002:a05:6214:5785:b0:6cb:eb66:c37a with SMTP id
+ 6a1803df08f44-6cbf00ec482mr175711336d6.53.1729008394486; 
+ Tue, 15 Oct 2024 09:06:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH69Lr6GqKclEz9wOIaXncCNmgjG3A+t+i8UcJQdMUqqpiqYIeDlin7v1GrbMXBSjD9q3ztHQ==
+X-Received: by 2002:a05:6214:5785:b0:6cb:eb66:c37a with SMTP id
+ 6a1803df08f44-6cbf00ec482mr175710956d6.53.1729008393909; 
+ Tue, 15 Oct 2024 09:06:33 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6cc22921b34sm8246126d6.46.2024.10.15.09.06.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Oct 2024 09:06:33 -0700 (PDT)
+Date: Tue, 15 Oct 2024 12:06:31 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH] migration: Ensure vmstate_save() sets errp
+Message-ID: <Zw6TBx0HPf1OhXD7@x1n>
+References: <20241015141515.150754-1-hreitz@redhat.com>
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 15 Oct 2024 16:48:53 +0100
-Message-ID: <CAFEAcA9CthdJz+QM=_q2NxPbdCyyf+YBGE+qDVYs7VbqWT+aqw@mail.gmail.com>
-Subject: patchew no longer pushing patches to git branches
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <famz@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241015141515.150754-1-hreitz@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,16 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It looks like since a few months back patchew stopped pushing patches
-to git branches: eg
+On Tue, Oct 15, 2024 at 04:15:15PM +0200, Hanna Czenczek wrote:
+> migration/savevm.c contains some calls to vmstate_save() that are
+> followed by migrate_set_error() if the integer return value indicates an
+> error.  migrate_set_error() requires that the `Error *` object passed to
+> it is set.  Therefore, vmstate_save() is assumed to always set *errp on
+> error.
+> 
+> Right now, that assumption is not met: vmstate_save_state_v() (called
+> internally by vmstate_save()) will not set *errp if
+> vmstate_subsection_save() or vmsd->post_save() fail.  Fix that by adding
+> an *errp parameter to vmstate_subsection_save(), and by generating a
+> generic error in case post_save() fails (as is already done for
+> pre_save()).
+> 
+> Without this patch, qemu will crash after vmstate_subsection_save() or
+> post_save() have failed inside of a vmstate_save() call (unless
+> migrate_set_error() then happen to discard the new error because
+> s->error is already set).  This happens e.g. when receiving the state
+> from a virtio-fs back-end (virtiofsd) fails.
+> 
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  migration/vmstate.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/migration/vmstate.c b/migration/vmstate.c
+> index ff5d589a6d..13532f2807 100644
+> --- a/migration/vmstate.c
+> +++ b/migration/vmstate.c
+> @@ -22,7 +22,8 @@
+>  #include "trace.h"
+>  
+>  static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
+> -                                   void *opaque, JSONWriter *vmdesc);
+> +                                   void *opaque, JSONWriter *vmdesc,
+> +                                   Error **errp);
+>  static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+>                                     void *opaque);
+>  
+> @@ -441,12 +442,13 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>          json_writer_end_array(vmdesc);
+>      }
+>  
+> -    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc);
+> +    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
+>  
+>      if (vmsd->post_save) {
+>          int ps_ret = vmsd->post_save(opaque);
+>          if (!ret) {
 
-https://patchew.org/QEMU/20240526204551.553282-1-richard.henderson@linaro.org/
-from four months ago had a git branch created for it, but more
-recent patches in patchew's UI don't seem to have that.
+Perhaps here it needs to be "if (!ret && ps_ret)" now, otherwise the error
+will be attached even if no error for both retvals?
 
-Did this get accidentally lost when patchew moved server, or
-was it deliberately disabled?
+Other than that it looks good.
 
-thanks
--- PMM
+Thanks,
+
+>              ret = ps_ret;
+> +            error_setg(errp, "post-save failed: %s", vmsd->name);
+>          }
+>      }
+>      return ret;
+> @@ -518,7 +520,8 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+>  }
+>  
+>  static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
+> -                                   void *opaque, JSONWriter *vmdesc)
+> +                                   void *opaque, JSONWriter *vmdesc,
+> +                                   Error **errp)
+>  {
+>      const VMStateDescription * const *sub = vmsd->subsections;
+>      bool vmdesc_has_subsections = false;
+> @@ -546,7 +549,7 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
+>              qemu_put_byte(f, len);
+>              qemu_put_buffer(f, (uint8_t *)vmsdsub->name, len);
+>              qemu_put_be32(f, vmsdsub->version_id);
+> -            ret = vmstate_save_state(f, vmsdsub, opaque, vmdesc);
+> +            ret = vmstate_save_state_with_err(f, vmsdsub, opaque, vmdesc, errp);
+>              if (ret) {
+>                  return ret;
+>              }
+> -- 
+> 2.45.2
+> 
+
+-- 
+Peter Xu
+
 
