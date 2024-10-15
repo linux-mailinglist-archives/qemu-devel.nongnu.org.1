@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6B299E45F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A8299E434
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewZ-0006gR-KH; Tue, 15 Oct 2024 06:38:23 -0400
+	id 1t0ewY-0006g9-OZ; Tue, 15 Oct 2024 06:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewV-0006do-H5
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:19 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1t0ewU-0006d4-6c
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:18 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewS-0005wS-Py
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:19 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43117ed8adbso58238175e9.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:16 -0700 (PDT)
+ id 1t0ewR-0005w2-Pp
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:17 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43111cff9d3so39035565e9.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728988695; x=1729593495; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728988694; x=1729593494; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uQyiSr+GMXfCOC8blY2Vz0JFIbQgxcDhxoPn/qE/+zs=;
- b=u6zOSnTkK5Y83j9DSpDTWHd9Fy+RuO1HiUHXaIock7ueZs1sUNkV8LL9EgHMANyu+K
- ZpaX9rm5PkBOqV3sFiFua6NKI6hW2O7nk2DFUo6nJrTUmAV/yXQIL//pKWOVs2AMb/t+
- M84hG01u7Nly5KDFGcJASGWCAFHkV7bFZ+7cKyDmgLpDbx0hlIIlnRpFKs3fFts5SqRA
- skYQKDHR02qtQBhjhHI0lhkkkdf5Js0Xr7d5ZBZAeLwapFidKWVbblT/kKP6qP2OkQp1
- Lu1Heotr0KifUDX9D9RADytk3jkGoxyt7aZDu7Nx7q7W2nFA0M0QHuQP5ENpkUDckKs+
- 94kg==
+ :reply-to; bh=T/8MhemOTljPnrKxsD/elwfdUS+UpSgEuo6SU7bdXqc=;
+ b=StWJIp6wYoDR3pn4xnxzp+F5RnqJwLE8GK/GOvRnScBklH9XJmmol/T6/kicn/MqsE
+ zgLURScrDwCSe44vldvnf8di84rRTrib9lmv1swigFwLRxCMFIJKWv3jXo4JsSpz3nJ6
+ k8KsctBj/hxZxzq3/Jkwe0domh2/AAuVr/QT6retjDEN/qEtsqh5blcJGRvd47PsdjSu
+ urJ9fDPTqCpMTgbcKtifAXx30GUcGJmC/WEgqwkQNXBVu5z6iP/3iR1lQqz4sP0+sbl5
+ VZG4Uf7At8R9cy3awqAaHFFN3etdIvr+PjYoPzgq+dtLllKr71Oz6CtazBwzpTyQwx0m
+ YTSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728988695; x=1729593495;
+ d=1e100.net; s=20230601; t=1728988694; x=1729593494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uQyiSr+GMXfCOC8blY2Vz0JFIbQgxcDhxoPn/qE/+zs=;
- b=cf6ZiyXP1JcmNthSsfNrLqnk8ivu09bqgR0W+scB6jMhv2VChdGjhfE484Rd5ivopy
- cw1pdFXQ0qnsQkHzQ1QyT29VIR50Nhbm1BDVcGjEusY/wMt2r1uPYNkAcsd1XhtKUQKe
- 94f2UKDuTGPFxoI8DH36RIPMuaWq2ST9KXMiIV7BGEC+e976cmniHLV8nw93QbEMqTju
- yDpACL7gIfPIDWCi398PuBmpx2FfMiqggL2lhVtr5T3WkiVyaIubrM68D0kjrnsls6T6
- Ln7Jp07GfevWRCdwYDBSRXlmUNZFrlVp3aHs+Ns5vzkl5fscZv8fiJ4v4M9FpEQw3dHM
- Nrrw==
-X-Gm-Message-State: AOJu0YyN3bm/Usrni+B3c+jPsnNQUHQ0XclMSCMcNRlGc4vG33+KPxjI
- rJlQUu+LHzvK7fxbAH5tSZz0pN98AkebqZ8yGjHwP3bWfg0lqzM3AeKKlUO7RbDr0mxgMx1y5eW
- U
-X-Google-Smtp-Source: AGHT+IGzsZP5PJ8Or73O3MLWC3pRp6kufC+SVeDhjUJAdvhE8dOvcFqr5fVaUqMv9vaVaFYV9KR4XQ==
-X-Received: by 2002:a05:6000:11ce:b0:37d:3e6d:6a00 with SMTP id
- ffacd0b85a97d-37d600d329cmr10271665f8f.47.1728988693548; 
- Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
+ bh=T/8MhemOTljPnrKxsD/elwfdUS+UpSgEuo6SU7bdXqc=;
+ b=NM2uFJik46F0S5KXj3R2p9CQByXhaMV5V90hAr4CLrYL06OAGIf/o55WvByK2B3GVQ
+ BVaxKBDAnBGWURbwek6X+GIwlFn0g/Mn3g7ciZGDZXho30fQdpk2QNxFvgU88X+W7aHc
+ nCgiI+5q50Tizv2e9udSC9TxQ4mvJolyG/KqWUDwKnnNEMuGEHrytLtip54AfqJW3AXZ
+ 4dhdKs+fCjezM0vilz/7AO0EGPU7Dxli2BSSQ7/TV1a/DN9NaYTPpJYVihHItbWBxpTN
+ fSkvuy3uqlFBhUbt8Qwu178SMGjho0fg4D/wEwcrethEaywpMI/Wao7G9Xgv9ROqYtn0
+ eijQ==
+X-Gm-Message-State: AOJu0YwCFF7y8SwVvWDbKGndFI2j0W+bTa4+dWj7vOxWgP0ityk1XymS
+ fao8feeZzkn9SFbkbwSYpJGVppORF3vrQpSZSVHIctEkttpbbkIVO4jXOCxG94YF2GYe8AZ/jhz
+ 1
+X-Google-Smtp-Source: AGHT+IFdcKp5HJzddTCUjS9tfz7zBA+EgrOh7T2My2DTFNrWmO31CBW896Gr8x4pLRIBNqWVDLjTbw==
+X-Received: by 2002:a5d:5708:0:b0:37d:4fe9:b6a6 with SMTP id
+ ffacd0b85a97d-37d551f2dbfmr8918582f8f.29.1728988694070; 
+ Tue, 15 Oct 2024 03:38:14 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.13
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 15 Oct 2024 03:38:13 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/28] hw/clock: Expose 'qtest-clock-period' QOM property for
- QTests
-Date: Tue, 15 Oct 2024 11:37:48 +0100
-Message-Id: <20241015103808.133024-9-peter.maydell@linaro.org>
+Subject: [PULL 09/28] tests/qtest: Check STM32L4x5 clock connections
+Date: Tue, 15 Oct 2024 11:37:49 +0100
+Message-Id: <20241015103808.133024-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,79 +94,229 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-Expose the clock period via the QOM 'qtest-clock-period' property so it
-can be used in QTests. This property is only accessible in QTests (not
-via HMP).
+For USART, GPIO and SYSCFG devices, check that clock frequency before
+and after enabling the peripheral clock in RCC is correct.
 
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Luc Michel <luc@lmichel.fr>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20241003081105.40836-3-ines.varhol@telecom-paris.fr
+Reviewed-by: Luc Michel <luc@lmichel.fr>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241003081105.40836-4-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/devel/clocks.rst |  6 ++++++
- hw/core/clock.c       | 16 ++++++++++++++++
- 2 files changed, 22 insertions(+)
+ tests/qtest/stm32l4x5.h             | 42 +++++++++++++++++++++++++++++
+ tests/qtest/stm32l4x5_gpio-test.c   | 23 ++++++++++++++++
+ tests/qtest/stm32l4x5_syscfg-test.c | 20 ++++++++++++--
+ tests/qtest/stm32l4x5_usart-test.c  | 26 ++++++++++++++++++
+ 4 files changed, 109 insertions(+), 2 deletions(-)
+ create mode 100644 tests/qtest/stm32l4x5.h
 
-diff --git a/docs/devel/clocks.rst b/docs/devel/clocks.rst
-index 177ee1c90d7..3f744f2be1e 100644
---- a/docs/devel/clocks.rst
-+++ b/docs/devel/clocks.rst
-@@ -358,6 +358,12 @@ humans (for instance in debugging), use ``clock_display_freq()``,
- which returns a prettified string-representation, e.g. "33.3 MHz".
- The caller must free the string with g_free() after use.
- 
-+It's also possible to retrieve the clock period from a QTest by
-+accessing QOM property ``qtest-clock-period`` using a QMP command.
-+This property is only present when the device is being run under
-+the ``qtest`` accelerator; it is not available when QEMU is
-+being run normally.
+diff --git a/tests/qtest/stm32l4x5.h b/tests/qtest/stm32l4x5.h
+new file mode 100644
+index 00000000000..2d21cc666cc
+--- /dev/null
++++ b/tests/qtest/stm32l4x5.h
+@@ -0,0 +1,42 @@
++/*
++ * QTest testcase header for STM32L4X5 :
++ * used for consolidating common objects in stm32l4x5_*-test.c
++ *
++ * Copyright (c) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2024 Inès Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
- Calculating expiry deadlines
- ----------------------------
- 
-diff --git a/hw/core/clock.c b/hw/core/clock.c
-index e212865307b..cbe7b1bc469 100644
---- a/hw/core/clock.c
-+++ b/hw/core/clock.c
-@@ -13,6 +13,8 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
-+#include "qapi/visitor.h"
-+#include "sysemu/qtest.h"
- #include "hw/clock.h"
- #include "trace.h"
- 
-@@ -158,6 +160,15 @@ bool clock_set_mul_div(Clock *clk, uint32_t multiplier, uint32_t divider)
-     return true;
- }
- 
-+static void clock_period_prop_get(Object *obj, Visitor *v, const char *name,
-+                                void *opaque, Error **errp)
++#include "libqtest.h"
++
++/* copied from clock.h */
++#define CLOCK_PERIOD_1SEC (1000000000llu << 32)
++#define CLOCK_PERIOD_FROM_HZ(hz) (((hz) != 0) ? CLOCK_PERIOD_1SEC / (hz) : 0u)
++/*
++ * MSI (4 MHz) is used as system clock source after startup
++ * from Reset.
++ * AHB, APB1 and APB2 prescalers are set to 1 at reset.
++ */
++#define SYSCLK_PERIOD CLOCK_PERIOD_FROM_HZ(4000000)
++#define RCC_AHB2ENR 0x4002104C
++#define RCC_APB1ENR1 0x40021058
++#define RCC_APB1ENR2 0x4002105C
++#define RCC_APB2ENR 0x40021060
++
++
++static inline uint64_t get_clock_period(QTestState *qts, const char *path)
 +{
-+    Clock *clk = CLOCK(obj);
-+    uint64_t period = clock_get(clk);
-+    visit_type_uint64(v, name, &period, errp);
++    uint64_t clock_period = 0;
++    QDict *r;
++
++    r = qtest_qmp(qts, "{ 'execute': 'qom-get', 'arguments':"
++        " { 'path': %s, 'property': 'qtest-clock-period'} }", path);
++    g_assert_false(qdict_haskey(r, "error"));
++    clock_period = qdict_get_int(r, "return");
++    qobject_unref(r);
++    return clock_period;
 +}
 +
 +
- static void clock_initfn(Object *obj)
- {
-     Clock *clk = CLOCK(obj);
-@@ -166,6 +177,11 @@ static void clock_initfn(Object *obj)
-     clk->divider = 1;
+diff --git a/tests/qtest/stm32l4x5_gpio-test.c b/tests/qtest/stm32l4x5_gpio-test.c
+index 72a78234066..c0686c7b306 100644
+--- a/tests/qtest/stm32l4x5_gpio-test.c
++++ b/tests/qtest/stm32l4x5_gpio-test.c
+@@ -10,6 +10,7 @@
  
-     QLIST_INIT(&clk->children);
-+
-+    if (qtest_enabled()) {
-+        object_property_add(obj, "qtest-clock-period", "uint64",
-+                            clock_period_prop_get, NULL, NULL, NULL);
-+    }
+ #include "qemu/osdep.h"
+ #include "libqtest-single.h"
++#include "stm32l4x5.h"
+ 
+ #define GPIO_BASE_ADDR 0x48000000
+ #define GPIO_SIZE      0x400
+@@ -505,6 +506,26 @@ static void test_bsrr_brr(const void *data)
+     gpio_writel(gpio, ODR, reset(gpio, ODR));
  }
  
- static void clock_finalizefn(Object *obj)
++static void test_clock_enable(void)
++{
++    /*
++     * For each GPIO, enable its clock in RCC
++     * and check that its clock period changes to SYSCLK_PERIOD
++     */
++    unsigned int gpio_id;
++
++    for (uint32_t gpio = GPIO_A; gpio <= GPIO_H; gpio += GPIO_B - GPIO_A) {
++        gpio_id = get_gpio_id(gpio);
++        g_autofree char *path = g_strdup_printf("/machine/soc/gpio%c/clk",
++                                                gpio_id + 'a');
++        g_assert_cmpuint(get_clock_period(global_qtest, path), ==, 0);
++        /* Enable the gpio clock */
++        writel(RCC_AHB2ENR, readl(RCC_AHB2ENR) | (0x1 << gpio_id));
++        g_assert_cmpuint(get_clock_period(global_qtest, path), ==,
++                         SYSCLK_PERIOD);
++    }
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -556,6 +577,8 @@ int main(int argc, char **argv)
+     qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr2",
+                         test_data(GPIO_D, 0),
+                         test_bsrr_brr);
++    qtest_add_func("stm32l4x5/gpio/test_clock_enable",
++                   test_clock_enable);
+ 
+     qtest_start("-machine b-l475e-iot01a");
+     ret = g_test_run();
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_syscfg-test.c
+index 258417cd889..d5c71e2c0e7 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -10,6 +10,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest-single.h"
++#include "stm32l4x5.h"
+ 
+ #define SYSCFG_BASE_ADDR 0x40010000
+ #define SYSCFG_MEMRMP 0x00
+@@ -26,7 +27,9 @@
+ #define INVALID_ADDR 0x2C
+ 
+ /* SoC forwards GPIOs to SysCfg */
+-#define SYSCFG "/machine/soc"
++#define SOC "/machine/soc"
++#define SYSCFG "/machine/soc/syscfg"
++#define SYSCFG_CLK "/machine/soc/syscfg/clk"
+ #define EXTI "/machine/soc/exti"
+ 
+ static void syscfg_writel(unsigned int offset, uint32_t value)
+@@ -41,7 +44,7 @@ static uint32_t syscfg_readl(unsigned int offset)
+ 
+ static void syscfg_set_irq(int num, int level)
+ {
+-   qtest_set_irq_in(global_qtest, SYSCFG, NULL, num, level);
++   qtest_set_irq_in(global_qtest, SOC, NULL, num, level);
+ }
+ 
+ static void system_reset(void)
+@@ -301,6 +304,17 @@ static void test_irq_gpio_multiplexer(void)
+     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+ }
+ 
++static void test_clock_enable(void)
++{
++    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), ==, 0);
++
++    /* Enable SYSCFG clock */
++    writel(RCC_APB2ENR, readl(RCC_APB2ENR) | (0x1 << 0));
++
++    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), ==,
++                                       SYSCLK_PERIOD);
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -325,6 +339,8 @@ int main(int argc, char **argv)
+                    test_irq_pin_multiplexer);
+     qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
+                    test_irq_gpio_multiplexer);
++    qtest_add_func("stm32l4x5/syscfg/test_clock_enable",
++                   test_clock_enable);
+ 
+     qtest_start("-machine b-l475e-iot01a");
+     ret = g_test_run();
+diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
+index 64cebda60f0..315bcee0042 100644
+--- a/tests/qtest/stm32l4x5_usart-test.c
++++ b/tests/qtest/stm32l4x5_usart-test.c
+@@ -12,6 +12,7 @@
+ #include "libqtest.h"
+ #include "hw/misc/stm32l4x5_rcc_internals.h"
+ #include "hw/registerfields.h"
++#include "stm32l4x5.h"
+ 
+ #define RCC_BASE_ADDR 0x40021000
+ /* Use USART 1 ADDR, assume the others work the same */
+@@ -331,6 +332,30 @@ static void test_ack(void)
+     qtest_quit(qts);
+ }
+ 
++static void check_clock(QTestState *qts, const char *path, uint32_t rcc_reg,
++                        uint32_t reg_offset)
++{
++    g_assert_cmpuint(get_clock_period(qts, path), ==, 0);
++    qtest_writel(qts, rcc_reg, qtest_readl(qts, rcc_reg) | (0x1 << reg_offset));
++    g_assert_cmpuint(get_clock_period(qts, path), ==, SYSCLK_PERIOD);
++}
++
++static void test_clock_enable(void)
++{
++    /*
++     * For each USART device, enable its clock in RCC
++     * and check that its clock frequency is SYSCLK_PERIOD
++     */
++    QTestState *qts = qtest_init("-M b-l475e-iot01a");
++
++    check_clock(qts, "machine/soc/usart[0]/clk", RCC_APB2ENR, 14);
++    check_clock(qts, "machine/soc/usart[1]/clk", RCC_APB1ENR1, 17);
++    check_clock(qts, "machine/soc/usart[2]/clk", RCC_APB1ENR1, 18);
++    check_clock(qts, "machine/soc/uart[0]/clk", RCC_APB1ENR1, 19);
++    check_clock(qts, "machine/soc/uart[1]/clk", RCC_APB1ENR1, 20);
++    check_clock(qts, "machine/soc/lpuart1/clk", RCC_APB1ENR2, 0);
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -344,6 +369,7 @@ int main(int argc, char **argv)
+     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
+     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
+     qtest_add_func("stm32l4x5/usart/ack", test_ack);
++    qtest_add_func("stm32l4x5/usart/clock_enable", test_clock_enable);
+     ret = g_test_run();
+ 
+     return ret;
 -- 
 2.34.1
 
