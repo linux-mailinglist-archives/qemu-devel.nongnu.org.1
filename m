@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E72799EC8B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4191C99EC6A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 15:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0hRV-00029u-No; Tue, 15 Oct 2024 09:18:29 -0400
+	id 1t0hRX-0002AJ-8V; Tue, 15 Oct 2024 09:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hRT-00029K-Oe
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:27 -0400
+ id 1t0hRW-0002A5-5a
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t0hRS-0001Ok-9I
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:27 -0400
+ id 1t0hRU-0001Pd-Mh
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 09:18:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728998305;
+ s=mimecast20190719; t=1728998307;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=guzIU8szJRoPg8gn1V5aPIVykgsXGQXnmT0CyHWL5RY=;
- b=azVZ9G8Bh0MplyhTU+8hNnlH8MTskL6RMnXnDeGiqg0M5SK6ehJoODYkBMqvC4oCbJUdK/
- fF1x+oKkVStDYR55wb2iADkTDqIqXBBAscDwKbcCgWLIEq7TWBNlPAbM6Migy7VHdNa1sB
- gIvuj9jLkjHIoIpDwnkLOmGDq1AR4d4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7x7nS4Xh6lw88VcJcF60YqjvT0tzg3gAq71y1ldvMM8=;
+ b=TIvOlI4kSVU0ASX0zNAuxw4Fa+QJdWEg+FDgfxNxSy3ns+Cwe2O0Pkgaei0fFXsP/T482g
+ LlLjr9B+ZhgVcI7JQFDFV4SlD5PVrfH7TNoeDUfhfnnPyrytxjmAFX9nfkcLsbe4Ks+I4t
+ 3R7kzBJgMuBSEbqGt21g9sHBd8YB0Nw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-Xwzp_SI9MoyoA_ah1uzquA-1; Tue, 15 Oct 2024 09:18:24 -0400
-X-MC-Unique: Xwzp_SI9MoyoA_ah1uzquA-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-539fbf73a2fso1672283e87.2
- for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:18:23 -0700 (PDT)
+ us-mta-259-n6KMFbOtPqaZ2UDScpayRg-1; Tue, 15 Oct 2024 09:18:26 -0400
+X-MC-Unique: n6KMFbOtPqaZ2UDScpayRg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d4af408dcso2209726f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 06:18:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728998302; x=1729603102;
+ d=1e100.net; s=20230601; t=1728998305; x=1729603105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=guzIU8szJRoPg8gn1V5aPIVykgsXGQXnmT0CyHWL5RY=;
- b=IJS1TcGopEneu+H/dbnhVE/BeTVBW+pchSdSx142XzObpndeCAXrOZPGoTeSPtQ3KK
- N8uLhCBEnAdsbFGRpnHsrmktXFFBF6wQbruZHbk9W5NpHF7Dfy9Xnn/jA3Tlr6JqvzZq
- i/UBh05LQ4+L1yyghsQCFzjYxP6pwfQbnAZcXp4NukbzoukX/O990ipNN42yi6gsbOlq
- MXhyR5X9SDKBnkL3p7BhplRX9bPA3NsuVrHi0rTSiVVmpGStdOpBi5eX3d6sdfMmHUy+
- wyldr2dixcyw/Q6Q/1Jv8Rs94DKwx37mDTtReNF9eBYNENV8hFTcmsVifNHg0nexFVwU
- rwOg==
-X-Gm-Message-State: AOJu0Yz7mX4/A/U8YaXDwi5xw2lN9+y0Ovugy2/bS3sYqJ6BOoo0eQL7
- sp/uq5ZTvKE/w2zcfatjYZkK/sZuV97S+JBky48O26wxvgxM2vdpciPa0BXNvqbtjXWlu7b3qf9
- 3bRGqA/RCqMgbgeB6nvaZGlbRdJwDJILwRrfJq4W+y4zJv40xiISVpQHGfW3xrCQcjtsVqzXNqu
- gk7DZIYfO7VuAnIOyNHjgOYjyiTCF2FmLlDQeN+74=
-X-Received: by 2002:a05:6512:2255:b0:539:e436:f1cc with SMTP id
- 2adb3069b0e04-539e574b003mr5002506e87.52.1728998302025; 
- Tue, 15 Oct 2024 06:18:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhsSY5Q/9ZWPH6Fo3zmbC+TtIrdG3pKvpCGsctfyBz7WXqSk/GpDore8ekzA+fvsdri9guKg==
-X-Received: by 2002:a05:6512:2255:b0:539:e436:f1cc with SMTP id
- 2adb3069b0e04-539e574b003mr5002490e87.52.1728998301468; 
- Tue, 15 Oct 2024 06:18:21 -0700 (PDT)
+ bh=7x7nS4Xh6lw88VcJcF60YqjvT0tzg3gAq71y1ldvMM8=;
+ b=ajox/wPVKKKSGMQH0iFM2s/5H6ji0WpNkt09sdBHj6qqRBnRKd0DRpLWDHlIzhpNFA
+ C6eH2Nsn2Jqw1PsOK6kmJDPXpJx7EJKDmvq45MUo9RkwLGqrB0KHOE7liUhHfr9nTYm+
+ cdWO7HT7nnU7LZrl/+tIXLjM4EvQotUyZsNnYkA4mglUAJ92CINrd8JeWGQuLSeq8jSe
+ Yuv3d5nUm11Rb+dY8RLNw01YRZEVeUMW7aIqF1Oq4z8LYWTYY+seHLGItGgqGl1rYbjJ
+ 0XBnSWEhLYwj5PIj7caqJQf0/AosGMUmg7H15p2Mx1llBb/i94DF74ZWusodeZ+5Cs7B
+ pCtg==
+X-Gm-Message-State: AOJu0YzutlPbmY8pEp/Uy5AqG5mUe9x/KWGmEj3H3nC5r+8po3Mjfkp0
+ BOVM6iBCSs21Rrtjj5aER/cfRkNNwwmEGU8x/LxVAsEXZ3o2EXAXaK7Qj2laIfAAu4EGcJy5/Z0
+ cCeS8d0tTuIy0QUC7AyK3fuxRArYjBobcNY5S8fGCXVKt5DnWxh7UCebcCgqZgAhbYIsCOhy3sT
+ TOl0X7u+Y4RYAuQKJx6z85vj/Q7tuPSSA8+Sn5EFg=
+X-Received: by 2002:a5d:5051:0:b0:37d:4fab:c194 with SMTP id
+ ffacd0b85a97d-37d86bd59b0mr179247f8f.25.1728998305098; 
+ Tue, 15 Oct 2024 06:18:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUPYyOliZu+SnSEXEgyGHGOQ2YnYJ97rxHKe0rzJMmnHNpaZDACcfVpC2WNzaPFfQa2MRXGg==
+X-Received: by 2002:a5d:5051:0:b0:37d:4fab:c194 with SMTP id
+ ffacd0b85a97d-37d86bd59b0mr179230f8f.25.1728998304498; 
+ Tue, 15 Oct 2024 06:18:24 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4313f569ef4sm17900355e9.18.2024.10.15.06.18.20
+ ffacd0b85a97d-37d7fa92741sm1576533f8f.60.2024.10.15.06.18.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Oct 2024 06:18:21 -0700 (PDT)
+ Tue, 15 Oct 2024 06:18:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 14/16] rust: do not use --no-size_t-is-usize
-Date: Tue, 15 Oct 2024 15:17:32 +0200
-Message-ID: <20241015131735.518771-15-pbonzini@redhat.com>
+Subject: [PATCH 15/16] rust: do not use --generate-cstr
+Date: Tue, 15 Oct 2024 15:17:33 +0200
+Message-ID: <20241015131735.518771-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015131735.518771-1-pbonzini@redhat.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
@@ -100,58 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This not necessary, and adds an extra cast since size_of and align_of
-already return the right type.
+--generate-cstr is a good idea and generally the right thing to do,
+but it is not available in Debian 12 and Ubuntu 22.04.  Work around
+the absence.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                      | 1 -
- rust/qemu-api/src/definitions.rs | 6 +++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ meson.build                       | 4 +++-
+ rust/hw/char/pl011/src/device.rs  | 1 +
+ rust/qemu-api/src/device_class.rs | 8 +++++++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 0e279d245b4..3b35fcb3feb 100644
+index 3b35fcb3feb..e08f226ee8a 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3931,7 +3931,6 @@ if have_rust and have_system
+@@ -3920,13 +3920,15 @@ common_all =3D static_library('common',
+                             dependencies: common_ss.all_dependencies())
+=20
+ if have_rust and have_system
++  # We would like to use --generate-cstr, but it is only available
++  # starting with bindgen 0.66.0.  The oldest supported versions
++  # are in Ubuntu 22.04 (0.59.1) and Debian 12 (0.60.1).
+   bindgen_args =3D [
+     '--disable-header-comment',
+     '--raw-line', '// @generated',
+     '--ctypes-prefix', 'std::os::raw',
+     '--formatter', 'rustfmt',
+     '--generate-block',
+-    '--generate-cstr',
+     '--impl-debug',
      '--merge-extern-blocks',
      '--no-doc-comments',
-     '--with-derive-default',
--    '--no-size_t-is-usize',
-     '--no-layout-tests',
-     '--no-prepend-enum-name',
-     '--allowlist-file', meson.project_source_root() + '/include/.*',
-diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitio=
-ns.rs
-index aa7cdd69c99..4eaf2a91fab 100644
---- a/rust/qemu-api/src/definitions.rs
-+++ b/rust/qemu-api/src/definitions.rs
-@@ -83,13 +83,13 @@ macro_rules! type_info {
-             } else {
-                 ::core::ptr::null_mut()
-             },
--            instance_size: ::core::mem::size_of::<$t>() as $crate::binding=
-s::size_t,
--            instance_align: ::core::mem::align_of::<$t>() as $crate::bindi=
-ngs::size_t,
-+            instance_size: ::core::mem::size_of::<$t>(),
-+            instance_align: ::core::mem::align_of::<$t>(),
-             instance_init: <$t as $crate::definitions::ObjectImpl>::INSTAN=
-CE_INIT,
-             instance_post_init: <$t as $crate::definitions::ObjectImpl>::I=
-NSTANCE_POST_INIT,
-             instance_finalize: <$t as $crate::definitions::ObjectImpl>::IN=
-STANCE_FINALIZE,
-             abstract_: <$t as $crate::definitions::ObjectImpl>::ABSTRACT,
--            class_size:  ::core::mem::size_of::<<$t as $crate::definitions=
-::ObjectImpl>::Class>() as $crate::bindings::size_t,
-+            class_size:  ::core::mem::size_of::<<$t as $crate::definitions=
-::ObjectImpl>::Class>(),
-             class_init: <<$t as $crate::definitions::ObjectImpl>::Class as=
- $crate::definitions::Class>::CLASS_INIT,
-             class_base_init: <<$t as $crate::definitions::ObjectImpl>::Cla=
-ss as $crate::definitions::Class>::CLASS_BASE_INIT,
-             class_data: ::core::ptr::null_mut(),
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
+ce.rs
+index ca67d452e7e..ec82a2619f2 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -13,6 +13,7 @@
+     bindings::{self, *},
+     c_str,
+     definitions::ObjectImpl,
++    device_class::TYPE_SYS_BUS_DEVICE,
+     with_offsets,
+ };
+=20
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
+lass.rs
+index d2535125c48..f4eec2f748a 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -2,7 +2,9 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+=20
+-use crate::bindings::Property;
++use std::ffi::CStr;
++
++use crate::bindings::{self, Property};
+=20
+ #[macro_export]
+ macro_rules! device_class_init {
+@@ -129,3 +131,7 @@ macro_rules! vm_state_description {
+         };
+     }
+ }
++
++// workaround until we can use --generate-cstr in bindgen.
++pub const TYPE_SYS_BUS_DEVICE: &CStr =3D
++    unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_SYS_BUS_DE=
+VICE) };
 --=20
 2.46.2
 
