@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A7899E436
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E7499E43C
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Oct 2024 12:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0ewX-0006f3-JK; Tue, 15 Oct 2024 06:38:21 -0400
+	id 1t0ewW-0006dj-9b; Tue, 15 Oct 2024 06:38:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewS-0006cS-FL
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:16 -0400
+ id 1t0ewR-0006cA-T1
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
 Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t0ewO-0005vS-Ko
- for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:16 -0400
+ id 1t0ewO-0005vU-Mx
+ for qemu-devel@nongnu.org; Tue, 15 Oct 2024 06:38:15 -0400
 Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-37d41894a32so3479882f8f.1
+ ffacd0b85a97d-37d518f9abcso2868200f8f.2
  for <qemu-devel@nongnu.org>; Tue, 15 Oct 2024 03:38:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1728988691; x=1729593491; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NWHQr29cLcyjPtlAutVj34guZVy2XyUSdjfvESJtOMQ=;
- b=Cue8S4zdcq3mFFuSKbgI3F/dMtv72f9z8O6G2a5dRkKPxbxeST8ihbwVqzF4WX1yJh
- gRECFgAiptdhu45Y5MEnMVjOrmk7nsNGTC1629f3c5kWbprcRs7qKMr+MzM0TAy87H8D
- kpmJRyeuq/iyPeSG19VPsJdItekPQhH0h3Rt6FpUfBGI6LT8qnaS8f5mdAcRhvict6jU
- QaXPFLa/sMT7RKu8hQCMsoGuxYgDA3d5s36vfFEBRn2gl+4rrVB64xqecgkSB7HVKYC2
- GnMfPyAkQZOfZg+M6EiHbikT7kgzCKyLC1n9MrzBHQxK6dC+W/Tc4maFbJqIzOp+fQxA
- vNZw==
+ :reply-to; bh=M8ybSySdBrTfoTyOvuNiOXF0pf6l+kJWpSoUB+F85eg=;
+ b=X4rGLBNsTbqic3h1iXLqpkQRvxwjEH/MW80EdH7FPzU7c+Lq9IBQPBhMbCMb3NXNbI
+ 0QJMPJiXpKimkZwfRc2xaKk8E4YytClb4fOIuxE0rldrwjjWIeZFuO/KdAjVb4zzFC3Y
+ XekotZ8cnzjj1opqHH78+IV1pIl0pbiW6dM4Ahe7YimUQ3m+GlCX0xOeEEyRda0vFBVe
+ 9vHUSIK0Mgnj2s7ykcE9698YJ8tVGVBLX/CZCYiyB6dtujggL/JeRvEuGT2Q9BxPpFuU
+ /DNy6gdaaCdXa0yDGnWgAZPiGwAPlAz18mk1j8TiZBnnrWT+/XGpplzKa5Zi3oobfFw7
+ P2JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1728988691; x=1729593491;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NWHQr29cLcyjPtlAutVj34guZVy2XyUSdjfvESJtOMQ=;
- b=EQ+hWJmW9cCNscs8l3qH5o8EDa9GA+WAVe/Khj9UYDeb+sXY8o2l4o4/4NBB4pm4EV
- vJPG90DXpqNSAdrUb/wGk6LGVXhMGNB7oSJ+9nX45g89nezugZ09tCA68fV64wbBLXNN
- +9+KvVDB8Z6IwsUkaMGUIKahj6UR+qObCs72PmM6//kqit/A+DsAhF6DKfUp5DSFuf5S
- 7tDILqwUsmdUUXpRAcTY7W5bGib4wQa/VJuuezGbKVQbBPGZT5sjDVlCEdEHU2oOcUck
- Nep6hMQQymNhA4NHoME+8M8L7tNn1hqfh9C96ISm8lFxXc0aAuKPXZXgxftBd2DsR0EP
- ljAQ==
-X-Gm-Message-State: AOJu0YzG8AgxGuOByb9KlOlOklpDJ8KoBqjQd1Or+QaofGFlf73CJKZq
- SV6dK9pqjwP0haowGA9pKjJtB78Fe7SQyLHXZSccpl50znq+IjRbXfDCs2sVX9cBDUbVG31oEY7
- y
-X-Google-Smtp-Source: AGHT+IHsXpaXUauXBHGMmr3Npc52NHi75DF4eb1tCP/eWPu9SyyzUxQMFRG5qV1HGag9SW+Hxt0TOA==
-X-Received: by 2002:a5d:424c:0:b0:37d:3e42:be32 with SMTP id
- ffacd0b85a97d-37d54e0c9e9mr9937356f8f.0.1728988690726; 
- Tue, 15 Oct 2024 03:38:10 -0700 (PDT)
+ bh=M8ybSySdBrTfoTyOvuNiOXF0pf6l+kJWpSoUB+F85eg=;
+ b=rLybIxeJ0gjxW+bAnZFSx0S0In3dZbESTUc8FFhcFl0iuqdR04h7NOHZDk+tsKY4i2
+ gFzRQ7NZ1eVKw+mniegUTGaz1ry5oqt7kpoiiXrAWu8FnSNQslIPFrYx5dUp1HIIPKgO
+ xIx2BBeRsxZgpRnZFXX7zwRut6uHgSNkRJoHleMfF/vqiNb7oiOcFxGtQZhLYqSNUteE
+ +oCozJ2IGAB05WvFCcOyqk61d5Ql4vcfzh7fLyPLd8ImBIdJXSfmjcw+g3BsJUwMvPd8
+ abzzKJoO3AT9z0YDZyM0y2MnFMG24WorAiEOt8e4jYZO8zupLm2KOVGFswZhv7voBJK8
+ OG/w==
+X-Gm-Message-State: AOJu0YwrsP34vCCz/M27UzyBMz6ucHNDBIACJrtK0hIX0IafNuIv3ZuY
+ 70yqvlpUuppXIBn2Rn4LKpphyq2qUtonjvKJW8sn/1khYXgnRuz+Wr9roO+wN/McSrtFCeYjNm7
+ L
+X-Google-Smtp-Source: AGHT+IGsrKFXwjv1eFj9i5LlS5b17Oxlv1IL1kjR35+bDDJdb7MDOES10JugcSXN+DRoPb9Gt5em2w==
+X-Received: by 2002:a05:6000:b10:b0:37d:4846:42c3 with SMTP id
+ ffacd0b85a97d-37d551b6ee1mr8241723f8f.22.1728988691167; 
+ Tue, 15 Oct 2024 03:38:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37d7fa7a06dsm1241635f8f.5.2024.10.15.03.38.10
@@ -59,9 +59,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 15 Oct 2024 03:38:10 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/28] hw/misc/stm32_rcc: Implement RCC device for STM32F4 SoCs
-Date: Tue, 15 Oct 2024 11:37:42 +0100
-Message-Id: <20241015103808.133024-3-peter.maydell@linaro.org>
+Subject: [PULL 03/28] hw/arm/stm32f405: Add RCC device to stm32f405 SoC
+Date: Tue, 15 Oct 2024 11:37:43 +0100
+Message-Id: <20241015103808.133024-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015103808.133024-1-peter.maydell@linaro.org>
 References: <20241015103808.133024-1-peter.maydell@linaro.org>
@@ -94,346 +94,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Román Cárdenas Rodríguez <rcardenas.rod@gmail.com>
 
-Generic RCC class for STM32 devices.  It can be used for most of
-the STM32 chips.  Note that it only implements enable and reset
-capabilities.
+Add the reset and clock controller device to the stm32f405 SoC.
 
 Signed-off-by: Roman Cardenas Rodriguez <rcardenas.rod@gmail.com>
-[PMM: tweaked commit message, added MAINTAINERS lines]
+[PMM: tweak commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS                 |   2 +
- include/hw/misc/stm32_rcc.h |  91 ++++++++++++++++++++
- hw/misc/stm32_rcc.c         | 162 ++++++++++++++++++++++++++++++++++++
- hw/misc/Kconfig             |   3 +
- hw/misc/meson.build         |   1 +
- hw/misc/trace-events        |   6 ++
- 6 files changed, 265 insertions(+)
- create mode 100644 include/hw/misc/stm32_rcc.h
- create mode 100644 hw/misc/stm32_rcc.c
+ docs/system/arm/stm32.rst      |  3 ++-
+ include/hw/arm/stm32f405_soc.h |  2 ++
+ hw/arm/stm32f405_soc.c         | 12 +++++++++++-
+ hw/arm/Kconfig                 |  1 +
+ 4 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dab931a3c5d..5cd661c9f9d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1059,6 +1059,8 @@ S: Maintained
- F: hw/arm/stm32f405_soc.c
- F: hw/misc/stm32f4xx_syscfg.c
- F: hw/misc/stm32f4xx_exti.c
-+F: hw/misc/stm32_rcc.c
-+F: include/hw/misc/stm32_rcc.h
+diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
+index 3b640f3ee07..ca7a55841b4 100644
+--- a/docs/system/arm/stm32.rst
++++ b/docs/system/arm/stm32.rst
+@@ -36,6 +36,7 @@ Supported devices
+  * SPI controller
+  * System configuration (SYSCFG)
+  * Timer controller (TIMER)
++ * Reset and Clock Controller (RCC) (STM32F4 only, reset and enable only)
  
- Netduino 2
- M: Alistair Francis <alistair@alistair23.me>
-diff --git a/include/hw/misc/stm32_rcc.h b/include/hw/misc/stm32_rcc.h
-new file mode 100644
-index 00000000000..ffbdf202ea5
---- /dev/null
-+++ b/include/hw/misc/stm32_rcc.h
-@@ -0,0 +1,91 @@
-+/*
-+ * STM32 RCC (only reset and enable registers are implemented)
-+ *
-+ * Copyright (c) 2024 Román Cárdenas <rcardenas.rod@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#ifndef HW_STM32_RCC_H
-+#define HW_STM32_RCC_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define STM32_RCC_CR 0x00
-+#define STM32_RCC_PLL_CFGR 0x04
-+#define STM32_RCC_CFGR 0x08
-+#define STM32_RCC_CIR 0x0C
-+#define STM32_RCC_AHB1_RSTR 0x10
-+#define STM32_RCC_AHB2_RSTR 0x14
-+#define STM32_RCC_AHB3_RSTR 0x18
-+
-+#define STM32_RCC_APB1_RSTR 0x20
-+#define STM32_RCC_APB2_RSTR 0x24
-+
-+#define STM32_RCC_AHB1_ENR 0x30
-+#define STM32_RCC_AHB2_ENR 0x34
-+#define STM32_RCC_AHB3_ENR 0x38
-+
-+#define STM32_RCC_APB1_ENR 0x40
-+#define STM32_RCC_APB2_ENR 0x44
-+
-+#define STM32_RCC_AHB1_LPENR 0x50
-+#define STM32_RCC_AHB2_LPENR 0x54
-+#define STM32_RCC_AHB3_LPENR 0x58
-+
-+#define STM32_RCC_APB1_LPENR 0x60
-+#define STM32_RCC_APB2_LPENR 0x64
-+
-+#define STM32_RCC_BDCR 0x70
-+#define STM32_RCC_CSR 0x74
-+
-+#define STM32_RCC_SSCGR 0x80
-+#define STM32_RCC_PLLI2SCFGR 0x84
-+#define STM32_RCC_PLLSAI_CFGR 0x88
-+#define STM32_RCC_DCKCFGR 0x8C
-+#define STM32_RCC_CKGATENR 0x90
-+#define STM32_RCC_DCKCFGR2 0x94
-+
-+#define STM32_RCC_NREGS ((STM32_RCC_DCKCFGR2 >> 2) + 1)
-+#define STM32_RCC_PERIPHERAL_SIZE 0x400
-+#define STM32_RCC_NIRQS (32 * 5) /* 32 bits per reg, 5 en/rst regs */
-+
-+#define STM32_RCC_GPIO_IRQ_OFFSET 0
-+
-+#define TYPE_STM32_RCC "stm32.rcc"
-+
-+typedef struct STM32RccState STM32RccState;
-+
-+DECLARE_INSTANCE_CHECKER(STM32RccState, STM32_RCC, TYPE_STM32_RCC)
-+
-+#define NUM_GPIO_EVENT_IN_LINES 16
-+
-+struct STM32RccState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mmio;
-+
-+    uint32_t regs[STM32_RCC_NREGS];
-+
-+    qemu_irq enable_irq[STM32_RCC_NIRQS];
-+    qemu_irq reset_irq[STM32_RCC_NIRQS];
-+};
-+
-+#endif /* HW_STM32_RCC_H */
-diff --git a/hw/misc/stm32_rcc.c b/hw/misc/stm32_rcc.c
-new file mode 100644
-index 00000000000..26672b5b24a
---- /dev/null
-+++ b/hw/misc/stm32_rcc.c
-@@ -0,0 +1,162 @@
-+/*
-+ * STM32 RCC (only reset and enable registers are implemented)
-+ *
-+ * Copyright (c) 2024 Román Cárdenas <rcardenas.rod@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "trace.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
+ Missing devices
+ ---------------
+@@ -53,7 +54,7 @@ Missing devices
+  * Power supply configuration (PWR)
+  * Random Number Generator (RNG)
+  * Real-Time Clock (RTC) controller
+- * Reset and Clock Controller (RCC)
++ * Reset and Clock Controller (RCC) (other features than reset and enable)
+  * Secure Digital Input/Output (SDIO) interface
+  * USB OTG
+  * Watchdog controller (IWDG, WWDG)
+diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_soc.h
+index d15c03c4b5d..2eeada64ded 100644
+--- a/include/hw/arm/stm32f405_soc.h
++++ b/include/hw/arm/stm32f405_soc.h
+@@ -25,6 +25,7 @@
+ #ifndef HW_ARM_STM32F405_SOC_H
+ #define HW_ARM_STM32F405_SOC_H
+ 
 +#include "hw/misc/stm32_rcc.h"
-+
-+static void stm32_rcc_reset(DeviceState *dev)
-+{
-+    STM32RccState *s = STM32_RCC(dev);
-+
-+    for (int i = 0; i < STM32_RCC_NREGS; i++) {
-+        s->regs[i] = 0;
-+    }
-+}
-+
-+static uint64_t stm32_rcc_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    STM32RccState *s = STM32_RCC(opaque);
-+
-+    uint32_t value = 0;
-+    if (addr > STM32_RCC_DCKCFGR2) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
-+                      __func__, addr);
-+    } else {
-+        value = s->regs[addr >> 2];
-+    }
-+    trace_stm32_rcc_read(addr, value);
-+    return value;
-+}
-+
-+static void stm32_rcc_write(void *opaque, hwaddr addr,
-+                            uint64_t val64, unsigned int size)
-+{
-+    STM32RccState *s = STM32_RCC(opaque);
-+    uint32_t value = val64;
-+    uint32_t prev_value, new_value, irq_offset;
-+
-+    trace_stm32_rcc_write(value, addr);
-+
-+    if (addr > STM32_RCC_DCKCFGR2) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
-+                      __func__, addr);
-+        return;
-+    }
-+
-+    switch (addr) {
-+    case STM32_RCC_AHB1_RSTR...STM32_RCC_APB2_RSTR:
-+        prev_value = s->regs[addr / 4];
-+        s->regs[addr / 4] = value;
-+
-+        irq_offset = ((addr - STM32_RCC_AHB1_RSTR) / 4) * 32;
-+        for (int i = 0; i < 32; i++) {
-+            new_value = extract32(value, i, 1);
-+            if (extract32(prev_value, i, 1) && !new_value) {
-+                trace_stm32_rcc_pulse_reset(irq_offset + i, new_value);
-+                qemu_set_irq(s->reset_irq[irq_offset + i], new_value);
-+            }
-+        }
-+        return;
-+    case STM32_RCC_AHB1_ENR...STM32_RCC_APB2_ENR:
-+        prev_value = s->regs[addr / 4];
-+        s->regs[addr / 4] = value;
-+
-+        irq_offset = ((addr - STM32_RCC_AHB1_ENR) / 4) * 32;
-+        for (int i = 0; i < 32; i++) {
-+            new_value = extract32(value, i, 1);
-+            if (!extract32(prev_value, i, 1) && new_value) {
-+                trace_stm32_rcc_pulse_enable(irq_offset + i, new_value);
-+                qemu_set_irq(s->enable_irq[irq_offset + i], new_value);
-+            }
-+        }
-+        return;
-+    default:
-+        qemu_log_mask(
-+            LOG_UNIMP,
-+            "%s: The RCC peripheral only supports enable and reset in QEMU\n",
-+            __func__
-+        );
-+        s->regs[addr >> 2] = value;
-+    }
-+}
-+
-+static const MemoryRegionOps stm32_rcc_ops = {
-+    .read = stm32_rcc_read,
-+    .write = stm32_rcc_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void stm32_rcc_init(Object *obj)
-+{
-+    STM32RccState *s = STM32_RCC(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &stm32_rcc_ops, s,
-+                          TYPE_STM32_RCC, STM32_RCC_PERIPHERAL_SIZE);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+
-+    qdev_init_gpio_out(DEVICE(obj), s->reset_irq, STM32_RCC_NIRQS);
-+    qdev_init_gpio_out(DEVICE(obj), s->enable_irq, STM32_RCC_NIRQS);
-+
-+    for (int i = 0; i < STM32_RCC_NIRQS; i++) {
-+        sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->reset_irq[i]);
-+        sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->enable_irq[i]);
-+    }
-+}
-+
-+static const VMStateDescription vmstate_stm32_rcc = {
-+    .name = TYPE_STM32_RCC,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, STM32RccState, STM32_RCC_NREGS),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void stm32_rcc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->vmsd = &vmstate_stm32_rcc;
-+    device_class_set_legacy_reset(dc, stm32_rcc_reset);
-+}
-+
-+static const TypeInfo stm32_rcc_info = {
-+    .name          = TYPE_STM32_RCC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(STM32RccState),
-+    .instance_init = stm32_rcc_init,
-+    .class_init    = stm32_rcc_class_init,
-+};
-+
-+static void stm32_rcc_register_types(void)
-+{
-+    type_register_static(&stm32_rcc_info);
-+}
-+
-+type_init(stm32_rcc_register_types)
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 1e08785b832..6bdc77cbe5d 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -82,6 +82,9 @@ config IMX
-     select SSI
-     select USB_EHCI_SYSBUS
+ #include "hw/misc/stm32f4xx_syscfg.h"
+ #include "hw/timer/stm32f2xx_timer.h"
+ #include "hw/char/stm32f2xx_usart.h"
+@@ -55,6 +56,7 @@ struct STM32F405State {
  
-+config STM32_RCC
-+    bool
+     ARMv7MState armv7m;
+ 
++    STM32RccState rcc;
+     STM32F4xxSyscfgState syscfg;
+     STM32F4xxExtiState exti;
+     STM32F2XXUsartState usart[STM_NUM_USARTS];
+diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
+index 2ad5b79a069..72ae62156f3 100644
+--- a/hw/arm/stm32f405_soc.c
++++ b/hw/arm/stm32f405_soc.c
+@@ -30,6 +30,7 @@
+ #include "hw/qdev-clock.h"
+ #include "hw/misc/unimp.h"
+ 
++#define RCC_ADDR                       0x40023800
+ #define SYSCFG_ADD                     0x40013800
+ static const uint32_t usart_addr[] = { 0x40011000, 0x40004400, 0x40004800,
+                                        0x40004C00, 0x40005000, 0x40011400,
+@@ -59,6 +60,8 @@ static void stm32f405_soc_initfn(Object *obj)
+ 
+     object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
+ 
++    object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32_RCC);
 +
- config STM32F2XX_SYSCFG
+     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32F4XX_SYSCFG);
+ 
+     for (i = 0; i < STM_NUM_USARTS; i++) {
+@@ -160,6 +163,14 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+         return;
+     }
+ 
++    /* Reset and clock controller */
++    dev = DEVICE(&s->rcc);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->rcc), errp)) {
++        return;
++    }
++    busdev = SYS_BUS_DEVICE(dev);
++    sysbus_mmio_map(busdev, 0, RCC_ADDR);
++
+     /* System configuration controller */
+     dev = DEVICE(&s->syscfg);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->syscfg), errp)) {
+@@ -276,7 +287,6 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+     create_unimplemented_device("GPIOH",       0x40021C00, 0x400);
+     create_unimplemented_device("GPIOI",       0x40022000, 0x400);
+     create_unimplemented_device("CRC",         0x40023000, 0x400);
+-    create_unimplemented_device("RCC",         0x40023800, 0x400);
+     create_unimplemented_device("Flash Int",   0x40023C00, 0x400);
+     create_unimplemented_device("BKPSRAM",     0x40024000, 0x400);
+     create_unimplemented_device("DMA1",        0x40026000, 0x400);
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index e7b9cfb59c0..f1e981622a1 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -397,6 +397,7 @@ config STM32F405_SOC
      bool
+     select ARM_V7M
+     select OR_IRQ
++    select STM32_RCC
+     select STM32F4XX_SYSCFG
+     select STM32F4XX_EXTI
  
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index a2951951b59..d02d96e403b 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -100,6 +100,7 @@ system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files(
- system_ss.add(when: 'CONFIG_XLNX_VERSAL_TRNG', if_true: files(
-   'xlnx-versal-trng.c',
- ))
-+system_ss.add(when: 'CONFIG_STM32_RCC', if_true: files('stm32_rcc.c'))
- system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_syscfg.c'))
- system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_syscfg.c'))
- system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.c'))
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 1be0717c0c9..b9fbcb09249 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -156,6 +156,12 @@ npcm7xx_pwm_write(const char *id, uint64_t offset, uint32_t value) "%s offset: 0
- npcm7xx_pwm_update_freq(const char *id, uint8_t index, uint32_t old_value, uint32_t new_value) "%s pwm[%u] Update Freq: old_freq: %u, new_freq: %u"
- npcm7xx_pwm_update_duty(const char *id, uint8_t index, uint32_t old_value, uint32_t new_value) "%s pwm[%u] Update Duty: old_duty: %u, new_duty: %u"
- 
-+# stm32_rcc.c
-+stm32_rcc_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
-+stm32_rcc_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
-+stm32_rcc_pulse_enable(int line, int level) "Enable: %d to %d"
-+stm32_rcc_pulse_reset(int line, int level) "Reset: %d to %d"
-+
- # stm32f4xx_syscfg.c
- stm32f4xx_syscfg_set_irq(int gpio, int line, int level) "Interrupt: GPIO: %d, Line: %d; Level: %d"
- stm32f4xx_pulse_exti(int irq) "Pulse EXTI: %d"
 -- 
 2.34.1
 
