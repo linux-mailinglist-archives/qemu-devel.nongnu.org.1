@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E5C9A11DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 20:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E49A129F
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 21:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t195I-0004KO-QO; Wed, 16 Oct 2024 14:49:24 -0400
+	id 1t19me-0007mT-64; Wed, 16 Oct 2024 15:34:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t195E-0004Ju-FT
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 14:49:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t195C-0006u3-IF
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 14:49:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729104556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ue1fcDmnO3gKmduh7Csvlg1tNOfQKtV8e+BK6eUdleE=;
- b=fNDzATim9djvlzlhamD6hK6mEE3xFSg7phHj7vOANHWbQfhZUWH44YxJUNOD937Vu20t8S
- HGyf5cVtgapmWO8JVwzu46KojVty8VDz0jvY644pJXHp+Dad7SI9HTn0eK1CvDZxvzc4bQ
- JSWjO5bD0kdu+vvE83hg90sv3qpIOO4=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-ln7QabvVOgup2J0Qqzie2g-1; Wed, 16 Oct 2024 14:49:15 -0400
-X-MC-Unique: ln7QabvVOgup2J0Qqzie2g-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6cbed928402so1471016d6.2
- for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 11:49:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729104555; x=1729709355;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1t19mY-0007Rd-MI; Wed, 16 Oct 2024 15:34:06 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1t19mU-00042c-Rq; Wed, 16 Oct 2024 15:34:06 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42f6bec84b5so1996015e9.1; 
+ Wed, 16 Oct 2024 12:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729107230; x=1729712030; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ue1fcDmnO3gKmduh7Csvlg1tNOfQKtV8e+BK6eUdleE=;
- b=moIHI3O+bZDd9qbPcPQ/hEJN/7HdZ6g7l8vI2LmhQOFUWFghA5RP8f7201FqHfpyoE
- HuSNZSvo4qE0NzqFAgb1lAslUT/9orif261B6ekbbwr+48izjm1ydDijsrQXiYiAmCM3
- GUGSodFHsL/6nlE48RI/Cueq5O9ol4Ry554HvdKwmJqZGII0LAgmlRtAawPGsdaK7yyX
- lBLWWREAH76miyuWvTZW782y6TMchqwF7dXHv0Qo8KJeiTwB0I9BuUBmuvL6QTEGd+RZ
- oT47BJFUTr8MVRVOF8jiXl7yINipFDLV9R3ZisPi1QmsbIf4Qnx++pgwehyzDIUPrSZN
- fIzQ==
-X-Gm-Message-State: AOJu0YyCHtWgpyRzSj25vcuPOVh5K02Go+jOpygzeS2+pQdtgkuPCbDj
- dRRRs6LE1puEPOjb+i6kSAEFAEXPReCUS1oXWhYfRYfCMQK4alqmtj07YrWydw8UZFrbC3zDEBS
- VWUMCBNGxnQbORpSRdWodL6bz7XDzqHOOvsdd1O2bEvnoBlHIhLYP
-X-Received: by 2002:a0c:f408:0:b0:6cb:ecb3:4d3b with SMTP id
- 6a1803df08f44-6cc2b91849amr62646796d6.42.1729104554569; 
- Wed, 16 Oct 2024 11:49:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExOC86vjiXBz/yAPRsc4+RRhU9MLKUg1OTfTA4ivQvZpDoKgl+YA9gahYovKwnqfKTbsfa5Q==
-X-Received: by 2002:a0c:f408:0:b0:6cb:ecb3:4d3b with SMTP id
- 6a1803df08f44-6cc2b91849amr62646446d6.42.1729104554087; 
- Wed, 16 Oct 2024 11:49:14 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6cc22990427sm20606536d6.134.2024.10.16.11.49.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2024 11:49:13 -0700 (PDT)
-Date: Wed, 16 Oct 2024 14:49:11 -0400
-From: Peter Xu <peterx@redhat.com>
-To: yong.huang@smartx.com
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 3/4] migration: Support periodic ramblock dirty sync
-Message-ID: <ZxAKp_qUU4ClLzs6@x1n>
-References: <cover.1729064919.git.yong.huang@smartx.com>
- <f1067c9ddca005629e64d7e77c98686612bb1f82.1729064919.git.yong.huang@smartx.com>
+ bh=LbmICVGtbM1/BADU4IKUlFjLhiURvx6edLLRS7oUaKc=;
+ b=BRO/wUgullIhj+q6N+fHhL6t2Ib6EHqgg/1Ry4ZwQk13mnJtWmyTR8sOwl7cM1cM5G
+ R/9eYVgbtSR8s72DHBGiQcjBxvhbPt/yCVLUaRzchf0Re6QQuAy9BbjahKA4YQM+e+OF
+ IQwbuKOFukHcl02KlbJVDwQBW+TvGq1vzEXeU+hlEUz6XluAPDXoPfS5T0u6jBqAq677
+ GpXBh0ONwvYLAVweSG63NfLMSh1MQXWYjOE9a56cS6gEmbZC/fqJ5oc6ZZm9aMJoagOG
+ 0L4IHuiSHegI9q+G7kdAiyKRWPQ9hPKd3C/QidUbVHnVcurPSqnPbBRnqPr47LJCcJ6u
+ lIhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729107230; x=1729712030;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LbmICVGtbM1/BADU4IKUlFjLhiURvx6edLLRS7oUaKc=;
+ b=Yn0dk5itJwBon1hYRutMW9QWpePIhzPfV77t9YoNvbM4RqmSffDd7CyqaC8X+Z40Nu
+ 9awIfXe6+qTfQqD5tl5Jbpu1PwSZIPX6AeGV6fjMOyvgLQAt55o9vc1ta31B3oaLkRVI
+ tcvkK2m/yc7ineIxUWJXBGBSqf3AoQ8YkcdMbzTKmjXkfVx2wYFmJiXlsgyfO3tf5rL8
+ MaX8f+IiWcz/rlqR5Hc8qpjG3VG6SiBU/DLB61Cn5YXwGfB/fU9shltPqZRmZGTHiWeB
+ YTwc3chjMaDbRK+3sFLUlZMnuNWDT7DFAb+RZXwq6BisOu3S3QCEqmu92hOkDYqr2bdx
+ SuSw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWf4qyoU46BBerIKV529JGv0iDQetmtYRDWW1HyhMJXX/6ylEPsyUZVebI4Hmc4A1/g9Yw0zXj1SEAfdw==@nongnu.org
+X-Gm-Message-State: AOJu0Yz8sX8QYjmQ+coAFOayrwMhja6rGO4q9ZONW9Ry5zm2d/V/WnkD
+ VO+ckOLlvHUplII+Rl/L3ZiOCZHeoecyemttHfgT8iSSp83vh5cyoHWtxQ==
+X-Google-Smtp-Source: AGHT+IFGm0Wkf+rVT3+0vpUh3FPdLhg4cw+TqX6QexmtHwXC0y2vaaflQdNmQApmEg2IW2ydA4gEeg==
+X-Received: by 2002:a05:600c:5110:b0:431:59ab:15cf with SMTP id
+ 5b1f17b1804b1-43159ab1711mr508545e9.19.1729107229305; 
+ Wed, 16 Oct 2024 12:33:49 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-025-143.77.191.pool.telefonica.de.
+ [77.191.25.143]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37d7fa7a1c8sm5025246f8f.21.2024.10.16.12.33.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Oct 2024 12:33:48 -0700 (PDT)
+Date: Wed, 16 Oct 2024 18:49:18 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+CC: Jason Wang <jasowang@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH v2] net/tap-win32: Fix gcc 14 format truncation errors
+In-Reply-To: <20241008202842.4478-1-shentey@gmail.com>
+References: <20241008202842.4478-1-shentey@gmail.com>
+Message-ID: <ED3A009C-15F4-47D0-8E67-65BAE0510A95@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f1067c9ddca005629e64d7e77c98686612bb1f82.1729064919.git.yong.huang@smartx.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.038,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,248 +93,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 16, 2024 at 03:56:44PM +0800, yong.huang@smartx.com wrote:
-> From: Hyman Huang <yong.huang@smartx.com>
-> 
-> When VM is configured with huge memory, the current throttle logic
-> doesn't look like to scale, because migration_trigger_throttle()
-> is only called for each iteration, so it won't be invoked for a long
-> time if one iteration can take a long time.
-> 
-> The periodic dirty sync aims to fix the above issue by synchronizing
-> the ramblock from remote dirty bitmap and, when necessary, triggering
-> the CPU throttle multiple times during a long iteration.
-> 
-> This is a trade-off between synchronization overhead and CPU throttle
-> impact.
-> 
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> ---
->  migration/cpu-throttle.c | 70 +++++++++++++++++++++++++++++++++++++++-
->  migration/cpu-throttle.h | 14 ++++++++
->  migration/migration.h    |  1 +
->  migration/ram.c          |  9 ++++--
->  migration/trace-events   |  1 +
->  5 files changed, 92 insertions(+), 3 deletions(-)
-> 
-> diff --git a/migration/cpu-throttle.c b/migration/cpu-throttle.c
-> index fa47ee2e21..784b51ab35 100644
-> --- a/migration/cpu-throttle.c
-> +++ b/migration/cpu-throttle.c
-> @@ -28,16 +28,23 @@
->  #include "qemu/main-loop.h"
->  #include "sysemu/cpus.h"
->  #include "cpu-throttle.h"
-> +#include "migration.h"
-> +#include "migration-stats.h"
-> +#include "options.h"
->  #include "trace.h"
->  
->  /* vcpu throttling controls */
-> -static QEMUTimer *throttle_timer;
-> +static QEMUTimer *throttle_timer, *throttle_dirty_sync_timer;
->  static unsigned int throttle_percentage;
-> +static bool throttle_dirty_sync_timer_active;
->  
->  #define CPU_THROTTLE_PCT_MIN 1
->  #define CPU_THROTTLE_PCT_MAX 99
->  #define CPU_THROTTLE_TIMESLICE_NS 10000000
->  
-> +/* RAMBlock dirty sync trigger every five seconds */
 
-Maybe enrich it to say "making sure it is synchronized every five seconds"?
-Because it can synchronize faster if each iteration runs faster than 5sec,
-so just to emphasize it's a fallback sync, and only with auto converge.
 
-> +#define CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS 5000
-> +
->  static void cpu_throttle_thread(CPUState *cpu, run_on_cpu_data opaque)
->  {
->      double pct;
-> @@ -112,6 +119,7 @@ void cpu_throttle_set(int new_throttle_pct)
->  void cpu_throttle_stop(void)
->  {
->      qatomic_set(&throttle_percentage, 0);
-> +    cpu_throttle_dirty_sync_timer(false);
->  }
->  
->  bool cpu_throttle_active(void)
-> @@ -124,8 +132,68 @@ int cpu_throttle_get_percentage(void)
->      return qatomic_read(&throttle_percentage);
->  }
->  
-> +void cpu_throttle_dirty_sync_timer_tick(void *opaque)
-> +{
-> +    static uint64_t prev_sync_cnt = 2;
+Am 8=2E Oktober 2024 20:28:42 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
+>The patch fixes the following errors generated by GCC 14=2E2:
+>
+>=2E=2E/src/net/tap-win32=2Ec:343:19: error: '%s' directive output may be =
+truncated writing up to 255 bytes into a region of size 176 [-Werror=3Dform=
+at-truncation=3D]
+>  343 |              "%s\\%s\\Connection",
+>      |                   ^~
+>  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>      |                                       ~~~~~~~~~
+>
+>=2E=2E/src/net/tap-win32=2Ec:341:9: note: 'snprintf' output between 92 an=
+d 347 bytes into a destination of size 256
+>  341 |         snprintf(connection_string,
+>      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  342 |              sizeof(connection_string),
+>      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  343 |              "%s\\%s\\Connection",
+>      |              ~~~~~~~~~~~~~~~~~~~~~
+>  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+>=2E=2E/src/net/tap-win32=2Ec:242:58: error: '%s' directive output may be =
+truncated writing up to 255 bytes into a region of size 178 [-Werror=3Dform=
+at-truncation=3D]
+>  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+>      |                                                          ^~
+>  243 |                   ADAPTER_KEY, enum_name);
+>      |                                ~~~~~~~~~
+>
+>=2E=2E/src/net/tap-win32=2Ec:242:9: note: 'snprintf' output between 79 an=
+d 334 bytes into a destination of size 256
+>  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+>      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  243 |                   ADAPTER_KEY, enum_name);
+>      |                   ~~~~~~~~~~~~~~~~~~~~~~~
+>
+>=2E=2E/src/net/tap-win32=2Ec:620:52: error: '%s' directive output may be =
+truncated writing up to 255 bytes into a region of size 245 [-Werror=3Dform=
+at-truncation=3D]
+>  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+>      |                                                    ^~
+>  621 |               USERMODEDEVICEDIR,
+>  622 |               device_guid,
+>      |               ~~~~~~~~~~~
+>=2E=2E/src/net/tap-win32=2Ec:620:5: note: 'snprintf' output between 16 an=
+d 271 bytes into a destination of size 256
+>  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+>      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  621 |               USERMODEDEVICEDIR,
+>      |               ~~~~~~~~~~~~~~~~~~
+>  622 |               device_guid,
+>      |               ~~~~~~~~~~~~
+>  623 |               TAPSUFFIX);
+>      |               ~~~~~~~~~~
+>
+>Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2607
+>Cc: qemu-stable@nongnu=2Eorg
+>
+>--
+>
+>This patch was just compile-tested (which fixes my issue)=2E Testing TAP
+>networking under Windows apparently requires extra drivers which I don't =
+want to
+>install (not my computer)=2E So it would be nice if someone could give th=
+is patch
+>a test ride=2E Thanks!
 
-IIUC the hard coded "2" isn't needed, as long as it's guaranteed to be
-updated for each timer call, and you special cased "1" anyway below.
+Ping=2E Patch is reviewed=2E Any testers or shall we just merge?
 
-> +    uint64_t sync_cnt = stat64_get(&mig_stats.dirty_sync_count);
-> +
-> +    if (!migrate_auto_converge()) {
-> +        /* Stop the timer when auto converge is disabled */
-> +        return;
+Best regards,
+Bernhard
 
-I think we can try to make sure this never starts if !auto-converge, so
-assuming this path will never trigger in real life.
-
-> +    }
-> +
-> +    /*
-> +     * The first iteration copies all memory anyhow and has no
-> +     * effect on guest performance, therefore omit it to avoid
-> +     * paying extra for the sync penalty.
-> +     */
-> +    if (sync_cnt <= 1) {
-> +        goto end;
-> +    }
-> +
-> +    if (sync_cnt == prev_sync_cnt) {
-> +        trace_cpu_throttle_dirty_sync();
-> +        WITH_RCU_READ_LOCK_GUARD() {
-> +            migration_bitmap_sync_precopy(false);
-> +        }
-> +    }
-> +
-> +end:
-> +    prev_sync_cnt = stat64_get(&mig_stats.dirty_sync_count);
-> +
-> +    timer_mod(throttle_dirty_sync_timer,
-> +        qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL_RT) +
-> +            CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS);
-> +}
-> +
-> +static bool cpu_throttle_dirty_sync_active(void)
-> +{
-> +    return qatomic_read(&throttle_dirty_sync_timer_active);
-> +}
-> +
-> +void cpu_throttle_dirty_sync_timer(bool enable)
-> +{
-> +    if (enable) {
-> +        assert(throttle_dirty_sync_timer);
-> +        if (!cpu_throttle_dirty_sync_active()) {
-
-I suppose this can be logically racy? As I think after this patch this path
-can be invoked both in main thread and migration thread.
-
-The simplest way to do is to move cpu_throttle_stop() call to be under
-bql_lock(), so that this will be serialized by BQL.  Then we can add an
-assertion at the entry of the function for bql_locked().
-
-> +            timer_mod(throttle_dirty_sync_timer,
-> +                qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL_RT) +
-> +                    CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS);
-> +            qatomic_set(&throttle_dirty_sync_timer_active, 1);
-> +        }
-> +    } else {
-> +        if (throttle_dirty_sync_timer != NULL) {
-
-IIUC throttle_dirty_sync_timer is never destroyed, aka, timer_del() only
-disables it.  So you should probably use throttle_dirty_sync_timer_active?
-
-> +            timer_del(throttle_dirty_sync_timer);
-> +            qatomic_set(&throttle_dirty_sync_timer_active, 0);
-> +        }
-> +    }
-> +}
-> +
->  void cpu_throttle_init(void)
->  {
->      throttle_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL_RT,
->                                    cpu_throttle_timer_tick, NULL);
-> +    throttle_dirty_sync_timer =
-> +        timer_new_ms(QEMU_CLOCK_VIRTUAL_RT,
-> +                     cpu_throttle_dirty_sync_timer_tick, NULL);
->  }
-> diff --git a/migration/cpu-throttle.h b/migration/cpu-throttle.h
-> index d65bdef6d0..420702b8d3 100644
-> --- a/migration/cpu-throttle.h
-> +++ b/migration/cpu-throttle.h
-> @@ -65,4 +65,18 @@ bool cpu_throttle_active(void);
->   */
->  int cpu_throttle_get_percentage(void);
->  
-> +/**
-> + * cpu_throttle_dirty_sync_timer_tick:
-> + *
-> + * Dirty sync timer hook.
-> + */
-> +void cpu_throttle_dirty_sync_timer_tick(void *opaque);
-> +
-> +/**
-> + * cpu_throttle_dirty_sync_timer:
-> + *
-> + * Start or stop the dirty sync timer.
-> + */
-> +void cpu_throttle_dirty_sync_timer(bool enable);
-> +
->  #endif /* SYSEMU_CPU_THROTTLE_H */
-> diff --git a/migration/migration.h b/migration/migration.h
-> index 38aa1402d5..fbd0d19092 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -537,4 +537,5 @@ int migration_rp_wait(MigrationState *s);
->   */
->  void migration_rp_kick(MigrationState *s);
->  
-> +void migration_bitmap_sync_precopy(bool last_stage);
->  #endif
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 9b5b350405..ac34e731e2 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -1020,6 +1020,11 @@ static void migration_trigger_throttle(RAMState *rs)
->          migration_transferred_bytes() - rs->bytes_xfer_prev;
->      uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
->      uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
-> +    bool auto_converge = migrate_auto_converge();
-> +
-> +    if (auto_converge) {
-> +        cpu_throttle_dirty_sync_timer(true);
-> +    }
-
-If you have the guard to skip the 1st sync in the timer fn(), IIUC you can
-move this earlier to e.g. migration_thread() before iteration starts.
-Otherwise it'll be not as clear on when this timer will start if it hides
-in the sync path itself.
-
->  
->      /*
->       * The following detection logic can be refined later. For now:
-> @@ -1031,7 +1036,7 @@ static void migration_trigger_throttle(RAMState *rs)
->      if ((bytes_dirty_period > bytes_dirty_threshold) &&
->          (++rs->dirty_rate_high_cnt >= 2)) {
->          rs->dirty_rate_high_cnt = 0;
-> -        if (migrate_auto_converge()) {
-> +        if (auto_converge) {
->              trace_migration_throttle();
->              mig_throttle_guest_down(bytes_dirty_period,
->                                      bytes_dirty_threshold);
-> @@ -1088,7 +1093,7 @@ static void migration_bitmap_sync(RAMState *rs, bool last_stage)
->      }
->  }
->  
-> -static void migration_bitmap_sync_precopy(bool last_stage)
-> +void migration_bitmap_sync_precopy(bool last_stage)
->  {
->      Error *local_err = NULL;
->      assert(ram_state);
-> diff --git a/migration/trace-events b/migration/trace-events
-> index 9a19599804..0638183056 100644
-> --- a/migration/trace-events
-> +++ b/migration/trace-events
-> @@ -381,3 +381,4 @@ migration_pagecache_insert(void) "Error allocating page"
->  
->  # cpu-throttle.c
->  cpu_throttle_set(int new_throttle_pct)  "set guest CPU throttled by %d%%"
-> +cpu_throttle_dirty_sync(void) ""
-> -- 
-> 2.27.0
-> 
-
--- 
-Peter Xu
-
+>
+>Changes since v1:
+>* Use g_autofree and g_strdup_printf() rather than fixed size arrays (Pet=
+er)
+>---
+> net/tap-win32=2Ec | 15 ++++++---------
+> 1 file changed, 6 insertions(+), 9 deletions(-)
+>
+>diff --git a/net/tap-win32=2Ec b/net/tap-win32=2Ec
+>index 7edbd71633=2E=2E671dee970f 100644
+>--- a/net/tap-win32=2Ec
+>+++ b/net/tap-win32=2Ec
+>@@ -214,7 +214,7 @@ static int is_tap_win32_dev(const char *guid)
+>=20
+>     for (;;) {
+>         char enum_name[256];
+>-        char unit_string[256];
+>+        g_autofree char *unit_string =3D NULL;
+>         HKEY unit_key;
+>         char component_id_string[] =3D "ComponentId";
+>         char component_id[256];
+>@@ -239,8 +239,7 @@ static int is_tap_win32_dev(const char *guid)
+>             return FALSE;
+>         }
+>=20
+>-        snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+>-                  ADAPTER_KEY, enum_name);
+>+        unit_string =3D g_strdup_printf("%s\\%s", ADAPTER_KEY, enum_name=
+);
+>=20
+>         status =3D RegOpenKeyEx(
+>             HKEY_LOCAL_MACHINE,
+>@@ -315,7 +314,7 @@ static int get_device_guid(
+>     while (!stop)
+>     {
+>         char enum_name[256];
+>-        char connection_string[256];
+>+        g_autofree char *connection_string =3D NULL;
+>         HKEY connection_key;
+>         char name_data[256];
+>         DWORD name_type;
+>@@ -338,9 +337,7 @@ static int get_device_guid(
+>             return -1;
+>         }
+>=20
+>-        snprintf(connection_string,
+>-             sizeof(connection_string),
+>-             "%s\\%s\\Connection",
+>+        connection_string =3D g_strdup_printf("%s\\%s\\Connection",
+>              NETWORK_CONNECTIONS_KEY, enum_name);
+>=20
+>         status =3D RegOpenKeyEx(
+>@@ -595,7 +592,7 @@ static void tap_win32_free_buffer(tap_win32_overlappe=
+d_t *overlapped,
+> static int tap_win32_open(tap_win32_overlapped_t **phandle,
+>                           const char *preferred_name)
+> {
+>-    char device_path[256];
+>+    g_autofree char *device_path =3D NULL;
+>     char device_guid[0x100];
+>     int rc;
+>     HANDLE handle;
+>@@ -617,7 +614,7 @@ static int tap_win32_open(tap_win32_overlapped_t **ph=
+andle,
+>     if (rc)
+>         return -1;
+>=20
+>-    snprintf (device_path, sizeof(device_path), "%s%s%s",
+>+    device_path =3D g_strdup_printf("%s%s%s",
+>               USERMODEDEVICEDIR,
+>               device_guid,
+>               TAPSUFFIX);
 
