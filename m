@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FEC9A137D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B33999A1395
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:13:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1AM9-0004pS-5b; Wed, 16 Oct 2024 16:10:53 -0400
+	id 1t1AMC-0004r0-LC; Wed, 16 Oct 2024 16:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AM6-0004pD-K6; Wed, 16 Oct 2024 16:10:50 -0400
+ id 1t1AM8-0004pU-8p; Wed, 16 Oct 2024 16:10:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AM4-0000gl-Uk; Wed, 16 Oct 2024 16:10:50 -0400
+ id 1t1AM6-0000h0-IZ; Wed, 16 Oct 2024 16:10:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AF7FB98F99;
- Wed, 16 Oct 2024 23:10:07 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 17B9098F9A;
+ Wed, 16 Oct 2024 23:10:08 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8F170156379;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0276515637A;
  Wed, 16 Oct 2024 23:10:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [Stable-9.1.1 39/49] meson: define qemu_isa_flags
-Date: Wed, 16 Oct 2024 23:09:58 +0300
-Message-Id: <20241016201025.256294-7-mjt@tls.msk.ru>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 40/49] meson: ensure -mcx16 is passed when detecting
+ ATOMIC128
+Date: Wed, 16 Oct 2024 23:09:59 +0300
+Message-Id: <20241016201025.256294-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
@@ -62,86 +62,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Create a separate variable for compiler flags that enable
-specific instruction set extensions, so that they can be used with
-cc.compiles/cc.links.
+Moving -mcx16 out of CPU_CFLAGS caused the detection of ATOMIC128 to
+fail, because flags have to be specified by hand in cc.compiles and
+cc.links invocations (why oh why??).
 
-Note that -mfpmath=sse is a code generation option but it does not
-enable new instructions, therefore I did not make it part of
-qemu_isa_flags.
+Ensure that these tests enable all the instruction set extensions that
+will be used to build the emulators.
 
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Fixes: c2bf2ccb266 ("configure: move -mcx16 flag out of CPU_CFLAGS", 2024-05-24)
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 6ae8c5382b2396d394e135c2c6d3742d11c6d0c2)
+(cherry picked from commit 8db4e0f92e83fd80b6609439440b303ddded7ad8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/meson.build b/meson.build
-index 6e467cbe7d..3031f37f45 100644
+index 3031f37f45..a11018b3ad 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -322,6 +322,10 @@ elif host_os == 'windows'
-   endif
- endif
+@@ -2795,7 +2795,7 @@ config_host_data.set('CONFIG_ATOMIC64', cc.links('''
+     __atomic_exchange_n(&x, y, __ATOMIC_RELAXED);
+     __atomic_fetch_add(&x, y, __ATOMIC_RELAXED);
+     return 0;
+-  }'''))
++  }''', args: qemu_isa_flags))
  
-+# Choose instruction set (currently x86-only)
-+
-+qemu_isa_flags = []
-+
- # __sync_fetch_and_and requires at least -march=i486. Many toolchains
- # use i686 as default anyway, but for those that don't, an explicit
- # specification is necessary
-@@ -338,7 +342,7 @@ if host_arch == 'i386' and not cc.links('''
-     sfaa(&val);
-     return val;
-   }''')
--  qemu_common_flags = ['-march=i486'] + qemu_common_flags
-+  qemu_isa_flags += ['-march=i486']
- endif
+ has_int128_type = cc.compiles('''
+   __int128_t a;
+@@ -2829,7 +2829,7 @@ if has_int128_type
+       __atomic_compare_exchange_n(&p[4], &p[5], p[6], 0, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+       return 0;
+     }'''
+-  has_atomic128 = cc.links(atomic_test_128)
++  has_atomic128 = cc.links(atomic_test_128, args: qemu_isa_flags)
  
- # Pick x86-64 baseline version
-@@ -354,29 +358,31 @@ if host_arch in ['i386', 'x86_64']
-     else
-       # present on basically all processors but technically not part of
-       # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
--      qemu_common_flags = ['-mcx16'] + qemu_common_flags
-+      qemu_isa_flags += ['-mcx16']
+   config_host_data.set('CONFIG_ATOMIC128', has_atomic128)
+ 
+@@ -2838,7 +2838,8 @@ if has_int128_type
+     # without optimization enabled.  Try again with optimizations locally
+     # enabled for the function.  See
+     #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
+-    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128)
++    has_atomic128_opt = cc.links('__attribute__((optimize("O1")))' + atomic_test_128,
++                                 args: qemu_isa_flags)
+     config_host_data.set('CONFIG_ATOMIC128_OPT', has_atomic128_opt)
+ 
+     if not has_atomic128_opt
+@@ -2849,7 +2850,7 @@ if has_int128_type
+           __sync_val_compare_and_swap_16(&x, y, x);
+           return 0;
+         }
+-      '''))
++      ''', args: qemu_isa_flags))
      endif
    endif
-   if get_option('x86_version') >= '2'
--    qemu_common_flags = ['-mpopcnt'] + qemu_common_flags
--    qemu_common_flags = cc.get_supported_arguments('-mneeded') + qemu_common_flags
-+    qemu_isa_flags += ['-mpopcnt']
-+    qemu_isa_flags += cc.get_supported_arguments('-mneeded')
-   endif
-   if get_option('x86_version') >= '3'
--    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
-+    qemu_isa_flags += ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c']
-   endif
- 
-   # add required vector instruction set (each level implies those below)
-   if get_option('x86_version') == '1'
--    qemu_common_flags = ['-msse2'] + qemu_common_flags
-+    qemu_isa_flags += ['-msse2']
-   elif get_option('x86_version') == '2'
--    qemu_common_flags = ['-msse4.2'] + qemu_common_flags
-+    qemu_isa_flags += ['-msse4.2']
-   elif get_option('x86_version') == '3'
--    qemu_common_flags = ['-mavx2'] + qemu_common_flags
-+    qemu_isa_flags += ['-mavx2']
-   elif get_option('x86_version') == '4'
--    qemu_common_flags = ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl'] + qemu_common_flags
-+    qemu_isa_flags += ['-mavx512f', '-mavx512bw', '-mavx512cd', '-mavx512dq', '-mavx512vl']
-   endif
- endif
- 
-+qemu_common_flags = qemu_isa_flags + qemu_common_flags
-+
- if get_option('prefer_static')
-   qemu_ldflags += get_option('b_pie') ? '-static-pie' : '-static'
  endif
 -- 
 2.39.5
