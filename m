@@ -2,101 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076029A12DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 21:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70AE9A137E
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:12:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t19xD-00075r-GU; Wed, 16 Oct 2024 15:45:07 -0400
+	id 1t1ALx-0004kE-PR; Wed, 16 Oct 2024 16:10:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t19x8-00073e-BY
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 15:45:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t1ALv-0004jY-D8; Wed, 16 Oct 2024 16:10:39 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t19x6-0005Zk-Fw
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 15:45:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729107898;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mW0oxvId7kG+w7/tmBDcqIAmjLANa5yzQGAw7SvqZtw=;
- b=S7PtOehkcRbszqCAuxQdgEXhDILqW3e2UAAJBVbWSlVry/nIKLtBCUeYgNq8qWyDPbmT13
- QfYFDadbafwnwc4J46CqeX18yTYUMtS5ihPbLcaEnzy5DIUVOrApv7GXAW1uo8x0Gys702
- uzCRMBHGL2x53iCfCOvGS7dJ3v0enXg=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-HjycEQaXMpWK7UpwopSJkQ-1; Wed, 16 Oct 2024 15:44:57 -0400
-X-MC-Unique: HjycEQaXMpWK7UpwopSJkQ-1
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-5eb61b55b47so246705eaf.2
- for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 12:44:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729107897; x=1729712697;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mW0oxvId7kG+w7/tmBDcqIAmjLANa5yzQGAw7SvqZtw=;
- b=JpV2m0Nhd4VQM4z0QkYL3iBjBQMfvfss8MNLrLW6aKVFBLXigmPIQPhRJuSTMUDn2+
- G4eELra0afOj8oPbJwb+kbA96/NTLIS32eSKXKpE9SYsRFHXNglatxVf8sXdvqViIMmd
- z8R7ispUw1DKap1Q2d8AQZVSP0lOQjV18sW8v3C4W1zELnNAgCOjkeGQ6EO1pBzlJ19Q
- tQS3P/jC5C/mK1SSoRuiKWB4TnxW1sVEiAWyyFL3Xlwc9Grj54t1etYmitXpMHhjHS1X
- SjHoz0+emNZI/f48MuaZ0ls/ts2EkypLvoxkBbavh3AHxX0WYXuh3JFnXMIuw3kRYPCV
- 4jnQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUuUzxqXOwKejTq+UGuQJX74nm97Y5hzffabRYVPjut8YOcEl/yFxeQoHwrCbk2YsoQrUOwuAP/SS7B@nongnu.org
-X-Gm-Message-State: AOJu0YwQpSY8KbwcvUHX8Iby1VvE9a2GxhvRJqj8L5j/LVm26RnzsXms
- iXpVLvlQLgBTKTnU5R9RD0ORc1UrKC+aaMvz7XimrPB5X/x7fRs1utGRdAn+SLF487yn2PHG8JA
- yoAWxfSFs3M19C0jo8U/6vK87uY/SJyxPnEc5cj1+zxR3UHm8jeBG
-X-Received: by 2002:a05:6358:7e0b:b0:1aa:d5c8:ec94 with SMTP id
- e5c5f4694b2df-1c3784fae72mr424748555d.26.1729107896750; 
- Wed, 16 Oct 2024 12:44:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPWGrku4CYKN0L8EqSbhEqjPzuU6f33XUmxvTVMZZhUJq0IY4AqI0iCfARJSDOctmrY8YfOg==
-X-Received: by 2002:a05:6358:7e0b:b0:1aa:d5c8:ec94 with SMTP id
- e5c5f4694b2df-1c3784fae72mr424746755d.26.1729107896432; 
- Wed, 16 Oct 2024 12:44:56 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4607b0a28d3sm20808521cf.18.2024.10.16.12.44.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2024 12:44:55 -0700 (PDT)
-Date: Wed, 16 Oct 2024 15:44:53 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Yichen Wang <yichen.wang@bytedance.com>
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, qemu-devel@nongnu.org,
- Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- Shivam Kumar <shivam.kumar1@nutanix.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Subject: Re: [External] Re: [PATCH v6 00/12] Use Intel DSA accelerator to
- offload zero page checking in multifd live migration.
-Message-ID: <ZxAXterqtYw2j5eV@x1n>
-References: <20241009234610.27039-1-yichen.wang@bytedance.com>
- <ZwlTCgqjbFbJduyI@x1n>
- <CAHObMVbmQt6U_16dYG4y_9kt76fk_W+OSSe34SRmFrC0bGNOVw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t1ALt-0000ee-5S; Wed, 16 Oct 2024 16:10:39 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id F0DA998F92;
+ Wed, 16 Oct 2024 23:10:04 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id EB91E156372;
+ Wed, 16 Oct 2024 23:10:24 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 00/49] Patch Round-up for stable 9.1.1,
+ freeze on 2024-10-16 (frozen)
+Date: Wed, 16 Oct 2024 23:09:51 +0300
+Message-Id: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHObMVbmQt6U_16dYG4y_9kt76fk_W+OSSe34SRmFrC0bGNOVw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.038,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -114,64 +57,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 15, 2024 at 03:02:37PM -0700, Yichen Wang wrote:
-> On Fri, Oct 11, 2024 at 9:32 AM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Wed, Oct 09, 2024 at 04:45:58PM -0700, Yichen Wang wrote:
-> >
-> > The doc update is still missing under docs/, we may need that for a final
-> > merge.
-> >
-> 
-> I will work with Intel to prepare a doc in my next patch.
-> 
-> > Are you using this in production?  How it performs in real life?  What is
-> > the major issue to solve for you?  Is it "zero detect eats cpu too much",
-> > or "migration too slow", or "we're doing experiment with the new hardwares,
-> > and see how it goes if we apply it on top of migrations"?
-> >
-> 
-> Yes, we do use it in production. Our codebase is based on an old QEMU
-> release (5.X), so we backported the series there. The major use case
-> is just to accelerate the live migration, and it is currently under QA
-> scale testing. The main motivation is, we reserve 4 cores for all
-> control plane services including QEMU. While doing 2nd-scheduling
-> (i.e. live migration to reduce the fragmentations, and very commonly
-> seen on cloud providers), we realize QEMU will eat a lot of CPUs which
-> causes jitter and slowness on the control planes. Even though this is
-> not happening too frequently, we still want it to be stable. With the
-> help of DSA, it saves CPU while accelerates the process, so we want to
-> use it in production.
+The following patches are queued for QEMU stable v9.1.1:
 
-Thanks. Please consider adding something like this (issues, why DSA help
-and how, etc.) into the doc file.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.1
 
-> 
-> > There're a lot of new code added for dsa just for this optimization on zero
-> > page detection.  We'd better understand the major benefits, and also
-> > whether that's applicable to other part of qemu or migration-only.  I
-> > actually wonder if we're going to support enqcmd whether migration is the
-> > best starting point (rather than other places where we emulate tons of
-> > devices, and maybe some backends can speedup IOs with enqcmd in some
-> > form?).. but it's more of a pure question.
-> >
-> 
-> I tried to put most of the code in dsa.c and do minimum changes on all
-> other files. Even in dsa.c, it has the abstraction for "submit task",
-> and the implementation of "submit a buffer_zero task". I think this is
-> the best I can think of. I am open to suggestions of how we can help
-> to move this forward. :)
+Patch freeze is 2024-10-16 (frozen), and the release is planned for 2024-10-18:
 
-That's ok.
+  https://wiki.qemu.org/Planning/9.1
 
-Though I think you ignored some of my question in the email on some
-parameter I never found myself in this series but got mentioned.  If you
-plan to repost soon, please help make sure the patchset is properly tested
-(including builds), and the results are reflecting what was posted.
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Thanks,
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
--- 
-Peter Xu
+Thanks!
 
+/mjt
+
+--------------------------------------
+01* ead5078cf1a5 Helge Deller:
+   target/hppa: Fix PSW V-bit packaging in cpu_hppa_get for hppa64
+02* 48b8583698d9 Daniel P. Berrangé:
+   iotests: fix expected output from gnutls
+03* c72cab5ad9f8 Tiago Pasqualini:
+   crypto: run qcrypto_pbkdf2_count_iters in a new thread
+04* e6c09ea4f9e5 Daniel P. Berrangé:
+   crypto: check gnutls & gcrypt support the requested pbkdf hash
+05* 586ac2c67d70 Daniel P. Berrangé:
+   crypto: avoid leak of ctx when bad cipher mode is given
+06* d0068b746a0a Alex Bennée:
+   tests/docker: remove debian-armel-cross
+07* 19d2111059c8 Alex Bennée:
+   tests/docker: update debian i686 and mipsel images to bookworm
+08* 1231bc7d12c3 Thomas Huth:
+   contrib/plugins/Makefile: Add a 'distclean' target
+09* 7fc6611cad3e Volker Rümelin:
+   hw/audio/virtio-sound: fix heap buffer overflow
+10* 110684c9a69a Jan Klötzke:
+   hw/intc/arm_gic: fix spurious level triggered interrupts
+11* ae23cd00170b Gert Wollny:
+   ui/sdl2: set swap interval explicitly when OpenGL is enabled
+12* 8d5ab746b1e6 Daniel P. Berrangé:
+   gitlab: fix logic for changing docker tag on stable branches
+13* 637b0aa13956 Mattias Nissler:
+   softmmu: Support concurrent bounce buffers
+14* b84f06c2bee7 David Hildenbrand:
+   softmmu/physmem: fix memory leak in dirty_memory_extend()
+15* d8d5ca40048b Fea.Wang:
+   softmmu/physmem.c: Keep transaction attribute in address_space_map()
+16* 2d0a071e625d Mattias Nissler:
+   mac_dbdma: Remove leftover `dma_memory_unmap` calls
+17* 4ce562290878 Fabiano Rosas:
+   migration/multifd: Fix rb->receivedmap cleanup race
+18* 6cce0dcc6f7a Jacob Abrams:
+   hw/char/stm32l4x5_usart.c: Enable USART ACK bit response
+19* 8676007eff04 Peter Maydell:
+   target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
+20* d33d3adb5737 Helge Deller:
+   target/hppa: Fix random 32-bit linux-user crashes
+21* 203beb6f0474 Arman Nabiev:
+   target/ppc: Fix migration of CPUs with TLB_EMB TLB type
+22* 405e352d28c2 Fabiano Rosas:
+   migration/multifd: Fix p->iov leak in multifd-uadk.c
+23* 4265b4f35843 Bibo Mao:
+   hw/loongarch/virt: Add description for virt machine type
+24* 9d8d5a5b9078 TANG Tiancheng:
+   tcg: Fix iteration step in 32-bit gvec operation
+25* 8bded2e73e80 Fabiano Rosas:
+   target/ppc: Fix lxvx/stxvx facility check
+26* 2e4fdf566062 Mark Cave-Ayland:
+   hw/mips/jazz: fix typo in in-built NIC alias
+27* bc02be4508d8 Alex Bennée:
+   util/timer: avoid deadlock when shutting down
+28* 6475155d5192 Fiona Ebner:
+   block/reqlist: allow adding overlapping requests
+29* 67d762e716a7 Ard Biesheuvel:
+   target/arm: Avoid target_ulong for physical address lookups
+30* 9601076b3b0b Jan Luebbe:
+   hw/sd/sdcard: Fix handling of disabled boot partitions
+31* c60473d29254 Alex Bennée:
+   testing: bump mips64el cross to bookworm and fix package list
+32* 0e60fc80938d Marc-André Lureau:
+   vnc: fix crash when no console attached
+33 a9ee641bd46f Philippe Mathieu-Daudé:
+   linux-user/flatload: Take mmap_lock in load_flt_binary()
+34 2884596f5f38 Richard Henderson:
+   linux-user: Fix parse_elf_properties GNU0_MAGIC check
+35 4cabcb89b101 Richard Henderson:
+   tcg/ppc: Use TCG_REG_TMP2 for scratch tcg_out_qemu_st
+36 3213da7b9539 Richard Henderson:
+   tcg/ppc: Use TCG_REG_TMP2 for scratch index in prepare_host_addr
+37 352cc9f300d8 Richard Henderson:
+   target/m68k: Always return a temporary from gen_lea_mode
+38 461a9252e249 Pierrick Bouvier:
+   meson: fix machine option for x86_version
+39 6ae8c5382b23 Paolo Bonzini:
+   meson: define qemu_isa_flags
+40 8db4e0f92e83 Paolo Bonzini:
+   meson: ensure -mcx16 is passed when detecting ATOMIC128
+41 e0c0ea6eca4f Alexandra Diupina:
+   hw/intc/arm_gicv3: Add cast to match the documentation
+42 12dc8f6eca1e Alexandra Diupina:
+   hw/intc/arm_gicv3: Add cast to match the documentation
+43 3db74afec3ca Alexandra Diupina:
+   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
+44 cd247eae16ab Peter Maydell:
+   hw/char/pl011: Use correct masks for IBRD and FBRD
+45 f27206ceedbe Marc-André Lureau:
+   hw/audio/hda: free timer on exit
+46 6d6e23361fc7 Marc-André Lureau:
+   hw/audio/hda: fix memory leak on audio setup
+47 244d52ff736f Marc-André Lureau:
+   ui/dbus: fix leak on message filtering
+48 330ef31deb2e Marc-André Lureau:
+   ui/win32: fix potential use-after-free with dbus shared memory
+49 cf5988978129 Marc-André Lureau:
+   ui/dbus: fix filtering all update messages
+
+(commit(s) marked with * were in previous series and are not resent)
 
