@@ -2,35 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70AE9A137E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EADB9A138D
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1ALx-0004kE-PR; Wed, 16 Oct 2024 16:10:41 -0400
+	id 1t1ALz-0004ki-JZ; Wed, 16 Oct 2024 16:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1ALv-0004jY-D8; Wed, 16 Oct 2024 16:10:39 -0400
+ id 1t1ALx-0004kW-GI; Wed, 16 Oct 2024 16:10:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1ALt-0000ee-5S; Wed, 16 Oct 2024 16:10:39 -0400
+ id 1t1ALv-0000ef-G7; Wed, 16 Oct 2024 16:10:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F0DA998F92;
- Wed, 16 Oct 2024 23:10:04 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E28198F93;
+ Wed, 16 Oct 2024 23:10:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB91E156372;
- Wed, 16 Oct 2024 23:10:24 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4376C156373;
+ Wed, 16 Oct 2024 23:10:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 00/49] Patch Round-up for stable 9.1.1,
- freeze on 2024-10-16 (frozen)
-Date: Wed, 16 Oct 2024 23:09:51 +0300
-Message-Id: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 33/49] linux-user/flatload: Take mmap_lock in
+ load_flt_binary()
+Date: Wed, 16 Oct 2024 23:09:52 +0300
+Message-Id: <20241016201025.256294-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
+References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,123 +61,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.1.1:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.1
+load_flt_binary() calls load_flat_file() -> page_set_flags().
 
-Patch freeze is 2024-10-16 (frozen), and the release is planned for 2024-10-18:
+page_set_flags() must be called with the mmap_lock held,
+otherwise it aborts:
 
-  https://wiki.qemu.org/Planning/9.1
+  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
+  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
+  Aborted (core dumped)
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Fix by taking the lock in load_flt_binary().
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit a9ee641bd46f5462eeed183ac3c3760bddfc2600)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Thanks!
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 04d8138d12..0e4be5bf44 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -487,7 +487,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     stack_len += (bprm->envc + 1) * 4; /* the envp array */
+ 
+ 
++    mmap_lock();
+     res = load_flat_file(bprm, libinfo, 0, &stack_len);
++    mmap_unlock();
++
+     if (is_error(res)) {
+             return res;
+     }
+-- 
+2.39.5
 
-/mjt
-
---------------------------------------
-01* ead5078cf1a5 Helge Deller:
-   target/hppa: Fix PSW V-bit packaging in cpu_hppa_get for hppa64
-02* 48b8583698d9 Daniel P. Berrangé:
-   iotests: fix expected output from gnutls
-03* c72cab5ad9f8 Tiago Pasqualini:
-   crypto: run qcrypto_pbkdf2_count_iters in a new thread
-04* e6c09ea4f9e5 Daniel P. Berrangé:
-   crypto: check gnutls & gcrypt support the requested pbkdf hash
-05* 586ac2c67d70 Daniel P. Berrangé:
-   crypto: avoid leak of ctx when bad cipher mode is given
-06* d0068b746a0a Alex Bennée:
-   tests/docker: remove debian-armel-cross
-07* 19d2111059c8 Alex Bennée:
-   tests/docker: update debian i686 and mipsel images to bookworm
-08* 1231bc7d12c3 Thomas Huth:
-   contrib/plugins/Makefile: Add a 'distclean' target
-09* 7fc6611cad3e Volker Rümelin:
-   hw/audio/virtio-sound: fix heap buffer overflow
-10* 110684c9a69a Jan Klötzke:
-   hw/intc/arm_gic: fix spurious level triggered interrupts
-11* ae23cd00170b Gert Wollny:
-   ui/sdl2: set swap interval explicitly when OpenGL is enabled
-12* 8d5ab746b1e6 Daniel P. Berrangé:
-   gitlab: fix logic for changing docker tag on stable branches
-13* 637b0aa13956 Mattias Nissler:
-   softmmu: Support concurrent bounce buffers
-14* b84f06c2bee7 David Hildenbrand:
-   softmmu/physmem: fix memory leak in dirty_memory_extend()
-15* d8d5ca40048b Fea.Wang:
-   softmmu/physmem.c: Keep transaction attribute in address_space_map()
-16* 2d0a071e625d Mattias Nissler:
-   mac_dbdma: Remove leftover `dma_memory_unmap` calls
-17* 4ce562290878 Fabiano Rosas:
-   migration/multifd: Fix rb->receivedmap cleanup race
-18* 6cce0dcc6f7a Jacob Abrams:
-   hw/char/stm32l4x5_usart.c: Enable USART ACK bit response
-19* 8676007eff04 Peter Maydell:
-   target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
-20* d33d3adb5737 Helge Deller:
-   target/hppa: Fix random 32-bit linux-user crashes
-21* 203beb6f0474 Arman Nabiev:
-   target/ppc: Fix migration of CPUs with TLB_EMB TLB type
-22* 405e352d28c2 Fabiano Rosas:
-   migration/multifd: Fix p->iov leak in multifd-uadk.c
-23* 4265b4f35843 Bibo Mao:
-   hw/loongarch/virt: Add description for virt machine type
-24* 9d8d5a5b9078 TANG Tiancheng:
-   tcg: Fix iteration step in 32-bit gvec operation
-25* 8bded2e73e80 Fabiano Rosas:
-   target/ppc: Fix lxvx/stxvx facility check
-26* 2e4fdf566062 Mark Cave-Ayland:
-   hw/mips/jazz: fix typo in in-built NIC alias
-27* bc02be4508d8 Alex Bennée:
-   util/timer: avoid deadlock when shutting down
-28* 6475155d5192 Fiona Ebner:
-   block/reqlist: allow adding overlapping requests
-29* 67d762e716a7 Ard Biesheuvel:
-   target/arm: Avoid target_ulong for physical address lookups
-30* 9601076b3b0b Jan Luebbe:
-   hw/sd/sdcard: Fix handling of disabled boot partitions
-31* c60473d29254 Alex Bennée:
-   testing: bump mips64el cross to bookworm and fix package list
-32* 0e60fc80938d Marc-André Lureau:
-   vnc: fix crash when no console attached
-33 a9ee641bd46f Philippe Mathieu-Daudé:
-   linux-user/flatload: Take mmap_lock in load_flt_binary()
-34 2884596f5f38 Richard Henderson:
-   linux-user: Fix parse_elf_properties GNU0_MAGIC check
-35 4cabcb89b101 Richard Henderson:
-   tcg/ppc: Use TCG_REG_TMP2 for scratch tcg_out_qemu_st
-36 3213da7b9539 Richard Henderson:
-   tcg/ppc: Use TCG_REG_TMP2 for scratch index in prepare_host_addr
-37 352cc9f300d8 Richard Henderson:
-   target/m68k: Always return a temporary from gen_lea_mode
-38 461a9252e249 Pierrick Bouvier:
-   meson: fix machine option for x86_version
-39 6ae8c5382b23 Paolo Bonzini:
-   meson: define qemu_isa_flags
-40 8db4e0f92e83 Paolo Bonzini:
-   meson: ensure -mcx16 is passed when detecting ATOMIC128
-41 e0c0ea6eca4f Alexandra Diupina:
-   hw/intc/arm_gicv3: Add cast to match the documentation
-42 12dc8f6eca1e Alexandra Diupina:
-   hw/intc/arm_gicv3: Add cast to match the documentation
-43 3db74afec3ca Alexandra Diupina:
-   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
-44 cd247eae16ab Peter Maydell:
-   hw/char/pl011: Use correct masks for IBRD and FBRD
-45 f27206ceedbe Marc-André Lureau:
-   hw/audio/hda: free timer on exit
-46 6d6e23361fc7 Marc-André Lureau:
-   hw/audio/hda: fix memory leak on audio setup
-47 244d52ff736f Marc-André Lureau:
-   ui/dbus: fix leak on message filtering
-48 330ef31deb2e Marc-André Lureau:
-   ui/win32: fix potential use-after-free with dbus shared memory
-49 cf5988978129 Marc-André Lureau:
-   ui/dbus: fix filtering all update messages
-
-(commit(s) marked with * were in previous series and are not resent)
 
