@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA16A9A139E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EAF9A13A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1AN2-0005a4-2B; Wed, 16 Oct 2024 16:11:48 -0400
+	id 1t1AM0-0004lX-Ph; Wed, 16 Oct 2024 16:10:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AMz-0005Y7-4e; Wed, 16 Oct 2024 16:11:45 -0400
+ id 1t1ALy-0004kj-NH; Wed, 16 Oct 2024 16:10:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AMx-0000kq-43; Wed, 16 Oct 2024 16:11:44 -0400
+ id 1t1ALw-0000fL-TV; Wed, 16 Oct 2024 16:10:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7245F98FA2;
- Wed, 16 Oct 2024 23:10:11 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id BEB8198F94;
+ Wed, 16 Oct 2024 23:10:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 58B75156382;
- Wed, 16 Oct 2024 23:10:31 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id A4F52156374;
+ Wed, 16 Oct 2024 23:10:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 48/49] ui/win32: fix potential use-after-free with dbus
- shared memory
-Date: Wed, 16 Oct 2024 23:10:07 +0300
-Message-Id: <20241016201025.256294-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 34/49] linux-user: Fix parse_elf_properties GNU0_MAGIC
+ check
+Date: Wed, 16 Oct 2024 23:09:53 +0300
+Message-Id: <20241016201025.256294-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
@@ -60,157 +60,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-DisplaySurface may be free before the pixman image is freed, since the
-image is refcounted and used by different objects, including pending
-dbus messages.
+Comparing a string of 4 bytes only works in little-endian.
 
-Furthermore, setting the destroy function in
-create_displaysurface_from() isn't appropriate, as it may not be used,
-and may be overriden as in ramfb.
+Adjust bulk bswap to only apply to the note payload.
+Perform swapping of the note header manually; the magic
+is defined so that it does not need a runtime swap.
 
-Set the destroy function when the shared handle is set, use the HANDLE
-directly for destroy data, using a single common helper
-qemu_pixman_win32_image_destroy().
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <20241008125028.1177932-5-marcandre.lureau@redhat.com>
-(cherry picked from commit 330ef31deb2e5461cff907488b710f5bd9cd2327)
+Fixes: 83f990eb5adb ("linux-user/elfload: Parse NT_GNU_PROPERTY_TYPE_0 notes")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2596
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 2884596f5f385b5712c356310dd4125a089888a8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 3281842bfe..017a0f170c 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -238,16 +238,6 @@ static uint32_t calc_image_hostmem(pixman_format_code_t pformat,
-     return height * stride;
- }
- 
--#ifdef WIN32
--static void
--win32_pixman_image_destroy(pixman_image_t *image, void *data)
--{
--    HANDLE handle = data;
--
--    qemu_win32_map_free(pixman_image_get_data(image), handle, &error_warn);
--}
--#endif
--
- static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
-                                           struct virtio_gpu_ctrl_command *cmd)
- {
-@@ -308,7 +298,7 @@ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
-             bits, c2d.height ? res->hostmem / c2d.height : 0);
- #ifdef WIN32
-         if (res->image) {
--            pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
-+            pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
-         }
- #endif
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index b27dd01734..0b1c230b1c 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3136,11 +3136,11 @@ static bool parse_elf_properties(const ImageSource *src,
      }
-@@ -1327,7 +1317,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-             return -EINVAL;
-         }
- #ifdef WIN32
--        pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
-+        pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
+ 
+     /*
+-     * The contents of a valid PT_GNU_PROPERTY is a sequence
+-     * of uint32_t -- swap them all now.
++     * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
++     * Swap most of them now, beyond the header and namesz.
+      */
+ #ifdef BSWAP_NEEDED
+-    for (int i = 0; i < n / 4; i++) {
++    for (int i = 4; i < n / 4; i++) {
+         bswap32s(note.data + i);
+     }
  #endif
+@@ -3150,15 +3150,15 @@ static bool parse_elf_properties(const ImageSource *src,
+      * immediately follows nhdr and is thus at the 4th word.  Further, all
+      * of the inputs to the kernel's round_up are multiples of 4.
+      */
+-    if (note.nhdr.n_type != NT_GNU_PROPERTY_TYPE_0 ||
+-        note.nhdr.n_namesz != NOTE_NAME_SZ ||
++    if (tswap32(note.nhdr.n_type) != NT_GNU_PROPERTY_TYPE_0 ||
++        tswap32(note.nhdr.n_namesz) != NOTE_NAME_SZ ||
+         note.data[3] != GNU0_MAGIC) {
+         error_setg(errp, "Invalid note in PT_GNU_PROPERTY");
+         return false;
+     }
+     off = sizeof(note.nhdr) + NOTE_NAME_SZ;
  
-         res->addrs = g_new(uint64_t, res->iov_cnt);
-diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index ef13a8210c..e3dd72b9e3 100644
---- a/include/ui/qemu-pixman.h
-+++ b/include/ui/qemu-pixman.h
-@@ -97,6 +97,8 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
- 
- void qemu_pixman_image_unref(pixman_image_t *image);
- 
-+void qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data);
-+
- G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
- 
- #endif /* QEMU_PIXMAN_H */
-diff --git a/ui/console.c b/ui/console.c
-index 105a0e2c70..8f416ff0b9 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -461,24 +461,6 @@ void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
-     surface->handle = h;
-     surface->handle_offset = offset;
- }
--
--static void
--win32_pixman_image_destroy(pixman_image_t *image, void *data)
--{
--    DisplaySurface *surface = data;
--
--    if (!surface->handle) {
--        return;
--    }
--
--    assert(surface->handle_offset == 0);
--
--    qemu_win32_map_free(
--        pixman_image_get_data(surface->image),
--        surface->handle,
--        &error_warn
--    );
--}
- #endif
- 
- DisplaySurface *qemu_create_displaysurface(int width, int height)
-@@ -504,6 +486,8 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
- 
- #ifdef WIN32
-     qemu_displaysurface_win32_set_handle(surface, handle, 0);
-+    pixman_image_set_destroy_function(surface->image,
-+                                      qemu_pixman_win32_image_destroy, handle);
- #endif
-     return surface;
- }
-@@ -519,10 +503,6 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
-                                               width, height,
-                                               (void *)data, linesize);
-     assert(surface->image != NULL);
--#ifdef WIN32
--    pixman_image_set_destroy_function(surface->image,
--                                      win32_pixman_image_destroy, surface);
--#endif
- 
-     return surface;
- }
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index 5ca55dd199..de6c88151c 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "ui/console.h"
- #include "standard-headers/drm/drm_fourcc.h"
- #include "trace.h"
-@@ -268,3 +269,17 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
-     pixman_image_unref(ibg);
- }
- #endif /* CONFIG_PIXMAN */
-+
-+#ifdef WIN32
-+void
-+qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data)
-+{
-+    HANDLE handle = data;
-+
-+    qemu_win32_map_free(
-+        pixman_image_get_data(image),
-+        handle,
-+        &error_warn
-+    );
-+}
-+#endif
+-    datasz = note.nhdr.n_descsz + off;
++    datasz = tswap32(note.nhdr.n_descsz) + off;
+     if (datasz > n) {
+         error_setg(errp, "Invalid note size in PT_GNU_PROPERTY");
+         return false;
 -- 
 2.39.5
 
