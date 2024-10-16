@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69AA9A137F
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCE49A1390
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:13:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1AMG-0004sI-BI; Wed, 16 Oct 2024 16:11:00 -0400
+	id 1t1AMY-0004yB-S5; Wed, 16 Oct 2024 16:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AMB-0004r9-Hc; Wed, 16 Oct 2024 16:10:55 -0400
+ id 1t1AMW-0004xo-VQ; Wed, 16 Oct 2024 16:11:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AM9-0000hY-K8; Wed, 16 Oct 2024 16:10:55 -0400
+ id 1t1AMV-0000ho-Eu; Wed, 16 Oct 2024 16:11:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E2F7598F9C;
- Wed, 16 Oct 2024 23:10:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 58F8F98F9D;
+ Wed, 16 Oct 2024 23:10:09 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id CAC4B15637C;
- Wed, 16 Oct 2024 23:10:28 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 36DA115637D;
+ Wed, 16 Oct 2024 23:10:29 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 42/49] hw/intc/arm_gicv3: Add cast to match the
+Subject: [Stable-9.1.1 43/49] hw/intc/arm_gicv3_cpuif: Add cast to match the
  documentation
-Date: Wed, 16 Oct 2024 23:10:01 +0300
-Message-Id: <20241016201025.256294-10-mjt@tls.msk.ru>
+Date: Wed, 16 Oct 2024 23:10:02 +0300
+Message-Id: <20241016201025.256294-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
@@ -63,33 +63,33 @@ From: Alexandra Diupina <adiupina@astralinux.ru>
 The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
 When cast to uint64_t (for further bitwise OR), the 32 most
 significant bits will be filled with 1s. However, the documentation
-states that the upper 32 bits of ICC_AP[0/1]R<n>_EL2 are reserved.
+states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
 
 Add an explicit cast to match the documentation.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 28cca59c46 ("hw/intc/arm_gicv3: Add NMI handling CPU interface registers")
+Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
 Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 12dc8f6eca1ead876142fd3d6731cf3da1295f2a)
+(cherry picked from commit 3db74afec3ca87f81fbdf5918ed1e21d837fbfab)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index ebad7aaea1..89359db700 100644
+index 89359db700..ea1d1b3455 100644
 --- a/hw/intc/arm_gicv3_cpuif.c
 +++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -1170,7 +1170,7 @@ static void icc_activate_irq(GICv3CPUState *cs, int irq)
-     if (nmi) {
-         cs->icc_apr[cs->hppi.grp][regno] |= ICC_AP1R_EL1_NMI;
-     } else {
--        cs->icc_apr[cs->hppi.grp][regno] |= (1 << regbit);
-+        cs->icc_apr[cs->hppi.grp][regno] |= (1U << regbit);
-     }
+@@ -793,7 +793,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
+     int regno = aprbit / 32;
+     int regbit = aprbit % 32;
  
-     if (irq < GIC_INTERNAL) {
+-    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
++    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
+     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
+ }
+ 
 -- 
 2.39.5
 
