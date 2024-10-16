@@ -2,67 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15DB9A03E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 10:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0CA9A04A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 10:49:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0zAW-00008l-Gb; Wed, 16 Oct 2024 04:14:08 -0400
+	id 1t0ziR-00054r-2d; Wed, 16 Oct 2024 04:49:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t0zAU-00008d-8U
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:14:06 -0400
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1t0ziN-00054F-NA
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:49:08 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t0zAR-0002hz-KZ
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:14:05 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxqrHEdQ9n8MMfAA--.45622S3;
- Wed, 16 Oct 2024 16:13:57 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBxXuTBdQ9n2GssAA--.17105S3;
- Wed, 16 Oct 2024 16:13:55 +0800 (CST)
-Subject: Re: [PATCH] linux-headers: loongarch: add kvm_para.h and unistd_64.h
-From: maobibo <maobibo@loongson.cn>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
-References: <20240929072240.251301-1-maobibo@loongson.cn>
-Message-ID: <6d4d65ad-9b35-ea5b-ae3d-0e1234477b66@loongson.cn>
-Date: Wed, 16 Oct 2024 16:13:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <gaosong@loongson.cn>) id 1t0ziL-0006PH-1X
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:49:07 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxDOv8fQ9nENUfAA--.47460S3;
+ Wed, 16 Oct 2024 16:49:00 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMAx_9X4fQ9n6ncsAA--.29226S2;
+ Wed, 16 Oct 2024 16:48:57 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/5] loongarch-to-apply queue
+Date: Wed, 16 Oct 2024 16:30:58 +0800
+Message-Id: <20241016083103.2541727-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-In-Reply-To: <20240929072240.251301-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXuTBdQ9n2GssAA--.17105S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7GF1xCw48ury3XF48Gw4xKrX_yoWDKrgE9a
- nrAr4rX340v39rt3Z2yFn3K3yUC3yxAanayr18ZwnFq3s8tF4jga1xJ34kGw1q9ryj9rs5
- uFWUtr1xZa13XosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbIxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
- 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
- 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1MK
- ZJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+X-CM-TRANSID: qMiowMAx_9X4fQ9n6ncsAA--.29226S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.7,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,41 +61,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping.
+The following changes since commit f774a677507966222624a9b2859f06ede7608100:
 
-@Song
+  Merge tag 'pull-target-arm-20241015-1' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-10-15 15:18:22 +0100)
 
-Could you give some comments since it is LoongArch specific?
+are available in the Git repository at:
 
-Regards
-Bibo Mao
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20241016
 
-On 2024/9/29 下午3:22, Bibo Mao wrote:
-> KVM LBT supports on LoongArch requires the linux-header kvm_para.h,
-> also unistd_64.h is required by unistd.h on LoongArch since 6.11
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   scripts/update-linux-headers.sh | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
-> index c34ac6454e..3c411f0318 100755
-> --- a/scripts/update-linux-headers.sh
-> +++ b/scripts/update-linux-headers.sh
-> @@ -186,6 +186,10 @@ EOF
->       if [ $arch = riscv ]; then
->           cp "$hdrdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
->       fi
-> +    if [ $arch = loongarch ]; then
-> +        cp "$hdrdir/include/asm/kvm_para.h" "$output/linux-headers/asm-loongarch/"
-> +        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-loongarch/"
-> +    fi
->   done
->   arch=
->   
-> 
-> base-commit: 3b14a767eaca3df5534a162851f04787b363670e
-> 
+for you to fetch changes up to e376c2d87cbbad3483adcd5e827bdd144edb7d2c:
+
+  hw/loongarch/fw_cfg: Build in common_ss[] (2024-10-16 16:06:07 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20241016
+
+----------------------------------------------------------------
+Bibo Mao (3):
+      acpi: ged: Add macro for acpi sleep control register
+      hw/loongarch/virt: Add FDT table support with acpi ged pm register
+      target/loongarch: Avoid bits shift exceeding width of bool type
+
+Philippe Mathieu-Daudé (2):
+      hw/loongarch/virt: Remove unnecessary 'cpu.h' inclusion
+      hw/loongarch/fw_cfg: Build in common_ss[]
+
+ hw/acpi/generic_event_device.c         |  6 +++---
+ hw/loongarch/meson.build               |  2 +-
+ hw/loongarch/virt.c                    | 39 ++++++++++++++++++++++++++++++++++
+ include/hw/acpi/generic_event_device.h |  7 ++++--
+ include/hw/loongarch/virt.h            |  1 -
+ target/loongarch/arch_dump.c           |  6 +-----
+ 6 files changed, 49 insertions(+), 12 deletions(-)
 
 
