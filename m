@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFBD9A1385
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CF59A1396
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1AM6-0004o6-6s; Wed, 16 Oct 2024 16:10:50 -0400
+	id 1t1AM7-0004pB-OU; Wed, 16 Oct 2024 16:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AM3-0004nc-Iu; Wed, 16 Oct 2024 16:10:47 -0400
+ id 1t1AM5-0004o7-6A; Wed, 16 Oct 2024 16:10:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1AM1-0000g9-Ua; Wed, 16 Oct 2024 16:10:47 -0400
+ id 1t1AM3-0000gN-Hd; Wed, 16 Oct 2024 16:10:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D2CC298F97;
- Wed, 16 Oct 2024 23:10:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 4566998F98;
+ Wed, 16 Oct 2024 23:10:07 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BED0C156377;
- Wed, 16 Oct 2024 23:10:26 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 260E9156378;
+ Wed, 16 Oct 2024 23:10:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 37/49] target/m68k: Always return a temporary from
- gen_lea_mode
-Date: Wed, 16 Oct 2024 23:09:56 +0300
-Message-Id: <20241016201025.256294-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [Stable-9.1.1 38/49] meson: fix machine option for x86_version
+Date: Wed, 16 Oct 2024 23:09:57 +0300
+Message-Id: <20241016201025.256294-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
@@ -60,61 +59,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Returning a raw areg does not preserve the value if the areg
-is subsequently modified.  Fixes, e.g. "jsr (sp)", where the
-return address is pushed before the branch.
+s/mbmi1/mbmi/
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2483
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240813000737.228470-1-richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 352cc9f300d83ea48b8154bfd2ff985fece887d0)
+When configuring with -Dx86_version >= 3, meson step works, but
+compilation fails because option -mbmi1 is unknown.
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Link: https://lore.kernel.org/r/20241004223715.1275428-1-pierrick.bouvier@linaro.org
+Cc: qemu-stable@nongnu.org
+Fixes: ef7d1adfa85 ("meson: allow configuring the x86-64 baseline", 2024-06-28)
+Revieved-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 461a9252e249adab5f0bae3b9634be77dd5be17e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 445966fb6a..ad3ce34501 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -720,7 +720,9 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         }
-         /* fallthru */
-     case 2: /* Indirect register */
--        return get_areg(s, reg0);
-+        tmp = tcg_temp_new();
-+        tcg_gen_mov_i32(tmp, get_areg(s, reg0));
-+        return tmp;
-     case 4: /* Indirect predecrememnt.  */
-         if (opsize == OS_UNSIZED) {
-             return NULL_QREG;
-@@ -747,20 +749,23 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         switch (reg0) {
-         case 0: /* Absolute short.  */
-             offset = (int16_t)read_im16(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 1: /* Absolute long.  */
-             offset = read_im32(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 2: /* pc displacement  */
-             offset = s->pc;
-             offset += (int16_t)read_im16(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 3: /* pc index+displacement.  */
-             return gen_lea_indexed(env, s, NULL_QREG);
-         case 4: /* Immediate.  */
-         default:
-             return NULL_QREG;
-         }
-+        tmp = tcg_temp_new();
-+        tcg_gen_movi_i32(tmp, offset);
-+        return tmp;
-     }
-     /* Should never happen.  */
-     return NULL_QREG;
+diff --git a/meson.build b/meson.build
+index fbda17c987..6e467cbe7d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -362,7 +362,7 @@ if host_arch in ['i386', 'x86_64']
+     qemu_common_flags = cc.get_supported_arguments('-mneeded') + qemu_common_flags
+   endif
+   if get_option('x86_version') >= '3'
+-    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi1', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
++    qemu_common_flags = ['-mmovbe', '-mabm', '-mbmi', '-mbmi2', '-mfma', '-mf16c'] + qemu_common_flags
+   endif
+ 
+   # add required vector instruction set (each level implies those below)
 -- 
 2.39.5
 
