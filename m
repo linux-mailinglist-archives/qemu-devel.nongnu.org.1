@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202E49A129F
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 21:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9BE9A11DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 20:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t19me-0007mT-64; Wed, 16 Oct 2024 15:34:12 -0400
+	id 1t196o-0004xk-2q; Wed, 16 Oct 2024 14:50:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t19mY-0007Rd-MI; Wed, 16 Oct 2024 15:34:06 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t19mU-00042c-Rq; Wed, 16 Oct 2024 15:34:06 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-42f6bec84b5so1996015e9.1; 
- Wed, 16 Oct 2024 12:33:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729107230; x=1729712030; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LbmICVGtbM1/BADU4IKUlFjLhiURvx6edLLRS7oUaKc=;
- b=BRO/wUgullIhj+q6N+fHhL6t2Ib6EHqgg/1Ry4ZwQk13mnJtWmyTR8sOwl7cM1cM5G
- R/9eYVgbtSR8s72DHBGiQcjBxvhbPt/yCVLUaRzchf0Re6QQuAy9BbjahKA4YQM+e+OF
- IQwbuKOFukHcl02KlbJVDwQBW+TvGq1vzEXeU+hlEUz6XluAPDXoPfS5T0u6jBqAq677
- GpXBh0ONwvYLAVweSG63NfLMSh1MQXWYjOE9a56cS6gEmbZC/fqJ5oc6ZZm9aMJoagOG
- 0L4IHuiSHegI9q+G7kdAiyKRWPQ9hPKd3C/QidUbVHnVcurPSqnPbBRnqPr47LJCcJ6u
- lIhg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t196Y-0004wZ-O8
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 14:50:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t196X-0007E1-Eg
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 14:50:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729104640;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=gU9i1C9Aue71SbAzvGLEJdlu3vP+mqyy1BUKddErPYY=;
+ b=Q+jfVXUEJvBpn18Rpu/p+HksyJ7LBM2viowRkP1kHWJ/Aje4V8FxWeKhB+fDk/107AjI04
+ WVULwRVMjD4rAl1v0NFPVz80E1UyqFPjDcB9EM92CxC9HG0AIBkkT04vpGQMEkHzwCQfbt
+ G+4Vd9VV3+riMn+5rjeX6ked58oHYVU=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-LnYnjnPuN_mZxCGUOVLmoQ-1; Wed, 16 Oct 2024 14:50:38 -0400
+X-MC-Unique: LnYnjnPuN_mZxCGUOVLmoQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b13ff957cbso18174485a.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 11:50:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729107230; x=1729712030;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LbmICVGtbM1/BADU4IKUlFjLhiURvx6edLLRS7oUaKc=;
- b=Yn0dk5itJwBon1hYRutMW9QWpePIhzPfV77t9YoNvbM4RqmSffDd7CyqaC8X+Z40Nu
- 9awIfXe6+qTfQqD5tl5Jbpu1PwSZIPX6AeGV6fjMOyvgLQAt55o9vc1ta31B3oaLkRVI
- tcvkK2m/yc7ineIxUWJXBGBSqf3AoQ8YkcdMbzTKmjXkfVx2wYFmJiXlsgyfO3tf5rL8
- MaX8f+IiWcz/rlqR5Hc8qpjG3VG6SiBU/DLB61Cn5YXwGfB/fU9shltPqZRmZGTHiWeB
- YTwc3chjMaDbRK+3sFLUlZMnuNWDT7DFAb+RZXwq6BisOu3S3QCEqmu92hOkDYqr2bdx
- SuSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWf4qyoU46BBerIKV529JGv0iDQetmtYRDWW1HyhMJXX/6ylEPsyUZVebI4Hmc4A1/g9Yw0zXj1SEAfdw==@nongnu.org
-X-Gm-Message-State: AOJu0Yz8sX8QYjmQ+coAFOayrwMhja6rGO4q9ZONW9Ry5zm2d/V/WnkD
- VO+ckOLlvHUplII+Rl/L3ZiOCZHeoecyemttHfgT8iSSp83vh5cyoHWtxQ==
-X-Google-Smtp-Source: AGHT+IFGm0Wkf+rVT3+0vpUh3FPdLhg4cw+TqX6QexmtHwXC0y2vaaflQdNmQApmEg2IW2ydA4gEeg==
-X-Received: by 2002:a05:600c:5110:b0:431:59ab:15cf with SMTP id
- 5b1f17b1804b1-43159ab1711mr508545e9.19.1729107229305; 
- Wed, 16 Oct 2024 12:33:49 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-191-025-143.77.191.pool.telefonica.de.
- [77.191.25.143]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d7fa7a1c8sm5025246f8f.21.2024.10.16.12.33.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Oct 2024 12:33:48 -0700 (PDT)
-Date: Wed, 16 Oct 2024 18:49:18 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-CC: Jason Wang <jasowang@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- qemu-stable@nongnu.org
-Subject: Re: [PATCH v2] net/tap-win32: Fix gcc 14 format truncation errors
-In-Reply-To: <20241008202842.4478-1-shentey@gmail.com>
-References: <20241008202842.4478-1-shentey@gmail.com>
-Message-ID: <ED3A009C-15F4-47D0-8E67-65BAE0510A95@gmail.com>
+ d=1e100.net; s=20230601; t=1729104637; x=1729709437;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gU9i1C9Aue71SbAzvGLEJdlu3vP+mqyy1BUKddErPYY=;
+ b=JPi51Nyd2diefxFwHhZG101YN7QHnbLA+crIUROgHaX9CN5kK4qVMMDORkZQgTyrxr
+ 0k9wk1HLuQ9/K8EpZJUNFiPpCWWFOaVtVmJEAs+aud9dh+Bc/oKNzolaDfKNPYurMz9q
+ ZxWBJth7YxDSpmatjdUkWMkRrqs/RXGLSs5d7VbB/rK4JxRhYvEWvvkNqKZPaKL08vLF
+ nVJyFJgGpn1zMrIgC5lRjCwAVlCcF990s9TcshXOeP0FQnot5Y7bMAmiEFxh+8djt//U
+ WjO2Q8SPmT+sek+OXPodLvdukpBE+R4XGnD87398Q/NqTDYPrPA52jy5ozzoPHxGvN0e
+ S7WQ==
+X-Gm-Message-State: AOJu0Yyc72pSDUjE9KNYcMqcsqTm8uYr1L7TwGp7m71epvVz0tatjIdR
+ QgucnP1JB8mTKB9dYg3lQi4yvMYFnq5LsF+on7lES/4QWwPG5rhe2iXXREXlcp0nFczhD4erlu3
+ hOwhlSfh7sby6JK7mTb5Z1L39tQeB2yDrum/OGE2IpJvsygR6Q4qU
+X-Received: by 2002:a05:620a:1a9b:b0:7a9:bcd1:527a with SMTP id
+ af79cd13be357-7b14189f5f2mr829989785a.55.1729104637572; 
+ Wed, 16 Oct 2024 11:50:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmQms0j2AQZzdrLNrnop1OfiaJZd0GDlSrw4xVMdigBALRPUvEuj0eKZ7x7nAZqPR/ufyeIA==
+X-Received: by 2002:a05:620a:1a9b:b0:7a9:bcd1:527a with SMTP id
+ af79cd13be357-7b14189f5f2mr829987085a.55.1729104637230; 
+ Wed, 16 Oct 2024 11:50:37 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b1363c9d24sm214163485a.133.2024.10.16.11.50.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Oct 2024 11:50:36 -0700 (PDT)
+Date: Wed, 16 Oct 2024 14:50:34 -0400
+From: Peter Xu <peterx@redhat.com>
+To: yong.huang@smartx.com
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 4/4] tests/migration: Add case for periodic ramblock
+ dirty sync
+Message-ID: <ZxAK-tvLdSc67drF@x1n>
+References: <cover.1729064919.git.yong.huang@smartx.com>
+ <4252161b9ec3964330d91a15295abe9fb171145f.1729064919.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4252161b9ec3964330d91a15295abe9fb171145f.1729064919.git.yong.huang@smartx.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.038,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,153 +100,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Oct 16, 2024 at 03:56:45PM +0800, yong.huang@smartx.com wrote:
+> From: Hyman Huang <yong.huang@smartx.com>
+> 
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Am 8=2E Oktober 2024 20:28:42 UTC schrieb Bernhard Beschow <shentey@gmail=
-=2Ecom>:
->The patch fixes the following errors generated by GCC 14=2E2:
->
->=2E=2E/src/net/tap-win32=2Ec:343:19: error: '%s' directive output may be =
-truncated writing up to 255 bytes into a region of size 176 [-Werror=3Dform=
-at-truncation=3D]
->  343 |              "%s\\%s\\Connection",
->      |                   ^~
->  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
->      |                                       ~~~~~~~~~
->
->=2E=2E/src/net/tap-win32=2Ec:341:9: note: 'snprintf' output between 92 an=
-d 347 bytes into a destination of size 256
->  341 |         snprintf(connection_string,
->      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->  342 |              sizeof(connection_string),
->      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
->  343 |              "%s\\%s\\Connection",
->      |              ~~~~~~~~~~~~~~~~~~~~~
->  344 |              NETWORK_CONNECTIONS_KEY, enum_name);
->      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
->=2E=2E/src/net/tap-win32=2Ec:242:58: error: '%s' directive output may be =
-truncated writing up to 255 bytes into a region of size 178 [-Werror=3Dform=
-at-truncation=3D]
->  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
->      |                                                          ^~
->  243 |                   ADAPTER_KEY, enum_name);
->      |                                ~~~~~~~~~
->
->=2E=2E/src/net/tap-win32=2Ec:242:9: note: 'snprintf' output between 79 an=
-d 334 bytes into a destination of size 256
->  242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
->      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  243 |                   ADAPTER_KEY, enum_name);
->      |                   ~~~~~~~~~~~~~~~~~~~~~~~
->
->=2E=2E/src/net/tap-win32=2Ec:620:52: error: '%s' directive output may be =
-truncated writing up to 255 bytes into a region of size 245 [-Werror=3Dform=
-at-truncation=3D]
->  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
->      |                                                    ^~
->  621 |               USERMODEDEVICEDIR,
->  622 |               device_guid,
->      |               ~~~~~~~~~~~
->=2E=2E/src/net/tap-win32=2Ec:620:5: note: 'snprintf' output between 16 an=
-d 271 bytes into a destination of size 256
->  620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
->      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  621 |               USERMODEDEVICEDIR,
->      |               ~~~~~~~~~~~~~~~~~~
->  622 |               device_guid,
->      |               ~~~~~~~~~~~~
->  623 |               TAPSUFFIX);
->      |               ~~~~~~~~~~
->
->Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2607
->Cc: qemu-stable@nongnu=2Eorg
->
->--
->
->This patch was just compile-tested (which fixes my issue)=2E Testing TAP
->networking under Windows apparently requires extra drivers which I don't =
-want to
->install (not my computer)=2E So it would be nice if someone could give th=
-is patch
->a test ride=2E Thanks!
+-- 
+Peter Xu
 
-Ping=2E Patch is reviewed=2E Any testers or shall we just merge?
-
-Best regards,
-Bernhard
-
->
->Changes since v1:
->* Use g_autofree and g_strdup_printf() rather than fixed size arrays (Pet=
-er)
->---
-> net/tap-win32=2Ec | 15 ++++++---------
-> 1 file changed, 6 insertions(+), 9 deletions(-)
->
->diff --git a/net/tap-win32=2Ec b/net/tap-win32=2Ec
->index 7edbd71633=2E=2E671dee970f 100644
->--- a/net/tap-win32=2Ec
->+++ b/net/tap-win32=2Ec
->@@ -214,7 +214,7 @@ static int is_tap_win32_dev(const char *guid)
->=20
->     for (;;) {
->         char enum_name[256];
->-        char unit_string[256];
->+        g_autofree char *unit_string =3D NULL;
->         HKEY unit_key;
->         char component_id_string[] =3D "ComponentId";
->         char component_id[256];
->@@ -239,8 +239,7 @@ static int is_tap_win32_dev(const char *guid)
->             return FALSE;
->         }
->=20
->-        snprintf (unit_string, sizeof(unit_string), "%s\\%s",
->-                  ADAPTER_KEY, enum_name);
->+        unit_string =3D g_strdup_printf("%s\\%s", ADAPTER_KEY, enum_name=
-);
->=20
->         status =3D RegOpenKeyEx(
->             HKEY_LOCAL_MACHINE,
->@@ -315,7 +314,7 @@ static int get_device_guid(
->     while (!stop)
->     {
->         char enum_name[256];
->-        char connection_string[256];
->+        g_autofree char *connection_string =3D NULL;
->         HKEY connection_key;
->         char name_data[256];
->         DWORD name_type;
->@@ -338,9 +337,7 @@ static int get_device_guid(
->             return -1;
->         }
->=20
->-        snprintf(connection_string,
->-             sizeof(connection_string),
->-             "%s\\%s\\Connection",
->+        connection_string =3D g_strdup_printf("%s\\%s\\Connection",
->              NETWORK_CONNECTIONS_KEY, enum_name);
->=20
->         status =3D RegOpenKeyEx(
->@@ -595,7 +592,7 @@ static void tap_win32_free_buffer(tap_win32_overlappe=
-d_t *overlapped,
-> static int tap_win32_open(tap_win32_overlapped_t **phandle,
->                           const char *preferred_name)
-> {
->-    char device_path[256];
->+    g_autofree char *device_path =3D NULL;
->     char device_guid[0x100];
->     int rc;
->     HANDLE handle;
->@@ -617,7 +614,7 @@ static int tap_win32_open(tap_win32_overlapped_t **ph=
-andle,
->     if (rc)
->         return -1;
->=20
->-    snprintf (device_path, sizeof(device_path), "%s%s%s",
->+    device_path =3D g_strdup_printf("%s%s%s",
->               USERMODEDEVICEDIR,
->               device_guid,
->               TAPSUFFIX);
 
