@@ -2,113 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1F39A062B
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 11:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC45E9A06F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 12:21:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t10ji-0004cP-Cw; Wed, 16 Oct 2024 05:54:34 -0400
+	id 1t118l-0000KL-4w; Wed, 16 Oct 2024 06:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t10jg-0004cG-17
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 05:54:32 -0400
-Received: from mail-sy4aus01olkn20828.outbound.protection.outlook.com
- ([2a01:111:f403:2819::828]
- helo=AUS01-SY4-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t118g-0000Jp-Rt
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 06:20:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t10je-0007DX-K7
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 05:54:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RF0W9qMuw8DuExPvO8hBCbCGxngzmkNhFN6Hpd4NQB95dRQT+iIBSpFJCxpxn0Z4vncQSt8d0wgRh1LM8hItvhZbn2NlRR5sDZW0/K4vJIA/wfeTkifFFZlJQ7lipy6K/TBcUo9ms34MoV4hEYB4wlvJFoy0G2QtoY9Hf7TFIUeIz6so8f+1y0/H53m5TOFiA0zZELZotbPuna0SknZbweEWbjFqyuh7IdwKfjWOiwqYoGAV+8OFyv0lL0bjfGh9ZEWnQucKpEpWwp3VYqUqHK8d8ShPsblHubvDA0ULjPu9nZ/4n/UcAHm31dJEkRjHkADnLTWjapnV34pa8F3nyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cnAmyS3p5FwgIjta6+gnR7y3tt+nKPnukuH30W1LBIA=;
- b=BvW7GH2gGiJwW3GnqYChlfdNzyEH+VOsKPysvzuCW3FJ2+4spJik0xivQX0zyLutold4xr/7I4FlYvHWGgWxUfXt4Q9+hukM6mWXymVhvg9ajyrRLdXsmiYK/DkNYrL2Res45l7DWblDJnO4+T/3agWSIaA4RIaqQMqjq/3ndsokVeIwHkSHDgIJkIr4Uk015Ip2vleYAJU5srySQXV7Xe7kOAbt8ow0wZ1MShqUtXzqc1mFG1RQIWIGQVs/5Qj4DqPLi/n8a5x0YC/C4IgbT9PW2TxSI840jGx1XU/DibGCUJSKaUsA3NTk/TNTyK+JncNpsIpOsfhqV2xp/7z+hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cnAmyS3p5FwgIjta6+gnR7y3tt+nKPnukuH30W1LBIA=;
- b=HLKkz1gORRhDTciMF6I7spM95w+BtpIR6Fmj3Pu/LDRhVu04dcvCQtCwd0pMk5HNZVzfEJVvMqS6z/53QnA4J4w4pYv44csUeDlWNHgtTcmCoBWe7LyvUF/9mXtfSLuCOJfjtr2JcCauS00X9EAAoMd772HUQ+iUf+1E+vAoJm37TTVoneWA2DYYio23EIqt9EHkrpBrOiWbnx6R6O3gyw98qbZstyHBNl5gVeYNHl4PdmPH0WXhyCJXfYrIip7mraB+2+FaGKMwoDy5eLRnO2EDXB9ay4KRzvllkuxv49hDu6IT4Igz47saV8l9V21SBsyZHzrkA2LIBpfqpV2w5g==
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
- by SY0P300MB0338.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:284::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Wed, 16 Oct
- 2024 09:54:25 +0000
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.016; Wed, 16 Oct 2024
- 09:54:25 +0000
-References: <20241015131735.518771-1-pbonzini@redhat.com>
- <20241015131735.518771-13-pbonzini@redhat.com>
- <SY0P300MB102670D06E55A6B463CD1BDA95462@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
- <CABgObfbqhmr=45c9ZiYoDAanM7Gsinz4RnwGMrivYDQgzP8kTw@mail.gmail.com>
-User-agent: mu4e 1.6.10; emacs 27.1
-From: Junjie Mao <junjie.mao@hotmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 12/16] rust: allow version 1.63.0 of rustc
-Date: Wed, 16 Oct 2024 17:53:46 +0800
-In-reply-to: <CABgObfbqhmr=45c9ZiYoDAanM7Gsinz4RnwGMrivYDQgzP8kTw@mail.gmail.com>
-Message-ID: <SY0P300MB10269110D64F40C0F5AF0E7595462@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-Content-Type: text/plain
-X-ClientProxiedBy: KL1PR01CA0156.apcprd01.prod.exchangelabs.com
- (2603:1096:820:149::13) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:282::22)
-X-Microsoft-Original-Message-ID: <871q0gqsop.fsf@hotmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t118f-0002mT-6T
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 06:20:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729074019;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qjMV6IFXMIFaUc9QMeKz16C92+HbCPAACDPEy3sqKt0=;
+ b=MBtDUubi1MMVTCsp5Qwho5Gyfo/XfIoo8y3Ns6D9cwIChI8i+zzXE9G5tOJdxMbohTJzsM
+ NWbVc4E5ppOH4u9+MVivFtzcnIfzYJPwvzQQydUCb9dV6IKEpVcAfOUaut2022y8sRe/Jj
+ YOlgvuhbzr0icz/uoyT8/Mo9LvAnhDg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-ft637SLLMxKBR6LmPgDSbA-1; Wed,
+ 16 Oct 2024 06:20:15 -0400
+X-MC-Unique: ft637SLLMxKBR6LmPgDSbA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 18EEA1964CEC; Wed, 16 Oct 2024 10:20:10 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.95])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A2A7E1955E7F; Wed, 16 Oct 2024 10:20:07 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Subject: [PATCH v2 0/3] crypto: fix regression in hash result buffer handling
+Date: Wed, 16 Oct 2024 11:20:03 +0100
+Message-ID: <20241016102006.480218-1-berrange@redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY0P300MB0338:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4244449e-c28b-44de-897f-08dcedc88437
-X-Microsoft-Antispam: BCL:0;
- ARA:14566002|461199028|15080799006|7092599003|5072599009|19110799003|8060799006|3412199025|440099028;
-X-Microsoft-Antispam-Message-Info: mxLyaJVZ3rLj94Vea6w7Jz/b7Vuv9/4jro6WgYh63LycqebiG579yf5OmkMDFqVMUvLD/P5ZqWWh/E+CSq+bZzvvD4lkt2TiO6YMiZRnGO9isu+50WxftM11DrITS6+AKBxqN9SHUNXmgLa6U/l+WBqiD9B+tO3Ct0dUrkEGXw+UItzjdIeHI+Y6OoWLWUhLYx3lRHf4Hf811o+ITgx0O4A11RforRsGoAPH9kpVld4E/+aepVTzuLwYuvVmkWjjIipCAFYKr1sgdU0nSOy84fXYIiRJctiOl9iqsbBwKeIkJRijWQwHTQYxwqukz8xhqosCjyJkrL7CVSv+xaaFZMtWpsYrzZUclWjvDLU4qEgxfdtEtJnyaWzpLE2PQlo6Dnd0BNbCNSV5YQLwt2elLq5tKXErzwx3L3D3swAFXdEt4vTsBc7mDHAZsi4pVUcQ1mTMledDyO51+56SOEoGybrmZn1sJsnYODSOhbHCHtWnNSOlFd+IYIMQHVyiq2oiz07gNacvtNl4Q53Var+M+mr0Mpuyi0N+sRAOIds7Mj0Vatd/np44tEliVzKyhkzhtxOZI+kaSTY+HX2MjBfX6HyUNpCkBdsKv1lV/+WH1Krk0jpAY26pMSTrfHdlCHfmDOjDNNx6azpZOTHPSLD2mseRDavc4Dr3L2HB6sL7Xr6fOEDVDAnUILIFQJ/j+BhinMj04BlwSQLsiJrH65xIv72JPB4z9Kiht63lXEqswmY=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VAXtHHfXKZKhNrALPz4Hu2KMT5v5aLi47wRxOIt6g4HEhvruQaVSyM2JeYyH?=
- =?us-ascii?Q?+DSYd6dm2XC4SNJutlnS9DxpZAttQNKS0qzESuLTPyj+ZzKWW5OhxapvBikI?=
- =?us-ascii?Q?1oKBeZ7eM8aQm9k+oBTOiIycAQP0HWA8pNxz+6KKneStMDtIMgIh0ywUeKWy?=
- =?us-ascii?Q?2njWOQK7EfI+mPzeFHbgyhkWMWLY+JpkgQxGfOCgMEalZq21JwMs1Db270jW?=
- =?us-ascii?Q?viFV3+xPzmIHau+4AwW0s+3m6WDQmF3uzIs2Fa+DkzH6fOG4i5tFrnxy0Tni?=
- =?us-ascii?Q?vsDV5WQupuSGPF5x/5nevnP3FvPZPnLIxL9PRTemtCFzsSOrH4eLvpxaZDYw?=
- =?us-ascii?Q?E4COG2rO0Ri9DJkLqhy4mt2IvrxwVX+7hypfmnm2v2gS/PuArm8W5gH2mCAD?=
- =?us-ascii?Q?uw/OS00AT0lCavKtnPdIuamlOFCO2zAk+MtVt9K8XlluhC4MyUd5iyrpcpwG?=
- =?us-ascii?Q?8PzGlqy5Av8+1qYWfZCTTSmYtqgkf42fgNM+apjnCRIZUCtgGUxVaXFwJnEP?=
- =?us-ascii?Q?VV2qq0vilbOaJXYCp+rIFl5+ueR20QeqyYu1vFF9wiW4/CPVWdpTr7Tbzn3Y?=
- =?us-ascii?Q?VsjBKCRaDvt9pXQnBuE1AL/fwbOQZIfMskniikO6h9DdrI0Z7Djg/S2+2tDp?=
- =?us-ascii?Q?XHtuipJ2LA+gDwXdr4VenEnJil7xCJo4DBa3kyIrJDQfDWnIiCZxjFherLym?=
- =?us-ascii?Q?bHvJae5GwAdmSZ9R0U9JNhBiXJixWRCPba2rVksJDD2VaC/6mPa33Sj2ya69?=
- =?us-ascii?Q?EisTXlHUxaI0f9I9N8/25nmU5pgescFWqxh3tIAOw0omndHfNPUsUqT5HeRj?=
- =?us-ascii?Q?sPemrvthFN+3nI7Hvadm3/2RJXyvEKLJmL6bufqYC/uOMTeZT+U3X+vqMxG0?=
- =?us-ascii?Q?qRyaJhmr4jjryVl6JdEB3BZ+juLTj34Sq28MJjdWQPufUl5WL+IK+IyOcgIq?=
- =?us-ascii?Q?ngDQcMLncPSx4/4RYqWqLKkbGpswivCnw7hGKP0Yvttq0XtOvuMonn6P/ceb?=
- =?us-ascii?Q?KaezmxeXqSkan5ggXeX5qiPPpGYKjmPaTyhuperE/vcGp4zpE7xITfmQBVdW?=
- =?us-ascii?Q?wMSNHLgTeb/CogsWKMnzoThlU3JWqarU7EudcU83mSLrARsT3xVld1JmZoGI?=
- =?us-ascii?Q?yyi8dBmggOskaptuAPc3kxBiYJ0NNePuvQdFS3pZJCftVqQki+C09WCvQ7qL?=
- =?us-ascii?Q?tDOz2VPNmTN6p+l0hbgT0/pzODsXp2+ubgCCUJv8qapjfvrosZDuZmIxMFs?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4244449e-c28b-44de-897f-08dcedc88437
-X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 09:54:24.9100 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0P300MB0338
-Received-SPF: pass client-ip=2a01:111:f403:2819::828;
- envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-SY4-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,21 +81,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
 
-> Il mer 16 ott 2024, 08:10 Junjie Mao <junjie.mao@hotmail.com> ha scritto:
->
->  In my Ubuntu 22.04 environment (rustc 1.76.0 and bindgen 0.59.1 from
->  apt) the feature `proc_macro_byte_character` is not yet stablized but
->  used in proc-macro2. Downgrading proc-macro2 to 1.0.79 [1] and syn to
->  2.0.58 fixes that issue for me.
->
-> This is handled by patch 5. Try "meson subprojects update --reset".
->
+Daniel P. Berrangé (3):
+  crypto/hash: avoid overwriting user supplied result pointer
+  tests: correctly validate result buffer in hash/hmac tests
+  include/crypto: clarify @result/@result_len for hash/hmac APIs
 
-Yes, that works. Thanks for the info!
+ crypto/hash-gcrypt.c          | 15 ++++++++++++---
+ crypto/hash-glib.c            | 11 +++++++++--
+ crypto/hash-gnutls.c          | 16 +++++++++++++---
+ crypto/hash-nettle.c          | 14 +++++++++++---
+ include/crypto/hash.h         | 30 +++++++++++++++++++++++-------
+ include/crypto/hmac.h         | 17 ++++++++++++-----
+ tests/unit/test-crypto-hash.c |  7 ++++---
+ tests/unit/test-crypto-hmac.c |  6 ++++--
+ 8 files changed, 88 insertions(+), 28 deletions(-)
 
---
-Best Regards
-Junjie Mao
+-- 
+2.46.0
+
 
