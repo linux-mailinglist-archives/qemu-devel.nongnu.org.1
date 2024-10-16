@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EADB9A138D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFEE9A1381
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 22:12:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1ALz-0004ki-JZ; Wed, 16 Oct 2024 16:10:43 -0400
+	id 1t1AM3-0004mZ-Cg; Wed, 16 Oct 2024 16:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1ALx-0004kW-GI; Wed, 16 Oct 2024 16:10:41 -0400
+ id 1t1AM0-0004m3-IY; Wed, 16 Oct 2024 16:10:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1ALv-0000ef-G7; Wed, 16 Oct 2024 16:10:41 -0400
+ id 1t1ALy-0000fe-UO; Wed, 16 Oct 2024 16:10:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E28198F93;
- Wed, 16 Oct 2024 23:10:05 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1DDA398F95;
+ Wed, 16 Oct 2024 23:10:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4376C156373;
- Wed, 16 Oct 2024 23:10:25 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 121D5156375;
+ Wed, 16 Oct 2024 23:10:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 33/49] linux-user/flatload: Take mmap_lock in
- load_flt_binary()
-Date: Wed, 16 Oct 2024 23:09:52 +0300
-Message-Id: <20241016201025.256294-1-mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 35/49] tcg/ppc: Use TCG_REG_TMP2 for scratch
+ tcg_out_qemu_st
+Date: Wed, 16 Oct 2024 23:09:54 +0300
+Message-Id: <20241016201025.256294-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241016195251@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,44 +58,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-load_flt_binary() calls load_flat_file() -> page_set_flags().
+In the fallback when STDBRX is not available, avoid clobbering
+TCG_REG_TMP1, which might be h.base, which is still in use.
+Use TCG_REG_TMP2 instead.
 
-page_set_flags() must be called with the mmap_lock held,
-otherwise it aborts:
-
-  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
-  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
-  Aborted (core dumped)
-
-Fix by taking the lock in load_flt_binary().
-
-Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Cc: qemu-stable@nongnu.org
+Fixes: 01a112e2e9 ("tcg/ppc: Reorg tcg_out_tlb_read")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit a9ee641bd46f5462eeed183ac3c3760bddfc2600)
+Tested-By: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 4cabcb89b101942346aebff081aa1453e958fe7f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 04d8138d12..0e4be5bf44 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -487,7 +487,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
-     stack_len += (bprm->envc + 1) * 4; /* the envp array */
- 
- 
-+    mmap_lock();
-     res = load_flat_file(bprm, libinfo, 0, &stack_len);
-+    mmap_unlock();
-+
-     if (is_error(res)) {
-             return res;
-     }
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 3553a47ba9..69abd30bbb 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2704,9 +2704,9 @@ static void tcg_out_qemu_st(TCGContext *s, TCGReg datalo, TCGReg datahi,
+         uint32_t insn = qemu_stx_opc[opc & (MO_BSWAP | MO_SIZE)];
+         if (!have_isa_2_06 && insn == STDBRX) {
+             tcg_out32(s, STWBRX | SAB(datalo, h.base, h.index));
+-            tcg_out32(s, ADDI | TAI(TCG_REG_TMP1, h.index, 4));
++            tcg_out32(s, ADDI | TAI(TCG_REG_TMP2, h.index, 4));
+             tcg_out_shri64(s, TCG_REG_R0, datalo, 32);
+-            tcg_out32(s, STWBRX | SAB(TCG_REG_R0, h.base, TCG_REG_TMP1));
++            tcg_out32(s, STWBRX | SAB(TCG_REG_R0, h.base, TCG_REG_TMP2));
+         } else {
+             tcg_out32(s, insn | SAB(datalo, h.base, h.index));
+         }
 -- 
 2.39.5
 
