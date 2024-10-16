@@ -2,84 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D8D9A035E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 09:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D15DB9A03E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 10:15:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0yu9-0003b9-Iu; Wed, 16 Oct 2024 03:57:13 -0400
+	id 1t0zAW-00008l-Gb; Wed, 16 Oct 2024 04:14:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t0yu5-0003a1-7b
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:09 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t0yu3-0000hW-OD
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:09 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-20cf3e36a76so27502685ad.0
- for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 00:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729065426; x=1729670226;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pcYOvgD8gChlYAF/Rf2Le7Pe4jCTRSW5UuA6AvRkQG8=;
- b=HlCqMLWwerVg7V5oD4Zma7UFsCX5VyuhevYJv2GqzoKP7MtI/9uzuZyfjicrn+9cWa
- OXe36AM8hXy2apyBuFTzZdlMpmXS+Gj0lvmJaYAGsj+qNcMx8WpbmL3rchs9pIyCokFt
- jMoULTUOaeZ92z3+uG6156jT/HY9fNeWH3Zua1b5uSG4qMCTJNSJa+wYdB4/+kY5qzum
- kMey3SCsQ+ScXQDFAgp46vPx0/QzTr0lbehQp6UzURz79qt7D8onkhneMinx/gVN8/+m
- ugIKVnUtH8UMLTX1EUJSAEE/N7m8R4Pqyq7WzNCImgeKmYx7fKmkjUBq48FGG2kQ58oA
- FH+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729065426; x=1729670226;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pcYOvgD8gChlYAF/Rf2Le7Pe4jCTRSW5UuA6AvRkQG8=;
- b=mu6bUr5IDA7epqK3VXnroxrig0yPbDzbCLS6Ct9DMAkrUe5Xa/YHGF+NUGpGIUb8GJ
- M/vIO1YeKvOyfo2xrEtET/ceXbqpgsgHANVRI8sVB6wMA71wqIKzF+zGaYUihBkcUuDq
- XxcRawJuPUt+nN4J8V7mG+iaIB1PSo7DvTuqYdhyejvLnPcfB+ERCiHJZAXcvOgQtDKh
- KkF/5Csvm/t1R2ewq/wL85kcKz6WZJdiQrSya5wvjA3lPTRaF8tgOOuZzaGntJ4ISGQv
- MAN2MUNZdevE+fmGtww8Tzj44fBb0JGoJi2mp6vI01jkn1e/hvs4qejMt7ti4IDFNfxW
- Kufw==
-X-Gm-Message-State: AOJu0YxWQHtumDQMcwdXl5/xG98T4oQQPQnakcK77eMbaNeJYHESfGof
- JI7z8LGCTGqhX+5Vzew4IrQwFKIGbHrESQ0NnQxpcWdTlMlvdotoGqtkR61u5RjVO5qdT3Kchei
- R4WItyA==
-X-Google-Smtp-Source: AGHT+IG2wjYJnDF1lSnEufnk35yRFrDDMqVotom4wcV/Zill1PNjw9sakq/oCxkKdV6gmoLoxlEm/w==
-X-Received: by 2002:a17:902:e747:b0:20c:bca5:12a8 with SMTP id
- d9443c01a7336-20cbca515a5mr158145675ad.60.1729065425667; 
- Wed, 16 Oct 2024 00:57:05 -0700 (PDT)
-Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20d17f84dd1sm23608365ad.43.2024.10.16.00.57.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2024 00:57:05 -0700 (PDT)
-From: yong.huang@smartx.com
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v3 4/4] tests/migration: Add case for periodic ramblock dirty
- sync
-Date: Wed, 16 Oct 2024 15:56:45 +0800
-Message-Id: <4252161b9ec3964330d91a15295abe9fb171145f.1729064919.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1729064919.git.yong.huang@smartx.com>
-References: <cover.1729064919.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1t0zAU-00008d-8U
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:14:06 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1t0zAR-0002hz-KZ
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 04:14:05 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8BxqrHEdQ9n8MMfAA--.45622S3;
+ Wed, 16 Oct 2024 16:13:57 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMBxXuTBdQ9n2GssAA--.17105S3;
+ Wed, 16 Oct 2024 16:13:55 +0800 (CST)
+Subject: Re: [PATCH] linux-headers: loongarch: add kvm_para.h and unistd_64.h
+From: maobibo <maobibo@loongson.cn>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
+References: <20240929072240.251301-1-maobibo@loongson.cn>
+Message-ID: <6d4d65ad-9b35-ea5b-ae3d-0e1234477b66@loongson.cn>
+Date: Wed, 16 Oct 2024 16:13:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240929072240.251301-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMBxXuTBdQ9n2GssAA--.17105S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7GF1xCw48ury3XF48Gw4xKrX_yoWDKrgE9a
+ nrAr4rX340v39rt3Z2yFn3K3yUC3yxAanayr18ZwnFq3s8tF4jga1xJ34kGw1q9ryj9rs5
+ uFWUtr1xZa13XosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbIxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+ 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1MK
+ ZJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,64 +80,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+ping.
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- tests/qtest/migration-test.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+@Song
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 95e45b5029..e6a2803e71 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2791,6 +2791,8 @@ static void test_migrate_auto_converge(void)
-      * so we need to decrease a bandwidth.
-      */
-     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
-+    uint64_t prev_dirty_sync_cnt, dirty_sync_cnt;
-+    int max_try_count, hit = 0;
- 
-     if (test_migrate_start(&from, &to, uri, &args)) {
-         return;
-@@ -2827,6 +2829,36 @@ static void test_migrate_auto_converge(void)
-     } while (true);
-     /* The first percentage of throttling should be at least init_pct */
-     g_assert_cmpint(percentage, >=, init_pct);
-+
-+    /*
-+     * End the loop when the dirty sync count greater than 1.
-+     */
-+    while ((dirty_sync_cnt = get_migration_pass(from)) < 2) {
-+        usleep(1000 * 1000);
-+    }
-+
-+    prev_dirty_sync_cnt = dirty_sync_cnt;
-+
-+    /*
-+     * The RAMBlock dirty sync count must changes in 5 seconds, here we set
-+     * the timeout to 10 seconds to ensure it changes.
-+     *
-+     * Note that migrate_ensure_non_converge set the max-bandwidth to 3MB/s,
-+     * while the qtest mem is >= 100MB, one iteration takes at least 33s (100/3)
-+     * to complete; this ensures that the RAMBlock dirty sync occurs.
-+     */
-+    max_try_count = 10;
-+    while (--max_try_count) {
-+        dirty_sync_cnt = get_migration_pass(from);
-+        if (dirty_sync_cnt != prev_dirty_sync_cnt) {
-+            hit = 1;
-+            break;
-+        }
-+        prev_dirty_sync_cnt = dirty_sync_cnt;
-+        sleep(1);
-+    }
-+    g_assert_cmpint(hit, ==, 1);
-+
-     /* Now, when we tested that throttling works, let it converge */
-     migrate_ensure_converge(from);
- 
--- 
-2.27.0
+Could you give some comments since it is LoongArch specific?
+
+Regards
+Bibo Mao
+
+On 2024/9/29 下午3:22, Bibo Mao wrote:
+> KVM LBT supports on LoongArch requires the linux-header kvm_para.h,
+> also unistd_64.h is required by unistd.h on LoongArch since 6.11
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   scripts/update-linux-headers.sh | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+> index c34ac6454e..3c411f0318 100755
+> --- a/scripts/update-linux-headers.sh
+> +++ b/scripts/update-linux-headers.sh
+> @@ -186,6 +186,10 @@ EOF
+>       if [ $arch = riscv ]; then
+>           cp "$hdrdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
+>       fi
+> +    if [ $arch = loongarch ]; then
+> +        cp "$hdrdir/include/asm/kvm_para.h" "$output/linux-headers/asm-loongarch/"
+> +        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-loongarch/"
+> +    fi
+>   done
+>   arch=
+>   
+> 
+> base-commit: 3b14a767eaca3df5534a162851f04787b363670e
+> 
 
 
