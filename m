@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9759A035F
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D8D9A035E
 	for <lists+qemu-devel@lfdr.de>; Wed, 16 Oct 2024 09:58:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t0yu9-0003aJ-Et; Wed, 16 Oct 2024 03:57:13 -0400
+	id 1t0yu9-0003b9-Iu; Wed, 16 Oct 2024 03:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t0yu3-0003ZQ-JV
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:07 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1t0yu5-0003a1-7b
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:09 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t0yu1-0000hJ-Sk
- for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:07 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20c8c50fdd9so4334225ad.0
- for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 00:57:05 -0700 (PDT)
+ id 1t0yu3-0000hW-OD
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 03:57:09 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-20cf3e36a76so27502685ad.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 00:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729065424; x=1729670224;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729065426; x=1729670226;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H9gc6WR+7vJ9WeCpYan0Utue6qlnIehIAkut2ksaHrI=;
- b=MqFy4XAya8KRZGGi1s+aIulfDNqM/aZmhmvf6Jm760CjJsnKzp106lNsySJwi6vHVl
- RyxJ/d3AH0XTWJmlKHIsBcePp6prsFxZYhZZESS6SIUJahJxGVyaE5SXigFsRWdDgJik
- 1xfGzw9x6LQSvjYRItH5qoZG+hzRjo2349YZ6+76YVJjpAk4Dznq49tGN1UswP6nxJxC
- HjaNOZ4tRh3C/IWPBN4nJON9OHLL1O7LNxfVYsjsWpyD21L9l50ND1XgEyF4/svRTOG/
- PW5LIws9Ye8z/yKcdQP7b/wRlP9aRJi11Ql8YynLwgB339vnjt8J9gu0BhE52xcLhGg7
- CPkg==
+ bh=pcYOvgD8gChlYAF/Rf2Le7Pe4jCTRSW5UuA6AvRkQG8=;
+ b=HlCqMLWwerVg7V5oD4Zma7UFsCX5VyuhevYJv2GqzoKP7MtI/9uzuZyfjicrn+9cWa
+ OXe36AM8hXy2apyBuFTzZdlMpmXS+Gj0lvmJaYAGsj+qNcMx8WpbmL3rchs9pIyCokFt
+ jMoULTUOaeZ92z3+uG6156jT/HY9fNeWH3Zua1b5uSG4qMCTJNSJa+wYdB4/+kY5qzum
+ kMey3SCsQ+ScXQDFAgp46vPx0/QzTr0lbehQp6UzURz79qt7D8onkhneMinx/gVN8/+m
+ ugIKVnUtH8UMLTX1EUJSAEE/N7m8R4Pqyq7WzNCImgeKmYx7fKmkjUBq48FGG2kQ58oA
+ FH+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729065424; x=1729670224;
+ d=1e100.net; s=20230601; t=1729065426; x=1729670226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H9gc6WR+7vJ9WeCpYan0Utue6qlnIehIAkut2ksaHrI=;
- b=FfW3PVgFSmzjZ8OaA3lqyabAq8n73ocJefVXJtokbLNq94GWPT9bSpKRd1H1LE1OA7
- Gd9iBtn0CbWMF0CHnTc5KvqwRetu4laC+fADrFJKOd3tdlROAgH6hu32JD0oCxjB45Kf
- ZrEF2Rk8+UejSoaf0OE7ZF3tqEFOsax+L8wHz19JgC1pR216nu1FAC/ZpfL6m3X80veU
- ZnLRPwiymj7uDG0osiamW0aa8ckUbUveAeCahlwIMhAAnZc7/m4ngWF4w4X9Kv+B6Gis
- tk9v3njp+vcofQS1AQcVeT87p7zOldKwF9jaoX0bxhNvNZRTvB1kCbP+Kv5TzO3hf0AQ
- RdPA==
-X-Gm-Message-State: AOJu0Ywzzgvj28v4GJqt+kgyYj9yF8mXnmMWIWmxGFt/cbN0m4hGutPh
- 5OkzyEtgfXYPovVpNdxAvIPixi6X6Ohg7a2vnYzfX7KLLlr5iZHHg8NDMBbcLd/p3L7mReYIALa
- 1Gcq6Dw==
-X-Google-Smtp-Source: AGHT+IFqq97Pzjox/ocrz8Jc/hVSVo7D5Fp55Houf3yxYVSoG16MoBaxXDO4IwAavTzUHTRU4UL5Lg==
-X-Received: by 2002:a17:903:2582:b0:20c:5990:897c with SMTP id
- d9443c01a7336-20d2708c932mr44244295ad.27.1729065423675; 
- Wed, 16 Oct 2024 00:57:03 -0700 (PDT)
+ bh=pcYOvgD8gChlYAF/Rf2Le7Pe4jCTRSW5UuA6AvRkQG8=;
+ b=mu6bUr5IDA7epqK3VXnroxrig0yPbDzbCLS6Ct9DMAkrUe5Xa/YHGF+NUGpGIUb8GJ
+ M/vIO1YeKvOyfo2xrEtET/ceXbqpgsgHANVRI8sVB6wMA71wqIKzF+zGaYUihBkcUuDq
+ XxcRawJuPUt+nN4J8V7mG+iaIB1PSo7DvTuqYdhyejvLnPcfB+ERCiHJZAXcvOgQtDKh
+ KkF/5Csvm/t1R2ewq/wL85kcKz6WZJdiQrSya5wvjA3lPTRaF8tgOOuZzaGntJ4ISGQv
+ MAN2MUNZdevE+fmGtww8Tzj44fBb0JGoJi2mp6vI01jkn1e/hvs4qejMt7ti4IDFNfxW
+ Kufw==
+X-Gm-Message-State: AOJu0YxWQHtumDQMcwdXl5/xG98T4oQQPQnakcK77eMbaNeJYHESfGof
+ JI7z8LGCTGqhX+5Vzew4IrQwFKIGbHrESQ0NnQxpcWdTlMlvdotoGqtkR61u5RjVO5qdT3Kchei
+ R4WItyA==
+X-Google-Smtp-Source: AGHT+IG2wjYJnDF1lSnEufnk35yRFrDDMqVotom4wcV/Zill1PNjw9sakq/oCxkKdV6gmoLoxlEm/w==
+X-Received: by 2002:a17:902:e747:b0:20c:bca5:12a8 with SMTP id
+ d9443c01a7336-20cbca515a5mr158145675ad.60.1729065425667; 
+ Wed, 16 Oct 2024 00:57:05 -0700 (PDT)
 Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20d17f84dd1sm23608365ad.43.2024.10.16.00.57.01
+ d9443c01a7336-20d17f84dd1sm23608365ad.43.2024.10.16.00.57.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2024 00:57:03 -0700 (PDT)
+ Wed, 16 Oct 2024 00:57:05 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v3 3/4] migration: Support periodic ramblock dirty sync
-Date: Wed, 16 Oct 2024 15:56:44 +0800
-Message-Id: <f1067c9ddca005629e64d7e77c98686612bb1f82.1729064919.git.yong.huang@smartx.com>
+Subject: [PATCH v3 4/4] tests/migration: Add case for periodic ramblock dirty
+ sync
+Date: Wed, 16 Oct 2024 15:56:45 +0800
+Message-Id: <4252161b9ec3964330d91a15295abe9fb171145f.1729064919.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1729064919.git.yong.huang@smartx.com>
 References: <cover.1729064919.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,209 +97,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-When VM is configured with huge memory, the current throttle logic
-doesn't look like to scale, because migration_trigger_throttle()
-is only called for each iteration, so it won't be invoked for a long
-time if one iteration can take a long time.
-
-The periodic dirty sync aims to fix the above issue by synchronizing
-the ramblock from remote dirty bitmap and, when necessary, triggering
-the CPU throttle multiple times during a long iteration.
-
-This is a trade-off between synchronization overhead and CPU throttle
-impact.
-
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- migration/cpu-throttle.c | 70 +++++++++++++++++++++++++++++++++++++++-
- migration/cpu-throttle.h | 14 ++++++++
- migration/migration.h    |  1 +
- migration/ram.c          |  9 ++++--
- migration/trace-events   |  1 +
- 5 files changed, 92 insertions(+), 3 deletions(-)
+ tests/qtest/migration-test.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/migration/cpu-throttle.c b/migration/cpu-throttle.c
-index fa47ee2e21..784b51ab35 100644
---- a/migration/cpu-throttle.c
-+++ b/migration/cpu-throttle.c
-@@ -28,16 +28,23 @@
- #include "qemu/main-loop.h"
- #include "sysemu/cpus.h"
- #include "cpu-throttle.h"
-+#include "migration.h"
-+#include "migration-stats.h"
-+#include "options.h"
- #include "trace.h"
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 95e45b5029..e6a2803e71 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2791,6 +2791,8 @@ static void test_migrate_auto_converge(void)
+      * so we need to decrease a bandwidth.
+      */
+     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
++    uint64_t prev_dirty_sync_cnt, dirty_sync_cnt;
++    int max_try_count, hit = 0;
  
- /* vcpu throttling controls */
--static QEMUTimer *throttle_timer;
-+static QEMUTimer *throttle_timer, *throttle_dirty_sync_timer;
- static unsigned int throttle_percentage;
-+static bool throttle_dirty_sync_timer_active;
- 
- #define CPU_THROTTLE_PCT_MIN 1
- #define CPU_THROTTLE_PCT_MAX 99
- #define CPU_THROTTLE_TIMESLICE_NS 10000000
- 
-+/* RAMBlock dirty sync trigger every five seconds */
-+#define CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS 5000
-+
- static void cpu_throttle_thread(CPUState *cpu, run_on_cpu_data opaque)
- {
-     double pct;
-@@ -112,6 +119,7 @@ void cpu_throttle_set(int new_throttle_pct)
- void cpu_throttle_stop(void)
- {
-     qatomic_set(&throttle_percentage, 0);
-+    cpu_throttle_dirty_sync_timer(false);
- }
- 
- bool cpu_throttle_active(void)
-@@ -124,8 +132,68 @@ int cpu_throttle_get_percentage(void)
-     return qatomic_read(&throttle_percentage);
- }
- 
-+void cpu_throttle_dirty_sync_timer_tick(void *opaque)
-+{
-+    static uint64_t prev_sync_cnt = 2;
-+    uint64_t sync_cnt = stat64_get(&mig_stats.dirty_sync_count);
-+
-+    if (!migrate_auto_converge()) {
-+        /* Stop the timer when auto converge is disabled */
-+        return;
-+    }
+     if (test_migrate_start(&from, &to, uri, &args)) {
+         return;
+@@ -2827,6 +2829,36 @@ static void test_migrate_auto_converge(void)
+     } while (true);
+     /* The first percentage of throttling should be at least init_pct */
+     g_assert_cmpint(percentage, >=, init_pct);
 +
 +    /*
-+     * The first iteration copies all memory anyhow and has no
-+     * effect on guest performance, therefore omit it to avoid
-+     * paying extra for the sync penalty.
++     * End the loop when the dirty sync count greater than 1.
 +     */
-+    if (sync_cnt <= 1) {
-+        goto end;
++    while ((dirty_sync_cnt = get_migration_pass(from)) < 2) {
++        usleep(1000 * 1000);
 +    }
 +
-+    if (sync_cnt == prev_sync_cnt) {
-+        trace_cpu_throttle_dirty_sync();
-+        WITH_RCU_READ_LOCK_GUARD() {
-+            migration_bitmap_sync_precopy(false);
++    prev_dirty_sync_cnt = dirty_sync_cnt;
++
++    /*
++     * The RAMBlock dirty sync count must changes in 5 seconds, here we set
++     * the timeout to 10 seconds to ensure it changes.
++     *
++     * Note that migrate_ensure_non_converge set the max-bandwidth to 3MB/s,
++     * while the qtest mem is >= 100MB, one iteration takes at least 33s (100/3)
++     * to complete; this ensures that the RAMBlock dirty sync occurs.
++     */
++    max_try_count = 10;
++    while (--max_try_count) {
++        dirty_sync_cnt = get_migration_pass(from);
++        if (dirty_sync_cnt != prev_dirty_sync_cnt) {
++            hit = 1;
++            break;
 +        }
++        prev_dirty_sync_cnt = dirty_sync_cnt;
++        sleep(1);
 +    }
++    g_assert_cmpint(hit, ==, 1);
 +
-+end:
-+    prev_sync_cnt = stat64_get(&mig_stats.dirty_sync_count);
-+
-+    timer_mod(throttle_dirty_sync_timer,
-+        qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL_RT) +
-+            CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS);
-+}
-+
-+static bool cpu_throttle_dirty_sync_active(void)
-+{
-+    return qatomic_read(&throttle_dirty_sync_timer_active);
-+}
-+
-+void cpu_throttle_dirty_sync_timer(bool enable)
-+{
-+    if (enable) {
-+        assert(throttle_dirty_sync_timer);
-+        if (!cpu_throttle_dirty_sync_active()) {
-+            timer_mod(throttle_dirty_sync_timer,
-+                qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL_RT) +
-+                    CPU_THROTTLE_DIRTY_SYNC_TIMESLICE_MS);
-+            qatomic_set(&throttle_dirty_sync_timer_active, 1);
-+        }
-+    } else {
-+        if (throttle_dirty_sync_timer != NULL) {
-+            timer_del(throttle_dirty_sync_timer);
-+            qatomic_set(&throttle_dirty_sync_timer_active, 0);
-+        }
-+    }
-+}
-+
- void cpu_throttle_init(void)
- {
-     throttle_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL_RT,
-                                   cpu_throttle_timer_tick, NULL);
-+    throttle_dirty_sync_timer =
-+        timer_new_ms(QEMU_CLOCK_VIRTUAL_RT,
-+                     cpu_throttle_dirty_sync_timer_tick, NULL);
- }
-diff --git a/migration/cpu-throttle.h b/migration/cpu-throttle.h
-index d65bdef6d0..420702b8d3 100644
---- a/migration/cpu-throttle.h
-+++ b/migration/cpu-throttle.h
-@@ -65,4 +65,18 @@ bool cpu_throttle_active(void);
-  */
- int cpu_throttle_get_percentage(void);
+     /* Now, when we tested that throttling works, let it converge */
+     migrate_ensure_converge(from);
  
-+/**
-+ * cpu_throttle_dirty_sync_timer_tick:
-+ *
-+ * Dirty sync timer hook.
-+ */
-+void cpu_throttle_dirty_sync_timer_tick(void *opaque);
-+
-+/**
-+ * cpu_throttle_dirty_sync_timer:
-+ *
-+ * Start or stop the dirty sync timer.
-+ */
-+void cpu_throttle_dirty_sync_timer(bool enable);
-+
- #endif /* SYSEMU_CPU_THROTTLE_H */
-diff --git a/migration/migration.h b/migration/migration.h
-index 38aa1402d5..fbd0d19092 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -537,4 +537,5 @@ int migration_rp_wait(MigrationState *s);
-  */
- void migration_rp_kick(MigrationState *s);
- 
-+void migration_bitmap_sync_precopy(bool last_stage);
- #endif
-diff --git a/migration/ram.c b/migration/ram.c
-index 9b5b350405..ac34e731e2 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1020,6 +1020,11 @@ static void migration_trigger_throttle(RAMState *rs)
-         migration_transferred_bytes() - rs->bytes_xfer_prev;
-     uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
-     uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
-+    bool auto_converge = migrate_auto_converge();
-+
-+    if (auto_converge) {
-+        cpu_throttle_dirty_sync_timer(true);
-+    }
- 
-     /*
-      * The following detection logic can be refined later. For now:
-@@ -1031,7 +1036,7 @@ static void migration_trigger_throttle(RAMState *rs)
-     if ((bytes_dirty_period > bytes_dirty_threshold) &&
-         (++rs->dirty_rate_high_cnt >= 2)) {
-         rs->dirty_rate_high_cnt = 0;
--        if (migrate_auto_converge()) {
-+        if (auto_converge) {
-             trace_migration_throttle();
-             mig_throttle_guest_down(bytes_dirty_period,
-                                     bytes_dirty_threshold);
-@@ -1088,7 +1093,7 @@ static void migration_bitmap_sync(RAMState *rs, bool last_stage)
-     }
- }
- 
--static void migration_bitmap_sync_precopy(bool last_stage)
-+void migration_bitmap_sync_precopy(bool last_stage)
- {
-     Error *local_err = NULL;
-     assert(ram_state);
-diff --git a/migration/trace-events b/migration/trace-events
-index 9a19599804..0638183056 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -381,3 +381,4 @@ migration_pagecache_insert(void) "Error allocating page"
- 
- # cpu-throttle.c
- cpu_throttle_set(int new_throttle_pct)  "set guest CPU throttled by %d%%"
-+cpu_throttle_dirty_sync(void) ""
 -- 
 2.27.0
 
