@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4340F9A263E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2829A2653
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1SCy-000780-IM; Thu, 17 Oct 2024 11:14:36 -0400
+	id 1t1SCu-00076j-K3; Thu, 17 Oct 2024 11:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCv-00077H-Ql
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:33 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1t1SCs-00076A-Ua
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:30 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCu-00014Q-3A
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:33 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBdMG025055;
- Thu, 17 Oct 2024 15:14:26 GMT
+ id 1t1SCr-000143-EP
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:30 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBoMx002190;
+ Thu, 17 Oct 2024 15:14:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=zJQyAAgoRK7Sa1RkUhlX0t66qLvJZN64Bq3Y4xKVkos=; b=
- i8gMZCXedeopozj0wz8e6EwP3/lAW/iJNs+j2Vj/hzKWjVQ9JbBKt0RJDXcZOsvM
- Ec3j0HuPNBzqcDr8fbx4VZuv/DmAM3jSDS2saw1CCEtjdHY+h8q1qkjxsAepP0yd
- ABKNs/SLHFlB3FkCnBI0CSQ/azy2VZ3vlRDSCHYfn5wIcowdUAqkZNczOVOa5q6u
- y1ujihhJ95PTkpXHwWOM21UphZfPxPAjtbpkgPVvmSvU6makkLOG1h16ECu6DT3m
- 3afKpQCrerREfEWYxUDTUdirb/+DHuWRfhO90e09qQnUpMOxYksmfUbt5JRLuSK/
- wotszkuWErhqgmVaWO3S0Q==
+ corp-2023-11-20; bh=xxGxWm2fCMgriPnvrLwmwzchcLAluagUkIOmkVXNLsU=; b=
+ DsbkB1MtiEA/H/quXP1T2oYHNgC3AVtvL431UUVyFoJUJPQjme+mEBOOqlL7A/Jf
+ 9yizcyIqY1AYoCeQCDrJupculp9eLjRVPXDnbJT6G8OQid50ZdUfldg7GhP30mfW
+ CZAJ4ntnHYsFS8v/QabC8dZnJeORxPxzkKOeLRdQcuRcrrALKicgnXcGhLck01+/
+ UiUGgDku0v64L9OSOak3ZlyJxB5cyUaW1wexXfmpjRrKsNoi2mJPB8HF6heW7Ad5
+ 59BcbKosvyxnwmj7qmUpKkaK2uWOusK//wcpF3WrFEy2GXYiWD7nB/Za3Tkc8GeR
+ uryUiJTleApK2x1g9a9+9A==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427g1apg1q-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fw2ptrs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 17 Oct 2024 15:14:26 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49HE32Dj027154; Thu, 17 Oct 2024 15:14:24 GMT
+ with ESMTP id 49HF2N3w027223; Thu, 17 Oct 2024 15:14:26 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 427fjgy68j-1
+ 427fjgy69m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:24 +0000
+ Thu, 17 Oct 2024 15:14:26 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgb017147;
- Thu, 17 Oct 2024 15:14:24 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgd017147;
+ Thu, 17 Oct 2024 15:14:25 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 427fjgy62e-6; Thu, 17 Oct 2024 15:14:24 +0000
+ ESMTP id 427fjgy62e-7; Thu, 17 Oct 2024 15:14:25 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 05/14] migration: init and listen during precreate
-Date: Thu, 17 Oct 2024 08:14:06 -0700
-Message-Id: <1729178055-207271-6-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 06/14] vl: precreate phase
+Date: Thu, 17 Oct 2024 08:14:07 -0700
+Message-Id: <1729178055-207271-7-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
@@ -76,10 +76,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410170105
-X-Proofpoint-GUID: Zoe9OEV40VBqLYRAoDdAtf3JXB0B91v5
-X-Proofpoint-ORIG-GUID: Zoe9OEV40VBqLYRAoDdAtf3JXB0B91v5
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-GUID: 0CFsiJWFfy87VHjHHZ1-yOJTxAzY1MQP
+X-Proofpoint-ORIG-GUID: 0CFsiJWFfy87VHjHHZ1-yOJTxAzY1MQP
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -103,91 +103,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initialize the migration object as early as possible so that migration
-configuration commands may be sent during the precreate phase.  Also,
-start listening for the incoming migration connection during precreate,
-so that the listen port number is assigned (if dynamic), and the user
-can discover it during precreate via query-migrate.  The precreate phase
-will be delineated in a subsequent patch.
-
-The code previously called migration_object_init after memory backends
-were created so that a subsequent migrate-set-capabilities call to set
-MIGRATION_CAPABILITY_POSTCOPY_RAM would verify all backends support
-postcopy.  See migrate_caps_check and postcopy_ram_supported_by_host.
-The new code calls migration_object_init before backends are created.
-However, migrate-set-capabilities will only be received during the
-precreate phase for CPR, and CPR does not support postcopy.  If the
-precreate phase is generalized in the future, then the ram compatibility
-check must be deferred to the start of migration.
+Refactor qemu_init into actions performed during the precreate phase,
+and actions performed when exiting precreate.  For now, always exit
+the precreate phase immediately at init time.  Future patches will add
+conditions that cause QEMU to linger in the precreate phase while running
+the main loop.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- system/vl.c | 35 +++++++++++++----------------------
- 1 file changed, 13 insertions(+), 22 deletions(-)
+ system/vl.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index bca2292..d32203c 100644
+index d32203c..5f5e810 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -2753,17 +2753,7 @@ void qmp_x_exit_preconfig(Error **errp)
-         replay_vmstate_init();
-     }
+@@ -183,6 +183,7 @@ static bool list_data_dirs;
+ static const char *qtest_chrdev;
+ static const char *qtest_log;
+ static AccelState *accel;
++static FILE *vmstate_dump_file;
  
--    if (incoming) {
--        Error *local_err = NULL;
--        if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, false, NULL, true, true,
--                                 &local_err);
--            if (local_err) {
--                error_reportf_err(local_err, "-incoming %s: ", incoming);
--                exit(1);
--            }
--        }
--    } else if (autostart) {
-+    if (!incoming && autostart) {
-         qmp_cont(NULL);
-     }
+ static int has_defaults = 1;
+ static int default_audio = 1;
+@@ -2731,6 +2732,8 @@ static bool qemu_machine_creation_done(Error **errp)
+     return true;
  }
-@@ -3751,6 +3741,18 @@ void qemu_init(int argc, char **argv)
-      * called from do_configure_accelerator().
-      */
  
-+    /* Creates a QOM object */
-+    migration_object_init();
++static void qemu_exit_precreate(void);
 +
-+    if (incoming && !g_str_equal(incoming, "defer")) {
-+        Error *local_err = NULL;
-+        qmp_migrate_incoming(incoming, false, NULL, true, true, &local_err);
-+        if (local_err) {
-+            error_reportf_err(local_err, "-incoming %s: ", incoming);
-+            exit(1);
-+        }
-+    }
+ void qmp_x_exit_preconfig(Error **errp)
+ {
+     if (phase_check(PHASE_MACHINE_INITIALIZED)) {
+@@ -2795,9 +2798,7 @@ void qemu_init(int argc, char **argv)
+     QemuOptsList *olist;
+     int optind;
+     const char *optarg;
+-    MachineClass *machine_class;
+     bool userconfig = true;
+-    FILE *vmstate_dump_file = NULL;
+ 
+     qemu_add_opts(&qemu_drive_opts);
+     qemu_add_drive_opts(&qemu_legacy_drive_opts);
+@@ -3753,6 +3754,13 @@ void qemu_init(int argc, char **argv)
+         }
+     }
+ 
++    qemu_exit_precreate();
++}
++
++static void qemu_exit_precreate(void)
++{
++    MachineClass *machine_class;
 +
      suspend_mux_open();
  
      qemu_disable_default_devices();
-@@ -3773,20 +3775,9 @@ void qemu_init(int argc, char **argv)
-                      machine_class->name, machine_class->deprecation_reason);
-     }
- 
--    /*
--     * Create backends before creating migration objects, so that it can
--     * check against compatibilities on the backend memories (e.g. postcopy
--     * over memory-backend-file objects).
--     */
-     qemu_create_late_backends();
-     phase_advance(PHASE_LATE_BACKENDS_CREATED);
- 
--    /*
--     * Note: creates a QOM object, must run only after global and
--     * compat properties have been set up.
--     */
--    migration_object_init();
--
-     /* parse features once if machine provides default cpu_type */
-     current_machine->cpu_type = machine_class_default_cpu_type(machine_class);
-     if (cpu_option) {
 -- 
 1.8.3.1
 
