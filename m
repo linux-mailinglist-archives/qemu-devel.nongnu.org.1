@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4459A242A
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 15:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400219A2443
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 15:52:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1QlX-0002UX-TL; Thu, 17 Oct 2024 09:42:11 -0400
+	id 1t1Qtx-0004Wz-KA; Thu, 17 Oct 2024 09:50:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1QlV-0002U6-Pc
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:42:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1QlR-0006QN-Ji
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:42:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729172523;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9CfZdrwtv4MuaHO9JzsZPIlORrtJE9yFU7JQ9B0pGso=;
- b=RJsbbFWKIPirD1xN3pmueGzHSoBCT7taCWYwYSQjQHWglxSFbjd1hLevfTKvOK5UFiNn9N
- Qm2iZt/aRLyXMNSBLUPpvPag+uExYocGwpjytFLWebZOcxLVUJj8Vx1odyU7gstdiLUR/Q
- iKHYG92vcjn2QpVyuYchHf0mN03XtY4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-dkIRoJOVPSuUlbgbL7bzww-1; Thu,
- 17 Oct 2024 09:42:00 -0400
-X-MC-Unique: dkIRoJOVPSuUlbgbL7bzww-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDBE41955D9D; Thu, 17 Oct 2024 13:41:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.94])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6147019560A2; Thu, 17 Oct 2024 13:41:57 +0000 (UTC)
-Date: Thu, 17 Oct 2024 14:41:53 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?=C3=81gatha?= Freitas <htafreit@gmail.com>
-Cc: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com
-Subject: Re: [PATCH 0/1] Insert LibSPDM in QEMU enabling in-tree compilation
-Message-ID: <ZxEUIbTj5IWp6kOY@redhat.com>
-References: <20241016163439.1130168-1-htafreit@gmail.com>
- <CAKmqyKPUUgF1tLKCFF1FiT5HHEDDDg+=Yha2e38wSto4mKh_BA@mail.gmail.com>
- <ZxDgGsjRkLEA8r6_@redhat.com>
- <CALKrZCJ6cnocjddg4uu=0q0+vtVCzkEzC0=scnRWhLpGX4zQ8w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t1Qtv-0004We-2d
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:50:51 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t1Qtt-0007ln-KA
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:50:50 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2fb49510250so9916631fa.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 06:50:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729173047; x=1729777847; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3zYk6tB+YibjJ9nXCG2r36SrD1pGwrQpBNG6tqoH5d4=;
+ b=icShNMJKTDGR4LeHbtlfCARh4jk9lN3IcUnT8InrZ6VtjacUxE6FjlEAG3a+csXul1
+ ffCKKd/Z+93p3ebukvhuu0jtGMu242d0ekeb3OtrU3Uhkgn5VcMK0lpCf69M+yZSkRmh
+ K8H4eDeZlFh9bwUL2LAKO6eqErS/t8M3J7NvrzqE/+MI+rCwdUbuheS0sOS5gbQnrJKe
+ y7FypQStvS9kIi8+KLpLtf7zvJLrOEM6ED7ttklmZjNDziELyMO1fwGNUyrgf62oKfpb
+ 5RJ00702csSMayI28+E1GXWhwFiiNmJl5IcYJrHkqvN8otrvi+14x9dN+3K6fFLmfX9e
+ fLdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729173047; x=1729777847;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3zYk6tB+YibjJ9nXCG2r36SrD1pGwrQpBNG6tqoH5d4=;
+ b=MDz7sCq31C2UbxQ7zYTTUA7oH2QDUxgFOB1heFlfwlcth6NRxTpVbawU9EIV250uRe
+ smlPs8OWxnah+frBzzMbMXJt7Vw7t1OqTXEJaopx58SenH+YohXTq1Ha4MhiAvnxW0DY
+ Om6MMoawh5SGm7LD+c9MfXaZevhBZauSsRtnsTrjB5MqocQ2krWBD0tY9iujOpEQSb9K
+ tc9c0d3zjkI/fKErBnMlvAgbQnme8flw5CIg8N1AihxVQHwpvCEnZqU8sCVFFAYTGDWa
+ fwe5OzQ1gIKs1nuunqqwwmnFXcqTjvYidGN4REqHf7blCvmjlHc+4QI+QOTpl/cEhkEO
+ iG4A==
+X-Gm-Message-State: AOJu0YwFRJb6LEr1NpqXIfMf8oWXUXvvtv4i958DSUa1VBHQ8I+HHwbq
+ PTjmvUfXmcnuKpsK2vutLtcROlG6tOdBCsLKsN79Xo+1mHbiS0w6gX6m3zdZWu+AvpRLR26oQaR
+ NutAnteUxAKRYsAUBxrHSwM/IL6XMWxMJ
+X-Google-Smtp-Source: AGHT+IHIyHzRc07N740cjDuLIJ+1IH7/q+rNA+8TsL7PqME96hnZTDTlN2Rb58osovKcQHeKlaJqoXWm4INGuFHPocQ=
+X-Received: by 2002:a2e:b88d:0:b0:2fb:5a7e:5046 with SMTP id
+ 38308e7fff4ca-2fb5a7e5310mr60924871fa.9.1729173047172; Thu, 17 Oct 2024
+ 06:50:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALKrZCJ6cnocjddg4uu=0q0+vtVCzkEzC0=scnRWhLpGX4zQ8w@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20241016102605.459395-1-r.peniaev@gmail.com>
+ <20241016102605.459395-8-r.peniaev@gmail.com>
+ <CAMxuvaz9_7JBGqsJHZO0zuvrdO20oDef2v=6TSy345byzkm1Tw@mail.gmail.com>
+In-Reply-To: <CAMxuvaz9_7JBGqsJHZO0zuvrdO20oDef2v=6TSy345byzkm1Tw@mail.gmail.com>
+From: Roman Penyaev <r.peniaev@gmail.com>
+Date: Thu, 17 Oct 2024 15:48:39 +0200
+Message-ID: <CACZ9PQVYD8zen8KAOJ-+BebWRKSFwmFn42h2uDofog1LkrcHog@mail.gmail.com>
+Subject: Re: [PATCH v4 7/8] tests/unit/test-char: add unit test for the
+ `mux-be` multiplexer
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,136 +87,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 10:37:21AM -0300, Ágatha Freitas wrote:
-> On Thu, Oct 17, 2024 at 7:00 AM Daniel P. Berrangé <berrange@redhat.com>
-> wrote:
-> 
-> > On Thu, Oct 17, 2024 at 02:00:35PM +1000, Alistair Francis wrote:
-> > > On Thu, Oct 17, 2024 at 2:35 AM htafr <htafreit@gmail.com> wrote:
-> > > >
-> > > > (I) Summary
-> > > >
-> > ===========================================================================
-> > > >
-> > > > This patch is the beginning of the support of the Security Protocol and
-> > > > Data Model (SPDM). There are some known issues (see II), but it's
-> > > > usable and not many users are going to use this functionality for now,
-> > > > but for those who will it may facilitate the development.
-> > > >
-> > > > There are some people working with LibSPDM to implement the SPDM on
-> > > > emulated devices, however current works that use QEMU compile LibSPDM
-> > > > out-of-tree [1][2][3]. This patch enables the compilation of LibSPDM
-> > when
-> > > > user pass the parameter '--enable-libspdm' to configure file, this
-> > option
-> > > > is disabled by default. The following parameters were also added:
-> > > >
-> > > >   --libspdm-crypto=CHOICE  set LibSPDM crypto algorithm [mbedtls]
-> > (choices:
-> > > >                            mbedtls/openssl)
-> > > >   --libspdm-toolchain=VALUE
-> > > >                            toolchain to use for LibSPDM compilation
-> > [GCC]
-> > > >
-> > > > In order to facilitate future code development using LibSPDM API, this
-> > > > patch also provides the definition of the macro 'CONFIG_LIBSPDM'.
-> > >
-> > > We have talked about this before, see
-> > > https://patchew.org/QEMU/cover.1691509717.git.alistair.francis@wdc.com/
-> > >
-> > > The general agreement seemed to be that it will be hard to do SPDM
-> > > configuration inside QEMU, hence the external library (like the QEMU
-> > > TPM support).
-> >
-> > More generally, seeing this libspdm proposed for QEMU, without any
-> > corresponding usage of it it dubious. It is hard to judge whether
-> > it makes any sense, without seeing how it will be used in real
-> > device code inside QEMU.
-> >
-> 
-> Currently, I'm working with EDK2 and QEMU so I have a branch [1] with
-> ongoing
-> modifications in files backends/spdm.c and hw/nvme/auth.c. Although the
-> current
-> modifications are able to exchange SPDM messages, it's far from being
-> complete
-> and it's not following better code practices yet. I'm making use of
-> Alistair's and
-> Mallawa's previous work in NVMe to authenticate it through PCI [2].
-> 
-> [1]  WIP: SPDM integration
->       Link: https://github.com/htafr/qemu/tree/libspdm-dev
-> [2] WIP: SPDM in OVMF
->       Link: https://github.com/htafr/edk2/tree/ovmf-spdm
-> 
-> 
-> >
-> > On the cryptography side, I'm not a fan of linking another
-> > crypto library to QEMU, that's different from what we already
-> > support in our crypto layer. openssl in particular is a problem
-> > due to its licensing - people tend to hand-waive away the
-> > licensing incompatibility by pretending openssl is a "system library"
-> > but I disagree with that interpretation.
-> >
-> > > > (II) Known Limitations
-> > > >
-> > ===========================================================================
-> > > >
-> > > > 1. This patch enables LibSPDM in-tree compilation for Linux systems
-> > only.
-> > > > 2. LibSPDM compilation uses CMake, so meson build system is making use
-> > > >    of the CMake module [4].
-> > > > 3. Some problems may occur when compiling LibSPDM with MbedTls such as:
-> > > >     error: "_GNU_SOURCE" redefined [-Werror]
-> > > >       10 | #define _GNU_SOURCE
-> > > >
-> > > >    It's possible to compile using --disable-werror.
-> > > >
-> > > > (III) Sample configuration
-> > > >
-> > ===========================================================================
-> > > >
-> > > > ../configure \
-> > > >   --disable-werror \
-> > > >   --enable-libspdm \
-> > > >   --libspdm-crypto=mbedtls \
-> > > >   --enable-gcov
-> > > >
-> > > > References:
-> > > > [1] riscv-spdm
-> > > >   Link: https://github.com/htafr/riscv-spdm
-> > > > [2] spdm-benchmark
-> > > >   Link: https://github.com/rcaalves/spdm-benchmark
-> > > > [3] qemu-spdm-emulation-guide
-> > > >   Link: https://github.com/twilfredo/qemu-spdm-emulation-guide
-> > >
-> > > This one has been merged upstream and mainline QEMU supports it now:
-> > >
-> > > https://www.qemu.org/docs/master/specs/spdm.html
-> >
-> > So with that merged, is this proposal for linking to libspdm redundant ?
-> >
+Hi Marc-Andr=C3=A9,
+
+On Wed, Oct 16, 2024 at 1:36=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@redhat.com> wrote:
 >
-> I'm not sure if I understood the redundancy. Would it be against QEMU
-> practices
-> to have another openssl as well as mbedtls linked inside it?
+> Hi
+>
+> On Wed, Oct 16, 2024 at 2:28=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.co=
+m> wrote:
+> >
+> > The test is trivial: several backends, 1 `mux-be`, 1 frontend
+> > do the buffer write and read. Pipe is used for EAGAIN verification.
+> >
+> > Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+> > Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
+> > Cc: qemu-devel@nongnu.org
+> > ---
+> >  tests/unit/test-char.c | 306 ++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 304 insertions(+), 2 deletions(-)
+>
+> please fix the few leaks (found with --enable-asan)
 
-QEMU doesn't link to either of those libraries. We preferentially use
-gnutls, with a fallback to gcrypt or nettle, to avoid the murky openssl
-licensing situation, and to a lesser extent because openssl has an
-unpleasant API to use. mbedtls isn't used because it is a more niche
-solution compared to what we already support, so wasn't compelling to
-support.
+Did not know about this option. Should be easy, thanks.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--
+Roman
 
