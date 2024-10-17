@@ -2,135 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF059A20E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 850319A210C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1OfB-0002J5-Ph; Thu, 17 Oct 2024 07:27:29 -0400
+	id 1t1OnA-0004Ea-TL; Thu, 17 Oct 2024 07:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t1Of8-0002Im-SD
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:27:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1OlT-0003xz-PL
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t1Of6-0004op-PK
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:27:26 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1OlQ-0005sR-Io
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:33:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729164440;
+ s=mimecast20190719; t=1729164834;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WxwWYReb1MGUsBhi3qCU56PpwRxbBB4Fpo2FhE635i4=;
- b=H/O8bnGcaIW63+QXE1qcV8wBAREOnEqv1C0eXpt6aj56aAUST75myMtuPG24Uhg1c/9EE3
- Fowg9bH/3hKqE5/SfxWCP2UKWXd+J7A7GbobChKf1aJfIQ9JvBjZLcM4dHHhxUlZ+QHjvi
- WVyNxEaTgH4nChm2SKmBe3DG8NQs17k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-ECS0ZVYSPgGzYP_lKNtnLA-1; Thu, 17 Oct 2024 07:27:19 -0400
-X-MC-Unique: ECS0ZVYSPgGzYP_lKNtnLA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d67f4bf98so453823f8f.1
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 04:27:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729164438; x=1729769238;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WxwWYReb1MGUsBhi3qCU56PpwRxbBB4Fpo2FhE635i4=;
- b=qq8V3aERRXRUH0p4AERGLbHFRvm8QMxBv0i3WYMN9bcVcuN9wjHVy6V8Aqy5Q5IH91
- QuoFXzWG8TbHEldA4wwMtQ66x7UUifTqpORwKvvUu2n/zePs7Smgo5e88elafGPK1EKC
- s1+2nAcWdr6VzPoy1EG/iy3UEUZaA3daktBN53p3Pom5uqSaKxHqwCuV0gGSqSmQUXW0
- JOvwFFYzbLqKwT7kkOVkwWimllv7rbTWbGYGPJdEZagpoV7GBezSogKxNG4QVRg4MmcU
- xWD46HUURDRTUkpO44XPo91BaqTTfvGshbGK3KHJOJkBGuMsXC5bXiyncEJzFRkomEV3
- 8oRQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWaJl3CzFi6OmNWDl/UYSj4XwZydCaNDqcEjBXmwr54/Bg0v8/1dsbKhdnidwymYMvsuqvuex/CnFIq@nongnu.org
-X-Gm-Message-State: AOJu0Yx2qj5pthmELVPk+yysr9QCR5yfe+GJXAbxsxjVa+eovBU4jgqT
- frXLuqTkHQVA+HkeZPlr46uIiN8h07O4a0qM5FEP/r2UKoemFj+rncFHnripKWmsNM/HVu51Pi6
- dIK+ioApJzv6rQeSMfiTYSUy/dueOijge89r4veehUxgkNVBbc+KesTC1V9SMUUw=
-X-Received: by 2002:a5d:4a06:0:b0:374:c8e5:d56a with SMTP id
- ffacd0b85a97d-37d86d68ee4mr4618044f8f.48.1729164437775; 
- Thu, 17 Oct 2024 04:27:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvYCtC1tL/2mEtI7wR7cJFqDHfo9GBc63xE8QEKnEeRJf/fpjXLAuT8tbwnbmOYb/gJqfOXg==
-X-Received: by 2002:a5d:4a06:0:b0:374:c8e5:d56a with SMTP id
- ffacd0b85a97d-37d86d68ee4mr4618032f8f.48.1729164437393; 
- Thu, 17 Oct 2024 04:27:17 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-50-24.web.vodafone.de. [109.42.50.24])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43158c35c7fsm23128695e9.10.2024.10.17.04.27.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Oct 2024 04:27:17 -0700 (PDT)
-Message-ID: <de5ab616-aa5b-4cb1-af56-1f4dc377b5f6@redhat.com>
-Date: Thu, 17 Oct 2024 13:27:15 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=FSd0tXpbuZxmkhB+wHn3d4tBA6k8S7x3Ml5raRCcKkg=;
+ b=NBEjw14SOvxj4tZ71hJ9xZo33lr+ZiSdtqoxNlFBN1kWQHiARq9SrBDizH0v59AXTtGxGO
+ z9kcVUedM31qzvXcsEb3exu2hF7LSabgEATdM30FdyWGSP6+DDginDAn1uJMAcUAoKH2zd
+ uYMgeDO/2e1jMVq7QItxq5p+cuqwxcI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-194-2YfbZ_IzMf2O6dRJlheFog-1; Thu,
+ 17 Oct 2024 07:33:48 -0400
+X-MC-Unique: 2YfbZ_IzMf2O6dRJlheFog-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C03951956058
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:33:46 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.94])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8AFA919560A2; Thu, 17 Oct 2024 11:33:45 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 00/31] include: move include/qapi/qmp/ to include/qobject/
+Date: Thu, 17 Oct 2024 12:33:12 +0100
+Message-ID: <20241017113344.883424-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 16/19] s390x: Rebuild IPLB for SCSI device directly
- from DIAG308
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com
-References: <20241017014748.829029-1-jrossi@linux.ibm.com>
- <20241017014748.829029-17-jrossi@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241017014748.829029-17-jrossi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,129 +81,338 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/2024 03.47, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> Because virtio-scsi type devices use a non-architected IPLB pbt code they cannot
-> be set and stored normally. Instead, the IPLB must be rebuilt during re-ipl.
-> 
-> As s390x does not natively support multiple boot devices, the devno field is
-> used to store the position in the boot order for the device.
-> 
-> Handling the rebuild as part of DIAG308 removes the need to check the devices
-> for invalid IPLBs later in the IPL.
-> 
-> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-> ---
->   hw/s390x/ipl.h              | 11 ++++--
->   include/hw/s390x/ipl/qipl.h |  3 +-
->   hw/s390x/ipl.c              | 75 +++++++------------------------------
->   pc-bios/s390-ccw/jump2ipl.c | 11 ++++--
->   target/s390x/diag.c         |  9 ++++-
->   5 files changed, 39 insertions(+), 70 deletions(-)
-> 
-> diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-> index 54eb48fd6e..aead1d6ae5 100644
-> --- a/hw/s390x/ipl.h
-> +++ b/hw/s390x/ipl.h
-> @@ -24,6 +24,7 @@
->   
->   void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp);
->   void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp);
-> +void s390_rebuild_iplb(uint16_t index, IplParameterBlock *iplb);
->   void s390_ipl_update_diag308(IplParameterBlock *iplb);
->   int s390_ipl_prepare_pv_header(Error **errp);
->   int s390_ipl_pv_unpack(void);
-> @@ -65,7 +66,8 @@ struct S390IPLState {
->       bool enforce_bios;
->       bool iplb_valid;
->       bool iplb_valid_pv;
-> -    bool netboot;
-> +    bool rebuilt_iplb;
-> +    uint16_t iplb_index;
->       /* reset related properties don't have to be migrated or reset */
->       enum s390_reset reset_type;
->       int reset_cpu_index;
-> @@ -172,11 +174,14 @@ static inline bool iplb_valid_pv(IplParameterBlock *iplb)
->   
->   static inline bool iplb_valid(IplParameterBlock *iplb)
->   {
-> +    uint32_t len = be32_to_cpu(iplb->len);
-> +
->       switch (iplb->pbt) {
->       case S390_IPL_TYPE_FCP:
-> -        return be32_to_cpu(iplb->len) >= S390_IPLB_MIN_FCP_LEN;
-> +        return len >= S390_IPLB_MIN_FCP_LEN;
->       case S390_IPL_TYPE_CCW:
-> -        return be32_to_cpu(iplb->len) >= S390_IPLB_MIN_CCW_LEN;
-> +        return (len >= S390_IPLB_MIN_CCW_LEN);
+To repeat the 1st patch commit message...
 
-Style inconsistency: In the FCP case, you did the return statement without 
-parentheses, so I'd suggest to remove them here, too.
+The general expectation is that header files should follow the same
+file/path naming scheme as the corresponding source file. There are
+various historical exceptions to this practice in QEMU, with one of
+the most notable being the include/qapi/qmp/ directory. Most of the
+headers there correspond to source files in qobject/.
 
-> +    case S390_IPL_TYPE_QEMU_SCSI:
->       default:
->           return false;
->       }
-> diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
-> index e56b181298..451f3b1684 100644
-> --- a/include/hw/s390x/ipl/qipl.h
-> +++ b/include/hw/s390x/ipl/qipl.h
-> @@ -28,7 +28,8 @@
->    */
->   struct QemuIplParameters {
->       uint8_t  qipl_flags;
-> -    uint8_t  reserved1[3];
-> +    uint8_t  index;
-> +    uint8_t  reserved1[2];
->       uint64_t reserved2;
->       uint32_t boot_menu_timeout;
->       uint8_t  reserved3[2];
-> diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-> index aec79f41a8..50fde05b67 100644
-> --- a/hw/s390x/ipl.c
-> +++ b/hw/s390x/ipl.c
-> @@ -448,7 +448,6 @@ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp)
->   
->   static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
->   {
-> -    S390IPLState *ipl = get_ipl_device();
->       CcwDevice *ccw_dev = NULL;
->       SCSIDevice *sd;
->       int devtype;
-> @@ -481,9 +480,6 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
->               iplb->ccw.ssid = ccw_dev->sch->ssid & 3;
->               break;
->           case CCW_DEVTYPE_VIRTIO_NET:
-> -            /* The S390IPLState netboot is true if ANY IPLB may use netboot */
-> -            ipl->netboot = true;
-> -            /* Fall through to CCW_DEVTYPE_VIRTIO case */
->           case CCW_DEVTYPE_VIRTIO:
->               iplb->len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
->               iplb->blk0_len =
-> @@ -508,6 +504,17 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
->       return false;
->   }
->   
-> +
+This patch corrects that inconsistency by creating include/qobject/.
+The only outlier is include/qapi/qmp/dispatch.h which gets renamed
+to include/qapi/qmp-registry.h.
 
-Remove the additonal empty line, please.
+To allow the code to continue to build, symlinks are temporarily
+added in $QEMU/qapi/qmp/ to point to the new location. This allows
+git to show a simple 'rename' diff in the 1st patch, which isn't
+possible if we put the symlinks straight in $QEMU/include/qapi/qmp/.
+The 27 patches that follow are mechanical updates to each top level
+sub-directory. The final patch removes the temporary compat symlinks.
 
-> +void s390_rebuild_iplb(uint16_t dev_index, IplParameterBlock *iplb)
-> +{
-> +    S390IPLState *ipl = get_ipl_device();
-> +    uint16_t index;
-> +    index = ipl->rebuilt_iplb ? ipl->iplb_index : dev_index;
-> +
-> +    ipl->rebuilt_iplb = s390_build_iplb(get_boot_device(index), iplb);
-> +    ipl->iplb_index = index;
-> +}
+It was questioned last time whether this should all just be one
+big bang commit. I don't mind either way, just the end result
+that matters to me.
 
-With the nits fixed:
-Acked-by: Thomas Huth <thuth@redhat.com>
+Changed in v2:
 
+ - Don't move include/qapi/qmp/qerror.h, as it is not
+   the same kind of thing as the other qobject related
+   headers, and this header is deprecated & (slowly)
+   getting eliminated anyway
 
-  Thomas
+ - Tacked on two trivial patches removing redundant
+   imports of qerror.h. Strictly they're independant
+   of this series, so could just go to qemu-trivial
+   on their own
 
+Daniel P. Berrangé (31):
+  include: move include/qapi/qmp/ to include/qobject/
+  audio: adapt to new import path for qobject data type headers
+  authz: adapt to new import path for qobject data type headers
+  block: adapt to new import path for qobject data type headers
+  backends: adapt to new import path for qobject data type headers
+  chardev: adapt to new import path for qobject data type headers
+  docs: adapt to new import path for qobject data type headers
+  dump: adapt to new import path for qobject data type headers
+  hw: adapt to new import path for qobject data type headers
+  include: adapt to new import path for qobject data type headers
+  migration: adapt to new import path for qobject data type headers
+  monitor: adapt to new import path for qobject data type headers
+  net: adapt to new import path for qobject data type headers
+  qapi: adapt to new import path for qobject data type headers
+  qga: adapt to new import path for qobject data type headers
+  qobject: adapt to new import path for qobject data type headers
+  qom: adapt to new import path for qobject data type headers
+  replay: adapt to new import path for qobject data type headers
+  scripts: adapt to new import path for qobject data type headers
+  scsi: adapt to new import path for qobject data type headers
+  stats: adapt to new import path for qobject data type headers
+  stubs: adapt to new import path for qobject data type headers
+  system: adapt to new import path for qobject data type headers
+  target: adapt to new import path for qobject data type headers
+  tests: adapt to new import path for qobject data type headers
+  trace: adapt to new import path for qobject data type headers
+  ui: adapt to new import path for qobject data type headers
+  util: adapt to new import path for qobject data type headers
+  qapi: remove header file compatibility symlinks
+  qga: remove unused qerror.h header
+  system: remove unused qerror.h header
+
+ MAINTAINERS                                     |  5 +----
+ audio/audio-hmp-cmds.c                          |  2 +-
+ audio/audio.c                                   |  2 +-
+ authz/listfile.c                                |  4 ++--
+ backends/cryptodev-hmp-cmds.c                   |  2 +-
+ block.c                                         |  8 ++++----
+ block/blkdebug.c                                |  6 +++---
+ block/blkio.c                                   |  2 +-
+ block/blklogwrites.c                            |  4 ++--
+ block/blkverify.c                               |  4 ++--
+ block/copy-before-write.c                       |  2 +-
+ block/copy-on-read.c                            |  2 +-
+ block/curl.c                                    |  4 ++--
+ block/file-posix.c                              |  4 ++--
+ block/file-win32.c                              |  4 ++--
+ block/gluster.c                                 |  2 +-
+ block/iscsi.c                                   |  4 ++--
+ block/monitor/block-hmp-cmds.c                  |  2 +-
+ block/nbd.c                                     |  2 +-
+ block/nfs.c                                     |  4 ++--
+ block/null.c                                    |  4 ++--
+ block/nvme.c                                    |  4 ++--
+ block/parallels.c                               |  2 +-
+ block/qapi-sysemu.c                             |  2 +-
+ block/qapi.c                                    | 10 +++++-----
+ block/qcow.c                                    |  4 ++--
+ block/qcow2.c                                   |  4 ++--
+ block/qed.c                                     |  2 +-
+ block/quorum.c                                  |  6 +++---
+ block/rbd.c                                     |  8 ++++----
+ block/replication.c                             |  2 +-
+ block/snapshot.c                                |  4 ++--
+ block/ssh.c                                     |  4 ++--
+ block/stream.c                                  |  2 +-
+ block/vhdx.c                                    |  2 +-
+ block/vmdk.c                                    |  2 +-
+ block/vpc.c                                     |  2 +-
+ block/vvfat.c                                   |  4 ++--
+ blockdev.c                                      |  8 ++++----
+ chardev/char-hmp-cmds.c                         |  2 +-
+ docs/devel/qapi-code-gen.rst                    |  4 ++--
+ dump/dump-hmp-cmds.c                            |  2 +-
+ hw/arm/aspeed_ast27x0.c                         |  2 +-
+ hw/arm/mps2-tz.c                                |  2 +-
+ hw/arm/mps2.c                                   |  2 +-
+ hw/arm/mps3r.c                                  |  2 +-
+ hw/arm/sbsa-ref.c                               |  2 +-
+ hw/arm/stellaris.c                              |  2 +-
+ hw/arm/vexpress.c                               |  2 +-
+ hw/arm/virt.c                                   |  2 +-
+ hw/arm/xlnx-versal.c                            |  2 +-
+ hw/block/xen-block.c                            |  4 ++--
+ hw/core/machine-hmp-cmds.c                      |  2 +-
+ hw/core/machine-qmp-cmds.c                      |  2 +-
+ hw/core/qdev-properties.c                       |  2 +-
+ hw/core/qdev.c                                  |  2 +-
+ hw/hyperv/hv-balloon.c                          |  2 +-
+ hw/i386/acpi-build.c                            |  2 +-
+ hw/i386/kvm/xen_evtchn.c                        |  2 +-
+ hw/i386/monitor.c                               |  2 +-
+ hw/i386/pc.c                                    |  2 +-
+ hw/net/rocker/rocker-hmp-cmds.c                 |  2 +-
+ hw/net/virtio-net.c                             |  2 +-
+ hw/net/xen_nic.c                                |  2 +-
+ hw/pci/pci-hmp-cmds.c                           |  2 +-
+ hw/ppc/pegasos2.c                               |  2 +-
+ hw/ppc/spapr_drc.c                              |  2 +-
+ hw/rx/rx62n.c                                   |  2 +-
+ hw/s390x/s390-skeys.c                           |  2 +-
+ hw/s390x/s390-stattrib.c                        |  2 +-
+ hw/usb/xen-usb.c                                |  4 ++--
+ hw/vfio/pci.c                                   |  2 +-
+ hw/virtio/virtio-hmp-cmds.c                     |  2 +-
+ hw/virtio/virtio-qmp.c                          |  4 ++--
+ hw/xen/xen-bus.c                                |  2 +-
+ include/block/qdict.h                           |  2 +-
+ include/qapi/{qmp/dispatch.h => qmp-registry.h} |  0
+ include/{qapi/qmp => qobject}/json-parser.h     |  0
+ include/{qapi/qmp => qobject}/json-writer.h     |  0
+ include/{qapi/qmp => qobject}/qbool.h           |  2 +-
+ include/{qapi/qmp => qobject}/qdict.h           |  2 +-
+ include/{qapi/qmp => qobject}/qjson.h           |  0
+ include/{qapi/qmp => qobject}/qlist.h           |  2 +-
+ include/{qapi/qmp => qobject}/qlit.h            |  0
+ include/{qapi/qmp => qobject}/qnull.h           |  2 +-
+ include/{qapi/qmp => qobject}/qnum.h            |  2 +-
+ include/{qapi/qmp => qobject}/qobject.h         |  2 +-
+ include/{qapi/qmp => qobject}/qstring.h         |  2 +-
+ migration/dirtyrate.c                           |  2 +-
+ migration/migration-hmp-cmds.c                  |  2 +-
+ migration/migration.c                           |  2 +-
+ migration/migration.h                           |  2 +-
+ migration/options.c                             |  2 +-
+ migration/vmstate.c                             |  2 +-
+ monitor/hmp-cmds-target.c                       |  2 +-
+ monitor/hmp-cmds.c                              |  2 +-
+ monitor/hmp.c                                   |  4 ++--
+ monitor/monitor-internal.h                      |  4 ++--
+ monitor/monitor.c                               |  2 +-
+ monitor/qemu-config-qmp.c                       |  2 +-
+ monitor/qmp.c                                   |  6 +++---
+ net/net-hmp-cmds.c                              |  2 +-
+ net/net.c                                       |  2 +-
+ net/slirp.c                                     |  2 +-
+ qapi/qapi-clone-visitor.c                       |  2 +-
+ qapi/qapi-dealloc-visitor.c                     |  2 +-
+ qapi/qapi-forward-visitor.c                     | 14 +++++++-------
+ qapi/qmp-dispatch.c                             |  8 ++++----
+ qapi/qmp-event.c                                |  6 +++---
+ qapi/qmp-registry.c                             |  2 +-
+ qapi/qobject-input-visitor.c                    | 14 +++++++-------
+ qapi/qobject-output-visitor.c                   | 12 ++++++------
+ qapi/string-input-visitor.c                     |  2 +-
+ qemu-img.c                                      |  4 ++--
+ qemu-io-cmds.c                                  |  2 +-
+ qemu-io.c                                       |  4 ++--
+ qemu-nbd.c                                      |  4 ++--
+ qga/commands-bsd.c                              |  1 -
+ qga/commands-linux.c                            |  1 -
+ qga/commands-posix.c                            |  1 -
+ qga/guest-agent-core.h                          |  2 +-
+ qga/main.c                                      |  6 +++---
+ qobject/block-qdict.c                           |  8 ++++----
+ qobject/json-parser-int.h                       |  2 +-
+ qobject/json-parser.c                           | 12 ++++++------
+ qobject/json-writer.c                           |  2 +-
+ qobject/qbool.c                                 |  2 +-
+ qobject/qdict.c                                 | 10 +++++-----
+ qobject/qjson.c                                 | 16 ++++++++--------
+ qobject/qlist.c                                 | 10 +++++-----
+ qobject/qlit.c                                  | 14 +++++++-------
+ qobject/qnull.c                                 |  2 +-
+ qobject/qnum.c                                  |  2 +-
+ qobject/qobject-internal.h                      |  2 +-
+ qobject/qobject.c                               | 12 ++++++------
+ qobject/qstring.c                               |  2 +-
+ qom/object.c                                    | 10 +++++-----
+ qom/object_interfaces.c                         |  6 +++---
+ qom/qom-hmp-cmds.c                              |  4 ++--
+ qom/qom-qmp-cmds.c                              |  2 +-
+ replay/replay-debugging.c                       |  2 +-
+ replay/replay-snapshot.c                        |  2 +-
+ scripts/qapi/commands.py                        |  6 +++---
+ scripts/qapi/events.py                          |  2 +-
+ scripts/qapi/introspect.py                      |  2 +-
+ scsi/qemu-pr-helper.c                           |  2 +-
+ stats/stats-hmp-cmds.c                          |  2 +-
+ storage-daemon/qemu-storage-daemon.c            |  4 ++--
+ stubs/qmp-command-available.c                   |  2 +-
+ stubs/qmp-quit.c                                |  2 +-
+ system/device_tree.c                            |  2 +-
+ system/dirtylimit.c                             |  2 +-
+ system/qdev-monitor.c                           |  6 +++---
+ system/runstate-hmp-cmds.c                      |  2 +-
+ system/vl.c                                     |  6 +++---
+ target/arm/arm-qmp-cmds.c                       |  2 +-
+ target/i386/cpu-apic.c                          |  2 +-
+ target/i386/cpu-sysemu.c                        |  2 +-
+ target/i386/monitor.c                           |  2 +-
+ target/loongarch/loongarch-qmp-cmds.c           |  2 +-
+ target/ppc/cpu_init.c                           |  2 +-
+ target/riscv/riscv-qmp-cmds.c                   |  4 ++--
+ target/s390x/cpu_models_sysemu.c                |  2 +-
+ tests/qtest/adm1266-test.c                      |  4 ++--
+ tests/qtest/adm1272-test.c                      |  4 ++--
+ tests/qtest/ahci-test.c                         |  2 +-
+ tests/qtest/arm-cpu-features.c                  |  4 ++--
+ tests/qtest/aspeed_gpio-test.c                  |  2 +-
+ tests/qtest/boot-order-test.c                   |  2 +-
+ tests/qtest/cdrom-test.c                        |  2 +-
+ tests/qtest/cpu-plug-test.c                     |  4 ++--
+ tests/qtest/device-introspect-test.c            |  6 +++---
+ tests/qtest/device-plug-test.c                  |  4 ++--
+ tests/qtest/drive_del-test.c                    |  4 ++--
+ tests/qtest/emc141x-test.c                      |  2 +-
+ tests/qtest/fdc-test.c                          |  2 +-
+ tests/qtest/hd-geo-test.c                       |  2 +-
+ tests/qtest/ide-test.c                          |  2 +-
+ tests/qtest/isl_pmbus_vr-test.c                 |  4 ++--
+ tests/qtest/libqmp.c                            |  4 ++--
+ tests/qtest/libqmp.h                            |  2 +-
+ tests/qtest/libqos/generic-pcihost.c            |  2 +-
+ tests/qtest/libqos/libqos.c                     |  2 +-
+ tests/qtest/libqos/pci-pc.c                     |  2 +-
+ tests/qtest/libqos/qos_external.c               |  8 ++++----
+ tests/qtest/libqtest.c                          | 10 +++++-----
+ tests/qtest/libqtest.h                          |  4 ++--
+ tests/qtest/lsm303dlhc-mag-test.c               |  2 +-
+ tests/qtest/machine-none-test.c                 |  2 +-
+ tests/qtest/max34451-test.c                     |  4 ++--
+ tests/qtest/migration-helpers.c                 |  4 ++--
+ tests/qtest/migration-test.c                    |  4 ++--
+ tests/qtest/netdev-socket.c                     |  2 +-
+ tests/qtest/npcm7xx_adc-test.c                  |  2 +-
+ tests/qtest/npcm7xx_emc-test.c                  |  4 ++--
+ tests/qtest/npcm7xx_pwm-test.c                  |  4 ++--
+ tests/qtest/npcm7xx_watchdog_timer-test.c       |  2 +-
+ tests/qtest/numa-test.c                         |  4 ++--
+ tests/qtest/pvpanic-pci-test.c                  |  2 +-
+ tests/qtest/pvpanic-test.c                      |  3 ++-
+ tests/qtest/q35-test.c                          |  2 +-
+ tests/qtest/qmp-cmd-test.c                      |  2 +-
+ tests/qtest/qmp-test.c                          |  6 +++---
+ tests/qtest/qom-test.c                          |  4 ++--
+ tests/qtest/qos-test.c                          |  2 +-
+ tests/qtest/readconfig-test.c                   |  6 +++---
+ tests/qtest/tco-test.c                          |  2 +-
+ tests/qtest/test-filter-mirror.c                |  2 +-
+ tests/qtest/test-filter-redirector.c            |  2 +-
+ tests/qtest/test-netfilter.c                    |  2 +-
+ tests/qtest/test-x86-cpuid-compat.c             |  8 ++++----
+ tests/qtest/tmp105-test.c                       |  2 +-
+ tests/qtest/tpm-emu.c                           |  4 ++--
+ tests/qtest/tpm-util.c                          |  2 +-
+ tests/qtest/vhost-user-test.c                   |  2 +-
+ tests/qtest/virtio-net-failover.c               |  6 +++---
+ tests/qtest/virtio-net-test.c                   |  2 +-
+ tests/qtest/vmgenid-test.c                      |  2 +-
+ tests/qtest/wdt_ib700-test.c                    |  2 +-
+ tests/unit/check-block-qdict.c                  |  4 ++--
+ tests/unit/check-qdict.c                        |  6 +++---
+ tests/unit/check-qjson.c                        | 12 ++++++------
+ tests/unit/check-qlist.c                        |  4 ++--
+ tests/unit/check-qlit.c                         | 12 ++++++------
+ tests/unit/check-qnull.c                        |  2 +-
+ tests/unit/check-qnum.c                         |  2 +-
+ tests/unit/check-qobject.c                      | 12 ++++++------
+ tests/unit/check-qom-proplist.c                 |  4 ++--
+ tests/unit/check-qstring.c                      |  2 +-
+ tests/unit/test-block-iothread.c                |  2 +-
+ tests/unit/test-blockjob-txn.c                  |  2 +-
+ tests/unit/test-blockjob.c                      |  2 +-
+ tests/unit/test-char.c                          |  2 +-
+ tests/unit/test-forward-visitor.c               |  4 ++--
+ tests/unit/test-image-locking.c                 |  2 +-
+ tests/unit/test-keyval.c                        |  6 +++---
+ tests/unit/test-qemu-opts.c                     |  4 ++--
+ tests/unit/test-qga.c                           |  4 ++--
+ tests/unit/test-qmp-cmds.c                      |  8 ++++----
+ tests/unit/test-qmp-event.c                     | 10 +++++-----
+ tests/unit/test-qobject-input-visitor.c         | 12 ++++++------
+ tests/unit/test-qobject-output-visitor.c        | 12 ++++++------
+ tests/unit/test-replication.c                   |  2 +-
+ tests/unit/test-visitor-serialization.c         |  4 ++--
+ trace/trace-hmp-cmds.c                          |  2 +-
+ ui/ui-hmp-cmds.c                                |  2 +-
+ util/keyval.c                                   |  6 +++---
+ util/qemu-config.c                              |  4 ++--
+ util/qemu-option.c                              |  8 ++++----
+ 249 files changed, 442 insertions(+), 447 deletions(-)
+ rename include/qapi/{qmp/dispatch.h => qmp-registry.h} (100%)
+ rename include/{qapi/qmp => qobject}/json-parser.h (100%)
+ rename include/{qapi/qmp => qobject}/json-writer.h (100%)
+ rename include/{qapi/qmp => qobject}/qbool.h (94%)
+ rename include/{qapi/qmp => qobject}/qdict.h (98%)
+ rename include/{qapi/qmp => qobject}/qjson.h (100%)
+ rename include/{qapi/qmp => qobject}/qlist.h (98%)
+ rename include/{qapi/qmp => qobject}/qlit.h (100%)
+ rename include/{qapi/qmp => qobject}/qnull.h (94%)
+ rename include/{qapi/qmp => qobject}/qnum.h (98%)
+ rename include/{qapi/qmp => qobject}/qobject.h (98%)
+ rename include/{qapi/qmp => qobject}/qstring.h (96%)
+
+-- 
+2.46.0
 
 
