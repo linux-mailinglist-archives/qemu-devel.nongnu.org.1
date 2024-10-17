@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2829A2653
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C099A2645
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:17:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1SCu-00076j-K3; Thu, 17 Oct 2024 11:14:32 -0400
+	id 1t1SCx-00077W-9b; Thu, 17 Oct 2024 11:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCs-00076A-Ua
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:30 -0400
+ id 1t1SCu-00076s-PG
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:32 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCr-000143-EP
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:30 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBoMx002190;
- Thu, 17 Oct 2024 15:14:27 GMT
+ id 1t1SCs-00014G-V1
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:32 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBvfB024544;
+ Thu, 17 Oct 2024 15:14:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=xxGxWm2fCMgriPnvrLwmwzchcLAluagUkIOmkVXNLsU=; b=
- DsbkB1MtiEA/H/quXP1T2oYHNgC3AVtvL431UUVyFoJUJPQjme+mEBOOqlL7A/Jf
- 9yizcyIqY1AYoCeQCDrJupculp9eLjRVPXDnbJT6G8OQid50ZdUfldg7GhP30mfW
- CZAJ4ntnHYsFS8v/QabC8dZnJeORxPxzkKOeLRdQcuRcrrALKicgnXcGhLck01+/
- UiUGgDku0v64L9OSOak3ZlyJxB5cyUaW1wexXfmpjRrKsNoi2mJPB8HF6heW7Ad5
- 59BcbKosvyxnwmj7qmUpKkaK2uWOusK//wcpF3WrFEy2GXYiWD7nB/Za3Tkc8GeR
- uryUiJTleApK2x1g9a9+9A==
+ corp-2023-11-20; bh=bOot6nKltj+7FRW7zF9v26svQIOgEmPKYklqUEF0Ey4=; b=
+ aispcUppA+pezU/7Z1+lCPSfM+FHp0DtvFETLS/BsY2nAHFJiTsK9Ffm2EQHT56n
+ dQ9WyXy1DiSgqzGfcrylUUMtvnfe4TNnuKCS7oHfd9CNLwTQL962Y5kTg1KR4mrF
+ sxgJvufZ3kEThEHSw1+Opar98hNWyKiK1WS7s5sSw/2o+MMjc9QNJ29YGQkH+4G8
+ 74Vbdr7Ug/K1MPwV0vSDjzCPGZIsupoliPYs4TLp26T0y0I+YKP/2IalAnhwSGrW
+ Dre6E/siRk1Z8Nwk2IUIhfiyTG0o7tmpCuzE5Gog1s8EYt9Xb1A58LE/WMyNfmD+
+ 6wcIXJlxEmg18gAY4+HvRA==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fw2ptrs-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fhcp9ew-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:26 +0000 (GMT)
+ Thu, 17 Oct 2024 15:14:28 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49HF2N3w027223; Thu, 17 Oct 2024 15:14:26 GMT
+ with ESMTP id 49HEMHPD027120; Thu, 17 Oct 2024 15:14:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 427fjgy69m-1
+ 427fjgy6ag-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:26 +0000
+ Thu, 17 Oct 2024 15:14:27 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgd017147;
- Thu, 17 Oct 2024 15:14:25 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgf017147;
+ Thu, 17 Oct 2024 15:14:27 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 427fjgy62e-7; Thu, 17 Oct 2024 15:14:25 +0000
+ ESMTP id 427fjgy62e-8; Thu, 17 Oct 2024 15:14:27 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,22 +62,22 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 06/14] vl: precreate phase
-Date: Thu, 17 Oct 2024 08:14:07 -0700
-Message-Id: <1729178055-207271-7-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 07/14] monitor: chardev name
+Date: Thu, 17 Oct 2024 08:14:08 -0700
+Message-Id: <1729178055-207271-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-17_16,2024-10-17_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=720
  adultscore=0
  spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410170105
-X-Proofpoint-GUID: 0CFsiJWFfy87VHjHHZ1-yOJTxAzY1MQP
-X-Proofpoint-ORIG-GUID: 0CFsiJWFfy87VHjHHZ1-yOJTxAzY1MQP
+X-Proofpoint-GUID: kZ9iAHODw5NBjBnGpKo35M7_3MwhBIbS
+X-Proofpoint-ORIG-GUID: kZ9iAHODw5NBjBnGpKo35M7_3MwhBIbS
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,62 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor qemu_init into actions performed during the precreate phase,
-and actions performed when exiting precreate.  For now, always exit
-the precreate phase immediately at init time.  Future patches will add
-conditions that cause QEMU to linger in the precreate phase while running
-the main loop.
+Define an accessor that returns the chardev name in monitor options.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- system/vl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/monitor/monitor.h |  1 +
+ monitor/monitor.c         | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/system/vl.c b/system/vl.c
-index d32203c..5f5e810 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -183,6 +183,7 @@ static bool list_data_dirs;
- static const char *qtest_chrdev;
- static const char *qtest_log;
- static AccelState *accel;
-+static FILE *vmstate_dump_file;
+diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
+index c3740ec..8edfd12 100644
+--- a/include/monitor/monitor.h
++++ b/include/monitor/monitor.h
+@@ -23,6 +23,7 @@ void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp);
+ void monitor_init_hmp(Chardev *chr, bool use_readline, Error **errp);
+ int monitor_init(MonitorOptions *opts, bool allow_hmp, Error **errp);
+ int monitor_init_opts(QemuOpts *opts, Error **errp);
++int monitor_chardev_name(QemuOpts *opts, char **name, Error **errp);
+ void monitor_cleanup(void);
  
- static int has_defaults = 1;
- static int default_audio = 1;
-@@ -2731,6 +2732,8 @@ static bool qemu_machine_creation_done(Error **errp)
-     return true;
+ int monitor_suspend(Monitor *mon);
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index db52a9c..8b356b6 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -777,6 +777,27 @@ int monitor_init_opts(QemuOpts *opts, Error **errp)
+     return ret;
  }
  
-+static void qemu_exit_precreate(void);
++int monitor_chardev_name(QemuOpts *opts, char **namep, Error **errp)
++{
++    Visitor *v = opts_visitor_new(opts);
++    MonitorOptions *options;
 +
- void qmp_x_exit_preconfig(Error **errp)
- {
-     if (phase_check(PHASE_MACHINE_INITIALIZED)) {
-@@ -2795,9 +2798,7 @@ void qemu_init(int argc, char **argv)
-     QemuOptsList *olist;
-     int optind;
-     const char *optarg;
--    MachineClass *machine_class;
-     bool userconfig = true;
--    FILE *vmstate_dump_file = NULL;
- 
-     qemu_add_opts(&qemu_drive_opts);
-     qemu_add_drive_opts(&qemu_legacy_drive_opts);
-@@ -3753,6 +3754,13 @@ void qemu_init(int argc, char **argv)
-         }
-     }
- 
-+    qemu_exit_precreate();
++    visit_type_MonitorOptions(v, NULL, &options, errp);
++    visit_free(v);
++    if (!options) {
++        return -1;
++    }
++
++    if (options->chardev) {
++        *namep = g_strdup(options->chardev);
++    } else {
++        *namep = NULL;
++    }
++
++    qapi_free_MonitorOptions(options);
++    return 0;
 +}
 +
-+static void qemu_exit_precreate(void)
-+{
-+    MachineClass *machine_class;
-+
-     suspend_mux_open();
- 
-     qemu_disable_default_devices();
+ QemuOptsList qemu_mon_opts = {
+     .name = "mon",
+     .implied_opt_name = "chardev",
 -- 
 1.8.3.1
 
