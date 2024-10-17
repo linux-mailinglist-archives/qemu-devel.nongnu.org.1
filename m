@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF239A210D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871FE9A2115
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:38:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1On8-0004EQ-9z; Thu, 17 Oct 2024 07:35:42 -0400
+	id 1t1OnV-00052W-Ls; Thu, 17 Oct 2024 07:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Olf-0003zX-Ev
+ id 1t1Olf-0003zY-Gn
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1OlX-0005tQ-Cq
+ id 1t1OlY-0005tS-Gp
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1729164842;
@@ -24,35 +24,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5Xl29/I2zCK+0VinV/2NZbu9TZBSnl9+02LyQkWfznI=;
- b=U7/gPOgOspWCfllZa3TqjL4UcHe3HV1GdaXUFp3OwFBrNLv67evYZIWp2U3Lb5+wMZZUfN
- LYgLXHNJJZzTCL0MJI0cTycfEf68K7hz3D9AxbgJeI5wwxaEL6xUIsKYyK635RMXQZi1ro
- IMjfHJzNDK0PgWfd5G1cROeTaORelRw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GxNZgNQ4nAl0yzuDvdi1ZlSaj95Jgk4eS7DxFCUjris=;
+ b=eFfshGGe50COtAYp34eEWORmDK+NSW7EoIfsWwWABU9wpIpfv5p3F59TPEeSFxiMjOS7eP
+ 6pt8gA34VylZQUKZbTwlyZXe57lNf9Evo7CRouMjQD0MT65A1QvvhIf99K+myAopl0skLu
+ Ir5uYnSa83BrhwJ+QaR4IF6ggWWaWu8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-vgq4KGCbOK6SreY1xS_-Ww-1; Thu,
- 17 Oct 2024 07:33:59 -0400
-X-MC-Unique: vgq4KGCbOK6SreY1xS_-Ww-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-SICpcuR0OGmENwhwN0lFwQ-1; Thu,
+ 17 Oct 2024 07:34:01 -0400
+X-MC-Unique: SICpcuR0OGmENwhwN0lFwQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB050195608F
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:33:58 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E079A19560A3
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:00 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.94])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8280E19560A2; Thu, 17 Oct 2024 11:33:57 +0000 (UTC)
+ id 51CF919560A2; Thu, 17 Oct 2024 11:33:59 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 06/31] chardev: adapt to new import path for qobject data
- type headers
-Date: Thu, 17 Oct 2024 12:33:18 +0100
-Message-ID: <20241017113344.883424-7-berrange@redhat.com>
+Subject: [PATCH v2 07/31] docs: adapt to new import path for qobject data type
+ headers
+Date: Thu, 17 Oct 2024 12:33:19 +0100
+Message-ID: <20241017113344.883424-8-berrange@redhat.com>
 In-Reply-To: <20241017113344.883424-1-berrange@redhat.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -90,21 +90,30 @@ qobject/.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- chardev/char-hmp-cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/devel/qapi-code-gen.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/chardev/char-hmp-cmds.c b/chardev/char-hmp-cmds.c
-index 287c2b1bcd..8e9e1c1c02 100644
---- a/chardev/char-hmp-cmds.c
-+++ b/chardev/char-hmp-cmds.c
-@@ -19,7 +19,7 @@
- #include "monitor/monitor.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-char.h"
--#include "qapi/qmp/qdict.h"
-+#include "qobject/qdict.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
+diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
+index 583207a8ec..ea26b8b473 100644
+--- a/docs/devel/qapi-code-gen.rst
++++ b/docs/devel/qapi-code-gen.rst
+@@ -1854,7 +1854,7 @@ Example::
+     #ifndef EXAMPLE_QAPI_INIT_COMMANDS_H
+     #define EXAMPLE_QAPI_INIT_COMMANDS_H
+ 
+-    #include "qapi/qmp/dispatch.h"
++    #include "qapi/qmp-registry.h"
+ 
+     void example_qmp_init_marshal(QmpCommandList *cmds);
+ 
+@@ -1985,7 +1985,7 @@ Example::
+     #ifndef EXAMPLE_QAPI_INTROSPECT_H
+     #define EXAMPLE_QAPI_INTROSPECT_H
+ 
+-    #include "qapi/qmp/qlit.h"
++    #include "qobject/qlit.h"
+ 
+     extern const QLitObject example_qmp_schema_qlit;
  
 -- 
 2.46.0
