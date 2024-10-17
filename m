@@ -2,90 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DCA9A2512
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7929A251B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:33:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1RY9-0005Nc-Pk; Thu, 17 Oct 2024 10:32:25 -0400
+	id 1t1RYC-0005QC-Lc; Thu, 17 Oct 2024 10:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY6-0005N1-Qf
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:22 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY8-0005NP-7r
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:25 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY2-0003sS-Qk
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:21 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY5-0003sf-DI
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:23 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 578C31FD33;
- Thu, 17 Oct 2024 14:32:15 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9FBA521D4F;
+ Thu, 17 Oct 2024 14:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729175535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
- b=AEAynrvyu6143Px2ljTPJD+wlWpJG3jS8YUkbXNqOi4chgGehktd3gYmTPJ5tFogHYMSMK
- Ze6Lrzyi5oiL3OHH4Cw9iQcaO4NlJsek9zJWfbSMLvK7sDoa6V5IfDCq2r+ag0Gfn/CJfq
- EevmLVSADTtKHC1Nu1+vImZC+Ucm3ZU=
+ t=1729175538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIRM9LB7FwkHydC3GCwMPV0i8o72SEtPi5z7MK5aYuI=;
+ b=WtZpEtpXatHHkdPNey7Gf6cvt/rSj6xSZ0tEYceBh9bwWIgyQnQDP2do/7rGFmzrnmoDbf
+ VFxQjti3RnyUQ08bRxEZ0oynEqKMGGrGnBHO8M8D3q+CtpHQ7h4PE05/qqtLKGAu9Wp1Qn
+ wmhUPWLurVe1h8FXOKiyeeQ5+wqNkdA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729175535;
+ s=susede2_ed25519; t=1729175538;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
- b=3C50auJNYcAM6f4d7euO1CzNQ9ZdUJ8t42/rcl4+tyjdGCVuweKdHIGl1MHu2zVH/T0AO4
- ktW9jO7W0ds8XSBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIRM9LB7FwkHydC3GCwMPV0i8o72SEtPi5z7MK5aYuI=;
+ b=vjHR2lQQObrZ8e918wyAyaSnTI1dUxfuiv5YYH7QPWqtsL/FQS1yNFLy+a1zZeShvogdkE
+ RYIdDM0PqJ67xWAA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WtZpEtpX;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vjHR2lQQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729175535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
- b=AEAynrvyu6143Px2ljTPJD+wlWpJG3jS8YUkbXNqOi4chgGehktd3gYmTPJ5tFogHYMSMK
- Ze6Lrzyi5oiL3OHH4Cw9iQcaO4NlJsek9zJWfbSMLvK7sDoa6V5IfDCq2r+ag0Gfn/CJfq
- EevmLVSADTtKHC1Nu1+vImZC+Ucm3ZU=
+ t=1729175538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIRM9LB7FwkHydC3GCwMPV0i8o72SEtPi5z7MK5aYuI=;
+ b=WtZpEtpXatHHkdPNey7Gf6cvt/rSj6xSZ0tEYceBh9bwWIgyQnQDP2do/7rGFmzrnmoDbf
+ VFxQjti3RnyUQ08bRxEZ0oynEqKMGGrGnBHO8M8D3q+CtpHQ7h4PE05/qqtLKGAu9Wp1Qn
+ wmhUPWLurVe1h8FXOKiyeeQ5+wqNkdA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729175535;
+ s=susede2_ed25519; t=1729175538;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
- b=3C50auJNYcAM6f4d7euO1CzNQ9ZdUJ8t42/rcl4+tyjdGCVuweKdHIGl1MHu2zVH/T0AO4
- ktW9jO7W0ds8XSBw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIRM9LB7FwkHydC3GCwMPV0i8o72SEtPi5z7MK5aYuI=;
+ b=vjHR2lQQObrZ8e918wyAyaSnTI1dUxfuiv5YYH7QPWqtsL/FQS1yNFLy+a1zZeShvogdkE
+ RYIdDM0PqJ67xWAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3258B13A42;
- Thu, 17 Oct 2024 14:32:13 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD32F13A42;
+ Thu, 17 Oct 2024 14:32:15 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id EXosOu0fEWcDKQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 17 Oct 2024 14:32:13 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id OJN+JO8fEWcDKQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 17 Oct 2024 14:32:15 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 0/4] tests/qtest: Move the bulk of migration tests into a
- separate target
-Date: Thu, 17 Oct 2024 11:32:07 -0300
-Message-Id: <20241017143211.17771-1-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH 1/4] tests/qtest: Add check-migration
+Date: Thu, 17 Oct 2024 11:32:08 -0300
+Message-Id: <20241017143211.17771-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20241017143211.17771-1-farosas@suse.de>
+References: <20241017143211.17771-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 9FBA521D4F
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCPT_COUNT_SEVEN(0.00)[10];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ RCVD_COUNT_TWO(0.00)[2];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,79 +133,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As promised, here are the changes to move most of the migration tests
-into a separate check-migration target that is intended to be used by
-migration maintainers and contributors.
+Add two new targets, check-migration and check-migration-quick to
+allow dividing migration tests into a quick set and a slow set. With
+this it'll be possible to reduce the amount of migration tests that
+run by default as part of 'make check'.
 
-A few tests will still be kept in another check-migration-quick
-target, that will run as part of make check by default. Those are
-there to catch changes in generic code that might affect migration and
-the rare device code change that affects migration ("rare" because
-migration-test runs with only default devices).
+Keep under the 'migration-quick' suite only a few tests to serve as
+sanity check for every build and move the rest under the 'migration'
+suite.
 
-The are two main reasons for this:
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ meson.build             |  6 +++---
+ tests/Makefile.include  |  2 ++
+ tests/qtest/meson.build | 47 +++++++++++++++++++++++++++++++++--------
+ 3 files changed, 43 insertions(+), 12 deletions(-)
 
-- Reduce the time of the common 'make check' invocation.
-
-  migration-test is notoriously wasteful in that it runs a migration
-  for every test. We don't yet have a comprehensive coverage analysis
-  nor the mechanisms for testing isolated parts of the code without
-  resorting to a full migration.
-
-  While the migration tests don't account for that much of make check
-  time in a parallel run (only about 30s, see table below), I'd like
-  to be able to write tests without encumbering every single make
-  check run.
-
-- Avoid breaking a developer's make check invocation and also CI when
-  only non-migration changes are present.
-
-  The migration tests are subject to races in the code that tend to be
-  quite intermittent. Ideally, if a code change does not touch
-  migration, it should not break migration-test.
-
-make -j16                   before     after      migration suite included
---------------------------------------------------------------------------
-check                       2m28.923s  1m56.178s  migration-quick
-check SPEED=slow            6m07.854s  5m59.982s  migration
-check SPEED=thorough       10m17.102s 10m02.416s  migration
-check-qtest                 2m07.827s  1m24.065s  none
-check-qtest SPEED=slow      5m06.149s  4m17.897s  none
-check-qtest SPEED=thorough  5m7.601s   4m18.135s  none
-check-migration                        3m41.927s  migration
-check-migration-quick                  0m15.592s  migration-quick
---------------------------------------------------------------------------
-
-Note that this series could very well be just patch 3 without any new
-target, but then to be able to run the full set of migration tests
-we'd need to also run all other slow tests from a set, either check or
-check-qtest and that would add at least 2 minutest to the migration
-run.
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1499208871
-
-Fabiano Rosas (4):
-  tests/qtest: Add check-migration
-  docs: Add migration tests documentation
-  tests/qtest/migration: Move tests into g_test_slow()
-  ci: Add check-migration-quick to the clang job
-
- .gitlab-ci.d/buildtest.yml       |   2 +-
- docs/devel/testing/index.rst     |   1 +
- docs/devel/testing/main.rst      |  13 ++
- docs/devel/testing/migration.rst | 275 +++++++++++++++++++++++++++++++
- docs/devel/testing/qtest.rst     |   1 +
- meson.build                      |   6 +-
- tests/Makefile.include           |   2 +
- tests/qtest/meson.build          |  47 +++++-
- tests/qtest/migration-helpers.c  |   9 +
- tests/qtest/migration-helpers.h  |  16 ++
- tests/qtest/migration-test.c     |  67 ++++----
- 11 files changed, 392 insertions(+), 47 deletions(-)
- create mode 100644 docs/devel/testing/migration.rst
-
-
-base-commit: 05adb38839ba656c7383a548b460d95c91e2febe
+diff --git a/meson.build b/meson.build
+index 4ea1984fc5..92d38691f9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3,9 +3,9 @@ project('qemu', ['c'], meson_version: '>=1.1.0',
+                           'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true'],
+         version: files('VERSION'))
+ 
+-add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true)
+-add_test_setup('slow', exclude_suites: ['thorough'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
+-add_test_setup('thorough', env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
++add_test_setup('quick', exclude_suites: ['slow', 'thorough', 'migration'], is_default: true)
++add_test_setup('slow', exclude_suites: ['thorough', 'migration-quick'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
++add_test_setup('thorough', exclude_suites: ['migration-quick'], env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
+ 
+ meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
+ 
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index 010369bd3a..79c1350bfb 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -11,6 +11,8 @@ check-help:
+ 	@echo " $(MAKE) check-qtest              Run qtest tests"
+ 	@echo " $(MAKE) check-functional         Run python-based functional tests"
+ 	@echo " $(MAKE) check-functional-TARGET  Run functional tests for a given target"
++	@echo " $(MAKE) check-migration-quick    Run a small set of migration tests"
++	@echo " $(MAKE) check-migration          Run all migration tests"
+ 	@echo " $(MAKE) check-unit               Run qobject tests"
+ 	@echo " $(MAKE) check-qapi-schema        Run QAPI schema tests"
+ 	@echo " $(MAKE) check-block              Run block tests"
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index b207e38696..27a802474a 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -406,14 +406,43 @@ foreach dir : target_dirs
+         test: executable(test, src, dependencies: deps)
+       }
+     endif
+-    test('qtest-@0@/@1@'.format(target_base, test),
+-         qtest_executables[test],
+-         depends: [test_deps, qtest_emulator, emulator_modules],
+-         env: qtest_env,
+-         args: ['--tap', '-k'],
+-         protocol: 'tap',
+-         timeout: slow_qtests.get(test, 60),
+-         priority: slow_qtests.get(test, 60),
+-         suite: ['qtest', 'qtest-' + target_base])
++
++    # The migration-test test runs several slow sub-tests. Add it to
++    # two separate targets, one for executing a few tests
++    # (migration-quick) and another for executing the full set
++    # (migration). This is done to reduce the amount of tests that run
++    # via make check.
++    if test == 'migration-test'
++      foreach opts : [
++        {
++          'test-args': ['--tap', '-k', '-m', 'slow'],
++          'test-suite': ['migration']
++        },
++        {
++          'test-args': ['--tap', '-k', '-m', 'quick'],
++          'test-suite': ['migration-quick']
++        }]
++
++        test(target_base,
++             qtest_executables[test],
++             depends: [test_deps, qtest_emulator, emulator_modules],
++             env: qtest_env,
++             args: opts['test-args'],
++             protocol: 'tap',
++             timeout: slow_qtests.get(test, 60),
++             priority: slow_qtests.get(test, 60),
++             suite: opts['test-suite'])
++      endforeach
++    else
++      test('qtest-@0@/@1@'.format(target_base, test),
++           qtest_executables[test],
++           depends: [test_deps, qtest_emulator, emulator_modules],
++           env: qtest_env,
++           args: ['--tap', '-k'],
++           protocol: 'tap',
++           timeout: slow_qtests.get(test, 60),
++           priority: slow_qtests.get(test, 60),
++           suite: ['qtest', 'qtest-' + target_base])
++    endif
+   endforeach
+ endforeach
 -- 
 2.35.3
 
