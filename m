@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64619A2150
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306339A2153
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:42:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1OoI-0006Oo-T7; Thu, 17 Oct 2024 07:36:55 -0400
+	id 1t1Op9-00083G-Iz; Thu, 17 Oct 2024 07:37:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Om4-00042J-9x
+ id 1t1Om4-00042L-59
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Om0-0005vp-8b
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:33 -0400
+ id 1t1Om0-0005vt-I1
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729164865;
+ s=mimecast20190719; t=1729164867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v7ckSRGqRM1XH0Kx9lmUrOQEv3jGmLbj97DC2YzJgFI=;
- b=HDBARP9vOOXQjTx0xajn2xits6XOnQJOc0XOK+IcKF/YEEQg7cr5mElj2LXcZgkme/07t8
- gIZNkIno5jf63X4kkFeLMp1qLJ9qDoB87wXYA1OXl64mZhk3yFSo5uMhq7XheUuF/TAZh5
- kc0xZRi3xD48/HY+Nm1gdo3a+YDr97M=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=5yvzsefFD6EZG2Lf+5z/FpGtknCcdEg3s08rxm0W7Qo=;
+ b=HcXIdsD0fe+V9+u5mudnZUyD7jdXwy55jA102UgmO8utnkPHP1+cM5ZHpMwHX/nXUbXLi9
+ blHn47ilhYKUZmALr6eGa60MyEtnw2ktwQpsokXWlPyJqfgTXOl/kuKY8sWAiPObavEt6f
+ xZGhGp7vzDfatlm/VcZGejG4ub68NYg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-rNnj1vmxNSie5UqoWA11xQ-1; Thu,
- 17 Oct 2024 07:34:24 -0400
-X-MC-Unique: rNnj1vmxNSie5UqoWA11xQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-TDhum44eOWKCpVM5ll_GHw-1; Thu,
+ 17 Oct 2024 07:34:26 -0400
+X-MC-Unique: TDhum44eOWKCpVM5ll_GHw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CCD5F1955D6A
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:23 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 755DD195608C
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:25 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.94])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 42D8419560A3; Thu, 17 Oct 2024 11:34:21 +0000 (UTC)
+ id 3750B19560A2; Thu, 17 Oct 2024 11:34:24 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 20/31] scsi: adapt to new import path for qobject data type
- headers
-Date: Thu, 17 Oct 2024 12:33:32 +0100
-Message-ID: <20241017113344.883424-21-berrange@redhat.com>
+Subject: [PATCH v2 21/31] stats: adapt to new import path for qobject data
+ type headers
+Date: Thu, 17 Oct 2024 12:33:33 +0100
+Message-ID: <20241017113344.883424-22-berrange@redhat.com>
 In-Reply-To: <20241017113344.883424-1-berrange@redhat.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -90,22 +90,22 @@ qobject/.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scsi/qemu-pr-helper.c | 2 +-
+ stats/stats-hmp-cmds.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scsi/qemu-pr-helper.c b/scsi/qemu-pr-helper.c
-index c6c6347e9b..b69dd982d6 100644
---- a/scsi/qemu-pr-helper.c
-+++ b/scsi/qemu-pr-helper.c
-@@ -47,7 +47,7 @@
- #include "qemu/log.h"
- #include "qemu/systemd.h"
- #include "qapi/util.h"
--#include "qapi/qmp/qstring.h"
-+#include "qobject/qstring.h"
- #include "io/channel-socket.h"
- #include "trace/control.h"
- #include "qemu-version.h"
+diff --git a/stats/stats-hmp-cmds.c b/stats/stats-hmp-cmds.c
+index 1f91bf8bd5..b93b471b1b 100644
+--- a/stats/stats-hmp-cmds.c
++++ b/stats/stats-hmp-cmds.c
+@@ -11,7 +11,7 @@
+ #include "monitor/monitor.h"
+ #include "qemu/cutils.h"
+ #include "hw/core/cpu.h"
+-#include "qapi/qmp/qdict.h"
++#include "qobject/qdict.h"
+ #include "qapi/error.h"
+ 
+ static void print_stats_schema_value(Monitor *mon, StatsSchemaValue *value)
 -- 
 2.46.0
 
