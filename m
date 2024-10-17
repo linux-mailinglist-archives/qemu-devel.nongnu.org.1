@@ -2,112 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC62C9A28D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 18:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4969A28EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 18:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1TNg-0007Vq-KJ; Thu, 17 Oct 2024 12:29:44 -0400
+	id 1t1TQo-00009x-6K; Thu, 17 Oct 2024 12:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1TNd-0007V9-UW
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 12:29:41 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1TQl-00008x-4c
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 12:32:55 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1TNc-0001K6-7K
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 12:29:41 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B796421B88;
- Thu, 17 Oct 2024 16:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729182578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UZL7VD++A2u5yANofml/EK7BaK/dgiXYg5I2ZDkGQTI=;
- b=F8TLtexUOxlvR7KHne34JEcmDqxyptyzLbhBFLjQDZTWGJ6kh9qyu/8Io6iC6Upi1LYdTp
- 9+Cpukmpgw/o9TZN352+rCh+CV9FbrZGGveevuCrIkxaKSVDgBU5MdTQtb9Oju97I1fMsF
- a3enQSCBDcTV7cZiNlNtd6aXvxZuRDc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729182578;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UZL7VD++A2u5yANofml/EK7BaK/dgiXYg5I2ZDkGQTI=;
- b=Xyot93eHuNeYUDvRxLh9UdrL5vyI4OMr9ybuSry7UBSgrZEPsQoCNGdKqPLNhA1qqtjhDc
- AQbd25FiQFPR/WCA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729182578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UZL7VD++A2u5yANofml/EK7BaK/dgiXYg5I2ZDkGQTI=;
- b=F8TLtexUOxlvR7KHne34JEcmDqxyptyzLbhBFLjQDZTWGJ6kh9qyu/8Io6iC6Upi1LYdTp
- 9+Cpukmpgw/o9TZN352+rCh+CV9FbrZGGveevuCrIkxaKSVDgBU5MdTQtb9Oju97I1fMsF
- a3enQSCBDcTV7cZiNlNtd6aXvxZuRDc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729182578;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UZL7VD++A2u5yANofml/EK7BaK/dgiXYg5I2ZDkGQTI=;
- b=Xyot93eHuNeYUDvRxLh9UdrL5vyI4OMr9ybuSry7UBSgrZEPsQoCNGdKqPLNhA1qqtjhDc
- AQbd25FiQFPR/WCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41D2513A53;
- Thu, 17 Oct 2024 16:29:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aEyVAnI7EWczSwAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 17 Oct 2024 16:29:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
-In-Reply-To: <ZxEl4zYgHLoLeHCT@redhat.com>
-References: <20241017143211.17771-1-farosas@suse.de>
- <20241017143211.17771-5-farosas@suse.de> <ZxEl4zYgHLoLeHCT@redhat.com>
-Date: Thu, 17 Oct 2024 13:29:35 -0300
-Message-ID: <87r08e3d74.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1TQg-0001pi-PU
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 12:32:54 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42f6bec84b5so12478715e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 09:32:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729182769; x=1729787569; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HsByr2/F9yb8R61V/RxanFmNShqqfc0i/+wi/KtFNd0=;
+ b=AHDrErLvai/XZPaIXPua77LCAck8v6y7ffqL3vuOC1k6Ox1WOECi0lbXHZUGB12dmO
+ 1HOxdIG/JEyO/9lSfo//9UA2DXowuQhMkVBVjEm7vYTpIzSJItglSR14DUatEAIuwNAH
+ I8XXcTON7qx4AMkqvYU+kdlnTMZbo5aeI68cYOAjLxSOzYnH2hgyc2F/7NbfTXDHcAJt
+ bSsrqoqG8rw9gep6wdqtqnkKM2i6V3RZv50EoWh9SYwiDPa4I1spTy4j3R4irl4aJto/
+ IyU5jHTcc4777pNJgPr9vjpAsYougWULp1S7w1AoZFiEGJbAEE7FXUUt/Ex8hvLlyWk+
+ 29RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729182769; x=1729787569;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HsByr2/F9yb8R61V/RxanFmNShqqfc0i/+wi/KtFNd0=;
+ b=efi8DsIT094YGdIluRoRy4ZUNsxIGAaioWQTcM7XayzcNTGuU2ox1E/6KXzK+iKKXt
+ EVIedEa4L6hAdch24Mr0qAcPUR7n1JdiwYfZVAGDGTjZZQnbL7SHMZxQcSWttonrg/73
+ sfr3wTuxuLyTnYDs2jyQW3ez8QybKYbqQix3UxtOH5Q22VkRjRMHjfqvdCzxX6xTHoLK
+ wwIccZunkN0NNPovUjCin/nd11/hEw64uhh8zAF7CyK5CgRjpv+a5S6LxDzGNz1ZjMry
+ r4ihJp/KtyboHGKNunhHuJpXi3GeUBpI2cb6rLdmgd6W9B9tjUVUBb0RIspGyrT/s6j8
+ rTpg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXf8g8TFfGJZEi/6OZ4rRhjztZHWPtgQifOC1kDij3TCcu8ad1dH042j30K5hMsbzSuz8/K3IBjPw36@nongnu.org
+X-Gm-Message-State: AOJu0YzRn8CoEFxkWP3L4X3ncKfwM7CrNYf44/JSe5TsjD+Pn5vYzk9M
+ MMUqJDus5YRWGAbpYCZ6b3D6g5hZTcm2RejIJs5MXd6hp737mLsQFV12kXZFSHg=
+X-Google-Smtp-Source: AGHT+IGgrrl26I9EWYTAQmdhEJoJ/ZPM0RwXUGPjojeSOV3jVFn8gANqOjVxPiKrodTqf9XJySUHcQ==
+X-Received: by 2002:a05:600c:4e10:b0:428:f0c2:ef4a with SMTP id
+ 5b1f17b1804b1-4314a2cc3a3mr69365415e9.13.1729182769128; 
+ Thu, 17 Oct 2024 09:32:49 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4316067dc56sm545165e9.3.2024.10.17.09.32.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Oct 2024 09:32:48 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 0/2] arm: Add collie and sx functional tests
+Date: Thu, 17 Oct 2024 17:32:45 +0100
+Message-Id: <20241017163247.711244-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
- suse.de:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,79 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+This patchset adds new functional tests for the collie and sx1
+boards, which are the only remaining ones that survived the
+culling of the OMAP/PXA2xx/strongarm machines.
 
-> On Thu, Oct 17, 2024 at 11:32:11AM -0300, Fabiano Rosas wrote:
->> Recent changes to how we invoke the migration tests have
->> (intentionally) caused them to not be part of the check-qtest target
->> anymore. Add the check-migration-quick target so we don't lose
->> migration code testing in this job.
->
-> But 'check-migration-quick' is only the subset of migration tests,
-> 'check-migration' is all of the migration tests. So surely this is
-> a massive regressions in covage in CI pipelines.
+For these tests I'm indebted to Guenter Roeck, who has kindly
+built and made available the kernel images, rootfs, etc and
+documented the commands needed to boot them. All I've done
+here is wrap those up into test cases in our testcase
+framework by cribbing from some of our existing test code.
 
-I'm not sure it is. There are tests there already for all the major
-parts of the code: precopy, postcopy, multifd, socket. Besides, we can
-tweak migration-quick to cover spots where we think we're losing
-coverage.
+Based-on: 20241017162755.710698-1-peter.maydell@linaro.org
+("hw/sd/omap_mmc: Don't use sd_cmd_type_t")
+ -- the sd card test for the sx1 board will not pass without
+    that bugfix
 
-Since our CI offers nothing in terms of reproducibility or
-debuggability, I don't think it's productive to have an increasing
-amount of tests running in CI if that means we'll be dealing with
-timeouts and intermittent crashes constantly.
+thanks
+-- PMM
 
->
-> Experience shows us that relying on humans to run tests periodically
-> doesn't work well, and they'll slowly bit rot. Migration maintainers
-> don't have a way to run this as gating test for every pull request
-> that merges, and pull requests coming from non-migration maintainers
-> can still break migration code.
+Peter Maydell (2):
+  tests/functional: Add a functional test for the collie board
+  tests/functional: Add a functional test for the sx1 board
 
-Right, but migration code would still be tested with migration-quick
-which is executed at every make check. Do we really need the full set in
-every pull request? We must draw a line somewhere, otherwise make check
-will just balloon in duration.
+ MAINTAINERS                         |  1 +
+ tests/functional/meson.build        |  3 ++
+ tests/functional/test_arm_collie.py | 31 +++++++++++++
+ tests/functional/test_arm_sx1.py    | 72 +++++++++++++++++++++++++++++
+ 4 files changed, 107 insertions(+)
+ create mode 100755 tests/functional/test_arm_collie.py
+ create mode 100755 tests/functional/test_arm_sx1.py
 
->
-> Any tests in tree need to be exercised by CI as the minimum bar
-> to prevent bit rot from merges.
->
+-- 
+2.34.1
 
-No disagreement here. But then I'm going to need advice on what to do
-when other maintainers ask us to stop writing migration tests because
-they take too long. I cannot send contributors away nor merge code
-without tests.
-
-Do we need nightly CI runs? Unit tests? Bear in mind there's a resource
-allocation issue there. Addressing problems with timeouts/races in our
-CI is not something any random person can do.
-
->>=20
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  .gitlab-ci.d/buildtest.yml | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>=20
->> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
->> index 34d3f4e9ab..37247dc5fa 100644
->> --- a/.gitlab-ci.d/buildtest.yml
->> +++ b/.gitlab-ci.d/buildtest.yml
->> @@ -442,7 +442,7 @@ clang-system:
->>      CONFIGURE_ARGS: --cc=3Dclang --cxx=3Dclang++ --enable-ubsan
->>        --extra-cflags=3D-fno-sanitize-recover=3Dundefined
->>      TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390=
-x-softmmu
->> -    MAKE_CHECK_ARGS: check-qtest check-tcg
->> +    MAKE_CHECK_ARGS: check-qtest check-tcg check-migration-quick
->>=20=20
->>  clang-user:
->>    extends: .native_build_job_template
->> --=20
->> 2.35.3
->>=20
->>=20
->
-> With regards,
-> Daniel
 
