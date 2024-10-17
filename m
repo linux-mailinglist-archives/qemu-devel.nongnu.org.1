@@ -2,87 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD419A19C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 06:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B389A9A1A32
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 07:40:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1IGM-0001wb-Ny; Thu, 17 Oct 2024 00:37:26 -0400
+	id 1t1JFW-0004HD-Ur; Thu, 17 Oct 2024 01:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t1IGJ-0001w0-Bm; Thu, 17 Oct 2024 00:37:23 -0400
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t1IGH-0005Ew-Gf; Thu, 17 Oct 2024 00:37:22 -0400
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-85019a60523so185848241.1; 
- Wed, 16 Oct 2024 21:37:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729139840; x=1729744640; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PM0x8O7RZaLDKopDysbc7AcphoVmmWbHmQ/0ADR9soo=;
- b=j1TOhIcZrRmKMc8dzgBt8DKhr548Ed4aoHxKxiaS+L6Y9PzVT2ulPLcbkZXuSAI3s8
- FkaElec/EGAlgyDH8mAV7paeAwPN/bWXF/jZjG+RW/VED9EkzgBXitoYodXHdOcGtVSf
- BQgFNfNbQmibDgAN+TS6szH2ytSn6M6o3BIM879zsnJUioqbX9TQhOtP1Zv5pZ0tsQct
- 6y+OBDK2GBlXKjUaH0msx+bXZ+g0N4Wu/bPkt5r1jcLwWKR0Nkti3/SYg16GT6Wim9vE
- Sfked8zTNXnZZhHN42WKWEYap1K+LpgMVID4G1bQJts6HrGrx7FKg5xRNtfHxQ4xm7SU
- IVng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729139840; x=1729744640;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PM0x8O7RZaLDKopDysbc7AcphoVmmWbHmQ/0ADR9soo=;
- b=hbPjYIsOdfizVItpnrXA/VwKpXx5Ur6EQidxQ2e8iPd+ClxVlkBwhhJGzKfFFUKOtb
- LZbrGqzNrP86lHosZF77KxkS6ZPWZ+mfEPAjQAw2SjNyRbTEv/jogxBi099/d9dXa1px
- RjBaEcXNJmPPl670c2ScPzG8zmBcZ3m/tb9vfelur5uVK2j10yqVu34PEiN1Pzm2/Fdo
- fDPvdHrqo4vehAOH2cjlkFwW4IABD6RaWIihksNL716GkLFHIYzFIGnkUG5D2G18yEPM
- SGqRtnwliP6SkJjFpeSDTsDEtUcNLeRBjalPJf2kiOE/ZZYgiBVKRle7vaBc2bEeLz3G
- /yOw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU57+eXCGB7O36nF+mslFwteLWKuK0iifZZlsYjdpQl8rFfJUmwjqoX9yCgEAuHNn/SaJiLSuNgZ1M+Jw==@nongnu.org,
- AJvYcCUw2ZyN7M5fXON9uT4r9/ZvjutegVN/SC/4n2n6VkWD5p/hvogkfva8FafH5gW+9oJ1YwfYCCKxYIPK@nongnu.org
-X-Gm-Message-State: AOJu0YyTrYeotC7DkGazgXJKnh7kzTFWJd9J77k6APJX63lhb4fddgTT
- AtTf+GqyYkgtVsjOTugC8zrdt+eglQMS3B3DyfRb2TMUfVYae52GWWbQJwJew+OWIi9RDQTyjGM
- Sce9eJA4uKtO4GTdi9YcAwW1r6oA=
-X-Google-Smtp-Source: AGHT+IHiiQSITe3FxNEdlWNdH/PKP8TgfEDP6XYZKGVNQEvLlzumHu1yqFUifIwcOsX1kOpfHhwWafOdinVY8pAITRU=
-X-Received: by 2002:a05:6102:a48:b0:4a3:ad8f:4fd9 with SMTP id
- ada2fe7eead31-4a5b5a70714mr5228894137.29.1729139839877; Wed, 16 Oct 2024
- 21:37:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t1JFI-0004Fv-BJ
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 01:40:24 -0400
+Received: from mail-me3aus01olkn2016.outbound.protection.outlook.com
+ ([40.92.63.16] helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t1JFG-0000YN-5O
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 01:40:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XJro/0QJy+9aJRBe46MF2ocR+PVQNKX/NqgH6PLHqOhptx4tUvVQeqIymxQ2T9Lc5R+CmWIjDeFnyDuvVedoLmIohrqTaxL2JZMlSOsQnWtH0TRlYRCyo/7WXFeJV/nMb4Ya3agnlCTZyPn7W6NXdCdXa0hW4EHlOTQ/SiCz9bEiuKbCbU/jCa2NBBEMN1Ul7pPzGLLPhM7tVDBCT9iKT7aNRCskhoMJHvEqTOMFPvCedGLzeAa0sysjK4Wg9z65vpdBO2F6onZ/3OrA+gECPZlaAyymY73cGz9ly77tsntkq0msBlbM2VRLLFKtrFCf5uaoIIef+NaOZ5HNqmX+Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BnglJ7OwKMZCpE8ModZ6dH2wZ5In0wU371gaO/RT+eg=;
+ b=LXi3aGQkWurYjat1PMTnwOxjAUcFAy83lIqqe2/K/1YDpMNg8JQ5iQOuEVgWrhie8Ya0v7vDKQ2qzA+jXvOYkhRFajXlFsXCqMFTmrByAXHO2HvTnS29Wq5+65URbDa1RTT5K7yII2KZqwRnVwMcULXqphluSqq7ugx8rnKe8a3KCzayxcoo8lCwWeR45Z6YuowtGJHPPvpj20kW2rzTwaLPvbssifAkwND9E8Gb6sRjcHlwUHymS41+aLLOGGqmd2wAYLQJqdsYaW433QOfD876iqgZi3JCjnZLOBamj3OEnhW8qiAZ4oWg4eVzYpvabiaXqcRKdfl+UHRTMcU3TQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BnglJ7OwKMZCpE8ModZ6dH2wZ5In0wU371gaO/RT+eg=;
+ b=R6lSZSLJl8ooXip/o8v2dyW/I7DbQPXbkNx5OdyVlPjKysLVMUmPdW+0rQ2gUYqpI7sJXJaYOLPmPke7ewD0O7DMVl4xKynY2wQU7vl+BNQsqEuSE6EXPxSIF7x6KmCpGo1pBsqvr9IIpIz3sfoUWR1etmrf0tOWAKTB5tr7ICg8a6kTTIfqsRX6h/mBYCjSVYFAwTlNBHuBEtorCuxjwSeZYkrZjlOZykHIXfH22924uX6PpkgAC+F7nfz99oVnIvsJPut7m7b8Tkdi4jXDVXe2HdBdDGwv54GIEm6yAYj3PG5hBeavBtE1anO5SnuorMl4DQzhPIi11ZA2mOCMCQ==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY0P300MB0628.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Thu, 17 Oct
+ 2024 05:35:02 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.016; Thu, 17 Oct 2024
+ 05:35:02 +0000
+References: <20241015131735.518771-1-pbonzini@redhat.com>
+ <20241015131735.518771-11-pbonzini@redhat.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 10/16] rust: introduce alternative implementation of
+ offset_of!
+Date: Thu, 17 Oct 2024 13:07:46 +0800
+In-reply-to: <20241015131735.518771-11-pbonzini@redhat.com>
+Message-ID: <SY0P300MB10266B5144972CDF92AF065795472@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: KL1PR0401CA0025.apcprd04.prod.outlook.com
+ (2603:1096:820:e::12) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <87bjzje1hg.fsf@hotmail.com>
 MIME-Version: 1.0
-References: <20240925115808.77874-1-cleger@rivosinc.com>
- <20240925115808.77874-3-cleger@rivosinc.com>
- <CAKmqyKPrHtsjAnc8kX__BeHvxoMvm+MmYLWSgh5TKdx0FE8o9A@mail.gmail.com>
- <Zwlz8LUEGB4Fa611@ved-XPS-8940>
-In-Reply-To: <Zwlz8LUEGB4Fa611@ved-XPS-8940>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 17 Oct 2024 14:36:54 +1000
-Message-ID: <CAKmqyKMtJK_2yoUoudVoZorW=A5fX=m5RvG_vvHNHj45nQy_hw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/8] target/riscv: Implement Ssdbltrp sret, mret and
- mnret behavior
-To: Ved Shanbhogue <ved@rivosinc.com>
-Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
- qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Atish Patra <atishp@rivosinc.com>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY0P300MB0628:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbe91608-bbca-4fc7-cc39-08dcee6d72b3
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|7092599003|5072599009|8060799006|19110799003|461199028|15080799006|440099028|3412199025|10035399004;
+X-Microsoft-Antispam-Message-Info: XhrV+9S5K6AOv/+14rvpY0PPG9JzGSNqHCKXbHHILzaLGO517MEAdlsgq5KaLDZuKZ04qyOzwJ4jNo5ArFt0JbTRJfP7j2Gj9S9wriwUIrIfG/6di59DP5ZXiqFGIj8qKmTqtXyzXzjV9/bjqlgSjJroC1aDvCvgSPr3y3danIWlUxMgAOoA+u5xGO/F10n2e7hwtH7ovFy9f51f4397xxlkLcrfrSGXzDb+wdMkzPHUiKArn19ywPOuCZH2HLV+Z/LF8vFz43C/KnXlwAfEzHyrXuhLLEx222+a/To+gCvsAdxsMLV0TuQTR4rTkEYv0R7DS51N7KaLa7JXTMoIVElS9RZaultvdxv4tpybLovtoiUdvC7mTF0PJ7UWKiPB3vXsKZitVKWK+yHtMeXsJktauM3JuMvOGX02p/OhrZnExkzMEt/wKsJPYeBMDs0cTT/BHB+CjlDik1gd5GmyEnI2KwTPFEwmdqw5I9Vi7LBmoqfWCMiVc8RPHQqdz0QRFjAdn4QyqLW+V6PyP74jnOBFbKZ1zew9tv8c78kfm1TSoMwQMTuHnH1g996/GAueonOkLtWAT7c59PXGzLH3blogDzfepT7Xor+DVtiqNuyPUMHlu/Dms54dCDqUFZtX/hdl/BJeLR+xHKVC9TJWVJldmgDo+MIa9UJCA5QjtukI/knNqAQYwWwWdumh3UCV9kiT4cxIDx60PNb0t4AlOqw+hRLwgAWkRAv2eoXXzCJwqc+2yb2KzaSplZAx1xrpkiiKifwFuVlzP0DceHSXI74JPeSwLspQl0Y03uSa5xIYr7lHAZeQZxq3MMuZX1Le
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+sa65FVKDD5D79OvHDyzEZTvL7fAkTPTP2GJ6Bwc6nwYe7guydtZYGi6Ma4R?=
+ =?us-ascii?Q?7kt5TxEkHaBUSKYtNlsN9rro+ziXA7sCq6Phj5x2wGq/UTdc6C0sqVNGmpsl?=
+ =?us-ascii?Q?hnb71Uv5L1CWA2hAB9aIh0sr0FNd9TYPcs7vuekuLcDVT3bSOBqfwAj72b4g?=
+ =?us-ascii?Q?zSEYyR43BHSijY+/EyWEczHCDIs+vHe2SfvQEJ5vtaO4gV6U9E+1rEsjxB2R?=
+ =?us-ascii?Q?bzfJQKRgWeFZsfUMDA755wNz9KJFcUIi8skh+Kz9XboPLYJFJUHywIb/fcLf?=
+ =?us-ascii?Q?GHkg11yY5u8fF3amKc0wTf818VrbFabI1V2XgyY8ixLlyeD8CmvTItv6PcW/?=
+ =?us-ascii?Q?LKQI7wCjZvirJdftHOv6DpAaUAEoyNQ1bBYCBglKj1W9T36perPgN42gQF0D?=
+ =?us-ascii?Q?hLmHsMjAigKk/DkAov1OSqbfoOK8bU8Z8PMGVuQs2F5Cfk6XvjNxb73U88Hl?=
+ =?us-ascii?Q?qkstKW+RxdqsnSqcdlxLgW8Tk5KNofsIt4Z4MsyU4eKQ642CnWV0KRFK3lyW?=
+ =?us-ascii?Q?QbJtYZWWLjcphdR6+wRJnzJ9fLhEWdSw349w6XFN6/5LXuSNN/zqkFdSvHLZ?=
+ =?us-ascii?Q?QaOdxNGx7+WQ7CTnfRWaRlAhIioN/YocPfduz7TQM1hTe7VbT5aYoLlVK5/q?=
+ =?us-ascii?Q?wtuKtti8Xbldx7vuHW+ebT/2UE52LnjwXFCNRkYBqgrSJCA5kwVaE2HsY347?=
+ =?us-ascii?Q?4bVC4d3GYJMDibgvQ1njks7m9PM9l/Sz2HGNX1dcsChKImBi+dC09d44ebXW?=
+ =?us-ascii?Q?crhBtzK0jNfVYAYMu0tODyXWyHRbm9g4loD3ngVL/Vs8WsMtu8U1QfeuFOy4?=
+ =?us-ascii?Q?ON3KKKN1D4DppJSuV6kHmXyNQmy32EhJ3Y+6KUTTM5hIfKoi3kUszR0e9DVJ?=
+ =?us-ascii?Q?I/qPgy89nyobQXgF/Canxhh23NJzHJT8qhwf2QakqnjTBmeRCXoHENMML+ad?=
+ =?us-ascii?Q?RmtrEuY6pRzPf6bq/s8KzpSK5nZEjT9hPKESkYv3XLGY3F8sR6atNGji9aHC?=
+ =?us-ascii?Q?CHgthQpu+l5bvSIOwBHde7KDxi2BIIOhxje+Qyq9UDMZJXurdHujB4cv+fAm?=
+ =?us-ascii?Q?IFBur1tqOakKQwNz6DHpudv5akQby+pfJzt0Y8K0AEhGYrVhUFFO+dTnZ/by?=
+ =?us-ascii?Q?l2bHXOOGLIPiyKsx99DGHBd3xXZ9CiPfpUn6mFn62ZavKcdH4az+23N/OA3o?=
+ =?us-ascii?Q?Z1525eYDZsfUdFEzFmCTzSJ0CEicSEpdfw1X5mRZzcdnAVbNc1O4UfesvpQ?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbe91608-bbca-4fc7-cc39-08dcee6d72b3
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 05:35:02.5282 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0P300MB0628
+Received-SPF: pass client-ip=40.92.63.16; envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_MSPIKE_H2=-1.277, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,62 +123,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 12, 2024 at 4:52=E2=80=AFAM Ved Shanbhogue <ved@rivosinc.com> w=
-rote:
+
+Paolo Bonzini <pbonzini@redhat.com> writes:
+
+> offset_of! was stabilized in Rust 1.77.0.  Use an alternative implemenation
+> that was found on the Rust forums, and whose author agreed to license as
+> MIT for use in QEMU.
 >
-> Alistair Francis wrote:
-> >> When the Ssdbltrp extension is enabled, SSTATUS.SDT field is cleared
-> >> when executing sret. When executing mret/mnret, SSTATUS.SDT is cleared
-> >> when returning to U, VS or VU and VSSTATUS.SDT is cleared when returni=
-ng
-> >> to VU from HS.
-> >
-> >I don't see mret being mentioned in the spec. Where do you see that
-> >V/SSTATUS.SDT should be cleared?
-> >
->
-> Ssdbltrp specifies:
->     In S-mode, the SRET instruction sets sstatus.SDT to 0,
->     and if the new privilege mode is VU, it also sets
->     vsstatus.SDT to 0. However, in VS-mode, only vsstatus.SDT
->     is set to to 0.
+> The alternative allows only one level of field access, but apart
+> from this can be used just by replacing core::mem::offset_of! with
+> qemu_api::offset_of!.
 
-I cannot find this
+How about a macro like this (which essentially comes from memoffset
+crate [1])? It has the same use as core::mem::offset_of! (except the
+same single-level limitation) and does not need wrapping structures with
+with_offsets!.
 
-$ git show --shortstat
-commit ef2ec9dc9afd003d0dab6d5ca36db59864c8483c (HEAD -> main, tag:
-riscv-isa-release-ef2ec9d-2024-10-16, origin/main)
-Author: Andrew Waterman <andrew@sifive.com>
-Date:   Wed Oct 16 12:09:41 2024 -0700
+macro_rules! offset_of {
+    ($parent:ty, $field:tt) => {{
+	let uninit = std::mem::MaybeUninit::<$parent>::uninit();
+	let base = uninit.as_ptr();
+	// SAFETY:
+	//
+	// MaybeUninit<$parent> has the same size and alignment as $parent, so
+	// projection to $field is in bound.
+	//
+	// addr_of! does not create intermediate references to the uninitialized
+	// memory, thus no UB is involved.
+	let field = unsafe { std::ptr::addr_of!((*base).$field) };
+	// SAFETY:
+	//
+	// Both base and field point to the MaybeUninit<$parent> and are casted
+	// to u8 for calculating their distance.
+	unsafe { field.cast::<u8>().offset_from(base.cast::<u8>()) as usize }
+    }};
+}
 
-   Remove future tense from description of now-ratified text (#1685)
+[1] https://docs.rs/memoffset/latest/memoffset/
 
-2 files changed, 8 insertions(+), 15 deletions(-)
-
-$ grep -r sstatus.SDT | grep SRET
-src/hypervisor.adoc:if the new privilege mode is VU, the `SRET`
-instruction sets `vsstatus.SDT`
-
-What am I missing here?
-
-Alistair
-
->
->     The MRET instructions sets sstatus.SDT to 0, if the new
->     privilege mode is U, VS, or VU. Additionally, if it is
->     VU, then vsstatus.SDT is also set to 0.
->
-> Smdbltrp specifies:
->     The MRET and SRET instructions, when executed in M-mode,
->     set the MDT bit to 0. If the new privilege mode is U, VS,
->     or VU, then sstatus.SDT is also set to 0. Additionally,
->     if it is VU, then vsstatus.SDT is also set to 0.
->
->     The MNRET instruction sets the MDT bit to 0 if the new
->     privilege mode is not M. If it is U, VS, or VU, then
->     sstatus.SDT is also set to 0. Additionally, if it is VU,
->     then vsstatus.SDT is also set to 0.
->
-> regards
-> ved
+--
+Best Regards
+Junjie Mao
 
