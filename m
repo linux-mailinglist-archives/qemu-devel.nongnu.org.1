@@ -2,101 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62729A2ED4
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 22:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0F89A2FD2
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 23:27:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1XGN-0002d2-Fj; Thu, 17 Oct 2024 16:38:27 -0400
+	id 1t1Y0k-0000Om-6O; Thu, 17 Oct 2024 17:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1t1XGK-0002cX-0p
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 16:38:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <pono@sfconservancy.org>)
+ id 1t1Xon-0007gJ-2v
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:14:01 -0400
+Received: from pine.sfconservancy.org ([192.237.253.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1t1XGI-0007fl-1K
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 16:38:23 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HJSCcN008212;
- Thu, 17 Oct 2024 20:38:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Ds5l6O
- wbtWIFz3OGFp7VL9J/dX2jNFIYrPcNxhTEy/4=; b=c5Nk9ij4Pew6BeFC9rTTjB
- qaSOdVf8T8/WvQg4gaXo7vtdnnzYRrpARGl+zApcxj415Jp54XU01bmuONnhQu4n
- g1hcrVPb9O53g1fYOe58A5jwRZKKSshVabAAIVNozO13AXwbYmYYAvmuQJxELwKM
- XNDaXuDVjQCGTHTbh2bMY+wkJqErD9TwYcUtAD9b3SPL4mkiv1m4y8g2IS7ZfCQY
- Pw8T2+8Oe6G43NmSjfii87RE8viMv+Gzi2tW8CpM3KEvs8XRdtr7M/8YFlQT+34t
- BcbvkPZndpHy93tmcWs52hMnVoUqyVJIgJU349ouALzUhwJSloUZfuctBiob74AA
- ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42as8a4wk0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 20:38:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49HIhxA4027480;
- Thu, 17 Oct 2024 20:38:08 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4283ty12tf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 20:38:08 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49HKc6hS22675836
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 20:38:06 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5EF522004B;
- Thu, 17 Oct 2024 20:38:06 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18DE220043;
- Thu, 17 Oct 2024 20:38:06 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.171.21.94])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
- Thu, 17 Oct 2024 20:38:05 +0000 (GMT)
-Date: Thu, 17 Oct 2024 22:38:04 +0200
-From: Halil Pasic <pasic@linux.ibm.com>
-To: "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, Halil
- Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2 09/31] hw: adapt to new import path for qobject data
- type headers
-Message-ID: <20241017223804.30afbf87.pasic@linux.ibm.com>
-In-Reply-To: <20241017113344.883424-10-berrange@redhat.com>
-References: <20241017113344.883424-1-berrange@redhat.com>
- <20241017113344.883424-10-berrange@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <pono@sfconservancy.org>)
+ id 1t1Xok-0002VU-Om
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:14:00 -0400
+Received: from localhost.localdomain (c-73-25-52-37.hsd1.or.comcast.net
+ [73.25.52.37]) (Authenticated sender: pono)
+ by pine.sfconservancy.org (Postfix) with ESMTPSA id B6B04E909
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 21:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=sfconservancy.org;
+ s=pine; t=1729199635;
+ bh=kgyypSmJWoY989mJIBixiSdPYyG67iMgbl7BiADrJys=;
+ h=Date:From:To:Subject:From;
+ b=oDEt/Xe18WrizX1816KDSpdAMeEBLkbfl87dHH/br9GEyPayMmTKqL2qkrq2S0Kst
+ 0gyeDFiFutfSQJJwmhweFexcDQHcjPoM3yhdkeLRuZwABWS/1pOF8RXhpmOyN8vdsJ
+ ziZoV78YADBNg8+oZGYnN+WYO2sDqnngQ5a/1zJ37aexnU0vDcLgeX9RXWO4UfaclO
+ K3teJg/Z/rjrl70oJeMh2XPfhae/fpiNKRtE7oU/a3Hl+tkHbwUjN1chx92aVs0ism
+ iCWv0CcZ3IehUKGzTKZ+vllIr5C525vzt/Kgmg7YoIXZTjaBgklvgkO9++JSVZaUDZ
+ c3mFaCBINOeOQ==
+Date: Thu, 17 Oct 2024 14:14:48 -0700
+From: Daniel Pono Takamori <pono@sfconservancy.org>
+To: qemu-devel@nongnu.org
+Subject: Seeking your thoughts on LLM-generated contributions
+Message-ID: <ZxF-SO_o34bKehn9@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rZW7phDRuKN7msIAkyMgngh6W6hC98LA
-X-Proofpoint-ORIG-GUID: rZW7phDRuKN7msIAkyMgngh6W6hC98LA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410170137
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pasic@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Received-SPF: pass client-ip=192.237.253.17;
+ envelope-from=pono@sfconservancy.org; helo=pine.sfconservancy.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 17 Oct 2024 17:26:20 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,33 +65,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 17 Oct 2024 12:33:21 +0100
-Daniel P. Berrangé <berrange@redhat.com> wrote:
+Heya qemu developers,
 
-> diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-> index bf22d6863e..1b89092fe7 100644
-> --- a/hw/s390x/s390-skeys.c
-> +++ b/hw/s390x/s390-skeys.c
-> @@ -16,7 +16,7 @@
->  #include "hw/s390x/storage-keys.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-commands-misc-target.h"
-> -#include "qapi/qmp/qdict.h"
-> +#include "qobject/qdict.h"
->  #include "qemu/error-report.h"
->  #include "sysemu/memory_mapping.h"
->  #include "exec/address-spaces.h"
-> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-> index c4259b5327..b9116cd5f5 100644
-> --- a/hw/s390x/s390-stattrib.c
-> +++ b/hw/s390x/s390-stattrib.c
-> @@ -18,7 +18,7 @@
->  #include "qemu/error-report.h"
->  #include "exec/ram_addr.h"
->  #include "qapi/error.h"
-> -#include "qapi/qmp/qdict.h"
-> +#include "qobject/qdict.h"
->  #include "cpu.h"
+We at Software Freedom Conservancy have been hearing from member
+projects that people are asking whether they can submit code to these
+projects that was generated by large language models (LLMs), sometimes
+called AI coding assistants.  We'd like to better understand the nature
+of these requests, how much LLM-generated code has been offered to these
+projects, and generally how you're feeling about the situation.
 
-Acked-by: Halil Pasic <pasic@linux.ibm.com> #s390x
+To do this, we will be holding three different sessions, where you are
+welcome to join and share your thoughts and any details so far on these
+types of contributions.  The sessions will all be run in the same way
+with the same topic - we are running three in order to hopefully allow
+as many people from around the world to attend as possible.
+
+Our Director of Compliance, Denver Gingerich, will be hosting some sessions
+at the times below for all our member projects to discuss the issue.
+
+date -d "2024-10-29 20:00 UTC"
+date -d "2024-11-01 14:00 UTC"
+date -d "2024-11-06 04:00 UTC"
+
+We'll be meeting in this room for the sessions:
+
+  https://bbb.sfconservancy.org/b/oss-nnj-obi-jea
+
+We are excited to see some of you there and are looking forward to
+drafting appropriate recommendations based on what we hear!
+
+Thanks,
+-Pono at Software Freedom Conservancy
 
