@@ -2,92 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D950B9A22E0
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 14:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D76549A2322
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 15:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Q5O-0005c9-J4; Thu, 17 Oct 2024 08:58:38 -0400
+	id 1t1QFJ-0001oH-8I; Thu, 17 Oct 2024 09:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t1Q5L-0005bH-Tw
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 08:58:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1t1QFG-0001o9-JO
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:08:50 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t1Q5K-0000Y1-D4
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 08:58:35 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HBo1nV015735;
- Thu, 17 Oct 2024 12:58:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=gS0xWRYrY5GGaEk9y
- 6Pmlu4HXJzr4kMuWVjTQXxgu+U=; b=hwlecouyVrD2fL5H4rcaJ+quxX93L6O5i
- pYMMOD8tmMiQSz01LRRIUMpD5xxrLPMi83dssvUrSWjN+IPS1Ds+DQRe87TSaxn4
- n5suxm37MBrhaAZhAGfXSxItRvtPqLbt/Eml+xXP7MCe07wjQHn8Fx44j1Gh/Gi2
- CcOouGnYylXVuU/rvodhPj9NDWlsUxAmx86A97UzakpPM7LkGgfQ7NpqJzqS/qnT
- hPoDrbaey2bTxc04JodL2aZHx8vwtNK/Cu5A1ghjt7XAd+WM/fFfDZDPJWhW3Af/
- GPaDEiLYkuNK9ny3FWUTjjsnvT+7h/UjEuDqFt3xyOZNyIINgDBug==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42as8a2py6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 12:58:18 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49HAmKBs006338;
- Thu, 17 Oct 2024 12:58:17 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4286516mwy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 12:58:17 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49HCwFkb45875688
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 12:58:15 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D0A5820043;
- Thu, 17 Oct 2024 12:58:15 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7045F20040;
- Thu, 17 Oct 2024 12:58:15 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.92.150])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 17 Oct 2024 12:58:15 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 2/2] tests/tcg: Test that sigreturn() does not corrupt the
- signal mask
-Date: Thu, 17 Oct 2024 14:54:44 +0200
-Message-ID: <20241017125811.447961-3-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241017125811.447961-1-iii@linux.ibm.com>
-References: <20241017125811.447961-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1t1QFE-00021B-6m
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 09:08:50 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTp6X4BSXz6JBT8;
+ Thu, 17 Oct 2024 21:08:04 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id DBD3B140119;
+ Thu, 17 Oct 2024 21:08:44 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Oct
+ 2024 15:08:44 +0200
+Date: Thu, 17 Oct 2024 14:08:43 +0100
+To: <nifan.cxl@gmail.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
+ <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
+ <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
+ Fan Ni <fan.ni@samsung.com>
+Subject: Re: [QEMU PATCH] hw/cxl/cxl-mailbox-util: Fix output buffer index
+ update when retrieving DC extents
+Message-ID: <20241017140843.00004685@huawei.com>
+In-Reply-To: <20241015190224.251293-1-nifan.cxl@gmail.com>
+References: <20241015190224.251293-1-nifan.cxl@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: B5GEhbjYwAf_sRZBSJoel3U0QfjqK8ri
-X-Proofpoint-ORIG-GUID: B5GEhbjYwAf_sRZBSJoel3U0QfjqK8ri
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=915 phishscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410170086
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -103,75 +67,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
+On Tue, 15 Oct 2024 11:51:26 -0700
+nifan.cxl@gmail.com wrote:
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/sigreturn-sigmask.c | 51 +++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
- create mode 100644 tests/tcg/multiarch/sigreturn-sigmask.c
+> From: Fan Ni <fan.ni@samsung.com>
+> 
+> In the function of retrieving DC extents (cmd_dcd_get_dyn_cap_ext_list),
+> the output buffer index was not correctly updated while iterating the
+> extent list on the device, leaving the extents returned incorrect except for
+> the first one.
+> 
+> Fixes: 1c9221f19e ("hw/mem/cxl_type3: Add DC extent list representative ...")
+> Signed-off-by: Fan Ni <fan.ni@samsung.com>
+I'll queue this up alongside that other fix.
 
-diff --git a/tests/tcg/multiarch/sigreturn-sigmask.c b/tests/tcg/multiarch/sigreturn-sigmask.c
-new file mode 100644
-index 00000000000..e6cc904898d
---- /dev/null
-+++ b/tests/tcg/multiarch/sigreturn-sigmask.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Test that sigreturn() does not corrupt the signal mask.
-+ * Block SIGUSR2 and handle SIGUSR1.
-+ * Then sigwait() SIGUSR2, which relies on it remaining blocked.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <pthread.h>
-+#include <signal.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+int seen_sig = -1;
-+
-+static void signal_func(int sig)
-+{
-+    seen_sig = sig;
-+}
-+
-+static void *thread_func(void *arg)
-+{
-+    kill(getpid(), SIGUSR2);
-+    return NULL;
-+}
-+
-+int main(void)
-+{
-+    struct sigaction act = {
-+        .sa_handler = signal_func,
-+    };
-+    pthread_t thread;
-+    sigset_t set;
-+    int sig;
-+
-+    assert(sigaction(SIGUSR1, &act, NULL) == 0);
-+
-+    assert(sigemptyset(&set) == 0);
-+    assert(sigaddset(&set, SIGUSR2) == 0);
-+    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
-+
-+    kill(getpid(), SIGUSR1);
-+    assert(seen_sig == SIGUSR1);
-+
-+    assert(pthread_create(&thread, NULL, thread_func, NULL) == 0);
-+    assert(sigwait(&set, &sig) == 0);
-+    assert(sig == SIGUSR2);
-+    assert(pthread_join(thread, NULL) == 0);
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.47.0
+thanks,
+
+Jonathan
+p.s. I'm having some issues with the list servers bouncing my emails so this
+may not reach the list.
+
+> ---
+>  hw/cxl/cxl-mailbox-utils.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index c82ad50ac8..58f8930272 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -2233,6 +2233,7 @@ static CXLRetCode cmd_dcd_get_dyn_cap_ext_list(const struct cxl_cmd *cmd,
+>              stw_le_p(&out_rec->shared_seq, ent->shared_seq);
+>  
+>              record_done++;
+> +            out_rec++;
+>              if (record_done == record_count) {
+>                  break;
+>              }
 
 
