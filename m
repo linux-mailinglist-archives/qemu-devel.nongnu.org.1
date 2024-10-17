@@ -2,91 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B45C9A25A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2A79A25B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:58:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Rst-0004DQ-K2; Thu, 17 Oct 2024 10:53:51 -0400
+	id 1t1Rwr-0001Rd-72; Thu, 17 Oct 2024 10:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1Rsr-0004BB-Fb
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:49 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1Rsp-00071q-MC
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:49 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7ea8c4ce232so1068993a12.0
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:53:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1729176826; x=1729781626;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H/aVyMnXdTRBWVSjAEfUa2Caje605EjZCHN82s+bGH8=;
- b=Pk2h5t4del7HPshKoly1vmQEicR5s/XzyCVf2ur5kajN/HADYrm3BKfCMQosZGKbHH
- JOxwd7iDxu9Zj26qXB2ru23EXML4b1w84/NE9UyzMBwPvWWd86VvsG9i/3mHynzTFFU6
- AXG6O1Qp2gszrsriymOzXLLM5+papLkCSkOlA9obKQVSD3S9mz1fPc8p5BjyExvdhKaY
- FbbY8+bACfpOO5/9QeZ5TLnDPF0mPCcCyfvjpHCmW7oRpE4ZgZtEvhYHwboPTq1wVkuH
- Tv+hJHWSkviX0tjmBQPZRHymcW7SPvNYPAQvg64/Kb3l8LDdNufROhy3esI7MV6+Nlg0
- 383A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729176826; x=1729781626;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H/aVyMnXdTRBWVSjAEfUa2Caje605EjZCHN82s+bGH8=;
- b=DenRdaqfikpa8CYBF3LaSfZSw0wNoWBs3yU36y3u46V3tdN4A73XJvzIB0rjk0W5WT
- Meyl40wu9H66j6acEMdH5mn4jSNRlEd1Keka5/LpFcCWJhOAeGVjXeJwRucimFavBWhZ
- IR0U5P4kQgprASqRl4QReyaTCBcBUQwhkyManzGYSgsdCCdjDPaAxGVlq6czWwLd5qIt
- KX3FyRVZGqy1//yxvjvWIHQpVLSp9z4oz3N5zb1k/hdcusCW2mJ1R3WAbyL6uhXfJRWS
- YOdihE2E+5xbj4nFyV/6Y+A2VYmXnDpkoQTsXkODMuzM1zYGC+mcBUdfuCNcKzHyImno
- J2aw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUCtocywk/Pd+/qlAWN5JHKvO+3AP/0KRSNti+d1XxrK2ff6eAxKXY3LCWvFMXukEL1bm+UvEO20Pmh@nongnu.org
-X-Gm-Message-State: AOJu0Yx1WhV9ovsP5PwlWy69DAqTfjS0L1tQ3yIOKcdSNIsrb8N6UM8s
- BR6VoZEDrif8wDgxwWuPiRwSOEahDM88Lt0Fj+agwj7j2UU7/3M2QWJqlZMLgHdxtIQrbkrLOgY
- eFrM=
-X-Google-Smtp-Source: AGHT+IEGZQLhhL1sezwP/RgOgJ2xmO9WLzC888lPWAChxfFjcffL3yLxXvdD1DMP8jibDDsAiSqu/g==
-X-Received: by 2002:a05:6a20:e613:b0:1cf:4679:9b97 with SMTP id
- adf61e73a8af0-1d8c969991cmr24502398637.37.1729176826253; 
- Thu, 17 Oct 2024 07:53:46 -0700 (PDT)
-Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e77371193sm4859580b3a.21.2024.10.17.07.53.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Oct 2024 07:53:45 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH v4 9/9] target/riscv: Add Smdbltrp ISA extension enable switch
-Date: Thu, 17 Oct 2024 16:52:20 +0200
-Message-ID: <20241017145226.365825-10-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241017145226.365825-1-cleger@rivosinc.com>
-References: <20241017145226.365825-1-cleger@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1Rwo-0001RO-RG
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:57:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1Rwm-0007QO-Dq
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:57:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729177070;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=fpVnaxA9MzoGeKmLNdNn02WN/Jq99QrzFLHT90kRSHs=;
+ b=MoBUK9qunGmOf5EusYKZ87qu5LUn3ff4aluJr1cDQGSAOYrSNCM9dK4eJcbogULcsRpaWf
+ ega52PfW7MUE7ma2WroXlLuC0d7Yk8qxFq8SvAaOpfSRS1j9aigf/Q9D+FEIr3b35tULf+
+ pdVNsZB9VrcGtE9a3J7TfHsdshaZTg0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-pphpNZ9nPM2JiB8LgEzw5A-1; Thu,
+ 17 Oct 2024 10:57:47 -0400
+X-MC-Unique: pphpNZ9nPM2JiB8LgEzw5A-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1BEC11955F42; Thu, 17 Oct 2024 14:57:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.94])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C02D419560A7; Thu, 17 Oct 2024 14:57:42 +0000 (UTC)
+Date: Thu, 17 Oct 2024 15:57:39 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
+Message-ID: <ZxEl4zYgHLoLeHCT@redhat.com>
+References: <20241017143211.17771-1-farosas@suse.de>
+ <20241017143211.17771-5-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=cleger@rivosinc.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241017143211.17771-5-farosas@suse.de>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,37 +85,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the switch to enable the Smdbltrp ISA extension.
+On Thu, Oct 17, 2024 at 11:32:11AM -0300, Fabiano Rosas wrote:
+> Recent changes to how we invoke the migration tests have
+> (intentionally) caused them to not be part of the check-qtest target
+> anymore. Add the check-migration-quick target so we don't lose
+> migration code testing in this job.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
----
- target/riscv/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+But 'check-migration-quick' is only the subset of migration tests,
+'check-migration' is all of the migration tests. So surely this is
+a massive regressions in covage in CI pipelines.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 15b21e4f7d..1323effdae 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -183,6 +183,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-+    ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_13_0, ext_smdbltrp),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-@@ -1506,6 +1507,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
- 
-     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
-+    MULTI_EXT_CFG_BOOL("smdbltrp", ext_smdbltrp, false),
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
+Experience shows us that relying on humans to run tests periodically
+doesn't work well, and they'll slowly bit rot. Migration maintainers
+don't have a way to run this as gating test for every pull request
+that merges, and pull requests coming from non-migration maintainers
+can still break migration code.
+
+Any tests in tree need to be exercised by CI as the minimum bar
+to prevent bit rot from merges.
+
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  .gitlab-ci.d/buildtest.yml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+> index 34d3f4e9ab..37247dc5fa 100644
+> --- a/.gitlab-ci.d/buildtest.yml
+> +++ b/.gitlab-ci.d/buildtest.yml
+> @@ -442,7 +442,7 @@ clang-system:
+>      CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-ubsan
+>        --extra-cflags=-fno-sanitize-recover=undefined
+>      TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390x-softmmu
+> -    MAKE_CHECK_ARGS: check-qtest check-tcg
+> +    MAKE_CHECK_ARGS: check-qtest check-tcg check-migration-quick
+>  
+>  clang-user:
+>    extends: .native_build_job_template
+> -- 
+> 2.35.3
+> 
+> 
+
+With regards,
+Daniel
 -- 
-2.45.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
