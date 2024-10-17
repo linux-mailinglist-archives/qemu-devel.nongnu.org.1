@@ -2,117 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67069A2EE0
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 22:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C77749A2E75
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 22:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1XKh-0003gY-U2; Thu, 17 Oct 2024 16:42:55 -0400
+	id 1t1X3z-0000Ey-IU; Thu, 17 Oct 2024 16:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1t1WPg-0002zw-1R; Thu, 17 Oct 2024 15:44:00 -0400
-Received: from mail.weilnetz.de ([37.120.169.71]
- helo=mail.v2201612906741603.powersrv.de)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1t1X3w-0000EF-Cm
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 16:25:36 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1t1WPd-0001c9-Nm; Thu, 17 Oct 2024 15:43:59 -0400
-Received: from [192.168.178.73] (p57b42979.dip0.t-ipconnect.de [87.180.41.121])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTPSA id 84CB1DA0784;
- Thu, 17 Oct 2024 21:43:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weilnetz.de; s=dkim1; 
- t=1729194233;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=cQrZKfwUc3T34hED9aJBdMJ48jOFA8eL4E5HsSU/pCA=;
- b=CUBS1rd7ifJ6+4hrQFCYamAo2ZG3yvH5aV/t55RYtQ4FCGRwwTPK0dkwQzVHOuYG4vyJo7
- TpTGaGjeL7pFfuhNVqy9ViCNESE/edI6NmjGqNoXGwq8T1FEZtfzlOWOEXybPckiba3FsS
- UDgcJtInAfagZi9hAPsEOKeT9oL951M=
-Authentication-Results: ORIGINATING;
- auth=pass smtp.auth=stefan.weil@weilnetz.de smtp.mailfrom=sw@weilnetz.de
-Content-Type: multipart/alternative;
- boundary="------------oWKNztQGK6Vkz8uY0KumXieR"
-Message-ID: <bc8991ef-91af-419c-beda-f0ece8eda019@weilnetz.de>
-Date: Thu, 17 Oct 2024 21:43:52 +0200
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1t1X3u-0006Sy-2s
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 16:25:36 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20ca96a155cso11216065ad.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 13:25:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729196732; x=1729801532; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=emq/pF99Weq//+1o2qFlB60qkHZsJbYzWrdr3wg7i5A=;
+ b=wtTKhS2cYaw6si/eQzkTLEvpTajdYmGys0NjYflaSuZCdIPZEUnuaNrcmtgcmAV7O1
+ cPb4zdMJ2F2fILS+X0I9f0RU4tjuTqJW8b+MSpT07JmkODrNr5zi1yVOes8s1gLuoSsg
+ EgjHJwrSlx3bSSoZlxYtvrcLkKHgDI9849WJA51THyGIOlv6aDloKeD87CvhkfKiudG9
+ L7C7h499vyypUaSiNHpJJbQ35izZ3e8G5E8rzlYb1Q80DsWhJVV6QB8MRWsCd3nwBZvy
+ OPDJfH2UuHZRIFNhtaIkdtaOAlcQU7ICyd6uGfmHvTvcdCPAjV367mfvwNIa8QqOthaL
+ fWIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729196732; x=1729801532;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=emq/pF99Weq//+1o2qFlB60qkHZsJbYzWrdr3wg7i5A=;
+ b=kS02NdIHvtVq3mwUMa9iALl1AI0Do6C+DDXtTa1b6m+/MPCGrdraxBOm/jIircVQL0
+ GlwiXWsDwTpg1wLK8MVG2QEK6Z1ER3JoRYm033Nw8SMkgV77tbcWsBslvbxAYXZOrDGS
+ mWnwe1wU45g/eHLeLpO8kFtCVG6XgztniiKECXFO24jPRdK6GP7V7i7pP3tzLcrsT9y+
+ BQ6C3xZJXRPFmVYeAfjGDwtQog12zVo9+VPEEtTiO8ZrIQaoTAN4AsAvCh/qEKh6N6XT
+ PeotDt0705RlPsWSPNbeGYqAdAslMuRjAjTOalGWwfo6EqbOtwSO87DN1bxWBPSbiQX/
+ HCmw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU4OUW3HvlrBx1DGitYZMifdGyZu4SwG2vnY4Ty23i6IDvo8TaYNIrRrGdELJvj4JaywqPrOLhNqxIA@nongnu.org
+X-Gm-Message-State: AOJu0YxhD/lww2iy77f0bLv3FN2bGtNcZTp4UjaBk71+XmeXM/NNvXVP
+ Fh7WUUPkbVEMW073vTunh4eZWEc/L2y2RlGPslhIrD0AvO28t7MU9sBuZDxpyu0=
+X-Google-Smtp-Source: AGHT+IEhW9vljHw/FMQFX4+mOjH2vadhvy01NFUe4yUDQRSW05QQw5/Sgu9UF0E1asKtThsAGlbTPQ==
+X-Received: by 2002:a17:903:990:b0:20c:d428:adf4 with SMTP id
+ d9443c01a7336-20e5a8f3e51mr2130685ad.38.1729196732288; 
+ Thu, 17 Oct 2024 13:25:32 -0700 (PDT)
+Received: from [192.168.0.102] ([187.121.94.4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20e5a90f1eesm355085ad.262.2024.10.17.13.25.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Oct 2024 13:25:31 -0700 (PDT)
+Message-ID: <ebf3ba9c-6891-4fb7-80e4-1169011b2e6d@linaro.org>
+Date: Thu, 17 Oct 2024 17:25:20 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Fix calculation of minimum in colo_compare_tcp
-To: "Zhang, Chen" <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>, 
- Jason Wang <jasowang@redhat.com>, qemu-stable <qemu-stable@nongnu.org>,
- QEMU Trivial <qemu-trivial@nongnu.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <20240909204254.1446800-1-sw@weilnetz.de>
- <CYYPR11MB8432028036D306D2FB6F4A359B9A2@CYYPR11MB8432.namprd11.prod.outlook.com>
-Autocrypt: addr=sw@weilnetz.de; keydata=
- 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
-In-Reply-To: <CYYPR11MB8432028036D306D2FB6F4A359B9A2@CYYPR11MB8432.namprd11.prod.outlook.com>
-X-Rspamd-Queue-Id: 84CB1DA0784
-X-Spamd-Bar: ---
-X-Spamd-Result: default: False [-3.10 / 14.00]; BAYES_HAM(-3.00)[99.99%];
- MIME_GOOD(-0.10)[multipart/alternative,text/plain];
- ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_EQ_ADDR_SOME(0.00)[]; MIME_TRACE(0.00)[0:+,1:+,2:~];
- RCVD_COUNT_ZERO(0.00)[0]; MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[weilnetz.de:s=dkim1]; TO_DN_SOME(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Action: no action
-X-Rspamd-Server: v2201612906741603
-Received-SPF: pass client-ip=37.120.169.71; envelope-from=sw@weilnetz.de;
- helo=mail.v2201612906741603.powersrv.de
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, HTML_MESSAGE=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Subject: Re: [PATCH V1 1/4] hw/acpi: Initialize ACPI Hotplug CPU Status with
+ Support for vCPU `Persistence`
+To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com
+Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
+ lpieralisi@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
+ david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
+ ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
+ gshan@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
+ alex.bennee@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
+ linux@armlinux.org.uk, darren@os.amperecomputing.com,
+ ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
+ karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
+ zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
+ jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
+ shahuang@redhat.com, zhao1.liu@intel.com, linuxarm@huawei.com
+References: <20241014192205.253479-1-salil.mehta@huawei.com>
+ <20241014192205.253479-2-salil.mehta@huawei.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20241014192205.253479-2-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 17 Oct 2024 16:42:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,136 +107,215 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Stefan Weil <sw@weilnetz.de>
-From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------oWKNztQGK6Vkz8uY0KumXieR
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Salil,
 
-It looks like nobody has sent a pull request for this fix up to now. Is 
-it trivial enough for qemu-trivial? And maybe qemu-stable could also 
-apply it to older versions.
+On 10/14/24 16:22, Salil Mehta wrote:
+> Certain CPU architecture specifications [1][2][3] prohibit changes to CPU
+> presence after the kernel has booted. This limitation exists because many system
+> initializations rely on the exact CPU count at boot time and do not expect it to
+> change later. For example, components like interrupt controllers, which are
+> closely tied to CPUs, or various per-CPU features, may not support configuration
+> changes once the kernel has been initialized. This presents a challenge for
+> virtualization features such as vCPU hotplug.
+> 
+> To address this issue, introduce an `is_enabled` state in the `AcpiCpuStatus`,
+> which reflects whether a vCPU has been hot-plugged or hot-unplugged in QEMU,
+> marking it as (un)available in the Guest Kernel. The `is_present` state should
+> be set based on the `acpi_persistent` flag. In cases where unplugged vCPUs need
+> to be deliberately simulated in the ACPI to maintain a persistent view of vCPUs,
+> this flag ensures the guest kernel continues to see those vCPUs.
+> 
+> Additionally, introduce an `acpi_persistent` property that can be used to
+> initialize the ACPI vCPU presence state accordingly. Architectures requiring
+> ACPI to expose a persistent view of vCPUs can override its default value. Refer
+> to the patch-set implelenting vCPU hotplug support for ARM for more details on
+> its usage.
+> 
+> References:
+> [1] KVMForum 2023 Presentation: Challenges Revisited in Supporting Virt CPU Hotplug on
+>      architectures that don’t Support CPU Hotplug (like ARM64)
+>      a. Kernel Link: https://kvm-forum.qemu.org/2023/KVM-forum-cpu-hotplug_7OJ1YyJ.pdf
+>      b. Qemu Link:  https://kvm-forum.qemu.org/2023/Challenges_Revisited_in_Supporting_Virt_CPU_Hotplug_-__ii0iNb3.pdf
+> [2] KVMForum 2020 Presentation: Challenges in Supporting Virtual CPU Hotplug on
+>      SoC Based Systems (like ARM64)
+>      Link: https://kvmforum2020.sched.com/event/eE4m
+> [3] Check comment 5 in the bugzilla entry
+>      Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4481#c5
+> 
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> ---
+>   cpu-target.c          |  1 +
+>   hw/acpi/cpu.c         | 35 ++++++++++++++++++++++++++++++++++-
+>   include/hw/acpi/cpu.h | 21 +++++++++++++++++++++
+>   include/hw/core/cpu.h | 21 +++++++++++++++++++++
+>   4 files changed, 77 insertions(+), 1 deletion(-)
+> 
+> diff --git a/cpu-target.c b/cpu-target.c
+> index 499facf774..c8a29ab495 100644
+> --- a/cpu-target.c
+> +++ b/cpu-target.c
+> @@ -200,6 +200,7 @@ static Property cpu_common_props[] = {
+>        */
+>       DEFINE_PROP_LINK("memory", CPUState, memory, TYPE_MEMORY_REGION,
+>                        MemoryRegion *),
+> +    DEFINE_PROP_BOOL("acpi-persistent", CPUState, acpi_persistent, false),
+>   #endif
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+> index 5cb60ca8bc..083c4010c2 100644
+> --- a/hw/acpi/cpu.c
+> +++ b/hw/acpi/cpu.c
+> @@ -225,7 +225,40 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+>       state->dev_count = id_list->len;
+>       state->devs = g_new0(typeof(*state->devs), state->dev_count);
+>       for (i = 0; i < id_list->len; i++) {
+> -        state->devs[i].cpu =  CPU(id_list->cpus[i].cpu);
+> +        struct CPUState *cpu = CPU(id_list->cpus[i].cpu);
+> +        /*
+> +         * In most architectures, CPUs that are marked as ACPI 'present' are
+> +         * also ACPI 'enabled' by default. These states remain consistent at
+> +         * both the QOM and ACPI levels.
+> +         */
+> +        if (cpu) {
+> +            state->devs[i].is_enabled = true;
+> +            state->devs[i].is_present = true;
+> +            state->devs[i].cpu = cpu;
+> +        } else {
+> +            state->devs[i].is_enabled = false;
+> +            /*
+> +             * In some architectures, even 'unplugged' or 'disabled' QOM CPUs
+> +             * may be exposed as ACPI 'present.' This approach provides a
+> +             * persistent view of the vCPUs to the guest kernel. This could be
+> +             * due to an architectural constraint that requires every per-CPU
+> +             * component to be present at boot time, meaning the exact count of
+> +             * vCPUs must be known and cannot be altered after the kernel has
+> +             * booted. As a result, the vCPU states at the QOM and ACPI levels
+> +             * might become inconsistent. However, in such cases, the presence
+> +             * of vCPUs has been deliberately simulated at the ACPI level.
+> +             */
+> +            if (acpi_persistent_cpu(first_cpu)) {
+> +                state->devs[i].is_present = true;
+> +                /*
+> +                 * `CPUHotplugState::AcpiCpuStatus::cpu` becomes insignificant
+> +                 * in this case
+> +                 */
+> +            } else {
+> +                state->devs[i].is_present = false;
+> +                state->devs[i].cpu = cpu;
 
-Stefan W.
+I think it's better to set cpu here explicitly to NULL in both cases
+(persistent and non-persistent cases). Also, 'cpu' here is always NULL
+since it's inside the else block of "if (cpu)" conditional. So how about
+setting cpu to NULL at the end of the else block:
 
-Am 10.09.24 um 04:38 schrieb Zhang, Chen:
->> -----Original Message-----
->> From: Stefan Weil<sw@weilnetz.de>
->> Sent: Tuesday, September 10, 2024 4:43 AM
->> To: Zhang, Chen<chen.zhang@intel.com>; Li Zhijian<lizhijian@fujitsu.com>;
->> Jason Wang<jasowang@redhat.com>
->> Cc:qemu-devel@nongnu.org; Stefan Weil<sw@weilnetz.de>
->> Subject: [PATCH] Fix calculation of minimum in colo_compare_tcp
->>
->> GitHub's CodeQL reports a critical error which is fixed by using the MIN
->> macro:
->>
->>      Unsigned difference expression compared to zero
->>
->> Signed-off-by: Stefan Weil<sw@weilnetz.de>
-> Looks good to me.
-> Reviewed-by: Zhang Chen<chen.zhang@intel.com>
->
-> Thanks
-> Chen
->
->> ---
->>   net/colo-compare.c | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/net/colo-compare.c b/net/colo-compare.c index
->> c4ad0ab71f..39f90c4065 100644
->> --- a/net/colo-compare.c
->> +++ b/net/colo-compare.c
->> @@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s,
->> Connection *conn)
->>        * can ensure that the packet's payload is acknowledged by
->>        * primary and secondary.
->>       */
->> -    uint32_t min_ack = conn->pack - conn->sack > 0 ?
->> -                       conn->sack : conn->pack;
->> +    uint32_t min_ack = MIN(conn->pack, conn->sack);
->>
->>   pri:
->>       if (g_queue_is_empty(&conn->primary_list)) {
->> --
->> 2.39.3 (Apple Git-146)
---------------oWKNztQGK6Vkz8uY0KumXieR
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index d34c1e601e..b830c0e85b 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -251,14 +251,14 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object 
+*owner,
+               */
+              if (acpi_persistent_cpu(first_cpu)) {
+                  state->devs[i].is_present = true;
+-                /*
+-                 * `CPUHotplugState::AcpiCpuStatus::cpu` becomes 
+insignificant
+-                 * in this case
+-                 */
+              } else {
+                  state->devs[i].is_present = false;
+-                state->devs[i].cpu = cpu;
+              }
++            /*
++             * `CPUHotplugState::AcpiCpuStatus::cpu` becomes insignificant
++             * in this case
++             */
++            state->devs[i].cpu = NULL;
+          }
+          state->devs[i].arch_id = id_list->cpus[i].arch_id;
+      }
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>It looks like nobody has sent a pull request for this fix up to
-      now. Is it trivial enough for qemu-trivial? And maybe qemu-stable
-      could also apply it to older versions.</p>
-    <p>Stefan W.<br>
-    </p>
-    <div class="moz-cite-prefix">Am 10.09.24 um 04:38 schrieb Zhang,
-      Chen:<span style="white-space: pre-wrap">
-</span></div>
-    <blockquote type="cite"
-cite="mid:CYYPR11MB8432028036D306D2FB6F4A359B9A2@CYYPR11MB8432.namprd11.prod.outlook.com">
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">-----Original Message-----
-From: Stefan Weil <a class="moz-txt-link-rfc2396E" href="mailto:sw@weilnetz.de">&lt;sw@weilnetz.de&gt;</a>
-Sent: Tuesday, September 10, 2024 4:43 AM
-To: Zhang, Chen <a class="moz-txt-link-rfc2396E" href="mailto:chen.zhang@intel.com">&lt;chen.zhang@intel.com&gt;</a>; Li Zhijian <a class="moz-txt-link-rfc2396E" href="mailto:lizhijian@fujitsu.com">&lt;lizhijian@fujitsu.com&gt;</a>;
-Jason Wang <a class="moz-txt-link-rfc2396E" href="mailto:jasowang@redhat.com">&lt;jasowang@redhat.com&gt;</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:qemu-devel@nongnu.org">qemu-devel@nongnu.org</a>; Stefan Weil <a class="moz-txt-link-rfc2396E" href="mailto:sw@weilnetz.de">&lt;sw@weilnetz.de&gt;</a>
-Subject: [PATCH] Fix calculation of minimum in colo_compare_tcp
 
-GitHub's CodeQL reports a critical error which is fixed by using the MIN
-macro:
+Cheers,
+Gustavo
 
-    Unsigned difference expression compared to zero
+> +            }
+> +        }
+>           state->devs[i].arch_id = id_list->cpus[i].arch_id;
+>       }
+>       memory_region_init_io(&state->ctrl_reg, owner, &cpu_hotplug_ops, state,
+> diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+> index 32654dc274..bd3f9973c9 100644
+> --- a/include/hw/acpi/cpu.h
+> +++ b/include/hw/acpi/cpu.h
+> @@ -26,6 +26,8 @@ typedef struct AcpiCpuStatus {
+>       uint64_t arch_id;
+>       bool is_inserting;
+>       bool is_removing;
+> +    bool is_present;
+> +    bool is_enabled;
+>       bool fw_remove;
+>       uint32_t ost_event;
+>       uint32_t ost_status;
+> @@ -75,4 +77,23 @@ extern const VMStateDescription vmstate_cpu_hotplug;
+>       VMSTATE_STRUCT(cpuhp, state, 1, \
+>                      vmstate_cpu_hotplug, CPUHotplugState)
+>   
+> +/**
+> + * acpi_persistent_cpu:
+> + * @cpu: The vCPU to check
+> + *
+> + * Checks if the vCPU state should always be reflected as *present* via ACPI
+> + * to the Guest. By default, this is False on all architectures and has to be
+> + * explicity set during initialization.
+> + *
+> + * Returns: True if it is ACPI 'persistent' CPU
+> + *
+> + */
+> +static inline bool acpi_persistent_cpu(CPUState *cpu)
+> +{
+> +    /*
+> +     * returns if 'Presence' of the vCPU is persistent and should be simulated
+> +     * via ACPI even after vCPUs have been unplugged in QOM
+> +     */
+> +    return cpu && cpu->acpi_persistent;
+> +}
+>   #endif
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index 04e9ad4996..299e96c45b 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -542,6 +542,27 @@ struct CPUState {
+>       CPUPluginState *plugin_state;
+>   #endif
+>   
+> +    /*
+> +     * To implement the vCPU hotplug feature (which simulates CPU hotplug
+> +     * behavior), we need to dynamically create and destroy QOM vCPU objects,
+> +     * and (de)associate them with pre-existing KVM vCPUs while (un)parking the
+> +     * KVM vCPU context. One challenge is ensuring that these dynamically
+> +     * appearing or disappearing QOM vCPU objects are accurately reflected
+> +     * through ACPI to the Guest Kernel. Due to architectural constraints,
+> +     * changing the number of vCPUs after the guest kernel has booted may not
+> +     * always be possible.
+> +     *
+> +     * In certain architectures, to provide the guest kernel with a *persistent*
+> +     * view of vCPU presence, even when the QOM does not have a corresponding
+> +     * vCPU object, ACPI may simulate the presence of vCPUs by marking them as
+> +     * ACPI-disabled. This is achieved by setting `_STA.PRES=True` and
+> +     * `_STA.Ena=False` for unplugged vCPUs in QEMU's QOM.
+> +     *
+> +     * By default, this flag is set to `FALSE`, and it must be explicitly set
+> +     * to `TRUE` for architectures like ARM.
+> +     */
+> +    bool acpi_persistent;
+> +
+>       /* TODO Move common fields from CPUArchState here. */
+>       int cpu_index;
+>       int cluster_index;
 
-Signed-off-by: Stefan Weil <a class="moz-txt-link-rfc2396E" href="mailto:sw@weilnetz.de">&lt;sw@weilnetz.de&gt;</a>
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Looks good to me.
-Reviewed-by: Zhang Chen <a class="moz-txt-link-rfc2396E" href="mailto:chen.zhang@intel.com">&lt;chen.zhang@intel.com&gt;</a>
-
-Thanks
-Chen
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">---
- net/colo-compare.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/net/colo-compare.c b/net/colo-compare.c index
-c4ad0ab71f..39f90c4065 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s,
-Connection *conn)
-      * can ensure that the packet's payload is acknowledged by
-      * primary and secondary.
-     */
--    uint32_t min_ack = conn-&gt;pack - conn-&gt;sack &gt; 0 ?
--                       conn-&gt;sack : conn-&gt;pack;
-+    uint32_t min_ack = MIN(conn-&gt;pack, conn-&gt;sack);
-
- pri:
-     if (g_queue_is_empty(&amp;conn-&gt;primary_list)) {
---
-2.39.3 (Apple Git-146)
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------oWKNztQGK6Vkz8uY0KumXieR--
 
