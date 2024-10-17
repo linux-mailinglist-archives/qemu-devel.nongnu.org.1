@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBB49A2599
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E81379A25A1
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Rsb-0003au-Ks; Thu, 17 Oct 2024 10:53:33 -0400
+	id 1t1Rsg-0003lt-Ql; Thu, 17 Oct 2024 10:53:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1RsY-0003Qz-Aj
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:30 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1t1Rsc-0003iM-L3
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:35 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1RsW-0006zO-9s
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:29 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7d4fa972cbeso911883a12.2
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:53:25 -0700 (PDT)
+ id 1t1Rsb-000708-0Z
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:53:34 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7ea9739647bso716891a12.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1729176804; x=1729781604;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1729176812; x=1729781612;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=71RCoEK2c3EE51YgECa9iN01Uc+4u3MvG3YZ4vrNInM=;
- b=SMkK3u1JDtaJJNV8jA7hTKpJNqZOLuklA7+B48TwrO1jc9euFu/RZC7V28tMIGepc0
- 1Rzhum5H/nCOShR8nTDlXl6Mp7tXQ33rr8dH1diLb4ivlhv0hte6ERExO89eYLb8PDg0
- qPn8jAaQ4z8l5mN0QnriAvGduI528/1iQrOQYJqrzZM1tVagVHZhLKMySRuquc8GiX1h
- x020V1HpVjDn5jr3/AOY3AHOVqXBikPAa7CMxGbRP0ZjsuonifIednXlGx48CcDHzekO
- d8CDcnJMK5bbTIUhqng60PLIaE6bjzdUXF4P56pz7j8gJSCFpR6byw6gzf3XeAIrzDbE
- 3Wfw==
+ bh=b2s51bbIA+3Sg7MDcZ62+3olj5EFQQVwUP1bfkF2EpU=;
+ b=0gYX7VG/jYmaFL5PiWmambo5IYL+xKYRmN8zPJZ76UXGBcY6pMWNeiZYxxB2Lx9/HY
+ 25E6puPaj/GM2WL4OPXOAVzsxM+VqnMLem+5xxKRwxdgy+I67dWHlK1vJMAnHRTvQ7PC
+ EfqtgtvTHhgcDvPWv1V+Z36vr+6HFnP0NN0RmTVrX6eXWT1BASNlqQWyQuboNbbHCjKz
+ EhrvrVj41FiAqESHR8sDji3RFGaECFIowx43pTzBVyPCbXOglWIKhwqCPlNFcNzDtWVX
+ cGZRknChzZW0iHeag1FEJLOWEANeqzFTTXvXeqgM1tT/fpwRLI0bB+PRhogHTaZt+SEr
+ HLag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729176804; x=1729781604;
+ d=1e100.net; s=20230601; t=1729176812; x=1729781612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=71RCoEK2c3EE51YgECa9iN01Uc+4u3MvG3YZ4vrNInM=;
- b=qvjm8sbjouQnE7EaYYFjwcfiIdTde+r5M6TI3EEPPRZ6J2mG2ZfJu0H6Cip4pq+icM
- E3HQx6/QaJIZ6cQazgqAhlCdX26f6sXdtMnZvveYddtKKuT+re1gzsYn/9rul6+nK3PG
- ZekLaKtoKlcxzTsN2dMjFG532A6MJp5Y/zXVzpdiEsqKhSEkHubjY/fSSpDFkyHu3Tq3
- L2Qr4/uflPpstk+Qu7UVHBVQeBAE5XxBamJV8T/tBSwih4bD80iSYKbPCEvl5ENB9syG
- gSCH3Iqe1oAB04AY0UtBcKRQnsVyX6qfDeMfVjS4Ni6DLi11WUdazTd5NO/iU/P+oKaw
- 8mfA==
+ bh=b2s51bbIA+3Sg7MDcZ62+3olj5EFQQVwUP1bfkF2EpU=;
+ b=e/mZAFX6NwA54EAWI/8ard9jy/CD+fapoYy8cPC1tw/NwxBA86uMwS5Zg6lvvNmxBR
+ pOlmvNfVHO3ZKzGfKV5ilTCANrB1cXhivScM5k2WS0Zqad6natyFwuzsqKxNZinGDhYV
+ raYixECmlJ1JCSFmag5A6FJLARwYorV5W3+0QAHBq/MXDg+xiwXbhsW6HTtX/dWvJQXh
+ 8Eq4h7bWuUPtRpzaodkoz5AkZ4IBhOARMbOaU4kUYsUuY37/mrhHV0Ek32BCLR9DTo6S
+ dBt/ijtoFEIZJ2YKpfPwQg9IvTX1y2Zi2taoyyKlgCp2IT73exyS27THLHJNaYHLvsUm
+ NoGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWcYFmDyRnVlC5vH2II6NP0LXsholRByQfq6iUeA7uQcGsPwOn0ClZ+qeTmkCJAUZ51LSqT695KJBWP@nongnu.org
-X-Gm-Message-State: AOJu0Ywr49BuJQQumJK1+21tqdeHQcXtJzxgiYvODSX5rmDuyUo5OO6Z
- 1et0x4jEYXTdXhdJEWdU4TFCxFKKZyQRmLlsZVZ91VScII7wyq8MZSrKLneiDqM=
-X-Google-Smtp-Source: AGHT+IE5Pn2etMSIgWE6FHlzO7/J/ea++TOT9G8x1+cQf+Xe4tLWUimUMOnFkixZkDVmF0kBxWLqFA==
-X-Received: by 2002:a05:6a20:78a5:b0:1d9:aa7:d6cc with SMTP id
- adf61e73a8af0-1d90aa7d708mr7845358637.24.1729176804554; 
- Thu, 17 Oct 2024 07:53:24 -0700 (PDT)
+ AJvYcCVKQWUunZ87bE9sKDRyBNs2h9Q2IjNoHn4txksSG8P8e4Et1Bn/LAMYWS/isekvFbSwxKy2DUDhTrgR@nongnu.org
+X-Gm-Message-State: AOJu0YyPPztJXKZqSIVNVrn4XqAY5aT31CoUV6uVXQ+t24+FergbFuRr
+ BZ/iS+OkuxFDS9SyWckGWaY1b+7lIWZsVNECHRiAyjOjr5D1Rs7ysQfsx8A+hXI=
+X-Google-Smtp-Source: AGHT+IEuiAZBrH6mkYBM690ikUM4r78bHha+WLIH2Nxr16orOxO27pgdwoEI39nxS20uRkjORcJk6Q==
+X-Received: by 2002:a05:6a21:3990:b0:1d9:2408:aa4c with SMTP id
+ adf61e73a8af0-1d92408b3f0mr2404315637.23.1729176811731; 
+ Thu, 17 Oct 2024 07:53:31 -0700 (PDT)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71e77371193sm4859580b3a.21.2024.10.17.07.53.18
+ d2e1a72fcca58-71e77371193sm4859580b3a.21.2024.10.17.07.53.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Oct 2024 07:53:24 -0700 (PDT)
+ Thu, 17 Oct 2024 07:53:31 -0700 (PDT)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -69,17 +69,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v4 6/9] target/riscv: Add Smdbltrp CSRs handling
-Date: Thu, 17 Oct 2024 16:52:17 +0200
-Message-ID: <20241017145226.365825-7-cleger@rivosinc.com>
+Subject: [PATCH v4 7/9] target/riscv: Implement Smdbltrp sret,
+ mret and mnret behavior
+Date: Thu, 17 Oct 2024 16:52:18 +0200
+Message-ID: <20241017145226.365825-8-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241017145226.365825-1-cleger@rivosinc.com>
 References: <20241017145226.365825-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=cleger@rivosinc.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=cleger@rivosinc.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,86 +102,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add `ext_smdbltrp`in RISCVCPUConfig and implement MSTATUS.MDT behavior.
-Also set MDT to 1 at reset according to the specification.
+When the Ssdbltrp extension is enabled, SSTATUS.MDT field is cleared
+when executing sret if executed in M-mode. When executing mret/mnret,
+SSTATUS.MDT is cleared.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
 ---
- target/riscv/cpu.c      |  3 +++
- target/riscv/cpu_bits.h |  1 +
- target/riscv/cpu_cfg.h  |  1 +
- target/riscv/csr.c      | 13 +++++++++++++
- 4 files changed, 18 insertions(+)
+ target/riscv/op_helper.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 39555364bf..15b21e4f7d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -959,6 +959,9 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
-             env->mstatus_hs = set_field(env->mstatus_hs,
-                                         MSTATUS64_UXL, env->misa_mxl);
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index dabc74de39..64c5792af8 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -299,6 +299,9 @@ target_ulong helper_sret(CPURISCVState *env)
          }
-+        if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+            env->mstatus = set_field(env->mstatus, MSTATUS_MDT, 1);
-+        }
+         mstatus = set_field(mstatus, MSTATUS_SDT, 0);
      }
-     env->mcause = 0;
-     env->miclaim = MIP_SGEIP;
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 0d0f253fcb..b368e27ca0 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -561,6 +561,7 @@
- #define MSTATUS_SDT         0x01000000
- #define MSTATUS_GVA         0x4000000000ULL
- #define MSTATUS_MPV         0x8000000000ULL
-+#define MSTATUS_MDT         0x40000000000ULL /* Smdbltrp extension */
- 
- #define MSTATUS64_UXL       0x0000000300000000ULL
- #define MSTATUS64_SXL       0x0000000C00000000ULL
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 518102d748..8ac1e7fce3 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -78,6 +78,7 @@ struct RISCVCPUConfig {
-     bool ext_sstc;
-     bool ext_smcntrpmf;
-     bool ext_ssdbltrp;
-+    bool ext_smdbltrp;
-     bool ext_svadu;
-     bool ext_svinval;
-     bool ext_svnapot;
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 9aa33611f7..9d2caf34ba 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1616,6 +1616,13 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-         }
++    if (riscv_cpu_cfg(env)->ext_smdbltrp && env->priv >= PRV_M) {
++        mstatus = set_field(mstatus, MSTATUS_MDT, 0);
++    }
+     if (env->priv_ver >= PRIV_VERSION_1_12_0) {
+         mstatus = set_field(mstatus, MSTATUS_MPRV, 0);
+     }
+@@ -375,6 +378,9 @@ target_ulong helper_mret(CPURISCVState *env)
+     if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
+         mstatus = ssdbltrp_mxret(env, mstatus, prev_priv, prev_virt);
+     }
++    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
++        mstatus = set_field(mstatus, MSTATUS_MDT, 0);
++    }
+     if ((env->priv_ver >= PRIV_VERSION_1_12_0) && (prev_priv != PRV_M)) {
+         mstatus = set_field(mstatus, MSTATUS_MPRV, 0);
+     }
+@@ -412,6 +418,12 @@ target_ulong helper_mnret(CPURISCVState *env)
+         env->mstatus = ssdbltrp_mxret(env, env->mstatus, prev_priv, prev_virt);
      }
  
 +    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+        mask |= MSTATUS_MDT;
-+        if ((val & MSTATUS_MDT) != 0) {
-+            val &= ~MSTATUS_MIE;
++        if (prev_priv < PRV_M) {
++            env->mstatus = set_field(env->mstatus, MSTATUS_MDT, false);
 +        }
 +    }
 +
-     if (xl != MXL_RV32 || env->debugger) {
-         if (riscv_has_ext(env, RVH)) {
-             mask |= MSTATUS_MPV | MSTATUS_GVA;
-@@ -1654,6 +1661,12 @@ static RISCVException write_mstatush(CPURISCVState *env, int csrno,
-     uint64_t valh = (uint64_t)val << 32;
-     uint64_t mask = riscv_has_ext(env, RVH) ? MSTATUS_MPV | MSTATUS_GVA : 0;
- 
-+    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+        mask |= MSTATUS_MDT;
-+        if ((valh & MSTATUS_MDT) != 0) {
-+            mask |= MSTATUS_MIE;
-+        }
-+    }
-     env->mstatus = (env->mstatus & ~mask) | (valh & mask);
- 
-     return RISCV_EXCP_NONE;
+     if (riscv_has_ext(env, RVH) && prev_virt) {
+         riscv_cpu_swap_hypervisor_regs(env);
+     }
 -- 
 2.45.2
 
