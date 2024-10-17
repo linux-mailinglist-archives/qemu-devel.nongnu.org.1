@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB159A3018
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E439A3017
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 23:54:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1YQt-0003VV-JE; Thu, 17 Oct 2024 17:53:23 -0400
+	id 1t1YQx-0003W7-L7; Thu, 17 Oct 2024 17:53:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3RYcRZwYKCtgLIKO8BAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--roqueh.bounces.google.com>)
- id 1t1YQm-0003VB-5X
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:53:16 -0400
-Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
+ <3SYcRZwYKCtwPMOSCFEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--roqueh.bounces.google.com>)
+ id 1t1YQn-0003VN-1Q
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:53:18 -0400
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3RYcRZwYKCtgLIKO8BAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--roqueh.bounces.google.com>)
- id 1t1YQk-0006nX-EK
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:53:15 -0400
-Received: by mail-yb1-xb49.google.com with SMTP id
- 3f1490d57ef6-e2971589916so2822091276.3
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 14:53:10 -0700 (PDT)
+ <3SYcRZwYKCtwPMOSCFEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--roqueh.bounces.google.com>)
+ id 1t1YQl-0006nf-C5
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 17:53:16 -0400
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-6e3c638cc27so28131387b3.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 14:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1729201990; x=1729806790; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=uLbCCcl8YaKlQ/t5PlJD7D1ldd6NVtm8Ut/+QIRNnP0=;
- b=WQ8TmmkDBxQ7g3wCmnq0SVFudwsvTPLEWWvK73a7Ep7buejk8b7++PdcfkO7lWWr7Q
- 3wkqAK8g/8dwGIAhEMAZCpMX2EDPJAXuEjctPrfjBlJ0XtSNlOehLAmFIA+jm/RsXg8F
- l0sffOkKcsthvGBMCfjpfinaTtSvCnAPsrv1JkkPidCgbbO8PFkHss24PF7qO6N2Ib8H
- kLUxiaD5ZIK1TMEiMvduQn/18BwHcPU85ebcKoaZYhSwPModlfcmlqhy/vv/Ws7thq1c
- k9vzx/bnLY3JgnVSoMuax4YCoG4kjJWAJoWzVTUx4d5lfpxgwhUHawIk/VHmVKFZmyKK
- Lfog==
+ d=google.com; s=20230601; t=1729201993; x=1729806793; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=t8McOsxV8sRtUClZQ3Bo3BJecAGF4zLurNe2HC/luCE=;
+ b=LpeLxMwHqtvfmGcJhDKyqWMzE+Eobu4JxHsxlQj4Rw89VrBL8cEC2B2XJKsS19ak8e
+ L43OQfQM3KAeqzYpAgH2VfHQYCiFGwSXLiw0NcJDeOwHAbEwWazo54YdZpvHc8NdS9A6
+ +nTQ8Y0UgqNYLfOP4xzjO2BgLxaY38sQPO/RXvVVG4xH7Id3uyRQpdx/162jGQUbW7UM
+ SjBTEaby1hBnkLYh7Ss4QzTDPQzkgPpr3EEiQM0DbNDZ1wxUgzGRZ0b7QPI9xvGNSXwJ
+ 74GhHWt0rqUDBZFvg2TWUoW7mvGcR3Mgcs+Mm04ofHOf1vWQGsWiJljnqP17yEqs1HBI
+ Cy7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729201990; x=1729806790;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uLbCCcl8YaKlQ/t5PlJD7D1ldd6NVtm8Ut/+QIRNnP0=;
- b=eNVvMtSHOUiHYsiOE+aGqoEs3noYbS0+ooB8DVQ3MRnape6P8SIF+FH7BCrGW0/4IG
- DRK2DaSod+WsmVU6YyDfYhnXvb5fvBR+eHW4bcAT4Um/SpMKNb96Nli4DRUGfgs55tX9
- 31O03gXZgwyywjjEKOB8Hiu/7Yv5tAGZ8csYAWxtX24sa/+y9p7UxiIo49jq7qTzEVDc
- tt73jGTr3qOTGbsEys07fjv4CjLX3S4eglw254FkPqoblGufDfHr0ZPPkV7J5iDuuFa1
- Po21ltT0Uqv8sou8Y1FxdYPjip51G85L4czbNeI0zSjQKlhMXp4Y34QA7Zi66TED8o6D
- Dcpg==
-X-Gm-Message-State: AOJu0YyEQ5bnPvcDXUKTGptmyKulfaDvLf7ffLU60NEHQp6Q1R7QyzT7
- mhfhrKwC9HcobFH3sJ7iQ89zCM+tn/UmhA2Iaz+FBMngpcvaBULK2CZFJfvdoHGllbgbrbhwu1s
- psQ==
-X-Google-Smtp-Source: AGHT+IHO2ScHZIonU9YnuD0HrNDO0QqEyQVcffcHceg5Z/Ap395XPAmhU3wSEWtHx8veke0lUzopI82dC9A=
+ d=1e100.net; s=20230601; t=1729201993; x=1729806793;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t8McOsxV8sRtUClZQ3Bo3BJecAGF4zLurNe2HC/luCE=;
+ b=UH5Efz/2Bwjxbv7QGgfGv6h+p+A2nFYvwcz+3C1YRysYqd+ROoxcmWryaEU5K3pWuy
+ AAGAgrsxhIf8DAhIrl6uQKRvYSbiLCy2H/ODMxhNMnmoq6p/hs0s7Kvw5OlBGvANlK3x
+ AoLuZ/83bjcOxZ4ODeuB2D4i3+CBzAXOJu2DUteVKBol/iOCey87iyJBlXPEHjYIBfoG
+ fvN68pIdNQG1VH5UNNTVN9DFHqvBjV+dLXQiWZVUKlkj8SG8NgugQJEWaKTXlgk67mjx
+ bTQM/WScklyZBVFT6zQSm9csKsmoq6Dbv9ZK+ZDBRtlowLa7O2U9SXj2UbccvH/sOuNG
+ n+5A==
+X-Gm-Message-State: AOJu0YzB6Ndf1wUiEBNjbCGLyc/lPgIKLaOMEu3PrpmUYrbWtDSZDEUJ
+ V1USjeIM7PK9zVCfJx6RWd9hhp/nl9B/eQsWZlwq1CzD2N24khrZPZjUhXbLcuxsZcsjUKfM7Lh
+ O1w==
+X-Google-Smtp-Source: AGHT+IF86U4cnv6PrISgfx/+cC5cxTkqq3TUF3Bg19FTIE/hsZXiSmPdvoobo05dQd1sj/RLsM+og2rg1Ro=
 X-Received: from roqueh.c.googlers.com ([fda3:e722:ac3:cc00:4e:3bc9:ac1c:1ab])
- (user=roqueh job=sendgmr) by 2002:a25:7a07:0:b0:e20:25f5:a889 with
- SMTP id
- 3f1490d57ef6-e2bb130ee4cmr195276.5.1729201989816; Thu, 17 Oct 2024 14:53:09
+ (user=roqueh job=sendgmr) by 2002:a05:690c:2e90:b0:6e3:1627:e866
+ with SMTP id
+ 00721157ae682-6e5bfbd836bmr38237b3.3.1729201993186; Thu, 17 Oct 2024 14:53:13
  -0700 (PDT)
-Date: Thu, 17 Oct 2024 21:53:02 +0000
+Date: Thu, 17 Oct 2024 21:53:03 +0000
+In-Reply-To: <20241017215304.3916866-1-roqueh@google.com>
 Mime-Version: 1.0
+References: <20241017215304.3916866-1-roqueh@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241017215304.3916866-1-roqueh@google.com>
-Subject: [PATCH 0/2] Allow injection of virtio-gpu EDID name
+Message-ID: <20241017215304.3916866-2-roqueh@google.com>
+Subject: [PATCH 1/2] ui: Allow injection of vnc display name
 From: Roque Arcudia Hernandez <roqueh@google.com>
 To: ankeesler@google.com, mst@redhat.com, marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, venture@google.com, 
  Roque Arcudia Hernandez <roqueh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
- envelope-from=3RYcRZwYKCtgLIKO8BAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--roqueh.bounces.google.com;
- helo=mail-yb1-xb49.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3SYcRZwYKCtwPMOSCFEMMEJC.AMKOCKS-BCTCJLMLELS.MPE@flex--roqueh.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -89,46 +91,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks to 72d277a7, 1ed2cb32, and others, EDID (Extended Display
-Identification Data) is propagated by QEMU such that a virtual
-display presents legitimate metadata (e.g., name, serial number,
-preferred resolutions, etc.) to its connected guest.
+From: Andrew Keesler <ankeesler@google.com>
 
-This change adds the ability to specify the EDID name for a
-particular virtio-vga display. Previously, every virtual display
-would have the same name: "QEMU Monitor". Now, we can inject names of
-displays in order to test guest behavior that is specific to display
-names. We provide the ability to inject the display name from the
-display configuration as that most closely resembles how real
-displays work (hardware displays contain static EDID information that
-is provided to every connected host).
+Thanks to 72d277a7, 1ed2cb32, and others, EDID (Extended Display Identification
+Data) is propagated by QEMU such that a virtual display presents legitimate
+metadata (e.g., name, serial number, preferred resolutions, etc.) to its
+connected guest.
 
-This new behavior must be enabled by setting the edid_name boolean
-property on the display device (it is disabled by default).
+This change propagates an optional user-provided display name to
+QemuConsole. Future changes will update downstream devices to leverage this
+display name for various uses, the primary one being providing a custom EDID
+name to guests. Future changes will also update other displays (e.g., spice)
+with a similar option to propagate a display name to downstream devices.
 
-It should be noted that EDID names longer than 12 bytes will be
-truncated per spec (I think?).
+Currently, every virtio-gpu virtual display has the same name: "QEMU
+Monitor". We hope to be able to inject the EDID name of virtual displays in
+order to test guest behavior that is specific to display names. We provide the
+ability to inject the display name from the display configuration as that most
+closely resembles how real displays work (hardware displays contain static EDID
+information that is provided to every connected host).
 
-Testing: verified that when I specified 2 outputs for a virtio-gpu
-with edid_name set, the names matched those that I configured with my
-vnc display.
+It should also be noted that EDID names longer than 12 bytes will be truncated
+per spec (I think?).
 
-  -display vnc=localhost:0,id=aaa,display=vga,head=0,name=AAA \
-  -display vnc=localhost:1,id=bbb,display=vga,head=1,name=BBB \
-  -device virtio-vga,max_outputs=2,id=vga,edid_name=true
+Signed-off-by: Andrew Keesler <ankeesler@google.com>
+Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
+---
+ include/ui/console.h | 1 +
+ ui/console-priv.h    | 1 +
+ ui/console.c         | 8 ++++++++
+ ui/vnc.c             | 8 +++++++-
+ 4 files changed, 17 insertions(+), 1 deletion(-)
 
-Andrew Keesler (2):
-  ui: Allow injection of vnc display name
-  hw/display: Allow injection of virtio-gpu EDID name
-
- hw/display/virtio-gpu-base.c   |  4 ++++
- include/hw/virtio/virtio-gpu.h |  5 +++++
- include/ui/console.h           |  2 ++
- ui/console-priv.h              |  1 +
- ui/console.c                   | 16 ++++++++++++++++
- ui/vnc.c                       |  8 +++++++-
- 6 files changed, 35 insertions(+), 1 deletion(-)
-
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 5832d52a8a..74ab03ed72 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -408,6 +408,7 @@ int qemu_console_get_index(QemuConsole *con);
+ uint32_t qemu_console_get_head(QemuConsole *con);
+ int qemu_console_get_width(QemuConsole *con, int fallback);
+ int qemu_console_get_height(QemuConsole *con, int fallback);
++void qemu_console_set_name(QemuConsole *con, const char *name);
+ /* Return the low-level window id for the console */
+ int qemu_console_get_window_id(QemuConsole *con);
+ /* Set the low-level window id for the console */
+diff --git a/ui/console-priv.h b/ui/console-priv.h
+index 43ceb8122f..9f2769843f 100644
+--- a/ui/console-priv.h
++++ b/ui/console-priv.h
+@@ -18,6 +18,7 @@ struct QemuConsole {
+     Object parent;
+ 
+     int index;
++    const char *name;
+     DisplayState *ds;
+     DisplaySurface *surface;
+     DisplayScanout scanout;
+diff --git a/ui/console.c b/ui/console.c
+index 5165f17125..f377fd8417 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1452,6 +1452,14 @@ int qemu_console_get_height(QemuConsole *con, int fallback)
+     }
+ }
+ 
++void qemu_console_set_name(QemuConsole *con, const char *name)
++{
++    if (con == NULL) {
++        return;
++    }
++    con->name = name;
++}
++
+ int qemu_invalidate_text_consoles(void)
+ {
+     QemuConsole *s;
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 93a8dbd253..7d6acc5c2e 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3595,6 +3595,9 @@ static QemuOptsList qemu_vnc_opts = {
+         },{
+             .name = "power-control",
+             .type = QEMU_OPT_BOOL,
++        },{
++            .name = "name",
++            .type = QEMU_OPT_STRING,
+         },
+         { /* end of list */ }
+     },
+@@ -4016,7 +4019,7 @@ void vnc_display_open(const char *id, Error **errp)
+     QemuOpts *opts = qemu_opts_find(&qemu_vnc_opts, id);
+     g_autoptr(SocketAddressList) saddr_list = NULL;
+     g_autoptr(SocketAddressList) wsaddr_list = NULL;
+-    const char *share, *device_id;
++    const char *share, *device_id, *name;
+     QemuConsole *con;
+     bool password = false;
+     bool reverse = false;
+@@ -4217,6 +4220,9 @@ void vnc_display_open(const char *id, Error **errp)
+     }
+     qkbd_state_set_delay(vd->kbd, key_delay_ms);
+ 
++    name = qemu_opt_get(opts, "name");
++    qemu_console_set_name(vd->dcl.con, name);
++
+     if (saddr_list == NULL) {
+         return;
+     }
 -- 
 2.47.0.rc1.288.g06298d1525-goog
 
