@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7419A24B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392609A24FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1RGR-0008Vw-2j; Thu, 17 Oct 2024 10:14:07 -0400
+	id 1t1RVE-0004Tw-2X; Thu, 17 Oct 2024 10:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1RGO-0008Ua-3x
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:14:04 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1RV8-0004Tf-Aq
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:29:18 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1t1RGL-0001yO-Ve
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:14:03 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4315c1c7392so5950655e9.1
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:14:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1RV6-0003Q9-Md
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:29:18 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5c937b5169cso1630110a12.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:29:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1729174440; x=1729779240;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=W/ORKd3cph6/ku0+Qc401FY0JRgv51EJWdtLhtOb4qc=;
- b=x6Ti/u6Io9HlRP6V6uAkFauDdc5scxHvB2a/L3zyOzyA0Bw5hieoYTNLpsHGzvwm1Y
- 0TxGV6nHLhYWL+4B8Di6Wu+9A/IdV8Z4L4+UYVybeCVk0pTXmy54dp+6hbhbLct1ULpv
- Dj8Fx71MZVlfNxy7dT9COav8MRmvaB99jiLIBnJPb39cC9k6+Hh7e09SFI/Ftre0ilqG
- D6NjNShLc41sOaG+v4Ue1bvTjqY0liH0LRGNQJbhnv4Q2QWvjQhxwDwiEy8YmpQF7O6a
- Bwa/oXX7PTtNhF3OP5iBN8RScvnchsqwvthSfIFPE8OOtjnsQDgD62ntjdLFrhHxDNX8
- 2BNg==
+ d=linaro.org; s=google; t=1729175354; x=1729780154; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=eFOX/syYZtwFsFH68uKcljYWd2x+NpIGFddXxltWQT4=;
+ b=WHED6oxLn4Xhi3XTN40wkTNSqR9gDD/RwNRGYDH2lpjbH5oEuF1Ti5wQqcWHE+ECO2
+ 8G9rmv3KAtRti9XOqAr0IqAxqiKSiRby93Eza+XR+dsH4AmUeBIRHnDGenTj1RIVpHRq
+ kU7SHTw1s6OC3zLv7f522cwQI5XCSCJhiitrgVN9kz7Jhd+zbgjGfMVk7OMRjurndxkY
+ weHBhRhbjWL68hJHfxYf9uXC0Zn7XDAiNIDgoJjjUSxOQLbUdIBLqXCHYPhfGoc2e31l
+ o+DowfALngPNNQzsawAJtbELSS3SUfgq4Q1mT+CH7uI3O2jF8RWwHiPCon7mYgjPbYVG
+ wKXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729174440; x=1729779240;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W/ORKd3cph6/ku0+Qc401FY0JRgv51EJWdtLhtOb4qc=;
- b=r2Xy8xV8bQZCFWY/fuhFATD9wW9Qeb1itpUb/xCxY7ZYBOUtpdK533kgogd4qDI8ef
- hbZo6ctmqIRyPBPcCYTK7RicWUQroVjOdVo6lpoQVJ5UwVOOMGJbDZ3EcAMq+f2liRbl
- Q15vRG4FjFiaxfDk+01ThEWqj+EJCQ1Z8l9/vkDHHzDkgK51YjC/9wPnpnazSbAFPQQg
- Xw5qI2LTyMVmYNjoDasF4eJ7v8O3Dxui6lCkLHodkVSv/66J/bZxZZl1E1L4xUWvEayW
- cl8o3/uMnAA1HneOnUK4BOE4m6VumeIM0jGcXKaWhBh3r0g5VylGBOZwJhFt9NeBOIYp
- 2K2Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNtXiTgudoqhfmEmOPFSltZ6cGwSVjKVb61aJdEiZKOkrprI73vKczXopPVitwrL8TfQLyDERi+TGM@nongnu.org
-X-Gm-Message-State: AOJu0YwMpcYACKVqtH4UuTIVHwt97ozQVsatsGHtwYRbU4XKLQi41kQY
- rtSoNMvC0TsUi7UFpWwYNHJsdD10ZVkshLceTjGQrC3Bg0tS3z8s89dzHM79NxQ=
-X-Google-Smtp-Source: AGHT+IENdxMnfrfxqj6gI5ADcU7T0zieFTEpRZPACY5pjb4K5oAPqLOsGfvrzVlxS2zRHHQgenewFA==
-X-Received: by 2002:a05:600c:3543:b0:425:80d5:b8b2 with SMTP id
- 5b1f17b1804b1-431255e4113mr169037775e9.16.1729174439764; 
- Thu, 17 Oct 2024 07:13:59 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:e17:9700:16d2:7456:6634:9626?
- ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43158c38397sm27730645e9.5.2024.10.17.07.13.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Oct 2024 07:13:59 -0700 (PDT)
-Message-ID: <1b9a53b3-79d0-4ba2-9450-35e28ecfbd79@rivosinc.com>
-Date: Thu, 17 Oct 2024 16:13:58 +0200
+ d=1e100.net; s=20230601; t=1729175354; x=1729780154;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eFOX/syYZtwFsFH68uKcljYWd2x+NpIGFddXxltWQT4=;
+ b=rzG5UnPwgrbnA8cdMMYoLrpqLWjr7+VtOSPWnZjA2HS2KmzWS1NTGMYDUgRYVstvTN
+ nc4kITlJB9X+il9GyhqoFbWBMIUWGovn13BadKTjOlqw1grqTHw535HbSHGoviOaOdpF
+ ZUVlFcsO7aPiAkhLsrRaBpMnkyoNb6i7oF2svqVKXigDUwX7a4UKR32RFCcHNsAdYvMd
+ lccWXs7/iMCy96HET6ffg/ZlTFmEDxiKK0jVA4W8+LCl5oi9NTtKCwOczwh+3cCIbhAA
+ jMNKkHdI3/8mYIRsNCwJ8qfgNM6XTD3OFjcKS7QyDDz5nB0F/RWDhOuBfmIdYT+2jqpz
+ gKIw==
+X-Gm-Message-State: AOJu0Yy/cdB9s3RxLrfJcT6H49Aa32iJeY44uEOayD7+c0GegyAdxXKn
+ bTWMl4GByZ0TQh60GEq/+udk+YpZbd+aq2ynUH+1kZpXmReG2F+AS+2sZekblvNA2PCiQXreHg7
+ ML1LgV330reu/pYrmfgmwEmErBtIJk9tKxy7OWQ==
+X-Google-Smtp-Source: AGHT+IFqQu5BsSjDaJ/Qq2jP0g37QIiFZ+q2FqbzPIoawFDWDK8RWGYsqGRH1uGeI2eeHFRw4RA6TDGSNtdAqvaKfg0=
+X-Received: by 2002:a05:6402:4404:b0:5c8:d9b8:9325 with SMTP id
+ 4fb4d7f45d1cf-5c9a5a1c1aamr4631517a12.5.1729175354260; Thu, 17 Oct 2024
+ 07:29:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/5] target/riscv: Handle Smrnmi interrupt and exception
-To: frank.chang@sifive.com
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- Tommy Wu <tommy.wu@sifive.com>
-References: <20241014181948.1974405-1-frank.chang@sifive.com>
- <20241014181948.1974405-3-frank.chang@sifive.com>
-Content-Language: en-US
-From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
-In-Reply-To: <20241014181948.1974405-3-frank.chang@sifive.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=cleger@rivosinc.com; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+ <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+ <CAFEAcA95QmpcsrgCj5uE-Ng8ahNir3MuVEHWBCvjb3UwBbOFRA@mail.gmail.com>
+ <ec0e8a75-c59f-41b3-b559-43c057fca8fd@roeck-us.net>
+ <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
+ <cf7c8f57-22d5-4a40-bd87-0f15f5457d48@roeck-us.net>
+ <CAFEAcA98=2OdT9ykg5ibDuVLtSXuq4g0PLmSbxkYmt1SyKe9iQ@mail.gmail.com>
+ <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net>
+In-Reply-To: <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 17 Oct 2024 15:29:02 +0100
+Message-ID: <CAFEAcA-NreDmpCoFgrTJ5dEto5jQbjRg1eCfqg9Ns8VwQ9-Qzw@mail.gmail.com>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,37 +103,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 17 Oct 2024 at 15:12, Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> On 10/17/24 05:42, Peter Maydell wrote:
+> > On Tue, 15 Oct 2024 at 19:12, Guenter Roeck <linux@roeck-us.net> wrote:
+> >> Please let me know if https://github.com/groeck/linux-test-downloads.git
+> >> meets your needs. For now I added 'collie'. I'll add more after it is
+> >> in a state that is useful for you.
+> >
+> > Yes, that's great, exactly what we need. I've put together a QEMU
+> > 'functional test' case that downloads the collie rootfs and image
+> > and checks that they boot. (I'll send the patches for that out
+> > in a bit.)
+> >
+> > (I've coded the test case to pull the binaries for a specific
+> > git revision of that repo rather than always-from-head, so
+> > we're testing always the same thing against head-of-QEMU.)
+> >
+>
+> Sounds good. I now also added information for sx1, so you should
+> be able to use that as well. Please let me know if you need any
+> others.
 
+I think sx1 and collie are all we need currently.
 
-On 14/10/2024 20:19, frank.chang@sifive.com wrote:
-> @@ -1679,6 +1718,20 @@ void riscv_cpu_do_interrupt(CPUState *cs)
->      target_ulong mtval2 = 0;
->      int sxlen = 0;
->      int mxlen = 0;
-> + bool nnmi_excep = false;
-> +
-> + if (cpu->cfg.ext_smrnmi && env->rnmip && async) {
-> + env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
-> + env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV,
-> + env->virt_enabled);
-> + env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP,
-> + env->priv);
-> + env->mncause = cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1));
-> + env->mnepc = env->pc;
-> + env->pc = env->rnmi_irqvec;
-> + riscv_cpu_set_mode(env, PRV_M, virt);
+By the way, it looks to me like QEMU has a regression
+somewhere where we can't boot that sx1 test for the SD
+card version -- it hangs during kernel boot waiting for
+the MMC card. (An elderly QEMU binary I have boots OK.)
+I'm looking into what's happened there.
 
-Hi Frank,
-
-Does it make sense to use the virt value here since if we are going to
-PRV_M mode, then virt should be false ?
-
-Thanks,
-
-Clément
-
-
-> + return;
-> + }
-
+-- PMM
 
