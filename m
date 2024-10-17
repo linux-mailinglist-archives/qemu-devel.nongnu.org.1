@@ -2,98 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE91D9A1817
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 03:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37ECF9A186D
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 04:08:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Fd7-0004ff-8J; Wed, 16 Oct 2024 21:48:45 -0400
+	id 1t1Fv9-0008Dv-0M; Wed, 16 Oct 2024 22:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1t1Fd5-0004bn-Am; Wed, 16 Oct 2024 21:48:43 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1t1Fd3-00033r-LC; Wed, 16 Oct 2024 21:48:43 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49GLQTi0032105;
- Thu, 17 Oct 2024 01:48:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=IBd7XKsnz2tFDBl4O
- +fp2irEqRK0riAvhQ/a7waerBM=; b=gksrkLW/pyY+9UIG+9Z6SnLfSULmGC8Gk
- gfHQbP1y7vYnlTOH4W3rGIS7RN3yfD4k/LVviqraKibuowpfGD3Rfv4i6grVyOZp
- IAgBzwYcj9CCahabyj5/ylJoaLKaP5ZFQaVenfczf5HWYiQg+cMQ9VvGHmvZw6/q
- HE6OFy2IaZPR4KxZUsCMQI5cmKVGiHCxLuQMaRHC+4ywLvoSklP67S9HS+70Px4G
- ACmq33jifJLFV1A1E26Edq7Y68W6p9DqnEOKRpc0df5KjmrBHWxzHIavNTvqzqar
- sxBjvU8LQ/JZP2Qr0hFMnb7/gJa+TlW5fL/UMSxn0I3/eGobEfxjg==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42and7grwy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 01:48:19 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49H1mJga012415;
- Thu, 17 Oct 2024 01:48:19 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42and7grwu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 01:48:19 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49H1dFL3006415;
- Thu, 17 Oct 2024 01:48:18 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xkc9fr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Oct 2024 01:48:18 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49H1mGZa27722294
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 01:48:17 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F63958056;
- Thu, 17 Oct 2024 01:48:16 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2797058052;
- Thu, 17 Oct 2024 01:48:16 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.153.16])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 17 Oct 2024 01:48:16 +0000 (GMT)
-From: jrossi@linux.ibm.com
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
-Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
-Subject: [PATCH v4 19/19] tests/qtest: Add s390x boot order tests to
- cdrom-test.c
-Date: Wed, 16 Oct 2024 21:47:48 -0400
-Message-ID: <20241017014748.829029-20-jrossi@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241017014748.829029-1-jrossi@linux.ibm.com>
-References: <20241017014748.829029-1-jrossi@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1t1Fv3-0008Da-0C
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 22:07:17 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1t1Fv0-0005cK-HR
+ for qemu-devel@nongnu.org; Wed, 16 Oct 2024 22:07:16 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8BxHLNMcRBnWdohAA--.50483S3;
+ Thu, 17 Oct 2024 10:07:08 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMBxztVMcRBnh_MtAA--.34438S2;
+ Thu, 17 Oct 2024 10:07:08 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
+Subject: [PATCH v2 0/2] linux-headers: loongarch: Add kvm_para.h and
+ unistd_64.h
+Date: Thu, 17 Oct 2024 10:07:06 +0800
+Message-Id: <20241017020708.1728620-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xJeD5qoYaQsPiX_5oQwXquoI0q9ag7-1
-X-Proofpoint-ORIG-GUID: tVds7s3CdnL1_I1h3cKNTkuq2b7J_QQ6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- impostorscore=0 spamscore=0 priorityscore=1501 clxscore=1015
- mlxlogscore=912 adultscore=0 bulkscore=0 mlxscore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410170011
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CM-TRANSID: qMiowMBxztVMcRBnh_MtAA--.34438S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -111,61 +62,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jared Rossi <jrossi@linux.ibm.com>
+linux-headers/asm/unistd.h:3:10: fatal error: asm/unistd_64.h: No such file or directory
+ #include <asm/unistd_64.h>
 
-Add two new qtests to verify that a valid IPL device can successfully boot after
-failed IPL attempts from one or more invalid devices.
+Also update linux-headers to v6.12-rc3
 
-cdrom-test/as-fallback-device: Defines the primary boot target as a device that
-is invalid for IPL and a second boot target that is valid for IPL. Ensures that
-the valid device will be selected after the initial failed IPL.
-
-cdrom-test/as-last-option: Defines the maximum number of boot devices (8)
-where only the final entry in the boot order is valid. Ensures that a valid
-device will be selected even after multiple failed IPL attempts from both
-virtio-blk and virtio-scsi device types.
-
-Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 ---
- tests/qtest/cdrom-test.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+v1 ... v2:
+  1. update header files in directory linux-headers to v6.12-rc3
+---
+Bibo Mao (2):
+  linux-headers: loongarch: Add kvm_para.h and unistd_64.h
+  linux-headers: Update to Linux v6.12-rc3
 
-diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
-index 9d72b24e4b..c86725a511 100644
---- a/tests/qtest/cdrom-test.c
-+++ b/tests/qtest/cdrom-test.c
-@@ -213,6 +213,30 @@ static void add_s390x_tests(void)
-                         "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
-                         "-device virtio-blk,drive=d2,bootindex=1 "
-                         "-drive if=none,id=d2,media=cdrom,file=", test_cdboot);
-+    qtest_add_data_func("cdrom/boot/as-fallback-device",
-+                        "-device virtio-serial -device virtio-scsi "
-+                        "-device virtio-blk,drive=d1,bootindex=1 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
-+                        "-device virtio-blk,drive=d2,bootindex=2 "
-+                        "-drive if=none,id=d2,media=cdrom,file=", test_cdboot);
-+    qtest_add_data_func("cdrom/boot/as-last-option",
-+                        "-device virtio-serial -device virtio-scsi "
-+                        "-device virtio-blk,drive=d1,bootindex=1 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
-+                        "-device virtio-blk,drive=d2,bootindex=2 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d2 "
-+                        "-device virtio-blk,drive=d3,bootindex=3 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d3 "
-+                        "-device scsi-hd,drive=d4,bootindex=4 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d4 "
-+                        "-device scsi-hd,drive=d5,bootindex=5 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d5 "
-+                        "-device virtio-blk,drive=d6,bootindex=6 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d6 "
-+                        "-device scsi-hd,drive=d7,bootindex=7 "
-+                        "-drive driver=null-co,read-zeroes=on,if=none,id=d7 "
-+                        "-device scsi-cd,drive=d8,bootindex=8 "
-+                        "-drive if=none,id=d8,media=cdrom,file=", test_cdboot);
-     if (qtest_has_device("x-terminal3270")) {
-         qtest_add_data_func("cdrom/boot/without-bootindex",
-                             "-device virtio-scsi -device virtio-serial "
+ include/standard-headers/drm/drm_fourcc.h     |  43 +++
+ include/standard-headers/linux/const.h        |  17 +
+ include/standard-headers/linux/ethtool.h      | 226 +++++++++++++
+ include/standard-headers/linux/fuse.h         |  22 +-
+ .../linux/input-event-codes.h                 |   2 +
+ include/standard-headers/linux/pci_regs.h     |  41 ++-
+ .../standard-headers/linux/virtio_balloon.h   |  16 +-
+ include/standard-headers/linux/virtio_gpu.h   |   1 +
+ linux-headers/asm-arm64/mman.h                |   9 +
+ linux-headers/asm-arm64/unistd.h              |  25 +-
+ linux-headers/asm-generic/unistd.h            |   6 +-
+ linux-headers/asm-loongarch/kvm.h             |  24 ++
+ linux-headers/asm-loongarch/kvm_para.h        |  21 ++
+ linux-headers/asm-loongarch/unistd.h          |   4 +-
+ linux-headers/asm-loongarch/unistd_64.h       | 320 ++++++++++++++++++
+ linux-headers/asm-riscv/kvm.h                 |   7 +
+ linux-headers/asm-riscv/unistd.h              |  41 +--
+ linux-headers/asm-x86/kvm.h                   |   2 +
+ linux-headers/asm-x86/unistd_64.h             |   1 +
+ linux-headers/asm-x86/unistd_x32.h            |   1 +
+ linux-headers/linux/bits.h                    |   3 +
+ linux-headers/linux/const.h                   |  17 +
+ linux-headers/linux/iommufd.h                 | 143 ++++++--
+ linux-headers/linux/kvm.h                     |  23 +-
+ linux-headers/linux/mman.h                    |   1 +
+ linux-headers/linux/psp-sev.h                 |  28 ++
+ scripts/update-linux-headers.sh               |   4 +
+ 27 files changed, 955 insertions(+), 93 deletions(-)
+ create mode 100644 linux-headers/asm-loongarch/kvm_para.h
+ create mode 100644 linux-headers/asm-loongarch/unistd_64.h
+
+
+base-commit: 7e3b6d8063f245d27eecce5aabe624b5785f2a77
 -- 
-2.45.1
+2.39.3
 
 
