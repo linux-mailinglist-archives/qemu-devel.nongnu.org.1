@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F5C9A1ADF
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 08:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2D79A1AE2
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 08:44:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1KE7-0001fb-3E; Thu, 17 Oct 2024 02:43:15 -0400
+	id 1t1KE8-0001gE-Kd; Thu, 17 Oct 2024 02:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t1KE4-0001f5-I4
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:12 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1t1KE5-0001fF-Ey
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:13 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t1KE2-0005EY-D7
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:12 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2e06acff261so421888a91.2
- for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 23:43:09 -0700 (PDT)
+ id 1t1KE3-0005F4-M6
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:13 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2e2bd347124so428210a91.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 23:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729147388; x=1729752188;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729147390; x=1729752190;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=x6zpqchONPHG2z1YpUsmT5085ajZuY5rM0OQd21AjPA=;
- b=JZd1gUPLOT1AUzHkL1TllzkWVpnXxj3+5nVbO3u8wFp21gmUXji7jA2QtySEYrOtzi
- 5u7g1ocZMgD21OB5S3EIEkECg64O5jJlKNn3DK3DGloZlUFraMA4FSGc+0UqIa5nrk5K
- T+vugZjGVDQahvPNCE2qTiTjsFw51HUguzxEWINW3QJgDNEyK98R0PiCmmKIa3zqoxTC
- DtArTmkD/cOTzyi1ZfmlFr+xTbuKWT2hJi0VSkUwH1fN6HZtWfFx+nLhN4k+ewGETCSE
- U0oaZOSEGyMDUZyDM+wNq+1m9oIv5YuErpQJP2gzXDPqXZ69EV5wZxWY+3bf5M5fArlo
- 204g==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=T6S1/+0v2iIFTN9IgGH3Oc8MyncjueTnrzbQJcQEhw8=;
+ b=doI/06lQliCs4Vk34jLYvocAnAipMTopoQ1pltv4w5HKiiUU/LiUev8JyMWuAjAPAx
+ AsEiui3jTRssBRnKD7idWDtOPd4j03/HWXp5EBMPU/heRGzVinY0abYzbVFEIPlORSSW
+ EHkkGk2oJiwjGz2rMrr2OWJPPYONEkndwyqcg0eljVTID52PtvkloRKbvyH/marQNNQ1
+ 12bTrXZUJAVk+9vomykjL5mhOMb4zC9xqXyyU6Avd9vJ0KudBCmIPL5rw1Ks1w8JAGCE
+ 1yE33v89lDlR0nxoRP/xHehACQ0ukEWvPssa9Y8C4XpGOKBz4mxARqVf49fI8Gim1TAC
+ /MSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729147388; x=1729752188;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x6zpqchONPHG2z1YpUsmT5085ajZuY5rM0OQd21AjPA=;
- b=EnZaQVjakBlPH2XNBwemnlDyn4Gl5xv1pBmmfgwgdvfOHQUgNgSSMiLwPESqAXSvXm
- G8E9Vo8kOulGS5ZdpAYIS4lXgA9lUXjoYxJGdNcSCvxyppMKX+SjGU2WgkLtURHHH2gM
- qC79v2jvp0eml4PMmvckI6PJtvwI8ipQEmGzOez5fnAx3LQR3LWmUuwWvAyj5NDiMw52
- 8vXGo3HrNtHCX28c4XRVumSBNan6NkDR0ucstiJXLPrpVm24xXp/GEqwvYaRgOKZcWd5
- 80aNwb6oSrHoZlTjAt7WRvXq/lL4sEveiiU+OYSjuns64pQhLd4iQDSnCGO1HS+TiyTQ
- BCRg==
-X-Gm-Message-State: AOJu0Yy3Z+tg9Rr8s3zVLW/8ieS7TC1BfuwR3iaEwmtsiQHaTdonSgUh
- ZriXRBUfpsAO3UjnAgCJAoGk86ZC5KjCNre9eYz+ucO4DF9TNpREUn8DOkLN0zFr5Pr9NGulb2m
- 4OB3X7w==
-X-Google-Smtp-Source: AGHT+IEf2TJZkHTOxBnirpe4APYmst/EbPGYtswB9IeyoXAwxqBduqDN+7+lyoY2+4YS6J3WpnPwkA==
-X-Received: by 2002:a17:90a:3ea7:b0:2e2:d197:40f3 with SMTP id
- 98e67ed59e1d1-2e3ab8e7b46mr7725796a91.35.1729147387458; 
- Wed, 16 Oct 2024 23:43:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729147390; x=1729752190;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T6S1/+0v2iIFTN9IgGH3Oc8MyncjueTnrzbQJcQEhw8=;
+ b=jAgjk0FE561FnGxeyy0KkVGdE+EtXGfkETzYwTaqbOktnaheJGETklZlAEGQgh55xr
+ MoNWyjEl/AENcSKffrT9bXpw/4XdElOVvpk34dtfOmN7ZMbatRMFl6K4TiBAtTnLUVMO
+ 8+2ekZHo9LVcGWwRrPlLJOcCzBPjabUPzcVpVpj8nO5v2ID+wMeDhVgNYFZv9fBffwXh
+ nrStsRfEnaMz9wJrKbFUToKfAfS0Viz/9ZqNwUDc7IIH5ihp7Euv2ZwBtwnW3ScJZPM0
+ 8JIRQLCGAl/EW/8WVI64jG87Jb8pU3sNX86MCQ5JZ7QHvlMRcrDQza7kLsRETdWW1UHQ
+ kvVQ==
+X-Gm-Message-State: AOJu0YyDJBpZ26o/+ySk4RnuJGzrFZOZIWHkA9IQ+DaGUVGC0nO+8mqg
+ 9wbmRffzm/MDdE0Z83CtYcdevFLQs5FsXY8ivzNJI9jF896Wap2LOzVEsr37GDMdjqAur+SkJ6r
+ pJDhTkg==
+X-Google-Smtp-Source: AGHT+IHlcjSGqarS+g1bhBvZ+/5z18UzVO8XJTedPcuZrk2rXbJ2yPGb6Ke6AXkQXWyOH6X/CTjG1Q==
+X-Received: by 2002:a17:90b:4c8c:b0:2e2:c66f:5527 with SMTP id
+ 98e67ed59e1d1-2e3ab8bcf91mr7405582a91.29.1729147389467; 
+ Wed, 16 Oct 2024 23:43:09 -0700 (PDT)
 Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e3e08eba12sm1044372a91.29.2024.10.16.23.43.05
+ 98e67ed59e1d1-2e3e08eba12sm1044372a91.29.2024.10.16.23.43.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2024 23:43:07 -0700 (PDT)
+ Wed, 16 Oct 2024 23:43:09 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v4 0/6] migration: auto-converge refinements for huge VM  
-Date: Thu, 17 Oct 2024 14:42:49 +0800
-Message-Id: <cover.1729146786.git.yong.huang@smartx.com>
+Subject: [PATCH v4 1/6] accel/tcg/icount-common: Remove the reference to the
+ unused header file
+Date: Thu, 17 Oct 2024 14:42:50 +0800
+Message-Id: <5e33b423d0b8506e5cb33fff42b50aa301b7731b.1729146786.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <cover.1729146786.git.yong.huang@smartx.com>
+References: <cover.1729146786.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,62 +97,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-v4:
-1. split the [PATCH v3 1/6] into smaller patches.
-2. refine some comment and commit message
-3. fix race issue for the throttle_dirty_sync_timer
-4. refine the util function cpu_throttle_dirty_sync_timer
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ accel/tcg/icount-common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thanks Peter for the suggestions.
-
-Please review.
-
-Yong
-
-v3:
-1. drop the responsive throttle patchset
-2. rename background sync to periodic ramblock dirty sync
-3. move the cpu-throttle.* from system to migration
-4. remove "rs" parameter in migration_bitmap_sync_precopy
-5. implement periodic ramblock dirty sync in cpu-throttle.c
-6. move the test change into a separate patch
-
-To simplify the cover letter, i have dropped the test data,
-please refer to 
-https://lore.kernel.org/qemu-devel/cover.1727630000.git.yong.huang@smartx.com/
-for more test details.
-
-Thanks Peter and Fabiano for the suggestions and comments.
-
-Please review.
-
-Yong
-
-Hyman Huang (6):
-  accel/tcg/icount-common: Remove the reference to the unused header
-    file
-  migration: Stop CPU throttling conditionally
-  migration: Move cpu-throttole.c from system to migration
-  migration: Remove "rs" parameter in migration_bitmap_sync_precopy
-  migration: Support periodic RAMBlock dirty bitmap sync
-  tests/migration: Add case for periodic ramblock dirty sync
-
- accel/tcg/icount-common.c                    |  1 -
- {system => migration}/cpu-throttle.c         | 67 +++++++++++++++++++-
- {include/sysemu => migration}/cpu-throttle.h | 14 ++++
- migration/meson.build                        |  1 +
- migration/migration.c                        | 23 +++++--
- migration/migration.h                        |  1 +
- migration/ram.c                              | 13 ++--
- migration/trace-events                       |  4 ++
- system/cpu-timers.c                          |  3 -
- system/meson.build                           |  1 -
- system/trace-events                          |  3 -
- tests/qtest/migration-test.c                 | 32 ++++++++++
- 12 files changed, 143 insertions(+), 20 deletions(-)
- rename {system => migration}/cpu-throttle.c (67%)
- rename {include/sysemu => migration}/cpu-throttle.h (87%)
-
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index 8d3d3a7e9d..30bf8500dc 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -36,7 +36,6 @@
+ #include "sysemu/runstate.h"
+ #include "hw/core/cpu.h"
+ #include "sysemu/cpu-timers.h"
+-#include "sysemu/cpu-throttle.h"
+ #include "sysemu/cpu-timers-internal.h"
+ 
+ /*
 -- 
 2.27.0
 
