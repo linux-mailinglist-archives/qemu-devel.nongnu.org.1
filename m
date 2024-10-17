@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823739A2634
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9AD9A2632
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1SD4-0007A9-6K; Thu, 17 Oct 2024 11:14:42 -0400
+	id 1t1SDB-0007Bc-20; Thu, 17 Oct 2024 11:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SD2-00079L-NQ
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:40 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1t1SD8-0007BM-Qt
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:46 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SD1-00015f-CL
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:40 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBv7B024561;
- Thu, 17 Oct 2024 15:14:37 GMT
+ id 1t1SD7-00016G-96
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:46 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBcgJ025032;
+ Thu, 17 Oct 2024 15:14:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=GBIfTLx2DuEIrzmPlqM5ObwCAX5mdO00SssK9p2FeIs=; b=
- c1lIF5AcS1OmOan38FT8UfIesg+wpJ80wcl7GSbQiLajUB67sFbFJexpOxpFe2m1
- 5HbpMvZl3uumezaKk+TbvAbajXSjsn48AZCA7cIAsM5vG8GxkgpHUMK2MD0JekrK
- HhB9nEb4aqrFMesT8qgfkZFMXSFtVgOMYBvH8r+RQwyqo40SRJJNYPYIPwNJIolH
- vspNxXA0Qldm3JvvND4iGAlOc881GDpwGYJQ2qcsgGs6XiCRKjooHOnbIanfCGyF
- PD+qSIgQVWeXwGHwwGJF1hWwSDx5c6vLNsYDP0+inulakXBKKS6ekuBEqcpfC5/M
- 2i4mYLs6aHaLctD5H/8GiA==
+ corp-2023-11-20; bh=dB4HCRsy8IFj/zUVwchannUOHLDV6S6nVpfFBtaBAXE=; b=
+ QzLs9vFrkNBOzP8y/ysnA9sMK5423ywIBAXQC/AKPcy0ORf8ShC7RJoN89rOCahW
+ Yu19sEsOBxpOHgEfm8oL+EO9nfvZKoi6wy0rdhRrRhMKPwiXh7GO9OTsv7jUKLUj
+ bVmXsi/orQICGaXGZUfQqw3MHlk9yzvNkLE7LjeRGKMJxMffSg/LPDV8n+dK1KAw
+ m4C900tyOA2szOPC1zPCSrYAg167WPnhyOuFRpQymcqZroyqCO7IlAe7RKndrwYK
+ 2LL3Fe8ArmPHRVanBev9E6Z6b+d2XIF5jzPObgm2wARK/G9tegsWMpFIbHh0zjyo
+ qwG7M8bXVMHaBNX/YUC/3A==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fhcp9fa-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427g1apg28-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:36 +0000 (GMT)
+ Thu, 17 Oct 2024 15:14:39 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49HEOSuT027163; Thu, 17 Oct 2024 15:14:36 GMT
+ with ESMTP id 49HEx45S027314; Thu, 17 Oct 2024 15:14:37 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 427fjgy6gc-1
+ 427fjgy6hd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:36 +0000
+ Thu, 17 Oct 2024 15:14:37 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgr017147;
- Thu, 17 Oct 2024 15:14:35 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgt017147;
+ Thu, 17 Oct 2024 15:14:37 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 427fjgy62e-14; Thu, 17 Oct 2024 15:14:35 +0000
+ ESMTP id 427fjgy62e-15; Thu, 17 Oct 2024 15:14:37 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,24 +62,25 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 13/14] net: cleanup for precreate phase
-Date: Thu, 17 Oct 2024 08:14:14 -0700
-Message-Id: <1729178055-207271-14-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 14/14] migration: allow commands during precreate and
+ preconfig
+Date: Thu, 17 Oct 2024 08:14:15 -0700
+Message-Id: <1729178055-207271-15-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-17_16,2024-10-17_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=903
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0
  spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410170105
-X-Proofpoint-GUID: 5IUtBn_T31wwp9HNs3KCn6V3u1QS2YoI
-X-Proofpoint-ORIG-GUID: 5IUtBn_T31wwp9HNs3KCn6V3u1QS2YoI
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: fiSzgF2sQTmP4Pkbvt_qT7ZTyMXGMZU5
+X-Proofpoint-ORIG-GUID: fiSzgF2sQTmP4Pkbvt_qT7ZTyMXGMZU5
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -103,29 +104,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Guard against unconfigured state if cleanup is called early, such as
-during the precreate phase.
+Allow various migration commands during the precreate and preconfig phases
+so migration may be set up and initiated at that time.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- net/net.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hmp-commands.hx     |  2 ++
+ qapi/migration.json | 16 +++++++++++-----
+ qapi/misc.json      |  3 ++-
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index d9b23a8..207fdb0 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1687,7 +1687,9 @@ void net_cleanup(void)
-         }
-     }
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 06746f0..c0f34e9 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -959,6 +959,7 @@ ERST
+         .params     = "uri",
+         .help       = "Continue an incoming migration from an -incoming defer",
+         .cmd        = hmp_migrate_incoming,
++        .flags      = "p",
+     },
  
--    qemu_del_vm_change_state_handler(net_change_state_entry);
-+    if (net_change_state_entry) {
-+        qemu_del_vm_change_state_handler(net_change_state_entry);
-+    }
- }
+ SRST
+@@ -1000,6 +1001,7 @@ ERST
+         .help       = "Enable/Disable the usage of a capability for migration",
+         .cmd        = hmp_migrate_set_capability,
+         .command_completion = migrate_set_capability_completion,
++        .flags      = "p",
+     },
  
- void net_check_clients(void)
+ SRST
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 3af6aa1..0468c07 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -373,7 +373,8 @@
+ #           }
+ #        }
+ ##
+-{ 'command': 'query-migrate', 'returns': 'MigrationInfo' }
++{ 'command': 'query-migrate', 'returns': 'MigrationInfo',
++  'allow-preconfig': true }
+ 
+ ##
+ # @MigrationCapability:
+@@ -527,7 +528,8 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'migrate-set-capabilities',
+-  'data': { 'capabilities': ['MigrationCapabilityStatus'] } }
++  'data': { 'capabilities': ['MigrationCapabilityStatus'] },
++  'allow-preconfig': true }
+ 
+ ##
+ # @query-migrate-capabilities:
+@@ -551,7 +553,9 @@
+ #           {"state": false, "capability": "x-colo"}
+ #        ]}
+ ##
+-{ 'command': 'query-migrate-capabilities', 'returns':   ['MigrationCapabilityStatus']}
++{ 'command': 'query-migrate-capabilities',
++  'returns':   ['MigrationCapabilityStatus'],
++  'allow-preconfig': true }
+ 
+ ##
+ # @MultiFDCompression:
+@@ -1297,7 +1301,8 @@
+ #        }
+ ##
+ { 'command': 'query-migrate-parameters',
+-  'returns': 'MigrationParameters' }
++  'returns': 'MigrationParameters',
++  'allow-preconfig': true }
+ 
+ ##
+ # @migrate-start-postcopy:
+@@ -1751,7 +1756,8 @@
+ { 'command': 'migrate-incoming',
+              'data': {'*uri': 'str',
+                       '*channels': [ 'MigrationChannel' ],
+-                      '*exit-on-error': 'bool' } }
++                      '*exit-on-error': 'bool' },
++  'allow-preconfig': true }
+ 
+ ##
+ # @xen-save-devices-state:
+diff --git a/qapi/misc.json b/qapi/misc.json
+index 559b66f..ce60493 100644
+--- a/qapi/misc.json
++++ b/qapi/misc.json
+@@ -241,7 +241,8 @@
+ { 'command': 'human-monitor-command',
+   'data': {'command-line': 'str', '*cpu-index': 'int'},
+   'returns': 'str',
+-  'features': [ 'savevm-monitor-nodes' ] }
++  'features': [ 'savevm-monitor-nodes' ],
++  'allow-preconfig': true }
+ 
+ ##
+ # @getfd:
 -- 
 1.8.3.1
 
