@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B359A1ABE
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 08:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F5C9A1ADF
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 08:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1K5x-00083K-Bq; Thu, 17 Oct 2024 02:34:49 -0400
+	id 1t1KE7-0001fb-3E; Thu, 17 Oct 2024 02:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1K5l-000830-1c
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:34:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1K5j-00025Q-M9
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:34:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729146873;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kyeFW8F58eg9bQP7olaA/2+XrDpleTSKUoyCc8mkoes=;
- b=RjAAIXWUnxT0SGMIefs0FNMW/up0Dc08Ps5g8p9YcPF6W1I1yw2m9nrdad/nEC6N8WnjS0
- 9U0sHjgsGZW/SuytjR3D0VjtPRB75+DhWAzg7uC64sPzkgiVRZx9GmTFTVoN3AS0corMA9
- nsOx842SUO4WJgBDr3RdIjzBfMfG9fY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-Vk0sqeyRNRCUIOetyJF3oQ-1; Thu,
- 17 Oct 2024 02:34:30 -0400
-X-MC-Unique: Vk0sqeyRNRCUIOetyJF3oQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2323C1956048; Thu, 17 Oct 2024 06:34:29 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C879319560A3; Thu, 17 Oct 2024 06:34:28 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5800A21E6A28; Thu, 17 Oct 2024 08:34:26 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Kunwu <chentao@kylinos.cn>,  =?utf-8?Q?C=C3=A9?=
- =?utf-8?Q?dric?= Le Goater
- <clg@redhat.com>,  Alejandro Zeise <alejandro.zeise@seagate.com>
-Subject: Re: [PULL 07/17] crypto/hash-afalg: Implement new hash API
-In-Reply-To: <20241010162024.988284-8-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 10 Oct 2024 17:20:14
- +0100")
-References: <20241010162024.988284-1-berrange@redhat.com>
- <20241010162024.988284-8-berrange@redhat.com>
-Date: Thu, 17 Oct 2024 08:34:26 +0200
-Message-ID: <87zfn3ck5p.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t1KE4-0001f5-I4
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:12 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t1KE2-0005EY-D7
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 02:43:12 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2e06acff261so421888a91.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Oct 2024 23:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729147388; x=1729752188;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=x6zpqchONPHG2z1YpUsmT5085ajZuY5rM0OQd21AjPA=;
+ b=JZd1gUPLOT1AUzHkL1TllzkWVpnXxj3+5nVbO3u8wFp21gmUXji7jA2QtySEYrOtzi
+ 5u7g1ocZMgD21OB5S3EIEkECg64O5jJlKNn3DK3DGloZlUFraMA4FSGc+0UqIa5nrk5K
+ T+vugZjGVDQahvPNCE2qTiTjsFw51HUguzxEWINW3QJgDNEyK98R0PiCmmKIa3zqoxTC
+ DtArTmkD/cOTzyi1ZfmlFr+xTbuKWT2hJi0VSkUwH1fN6HZtWfFx+nLhN4k+ewGETCSE
+ U0oaZOSEGyMDUZyDM+wNq+1m9oIv5YuErpQJP2gzXDPqXZ69EV5wZxWY+3bf5M5fArlo
+ 204g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729147388; x=1729752188;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x6zpqchONPHG2z1YpUsmT5085ajZuY5rM0OQd21AjPA=;
+ b=EnZaQVjakBlPH2XNBwemnlDyn4Gl5xv1pBmmfgwgdvfOHQUgNgSSMiLwPESqAXSvXm
+ G8E9Vo8kOulGS5ZdpAYIS4lXgA9lUXjoYxJGdNcSCvxyppMKX+SjGU2WgkLtURHHH2gM
+ qC79v2jvp0eml4PMmvckI6PJtvwI8ipQEmGzOez5fnAx3LQR3LWmUuwWvAyj5NDiMw52
+ 8vXGo3HrNtHCX28c4XRVumSBNan6NkDR0ucstiJXLPrpVm24xXp/GEqwvYaRgOKZcWd5
+ 80aNwb6oSrHoZlTjAt7WRvXq/lL4sEveiiU+OYSjuns64pQhLd4iQDSnCGO1HS+TiyTQ
+ BCRg==
+X-Gm-Message-State: AOJu0Yy3Z+tg9Rr8s3zVLW/8ieS7TC1BfuwR3iaEwmtsiQHaTdonSgUh
+ ZriXRBUfpsAO3UjnAgCJAoGk86ZC5KjCNre9eYz+ucO4DF9TNpREUn8DOkLN0zFr5Pr9NGulb2m
+ 4OB3X7w==
+X-Google-Smtp-Source: AGHT+IEf2TJZkHTOxBnirpe4APYmst/EbPGYtswB9IeyoXAwxqBduqDN+7+lyoY2+4YS6J3WpnPwkA==
+X-Received: by 2002:a17:90a:3ea7:b0:2e2:d197:40f3 with SMTP id
+ 98e67ed59e1d1-2e3ab8e7b46mr7725796a91.35.1729147387458; 
+ Wed, 16 Oct 2024 23:43:07 -0700 (PDT)
+Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2e3e08eba12sm1044372a91.29.2024.10.16.23.43.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Oct 2024 23:43:07 -0700 (PDT)
+From: yong.huang@smartx.com
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
+Subject: [PATCH v4 0/6] migration: auto-converge refinements for huge VM  
+Date: Thu, 17 Oct 2024 14:42:49 +0800
+Message-Id: <cover.1729146786.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.038,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,43 +91,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+From: Hyman Huang <yong.huang@smartx.com>
 
-> From: Alejandro Zeise <alejandro.zeise@seagate.com>
->
-> Updates the afalg hash driver to support the new accumulative
-> hashing changes as part of the patch series.
->
-> Implements opening/closing of contexts, updating hash data
-> and finalizing the hash digest.
->
-> In order to support the update function, a flag needs to be passed
-> to the kernel via the socket send call (MSG_MORE) to notify it that more
-> data is to be expected to calculate the hash correctly.
-> As a result, a new function was added to the iov helper utils to allow
-> passing a flag to the socket send call.
->
-> Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
-> [ clg: - Handled qcrypto_afalg_hash_ctx_new() errors in
->          qcrypto_afalg_hash_new()
->        - Freed alg_name in qcrypto_afalg_hash_new()
->        - Reworked qcrypto_afalg_recv_from_kernel()
->        - Split iov changes from original patch ]
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+v4:
+1. split the [PATCH v3 1/6] into smaller patches.
+2. refine some comment and commit message
+3. fix race issue for the throttle_dirty_sync_timer
+4. refine the util function cpu_throttle_dirty_sync_timer
 
-Semantic conflict with commit 8f525028bc6 broke the build:
+Thanks Peter for the suggestions.
 
-    ../crypto/hash-afalg.c: In function =E2=80=98qcrypto_afalg_hash_free=E2=
-=80=99:
-    ../crypto/hash-afalg.c:145:5: error: unknown type name =E2=80=98QCrypto=
-AFAlg=E2=80=99; did you mean =E2=80=98QCryptoAFAlgo=E2=80=99?
-      145 |     QCryptoAFAlg *ctx =3D hash->opaque;
-          |     ^~~~~~~~~~~~
-          |     QCryptoAFAlgo
+Please review.
 
+Yong
 
-and more of the same.  I'll post a patch.
+v3:
+1. drop the responsive throttle patchset
+2. rename background sync to periodic ramblock dirty sync
+3. move the cpu-throttle.* from system to migration
+4. remove "rs" parameter in migration_bitmap_sync_precopy
+5. implement periodic ramblock dirty sync in cpu-throttle.c
+6. move the test change into a separate patch
+
+To simplify the cover letter, i have dropped the test data,
+please refer to 
+https://lore.kernel.org/qemu-devel/cover.1727630000.git.yong.huang@smartx.com/
+for more test details.
+
+Thanks Peter and Fabiano for the suggestions and comments.
+
+Please review.
+
+Yong
+
+Hyman Huang (6):
+  accel/tcg/icount-common: Remove the reference to the unused header
+    file
+  migration: Stop CPU throttling conditionally
+  migration: Move cpu-throttole.c from system to migration
+  migration: Remove "rs" parameter in migration_bitmap_sync_precopy
+  migration: Support periodic RAMBlock dirty bitmap sync
+  tests/migration: Add case for periodic ramblock dirty sync
+
+ accel/tcg/icount-common.c                    |  1 -
+ {system => migration}/cpu-throttle.c         | 67 +++++++++++++++++++-
+ {include/sysemu => migration}/cpu-throttle.h | 14 ++++
+ migration/meson.build                        |  1 +
+ migration/migration.c                        | 23 +++++--
+ migration/migration.h                        |  1 +
+ migration/ram.c                              | 13 ++--
+ migration/trace-events                       |  4 ++
+ system/cpu-timers.c                          |  3 -
+ system/meson.build                           |  1 -
+ system/trace-events                          |  3 -
+ tests/qtest/migration-test.c                 | 32 ++++++++++
+ 12 files changed, 143 insertions(+), 20 deletions(-)
+ rename {system => migration}/cpu-throttle.c (67%)
+ rename {include/sysemu => migration}/cpu-throttle.h (87%)
+
+-- 
+2.27.0
 
 
