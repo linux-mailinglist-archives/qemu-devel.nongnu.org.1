@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A289A2630
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6277C9A263F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:16:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1SCz-000783-1O; Thu, 17 Oct 2024 11:14:37 -0400
+	id 1t1SD1-00078h-MF; Thu, 17 Oct 2024 11:14:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCw-00077i-DE
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:34 -0400
+ id 1t1SCx-00077s-6P
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:35 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCu-00014b-Ns
+ id 1t1SCv-00014r-Iu
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:34 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBntI019222;
- Thu, 17 Oct 2024 15:14:30 GMT
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBv7A024561;
+ Thu, 17 Oct 2024 15:14:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=I6kRe7XWAeep7YalOEQJIxLpst0wY/dkjO24wZibC4o=; b=
- Mp20yxItkyuXuqU0ail9GztN9w1CGM1E3Om3daSeR3qdRDoN+aeVnVkfuRja4g7K
- gl9gidDUAX75kJW+RdduiH3pGACbZsGkx21dwguIih8/cv+WpD6ins1NWkxfUXba
- 3srYGZ+psiQ2ay96ZxTAwdYLNobBtWXLiTsxhC+wh/eFvP2vOZZ/K6FDSpwbjmKG
- J73pvPH9BO2iO7SaQzqaLBZmNZHTVOXlcTBbhL2CWCi+7y2AjjOaYDRyCPPFqHpH
- BPMKnVel9Kwt8JpnIj7kdhLfCRh/8k3kj74lJAMfEnFOw6HGRIMS5hR0i76SBIv7
- myoGBhyCoxbBUaGKLyUh2g==
+ corp-2023-11-20; bh=Plx7NKWG6o8+aXxaD4xxaoc4Ah8qyprSQc9PLk5710I=; b=
+ WwsQ/PquXZh8I23m79IMGler86ZwZAIWpYDiv6UOZ0xNEpqxUnYxQTeKeU18S4Ia
+ ZJeb4pXpGlgFu2KOf8MP4bLOCSwAO9boB526FsnoK8EDh9aEIBvO8+AKWQVSgs8X
+ qy4nap+RYEmgJPpY+e8qREV5LNIau7AF9P2jAcBHNOO0GOAeLKwhwyHsvcTzwJIf
+ TYhgxLp1JeugSkTLMvpyb/BOxRJMmmKSs5N/VdBSFTzOcOgTXf7fdiyQGy4TIocE
+ pIpLT/ObpXbwjGFU91kPobrY8yQYRKCqLgR2xAfaLyfwViQ7qK+FsSKe0s+jIhAG
+ B2cKbJmKxg3z2s5XFpS0fA==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427h5cq32q-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fhcp9f1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:29 +0000 (GMT)
+ Thu, 17 Oct 2024 15:14:31 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49HE0skJ027565; Thu, 17 Oct 2024 15:14:29 GMT
+ with ESMTP id 49HF0CrK027322; Thu, 17 Oct 2024 15:14:30 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 427fjgy6b9-1
+ 427fjgy6c5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:29 +0000
+ Thu, 17 Oct 2024 15:14:30 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgh017147;
- Thu, 17 Oct 2024 15:14:28 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgj017147;
+ Thu, 17 Oct 2024 15:14:29 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 427fjgy62e-9; Thu, 17 Oct 2024 15:14:28 +0000
+ ESMTP id 427fjgy62e-10; Thu, 17 Oct 2024 15:14:29 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 08/14] qom: get properties
-Date: Thu, 17 Oct 2024 08:14:09 -0700
-Message-Id: <1729178055-207271-9-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 09/14] qemu-option: filtered foreach
+Date: Thu, 17 Oct 2024 08:14:10 -0700
+Message-Id: <1729178055-207271-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410170105
-X-Proofpoint-ORIG-GUID: DYbuSD6wqBf0Xw-a9nDdZE3qJnt73d0M
-X-Proofpoint-GUID: DYbuSD6wqBf0Xw-a9nDdZE3qJnt73d0M
+X-Proofpoint-GUID: r5jGEB_J2HRV22nNVxeL8JYINFHdAuqP
+X-Proofpoint-ORIG-GUID: r5jGEB_J2HRV22nNVxeL8JYINFHdAuqP
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,93 +103,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract a subroutine from user_creatable_add_qapi that converts object
-options to a dictionary of properties and returns them.  Use g_autoptr
-to simplify the code.  No functional change.
+Define an accessor to loop over an options list and call a function
+for each element that passes a filter function.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/qapi/visitor.h          |  1 +
- include/qom/object_interfaces.h |  8 ++++++++
- qom/object_interfaces.c         | 27 ++++++++++++++-------------
- 3 files changed, 23 insertions(+), 13 deletions(-)
+ include/qemu/option.h |  5 +++++
+ util/qemu-option.c    | 25 +++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/include/qapi/visitor.h b/include/qapi/visitor.h
-index 27b85d4..640b941 100644
---- a/include/qapi/visitor.h
-+++ b/include/qapi/visitor.h
-@@ -268,6 +268,7 @@ void visit_complete(Visitor *v, void *opaque);
-  */
- void visit_free(Visitor *v);
+diff --git a/include/qemu/option.h b/include/qemu/option.h
+index 01e673a..fe37d4c 100644
+--- a/include/qemu/option.h
++++ b/include/qemu/option.h
+@@ -138,9 +138,14 @@ QDict *qemu_opts_to_qdict_filtered(QemuOpts *opts, QDict *qdict,
+ QDict *qemu_opts_to_qdict(QemuOpts *opts, QDict *qdict);
+ bool qemu_opts_absorb_qdict(QemuOpts *opts, QDict *qdict, Error **errp);
  
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(Visitor, visit_free)
- 
- /*** Visiting structures ***/
- 
-diff --git a/include/qom/object_interfaces.h b/include/qom/object_interfaces.h
-index 02b11a7..2384263 100644
---- a/include/qom/object_interfaces.h
-+++ b/include/qom/object_interfaces.h
-@@ -98,6 +98,14 @@ Object *user_creatable_add_type(const char *type, const char *id,
- void user_creatable_add_qapi(ObjectOptions *options, Error **errp);
- 
- /**
-+ * user_creatable_get_props:
-+ * @options: the object definition
-+ *
-+ * Convert @options to a dictionary of properties and return it.
-+ */
-+QDict *user_creatable_get_props(ObjectOptions *options);
-+
-+/**
-  * user_creatable_parse_str:
-  * @str: the object definition string as passed on the command line
-  * @errp: if an error occurs, a pointer to an area to store the error
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index e0833c8..104d75c 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -139,26 +139,27 @@ out:
- 
- void user_creatable_add_qapi(ObjectOptions *options, Error **errp)
- {
--    Visitor *v;
--    QObject *qobj;
--    QDict *props;
--    Object *obj;
-+    g_autoptr(Visitor) v;
-+    g_autoptr(Object) obj;
-+    g_autoptr(QDict) props = user_creatable_get_props(options);
- 
--    v = qobject_output_visitor_new(&qobj);
--    visit_type_ObjectOptions(v, NULL, &options, &error_abort);
--    visit_complete(v, &qobj);
--    visit_free(v);
--
--    props = qobject_to(QDict, qobj);
-     qdict_del(props, "qom-type");
-     qdict_del(props, "id");
- 
-     v = qobject_input_visitor_new(QOBJECT(props));
-     obj = user_creatable_add_type(ObjectType_str(options->qom_type),
-                                   options->id, props, v, errp);
--    object_unref(obj);
--    qobject_unref(qobj);
--    visit_free(v);
-+}
-+
-+QDict *user_creatable_get_props(ObjectOptions *options)
-+{
-+    g_autoptr(Visitor) v;
-+    QObject *qobj;
-+
-+    v = qobject_output_visitor_new(&qobj);
-+    visit_type_ObjectOptions(v, NULL, &options, &error_abort);
-+    visit_complete(v, &qobj);
-+    return qobject_to(QDict, qobj);
++typedef bool (*qemu_opts_filterfunc)(void *opaque, QemuOpts *opts);
+ typedef int (*qemu_opts_loopfunc)(void *opaque, QemuOpts *opts, Error **errp);
+ int qemu_opts_foreach(QemuOptsList *list, qemu_opts_loopfunc func,
+                       void *opaque, Error **errp);
++int qemu_opts_filter_foreach(QemuOptsList *list,
++                             qemu_opts_filterfunc filter,
++                             qemu_opts_loopfunc func,
++                             void *opaque, Error **errp);
+ void qemu_opts_print(QemuOpts *opts, const char *sep);
+ void qemu_opts_print_help(QemuOptsList *list, bool print_caption);
+ void qemu_opts_free(QemuOptsList *list);
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index 201f7a8..f2f02d6 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -1142,6 +1142,31 @@ int qemu_opts_foreach(QemuOptsList *list, qemu_opts_loopfunc func,
+     return rc;
  }
  
- char *object_property_help(const char *name, const char *type,
++int qemu_opts_filter_foreach(QemuOptsList *list,
++                             qemu_opts_filterfunc filter,
++                             qemu_opts_loopfunc func,
++                             void *opaque, Error **errp)
++{
++    Location loc;
++    QemuOpts *opts, *next;
++    int rc = 0;
++
++    loc_push_none(&loc);
++    QTAILQ_FOREACH_SAFE(opts, &list->head, next, next) {
++        if (!filter(opaque, opts)) {
++            continue;
++        }
++        loc_restore(&opts->loc);
++        rc = func(opaque, opts, errp);
++        if (rc) {
++            break;
++        }
++        assert(!errp || !*errp);
++    }
++    loc_pop(&loc);
++    return rc;
++}
++
+ static size_t count_opts_list(QemuOptsList *list)
+ {
+     QemuOptDesc *desc = NULL;
 -- 
 1.8.3.1
 
