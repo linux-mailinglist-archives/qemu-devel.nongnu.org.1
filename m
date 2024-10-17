@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973439A2636
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5DA9A2633
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1SCr-00075U-PF; Thu, 17 Oct 2024 11:14:29 -0400
+	id 1t1SCq-000754-Ll; Thu, 17 Oct 2024 11:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCp-00074r-GM
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:27 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1t1SCo-00074h-SF
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:26 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t1SCn-00013I-KS
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:27 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBdpI000302;
- Thu, 17 Oct 2024 15:14:19 GMT
+ id 1t1SCm-000138-S2
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:26 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBnMM002180;
+ Thu, 17 Oct 2024 15:14:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:message-id:subject:to; s=corp-2023-11-20; bh=n2jyMnxa
- ZtbkIgyEE0HE4pfchrWhkrfJNQvpORfedj0=; b=bKCRutFu6AHW9RBVec0jyKvO
- MIkpdJri98HFDEPOkFE4TA5hg73SRIMG/j+ysU2L/vwQorrnYGkqqBOMQwK06a3y
- J1Y4NzseUKUlUpSH4X17cclk24qt3HZEa/GtsixB2wZpyrgbRXiXI+0Ekxuu4cPa
- k6NQgTYEsZkPhlBs7ZdFqSPCJf1nL6WqOKrIFdzlpT9f8/wo1xTMPU+tKaccO9Cj
- 5M5TcxUbiZB8+OMSfTO358IQABnRVIxJWU49RRusSkMVZr9UAlOfEKqSatoSPI7L
- WFVRwiR9Hx4cOTt3KpUbqhqXVFGBFcSvfSRs0ONoJwMoAYNTcqpZWTwziitKxA==
+ :date:from:in-reply-to:message-id:references:subject:to; s=
+ corp-2023-11-20; bh=frxO7ahMl8qvacRYWDcpnTuF9WMCVFPghqcWZg2FsOI=; b=
+ IYOeCMu2xiW8rehMUNSZAE6MnlPjgDJHYtaE7cXkE4a77RrPMZYTVxaTKFbx4BKZ
+ ITZM/NOj+xRQR334t4LZjllEUMu94zFcqK+XXE6ynNQCiZk1UOhMWj7eWrKTHcZ5
+ tMVmc66RiIRJK9mteLbAzZbsct3AQ9B8xG15L+hEGr+XcJdf+DQ78decg+LHaWGs
+ Fgbj+PupBLby4NKj710eO0y373DD/sqEt9xePM+vYfwjlzo9XpRjerRWEnwLbVLt
+ ghOqc1tjg1sozHkIR0tvHxBE9LQidEskHC1oS8G/PqCVvm+cJjUR7d9TQ9ujjASW
+ KcwBM+75MuRKB/jfPtrv6g==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427h09p4hy-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fw2ptrd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 17 Oct 2024 15:14:19 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49HEfFFl027182; Thu, 17 Oct 2024 15:14:18 GMT
+ with ESMTP id 49HEoVhH027387; Thu, 17 Oct 2024 15:14:19 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 427fjgy63c-1
+ 427fjgy648-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2024 15:14:17 +0000
+ Thu, 17 Oct 2024 15:14:19 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgR017147;
- Thu, 17 Oct 2024 15:14:17 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgT017147;
+ Thu, 17 Oct 2024 15:14:18 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 427fjgy62e-1; Thu, 17 Oct 2024 15:14:17 +0000
+ ESMTP id 427fjgy62e-2; Thu, 17 Oct 2024 15:14:18 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -61,10 +62,12 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 00/14] precreate phase
-Date: Thu, 17 Oct 2024 08:14:01 -0700
-Message-Id: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 01/14] accel: encapsulate search state
+Date: Thu, 17 Oct 2024 08:14:02 -0700
+Message-Id: <1729178055-207271-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
+References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-17_16,2024-10-17_01,2024-09-30_01
@@ -73,10 +76,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410170105
-X-Proofpoint-GUID: tFdCHiLWBFP7EF8Aj4pB2_VBKPaFdZzn
-X-Proofpoint-ORIG-GUID: tFdCHiLWBFP7EF8Aj4pB2_VBKPaFdZzn
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-GUID: Ojdqa_dkZ128-5jHenRnV6AMNRS9KGr_
+X-Proofpoint-ORIG-GUID: Ojdqa_dkZ128-5jHenRnV6AMNRS9KGr_
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -100,87 +103,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define a new qemu initialization phase called 'precreate' which occurs
-before most backends or devices have been created.  The only exception
-is monitor and qtest devices and their associated chardevs.
+Save the state of the search for a working machine accelerator in
+the new structure AccelSearch.  No functional change.
 
-QEMU runs in the main loop during this phase.  Monitor connections are
-active and can receive migration configuration commands.  QEMU starts
-listening on the normal migration URI during this phase, which can come
-from either the QEMU command line or from a migrate_incoming command.
-Thus the user can issue query-migrate to get the socket-address for
-dynamically allocated port numbers during precreate.
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ system/vl.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-In this series QEMU passes through and does not linger in the precreate
-phase, and the user sees no change in behavior.  The cpr-transfer series
-will linger in the phase for an incoming CPR operation, and exit the phase
-when the migrate command is send to source QEMU and causes destination QEMU
-to read CPR state.
-
-A future series may wish to add a command-line argument and monitor
-command that enters and exits the precreate phase for general purpose use.
-That would enable the user to issue monitor commands that specify backend
-creation parameters.
-
-Now that both the monitor and migration are initialized early, one could
-implement a future scheme in which very few parameters are passed on the
-command line, and all backend and device creation parameters are passed
-in the migration stream.
-
-Patches 1-5 untangle dependencies between accelerator and migration
-initialization, allowing the latter to be called earlier.  Currently
-configure_accelerators chooses the accelerator, defines compatability
-properties needed to initialize migration, and creates the machine in
-accel_init_machine.  The patches split configure_accelerators into a first
-part which probes for accelerators and defines properties, and a second
-part which creates the machine.  The second part is called after the
-precreate phase.  The patches also set machine options earlier, so they
-are known when migration is initialized.
-
-Patch 6 defines the boundaries of the precreate phase.
-
-Patches 7-12 define and use helper functions to extract monitor and qtest
-options from the command line, find their associated chardevs, and initialize
-the monitor and qtest devices early, prior to qemu_create_early_backends.
-
-Patches 13-14 contain miscellany.
-
-Steve Sistare (14):
-  accel: encapsulate search state
-  accel: accel preinit function
-  accel: split configure_accelerators
-  accel: set accelerator and machine props earlier
-  migration: init and listen during precreate
-  vl: precreate phase
-  monitor: chardev name
-  qom: get properties
-  qemu-option: filtered foreach
-  qemu-options: pass object to filter
-  monitor: connect in precreate
-  qtest: connect in precreate
-  net: cleanup for precreate phase
-  migration: allow commands during precreate and preconfig
-
- accel/accel-system.c            |   2 -
- accel/kvm/kvm-all.c             |  58 +++++----
- accel/xen/xen-all.c             |  11 +-
- hmp-commands.hx                 |   2 +
- include/monitor/monitor.h       |   1 +
- include/qapi/visitor.h          |   1 +
- include/qemu/accel.h            |   1 +
- include/qemu/option.h           |   5 +
- include/qom/object_interfaces.h |   8 ++
- monitor/monitor.c               |  21 ++++
- net/net.c                       |   4 +-
- qapi/migration.json             |  16 ++-
- qapi/misc.json                  |   3 +-
- qom/object_interfaces.c         |  27 ++--
- system/vl.c                     | 270 ++++++++++++++++++++++++++++++----------
- target/i386/nvmm/nvmm-all.c     |  10 +-
- target/i386/whpx/whpx-all.c     |  14 ++-
- util/qemu-option.c              |  25 ++++
- 18 files changed, 358 insertions(+), 121 deletions(-)
-
+diff --git a/system/vl.c b/system/vl.c
+index 7439916..8b345dd 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2304,9 +2304,14 @@ static int accelerator_set_property(void *opaque,
+     return object_parse_property_opt(opaque, name, value, "accel", errp);
+ }
+ 
++typedef struct {
++    AccelState *accel;
++    bool init_failed;
++} AccelSearch;
++
+ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
+ {
+-    bool *p_init_failed = opaque;
++    AccelSearch *acs = opaque;
+     const char *acc = qemu_opt_get(opts, "accel");
+     AccelClass *ac = accel_find(acc);
+     AccelState *accel;
+@@ -2340,16 +2345,17 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
+         goto bad;
+     }
+ 
++    acs->accel = accel;
+     return 1;
+ 
+ bad:
+-    *p_init_failed = true;
++    acs->init_failed = true;
+     return 0;
+ }
+ 
+ static void configure_accelerators(const char *progname)
+ {
+-    bool init_failed = false;
++    AccelSearch acs = {0};
+ 
+     qemu_opts_foreach(qemu_find_opts("icount"),
+                       do_configure_icount, NULL, &error_fatal);
+@@ -2389,7 +2395,7 @@ static void configure_accelerators(const char *progname)
+             if (accel_find(*tmp)) {
+                 qemu_opts_parse_noisily(qemu_find_opts("accel"), *tmp, true);
+             } else {
+-                init_failed = true;
++                acs.init_failed = true;
+                 error_report("invalid accelerator %s", *tmp);
+             }
+         }
+@@ -2402,15 +2408,15 @@ static void configure_accelerators(const char *progname)
+     }
+ 
+     if (!qemu_opts_foreach(qemu_find_opts("accel"),
+-                           do_configure_accelerator, &init_failed, &error_fatal)) {
+-        if (!init_failed) {
++                           do_configure_accelerator, &acs, &error_fatal)) {
++        if (!acs.init_failed) {
+             error_report("no accelerator found");
+         }
+         exit(1);
+     }
+ 
+-    if (init_failed && !qtest_chrdev) {
+-        error_report("falling back to %s", current_accel_name());
++    if (acs.init_failed && !qtest_chrdev) {
++        error_report("falling back to %s", ACCEL_GET_CLASS(acs.accel)->name);
+     }
+ 
+     if (icount_enabled() && !tcg_enabled()) {
 -- 
 1.8.3.1
 
