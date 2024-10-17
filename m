@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392609A24FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DCA9A2512
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1RVE-0004Tw-2X; Thu, 17 Oct 2024 10:29:24 -0400
+	id 1t1RY9-0005Nc-Pk; Thu, 17 Oct 2024 10:32:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1RV8-0004Tf-Aq
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:29:18 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY6-0005N1-Qf
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:22 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1RV6-0003Q9-Md
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:29:18 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5c937b5169cso1630110a12.1
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:29:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729175354; x=1729780154; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eFOX/syYZtwFsFH68uKcljYWd2x+NpIGFddXxltWQT4=;
- b=WHED6oxLn4Xhi3XTN40wkTNSqR9gDD/RwNRGYDH2lpjbH5oEuF1Ti5wQqcWHE+ECO2
- 8G9rmv3KAtRti9XOqAr0IqAxqiKSiRby93Eza+XR+dsH4AmUeBIRHnDGenTj1RIVpHRq
- kU7SHTw1s6OC3zLv7f522cwQI5XCSCJhiitrgVN9kz7Jhd+zbgjGfMVk7OMRjurndxkY
- weHBhRhbjWL68hJHfxYf9uXC0Zn7XDAiNIDgoJjjUSxOQLbUdIBLqXCHYPhfGoc2e31l
- o+DowfALngPNNQzsawAJtbELSS3SUfgq4Q1mT+CH7uI3O2jF8RWwHiPCon7mYgjPbYVG
- wKXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729175354; x=1729780154;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eFOX/syYZtwFsFH68uKcljYWd2x+NpIGFddXxltWQT4=;
- b=rzG5UnPwgrbnA8cdMMYoLrpqLWjr7+VtOSPWnZjA2HS2KmzWS1NTGMYDUgRYVstvTN
- nc4kITlJB9X+il9GyhqoFbWBMIUWGovn13BadKTjOlqw1grqTHw535HbSHGoviOaOdpF
- ZUVlFcsO7aPiAkhLsrRaBpMnkyoNb6i7oF2svqVKXigDUwX7a4UKR32RFCcHNsAdYvMd
- lccWXs7/iMCy96HET6ffg/ZlTFmEDxiKK0jVA4W8+LCl5oi9NTtKCwOczwh+3cCIbhAA
- jMNKkHdI3/8mYIRsNCwJ8qfgNM6XTD3OFjcKS7QyDDz5nB0F/RWDhOuBfmIdYT+2jqpz
- gKIw==
-X-Gm-Message-State: AOJu0Yy/cdB9s3RxLrfJcT6H49Aa32iJeY44uEOayD7+c0GegyAdxXKn
- bTWMl4GByZ0TQh60GEq/+udk+YpZbd+aq2ynUH+1kZpXmReG2F+AS+2sZekblvNA2PCiQXreHg7
- ML1LgV330reu/pYrmfgmwEmErBtIJk9tKxy7OWQ==
-X-Google-Smtp-Source: AGHT+IFqQu5BsSjDaJ/Qq2jP0g37QIiFZ+q2FqbzPIoawFDWDK8RWGYsqGRH1uGeI2eeHFRw4RA6TDGSNtdAqvaKfg0=
-X-Received: by 2002:a05:6402:4404:b0:5c8:d9b8:9325 with SMTP id
- 4fb4d7f45d1cf-5c9a5a1c1aamr4631517a12.5.1729175354260; Thu, 17 Oct 2024
- 07:29:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY2-0003sS-Qk
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:21 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 578C31FD33;
+ Thu, 17 Oct 2024 14:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1729175535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
+ b=AEAynrvyu6143Px2ljTPJD+wlWpJG3jS8YUkbXNqOi4chgGehktd3gYmTPJ5tFogHYMSMK
+ Ze6Lrzyi5oiL3OHH4Cw9iQcaO4NlJsek9zJWfbSMLvK7sDoa6V5IfDCq2r+ag0Gfn/CJfq
+ EevmLVSADTtKHC1Nu1+vImZC+Ucm3ZU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1729175535;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
+ b=3C50auJNYcAM6f4d7euO1CzNQ9ZdUJ8t42/rcl4+tyjdGCVuweKdHIGl1MHu2zVH/T0AO4
+ ktW9jO7W0ds8XSBw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1729175535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
+ b=AEAynrvyu6143Px2ljTPJD+wlWpJG3jS8YUkbXNqOi4chgGehktd3gYmTPJ5tFogHYMSMK
+ Ze6Lrzyi5oiL3OHH4Cw9iQcaO4NlJsek9zJWfbSMLvK7sDoa6V5IfDCq2r+ag0Gfn/CJfq
+ EevmLVSADTtKHC1Nu1+vImZC+Ucm3ZU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1729175535;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VGscQbkJKXwvSxhBXD+jrauxB3LvLeBk0WUJAUqrND4=;
+ b=3C50auJNYcAM6f4d7euO1CzNQ9ZdUJ8t42/rcl4+tyjdGCVuweKdHIGl1MHu2zVH/T0AO4
+ ktW9jO7W0ds8XSBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3258B13A42;
+ Thu, 17 Oct 2024 14:32:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EXosOu0fEWcDKQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 17 Oct 2024 14:32:13 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/4] tests/qtest: Move the bulk of migration tests into a
+ separate target
+Date: Thu, 17 Oct 2024 11:32:07 -0300
+Message-Id: <20241017143211.17771-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
- <CAFEAcA95QmpcsrgCj5uE-Ng8ahNir3MuVEHWBCvjb3UwBbOFRA@mail.gmail.com>
- <ec0e8a75-c59f-41b3-b559-43c057fca8fd@roeck-us.net>
- <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
- <cf7c8f57-22d5-4a40-bd87-0f15f5457d48@roeck-us.net>
- <CAFEAcA98=2OdT9ykg5ibDuVLtSXuq4g0PLmSbxkYmt1SyKe9iQ@mail.gmail.com>
- <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net>
-In-Reply-To: <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Oct 2024 15:29:02 +0100
-Message-ID: <CAFEAcA-NreDmpCoFgrTJ5dEto5jQbjRg1eCfqg9Ns8VwQ9-Qzw@mail.gmail.com>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- linux-omap@vger.kernel.org, 
- Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>, 
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,35 +107,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 17 Oct 2024 at 15:12, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 10/17/24 05:42, Peter Maydell wrote:
-> > On Tue, 15 Oct 2024 at 19:12, Guenter Roeck <linux@roeck-us.net> wrote:
-> >> Please let me know if https://github.com/groeck/linux-test-downloads.git
-> >> meets your needs. For now I added 'collie'. I'll add more after it is
-> >> in a state that is useful for you.
-> >
-> > Yes, that's great, exactly what we need. I've put together a QEMU
-> > 'functional test' case that downloads the collie rootfs and image
-> > and checks that they boot. (I'll send the patches for that out
-> > in a bit.)
-> >
-> > (I've coded the test case to pull the binaries for a specific
-> > git revision of that repo rather than always-from-head, so
-> > we're testing always the same thing against head-of-QEMU.)
-> >
->
-> Sounds good. I now also added information for sx1, so you should
-> be able to use that as well. Please let me know if you need any
-> others.
+As promised, here are the changes to move most of the migration tests
+into a separate check-migration target that is intended to be used by
+migration maintainers and contributors.
 
-I think sx1 and collie are all we need currently.
+A few tests will still be kept in another check-migration-quick
+target, that will run as part of make check by default. Those are
+there to catch changes in generic code that might affect migration and
+the rare device code change that affects migration ("rare" because
+migration-test runs with only default devices).
 
-By the way, it looks to me like QEMU has a regression
-somewhere where we can't boot that sx1 test for the SD
-card version -- it hangs during kernel boot waiting for
-the MMC card. (An elderly QEMU binary I have boots OK.)
-I'm looking into what's happened there.
+The are two main reasons for this:
 
--- PMM
+- Reduce the time of the common 'make check' invocation.
+
+  migration-test is notoriously wasteful in that it runs a migration
+  for every test. We don't yet have a comprehensive coverage analysis
+  nor the mechanisms for testing isolated parts of the code without
+  resorting to a full migration.
+
+  While the migration tests don't account for that much of make check
+  time in a parallel run (only about 30s, see table below), I'd like
+  to be able to write tests without encumbering every single make
+  check run.
+
+- Avoid breaking a developer's make check invocation and also CI when
+  only non-migration changes are present.
+
+  The migration tests are subject to races in the code that tend to be
+  quite intermittent. Ideally, if a code change does not touch
+  migration, it should not break migration-test.
+
+make -j16                   before     after      migration suite included
+--------------------------------------------------------------------------
+check                       2m28.923s  1m56.178s  migration-quick
+check SPEED=slow            6m07.854s  5m59.982s  migration
+check SPEED=thorough       10m17.102s 10m02.416s  migration
+check-qtest                 2m07.827s  1m24.065s  none
+check-qtest SPEED=slow      5m06.149s  4m17.897s  none
+check-qtest SPEED=thorough  5m7.601s   4m18.135s  none
+check-migration                        3m41.927s  migration
+check-migration-quick                  0m15.592s  migration-quick
+--------------------------------------------------------------------------
+
+Note that this series could very well be just patch 3 without any new
+target, but then to be able to run the full set of migration tests
+we'd need to also run all other slow tests from a set, either check or
+check-qtest and that would add at least 2 minutest to the migration
+run.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1499208871
+
+Fabiano Rosas (4):
+  tests/qtest: Add check-migration
+  docs: Add migration tests documentation
+  tests/qtest/migration: Move tests into g_test_slow()
+  ci: Add check-migration-quick to the clang job
+
+ .gitlab-ci.d/buildtest.yml       |   2 +-
+ docs/devel/testing/index.rst     |   1 +
+ docs/devel/testing/main.rst      |  13 ++
+ docs/devel/testing/migration.rst | 275 +++++++++++++++++++++++++++++++
+ docs/devel/testing/qtest.rst     |   1 +
+ meson.build                      |   6 +-
+ tests/Makefile.include           |   2 +
+ tests/qtest/meson.build          |  47 +++++-
+ tests/qtest/migration-helpers.c  |   9 +
+ tests/qtest/migration-helpers.h  |  16 ++
+ tests/qtest/migration-test.c     |  67 ++++----
+ 11 files changed, 392 insertions(+), 47 deletions(-)
+ create mode 100644 docs/devel/testing/migration.rst
+
+
+base-commit: 05adb38839ba656c7383a548b460d95c91e2febe
+-- 
+2.35.3
+
 
