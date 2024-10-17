@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F95E9A2579
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46EBB9A258C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Rl8-0003YK-Mu; Thu, 17 Oct 2024 10:45:50 -0400
+	id 1t1RpL-0001TL-Jp; Thu, 17 Oct 2024 10:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t1Rl6-0003XZ-4o
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:45:48 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1t1Row-0001S8-Of
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:49:47 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t1Rl4-0005fe-16
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:45:47 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5c9625cfe4dso1383810a12.0
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:45:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1t1Rou-0006E9-T5
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:49:46 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2fb584a8f81so12897111fa.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729176344; x=1729781144; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BPum5WuUR1pl6Nf8anLI5uEzQpe4u1JtVxTalO9kwT8=;
- b=WTkDgsTzGOOE5aXRHxsZvbBLJdiILT4AX4O2caw8iXWhJzuPguwgLEkxr8GR8xQT7/
- XifHGfIlETmmzGK24sR7cDOR6wbILd8r6oNJw6jMrEmidLCbnNh7H6ytfWNbUA3ZitKQ
- X164H+ZrjK7M7wX05dVtLtbnB+l5B1kpOfeLELXcSxEeDsfGKMPWdbQA6Ehzz1sswpug
- Aid9NdVo6bfqd9ONRE6m8KrkNbI7xkEvWN7DTaOnxr/isSJqQJHDfHW3HdRReVj/lFVF
- +4H5VRLpIX7koVzaxdO0qrrhxVePfwNGBZIBiut3rJd3KpILE37qx4KlEgLMVRWHSeJ7
- P7Ig==
+ d=sifive.com; s=google; t=1729176580; x=1729781380; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=r62nnLCkuDM/Z6qpnbUBKPxbjg3b9wlo1mmXrcAbnnc=;
+ b=dILreH+fPUdLsoshfZB9OWbttKqv7fOYHCU1KAZ4kjQCyfxBw2PWViNYV6Zvx4SzXo
+ QdLTBSoLXHcaf+RFB7dSiCC/icn8DmJYWTSgSJEkDpwDTYaVulnK6ARRbS1QDnbRgsic
+ PVh1JmnlcIxSezaUVm3FzEnByRa1pmrF0ox6DEWQPIFg+1Vo/5jMtSP3PD/V5UlutZ9/
+ e+bjT0VzJpFgOo5JmWB3m3fr5Mn3VMBXOAz6sPW/bzHPekYMablvZaqffEkopodeaYqQ
+ 3gfU9ZYOBYpDFRTcUESqkZA2qpRxgT6d5cKyonrrXs6tTMNNGmY4XYLU5G6uAAK45Krr
+ To/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729176344; x=1729781144;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BPum5WuUR1pl6Nf8anLI5uEzQpe4u1JtVxTalO9kwT8=;
- b=JtIYk5/mEKOl9Wsh0hZapvTIMPnyEnm5b5FHm0H9/7STqD1nNZG6q31MriyfRgux7e
- LggUVqiW25Bvjg1pwtt14zo4wtWVZ98VaXHno5YALEuFjVxWjFgybAqmtn0QxAdjIT2a
- SIdgLlv0UES79xuuMWDEL2TaT+axPWvXrH5v8DSNT4OFrdUEKfJqVQHl4LYacM9zhfAe
- P+52yV7daG2CLAiI4vUD39RcB/KCE7lKDBdeUjlDTC2+BwcFVQ8q0lmKTWlGpj1tjz1x
- dFIMxS8qcoGCYzEIaM369clZgTh18a1BLlzp0h/pFF/CcHMaEkc0xUQhWKjy+S3B1upR
- eutA==
+ d=1e100.net; s=20230601; t=1729176580; x=1729781380;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=r62nnLCkuDM/Z6qpnbUBKPxbjg3b9wlo1mmXrcAbnnc=;
+ b=Uyz1F1GF19EgAtr0sYDsG0+FFkTIYfeeV7XVlqbP01dhPdiBMXLE1abm9CiJRAG5+0
+ ChXKljME3UN/lXCSedzi/RBNbP48NLK+KiXucSS+Eat65j7y1N5Q9En8JVdNff8WVzJa
+ YinvtkOgD/kn7ETk9XqvisMMk74w6XhR/jkM1mfbV/hbIC8y8VagQ3oesyc3WSAUDD/C
+ reABS7SJ39pAYDORrTDAQsl/Lk1BYSGopI6miIJ9K1+/k0ct6C4KdzL3UinD72vnu2Y5
+ AxsD38Viesbd1m6wtYdNOCCgfoT6kCUPU9Sif5oncHrEHMS+QaYDemaEoOxemrZdUAX4
+ uMuQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3Dd1Xg6RVutDluVYVqxsLu3VdKodAqcvU9vVDIvo03ScjaaQ7tZc6JjjkIluXehaJSSQd5g9MHPRg@nongnu.org
-X-Gm-Message-State: AOJu0YxXwF+rQxB62LrRZFvjE7PyszvkwieUhtHInuQF7mhsQzZGrq4D
- USPAxwwj3lnrd034IL28Amy0TEt6GKjzAfremQHwol0yzc1BNufV
-X-Google-Smtp-Source: AGHT+IFB7wPcnERiA5LRenZDfsxhw2O3PPrNeBoEPL1806/I5t6mCc+tmrXj3qhmVbSaVrHOPDgSVQ==
-X-Received: by 2002:a05:6402:1e93:b0:5c9:845f:25fd with SMTP id
- 4fb4d7f45d1cf-5c9845f2752mr10802859a12.23.1729176344220; 
- Thu, 17 Oct 2024 07:45:44 -0700 (PDT)
-Received: from finn.fritz.box ([2a02:8109:8384:1400:9c4:b066:486:f408])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c98d507a14sm2867581a12.49.2024.10.17.07.45.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Oct 2024 07:45:43 -0700 (PDT)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH v5 8/8] qemu-options.hx: describe multiplexing of several
- backend devices
-Date: Thu, 17 Oct 2024 16:43:16 +0200
-Message-Id: <20241017144316.517709-9-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241017144316.517709-1-r.peniaev@gmail.com>
-References: <20241017144316.517709-1-r.peniaev@gmail.com>
+ AJvYcCWF/N9m5DurgRpQe4SngInCUn0dC+R78VdL1aN8dnAVYTAozrau4f8OkqZ50b39LEgrc18coU/eMdYg@nongnu.org
+X-Gm-Message-State: AOJu0Yzk+eWI4112qMTs78+M7H3/iIGgAmNkGuhxVLzW0dH6UvhBZnZe
+ XQdeUF1oOHMYvs8Gnv2qEIS78Er7YCNJC/BupLpvd2ZfEcyvqI2CmPTHuNzix6TQb1TcUUVcWDp
+ uNEX66QMxbQjSs/e9tjFJE3rITgeue1kJLVdEAA==
+X-Google-Smtp-Source: AGHT+IGwnuVxRApSWU7BNyC4HbA6HTk2R3pX0DIXM00zqBvTU4N3O4o0rZobbLeq9YSL0ep3ld7qVHG4l1lVU7C8DU4=
+X-Received: by 2002:a2e:4601:0:b0:2fb:599a:a900 with SMTP id
+ 38308e7fff4ca-2fb61b4789fmr45930771fa.15.1729176580349; Thu, 17 Oct 2024
+ 07:49:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x533.google.com
+References: <20241014181948.1974405-1-frank.chang@sifive.com>
+ <20241014181948.1974405-3-frank.chang@sifive.com>
+ <1b9a53b3-79d0-4ba2-9450-35e28ecfbd79@rivosinc.com>
+In-Reply-To: <1b9a53b3-79d0-4ba2-9450-35e28ecfbd79@rivosinc.com>
+From: Frank Chang <frank.chang@sifive.com>
+Date: Thu, 17 Oct 2024 22:49:29 +0800
+Message-ID: <CAE_xrPiMxUYRdAH7XXmb9Qmv6f1bJwFQL+OBHEV7OiD7E=WQrQ@mail.gmail.com>
+Subject: Re: [PATCH v7 2/5] target/riscv: Handle Smrnmi interrupt and exception
+To: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ Tommy Wu <tommy.wu@sifive.com>
+Content-Type: multipart/alternative; boundary="000000000000d395940624ad4b17"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=frank.chang@sifive.com; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,146 +96,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds a few lines describing `mux-be` multiplexer configuration
-for multiplexing several backend devices with a single frontend
-device.
+--000000000000d395940624ad4b17
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- qemu-options.hx | 80 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 60 insertions(+), 20 deletions(-)
+Hi Cl=C3=A9ment,
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index daae49414740..d620dc39b489 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -3677,37 +3677,37 @@ DEFHEADING(Character device options:)
- 
- DEF("chardev", HAS_ARG, QEMU_OPTION_chardev,
-     "-chardev help\n"
--    "-chardev null,id=id[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev null,id=id[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-     "-chardev socket,id=id[,host=host],port=port[,to=to][,ipv4=on|off][,ipv6=on|off][,nodelay=on|off]\n"
--    "         [,server=on|off][,wait=on|off][,telnet=on|off][,websocket=on|off][,reconnect=seconds][,mux=on|off]\n"
-+    "         [,server=on|off][,wait=on|off][,telnet=on|off][,websocket=on|off][,reconnect=seconds][,mux=on|off][,mux-be-id=id]\n"
-     "         [,logfile=PATH][,logappend=on|off][,tls-creds=ID][,tls-authz=ID] (tcp)\n"
-     "-chardev socket,id=id,path=path[,server=on|off][,wait=on|off][,telnet=on|off][,websocket=on|off][,reconnect=seconds]\n"
--    "         [,mux=on|off][,logfile=PATH][,logappend=on|off][,abstract=on|off][,tight=on|off] (unix)\n"
-+    "         [,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off][,abstract=on|off][,tight=on|off] (unix)\n"
-     "-chardev udp,id=id[,host=host],port=port[,localaddr=localaddr]\n"
--    "         [,localport=localport][,ipv4=on|off][,ipv6=on|off][,mux=on|off]\n"
-+    "         [,localport=localport][,ipv4=on|off][,ipv6=on|off][,mux=on|off][,mux-be-id=id]\n"
-     "         [,logfile=PATH][,logappend=on|off]\n"
--    "-chardev msmouse,id=id[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev msmouse,id=id[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-     "-chardev vc,id=id[[,width=width][,height=height]][[,cols=cols][,rows=rows]]\n"
--    "         [,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "         [,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-     "-chardev ringbuf,id=id[,size=size][,logfile=PATH][,logappend=on|off]\n"
--    "-chardev file,id=id,path=path[,input-path=input-file][,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
--    "-chardev pipe,id=id,path=path[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev file,id=id,path=path[,input-path=input-file][,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev pipe,id=id,path=path[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
- #ifdef _WIN32
--    "-chardev console,id=id[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
--    "-chardev serial,id=id,path=path[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev console,id=id[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev serial,id=id,path=path[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
- #else
--    "-chardev pty,id=id[,path=path][,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
--    "-chardev stdio,id=id[,mux=on|off][,signal=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev pty,id=id[,path=path][,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev stdio,id=id[,mux=on|off][,mux-be-id=id][,signal=on|off][,logfile=PATH][,logappend=on|off]\n"
- #endif
- #ifdef CONFIG_BRLAPI
--    "-chardev braille,id=id[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev braille,id=id[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
- #endif
- #if defined(__linux__) || defined(__sun__) || defined(__FreeBSD__) \
-         || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
--    "-chardev serial,id=id,path=path[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev serial,id=id,path=path[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
- #endif
- #if defined(__linux__) || defined(__FreeBSD__) || defined(__DragonFly__)
--    "-chardev parallel,id=id,path=path[,mux=on|off][,logfile=PATH][,logappend=on|off]\n"
-+    "-chardev parallel,id=id,path=path[,mux=on|off][,mux-be-id=id][,logfile=PATH][,logappend=on|off]\n"
- #endif
- #if defined(CONFIG_SPICE)
-     "-chardev spicevmc,id=id,name=name[,debug=debug][,logfile=PATH][,logappend=on|off]\n"
-@@ -3719,8 +3719,8 @@ DEF("chardev", HAS_ARG, QEMU_OPTION_chardev,
- SRST
- The general form of a character device option is:
- 
--``-chardev backend,id=id[,mux=on|off][,options]``
--    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``,
-+``-chardev backend,id=id[,mux=on|off][,mux-be-id=id][,options]``
-+    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``, ``mux-be``,
-     ``vc``, ``ringbuf``, ``file``, ``pipe``, ``console``, ``serial``,
-     ``pty``, ``stdio``, ``braille``, ``parallel``,
-     ``spicevmc``, ``spiceport``. The specific backend will determine the
-@@ -3777,9 +3777,11 @@ The general form of a character device option is:
-     the QEMU monitor, and ``-nographic`` also multiplexes the console
-     and the monitor to stdio.
- 
--    There is currently no support for multiplexing in the other
--    direction (where a single QEMU front end takes input and output from
--    multiple chardevs).
-+    If you need to multiplex in the opposite direction (where one QEMU
-+    interface receives input and output from multiple chardev devices),
-+    each character device needs the ``mux-be-id=ID`` option. Please
-+    refer to the paragraph below regarding chardev ``mux-be``
-+    configuration.
- 
-     Every backend supports the ``logfile`` option, which supplies the
-     path to a file to record all data transmitted via the backend. The
-@@ -3879,6 +3881,44 @@ The available backends are:
-     Forward QEMU's emulated msmouse events to the guest. ``msmouse``
-     does not take any options.
- 
-+``-chardev mux-be,id=id``
-+    Explicitly create chardev backend multiplexer with the possibility
-+    to multiplex in the opposite direction, where one QEMU interface
-+    (frontend device) receives input and output from multiple chardev
-+    backend devices. (Since 9.2)
-+
-+    For example, the following is a use case of 2 backend devices:
-+    virtual console ``vc0`` and a socket ``sock0`` connected to a
-+    single virtio hvc console frontend device with multiplexer
-+    ``mux0`` help. Virtual console renders text to an image, which can
-+    be shared over the VNC protocol. In turn, socket backend provides
-+    bidirectional communication to the virtio hvc console over the
-+    socket. The example configuration can be as follows:
-+
-+    ::
-+
-+       -chardev mux-be,id=mux0 \
-+       -chardev socket,path=/tmp/sock,server=on,wait=off,id=sock0,mux-be-id=mux0 \
-+       -chardev vc,id=vc0,mux-be-id=mux0 \
-+       -device virtconsole,chardev=mux0 \
-+       -vnc 0.0.0.0:0
-+
-+    Once QEMU starts VNC client and any TTY emulator can be used to
-+    control a single hvc console:
-+
-+    ::
-+
-+       # VNC client
-+       vncviewer :0
-+
-+       # TTY emulator
-+       socat unix-connect:/tmp/sock pty,link=/tmp/pty & \
-+       tio /tmp/pty
-+
-+    Multiplexing of several backend devices with several frontend
-+    devices is not supported. Stacking of multiplexers is not
-+    supported as well.
-+
- ``-chardev vc,id=id[[,width=width][,height=height]][[,cols=cols][,rows=rows]]``
-     Connect to a QEMU text console. ``vc`` may optionally be given a
-     specific size.
--- 
-2.34.1
+On Thu, Oct 17, 2024 at 10:14=E2=80=AFPM Cl=C3=A9ment L=C3=A9ger <cleger@ri=
+vosinc.com> wrote:
 
+>
+>
+> On 14/10/2024 20:19, frank.chang@sifive.com wrote:
+> > @@ -1679,6 +1718,20 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+> >      target_ulong mtval2 =3D 0;
+> >      int sxlen =3D 0;
+> >      int mxlen =3D 0;
+> > + bool nnmi_excep =3D false;
+> > +
+> > + if (cpu->cfg.ext_smrnmi && env->rnmip && async) {
+> > + env->mnstatus =3D set_field(env->mnstatus, MNSTATUS_NMIE, false);
+> > + env->mnstatus =3D set_field(env->mnstatus, MNSTATUS_MNPV,
+> > + env->virt_enabled);
+> > + env->mnstatus =3D set_field(env->mnstatus, MNSTATUS_MNPP,
+> > + env->priv);
+> > + env->mncause =3D cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1))=
+;
+> > + env->mnepc =3D env->pc;
+> > + env->pc =3D env->rnmi_irqvec;
+> > + riscv_cpu_set_mode(env, PRV_M, virt);
+>
+> Hi Frank,
+>
+> Does it make sense to use the virt value here since if we are going to
+> PRV_M mode, then virt should be false ?
+>
+
+Yes, you are right.
+We need to pass virt_en to false as we are going to switch to M-mode.
+Otherwise, we may hit the assertion in:
+riscv_pmu_cycle_update_priv(), and riscv_pmu_icount_update_priv()
+The TLB will also not be flushed properly on the virt mode changed.
+
+I will fix it in the next patchset.
+
+Thanks,
+Frank Chang
+
+
+>
+> Thanks,
+>
+> Cl=C3=A9ment
+>
+>
+> > + return;
+> > + }
+>
+>
+
+--000000000000d395940624ad4b17
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi=C2=A0Cl=C3=A9ment,</div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 17, 2024=
+ at 10:14=E2=80=AFPM Cl=C3=A9ment L=C3=A9ger &lt;<a href=3D"mailto:cleger@r=
+ivosinc.com">cleger@rivosinc.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex"><br>
+<br>
+On 14/10/2024 20:19, <a href=3D"mailto:frank.chang@sifive.com" target=3D"_b=
+lank">frank.chang@sifive.com</a> wrote:<br>
+&gt; @@ -1679,6 +1718,20 @@ void riscv_cpu_do_interrupt(CPUState *cs)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 target_ulong mtval2 =3D 0;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 int sxlen =3D 0;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 int mxlen =3D 0;<br>
+&gt; + bool nnmi_excep =3D false;<br>
+&gt; +<br>
+&gt; + if (cpu-&gt;cfg.ext_smrnmi &amp;&amp; env-&gt;rnmip &amp;&amp; async=
+) {<br>
+&gt; + env-&gt;mnstatus =3D set_field(env-&gt;mnstatus, MNSTATUS_NMIE, fals=
+e);<br>
+&gt; + env-&gt;mnstatus =3D set_field(env-&gt;mnstatus, MNSTATUS_MNPV,<br>
+&gt; + env-&gt;virt_enabled);<br>
+&gt; + env-&gt;mnstatus =3D set_field(env-&gt;mnstatus, MNSTATUS_MNPP,<br>
+&gt; + env-&gt;priv);<br>
+&gt; + env-&gt;mncause =3D cause | ((target_ulong)1U &lt;&lt; (TARGET_LONG_=
+BITS - 1));<br>
+&gt; + env-&gt;mnepc =3D env-&gt;pc;<br>
+&gt; + env-&gt;pc =3D env-&gt;rnmi_irqvec;<br>
+&gt; + riscv_cpu_set_mode(env, PRV_M, virt);<br>
+<br>
+Hi Frank,<br>
+<br>
+Does it make sense to use the virt value here since if we are going to<br>
+PRV_M mode, then virt should be false ?<br></blockquote><div><br></div><div=
+>Yes, you are right.</div><div>We need to pass virt_en to false as we are g=
+oing to switch to M-mode.</div><div>Otherwise, we may hit the assertion in:=
+<br></div><div>riscv_pmu_cycle_update_priv(), and=C2=A0riscv_pmu_icount_upd=
+ate_priv()<br></div><div>The TLB will also not be flushed properly on the v=
+irt mode changed.</div><div><br></div><div>I will fix it in the next patchs=
+et.</div><div><br></div><div>Thanks,</div><div>Frank Chang</div><div>=C2=A0=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+Thanks,<br>
+<br>
+Cl=C3=A9ment<br>
+<br>
+<br>
+&gt; + return;<br>
+&gt; + }<br>
+<br>
+</blockquote></div></div>
+
+--000000000000d395940624ad4b17--
 
