@@ -2,71 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE7B9A24CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BCF9A2575
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:47:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1RJ8-0001LW-Oh; Thu, 17 Oct 2024 10:16:54 -0400
+	id 1t1Rky-0003UG-Tr; Thu, 17 Oct 2024 10:45:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1RJ0-0001Kw-Pg
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:16:47 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1RIv-0002JY-QH
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:16:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729174602; x=1760710602;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/yQo6+7bsP8eC1dyMzAtkIfv6PJcEMqZ4e/WQ4T07fw=;
- b=ErO7qKK+yY65A+JqILC4v/1eKASvGhCd0H/uvC0L+xw29tLNEs2qEwHN
- w5bmaXnK2dxVpknAN+cRLzgQOTbgiX2R++L+Mvw4RNkgf6qxpya++rwbi
- xGlA/+JqRlJFTUtxBN1qA60sDq7uGiNgkYxdxBlXqUSz7go84m1p5KirQ
- 8UmPq4K5ArHp2G3GBurwQ26SfLpM5khFFCiYoIxPxJdFEX3bAr6oBeADB
- +YfhIoYwmcCR8rx0ZASjTxZ8bIGC+qaY64dsuJF8hHjHuj/XXYSHrgG9i
- SA2W1953YQmjg89kDeaKEIGObwneQF+vTcQSMb1z57aXG0/8zLtDPYa87 w==;
-X-CSE-ConnectionGUID: X/oeM8AeTeSOoXlAjBZdHA==
-X-CSE-MsgGUID: Eqyt9oW6RJyj1D35WaxGCQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="39299399"
-X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="39299399"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2024 07:16:40 -0700
-X-CSE-ConnectionGUID: oTyaXtXdQ7aKfOI3FZp8fA==
-X-CSE-MsgGUID: 3NmUE+CXTlWSc//DU259KQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="78900057"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 17 Oct 2024 07:16:38 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Junjie Mao <junjie.mao@hotmail.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 2/2] rust/qemu-api: Bind PropertyInfo to type
-Date: Thu, 17 Oct 2024 22:32:45 +0800
-Message-Id: <20241017143245.1248589-3-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t1Rkw-0003TZ-Q2
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:45:38 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t1Rku-0005cX-QD
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:45:38 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2fb443746b8so12894141fa.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 07:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729176334; x=1729781134; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8o0jHHm4HGadaDCCtgC5WdOSgCSIw+a9ax4xPsrCy1Q=;
+ b=b891D1d5YwLYS9by44gkRw0QAbPZQYTsbvqw53U9AAymW7Wg3w45miOTfOzzNh1h+j
+ MRBclVRXl++P/go3WwxD4I+usqn5jJwUTVNkie4eKzaCZLmyk3ku3NL3e1UdJtDISAyw
+ 7cjjggp512bom4xGSlF5lDh/k9XNa/J/o7qQOR2bjB4Ag54EyjzeyXMxjxAJ2vhj5Oxv
+ +0PnU7swwIL1hL+mLHZJPJXa0By3t75SyfEEK3Q4HX4wx+/xq+B7QZJITbAgIy10c1I7
+ vIEPd1xk1BY2W+tG2Hp0A4GloFqpIST4+yqee7THulX9AdsMBjZwZrWq1GEFIqKf45c7
+ sV8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729176334; x=1729781134;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8o0jHHm4HGadaDCCtgC5WdOSgCSIw+a9ax4xPsrCy1Q=;
+ b=WYgEa+aKN5QoxRP0JKEP++NGyTk0BoyQyQc9LO4OJRdl2b0f3YKgUKWjrm9WqdvkEr
+ R8mv1pZ6G5f7jsmWzHq82eO5BMapeFhdjXQAyVqpJ98TMI+V8ZfiIe9rzr0wp2kXujuu
+ UF4faOhqmGHAyVAory7EiKTKb4w7CBxXPIGhpF48s/scAtQNZC3dud4LVDj84TEOTqpd
+ 13NBsLRqS76nE13pc8tCVGjojpqKdMQsZ2xqOYqK4v2VEXETHIG8bJi1I+graS3wvjEO
+ NJvR4N3CrpagastrAjKTcO4mLLQxfWVy7iCDd7EieNlQCjXEEbjPpfw8SFTxQTc3yIHp
+ 6Jpg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUfbEZWVlCwHlwB0STg20vWKWsL0TuBHYNm1AOtzfxVvPh1XtidRZshmIRosRiaeXOlGQYjBJY64u4G@nongnu.org
+X-Gm-Message-State: AOJu0Yw1XLtRDA1H/o42flbHdfhElhyLyyYVhXb95P3vjinWftBpfWm9
+ WZlBCJMCRrlB1vDbN6M+myGC8DzqR2h8qEu14D/ZjFzAmfzLjT7d
+X-Google-Smtp-Source: AGHT+IGenumB6nr5Pwfd6ElDCfa5UseAQKouamhngqj3GaJu1ZAnshsN/IwAu26CaFSVvE0qjYrkxw==
+X-Received: by 2002:a2e:be1f:0:b0:2fb:30d5:669f with SMTP id
+ 38308e7fff4ca-2fb61b3e651mr53565901fa.7.1729176334244; 
+ Thu, 17 Oct 2024 07:45:34 -0700 (PDT)
+Received: from finn.fritz.box ([2a02:8109:8384:1400:9c4:b066:486:f408])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c98d507a14sm2867581a12.49.2024.10.17.07.45.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Oct 2024 07:45:33 -0700 (PDT)
+From: Roman Penyaev <r.peniaev@gmail.com>
+To: 
+Cc: Roman Penyaev <r.peniaev@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH v5 0/8] chardev: implement backend chardev multiplexing
+Date: Thu, 17 Oct 2024 16:43:08 +0200
+Message-Id: <20241017144316.517709-1-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241017143245.1248589-1-zhao1.liu@intel.com>
-References: <20241017143245.1248589-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,157 +93,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For traditional property definitions implemented in C, since the C
-language cannot bind variable types to specific methods or variables,
-user must specify the concrete PropertyInfo and variable type in the
-DEFINE_PROP macro and its variants. Then the property macro effectively
-associate PropertyInfo with variable type through clever check.
+Mux is a character backend (host side) device, which multiplexes
+multiple frontends with one backend device. The following is a
+few lines from the QEMU manpage [1]:
 
-However, in Rust, this process can be more elegant. By introducing the
-PropertyType trait, QAPI (in Rust) can associate PropertyInfo with
-specific types, allowing Rust to infer the predefined PropertyInfo from
-the variable type.
+  A multiplexer is a "1:N" device, and here the "1" end is your
+  specified chardev backend, and the "N" end is the various parts
+  of QEMU that can talk to a chardev.
 
-This avoids user errors in passing incorrect PropertyInfo and simplifies
-property definitions. And based on this enhancement, the property
-definition macro can eliminate the need for the type and prop parameters.
+But sadly multiple backends are not supported.
 
-Co-developed-by: Junjie Mao <junjie.mao@hotmail.com>
-Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- rust/hw/char/pl011/src/device_class.rs |  4 ---
- rust/qemu-api/src/device_class.rs      | 48 +++++++++++++++++++++++---
- rust/qemu-api/src/tests.rs             |  4 ---
- 3 files changed, 43 insertions(+), 13 deletions(-)
+This work implements multiplexing capability of several backend
+devices, which opens up an opportunity to use a single frontend
+device on the guest, which can be manipulated from several
+backend devices.
 
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index b7ab31af02d7..295e970e8564 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -21,15 +21,11 @@
-         c"chardev",
-         PL011State,
-         char_backend,
--        unsafe { &qdev_prop_chr },
--        CharBackend
-     ),
-     qemu_api::define_property!(
-         c"migrate-clk",
-         PL011State,
-         migrate_clock,
--        unsafe { &qdev_prop_bool },
--        bool
-     ),
- }
- 
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index be363fd63223..0b9d6ca705d3 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -4,7 +4,7 @@
- 
- use std::sync::OnceLock;
- 
--use crate::bindings::Property;
-+use crate::bindings::{CharBackend, Property, PropertyInfo, qdev_prop_chr, qdev_prop_bool};
- 
- #[macro_export]
- macro_rules! device_class_init {
-@@ -24,16 +24,54 @@ macro_rules! device_class_init {
-     };
- }
- 
-+pub trait PropertyType {
-+    fn get_prop_info() -> *const PropertyInfo;
-+}
-+
-+pub trait PropertyTypeImpl<T: PropertyType> {
-+    fn get_prop_info(_: *const T) -> *const PropertyInfo;
-+}
-+
-+impl<T: PropertyType> PropertyTypeImpl<T> for () {
-+    fn get_prop_info(_: *const T) -> *const PropertyInfo {
-+        T::get_prop_info()
-+    }
-+}
-+
-+impl PropertyType for CharBackend {
-+    fn get_prop_info() -> *const PropertyInfo {
-+        // SAFETY: Access to a defined c-structure, no other operation is performed.
-+        unsafe { std::ptr::addr_of!(qdev_prop_chr) }
-+    }
-+}
-+
-+impl PropertyType for bool {
-+    fn get_prop_info() -> *const PropertyInfo {
-+        // SAFETY: Access to a defined c-structure, no other operation is performed.
-+        unsafe { std::ptr::addr_of!(qdev_prop_bool) }
-+    }
-+}
-+
-+#[macro_export]
-+macro_rules! get_prop_info {
-+    ($state:ty, $field:ident) => {{
-+    use $crate::device_class::PropertyTypeImpl;
-+    let base = std::mem::MaybeUninit::<$state>::uninit().as_ptr();
-+    <()>::get_prop_info(unsafe { std::ptr::addr_of!((*base).$field) })
-+    }};
-+}
-+
-+
- #[macro_export]
- macro_rules! define_property {
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
-+    ($name:expr, $state:ty, $field:ident, default = $defval:expr$(,)*) => {
-         $crate::bindings::Property {
-             name: {
-                 #[used]
-                 static _TEMP: &::core::ffi::CStr = $name;
-                 _TEMP.as_ptr()
-             },
--            info: $prop,
-+            info: $crate::get_prop_info!($state, $field),
-             offset: ::core::mem::offset_of!($state, $field)
-                 .try_into()
-                 .expect("Could not fit offset value to type"),
-@@ -47,14 +85,14 @@ macro_rules! define_property {
-             link_type: ::core::ptr::null(),
-         }
-     };
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty$(,)*) => {
-+    ($name:expr, $state:ty, $field:ident$(,)*) => {
-         $crate::bindings::Property {
-             name: {
-                 #[used]
-                 static _TEMP: &::core::ffi::CStr = $name;
-                 _TEMP.as_ptr()
-             },
--            info: $prop,
-+            info: $crate::get_prop_info!($state, $field),
-             offset: ::core::mem::offset_of!($state, $field)
-                 .try_into()
-                 .expect("Could not fit offset value to type"),
-diff --git a/rust/qemu-api/src/tests.rs b/rust/qemu-api/src/tests.rs
-index df54edbd4e27..d2b7451ef707 100644
---- a/rust/qemu-api/src/tests.rs
-+++ b/rust/qemu-api/src/tests.rs
-@@ -27,15 +27,11 @@ pub struct DummyState {
-                 c"chardev",
-                 DummyState,
-                 char_backend,
--                unsafe { &qdev_prop_chr },
--                CharBackend
-             ),
-             define_property!(
-                 c"migrate-clk",
-                 DummyState,
-                 migrate_clock,
--                unsafe { &qdev_prop_bool },
--                bool
-             ),
-     }
- 
+The motivation is the EVE project [2], where it would be very
+convenient to have a virtio console frontend device on the guest that
+can be controlled from multiple backend devices, namely VNC and local
+TTY emulator. The following is an example of the QEMU command line:
+
+   -chardev mux-be,id=mux0 \
+   -chardev socket,path=/tmp/sock,server=on,wait=off,id=sock0,mux-be-id=mux0 \
+   -chardev vc,id=vc0,mux-be-id=mux0 \
+   -device virtconsole,chardev=mux0 \
+   -vnc 0.0.0.0:0
+
+Which creates two backend devices:
+
+* Text virtual console (`vc0`)
+* A socket (`sock0`) connected to the single virtio hvc console with the
+  help of the backend multiplexer (`mux0`)
+
+`vc0` renders text to an image, which can be shared over the VNC protocol.
+`sock0` is a socket backend which provides bidirectional communication to
+the virtio hvc console.
+
+Once QEMU starts, the VNC client and any TTY emulator can be used to
+control a single hvc console. For example, these two different
+consoles should have similar input and output due to the buffer
+multiplexing:
+
+   # VNC client
+   vncviewer :0
+
+   # TTY emulator
+   socat unix-connect:/tmp/sock pty,link=/tmp/pty
+   tio /tmp/pty
+
+v4 .. v5:
+
+* Spelling fixes in qemu-options description
+* Memory leaks fixes in mux-be tests
+* Add sanity checks to chardev to avoid stacking of mux devices
+* Add corresponding unit test case to cover the creation of stacked
+  muxers: `-chardev mux-be,mux-id-be=ID`, which is forbidden
+* Reflect the fact that stacking is not supported in the documentation
+
+v3 .. v4:
+
+* Rebase on latest chardev changes
+* Add unit tests which test corner cases:
+   * Inability to remove mux with active frontend
+   * Inability to add more chardevs to a mux than `MUX_MAX`
+   * Inability to mix mux-fe and mux-be for the same chardev
+
+v2 .. v3:
+
+* Split frontend and backend multiplexer implementations and
+  move them to separate files: char-mux-fe.c and char-mux-be.c
+
+v1 .. v2:
+
+* Separate type for the backend multiplexer `mux-be`
+* Handle EAGAIN on write to the backend device
+* Support of watch of previously failed backend device
+* Proper json support of the `mux-be-id` option
+* Unit test for the `mux-be` multiplexer
+
+[1] https://www.qemu.org/docs/master/system/qemu-manpage.html#hxtool-6
+[2] https://github.com/lf-edge/eve
+
+Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org
+
+Roman Penyaev (8):
+  chardev/char: rename `MuxChardev` struct to `MuxFeChardev`
+  chardev/char: rename `char-mux.c` to `char-mux-fe.c`
+  chardev/char: move away mux suspend/resume calls
+  chardev/char: rename frontend mux calls
+  chardev/char: introduce `mux-be-id=ID` option
+  chardev/char-mux: implement backend chardev multiplexing
+  tests/unit/test-char: add unit test for the `mux-be` multiplexer
+  qemu-options.hx: describe multiplexing of several backend devices
+
+ chardev/char-fe.c                     |  25 +-
+ chardev/char-mux-be.c                 | 290 +++++++++++++++++++++++
+ chardev/{char-mux.c => char-mux-fe.c} | 157 ++++---------
+ chardev/char.c                        | 139 +++++++++--
+ chardev/chardev-internal.h            |  55 ++++-
+ chardev/meson.build                   |   3 +-
+ include/chardev/char.h                |   8 +-
+ qapi/char.json                        |  31 ++-
+ qemu-options.hx                       |  80 +++++--
+ system/vl.c                           |   4 +-
+ tests/unit/test-char.c                | 323 +++++++++++++++++++++++++-
+ 11 files changed, 947 insertions(+), 168 deletions(-)
+ create mode 100644 chardev/char-mux-be.c
+ rename chardev/{char-mux.c => char-mux-fe.c} (71%)
+
 -- 
 2.34.1
 
