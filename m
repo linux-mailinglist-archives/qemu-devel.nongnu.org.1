@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FD79A2129
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403CB9A2165
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:46:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1OqO-0001ge-H7; Thu, 17 Oct 2024 07:39:04 -0400
+	id 1t1OnW-0005Cb-Qc; Thu, 17 Oct 2024 07:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1OmG-00045j-KE
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:55 -0400
+ id 1t1OmJ-00046G-WD
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:35:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Om6-0005zg-V4
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:41 -0400
+ id 1t1OmE-00060C-OA
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729164878;
+ s=mimecast20190719; t=1729164879;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VRZNTTUtIG6IBGQqIQRLWGhUwF0a5EMxM6TNB2gfGk4=;
- b=DnnPufMIEuHjcwZr4SHSEi7yVBjEMufz7NySSgGaBw7EYFQO+O1udlwknxYdYUXRjQOO7v
- XPMWsDRZ8gLxS20HoL4VvLPcRhCZVtuGRx8nHuWswLTEtM2YcwQ049yuTS0CZFj4a2QbLl
- LAtRa/wez8vwLA/m5nm9jwVW5NDRBUQ=
+ bh=3bfXIQ3a1H+u6eRCza5sO5zZIDf50gdhjDguQOt/2CY=;
+ b=i055oJGvQQclGXWB+/j7rc+f860aYA8YVRtTfWNx4Op/7uwxIeKy00D/yWIafBh1ob6E1Q
+ m1hWIA17o7pvMaXSR3I6VdjzEbVDRdKmWtYi+emUDDODC/VyfwwBkRCTzF4A714wzbxkq6
+ ncNsk5+yhc8RZs7SK7ZryZ4TG8LuDRo=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-Rqbs0L4HPy2xP3cI3yEQwg-1; Thu,
- 17 Oct 2024 07:34:37 -0400
-X-MC-Unique: Rqbs0L4HPy2xP3cI3yEQwg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-196-312TxuEqP-OqPu6QUXu6IQ-1; Thu,
+ 17 Oct 2024 07:34:38 -0400
+X-MC-Unique: 312TxuEqP-OqPu6QUXu6IQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 378B31955F35
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:36 +0000 (UTC)
+ id B9F8019560B6
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:37 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.94])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D48BC19560A2; Thu, 17 Oct 2024 11:34:34 +0000 (UTC)
+ id 96A5619560A2; Thu, 17 Oct 2024 11:34:36 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 27/31] ui: adapt to new import path for qobject data type
+Subject: [PATCH v2 28/31] util: adapt to new import path for qobject data type
  headers
-Date: Thu, 17 Oct 2024 12:33:39 +0100
-Message-ID: <20241017113344.883424-28-berrange@redhat.com>
+Date: Thu, 17 Oct 2024 12:33:40 +0100
+Message-ID: <20241017113344.883424-29-berrange@redhat.com>
 In-Reply-To: <20241017113344.883424-1-berrange@redhat.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -90,22 +90,62 @@ qobject/.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/ui-hmp-cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ util/keyval.c      | 6 +++---
+ util/qemu-config.c | 4 ++--
+ util/qemu-option.c | 8 ++++----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/ui/ui-hmp-cmds.c b/ui/ui-hmp-cmds.c
-index 26c8ced1f2..980a8bbc51 100644
---- a/ui/ui-hmp-cmds.c
-+++ b/ui/ui-hmp-cmds.c
-@@ -21,7 +21,7 @@
- #include "monitor/monitor-internal.h"
+diff --git a/util/keyval.c b/util/keyval.c
+index 66a5b4740f..a70629a481 100644
+--- a/util/keyval.c
++++ b/util/keyval.c
+@@ -91,9 +91,9 @@
+ 
+ #include "qemu/osdep.h"
  #include "qapi/error.h"
- #include "qapi/qapi-commands-ui.h"
 -#include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qlist.h"
+-#include "qapi/qmp/qstring.h"
 +#include "qobject/qdict.h"
++#include "qobject/qlist.h"
++#include "qobject/qstring.h"
  #include "qemu/cutils.h"
- #include "ui/console.h"
- #include "ui/input.h"
+ #include "qemu/keyval.h"
+ #include "qemu/help_option.h"
+diff --git a/util/qemu-config.c b/util/qemu-config.c
+index a90c18dad2..d1fc49c507 100644
+--- a/util/qemu-config.c
++++ b/util/qemu-config.c
+@@ -1,8 +1,8 @@
+ #include "qemu/osdep.h"
+ #include "block/qdict.h" /* for qdict_extract_subqdict() */
+ #include "qapi/error.h"
+-#include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qlist.h"
++#include "qobject/qdict.h"
++#include "qobject/qlist.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+ #include "qemu/config-file.h"
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index 201f7a87f3..770300dff1 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -27,10 +27,10 @@
+ 
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-#include "qapi/qmp/qbool.h"
+-#include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qnum.h"
+-#include "qapi/qmp/qstring.h"
++#include "qobject/qbool.h"
++#include "qobject/qdict.h"
++#include "qobject/qnum.h"
++#include "qobject/qstring.h"
+ #include "qapi/qmp/qerror.h"
+ #include "qemu/option_int.h"
+ #include "qemu/cutils.h"
 -- 
 2.46.0
 
