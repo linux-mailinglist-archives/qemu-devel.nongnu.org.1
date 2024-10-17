@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF749A2161
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FE79A2160
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 13:45:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Ood-0007OE-8w; Thu, 17 Oct 2024 07:37:16 -0400
+	id 1t1OoT-0006ZU-Bk; Thu, 17 Oct 2024 07:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1OmJ-00046F-W7
+ id 1t1OmJ-00046E-WD
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:35:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1OmG-00061R-5Q
+ id 1t1OmG-00061Z-Dx
  for qemu-devel@nongnu.org; Thu, 17 Oct 2024 07:34:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729164883;
+ s=mimecast20190719; t=1729164886;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3YXaqBFI0nUvcWIMmsgdysYTV4nOiAFbmMwv5oRjlwU=;
- b=cpoBx3mECx+EUg/VQQCR/U4XpsgezmplaJC6JdjN1qumHzKSXnDZwyPzyt4tmY5sEgob8v
- iLPFwweGlAqNc9P52mucD3d6O9Wk6/dhtqxwGTY8wRYm/wj5SoX3nKJud54n5T+RyH5BjW
- 7iKOnQ8qX8/D3nPeGGrTdFOZ+aGH4rs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=L2N9q+FpICGN0vOLHrGD2bQ2kE00/eI+pY8KkGNBCvA=;
+ b=IV8wjQFlgP4qRkI5i0G+w6+cGK96OHrDcYarYIsaokho6lZ/MiXW6LQ9iKfTcJgjRKhM+W
+ 4I/H2SSeQdTZ7u4Kj6FH2KFr0J/Et76UUE/2XW2joS8mG8GSnAdXy90cINcXZ/QyaBCP7g
+ z8atKxSyLUxW0pcOutKuygzVe3Ipb6E=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-2idbWqdGOuevRXux4ljhzQ-1; Thu,
- 17 Oct 2024 07:34:42 -0400
-X-MC-Unique: 2idbWqdGOuevRXux4ljhzQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-4IWLFlpuOE6kRXQqDBLiuQ-1; Thu,
+ 17 Oct 2024 07:34:43 -0400
+X-MC-Unique: 4IWLFlpuOE6kRXQqDBLiuQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 55EBD19560AD
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:41 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2EC881955D91
+ for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 11:34:43 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.94])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BFB9019560B2; Thu, 17 Oct 2024 11:34:39 +0000 (UTC)
+ id CB24519560AE; Thu, 17 Oct 2024 11:34:41 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 30/31] qga: remove unused qerror.h header
-Date: Thu, 17 Oct 2024 12:33:42 +0100
-Message-ID: <20241017113344.883424-31-berrange@redhat.com>
+Subject: [PATCH v2 31/31] system: remove unused qerror.h header
+Date: Thu, 17 Oct 2024 12:33:43 +0100
+Message-ID: <20241017113344.883424-32-berrange@redhat.com>
 In-Reply-To: <20241017113344.883424-1-berrange@redhat.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -86,47 +86,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qga/commands-bsd.c   | 1 -
- qga/commands-linux.c | 1 -
- qga/commands-posix.c | 1 -
- 3 files changed, 3 deletions(-)
+ system/rtc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
-index 9ce48af311..94ff6fee6a 100644
---- a/qga/commands-bsd.c
-+++ b/qga/commands-bsd.c
-@@ -12,7 +12,6 @@
- 
+diff --git a/system/rtc.c b/system/rtc.c
+index e3bc2095f9..216d2aee3a 100644
+--- a/system/rtc.c
++++ b/system/rtc.c
+@@ -25,7 +25,6 @@
  #include "qemu/osdep.h"
- #include "qga-qapi-commands.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/error.h"
- #include "qemu/queue.h"
- #include "commands-common.h"
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 51d5e3d927..9b1746b24f 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -15,7 +15,6 @@
- #include "qapi/error.h"
- #include "qga-qapi-commands.h"
+ #include "qemu/cutils.h"
  #include "qapi/error.h"
 -#include "qapi/qmp/qerror.h"
- #include "commands-common.h"
- #include "cutils.h"
- #include <mntent.h>
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index c2bd0b4316..389c5eeb5d 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -18,7 +18,6 @@
- #include <dirent.h>
- #include "qga-qapi-commands.h"
- #include "qapi/error.h"
--#include "qapi/qmp/qerror.h"
- #include "qemu/host-utils.h"
- #include "qemu/sockets.h"
- #include "qemu/base64.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+ #include "qemu/timer.h"
 -- 
 2.46.0
 
