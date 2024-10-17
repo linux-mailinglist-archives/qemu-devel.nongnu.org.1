@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2A79A25B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD39F9A256F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:46:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Rwr-0001Rd-72; Thu, 17 Oct 2024 10:57:57 -0400
+	id 1t1Rkm-0003Qr-Hx; Thu, 17 Oct 2024 10:45:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Rwo-0001RO-RG
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:57:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1Rki-0003On-45; Thu, 17 Oct 2024 10:45:24 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1Rwm-0007QO-Dq
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:57:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729177070;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=fpVnaxA9MzoGeKmLNdNn02WN/Jq99QrzFLHT90kRSHs=;
- b=MoBUK9qunGmOf5EusYKZ87qu5LUn3ff4aluJr1cDQGSAOYrSNCM9dK4eJcbogULcsRpaWf
- ega52PfW7MUE7ma2WroXlLuC0d7Yk8qxFq8SvAaOpfSRS1j9aigf/Q9D+FEIr3b35tULf+
- pdVNsZB9VrcGtE9a3J7TfHsdshaZTg0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-pphpNZ9nPM2JiB8LgEzw5A-1; Thu,
- 17 Oct 2024 10:57:47 -0400
-X-MC-Unique: pphpNZ9nPM2JiB8LgEzw5A-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1BEC11955F42; Thu, 17 Oct 2024 14:57:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.94])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C02D419560A7; Thu, 17 Oct 2024 14:57:42 +0000 (UTC)
-Date: Thu, 17 Oct 2024 15:57:39 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
-Message-ID: <ZxEl4zYgHLoLeHCT@redhat.com>
-References: <20241017143211.17771-1-farosas@suse.de>
- <20241017143211.17771-5-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1Rkf-0005Zb-Oi; Thu, 17 Oct 2024 10:45:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729176322; x=1760712322;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=zV481lRGbVV63j3CCjzbuapW1g8a4oHW28WTjDZBWng=;
+ b=MiT73TZ1WhWkOAUyvyNpvLvK12joFNee91TYB3x82+/Eyv66V43b1FiZ
+ O0ChiFzWimasX1OkTiqftNiRZg+NqcCwEioxTfSTZ/6SSuaHNjojb9I02
+ Pqj+OaUplgE+ACHOxY8apRYV1pMGWht1yp4MoVZEpXbZswVh6cpezwUn9
+ P07RD1Hw4Y6IVwmJ0Y/NLgcAJX3A9RYKQIRJQyN2VRXjpl7fymvmPGGqG
+ 76XGrGpkqXo9Aso2WRM+GgHo0o+w+7kBqdGtoOYcjbBPpMN+nBfNLiPK0
+ I7npc/dFE4rflFLK4UBGQRSMOI8rr7VNNR+Pj8OcVxJTTrD2c7PP2Wreh A==;
+X-CSE-ConnectionGUID: rKt8CMpTQwimfzXJk++ZjQ==
+X-CSE-MsgGUID: BbRncYPFTMC/fJ7mA+ZmBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="31531319"
+X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="31531319"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 07:45:17 -0700
+X-CSE-ConnectionGUID: S7JYt02wSee58G72esSEdQ==
+X-CSE-MsgGUID: rTmYgiaESOSOiAQtFw6EsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="78708432"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa006.jf.intel.com with ESMTP; 17 Oct 2024 07:45:11 -0700
+Date: Thu, 17 Oct 2024 23:01:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?us-ascii?B?PT9JU08tODg1OS0xP1E/TWE/PSA9P0lTTy04ODU5LTE/UT90?=
+ =?us-ascii?Q?hieu-Daud=3DE9=3F=3D?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?us-ascii?B?PT9JU08tODg1OS0xP1E/QmVubj1FOWU/PQ==?=
+ <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 0/7] Introduce SMP Cache Topology
+Message-ID: <ZxEmxkwQythD6ILI@intel.com>
+References: <20241012104429.1048908-1-zhao1.liu@intel.com>
+ <20241017141402.0000135b@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017143211.17771-5-farosas@suse.de>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+In-Reply-To: <20241017141402.0000135b@Huawei.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,58 +91,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 11:32:11AM -0300, Fabiano Rosas wrote:
-> Recent changes to how we invoke the migration tests have
-> (intentionally) caused them to not be part of the check-qtest target
-> anymore. Add the check-migration-quick target so we don't lose
-> migration code testing in this job.
+(Cc and gentlely ping QOM & QAPI maintainers :) )
 
-But 'check-migration-quick' is only the subset of migration tests,
-'check-migration' is all of the migration tests. So surely this is
-a massive regressions in covage in CI pipelines.
-
-Experience shows us that relying on humans to run tests periodically
-doesn't work well, and they'll slowly bit rot. Migration maintainers
-don't have a way to run this as gating test for every pull request
-that merges, and pull requests coming from non-migration maintainers
-can still break migration code.
-
-Any tests in tree need to be exercised by CI as the minimum bar
-to prevent bit rot from merges.
-
+> > Meanwhile, ARM side has also worked a lot on the smp-cache based on
+> > this series [2], so I think we are very close to the final merge, to
+> > catch up with this cycle. :)
 > 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  .gitlab-ci.d/buildtest.yml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> This would finally solve a long standing missing control for our
+> virtualization usecases (TCG and MPAM stuff is an added bonus),
+> so I'm very keen in this making 9.2 (and maybe even the ARM part
+> of things happen to move fast enough). Ali is out this week,
+> but should be back sometime next week. Looks like rebase of his
+> ARM patches on this should be simple!
 > 
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index 34d3f4e9ab..37247dc5fa 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -442,7 +442,7 @@ clang-system:
->      CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-ubsan
->        --extra-cflags=-fno-sanitize-recover=undefined
->      TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390x-softmmu
-> -    MAKE_CHECK_ARGS: check-qtest check-tcg
-> +    MAKE_CHECK_ARGS: check-qtest check-tcg check-migration-quick
->  
->  clang-user:
->    extends: .native_build_job_template
-> -- 
-> 2.35.3
-> 
-> 
+> I think this set mostly needs a QAPI review (perhaps from Markus?)
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Michael mentioned this series also need QOM maintainer's review. So I
+pinged maintainers at the beginning of this reply.
+
+> > 
+> > This series is based on the commit 7e3b6d8063f2 ("Merge tag 'crypto-
+> > fixes-pull-request' of https://gitlab.com/berrange/qemu into staging").
+> > 
+> > Background
+> > ==========
+> > 
+> > The x86 and ARM (RISCV) need to allow user to configure cache properties
+> *laughs*. I definitely going to start emailing ARM folk with
+> ARM (RISCV)  
+> :)  
+
+:) I remembered you discussing cache topology with Sia (from RISCV).
+
+Thanks,
+Zhao
+
 
 
