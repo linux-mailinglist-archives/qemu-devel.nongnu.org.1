@@ -2,119 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710629A2517
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F83B9A24D0
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 16:17:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1RYD-0005Qb-KG; Thu, 17 Oct 2024 10:32:29 -0400
+	id 1t1RJ8-0001LC-O0; Thu, 17 Oct 2024 10:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RYB-0005PU-9F
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:27 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t1RY9-0003vM-M1
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:32:26 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6F24821D4F;
- Thu, 17 Oct 2024 14:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729175544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P43KxTI/+J6dM0EcAKzewQzNim/G2N0eTsStzshMoaE=;
- b=mWphIMxGwT8V6SLZe3DEkIjsF0gMBAsrw84gqpcWgp3TyI5s5wyPD7eoKxTGtA8on26b9r
- VteTO+1El7Da7PTm3US2btf9mB7yGrV0+PPT5+j4W/Uj+IGi9wEUM+HIls0c55AMz+poiE
- 2TPCS69BHfq4Epg5BlDPN49y62G+Wzw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729175544;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P43KxTI/+J6dM0EcAKzewQzNim/G2N0eTsStzshMoaE=;
- b=kEjSHOdWkgHivc7t6yIdmuVOKhRSfptIKbgy9ehE6/bqd/ApZ279Rcz1CdeiYXerJNgQrr
- mR+LMKoef7fFi7CQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mWphIMxG;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kEjSHOdW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729175544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P43KxTI/+J6dM0EcAKzewQzNim/G2N0eTsStzshMoaE=;
- b=mWphIMxGwT8V6SLZe3DEkIjsF0gMBAsrw84gqpcWgp3TyI5s5wyPD7eoKxTGtA8on26b9r
- VteTO+1El7Da7PTm3US2btf9mB7yGrV0+PPT5+j4W/Uj+IGi9wEUM+HIls0c55AMz+poiE
- 2TPCS69BHfq4Epg5BlDPN49y62G+Wzw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729175544;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P43KxTI/+J6dM0EcAKzewQzNim/G2N0eTsStzshMoaE=;
- b=kEjSHOdWkgHivc7t6yIdmuVOKhRSfptIKbgy9ehE6/bqd/ApZ279Rcz1CdeiYXerJNgQrr
- mR+LMKoef7fFi7CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5FC1613A42;
- Thu, 17 Oct 2024 14:32:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id sMeXCfYfEWcDKQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 17 Oct 2024 14:32:22 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1RIy-0001KZ-Im
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:16:45 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1RIt-0002JI-1t
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 10:16:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729174599; x=1760710599;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jbN/Yjmmdjf0l59XCJJYXsWIbRhPCyFMSYBXdilqhCk=;
+ b=TeaETVQKzU8neegvm+z9kOXmDRpwg5erPFIXHWo8awe7Oaj/ZTBEe6bl
+ Rp0WqlrgxBDv5HPDY7WzFP8Z4Gm4M9s4bvFBfQxJJCJpBdYJ/ORXzcAxm
+ zAVcOPxEP1U6Yq5TVXB4JwKee55+yHAGTwE497ynt5G9D4ixA/AlOs7BF
+ hsrPfSGd1B9RjiLGYFbZ4AMg7xoU/ngu8gU04soz8vkAKQT8NF2/um9GS
+ aTiM0+D0MjGHFyxluy4dwI7abFLdhO1Z1VwLXIBQLyNCImaf7w+A5JaQl
+ K34D0nUf7o6okGafggU0P2zL/zCkKB5Et+2+cfNZUDUoCjCbSoIIvQk5L w==;
+X-CSE-ConnectionGUID: wWY1HaeJTQ+06YAC1SXnwQ==
+X-CSE-MsgGUID: mDzAwoLhRHGQsEOYi8W8qg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="39299376"
+X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="39299376"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 07:16:36 -0700
+X-CSE-ConnectionGUID: te3D44BFTLC6Fh1Y3auJEg==
+X-CSE-MsgGUID: /MzVvsWGQd6nQ6Zc1fStfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; d="scan'208";a="78900041"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa010.fm.intel.com with ESMTP; 17 Oct 2024 07:16:34 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 4/4] ci: Add check-migration-quick to the clang job
-Date: Thu, 17 Oct 2024 11:32:11 -0300
-Message-Id: <20241017143211.17771-5-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20241017143211.17771-1-farosas@suse.de>
-References: <20241017143211.17771-1-farosas@suse.de>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Junjie Mao <junjie.mao@hotmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [RFC 0/2] rust/qemu-api: Rethink property definition macro
+Date: Thu, 17 Oct 2024 22:32:43 +0800
+Message-Id: <20241017143245.1248589-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F24821D4F
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- RCPT_COUNT_SEVEN(0.00)[7];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_COUNT_TWO(0.00)[2];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -133,30 +81,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recent changes to how we invoke the migration tests have
-(intentionally) caused them to not be part of the check-qtest target
-anymore. Add the check-migration-quick target so we don't lose
-migration code testing in this job.
+Hi all,
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
+This RFC is try to implement the property definition macro in Rust
+style, to take advantage of Rust's language features and to eliminate
+some of the extra checking burden of the C version.
+
+This RFC would change the way property definitions are defined, making
+the Rust version of the interface less like C.
+
+Junjie and I felt that this was a small enough, as well as special
+enough case, to get us thinking together about what changes Rust would
+bring to the QEMU interface.
+
+Welcome your comments!
+
+
+Background
+==========
+
+Let's start by reviewing the original property definition macro in C
+version.
+
+This is the most basic one, "DEFINE_PROP":
+
+#define DEFINE_PROP(_name, _state, _field, _prop, _type, ...) {  \
+        .name      = (_name),                                    \
+        .info      = &(_prop),                                   \
+        .offset    = offsetof(_state, _field)                    \
+            + type_check(_type, typeof_field(_state, _field)),   \
+        __VA_ARGS__                                              \
+        }
+
+This macro, to ensure correctness, needs to consider two places:
+
+ 1. "_field" must be the member name of "_state".
+   * checked by typeof_field().
+
+ 2. "_field", "_type" and "_prop" must be aligned.
+   * Type of "field" is checked by type_check().
+   * Various variants of the macro bind "_prop" to "_type".
+
+For Rust version macro, "define_property!", performs the first check by
+"offset_of!", but the second requirement is not ensured because it
+doesn't check if $type matches $field. This makes the current Rust
+version more unsafe than the C version. :)
+
+
+Solution
+========
+
+Of course, we can add checks, such as some tricks similar to those in
+patch 2 for type inference.
+
+However, manually binding $type and $prop in macros and checking $field
+feels like C style, especially since Rust has type inference and trait.
+
+Therefore, we define a trait for types in QEMU that require properties,
+and return the PropertyInfo by trait, like:
+
+pub trait PropertyType {
+    fn get_prop_info() -> *const PropertyInfo;
+}
+
+impl PropertyType for bool {
+    fn get_prop_info() -> *const PropertyInfo {
+        unsafe { std::ptr::addr_of!(qdev_prop_bool) }
+    }
+}
+
+(This is a simplified version, and we spend the extra effort to implement
+PropertyTypeImpl, to get $field type in a safer way, pls see patch 2 for
+details.)
+
+At the same time, using Rust's type inference, the PropertyInfo is
+directly obtained in the macro based on the type of $field.
+
+Therefore, from $field, we can derive $type, and thus $prop, so that
+these three things can be naturally aligned, and, in turn, we can
+eliminate the $type and $prop parameters, from the Rust macro.
+
+Fewer parameter relationships mean fewer errors.
+
+Then for Rust version, user shouldn't encode PropertyInfo in macro
+directly, instead he should implement PropertyType trait.
+
+
+Opens
+=====
+
+But because of the change in the way properties are defined, we need to
+think about how to support custom PropertyInfo: this happens when QEMU
+needs to support different PropertyInfo's for the same type, and Rust
+trait can't implement it multiple times for the same type.
+
+There're 2 options:
+
+1. Introduce a new macro to support $prop parameter, and user could
+specify their custom PropertyInfo.
+
+This is aligned with original C version and reverts to the current code
+prior to modifications.
+
+
+2. Don't allow the user to override the PropertyInfo of the type. Instead
+user can wrap the type in truple struct and then implement trait for the
+new truple type. For example,
+
+struct MyBool(bool);
+
+impl PropertyType for MyBool {
+    ...
+}
+
+This way is more like Rust style, but users have to add ".0" whenever
+they want to access the wrapped property value.
+
+
+In both cases we allow the user to specify the pointer to PropertyInfo.
+But there is no way to check if the provided PropertyInfo is consistent
+with the property type (afterall, we haven't implemented the property
+registration mechanism in Rust yet), and we have to assume the user will
+ensure the consistency. So both approaches have the same level of safety.
+
+Which option do you think is better?
+
+Thanks and Best Regards,
+Zhao
+
 ---
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Junjie Mao (1):
+  rust/qemu-api: Fix fragment-specifiers in define_property macro
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 34d3f4e9ab..37247dc5fa 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -442,7 +442,7 @@ clang-system:
-     CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-ubsan
-       --extra-cflags=-fno-sanitize-recover=undefined
-     TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390x-softmmu
--    MAKE_CHECK_ARGS: check-qtest check-tcg
-+    MAKE_CHECK_ARGS: check-qtest check-tcg check-migration-quick
- 
- clang-user:
-   extends: .native_build_job_template
+Zhao Liu (1):
+  rust/qemu-api: Bind PropertyInfo to type
+
+ rust/hw/char/pl011/src/device_class.rs |  4 ---
+ rust/qemu-api/src/device_class.rs      | 48 +++++++++++++++++++++++---
+ rust/qemu-api/src/tests.rs             |  4 ---
+ 3 files changed, 43 insertions(+), 13 deletions(-)
+
 -- 
-2.35.3
+2.34.1
 
 
