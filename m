@@ -2,99 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D759B1F71
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 18:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F07839B20C6
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 22:15:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t57IC-0007k0-NG; Sun, 27 Oct 2024 13:43:08 -0400
+	id 1t5AaC-0005MZ-CT; Sun, 27 Oct 2024 17:13:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t57I4-0007js-0k; Sun, 27 Oct 2024 13:43:00 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1t5Aa9-0005M8-Mh; Sun, 27 Oct 2024 17:13:53 -0400
+Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t57I2-0004Xo-Ar; Sun, 27 Oct 2024 13:42:59 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49R6obgc020826;
- Sun, 27 Oct 2024 17:42:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=o13gzE
- hjtVOELqeezEGE+a32RYRaIwtD/Ef6bPnFUNk=; b=F472sPSGvYtnVPYjNMKHhb
- AzXSpli8QaZtk8o+cGuqj+MQJd6M2Wtvu8YUJNnhbbCKVXS4cj3HLb7mnbIyRuqe
- Tp2ZccfKe9eGbigvgeY6GWWaeagTkrt4EJHRP8kRpgJlH4RfQot4keoPspvk+XDC
- uW0uznMmCT+wYMR4+jUVehEyRzgALPwbnjfmb/cpXgDX7aiB+4de5pMfv4WTfmTR
- mPECH/5Ve+zT4b107XV12/EOahXHHYUPMXKuPFC7e9Y4Qv5lT59HELaFeObxZQi+
- TR7o6h9cJu3MWcayg3jDb9b8O0+aCtJodnJXzTze2WmrZVnIsBBvvqVIc0+V87NA
- ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42grwawd8n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 27 Oct 2024 17:42:47 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49RGVbbT028327;
- Sun, 27 Oct 2024 17:42:45 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42hb4xjucy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 27 Oct 2024 17:42:45 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49RHgjco18219564
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 27 Oct 2024 17:42:45 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2797258052;
- Sun, 27 Oct 2024 17:42:45 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9A7F58056;
- Sun, 27 Oct 2024 17:42:44 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 27 Oct 2024 17:42:44 +0000 (GMT)
-Message-ID: <33618d67-861c-41aa-99d3-c610b59dc9e6@linux.ibm.com>
-Date: Sun, 27 Oct 2024 13:42:44 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tests/qtest/tpm: add unit test to tis-spi
-To: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- stefanb@linux.vnet.ibm.com, pbonzini@redhat.com, farosas@suse.de,
- lvivier@redhat.com, clg@kaod.org
-Cc: qemu-ppc@nongnu.org
-References: <20241025201247.29574-1-dantan@linux.vnet.ibm.com>
- <20241025201247.29574-4-dantan@linux.vnet.ibm.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20241025201247.29574-4-dantan@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kgQr0_SBerOuC6LTvAeIFlcSW_a1F7xC
-X-Proofpoint-ORIG-GUID: kgQr0_SBerOuC6LTvAeIFlcSW_a1F7xC
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1t5Aa7-0007VM-Kz; Sun, 27 Oct 2024 17:13:53 -0400
+DKIM-Signature: a=rsa-sha256; bh=P/QJArraF9s0Wj18D9e7gLOaNmiBzvEBCk+A4ZQSQHo=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
+ t=1730063627; v=1;
+ b=aCaFxov3AI8MqsRyCTHsEsJXKE874ZjNVsC07zA3XnXaUq+DGzfdohpyjuEhMpcyeuMFm0HM
+ gBGgbQsCt2AxDVfnP8tn9HBaVI8MgjCblgKGjhqPjtkxYn7+AnewvKc43IRRbxS1jXijs34Sdjs
+ csDlfmZ6WB3iVk0vrkBcnlc9vaZnLLA4eBLJf8oTmGQk0if58hBU6THpt9X3HS9iLBwgqLYmw5M
+ B/0hDq9Fnb3mKWZjnAofLnaRK+6tDhHC74KZz6sOq5CwGdN604qibTnohoVVTk0MU0LQosC5cvq
+ Y9tD5sl6YeJh2+aGJnrivFE52WiXQ/9a8iHJ46SjTu34Q==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id B4A37202BC;
+ Sun, 27 Oct 2024 21:13:47 +0000 (UTC)
+From: ~axelheider <axelheider@git.sr.ht>
+Date: Thu, 17 Oct 2024 19:58:21 +0200
+Subject: [PATCH qemu.git v2 1/2] docs/devel/reset: add missing words
+Message-ID: <173006362760.28451.11319467059840843945-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <173006362760.28451.11319467059840843945-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 phishscore=0 mlxlogscore=999
- impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410270155
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: 38
+X-Spam_score: 3.8
+X-Spam_bar: +++
+X-Spam_report: (3.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIM_INVALID=0.1, DKIM_SIGNED=0.1, FREEMAIL_FORGED_REPLYTO=2.095,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,75 +60,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~axelheider <axelheider@gmx.de>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Axel Heider <axel.heider@codasip.com>
 
+Signed-off-by: Axel Heider <axel.heider@codasip.com>
+---
+ docs/devel/reset.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 10/25/24 4:12 PM, dan tan wrote:
-> Add qtest cases to exercise main TPM locality functionality
-> The TPM device emulation is provided by swtpm, which is TCG
-> TPM 2.0, and TCG TPM TIS compliant. See
-> https://trustedcomputinggroup.org/wp-content/uploads/TCG_PC_Client_Platform_TPM_Profile_PTP_2.0_r1.03_v22.pdf
-> https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientTPMInterfaceSpecification_TIS__1-3_27_03212013.pdf
-> The SPI registers are specific to the PowerNV platform
-> architecture
-> 
-> Signed-off-by: dan tan <dantan@linux.vnet.ibm.com>
-> ---
-;
-> +
-> +static inline void tpm_reg_writeb(const PnvChip *c,
-> +                                  int locl,
-> +                                  uint8_t reg,
-> +                                  uint8_t val)
-> +{
-> +    uint32_t tpm_reg_locl = SPI_TPM_TIS_ADDR | (locl << TPM_TIS_LOCALITY_SHIFT);
-> +
-> +    spi_access_start(c, false, 1, TPM_WRITE_OP, tpm_reg_locl | reg);
-> +    spi_write_reg(c, bswap64(val));
+diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
+index 74c7c0171a..3e64a7259f 100644
+--- a/docs/devel/reset.rst
++++ b/docs/devel/reset.rst
+@@ -286,7 +286,7 @@ every reset child of the given resettable object. All chi=
+ldren must be
+ resettable too. Additional parameters (a reset type and an opaque pointer) m=
+ust
+ be passed to the callback too.
+=20
+-In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located
++In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located in the
+ ``DeviceState`` and ``BusState`` structure. ``child_foreach()`` is implement=
+ed
+ to follow the bus hierarchy; for a bus, it calls the function on every child
+ device; for a device, it calls the function on every bus child. When we reset
+--=20
+2.45.2
 
-spi_write_reg(c, (uint64_t)val << 56);
-
-A #define for the 56 would be good.
-
-
-> +
-> +static void spi_access_start(const PnvChip *chip,
-> +                             bool n2,
-> +                             uint8_t bytes,
-> +                             uint8_t tpm_op,
-> +                             uint32_t tpm_reg)
-> +{
-> +    uint64_t cfg_reg;
-> +    uint64_t reg_op;
-> +    uint64_t seq_op = SEQ_OP_REG_BASIC;
-> +
-> +    cfg_reg = pnv_spi_tpm_read(chip, SPI_CLK_CFG_REG);
-> +    if (cfg_reg != CFG_COUNT_COMPARE_1) {
-> +        pnv_spi_tpm_write(chip, SPI_CLK_CFG_REG, CFG_COUNT_COMPARE_1);
-> +    }
-> +    /* bytes - sequencer operation register bits 24:31 */
-> +    if (n2) {
-> +        seq_op |= SPI_SHIFT_COUNTER_N2 | (bytes << 0x18);
-> +    } else {
-> +        seq_op |= SPI_SHIFT_COUNTER_N1 | (bytes << 0x18);
-> +    }
-> +    pnv_spi_tpm_write(chip, SPI_SEQ_OP_REG, seq_op);
-> +    pnv_spi_tpm_write(chip, SPI_MM_REG, MM_REG_RDR_MATCH);
-> +    pnv_spi_tpm_write(chip, SPI_CTR_CFG_REG, (uint64_t)0);
-> +    reg_op = bswap64(tpm_op) | ((uint64_t)tpm_reg << 0x20);
-
-
-Same #define to use here, maybe called SPI_XMIT_DATA_OP_SHIFT. And one 
-for the 0x20, maybe called SPI_XMIT_DATA_ADDR_SHIFT. Any reference to a 
-spec?
-
-(uint64_t)tmp_op << SPI_XMIT_DATA_OP_SHIFT | (uint64_t)(tpm_reg & 
-0xffffff) << SPI_XMIT_DATA_ADDR_SHIFT;
-
-
-> +    pnv_spi_tpm_write(chip, SPI_XMIT_DATA_REG, reg_op);
-> +}
-> +
 
