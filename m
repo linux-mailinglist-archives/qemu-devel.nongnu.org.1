@@ -2,78 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8655C9A2623
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 973439A2636
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 17:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1S8A-0005yl-2t; Thu, 17 Oct 2024 11:09:38 -0400
+	id 1t1SCr-00075U-PF; Thu, 17 Oct 2024 11:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1S87-0005yW-Fl
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:09:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1t1SCp-00074r-GM
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:27 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1S85-0000PP-3U
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:09:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729177770;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=byNs/YnIi8i76zN9NCzT8WJnEPIev0quFEOa5VG+Jt0=;
- b=D61xZflmcsBW/PIby8ZGvgM/RxEEY+qc7bf7UKlg0725AaqBpqKZwMlinDo993k6txEFwM
- Ke0EBydXJFJ2Ac1UVPyazXmXFi7MiimTdXw0usRot5LmYS2EU5JbdZgPZI3iLfql/enAMv
- FKeTDVOUtmeTbGLWJ7BGLreDOXgUmCI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-8jX06dYKNlSRxt_T6rx7yQ-1; Thu,
- 17 Oct 2024 11:09:26 -0400
-X-MC-Unique: 8jX06dYKNlSRxt_T6rx7yQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D419E1955D94; Thu, 17 Oct 2024 15:09:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.94])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BEEF51956086; Thu, 17 Oct 2024 15:09:20 +0000 (UTC)
-Date: Thu, 17 Oct 2024 16:09:16 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1t1SCn-00013I-KS
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 11:14:27 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBdpI000302;
+ Thu, 17 Oct 2024 15:14:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :date:from:message-id:subject:to; s=corp-2023-11-20; bh=n2jyMnxa
+ ZtbkIgyEE0HE4pfchrWhkrfJNQvpORfedj0=; b=bKCRutFu6AHW9RBVec0jyKvO
+ MIkpdJri98HFDEPOkFE4TA5hg73SRIMG/j+ysU2L/vwQorrnYGkqqBOMQwK06a3y
+ J1Y4NzseUKUlUpSH4X17cclk24qt3HZEa/GtsixB2wZpyrgbRXiXI+0Ekxuu4cPa
+ k6NQgTYEsZkPhlBs7ZdFqSPCJf1nL6WqOKrIFdzlpT9f8/wo1xTMPU+tKaccO9Cj
+ 5M5TcxUbiZB8+OMSfTO358IQABnRVIxJWU49RRusSkMVZr9UAlOfEKqSatoSPI7L
+ WFVRwiR9Hx4cOTt3KpUbqhqXVFGBFcSvfSRs0ONoJwMoAYNTcqpZWTwziitKxA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427h09p4hy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Oct 2024 15:14:19 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 49HEfFFl027182; Thu, 17 Oct 2024 15:14:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 427fjgy63c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Oct 2024 15:14:17 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HFEHgR017147;
+ Thu, 17 Oct 2024 15:14:17 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 427fjgy62e-1; Thu, 17 Oct 2024 15:14:17 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH 1/4] tests/qtest: Add check-migration
-Message-ID: <ZxEonPy5m1DjQ3CM@redhat.com>
-References: <20241017143211.17771-1-farosas@suse.de>
- <20241017143211.17771-2-farosas@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241017143211.17771-2-farosas@suse.de>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [RFC V1 00/14] precreate phase
+Date: Thu, 17 Oct 2024 08:14:01 -0700
+Message-Id: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-17_16,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410170105
+X-Proofpoint-GUID: tFdCHiLWBFP7EF8Aj4pB2_VBKPaFdZzn
+X-Proofpoint-ORIG-GUID: tFdCHiLWBFP7EF8Aj4pB2_VBKPaFdZzn
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,141 +97,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 11:32:08AM -0300, Fabiano Rosas wrote:
-> Add two new targets, check-migration and check-migration-quick to
-> allow dividing migration tests into a quick set and a slow set. With
-> this it'll be possible to reduce the amount of migration tests that
-> run by default as part of 'make check'.
-> 
-> Keep under the 'migration-quick' suite only a few tests to serve as
-> sanity check for every build and move the rest under the 'migration'
-> suite.
+Define a new qemu initialization phase called 'precreate' which occurs
+before most backends or devices have been created.  The only exception
+is monitor and qtest devices and their associated chardevs.
 
-I don't think we should need to have separate make targets
-for each speed. I would expect users to be able to run
+QEMU runs in the main loop during this phase.  Monitor connections are
+active and can receive migration configuration commands.  QEMU starts
+listening on the normal migration URI during this phase, which can come
+from either the QEMU command line or from a migrate_incoming command.
+Thus the user can issue query-migrate to get the socket-address for
+dynamically allocated port numbers during precreate.
 
-  $ make check SPEED=thorough
-  $ make check-qtest SPEED=thorough
+In this series QEMU passes through and does not linger in the precreate
+phase, and the user sees no change in behavior.  The cpr-transfer series
+will linger in the phase for an incoming CPR operation, and exit the phase
+when the migrate command is send to source QEMU and causes destination QEMU
+to read CPR state.
 
-which is how we document doing this for functional tests.
+A future series may wish to add a command-line argument and monitor
+command that enters and exits the precreate phase for general purpose use.
+That would enable the user to issue monitor commands that specify backend
+creation parameters.
 
-If we want a way to let users more easily run individual
-(or a subset of) qtest suites, how about we allow for
-some filtering along the lines of:
+Now that both the monitor and migration are initialized early, one could
+implement a future scheme in which very few parameters are passed on the
+command line, and all backend and device creation parameters are passed
+in the migration stream.
 
-  $ make check-qtest QTESTS=migration-test
+Patches 1-5 untangle dependencies between accelerator and migration
+initialization, allowing the latter to be called earlier.  Currently
+configure_accelerators chooses the accelerator, defines compatability
+properties needed to initialize migration, and creates the machine in
+accel_init_machine.  The patches split configure_accelerators into a first
+part which probes for accelerators and defines properties, and a second
+part which creates the machine.  The second part is called after the
+precreate phase.  The patches also set machine options earlier, so they
+are known when migration is initialized.
 
-as adding top level make-check-<blah> targets for each
-different subset maintainers might want isn't scalable.
+Patch 6 defines the boundaries of the precreate phase.
 
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  meson.build             |  6 +++---
->  tests/Makefile.include  |  2 ++
->  tests/qtest/meson.build | 47 +++++++++++++++++++++++++++++++++--------
->  3 files changed, 43 insertions(+), 12 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 4ea1984fc5..92d38691f9 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3,9 +3,9 @@ project('qemu', ['c'], meson_version: '>=1.1.0',
->                            'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true'],
->          version: files('VERSION'))
->  
-> -add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true)
-> -add_test_setup('slow', exclude_suites: ['thorough'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
-> -add_test_setup('thorough', env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
-> +add_test_setup('quick', exclude_suites: ['slow', 'thorough', 'migration'], is_default: true)
-> +add_test_setup('slow', exclude_suites: ['thorough', 'migration-quick'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
-> +add_test_setup('thorough', exclude_suites: ['migration-quick'], env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
->  
->  meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
->  
-> diff --git a/tests/Makefile.include b/tests/Makefile.include
-> index 010369bd3a..79c1350bfb 100644
-> --- a/tests/Makefile.include
-> +++ b/tests/Makefile.include
-> @@ -11,6 +11,8 @@ check-help:
->  	@echo " $(MAKE) check-qtest              Run qtest tests"
->  	@echo " $(MAKE) check-functional         Run python-based functional tests"
->  	@echo " $(MAKE) check-functional-TARGET  Run functional tests for a given target"
-> +	@echo " $(MAKE) check-migration-quick    Run a small set of migration tests"
-> +	@echo " $(MAKE) check-migration          Run all migration tests"
->  	@echo " $(MAKE) check-unit               Run qobject tests"
->  	@echo " $(MAKE) check-qapi-schema        Run QAPI schema tests"
->  	@echo " $(MAKE) check-block              Run block tests"
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index b207e38696..27a802474a 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -406,14 +406,43 @@ foreach dir : target_dirs
->          test: executable(test, src, dependencies: deps)
->        }
->      endif
-> -    test('qtest-@0@/@1@'.format(target_base, test),
-> -         qtest_executables[test],
-> -         depends: [test_deps, qtest_emulator, emulator_modules],
-> -         env: qtest_env,
-> -         args: ['--tap', '-k'],
-> -         protocol: 'tap',
-> -         timeout: slow_qtests.get(test, 60),
-> -         priority: slow_qtests.get(test, 60),
-> -         suite: ['qtest', 'qtest-' + target_base])
-> +
-> +    # The migration-test test runs several slow sub-tests. Add it to
-> +    # two separate targets, one for executing a few tests
-> +    # (migration-quick) and another for executing the full set
-> +    # (migration). This is done to reduce the amount of tests that run
-> +    # via make check.
-> +    if test == 'migration-test'
-> +      foreach opts : [
-> +        {
-> +          'test-args': ['--tap', '-k', '-m', 'slow'],
-> +          'test-suite': ['migration']
-> +        },
-> +        {
-> +          'test-args': ['--tap', '-k', '-m', 'quick'],
-> +          'test-suite': ['migration-quick']
-> +        }]
-> +
-> +        test(target_base,
-> +             qtest_executables[test],
-> +             depends: [test_deps, qtest_emulator, emulator_modules],
-> +             env: qtest_env,
-> +             args: opts['test-args'],
-> +             protocol: 'tap',
-> +             timeout: slow_qtests.get(test, 60),
-> +             priority: slow_qtests.get(test, 60),
-> +             suite: opts['test-suite'])
-> +      endforeach
-> +    else
-> +      test('qtest-@0@/@1@'.format(target_base, test),
-> +           qtest_executables[test],
-> +           depends: [test_deps, qtest_emulator, emulator_modules],
-> +           env: qtest_env,
-> +           args: ['--tap', '-k'],
-> +           protocol: 'tap',
-> +           timeout: slow_qtests.get(test, 60),
-> +           priority: slow_qtests.get(test, 60),
-> +           suite: ['qtest', 'qtest-' + target_base])
-> +    endif
->    endforeach
->  endforeach
-> -- 
-> 2.35.3
-> 
+Patches 7-12 define and use helper functions to extract monitor and qtest
+options from the command line, find their associated chardevs, and initialize
+the monitor and qtest devices early, prior to qemu_create_early_backends.
 
-With regards,
-Daniel
+Patches 13-14 contain miscellany.
+
+Steve Sistare (14):
+  accel: encapsulate search state
+  accel: accel preinit function
+  accel: split configure_accelerators
+  accel: set accelerator and machine props earlier
+  migration: init and listen during precreate
+  vl: precreate phase
+  monitor: chardev name
+  qom: get properties
+  qemu-option: filtered foreach
+  qemu-options: pass object to filter
+  monitor: connect in precreate
+  qtest: connect in precreate
+  net: cleanup for precreate phase
+  migration: allow commands during precreate and preconfig
+
+ accel/accel-system.c            |   2 -
+ accel/kvm/kvm-all.c             |  58 +++++----
+ accel/xen/xen-all.c             |  11 +-
+ hmp-commands.hx                 |   2 +
+ include/monitor/monitor.h       |   1 +
+ include/qapi/visitor.h          |   1 +
+ include/qemu/accel.h            |   1 +
+ include/qemu/option.h           |   5 +
+ include/qom/object_interfaces.h |   8 ++
+ monitor/monitor.c               |  21 ++++
+ net/net.c                       |   4 +-
+ qapi/migration.json             |  16 ++-
+ qapi/misc.json                  |   3 +-
+ qom/object_interfaces.c         |  27 ++--
+ system/vl.c                     | 270 ++++++++++++++++++++++++++++++----------
+ target/i386/nvmm/nvmm-all.c     |  10 +-
+ target/i386/whpx/whpx-all.c     |  14 ++-
+ util/qemu-option.c              |  25 ++++
+ 18 files changed, 358 insertions(+), 121 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+1.8.3.1
 
 
