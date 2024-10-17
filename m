@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37ECF9A186D
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E999A186E
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Oct 2024 04:08:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1Fv9-0008Dv-0M; Wed, 16 Oct 2024 22:07:23 -0400
+	id 1t1Fv8-0008E0-Pn; Wed, 16 Oct 2024 22:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t1Fv3-0008Da-0C
+ id 1t1Fv3-0008Db-0P
  for qemu-devel@nongnu.org; Wed, 16 Oct 2024 22:07:17 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t1Fv0-0005cK-HR
+ (envelope-from <maobibo@loongson.cn>) id 1t1Fv0-0005cJ-JA
  for qemu-devel@nongnu.org; Wed, 16 Oct 2024 22:07:16 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxHLNMcRBnWdohAA--.50483S3;
- Thu, 17 Oct 2024 10:07:08 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxQYhNcRBnXNohAA--.49045S3;
+ Thu, 17 Oct 2024 10:07:09 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxztVMcRBnh_MtAA--.34438S2;
+ by front1 (Coremail) with SMTP id qMiowMBxztVMcRBnh_MtAA--.34438S3;
  Thu, 17 Oct 2024 10:07:08 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v2 0/2] linux-headers: loongarch: Add kvm_para.h and
+Subject: [PATCH v2 1/2] linux-headers: loongarch: Add kvm_para.h and
  unistd_64.h
-Date: Thu, 17 Oct 2024 10:07:06 +0800
-Message-Id: <20241017020708.1728620-1-maobibo@loongson.cn>
+Date: Thu, 17 Oct 2024 10:07:07 +0800
+Message-Id: <20241017020708.1728620-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20241017020708.1728620-1-maobibo@loongson.cn>
+References: <20241017020708.1728620-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxztVMcRBnh_MtAA--.34438S2
+X-CM-TRANSID: qMiowMBxztVMcRBnh_MtAA--.34438S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,52 +64,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+KVM LBT supports on LoongArch depends on the linux-header file
+kvm_para.h, also unistd_64.h is required by unistd.h on LoongArch
+since 6.11, otherwise there will be compiling error such as:
+
 linux-headers/asm/unistd.h:3:10: fatal error: asm/unistd_64.h: No such file or directory
  #include <asm/unistd_64.h>
 
-Also update linux-headers to v6.12-rc3
-
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v1 ... v2:
-  1. update header files in directory linux-headers to v6.12-rc3
----
-Bibo Mao (2):
-  linux-headers: loongarch: Add kvm_para.h and unistd_64.h
-  linux-headers: Update to Linux v6.12-rc3
+ scripts/update-linux-headers.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- include/standard-headers/drm/drm_fourcc.h     |  43 +++
- include/standard-headers/linux/const.h        |  17 +
- include/standard-headers/linux/ethtool.h      | 226 +++++++++++++
- include/standard-headers/linux/fuse.h         |  22 +-
- .../linux/input-event-codes.h                 |   2 +
- include/standard-headers/linux/pci_regs.h     |  41 ++-
- .../standard-headers/linux/virtio_balloon.h   |  16 +-
- include/standard-headers/linux/virtio_gpu.h   |   1 +
- linux-headers/asm-arm64/mman.h                |   9 +
- linux-headers/asm-arm64/unistd.h              |  25 +-
- linux-headers/asm-generic/unistd.h            |   6 +-
- linux-headers/asm-loongarch/kvm.h             |  24 ++
- linux-headers/asm-loongarch/kvm_para.h        |  21 ++
- linux-headers/asm-loongarch/unistd.h          |   4 +-
- linux-headers/asm-loongarch/unistd_64.h       | 320 ++++++++++++++++++
- linux-headers/asm-riscv/kvm.h                 |   7 +
- linux-headers/asm-riscv/unistd.h              |  41 +--
- linux-headers/asm-x86/kvm.h                   |   2 +
- linux-headers/asm-x86/unistd_64.h             |   1 +
- linux-headers/asm-x86/unistd_x32.h            |   1 +
- linux-headers/linux/bits.h                    |   3 +
- linux-headers/linux/const.h                   |  17 +
- linux-headers/linux/iommufd.h                 | 143 ++++++--
- linux-headers/linux/kvm.h                     |  23 +-
- linux-headers/linux/mman.h                    |   1 +
- linux-headers/linux/psp-sev.h                 |  28 ++
- scripts/update-linux-headers.sh               |   4 +
- 27 files changed, 955 insertions(+), 93 deletions(-)
- create mode 100644 linux-headers/asm-loongarch/kvm_para.h
- create mode 100644 linux-headers/asm-loongarch/unistd_64.h
-
-
-base-commit: 7e3b6d8063f245d27eecce5aabe624b5785f2a77
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index c34ac6454e..3c411f0318 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -186,6 +186,10 @@ EOF
+     if [ $arch = riscv ]; then
+         cp "$hdrdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
+     fi
++    if [ $arch = loongarch ]; then
++        cp "$hdrdir/include/asm/kvm_para.h" "$output/linux-headers/asm-loongarch/"
++        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-loongarch/"
++    fi
+ done
+ arch=
+ 
 -- 
 2.39.3
 
