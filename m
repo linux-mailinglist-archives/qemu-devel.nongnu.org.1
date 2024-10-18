@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB7C9A4175
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726B69A417E
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:45:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1oCh-0008Hj-W4; Fri, 18 Oct 2024 10:43:48 -0400
+	id 1t1oCn-0008IH-0m; Fri, 18 Oct 2024 10:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t1oCg-0008HX-3n
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:43:46 -0400
+ id 1t1oCj-0008I7-Uo
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:43:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t1oCe-0002cS-Gk
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:43:45 -0400
+ id 1t1oCi-0002cf-EL
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:43:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729262624;
+ s=mimecast20190719; t=1729262627;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q6fXeEeyQn++bTLgXgQsS/yFO40vxiI7losxFrd52jU=;
- b=MqD6ZYNY7v1ub4PulnxZIskQslR4ifssMmXmddnuP5aeNVFX4qgXXd3Tzj1uZmkXGRK3ER
- OtYn2byI1Ahl/NcriE5/qCkuJyCDOWmaw65DeppKR5xBfSF6yIRL/jRhMb4mZd1L0Th/gn
- P3iFmP3fWEAxA0LklErVTnu6fY0a8FM=
+ bh=Qr5dagb8vQ3bDNxUa7EXxPicbCEKo86t7f8oVBzNrBQ=;
+ b=NJ585F2RaXAio8Jvs/TP1RzYogFcOy9juwoojw1zPTKN6pvkXYanKCyENBExGELVe3vWJj
+ FvcaZaOPPUAN4o0v+ZEIrfv66Pf+9Zr+GPPcfjW1tAqlbLYQxFmBA/IqC1sX1N+uOhQdgC
+ TIfZGE21XOZo1Cd8f6abt94w31CcJmo=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-578-_rtPBCsLPh29ujAv61_1fA-1; Fri, 18 Oct 2024 10:43:42 -0400
-X-MC-Unique: _rtPBCsLPh29ujAv61_1fA-1
+ us-mta-504-oVX88SV4Oi-gKGNpQ1mjFA-1; Fri, 18 Oct 2024 10:43:46 -0400
+X-MC-Unique: oVX88SV4Oi-gKGNpQ1mjFA-1
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-431518ae047so16265445e9.0
- for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 07:43:42 -0700 (PDT)
+ 5b1f17b1804b1-4316655b2f1so1362215e9.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 07:43:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729262620; x=1729867420;
+ d=1e100.net; s=20230601; t=1729262623; x=1729867423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q6fXeEeyQn++bTLgXgQsS/yFO40vxiI7losxFrd52jU=;
- b=PWgA5te4MBF84uJEK7/0i9zSzEOEbiYG9+4cokqkSjc/XU1BAnXWw5T0YngwLCMbOw
- 0NZtiatWvlXaeVkUj2/hXKVgtSJXsswTqmDTav441cU17bI/vKoUCMjalCfn6Yr8JeDU
- +nluJXOos16rJI607EUMTKkHyOEQV/nQUTcVhHMcqcSZz3Cor7p27Eu0pptWHfM3QYWB
- TKZfbz68ItnxpDw3QuXhpnynOvrIKQnlfqK08iyE8/Hy1XqBVYeYyL4XHHr/kUFX0I0P
- 3c+zD0CNzJby2RdFANlVNZPgVJza5OtWtyrnIzwW8Jau+UeWulHC8a1NYiAgRKLeQWGN
- U7gg==
-X-Gm-Message-State: AOJu0YyQBPzEnvg2QL3U30CMObDhYDLRq1SqPyHI1XutxRJ+ndLGMYbx
- T2HZtK7nDPDnHWfZNzuRjewaZFix/7ruHYknX7f9W5A5hRVNFrp6RLJIcYgk0kiLExP8NjtYWak
- 1yo0leEHDeYA5bqFbf45WmUtVAbpCXF/zmB/oxn/l2UN0LImNCeDLchZkQseEl9Yj495rCdt9rm
- hZHF1QTL/drKLqHYWnPuDbVDGNmOiKV4I89iDqPbg=
-X-Received: by 2002:a05:600c:4fcd:b0:431:4e33:98b6 with SMTP id
- 5b1f17b1804b1-43161624d76mr17988475e9.5.1729262620282; 
- Fri, 18 Oct 2024 07:43:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKy+uR3ApXqAZBoEmjUeistu/R6u060V5naxL17li2eQl4agU2Fbf8Ya7MPvzQodZVoVCXwg==
-X-Received: by 2002:a05:600c:4fcd:b0:431:4e33:98b6 with SMTP id
- 5b1f17b1804b1-43161624d76mr17987435e9.5.1729262619392; 
- Fri, 18 Oct 2024 07:43:39 -0700 (PDT)
+ bh=Qr5dagb8vQ3bDNxUa7EXxPicbCEKo86t7f8oVBzNrBQ=;
+ b=FQf6sKO1veG3TBMduMAJr9c5s9Bb2aYJ8Ybz3BeD20wdO2ekyKgiiiKvlrEOT14SJM
+ QuYnYpREHA1l2ptE67AKxbWyr1TrWBF45nk5m/nwr26q8ZXNEp7fRLDE7yOd8fufkXOd
+ XOjPjj1qgHBBjuDzWJvCtHrsnv4vo3h4patrUoEW03BTyprZULOi3ORm/tftwR4HIwec
+ 9lAYliJnEBECH78gKeWxSNwKelNDCnAGE5mGK7VXqpSYQnRQVLa2obhqkZALO2xtFXh+
+ Xcr1EBTOrQ48lllOQoV5oVXtL8ag+dO9+GqhvGRTGAWVUBbZWwFs6vLqKcLpXPdTEEts
+ YtEQ==
+X-Gm-Message-State: AOJu0YzL3/dIEVgymYlyHatxN4+YJEdTBIDfVxVXumaRqdRQyUEqI81s
+ uqdaZYyayKRv55CkyruHaNCUTr7FnVf9/qbouOwOsjuj61IEWUQSUMgZkIXgs1PCvmn/juG5/ny
+ M239nK9ceefy8S3Zanec7VL+7D77L8yCluRoqQ1Q/6ZSnijvQ12zNeMWxd0eFKCXMaXoBFT7SOK
+ SXTS/3gDb4K+sJGmuURcapAR6hs5PSZ6LY7V0Q8fo=
+X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
+ 5b1f17b1804b1-431616a388cmr21866525e9.29.1729262623500; 
+ Fri, 18 Oct 2024 07:43:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaSGjlQKknbJVwEuYZZVU30k72n+n1WrGSyD7f5FtRHRlGzfUZq+z8LuJhOKtRYpMnY/7QIA==
+X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
+ 5b1f17b1804b1-431616a388cmr21866275e9.29.1729262623079; 
+ Fri, 18 Oct 2024 07:43:43 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43160dc9365sm25846115e9.11.2024.10.18.07.43.38
+ 5b1f17b1804b1-43160dbe7c5sm25845785e9.6.2024.10.18.07.43.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2024 07:43:38 -0700 (PDT)
+ Fri, 18 Oct 2024 07:43:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PATCH 10/13] qdev: make properties array "const"
-Date: Fri, 18 Oct 2024 16:43:02 +0200
-Message-ID: <20241018144306.954716-11-pbonzini@redhat.com>
+Subject: [PATCH 11/13] rust: make properties array immutable
+Date: Fri, 18 Oct 2024 16:43:03 +0200
+Message-ID: <20241018144306.954716-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241018144306.954716-1-pbonzini@redhat.com>
 References: <20241018144306.954716-1-pbonzini@redhat.com>
@@ -101,182 +101,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Constify all accesses to qdev properties, except for the
-ObjectPropertyAccessor itself.  This makes it possible to place them in
-read-only memory, and also lets Rust bindings switch from "static mut"
-arrays to "static"; which is advantageous, because mutable statics are
-highly discouraged.
+Now that device_class_set_props() takes a const pointer, the only part of
+"define_property!" that needs to be non-const is the call to try_into().
+This in turn will only break if offset_of returns a value with the most
+significant bit set (i.e. a struct size that is >=2^31 or >= 2^63,
+respectively on 32- and 64-bit system), which is impossible.
+
+Just use a cast and clean everything up to remove the run-time
+initialization.  This also removes a use of OnceLock, which was only
+stabilized in 1.70.0.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/qdev-core.h       |  4 ++--
- include/hw/qdev-properties.h |  4 ++--
- hw/core/qdev-properties.c    | 26 +++++++++++++-------------
- system/qdev-monitor.c        |  2 +-
- 4 files changed, 18 insertions(+), 18 deletions(-)
+ rust/qemu-api/src/device_class.rs | 42 ++++++-------------------------
+ 1 file changed, 8 insertions(+), 34 deletions(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index aa97c34a4be..f9fa291cc63 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -132,7 +132,7 @@ struct DeviceClass {
-      * ensures a compile-time error if someone attempts to assign
-      * dc->props directly.
-      */
--    Property *props_;
-+    const Property *props_;
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index 5aba426d243..d885f2fcf19 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -2,10 +2,6 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-     /**
-      * @user_creatable: Can user instantiate with -device / device_add?
-@@ -935,7 +935,7 @@ char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
-  * you attempt to add an existing property defined by a parent class.
-  * To modify an inherited property you need to use????
-  */
--void device_class_set_props(DeviceClass *dc, Property *props);
-+void device_class_set_props(DeviceClass *dc, const Property *props);
- 
- /**
-  * device_class_set_parent_realize() - set up for chaining realize fns
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 09aa04ca1e2..26ebd230685 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -37,7 +37,7 @@ struct PropertyInfo {
-     int (*print)(Object *obj, Property *prop, char *dest, size_t len);
-     void (*set_default_value)(ObjectProperty *op, const Property *prop);
-     ObjectProperty *(*create)(ObjectClass *oc, const char *name,
--                              Property *prop);
-+                              const Property *prop);
-     ObjectPropertyAccessor *get;
-     ObjectPropertyAccessor *set;
-     ObjectPropertyRelease *release;
-@@ -223,7 +223,7 @@ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
-  * On error, store error in @errp.  Static properties access data in a struct.
-  * The type of the QOM property is derived from prop->info.
-  */
--void qdev_property_add_static(DeviceState *dev, Property *prop);
-+void qdev_property_add_static(DeviceState *dev, const Property *prop);
- 
- /**
-  * qdev_alias_all_properties: Create aliases on source for all target properties
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 86a583574dd..315196bd85a 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -749,7 +749,7 @@ const PropertyInfo qdev_prop_array = {
- 
- /* --- public helpers --- */
- 
--static Property *qdev_prop_walk(Property *props, const char *name)
-+static const Property *qdev_prop_walk(const Property *props, const char *name)
- {
-     if (!props) {
-         return NULL;
-@@ -763,10 +763,10 @@ static Property *qdev_prop_walk(Property *props, const char *name)
-     return NULL;
+-use std::sync::OnceLock;
+-
+-use crate::bindings::Property;
+-
+ #[macro_export]
+ macro_rules! device_class_init {
+     ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, legacy_reset_fn => $legacy_reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
+@@ -19,7 +15,7 @@ macro_rules! device_class_init {
+                 dc.as_mut().realize = $realize_fn;
+                 dc.as_mut().vmsd = &$vmsd;
+                 $crate::bindings::device_class_set_legacy_reset(dc.as_mut(), $legacy_reset_fn);
+-                $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_mut_ptr());
++                $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_ptr());
+             }
+         }
+     };
+@@ -32,9 +28,7 @@ macro_rules! define_property {
+             // use associated function syntax for type checking
+             name: ::core::ffi::CStr::as_ptr($name),
+             info: $prop,
+-            offset: ::core::mem::offset_of!($state, $field)
+-                .try_into()
+-                .expect("Could not fit offset value to type"),
++            offset: ::core::mem::offset_of!($state, $field) as isize,
+             set_default: true,
+             defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval.into() },
+             ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
+@@ -45,47 +39,27 @@ macro_rules! define_property {
+             // use associated function syntax for type checking
+             name: ::core::ffi::CStr::as_ptr($name),
+             info: $prop,
+-            offset: ::core::mem::offset_of!($state, $field)
+-                .try_into()
+-                .expect("Could not fit offset value to type"),
++            offset: ::core::mem::offset_of!($state, $field) as isize,
+             set_default: false,
+             ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
+         }
+     };
  }
  
--static Property *qdev_prop_find(DeviceState *dev, const char *name)
-+static const Property *qdev_prop_find(DeviceState *dev, const char *name)
- {
-     ObjectClass *class;
--    Property *prop;
-+    const Property *prop;
- 
-     /* device properties */
-     class = object_get_class(OBJECT(dev));
-@@ -840,7 +840,7 @@ void qdev_prop_set_string(DeviceState *dev, const char *name, const char *value)
- 
- void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
- {
--    Property *prop;
-+    const Property *prop;
- 
-     prop = qdev_prop_find(dev, name);
-     object_property_set_str(OBJECT(dev), name,
-@@ -956,7 +956,7 @@ const PropertyInfo qdev_prop_size = {
- /* --- object link property --- */
- 
- static ObjectProperty *create_link_property(ObjectClass *oc, const char *name,
--                                            Property *prop)
-+                                            const Property *prop)
- {
-     return object_class_property_add_link(oc, name, prop->link_type,
-                                           prop->offset,
-@@ -969,7 +969,7 @@ const PropertyInfo qdev_prop_link = {
-     .create = create_link_property,
- };
- 
--void qdev_property_add_static(DeviceState *dev, Property *prop)
-+void qdev_property_add_static(DeviceState *dev, const Property *prop)
- {
-     Object *obj = OBJECT(dev);
-     ObjectProperty *op;
-@@ -980,7 +980,7 @@ void qdev_property_add_static(DeviceState *dev, Property *prop)
-                              field_prop_getter(prop->info),
-                              field_prop_setter(prop->info),
-                              prop->info->release,
--                             prop);
-+                             (Property *)prop);
- 
-     object_property_set_description(obj, prop->name,
-                                     prop->info->description);
-@@ -994,7 +994,7 @@ void qdev_property_add_static(DeviceState *dev, Property *prop)
+-#[repr(C)]
+-pub struct Properties<const N: usize>(pub OnceLock<[Property; N]>, pub fn() -> [Property; N]);
+-
+-impl<const N: usize> Properties<N> {
+-    pub fn as_mut_ptr(&mut self) -> *mut Property {
+-        _ = self.0.get_or_init(self.1);
+-        self.0.get_mut().unwrap().as_mut_ptr()
+-    }
+-}
+-
+ #[macro_export]
+ macro_rules! declare_properties {
+     ($ident:ident, $($prop:expr),*$(,)*) => {
+-
+-        const fn _calc_prop_len() -> usize {
++        pub static $ident: [$crate::bindings::Property; {
+             let mut len = 1;
+             $({
+                 _ = stringify!($prop);
+                 len += 1;
+             })*
+             len
+-        }
+-        const PROP_LEN: usize = _calc_prop_len();
+-
+-        fn _make_properties() -> [$crate::bindings::Property; PROP_LEN] {
+-            [
+-                $($prop),*,
+-                    unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() },
+-            ]
+-        }
+-
+-        pub static mut $ident: $crate::device_class::Properties<PROP_LEN> = $crate::device_class::Properties(::std::sync::OnceLock::new(), _make_properties);
++        }] = [
++            $($prop),*,
++            unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() },
++        ];
+     };
  }
  
- static void qdev_class_add_property(DeviceClass *klass, const char *name,
--                                    Property *prop)
-+                                    const Property *prop)
- {
-     ObjectClass *oc = OBJECT_CLASS(klass);
-     ObjectProperty *op;
-@@ -1007,7 +1007,7 @@ static void qdev_class_add_property(DeviceClass *klass, const char *name,
-                                        field_prop_getter(prop->info),
-                                        field_prop_setter(prop->info),
-                                        prop->info->release,
--                                       prop);
-+                                       (Property *)prop);
-     }
-     if (prop->set_default) {
-         prop->info->set_default_value(op, prop);
-@@ -1046,7 +1046,7 @@ static void qdev_get_legacy_property(Object *obj, Visitor *v,
-  * Do not use this in new code!  QOM Properties added through this interface
-  * will be given names in the "legacy" namespace.
-  */
--static void qdev_class_add_legacy_property(DeviceClass *dc, Property *prop)
-+static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop)
- {
-     g_autofree char *name = NULL;
- 
-@@ -1058,12 +1058,12 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, Property *prop)
-     name = g_strdup_printf("legacy-%s", prop->name);
-     object_class_property_add(OBJECT_CLASS(dc), name, "str",
-         prop->info->print ? qdev_get_legacy_property : prop->info->get,
--        NULL, NULL, prop);
-+        NULL, NULL, (Property *)prop);
- }
- 
--void device_class_set_props(DeviceClass *dc, Property *props)
-+void device_class_set_props(DeviceClass *dc, const Property *props)
- {
--    Property *prop;
-+    const Property *prop;
- 
-     dc->props_ = props;
-     for (prop = props; prop && prop->name; prop++) {
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 44994ea0e16..c346ea6ae4b 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -751,7 +751,7 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
- 
- #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
- 
--static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
-+static void qdev_print_props(Monitor *mon, DeviceState *dev, const Property *props,
-                              int indent)
- {
-     if (!props)
 -- 
 2.46.2
 
