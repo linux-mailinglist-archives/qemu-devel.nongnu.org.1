@@ -2,104 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46209A38F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 10:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2A89A3958
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:03:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1iaJ-0007dc-El; Fri, 18 Oct 2024 04:43:47 -0400
+	id 1t1irt-0002Iz-5a; Fri, 18 Oct 2024 05:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1t1iaG-0007dA-TY; Fri, 18 Oct 2024 04:43:44 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1irl-0002Ih-5O
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:01:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1t1iaE-0003RB-2u; Fri, 18 Oct 2024 04:43:44 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49I8bNMY025156;
- Fri, 18 Oct 2024 08:43:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=aNgMLq
- eyJ+9ETqBnDGbeS8eewDF/fybCxfnEDW5Wpmk=; b=rfiFKBUvWOUoeuDEcz6T5B
- GQVONlXFI6VD2hR+sBr677fnN8Q/3ggDli17ujrb71CC+bRGlm9EauWHxxdTEDD5
- KWvyOsRmCJBLuzWA7gAOj4HsOCv81FnosqynHC3Bw7HGSj0DV7/iT3LfMxEpZqAi
- quexOFxe8ojOFvwjNFTIUnxb2wzZaCzoEI9VYK0zkY6V+OUjv0NW7rY4uP+lNHnE
- tHWDjPDiW21E/iVa1x2iNjiuyEBI3dTABhXknFZevmJjzP9rjZkplxNfIpnc5fk7
- EJrC3lnCJwV2eLJyNaT0TB8r1qsg/W9tE71/UCvHPcX/JQEr3WjkcABOyTU6GZQg
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42asbd7wku-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Oct 2024 08:43:35 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49I8hZJO011914;
- Fri, 18 Oct 2024 08:43:35 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42asbd7wkq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Oct 2024 08:43:35 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49I7cDiO002426;
- Fri, 18 Oct 2024 08:43:34 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284en3f79-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Oct 2024 08:43:34 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49I8hW2649676690
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Oct 2024 08:43:32 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 830F258060;
- Fri, 18 Oct 2024 08:43:32 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAD665804E;
- Fri, 18 Oct 2024 08:43:29 +0000 (GMT)
-Received: from [9.124.220.95] (unknown [9.124.220.95])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 18 Oct 2024 08:43:29 +0000 (GMT)
-Message-ID: <952fc526-03a5-4965-9bba-f3aa30147370@linux.ibm.com>
-Date: Fri, 18 Oct 2024 14:13:28 +0530
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t1iri-00056V-Ap
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:01:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729242105;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OxgSqIWYuy4xcOuSuTF5EAK/Li8iIB+CAAdWFR9KzsM=;
+ b=WacROtwBqFH91JyQigpedu+m9lF4LJY0orEG/lyLiu3rQMl9ic07u5qF2vpg+EH/FQfAfv
+ CaSSnYmD3AXl0VbAev4+HbY6XJ7HknG1d9sWcVcV2Q3khAnVXgZtJylg+8IOMJGGBHYbm9
+ YrJcwG0BPM2op4WT3D2RFDbNmsxeaVk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-vCXDmfTRPWKLyxdqYDpMFQ-1; Fri,
+ 18 Oct 2024 05:01:40 -0400
+X-MC-Unique: vCXDmfTRPWKLyxdqYDpMFQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EA5AB1955D4A; Fri, 18 Oct 2024 09:01:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.61])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AE1C919560A3; Fri, 18 Oct 2024 09:01:34 +0000 (UTC)
+Date: Fri, 18 Oct 2024 10:01:31 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
+Message-ID: <ZxIj694WqXwwMRIY@redhat.com>
+References: <20241017143211.17771-1-farosas@suse.de>
+ <20241017143211.17771-5-farosas@suse.de>
+ <ZxEl4zYgHLoLeHCT@redhat.com> <87r08e3d74.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spapr: nested: Add support for DPDES SPR in GSB for TCG L0
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Vaibhav Jain <vaibhav@linux.ibm.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-References: <20241017110033.3929988-1-amachhiw@linux.ibm.com>
- <07af4e02-aa2a-494c-9279-cd70389fc97e@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <07af4e02-aa2a-494c-9279-cd70389fc97e@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ipi2fBEKfu4kddEj_ZYxpp9K1bgVyA3A
-X-Proofpoint-GUID: plfxq4MFxZaFzvh5uAVEkp57vi5iax2a
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 mlxlogscore=910
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410180052
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <87r08e3d74.fsf@suse.de>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -114,96 +88,188 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Amit,
+On Thu, Oct 17, 2024 at 01:29:35PM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Thu, Oct 17, 2024 at 11:32:11AM -0300, Fabiano Rosas wrote:
+> >> Recent changes to how we invoke the migration tests have
+> >> (intentionally) caused them to not be part of the check-qtest target
+> >> anymore. Add the check-migration-quick target so we don't lose
+> >> migration code testing in this job.
+> >
+> > But 'check-migration-quick' is only the subset of migration tests,
+> > 'check-migration' is all of the migration tests. So surely this is
+> > a massive regressions in covage in CI pipelines.
+> 
+> I'm not sure it is. There are tests there already for all the major
+> parts of the code: precopy, postcopy, multifd, socket. Besides, we can
+> tweak migration-quick to cover spots where we think we're losing
+> coverage.
 
-On 10/18/24 10:47, Harsh Prateek Bora wrote:
-> Hi Amit,
-> 
-> On 10/17/24 16:30, Amit Machhiwal wrote:
->> The DPDES support for doorbell emulation and handling for KVM on PAPR
->> guests was added in Linux via [1]. Subsequently, a new GSB element for
->> DPDES was added in Linux; the same has been missing in QEMU L0. Add
-> 
-> s/QEMU L0/ TCG L0 implementation?
-> 
->> support for DPDES register's APIv2 GSB element and required handling in
->> `spapr_nested.c`.
->>
->> Currently, booting a KVM guest inside a QEMU TCG guest fails with the
->> below crash. The crash is encountered when GUEST_RUN_VCPU hcall made
->> into QEMU TCG L0 fails because H_INVALID_ELEMENT_VALUE is returned as
->> the mapping of the element ID corresponding to DPDES (unknown to QEMU
->> TCG L0) in GSR (Guest State Request) of TCG guest's KVM to the GSB
->> (Guest State Buffer) elements of QEMU TCG L0 fails.
-> 
-> GSB full form would be more appropriate along with first mention of GSB 
-> in above text.
-> 
-> With that:
-> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> 
->>
+Each of the tests in migration-test  were added for a good reason,
+generally to address testing gaps where we had functional regressions
+in the past. I don't think its a good idea to stop running such tests
+in CI as gating on new contributions. Any time we've had optional
+tests in QEMU, we've seen repeated regressions in the area in question.
 
-<snip>
+> Since our CI offers nothing in terms of reproducibility or
+> debuggability, I don't think it's productive to have an increasing
+> amount of tests running in CI if that means we'll be dealing with
+> timeouts and intermittent crashes constantly.
 
->> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
->> index c02785756c1e..b696ad537a77 100644
->> --- a/hw/ppc/spapr_nested.c
->> +++ b/hw/ppc/spapr_nested.c
->> @@ -194,6 +194,7 @@ static void nested_save_state(struct 
->> nested_ppc_state *save, PowerPCCPU *cpu)
->>           save->fscr = env->spr[SPR_FSCR];
->>           save->pspb = env->spr[SPR_PSPB];
->>           save->ctrl = env->spr[SPR_CTRL];
->> +        save->dpdes = env->spr[SPR_DPDES];
->>           save->vrsave = env->spr[SPR_VRSAVE];
->>           save->dar = env->spr[SPR_DAR];
->>           save->dsisr = env->spr[SPR_DSISR];
->> @@ -293,6 +294,7 @@ static void nested_load_state(PowerPCCPU *cpu, 
->> struct nested_ppc_state *load)
->>           env->spr[SPR_FSCR] = load->fscr;
->>           env->spr[SPR_PSPB] = load->pspb;
->>           env->spr[SPR_CTRL] = load->ctrl;
->> +        env->spr[SPR_DPDES] = load->dpdes;
->>           env->spr[SPR_VRSAVE] = load->vrsave;
->>           env->spr[SPR_DAR] = load->dar;
->>           env->spr[SPR_DSISR] = load->dsisr;
+Test reliability is a different thing. If a particular test is
+flaky, it needs to either be fixed or disabled. Splitting into
+a fast & slow grouping doesn't address reliability, just hides
+the problem from view.
 
-Looks like we overlooked above inits already present in existing code.
-I just checked above inits in nested_{save,load}_state are already
-present as common code between apiv1 & apiv2. So, we only need the inits
-below for initializing the lookup table.
-
-regards,
-Harsh
->> @@ -982,6 +984,7 @@ struct guest_state_element_type 
->> guest_state_element_types[] = {
->>       GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_FSCR,  fscr),
->>       GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_PSPB,   pspb),
->>       GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_CTRL,  ctrl),
->> +    GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_DPDES, dpdes),
->>       GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_VRSAVE, vrsave),
->>       GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_DAR,   dar),
->>       GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_DSISR,  dsisr),
->> diff --git a/include/hw/ppc/spapr_nested.h 
->> b/include/hw/ppc/spapr_nested.h
->> index 93ef14adcc5e..3b5cd993c256 100644
->> --- a/include/hw/ppc/spapr_nested.h
->> +++ b/include/hw/ppc/spapr_nested.h
->> @@ -99,7 +99,8 @@
->>   #define GSB_VCPU_SPR_HASHKEYR   0x1050
->>   #define GSB_VCPU_SPR_HASHPKEYR  0x1051
->>   #define GSB_VCPU_SPR_CTRL       0x1052
->> -                    /* RESERVED 0x1053 - 0x1FFF */
->> +#define GSB_VCPU_SPR_DPDES      0x1053
->> +                    /* RESERVED 0x1054 - 0x1FFF */
->>   #define GSB_VCPU_SPR_CR         0x2000
->>   #define GSB_VCPU_SPR_PIDR       0x2001
->>   #define GSB_VCPU_SPR_DSISR      0x2002
->>
->> base-commit: aa54f5be44be786636a5d51cc1612ad208a24849
+> > Experience shows us that relying on humans to run tests periodically
+> > doesn't work well, and they'll slowly bit rot. Migration maintainers
+> > don't have a way to run this as gating test for every pull request
+> > that merges, and pull requests coming from non-migration maintainers
+> > can still break migration code.
 > 
+> Right, but migration code would still be tested with migration-quick
+> which is executed at every make check. Do we really need the full set in
+> every pull request? We must draw a line somewhere, otherwise make check
+> will just balloon in duration.
+
+Again, the tests all exist because migration code is incredibly
+complicated, with a lot of permutations, with a history of being
+very bug / regression prone. With that in mind, it is unavoidable
+that we're going to have a significant testing overhead for
+migration code.
+
+Looking at its execution time right now, I'd say migration test
+is pretty good, considering the permutations we have to target.
+
+It gets a bad reputation because historically it has been as
+much as x20 slower than it is today, and has also struggled
+with reliability. The latter is a reflection of the complexity
+of migration and and IMHO actually justifies greater testing,
+as long as we put in time to address bugs.
+
+Also we've got one single test program, covering an entire
+subsystem in one go, rather than lots of short individual
+test programs, so migration unfairly gets blamed for being
+slow, when it simply covers alot of functionality in one
+program.
+
+> > Any tests in tree need to be exercised by CI as the minimum bar
+> > to prevent bit rot from merges.
+> >
+> 
+> No disagreement here. But then I'm going to need advice on what to do
+> when other maintainers ask us to stop writing migration tests because
+> they take too long. I cannot send contributors away nor merge code
+> without tests.
+
+In general, I think it is unreasonable for other maintainers to
+tell us to stop adding test coverage for migration, and would
+push back against such a request. 
+
+We should, however, continue to optimize how we add further test
+coverage, where practical, overload testing of multiple features
+onto a single test case helps.
+
+We've already massively optimized the migration-test compared to
+its historical behaviour.
+
+A potentially bigger win could be seen if we change how we exercise
+the migration functionality. Since we had the migration qtest that
+runs a full migration operation, we've tended to expand testing by
+adding new qtest functions. ie we've added a functional test for
+everything we want covered. This is nice & simple, but also expensive.
+We've ignored unit testing, which I think is a mistake.
+
+If i look at the test list:
+
+# /x86_64/migration/bad_dest
+# /x86_64/migration/analyze-script
+# /x86_64/migration/validate_uuid
+# /x86_64/migration/validate_uuid_error
+# /x86_64/migration/validate_uuid_src_not_set
+# /x86_64/migration/validate_uuid_dst_not_set
+# /x86_64/migration/dirty_ring
+# /x86_64/migration/precopy/file
+# /x86_64/migration/precopy/unix/plain
+# /x86_64/migration/precopy/unix/suspend/live
+# /x86_64/migration/precopy/unix/suspend/notlive
+# /x86_64/migration/precopy/unix/tls/psk
+# /x86_64/migration/precopy/unix/tls/x509/default-host
+# /x86_64/migration/precopy/unix/tls/x509/override-host
+# /x86_64/migration/precopy/file/offset
+# /x86_64/migration/precopy/file/mapped-ram
+# /x86_64/migration/precopy/file/offset/fdset
+# /x86_64/migration/precopy/file/offset/bad
+# /x86_64/migration/precopy/file/mapped-ram/live
+# /x86_64/migration/precopy/tcp/plain
+# /x86_64/migration/precopy/tcp/plain/switchover-ack
+# /x86_64/migration/precopy/tcp/tls/psk/match
+# /x86_64/migration/precopy/tcp/tls/psk/mismatch
+# /x86_64/migration/precopy/tcp/tls/x509/default-host
+# /x86_64/migration/precopy/tcp/tls/x509/override-host
+# /x86_64/migration/precopy/tcp/tls/x509/mismatch-host
+# /x86_64/migration/precopy/tcp/tls/x509/friendly-client
+# /x86_64/migration/precopy/tcp/tls/x509/hostile-client
+# /x86_64/migration/precopy/tcp/tls/x509/allow-anon-client
+# /x86_64/migration/precopy/tcp/tls/x509/reject-anon-client
+# /x86_64/migration/precopy/fd/tcp
+# /x86_64/migration/precopy/fd/file
+# /x86_64/migration/multifd/file/mapped-ram
+# /x86_64/migration/multifd/file/mapped-ram/live
+# /x86_64/migration/multifd/file/mapped-ram/dio
+# /x86_64/migration/multifd/file/mapped-ram/fdset
+# /x86_64/migration/multifd/file/mapped-ram/fdset/dio
+# /x86_64/migration/multifd/tcp/uri/plain/none
+# /x86_64/migration/multifd/tcp/channels/plain/none
+# /x86_64/migration/multifd/tcp/plain/cancel
+# /x86_64/migration/multifd/tcp/plain/zlib
+# /x86_64/migration/multifd/tcp/plain/zstd
+# /x86_64/migration/multifd/tcp/plain/zero-page/legacy
+# /x86_64/migration/multifd/tcp/plain/zero-page/none
+# /x86_64/migration/multifd/tcp/tls/psk/match
+# /x86_64/migration/multifd/tcp/tls/psk/mismatch
+# /x86_64/migration/multifd/tcp/tls/x509/default-host
+# /x86_64/migration/multifd/tcp/tls/x509/override-host
+# /x86_64/migration/multifd/tcp/tls/x509/mismatch-host
+# /x86_64/migration/multifd/tcp/tls/x509/allow-anon-client
+# /x86_64/migration/multifd/tcp/tls/x509/reject-anon-client
+# /x86_64/migration/validate_uri/channels/both_set
+# /x86_64/migration/validate_uri/channels/none_set
+
+Individually none of those is very slow on its own - 10 are in
+the 2-3 second range,  35 are 1-2 secs,  and 6 are less than
+1 second.
+
+A very large portion of those are validating different ways to
+establish migration. Hardly any of them actually need to run
+a migration to completion. Even without running to completion
+though, we have the overheads of spawning 2 QEMUs.
+
+This feels like something that should be amenable to unit testing.
+Might need a little re-factoring of migration code to make it
+easier to run a subset of its logic in isolation, but that'd
+probably be a win anyway, as such work usually makes code cleaner.
+
+> Do we need nightly CI runs? Unit tests? Bear in mind there's a resource
+> allocation issue there. Addressing problems with timeouts/races in our
+> CI is not something any random person can do.
+
+In terms of running time, I think migration-test is acceptable as it is
+to run in 'make check' by default and doesn't justify dropping test
+coverage. We should still look to optimize & move to unit testing more
+code, and any reliability issues are something that needs to be addressed
+too.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
