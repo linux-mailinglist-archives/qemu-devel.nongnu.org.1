@@ -2,86 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFA09A329B
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 04:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD0F9A3322
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 05:02:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1cbP-0008Tt-Dz; Thu, 17 Oct 2024 22:20:31 -0400
+	id 1t1dEK-000785-6p; Thu, 17 Oct 2024 23:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1cbN-0008TN-MI; Thu, 17 Oct 2024 22:20:29 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t1dEI-00077v-FR
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 23:00:42 -0400
+Received: from mail-sy4aus01olkn20817.outbound.protection.outlook.com
+ ([2a01:111:f403:2819::817]
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1cbL-0004yf-5r; Thu, 17 Oct 2024 22:20:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729218027; x=1760754027;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8PKsoPgR4Ld+C0xF/qZFXE3weaPnEMpOVlDjd59wIDw=;
- b=NGoZQCDc0frZ5uGb0x3DQDFg4ghw/jle5FeN2QyFgFBGnKNDuChRQ6zX
- Slulr7XJ0k6XHBHWLXWKjSe2Lr5PMQjq0shMA2z0YNXvK2HeGFAyJ2G8D
- 4uAw2gIITrYQkk9/82oMYwdfoqCcsSftUwxV7Uw/N4Ry6bew7i+vjCzVm
- 0WGi4TBQz7OysRtqtnRbrSDxT9EDjUgnvBidTWxxLcV4m5E67aEKtfQ1X
- c1csjp+SdxJPBiWp294uY2C0nbVgcAR7DpVuOup1pHkkU/xJtyKoVj0rL
- CohVaOln/P35QbLrTOtAL4eeQg+j5LmP9vh6oyfF55AMWLytEW2QBKD98 g==;
-X-CSE-ConnectionGUID: gF2am3UfQSevXv2Hf5NICQ==
-X-CSE-MsgGUID: ivJ5dVYjQim6xZpbJzhz7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="28827909"
-X-IronPort-AV: E=Sophos;i="6.11,212,1725346800"; d="scan'208";a="28827909"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2024 19:20:22 -0700
-X-CSE-ConnectionGUID: L+YNHYlyR+6QwKMonGQkjw==
-X-CSE-MsgGUID: GChpiH98T9WKlXP4N1D6Sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="83557602"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 17 Oct 2024 19:20:14 -0700
-Date: Fri, 18 Oct 2024 10:36:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 1/7] hw/core: Make CPU topology enumeration
- arch-agnostic
-Message-ID: <ZxHJri+rgdGKf/0L@intel.com>
-References: <20241012104429.1048908-1-zhao1.liu@intel.com>
- <20241012104429.1048908-2-zhao1.liu@intel.com>
- <ZxEte1KBwWuCdkb1@redhat.com>
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t1dEF-0000Xg-W2
+ for qemu-devel@nongnu.org; Thu, 17 Oct 2024 23:00:42 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fZpz2rznh32+3kXdinVh9Z+lJSFFmzM1Q+8JfvdUD/hjbQNounDSOsB1xSzbwMOeyLzEzRfQmF/C1b5N4IgFo27YF08VdidWkqX93ZSxdC9ZMTGY+3rX9i2XPIq5wjfkogbcvqfBnUsgfUGR+cZys4DhIJ9Q9//InXMcMhlcZ0RtgxtEyTK52fkRZawBhfBXcASWafxEGEuJ6lO1pxCpUOc6vNIbfjiMgZAxEGSfTMsI+mA+wAbNmKnWcULNxq4iVDufEnUWIFSthDvAKuQwxCJ+qkTiH+j9/FD25aBmkNPo+w/Qgia99bQWeb5KQAV2H2yz9/vjN6ydi26NKzSFvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IgRTJ4XMEdPwWt4n0iJPlWwydO0YkVfuJ3ObH45b7v0=;
+ b=Jac+Awhh1arHTj2tDOTRHgqxdhzGh6v6/Y74HWlUGAVzFtEhvkhnGdcLRnmlCE6Pi7RyLxdX5Mww//TfkIBJH7/ilHTgf5ctdfixwFc4pKM5d6ne+wdf/siiSp56Fpd/UnFN+H/Y6vfxr8M2FTPEoDzlBtIcEnm9KH5ZZXOJYdA8rSqvZGiGDk6BWPbgI97ldGt81GTcSYF2P5chHDffS2jOcZaqqXuOeTULD5xAqmYy4LezlUg6PSsnBM9gDeRsEcF3oSP7FMT13X+eBs/fwtYxG2M0r+w8o7SxW8apMYDzAHZ1jucDBmRBCq07nbGO/D8vqLSHvtMEspq0AzNmkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IgRTJ4XMEdPwWt4n0iJPlWwydO0YkVfuJ3ObH45b7v0=;
+ b=LmPt7QIwiJQNgJm3F4PGW2CZBQ4MirXKTWSQ6F2dFgCldcqjHsmG5po/BD0f7+qgDiT7ci4isLlwMR2/onarEb4cHmiWx/JpyoJ6lP4Pswq3lmSZWBB/zWYzTnMORbOtyaVatHCyMvKxntQI8MLM+Eohm+DQ4ddwvy6u+R6n/yBtkQPqdTIVBd4GIT5SAoYr8ZoLke977p8PB02GZPcay6lcE1iiWo0WJH4CpnxCBYdX05oWLVaHriIQFW9quyiziTrA8S2xOzVaACyMLmWKUbzvmJMLTxTOOUUMPX/yOd1IUjEeAmA2uRjxM/48sP6xKS2YDhooA6acriTa50fXVg==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY7P300MB0055.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:238::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.19; Fri, 18 Oct
+ 2024 03:00:33 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.020; Fri, 18 Oct 2024
+ 03:00:33 +0000
+References: <20241015131735.518771-1-pbonzini@redhat.com>
+ <20241015131735.518771-13-pbonzini@redhat.com>
+ <SY0P300MB102670D06E55A6B463CD1BDA95462@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+ <CABgObfbqhmr=45c9ZiYoDAanM7Gsinz4RnwGMrivYDQgzP8kTw@mail.gmail.com>
+ <SY0P300MB10269110D64F40C0F5AF0E7595462@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Junjie Mao <junjie.mao@hotmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 12/16] rust: allow version 1.63.0 of rustc
+Date: Fri, 18 Oct 2024 10:44:41 +0800
+In-reply-to: <SY0P300MB10269110D64F40C0F5AF0E7595462@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Message-ID: <SY0P300MB1026A5E47899229BA3F559F595402@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: KL1PR0401CA0033.apcprd04.prod.outlook.com
+ (2603:1096:820:e::20) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <87jze6m7y1.fsf@hotmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxEte1KBwWuCdkb1@redhat.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY7P300MB0055:EE_
+X-MS-Office365-Filtering-Correlation-Id: b69bd719-db1f-4d87-91bb-08dcef21085c
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|15080799006|7092599003|5072599009|8060799006|461199028|19110799003|1602099012|10035399004|3412199025|440099028|4302099013|1710799026;
+X-Microsoft-Antispam-Message-Info: TekBbxQWPy1LuZ2LyWQw3vYNTsTtegAj2Lt0LTTY3lcLvT9uLWTSX+W4uKFx+AM/tTpxOQcsC1ziWsjEks+ww10yBQN/15tS2sE32BpZSH8am1e0KdtbuMIlO2TcWI8Ca/NvhK3CXe2pXd4gCGX8fdXJVuBAHhTNzAbEMzelKrGrK3QioPRIBM14UokViOXn/GQP6bBCJ2Yp/WW3zKWdCSfJPaVxQtL6vfvxcnk1gz5Gro3OCfgLNzj+co0qxCEtq2deD95lJ33fVBmErk+axhhAgML27ESuJDkptyQ9y0Ec1k04ICbcxWdtzqIc1fd7BZ8jCbQFgTGEqZuvgGC0SUQUpx8oRD/mLkyr1CzX3lcQk37dVVlNb812qQs8y5FX5eaIZgAHBEiJ3CIpzb/VMOmu1iSE+6E/FBXti2lyQVUoeBCNeiRWEi4W2sKGXImGEfGy6oGmxYLri1OuALvsx/5ngNfl36v2E8r1VNVr+vrN8jYDyxDNREWR3lIS/VzBRB603oNGKGtGQgsCWCcm8Y00YBTkebLEcAc0WnKJu4xYmhKOMyfJK2oI8cjzKzoFHZAFUVaTSGWY0mXw4u6KeNpfIwecimrDV6W5hDgZvnA440WK/J70joHkEg+E2WSrMeUAPgQkpcOTSwVo1xGTq8uRdLT0DmN5f8x9H2UK795jQzudEl3EevlYJhxVPcneIFyoP2tAYb1y3mUkNroONWx5XfPYX0yoBQORlqvrbyMYvX1XUNc78goj1BJ2DAdLGv71wJHvGABqq6Y8g6djMKIxmG1W8QK0oyTTBf4GhndMi8GVhBuUOZAEsTVcU/Uv65Qfy53QrAkK0t95Sa8Zbc55GHTNNt7RQRRsozsBk3LsX1L0OULURysOHZ7J2OxNQohu8E2wImDQDO66rxVJDQ==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4PoQA8+6aDxmQzUEtx6Bb734SD3vR49zvVqAZ+A5x5fB/gUoiR5KRrbcsbkL?=
+ =?us-ascii?Q?FihDZ6AO01kd5LqzlRiT1wZwzVgNzwzSsGxvIoIPfRboCNkIZXTOLuOD7U1E?=
+ =?us-ascii?Q?VYmlpl6k5JwNTKefX6hBxigDmPw3pfypuo5mB7VZlKNZbYRIwXHsCGCo0mhq?=
+ =?us-ascii?Q?aNne6zNasFeu42fABihN6oID01HeuTZo01HgUxncrFaH/5LlkL9gCKX221mo?=
+ =?us-ascii?Q?L2RBj/+UThLxgQDUA+3z2jJow+ccaxuAIIIAgY90Jl9plBBo46xFzOgCYLm5?=
+ =?us-ascii?Q?4Ag9mvMDiqOyNpcLEL6OetQDAT4bgYTgbEPQ1nOF9fG8nKKJMLME9t6gACrT?=
+ =?us-ascii?Q?7Yg2TgoVxYlenNaHhuWg4Brw+h4uPiocuEGlli85e4Ev8r+Wt74Wq3LGYAqx?=
+ =?us-ascii?Q?UyDNBa633F69/s4fslc0VlxslPUj9uPbgWja7HvW6ZmTd69gA25TmkTyB6lt?=
+ =?us-ascii?Q?xeWIouEKvtwDZKL4gIXY7yCp4yA4rZVbMZF5GzEpEIS9zc6shRVT4SpgiGek?=
+ =?us-ascii?Q?xs6oHxatNsPo/Y+WZiL4FvNKja6bLYxZZ19aQgD0VncRe4ZbM/89j9bH9WDi?=
+ =?us-ascii?Q?FFUvnLs6SGAm4mHY3K1EcJrwnkHhE8pdS2fHlIVmOQ122lkfbepK5c/R9cEY?=
+ =?us-ascii?Q?X8+ViCg5WFbHh51aloeInZYceDDkhdLfiP106WKGKl+o+Hs7gOAV/l8HdoK9?=
+ =?us-ascii?Q?6K7P/1ClrHkyCc6y8D/5/Lgpk43ucPbN0t3ioTKGFaD/vfVrZA9VDTD9dQ1Q?=
+ =?us-ascii?Q?OpnELe0xjWwz1IEtyFAmcgbRINIh6qo00k7GIto0L4T9uMu5JOrfFRf1ia8d?=
+ =?us-ascii?Q?eqCKk8kEFxkcMVtq2fPGKt19Lamlq2BaODC9hHtHxifdpg+ufck/BCOFX2eY?=
+ =?us-ascii?Q?gdBV8EmK3rg9s5ajAxifX5+EmFKydz6DvsjE0DXzHmU9+FDHWZVzdI3F1spr?=
+ =?us-ascii?Q?Gg+3l9Mzok9Ai2FPcMU2FLnunAHUYjEP9W9ag4Z7Qfv8n6eksrgN8dt/rnvJ?=
+ =?us-ascii?Q?1Qh6FJYym9gB323D/4lR1JGwNqE8YOqYVvai+hTMLwnk5QRAZoONXrV/s8dU?=
+ =?us-ascii?Q?U/VrMl9OR0gmr5CbNnSFfcpzgcc9AN0CkUc/PwSgLllvOkNXo4gcJoG5VgMy?=
+ =?us-ascii?Q?LQIPiexDTc228JcqyWdCqaZXYC8SsDqAWpDuJVStpnr7B+mZfXdWPDGWXKxu?=
+ =?us-ascii?Q?1FyNC+3TtqbFJj8FFwRwvPzz7eXWZASUEuovXbgoG2Zpq3+9asAPOHzyKqc?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: b69bd719-db1f-4d87-91bb-08dcef21085c
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 03:00:33.5590 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB0055
+Received-SPF: pass client-ip=2a01:111:f403:2819::817;
+ envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,58 +125,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
 
-> > -/*
-> > - * CPUTopoLevel is the general i386 topology hierarchical representation,
-> > - * ordered by increasing hierarchical relationship.
-> > - * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-> > - * or AMD (CPUID[0x80000026]).
-> > - */
-> > -enum CPUTopoLevel {
-> > -    CPU_TOPO_LEVEL_INVALID,
-> > -    CPU_TOPO_LEVEL_SMT,
-> > -    CPU_TOPO_LEVEL_CORE,
-> > -    CPU_TOPO_LEVEL_MODULE,
-> > -    CPU_TOPO_LEVEL_DIE,
-> > -    CPU_TOPO_LEVEL_PACKAGE,
-> > -    CPU_TOPO_LEVEL_MAX,
-> > -};
-> > -
-> 
-> snip
-> 
-> > @@ -18,3 +18,47 @@
-> >  ##
-> >  { 'enum': 'S390CpuEntitlement',
-> >    'data': [ 'auto', 'low', 'medium', 'high' ] }
-> > +
-> > +##
-> > +# @CpuTopologyLevel:
-> > +#
-> > +# An enumeration of CPU topology levels.
-> > +#
-> > +# @invalid: Invalid topology level.
-> 
-> Previously all topology levels were internal to QEMU, and IIUC
-> this CPU_TOPO_LEVEL_INVALID appears to have been a special
-> value to indicate  the cache was absent ?
+Junjie Mao <junjie.mao@hotmail.com> writes:
 
-Now I haven't support this logic.
-x86 CPU has a "l3-cache" property, and maybe that property can be
-implemented or replaced by the "invalid" level support you mentioned.
+> Paolo Bonzini <pbonzini@redhat.com> writes:
+>
+>> Il mer 16 ott 2024, 08:10 Junjie Mao <junjie.mao@hotmail.com> ha scritto:
+>>
+>>  In my Ubuntu 22.04 environment (rustc 1.76.0 and bindgen 0.59.1 from
+>>  apt) the feature `proc_macro_byte_character` is not yet stablized but
+>>  used in proc-macro2. Downgrading proc-macro2 to 1.0.79 [1] and syn to
+>>  2.0.58 fixes that issue for me.
+>>
+>> This is handled by patch 5. Try "meson subprojects update --reset".
+>>
+>
+> Yes, that works. Thanks for the info!
 
-> Now we're exposing this directly to the user as a settable
-> option. We need to explain what effect setting 'invalid'
-> has on the CPU cache config.
+After cleaning everything to build from scratch, I met another issue:
 
-If user set "invalid", QEMU will report the error message:
+  bilge-0.2-rs| Downloading bilge-impl-0.2-rs source from https://crates.io/api/v1/crates/bilge-impl/0.2.0/download
+  Download size: 24524
+  Downloading: ..........
+  bilge-0.2-rs| Applying diff file "bilge-impl-1.63.0.patch"
+  bilge-0.2-rs| patching file src/shared/discriminant_assigner.rs
+  bilge-0.2-rs| Hunk #1 FAILED at 26 (different line endings).
+  bilge-0.2-rs| 1 out of 1 hunk FAILED -- saving rejects to file src/shared/discriminant_assigner.rs.rej
+  bilge-0.2-rs| patching file src/shared/fallback.rs
+  bilge-0.2-rs| Hunk #1 FAILED at 22 (different line endings).
+  bilge-0.2-rs| 1 out of 1 hunk FAILED -- saving rejects to file src/shared/fallback.rs.rej
 
-qemu-system-x86_64: Invalid cache topology level: invalid. The topology should match valid CPU topology level
+  ../subprojects/bilge-0.2.0/meson.build:9:0: ERROR: Failed to apply diff file "bilge-impl-1.63.0.patch"
 
-Do you think this error message is sufficient?
+It turns out that the sources in bilge-impl have CRLF line endings and
+`patch` does not ignore that even with the `-l` option:
 
-Thanks,
-Zhao
+  ~/Projects/qemu/subprojects$ tar xf packagecache/bilge-impl-0.2.0.tar.gz
+  ~/Projects/qemu/subprojects$ cd bilge-impl-0.2.0/
+  ~/Projects/qemu/subprojects/bilge-impl-0.2.0$ patch -l -f -p1 -i ../packagefiles/bilge-impl-1.63.0.patch
+  patching file src/shared/discriminant_assigner.rs
+  Hunk #1 FAILED at 26 (different line endings).
+  1 out of 1 hunk FAILED -- saving rejects to file src/shared/discriminant_assigner.rs.rej
+  patching file src/shared/fallback.rs
+  Hunk #1 FAILED at 22 (different line endings).
+  1 out of 1 hunk FAILED -- saving rejects to file src/shared/fallback.rs.rej
+  ~/Projects/qemu/subprojects/bilge-impl-0.2.0$ file src/shared/discriminant_assigner.rs
+  src/shared/discriminant_assigner.rs: ASCII text, with CRLF line terminators
 
+Meson uses patch with the command above as the first preference to apply
+diffs. That command is not yet customizable.
+
+--
+Best Regards
+Junjie Mao
 
