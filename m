@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B579A436A
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956969A436B
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:14:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1pbQ-0003lZ-IW; Fri, 18 Oct 2024 12:13:24 -0400
+	id 1t1pbV-0003qn-PP; Fri, 18 Oct 2024 12:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbK-0003ke-Ak
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:18 -0400
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbO-0003ll-41
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:23 -0400
 Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbH-0004Ob-DH
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:17 -0400
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbK-0004Ov-38
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:21 -0400
 Received: by mail-qk1-x735.google.com with SMTP id
- af79cd13be357-7b13bf566c0so141760585a.3
- for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 09:13:14 -0700 (PDT)
+ af79cd13be357-7b15495f04dso122313785a.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 09:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gourry.net; s=google; t=1729267993; x=1729872793; darn=nongnu.org;
+ d=gourry.net; s=google; t=1729267995; x=1729872795; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y/0cRfb4YBF8cPInnUDV/L7Jp4pgWglmeJbCtRCfJPQ=;
- b=HNFcszvgCsCQpBwfNyRF30E11MocbpOraEzo9kzfMqaez1xGn4M+UvoItRolF8GcJ5
- Lb5ABzCCWqtlq9YetA/ylo87VOi5jZQ0OeDWjCCN6eUjZD3UN5294YHU5JsV3pukPmbn
- UwQuK+ORf6pBl0MbPFMru9zP/tHluHD6VwP+JZRvx8DxbG3mbpNYDXGqEx56PjaASukQ
- +w9M3i/aLWxQxgbALlSvHWJVlcFwGU90Fmpn+y/F1Zr91HMnjMYJp9LuSTuPvxOyYfZV
- Q8/N8w32ZunGU1zZtQdk753ZgRmYxuHBan81WFaRjKPpsz/4TEChkY5H5vaN1kg7hnqk
- o+yQ==
+ bh=lWkU6s2NOVNttOr0QYI8NeG1kjlYmYzZJu3z4aGvls0=;
+ b=Wh0Kg0iNEnSMAKd0ZUq08vj6o7j5anycn/NYjghg7It0H2xt8OJS63s6tYU9ad/BmL
+ 8bKut87VS6JdJcCj60k5Ml23BqaANZwC2Xe2Ztn+QedvhlhHXEQReIqipTPIT9TA5yhw
+ iXPw2OJnoS/hlKoaDZNWnhVzwoOVGK8HCTJ/NL5tEqg6PxyKU6Hv9RRZstSQZ8dlEurG
+ Vl2avwEKJrKtgG/0W1CoYdkNOVIOU9FpL2UsHJmEdt8E88Jit6YjKoAZk67Wsg3+dnYV
+ Ir1tmMcTmomblcJ968gQnHUss5c+++cO9fQ/wB6WPqhp78lZ43J1Er2WCJM0pc686U4P
+ gHzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729267993; x=1729872793;
+ d=1e100.net; s=20230601; t=1729267995; x=1729872795;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y/0cRfb4YBF8cPInnUDV/L7Jp4pgWglmeJbCtRCfJPQ=;
- b=au6oRU4yckc0zpfSGEcYyvQ+j4B2MLwh/7ZJtC0/2AtDWP3zJubh2d8hIANIEJl7+Y
- OnSHYlfODRCtnECTCbcX/qilYKgq1IK0qJuxVXNLSTgjuNHVjx2OV7p+C4sF5fFtlFNT
- dE4G9+++qCwjqf9UI1bln5JgDy6zhP8pN//3a5sDEm0F7UNu6S+uJI7z255Q07l9f/rd
- O1BOfGwKsAMICMLTszHUQUBYA2xKVOiqLtbb/xdI45XED0mAqjgOfwRhdlpDW6ZYeHW2
- J6ssAO6hS9H6frN+ltePIK+UKr5TVPEV3CpQvyqpIaJZr2GmccK8MezFn5IgeH4RNrtP
- edFg==
-X-Gm-Message-State: AOJu0Yx/e2SY3FhCKNXIBkNfrv5/+nF4UmCxnWKf8RnXlAdTcxyOgPwd
- 2UYss3kPPb6PagKmbw3xC45eCZlbDOJm0yKpf2slRQuBaxbRyHR571mYfPOItfM=
-X-Google-Smtp-Source: AGHT+IHgiNaZWimN4akiargJriy+PnqMz0dQ4VKMrO8LERPUv3AnoxXaArowIO1TsiS2YWVAiX8YXQ==
-X-Received: by 2002:a05:620a:2402:b0:7b1:4948:109f with SMTP id
- af79cd13be357-7b157bf13camr287097685a.57.1729267993256; 
- Fri, 18 Oct 2024 09:13:13 -0700 (PDT)
+ bh=lWkU6s2NOVNttOr0QYI8NeG1kjlYmYzZJu3z4aGvls0=;
+ b=GkxVB5I0MSURJ3tQ2uS0ZYwxjPaNpVVmve4rpfWWG/dp/Ihtc7RdZQngwxFkPmanL+
+ QtUC2hMb33lb6WgeM0q2ZKOExi0C2AhaU1S+3rKr1IhsiwSYMkMmi6f65qQQuby4FA3v
+ ceIOPlOFxhYcs6LzG4Z/aBahX+HFrJOVI1AbsPrnST9yTzjOkIehFRHSF+t8+1Hse/qs
+ WRtTnddCyjTqUN6qHOs97feMbKv6yOz5JnpduU68/UPazdJsYJPdLnFxUftS7tj5lcWI
+ 9T2CoAMeplz5GHYBsfROHhv09t6mSwkzKdFNS0SoBoEnB+VEQAUm2vA77X0YyvdcwAgK
+ f7tw==
+X-Gm-Message-State: AOJu0Yw01eZcAJ9LCMeDkrh59v1nWpff4tO3yvE6WrrHdBcKL7SbLXFi
+ B+5PdNROPlPQUrF0ptVIGKF0uqWkuf6NyPOZWabnt4/wHtDwO+d4tEzUV1/kfZg=
+X-Google-Smtp-Source: AGHT+IEqKAO0ketnSqmhUBvPOV068tf2A5Q37gpR9t7bNJ8EjmxgVJSGSr2XZ2oPQNDkOHcwr/ymVw==
+X-Received: by 2002:a05:620a:2492:b0:7b1:4579:61fa with SMTP id
+ af79cd13be357-7b157beea8fmr371565785a.55.1729267994804; 
+ Fri, 18 Oct 2024 09:13:14 -0700 (PDT)
 Received: from PC2K9PVX.TheFacebook.com
  (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b156fa55cfsm81677385a.67.2024.10.18.09.13.12
+ af79cd13be357-7b156fa55cfsm81677385a.67.2024.10.18.09.13.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2024 09:13:12 -0700 (PDT)
+ Fri, 18 Oct 2024 09:13:14 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-cxl@vger.kernel.org
 Cc: qemu-devel@nongnu.org, svetly.todorov@memverge.com,
  jonathan.cameron@huawei.com, nifan.cxl@gmail.com
-Subject: [PATCH RFC v3 1/3] cxl-mailbox-utils: move CXLUpdateDCExtentListInPl
- into header
-Date: Fri, 18 Oct 2024 12:12:50 -0400
-Message-ID: <20241018161252.8896-2-gourry@gourry.net>
+Subject: [PATCH RFC v3 2/3] cxl_type3: add MHD callbacks
+Date: Fri, 18 Oct 2024 12:12:51 -0400
+Message-ID: <20241018161252.8896-3-gourry@gourry.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241018161252.8896-1-gourry@gourry.net>
 References: <20241018161252.8896-1-gourry@gourry.net>
@@ -94,69 +93,196 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Svetly Todorov <svetly.todorov@memverge.com>
 
-Allows other CXL devices to access host DCD-add-response payload.
+Introduce an API for validating DC adds, removes, and responses
+against a multi-headed device.
+
+mhd_reserve_extents() is called during a DC add request. This allows
+a multi-headed device to check whether the requested extents belong
+to another host. If not, then this function can claim those extents
+in the MHD state and allow the cxl_type3 code to follow suit in the
+host-local blk_bitmap.
+
+mhd_reclaim_extents() is called during the DC add response. It allows
+the MHD to reclaim extents that were preallocated to a host during the
+request but rejected in the response.
+
+mhd_release_extent() is called during the DC release response. It can
+be invoked after a host frees an extent in its local bitmap, allowing
+the MHD handler to release that same extent in the multi-host state.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 Signed-off-by: Svetly Todorov <svetly.todorov@memverge.com>
 ---
- hw/cxl/cxl-mailbox-utils.c  | 16 ----------------
- include/hw/cxl/cxl_device.h | 16 ++++++++++++++++
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c  | 28 +++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 17 +++++++++++++++++
+ include/hw/cxl/cxl_device.h |  8 ++++++++
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 72c03d85cf..10de26605c 100644
+index 10de26605c..112272e9ac 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -2446,22 +2446,6 @@ void cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list)
-     g_free(group);
+@@ -2545,6 +2545,7 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+ {
+     CXLUpdateDCExtentListInPl *in = (void *)payload_in;
+     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+     CXLDCExtentList *extent_list = &ct3d->dc.extents;
+     uint32_t i;
+     uint64_t dpa, len;
+@@ -2579,6 +2580,11 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+         ct3d->dc.total_extent_count += 1;
+         ct3_set_region_block_backed(ct3d, dpa, len);
+     }
++
++    if (cvc->mhd_reclaim_extents)
++        cvc->mhd_reclaim_extents(&ct3d->parent_obj, &ct3d->dc.extents_pending,
++                in);
++
+     /* Remove the first extent group in the pending list */
+     cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
+ 
+@@ -2612,6 +2618,7 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+         uint32_t *updated_list_size)
+ {
+     CXLDCExtent *ent, *ent_next;
++    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+     uint64_t dpa, len;
+     uint32_t i;
+     int cnt_delta = 0;
+@@ -2632,6 +2639,13 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+             goto free_and_exit;
+         }
+ 
++        /* In an MHD, check that this DPA range belongs to this host */
++        if (cvc->mhd_access_valid &&
++            !cvc->mhd_access_valid(&ct3d->parent_obj, dpa, len)) {
++            ret = CXL_MBOX_INVALID_PA;
++            goto free_and_exit;
++        }
++
+         /* After this point, extent overflow is the only error can happen */
+         while (len > 0) {
+             QTAILQ_FOREACH(ent, updated_list, node) {
+@@ -2704,9 +2718,11 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+ {
+     CXLUpdateDCExtentListInPl *in = (void *)payload_in;
+     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+     CXLDCExtentList updated_list;
+     CXLDCExtent *ent, *ent_next;
+-    uint32_t updated_list_size;
++    uint32_t updated_list_size, i;
++    uint64_t dpa, len;
+     CXLRetCode ret;
+ 
+     if (in->num_entries_updated == 0) {
+@@ -2724,6 +2740,16 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+         return ret;
+     }
+ 
++    /* Updated_entries contains the released extents. Free those in the MHD */
++    for (i = 0; cvc->mhd_release_extent && i < in->num_entries_updated; ++i) {
++        dpa = in->updated_entries[i].start_dpa;
++        len = in->updated_entries[i].len;
++
++        if (cvc->mhd_release_extent) {
++            cvc->mhd_release_extent(&ct3d->parent_obj, dpa, len);
++        }
++    }
++
+     /*
+      * If the dry run release passes, the returned updated_list will
+      * be the updated extent list and we just need to clear the extents
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index b7b24b6a32..a94b9931d2 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -799,6 +799,7 @@ static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
+ {
+     CXLDCExtent *ent, *ent_next;
+     CXLDCExtentGroup *group, *group_next;
++    CXLType3Class *cvc = CXL_TYPE3_CLASS(ct3d);
+     int i;
+     CXLDCRegion *region;
+ 
+@@ -817,6 +818,10 @@ static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
+     for (i = 0; i < ct3d->dc.num_regions; i++) {
+         region = &ct3d->dc.regions[i];
+         g_free(region->blk_bitmap);
++        if (cvc->mhd_release_extent) {
++            cvc->mhd_release_extent(&ct3d->parent_obj, region->base,
++                    region->len);
++        }
+     }
  }
  
--/*
-- * CXL r3.1 Table 8-168: Add Dynamic Capacity Response Input Payload
-- * CXL r3.1 Table 8-170: Release Dynamic Capacity Input Payload
-- */
--typedef struct CXLUpdateDCExtentListInPl {
--    uint32_t num_entries_updated;
--    uint8_t flags;
--    uint8_t rsvd[3];
--    /* CXL r3.1 Table 8-169: Updated Extent */
--    struct {
--        uint64_t start_dpa;
--        uint64_t len;
--        uint8_t rsvd[8];
--    } QEMU_PACKED updated_entries[];
--} QEMU_PACKED CXLUpdateDCExtentListInPl;
--
- /*
-  * For the extents in the extent list to operate, check whether they are valid
-  * 1. The extent should be in the range of a valid DC region;
+@@ -2077,6 +2082,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
+     CXLEventDynamicCapacity dCap = {};
+     CXLEventRecordHdr *hdr = &dCap.hdr;
+     CXLType3Dev *dcd;
++    CXLType3Class *cvc;
+     uint8_t flags = 1 << CXL_EVENT_TYPE_INFO;
+     uint32_t num_extents = 0;
+     CxlDynamicCapacityExtentList *list;
+@@ -2094,6 +2100,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
+     }
+ 
+     dcd = CXL_TYPE3(obj);
++    cvc = CXL_TYPE3_GET_CLASS(dcd);
+     if (!dcd->dc.num_regions) {
+         error_setg(errp, "No dynamic capacity support from the device");
+         return;
+@@ -2166,6 +2173,13 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
+         num_extents++;
+     }
+ 
++    /* If this is an MHD, attempt to reserve the extents */
++    if (type == DC_EVENT_ADD_CAPACITY && cvc->mhd_reserve_extents &&
++       !cvc->mhd_reserve_extents(&dcd->parent_obj, records, rid)) {
++        error_setg(errp, "mhsld is enabled and extent reservation failed");
++        return;
++    }
++
+     /* Create extent list for event being passed to host */
+     i = 0;
+     list = records;
+@@ -2304,6 +2318,9 @@ static void ct3_class_init(ObjectClass *oc, void *data)
+     cvc->set_cacheline = set_cacheline;
+     cvc->mhd_get_info = NULL;
+     cvc->mhd_access_valid = NULL;
++    cvc->mhd_reserve_extents = NULL;
++    cvc->mhd_reclaim_extents = NULL;
++    cvc->mhd_release_extent = NULL;
+ }
+ 
+ static const TypeInfo ct3d_info = {
 diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index c3e93b876a..b2dc7fb769 100644
+index b2dc7fb769..13c97b576f 100644
 --- a/include/hw/cxl/cxl_device.h
 +++ b/include/hw/cxl/cxl_device.h
-@@ -552,6 +552,22 @@ typedef struct CXLDCExtentGroup {
- } CXLDCExtentGroup;
- typedef QTAILQ_HEAD(, CXLDCExtentGroup) CXLDCExtentGroupList;
+@@ -14,6 +14,7 @@
+ #include "hw/pci/pci_device.h"
+ #include "hw/register.h"
+ #include "hw/cxl/cxl_events.h"
++#include "qapi/qapi-commands-cxl.h"
  
-+/*
-+ * CXL r3.1 Table 8-168: Add Dynamic Capacity Response Input Payload
-+ * CXL r3.1 Table 8-170: Release Dynamic Capacity Input Payload
-+ */
-+typedef struct CXLUpdateDCExtentListInPl {
-+    uint32_t num_entries_updated;
-+    uint8_t flags;
-+    uint8_t rsvd[3];
-+    /* CXL r3.1 Table 8-169: Updated Extent */
-+    struct {
-+        uint64_t start_dpa;
-+        uint64_t len;
-+        uint8_t rsvd[8];
-+    } QEMU_PACKED updated_entries[];
-+} QEMU_PACKED CXLUpdateDCExtentListInPl;
-+
- typedef struct CXLDCRegion {
-     uint64_t base;       /* aligned to 256*MiB */
-     uint64_t decode_len; /* aligned to 256*MiB */
+ #include "hw/cxl/cxl_cpmu.h"
+ /*
+@@ -682,6 +683,13 @@ struct CXLType3Class {
+                                size_t *len_out,
+                                CXLCCI *cci);
+     bool (*mhd_access_valid)(PCIDevice *d, uint64_t addr, unsigned int size);
++    bool (*mhd_reserve_extents)(PCIDevice *d,
++                                CxlDynamicCapacityExtentList *records,
++                                uint8_t rid);
++    bool (*mhd_reclaim_extents)(PCIDevice *d,
++                                CXLDCExtentGroupList *groups,
++                                CXLUpdateDCExtentListInPl *in);
++    bool (*mhd_release_extent)(PCIDevice *d, uint64_t dpa, uint64_t len);
+ };
+ 
+ struct CSWMBCCIDev {
 -- 
 2.43.0
 
