@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB139A40E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A1B9A40DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1nja-0000wy-7D; Fri, 18 Oct 2024 10:13:42 -0400
+	id 1t1njb-0000yF-Bc; Fri, 18 Oct 2024 10:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1njX-0000vU-Pb
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:39 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1t1njY-0000w7-D5
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:40 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1njV-0006x7-8B
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:39 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-37d4ba20075so1626595f8f.0
- for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 07:13:36 -0700 (PDT)
+ id 1t1njV-0006xK-VY
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:40 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43161c0068bso6479485e9.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 07:13:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1729260816; x=1729865616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gtbif3E88e+6/TwfMyavJ5V/o1ksnebzcTF5I6GLPpQ=;
- b=Cuw3XJLYjawlZIRLk1fjtDO8bEIQUb8Nc7mMtnJBwfWddIkpswqrgY6mkAxwRZwjle
- Q9oebyK5hkciDWvY/IujKu9beJGLSTnqUnPHFi0NIBsg6Kq4y88VDmKMRPGVG4Ra7Qus
- ZGmGhpZZCFXnlwqkeE3nCY9UxsM+rPA6z84bwLFsJrRXYIl0vy3WtuJGUYbQNc9/9G4U
- cMShIb+KV9BS+sMNZtl7dFC28UKh7GceKS8ysPvOmkhBNsEaGATWxytRHz+6zKo40Ryh
- tMtIEGd6S6RTGwgo/cE9GoaP5MqZPlaPW9WNIghJdYgib6T9zmcARgmzQcQsYL0xgIPJ
- E3+A==
+ bh=/CHgIXie95gPd8mgM7wMcsIUcDpBmAMsOaaghgDk4m8=;
+ b=OD6JZv4KtqY/RyUqrW/NoTMzKgtK5FJ6DbSQPbPQ4ijTqpBGfS3JdzVFjDndoywkEm
+ ZRDcS0KKU5ESVB6R8pXOXSTga7s37BNM2j6E4NkD+2zm/xzZpN0sUxFb3KmVlIkVd00e
+ x4ZZDAZJeO44/fv6rgx36f8rcz1cxonGzi0XlqdCSmas9V/1wCdoEVI+KENnOcGV4S5h
+ 5JuKE9Bpf+H1DHiCBSjbTbDKYAWzh8jIzb14ScRZkxMVeIrCOAPLVwbwnGA7ZT/5jbzc
+ 8I6b3V3uilk6uoNm1lDaTqO12hM6uUmdYkPMXNitiycoJG91vaxT+uZNfc2CqKHpUf5G
+ vNaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1729260816; x=1729865616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gtbif3E88e+6/TwfMyavJ5V/o1ksnebzcTF5I6GLPpQ=;
- b=pQZHn9yZal0g0HiCuENkFAUC3NVxDtoFG7W4RTt49YuwXs5WsoKdJ9usWIta4eknDy
- NCdzrzf8qQRja9QEUFhd1zQ72/GWXZMK00m15v41HnXdO3RDGCzqg2CsOJAU6hfdVFC5
- lSDfkHtRbyqWncKXGP9qcc6ZGCxjaJVgjEkqk5ihG3ZAMBjOi3Jra3/JirNW1NavXqt4
- uwEn90llqmw+0hK8iJhxGfu/SefuKwtTVUsaBJ81+HF14aym8pSh8b+I7OxSOMUKzsS2
- 92zGya0sqA01/CxSg1kyOXk8e/4h5G337B0flg/hW84aBoKlGBMTM9BDHS1QYS4slWXa
- yUrQ==
+ bh=/CHgIXie95gPd8mgM7wMcsIUcDpBmAMsOaaghgDk4m8=;
+ b=hlYbjzRpYydklCGPcIvycLuVe06QiWIbu+QMH5SXvzwtyn8LkYL5x2nh6H8oMsnvk1
+ D3f7fOZnkmhnXW1jOBlr7jcPoYi0EeN+sbqzZktps+dS8mUDHVsbmijOTC4Pl/1f5yI2
+ VcJV8t/gG9EerF73XYoHakbOY7OElSRlRdoH5UWW34e/WChoY2UmxkHQOD9x0ck/yXpf
+ OnK2WTA2UL9czmZPK2VzYviD4PZ/MQu5cCRhnb4f3v4aL2C0V333wIH8Qa6vcUAkePPw
+ 9xCUK+NwSYFrU+xVKLANVtQ5ucD0iNRFJmB6YSfCF9DhBC8YvUP8BHjihyrnPBn9B1J1
+ 9xNA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXDRSB/k24z9Q3l1Xgy41A8lFxN2b+faw8F668ufrET840vUV4rTw+F+34GWwXD/sjDhvl9LeWmsQTH@nongnu.org
-X-Gm-Message-State: AOJu0YzP89dvQBPpJ7lNYyxoS+jwl8SkW59pjcv8dH5I8CnRnfUIZbv6
- bRUIp7YQlYsE1cn1bQiA498X57RQ9bR5oCLuG/9lMeYJOag1527Dj/ZNsrYo7m8=
-X-Google-Smtp-Source: AGHT+IEp+yNVBYg3tGX4pdAvqXy3w7NIVwZmWbVHONAoL1AVUK9Xb0IcINT7gaGzECaX+G4AFBD7WA==
-X-Received: by 2002:adf:f587:0:b0:37d:4afe:8c98 with SMTP id
- ffacd0b85a97d-37ea219836emr2093995f8f.26.1729260815779; 
- Fri, 18 Oct 2024 07:13:35 -0700 (PDT)
+ AJvYcCX9kVsnSNRmLpDYW6mtuwcjA61JP/Z7pVSkUySBuutw6oAgFotkLGaC7g8SY33yXywGKTZ2cH5PpGVF@nongnu.org
+X-Gm-Message-State: AOJu0YzaEg3qziC/HpA5hLPCUAFpuDaXIvilyeV0eFq+r9VamBmCQg3g
+ 490Qy+dTRY39ELLaHZc8F/BwcLKmogdpPrajY5pBmNFAW1MV/F2akOu6cBxN+vk=
+X-Google-Smtp-Source: AGHT+IE/LHxjua8FHvmPZ3dzgmWfOdxer9v+JSj3UH/Q2gqOnSUPFRgTmiKM8aKTdYIOlY9xFwSaoA==
+X-Received: by 2002:adf:ec12:0:b0:37d:50e7:8c56 with SMTP id
+ ffacd0b85a97d-37ea213ffd2mr1768853f8f.11.1729260816407; 
+ Fri, 18 Oct 2024 07:13:36 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37ecf0ecd89sm2040086f8f.78.2024.10.18.07.13.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2024 07:13:35 -0700 (PDT)
+ Fri, 18 Oct 2024 07:13:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -68,23 +68,23 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Alistair Francis <alistair@alistair23.me>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 2/7] docs/system/arm: Don't use wildcard '*-bmc' in doc titles
-Date: Fri, 18 Oct 2024 15:13:27 +0100
-Message-Id: <20241018141332.942844-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/7] docs/system/arm: Split fby35 out from aspeed.rst
+Date: Fri, 18 Oct 2024 15:13:28 +0100
+Message-Id: <20241018141332.942844-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241018141332.942844-1-peter.maydell@linaro.org>
 References: <20241018141332.942844-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,43 +100,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have two Arm board doc files which both use '*-bmc' in their
-documentation title. The result is that when you read the
-table of contents in system/target-arm.html you don't know
-which boards are covered by which file.
+The fby35 machine is not implemented in hw/arm/aspeed.c,
+but its documentation is currently stuck at the end of aspeed.rst,
+formatted in a way that it gets its own heading in the top-level
+list of boards in target-arm.html.
 
-Expand out the board names entirely in the document titles.
+We don't have any other boards that we document like this; split it
+out into its own rst file. This improves consistency with other
+board docs and means we can have the entry in the target-arm
+list be in the correct alphabetical order.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/aspeed.rst  | 4 ++--
- docs/system/arm/nuvoton.rst | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ MAINTAINERS                |  1 +
+ docs/system/arm/aspeed.rst | 48 --------------------------------------
+ docs/system/arm/fby35.rst  | 47 +++++++++++++++++++++++++++++++++++++
+ docs/system/target-arm.rst |  1 +
+ 4 files changed, 49 insertions(+), 48 deletions(-)
+ create mode 100644 docs/system/arm/fby35.rst
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c21d6a2f9e1..dff8073c5bc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1121,6 +1121,7 @@ F: include/hw/*/*aspeed*
+ F: hw/net/ftgmac100.c
+ F: include/hw/net/ftgmac100.h
+ F: docs/system/arm/aspeed.rst
++F: docs/system/arm/fby35.rst
+ F: tests/*/*aspeed*
+ F: hw/arm/fby35.c
+ 
 diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 6733ffd2b94..968ba88b997 100644
+index 968ba88b997..63910d382fe 100644
 --- a/docs/system/arm/aspeed.rst
 +++ b/docs/system/arm/aspeed.rst
-@@ -1,5 +1,5 @@
--Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``)
--===================================================================================
-+Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``tiogapass-bmc``, ``tacoma-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+========================================================================================================================================================================================================================================================================================================================================================================================================
+@@ -257,51 +257,3 @@ To boot a kernel directly from a Zephyr build tree:
  
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
-diff --git a/docs/system/arm/nuvoton.rst b/docs/system/arm/nuvoton.rst
-index 0424cae4b01..05059378e55 100644
---- a/docs/system/arm/nuvoton.rst
-+++ b/docs/system/arm/nuvoton.rst
-@@ -1,5 +1,5 @@
--Nuvoton iBMC boards (``*-bmc``, ``npcm750-evb``, ``quanta-gsj``)
--================================================================
-+Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``)
-+=====================================================================================================
- 
- The `Nuvoton iBMC`_ chips (NPCM7xx) are a family of ARM-based SoCs that are
- designed to be used as Baseboard Management Controllers (BMCs) in various
+   $ qemu-system-arm -M ast1030-evb -nographic \
+         -kernel zephyr.elf
+-
+-Facebook Yosemite v3.5 Platform and CraterLake Server (``fby35``)
+-==================================================================
+-
+-Facebook has a series of multi-node compute server designs named
+-Yosemite. The most recent version released was
+-`Yosemite v3 <https://www.opencompute.org/documents/ocp-yosemite-v3-platform-design-specification-1v16-pdf>`__.
+-
+-Yosemite v3.5 is an iteration on this design, and is very similar: there's a
+-baseboard with a BMC, and 4 server slots. The new server board design termed
+-"CraterLake" includes a Bridge IC (BIC), with room for expansion boards to
+-include various compute accelerators (video, inferencing, etc). At the moment,
+-only the first server slot's BIC is included.
+-
+-Yosemite v3.5 is itself a sled which fits into a 40U chassis, and 3 sleds
+-can be fit into a chassis. See `here <https://www.opencompute.org/products/423/wiwynn-yosemite-v3-server>`__
+-for an example.
+-
+-In this generation, the BMC is an AST2600 and each BIC is an AST1030. The BMC
+-runs `OpenBMC <https://github.com/facebook/openbmc>`__, and the BIC runs
+-`OpenBIC <https://github.com/facebook/openbic>`__.
+-
+-Firmware images can be retrieved from the Github releases or built from the
+-source code, see the README's for instructions on that. This image uses the
+-"fby35" machine recipe from OpenBMC, and the "yv35-cl" target from OpenBIC.
+-Some reference images can also be found here:
+-
+-.. code-block:: bash
+-
+-    $ wget https://github.com/facebook/openbmc/releases/download/openbmc-e2294ff5d31d/fby35.mtd
+-    $ wget https://github.com/peterdelevoryas/OpenBIC/releases/download/oby35-cl-2022.13.01/Y35BCL.elf
+-
+-Since this machine has multiple SoC's, each with their own serial console, the
+-recommended way to run it is to allocate a pseudoterminal for each serial
+-console and let the monitor use stdio. Also, starting in a paused state is
+-useful because it allows you to attach to the pseudoterminals before the boot
+-process starts.
+-
+-.. code-block:: bash
+-
+-    $ qemu-system-arm -machine fby35 \
+-        -drive file=fby35.mtd,format=raw,if=mtd \
+-        -device loader,file=Y35BCL.elf,addr=0,cpu-num=2 \
+-        -serial pty -serial pty -serial mon:stdio \
+-        -display none -S
+-    $ screen /dev/tty0 # In a separate TMUX pane, terminal window, etc.
+-    $ screen /dev/tty1
+-    $ (qemu) c		   # Start the boot process once screen is setup.
+diff --git a/docs/system/arm/fby35.rst b/docs/system/arm/fby35.rst
+new file mode 100644
+index 00000000000..742b887d44c
+--- /dev/null
++++ b/docs/system/arm/fby35.rst
+@@ -0,0 +1,47 @@
++Facebook Yosemite v3.5 Platform and CraterLake Server (``fby35``)
++==================================================================
++
++Facebook has a series of multi-node compute server designs named
++Yosemite. The most recent version released was
++`Yosemite v3 <https://www.opencompute.org/documents/ocp-yosemite-v3-platform-design-specification-1v16-pdf>`__.
++
++Yosemite v3.5 is an iteration on this design, and is very similar: there's a
++baseboard with a BMC, and 4 server slots. The new server board design termed
++"CraterLake" includes a Bridge IC (BIC), with room for expansion boards to
++include various compute accelerators (video, inferencing, etc). At the moment,
++only the first server slot's BIC is included.
++
++Yosemite v3.5 is itself a sled which fits into a 40U chassis, and 3 sleds
++can be fit into a chassis. See `here <https://www.opencompute.org/products/423/wiwynn-yosemite-v3-server>`__
++for an example.
++
++In this generation, the BMC is an AST2600 and each BIC is an AST1030. The BMC
++runs `OpenBMC <https://github.com/facebook/openbmc>`__, and the BIC runs
++`OpenBIC <https://github.com/facebook/openbic>`__.
++
++Firmware images can be retrieved from the Github releases or built from the
++source code, see the README's for instructions on that. This image uses the
++"fby35" machine recipe from OpenBMC, and the "yv35-cl" target from OpenBIC.
++Some reference images can also be found here:
++
++.. code-block:: bash
++
++    $ wget https://github.com/facebook/openbmc/releases/download/openbmc-e2294ff5d31d/fby35.mtd
++    $ wget https://github.com/peterdelevoryas/OpenBIC/releases/download/oby35-cl-2022.13.01/Y35BCL.elf
++
++Since this machine has multiple SoC's, each with their own serial console, the
++recommended way to run it is to allocate a pseudoterminal for each serial
++console and let the monitor use stdio. Also, starting in a paused state is
++useful because it allows you to attach to the pseudoterminals before the boot
++process starts.
++
++.. code-block:: bash
++
++    $ qemu-system-arm -machine fby35 \
++        -drive file=fby35.mtd,format=raw,if=mtd \
++        -device loader,file=Y35BCL.elf,addr=0,cpu-num=2 \
++        -serial pty -serial pty -serial mon:stdio \
++        -display none -S
++    $ screen /dev/tty0 # In a separate TMUX pane, terminal window, etc.
++    $ screen /dev/tty1
++    $ (qemu) c		   # Start the boot process once screen is setup.
+diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
+index 3c0a5848453..9c01e66ffa9 100644
+--- a/docs/system/target-arm.rst
++++ b/docs/system/target-arm.rst
+@@ -90,6 +90,7 @@ undocumented; you can get a complete list by running
+    arm/digic
+    arm/cubieboard
+    arm/emcraft-sf2
++   arm/fby35
+    arm/musicpal
+    arm/kzm
+    arm/nrf
 -- 
 2.34.1
 
