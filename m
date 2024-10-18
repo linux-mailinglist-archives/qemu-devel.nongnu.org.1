@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8AE9A4364
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA4B9A4368
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:14:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1paV-00035X-Hz; Fri, 18 Oct 2024 12:12:27 -0400
+	id 1t1pbV-0003mb-H0; Fri, 18 Oct 2024 12:13:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1paT-00035L-En
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:12:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1paR-0004Iu-4g
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:12:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729267941;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rFb22aFeFZKwSAP3hHjtLSDkSlgY5x2/d6eHUr7Eths=;
- b=BeaZeawHBX7vTubsYuLhxl0iRjuLi6kTDV8ol3gjyJnMGUjVWWKW7GFdH9GzRwB+I1P9Tp
- IiZMPgijdiQ5pUXxdvnGJCe70QnCtXzIo3mJ8s4x73CSrJQRczp9S/HKNe8mPbOKDh/2ry
- zcT4j7FnLuloq0SNDLlR5MwUL+N7kO4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-FZ8KCrhYPMi-MdziMFiR0w-1; Fri,
- 18 Oct 2024 12:12:17 -0400
-X-MC-Unique: FZ8KCrhYPMi-MdziMFiR0w-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1A0C71955F42; Fri, 18 Oct 2024 16:12:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.61])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4350019560AD; Fri, 18 Oct 2024 16:12:12 +0000 (UTC)
-Date: Fri, 18 Oct 2024 17:12:09 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Peter Xu <peterx@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
-Message-ID: <ZxKI2fYaveHJpHGO@redhat.com>
-References: <20241017143211.17771-1-farosas@suse.de>
- <20241017143211.17771-5-farosas@suse.de>
- <ZxEl4zYgHLoLeHCT@redhat.com> <87r08e3d74.fsf@suse.de>
- <ZxIj694WqXwwMRIY@redhat.com>
- <CAFEAcA9eFApeeLBQvFC8zPNo+Ovk5woA5HKzaQ5j3=hd-G4smw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbL-0003kw-DH
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:19 -0400
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbF-0004OD-GV
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:19 -0400
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-7b15416303aso113206985a.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 09:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gourry.net; s=google; t=1729267990; x=1729872790; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ngioInjflIeuk03TT5q8AniH0tXIsTkJB53uyQo/6Qo=;
+ b=R1lwODvKwEAp34HIhJjG1DLtDJpcQnvYmPy4qdE/6Ob7M+JtYWHonr5YerDM2I/YRK
+ tusnV8t4Z+ZMsZrrPGGw4LVsveTU9MyxYjX3NRAT9DU+1e5G3PvLsEBmXa2qDU8l2azl
+ XkAza2q4o3lrHCfNW+3MEWYydW9DewvCRz1g8gDS4FBPcpZR/XzH5XhiB5F+z5oOUjHz
+ W+jihOMXp5OyfpFcnnaybL+zy/waucz1ZDUrpcP7WpAX4xB/9JvN9MQSHHJYMoDOmYAn
+ S7yRfl0g2UKzbtK9SsRuVPl9gQi/+U/AkCEbCzPrj7fVOo/UOdVpYRV2jO8v2eLyu41g
+ V8Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729267990; x=1729872790;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ngioInjflIeuk03TT5q8AniH0tXIsTkJB53uyQo/6Qo=;
+ b=kdLJTP+hGFfT0nSet57CR3CHdhYZM+EW1xCrTndeNSEDxgoAFvkHMgg8OGpVDwQB/F
+ U3eTLkhHi4ZVSYodFPhi21/hgTVqOwjKT86EAaXqdyRpKTP9q/hhjvqDwSkuWDjPDQcM
+ awv5UgHiGgzAIVgG3IgW9/O5xCDPVpdlC4YfDlHgDB7Zx+4TCHGy5F65hVDCL68HrFB/
+ GrBzlWSSvdvDDgOURzTOhbH4zJ8Zvl4MUKEoGbl64TewZio280ssaR+SIj82RNBC9xoy
+ uGD6IXB+izWvGWf7Rc0UDbbi0i2DL0otJH2u3fZcP6rEIXjXg20iWsUGXQ1InlUJmZoB
+ m2XQ==
+X-Gm-Message-State: AOJu0YyIzp+dH5DYFVxm84eojewH3xi9ufe/2tbOXcdgtUWNIgDxOxGM
+ c2Rc90ReQxam5tldeDqRkmwt1qlgghGlde/Nncqc95XLY/iUjJjHyp1HA4iFHLY=
+X-Google-Smtp-Source: AGHT+IHY5SQOsi749VokI/SC5N20+Gor9GxNzD5XoMRkvXOZrmI5mdWm1kkZQ5dxDrcjzVVApCxXdg==
+X-Received: by 2002:a05:620a:4614:b0:7b1:4073:e8c9 with SMTP id
+ af79cd13be357-7b157b5aae0mr360782385a.20.1729267989507; 
+ Fri, 18 Oct 2024 09:13:09 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com
+ (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b156fa55cfsm81677385a.67.2024.10.18.09.13.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Oct 2024 09:13:08 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-cxl@vger.kernel.org
+Cc: qemu-devel@nongnu.org, svetly.todorov@memverge.com,
+ jonathan.cameron@huawei.com, nifan.cxl@gmail.com
+Subject: [PATCH RFC v3 0/3] cxl: Multi-headed Single Logical Device (MHSLD)
+Date: Fri, 18 Oct 2024 12:12:49 -0400
+Message-ID: <20241018161252.8896-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA9eFApeeLBQvFC8zPNo+Ovk5woA5HKzaQ5j3=hd-G4smw@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=gourry@gourry.net; helo=mail-qk1-x72b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,55 +85,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 18, 2024 at 04:25:07PM +0100, Peter Maydell wrote:
-> On Fri, 18 Oct 2024 at 10:01, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > Test reliability is a different thing. If a particular test is
-> > flaky, it needs to either be fixed or disabled. Splitting into
-> > a fast & slow grouping doesn't address reliability, just hides
-> > the problem from view.
-> 
-> On the subject of 'flaky', here's another low-repeatability
-> intermittent with migration-test that I just ran into in
-> 'make vm-build-openbsd':
-> 
-> ▶  97/916 /ppc64/migration/multifd/tcp/plain/cancel
->            OK
-> ▶  96/916 /i386/migration/precopy/tcp/tls/x509/allow-anon-client
->            OK
-> ▶  97/916 /ppc64/migration/multifd/tcp/plain/zlib -
-> ERROR:../src/tests/qtest/migration-helpers.c:322:check_migration_status:
-> assertion failed (current_status != "failed"): ("failed" != "failed")
-> FAIL
-> ▶  97/916
->            ERROR
-> ▶  95/916 /aarch64/migration/multifd/tcp/channels/plain/none
->            OK
->  97/916 qemu:qtest+qtest-ppc64 / qtest-ppc64/migration-test
->            ERROR          134.38s   killed by signal 6 SIGABRT
-> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
-> stderr:
-> warning: fd: migration to a file is deprecated. Use file: instead.
-> warning: fd: migration to a file is deprecated. Use file: instead.
-> **
-> ERROR:../src/tests/qtest/migration-helpers.c:322:check_migration_status:
-> assertion failed (current_status != "failed"): ("failed" != "failed")
-> qemu-system-ppc64: Failed to connect to '127.0.0.1:24109': Address
-> already in use
+MHSLDs allow multiple hosts to access dynamic capacity on a single
+backing device. This complicates DC management because adds,
+removals, and accesses need to be vetted such that hosts don't
+stomp on each other's data.
 
-This is interesting, as I suspect it is a sign of a genuine portability
-problem, as there are some subtle sockets binding differences between
-Linux and *BSDs IIRC.
+This patchset proposes a set of hooks to be called in cxl_type3.c
+when each of the above events happens. The results of the hooks
+can be used to prevent illegal DC operations in the corresponding
+cxl_* functions. 
 
+It also proposes an implementation for MHSLD emulation. The device's
+state is stored in a shared memory-backed file (on Linux, under /dev/shm).
+Extent ownership is tracked in a bytemap, wherein every byte acts
+as a set of flags showing which host ID can access the extent at that
+index. Blocks in an extent are claimed via compare-and-swap. Failure to
+claim the entirety of an extent is treated as a failure; the host will
+parse back over any blocks claimed so far and mask out its corresponding
+ownership bit. Operations on block states are done via atomics. This
+allows claims on unrelated extents to be serviced concurrently.
 
-With regards,
-Daniel
+Block state is relegated to a u8 to conserve space.
+Therefore only 8 heads are currently supported.
+
+The MHSLD device inherits from the CXL_TYPE3 class and adds the following
+configuration options:
+--mhd-head=<u32>
+--mhd-state_file=<str>
+--mhd-init=<bool>
+
+--mhd-head specifies the head ID of the host on the given device.
+
+--mhd-state_file is the name of the shared-memory-backed file used
+to store the MHD state.
+
+--mhd-init indicates whether this QEMU instance should initialize
+the state_file; if so, the instance will create the file if it does
+not exist, ftruncate it to the appropriate size, and initialize its
+header. It is assumed that the --mhd-init instance is run and allowed
+to completely finish configuration before any other guests access the
+shared state.
+
+The shared state file only needs to be intialized once. Even if a guest
+dies without clearing the ownership bits associated with its head-ID,
+future guests with that ID will clear those bits in cxl_mhsld_realize(),
+regardless of whether mhd_init is true or false.
+
+The following command line options create an MHSLD with 4GB of
+backing memory, whose state is tracked in /dev/shm/mhd_metadata.
+--mhd-init=true tells this instance to initialize the file as
+described above.
+
+./qemu-system_x86-64 \
+[... other options ...] \
+-device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+-device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+-object memory-backend-ram,id=mem0,size=4G \
+-device cxl-mhsld,bus=rp0,num-dc-regions=1,volatile-dc-memdev=mem0,id=cxl-mem0,sn=66667,mhd-head=0,mhd-state_file=mhd_metadata,mhd-init=true \
+-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=4G \
+-qmp unix:/tmp/qmp-sock-1,server,nowait
+
+Once this guest completes setup, other guests looking to access the
+device can be booted with the same configuration options, but with
+--mhd-head != 0,
+--mhd-init=false,
+and a different QMP socket.
+
+The first patch in the series moves the CXLUpdateDCExtentListInPl
+struct to a shared header. This allows DC-management code outside
+of cxl_type3.c (like mhsld.c) to see which extents have been
+accepted by a host in its DC-add response.
+
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Signed-off-by: Svetly Todorov <svetly.todorov@memverge.com>
+
+Changes in v3:
+- rebase on 10_15_2024 branch, handle renaming issues
+- dc->reset to legacy_reset update 
+
+Changes in v2:
+- remove explicit init_mhsld script
+- implement remaining DC add/remove logic
+
+---
+Svetly Todorov (3):
+  cxl-mailbox-utils: move CXLUpdateDCExtentListInPl into header
+  cxl_type3: add MHD callbacks
+  mhsld: implement MHSLD device
+
+ hw/cxl/Kconfig              |   1 +
+ hw/cxl/cxl-mailbox-utils.c  |  44 ++--
+ hw/cxl/meson.build          |   1 +
+ hw/cxl/mhsld/Kconfig        |   4 +
+ hw/cxl/mhsld/meson.build    |   3 +
+ hw/cxl/mhsld/mhsld.c        | 456 ++++++++++++++++++++++++++++++++++++
+ hw/cxl/mhsld/mhsld.h        |  75 ++++++
+ hw/mem/cxl_type3.c          |  17 ++
+ include/hw/cxl/cxl_device.h |  24 ++
+ 9 files changed, 608 insertions(+), 17 deletions(-)
+ create mode 100644 hw/cxl/mhsld/Kconfig
+ create mode 100644 hw/cxl/mhsld/meson.build
+ create mode 100644 hw/cxl/mhsld/mhsld.c
+ create mode 100644 hw/cxl/mhsld/mhsld.h
+---
+base-commit: c4f85d1b04caf0a2baeccb13790da5e2a42fb0d9
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
