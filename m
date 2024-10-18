@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85EC9A3F94
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6DB9A3F95
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1n1x-0005hq-9s; Fri, 18 Oct 2024 09:28:37 -0400
+	id 1t1n1w-0005h8-2l; Fri, 18 Oct 2024 09:28:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1u-0005gv-TO
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:34 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0005gb-Kl
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0007Oq-GD
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:34 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1r-0007Ni-Tt
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729258112;
+ s=mimecast20190719; t=1729258109;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y6Fy1LQQxsiJJUp7CE/ZOqHc/ddFFABJ+pajEiKmoEw=;
- b=TYQfFsMEF+iYD0YxDkAh8UnfskFwXLOvBCJ6JhP0VeVIKrtat0UTixFE6+ZS0Xr4UQPb07
- K2lLmPPwq0vQo/lq9uSBHPKw7QyVPSHf8MTxRC85TiKd7mNtpY2EB2DG3LllybxgjrkjsJ
- ZOntnkHMHCXrZtv5+l4iAKdYNiEfpzs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qld2nKcPqOEkBG5sB6awVUHedtwy4wYqOCrZQLB7dPk=;
+ b=WHBBV0fvw9Bh9ygFu3MTaHQieAcmyHZ3MdI1Zwsl9VsSRu4jCZOWQVf+KslAVuASN0ej8R
+ pO4pmLBPc+4yKXSox4z10dhPcMWjby2i2EXrZoCLqqbUpMKRgTCg9OjH61p1ZjiK7tB9Dy
+ iqhr5fgCB2UU9BdrfgxZ0RG9DQSFla0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-hEt0EG-6M6yNJyLMnMUBdw-1; Fri,
- 18 Oct 2024 09:28:29 -0400
-X-MC-Unique: hEt0EG-6M6yNJyLMnMUBdw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-hdZ4pI9tOSCPhJSGVK7gKw-1; Fri,
+ 18 Oct 2024 09:28:28 -0400
+X-MC-Unique: hdZ4pI9tOSCPhJSGVK7gKw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5030A19560A7; Fri, 18 Oct 2024 13:28:28 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5DE2119560AF; Fri, 18 Oct 2024 13:28:27 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 147611956086; Fri, 18 Oct 2024 13:28:28 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1F7D119560A3; Fri, 18 Oct 2024 13:28:27 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4C43B21E692E; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
+ id 4F27221E6939; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 2/9] qga: Improve error for guest-set-user-password parameter
- @crypted
-Date: Fri, 18 Oct 2024 15:28:17 +0200
-Message-ID: <20241018132824.3379780-3-armbru@redhat.com>
+Cc: peter.maydell@linaro.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 3/9] error: Drop superfluous #include "qapi/qmp/qerror.h"
+Date: Fri, 18 Oct 2024 15:28:18 +0200
+Message-ID: <20241018132824.3379780-4-armbru@redhat.com>
 In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
 References: <20241018132824.3379780-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,45 +82,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Windows version of guest-set-user-password rejects argument
-"crypted": true with the rather useless "this feature or command is
-not currently supported".  Improve to "'crypted' must be off on this
-host".
-
-QERR_UNSUPPORTED is now unused.  Drop.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240911131206.2503035-3-armbru@redhat.com>
+Message-ID: <20241010150144.986655-2-armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- qga/commands-win32.c      | 2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ qga/commands-bsd.c   | 1 -
+ qga/commands-linux.c | 1 -
+ qga/commands-posix.c | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 38e89762b3..101c1141b9 100644
---- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -26,7 +26,4 @@
- #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
-     "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
+diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
+index 9ce48af311..94ff6fee6a 100644
+--- a/qga/commands-bsd.c
++++ b/qga/commands-bsd.c
+@@ -12,7 +12,6 @@
  
--#define QERR_UNSUPPORTED \
--    "this feature or command is not currently supported"
--
- #endif /* QERROR_H */
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index 61b36da469..038beb8cfa 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -1914,7 +1914,7 @@ void qmp_guest_set_user_password(const char *username,
-     GError *gerr = NULL;
- 
-     if (crypted) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "'crypted' must be off on this host");
-         return;
-     }
- 
+ #include "qemu/osdep.h"
+ #include "qga-qapi-commands.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/error.h"
+ #include "qemu/queue.h"
+ #include "commands-common.h"
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+index 51d5e3d927..9b1746b24f 100644
+--- a/qga/commands-linux.c
++++ b/qga/commands-linux.c
+@@ -15,7 +15,6 @@
+ #include "qapi/error.h"
+ #include "qga-qapi-commands.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "commands-common.h"
+ #include "cutils.h"
+ #include <mntent.h>
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index c2bd0b4316..389c5eeb5d 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -18,7 +18,6 @@
+ #include <dirent.h>
+ #include "qga-qapi-commands.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/sockets.h"
+ #include "qemu/base64.h"
 -- 
 2.46.0
 
