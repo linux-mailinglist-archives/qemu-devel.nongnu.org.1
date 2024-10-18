@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DF99A3B33
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9469A3B34
 	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 12:18:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1k3F-00017U-O5; Fri, 18 Oct 2024 06:17:45 -0400
+	id 1t1k3C-00017C-0u; Fri, 18 Oct 2024 06:17:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1k3D-00017L-Hu
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 06:17:43 -0400
+ id 1t1k3A-00016o-4c
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 06:17:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t1k3B-0005Ro-Oc
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 06:17:43 -0400
+ id 1t1k38-0005RZ-0A
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 06:17:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729246660;
+ s=mimecast20190719; t=1729246656;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Ohf/U8Ge7zXsOFfFT1/WqAmWvnQNOqQLWq6QiVcC/uA=;
- b=UT0T2i/BcufZ2VN+oauMkeGdQoTdX2cY9gjohN6MlL1plyTSLlmut3vnU+0H4TBdmXYH4C
- R8zhJAU9y/NW65IhVh8ycH3cHLNO5VfvklHk2h0S4nhOma6RWSP62ALALAqhjs1qC7zBTm
- 90igHXJeZtF50CiI4QjbhlmihfsFn4o=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JKKe1O7fIVAp2X/jfDGvzroQOsjwRVp4kDmSy7Ems8k=;
+ b=dksgarcFEH9FiMCd8lh0YI1cDZIKvJKIKgBRDHJtJm59/bsa1vxMaf4IYdFXoQArptBT8+
+ sEdfHJO8pXZzThObv36pjmAoDHc7vsUt8t83UETSQ69+AByQZaJ73+hshGTrWfZlOm0LmO
+ FuJ4A82d4la3mBB5L139C2IpYA5tZtU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-BPloVrbCMAaIt8pvBsKtdg-1; Fri,
- 18 Oct 2024 06:17:30 -0400
-X-MC-Unique: BPloVrbCMAaIt8pvBsKtdg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-s7RI570uNO6BvDZBHDMPyA-1; Fri,
+ 18 Oct 2024 06:17:32 -0400
+X-MC-Unique: s7RI570uNO6BvDZBHDMPyA-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28F1119560A5; Fri, 18 Oct 2024 10:17:28 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20C4E19560B0; Fri, 18 Oct 2024 10:17:31 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.61])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6621C19560A3; Fri, 18 Oct 2024 10:17:24 +0000 (UTC)
+ id C57E21956056; Fri, 18 Oct 2024 10:17:28 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -50,11 +51,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 0/4] qapi: generalize special features
-Date: Fri, 18 Oct 2024 11:17:20 +0100
-Message-ID: <20241018101724.1221152-1-berrange@redhat.com>
+Subject: [PATCH v2 1/4] qapi: cope with  feature names containing a '-'
+Date: Fri, 18 Oct 2024 11:17:21 +0100
+Message-ID: <20241018101724.1221152-2-berrange@redhat.com>
+In-Reply-To: <20241018101724.1221152-1-berrange@redhat.com>
+References: <20241018101724.1221152-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -82,66 +85,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is a spin-off from
+When we shortly expose all feature names to code, it will be valid to
+include a '-', which must be translated to a '_' for the enum constants.
 
-  https://lists.nongnu.org/archive/html/qemu-devel/2024-06/msg00807.html
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ scripts/qapi/gen.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-That series introduced a pragma allowing a schema to declare extra
-features that would be exposed to code.
-
-Following Markus' suggestion:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg03765.html
-
-I've changed impl such that we expose all features to the code
-regardless of whether they are special, and don't require any pragma.
-
-I've split it from the QGA patches since it makes more sense to work
-on this bit in isolation.
-
-Changed in v2:
-
- * Reference QapiSpecialFeature enums constants when defining
-   QapiFeature enums constants for deprecated & unstable
-
- * Don't expose qapi-features.h in qapi-types.h, to avoid
-   global namespace pollution, instead pull it into only the
-   .c files that need it. This avoids the need to add a 'prefix'
-   to enum constants
-
- * Collect all features during parse time, rather than
-   generate time, to allow earlier error reporting of the
-   64 feature limit
-
-Daniel P. Berrangé (4):
-  qapi: cope with  feature names containing a '-'
-  qapi: change 'unsigned special_features' to 'uint64_t features'
-  qapi: rename 'special_features' to 'features'
-  qapi: expose all schema features to code
-
- include/qapi/compat-policy.h  |  2 +-
- include/qapi/qmp/dispatch.h   |  4 +--
- include/qapi/util.h           |  2 +-
- include/qapi/visitor-impl.h   |  4 +--
- include/qapi/visitor.h        | 12 +++----
- meson.build                   |  1 +
- qapi/qapi-forward-visitor.c   |  8 ++---
- qapi/qapi-util.c              |  6 ++--
- qapi/qapi-visit-core.c        | 12 +++----
- qapi/qmp-dispatch.c           |  2 +-
- qapi/qmp-registry.c           |  4 +--
- qapi/qobject-input-visitor.c  |  4 +--
- qapi/qobject-output-visitor.c |  6 ++--
- scripts/qapi/commands.py      |  5 +--
- scripts/qapi/features.py      | 62 +++++++++++++++++++++++++++++++++++
- scripts/qapi/gen.py           |  9 ++---
- scripts/qapi/main.py          |  2 ++
- scripts/qapi/schema.py        | 19 ++++++++++-
- scripts/qapi/types.py         | 18 +++++-----
- scripts/qapi/visit.py         | 17 +++++-----
- 20 files changed, 143 insertions(+), 56 deletions(-)
- create mode 100644 scripts/qapi/features.py
-
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index 6a8abe0041..c53ca72950 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -24,6 +24,7 @@
+ )
+ 
+ from .common import (
++    c_enum_const,
+     c_fname,
+     c_name,
+     guardend,
+@@ -41,7 +42,7 @@
+ 
+ 
+ def gen_special_features(features: Sequence[QAPISchemaFeature]) -> str:
+-    special_features = [f"1u << QAPI_{feat.name.upper()}"
++    special_features = [f"1u << {c_enum_const('qapi', feat.name)}"
+                         for feat in features if feat.is_special()]
+     return ' | '.join(special_features) or '0'
+ 
 -- 
 2.46.0
 
