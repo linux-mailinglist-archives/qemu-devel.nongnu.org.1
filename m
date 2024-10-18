@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3531F9A3A9E
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C32B9A3AA1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1jjD-0001x3-W3; Fri, 18 Oct 2024 05:57:04 -0400
+	id 1t1jjl-0003Sj-11; Fri, 18 Oct 2024 05:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jjA-0001np-Pu
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:57:00 -0400
+ id 1t1jje-0003PE-TQ
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:57:30 -0400
 Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jj7-0003DW-Pb
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:56:59 -0400
+ id 1t1jjd-0003F5-E9
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:57:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729245418; x=1760781418;
+ t=1729245450; x=1760781450;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=WDQO2UX3UvyY9vwPgER423gii0g9dbmDhIXVJLaLDAQ=;
- b=D4BKk0oyXtu4gaeZniQk2jjGgfVPi4FP/9GT8mWOKO+kTOrN7guPH+Fk
- sCjFSxrsSTm03DjmO+f9DKcCuY9LnMfFxzbhRALLv/1quScbU0CBM8T1C
- sq0VKrdoqRsKL2HtuxVjrae8rHyLCeF5GuTVWkzeC1ZSyY1/0Pbg7R1cF
- OMjVQvcVjnXiUuhjBC9Z6VvcnSGzQfC5YU/1dAENNca0IiZGBGl0K4fQY
- iBBCuETBf2DSa7XoLIcXSkItGNZJJghmbcCUW09Dp3aCG462BzVEnKchy
- CZuWlxNY5aeSoPDjLXbNiN1Gq6YR64brf50ixees+vv+M1mpfKcDvKmx/ g==;
-X-CSE-ConnectionGUID: JH26WxYvTiyuPTYdSBOkBw==
-X-CSE-MsgGUID: +Izb2QZjSgCjPxqsv/sPjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28874028"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28874028"
+ bh=CfFQveU7PNVXCnx6MckeIU5ayV2Ut7YQqTWRONbf5m8=;
+ b=jLPJtwEz+Jiiio+Yy9i0IWSN151TDuaL+zjlIh8Jw3PkNsAGR0svC1RQ
+ WM5213ueiSPyUipxnq5+XTQr/vsO0XmfMnESk6qP3IC4MrVXmLNZqJqHn
+ Gq7ZZwjYWjgG3c/wH1Go1otqmF6QWM/PFefPNJDIlUPxm9cyXCcVXeJUl
+ 8IRrmTGGpyP1ar+21m6awS0IRw4JTZvvHJO24TSu8X/4vpEy1NfR2Rkbn
+ SFYjcsd046fIuzeLtHRCDnFmYJO0YVbjqP9FwLAuhxv2ly8fy7ifrlMet
+ kh70eqZ0NxLYPmk8aJo05fHOmm4ZgWqXoINhiPHQbtARfchqUHw+9cQd8 g==;
+X-CSE-ConnectionGUID: es2T2V38Tou41v1D1vO9Gg==
+X-CSE-MsgGUID: V+6T0xR3S4iWPf4qGLogog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28874122"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28874122"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 02:56:56 -0700
-X-CSE-ConnectionGUID: +2mHIZI0T4CxprmKa19hAw==
-X-CSE-MsgGUID: iaEPtiwDSOmRSqvGvMpVtw==
+ 18 Oct 2024 02:57:28 -0700
+X-CSE-ConnectionGUID: 3/fvcj1kSmahxIOkht3TOw==
+X-CSE-MsgGUID: O/hzx3koTFOFGD/KciUlDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="78866329"
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="78866420"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 18 Oct 2024 02:56:54 -0700
-Date: Fri, 18 Oct 2024 18:13:10 +0800
+ by fmviesa008.fm.intel.com with ESMTP; 18 Oct 2024 02:57:26 -0700
+Date: Fri, 18 Oct 2024 18:13:41 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 28/31] util: adapt to new import path for qobject data
- type headers
-Message-ID: <ZxI0tjPia+PV+X0s@intel.com>
+Subject: Re: [PATCH v2 29/31] qapi: remove header file compatibility symlinks
+Message-ID: <ZxI01WJu8GsQ7tr6@intel.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
- <20241017113344.883424-29-berrange@redhat.com>
+ <20241017113344.883424-30-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241017113344.883424-29-berrange@redhat.com>
+In-Reply-To: <20241017113344.883424-30-berrange@redhat.com>
 Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
@@ -83,21 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 12:33:40PM +0100, Daniel P. Berrangé wrote:
-> Date: Thu, 17 Oct 2024 12:33:40 +0100
+On Thu, Oct 17, 2024 at 12:33:41PM +0100, Daniel P. Berrangé wrote:
+> Date: Thu, 17 Oct 2024 12:33:41 +0100
 > From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: [PATCH v2 28/31] util: adapt to new import path for qobject data
->  type headers
+> Subject: [PATCH v2 29/31] qapi: remove header file compatibility symlinks
 > 
-> The qobject data type headers have moved from qapi/qmp/ to
-> qobject/.
+> All code is converted to the new 'qobject/' import path, so
+> the temporary header file compatibility symlinks are now
+> redundant.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->  util/keyval.c      | 6 +++---
->  util/qemu-config.c | 4 ++--
->  util/qemu-option.c | 8 ++++----
->  3 files changed, 9 insertions(+), 9 deletions(-)
+>  qapi/qmp/dispatch.h    | 1 -
+>  qapi/qmp/json-parser.h | 1 -
+>  qapi/qmp/json-writer.h | 1 -
+>  qapi/qmp/qbool.h       | 1 -
+>  qapi/qmp/qdict.h       | 1 -
+>  qapi/qmp/qjson.h       | 1 -
+>  qapi/qmp/qlist.h       | 1 -
+>  qapi/qmp/qlit.h        | 1 -
+>  qapi/qmp/qnull.h       | 1 -
+>  qapi/qmp/qnum.h        | 1 -
+>  qapi/qmp/qobject.h     | 1 -
+>  qapi/qmp/qstring.h     | 1 -
+>  12 files changed, 12 deletions(-)
+>  delete mode 120000 qapi/qmp/dispatch.h
+>  delete mode 120000 qapi/qmp/json-parser.h
+>  delete mode 120000 qapi/qmp/json-writer.h
+>  delete mode 120000 qapi/qmp/qbool.h
+>  delete mode 120000 qapi/qmp/qdict.h
+>  delete mode 120000 qapi/qmp/qjson.h
+>  delete mode 120000 qapi/qmp/qlist.h
+>  delete mode 120000 qapi/qmp/qlit.h
+>  delete mode 120000 qapi/qmp/qnull.h
+>  delete mode 120000 qapi/qmp/qnum.h
+>  delete mode 120000 qapi/qmp/qobject.h
+>  delete mode 120000 qapi/qmp/qstring.h
 > 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
