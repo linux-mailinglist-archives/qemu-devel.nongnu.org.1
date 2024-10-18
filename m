@@ -2,98 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B3D9A4567
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 20:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F029A45E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 20:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1rJH-0007vC-9M; Fri, 18 Oct 2024 14:02:47 -0400
+	id 1t1rfB-0005Ow-Aa; Fri, 18 Oct 2024 14:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t1rJD-0007um-HK; Fri, 18 Oct 2024 14:02:44 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t1rJB-0007Ub-Cd; Fri, 18 Oct 2024 14:02:43 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49IAiVpf008225;
- Fri, 18 Oct 2024 18:02:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=d5NZNk
- Zqh78Lbl1qV5s3wd32xFybVl2w6L0EJQd8YJg=; b=VcQTKhUdTOPcLXF0xETShe
- OxG/l3tipDxjXEcm7Xf/AlTGpw1q/0kcXsAsmnPKt/K5CTiwJek91nHHcQAoH6kY
- hggkejKNnSkt3DjTaBe9pUrAuWqv+4i9ZGrSLAOwFnmul993fI8Ga784uFaYRFqZ
- 5z7Z9OfhQi0V4I6c2zoje/eSvgZJDhZCkbyryl2nXl+HABYMIH35JvviI2l0Y+kb
- Z/c8XZSKwK9TUUC00jE3pDWxKne7oWhWeEETlsLVQf6ieSgOIHAB3XL+4WoJfJxP
- lAbZSjFoxEviKwDdWcRtIKJzhSnA1DFuUd+Wk+8RcQLExiNxLgp9wtnvzKr+yDHQ
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42as8aa5aq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Oct 2024 18:02:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49IF8EW1007025;
- Fri, 18 Oct 2024 18:02:38 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xknxyw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Oct 2024 18:02:38 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49II2bJQ42533252
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Oct 2024 18:02:38 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E67B558058;
- Fri, 18 Oct 2024 18:02:37 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C68D58061;
- Fri, 18 Oct 2024 18:02:37 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 18 Oct 2024 18:02:37 +0000 (GMT)
-Message-ID: <eadd4212-e662-4952-9e53-96e2c97f6c3b@linux.ibm.com>
-Date: Fri, 18 Oct 2024 14:02:36 -0400
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t1rf5-0005OU-Q5
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 14:25:19 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t1rf1-0001yz-Eq
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 14:25:18 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-20e6981ca77so7566775ad.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 11:25:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729275913; x=1729880713;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5To3CkUFilshmDxqH57Mai0sOOEWpL73vJChKdmeLmc=;
+ b=zNAQZr3dk+eDUjJHNScj6gGcYaAsWDdUFbVIHPxN8+ifB1ZxnZMwU8/qlmS83kTd69
+ OQ8oMszXwAuZ5g6ub2/Q2xF0yUsBqf9o+eou4cguC1HoCDrc99VZ+kqJJoNvLwv4q2hb
+ F3hALdvQR9Jox5trqgV3z0uaGsuUG5R4J/I5vTW0EYTVHdV98vW514lHgj7zngJJqL3s
+ R3vOaqR8Bnosyz096SjVd638dJO0bcYzhWIY+7n+/+ZTQ2dQlRcuXAXdgfTbmgWQat3K
+ AHJOzNv4tl1bOftMqLJwW8PSrCCuqHjnjqiVWOg1dAO2W0Hic52imWdAaBwjFXz5Ww+k
+ QdzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729275913; x=1729880713;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5To3CkUFilshmDxqH57Mai0sOOEWpL73vJChKdmeLmc=;
+ b=at2R5UZ4cOmbdccx68DUxTfGcbLHRERXQrfG+G7iXK6jPA2ZsbaHYp08VoFeDuPjiN
+ 3kkD7U7XIpmwPXIZ927te+j3Wimm5eaZSIV6k30G9VWFFYJcuq6/UXcysrSxU9i5zI7B
+ kuaHcQ3DJHGYxdifp1moehZ2Fuj1olJVfLAqejXkc8aLRPfrmhiHfzNzvZhI4M5apFG2
+ S30YN5aUyRKeGndrDC0ZfYWy8AEnTuiD7GE0+Yee8CJM7B3TWMf9uXFmsWNKbw6pceQX
+ 1ajHKb/rpjw1wECfsttsR5WBNOZJ/fvNlRgP0N3VISvynChW6GZOte2rhpts7f/K72Km
+ qmrA==
+X-Gm-Message-State: AOJu0YyshU4b/yBQWBkMgskcYZoISTu51Vl/NVR2dME+UkCPy6o18Bd5
+ /pHeTnnSLHyK9NifcNjfCeOX2W808ZdVufp/gysHrO6vnMVALyVVPQu5iXQ1RPS8p8m7QCom4x2
+ mF+tRSw==
+X-Google-Smtp-Source: AGHT+IFlJxiyeu0D/jA3YtPgssxliuXR//OWy1tg1iVtgi/lUNKgf1jACTxx9I7pUtvpizbISz5sgw==
+X-Received: by 2002:a17:903:94f:b0:20c:ea04:a186 with SMTP id
+ d9443c01a7336-20e5a914892mr47876285ad.48.1729275912562; 
+ Fri, 18 Oct 2024 11:25:12 -0700 (PDT)
+Received: from localhost.localdomain ([118.114.60.204])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20e5a8f2034sm15668475ad.193.2024.10.18.11.25.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Oct 2024 11:25:12 -0700 (PDT)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ yong.huang@smartx.com
+Subject: [PATCH v2 0/5] Guestperf: miscellaneous refinement and enrichment 
+Date: Sat, 19 Oct 2024 02:25:02 +0800
+Message-Id: <cover.1729275266.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests: Wait for migration completion on destination QEMU
- to avoid failures
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- marcandre.lureau@redhat.com, Fabiano Rosas <farosas@suse.de>
-References: <20241016152159.1168722-1-stefanb@linux.ibm.com>
- <a3462080-f37d-45c9-a220-d3475b25997f@tls.msk.ru>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <a3462080-f37d-45c9-a220-d3475b25997f@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CYGBSZw74hEX_yduHoN3Q92cmONePMIJ
-X-Proofpoint-ORIG-GUID: CYGBSZw74hEX_yduHoN3Q92cmONePMIJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=728 phishscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410180113
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,34 +91,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v2:
+1. Update the MAINTAINERS section suggested by Fabiano Rosas 
+2. Ensure the dependencies when build the initrd-stress.img suggested by Daniel
+3. Fix some bugs
 
+Please review, thanks
 
-On 10/18/24 12:23 PM, Michael Tokarev wrote:
-> 16.10.2024 18:21, Stefan Berger wrote:
->> Rather than waiting for the completion of migration on the source side,
->> wait for it on the destination QEMU side to avoid accessing the TPM TIS
->> memory mapped registers before QEMU could restore their state. This
->> error condition could be triggered on busy systems where the destination
->> QEMU did not have enough time to restore the TIS state while the test 
->> case
->> was already reading its registers. The test case was for example reading
->> the STS register and received an unexpected value (0xffffffff), which
->> lead to a segmentation fault later on due to trying to read 0xffff bytes
->> from the TIS into a buffer.
->>
->> Cc: qemu-stable@nongnu.org
->> Reported-by: Fabiano Rosas <farosas@suse.de>
->> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> 
-> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-> 
-> Queued for qemu-stable, though this one might better be applied through
-> the test tree.
+Yong
 
-Thanks.  I actually already sent it as part of my PR today...
+v1:
+The previous patchset:
+https://lore.kernel.org/qemu-devel/cover.1722957352.git.yong.huang@smartx.com/
+does not made the necessary changes and tests for the upstream version.
 
-> 
-> Thanks,
-> 
-> /mjt
+This patchset works for that:
+1. Move the guestperf to scripts directory suggested by Fabiano Rosas
+2. Make initrd-stress.img built by default suggested by Fabiano Rosas
+3. Make the necessary changes to adapt the latest multifd behavior
+4. A nitpick for multifd migration
+5. Support multifd compression option
+
+Hyman Huang (5):
+  tests/migration: Move the guestperf tool to scripts directory
+  tests/migration: Make initrd-stress.img built by default
+  guestperf: Support deferred migration for multifd
+  guestperf: Nitpick the inconsistent parameters
+  guestperf: Introduce multifd compression option
+
+ MAINTAINERS                                   |  5 +++
+ .../migration/guestperf-batch.py              |  0
+ .../migration/guestperf-plot.py               |  0
+ {tests => scripts}/migration/guestperf.py     |  0
+ .../migration/guestperf/__init__.py           |  0
+ .../migration/guestperf/comparison.py         | 15 ++++++++-
+ .../migration/guestperf/engine.py             | 33 ++++++++++++++++---
+ .../migration/guestperf/hardware.py           |  0
+ .../migration/guestperf/plot.py               |  0
+ .../migration/guestperf/progress.py           |  0
+ .../migration/guestperf/report.py             |  0
+ .../migration/guestperf/scenario.py           |  7 ++--
+ .../migration/guestperf/shell.py              |  3 ++
+ .../migration/guestperf/timings.py            |  0
+ tests/migration/meson.build                   | 33 +++++++++++--------
+ 15 files changed, 76 insertions(+), 20 deletions(-)
+ rename {tests => scripts}/migration/guestperf-batch.py (100%)
+ rename {tests => scripts}/migration/guestperf-plot.py (100%)
+ rename {tests => scripts}/migration/guestperf.py (100%)
+ rename {tests => scripts}/migration/guestperf/__init__.py (100%)
+ rename {tests => scripts}/migration/guestperf/comparison.py (89%)
+ rename {tests => scripts}/migration/guestperf/engine.py (93%)
+ rename {tests => scripts}/migration/guestperf/hardware.py (100%)
+ rename {tests => scripts}/migration/guestperf/plot.py (100%)
+ rename {tests => scripts}/migration/guestperf/progress.py (100%)
+ rename {tests => scripts}/migration/guestperf/report.py (100%)
+ rename {tests => scripts}/migration/guestperf/scenario.py (93%)
+ rename {tests => scripts}/migration/guestperf/shell.py (98%)
+ rename {tests => scripts}/migration/guestperf/timings.py (100%)
+
+-- 
+2.39.1
+
 
