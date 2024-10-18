@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6DB9A3F95
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4509A3F92
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1n1w-0005h8-2l; Fri, 18 Oct 2024 09:28:36 -0400
+	id 1t1n1z-0005iO-5l; Fri, 18 Oct 2024 09:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0005gb-Kl
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1v-0005h9-7T
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1r-0007Ni-Tt
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0007Nk-BE
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729258109;
+ s=mimecast20190719; t=1729258110;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qld2nKcPqOEkBG5sB6awVUHedtwy4wYqOCrZQLB7dPk=;
- b=WHBBV0fvw9Bh9ygFu3MTaHQieAcmyHZ3MdI1Zwsl9VsSRu4jCZOWQVf+KslAVuASN0ej8R
- pO4pmLBPc+4yKXSox4z10dhPcMWjby2i2EXrZoCLqqbUpMKRgTCg9OjH61p1ZjiK7tB9Dy
- iqhr5fgCB2UU9BdrfgxZ0RG9DQSFla0=
+ bh=VXTY/0zpasdLY6hA9Iyg2hWLpcN5UMawkzvJ1EtxmKY=;
+ b=LrpENiTbD44SkPLjgBUDYfaeXsI5bNLHG1eGOKRx8X/A8FpL41soKaXLUqoQJaMD8mzKlp
+ VzIvathIAo321au1rxXcV2l3raRbAV4KqWkVe9UasZeC5tVojvtIASBYuuhT+mRGuJ4WvI
+ s5iq1D+cCJe1+FK36bTjdmEvol3oyjw=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-hdZ4pI9tOSCPhJSGVK7gKw-1; Fri,
- 18 Oct 2024 09:28:28 -0400
-X-MC-Unique: hdZ4pI9tOSCPhJSGVK7gKw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-hAYMZqpzMhKz4td2Vj4Iug-1; Fri,
+ 18 Oct 2024 09:28:27 -0400
+X-MC-Unique: hAYMZqpzMhKz4td2Vj4Iug-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5DE2119560AF; Fri, 18 Oct 2024 13:28:27 +0000 (UTC)
+ id AA63F19560A2; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1F7D119560A3; Fri, 18 Oct 2024 13:28:27 +0000 (UTC)
+ id 6C23E19560A3; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4F27221E6939; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
+ id 521A421E6889; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 3/9] error: Drop superfluous #include "qapi/qmp/qerror.h"
-Date: Fri, 18 Oct 2024 15:28:18 +0200
-Message-ID: <20241018132824.3379780-4-armbru@redhat.com>
+Subject: [PULL 4/9] block: Improve errors about block sizes
+Date: Fri, 18 Oct 2024 15:28:19 +0200
+Message-ID: <20241018132824.3379780-5-armbru@redhat.com>
 In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
 References: <20241018132824.3379780-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -82,51 +82,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Block sizes need to be a power of two between 512 and an arbitrary
+limit, currently 2MiB.
+
+Commit 5937835ac4c factored block size checking out of set_blocksize()
+into new check_block_size(), for reuse in block/export/.
+
+Its two error messages are okay for the original purpose:
+
+    $ qemu-system-x86_64 -device ide-hd,physical_block_size=1
+    qemu-system-x86_64: -device ide-hd,physical_block_size=1: Property .physical_block_size doesn't take value 1 (minimum: 512, maximum: 2097152)
+    $ qemu-system-x86_64 -device ide-hd,physical_block_size=513
+    qemu-system-x86_64: -device ide-hd,physical_block_size=513: Property .physical_block_size doesn't take value '513', it's not a power of 2
+
+They're mildly off for block exports:
+
+    $ qemu-storage-daemon --blockdev node-name=nod0,driver=file,filename=foo.img --export type=vduse-blk,id=exp0,node-name=nod0,name=foo,logical-block-size=1
+    qemu-storage-daemon: --export type=vduse-blk,id=exp0,node-name=nod0,name=foo,logical-block-size=1: Property exp0.logical-block-size doesn't take value 1 (minimum: 512, maximum: 2097152)
+
+The error message talks about a property.  CLI options like --export
+don't have properties, they have parameters.
+
+Replace the two error messages by a single one that's okay for both
+purposes.  Looks like this:
+
+    qemu-storage-daemon: --export type=vduse-blk,id=exp0,node-name=nod0,name=foo,logical-block-size=1: parameter logical-block-size must be a power of 2 between 512 and 2097152
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20241010150144.986655-2-armbru@redhat.com>
+Message-ID: <20241010150144.986655-3-armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qga/commands-bsd.c   | 1 -
- qga/commands-linux.c | 1 -
- qga/commands-posix.c | 1 -
- 3 files changed, 3 deletions(-)
+ util/block-helpers.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
-index 9ce48af311..94ff6fee6a 100644
---- a/qga/commands-bsd.c
-+++ b/qga/commands-bsd.c
-@@ -12,7 +12,6 @@
+diff --git a/util/block-helpers.c b/util/block-helpers.c
+index c4851432f5..fb5de348e2 100644
+--- a/util/block-helpers.c
++++ b/util/block-helpers.c
+@@ -10,7 +10,6 @@
  
  #include "qemu/osdep.h"
- #include "qga-qapi-commands.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/error.h"
- #include "qemu/queue.h"
- #include "commands-common.h"
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 51d5e3d927..9b1746b24f 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -15,7 +15,6 @@
- #include "qapi/error.h"
- #include "qga-qapi-commands.h"
  #include "qapi/error.h"
 -#include "qapi/qmp/qerror.h"
- #include "commands-common.h"
- #include "cutils.h"
- #include <mntent.h>
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index c2bd0b4316..389c5eeb5d 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -18,7 +18,6 @@
- #include <dirent.h>
- #include "qga-qapi-commands.h"
- #include "qapi/error.h"
--#include "qapi/qmp/qerror.h"
- #include "qemu/host-utils.h"
- #include "qemu/sockets.h"
- #include "qemu/base64.h"
+ #include "block-helpers.h"
+ 
+ /**
+@@ -28,19 +27,16 @@
+ void check_block_size(const char *id, const char *name, int64_t value,
+                       Error **errp)
+ {
+-    /* value of 0 means "unset" */
+-    if (value && (value < MIN_BLOCK_SIZE || value > MAX_BLOCK_SIZE)) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
+-                   id, name, value, MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
++    if (!value) {
++        /* unset */
+         return;
+     }
+ 
+-    /* We rely on power-of-2 blocksizes for bitmasks */
+-    if ((value & (value - 1)) != 0) {
++    if (value < MIN_BLOCK_SIZE || value > MAX_BLOCK_SIZE
++        || (value & (value - 1))) {
+         error_setg(errp,
+-                   "Property %s.%s doesn't take value '%" PRId64
+-                   "', it's not a power of 2",
+-                   id, name, value);
+-        return;
++                   "parameter %s must be a power of 2 between %" PRId64
++                   " and %" PRId64,
++                   name, MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
+     }
+ }
 -- 
 2.46.0
 
