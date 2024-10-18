@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24A49A3454
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E189A3444
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:32:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1faH-0008GL-85; Fri, 18 Oct 2024 01:31:33 -0400
+	id 1t1faJ-0008GY-By; Fri, 18 Oct 2024 01:31:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1fa9-0008FC-Jx; Fri, 18 Oct 2024 01:31:25 -0400
+ id 1t1faF-0008Fk-A3; Fri, 18 Oct 2024 01:31:31 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1fa7-00089Y-UF; Fri, 18 Oct 2024 01:31:25 -0400
+ id 1t1faC-00089Y-6F; Fri, 18 Oct 2024 01:31:30 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 18 Oct
- 2024 13:31:12 +0800
+ 2024 13:31:13 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Fri, 18 Oct 2024 13:31:12 +0800
+ Transport; Fri, 18 Oct 2024 13:31:13 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -34,10 +34,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 01/16] aspeed/smc: Fix write incorrect data into flash in
- user mode
-Date: Fri, 18 Oct 2024 13:30:57 +0800
-Message-ID: <20241018053112.1886173-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 02/16] hw/block:m25p80: Fix coding style
+Date: Fri, 18 Oct 2024 13:30:58 +0800
+Message-ID: <20241018053112.1886173-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
 References: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
@@ -69,149 +68,82 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the design of ASPEED SPI controllers user mode, users write the
-data to flash, the SPI drivers set the Control Register(0x10) bit 0 and 1
-enter user mode. Then, SPI drivers send flash commands for writing data.
-Finally, SPI drivers set the Control Register (0x10) bit 2 to stop
-active control and restore bit 0 and 1.
-
-According to the design of ASPEED SMC model, firmware writes the
-Control Register and the "aspeed_smc_flash_update_ctrl" function is called.
-Then, this function verify Control Register(0x10) bit 0 and 1. If it set user
-mode, the value of s->snoop_index is SNOOP_START else SNOOP_OFF.
-If s->snoop_index is SNOOP_START, the "aspeed_smc_do_snoop" function verify
-the first incomming data is a new flash command and writes the corresponding
-dummy bytes if need.
-
-However, it did not check the current unselect status. If current unselect
-status is "false" and firmware set the IO MODE by Control Register bit 31:28,
-the value of s->snoop_index will be changed to SNOOP_START again and
-"aspeed_smc_do_snoop" misunderstand that the incomming data is the new flash
-command and it causes writing unexpected data into flash.
-
-Example:
-1. Firmware set user mode by Control Register bit 0 and 1(0x03)
-2. SMC model set s->snoop SNOOP_START
-3. Firmware set Quad Page Program with 4-Byte Address command (0x34)
-4. SMC model verify this flash command and it needs 4 dummy bytes.
-5. Firmware send 4 bytes address.
-6. SMC model receives 4 bytes address
-7. Firmware set QPI IO MODE by Control Register bit 31. (0x80000003)
-8. SMC model verify new user mode by Control Register bit 0 and 1.
-   Then, set s->snoop SNOOP_START again. (It is the wrong behavior.)
-9. Firmware send 0xebd8c134 data and it should be written into flash.
-   However, SMC model misunderstand that the first incoming data, 0x34,
-   is the new command because the value of s->snoop is changed to SNOOP_START.
-   Finally, SMC sned the incorrect data to flash model.
-
-Introduce a new unselect attribute in AspeedSMCState to save the current
-unselect status for user mode and set it "true" by default.
-Update "aspeed_smc_flash_update_ctrl" function to check the previous unselect
-status. If both new unselect status and previous unselect status is different,
-update s->snoop_index value and call "aspeed_smc_flash_do_select".
-
-Increase VMStateDescription version 1.
+Fix coding style issues from checkpatch.pl
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/ssi/aspeed_smc.c         | 39 +++++++++++++++++++++++++------------
- include/hw/ssi/aspeed_smc.h |  1 +
- 2 files changed, 28 insertions(+), 12 deletions(-)
+ hw/block/m25p80.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-index e3fdc66cb2..8a6145afe9 100644
---- a/hw/ssi/aspeed_smc.c
-+++ b/hw/ssi/aspeed_smc.c
-@@ -417,7 +417,7 @@ static void aspeed_smc_flash_do_select(AspeedSMCFlash *fl, bool unselect)
-     AspeedSMCState *s = fl->controller;
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index f7123f9e68..3f55b8f385 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -61,7 +61,8 @@ typedef struct FlashPartInfo {
+      */
+     uint8_t id[SPI_NOR_MAX_ID_LEN];
+     uint8_t id_len;
+-    /* there is confusion between manufacturers as to what a sector is. In this
++    /*
++     * there is confusion between manufacturers as to what a sector is. In this
+      * device model, a "sector" is the size that is erased by the ERASE_SECTOR
+      * command (opcode 0xd8).
+      */
+@@ -168,7 +169,7 @@ typedef struct FlashPartInfo {
+ /*
+  * Spansion read mode command length in bytes,
+  * the mode is currently not supported.
+-*/
++ */
  
-     trace_aspeed_smc_flash_select(fl->cs, unselect ? "un" : "");
--
-+    s->unselect = unselect;
-     qemu_set_irq(s->cs_lines[fl->cs], unselect);
+ #define SPANSION_CONTINUOUS_READ_MODE_CMD_LEN 1
+ #define WINBOND_CONTINUOUS_READ_MODE_CMD_LEN 1
+@@ -189,7 +190,8 @@ static const FlashPartInfo known_devices[] = {
+ 
+     { INFO("at45db081d",  0x1f2500,      0,  64 << 10,  16, ER_4K) },
+ 
+-    /* Atmel EEPROMS - it is assumed, that don't care bit in command
++    /*
++     * Atmel EEPROMS - it is assumed, that don't care bit in command
+      * is set to 0. Block protection is not supported.
+      */
+     { INFO("at25128a-nonjedec", 0x0,     0,         1, 131072, EEPROM) },
+@@ -275,10 +277,13 @@ static const FlashPartInfo known_devices[] = {
+     { INFO_STACKED("n25q00a",   0x20bb21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
+     { INFO_STACKED("mt25ql01g", 0x20ba21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
+     { INFO_STACKED("mt25qu01g", 0x20bb21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
+-    { INFO_STACKED("mt25ql02g", 0x20ba22, 0x1040, 64 << 10, 4096, ER_4K | ER_32K, 2) },
+-    { INFO_STACKED("mt25qu02g", 0x20bb22, 0x1040, 64 << 10, 4096, ER_4K | ER_32K, 2) },
++    { INFO_STACKED("mt25ql02g", 0x20ba22, 0x1040, 64 << 10, 4096,
++                   ER_4K | ER_32K, 2) },
++    { INFO_STACKED("mt25qu02g", 0x20bb22, 0x1040, 64 << 10, 4096,
++                   ER_4K | ER_32K, 2) },
+ 
+-    /* Spansion -- single (large) sector size only, at least
++    /*
++     * Spansion -- single (large) sector size only, at least
+      * for the chips listed here (without boot sectors).
+      */
+     { INFO("s25sl032p",   0x010215, 0x4d00,  64 << 10,  64, ER_4K) },
+@@ -549,7 +554,8 @@ static void blk_sync_complete(void *opaque, int ret)
+     qemu_iovec_destroy(iov);
+     g_free(iov);
+ 
+-    /* do nothing. Masters do not directly interact with the backing store,
++    /*
++     * do nothing. Masters do not directly interact with the backing store,
+      * only the working copy so no mutexing required.
+      */
  }
+@@ -1843,7 +1849,7 @@ static void m25p80_register_types(void)
  
-@@ -677,22 +677,35 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
- static void aspeed_smc_flash_update_ctrl(AspeedSMCFlash *fl, uint32_t value)
- {
-     AspeedSMCState *s = fl->controller;
--    bool unselect;
-+    bool unselect = false;
-+    uint32_t old_mode;
-+    uint32_t new_mode;
-+
-+    old_mode = s->regs[s->r_ctrl0 + fl->cs] & CTRL_CMD_MODE_MASK;
-+    new_mode = value & CTRL_CMD_MODE_MASK;
- 
--    /* User mode selects the CS, other modes unselect */
--    unselect = (value & CTRL_CMD_MODE_MASK) != CTRL_USERMODE;
-+    if (old_mode == CTRL_USERMODE) {
-+        if (new_mode != CTRL_USERMODE) {
-+            unselect = true;
-+        }
- 
--    /* A change of CTRL_CE_STOP_ACTIVE from 0 to 1, unselects the CS */
--    if (!(s->regs[s->r_ctrl0 + fl->cs] & CTRL_CE_STOP_ACTIVE) &&
--        value & CTRL_CE_STOP_ACTIVE) {
--        unselect = true;
-+        /* A change of CTRL_CE_STOP_ACTIVE from 0 to 1, unselects the CS */
-+        if (!(s->regs[s->r_ctrl0 + fl->cs] & CTRL_CE_STOP_ACTIVE) &&
-+            value & CTRL_CE_STOP_ACTIVE) {
-+            unselect = true;
-+        }
-+    } else {
-+        if (new_mode != CTRL_USERMODE) {
-+            unselect = true;
-+        }
-     }
- 
-     s->regs[s->r_ctrl0 + fl->cs] = value;
- 
--    s->snoop_index = unselect ? SNOOP_OFF : SNOOP_START;
--
--    aspeed_smc_flash_do_select(fl, unselect);
-+    if (unselect != s->unselect) {
-+        s->snoop_index = unselect ? SNOOP_OFF : SNOOP_START;
-+        aspeed_smc_flash_do_select(fl, unselect);
-+    }
- }
- 
- static void aspeed_smc_reset(DeviceState *d)
-@@ -737,6 +750,7 @@ static void aspeed_smc_reset(DeviceState *d)
- 
-     s->snoop_index = SNOOP_OFF;
-     s->snoop_dummies = 0;
-+    s->unselect = true;
- }
- 
- static uint64_t aspeed_smc_read(void *opaque, hwaddr addr, unsigned int size)
-@@ -1261,12 +1275,13 @@ static void aspeed_smc_realize(DeviceState *dev, Error **errp)
- 
- static const VMStateDescription vmstate_aspeed_smc = {
-     .name = "aspeed.smc",
--    .version_id = 2,
-+    .version_id = 3,
-     .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, AspeedSMCState, ASPEED_SMC_R_MAX),
-         VMSTATE_UINT8(snoop_index, AspeedSMCState),
-         VMSTATE_UINT8(snoop_dummies, AspeedSMCState),
-+        VMSTATE_BOOL(unselect, AspeedSMCState),
-         VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/include/hw/ssi/aspeed_smc.h b/include/hw/ssi/aspeed_smc.h
-index 234dca32b0..25b95e7406 100644
---- a/include/hw/ssi/aspeed_smc.h
-+++ b/include/hw/ssi/aspeed_smc.h
-@@ -82,6 +82,7 @@ struct AspeedSMCState {
- 
-     uint8_t snoop_index;
-     uint8_t snoop_dummies;
-+    bool unselect;
- };
- 
- typedef struct AspeedSegments {
+     type_register_static(&m25p80_info);
+     for (i = 0; i < ARRAY_SIZE(known_devices); ++i) {
+-        TypeInfo ti = {
++        const TypeInfo ti = {
+             .name       = known_devices[i].part_name,
+             .parent     = TYPE_M25P80,
+             .class_init = m25p80_class_init,
 -- 
 2.34.1
 
