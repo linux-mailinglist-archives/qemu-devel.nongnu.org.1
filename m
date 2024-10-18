@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4209A3A6C
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAC19A3A6B
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:47:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1jZG-0003bY-5b; Fri, 18 Oct 2024 05:46:46 -0400
+	id 1t1jZa-0003pU-GL; Fri, 18 Oct 2024 05:47:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jZD-0003WC-7i
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:46:43 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ id 1t1jZW-0003nI-P3
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:47:02 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jZB-0002CS-2B
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:46:42 -0400
+ id 1t1jZR-0002Dv-K9
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:47:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729244801; x=1760780801;
+ t=1729244817; x=1760780817;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=kJMgfm6qzdm6/+u8juIOnObNNCxgtFq1Q44oN98iZMM=;
- b=RfBde+wCAiWq3CCg/FsrXiw/IDBrH8E+yD70MuCBnuV7sauLv2sNjqjE
- PAME2NSBHvmss+n5giycavojAiMh1gyYWg7ut4yfR7IzITqQUOdkRlK05
- wI7pN+Vcx9UpJ9HFRBIvMCmAPOaUM+qZIMxdoFmd7Ue1LJPlXxQswpNwN
- piVClfQcm3pCqeqgm0ceX+h7wFTemAmh7d1NUixzq95Wbcmw+emVAcxPx
- ozeQLCyfoAd+FN5KPcVAUjRNrI/0aUrRsxHgdEZBuGwX4SOSN/xDrai++
- Uk9yZMqg0S9IZuct+rrJZvjYxDTowvlCBDrPRHnArZsw6MpdV8gcVxVnw g==;
-X-CSE-ConnectionGUID: r+Hc2HlDSTCeqtLSh6YYDg==
-X-CSE-MsgGUID: POElDJR0QR27X5bc0mhkvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="28862114"
-X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="28862114"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 02:46:40 -0700
-X-CSE-ConnectionGUID: 363BtQecTtOt7464O9kySg==
-X-CSE-MsgGUID: pw8eNM7TTQycWj87hinCqg==
+ bh=TdCRYriQGL2ze7PaTeD1CZVUfvmf8JwXiL7On7FzRHk=;
+ b=EZgDR92klV0n+Jinx3ZapNIUa5L2kIgfpWCb2+bwOBwet+2/6m/bhOA4
+ N51XkemH8N5/vbF5u+wxcDvvbMZWA/n8NgcJ0LLpek9FBFZ5FLvBXgn7B
+ A/aIJnk+Xpy+eHC+7KtuSNob2tFyo57CSa6mMTv8dYCqGFA9kFNTv51e2
+ gPAyLLjr2sXgZ+/S8gw/FAmtKglQUEqibhclS/WSFiC+0zgOy6/JGwMMe
+ WiSofJ8uxcbLJW6UO8dwLBe2PyrOpj/unMSpqRIDm6/clP+GrfiRnDspr
+ 6pSlyacjUwG3ejRAADFfO/QiFPwqm7uh1WVatRQI5uBTcfHneG5HP4S1p A==;
+X-CSE-ConnectionGUID: TOVC4ubtSmughLNvtgQMMw==
+X-CSE-MsgGUID: ee1TkTtqRa2kGrn3YKKhLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="39398615"
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="39398615"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2024 02:46:56 -0700
+X-CSE-ConnectionGUID: yRdmgDnUQC+uMGM1d6L2eQ==
+X-CSE-MsgGUID: q16Q4e6OSYiUf3Bm98KuSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="79629356"
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="83402126"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 18 Oct 2024 02:46:38 -0700
-Date: Fri, 18 Oct 2024 18:02:53 +0800
+ by fmviesa005.fm.intel.com with ESMTP; 18 Oct 2024 02:46:55 -0700
+Date: Fri, 18 Oct 2024 18:03:10 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 20/31] scsi: adapt to new import path for qobject data
- type headers
-Message-ID: <ZxIyTa6pk06ReiLU@intel.com>
+Subject: Re: [PATCH v2 21/31] stats: adapt to new import path for qobject
+ data type headers
+Message-ID: <ZxIyXpxKMAUp9Qxh@intel.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
- <20241017113344.883424-21-berrange@redhat.com>
+ <20241017113344.883424-22-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241017113344.883424-21-berrange@redhat.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241017113344.883424-22-berrange@redhat.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -83,10 +83,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 12:33:32PM +0100, Daniel P. Berrangé wrote:
-> Date: Thu, 17 Oct 2024 12:33:32 +0100
+On Thu, Oct 17, 2024 at 12:33:33PM +0100, Daniel P. Berrangé wrote:
+> Date: Thu, 17 Oct 2024 12:33:33 +0100
 > From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: [PATCH v2 20/31] scsi: adapt to new import path for qobject data
+> Subject: [PATCH v2 21/31] stats: adapt to new import path for qobject data
 >  type headers
 > 
 > The qobject data type headers have moved from qapi/qmp/ to
@@ -94,9 +94,9 @@ On Thu, Oct 17, 2024 at 12:33:32PM +0100, Daniel P. Berrangé wrote:
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->  scsi/qemu-pr-helper.c | 2 +-
+>  stats/stats-hmp-cmds.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+>
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
