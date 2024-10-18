@@ -2,64 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB2B9A3F9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1814A9A3FA1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:30:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1n20-0005ji-NU; Fri, 18 Oct 2024 09:28:40 -0400
+	id 1t1n25-0005ld-IQ; Fri, 18 Oct 2024 09:28:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1w-0005hw-HV
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t1n23-0005l0-F8
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1u-0007PX-4t
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t1n22-0007RH-5G
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729258113;
+ s=mimecast20190719; t=1729258121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rUpLyhDsLisQTXQlAbiU+CV4+/OCPpHi4uqHDEttUjo=;
- b=deMmZpCqrtM/ljHqe06pawYLVFba8zqzCYNEW6gz7EGUvk43rj55n54NMuR6GT+D6pEiXh
- wSNLf9QSHsLmSfTvzQ9kRMRdte9399OgdYkRtUVkYutDiRsR/BLgH58kUvjjJzExshziub
- zq8+G5vDfG3VBgNM6T6Z+V87vPyv/VI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=5bjSRQxZk/xaVDJ+RsRoxMIYeCTSvg3PBVo6vj2j3m4=;
+ b=FRh/xp4S2kCCPjQn0U+Pv4dYfaUMoSVpSEsijld9hGOFFOw3CgLkLNOdDEUc3WufAu9aCG
+ +rcMbVWVPXQFMhKnkCBgcZVdvAblWBGlKVVvss2DF4bv+rQOHSXiaQkhVN8wFI5O4fBrpY
+ bzwGdCo6B0DUEAh+pY5q5gPEYz0HFC4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-OySbELc-NcSu4Mops0s_sQ-1; Fri,
- 18 Oct 2024 09:28:31 -0400
-X-MC-Unique: OySbELc-NcSu4Mops0s_sQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-rYz4bmqwNXOUfAQEVdHiiA-1; Fri,
+ 18 Oct 2024 09:28:38 -0400
+X-MC-Unique: rYz4bmqwNXOUfAQEVdHiiA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C8461955F40; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CC7B19560AD; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 607F621E68BD; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] hw/intc/openpic: Improve errors for out of bounds property
- values
-Date: Fri, 18 Oct 2024 15:28:23 +0200
-Message-ID: <20241018132824.3379780-9-armbru@redhat.com>
-In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
-References: <20241018132824.3379780-1-armbru@redhat.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 795C019560B5; Fri, 18 Oct 2024 13:28:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.196])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E190A300019D; Fri, 18 Oct 2024 13:28:31 +0000 (UTC)
+Date: Fri, 18 Oct 2024 15:28:28 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Corey Minyard <cminyard@mvista.com>, qemu-ppc@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-block@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Subject: Re: [PATCH v2 19/23] hw/block/pflash_cfi01: Prefer DEFINE_TYPES()
+ macro
+Message-ID: <ZxJifCHvSyWgdKNX@redhat.com>
+References: <20241005194603.23139-1-shentey@gmail.com>
+ <20241005194603.23139-20-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+In-Reply-To: <20241005194603.23139-20-shentey@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,43 +90,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message doesn't matter much, as the "openpic" device isn't
-user-creatable.  But it's the last use of
-QERR_PROPERTY_VALUE_OUT_OF_RANGE, which has to go.  Change the message
-just like the previous commit did for x86 CPUs.
+Am 05.10.2024 um 21:45 hat Bernhard Beschow geschrieben:
+> Reviewed-by: C�dric Le Goater <clg@redhat.com>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20241010150144.986655-7-armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/intc/openpic.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
-index 32bd880dfa..cd3d87768e 100644
---- a/hw/intc/openpic.c
-+++ b/hw/intc/openpic.c
-@@ -41,7 +41,6 @@
- #include "hw/pci/msi.h"
- #include "qapi/error.h"
- #include "qemu/bitops.h"
--#include "qapi/qmp/qerror.h"
- #include "qemu/module.h"
- #include "qemu/timer.h"
- #include "qemu/error-report.h"
-@@ -1535,9 +1534,7 @@ static void openpic_realize(DeviceState *dev, Error **errp)
-     };
- 
-     if (opp->nb_cpus > MAX_CPU) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
--                   TYPE_OPENPIC, "nb_cpus", (uint64_t)opp->nb_cpus,
--                   (uint64_t)0, (uint64_t)MAX_CPU);
-+        error_setg(errp, "property 'nb_cpus' can be at most %d", MAX_CPU);
-         return;
-     }
- 
--- 
-2.46.0
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 
 
