@@ -2,151 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46FC9A3F73
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6579E9A3F91
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1mvB-0003jz-IW; Fri, 18 Oct 2024 09:21:38 -0400
+	id 1t1n1y-0005hx-JB; Fri, 18 Oct 2024 09:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1t1mv1-0003gI-Cn
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:21:27 -0400
-Received: from mail-vi1eur02on20712.outbound.protection.outlook.com
- ([2a01:111:f403:2607::712]
- helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1v-0005hM-9H
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1t1muw-00063K-7T
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:21:24 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A6F1gd7tfgiU7zWZpA9ErgII2ALRADxoazkdHmjUdUfdhxHpG48rZZGlyWek+P05IGXPqB/newRiXX3Ab2E/Tu8eYjtaQ4fxKNwY2oOyRZlVa3TM0jg6VBy1h/UHLC2f2xS/XjK/ANKZ4PdYdD9e3/GBgoEhcOOWFh4Kpx55nr8vkupYOHZlTTHDqXzlorb1vpH/vc4DTPpYofe/Ts6KXlu+lVL4hMA6onqaHUMnTEnxYMuZQhgvj6g7i884HkW3bHImUKXsSzNSei+axeS0LFP7TQPb0rw9rSYKrYIBs6VarlQTAfCRw3namR1j6KUJySh+3qtLTyI0OvT9udHVyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nQ5sTWhEoiGZLWgsRNQQxTFfkoRF1YKoBojMqC5x6IQ=;
- b=bhowePJh3r6WBupOX3PNAy5ItBBmVJSVmazyiMc6a7SLkX2C8sTbBrqgb9yhMv/bKkOkkdmQFdVS6a7huPgn9S4qfG1VVcp3U+wLM/mLKTAtW3dJ6dGXl752LAqgT6wVcCaQlu4IGIWYFghlHJXsvv6BdAJ1clOl85rW62J92e9xQ+ZmOrOJz8F0oz/lYMTjqi5JcvZthUkb0ByIbfmeFKMHoGexOHA0wZqwMNuShlmj3xmM01+gdUhFLEPQORDXQu+IKwvifbpU06XXxkeWjhQID/oEFQJhYzb+8atTUlvITSi7mLCTCWnz1z6j+RPb7YLOxKKkz0R/ZuCDI/tpgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=htecgroup.com; dmarc=pass action=none
- header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nQ5sTWhEoiGZLWgsRNQQxTFfkoRF1YKoBojMqC5x6IQ=;
- b=gM7laTgDiBP/tOgoOJvrqmACuwcRZbuA7Mi+ML5eqHmsMHK8MsOBeCwOzr7be/pSR9mGr0qYdbuvPHJFJhWpU9C+xu7Awgx16HfDoxXn71u4Xnf4swttYsyNOWQ+KOKqE9YcnCavHmY/MDicjBSXlyDGtMx1vVu9oNSB0zonSLnt3QcQwRHa82Qegp3+t4nY9qsIRWnkinVX5JGCHmQ5vFe5LOU4JfC+XgYYEERc5lYx8Yjvv0PBfcpNFMXMx+6E4pK0xSKYE2gfowmPNK85O1rrFMeRQLgRkuIu1k+PMTZMVqMr/lM3vcR8FhWF6YcKRIPRQYrz5UwF/oWai/JW2Q==
-Received: from AM9PR09MB4851.eurprd09.prod.outlook.com (2603:10a6:20b:2d4::13)
- by GV2PR09MB5889.eurprd09.prod.outlook.com (2603:10a6:150:ae::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.21; Fri, 18 Oct
- 2024 13:21:16 +0000
-Received: from AM9PR09MB4851.eurprd09.prod.outlook.com
- ([fe80::2fed:370:dd45:13a2]) by AM9PR09MB4851.eurprd09.prod.outlook.com
- ([fe80::2fed:370:dd45:13a2%6]) with mapi id 15.20.8069.020; Fri, 18 Oct 2024
- 13:21:16 +0000
-From: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>, "cfu@mips.com"
- <cfu@mips.com>, "arikalo@gmail.com" <arikalo@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-Subject: [PATCH v2 8/8] target/mips: Enable MSA ASE for mips64R2-generic
-Thread-Topic: [PATCH v2 8/8] target/mips: Enable MSA ASE for mips64R2-generic
-Thread-Index: AQHbIV6zG7r1NGRInEu1u+T5QtXCOw==
-Date: Fri, 18 Oct 2024 13:21:15 +0000
-Message-ID: <AM9PR09MB485141F5613A7EBFC5A4A08884402@AM9PR09MB4851.eurprd09.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=htecgroup.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR09MB4851:EE_|GV2PR09MB5889:EE_
-x-ms-office365-filtering-correlation-id: 85fbdbb6-98ad-458c-5a3c-08dcef77bec1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?je9M1hG++82TdDjl/A3/bmM4k7MqEGbzrG4hi9C5Jm/O3QshDOUytrKlSq?=
- =?iso-8859-1?Q?VEFgg5I3AuJaGiHo9GSAm3+O4mmx7uPzEpFI1BICRu4DKBlYlFNrUqqPb+?=
- =?iso-8859-1?Q?9UZOflSWQhFOPwsqYSvA9Q4ueUfkLiKw+qdIOHAdJ9Liv7WG9fKB7pJM9d?=
- =?iso-8859-1?Q?rpUvOkpCvaT90SO8lazrcqcBmEZ84lKTl/f+GU9Mp4CKGMR5rfCVQCcFrM?=
- =?iso-8859-1?Q?KIKa32T4a4niR+8LseZDri4hiRzmis/WsZDGtbCHFFRjXe4DZG8I4wRyRO?=
- =?iso-8859-1?Q?Lad5E3HWZzPaNvABJvhREAbjgBJVaO5e38UTtyG6iD24xpSjVa0UhI2MDo?=
- =?iso-8859-1?Q?+oRYLj2mIwOf4s69rVnrmYU4l/JphVmLNbQgZRRtbg8/JSKb+byzpnXon4?=
- =?iso-8859-1?Q?ozinfsCzvpzD5wDfE0z3TBUOCkHZSArKAK88C1nDyOGZSQs/40x6HvSH8f?=
- =?iso-8859-1?Q?zJB6xzk3kx1IE6wD1xA3YHi+/9afcamjKROb1mlqqG9QjZGIPatI5zqeEP?=
- =?iso-8859-1?Q?KlaFCotb4R7rTC2Nm6xJwXQPfjWwHYZfDoyXL7Vxwhqq1knJC6mwrWmbcI?=
- =?iso-8859-1?Q?Zw+JniIdPO86mBAUW0x7JPUuSFLUBHiR/LACX45Tq1GmYw4UYs+n/CPEOp?=
- =?iso-8859-1?Q?0nl+loa8D+PPTH8a9ZF7V9xYtcx1a9yewkeP7XrnksaERa041XbvU0S8sp?=
- =?iso-8859-1?Q?ASaKO/gCaOii3RScEsRDDSqv5+YE8XcP8sj41EWjlwfLXQCq9HC86+gtIk?=
- =?iso-8859-1?Q?iZYDixcQ5YSyrh8FziNTtMNNW9SMyHVvYjjeqt090lndhn2vCDknB60Ubs?=
- =?iso-8859-1?Q?sjBAj+dRnKBg+x/nIiQW+xoOQEAKTgQULbIUrNRw8SfFH+CbEEEMmpb0Gc?=
- =?iso-8859-1?Q?c/0Lqukim0/WkfF/2iLQUrHgnNO9DTHiVSUADRrLPgRlhATKSiUxCVBpJU?=
- =?iso-8859-1?Q?D8kX4PYTMS6C0K6nWF2/rj4iDpLnkcloTbVOsoHdXbf8rWjIWVpCt9Lguq?=
- =?iso-8859-1?Q?LW0ImWEslHNfD5NyuzZ86DaNnC8HA6kM/Y1wCdS2+bBwjtgZjhtXASE9Z3?=
- =?iso-8859-1?Q?U70I/Nvq6036V7Ek+VDnwzE4uCD5fn29iVxQxYEjoah41yAKdXaiD6msxe?=
- =?iso-8859-1?Q?Nootn802cLjRFNPbm7kHX3B+ncsCjyglWm2AI8gaxGcpdUjhTITHaYgZVp?=
- =?iso-8859-1?Q?Qpl0QNZVNfV235b/rqPzNjXlTV+KiHLqcYubKjLJif9lK+7AcvXLYCISAZ?=
- =?iso-8859-1?Q?1DooiRL1EQb2tLgCin4TdNjorCs9Dk6tDWXubKyCYzOmiu2+jYW+fDexbC?=
- =?iso-8859-1?Q?RAXJHYj+mZd+BIHcYv0cU79BbX+EG07Pdocw4E++b1l/t+8ioh0AVkeHRf?=
- =?iso-8859-1?Q?jps3DmT9GdpnaMexSyF6o7RLEkosDGVTFI6vUt0kXPYuK/tzLkbypms8lG?=
- =?iso-8859-1?Q?BG8FwNhEHf2jHqGw?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM9PR09MB4851.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?uBW5dkLEwpv36tqTqESFN7ZVYNMUaqVwhhr3u4PWGaBUCWiYeeBKSOyDLo?=
- =?iso-8859-1?Q?I2yKtvYyE5dlPdHX3GDuclEDmS30V8/m9+O2KV7sjMa1bRe+yklhrweozW?=
- =?iso-8859-1?Q?pZIRQe4VMXEr8Ylh16AtA3ADetoY3o1nnqpWtFtk6DEkO2cvG4BcZtymrc?=
- =?iso-8859-1?Q?ANXJnCRgr5Zz5cgltAUrBe6+kF3tLaaKudQstCXDDSUU0skpZG1vvIuvWR?=
- =?iso-8859-1?Q?QxynYlv7REXJApV8Ce+FY2IuWakEe17QWmyf6J/EU/2/p2D/Q6sLJGL5DO?=
- =?iso-8859-1?Q?8bWUkIF0E2LajjwtrffzWFyOo77gyHHkLJ8s5cC5hhUAu3cFazpIhny1bw?=
- =?iso-8859-1?Q?Hj6t+Y0w18nji9/SwdUqu8DfjQLe7YpC3zuZIQQUw5gLmBK39Y0uHOksSa?=
- =?iso-8859-1?Q?lMFRNozq5PsFg0h2iYehFbczTXCsGzKMiYYvlnvPI6Y3ER1AQY1cK++6A0?=
- =?iso-8859-1?Q?TaP6FR3vz0EVe9kQzPC71pn43zMNxA+2+5CwAUR4f7QOggtZFPwqSQcIKd?=
- =?iso-8859-1?Q?d/XB+x4i9Mp0xS/PB7PFKa90l+P+PXHlhjDGbOPTJZke5MmZ+E25Bjv3eZ?=
- =?iso-8859-1?Q?cXwYg58qRF0PdAFXbOiVku3ZDcKOAsQ65x4mZCa7YaNoGHKQ49PvamSf9X?=
- =?iso-8859-1?Q?FIHZwDOFO/uhkf+dWE+FVOy0zxbH7ZyhWy26QQcD6RcmR3ZMz/jxlxznJx?=
- =?iso-8859-1?Q?HYqXsr0z87aIX4BYLmmR9scVUK3gLfAXdwfHgMyaBfFgRHSM4VONVNwHGj?=
- =?iso-8859-1?Q?ZqNwRMHGrKNajpsF4JuHKf0YCkAhBOUSAIoGiskJYWLVBrnrMrsfFbpsyJ?=
- =?iso-8859-1?Q?vN0sxRw86osHslEBXfvQh3H0fNomn8Xn13mU+LszXmC46FpTQSiXjzraFK?=
- =?iso-8859-1?Q?FXWjF8lU8dttWoMCWIxuRHBJjRVFBtYfWzWCGEe69VmgrbK/45AJjLuppE?=
- =?iso-8859-1?Q?OjSsvmuZhWDpAtei5+9GJkX0vOjqoCUxDDUJ/RUIRMeWC52iz0EaqUhAqJ?=
- =?iso-8859-1?Q?gadSQmMfy5LetA9zj2HEAedzdDX3oCUBPaSeA1+JLZJy78KMIte3k5JNK6?=
- =?iso-8859-1?Q?sMCTGIGmbs+n/r/TXgFd6OmZoWvWf3ex5lIdJcwQUe4ZaU6F/TOdecLBof?=
- =?iso-8859-1?Q?ie5zLiATFyFHTgTBUsuDZ4oNs8m0IWY3p+E0GU4bZuClHYsLYIYZpsQpO8?=
- =?iso-8859-1?Q?p38mDSymgY6AI2jN9ZlLkbeeog3tnriv1S2yLP/1ksFCURSRAqoNXrx8jD?=
- =?iso-8859-1?Q?uAyQXmdgBlOikvodiBUycm7gDwDQsZyTbpnVR91uGtLkIr4gOh6lIxvlfF?=
- =?iso-8859-1?Q?gCgG6APFUS8w7iSvB1QbCLO17AiVXHpZc13idoNKcRovvc7wWfKgDvLmhq?=
- =?iso-8859-1?Q?B9kLlYEc704jBUhy4JPn1K5zaxg8otJkFFrkW6z6+cA+sSOQ3R1+Nd93YQ?=
- =?iso-8859-1?Q?Jz2G91FEFZ2o7tiUorpzk15NijEJhTcwiQjU5SIuugt3Nb4eKmJPZKFSsD?=
- =?iso-8859-1?Q?eb0qWXccPNLqaiPTJSjpCVZoozjnc4rh2RUSK+bfJviibrTY7Y3Q66vjAE?=
- =?iso-8859-1?Q?J0BU7zwFx0xyG4iYRt+FucJ4LfJ9363+BZm/HtS5nhVUJo9QrVY8sJlbXQ?=
- =?iso-8859-1?Q?dqOGtwY8ftzhM5DEpercRxszg+s8bueCii0quCgqAOynP4LB7g+Iij3Q?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0007Nj-Ac
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729258109;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1FC2jC+761e7WwP8qHWQhXxFHLAGdqP3ZXmkxzWQ2rc=;
+ b=EUnkJRIILH5HqI37o2LJJceTmtVx3B5PalOib6Dieh6zemswgLjmAaHqkcyVAffU0rmUKr
+ MKu1x8qsJYxvnCs4zcJ51hmlT1E7SZvZYloOkggRCtt+AC6NpIFt8Y0EKOZAs2xhHywzv2
+ WQK3ksIDeptAYpCO8hrOnjAGM2sdXWw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-og4D-iPbNSa0KiofE1LmZg-1; Fri,
+ 18 Oct 2024 09:28:28 -0400
+X-MC-Unique: og4D-iPbNSa0KiofE1LmZg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB70319560AB; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 942171956086; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 47D4821E6A28; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/9] Error reporting patches for 2024-10-18
+Date: Fri, 18 Oct 2024 15:28:15 +0200
+Message-ID: <20241018132824.3379780-1-armbru@redhat.com>
 MIME-Version: 1.0
-X-OriginatorOrg: htecgroup.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR09MB4851.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85fbdbb6-98ad-458c-5a3c-08dcef77bec1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2024 13:21:15.9956 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dzgnbe9HUZ9hLoa3Z8efF6pqNjPyXkRgQDsDzQyMyD3wxjWY8MX91QrI3fECsZiKBNU22BZl8/QD6uENW2qBiGpMnb+n06bVFSxTlu7SA58=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR09MB5889
-Received-SPF: pass client-ip=2a01:111:f403:2607::712;
- envelope-from=aleksandar.rakic@htecgroup.com;
- helo=EUR02-VI1-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -162,34 +78,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable MSA ASE for mips64R2-generic CPU.=0A=
-=0A=
-Cherry-picked 60f6ae8d3d685ba1ea5d301222fb72b67f39264f=0A=
-from  https://github.com/MIPS/gnutools-qemu=0A=
-=0A=
-Signed-off-by: Faraz Shahbazker <fshahbazker@wavecomp.com>=0A=
-Signed-off-by: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>=0A=
----=0A=
- target/mips/cpu-defs.c.inc | 4 +++-=0A=
- 1 file changed, 3 insertions(+), 1 deletion(-)=0A=
-=0A=
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc=0A=
-index 19e2abac82..2b707cc5a7 100644=0A=
---- a/target/mips/cpu-defs.c.inc=0A=
-+++ b/target/mips/cpu-defs.c.inc=0A=
-@@ -678,7 +678,9 @@ const mips_def_t mips_defs[] =3D=0A=
-                        (2 << CP0C1_DS) | (4 << CP0C1_DL) | (3 << CP0C1_DA)=
- |=0A=
-                        (1 << CP0C1_PC) | (1 << CP0C1_WR) | (1 << CP0C1_EP)=
-,=0A=
-         .CP0_Config2 =3D MIPS_CONFIG2,=0A=
--        .CP0_Config3 =3D MIPS_CONFIG3 | (1 << CP0C3_LPA),=0A=
-+        .CP0_Config3 =3D MIPS_CONFIG3 | (1 << CP0C3_LPA) |=0A=
-+                       (1 << CP0C3_VInt) | (1 << CP0C3_MSAP),=0A=
-+        .CP0_Config5_rw_bitmask =3D (1 << CP0C5_MSAEn),=0A=
-         .CP0_LLAddr_rw_bitmask =3D 0,=0A=
-         .CP0_LLAddr_shift =3D 0,=0A=
-         .SYNCI_Step =3D 32,=0A=
--- =0A=
-2.34.1=
+The following changes since commit 95a16ee753d6da651fce8df876333bf7fcf134d9:
+
+  Merge tag 'pull-loongarch-20241016' of https://gitlab.com/gaosong/qemu into staging (2024-10-17 12:42:23 +0100)
+
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/armbru.git tags/pull-error-2024-10-18
+
+for you to fetch changes up to 1824e9fc646c68e42e3f823b208382563ce5dc83:
+
+  qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer used, drop (2024-10-18 15:03:35 +0200)
+
+----------------------------------------------------------------
+Error reporting patches for 2024-10-18
+
+----------------------------------------------------------------
+Markus Armbruster (9):
+      qga/qapi-schema: Drop obsolete note on "unsupported" errors
+      qga: Improve error for guest-set-user-password parameter @crypted
+      error: Drop superfluous #include "qapi/qmp/qerror.h"
+      block: Improve errors about block sizes
+      block: Adjust check_block_size() signature
+      target/i386/cpu: Avoid mixing signed and unsigned in property setters
+      target/i386/cpu: Improve errors for out of bounds property values
+      hw/intc/openpic: Improve errors for out of bounds property values
+      qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer used, drop
+
+ qga/qapi-schema.json                 |  9 ------
+ include/qapi/qmp/qerror.h            |  6 ----
+ util/block-helpers.h                 |  3 +-
+ block/export/vduse-blk.c             |  7 ++---
+ block/export/vhost-user-blk-server.c |  6 +---
+ hw/core/qdev-properties-system.c     |  6 +---
+ hw/intc/openpic.c                    |  5 +--
+ qga/commands-bsd.c                   |  1 -
+ qga/commands-linux.c                 |  1 -
+ qga/commands-posix.c                 |  1 -
+ qga/commands-win32.c                 |  2 +-
+ target/i386/cpu.c                    | 59 +++++++++++++++++-------------------
+ util/block-helpers.c                 | 28 ++++++++---------
+ 13 files changed, 47 insertions(+), 87 deletions(-)
+
+-- 
+2.46.0
+
 
