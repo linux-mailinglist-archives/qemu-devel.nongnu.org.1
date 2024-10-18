@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514869A3446
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24A49A3454
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:33:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1fa9-0008FA-Ni; Fri, 18 Oct 2024 01:31:25 -0400
+	id 1t1faH-0008GL-85; Fri, 18 Oct 2024 01:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1fa6-0008EL-SW; Fri, 18 Oct 2024 01:31:23 -0400
+ id 1t1fa9-0008FC-Jx; Fri, 18 Oct 2024 01:31:25 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1fa4-00089Y-IE; Fri, 18 Oct 2024 01:31:22 -0400
+ id 1t1fa7-00089Y-UF; Fri, 18 Oct 2024 01:31:25 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 18 Oct
@@ -34,10 +34,13 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 00/16] Fix write incorrect data into flash in user mode
-Date: Fri, 18 Oct 2024 13:30:56 +0800
-Message-ID: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 01/16] aspeed/smc: Fix write incorrect data into flash in
+ user mode
+Date: Fri, 18 Oct 2024 13:30:57 +0800
+Message-ID: <20241018053112.1886173-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
+References: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -66,51 +69,149 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-change from v1:
- 1. Fix write incorrect data into flash in user mode.
- 2. Refactor aspeed smc qtest testcases to support AST2600, AST2500 and
-AST1030.
- 3. Add ast2700 smc qtest testcase to support AST2700.
+According to the design of ASPEED SPI controllers user mode, users write the
+data to flash, the SPI drivers set the Control Register(0x10) bit 0 and 1
+enter user mode. Then, SPI drivers send flash commands for writing data.
+Finally, SPI drivers set the Control Register (0x10) bit 2 to stop
+active control and restore bit 0 and 1.
 
-QEMU version: https://github.com/qemu/qemu/commit/95a16ee753d6da651fce8df876333bf7fcf134d9
+According to the design of ASPEED SMC model, firmware writes the
+Control Register and the "aspeed_smc_flash_update_ctrl" function is called.
+Then, this function verify Control Register(0x10) bit 0 and 1. If it set user
+mode, the value of s->snoop_index is SNOOP_START else SNOOP_OFF.
+If s->snoop_index is SNOOP_START, the "aspeed_smc_do_snoop" function verify
+the first incomming data is a new flash command and writes the corresponding
+dummy bytes if need.
 
-Depend patch series:
-To successfully apply this patch series, it is required to apply this
-patch series first, https://patchwork.kernel.org/project/qemu-devel/list/?series=894520
+However, it did not check the current unselect status. If current unselect
+status is "false" and firmware set the IO MODE by Control Register bit 31:28,
+the value of s->snoop_index will be changed to SNOOP_START again and
+"aspeed_smc_do_snoop" misunderstand that the incomming data is the new flash
+command and it causes writing unexpected data into flash.
 
-Jamin Lin (16):
-  aspeed/smc: Fix write incorrect data into flash in user mode
-  hw/block:m25p80: Fix coding style
-  hw/block:m25p80: Support write status register 2 command (0x31) for
-    w25q01jvq
-  hw/block/m25p80: Add SFDP table for w25q80bl flash
-  hw/arm/aspeed: Correct spi_model w25q256 for ast1030-a1 EVB.
-  hw/arm/aspeed: Correct fmc_model w25q80bl for ast1030-a1 EVB
-  test/qtest/aspeed_smc-test: Fix coding style
-  test/qtest/aspeed_smc-test: Move testcases to test_palmetto_bmc
-    function
-  test/qtest/aspeed_smc-test: Introduce a new TestData to test different
-    BMC SOCs
-  test/qtest/aspeed_smc-test: Support to test all CE pins
-  test/qtest/aspeed_smc-test: Support to test all flash models
-  test/qtest/aspeed_smc-test: Support to test AST2500
-  test/qtest/aspeed_smc-test: Support to test AST2600
-  test/qtest/aspeed_smc-test: Support to test AST1030
-  test/qtest/aspeed_smc-test: Support write page command with QPI mode
-  test/qtest/ast2700-smc-test: Support to test AST2700
+Example:
+1. Firmware set user mode by Control Register bit 0 and 1(0x03)
+2. SMC model set s->snoop SNOOP_START
+3. Firmware set Quad Page Program with 4-Byte Address command (0x34)
+4. SMC model verify this flash command and it needs 4 dummy bytes.
+5. Firmware send 4 bytes address.
+6. SMC model receives 4 bytes address
+7. Firmware set QPI IO MODE by Control Register bit 31. (0x80000003)
+8. SMC model verify new user mode by Control Register bit 0 and 1.
+   Then, set s->snoop SNOOP_START again. (It is the wrong behavior.)
+9. Firmware send 0xebd8c134 data and it should be written into flash.
+   However, SMC model misunderstand that the first incoming data, 0x34,
+   is the new command because the value of s->snoop is changed to SNOOP_START.
+   Finally, SMC sned the incorrect data to flash model.
 
- hw/arm/aspeed.c                |   4 +-
- hw/block/m25p80.c              |  63 ++-
- hw/block/m25p80_sfdp.c         |  36 ++
- hw/block/m25p80_sfdp.h         |   2 +-
- hw/ssi/aspeed_smc.c            |  39 +-
- include/hw/ssi/aspeed_smc.h    |   1 +
- tests/qtest/aspeed_smc-test.c  | 783 ++++++++++++++++++++++-----------
- tests/qtest/ast2700-smc-test.c | 598 +++++++++++++++++++++++++
- tests/qtest/meson.build        |   3 +-
- 9 files changed, 1245 insertions(+), 284 deletions(-)
- create mode 100644 tests/qtest/ast2700-smc-test.c
+Introduce a new unselect attribute in AspeedSMCState to save the current
+unselect status for user mode and set it "true" by default.
+Update "aspeed_smc_flash_update_ctrl" function to check the previous unselect
+status. If both new unselect status and previous unselect status is different,
+update s->snoop_index value and call "aspeed_smc_flash_do_select".
 
+Increase VMStateDescription version 1.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/ssi/aspeed_smc.c         | 39 +++++++++++++++++++++++++------------
+ include/hw/ssi/aspeed_smc.h |  1 +
+ 2 files changed, 28 insertions(+), 12 deletions(-)
+
+diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+index e3fdc66cb2..8a6145afe9 100644
+--- a/hw/ssi/aspeed_smc.c
++++ b/hw/ssi/aspeed_smc.c
+@@ -417,7 +417,7 @@ static void aspeed_smc_flash_do_select(AspeedSMCFlash *fl, bool unselect)
+     AspeedSMCState *s = fl->controller;
+ 
+     trace_aspeed_smc_flash_select(fl->cs, unselect ? "un" : "");
+-
++    s->unselect = unselect;
+     qemu_set_irq(s->cs_lines[fl->cs], unselect);
+ }
+ 
+@@ -677,22 +677,35 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
+ static void aspeed_smc_flash_update_ctrl(AspeedSMCFlash *fl, uint32_t value)
+ {
+     AspeedSMCState *s = fl->controller;
+-    bool unselect;
++    bool unselect = false;
++    uint32_t old_mode;
++    uint32_t new_mode;
++
++    old_mode = s->regs[s->r_ctrl0 + fl->cs] & CTRL_CMD_MODE_MASK;
++    new_mode = value & CTRL_CMD_MODE_MASK;
+ 
+-    /* User mode selects the CS, other modes unselect */
+-    unselect = (value & CTRL_CMD_MODE_MASK) != CTRL_USERMODE;
++    if (old_mode == CTRL_USERMODE) {
++        if (new_mode != CTRL_USERMODE) {
++            unselect = true;
++        }
+ 
+-    /* A change of CTRL_CE_STOP_ACTIVE from 0 to 1, unselects the CS */
+-    if (!(s->regs[s->r_ctrl0 + fl->cs] & CTRL_CE_STOP_ACTIVE) &&
+-        value & CTRL_CE_STOP_ACTIVE) {
+-        unselect = true;
++        /* A change of CTRL_CE_STOP_ACTIVE from 0 to 1, unselects the CS */
++        if (!(s->regs[s->r_ctrl0 + fl->cs] & CTRL_CE_STOP_ACTIVE) &&
++            value & CTRL_CE_STOP_ACTIVE) {
++            unselect = true;
++        }
++    } else {
++        if (new_mode != CTRL_USERMODE) {
++            unselect = true;
++        }
+     }
+ 
+     s->regs[s->r_ctrl0 + fl->cs] = value;
+ 
+-    s->snoop_index = unselect ? SNOOP_OFF : SNOOP_START;
+-
+-    aspeed_smc_flash_do_select(fl, unselect);
++    if (unselect != s->unselect) {
++        s->snoop_index = unselect ? SNOOP_OFF : SNOOP_START;
++        aspeed_smc_flash_do_select(fl, unselect);
++    }
+ }
+ 
+ static void aspeed_smc_reset(DeviceState *d)
+@@ -737,6 +750,7 @@ static void aspeed_smc_reset(DeviceState *d)
+ 
+     s->snoop_index = SNOOP_OFF;
+     s->snoop_dummies = 0;
++    s->unselect = true;
+ }
+ 
+ static uint64_t aspeed_smc_read(void *opaque, hwaddr addr, unsigned int size)
+@@ -1261,12 +1275,13 @@ static void aspeed_smc_realize(DeviceState *dev, Error **errp)
+ 
+ static const VMStateDescription vmstate_aspeed_smc = {
+     .name = "aspeed.smc",
+-    .version_id = 2,
++    .version_id = 3,
+     .minimum_version_id = 2,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(regs, AspeedSMCState, ASPEED_SMC_R_MAX),
+         VMSTATE_UINT8(snoop_index, AspeedSMCState),
+         VMSTATE_UINT8(snoop_dummies, AspeedSMCState),
++        VMSTATE_BOOL(unselect, AspeedSMCState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+diff --git a/include/hw/ssi/aspeed_smc.h b/include/hw/ssi/aspeed_smc.h
+index 234dca32b0..25b95e7406 100644
+--- a/include/hw/ssi/aspeed_smc.h
++++ b/include/hw/ssi/aspeed_smc.h
+@@ -82,6 +82,7 @@ struct AspeedSMCState {
+ 
+     uint8_t snoop_index;
+     uint8_t snoop_dummies;
++    bool unselect;
+ };
+ 
+ typedef struct AspeedSegments {
 -- 
 2.34.1
 
