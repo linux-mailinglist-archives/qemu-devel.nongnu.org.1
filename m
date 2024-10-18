@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0669A432C
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C2F9A42D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:46:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1pRs-0006TR-3a; Fri, 18 Oct 2024 12:03:32 -0400
+	id 1t1pBL-0006la-3M; Fri, 18 Oct 2024 11:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t1pQX-0005c3-CU
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:02:09 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1pB8-0006l6-4V
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:46:15 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t1pQU-0002qo-0W
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:02:08 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6234B99D2A;
- Fri, 18 Oct 2024 19:01:37 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 36108157894;
- Fri, 18 Oct 2024 19:02:00 +0300 (MSK)
-Message-ID: <806baf9d-5549-4298-99e7-f50fdf69f99d@tls.msk.ru>
-Date: Fri, 18 Oct 2024 19:02:00 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1pB5-0001Mj-Dd
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:46:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729266371; x=1760802371;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=hQfkC+zqc4rqm0WgktvH7Ig4QCXzV4ltcaLjcR2GE4w=;
+ b=G1jdZsBkECHJig9FnLnKUMxm05NFheKZBfjYEgDCpg1kbSpXs8c08Vfh
+ maxzN+6Gd3AsWFaC4jdZkqtTW+9j69H8LhLCuAcEGb03sWHwQl+w2a2k7
+ ZLHjGZQ5Pc+xUGRzmzb3lG8yVhwVAC9/xZWnId6tGw6RwlQPJDJC5eHOT
+ LADST3SEFxxF8edOTdJMUCQzje413BxUKfPasbWSdD5GLQkrS71z6FAgV
+ UdIqvEqu1PMycLHNTfq8eqiVCL/g9FzxgbGWbhGFdE7o3bXvLc581YWpZ
+ 7kpPTiBjNgtCuNh02IoEDnsEE2QtfvHK7Ww+QRCD+wd71V/xcNuBxwxe/ g==;
+X-CSE-ConnectionGUID: w6lh6rzeSAqadnBqch9Qjw==
+X-CSE-MsgGUID: aBy6cGHqTgiAcFOgq40OBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39346582"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="39346582"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2024 08:46:09 -0700
+X-CSE-ConnectionGUID: Ud+3V9hPQyuDJNIxivkhZA==
+X-CSE-MsgGUID: UY6TEBk9S82+AB+uhDxMWw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; d="scan'208";a="109726518"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 18 Oct 2024 08:46:08 -0700
+Date: Sat, 19 Oct 2024 00:02:23 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 06/16] rust: do not use OnceLock for properties
+Message-ID: <ZxKGj+LVw3I0VdH0@intel.com>
+References: <20241015131735.518771-1-pbonzini@redhat.com>
+ <20241015131735.518771-7-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] target/i386/tcg: Use DPL-level accesses for
- interrupts and call gates
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: rrh.henry@gmail.com, richard.henderson@linaro.org
-References: <20240710062920.73063-1-pbonzini@redhat.com>
- <20240710062920.73063-8-pbonzini@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240710062920.73063-8-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015131735.518771-7-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,29 +81,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-10.07.2024 09:29, Paolo Bonzini wrote:
-> This fixes a bug wherein i386/tcg assumed an interrupt return using
-> the CALL or JMP instructions were always going from kernel or user mode to
-> kernel mode, when using a call gate. This assumption is violated if
-> the call gate has a DPL that is greater than 0.
+On Tue, Oct 15, 2024 at 03:17:24PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 15 Oct 2024 15:17:24 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 06/16] rust: do not use OnceLock for properties
+> X-Mailer: git-send-email 2.46.2
 > 
-> In addition, the stack accesses should count as explicit, not implicit
-> ("kernel" in QEMU code), so that SMAP is not applied if DPL=3.
+> Properties are initialized lazily but always accessed within the big QEMU lock.
 > 
-> Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
+> There is no need to have a OnceLock around them, and also OnceCell/OnceLock
+> were only stabilized in 1.70.0; so remove it.
+> 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/src/device_class.rs | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
 
-This sounds like qemu-stable material, is it not?
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-It can be picked up for 9.1.x, but for 9.0 and before it needs a few
-other changes in this area, like v9.0.0-2238-g8053862af9 "target/i386/tcg:
-Compute MMU index once" and v9.0.0-2236-g059368bcf5 "target/i386/tcg:
-Reorg push/pop within seg_helper.c", or it needs a proper backport.
-
-What do you think?
-
-Thanks,
-
-/mjt
 
