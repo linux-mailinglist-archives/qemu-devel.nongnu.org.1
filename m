@@ -2,88 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6B49A390C
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 10:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3469A39E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:23:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1ieD-0000rH-H8; Fri, 18 Oct 2024 04:47:49 -0400
+	id 1t1jBb-0005TB-6c; Fri, 18 Oct 2024 05:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1ieA-0000q6-3k; Fri, 18 Oct 2024 04:47:46 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <cmarinas@kernel.org>)
+ id 1t1jBY-0005Sk-TZ
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:22:16 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1ie8-0003nP-Dn; Fri, 18 Oct 2024 04:47:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729241264; x=1760777264;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=plBfgMHQMuI+dLmqLkuBbIQUiwBm4swhKQlf4bzVhk8=;
- b=eAg8CLRIPrlXDWG+NytNYuzSvu8a1cRnY9PbU3eAGqdWeinL7iLiGlj3
- oiLZmD4u6SrpavJWbycD/osaoVaOIRomIZ9nuwFQ5e+7AXYbzGUrBAyE8
- xZv37BnKxdRfsilj5QyLGr21yCwmzGlq8XarvuH4e0546fwYFliMNCnT6
- CEnHRDxmRQxN7bNob4mYaVSM+0i4KcTDnfuElT1g8JLKn19RX9KGzwij1
- 4B023z7/RjvyT7fElPLjcBR4lwc74arl7GXyJtHk8bnFvyBFG6DgUEIt8
- tl23/ZWJALAPlcgmkaPcWwFzFvGdQPYmPKS1sNXuB8LlH9md3dl4Rkahj g==;
-X-CSE-ConnectionGUID: 2aoj5lNvSiCnV8N35vdfww==
-X-CSE-MsgGUID: Yjg6M8D8Qn2f/XOVEEo2fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39306052"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="39306052"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 01:47:40 -0700
-X-CSE-ConnectionGUID: 1X6bbWVLRPKGDBLVB3+qyQ==
-X-CSE-MsgGUID: 0qGpU8v8T3qusDQ6TdvBUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="102105838"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 18 Oct 2024 01:47:35 -0700
-Date: Fri, 18 Oct 2024 17:03:51 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
+ (Exim 4.90_1) (envelope-from <cmarinas@kernel.org>)
+ id 1t1jBW-0007Ym-Ty
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:22:16 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 669135C58A4;
+ Fri, 18 Oct 2024 09:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF5DC4CEC3;
+ Fri, 18 Oct 2024 09:22:00 +0000 (UTC)
+Date: Fri, 18 Oct 2024 10:21:57 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: open list <linux-kernel@vger.kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ qemu-devel@nongnu.org, lkft-triage@lists.linaro.org,
+ Linux Regressions <regressions@lists.linux.dev>,
+ Mark Brown <broonie@kernel.org>,
  Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 6/7] i386/pc: Support cache topology in -machine for
- PC machine
-Message-ID: <ZxIkdyJ2ysibi74R@intel.com>
-References: <20241012104429.1048908-1-zhao1.liu@intel.com>
- <20241012104429.1048908-7-zhao1.liu@intel.com>
- <ZxEs3DGGgCqGT5yK@redhat.com> <ZxHcsPyqT6MLJ9hG@intel.com>
- <ZxIVC-XQaMqOy6Fw@redhat.com>
+ Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Aishwarya TCV <aishwarya.tcv@arm.com>
+Subject: Re: Qemu v9.0.2: Boot failed qemu-arm64 with Linux next-20241017 tag
+Message-ID: <ZxIotWFxJf8H9bYX@arm.com>
+References: <CA+G9fYvx05D7TfRjvdPtKM9iWS6i7b-EHuBAbHEQghvMEg221g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxIVC-XQaMqOy6Fw@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+In-Reply-To: <CA+G9fYvx05D7TfRjvdPtKM9iWS6i7b-EHuBAbHEQghvMEg221g@mail.gmail.com>
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=cmarinas@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,106 +66,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 18, 2024 at 08:58:03AM +0100, Daniel P. Berrangé wrote:
-> Date: Fri, 18 Oct 2024 08:58:03 +0100
-> From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: Re: [PATCH v3 6/7] i386/pc: Support cache topology in -machine for
->  PC machine
+On Fri, Oct 18, 2024 at 12:56:01PM +0530, Naresh Kamboju wrote:
+> The QEMU-arm64 boot has failed with the Linux next-20241017 tag.
+> The boot log is incomplete, and no kernel crash was detected.
+> However, the system did not proceed far enough to reach the login prompt.
 > 
-> On Fri, Oct 18, 2024 at 11:57:36AM +0800, Zhao Liu wrote:
-> > Hi Daniel,
-> > 
-> > > > +    ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
-> > > > +        Define cache properties for SMP system.
-> > > > +
-> > > > +        ``cache=cachename`` specifies the cache that the properties will be
-> > > > +        applied on. This field is the combination of cache level and cache
-> > > > +        type. It supports ``l1d`` (L1 data cache), ``l1i`` (L1 instruction
-> > > > +        cache), ``l2`` (L2 unified cache) and ``l3`` (L3 unified cache).
-> > > > +
-> > > > +        ``topology=topologylevel`` sets the cache topology level. It accepts
-> > > > +        CPU topology levels including ``thread``, ``core``, ``module``,
-> > > > +        ``cluster``, ``die``, ``socket``, ``book``, ``drawer`` and a special
-> > > > +        value ``default``. If ``default`` is set, then the cache topology will
-> > > > +        follow the architecture's default cache topology model. If another
-> > > > +        topology level is set, the cache will be shared at corresponding CPU
-> > > > +        topology level. For example, ``topology=core`` makes the cache shared
-> > > > +        by all threads within a core.
-> > > > +
-> > > > +        Example:
-> > > > +
-> > > > +        ::
-> > > > +
-> > > > +            -machine smp-cache.0.cache=l1d,smp-cache.0.topology=core,smp-cache.1.cache=l1i,smp-cache.1.topology=core
-> > > 
-> > > There are 4 cache types, l1d, l1i, l2, l3.
-> > > 
-> > > In this example you've only set properties for l1d, l1i caches.
-> > > 
-> > > What does this mean for l2 / l3 caches ?
-> > 
-> > Omitting "cache" will default to using the "default" level.
-> > 
-> > I think I should add the above description to the documentation.
-> > 
-> > > Are they reported as not existing, or are they to be reported at
-> > > some built-in default topology level.
-> > 
-> > It's the latter.
-> > 
-> > If a machine doesn't support l2/l3, then QEMU will also report the error
-> > like:
-> > 
-> > qemu-system-*: l2 cache topology not supported by this machine
+> Please find the incomplete boot log links below for your reference.
+> The Qemu version is 9.0.2.
+> The arm64 devices boot pass.
 > 
-> Ok, that's good.
+> This is always reproducible.
+> First seen on Linux next-20241017 tag.
+>   Good: next-20241016
+>   Bad: next-20241017
 > 
-> > > If the latter, how does the user know what that built-in default is, 
-> > 
-> > Currently, the default cache model for x86 is L1 per core, L2 per core,
-> > and L3 per die. Similar to the topology levels, there is still no way to
-> > expose this to users. I can descript default cache model in doc.
-> > 
-> > But I feel like we're back to the situation we discussed earlier:
-> > "default" CPU topology support should be related to the CPU model, but
-> > in practice, QEMU supports it at the machine level. The cache topology
-> > depends on CPU topology support and can only continue to be added on top
-> > of the machine.
-> > 
-> > So do you think we can add topology and cache information in CpuModelInfo
-> > so that query-cpu-model-expansion can expose default CPU/cache topology
-> > information to users?
-> > 
-> > This way, users can customize CPU/cache topology in -smp and
-> > -machine smp-cache. Although the QMP command is targeted at the CPU model
-> > while our CLI is at the machine level, at least we can expose the
-> > information to users.
-> > 
-> > If you agree to expose the default topology/cache info in
-> > query-cpu-model-expansion, can I work on this in a separate series? :)
+> qemu-arm64-protected:
+>   boot:
+>     * clang-19-lkftconfig
+>     * gcc-13-lkftconfig
+>     * clang-nightly-lkftconfig
 > 
-> Yeah, lets worry about that another day.
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 > 
-> It it sufficient to just encourage users to always specify
-> the full set of caches.
+> Boot log:
+> ---------
+> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x000f0510]
+> [    0.000000] Linux version 6.12.0-rc3-next-20241017
+> (tuxmake@tuxmake) (Debian clang version 19.1.2
+> (++20241001023520+d5498c39fe6a-1~exp1~20241001143639.51), Debian LLD
+> 19.1.2) #1 SMP PREEMPT @1729156545
+> [    0.000000] KASLR enabled
+> [    0.000000] random: crng init done
+> [    0.000000] Machine model: linux,dummy-virt
+> [    0.000000] efi: UEFI not found.
+> [    0.000000] Capping linear region to 51 bits for KVM in nVHE mode
+> on LVA capable hardware.
+> ...
+> [    0.000000] Kernel command line: console=ttyAMA0,115200 rootwait
+> root=/dev/vda debug verbose console_msg_format=syslog
+> systemd.log_level=warning rw kvm-arm.mode=protected earlycon
+> ...
+> <6>[    0.305549] SME: maximum available vector length 256 bytes per vector
+> <6>[    0.306214] SME: default vector length 32 bytes per vector
+> **
+> ERROR:target/arm/internals.h:923:regime_is_user: code should not be reached
+> Bail out! ERROR:target/arm/internals.h:923:regime_is_user: code should
+> not be reached
+> <nothing after this>
 
-Thanks!
+Qemu bug. See this email from Peter:
 
-> > > Can we explicitly disable a l2/l3 cache, or must it always exists ?
-> > 
-> > Now we can't disable it through -machine smp-cache (while x86 CPU support
-> > l3-cache=off), but as you mentioned, I can try using "invalid" to support
-> > this scenario, which would be more general. Similarly, if you agree, I
-> > can also add this support in a separate series.
-> 
-> If we decide to offer a way to disable caches, probably better to have
-> a name like 'disabled' for such a setting, and yes, we don't need todo
-> that now.
+https://lore.kernel.org/r/CAFEAcA8uJL1t2MDjaJL7u5oW4ns23_E+sk7987x4gAcs3dSZOw@mail.gmail.com
 
-Yes, "disabled" is better.
-
-Regards,
-Zhao
-
- 
+-- 
+Catalin
 
