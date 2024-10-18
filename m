@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89959A3F9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB2B9A3F9D
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1n20-0005jd-LC; Fri, 18 Oct 2024 09:28:40 -0400
+	id 1t1n20-0005ji-NU; Fri, 18 Oct 2024 09:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1y-0005iN-5s
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1w-0005hw-HV
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1w-0007Q7-JM
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:37 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1u-0007PX-4t
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729258115;
+ s=mimecast20190719; t=1729258113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ELTbiLR5hOhveedIClubmCc02LrhhFa+4jBCPxM+J2w=;
- b=f5Bpxd5PmCI8CI/6RxBnjP6mLBfhdAKbaVrGVy1haNIr0pdZR2MXZaKXelFM4pOpjd4dKS
- t4/voel8SJmIqElW/7hh0VCdGcxn3dH80/lWa3KqcH4+JXpbSER9+WdKRtJ0t8slMTGGNK
- 9gsS2mzntH628pPzy0oabndHPMXCHcM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rUpLyhDsLisQTXQlAbiU+CV4+/OCPpHi4uqHDEttUjo=;
+ b=deMmZpCqrtM/ljHqe06pawYLVFba8zqzCYNEW6gz7EGUvk43rj55n54NMuR6GT+D6pEiXh
+ wSNLf9QSHsLmSfTvzQ9kRMRdte9399OgdYkRtUVkYutDiRsR/BLgH58kUvjjJzExshziub
+ zq8+G5vDfG3VBgNM6T6Z+V87vPyv/VI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-rywRtPSaO4Oj5RwQFhCRNA-1; Fri,
- 18 Oct 2024 09:28:32 -0400
-X-MC-Unique: rywRtPSaO4Oj5RwQFhCRNA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-OySbELc-NcSu4Mops0s_sQ-1; Fri,
+ 18 Oct 2024 09:28:31 -0400
+X-MC-Unique: OySbELc-NcSu4Mops0s_sQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB34F195609D; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5C8461955F40; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7CCAA1956056; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CC7B19560AD; Fri, 18 Oct 2024 13:28:30 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5CD7121E68B2; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
+ id 607F621E68BD; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 7/9] target/i386/cpu: Improve errors for out of bounds property
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 8/9] hw/intc/openpic: Improve errors for out of bounds property
  values
-Date: Fri, 18 Oct 2024 15:28:22 +0200
-Message-ID: <20241018132824.3379780-8-armbru@redhat.com>
+Date: Fri, 18 Oct 2024 15:28:23 +0200
+Message-ID: <20241018132824.3379780-9-armbru@redhat.com>
 In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
 References: <20241018132824.3379780-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,91 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message for a "stepping" value that is out of bounds is a
-bit odd:
-
-    $ qemu-system-x86_64 -cpu qemu64,stepping=16
-    qemu-system-x86_64: can't apply global qemu64-x86_64-cpu.stepping=16: Property .stepping doesn't take value 16 (minimum: 0, maximum: 15)
-
-The "can't apply global" part is an unfortunate artifact of -cpu's
-implementation.  Left for another day.
-
-The remainder feels overly verbose.  Change it to
-
-    qemu64-x86_64-cpu: can't apply global qemu64-x86_64-cpu.stepping=16: parameter 'stepping' can be at most 15
-
-Likewise for "family", "model", and "tsc-frequency".
+The error message doesn't matter much, as the "openpic" device isn't
+user-creatable.  But it's the last use of
+QERR_PROPERTY_VALUE_OUT_OF_RANGE, which has to go.  Change the message
+just like the previous commit did for x86 CPUs.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20241010150144.986655-6-armbru@redhat.com>
+Message-ID: <20241010150144.986655-7-armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ hw/intc/openpic.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index cd0dfd03fd..5267dad850 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -31,7 +31,6 @@
+diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
+index 32bd880dfa..cd3d87768e 100644
+--- a/hw/intc/openpic.c
++++ b/hw/intc/openpic.c
+@@ -41,7 +41,6 @@
+ #include "hw/pci/msi.h"
  #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qapi/qapi-visit-machine.h"
+ #include "qemu/bitops.h"
 -#include "qapi/qmp/qerror.h"
- #include "standard-headers/asm-x86/kvm_para.h"
- #include "hw/qdev-properties.h"
- #include "hw/i386/topology.h"
-@@ -5455,8 +5454,8 @@ static void x86_cpuid_version_set_family(Object *obj, Visitor *v,
-         return;
-     }
-     if (value > max) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
--                   name ? name : "null", value, (int64_t)0, (int64_t)max);
-+        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
-+                   name ? name : "null", max);
-         return;
-     }
+ #include "qemu/module.h"
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+@@ -1535,9 +1534,7 @@ static void openpic_realize(DeviceState *dev, Error **errp)
+     };
  
-@@ -5494,8 +5493,8 @@ static void x86_cpuid_version_set_model(Object *obj, Visitor *v,
-         return;
-     }
-     if (value > max) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
--                   name ? name : "null", value, (int64_t)0, (int64_t)max);
-+        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
-+                   name ? name : "null", max);
-         return;
-     }
- 
-@@ -5528,8 +5527,8 @@ static void x86_cpuid_version_set_stepping(Object *obj, Visitor *v,
-         return;
-     }
-     if (value > max) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
--                   name ? name : "null", value, (int64_t)0, (int64_t)max);
-+        error_setg(errp, "parameter '%s' can be at most %" PRIu64,
-+                   name ? name : "null", max);
-         return;
-     }
- 
-@@ -5623,16 +5622,15 @@ static void x86_cpuid_set_tsc_freq(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
- {
-     X86CPU *cpu = X86_CPU(obj);
--    const int64_t min = 0;
-     const int64_t max = INT64_MAX;
-     int64_t value;
- 
-     if (!visit_type_int(v, name, &value, errp)) {
-         return;
-     }
--    if (value < min || value > max) {
--        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
--                   name ? name : "null", value, min, max);
-+    if (value < 0 || value > max) {
-+        error_setg(errp, "parameter '%s' can be at most %" PRId64,
-+                   name ? name : "null", max);
+     if (opp->nb_cpus > MAX_CPU) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
+-                   TYPE_OPENPIC, "nb_cpus", (uint64_t)opp->nb_cpus,
+-                   (uint64_t)0, (uint64_t)MAX_CPU);
++        error_setg(errp, "property 'nb_cpus' can be at most %d", MAX_CPU);
          return;
      }
  
