@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A779A3449
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFF09A3458
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 07:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1fac-0008TA-Qu; Fri, 18 Oct 2024 01:31:54 -0400
+	id 1t1faf-00005T-Bx; Fri, 18 Oct 2024 01:31:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1faY-0008OM-FP; Fri, 18 Oct 2024 01:31:50 -0400
+ id 1t1fab-0008SQ-8w; Fri, 18 Oct 2024 01:31:53 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t1faV-00089Y-6E; Fri, 18 Oct 2024 01:31:49 -0400
+ id 1t1faZ-00089Y-It; Fri, 18 Oct 2024 01:31:52 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 18 Oct
- 2024 13:31:14 +0800
+ 2024 13:31:15 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Fri, 18 Oct 2024 13:31:14 +0800
+ Transport; Fri, 18 Oct 2024 13:31:15 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -34,9 +34,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 07/16] test/qtest/aspeed_smc-test: Fix coding style
-Date: Fri, 18 Oct 2024 13:31:03 +0800
-Message-ID: <20241018053112.1886173-8-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 08/16] test/qtest/aspeed_smc-test: Move testcases to
+ test_palmetto_bmc function
+Date: Fri, 18 Oct 2024 13:31:04 +0800
+Message-ID: <20241018053112.1886173-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
 References: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
@@ -68,37 +69,56 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style issues from checkpatch.pl
+So far, the test cases are used for testing SMC model with AST2400 BMC.
+However, AST2400 is end off live and ASPEED is no longer support this SOC.
+To test SMC model for AST2500, AST2600 and AST1030, move the test cases
+from main to test_palmetto_bmc function.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/qtest/aspeed_smc-test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/qtest/aspeed_smc-test.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/tests/qtest/aspeed_smc-test.c b/tests/qtest/aspeed_smc-test.c
-index c713a3700b..4673371d95 100644
+index 4673371d95..ec1fa6ec15 100644
 --- a/tests/qtest/aspeed_smc-test.c
 +++ b/tests/qtest/aspeed_smc-test.c
-@@ -353,7 +353,8 @@ static void test_read_page_mem(void)
-     uint32_t page[FLASH_PAGE_SIZE / 4];
-     int i;
+@@ -610,14 +610,12 @@ static void test_write_block_protect_bottom_bit(void)
+     flash_reset();
+ }
  
--    /* Enable 4BYTE mode for controller. This is should be strapped by
-+    /*
-+     * Enable 4BYTE mode for controller. This is should be strapped by
-      * HW for CE0 anyhow.
-      */
-     spi_ce_ctrl(1 << CRTL_EXTENDED0);
-@@ -394,7 +395,8 @@ static void test_write_page_mem(void)
-     uint32_t page[FLASH_PAGE_SIZE / 4];
-     int i;
+-int main(int argc, char **argv)
++static int test_palmetto_bmc(void)
+ {
+     g_autofree char *tmp_path = NULL;
+     int ret;
+     int fd;
  
--    /* Enable 4BYTE mode for controller. This is should be strapped by
-+    /*
-+     * Enable 4BYTE mode for controller. This is should be strapped by
-      * HW for CE0 anyhow.
-      */
-     spi_ce_ctrl(1 << CRTL_EXTENDED0);
+-    g_test_init(&argc, &argv, NULL);
+-
+     fd = g_file_open_tmp("qtest.m25p80.XXXXXX", &tmp_path, NULL);
+     g_assert(fd >= 0);
+     ret = ftruncate(fd, FLASH_SIZE);
+@@ -644,8 +642,18 @@ int main(int argc, char **argv)
+ 
+     flash_reset();
+     ret = g_test_run();
+-
+     qtest_quit(global_qtest);
+     unlink(tmp_path);
++
++    return ret;
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    ret = test_palmetto_bmc();
++
+     return ret;
+ }
 -- 
 2.34.1
 
