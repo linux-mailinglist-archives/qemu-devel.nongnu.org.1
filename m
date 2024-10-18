@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4927F9A41DA
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A04B9A424A
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:26:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1oT4-0006hi-Ty; Fri, 18 Oct 2024 11:00:42 -0400
+	id 1t1oqz-0004zI-2r; Fri, 18 Oct 2024 11:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1oSe-0006YM-Rg
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:00:22 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1oSd-0004Kq-5f
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:00:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729263615; x=1760799615;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=7D+Bj5PNHOB883QSjDLZqfMriO6Yk4rxdlZDcMgxIr4=;
- b=nfznYKB7hmoF0ALZ9lGAyLwPPZYcnaDWqC4jB1yQKTVI7O2dC6Ajr0w0
- UCWahEdAMDc7MJaMt+swpLiHi5Dr3+Dk9qnsvl272IgnG8Wd+JMZtLENs
- fWCSCnrzVbyHXgt1SLxg7BNJq3ZrHPDcdvBIDXFNBRDIVkfqf5ovAvhHZ
- DxjYLIs2FKpKd6WV7j9gx46hLjjILpy7a4+WRMKn0YMsGKjMb5QOWaEs2
- O3CZp8ln9UcuMSC/qqSdkdfHDPm8C15lNQTbrx0U4LX7siFytQtIJjSqy
- 0Bfz0CCnL/ZVUbVVX2EZ4ZunZt/D1JkaBR4QUVAbm+jWLtxKNgmHKMFZZ g==;
-X-CSE-ConnectionGUID: g3n3x2LZTvyiutT7LLkwFA==
-X-CSE-MsgGUID: hWDyV5peQn+kIcx7u7eZpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11229"; a="29006219"
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; d="scan'208";a="29006219"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 08:00:08 -0700
-X-CSE-ConnectionGUID: JjVkaXpESt2J0hc1zgAh2A==
-X-CSE-MsgGUID: ntsVYkaZSHKdd4V2zM9yFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; d="scan'208";a="79234532"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 18 Oct 2024 08:00:06 -0700
-Date: Fri, 18 Oct 2024 23:16:21 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 02/16] meson: remove repeated search for rust_root_crate.sh
-Message-ID: <ZxJ7xb0l8igb2bjP@intel.com>
-References: <20241015131735.518771-1-pbonzini@redhat.com>
- <20241015131735.518771-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1oqw-0004yl-JG
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:25:22 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t1oqu-0007ct-K7
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:25:22 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2fb584a8f81so27219031fa.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 08:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729265119; x=1729869919; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wQTsppqQg8l9iM4w+0DERoHy56Ihw+GYNagsipVysbk=;
+ b=riwekbz7As76Wo4PwP2KZsEpPOYm1XhwlOsawGyCjsUKgSQp3GGIq21Pe54uxzq7fP
+ A4/YIge/2bLaJY3Rk2txQQjeIndY/YB9fc2fMmlwU3zFCjYyyBQZD1qNRRfuYj3eFZzD
+ 7VBqdKjK4BHdoGCgPR7+uJEU/qBMk5p7Kfi2beMi2C2JecRZrsHjemIwHzTK8ig+/SzU
+ qPe0ifeQXfvAYx7o7cVS7296N0H1gseN0kcbjLmNf7e+5E6CTkaHnTgIjE714dd9MZvW
+ XPdAZlGuH8aaJaPmmeperxsnKE8V2xIzp9t810wktVsZLAU6We56zC31fz9xlJcSZLvf
+ CNFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729265119; x=1729869919;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wQTsppqQg8l9iM4w+0DERoHy56Ihw+GYNagsipVysbk=;
+ b=VcjY3fI2yRXqlH9NHFF1skFL2D2NiJsMB0Dn4xwZi00baKo9vbA9y3u/CV+C7Js+Rn
+ xdA6GOsTkSDZQqn7hfXZGXkMvcrMWQQipWLY3FShyQ/0x1aXkYty9TDcSqJ3cyg54yH0
+ BfQa3XSq3LXxcmu1AP7kOW8SYRlizqA5EwRo48dnNkRGoA2SjKNLyGzHfFl2xfPb3OEe
+ /bCIqsVtO07AmaZLKdxPkSeY2YtuyFwt5CMOZ0wcN78WdVnXJ9haEjHsRVSveoq77/rn
+ VGMHo5ge20ye1pivPirga32jy8I7fPsfzyxLgpWhOesLiasTYz5Ms8/PBPT+nXGdIvCV
+ 21eQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVTkwG8oYZTaNN3prcxm4WIw1fJkIrKEn/Z98z15wYClt9PtO1eWMhNJFsPCw/APwrEoWq24bp3Z4wY@nongnu.org
+X-Gm-Message-State: AOJu0YwFYHeK7Tkl0GPQGqnQAyhAW7E/cSTa2CMis6fQjLhXoKiumWjm
+ kwY+6KWiZgIbJ5ZqpqEd0Uvjrfq/TGo/4Dji1xPf67BZ3Z+TynZFKFsTrO03L6opxK0sfs0XCWq
+ j9fFdKZ3iHXohG4+hiyxQvosIvavLS6U9h77cRw==
+X-Google-Smtp-Source: AGHT+IEamTRTBFUYUPwoPO/y8uvrMHHHCn1vQce02s3kL2+4o8ZsJySjmMeebBXJ8+OdinIj1idZT0Nueb+RVh9Fe1Q=
+X-Received: by 2002:a2e:4601:0:b0:2fb:599a:a900 with SMTP id
+ 38308e7fff4ca-2fb82ea506cmr15566441fa.15.1729265118561; Fri, 18 Oct 2024
+ 08:25:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015131735.518771-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241017143211.17771-1-farosas@suse.de>
+ <20241017143211.17771-5-farosas@suse.de>
+ <ZxEl4zYgHLoLeHCT@redhat.com> <87r08e3d74.fsf@suse.de>
+ <ZxIj694WqXwwMRIY@redhat.com>
+In-Reply-To: <ZxIj694WqXwwMRIY@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 18 Oct 2024 16:25:07 +0100
+Message-ID: <CAFEAcA9eFApeeLBQvFC8zPNo+Ovk5woA5HKzaQ5j3=hd-G4smw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] ci: Add check-migration-quick to the clang job
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Peter Xu <peterx@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,23 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 15, 2024 at 03:17:20PM +0200, Paolo Bonzini wrote:
-> Date: Tue, 15 Oct 2024 15:17:20 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 02/16] meson: remove repeated search for rust_root_crate.sh
-> X-Mailer: git-send-email 2.46.2
-> 
-> Avoid repeated lines of the form
-> 
-> Program scripts/rust/rust_root_crate.sh found: YES (/home/pbonzini/work/upstream/qemu/scripts/rust/rust_root_crate.sh)
-> 
-> in the meson logs.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  meson.build | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+T24gRnJpLCAxOCBPY3QgMjAyNCBhdCAxMDowMSwgRGFuaWVsIFAuIEJlcnJhbmfDqSA8YmVycmFu
+Z2VAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IFRlc3QgcmVsaWFiaWxpdHkgaXMgYSBkaWZmZXJlbnQg
+dGhpbmcuIElmIGEgcGFydGljdWxhciB0ZXN0IGlzDQo+IGZsYWt5LCBpdCBuZWVkcyB0byBlaXRo
+ZXIgYmUgZml4ZWQgb3IgZGlzYWJsZWQuIFNwbGl0dGluZyBpbnRvDQo+IGEgZmFzdCAmIHNsb3cg
+Z3JvdXBpbmcgZG9lc24ndCBhZGRyZXNzIHJlbGlhYmlsaXR5LCBqdXN0IGhpZGVzDQo+IHRoZSBw
+cm9ibGVtIGZyb20gdmlldy4NCg0KT24gdGhlIHN1YmplY3Qgb2YgJ2ZsYWt5JywgaGVyZSdzIGFu
+b3RoZXIgbG93LXJlcGVhdGFiaWxpdHkNCmludGVybWl0dGVudCB3aXRoIG1pZ3JhdGlvbi10ZXN0
+IHRoYXQgSSBqdXN0IHJhbiBpbnRvIGluDQonbWFrZSB2bS1idWlsZC1vcGVuYnNkJzoNCg0K4pa2
+ICA5Ny85MTYgL3BwYzY0L21pZ3JhdGlvbi9tdWx0aWZkL3RjcC9wbGFpbi9jYW5jZWwNCiAgICAg
+ICAgICAgT0sNCuKWtiAgOTYvOTE2IC9pMzg2L21pZ3JhdGlvbi9wcmVjb3B5L3RjcC90bHMveDUw
+OS9hbGxvdy1hbm9uLWNsaWVudA0KICAgICAgICAgICBPSw0K4pa2ICA5Ny85MTYgL3BwYzY0L21p
+Z3JhdGlvbi9tdWx0aWZkL3RjcC9wbGFpbi96bGliIC0NCkVSUk9SOi4uL3NyYy90ZXN0cy9xdGVz
+dC9taWdyYXRpb24taGVscGVycy5jOjMyMjpjaGVja19taWdyYXRpb25fc3RhdHVzOg0KYXNzZXJ0
+aW9uIGZhaWxlZCAoY3VycmVudF9zdGF0dXMgIT0gImZhaWxlZCIpOiAoImZhaWxlZCIgIT0gImZh
+aWxlZCIpDQpGQUlMDQrilrYgIDk3LzkxNg0KICAgICAgICAgICBFUlJPUg0K4pa2ICA5NS85MTYg
+L2FhcmNoNjQvbWlncmF0aW9uL211bHRpZmQvdGNwL2NoYW5uZWxzL3BsYWluL25vbmUNCiAgICAg
+ICAgICAgT0sNCiA5Ny85MTYgcWVtdTpxdGVzdCtxdGVzdC1wcGM2NCAvIHF0ZXN0LXBwYzY0L21p
+Z3JhdGlvbi10ZXN0DQogICAgICAgICAgIEVSUk9SICAgICAgICAgIDEzNC4zOHMgICBraWxsZWQg
+Ynkgc2lnbmFsIDYgU0lHQUJSVA0K4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCVIOKcgCAg4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCVDQpzdGRlcnI6DQp3YXJuaW5nOiBmZDogbWlncmF0aW9uIHRv
+IGEgZmlsZSBpcyBkZXByZWNhdGVkLiBVc2UgZmlsZTogaW5zdGVhZC4NCndhcm5pbmc6IGZkOiBt
+aWdyYXRpb24gdG8gYSBmaWxlIGlzIGRlcHJlY2F0ZWQuIFVzZSBmaWxlOiBpbnN0ZWFkLg0KKioN
+CkVSUk9SOi4uL3NyYy90ZXN0cy9xdGVzdC9taWdyYXRpb24taGVscGVycy5jOjMyMjpjaGVja19t
+aWdyYXRpb25fc3RhdHVzOg0KYXNzZXJ0aW9uIGZhaWxlZCAoY3VycmVudF9zdGF0dXMgIT0gImZh
+aWxlZCIpOiAoImZhaWxlZCIgIT0gImZhaWxlZCIpDQpxZW11LXN5c3RlbS1wcGM2NDogRmFpbGVk
+IHRvIGNvbm5lY3QgdG8gJzEyNy4wLjAuMToyNDEwOSc6IEFkZHJlc3MNCmFscmVhZHkgaW4gdXNl
+DQpxZW11LXN5c3RlbS1wcGM2NDogRmFpbGVkIHRvIHBlZWsgYXQgY2hhbm5lbA0KDQoodGVzdCBw
+cm9ncmFtIGV4aXRlZCB3aXRoIHN0YXR1cyBjb2RlIC02KQ0K4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV
+4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCV4oCVDQoNClByb2JhYmx5IGh0
+dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvQ0FGRUFjQThwOUJLQ3JuOUVmRlhUcEhF
+KzV3LV84emh0RV81MlNwWkx1Uy0renBGNUdnQG1haWwuZ21haWwuY29tLw0KDQppbiBhIHNsaWdo
+dGx5IGRpZmZlcmVudCBmb3JtLg0KDQp0aGFua3MNCi0tIFBNTQ0K
 
