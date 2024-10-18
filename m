@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4839A40DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB139A40E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 16:15:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1njZ-0000wa-UU; Fri, 18 Oct 2024 10:13:41 -0400
+	id 1t1nja-0000wy-7D; Fri, 18 Oct 2024 10:13:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1njW-0000uq-J0
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:38 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1t1njX-0000vU-Pb
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:39 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1njU-0006wh-Lz
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:38 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-37d473c4bb6so1925871f8f.3
+ id 1t1njV-0006x7-8B
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 10:13:39 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-37d4ba20075so1626595f8f.0
  for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 07:13:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729260815; x=1729865615; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729260816; x=1729865616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g2lDYVfRW2UdAzAzqSSVMXHFzpJAZtFQKbpf5EclSHE=;
- b=BJ3ynSViRwHs9nEmcdKADyhvByDQZfKy9hLulIBrH0qD0YEtqbc4C4x5rdqapD1ihh
- a8iqVSJ0LFB37cMB3C87Dw6GIJIv0WziaPvhB/AF8pkOKYb3CkSP3DnjUZ9Cv9Y25Jqx
- uXjtPVhk0man+mz8Df70W2U5ZiZteM7OWzdCwG8wS4fZ4eOU57MsGUJY6B/QhvXKM+G8
- OL77HmYTLDcX8HoqOUJFokpgifcHqOCALuscBiZeyoxvhtlbVXcuuqyTHdJDRFrvYUKz
- F+9MRqjU55+krJaYtkHJqy7DpRi/wu1fuD9hu1WSB3MP2jy9+8ykSws4Nnr8v6pVDBhl
- 5QRg==
+ bh=Gtbif3E88e+6/TwfMyavJ5V/o1ksnebzcTF5I6GLPpQ=;
+ b=Cuw3XJLYjawlZIRLk1fjtDO8bEIQUb8Nc7mMtnJBwfWddIkpswqrgY6mkAxwRZwjle
+ Q9oebyK5hkciDWvY/IujKu9beJGLSTnqUnPHFi0NIBsg6Kq4y88VDmKMRPGVG4Ra7Qus
+ ZGmGhpZZCFXnlwqkeE3nCY9UxsM+rPA6z84bwLFsJrRXYIl0vy3WtuJGUYbQNc9/9G4U
+ cMShIb+KV9BS+sMNZtl7dFC28UKh7GceKS8ysPvOmkhBNsEaGATWxytRHz+6zKo40Ryh
+ tMtIEGd6S6RTGwgo/cE9GoaP5MqZPlaPW9WNIghJdYgib6T9zmcARgmzQcQsYL0xgIPJ
+ E3+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729260815; x=1729865615;
+ d=1e100.net; s=20230601; t=1729260816; x=1729865616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g2lDYVfRW2UdAzAzqSSVMXHFzpJAZtFQKbpf5EclSHE=;
- b=l95yAoSNAoy9OThLYV4PjdcCWJu+Lz8ga4WWG6Oyaod4LObUmZNeCpHJ1hyWFiJQdM
- LbPv6VLRMMGGOiyCy9su1BCBYXsXObkoQFchoW3vnv9aemi6zQgXuZvB+W42an13DJPu
- jDulwJmmekgjXLJOLZvN1Bqud7JG8rgIUQTXOEEQqgV+ow0QI3MvdntiEXXsOscYS20w
- ZGQuQ+Zq3SiXfZAWVzLdazJ7CbcWE3W84Zvbik7cCza9Z9c26nt7j18e2nQhERo7bqoX
- mh+VPARfNodwRbqUopaL6jUDHz45yNIsQ2Clxyz7orR2rfqlzEeyqeJWVM7cMMkheSFP
- er3Q==
+ bh=Gtbif3E88e+6/TwfMyavJ5V/o1ksnebzcTF5I6GLPpQ=;
+ b=pQZHn9yZal0g0HiCuENkFAUC3NVxDtoFG7W4RTt49YuwXs5WsoKdJ9usWIta4eknDy
+ NCdzrzf8qQRja9QEUFhd1zQ72/GWXZMK00m15v41HnXdO3RDGCzqg2CsOJAU6hfdVFC5
+ lSDfkHtRbyqWncKXGP9qcc6ZGCxjaJVgjEkqk5ihG3ZAMBjOi3Jra3/JirNW1NavXqt4
+ uwEn90llqmw+0hK8iJhxGfu/SefuKwtTVUsaBJ81+HF14aym8pSh8b+I7OxSOMUKzsS2
+ 92zGya0sqA01/CxSg1kyOXk8e/4h5G337B0flg/hW84aBoKlGBMTM9BDHS1QYS4slWXa
+ yUrQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUoKJCsqTZbFYd3zVe0Oba5gPJI4GGhtm17y3Gw8Rzlx4pnSG7oSoMjHH04rWD6HchvScTYg94vgl4q@nongnu.org
-X-Gm-Message-State: AOJu0Yx6xUKoUDYH7TOkqV4TF8Y4roBlhBQq9YmjC0JO5oDNSIW+zaaX
- caY4d5b0mVzIS5rEBA0a+CovR2WkBIYDaXwf1iI5fNZjBUkoH7oW0IMfZEPbeGw=
-X-Google-Smtp-Source: AGHT+IHh+9BITtOsB3WacxP8YgdH8C2te8mHYrrqdN2oUlyuxXQYQv5L2XHaLfZNQhYo5D/P2DsAfQ==
-X-Received: by 2002:adf:eac8:0:b0:37d:397a:5a05 with SMTP id
- ffacd0b85a97d-37eb485ed73mr2364472f8f.54.1729260814993; 
- Fri, 18 Oct 2024 07:13:34 -0700 (PDT)
+ AJvYcCXDRSB/k24z9Q3l1Xgy41A8lFxN2b+faw8F668ufrET840vUV4rTw+F+34GWwXD/sjDhvl9LeWmsQTH@nongnu.org
+X-Gm-Message-State: AOJu0YzP89dvQBPpJ7lNYyxoS+jwl8SkW59pjcv8dH5I8CnRnfUIZbv6
+ bRUIp7YQlYsE1cn1bQiA498X57RQ9bR5oCLuG/9lMeYJOag1527Dj/ZNsrYo7m8=
+X-Google-Smtp-Source: AGHT+IEp+yNVBYg3tGX4pdAvqXy3w7NIVwZmWbVHONAoL1AVUK9Xb0IcINT7gaGzECaX+G4AFBD7WA==
+X-Received: by 2002:adf:f587:0:b0:37d:4afe:8c98 with SMTP id
+ ffacd0b85a97d-37ea219836emr2093995f8f.26.1729260815779; 
+ Fri, 18 Oct 2024 07:13:35 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37ecf0ecd89sm2040086f8f.78.2024.10.18.07.13.34
+ ffacd0b85a97d-37ecf0ecd89sm2040086f8f.78.2024.10.18.07.13.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2024 07:13:34 -0700 (PDT)
+ Fri, 18 Oct 2024 07:13:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -68,17 +68,16 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Alistair Francis <alistair@alistair23.me>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 1/7] docs/system/arm/stm32: List olimex-stm32-h405 in document
- title
-Date: Fri, 18 Oct 2024 15:13:26 +0100
-Message-Id: <20241018141332.942844-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/7] docs/system/arm: Don't use wildcard '*-bmc' in doc titles
+Date: Fri, 18 Oct 2024 15:13:27 +0100
+Message-Id: <20241018141332.942844-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241018141332.942844-1-peter.maydell@linaro.org>
 References: <20241018141332.942844-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,26 +100,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-List the olimex-stm32-h405 board in the document title, so that the
-board name appears in the table of contents in system/target-arm.rst.
+We have two Arm board doc files which both use '*-bmc' in their
+documentation title. The result is that when you read the
+table of contents in system/target-arm.html you don't know
+which boards are covered by which file.
+
+Expand out the board names entirely in the document titles.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/stm32.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/system/arm/aspeed.rst  | 4 ++--
+ docs/system/arm/nuvoton.rst | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
-index ca7a55841b4..511e3eb9ac1 100644
---- a/docs/system/arm/stm32.rst
-+++ b/docs/system/arm/stm32.rst
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index 6733ffd2b94..968ba88b997 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
 @@ -1,5 +1,5 @@
--STMicroelectronics STM32 boards (``netduino2``, ``netduinoplus2``, ``stm32vldiscovery``)
--========================================================================================
-+STMicroelectronics STM32 boards (``netduino2``, ``netduinoplus2``, ``olimex-stm32-h405``, ``stm32vldiscovery``)
-+===============================================================================================================
+-Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``)
+-===================================================================================
++Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``tiogapass-bmc``, ``tacoma-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
++========================================================================================================================================================================================================================================================================================================================================================================================================
  
- The `STM32`_ chips are a family of 32-bit ARM-based microcontroller by
- STMicroelectronics.
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
+ Aspeed evaluation boards. They are based on different releases of the
+diff --git a/docs/system/arm/nuvoton.rst b/docs/system/arm/nuvoton.rst
+index 0424cae4b01..05059378e55 100644
+--- a/docs/system/arm/nuvoton.rst
++++ b/docs/system/arm/nuvoton.rst
+@@ -1,5 +1,5 @@
+-Nuvoton iBMC boards (``*-bmc``, ``npcm750-evb``, ``quanta-gsj``)
+-================================================================
++Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``)
++=====================================================================================================
+ 
+ The `Nuvoton iBMC`_ chips (NPCM7xx) are a family of ARM-based SoCs that are
+ designed to be used as Baseboard Management Controllers (BMCs) in various
 -- 
 2.34.1
 
