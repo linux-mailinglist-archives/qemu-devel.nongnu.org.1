@@ -2,39 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3559A43A3
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E919A43B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1piQ-0000KX-3Q; Fri, 18 Oct 2024 12:20:38 -0400
+	id 1t1ple-0001sy-OF; Fri, 18 Oct 2024 12:23:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1piK-0000Hs-Sa; Fri, 18 Oct 2024 12:20:33 -0400
+ id 1t1plc-0001sa-IF; Fri, 18 Oct 2024 12:23:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t1piJ-0005Or-4I; Fri, 18 Oct 2024 12:20:32 -0400
+ id 1t1pla-0005VT-Qi; Fri, 18 Oct 2024 12:23:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5498499D38;
- Fri, 18 Oct 2024 19:20:05 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3FF4699D3D;
+ Fri, 18 Oct 2024 19:23:29 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2B32C1578AB;
- Fri, 18 Oct 2024 19:20:28 +0300 (MSK)
-Message-ID: <9d9d75df-af78-4476-9154-516878c43168@tls.msk.ru>
-Date: Fri, 18 Oct 2024 19:20:28 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 183621578AC;
+ Fri, 18 Oct 2024 19:23:52 +0300 (MSK)
+Message-ID: <a3462080-f37d-45c9-a220-d3475b25997f@tls.msk.ru>
+Date: Fri, 18 Oct 2024 19:23:52 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ui/console-vc: Silence warning about sprintf() on
- OpenBSD
-To: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Brad Smith <brad@comstyle.com>, qemu-trivial@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20241015112510.412471-1-thuth@redhat.com>
+Subject: Re: [PATCH] tests: Wait for migration completion on destination QEMU
+ to avoid failures
+To: Stefan Berger <stefanb@linux.ibm.com>, qemu-stable@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
+ marcandre.lureau@redhat.com, Fabiano Rosas <farosas@suse.de>
+References: <20241016152159.1168722-1-stefanb@linux.ibm.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -61,7 +58,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20241015112510.412471-1-thuth@redhat.com>
+In-Reply-To: <20241016152159.1168722-1-stefanb@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -87,18 +84,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.10.2024 14:25, Thomas Huth wrote:
-> The linker on OpenBSD complains:
+16.10.2024 18:21, Stefan Berger wrote:
+> Rather than waiting for the completion of migration on the source side,
+> wait for it on the destination QEMU side to avoid accessing the TPM TIS
+> memory mapped registers before QEMU could restore their state. This
+> error condition could be triggered on busy systems where the destination
+> QEMU did not have enough time to restore the TIS state while the test case
+> was already reading its registers. The test case was for example reading
+> the STS register and received an unexpected value (0xffffffff), which
+> lead to a segmentation fault later on due to trying to read 0xffff bytes
+> from the TIS into a buffer.
 > 
->   ld: warning: console-vc.c:824 (../src/ui/console-vc.c:824)([...]):
->   warning: sprintf() is often misused, please use snprintf()
-> 
-> Using g_strdup_printf() is certainly better here, so let's switch
-> to that function instead.
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Queued for qemu-trivial, thanks!
+Queued for qemu-stable, though this one might better be applied through
+the test tree.
+
+Thanks,
 
 /mjt
 
