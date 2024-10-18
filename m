@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C829A42A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E6F9A42A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1p3o-0001K7-Hw; Fri, 18 Oct 2024 11:38:40 -0400
+	id 1t1p4S-0001mi-1H; Fri, 18 Oct 2024 11:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1p3n-0001Jx-6c
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:38:39 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t1p3l-0000Tq-6q
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:38:38 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5c903f5bd0eso3851859a12.3
- for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 08:38:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729265915; x=1729870715; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=22e+AwVFs/2jb6cCc5l+7cN5yNe3vbM4QSll7c09c2M=;
- b=gnbfBBRG2rWqcXYARhMZXR3PT3hMZif3oimJGvFL9w7fhbiLOt/FXO0VnVhg1uLlsF
- 9NBfTmyU6dUUEWz2P/NmRzoG1Vjr5KrQtJUHaQ3J7NFl4XaNRdeRBs8NfWEDLE8fT4vh
- AswdshM4Tb3VfjrLQvwQpg11VrppLahF4B5NyvmuN5eUM2u6ulJL+EC0TCg+pAG4vV10
- 4gHHMkcnySxnPBfToAPF4p6VMrcVTiefR2//S4pDGPAH/lue2P8988ruNfTSWe8yAax1
- IbapSa3SS1ilKb2H2xRdNpJRzcaWgLB27lUr1+zY61rodyHF6AdrkYAZIWyVM0sw6idb
- Z4Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729265915; x=1729870715;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=22e+AwVFs/2jb6cCc5l+7cN5yNe3vbM4QSll7c09c2M=;
- b=jD4RPHFMGvd7xI+gPlczEIOzeo7PbGLL2esNOGZxl8wAvKiYxRFViGQ5EBapbrDTkJ
- 5l2nb0FxoAyB7HBs1BKOK6BK1bd5z2tKYKwyzwSSdxMn7fPhf385IAjcM++EsBIteQIJ
- 9U+ZfoZn3hi9HBFKIpMlhjZ2mAbb/chQ29/D0dyGADUyu3RdAZaKAYo2imnBhYLghk62
- 0H2gwr9nL4OQJldeF9gnIS2Ml0s0v8SG5YTuBsAuUnHj6warEMSw9DIiZwa2/mIyYsdH
- ITLXRv+f0hgY9AAHcimVDjKzPZr5gXdknSNMQgLLtlo3NOOsUKkAim30slRmi3WhJM2F
- AQ9Q==
-X-Gm-Message-State: AOJu0YxrrAY8F/lv5yIXcxR5n/zoJO4ibabZqo9Ik1LfeV0hALq/dpOV
- 0rvkwiDrFioBXnXJa+9GM0hAa0yy0r0x0fv0cMl6uAsgHLccgvakJREVrfUqyrmPPCF7BgvxEWE
- ZP3ojR+6xnr2w8HTYHOMuNcEr5uUF2vJaf/H6rQ==
-X-Google-Smtp-Source: AGHT+IHJFN7n/M+4xw87/t+z7MunTJ2de4TdTSnlcE3bDkWF4gTkAmp5S84vh1t+R8lEp3Sbb5ShXGJA//5ldTGc2sE=
-X-Received: by 2002:a05:6402:2187:b0:5ca:efb:b87d with SMTP id
- 4fb4d7f45d1cf-5ca0efbb8c5mr635284a12.15.1729265915138; Fri, 18 Oct 2024
- 08:38:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t1p4H-0001kB-Nu; Fri, 18 Oct 2024 11:39:10 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t1p4F-0000UJ-DG; Fri, 18 Oct 2024 11:39:09 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 28ABF99D09;
+ Fri, 18 Oct 2024 18:38:31 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E46D815787A;
+ Fri, 18 Oct 2024 18:38:53 +0300 (MSK)
+Message-ID: <52cc6540-b1ff-495e-9b98-98f13ecbf380@tls.msk.ru>
+Date: Fri, 18 Oct 2024 18:38:53 +0300
 MIME-Version: 1.0
-References: <20241010173929.3910466-1-tavip@google.com>
-In-Reply-To: <20241010173929.3910466-1-tavip@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 18 Oct 2024 16:38:24 +0100
-Message-ID: <CAFEAcA9X1bdtxRL9fm_rnw9ezMZSW6HaURfMsA4aLMSHM4fzdw@mail.gmail.com>
-Subject: Re: [RFC PATCH] cli: add connect-gpios option
-To: Octavian Purdila <tavip@google.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com, 
- eduardo@habkost.net, armbru@redhat.com, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] KVM: Dynamic sized kvm memslots array
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Prasad Pandit <ppandit@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>, qemu-stable <qemu-stable@nongnu.org>,
+ Zhiyi Guo <zhguo@redhat.com>
+References: <20240917163835.194664-1-peterx@redhat.com>
+ <20240917163835.194664-2-peterx@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240917163835.194664-2-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,45 +87,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Oct 2024 at 18:39, Octavian Purdila <tavip@google.com> wrote:
->
-> From: Valentin Ghita <valentinghita@google.com>
->
-> Add option to allow for connecting device GPIOs. This is useful when
-> adding a peripheral device from the command line which uses an
-> interrupt.
->
-> It takes the following options:
->
-> * in-dev-path, out-dev-path - required, the device canonical object
->   path (e.g. /machine/peripheral-anon/device[0],
->   /machine/iotkit/cluster0/armv7m0) for the devices that should have
->   their in <-> out GPIOs connected
->
-> * in-gpio-name, out-gpio-name - optional, the name of the GPIO list;
->   if not specified, the unnamed GPIO list is used
->
-> * in-gpio-index, out-gpio-index - optional, the index in the GPIO list
->   that identifies the GPIO to be used; if not specified 0 (the first
->   GPIO in the list) is used
->
-> Usage example:
->
->  # add the tmp105 sensor and connects its irq line to the CPU
->  qemu-system-arm \
->   --machine mps2-an505 \
->   --device tmp105,bus=/versatile_i2c/i2c,address=0x50 \
->   --connect-gpios out-dev-path=/machine/peripheral-anon/device[0],\
->     in-dev-path=/machine/iotkit/cluster0/armv7m0,in-gpio-index=100
+17.09.2024 19:38, Peter Xu wrote:
+> Zhiyi reported an infinite loop issue in VFIO use case.  The cause of that
+> was a separate discussion, however during that I found a regression of
+> dirty sync slowness when profiling.
+> 
+> Each KVMMemoryListerner maintains an array of kvm memslots.  Currently it's
+> statically allocated to be the max supported by the kernel.  However after
+> Linux commit 4fc096a99e ("KVM: Raise the maximum number of user memslots"),
+> the max supported memslots reported now grows to some number large enough
+> so that it may not be wise to always statically allocate with the max
+> reported.
+> 
+> What's worse, QEMU kvm code still walks all the allocated memslots entries
+> to do any form of lookups.  It can drastically slow down all memslot
+> operations because each of such loop can run over 32K times on the new
+> kernels.
+> 
+> Fix this issue by making the memslots to be allocated dynamically.
+> 
+> Here the initial size was set to 16 because it should cover the basic VM
+> usages, so that the hope is the majority VM use case may not even need to
+> grow at all (e.g. if one starts a VM with ./qemu-system-x86_64 by default
+> it'll consume 9 memslots), however not too large to waste memory.
+> 
+> There can also be even better way to address this, but so far this is the
+> simplest and should be already better even than before we grow the max
+> supported memslots.  For example, in the case of above issue when VFIO was
+> attached on a 32GB system, there are only ~10 memslots used.  So it could
+> be good enough as of now.
+> 
+> In the above VFIO context, measurement shows that the precopy dirty sync
+> shrinked from ~86ms to ~3ms after this patch applied.  It should also apply
+> to any KVM enabled VM even without VFIO.
+> 
+> NOTE: we don't have a FIXES tag for this patch because there's no real
+> commit that regressed this in QEMU. Such behavior existed for a long time,
+> but only start to be a problem when the kernel reports very large
+> nr_slots_max value.  However that's pretty common now (the kernel change
+> was merged in 2021) so we attached cc:stable because we'll want this change
+> to be backported to stable branches.
 
+Looking at this from qemu-stable PoV, I'm not 100% sure this change is good
+for stable-7.2 series, because 7.2 lacks v8.1.0-1571-g5b23186a95
+"kvm: Return number of free memslots" commit, which was a preparation for
+for memory devices that consume multiple memslots.
 
-This seems to be moving down the path towards "create and
-wire up machines on the command line". We shouldn't
-be doing that ad-hoc with one small commandline option
-at a time, we should be doing it with a coherent plan.
+I did a backport of this change (currently it is at the tip of staging-7.2
+branch of https://gitlab.com/mjt0k/qemu.git) - I had to tweak context and
+also to remove now-unused local variable in kvm-all.c.  It builds and the
+tests run fine, but I'm not really sure it does what it is intended to do.
 
-I think Philippe will know the current intentions in this area.
+Should anything else be picked up for 7.2 for all this to work, or should
+this change not be back-ported to 7.2 ?
 
-thanks
--- PMM
+(for more recent releases, everything looks ok).
+
+Thanks,
+
+/mjt
 
