@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256B49A3A6E
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335CE9A3A75
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 11:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1ja7-0004W4-Oo; Fri, 18 Oct 2024 05:47:40 -0400
+	id 1t1jcY-0007Yq-F3; Fri, 18 Oct 2024 05:50:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jZs-0004Ee-Mw
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:47:29 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ id 1t1jcW-0007Yf-FY
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:50:08 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1jZo-0002Gm-W5
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:47:23 -0400
+ id 1t1jcU-0002be-DN
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 05:50:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729244841; x=1760780841;
+ t=1729245007; x=1760781007;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=lclmjK45nWxt0K+/Vbjlnjdf1hQySwko9SYfQHQvIUw=;
- b=Dz7loAl0R0k7pbnSkmHx+P5axdXrAKhDa/XLQKgS0KW+Yr0fHf+kINhb
- QnRh8is1cqUt5knJGHaH7jqwHw80/M68XmmzaemPOTYHqg5exU8FOdnNB
- 6U9cFGzXvvlnAVZIflk2JLOFlluJfEchJXfw3SuZXBfIG9rujCJhBfBQ/
- OSo8+4787Qy2ATXjTPH1D4E7pn1kZIrprlvRfLLKGSluqtWvUZGBr+rTf
- paM8NGAtO0ehd2E45xxkJv5X7M+vTq3tJX7Lxyr/wK3+HXiEcH4r69Elo
- BZ9UfBSpXQ/kCioIDCL+Xxdx68XYxhfa3tPnJoyiPPgn39R031kHKHnFA Q==;
-X-CSE-ConnectionGUID: D4RBY+YfQpm4XzvE0tMiQw==
-X-CSE-MsgGUID: oCxF7bcOQmCMRyxxlkvjqQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28873121"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28873121"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 02:47:20 -0700
-X-CSE-ConnectionGUID: NdvanZI3RxiKcdey1QSHLQ==
-X-CSE-MsgGUID: JN66zPkoR9eybdb+FUqRGQ==
+ bh=keBIetwaVJRonVGv7gyfRe5rqOyEaYKmb91WiBZqkoQ=;
+ b=mkxbwu5/ay6G0qo6DVJmpmM/WHA41mznMtEKfMmCnHhRtEkY4iy0K2Xi
+ 4OPtSgMdqgN1DQIPh1H65DrL3bE5fgExPQ7b22WmVvIeL/6X9JM3GKVMj
+ eW1h4nlPEr6MFIYpCR4eOP+b9EnFw6kwPyVQ7l/4z2jZ9sC9LEEsd5dSA
+ VsTxH6AIJ8kx1djDeWVvHcIdSh0C+RbjPHNDnWx5pqJIYFmBOMxEHz+LX
+ JYpG7efFKkS0wC33bGwh6GE877TBG/Ipd9k9TmaubWnBKP/YzlbafUUX6
+ GwW0nEoY1g6CirU+1fA0wopgctzhVhXQGyiK7HsYTiJI2DjloV+gQGaih g==;
+X-CSE-ConnectionGUID: IgGFCnQdQu20vXNtDVE81A==
+X-CSE-MsgGUID: qgIvJI89SmmHmqgOLqmWkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28922218"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28922218"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2024 02:50:04 -0700
+X-CSE-ConnectionGUID: DIRbAyDWQRCetzyRJIMh4g==
+X-CSE-MsgGUID: jl7Wk/iwRpCr+7yKZFhEew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="83459071"
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; d="scan'208";a="78778000"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 18 Oct 2024 02:47:18 -0700
-Date: Fri, 18 Oct 2024 18:03:33 +0800
+ by orviesa010.jf.intel.com with ESMTP; 18 Oct 2024 02:50:03 -0700
+Date: Fri, 18 Oct 2024 18:06:18 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 22/31] stubs: adapt to new import path for qobject
+Subject: Re: [PATCH v2 23/31] system: adapt to new import path for qobject
  data type headers
-Message-ID: <ZxIydfyJ0Lm5qqSc@intel.com>
+Message-ID: <ZxIzGtYb6nsk38A5@intel.com>
 References: <20241017113344.883424-1-berrange@redhat.com>
- <20241017113344.883424-23-berrange@redhat.com>
+ <20241017113344.883424-24-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241017113344.883424-23-berrange@redhat.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241017113344.883424-24-berrange@redhat.com>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -83,10 +83,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 12:33:34PM +0100, Daniel P. Berrangé wrote:
-> Date: Thu, 17 Oct 2024 12:33:34 +0100
+Hi Daniel,
+
+On Thu, Oct 17, 2024 at 12:33:35PM +0100, Daniel P. Berrangé wrote:
+> Date: Thu, 17 Oct 2024 12:33:35 +0100
 > From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: [PATCH v2 22/31] stubs: adapt to new import path for qobject data
+> Subject: [PATCH v2 23/31] system: adapt to new import path for qobject data
 >  type headers
 > 
 > The qobject data type headers have moved from qapi/qmp/ to
@@ -94,11 +96,31 @@ On Thu, Oct 17, 2024 at 12:33:34PM +0100, Daniel P. Berrangé wrote:
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->  stubs/qmp-command-available.c | 2 +-
->  stubs/qmp-quit.c              | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  system/device_tree.c       | 2 +-
+>  system/dirtylimit.c        | 2 +-
+>  system/qdev-monitor.c      | 6 +++---
+>  system/rtc.c               | 1 +
+>  system/runstate-hmp-cmds.c | 2 +-
+>  system/vl.c                | 6 +++---
+>  6 files changed, 10 insertions(+), 9 deletions(-)
 > 
+> diff --git a/system/rtc.c b/system/rtc.c
+> index 216d2aee3a..e3bc2095f9 100644
+> --- a/system/rtc.c
+> +++ b/system/rtc.c
+> @@ -25,6 +25,7 @@
+>  #include "qemu/osdep.h"
+>  #include "qemu/cutils.h"
+>  #include "qapi/error.h"
+> +#include "qapi/qmp/qerror.h"
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Is this a typo?
+
+>  #include "qemu/error-report.h"
+>  #include "qemu/option.h"
+>  #include "qemu/timer.h"
+
+Regards,
+Zhao
 
 
