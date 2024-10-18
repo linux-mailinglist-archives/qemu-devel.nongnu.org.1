@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA309A42A3
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 17:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0669A432C
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:05:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1p4K-0001ip-RP; Fri, 18 Oct 2024 11:39:12 -0400
+	id 1t1pRs-0006TR-3a; Fri, 18 Oct 2024 12:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1p4D-0001ad-MQ
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:39:05 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t1pQX-0005c3-CU
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:02:09 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t1p49-0000UT-QY
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 11:39:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729265942; x=1760801942;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=GwmZO2yTE0HlvRQDKxXlG0S/PHmepUUMltt+SvxZdOg=;
- b=GUHUqJpWe4XDd11EKaUZKOxlN8rUIGLu1OR/XMXL8mGsBdgeW/B/+sd1
- UZQeJXd33qPNuaNGRpYtBwMcflM0Oldc9oCgd5xQZKEjF4FFoX9vakj9q
- pHDuh614sT0JEjgpCfdlFPyWtg9eAh6HXpho8VPTgKxAJ4/y+hYbk+xGp
- VmrZmqmIODd8Kwef2eUj9TzyxJE9xr262KE3FCiFRMd2466FuDWb1WSoo
- qifE4M23TKDar24umrqOtJ3yf6IUfE4JaYenPyjOsDi2lrbKoRPucqwWU
- DJ1jbEjU4vV7Rx+yjOP0sjdDDbITd5OcmmmUDvHI+KAknA0XX36yvH1Xs A==;
-X-CSE-ConnectionGUID: JvIEIgDPSVOsoUOqZyOc6A==
-X-CSE-MsgGUID: pNRk9Rd8Sc6CYGWxIuIavA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39345699"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="39345699"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 08:39:00 -0700
-X-CSE-ConnectionGUID: HVFmqqryQZKqucqd7brDVg==
-X-CSE-MsgGUID: rNLgTtW+QxeUHBkQq5lfwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; d="scan'208";a="79243723"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 18 Oct 2024 08:38:58 -0700
-Date: Fri, 18 Oct 2024 23:55:14 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/16] rust: patch bilge-impl to allow compilation with
- 1.63.0
-Message-ID: <ZxKE4iRE0TA4P5Ja@intel.com>
-References: <20241015131735.518771-1-pbonzini@redhat.com>
- <20241015131735.518771-5-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t1pQU-0002qo-0W
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:02:08 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 6234B99D2A;
+ Fri, 18 Oct 2024 19:01:37 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 36108157894;
+ Fri, 18 Oct 2024 19:02:00 +0300 (MSK)
+Message-ID: <806baf9d-5549-4298-99e7-f50fdf69f99d@tls.msk.ru>
+Date: Fri, 18 Oct 2024 19:02:00 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015131735.518771-5-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] target/i386/tcg: Use DPL-level accesses for
+ interrupts and call gates
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: rrh.henry@gmail.com, richard.henderson@linaro.org
+References: <20240710062920.73063-1-pbonzini@redhat.com>
+ <20240710062920.73063-8-pbonzini@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240710062920.73063-8-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,26 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 15, 2024 at 03:17:22PM +0200, Paolo Bonzini wrote:
-> Date: Tue, 15 Oct 2024 15:17:22 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 04/16] rust: patch bilge-impl to allow compilation with
->  1.63.0
-> X-Mailer: git-send-email 2.46.2
+10.07.2024 09:29, Paolo Bonzini wrote:
+> This fixes a bug wherein i386/tcg assumed an interrupt return using
+> the CALL or JMP instructions were always going from kernel or user mode to
+> kernel mode, when using a call gate. This assumption is violated if
+> the call gate has a DPL that is greater than 0.
 > 
-> Apply a patch that removes "let ... else" constructs, replacing them with
-> "if let ... else" or "let ... = match ...".  "let ... else" was stabilized in
-> Rust 1.65.0.
+> In addition, the stack accesses should count as explicit, not implicit
+> ("kernel" in QEMU code), so that SMAP is not applied if DPL=3.
 > 
+> Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  .gitattributes                                |  2 +
->  subprojects/bilge-impl-0.2-rs.wrap            |  1 +
->  .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
->  3 files changed, 48 insertions(+)
->  create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
-> 
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+This sounds like qemu-stable material, is it not?
 
+It can be picked up for 9.1.x, but for 9.0 and before it needs a few
+other changes in this area, like v9.0.0-2238-g8053862af9 "target/i386/tcg:
+Compute MMU index once" and v9.0.0-2236-g059368bcf5 "target/i386/tcg:
+Reorg push/pop within seg_helper.c", or it needs a proper backport.
+
+What do you think?
+
+Thanks,
+
+/mjt
 
