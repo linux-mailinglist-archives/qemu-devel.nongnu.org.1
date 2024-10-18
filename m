@@ -2,80 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC8B9A4369
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FFF9A439F
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 18:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1pbS-0003nm-Kh; Fri, 18 Oct 2024 12:13:27 -0400
+	id 1t1phL-000892-3e; Fri, 18 Oct 2024 12:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbP-0003ly-No
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:23 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1t1pbK-0004P2-KQ
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:13:22 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7b1467af9dbso154627885a.0
- for <qemu-devel@nongnu.org>; Fri, 18 Oct 2024 09:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gourry.net; s=google; t=1729267997; x=1729872797; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Yg1P4kmuxtDkOe9Icy7EtGIDk1BBaBntSPvV2yBw5Vg=;
- b=P8YUQt0osLg50ZMDdyYJozJeqJdyGW6KWVuW8kUu4mmLYx6WPrbCeX+VRnZuv0yHHB
- kY39/7caafGJ+lMsbZ3TvZsGYgFYomdlpei0syt0e2PHGSeSz5/rFLqMfW7g3QPh5i2r
- i6TWZ4w4BwQovt+HOEvHY7Bus8kSVHthhm18t32tWfFyxdxCBcn/ZzOOSVDuG4Vu/JLU
- +5l0TOK6k3jTTQMF96Wjvt5TFMG9e9OTSlYR7b3SfkvdGDoBU5BEd8aQ0NDXX1QrdOQ4
- xVtgtSR4bSV3QSPvAujRz0piF3+W4rE+u+ZCD6cJDpmAzHHvB4hXHc21++R98wYwMjNV
- qCeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729267997; x=1729872797;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Yg1P4kmuxtDkOe9Icy7EtGIDk1BBaBntSPvV2yBw5Vg=;
- b=BL/ox9MfhLkLUtosD7qPYe1EhlG2ApiMOOjKdXvHbJRf0C08tXtsrZy4ifJN+ww45F
- Lu4vQCJKeWLY5VUU/DPPssWD7KBdYp6d5sl+IdKIuVnNsx8SmBavEfZcEHSdUabR0VMr
- UFH8rve7YuB2sfS1TpI63MOCQn3arrEslfWY00mguv8N4Zkhe+8jz3IDHNQHEYK+zZw5
- ajv3uSx+1CaBV9kgutSKPBt6SmRm+ioelhj/v7Tpg3Q8Trzbf7i2fwLYA8yQsFMiin8w
- LL65eKx20gONR1nb/sR/WuITTWJWEaM1dF4LOnmq97TBaLCztcVSbQFzuyrAf2jsHKC2
- NzwQ==
-X-Gm-Message-State: AOJu0YwfMeKsR5miskUHoQ8I16GNo+AWrSABxmLgE2na1wj+mGOlGgni
- sqWH6yZAIYNNNYRrsz00Aef2WnG6FnMKBg5s/3/AKSQOWic7xOY8uMsOzHu59pM=
-X-Google-Smtp-Source: AGHT+IGikF7stO1WCXDYt/0EcUOjzFHMh+z2T+w/8SlImKWFClQj57CqBtAj2rgWTq3cnNRp87CkTA==
-X-Received: by 2002:a05:620a:4007:b0:7ac:c359:f132 with SMTP id
- af79cd13be357-7b157b72801mr259516085a.26.1729267996520; 
- Fri, 18 Oct 2024 09:13:16 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com
- (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b156fa55cfsm81677385a.67.2024.10.18.09.13.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2024 09:13:16 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-cxl@vger.kernel.org
-Cc: qemu-devel@nongnu.org, svetly.todorov@memverge.com,
- jonathan.cameron@huawei.com, nifan.cxl@gmail.com
-Subject: [PATCH RFC v3 3/3] mhsld: implement MHSLD device
-Date: Fri, 18 Oct 2024 12:12:52 -0400
-Message-ID: <20241018161252.8896-4-gourry@gourry.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241018161252.8896-1-gourry@gourry.net>
-References: <20241018161252.8896-1-gourry@gourry.net>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1t1phI-00088X-EK
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:19:28 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1t1phF-00059F-7Y
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 12:19:28 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XVVHq2Cs8z67fBs;
+ Sat, 19 Oct 2024 00:18:31 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id B4695140680;
+ Sat, 19 Oct 2024 00:19:14 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 18 Oct
+ 2024 18:19:14 +0200
+Date: Fri, 18 Oct 2024 17:19:12 +0100
+To: Alejandro Lucero Palau <alucerop@amd.com>
+CC: Zhi Wang <zhiw@nvidia.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
+ <clg@redhat.com>, Ira Weiny <ira.weiny@intel.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, Dave Jiang <dave.jiang@intel.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Alex Williamson
+ <alex.williamson@redhat.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>
+Subject: Re: [PATCH RFC 0/5] hw/cxl: Type 2 Device RFC
+Message-ID: <20241018171912.00001e44@Huawei.com>
+In-Reply-To: <29528327-90d0-5aa7-d756-0a88a396d6f6@amd.com>
+References: <20230517-rfc-type2-dev-v1-0-6eb2e470981b@intel.com>
+ <5827f6e5-6de9-4ec1-83eb-b2e552092498@redhat.com>
+ <4085e18e-65bb-4b0e-bb72-f05e69996cbc@nvidia.com>
+ <29528327-90d0-5aa7-d756-0a88a396d6f6@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=gourry@gourry.net; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,655 +72,175 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Svetly Todorov <svetly.todorov@memverge.com>
+On Fri, 18 Oct 2024 16:25:58 +0100
+Alejandro Lucero Palau <alucerop@amd.com> wrote:
 
-Using a shared-memory bytemap, validates that DC adds, releases,
-and reclamations happen on extents belonging to the appropriate
-host.
+> On 10/18/24 15:49, Zhi Wang wrote:
+> > On 17/10/2024 19.57, C=E9dric Le Goater wrote: =20
+> >> External email: Use caution opening links or attachments
+> >>
+> >>
+> >> Hello,
+> >>
+> >> On 5/18/23 04:45, Ira Weiny wrote: =20
+> >>> Type 2 devices are not yet a reality.=A0 Developing core kernel suppo=
+rt
+> >>> is difficult without some test device to model against.
+> >>>
+> >>> Define a type 2 device 'cxl-accel'.=A0 This device is derived from the
+> >>> type 3 device and retains all that functionality for now.
+> >>>
+> >>> Mock up a couple of accelerator features (Back Invalidate [BI] and
+> >>> Unordered IO [UIO]) as examples for the RFC.=A0 These have no
+> >>> functionality other than to report the features as present for softwa=
+re
+> >>> to key off of.
+> >>>
+> >>> Defining these devices in qemu can be done with the following example:
+> >>>
+> >>> ...
+> >>>  =A0=A0 -device
+> >>> cxl-accel,bus=3Dsw0p0,volatile-memdev=3Dcxl-ac-mem5,id=3Dcxl-dev5,sn=
+=3D0xCAFE0005
+> >>> ...
+> >>>
+> >>> NOTE: I'm leaving off Michael Tsirkin for now because this is really
+> >>> rough and I'm mainly sending it out because it was talked about in the
+> >>> CXL community call on 5/16.
+> >>>
+> >>> Not-Yet-Signed-off-by: Ira Weiny <ira.weiny@intel.com> =20
+> >>
+> >> A recent proposal to add support in VFIO for CXL passthrough uses
+> >> this emulated device and a sample driver for a proof of concept.
+> >> For this effort, it would be very useful to have a QEMU model for
+> >> a CXL type2 device, even partially implemented.
+> >>
+> >> I haven't found any updates of this series. What are the plans for
+> >> upstream today ?
+> >> =20
+> > I was discussing this with Ira and Jonathan in the LPC and CXL discord
+> > groups. (Irq and Jonathan, please feel free to correct me) I think we
+> > all thought that having the emulated device support in QEMU and a sample
+> > CXL type-2 driver in the upstream kernel could be valuable for
+> >
+> > 1) people who wish to contribute and propose changes, like refactor, and
+> > code tweaks related to CXL type-2 support in the kernel. They can
+> > validate their patches to check if they break something without a CXL
+> > type-2 device.
+> >
+> > 2) people who wish to contribute on solving problems of CXL type-2
+> > generic code, e.g. loading sequences of modules... They can get involved
+> > without a real HW.
+> >
+> > My gut feeling is I can start to work with folks to get it into the
+> > mainline together with the sample driver when CXL type-2 support is
+> > merged. So people can play with it. =20
+>=20
+>=20
+> I did use an emulated Type2 device for my initial development and I'm=20
+> still using it for wider testing. It is basically same than the Type3=20
+> with small changes. I think a proper solution should include command=20
+> line options for configuring the device with flexibility or maybe=20
+> referring to a file with that specific configuration. Note there exist=20
+> optional functionalities like HDM decoder, and CXL.cache will need such=20
+> a flexibility as well.
 
-The MHSLD device inherits from the CXL_TYPE3 class and adds the following
-configuration options:
---mhd-head=<u32>
---mhd-state_file=<str>
---mhd-init=<bool>
+In the first instance, I'd just make up a single reasonable configuration.
+Later, it may make sense to make it flexible.
 
---mhd-head specifies the head ID of the host on the given device.
 
---mhd-state_file is the name of the shared-memory-backed file used
-to store the MHD state.
+>=20
+> The RFC contains the driver for such emulated device implemented inside=20
+> the tools/testing/cxl directory, although it has changed since then, but=
+=20
+> happy to share it. It is almost equal to the code inside efx_cxl.c along=
+=20
+> with the functions/macros for defining the driver.
+>=20
+> FWIW, although I'm working on Type2 support, I really think qemu could=20
+> help for development and testing complex CXL infrastructures, more for=20
+> memory expanders aka Type3 than Type2. I know this requires a good=20
+> effort but IMO, it will pay off.
 
---mhd-init indicates whether this QEMU instance should initialize
-the state_file; if so, the instance will create the file if it does
-not exist, ftruncate it to the appropriate size, and initialize its
-header. It is assumed that the --mhd-init instance is run and allowed
-to completely finish configuration before any other guests access the
-shared state.
+I'm definitely not against adding support and Zhi's rough sketch sounds
+about right.
 
-The shared state file only needs to be intialized once. Even if a guest
-dies without clearing the ownership bits associated with its head-ID,
-future guests with that ID will clear those bits in cxl_mhsld_realize(),
-regardless of whether mhd_init is true or false.
-
-The following command line options create an MHSLD with 4GB of
-backing memory, whose state is tracked in /dev/shm/mhd_metadata.
---mhd-init=true tells this instance to initialize the state as
-described above.
-
-./qemu-system_x86-64 \
-[... other options ...] \
--device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
--device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
--object memory-backend-ram,id=mem0,size=4G \
--device cxl-mhsld,bus=rp0,num-dc-regions=1,volatile-dc-memdev=mem0,id=cxl-mem0,sn=66667,mhd-head=0,mhd-state_file=mhd_metadata,mhd-init=true \
--M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=4G \
--qmp unix:/tmp/qmp-sock-1,server,nowait
-
-Once this guest completes setup, other guests looking to access the
-device can be booted with the same configuration options, but with
---mhd-head != 0,
---mhd-init=false,
-and a different QMP socket.
-
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Svetly Todorov <svetly.todorov@memverge.com>
----
- hw/cxl/Kconfig           |   1 +
- hw/cxl/meson.build       |   1 +
- hw/cxl/mhsld/Kconfig     |   4 +
- hw/cxl/mhsld/meson.build |   3 +
- hw/cxl/mhsld/mhsld.c     | 456 +++++++++++++++++++++++++++++++++++++++
- hw/cxl/mhsld/mhsld.h     |  75 +++++++
- 6 files changed, 540 insertions(+)
- create mode 100644 hw/cxl/mhsld/Kconfig
- create mode 100644 hw/cxl/mhsld/meson.build
- create mode 100644 hw/cxl/mhsld/mhsld.c
- create mode 100644 hw/cxl/mhsld/mhsld.h
-
-diff --git a/hw/cxl/Kconfig b/hw/cxl/Kconfig
-index e603839a62..919e59b598 100644
---- a/hw/cxl/Kconfig
-+++ b/hw/cxl/Kconfig
-@@ -1,3 +1,4 @@
-+source mhsld/Kconfig
- source vendor/Kconfig
- 
- config CXL
-diff --git a/hw/cxl/meson.build b/hw/cxl/meson.build
-index e8c8c1355a..394750dd19 100644
---- a/hw/cxl/meson.build
-+++ b/hw/cxl/meson.build
-@@ -16,4 +16,5 @@ system_ss.add(when: 'CONFIG_I2C_MCTP_CXL', if_true: files('i2c_mctp_cxl.c'))
- 
- system_ss.add(when: 'CONFIG_ALL', if_true: files('cxl-host-stubs.c'))
- 
-+subdir('mhsld')
- subdir('vendor')
-diff --git a/hw/cxl/mhsld/Kconfig b/hw/cxl/mhsld/Kconfig
-new file mode 100644
-index 0000000000..dc2be15140
---- /dev/null
-+++ b/hw/cxl/mhsld/Kconfig
-@@ -0,0 +1,4 @@
-+config CXL_MHSLD
-+    bool
-+    depends on CXL_MEM_DEVICE
-+    default y
-diff --git a/hw/cxl/mhsld/meson.build b/hw/cxl/mhsld/meson.build
-new file mode 100644
-index 0000000000..c595558f8a
---- /dev/null
-+++ b/hw/cxl/mhsld/meson.build
-@@ -0,0 +1,3 @@
-+if host_os == 'linux'
-+	system_ss.add(when: 'CONFIG_CXL_MHSLD', if_true: files('mhsld.c',))
-+endif
-diff --git a/hw/cxl/mhsld/mhsld.c b/hw/cxl/mhsld/mhsld.c
-new file mode 100644
-index 0000000000..2a3023607e
---- /dev/null
-+++ b/hw/cxl/mhsld/mhsld.c
-@@ -0,0 +1,456 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Copyright (c) 2024 MemVerge Inc.
-+ *
-+ */
-+
-+#include <sys/file.h>
-+#include "qemu/osdep.h"
-+#include "qemu/bitmap.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
-+#include "qapi/error.h"
-+#include "hw/cxl/cxl.h"
-+#include "hw/cxl/cxl_mailbox.h"
-+#include "hw/cxl/cxl_device.h"
-+#include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_port.h"
-+#include "hw/qdev-properties.h"
-+#include "sysemu/hostmem.h"
-+#include "mhsld.h"
-+
-+#define TYPE_CXL_MHSLD "cxl-mhsld"
-+OBJECT_DECLARE_TYPE(CXLMHSLDState, CXLMHSLDClass, CXL_MHSLD)
-+
-+/*
-+ * CXL r3.0 section 7.6.7.5.1 - Get Multi-Headed Info (Opcode 5500h)
-+ *
-+ * This command retrieves the number of heads, number of supported LDs,
-+ * and Head-to-LD mapping of a Multi-Headed device.
-+ */
-+static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
-+                                   uint8_t *payload_in, size_t len_in,
-+                                   uint8_t *payload_out, size_t *len_out,
-+                                   CXLCCI * cci)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(cci->d);
-+    MHDGetInfoInput *input = (void *)payload_in;
-+    MHDGetInfoOutput *output = (void *)payload_out;
-+
-+    uint8_t start_ld = input->start_ld;
-+    uint8_t ldmap_len = input->ldmap_len;
-+    uint8_t i;
-+
-+    if (start_ld >= s->mhd_state->nr_lds) {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+
-+    output->nr_lds = s->mhd_state->nr_lds;
-+    output->nr_heads = s->mhd_state->nr_heads;
-+    output->resv1 = 0;
-+    output->start_ld = start_ld;
-+    output->resv2 = 0;
-+
-+    for (i = 0; i < ldmap_len && (start_ld + i) < output->nr_lds; i++) {
-+        output->ldmap[i] = s->mhd_state->ldmap[start_ld + i];
-+    }
-+    output->ldmap_len = i;
-+
-+    *len_out = sizeof(*output) + output->ldmap_len;
-+    return CXL_MBOX_SUCCESS;
-+}
-+
-+static const struct cxl_cmd cxl_cmd_set_mhsld[256][256] = {
-+    [MHSLD_MHD][GET_MHD_INFO] = {"GET_MULTI_HEADED_INFO",
-+        cmd_mhd_get_info, 2, 0},
-+};
-+
-+static Property cxl_mhsld_props[] = {
-+    DEFINE_PROP_UINT32("mhd-head", CXLMHSLDState, mhd_head, ~(0)),
-+    DEFINE_PROP_STRING("mhd-state_file", CXLMHSLDState, mhd_state_file),
-+    DEFINE_PROP_BOOL("mhd-init", CXLMHSLDState, mhd_init, false),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static int cxl_mhsld_state_open(const char *filename, int flags)
-+{
-+    char name[128];
-+    snprintf(name, sizeof(name), "/%s", filename);
-+    return shm_open(name, flags, 0666);
-+}
-+
-+static int cxl_mhsld_state_unlink(const char *filename)
-+{
-+    char name[128];
-+    snprintf(name, sizeof(name), "/%s", filename);
-+    return shm_unlink(name);
-+}
-+
-+static int cxl_mhsld_state_create(const char *filename, size_t size)
-+{
-+    int fd, rc;
-+
-+    fd = cxl_mhsld_state_open(filename, O_RDWR | O_CREAT);
-+    if (fd == -1) {
-+        return -1;
-+    }
-+
-+    rc = ftruncate(fd, size);
-+
-+    if (rc) {
-+        close(fd);
-+        return -1;
-+    }
-+
-+    return fd;
-+}
-+
-+static bool cxl_mhsld_state_set(CXLMHSLDState *s, size_t block_start,
-+                                size_t block_count)
-+{
-+    uint8_t prev, val, *block;
-+    size_t i;
-+
-+    val = (1 << s->mhd_head);
-+
-+    /*
-+     * Try to claim all extents from start -> start + count;
-+     * break early if a claimed extent is encountered
-+     */
-+    for (i = 0; i < block_count; ++i) {
-+        block = &s->mhd_state->blocks[block_start + i];
-+        prev = __sync_val_compare_and_swap(block, 0, val);
-+        if (prev != 0) {
-+            break;
-+        }
-+    }
-+
-+    if (prev == 0) {
-+        return true;
-+    }
-+
-+    /* Roll back incomplete claims */
-+    for (;; --i) {
-+        block = &s->mhd_state->blocks[block_start + i];
-+        __sync_fetch_and_and(block, ~(1u << s->mhd_head));
-+        if (i == 0) {
-+            break;
-+        }
-+    }
-+
-+    return false;
-+}
-+
-+static void cxl_mhsld_state_clear(CXLMHSLDState *s, size_t block_start,
-+                                  size_t block_count)
-+{
-+    size_t i;
-+    uint8_t *block;
-+
-+    for (i = 0; i < block_count; ++i) {
-+        block = &s->mhd_state->blocks[block_start + i];
-+        __sync_fetch_and_and(block, ~(1u << s->mhd_head));
-+    }
-+}
-+
-+static void cxl_mhsld_state_initialize(CXLMHSLDState *s, size_t dc_size)
-+{
-+    if (!s->mhd_init) {
-+        cxl_mhsld_state_clear(s, 0, dc_size / MHSLD_BLOCK_SZ);
-+        return;
-+    }
-+
-+    memset(s->mhd_state, 0, s->mhd_state_size);
-+    s->mhd_state->nr_heads = MHSLD_HEADS;
-+    s->mhd_state->nr_lds = MHSLD_HEADS;
-+    s->mhd_state->nr_blocks = dc_size / MHSLD_BLOCK_SZ;
-+}
-+
-+/* Returns starting index of region in MHD map. */
-+static inline size_t cxl_mhsld_find_dc_region_start(PCIDevice *d,
-+                                                    CXLDCRegion *r)
-+{
-+    CXLType3Dev *dcd = CXL_TYPE3(d);
-+    size_t start = 0;
-+    uint8_t rid;
-+
-+    for (rid = 0; rid < dcd->dc.num_regions; ++rid) {
-+        if (&dcd->dc.regions[rid] == r) {
-+            break;
-+        }
-+        start += dcd->dc.regions[rid].len / dcd->dc.regions[rid].block_size;
-+    }
-+
-+    return start;
-+}
-+
-+static MHSLDSharedState *cxl_mhsld_state_map(CXLMHSLDState *s)
-+{
-+    void *map;
-+    size_t size = s->mhd_state_size;
-+    int fd = s->mhd_state_fd;
-+
-+    if (fd < 0) {
-+        return NULL;
-+    }
-+
-+    map = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+    if (map == MAP_FAILED) {
-+        return NULL;
-+    }
-+
-+    return (MHSLDSharedState *)map;
-+}
-+
-+/*
-+ * Triggered during an add_capacity command to a CXL device:
-+ * takes a list of extent records and preallocates them,
-+ * in anticipation of a "dcd accept" response from the host.
-+ *
-+ * Extents that are not accepted by the host will be rolled
-+ * back later.
-+ */
-+static bool cxl_mhsld_reserve_extents(PCIDevice *d,
-+                                      CxlDynamicCapacityExtentList *records,
-+                                      uint8_t rid)
-+{
-+    uint64_t len, dpa;
-+    bool rc;
-+
-+    CXLMHSLDState *s = CXL_MHSLD(d);
-+    CxlDynamicCapacityExtentList *list = records, *rollback = NULL;
-+
-+    CXLType3Dev *ct3d = CXL_TYPE3(d);
-+    CXLDCRegion *region = &ct3d->dc.regions[rid];
-+
-+    for (; list; list = list->next) {
-+        len = list->value->len / MHSLD_BLOCK_SZ;
-+        dpa = (list->value->offset + region->base) / MHSLD_BLOCK_SZ;
-+
-+        rc = cxl_mhsld_state_set(s, dpa, len);
-+
-+        if (!rc) {
-+            rollback = records;
-+            break;
-+        }
-+    }
-+
-+    /* Setting the mhd state failed. Roll back the extents that were added */
-+    for (; rollback; rollback = rollback->next) {
-+        len = rollback->value->len / MHSLD_BLOCK_SZ;
-+        dpa = (list->value->offset + region->base) / MHSLD_BLOCK_SZ;
-+
-+        cxl_mhsld_state_clear(s, dpa, len);
-+
-+        if (rollback == list) {
-+            return false;
-+        }
-+    }
-+
-+    return true;
-+}
-+
-+static bool cxl_mhsld_reclaim_extents(PCIDevice *d,
-+                                      CXLDCExtentGroupList *ext_groups,
-+                                      CXLUpdateDCExtentListInPl *in)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(d);
-+    CXLType3Dev *ct3d = CXL_TYPE3(d);
-+    CXLDCExtentGroup *ext_group = QTAILQ_FIRST(ext_groups);
-+    CXLDCExtent *ent;
-+    CXLDCRegion *region;
-+    g_autofree unsigned long *blk_bitmap = NULL;
-+    uint64_t dpa, off, len, size, i;
-+
-+    /* Get the DCD region via the first requested extent */
-+    ent = QTAILQ_FIRST(&ext_group->list);
-+    dpa = ent->start_dpa;
-+    len = ent->len;
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    size = region->len / MHSLD_BLOCK_SZ;
-+    blk_bitmap = bitmap_new(size);
-+
-+    /* Set all requested extents to 1 in a bitmap */
-+    QTAILQ_FOREACH(ent, &ext_group->list, node) {
-+        off = ent->start_dpa - region->base;
-+        len = ent->len;
-+        bitmap_set(blk_bitmap, off / MHSLD_BLOCK_SZ, len / MHSLD_BLOCK_SZ);
-+    }
-+
-+    /* Clear bits associated with accepted extents */
-+    for (i = 0; i < in->num_entries_updated; i++) {
-+        off = in->updated_entries[i].start_dpa - region->base;
-+        len = in->updated_entries[i].len;
-+        bitmap_clear(blk_bitmap, off / MHSLD_BLOCK_SZ, len / MHSLD_BLOCK_SZ);
-+    }
-+
-+    /*
-+     * Reclaim only the extents that belong to unaccepted extents,
-+     * i.e. those whose bits are still raised in blk_bitmap
-+     */
-+    for (off = find_first_bit(blk_bitmap, size); off < size;) {
-+        len = find_next_zero_bit(blk_bitmap, size, off) - off;
-+        cxl_mhsld_state_clear(s, off, len);
-+        off = find_next_bit(blk_bitmap, size, off + len);
-+    }
-+
-+    return true;
-+}
-+
-+static bool cxl_mhsld_release_extent(PCIDevice *d, uint64_t dpa, uint64_t len)
-+{
-+    cxl_mhsld_state_clear(CXL_MHSLD(d), dpa / MHSLD_BLOCK_SZ,
-+        len / MHSLD_BLOCK_SZ);
-+    return true;
-+}
-+
-+static bool cxl_mhsld_access_valid(PCIDevice *d, uint64_t addr,
-+                                   unsigned int size)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(d);
-+    CXLMHSLDState *s = CXL_MHSLD(d);
-+    CXLDCRegion *r = cxl_find_dc_region(ct3d, addr, size);
-+    size_t i;
-+
-+    addr = addr / r->block_size;
-+    size = size / r->block_size;
-+
-+    for (i = 0; i < size; ++i) {
-+        if (s->mhd_state->blocks[addr + i] != (1 << s->mhd_head)) {
-+            return false;
-+        }
-+    }
-+
-+    return true;
-+}
-+
-+static void cxl_mhsld_realize(PCIDevice *pci_dev, Error **errp)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(pci_dev);
-+    MemoryRegion *mr;
-+    int fd = -1;
-+    size_t dc_size;
-+
-+    ct3_realize(pci_dev, errp);
-+
-+    /* Get number of blocks from dcd size */
-+    mr = host_memory_backend_get_memory(s->ct3d.dc.host_dc);
-+    if (!mr) {
-+        return;
-+    }
-+    dc_size = memory_region_size(mr);
-+    if (!dc_size) {
-+        error_setg(errp, "MHSLD does not have dynamic capacity to manage");
-+        return;
-+    }
-+
-+    s->mhd_state_size = (dc_size / MHSLD_BLOCK_SZ) + sizeof(MHSLDSharedState);
-+
-+    /* Sanity check the head idx */
-+    if (s->mhd_head >= MHSLD_HEADS) {
-+        error_setg(errp, "MHD Head ID must be between 0-7");
-+        return;
-+    }
-+
-+    /* Create the state file if this is the 'mhd_init' instance */
-+    if (s->mhd_init) {
-+        fd = cxl_mhsld_state_create(s->mhd_state_file, s->mhd_state_size);
-+    } else {
-+        fd = cxl_mhsld_state_open(s->mhd_state_file, O_RDWR);
-+    }
-+
-+    if (fd < 0) {
-+        error_setg(errp, "failed to open mhsld state errno %d", errno);
-+        return;
-+    }
-+
-+    s->mhd_state_fd = fd;
-+
-+    /* Map the state and initialize it as needed */
-+    s->mhd_state = cxl_mhsld_state_map(s);
-+    if (!s->mhd_state) {
-+        error_setg(errp, "Failed to mmap mhd state file");
-+        close(fd);
-+        cxl_mhsld_state_unlink(s->mhd_state_file);
-+        return;
-+    }
-+
-+    cxl_mhsld_state_initialize(s, dc_size);
-+
-+    /* Set the LD ownership for this head to this system */
-+    s->mhd_state->ldmap[s->mhd_head] = s->mhd_head;
-+    return;
-+}
-+
-+
-+static void cxl_mhsld_exit(PCIDevice *pci_dev)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(pci_dev);
-+
-+    ct3_exit(pci_dev);
-+
-+    if (s->mhd_state_fd) {
-+        munmap(s->mhd_state, s->mhd_state_size);
-+        close(s->mhd_state_fd);
-+        cxl_mhsld_state_unlink(s->mhd_state_file);
-+        s->mhd_state = NULL;
-+    }
-+}
-+
-+static void cxl_mhsld_reset(DeviceState *d)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(d);
-+
-+    ct3d_reset(d);
-+    cxl_add_cci_commands(&s->ct3d.cci, cxl_cmd_set_mhsld, 512);
-+
-+    cxl_mhsld_state_clear(s, 0, s->mhd_state->nr_blocks);
-+}
-+
-+/*
-+ * Example: DCD-add events need to validate that the requested extent
-+ *          does not already have a mapping (or, if it does, it is
-+ *          a shared extent with the right tagging).
-+ *
-+ * Since this operates on the shared state, we will need to serialize
-+ * these callbacks across QEMU instances via a mutex in shared state.
-+ */
-+
-+static void cxl_mhsld_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
-+
-+    pc->realize = cxl_mhsld_realize;
-+    pc->exit = cxl_mhsld_exit;
-+    device_class_set_legacy_reset(dc, cxl_mhsld_reset);
-+    device_class_set_props(dc, cxl_mhsld_props);
-+
-+    CXLType3Class *cvc = CXL_TYPE3_CLASS(klass);
-+    cvc->mhd_get_info = cmd_mhd_get_info;
-+    cvc->mhd_access_valid = cxl_mhsld_access_valid;
-+    cvc->mhd_reserve_extents = cxl_mhsld_reserve_extents;
-+    cvc->mhd_reclaim_extents = cxl_mhsld_reclaim_extents;
-+    cvc->mhd_release_extent = cxl_mhsld_release_extent;
-+}
-+
-+static const TypeInfo cxl_mhsld_info = {
-+    .name = TYPE_CXL_MHSLD,
-+    .parent = TYPE_CXL_TYPE3,
-+    .class_size = sizeof(struct CXLMHSLDClass),
-+    .class_init = cxl_mhsld_class_init,
-+    .instance_size = sizeof(CXLMHSLDState),
-+    .interfaces = (InterfaceInfo[]) {
-+        { INTERFACE_CXL_DEVICE },
-+        { INTERFACE_PCIE_DEVICE },
-+        {}
-+    },
-+};
-+
-+static void cxl_mhsld_register_types(void)
-+{
-+    type_register_static(&cxl_mhsld_info);
-+}
-+
-+type_init(cxl_mhsld_register_types)
-diff --git a/hw/cxl/mhsld/mhsld.h b/hw/cxl/mhsld/mhsld.h
-new file mode 100644
-index 0000000000..e7ead1f0d2
---- /dev/null
-+++ b/hw/cxl/mhsld/mhsld.h
-@@ -0,0 +1,75 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Copyright (c) 2024 MemVerge Inc.
-+ *
-+ */
-+
-+#ifndef CXL_MHSLD_H
-+#define CXL_MHSLD_H
-+#include <stdint.h>
-+#include "hw/cxl/cxl.h"
-+#include "hw/cxl/cxl_mailbox.h"
-+#include "hw/cxl/cxl_device.h"
-+#include "qemu/units.h"
-+
-+#define MHSLD_BLOCK_SZ (2 * MiB)
-+
-+/*
-+ * We limit the number of heads to prevent the shared state
-+ * region from becoming a major memory hog.  We need 512MB of
-+ * memory space to track 8-host ownership of 4GB of memory in
-+ * blocks of 2MB.  This can change if the block size is increased.
-+ */
-+#define MHSLD_HEADS  (8)
-+
-+/*
-+ * The shared state cannot have 2 variable sized regions
-+ * so we have to max out the ldmap.
-+ */
-+typedef struct MHSLDSharedState {
-+    uint8_t nr_heads;
-+    uint8_t nr_lds;
-+    uint8_t ldmap[MHSLD_HEADS];
-+    uint64_t nr_blocks;
-+    uint8_t blocks[];
-+} MHSLDSharedState;
-+
-+struct CXLMHSLDState {
-+    CXLType3Dev ct3d;
-+    bool mhd_init;
-+    char *mhd_state_file;
-+    int mhd_state_fd;
-+    size_t mhd_state_size;
-+    uint32_t mhd_head;
-+    MHSLDSharedState *mhd_state;
-+};
-+
-+struct CXLMHSLDClass {
-+    CXLType3Class parent_class;
-+};
-+
-+enum {
-+    MHSLD_MHD = 0x55,
-+        #define GET_MHD_INFO 0x0
-+};
-+
-+/*
-+ * MHD Get Info Command
-+ * Returns information the LD's associated with this head
-+ */
-+typedef struct MHDGetInfoInput {
-+    uint8_t start_ld;
-+    uint8_t ldmap_len;
-+} QEMU_PACKED MHDGetInfoInput;
-+
-+typedef struct MHDGetInfoOutput {
-+    uint8_t nr_lds;
-+    uint8_t nr_heads;
-+    uint16_t resv1;
-+    uint8_t start_ld;
-+    uint8_t ldmap_len;
-+    uint16_t resv2;
-+    uint8_t ldmap[];
-+} QEMU_PACKED MHDGetInfoOutput;
-+#endif
--- 
-2.43.0
+>=20
+> > 3) people who would like to try on vfio-cxl.
+> >
+> > What would be nice to include in the patchset V1 in my mind:
+> >
+> > (Ira and Jonathan and folks please feel free to comment)
+> >
+> > Must have:
+> >    - HDM decoder support (>1 HDM decoder). (which I have done it in my
+> > tree, so the CXL core can create a CXL region)
+> >
+> > Nice to have:
+> >    - CXLType2 device system reset handler. As what mentioned in my cover
+> > letter, a system reset handler is required to reset the device state.
+> > Linux kernel CXL core assumes the HW is pre-configured by FW if it sees
+> > CXL.mem is enabled when enumerating the device. So I have to kill QEMU
+> > instead of resetting the virtual machine when debugging.
+> >
+> >    - CXLType2 device in the patch should be derived from PCIDevice
+> > (current it is derived from the CXLType3 device, which carries quite
+> > some unnecessary stuff to present to the guest)
+> >
+> >    - Refactor of the current QEMU FWMS code to deliver the guest access
+> > to the virtual memory backend to the correct emulated CXL device (which
+> > is currently hardcoded to connect to cxl-type3 device in QEMU. Without
+> > this, the access to the CXL region from the guest seems problematic but
+> > creating CXL region is still fine.)
+> >
+> > Thanks,
+> > Zhi.
+> > =20
+> >> For vfio-cxl, see :
+> >>
+> >> * [RFC] vfio: introduce vfio-cxl to support CXL type-2 accelerator
+> >> passthrough
+> >>   =A0 https://lore.kernel.org/kvm/20240920223446.1908673-1-zhiw@nvidia=
+.com
+> >> * [RFC] Introduce vfio-cxl to support CXL type-2 device passthrough
+> >>   =A0 https://lore.kernel.org/all/20240921071440.1915876-1-zhiw@nvidia=
+.com/
+> >>
+> >>
+> >> Thanks,
+> >>
+> >> C.
+> >>
+> >>
+> >> =20
+> >>> ---
+> >>> Ira Weiny (5):
+> >>>  =A0=A0=A0=A0=A0=A0 hw/cxl: Use define for build bug detection
+> >>>  =A0=A0=A0=A0=A0=A0 hw/cxl: Refactor component register initialization
+> >>>  =A0=A0=A0=A0=A0=A0 hw/cxl: Derive a CXL accelerator device from Type=
+-3
+> >>>  =A0=A0=A0=A0=A0=A0 hw/cxl/accel: Add Back-Invalidate decoder capbili=
+ty structure
+> >>>  =A0=A0=A0=A0=A0=A0 hw/cxl: Add UIO HDM decoder register fields
+> >>>
+> >>>  =A0 docs/system/devices/cxl.rst=A0=A0=A0 | 11 ++++++
+> >>>  =A0 hw/cxl/cxl-component-utils.c=A0=A0 | 80
+> >>> +++++++++++++++++++-----------------------
+> >>>  =A0 hw/mem/cxl_type3.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 | 39 ++++=
+++++++++++++++++
+> >>>  =A0 include/hw/cxl/cxl_component.h | 51 +++++++++++++++++++--------
+> >>>  =A0 include/hw/cxl/cxl_device.h=A0=A0=A0 | 16 +++++++++
+> >>>  =A0 include/hw/pci/pci_ids.h=A0=A0=A0=A0=A0=A0 |=A0 1 +
+> >>>  =A0 6 files changed, 141 insertions(+), 57 deletions(-)
+> >>> ---
+> >>> base-commit: 8eb2a03258313f404ca0c8609a8f9009b9b4318c
+> >>> change-id: 20230517-rfc-type2-dev-c2d661a29d96
+> >>>
+> >>> Best regards, =20
 
 
