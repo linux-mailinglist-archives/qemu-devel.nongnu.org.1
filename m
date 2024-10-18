@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0D89A32E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 04:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFA09A329B
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 04:22:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1clw-0002mj-O3; Thu, 17 Oct 2024 22:31:24 -0400
+	id 1t1cbP-0008Tt-Dz; Thu, 17 Oct 2024 22:20:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t1clu-0002mQ-My
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 22:31:22 -0400
-Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t1cls-00067C-ST
- for qemu-devel@nongnu.org; Thu, 17 Oct 2024 22:31:22 -0400
-Received: by mail-vk1-xa2f.google.com with SMTP id
- 71dfb90a1353d-50d431b0ae2so1520499e0c.1
- for <qemu-devel@nongnu.org>; Thu, 17 Oct 2024 19:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729218679; x=1729823479; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+lm2c4vZTjn9mKSDBxE+rQj3vIsDk0dYb/iEZdDHVDM=;
- b=RglQnNRBPtCdxq9Pv8p+d8ZslDju69jwgGtns16vT2tKcoLfZQZssp3aHUh1lP5W+M
- 3PeWhpTdVOKKBsYcFkMeIDe5nL/rQ1n2sJtUa89oes+qVDyjdvC18Jl/Lq2vd0EjAdhg
- nuR9tSePfeF0cwB0xJkNFgbzTi4SmuaMLuxre7je/QAmwfi51LubfZfkbJZYYgMezYCQ
- VGX5+wyIhSo2vZDK/8px3vq3hyXNQYv5WqYk7uyCOBaTesXDmlrvveLs/zVw8IcKe2Wd
- xRA1hJAygiEZTPrzY65lHBg/UuwL4SELzhIoLNUq2WtIyBJcXVrIL1PqEaRFTIKkdjtI
- K6XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729218679; x=1729823479;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+lm2c4vZTjn9mKSDBxE+rQj3vIsDk0dYb/iEZdDHVDM=;
- b=QtoQP4/zpbdbgMw41bJrLDsxCvWh4FkLyQRJBCiqGIQNmdee5jf2BzZ6bPwl9FB0de
- U2BHkEzsqrhTRKQ2kcdlBYODr9NeJ+CTjoTyyy6DbRx0C1tIE1FeTJ2GQR+Btcu9KRBU
- 7FWY7v4sXEurjfezkxIUo0uIds7OdXBnN4RG8OWMGw5mb4wwToA4ZWCKQ8OFLVmYigIl
- Bnr4fpNuZN4WgAWtiSiM1D22gSXh4GT/fc7SA7CsFH1/sqhOlc3PdY8OOzso7djThjIg
- /RLrSdJ/rtKsHb2hRhYRmh7rjk3QfyJkYWGchE4fFC5OI578Fnx3qJJwtaPeDxKon2VE
- iI4A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXqdDU4S0u2DZCw3kCKULNSHtN9Tb0nYuvayIbBYMhkgzeQd3/eA7GfFSzj123OinsIZ/BpwbAd+t3B@nongnu.org
-X-Gm-Message-State: AOJu0YyjyZOz6Tt5QaNm/RZEjnzUujrky3RDmngSi2kKv6rNa5k4NK1v
- i/I+MGWOsqSK7SoQOldIlSNvMGG+mSkxg0jsMQEQMiWVDLR/65Ph2XdRcveyKZ7NdQM5sKiUvrl
- wr6Q0o2MMbUTsO+FwjQdwjlYozQw=
-X-Google-Smtp-Source: AGHT+IEHSWeEHxWNA9GZ1Wei9EspFwXICGROlbsyeyGgLov3SrIA+NPWq2qu8SlMuHPHrD9lD624C8WdOnX/raaF8tU=
-X-Received: by 2002:a05:6122:caa:b0:50d:6cfc:ac4d with SMTP id
- 71dfb90a1353d-50dda3f6f01mr412592e0c.5.1729218679090; Thu, 17 Oct 2024
- 19:31:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1cbN-0008TN-MI; Thu, 17 Oct 2024 22:20:29 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t1cbL-0004yf-5r; Thu, 17 Oct 2024 22:20:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729218027; x=1760754027;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=8PKsoPgR4Ld+C0xF/qZFXE3weaPnEMpOVlDjd59wIDw=;
+ b=NGoZQCDc0frZ5uGb0x3DQDFg4ghw/jle5FeN2QyFgFBGnKNDuChRQ6zX
+ Slulr7XJ0k6XHBHWLXWKjSe2Lr5PMQjq0shMA2z0YNXvK2HeGFAyJ2G8D
+ 4uAw2gIITrYQkk9/82oMYwdfoqCcsSftUwxV7Uw/N4Ry6bew7i+vjCzVm
+ 0WGi4TBQz7OysRtqtnRbrSDxT9EDjUgnvBidTWxxLcV4m5E67aEKtfQ1X
+ c1csjp+SdxJPBiWp294uY2C0nbVgcAR7DpVuOup1pHkkU/xJtyKoVj0rL
+ CohVaOln/P35QbLrTOtAL4eeQg+j5LmP9vh6oyfF55AMWLytEW2QBKD98 g==;
+X-CSE-ConnectionGUID: gF2am3UfQSevXv2Hf5NICQ==
+X-CSE-MsgGUID: ivJ5dVYjQim6xZpbJzhz7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="28827909"
+X-IronPort-AV: E=Sophos;i="6.11,212,1725346800"; d="scan'208";a="28827909"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 19:20:22 -0700
+X-CSE-ConnectionGUID: L+YNHYlyR+6QwKMonGQkjw==
+X-CSE-MsgGUID: GChpiH98T9WKlXP4N1D6Sg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="83557602"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 17 Oct 2024 19:20:14 -0700
+Date: Fri, 18 Oct 2024 10:36:30 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 1/7] hw/core: Make CPU topology enumeration
+ arch-agnostic
+Message-ID: <ZxHJri+rgdGKf/0L@intel.com>
+References: <20241012104429.1048908-1-zhao1.liu@intel.com>
+ <20241012104429.1048908-2-zhao1.liu@intel.com>
+ <ZxEte1KBwWuCdkb1@redhat.com>
 MIME-Version: 1.0
-References: <20241016163439.1130168-1-htafreit@gmail.com>
- <CAKmqyKPUUgF1tLKCFF1FiT5HHEDDDg+=Yha2e38wSto4mKh_BA@mail.gmail.com>
- <ZxDgGsjRkLEA8r6_@redhat.com>
- <CALKrZCJ6cnocjddg4uu=0q0+vtVCzkEzC0=scnRWhLpGX4zQ8w@mail.gmail.com>
-In-Reply-To: <CALKrZCJ6cnocjddg4uu=0q0+vtVCzkEzC0=scnRWhLpGX4zQ8w@mail.gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 18 Oct 2024 12:30:52 +1000
-Message-ID: <CAKmqyKOTvf-PL++dp3iv=L1OefcLmSb+oXqh65s2EM9JVsHwKA@mail.gmail.com>
-Subject: Re: [PATCH 0/1] Insert LibSPDM in QEMU enabling in-tree compilation
-To: =?UTF-8?Q?=C3=81gatha_Freitas?= <htafreit@gmail.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxEte1KBwWuCdkb1@redhat.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.068,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,169 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 17, 2024 at 11:37=E2=80=AFPM =C3=81gatha Freitas <htafreit@gmai=
-l.com> wrote:
->
->
->
-> On Thu, Oct 17, 2024 at 7:00=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange=
-@redhat.com> wrote:
->>
->> On Thu, Oct 17, 2024 at 02:00:35PM +1000, Alistair Francis wrote:
->> > On Thu, Oct 17, 2024 at 2:35=E2=80=AFAM htafr <htafreit@gmail.com> wro=
-te:
->> > >
->> > > (I) Summary
->> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > >
->> > > This patch is the beginning of the support of the Security Protocol =
-and
->> > > Data Model (SPDM). There are some known issues (see II), but it's
->> > > usable and not many users are going to use this functionality for no=
-w,
->> > > but for those who will it may facilitate the development.
->> > >
->> > > There are some people working with LibSPDM to implement the SPDM on
->> > > emulated devices, however current works that use QEMU compile LibSPD=
-M
->> > > out-of-tree [1][2][3]. This patch enables the compilation of LibSPDM=
- when
->> > > user pass the parameter '--enable-libspdm' to configure file, this o=
-ption
->> > > is disabled by default. The following parameters were also added:
->> > >
->> > >   --libspdm-crypto=3DCHOICE  set LibSPDM crypto algorithm [mbedtls] =
-(choices:
->> > >                            mbedtls/openssl)
->> > >   --libspdm-toolchain=3DVALUE
->> > >                            toolchain to use for LibSPDM compilation =
-[GCC]
->> > >
->> > > In order to facilitate future code development using LibSPDM API, th=
-is
->> > > patch also provides the definition of the macro 'CONFIG_LIBSPDM'.
->> >
->> > We have talked about this before, see
->> > https://patchew.org/QEMU/cover.1691509717.git.alistair.francis@wdc.com=
-/
->> >
->> > The general agreement seemed to be that it will be hard to do SPDM
->> > configuration inside QEMU, hence the external library (like the QEMU
->> > TPM support).
->>
->> More generally, seeing this libspdm proposed for QEMU, without any
->> corresponding usage of it it dubious. It is hard to judge whether
->> it makes any sense, without seeing how it will be used in real
->> device code inside QEMU.
->
->
-> Currently, I'm working with EDK2 and QEMU so I have a branch [1] with ong=
-oing
-> modifications in files backends/spdm.c and hw/nvme/auth.c. Although the c=
-urrent
-> modifications are able to exchange SPDM messages, it's far from being com=
-plete
-> and it's not following better code practices yet. I'm making use of Alist=
-air's and
-> Mallawa's previous work in NVMe to authenticate it through PCI [2].
->
-> [1]  WIP: SPDM integration
->       Link: https://github.com/htafr/qemu/tree/libspdm-dev
-> [2] WIP: SPDM in OVMF
->       Link: https://github.com/htafr/edk2/tree/ovmf-spdm
+Hi Daniel,
 
-I also started working on this, see
-https://github.com/tianocore/edk2/pull/5715 .
-I was working towards SPDM communication over DOE as well.
+> > -/*
+> > - * CPUTopoLevel is the general i386 topology hierarchical representation,
+> > - * ordered by increasing hierarchical relationship.
+> > - * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
+> > - * or AMD (CPUID[0x80000026]).
+> > - */
+> > -enum CPUTopoLevel {
+> > -    CPU_TOPO_LEVEL_INVALID,
+> > -    CPU_TOPO_LEVEL_SMT,
+> > -    CPU_TOPO_LEVEL_CORE,
+> > -    CPU_TOPO_LEVEL_MODULE,
+> > -    CPU_TOPO_LEVEL_DIE,
+> > -    CPU_TOPO_LEVEL_PACKAGE,
+> > -    CPU_TOPO_LEVEL_MAX,
+> > -};
+> > -
+> 
+> snip
+> 
+> > @@ -18,3 +18,47 @@
+> >  ##
+> >  { 'enum': 'S390CpuEntitlement',
+> >    'data': [ 'auto', 'low', 'medium', 'high' ] }
+> > +
+> > +##
+> > +# @CpuTopologyLevel:
+> > +#
+> > +# An enumeration of CPU topology levels.
+> > +#
+> > +# @invalid: Invalid topology level.
+> 
+> Previously all topology levels were internal to QEMU, and IIUC
+> this CPU_TOPO_LEVEL_INVALID appears to have been a special
+> value to indicate  the cache was absent ?
 
-Unfortunately it stalled with the EDK2 review process being so incredibly s=
-low
+Now I haven't support this logic.
+x86 CPU has a "l3-cache" property, and maybe that property can be
+implemented or replaced by the "invalid" level support you mentioned.
 
->
->>
->>
->> On the cryptography side, I'm not a fan of linking another
->> crypto library to QEMU, that's different from what we already
->> support in our crypto layer. openssl in particular is a problem
->> due to its licensing - people tend to hand-waive away the
->> licensing incompatibility by pretending openssl is a "system library"
->> but I disagree with that interpretation.
->>
->> > > (II) Known Limitations
->> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > >
->> > > 1. This patch enables LibSPDM in-tree compilation for Linux systems =
-only.
->> > > 2. LibSPDM compilation uses CMake, so meson build system is making u=
-se
->> > >    of the CMake module [4].
->> > > 3. Some problems may occur when compiling LibSPDM with MbedTls such =
-as:
->> > >     error: "_GNU_SOURCE" redefined [-Werror]
->> > >       10 | #define _GNU_SOURCE
->> > >
->> > >    It's possible to compile using --disable-werror.
->> > >
->> > > (III) Sample configuration
->> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > >
->> > > ../configure \
->> > >   --disable-werror \
->> > >   --enable-libspdm \
->> > >   --libspdm-crypto=3Dmbedtls \
->> > >   --enable-gcov
->> > >
->> > > References:
->> > > [1] riscv-spdm
->> > >   Link: https://github.com/htafr/riscv-spdm
->> > > [2] spdm-benchmark
->> > >   Link: https://github.com/rcaalves/spdm-benchmark
->> > > [3] qemu-spdm-emulation-guide
->> > >   Link: https://github.com/twilfredo/qemu-spdm-emulation-guide
->> >
->> > This one has been merged upstream and mainline QEMU supports it now:
->> >
->> > https://www.qemu.org/docs/master/specs/spdm.html
->>
->> So with that merged, is this proposal for linking to libspdm redundant ?
->>
->> With regards,
->> Daniel
->> --
->> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberra=
-nge :|
->> |: https://libvirt.org         -o-            https://fstop138.berrange.=
-com :|
->> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberra=
-nge :|
->>
->
-> I'm not sure if I understood the redundancy. Would it be against QEMU pra=
-ctices
-> to have another openssl as well as mbedtls linked inside it?
->
-> Also, I didn't know the LibSPDM insertion was already discussed previousl=
-y as
-> Alistair pointed out. I think I should have sent this patch as RFC instea=
-d. As this is
-> my first interaction in any mail list, I'm sorry for any mistakes I made.
+> Now we're exposing this directly to the user as a settable
+> option. We need to explain what effect setting 'invalid'
+> has on the CPU cache config.
 
-No worries, there were no mistakes made. I was just pointing out that
-we have had this discussion before and settled on an external SPDM
-implementation.
+If user set "invalid", QEMU will report the error message:
 
-That doesn't mean we can't change that in the future, but I think it
-needs a good justification and like Daniel says at least a partial
-implementation to go with it
+qemu-system-x86_64: Invalid cache topology level: invalid. The topology should match valid CPU topology level
 
-Alistair
+Do you think this error message is sufficient?
+
+Thanks,
+Zhao
+
 
