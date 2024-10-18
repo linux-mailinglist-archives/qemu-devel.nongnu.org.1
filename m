@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6579E9A3F91
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3741F9A3F98
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Oct 2024 15:29:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t1n1y-0005hx-JB; Fri, 18 Oct 2024 09:28:39 -0400
+	id 1t1n1v-0005gu-1W; Fri, 18 Oct 2024 09:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1v-0005hM-9H
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0005gc-Km
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1t-0007Nj-Ac
- for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t1n1s-0007O2-1E
+ for qemu-devel@nongnu.org; Fri, 18 Oct 2024 09:28:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729258109;
+ s=mimecast20190719; t=1729258111;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=1FC2jC+761e7WwP8qHWQhXxFHLAGdqP3ZXmkxzWQ2rc=;
- b=EUnkJRIILH5HqI37o2LJJceTmtVx3B5PalOib6Dieh6zemswgLjmAaHqkcyVAffU0rmUKr
- MKu1x8qsJYxvnCs4zcJ51hmlT1E7SZvZYloOkggRCtt+AC6NpIFt8Y0EKOZAs2xhHywzv2
- WQK3ksIDeptAYpCO8hrOnjAGM2sdXWw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lpWSy0XyKx65FnLlrtpV8TJHvHRjtWH5qZJitrNaeTY=;
+ b=LzhSXaZCUX3S5GHvdT2h4GzGLaPX7JdIy4mmqWFo+4ZBghbU96g/bEqfMmI/sXXOyFTDJL
+ ExKA7nitv76MIAJeT/RhkJJvnzvYIVy1t+B11NfFGWGNRZkHWcPSVOZKFl3XJ6ZjLnVehe
+ gy0ae3WnVNWJfdk2jq9YD3PI7cBG1ps=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-og4D-iPbNSa0KiofE1LmZg-1; Fri,
- 18 Oct 2024 09:28:28 -0400
-X-MC-Unique: og4D-iPbNSa0KiofE1LmZg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-soRP1AKRO7aZayl9FdtZRg-1; Fri,
+ 18 Oct 2024 09:28:29 -0400
+X-MC-Unique: soRP1AKRO7aZayl9FdtZRg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB70319560AB; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 99D441955EE7; Fri, 18 Oct 2024 13:28:28 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 942171956086; Fri, 18 Oct 2024 13:28:26 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D38E19560AD; Fri, 18 Oct 2024 13:28:28 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 47D4821E6A28; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
+ id 4980621E691E; Fri, 18 Oct 2024 15:28:24 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 0/9] Error reporting patches for 2024-10-18
-Date: Fri, 18 Oct 2024 15:28:15 +0200
-Message-ID: <20241018132824.3379780-1-armbru@redhat.com>
+Subject: [PULL 1/9] qga/qapi-schema: Drop obsolete note on "unsupported" errors
+Date: Fri, 18 Oct 2024 15:28:16 +0200
+Message-ID: <20241018132824.3379780-2-armbru@redhat.com>
+In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
+References: <20241018132824.3379780-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,48 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 95a16ee753d6da651fce8df876333bf7fcf134d9:
+The note talks about "unsupported" errors and QERR_UNSUPPORTED.  The
+former is vague, and the latter makes sense only in C, not in external
+interface documentation.  Fortunately, we don't have to address this
+anymore: recent merge commit 3b5efc553eb got rid of these errors.
+Delete the note.
 
-  Merge tag 'pull-loongarch-20241016' of https://gitlab.com/gaosong/qemu into staging (2024-10-17 12:42:23 +0100)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240911131206.2503035-2-armbru@redhat.com>
+---
+ qga/qapi-schema.json | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-are available in the Git repository at:
-
-  https://repo.or.cz/qemu/armbru.git tags/pull-error-2024-10-18
-
-for you to fetch changes up to 1824e9fc646c68e42e3f823b208382563ce5dc83:
-
-  qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer used, drop (2024-10-18 15:03:35 +0200)
-
-----------------------------------------------------------------
-Error reporting patches for 2024-10-18
-
-----------------------------------------------------------------
-Markus Armbruster (9):
-      qga/qapi-schema: Drop obsolete note on "unsupported" errors
-      qga: Improve error for guest-set-user-password parameter @crypted
-      error: Drop superfluous #include "qapi/qmp/qerror.h"
-      block: Improve errors about block sizes
-      block: Adjust check_block_size() signature
-      target/i386/cpu: Avoid mixing signed and unsigned in property setters
-      target/i386/cpu: Improve errors for out of bounds property values
-      hw/intc/openpic: Improve errors for out of bounds property values
-      qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer used, drop
-
- qga/qapi-schema.json                 |  9 ------
- include/qapi/qmp/qerror.h            |  6 ----
- util/block-helpers.h                 |  3 +-
- block/export/vduse-blk.c             |  7 ++---
- block/export/vhost-user-blk-server.c |  6 +---
- hw/core/qdev-properties-system.c     |  6 +---
- hw/intc/openpic.c                    |  5 +--
- qga/commands-bsd.c                   |  1 -
- qga/commands-linux.c                 |  1 -
- qga/commands-posix.c                 |  1 -
- qga/commands-win32.c                 |  2 +-
- target/i386/cpu.c                    | 59 +++++++++++++++++-------------------
- util/block-helpers.c                 | 28 ++++++++---------
- 13 files changed, 47 insertions(+), 87 deletions(-)
-
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index 495706cf73..0537bb7886 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -1,15 +1,6 @@
+ # *-*- Mode: Python -*-*
+ # vim: filetype=python
+ 
+-##
+-# = General note concerning the use of guest agent interfaces
+-#
+-# "unsupported" is a higher-level error than the errors that
+-# individual commands might document.  The caller should always be
+-# prepared to receive QERR_UNSUPPORTED, even if the given command
+-# doesn't specify it, or doesn't document any failure mode at all.
+-##
+-
+ ##
+ # = QEMU guest agent protocol commands and structs
+ ##
 -- 
 2.46.0
 
