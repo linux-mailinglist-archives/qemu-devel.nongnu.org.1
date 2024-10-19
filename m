@@ -2,69 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316419A4F89
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Oct 2024 17:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DB29A4FE8
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Oct 2024 18:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2BmL-0001XB-4W; Sat, 19 Oct 2024 11:54:09 -0400
+	id 1t2CUy-000208-JZ; Sat, 19 Oct 2024 12:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2BmJ-0001Wz-5c
- for qemu-devel@nongnu.org; Sat, 19 Oct 2024 11:54:07 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2BmG-0006yR-Hi
- for qemu-devel@nongnu.org; Sat, 19 Oct 2024 11:54:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729353244; x=1760889244;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=jcLgcrq/lakvwSQ6mwTfSGUhu6IwsQgJswmReLdnNUQ=;
- b=P80uNctogF3S4Tg5eY2Irc0bYijpymYzatQzT66BTDSkB3DmNVZLYjeI
- DFD6qydpRSDTebjdoLD4I0Va3rg8FCygPykIDRb4Ks4aUebPuAQasuXFx
- yLF3NxstV3TxcYlmAhUljhzoPQKdfZ4cwUnh5eco+9Wi7/sbjWwhkVN7N
- Ryx8chtyFdD0g/kB35UYjKFC/MKnHXaOBVu4RBSNa+prphuAFASzDDP8T
- LWmEaazLXih/GJsXotEVaqo5j0ydGUrKEo5X/fqn25wpLUu2yehltghms
- zSwG7i0HXj/D/0FCPfOnqPybPfA7KLL562USqNomlqQcvDWoUQq2pgCht A==;
-X-CSE-ConnectionGUID: 82LWl9NrTmqlNrjsIcqkDg==
-X-CSE-MsgGUID: fuHH01THSb6yyQAgAqFPgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11230"; a="40269529"
-X-IronPort-AV: E=Sophos;i="6.11,216,1725346800"; d="scan'208";a="40269529"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2024 08:54:00 -0700
-X-CSE-ConnectionGUID: ZvwRPPGAR6y9HKDVPNwUTA==
-X-CSE-MsgGUID: hfhBTUYtSYS0EXFC7OHj4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,216,1725346800"; d="scan'208";a="102435466"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 19 Oct 2024 08:53:58 -0700
-Date: Sun, 20 Oct 2024 00:10:14 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [Question] What is the =?gb2312?Q?definiti?=
- =?gb2312?B?b24gb2YgobBwcml2YXRlobE=?= fields in QOM?
-Message-ID: <ZxPZ5oUDRcVroh7o@intel.com>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUs-0001vY-UH
+ for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:10 -0400
+Received: from mailgate02.uberspace.is ([185.26.156.114])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUp-0003gU-H2
+ for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:10 -0400
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 4078117F753
+ for <qemu-devel@nongnu.org>; Sat, 19 Oct 2024 18:39:57 +0200 (CEST)
+Received: (qmail 9700 invoked by uid 990); 19 Oct 2024 16:39:57 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Sat, 19 Oct 2024 18:39:56 +0200
+From: Julian Ganz <neither@nut.email>
+To: qemu-devel@nongnu.org
+Cc: Julian Ganz <neither@nut.email>
+Subject: [RFC PATCH v2 0/7] tcg-plugins: add hooks for interrupts,
+ exceptions and traps
+Date: Sat, 19 Oct 2024 18:39:33 +0200
+Message-ID: <cover.1729355735.git.neither@nut.email>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20231021122502.26746-1-neither@nut.email>
+References: <20231021122502.26746-1-neither@nut.email>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Rspamd-Bar: /
+X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-0.000013) MIME_GOOD(-0.1)
+X-Rspamd-Score: 0.899986
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=evIaEZnuYYugfnefbvuAAsBQdMwoHWbcJqmDYP+uTkw=;
+ b=HvuH0CYm9MxPKp5Nx1rSjvBBu66c0UDuNCLiRkzB59BW7aVirP4MTW1QGW+DzmO1l/qEKgp5g0
+ xhmSeoTz4AJ3QesoAjoQ98G5PAAsJbwWNewn0fM7/roq4iFWt2zT2Ykpa7JqN1mHxu0u3Gjj3k10
+ L7rUh2lMkwfcS4VVwrvsAyZqIMwujYqhlHjdocuoXJTNGFDUF+LQsWnAnJob9sMeHKPq7BVgW2Co
+ E8dRyoHMw1Wbh8rM9WDCpL1AEWKRmhhZH9Q32m/TbZWnruwjUvTCN24IO40BpjPd36aY1pAQSg1c
+ TK967X9Xj1eBOyEpqKquCuXMgGDN1C9FZvl5oEKNuSeYqd5T8zyn4zMaasUjX503nqs/iqvX+1CA
+ w5eygLEQFVW5sfTYGdDoXjL5azdL8LO6BVwUeKgEnnhDBxLpL8Z4kKDbZL2EVnWBTenhqbTjsYv6
+ Ey0Vmob4ALvQgQsq+Cq9befMpvbc5ieOo1KQqHfDjBlg0ZmddEzharqEHv1cV3eq8vYMBRFfSxU3
+ XNhMncANrKOP4L05AiGh7JBBy7ZHDa/sc/HUh6C7F+tAtyGGwKIRQfGbWCyd3kIdXweB5fESSl1p
+ apAxt+spR1B4sMq4i6eFHHvmQbmosEjZVP2atFftE2ZBEWEvd2Qr/UpBAw4gGjUpM8OY75zCzb0/
+ k=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,23 +78,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi maintainers and list,
+Some analysis greatly benefits, or depends on, information about
+interrupts. For example, we may need to handle the execution of a new
+translation block differently if it is not the result of normal program
+flow but of an interrupt.
 
-In the QOM structure, the class and object structs have two members:
-parent_class and parent_obj, which are often marked as "< private >" in
-the comment.
+Even with the existing interfaces, it is more or less possible to
+discern these situations, e.g. as done by the cflow plugin. However,
+this process poses a considerable overhead to the core analysis one may
+intend to perform.
 
-I couldn°Øt find information on why to define °Æprivate°Ø and °Æpublic°Ø,
-even in the earliest QOM commits and the patch emails I could find.
+These changes introduce a generic and easy-to-use interface for plugin
+authors in the form of callbacks for different types of traps. Patch 1
+defines the callback registration functions and supplies a somewhat
+narrow definition of the event the callbacks are called. Patch 2 adds
+some hooks for triggering the callbacks. Patch 3 adds an example plugin
+showcasing the new API. The remaining patches call the hooks for a
+selection of architectures, mapping architecture specific events to the
+three categories defined in patch 1. Future non-RFC patchsets will call
+these hooks for all architectures (that have some concept of trap or
+interrupt).
 
-Does °Æprivate°Ø refer to the internal implementation code of QOM, or does
-it refer to the specific code that defines and implements this object
-and its class?
+Sidenote: I'm likely doing something wrong for one architecture or
+the other. For example, with the old version Alex Benn√©e suggested
+registering a helper function with arm_register_el_change_hook() for
+arm, which is not what I ended up doing. And for AVR my approach to just
+assume only (asynchroneous) interrupts exist is also likely too na√Øve.
 
-I understand the original idea of private field indicates it cannot be
-accessed directly out of the "private" scope.
+Since v1:
+  - Split the one callback into multiple callbacks
+  - Added a target-agnostic definition of the relevant event(s)
+  - Call hooks from architecture-code rather than accel/tcg/cpu-exec.c
+  - Added a plugin showcasing API usage
 
-Regards,
-Zhao
+Julian Ganz (7):
+  plugins: add API for registering trap related callbacks
+  plugins: add hooks for new trap related callbacks
+  contrib/plugins: add plugin showcasing new trap related API
+  target/arm: call plugin trap callbacks
+  target/avr: call plugin trap callbacks
+  target/riscv: call plugin trap callbacks
+  target/sparc: call plugin trap callbacks
+
+ contrib/plugins/Makefile     |  1 +
+ contrib/plugins/traps.c      | 89 ++++++++++++++++++++++++++++++++++++
+ include/qemu/plugin-event.h  |  3 ++
+ include/qemu/plugin.h        | 12 +++++
+ include/qemu/qemu-plugin.h   | 45 ++++++++++++++++++
+ plugins/core.c               | 42 +++++++++++++++++
+ plugins/qemu-plugins.symbols |  3 ++
+ target/arm/helper.c          | 23 ++++++++++
+ target/avr/helper.c          |  3 ++
+ target/riscv/cpu_helper.c    |  8 ++++
+ target/sparc/int32_helper.c  |  7 +++
+ target/sparc/int64_helper.c  | 10 ++++
+ 12 files changed, 246 insertions(+)
+ create mode 100644 contrib/plugins/traps.c
+
+-- 
+2.45.2
 
 
