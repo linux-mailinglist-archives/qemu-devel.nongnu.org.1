@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702689A4FE2
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Oct 2024 18:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868F9A4FE7
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Oct 2024 18:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2CUt-0001vT-RB; Sat, 19 Oct 2024 12:40:11 -0400
+	id 1t2CUx-0001zm-Ks; Sat, 19 Oct 2024 12:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUr-0001v7-76
- for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:09 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUt-0001wV-JJ
+ for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:11 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUo-0003h3-TD
- for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:08 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1t2CUs-0003xC-3q
+ for qemu-devel@nongnu.org; Sat, 19 Oct 2024 12:40:11 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 02A3217F9F4
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 904C917F838
  for <qemu-devel@nongnu.org>; Sat, 19 Oct 2024 18:39:59 +0200 (CEST)
-Received: (qmail 9771 invoked by uid 990); 19 Oct 2024 16:39:58 -0000
+Received: (qmail 9787 invoked by uid 990); 19 Oct 2024 16:39:59 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Sat, 19 Oct 2024 18:39:58 +0200
+ Sat, 19 Oct 2024 18:39:59 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [RFC PATCH v2 4/7] target/arm: call plugin trap callbacks
-Date: Sat, 19 Oct 2024 18:39:37 +0200
-Message-ID: <be4c64f56a4a7f25a2769c0eccd2ed6e1d8cb9ee.1729355735.git.neither@nut.email>
+Cc: Julian Ganz <neither@nut.email>,
+	Michael Rolnik <mrolnik@gmail.com>
+Subject: [RFC PATCH v2 5/7] target/avr: call plugin trap callbacks
+Date: Sat, 19 Oct 2024 18:39:38 +0200
+Message-ID: <5807fbae77440ce091c1480a173e371a72142952.1729355735.git.neither@nut.email>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1729355735.git.neither@nut.email>
 References: <20231021122502.26746-1-neither@nut.email>
@@ -39,22 +39,22 @@ References: <20231021122502.26746-1-neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.83479) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.955061) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.43479
+X-Rspamd-Score: -5.555061
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=QW5b+c8GerXmJWDNBXe+kTqzYLQkqZ+V6ikpQTJsG78=;
- b=Dwzd9ejyKQW+iC6emONffpP14xKf6tH85Pp3LCf3wawqHFZHM/nrBRRrnN6hfpmuiG0hKnFrbS
- aG1W1P4Ng/k+3WOVGgNAt3JRZXw6nz1rIuhdLlJOvcdUxralJIuUsXx64Dle78VjR9ptrelCQcmn
- LmDZZW85shk1H1Aff2YA6d+aphCSSbLZeEPyyHU3btUfOl/drs/gwk+WEwQfRekg16p5xY3n80YR
- n7ODFibt+cbEiqIXAidJdKi0v0kB6VPAtBH6weFMhmnBMmb+nIwc/jVSPaSkh6khhELYYw7oZtLm
- MMk9JDzpl5FGJFSht3FqhYbiz5G/y+bUB2wolQxCr/PnSUWd+es1s3jlaCJ0kwkHT8hwa2Hld8vA
- lMGA25QrST6h39s4uABTlZYHCAk6/C8Wg+aIIKyYku+zyc7s7kOiq/R4vgjQOnz7NWxKbL7ZThQp
- I741x7rweD3RQn6YeMN3C3mKAWrEmEslDKMSBktaKbHpbAhQ54/ipb4FcnGq8PY6lDVPg3wunQHx
- 1XhMKbYTo6wcOgh/wVD9o8gcj+E9shLe6UaSPuAS74gAtlpsxENLaTpGKmcMwFh//FaFTwNMzP+v
- IDSBExGb7Yiz7Im9VCZ6/CdnCCzhRvJ5+MrwCYtKHh5InX4ftzuAiZR0zDyD4KDHuImo3srsdA6E
- w=
+ bh=3kEDEfs2NK+O76NkQpJ9J9wdE/Guadg1wnJP/wNvu24=;
+ b=oL2YfM2sk5MpdnW86mImRU62igmM9MjOSYjboKOGIu1YkkUy7wFrnxDLp7m9lpwf3pclQ/wpE7
+ wtrnF4hWQkb5y5HTD4NMxxrdx3LoAU7MXIvU9SWXsDjQEbJDK0GppXrnyFb2i6oVfNcWXWEU5Dlg
+ MdzR3ho/AaU9BnwTNKz7vMyTjCFdxcQDkUtq4Lo+ZZNX0yMLZcN4Jmrc9XwBQnyHPA5HpjjQm7OO
+ P1pKedCoI/Rr0XEUaX/KspdT4EwEvosqizSUwfupWiJB1Ai3+W6EH6CXVjHnO6jyrLv9aQTANqHS
+ OV8Ob2MReoHawOJg5fQmkx18EKzfwZzpqEfC2b2mZoyP6qmBdLVlk+ftesPyLNDZ6kBrTQCezO19
+ zGO8GQfFZVIHI7pX1CndzZ2AUgUrTUNnDz/0FbOCS2wSkqPXK55zdTrEoV35xQtfXqPQVqkpcEPe
+ ThXSz9i0QecFaIe/c4BJHCOxY765f4/uMZrCe5FaLC+FL2YnITG+mMInQXdrecEgJCtE6i3lxnMy
+ z+kRKN6xSuRdDbBOyauCozvR8m8yI6bb8cBlGOe/xu5UOrvdlwTxSLnmXWPJlR7jAlWJmoPCLFT+
+ zD3jZa+wgIjRA5Fdf2mdPsurVvt/5AOgwL9/Q6VegPh4U6AtX6H5WrxzILzCGkua/PJKgjdpFue6
+ k=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
@@ -84,77 +84,35 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for ARM (and Aarch64) targets. We decided to
-treat the (V)IRQ, (VI/VF)NMI, (V)FIQ and VSERR exceptions as interrupts
-since they are, presumably, async in nature.
+This change places the hook for AVR targets. That architecture appears
+to only know interrupts.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/arm/helper.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ target/avr/helper.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 0a731a38e8..f636e216c8 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -31,6 +31,7 @@
- #endif
- #include "cpregs.h"
- #include "target/arm/gtimer.h"
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index 345708a1b3..be94552674 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -28,6 +28,7 @@
+ #include "exec/cpu_ldst.h"
+ #include "exec/address-spaces.h"
+ #include "exec/helper-proto.h"
 +#include "qemu/plugin.h"
  
- #define ARM_CPU_FREQ 1000000000 /* FIXME: 1 GHz, should be configurable */
- 
-@@ -11147,6 +11148,24 @@ static void take_aarch32_exception(CPUARMState *env, int new_mode,
-     }
- }
- 
-+static void arm_do_plugin_vcpu_interrupt_cb(CPUState *cs)
-+{
-+    switch (cs->exception_index) {
-+    case EXCP_IRQ:
-+    case EXCP_VIRQ:
-+    case EXCP_NMI:
-+    case EXCP_VINMI:
-+    case EXCP_FIQ:
-+    case EXCP_VFIQ:
-+    case EXCP_VFNMI:
-+    case EXCP_VSERR:
-+        qemu_plugin_vcpu_interrupt_cb(cs);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs);
-+    }
-+}
-+
- static void arm_cpu_do_interrupt_aarch32_hyp(CPUState *cs)
+ bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  {
-     /*
-@@ -11819,6 +11838,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
-     if (tcg_enabled() && arm_is_psci_call(cpu, cs->exception_index)) {
-         arm_handle_psci_call(cpu);
-         qemu_log_mask(CPU_LOG_INT, "...handled as PSCI call\n");
-+        arm_do_plugin_vcpu_interrupt_cb(cs);
-         return;
-     }
+@@ -97,6 +98,8 @@ void avr_cpu_do_interrupt(CPUState *cs)
+     env->sregI = 0; /* clear Global Interrupt Flag */
  
-@@ -11830,6 +11850,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
- #ifdef CONFIG_TCG
-     if (cs->exception_index == EXCP_SEMIHOST) {
-         tcg_handle_semihosting(cs);
-+        qemu_plugin_vcpu_semihosting_cb(cs);
-         return;
-     }
- #endif
-@@ -11855,6 +11876,8 @@ void arm_cpu_do_interrupt(CPUState *cs)
-     if (!kvm_enabled()) {
-         cs->interrupt_request |= CPU_INTERRUPT_EXITTB;
-     }
+     cs->exception_index = -1;
 +
-+    arm_do_plugin_vcpu_interrupt_cb(cs);
++    qemu_plugin_vcpu_interrupt_cb(cs);
  }
- #endif /* !CONFIG_USER_ONLY */
  
+ hwaddr avr_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
 -- 
 2.45.2
 
