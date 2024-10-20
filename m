@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A379A54DF
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8AD9A54E3
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:56:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2YG7-0003Wx-F7; Sun, 20 Oct 2024 11:54:23 -0400
+	id 1t2YG7-0003X6-J9; Sun, 20 Oct 2024 11:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFi-0003NH-Jj
+ id 1t2YFh-0003NA-56
  for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:53:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFf-0005Pi-JF
- for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:53:58 -0400
+ id 1t2YFf-0005Pp-JL
+ for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:53:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729439621;
+ s=mimecast20190719; t=1729439623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZG7pDim8gIa7OEsfLMhqCQMQAwzlje+SQX3YGIdJRk4=;
- b=fvNrf7e0pW7H/eXr1uBpVM6J+3NUDjtauXAImnZr0Sgpjulqs+RMLZJnLG0xhmLS9Ws4Fs
- CWTzhIscq0ALrsigDpF5BBoLcq5KPzbyBhYMDBmkb3VB583TcWMbfCHvXiQwVXVHAWZ+fy
- BckwSXwWH1uEQJ6g2FBGCuiT4omoJEg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uPHb5ByYipPEkRTaBja/s+S6rotpUpBmTRUGPYsW6is=;
+ b=f10Z7w5g811ee7A5Y2FMW9O1hDHfqKNwOnmYPYOq3c8ic74I8iVFUiNqE9Qq4U1DA4RIAg
+ UoGOPPty+m86llFUVF72Og6MMXnexYg3vVP8AZnepjznBF4hSEDIsZ2GMjnVioKvzBtG2a
+ 66BPRsf4QokgnK5S/VieMGSA3V3X9Qo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-oou1QCbyPVuykxrT6N1Jpw-1; Sun, 20 Oct 2024 11:53:39 -0400
-X-MC-Unique: oou1QCbyPVuykxrT6N1Jpw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-431518e6d8fso24230505e9.0
- for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:53:38 -0700 (PDT)
+ us-mta-587-7oxP4ECDOWGrI8i5US1hrA-1; Sun, 20 Oct 2024 11:53:42 -0400
+X-MC-Unique: 7oxP4ECDOWGrI8i5US1hrA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-431673032e6so11855135e9.0
+ for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:53:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729439616; x=1730044416;
+ d=1e100.net; s=20230601; t=1729439620; x=1730044420;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZG7pDim8gIa7OEsfLMhqCQMQAwzlje+SQX3YGIdJRk4=;
- b=NkgzXMYQL+VeziNy0pzUlaYpD1Lk1X1la4LfHHZYWrxbIQg9UVNeNcdaH3r2AQR34U
- MxYQ3IT5XnD+vAfTDEAmzVPytM8GgZ0uzFd5qNaJzWzH2q7zcoRnlYpQNjOXqsavJ/u4
- Zdx+CJt8ec5XtAWalTBN1cfzu2Df/2cTZ5lW3zIcVIZdS1DonzWwozp4/AGHpVEProPJ
- rpWE5Q/YbmbWrIVJVXl+a+SwxlVzD+sGTmgHJ1GEqvoUFh88rorcYFgYUUixpzNoZcXd
- eg8OYOcPW2TwbV5mBUlrPQ8Ook8nXuLD/aG4UGjZd0lolBJ8NXd93EjktKQs32cVUnaV
- B5kQ==
-X-Gm-Message-State: AOJu0Yxw037bJVniwfQI/76b1D86n/i+T2JQ0Rq5U1jOJGs5a++VaNH4
- PkKVbYtE+iMpVCq39pbmUnw3ElcmU81xDOVbEZx9Sjv21HdeSA8KCB1CoYNUzIwL4LydMl/5Rju
- QGONBY9kt6nqz3gtjbDRlkqDXV5JiH0iMBQFvUPdPbzLQatysDlXr/d50Un8ft7ucxfOSGKK/NS
- xeU7uVckwSHwsIf04gllhG0aUwxq1CWuPBVkxa0eY=
-X-Received: by 2002:a05:600c:c89:b0:431:5c1c:250b with SMTP id
- 5b1f17b1804b1-43161633321mr70622655e9.1.1729439616474; 
- Sun, 20 Oct 2024 08:53:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkachAWDb3R5jKP+xQSpQUj5WQCI4H1d2THyn09b/y6GSBk3CTXpj3MmloHeRBMBjAFFXT0g==
-X-Received: by 2002:a05:600c:c89:b0:431:5c1c:250b with SMTP id
- 5b1f17b1804b1-43161633321mr70622455e9.1.1729439615860; 
- Sun, 20 Oct 2024 08:53:35 -0700 (PDT)
+ bh=uPHb5ByYipPEkRTaBja/s+S6rotpUpBmTRUGPYsW6is=;
+ b=j+FTXiXlRdzEFPkkvX7aJmVZ7imjoDil81mw8qzQF2mfYp3gpdJQw+KFh/eunsKA8u
+ gA+UVo6R0hDCt6Kk0gZDbrNZCNCHMMBVRjAnl634zH12JJxg56q2p2zvhVp3Fuy2yCFW
+ UsITmtSZtgIKo9I7CkHQDGhe/uwG4sjsMNigcu0yyMFQ+5+P3Y3mipItMQZhk6hUS3j4
+ i2RogH1+IlndU8ps1Y1Lxmzrznu0SJaPuOGu14ui/C5HSsEzSTMCsDkPz/frAL0DiNbT
+ rYVO/CUbtYyxK9wA9KIbADtmYkccXrO/H3tX7/jTccBha42OXH+B89EPvIkedlOjO/an
+ rp+g==
+X-Gm-Message-State: AOJu0YzLo+XUBroRPOOsvEU8o2+CGlniWWLLkem+EaXenf76ZbrrN+3n
+ 8E7fd8COhz846AJt5KYUuSqk0LULUTYsiXRMygD/FUOImXXw/paWiy6icDv0/Cw8I5+Kgjs+KPs
+ BdKQWOkprkuYvbOPiipOd2THJ2K89nmQ9uPo/ZmmWEOKQL39LqRs4P+HjRawo4TJJBRDRgKBsVk
+ wa4DjzYApFZd3S5FMEJrCCg561Ck/8QueX/rJC2p4=
+X-Received: by 2002:a05:600c:3151:b0:431:6060:8b22 with SMTP id
+ 5b1f17b1804b1-43161641a62mr67364205e9.10.1729439620017; 
+ Sun, 20 Oct 2024 08:53:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IELz/Bg3uT/zOKKTe5KLi113M0KBal67e64hNp/KNlHYoW6Wuny6p2X/IHUjTd1m42veVQYrQ==
+X-Received: by 2002:a05:600c:3151:b0:431:6060:8b22 with SMTP id
+ 5b1f17b1804b1-43161641a62mr67364125e9.10.1729439619617; 
+ Sun, 20 Oct 2024 08:53:39 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f57112esm27392755e9.6.2024.10.20.08.53.33
+ 5b1f17b1804b1-4316f5cb88csm27004045e9.39.2024.10.20.08.53.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Oct 2024 08:53:34 -0700 (PDT)
+ Sun, 20 Oct 2024 08:53:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 03/14] target/i386: remove CC_OP_CLR
-Date: Sun, 20 Oct 2024 17:53:13 +0200
-Message-ID: <20241020155324.35273-4-pbonzini@redhat.com>
+Subject: [PATCH 04/14] target/i386: Rearrange CCOp
+Date: Sun, 20 Oct 2024 17:53:14 +0200
+Message-ID: <20241020155324.35273-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241020155324.35273-1-pbonzini@redhat.com>
 References: <20241020155324.35273-1-pbonzini@redhat.com>
@@ -100,169 +100,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just use CC_OP_EFLAGS; it is not that likely that the flags computed by
-CC_OP_CLR survive the end of the basic block, in which case there is no
-need to spill cc_op_src.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-cc_op_src now does need spilling if the XOR is followed by a memory
-operation, but this only costs 0.2% extra TCG ops.  They will be recouped
-by simplifications in how QEMU evaluates ZF at runtime, which are even
-greater with this change.
+Give the first few enumerators explicit integer constants,
+align the BWLQ enumerators.
 
+This will be used to simplify ((op - CC_OP_*B) & 3).
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/r/20240701025115.1265117-4-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h           |  1 -
- target/i386/cpu-dump.c      |  1 -
- target/i386/tcg/cc_helper.c |  3 ---
- target/i386/tcg/translate.c | 10 ----------
- target/i386/tcg/emit.c.inc  | 15 ++++-----------
- 5 files changed, 4 insertions(+), 26 deletions(-)
+ target/i386/cpu.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 74886d1580f..567fefa1d7b 100644
+index 567fefa1d7b..f292463c34a 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1283,7 +1283,6 @@ typedef enum {
-     CC_OP_ADCX, /* CC_DST = C, CC_SRC = rest.  */
-     CC_OP_ADOX, /* CC_SRC2 = O, CC_SRC = rest.  */
-     CC_OP_ADCOX, /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
--    CC_OP_CLR, /* Z and P set, all other flags clear.  */
+@@ -1278,11 +1278,10 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+  * are only needed for conditional branches.
+  */
+ typedef enum {
+-    CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
+-    CC_OP_EFLAGS,  /* all cc are explicitly computed, CC_SRC = flags */
+-    CC_OP_ADCX, /* CC_DST = C, CC_SRC = rest.  */
+-    CC_OP_ADOX, /* CC_SRC2 = O, CC_SRC = rest.  */
+-    CC_OP_ADCOX, /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
++    CC_OP_EFLAGS = 0,  /* all cc are explicitly computed, CC_SRC = flags */
++    CC_OP_ADCX = 1,    /* CC_DST = C, CC_SRC = rest.  */
++    CC_OP_ADOX = 2,    /* CC_SRC2 = O, CC_SRC = rest.  */
++    CC_OP_ADCOX = 3,   /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
  
      CC_OP_MULB, /* modify all flags, C, O = (CC_SRC != 0) */
      CC_OP_MULW,
-diff --git a/target/i386/cpu-dump.c b/target/i386/cpu-dump.c
-index dc6723aedee..a72ed93bd2f 100644
---- a/target/i386/cpu-dump.c
-+++ b/target/i386/cpu-dump.c
-@@ -91,7 +91,6 @@ static const char * const cc_op_str[] = {
-     [CC_OP_BMILGQ] = "BMILGQ",
+@@ -1355,9 +1354,12 @@ typedef enum {
+     CC_OP_POPCNTQ__,
+     CC_OP_POPCNT = sizeof(target_ulong) == 8 ? CC_OP_POPCNTQ__ : CC_OP_POPCNTL__,
  
-     [CC_OP_POPCNT] = "POPCNT",
--    [CC_OP_CLR] = "CLR",
- };
++    CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
+     CC_OP_NB,
+ } CCOp;
+-QEMU_BUILD_BUG_ON(CC_OP_NB >= 128);
++
++/* See X86DecodedInsn.cc_op, using int8_t. */
++QEMU_BUILD_BUG_ON(CC_OP_DYNAMIC > INT8_MAX);
  
- static void
-diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
-index dbddaa2fcb3..40583c04cf9 100644
---- a/target/i386/tcg/cc_helper.c
-+++ b/target/i386/tcg/cc_helper.c
-@@ -104,8 +104,6 @@ target_ulong helper_cc_compute_all(target_ulong dst, target_ulong src1,
- 
-     case CC_OP_EFLAGS:
-         return src1;
--    case CC_OP_CLR:
--        return CC_Z | CC_P;
-     case CC_OP_POPCNT:
-         return dst ? 0 : CC_Z;
- 
-@@ -243,7 +241,6 @@ target_ulong helper_cc_compute_c(target_ulong dst, target_ulong src1,
-     case CC_OP_LOGICW:
-     case CC_OP_LOGICL:
-     case CC_OP_LOGICQ:
--    case CC_OP_CLR:
-     case CC_OP_POPCNT:
-         return 0;
- 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index dc308f31041..a20fbb019c8 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -309,7 +309,6 @@ static const uint8_t cc_op_live[CC_OP_NB] = {
-     [CC_OP_ADCX] = USES_CC_DST | USES_CC_SRC,
-     [CC_OP_ADOX] = USES_CC_SRC | USES_CC_SRC2,
-     [CC_OP_ADCOX] = USES_CC_DST | USES_CC_SRC | USES_CC_SRC2,
--    [CC_OP_CLR] = 0,
-     [CC_OP_POPCNT] = USES_CC_DST,
- };
- 
-@@ -803,10 +802,6 @@ static void gen_mov_eflags(DisasContext *s, TCGv reg)
-         tcg_gen_mov_tl(reg, cpu_cc_src);
-         return;
-     }
--    if (s->cc_op == CC_OP_CLR) {
--        tcg_gen_movi_tl(reg, CC_Z | CC_P);
--        return;
--    }
- 
-     dst = cpu_cc_dst;
-     src1 = cpu_cc_src;
-@@ -897,7 +892,6 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
-                              .reg2 = cpu_cc_src, .use_reg2 = true };
- 
-     case CC_OP_LOGICB ... CC_OP_LOGICQ:
--    case CC_OP_CLR:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
- 
-@@ -969,7 +963,6 @@ static CCPrepare gen_prepare_eflags_s(DisasContext *s, TCGv reg)
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_TSTNE, .reg = cpu_cc_src,
-                              .imm = CC_S };
--    case CC_OP_CLR:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
-     default:
-@@ -988,7 +981,6 @@ static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_src2,
-                              .no_setcond = true };
--    case CC_OP_CLR:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
-     case CC_OP_MULB ... CC_OP_MULQ:
-@@ -1013,8 +1005,6 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_TSTNE, .reg = cpu_cc_src,
-                              .imm = CC_Z };
--    case CC_OP_CLR:
--        return (CCPrepare) { .cond = TCG_COND_ALWAYS };
-     default:
-         {
-             MemOp size = (s->cc_op - CC_OP_ADDB) & 3;
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index fd17a9b1eca..790307dbba8 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1452,19 +1452,12 @@ static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src, TCGv
-      * C is the result of the test, Z is unchanged, and the others
-      * are all undefined.
-      */
--    switch (s->cc_op) {
--    case CC_OP_DYNAMIC:
--    case CC_OP_CLR:
--    case CC_OP_EFLAGS:
--    case CC_OP_ADCX:
--    case CC_OP_ADOX:
--    case CC_OP_ADCOX:
-+    if (s->cc_op == CC_OP_DYNAMIC || CC_OP_HAS_EFLAGS(s->cc_op)) {
-         /* Generate EFLAGS and replace the C bit.  */
-         cf = tcg_temp_new();
-         tcg_gen_setcond_tl(TCG_COND_TSTNE, cf, src, mask);
-         prepare_update_cf(decode, s, cf);
--        break;
--    default:
-+    } else {
-         /*
-          * Z was going to be computed from the non-zero status of CC_DST.
-          * We can get that same Z value (and the new C value) by leaving
-@@ -1475,7 +1468,6 @@ static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src, TCGv
-         decode->cc_dst = cpu_cc_dst;
-         decode->cc_op = ((s->cc_op - CC_OP_MULB) & 3) + CC_OP_SARB;
-         tcg_gen_shr_tl(decode->cc_src, src, s->T1);
--        break;
-     }
- }
- 
-@@ -4724,7 +4716,8 @@ static void gen_XOR(DisasContext *s, X86DecodedInsn *decode)
-         decode->op[2].unit == X86_OP_INT &&
-         decode->op[1].n == decode->op[2].n) {
-         tcg_gen_movi_tl(s->T0, 0);
--        decode->cc_op = CC_OP_CLR;
-+        decode->cc_op = CC_OP_EFLAGS;
-+        decode->cc_src = tcg_constant_tl(CC_Z | CC_P);
-     } else {
-         MemOp ot = decode->op[1].ot;
- 
+ typedef struct SegmentCache {
+     uint32_t selector;
 -- 
 2.46.2
 
