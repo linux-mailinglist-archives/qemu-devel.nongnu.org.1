@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B5E9A54DA
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730A29A54E1
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:55:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2YFO-0003Lx-7W; Sun, 20 Oct 2024 11:53:38 -0400
+	id 1t2YFN-0003Lc-VQ; Sun, 20 Oct 2024 11:53:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFL-0003LC-S0
+ id 1t2YFM-0003LD-46
  for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:53:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFK-0005P5-2r
+ id 1t2YFK-0005PF-ON
  for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:53:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729439611;
+ s=mimecast20190719; t=1729439614;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=tD++BQ9h6ta2uKNlUNxRwlSqhs8vQvZoIRKWukTm62Q=;
- b=ZbUYvO2obLH4tLOfsBtnkFb9dxH7Nr9a3vTd0XsU1ouQuiw9lYZxgYfCNL1EwAdrussaU+
- jUTO6aSovQjCQMgGnHHzkdTibob/ZjMBPPKwOfWYtjmYDzuC0RiF0rt68XS8DtaMIyKacT
- 1RhnOf3TCK2S594ser0vueshfYC2E0I=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EMwb4cqMtnHKGBA9xJPy57dYI46qDTx8J452fpJp7/c=;
+ b=MVDOIY3ATvLJh9KPPo8BM002fgfKZBQ+5SnCtE7Hc/xRM79NiR7+L6oOmC7O2NjuoewD4H
+ IbWIS3yoK1dU+cmdJ7hxUFRqrtoMqsPAYOhXSUZotu0x9N2l7bQfKDaOKSdgeUBNqNPIuv
+ ekmrzNFM0a+nU1C3E2C0+pwd5mQR+bM=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-42-QQURD0hKNIaPmkYsUoGIuA-1; Sun, 20 Oct 2024 11:53:28 -0400
-X-MC-Unique: QQURD0hKNIaPmkYsUoGIuA-1
+ us-mta-264-KS3alombNPKMMT_qbc7-HA-1; Sun, 20 Oct 2024 11:53:31 -0400
+X-MC-Unique: KS3alombNPKMMT_qbc7-HA-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43151a9ea95so22247695e9.1
- for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:53:28 -0700 (PDT)
+ 5b1f17b1804b1-4317391101aso457565e9.2
+ for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:53:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729439607; x=1730044407;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tD++BQ9h6ta2uKNlUNxRwlSqhs8vQvZoIRKWukTm62Q=;
- b=V4WHHnz6hlscCPf+UmucXAULZ8pAAoJhbKJwNPJum3lA/60hSDe8IEm0kI9Er/ed4w
- Go9kTz+mSkdXgvCfqzdOEToj9RPwT1NwGWS5asfKivWnsC08W+pKxRI7MaiDJ+402tJk
- rayBCM9XF6YljuLXPU0snHAaBLsbnmT3qnBo1aQNQ9F/oV0f/1zSL1pPUM2tN6kit1Ae
- G0SFgrn0qiafZZQetUnglQkspxQ/dcW5a72p3DeQurah5ylpKEDqQSrm31uQrzF7xkAB
- fCaTSrUikB+bfYM+cWGQatgTGslyqqRfS4Q/LPbQtQWlqoUBOWJ3NlGE3Hz6Vcsi1D2I
- bI/A==
-X-Gm-Message-State: AOJu0Ywr9Vz9cClHwn6qgFbKV/7M4pw8250qLC1KN40vVMecEYDAIi+0
- krUoyXkCCeoLIO6vfR0KezJ2h4dCg7dtYwkjehvOIG3ov4EQDPziOrVQGb2UhK23If54iO8eWhN
- 4u4kfyWqN2LtQls+cbPbchE5OqP352xpApRZx08HiOf3GUocO/F7lKXKPkbOg0e0daOYNJN/ciF
- xlF6xdOFx1ETtSwwmdwUb9eyzLQD4/SNVzZRsu8rY=
-X-Received: by 2002:a05:600c:4fd2:b0:431:15f1:421d with SMTP id
- 5b1f17b1804b1-43158760531mr86106415e9.16.1729439606760; 
- Sun, 20 Oct 2024 08:53:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmGox0vj62zqitgOre88p3xDLd8okrdL2AqeKlrZ6EhYArjxRxCYi911G/mdA6dwOueiZzTA==
-X-Received: by 2002:a05:600c:4fd2:b0:431:15f1:421d with SMTP id
- 5b1f17b1804b1-43158760531mr86106225e9.16.1729439606288; 
- Sun, 20 Oct 2024 08:53:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729439610; x=1730044410;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EMwb4cqMtnHKGBA9xJPy57dYI46qDTx8J452fpJp7/c=;
+ b=jVdNOoWQKhUuwo2ptt0bjYoH3Bk6BuV7AfGHyGe/23COteVnViEA50GhJVbPJUoLiF
+ dKzegxp2GZj9DopvQcvAtF7Xqnet1zshe5l2c9dVkvFUwN342FIU9EuLW/Y9JgJvRmKw
+ x7sSz6Vt3/3B/j9Ge0raX5/oIOeIFlNEIt9+O6al3qvrBP8lFsUidCU9vYwKmnhRNVo7
+ BhOioEvuXUre1UNDuxVxqJz7krRb76Lx8ls8oINrVCXPOEITtYjQ5YEIlQ02Rtvn1dw9
+ xwaT/t2WKNX88Sq4a1MMtu+ULdwE8qmYsK/LrIv7EHg5neTr6US4HC+oo60C9Bi4roCa
+ WRaw==
+X-Gm-Message-State: AOJu0YwP+ld+5e20V/1SevVhKTpcxvxVJMqGWThoIOkL5WkekjIh4v7e
+ x7Xtg60o5Taz7tJ71nzba12Qg6cmS1P8MEjkdrCTjDkU42ydFXjhIvVAm6uv5fkFONGQVSNdDmt
+ /0IqVJaJxvOeaEBHQlVKPqrPxHfgxR8N8FMH24lDhLXIdUhGe8G4T9vnVJ6AwQGa2jgzF7MZv3+
+ P/UM9Cm8BB4vQGwgpuDlwUw7s+THGCcvFAxHCTe6k=
+X-Received: by 2002:a05:600c:4ed2:b0:426:64a2:5362 with SMTP id
+ 5b1f17b1804b1-4316163b8bbmr63952505e9.8.1729439609801; 
+ Sun, 20 Oct 2024 08:53:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQfHN5TXu0JflghqLSw/jVxhSR+lR6woc1hz0kzri/1mvHNFCwU+0Vc/pW1+SV2XtJ8LkFug==
+X-Received: by 2002:a05:600c:4ed2:b0:426:64a2:5362 with SMTP id
+ 5b1f17b1804b1-4316163b8bbmr63952365e9.8.1729439609293; 
+ Sun, 20 Oct 2024 08:53:29 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f5c2cb8sm27174105e9.31.2024.10.20.08.53.25
+ 5b1f17b1804b1-4316f58ae9bsm27070935e9.21.2024.10.20.08.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Oct 2024 08:53:25 -0700 (PDT)
+ Sun, 20 Oct 2024 08:53:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 00/14] target/i386: miscellaneous flags improvements
-Date: Sun, 20 Oct 2024 17:53:10 +0200
-Message-ID: <20241020155324.35273-1-pbonzini@redhat.com>
+Subject: [PATCH 01/14] target/i386: use tcg_gen_ext_tl when applicable
+Date: Sun, 20 Oct 2024 17:53:11 +0200
+Message-ID: <20241020155324.35273-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241020155324.35273-1-pbonzini@redhat.com>
+References: <20241020155324.35273-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -97,67 +100,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This includes improved translation of checks, microoptimization of the
-helpers, and improvements to the cc_op_* functions from Richard.
+Prefer it to gen_ext_tl in the common case where the destination is known.
 
-Unlike his original patches[1] I didn't convert cc_op_live() to a switch
-statement, instead keeping the array but making sure that all of its
-entries are nonzero.  The only zero entry was CC_OP_CLR, which is now
-changed to spill the constant value of EFLAGS to cc_op_src.  While this
-has a 0.2% cost in number of TCG ops, getting rid of the special
-case for CC_OP_CLR makes it even easier to optimize computation of ZF
-from CC_OP_DYNAMIC; this is quite common, for example in switch
-statements that have CMP/JG/JE sequences (JE followed JL/JG/JA/JB seems
-less common than the opposite, though that's not universal).
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/translate.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-On a quick-and-dirty run of "ls -lR", the changes add ~750 spills of
-0x44 to cc_op_src; but it also reduces to one half the calls to
-cc_compute_all (most of them are completely eliminated), and that
-is a lot more expensive.
-
-One thing I noticed is that those spills are really huge (11 bytes).
-It might help to move cc_* at the very beginning of CPUX86State, because
-the number of accesses to cc_* is comparable to the number of accesses
-to registers (despite cc_* being mostly written, while registers are
-both read and written).
-
-Thanks,
-
-Paolo
-
-[1] https://patchew.org/QEMU/20240701025115.1265117-1-richard.henderson@linaro.org/
-
-Paolo Bonzini (10):
-  target/i386: use tcg_gen_ext_tl when applicable
-  target/i386: remove CC_OP_CLR
-  target/i386: optimize computation of ZF from CC_OP_DYNAMIC
-  target/i386: optimize TEST+Jxx sequences
-  target/i386: add a few more trivial CCPrepare cases
-  target/i386: add a note about gen_jcc1
-  target/i386: make flag variables unsigned
-  target/i386: use builtin popcnt or parity to compute PF, if available
-  target/i386: use higher-precision arithmetic to compute CF
-  target/i386: use + to put flags together
-
-Richard Henderson (4):
-  target/i386: Tidy cc_op_str usage
-  target/i386: Rearrange CCOp
-  target/i386: Introduce cc_op_size
-  target/i386: Wrap cc_op_live with a validity check
-
- include/qemu/host-utils.h                |  16 +++
- target/i386/cpu.h                        |  33 ++++--
- target/i386/helper.h                     |   1 +
- target/i386/tcg/helper-tcg.h             |  12 +++
- target/i386/tcg/cc_helper_template.h.inc | 127 +++++++++++++++--------
- target/i386/cpu-dump.c                   |  18 ++--
- target/i386/tcg/cc_helper.c              |  25 ++++-
- target/i386/tcg/int_helper.c             |   4 +-
- target/i386/tcg/translate.c              | 103 ++++++++++++------
- target/i386/tcg/decode-new.c.inc         |   2 +-
- target/i386/tcg/emit.c.inc               |  24 ++---
- 11 files changed, 249 insertions(+), 116 deletions(-)
-
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index ef190416b49..dc308f31041 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -883,16 +883,16 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+     case CC_OP_SUBB ... CC_OP_SUBQ:
+         /* (DATA_TYPE)CC_SRCT < (DATA_TYPE)CC_SRC */
+         size = s->cc_op - CC_OP_SUBB;
+-        gen_ext_tl(s->cc_srcT, s->cc_srcT, size, false);
+-        gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++        tcg_gen_ext_tl(s->cc_srcT, s->cc_srcT, size);
++        tcg_gen_ext_tl(cpu_cc_src, cpu_cc_src, size);
+         return (CCPrepare) { .cond = TCG_COND_LTU, .reg = s->cc_srcT,
+                              .reg2 = cpu_cc_src, .use_reg2 = true };
+ 
+     case CC_OP_ADDB ... CC_OP_ADDQ:
+         /* (DATA_TYPE)CC_DST < (DATA_TYPE)CC_SRC */
+         size = s->cc_op - CC_OP_ADDB;
+-        gen_ext_tl(cpu_cc_dst, cpu_cc_dst, size, false);
+-        gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++        tcg_gen_ext_tl(cpu_cc_dst, cpu_cc_dst, size);
++        tcg_gen_ext_tl(cpu_cc_src, cpu_cc_src, size);
+         return (CCPrepare) { .cond = TCG_COND_LTU, .reg = cpu_cc_dst,
+                              .reg2 = cpu_cc_src, .use_reg2 = true };
+ 
+@@ -1041,8 +1041,8 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
+         size = s->cc_op - CC_OP_SUBB;
+         switch (jcc_op) {
+         case JCC_BE:
+-            gen_ext_tl(s->cc_srcT, s->cc_srcT, size, false);
+-            gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++            tcg_gen_ext_tl(s->cc_srcT, s->cc_srcT, size);
++            tcg_gen_ext_tl(cpu_cc_src, cpu_cc_src, size);
+             cc = (CCPrepare) { .cond = TCG_COND_LEU, .reg = s->cc_srcT,
+                                .reg2 = cpu_cc_src, .use_reg2 = true };
+             break;
+@@ -1052,8 +1052,8 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
+         case JCC_LE:
+             cond = TCG_COND_LE;
+         fast_jcc_l:
+-            gen_ext_tl(s->cc_srcT, s->cc_srcT, size, true);
+-            gen_ext_tl(cpu_cc_src, cpu_cc_src, size, true);
++            tcg_gen_ext_tl(s->cc_srcT, s->cc_srcT, size | MO_SIGN);
++            tcg_gen_ext_tl(cpu_cc_src, cpu_cc_src, size | MO_SIGN);
+             cc = (CCPrepare) { .cond = cond, .reg = s->cc_srcT,
+                                .reg2 = cpu_cc_src, .use_reg2 = true };
+             break;
 -- 
 2.46.2
 
