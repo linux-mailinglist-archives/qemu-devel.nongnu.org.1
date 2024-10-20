@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A639A54E2
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A31429A54DE
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 17:55:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2YGD-0003hf-MV; Sun, 20 Oct 2024 11:54:29 -0400
+	id 1t2YGD-0003hz-OL; Sun, 20 Oct 2024 11:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFx-0003On-GG
- for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:54:15 -0400
+ id 1t2YG3-0003Us-Gh
+ for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:54:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2YFv-0005RX-QO
- for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:54:13 -0400
+ id 1t2YG1-0005Rt-5s
+ for qemu-devel@nongnu.org; Sun, 20 Oct 2024 11:54:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729439650;
+ s=mimecast20190719; t=1729439656;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=puHKtdYSByTzsLL6YmkC2GAWqDoPkcpbu5iM6Kyqj54=;
- b=Nz4zIPC0TyS8ncIS9x09uzaEf+MG2HH30lHFSPendb/mxhnzCTeZXI+mfAnSiOaJB3LPiI
- 6rbjg5J5+7S8w+pEA713m5jVeysPEM3stwvQp4suVaXw5t/1gxLExP4lkx7jr02LMk/nlQ
- 00z7wBj6nB/hhCf2WJShrOn3s5g1YGo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rdCTjRuJWU9eu1zEMJ2p20wsDU/+YEzfRzwCWhFB3yM=;
+ b=CXdsvnOa5C/j30ATpnxii9qOQDFM5Vz+5cYg5+I9Qbzc/NydE7nle8RpRJsCwUv17W641A
+ 0LmhWN5d4CPG0A6t+fzyA+eGSHHYRpDjxBCY7HrZd/1sBskHLQznu5QkGt3HDRTV+AMp9Z
+ gfxWdcDcw3vg+B4+qChHY0Xo8ALwoxA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-e8e5t7HwPCu7KjFE2Xh9wA-1; Sun, 20 Oct 2024 11:54:09 -0400
-X-MC-Unique: e8e5t7HwPCu7KjFE2Xh9wA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-431518ae047so22293275e9.0
- for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:54:08 -0700 (PDT)
+ us-mta-622-NxBTyTQzMoKA4weyoH27QQ-1; Sun, 20 Oct 2024 11:54:13 -0400
+X-MC-Unique: NxBTyTQzMoKA4weyoH27QQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d5a3afa84so1859821f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 08:54:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729439647; x=1730044447;
+ d=1e100.net; s=20230601; t=1729439651; x=1730044451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=puHKtdYSByTzsLL6YmkC2GAWqDoPkcpbu5iM6Kyqj54=;
- b=ROPcz4MzLLLyoFq8PQQW/ARmUWp1YKUTYwNaiNbQum8S6l0p3eo6aN2YaKsb73/alw
- IYfCfy2efZd+tuyBdNb4yIiWdJnyEm1Wh/aEiv9BbEMk6qCwjpR0ebTEjkYQw3XU/EU2
- vCLB1khdxAjkjvL2lm0jEV3uPbUdEbkM+Oc1SKoQGMrAnCxTq2hjkWr7YwI5x8XcqtBH
- Ua3L6doyA37fjonVfHZPy75DZQFlKLmhVOCwqBcCG0lb+GicrVFN3wJeR5t+5PaoIOXM
- R6ey+Wad3QrybhSEREZRXQ26kMHpjPvYRJ9OSthIqzRlot3/BrhnNjo8iuZwA80ykL9p
- cKfg==
-X-Gm-Message-State: AOJu0YwSLVPWRl9TPIBt69cYpawW2/6b613mA5x5sKfljCPjhpXfSp9u
- WqevpGQ8I8wBhqmC4BJ/ylBvj3RtvbhuLfWgRID60gwM545L0ASjRaIZaJUk3oN7mUL0ifMTrJr
- UFO3+ZG8giRO2e/CwsQQns1WB3Ak5YS9/qrUGT7GYQC5XV51lhWIld5GEa7PhWvSp7h2jue+mPp
- 7Jj5ytTynuDscFWcEbsZLNJVRh4dg+jpd1L+Pg2DE=
-X-Received: by 2002:a05:600c:511c:b0:430:56f5:4d1f with SMTP id
- 5b1f17b1804b1-431586fc549mr74756155e9.2.1729439646841; 
- Sun, 20 Oct 2024 08:54:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxc5DRFb/uEe0C0BIK2MYpByrUuLmhNMTr70RIymtc9wedP82J5pjzpcd7CyaAlbN/GtxCIg==
-X-Received: by 2002:a05:600c:511c:b0:430:56f5:4d1f with SMTP id
- 5b1f17b1804b1-431586fc549mr74756005e9.2.1729439646383; 
- Sun, 20 Oct 2024 08:54:06 -0700 (PDT)
+ bh=rdCTjRuJWU9eu1zEMJ2p20wsDU/+YEzfRzwCWhFB3yM=;
+ b=TvwjKeKvTpK7X1iEmDSyVj51RIlXseWgLwKUchoZ1lfLFv3TR3PuHupH1SCTlZqQut
+ nuaaGi3JbkQSKW/3LlREV2lpF/96Z7NuUgPs36uLPEoNocttJZM9oNC5Q0+sqM2RBwdV
+ kJcieDrbSx+Nh/vttzT7yuTo0B98Llu1OMHaw2wm3BlRJh/kxoSXW0xKXKBHsokhMbfM
+ qeGYEI9i5bqq8DMefZr+HYVxjnwMpy8Y38MJHkCgwkyksQPUPvorT/3xkTtS2Zxl6meC
+ 7TJbcQn45ahkSvBZOmh0ZFKDnLrQD9LL3b8QTK+fBVOJZBkZxg93gXN913u1mZRpn6M1
+ veqw==
+X-Gm-Message-State: AOJu0YxdK7k5HL35koI7CtW5mqV2gKf2fFeUkuwSwKDCRuYwsVcDLfK2
+ sf1O9YyRqCJWoABFKZqJFcX8eNbmbLVdnJ0A16jndVE854UjshgOB7g7yGmcuZ5euBIIKLQxpQE
+ nu70oXfxn5NMOoZA6NpdvSquIE3wem2HWdVkt3EdDJlZvQMK/U6B0b5Xw9EDzMjTCpKGzkCZOhx
+ aKkK2ocditBlw7k1e52/x6dHOTc8gniZYjmDssG2o=
+X-Received: by 2002:adf:f6d2:0:b0:37c:d299:b5f0 with SMTP id
+ ffacd0b85a97d-37eab6ec6camr5327420f8f.59.1729439650906; 
+ Sun, 20 Oct 2024 08:54:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYWBXyX46VYVA7kzUy0SkLvAFBfoAYjzVeL4dAj59yP8wZStDJT74AzOHqBwAPxGhzbkSWuw==
+X-Received: by 2002:adf:f6d2:0:b0:37c:d299:b5f0 with SMTP id
+ ffacd0b85a97d-37eab6ec6camr5327412f8f.59.1729439650386; 
+ Sun, 20 Oct 2024 08:54:10 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37ee0a37bb5sm2015074f8f.7.2024.10.20.08.54.05
+ ffacd0b85a97d-37ee0ba7dffsm1991213f8f.116.2024.10.20.08.54.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Oct 2024 08:54:05 -0700 (PDT)
+ Sun, 20 Oct 2024 08:54:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 12/14] target/i386: use builtin popcnt or parity to compute PF,
- if available
-Date: Sun, 20 Oct 2024 17:53:22 +0200
-Message-ID: <20241020155324.35273-13-pbonzini@redhat.com>
+Subject: [PATCH 13/14] target/i386: use higher-precision arithmetic to compute
+ CF
+Date: Sun, 20 Oct 2024 17:53:23 +0200
+Message-ID: <20241020155324.35273-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241020155324.35273-1-pbonzini@redhat.com>
 References: <20241020155324.35273-1-pbonzini@redhat.com>
@@ -101,219 +101,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This removes the 256 byte parity table from the executable on
-x86, s390 and RISC-V/zbb hosts.
-
+If the operands of the arithmetic instruction fit within a half-register,
+it's easiest to use a comparison instruction to compute the carry.
+`
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/host-utils.h                | 16 ++++++++++++++++
- target/i386/tcg/helper-tcg.h             | 12 ++++++++++++
- target/i386/tcg/cc_helper_template.h.inc | 20 ++++++++++----------
- target/i386/tcg/cc_helper.c              |  2 ++
- target/i386/tcg/int_helper.c             |  4 ++--
- 5 files changed, 42 insertions(+), 12 deletions(-)
+ target/i386/tcg/cc_helper_template.h.inc | 37 ++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-index ead97d354d6..bd4c684e5b5 100644
---- a/include/qemu/host-utils.h
-+++ b/include/qemu/host-utils.h
-@@ -126,6 +126,13 @@ static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
- }
- #endif
- 
-+#if defined __POPCNT__ || defined __s390x__|| defined __riscv_zbb
-+#define HAVE_FAST_CTPOP 1
-+#endif
-+#if defined __i386__ || defined __x86_64__ || defined HAVE_FAST_CTPOP
-+#define HAVE_FAST_PARITY8 1
-+#endif
-+
- /**
-  * clz8 - count leading zeros in a 8-bit value.
-  * @val: The value to search
-@@ -313,6 +320,15 @@ static inline int ctpop8(uint8_t val)
-     return __builtin_popcount(val);
- }
- 
-+/*
-+ * parity8 - return the parity (1 = odd) of an 8-bit value.
-+ * @val: The value to search
-+ */
-+static inline int parity8(uint8_t val)
-+{
-+    return __builtin_parity(val);
-+}
-+
- /**
-  * ctpop16 - count the population of one bits in a 16-bit value.
-  * @val: The value to search
-diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
-index 15d6c6f8b4f..fb6354873d1 100644
---- a/target/i386/tcg/helper-tcg.h
-+++ b/target/i386/tcg/helper-tcg.h
-@@ -21,6 +21,7 @@
- #define I386_HELPER_TCG_H
- 
- #include "exec/exec-all.h"
-+#include "qemu/host-utils.h"
- 
- /* Maximum instruction code size */
- #define TARGET_MAX_INSN_SIZE 16
-@@ -87,7 +88,18 @@ G_NORETURN void x86_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
- #endif
- 
- /* cc_helper.c */
-+#ifdef HAVE_FAST_PARITY8
-+static inline unsigned int compute_pf(uint8_t x)
-+{
-+    return !parity8(x) * CC_P;
-+}
-+#else
- extern const uint8_t parity_table[256];
-+static inline unsigned int compute_pf(uint8_t x)
-+{
-+    return parity_table[x];
-+}
-+#endif
- 
- /* misc_helper.c */
- void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
 diff --git a/target/i386/tcg/cc_helper_template.h.inc b/target/i386/tcg/cc_helper_template.h.inc
-index 4cbbc73c3cd..8af8b8539f9 100644
+index 8af8b8539f9..f29a6dfb77c 100644
 --- a/target/i386/tcg/cc_helper_template.h.inc
 +++ b/target/i386/tcg/cc_helper_template.h.inc
-@@ -45,7 +45,7 @@ static uint32_t glue(compute_all_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     DATA_TYPE src2 = dst - src1;
- 
-     cf = dst < src1;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & CC_A;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -65,7 +65,7 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+@@ -22,12 +22,17 @@
+ #if DATA_BITS == 8
+ #define SUFFIX b
+ #define DATA_TYPE uint8_t
++#define WIDER_TYPE uint32_t
+ #elif DATA_BITS == 16
+ #define SUFFIX w
+ #define DATA_TYPE uint16_t
++#define WIDER_TYPE uint32_t
+ #elif DATA_BITS == 32
+ #define SUFFIX l
+ #define DATA_TYPE uint32_t
++#if HOST_LONG_BITS <= 64
++#define WIDER_TYPE uint64_t
++#endif
+ #elif DATA_BITS == 64
+ #define SUFFIX q
+ #define DATA_TYPE uint64_t
+@@ -62,9 +67,18 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+                                          DATA_TYPE src3)
+ {
+     uint32_t cf, pf, af, zf, sf, of;
++
++#ifdef WIDER_TYPE
++    WIDER_TYPE src13 = (WIDER_TYPE) src1 + (WIDER_TYPE) src3;
++    DATA_TYPE src2 = dst - src13;
++
++    cf = dst < src13;
++#else
      DATA_TYPE src2 = dst - src1 - src3;
  
      cf = (src3 ? dst <= src1 : dst < src1);
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
++#endif
++
+     pf = compute_pf(dst);
      af = (dst ^ src1 ^ src2) & 0x10;
      zf = (dst == 0) << 6;
-     sf = lshift(dst, 8 - DATA_BITS) & 0x80;
-@@ -85,7 +85,7 @@ static uint32_t glue(compute_all_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
-     DATA_TYPE src1 = dst + src2;
+@@ -76,7 +90,13 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+ static int glue(compute_c_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+                                        DATA_TYPE src3)
+ {
++#ifdef WIDER_TYPE
++    WIDER_TYPE src13 = (WIDER_TYPE) src1 + (WIDER_TYPE) src3;
++
++    return dst < src13;
++#else
+     return src3 ? dst <= src1 : dst < src1;
++#endif
+ }
  
-     cf = src1 < src2;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & CC_A;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -107,7 +107,7 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
+ static uint32_t glue(compute_all_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
+@@ -104,9 +124,18 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
+                                          DATA_TYPE src3)
+ {
+     uint32_t cf, pf, af, zf, sf, of;
++
++#ifdef WIDER_TYPE
++    WIDER_TYPE src23 = (WIDER_TYPE) src2 + (WIDER_TYPE) src3;
++    DATA_TYPE src1 = dst + src23;
++
++    cf = src1 < src23;
++#else
      DATA_TYPE src1 = dst + src2 + src3;
  
      cf = (src3 ? src1 <= src2 : src1 < src2);
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
++#endif
++
+     pf = compute_pf(dst);
      af = (dst ^ src1 ^ src2) & 0x10;
      zf = (dst == 0) << 6;
-     sf = lshift(dst, 8 - DATA_BITS) & 0x80;
-@@ -128,7 +128,7 @@ static uint32_t glue(compute_all_logic, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     uint32_t cf, pf, af, zf, sf, of;
+@@ -118,9 +147,16 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
+ static int glue(compute_c_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
+                                        DATA_TYPE src3)
+ {
++#ifdef WIDER_TYPE
++    WIDER_TYPE src23 = (WIDER_TYPE) src2 + (WIDER_TYPE) src3;
++    DATA_TYPE src1 = dst + src23;
++
++    return src1 < src23;
++#else
+     DATA_TYPE src1 = dst + src2 + src3;
  
-     cf = 0;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = 0;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -144,7 +144,7 @@ static uint32_t glue(compute_all_inc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     cf = src1;
-     src1 = dst - 1;
-     src2 = 1;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & CC_A;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -160,7 +160,7 @@ static uint32_t glue(compute_all_dec, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     cf = src1;
-     src1 = dst + 1;
-     src2 = 1;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & CC_A;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -173,7 +173,7 @@ static uint32_t glue(compute_all_shl, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     uint32_t cf, pf, af, zf, sf, of;
- 
-     cf = (src1 >> (DATA_BITS - 1)) & CC_C;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = 0; /* undefined */
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -192,7 +192,7 @@ static uint32_t glue(compute_all_sar, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-     uint32_t cf, pf, af, zf, sf, of;
- 
-     cf = src1 & 1;
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = 0; /* undefined */
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-@@ -209,7 +209,7 @@ static uint32_t glue(compute_all_mul, SUFFIX)(DATA_TYPE dst, target_long src1)
-     uint32_t cf, pf, af, zf, sf, of;
- 
-     cf = (src1 != 0);
--    pf = parity_table[(uint8_t)dst];
-+    pf = compute_pf(dst);
-     af = 0; /* undefined */
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
-diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
-index c24e6a14c07..d65345f059d 100644
---- a/target/i386/tcg/cc_helper.c
-+++ b/target/i386/tcg/cc_helper.c
-@@ -22,6 +22,7 @@
- #include "exec/helper-proto.h"
- #include "helper-tcg.h"
- 
-+#ifndef HAVE_FAST_PARITY8
- const uint8_t parity_table[256] = {
-     CC_P, 0, 0, CC_P, 0, CC_P, CC_P, 0,
-     0, CC_P, CC_P, 0, CC_P, 0, 0, CC_P,
-@@ -56,6 +57,7 @@ const uint8_t parity_table[256] = {
-     CC_P, 0, 0, CC_P, 0, CC_P, CC_P, 0,
-     0, CC_P, CC_P, 0, CC_P, 0, 0, CC_P,
- };
+     return (src3 ? src1 <= src2 : src1 < src2);
 +#endif
+ }
  
- #define SHIFT 0
- #include "cc_helper_template.h.inc"
-diff --git a/target/i386/tcg/int_helper.c b/target/i386/tcg/int_helper.c
-index e1f92405282..1a02e9d8434 100644
---- a/target/i386/tcg/int_helper.c
-+++ b/target/i386/tcg/int_helper.c
-@@ -237,7 +237,7 @@ void helper_daa(CPUX86State *env)
-     env->regs[R_EAX] = (env->regs[R_EAX] & ~0xff) | al;
-     /* well, speed is not an issue here, so we compute the flags by hand */
-     eflags |= (al == 0) << 6; /* zf */
--    eflags |= parity_table[al]; /* pf */
-+    eflags |= compute_pf(al);
-     eflags |= (al & 0x80); /* sf */
-     CC_SRC = eflags;
-     CC_OP = CC_OP_EFLAGS;
-@@ -269,7 +269,7 @@ void helper_das(CPUX86State *env)
-     env->regs[R_EAX] = (env->regs[R_EAX] & ~0xff) | al;
-     /* well, speed is not an issue here, so we compute the flags by hand */
-     eflags |= (al == 0) << 6; /* zf */
--    eflags |= parity_table[al]; /* pf */
-+    eflags |= compute_pf(al);
-     eflags |= (al & 0x80); /* sf */
-     CC_SRC = eflags;
-     CC_OP = CC_OP_EFLAGS;
+ static uint32_t glue(compute_all_logic, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -258,3 +294,4 @@ static int glue(compute_c_blsi, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+ #undef DATA_TYPE
+ #undef DATA_MASK
+ #undef SUFFIX
++#undef WIDER_TYPE
 -- 
 2.46.2
 
