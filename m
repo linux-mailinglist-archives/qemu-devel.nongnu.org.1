@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8849A51EB
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 03:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AE39A51E7
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 03:32:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2Klq-0008OO-AU; Sat, 19 Oct 2024 21:30:14 -0400
+	id 1t2Klt-0008QC-1s; Sat, 19 Oct 2024 21:30:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1t2Kln-0008NM-Ul; Sat, 19 Oct 2024 21:30:11 -0400
+ id 1t2Klq-0008Ow-Hj; Sat, 19 Oct 2024 21:30:14 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1t2Klm-0005OL-07; Sat, 19 Oct 2024 21:30:11 -0400
+ id 1t2Klo-0005Oa-IW; Sat, 19 Oct 2024 21:30:14 -0400
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49JLldSN000320;
- Sun, 20 Oct 2024 01:30:08 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49K1H4QB017592;
+ Sun, 20 Oct 2024 01:30:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=3baPwsJ4d9/44iWyL
- E2uKRwn3a4yRi/xHKhWUigxytk=; b=Ku7eyp2jkpOPnnQ7xB6XCs6LQLeoPX+NG
- QRouuTvrzah4+QoRSAB+VtGVV8PVwHAOahvvaMvXMQZ++u+dQzsq7w3Fv79HBa5q
- TKP3DB3g+blXR4JJ6PACDMKElpYMFa4AmHZxps4bVvGIpXwHvwM0Jm7aAs3tp3jK
- SdvxE69KCvW8ddchVZm8NghL+uyzbIrZLcOY4gxpdjn4wNyhRB6ouOxWpHmL+E74
- 3EYnMJ3QW3tmFNdV6S6+p/TdADuW1KxmNqOykk5HTVWVHEQnzTJQrtihRo0Pd47b
- Ua8RBKaf9RXlW2i0Qd6HsW76ueiICnAHtX+5/eu0NZJ+AtwzRdpoA==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42c5h2u6hw-1
+ :mime-version:references:subject:to; s=pp1; bh=eFmqnFXnvrc0cV7wb
+ NrCoh/lWeqHjrMafgELnZt1vS8=; b=izJu511c3za7dyXhk4Eb/NAAol1jgbg2p
+ bDZ8yTX/huKqOpvnn4cdeufeMj9TEHnwLDrAXNhHHNMnpFlU0jd0UObNh589SsQv
+ yhvUQZjAjU6PxXudDYveIpaFMcWeEISHFoUslSxLCkOfPZ6VXsQ769d0uiIEq+GJ
+ 4jBYLRbAnbfYbZ0sbfnZf2gl0yiFcrvzXaqo6M5/YQIMv7EQ/Qb5A64f6nTt33ts
+ ywKCxXxFnQUYkbImqe5wJq6ptakONReRWRLeY050a8QnDiziqGqQUFxgTdzTsJvw
+ IwMVHhu7YyK0iYnzDjNH/S37I/E6hENilwj68jLfllzTiKJ7D7RhA==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42c5h2u6j0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 20 Oct 2024 01:30:08 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49K1LVR4005946;
- Sun, 20 Oct 2024 01:30:07 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428651k9he-1
+ Sun, 20 Oct 2024 01:30:10 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49K0bIVk028879;
+ Sun, 20 Oct 2024 01:30:09 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42cqfx84wr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 20 Oct 2024 01:30:07 +0000
+ Sun, 20 Oct 2024 01:30:09 +0000
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
  [10.39.53.230])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49K1U6jb46465410
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49K1U7qY52822512
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 20 Oct 2024 01:30:06 GMT
+ Sun, 20 Oct 2024 01:30:08 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 305F45805F;
- Sun, 20 Oct 2024 01:30:06 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B152D58064;
+ Sun, 20 Oct 2024 01:30:07 +0000 (GMT)
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8197D5805A;
- Sun, 20 Oct 2024 01:30:05 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 044795805C;
+ Sun, 20 Oct 2024 01:30:07 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.54.50])
  by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 20 Oct 2024 01:30:05 +0000 (GMT)
+ Sun, 20 Oct 2024 01:30:06 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
-Subject: [PATCH v5 06/19] docs/system/s390x/bootdevices: Update the
- documentation about network booting
-Date: Sat, 19 Oct 2024 21:29:40 -0400
-Message-ID: <20241020012953.1380075-7-jrossi@linux.ibm.com>
+Subject: [PATCH v5 07/19] pc-bios/s390-ccw: Remove panics from ISO IPL path
+Date: Sat, 19 Oct 2024 21:29:41 -0400
+Message-ID: <20241020012953.1380075-8-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20241020012953.1380075-1-jrossi@linux.ibm.com>
 References: <20241020012953.1380075-1-jrossi@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cCRNL62IssOueBBfT4jDAaTPhXoM2cek
-X-Proofpoint-ORIG-GUID: cCRNL62IssOueBBfT4jDAaTPhXoM2cek
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sH_gkzeU5CZzHf13tfyJ5VXG3mKYBxm-
+X-Proofpoint-ORIG-GUID: sH_gkzeU5CZzHf13tfyJ5VXG3mKYBxm-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=948
+ mlxscore=0 mlxlogscore=999
  adultscore=0 clxscore=1015 phishscore=0 spamscore=0 suspectscore=0
  priorityscore=1501 impostorscore=0 lowpriorityscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
@@ -107,50 +105,253 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Remove the information about the separate s390-netboot.img from
-the documentation.
+Remove panic-on-error from IPL ISO El Torito specific functions so that error
+recovery may be possible in the future.
 
-Co-authored by: Thomas Huth <thuth@redhat.com>
+Functions that would previously panic now provide a return code.
+
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 ---
- docs/system/s390x/bootdevices.rst | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ pc-bios/s390-ccw/bootmap.h  | 15 +++----
+ pc-bios/s390-ccw/s390-ccw.h |  1 +
+ pc-bios/s390-ccw/bootmap.c  | 87 ++++++++++++++++++++++++-------------
+ 3 files changed, 65 insertions(+), 38 deletions(-)
 
-diff --git a/docs/system/s390x/bootdevices.rst b/docs/system/s390x/bootdevices.rst
-index 1a7a18b43b..c97efb8fc0 100644
---- a/docs/system/s390x/bootdevices.rst
-+++ b/docs/system/s390x/bootdevices.rst
-@@ -82,23 +82,17 @@ Note that ``0`` can be used to boot the default entry.
- Booting from a network device
- -----------------------------
+diff --git a/pc-bios/s390-ccw/bootmap.h b/pc-bios/s390-ccw/bootmap.h
+index 4a7d8a91f1..3cb573b86b 100644
+--- a/pc-bios/s390-ccw/bootmap.h
++++ b/pc-bios/s390-ccw/bootmap.h
+@@ -385,17 +385,14 @@ static inline uint32_t iso_733_to_u32(uint64_t x)
  
--Beside the normal guest firmware (which is loaded from the file ``s390-ccw.img``
--in the data directory of QEMU, or via the ``-bios`` option), QEMU ships with
--a small TFTP network bootloader firmware for virtio-net-ccw devices, too. This
--firmware is loaded from a file called ``s390-netboot.img`` in the QEMU data
--directory. In case you want to load it from a different filename instead,
--you can specify it via the ``-global s390-ipl.netboot_fw=filename``
--command line option.
+ #define ISO_PRIMARY_VD_SECTOR 16
+ 
+-static inline void read_iso_sector(uint32_t block_offset, void *buf,
+-                                   const char *errmsg)
+-{
+-    IPL_assert(virtio_read_many(block_offset, buf, 1) == 0, errmsg);
+-}
 -
--The ``bootindex`` property is especially important for booting via the network.
--If you don't specify the ``bootindex`` property here, the network bootloader
--firmware code won't get loaded into the guest memory so that the network boot
--will fail. For a successful network boot, try something like this::
-+The firmware that ships with QEMU includes a small TFTP network bootloader
-+for virtio-net-ccw devices.  The ``bootindex`` property is especially
-+important for booting via the network. If you don't specify the ``bootindex``
-+property here, the network bootloader won't be taken into consideration and
-+the network boot will fail. For a successful network boot, try something
-+like this::
+-static inline void read_iso_boot_image(uint32_t block_offset, void *load_addr,
++static inline int read_iso_boot_image(uint32_t block_offset, void *load_addr,
+                                        uint32_t blks_to_load)
+ {
+-    IPL_assert(virtio_read_many(block_offset, load_addr, blks_to_load) == 0,
+-               "Failed to read boot image!");
++    if (virtio_read_many(block_offset, load_addr, blks_to_load)) {
++        puts("Failed to read boot image!");
++        return -1;
++    }
++    return 0;
+ }
  
-  qemu-system-s390x -netdev user,id=n1,tftp=...,bootfile=... \
-                    -device virtio-net-ccw,netdev=n1,bootindex=1
+ #define ISO9660_MAX_DIR_DEPTH 8
+diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+index 6abb34e563..3e844abd71 100644
+--- a/pc-bios/s390-ccw/s390-ccw.h
++++ b/pc-bios/s390-ccw/s390-ccw.h
+@@ -30,6 +30,7 @@ typedef unsigned long long u64;
+ #define EIO     1
+ #define EBUSY   2
+ #define ENODEV  3
++#define EINVAL  4
  
--The network bootloader firmware also has basic support for pxelinux.cfg-style
-+The network bootloader also has basic support for pxelinux.cfg-style
- configuration files. See the `PXELINUX Configuration page
- <https://wiki.syslinux.org/wiki/index.php?title=PXELINUX#Configuration>`__
- for details how to set up the configuration file on your TFTP server.
+ #ifndef MIN
+ #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
+index 414c3f1b47..af73254acb 100644
+--- a/pc-bios/s390-ccw/bootmap.c
++++ b/pc-bios/s390-ccw/bootmap.c
+@@ -678,8 +678,10 @@ static bool is_iso_bc_entry_compatible(IsoBcSection *s)
+     if (s->unused || !s->sector_count) {
+         return false;
+     }
+-    read_iso_sector(bswap32(s->load_rba), magic_sec,
+-                    "Failed to read image sector 0");
++    if (virtio_read(bswap32(s->load_rba), magic_sec)) {
++        puts("Failed to read image sector 0");
++        return false;
++    }
+ 
+     /* Checking bytes 8 - 32 for S390 Linux magic */
+     return !memcmp(magic_sec + 8, linux_s390_magic, 24);
+@@ -692,28 +694,35 @@ static uint32_t sec_offset[ISO9660_MAX_DIR_DEPTH];
+ /* Remained directory space in bytes */
+ static uint32_t dir_rem[ISO9660_MAX_DIR_DEPTH];
+ 
+-static inline uint32_t iso_get_file_size(uint32_t load_rba)
++static inline long iso_get_file_size(uint32_t load_rba)
+ {
+     IsoVolDesc *vd = (IsoVolDesc *)sec;
+     IsoDirHdr *cur_record = &vd->vd.primary.rootdir;
+     uint8_t *temp = sec + ISO_SECTOR_SIZE;
+     int level = 0;
+ 
+-    read_iso_sector(ISO_PRIMARY_VD_SECTOR, sec,
+-                    "Failed to read ISO primary descriptor");
++    if (virtio_read(ISO_PRIMARY_VD_SECTOR, sec)) {
++        puts("Failed to read ISO primary descriptor");
++        return -EIO;
++    }
++
+     sec_loc[0] = iso_733_to_u32(cur_record->ext_loc);
+     dir_rem[0] = 0;
+     sec_offset[0] = 0;
+ 
+     while (level >= 0) {
+-        IPL_assert(sec_offset[level] <= ISO_SECTOR_SIZE,
+-                   "Directory tree structure violation");
++        if (sec_offset[level] > ISO_SECTOR_SIZE) {
++            puts("Directory tree structure violation");
++            return -EIO;
++        }
+ 
+         cur_record = (IsoDirHdr *)(temp + sec_offset[level]);
+ 
+         if (sec_offset[level] == 0) {
+-            read_iso_sector(sec_loc[level], temp,
+-                            "Failed to read ISO directory");
++            if (virtio_read(sec_loc[level], temp)) {
++                puts("Failed to read ISO directory");
++                return -EIO;
++            }
+             if (dir_rem[level] == 0) {
+                 /* Skip self and parent records */
+                 dir_rem[level] = iso_733_to_u32(cur_record->data_len) -
+@@ -758,8 +767,10 @@ static inline uint32_t iso_get_file_size(uint32_t load_rba)
+         if (dir_rem[level] == 0) {
+             /* Nothing remaining */
+             level--;
+-            read_iso_sector(sec_loc[level], temp,
+-                            "Failed to read ISO directory");
++            if (virtio_read(sec_loc[level], temp)) {
++                puts("Failed to read ISO directory");
++                return -EIO;
++            }
+         }
+     }
+ 
+@@ -774,19 +785,24 @@ static void load_iso_bc_entry(IsoBcSection *load)
+      * is padded and ISO_SECTOR_SIZE bytes aligned
+      */
+     uint32_t blks_to_load = bswap16(s.sector_count) >> ET_SECTOR_SHIFT;
+-    uint32_t real_size = iso_get_file_size(bswap32(s.load_rba));
++    long real_size = iso_get_file_size(bswap32(s.load_rba));
+ 
+-    if (real_size) {
++    if (real_size > 0) {
+         /* Round up blocks to load */
+         blks_to_load = (real_size + ISO_SECTOR_SIZE - 1) / ISO_SECTOR_SIZE;
+         puts("ISO boot image size verified");
+     } else {
+         puts("ISO boot image size could not be verified");
++        if (real_size < 0) {
++            return;
++        }
+     }
+ 
+-    read_iso_boot_image(bswap32(s.load_rba),
++    if (read_iso_boot_image(bswap32(s.load_rba),
+                         (void *)((uint64_t)bswap16(s.load_segment)),
+-                        blks_to_load);
++                        blks_to_load)) {
++        return;
++    }
+ 
+     jump_to_low_kernel();
+ }
+@@ -809,17 +825,18 @@ static uint32_t find_iso_bc(void)
+                 return bswap32(et->bc_offset);
+             }
+         }
+-        read_iso_sector(block_num++, sec,
+-                        "Failed to read ISO volume descriptor");
++        if (virtio_read(block_num++, sec)) {
++            puts("Failed to read ISO volume descriptor");
++            return 0;
++        }
+     }
+ 
+     return 0;
+ }
+ 
+-static IsoBcSection *find_iso_bc_entry(void)
++static IsoBcSection *find_iso_bc_entry(uint32_t offset)
+ {
+     IsoBcEntry *e = (IsoBcEntry *)sec;
+-    uint32_t offset = find_iso_bc();
+     int i;
+     unsigned int loadparm = get_loadparm_index();
+ 
+@@ -827,11 +844,13 @@ static IsoBcSection *find_iso_bc_entry(void)
+         return NULL;
+     }
+ 
+-    read_iso_sector(offset, sec, "Failed to read El Torito boot catalog");
++    if (virtio_read(offset, sec)) {
++        puts("Failed to read El Torito boot catalog");
++        return NULL;
++    }
+ 
+     if (!is_iso_bc_valid(e)) {
+         /* The validation entry is mandatory */
+-        panic("No valid boot catalog found!\n");
+         return NULL;
+     }
+ 
+@@ -851,19 +870,25 @@ static IsoBcSection *find_iso_bc_entry(void)
+         }
+     }
+ 
+-    panic("No suitable boot entry found on ISO-9660 media!\n");
+-
+     return NULL;
+ }
+ 
+-static void ipl_iso_el_torito(void)
++static int ipl_iso_el_torito(void)
+ {
+-    IsoBcSection *s = find_iso_bc_entry();
++    uint32_t offset = find_iso_bc();
++    if (!offset) {
++        return 0;
++    }
++
++    IsoBcSection *s = find_iso_bc_entry(offset);
+ 
+     if (s) {
+-        load_iso_bc_entry(s);
+-        /* no return */
++        load_iso_bc_entry(s); /* only return in error */
++        return -1;
+     }
++
++    puts("No suitable boot entry found on ISO-9660 media!");
++    return -EIO;
+ }
+ 
+ /**
+@@ -893,7 +918,9 @@ static void zipl_load_vblk(void)
+         if (blksize != VIRTIO_ISO_BLOCK_SIZE) {
+             virtio_assume_iso9660();
+         }
+-        ipl_iso_el_torito();
++        if (ipl_iso_el_torito()) {
++            return;
++        }
+     }
+ 
+     if (blksize != VIRTIO_DASD_DEFAULT_BLOCK_SIZE) {
+@@ -907,7 +934,9 @@ static void zipl_load_vscsi(void)
+ {
+     if (virtio_get_block_size() == VIRTIO_ISO_BLOCK_SIZE) {
+         /* Is it an ISO image in non-CD drive? */
+-        ipl_iso_el_torito();
++        if (ipl_iso_el_torito()) {
++            return;
++        }
+     }
+ 
+     puts("Using guessed DASD geometry.");
 -- 
 2.45.1
 
