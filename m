@@ -2,61 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8839A51D3
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 03:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186729A51DE
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Oct 2024 03:31:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2KMk-0005nC-8Z; Sat, 19 Oct 2024 21:04:18 -0400
+	id 1t2Kli-0008HD-3P; Sat, 19 Oct 2024 21:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
- id 1t2KMg-0005mc-Si; Sat, 19 Oct 2024 21:04:14 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1t2Klf-0008FS-Vb; Sat, 19 Oct 2024 21:30:04 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
- id 1t2KMe-0002ay-TD; Sat, 19 Oct 2024 21:04:14 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 3FED55C10DF;
- Sun, 20 Oct 2024 01:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569EDC4CEC5;
- Sun, 20 Oct 2024 01:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1729386241;
- bh=XnWLhgCmxkJWKI4HbZ0VFaTagtFKA9nagmBkSiwvehw=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=QNAJ1zfSWijke5oauKxlvi59iYVySEFNaWKOTjWCHDYxpvEF3M0UN9KabF4fTkSQh
- RUcUD2KwiS2uzMoeRrdPK8N5P7jJ84wS+TgDngDqcf8Juxf90H11dkxYwqah6IhDuv
- qSkEzaJT7nI8N+5JuPWo2LOaaX4oO7cZ86RjMmAJnATTLu1O94VhN2Ty52J5dVRiA6
- 0FeKX7H431GJ1hYuCsls25ZsQCddy8PBst7NS0nZ0BWDMFNyUiBuKE93NedUgB76tk
- SMQIi2sYkJPMyA0eZisykA4BjWnAY7+k2wneYMEhP9Oq88ruNg+kkbeaNDo7TB3GwJ
- f9wcm3PbZcivg==
-Message-ID: <94067926-de2b-41d4-b401-540eb91d887c@kernel.org>
-Date: Sun, 20 Oct 2024 10:03:59 +0900
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1t2Kld-0005AK-R1; Sat, 19 Oct 2024 21:30:03 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49JNeSPK027695;
+ Sun, 20 Oct 2024 01:29:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=W9pwxI2Gnyub3JO82A0Xev55liYQjS/VG9SXWgCom
+ R4=; b=gDgH3dGxncP7OfTZOzNGcMMOX3jpCBCB07lePEYwkI3b5QPzny161BWRY
+ g5Jv3lR6AtaT3C93FORWEUYngeMjCN8wfokfsv8vD3lj/cC6zX8LyqM7H+n+QXsh
+ ZpZeE0NscEsRsy2VQ8LTksRUcC2Vlf/Gyr5A0FLtkV1gSxdmEvWiffsckX+r7/xS
+ DcEu9N47Z+JL/KbU8I5u3GW2RxDrrpteW5ySFHGcAIgUJFWJyseoLiq2jpcgOyRF
+ RDVBgQ12l13qDn9uI01y1+dQl3cjBmjRpkpGdxDtelhz8kAF8jF17K/41qQxIDqB
+ i1lfDlPfsUuhMqSGunazPi/VYeF/A==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42c5fsk1sm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 20 Oct 2024 01:29:58 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49K0BR7Q026471;
+ Sun, 20 Oct 2024 01:29:57 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42cq3s07sh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 20 Oct 2024 01:29:57 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49K1TuD336503938
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 20 Oct 2024 01:29:57 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A041E5805A;
+ Sun, 20 Oct 2024 01:29:56 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1B1458054;
+ Sun, 20 Oct 2024 01:29:55 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.54.50])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Sun, 20 Oct 2024 01:29:55 +0000 (GMT)
+From: jrossi@linux.ibm.com
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
+Subject: [PATCH v5 00/19] s390x: Add Full Boot Order Support
+Date: Sat, 19 Oct 2024 21:29:34 -0400
+Message-ID: <20241020012953.1380075-1-jrossi@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] block/file-posix: optimize append write
-To: Kevin Wolf <kwolf@redhat.com>, Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, dmitry.fomichev@wdc.com,
- qemu-block@nongnu.org
-References: <20241004104123.236457-1-faithilikerun@gmail.com>
- <ZxJynt-0ySt3DG7W@redhat.com>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <ZxJynt-0ySt3DG7W@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=dlemoal@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6w0hZxEznfidHkFCylVU2DJ67J-B4Siy
+X-Proofpoint-ORIG-GUID: 6w0hZxEznfidHkFCylVU2DJ67J-B4Siy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 clxscore=1015 mlxscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ spamscore=0 mlxlogscore=852 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2410200009
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,32 +101,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/24 23:37, Kevin Wolf wrote:
-> Am 04.10.2024 um 12:41 hat Sam Li geschrieben:
->> When the file-posix driver emulates append write, it holds the lock
->> whenever accessing wp, which limits the IO queue depth to one.
->>
->> The write IO flow can be optimized to allow concurrent writes. The lock
->> is held in two cases:
->> 1. Assumed that the write IO succeeds, update the wp before issuing the
->> write.
->> 2. If the write IO fails, report that zone and use the reported value
->> as the current wp.
-> 
-> What happens with the concurrent writes that started later and may not
-> have completed yet? Can we really just reset to the reported value
-> before all other requests have completed, too?
+From: Jared Rossi <jrossi@linux.ibm.com>
 
-Yes, because if one write fails, we know that the following writes will fail too
-as they will not be aligned to the write pointer. These subsequent failed writes
-will again trigger the report zones and update, but that is fine. All of them
-have failed and the report will give the same wp again.
+changes v4 -> v5:
+- Fix a bug with per-deice loadparm support:
+    The machine loadparm is no longer overwritten by device values, which now
+    allows an empty machine loadparm to propagate to later devices even if
+    the primary boot device set an initial loadparm
+- Fix two instances where changes were squashed into wrong patch
+- Fix an instance where NULL_BLOCK_NR was returned instead of ERROR_BLOCK_NR
+- Fix an instance of logical AND being used instead of bitwise AND
+- Standardize all error values to be negative in all device type paths
+- Minor stylistic changes and code simplification
 
-This is a typical pattern with zoned block device: if one write fails in a zone,
-the user has to expect failures for all other writes issued to the same zone, do
-a report zone to get the wp and restart writing from there.
+
+changes v3 -> v4:
+- Ensure signed-ness of return values is appropriate
+- Add missing newline character in replacements of sclp_print_int()
+- Add a missing return in a SCSI error path
+- Restore break that was incorrectly removed for Virtio CU devices
+- Remove an extra/early return that caused probing to end early
+- Convert "good" device to scsi-cd in a cdrom-test for better coverage
+- Minor stylistic clean-ups and variable name clarifications
+
+Jared Rossi (19):
+  hw/s390x/ipl: Provide more memory to the s390-ccw.img firmware
+  pc-bios/s390-ccw: Use the libc from SLOF and remove sclp prints
+  pc-bios/s390-ccw: Link the netboot code into the main s390-ccw.img
+    binary
+  hw/s390x: Remove the possibility to load the s390-netboot.img binary
+  pc-bios/s390-ccw: Merge netboot.mak into the main Makefile
+  docs/system/s390x/bootdevices: Update the documentation about network
+    booting
+  pc-bios/s390-ccw: Remove panics from ISO IPL path
+  pc-bios/s390-ccw: Remove panics from ECKD IPL path
+  pc-bios/s390-ccw: Remove panics from SCSI IPL path
+  pc-bios/s390-ccw: Remove panics from DASD IPL path
+  pc-bios/s390-ccw: Remove panics from Netboot IPL path
+  pc-bios/s390-ccw: Enable failed IPL to return after error
+  include/hw/s390x: Add include files for common IPL structs
+  s390x: Add individual loadparm assignment to CCW device
+  hw/s390x: Build an IPLB for each boot device
+  s390x: Rebuild IPLB for SCSI device directly from DIAG308
+  pc-bios/s390x: Enable multi-device boot loop
+  docs/system: Update documentation for s390x IPL
+  tests/qtest: Add s390x boot order tests to cdrom-test.c
+
+ docs/system/bootindex.rst         |   7 +-
+ docs/system/s390x/bootdevices.rst |  29 +-
+ pc-bios/s390-ccw/netboot.mak      |  62 ----
+ hw/s390x/ccw-device.h             |   2 +
+ hw/s390x/ipl.h                    | 123 +-------
+ include/hw/s390x/ipl/qipl.h       | 127 +++++++++
+ pc-bios/s390-ccw/bootmap.h        |  20 +-
+ pc-bios/s390-ccw/cio.h            |   2 +
+ pc-bios/s390-ccw/dasd-ipl.h       |   2 +-
+ pc-bios/s390-ccw/iplb.h           | 108 ++-----
+ pc-bios/s390-ccw/libc.h           |  89 ------
+ pc-bios/s390-ccw/s390-ccw.h       |  36 +--
+ pc-bios/s390-ccw/virtio.h         |   3 +-
+ hw/s390x/ccw-device.c             |  46 +++
+ hw/s390x/ipl.c                    | 282 +++++++++---------
+ hw/s390x/s390-virtio-ccw.c        |  28 +-
+ hw/s390x/sclp.c                   |   9 +-
+ pc-bios/s390-ccw/bootmap.c        | 455 ++++++++++++++++++++----------
+ pc-bios/s390-ccw/cio.c            |  81 +++---
+ pc-bios/s390-ccw/dasd-ipl.c       |  71 ++---
+ pc-bios/s390-ccw/jump2ipl.c       |  22 +-
+ pc-bios/s390-ccw/libc.c           |  88 ------
+ pc-bios/s390-ccw/main.c           |  97 ++++---
+ pc-bios/s390-ccw/menu.c           |  51 ++--
+ pc-bios/s390-ccw/netmain.c        |  38 ++-
+ pc-bios/s390-ccw/sclp.c           |   7 +-
+ pc-bios/s390-ccw/virtio-blkdev.c  |  12 +-
+ pc-bios/s390-ccw/virtio-net.c     |   7 +-
+ pc-bios/s390-ccw/virtio-scsi.c    | 160 +++++++----
+ pc-bios/s390-ccw/virtio.c         |  67 +++--
+ target/s390x/diag.c               |   9 +-
+ tests/qtest/cdrom-test.c          |  24 ++
+ pc-bios/meson.build               |   1 -
+ pc-bios/s390-ccw/Makefile         |  69 ++++-
+ pc-bios/s390-netboot.img          | Bin 67232 -> 0 bytes
+ 35 files changed, 1158 insertions(+), 1076 deletions(-)
+ delete mode 100644 pc-bios/s390-ccw/netboot.mak
+ create mode 100644 include/hw/s390x/ipl/qipl.h
+ delete mode 100644 pc-bios/s390-ccw/libc.h
+ delete mode 100644 pc-bios/s390-ccw/libc.c
+ delete mode 100644 pc-bios/s390-netboot.img
 
 -- 
-Damien Le Moal
-Western Digital Research
+2.45.1
+
 
