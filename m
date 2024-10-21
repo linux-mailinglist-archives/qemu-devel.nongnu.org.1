@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D5B9A6F52
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C9D9A6F54
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:21:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2v8r-0004MN-4M; Mon, 21 Oct 2024 12:20:25 -0400
+	id 1t2v8n-0004Iu-78; Mon, 21 Oct 2024 12:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t2v8b-0004EM-5i
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:09 -0400
+ id 1t2v8d-0004H0-Aw
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t2v8Z-00046W-KY
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:08 -0400
+ id 1t2v8b-00046x-JC
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729527606;
+ s=mimecast20190719; t=1729527609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GoJ5T5zTaGkVLgCxaIyOEr8Aae1wNXSL4zr8S1ojULU=;
- b=BqCWHbsxtvLhMAeEZ90PR98aRnLdJGRoVtD4FJjuBmDJr/FbFX5NNTERMlulRRjgDo+BBj
- l49E9wg6s0sL5TohYg7FIK3aPmFAUno16rG7rbUaf0hvYASLRHMRyQuV9dj6YtI8/2Xv4F
- GxwJhrzytQE+WC6O1sg5QMqbqe8weFE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=zuX2dZU16IZBuf2So7P5DYEIO4SCaDObnWK2MAc+WqE=;
+ b=GZv9p/6xaXl4zKRuPJBMU7qswVgQ1+ycJHtETMhhANJ+yxyP02AgURQL8wbGJBVsXQCQ2h
+ aB0Vo1MXhkQR/kgYxseqJX6Axr0z2bmbLwGfR9uwBr15npD+IqBFy1JMAT6trATjWlmoCj
+ w2Q6ed8JvqbmtOAMhQHDxvVG0xmefZg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-r6XmpSpPPdySRxuruafjug-1; Mon,
- 21 Oct 2024 12:20:05 -0400
-X-MC-Unique: r6XmpSpPPdySRxuruafjug-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-OWS1M5ibNmWsuVu48z1muw-1; Mon,
+ 21 Oct 2024 12:20:07 -0400
+X-MC-Unique: OWS1M5ibNmWsuVu48z1muw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4E9F1955EB3
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 16:20:04 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CAB641955EA5
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 16:20:06 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.27])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4F0371956056; Mon, 21 Oct 2024 16:20:03 +0000 (UTC)
+ id 466851955E8F; Mon, 21 Oct 2024 16:20:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/6] ui/vnc: don't raise error formatting socket address for
- non-inet
-Date: Mon, 21 Oct 2024 17:19:53 +0100
-Message-ID: <20241021161957.1431919-3-berrange@redhat.com>
+Subject: [PATCH 3/6] ui/vnc: fix skipping SASL SSF on UNIX sockets
+Date: Mon, 21 Oct 2024 17:19:54 +0100
+Message-ID: <20241021161957.1431919-4-berrange@redhat.com>
 In-Reply-To: <20241021161957.1431919-1-berrange@redhat.com>
 References: <20241021161957.1431919-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -84,79 +83,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SASL library requires the connection's local & remote IP address to
-be passed in, since some mechanism may use this information. Currently
-QEMU raises an error for non-inet sockets, but it is valid to pass NULL
-to the SASL library. Doing so makes SASL work on UNIX sockets.
+The 'is_unix' flag is set on the VNC server during startup, however,
+a regression in:
+
+  commit 8bd22f477f68bbd7a9c88e926e7a58bf65605e39
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Fri Feb 3 12:06:46 2017 +0000
+
+    ui: extract code to connect/listen from vnc_display_open
+
+meant we stopped setting the 'is_unix' flag when QEMU listens for
+VNC sockets, only setting when QEMU does a reverse VNC connection.
+
+Rather than fixing setting of the 'is_unix' flag, remove it, and
+directly check the live client socket address. This is more robust
+to a possible situation where the VNC server was listening on a
+mixture of INET and UNIX sockets.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vnc-auth-sasl.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ ui/vnc-auth-sasl.c | 14 +++++++++++---
+ ui/vnc.c           |  3 ---
+ ui/vnc.h           |  1 -
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/ui/vnc-auth-sasl.c b/ui/vnc-auth-sasl.c
-index 7d9ca9e8ac..edf19deb3b 100644
+index edf19deb3b..43515447fb 100644
 --- a/ui/vnc-auth-sasl.c
 +++ b/ui/vnc-auth-sasl.c
-@@ -524,13 +524,13 @@ static int protocol_client_auth_sasl_mechname_len(VncState *vs, uint8_t *data, s
+@@ -551,6 +551,13 @@ vnc_socket_ip_addr_string(QIOChannelSocket *ioc,
      return 0;
  }
  
--static char *
-+static int
- vnc_socket_ip_addr_string(QIOChannelSocket *ioc,
-                           bool local,
-+                          char **addrstr,
-                           Error **errp)
- {
-     SocketAddress *addr;
--    char *ret;
- 
-     if (local) {
-         addr = qio_channel_socket_get_local_address(ioc, errp);
-@@ -538,17 +538,17 @@ vnc_socket_ip_addr_string(QIOChannelSocket *ioc,
-         addr = qio_channel_socket_get_remote_address(ioc, errp);
-     }
-     if (!addr) {
--        return NULL;
-+        return -1;
-     }
- 
-     if (addr->type != SOCKET_ADDRESS_TYPE_INET) {
--        error_setg(errp, "Not an inet socket type");
-+        *addrstr = NULL;
-         qapi_free_SocketAddress(addr);
--        return NULL;
-+        return 0;
-     }
--    ret = g_strdup_printf("%s;%s", addr->u.inet.host, addr->u.inet.port);
-+    *addrstr = g_strdup_printf("%s;%s", addr->u.inet.host, addr->u.inet.port);
-     qapi_free_SocketAddress(addr);
--    return ret;
-+    return 0;
- }
- 
++static bool
++vnc_socket_is_unix(QIOChannelSocket *ioc)
++{
++    SocketAddress *addr = qio_channel_socket_get_local_address(ioc, NULL);
++    return addr && addr->type == SOCKET_ADDRESS_TYPE_UNIX;
++}
++
  void start_auth_sasl(VncState *vs)
-@@ -561,15 +561,15 @@ void start_auth_sasl(VncState *vs)
-     int mechlistlen;
- 
-     /* Get local & remote client addresses in form  IPADDR;PORT */
--    localAddr = vnc_socket_ip_addr_string(vs->sioc, true, &local_err);
--    if (!localAddr) {
-+    if (vnc_socket_ip_addr_string(vs->sioc, true,
-+                                  &localAddr, &local_err) < 0) {
-         trace_vnc_auth_fail(vs, vs->auth, "Cannot format local IP",
-                             error_get_pretty(local_err));
-         goto authabort;
+ {
+     const char *mechlist = NULL;
+@@ -627,10 +634,11 @@ void start_auth_sasl(VncState *vs)
+     memset (&secprops, 0, sizeof secprops);
+     /* Inform SASL that we've got an external SSF layer from TLS.
+      *
+-     * Disable SSF, if using TLS+x509+SASL only. TLS without x509
+-     * is not sufficiently strong
++     * Disable SSF, if using TLS+x509+SASL only, or UNIX sockets.
++     * TLS without x509 is not sufficiently strong, nor is plain
++     * TCP
+      */
+-    if (vs->vd->is_unix ||
++    if (vnc_socket_is_unix(vs->sioc) ||
+         (vs->auth == VNC_AUTH_VENCRYPT &&
+          vs->subauth == VNC_AUTH_VENCRYPT_X509SASL)) {
+         /* If we've got TLS or UNIX domain sock, we don't care about SSF */
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 93a8dbd253..5fcb35bf25 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3430,7 +3430,6 @@ static void vnc_display_close(VncDisplay *vd)
+     if (!vd) {
+         return;
      }
+-    vd->is_unix = false;
  
--    remoteAddr = vnc_socket_ip_addr_string(vs->sioc, false, &local_err);
--    if (!remoteAddr) {
-+    if (vnc_socket_ip_addr_string(vs->sioc, false,
-+                                  &remoteAddr, &local_err) < 0) {
-         trace_vnc_auth_fail(vs, vs->auth, "Cannot format remote IP",
-                             error_get_pretty(local_err));
-         g_free(localAddr);
+     if (vd->listener) {
+         qio_net_listener_disconnect(vd->listener);
+@@ -3932,8 +3931,6 @@ static int vnc_display_connect(VncDisplay *vd,
+         error_setg(errp, "Expected a single address in reverse mode");
+         return -1;
+     }
+-    /* TODO SOCKET_ADDRESS_TYPE_FD when fd has AF_UNIX */
+-    vd->is_unix = saddr_list->value->type == SOCKET_ADDRESS_TYPE_UNIX;
+     sioc = qio_channel_socket_new();
+     qio_channel_set_name(QIO_CHANNEL(sioc), "vnc-reverse");
+     if (qio_channel_socket_connect_sync(sioc, saddr_list->value, errp) < 0) {
+diff --git a/ui/vnc.h b/ui/vnc.h
+index e5fa2efa3e..acc53a2cc1 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -168,7 +168,6 @@ struct VncDisplay
+ 
+     const char *id;
+     QTAILQ_ENTRY(VncDisplay) next;
+-    bool is_unix;
+     char *password;
+     time_t expires;
+     int auth;
 -- 
 2.46.0
 
