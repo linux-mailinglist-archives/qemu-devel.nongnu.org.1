@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484689A6A5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 15:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBF19A6A58
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 15:30:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2sTe-0006SD-2R; Mon, 21 Oct 2024 09:29:43 -0400
+	id 1t2sTg-0006V6-9h; Mon, 21 Oct 2024 09:29:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTS-0006Eo-PG
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:32 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTX-0006ND-FU
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTR-0000iR-GW
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:30 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTV-0000ie-8h
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729517367;
+ s=mimecast20190719; t=1729517372;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=89BuzVL2Ofdj6f7IOw3BkvNQfFJUf/0FqCtxr/n1RD0=;
- b=GprlhFXJHZk9t1D6513KmfxjXpa6dWrpG52WGWoDoVz/vKnTQsJ2FpMU5N32jKtIZHk0HI
- k2Zd02OyDSgX+jMNkBoOYD7bckhhvuUvdGGVxVxLUNjKJcuyBEd7/HHeep/y/XC9NcVz5d
- qTen9t+iyJ3qwz6hpFzV9sSaxMSUHIY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=S70GhYB7laEL2fnTCNmkV4yqr3u8YRvyEUuIY22drcU=;
+ b=W0PffRVo29fnNH+cFTzYSqgSaJP6jtQ8Lg9s17Zmxc6hKErt3x+ErS9ehUXqEyMF5cxuu1
+ izeAu21hapVnZNnSnFL8y3ew4nlObw+gDGxOtNBTt8RZTm1IchusTDFG6ThsjBdeMFQZMH
+ UOAVhMgqbDFEQGmKn8gL3tTaUDQWWBQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-3fmyaRRhNJK-4GNQCkLasQ-1; Mon,
- 21 Oct 2024 09:29:24 -0400
-X-MC-Unique: 3fmyaRRhNJK-4GNQCkLasQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-fH6WnoLZOgGCFlOyS_A4hw-1; Mon,
+ 21 Oct 2024 09:29:29 -0400
+X-MC-Unique: fH6WnoLZOgGCFlOyS_A4hw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9643019560A3; Mon, 21 Oct 2024 13:29:23 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26FA41955D64; Mon, 21 Oct 2024 13:29:28 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.72.116.80])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B13B819560AA; Mon, 21 Oct 2024 13:29:19 +0000 (UTC)
+ id 72C0B1955E83; Mon, 21 Oct 2024 13:29:24 +0000 (UTC)
 From: Dehan Meng <demeng@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
  peter.maydell@linaro.org, berrange@redhat.com
-Subject: [PATCH v3 2/4] qemu-ga: Initialize correctly so getline works properly
-Date: Mon, 21 Oct 2024 21:28:37 +0800
-Message-Id: <20241021132839.463255-8-demeng@redhat.com>
+Subject: [PATCH v3 3/4] qemu-ga: Avoiding freeing line prematurely
+Date: Mon, 21 Oct 2024 21:28:38 +0800
+Message-Id: <20241021132839.463255-9-demeng@redhat.com>
 In-Reply-To: <20241021132839.463255-1-demeng@redhat.com>
 References: <20241021132839.463255-1-demeng@redhat.com>
 MIME-Version: 1.0
@@ -79,27 +79,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Proper initialization of param 'size_t n' to '0' for
-getline to function correctly.
+It's now only freed at the end of the function.
 
 Signed-off-by: Dehan Meng <demeng@redhat.com>
 ---
- qga/commands-linux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qga/commands-linux.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index f0e9cdd27c..32bf1b8ce7 100644
+index 32bf1b8ce7..c6bda78de6 100644
 --- a/qga/commands-linux.c
 +++ b/qga/commands-linux.c
-@@ -2126,7 +2126,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-     GuestNetworkRouteList *head = NULL, **tail = &head;
-     const char *routeFiles[] = {"/proc/net/route", "/proc/net/ipv6_route"};
-     FILE *fp;
--    size_t n;
-+    size_t n = 0;
-     char *line = NULL;
-     int firstLine;
-     int is_ipv6;
+@@ -2137,8 +2137,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+         is_ipv6 = (i == 1);
+         fp = fopen(routeFiles[i], "r");
+         if (fp == NULL) {
+-            error_setg_errno(errp, errno, "open(\"%s\")", routeFiles[i]);
+-            free(line);
++            error_setg_errno(errp, errno, "open(\"%s\")", route_files[i]);
+             continue;
+         }
+ 
+@@ -2226,9 +2225,8 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+             QAPI_LIST_APPEND(tail, route);
+         }
+ 
+-        free(line);
+         fclose(fp);
+     }
+-
++    free(line);
+     return head;
+ }
 -- 
 2.40.1
 
