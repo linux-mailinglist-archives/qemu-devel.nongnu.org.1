@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72559A6F1D
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AB99A6F21
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2v1B-000419-PD; Mon, 21 Oct 2024 12:12:29 -0400
+	id 1t2v1E-00043s-Uu; Mon, 21 Oct 2024 12:12:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2v13-00040e-4p
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:12:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2v16-00041a-K7
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:12:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2v11-0003CX-3f
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:12:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2v14-0003Ct-Qk
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:12:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729527137;
+ s=mimecast20190719; t=1729527141;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=64bqzH07nxjia66UnV1/AmUghsFPcT6V9c+kK4hzO7A=;
- b=SXXvC41xSgFOAz0X0JNgN4M4b1VYc3nYnIwPDoF/c0UouNb+4mnKHIwelj/BlHb0p4RVx9
- WbpgHeu7uNvymIPewWo5U6oAQhlOtlshRtEo/owaXw8Rfx87oh9LCJG3FkxFlPm1ZvuyeC
- gtMDuDXpTxq439/tsjS7n4DFFaYqM1s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=bVncTPc+0BYGJVtF4QmWYbjrP63YHAxS20dWfcf6Jts=;
+ b=DWLIsJKMUQYbq8KcM9O8SnBpWGwTVKHaJdj2g/SpRxYp5DMDbdLKU239L8dCthPGQT2szy
+ uIsmrauI2fY5MR0jrrq6gDSqbvrhEImNjDcVN0OLYGJxJ7H3pxVkYFUXA82cH88my0tnTC
+ ar+Ti93jIr9UglIErYGeJRWowjqjHS4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-DTGF2W-LMbeBvlPSaOUwkA-1; Mon,
- 21 Oct 2024 12:12:15 -0400
-X-MC-Unique: DTGF2W-LMbeBvlPSaOUwkA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-ckNRmgh9NTWNpxoSVgjsXg-1; Mon,
+ 21 Oct 2024 12:12:17 -0400
+X-MC-Unique: ckNRmgh9NTWNpxoSVgjsXg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CE061955BE1; Mon, 21 Oct 2024 16:12:14 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 96D801955F42; Mon, 21 Oct 2024 16:12:16 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.49])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 09D001956088; Mon, 21 Oct 2024 16:12:12 +0000 (UTC)
+ id 1262C1956088; Mon, 21 Oct 2024 16:12:14 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL v2 17/20] tests/functional: Convert the Avocado mips64el tuxrun
+Subject: [PULL v2 18/20] tests/functional: Convert the Avocado ppc32 tuxrun
  test
-Date: Mon, 21 Oct 2024 18:11:51 +0200
-Message-ID: <20241021161156.176427-8-thuth@redhat.com>
+Date: Mon, 21 Oct 2024 18:11:52 +0200
+Message-ID: <20241021161156.176427-9-thuth@redhat.com>
 In-Reply-To: <20241021161156.176427-1-thuth@redhat.com>
 References: <20241021161156.176427-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,78 +81,74 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Move the test into a new file so that it can be run via
-qemu-system-mips64el in the functional framework.
+qemu-system-ppc in the functional framework.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241011131937.377223-15-thuth@redhat.com>
+Message-ID: <20241011131937.377223-16-thuth@redhat.com>
 ---
- MAINTAINERS                              |  5 ++--
- tests/avocado/tuxrun_baselines.py        | 16 -----------
- tests/functional/meson.build             |  1 +
- tests/functional/test_mips64el_tuxrun.py | 35 ++++++++++++++++++++++++
- 4 files changed, 38 insertions(+), 19 deletions(-)
- create mode 100755 tests/functional/test_mips64el_tuxrun.py
+ MAINTAINERS                         |  1 +
+ tests/avocado/tuxrun_baselines.py   | 16 -------------
+ tests/functional/meson.build        |  1 +
+ tests/functional/test_ppc_tuxrun.py | 35 +++++++++++++++++++++++++++++
+ 4 files changed, 37 insertions(+), 16 deletions(-)
+ create mode 100755 tests/functional/test_ppc_tuxrun.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c7cd5a28d9..cd9ebe77c1 100644
+index cd9ebe77c1..8777e31fd5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1312,9 +1312,8 @@ F: hw/mips/malta.c
- F: hw/pci-host/gt64120.c
- F: include/hw/southbridge/piix.h
- F: tests/avocado/linux_ssh_mips_malta.py
--F: tests/functional/test_mips_malta.py
--F: tests/functional/test_mipsel_malta.py
--F: tests/functional/test_mips64el_malta.py
-+F: tests/functional/test_mips*_malta.py
-+F: tests/functional/test_mips*_tuxrun.py
+@@ -1396,6 +1396,7 @@ F: hw/intc/openpic_kvm.c
+ F: include/hw/ppc/openpic_kvm.h
+ F: docs/system/ppc/ppce500.rst
+ F: tests/functional/test_ppc64_e500.py
++F: tests/functional/test_ppc_tuxrun.py
  
- Mipssim
- R: Aleksandar Rikalo <arikalo@gmail.com>
+ mpc8544ds
+ M: Bernhard Beschow <shentey@gmail.com>
 diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index f7de13735c..76afbfd8f0 100644
+index 76afbfd8f0..80892a0e17 100644
 --- a/tests/avocado/tuxrun_baselines.py
 +++ b/tests/avocado/tuxrun_baselines.py
 @@ -223,22 +223,6 @@ def test_arm64be(self):
                   "e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7"}
          self.common_tuxrun(csums=sums)
  
--    def test_mips64el(self):
+-    def test_ppc32(self):
 -        """
--        :avocado: tags=arch:mips64el
--        :avocado: tags=machine:malta
--        :avocado: tags=tuxboot:mips64el
--        :avocado: tags=image:vmlinux
--        :avocado: tags=root:sda
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:ppce500
+-        :avocado: tags=cpu:e500mc
+-        :avocado: tags=tuxboot:ppc32
+-        :avocado: tags=image:uImage
 -        :avocado: tags=shutdown:nowait
 -        """
 -        sums = { "rootfs.ext4.zst" :
--                 "fba585368f5915b1498ed081863474b2d7ec4e97cdd46d21bdcb2f9698f83de4",
--                 "vmlinux" :
--                 "d4e08965e2155c4cccce7c5f34d18fe34c636cda2f2c9844387d614950155266" }
+-                 "8885b9d999cc24d679542a02e9b6aaf48f718f2050ece6b8347074b6ee41dd09",
+-                 "uImage" :
+-                 "1a68f74b860fda022fb12e03c5efece8c2b8b590d96cca37a8481a3ae0b3f81f" }
 -
--        self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
+-        self.common_tuxrun(csums=sums, drive="virtio-blk-pci")
 -
-     def test_ppc32(self):
-         """
-         :avocado: tags=arch:ppc
+     # Note: some segfaults caused by unaligned userspace access
+     @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+     def test_sh4(self):
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 0f2eca6495..98e9229c4d 100644
+index 98e9229c4d..6c62ca2334 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -106,6 +106,7 @@ tests_mips64el_system_thorough = [
-   'mips64el_fuloong2e',
-   'mips64el_loongson3v',
-   'mips64el_malta',
-+  'mips64el_tuxrun',
+@@ -124,6 +124,7 @@ tests_ppc_system_thorough = [
+   'ppc_bamboo',
+   'ppc_mac',
+   'ppc_mpc8544ds',
++  'ppc_tuxrun',
+   'ppc_virtex_ml507',
  ]
  
- tests_or1k_system_thorough = [
-diff --git a/tests/functional/test_mips64el_tuxrun.py b/tests/functional/test_mips64el_tuxrun.py
+diff --git a/tests/functional/test_ppc_tuxrun.py b/tests/functional/test_ppc_tuxrun.py
 new file mode 100755
-index 0000000000..819549a27b
+index 0000000000..50b76946c4
 --- /dev/null
-+++ b/tests/functional/test_mips64el_tuxrun.py
++++ b/tests/functional/test_ppc_tuxrun.py
 @@ -0,0 +1,35 @@
 +#!/usr/bin/env python3
 +#
@@ -170,22 +166,22 @@ index 0000000000..819549a27b
 +from qemu_test import Asset
 +from qemu_test.tuxruntest import TuxRunBaselineTest
 +
-+class TuxRunMips64ELTest(TuxRunBaselineTest):
++class TuxRunPPC32Test(TuxRunBaselineTest):
 +
-+    ASSET_MIPS64EL_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/mips64el/vmlinux',
-+        'd4e08965e2155c4cccce7c5f34d18fe34c636cda2f2c9844387d614950155266')
-+    ASSET_MIPS64EL_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/mips64el/rootfs.ext4.zst',
-+        'fba585368f5915b1498ed081863474b2d7ec4e97cdd46d21bdcb2f9698f83de4')
++    ASSET_PPC32_KERNEL = Asset(
++        'https://storage.tuxboot.com/20230331/ppc32/uImage',
++        '1a68f74b860fda022fb12e03c5efece8c2b8b590d96cca37a8481a3ae0b3f81f')
++    ASSET_PPC32_ROOTFS = Asset(
++        'https://storage.tuxboot.com/20230331/ppc32/rootfs.ext4.zst',
++        '8885b9d999cc24d679542a02e9b6aaf48f718f2050ece6b8347074b6ee41dd09')
 +
-+    def test_mips64el(self):
-+        self.set_machine('malta')
-+        self.root="sda"
++    def test_ppc32(self):
++        self.set_machine('ppce500')
++        self.cpu='e500mc'
 +        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_MIPS64EL_KERNEL,
-+                           rootfs_asset=self.ASSET_MIPS64EL_ROOTFS,
-+                           drive="driver=ide-hd,bus=ide.0,unit=0")
++        self.common_tuxrun(kernel_asset=self.ASSET_PPC32_KERNEL,
++                           rootfs_asset=self.ASSET_PPC32_ROOTFS,
++                           drive="virtio-blk-pci")
 +
 +if __name__ == '__main__':
 +    TuxRunBaselineTest.main()
