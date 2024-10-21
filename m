@@ -2,136 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791779A5A17
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 08:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471E59A5A6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 08:33:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2lUB-0003HW-0k; Mon, 21 Oct 2024 02:01:47 -0400
+	id 1t2lxe-0002OW-NI; Mon, 21 Oct 2024 02:32:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2lU3-0003DH-Iu
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 02:01:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t2lxZ-0002ON-FZ
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 02:32:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2lTz-0005gX-Mm
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 02:01:37 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t2lxX-0000ES-P0
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 02:32:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729490494;
+ s=mimecast20190719; t=1729492324;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=n9FGRL7g4a5XoyEQL8rvQTjKEocxsLblIQiJB9fxyIU=;
- b=OLY+m8O0II/s/gU9sWYhcQMeUkg5pXJiW25ZrUugc0yYqs/L8q77olgonNZMV/cowAzoTA
- pH/HOyV3aBuTlRGs/GODTWOeJOHd6x5zY7qTwnkwHFIYnNgAaTp/aOQLCZNkVuN0CS5rD6
- hpIm2F0EL3UCzAHn+VY6Rs+7dOpCRW8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ISefsF479RvHV+vrC6uixw+VR9UlYq+sxwzmumiQNHc=;
+ b=FjnIDzPgPi0ZP7U9/PAozdfjo0MilqM/4Y3ZltfmoFTPuQjMmjl2iDL4btGNk0h/EkdUAG
+ E2sywiGlmBEb6TC2BaZ+4Xuws4jGNN52P51pBAzDJMZTpos+ZFzJxwFaS2x29lWfyULwuA
+ LqGVezbtNf/ZDMbnog0+tURh7wTh3wU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-mRSPE9iYPEWKkZ58MvEK1g-1; Mon, 21 Oct 2024 02:01:32 -0400
-X-MC-Unique: mRSPE9iYPEWKkZ58MvEK1g-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43159c07193so35612345e9.0
- for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 23:01:32 -0700 (PDT)
+ us-mta-42-Fiv7vy9SP8Cu2FZyCmzVMQ-1; Mon, 21 Oct 2024 02:32:03 -0400
+X-MC-Unique: Fiv7vy9SP8Cu2FZyCmzVMQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-431518ae047so24100215e9.0
+ for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 23:32:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729490491; x=1730095291;
+ d=1e100.net; s=20230601; t=1729492321; x=1730097121;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=n9FGRL7g4a5XoyEQL8rvQTjKEocxsLblIQiJB9fxyIU=;
- b=UJ+TyqsAWH6Y993cSc9U2WuPJ2fSf2AcWsYOxqsZTbIrQQV42S/v0ivSIedeHhuHxP
- DfWsZ2ee4BHtJubBlYT5EXjHjGwu1HWoKK0w2R+fBJB3Sfw935rwl/MVa/OkMK+1Tofs
- UgrtsRdWWusBEReyvHDN1p6I7VLMpfVfAZCGxDpdCM/NlTWSBwSy13/uI2Cq+jb3mW4j
- K2ObSxq5SpLvwnFkC/o2egi/uIqQQePoJXs03FzLWMOagNT/naehM3o5dbKiDTKdN/e9
- hAgPsMzf/QBBqRkDx/r0OtQL+C38CKVj7jacwGAp8CFMTNBE5LVnlp958farzRG/cdr8
- raZQ==
-X-Gm-Message-State: AOJu0Yz4tXnalEUCJbk8AZbiflNbCBm/VkmNzXOkFRmKf62SkIYuRoCv
- lvvw8w5Omfxz4fgbSKvGbO797IZDPLKFrNa9VuGQ9OePklYBuAsOV8RyY+4/xC0SxpinS7Rclor
- 1KWMCwtCaJyJmXQ2ER6+fB9WHI6qKWt0NsUR8yMr/c/68zMU7u8NAoKhpgbtFssrNQ9/LGv+Swk
- 0nTfm7Qa0HNm/uMeIqw0iiO8omAQ9DmJ+90fY=
-X-Received: by 2002:adf:f9d0:0:b0:37c:cfa4:d998 with SMTP id
- ffacd0b85a97d-37eb4768898mr8690023f8f.49.1729490491057; 
- Sun, 20 Oct 2024 23:01:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlNh9if4DVz6QcYI8n4+nT2yi5Pjq5ziOJVAhq8OR90U1543vgQZi44uXLKNHyXVCIntuO5w==
-X-Received: by 2002:adf:f9d0:0:b0:37c:cfa4:d998 with SMTP id
- ffacd0b85a97d-37eb4768898mr8689990f8f.49.1729490490693; 
- Sun, 20 Oct 2024 23:01:30 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-50-24.web.vodafone.de. [109.42.50.24])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37ee0b9bd6esm3356912f8f.104.2024.10.20.23.01.28
+ bh=ISefsF479RvHV+vrC6uixw+VR9UlYq+sxwzmumiQNHc=;
+ b=YgOZwmhy4H781DPlWp4lWVTk+YKozPtow3HdKed3ZCgZICv3jcZczIYPfWG0jDRQdm
+ kQ3b0EauF9f+kd6JaZvoeeIOVUbUfwvXpcXZkx5TxyCLVKwBmZFXkromZoLc+Dc9bA+o
+ oEwFa8hY7jnwH0qBEF0iQtRWMKmaAsE3+Gz/HWRmRAVnO+/iOq0y0eOrc2MXMnwgyBEG
+ OkafzRmYfhMXCMZid2wKK4f+eGLy7DIXuPkeK1l551DW6YhYfcuYeu2/j8PenZ1JvyWy
+ 9vM/mYRRQxxiZ/4siGkZjTjDSkfVESQOUf7m2RbC6m+0rvJy26VvlRY8CVT6y56Dac9P
+ 8Juw==
+X-Gm-Message-State: AOJu0YwYl6Ph1HqHQL+8KD6c5EN4iyM9hXstXIhanPj90o+DECCmre9C
+ LHfNDQL5iTnvLgCnmOOxfFFTn9i/TQrbGC6lQSXnQ3AeZHkC4lJ8eFQxmLb6vqPAut9tse5Nj1z
+ vj+1+P++kgLRGSQOS1O1YXb9QWjRqFPGzH1RweKyfOBVG0vadPj1qvwMLY7uEXvQ=
+X-Received: by 2002:a05:600c:3c9a:b0:431:47e7:9f45 with SMTP id
+ 5b1f17b1804b1-43158756c5dmr83406005e9.11.1729492321052; 
+ Sun, 20 Oct 2024 23:32:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+d+/1PWy67FUzNjqXoi1LJNViA4IB9YD28stG9NllVAQGFMjv4qfYXGR4N5B5X1KXbwK3dQ==
+X-Received: by 2002:a05:600c:3c9a:b0:431:47e7:9f45 with SMTP id
+ 5b1f17b1804b1-43158756c5dmr83405915e9.11.1729492320690; 
+ Sun, 20 Oct 2024 23:32:00 -0700 (PDT)
+Received: from [192.168.10.47] ([151.95.144.54])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-4316f57124csm45614005e9.8.2024.10.20.23.31.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Oct 2024 23:01:30 -0700 (PDT)
-Message-ID: <75745c15-feed-45e8-9ba4-93ab103fd832@redhat.com>
-Date: Mon, 21 Oct 2024 08:01:27 +0200
+ Sun, 20 Oct 2024 23:32:00 -0700 (PDT)
+Message-ID: <5db62c58-b6e3-4f83-9954-ff2bcb1108bc@redhat.com>
+Date: Mon, 21 Oct 2024 08:31:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/17] Convert the Avocado tuxrun tests into new
- functional tests
-To: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Guenter Roeck <linux@roeck-us.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, qemu-arm@nongnu.org
-References: <20241011131937.377223-1-thuth@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH] rust: introduce alternative implementation of offset_of!
+To: Junjie Mao <junjie.mao@hotmail.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <SY0P300MB10265E25557DB71EE426525795432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241011131937.377223-1-thuth@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <SY0P300MB10265E25557DB71EE426525795432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.527,
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.527,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,87 +138,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/2024 15.19, Thomas Huth wrote:
-> This patch series converts the tests/avocado/tuxrun_baselines.py
-> to the new functional test framework. While converting the sh4 test,
-> I noticed that the Avocado test was completely broken, so I included
-> a fix (revert) for that problem in this series, too.
+On 10/21/24 07:40, Junjie Mao wrote:
+> offset_of! was stabilized in Rust 1.77.0. Use an alternative implemenation
+> that was found on the Rust forums, and whose author agreed to license as
+> MIT for use in QEMU.
 > 
-> Thomas Huth (17):
->    tests/functional: Add a base class for the TuxRun tests
->    tests/functional: Convert the Avocado ppc64 tuxrun tests
->    tests/functional: Convert the Avocado aarch64 tuxrun tests
->    tests/functional: Convert the Avocado sparc64 tuxrun test
->    tests/functional: Convert the Avocado s390x tuxrun test
->    tests/functional: Convert the Avocado arm tuxrun tests
->    tests/functional: Convert the Avocado riscv32 tuxrun tests
->    tests/functional: Convert the Avocado riscv64 tuxrun tests
->    tests/functional: Convert the Avocado i386 tuxrun test
->    tests/functional: Convert the Avocado x86_64 tuxrun test
->    tests/functional: Convert the Avocado mips tuxrun test
->    tests/functional: Convert the Avocado mipsel tuxrun test
->    tests/functional: Convert the Avocado mips64 tuxrun test
->    tests/functional: Convert the Avocado mips64el tuxrun test
->    tests/functional: Convert the Avocado ppc32 tuxrun test
->    Revert "hw/sh4/r2d: Realize IDE controller before accessing it"
->    tests/functional: Convert the Avocado sh4 tuxrun test
+> The alternative allows only one level of field access, but apart from this
+> can be used just by replacing core::mem::offset_of! with
+> qemu_api::offset_of!.
 > 
->   MAINTAINERS                              |   4 +-
->   hw/sh4/r2d.c                             |   2 +-
->   tests/avocado/tuxrun_baselines.py        | 620 -----------------------
->   tests/functional/meson.build             |  28 +
->   tests/functional/qemu_test/tuxruntest.py | 158 ++++++
->   tests/functional/test_aarch64_tuxrun.py  |  50 ++
->   tests/functional/test_arm_tuxrun.py      |  70 +++
->   tests/functional/test_i386_tuxrun.py     |  35 ++
->   tests/functional/test_mips64_tuxrun.py   |  35 ++
->   tests/functional/test_mips64el_tuxrun.py |  35 ++
->   tests/functional/test_mips_tuxrun.py     |  36 ++
->   tests/functional/test_mipsel_tuxrun.py   |  36 ++
->   tests/functional/test_ppc64_tuxrun.py    | 110 ++++
->   tests/functional/test_ppc_tuxrun.py      |  35 ++
->   tests/functional/test_riscv32_tuxrun.py  |  38 ++
->   tests/functional/test_riscv64_tuxrun.py  |  38 ++
->   tests/functional/test_s390x_tuxrun.py    |  34 ++
->   tests/functional/test_sh4_tuxrun.py      |  57 +++
->   tests/functional/test_sparc64_tuxrun.py  |  34 ++
->   tests/functional/test_x86_64_tuxrun.py   |  36 ++
->   20 files changed, 869 insertions(+), 622 deletions(-)
->   delete mode 100644 tests/avocado/tuxrun_baselines.py
->   create mode 100644 tests/functional/qemu_test/tuxruntest.py
->   create mode 100755 tests/functional/test_aarch64_tuxrun.py
->   create mode 100755 tests/functional/test_arm_tuxrun.py
->   create mode 100755 tests/functional/test_i386_tuxrun.py
->   create mode 100755 tests/functional/test_mips64_tuxrun.py
->   create mode 100755 tests/functional/test_mips64el_tuxrun.py
->   create mode 100755 tests/functional/test_mips_tuxrun.py
->   create mode 100755 tests/functional/test_mipsel_tuxrun.py
->   create mode 100755 tests/functional/test_ppc64_tuxrun.py
->   create mode 100755 tests/functional/test_ppc_tuxrun.py
->   create mode 100755 tests/functional/test_riscv32_tuxrun.py
->   create mode 100755 tests/functional/test_riscv64_tuxrun.py
->   create mode 100755 tests/functional/test_s390x_tuxrun.py
->   create mode 100755 tests/functional/test_sh4_tuxrun.py
->   create mode 100755 tests/functional/test_sparc64_tuxrun.py
->   create mode 100755 tests/functional/test_x86_64_tuxrun.py
+> Using offset_of! prior Rust 1.77.0 requires the structure to have the
+> derive(qemu_api_macros::Offsets) attribute.
+> 
+> Apply as a replacement of 10/16 of Paolo's RFC series [1].
+> 
+> Also remove subprojects/syn-2.0.66 if there is an existing build. An additional
+> feature cfg is added to packagefiles/syn-2-rs/meson.build, which requires meson
+> to re-checkout the subproject.
+> 
+> [1] https://lore.kernel.org/qemu-devel/20241015131735.518771-1-pbonzini@redhat.com
+> 
+> Co-authored-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
 
-Ok, if there are no objections, I'll include this patch series in my next 
-pull request, with this small fix squashed into the final patch:
+Thanks.  I still prefer to keep the procedural macro code minimal, and 
+have the code generation in a separate macro, but this is a nice start!
 
-diff --git a/MAINTAINERS b/MAINTAINERS
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4071,7 +4071,8 @@ F: scripts/ci/
-  F: tests/docker/
-  F: tests/vm/
-  F: tests/lcitool/
--F: tests/avocado/tuxrun_baselines.py
-+F: tests/functional/qemu_test/tuxruntest.py
-+F: tests/functional/test_*_tuxrun.py
-  F: scripts/archive-source.sh
-  F: docs/devel/testing.rst
-  W: https://gitlab.com/qemu-project/qemu/pipelines
+> +fn is_c_repr(input: &DeriveInput) -> Result<(), proc_macro2::TokenStream> {
+> +    let expected = parse_quote! { #[repr(C)] };
+> +
+> +    for attr in &input.attrs {
+> +        if attr == &expected {
+> +            return Ok(());
+> +        }
+> +    }
+> +
+> +    Err(quote! { "Can only generate offsets for structs with a C representation." })
+> +}
 
-  Thomas
+Probably can use any() here.
+
+> +/// A derive macro that generate field offsets for using `offset_of!` in
+> +/// versions of Rust prior to 1.77
+> +#[proc_macro_derive(Offsets)]
+> +pub fn derive_offsets(input: TokenStream) -> TokenStream {
+> +    let input = parse_macro_input!(input as DeriveInput);
+> +
+> +    let expanded = match derive_offsets_or_error(input) {
+> +        Ok(ts) => ts,
+> +        Err(msg) => quote! { compile_error!(#msg); },
+
+It should use quote_spanned! here.
+
+Paolo
 
 
