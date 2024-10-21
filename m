@@ -2,61 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9D99A5FB3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 11:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D749A5F3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 10:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2oNC-00019D-Lt; Mon, 21 Oct 2024 05:06:46 -0400
+	id 1t2o7s-0004tn-1o; Mon, 21 Oct 2024 04:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=cGEO=RR=kaod.org=clg@ozlabs.org>)
- id 1t2oN0-00011F-Tg; Mon, 21 Oct 2024 05:06:34 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2o7p-0004td-Gm
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 04:50:53 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=cGEO=RR=kaod.org=clg@ozlabs.org>)
- id 1t2oMz-0008RM-5G; Mon, 21 Oct 2024 05:06:34 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4XX8Yx1RkRz4wxx;
- Mon, 21 Oct 2024 20:06:29 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4XX8Yq6l0Bz4wb5;
- Mon, 21 Oct 2024 20:06:23 +1100 (AEDT)
-Message-ID: <05d86744-c702-43eb-8d27-164608c6ba22@kaod.org>
-Date: Mon, 21 Oct 2024 11:06:22 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2o7m-0006sl-28
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 04:50:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729500650; x=1761036650;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=VqvgbKpK0ZXTqjdy6W4xM0uYDi6p+P3JYiKX4cX9a4Y=;
+ b=eG3CVIRR7r17v8LhEgPMRAUXV4I4CYY4o5bnrMvJGVTvaYtO34FgobPQ
+ hqSy1hBQHTNHLg0/qINlonZ1vqQ+ox5Luf44HKlMKc4op2cQKrkAKsjne
+ szi572SeCSIV0j01aJPEEjm0fPF8KiZa1ao0i7xp4YOJfIL1XwyW1gPzE
+ mO63fOUcVmvb60uFVZG30Ja9DbFw/l7cfgJKNtG1ESYG5o4udgy01GJud
+ s2fEGPfRMIp2xt/hcbGSPhQJpGO+VfS2MrIQFywLXmVvqBgVatMwmWAFS
+ IU8ZxngMkMP8euTN4qvIHrPY93lPw3k/yJynpAb6jgLvwngh9ha5o5+Kb Q==;
+X-CSE-ConnectionGUID: TxcQ5wBnRQKwaIErlK9IwA==
+X-CSE-MsgGUID: smOeWRnNRmWbGKx9igYBKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29089590"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29089590"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 01:50:46 -0700
+X-CSE-ConnectionGUID: QipNsdAbR8qBfjXmdvTEhg==
+X-CSE-MsgGUID: YafKmUwFRfa7AaJyCQJTzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; d="scan'208";a="79105527"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 21 Oct 2024 01:50:44 -0700
+Date: Mon, 21 Oct 2024 17:07:01 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 08/16] rust: build tests for the qemu_api crate
+Message-ID: <ZxYZtTtZbDRfxuQk@intel.com>
+References: <20241015131735.518771-1-pbonzini@redhat.com>
+ <20241015131735.518771-9-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v1 05/16] hw/arm/aspeed: Correct spi_model w25q256
- for ast1030-a1 EVB.
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20241018053112.1886173-1-jamin_lin@aspeedtech.com>
- <20241018053112.1886173-6-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20241018053112.1886173-6-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=cGEO=RR=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015131735.518771-9-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
 X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.17, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.527,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,40 +81,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/24 07:31, Jamin Lin wrote:
-> Currently, the default spi_model was "sst25vf032b" whose size was 4MB for
-> ast1030-a1 EVB. However, according to the schematic of ast1030-a1 EVB,
-> ASPEED shipped default flash of spi1 and spi2 were w25q256 whose size
-> was 32MB.
+On Tue, Oct 15, 2024 at 03:17:26PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 15 Oct 2024 15:17:26 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 08/16] rust: build tests for the qemu_api crate
+> X-Mailer: git-send-email 2.46.2
 > 
-> Correct spi_model default flash to w25q256 for ast1030-a1 EVB.
+> Fix some bitrot in tests.rs, and allow the unit tests to be run via
+> "meson test".
 > 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/arm/aspeed.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/qemu-api/meson.build  | 3 +++
+>  rust/qemu-api/src/tests.rs | 2 +-
+>  2 files changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index cf0c6c580b..bf68224295 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -1643,7 +1643,7 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
->       amc->i2c_init = ast1030_evb_i2c_init;
->       mc->default_ram_size = 0;
->       amc->fmc_model = "sst25vf032b";
-> -    amc->spi_model = "sst25vf032b";
-> +    amc->spi_model = "w25q256";
->       amc->num_cs = 2;
->       amc->macs_mask = 0;
->       aspeed_machine_class_init_cpus_defaults(mc);
+> diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+> index 42ea815fa5a..436e2f1e836 100644
+> --- a/rust/qemu-api/meson.build
+> +++ b/rust/qemu-api/meson.build
+> @@ -5,6 +5,7 @@ _qemu_api_rs = static_library(
+>        'src/lib.rs',
+>        'src/definitions.rs',
+>        'src/device_class.rs',
+> +      'src/tests.rs',
+>      ],
+>      {'.' : bindings_rs},
+>    ),
+> @@ -19,6 +20,8 @@ _qemu_api_rs = static_library(
+>    ],
+>  )
+>  
+> +rust.test('rust-qemu-api-tests', _qemu_api_rs)
+> +
 
+It seems the change will bring a warning for "./configure --enable-rust":
+
+WARNING: Unknown keyword argument(s) in target rust-qemu-api-tests: rust_abi, prelink, pic.
+
+ 
 
