@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4109C9A66B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 300849A66CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:40:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qhG-00028B-OK; Mon, 21 Oct 2024 07:35:38 -0400
+	id 1t2qh7-000270-Hw; Mon, 21 Oct 2024 07:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh0-00026D-Eb
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh0-00026C-4I
  for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgy-0001gg-DB
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgy-0001gq-Lc
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729510518;
+ s=mimecast20190719; t=1729510520;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PrlK2hZEBCCrTkovizM4jFgPgyk/oE7aw+Iyqndpn2Y=;
- b=EMrkdXx73sqlrRH8ayCy7WB/tjaxk5vnp0rObV1jT0cxOtErR7UVDC2cUV0sbrqBOuHfsb
- h9JjeGAepDy2SHtTnBss0wV+7K4fvdLgkx7UpvN5JXOokkbHwYrS7oGL5Lg8J6OtksZCNQ
- ZxH+jXkR8By+pZplGoaNoOwFHLSwrkY=
+ bh=bzNMnZk4rdkf2mHgeNBsxePF53QrmrE+dRoTC8DjWPU=;
+ b=bsAUtQtTYhwv14IMbOOf7FE8R8Jj4eARzLchGhqjYS///f7jjca+tsUXPbvEwCxCfdgZNm
+ 10N0uDCaOWV9f1YkYVkaAU9Jgr8PNMoal1I2zQv7g0hfY8vMN4wNeozupRolmcWB9h6HN7
+ 97qoeZ3Ysw1f9YqzIJfrmrc2P9nUdCc=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-JJUlpszONxebWnGNvu9DvA-1; Mon,
- 21 Oct 2024 07:35:13 -0400
-X-MC-Unique: JJUlpszONxebWnGNvu9DvA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-137-IdadrSD3PIm4tXpuDw0x_A-1; Mon,
+ 21 Oct 2024 07:35:16 -0400
+X-MC-Unique: IdadrSD3PIm4tXpuDw0x_A-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 606AB195608C; Mon, 21 Oct 2024 11:35:12 +0000 (UTC)
+ id 73C1B1955F45; Mon, 21 Oct 2024 11:35:15 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.49])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5ABD1955F42; Mon, 21 Oct 2024 11:35:09 +0000 (UTC)
+ id 3D50719560AA; Mon, 21 Oct 2024 11:35:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 03/21] MAINTAINERS: A new maintainer for the qtests
-Date: Mon, 21 Oct 2024 13:34:40 +0200
-Message-ID: <20241021113500.122500-4-thuth@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 04/21] hw/pci-bridge: Add a Kconfig switch for the normal PCI
+ bridge
+Date: Mon, 21 Oct 2024 13:34:41 +0200
+Message-ID: <20241021113500.122500-5-thuth@redhat.com>
 In-Reply-To: <20241021113500.122500-1-thuth@redhat.com>
 References: <20241021113500.122500-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,48 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since I blundered into becoming the maintainer of the new functional
-test  framework in QEMU (tests/functional/) recently, I need to drop
-some other duties - it's getting too much for me otherwise. Laurent
-is also quite busy with other projects nowadays, so I looked around
-for help.
-Fabiano did quite a lot of work in the qtests in the past already,
-and is also already a maintainer for migration, so I thought he
-would be a very good fit, thus I asked him whether he would be
-interested to help out with the qtests and he agreed.
-Thank you very much, Fabiano!
+The pci-bridge device is not usable on s390x, so introduce a Kconfig
+switch that allows to disable it.
 
-Message-ID: <20241011141344.379781-1-thuth@redhat.com>
-Acked-by: Laurent Vivier <lvivier@redhat.com>
+Message-ID: <20240913144844.427899-1-thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/pci-bridge/Kconfig     | 5 +++++
+ hw/pci-bridge/meson.build | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c21d6a2f9e..d1a9959031 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3259,7 +3259,7 @@ F: tests/qtest/qmp-cmd-test.c
- T: git https://repo.or.cz/qemu/armbru.git qapi-next
- 
- qtest
--M: Thomas Huth <thuth@redhat.com>
-+M: Fabiano Rosas <farosas@suse.de>
- M: Laurent Vivier <lvivier@redhat.com>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
-@@ -3277,7 +3277,7 @@ M: Alexander Bulekov <alxndr@bu.edu>
- R: Paolo Bonzini <pbonzini@redhat.com>
- R: Bandan Das <bsd@redhat.com>
- R: Stefan Hajnoczi <stefanha@redhat.com>
--R: Thomas Huth <thuth@redhat.com>
-+R: Fabiano Rosas <farosas@suse.de>
- R: Darren Kenny <darren.kenny@oracle.com> 
- R: Qiuhao Li <Qiuhao.Li@outlook.com>
- S: Maintained
+diff --git a/hw/pci-bridge/Kconfig b/hw/pci-bridge/Kconfig
+index 67077366cc..449ec98643 100644
+--- a/hw/pci-bridge/Kconfig
++++ b/hw/pci-bridge/Kconfig
+@@ -1,3 +1,8 @@
++config PCI_BRIDGE
++    bool
++    default y if PCI_DEVICES
++    depends on PCI
++
+ config PCIE_PORT
+     bool
+     default y if PCI_DEVICES
+diff --git a/hw/pci-bridge/meson.build b/hw/pci-bridge/meson.build
+index f2a60434dd..2e0eb0d233 100644
+--- a/hw/pci-bridge/meson.build
++++ b/hw/pci-bridge/meson.build
+@@ -1,5 +1,5 @@
+ pci_ss = ss.source_set()
+-pci_ss.add(files('pci_bridge_dev.c'))
++pci_ss.add(when: 'CONFIG_PCI_BRIDGE', if_true: files('pci_bridge_dev.c'))
+ pci_ss.add(when: 'CONFIG_I82801B11', if_true: files('i82801b11.c'))
+ pci_ss.add(when: 'CONFIG_IOH3420', if_true: files('ioh3420.c'))
+ pci_ss.add(when: 'CONFIG_PCIE_PORT', if_true: files('pcie_root_port.c', 'gen_pcie_root_port.c'))
 -- 
 2.47.0
 
