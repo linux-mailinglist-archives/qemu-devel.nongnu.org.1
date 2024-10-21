@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9259A721A
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 20:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471E89A7248
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 20:27:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2wum-00069Y-3X; Mon, 21 Oct 2024 14:14:00 -0400
+	id 1t2x6X-0000Kb-U9; Mon, 21 Oct 2024 14:26:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1t2wuk-00068n-2a
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 14:13:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1t2wuh-0000QV-6w
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 14:13:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729534432;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=09e+oKX4J9p9oc+3JTGgsrN94apU+rKFWMy73eYLAHo=;
- b=RQugsPeqs5lxucTM48GTtbjKfBqX3iJs8kPe3LafXef/MWUysxMuvEtFWK37rHiaCx3zrj
- ynIVAoa35EfBNHnPkQcd5RnEU9HX5imC3KZEUVHm91xXuCEXI6buX8jLBxctZvaUBdA3hb
- ascDwRSg1xcrf1m5tz48Heh7QeYZhKw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-fI-70tQANdyapfd8t-og-g-1; Mon,
- 21 Oct 2024 14:13:50 -0400
-X-MC-Unique: fI-70tQANdyapfd8t-og-g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 78125195423A; Mon, 21 Oct 2024 18:13:49 +0000 (UTC)
-Received: from localhost (unknown [10.2.144.110])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B861419560A2; Mon, 21 Oct 2024 18:13:48 +0000 (UTC)
-Date: Mon, 21 Oct 2024 14:13:42 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Kevin Wolf <kwolf@redhat.com>, Sam Li <faithilikerun@gmail.com>,
- qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- dmitry.fomichev@wdc.com, qemu-block@nongnu.org
-Subject: Re: [PATCH v2] block/file-posix: optimize append write
-Message-ID: <20241021181342.GA293227@fedora.redhat.com>
-References: <20241004104123.236457-1-faithilikerun@gmail.com>
- <ZxJynt-0ySt3DG7W@redhat.com>
- <94067926-de2b-41d4-b401-540eb91d887c@kernel.org>
- <ZxY2JBaJW1FO9tsl@redhat.com>
- <c9e227e2-8cbe-4504-8271-6934f60be4e3@kernel.org>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t2x6V-0000KF-Gi
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 14:26:07 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t2x6S-0001sa-85
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 14:26:07 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20c7ee8fe6bso45332985ad.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 11:26:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1729535163; x=1730139963; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i4i0WLCG7/flCkPuV+WsdSoxU1OSieeFsGi0Mj0Cayw=;
+ b=ZYgDKZHu+h8xtTvKcGd2Y6yWaH0iSMo4fQE7wFBB6F9AoxisdWRL3S2qTH5M30R7V6
+ rDX5xX7P/kYwCb2YZhLkgqQXC20V0keR/seBQfSWSZlYqaZ1S3DhZXEDXK0l0eloZ3jX
+ C08xPJOTn4EZ2XLFcI+5lPJSfGGsX/CH1WBVn3nrmnQFeIHDUvWHwoS2R9G4A+BmU3Cv
+ Ovm9tIv8yfc5yh+zAip57k1xDgllkr/OzeiBfCHbRHVQih5Bkt3f1Z0Xv0O6VJXbeLBL
+ YZNc4gUsPoDJjMXgj/EnOdR86D/bl0fFCFfzGknASzKjP2i0ovZe44Jvkm2Hr6v4qwys
+ Ko0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729535163; x=1730139963;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i4i0WLCG7/flCkPuV+WsdSoxU1OSieeFsGi0Mj0Cayw=;
+ b=bwQOnsdnzJ56VY7WhoEqcAiEo+5lqIYaISJfH1OSSEGjQDYA6e4bHCqxdWW4aoGBV6
+ 6u2bAOSvjS6YKO7OQ0q1J5UVY70AhnEotgCLfoWmOCGAq1QdMIVnZQOSgekzEHZvXB0X
+ DF7X71V1wD4M6Zb7ybtmJam0hYlOfffIgjQ/sJfSqnP2/Lz4C7KAJlX5P+r963n5078k
+ 6qnz8pfMGc50YPT6Ar6qV1pDLyyNxhJSC81k+Ar9x82bd5/hHD1GnOT7XYMdDoN6MdSM
+ KWI/RjoKHsE7BoB/f9I+uZo/ZHzjeHIw/GfwV6jrNrZ/F9vd9qxaZP912bGc1zJlK7qW
+ A7vg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXcUnYDINo58r6etRzJ6UHCB2mubl/VZQwfghLE1sKryZwFAeimw3SzTBneommh7t1T3FAjg5412Ljp@nongnu.org
+X-Gm-Message-State: AOJu0YxE4vSkuent7VJBqh/w/72ww4snKIr7OEM8gkM4SAM5kI8no5qw
+ LS6+CzHV1WRSTfTUhy1V/5+SqnZFMnnb6UteiGxOQUbOtNX31OMIy8ynSVpsq48=
+X-Google-Smtp-Source: AGHT+IGICfe0Aw62B71U4ec9LzrSXO1ruxoorxZwPQvIgKuv0ldZyulNelnnQ5XCo0rKliRdSASGMA==
+X-Received: by 2002:a17:902:ecc9:b0:20d:27f8:d72a with SMTP id
+ d9443c01a7336-20e5a955803mr165770295ad.61.1729535162571; 
+ Mon, 21 Oct 2024 11:26:02 -0700 (PDT)
+Received: from [192.168.68.110] ([177.188.133.9])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20e7f0c189dsm29113325ad.163.2024.10.21.11.26.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 21 Oct 2024 11:26:02 -0700 (PDT)
+Message-ID: <f9a4f4ac-fb69-438d-aff9-b333408c80f3@ventanamicro.com>
+Date: Mon, 21 Oct 2024 15:25:59 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="kIoluX7md+q1fd+s"
-Content-Disposition: inline
-In-Reply-To: <c9e227e2-8cbe-4504-8271-6934f60be4e3@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 03/14] util: Add RISC-V vector extension probe in
+ cpuinfo
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ zhiwei_liu@linux.alibaba.com,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+References: <20241016193140.2206352-1-richard.henderson@linaro.org>
+ <20241016193140.2206352-4-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20241016193140.2206352-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,77 +99,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
---kIoluX7md+q1fd+s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch is breaking a KVM guest that runs  with '-cpu host' in an emulated
+Risc-V host. The break happens regardless of the RVV support in the emulated
+host:
 
-On Mon, Oct 21, 2024 at 09:32:50PM +0900, Damien Le Moal wrote:
-> On 10/21/24 20:08, Kevin Wolf wrote:
-> > Am 20.10.2024 um 03:03 hat Damien Le Moal geschrieben:
-> >> On 10/18/24 23:37, Kevin Wolf wrote:
-> >>> Am 04.10.2024 um 12:41 hat Sam Li geschrieben:
-> >>>> When the file-posix driver emulates append write, it holds the lock
-> >>>> whenever accessing wp, which limits the IO queue depth to one.
-> >>>>
-> >>>> The write IO flow can be optimized to allow concurrent writes. The l=
-ock
-> >>>> is held in two cases:
-> >>>> 1. Assumed that the write IO succeeds, update the wp before issuing =
-the
-> >>>> write.
-> >>>> 2. If the write IO fails, report that zone and use the reported value
-> >>>> as the current wp.
-> >>>
-> >>> What happens with the concurrent writes that started later and may not
-> >>> have completed yet? Can we really just reset to the reported value
-> >>> before all other requests have completed, too?
-> >>
-> >> Yes, because if one write fails, we know that the following writes
-> >> will fail too as they will not be aligned to the write pointer. These
-> >> subsequent failed writes will again trigger the report zones and
-> >> update, but that is fine. All of them have failed and the report will
-> >> give the same wp again.
-> >>
-> >> This is a typical pattern with zoned block device: if one write fails
-> >> in a zone, the user has to expect failures for all other writes issued
-> >> to the same zone, do a report zone to get the wp and restart writing
-> >> from there.
-> >=20
-> > Ok, that makes sense. Can we be sure that requests are handled in the
-> > order they were submitted, though? That is, if the failed request is
-> > resubmitted, could the already pending next one still succeed if it's
-> > overtaken by the resubmitted request? Not sure if this would even cause
-> > a probem, but is it a case we have to consider?
->=20
-> A zoned device will always handle writes in the order they were submitted=
- (per
-> zone) and that is true for emulated devices as well as real ones.
 
-Is there serialization code in the kernel so that zoned devices behind
-multi-path keep requests ordered?
+$ qemu-system-riscv64 \
+	-machine virt,accel=kvm -m 2G -smp 1 \
+	-cpu host \
+	-nographic -snapshot \
+	-kernel ./guest_imgs/Image \
+	-initrd ./guest_imgs/rootfs_kvm_riscv64.img \
+	-append "root=/dev/ram rw console=ttyS0 earlycon=sbi"
 
-Normally I don't assume any ordering between concurrent requests to a
-block device, so I'm surprised that it's safe to submit multiple writes.
+qemu-system-riscv64: ../util/cpuinfo-riscv.c:119: cpuinfo_init: Assertion `left == 0' failed.
+Aborted
 
-Stefan
 
---kIoluX7md+q1fd+s
-Content-Type: application/pgp-signature; name="signature.asc"
+In a quick debug:
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmcWmdYACgkQnKSrs4Gr
-c8ho9gf/VWxd+0UAwWHQuMk/IRkUJtVgxLduj+RxN6S1OZZ5xo+VUfWVU2yQqxxv
-TCe/tN788Y5i8oqdqefc4k7Bpp14WZjVMecfX3n/n6jLrlwt7qsXES7rSJUsPpXQ
-t45Ty0xuCofi4kAHdDgUKvES+mALyyShdG61cqL+2MC05p7RrpuheiRxl3k9CvnU
-vWXFK1hkoeGuNDefNFATPBLo+Hmu5sRN9CInTNVzTN5Mze23jHP085trYNNM2+dz
-r0WQFPE2TJCDi+0HbdAeJSl1L/0aSV2zKS3f6CZUIN+wpNM9TJzYUE35+486dze9
-nJ3wQmKi5fZSw+fAJB7a+SLixhLXCQ==
-=CuVZ
------END PGP SIGNATURE-----
+On 10/16/24 4:31 PM, Richard Henderson wrote:
+> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+> 
+> Add support for probing RISC-V vector extension availability in
+> the backend. This information will be used when deciding whether
+> to use vector instructions in code generation.
+> 
+> Cache lg2(vlenb) for the backend. The storing of lg2(vlenb) means
+> we can convert all of the division into subtraction.
+> 
+> While the compiler doesn't support RISCV_HWPROBE_EXT_ZVE64X,
+> we use RISCV_HWPROBE_IMA_V instead. RISCV_HWPROBE_IMA_V is more
+> strictly constrainted than RISCV_HWPROBE_EXT_ZVE64X. At least in
+> current QEMU implemenation, the V vector extension depends on the
+> zve64d extension.
+> 
+> Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+> Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Message-ID: <20241007025700.47259-2-zhiwei_liu@linux.alibaba.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   host/include/riscv/host/cpuinfo.h |  2 ++
+>   util/cpuinfo-riscv.c              | 24 ++++++++++++++++++++++--
+>   2 files changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/host/include/riscv/host/cpuinfo.h b/host/include/riscv/host/cpuinfo.h
+> index 2b00660e36..cdc784e7b6 100644
+> --- a/host/include/riscv/host/cpuinfo.h
+> +++ b/host/include/riscv/host/cpuinfo.h
+> @@ -10,9 +10,11 @@
+>   #define CPUINFO_ZBA             (1u << 1)
+>   #define CPUINFO_ZBB             (1u << 2)
+>   #define CPUINFO_ZICOND          (1u << 3)
+> +#define CPUINFO_ZVE64X          (1u << 4)
+>   
+>   /* Initialized with a constructor. */
+>   extern unsigned cpuinfo;
+> +extern unsigned riscv_lg2_vlenb;
+>   
+>   /*
+>    * We cannot rely on constructor ordering, so other constructors must
+> diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+> index 8cacc67645..16114ffd32 100644
+> --- a/util/cpuinfo-riscv.c
+> +++ b/util/cpuinfo-riscv.c
+> @@ -4,6 +4,7 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include "qemu/host-utils.h"
+>   #include "host/cpuinfo.h"
+>   
+>   #ifdef CONFIG_ASM_HWPROBE_H
+> @@ -13,6 +14,7 @@
+>   #endif
+>   
+>   unsigned cpuinfo;
+> +unsigned riscv_lg2_vlenb;
+>   static volatile sig_atomic_t got_sigill;
+>   
+>   static void sigill_handler(int signo, siginfo_t *si, void *data)
+> @@ -34,7 +36,7 @@ static void sigill_handler(int signo, siginfo_t *si, void *data)
+>   /* Called both as constructor and (possibly) via other constructors. */
+>   unsigned __attribute__((constructor)) cpuinfo_init(void)
+>   {
+> -    unsigned left = CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZICOND;
+> +    unsigned left = CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZICOND | CPUINFO_ZVE64X;
 
---kIoluX7md+q1fd+s--
 
+This will init 'left' with 30 (2 + 4 + 8 + 16)
+
+
+>       unsigned info = cpuinfo;
+>   
+>       if (info) {
+> @@ -50,6 +52,9 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>   #endif
+>   #if defined(__riscv_arch_test) && defined(__riscv_zicond)
+>       info |= CPUINFO_ZICOND;
+> +#endif
+> +#if defined(__riscv_arch_test) && defined(__riscv_zve64x)
+> +    info |= CPUINFO_ZVE64X;
+>   #endif
+>       left &= ~info;
+>   
+> @@ -65,7 +70,8 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>               && pair.key >= 0) {
+>               info |= pair.value & RISCV_HWPROBE_EXT_ZBA ? CPUINFO_ZBA : 0;
+>               info |= pair.value & RISCV_HWPROBE_EXT_ZBB ? CPUINFO_ZBB : 0;
+> -            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB);
+> +            info |= pair.value & RISCV_HWPROBE_IMA_V ? CPUINFO_ZVE64X : 0;
+> +            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZVE64X);
+>   #ifdef RISCV_HWPROBE_EXT_ZICOND
+>               info |= pair.value & RISCV_HWPROBE_EXT_ZICOND ? CPUINFO_ZICOND : 0;
+>               left &= ~CPUINFO_ZICOND;
+> @@ -113,6 +119,20 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>           assert(left == 0);
+
+To better understand, this is the 'if' block that contains this assert:
+
+     if (left) {
+         struct sigaction sa_old, sa_new;
+
+         memset(&sa_new, 0, sizeof(sa_new));
+         sa_new.sa_flags = SA_SIGINFO;
+         sa_new.sa_sigaction = sigill_handler;
+         sigaction(SIGILL, &sa_new, &sa_old);
+
+         if (left & CPUINFO_ZBA) {
+             /* Probe for Zba: add.uw zero,zero,zero. */
+             got_sigill = 0;
+             asm volatile(".insn r 0x3b, 0, 0x04, zero, zero, zero"
+                          : : : "memory");
+             info |= got_sigill ? 0 : CPUINFO_ZBA;
+             left &= ~CPUINFO_ZBA;
+         }
+
+         if (left & CPUINFO_ZBB) {
+             /* Probe for Zbb: andn zero,zero,zero. */
+             got_sigill = 0;
+             asm volatile(".insn r 0x33, 7, 0x20, zero, zero, zero"
+                          : : : "memory");
+             info |= got_sigill ? 0 : CPUINFO_ZBB;
+             left &= ~CPUINFO_ZBB;
+         }
+
+         if (left & CPUINFO_ZICOND) {
+             /* Probe for Zicond: czero.eqz zero,zero,zero. */
+             got_sigill = 0;
+             asm volatile(".insn r 0x33, 5, 0x07, zero, zero, zero"
+                          : : : "memory");
+             info |= got_sigill ? 0 : CPUINFO_ZICOND;
+             left &= ~CPUINFO_ZICOND;
+         }
+
+         sigaction(SIGILL, &sa_old, NULL);
+         assert(left == 0);
+     }
+
+
+The 'assert' is hit at this point because left is 16, i.e. left = CPUINFO_ZVE64X.
+
+I did a fix based on what seems to be the usual flow of how 'left' is being calculated:
+
+
+$ git diff
+diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+index 16114ffd32..25a98a75ad 100644
+--- a/util/cpuinfo-riscv.c
++++ b/util/cpuinfo-riscv.c
+@@ -115,24 +115,27 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+              left &= ~CPUINFO_ZICOND;
+          }
+  
++        if (left & CPUINFO_ZVE64X) {
++            /*
++             * We are guaranteed by RVV-1.0 that VLEN is a power of 2.
++             * We are guaranteed by Zve64x that VLEN >= 64, and that
++             * EEW of {8,16,32,64} are supported.
++             *
++             * Cache VLEN in a convenient form.
++             */
++            unsigned long vlenb;
++            got_sigill = 0;
++            /* Read csr "vlenb" with "csrr %0, vlenb" : "=r"(vlenb) */
++            asm volatile(".insn i 0x73, 0x2, %0, zero, -990" : "=r"(vlenb));
++            info |= got_sigill ? 0 : CPUINFO_ZVE64X;
++            left &= ~CPUINFO_ZVE64X;
++            riscv_lg2_vlenb = ctz32(vlenb);
++        }
++
+          sigaction(SIGILL, &sa_old, NULL);
+          assert(left == 0);
+      }
+  
+-    if (info & CPUINFO_ZVE64X) {
+-        /*
+-         * We are guaranteed by RVV-1.0 that VLEN is a power of 2.
+-         * We are guaranteed by Zve64x that VLEN >= 64, and that
+-         * EEW of {8,16,32,64} are supported.
+-         *
+-         * Cache VLEN in a convenient form.
+-         */
+-        unsigned long vlenb;
+-        /* Read csr "vlenb" with "csrr %0, vlenb" : "=r"(vlenb) */
+-        asm volatile(".insn i 0x73, 0x2, %0, zero, -990" : "=r"(vlenb));
+-        riscv_lg2_vlenb = ctz32(vlenb);
+-    }
+-
+      info |= CPUINFO_ALWAYS;
+      cpuinfo = info;
+      return info;
+
+
+
+i.e. I moved the CPUINFO_ZVE64X inside the 'if (left)' block, then update both 'info' and
+'left' depending on if we found the vlenb CSR.
+
+Note that this fixes the issue I'm seeing (KVM guest boot), but I can't say if the original
+intent of the patch is preserved. If this is a good fix feel free to squash this diff into
+the patch.
+
+
+Thanks,
+
+Daniel
+
+
+>       }>   
+> +    if (info & CPUINFO_ZVE64X) {
+> +        /*
+> +         * We are guaranteed by RVV-1.0 that VLEN is a power of 2.
+> +         * We are guaranteed by Zve64x that VLEN >= 64, and that
+> +         * EEW of {8,16,32,64} are supported.
+> +         *
+> +         * Cache VLEN in a convenient form.
+> +         */
+> +        unsigned long vlenb;
+> +        /* Read csr "vlenb" with "csrr %0, vlenb" : "=r"(vlenb) */
+> +        asm volatile(".insn i 0x73, 0x2, %0, zero, -990" : "=r"(vlenb));
+> +        riscv_lg2_vlenb = ctz32(vlenb);
+> +    }
+> +
+>       info |= CPUINFO_ALWAYS;
+>       cpuinfo = info;
+>       return info;
 
