@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1099B9A5D50
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 09:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D629A5CDB
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 09:25:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2n1e-0005Wq-Vo; Mon, 21 Oct 2024 03:40:27 -0400
+	id 1t2mmE-0001Td-EJ; Mon, 21 Oct 2024 03:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1t2n1O-0005VI-PI
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 03:40:10 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1t2n1M-0007Ia-Ik
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 03:40:10 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-539e8607c2aso4324291e87.3
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 00:40:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729496402; x=1730101202; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ut6tdXFoieCwDzjCk3rSVYe/V5H9QVhV/RCoAHnEImI=;
- b=iW3GQep4V8Ov0ny7TNe75RvegPFArq5KGy0oU6G4eLhCO2eBEvI5mKxRG28MQ5Eu1e
- PIzC5P6QH0xqdBkQSG+One20GqldJoZ90LUnDy7ME05FecVj62Sldv4NCtWE7JSERBAf
- 6MntwacXThA5Pv36GOq1A+ZkXaHd0oYodwV8J5+Pffhg6+jRM9kqfpJQYCc3/2pNUhlO
- pXgECMeKEjDBqTc12IFTeDF98szI5qSMMgbJ3jzuM0GZOAPGaAuQfJcpqxuno4YF4sa4
- RuXS7nlVu8iBex7uli70zcCccOJZfv3uX0u9uEn8lBmSJalnHhkTNGK08nEKXvVxSl2e
- Qm0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729496402; x=1730101202;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ut6tdXFoieCwDzjCk3rSVYe/V5H9QVhV/RCoAHnEImI=;
- b=HdCM1NBpPesXkv39Wj/VeLocuMleLfas+lwNfKjde7PklBJdDOvCtPWmgsRgTnOKgS
- SZ/nYMUsLYHLHBJpNeuqoFB7XdAPQM7RCM7ya63mSGdeifAN6yS5drEt1i3fGHygQUIL
- Hd4qwLqdbcja9JVMp5vEt8c5ae/PiF2ORGErcTFgozbMiAZ+vJ5paemNwCkYiPCDKV/k
- k68MrUuhw1KyNdSG1vumXeu9eeGNBRDPMQ8SI+ejEX/1dkkTgsilSescAkrSLpClASCn
- HNXQKqHAsqjI3s9Zymb6o7khbnTutt3BhPMbfZwMlVACRVaFtVwWs1UEXVEPxoqvCDrt
- izpg==
-X-Gm-Message-State: AOJu0YwRfyoaoM27eYZro4LNOf98v5ftLEaEq3Op2ke228pm2b7Vqjzp
- XZdGtFmEQYUwpbrjgNV4lK0KMA9VOS7sWdzl6JlRyE/35U1ugdz44W0WX7hE
-X-Google-Smtp-Source: AGHT+IHQciL+iTlfAU599XwSCdWoMZD5RsI/tADgn8OXsviefzQLziznjymiXZ5JCWF6gR0gAzu4Hg==
-X-Received: by 2002:a05:6512:3a95:b0:539:ee0d:2bb4 with SMTP id
- 2adb3069b0e04-53a154b2cb6mr5122358e87.45.1729496402045; 
- Mon, 21 Oct 2024 00:40:02 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53a22456503sm411931e87.306.2024.10.21.00.40.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 00:40:00 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- peter.maydell@linaro.org, edgar.iglesias@amd.com,
- xen-devel@lists.xenproject.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PULL v1 1/1] hw/xen: Avoid use of uninitialized bufioreq_evtchn
-Date: Mon, 21 Oct 2024 09:39:57 +0200
-Message-ID: <20241021073957.1851500-2-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241021073957.1851500-1-edgar.iglesias@gmail.com>
-References: <20241021073957.1851500-1-edgar.iglesias@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2mmC-0001TV-8Z
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 03:24:28 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2mm7-0005bA-KT
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 03:24:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729495464; x=1761031464;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=NGl3r5fmOudRc/L4pqhjtSh24bKpx54A9FpiC7dQjgc=;
+ b=BZuFbYfXbKdeZ2Cnie4eFmga80xrIK17ezraOl5ShodGQxiUXWFddXWN
+ VJLU+LeBrtg8n1w0OFESfiJA8AMA9SRRHL8IEe+Y427/GBmwfKBG3nJ0q
+ ijj+9JUZuK0xd4T9pL09hqSYTgJJsKKP9FjTwPm3W8fz50Tl6+rKhPcLM
+ oLRH6isHE1n37x0DjesCE727TyRIg12wH+1AekGzUWYvcj+jveb9l+M4s
+ VaGoF7GrG8nqa8jkiIDyewta9vkq9gys85pdVW58D4vbN10/bWvJVkLmd
+ 4/AHM5hnXIauKJEOIyeAhj4XKFIXah1kluizwW05s7fEWKG8oTW3fChA9 g==;
+X-CSE-ConnectionGUID: kG617X0ESAea/Jo8n0ZABg==
+X-CSE-MsgGUID: iWcOiz75Q2WnAj27o4gwNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46431833"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="46431833"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 00:24:21 -0700
+X-CSE-ConnectionGUID: mnxqQK3ySHC4CsL5jLiUHg==
+X-CSE-MsgGUID: 1oqouM4pR7Gt0SUqVNjiAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; d="scan'208";a="79402130"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 21 Oct 2024 00:24:19 -0700
+Date: Mon, 21 Oct 2024 15:40:35 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 05/16] rust: fix cfgs of proc-macro2 for 1.63.0
+Message-ID: <ZxYFc+jm/oOzWa6F@intel.com>
+References: <20241015131735.518771-1-pbonzini@redhat.com>
+ <20241015131735.518771-6-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015131735.518771-6-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.527,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,38 +81,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+On Tue, Oct 15, 2024 at 03:17:23PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 15 Oct 2024 15:17:23 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 05/16] rust: fix cfgs of proc-macro2 for 1.63.0
+> X-Mailer: git-send-email 2.46.2
+> 
+> Replay the configuration that would be computed by build.rs when compiling
+> on a 1.63.0 compiler.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  subprojects/packagefiles/proc-macro2-1-rs/meson.build | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-Avoid use of uninitialized bufioreq_evtchn. It should only
-be used if buffered IOREQs are enabled.
-
-Resolves: Coverity CID 1563383
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- hw/xen/xen-hvm-common.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 7d2b72853b..7ffbbfea23 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -752,9 +752,10 @@ static int xen_map_ioreq_server(XenIOState *state)
-         return -1;
-     }
- 
--    trace_xen_map_ioreq_server_buffered_io_evtchn(bufioreq_evtchn);
--
--    state->bufioreq_remote_port = bufioreq_evtchn;
-+    if (state->has_bufioreq) {
-+        trace_xen_map_ioreq_server_buffered_io_evtchn(bufioreq_evtchn);
-+        state->bufioreq_remote_port = bufioreq_evtchn;
-+    }
- 
-     return 0;
- }
--- 
-2.43.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
