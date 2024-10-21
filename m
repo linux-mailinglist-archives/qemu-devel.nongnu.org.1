@@ -2,64 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B5A9A6F4E
+	by mail.lfdr.de (Postfix) with ESMTPS id 207F49A6F4F
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2v8v-0004Um-SL; Mon, 21 Oct 2024 12:20:29 -0400
+	id 1t2v9s-0005WC-6K; Mon, 21 Oct 2024 12:21:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t2v8j-0004JG-BA
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:17 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t2v9O-0005Kd-TY
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t2v8h-00047z-Kx
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t2v9N-00049x-Db
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:20:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729527614;
+ s=mimecast20190719; t=1729527656;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VVieedyPJlknzVmD9/TMYpfZlftz/s1bAD6yv7JeyO8=;
- b=G6jnqsnctE0CAfV7ljv17U3KwpEbUfGri6+NZ/DaWuF8k7VNe5/kEEajEY0QrFWpurtXB3
- SCu0OhyIAct3OY7Y0scKCppcEMnFd82DBV3H/t5I4REQvyowkUM5Y369EadBBzkazuNX9D
- +CPStNvIX+eQU+dhIQ5mNg4L2PLV3WQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-jzoSfU1pN1OPYINvDUK4TA-1; Mon,
- 21 Oct 2024 12:20:13 -0400
-X-MC-Unique: jzoSfU1pN1OPYINvDUK4TA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 466831955F40
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 16:20:12 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.27])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1BC301956056; Mon, 21 Oct 2024 16:20:10 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 6/6] ui: validate NUL byte padding in SASL client data more
- strictly
-Date: Mon, 21 Oct 2024 17:19:57 +0100
-Message-ID: <20241021161957.1431919-7-berrange@redhat.com>
-In-Reply-To: <20241021161957.1431919-1-berrange@redhat.com>
-References: <20241021161957.1431919-1-berrange@redhat.com>
+ bh=mstckrJMDjF6iw5guSYUvdoOXAtEPcsm4kpIPxJNTvQ=;
+ b=LThZ7420qjkq2Hz5ccHaIeAOPCwSgHjcYFeERb9IyKNe1Ar0kSc64232Z0NFBqXemjUgLi
+ bNyJjB1vY0JGtHbqg2GwKK/kU42cgBOZNEoJOpbwkCsrR4FOCCzn6PRtRB0UkYU7cBBDkz
+ 81lLrBvM4/74EP2x/kdfL732skXlGdk=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-227-6fA5r8rJM2254_5I03tTmg-1; Mon, 21 Oct 2024 12:20:55 -0400
+X-MC-Unique: 6fA5r8rJM2254_5I03tTmg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b14634dba8so863227685a.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:20:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729527654; x=1730132454;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mstckrJMDjF6iw5guSYUvdoOXAtEPcsm4kpIPxJNTvQ=;
+ b=swAxG5dbGXFijo+96BhZpe26HjQAFFFp6zV7hWz5cDZaFcXgUHQ6pMZpx9pgYQS2/H
+ 388p+SmkatH8CIOnpa7GzTs+xzOtWvXEIJbKggR1N/YH9RuL387jXrX9k2Xh/5LUVq+b
+ ZuAtSdUzA2mwf7ZSs0hAw4uU1HuiLE4TOO0JkPeoffCAFOJ96/POAXLl3IiTPUDRcUDk
+ qmeW1JE9x5EOx7utAM8hkSuFh97KvBBMej8a8MBBwbb3IJU4LwoqjSA620D4sduf/o5J
+ YnodoZAr2HXZCwidLtEBuoxknMkevNG/31JJqvdEZ5lRDV4ECLNYP2P3mLPMpe3yZCOr
+ gZDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUhIsgY6anf4yN7HqK4U4s9LrKfZXgfqwYUf1DAiQL8ALGnPGF/oHWvTHW19d/JnFoDyqJu3BjgCZfV@nongnu.org
+X-Gm-Message-State: AOJu0Yx9SEysi1bjRzlJNyiSWz9VkPrhfTjYyig81ABL/jW4S1iJ+0AG
+ w4HGP9z7hLfbj+/CmYBTFvt+WgYxGi0hCNlgh3e9gA0cK+epbeYOoCjYKq2UJJWbWd2cYGDd3jV
+ gUhTN4RTNjDIhu/D0WFTVKEQPXuZKcAZHJjzMABbc4DYjV/h5sWBu
+X-Received: by 2002:a05:620a:4620:b0:7a9:8679:993 with SMTP id
+ af79cd13be357-7b157b3fda4mr1408578585a.13.1729527654524; 
+ Mon, 21 Oct 2024 09:20:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3VHCI3p4b2OXIcOQqyeIoABfVO81wHSg/RLsTnOEM5BuMIK7JsWWI2G2bHN4LsN7fnWrxdQ==
+X-Received: by 2002:a05:620a:4620:b0:7a9:8679:993 with SMTP id
+ af79cd13be357-7b157b3fda4mr1408575685a.13.1729527654250; 
+ Mon, 21 Oct 2024 09:20:54 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b165a06daasm184731285a.70.2024.10.21.09.20.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Oct 2024 09:20:53 -0700 (PDT)
+Date: Mon, 21 Oct 2024 12:20:51 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [RFC V1 04/14] accel: set accelerator and machine props earlier
+Message-ID: <ZxZ_Y3DYgs8ZlhaI@x1n>
+References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
+ <1729178055-207271-5-git-send-email-steven.sistare@oracle.com>
+ <87ldyl1mah.fsf@suse.de>
+ <628ceba7-9cf4-4ad2-b3e5-6af4037a0bc1@oracle.com>
+ <4c0645c9-a38b-4399-ba30-cf2ced63fc5e@oracle.com>
+ <3da9ec87-3466-4fad-b4c0-2bcfe3853b5a@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3da9ec87-3466-4fad-b4c0-2bcfe3853b5a@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -84,55 +110,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the SASL data is non-NULL, the SASL protocol spec requires that
-it is padded with a trailing NUL byte. QEMU discards the trailing
-byte, but does not currently validate that it was in fact a NUL.
-Apply strict validation to better detect any broken clients.
+On Fri, Oct 18, 2024 at 03:15:56PM -0400, Steven Sistare wrote:
+> I understand this now.  The old code worked in this order:
+> 
+>   qemu_create_early_backends()
+>     ... creates "-object can-bus,id=canbus"
+>   qemu_create_machine()
+>   qemu_apply_machine_options()
+>     applies link property "canbus0" with value canbus, finds canbus object
+> 
+> The new code fails:
+> 
+>   qemu_create_machine()
+>   qemu_apply_machine_options()
+>     applies link property "canbus0" with value canbus,
+>     error because fails to find canbus object
+>   ...
+>   qemu_exit_precreate()
+>     qemu_create_early_backends()
+>       ... creates "-object can-bus,id=canbus"
+> 
+> The fix is to provide a new function, called before qemu_create_machine,
+> which creates only the backends that are needed to create the machine.
+> AFAIK can-bus is the only one, because the xlnx-zcu102 machine has
+> link properties.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- ui/vnc-auth-sasl.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+Wanna share more on the specific solution?  I wonder if the plan is to add
+one more special window for creating -object just for can-bus, and how to
+justify that extra phase.  Perhaps whatever that do not require fd to back
+it (so not affected by CPR)?  But not sure whether that's too special.
 
-diff --git a/ui/vnc-auth-sasl.c b/ui/vnc-auth-sasl.c
-index a04feeb429..df2825797d 100644
---- a/ui/vnc-auth-sasl.c
-+++ b/ui/vnc-auth-sasl.c
-@@ -263,8 +263,14 @@ static int protocol_client_auth_sasl_step(VncState *vs, uint8_t *data, size_t le
-     /* NB, distinction of NULL vs "" is *critical* in SASL */
-     if (datalen) {
-         clientdata = (char*)data;
--        clientdata[datalen-1] = '\0'; /* Wire includes '\0', but make sure */
--        datalen--; /* Don't count NULL byte when passing to _start() */
-+        if (clientdata[datalen-1] != '\0') {
-+            trace_vnc_auth_fail(vs, vs->auth, "Malformed SASL client data",
-+                                "Missing SASL NUL padding byte");
-+            sasl_dispose(&vs->sasl.conn);
-+            vs->sasl.conn = NULL;
-+            goto authabort;
-+        }
-+        datalen--; /* Discard the extra NULL byte padding when calling _start() */
-     }
- 
-     err = sasl_server_step(vs->sasl.conn,
-@@ -385,8 +391,14 @@ static int protocol_client_auth_sasl_start(VncState *vs, uint8_t *data, size_t l
-     /* NB, distinction of NULL vs "" is *critical* in SASL */
-     if (datalen) {
-         clientdata = (char*)data;
--        clientdata[datalen-1] = '\0'; /* Should be on wire, but make sure */
--        datalen--; /* Don't count NULL byte when passing to _start() */
-+        if (clientdata[datalen-1] != '\0') {
-+            trace_vnc_auth_fail(vs, vs->auth,  "Malformed SASL client data",
-+                                "Missing SASL NUL padding byte");
-+            sasl_dispose(&vs->sasl.conn);
-+            vs->sasl.conn = NULL;
-+            goto authabort;
-+        }
-+        datalen--; /* Discard the extra NULL byte padding when calling _start() */
-     }
- 
-     err = sasl_server_start(vs->sasl.conn,
+I wished it could be simply put into the "very early" stage (pre-sandbox),
+but I think object_create_pre_sandbox() did mention that we need explicit
+reasons for those, and I'm not sure whether this reason justifies either
+for why can-bus is so special so can be created without the sandboxing.
+
 -- 
-2.46.0
+Peter Xu
 
 
