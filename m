@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDE49A6FAB
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DC29A6FBA
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2vOO-00067b-MJ; Mon, 21 Oct 2024 12:36:35 -0400
+	id 1t2vP1-0006ol-0e; Mon, 21 Oct 2024 12:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vNw-0005un-GM
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t2vOD-00067n-Va
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vNu-0006IO-W3
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:00 -0400
+ id 1t2vOA-0006K1-RG
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729528557;
+ s=mimecast20190719; t=1729528572;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+VBSGG9/QZnUbOHJ1ZUaj0+mzJGppSH57Y5XCkB20uU=;
- b=Yk3GtvRLSGY7iZFUV50TFOnDSVheFkVJ/YF3Qln5InL9h023DQ9J1lVWc97ktE5f68NBeM
- iTjtWeLCTKHPJg5fdNiIDu/JGc41zGWCVwIPpFwidsNWRSUCtW3DBW9Lg77fbpyGDsQUga
- TYoTihjTT8B2E9ToNHkxnxzL/CJjfIw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ieLsbmqkTfVjeUAmxOVRrXd6Rl3o+mJGozPICAN/5xE=;
+ b=F0E6w98mn9oeKoZh4sjhz28+jiI4X0vrYO0gk0KT4+/hcrDS2U/V5hxQzfpcrfvJfR+QCN
+ v7HPKTIF1GtByNhR61hcz3NRSHx11JZ5wKpg9TpSJsHZ9zod6BJv8WBZ0XTKAbCYStdWyd
+ NJiRBliBWfT+j0RRI1Wj5x7GXvSRhs0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-5mxRttA5MCijBc4yZAYxew-1; Mon, 21 Oct 2024 12:35:56 -0400
-X-MC-Unique: 5mxRttA5MCijBc4yZAYxew-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43151e4ef43so34583445e9.3
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:35:56 -0700 (PDT)
+ us-mta-631-rM1olqiiMguaYboKpJrx_Q-1; Mon, 21 Oct 2024 12:36:10 -0400
+X-MC-Unique: rM1olqiiMguaYboKpJrx_Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43163a40ee0so25575105e9.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:36:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729528555; x=1730133355;
+ d=1e100.net; s=20230601; t=1729528559; x=1730133359;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+VBSGG9/QZnUbOHJ1ZUaj0+mzJGppSH57Y5XCkB20uU=;
- b=n3LRHWlr+ZmF2vDLli7A3s9Hk9ZAUGYKn2g2cNoTevwTpWbNnV4nYK0gfABVCPS6uO
- FVSCp7MqfGXfEMarD1TKAd8AAvOOf0QJY5zdt2qD69sz5HCF/HalK4w5+HDHcvsKMSO9
- 0UmW9yAw92y+sTnlv4PduY+5mnI1dEUrL4r5qTOYxk8iinzFaKJ+XjKKw0+V0JceE9Th
- 867pFzMPyX0+nBfMVcA/3dXA/fy27N0g9/pCpXG9MVpxh5E6DWhI/u+6BgnNn8UxmPKD
- vvmw8VdyhyvTT9dJY3iZ93ajy3jFOv1qWDX6kVuQxzQVehf9rxRyvCXzkEIW0g4z/Aws
- S4Gw==
-X-Gm-Message-State: AOJu0YwX+JZwqtWSnxFpBFXrJsnS8o63b0cYEIhhwKi+TmvB4zg+V8OA
- eRA6bZQbnF+9Gld6M6tUB4g6WoctEXvsGt92E3qKOH+z0jV2mVRopKtv3ApxKw8AJP2R5BaEdU3
- dD8Il1/Q61AYNvL9XjQ/oP99M3klSIWZTA/EhiEyNKf2RA53WLunFgdKI1fn7GbZZzo2trAiNpG
- Ko5h8GyMpB7dF4lk5nS01ps7ZZ3Hpcy9gIqgTgSU8=
-X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
- 5b1f17b1804b1-431616a388cmr100577145e9.29.1729528554862; 
- Mon, 21 Oct 2024 09:35:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIIIJRzkemrUvKk4iyOOzbee7lZKyXOs6e3741YOKlQdEaBc8g+wXmIVejD4MgZgdKWSgxZw==
-X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
- 5b1f17b1804b1-431616a388cmr100576935e9.29.1729528554427; 
- Mon, 21 Oct 2024 09:35:54 -0700 (PDT)
+ bh=ieLsbmqkTfVjeUAmxOVRrXd6Rl3o+mJGozPICAN/5xE=;
+ b=hC3jHqS1Ekt8PTe+Jv9B6ChxFjlwYgVQUsUMWIkgpw5v2Lccz+7BStlRS2QS0OHyNp
+ FBoQOlKw8ARbF6z8mJ7Rw3pU3ZNbuoO+9UNGRr1I4Nks6/9jYHSTEcD9P3OWzkS63NcR
+ atDpVszDpI5vABRd7sPGJFVXa12aK5yttKr5doxRib4o262feJzu0aABYIOsn9Z9j7sQ
+ ckQY9A/vPjXss5fu043zVjS9nyyMS4MpvMjGX483kvbb1ANqWG/i+AAUx0dZeUL7slLE
+ 0mmFQrYstlFpnx0KOEPo570G2NwYCljBQ7vB4BQKVlq4X7r/n/SR3jh3IX3iRrk3Pvyu
+ c6vA==
+X-Gm-Message-State: AOJu0YztnBQvxRUcZJNUT7wdF6yXcyBwfwAFv64Od5XPbIgvIe/iLgkw
+ Bz4XUdxnuPzvKfb0A7VTJo+/Beac1IEGLTtTHcxlr0KPLnJAo1ZyOMJqvhOKYOGGB2uWoMR0Vmp
+ VWstsiqLMED+57Ay4r1Mz5cBTFkZJyRYH9pN13SwwVBNZOwgxx+1EZz5KYT2ulpCfDP71rOTl+7
+ kAmi4ve0nJfbq8jjb93W96gQClgvFUCq1cVvtcDxA=
+X-Received: by 2002:a05:600c:45cb:b0:431:3927:d1bc with SMTP id
+ 5b1f17b1804b1-431616331f5mr86372445e9.2.1729528559291; 
+ Mon, 21 Oct 2024 09:35:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHu9Toro2BrXmSEvXUExVMxKz8xGKwSpCitVQrOvid8rCqjZyXrzFvZ3FJcdm0RkCQisHmB1Q==
+X-Received: by 2002:a05:600c:45cb:b0:431:3927:d1bc with SMTP id
+ 5b1f17b1804b1-431616331f5mr86372195e9.2.1729528558754; 
+ Mon, 21 Oct 2024 09:35:58 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f5cc1e2sm63458665e9.42.2024.10.21.09.35.53
+ ffacd0b85a97d-37ee0b9bb15sm4711993f8f.99.2024.10.21.09.35.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 09:35:53 -0700 (PDT)
+ Mon, 21 Oct 2024 09:35:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PATCH v2 04/13] rust: do not use --no-size_t-is-usize
-Date: Mon, 21 Oct 2024 18:35:29 +0200
-Message-ID: <20241021163538.136941-5-pbonzini@redhat.com>
+Subject: [PATCH v2 05/13] rust: remove uses of #[no_mangle]
+Date: Mon, 21 Oct 2024 18:35:30 +0200
+Message-ID: <20241021163538.136941-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241021163538.136941-1-pbonzini@redhat.com>
 References: <20241021163538.136941-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,49 +101,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This not necessary and makes it harder to write code that
-is portable between 32- and 64-bit systems: it adds extra casts even
-though size_of, align_of or offset_of already return the right type.
+Mangled symbols do not cause any issue; disabling mangling is only useful if
+C headers reference the Rust function, which is not the case here.
 
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                      | 1 -
- rust/qemu-api/src/definitions.rs | 6 +++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ rust/hw/char/pl011/src/device.rs       | 5 -----
+ rust/hw/char/pl011/src/device_class.rs | 2 --
+ rust/hw/char/pl011/src/memory_ops.rs   | 2 --
+ rust/qemu-api/src/definitions.rs       | 1 -
+ rust/qemu-api/src/device_class.rs      | 2 --
+ 5 files changed, 12 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 63c07a5b660..6739165908e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3934,7 +3934,6 @@ if have_rust and have_system
-     '--no-doc-comments',
-     '--use-core',
-     '--with-derive-default',
--    '--no-size_t-is-usize',
-     '--no-layout-tests',
-     '--no-prepend-enum-name',
-     '--allowlist-file', meson.project_source_root() + '/include/.*',
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index c7193b41bee..2b43f5e0939 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -514,7 +514,6 @@ pub fn update(&self) {
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_can_receive(opaque: *mut c_void) -> c_int {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+@@ -530,7 +529,6 @@ pub fn update(&self) {
+ /// readable/writeable from one thread at any time.
+ ///
+ /// The buffer and size arguments must also be valid.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_receive(
+     opaque: *mut core::ffi::c_void,
+     buf: *const u8,
+@@ -554,7 +552,6 @@ pub fn update(&self) {
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_event(opaque: *mut core::ffi::c_void, event: QEMUChrEvent) {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+@@ -566,7 +563,6 @@ pub fn update(&self) {
+ /// # Safety
+ ///
+ /// We expect the FFI user of this function to pass a valid pointer for `chr`.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_create(
+     addr: u64,
+     irq: qemu_irq,
+@@ -589,7 +585,6 @@ pub fn update(&self) {
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_init(obj: *mut Object) {
+     unsafe {
+         debug_assert!(!obj.is_null());
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index b7ab31af02d..2ad80451e87 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -46,7 +46,6 @@
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_realize(dev: *mut DeviceState, _errp: *mut *mut Error) {
+     unsafe {
+         assert!(!dev.is_null());
+@@ -60,7 +59,6 @@
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-#[no_mangle]
+ pub unsafe extern "C" fn pl011_reset(dev: *mut DeviceState) {
+     unsafe {
+         assert!(!dev.is_null());
+diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
+index 8d066ebf6d0..5a5320e66c3 100644
+--- a/rust/hw/char/pl011/src/memory_ops.rs
++++ b/rust/hw/char/pl011/src/memory_ops.rs
+@@ -22,7 +22,6 @@
+     },
+ };
+ 
+-#[no_mangle]
+ unsafe extern "C" fn pl011_read(
+     opaque: *mut core::ffi::c_void,
+     addr: hwaddr,
+@@ -44,7 +43,6 @@
+     }
+ }
+ 
+-#[no_mangle]
+ unsafe extern "C" fn pl011_write(
+     opaque: *mut core::ffi::c_void,
+     addr: hwaddr,
 diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
-index 60bd3f8aaa6..0b681c593f2 100644
+index 0b681c593f2..49ac59af123 100644
 --- a/rust/qemu-api/src/definitions.rs
 +++ b/rust/qemu-api/src/definitions.rs
-@@ -81,13 +81,13 @@ macro_rules! type_info {
-             } else {
-                 ::core::ptr::null_mut()
-             },
--            instance_size: ::core::mem::size_of::<$t>() as $crate::bindings::size_t,
--            instance_align: ::core::mem::align_of::<$t>() as $crate::bindings::size_t,
-+            instance_size: ::core::mem::size_of::<$t>(),
-+            instance_align: ::core::mem::align_of::<$t>(),
-             instance_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_INIT,
-             instance_post_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_POST_INIT,
-             instance_finalize: <$t as $crate::definitions::ObjectImpl>::INSTANCE_FINALIZE,
-             abstract_: <$t as $crate::definitions::ObjectImpl>::ABSTRACT,
--            class_size:  ::core::mem::size_of::<<$t as $crate::definitions::ObjectImpl>::Class>() as $crate::bindings::size_t,
-+            class_size:  ::core::mem::size_of::<<$t as $crate::definitions::ObjectImpl>::Class>(),
-             class_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_INIT,
-             class_base_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_BASE_INIT,
-             class_data: ::core::ptr::null_mut(),
+@@ -53,7 +53,6 @@ extern "C" fn __load() {
+         #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+         pub static LOAD_MODULE: extern "C" fn() = {
+             extern "C" fn __load() {
+-                #[no_mangle]
+                 unsafe extern "C" fn $func() {
+                     $body
+                 }
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index b6b68cf9ce2..2219b9f73d0 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -9,7 +9,6 @@
+ #[macro_export]
+ macro_rules! device_class_init {
+     ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, legacy_reset_fn => $legacy_reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
+-        #[no_mangle]
+         pub unsafe extern "C" fn $func(
+             klass: *mut $crate::bindings::ObjectClass,
+             _: *mut ::core::ffi::c_void,
+@@ -103,7 +102,6 @@ const fn _calc_prop_len() -> usize {
+             ]
+         }
+ 
+-        #[no_mangle]
+         pub static mut $ident: $crate::device_class::Properties<PROP_LEN> = $crate::device_class::Properties(::std::sync::OnceLock::new(), _make_properties);
+     };
+ }
 -- 
 2.46.2
 
