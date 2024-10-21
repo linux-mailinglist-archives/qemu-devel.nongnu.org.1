@@ -2,130 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DC99A6CAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 16:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FBE9A6C2B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 16:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2tiG-0002TP-Uh; Mon, 21 Oct 2024 10:48:53 -0400
+	id 1t2tSq-0003La-DC; Mon, 21 Oct 2024 10:32:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2tiE-0002T9-32
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 10:48:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2tSo-0003LB-GA
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 10:32:54 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2tiC-0001BJ-A7
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 10:48:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729522125;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=J7qlszkR0WjMJVJEJNATub/RSNL27MnnNWGOu3+BzKM=;
- b=GvoNT9WoQqcmG1D5aQlNVMlK5HhJh5JoO8QzHLBHEeeJ72HKbghxoZu2IYtWmISua9cSrw
- jv4rC1caWjf1eigy69DILR9ikUn9RerGhkO+sfG8QYv+SAQGEnKcKmWCJuETiclwXnN7tU
- +hVj0BsZzVelubMCD0oy+T+phYwPb/E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-GyPaovdFP4-86VcxArJfJg-1; Mon, 21 Oct 2024 10:48:43 -0400
-X-MC-Unique: GyPaovdFP4-86VcxArJfJg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4316ac69e6dso16214755e9.0
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 07:48:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729522121; x=1730126921;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J7qlszkR0WjMJVJEJNATub/RSNL27MnnNWGOu3+BzKM=;
- b=Ohe6dbYjrjedJUYCaJj8zWtFsZv9YHC8f94hv75aTvHNv3apmpAaTPUoT3u0OZLMDh
- Q1Nfiv1T3TNVrNz2zUj7M+P/czuNFl7vTAqPFs3g/hHm4FARquJ7OuZc9LzOxutcvYTz
- Vspz3V8IhWnT3QoxsX3/pYGyX0ITqoM+DcVWLDguvjnvcmj/qi8eKeNo5+L8s293VAtT
- jX9b/7h4p4RS4YNNAK4E8nCxjUiX0S6TAlcBrdSP33BLlXLPfNied6AOrAbfPb+styKM
- uZ2R/DUl9h8PV/HQ2lCm2JHccKraLUNOqirnj6PjAMxlP6VsQq/UrtbWXgxeF02I8k3f
- 7NWQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWHR9xII0/fjKz+0N+kAZ+CI8vSPjAH6swpH9gPAn+dmO4GLgeeowVwgI7UP3JIlzGqmool8u4VxnTm@nongnu.org
-X-Gm-Message-State: AOJu0Yw8TiHayYuiaXVcM07Z/CgrVdPnkDWE6c4I1QY9W5R9StD46QXY
- 16I6R3TmuXawcjA4hdTeuICNfc73WvRYseKmJY2bfaRt6eqMtVmGu51DYRy8Cg3YGY7QjQh6f9D
- x0+8t4TNorrUOgZslXmz2/L+tzvweN8W5tRUy3NgSfwbaGzxy097o
-X-Received: by 2002:a05:600c:3b08:b0:42c:b4f2:7c30 with SMTP id
- 5b1f17b1804b1-43161687de8mr94733555e9.23.1729522121126; 
- Mon, 21 Oct 2024 07:48:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0b1a7+reuLyU7tj0k1Hlzl+urKz7/YJJCDpbknxJ0alYVMS2fCrdpm6HpozY8BvoMghsBYA==
-X-Received: by 2002:a05:600c:3b08:b0:42c:b4f2:7c30 with SMTP id
- 5b1f17b1804b1-43161687de8mr94733385e9.23.1729522120771; 
- Mon, 21 Oct 2024 07:48:40 -0700 (PDT)
-Received: from [192.168.10.47] ([151.95.144.54])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-37ee0ba7480sm4479939f8f.113.2024.10.21.07.48.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Oct 2024 07:48:40 -0700 (PDT)
-Message-ID: <e8b2187b-78a9-4181-b72d-dbec3008633f@redhat.com>
-Date: Mon, 21 Oct 2024 16:48:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/16] rust: allow older versions of rustc and bindgen
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t2tSl-0008Ce-8m
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 10:32:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729521171; x=1761057171;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=7oapRdL6rqiz0SXlEgDq9ctqB6zI/7cB4mtrzTqPhmA=;
+ b=e2AD9Q8r2v3QCG9tbTj1mN3ZFRgCh5E5k/vifLHOYtCaq29d9LZ0slR7
+ wB21kjib9VDOQ3BdA14hr7ZggH5rjMAyYrOOM2pFl4EUKZ/7EXZA5do9W
+ 7oqeD9gZSeK5KjxjW+73CcsAqdC4b+StVierooMaPS7YdANfZx4qLNEdb
+ Z8JULGIwJZS/ioCFAtTk9A/Hv89nA8J3WlW3FeDda3XEbf/G6sVy8Gyew
+ w96NsJKWAyBCfngCCnWFdNqZBWOSf6BkTPkhyAz64vEbk1HCTDKmqJbDU
+ ed3WWRxHfe3mkt7sqe3cc+ANzJ5hWqLAz8kTTDPdHqinQP0yfVKqq1DPt A==;
+X-CSE-ConnectionGUID: Fqp6Jw3XRxqusWZux+Nvkg==
+X-CSE-MsgGUID: 9decDxGIRVKuwazFj3dJfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="28463204"
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="28463204"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 07:32:48 -0700
+X-CSE-ConnectionGUID: YscHWyvkQ6S1XtGszIwbrQ==
+X-CSE-MsgGUID: S/2+t2QSQliGF1JQXHMnDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="110389078"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 21 Oct 2024 07:32:47 -0700
+Date: Mon, 21 Oct 2024 22:49:03 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 03/16] rust: pass rustc_args when building all crates
+Message-ID: <ZxZp39giE4j/NWzy@intel.com>
 References: <20241015131735.518771-1-pbonzini@redhat.com>
- <ZxJjLpDe0-A_6PEL@redhat.com>
- <2f34640b-77ad-4267-975e-7898b6f8e38d@redhat.com>
- <CAFEAcA8HBNkbWOJ26jfopah1CDAm2qfJiudVJ1n2aeKayDFZ6w@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAFEAcA8HBNkbWOJ26jfopah1CDAm2qfJiudVJ1n2aeKayDFZ6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+ <20241015131735.518771-4-pbonzini@redhat.com>
+ <ZxX1jSkJ3Muk11zC@intel.com>
+ <CABgObfa6G0Seobc5jLsxEFSRXu4qf-1U7vEEix6pCX=wfsjsPw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfa6G0Seobc5jLsxEFSRXu4qf-1U7vEEix6pCX=wfsjsPw@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -143,34 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/21/24 16:15, Peter Maydell wrote:
->> Very simple - "cargo install bindgen-cli", as already seen in the
->> fedora-rust-nightly container's Dockerfile (note: building QEMU does
->> _not_ need cargo).  In fact we could in fact do it via libvirt-ci, and
->> it's quite possible that MacOS or some BSDs will need it.
+On Mon, Oct 21, 2024 at 03:38:06PM +0200, Paolo Bonzini wrote:
+> Date: Mon, 21 Oct 2024 15:38:06 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH 03/16] rust: pass rustc_args when building all crates
 > 
-> Why doesn't 'rustup update' do this automatically? My Ubuntu 22.04
-> system I'm using 'rustup' to provide the rust toolchain,
-> and 'rustup update' updates rustc, cargo, clippy, etc, so
-> why isn't it also providing and updating bindgen?
-> ('bindgen' for me is ~/.cargo/bin/bindgen, so not the system one.)
-> My expectation here was that "rustup update" would keep
-> the whole toolchain up-to-date...
+> On Mon, Oct 21, 2024 at 8:16 AM Zhao Liu <zhao1.liu@intel.com> wrote:
+> > unsafe_op_in_unsafe_fn is allowed in
+> > rust/qemu-api/src/lib.rs. So should we wrap the bindings in a separate
+> > lib (similar to the rust/bindings in the Linux kernel)?
+> >
+> > This way, the special lint settings can be applied only to the binding
+> > files, while the default lint checks can cover the other user
+> > development code.
+> >
+> > In addition, another thing that confuses me is why bindgen still
+> > generates code that does not follow the unsafe_op_in_unsafe_fn
+> > requirement. It seems that bindgen has supported unsafe_op_in_unsafe_fn
+> > since v0.62 [1, 2], but binding code we generated still violates
+> > unsafe_op_in_unsafe_fn. Is this a bug of bindgen?
+> 
+> The plan is to support older versions of bindgen (0.60.x) as long as
+> Debian has them. One possibility to fix this is, as you said, to use a
+> completely separate crate. Another is to add #![allow()] to just the
+> bindings module, for example by changing bindgen.rs to
+> 
+> #![allow(...)]
+> include!("bindgen.rs.inc")
+> 
+> This is related to the fact that we don't have yet a good way to run
+> "clippy", because "cargo clippy" needs the bindgen.rs file. So we
+> should probably look at these issues at once.
 
-I'd agree with you, but bindgen is not part of the toolchain. :/  In the 
-Cargo way of doing things, bindgen is specified in build-dependencies 
-and it's rebuilt together with the rest of the library that uses it.
+Thank you. I agree, it's a better way.
 
-This is as wasteful as it sounds; I guess it makes it easier for bindgen 
-authors to "move fast and break things"?  Even in the 3-years span of 
-bindgen versions supported by QEMU we have the case where 
---size_t-is-usize is needed on older versions and was removed only a 
-handful of versions after it became the default.
-
-Hopefully, this becomes less problematic as Linux forces the tools to 
-mature (my hope is that, in general, Linux will force the Rust team to 
-give more consideration to non-Cargo mixed-language projects).
-
-Paolo
+Regards,
+Zhao
 
 
