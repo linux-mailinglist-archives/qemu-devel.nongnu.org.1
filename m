@@ -2,84 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535A19A59E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 07:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEC79A59E8
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 07:47:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2lEY-0002ng-JA; Mon, 21 Oct 2024 01:45:38 -0400
+	id 1t2lGW-0004HJ-Tr; Mon, 21 Oct 2024 01:47:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t2lET-0002nF-V6
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 01:45:33 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t2lER-00041O-4J
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 01:45:32 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-20c77459558so34272485ad.0
- for <qemu-devel@nongnu.org>; Sun, 20 Oct 2024 22:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729489529; x=1730094329; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NYZoxT+E6u1jL3locsrOgNtgeRn0RF50FeqMGo5k0G8=;
- b=Evi2e7YEvLKbOJ7xAUTR1CnaWOzFJVsNNZ+Jtev2yQw4kpUxOsRR6Bq/p3u9Dk/Iky
- TgAsLYt80t1+QBWK0Zom2DbLY2u9EI96DOBDYXdL6A7fTXbJra2lJV9DPYKYlFkayf2D
- sqqRkc2cRFWRJ4dSCL+40gbrI37t1npMR9IMNoctW/4PkU6CaBGLnYiKJeBaqGZkWzx6
- yJFBIe8wqh8SADx2UD0gtcjpp8JBesCNoMpH2p0Qi6w37yW/BFkqasVaE1Hy6FDt12he
- cjXqseM1ioZeWRFFh5qcZqMiUNRTvzJU78w0jop4jC1ZaOA6xu1P0gjMyCzBwoi5hPcy
- ZYow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729489529; x=1730094329;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NYZoxT+E6u1jL3locsrOgNtgeRn0RF50FeqMGo5k0G8=;
- b=EaxnLQclp6MaNFz21if2SEtcu6Z+wV/79VhUrDyJqHIigGy/LgVcstaBJI1KPw4lKe
- v4mSp/qrdoUGaRjcSQZAHzIZU49xoxXHp4/9EqQdNvqVqMTnea8vB1/40Bdh+d0Y0cCx
- u8/rN/QoAmnph2jvKOcuHKxOe996EAGc71aPkDvnRRHz4goLy0BifVKWVXnnToijaqio
- +ygbClmpcHjmYO306qM4AL7Um/inDhERAKuqbikAZNLzHrD41mMW46LEUcYx10ApVibN
- IdSDo2K4toZic/8PnIWzW+CJTz04hJgYoPfA2cabBIoUWbhGohcfISAMRxNe/FDR0MWh
- abFA==
-X-Gm-Message-State: AOJu0YzFU+VifdNKRQQb83yvs4xxWCZ1pK1EbZrS7cULzy9dIz8H11kb
- T4ccUpfXhiQL3qkXj8ejSCW2/K2A0LdCvxMLfEBmvVc4FHfbTukY33OaKONjwoE=
-X-Google-Smtp-Source: AGHT+IGJC+NDVg+tu5v/qQkEuc3SLpie0p0OHBnn7TiSVcWk6EJjQqRmxDkckyYMGQ74xAG3OaHcbg==
-X-Received: by 2002:a17:902:db05:b0:20c:a659:dec1 with SMTP id
- d9443c01a7336-20e5a8a2b05mr141028355ad.29.1729489528959; 
- Sun, 20 Oct 2024 22:45:28 -0700 (PDT)
-Received: from [192.168.100.35] ([45.176.88.171])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0ebb5csm18214555ad.240.2024.10.20.22.45.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Oct 2024 22:45:28 -0700 (PDT)
-Message-ID: <4dd04e19-401b-46e7-abcb-67b64a3791bc@linaro.org>
-Date: Mon, 21 Oct 2024 02:45:24 -0300
+ (Exim 4.90_1) (envelope-from <SRS0=cGEO=RR=kaod.org=clg@ozlabs.org>)
+ id 1t2lG9-0004EX-Op; Mon, 21 Oct 2024 01:47:18 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=cGEO=RR=kaod.org=clg@ozlabs.org>)
+ id 1t2lG8-0004H9-04; Mon, 21 Oct 2024 01:47:17 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4XX47t3rbWz4wbv;
+ Mon, 21 Oct 2024 16:47:06 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4XX47p6hrRz4wc1;
+ Mon, 21 Oct 2024 16:47:02 +1100 (AEDT)
+Message-ID: <b396dc9f-c38a-48b4-9ee1-a3dd1eed2c15@kaod.org>
+Date: Mon, 21 Oct 2024 07:46:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] linux-user/ppc: Fix sigmask endianness issue in
- sigreturn
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20241017125811.447961-1-iii@linux.ibm.com>
- <20241017125811.447961-2-iii@linux.ibm.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241017125811.447961-2-iii@linux.ibm.com>
+Subject: Re: [PATCH 1/7] docs/system/arm/stm32: List olimex-stm32-h405 in
+ document title
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20241018141332.942844-1-peter.maydell@linaro.org>
+ <20241018141332.942844-2-peter.maydell@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20241018141332.942844-2-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=cGEO=RR=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.17, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +69,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/24 09:54, Ilya Leoshkevich wrote:
-> do_setcontext() copies the target sigmask without endianness handling
-> and then uses target_to_host_sigset_internal(), which expects a
-> byte-swapped one. Use target_to_host_sigset() instead.
-
-These function names are confusing.
-
-> Fixes: bcd4933a23f1 ("linux-user: ppc signal handling")
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   linux-user/ppc/signal.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/18/24 16:13, Peter Maydell wrote:
+> List the olimex-stm32-h405 board in the document title, so that the
+> board name appears in the table of contents in system/target-arm.rst.
 > 
-> diff --git a/linux-user/ppc/signal.c b/linux-user/ppc/signal.c
-> index a1d8c0bccc1..24e5a02a782 100644
-> --- a/linux-user/ppc/signal.c
-> +++ b/linux-user/ppc/signal.c
-> @@ -628,7 +628,7 @@ static int do_setcontext(struct target_ucontext *ucp, CPUPPCState *env, int sig)
->       if (!lock_user_struct(VERIFY_READ, mcp, mcp_addr, 1))
->           return 1;
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/system/arm/stm32.rst | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
+> index ca7a55841b4..511e3eb9ac1 100644
+> --- a/docs/system/arm/stm32.rst
+> +++ b/docs/system/arm/stm32.rst
+> @@ -1,5 +1,5 @@
+> -STMicroelectronics STM32 boards (``netduino2``, ``netduinoplus2``, ``stm32vldiscovery``)
+> -========================================================================================
+> +STMicroelectronics STM32 boards (``netduino2``, ``netduinoplus2``, ``olimex-stm32-h405``, ``stm32vldiscovery``)
+> +===============================================================================================================
 >   
-> -    target_to_host_sigset_internal(&blocked, &set);
-> +    target_to_host_sigset(&blocked, &set);
->       set_sigmask(&blocked);
->       restore_user_regs(env, mcp, sig);
->   
+>   The `STM32`_ chips are a family of 32-bit ARM-based microcontroller by
+>   STMicroelectronics.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
 
 
