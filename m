@@ -2,105 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73989A61B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 12:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C85829A62A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 12:20:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2pKp-0004ds-DS; Mon, 21 Oct 2024 06:08:23 -0400
+	id 1t2pVm-0007sY-3Z; Mon, 21 Oct 2024 06:19:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t2pKn-0004dc-16
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 06:08:21 -0400
-Received: from mail-sy4aus01olkn20817.outbound.protection.outlook.com
- ([2a01:111:f403:2819::817]
- helo=AUS01-SY4-obe.outbound.protection.outlook.com)
+ id 1t2pVk-0007sP-As
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 06:19:40 -0400
+Received: from mail-me3aus01olkn20827.outbound.protection.outlook.com
+ ([2a01:111:f403:2818::827]
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t2pKl-00072W-DD
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 06:08:20 -0400
+ id 1t2pVi-00005t-Ow
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 06:19:40 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VNDwH3s3wzm8uB83aFssz5ARaQId1px9Wv6VkgcYCa/g0dXIroiyL2vBVyl/0AL277bVWAB6h0iawuWOMsK8EuEqd+WcgqRI/VYDRzSZYc7m/hr+YjmnV/yhiN1nUUeUMqo8H/5rRDbTv7NLlg/Ai/BirZ3s+NRgEticaaXN7lz9rOPecQFoUhX2yKdGZ9tOg8/FNKiv4xpbKpV59qjSs03XSfXdqztwbVFf/Co73qCBcAkwmzNXNWQVGh/rGbUDaykn4ROjncT/rzBi1JPvhI90oIou5VjVCnMYTBaMQX8vyCt/y/boedpLWTVq1HMXqAYQbbnYsR1nytRKDHB8Wg==
+ b=QMeF4OJKgL4QLYosxVwIJ4W4EZUkFPjXFdnEIYmuaNGokor/oSFsR3sZ+K2YgB1Dgd2Rdd/DEi3X7s7WswtZAAzZSFmwj6mpfBTnVGvjIfE+bL3IM9lTQI5mcxY2CHQ0lOY4UJmFkpJQ/SsdcfApxOQ9jwmo6kr1OZ1q36Nopdj15pYcoYBDYVPScSmQiJRSDMppKO11dV2N/+3oC4+j+/xJTr+AwGseCw8IhZeg+b9KAO8bWrWjxG5OY9xcj0J+n2uAlXmQ1cUFTlLaGoYyYRYE2U9i6mvYlZI4uy5XIgYSRsmBdPvPfRE91uHJdIYosLTTsEBiFi+okg3vSIDGaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oBvlHKm/uYJM4K281Iyugtfdw+E8MTJ6prSpd0jBcGI=;
- b=X50TSz+m27STpOCu8jh7GrkZqq89qmDGX9fdPvg9r9lIDyknOsHAmzGaSAxWIy/WjaoSVFiMDYX5mos/tIL7lqXvalhH/LFPj5bEbDai/xSTJ9e16K4Ov6N04rof2vChvx2zFCzIRhwlsqAGFEqfKp/kU8Ou17QB1ILA2gc03blPzPHb4TMPCjQqUAgHb4TyI7K0wjkoOnwsp+lpfQStanlDUb2xovrk1YXUFAzV042Oo4Xjn8DatrSkLtpAtmI/UuGvbw0gIekKROpVWriDoLgz3lSwCaYkl+Gonxh0h1lxCZ+TeBHR4CqG6mhUFT3KxW9nxNjS4Mv1xOP58M3heg==
+ bh=n4pkI7ylnULeIW42FKh0Dr/W+S8fKIF06U+q4FaNREM=;
+ b=eqnmTHPm5m5cdWMnwfseZQiIteE98dkY/kVRqu8CTYH6Fk0SFm0EG4m19G54eae+vnMy67gSmhk607XnHoDDR7fqhbZuQ6Z9QXTa1PGYe9m6GnqA4qt6iL3EYogC0JT8GRCeZAGsOjbhBkzAsi1JVgaJ8qq9hpNR2lFv9xMr0sWl18sxBtLQ4zZS3aJFUgv72X24WWxh1Vg+mBhdDl/wJd1V7R3NDWE2LaVd/MJu9hXu+3m4DQnjpHUCBT4KpL5ZYKBmJBamgc9VVGCvSNx07XXP3FC3I0kjNIiSpY8PEkWvUd7g3WJ4MRvOkWiagbEyLDcXt5jvU+MF8dCI5YL8Jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oBvlHKm/uYJM4K281Iyugtfdw+E8MTJ6prSpd0jBcGI=;
- b=WtwgN9Dryt+5X42xhUm4RABomU6k6+OdqfYjz71WZGpGssP3rVitE34ZRx63R1ZjBpa1LAxE4RHmUNAu2jhJBmoYQ1zg7TYO5+C6b+au3/4GMhE/g1/28dc1keZt5FH2+qTwQoZTpOe7WZX5scd3p4OkkfPmRfjaQ9GtQ7knje+E4Tlcy62mU1LlCddkfe41qDK42QGuQkrrKjWqQgijmBeGm14+HUZmTnhos8xwEU3V6HmMcEvZCCCgmvdMwTuMonyOeL1G8J8FTTsRCFXSkB7LoFnjW5eKsZqdtsTCYXYFcUWx72KglIKhFAQ0NOxEbZT+kER62efnCVYNQUgCwg==
+ bh=n4pkI7ylnULeIW42FKh0Dr/W+S8fKIF06U+q4FaNREM=;
+ b=Fw8FyzfHnjoDZJxP3kAY13O7Dmcz2Uhd+rzWpnS11ZIT7+Gmi32VSslLuWBj5+A9T/eRa4aVLane6OGr5MnoWHLSWEnPJyyqEiZ6949Z8mOxWUSLLIXbYA//niynA3hDj/VYU/q1P1eT/LlHwdfAoCit6XvOJCCbPOpVWqZ3QcIFckK5F6DhEBCaGBzS2fGDVJ84W6YiX0RYlVTecXewJiRXu2q7FLFBaj+zVGyNgY+rCV7IqMG3nF0QhqpsfTky8gmwx6fOv1HrSo8Tii25ONfRvSkP9+ncG6PYv3FUtxW5mPVnCGcnIS4dBizOWN+K5m6ByYaUUWvMeCc3qOZkNA==
 Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
- by SY8P300MB0693.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:295::8) with
+ by SY3PPF9305F0E3A.AUSP300.PROD.OUTLOOK.COM (2603:10c6:18::49f) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Mon, 21 Oct
- 2024 10:08:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Mon, 21 Oct
+ 2024 10:19:32 +0000
 Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
  ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
  ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.027; Mon, 21 Oct 2024
- 10:08:12 +0000
+ 10:19:32 +0000
 References: <20241018144306.954716-1-pbonzini@redhat.com>
- <20241018144306.954716-6-pbonzini@redhat.com>
+ <20241018144306.954716-7-pbonzini@redhat.com>
 User-agent: mu4e 1.6.10; emacs 27.1
 From: Junjie Mao <junjie.mao@hotmail.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH 05/13] rust: remove uses of #[no_mangle]
-Date: Mon, 21 Oct 2024 18:07:21 +0800
-In-reply-to: <20241018144306.954716-6-pbonzini@redhat.com>
-Message-ID: <SY0P300MB1026F135EC012952069BBC4795432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH 06/13] rust: remove unused macro module_init!
+Date: Mon, 21 Oct 2024 18:16:00 +0800
+In-reply-to: <20241018144306.954716-7-pbonzini@redhat.com>
+Message-ID: <SY0P300MB10265F36FDD39FD0B258F37795432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
 Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0198.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::7) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-ClientProxiedBy: SG2PR02CA0077.apcprd02.prod.outlook.com
+ (2603:1096:4:90::17) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
  (2603:10c6:10:282::22)
-X-Microsoft-Original-Message-ID: <877ca1u5tp.fsf@hotmail.com>
+X-Microsoft-Original-Message-ID: <8734kpu5b6.fsf@hotmail.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY8P300MB0693:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d86444b-091d-4caa-6f1e-08dcf1b8457e
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY3PPF9305F0E3A:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37cbd670-085f-4e6f-88e5-08dcf1b9da92
 X-Microsoft-Antispam: BCL:0;
- ARA:14566002|5072599009|8060799006|19110799003|15080799006|461199028|7092599003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info: KQae0Yfmk7D3IBnJ32xEYyzQqOQAKv3DNnox3N1kP0SrXc3sw69yGzDvrxIvJcX3Ms+jOjZNNDyGX5ulG2SRN8RlBL18NurM90ikiks5nea/1/r4WTkiyEbykVpoz5QpDPXedJjR1K/akj06bwBs62mqqEQ66toKK6s7lgo4QI1QQzYrmfwu6jnMHXPqyCAhgQn/kcuUko93lKmORCemQQew/onh8vhgQKrlXQmE/SRyZlTE7qdgXy9toxglSAaIkfoNDCeEbI6Hi2EB78kyjZPSfxincFOGhIto3o7u2xlDufuP+yM6s5oHFH2dwI50hCBBUvW3+AdVsTkjWGx6ewSe70AbCCBehulVme3nukI2CHrOZnZFO7O/YO5xm4IvWH/dvuIwCtioEyzthGPUR9SiVK3D8rqjfTuKiTDHzQrybwAMjeKHpUYrJptKuDR01sL110lr1GoT21rEbgJTi40GDxco3kSSvlkluHrmXmEfHRQdjJr6fnmz5p/taWklHhO3xFJH/nDwkZ6/2TMZOSjuFutjLvc4ZqePs5A+pp37xxOpnIE39aO/G7dtmTSuBwMoFdtj2lVLsc7oKTctYkeXQvJlk6f2UQFQ/Wm/IdxQPHk3P0NDp4pcDTIIT1vgApZ3lPrzCRWh6TWEnzlaXQAOdClhujgAoMy1xiTAyHTUwF7fK6KJYLVu38ZKLPEbOrP9vVfkL6gtIStZ0eVkyCFVTVtxzpi4jBOk1/3blVQ=
+ ARA:14566002|8060799006|461199028|15080799006|5072599009|19110799003|7092599003|10035399004|4302099013|3412199025|440099028|1602099012;
+X-Microsoft-Antispam-Message-Info: n2mVkYrGcHEw7X7TfIKS6RW3dwRJMPtBjqsy43obneuW+ZjEjocqldV+1fKY8x1+l7L4mi8BEZw4ERVdDt1OhvFIApeUnBnTEuzmd15nP40QLpaE3rBGSFAd3uuPqSeBZoLk9ZQTWf0i1it4uIEP4qoFCRfTD4yTjUK2FFDmRSDnFPf2oPoDcOlXF9pP7sy85HEeGSSe+cj03zcEvsgyhf5dRczPn65fCjoCKu1L9NSBFUVldtYVw1f9ysx7F1023RTdxNJQS0iUBhgL25w6SwkOjSYGYnXd2vUP8lnPv+FxjU2gL37dAhUpQ1mDsS9mnb+OG4XwZodLCzpR4sT/ZB1et2Ax9Hmi21ZxpBnBP9LGidcyJM0kBDigZhA7igkKqSNsvHQrStfojpanUK1a1fFk9qkFbcFTwgmI1ldVcOVM0LRS0pxHIuwdm/URgFiIY7OIhWBYQrWWpcdsGix5OdhrLVFDrGdxrgZdNQxOBHM6qQF7+QARO860X8GpbZFL9zXb1Ax6vhi284e7F+M9UipGZ8GRm2CcVmtaIKOM/JHZH8VhDVuOhI7xxd9Au4+5GXkUFPFXSK+OulPZShYcDKtI0BpmvhKPyY44QytBCIAwbONvWPreDdtNLx4yJNMt2dk/82KWJ9OMGxOh6EOqe36Obj3gSLLntIlCqxwi/6dPA4snYY0d0lOHv5Uqq7N4F3eYCRtEOkxgU4p0LEPX7mQcteI0/8SlqlliQ/+gfyN8P3e4rFeAhGTF0R1nmiR7sknj9aDN5GWScTnWgCWsgkIU0Dh1LLAkd539PdpZ2t7PcgGhd5D3xB8p3ujPzYfu1YiD0igQXve7DpcvA4iPZCNcytooFvrxAWFMqgFwHuZI1ibQo6CchKuq8gnhIOJ2/fRsKFwhcyffNVzvzI24sW9MNKhwpI5qs0A3Coa0YMw=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jC2UloVvwbnKPwZUqjrq5a8LzheaegybNg4sdGoDL+H+WjCw4HMlNU8CvBcc?=
- =?us-ascii?Q?csWDEneM3Bo+C0ATFxD4HQINQuAa11rAgXNCTa21fvsIvd4tMG1/i7uPxLsi?=
- =?us-ascii?Q?YqZ1EPShRxPKElGR8bDR5vDYsV3095dq/oojqqRbtboWqmTlguoy7HDIdBXV?=
- =?us-ascii?Q?YT8E1j2adRQOJjoYtUEdTZDiGygfW7sNNoe8LNT8df8+6Dq8OJvUXylrJ4Nh?=
- =?us-ascii?Q?XbmlB2Nfs1DtZA7hAmYVa6tI8vzOZ/Flh9BAYTwx9eOS/ZlIK/s1epiEZcYz?=
- =?us-ascii?Q?xdxuG+IlojBknS8oUaS+6q+5IXfueuQBBFNRChShVaZeM73bu52GPXw7d69/?=
- =?us-ascii?Q?kSUN6KNXwIj8tJhVSRvKoFS053nM4Z8kYT8erqPofNm+nihU7zhG8fMjtNQK?=
- =?us-ascii?Q?qRgULoGo49MtXOFFJ0Vu5C20DAU7EnZl3drnbTPf1iv9iu6M2gs56aMpFEM9?=
- =?us-ascii?Q?7sFjq+dYy3CVVPFfje6aaoJiHyXRVSDKW7pmjDCOWHofgis3e5ElknBqmzeE?=
- =?us-ascii?Q?G3fnKosUzPU2F/8QfASWL4EI60BRAsQ5zsr+lovySLqil/6/iKloe+kcnsR4?=
- =?us-ascii?Q?UDn7ReccM6eYGhNfnk0hOLfv7XP1kfz7Tx0w1z9KioR8sT4YpfMYewGtNrFw?=
- =?us-ascii?Q?EuIdhQz4V49OwnbV0Tx0ymAV0DMA6Wcq1k5DwezOgP1qwJCrSP9Yco/hnw++?=
- =?us-ascii?Q?USdEdrWr65g4ixWplNeiGtmJmTWmSxXRhBCk8NtoTtipqiZ1D6AN9ulEGbC1?=
- =?us-ascii?Q?vJ0s7zY/1jzMt1XMXfNyw7JRi9zZ6jrMpwpe27XQsmRvoVc6SJ6UtlkidWOL?=
- =?us-ascii?Q?uvrouU/CSG15GTRZg+wTcy0+KGYS3p5pu8dAwzXFCJrjDE8SpFuninJ3OTK4?=
- =?us-ascii?Q?pXAubwi2uwsNDKfcBcAACX3QY16KJs9KQ2X7MzGgmm1OYTRFsTRL+Y9vYLmV?=
- =?us-ascii?Q?e1bUjMW9lM+/4VVhjwbDJtvBVMqCa9bxxxM32Mi/T1UDOibWFoIXCE3R6dY6?=
- =?us-ascii?Q?UEc7SW7/Y16xF9hZ+3sl+TH2FPPMr9rZfwNt8vDFM71waubRxZ3oqX8Q2DVu?=
- =?us-ascii?Q?eFM+TloFj6Ajw4UOGCqCWAB4NtJYG2AX+VEwJXDjE+U3ahV6mNXI5WhGBgMz?=
- =?us-ascii?Q?6Sk4l74thGnGIBj+L3AELopabAXE8WzIovnagP8ZksSCjdW/QNtzhlfUj/KZ?=
- =?us-ascii?Q?qN2L64xu5Uzx3faDc8rCnGc2micVhBtLar8iBAUks6MJWpBsyTPOxeVvP00?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cMfiLEPCY5x9GoJT4P62rPvAWw1RFCTxDBmFxAfBAf5MB3HDUXtOf2muW7D8?=
+ =?us-ascii?Q?I/drbPplWO9WZrYeWKK0Gj+aMNzQ/1nRPGMRo8nZXfmproqmwIzWflxwt6Rc?=
+ =?us-ascii?Q?f9Lzuc2nKI95t0ryV6dstPGbMUEQD2wKkO0qCm277foOjtnN8vAwGsKcx1jA?=
+ =?us-ascii?Q?TsOG4iSbR0a6b+Ywlj9nY/wVr+CSORmbYHwe6yLOn0GRcP/IZDJlm9Xwxh2j?=
+ =?us-ascii?Q?SiMj6lECslsmkJBC4r3z7NlCTk7bmi7GCCxNkM3E2Sj2n7o8leGLN3nh4OZq?=
+ =?us-ascii?Q?cZsq4IaRYfSUJZC91HzKrEzPAqyXNcxAv1p5kLoZCnFqhmsGUgxJLvK2ZU8s?=
+ =?us-ascii?Q?B0wLcGCbJRLbGfjCxOU4GkORat1v37i2fHg9gJnwGIHU2EKQUgSkEO+OOyXI?=
+ =?us-ascii?Q?Lsj118wefGzOIHK8kRGcPdHTrr8mjpIvRbeMRvNQ70FBHLgboQR1jsyiOsj3?=
+ =?us-ascii?Q?787pcd+0e/95ltf47j/ng1i3RH97FbuNNmujdUqrWQEifqIv+X9dyBiKEwEO?=
+ =?us-ascii?Q?5NgDieoHKVsEmdh2fR3IA6InqgWJXxINmDbpCXQtTnllVX5B3plDN1JRzkDY?=
+ =?us-ascii?Q?IhgR5sEV658k45s0fuaeB19Q9Z5jkwLNdHkTEEPa3rlyOp28YmyBGSrA3CxO?=
+ =?us-ascii?Q?+2UFPkTyi2hrd69SSo2BTGoUBcb/B4QRb5aTtHhd91XQW9exqj0B89TCymYe?=
+ =?us-ascii?Q?3c9ml0h5bzX3JuvGK+SCwovDsg8oDSnhk1O4JLTBqgosVNVXW/mZ0O6mLjhQ?=
+ =?us-ascii?Q?QofQ6wXqeKnaSwLl3jg9AV5boLz+8xva9sDDXSVSKYd8THOyzJZWd8U1R/Zu?=
+ =?us-ascii?Q?2Y5F7aBuUScfBRrmT/Urfrtd2l5n1l8b04ArsoRzERopIqOaKKDhvSpvPXWe?=
+ =?us-ascii?Q?wmoJ99UtYdWZYcPySl4LLW8gpqDowfoEH/6bfKmPaWBW3Y1gmo/Qsv7VU/ig?=
+ =?us-ascii?Q?tlJb0mCDpchQbMt4Mm5UUeUKVsS1C3IBYCNUY+HZnUkyT8X1zwoJyjYuU3XU?=
+ =?us-ascii?Q?6GJXHsJ4RpK9NmzyeUNZTCDeCY/Hp/MlPpGLoE7hTW1QEXk8WMEbTQPNdoyb?=
+ =?us-ascii?Q?jjCwa+aTcL6vkvDE/OwOcgPN/jaVa0IY1jh1H8CgzQvZyZcD4RORDsMybiG8?=
+ =?us-ascii?Q?Hdr3zAJA4MXYe39dntQCcTH0kEtgCJ2uqgNnouZihFNTmwX9+GLRKaMLPu5N?=
+ =?us-ascii?Q?ADFfMQRuRm7c9irBeUnvlohxK1Iyz/K7UOV6ttvX188fDe3PblE5F3BB88w?=
  =?us-ascii?Q?=3D?=
 X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d86444b-091d-4caa-6f1e-08dcf1b8457e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37cbd670-085f-4e6f-88e5-08dcf1b9da92
 X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 10:08:12.5716 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 10:19:32.0900 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY8P300MB0693
-Received-SPF: pass client-ip=2a01:111:f403:2819::817;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY3PPF9305F0E3A
+Received-SPF: pass client-ip=2a01:111:f403:2818::827;
  envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-SY4-obe.outbound.protection.outlook.com
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,14 +125,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Paolo Bonzini <pbonzini@redhat.com> writes:
 
-> Mangled symbols do not cause any issue; disabling mangling is only useful if
-> C headers reference the Rust function, which is not the case here.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Registering the object is now done by the #[derive(Object)] macro.
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+The module_init! macro is still necessary when a device needs more logic
+(in addition to a single type registration) in module init. That is not
+rare among the devices in C we have today.
+
+Manos and I had a conversation on this. He mentioned that he had a
+second Rust device that needs this macro [1].
+
+[1] https://lore.kernel.org/qemu-devel/itblf.by425lac4ow@linaro.org/
 
 --
 Best Regards
 Junjie Mao
+
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/src/definitions.rs | 43 --------------------------------
+>  1 file changed, 43 deletions(-)
 
