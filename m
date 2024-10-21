@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4269A6FB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDE49A6FAB
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:37:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2vOz-0006cb-0i; Mon, 21 Oct 2024 12:37:05 -0400
+	id 1t2vOO-00067b-MJ; Mon, 21 Oct 2024 12:36:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vNv-0005uZ-9B
+ id 1t2vNw-0005un-GM
  for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vNt-0006I8-8A
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:35:58 -0400
+ id 1t2vNu-0006IO-W3
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729528555;
+ s=mimecast20190719; t=1729528557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9GT7AM3dNIUTb0glH6Ier4DyJgqZCZmSaW5xm7t2d5c=;
- b=e/LmQLHxgYPKHwr4mxu3wK62XtOzicj0p8jgJQmfBK0hNkSzcZPyibrUDi31cHnIWhAuEi
- A41eLc7eavctUFVcSEVUkzcGmZia+X+NdSjnxbTe9+aePgd4gRAH6EpUyt1cnsbK9741BW
- AWHq9cjH0vOI/HpfncvJP6ficfFHrhs=
+ bh=+VBSGG9/QZnUbOHJ1ZUaj0+mzJGppSH57Y5XCkB20uU=;
+ b=Yk3GtvRLSGY7iZFUV50TFOnDSVheFkVJ/YF3Qln5InL9h023DQ9J1lVWc97ktE5f68NBeM
+ iTjtWeLCTKHPJg5fdNiIDu/JGc41zGWCVwIPpFwidsNWRSUCtW3DBW9Lg77fbpyGDsQUga
+ TYoTihjTT8B2E9ToNHkxnxzL/CJjfIw=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-7VwXp7kkMZ6K6ACdEL_CNA-1; Mon, 21 Oct 2024 12:35:53 -0400
-X-MC-Unique: 7VwXp7kkMZ6K6ACdEL_CNA-1
+ us-mta-350-5mxRttA5MCijBc4yZAYxew-1; Mon, 21 Oct 2024 12:35:56 -0400
+X-MC-Unique: 5mxRttA5MCijBc4yZAYxew-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-431518ae047so27500045e9.0
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:35:53 -0700 (PDT)
+ 5b1f17b1804b1-43151e4ef43so34583445e9.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:35:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729528551; x=1730133351;
+ d=1e100.net; s=20230601; t=1729528555; x=1730133355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9GT7AM3dNIUTb0glH6Ier4DyJgqZCZmSaW5xm7t2d5c=;
- b=tZN48FZSnoq6f2G8CBP3WD3+XCmkftHsuxccsEmYOpWIRwdSsFZ3mJlwjkBm1wteZV
- cIyp9CHjNHI8/GgxZTxT+2X5E9AB9XKHW9sfX0KrC0P6+DOSdyORAyCM1OW2N8EqOqHu
- XKfzc1IdaHPqD0iJuyXkCB3BQ9wsTzppM+xDSx/gcypEmAaHbkTvHlFP89JCSjex9vZ5
- Xl2wF2IG/LDXIo79kP5zAwGhXxV4vrYmbem5yxEczk2u7C1lvWm23Naip/OaOL+wNDbg
- 2niu3GCCHaoSKIe0XOoBxlt05qsRxve790yDhPruUgdAjZp399dTe4rK9Iy9brM2113/
- R/9A==
-X-Gm-Message-State: AOJu0YzHIVYmsQJVt37Co4pwsa2UL7qeEZUZ7EOmltR2zcpzkUJJ21xG
- vACNprNDRi7akhO+Bu9U9u1d6usrOKC2Y8f3yEO7/erxHcvnginEqp9Xe9g3MnaqGHGDkzMHJfR
- H/Ixewa2BAa5iPvRsqlJ1ZPZ1Edfc1vmObgKLPIIBjiO9XUGQuiRxhDEM0gJ/hN6cs5WwQuprGT
- T7fRSFh9q+C2ZaKgRmEbiTRqWKtCRfCVUbi9HbyWM=
-X-Received: by 2002:a05:600c:3590:b0:431:4a82:97f2 with SMTP id
- 5b1f17b1804b1-4317bd7f68fmr1645255e9.6.1729528551309; 
- Mon, 21 Oct 2024 09:35:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4SLc6xQ1Gv58wzV1GBsiZAYLjnpBGJee1+5HmHNgVb8o94h9FPGT5N+Xcvf56CjVwUR1QHQ==
-X-Received: by 2002:a05:600c:3590:b0:431:4a82:97f2 with SMTP id
- 5b1f17b1804b1-4317bd7f68fmr1645095e9.6.1729528550856; 
- Mon, 21 Oct 2024 09:35:50 -0700 (PDT)
+ bh=+VBSGG9/QZnUbOHJ1ZUaj0+mzJGppSH57Y5XCkB20uU=;
+ b=n3LRHWlr+ZmF2vDLli7A3s9Hk9ZAUGYKn2g2cNoTevwTpWbNnV4nYK0gfABVCPS6uO
+ FVSCp7MqfGXfEMarD1TKAd8AAvOOf0QJY5zdt2qD69sz5HCF/HalK4w5+HDHcvsKMSO9
+ 0UmW9yAw92y+sTnlv4PduY+5mnI1dEUrL4r5qTOYxk8iinzFaKJ+XjKKw0+V0JceE9Th
+ 867pFzMPyX0+nBfMVcA/3dXA/fy27N0g9/pCpXG9MVpxh5E6DWhI/u+6BgnNn8UxmPKD
+ vvmw8VdyhyvTT9dJY3iZ93ajy3jFOv1qWDX6kVuQxzQVehf9rxRyvCXzkEIW0g4z/Aws
+ S4Gw==
+X-Gm-Message-State: AOJu0YwX+JZwqtWSnxFpBFXrJsnS8o63b0cYEIhhwKi+TmvB4zg+V8OA
+ eRA6bZQbnF+9Gld6M6tUB4g6WoctEXvsGt92E3qKOH+z0jV2mVRopKtv3ApxKw8AJP2R5BaEdU3
+ dD8Il1/Q61AYNvL9XjQ/oP99M3klSIWZTA/EhiEyNKf2RA53WLunFgdKI1fn7GbZZzo2trAiNpG
+ Ko5h8GyMpB7dF4lk5nS01ps7ZZ3Hpcy9gIqgTgSU8=
+X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
+ 5b1f17b1804b1-431616a388cmr100577145e9.29.1729528554862; 
+ Mon, 21 Oct 2024 09:35:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIIIJRzkemrUvKk4iyOOzbee7lZKyXOs6e3741YOKlQdEaBc8g+wXmIVejD4MgZgdKWSgxZw==
+X-Received: by 2002:a05:600c:5124:b0:431:5bf2:2d4 with SMTP id
+ 5b1f17b1804b1-431616a388cmr100576935e9.29.1729528554427; 
+ Mon, 21 Oct 2024 09:35:54 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f5c2c8esm62956805e9.36.2024.10.21.09.35.50
+ 5b1f17b1804b1-4316f5cc1e2sm63458665e9.42.2024.10.21.09.35.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 09:35:50 -0700 (PDT)
+ Mon, 21 Oct 2024 09:35:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PATCH v2 03/13] meson: pass rustc_args when building all crates
-Date: Mon, 21 Oct 2024 18:35:28 +0200
-Message-ID: <20241021163538.136941-4-pbonzini@redhat.com>
+Subject: [PATCH v2 04/13] rust: do not use --no-size_t-is-usize
+Date: Mon, 21 Oct 2024 18:35:29 +0200
+Message-ID: <20241021163538.136941-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241021163538.136941-1-pbonzini@redhat.com>
 References: <20241021163538.136941-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,95 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rustc_args is needed to smooth the difference in warnings between the various
-versions of rustc.  Always include those arguments.
+This not necessary and makes it harder to write code that
+is portable between 32- and 64-bit systems: it adds extra casts even
+though size_of, align_of or offset_of already return the right type.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                       | 20 +++++++++++++-------
- rust/qemu-api/meson.build         |  2 +-
- rust/qemu-api/src/device_class.rs | 10 ++++++----
- 3 files changed, 20 insertions(+), 12 deletions(-)
+ meson.build                      | 1 -
+ rust/qemu-api/src/definitions.rs | 6 +++---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index f85bc22fbdd..63c07a5b660 100644
+index 63c07a5b660..6739165908e 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3317,6 +3317,19 @@ endif
- 
- genh += configure_file(output: 'config-host.h', configuration: config_host_data)
- 
-+if have_rust and have_system
-+  rustc_args = run_command(
-+    find_program('scripts/rust/rustc_args.py'),
-+    '--config-headers', meson.project_build_root() / 'config-host.h',
-+    capture : true,
-+    check: true).stdout().strip().split()
-+
-+  # Prohibit code that is forbidden in Rust 2024
-+  rustc_args += ['-D', 'unsafe_op_in_unsafe_fn']
-+  add_project_arguments(rustc_args, native: false, language: 'rust')
-+  add_project_arguments(rustc_args, native: true, language: 'rust')
-+endif
-+
- hxtool = find_program('scripts/hxtool')
- shaderinclude = find_program('scripts/shaderinclude.py')
- qapi_gen = find_program('scripts/qapi-gen.py')
-@@ -3909,12 +3922,6 @@ common_all = static_library('common',
-                             dependencies: common_ss.all_dependencies())
- 
- if have_rust and have_system
--  rustc_args = run_command(
--    find_program('scripts/rust/rustc_args.py'),
--    '--config-headers', meson.project_build_root() / 'config-host.h',
--    capture : true,
--    check: true).stdout().strip().split()
--  rustc_args += ['-D', 'unsafe_op_in_unsafe_fn']
-   bindgen_args = [
-     '--disable-header-comment',
-     '--raw-line', '// @generated',
-@@ -4087,7 +4094,6 @@ foreach target : target_dirs
-                             rlib_rs,
-                             dependencies: target_rust.dependencies(),
-                             override_options: ['rust_std=2021', 'build.rust_std=2021'],
--                            rust_args: rustc_args,
-                             rust_abi: 'c')
-       arch_deps += declare_dependency(link_whole: [rlib])
-     endif
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index c72d34b607d..42ea815fa5a 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -10,7 +10,7 @@ _qemu_api_rs = static_library(
-   ),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
--  rust_args: rustc_args + [
-+  rust_args: [
-     '--cfg', 'MESON',
-     # '--cfg', 'feature="allocator"',
-   ],
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index 1ea95beb78d..b6b68cf9ce2 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -16,10 +16,12 @@ macro_rules! device_class_init {
-         ) {
-             let mut dc =
-                 ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::DeviceClass>()).unwrap();
--            dc.as_mut().realize = $realize_fn;
--            dc.as_mut().vmsd = &$vmsd;
--            $crate::bindings::device_class_set_legacy_reset(dc.as_mut(), $legacy_reset_fn);
--            $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_mut_ptr());
-+            unsafe {
-+                dc.as_mut().realize = $realize_fn;
-+                dc.as_mut().vmsd = &$vmsd;
-+                $crate::bindings::device_class_set_legacy_reset(dc.as_mut(), $legacy_reset_fn);
-+                $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_mut_ptr());
-+            }
-         }
-     };
- }
+@@ -3934,7 +3934,6 @@ if have_rust and have_system
+     '--no-doc-comments',
+     '--use-core',
+     '--with-derive-default',
+-    '--no-size_t-is-usize',
+     '--no-layout-tests',
+     '--no-prepend-enum-name',
+     '--allowlist-file', meson.project_source_root() + '/include/.*',
+diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
+index 60bd3f8aaa6..0b681c593f2 100644
+--- a/rust/qemu-api/src/definitions.rs
++++ b/rust/qemu-api/src/definitions.rs
+@@ -81,13 +81,13 @@ macro_rules! type_info {
+             } else {
+                 ::core::ptr::null_mut()
+             },
+-            instance_size: ::core::mem::size_of::<$t>() as $crate::bindings::size_t,
+-            instance_align: ::core::mem::align_of::<$t>() as $crate::bindings::size_t,
++            instance_size: ::core::mem::size_of::<$t>(),
++            instance_align: ::core::mem::align_of::<$t>(),
+             instance_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_INIT,
+             instance_post_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_POST_INIT,
+             instance_finalize: <$t as $crate::definitions::ObjectImpl>::INSTANCE_FINALIZE,
+             abstract_: <$t as $crate::definitions::ObjectImpl>::ABSTRACT,
+-            class_size:  ::core::mem::size_of::<<$t as $crate::definitions::ObjectImpl>::Class>() as $crate::bindings::size_t,
++            class_size:  ::core::mem::size_of::<<$t as $crate::definitions::ObjectImpl>::Class>(),
+             class_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_INIT,
+             class_base_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_BASE_INIT,
+             class_data: ::core::ptr::null_mut(),
 -- 
 2.46.2
 
