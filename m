@@ -2,114 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D930F9A66D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E7D9A66DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:43:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qm0-0003ZM-LE; Mon, 21 Oct 2024 07:40:34 -0400
+	id 1t2qoN-0007c8-TD; Mon, 21 Oct 2024 07:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t2ql7-0003EE-VZ
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:39:40 -0400
-Received: from mail-me3aus01olkn20814.outbound.protection.outlook.com
- ([2a01:111:f403:2818::814]
- helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t2qo8-00074n-1S
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:42:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1t2ql6-0001y1-50
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:39:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TcLGGUyVv96zkcBwJthcHiMuouh7U0sZw79GATRx8fqT3mySNAHKY3pfl4L9blDdEi9cvZjJtradmN5JU60uf216e0uo3uIWlI70mqCagRkQtZP4VO4U/EJA2UKb4dalxc8s7ee87d9rCyi8vCRYwCGcctM2ytSUabZiEJXJ/QEmd2fkNANjqQGiAhlZZHO/rT3eAjXOfxoXENW7zL45rG+7sVsT0YFd4CuBC5y4dc+sgZYnsQ+Ac4PaynlHxOJa/rq5MhBAXkuH5vK1Pipso0MAFZCbvNlpJ3A/ZE53av/dPLldLaVoIXtgw0ZnrVdFx46GRR4QYrV87rxqXUqsJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UE6iaAtxxeFE4g/MLeVFw7ixcUXL7Z75s5oqiwFQYZE=;
- b=KOD62WUgo/LzpndHd0qGHjjSb+UuPpvWCRLkbljn+WOPu3Nz5orBzfNJQkso1Cf9mKjMKqaAfZ7R72SjEKMdMrMrLx+BosZz6XB140kgMAIoYza88YZlg78p8AGOIrgyC2jGnKtSZr0iWckA26Gy61r25B4u9u31TC7ByaZq+20lEqEkCCrAqlBvJYafFXjPy0K/R/eW1IhORii+cUqpx9RWn+Qx+uB8iZ+LDWM8updY4cqEgxFi4VvEPVZfgrIT1exq94yIHCBcGNijmmLur3c3dBchfBdTn6Yu9wo7uLO/1P9PyRNM34cQeD7olg/H2MNQeOzplfi48HlqEokk8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UE6iaAtxxeFE4g/MLeVFw7ixcUXL7Z75s5oqiwFQYZE=;
- b=tm9I6GauGmbzfv8CvLg1bXGTsjXdtp3OEWhN/JhV98+ex3eOizY+aBedkdbiZYsuB+Q0h+U1Hk+76Y3VE/VT5lhGnkBQ0i3cg1+fC4ZsKjA0LhZQmsAkSoOY2ySKe/gmd/ZMd68RyvX4ke4NPsCRmIGE/zzU6WjYZ1GKANcwdLcV4TheVDeAeI61gpKNJ+pAtLZl9LhscCad/YDk9yUptqxWbwQB7vOYjIwxdfszzA4iqm8/X9kzLrUxRRQ5ZGLuMRVCgsL844jFrSeCe21tDP5b9U0j37Vi1+k24gOFqt+FsXbhON9pMNxY9IOmyajHBlxm2BCv6KSb+m3sG2d5KA==
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
- by SY7P300MB0292.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:236::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.23; Mon, 21 Oct
- 2024 11:39:28 +0000
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.027; Mon, 21 Oct 2024
- 11:39:28 +0000
-References: <20241018144306.954716-1-pbonzini@redhat.com>
- <20241018144306.954716-10-pbonzini@redhat.com>
- <SY0P300MB1026DF84A11DD5A72EC45EEB95432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
- <CABgObfYox+Un798wFjxktDsa7XnjXmgM8ohTeotD2eFpqAweeg@mail.gmail.com>
-User-agent: mu4e 1.6.10; emacs 27.1
-From: Junjie Mao <junjie.mao@hotmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH 09/13] rust: clean up define_property macro
-Date: Mon, 21 Oct 2024 19:37:38 +0800
-In-reply-to: <CABgObfYox+Un798wFjxktDsa7XnjXmgM8ohTeotD2eFpqAweeg@mail.gmail.com>
-Message-ID: <SY0P300MB1026052067932D3A10A9C89595432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-Content-Type: text/plain
-X-ClientProxiedBy: KL1PR02CA0011.apcprd02.prod.outlook.com
- (2603:1096:820:c::16) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:282::22)
-X-Microsoft-Original-Message-ID: <87h695sn14.fsf@hotmail.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t2qo6-0002O9-BC
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:42:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729510961;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iNGMyzjiFGt9fgmqu4qHvlDy1AUtLIDR6d0UlcU7HNA=;
+ b=VI/T6LH6/CQYbrtwjPtzQamE5UcXqEV5tfvcUPVgibTaPb6OA1zMUZGTb6tCl4Yd/JtJou
+ qCRdBw+Sq6P8v4LDVvAsYPq9W+ySPEpGaU4+C1scPo0RPSpVH6bJfp0gw8B16G60u8ZVxw
+ 0+V8is3iissFV4URgDyXmLOo69aiHzM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-1F8shVe3PnyBvrLYbwlcQA-1; Mon,
+ 21 Oct 2024 07:42:37 -0400
+X-MC-Unique: 1F8shVe3PnyBvrLYbwlcQA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AFA881956088; Mon, 21 Oct 2024 11:42:35 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.209])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1B321300019D; Mon, 21 Oct 2024 11:42:31 +0000 (UTC)
+Date: Mon, 21 Oct 2024 13:42:29 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ "cfu@mips.com" <cfu@mips.com>, "arikalo@gmail.com" <arikalo@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ qemu-block <qemu-block@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ alex.bennee@linaro.org
+Subject: Re: [PATCH v2 6/8] Revert use of clock_gettime for benchmarking
+Message-ID: <ZxY-JRCHAZF-qQiW@redhat.com>
+References: <AM9PR09MB485113D76C5AE02516C08E8E84402@AM9PR09MB4851.eurprd09.prod.outlook.com>
+ <5ae0d26e-d969-48e3-9bfd-8a07db727620@linaro.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY7P300MB0292:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e52ccbb-212f-4a5b-e4f0-08dcf1c505ba
-X-Microsoft-Antispam: BCL:0;
- ARA:14566002|15080799006|7092599003|8060799006|461199028|5072599009|19110799003|3412199025|440099028;
-X-Microsoft-Antispam-Message-Info: bktBiIqY72R12F1MHRoSI+0bpzo8h9TjTbdL7ezgPn6kC3CYLCiRsuDgO62Q/rm8gGsV6kjWTNpGNBYGl5FM/auhF8Cyaf4Kw2MAI6ytPcwq0kxpKTMNrpHvr23luiD74DfmXzBEfFEV0YdnxBptPBWU+D19kUv7Ka4dWwuWFN6odh5gZWrucqslZF7t5OfxsE96vJd+OI5bz5vZ0jfdvgcYMHQC8fV2Z/rtO6bpIJJ/btoPHYJhai1oifsjkaE5g50SA3Ly3VYkcVy+bjNh8RfEADXNR9243EoGU2KbDhy234RQIsiLkz7FB1tNjk2NKni1Blmn7A7FtNeCcb58YeEMD5Q0rZu+g/Tsnjt8RsaaloeDWQkzIm5/kEUxPNTUBBt374JLykHjWNLa6RUt2pDZkH8I0RtyIMOYAaZpJlTbXEiGFxXMgthIqAEdHLSFlIm0VTRWdIVe3umW4ZFP7WGa6ML/av2uBJNBpxOBF9W0JYtmetNBVjKZOv7iLLg4w2KAWaoD6R7l0q4Zd++PKmTXwAccA/FghgoxUIhI1E0uonlXNiFaZkWOz+ZO5TAOQWznqopun1TryMFDP34LB/vW9tK3FsuLqxmwDSOGtKboNRtjeHn1Wizw+GN3j/POWlSOpxs9KvmKCuQ0496P6avMst4uMnTofiG51CSjSSLcuOEbA7q5DZncSmNgvUeW4oFuJExEHd8KV0nPFpCy9NrO0M/VJysA5z5RAxueSn8=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PYz+kLL6/nv7jQ1sXwKA/HMncQOv8H4826nSqGkbBvejgnMrSiCDid0UGYRV?=
- =?us-ascii?Q?N6NZNZl/SsGDJhoX2in2xEZ2CtAyAfN0zHngT3H3PZD4euhG7/GZZ039FqYB?=
- =?us-ascii?Q?VHsSrj1vFe8H52edng+KTA9I0fTtoNPtp5eElIhvHG9AnWmS/0HtS6FjrwTz?=
- =?us-ascii?Q?AT6qSvmHwuv+VhBrqyNWtGwA/1gB0caHUrYAKw0RNRQZ1/exHGf6EajZWwht?=
- =?us-ascii?Q?VeP9FDr9IqxCr5CAyS4upBl/KtrimNksTQrCSc/Ce4CxpmQ3lJE4ONcJHGgR?=
- =?us-ascii?Q?yfzHZ/8xnHHNDloNao7sGKvEDKk4w/R7NTov/EzjoWK6GSipZvrkY7yGqchT?=
- =?us-ascii?Q?deIM6lVVqHHUlwfFWqOSLRmPeofc3j3UtxqLIx58ZhEb0sqkSKL9ba1SYIXi?=
- =?us-ascii?Q?EIQoxFvXcF+ZQq+rQw/XxpqfCFZSEAp/iG5sUIzlkiJORz8JvaP4+ER0p+Hz?=
- =?us-ascii?Q?BW8Wvs4zmzE+BbHlJsirOB7pwziCfYgmIBaKyC4FkmmtsW+KNxYGelWMyrqU?=
- =?us-ascii?Q?GMFcEi9gxuSRE/sqbmjNOYaLw/rq7y4zoemUm3FRTLoGs7Shf+2ayvQNeApQ?=
- =?us-ascii?Q?rIbQiNoFeYTV2lRoZGRsxDpeNEINxuELocDQyy8UCcs83yi4eDFD1Z1gEvoR?=
- =?us-ascii?Q?pjmEdnwF/Ef4ogkHskPfXVR7W3pn54uwRJ0ml1lbAZ30dan+IjG2LmOD8hwu?=
- =?us-ascii?Q?eYm2+WuK08IqsUPtUiJJ0EJg0HXqyAy4OZR/KqxNCbWgL9hq20cwXAZslSu/?=
- =?us-ascii?Q?I81YQgNd6m7XBNUPwnf7pLqdvwb0ATbqP3OBkLbb3z4fsBHxukUa0F2IIn28?=
- =?us-ascii?Q?yRldxdXiOzddYt8RDYNbWfp4156398zr5styQpL6zavShO0IvHwNi6qIOK0b?=
- =?us-ascii?Q?l6JbBEuViyoJoIj3IYMXJP0E0hrlnbPMF7hsC6amdE9CZRc6SajoromaxKxX?=
- =?us-ascii?Q?hhwtQM54tEwnw+3giHKRd41s3q2Lu6Cn/3LNFeu7DTyNRZk5X5zgWVElPnZu?=
- =?us-ascii?Q?QfoOW7001NNh9zClk9qEl7aC4BWhpah1pYWCEILLAxUGa5U4bp4ED6ra+Ie5?=
- =?us-ascii?Q?fD7484Obhz5aGLa/UOdiWNJQAJzEQOdOlqAkWaAGJ+j38Xe4/O9xr9LDK7v7?=
- =?us-ascii?Q?FIViRxNS7VVF6ocdlMXjXmMI1Zbf0hdHg2KjLG2o713QF7yLbB9fm9qzAAvK?=
- =?us-ascii?Q?SCIAkk+0oUWj8CXqJP9fIgg3u04CoK3HG/cUYxGRQ/x2pjQi8GB4rTd/vGk?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e52ccbb-212f-4a5b-e4f0-08dcf1c505ba
-X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 11:39:28.8145 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB0292
-Received-SPF: pass client-ip=2a01:111:f403:2818::814;
- envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-ME3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5ae0d26e-d969-48e3-9bfd-8a07db727620@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,60 +88,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Am 19.10.2024 um 21:35 hat Philippe Mathieu-Daudé geschrieben:
+> Hi,
+> 
+> On 18/10/24 10:20, Aleksandar Rakic wrote:
+> > This patch reverts the commit (with SHA
+> > 50290c002c045280f8defad911901e16bfb52884 from
+> > https://github.com/MIPS/gnutools-qemu) that breaks for mingw builds,
+> > where clock_gettime and CLOCK_MONOTONIC are not available.
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+What does "not available" mean? I'm sure that we have kept building QEMU
+with mingw in the past five years (the commit you want to revert is from
+2019), so they must exist in some form?
 
-> Il lun 21 ott 2024, 12:39 Junjie Mao <junjie.mao@hotmail.com> ha scritto:
->
->  Paolo Bonzini <pbonzini@redhat.com> writes:
->
->  > Use the "struct update" syntax to initialize most of the fields to zero,
->  > and simplify the handmade type-checking of $name.
->  >
->  > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->  > ---
->  >  rust/qemu-api/src/device_class.rs | 29 ++++++-----------------------
->  >  1 file changed, 6 insertions(+), 23 deletions(-)
->  >
->  > diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
->  > index 2219b9f73d0..5aba426d243 100644
->  > --- a/rust/qemu-api/src/device_class.rs
->  > +++ b/rust/qemu-api/src/device_class.rs
->  > @@ -29,44 +29,27 @@ macro_rules! device_class_init {
->  >  macro_rules! define_property {
->  >      ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
->  >          $crate::bindings::Property {
->  > -            name: {
->  > -                #[used]
->  > -                static _TEMP: &::core::ffi::CStr = $name;
->  > -                _TEMP.as_ptr()
->  > -            },
->  > +            // use associated function syntax for type checking
->  > +            name: ::core::ffi::CStr::as_ptr($name),
->  >              info: $prop,
->  >              offset: ::core::mem::offset_of!($state, $field)
->  >                  .try_into()
->  >                  .expect("Could not fit offset value to type"),
->  > -            bitnr: 0,
->  > -            bitmask: 0,
->  >              set_default: true,
->  >              defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval.into() },
->  > -            arrayoffset: 0,
->  > -            arrayinfo: ::core::ptr::null(),
->  > -            arrayfieldsize: 0,
->  > -            link_type: ::core::ptr::null(),
->  > +            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
->
->  zeroed() is const only since 1.75.0 [1]. Is there any alternative for
->  older Rust versions?
->
-> Yes: manual implementation of a Zeroable trait, as in the series I sent before one. For now I am not worrying about the MSRV, since the hacks/workarounds from those patches do not become any worse.
+> Isn't get_clock() what we want here?
+> 
+> > Cherry-picked d57c735e1af1ca719dbd0c3a904ad70c9c31cbb7
+> > from https://github.com/MIPS/gnutools-qemu
+> > 
+> > Signed-off-by: Faraz Shahbazker <fshahbazker@wavecomp.com>
+> > Signed-off-by: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
+> > ---
+> >   qemu-io-cmds.c | 77 +++++++++++++++++++++++++-------------------------
+> >   1 file changed, 39 insertions(+), 38 deletions(-)
+> 
+> Please Cc maintainers (done now):
+> 
+> $ ./scripts/get_maintainer.pl -f qemu-io-cmds.c
+> Kevin Wolf <kwolf@redhat.com> (supporter:Block layer core)
+> Hanna Reitz <hreitz@redhat.com> (supporter:Block layer core)
 
-Ah, yes, I should have recalled seeing that earlier.
+Also Alex (CCed) who is the author of the patch you want to revert.
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+Kevin
 
---
-Best Regards
-Junjie Mao
+> > @@ -904,7 +905,7 @@ static const cmdinfo_t readv_cmd = {
+> >   static int readv_f(BlockBackend *blk, int argc, char **argv)
+> >   {
+> > -    struct timespec t1, t2;
+> > +    struct timeval t1, t2;
+> >       bool Cflag = false, qflag = false, vflag = false;
+> >       int c, cnt, ret;
+> >       char *buf;
+> > @@ -964,9 +965,9 @@ static int readv_f(BlockBackend *blk, int argc, char **argv)
+> >           return -EINVAL;
+> >       }
+> > -    clock_gettime(CLOCK_MONOTONIC, &t1);
+> > +    gettimeofday(&t1, NULL);
+> >       ret = do_aio_readv(blk, &qiov, offset, flags, &total);
+> > -    clock_gettime(CLOCK_MONOTONIC, &t2);
+> > +    gettimeofday(&t2, NULL);
+> >       if (ret < 0) {
+> >           printf("readv failed: %s\n", strerror(-ret));
+> 
+
 
