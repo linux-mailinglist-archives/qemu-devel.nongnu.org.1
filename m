@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49879A66BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF229A66B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qhM-0002Cs-QN; Mon, 21 Oct 2024 07:35:45 -0400
+	id 1t2qhI-00029u-AP; Mon, 21 Oct 2024 07:35:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh9-00028S-O9
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh9-00028R-Is
  for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh7-0001iB-Q4
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qh5-0001ht-LW
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729510529;
+ s=mimecast20190719; t=1729510525;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vMAUfatU4v8P6M6l9m7ZlyTq9+P6vVi+BYaO0qNGlTY=;
- b=bgQw7k4/oIZHNJAerrnpDiYNOtP5KSqo0FJgEpCxoW0f5qz9sE/WAwWRzzDu9+ab96R3Lw
- kP12jRusI5eQbAvcerq3+ARxO26ZPDITJUHmVhOUwkOpdyfWcDG45OKVg/jV4awsuORNJ6
- d6R/S5EWvX1u2i3KNPnXEmumKAT/HBg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=RpMPpZ7pnQTOpE70JYMwnMCCXBLxyKK7KkYNRJZhdws=;
+ b=iOtSjPrDGe0E8Bqd5qrOOakMAUB4Ui59cez9R+PBecIjLQ3P5u9Pagvp3mn1AHP9HAnFIh
+ 9rARwOXzOePlcIOUTyKrsHawF4dPkvz/k4gb4Rx3zu990J+e5ZTVBE4ySvsWEPmBQcCWdj
+ 38Ss8aGv2KXtB2fgBNZ34cURXihPORs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-XyZNDfV8PmiHH3DA_XU9Uw-1; Mon,
- 21 Oct 2024 07:35:22 -0400
-X-MC-Unique: XyZNDfV8PmiHH3DA_XU9Uw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-Deifii_cOoataunRGT5lpg-1; Mon,
+ 21 Oct 2024 07:35:24 -0400
+X-MC-Unique: Deifii_cOoataunRGT5lpg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8CC21955EE9; Mon, 21 Oct 2024 11:35:21 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C0B54195608F; Mon, 21 Oct 2024 11:35:23 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.49])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AC27319560AA; Mon, 21 Oct 2024 11:35:20 +0000 (UTC)
+ id 5062719560AA; Mon, 21 Oct 2024 11:35:22 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 07/21] tests/functional: Convert the Avocado aarch64 tuxrun
- tests
-Date: Mon, 21 Oct 2024 13:34:44 +0200
-Message-ID: <20241021113500.122500-8-thuth@redhat.com>
+Subject: [PULL 08/21] tests/functional: Convert the Avocado sparc64 tuxrun test
+Date: Mon, 21 Oct 2024 13:34:45 +0200
+Message-ID: <20241021113500.122500-9-thuth@redhat.com>
 In-Reply-To: <20241021113500.122500-1-thuth@redhat.com>
 References: <20241021113500.122500-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,99 +79,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the tests to a new file so that they can be run via
-qemu-system-aarch64 in the functional framework.
+Move the test to a new file so that it can be run via
+qemu-system-sparc64 in the functional framework.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241011131937.377223-4-thuth@redhat.com>
+Message-ID: <20241011131937.377223-5-thuth@redhat.com>
 ---
  MAINTAINERS                             |  1 +
- tests/avocado/tuxrun_baselines.py       | 31 ---------------
- tests/functional/meson.build            |  2 +
- tests/functional/test_aarch64_tuxrun.py | 50 +++++++++++++++++++++++++
- 4 files changed, 53 insertions(+), 31 deletions(-)
- create mode 100755 tests/functional/test_aarch64_tuxrun.py
+ tests/avocado/tuxrun_baselines.py       | 16 ------------
+ tests/functional/meson.build            |  1 +
+ tests/functional/test_sparc64_tuxrun.py | 34 +++++++++++++++++++++++++
+ 4 files changed, 36 insertions(+), 16 deletions(-)
+ create mode 100755 tests/functional/test_sparc64_tuxrun.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f4a58f850..4f4f50711b 100644
+index 4f4f50711b..778fb4d64b 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -987,6 +987,7 @@ F: hw/arm/virt*
- F: include/hw/arm/virt.h
- F: docs/system/arm/virt.rst
- F: tests/functional/test_aarch64_virt.py
-+F: tests/functional/test_aarch64_tuxrun.py
+@@ -1664,6 +1664,7 @@ F: hw/pci-bridge/simba.c
+ F: include/hw/pci-bridge/simba.h
+ F: pc-bios/openbios-sparc64
+ F: tests/functional/test_sparc64_sun4u.py
++F: tests/functional/test_sparc64_tuxrun.py
  
- Xilinx Zynq
- M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+ Sun4v
+ M: Artyom Tarasenko <atar4qemu@gmail.com>
 diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index 56c8bdb2dc..dffa4f6339 100644
+index dffa4f6339..dc32735c3f 100644
 --- a/tests/avocado/tuxrun_baselines.py
 +++ b/tests/avocado/tuxrun_baselines.py
-@@ -192,37 +192,6 @@ def common_tuxrun(self,
-     #        --kernel https://storage.tuxboot.com/{TUXBOOT}/{IMAGE}
-     #
+@@ -462,22 +462,6 @@ def test_sh4(self):
+         exec_command_and_wait_for_pattern(self, 'halt',
+                                           "reboot: System halted")
  
--    def test_arm64(self):
+-    def test_sparc64(self):
 -        """
--        :avocado: tags=arch:aarch64
--        :avocado: tags=cpu:cortex-a57
--        :avocado: tags=machine:virt
--        :avocado: tags=tuxboot:arm64
--        :avocado: tags=console:ttyAMA0
+-        :avocado: tags=arch:sparc64
+-        :avocado: tags=tuxboot:sparc64
+-        :avocado: tags=image:vmlinux
+-        :avocado: tags=root:sda
 -        :avocado: tags=shutdown:nowait
 -        """
--        sums = {"Image" :
--                "ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7",
--                "rootfs.ext4.zst" :
--                "bbd5ed4b9c7d3f4ca19ba71a323a843c6b585e880115df3b7765769dbd9dd061"}
--        self.common_tuxrun(csums=sums)
 -
--    def test_arm64be(self):
--        """
--        :avocado: tags=arch:aarch64
--        :avocado: tags=cpu:cortex-a57
--        :avocado: tags=endian:big
--        :avocado: tags=machine:virt
--        :avocado: tags=tuxboot:arm64be
--        :avocado: tags=console:ttyAMA0
--        :avocado: tags=shutdown:nowait
--        """
--        sums = { "Image" :
--                 "e0df4425eb2cd9ea9a283e808037f805641c65d8fcecc8f6407d8f4f339561b4",
--                 "rootfs.ext4.zst" :
--                 "e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7"}
--        self.common_tuxrun(csums=sums)
+-        sums = { "rootfs.ext4.zst" :
+-                 "ad2f1dc436ab51583543d25d2c210cab478645d47078d30d129a66ab0e281d76",
+-                 "vmlinux" :
+-                 "e34313e4325ff21deaa3d38a502aa09a373ef62b9bd4d7f8f29388b688225c55" }
 -
-     def test_armv5(self):
+-        self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
+-
+     def test_x86_64(self):
          """
-         :avocado: tags=arch:arm
+         :avocado: tags=arch:x86_64
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index c90c02517a..222bfbcc62 100644
+index 222bfbcc62..d598f43289 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -13,6 +13,7 @@ endif
- test_timeouts = {
-   'aarch64_raspi4' : 120,
-   'aarch64_sbsaref' : 600,
-+  'aarch64_tuxrun' : 120,
-   'aarch64_virt' : 360,
-   'acpi_bits' : 240,
-   'arm_raspi2' : 120,
-@@ -41,6 +42,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_raspi3',
-   'aarch64_raspi4',
-   'aarch64_sbsaref',
-+  'aarch64_tuxrun',
-   'aarch64_virt',
-   'multiprocess',
+@@ -142,6 +142,7 @@ tests_sparc_system_thorough = [
+ 
+ tests_sparc64_system_thorough = [
+   'sparc64_sun4u',
++  'sparc64_tuxrun',
  ]
-diff --git a/tests/functional/test_aarch64_tuxrun.py b/tests/functional/test_aarch64_tuxrun.py
+ 
+ tests_x86_64_system_quick = [
+diff --git a/tests/functional/test_sparc64_tuxrun.py b/tests/functional/test_sparc64_tuxrun.py
 new file mode 100755
-index 0000000000..da56aee4ed
+index 0000000000..1c2c005630
 --- /dev/null
-+++ b/tests/functional/test_aarch64_tuxrun.py
-@@ -0,0 +1,50 @@
++++ b/tests/functional/test_sparc64_tuxrun.py
+@@ -0,0 +1,34 @@
 +#!/usr/bin/env python3
 +#
 +# Functional test that boots known good tuxboot images the same way
@@ -189,37 +165,21 @@ index 0000000000..da56aee4ed
 +from qemu_test import Asset
 +from qemu_test.tuxruntest import TuxRunBaselineTest
 +
-+class TuxRunAarch64Test(TuxRunBaselineTest):
++class TuxRunSparc64Test(TuxRunBaselineTest):
 +
-+    ASSET_ARM64_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64/Image',
-+        'ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7')
-+    ASSET_ARM64_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64/rootfs.ext4.zst',
-+        'bbd5ed4b9c7d3f4ca19ba71a323a843c6b585e880115df3b7765769dbd9dd061')
++    ASSET_SPARC64_KERNEL = Asset(
++        'https://storage.tuxboot.com/20230331/sparc64/vmlinux',
++        'e34313e4325ff21deaa3d38a502aa09a373ef62b9bd4d7f8f29388b688225c55')
++    ASSET_SPARC64_ROOTFS = Asset(
++        'https://storage.tuxboot.com/20230331/sparc64/rootfs.ext4.zst',
++        'ad2f1dc436ab51583543d25d2c210cab478645d47078d30d129a66ab0e281d76')
 +
-+    def test_arm64(self):
-+        self.set_machine('virt')
-+        self.cpu='cortex-a57'
-+        self.console='ttyAMA0'
++    def test_sparc64(self):
++        self.root='sda'
 +        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_ARM64_KERNEL,
-+                           rootfs_asset=self.ASSET_ARM64_ROOTFS)
-+
-+    ASSET_ARM64BE_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64be/Image',
-+        'e0df4425eb2cd9ea9a283e808037f805641c65d8fcecc8f6407d8f4f339561b4')
-+    ASSET_ARM64BE_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64be/rootfs.ext4.zst',
-+        'e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7')
-+
-+    def test_arm64be(self):
-+        self.set_machine('virt')
-+        self.cpu='cortex-a57'
-+        self.console='ttyAMA0'
-+        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_ARM64BE_KERNEL,
-+                           rootfs_asset=self.ASSET_ARM64BE_ROOTFS)
++        self.common_tuxrun(kernel_asset=self.ASSET_SPARC64_KERNEL,
++                           rootfs_asset=self.ASSET_SPARC64_ROOTFS,
++                           drive="driver=ide-hd,bus=ide.0,unit=0")
 +
 +if __name__ == '__main__':
 +    TuxRunBaselineTest.main()
