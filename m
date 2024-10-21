@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3649A66D3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7555B9A66B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qgs-00024a-Vb; Mon, 21 Oct 2024 07:35:14 -0400
+	id 1t2qhG-00028M-Mn; Mon, 21 Oct 2024 07:35:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgq-00024N-RE
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgy-000266-MF
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgo-0001UP-7j
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgt-0001Uu-1T
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729510507;
+ s=mimecast20190719; t=1729510514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=xtu5AWyMDAVfx5qyqU6z5XB+Wpdg8aUJIo2FrG88Rlc=;
- b=R3keqBFfM9ftdUvR0hxPAFh/PHKG6f2Io7DDae82iFpTFQxqKRsj/ljVZw9LANjbVYGbH1
- MXg/U+10FJR+TBqvhrNafpPAg9ZsUvNr7J6yIAf2e+ciRoS6tEzEia9Tk05K8MY8AQUyVt
- f12ds17zk0y/OxPQx5P4PjM2e1N9/oI=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2AW0JMFGDoiKZeDB3X89zNWa0sAywienipoUJUTxBUY=;
+ b=UqlBBY0GK3Z5RaLDnZxVQ4+tQApI4ENJX5IDF7ND+88zbhKx2B4TDdyRAX4/eQLv40ijNI
+ rC6dnsXoY9XxMkrLtn46IGOMuhRkPwDjyaMyIo4CdYqy14W9zLXeFxTieK7bkjXxnkqNrD
+ vgj5Lvq53tNg6BgJBEBcVGhIK3jsKiY=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-K6r9MN0iOi6EFav5i6MrXA-1; Mon,
- 21 Oct 2024 07:35:05 -0400
-X-MC-Unique: K6r9MN0iOi6EFav5i6MrXA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-S6ySwIVVMbGipxhQLkAgpw-1; Mon,
+ 21 Oct 2024 07:35:08 -0400
+X-MC-Unique: S6ySwIVVMbGipxhQLkAgpw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 74C22195608C; Mon, 21 Oct 2024 11:35:04 +0000 (UTC)
+ id 6553419560B2; Mon, 21 Oct 2024 11:35:07 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.49])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2355C19560AA; Mon, 21 Oct 2024 11:35:02 +0000 (UTC)
+ id 11C7319560AA; Mon, 21 Oct 2024 11:35:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/21] Test updates (tuxrun tests, new QTest maintainer, ...)
-Date: Mon, 21 Oct 2024 13:34:37 +0200
-Message-ID: <20241021113500.122500-1-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+	Brad Smith <brad@comstyle.com>
+Subject: [PULL 01/21] tests/vm: update openbsd image to 7.6
+Date: Mon, 21 Oct 2024 13:34:38 +0200
+Message-ID: <20241021113500.122500-2-thuth@redhat.com>
+In-Reply-To: <20241021113500.122500-1-thuth@redhat.com>
+References: <20241021113500.122500-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -76,94 +79,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f1dd640896ee2b50cb34328f2568aad324702954:
+From: Brad Smith <brad@comstyle.com>
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-18 10:42:56 +0100)
+Remove tomli as Python has been updated to 3.11.
 
-are available in the Git repository at:
+[thuth: The "Time appears wrong" line is now necessary since the server
+ seems to provide a wrong timestamp. We likely have to remove that again
+ later once the server is running with the correct time again]
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-10-21
+Signed-off-by: Brad Smith <brad@comstyle.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <ZwtmfVlWgFRF9G8W@humpty.home.comstyle.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/vm/openbsd | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-for you to fetch changes up to ee772a332af8f23acf604ad0fb5132f886b0eb16:
-
-  tests/functional: Convert the Avocado sh4 tuxrun test (2024-10-21 13:25:12 +0200)
-
-----------------------------------------------------------------
-* Convert the Tuxrun Avocado tests to the new functional framework
-* Update the OpenBSD CI image to OpenBSD v7.6
-* Bump timeout of the ide-test
-* New maintainer for the QTests
-* Disable the pci-bridge on s390x by default
-
-----------------------------------------------------------------
-Brad Smith (1):
-      tests/vm: update openbsd image to 7.6
-
-Peter Maydell (1):
-      tests/qtest: Raise the ide-test timeout
-
-Thomas Huth (19):
-      MAINTAINERS: A new maintainer for the qtests
-      hw/pci-bridge: Add a Kconfig switch for the normal PCI bridge
-      tests/functional: Add a base class for the TuxRun tests
-      tests/functional: Convert the Avocado ppc64 tuxrun tests
-      tests/functional: Convert the Avocado aarch64 tuxrun tests
-      tests/functional: Convert the Avocado sparc64 tuxrun test
-      tests/functional: Convert the Avocado s390x tuxrun test
-      tests/functional: Convert the Avocado arm tuxrun tests
-      tests/functional: Convert the Avocado riscv32 tuxrun tests
-      tests/functional: Convert the Avocado riscv64 tuxrun tests
-      tests/functional: Convert the Avocado i386 tuxrun test
-      tests/functional: Convert the Avocado x86_64 tuxrun test
-      tests/functional: Convert the Avocado mips tuxrun test
-      tests/functional: Convert the Avocado mipsel tuxrun test
-      tests/functional: Convert the Avocado mips64 tuxrun test
-      tests/functional: Convert the Avocado mips64el tuxrun test
-      tests/functional: Convert the Avocado ppc32 tuxrun test
-      Revert "hw/sh4/r2d: Realize IDE controller before accessing it"
-      tests/functional: Convert the Avocado sh4 tuxrun test
-
- MAINTAINERS                              |  22 +-
- hw/sh4/r2d.c                             |   2 +-
- hw/pci-bridge/Kconfig                    |   5 +
- hw/pci-bridge/meson.build                |   2 +-
- tests/avocado/tuxrun_baselines.py        | 620 -------------------------------
- tests/functional/meson.build             |  28 ++
- tests/functional/qemu_test/tuxruntest.py | 158 ++++++++
- tests/functional/test_aarch64_tuxrun.py  |  50 +++
- tests/functional/test_arm_tuxrun.py      |  70 ++++
- tests/functional/test_i386_tuxrun.py     |  35 ++
- tests/functional/test_mips64_tuxrun.py   |  35 ++
- tests/functional/test_mips64el_tuxrun.py |  35 ++
- tests/functional/test_mips_tuxrun.py     |  36 ++
- tests/functional/test_mipsel_tuxrun.py   |  36 ++
- tests/functional/test_ppc64_tuxrun.py    | 110 ++++++
- tests/functional/test_ppc_tuxrun.py      |  35 ++
- tests/functional/test_riscv32_tuxrun.py  |  38 ++
- tests/functional/test_riscv64_tuxrun.py  |  38 ++
- tests/functional/test_s390x_tuxrun.py    |  34 ++
- tests/functional/test_sh4_tuxrun.py      |  57 +++
- tests/functional/test_sparc64_tuxrun.py  |  34 ++
- tests/functional/test_x86_64_tuxrun.py   |  36 ++
- tests/qtest/meson.build                  |   1 +
- tests/vm/openbsd                         |   6 +-
- 24 files changed, 891 insertions(+), 632 deletions(-)
- delete mode 100644 tests/avocado/tuxrun_baselines.py
- create mode 100644 tests/functional/qemu_test/tuxruntest.py
- create mode 100755 tests/functional/test_aarch64_tuxrun.py
- create mode 100755 tests/functional/test_arm_tuxrun.py
- create mode 100755 tests/functional/test_i386_tuxrun.py
- create mode 100755 tests/functional/test_mips64_tuxrun.py
- create mode 100755 tests/functional/test_mips64el_tuxrun.py
- create mode 100755 tests/functional/test_mips_tuxrun.py
- create mode 100755 tests/functional/test_mipsel_tuxrun.py
- create mode 100755 tests/functional/test_ppc64_tuxrun.py
- create mode 100755 tests/functional/test_ppc_tuxrun.py
- create mode 100755 tests/functional/test_riscv32_tuxrun.py
- create mode 100755 tests/functional/test_riscv64_tuxrun.py
- create mode 100755 tests/functional/test_s390x_tuxrun.py
- create mode 100755 tests/functional/test_sh4_tuxrun.py
- create mode 100755 tests/functional/test_sparc64_tuxrun.py
- create mode 100755 tests/functional/test_x86_64_tuxrun.py
+diff --git a/tests/vm/openbsd b/tests/vm/openbsd
+index 49cab08782..dfd11c93f0 100755
+--- a/tests/vm/openbsd
++++ b/tests/vm/openbsd
+@@ -22,8 +22,8 @@ class OpenBSDVM(basevm.BaseVM):
+     name = "openbsd"
+     arch = "x86_64"
+ 
+-    link = "https://cdn.openbsd.org/pub/OpenBSD/7.5/amd64/install75.iso"
+-    csum = "034435c6e27405d5a7fafb058162943c194eb793dafdc412c08d49bb56b3892a"
++    link = "https://cdn.openbsd.org/pub/OpenBSD/7.6/amd64/install76.iso"
++    csum = "60cba8cb391b50bba8fa10fc768bd0529636f5345d82133c93e22c798d8e5269"
+     size = "20G"
+     pkgs = [
+         # tools
+@@ -32,7 +32,6 @@ class OpenBSDVM(basevm.BaseVM):
+         "pkgconf",
+         "bzip2", "xz",
+         "ninja",
+-        "py3-tomli",
+ 
+         # gnu tools
+         "bash",
+@@ -160,6 +159,7 @@ class OpenBSDVM(basevm.BaseVM):
+ 
+         self.print_step("Installation started now, this will take a while")
+         self.console_wait_send("Location of sets",        "done\n")
++        self.console_wait_send("Time appears wrong.  Set to", "\n")
+ 
+         self.console_wait("successfully completed")
+         self.print_step("Installation finished, rebooting")
+-- 
+2.47.0
 
 
