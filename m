@@ -2,74 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F82A9A6D88
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 17:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8410E9A6DF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 17:20:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2tvH-0000QM-8e; Mon, 21 Oct 2024 11:02:19 -0400
+	id 1t2uBf-0001Y3-Az; Mon, 21 Oct 2024 11:19:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2tvF-0000Q7-6x
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 11:02:17 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t2uBc-0001Xb-3p
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 11:19:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2tvC-0002na-P5
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 11:02:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729522935; x=1761058935;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=CBmnK50kHKPX2WZ5rEY88VHDRhyNYz2aXRI1lQbPYyA=;
- b=FrMRC+yrVSZTyLi+jtXU1EDf9s+BkXVc3lVV2T3+Sx6vRM+F6MWEegjh
- v+/o+czLY2gxwREGrMrza4/oMfNTGt21DGDRzZJDpCc887Uu8r/bNS8uz
- /mV3MNmg8Q5Iz8oilnKloyuHyU0CpyTZikPhi+3W8OYqGrHILabkdYB2R
- jaH5gNosdTUjUW7e0/Ikp3lRY+C95LNJlYa1gmd8/MiKXFWmJooAQYaMk
- yFMwsytwAB4bvJyPS0DVy1/cJy7SaoR1HjukzImYAhMrfpNCB8CD6URQS
- klXEBhdQ7ROuxRjHBgK0d3OKV7QoGjI4sIlpY8WGz/2eReT8q+fEXQLw1 g==;
-X-CSE-ConnectionGUID: 3a6XFYnNSmyNRja4EAxLrA==
-X-CSE-MsgGUID: x6IY37nlS0G/EUUO/mEUeg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28887276"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28887276"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 08:02:11 -0700
-X-CSE-ConnectionGUID: 6ChuHoqvSMOmOvU+/UoH+w==
-X-CSE-MsgGUID: fxDKoIxrQLGh3yQ5h2M0cA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="83558638"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 21 Oct 2024 08:02:09 -0700
-Date: Mon, 21 Oct 2024 23:18:25 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t2uBa-00058d-EO
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 11:19:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729523949;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4rTUJXVwSnpTBxqVZ0n1fIUOLhyAxulXFJ+pM27GN8c=;
+ b=e7aW/qzXTLC/+Hq1EZ5RD50J9mJSf2ivOtHTCnY+F2My5s9L3AXMrUWgKwKzCkGoLGNuHc
+ qbguox1KbjiuMbhM0ZJkMH03g2YnAgH0xRsCA284IWqEr+NtTxGwcK9ejcxj4xrjl/rV9W
+ vnOcw9MmEkRo6wuOq5WNdAlXmD0uoPI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-FnfYVOfXNIOFN6TtawZaMQ-1; Mon, 21 Oct 2024 11:19:08 -0400
+X-MC-Unique: FnfYVOfXNIOFN6TtawZaMQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b15a8e9ff1so564243685a.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 08:19:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729523947; x=1730128747;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4rTUJXVwSnpTBxqVZ0n1fIUOLhyAxulXFJ+pM27GN8c=;
+ b=hU6fmqoay3zUlXBijUHJh35UtY9n3c2FT832QooyixBcFlM/ljbQDwHhHDgd1UV5TB
+ 58IPnJCylwOR5LSd7vzSmz7BzOwyQRyDcOiv5p8lJVzo81u4TBvHj1eTG5QpIVF4R0xe
+ vpBhK7Wqn/ME+fnFhmmaflimqniS4i6pP/d0O1WynkCRzqq+JyLKQZHvn1zbh8ls2SBa
+ xHEju1f4FVucBiNqmLtRTudN4SBnPwIH1x9UTSq5nx4YtOwcLMvLXz7NuCdIuGW92InU
+ W2oTUnBeJMCHQd5yRqkjlcerhB7s35cQ/x6IV/eYkGIYsZXPRRYLnMSA8pQXT8YvnA9k
+ /9Yg==
+X-Gm-Message-State: AOJu0YxvXgETCEsgfSkah2TChroPpGbldf/YasWor+RKr1apoUH8K3D6
+ J2FqEd1Y5AeuZs9TMFL1CCFcDWSqoUqsUHmdyxafGR73+dgkIz7p+KBjPNA/Bc1webdQlm3kPYL
+ V5YqOxjalGKAZCBn0BO6I6nKT8f5yea/v3RSvPywuP4gQyZ0C/nSb
+X-Received: by 2002:a05:620a:45ab:b0:7af:cf2e:197b with SMTP id
+ af79cd13be357-7b157b5aacbmr1430290985a.21.1729523947561; 
+ Mon, 21 Oct 2024 08:19:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHk9cwXOtQLjchVnabHiG3J83BRNsMYlqaDheVT6YBOgkGwlZ40J2LDpJiTnhg4MhbWv4NKbA==
+X-Received: by 2002:a05:620a:45ab:b0:7af:cf2e:197b with SMTP id
+ af79cd13be357-7b157b5aacbmr1430287685a.21.1729523947214; 
+ Mon, 21 Oct 2024 08:19:07 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b1659c88f1sm176949685a.17.2024.10.21.08.19.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Oct 2024 08:19:06 -0700 (PDT)
+Date: Mon, 21 Oct 2024 11:19:03 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [Question] What is the =?gb2312?Q?defi?=
- =?gb2312?B?bml0aW9uIG9mIKGwcHJpdmF0ZaGx?= fields in QOM?
-Message-ID: <ZxZwwe1ULIUqEdKN@intel.com>
-References: <ZxPZ5oUDRcVroh7o@intel.com>
- <CAFEAcA8m4OeDHopFxCL3MP-cmu-PO5=2+MjNBG7YCudpKdoqDA@mail.gmail.com>
- <ZxZjqypRL7d2rMuQ@intel.com>
- <CAFEAcA-imJJQO=WAmCAHBY1MtszuPyyaD9OHWMRx88h-fjVvsw@mail.gmail.com>
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [RFC V1 04/14] accel: set accelerator and machine props earlier
+Message-ID: <ZxZw5xnN4cY7j680@x1n>
+References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
+ <1729178055-207271-5-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA-imJJQO=WAmCAHBY1MtszuPyyaD9OHWMRx88h-fjVvsw@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIMWL_WL_HIGH=-0.421, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+In-Reply-To: <1729178055-207271-5-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,67 +104,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 03:20:39PM +0100, Peter Maydell wrote:
-> Date: Mon, 21 Oct 2024 15:20:39 +0100
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: Re: [Question] What is the definition of ¡°private¡± fields in
->  QOM?
+On Thu, Oct 17, 2024 at 08:14:05AM -0700, Steve Sistare wrote:
+> Make all global and compat properties available before the first objects
+> are created.  Set accelerator compatibility properties in
+> configure_accelerators, when the accelerator is chosen, and call
+> configure_accelerators earlier.  Set machine options earlier.
 > 
-> On Mon, 21 Oct 2024 at 15:12, Zhao Liu <zhao1.liu@intel.com> wrote:
-> >
-> > Hi Peter,
-> >
-> > On Mon, Oct 21, 2024 at 10:25:07AM +0100, Peter Maydell wrote:
-> > > Date: Mon, 21 Oct 2024 10:25:07 +0100
-> > > From: Peter Maydell <peter.maydell@linaro.org>
-> > > Subject: Re: [Question] What is the definition of ¡°private¡± fields in
-> > >  QOM?
-> > >
-> > > On Sat, 19 Oct 2024 at 16:54, Zhao Liu <zhao1.liu@intel.com> wrote:
-> > > >
-> > > > Hi maintainers and list,
-> > > >
-> > > > In the QOM structure, the class and object structs have two members:
-> > > > parent_class and parent_obj, which are often marked as "< private >" in
-> > > > the comment.
-> > > >
-> > > > I couldn¡¯t find information on why to define ¡®private¡¯ and ¡®public¡¯,
-> > > > even in the earliest QOM commits and the patch emails I could find.
-> > >
-> > > This is a rather old thing which I think was originally
-> > > borrowed from glib's commenting convention.
-> > >
-> > > I'm fairly sure that we decided a while back that they were entirely
-> > > unnecessary, so you don't need to add them in new code. (I can't
-> > > actually find anything with a quick list search about that though
-> > > so maybe I'm misremembering.)
-> >
-> > Thanks for your explanation! So I understand that directly accessing
-> > parent_obj/parent_class is actually allowed.
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>  accel/accel-system.c |  2 --
+>  system/vl.c          | 34 ++++++++++++++++++----------------
+>  2 files changed, 18 insertions(+), 18 deletions(-)
 > 
-> No, you shouldn't do that. You can use a QOM cast of the
-> object pointer to the relevant parent class if you need to
-> treat it as an instance of the parent class.
->
-> What I mean by "the private/public markers are unnecessary" is
-> that they don't tell the reader anything, because all the fields
-> in a QOM device struct are private.
+> diff --git a/accel/accel-system.c b/accel/accel-system.c
+> index f6c947d..c8aeae4 100644
+> --- a/accel/accel-system.c
+> +++ b/accel/accel-system.c
+> @@ -41,8 +41,6 @@ int accel_init_machine(AccelState *accel, MachineState *ms)
+>          ms->accelerator = NULL;
+>          *(acc->allowed) = false;
+>          object_unref(OBJECT(accel));
+> -    } else {
+> -        object_set_accelerator_compat_props(acc->compat_props);
+>      }
+>      return ret;
+>  }
+> diff --git a/system/vl.c b/system/vl.c
+> index b94a6b9..bca2292 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -2346,6 +2346,7 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
+>          goto bad;
+>      }
+>  
+> +    object_set_accelerator_compat_props(ac->compat_props);
 
-This time I really understand the question of whether it's okay to
-directly access parent_obj/parent_class. :-)
+This is the probe/preinit iterator, might be good to keep it simple to only
+make the decision of choosing one accel, then move this line over to
+configure_accelerators() at the end.
 
-> If you're not in the implementation of that class, then you shouldn't
-> really be directly touching any of the fields in the state struct.
-> (In some places we take a shortcut and do it. But really it's almost
-> never necessary.)
+>      acs->accel = accel;
+>      return 1;
+>  
+> @@ -3728,29 +3729,14 @@ void qemu_init(int argc, char **argv)
+>      parse_memory_options();
+>  
+>      qemu_create_machine(machine_opts_dict);
+> -
+> -    suspend_mux_open();
+> -
+> -    qemu_disable_default_devices();
+> -    qemu_setup_display();
+> -    qemu_create_default_devices();
+> -    qemu_create_early_backends();
+> -
+>      qemu_apply_legacy_machine_options(machine_opts_dict);
+>      qemu_apply_machine_options(machine_opts_dict);
+>      qobject_unref(machine_opts_dict);
+> -    phase_advance(PHASE_MACHINE_CREATED);
+>  
+> -    /*
+> -     * Note: uses machine properties such as kernel-irqchip, must run
+> -     * after qemu_apply_machine_options.
+> -     */
+>      accel = configure_accelerators(argv[0]);
+> -    create_accelerator(accel);
+> -    phase_advance(PHASE_ACCEL_CREATED);
+>  
+>      /*
+> -     * Beware, QOM objects created before this point miss global and
+> +     * QOM objects created after this point see all global and
+>       * compat properties.
+>       *
+>       * Global properties get set up by qdev_prop_register_global(),
+> @@ -3765,6 +3751,22 @@ void qemu_init(int argc, char **argv)
+>       * called from do_configure_accelerator().
+>       */
+>  
+> +    suspend_mux_open();
+> +
+> +    qemu_disable_default_devices();
+> +    qemu_setup_display();
+> +    qemu_create_default_devices();
+> +    qemu_create_early_backends();
+> +
+> +    phase_advance(PHASE_MACHINE_CREATED);
+> +
+> +    /*
+> +     * Note: uses machine properties such as kernel-irqchip, must run
+> +     * after qemu_apply_machine_options.
+> +     */
+> +    create_accelerator(accel);
+> +    phase_advance(PHASE_ACCEL_CREATED);
+> +
+>      machine_class = MACHINE_GET_CLASS(current_machine);
+>      if (!qtest_enabled() && machine_class->deprecation_reason) {
+>          warn_report("Machine type '%s' is deprecated: %s",
+> -- 
+> 1.8.3.1
+> 
 
-Thank you for your further explanation! I hadn¡¯t noticed that. So, for
-other code (code outside the class/object implementation) to access the
-fields other than parent_obj/parent_class of class/state struct, the
-most ideal way would be to use the set/get property interfaces as
-much as possible instead of accessing them directly, right?
-
-Regards,
-Zhao
+-- 
+Peter Xu
 
 
