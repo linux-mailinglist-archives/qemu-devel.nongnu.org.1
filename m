@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE849A6FC6
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0EE9A6FB9
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 18:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2vP1-0006oT-CB; Mon, 21 Oct 2024 12:37:07 -0400
+	id 1t2vP4-0006yC-0F; Mon, 21 Oct 2024 12:37:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vOC-00065s-2G
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t2vOD-00067m-VV
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2vO6-0006Ji-Si
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:14 -0400
+ id 1t2vO9-0006Jx-Li
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 12:36:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729528569;
+ s=mimecast20190719; t=1729528572;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q404IxZFk+NIfcxl+Tcr9XRM6bnBKtIpSop9l9a12Xk=;
- b=ictC8xMQGsEzxlhMG1jC3ioeGnlkUHdZXNr2x4/PpjPnxjdYxUORHKsUNkS7QDdsbCLJYY
- p9RtfwRBNpBni/6solWaxcQA7oCEPHeluKm5QU9peEmJS3nJF401oJnJDKh5ACuQg1l47I
- hjgOjWEG57rPsVxuRoppnjHDpG/xNZM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kvb89qSp/JxmYfOj6SZi8Bx0KqHl+LVpfSQJUogsuq4=;
+ b=UxvnHXxUvAngz3NM7pQsn7W1Gpx3F0T690YPCi24AOnJk+w6Xe1xefvLMLRwMd+ujX6MNQ
+ qFL6eVRzFZh+y7Nf4ixodcsYlZbo6iDQSWn7PXBlW7Nf8cmvyz4D5u4VhyOz8E7LHEw4Cr
+ t+Og0WGDuaGzGvF0i/QQHJpFU34/aTc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-xAyz1ud0OsWaj2LXtjagRw-1; Mon, 21 Oct 2024 12:36:08 -0400
-X-MC-Unique: xAyz1ud0OsWaj2LXtjagRw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4315f48bd70so28269635e9.2
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:36:08 -0700 (PDT)
+ us-mta-385-IsaXhJRgMfC9XKIlxMzokA-1; Mon, 21 Oct 2024 12:36:11 -0400
+X-MC-Unique: IsaXhJRgMfC9XKIlxMzokA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4315544642eso37410185e9.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 09:36:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729528566; x=1730133366;
+ d=1e100.net; s=20230601; t=1729528569; x=1730133369;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q404IxZFk+NIfcxl+Tcr9XRM6bnBKtIpSop9l9a12Xk=;
- b=lcVgPOvrthamK7UnWGUQ4pn/A2TawrX4PpzUAspijK6wfrOISysleLY1jI27W5Os8p
- z70flVfJsTAAZXx789KhnZAj6sXxg0hRghGFoDnsqHwtpiFHydhgMa5RYqdJZhzBsQbV
- 1/5lmYq4xpBm+ELusc+i1Q0gb8JKTIYqWBm5XFMPzbmSVi7ty/5FyZSziaWlt9sMz/3U
- gt1Jlhoaa+5OCERhTE63eHwI6DRta34rCjQ7j/Y0C1ZuziN57VMvlYdkNjba4FY72aVO
- Qsa9Iex19sTgceURlh9LQz7vP0fDu5QpJ7Sjp3CQMZprx0FfsD34s+sCEyAq6AdMT67v
- O8Zg==
-X-Gm-Message-State: AOJu0YyavooiB/pSlnHLAIfQwtuY+LLrqHsyePz5cz5I087gwYzdZdFV
- J0lU3UWelfNMBpGPTyffCiKxAnPqBb+alaPJPLu+SCHCqDcHLHaLjJ4LbUZa22KEg14VzleNB2C
- yGs9uo6vn4edzIWwJJcZS6+pibDAM2+4CqSDHQRiTnuN0NIesm6wSFisMx6aMJ26WDTl28Lbl5I
- Sgjkc1CJEOvlHIhIu8do6KYBSns4EDrIdxX1uh1rw=
-X-Received: by 2002:a05:600c:19d2:b0:431:3c67:fb86 with SMTP id
- 5b1f17b1804b1-431616a404dmr88541325e9.33.1729528566373; 
- Mon, 21 Oct 2024 09:36:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHecvCZ1N1dVcHdMc7UcS3N7JC2ht0pL/nBidv/7JzOv05qnQEXa6OPB3xkVzspDNQhi6fJOQ==
-X-Received: by 2002:a05:600c:19d2:b0:431:3c67:fb86 with SMTP id
- 5b1f17b1804b1-431616a404dmr88541095e9.33.1729528565907; 
- Mon, 21 Oct 2024 09:36:05 -0700 (PDT)
+ bh=kvb89qSp/JxmYfOj6SZi8Bx0KqHl+LVpfSQJUogsuq4=;
+ b=mVVkyBcrkE5nJEKV9PTTZGMDk4VTCFpShtfdtWt0G+iqWE0FyfolbCOwaZgUBIRsvK
+ MBj6RVSHHnQUM8b/wFzOSjndi2/68AQSyDtziSv6QfXFgtBDjQekGnc/W5EpSX0zRKMl
+ V6VGz6kGu/FwNfLrIm+aH/Z8Niu4DRyLsilkQZWOxURavFIeJmTRBXOQHIox/FWn8dLH
+ q16fetw8Kr+/KTQRbC1XmbYutjAnjzd4XcQcvatOtdkEjHiSSm0VpirhEN1uF+sks5V2
+ znY+XDgpv/m54VKDWOq3WEGE19xcEdYoePGDjvLPjuheLreOfZLpi3lBulV+pOuslaNp
+ Xoog==
+X-Gm-Message-State: AOJu0Yz/5yvw+LNTA6PiFRiDUlQHGckZtWxFzQ/wOAY2xJiw3rUSmTQ9
+ aX/BhO+4S/NeGzPHwapwWBa6iZ+0THHXInTwgID5kuXjSAMmqRDdQY5u0RouE3WWiWJMK/UILB0
+ Vo/KUP/szWzK4N92DAyRBuYj4MQHPq8Gd6H+lYzJwk9wSQCNyOefwFMga89p65FOKPt6YkGJheO
+ yQX9ziN4/KIuxnCbZIn9oszFkOulu7WgqJiEyIgd4=
+X-Received: by 2002:a05:600c:1d01:b0:42c:b74c:d8c3 with SMTP id
+ 5b1f17b1804b1-4316168ff01mr99496365e9.32.1729528569240; 
+ Mon, 21 Oct 2024 09:36:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoo2DZlzYa5tO9scq9rSbVdszZ2ED+SvdnMr+4+YYOsddyVtq1HlTczBGmh8mLjTphc1v7jg==
+X-Received: by 2002:a05:600c:1d01:b0:42c:b74c:d8c3 with SMTP id
+ 5b1f17b1804b1-4316168ff01mr99496045e9.32.1729528568746; 
+ Mon, 21 Oct 2024 09:36:08 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f57102asm62047065e9.1.2024.10.21.09.36.05
+ 5b1f17b1804b1-4316f57fa4fsm62774405e9.16.2024.10.21.09.36.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 09:36:05 -0700 (PDT)
+ Mon, 21 Oct 2024 09:36:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 07/13] rust: build integration test for the qemu_api crate
-Date: Mon, 21 Oct 2024 18:35:32 +0200
-Message-ID: <20241021163538.136941-8-pbonzini@redhat.com>
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: [PATCH v2 08/13] rust: cleanup module_init!,
+ use it from #[derive(Object)]
+Date: Mon, 21 Oct 2024 18:35:33 +0200
+Message-ID: <20241021163538.136941-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241021163538.136941-1-pbonzini@redhat.com>
 References: <20241021163538.136941-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,237 +102,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adjust the integration test to compile with a subset of QEMU object
-files, and make it actually create an object of the class it defines.
+Remove the duplicate code by using the module_init! macro; at the same time,
+simplify how module_init! is used, by taking inspiration from the implementation
+of #[derive(Object)].
 
-Follow the Rust filesystem conventions, where tests go in tests/ if
-they use the library in the same way any other code would.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                  | 10 ++++-
- rust/qemu-api/meson.build    | 26 ++++++++++--
- rust/qemu-api/src/lib.rs     |  3 --
- rust/qemu-api/src/tests.rs   | 49 ----------------------
- rust/qemu-api/tests/tests.rs | 78 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 110 insertions(+), 56 deletions(-)
- delete mode 100644 rust/qemu-api/src/tests.rs
- create mode 100644 rust/qemu-api/tests/tests.rs
+ rust/qemu-api-macros/src/lib.rs  | 33 +++-------------
+ rust/qemu-api/src/definitions.rs | 66 ++++++++++++++------------------
+ 2 files changed, 33 insertions(+), 66 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 6739165908e..3c71d129494 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3326,7 +3326,15 @@ if have_rust and have_system
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index 70e3f920460..a4bc5d01ee8 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -3,43 +3,20 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-   # Prohibit code that is forbidden in Rust 2024
-   rustc_args += ['-D', 'unsafe_op_in_unsafe_fn']
--  add_project_arguments(rustc_args, native: false, language: 'rust')
-+
-+  # Apart from procedural macros, our Rust executables will often link
-+  # with C code, so include all the libraries that C code needs.  This
-+  # is safe; https://github.com/rust-lang/rust/pull/54675 says that
-+  # passing -nodefaultlibs to the linker "was more ideological to
-+  # start with than anything".
-+  add_project_arguments(rustc_args + ['-C', 'default-linker-libraries'],
-+      native: false, language: 'rust')
-+
-   add_project_arguments(rustc_args, native: true, language: 'rust')
- endif
+ use proc_macro::TokenStream;
+-use quote::{format_ident, quote};
++use quote::quote;
+ use syn::{parse_macro_input, DeriveInput};
  
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 42ea815fa5a..1fc36078027 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -14,11 +14,31 @@ _qemu_api_rs = static_library(
-     '--cfg', 'MESON',
-     # '--cfg', 'feature="allocator"',
-   ],
--  dependencies: [
--    qemu_api_macros,
--  ],
- )
+ #[proc_macro_derive(Object)]
+ pub fn derive_object(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+-
+     let name = input.ident;
+-    let module_static = format_ident!("__{}_LOAD_MODULE", name);
  
- qemu_api = declare_dependency(
-   link_with: _qemu_api_rs,
-+  dependencies: qemu_api_macros,
- )
-+
-+# Rust executables do not support objects, so add an intermediate step.
-+rust_qemu_api_objs = static_library(
-+    'rust_qemu_api_objs',
-+    objects: [libqom.extract_all_objects(recursive: false),
-+              libhwcore.extract_all_objects(recursive: false)])
-+
-+test('rust-qemu-api-integration',
-+    executable(
-+        'rust-qemu-api-integration',
-+        'tests/tests.rs',
-+        override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+        rust_args: ['--test'],
-+        install: false,
-+        dependencies: [qemu_api, qemu_api_macros],
-+        link_whole: [rust_qemu_api_objs, libqemuutil]),
-+    args: [
-+        '--test',
-+        '--format', 'pretty',
-+    ],
-+    protocol: 'rust',
-+    suite: ['unit', 'rust'])
-diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-index e72fb4b4bb1..6bc68076aae 100644
---- a/rust/qemu-api/src/lib.rs
-+++ b/rust/qemu-api/src/lib.rs
-@@ -30,9 +30,6 @@ unsafe impl Sync for bindings::VMStateDescription {}
- pub mod definitions;
- pub mod device_class;
+     let expanded = quote! {
+-        #[allow(non_upper_case_globals)]
+-        #[used]
+-        #[cfg_attr(
+-            not(any(target_vendor = "apple", target_os = "windows")),
+-            link_section = ".init_array"
+-        )]
+-        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
+-        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+-        pub static #module_static: extern "C" fn() = {
+-            extern "C" fn __register() {
+-                unsafe {
+-                    ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::definitions::ObjectImpl>::TYPE_INFO);
+-                }
++        ::qemu_api::module_init! {
++            MODULE_INIT_QOM => unsafe {
++                ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::definitions::ObjectImpl>::TYPE_INFO);
+             }
+-
+-            extern "C" fn __load() {
+-                unsafe {
+-                    ::qemu_api::bindings::register_module_init(
+-                        Some(__register),
+-                        ::qemu_api::bindings::module_init_type::MODULE_INIT_QOM
+-                    );
+-                }
+-            }
+-
+-            __load
+-        };
++        }
+     };
  
--#[cfg(test)]
--mod tests;
--
- use std::alloc::{GlobalAlloc, Layout};
+     TokenStream::from(expanded)
+diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
+index 3323a665d92..f180c38bfb2 100644
+--- a/rust/qemu-api/src/definitions.rs
++++ b/rust/qemu-api/src/definitions.rs
+@@ -29,51 +29,40 @@ pub trait Class {
  
- #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
-diff --git a/rust/qemu-api/src/tests.rs b/rust/qemu-api/src/tests.rs
-deleted file mode 100644
-index df54edbd4e2..00000000000
---- a/rust/qemu-api/src/tests.rs
-+++ /dev/null
-@@ -1,49 +0,0 @@
--// Copyright 2024, Linaro Limited
--// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
--// SPDX-License-Identifier: GPL-2.0-or-later
+ #[macro_export]
+ macro_rules! module_init {
+-    ($func:expr, $type:expr) => {
+-        #[used]
+-        #[cfg_attr(
+-            not(any(target_vendor = "apple", target_os = "windows")),
+-            link_section = ".init_array"
+-        )]
+-        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
+-        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+-        pub static LOAD_MODULE: extern "C" fn() = {
+-            extern "C" fn __load() {
+-                unsafe {
+-                    $crate::bindings::register_module_init(Some($func), $type);
+-                }
+-            }
 -
--use crate::{
--    bindings::*, declare_properties, define_property, device_class_init, vm_state_description,
--};
--
--#[test]
--fn test_device_decl_macros() {
--    // Test that macros can compile.
--    vm_state_description! {
--        VMSTATE,
--        name: c"name",
--        unmigratable: true,
--    }
--
--    #[repr(C)]
--    pub struct DummyState {
--        pub char_backend: CharBackend,
--        pub migrate_clock: bool,
--    }
--
--    declare_properties! {
--        DUMMY_PROPERTIES,
--            define_property!(
--                c"chardev",
--                DummyState,
--                char_backend,
--                unsafe { &qdev_prop_chr },
--                CharBackend
--            ),
--            define_property!(
--                c"migrate-clk",
--                DummyState,
--                migrate_clock,
--                unsafe { &qdev_prop_bool },
--                bool
--            ),
--    }
--
--    device_class_init! {
--        dummy_class_init,
--        props => DUMMY_PROPERTIES,
--        realize_fn => None,
--        reset_fn => None,
--        vmsd => VMSTATE,
--    }
--}
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-new file mode 100644
-index 00000000000..aa1e0568c69
---- /dev/null
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -0,0 +1,78 @@
-+// Copyright 2024, Linaro Limited
-+// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+// SPDX-License-Identifier: GPL-2.0-or-later
+-            __load
+-        };
+-    };
+-    (qom: $func:ident => $body:block) => {
+-        // NOTE: To have custom identifiers for the ctor func we need to either supply
+-        // them directly as a macro argument or create them with a proc macro.
+-        #[used]
+-        #[cfg_attr(
+-            not(any(target_vendor = "apple", target_os = "windows")),
+-            link_section = ".init_array"
+-        )]
+-        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
+-        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+-        pub static LOAD_MODULE: extern "C" fn() = {
+-            extern "C" fn __load() {
+-                unsafe extern "C" fn $func() {
++    ($type:ident => $body:block) => {
++        const _: () = {
++            #[used]
++            #[cfg_attr(
++                not(any(target_vendor = "apple", target_os = "windows")),
++                link_section = ".init_array"
++            )]
++            #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
++            #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
++            pub static LOAD_MODULE: extern "C" fn() = {
++                extern "C" fn init_fn() {
+                     $body
+                 }
+ 
+-                unsafe {
+-                    $crate::bindings::register_module_init(
+-                        Some($func),
+-                        $crate::bindings::module_init_type::MODULE_INIT_QOM,
+-                    );
++                extern "C" fn ctor_fn() {
++                    unsafe {
++                        $crate::bindings::register_module_init(
++                            Some(init_fn),
++                            $crate::bindings::module_init_type::$type,
++                        );
++                    }
+                 }
+-            }
+ 
+-            __load
++                ctor_fn
++            };
+         };
+     };
 +
-+use core::ffi::CStr;
-+
-+use qemu_api::{
-+    bindings::*,
-+    declare_properties, define_property,
-+    definitions::{Class, ObjectImpl},
-+    device_class_init, vm_state_description,
-+};
-+
-+#[test]
-+fn test_device_decl_macros() {
-+    // Test that macros can compile.
-+    vm_state_description! {
-+        VMSTATE,
-+        name: c"name",
-+        unmigratable: true,
-+    }
-+
-+    #[repr(C)]
-+    #[derive(qemu_api_macros::Object)]
-+    pub struct DummyState {
-+        pub _parent: DeviceState,
-+        pub migrate_clock: bool,
-+    }
-+
-+    #[repr(C)]
-+    pub struct DummyClass {
-+        pub _parent: DeviceClass,
-+    }
-+
-+    declare_properties! {
-+        DUMMY_PROPERTIES,
-+            define_property!(
-+                c"migrate-clk",
-+                DummyState,
-+                migrate_clock,
-+                unsafe { &qdev_prop_bool },
-+                bool
-+            ),
-+    }
-+
-+    device_class_init! {
-+        dummy_class_init,
-+        props => DUMMY_PROPERTIES,
-+        realize_fn => None,
-+        legacy_reset_fn => None,
-+        vmsd => VMSTATE,
-+    }
-+
-+    impl ObjectImpl for DummyState {
-+        type Class = DummyClass;
-+        const TYPE_INFO: qemu_api::bindings::TypeInfo = qemu_api::type_info! { Self };
-+        const TYPE_NAME: &'static CStr = c"dummy";
-+        const PARENT_TYPE_NAME: Option<&'static CStr> = Some(TYPE_DEVICE);
-+        const ABSTRACT: bool = false;
-+        const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-+        const INSTANCE_POST_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-+        const INSTANCE_FINALIZE: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-+    }
-+
-+    impl Class for DummyClass {
-+        const CLASS_INIT: Option<
-+            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi::c_void),
-+        > = Some(dummy_class_init);
-+        const CLASS_BASE_INIT: Option<
-+            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi::c_void),
-+        > = None;
-+    }
-+
-+    unsafe {
-+        module_call_init(module_init_type::MODULE_INIT_QOM);
-+        object_unref(object_new(DummyState::TYPE_NAME.as_ptr()) as *mut _);
-+    }
-+}
++    // shortcut because it's quite common that $body needs unsafe {}
++    ($type:ident => unsafe $body:block) => {
++        $crate::module_init! {
++            $type => { unsafe { $body } }
++        }
++    };
+ }
+ 
+ #[macro_export]
 -- 
 2.46.2
 
