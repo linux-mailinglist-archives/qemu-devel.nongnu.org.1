@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7555B9A66B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B000A9A66C5
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:39:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qhG-00028M-Mn; Mon, 21 Oct 2024 07:35:38 -0400
+	id 1t2qgy-00025h-FX; Mon, 21 Oct 2024 07:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgy-000266-MF
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgv-00025C-8J
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgt-0001Uu-1T
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t2qgs-0001Uq-9y
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:35:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729510514;
+ s=mimecast20190719; t=1729510513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2AW0JMFGDoiKZeDB3X89zNWa0sAywienipoUJUTxBUY=;
- b=UqlBBY0GK3Z5RaLDnZxVQ4+tQApI4ENJX5IDF7ND+88zbhKx2B4TDdyRAX4/eQLv40ijNI
- rC6dnsXoY9XxMkrLtn46IGOMuhRkPwDjyaMyIo4CdYqy14W9zLXeFxTieK7bkjXxnkqNrD
- vgj5Lvq53tNg6BgJBEBcVGhIK3jsKiY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=6c4zfgPK1uXbCp9TP3YFdnWGgDrkyRl4csOphvPzFG8=;
+ b=KJj4VF75mhIBBCg4qVO8fcL082tu8EU5QkQV6TgNvdUvpRyAS/4Lq4d35teVq08v73fnei
+ mahQkUDVrM+YtWJJYycEpSuoTfi2g89loGn9pBe+nLbe2ZxHRE61DIkgH0ds7d2+Xztt0a
+ Xz9BmRUom6YZl070EJImeSE1i3VP7qw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-S6ySwIVVMbGipxhQLkAgpw-1; Mon,
- 21 Oct 2024 07:35:08 -0400
-X-MC-Unique: S6ySwIVVMbGipxhQLkAgpw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-5CEe5B-DOQSTK3fjfoLHEQ-1; Mon,
+ 21 Oct 2024 07:35:10 -0400
+X-MC-Unique: 5CEe5B-DOQSTK3fjfoLHEQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6553419560B2; Mon, 21 Oct 2024 11:35:07 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2240519560BE; Mon, 21 Oct 2024 11:35:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.49])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 11C7319560AA; Mon, 21 Oct 2024 11:35:04 +0000 (UTC)
+ id 0922619560AA; Mon, 21 Oct 2024 11:35:07 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
-	Brad Smith <brad@comstyle.com>
-Subject: [PULL 01/21] tests/vm: update openbsd image to 7.6
-Date: Mon, 21 Oct 2024 13:34:38 +0200
-Message-ID: <20241021113500.122500-2-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 02/21] tests/qtest: Raise the ide-test timeout
+Date: Mon, 21 Oct 2024 13:34:39 +0200
+Message-ID: <20241021113500.122500-3-thuth@redhat.com>
 In-Reply-To: <20241021113500.122500-1-thuth@redhat.com>
 References: <20241021113500.122500-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,54 +78,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brad Smith <brad@comstyle.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Remove tomli as Python has been updated to 3.11.
+The ide-test occasionally times out: on the system I run
+vm-build-openbsd on, it usually takes about 18 seconds, but
+occasionally hits the 60s timeout, likely when the host machine is
+under heavy load.  I have also seen this test hit its time limit on
+the s390x CI runner.
 
-[thuth: The "Time appears wrong" line is now necessary since the server
- seems to provide a wrong timestamp. We likely have to remove that again
- later once the server is running with the correct time again]
+Double the timeout for this test so that it won't hit its timeout
+even when the host is running more slowly than usual.
 
-Signed-off-by: Brad Smith <brad@comstyle.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <ZwtmfVlWgFRF9G8W@humpty.home.comstyle.com>
+Message-ID: <20241015113705.239067-1-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/vm/openbsd | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/qtest/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 49cab08782..dfd11c93f0 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -22,8 +22,8 @@ class OpenBSDVM(basevm.BaseVM):
-     name = "openbsd"
-     arch = "x86_64"
- 
--    link = "https://cdn.openbsd.org/pub/OpenBSD/7.5/amd64/install75.iso"
--    csum = "034435c6e27405d5a7fafb058162943c194eb793dafdc412c08d49bb56b3892a"
-+    link = "https://cdn.openbsd.org/pub/OpenBSD/7.6/amd64/install76.iso"
-+    csum = "60cba8cb391b50bba8fa10fc768bd0529636f5345d82133c93e22c798d8e5269"
-     size = "20G"
-     pkgs = [
-         # tools
-@@ -32,7 +32,6 @@ class OpenBSDVM(basevm.BaseVM):
-         "pkgconf",
-         "bzip2", "xz",
-         "ninja",
--        "py3-tomli",
- 
-         # gnu tools
-         "bash",
-@@ -160,6 +159,7 @@ class OpenBSDVM(basevm.BaseVM):
- 
-         self.print_step("Installation started now, this will take a while")
-         self.console_wait_send("Location of sets",        "done\n")
-+        self.console_wait_send("Time appears wrong.  Set to", "\n")
- 
-         self.console_wait("successfully completed")
-         self.print_step("Installation finished, rebooting")
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index b207e38696..e8be8b3942 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -4,6 +4,7 @@ slow_qtests = {
+   'bios-tables-test' : 910,
+   'cdrom-test' : 610,
+   'device-introspect-test' : 720,
++  'ide-test' : 120,
+   'migration-test' : 480,
+   'npcm7xx_pwm-test': 300,
+   'npcm7xx_watchdog_timer-test': 120,
 -- 
 2.47.0
 
