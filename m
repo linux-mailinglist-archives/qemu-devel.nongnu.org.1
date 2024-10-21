@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014209A66D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CAF9A66B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:37:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qi8-0003Ga-OQ; Mon, 21 Oct 2024 07:36:32 -0400
+	id 1t2qiN-0003jF-Vb; Mon, 21 Oct 2024 07:36:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t2qhu-0003Bn-5p
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:36:18 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1t2qi9-0003Yc-Js
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:36:33 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t2qhs-0001nQ-CF
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:36:17 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5c9c28c1ecbso5539354a12.0
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 04:36:15 -0700 (PDT)
+ id 1t2qi7-0001oR-RG
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:36:33 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a9a5f555cfbso279485166b.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 04:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729510575; x=1730115375; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729510590; x=1730115390; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=uxtaWv6u/HvymZS8etCMb6RC5ms11Z/1DsPQMlxfEfs=;
- b=L5p8XRMAMDKtYSuwCGk0bH/2Rb6RHNiimCMKx5hF3W5G8Iz+0pUSkAmkW1WVv2lDsN
- gqN7VcdFAxHn5MbRwHF6i0Pr0H0sOuVl9vmV/2iXfK+4z6jR2uvuxETQ9/mLYheUCkEg
- QEfbERsRUTtfky3djMpNS/D3OzU6CmdQ9b96dsGUIS8E/kwwYX7PO4MfKF4V61Gb5CdA
- QWcTUXfmsNqw30fIalmMoBPLnuplF5/YdrsTfOsZmyy2cxcey34tDj9oo+tXnpMSq7MZ
- 2dr/zzcs+12WDa8v94OtosowU0osC5NL/p47Fq67nr8bVppbfEn+XSre16dybKeXrh9p
- qUNg==
+ bh=RZMi2QZw3dSVcCzfZWFWdEn5OvePpayXlO9Jj50M+zU=;
+ b=tj/Lg6mJ55i6tDWkCY89Rqt+uU97QMT2Hue02n4YSeT3vXaxXKhiq2rgSsFRYo1Bc8
+ hwT72kS47rUlNMcV+izfJKX9xQb29R1aT4qJDXd4ITkHgpWxk4lnNFQcFcBAwPt5qr44
+ flonwY00jlcuHXe2f35oMaAxjRqRw22+42JReJqo8eHQnqgY9ulfogEeM0M0OmpEpYqT
+ NwiTOuCUUM0Jq71sffbwJj7h58ffiVsm7vmQQBXyKu65p/JM4ecr8TKv/yJf1v/Otm/S
+ TxwtDQQNIfj0wvMdqKQnGNR2YeDyeKJ5oPUiBfi4LnWWqcAq9SDbH87/b13lI5PmrrjH
+ lAZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729510575; x=1730115375;
+ d=1e100.net; s=20230601; t=1729510590; x=1730115390;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uxtaWv6u/HvymZS8etCMb6RC5ms11Z/1DsPQMlxfEfs=;
- b=WG9c71pTepRdKwjJzp9WJNS7EyHGPtPMJqmRHsjdxh7zZnThrOXlUgnpSs/nDALVi7
- XvEyBpM7PHSC48Cv5kpRHAqoFCxE7mgvLNIVULaf1zwoeUANcsOVR2YN0fP9xqc4PeYW
- IbF8ay/4YMQ6g1FgwgSgUvtkBHmFT0+C+moPCgSJ61pgy7mXhF2q+VWHu7XjrxxUP1b0
- Wgky03NBQgDZ68aBcaTpps2Cx69J5gsc/dKvwqtfXKfB962YH5Qny5WLgY1Oq/DW/sGI
- XmdVmOaDh88DyNa5EDpqz4pEgMEVptAKoaerzV/fRqFACX/OV9rhVBezHvC9FXOJS4ca
- zfPg==
-X-Gm-Message-State: AOJu0YzVVXfDPdwGtR/9Kz0Fn6gcIKYua6rvOiY3+myoKvhcn7y0cVMv
- tZ7wN0xzMpXKgZjYrMxUPZoDhrhUjC9GBfeF9DldZQ8jlaPBcupA3okxeYDKz2YbNiAfliZ2pYc
- /iTwrXQIc4dMWnFnon2fPzLOr4YjaT1guY/xE8w==
-X-Google-Smtp-Source: AGHT+IEMDabWuEvyVInUFcJ93m5cRSBw2o7rz+UzgpFW3spHLGpBj/oBk/xoVFitoNDPU/izbHNL2jcYIE11tP+kOCI=
-X-Received: by 2002:a05:6402:26c1:b0:5c9:8ab0:2975 with SMTP id
- 4fb4d7f45d1cf-5ca0ac79006mr7035016a12.6.1729510574646; Mon, 21 Oct 2024
- 04:36:14 -0700 (PDT)
+ bh=RZMi2QZw3dSVcCzfZWFWdEn5OvePpayXlO9Jj50M+zU=;
+ b=rU1AzI78yWlX3svrEkyMToqs0ec/I+CP7gVAI3rkLqpo1qs2dDKLlWf12cUVgxvVG5
+ fyx+hKme1dQpUJMZLFn5YMdWa+CuIb93c1LdDEOgixB4Ju4odNqHTTJaRNaEudyPV4gi
+ u/HCfhMwE4cJhmn7UHq/42jQhzV7LQOtXPHYRRn97H7Bpynd7SQKeboJYEbTChA+rSPL
+ EpWTKgR4IbbjrtsTHZO4RdflWDW6rezC1A/yKKnNx68m1jXPlRTHH1oy5MPf42db308a
+ sqnriqFU0iqe4eh+aoU2UjFQ5a76MnTiT8YXdjC6smpxE6w34I1fNA4ciDjLY0qyRCsx
+ cJ5g==
+X-Gm-Message-State: AOJu0Yw+FZa5M+NF2TcAcOn1bxf72ncQk+wy3aEpYV2v4zvXd+hfp1eS
+ MLhALOBCTvFIYf9I9p40OvLtpKOCxxCmCzgRz/uE+VExFpWsSC+g7PNYQ6Kbx4HQdDG2/GJmdyd
+ dtazTmhHyq0duHen7mMDGDp4ZGQY84CZuedRRHw==
+X-Google-Smtp-Source: AGHT+IF90MWKJ6n1E/Wop70gcA3tMbWuQGLtjW2uk57qrth3Sm27hmsynCFURioIsRBpyr40vwynK9DcjTcQPsTWfaI=
+X-Received: by 2002:a05:6402:42d6:b0:5c9:137b:b81b with SMTP id
+ 4fb4d7f45d1cf-5ca0ae81126mr13589102a12.25.1729510589604; Mon, 21 Oct 2024
+ 04:36:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241018132824.3379780-1-armbru@redhat.com>
-In-Reply-To: <20241018132824.3379780-1-armbru@redhat.com>
+References: <20241018134004.2110276-1-stefanb@linux.ibm.com>
+In-Reply-To: <20241018134004.2110276-1-stefanb@linux.ibm.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 21 Oct 2024 12:36:03 +0100
-Message-ID: <CAFEAcA_FMqYZpPuK7HHX_su_CVb-9=DovB5D0nYdLysYGc7pdg@mail.gmail.com>
-Subject: Re: [PULL 0/9] Error reporting patches for 2024-10-18
-To: Markus Armbruster <armbru@redhat.com>
+Date: Mon, 21 Oct 2024 12:36:18 +0100
+Message-ID: <CAFEAcA9hOvT1zFGg5X0njTtkCKLHnCHV_BYqm-JwpKTCvARv-w@mail.gmail.com>
+Subject: Re: [PULL v1 0/3] Merge tpm 2024/10/18 v1
+To: Stefan Berger <stefanb@linux.ibm.com>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,7 +85,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 18 Oct 2024 at 14:28, Markus Armbruster <armbru@redhat.com> wrote:
+On Fri, 18 Oct 2024 at 14:40, Stefan Berger <stefanb@linux.ibm.com> wrote:
+>
+> Hello!
+>
+>   This PR fixes an issue with a TPM test case under heavy system load and
+> improves control channel error message handling.
+>
+>    Stefan
 >
 > The following changes since commit 95a16ee753d6da651fce8df876333bf7fcf134d9:
 >
@@ -93,14 +100,11 @@ On Fri, 18 Oct 2024 at 14:28, Markus Armbruster <armbru@redhat.com> wrote:
 >
 > are available in the Git repository at:
 >
->   https://repo.or.cz/qemu/armbru.git tags/pull-error-2024-10-18
+>   https://github.com/stefanberger/qemu-tpm.git tags/pull-tpm-2024-10-18-1
 >
-> for you to fetch changes up to 1824e9fc646c68e42e3f823b208382563ce5dc83:
+> for you to fetch changes up to d9280ea3174700170d39c4cdd3f587f260757711:
 >
->   qerror: QERR_PROPERTY_VALUE_OUT_OF_RANGE is no longer used, drop (2024-10-18 15:03:35 +0200)
->
-> ----------------------------------------------------------------
-> Error reporting patches for 2024-10-18
+>   tests: Wait for migration completion on destination QEMU to avoid failures (2024-10-18 07:58:04 -0400)
 >
 
 
