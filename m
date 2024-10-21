@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D309A6A55
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 15:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E359A6A53
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 15:30:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2sTG-0006AD-7U; Mon, 21 Oct 2024 09:29:18 -0400
+	id 1t2sTP-0006BK-DR; Mon, 21 Oct 2024 09:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTB-00069q-2Y
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:13 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTC-00069z-8O
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sT3-0000et-Ao
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:07 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t2sTA-0000gt-Rg
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 09:29:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729517344;
+ s=mimecast20190719; t=1729517350;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KgdZ+HD0518zqi0YLO1K0m739vSttIHyUWJfEt1DIKY=;
- b=I4+/9zbeUAJvNd6sDTRayk0/t7s7ZCXFHPOkgqNxP0jRtKraYDOSxC6aXPyTAnuNOULhlh
- aWHHQrMqLYaJ3iJ5QpQUe35lHqpX51qiS1OfvCURqAdvDPonRSROT7LZJgzL2+wIE0lk+r
- 1+Kwl9RGRFfmvEWnkZz+HKhPHYkkZRc=
+ bh=En4E4bV6p0hB9ksV+UIpl4B2QQPRkJ/JelXvBFQNfuk=;
+ b=OTioEiuLNQ40J0NbOVV6umuPK4I2zGkcuZNZvH3ikwiWuLaX0k9RmbYR/iL/Z4l6HU53an
+ GjTACqVF61P6/rEB1eOxdOd6EnuJwt88H+ypBhug90G8/pcOedWl8f+9IZiyUeCS+dyJx+
+ C+8u/VxOvwlD6Pl3h5yu54DZ/Ar5buE=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-413-ibJAYMk2OeumM23Hru9Jsw-1; Mon,
- 21 Oct 2024 09:29:01 -0400
-X-MC-Unique: ibJAYMk2OeumM23Hru9Jsw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-o4phB6ZmNM6ewClXsl0ZXQ-1; Mon,
+ 21 Oct 2024 09:29:06 -0400
+X-MC-Unique: o4phB6ZmNM6ewClXsl0ZXQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7D1891955D61; Mon, 21 Oct 2024 13:29:00 +0000 (UTC)
+ id 079781955EA9; Mon, 21 Oct 2024 13:29:05 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.72.116.80])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CF41F19560AA; Mon, 21 Oct 2024 13:28:56 +0000 (UTC)
+ id 5885319560AA; Mon, 21 Oct 2024 13:29:00 +0000 (UTC)
 From: Dehan Meng <demeng@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
  peter.maydell@linaro.org, berrange@redhat.com
-Subject: [PATCH v2 2/4] Proper initialization of n to 0 for getline to
- function correctly.
-Date: Mon, 21 Oct 2024 21:28:32 +0800
-Message-Id: <20241021132839.463255-3-demeng@redhat.com>
+Subject: [PATCH v2 3/4] Avoiding freeing line prematurely. It's now only freed
+ at the end of the function.
+Date: Mon, 21 Oct 2024 21:28:33 +0800
+Message-Id: <20241021132839.463255-4-demeng@redhat.com>
 In-Reply-To: <20241021132839.463255-1-demeng@redhat.com>
 References: <20241021132839.463255-1-demeng@redhat.com>
 MIME-Version: 1.0
@@ -82,22 +82,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Dehan Meng <demeng@redhat.com>
 ---
- qga/commands-linux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qga/commands-linux.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 2c2b5f4ff2..b905f33a57 100644
+index b905f33a57..4f0e38be81 100644
 --- a/qga/commands-linux.c
 +++ b/qga/commands-linux.c
-@@ -2126,7 +2126,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-     GuestNetworkRouteList *head = NULL, **tail = &head;
-     const char *routeFiles[] = {"/proc/net/route", "/proc/net/ipv6_route"};
-     FILE *fp;
--    size_t n;
-+    size_t n = 0;
-     char *line = NULL;
-     int firstLine;
-     int is_ipv6;
+@@ -2137,8 +2137,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+         is_ipv6 = (i == 1);
+         fp = fopen(routeFiles[i], "r");
+         if (fp == NULL) {
+-            error_setg_errno(errp, errno, "open(\"%s\")", routeFiles[i]);
+-            free(line);
++            error_setg_errno(errp, errno, "open(\"%s\")", route_files[i]);
+             continue;
+         }
+ 
+@@ -2218,9 +2217,8 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+             QAPI_LIST_APPEND(tail, route);
+         }
+ 
+-        free(line);
+         fclose(fp);
+     }
+-
++    free(line);
+     return head;
+ }
 -- 
 2.40.1
 
