@@ -2,87 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC1D9A66E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 824C99A66F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 13:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2qpF-000104-OU; Mon, 21 Oct 2024 07:43:53 -0400
+	id 1t2qsb-0002KP-Jd; Mon, 21 Oct 2024 07:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2qp9-0000vJ-Tr
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:43:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t2qsY-0002K7-Tg
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:47:19 -0400
+Received: from mail-sy4aus01olkn20831.outbound.protection.outlook.com
+ ([2a01:111:f403:2819::831]
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t2qp7-0002RJ-Mb
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:43:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729511025;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tvbTdqaEaf4wXZnu3ff1Qc4CfxzGOCroOxwxcythHLo=;
- b=jWZjVIREEkxDMJzPBDGWoJkbGPn3rAFwKzdQYvpDgug8+Gpw+uSaFpt70KUt6wULxQHlOz
- FGOVH+VIBKkm84tf++pzcP/f2UUStGiWTUcw4nnwhVXFCwSE8l2YnQhSq+9Wm/CJZv8g/5
- YwmJnhkNFCzTsWa28GZaKx4e/MKFvSU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-RbeVYON1NZ6uj6V9nG1LkQ-1; Mon, 21 Oct 2024 07:43:41 -0400
-X-MC-Unique: RbeVYON1NZ6uj6V9nG1LkQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43159603c92so30636585e9.2
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 04:43:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729511020; x=1730115820;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tvbTdqaEaf4wXZnu3ff1Qc4CfxzGOCroOxwxcythHLo=;
- b=ZItXhRMY5EVNu98ZcEOjjU6V4rz32u6HAIR00w3U/Z+AZ8109hR2EB2C9cQKCXv682
- DDITWPL+zm2brv0A0ZB3WmGYm7tlLmkYlHxiCQrNieF2KNqlWUPgbiUvfCl+VGboA0Y6
- jjn4SwgXO/6VyZjzJqVGq6HTiGO3iy7eziDFKtx1yGBDgP9592/y/YAUwvP2cEbT2L3E
- 5k96SJ6xTFAQcceYZi6iqa/1qr5D2EtNNgZeksPDVszCEfstOpu2TqvNtA3waOegjPur
- RnE3PVzQhWqEa0gz3cESTgs/LPkAo0GRWBQpVC9lRRYvuWIRz1/vTRPg8uzmCBVFZKBK
- JyRA==
-X-Gm-Message-State: AOJu0YyZh4J+twxtfbMwMDJIKwQvFP35dPITmuhVtX9hA7ExKcQPo/m1
- q8hw6IXyBiKMu+CZthLGDCtJ6mnI4GHBpibRtWHlvo9nFHlS7o9qL1PSOtCPWq+QFwkZsAXBX46
- uAqmURjCJjki5/V6I7IVat71jcyEQkbyYV8fw6+v3SXpLnJHfzoLE1YQUhQu0eKAO9IAPYSHscw
- L1hHPNsTtQMLn9kyGM600vwepd5uA=
-X-Received: by 2002:a05:600c:4fd4:b0:431:5533:8f0c with SMTP id
- 5b1f17b1804b1-431616ad341mr88933465e9.29.1729511020400; 
- Mon, 21 Oct 2024 04:43:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyu/Vx7m7UiGxR4PA7vRoWq4jKJPvHlSpkXesB3kPvcmyzqZaNzJ2rU87emEiUSojHPWdeCBmKV7ojR9PiyGg=
-X-Received: by 2002:a05:600c:4fd4:b0:431:5533:8f0c with SMTP id
- 5b1f17b1804b1-431616ad341mr88933305e9.29.1729511020055; Mon, 21 Oct 2024
- 04:43:40 -0700 (PDT)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t2qsX-0002kB-9q
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 07:47:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g08qbOtW1Hby4PeKjbw7D+5kngIOX57GaewHKX6Jds0pPZckR6rIb/zGXkDeGi7/ybnfM/y2oh9ztdMFzZbiZAKOzRGbcd63o95WJ5sl+woUxjbSSP4NW6h1EKcWQOl8tueW27HFj0NoGo8RQlze8I10AhcTvYPvMR2h6pMNUlEKEMmBV3/KZIMExDoAHGZSM7Aveo4jVdJHHE16SVnw2AMesPtmFMlHb2DfVxImhpL6JDmvCJjvB4QBYOgCQZTFUxHUH1aPhmLiFneK+ejEzX8RokhyCrPB6o+10X6HrMGZszQDaG8cI8HOfEKtwam/3cD6/I7HR9EQ8X9sRHOosw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WtcYVmdQDbP5fMEXh02VRN1A3cNY81gOv8M+el4Gggs=;
+ b=B+et5Au/ldbylGK85pl4KW3CjQqMx3pFh3Hx9iaq4Oscy4Snim71xi033W4zn/yCViUYnd3yK9/hHW/ll8YM4bM43TzW2JV/jbzmO9WChUrTWrZW5mK/9frNevO6TINHIVyNUp6EGLSyOaWQEIEu+7PLxYSUDg7C60BngFLc1GU/8Kr6BlSnUh3TGGJKkcupQT37eVlp8HmxiVYCriryThEZmTyfrMmPnOxy1Wzcmfdxw2nDSqK0Te5O6Nrrd8q27IKAmBkmyzc+6qlw1+A6ceuZylqgnaX181cJjdJflAf23x9FMyJ5TsHsT/SU9qqTP6AW8lCmAIKY/7mUZEE0mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WtcYVmdQDbP5fMEXh02VRN1A3cNY81gOv8M+el4Gggs=;
+ b=IGQLOZStMflZufvNTN049u8nahjfNZMCarvRtvwQCB2IiYT466UoWHrf+Y+bf891G6N6Mp6B085E4Nd+DFyab4H6C40kZZ/NpB0A9lhW9JfURXbzp7EuqADh16BetypO4W5Q+9baPyf0Q5QwsS7icCnv5JflRgYsL4IOCXAEdn6ZhN969JLOdrfag+0e/m6Mn9FQpFoC3+TiF4hvojRvpmDxphrbxlSEZeB6D+Txq0J4MMVzAWv6uWEeNgcABTRMkka8eYvG997Viq2tAj+jrsToe/z5sdyI54tYTdp0ZoLPT8zAyY1OdsLWHfAK8PfjumLrATgSsJO4M9Hz9SsQMA==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY8P300MB0171.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:263::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Mon, 21 Oct
+ 2024 11:47:11 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8069.027; Mon, 21 Oct 2024
+ 11:47:11 +0000
 References: <20241018144306.954716-1-pbonzini@redhat.com>
- <20241018144306.954716-9-pbonzini@redhat.com>
- <SY0P300MB10265D6A0FEDF3DE07F2220395432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-In-Reply-To: <SY0P300MB10265D6A0FEDF3DE07F2220395432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 21 Oct 2024 13:43:27 +0200
-Message-ID: <CABgObfbUWFf_Mr+PR5_TZ0A6n29sZwdJ3umJFdTHgPHiVZrU4Q@mail.gmail.com>
-Subject: Re: [PATCH 08/13] rust: build integration test for the qemu_api crate
-To: Junjie Mao <junjie.mao@hotmail.com>
-Cc: qemu-devel@nongnu.org, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+ <20241018144306.954716-13-pbonzini@redhat.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH 12/13] rust: provide safe wrapper for MaybeUninit::zeroed()
+Date: Mon, 21 Oct 2024 19:46:04 +0800
+In-reply-to: <20241018144306.954716-13-pbonzini@redhat.com>
+Message-ID: <SY0P300MB1026366BDEC5CD6196BCC88E95432@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0071.apcprd02.prod.outlook.com
+ (2603:1096:4:54::35) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <878quhsmo9.fsf@hotmail.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY8P300MB0171:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68d95bbf-a365-4cba-2b48-08dcf1c619b1
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199028|15080799006|7092599003|5072599009|8060799006|19110799003|440099028|3412199025;
+X-Microsoft-Antispam-Message-Info: hHxenJ5DPRa6rY/GH2wOrIqEHVY+c/iPElThwdGppsp585t+cPou+r3TFWdWsOpOoDc09AblMDKmEf9ISiI/vC5mDm1bPMD/LgM3GYVO5/aONkNYadPpd4wdB0lnd69vDPX/yNIGvcw+AQ1Z0YW4k/GFIfq5XT3A7KhqVh+bLZDADqJkSraoLbC8yS6dMIdgBkRPuZC/aK9qWu+8gKtDTKKVv6vUBX4PT1QIjwIblVIhQDjmxfFXHmKZGLN9CY2y6ek+rDUFF3AP49XheFyB8z4qr+ek+B9CqAODuZu6UtEzL0jybMWAceo29pCXspm3xl/HGf92WkMGsa+gIRviLxKYM0L9BxAy8QqtJO6Cjwg5z6gLNJ2Gon2bnyIxi3mn9IaaZMJDfLJbvqKSiva3iVPMyh4iRfAEnIEdEWn+8kfK1pxBBhsMTo77gA/l7YkGYZJ0ugr9qiSBm8iHgj0H5qIk8rvVD58sehNoh2s5GOLlfbciAwFIGcxNj4nWacn4JaSL38Qla/6v+ddiRVLu8mH1MjRmKtkmRsFimsFysUWzEwaQy6CNGFpVm8SBZx14iuj47ekB6RlWMRsxz0A0PbhY6RZQtcVVuVvr5OpH6IzNh83Q9yoo6ODmTDvURSQyexUqVXga2ISzTA+H2KRyxwhFKNCqbUebOSWM39XF6YglSUhYvc34oZteGH+KQ49RP3L2fskYgQRRmeAwQgYzZQEHGy2hBqPypZlQiNOwcsg=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XPiKyswg2xtMNbJHfO7+5rEA88CFv6+ufS1NxxeXNbP06wuZ3+WfrYtCnOuG?=
+ =?us-ascii?Q?WJfRX+09+wWJqk8jLYfgxgSyUgFD5VjuFzKVxXpIVM+m6RYxqFYmMtVT0LlX?=
+ =?us-ascii?Q?mw5/Ti/9+61J5rWHvV3EXjh+gjJSG+bTKPn92eSyE8SKQ8rk2Ykgg0y94VMf?=
+ =?us-ascii?Q?tegRLoNUkvN2IY+S6aQ0+uYuhLV0xdY/ufSYpIm+p+RB6rdLhE+a5GXUy3Sc?=
+ =?us-ascii?Q?Ort7Yqwbdag4rkTpdVn8iDnzUgO0ESk2kAYcIvWoA1fo69azq/ex2qWv/w1y?=
+ =?us-ascii?Q?74AsZy2k+1qoYxZC13ecipIS8YwI5sqLRM8D7PYnwHHfgIMqhgi542MNiR1d?=
+ =?us-ascii?Q?6rJCoZyH5Yvy/NpRWM1GE6PvTfjfxl6SUCXB6QoRC8pa8ofAt2A7trAbv80A?=
+ =?us-ascii?Q?3N8qRTOlFaxdiLFtJVAJGw3JoM1Rf7NcXjdvQMMpzY/FcJLgkX9mN8fik12n?=
+ =?us-ascii?Q?5XjM/GIBWZwfqlLT4b53Jwfxf3piJUk1kQTVT1wLhTyPw0Bn1CgenJkMp3AY?=
+ =?us-ascii?Q?jbs30kTuizlDHJOgpRTnlHk3Lr2mDvZ6YDZOPZosjCvjnOt46DcUTY8alqxg?=
+ =?us-ascii?Q?LNCqSq15D7yuNhdepdoVE40DNhMhJ8Ri//hF8J26xZdLohPsYvkOEK7fZ+nV?=
+ =?us-ascii?Q?VnGJc6z5FjT1MHWWUKfA7UFIu0Qmpr6Gfxi13Y5iK1S3kvB7epJQqXpedN9N?=
+ =?us-ascii?Q?JEq2yJK1zdws0fsLnYyr7kbGEQJ4ABYnGxtM1jfCiWasm3Txs4CIBGOaujPr?=
+ =?us-ascii?Q?/AhgpdZ8voEfrrjcBdI6krO6SBYLzlW/cBJL1jOIQq0G60SrZYmMAvbl2U7p?=
+ =?us-ascii?Q?teR+HeVPPolrZc95K1izCO3GNeKohs+wxq+4Q+YxmbXnr2ubXKr9JNtMipEd?=
+ =?us-ascii?Q?0H2qYxQHlNyBsa/AFChPwMqpmopxLBFiKtQshZS/DF2/f3vkTEfB9blQQ21S?=
+ =?us-ascii?Q?LxgEHB22wzw8hvUGyZeYDsYctFf93NVEv0P2agRhrHrG8amJ3V9IUwnawA8t?=
+ =?us-ascii?Q?5r/tPBEbipZpWWAi5RIU6uVwPQwXX7x6prVMxq+3hqfxuAUz+sjDV/VwTcRB?=
+ =?us-ascii?Q?sfnyDL+jor2M3IiqdOgpt0j51kQym178LnfXkYgBAFs/qnA3Nihy6V6PxQTC?=
+ =?us-ascii?Q?LftvzkX4cKNyUftBkVDtdKivju1FnTIw3tDxWHyNGZB3IL8Q6BZ+IF2rcXRy?=
+ =?us-ascii?Q?sTDEtlU6ZviPDQ30pV3VcBuQKjmhFl4bpZfP4jMhK+apkwQ7SEFe1zmmA+E?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68d95bbf-a365-4cba-2b48-08dcf1c619b1
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 11:47:11.8123 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY8P300MB0171
+Received-SPF: pass client-ip=2a01:111:f403:2819::831;
+ envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,90 +122,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 1:35=E2=80=AFPM Junjie Mao <junjie.mao@hotmail.com>=
- wrote:
->
->
-> Paolo Bonzini <pbonzini@redhat.com> writes:
->
-> > Adjust the integration test to compile with a subset of QEMU object
-> > files, and make it actually create an object of the class it defines.
-> >
-> > Follow the Rust filesystem conventions, where tests go in tests/ if
-> > they use the library in the same way any other code would.
-> >
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >  meson.build                  | 10 ++++-
-> >  rust/qemu-api/meson.build    | 20 +++++++--
-> >  rust/qemu-api/src/tests.rs   | 49 ----------------------
-> >  rust/qemu-api/tests/tests.rs | 78 ++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 104 insertions(+), 53 deletions(-)
-> >  delete mode 100644 rust/qemu-api/src/tests.rs
-> >  create mode 100644 rust/qemu-api/tests/tests.rs
-> <snip>
-> > diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-> > index 42ea815fa5a..d24e0c0725e 100644
-> > --- a/rust/qemu-api/meson.build
-> > +++ b/rust/qemu-api/meson.build
-> > @@ -14,11 +14,25 @@ _qemu_api_rs =3D static_library(
-> >      '--cfg', 'MESON',
-> >      # '--cfg', 'feature=3D"allocator"',
-> >    ],
-> > -  dependencies: [
-> > -    qemu_api_macros,
-> > -  ],
-> >  )
-> >
-> >  qemu_api =3D declare_dependency(
-> >    link_with: _qemu_api_rs,
-> > +  dependencies: qemu_api_macros,
-> >  )
-> > +
-> > +# Rust executable do not support objects, so add an intermediate step.
-> > +rust_qemu_api_objs =3D static_library(
-> > +    'rust_qemu_api_objs',
-> > +    objects: [libqom.extract_all_objects(recursive: false),
-> > +              libhwcore.extract_all_objects(recursive: false)])
-> > +
-> > +rust.test('rust-qemu-api-integration',
-> > +     static_library(
-> > +         'rust_qemu_api_integration',
-> > +         'tests/tests.rs',
-> > +         override_options: ['rust_std=3D2021', 'build.rust_std=3D2021'=
-],
-> > +         link_whole: [rust_qemu_api_objs, libqemuutil]),
-> > +
-> > +     dependencies: [qemu_api, qemu_api_macros],
-> > +     suite: ['unit', 'rust'])
->
-> I met the following error when trying to build the test:
 
-It works for me, but I'll switch to your meson.build code just to be safe.
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-Paolo
-
-> test('rust-qemu-api-integration',
->     executable(
->         'rust_qemu_api_integration',
->         'tests/tests.rs',
->         override_options: ['rust_std=3D2021', 'build.rust_std=3D2021'],
->         rust_args: [
->             '--test',
->         ],
->         install: false,
->         dependencies: [qemu_api, qemu_api_macros],
->         link_whole: [rust_qemu_api_objs, libqemuutil]),
->     args: [
->         '--test',
->         '--format', 'pretty',
->     ],
->     protocol: 'rust',
->     suite: ['unit', 'rust'])
+> MaybeUninit::zeroed() is handy, but it introduces unsafe (and has a
+> pretty heavy syntax in general).  Introduce a trait that provides the
+> same functionality while staying within safe Rust.
 >
-> --
-> Best Regards
-> Junjie Mao
+> In addition, MaybeUninit::zeroed() is not available as a "const"
+> function until Rust 1.75.0, so this also prepares for having handwritten
+> implementations of the trait until we can assume that version.
 >
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+
+--
+Best Regards
+Junjie Mao
 
