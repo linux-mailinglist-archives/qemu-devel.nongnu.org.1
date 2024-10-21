@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6E39A5FB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 11:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791299A5FF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Oct 2024 11:26:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t2oMR-0000t7-To; Mon, 21 Oct 2024 05:06:02 -0400
+	id 1t2ofD-0000eR-78; Mon, 21 Oct 2024 05:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2oMO-0000rY-9C
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 05:05:56 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t2oML-0008PI-QU
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 05:05:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729501554; x=1761037554;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=fhHLo0nmv4N859MO1xJdC24xJMzxpiiegzXrG4EWaJ8=;
- b=J1LmEllYeGIN/+/45fFbarY7Y0B37nxTMeD1SVliWV7dVp24QrHtb011
- 9AGCXVxh3TwGRHltZa8RznyH9PY+ylSBevszLVpFZe6K284wAToi37chf
- 8C7ym5ShaNSS4YpAm2/sFvdK7N5doMYLxDsYduIEje2a39oExzPJ7JUjj
- bJ9qOVwviW1RloKlWSGVoTTzCCG+IxHLACpomTbS56dzKzDLtXrToyk6f
- mynUleJgOrh2PTIyA4ClskzUaT9iWmUJxkwsRxDp6A0iEnRsjEDWoVSrY
- 6PjOzvaNsT9eSyzEMq6cn6qtLuFCllhBa3BcfluzVZO4cUzpnpzRjg5tm g==;
-X-CSE-ConnectionGUID: ciuOXMPvRGyKPlzONyjLbw==
-X-CSE-MsgGUID: t8UXn0ADSCulBPgL3Ywnug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40100279"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40100279"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 02:05:51 -0700
-X-CSE-ConnectionGUID: G7957S90QQyfdICR+jkbIw==
-X-CSE-MsgGUID: sQLfL1fWRuKBUgF+z+oNww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="84286290"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 21 Oct 2024 02:05:50 -0700
-Date: Mon, 21 Oct 2024 17:22:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [Question] What is the =?gb2312?Q?defi?=
- =?gb2312?B?bml0aW9uIG9mIKGwcHJpdmF0ZaGx?= fields in QOM?
-Message-ID: <ZxYdPZCc+3wi3f6z@intel.com>
-References: <ZxPZ5oUDRcVroh7o@intel.com>
- <ZxYSSp1wkifLy3tV@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t2ofB-0000e7-HO
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 05:25:21 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t2of9-00026p-Qb
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 05:25:21 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5c903f5bd0eso7714100a12.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 02:25:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729502718; x=1730107518; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BMyzPiugsasCOpptOZqFnzcxcSGh7UZ3aQX0Zs6ye5w=;
+ b=SO/3thCfh2tErEUQxSzNGbXqLrqW51P/uO1XQpzWcaCa+Pt31eIkWmBWkvmoiBdf0L
+ dcQ79cnhdJJyE/sNeC+8XSqtMqggXkfqLGUMi9t56LSmbtDww26CS//WVUJah/Qu4inB
+ BrQblZxFwVSH3D5V6r7w2jRmU1Ew59QlAB6PitfDCFvAIsKBYAKMg/C+y24mme+W4ygF
+ lwXwRwg7yCCr2unY/CZ1UtSVL5BJnM7NhwhmvLQx4jK8W4PTZ+Azyk1MgRfU7cDTrcvO
+ bkDhyt8aUVMUDYp5CrfqjWJp+JNnQMTDPEqr7JgWPNHu5vh2CtdC6F3K++VpuY3Cw3Wf
+ JkIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729502718; x=1730107518;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BMyzPiugsasCOpptOZqFnzcxcSGh7UZ3aQX0Zs6ye5w=;
+ b=CfrpkZnghYP+PV6LyMP/x8IZYcMJnv9hcoIvLUiIwmqlhEYPMkVkaK5l8gGTqQwDZz
+ 6bdr+T+SPIye8mDh7H0fzoXLEf9EEETdLUlA+iydX5eLwcKZffP00yBsZwzrT/nCr3st
+ 0DcvDN+Dc0XCNMaSgvS5bYDartvFgZenU7DhW+7ezbHVeDiblyCyGDL7vHXkjb4TQsio
+ pHi0QTCuRLz8Jf5oJ3QUPfN6awBB09eMpolMsq0Q6FXsA0+ygurJnH5MrenyfIVpUZW4
+ +LQyrJF3b9uOIB9BPfVJ5HEUXt08cqttgpaAEi5DTclmEdSssCOwL488wLbZRZn96Uiw
+ qxYg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8DkCXdMUs2mIZ8PIe7qs5ua/wEUFU+hVvYFZA07GPq+1M3gtkobY70M8XDfsz4HEKnliIkvv9ARrN@nongnu.org
+X-Gm-Message-State: AOJu0Ywk2Is8CYwNffdhk2N93/mUEDZxSXq791u4b4N1VwWWqAaA68zZ
+ T1SoxvuiL2tVu+jNpDUbSIz7VbqPnWnfWkfq2gncgrrJEoncffDBcA7pWjzzaDfIG3ayTQ8yMS9
+ y45L8pusR/zruNjfQu5cc9qqytJQI4mIUDP0Lwagd2fswhU9e
+X-Google-Smtp-Source: AGHT+IHDTAE9YEa+9R04KrrkA+80UPVk6AFr6VUatGo8NpUOzrq1MDsbg2yyyw8u01gjj0VfVZjZbR2MteYGZ8noHoE=
+X-Received: by 2002:a05:6402:2681:b0:5ca:1598:195b with SMTP id
+ 4fb4d7f45d1cf-5ca15981b74mr7104640a12.28.1729502717837; Mon, 21 Oct 2024
+ 02:25:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxYSSp1wkifLy3tV@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIMWL_WL_HIGH=-0.527, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <ZxPZ5oUDRcVroh7o@intel.com>
+In-Reply-To: <ZxPZ5oUDRcVroh7o@intel.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 21 Oct 2024 10:25:07 +0100
+Message-ID: <CAFEAcA8m4OeDHopFxCL3MP-cmu-PO5=2+MjNBG7YCudpKdoqDA@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BQuestion=5D_What_is_the_definition_of_=E2=80=9Cprivate?=
+ =?UTF-8?Q?=E2=80=9D_fields_in_QOM=3F?=
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,83 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+On Sat, 19 Oct 2024 at 16:54, Zhao Liu <zhao1.liu@intel.com> wrote:
+>
+> Hi maintainers and list,
+>
+> In the QOM structure, the class and object structs have two members:
+> parent_class and parent_obj, which are often marked as "< private >" in
+> the comment.
+>
+> I couldn=E2=80=99t find information on why to define =E2=80=98private=E2=
+=80=99 and =E2=80=98public=E2=80=99,
+> even in the earliest QOM commits and the patch emails I could find.
 
-On Mon, Oct 21, 2024 at 09:35:22AM +0100, Daniel P. Berrang¨¦ wrote:
-> Date: Mon, 21 Oct 2024 09:35:22 +0100
-> From: "Daniel P. Berrang¨¦" <berrange@redhat.com>
-> Subject: Re: [Question] What is the definition of ¡°private¡± fields in
->  QOM?
-> 
-> On Sun, Oct 20, 2024 at 12:10:14AM +0800, Zhao Liu wrote:
-> > Hi maintainers and list,
-> > 
-> > In the QOM structure, the class and object structs have two members:
-> > parent_class and parent_obj, which are often marked as "< private >" in
-> > the comment.
-> > 
-> > I couldn¡¯t find information on why to define ¡®private¡¯ and ¡®public¡¯,
-> > even in the earliest QOM commits and the patch emails I could find.
-> > 
-> > Does ¡®private¡¯ refer to the internal implementation code of QOM, or does
-> > it refer to the specific code that defines and implements this object
-> > and its class?
-> > 
-> > I understand the original idea of private field indicates it cannot be
-> > accessed directly out of the "private" scope.
-> 
-> I see two scenarios
-> 
->  * Devices where the structs are in the include/..../<blah>.h
-> 
->    The private/public comments are a message to other code in QEMU about
->    which fields are OK to access directly, and which should not be accessed.
+This is a rather old thing which I think was originally
+borrowed from glib's commenting convention.
 
-Does "other code" refer to the fact that no arbitrary code should
-directly access parent_obj/parent_class, but rather should use an
-explicit cast to convert to the parent class/object?
+I'm fairly sure that we decided a while back that they were entirely
+unnecessary, so you don't need to add them in new code. (I can't
+actually find anything with a quick list search about that though
+so maybe I'm misremembering.)
 
-For example, are the following direct accesses to parent_obj all
-considered illegal?
+Either way, there's still a lot of them floating around in the codebase
+that were added before we made that decision.
 
-hw/usb/hcd-ohci-pci.c:58:    pci_set_word(dev->parent_obj.config + PCI_STATUS,
-hw/arm/smmuv3.c:1094:        trace_smmuv3_translate_success(mr->parent_obj.name, sid, addr,
-hw/arm/smmuv3.c:1101:        trace_smmuv3_translate_disable(mr->parent_obj.name, sid, addr,
-hw/arm/smmuv3.c:1107:        trace_smmuv3_translate_bypass(mr->parent_obj.name, sid, addr,
-hw/arm/smmuv3.c:1112:        trace_smmuv3_translate_abort(mr->parent_obj.name, sid, addr,
-hw/arm/smmuv3.c:1119:                      mr->parent_obj.name, addr, smmu_event_string(event.type));
-hw/arm/smmuv3.c:1212:        trace_smmuv3_inv_notifiers_iova(mr->parent_obj.name, asid, vmid,
-hw/arm/smmuv3.c:2033:        trace_smmuv3_notify_flag_add(iommu->parent_obj.name);
-hw/arm/smmuv3.c:2036:        trace_smmuv3_notify_flag_del(iommu->parent_obj.name);
-hw/arm/smmu-common.c:888:    trace_smmu_inv_notifiers_mr(mr->parent_obj.name);
-block/throttle-groups.c:777:    if (!tg->name && tg->parent_obj.parent) {
-iothread.c:173:                               iothread->parent_obj.aio_max_batch);
-iothread.c:359:    info->aio_max_batch = iothread->parent_obj.aio_max_batch;
-target/i386/sev.c:1240:    if (sev_snp->parent_obj.kernel_hashes) {
-target/ppc/kvm.c:2354:    const char *vcpu_str = (cs->parent_obj.hotplugged == true) ?
-target/openrisc/sys_helper.c:289:        return cpu->parent_obj.cpu_index;
-accel/kvm/kvm-all.c:4285:                        cpu->parent_obj.canonical_path,
-accel/kvm/kvm-all.c:4377:            if (!apply_str_list_filter(cpu->parent_obj.canonical_path, targets)) {
-accel/tcg/translator.c:26:                    offsetof(ArchCPU, parent_obj.neg.can_do_io) -
-accel/tcg/translator.c:50:                       offsetof(ArchCPU, parent_obj.neg.icount_decr.u32)
-accel/tcg/translator.c:80:                         offsetof(ArchCPU, parent_obj.neg.icount_decr.u16.low)
-include/hw/pci-host/dino.h:113:     * PCI_CONFIG_ADDR is parent_obj.config_reg, via pci_host_conf_be_ops,
-...
-
->  * Devices where the structs are in the ../<blah>.c
-> 
->    The private/public comments look entirely pointless, as everything
->    is private to the .c file.
-
-Yes!
-
-> 99% of the time it seems the "parent" / "parent_obj" fields are the only
-> one marked private. There are a handful of classes where other fields are
-> under the private comment, but not many. 
-
-Yes. "parent" / "parent_obj" are the most common cases.
-
-Thanks,
-Zhao
-
+thanks
+-- PMM
 
