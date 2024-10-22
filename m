@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351DC9AA098
+	by mail.lfdr.de (Postfix) with ESMTPS id 7737A9AA099
 	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3CZ7-0001rL-CP; Tue, 22 Oct 2024 06:56:41 -0400
+	id 1t3CZJ-0001sb-Nf; Tue, 22 Oct 2024 06:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYv-0001lF-62
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:29 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ id 1t3CYw-0001mJ-QL
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:30 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYt-00022o-Ae
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:28 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a99e3b3a411so1054242866b.0
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:26 -0700 (PDT)
+ id 1t3CYt-00022y-Lm
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:30 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5c941623a5aso10852690a12.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1729594586; x=1730199386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HOyxXWkbmxyeJp1271bZ6nHrEgwT9agO1ZydqcSHiVY=;
- b=VZn8DrFiuIHwxVXCHZtWUH2Er6GDLnoz/aq5guxUrNWHZpyge4xbzfGhA+RW7k16Dl
- AZ9vVTAffjDrDarV55DmbCSQ5ZJrzNPPCnTxlVU0FgMV0yERUj6A1c//JRmmW5WceStm
- YaabpzzOUBQJR47ftiRg/SfHgkm8dAaqzOrBKZV0IPkooxGwxyGUmNc5qrd8iL8gA3sW
- hhAaSE9Pijs08oOTRIwcn5IOo2jJr2lGtwKBgxhpTWv5SOv+vb/4J0d2Eyd4MwUOXYLf
- AhZul2SAQ6zJMY0G4wSwORx9nJRe60GmZU2imHMklAZT2nvUEkEwYXYPSzBfD63meBJq
- jrtA==
+ bh=CnSO5MY5LW+ONfwtsvf8QoavFQHBZ1D8g95DfEWZbMI=;
+ b=krAPCbK6vVfqJ+3Gw5QmJdK5a3cuR7ymepFMHdmSvDd87gWOG11GGntTF0LdknzLKa
+ sJnDV/7xiwJq794JCHFE9xLNeXCetelYhyC92rfmI4MpZ/bbLhx9tmITFxI4sj4ELCxQ
+ QvDajzUwZUsTR/vKHukSyyRz17v2j+igPzjf5b+dnZZiHC4oq7NT4fVSPX9A9B8TODzZ
+ 4OGbBzQqRLPFjQ2jLvrukIEaaZ2qQxJdSj06xGSC/EvWkYOi1lqzfbjnofC1mD8zKrp+
+ eVH3sDcdDHvXZrBSu1hBqVAdrUjv0o6nZ3XP457CzK9EwzjVZ5b1RzAMRiR0CBzMHYQW
+ In+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1729594586; x=1730199386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HOyxXWkbmxyeJp1271bZ6nHrEgwT9agO1ZydqcSHiVY=;
- b=oYsCIQ7yV8bYIYnAGqvoV8pf3mBnUZU8PmuezCp2x5qwm06MME8HHMSuFtJNqvu6gw
- 75gB0m8XcI1rMLwYjExEQzvdDcgfSkQUYJHq5hIWv1UCswAFqrtF2BFWZJL2bRSAhU43
- iARVjkbrZi6AaTzHvmLK1R04eZL4twB1stxwN2FpMhMnw4gd6c//5tuwC6o6zCFpnKOD
- TCX88Eazn7bswS4sg0iC1ikYk8pE2UPtZe/mai8yTMWHXL/3tbZXaNaNzEEcLM25G3fM
- dBfbrYr1O2XZ/wFzOGzkus5E6dYEl5pDW5K8JZPFXBkgmJeNkOWqqwjk+CifnN9TfDha
- UJyQ==
-X-Gm-Message-State: AOJu0YyCU3EZmJUuf8nb/0/F8wjUcdqAiljnUfE/fJRKRRcsbqjtcZQO
- Y9y+y8i8jiEZiaAg7IaEzH4RbdC5erEbrPAFTJCWNQG2Vq3NDNE9dWtWf3KGG+c=
-X-Google-Smtp-Source: AGHT+IEZjLLtqU09Sx+uo+mrjZmbCZKUxmm4Ab8Z+Gbl4XRa6e9yqIzpm990wPYB5uU0/r5L4B8Jhw==
-X-Received: by 2002:a17:907:1c85:b0:a9a:597:8cc9 with SMTP id
- a640c23a62f3a-a9aaa523356mr288374566b.12.1729594585591; 
- Tue, 22 Oct 2024 03:56:25 -0700 (PDT)
+ bh=CnSO5MY5LW+ONfwtsvf8QoavFQHBZ1D8g95DfEWZbMI=;
+ b=T8OvHCpmPQOnhnOaWiVu3IthQHfykI/9CnLawlLrZthRM2AM2TIO7rwZWtByjRz7Xu
+ 7xI3Hdb/vM2KaXvx1FioXNhyNOYcIPMoA8YthWXcLIGqgHre2dZ6IC7lW9HvW4mMSemU
+ paFFU+YNBAIzDGpTkHc+MTlOhv7cNHG8NOMsVYJPe9KmEN3t0kqBwdQwWyvD5vJIKUn6
+ kGkGY7rLe9aj52NDK2Ri1Xtau/8LAuEZEjUfhNF3cRsV4CC88OGwcqoanmv1/D7YOqQX
+ vagqB1nCvQaHsyNjHtz/SSLOwEtbKkwfAB0lgppicF0zaJDrUhtWYGy5loCCIQzNbho5
+ ducA==
+X-Gm-Message-State: AOJu0YzjugMZ1/36gwso922yw93J88lvbPvaJ2bvnofjqtrzpIwdx87r
+ +xxnUtNPhEQWeeJ4yjcs+orY8R/AvhrvvtWBlS1syP3wsfRZnAYzR0VqKWkI6Oo=
+X-Google-Smtp-Source: AGHT+IE/K5pr2g0U8BMqLhyIWw7NwWY4cgjvbPeZV6ZYZQj/JnrnlV+snPJRyVIL9w1vqQwf5cuM+A==
+X-Received: by 2002:a17:907:944e:b0:a9a:3f9c:f89d with SMTP id
+ a640c23a62f3a-a9aaa5ee850mr282522466b.34.1729594586066; 
+ Tue, 22 Oct 2024 03:56:26 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a91370e91sm320592666b.123.2024.10.22.03.56.17
+ a640c23a62f3a-a9a91559c06sm324381166b.138.2024.10.22.03.56.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Oct 2024 03:56:19 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 465EC5F942;
+ by draig.lan (Postfix) with ESMTP id 5CB715F9D0;
  Tue, 22 Oct 2024 11:56:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,25 +81,25 @@ Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 07/20] tests/tcg/x86_64: Add cross-modifying code test
-Date: Tue, 22 Oct 2024 11:56:01 +0100
-Message-Id: <20241022105614.839199-8-alex.bennee@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 08/20] accel/tcg: add tracepoints for cpu_loop_exit_atomic
+Date: Tue, 22 Oct 2024 11:56:02 +0100
+Message-Id: <20241022105614.839199-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,134 +115,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+We try to avoid using cpu_loop_exit_atomic as it brings in an all-core
+sync point. However on some cpu/kernel/benchmark combinations it is
+starting to show up in the performance profile. To make it easier to
+see whats going on add tracepoints for the slow path so we can see
+what is triggering the wait.
 
-commit f025692c992c ("accel/tcg: Clear PAGE_WRITE before translation")
-fixed cross-modifying code handling, but did not add a test. The
-changed code was further improved recently [1], and I was not sure
-whether these modifications were safe (spoiler: they were fine).
+It seems for a modern CPU it can be quite a bit, for example:
 
-Add a test to make sure there are no regressions.
+./qemu-system-aarch64 \
+           -machine type=virt,virtualization=on,pflash0=rom,pflash1=efivars,gic-version=max \
+           -smp 4 \
+           -accel tcg \
+           -device virtio-net-pci,netdev=unet \
+           -device virtio-scsi-pci \
+           -device scsi-hd,drive=hd \
+           -netdev user,id=unet,hostfwd=tcp::2222-:22 \
+           -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=/dev/zen-ssd2/trixie-arm64,discard=unmap \
+           -serial mon:stdio \
+           -blockdev node-name=rom,driver=file,filename=(pwd)/pc-bios/edk2-aarch64-code.fd,read-only=true \
+           -blockdev node-name=efivars,driver=file,filename=$HOME/images/qemu-arm64-efivars \
+           -m 8192 \
+           -object memory-backend-memfd,id=mem,size=8G,share=on \
+           -kernel /home/alex/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image -append "root=/dev/sda2 console=ttyAMA0 systemd.unit=benchmark-stress-ng.service" \
+           -display none -d trace:load_atom\*_fallback,trace:store_atom\*_fallback
 
-[1] https://lists.gnu.org/archive/html/qemu-devel/2022-09/msg00034.html
+With:
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20241001150617.9977-1-iii@linux.ibm.com>
+  -cpu neoverse-v1,pauth-impdef=on => 2203343
+
+With:
+
+  -cpu cortex-a76 => 0
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/tcg/x86_64/cross-modifying-code.c | 80 +++++++++++++++++++++++++
- tests/tcg/x86_64/Makefile.target        |  4 ++
- 2 files changed, 84 insertions(+)
- create mode 100644 tests/tcg/x86_64/cross-modifying-code.c
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-diff --git a/tests/tcg/x86_64/cross-modifying-code.c b/tests/tcg/x86_64/cross-modifying-code.c
-new file mode 100644
-index 0000000000..2704df6061
---- /dev/null
-+++ b/tests/tcg/x86_64/cross-modifying-code.c
-@@ -0,0 +1,80 @@
-+/*
-+ * Test patching code, running in one thread, from another thread.
-+ *
-+ * Intel SDM calls this "cross-modifying code" and recommends a special
-+ * sequence, which requires both threads to cooperate.
-+ *
-+ * Linux kernel uses a different sequence that does not require cooperation and
-+ * involves patching the first byte with int3.
-+ *
-+ * Finally, there is user-mode software out there that simply uses atomics, and
-+ * that seems to be good enough in practice. Test that QEMU has no problems
-+ * with this as well.
-+ */
-+
-+#include <assert.h>
-+#include <pthread.h>
-+#include <stdbool.h>
-+#include <stdlib.h>
-+
-+void add1_or_nop(long *x);
-+asm(".pushsection .rwx,\"awx\",@progbits\n"
-+    ".globl add1_or_nop\n"
-+    /* addq $0x1,(%rdi) */
-+    "add1_or_nop: .byte 0x48, 0x83, 0x07, 0x01\n"
-+    "ret\n"
-+    ".popsection\n");
-+
-+#define THREAD_WAIT 0
-+#define THREAD_PATCH 1
-+#define THREAD_STOP 2
-+
-+static void *thread_func(void *arg)
-+{
-+    int val = 0x0026748d; /* nop */
-+
-+    while (true) {
-+        switch (__atomic_load_n((int *)arg, __ATOMIC_SEQ_CST)) {
-+        case THREAD_WAIT:
-+            break;
-+        case THREAD_PATCH:
-+            val = __atomic_exchange_n((int *)&add1_or_nop, val,
-+                                      __ATOMIC_SEQ_CST);
-+            break;
-+        case THREAD_STOP:
-+            return NULL;
-+        default:
-+            assert(false);
-+            __builtin_unreachable();
-+        }
-+    }
-+}
-+
-+#define INITIAL 42
-+#define COUNT 1000000
-+
-+int main(void)
-+{
-+    int command = THREAD_WAIT;
-+    pthread_t thread;
-+    long x = 0;
-+    int err;
-+    int i;
-+
-+    err = pthread_create(&thread, NULL, &thread_func, &command);
-+    assert(err == 0);
-+
-+    __atomic_store_n(&command, THREAD_PATCH, __ATOMIC_SEQ_CST);
-+    for (i = 0; i < COUNT; i++) {
-+        add1_or_nop(&x);
-+    }
-+    __atomic_store_n(&command, THREAD_STOP, __ATOMIC_SEQ_CST);
-+
-+    err = pthread_join(thread, NULL);
-+    assert(err == 0);
-+
-+    assert(x >= INITIAL);
-+    assert(x <= INITIAL + COUNT);
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
-index 783ab5b21a..d6dff559c7 100644
---- a/tests/tcg/x86_64/Makefile.target
-+++ b/tests/tcg/x86_64/Makefile.target
-@@ -17,6 +17,7 @@ X86_64_TESTS += cmpxchg
- X86_64_TESTS += adox
- X86_64_TESTS += test-1648
- X86_64_TESTS += test-2175
-+X86_64_TESTS += cross-modifying-code
- TESTS=$(MULTIARCH_TESTS) $(X86_64_TESTS) test-x86_64
- else
- TESTS=$(MULTIARCH_TESTS)
-@@ -27,6 +28,9 @@ adox: CFLAGS=-O2
- run-test-i386-ssse3: QEMU_OPTS += -cpu max
- run-plugin-test-i386-ssse3-%: QEMU_OPTS += -cpu max
+---
+v2
+  - 0x prefixes for ra as per checkpatch
+---
+ accel/tcg/user-exec.c          |  2 +-
+ accel/tcg/ldst_atomicity.c.inc |  9 +++++++++
+ accel/tcg/trace-events         | 12 ++++++++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 51b2c16dbe..aa8af52cc3 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -29,7 +29,7 @@
+ #include "exec/page-protection.h"
+ #include "exec/helper-proto.h"
+ #include "qemu/atomic128.h"
+-#include "trace/trace-root.h"
++#include "trace.h"
+ #include "tcg/tcg-ldst.h"
+ #include "internal-common.h"
+ #include "internal-target.h"
+diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+index 134da3c1da..c735add261 100644
+--- a/accel/tcg/ldst_atomicity.c.inc
++++ b/accel/tcg/ldst_atomicity.c.inc
+@@ -168,6 +168,7 @@ static uint64_t load_atomic8_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
+ #endif
  
-+cross-modifying-code: CFLAGS+=-pthread
-+cross-modifying-code: LDFLAGS+=-pthread
+     /* Ultimate fallback: re-execute in serial context. */
++    trace_load_atom8_or_exit_fallback(ra);
+     cpu_loop_exit_atomic(cpu, ra);
+ }
+ 
+@@ -212,6 +213,7 @@ static Int128 load_atomic16_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
+     }
+ 
+     /* Ultimate fallback: re-execute in serial context. */
++    trace_load_atom16_or_exit_fallback(ra);
+     cpu_loop_exit_atomic(cpu, ra);
+ }
+ 
+@@ -519,6 +521,7 @@ static uint64_t load_atom_8(CPUState *cpu, uintptr_t ra,
+         if (HAVE_al8) {
+             return load_atom_extract_al8x2(pv);
+         }
++        trace_load_atom8_fallback(memop, ra);
+         cpu_loop_exit_atomic(cpu, ra);
+     default:
+         g_assert_not_reached();
+@@ -563,6 +566,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
+         break;
+     case MO_64:
+         if (!HAVE_al8) {
++            trace_load_atom16_fallback(memop, ra);
+             cpu_loop_exit_atomic(cpu, ra);
+         }
+         a = load_atomic8(pv);
+@@ -570,6 +574,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
+         break;
+     case -MO_64:
+         if (!HAVE_al8) {
++            trace_load_atom16_fallback(memop, ra);
+             cpu_loop_exit_atomic(cpu, ra);
+         }
+         a = load_atom_extract_al8x2(pv);
+@@ -897,6 +902,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
+         g_assert_not_reached();
+     }
+ 
++    trace_store_atom2_fallback(memop, ra);
+     cpu_loop_exit_atomic(cpu, ra);
+ }
+ 
+@@ -961,6 +967,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
+                 return;
+             }
+         }
++        trace_store_atom4_fallback(memop, ra);
+         cpu_loop_exit_atomic(cpu, ra);
+     default:
+         g_assert_not_reached();
+@@ -1029,6 +1036,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
+     default:
+         g_assert_not_reached();
+     }
++    trace_store_atom8_fallback(memop, ra);
+     cpu_loop_exit_atomic(cpu, ra);
+ }
+ 
+@@ -1107,5 +1115,6 @@ static void store_atom_16(CPUState *cpu, uintptr_t ra,
+     default:
+         g_assert_not_reached();
+     }
++    trace_store_atom16_fallback(memop, ra);
+     cpu_loop_exit_atomic(cpu, ra);
+ }
+diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
+index 4e9b450520..14f638810c 100644
+--- a/accel/tcg/trace-events
++++ b/accel/tcg/trace-events
+@@ -12,3 +12,15 @@ memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
+ 
+ # translate-all.c
+ translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
 +
- test-x86_64: LDFLAGS+=-lm -lc
- test-x86_64: test-i386.c test-i386.h test-i386-shift.h test-i386-muldiv.h
- 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
++# ldst_atomicity
++load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++load_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++load_atom8_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
++load_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++load_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++load_atom16_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
++store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
 -- 
 2.39.5
 
