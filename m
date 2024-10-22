@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB029AA354
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 15:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C4D9AB01A
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 15:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3F4R-0006RZ-EN; Tue, 22 Oct 2024 09:37:11 -0400
+	id 1t3FJo-00055G-LD; Tue, 22 Oct 2024 09:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3F4I-0006CC-71; Tue, 22 Oct 2024 09:37:04 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3F4G-0000FX-G7; Tue, 22 Oct 2024 09:37:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729604220; x=1761140220;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TEjT9vfLlCt/Mc8nTWxqbY6vNGP1X8MOONe4ssw/sls=;
- b=BSocPHnAoGa9ZgTk5J2XWGXwM7+MLute2Y/NzeRY6IR06RaujuUHRKFM
- Hh0XQW3GeM/yRUDrknd7ZL1dYAnTYBJ/+v/hMss0M9vfAHysktI3Cygh6
- sY0IJlJ6wYzjlLbYuGuwdQtTX6IwWkDa25E5/8WUJ3kXXCeSJBE74SJ4V
- cdHwZ19pTYpefDUY5hYC6l7/c75u5zzntUh3UGzD/rf45looCKWbv4hP3
- ClwvOrKPlsFblMvF7IBPR3/qhQ4yMtkkGeAkFgQMvd2R+wU4dTV886pZl
- pAZKD7dkEXRCplT5OhZYkxO3XbdyW4dM6j8sxy7kn8tdzXKnpqStr/rfW A==;
-X-CSE-ConnectionGUID: 5K9po2hwTiy10D6T8P5hLg==
-X-CSE-MsgGUID: 47xuvSWtQjmzM3B01EDEWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46603793"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="46603793"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 06:36:58 -0700
-X-CSE-ConnectionGUID: 0mi/KwG8SrmbGUlx6dY4Bw==
-X-CSE-MsgGUID: QFOw/PCjSN68kmzEB8qccw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="79782484"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 22 Oct 2024 06:36:53 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 9/9] i386/cpu: add has_caches flag to check smp_cache
- configuration
-Date: Tue, 22 Oct 2024 21:51:51 +0800
-Message-Id: <20241022135151.2052198-10-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241022135151.2052198-1-zhao1.liu@intel.com>
-References: <20241022135151.2052198-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t3FJm-00054m-Rd
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 09:53:02 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t3FJk-0002AK-TT
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 09:53:02 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9709c9b0cso7437079a12.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 06:53:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729605179; x=1730209979; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uSklaj1Iow3OC/fgWLoyafNoKV4KALgVR05ccdjFQ5Y=;
+ b=elEe//BIYje8MW23o3obiesNpeODQYSBnw53RGkK68z/z6hhVep6rQFGL3QbldakJV
+ dikfnu25/BPBQLzCTQC1oaI/YQQsKWQ9WKgwHdLoYQCY11nfAaqAm05Z6Hd7oJAts7Wk
+ sr99ckkfGZEXzM6coa2+R8/olPJoeT0unUYiWMLMMK2LAzeoaXCwIolOuO6cjWUYbPBk
+ mB0iqRgOdZ/lz05V+mWSuWsFBRTGI9UItuG6Q3km40QW4luaZgZIs2xiVhQpNiGQCDol
+ XsAX8Vvrzc4+/Sqsk+Trl9SHN6XRT/XasqNzR6DHqTX1F8ySs6qSQMEOXutqr/P0reSR
+ GMJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729605179; x=1730209979;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uSklaj1Iow3OC/fgWLoyafNoKV4KALgVR05ccdjFQ5Y=;
+ b=Fw/RLMAj2hb3d30j35OkqK/4tvbBPUYAJ7uJuqqAK5GWID4ckV5DdRx87vTbx4xD4Z
+ X05OcX9vO3ouGir4Pjuht77mKp09PyaT8Nm1VSEoJmhKTdXZPJG1h0ZF6a+TQHgcCOev
+ FL7a5WjgjhxigeC3YKgDCPP41D5KTO4wbqKhga7wYaoWb8vhxvAxpse0p+Q4sLimA13Y
+ eiI3dZM2b1uurIl1uimFMtcmawlTkIS9GZD5zryybXBExOQn5Q6uzo7fsGDvHUKMIvX4
+ 90ntUAKRioPUMtgemBfURwgjM7ZfKame8WP/YYOYMK4NO6eAWZUQDC6+9rNmQsTXKSGW
+ DJhg==
+X-Gm-Message-State: AOJu0YzePcby7nv3aEq692Mm2J6F/qS2ZuDisD3p8NChgHx5ryp+JhBs
+ pilKsnkmlFHsGPhkNUQxLokUPVcM2p/cDFNtpwRQh0Gu5FmhPTgSZ9El7tH+FFOfJCcEUTCuoXj
+ xlT/6ldWsj7NKqeBlSzvfR7Hf/qdHUvyfRLU3Gw==
+X-Google-Smtp-Source: AGHT+IE5idqcDxn3wPR9rUM7wB07gzbhBWxNVeTb6QnYbSe3NEms4jgZVc6CzAlgkUpwqfNlfo1Al3BdpWyeSBwHypc=
+X-Received: by 2002:a05:6402:210d:b0:5cb:78b8:7056 with SMTP id
+ 4fb4d7f45d1cf-5cb78b87ad7mr2740671a12.33.1729605178869; Tue, 22 Oct 2024
+ 06:52:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241021073957.1851500-1-edgar.iglesias@gmail.com>
+In-Reply-To: <20241021073957.1851500-1-edgar.iglesias@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 22 Oct 2024 14:52:47 +0100
+Message-ID: <CAFEAcA_M2HsgKM2idG4030JTZWEUFfm_2Ae980zyh0DGhe-p=Q@mail.gmail.com>
+Subject: Re: [PULL v1 0/1] Xen Queue
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org, 
+ paul@xen.org, edgar.iglesias@amd.com, xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,88 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On Mon, 21 Oct 2024 at 08:40, Edgar E. Iglesias
+<edgar.iglesias@gmail.com> wrote:
+>
+> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+>
+> The following changes since commit f1dd640896ee2b50cb34328f2568aad324702954:
+>
+>   Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-18 10:42:56 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/edgar.iglesias/qemu.git tags/edgar/xen-queue-2024-10-21.for-upstream
+>
+> for you to fetch changes up to 676a68fd4850924db73548c9cb20ea484709708c:
+>
+>   hw/xen: Avoid use of uninitialized bufioreq_evtchn (2024-10-21 07:53:21 +0200)
+>
+> ----------------------------------------------------------------
+> Edgars Xen queue.
+>
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
 
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c |  2 ++
- include/hw/boards.h   |  3 +++
- target/i386/cpu.c     | 11 +++++------
- 3 files changed, 10 insertions(+), 6 deletions(-)
+Applied, thanks.
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 640b2114b429..6ae7c4765402 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -324,6 +324,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
-     }
-+
-+    mc->smp_props.has_caches = true;
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 192f78539a6e..e6680701eec3 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -156,6 +156,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -166,6 +168,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b6e12b46c9cc..9a81402e71c4 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7884,13 +7884,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
--     * if user didn't set smp_cache.
--     */
--    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
--        return;
-+    if (mc->smp_props.has_caches) {
-+        if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
-+            return;
-+        }
-     }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
--- 
-2.34.1
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
+-- PMM
 
