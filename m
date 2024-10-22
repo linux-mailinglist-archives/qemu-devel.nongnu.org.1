@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A65A9A9ED6
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 11:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52579A9EDB
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 11:45:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3BOk-0002un-TQ; Tue, 22 Oct 2024 05:41:54 -0400
+	id 1t3BOm-0002wu-Qn; Tue, 22 Oct 2024 05:41:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t3BOg-0002s2-3x; Tue, 22 Oct 2024 05:41:50 -0400
+ id 1t3BOi-0002t3-OS; Tue, 22 Oct 2024 05:41:52 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t3BOe-00015E-8i; Tue, 22 Oct 2024 05:41:49 -0400
+ id 1t3BOh-00015E-Dt; Tue, 22 Oct 2024 05:41:52 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 22 Oct
- 2024 17:41:13 +0800
+ 2024 17:41:14 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 22 Oct 2024 17:41:13 +0800
+ Transport; Tue, 22 Oct 2024 17:41:14 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -33,17 +33,17 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:All patches CC here" <qemu-devel@nongnu.org>, "open list:Block layer
  core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v2 07/18] aspeed: Fix hardcode attach flash model of spi
- controllers
-Date: Tue, 22 Oct 2024 17:40:59 +0800
-Message-ID: <20241022094110.1574011-8-jamin_lin@aspeedtech.com>
+ <yunlin.tang@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
+ <clg@redhat.com>
+Subject: [PATCH v2 08/18] test/qtest/aspeed_smc-test: Fix coding style
+Date: Tue, 22 Oct 2024 17:41:00 +0800
+Message-ID: <20241022094110.1574011-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241022094110.1574011-1-jamin_lin@aspeedtech.com>
 References: <20241022094110.1574011-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -69,77 +69,39 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It only attached flash model of fmc and spi[0] in aspeed_machine_init function.
-However, AST2500 and AST2600 have one fmc and two spi(spi1 and spi2)
-controllers; AST2700 have one fmc and 3 spi(spi0, spi1 and spi2) controllers.
-
-Besides, it used hardcode to attach flash model of fmc, spi[0] and spi[1] in
-aspeed_minibmc_machine_init for AST1030.
-
-To make both functions more flexible and support all ASPEED SOCs spi
-controllers, adds a for loop with sc->spis_num to attach flash model of
-all supported spi controllers. The sc->spis_num is from AspeedSoCClass.
+Fix coding style issues from checkpatch.pl
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tests/qtest/aspeed_smc-test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index b4b1ce9efb..7ac01a3562 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -419,9 +419,11 @@ static void aspeed_machine_init(MachineState *machine)
-         aspeed_board_init_flashes(&bmc->soc->fmc,
-                               bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
-                               amc->num_cs, 0);
--        aspeed_board_init_flashes(&bmc->soc->spi[0],
--                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                              1, amc->num_cs);
-+        for (i = 0; i < sc->spis_num; i++) {
-+            aspeed_board_init_flashes(&bmc->soc->spi[i],
-+                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
-+                            amc->num_cs, amc->num_cs + (amc->num_cs * i));
-+        }
-     }
+diff --git a/tests/qtest/aspeed_smc-test.c b/tests/qtest/aspeed_smc-test.c
+index c713a3700b..4673371d95 100644
+--- a/tests/qtest/aspeed_smc-test.c
++++ b/tests/qtest/aspeed_smc-test.c
+@@ -353,7 +353,8 @@ static void test_read_page_mem(void)
+     uint32_t page[FLASH_PAGE_SIZE / 4];
+     int i;
  
-     if (machine->kernel_filename && sc->num_cpus > 1) {
-@@ -1579,7 +1581,9 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
- {
-     AspeedMachineState *bmc = ASPEED_MACHINE(machine);
-     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
-+    AspeedSoCClass *sc;
-     Clock *sysclk;
-+    int i;
+-    /* Enable 4BYTE mode for controller. This is should be strapped by
++    /*
++     * Enable 4BYTE mode for controller. This is should be strapped by
+      * HW for CE0 anyhow.
+      */
+     spi_ce_ctrl(1 << CRTL_EXTENDED0);
+@@ -394,7 +395,8 @@ static void test_write_page_mem(void)
+     uint32_t page[FLASH_PAGE_SIZE / 4];
+     int i;
  
-     sysclk = clock_new(OBJECT(machine), "SYSCLK");
-     clock_set_hz(sysclk, SYSCLK_FRQ);
-@@ -1587,6 +1591,7 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
-     bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-     object_unref(OBJECT(bmc->soc));
-+    sc = ASPEED_SOC_GET_CLASS(bmc->soc);
-     qdev_connect_clock_in(DEVICE(bmc->soc), "sysclk", sysclk);
- 
-     object_property_set_link(OBJECT(bmc->soc), "memory",
-@@ -1599,13 +1604,11 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
-                               amc->num_cs,
-                               0);
- 
--    aspeed_board_init_flashes(&bmc->soc->spi[0],
--                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                              amc->num_cs, amc->num_cs);
--
--    aspeed_board_init_flashes(&bmc->soc->spi[1],
-+    for (i = 0; i < sc->spis_num; i++) {
-+        aspeed_board_init_flashes(&bmc->soc->spi[i],
-                               bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                              amc->num_cs, (amc->num_cs * 2));
-+                              amc->num_cs, amc->num_cs + (amc->num_cs * i));
-+    }
- 
-     if (amc->i2c_init) {
-         amc->i2c_init(bmc);
+-    /* Enable 4BYTE mode for controller. This is should be strapped by
++    /*
++     * Enable 4BYTE mode for controller. This is should be strapped by
+      * HW for CE0 anyhow.
+      */
+     spi_ce_ctrl(1 << CRTL_EXTENDED0);
 -- 
 2.34.1
 
