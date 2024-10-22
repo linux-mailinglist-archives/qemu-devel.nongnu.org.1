@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FCE9AB461
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 18:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F09AB462
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 18:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3I4i-0000YX-DP; Tue, 22 Oct 2024 12:49:40 -0400
+	id 1t3I4j-0000Zc-DL; Tue, 22 Oct 2024 12:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t3I4b-0000L4-Ey
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 12:49:33 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t3I4e-0000Qp-0s
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 12:49:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t3I4X-00065x-Jq
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 12:49:33 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1t3I4c-00068J-Fl
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 12:49:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729615768;
+ s=mimecast20190719; t=1729615773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rl0hWf2NeoTp5Fong/EsvdHnc9EM8hnTSIjY+zlizyA=;
- b=ERG53exUQN6Zc5mZqfchfn6ACkiCosY2+5hKzW/qRH1lD02bLexLk/PkqZoi8p84IH9LwA
- yWBAOxoFTzPje97Agp/cQqnU1585e0LlqoLbNhJJnHBnckQIK4q9pkiqsdOOMWx45iM3S4
- vY7WlGK8uANrbkonl2lFxpOdFVyRP/M=
+ bh=rMpQ5CTt7Zy94AtlruARh6XIoc4CG8eA88qWMFobVeo=;
+ b=RaE3jx5WPmDAJAFxzImM8ZmCUduX5yHzfQKsLpyiFjhB3Nr2xtMdwt3wMBl0TPfRZjR4c9
+ xeG7rU4hcMV8naXL3Ar99x/MKCPc8zg3lPmo7gyudbSmJTDTH9tU8z5tkAbhNUcvElBwOB
+ auGNKKVm07RPuLd86qQckZNG0Js0Qz4=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-zkNmY3dsPMOLyiW_5LvZaw-1; Tue,
- 22 Oct 2024 12:49:27 -0400
-X-MC-Unique: zkNmY3dsPMOLyiW_5LvZaw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-H1zftW-UPXy4Rkr5c4Am8w-1; Tue,
+ 22 Oct 2024 12:49:32 -0400
+X-MC-Unique: H1zftW-UPXy4Rkr5c4Am8w-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 475A11955D92; Tue, 22 Oct 2024 16:49:26 +0000 (UTC)
+ id BA39E1956096; Tue, 22 Oct 2024 16:49:31 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.70])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 66CD41956056; Tue, 22 Oct 2024 16:49:23 +0000 (UTC)
+ id 256091955E70; Tue, 22 Oct 2024 16:49:29 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 6/9] iotests/backup-discard-source: don't use actual-size
-Date: Tue, 22 Oct 2024 18:49:00 +0200
-Message-ID: <20241022164903.282174-7-kwolf@redhat.com>
+Subject: [PULL 7/9] qapi: add qom-path to BLOCK_IO_ERROR event
+Date: Tue, 22 Oct 2024 18:49:01 +0200
+Message-ID: <20241022164903.282174-8-kwolf@redhat.com>
 In-Reply-To: <20241022164903.282174-1-kwolf@redhat.com>
 References: <20241022164903.282174-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,93 +81,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Relying on disk usage is bad thing, and test just doesn't work on XFS.
-
-Let's instead add a dirty bitmap to track writes to test image.
+We need something more reliable than "device" (which absent in modern
+interfaces) and "node-name" (which may absent, and actually don't
+specify the device, which is a source of error) to make a per-device
+throttling for the event in the following commit.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-ID: <20240620144402.65896-3-vsementsov@yandex-team.ru>
+Message-ID: <20241002151806.592469-2-vsementsov@yandex-team.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Tested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- .../qemu-iotests/tests/backup-discard-source  | 29 +++++++++++++------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ qapi/block-core.json  |  7 +++++--
+ block/block-backend.c | 21 +++++++++++++++++----
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/tests/qemu-iotests/tests/backup-discard-source b/tests/qemu-iotests/tests/backup-discard-source
-index 05fbe5d26b..17fef9c6d3 100755
---- a/tests/qemu-iotests/tests/backup-discard-source
-+++ b/tests/qemu-iotests/tests/backup-discard-source
-@@ -31,12 +31,6 @@ target_img = os.path.join(iotests.test_dir, 'target')
- size = 1024 * 1024
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 2feae8e697..fe63ba6cbf 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -5584,6 +5584,8 @@
+ #
+ # Emitted when a disk I/O error occurs
+ #
++# @qom-path: path to the device object in the QOM tree (since 9.2)
++#
+ # @device: device name.  This is always present for compatibility
+ #     reasons, but it can be empty ("") if the image does not have a
+ #     device name associated.
+@@ -5614,7 +5616,8 @@
+ # .. qmp-example::
+ #
+ #     <- { "event": "BLOCK_IO_ERROR",
+-#          "data": { "device": "ide0-hd1",
++#          "data": { "qom-path": "/machine/unattached/device[0]",
++#                    "device": "ide0-hd1",
+ #                    "node-name": "#block212",
+ #                    "operation": "write",
+ #                    "action": "stop",
+@@ -5622,7 +5625,7 @@
+ #          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
+ ##
+ { 'event': 'BLOCK_IO_ERROR',
+-  'data': { 'device': 'str', '*node-name': 'str',
++  'data': { 'qom-path': 'str', 'device': 'str', '*node-name': 'str',
+             'operation': 'IoOperationType',
+             'action': 'BlockErrorAction', '*nospace': 'bool',
+             'reason': 'str' } }
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 7bea43bf72..85bcdedcef 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -1019,22 +1019,34 @@ DeviceState *blk_get_attached_dev(BlockBackend *blk)
+     return blk->dev;
+ }
  
+-/* Return the qdev ID, or if no ID is assigned the QOM path, of the block
+- * device attached to the BlockBackend. */
+-char *blk_get_attached_dev_id(BlockBackend *blk)
++static char *blk_get_attached_dev_id_or_path(BlockBackend *blk, bool want_id)
+ {
+     DeviceState *dev = blk->dev;
+     IO_CODE();
  
--def get_actual_size(vm, node_name):
--    nodes = vm.cmd('query-named-block-nodes', flat=True)
--    node = next(n for n in nodes if n['node-name'] == node_name)
--    return node['image']['actual-size']
--
--
- class TestBackup(iotests.QMPTestCase):
-     def setUp(self):
-         qemu_img_create('-f', iotests.imgfmt, source_img, str(size))
-@@ -84,7 +78,12 @@ class TestBackup(iotests.QMPTestCase):
-             }
-         })
+     if (!dev) {
+         return g_strdup("");
+-    } else if (dev->id) {
++    } else if (want_id && dev->id) {
+         return g_strdup(dev->id);
+     }
  
--        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+        self.bitmap = {
-+            'node': 'temp',
-+            'name': 'bitmap0'
-+        }
+     return object_get_canonical_path(OBJECT(dev)) ?: g_strdup("");
+ }
+ 
++/*
++ * Return the qdev ID, or if no ID is assigned the QOM path, of the block
++ * device attached to the BlockBackend.
++ */
++char *blk_get_attached_dev_id(BlockBackend *blk)
++{
++    return blk_get_attached_dev_id_or_path(blk, true);
++}
 +
-+        self.vm.cmd('block-dirty-bitmap-add', self.bitmap)
- 
-     def tearDown(self):
-         # That should fail, because region is discarded
-@@ -113,6 +112,13 @@ class TestBackup(iotests.QMPTestCase):
- 
-         self.vm.event_wait(name='BLOCK_JOB_COMPLETED')
- 
-+    def get_bitmap_count(self):
-+        nodes = self.vm.cmd('query-named-block-nodes', flat=True)
-+        temp = next(n for n in nodes if n['node-name'] == 'temp')
-+        bitmap = temp['dirty-bitmaps'][0]
-+        assert bitmap['name'] == self.bitmap['name']
-+        return bitmap['count']
++static char *blk_get_attached_dev_path(BlockBackend *blk)
++{
++    return blk_get_attached_dev_id_or_path(blk, false);
++}
 +
-     def test_discard_written(self):
-         """
-         1. Guest writes
-@@ -125,7 +131,7 @@ class TestBackup(iotests.QMPTestCase):
-         self.assert_qmp(result, 'return', '')
+ /*
+  * Return the BlockBackend which has the device model @dev attached if it
+  * exists, else null.
+@@ -2125,6 +2137,7 @@ static void send_qmp_error_event(BlockBackend *blk,
  
-         # Check that data is written to temporary image
--        self.assertGreater(get_actual_size(self.vm, 'temp'), size)
-+        self.assertEqual(self.get_bitmap_count(), size)
- 
-         self.do_backup()
- 
-@@ -138,13 +144,18 @@ class TestBackup(iotests.QMPTestCase):
-         """
-         self.do_backup()
- 
-+        # backup job did discard operation and pollute the bitmap,
-+        # we have to clean the bitmap, to check next write
-+        self.assertEqual(self.get_bitmap_count(), size)
-+        self.vm.cmd('block-dirty-bitmap-clear', self.bitmap)
-+
-         # Try trigger copy-before-write operation
-         result = self.vm.hmp_qemu_io('cbw', 'write 0 1M')
-         self.assert_qmp(result, 'return', '')
- 
-         # Check that data is not written to temporary image, as region
-         # is discarded from copy-before-write process
--        self.assertLess(get_actual_size(self.vm, 'temp'), 512 * 1024)
-+        self.assertEqual(self.get_bitmap_count(), 0)
- 
- 
- if __name__ == '__main__':
+     optype = is_read ? IO_OPERATION_TYPE_READ : IO_OPERATION_TYPE_WRITE;
+     qapi_event_send_block_io_error(blk_name(blk),
++                                   blk_get_attached_dev_path(blk),
+                                    bs ? bdrv_get_node_name(bs) : NULL, optype,
+                                    action, blk_iostatus_is_enabled(blk),
+                                    error == ENOSPC, strerror(error));
 -- 
 2.47.0
 
