@@ -2,83 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DEB9A9644
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B61449A964E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:37:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t34j7-00039o-V6; Mon, 21 Oct 2024 22:34:29 -0400
+	id 1t34lp-0004Z9-Mi; Mon, 21 Oct 2024 22:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t34j6-00039M-LM
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:34:28 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t34j4-0003Mj-S2
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:34:28 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-20c8c50fdd9so38135685ad.0
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729564464; x=1730169264; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rKQcdRNGpdnsHkX541RiM+Fub1nh0YSApjfSuafCB5Y=;
- b=Pwyx5FBsGt5fD9UGKKQ+JZDH//I+DNsIW7Tj00XkQRHPRE9WrhWgcCxqSbKuEcH6iz
- XR9MSs7BlJ2CyqCbKaBHuIvPj+8gCcyA56jwImOWQdRQOnw88VLN/wJEPL2of81hAnl3
- g6CFabknsIHJP/oaWhmaF9Rqz3O8sDXL/Le8vci5ZiwSBzHo7w6eUHxBrpnZW4USTFzk
- uhcLpDf1/hYyi44uwq2nGuapo0RLCgGlclIMZ2KX22swcfkHOdmEYxPbAHxNj/0/mVMF
- buIHuZetWpyaukR3oAPTu+Ig+5kSCAGAHidkA4SLPkR3nWHvTYg8P/0wVsKKjT/YZ5mR
- 9zZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729564464; x=1730169264;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rKQcdRNGpdnsHkX541RiM+Fub1nh0YSApjfSuafCB5Y=;
- b=Le0x5Y0Tp19KXJjfcHi054FgTF1LypNPhHX0ivZvmENplO4ZZxZfbMHtSfFwGm8jHU
- tIrBjDeBYYCSnO8eBsSUhTmI+FiX+l4sVGpzVz35JnCk42rE12cmfWe53ouBTFGKOQll
- fWcFVcrwJkX40IFMSWhJc3trMPEiREAcCY+X2BuH03BoMwcArkJbMA49/pNJzI5LT+mD
- FoVyLKnMCk9wZ4aC+dVVE2Li1G1Nzc8X8vb6E7ThMzWakEvur1Q1YCjy5MSMlqwIXeIy
- mRbURCJLpmuaROpNaRT9kSojBk3WgKqjios3PqxGAch4ejLaGII+/0tgN8zEJJc2nDxu
- HSnQ==
-X-Gm-Message-State: AOJu0Ywq7G6JuY8tEqbhEq9rUY2lwyUVaZvAHiH2xo+FGxzdM6EHhHlS
- TRvIQaCBCFVfm/qaMGhsBXcS5Bm7nFV5vw4Zdn/iwSEFVyeA2ykdnrq0sJRB25Y=
-X-Google-Smtp-Source: AGHT+IFQsbOpcDZ+9FVwpzomsuu9A0rYtLmcbvdAxAul/Q4wAZrS9yyUrFT/ZtPqWLQ9fdtLvsZBVQ==
-X-Received: by 2002:a17:903:22ce:b0:205:8763:6c2d with SMTP id
- d9443c01a7336-20e96ebde15mr20210425ad.9.1729564463982; 
- Mon, 21 Oct 2024 19:34:23 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0c0cc5sm32707585ad.125.2024.10.21.19.34.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Oct 2024 19:34:23 -0700 (PDT)
-Message-ID: <38ff2ca7-7156-4ad8-b777-dab689043ecc@linaro.org>
-Date: Mon, 21 Oct 2024 19:34:22 -0700
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t34ln-0004Yo-7x
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:37:15 -0400
+Received: from mail-me3aus01olkn20805.outbound.protection.outlook.com
+ ([2a01:111:f403:2818::805]
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t34lm-0003kd-0k
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:37:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DGkygEd0qTfuZhQN6ejWX3J9ELUDUzp1FCNawsjGvIG3FDb4h054OlFDjSrA/Tbm2iRr6PbP0SQHnlM+qqzHG872kzEEJA01m46Nq5DrKcDqE4ZM6PFhx/U+/ei3sbQQQ0la4F1FJPbVPZfSf55IDi4jfYxfb6HjDbsXU2Atgqpo0da0+vlYhv/IJjmN7RwghJiL856QERxTqZCGyWVeIcPjGsAOZ2MpJsQJtJsC4lTV8RGKc9B4BHvK6Sjruql+MHdBlAEKHZp/9JbcMEajSfPQe8uty3/tlTZLtejGmSI6ZZdFgfDMLbcQop8ieagC4QDFt/b1YV6WvqJXD4g1nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RpP4HYAN0HjtWUYcYFBCfApKZxpC1I/YWuPbgmdR+0o=;
+ b=yyuwFEcaZQnRcnIaEwjD4DAzrki22on8sh+PiBUG5V84AifuVq9M6wlWdPC/NtlZq1XV1wjOYG33DVUI9odavuB+NYFeXW1JS9UXGTPZs9kdxxuuiMJdaQnrVTWSBbUG+6Bb288CQ/bi5ybg9fCAOHO3RygBPHBBTrVHJG+ReauWdRgytc3h/EjYH6H7SaECdJbGOhCYihc5F++YM9vhKtqEIprAqziqC65F1DyK6yB+jWOPFRmEdaIOhbhkdQO6mBVjqaNH4mpcTij0IQtA2Qu4Xr2urOIG2mTugEx9Yhp8LPoKTKQphsWLmuLGTzEVL3JF/6Yzc7E6DapYHgesmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RpP4HYAN0HjtWUYcYFBCfApKZxpC1I/YWuPbgmdR+0o=;
+ b=I8RsPqXfZnDbtG4pamCgb0gyFcfZ3sTDwJL5ihbCSTPB+2zeqjaEEhrD5oMaME0v3Phws9Sex+qxM6rh9MLN5dFRBjdaeFkBNsyjMou8wdM2Uot7yL71YdE/5qskLqZLqAeoxa+X8BjkRGu6MfXJncCfROfsnDUjlge7qErqvnitfrAgIeJIHAJvl7CMyGZr7B/n4WnGhZqLxIAGTGoRu10TrXma0hZEqXGKD7WRsTznpvGjgPAc6FI8dGP7sMrNokQG4r5a97FkwDZABvl2v1GAoxqy4PB2vtjF253W88gDacKQMtUOpCoRaecFjXFVRiEB72cE5ELUlJssL0omuw==
+Received: from ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:231::14)
+ by SY3PPF947566139.AUSP300.PROD.OUTLOOK.COM (2603:10c6:18::4a0) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.23; Tue, 22 Oct
+ 2024 02:37:02 +0000
+Received: from ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::f32e:6e2b:b854:7166]) by ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::f32e:6e2b:b854:7166%6]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 02:37:02 +0000
+References: <20241021163538.136941-1-pbonzini@redhat.com>
+ <20241021163538.136941-4-pbonzini@redhat.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v2 03/13] meson: pass rustc_args when building all crates
+Date: Tue, 22 Oct 2024 10:35:32 +0800
+In-reply-to: <20241021163538.136941-4-pbonzini@redhat.com>
+Message-ID: <ME0P300MB104040B27788B33C0ECE60F3954C2@ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0037.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::9) To ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:220:231::14)
+X-Microsoft-Original-Message-ID: <87bjzcsw1p.fsf@hotmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: Tolerate CONFIG_LSM_MMAP_MIN_ADDR
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
- Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org
-References: <20241021121820.483535-1-iii@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241021121820.483535-1-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ME0P300MB1040:EE_|SY3PPF947566139:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97279746-6619-469d-512d-08dcf24268d9
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|19110799003|5072599009|8060799006|461199028|15080799006|7092599003|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info: m1NPcdKW1pGxb+QDEwgMM3Cs6LHHJgbBY7ivYzaRqVbr534sFBA21Qdl56yGAxigFYZn/7cDHxkDGlQ0w3iH80B71OxNGnSH5iOcZb6palAe7NzFMU9jJsSjNFmj9wgZroKEWQz/Trj5x+Y+G6Oz7AiFY3kfE/nVfEtcYatbOOQek33hJQmHxSVLajeCTKmC4Qkj1MPg4U1hqLbWUYhGQ66/o4jp87o3jMi5moNqgBoczIIadcuUx/vPV1yQwvW8rw5tJV8rRAnlwLjSAvG7u4xoxphp1v6XZKHBSXIp5jyg/GNDskDyonqJ/vlEY65JdzSLlo9N6bsd1IZ4DEzsoZWYoEM7X0tWUD7I1/57p9EmznnoKiA9LnJBwuoxkAHOoAm1r/J/UZh+Qnn7rj6QRV9mmLqq/d2lHUCBhqfC9kzz+gn2J4gm5VCcxEMk/RrkN+ltAX1Sgve5J15S5G7ATFtBny0Ig+N8O6uB0UeCNGWce9xIXc9f5BpkHc3PS3GGtD8PnPLOU95BylM/aVlu4haGcghfoIDrsKxUTBDWOu/jERzw7spMJz6cN93U0x6Y5e8tpCAHlErEQ1AxEfY6yA5n7Oik/neF3dA2dNB1B4tgSbVFuwdu7wxGT/xgJ5P6Nt1Trk3QS6oEnwCqegLMNGzOBxc7vFGuy+zVAFijBRtyfGRAZr5GQ1W/v3qVjI+nLFv0aXAPyaTcIZyrjiSr97NLnQBpk9dYIov5VwyrN5k=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JJhjkPaqbMQCvfgz9Ys7c2CVq3qumGlhU5GLHkSUjiP39NMGAa7PHsCLDOvL?=
+ =?us-ascii?Q?+nKv3jNHUx+nxeddKZX2T7nfPG7ue3xMzwKSD7wgMLPzU1LgxPE0VLKtbLWN?=
+ =?us-ascii?Q?lSzfqb0U6W14sBQ/6PU+f79pzhwMxZaUdNLxemNJuj9aEJ/ulxaYykp/FPn7?=
+ =?us-ascii?Q?6cQfiAguOsrKVQ2kx2V01DUAzhJAxM2Xgji59MH1BRFEa2MHy55sEGLZYrYr?=
+ =?us-ascii?Q?iTROhxPyaQ4KwJvwOimX0J6moFvAlO2hhO/eg/FcTzZhZPUfj9qGBXXIm492?=
+ =?us-ascii?Q?2zYdU5JfMUVwdMgXetxHmQeiv+S/x27OeyYEHgDGSlOAe9pjcX6W0iYjrbye?=
+ =?us-ascii?Q?5ivHipMg3HtLzB+fhbb6n4CJlXjkIWiMjGXcUEDnmd4EOfSc29oIgrsk6aLV?=
+ =?us-ascii?Q?abZFvqZIGeu5YC0HX68AcZKnq5iB7xFfeTDOwWAl1F66KhCKpD3FA+uDKuLZ?=
+ =?us-ascii?Q?FRkJNweN73fehYNIchF2Rg7tMrT/AvARSXdkro+08AZP+tYeyFuMxW2THdjv?=
+ =?us-ascii?Q?nXZBslGnoz2dS+mKfrpTdlP1WZNFIZbeQ2B/yIz06xhWfkm9RCemM0Lw5+/X?=
+ =?us-ascii?Q?09d7XfyQEyv0u3B7Z7cvoNhgHSA8aDmfgA1aoI5q/xhuLoQajDU2FUwrbQBd?=
+ =?us-ascii?Q?1LdM8x7XDgM9nCsY5jL2XwSBq5ryeEPuGhWn9acrwNfVu69V7gLO9gC+84J/?=
+ =?us-ascii?Q?rJl7j0bgUVeWS33LUv5kEInN0bFGIxiRdFC9q8cxO2SQH38gl4C+kPupaoRy?=
+ =?us-ascii?Q?EUCl3WpSHOd4ACtL+vaCLG2jSccaZraaMqtOYSmiiOJ17LeIRKxR9Qnce8tO?=
+ =?us-ascii?Q?ZOxrvk8ZNF3it5ZdrcmVQf3JwLQTZ8S+7kiXLSIxGHvcM0dCf36QeNjr+GH+?=
+ =?us-ascii?Q?o7agYgn5ZRho7twiPpkhJy464+M/sJnp1TNXd1sGF9Ee3GT+r+1jKWVozj10?=
+ =?us-ascii?Q?CUwL/tAl/uOQRB7SWMDN26VWraiHtu6z7REiq//kf4d2Z4t3C4g92qKbSxVo?=
+ =?us-ascii?Q?Tj5Jzzau0z7szx5dl9UN7SmE8zhxa3KAac2c3bfiQ59C3AAcyPOpcEqZolaL?=
+ =?us-ascii?Q?LT4RpLo0hE2QVtXFLiFRMLYpgLcyN3MZTDA7jPw0tZUHcvKUgJvGmxL2JNeE?=
+ =?us-ascii?Q?QjCTnZLE1uwHXNvRPBSl9dxGIdHWiG9B0vAEUWN3aCl/Y8SOdI1ph1YO+DGR?=
+ =?us-ascii?Q?+X68w3qh97e496juaD+HBflq4ZI+e/SMcsoJnJlAsePWFAkBxFgoImeb3/k?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97279746-6619-469d-512d-08dcf24268d9
+X-MS-Exchange-CrossTenant-AuthSource: ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 02:37:02.2473 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY3PPF947566139
+Received-SPF: pass client-ip=2a01:111:f403:2818::805;
+ envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +122,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/21/24 05:17, Ilya Leoshkevich wrote:
-> Running qemu-i386 on a system running with SELinux in enforcing mode
-> fails with:
-> 
->      qemu-i386: tests/tcg/i386-linux-user/sigreturn-sigmask: Unable to find a guest_base to satisfy all guest address mapping requirements
->        00000000-ffffffff
-> 
-> The reason is that main() determines mmap_min_addr from
-> /proc/sys/vm/mmap_min_addr, but SELinux additionally defines
-> CONFIG_LSM_MMAP_MIN_ADDR, which is normally larger: 32K or 64K, but,
-> in general, can be anything. There is no portable way to query its
-> value: /boot/config, /proc/config and /proc/config.gz are distro- and
-> environment-specific.
-> 
-> For maximum compatibility, probing is required. Use pgb_find_fallback()
-> for this purpose. The downside of this approach is that mmap_min_addr
-> remains incorrect, but there don't seem to be any practical
-> consequences from this. If a correct mmap_min_addr will be required in
-> the future, probing will need to be moved to linux-user main().
-> 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   linux-user/elfload.c | 4 ++++
->   1 file changed, 4 insertions(+)
 
-This is
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-     https://gitlab.com/qemu-project/qemu/-/issues/2598
+> rustc_args is needed to smooth the difference in warnings between the various
+> versions of rustc.  Always include those arguments.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-which we closed as a system configuration / kernel bug.
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 
-I'm open to working around the issue, because I can see it coming up again and again.
-
-In pgb_find_fallback, we use a skip value of 4M or 4G, using that skip as the base at 
-which to begin the search.  I think it might be better to use this as the initial start 
-point in pgb_find_itree as well, rather than mmap_min_addr.
-
-Since I never had a setup in which this triggered, would you be willing to test such a change?
-
-
-r~
+--
+Best Regards
+Junjie Mao
 
