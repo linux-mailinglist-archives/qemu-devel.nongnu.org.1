@@ -2,52 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F8D9AB0E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 16:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E979AB0DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 16:31:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3FuY-0001sm-EB; Tue, 22 Oct 2024 10:31:02 -0400
+	id 1t3FuK-0001Xb-Ds; Tue, 22 Oct 2024 10:30:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t3Fti-0001On-GT
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t3Fti-0001Om-FA
  for qemu-devel@nongnu.org; Tue, 22 Oct 2024 10:30:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t3Ftg-0007E4-RJ
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 10:30:10 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t3Ftg-0007EN-O8
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 10:30:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729607405;
+ s=mimecast20190719; t=1729607407;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=34FU5IvKD9KpjKgE5Lz4+yatoqkPLZYWWNJPCotv4fQ=;
- b=WHDOI9a4rPZIz9DrL36s44+RyCjc02FOdOffWfXgQgEN7mE8wcDRCXlA1W+ATsjw4A66jH
- GB+BG0e0baIhelnMz1jwktQ2XiVmxfBE4E+ZIlJxLpmPuJMbQzz9cxj2xe73ygNH0fmrzN
- JGJyMGgfzugycb0xb1WlHlWkJH5V1Tg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=34PkQkzS2fJKjA97jCvEOEfq09+BKhcwhQ4YHpj/pVU=;
+ b=eUwHvAruEZxZPg2OszD6TE8IGE4XZ6/EQ/UnrrUf69qaSejNKPqPkQVtBFjLeeir5W3iG+
+ 0VnbAsBy9TeHn0WKAJmwC/bCigB38s8mc+J00snNbHXlT4jCiEkPGPZgpvzsyfIOFZCAzO
+ Nshzwy909doX55x3jnOSLkts9Wx6GKc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-_dbia4beNWWtNwYimNwOHg-1; Tue,
- 22 Oct 2024 10:30:01 -0400
-X-MC-Unique: _dbia4beNWWtNwYimNwOHg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-OM0OjuzlPReio9LBApKOhQ-1; Tue,
+ 22 Oct 2024 10:30:04 -0400
+X-MC-Unique: OM0OjuzlPReio9LBApKOhQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8F23D197701F; Tue, 22 Oct 2024 14:29:58 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9788F19560BE; Tue, 22 Oct 2024 14:30:03 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.72.116.80])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C2E261955F42; Tue, 22 Oct 2024 14:29:53 +0000 (UTC)
+ id B3B001955E84; Tue, 22 Oct 2024 14:29:59 +0000 (UTC)
 From: Dehan Meng <demeng@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
  peter.maydell@linaro.org, berrange@redhat.com
-Subject: [PATCH v4 0/5] qemu-ga: Hanle memory leak and simplify code
-Date: Tue, 22 Oct 2024 22:29:43 +0800
-Message-Id: <20241022142948.531325-1-demeng@redhat.com>
+Subject: [PATCH v4 1/5] qemu-ga:  'Null' check for mandatory parameters
+Date: Tue, 22 Oct 2024 22:29:44 +0800
+Message-Id: <20241022142948.531325-2-demeng@redhat.com>
+In-Reply-To: <20241022142948.531325-1-demeng@redhat.com>
+References: <20241022142948.531325-1-demeng@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
@@ -76,27 +79,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v4:
-Handle g_autoptr() to simplify code and memory leak
-
-v3:
-Modify commits message and do some minor update.
-
-v2:
-Split v1 up to separate commits for each logically independent change
-
-Dehan Meng (5):
-  'Null' check for mandatory parameters
-  Initialize correctly so getline works properly
-  Avoiding freeing line prematurely
-  For correcting code style
-  Replace g_new0() with g_autoptr()
+sscanf return values are checked and add 'Null' check for
+mandatory parameters.
 
 Signed-off-by: Dehan Meng <demeng@redhat.com>
+---
+ qga/commands-linux.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
- qga/commands-linux.c | 135 +++++++++++++++++++++----------------------
- 1 file changed, 66 insertions(+), 69 deletions(-)
-
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+index 51d5e3d927..f0e9cdd27c 100644
+--- a/qga/commands-linux.c
++++ b/qga/commands-linux.c
+@@ -2103,7 +2103,9 @@ static char *hexToIPAddress(const void *hexValue, int is_ipv6)
+         int i;
+ 
+         for (i = 0; i < 16; i++) {
+-            sscanf(&hexStr[i * 2], "%02hhx", &in6.s6_addr[i]);
++            if (sscanf(&hex_str[i * 2], "%02hhx", &in6.s6_addr[i]) != 1) {
++                return NULL;
++            }
+         }
+         inet_ntop(AF_INET6, &in6, addr, INET6_ADDRSTRLEN);
+ 
+@@ -2164,6 +2166,10 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+                 networkroute = route;
+                 networkroute->iface = g_strdup(Iface);
+                 networkroute->destination = hexToIPAddress(Destination, 1);
++                if (networkroute->destination == NULL) {
++                    g_free(route);
++                    continue;
++                }
+                 networkroute->metric = Metric;
+                 networkroute->source = hexToIPAddress(Source, 1);
+                 networkroute->desprefixlen = g_strdup_printf(
+@@ -2195,6 +2201,10 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+                 networkroute = route;
+                 networkroute->iface = g_strdup(Iface);
+                 networkroute->destination = hexToIPAddress(&Destination, 0);
++                if (networkroute->destination == NULL) {
++                    g_free(route);
++                    continue;
++                }
+                 networkroute->gateway = hexToIPAddress(&Gateway, 0);
+                 networkroute->mask = hexToIPAddress(&Mask, 0);
+                 networkroute->metric = Metric;
 -- 
 2.40.1
 
