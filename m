@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BBD9A9615
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 986739A9617
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:15:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t34Q4-0005w6-Pu; Mon, 21 Oct 2024 22:14:49 -0400
+	id 1t34Q5-0005w8-3c; Mon, 21 Oct 2024 22:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t34Q1-0005vB-RM
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:45 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1t34Q2-0005vO-Nn
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:46 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t34Pz-0001Wi-Ku
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:45 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2e31af47681so4056138a91.2
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:14:43 -0700 (PDT)
+ id 1t34Q1-0001Wq-49
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:46 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-7eb0bc007edso30099a12.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729563282; x=1730168082;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729563283; x=1730168083;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sVA3h8dGHcJJcPtq0zM3qZ8s881zYIxPG4Jh2pmOWt8=;
- b=S+xCVywvJ3/w4fMH57VS0yRNSYKV4Dhg5giX53yMYjDEwYpc7iu30PqhRJ9x7szjH+
- ikO6q31g8obaCHRJlJZLbfD/nJsNO+izCOdLfIoug6leEmBDGmi05Qw7iy4YcbsgKUmr
- 3cOtwRv6oke6TCvslVSdxArXLDwTfi95/XA2iOZ1cSWTfjWtwH3qEoBA6GcCreUIphMv
- 4OTDemme8FVJIyRRhnrPdq4NH2AUSoKpNnsxxylW8XmREZQPuJOjuUD2z5AsuAZb7xhJ
- dp28K0j0UmPls5zfW7OXDsTx5R7XulT0OtmpbkYbTxJFCVLcJlx6y//zPyX9ugLHeYlu
- w01w==
+ bh=W5MvZfZJ1w+4jWoKSy1g+C8Ivvk/AddqkyL7u9uzph4=;
+ b=lPU5yoeQOO6zwtnLcmgOv6RGaNAHh0BrgtmkN3qJoKFw060w2rr12Nnlz2iNJebhFD
+ 6MKcEud4OgRtFZf24cwHSyor/7cAU57MOl48T2KTOigZidnCp4RmDSncRMXM9N3YFsSH
+ jR1dO7goELGgB/KgCJ5GJPnCojdq/EPZtIAqK/zZo6pUvbFI5nauIX+2zc57nABtVKUK
+ Wbnm0o+pRnKEFpj13AaT0pMicHnihoKCclMOM71WTGy/P4QlrtNQtzNNBXC0Eg2zt+8d
+ sQ8HFrTJCdyt+Bnv4ixxDj4WA5ZTReWGmuypLe9qQ1uQlIOsVgTuMzNl783bb8kSlzIW
+ n6ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729563282; x=1730168082;
+ d=1e100.net; s=20230601; t=1729563283; x=1730168083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sVA3h8dGHcJJcPtq0zM3qZ8s881zYIxPG4Jh2pmOWt8=;
- b=dZRLgMgNotpYdQkA2qn0sYEuwUmnQYT4kQ4RNe2ymYE8PKvAnUciRM5oqTzS2bHili
- TsuTZowt+sQ9+EQaUpD0t2wdiQ3a5tsouINf+lwANrh+2G6PwYsRp+An10yTlB9MvtQ1
- h3qeIdyPBuwUknN9aLrOJEDehYUXI9BsGpWqgDHJW7YOD114kSOFusbtsr6dOEsKCGDn
- 28Kp0VM+XPhAvYSNi9Ys26O/D53pSC6pMHzPORrgd3MqqW4V5Yc0ruUVrWm5zCp2ZB6Z
- kE8hLoS84lcheC6e8Cx7KLB9GCfADFUpEAb9w7/6tHjDqMH+Qc93aT+BtpkOWE6+AcU3
- liiA==
-X-Gm-Message-State: AOJu0YyTcft2NDB27MUybFn3uSG5ZT16f87wLLArT1l5XQ989h/C/rU7
- lXR302JuZziwREGhu49ueb14WAG5ouWLlK4CuLTpuwyh81PVgW+62BeAzwcnHvb15dHRX/Kdgks
- D3JS0Gw==
-X-Google-Smtp-Source: AGHT+IEFp6ES0EJ9Ic3b/aaPxATEdFUK8XSINx3nS9axZTxRJCfOoTsA06Hu0NzXL6l7o8Xq4M86LQ==
-X-Received: by 2002:a17:90a:4e0b:b0:2e5:e33c:99c5 with SMTP id
- 98e67ed59e1d1-2e5e33c9a62mr276073a91.37.1729563281072; 
- Mon, 21 Oct 2024 19:14:41 -0700 (PDT)
+ bh=W5MvZfZJ1w+4jWoKSy1g+C8Ivvk/AddqkyL7u9uzph4=;
+ b=gEF5wky7X+l+b1GRS3obCtElceOS5FHk+lmEUBIB1jU73ariOSI+I57yXS+1npDUGB
+ ne8YxzayQikbI/fY+7b923BK58ovCwh7DQQ+j2LvkKDSzeAHNbl2gVgdJi7D/Yc4Q1u+
+ 1/lvDjRKzqlitZWHyA5LdmPWhVQTvzi7HKb1Xfw3uQTijp1nYqxB1cnLllM12sZBRyVH
+ sGXDVaBOvjoPj2GYfUejGYyUyvntn2HMz8hhjGjNmsNDcmTXIdOzkMWcpXgzBXDVFZBr
+ xcW3316WJdVUzvv3MT87Yidz+Z+AIcdU849CIDH0IQegz6alzGePITWoFvjDkaZEkMGX
+ kCLg==
+X-Gm-Message-State: AOJu0YzLLLSmnQPxi9BzSL9D93WLitC7NXfuWQBC/ARxDIUFPLS2fI//
+ nkcJAIQu8h1T/mimxOJI7XRqtfAWr9hq4TaqXewo9fFNNeEZuct9gWEQ8khd2fo5jP0PlI7Dvif
+ FuMkTSA==
+X-Google-Smtp-Source: AGHT+IENuVTNXjHICjhlAVrfJZrJ6dYjOmJ/DjzyWdC0koxZVln6NeZFXsl3SeQE82G6xu8LLtkFXw==
+X-Received: by 2002:a05:6a20:d795:b0:1d9:252f:a063 with SMTP id
+ adf61e73a8af0-1d96dece061mr1204868637.25.1729563282891; 
+ Mon, 21 Oct 2024 19:14:42 -0700 (PDT)
 Received: from Hyman-Dev-Euler.zelin.local ([103.172.41.198])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0bd63fsm32726545ad.173.2024.10.21.19.14.39
+ d9443c01a7336-20e7f0bd63fsm32726545ad.173.2024.10.21.19.14.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 19:14:40 -0700 (PDT)
+ Mon, 21 Oct 2024 19:14:42 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v3 1/5] tests/migration: Move the guestperf tool to scripts
- directory
-Date: Tue, 22 Oct 2024 10:14:22 +0800
-Message-Id: <fe995bdedf850f4618721911fb4122621f4768c9.1729562974.git.yong.huang@smartx.com>
+Subject: [PATCH v3 2/5] tests/migration: Make initrd-stress.img built by
+ default
+Date: Tue, 22 Oct 2024 10:14:23 +0800
+Message-Id: <712b58440ee6a2cfae925978276171553dbae1eb.1729562974.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1729562974.git.yong.huang@smartx.com>
 References: <cover.1729562974.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,115 +98,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-Guestperf was designed to test the performance of migration,
-with a loose connection to the fundamental test cases of QEMU.
-
-To improve the repository's structure, move it to the scripts
-directory.
-
-Add myself as a maintainer for the guestperf so that I can
-help to fix bugs.
+The initrd-stress.img was compiled by specifying the target,
+to make it easier for developers to play the guestperf tool,
+make it built when dependencies suffices.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- MAINTAINERS                                          | 5 +++++
- {tests => scripts}/migration/guestperf-batch.py      | 0
- {tests => scripts}/migration/guestperf-plot.py       | 0
- {tests => scripts}/migration/guestperf.py            | 0
- {tests => scripts}/migration/guestperf/__init__.py   | 0
- {tests => scripts}/migration/guestperf/comparison.py | 0
- {tests => scripts}/migration/guestperf/engine.py     | 0
- {tests => scripts}/migration/guestperf/hardware.py   | 0
- {tests => scripts}/migration/guestperf/plot.py       | 0
- {tests => scripts}/migration/guestperf/progress.py   | 0
- {tests => scripts}/migration/guestperf/report.py     | 0
- {tests => scripts}/migration/guestperf/scenario.py   | 0
- {tests => scripts}/migration/guestperf/shell.py      | 0
- {tests => scripts}/migration/guestperf/timings.py    | 0
- 14 files changed, 5 insertions(+)
- rename {tests => scripts}/migration/guestperf-batch.py (100%)
- rename {tests => scripts}/migration/guestperf-plot.py (100%)
- rename {tests => scripts}/migration/guestperf.py (100%)
- rename {tests => scripts}/migration/guestperf/__init__.py (100%)
- rename {tests => scripts}/migration/guestperf/comparison.py (100%)
- rename {tests => scripts}/migration/guestperf/engine.py (100%)
- rename {tests => scripts}/migration/guestperf/hardware.py (100%)
- rename {tests => scripts}/migration/guestperf/plot.py (100%)
- rename {tests => scripts}/migration/guestperf/progress.py (100%)
- rename {tests => scripts}/migration/guestperf/report.py (100%)
- rename {tests => scripts}/migration/guestperf/scenario.py (100%)
- rename {tests => scripts}/migration/guestperf/shell.py (100%)
- rename {tests => scripts}/migration/guestperf/timings.py (100%)
+ tests/migration/meson.build | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c21d6a2f9e..c7938c397c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3403,6 +3403,11 @@ F: migration/dirtyrate.h
- F: include/sysemu/dirtyrate.h
- F: docs/devel/migration/dirty-limit.rst
+diff --git a/tests/migration/meson.build b/tests/migration/meson.build
+index a91aa61c65..e10acbe317 100644
+--- a/tests/migration/meson.build
++++ b/tests/migration/meson.build
+@@ -2,17 +2,21 @@ sysprof = dependency('sysprof-capture-4', method: 'pkg-config', required: false)
+ glib_static = dependency('glib-2.0', version: glib_req_ver, required: false,
+                          method: 'pkg-config', static: true)
  
-+Migration performance test tool
-+M: Hyman Huang <yong.huang@smartx.com>
-+S: Maintained
-+F: scripts/migration/guestperf*
+-stress = executable(
+-  'stress',
+-  files('stress.c'),
+-  dependencies: [glib_static, sysprof],
+-  link_args: ['-static'],
+-  build_by_default: false,
+-)
+ 
+-custom_target(
+-  'initrd-stress.img',
+-  output: 'initrd-stress.img',
+-  input: stress,
+-  command: [find_program('initrd-stress.sh'), '@OUTPUT@', '@INPUT@']
+-)
++if host_os == 'linux' and sysprof.found() and glib_static.found()
++    stress = executable(
++      'stress',
++      files('stress.c'),
++      dependencies: [glib_static, sysprof],
++      link_args: ['-static'],
++    )
 +
- Detached LUKS header
- M: Hyman Huang <yong.huang@smartx.com>
- S: Maintained
-diff --git a/tests/migration/guestperf-batch.py b/scripts/migration/guestperf-batch.py
-similarity index 100%
-rename from tests/migration/guestperf-batch.py
-rename to scripts/migration/guestperf-batch.py
-diff --git a/tests/migration/guestperf-plot.py b/scripts/migration/guestperf-plot.py
-similarity index 100%
-rename from tests/migration/guestperf-plot.py
-rename to scripts/migration/guestperf-plot.py
-diff --git a/tests/migration/guestperf.py b/scripts/migration/guestperf.py
-similarity index 100%
-rename from tests/migration/guestperf.py
-rename to scripts/migration/guestperf.py
-diff --git a/tests/migration/guestperf/__init__.py b/scripts/migration/guestperf/__init__.py
-similarity index 100%
-rename from tests/migration/guestperf/__init__.py
-rename to scripts/migration/guestperf/__init__.py
-diff --git a/tests/migration/guestperf/comparison.py b/scripts/migration/guestperf/comparison.py
-similarity index 100%
-rename from tests/migration/guestperf/comparison.py
-rename to scripts/migration/guestperf/comparison.py
-diff --git a/tests/migration/guestperf/engine.py b/scripts/migration/guestperf/engine.py
-similarity index 100%
-rename from tests/migration/guestperf/engine.py
-rename to scripts/migration/guestperf/engine.py
-diff --git a/tests/migration/guestperf/hardware.py b/scripts/migration/guestperf/hardware.py
-similarity index 100%
-rename from tests/migration/guestperf/hardware.py
-rename to scripts/migration/guestperf/hardware.py
-diff --git a/tests/migration/guestperf/plot.py b/scripts/migration/guestperf/plot.py
-similarity index 100%
-rename from tests/migration/guestperf/plot.py
-rename to scripts/migration/guestperf/plot.py
-diff --git a/tests/migration/guestperf/progress.py b/scripts/migration/guestperf/progress.py
-similarity index 100%
-rename from tests/migration/guestperf/progress.py
-rename to scripts/migration/guestperf/progress.py
-diff --git a/tests/migration/guestperf/report.py b/scripts/migration/guestperf/report.py
-similarity index 100%
-rename from tests/migration/guestperf/report.py
-rename to scripts/migration/guestperf/report.py
-diff --git a/tests/migration/guestperf/scenario.py b/scripts/migration/guestperf/scenario.py
-similarity index 100%
-rename from tests/migration/guestperf/scenario.py
-rename to scripts/migration/guestperf/scenario.py
-diff --git a/tests/migration/guestperf/shell.py b/scripts/migration/guestperf/shell.py
-similarity index 100%
-rename from tests/migration/guestperf/shell.py
-rename to scripts/migration/guestperf/shell.py
-diff --git a/tests/migration/guestperf/timings.py b/scripts/migration/guestperf/timings.py
-similarity index 100%
-rename from tests/migration/guestperf/timings.py
-rename to scripts/migration/guestperf/timings.py
++    custom_target(
++      'initrd-stress.img',
++      output: 'initrd-stress.img',
++      input: stress,
++      command: [find_program('initrd-stress.sh'), '@OUTPUT@', '@INPUT@'],
++      build_by_default: true,
++      depends: [stress],
++    )
++endif
 -- 
 2.27.0
 
