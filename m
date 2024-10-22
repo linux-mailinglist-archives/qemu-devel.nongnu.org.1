@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F339AA0B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5E49AA091
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:57:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3CYx-0001lO-15; Tue, 22 Oct 2024 06:56:31 -0400
+	id 1t3CYt-0001id-0g; Tue, 22 Oct 2024 06:56:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYo-0001ia-N5
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:24 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1t3CYn-0001ho-22
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:21 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYn-0001yt-47
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:22 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5c9709c9b0cso7211143a12.1
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:20 -0700 (PDT)
+ id 1t3CYk-0001yB-OG
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:20 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37d58377339so5880002f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729594580; x=1730199380; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729594577; x=1730199377; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LfxPswSzpy5PJY7wIfJ4Znven71oBCSA3p2JUb9OqOg=;
- b=hXzWgu13QIr+QYXUj0yTO/727/OWh1+qF08195R8LmqpA0NEmVZmpMPGHcFWEnY3oq
- hDRjYn51SivmTdwDsF9fvc0xhO9a9DqSl++q0aMnZbejrmNEuJcbPIMK99ovAsZvedM+
- YjpRGUvwuqxxOyZ4JLGykLTo+p3aOp1qwj1yOESz1Qj/5sm7dRonCj8KU3Xd8cB+AbzK
- 2irrfiFTh9EcyzbuICBcRuSAJXdARqXl6Aq445UnkNcxyfPHS6HokXGj8TiJ9xDyDdnh
- gKe0HX6NOJAL2x40Uphr6KIN92iQs/Eycy8IxQ/W5n9462h9tHZNMMn2mg9u7DrbMZlv
- 0vXg==
+ bh=VedVTeltUD2hOjhTzgZcTRLZkzOYBwLXkPWLhE+aU3A=;
+ b=uCBJONxYiFuFvNaL8Mrpcw4UN+kTMvbYwlhUEQKfMrNDnrQlXqezd7YzpcoQ0u9+VW
+ Q3pts0L4dbiTgaHNGdtaswHkCtC7T1l2GJ3KgX4NezmIM9+Qg+oPNrt2Z9aIOI9ghgKH
+ DW0PD1PgWWGKFEZYOndDo4IMzYg1lptu4SmsygJ8jqPpuaIC0/LueOPCk8sHy9ZTeFat
+ r9FSbLTReSpcJt2i0HJVdwfk5LdF2Kdm1exYgLb06io+uDVlRiyChoq6FT57BheJ85Ny
+ F3unFBY0eKJxigI7/igx1/TaVntOBsFcIMFtDtLYWLhY5/fCxl4F/tkG1offm2e2Ar50
+ Y/pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729594580; x=1730199380;
+ d=1e100.net; s=20230601; t=1729594577; x=1730199377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LfxPswSzpy5PJY7wIfJ4Znven71oBCSA3p2JUb9OqOg=;
- b=rohM4eX/iRx+43i0oGMoK9wfxS3wt+diSOh7+TWQVRAq91hT9yUAY9hGAYZpU0KbCn
- m0QmMNekQlVyzJAfdvGjrKFQLxCznaGyd3pk+GeMRJPZApXJ586rOvcuqOVVwd+6KYPe
- fnjHXsmNB3LTyfmZcWtQw3xEkMCH9h38RW90mTYVZDLZrGQPDEHtq3WNtHwBl44cK4Qm
- eAS+MNp9gymtg25Xe81Sg8ElN+Hky19AiTe9SRWat5awWsmV9b80cNZO0LQUpHKsYSql
- Sb4jHMEKW9jZjxvVAO147kBf7AzwQNNIBUf/ybX8QQjcGFtRjtCSYePYa6Yw+hFR2SFj
- 79bA==
-X-Gm-Message-State: AOJu0YwvOXnrmmfCiHRW1o0p9fphg9DAmMKgMmMvUY8MdIVbADUKOkpO
- 7QR+OyTzbawZ4vxFlXa5Eq/8N2/QEF4R9uK/sLuKUDcqzWKE940Rs1bav9lxe94=
-X-Google-Smtp-Source: AGHT+IEWTHq0nZKsD5+vd+nTSltz6qRpJ8m1ZUA3e2J9fRXNb4Q6Dz/tYps28BHQ7v9MYQ4wj/pQ1w==
-X-Received: by 2002:a05:6402:1d49:b0:5c9:57bd:e9d with SMTP id
- 4fb4d7f45d1cf-5cb782f9e3fmr2351410a12.19.1729594579617; 
- Tue, 22 Oct 2024 03:56:19 -0700 (PDT)
+ bh=VedVTeltUD2hOjhTzgZcTRLZkzOYBwLXkPWLhE+aU3A=;
+ b=cht8Vngx7oFZuR2TNcKRfJ3HbSLGI/FkT/L+Pouqrx6EZj8M+6J2mtDd6p4ZGWsTNK
+ Al67MUEsBQC43wwLkoK0oOwfD2VQx4UKFMfjLmYJfau76/OSOfw4TXxXJGd3R6lxg2Ea
+ f6Q69+pEJ1q5rn49tAjTuXBTPcUVAj78DtGD7ViIDVSU3yXAt3D8FEMnt7xdivi6OdiM
+ cAxtKlZKslHQvhOx/iiCPRiHEL9LzoTpaC9JbyxYKHelVcpsbFzwcBt+QTukqEb42CSU
+ YN6A87a9mFQrkSI951ZXLGpt8Br0LjbY4XkDoKpTHUtKOals49wZj7irJgDVhl7lpwm+
+ CTdw==
+X-Gm-Message-State: AOJu0Yy4Nsnl2LYyNo7B4xcBXQBnNfDjewTWhjXkKL6eZxT3Pf0jpQh6
+ ZWlZ7L+y3bzB0uVmtj1pqutbXakHgGdNNkFmlQkGXW7/VZQC89hlT7TzFSjYrKE=
+X-Google-Smtp-Source: AGHT+IEkxGTtQDWx75WFvqG2eOnkN/ttLbD0g2OlndDgZrl3BuDo9P5GA68WBIt5JhY19RGUOaJdnw==
+X-Received: by 2002:a5d:424c:0:b0:37d:51b7:5e08 with SMTP id
+ ffacd0b85a97d-37ea21d8fbdmr11273254f8f.18.1729594576819; 
+ Tue, 22 Oct 2024 03:56:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cb66c7262bsm2981150a12.82.2024.10.22.03.56.15
+ a640c23a62f3a-a9a91572abdsm326459266b.171.2024.10.22.03.56.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Oct 2024 03:56:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D35445F8CC;
+ by draig.lan (Postfix) with ESMTP id E69C95F8D7;
  Tue, 22 Oct 2024 11:56:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 02/20] tests/docker: add NOFETCH env variable for testing
-Date: Tue, 22 Oct 2024 11:55:56 +0100
-Message-Id: <20241022105614.839199-3-alex.bennee@linaro.org>
+Subject: [PATCH v2 03/20] MAINTAINERS: mention my testing/next tree
+Date: Tue, 22 Oct 2024 11:55:57 +0100
+Message-Id: <20241022105614.839199-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,42 +115,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Testing non-auto built docker containers (i.e. custom built compilers)
-is a bit fiddly as you couldn't continue a build with a previously
-locally built container. While you can play games with REGISTRY its
-simpler to allow a NOFETCH that will go through the cached build
-process when you run the tests.
+I put it under my name as there may be other maintainer testing trees
+as well.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/docker/Makefile.include | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 681feae744..fead7d3abe 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -92,10 +92,10 @@ endif
- docker-image-alpine: NOUSER=1
- 
- debian-toolchain-run = \
--	$(if $(NOCACHE), 						\
-+	$(if $(NOCACHE)$(NOFETCH),					\
- 		$(call quiet-command,					\
- 			$(DOCKER_SCRIPT) build -t qemu/$1 -f $< 	\
--			$(if $V,,--quiet) --no-cache 			\
-+			$(if $V,,--quiet) $(if $(NOCACHE),--no-cache)	\
- 			--registry $(DOCKER_REGISTRY) --extra-files	\
- 			$(DOCKER_FILES_DIR)/$1.d/build-toolchain.sh,	\
- 			"BUILD", $1),				        \
-@@ -177,6 +177,7 @@ docker:
- 	@echo '    NETWORK=$$BACKEND     Enable virtual network interface with $$BACKEND.'
- 	@echo '    NOUSER=1             Define to disable adding current user to containers passwd.'
- 	@echo '    NOCACHE=1            Ignore cache when build images.'
-+	@echo '    NOFETCH=1            Do not fetch from the registry.'
- 	@echo '    EXECUTABLE=<path>    Include executable in image.'
- 	@echo '    EXTRA_FILES="<path> [... <path>]"'
- 	@echo '                         Include extra files in image.'
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c21d6a2f9e..b84787ae1b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4074,6 +4074,7 @@ Build and test automation
+ -------------------------
+ Build and test automation, general continuous integration
+ M: Alex Bennée <alex.bennee@linaro.org>
++T: git https://gitlab.com/stsquad/qemu testing/next
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ M: Thomas Huth <thuth@redhat.com>
+ R: Wainer dos Santos Moschetta <wainersm@redhat.com>
 -- 
 2.39.5
 
