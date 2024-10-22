@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738269A95F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5850F9A961A
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:16:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t34HR-0003OS-1G; Mon, 21 Oct 2024 22:05:53 -0400
+	id 1t34Q4-0005vW-1r; Mon, 21 Oct 2024 22:14:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t34HK-0003Ne-VX
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:05:47 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t34Q1-0005v7-Eu
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:45 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t34HI-0000jZ-Qs
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:05:46 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-71e61b47c6cso3927810b3a.2
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:05:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1t34Py-0001Wd-Ru
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:45 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20ceb8bd22fso43523785ad.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729562743; x=1730167543; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Kp9Fb0fN/ZE4y7VIcuj6RCVrocG6dAHCaO6bc3O9m1s=;
- b=o1Ot6T6WC2Xe/OpWdd2JwroJA9T7l/AaEox9vClWZ3GQOPYolzG4UCBx8AtyyP/Dfh
- or0u7eQyfI10gPJ7NxPz2IfZgs6daGiJ3Sc83MnR2jWTaw7DJT4ixp6AK5nXIjK24BG7
- BFn5k8KuHOouO4rZPBU4ua47uqnuI5u9mKSiqEnMZIZ8611PcCKsoGKHegeQICTF1pLk
- 0+90QaqkWKtmgxJSP3uK9PbEwvA6BvtOAFcBlF8FNqo8h/EjNIzL5Happe4oI0OTnlVh
- IexBhFKJFppGVklb80tPuCongJcwBFNXXukJ63DmLzi3nXeLZ79a7C8RiRKrTjIqLH2o
- BcBg==
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729563280; x=1730168080;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=28cPfR2zOBj5XZq82Me7wK87Xf09YOKdsorP/mEeBcc=;
+ b=LLC8RsAHpYNeyADPaP6EJM7PQ7xjPHCBdm9l/bjmI4jBYSMpUP8Umc+MI7dEzMQQ6t
+ zIO4XvPt+vLPkbBxWecxRwXv7Rp8lIDzd7EDeHO2555NZmmVNVpdAEjTp7RJ2iKkCNmg
+ xuWWC9WQ8f7bHmi6KEIWs1yZ4kQYFY2VqjDO6m1qTQLRsakpAUCkD6eX2ctieAO6SCxF
+ sLnReDO9VhJRrhAjAls34LEi13M93U0EsIy3LbdUZKcyhrEp6+ALJasUbCOmH0fERCya
+ HJQB29bK88uq3v6UQaO2EZZu3uOQtjqz9jcaAJBwex+znbcOnFIQ0lzks5jqb8wZ1bLm
+ GXyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729562743; x=1730167543;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Kp9Fb0fN/ZE4y7VIcuj6RCVrocG6dAHCaO6bc3O9m1s=;
- b=UruO70/0pt0JvcpzD0E31gCNMxBFFwY21vhyAxOIHiCGmTmpDEYV7dsc1PxlqPu6eO
- uYTc8y4EBRGRyjowgxq5h0WI1KC/8Xi0GTLP1AF54yeVr/CdOi3tj/9okrI4W06POO4O
- aNR0k42sslY+47+EeHlIwnwAh5gPYOpuHbh8twix8c8m5n55xupfwBRk14MVfNF5wUeO
- nsZ1HrtweyjlQ1mh/qMsPWYeu07grJQpWf+5oItC5XzCD+AZhKm/Xmiq9UkH7/u5s4pu
- 1Js1L7TzK8DNDGdnVW3vguZ5tnkuvwi54M9UQg/O1r/VpfWOKM7ZMBWjSOY1zYH0cEsD
- RC1w==
-X-Gm-Message-State: AOJu0Yz0925FxVqhbOzNmlWUOwsVKDRh4fddLqK+UyJbHEgHrZG5Vh3r
- 5zLQMUyG4bNMIjeQmoBekwAlCSQjj4calCttYJyDGlPKXE0VXY+yBWYBlsPJPrw=
-X-Google-Smtp-Source: AGHT+IFifxgiqJvmtC1hn3VJMIx04E9kZbK68atEsfjUpulLpUJP0T7YN3ToEBjQ5oZvBLGZJ49wCQ==
-X-Received: by 2002:a05:6a00:2d29:b0:71e:692e:7afb with SMTP id
- d2e1a72fcca58-71ea31172cemr16521934b3a.5.1729562742731; 
- Mon, 21 Oct 2024 19:05:42 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ d=1e100.net; s=20230601; t=1729563280; x=1730168080;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=28cPfR2zOBj5XZq82Me7wK87Xf09YOKdsorP/mEeBcc=;
+ b=aFHtaeKYv5hkqRsoNVoDzAGVBXQ0Goa5ojjyA0yUgXDk3qMj/w+ipZScjgl2EpHjrO
+ XJVnELtMtpoDplAdb9WpbvLeZDeNl7FOIQbjZNL/J2hUi/K0AcoEPpP8tviqYIiH6/FP
+ k9/z99J2OSvUrkQICTneI0+nvu0urgnmKbr36p1HJ4UWIctnKro0U9gjB/QvlILdfL5d
+ oOnJAr253SfLtqCe1VGw8jDgrTbdJPinZngSwO/EJkpI8q7VokIZ6LyX8/foJOhC5hor
+ yZofKN2LOBpFWgN60YoDCzWVQ2o99FcE/aFHFqQnJJDPFMXIjkZ0mVSrp4yRAv/Faiiq
+ 7HUQ==
+X-Gm-Message-State: AOJu0Yx4eHi3ejM+Tyt4CloaV8hC5afdE1MgnqJ1YhXy8P878CTbFjAW
+ Q+5SZm46r+qmfQP8ctBEHB9FhYRL0+juNWrYU1JEZ1Fvu+EGUzn0Wf0DG8DxLprTqzV+V1MahFI
+ RLG9gyg==
+X-Google-Smtp-Source: AGHT+IEA2KAhEso2RQI5oKovJdQTmw88nHNYuR1NTvl+1PSV4RRcBK9TVIrSly3KDQZxlT6dvKQAsw==
+X-Received: by 2002:a17:902:e74e:b0:20c:8763:b3f7 with SMTP id
+ d9443c01a7336-20e5a78adfbmr203232745ad.17.1729563279183; 
+ Mon, 21 Oct 2024 19:14:39 -0700 (PDT)
+Received: from Hyman-Dev-Euler.zelin.local ([103.172.41.198])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71ec13d74e5sm3581882b3a.125.2024.10.21.19.05.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Oct 2024 19:05:42 -0700 (PDT)
-Message-ID: <3394cdfd-16e0-4ee5-bafc-92f8e328449f@linaro.org>
-Date: Mon, 21 Oct 2024 19:05:40 -0700
+ d9443c01a7336-20e7f0bd63fsm32726545ad.173.2024.10.21.19.14.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Oct 2024 19:14:38 -0700 (PDT)
+From: yong.huang@smartx.com
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ yong.huang@smartx.com
+Subject: [PATCH v3 0/5] Guestperf: miscellaneous refinement and enrichment
+Date: Tue, 22 Oct 2024 10:14:21 +0800
+Message-Id: <cover.1729562974.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests/tcg: Test that sigreturn() does not corrupt the
- signal mask
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20241017125811.447961-1-iii@linux.ibm.com>
- <20241017125811.447961-3-iii@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241017125811.447961-3-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,77 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/17/24 05:54, Ilya Leoshkevich wrote:
-> Add a small test to prevent regressions.
-> 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   tests/tcg/multiarch/sigreturn-sigmask.c | 51 +++++++++++++++++++++++++
->   1 file changed, 51 insertions(+)
->   create mode 100644 tests/tcg/multiarch/sigreturn-sigmask.c
+From: Hyman Huang <yong.huang@smartx.com>
 
+v3:
+1. Remove the two redundant assignments in [PATCH v2 2/5] suggested by Daniel 
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Please review, thanks
+Yong
 
-r~
+v2:
+1. Update the MAINTAINERS section suggested by Fabiano Rosas 
+2. Ensure the dependencies when build the initrd-stress.img suggested by Daniel
+3. Fix some bugs
 
-> 
-> diff --git a/tests/tcg/multiarch/sigreturn-sigmask.c b/tests/tcg/multiarch/sigreturn-sigmask.c
-> new file mode 100644
-> index 00000000000..e6cc904898d
-> --- /dev/null
-> +++ b/tests/tcg/multiarch/sigreturn-sigmask.c
-> @@ -0,0 +1,51 @@
-> +/*
-> + * Test that sigreturn() does not corrupt the signal mask.
-> + * Block SIGUSR2 and handle SIGUSR1.
-> + * Then sigwait() SIGUSR2, which relies on it remaining blocked.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +#include <assert.h>
-> +#include <pthread.h>
-> +#include <signal.h>
-> +#include <stdlib.h>
-> +#include <unistd.h>
-> +
-> +int seen_sig = -1;
-> +
-> +static void signal_func(int sig)
-> +{
-> +    seen_sig = sig;
-> +}
-> +
-> +static void *thread_func(void *arg)
-> +{
-> +    kill(getpid(), SIGUSR2);
-> +    return NULL;
-> +}
-> +
-> +int main(void)
-> +{
-> +    struct sigaction act = {
-> +        .sa_handler = signal_func,
-> +    };
-> +    pthread_t thread;
-> +    sigset_t set;
-> +    int sig;
-> +
-> +    assert(sigaction(SIGUSR1, &act, NULL) == 0);
-> +
-> +    assert(sigemptyset(&set) == 0);
-> +    assert(sigaddset(&set, SIGUSR2) == 0);
-> +    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
-> +
-> +    kill(getpid(), SIGUSR1);
-> +    assert(seen_sig == SIGUSR1);
-> +
-> +    assert(pthread_create(&thread, NULL, thread_func, NULL) == 0);
-> +    assert(sigwait(&set, &sig) == 0);
-> +    assert(sig == SIGUSR2);
-> +    assert(pthread_join(thread, NULL) == 0);
-> +
-> +    return EXIT_SUCCESS;
-> +}
+v1:
+The previous patchset:
+https://lore.kernel.org/qemu-devel/cover.1722957352.git.yong.huang@smartx.com/
+does not made the necessary changes and tests for the upstream version.
+
+This patchset works for that:
+1. Move the guestperf to scripts directory suggested by Fabiano Rosas
+2. Make initrd-stress.img built by default suggested by Fabiano Rosas
+3. Make the necessary changes to adapt the latest multifd behavior
+4. A nitpick for multifd migration
+5. Support multifd compression option
+
+Hyman Huang (5):
+  tests/migration: Move the guestperf tool to scripts directory
+  tests/migration: Make initrd-stress.img built by default
+  guestperf: Support deferred migration for multifd
+  guestperf: Nitpick the inconsistent parameters
+  guestperf: Introduce multifd compression option
+
+ MAINTAINERS                                   |  5 +++
+ .../migration/guestperf-batch.py              |  0
+ .../migration/guestperf-plot.py               |  0
+ {tests => scripts}/migration/guestperf.py     |  0
+ .../migration/guestperf/__init__.py           |  0
+ .../migration/guestperf/comparison.py         | 15 ++++++++-
+ .../migration/guestperf/engine.py             | 33 ++++++++++++++++---
+ .../migration/guestperf/hardware.py           |  0
+ .../migration/guestperf/plot.py               |  0
+ .../migration/guestperf/progress.py           |  0
+ .../migration/guestperf/report.py             |  0
+ .../migration/guestperf/scenario.py           |  7 ++--
+ .../migration/guestperf/shell.py              |  3 ++
+ .../migration/guestperf/timings.py            |  0
+ tests/migration/meson.build                   | 30 +++++++++--------
+ 15 files changed, 73 insertions(+), 20 deletions(-)
+ rename {tests => scripts}/migration/guestperf-batch.py (100%)
+ rename {tests => scripts}/migration/guestperf-plot.py (100%)
+ rename {tests => scripts}/migration/guestperf.py (100%)
+ rename {tests => scripts}/migration/guestperf/__init__.py (100%)
+ rename {tests => scripts}/migration/guestperf/comparison.py (89%)
+ rename {tests => scripts}/migration/guestperf/engine.py (93%)
+ rename {tests => scripts}/migration/guestperf/hardware.py (100%)
+ rename {tests => scripts}/migration/guestperf/plot.py (100%)
+ rename {tests => scripts}/migration/guestperf/progress.py (100%)
+ rename {tests => scripts}/migration/guestperf/report.py (100%)
+ rename {tests => scripts}/migration/guestperf/scenario.py (93%)
+ rename {tests => scripts}/migration/guestperf/shell.py (98%)
+ rename {tests => scripts}/migration/guestperf/timings.py (100%)
+
+-- 
+2.27.0
 
 
