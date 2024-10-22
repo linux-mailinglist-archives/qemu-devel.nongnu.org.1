@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CA99A9619
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DB79A962E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 04:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t34QA-0005xg-2i; Mon, 21 Oct 2024 22:14:54 -0400
+	id 1t34Vg-0001YN-KE; Mon, 21 Oct 2024 22:20:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t34Q8-0005xY-OQ
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:52 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t34Q7-0001YG-0E
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:14:52 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-20cb47387ceso45381085ad.1
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 19:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729563289; x=1730168089;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lKvuj5hWnr5GBGkIVkR3iyQz24UtRbahAZ35LrK2uoY=;
- b=APO0QSv1s6ScGy9y9I1+uqLUMP7+UpKl7V/9LYW9LWyRe134XdJy+EHP0GHXhEhS63
- xrnrWKgUwtF61xkfdsYxHllg3VKmzLPLaHZt1L1tp3BEAJY107DdAsgI0e4kn5T57jb6
- V/HPhGFCIaa164TNzf/qp3rZn6w8vRntYFZNpJRkSGs5b1WkM+km11JBdhXw246GaoLe
- PFEaSISHM8rXqgLQErkc48D7S8qUsYWgCZBBYpM0ZGtM/tn8YXkJWjdN2Zs8U7DEobVS
- bEYXpk2uEic8m9ouy3mfM0hp1+93B4xKui1QFeiZI4OF5Hcsdt6kqWphyuXlBrIuUIC/
- yqFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729563289; x=1730168089;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lKvuj5hWnr5GBGkIVkR3iyQz24UtRbahAZ35LrK2uoY=;
- b=GZRnQXqF7qfeDGLlZ4vyLreLZQt4xnoOxHOwGSbaRztW8I/4+nDXuQqQKVnCuWSUZP
- qBJe6jRAuRFQluEDxyaiTEjyUIWVB3EU14xP7jefBKg/8Y++tlqqsDPcbvVvgQ8F+Y+4
- gYYNXKPlQXNScBT5KMsjyMHjz1w0ql64PspZ8V9oDMwad0eBH7QyQQzGlbXDXAMC2MGH
- IbJtID8L20+HtiSk3GdxCqw2xR9ZBjzJw6cv/IrOV7xhSd2L+tgutVlayfYOPM6DFQU5
- TckkdUJLxS8t0JmCwZn1zMqEcmSkz/iyNBpZpgS40C1o8QuurA93pc2MkM7Zau74rw34
- 7FlQ==
-X-Gm-Message-State: AOJu0YwadLA5+OTg+ZaMw6SSTBDPZ6Tg6pVn+SrAn/Akuw44rpZkMZ9R
- UWuw3xmN30y5pO4bpzegR5jJOPkw3xcmzyaZCkgFC0YAU5rLPhGQnoERVJcLhdtr74zs03sGEs9
- oMqNmAA==
-X-Google-Smtp-Source: AGHT+IEN5aCcckZf6y8wKLRPkS/feHXlDLngYAQsMgVQvxughZJjj80y3tjn7JcPTXz6F2f1GDnePg==
-X-Received: by 2002:a17:902:ced2:b0:20c:c694:f6c6 with SMTP id
- d9443c01a7336-20e5a927e6bmr136070235ad.49.1729563288679; 
- Mon, 21 Oct 2024 19:14:48 -0700 (PDT)
-Received: from Hyman-Dev-Euler.zelin.local ([103.172.41.198])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0bd63fsm32726545ad.173.2024.10.21.19.14.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 19:14:48 -0700 (PDT)
-From: yong.huang@smartx.com
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- yong.huang@smartx.com
-Subject: [PATCH v3 5/5] guestperf: Introduce multifd compression option
-Date: Tue, 22 Oct 2024 10:14:26 +0800
-Message-Id: <89b191beabd6ce778e5ae4756937f589b5261099.1729562974.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1729562974.git.yong.huang@smartx.com>
-References: <cover.1729562974.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t34Vd-0001Xo-C8
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:20:33 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t34Va-0002E8-CI
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 22:20:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729563630; x=1761099630;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/z4bkz5DSU3PN+XsM48s2xIL9AwW0D1ypYVs8Z1CYiw=;
+ b=UfZclYU53hWo6T/fVsH6GIcUuu24W5YhQdOiJurTM9TeZ9GgRu3vytp3
+ 8wzUYBsDmJSRF5BRdvKtsfoq1sJBR/98vqyDhqkOyOtGr+ZdypTImT8Go
+ dGNtfVQyl/m8wUelIczw9EEh5HBvkuLSTs0idkwtCG/D1WHiScD/bC5cE
+ Eu8taQdRjLXby/Tyybz7rinXyLOOdL6+2hi2ulK9rALyxdaECRXKgBgCT
+ V6N8fC5YDPh2l5CnMrVFqN4hOWt7peotxVogUScqJMjGw/BQQsPPC9qde
+ kx9wln/R4lME9yJPAoCdPvUxcTAkTRY8UrU36sReWjtcarcuo9ULCpY8B A==;
+X-CSE-ConnectionGUID: QmyN1liARE2INEA06wymOw==
+X-CSE-MsgGUID: F3P0wEeGSSeVfjJEKLkGfA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28953473"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28953473"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 19:20:27 -0700
+X-CSE-ConnectionGUID: ichHOL/LREWbhk+hYq/XOw==
+X-CSE-MsgGUID: FERbFIwURrCAKb7E029hmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; d="scan'208";a="79707229"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 21 Oct 2024 19:20:26 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] MAINTAINERS: Add myself as a reviewer of x86 general
+ architecture support
+Date: Tue, 22 Oct 2024 10:36:28 +0800
+Message-Id: <20241022023628.1743686-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.699,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,156 +79,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+X86 architecture has always been a focus of my work. I would like to
+help to review more related patches.
 
-Guestperf tool does not cover the multifd compression option
-currently, it is worth supporting so that developers can
-analysis the migration performance with different
-compression algorithms.
-
-Multifd support 4 compression algorithms currently:
-zlib, zstd, qpl, uadk
-
-To request that multifd with the specified compression
-algorithm such as zlib:
-$ ./scripts/migration/guestperf.py \
-    --multifd --multifd-channels 4 --multifd-compression zlib \
-    --output output.json
-
-To run the entire standardized set of multifd compression
-comparisons, with unix migration:
-$ ./scripts/migration/guestperf-batch.py \
-    --dst-host localhost --transport unix \
-    --filter compr-multifd-compression* --output outputdir
-
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- scripts/migration/guestperf/comparison.py | 13 +++++++++++++
- scripts/migration/guestperf/engine.py     | 14 ++++++++++++++
- scripts/migration/guestperf/scenario.py   |  7 +++++--
- scripts/migration/guestperf/shell.py      |  3 +++
- 4 files changed, 35 insertions(+), 2 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/migration/guestperf/comparison.py b/scripts/migration/guestperf/comparison.py
-index 40e9d2eb1d..dee3ac25e4 100644
---- a/scripts/migration/guestperf/comparison.py
-+++ b/scripts/migration/guestperf/comparison.py
-@@ -158,4 +158,17 @@ def __init__(self, name, scenarios):
-         Scenario("compr-dirty-limit-50MB",
-                  dirty_limit=True, vcpu_dirty_limit=50),
-     ]),
-+
-+    # Looking at effect of multifd with
-+    # different compression algorithms
-+    Comparison("compr-multifd-compression", scenarios = [
-+        Scenario("compr-multifd-compression-zlib",
-+                 multifd=True, multifd_channels=2, multifd_compression="zlib"),
-+        Scenario("compr-multifd-compression-zstd",
-+                 multifd=True, multifd_channels=2, multifd_compression="zstd"),
-+        Scenario("compr-multifd-compression-qpl",
-+                 multifd=True, multifd_channels=2, multifd_compression="qpl"),
-+        Scenario("compr-multifd-compression-uadk",
-+                 multifd=True, multifd_channels=2, multifd_compression="uadk"),
-+    ]),
- ]
-diff --git a/scripts/migration/guestperf/engine.py b/scripts/migration/guestperf/engine.py
-index 4b15322e8d..e11f6a8496 100644
---- a/scripts/migration/guestperf/engine.py
-+++ b/scripts/migration/guestperf/engine.py
-@@ -31,6 +31,8 @@
-                              '..', '..', '..', 'python'))
- from qemu.machine import QEMUMachine
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c21d6a2f9e1e..d103c1149cbb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -132,6 +132,7 @@ F: configs/targets/mips*
  
-+# multifd supported compression algorithms
-+MULTIFD_CMP_ALGS = ("zlib", "zstd", "qpl", "uadk")
- 
- class Engine(object):
- 
-@@ -191,6 +193,12 @@ def _migrate(self, hardware, scenario, src,
-                                scenario._compression_xbzrle_cache))
- 
-         if scenario._multifd:
-+            if (scenario._multifd_compression and
-+                (scenario._multifd_compression not in MULTIFD_CMP_ALGS)):
-+                    raise Exception("unsupported multifd compression "
-+                                    "algorithm: %s" %
-+                                    scenario._multifd_compression)
-+
-             resp = src.cmd("migrate-set-capabilities",
-                            capabilities = [
-                                { "capability": "multifd",
-@@ -206,6 +214,12 @@ def _migrate(self, hardware, scenario, src,
-             resp = dst.cmd("migrate-set-parameters",
-                            multifd_channels=scenario._multifd_channels)
- 
-+            if scenario._multifd_compression:
-+                resp = src.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
-+                resp = dst.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
-+
-         if scenario._dirty_limit:
-             if not hardware._dirty_ring_size:
-                 raise Exception("dirty ring size must be configured when "
-diff --git a/scripts/migration/guestperf/scenario.py b/scripts/migration/guestperf/scenario.py
-index 154c4f5d5f..4be7fafebf 100644
---- a/scripts/migration/guestperf/scenario.py
-+++ b/scripts/migration/guestperf/scenario.py
-@@ -30,7 +30,7 @@ def __init__(self, name,
-                  auto_converge=False, auto_converge_step=10,
-                  compression_mt=False, compression_mt_threads=1,
-                  compression_xbzrle=False, compression_xbzrle_cache=10,
--                 multifd=False, multifd_channels=2,
-+                 multifd=False, multifd_channels=2, multifd_compression="",
-                  dirty_limit=False, x_vcpu_dirty_limit_period=500,
-                  vcpu_dirty_limit=1):
- 
-@@ -61,6 +61,7 @@ def __init__(self, name,
- 
-         self._multifd = multifd
-         self._multifd_channels = multifd_channels
-+        self._multifd_compression = multifd_compression
- 
-         self._dirty_limit = dirty_limit
-         self._x_vcpu_dirty_limit_period = x_vcpu_dirty_limit_period
-@@ -85,6 +86,7 @@ def serialize(self):
-             "compression_xbzrle_cache": self._compression_xbzrle_cache,
-             "multifd": self._multifd,
-             "multifd_channels": self._multifd_channels,
-+            "multifd_compression": self._multifd_compression,
-             "dirty_limit": self._dirty_limit,
-             "x_vcpu_dirty_limit_period": self._x_vcpu_dirty_limit_period,
-             "vcpu_dirty_limit": self._vcpu_dirty_limit,
-@@ -109,4 +111,5 @@ def deserialize(cls, data):
-             data["compression_xbzrle"],
-             data["compression_xbzrle_cache"],
-             data["multifd"],
--            data["multifd_channels"])
-+            data["multifd_channels"],
-+            data["multifd_compression"])
-diff --git a/scripts/migration/guestperf/shell.py b/scripts/migration/guestperf/shell.py
-index c85d89efec..1452eb8a33 100644
---- a/scripts/migration/guestperf/shell.py
-+++ b/scripts/migration/guestperf/shell.py
-@@ -130,6 +130,8 @@ def __init__(self):
-                             action="store_true")
-         parser.add_argument("--multifd-channels", dest="multifd_channels",
-                             default=2, type=int)
-+        parser.add_argument("--multifd-compression", dest="multifd_compression",
-+                            default="")
- 
-         parser.add_argument("--dirty-limit", dest="dirty_limit", default=False,
-                             action="store_true")
-@@ -166,6 +168,7 @@ def get_scenario(self, args):
- 
-                         multifd=args.multifd,
-                         multifd_channels=args.multifd_channels,
-+                        multifd_compression=args.multifd_compression,
- 
-                         dirty_limit=args.dirty_limit,
-                         x_vcpu_dirty_limit_period=\
+ X86 general architecture support
+ M: Paolo Bonzini <pbonzini@redhat.com>
++R: Zhao Liu <zhao1.liu@intel.com>
+ S: Maintained
+ F: configs/devices/i386-softmmu/default.mak
+ F: configs/targets/i386-softmmu.mak
 -- 
-2.27.0
+2.34.1
 
 
