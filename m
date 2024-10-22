@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8965D9ABA4D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 02:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845C69ABA4C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 02:02:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3OpN-0004ib-Ff; Tue, 22 Oct 2024 20:02:17 -0400
+	id 1t3OpO-0004jR-Db; Tue, 22 Oct 2024 20:02:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t3OpK-0004hX-8T; Tue, 22 Oct 2024 20:02:14 -0400
+ id 1t3OpK-0004hk-GL; Tue, 22 Oct 2024 20:02:14 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t3OpG-0004QI-UQ; Tue, 22 Oct 2024 20:02:14 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MLo8p5016253;
+ id 1t3OpH-0004QK-2A; Tue, 22 Oct 2024 20:02:14 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MLoAxF029973;
  Wed, 23 Oct 2024 00:01:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=vb77iz2g4XK9z4Nh2vB8sTCndJRm7Rm7jk/LWyDvk
- 54=; b=De0S25mf2124TkiphU5gpMjj8XAMHFJTmy5PJKAaC65QUM3YDz/H9E/6/
- 7d1dSdex1XqYN4Kw7cVlGKmyTVWor4SejXmdr2GYj0M8yfxb09h5Ubb1ik/f1YbZ
- GJ8R384PzHQUMoXI58Ojs8WzB0dAvl8PXAA/ryTWcg/0QX+oNxnlI2s56+3USglx
- qLISycIaN66OM1EP8W+sQYAr3yD+ld/7B3t98LaPc1OAfFQBTiBUHkKvfo7fGCSq
- ObhvAdoijxBe5WuPhbt0RniOcQNVxrSWQEfIxCVR/dpd3QfS4bbpKADM0NyqeBSB
- k2NeoHyn7/gPfpFkOKGxyI85D4THw==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emafrctu-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=DE9fEl2MbyBjyVKLI
+ LKN31Xn9Ht7J9RVPieuaoHEzW8=; b=GYIEj75HiJt2DO1zLNbavefSruAxxUlQT
+ uPQ52fgtcS/hfsSaZlXivXs5561x8CUFy2IyPd+qrVxOsQ4RXSSmjGBrvtpzRm4k
+ Jv3QUh/TzbZZDoIqJss5bJ+Ts4jWswa9dNrdEtIhTTmshH0tetqWGA78JAUMZTXO
+ GTLnv2l/uRsfQEEkkoOtRbtn4xMTdvLSb1rISvlZksnLzCmt1Ev8DK/lGb0u5ywR
+ myebGPY5iWYXaMykdeI118ud1924BV9q6qyx6d5KGD0oVI2oHtCqFDpb2UGjL/9c
+ shwjttxX36Lod3JdN4OIzOLjZBp2sWS3l32MrJIS2wCnvqiNnLY+Q==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emafgcqj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 23 Oct 2024 00:01:53 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49MM8ZZZ014568;
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49MM4mGU012603;
  Wed, 23 Oct 2024 00:01:52 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk7ray5-1
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emhf8bje-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 23 Oct 2024 00:01:52 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49N01oqP48169308
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49N01pot54133056
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Oct 2024 00:01:50 GMT
+ Wed, 23 Oct 2024 00:01:51 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C6C12004D;
+ by IMSVA (Postfix) with ESMTP id 3188F2004B;
+ Wed, 23 Oct 2024 00:01:51 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C2D3720040;
  Wed, 23 Oct 2024 00:01:50 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9282420040;
- Wed, 23 Oct 2024 00:01:49 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.26.72])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 23 Oct 2024 00:01:49 +0000 (GMT)
+ Wed, 23 Oct 2024 00:01:50 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Aurelien Jarno <aurelien@aurel32.net>,
  Peter Maydell <peter.maydell@linaro.org>,
@@ -63,25 +63,27 @@ To: Aurelien Jarno <aurelien@aurel32.net>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 0/2] target/s390x: Fix the floating-point multiply-and-add NaN
+Subject: [PATCH 1/2] target/s390x: Fix the floating-point multiply-and-add NaN
  rules
-Date: Wed, 23 Oct 2024 01:59:17 +0200
-Message-ID: <20241023000147.34035-1-iii@linux.ibm.com>
+Date: Wed, 23 Oct 2024 01:59:18 +0200
+Message-ID: <20241023000147.34035-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241023000147.34035-1-iii@linux.ibm.com>
+References: <20241023000147.34035-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0oLTWlGPn0jf_9lBSeQhVFIIzLA0DFF6
-X-Proofpoint-ORIG-GUID: 0oLTWlGPn0jf_9lBSeQhVFIIzLA0DFF6
+X-Proofpoint-ORIG-GUID: w3SJlgp944AJTwX0UJ1o7nvO48_mO1nC
+X-Proofpoint-GUID: w3SJlgp944AJTwX0UJ1o7nvO48_mO1nC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0
- bulkscore=0 clxscore=1011 spamscore=0 mlxlogscore=666 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220154
+ clxscore=1015 suspectscore=0
+ mlxscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0 malwarescore=0
+ spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410220154
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -107,31 +109,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Order the helper arguments to match the Principles of Operation.
+Implement the "Results: MULTIPLY AND ADD" table in pickNaNMulAdd().
 
-Peter reported on IRC that FMA NaN handling was likely broken on s390x.
-Patch 1 of this series fixes the issue, patch 2 adds a test. For the
-sake of readability, the test sacrifices the 90-character line length
-rule.
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ fpu/softfloat-specialize.c.inc    | 19 +++++++++++++++++++
+ target/s390x/tcg/fpu_helper.c     |  8 ++++----
+ target/s390x/tcg/vec_fpu_helper.c | 12 ++++++------
+ 3 files changed, 29 insertions(+), 10 deletions(-)
 
-Best regards,
-Ilya
-
-Ilya Leoshkevich (2):
-  target/s390x: Fix the floating-point multiply-and-add NaN rules
-  tests/tcg/s390x: Add the floating-point multiply-and-add test
-
- fpu/softfloat-specialize.c.inc    |  19 +++
- target/s390x/tcg/fpu_helper.c     |   8 +-
- target/s390x/tcg/vec_fpu_helper.c |  12 +-
- tests/tcg/s390x/Makefile.target   |   5 +-
- tests/tcg/s390x/float.h           | 104 +++++++++++++
- tests/tcg/s390x/fma.c             | 233 ++++++++++++++++++++++++++++++
- tests/tcg/s390x/vfminmax.c        | 223 ++++++++++------------------
- 7 files changed, 449 insertions(+), 155 deletions(-)
- create mode 100644 tests/tcg/s390x/float.h
- create mode 100644 tests/tcg/s390x/fma.c
-
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index 4e279b9bc40..62197373c93 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -635,6 +635,25 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+         float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+     }
+     return 3; /* default NaN */
++#elif defined(TARGET_S390X)
++    if (infzero) {
++        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
++        return 3;
++    }
++
++    if (is_snan(a_cls)) {
++        return 0;
++    } else if (is_snan(b_cls)) {
++        return 1;
++    } else if (is_snan(c_cls)) {
++        return 2;
++    } else if (is_qnan(a_cls)) {
++        return 0;
++    } else if (is_qnan(b_cls)) {
++        return 1;
++    } else {
++        return 2;
++    }
+ #elif defined(TARGET_SPARC)
+     /* For (inf,0,nan) return c. */
+     if (infzero) {
+diff --git a/target/s390x/tcg/fpu_helper.c b/target/s390x/tcg/fpu_helper.c
+index d8bd5748faf..5041c139627 100644
+--- a/target/s390x/tcg/fpu_helper.c
++++ b/target/s390x/tcg/fpu_helper.c
+@@ -780,7 +780,7 @@ uint32_t HELPER(kxb)(CPUS390XState *env, Int128 a, Int128 b)
+ uint64_t HELPER(maeb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float32 ret = float32_muladd(f2, f3, f1, 0, &env->fpu_status);
++    float32 ret = float32_muladd(f3, f2, f1, 0, &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+ }
+@@ -789,7 +789,7 @@ uint64_t HELPER(maeb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(madb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float64 ret = float64_muladd(f2, f3, f1, 0, &env->fpu_status);
++    float64 ret = float64_muladd(f3, f2, f1, 0, &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+ }
+@@ -798,7 +798,7 @@ uint64_t HELPER(madb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(mseb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float32 ret = float32_muladd(f2, f3, f1, float_muladd_negate_c,
++    float32 ret = float32_muladd(f3, f2, f1, float_muladd_negate_c,
+                                  &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+@@ -808,7 +808,7 @@ uint64_t HELPER(mseb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(msdb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float64 ret = float64_muladd(f2, f3, f1, float_muladd_negate_c,
++    float64 ret = float64_muladd(f3, f2, f1, float_muladd_negate_c,
+                                  &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+diff --git a/target/s390x/tcg/vec_fpu_helper.c b/target/s390x/tcg/vec_fpu_helper.c
+index 75cf605b9f4..1bbaa82fe8a 100644
+--- a/target/s390x/tcg/vec_fpu_helper.c
++++ b/target/s390x/tcg/vec_fpu_helper.c
+@@ -621,8 +621,8 @@ static void vfma32(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+     int i;
+ 
+     for (i = 0; i < 4; i++) {
+-        const float32 a = s390_vec_read_float32(v2, i);
+-        const float32 b = s390_vec_read_float32(v3, i);
++        const float32 a = s390_vec_read_float32(v3, i);
++        const float32 b = s390_vec_read_float32(v2, i);
+         const float32 c = s390_vec_read_float32(v4, i);
+         float32 ret = float32_muladd(a, b, c, flags, &env->fpu_status);
+ 
+@@ -645,8 +645,8 @@ static void vfma64(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+     int i;
+ 
+     for (i = 0; i < 2; i++) {
+-        const float64 a = s390_vec_read_float64(v2, i);
+-        const float64 b = s390_vec_read_float64(v3, i);
++        const float64 a = s390_vec_read_float64(v3, i);
++        const float64 b = s390_vec_read_float64(v2, i);
+         const float64 c = s390_vec_read_float64(v4, i);
+         const float64 ret = float64_muladd(a, b, c, flags, &env->fpu_status);
+ 
+@@ -664,8 +664,8 @@ static void vfma128(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+                     const S390Vector *v4, CPUS390XState *env, bool s, int flags,
+                     uintptr_t retaddr)
+ {
+-    const float128 a = s390_vec_read_float128(v2);
+-    const float128 b = s390_vec_read_float128(v3);
++    const float128 a = s390_vec_read_float128(v3);
++    const float128 b = s390_vec_read_float128(v2);
+     const float128 c = s390_vec_read_float128(v4);
+     uint8_t vxc, vec_exc = 0;
+     float128 ret;
 -- 
 2.47.0
 
