@@ -2,54 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6978D9A96A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 05:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C40D9A9705
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 05:26:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t35K2-0002hb-0x; Mon, 21 Oct 2024 23:12:38 -0400
+	id 1t35XX-0005MT-Bm; Mon, 21 Oct 2024 23:26:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1t35Jt-0002hH-2a; Mon, 21 Oct 2024 23:12:29 -0400
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132])
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1t35XU-0005M5-Rk
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 23:26:32 -0400
+Received: from fly.ash.relay.mailchannels.net ([23.83.222.61])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1t35Jp-0006jV-Py; Mon, 21 Oct 2024 23:12:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1729566734; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
- bh=O1YF3MhKvfa4h2+MKp0zvG1Kc+33Z+47MJ8GL8rySwk=;
- b=xgxG40e5T5Bmmp6hDA8SpprLJ4YxO2HttdywhFIWDjLqeEKH6nqhHMaV2HnJuNJmrQuAx4CSB2k08WAzlUQPGpRVqZMRW4+MUr+8sZzxc0u9SidhX45ktkvyP5FPGgDjyGudbtAGYe/kyEHcSj9kLUwM4Jh+T5sv8c/XOP6VNgk=
-Received: from 30.166.64.99(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WHgKM.S_1729566732 cluster:ay36) by smtp.aliyun-inc.com;
- Tue, 22 Oct 2024 11:12:12 +0800
-Message-ID: <b82a2350-9115-4bb3-9aa4-46f7c5087927@linux.alibaba.com>
-Date: Tue, 22 Oct 2024 11:12:11 +0800
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1t35XT-0007yP-4W
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 23:26:32 -0400
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 0E1F68A4DB0;
+ Tue, 22 Oct 2024 03:26:27 +0000 (UTC)
+Received: from pdx1-sub0-mail-a259.dreamhost.com
+ (trex-1.trex.outbound.svc.cluster.local [100.102.182.244])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 8CEAE8A52EA;
+ Tue, 22 Oct 2024 03:26:26 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1729567586; a=rsa-sha256;
+ cv=none;
+ b=p47+uSZr5OnEYhqfslUIj8u1LSgh0lC0zpSSLhihUqDY3FZShlsCG+kmgnFMwf9VV1EJ7c
+ VAgm9hdoRIkyQyEYSx1Uyd0nJbQwl/TNkfzXlwc0oTnjZv2Q2Q74GyBD1aw3Mjv9Q4zuAC
+ zfObrmjc+Z7hH8/wRolv6tUXx744M08UafXUIIY9bbgPF+J/nZ5q9od0nRjEYR8zOhWgTo
+ n1qwDt07ratVSpCzaGSsYi9qnfJfZwfcli+ztTdh+sVwuHj1OyFphCGz+NEYIC1ARKwRvF
+ BhKVc8suxO7j1H/rYdFsAjIqHuGTUtiCESg1/bm+Txl4ITOdp2BMy2pqEKW62w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1729567586;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=lH0MQXykfOQt1lUch/UPd3kSWdAlSp9z3M7wrBCgsKA=;
+ b=4COUlfFMfz8BDmOoNe82lq/nOrSbuIWkxWoEuhaTZPwxNuRLgc3wPoi6r2aj4xb2ZhWfCs
+ 3exm1cHkMqE2HaRuAkBe69sGaHUXjCZ5+ZzLbc1sC4T44YXYN2pVUtaksxp/w0+ubBtQ1Y
+ MKCDM2pMX6wHcJRcvQpY1f8QjbbblvbwSWRH02wqCJCenJPSuHftuJaIlTLPquIHpgdID2
+ vtpberV7tMGRUwG9fCngSzefEqd4P+bo8hQGghVzBWKGlCUO1xGtM/c9GSDERIRHlwAaNb
+ aKmsLkpRYYz59HjHqWaNZAw9uFwBQPTEYeCCCV4UkxtJpnDZT7luBzgvnehCjg==
+ARC-Authentication-Results: i=1; rspamd-6bcbdd57f8-cgzfq;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Lettuce-Invention: 1b5f166378ae4e5c_1729567586868_4284065658
+X-MC-Loop-Signature: 1729567586868:1895697523
+X-MC-Ingress-Time: 1729567586868
+Received: from pdx1-sub0-mail-a259.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.102.182.244 (trex/7.0.2); Tue, 22 Oct 2024 03:26:26 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a259.dreamhost.com (Postfix) with ESMTPSA id 4XXcz550lmz1p; 
+ Mon, 21 Oct 2024 20:26:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1729567586;
+ bh=lH0MQXykfOQt1lUch/UPd3kSWdAlSp9z3M7wrBCgsKA=;
+ h=Date:From:To:Cc:Subject:Content-Type;
+ b=opkHkLsC0YFqllBezWtlCa0SToTjzP3LCiG1MxP+fZE3lfG+LKIGHzTOp4Miu1ypL
+ +7FJ1mfRHGUyIZEs1zW+hbDyo/2gDcKRYo1YPqI/1XE7IgX6YuGeCABaZBUhPvgZSJ
+ wdGs0cSmp40qPANv3OHYKvbCKmxucfjx0ZfcEtiVQqzLxotxIQQUni6K9BSm2ZSeuU
+ bmCuaAISNkmE6FDeOYUqf6udJlGJXs3AIQNkCV5kMfEtzColHfWzcQKffv6yaVaGoF
+ 89eeyAg0lg39YessKltYEB2W8t6VTJmPSpdPV1bdewbi4Ou1FtZ/6pSnuh338fwMq2
+ d3rZqCt4GJKWQ==
+Date: Mon, 21 Oct 2024 20:23:46 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: ajay.opensrc@micron.com, fan.ni@samsung.com, john@jagalactic.com, 
+ emirakhur@micron.com, ajayjoshi@micron.com, sthanneeru@micron.com, 
+ ravis.opensrc@micron.com, arramesh@micron.com, tmmulgund@micron.com, 
+ linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/cxl: Support aborting background commands
+Message-ID: <jdipjanthgt6atlksngodxjevfb5d43d5rshtxqxxwruszqa3e@vctljs77lg4e>
+References: <20240813221255.179200-1-dave@stgolabs.net>
+ <20240827163357.0000228e@Huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/14] disas/riscv: Fix vsetivli disassembly
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com
-References: <20241016193140.2206352-1-richard.henderson@linaro.org>
- <20241016193140.2206352-3-richard.henderson@linaro.org>
-Content-Language: en-US
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20241016193140.2206352-3-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.132;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-132.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240827163357.0000228e@Huawei.com>
+User-Agent: NeoMutt/20240425
+Received-SPF: pass client-ip=23.83.222.61; envelope-from=dave@stgolabs.net;
+ helo=fly.ash.relay.mailchannels.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,48 +113,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 27 Aug 2024, Jonathan Cameron wrote:\n
+>No comments inline and LGTM. I'll queue it on my tree and push
+>that out on gitlab sometime soonish.
 
-On 2024/10/17 03:31, Richard Henderson wrote:
-> The first immediate field is unsigned, whereas operand_vimm
-> extracts a signed value.  There is no need to mask the result
-> with 'u'; just print the immediate with 'i'.
->
-> Fixes: 07f4964d178 ("disas/riscv.c: rvv: Add disas support for vector instructions")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   disas/riscv.h | 2 +-
->   disas/riscv.c | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/disas/riscv.h b/disas/riscv.h
-> index 16a08e4895..0d1f89ce8a 100644
-> --- a/disas/riscv.h
-> +++ b/disas/riscv.h
-> @@ -290,7 +290,7 @@ enum {
->   #define rv_fmt_fd_vs2                 "O\t3,F"
->   #define rv_fmt_vd_vm                  "O\tDm"
->   #define rv_fmt_vsetvli                "O\t0,1,v"
-> -#define rv_fmt_vsetivli               "O\t0,u,v"
-> +#define rv_fmt_vsetivli               "O\t0,i,v"
->   #define rv_fmt_rs1_rs2_zce_ldst       "O\t2,i(1)"
->   #define rv_fmt_push_rlist             "O\tx,-i"
->   #define rv_fmt_pop_rlist              "O\tx,i"
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index 5965574d87..fc0331b90b 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -4808,7 +4808,7 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
->           break;
->       case rv_codec_vsetivli:
->           dec->rd = operand_rd(inst);
-> -        dec->imm = operand_vimm(inst);
-> +        dec->imm = extract32(inst, 15, 5);
+I don't see this picked up, which is a good thing atm. While testing
+the kernel side, I noticed the following is needed, will send a v2
+with it folded in.
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 1a9779ed8201..0d429b59aafc 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -94,14 +94,15 @@ static uint64_t mailbox_reg_read(void *opaque, hwaddr offset, unsigned size)
+	     cxl_dstate->mbox_reg_state64[offset / size] = bg_status_reg;
+	 }
+	 if (offset == A_CXL_DEV_MAILBOX_STS) {
++            int bgop;
+	     uint64_t status_reg = cxl_dstate->mbox_reg_state64[offset / size];
 
-Zhiwei
+	     qemu_mutex_lock(&cci->bg.lock);
+-            if (cci->bg.complete_pct == 100 || cci->bg.aborted) {
+-                status_reg = FIELD_DP64(status_reg, CXL_DEV_MAILBOX_STS, BG_OP,
+-                                        0);
+-                cxl_dstate->mbox_reg_state64[offset / size] = status_reg;
+-            }
++            bgop = !(cci->bg.complete_pct == 100 || cci->bg.aborted);
++
++            status_reg = FIELD_DP64(status_reg, CXL_DEV_MAILBOX_STS, BG_OP,
++                                    bgop);
++            cxl_dstate->mbox_reg_state64[offset / size] = status_reg;
+	     qemu_mutex_unlock(&cci->bg.lock);
+	 }
+	 return cxl_dstate->mbox_reg_state64[offset / size];
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index d5b084388288..760a8571fda6 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -2731,9 +2731,11 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+      [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
+	 cmd_firmware_update_get_info, 0, 0 },
+      [FIRMWARE_UPDATE][TRANSFER] = { "FIRMWARE_UPDATE_TRANSFER",
+-        cmd_firmware_update_transfer, ~0, CXL_MBOX_BACKGROUND_OPERATION },
++        cmd_firmware_update_transfer, ~0,
++        CXL_MBOX_BACKGROUND_OPERATION | CXL_MBOX_BACKGROUND_OPERATION_ABORT },
+      [FIRMWARE_UPDATE][ACTIVATE] = { "FIRMWARE_UPDATE_ACTIVATE",
+-        cmd_firmware_update_activate, 2, CXL_MBOX_BACKGROUND_OPERATION },
++        cmd_firmware_update_activate, 2,
++        CXL_MBOX_BACKGROUND_OPERATION | CXL_MBOX_BACKGROUND_OPERATION_ABORT },
+      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+      [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set,
+			  8, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
 
->           dec->vzimm = operand_vzimm10(inst);
->           break;
->       case rv_codec_zcb_lb:
+Thanks,
+Davidlohr
 
