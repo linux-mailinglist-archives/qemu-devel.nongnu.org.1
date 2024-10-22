@@ -2,151 +2,160 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE849A9E90
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 11:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB729A9EE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 11:45:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3BGQ-0000oV-RB; Tue, 22 Oct 2024 05:33:18 -0400
+	id 1t3BQV-0008N4-06; Tue, 22 Oct 2024 05:43:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1t3BGP-0000nX-5k
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 05:33:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1t3BQR-0008C1-CI
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 05:43:39 -0400
+Received: from mail-bn8nam11on2060.outbound.protection.outlook.com
+ ([40.107.236.60] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1t3BGM-00089c-V3
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 05:33:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729589593;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=PVXjarjpT2me/HEqV5U+dOBsyl8V0kY5yMijGXx3qRE=;
- b=K6wGcYgAkQssUFs3F5ABHmLT7+GgYioM41w0yJX/NDNUAMzawn8sVP25cw2MDum43Z+xLD
- XQDET7wDDDinNP5Zf7fIZZW6G3Hve8Kv8342Yo2HoGpDkps7ZW2ATmuYaShtdYLKRF3KG9
- QPMpgKecg1wOKVZIixSsbHrcht8gw8E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-iDvFBaf7NeiGxFMeaeVjsw-1; Tue, 22 Oct 2024 05:33:12 -0400
-X-MC-Unique: iDvFBaf7NeiGxFMeaeVjsw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315c1b5befso39477325e9.1
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 02:33:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729589591; x=1730194391;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=PVXjarjpT2me/HEqV5U+dOBsyl8V0kY5yMijGXx3qRE=;
- b=UnhCXo2d8yH5dKLpKrMUZmkre4T55Vl2LY2ohC3ssg58cf32QnYx2cJpfwZfYbIeCN
- KyXOpYNOxAhj3IQgG/XDkLqbP0k8GVc4A8cK6Lna6qG6NI1fVE4Tf408+Zjey3Nr2zTU
- ygr1TEEjqk42mhkFdL/a6qdvmuoGbc+GSL/0lUVgYDTHq1XSSGMIvuPgHC3s4knKT2++
- uSHkC760IUC2BRqjHQ0NG1inpZVE1pdaGFgwBU1XDSm4Mm7x1iT7G7TOa49Z6K6IjWyZ
- V7CZBnSFuAPncNr2pMX9gE28EX5sPeId1U/Lp9JV81mTjgAmAIDMhC6DqXx3cwY+Xw6V
- Lr0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWLtcLOcYkY29Bb6UNLd+ZlKXD8w928ec0fi9GJf1K2kjmJzQnI6rJ33SBgttGsrkP8kGJDtAvxdc3j@nongnu.org
-X-Gm-Message-State: AOJu0Yw9/soHfSMAtV2LufFSbRC09SH+sgsIXmCbAKM4saqh2KgIicrR
- RQ7DBQSQuWrX5cSHxjrVuTDe6okObTP496WC94yB9l2Abye051fBe8fV7NZJKH4MKgleVFvNvaW
- CWUsPStPSlyVm4Tc3LKcZHN+BURFZVSiQDloBu1CBczVVtszm7kgt
-X-Received: by 2002:a05:600c:1d04:b0:431:43c6:e868 with SMTP id
- 5b1f17b1804b1-4316168989amr116823855e9.23.1729589590833; 
- Tue, 22 Oct 2024 02:33:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGsVMtr0vPoX3GC1cafvEWG+eXenTikKUk4UF7+4sSq9bykVMQaJpWzxJ8Y3D4BsFBHFgf+EQ==
-X-Received: by 2002:a05:600c:1d04:b0:431:43c6:e868 with SMTP id
- 5b1f17b1804b1-4316168989amr116823485e9.23.1729589590404; 
- Tue, 22 Oct 2024 02:33:10 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:f700:352b:d857:b95d:9072?
- (p200300cbc705f700352bd857b95d9072.dip0.t-ipconnect.de.
- [2003:cb:c705:f700:352b:d857:b95d:9072])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f5c311bsm81820335e9.29.2024.10.22.02.33.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Oct 2024 02:33:09 -0700 (PDT)
-Message-ID: <1238f2a3-88a2-4996-92f2-05735801002b@redhat.com>
-Date: Tue, 22 Oct 2024 11:33:07 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1t3BQP-0001H4-ES
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 05:43:39 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dx6kisjsT+NV664mRMqneCJLjnWio7gUEkpML4okurj40nKOaOtPtoOaugNhV3I8GE9BlVZMADs8GDTxCKaAllXuqpxIMCb6/4U8YnOchKFWN0KYUBYLtyH/WtQdB6aTM6IhOSGluWmMKJWpKT8527d8xH7kcp6Ig8j8AxaMN3rnktUE03p8AI6n04a3whSA3FJG2XuZsTd24KWjDTumJ7YCE/rg15jY44XZ3Feu24bSxy7VQ0yrCkSag6HXTAFn++r+7iOTt3inRrYU1pRhYDOo+5rLXngY1W5U3VA8NsbHFrAypQYW92/Mpg8IW5zdUEPfld/CcGWNxbZOhJWTEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vxJN8BEMkIqs4VRH/xdm8eZvkIas86IRbDdGAeUJNz8=;
+ b=OkYz1wPsx37VQGHvhaJQ7B+64aXeiT0PLdXfdIhDRxIoK71dWVlx1/vvoiygM+M+V2q3uZw9dCwvvKQcQuCbB2pGscNNaC6jnke4E8vUhftnUiXD+xOngcOMdRtKJpzeHDebfEXzr09B9Ff/SGd281BX6Sxc9L2mfzppQPBG5sim7S62j6htncemoatzVYhyET7N9KsowyZPUJtD70Ah8Ij9gKntA15xYDlPkTObDzUbfJkhT/IK5Rs04th0HEZozNzvQPWuHDlhEfpGJzkzoDcaUTS1BYyi7FPyq0Y79Re/phwuCXDsjafjjQe6oGGensOUDqS7hFWHjdkscNAALg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by LV2PR12MB5726.namprd12.prod.outlook.com (2603:10b6:408:17e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Tue, 22 Oct
+ 2024 09:38:29 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::e2a0:b00b:806b:dc91]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::e2a0:b00b:806b:dc91%6]) with mapi id 15.20.8093.014; Tue, 22 Oct 2024
+ 09:38:28 +0000
+Message-ID: <3e0d59e7-699e-47b2-a6dc-204d64e07895@nvidia.com>
+Date: Tue, 22 Oct 2024 12:38:23 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Virtualizing tagged disaggregated memory capacity (app
- specific, multi host shared)
-To: Gregory Price <gourry@gourry.net>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>,
- Ira Weiny <ira.weiny@intel.com>, John Groves <John@groves.net>,
- virtualization@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
- qemu-devel@nongnu.org, Dave Jiang <dave.jiang@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxarm@huawei.com,
- wangkefeng.wang@huawei.com, John Groves <jgroves@micron.com>,
- Fan Ni <fan.ni@samsung.com>, Navneet Singh <navneet.singh@intel.com>,
- =?UTF-8?B?4oCcTWljaGFlbCBTLiBUc2lya2lu4oCd?= <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240815172223.00001ca7@Huawei.com>
- <fc05d089-ce04-42d2-a0d7-ea32fd73fe90@redhat.com>
- <Zu07AU3aUrHBMXaw@PC2K9PVX.TheFacebook.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 2/3] vfio/migration: Refactor
+ vfio_vmstate_change/_prepare() error reporting
+To: Peter Xu <peterx@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+References: <20241020130108.27148-1-avihaih@nvidia.com>
+ <20241020130108.27148-3-avihaih@nvidia.com>
+ <cfca06dd-cfd3-4a36-a80f-b8e2ddecbf88@redhat.com> <ZxZ4Y5KSNPcuN8-X@x1n>
+ <68d60abe-32b6-49b3-bc60-6c92909252f0@redhat.com> <ZxaHPo7GRPuby5ky@x1n>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Zu07AU3aUrHBMXaw@PC2K9PVX.TheFacebook.com>
+In-Reply-To: <ZxaHPo7GRPuby5ky@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO2P265CA0038.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:61::26) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|LV2PR12MB5726:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7daafff3-e196-4dea-7f6d-08dcf27d48c3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K2wxQ2ZsVGI5MEJZRzNSdG5vME5SZnZSTUtra2JEYndoU3NHRHh5TlhRZERF?=
+ =?utf-8?B?dHczWnZqeXcraTRRYkFJR00vQjhaME0rUUhOSFUwR0psTEs2NlRkQVZHV2FS?=
+ =?utf-8?B?cG1NSEdLTTZHVHlBMUpiRGhuVTh2S1FXcmlNejZ2MWdHN0J0Q2NPRFVuWEpo?=
+ =?utf-8?B?ZFE4REYwVS9NWThnb0dWZmEvYytiYWRMZTJsSk1sbFhyYlF5V2NNYVV6b2hW?=
+ =?utf-8?B?dXZpZmxPTzhGZmt4Q3MzSWRscHlBaG5tUjFwd1pQdHJ6K200QkhmUmtmMWkv?=
+ =?utf-8?B?dE5iNjJOUkVXK3c0U1FEdWdocUZWTUFva2NEcVE4V1BuSnlFNllrMlYwNXpH?=
+ =?utf-8?B?QUdWcm90RlhIUDBSZkhiM0JjcjdKWG5BL3M1U1U5WE4zVGQ2WVcwL3pOamI0?=
+ =?utf-8?B?cTFyYlp0bEt2M3lOS0lmZHFINEZJMndkNmpPT0pUQkh2VjdEa0djMkV3MDFN?=
+ =?utf-8?B?NVlPMDlZR2hZNy8wczNxQXpIZkJGb3o4OGxtQnUvKy9CV0hpS0VudG42LzU3?=
+ =?utf-8?B?aklHVE1VdkVPcnJzOUdZdE12SE5KdXkxdlMxNnZpTVJpQ0tnVTBOejlrenlB?=
+ =?utf-8?B?K0FmWkxxTjIxVGtaZytVSGtFcDFsa0crSjNKTkRuMG42K1BoVkNxa1FQQUNT?=
+ =?utf-8?B?eDR6WUNDdSsxS2FPMGtVQzV1ZlNaWXlrb0FlVDVDZkFodE1lb0lHK3Ntc255?=
+ =?utf-8?B?eGUzUEhCWHAxZldvQURwbUxVaUUvdXVHUVdJM29FeEtKcW5yTm0zT2hPbW4y?=
+ =?utf-8?B?akg0U3lPRXh1YmtwNFVMQmlWdHdzVWUrcG5QUEdtWE4vTEx0REIyUytxUDBS?=
+ =?utf-8?B?WFkwU2NvbnRCSHFIQlpRVS9nRGRBb3JReXhNbUZPUHVOUVYrN1ZtdGFKMUkz?=
+ =?utf-8?B?YTJxODIvUm0rVFJCQzVSbFU4L25iWnV0b2N2bkMrV2tjY0hBNzNSSGsyNzM4?=
+ =?utf-8?B?R2RYWFRiVUNJQVRIRVlJMis5Mmk5QmNiNGZvR0puUDU3cy8wOUM0L2VUbmdo?=
+ =?utf-8?B?MWsyVTJLK1IrSk9BSzFpWW10U2d5UXRwM1loZDhSa2ZzQ0FONStrb0ZEdEl4?=
+ =?utf-8?B?bTZPMllDVHVxbCtLS2oyNGRNcyswcklPTXBjZ205WnJIbHdUcEs1bXlLdHpP?=
+ =?utf-8?B?YVVNYXA4RlEvMlFTaFlOcC9zdisyMU9RTWxTQWQ4a011NGlWOFpxYld3V0I0?=
+ =?utf-8?B?bG9hYXo4ekVFV2hhaTNHeHhnTk9paUdyWWYyb09BVmFzN1I2THFlUWNTQ0hD?=
+ =?utf-8?B?UWhIbnN6WHFlUlkzMWFGbWxTNUhvNVh0a1lrWVlXN0F4Y3htdDNpcUY0QjlW?=
+ =?utf-8?B?YmI2S3hVQnNlMVNBbkNJSlAwaWhjZHBEUWhsWEhXbXFXV3VURE9vdG9PL1B4?=
+ =?utf-8?B?WTBEK2JpNDNoemp2TUVSdDA4b2RvbzNBOG9SVCtJZUUrZXZqaGFrK0NJSWVM?=
+ =?utf-8?B?a3NkYkt0ZDVTNGdUMHh2MjBJUm9TWmRZUUhzWmJmbkdMMnN4S1BDWExoKzRS?=
+ =?utf-8?B?WGZ0YXZYanhGZVhYTWtpblJBclg0QWMwaWVrbm1pTFVsWEUwd0t4RC9NSzIy?=
+ =?utf-8?B?WUx4UG95OG9nM3pBcExIMmF4VkdxRXpXclFYVTBHNmdDL2t1WktySDRFMERI?=
+ =?utf-8?B?c0doaS9lMzhva3cvZm4vZklIMmt4Sk9EMGRRdXNVUW9iS01EeExGcHcrUGth?=
+ =?utf-8?B?U0EvSXRGWDZnS3BYSTNMdENUd0FqR0VLOUV0KzVOdGVhM2pSSk5yM2JodTU0?=
+ =?utf-8?Q?sDIG9G2o0FNfDVoqnWoxnclLFWbFDsNaC3uvFRB?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QTdCY3RqRkNERm1nN0o3WG9hNW04UnVNTE5ZMWVkRVJhZUtGTkRsTktXQkx6?=
+ =?utf-8?B?YUxQRnhmcG41YU9jV3lLclpsNmd4eGNQMnBvVy9LWThhZExzTmVVUTJQUDhr?=
+ =?utf-8?B?ZVZEcGY4OUMvTUVpcmVpZS80UC83d3ZFZ3VWNmVZWlNkZmtiVFJjYXdhOU5S?=
+ =?utf-8?B?SGFBaHhjR2pBRkZVZ0pvNFlTQ3JxUVozYm9uR1RrR3FYVmlabVplY2RxZmg1?=
+ =?utf-8?B?ZzJQTm9pbmFBemJnVnVLL3U1RTJKajNYemhWQzMrZC9KQm9ITWtza3VraVRH?=
+ =?utf-8?B?enYzRmhVR3F1WEJhMWoyVGhDZ1F6L09YTnNxemczOWlQZGlGd0R6QmhhMDhk?=
+ =?utf-8?B?MXBMVWNFbkVzVTM0WDBvQVJCZ0FNVGVQS0lmU0FxSktJd3FFZExoZ1A0MkFO?=
+ =?utf-8?B?blZZazZGQmdKSjRFc3ByRVFYWC8rak5qaHVLNmdGVks1WjNzdDM1U0FPS3RT?=
+ =?utf-8?B?dU9vSEdVK2hqd0pqWUJ4UVNwN1NyaGwwUVYyRW5lSVNNUm5YUHkyb0s2ditT?=
+ =?utf-8?B?UnJQbVIyUW9yWThMY00ySGRjMnZsQjhGNkZhbVNQcDFXQUpnUjdyd0E5Q2RJ?=
+ =?utf-8?B?ZVJQc1czUGpiU3lKMExWbUJ3R284WTgvRnVYcXRmQ1lnVWh2U0ZrR2tGbldR?=
+ =?utf-8?B?NHkyNXQ5VjdTVk56Yms4dTZuVzFEanhJNnJTSkZhMmh1bFRUTkx1cS9xdzcr?=
+ =?utf-8?B?RXdqeVdONUZGSXBHUGZ3b2RNZTd4Zy9BVityZ3NYRUFMSTczV0lQZmMzb3lJ?=
+ =?utf-8?B?bURDYkRGTHl1QVlnZWxOem9UMW43TUJ1c3JsVUM1NW5OcisxWjU5eVk2My8z?=
+ =?utf-8?B?T0dCY0N5WUM3a3dLTm9ELzhKMWpFTzlvdENwTWxHc0M3bWUwVDBrOGJLYTRN?=
+ =?utf-8?B?YzRVUjNrL3BRTktxVy85clVKb1NSL3VYMTd2MW9ZZFg0VnFTcG9ZbVBpTnlU?=
+ =?utf-8?B?cE1NeVRkVCthZmdaWDZydEo4NkZZMnEwVm8rTmp6RVpZZndZTTloYXVLMjNj?=
+ =?utf-8?B?R0VzZ245VURGR1c0MENQWGRVMjFrS1NuMjJaVkxENzlkT0xkLzlVQUFTUG5h?=
+ =?utf-8?B?RmlmTkZ1S052S3o1LytKeC9MNEErQWFPUFlzeVl5RWVsUzIvK2dPbTRzZ3Fu?=
+ =?utf-8?B?ay93VTA4bkt4RlBwTy92aU9kaUdMY2hYZTlsQVNzTTl1Ujg2OVNKN3YrbzQ3?=
+ =?utf-8?B?Vi9VRlp3NngzVWtIdEc3anNEVWYrWkdBMyt0Qm5OM2J2MzBPV1VoMjdjTEZ4?=
+ =?utf-8?B?dlJNMnFWSUhDZ2dxVExMSlRBSW90Z0xtejFjNzR1V1pHQ2l0Y0ZNN1BZWkJy?=
+ =?utf-8?B?SkVKOWJkNllUQUNXbW5JWkpqNVNjdjFtb0tIQUhTVlpxc1M1ZW41WWl6dkly?=
+ =?utf-8?B?VmVpZngrWGFRMXpZSmdleEo3VFRmLzZkRzBrZVJ6UmQ0SVBScHJIZ1BQQmRy?=
+ =?utf-8?B?emdCS3B4NlYvbFhkajhpeWJQNFJDWlFrR1lGK3lzSnNMbE93dFdxNXFYQm4x?=
+ =?utf-8?B?ZlFVUU9nWTE0T01ZOEhnb2xPcTZpMjZyZ0M0bjdXcTZCOVpYQjhHZTlXSGtu?=
+ =?utf-8?B?cFA2SnMxU0RpTzNXeEJKWFZhdHNqNUYzQmtDWkZkOVJMQmFTRVRtOHZCM3F2?=
+ =?utf-8?B?NnVDSkV6VWNzeUxuTGg1dzRkY0NPbmJ3aHhyOXRuWnoyaEpqUmo4VDNVayth?=
+ =?utf-8?B?Ri9hbWtDWG82MzloYTVTL25UcGVwMFE5UmJESFA0eU50STJSSWc3aTNGc1Vp?=
+ =?utf-8?B?dGJhek5zMER1VDJVMytDdC9mRm9pcnI3N0NJUTVsc0ZGRmZiZTNzSUlxSkNR?=
+ =?utf-8?B?MVdFS2Vqa0JpdHNtelIrVm5tdG03akdjazBsTnBzTG1UeHRFTi9JQ0ZibHJ6?=
+ =?utf-8?B?L1JkMkdXa01jalRZSk0zQi9rL3JSUWZiUFNHZmRPRUxYa295Q0pBRUJwUitE?=
+ =?utf-8?B?TXRWY3dNc2RReGxCSVprTGpmNnlTcEg1MnRaYzV1eXNXNFBUenRrV1R5V2h4?=
+ =?utf-8?B?dkI4RzluSFhNRjZhallWVEdNR1gyMk5ZbEh5NUMydlFXcWd2bzNnSW9VeHJT?=
+ =?utf-8?B?eXNqYlloL0JaMllqVnRVL1VQNFFHb2gvK3p4cy9RcEg0bGVRVVBZc2d5RzI2?=
+ =?utf-8?Q?fnyd4mC0HWg7i1UJC9qsArIuc?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7daafff3-e196-4dea-7f6d-08dcf27d48c3
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 09:38:28.7679 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GgVoUzABjyMddr0VmCmJzusnin/DKPROlZrzc9Ffdo+AWuL4yVsFCV/l6JIX7mxmzQjtXYYOUf71IDShXPpXwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5726
+Received-SPF: softfail client-ip=40.107.236.60;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,108 +168,124 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Avihai Horon <avihaih@nvidia.com>
+From:  Avihai Horon via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.09.24 11:06, Gregory Price wrote:
->>> 2. Coarse grained memory increases for 'normal' memory.
->>>      Can use memory hot-plug. Recovery of capacity likely to only be possible on
->>>      VM shutdown.
+
+On 21/10/2024 19:54, Peter Xu wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On Mon, Oct 21, 2024 at 06:43:13PM +0200, Cédric Le Goater wrote:
+>> Hello,
 >>
->> Is there are reason "movable" (ZONE_MOVABLE) is not an option, at least in
->> some setups? If not, why?
->>
-> 
-> 
-> This seems like a bit of a muddied conversation.
+>>> IIUC the migration thread should always see valid migration object, as it
+>>> takes one refcount at the entrance of migration_thread():
+>>>
+>>>       object_ref(OBJECT(s));
+>> Could the migration have failed before ? in migrate_fd_connect()
+> I just noticed it's a vm state change notifier..
 
-Cleaning up my inbox ... well at least trying :)
+Yep.
+I stumbled upon this bug by accident when running on a buggy machine.
+Migration wasn't involved, I just started the VM, shut it down and got 
+the assert (as my VFIO device was faulty and errored on RUNNING->STOP 
+state change).
 
-> 
-> "'normal' memory" has no defined meaning - so lets clear this up a bit
-> 
-> There is:
-> * System-RAM (memory managed by kernel allocators)
-> * Special Purpose Memory (generally presented as DAX)
- > > System-RAM is managed as zones - the relevant ones are
-> * ZONE_NORMAL allows both movable and non-movable allocations
+You can repro it by forcefully triggering an error on *->STOP transition:
 
-.. except in corner cases like MIGRATE_CMA :)
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 17199b73ae..d41cb7c634 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -831,7 +831,9 @@ static void vfio_vmstate_change(void *opaque, bool 
+running, RunState state)
+      }
 
-> * ZONE_MOVABLE only allows non-movable allocations
->    (Caveat: this generally only applies to allocation, you can
->     violate this with stuff like pinning)
+      ret = vfio_migration_set_state_or_reset(vbasedev, new_state, 
+&local_err);
+-    if (ret) {
++    if (ret || new_state == VFIO_DEVICE_STATE_STOP) {
++        ret = -1;
++        error_setg(&local_err, "%s: forced error", vbasedev->name);
+          /*
+           * Migration should be aborted in this case, but vm_state_notify()
+           * currently does not support reporting failures.
 
-Note that long-term pinning is forbidden on MOVABLE, just like it is on 
-MIGRATE_CMA. So we try that common use cases cannot violate this.
+>
+> If so, maybe VFIO could refer to its internal states showing that it's
+> during a migration first (so as to guarantee the migration object is valid;
+> e.g., only after save_setup() but before save_cleanup() hooks are invoked).
 
-> 
-> Hotplug can be thought of as two discrete mechanisms
-> * Exposing capacity to the kernel (CXL DCD Transactions)
-> * Exposing capacity to allocators (mm/memory-hotplug.c)
- > > 1) if the intent is to primarily utilize dynamic capacity for VMs, then
->     the host does not need (read: should not need) to map the memory as
->     System-RAM in the host. The VMM should be made to consume it directly
->     via DAX or otherwise.
-> 
->     That capacity is almost by definition "Capital G Guaranteed" to be
->     reclaimable regardless of what the guest does. A VMM can force a guest
->     to let go of resources - that's its job.
-> 
-> 2) if the intent is to provide dynamic capacity to a host as System-RAM, then
->     recoverability is dictated by system usage of that capacity. If onlined
->     into ZONE_MOVABLE, then if the system has avoided doing things like pinning
->     those pages it should *generally* be recoverable (but not guaranteed).
+It's an option, but I think it's a bit awkward as we'd need to check 
+that VFIOMigration->data_buffer is set or add a new flag.
+Besides that, as Cedric pointed out, VFIO code calls 
+migration_is_setup_or_active() which can also be unsafe, as it might be 
+invoked after migration object has been freed.
 
-There is, of course, the use case of memory overcommit -- in which case 
-you would want 2). But likely that's out of the picture for this tagged 
-memory.
+Maybe a simpler solution would be to extend the the migration object 
+lifetime?
+Looking at commit history, you can see that commit 1f8956041ad3 
+("migration: finalize current_migration object") added migration object 
+finalization at the very end of qemu cleanup.
+Then came commit 892ae715b6bc ("migration: Cleanup during exit") and 
+moved the migration object finalization to the beginning of qemu cleanup 
+(before stopping the VM etc.).
 
-> 
-> 
-> For the virtualization discussion:
-> 
-> Hotplug and recoverability is a non-issue.  The capacity should never be
-> exposed to system allocators and the VMM should be made to consume special
-> purpose memory directly. That's on the VMM/orchestration software to get right.
-> 
-> 
-> For the host System-RAM discussion:
-> 
-> Auto-onlined hotplug capacity presently defaults to ZONE_NORMAL, but we
-> discussed (yesterday, at Plumbers) changing this default to ZONE_MOVABLE.
-> 
-> The only concern is when insufficient ZONE_NORMAL exists to support
-> ZONE_MOVABLE capacity - but this is unlikely to be the general scenario AND
-> can be mitigated w/ existing mechanisms.
+If so, the fix could be something like the below?
 
-It might be worthwhile looking at 
-Documentation/admin-guide/mm/memory-hotplug.rst "auto-movable" memory 
-onlining polciy. It might not fit all sue cases, though (just like 
-ZONE_MOVABLE doesn't)
+-------------8<-------------
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index bfadc5613b..5eb099349a 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -52,6 +52,7 @@ void dump_vmstate_json_to_file(FILE *out_fp);
 
-> 
-> Manually onlined capacity defaults to ZONE_MOVABLE.
-> 
-> It would be nice to make this behavior consistent, since the general opinion
-> appears to be that this capacity should default to ZONE_MOVABLE.
+  /* migration/migration.c */
+  void migration_object_init(void);
++void migration_object_finalize(void);
+  void migration_shutdown(void);
+  bool migration_is_idle(void);
+  bool migration_is_active(void);
+diff --git a/migration/migration.c b/migration/migration.c
+index 021faee2f3..9eaa7947bc 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -265,6 +265,11 @@ void migration_object_init(void)
+      dirty_bitmap_mig_init();
+  }
 
-It's much easier to shoot yourself into the foot with ZONE_MOVABLE, 
-that's why the default can be adjusted manually using "online_movable" 
-with e.g., memhp_default_state.
++void migration_object_finalize(void)
++{
++    object_unref(OBJECT(current_migration));
++}
++
+  typedef struct {
+      QEMUBH *bh;
+      QEMUBHFunc *cb;
+@@ -330,7 +335,6 @@ void migration_shutdown(void)
+       * stop the migration using this structure
+       */
+      migration_cancel(NULL);
+-    object_unref(OBJECT(current_migration));
 
-It's all a bit complicated, because there are various use cases and 
-mechanisms for memory hotplug ... IIRC RHEL defaults with its udev rules 
-to "ZONE_MOVABLE" on bare metal and "ZONE_NORMAL" in VMs. Except on 
-s390, where we default to "offline" (standby memory ....).
+      /*
+       * Cancel outgoing migration of dirty bitmaps. It should
+diff --git a/system/runstate.c b/system/runstate.c
+index c2c9afa905..fa823f5e72 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -930,5 +930,6 @@ void qemu_cleanup(int status)
+      monitor_cleanup();
+      qemu_chr_cleanup();
+      user_creatable_cleanup();
++    migration_object_finalize();
+      /* TODO: unref root container, check all devices are ok */
+  }
+-------------8<-------------
 
-I once worked on a systemd unit to make this configuration easier (and 
-avoid udev rules), and possibly more "automatic" depending on the 
-detected environment.
-
--- 
-Cheers,
-
-David / dhildenb
+Thanks.
 
 
