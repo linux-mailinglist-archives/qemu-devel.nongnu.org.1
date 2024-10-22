@@ -2,76 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C679A9493
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 02:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E049A9576
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 03:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t32VW-0000F9-D9; Mon, 21 Oct 2024 20:12:18 -0400
+	id 1t33ji-0001BQ-9d; Mon, 21 Oct 2024 21:31:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t32V5-000088-O3
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 20:11:53 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1t33jY-0001Az-QR
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 21:30:54 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t32V2-0005WQ-1N
- for qemu-devel@nongnu.org; Mon, 21 Oct 2024 20:11:51 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-20caccadbeeso55522855ad.2
- for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 17:11:47 -0700 (PDT)
+ id 1t33jX-0005zu-51
+ for qemu-devel@nongnu.org; Mon, 21 Oct 2024 21:30:52 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-7eae96e6624so1312121a12.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Oct 2024 18:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729555907; x=1730160707; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9wtdGS6j59IEw6lp5Sp3jQrC+uEbTCdVdwYMkROoHlk=;
- b=Dx3puJDS8mIOKwmY/eoW7N+ycmwirbpIKtqIqarukorq5hOU7sdJBwzkapReKTQZ9+
- EZwpFQr/tpjE/ShbpW/KeFrfYCepgSXMCz8+rmeyFKKUQPP5z6jSut/QVK4Pkcx6tage
- 8jGMoN9e4cZUEwY+blfKHlwZSBag1W90S23ZZ4W7jFvfCK2lP9e0kK5jUgO75XUwQkvz
- VX1uOuDpaJlxoTW8bhl6br6wz/60DZhczky4INolvSxGyc8u5aJP0u8uQtt/6kBtKTZA
- 5zHNxnBtuqw5mLwdpW629H96Xd9qNAIWNqN8Y7hvqY/iVlsFXldhoxXQWWgbZJsDuzxD
- pymQ==
+ d=linaro.org; s=google; t=1729560648; x=1730165448; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fTpbQNQsiNuoNwZcxTtelnwqavecyaXodDgMGiTIYRI=;
+ b=hP6+6nzNYlIO3lPLhoAok9FHGN8yn72SOpCiE+diDzwP3Jy4fyVK/MDHjFVZUTTKt+
+ juHXbj+ltGJyhh3aQvwha0bk4RjSll42oMYzwqLynhBFY6GkJNjG3jOY/9H9PRORFd0I
+ Vv+c4WBtiPVotH9b/n0TdSz0v8okEulg5RPPcImRswOE1Raw3VObpz+XEBlrC8Fliezl
+ iKX4Qy/qch0dBGqSDwJ19auLjeXyweozedi/0FxjwJSC9/EG0HFUzATQYZoDe8Ivampm
+ XakLW4J38bv8IHnqFqtHQOj2AvYVNsLnILS3dzi6zOAjTY3U7nlSJUY/MH85d3VyJ/Fj
+ XODg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729555907; x=1730160707;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9wtdGS6j59IEw6lp5Sp3jQrC+uEbTCdVdwYMkROoHlk=;
- b=SqWtpOJdjsHAU6R27Phn+ryfu1YipMIXbbtaittFTkonbNskO13Yd3RKhFqNBaFRXF
- Bu2FxMc1F49zz6deXALJFFnBrTIoDhzLQ0tByuh2NokWVwy/BG6EtKMVXa6OJN2V9rwU
- +GfR+eHEOuNTd/btgBoqTk9aTN42Cx6g6LdwUUwKUYf1QlTqj69LXyr6Mjb1i2g8o7Zz
- XlBhlJZPpv18Uk22nrMBX7bIz90GY4KsJ8vYtpCTx0jumJt6I+iU6XqNHMQiGK49jzsr
- pWpo/THaTQYqGOl5lVZfv2X27xITkFUj1mf52/grhGMmg0fleVX9//DMLIEac5+VOIh6
- wpIQ==
-X-Gm-Message-State: AOJu0YxXSiLn7YERjgsVPbUW/AxM111lUebuOUFreTWkRV9ek7o3aMil
- 4EV/ISkZ099S/H+jpOiqiVH2ayVwzBEBHLh8B729YueXTtJ4xI5I/RqO8sI6auDD3t98iKFbDVm
- E
-X-Google-Smtp-Source: AGHT+IHPaxHbm8kB5Pd/TaU6LDvpmvdcS5seUyDuZF135l4WnhgwA7oolvXIOH+MXmv4AT/JBA3iUA==
-X-Received: by 2002:a17:902:e548:b0:20c:b483:cce2 with SMTP id
- d9443c01a7336-20e984f03demr8796355ad.60.1729555906664; 
- Mon, 21 Oct 2024 17:11:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729560648; x=1730165448;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fTpbQNQsiNuoNwZcxTtelnwqavecyaXodDgMGiTIYRI=;
+ b=SFZeiMD0MwSZfLoGYgqt6omom2ioeV0G671JP19W57qwbOvH9ohIPDbgbsH45VFfcO
+ 24G/cZSydLVuKMfFI4hD/slOG6nep7h56uqyT7JMsKahqWli+Z6VE7hEckZGzsxdJ88V
+ kK5rq5WCpbaqJ2IPZKAMNJPej/mqRiXXQwhDGRWl5HJD3sAT1mpd/auzA92Lo1Eu953/
+ cyCf0tc/GDwQYBbhzRKXp/ObcLm5RW01oHiCcP18xCvYy11fhTe4mphIgrVXd9S0F/xZ
+ Sy1H+b7tM6k9y1+FdPGhxCHKUd8vOyv20iQWsYO3zGQhAVt2BwY7j5Nqgpbpme73izgh
+ +krg==
+X-Gm-Message-State: AOJu0YywW43fzwoNqjMfXB4xwdNbV9gMTLQaWVqkXieyzbKQMOTGFt0Y
+ Z9cQuEjLVZ/to1xZcvgC0SR1M/Q3nYK/9V3MgWzfbzCLHrnPl11+Zlg8yL0HGOUbmDKcvNt8zk7
+ Q
+X-Google-Smtp-Source: AGHT+IES+cLkGhSMzXTFpxCJujo7evWzadr6uJdH9OOhdKMwJ+TvVthNPRWlNzggCQkp0y7tqI0w1w==
+X-Received: by 2002:a05:6a21:a4c1:b0:1d8:f1f4:f4ee with SMTP id
+ adf61e73a8af0-1d92c4baaaemr19261549637.8.1729560648521; 
+ Mon, 21 Oct 2024 18:30:48 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0f6462sm31681145ad.272.2024.10.21.17.11.46
+ 98e67ed59e1d1-2e5ad365d1fsm4728338a91.16.2024.10.21.18.30.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Oct 2024 17:11:46 -0700 (PDT)
+ Mon, 21 Oct 2024 18:30:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, dbarboza@ventanamicro.com, alistair23@gmail.com,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v7 14/14] tcg/riscv: Enable native vector support for TCG host
-Date: Mon, 21 Oct 2024 17:11:34 -0700
-Message-ID: <20241022001134.828724-15-richard.henderson@linaro.org>
+Cc: gustavo.romero@linaro.org
+Subject: [PATCH] disas: Fix build against Capstone v6 (again)
+Date: Mon, 21 Oct 2024 18:30:47 -0700
+Message-ID: <20241022013047.830273-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241022001134.828724-1-richard.henderson@linaro.org>
-References: <20241022001134.828724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,34 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Like 9971cbac2f3, which set CAPSTONE_AARCH64_COMPAT_HEADER,
+also set CAPSTONE_SYSTEMZ_COMPAT_HEADER.  Fixes the build
+against capstone v6-alpha.
 
-Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241007025700.47259-13-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/riscv/tcg-target.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/disas/capstone.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index e6d66cd1b9..334c37cbe6 100644
---- a/tcg/riscv/tcg-target.h
-+++ b/tcg/riscv/tcg-target.h
-@@ -143,9 +143,9 @@ typedef enum {
- #define TCG_TARGET_HAS_tst              0
+diff --git a/include/disas/capstone.h b/include/disas/capstone.h
+index a11985151d..c43033f7f6 100644
+--- a/include/disas/capstone.h
++++ b/include/disas/capstone.h
+@@ -4,6 +4,7 @@
+ #ifdef CONFIG_CAPSTONE
  
- /* vector instructions */
--#define TCG_TARGET_HAS_v64              0
--#define TCG_TARGET_HAS_v128             0
--#define TCG_TARGET_HAS_v256             0
-+#define TCG_TARGET_HAS_v64              (cpuinfo & CPUINFO_ZVE64X)
-+#define TCG_TARGET_HAS_v128             (cpuinfo & CPUINFO_ZVE64X)
-+#define TCG_TARGET_HAS_v256             (cpuinfo & CPUINFO_ZVE64X)
- #define TCG_TARGET_HAS_andc_vec         0
- #define TCG_TARGET_HAS_orc_vec          0
- #define TCG_TARGET_HAS_nand_vec         0
+ #define CAPSTONE_AARCH64_COMPAT_HEADER
++#define CAPSTONE_SYSTEMZ_COMPAT_HEADER
+ #include <capstone.h>
+ 
+ #else
 -- 
 2.43.0
 
