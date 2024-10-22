@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A53F9AB1F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 17:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA649AB203
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 17:27:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3GkM-0007bq-7X; Tue, 22 Oct 2024 11:24:34 -0400
+	id 1t3GkM-0007Ze-0I; Tue, 22 Oct 2024 11:24:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3GkI-0007SA-G8
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:24:30 -0400
+ id 1t3GkJ-0007Vp-Pn
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:24:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3GkG-0004xe-U2
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:24:30 -0400
+ id 1t3GkI-0004xv-0X
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:24:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729610667;
+ s=mimecast20190719; t=1729610669;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bupRsxA4PxPcQKR0C/4MvsGIj4c44qcPAmQ0QpoES/c=;
- b=ccyrwUMo/T3C497oLZC1Qg+rRwwSEn6yJjFaZFT4eMl+8DApT7gsH0euqIOQohnGi43ixG
- 2NyaHtyCXVCsPEG09YQ63GuM7fcJaIKPDZLfJ0CTwnKBKlg2M1/lq56/LC1HcsRXxfdh87
- Y8h83lPa3QQH0kPHz/pcjTVHEiPeT24=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OTQ6oHWtR4o7XzRFPiGtn1wRQxJXoWFgPGHC0CJImaQ=;
+ b=Tc9xo9MvmVks/RtyNPwe0kZM41OKLOtEG+Ai8j5cTK91zbhSFaohoQmJs/5Yuy/vRrMUl1
+ VUnemcrr+JbP7Hqez6anddVWEv2z0C7B/1RjwDwHxj/UQku1ZMk89n43Kgq1s3c3g9o+im
+ k7l/K89AaStUcWoomBchJ+XFtCN9Z9Q=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-DwLAbmNBOX6FwWkaBsaq5g-1; Tue,
- 22 Oct 2024 11:24:24 -0400
-X-MC-Unique: DwLAbmNBOX6FwWkaBsaq5g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-NFQG_pXTPy2svcrGqJ4_8A-1; Tue,
+ 22 Oct 2024 11:24:26 -0400
+X-MC-Unique: NFQG_pXTPy2svcrGqJ4_8A-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 11D4E195422E; Tue, 22 Oct 2024 15:24:22 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 208A91955D4C; Tue, 22 Oct 2024 15:24:25 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.59])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AF78E1956046; Tue, 22 Oct 2024 15:24:19 +0000 (UTC)
+ id 75B2319560B2; Tue, 22 Oct 2024 15:24:22 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 01/14] crypto: Remove unused DER string functions
-Date: Tue, 22 Oct 2024 16:24:02 +0100
-Message-ID: <20241022152415.1632556-2-berrange@redhat.com>
+Subject: [PULL 02/14] sockets: Remove deadcode
+Date: Tue, 22 Oct 2024 16:24:03 +0100
+Message-ID: <20241022152415.1632556-3-berrange@redhat.com>
 In-Reply-To: <20241022152415.1632556-1-berrange@redhat.com>
 References: <20241022152415.1632556-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -89,9 +89,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-qcrypto_der_encode_octet_str_begin and _end have been unused
-since they were added in
-  3b34ccad66 ("crypto: Support DER encodings")
+socket_remote_address hasn't been used since it was added in
+  17c55decec ("sockets: add helpers for creating SocketAddress from a socket")
+
+inet_connect hasn't been used since 2017's
+  8ecc2f9eab ("sheepdog: Use SocketAddress and socket_connect()")
 
 Remove them.
 
@@ -99,67 +101,97 @@ Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/der.c | 13 -------------
- crypto/der.h | 22 ----------------------
- 2 files changed, 35 deletions(-)
+ include/qemu/sockets.h | 16 ----------------
+ util/qemu-sockets.c    | 35 -----------------------------------
+ 2 files changed, 51 deletions(-)
 
-diff --git a/crypto/der.c b/crypto/der.c
-index ebbecfc3fe..81367524c3 100644
---- a/crypto/der.c
-+++ b/crypto/der.c
-@@ -408,19 +408,6 @@ void qcrypto_der_encode_octet_str(QCryptoEncodeContext *ctx,
-     qcrypto_der_encode_prim(ctx, tag, src, src_len);
- }
+diff --git a/include/qemu/sockets.h b/include/qemu/sockets.h
+index d935fd80da..c562690d89 100644
+--- a/include/qemu/sockets.h
++++ b/include/qemu/sockets.h
+@@ -61,7 +61,6 @@ int socket_set_fast_reuse(int fd);
+ int inet_ai_family_from_address(InetSocketAddress *addr,
+                                 Error **errp);
+ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp);
+-int inet_connect(const char *str, Error **errp);
+ int inet_connect_saddr(InetSocketAddress *saddr, Error **errp);
  
--void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx)
--{
--    uint8_t tag = QCRYPTO_DER_TAG(QCRYPTO_DER_TAG_CLASS_UNIV,
--                                  QCRYPTO_DER_TAG_ENC_PRIM,
--                                  QCRYPTO_DER_TYPE_TAG_OCT_STR);
--    qcrypto_der_encode_cons_begin(ctx, tag);
--}
--
--void qcrypto_der_encode_octet_str_end(QCryptoEncodeContext *ctx)
--{
--    qcrypto_der_encode_cons_end(ctx);
--}
--
- size_t qcrypto_der_encode_ctx_buffer_len(QCryptoEncodeContext *ctx)
- {
-     return ctx->root.dlen;
-diff --git a/crypto/der.h b/crypto/der.h
-index f4ba6da28a..bcfa4a2495 100644
---- a/crypto/der.h
-+++ b/crypto/der.h
-@@ -242,28 +242,6 @@ void qcrypto_der_encode_null(QCryptoEncodeContext *ctx);
- void qcrypto_der_encode_octet_str(QCryptoEncodeContext *ctx,
-                                   const uint8_t *src, size_t src_len);
+ NetworkAddressFamily inet_netfamily(int family);
+@@ -117,21 +116,6 @@ socket_sockaddr_to_address(struct sockaddr_storage *sa,
+  */
+ SocketAddress *socket_local_address(int fd, Error **errp);
  
 -/**
-- * qcrypto_der_encode_octet_str_begin:
-- * @ctx: the encode context.
+- * socket_remote_address:
+- * @fd: the socket file handle
+- * @errp: pointer to uninitialized error object
 - *
-- * Start encoding a octet string, All fields between
-- * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
-- * are encoded as an octet string. This is useful when we need to encode a
-- * encoded SEQUENCE as OCTET STRING.
-- */
--void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx);
--
--/**
-- * qcrypto_der_encode_octet_str_end:
-- * @ctx: the encode context.
+- * Get the string representation of the remote socket
+- * address. A pointer to the allocated address information
+- * struct will be returned, which the caller is required to
+- * release with a call qapi_free_SocketAddress() when no
+- * longer required.
 - *
-- * Finish encoding a octet string, All fields between
-- * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
-- * are encoded as an octet string. This is useful when we need to encode a
-- * encoded SEQUENCE as OCTET STRING.
+- * Returns: the socket address struct, or NULL on error
 - */
--void qcrypto_der_encode_octet_str_end(QCryptoEncodeContext *ctx);
+-SocketAddress *socket_remote_address(int fd, Error **errp);
 -
  /**
-  * qcrypto_der_encode_ctx_buffer_len:
-  * @ctx: the encode context.
+  * socket_address_flatten:
+  * @addr: the socket address to flatten
+diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
+index 60c44b2b56..c1b162b056 100644
+--- a/util/qemu-sockets.c
++++ b/util/qemu-sockets.c
+@@ -707,26 +707,6 @@ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp)
+ }
+ 
+ 
+-/**
+- * Create a blocking socket and connect it to an address.
+- *
+- * @str: address string
+- * @errp: set in case of an error
+- *
+- * Returns -1 in case of error, file descriptor on success
+- **/
+-int inet_connect(const char *str, Error **errp)
+-{
+-    int sock = -1;
+-    InetSocketAddress *addr = g_new(InetSocketAddress, 1);
+-
+-    if (!inet_parse(addr, str, errp)) {
+-        sock = inet_connect_saddr(addr, errp);
+-    }
+-    qapi_free_InetSocketAddress(addr);
+-    return sock;
+-}
+-
+ #ifdef CONFIG_AF_VSOCK
+ static bool vsock_parse_vaddr_to_sockaddr(const VsockSocketAddress *vaddr,
+                                           struct sockaddr_vm *svm,
+@@ -1421,21 +1401,6 @@ SocketAddress *socket_local_address(int fd, Error **errp)
+ }
+ 
+ 
+-SocketAddress *socket_remote_address(int fd, Error **errp)
+-{
+-    struct sockaddr_storage ss;
+-    socklen_t sslen = sizeof(ss);
+-
+-    if (getpeername(fd, (struct sockaddr *)&ss, &sslen) < 0) {
+-        error_setg_errno(errp, errno, "%s",
+-                         "Unable to query remote socket address");
+-        return NULL;
+-    }
+-
+-    return socket_sockaddr_to_address(&ss, sslen, errp);
+-}
+-
+-
+ SocketAddress *socket_address_flatten(SocketAddressLegacy *addr_legacy)
+ {
+     SocketAddress *addr;
 -- 
 2.46.0
 
