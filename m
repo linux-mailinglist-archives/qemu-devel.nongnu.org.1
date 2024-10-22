@@ -2,99 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0255D9AB181
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 16:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8AB9AB12B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 16:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3GGV-0000dg-Cb; Tue, 22 Oct 2024 10:53:43 -0400
+	id 1t3G8Y-00077w-Vy; Tue, 22 Oct 2024 10:45:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t3GGR-0000d0-VI; Tue, 22 Oct 2024 10:53:40 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t3G8N-00073p-Th
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 10:45:20 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t3GGQ-0001b4-8B; Tue, 22 Oct 2024 10:53:39 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 25ED39B005;
- Tue, 22 Oct 2024 17:53:04 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3AA9A15A491;
- Tue, 22 Oct 2024 17:53:32 +0300 (MSK)
-Message-ID: <2b180c87-fd5f-4c54-bc5d-757a45eb9285@tls.msk.ru>
-Date: Tue, 22 Oct 2024 17:53:31 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t3G8K-0000iU-TR
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 10:45:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729608317; x=1761144317;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=S6MBMjJ2N2EXgvrAo/JrbK5lxLqIJx4tC3P69bnXXww=;
+ b=ZFglwkv+MrWFRhYQLmlds4xG4YC2go9JjGgFLVHk0X1wsc44kgSZ9IqO
+ n2alMrxWcrLHUnGBh1swPD9sFdARXBYIrP05LMFUz7qh1TUBzfDzGsOBw
+ hiDaKofCgFRUDVv8xopRqZkWqiG0fJKilITlNFgT2tSjmUyCrYbqYvvZu
+ xKpCf0haAvB2VpnOmPLLQ9GYn9Ss6rGJhbHHHQObejUSVB3HYhz1dEEEG
+ UEPhiRzIxQn/iAmnC/c8xc8pqkwHVCmfZamc25yea6f0pyskxs/WIiRPD
+ psQdrhJjOruYpDC1PO3vDavN2wrYc25qOzSeMXUUcoV4MHAR3Cl28/LCU w==;
+X-CSE-ConnectionGUID: 3Fe5M/5qRqKc4TGKfyvLbQ==
+X-CSE-MsgGUID: sdZKwAFNQUS3F6ARl59vRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="16775126"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="16775126"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 07:45:14 -0700
+X-CSE-ConnectionGUID: hfsQmgbHRveLzsq30iZLTQ==
+X-CSE-MsgGUID: JS2GXUg8RE2so2ytPavvIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="84710655"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 22 Oct 2024 07:45:12 -0700
+Date: Tue, 22 Oct 2024 23:01:29 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [Question] What is the =?gb2312?Q?defi?=
+ =?gb2312?B?bml0aW9uIG9mIKGwcHJpdmF0ZaGx?= fields in QOM?
+Message-ID: <Zxe+SZmtJ7XJ49IY@intel.com>
+References: <ZxPZ5oUDRcVroh7o@intel.com>
+ <CAFEAcA8m4OeDHopFxCL3MP-cmu-PO5=2+MjNBG7YCudpKdoqDA@mail.gmail.com>
+ <ZxZjqypRL7d2rMuQ@intel.com>
+ <CAFEAcA-imJJQO=WAmCAHBY1MtszuPyyaD9OHWMRx88h-fjVvsw@mail.gmail.com>
+ <ZxZwwe1ULIUqEdKN@intel.com>
+ <CAFEAcA9E_-J3EJ+izeErnHDAwaP1LoctRaihu=5xTYrMSnqVig@mail.gmail.com>
+ <ZxZ2KS6hi3Y2HdtC@intel.com>
+ <CAFEAcA9V0yUCOkAWGumoOD_SMk-saS4OU5gL67gj7SRT0v4cPg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] hw/sh4/r2d: Realize IDE controller before
- accessing it
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Bernhard Beschow
- <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20240213130341.1793-1-philmd@linaro.org>
- <20240213130341.1793-8-philmd@linaro.org>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20240213130341.1793-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+In-Reply-To: <CAFEAcA9V0yUCOkAWGumoOD_SMk-saS4OU5gL67gj7SRT0v4cPg@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
+ DKIMWL_WL_HIGH=-0.519, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,35 +92,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13.02.2024 16:03, Philippe Mathieu-Daud√© wrote:
-> We should not wire IRQs on unrealized device.
+On Mon, Oct 21, 2024 at 05:47:05PM +0100, Peter Maydell wrote:
+> Date: Mon, 21 Oct 2024 17:47:05 +0100
+> From: Peter Maydell <peter.maydell@linaro.org>
+> Subject: Re: [Question] What is the definition of °∞private°± fields in
+>  QOM?
 > 
-> Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-> ---
->   hw/sh4/r2d.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> On Mon, 21 Oct 2024 at 16:25, Zhao Liu <zhao1.liu@intel.com> wrote:
+> > My initial confusion stemmed from seeing the private comment and
+> > noticing that there are many direct accesses to parent_obj/parent_class
+> > in QEMU (which I could list in my reply to Daniel). Now I understand
+> > that these examples are only valid within the class/object
+> > implementation or in QOM code.
+> >
+> > For instance, an example in KVM is a misuse:
+> >
+> > accel/kvm/kvm-all.c:4285:                        cpu->parent_obj.canonical_path,
+> > accel/kvm/kvm-all.c:4377:            if (!apply_str_list_filter(cpu->parent_obj.canonical_path, targets)) {
+> >
+> >
+> > At the same time, I°Øve been thinking that the current C implementation
+> > seems to have no way to prevent such misuse.
 > 
-> diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-> index e9f316a6ce..c73e8f49b8 100644
-> --- a/hw/sh4/r2d.c
-> +++ b/hw/sh4/r2d.c
-> @@ -285,9 +285,9 @@ static void r2d_init(MachineState *machine)
->       dinfo = drive_get(IF_IDE, 0, 0);
->       dev = qdev_new("mmio-ide");
->       busdev = SYS_BUS_DEVICE(dev);
-> -    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
->       qdev_prop_set_uint32(dev, "shift", 1);
->       sysbus_realize_and_unref(busdev, &error_fatal);
-> +    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
->       sysbus_mmio_map(busdev, 0, 0x14001000);
->       sysbus_mmio_map(busdev, 1, 0x1400080c);
->       mmio_ide_init_drives(dev, dinfo, NULL);
+> Mmm. We rely on code review to catch major misuses (and let
+> some minor misuses slide because we don't care enough to put
+> in the effort to provide a proper API to access the information
+> or because we don't want the performance overhead of a QOM cast).
+> 
+> In a previous iteration of QEMU's design the device's state
+> struct was purely private to the implementation source file,
+> and code that used the device always did so via a pointer.
+> But at some point we decided we wanted to allow users to
+> embed the device struct inside their own device struct, which
+> needs them to have access to the struct definition (though
+> strictly they only need to know the size and alignment
+> requirements of it).
 
-Should we pick this up for stable-9.0 & -9.1 series?
+Thank you for taking me through this history, I see the intent of
+designing the embedded device structure in this way!
 
-Thanks,
+> I did a decade ago write a proof-of-concept for marking
+> fields in the C struct as "private" such that you could get
+> a compile error for touching them:
+> https://lists.gnu.org/archive/html/qemu-devel/2014-05/msg01846.html
+> which (mis?)uses GCC's __attribute__((deprecated("reason")))
+> to arrange that touching the struct field from outside the
+> implementation is a compile error. But we never took up the idea.
 
-/mjt
+Very cool! May I ask a few more questions? :-) The feedback on this
+series looks very positive, and it seems you were almost close to merge
+it at the time. What ultimately led you to decide against it? If we
+revisit the issue of Rust's private/pub visibility, I'm curious if we
+would face the same dilemma again.
+
+Regards,
+Zhao
+
 
