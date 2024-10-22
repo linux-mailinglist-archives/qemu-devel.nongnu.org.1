@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4B09AA097
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA23F9AA0AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:58:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3CYt-0001jK-Dj; Tue, 22 Oct 2024 06:56:27 -0400
+	id 1t3CZ2-0001np-Rf; Tue, 22 Oct 2024 06:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYo-0001i7-3c
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:22 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1t3CYr-0001iv-A2
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:26 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYl-0001y7-5G
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:21 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a9932aa108cso812827466b.2
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:18 -0700 (PDT)
+ id 1t3CYn-0001yq-BY
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:23 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-539f4d8ef66so7276125e87.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729594576; x=1730199376; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=COpfR9RLf2CLdazvbIhqB2YmojRnRaS7PX4PKuRZwh4=;
- b=a/r+TFJeohAszKlrJAQYJQIca0/J4Jx9WRu/poB0S996Jc+T358xq0O910gFkJSDj9
- svyqfRQgupCOy9JBhYyC/kAmKedkWDdvfro+ek1AFGjIRWE7vzWo6WnkRuYBHxHvUD5o
- 7RE8XOh8H6CLYtnE/93msiAVOL89W0cy0xrbYCfznMHOUJle621Ad1dhBm3OI98mI7Ak
- RZvCOoakctgrl+BF9yb5DxFW1LtKGvnnmAn/vltS/3A1Bn0mMNVsrEgnj5sxlNaT/oXq
- V042NOoJVvtNOzxfaffAY5nPU2KknwtrplFAHgNQ5gc4UQv4ay7WRuTKyS6wpP3ttXG4
- 2sVg==
+ d=linaro.org; s=google; t=1729594579; x=1730199379; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
+ b=Ukl5X34AE0gzAUhgp1B//k5X41uY02S27X8r0PsRHvIe5OSia7lBWBl6jSEPojhe/a
+ qwAxlFPgSdDzrGXtAejuyLnnI4XdnDSpfPbFb5oEGiRj0haH2pSJZSj8lBoKRxDKt+Q4
+ UzGAALsYdiL9KHRHLeQ/nsZPLMywDL1hF1/OwB5fJjDfjdShvdWo+ftMJNW3MrORqnze
+ WB/m5QJt6YgC6bzva6XPxTQrwvuN7LTpZ1zxiHysF5df9WjXVOsXISBZqmc/I5vkRBTZ
+ LQxkMR+7esXPkoqt1va+pNcYlDxIPHdcVbVJ43UgPfRhNVu9ZYwZMxG5h66tlRekVEGd
+ jvEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729594576; x=1730199376;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=COpfR9RLf2CLdazvbIhqB2YmojRnRaS7PX4PKuRZwh4=;
- b=CnvxcXlXc/i6D0Tg5BwwsvByKGUtyFuEiIztswNpH8N2K1iz7d2bsNwx/2p5/1ykyK
- lPk8RkCCBjQV7SZwMXahBV1lVEDKfMejewmgar6EhT/EJ72ANXoSvxUqhskENLwuNfQa
- yUl8GH8W8h+htpCwSTPF/AZZea12nxo9JwewJ/Qg0+YXY/a30J+52kV577nY8K60O3HW
- nKLr8dD8+MD928oQygy9r6LksEpPiQ7ToNWo3uvfmM23i3Bny+48EqSX+GEw6ZMXt6AD
- WwBrKryrS4DtPakNkTIAsJ2yrVN0MyRnkP71OCz3lCQkdaNLMWFy0+iYti15jlIkpi53
- rDgQ==
-X-Gm-Message-State: AOJu0YzuqkT36Abn63Pn3G8cx3R/u5vXatsbIHUBwb4bchE3pf4j1geK
- hyU/okpKpvvwzj/T0FYIzZnbMdqL2Av0n1UN9OP5DBHzSpnuNEU6qkM1nj+xlJw=
-X-Google-Smtp-Source: AGHT+IFvyKkyeRPJrAKRyY3MStdAXndUKfD+I3lEe2ovrB6KLCkuexA+w8IhgFRYygmb+9drojBW0Q==
-X-Received: by 2002:a17:906:c150:b0:a9a:47a:8908 with SMTP id
- a640c23a62f3a-a9aace2551cmr208312266b.9.1729594576427; 
- Tue, 22 Oct 2024 03:56:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729594579; x=1730199379;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
+ b=s+ZP//WpNYXyRJZOo0BOXSwHfXes1wR2qh8xMyZOV01pFTeKNHAjcG+Rbd97tI0WGO
+ 0cqQeh/yjW4ylPEMR9aXc+qRqczXJoicTFbUIN0rKqHD1PNhaOHI5Jwv+HFJNyI2Oxct
+ Sr8K/0m8OvaDzEb0MORl7gN1RqSDPaUjv6BdzKRK6MdK4LYr8Eeshj4VN4hGYUn95vob
+ ludFQpXbmKBWna2fiwAD/m4U4YLF+52efROzeOWkMxgeHM3yRajIcBf2QXtuDCKBfj/F
+ tHzj1Doguw6V5mjU0vwk4KSQ8siYE6iRX9sVoOF42evQ2swU8SHWQNXTEQiGA/y0Wpve
+ 0X5g==
+X-Gm-Message-State: AOJu0YyYGWVnFZQ7vT7ciTMJxLS8acAX2fObKQZGIoouEjHR53qI2Cc8
+ deVtx3ODlSqfQY0Glaa6kI80R6GBHcgNSuUux+QhJysqMSsXhPLyxCLAYwOFoZU=
+X-Google-Smtp-Source: AGHT+IFnyQzZQ7bHbDbOpYPXpjtSnilsQDL7HRDM+s0y4d6oS+Xo96+ra1aRtC+YDcuLeBLbm75Uyw==
+X-Received: by 2002:a05:6512:108f:b0:536:9ef0:d829 with SMTP id
+ 2adb3069b0e04-53a1544afc8mr7923850e87.44.1729594579206; 
+ Tue, 22 Oct 2024 03:56:19 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912edc33sm321447866b.58.2024.10.22.03.56.15
+ 4fb4d7f45d1cf-5cb675eb1bdsm2947453a12.10.2024.10.22.03.56.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Oct 2024 03:56:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A8D0D5F89C;
+ by draig.lan (Postfix) with ESMTP id BF0265F8A6;
  Tue, 22 Oct 2024 11:56:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,23 +81,25 @@ Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 00/20] maintainer updates (testing, gdbstub, plugins)
-Date: Tue, 22 Oct 2024 11:55:54 +0100
-Message-Id: <20241022105614.839199-1-alex.bennee@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 01/20] tests/docker: Fix microblaze atomics
+Date: Tue, 22 Oct 2024 11:55:55 +0100
+Message-Id: <20241022105614.839199-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
+References: <20241022105614.839199-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,105 +115,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an aggregation of three of my maintainer trees which you can
-also get from their respective branches (testing/next, gdbstub/next
-and plugins/next). I didn't include the plugins on the last post as I
-hadn't had a chance to do my sweep through patches before travelling.
-I've also updated MAINTAINERS to point at my next trees.
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-For testing we have mostly tweaks and cleanups. I've included some
-tracepoints tweaks for cpu_loop_exit_atomic purely as there was no
-where else to but it. There are also some cleanups to the tsan support
-from Pierrick. The mipsel tweaks have already been applied directly to
-the tree.
+GCC produces invalid code for microblaze atomics.
 
-For gdbstub more cleanups as well as fixing some gdbstub breakage of
-the untested aarch64-be linux-user target. I've added a very basic
-some test to prevent silly regressions in the future.
+The fix is unfortunately not upstream, so fetch it from an external
+location and apply it locally.
 
-For plugins again more cleanups. The GDB trigger patch will probably
-not get merged and should be considered an experimental hack for now.
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240919152308.10440-1-iii@linux.ibm.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .../debian-microblaze-cross.d/build-toolchain.sh          | 8 ++++++++
+ tests/docker/dockerfiles/debian-toolchain.docker          | 7 +++++++
+ 2 files changed, 15 insertions(+)
 
-The following still need review:
-
-  plugins: add ability to register a GDB triggered callback
-  tests/tcg: enable basic testing for aarch64_be-linux-user
-  config/targets: update aarch64_be-linux-user gdb XML list
-  MAINTAINERS: mention my gdbstub/next tree
-  gitlab: make check-[dco|patch] a little more verbose
-  scripts/ci: remove architecture checks for build-environment updates
-  MAINTAINERS: mention my testing/next tree
-  tests/docker: add NOFETCH env variable for testing
-  MAINTAINERS: mention my plugins/next tree
-
-Alex Bennée (10):
-  tests/docker: add NOFETCH env variable for testing
-  MAINTAINERS: mention my testing/next tree
-  scripts/ci: remove architecture checks for build-environment updates
-  accel/tcg: add tracepoints for cpu_loop_exit_atomic
-  gitlab: make check-[dco|patch] a little more verbose
-  MAINTAINERS: mention my gdbstub/next tree
-  config/targets: update aarch64_be-linux-user gdb XML list
-  tests/tcg: enable basic testing for aarch64_be-linux-user
-  MAINTAINERS: mention my plugins/next tree
-  plugins: add ability to register a GDB triggered callback
-
-Gustavo Romero (2):
-  tests/tcg/aarch64: Use raw strings for regexes in test-mte.py
-  testing: Enhance gdb probe script
-
-Ilya Leoshkevich (2):
-  tests/docker: Fix microblaze atomics
-  tests/tcg/x86_64: Add cross-modifying code test
-
-Pierrick Bouvier (6):
-  meson: hide tsan related warnings
-  docs/devel: update tsan build documentation
-  dockerfiles: fix default targets for debian-loongarch-cross
-  meson: build contrib/plugins with meson
-  contrib/plugins: remove Makefile for contrib/plugins
-  plugins: fix qemu_plugin_reset
-
- MAINTAINERS                                   |  3 +
- docs/devel/testing/main.rst                   | 26 +++++-
- configure                                     | 23 ++---
- Makefile                                      | 10 ---
- configs/targets/aarch64_be-linux-user.mak     |  2 +-
- meson.build                                   | 14 ++-
- include/qemu/plugin-event.h                   |  1 +
- include/qemu/qemu-plugin.h                    | 16 ++++
- plugins/plugin.h                              |  9 ++
- accel/tcg/plugin-gen.c                        |  4 +
- accel/tcg/user-exec.c                         |  2 +-
- plugins/api.c                                 | 18 ++++
- plugins/core.c                                | 37 ++++++++
- tests/tcg/aarch64_be/hello.c                  | 35 ++++++++
- tests/tcg/plugins/mem.c                       | 11 ++-
- tests/tcg/x86_64/cross-modifying-code.c       | 80 +++++++++++++++++
- accel/tcg/ldst_atomicity.c.inc                |  9 ++
- .gitlab-ci.d/check-dco.py                     |  9 +-
- .gitlab-ci.d/check-patch.py                   |  9 +-
- accel/tcg/trace-events                        | 12 +++
- contrib/plugins/Makefile                      | 87 -------------------
- contrib/plugins/meson.build                   | 23 +++++
- plugins/qemu-plugins.symbols                  |  1 +
- scripts/ci/setup/ubuntu/build-environment.yml |  2 -
- scripts/probe-gdb-support.py                  | 75 ++++++++--------
- tests/docker/Makefile.include                 |  5 +-
- .../dockerfiles/debian-loongarch-cross.docker |  4 +-
- .../build-toolchain.sh                        |  8 ++
- .../dockerfiles/debian-toolchain.docker       |  7 ++
- tests/tcg/Makefile.target                     |  7 +-
- tests/tcg/aarch64/gdbstub/test-mte.py         |  4 +-
- tests/tcg/aarch64_be/Makefile.target          | 17 ++++
- tests/tcg/x86_64/Makefile.target              |  4 +
- 33 files changed, 397 insertions(+), 177 deletions(-)
- create mode 100644 tests/tcg/aarch64_be/hello.c
- create mode 100644 tests/tcg/x86_64/cross-modifying-code.c
- delete mode 100644 contrib/plugins/Makefile
- create mode 100644 contrib/plugins/meson.build
- create mode 100644 tests/tcg/aarch64_be/Makefile.target
-
+diff --git a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
+index 23ec0aa9a7..c5cd0aa931 100755
+--- a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
++++ b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
+@@ -10,6 +10,8 @@ TOOLCHAIN_INSTALL=/usr/local
+ TOOLCHAIN_BIN=${TOOLCHAIN_INSTALL}/bin
+ CROSS_SYSROOT=${TOOLCHAIN_INSTALL}/$TARGET/sys-root
+ 
++GCC_PATCH0_URL=https://raw.githubusercontent.com/Xilinx/meta-xilinx/refs/tags/xlnx-rel-v2024.1/meta-microblaze/recipes-devtools/gcc/gcc-12/0009-Patch-microblaze-Fix-atomic-boolean-return-value.patch
++
+ export PATH=${TOOLCHAIN_BIN}:$PATH
+ 
+ #
+@@ -31,6 +33,12 @@ mv gcc-11.2.0 src-gcc
+ mv musl-1.2.2 src-musl
+ mv linux-5.10.70 src-linux
+ 
++#
++# Patch gcc
++#
++
++wget -O - ${GCC_PATCH0_URL} | patch -d src-gcc -p1
++
+ mkdir -p bld-hdr bld-binu bld-gcc bld-musl
+ mkdir -p ${CROSS_SYSROOT}/usr/include
+ 
+diff --git a/tests/docker/dockerfiles/debian-toolchain.docker b/tests/docker/dockerfiles/debian-toolchain.docker
+index 687a97fec4..ab4ce29533 100644
+--- a/tests/docker/dockerfiles/debian-toolchain.docker
++++ b/tests/docker/dockerfiles/debian-toolchain.docker
+@@ -10,6 +10,8 @@ FROM docker.io/library/debian:11-slim
+ # ??? The build-dep isn't working, missing a number of
+ # minimal build dependiencies, e.g. libmpc.
+ 
++RUN sed 's/^deb /deb-src /' </etc/apt/sources.list >/etc/apt/sources.list.d/deb-src.list
++
+ RUN apt update && \
+     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
+     DEBIAN_FRONTEND=noninteractive eatmydata \
+@@ -33,6 +35,11 @@ RUN cd /root && ./build-toolchain.sh
+ # and the build trees by restoring the original image,
+ # then copying the built toolchain from stage 0.
+ FROM docker.io/library/debian:11-slim
++RUN apt update && \
++    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
++    DEBIAN_FRONTEND=noninteractive eatmydata \
++    apt install -y --no-install-recommends \
++        libmpc3
+ COPY --from=0 /usr/local /usr/local
+ # As a final step configure the user (if env is defined)
+ ARG USER
 -- 
 2.39.5
 
