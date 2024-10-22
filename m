@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D579A9FB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 365A89A9FB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:11:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3BqU-0004sX-Ni; Tue, 22 Oct 2024 06:10:34 -0400
+	id 1t3Bqb-0004uo-1d; Tue, 22 Oct 2024 06:10:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3BqM-0004sD-F4
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:27 -0400
+ id 1t3BqW-0004tX-II
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3BqJ-0004O1-GK
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:25 -0400
+ id 1t3BqU-0004Oo-1t
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729591822;
+ s=mimecast20190719; t=1729591833;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FhAct4q18ImXFIsWNk2smwgX1VzeDjNJvhYscWcGBhY=;
- b=ehLKCrcbpel7YcafEFxnSPUOA+mezi2WVvU2zO3YTGbdQSEGbe+2VxZ3Ryw8aFo+9lmgyE
- Ae/NlA2Nl6fBS1JIwQqriYdmYDkIQNismsBEUv9mrMlvzi7M3KjwQslVlYncvhFJnhFt9f
- qQ8HR010vDP/KkJNRKAsbFqQ/GBZRPE=
+ bh=03JiRCmWWZh2jJskiShZoJxz/aHC3ZzZOgP/wBs0hjc=;
+ b=Nlrbu5pC3o1CQQDM1AxBB3wvtQq+3+z2DHy79F95PusgjSb0v1oVIm4toEp+eVile8yNGh
+ REEBjwnLk4JMucsBt9NwSaYIoYlX3+B+EXaN/9RHKPsjYSTPNACljnB9a4LE/n5W8Ap26W
+ IdAhpkUF5tpuuim3OUNqhND/3Bi+/oM=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-209-HSM7FzGbMFWdl4WtJo0cuw-1; Tue, 22 Oct 2024 06:10:21 -0400
-X-MC-Unique: HSM7FzGbMFWdl4WtJo0cuw-1
+ us-mta-375-7AElOKDfPgqeNM6EwSfBVg-1; Tue, 22 Oct 2024 06:10:32 -0400
+X-MC-Unique: 7AElOKDfPgqeNM6EwSfBVg-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4315d98a873so36909055e9.1
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:10:21 -0700 (PDT)
+ 5b1f17b1804b1-4315dd8fe7fso45269605e9.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:10:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729591819; x=1730196619;
+ d=1e100.net; s=20230601; t=1729591830; x=1730196630;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FhAct4q18ImXFIsWNk2smwgX1VzeDjNJvhYscWcGBhY=;
- b=geNrDPU8nL25EgmZM/nS4JdfBg7Ea5Qho9oHU3n4Ld7h7TBLR8ouoE0HJ0zQqk8gO2
- /XxBq1jrxNGaB/pACLyqKs8SW35+1HyzW26jrl/cjPpK169EnJ4MKs5QcfV+moP61DcE
- 00zGaKGGlrjZMnIy8m0TWqNhYJGXYTm0/QD1ypttuOPc7PknDeD9Xb7aDz8t/+vst/zM
- 2gYhGA1trDbGqbi1O2vs8JfuFhL5lRc+NwGFWJVgCj0pjX9hM5s0cEjgi4fgSTuqPNBp
- o3wCTe8Ri6x1OvSmsVAz11rxf2lKIrV5Sv5br8GwZLH7AjDljb75eijrENh8BsArBYSD
- lhNQ==
-X-Gm-Message-State: AOJu0Yyf3/unVNI/uH80Zi724cT9kVDJ2usBSVuPJx0frXOVChOzpch8
- u4oENVxeMHVwJWJvBbp+dwCSQDOfGw1ndJllMcWcuo2INwsfP+sPGzn1+x7K+/y+OeppFE9V716
- OWKPK1hfyh/AXVgvyRz0H/ofsbJxn9zFlUgU+HgQD/i5+lbez+i76N/01iE9Ns8obFShICMLwUY
- yfuBvYnu6mq+CHqXh28zIMpKBLGdnIy6GvbL5KSUE=
-X-Received: by 2002:adf:cb09:0:b0:37c:d179:2f73 with SMTP id
- ffacd0b85a97d-37ef0b7c8a5mr1907599f8f.13.1729591819405; 
- Tue, 22 Oct 2024 03:10:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQHeGfJVT36YqLn+DMDNjjXcUGuP1hlqTqi7nBib4PHBCTALP7lJMDW5934aNhKUagchCtcg==
-X-Received: by 2002:adf:cb09:0:b0:37c:d179:2f73 with SMTP id
- ffacd0b85a97d-37ef0b7c8a5mr1907579f8f.13.1729591818925; 
- Tue, 22 Oct 2024 03:10:18 -0700 (PDT)
+ bh=03JiRCmWWZh2jJskiShZoJxz/aHC3ZzZOgP/wBs0hjc=;
+ b=OMq8sbhg8tIYclb4jYBZqdTJq0wBxPnRFq4e5JY8eIzO/tQeP3EQ7Wi4SC2otjiufx
+ pmjwxcLRvstPRqdZY7OwSc8dijolNp/FzTfEoDYyVEnX1i9Niz40VkUC9H9K/CwXmAA3
+ Al26X6fVe3ozdooF+CgzsvT1CqT+3qvVEpz2jGrdtJY6u+vnCHrdtqLwt2RnA7RStjux
+ HrVRg2zmuHkHvtco2qflsdZMisZVtdVAWHrs7DLE/5ZBmxShteMrW2sYCHfPgoWihpUf
+ ZGekIgxHZEnzAbteQhFHeXlp6KFIIgabdevXINqG4dgyItZIhOVFBupiKJDZK1Spna/R
+ MuoQ==
+X-Gm-Message-State: AOJu0Yydu1E2ZUD749mqxd/NdLHiF8Z2y8ZST+nZk7kNAakRtYkXjH6z
+ hpC0R/L2V2sPMQXpsVJ89zCrQjnpdkrYwRHK6KwVKld66e2m27EIdigPXC9LlQcBPJC/pPyB5Y9
+ ou/J3D40sjUaD2FfM1AwDJrg7sHG/jWYomAzmCCodseSkergPxa8TDM4dc8SZMBQXmZWyFGP0Rx
+ z12Veg8D0xy2yCJlejeHNtnXsx85X2U8eIc3kU2hM=
+X-Received: by 2002:a05:600c:6747:b0:431:5ba1:a520 with SMTP id
+ 5b1f17b1804b1-4316161ef0bmr156590505e9.3.1729591830088; 
+ Tue, 22 Oct 2024 03:10:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeXIzdAkgD/irfpaEYUIV1U1m1yqe+mtDkoib8cYmNAUb4ZS087N2QLxFwDJ4XbqUxXSPPVg==
+X-Received: by 2002:a05:600c:6747:b0:431:5ba1:a520 with SMTP id
+ 5b1f17b1804b1-4316161ef0bmr156590225e9.3.1729591829637; 
+ Tue, 22 Oct 2024 03:10:29 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37ee0a48882sm6257283f8f.30.2024.10.22.03.10.17
+ 5b1f17b1804b1-4316f5cc183sm83173315e9.40.2024.10.22.03.10.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2024 03:10:17 -0700 (PDT)
+ Tue, 22 Oct 2024 03:10:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, kwolf@redhat.com, junjie.mao@hotmail.com,
  manos.pitsidianakis@linaro.org
-Subject: [PATCH v2 05/14] rust: silence unknown warnings for the sake of old
- compilers
-Date: Tue, 22 Oct 2024 12:09:46 +0200
-Message-ID: <20241022100956.196657-6-pbonzini@redhat.com>
+Subject: [PATCH v2 08/14] rust: do not use MaybeUninit::zeroed()
+Date: Tue, 22 Oct 2024 12:09:49 +0200
+Message-ID: <20241022100956.196657-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241022100956.196657-1-pbonzini@redhat.com>
 References: <20241022100956.196657-1-pbonzini@redhat.com>
@@ -102,94 +101,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Occasionally, we may need to silence warnings and clippy lints that
-were only introduced in newer Rust compiler versions.  However, this
-would fail when compiling with an older rustc:
+MaybeUninit::zeroed() is handy is not available as a "const" function until
+Rust 1.75.0.
 
-error: unknown lint: `non_local_definitions`
-   --> rust/qemu-api/rust-qemu-api-tests.p/structured/offset_of.rs:79:17
-
-So by default we need to block the unknown_lints warning.  To avoid
-misspelled lints or other similar issues, re-enable it in the CI job
-that uses nightly rust.
+Remove the default implemntation of Zeroable::ZERO, and write by hand
+the definitions for those types that need it.  It may be possible to
+add automatic implementation of the trait, via a procedural macro and/or
+a trick similar to offset_of!, but do it the easy way for now.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 8 ++++++++
- .gitlab-ci.d/buildtest.yml    | 2 +-
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 4 ++++
- 4 files changed, 15 insertions(+), 1 deletion(-)
+ rust/qemu-api/src/zeroable.rs | 91 +++++++++++++++++++++++++++++------
+ 1 file changed, 77 insertions(+), 14 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 94f30033f68..fe72f9951ca 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3327,6 +3327,14 @@ if have_rust and have_system
-   # Prohibit code that is forbidden in Rust 2024
-   rustc_args +=3D ['-D', 'unsafe_op_in_unsafe_fn']
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
+index 45ec95c9f70..13cdb2ccba5 100644
+--- a/rust/qemu-api/src/zeroable.rs
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -1,23 +1,86 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
 =20
-+  # Occasionally, we may need to silence warnings and clippy lints that
-+  # were only introduced in newer Rust compiler versions.  Do not croak
-+  # in that case; a CI job with rust_strict_lints =3D=3D true ensures that
-+  # we do not have misspelled allow() attributes.
-+  if not get_option('strict_rust_lints')
-+    rustc_args +=3D ['-A', 'unknown_lints']
-+  endif
++use std::ptr;
 +
-   # Apart from procedural macros, our Rust executables will often link
-   # with C code, so include all the libraries that C code needs.  This
-   # is safe; https://github.com/rust-lang/rust/pull/54675 says that
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 7705000e3cc..4c87f8788d5 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -128,7 +128,7 @@ build-system-fedora-rust-nightly:
-     job: amd64-fedora-rust-nightly-container
-   variables:
-     IMAGE: fedora-rust-nightly
--    CONFIGURE_ARGS: --disable-docs --enable-rust
-+    CONFIGURE_ARGS: --disable-docs --enable-rust --enable-strict-rust-lints
-     TARGETS: aarch64-softmmu
-     MAKE_CHECK_ARGS: check-build
-   allow_failure: true
-diff --git a/meson_options.txt b/meson_options.txt
-index 0ee4d7bb86b..e46199a3232 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -376,3 +376,5 @@ option('x86_version', type : 'combo', choices : ['0', '=
-1', '2', '3', '4'], value
+ /// Encapsulates the requirement that
+-/// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause
+-/// undefined behavior.
++/// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause undefined
++/// behavior.  This trait in principle could be implemented as just:
++///
++/// ```
++///     const ZERO: Self =3D unsafe {
++///         ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed=
+().assume_init()
++///     },
++/// ```
++///
++/// The need for a manual implementation is only because `zeroed()` cannot
++/// be used as a `const fn` prior to Rust 1.75.0. Once we can assume a new
++/// enough version of the compiler, we could provide a `#[derive(Zeroable)=
+]`
++/// macro to check at compile-time that all struct fields are Zeroable, and
++/// use the above blanket implementation of the `ZERO` constant.
+ ///
+ /// # Safety
+ ///
+-/// Do not add this trait to a type unless all-zeroes is
+-/// a valid value for the type.  In particular, remember that raw
+-/// pointers can be zero, but references and `NonNull<T>` cannot
+-/// unless wrapped with `Option<>`.
++/// Because the implementation of `ZERO` is manual, it does not make
++/// any assumption on the safety of `zeroed()`.  However, other users of t=
+he
++/// trait could use it that way.  Do not add this trait to a type unless
++/// all-zeroes is a valid value for the type.  In particular, remember that
++/// raw pointers can be zero, but references and `NonNull<T>` cannot
+ pub unsafe trait Zeroable: Default {
+-    /// SAFETY: If the trait was added to a type, then by definition
+-    /// this is safe.
+-    const ZERO: Self =3D unsafe { ::core::mem::MaybeUninit::<Self>::zeroed=
+().assume_init() };
++    const ZERO: Self;
+ }
 =20
- option('rust', type: 'feature', value: 'disabled',
-        description: 'Rust support')
-+option('strict_rust_lints', type: 'boolean', value: false,
-+       description: 'Enable stricter set of Rust warnings')
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 6d08605b771..e898b20307d 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -47,6 +47,8 @@ meson_options_help() {
-   printf "%s\n" '                           getrandom()'
-   printf "%s\n" '  --enable-safe-stack      SafeStack Stack Smash Protecti=
-on (requires'
-   printf "%s\n" '                           clang/llvm and coroutine backe=
-nd ucontext)'
-+  printf "%s\n" '  --enable-strict-rust-lints'
-+  printf "%s\n" '                           Enable stricter set of Rust wa=
-rnings'
-   printf "%s\n" '  --enable-strip           Strip targets on install'
-   printf "%s\n" '  --enable-tcg-interpreter TCG with bytecode interpreter =
-(slow)'
-   printf "%s\n" '  --enable-trace-backends=3DCHOICES'
-@@ -490,6 +492,8 @@ _meson_option_parse() {
-     --disable-spice-protocol) printf "%s" -Dspice_protocol=3Ddisabled ;;
-     --enable-stack-protector) printf "%s" -Dstack_protector=3Denabled ;;
-     --disable-stack-protector) printf "%s" -Dstack_protector=3Ddisabled ;;
-+    --enable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=3Dtrue ;;
-+    --disable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=3Dfalse ;;
-     --enable-strip) printf "%s" -Dstrip=3Dtrue ;;
-     --disable-strip) printf "%s" -Dstrip=3Dfalse ;;
-     --sysconfdir=3D*) quote_sh "-Dsysconfdir=3D$2" ;;
+-unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {}
+-unsafe impl Zeroable for crate::bindings::Property {}
+-unsafe impl Zeroable for crate::bindings::VMStateDescription {}
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {}
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {}
++unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {
++    const ZERO: Self =3D Self { i: 0 };
++}
++
++unsafe impl Zeroable for crate::bindings::Property {
++    const ZERO: Self =3D Self {
++        name: ptr::null(),
++        info: ptr::null(),
++        offset: 0,
++        bitnr: 0,
++        bitmask: 0,
++        set_default: false,
++        defval: Zeroable::ZERO,
++        arrayoffset: 0,
++        arrayinfo: ptr::null(),
++        arrayfieldsize: 0,
++        link_type: ptr::null(),
++    };
++}
++
++unsafe impl Zeroable for crate::bindings::VMStateDescription {
++    const ZERO: Self =3D Self {
++        name: ptr::null(),
++        unmigratable: false,
++        early_setup: false,
++        version_id: 0,
++        minimum_version_id: 0,
++        priority: crate::bindings::MigrationPriority::MIG_PRI_DEFAULT,
++        pre_load: None,
++        post_load: None,
++        pre_save: None,
++        post_save: None,
++        needed: None,
++        dev_unplug_pending: None,
++        fields: ptr::null(),
++        subsections: ptr::null(),
++    };
++}
++
++unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {
++    const ZERO: Self =3D Self {
++        min_access_size: 0,
++        max_access_size: 0,
++        unaligned: false,
++        accepts: None,
++    };
++}
++
++unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {
++    const ZERO: Self =3D Self {
++        min_access_size: 0,
++        max_access_size: 0,
++        unaligned: false,
++    };
++}
 --=20
 2.46.2
 
