@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243129AB1E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 17:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAA99AB31B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 18:01:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3GfV-0005Q7-SE; Tue, 22 Oct 2024 11:19:33 -0400
+	id 1t3HIa-0004Lj-R3; Tue, 22 Oct 2024 11:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3GfR-0005Pj-2i
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:19:29 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3HIV-0004LU-FY
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:59:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3GfO-0004Zo-Ah
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:19:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729610366; x=1761146366;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hby/lNQb7kcz3aErF/baCHtbEoNxlIQvuJ1v3SMGwU0=;
- b=Pr+yJPqpl2dIsoUr0BGub61Z5tnH4PvNJC2pQ37bavvOJTOQAa71EC/j
- h5yuirWWdrXqh1+vNsOvZouXhAzm3SVMt0OoUBO1dOLWNUndHTtWYArjI
- TQzVpr9ERfJMiFM0Urk+wEA4k/pXfvGhgewRcmaLKt9B/c8M/kpm71d+T
- uwG4kQFPYPM8NLNm+DVCH21pOBNP9Xr/QC8a8KRG7MQiKxS6WNWUG7uuD
- XCdknxS5MZ8GL1NErCREupZWy+E7jVb05LN8M9Qo0PWa00hTax+0nWn2u
- oROOzyXPqMgu0HRlVG+CD2ya5zMgVRmtfdZCxFUtAZ0ggQCK5Xw1oSK3M g==;
-X-CSE-ConnectionGUID: G9oC2kOuRuKpyZagfJ6e3A==
-X-CSE-MsgGUID: pD9C8WI7Q0ai9RnqlAqjoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="40528818"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="40528818"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 08:19:21 -0700
-X-CSE-ConnectionGUID: zkVdP6n8Q7ef+T8tDYcMng==
-X-CSE-MsgGUID: v/shGKtRTy6XjTBBVqMqQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="80078966"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 22 Oct 2024 08:19:20 -0700
-Date: Tue, 22 Oct 2024 23:35:36 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH v2 03/13] meson: pass rustc_args when building all crates
-Message-ID: <ZxfGSO1AklSDwvQC@intel.com>
-References: <20241021163538.136941-1-pbonzini@redhat.com>
- <20241021163538.136941-4-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3HIS-0000dH-Ta
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 11:59:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729612786;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vPDvf4+CfIkk8D/qaXxb4BdrqY2Rc8Lqp2W80tVKAOw=;
+ b=fmCs1pgDCMn4+n2vj2MgWO5ZK5EsycoBaFZvRHVgHSw7hKKU8MnUdkrlOAO6G1BYXuXQb7
+ 2Y3zkN/5TxHjN7vf9ZQ5DHG7G8qQbhyOxOaaGyoPNbu5AVDnsak/8nGqmxgj2yEzIP93ZD
+ l55SfEEQmNrC0g6wS8advuNHHUrd3vg=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-ZVbUMPHhOly_AZrmADnzsQ-1; Tue, 22 Oct 2024 11:59:45 -0400
+X-MC-Unique: ZVbUMPHhOly_AZrmADnzsQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6cbe4a123fdso88348606d6.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 08:59:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729612784; x=1730217584;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vPDvf4+CfIkk8D/qaXxb4BdrqY2Rc8Lqp2W80tVKAOw=;
+ b=QAhHboQ2azxmsGxxO3QnhlDaUj2/NZr/7wEdr4EZiE2RWhJiLp96WxxYINrKfmyX4e
+ 1jqdk5dP2hKOd7qIZygNDrP2oLZzp/Jlk1MFn76ZUnIH98K/dFiy1LOzBBXsaAsPr1xk
+ WgCXNBF0r7Ut7EdEn9ek2ir60UMPit+yb8/N0vKX3DOxQlomxE0jGws2nE0MlqHRwWB+
+ z9Eg42DHd6nepgNlqjMLLwJLy5TmDxA7awCBdr51xUkwTVqYaMkY1rjab0gqLlMUPWmi
+ DoF7yc1GXTRTyUAp9UHk9+Aaqt18woOZfaTiFLwgrAfEX+ezJFgkf0nhAO4KVfJOQucR
+ T1/w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUOhQdnPcoY4ZNS7CxAdtLCubhDifc66MJFTdX96EoMhfqoXP9MTvHixyWhoVzzSw1LCd7g3xfTVXh4@nongnu.org
+X-Gm-Message-State: AOJu0YyFabIOzXHfBq23vMWI0WA1PVxdC6bZrGrKwE/DDHVe+rUIF5yy
+ DpPfEqb/3bS+VrOVqfpNApr06J+Jl/7Dv5dAV08zscME+kPEEqA/2ugFuA9VOR4Fyae2i2dTfbC
+ J02EWebmjTLwj6pw6eBs415x8h++6T5MtrV/T3mgaBuOqatjPGH3/
+X-Received: by 2002:a05:6214:3bc5:b0:6cb:c5f7:719 with SMTP id
+ 6a1803df08f44-6ce23e1d554mr39626976d6.27.1729612784728; 
+ Tue, 22 Oct 2024 08:59:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkm8iKInFI9c+SusnQIovxIVPhn46eDwZlGP5xBmAn5wk2FmxZsjbe0TCZr3q9RoVHUV3ofg==
+X-Received: by 2002:a05:6214:3bc5:b0:6cb:c5f7:719 with SMTP id
+ 6a1803df08f44-6ce23e1d554mr39626716d6.27.1729612784449; 
+ Tue, 22 Oct 2024 08:59:44 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6ce009fea30sm30260006d6.135.2024.10.22.08.59.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Oct 2024 08:59:44 -0700 (PDT)
+Date: Tue, 22 Oct 2024 11:59:42 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Hyman Huang <yong.huang@smartx.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] migration/dirtyrate: Silence warning about strcpy()
+ on OpenBSD
+Message-ID: <ZxfL7lrntriKoVOX@x1n>
+References: <20241022063402.184213-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241021163538.136941-4-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
+In-Reply-To: <20241022063402.184213-1-thuth@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,22 +100,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 06:35:28PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 21 Oct 2024 18:35:28 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 03/13] meson: pass rustc_args when building all crates
-> X-Mailer: git-send-email 2.46.2
+On Tue, Oct 22, 2024 at 08:34:02AM +0200, Thomas Huth wrote:
+> The linker on OpenBSD complains:
 > 
-> rustc_args is needed to smooth the difference in warnings between the various
-> versions of rustc.  Always include those arguments.
+>  ld: warning: dirtyrate.c:447 (../src/migration/dirtyrate.c:447)(...):
+>  warning: strcpy() is almost always misused, please use strlcpy()
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> It's currently not a real problem in this case since both arrays
+> have the same size (256 bytes). But just in case somebody changes
+> the size of the source array in the future, let's better play safe
+> and use g_strlcpy() here instead, with an additional check that the
+> string has been copied as a whole.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  meson.build                       | 20 +++++++++++++-------
->  rust/qemu-api/meson.build         |  2 +-
->  rust/qemu-api/src/device_class.rs | 10 ++++++----
->  3 files changed, 20 insertions(+), 12 deletions(-)
+>  v2: Check the return value of g_strlcpy to avoid truncation of the string
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
- 
+queued, thanks.
+
+-- 
+Peter Xu
+
 
