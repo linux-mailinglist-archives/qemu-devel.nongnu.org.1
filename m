@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE2A9A9FB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9449A9FBB
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:13:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Bqr-000572-Hg; Tue, 22 Oct 2024 06:10:57 -0400
+	id 1t3BqA-0004qn-H5; Tue, 22 Oct 2024 06:10:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Bqm-00056Z-Ib
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t3Bq7-0004px-C6
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Bql-0004Q7-5z
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:52 -0400
+ id 1t3Bq3-0004KM-8Y
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:10:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729591850;
+ s=mimecast20190719; t=1729591804;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=K9B3S4pkz/ND8ZX3LymjnObrKUjAIX6qwMdxq9Q+Q3M=;
- b=SD6ifI+tF2B+wjjveBxHO9LVNqVvoes4bd6026sKkeOW7vMtcggmn1+trHrFDAjvs9jCEp
- phS+Yjo5RPPrkUxEwvJDIla851LziXyXk3nTuxOBxU50g+ORJddZNxfCsL8JhEN+Zc1InX
- SG/WAhUlEdo1Sx+oFkS7290Bs3FiEG4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tbvXfRrFBOsk5giDSgfqNdSIEAUGb9q/RRGU64sx1+8=;
+ b=CTBW8Ktqvm6YUOvoNpLUnjMo6/gYzP6ppd7QPW7DReDJWgOe+Y8UXwQ3uuwxlhGRfd7z62
+ Yq2ItbzbKh0cGs4WLh1CHhbCCwsP7886AO5Rqxhw29/4deQ5Jivhm+3EJv5M+GgVT675ED
+ MixsqXDqMCOqizwfGyAEHaS8M7PIRp8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-LzABJowoNgejoB91X1AFWQ-1; Tue, 22 Oct 2024 06:10:49 -0400
-X-MC-Unique: LzABJowoNgejoB91X1AFWQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4317391101aso14416645e9.2
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:10:49 -0700 (PDT)
+ us-mta-1-hfbGvD8iNXC7xazB7U9vVQ-1; Tue, 22 Oct 2024 06:10:02 -0400
+X-MC-Unique: hfbGvD8iNXC7xazB7U9vVQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d5116f0a6so2638628f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:10:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729591847; x=1730196647;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=K9B3S4pkz/ND8ZX3LymjnObrKUjAIX6qwMdxq9Q+Q3M=;
- b=d3UzbLRbvCPGTxomKFsg48Mh88esiKyvBUgUQzLw6AaZAz4YlCkPAJD4ezFHskhZ6H
- GnV58MOMvVri9quRUHoA42QPPAcmpMmfYc2zaTwltPCv0VO0ceApBqFaG4XrUR/7C85f
- RoHgfE8oB2122D7CrjrKF1hwvtJ9RAtAwGEQPl2wq/SjuNSjebdRPqrX8RAqZgP6zFq5
- FK77XEQfGNYe3m7EP0kS8OAIRlvRnGKU+drR61LWJ/2EyEW39S5t122ucqDQIiExeXFS
- 4UyOQRlqCPKcOChMbZulJ/7Bm4hnj+OHOmTDi+yBKvsoqascnHUX2m6mYIjmWT0C/B7q
- 6QYQ==
-X-Gm-Message-State: AOJu0YzguYD0QzQgksjQ7VnrAlo1iaqToJJNphMJJN7zAsWUTgkw6n/h
- 8dE13K9bT/mx7u5AbvzGEsvoTuPlN4UX0KrjItdB/6eOa84C73PFCo0ValPsTG6uc5WNm102Ol2
- dtoqu8K7FIHIpv3dYhocghyl+W+I1jTHuT/1m6r+NjB0DF7shpRxJVLF8zB9AVpRrOJKqb3tkam
- mmsCPkXJc3mZlr7hwev7veB04uvHyPfHH8wq8EWE8=
-X-Received: by 2002:a05:600c:1c95:b0:431:6083:cd2a with SMTP id
- 5b1f17b1804b1-43161659c02mr124685855e9.15.1729591847429; 
- Tue, 22 Oct 2024 03:10:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDQGfliN2mrPSUog1KDj6MU2y/6FNACnBkmObU8eVnHfr3chcQmaoS/LkbMYCw8wpOebwq8A==
-X-Received: by 2002:a05:600c:1c95:b0:431:6083:cd2a with SMTP id
- 5b1f17b1804b1-43161659c02mr124685555e9.15.1729591846992; 
- Tue, 22 Oct 2024 03:10:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729591799; x=1730196599;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tbvXfRrFBOsk5giDSgfqNdSIEAUGb9q/RRGU64sx1+8=;
+ b=wn1yCQLNKv4TQQdWMPixjE5LaPVABtns9IzV9KQsGq9anQVc7fH3zOSs+jBn5NHLzc
+ mXUu3D3UJ8lagu8oCm51VerVvy38USUXqwsMj+kVYkKdD9J4KmfOIfU9lA6zF0pzMKk9
+ fdYbDjxkoCdQHm/LE8VBzddw7SEtNJhnvf28ZY1X2DciWzXpZyICtKVtj0bugwH6YlHP
+ qlNC9P/+Vs8zk8S8Vy19pUJ16D6y3AXZY/o8OZ2umD17JrC4+XTDM0i/68FeZuhp5WAO
+ Zchs2jR0HQv+Hcv2DWoDViz7xjnCi7Bf74ufaHA83P8ZSZ9Il6N5Gy+eH4lWufkR7fiN
+ eZxw==
+X-Gm-Message-State: AOJu0YzM89Eyd90I8LzY00VddVWIwxmbc0/2wxtpOl5JuZ6kthk2ZwTk
+ EOTHCuCTw/BTZaNCrzreHuUZ+cYum81IoS8Tize/+OfJd8oTrFATZCn2CRqdkg9RxwfmKtz4TaS
+ pjb2AMNwoc/fRIbv3rFiHyOR7O8EmrSmT5RaSUJkLW6jmIy3W0KPzD75yXkdEHex/LHOA0kgBAs
+ 9TwUAMSnWfMbbkfUFfqCKo4MtxVsgESkodVL2DyLo=
+X-Received: by 2002:a5d:5266:0:b0:37d:509e:8742 with SMTP id
+ ffacd0b85a97d-37ea2140fe2mr8649067f8f.1.1729591799433; 
+ Tue, 22 Oct 2024 03:09:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+z8jHGDB1rp1c/5b7xSLnfMWGqpXU1YvY4wZ6yWcK9A/pC31BB3okWvd1B2Jr9T0rK5wEJQ==
+X-Received: by 2002:a5d:5266:0:b0:37d:509e:8742 with SMTP id
+ ffacd0b85a97d-37ea2140fe2mr8649048f8f.1.1729591799025; 
+ Tue, 22 Oct 2024 03:09:59 -0700 (PDT)
 Received: from avogadro.local ([151.95.144.54])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4316f5c3194sm84592765e9.31.2024.10.22.03.10.45
+ ffacd0b85a97d-37ee0a488edsm6277685f8f.31.2024.10.22.03.09.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2024 03:10:45 -0700 (PDT)
+ Tue, 22 Oct 2024 03:09:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, kwolf@redhat.com, junjie.mao@hotmail.com,
  manos.pitsidianakis@linaro.org
-Subject: [PATCH v2 13/14] rust: make rustfmt optional
-Date: Tue, 22 Oct 2024 12:09:54 +0200
-Message-ID: <20241022100956.196657-14-pbonzini@redhat.com>
+Subject: [PATCH v2 00/14] rust: allow older versions of rustc and bindgen
+Date: Tue, 22 Oct 2024 12:09:41 +0200
+Message-ID: <20241022100956.196657-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241022100956.196657-1-pbonzini@redhat.com>
-References: <20241022100956.196657-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.421,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.699,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,41 +98,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- meson.build | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+This is the second of three series needed to enable Rust for all CI
+jobs (the third is due to differences in the functionality between
+C and Rust implementations of PL011, for which I have sent the RFC
+a little earlier).
 
-diff --git a/meson.build b/meson.build
-index d78afb79d67..5e3501750a1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -115,6 +115,10 @@ if not bindgen.found() or bindgen.version().version_co=
-mpare('<0.60.0')
-   endif
- endif
-=20
-+if have_rust
-+  rustfmt =3D find_program('rustfmt', required: false)
-+endif
-+
- dtrace =3D not_found
- stap =3D not_found
- if 'dtrace' in get_option('trace_backends')
-@@ -3973,6 +3977,13 @@ if have_rust
-     '--allowlist-file', meson.project_source_root() + '/.*',
-     '--allowlist-file', meson.project_build_root() + '/.*'
-     ]
-+  if not rustfmt.found()
-+    if bindgen.version().version_compare('<0.65.0')
-+      bindgen_args +=3D ['--no-rustfmt-bindings']
-+    else
-+      bindgen_args +=3D ['--formatter', 'none']
-+    endif
-+  endif
-   if bindgen.version().version_compare('<0.61.0')
-     # default in 0.61+
-     bindgen_args +=3D ['--size_t-is-usize']
+My overall patch queue can be found at branch rust-next of my git
+repository https://gitlab.com/bonzini/qemu.git.
+
+Note that this requires "meson subprojects update --reset" in order to do
+an incremental build if you have already downloaded the Rust subprojects.
+While I have a solution for that (modeled after scripts/git-submodule.sh),
+I first need to check with the Meson folks whether my script is using only
+stable interfaces.
+
+Paolo
+
+Based-on: <20241021163538.136941-1-pbonzini@redhat.com>
+
+CI:
+- Debian: https://gitlab.com/bonzini/qemu/-/jobs/8149518712
+- Fedora: https://gitlab.com/bonzini/qemu/-/jobs/8149518714
+- Fedora + nightly Rust: https://gitlab.com/bonzini/qemu/-/jobs/8149518716
+- Ubuntu: https://gitlab.com/bonzini/qemu/-/jobs/8149518709
+
+
+Junjie Mao (1):
+  rust: introduce alternative implementation of offset_of!
+
+Paolo Bonzini (13):
+  rust: patch bilge-impl to allow compilation with 1.63.0
+  rust: fix cfgs of proc-macro2 for 1.63.0
+  rust: use std::os::raw instead of core::ffi
+  rust: introduce a c_str macro
+  rust: silence unknown warnings for the sake of old compilers
+  rust: synchronize dependencies between subprojects and Cargo.lock
+  rust: do not use MaybeUninit::zeroed()
+  rust: clean up detection of the language
+  rust: allow version 1.63.0 of rustc
+  rust: do not use --generate-cstr
+  rust: allow older version of bindgen
+  rust: make rustfmt optional
+  dockerfiles: install bindgen from cargo on Ubuntu 22.04
+
+ docs/about/build-platforms.rst                |   8 +
+ meson.build                                   | 102 +++++++----
+ .gitattributes                                |   2 +
+ .gitlab-ci.d/buildtest.yml                    |   2 +-
+ meson_options.txt                             |   2 +
+ rust/hw/char/pl011/Cargo.lock                 |   6 +-
+ rust/hw/char/pl011/src/device.rs              |  28 +--
+ rust/hw/char/pl011/src/device_class.rs        |   5 +-
+ rust/hw/char/pl011/src/lib.rs                 |   4 +-
+ rust/hw/char/pl011/src/memory_ops.rs          |  10 +-
+ rust/qemu-api-macros/Cargo.lock               |  11 +-
+ rust/qemu-api-macros/Cargo.toml               |   5 +-
+ rust/qemu-api-macros/src/lib.rs               |  29 +++-
+ rust/qemu-api/Cargo.lock                      |  56 +++++-
+ rust/qemu-api/Cargo.toml                      |   7 +-
+ rust/qemu-api/build.rs                        |   8 +
+ rust/qemu-api/meson.build                     |  16 +-
+ rust/qemu-api/src/c_str.rs                    |  53 ++++++
+ rust/qemu-api/src/definitions.rs              |   2 +-
+ rust/qemu-api/src/device_class.rs             |  26 ++-
+ rust/qemu-api/src/lib.rs                      |  16 +-
+ rust/qemu-api/src/offset_of.rs                | 161 ++++++++++++++++++
+ rust/qemu-api/src/zeroable.rs                 |  91 ++++++++--
+ rust/qemu-api/tests/tests.rs                  |  22 +--
+ scripts/meson-buildoptions.sh                 |   4 +
+ subprojects/bilge-impl-0.2-rs.wrap            |   1 +
+ subprojects/packagefiles/.gitattributes       |   1 +
+ .../packagefiles/bilge-impl-1.63.0.patch      |  45 +++++
+ .../packagefiles/proc-macro2-1-rs/meson.build |   4 +-
+ subprojects/packagefiles/syn-2-rs/meson.build |   1 +
+ tests/docker/dockerfiles/ubuntu2204.docker    |   5 +
+ tests/lcitool/mappings.yml                    |   4 +
+ tests/lcitool/refresh                         |  11 +-
+ 33 files changed, 644 insertions(+), 104 deletions(-)
+ create mode 100644 rust/qemu-api/src/c_str.rs
+ create mode 100644 rust/qemu-api/src/offset_of.rs
+ create mode 100644 subprojects/packagefiles/.gitattributes
+ create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+
 --=20
 2.46.2
 
