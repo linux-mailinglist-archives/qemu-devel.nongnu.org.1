@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFE29AA0A3
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBE39AA0A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 12:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3CZj-0002dQ-E9; Tue, 22 Oct 2024 06:57:20 -0400
+	id 1t3CZc-0001w1-JK; Tue, 22 Oct 2024 06:57:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CZ1-0001p2-17
+ id 1t3CZ1-0001p1-0u
  for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:36 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3CYy-00024d-Is
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:34 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a99eb8b607aso588256466b.2
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:32 -0700 (PDT)
+ id 1t3CYx-00023z-Df
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 06:56:32 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c937b5169cso1155614a12.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 03:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729594591; x=1730199391; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729594590; x=1730199390; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p2jXJE3FbWlzhHC2JLNXh46hRwsq96dE8ivUr/Ry4PY=;
- b=itvKW5FyYgWnPx6VY1MhYfAcczcT2WZGWcPHTBM/4/I+0zdtsgRW84Kao7sBue26CF
- G/EsiBvcm7YkrxSN23L33NIM6M5Wsp1zMuBuHjr+rmorWjk+Q19Jdv8QfHhDJsCrhI27
- EpT5nSEHUG+9vyNfwEZ5DEJEzxJp+fvmi/dzmI6iGDMJEfMZ/6pgPTa8ZwOqUKfSRsbM
- cKTNNGbD1SLmxN92m6c+rCvze3wDfmN1b7Q1hhvJDcUCnQOowQMbVjtJMwTNU68AzgQr
- ohfsOxexNXTEm76CzJgf1TRlUyQDCiebJqNj24LfooC5x8VwXUWiGWrMBklb00I5/UMc
- EZyQ==
+ bh=nuVL16OURPo6SfQxD2PzScmfjsPxu4HizBAVk8u7e/E=;
+ b=yEgmR/iucv08DNiZ7m008A6CAAh3GaZt5k0f/0SCmq6RK3bXS27FBvrPerjCf387AW
+ WQnJLAB5boaVNUizxzqMfclYYhIrDpJvh3FlW4yqJop0THj6ZfFxdJDPfyBxmolAcPF+
+ Gb/wNUNpnzPctM+mvYL7M/mxLScxLmEfUMNfPJAG4C9gBy8grZTG85zm+uD3L37TLBUw
+ CjQNCSiRKXY17nY7WemyUd2R97/sYuQsGCpqQdDSi/r78p1plUQCeilcLR2qjijmjLng
+ 9s2nWZxo0kq9IkgNPXSPNJRiGTtNxsKRXOLLPwaIHnVCOsgGlIibMjv5h3B2kBBFyXR/
+ wnpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729594591; x=1730199391;
+ d=1e100.net; s=20230601; t=1729594590; x=1730199390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p2jXJE3FbWlzhHC2JLNXh46hRwsq96dE8ivUr/Ry4PY=;
- b=QLO7tJm1pTJss1p3jErNm4J0ir30oI5acoKwE1V0LZfleESxEiIAOjKxV8iFZ1vnkK
- 1J8pVyQ9U2wYHbRg/xQSnwS7LYJ34OLzCcPDMpAY69CiSvOacsbsQGNcpbHWeUGAoWuC
- PS13ZYj5EdVG7f1Py6+c544ziL4SwXe/PaZBdXe8v3DMgL8pffNRqUcswGTMWDsgKtQl
- n5LiuLL5JoxYgzAUCpIQitJLkb2WA+74rgcGcB+W7qN9uSnZQyixR4KD4lgoPXWn1y05
- IguixgI0/ECatagFfjplkqAWonpgLBWKBuK4KRJHChS+renIo3msTM5teQlzPuxJk79o
- 0+ew==
-X-Gm-Message-State: AOJu0YwBoBuivX0eurMbxf25bMivhn5QfTIrgQ711JwjENDKtIFL01+3
- HyrQ9NsUvJaHQVXpe1AmyxL8U2iSWj2/DdC/DyQWDTWIweKlIYDLFtn1yS9tDg0=
-X-Google-Smtp-Source: AGHT+IGUejPeSVv+t0DCi7SW64a6BptBW33UQRq4rjvBjk+8TQgWaYTlBD5pezBspgvI4FXlscux/w==
-X-Received: by 2002:a17:907:7da5:b0:a99:4aa7:4d6f with SMTP id
- a640c23a62f3a-a9a6995d6f8mr1533790966b.12.1729594590554; 
- Tue, 22 Oct 2024 03:56:30 -0700 (PDT)
+ bh=nuVL16OURPo6SfQxD2PzScmfjsPxu4HizBAVk8u7e/E=;
+ b=WgY3qv4NiDGRCHJzB6WZr2mGT2uoRRu6z1bp3TfGGwLXg8+21KYYuR4tSZkLVHaP14
+ YlF/yselihVUQzTHWWOXlBNiP3VVX1WkxxGeGoIRGbWrjmxYxv9oe7beJf3lYMTuDUju
+ 0mU0glJtrBc7OdGIIoMgGzTV1z+8dkmI+EPWq+Is2E+C7FpBq82b58DRU35Kl/+E7Gk/
+ BwyG/TEcMkJMmwpVptpuDHorvaVfqreWQ5WWVVFI4TsLZ0Z5vr/HLHiI+b/z1K0LnLC8
+ JCkOzYS5kzB/nW08vNoPUT57Lz9rdWPhpcIBqCWA1dGOw4QRTBCHQy1E5hloKd+axu04
+ x22Q==
+X-Gm-Message-State: AOJu0Ywj9tJoBaxwpJyTZc4a9pxOQrq5mt0tzmiqQnCkanbSYrZkJqSN
+ 8bxa/5A4pbZNIPC5WHOuXZT3LkrcsIgus/92LaBP9Tqj/pNCKuhxRNJUYt/rqKg=
+X-Google-Smtp-Source: AGHT+IHwi1+vxmbQ3YLA9r6WePtD03FZyJBvumSeivnyntfSu8jv5XX9sGc6cj7ZvugURHt1idsIcQ==
+X-Received: by 2002:a05:6402:35c2:b0:5c9:3070:701e with SMTP id
+ 4fb4d7f45d1cf-5cb794670eemr2833546a12.9.1729594589755; 
+ Tue, 22 Oct 2024 03:56:29 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912edc33sm321455366b.58.2024.10.22.03.56.19
+ 4fb4d7f45d1cf-5cb66c7255esm3123937a12.80.2024.10.22.03.56.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Oct 2024 03:56:28 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 99FE35FA0B;
+ by draig.lan (Postfix) with ESMTP id ADE0A5FABE;
  Tue, 22 Oct 2024 11:56:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,24 +82,25 @@ Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 11/20] MAINTAINERS: mention my gdbstub/next tree
-Date: Tue, 22 Oct 2024 11:56:05 +0100
-Message-Id: <20241022105614.839199-12-alex.bennee@linaro.org>
+Subject: [PATCH v2 12/20] config/targets: update aarch64_be-linux-user gdb XML
+ list
+Date: Tue, 22 Oct 2024 11:56:06 +0100
+Message-Id: <20241022105614.839199-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,25 +116,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make it easy for people to see what is already queued.
+Attempting to run the binary asserts when it can't find the XML entry.
+We can fix it so we don't although I suspect other stuff is broken.
 
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2580
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ configs/targets/aarch64_be-linux-user.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b84787ae1b..81396c9f15 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2978,6 +2978,7 @@ F: gdb-xml/
- F: tests/tcg/multiarch/gdbstub/*
- F: scripts/feature_to_c.py
- F: scripts/probe-gdb-support.py
-+T: git https://gitlab.com/stsquad/qemu gdbstub/next
- 
- Memory API
- M: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
+index 778d22b2a9..dcef597a80 100644
+--- a/configs/targets/aarch64_be-linux-user.mak
++++ b/configs/targets/aarch64_be-linux-user.mak
+@@ -1,7 +1,7 @@
+ TARGET_ARCH=aarch64
+ TARGET_BASE_ARCH=arm
+ TARGET_BIG_ENDIAN=y
+-TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
 -- 
 2.39.5
 
