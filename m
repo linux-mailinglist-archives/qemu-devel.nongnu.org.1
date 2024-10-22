@@ -2,90 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F099AB007
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 15:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E63009AA36B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 15:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3FG7-0002kn-4L; Tue, 22 Oct 2024 09:49:15 -0400
+	id 1t3F8Q-0005q3-SV; Tue, 22 Oct 2024 09:41:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <szedani@linux.ibm.com>)
- id 1t3FFn-0002hX-Fv; Tue, 22 Oct 2024 09:48:57 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <SRS0=pGrG=RS=kaod.org=clg@ozlabs.org>)
+ id 1t3F8H-0005jG-FC; Tue, 22 Oct 2024 09:41:09 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <szedani@linux.ibm.com>)
- id 1t3FFk-0001cJ-OV; Tue, 22 Oct 2024 09:48:55 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M2HAhA018174;
- Tue, 22 Oct 2024 13:48:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=5ETLuzk+XuOdnICcZ4tq21VMRxXgcKaAgxt4XdZmf
- kA=; b=CMhlFZ+KSZyMpze3uyweFxMCo/gr1RYqCksyxLD7DU5NH1u1dcyoVx3Pb
- gZE1c1fPsfb5/HVnSTPy0dwf10VlJzj3JhS84nzt5iuOlx797v7uucMh4a9SO2V4
- HK/Vfq5FBlH+4usGDqJxJ2/P8i7OLYKU8NyXwIcJclmgam1ijde2Js+Wtxqw7hFN
- kC0msxxDyyADpD1h6LMGF4g+ZvuFjFxtn9K8jkcUuiw+72qQolW42KYK2qscLrYt
- dZe1EWWTSeGh+EkyIvrU5byENUkmJUNZxb361+gQIyRWHrxnwKXPCN8ZE6AY4lf5
- RlJnXJhVZ64obxD/MJY34UnU5BvNA==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42c5gcpvuc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Oct 2024 13:48:46 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49MCm6Qg026491;
- Tue, 22 Oct 2024 13:48:45 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42cq3sbmn3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Oct 2024 13:48:45 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49MDmfTV43974948
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Oct 2024 13:48:42 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB85820040;
- Tue, 22 Oct 2024 13:48:41 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2628620043;
- Tue, 22 Oct 2024 13:48:40 +0000 (GMT)
-Received: from li-68760b29-fd7c-4017-a34c-fc5cee828441.fritz.box (unknown
- [9.171.57.120]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 22 Oct 2024 13:48:39 +0000 (GMT)
-From: Dani Szebenyi <szedani@linux.ibm.com>
-To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, richard.henderson@linaro.org
-Cc: Dani Szebenyi <szedani@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH] tcg/ppc/tcg-target.c.inc: Fix tcg_out_rlw_rc
-Date: Tue, 22 Oct 2024 15:34:39 +0200
-Message-ID: <20241022133535.69351-2-szedani@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
+ (Exim 4.90_1) (envelope-from <SRS0=pGrG=RS=kaod.org=clg@ozlabs.org>)
+ id 1t3F8E-00014d-7X; Tue, 22 Oct 2024 09:41:09 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4XXtcD48JMz4w2N;
+ Wed, 23 Oct 2024 00:41:00 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4XXtbl5JXxz4wbr;
+ Wed, 23 Oct 2024 00:40:34 +1100 (AEDT)
+Message-ID: <b682dc55-f5e8-4fec-82f7-333dbaba240e@kaod.org>
+Date: Tue, 22 Oct 2024 15:40:32 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OU02dCmcexpgym-C4G3pdB579K3rS-o8
-X-Proofpoint-ORIG-GUID: OU02dCmcexpgym-C4G3pdB579K3rS-o8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=593 clxscore=1011 suspectscore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 spamscore=0 phishscore=0 adultscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220087
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=szedani@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/18] aspeed/smc: Fix write incorrect data into flash
+ in user mode
+To: Kevin Wolf <kwolf@redhat.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Hanna Reitz <hreitz@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20241022094110.1574011-1-jamin_lin@aspeedtech.com>
+ <20241022094110.1574011-2-jamin_lin@aspeedtech.com>
+ <ZxeDVTBwLZsOEDvE@redhat.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <ZxeDVTBwLZsOEDvE@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=pGrG=RS=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.169, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,41 +74,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous message I sent was corrupted, sending again.
+>>   
+>>   static const VMStateDescription vmstate_aspeed_smc = {
+>>       .name = "aspeed.smc",
+>> -    .version_id = 2,
+>> +    .version_id = 3,
+>>       .minimum_version_id = 2,
+>>       .fields = (const VMStateField[]) {
+>>           VMSTATE_UINT32_ARRAY(regs, AspeedSMCState, ASPEED_SMC_R_MAX),
+>>           VMSTATE_UINT8(snoop_index, AspeedSMCState),
+>>           VMSTATE_UINT8(snoop_dummies, AspeedSMCState),
+>> +        VMSTATE_BOOL(unselect, AspeedSMCState),
+>>           VMSTATE_END_OF_LIST()
+>>       }
+>>   };
+> 
+> I think this will break migration compatibility. In order to enable
+> at least forward migration, it should be:
+> 
+>      VMSTATE_BOOL_V(unselect, AspeedSMCState, 3),
 
-The TCG IR sequence:
-mov_i32 tmp97,$0xc4240000                dead: 1  pref=0xffffffff
-mov_i32 tmp98,$0x0                       pref=0xffffffff
-rotr_i32 tmp97,tmp97,tmp98               dead: 1 2  pref=0xffffffff
+This is correct. I will fix the patch.
 
-was translated to `slwi	r15, r14, 0` instead of `slwi	r14, r14, 0` due to SH field overflow.
+Some background,
 
-SH field is 5 bits, and tcg_out_rlw is called in some situations with `32-n`, when `n` is 0 it results in an overflow to RA field.
+The aspeed machines are fully emulated and the Aspeed SoC models are not
+part of any virt* machines (yet). So migration support is a bit of a
+theory. We have done our best to maintain some support, compatibility
+not being a priority. IOW, it's not perfectly tuned as on virt machines.
 
-This commit prevents overflow of that field and adds debug assertions for the other fields
+Also, on ARM, migration of the CPU secure mode (I think this is the reason,
+Peter please correct me !) is not supported and if migration is initiated
+after Linux has started, the machine will hang.
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Dani Szebenyi <szedani@linux.ibm.com>
----
- tcg/ppc/tcg-target.c.inc | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+However, if one day, an aspeed model becomes part of a virt machine, we
+should be more careful. I would start by resetting all vmstate versions
+to 1!
 
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 223f079524..9a11c26fd3 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -911,7 +911,9 @@ static void tcg_out_rld(TCGContext *s, int op, TCGReg ra, TCGReg rs,
- static void tcg_out_rlw_rc(TCGContext *s, int op, TCGReg ra, TCGReg rs,
-                            int sh, int mb, int me, bool rc)
- {
--    tcg_out32(s, op | RA(ra) | RS(rs) | SH(sh) | MB(mb) | ME(me) | rc);
-+    tcg_debug_assert((mb & 0x1f) == mb);
-+    tcg_debug_assert((me & 0x1f) == me);
-+    tcg_out32(s, op | RA(ra) | RS(rs) | SH(sh & 0x1f) | MB(mb) | ME(me) | rc);
- }
- 
- static void tcg_out_rlw(TCGContext *s, int op, TCGReg ra, TCGReg rs,
--- 
-2.47.0
+Thanks,
+
+C.
+
+
+
+> 
+> For allowing backwards migration, too, we should consider making it a
+> subsection instead that allows migration in the default case of an idle
+> device.
+> 
+> Kevin
+> 
 
 
