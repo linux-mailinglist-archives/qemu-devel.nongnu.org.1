@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600CD9AB8AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 23:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B54C99AB8B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Oct 2024 23:38:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3MXE-0004wM-Qk; Tue, 22 Oct 2024 17:35:24 -0400
+	id 1t3MZv-0000s3-Vc; Tue, 22 Oct 2024 17:38:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t3MXA-0004vl-KE
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 17:35:22 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t3MZn-0000mU-ED
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 17:38:03 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t3MX8-0006im-FW
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 17:35:19 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2e2fb304e7dso4995534a91.1
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 14:35:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t3MZk-0006qk-Mx
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 17:38:02 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20cceb8d8b4so1780855ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 14:38:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729632916; x=1730237716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729633079; x=1730237879; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vrjd+awV4p1X85NUzivqgfpDIpXkjLSWu5ANEGZU2Nc=;
- b=Rz42JmhpB+IwCY82ERlx5fhV6FXE73XYBJ8Cs76LicRGQUHQ7C8bfIYLAYTcy8hRx0
- mponMFk4ytqJO1hbKlvD1bJayzN5hgdViEZAZbDl1QMw5spg1lPtjwbv9nYY4h8wTTxS
- u7qOqks9wDy/43PqdwkPtn3a2wsc1BxXh6GxbJsLoZAHZWZEj0Ky07mq2cpUcZawFxSj
- ThxJ8h/WctdiX6jWGblU2UzXxS3TWk+HQLi47ilIbGDcxfhY0tT1bNOKAuT70gZubIQG
- En4Bjb8F4enIw47MlkEtE9+oBk9gProbaeuw8R2a50eG3MozQZnrtRG0xh+BUYMnUl+0
- o/ow==
+ bh=VUKVknCSlFqFsBqoQ9goFiTR4ArnZOnvNU99XEHFp3w=;
+ b=P0QNVUhf0PFCt8jEEek52mSK3dzn4SX2ZhU+SOHBfLeswiL+Ll0zhv6fh0ktYGkRry
+ gtGYj0oYkexQxsEpHc/Vh9CufPjsiZfGVIz3FWzbk17jvsf1Rm4pnDQjig+3WQRycBG9
+ rLnumcLdhWJcWcVea2pGlFzQV6v9g9ZY3xRVcYkMdACvGrOQnUCXvGtTt1NR/wVNLaE6
+ ktA+Rf5J1JmX90REXj8H/FaGHT8sQSCfNTloh5FuMjCH0uNPuGpwfqFR4YucpVrOgXRQ
+ yatHi6vFsRg/94NeDAd+uL6HQE9QhGxRrpcmRgsX4hIpOElEFjCg0dZ6qj6C+s12GSFv
+ klng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729632916; x=1730237716;
+ d=1e100.net; s=20230601; t=1729633079; x=1730237879;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vrjd+awV4p1X85NUzivqgfpDIpXkjLSWu5ANEGZU2Nc=;
- b=IgWxTUNaTA1SykMFLLmRmL4AsoKYJPQhQKHKOmaaPHGXuVOv6K/Z3qzzNGxttjBL5e
- kcecbjOlx0dP806+8833lNqZMm9VJpkNn2P/xBiPz1CLSDBRB4NHdR8vd/atYa3nXv+C
- YH4BH9MTb5LyASAOt3p9xpKjw0QRaxdSuo+uvI3eMj+67zo+THAThuJkiB87VKhx4UHt
- 26Bv34oR34IEp/yrr9o4xepmMdOPH/ua3BC8yN39DDg6MVVvh74bYwimx5JDNtUD9PUr
- UGnMIe04yK+jmfA/4DWdJbNBWBegWahZtSu8urZ9Wtqm/Ko7mVbm+X32d2pRUYGhzFsR
- +MXQ==
+ bh=VUKVknCSlFqFsBqoQ9goFiTR4ArnZOnvNU99XEHFp3w=;
+ b=EkSIDdF8TsF9+BOqinXvBBM6u7iZ3YuyY00uU8TFhnG0beTOWNc1a9HhlJK4q2Urw8
+ 4mIy3LOKOvpdjGylxECwAPWTvL9snd+9/BZ7KioI7a1flKT0FD8dApVtwygOQKH7I6R7
+ VyelqpLlMh3MFiR3rK7+UxBngsdrfZLpzE9OM/nGQQbYdKy/xyNIGaCnYEq8D0EwYBLJ
+ e8127g8iNX5l9lqO+sOvhyof7WU7OGDyVyT9x1/gQ+mzDYjv4cSzUlO7hr+rF1EYg3Ry
+ AG/QT4Q7wWrm46S+R5PnYJG60JqaPEEGbmhSLvLFb5nbCyDBCrRgHwSIs1XEYXlMY6ta
+ vIiA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUXkv5FLUOd5YXqDFKWDrR5d4yby59phYdgi3PyNRPn/IW+9wn7O6aJCXrbYjqpFWpF1ALKGBRqmOQ6@nongnu.org
-X-Gm-Message-State: AOJu0Yztu2ohsVNunqJW6g8bWO9WtNfJ6+ttZkkif9ARdc1GUh5iMXsZ
- UM4skM22hv4n+UhFhmOUCyUzNvwMnUxQGNJQPn5RwhAIk+lVZduUDPqbw2+54Ak=
-X-Google-Smtp-Source: AGHT+IHwvFEbSklJvPoqvUT2KermREbxK98wEJFbsYF3kmhEawq+YoepuIPGAXgjJxZwB3YiPbaqXg==
-X-Received: by 2002:a17:90a:cf93:b0:2e2:c6b9:fd4a with SMTP id
- 98e67ed59e1d1-2e76b5fee60mr394865a91.18.1729632916590; 
- Tue, 22 Oct 2024 14:35:16 -0700 (PDT)
+ AJvYcCVskjiPhgSF0sPTCNtXO0HWLYTD4ZEHSY1Vl9EcQtsr1qlYaV1rxy4Bqa5vIvI5zHFLa3UXRM6RBVS+@nongnu.org
+X-Gm-Message-State: AOJu0Yz7Puop2UXzVykEJlWu/4WuhpD1DRhm5TGHFr6XxVhQNRvIdlBN
+ tl3qAZ9NayApHTzeNWKZo4/aYGM/Fy1BG94Bi1Vr61+tb4JE43A/29QZNtZ9mPE=
+X-Google-Smtp-Source: AGHT+IHlm9BqHLU0sWEdynV1vM6Mhq6aFCZddq4VYJowPs+Wt47y1RjJ8GqOZOi7QgCpTbYANdT30w==
+X-Received: by 2002:a17:903:40c8:b0:20c:62af:a0f0 with SMTP id
+ d9443c01a7336-20e96ebc90emr70643225ad.7.1729633079139; 
+ Tue, 22 Oct 2024 14:37:59 -0700 (PDT)
 Received: from [192.168.100.49] ([45.176.88.171])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e5ad4ee3b0sm6714339a91.42.2024.10.22.14.35.09
+ d9443c01a7336-20e7ef152d3sm46951595ad.117.2024.10.22.14.37.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Oct 2024 14:35:15 -0700 (PDT)
-Message-ID: <361bd240-5203-4671-b201-e3814c8aef81@linaro.org>
-Date: Tue, 22 Oct 2024 18:35:07 -0300
+ Tue, 22 Oct 2024 14:37:58 -0700 (PDT)
+Message-ID: <79577df9-fe51-46e6-9b70-01ae03ef4dae@linaro.org>
+Date: Tue, 22 Oct 2024 18:37:51 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/20] MAINTAINERS: mention my gdbstub/next tree
+Subject: Re: [PATCH v2 13/20] tests/tcg: enable basic testing for
+ aarch64_be-linux-user
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -82,21 +83,21 @@ Cc: Beraldo Leal <bleal@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
- <20241022105614.839199-12-alex.bennee@linaro.org>
+ <20241022105614.839199-14-alex.bennee@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241022105614.839199-12-alex.bennee@linaro.org>
+In-Reply-To: <20241022105614.839199-14-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,14 +114,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 22/10/24 07:56, Alex Bennée wrote:
-> Make it easy for people to see what is already queued.
+> We didn't notice breakage of aarch64_be because we don't have any TCG
+> tests for it. However while the existing aarch64 compiler can target
+> big-endian builds no one packages a BE libc. Instead we bang some
+> rocks together to do the most basic of hello world with a nostdlib
+> syscall test.
 > 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> 
 > ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+> v2
+>    - fix checkpatch complaints
+> ---
+>   configure                            |  5 ++++
+>   tests/tcg/aarch64_be/hello.c         | 35 ++++++++++++++++++++++++++++
+>   tests/tcg/Makefile.target            |  7 +++++-
+>   tests/tcg/aarch64_be/Makefile.target | 17 ++++++++++++++
+>   4 files changed, 63 insertions(+), 1 deletion(-)
+>   create mode 100644 tests/tcg/aarch64_be/hello.c
+>   create mode 100644 tests/tcg/aarch64_be/Makefile.target
+
+
+> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+> index 2da70b2fcf..9722145b97 100644
+> --- a/tests/tcg/Makefile.target
+> +++ b/tests/tcg/Makefile.target
+> @@ -103,9 +103,14 @@ ifeq ($(filter %-softmmu, $(TARGET)),)
+>   # then the target. If there are common tests shared between
+>   # sub-targets (e.g. ARM & AArch64) then it is up to
+>   # $(TARGET_NAME)/Makefile.target to include the common parent
+> -# architecture in its VPATH.
+> +# architecture in its VPATH. However some targets are so minimal we
+> +# can't even build the multiarch tests.
+> +ifneq ($(filter $(TARGET_NAME),aarch64_be),)
+> +-include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
+
+ifeq and include once? Anyhow,
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> +else
+>   -include $(SRC_PATH)/tests/tcg/multiarch/Makefile.target
+>   -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
+> +endif
 
 
