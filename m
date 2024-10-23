@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757989ACE68
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 17:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DE79ACE6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 17:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3d4G-0007zr-6B; Wed, 23 Oct 2024 11:14:36 -0400
+	id 1t3d64-0000Qw-Jj; Wed, 23 Oct 2024 11:16:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3d4D-0007zc-Tp
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:14:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3d4B-0003Kp-Lw
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:14:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729696469;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iFf7+QMf3koSmDd3Jbv4YhPgMZPa/gLlEiHab8iYxPA=;
- b=TU+l5Yb+YtAFxou6jRgmMpII9/0s74BvXjIBwedF3Du74gxAoYAo5VZuaKBNbOBnWrbX6a
- ATUviQd0pG4SiAXZCUyK3D/99i3Rq3bu1AlJNMxQCytpFW/VH/pf1xX/80fsqQ10Eit203
- Wq25DmDojbsot2TMoS7+gU0FUzr+l7E=
-Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
- [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-03aGjQ76P-GARJpZuAYr_g-1; Wed, 23 Oct 2024 11:14:27 -0400
-X-MC-Unique: 03aGjQ76P-GARJpZuAYr_g-1
-Received: by mail-oa1-f71.google.com with SMTP id
- 586e51a60fabf-277fc980ec7so7362687fac.0
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 08:14:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t3d5i-0000Nz-HE
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:16:08 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t3d5f-0003lC-Uf
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:16:06 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e59746062fso3136746a91.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 08:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729696562; x=1730301362; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Ros+bs8D3SiE7lWqALAlBlhEtzPEvmegLFTudfIHiok=;
+ b=MawiV9ObxrOobtMe+xOpo3VEWhkarzDti7SJH6/QPuKhcayF0+gbRaGkAClOnmz0dq
+ XegERRnaFOcQUbW3NueHdD8ZEwjnUOoJh8UrihCloVVGTRP01IkCdbcJmdc+zor+c6+X
+ 8ZWHDUezePmmIGscI4U9tuP7sMvuSJ2cLmTsw6r+oWA6aNQe1fg/bwJUl+PtEInxoNd/
+ LJSICHxRPdxb8f2ei60DFiAOspeIIVYQ7TXmwdGq/jBs9J0zzmVTHSrY9b0Svf8rAZ/z
+ xQWXKo3W01LMbAKX03II15AcZNfKrFQgYYwJMbDw3NHzYDX9aD2jk5T4XHROZF0plAfe
+ deiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729696467; x=1730301267;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1729696562; x=1730301362;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iFf7+QMf3koSmDd3Jbv4YhPgMZPa/gLlEiHab8iYxPA=;
- b=qSNI+fCdJMm0O8rE+dAbhVbqSKWGYG5T7xJ3JJuo3pMN3TJqe9x9IMnbgcWtAduJRm
- E7nx+Nc9UX0Ig4PUIyApZO9MPLe0ePTM7+WQ1n0894/RLZ79JvU14PWyUR+wYeR9VrzW
- NdOj2mT30b0nXSc1p37Hr0R64982Kw0Hri7lneMnCOZFbD6/Km3Bso1QSX6SHqRwWmiH
- NriNKDmSokrq/lqqZuEenjWRYkN2oXAhFxgk7knJpr1oVGeHNFwphUUque+3JaVuyVYA
- bUIPSAZMuO1fB61aXU9v9+QEaSKwpxMA6zPnxjTuktYCK4oA8VE3ZJiGMyEF3QvQnIeu
- mi1A==
-X-Gm-Message-State: AOJu0Yy5sDbwEV6fbeES41BzFZrlhvhf99OORbU/a+rEEz9yVPE0js+e
- FHTaoVh6n477HLv7Ljx9KTCV3m+XztBZ0CgHmVIQutcvYW3THZmwjgEjioB09hZqtugbRRrzXSN
- YkCgSzCLWnPxd4dFy2S1dbXA4lHLuBj4TFONnoHyB3z6yZNXBkusj
-X-Received: by 2002:a05:6870:468e:b0:27b:4f51:d73a with SMTP id
- 586e51a60fabf-28ccb8305a1mr3543622fac.21.1729696466999; 
- Wed, 23 Oct 2024 08:14:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5teBFLtCcx3ITJVdLHafV8PL6A3WqEVivHM7bP+6T1T52nAIO8Xc+9X3FQZ+yD5GLndznEQ==
-X-Received: by 2002:a05:6870:468e:b0:27b:4f51:d73a with SMTP id
- 586e51a60fabf-28ccb8305a1mr3543596fac.21.1729696466614; 
- Wed, 23 Oct 2024 08:14:26 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6ce009fd21asm40317746d6.133.2024.10.23.08.14.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 08:14:26 -0700 (PDT)
-Date: Wed, 23 Oct 2024 11:14:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH 1/2] migration: Make all helpers in misc.h safe to use
- without migration
-Message-ID: <ZxkS0GCmPrOHN1_V@x1n>
-References: <20241022160720.1013543-1-peterx@redhat.com>
- <20241022160720.1013543-2-peterx@redhat.com>
- <0540c704-c2ce-41fc-bbb3-a2d84f0f2fc7@nvidia.com>
+ bh=Ros+bs8D3SiE7lWqALAlBlhEtzPEvmegLFTudfIHiok=;
+ b=nyINn6RMwN/VMwnqRSkFFvnS0TLgRZ1LSIKxwm6F/lCB9Pa0Qhds0th1FavaKR7x6I
+ YgQYulodTgXvfEO8KLb3KpqkFK6InuOKWtBIdEYyI6tvaTlDzRt8WtyZej8zpCEsxkDY
+ d1iKNyfF21SQ5eqPq8gor9NyZ4VddqKI5F7mNUQRaYW6hEamajkVomVUVW6Gjly1Drdv
+ tgsZOOEzPyiHizV1FCxkJkRQZRX6WzJzTAjlDPyN4AKHAS4EQIarSglR22mHX0Djks3a
+ dUv60dfdHLq6odHINgDX1M3FZzUnHInbYWeM7yr5I3PCNe2DgBZCFyIvSg+kSDvvi5M4
+ rFaw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWowBC6yo7YZ4n/a/8PSNvzTyCqJy7AEGVC0QdvrUXiXkrVR33RU22HZG//gqoUA//kCVK5MdgsT7MN@nongnu.org
+X-Gm-Message-State: AOJu0YwubZRflyLUXEeeis/Tgf8IAunJCsMLhblqUMZXt6XTANSFUmSL
+ xnb44xyTl8tQenHdOgqNtIuiCNSIp9KU1TJWV2Lpb5MulysMdWK4DFxpfe1CnVQ=
+X-Google-Smtp-Source: AGHT+IFhuGy8o28j77UlzTMqWGnSl+OcuyhcpY0mXxtL0XRZjU001K+CYBcHt3hEnNdwwdkxSBxiow==
+X-Received: by 2002:a17:90a:1bc6:b0:2e2:bb02:4668 with SMTP id
+ 98e67ed59e1d1-2e76b722988mr2384964a91.40.1729696561878; 
+ Wed, 23 Oct 2024 08:16:01 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2e76e05b775sm1539645a91.46.2024.10.23.08.16.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Oct 2024 08:16:01 -0700 (PDT)
+Message-ID: <28f647ca-0b88-4a01-90d3-4cc4450e0d1d@linaro.org>
+Date: Wed, 23 Oct 2024 08:16:00 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0540c704-c2ce-41fc-bbb3-a2d84f0f2fc7@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/7] tcg-plugins: add hooks for interrupts,
+ exceptions and traps
+To: Julian Ganz <nenut@skiff.uberspace.de>, Julian Ganz <neither@nut.email>,
+ qemu-devel@nongnu.org
+References: <20231021122502.26746-1-neither@nut.email>
+ <cover.1729355735.git.neither@nut.email>
+ <fad67d3f-5b8d-45f6-a1aa-666852a0dad4@linaro.org>
+ <8929cd79ce653b55e7cb166300782cb13727da3b@skiff.uberspace.de>
+ <f7e574bb-a780-4f5b-a511-ab9f0aa86f31@linaro.org>
+ <ab29d100610abcc59ce2305a1ace1ac0b53340a3@skiff.uberspace.de>
+ <2419ec6e-3d4e-4d6d-a738-7615c99ed60c@linaro.org>
+ <0696c7fc52d1d58002f0a8be7e7502f57fd61d24@skiff.uberspace.de>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <0696c7fc52d1d58002f0a8be7e7502f57fd61d24@skiff.uberspace.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,179 +103,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 23, 2024 at 11:30:14AM +0300, Avihai Horon wrote:
+Hi Julian,
+
+On 10/23/24 05:56, Julian Ganz wrote:
+> Hi, Pierrick,
 > 
-> On 22/10/2024 19:07, Peter Xu wrote:
-> > External email: Use caution opening links or attachments
-> > 
-> > 
-> > Migration object can be freed before some other device codes run, while we
-> > do have a bunch of migration helpers exported in migration/misc.h that
-> > logically can be invoked at any time of QEMU, even during destruction of a
-> > VM.
-> > 
-> > Make all these functions safe to be called, especially, not crashing after
-> > the migration object is freed.
-> > 
-> > Add a rich comment in the header explaining how to guarantee thread safe on
-> > using these functions, and we choose BQL because fundamentally that's how
-> > it's working now.  We can move to other things (e.g. RCU) whenever
-> > necessary in the future but it's an overkill if we have BQL anyway in
-> > most/all existing callers.
-> > 
-> > When at it, update some comments, e.g. migrate_announce_params() is
-> > exported from options.c now.
-> > 
-> > Cc: Cédric Le Goater <clg@redhat.com>
-> > Cc: Avihai Horon <avihaih@nvidia.com>
-> > Cc: Fabiano Rosas <farosas@suse.de>
-> > Cc: Dr. David Alan Gilbert <dave@treblig.org>
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > ---
-> >   include/migration/misc.h | 33 ++++++++++++++++++++++++++++-----
-> >   migration/migration.c    | 22 +++++++++++++++++++++-
-> >   2 files changed, 49 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/include/migration/misc.h b/include/migration/misc.h
-> > index bfadc5613b..8d6812b8c7 100644
-> > --- a/include/migration/misc.h
-> > +++ b/include/migration/misc.h
-> > @@ -19,8 +19,26 @@
-> >   #include "qapi/qapi-types-net.h"
-> >   #include "migration/client-options.h"
-> > 
-> > -/* migration/ram.c */
-> > +/*
-> > + * Misc migration functions exported to be used in QEMU generic system
-> > + * code outside migration/.
-> > + *
-> > + * By default, BQL is required to use below functions to avoid race
-> > + * conditions (e.g. concurrent free of the migration object).  It's
-> > + * caller's responsibility to make sure it's thread safe otherwise when
-> > + * below helpers are used without BQL held.
-> > + *
-> > + * One example of the special case is migration_thread(), who will take a
-> > + * refcount of the migration object.  The refcount will make sure the
-> > + * migration object will not be freed concurrently when accessing through
-> > + * below helpers.
-> > + *
-> > + * When unsure, always take BQL first before using the helpers.
-> > + */
-> > 
-> > +/*
-> > + * migration/ram.c
-> > + */
-> >   typedef enum PrecopyNotifyReason {
-> >       PRECOPY_NOTIFY_SETUP = 0,
-> >       PRECOPY_NOTIFY_BEFORE_BITMAP_SYNC = 1,
-> > @@ -43,14 +61,19 @@ void ram_mig_init(void);
-> >   void qemu_guest_free_page_hint(void *addr, size_t len);
-> >   bool migrate_ram_is_ignored(RAMBlock *block);
-> > 
-> > -/* migration/block.c */
-> > -
-> > +/*
-> > + * migration/options.c
-> > + */
-> >   AnnounceParameters *migrate_announce_params(void);
-> > -/* migration/savevm.c */
-> > 
-> > +/*
-> > + * migration/savevm.c
-> > + */
-> >   void dump_vmstate_json_to_file(FILE *out_fp);
-> > 
-> > -/* migration/migration.c */
-> > +/*
-> > + * migration/migration.c
-> > + */
-> >   void migration_object_init(void);
-> >   void migration_shutdown(void);
-> >   bool migration_is_idle(void);
-> > diff --git a/migration/migration.c b/migration/migration.c
-> > index bcb735869b..27341eed50 100644
-> > --- a/migration/migration.c
-> > +++ b/migration/migration.c
-> > @@ -1121,6 +1121,10 @@ bool migration_is_setup_or_active(void)
-> >   {
-> >       MigrationState *s = current_migration;
-> > 
-> > +    if (!s) {
-> > +        return false;
-> > +    }
-> > +
-> >       switch (s->state) {
-> >       case MIGRATION_STATUS_ACTIVE:
-> >       case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-> > @@ -1136,7 +1140,6 @@ bool migration_is_setup_or_active(void)
-> > 
-> >       default:
-> >           return false;
-> > -
-> >       }
-> >   }
-> > 
-> > @@ -1685,6 +1688,10 @@ bool migration_is_active(void)
-> >   {
-> >       MigrationState *s = current_migration;
-> > 
-> > +    if (!s) {
-> > +        return false;
-> > +    }
-> > +
-> >       return (s->state == MIGRATION_STATUS_ACTIVE ||
-> >               s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
-> >   }
-> > @@ -1693,6 +1700,10 @@ bool migration_is_device(void)
-> >   {
-> >       MigrationState *s = current_migration;
-> > 
-> > +    if (!s) {
-> > +        return false;
-> > +    }
-> > +
-> >       return s->state == MIGRATION_STATUS_DEVICE;
-> >   }
-> > 
-> > @@ -1700,6 +1711,11 @@ bool migration_thread_is_self(void)
-> >   {
-> >       MigrationState *s = current_migration;
-> > 
-> > +    /* If no migration object, must not be the migration thread */
-> > +    if (!s) {
-> > +        return false;
-> > +    }
-> > +
-> >       return qemu_thread_is_self(&s->thread);
-> >   }
-> > 
-> > @@ -3077,6 +3093,10 @@ void migration_file_set_error(int ret, Error *err)
-> >   {
-> >       MigrationState *s = current_migration;
-> > 
-> > +    if (!s) {
-> > +        return;
-> > +    }
-> > +
+> resent as I was too stupid to hit reply instead of reply-all.
 > 
-> I think this is not enough because current_migration is never set to NULL
-> after it's destroyed.
+> October 22, 2024 at 11:15 PM, "Pierrick Bouvier" wrote:
+>>
+>> On 10/22/24 01:21, Julian Ganz wrote:
+>>
+>>>
+>>> Hi, Pierrick,
+>>>   October 21, 2024 at 11:59 PM, "Pierrick Bouvier" wrote:
+>>>
+>>>>
+>>>>   Maybe we could have a single API like:
+>>>>
+>>>>   enum qemu_plugin_cf_event_type {
+>>>>   QEMU_PLUGIN_CF_INTERRUPT;
+>>>>   QEMU_PLUGIN_CF_TRAP;
+>>>>   QEMU_PLUGIN_CF_SEMIHOSTING;
+>>>>   };
+>>>>
+>>>   I have considered such an enum, as an input for the callback, as a
+>>>   parameter of the registration function, and both. Of course, if you were
+>>>   to add a selection parameter for the registration function, you likely
+>>>   want OR-able flags.
+>>>   An additional input for the callback type would obviously require a new
+>>>   function type just for that callback. Since the callbacks are somewhat
+>>>   similar to the VCPU init, exit, resume, ... ones it felt appropriate
+>>>   to use the same function type for all of them.
+>>>
+>> I tend to disagree on that. IMHO, it's better to reduce number of API entries instead of callback types.
+>> It's easy for a user to understand how to implement a given callback, while it's hard to understand which API you need for which thing.
+>>
+>> For the syscall cbs, we already have a specific callback. So why not here?
 > 
-> Can we add "current_migration = NULL;" to migration_instance_finalize()?
+> <snip>
+> 
+>>> As for the registration, it may make the registration a bit more
+>>>   convenient and maybe keep the API clutter a bit lower, but not by that
+>>>   much.
+>>>
+>> It's ok for the user. But I think it's more complicated to extend, when we'll want to introduce control flow API in the future. Do we want 5 or 6 different callbacks when people want to track fully control flow from a plugin?
+> 
+> Ok, I'll introduce an enum and combine the three callbacks in the next
+> iteration then.
+> 
+>>>> typedef struct {
+>>>>   enum qemu_plugin_cf_event_type ev;
+>>>>   union {
+>>>>   data_for_interrupt interrupt;
+>>>>   data_for_trap trap;
+>>>>   data_for_semihosting semihosting;
+>>>>   } qemu_plugin_cf_event;
+>>>>   /* data_for_... could contain things like from/to addresses, interrupt id, ... */
+>>>>
+>>>   I don't think this is a good idea.
+>>>   Traps are just too diverse, imo there is too little overlap between
+>>>   different architectures, with the sole exception maybe being the PC
+>>>   prior to the trap. "Interrupt id" sounds like a reasonably common
+>>>   concept, but then you would need to define a mapping for each and every
+>>>   architecture. What integer type do you use? In RISC-V, for example,
+>>>   exceptions and interrupt "ids" are differentiated via the most
+>>>   significant bit. Dou keep that or do you zero it? And then there's
+>>>   ring/privilage mode, cause (sometimes for each mode), ...
+>>>
+>> I didn't want to open the per architecture pandora box :).
+>> I don't think the plugin API itself should deal with per architecture
+>> details like meaning of a given id. I was just thinking to push this "raw" information to the plugin, that may/may not use architecture specific knowledge to do its work. We already have plugins that have similar per architecture knowledge (contrib/plugins/howvec.c) and it's ok in some specific cases.
+> 
+> But how would such an interface look? The last PC aside, what would you
+> include, and how? A GArray with named items that are itself just opaque
+> blobs?
+> 
 
-Good point..
+I was not thinking about a new interface for this. Having the "raw" 
+interrupt id is enough for a plugin to do useful things, by having 
+knowledge of which architecture it's instrumenting.
 
-I thought it was cleared already in migration_shutdown(), but now I just
-noticed why it can't - we have too many dangling references in migration/
-so that it needs to be there even if migration threads holds one refcount.
+> And what would be the benefit compared to just querying the respective
+> target specific registers through qemu_plugin_read_register? Which btw.
+> is what we were going to do for our use-case. Even the example you
+> brought up (howvec) uses querying functions and doesn't expect to get
+> all the info via parameters.
+>
 
-I'll add one more patch as you suggested as of now and repost soon.  It's
-not the cleanest that we clear that global pointer in a finalize(), but
-looks like that's the only simple way forward.
+You're right, but it's because it's querying instruction data.
+I may be wrong on that, but at translation time, we may or may not be 
+interested in accessing tb/insn data.
 
-Will repost soon, thanks.
+However, for control flow analysis, beyond a simple counting plugin, we 
+probably want to access further data almost everytime.
 
--- 
-Peter Xu
+I see it closer from syscall instrumentation, which pushes the syscall 
+id, and all register values, instead of letting the user poke it. Makes 
+more sense compared to that?
 
+>> But having something like from/to address seems useful to start. Even if we don't provide it for all events yet, it's ok.
+> 
+> Yes, I certainly see the advantages of having either the last PC or the
+> would-be-next PC as they are sufficiently universal. You can usually
+> retrieve them from target-specific registers, but that may be more
+> complicated in practice. In the case of RISC-V for example, the value
+> of the EPC differs between interrupts and exceptions.
+> 
+
+To the opposite of interrupt id, a PC is something universal by 
+definition, and with a single meaning across architecture. However, 
+accessing it by name varies per architecture, and even per sub events, 
+as you are stating for RISC-V.
+
+> That PC value should also be easy enough to obtain at the hook call
+> sites. We only need to store the (old) PC before doing the setup. The
+> "to-address" is the current PC at the time the callback is invoked.
+> Anything else would be a bug. I was going to write that you can
+> already query that in a plugin through a dedicated helper function
+> but apparently I misremembered.
+> 
+> I'll include this in the next iteration.
+> 
+>>> It would also complicate call sites for hooks in target code. You'd
+>>>   either need awkwardly long function signitures or setup code for that
+>>>   struct. Both are things you don't want, as a hook call site should
+>>>   never distract from the actual logic surrounding them. You could
+>>>   probably have something reasonable in Rust, using a builder/command
+>>>   pattern. But in C this would require too much boiler plate code than
+>>>   I'd be comfortable with.
+>>>
+>> We can have one "builder" function per data type, with fixed parameters (no varargs), it's reasonable and would scale well with new entries/data information.
+> 
+> I'm still not on board on preparing a more complex data type. For the
+> next iteration I'd rather stick to a simple function receiving the
+> "type" of event and the PCs. That may not be extensible, but I don't see
+> any benefit in shoehorning inheritelntly target-specifc information into
+> a complex struct.
+> 
+
+It's a good compromise for now, and avoid introducing a more complex 
+data type.
+
+> If this is a hard requirement, I'll of course still do so.
+> 
+
+My goal was not to hijack this series, or put the burden on you, but to 
+talk about which direction we want to go.
+As long as we start with a single callback (vs one per event), I'm fine 
+to go slowly and iterate in the future.
+
+> Regards,
+> Julian
+
+Thanks Julian!
 
