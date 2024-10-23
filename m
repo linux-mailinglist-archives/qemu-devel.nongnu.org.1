@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E51A9AC928
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8FA9AC939
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:39:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ZdC-0007KO-F2; Wed, 23 Oct 2024 07:34:26 -0400
+	id 1t3ZdE-0007Ki-B1; Wed, 23 Oct 2024 07:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zd2-0007DN-Rp
+ id 1t3Zd2-0007DJ-RS
  for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:16 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zcy-00033q-2e
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:14 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5c95a962c2bso8038746a12.2
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:34:09 -0700 (PDT)
+ id 1t3Zcy-00035Z-3p
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:16 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5c94b0b466cso7542050a12.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729683249; x=1730288049; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729683250; x=1730288050; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+XNjfi7hRi9preQg6Skm6jboyJIHM73C5JCjrQ/Fxa0=;
- b=gSmwH/Q7+/Rr63a5baY/EhChgY05Q+7PZiQg5QMVSsfGV/n6SwHdDJrX6PesT8nIMK
- MzmwJjrzf+eucnctEoNIT3GNuFAMf1+5eoOnTPCbupzGMgseX1vvMP+AD5aQWqLPMFDt
- v/GdB8TpJGt4TJC12Lt6a95pR831IwU3cs+GZX/lSAFjQQLxhxOcbTajXKYtk9hXNl6d
- KSNgF95du3C5sTwTSKqeKuFJHfO+NOxh77lBSss1lNLoapIIFb9OxKgAKk+p+HEUtqD1
- ZTctnlWF9ctvXbGY9f8PdqNkzcTP7dfyAv1iHqjBc2W/UonqxXCJrPEGhaBXAwyPdmSh
- b2xQ==
+ bh=lRYAOn92MElnY+r7ZLHmtJJWBk1GGo3GQl/0Duq+UXc=;
+ b=MgFrxYOc6jlEzLeRCVevFiFmA2wY7UGQHGdsG5Dbgfb8moXjdUDHfGit0WEIQ6IsDs
+ 0ndMfUh0E4qVvEAwUq/D/CURf9LjJZ8hbn4B47Nx6siVXGu4TPM3EcGvLiE44HUFtcYN
+ O56MEJgaKehUtgXHLhrY8PckiJWtBCZ5EPtRqNgX5uPQReps4hDj3KICQMZdhYus0/Kl
+ oBCazZJQ3IKBjzSp5hUxfMHjI6IPp1p4nNqoexyEQLgBfsXXgucvC7ql/cgd+aJIfmfj
+ UcWe32T+tZFtdH/GIlJc7mbnCNhWZEXA1FEzQPkaY/aiG40qzab49utcU1alCgjkA7WL
+ fmuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729683249; x=1730288049;
+ d=1e100.net; s=20230601; t=1729683250; x=1730288050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+XNjfi7hRi9preQg6Skm6jboyJIHM73C5JCjrQ/Fxa0=;
- b=XwjhhQ6acA6tEnJeWcqHTPslswawVkeH6H6cSRoQbzNxKFxBOMfyUv1z3hUWnRAd2z
- RY0wu4LDG1O5ub+TGy96Nw2dtJ0LnBYI5UsEJW0hbvefe6yCfE3AO3iL6M4ZDvbcqCBv
- ZGGNjMQ+8ONnJFRNGnFBqcdMVH+4mq1Ps86Ia0KTduHUQrAxWDsM49QFmiilkbuNXOOP
- RLO5r46fwQL4qGxwZaaHVRskmPADzKDRPJ02dmpZLKVCdmgjWaBtuyJTTsi1vDQAPFIG
- /bOE2dR5vDXhax29iZDBuFAyv4nma+3ADInfRuBxU3jfT7XnQs245N1mZhsJk1oMFnAG
- 8ADw==
-X-Gm-Message-State: AOJu0YyHiPW5TNzrF/4+sAZ/8GacI/odiT5ao3yTSDJ23IMFiEJU4khc
- M4aOb31xBUfjD49HTwMkcuVsGdl4DbBdDEx1eXfdoBLHGoclW3NLgE/U7gr6ols=
-X-Google-Smtp-Source: AGHT+IHbBHuAhyUoRAK6Z+ouKhhEjsA1T4wrJBvMTAuUApw84TIFTJaW/QBSBiQQ9GXdgQDRf9QMxg==
-X-Received: by 2002:a05:6402:434c:b0:5c4:51b3:d75f with SMTP id
- 4fb4d7f45d1cf-5cb8af72080mr1849170a12.24.1729683248677; 
- Wed, 23 Oct 2024 04:34:08 -0700 (PDT)
+ bh=lRYAOn92MElnY+r7ZLHmtJJWBk1GGo3GQl/0Duq+UXc=;
+ b=dJKnwW7jwZRqWsg3Dr9hPj7MyeN5cguDkQZfJ2m3pZi+muFWt7aXbGS3wJXu0Ruhig
+ XZ2Cgdvq2RMXx1bplZ8FrOkasaRy9kTQyCilaHtKX+dy0WWkdZ1nzlG9OLWHIm3PWOZm
+ XGVezXKz+4a8GHeART3aBNtXV6Xex9sAt51Rjl7KNCeOJpU7ZyzI0SLkJ1tKG0WdcCgH
+ Jy8lKgyshPD/d9BZaYsBUGK2HrUHjO8nprrN9ecwbqHTZ+hqlqXsqgm3j3OqX9alybPG
+ op/PRRgOddpetK0MVp2ln9GQroL6B4J8XiOOipGuSkqDYbNxYWUuZUgr9H9Vtcgt23gU
+ rdcQ==
+X-Gm-Message-State: AOJu0YylcL745m44U4eZdvNXI0oXd9SQh7RUiElGO31M24zaLK4Xm8+m
+ RV1tvuSx7fPIMRHdNTEXz1pL5ZkeHY9iaxalagZQjxPsBb/r/uxkd1hozXgUvks=
+X-Google-Smtp-Source: AGHT+IG9ed8D/XA3RQ+vEybFyxLY6xveuq9hk50ZZpmXX0BS0cBlAFS0roggteE+iw+87DvUNNlLRQ==
+X-Received: by 2002:a17:907:7291:b0:a9a:9ab:6233 with SMTP id
+ a640c23a62f3a-a9abf8a7feemr201487366b.34.1729683250497; 
+ Wed, 23 Oct 2024 04:34:10 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cb766710d1sm2661378a12.90.2024.10.23.04.34.07
+ a640c23a62f3a-a9a912d62e4sm461595266b.7.2024.10.23.04.34.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 23 Oct 2024 04:34:07 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 11D8C5F8AD;
+ by draig.lan (Postfix) with ESMTP id 283C55F8B5;
  Wed, 23 Oct 2024 12:34:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,19 +79,18 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 01/18] tests/docker: Fix microblaze atomics
-Date: Wed, 23 Oct 2024 12:33:49 +0100
-Message-Id: <20241023113406.1284676-2-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 02/18] tests/docker: add NOFETCH env variable for testing
+Date: Wed, 23 Oct 2024 12:33:50 +0100
+Message-Id: <20241023113406.1284676-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,75 +113,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+Testing non-auto built docker containers (i.e. custom built compilers)
+is a bit fiddly as you couldn't continue a build with a previously
+locally built container. While you can play games with REGISTRY its
+simpler to allow a NOFETCH that will go through the cached build
+process when you run the tests.
 
-GCC produces invalid code for microblaze atomics.
-
-The fix is unfortunately not upstream, so fetch it from an external
-location and apply it locally.
-
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20241022105614.839199-3-alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241022105614.839199-2-alex.bennee@linaro.org>
-Message-Id: <20240919152308.10440-1-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .../debian-microblaze-cross.d/build-toolchain.sh          | 8 ++++++++
- tests/docker/dockerfiles/debian-toolchain.docker          | 7 +++++++
- 2 files changed, 15 insertions(+)
+ tests/docker/Makefile.include | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-index 23ec0aa9a7..c5cd0aa931 100755
---- a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-+++ b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-@@ -10,6 +10,8 @@ TOOLCHAIN_INSTALL=/usr/local
- TOOLCHAIN_BIN=${TOOLCHAIN_INSTALL}/bin
- CROSS_SYSROOT=${TOOLCHAIN_INSTALL}/$TARGET/sys-root
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index 681feae744..fead7d3abe 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -92,10 +92,10 @@ endif
+ docker-image-alpine: NOUSER=1
  
-+GCC_PATCH0_URL=https://raw.githubusercontent.com/Xilinx/meta-xilinx/refs/tags/xlnx-rel-v2024.1/meta-microblaze/recipes-devtools/gcc/gcc-12/0009-Patch-microblaze-Fix-atomic-boolean-return-value.patch
-+
- export PATH=${TOOLCHAIN_BIN}:$PATH
- 
- #
-@@ -31,6 +33,12 @@ mv gcc-11.2.0 src-gcc
- mv musl-1.2.2 src-musl
- mv linux-5.10.70 src-linux
- 
-+#
-+# Patch gcc
-+#
-+
-+wget -O - ${GCC_PATCH0_URL} | patch -d src-gcc -p1
-+
- mkdir -p bld-hdr bld-binu bld-gcc bld-musl
- mkdir -p ${CROSS_SYSROOT}/usr/include
- 
-diff --git a/tests/docker/dockerfiles/debian-toolchain.docker b/tests/docker/dockerfiles/debian-toolchain.docker
-index 687a97fec4..ab4ce29533 100644
---- a/tests/docker/dockerfiles/debian-toolchain.docker
-+++ b/tests/docker/dockerfiles/debian-toolchain.docker
-@@ -10,6 +10,8 @@ FROM docker.io/library/debian:11-slim
- # ??? The build-dep isn't working, missing a number of
- # minimal build dependiencies, e.g. libmpc.
- 
-+RUN sed 's/^deb /deb-src /' </etc/apt/sources.list >/etc/apt/sources.list.d/deb-src.list
-+
- RUN apt update && \
-     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
-     DEBIAN_FRONTEND=noninteractive eatmydata \
-@@ -33,6 +35,11 @@ RUN cd /root && ./build-toolchain.sh
- # and the build trees by restoring the original image,
- # then copying the built toolchain from stage 0.
- FROM docker.io/library/debian:11-slim
-+RUN apt update && \
-+    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
-+    DEBIAN_FRONTEND=noninteractive eatmydata \
-+    apt install -y --no-install-recommends \
-+        libmpc3
- COPY --from=0 /usr/local /usr/local
- # As a final step configure the user (if env is defined)
- ARG USER
+ debian-toolchain-run = \
+-	$(if $(NOCACHE), 						\
++	$(if $(NOCACHE)$(NOFETCH),					\
+ 		$(call quiet-command,					\
+ 			$(DOCKER_SCRIPT) build -t qemu/$1 -f $< 	\
+-			$(if $V,,--quiet) --no-cache 			\
++			$(if $V,,--quiet) $(if $(NOCACHE),--no-cache)	\
+ 			--registry $(DOCKER_REGISTRY) --extra-files	\
+ 			$(DOCKER_FILES_DIR)/$1.d/build-toolchain.sh,	\
+ 			"BUILD", $1),				        \
+@@ -177,6 +177,7 @@ docker:
+ 	@echo '    NETWORK=$$BACKEND     Enable virtual network interface with $$BACKEND.'
+ 	@echo '    NOUSER=1             Define to disable adding current user to containers passwd.'
+ 	@echo '    NOCACHE=1            Ignore cache when build images.'
++	@echo '    NOFETCH=1            Do not fetch from the registry.'
+ 	@echo '    EXECUTABLE=<path>    Include executable in image.'
+ 	@echo '    EXTRA_FILES="<path> [... <path>]"'
+ 	@echo '                         Include extra files in image.'
 -- 
 2.39.5
 
