@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C789AD57D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 22:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB2E9AD57A
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 22:30:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3hym-0006UK-Di; Wed, 23 Oct 2024 16:29:16 -0400
+	id 1t3hys-0006V1-Rq; Wed, 23 Oct 2024 16:29:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t3hyj-0006U8-PK
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 16:29:13 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1t3hyq-0006Ui-R9
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 16:29:21 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t3hyg-0000Oh-V4
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 16:29:13 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NFfet3012081;
- Wed, 23 Oct 2024 20:29:04 GMT
+ id 1t3hyp-0000Pf-7y
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 16:29:20 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NFffog001663;
+ Wed, 23 Oct 2024 20:29:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=T2UecbWpGOI9mLg+a1qoeHISLwds+shaL9D88w5UMMg=; b=
- kHVjijjh8ywT+q3EORIEcwdqfYzfaYAs5zgaGrMB4iiuYPwLxDMX9rIpI38B8Sof
- 1YINhLQmz8dq7q7bD1y9WAzpwWy+f9pzhWOVLfeRCqxvZFlaPdOgUAWrgZdMSY/j
- pQ7C6caQgreFUt0YSaJZNUzUOMoO+Wd3uKCuGMSGG8mQIl4NPXsnCx8bBsNfFSp9
- nv7uRE66iCcEbT0Dhqy+H3r4fCdDNi48RGF/CXR43V1Jpz0WMbPEkZVaOmpYzEqc
- jtSvaAAl1gsD8oWShZSGlcQCh0gdKx1n7tCmqJe1wMBzUa7hzc57AChEJNoR4Nsn
- +nrPjCq7LKo5cECUSfEcXg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c53us3tw-1
+ corp-2023-11-20; bh=LDpf4qQ4A6khrAJqO6MSu6XKmIqlBUQP7EaetN/Yw6g=; b=
+ fX/lxwoFjD0XbrPEdhe3OmHDeTBdpKVFNVFn2VaSYzCzppfMRJhjOb1GioOEypBu
+ BwNhCjeCqIh6M470ZggBrELI8PR6rMrKCaXb+Ac3OslfpEXtjap1s3Bl9hGW3AiF
+ NlIXxBnMOliLKYm5kurl/GR9sJ7Z56pncfsfNDVBjw7BVfi0M3kHwsyCDCF8Q6JN
+ 1kGVgOfYonDawnstATvHA2EYB4AJc04B4rb6/OjQD0zFrxDBDEYWX+DkWKgWlc/w
+ 6mn6W6offGGeyz4qc9Z92oTUbhkaV/Tc+a0Zang/C0xCfDcGQbCbiB07fK0bD4qA
+ 95d7GDvmAbCQsQjfs6diyg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c57qh4ta-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Oct 2024 20:29:04 +0000 (GMT)
+ Wed, 23 Oct 2024 20:29:16 +0000 (GMT)
 Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 49NJIEw0027484; Wed, 23 Oct 2024 20:29:03 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2175.outbound.protection.outlook.com [104.47.58.175])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 42emh3b8ab-1
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 49NK7Z5n036212; Wed, 23 Oct 2024 20:29:15 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 42emh310xv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Oct 2024 20:29:02 +0000
+ Wed, 23 Oct 2024 20:29:15 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OYbok9mn4P+/SDG45vOC155KYtKkn13DuNDlkI2vN6g8IzkkRZgpvArI7kTczt+5KIEavC8AU9OsksXq2oPsKBWMurxSIzwWFWZx0LoLIiCwge+FrlTYRnGnRiSWYA9JFQKTAOK7jlc2nzAKbKIVKW0iMu+1ORGZdnkPGKWGixx8z/GvD/aUZPFDeziK5SKGOBEeMfy7P1UBPLvElLzddGOcVuxBBS13mZjcwvmpbA37Z3UocR4xscRCZGEhIg7H35GrP3YiNYbGEPXc5W2wW1KuUhER9XSFcqjt02TkExlV5YfKUmhJg/aAzO/4G8/wyt62JpwtmxxcUKWwzaqrCA==
+ b=Ht9e5rTQppV670mVaR1yW44BqMgXr3tQIhwJx2e4pFhNAkanlt6i2wDSE6U1sP0dnU9OUGlhQjAFmAUVszG3g5tBJknSN/CgIvoKdmnLU9Hx+sdWVzrSxtAYIvfZ/xWxX/INkffyiIChPE6XR7ap6JNA5t0mvDr0oW0WIT8gvGtjwdUqHqdUQi2oUx7plMiEqKSN5nH+3b9ACUEgbO3rbcLRgi33tUaG92V2cJ4w9V4dGCquCCYpSlPw9wLKPyo2Eq9UAUSc/Kiy7QtF+DQukObCQxFbDK0uFRxlwQJ9MGIKRKMTK+9Md8n6JTOkYkx97xV/tEmS56GGNGOIZz2f5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T2UecbWpGOI9mLg+a1qoeHISLwds+shaL9D88w5UMMg=;
- b=i4tFUj0r+jnHKcYQ0jtWeqIlhO88OKE4yoO/IzJLfEib1u7EZ5nphBz65KnuvSrwDHwcgt9EgKkRM2OIu4l00FXONCkIxcSXGhRYc9fTx+0DN1ePVlWaEYgTLBRhWwkstwHsLnMnRjDopu4sexubi8eIQQ/cwBgYNSLgLIVJZNVPLJ2HhbWRcCLPWRE4wKxN77I+d7ebXl7dM7yDBaofUIwc68O2z8+WAV1g8keOmGF2OPhiQxcC3WoVINB1ROlb2dSLgInZWoRkfIcgVF87l5swsVd+VugBn/JBOg+jXsvyJ96p3McrBtSGIAm23tA/4AqOGDx0/ZCQo8EHjmWujQ==
+ bh=LDpf4qQ4A6khrAJqO6MSu6XKmIqlBUQP7EaetN/Yw6g=;
+ b=PL4k1ZEOJF49Hz/lKxA9KYVx+TqQhHwYBe/HarIUron5g4ql/mJaY79OViD8GkEr7esmy0URIqM9VeFTICaByc2zUXoUF8lC8r/2w9UERJGr/Tt5wKxk/YCONTyVlv6fuI+1yqG/tLmRG5lVzCOtc7Ll2LYHMskGuEQENHQdZiQKUx8awgqganxUOo0ootRxVzTz8/hbebed/s90JYVFiafdzGvgINt6k9tGuGtLdSscmz4SquqmC+Bch0LvFjlYvxByLOnLfXC4IyqGQpuM2QGTsxM6Z4arCHUXORgrzs4gbXisDLcREGKVo5dY33+UVXW+xF6VJW1dQF0AHmDqTg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T2UecbWpGOI9mLg+a1qoeHISLwds+shaL9D88w5UMMg=;
- b=Jk1cqEixnwEJhPHhI4Mhj69klPKRdZI98QjnxHbYFj0ihzgQmGrDlXkyxy42kMrWV/qBMESSB1VzjcTeS0Iz6pyj4iolf/hq/NPnaPJ0DcNzBkDKd1sOVUtprcTNzQRfA9zhepzlHzcQS/s9OI9mp5HK8MojqoJsu1JQ9nhBzjk=
+ bh=LDpf4qQ4A6khrAJqO6MSu6XKmIqlBUQP7EaetN/Yw6g=;
+ b=UwdN/ae2wbuv1M8sPA3Ugny9CLbWwoWTBsZxe1XI5ek8PN/jleoHoe2THHMiIcSkDiGvk2SsyGJ8x1ue4wtc97IPd2qJUwzVxiZh6BnSwJu26bmnVu5uab6M3UNkqCxVrWAyFrmHIsWlG7pJcFdrTeFpgSHSfeevkwkBzMNz4Gc=
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by IA1PR10MB6758.namprd10.prod.outlook.com (2603:10b6:208:42e::18)
+ by SA1PR10MB6662.namprd10.prod.outlook.com (2603:10b6:806:2b6::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Wed, 23 Oct
- 2024 20:29:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
+ 2024 20:29:12 +0000
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572%4]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
- 20:29:00 +0000
-Message-ID: <cbbd6fda-2bef-46d4-8c13-91cdd7cc96f5@oracle.com>
-Date: Wed, 23 Oct 2024 16:28:54 -0400
+ 20:29:12 +0000
+Message-ID: <faf6e836-d441-4817-a520-9e747a5eb8be@oracle.com>
+Date: Wed, 23 Oct 2024 16:29:07 -0400
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC V1 04/14] accel: set accelerator and machine props earlier
-To: David Hildenbrand <david@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
@@ -84,121 +84,118 @@ Cc: Peter Xu <peterx@redhat.com>,
  <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
 References: <1729178055-207271-1-git-send-email-steven.sistare@oracle.com>
  <1729178055-207271-5-git-send-email-steven.sistare@oracle.com>
- <87ldyl1mah.fsf@suse.de> <628ceba7-9cf4-4ad2-b3e5-6af4037a0bc1@oracle.com>
- <4c0645c9-a38b-4399-ba30-cf2ced63fc5e@oracle.com>
- <3da9ec87-3466-4fad-b4c0-2bcfe3853b5a@oracle.com>
- <ce3c0f72-0442-4519-9c0e-bbd67d25730a@redhat.com>
+ <ZxZw5xnN4cY7j680@x1n>
 Content-Language: en-US
 From: Steven Sistare <steven.sistare@oracle.com>
 Organization: Oracle Corporation
-In-Reply-To: <ce3c0f72-0442-4519-9c0e-bbd67d25730a@redhat.com>
+In-Reply-To: <ZxZw5xnN4cY7j680@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0126.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::11) To IA1PR10MB7447.namprd10.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0136.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::21) To IA1PR10MB7447.namprd10.prod.outlook.com
  (2603:10b6:208:44c::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|IA1PR10MB6758:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a637a08-766e-4af6-6657-08dcf3a153e0
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|SA1PR10MB6662:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d3567c8-faef-41bb-eb50-08dcf3a15b1b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aXliNUMvajVBekVLVTV5ajZWZzBENGJGbWVVRlZoUzJJNjlSSGxoZTF4Z2lj?=
- =?utf-8?B?R2h0TGYvSzJyTjVEOUQ2SHkzZ0o1YncyZXNneGY4em5sd1BHMWZRUzcwMWh5?=
- =?utf-8?B?dGlGQnFTNTVnSHpyejdjb0RRRFZqeGYxWnFoQldrTytGVE16djVydlVNVCtY?=
- =?utf-8?B?VmRjVU1yd2lpZmJPZjJ6KzBlRW5QRkphWTlKVkk4MWhyRlVOMlFBWG9oa0hC?=
- =?utf-8?B?TklkQVI0b1VwNE8xWFdrTkprVmM3Y1JCMXZWM2pyd0ZLUElTYU55NUo2SUQ1?=
- =?utf-8?B?aEVpVFIzaldvYU1nMXpqMk83TW5LQzJZOGc5cXJUWDFVN1hqV0hrczVKbXdR?=
- =?utf-8?B?V1NVMG5qRUNHTWhSSW1CdVNMMmFVc1ZSVHBPWnRJRmpRMklGbWxNeVJrK0RO?=
- =?utf-8?B?ZEFzQXpxWlBYUktLWHFhQUVaeTg3cGdrQlFMb29nMDRsK1VwKzM3Y1QzVEp5?=
- =?utf-8?B?UElmSnp4a3dtMjRVcjlRZStFWVRSR2lQQnY3YVRZdDFXZ3B6Y2Eyc0ExNElq?=
- =?utf-8?B?NzhxMXJrNXNMRUg1MGY1TGF5U1NWWE9MWSttMjZHdDR0TkhBdHhsTmQvQzhG?=
- =?utf-8?B?YWJyUVd3Tk5Fa3d5amtBZUJzSGQzdUFucVJWMFBXRGdDRFZ0SWZHODRlRUlE?=
- =?utf-8?B?UDZtV0NRd1B0RmxabG9QT0RtTUcwcnFEb1JKNEUvQXdvd0tiWmdBODlpZGZT?=
- =?utf-8?B?bmNFUk5hdHViejhrZkFtOU1MbGRGR0tMYVY3NE51SUlkdGFVR2lCZEJMMlhM?=
- =?utf-8?B?Tk1sNnV0MVJObHdlVlc0aTdVT3BBN1pvdlJRanZjOGdJWTJ4dDhTODdqNEJw?=
- =?utf-8?B?R2JTamhHL3BGQzJNL010Umk5bFpZa3RmTjUvWWVwcHNEYWxTa3BKb3FDUERm?=
- =?utf-8?B?NjlZekw1MVB6Tlh6cFZxbm52U1RiYWdralZUKzNVVUxvcVVRYXZjb0RYdHZD?=
- =?utf-8?B?Rms5RzNSSlZHMEI5L0FFd2ZNMy8reER0SEFpWVptNTNySHc3SmNKNlFIeFVW?=
- =?utf-8?B?dWxGOHVlRUk3VXhJOXVReGhFYnY0alFWNzJZbU9rMnhTSmhWWFRFTzRwOVNF?=
- =?utf-8?B?Tmt0MGlaU0JsNHBROThENnZ3YUhuWnY5WkcyN3Q3UXhDcUFjV1kxSytrZEV1?=
- =?utf-8?B?NnRoUWZsVWlmSko5TmZGdm93NTM1YzZ4Y0ZjWUNNY1JRWVd6TXJ5SXdTdVdS?=
- =?utf-8?B?cVlrL2xCbWlycFVmYVdRbHhQT1A4UWI4ekFMWElIYzdiQ2VwelptcFdVNTZt?=
- =?utf-8?B?RkJTcWtTbTA0Ukd5a3ZuYXJqNUk5VzNGUStpUVNjak5MU1NFYmxjeWRrblVa?=
- =?utf-8?B?QU5acmxJK1BxZTZwZ3puUnY3MzlONWFzVS9jamIrOUg1SnVkeGRCNTJQeHhX?=
- =?utf-8?B?dFNBYkdoQ1QyRERWT3RPSER6MXErTDJ3bmRja3ltWmYyMkN0SU41Y043M2Zq?=
- =?utf-8?B?QTMwQkJGWVQ1YXZSMGllU1gyNHE1VGFKNEducElUUHZ4aVprb3JVZ1NWc2U1?=
- =?utf-8?B?OURRb2lJL0NUVU9kanRqTi8vclZ5Zm1JUWYvSU9VcHIxd1MzMXV6bjRCMEJX?=
- =?utf-8?B?MXlIVnBKTEx4L1g3MnRXcDNka2dSSXBZRkpjZW16TzlHczIyOUpaVWJpRGhK?=
- =?utf-8?B?c3gxMTVzUTBaNDlmK25nVE5rVHphdXVrUmdvZ3p0WUNnVmdPR096em5HTFVY?=
- =?utf-8?B?dmQ1RHduQXZ4cGN2aG1BeW1kM2ZwbmprSlozR1Y4WXRSZFA3SkZoQVB5b2Rw?=
- =?utf-8?Q?msKScnnbP9TPzah5mn3VrQ5sUNG8GEOo4wnUpri?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Q3lWdzN3dkYwU1VkaFdMUE5ESlpIWWhVdExRZ0h1Rk9tTmY0NHoyRGdqWEQv?=
+ =?utf-8?B?anBXTVNxMVpwakpZOVJEYTFJYnl2NDM0L0RVSS9mTlM1RWRkTlRmQklnWXBy?=
+ =?utf-8?B?bllsLzMwOEVjMEhLZkpTTTJVa1VJc0ZXQ28xZWxxdVg3QVZjdVdnYXVGTzUz?=
+ =?utf-8?B?YzJNZFVuN0lTbDdFYnpPRVBtRjhuTlQ3S0RrZmhqMFRweHNva3plV0F2WXBB?=
+ =?utf-8?B?NGJhdXBOaHN5ejFXL1c3QTRGTUhwNTBVMThYVFJBM2Q4S1dLcGhVd2UyOW9K?=
+ =?utf-8?B?eEd1aUxvRW1hV3dXZHEzMUgyU0xuOU5TNllacUpNaUx6NDVBR2JuTVVGWGtR?=
+ =?utf-8?B?SEE2NkN2MHhaRWFWSHJhdW1sQSt1YVhsVnRicFJOTG1LZnJTMUd0K21ValNz?=
+ =?utf-8?B?cUZIb25LWU50MElBWFJxQ1JNMkdQRkJPeUVZUnNXSDFFR2lUdWZlQWVKUWZ2?=
+ =?utf-8?B?RGpZNUI1QTFmR0pEeThmTWhKNGdDMzBFaldNSmpsU2VROFBabmk2b1ozV1E5?=
+ =?utf-8?B?M1I3dGZtclB2MmpLdlRzL2NNMmxYODUvNWwxTWRlUFRQcWFNTzNDYzM2L3Rp?=
+ =?utf-8?B?L0pHTkJPc2RoVVZySmFxV0dBb2ZkVGo5eWIxOUs0R2NwMGZuUSt3MzE0T0VG?=
+ =?utf-8?B?dFlsTzdXMkprTEVEb0o0ejRGZTk3WUZqV09LekUycTlLWm1NejI5SkZNblB4?=
+ =?utf-8?B?ZS8zWnBiUlJPSXBUOWZLd3VUOGNjKzU3OVRrQlVVeHBoSzNLRkdKaGZMUVN4?=
+ =?utf-8?B?Y3FtZUM1Z3REWVJZck5PTGU4YVJNUDlyTjE2TW41ZXJvbTRXK2M4bHM2SW9F?=
+ =?utf-8?B?SFZ2bDZrcERIdldLNFlpUE9jclg0UldGMHd1S2R1a3B6Q3NlRUVoaExaRHFv?=
+ =?utf-8?B?TnVZYlF1dnVyVFQwYm8yeWZLT3N1aGprYklFU3hMSnVYSDhJZnlzSTJiWitL?=
+ =?utf-8?B?K3hZckF2QUFpSDIxdGd1T2VOeFRqcXRHNjhCOUhxbXFWQUorMGNxVy9rbDJW?=
+ =?utf-8?B?K2VKSHBadWhjbi9JenJSVXl5UU44U3lWMlh3djFnYjM2ZHpwaXZkekJrVTdK?=
+ =?utf-8?B?REdhNUtJOFpoSlNzcGtjL24zZmV4TjRwQUpTdm5pZkdsNGd4RlR3MUxrUU53?=
+ =?utf-8?B?RzVRK21SQ3pEUkFrK0dkZDRtdGhsWCtQeCtJOTlQZ1Z0engvcWpkRUdCd2Jz?=
+ =?utf-8?B?aXM5WUFGTndlVGZXcWJmUjJKYUkyMHcvMDlXaXV5QmR3UzBjVUh5b2RNUEpu?=
+ =?utf-8?B?RVNPM0dlY0Rma09qSnh2R25ZWjhFTEtVWUVDOXR4dWYwZzdSZXlWN2w2SUhX?=
+ =?utf-8?B?OUVTNHRmS0JNYVhzKzNLclhpMzhUSTJUcE5YOHJRcGY4d2puV2FVV3dsSnlQ?=
+ =?utf-8?B?MjMzYXFVRlExb2xkVktFTENpL0tmbXJPR1oxL2JWaGVtUFptd2NGNXZFMDBz?=
+ =?utf-8?B?ZTRIOEN0OVRJQkpTOEM4M2FJNWhtKzVUQTZwY3JUdTY5cjNNSUN6WEpFUTJJ?=
+ =?utf-8?B?Yi9hRFIrTFozZjQ3a3RIOXFNeG5NeWJCQ1YzNUVOM2NOWDRsRzQ1MjNPYU9G?=
+ =?utf-8?B?RzhNRmVjUG5sUCthYUpYM0QzYWdQT0VHSGFDRXZrSHlPczdBR3R5SDE5S1lC?=
+ =?utf-8?B?SG5CcXZLSFp3RDc5SFFOSi9hSjhUVGtlU2NpTXBRWjJHSTNpSVZYUFNxY1J1?=
+ =?utf-8?B?L3lWUU9xVWdOaTkrRlV6TnhLMWp5OFRuOGRNcmorY3lTL21wRDhtQUV1VGhT?=
+ =?utf-8?Q?QhNKyUfFT46WxeVrFsH5BY57x7s3yWu6YzmPAbI?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(7416014)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(7416014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cy9ZaWxEMHZqd0tDSjZUcUdsNDgxTmhvSEh6ZGxxRVVWdUhlR0FoWWs2RWt3?=
- =?utf-8?B?QzVqQUpoZXg4NDkxUlVNUG9uTG9FMEhiVDZVV0MxVEdrb1lqUlluUXUvTDZE?=
- =?utf-8?B?cWIxTzAwTllOakRwRGUvT1dCTDR0aHhZWTMyM3hvVlhlNEFjN1hnK0s5NzdS?=
- =?utf-8?B?VENsSlliUkZjSG9DRlBwWXpwU1BDWmh0K09WNkFZSWZBaGdCUzZyTndOWlMx?=
- =?utf-8?B?RjBQcHNLSHlMU3YzQklBTFJHUzg5RTJvUzJUbzM4MVRuUDhGRk1qMGVHTEhE?=
- =?utf-8?B?ZHhXaHkvWmhBNFJNelRMdmJzWlA0cFdIL05lZ0JVL05TWU1wb3BVOWUzTXM0?=
- =?utf-8?B?YjZ1RVZrcTQ2ek1oNmMvVVBrL1JXeWFOcVJLNFd5TzE5QTc1bCtZN2lQWmxJ?=
- =?utf-8?B?RjZheDV1QlRXTGEzNWdWckVkbkhsR2JHZmtTcW9aaFVCc0hDRVNPWlFKeUta?=
- =?utf-8?B?d293RmNLTjA0WWV5QlBKb1VsWjB1UlFOaEdTcDRWUFRBcXNyNzVMUjJHQldC?=
- =?utf-8?B?cC9xeDJJaGNIbENjd3NuL214WWVkRzREbWJtSU9Na04wejFlc084R3d0ZDJm?=
- =?utf-8?B?L2d4VVU4VExITEMwTnI4Y0VLS2ZqRDRRbThuUGpVS2R1SHVxMElvRFpUZnAz?=
- =?utf-8?B?SnMvMFZ1Uy9QOXZBbDNpb2dEQllYSFVsekkzZkVRT1loK2duRWd4cytIR3hE?=
- =?utf-8?B?UnFpRjBpOG1PQklRRlJJTlEvNE5KOW9FTXRxNmoremdDMmFMSHJzd0ZUTy9z?=
- =?utf-8?B?UStzK2dDTkdGdHNaMUVEcE0zWmh3cjBPRlJXbVhMbzBaQVVpdk52ZmNUTGtY?=
- =?utf-8?B?bW9iLzZXbVJHSkoyQzhneGdpSGpCcjMzbEgyNXBIWW9lV290MFF3WncxbWxE?=
- =?utf-8?B?cWdSR3RXRytrdDAya3RQZTRGSXpoMTNkQnh1SXNmV282R1NENkJCdlkwRE1m?=
- =?utf-8?B?NWZPR1BkY0VYLzVjV25pdE5hZHNnVU9mS05NMVZ4WVAvRjVqaHlJWFhQOS9Q?=
- =?utf-8?B?NTE5eHZ1VEkvaS9SU2ZBZW44ZTJJREFUSWh5WGxuRUd4Zm92UHVmTzdnN3Q5?=
- =?utf-8?B?QXBJOUU0blAzL1p6OFduZXlWaUhnNndqeGRRSzZnK3FEaVZxR0JOQ1pQOW1h?=
- =?utf-8?B?VzU0aVdjcFN5VlBxVkQvN2NiWnZFZVVtUDhxYjNuMVhBVm0vNUVXUXpPVjlJ?=
- =?utf-8?B?Z3BMVm1BNjBLOXJrbXFFTmhDNzJrTmEyaUxUYjBoamRENnpLSFFnVEVvcEly?=
- =?utf-8?B?NlFBeml6aFdlVmo3eEhrVGQrQUljdjNqcVVaZmVxc3l2TFlEaDNlWkp4L09V?=
- =?utf-8?B?MzVyMHR0L0pscDgyL09iVmJ1YkdVNkxTZlczZ3Nmc084RmRkcytROWd5eHBN?=
- =?utf-8?B?MEFNZWxKVVMvVTVNekluWVZ5Qy9iOVh2c21CbUs4K1VBaktOcitDQmlSaHA3?=
- =?utf-8?B?ZHZHU3VUMFg3eDhDblcrNC9RZ2lmUmZrK1J3YmFwUWpMSVgrL2hwaWpBNXlY?=
- =?utf-8?B?YU5uemxrZENOQ1JnQWI4M0lrNnI1RHBIdGlHNEJkTjFCQkN2enZTRTczN3Ft?=
- =?utf-8?B?QzlqbWpmNXFiUmg4by9vTUNEMkkvTXowdU9jRFVpTmtMSjJQUGRhYU5mbjd1?=
- =?utf-8?B?eDBMK2gzczE2RncrVXVaY3BMZnhhVjJiVGVVc0VvWDdITHdVRTNIcDQ5RVNx?=
- =?utf-8?B?M1hScW9DdUNWdStPWWhxRTNTNGZLcVNENVFQdWxndG5NZVdTNEFYdUt3bHF0?=
- =?utf-8?B?OWxaUjRwd1puWTNjWnYzNG5QVE5FcTZZaVp2QXZMdG9vL2hCVXRJMmN2YU1x?=
- =?utf-8?B?LzJBTk54ajBiekJHdldCR1NCQnBiVjN4U1F0MitTdmFGeE81b0tVNkNoTGIy?=
- =?utf-8?B?b1NscFFSZGl6MHgwYmZFK05GTUFZYWtETTkvS3JqNElza05WU0cyREp3UDYr?=
- =?utf-8?B?SHlacm51bW5sc3YzaWI4cmhMUFd2L2xmamplaFhKVU9JdUpHanU3dUdEWncz?=
- =?utf-8?B?VzBiUk50NGQvM3YvWUVGbmc2d2d0aWF4bElDZHpsQWt3UGIwQnlSNlBzQ0d4?=
- =?utf-8?B?ZUI2dHFQTzM0SUxmam1GM1NEV2w5TUJoNnRHVXF2Y0h6ZTE0Y0QxVlNXSVRZ?=
- =?utf-8?B?MTRoYVdBV250SlFLaERHQ1VaYXg0VWI2MVFvWnp5M1dEbGxVZHltUE1JZStZ?=
- =?utf-8?B?Y3c9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MEZiQXV2cmE3d01TWVZ0SlF1L2lQWHNndFZvWmYrN3J3L3ZXNm5GY2dKQXJ0?=
+ =?utf-8?B?cEFKeG9Vb3ZqUG1MR1lvOEVTc1VOS1YvNnd6WGVZcG15c0RyWEpwbWxCdVl0?=
+ =?utf-8?B?TlJ3K1JTMzlXTS93akxheEJQRFJPMFQyTDY5NjVINGNsVnI1WVJ3aWtFaGJs?=
+ =?utf-8?B?VGFuVHJFanJITWJIcHJRamZZR09EcDAxTk44czduUzVFQkpVWStzeWFPcCtC?=
+ =?utf-8?B?aHBPN0R1ZDNudG1tN29mc09SYy90U3VGbVFLNHd4MXFXaytLaTFnNlkzcWFt?=
+ =?utf-8?B?eGVNYTF1aWRSQW9PakFlMktvSWlmQm0vSEZRQzdXSkI0bmUxYnVDZWtkc1NT?=
+ =?utf-8?B?NVJrSUw2VlUvNWg4WFVjZ2w3UlR4TW1wblgwUW5BVWRCN2d5L1I5YnUxOXI0?=
+ =?utf-8?B?SGcvRUw0WGNrVHVsYktDYXhlOTA1YXJ1WFBLaW51OU1adGM4bHNJaDNnNnJH?=
+ =?utf-8?B?MFBzQUZkWVJoTUVHa0dtYzdCeWFvbVk2Y1BLL3dMWHJKZzdsbXRSdEFkTDQ1?=
+ =?utf-8?B?NlErMEgrNG4ySVdXMERoQ1BXU2UrdFhUM2ZTSmo2WWJiNUFuNGd2MmZ2QXhI?=
+ =?utf-8?B?MWRZQlRBYTlNOGEzakF3ZVBhd0M0dW1RY09oY3VVaXVjTTZoSGZDYzhaNDNP?=
+ =?utf-8?B?NW1kanVOWUI5bWlsM0Z1aGMyYUpZNHZYWUtxOEx0VXZYT3JBWit6eVlmVUZT?=
+ =?utf-8?B?TTUrR0Y5ZW1ScktXbmF5ck51NHhkMEM5S2dOb2JMVkZKYUo2dkRjN1hPc2Q3?=
+ =?utf-8?B?UlhZZ0o2SUJCRE9NYlZsczlUREd1YUlkc2Z6d1Nsa3dCelhqaytNTlZCck5V?=
+ =?utf-8?B?YzgyY3hzdlBHWjBJeGlXVGZhYnl5d3ZWNWJrbUVFcU9HYWhuRmpXVDIzMUFa?=
+ =?utf-8?B?aExRUGNhcWpETVFPaDQ5M3MzV1JkNGVOWlRTK3BqaTgxalJ1aVEvaG5aTmpv?=
+ =?utf-8?B?amQxbFY3TC9HSlF2RlR2VGdNL2ZLKzVLRG0xYWhlWTdUN3U5L0hkbjhEZjlP?=
+ =?utf-8?B?WjdSMEtxSjNkditKZXo2WnY4NFNZbm5mZmVIdVJneTM3b1Jnd1duRzhSOHdR?=
+ =?utf-8?B?MnQwazErby9nNWFJK1RJcVBTa3JCV1BlWkphV0xuNTRCNjdmNVBIOHdXWDBq?=
+ =?utf-8?B?QmVIN2tCU2VsaEYvbXp5S3RvZVpzTmFtVVpqZFhnMXIwZjVub0xTa0NJT1B2?=
+ =?utf-8?B?U3Q0MGNGSXBrOURjOEZTcHV6c2w1WGYxdUpxVTJ3SjdxTUtzYzdXNjNVb0gz?=
+ =?utf-8?B?NDZOMUxVdy9kU21OVFljZDZ4MlFDMTZseWxmYzQzWFdaY1dWemNtaDI2RE1U?=
+ =?utf-8?B?MmdPRFdHV1pKK0FvN21TWVBFaWo2T0w2QTBsL2dvMzNaUXZ4M2NmalpqWE5F?=
+ =?utf-8?B?dktIK3prVzZyRnZTQnNCODlhVzJPRWVralVHUkN4Y2FtdkFUbllkQ041dHp4?=
+ =?utf-8?B?SWlOYW55bWpPMUVjUG05OHp6NXhPaWkzSE8zeXRXTldpQzVHbGwzUjJOVjBR?=
+ =?utf-8?B?UVM4ZkNVQjhPa3NsclZFZDNPbGRJQTNOZjE5MFBPU2szc0tLWDliMWVtUmpv?=
+ =?utf-8?B?Ty9GbEFOdWdJWXZxS21EN1ZnN0tEV0crMUI3amlUazdhRDhGRzFBN3hXeC9H?=
+ =?utf-8?B?Wk5SM09zdnkxVmRpM2FnS3g1WTJsK1pBbGcrZHpxWVk5ekw1RCsyTWJxdGNk?=
+ =?utf-8?B?bjlUVnpUNWNzcnV6WU1FU2h3N0thTnUwcksydDgvQ3o5djQvdG1YYmxCcVdV?=
+ =?utf-8?B?OFZxRHI3OGYrdkorbVUzbjRqNkxmcjd4MkNxY1VDRjZuNTM2YlBDOUF6cVBL?=
+ =?utf-8?B?bFhnTU10KzhTVWtwaEN6dXJHUlBoRU9sdDcwbm80WXI0L1RSWExDK28vVzVk?=
+ =?utf-8?B?ai84aHYraCtxN2JzT2ltZURuTENqWHgwNzl4aE96Qkt3RDN5TlpwTVNLdGxV?=
+ =?utf-8?B?cXdnQlVERE5uV3ZXdGFuL2NGQjJRUnhFMTV5bmdOMzF5VXBJbXZHNVpwQk5R?=
+ =?utf-8?B?OVZMWFNQM0NXRGFic0FFY05uOE81MVZwdDBaWXlINjhXaHdyZlU2Sk52c05k?=
+ =?utf-8?B?Zy9ZN2ZIK01rUHpYM0JpZ2Z4WFdhc1E1SmFqS2lZTkc1Rk1RNFlIWWdTazFD?=
+ =?utf-8?B?TXM0bSt3cFlKczlLYnlJUXRMRDRDckhGRC83ZkRyKzhKeW4zSmV5Y0xLN3ZP?=
+ =?utf-8?B?RWc9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: hjNPxKZJ4N6THxpWpoMGTSBBfbNi0QKgauX/JzP0yN5sV0X0zX+BojXtcv1Xzptzt377mS0eQz3PuhCyA4QqT03/IQy+6mMy6AhoG/eL8KBk7IZ/fMFbWIbmgRC94U/GvVuRteBB9LU1sKZhVHw/GUZ8M0IhS9dWMPhhxuc2F/DfA83C6KONhbxgwrevkCNYQe3z9OqN407fyQ6KNkrr3+LRfUghWExSug9B10v+cQz7z7ILHAoRJWq1j+nhICI2jHNLhfQ/hy5yQP7xHd7GWJj9YePRoMfXQarRFK4j8PhPbf32ypT4raSiRWueEtY41/xo2o+t+lnEPKZ4OW5DF7kzXvTYI6gFKBAftQSw08FsKzSjdJeRBdRvCrDu6ggjvymPLf0MeUZoVvq5RT9W26NJLnN5pEwLhjQsV8BvwuqE9PWVF2KH255P522rPjSWd+WxHPYzrxBNeFmzc3zcq0uSZbZKxz1nCStWN4idYwpuViHnRQkBj1cM96NsRQvNqxSfX5i+wmOpu2wnosXKycJUXApSmHrca1T59RQ9tddLAPCf0HpjtvKA31X8zJzrBdebeGOAzFlvZVLCoHmRCjd2Yd+YIjjcbNfRbFtzS8s=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: dw2Ic4imKh1QoqgQdLRkwe6275fcxeZ3Gz1tyXlCGeGaNILcwIa3kEgHeZSJHvRRQbYVKr1CctoDmrMUGigFpOvJroazf1kaAbzkuxvwAMeS2keS7x5tC3q2X4RtlG09+8XU3ruqD4lG/5IvI6Nb+UKMp0Ic/Ri0h15OxoN1SDu+7kxzn9CrreQwNamtjlVNIEHc78Y7RXPbdFL75+akh1+KCWFverbNcX8wdGW6Cl3cgyQULZQd1kuBMxd1GmeCjHB9iHEnfh0RERuVrfiZKt2WaXA5sEGsIDj7V5lZQNt6qQoPO+/M2rcTxEqkCuROpYys3NQqONX+WGtmdsyTsqspVM/CiyOL+mMp+uU33x8oyeDJZerphl4PoT5z1g7UqKXda9dfVhoJmJGECeGzysEw6JyshRUUeDiq5F6GfUN4lQx2RTETTUzlLpkA8CNpig49i0GXOfuPYWWkMrkupz9TLola4IpSCKrhITyFZfayUU1ZMNS4fSQej2s1pJkIDTW8Eeis1RDUwOrTjlBF/INmkVM9WLijItvlVbNHplJ49fyTDmHiK3XBhnRyT5L9WeROcVMyvHr809uh7CQkiZ1z1RuV4J98nZT+ANzcMqU=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a637a08-766e-4af6-6657-08dcf3a153e0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d3567c8-faef-41bb-eb50-08dcf3a15b1b
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 20:29:00.4808 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 20:29:12.5505 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +KM8E1NkdPSLhZrcdMuH41VpF/yIQcj8tfqTOLrR3KKq7H/iYEiv89NfCVCz+pmPvMv81QvbFHFo71Grp4XHaOnejReodYxAnpTYPRbgf3g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6758
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yr+wIdlNn1gmKXyYPhboTBe64Gx+i4ULVecTIhnDhCQTkO/hz26C0q+9a+J3uV9LC80HOzUHI7vLaNiZIFKtrlOHCcvlquk+FZMXHi+aNq0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6662
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-23_16,2024-10-23_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0
- malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ adultscore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2410230130
-X-Proofpoint-GUID: 3apYinsVnZSsUZFBq_VHu60lZoV2QQs6
-X-Proofpoint-ORIG-GUID: 3apYinsVnZSsUZFBq_VHu60lZoV2QQs6
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: 0kpENWuxTmiTUKondh7AHeEBFdZ8Uu6-
+X-Proofpoint-GUID: 0kpENWuxTmiTUKondh7AHeEBFdZ8Uu6-
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -222,150 +219,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/22/2024 4:30 AM, David Hildenbrand wrote:
-> On 18.10.24 21:15, Steven Sistare wrote:
->> On 10/18/2024 11:40 AM, Steven Sistare wrote:
->>> On 10/18/2024 11:32 AM, Steven Sistare wrote:
->>>> On 10/18/2024 11:08 AM, Fabiano Rosas wrote:
->>>>> Steve Sistare <steven.sistare@oracle.com> writes:
->>>>>
->>>>>> Make all global and compat properties available before the first objects
->>>>>> are created.  Set accelerator compatibility properties in
->>>>>> configure_accelerators, when the accelerator is chosen, and call
->>>>>> configure_accelerators earlier.  Set machine options earlier.
->>>>>>
->>>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>>>> ---
->>>>>>    accel/accel-system.c |  2 --
->>>>>>    system/vl.c          | 34 ++++++++++++++++++----------------
->>>>>>    2 files changed, 18 insertions(+), 18 deletions(-)
->>>>>>
->>>>>> diff --git a/accel/accel-system.c b/accel/accel-system.c
->>>>>> index f6c947d..c8aeae4 100644
->>>>>> --- a/accel/accel-system.c
->>>>>> +++ b/accel/accel-system.c
->>>>>> @@ -41,8 +41,6 @@ int accel_init_machine(AccelState *accel, MachineState *ms)
->>>>>>            ms->accelerator = NULL;
->>>>>>            *(acc->allowed) = false;
->>>>>>            object_unref(OBJECT(accel));
->>>>>> -    } else {
->>>>>> -        object_set_accelerator_compat_props(acc->compat_props);
->>>>>>        }
->>>>>>        return ret;
->>>>>>    }
->>>>>> diff --git a/system/vl.c b/system/vl.c
->>>>>> index b94a6b9..bca2292 100644
->>>>>> --- a/system/vl.c
->>>>>> +++ b/system/vl.c
->>>>>> @@ -2346,6 +2346,7 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
->>>>>>            goto bad;
->>>>>>        }
->>>>>> +    object_set_accelerator_compat_props(ac->compat_props);
->>>>>>        acs->accel = accel;
->>>>>>        return 1;
->>>>>> @@ -3728,29 +3729,14 @@ void qemu_init(int argc, char **argv)
->>>>>>        parse_memory_options();
->>>>>>        qemu_create_machine(machine_opts_dict);
->>>>>> -
->>>>>> -    suspend_mux_open();
->>>>>> -
->>>>>> -    qemu_disable_default_devices();
->>>>>> -    qemu_setup_display();
->>>>>> -    qemu_create_default_devices();
->>>>>> -    qemu_create_early_backends();
->>>>>> -
->>>>>>        qemu_apply_legacy_machine_options(machine_opts_dict);
->>>>>>        qemu_apply_machine_options(machine_opts_dict);
->>>>>>        qobject_unref(machine_opts_dict);
->>>>>> -    phase_advance(PHASE_MACHINE_CREATED);
->>>>>> -    /*
->>>>>> -     * Note: uses machine properties such as kernel-irqchip, must run
->>>>>> -     * after qemu_apply_machine_options.
->>>>>> -     */
->>>>>>        accel = configure_accelerators(argv[0]);
->>>>>> -    create_accelerator(accel);
->>>>>> -    phase_advance(PHASE_ACCEL_CREATED);
->>>>>>        /*
->>>>>> -     * Beware, QOM objects created before this point miss global and
->>>>>> +     * QOM objects created after this point see all global and
->>>>>>         * compat properties.
->>>>>>         *
->>>>>>         * Global properties get set up by qdev_prop_register_global(),
->>>>>> @@ -3765,6 +3751,22 @@ void qemu_init(int argc, char **argv)
->>>>>>         * called from do_configure_accelerator().
->>>>>>         */
->>>>>> +    suspend_mux_open();
->>>>>> +
->>>>>> +    qemu_disable_default_devices();
->>>>>> +    qemu_setup_display();
->>>>>> +    qemu_create_default_devices();
->>>>>> +    qemu_create_early_backends();
->>>>>> +
->>>>>> +    phase_advance(PHASE_MACHINE_CREATED);
->>>>>> +
->>>>>> +    /*
->>>>>> +     * Note: uses machine properties such as kernel-irqchip, must run
->>>>>> +     * after qemu_apply_machine_options.
->>>>>> +     */
->>>>>> +    create_accelerator(accel);
->>>>>> +    phase_advance(PHASE_ACCEL_CREATED);
->>>>>> +
->>>>>>        machine_class = MACHINE_GET_CLASS(current_machine);
->>>>>>        if (!qtest_enabled() && machine_class->deprecation_reason) {
->>>>>>            warn_report("Machine type '%s' is deprecated: %s",
->>>>>
->>>>> Hi Steve,
->>>>>
->>>>> after this commit:
->>>>>
->>>>> $ QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/xlnx-can-test
->>>>> # random seed: R02Saf9b44f2d88dd417052905692ee79981
->>>>> 1..5
->>>>> # Start of aarch64 tests
->>>>> # Start of net tests
->>>>> # Start of can tests
->>>>> # starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2396.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2396.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -machine xlnx-zcu102 -object can-bus,id=canbus -machine canbus0=canbus -machine canbus1=canbus -accel qtest
->>>>> qemu-system-aarch64: Device 'canbus' not found
->>>>>
->>>>> I tried briefly to figure out what the issue is, but I don't really
->>>>> understand the dependencies involved. Hope you can tell us.
->>>>
->>>> Thanks! I forgot to define the preinit method for the qtest accelerator in patch 1.
->>>> I'll verify that fixes the problem and send you a one-off patch if you want to continue
->>>> testing.
->>>
->>> Actually that is not a problem.  qtest qtest_init_accel does nothing, so preinit will do
->>> nothing, so it is OK to not define preinit.
->>>
->>> Still looking.
+On 10/21/2024 11:19 AM, Peter Xu wrote:
+> On Thu, Oct 17, 2024 at 08:14:05AM -0700, Steve Sistare wrote:
+>> Make all global and compat properties available before the first objects
+>> are created.  Set accelerator compatibility properties in
+>> configure_accelerators, when the accelerator is chosen, and call
+>> configure_accelerators earlier.  Set machine options earlier.
 >>
->> I understand this now.  The old code worked in this order:
+>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>> ---
+>>   accel/accel-system.c |  2 --
+>>   system/vl.c          | 34 ++++++++++++++++++----------------
+>>   2 files changed, 18 insertions(+), 18 deletions(-)
 >>
->>     qemu_create_early_backends()
->>       ... creates "-object can-bus,id=canbus"
->>     qemu_create_machine()
->>     qemu_apply_machine_options()
->>       applies link property "canbus0" with value canbus, finds canbus object
+>> diff --git a/accel/accel-system.c b/accel/accel-system.c
+>> index f6c947d..c8aeae4 100644
+>> --- a/accel/accel-system.c
+>> +++ b/accel/accel-system.c
+>> @@ -41,8 +41,6 @@ int accel_init_machine(AccelState *accel, MachineState *ms)
+>>           ms->accelerator = NULL;
+>>           *(acc->allowed) = false;
+>>           object_unref(OBJECT(accel));
+>> -    } else {
+>> -        object_set_accelerator_compat_props(acc->compat_props);
+>>       }
+>>       return ret;
+>>   }
+>> diff --git a/system/vl.c b/system/vl.c
+>> index b94a6b9..bca2292 100644
+>> --- a/system/vl.c
+>> +++ b/system/vl.c
+>> @@ -2346,6 +2346,7 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
+>>           goto bad;
+>>       }
+>>   
+>> +    object_set_accelerator_compat_props(ac->compat_props);
 > 
-> Now I am confused.
-> 
-> I think the current code does:
-> 
-> qemu_create_machine(machine_opts_dict);
-> qemu_create_early_backends();
-> qemu_apply_machine_options(machine_opts_dict);
-> 
-> Isn't the relevant part that we may only apply the machine options after creating the early backends?
+> This is the probe/preinit iterator, might be good to keep it simple to only
+> make the decision of choosing one accel, then move this line over to
+> configure_accelerators() at the end.
 
-Yes, I showed the wrong order for the old code, but our explanations are equivalent.
-
-Perhaps this could be fixed by moving qemu_apply_machine_options after
-qemu_create_early_backends in qemu_exit_precreate.  But that seems risky and
-fragile,  as there would be a large window of code between qemu_create_machine
-and qemu_apply_machine_options where the machine has been created but the machine
-options and not known.
+It's actually simpler to leave it here.  Hoisting object_set_accelerator_compat_props
+would require extra code to derive the ac parameter.
 
 - Steve
 
+>>       acs->accel = accel;
+>>       return 1;
+>>   
+>> @@ -3728,29 +3729,14 @@ void qemu_init(int argc, char **argv)
+>>       parse_memory_options();
+>>   
+>>       qemu_create_machine(machine_opts_dict);
+>> -
+>> -    suspend_mux_open();
+>> -
+>> -    qemu_disable_default_devices();
+>> -    qemu_setup_display();
+>> -    qemu_create_default_devices();
+>> -    qemu_create_early_backends();
+>> -
+>>       qemu_apply_legacy_machine_options(machine_opts_dict);
+>>       qemu_apply_machine_options(machine_opts_dict);
+>>       qobject_unref(machine_opts_dict);
+>> -    phase_advance(PHASE_MACHINE_CREATED);
+>>   
+>> -    /*
+>> -     * Note: uses machine properties such as kernel-irqchip, must run
+>> -     * after qemu_apply_machine_options.
+>> -     */
+>>       accel = configure_accelerators(argv[0]);
+>> -    create_accelerator(accel);
+>> -    phase_advance(PHASE_ACCEL_CREATED);
+>>   
+>>       /*
+>> -     * Beware, QOM objects created before this point miss global and
+>> +     * QOM objects created after this point see all global and
+>>        * compat properties.
+>>        *
+>>        * Global properties get set up by qdev_prop_register_global(),
+>> @@ -3765,6 +3751,22 @@ void qemu_init(int argc, char **argv)
+>>        * called from do_configure_accelerator().
+>>        */
+>>   
+>> +    suspend_mux_open();
+>> +
+>> +    qemu_disable_default_devices();
+>> +    qemu_setup_display();
+>> +    qemu_create_default_devices();
+>> +    qemu_create_early_backends();
+>> +
+>> +    phase_advance(PHASE_MACHINE_CREATED);
+>> +
+>> +    /*
+>> +     * Note: uses machine properties such as kernel-irqchip, must run
+>> +     * after qemu_apply_machine_options.
+>> +     */
+>> +    create_accelerator(accel);
+>> +    phase_advance(PHASE_ACCEL_CREATED);
+>> +
+>>       machine_class = MACHINE_GET_CLASS(current_machine);
+>>       if (!qtest_enabled() && machine_class->deprecation_reason) {
+>>           warn_report("Machine type '%s' is deprecated: %s",
+>> -- 
+>> 1.8.3.1
+>>
+> 
 
 
