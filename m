@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35F69AC909
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 721D59AC911
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Zd7-0007Fj-MU; Wed, 23 Oct 2024 07:34:21 -0400
+	id 1t3Zd9-0007Gl-9i; Wed, 23 Oct 2024 07:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zd2-0007DO-Ry
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:16 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1t3Zd6-0007FK-3g
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:20 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zcy-00035d-L3
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:16 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a9a0472306cso897197866b.3
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:34:12 -0700 (PDT)
+ id 1t3Zd2-00036f-DL
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:19 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5c99be0a4bbso8927524a12.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729683251; x=1730288051; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729683253; x=1730288053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
- b=Ef51HeCmu+1RWV5vlaVWCHUhDbxPLK68ANw+taYZPe/xXh9KyU0qM7g1liLgMF7G/4
- PsUOQAAfzk4+HVl0g829y73KBqnZ4PoYHZ/iy7CFGEh1uLUT0JPIf6w2ByZ0kbw47rvB
- Ti5/or4ZxzC6oye/VYpqKIscW1/xdd1JUSHZV0CkZO5bu6Yia72/qceQjEoJH9+Wf7Iw
- bDU1JvNNCFG+NItNiF51T4F55hrCgWN8QP0p++SMj2aCnUVsOWwkfFVds44hTcoJrtiA
- Evp8GRpJKH05lfNAUU5x5Ev9xj9AeUHFrXn9I9AbS0B1EQ9Yk/3u/C5XCj6OHB56eTDK
- Gp0Q==
+ bh=iZZo1oPZPqzjBeoixQ7wpptFRyTvJhgIff9wczeHXgQ=;
+ b=yhM5LlpbxVrKpaZ7j0kBjMf/AA4sCMkxvuFc3nDTuxMZNNBz1K3mAr1iI7YW6XEyKv
+ 2DkM+GyvCsARQPQJtf8Mjm8lD7gDsOrKOPPDgT5OrKeeBcylh+ZHgb/tror04VOHOCIp
+ 1gbliV4jQ7xvpyjVmXl9m/W7XN3b69HJthivczcGr7e55w2VvAb6Uck3WN+JaZ2HWnOK
+ pAnhh49/feiFSInIlk80Pvpq2u6wJ7MeIbqdejpxQm6mGeQRX6askXWmkmVrIL7rrdq9
+ VZaccBQ0MvFkyjZBR1i7f8z6Ad1GIqu9pcTn0AdxT8i/oqcZVZqDr3NG/WvYjdOTv3zS
+ N46Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729683251; x=1730288051;
+ d=1e100.net; s=20230601; t=1729683253; x=1730288053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
- b=ObEHLDsD+iQc/gKBOssJPgVD4bPaBO37/rGE424nEqjWdMHh7794BkhoKBXvxI2sZR
- 3vUTCc0Jrh0sxJYwfL5rDIFwFvdsgYhv0WArboHOEjB6hDnvrEcMJAEJ6cCBvEycMypr
- wrW6nKRj00Hu4HC8Hao+YMu2jht74MvU6k3bDsDCI3+CVl4EQS3RuelxLKgbE+HXvjop
- kRAxn5YNnRCi98FSA7Tv+3QKu4Qg52eNlSYIlpTiUZF9cJEsQ7y3oAqhOX6bdxh0yrES
- e7knWyr63qJY7v6Wqpe6wmn6e34WgO0yIEFBqhbdXe81okAMpDox4o8AJkvDnv2bRS8h
- HwoQ==
-X-Gm-Message-State: AOJu0Yx8znvG0Ho4ieRs3qUodaP4Sbu453vTI+HLkmw7mAbZulOSsN5q
- DYkVNZ8nAfMkJW7fpI6Bz2rdm5ub3Z+Ldrronb4tklUhXECbI5Cuqy83lTRfjpc=
-X-Google-Smtp-Source: AGHT+IHwbt07id+3Aor1n1Uw1SIwY71B+kw6O/tu5t2PwERx5fCQ43YmiWLOmkaJNzRIJ+hnNpC7YQ==
-X-Received: by 2002:a17:907:9496:b0:a9a:1bb4:800c with SMTP id
- a640c23a62f3a-a9abf85caf5mr187274866b.4.1729683250848; 
- Wed, 23 Oct 2024 04:34:10 -0700 (PDT)
+ bh=iZZo1oPZPqzjBeoixQ7wpptFRyTvJhgIff9wczeHXgQ=;
+ b=hkkHbWOOB+wg4BSGxwqyRNN2E7B1wcBDkmfc4AIhmj1OI3Y+mkNq/SaV+dxLgb6CRY
+ ZrP/YsXF52G8KY1tBTybYtm93qBMNAtVHoyov5AriV8S6NMXA+6hHXVMkVKctiCAqfxr
+ jA3vZXGjAlndShspSxkVdK1A6qu+aZY9BB4Y/lO5QSeOJvvjbgGhPTudidkhQq3EmOm/
+ 5t9maTL+4HPA6EgudmSQHeElhU+yryROWxUJa8NN5fGN9EZOy4Wa7Ew5VQoxDI6wL2CA
+ dQK0eSDHoDPBwTIS8s4LE2lT/hkrPX5DuZMBgJQ5imriUdYqCGH4mpcfIZHeiLIDkM7p
+ Y1Vw==
+X-Gm-Message-State: AOJu0YxuBZaE3mVMdGhQONwyN1kkQSNBDut617yNxsPa/DNtboGSaMVE
+ lJGsY6uv+f+JYn0a+YwZk0Z+Yd5cq6VzPPS9IGRcvNnZxe0C0CXRVPRJbae/jUg=
+X-Google-Smtp-Source: AGHT+IFA0UaPGC8xcZ4LXhrZOMA5j/aP5IXRqvhXDz6QfMISSlPCIVK4HHHGWxBkVlt2kvmppngmEw==
+X-Received: by 2002:a05:6402:1955:b0:5cb:6718:7326 with SMTP id
+ 4fb4d7f45d1cf-5cb8ad0734cmr1936187a12.21.1729683253220; 
+ Wed, 23 Oct 2024 04:34:13 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9acad2eeabsm12746666b.20.2024.10.23.04.34.07
+ 4fb4d7f45d1cf-5cb66a654b9sm4351143a12.34.2024.10.23.04.34.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 04:34:08 -0700 (PDT)
+ Wed, 23 Oct 2024 04:34:10 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 570455F8D7;
+ by draig.lan (Postfix) with ESMTP id 6C4CE5F913;
  Wed, 23 Oct 2024 12:34:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 04/18] meson: hide tsan related warnings
-Date: Wed, 23 Oct 2024 12:33:52 +0100
-Message-Id: <20241023113406.1284676-5-alex.bennee@linaro.org>
+Subject: [PATCH v3 05/18] docs/devel: update tsan build documentation
+Date: Wed, 23 Oct 2024 12:33:53 +0100
+Message-Id: <20241023113406.1284676-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,42 +115,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-When building with gcc-12 -fsanitize=thread, gcc reports some
-constructions not supported with tsan.
-Found on debian stable.
-
-qemu/include/qemu/atomic.h:36:52: error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’ [-Werror=tsan]
-   36 | #define smp_mb()                     ({ barrier(); __atomic_thread_fence(__ATOMIC_SEQ_CST); })
-      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mention it's now possible to build with gcc, instead of clang, and
+explain how to build a sanitized glib version.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240910174013.1433331-2-pierrick.bouvier@linaro.org>
+Message-Id: <20240910174013.1433331-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- meson.build | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ docs/devel/testing/main.rst | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index d26690ce20..bdd67a2d6d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -538,7 +538,15 @@ if get_option('tsan')
-                          prefix: '#include <sanitizer/tsan_interface.h>')
-     error('Cannot enable TSAN due to missing fiber annotation interface')
-   endif
--  qemu_cflags = ['-fsanitize=thread'] + qemu_cflags
-+  tsan_warn_suppress = []
-+  # gcc (>=11) will report constructions not supported by tsan:
-+  # "error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’"
-+  # https://gcc.gnu.org/gcc-11/changes.html
-+  # However, clang does not support this warning and this triggers an error.
-+  if cc.has_argument('-Wno-tsan')
-+    tsan_warn_suppress = ['-Wno-tsan']
-+  endif
-+  qemu_cflags = ['-fsanitize=thread'] + tsan_warn_suppress + qemu_cflags
-   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
- endif
+diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
+index 09725e8ea9..91f4dc61fb 100644
+--- a/docs/devel/testing/main.rst
++++ b/docs/devel/testing/main.rst
+@@ -628,20 +628,38 @@ Building and Testing with TSan
+ It is possible to build and test with TSan, with a few additional steps.
+ These steps are normally done automatically in the docker.
+ 
+-There is a one time patch needed in clang-9 or clang-10 at this time:
++TSan is supported for clang and gcc.
++One particularity of sanitizers is that all the code, including shared objects
++dependencies, should be built with it.
++In the case of TSan, any synchronization primitive from glib (GMutex for
++instance) will not be recognized, and will lead to false positives.
++
++To build a tsan version of glib:
+ 
+ .. code::
+ 
+-  sed -i 's/^const/static const/g' \
+-      /usr/lib/llvm-10/lib/clang/10.0.0/include/sanitizer/tsan_interface.h
++   $ git clone --depth=1 --branch=2.81.0 https://github.com/GNOME/glib.git
++   $ cd glib
++   $ CFLAGS="-O2 -g -fsanitize=thread" meson build
++   $ ninja -C build
+ 
+ To configure the build for TSan:
+ 
+ .. code::
+ 
+-  ../configure --enable-tsan --cc=clang-10 --cxx=clang++-10 \
++  ../configure --enable-tsan \
+                --disable-werror --extra-cflags="-O0"
+ 
++When executing qemu, don't forget to point to tsan glib:
++
++.. code::
++
++   $ glib_dir=/path/to/glib
++   $ export LD_LIBRARY_PATH=$glib_dir/build/gio:$glib_dir/build/glib:$glib_dir/build/gmodule:$glib_dir/build/gobject:$glib_dir/build/gthread
++   # check correct version is used
++   $ ldd build/qemu-x86_64 | grep glib
++   $ qemu-system-x86_64 ...
++
+ The runtime behavior of TSAN is controlled by the TSAN_OPTIONS environment
+ variable.
  
 -- 
 2.39.5
