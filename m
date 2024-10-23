@@ -2,103 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B7A9AC958
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6389AC941
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:41:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Zmi-0001xX-DL; Wed, 23 Oct 2024 07:44:16 -0400
+	id 1t3ZiN-0005ei-VT; Wed, 23 Oct 2024 07:39:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zmb-0001vY-S4
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:44:09 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3ZmY-0004YS-Ca
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:44:09 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5c9c28c1ecbso8651023a12.0
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729683844; x=1730288644; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0yP4SNsaEappmzZc/gnms0PRD/uAmEAQCRgu6RQMiI8=;
- b=klfGWULhvregkR5+7mEysgzylwl85S2wHOEeodVczX1s0fNewS03IH/lh1Cmkm4C0x
- okTPHotFzgTHl80SdQlJsJBrJyxYhmzITRM+JNYKScOadEMJ1VgK+xOVv1iTs7mrG4Q0
- 5EQk+Yrzt/qCBjMXFz+dSFma1lVPXWD+UodeOmF6YxlL5t6P6XCe18Ls1Bvi33/+DmSV
- 0vH68ZcxP9ppMeZPEEqUDb7JJNAfdyxCh8kVqNtsGMqet9VJ4Gm5DDo77VOYe4dVvQIR
- P1Epn1PqMYpLedAtnSQCTEEsIs1TY1TVz2xPcTIVNKnokJen3uaJuDUMQHV/J/E/TkxW
- NNeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729683844; x=1730288644;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0yP4SNsaEappmzZc/gnms0PRD/uAmEAQCRgu6RQMiI8=;
- b=rbyRr/k7G8OXGGlFvkwjLQHGIWImNL1AEv8vO2bH+CxCewWgvfKoTcL7nBijyXzyDV
- ++GP1bLBnmhddXDGmqqhQVE3vXDkW35gFsJECyXWUrJPQjJfbQCvWBZpXZbAndX8iR8K
- mHoC3SSrdWJupEonPPv7p/jKX6KiEidgS8GiMYDfixvtibP0tpB1D+SOzm9BM5MS4lwR
- Iu9qaRXEW6mthXmkwjuTZZfdXTJ09yQNyk96cgLYB9J1CshidLZFmv2x1+pt6x6f5mhj
- u4UmmBb+MxdnRIhUX/1/uqu0q41eqUfIXb+ZTFW8zFx0WgguT+yuV5fQ21F9XTcwwsQh
- hhbQ==
-X-Gm-Message-State: AOJu0YyFxO34aGEd8+OckIJ84l7+djSIHZ/43ubq2Ki54rzxMPbTNTFg
- 72e+EzdN+vAp7X1rtktO1pyD59w689U41yUzpkCoxfs6bK1pKWvE2cczxgHQ5+A=
-X-Google-Smtp-Source: AGHT+IHMnbwSpFbIxFr8E05r4uLkxn6q0bmtEG4CkFZ2WZbJ45lEqJq6MM15OG/HAzJxk8Ota85Nkw==
-X-Received: by 2002:a17:907:a4c:b0:a9a:e9c:1d8d with SMTP id
- a640c23a62f3a-a9abf8664aamr189274166b.17.1729683844365; 
- Wed, 23 Oct 2024 04:44:04 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a91571ed3sm463602366b.164.2024.10.23.04.44.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 04:44:03 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B34075FC34;
- Wed, 23 Oct 2024 12:34:08 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1t3ZhH-0005GA-Kj
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:38:44 -0400
+Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1t3ZhC-0003kr-2Y
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:38:39 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 12C56260983;
+ Wed, 23 Oct 2024 13:38:30 +0200 (CEST)
+X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
+Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
+ by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id CUeNcroBrWNo; Wed, 23 Oct 2024 13:38:27 +0200 (CEST)
+Received: from applejack.lan (83.11.13.124.ipv4.supernova.orange.pl
+ [83.11.13.124])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 39BE326059E;
+ Wed, 23 Oct 2024 13:38:27 +0200 (CEST)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- devel@lists.libvirt.org, Marcelo Tosatti <mtosatti@redhat.com>,
- Riku Voipio <riku.voipio@iki.fi>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, qemu-arm@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, kvm@vger.kernel.org,
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Robbin Ehn <rehn@rivosinc.com>
-Subject: [PATCH v3 18/18] plugins: fix qemu_plugin_reset
-Date: Wed, 23 Oct 2024 12:34:06 +0100
-Message-Id: <20241023113406.1284676-19-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
-References: <20241023113406.1284676-1-alex.bennee@linaro.org>
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH v2 1/1] pcie: enable Extended tag field support
+Date: Wed, 23 Oct 2024 13:38:20 +0200
+Message-ID: <20241023113820.486017-1-marcin.juszkiewicz@linaro.org>
+X-Mailer: git-send-email 2.46.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: softfail client-ip=213.251.184.221;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,47 +63,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From what I read PCI has 32 transactions, PCI Express devices can handle
+256 with Extended tag enabled (spec mentions also larger values but I
+lack PCIe knowledge).
 
-34e5e1 refactored the plugin context initialization. After this change,
-tcg_ctx->plugin_insn is not reset inconditionnally anymore, but only if
-one plugin at least is active.
+QEMU leaves 'Extended tag field' with 0 as value:
 
-When uninstalling the last plugin active, we stopped reinitializing
-tcg_ctx->plugin_insn, which leads to memory callbacks being emitted.
-This results in an error as they don't appear in a plugin op sequence as
-expected.
+Capabilities: [e0] Express (v1) Root Complex Integrated Endpoint, IntMsgNum 0
+        DevCap: MaxPayload 128 bytes, PhantFunc 0
+                ExtTag- RBE+ FLReset- TEE-IO-
 
-The correct fix is to make sure we reset plugin translation variables
-after current block translation ends. This way, we can catch any
-potential misuse of those after a given block, in more than fixing the
-current bug.
+SBSA ACS has test 824 which checks for PCIe device capabilities. BSA
+specification [1] (SBSA is on top of BSA) in section F.3.2 lists
+expected values for Device Capabilities Register:
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2570
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Robbin Ehn <rehn@rivosinc.com>
-Message-Id: <20241015003819.984601-1-pierrick.bouvier@linaro.org>
-[AJB: trim patch version details from commit msg]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Device Capabilities Register     Requirement
+Role based error reporting       RCEC and RCiEP: Hardwired to 1
+Endpoint L0s acceptable latency  RCEC and RCiEP: Hardwired to 0
+L1 acceptable latency            RCEC and RCiEP: Hardwired to 0
+Captured slot power limit scale  RCEC and RCiEP: Hardwired to 0
+Captured slot power limit value  RCEC and RCiEP: Hardwired to 0
+Max payload size                 value must be compliant with PCIe spec
+Phantom functions                RCEC and RCiEP: Recommendation is to
+                                 hardwire this bit to 0.
+Extended tag field               Hardwired to 1
+
+1. https://developer.arm.com/documentation/den0094/c/
+
+This change enables Extended tag field. All versioned platforms should
+have it disabled for older versions (tested with Arm/virt).
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/core/machine.c    | 4 +++-
+ hw/pci/pci.c         | 2 ++
+ hw/pci/pcie.c        | 8 +++++++-
+ include/hw/pci/pci.h | 2 ++
+ 4 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 2ee4c22bef..0f47bfbb48 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -467,4 +467,8 @@ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17eba..8ccc74067a 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -34,7 +34,9 @@
+ #include "hw/virtio/virtio-iommu.h"
+ #include "audio/audio.h"
  
-     /* inject the instrumentation at the appropriate places */
-     plugin_gen_inject(ptb);
+-GlobalProperty hw_compat_9_1[] = {};
++GlobalProperty hw_compat_9_1[] = {
++    { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
++};
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
+ 
+ GlobalProperty hw_compat_9_0[] = {
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 87da35ca9b..9a3b0e4a43 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -87,6 +87,8 @@ static Property pci_props[] = {
+                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+     DEFINE_PROP_SIZE32("x-max-bounce-buffer-size", PCIDevice,
+                      max_bounce_buffer_size, DEFAULT_MAX_BOUNCE_BUFFER_SIZE),
++    DEFINE_PROP_BIT("x-pcie-ext-tag", PCIDevice, cap_present,
++                    QEMU_PCIE_EXT_TAG_BITNR, true),
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index 4b2f0805c6..9f369c2b6c 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -86,7 +86,13 @@ pcie_cap_v1_fill(PCIDevice *dev, uint8_t port, uint8_t type, uint8_t version)
+      * Specification, Revision 1.1., or subsequent PCI Express Base
+      * Specification revisions.
+      */
+-    pci_set_long(exp_cap + PCI_EXP_DEVCAP, PCI_EXP_DEVCAP_RBER);
++    uint32_t devcap = PCI_EXP_DEVCAP_RBER;
 +
-+    /* reset plugin translation state (plugin_tb is reused between blocks) */
-+    tcg_ctx->plugin_db = NULL;
-+    tcg_ctx->plugin_insn = NULL;
- }
++    if (dev->cap_present & QEMU_PCIE_EXT_TAG) {
++        devcap = PCI_EXP_DEVCAP_RBER | PCI_EXP_DEVCAP_EXT_TAG;
++    }
++
++    pci_set_long(exp_cap + PCI_EXP_DEVCAP, devcap);
+ 
+     pci_set_long(exp_cap + PCI_EXP_LNKCAP,
+                  (port << PCI_EXP_LNKCAP_PN_SHIFT) |
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index eb26cac810..5b14f9d375 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -213,6 +213,8 @@ enum {
+     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
+ #define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
+     QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
++#define QEMU_PCIE_EXT_TAG_BITNR 13
++    QEMU_PCIE_EXT_TAG = (1 << QEMU_PCIE_EXT_TAG_BITNR),
+ };
+ 
+ typedef struct PCIINTxRoute {
 -- 
-2.39.5
+2.46.1
 
 
