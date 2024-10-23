@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF719AC23E
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 10:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37949AC242
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 10:52:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3X5t-0000db-G3; Wed, 23 Oct 2024 04:51:53 -0400
+	id 1t3X5q-0000cy-Sn; Wed, 23 Oct 2024 04:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3X5r-0000dF-TV
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:51 -0400
+ id 1t3X5o-0000cI-5o
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3X5q-00083n-ET
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:51 -0400
+ id 1t3X5m-00083N-Lm
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729673494;
+ s=mimecast20190719; t=1729673499;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dsTsmOfDyavmsVDGwb88r2xES8RbPpv2JJlAjl9MVRw=;
- b=TWG2VGtPyPvAnx4kUcl1qnKg/bDgqn22D6sKrnFCT2j8tPbu9rw8KEOAsNBloP3YWGBP2j
- 4/e5Kjz5yunahw7kz/uPrYHRzv5uqbe7QPudbXQvsel2pmwtdzIdLUE/h/0wpJkd6EuQWp
- YwLgt25a5xxKOQKma3FI4Jzjct9nTO4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7wKf41dLp7c98epQlQNKz9nwJiWUPVqLqX8g/XIo87E=;
+ b=Rt9CUSvk8sCS243oz1yzXNNoO3bpJHfecUWxXzgn64dT6T0uvr2pFgcpAV5oxIFQNeLp7C
+ KOx7a+Gi2s8KHJniqNY1MCi2attNPBgoTEWawAonr39HGY6LklJpzyuPj+BZ9KImKsCaIL
+ 1xnhQaAPuhRbuMlSuxD+CuxT3lylxaA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-uFj9bcgmP82BNsCqWMSnmg-1; Wed,
- 23 Oct 2024 04:51:31 -0400
-X-MC-Unique: uFj9bcgmP82BNsCqWMSnmg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-aDdk8np9PBWU-OHDGGn2Pw-1; Wed,
+ 23 Oct 2024 04:51:35 -0400
+X-MC-Unique: aDdk8np9PBWU-OHDGGn2Pw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AE351955DA6; Wed, 23 Oct 2024 08:51:30 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 66C96195608B; Wed, 23 Oct 2024 08:51:34 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 665CB1956056; Wed, 23 Oct 2024 08:51:27 +0000 (UTC)
+ id 341821955EA3; Wed, 23 Oct 2024 08:51:30 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,9 +54,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v3 6/8] hw/net: report errors from failing to use eBPF RSS FDs
-Date: Wed, 23 Oct 2024 09:51:01 +0100
-Message-ID: <20241023085103.1980072-7-berrange@redhat.com>
+Subject: [PATCH v3 7/8] ebpf: improve trace event coverage to all key
+ operations
+Date: Wed, 23 Oct 2024 09:51:02 +0100
+Message-ID: <20241023085103.1980072-8-berrange@redhat.com>
 In-Reply-To: <20241023085103.1980072-1-berrange@redhat.com>
 References: <20241023085103.1980072-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,102 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the user/mgmt app passed in a set of pre-opened FDs for eBPF RSS,
-then it is expecting QEMU to use them. Any failure to do so must be
-considered a fatal error and propagated back up the stack, otherwise
-deployment mistakes will not be detectable in a prompt manner. When
-not using pre-opened FDs, then eBPF RSS is tried on a "best effort"
-basis only and thus fallback to software RSS is valid.
+The existing error trace event is renamed to have a name prefix
+matching its source file & to remove the redundant first arg that
+adds no useful information.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/net/virtio-net.c | 41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ ebpf/ebpf_rss.c   | 19 +++++++++++++++++++
+ ebpf/trace-events |  4 ++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 289fba8152..c08ae55424 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1316,28 +1316,27 @@ static void virtio_net_disable_rss(VirtIONet *n)
-     virtio_net_commit_rss_config(n);
- }
- 
--static bool virtio_net_load_ebpf_fds(VirtIONet *n)
-+static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
- {
-     int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
-     int ret = true;
-     int i = 0;
- 
-     if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
--        warn_report("Expected %d file descriptors but got %d",
--                    EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
--       return false;
--   }
-+        error_setg(errp, "Expected %d file descriptors but got %d",
-+                   EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
-+        return false;
-+    }
- 
-     for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
--        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i],
--                                  &error_warn);
-+        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i], errp);
-         if (fds[i] < 0) {
-             ret = false;
-             goto exit;
-         }
+diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+index 67cdab197d..e793786c17 100644
+--- a/ebpf/ebpf_rss.c
++++ b/ebpf/ebpf_rss.c
+@@ -74,6 +74,10 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx, Error **errp)
+         goto indirection_fail;
      }
  
--    ret = ebpf_rss_load_fds(&n->ebpf_rss, fds[0], fds[1], fds[2], fds[3], NULL);
-+    ret = ebpf_rss_load_fds(&n->ebpf_rss, fds[0], fds[1], fds[2], fds[3], errp);
++    trace_ebpf_rss_mmap(ctx,
++                        ctx->mmap_configuration,
++                        ctx->mmap_toeplitz_key,
++                        ctx->mmap_indirections_table);
+     return true;
  
- exit:
-     if (!ret) {
-@@ -1349,13 +1348,15 @@ exit:
-     return ret;
+ indirection_fail:
+@@ -131,6 +135,11 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx, Error **errp)
+     ctx->map_toeplitz_key = bpf_map__fd(
+             rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
+ 
++    trace_ebpf_rss_load(ctx,
++                        ctx->program_fd,
++                        ctx->map_configuration,
++                        ctx->map_indirections_table,
++                        ctx->map_toeplitz_key);
+     if (!ebpf_rss_mmap(ctx, errp)) {
+         goto error;
+     }
+@@ -178,6 +187,12 @@ bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
+     ctx->map_toeplitz_key = toeplitz_fd;
+     ctx->map_indirections_table = table_fd;
+ 
++    trace_ebpf_rss_load(ctx,
++                        ctx->program_fd,
++                        ctx->map_configuration,
++                        ctx->map_indirections_table,
++                        ctx->map_toeplitz_key);
++
+     if (!ebpf_rss_mmap(ctx, errp)) {
+         ctx->program_fd = -1;
+         ctx->map_configuration = -1;
+@@ -259,6 +274,8 @@ bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+ 
+     ebpf_rss_set_toepliz_key(ctx, toeplitz_key);
+ 
++    trace_ebpf_rss_set_data(ctx, config, indirections_table, toeplitz_key);
++
+     return true;
  }
  
--static bool virtio_net_load_ebpf(VirtIONet *n)
-+static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
- {
-     bool ret = false;
- 
-     if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
--        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
--            ret = ebpf_rss_load(&n->ebpf_rss, NULL);
-+        if (n->ebpf_rss_fds) {
-+            ret = virtio_net_load_ebpf_fds(n, errp);
-+        } else {
-+            ret = ebpf_rss_load(&n->ebpf_rss, errp);
-         }
+@@ -268,6 +285,8 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
+         return;
      }
  
-@@ -3761,7 +3762,23 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     net_rx_pkt_init(&n->rx_pkt);
++    trace_ebpf_rss_unload(ctx);
++
+     ebpf_rss_munmap(ctx);
  
-     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_load_ebpf(n);
-+        Error *err = NULL;
-+        if (!virtio_net_load_ebpf(n, &err)) {
-+            /*
-+             * If user explicitly gave QEMU RSS FDs to use, then
-+             * failing to use them must be considered a fatal
-+             * error. If no RSS FDs were provided, QEMU is trying
-+             * eBPF on a "best effort" basis only, so report a
-+             * warning and allow fallback to software RSS.
-+             */
-+            if (n->ebpf_rss_fds) {
-+                error_propagate(errp, err);
-+            } else {
-+                warn_report("unable to load eBPF RSS: %s",
-+                            error_get_pretty(err));
-+                error_free(err);
-+            }
-+        }
-     }
- }
+     if (ctx->obj) {
+diff --git a/ebpf/trace-events b/ebpf/trace-events
+index a0f157be37..bf3d9b6451 100644
+--- a/ebpf/trace-events
++++ b/ebpf/trace-events
+@@ -1,6 +1,10 @@
+ # See docs/devel/tracing.rst for syntax documentation.
  
+ # ebpf-rss.c
++ebpf_rss_load(void *ctx, int progfd, int cfgfd, int toepfd, int indirfd) "ctx=%p program-fd=%d config-fd=%d toeplitz-fd=%d indirection-fd=%d"
+ ebpf_rss_load_error(void *ctx) "ctx=%p"
++ebpf_rss_mmap(void *ctx, void *cfgptr, void *toepptr, void *indirptr) "ctx=%p config-ptr=%p toeplitz-ptr=%p indirection-ptr=%p"
+ ebpf_rss_mmap_error(void *ctx, const char *object) "ctx=%p object=%s"
+ ebpf_rss_open_error(void *ctx) "ctx=%p"
++ebpf_rss_set_data(void *ctx, void *cfgptr, void *toepptr, void *indirptr) "ctx=%p config-ptr=%p toeplitz-ptr=%p indirection-ptr=%p"
++ebpf_rss_unload(void *ctx) "rss unload ctx=%p"
 -- 
 2.46.0
 
