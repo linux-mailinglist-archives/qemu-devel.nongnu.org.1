@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485429AC28A
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 11:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA189AC2E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 11:06:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3XDz-0001XH-Q4; Wed, 23 Oct 2024 05:00:15 -0400
+	id 1t3XE7-0001gi-EG; Wed, 23 Oct 2024 05:00:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDp-0001N0-PX
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:07 -0400
+ id 1t3XDu-0001Y3-5l
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:10 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDn-0000Mu-OV
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:05 -0400
+ id 1t3XDs-0000N6-AZ
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=jHCPHwYNdJVTOr6wFMmpu+w67QlujWQpzGyzvLt7Qgc=; b=aQsPnB2xFLAh+Z5IB5qqY1jPfs
- +9KlkIpNo6ABXPiGbRRdQjH/HBNpAtqEc3YZrJBDtjs5Rk5+G9qcrnnY2/OG7z5ABHVCWUOEgy2pm
- RNsrY6XkhJst9WtHH80vQM0x/yzrpXM15+9/kzC9J83Bn+UyP3o7eXCAGyUzkmaVNC1zn+LpqRGeP
- dgc1fEtJfjq1ZMeiemAyyTsWj6BKcMzbNRGzmEucfC+eUSNH5HzdomIYEyP6bBjbknO8ucdXm3xEs
- UTeJFZufG8D0R7NfCjGp9Cnv7FcssOWQ4CK43PdixWnZ0VZ7AFxp8xdfurrgrZhxBW9AfnqXem+xK
- otD218BzInbM9nrp77i/8638kwzlYh3VTalY4qR5i5ImfujjrML+6UCPKmp1JUZ8XCgNzhIzjhVmh
- ofpCSOVHk92rEFwHeG5UDqQ6qZLPh3qHwrPoPKf/wkSXUFJXHYpMrJn2LgaBPdL8qGI2twLBORfvl
- 5g4fVmnY6OJRyxd6sr0OMVXmbh8MlhIt0QbrdclWo1gXKcZs0d90fbVoO9n/thJIkiG/tKCON0hLF
- OqjJBmORKyRk62xRagAsOVzrSd5LBLJNXTR7vNfDlDHCOr3FlFxnULtoUHGgeMhdHf7cn6QeuL6+L
- xBUS8fFsSNRPwDQBC0umqFlOPsBaF0iDCb243A1nQ=;
+ bh=62yV6jFw3OK6jnsA0lQzJsjXvP3TJGM1iHN4+6yoExE=; b=cd1aPNmfGD6+ZrnKGED+C3ZCnD
+ N7sQGLtpB97BPYOJAlEl+Rbv0cCa4V1zO6mwbUkfAefBiv5LibqW20pQ89KqNcgTEJZjvZk//aCnE
+ jivF5992cHoKj+D+P8MT8ZIgTLJMtG6nUB+lJYE5bk3akc+K3l/EB+pkA0pmM7o5y0itDETY6dNBo
+ OtWXEl8nDbIG1+Fz03kxIZf72XGZDnJeov6aaKWSEl7iMfALcaY3CQmwAWBIO6GVzxD49+D/3O5Ht
+ j/BPTfuo5oniPwjbh72VGqjgQBdxpSkcSZb01dJp3addMhwwm1UNaA0MG42aukYzyTuMEfh44Ryvq
+ RbRqURNCf8DB2rPBP4JlokTjXaU5kdyc2kUyw1tvvzhsG1eNRzsxZUmToZ0aWHGkNKORqxe29wOpq
+ UxY4OPvVRNwr8z/l+R+6t3BAZzWrBhJ5XzF7O+uEZvV5mzopG4wZhaQJ4iZwhe4dpacS8RDx2Qm4B
+ f8w+Ma30W6tqQPxQOrsXMQM8Znl8DiZ9veghsn8ZNeXnjWhLBGfpcXvb/1bGMAJjDgO7D++Kq226o
+ V9L5pVjyz/V9ntu7Rtj6P4s6qQ+tJzs7CVim0/Ijyx9ySCFXZNf3ymrNsTgcJuzvUxJbiiSEsJcEN
+ yH7Q6C7f4lgL9SpNNsp14UlZ3JivPODsyCN6hfBMA=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDN-0008EL-FK; Wed, 23 Oct 2024 09:59:37 +0100
+ id 1t3XDO-0008EL-2U; Wed, 23 Oct 2024 09:59:42 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 23 Oct 2024 09:58:31 +0100
-Message-Id: <20241023085852.1061031-16-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 23 Oct 2024 09:58:32 +0100
+Message-Id: <20241023085852.1061031-17-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
 References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 15/36] next-cube: move en ethernet MMIO to separate memory
- region on next-pc device
+Subject: [PATCH 16/36] next-cube: add empty slots for unknown accesses to
+ next.scr memory region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,108 +77,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the en ethernet MMIO accesses to a separate memory region on the next-pc
-device instead of being part of the next.scr MMIO memory region.
+The next.scr memory is now effectively unused, however there are 3 separate region
+accesses still logged that occur when booting a NeXTStep disk image. Use the
+empty_slot device to capture and ignore memory accesses to these 3 memory regions.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/next-cube.c | 48 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ hw/m68k/Kconfig     | 1 +
+ hw/m68k/next-cube.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
+diff --git a/hw/m68k/Kconfig b/hw/m68k/Kconfig
+index 0092cda4e9..aff769b30f 100644
+--- a/hw/m68k/Kconfig
++++ b/hw/m68k/Kconfig
+@@ -18,6 +18,7 @@ config NEXTCUBE
+     depends on M68K
+     select FRAMEBUFFER
+     select ESCC
++    select EMPTY_SLOT
+ 
+ config Q800
+     bool
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 402aa7ea8e..3278970890 100644
+index 3278970890..ac6d3cb634 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -110,6 +110,7 @@ struct NeXTPC {
+@@ -22,6 +22,7 @@
+ #include "qom/object.h"
+ #include "hw/char/escc.h" /* ZILOG 8530 Serial Emulation */
+ #include "hw/block/fdc.h"
++#include "hw/misc/empty_slot.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -1239,6 +1240,11 @@ static void next_cube_init(MachineState *machine)
+     /* BMAP IO - acts as a catch-all for now */
+     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 1, 0x02100000);
  
-     MemoryRegion floppy_mem;
-     MemoryRegion timer_mem;
-+    MemoryRegion dummyen_mem;
-     MemoryRegion mmiomem;
-     MemoryRegion scrmem;
- 
-@@ -372,11 +373,6 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
-     uint64_t val;
- 
-     switch (addr) {
--    /* For now return dummy byte to allow the Ethernet test to timeout */
--    case 0x6000:
--        val = 0xff;
--        break;
--
-     default:
-         DPRINTF("BMAP Read @ 0x%x size %u\n", (unsigned int)addr, size);
-         val = 0;
-@@ -1012,6 +1008,38 @@ static const MemoryRegionOps next_timer_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+static void next_dummy_en_write(void *opaque, hwaddr addr, uint64_t val,
-+                                unsigned size)
-+{
-+    /* Do nothing */
-+    return;
-+}
++    /* unknown */
++    empty_slot_init("next.unknown", 0x02110000, 0x10);
++    empty_slot_init("next.unknown", 0x02112000, 0x10);
++    empty_slot_init("next.unknown", 0x02118004, 0x10);
 +
-+static uint64_t next_dummy_en_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uint64_t val;
-+
-+    switch (addr) {
-+    case 0:
-+        /* For now return dummy byte to allow the Ethernet test to timeout */
-+        val = 0xff;
-+        break;
-+
-+    default:
-+        val = 0;
-+    }
-+
-+    return val;
-+}
-+
-+static const MemoryRegionOps next_dummy_en_ops = {
-+    .read = next_dummy_en_read,
-+    .write = next_dummy_en_write,
-+    .valid.min_access_size = 1,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
- static void next_pc_reset(DeviceState *dev)
- {
-     NeXTPC *s = NEXT_PC(dev);
-@@ -1034,6 +1062,10 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     SysBusDevice *sbd;
-     DeviceState *d;
- 
-+    /* en network (dummy) */
-+    memory_region_add_subregion(&s->scrmem, 0x6000,
-+                                &s->dummyen_mem);
-+
-     /* SCSI */
-     sbd = SYS_BUS_DEVICE(&s->next_scsi);
-     if (!sysbus_realize(sbd, errp)) {
-@@ -1093,6 +1125,9 @@ static void next_pc_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->mmiomem);
-     sysbus_init_mmio(sbd, &s->scrmem);
- 
-+    memory_region_init_io(&s->dummyen_mem, OBJECT(s), &next_dummy_en_ops, s,
-+                          "next.en", 0x20);
-+
-     object_initialize_child(obj, "next-scsi", &s->next_scsi, TYPE_NEXT_SCSI);
- 
-     memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
-@@ -1239,9 +1274,6 @@ static void next_cube_init(MachineState *machine)
-         }
-     }
- 
--    /* TODO: */
--    /* Network */
--
-     /* DMA */
-     memory_region_init_io(&m->dmamem, NULL, &next_dma_ops, machine,
-                           "next.dma", 0x5000);
+     /* BMAP memory */
+     memory_region_init_ram_flags_nomigrate(&m->bmapm1, NULL, "next.bmapmem",
+                                            64, RAM_SHARED, &error_fatal);
 -- 
 2.39.5
 
