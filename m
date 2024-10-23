@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FFF9AC835
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 12:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 991BA9AC8D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:24:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Yv5-0005E3-4Z; Wed, 23 Oct 2024 06:48:51 -0400
+	id 1t3ZSi-0005Dk-5Q; Wed, 23 Oct 2024 07:23:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Yuz-0005D2-78
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:48:45 -0400
+ id 1t3ZSW-0005DN-8o
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:23:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Yux-0004QK-Bj
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:48:44 -0400
+ id 1t3ZST-0001VY-MU
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:23:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729680521;
+ s=mimecast20190719; t=1729682600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=iwwGrtb20AbuUvRpNDh0EDIr8sYTHnBPOhYtnXR5P6g=;
- b=Ioa4vOR7IiTAYaSZHaa5lcYEYNmsoAJCnDoIlk4tgYa0DOOlEpZbk7W3rzVrm8ykQOhTGH
- qyu6+BNYHXLYkbgAN4nh5ioHtJ8+wUXVG6bHRJQ8yl9lxfPNSp10jPh7D5dFCAMX/b0T6y
- IGwfu4Uxm0oNiLyONskIZQIt6iju6XI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DOKosa6OrJwS7eDB+xkj3leGrSSZaQg+wsKSYyYLrmY=;
+ b=VNbzwLwHEYMb2k8imHDpx9oA4g6kvX0js4EnKkWDegk5HN61KA/wyhELjhTmMvIckGNrqA
+ SC5/CP6M0HZ2tmSjhXugtV/hAT0A5giUQPiPj0W1mUXKfIM/BUES7NUprkIeA2y6+dSzB5
+ Y7KQ5w9Zx0+lV4k7vWk0pYcpQZaJALs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-1lzB6YR5Oput2uFWk1PJFw-1; Wed, 23 Oct 2024 06:48:38 -0400
-X-MC-Unique: 1lzB6YR5Oput2uFWk1PJFw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d49887a2cso406395f8f.0
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 03:48:38 -0700 (PDT)
+ us-mta-178-JLRhNJ9APtCTUsFz_x8KpQ-1; Wed, 23 Oct 2024 07:23:18 -0400
+X-MC-Unique: JLRhNJ9APtCTUsFz_x8KpQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d563a1af4so3278477f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:23:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729680515; x=1730285315;
+ d=1e100.net; s=20230601; t=1729682597; x=1730287397;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:cc:to:from:subject:user-agent:mime-version:date
+ :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=iwwGrtb20AbuUvRpNDh0EDIr8sYTHnBPOhYtnXR5P6g=;
- b=knm8qSMmyOSL0o8Ztlo7Z7+gFg/fyup1tmyma26M8SsZOCP9ORZPBoReJl8VU84qMV
- 4CVo+lM2eNZePfwcnKYnPVIuczhbqJGFiLPCwdICBN2E7XMnfmoIMla65pptTQg4kOjO
- j+/Zm8Vk6UJeL9ziDQIt8BPb5Dcn45wqURRJFNPR2vfWdjubq/oAxGMVfhy3tFrNUB4h
- W7NJTRDLGX2Ols7W5HPe8WzndjbO3p7c+0oPRmm8/ZYQ7feZ8GXaHDo2JMO1qiATu8D7
- eT1eb8h+erwpGj6VwKsDGPao5vziutViWI3gN4sO0OmGAVYt2vBqrULlLFS4sLWZzDtJ
- XD4Q==
-X-Gm-Message-State: AOJu0YzXnufeyC6kvSspZX4naG82X+KutHFoNLGpmQ5DIgQXPh+EMvAU
- a8XYa4RuDpqxix/GGeCkfIIBhTPClsiCbj0p7COhP2KJHe80Tca01gecas8pnZYXEheB3/ZvRkH
- DVeRDK+LcdrCIr5wm3HU5xJdVnBBCnuHLCK3aY2fwut0x2jZI7dHHZ5WpimKvKOwbDyl1JbsXAF
- Sc1O3hXz2irIL0vi8E9pcMIISots9g6XdT2CAbDi4=
-X-Received: by 2002:adf:f1c7:0:b0:37d:47ef:17d0 with SMTP id
- ffacd0b85a97d-37efc5de911mr1256122f8f.13.1729680515401; 
- Wed, 23 Oct 2024 03:48:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjAmM+q65A+q9XDsDUZna0pHyUQn42lxlNLGG30Eiuc+XLFJBnc5H8toBoh6pOtWsGnIvpHg==
-X-Received: by 2002:adf:f1c7:0:b0:37d:47ef:17d0 with SMTP id
- ffacd0b85a97d-37efc5de911mr1256100f8f.13.1729680514863; 
- Wed, 23 Oct 2024 03:48:34 -0700 (PDT)
+ bh=DOKosa6OrJwS7eDB+xkj3leGrSSZaQg+wsKSYyYLrmY=;
+ b=jQopR/Wd/2TdGSQyPnhjiahUF2c668j5EvtKYLnmDb5O7ciCy/Sd7o7vWf+6gwcuXQ
+ 3wnbufZA0gzXhILvkctun4zAy7n0/0zjKcPVgaY5DhmTSDl3izYHjmYmjFkT2W1uPLwh
+ fsvAGi4dr1upxLt3iUmQzIXIK5vLuPM2qYeJE49wCKb1gwTEaDkAl8rYTBg+JBVhujHE
+ d0BgfxLYujCEYb3UPVDpN/u1390lo1HwlQWQPyZ9P/6ubvaiBzJmweVeg/8Cvl/D15t7
+ SdG2vphptUbMWLf27AKAlwyBNabAFtn04Tu+cTxkjbTM1PHZf4ymcp1LmVJWkpia15Qt
+ FLZQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWHaavpETH87oL2EsLs+9CtiP6nZkaifNqwXOLB+sw2vEyeWz+JhUkZpy6PvWq/hXQeUmsGs1YvOk7m@nongnu.org
+X-Gm-Message-State: AOJu0YydwWcphu+bs1i3SSjAifPeg51Ew0KNUkIGDzxoLrQ7Ny+lR20M
+ JXWuI1E54rBE0y1NHjFMUemfw+QN2KHZrE/hAOk7veFOjHOu75dfxwAWwoO297qPcaYD5ydXe79
+ DPX/0nd1GJK2CH4Ao4fqhzfKe7kWOdZ+RCt9V+B23gVLJbXHANOvApXUEosqVtq4=
+X-Received: by 2002:a5d:69d0:0:b0:37d:43d2:d894 with SMTP id
+ ffacd0b85a97d-37efcf77570mr1278438f8f.37.1729682597095; 
+ Wed, 23 Oct 2024 04:23:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4h88QkylkF86bEYCMpeOAJ6B5O+IGDGnyGgb3MHMJE5kJxom7ohCuMd0LVGOG9Oofp/BWgQ==
+X-Received: by 2002:a5d:69d0:0:b0:37d:43d2:d894 with SMTP id
+ ffacd0b85a97d-37efcf77570mr1278423f8f.37.1729682596671; 
+ Wed, 23 Oct 2024 04:23:16 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.144.54])
  by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-37ee0a64dc1sm8619775f8f.65.2024.10.23.03.48.33
+ ffacd0b85a97d-37ee0b9413fsm8724357f8f.74.2024.10.23.04.23.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Oct 2024 03:48:34 -0700 (PDT)
-Message-ID: <c77c8129-a732-4c80-b9de-61a92a7d97c2@redhat.com>
-Date: Wed, 23 Oct 2024 12:48:33 +0200
+ Wed, 23 Oct 2024 04:23:16 -0700 (PDT)
+Message-ID: <c9f8b621-bc68-44a9-b89a-fb2ebca6fb84@redhat.com>
+Date: Wed, 23 Oct 2024 13:23:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/13] rust: remove uses of #[no_mangle]
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH v2 09/13] rust: clean up define_property macro
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Junjie Mao <junjie.mao@hotmail.com>
 References: <20241021163538.136941-1-pbonzini@redhat.com>
- <20241021163538.136941-6-pbonzini@redhat.com>
+ <20241021163538.136941-10-pbonzini@redhat.com>
+ <lt261.tyno4xdeejj0@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -112,18 +113,18 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20241021163538.136941-6-pbonzini@redhat.com>
+In-Reply-To: <lt261.tyno4xdeejj0@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -140,16 +141,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/21/24 18:35, Paolo Bonzini wrote:
-> @@ -566,7 +563,6 @@ pub fn update(&self) {
->   /// # Safety
->   ///
->   /// We expect the FFI user of this function to pass a valid pointer for `chr`.
-> -#[no_mangle]
->   pub unsafe extern "C" fn pl011_create(
->       addr: u64,
->       irq: qemu_irq,
-This _needs_ to be no_mangle actually, because it is called from C.
+On 10/23/24 12:38, Manos Pitsidianakis wrote:
+> Hello Paolo,
+> 
+> On Mon, 21 Oct 2024 19:35, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>> Use the "struct update" syntax to initialize most of the fields to zero,
+>> and simplify the handmade type-checking of $name.
+> 
+> Note: It wasn't meant for type checking but for making sure the linker
+> doesn't strip the symbol (hence the #[used] attribute). These were left
+> over when I was debugging linker issues and slapped #[used] everywhere
+> but they are not needed in this case indeed.
+
+Well, it does do type checking as well, :) otherwise you end up 
+duck-typing on whether $name as as_ptr().  I guess you are okay with the 
+change below and the comment:
+
+>> -            name: {
+>> -                #[used]
+>> -                static _TEMP: &::core::ffi::CStr = $name;
+>> -                _TEMP.as_ptr()
+>> -            },
+>> +            // use associated function syntax for type checking
+>> +            name: ::core::ffi::CStr::as_ptr($name),
+
+?
+
+>>              info: $prop,
+>>              offset: ::core::mem::offset_of!($state, $field)
+>>                  .try_into()
+>>                  .expect("Could not fit offset value to type"),
+>> -            bitnr: 0,
+>> -            bitmask: 0,
+>>              set_default: true,
+>>              defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval.into() },
+>> -            arrayoffset: 0,
+>> -            arrayinfo: ::core::ptr::null(),
+>> -            arrayfieldsize: 0,
+>> -            link_type: ::core::ptr::null(),
+>> +            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
+> 
+> Call it personal taste but I don't like emulating C's zero initializer
+> syntax in Rust :) Is it that much trouble to explicitly write down every
+> field in a macro, anyway? No strong preference here though.
+
+Rust does make generous use of "..Default::default()", so I think it's 
+more idiomatic to use the struct update syntax.  We just cannot use it 
+here because it's not const-ified.
+
+I'm okay with switching from Zeroable::ZERO to something like 
+ConstDefault::CONST_DEFAULT; it's basically just a rename.  On the other 
+hand you do rely on "zero-ness" in PL011State::init()... so I thought I 
+was actually following your style. :)
 
 Paolo
 
