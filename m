@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D9D9ABC4B
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171529ABC39
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3S9M-00077o-Nv; Tue, 22 Oct 2024 23:35:08 -0400
+	id 1t3S9I-00070U-05; Tue, 22 Oct 2024 23:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S94-0006zd-DT
+ id 1t3S94-0006zW-3r
  for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:50 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S8v-0008Kc-OT
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:50 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-71e4c2e36daso321752b3a.0
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:34 -0700 (PDT)
+ id 1t3S90-0008Kh-FD
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:49 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-2872134c806so2096494fac.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1729654474; x=1730259274; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dGHEwIIzB23tpzx5mvuqbcFlOnyFHekDP8qTyxIn24Y=;
- b=r080wC7s7UH+MKfuJMNAslwPRj9J6MIoAxi16YpJYZwHfegRNDq2cmez73lPOMkkd8
- l6DWXDjB8/WNirUVBBn/cl+4lOSlwM+ERnt4c9sju5Wi2bcsOCloI7JA3UFblP5yBs4X
- M21SBr8UbczUuForG5dyKlgI74sWuPNMNtprZZ5+RUuIKAfhDEHtw2+V1SA0nY6lodM3
- 9JNgKqgCdy0ws5yBAdt50qolHlyORuHux5Q2HInbAN98rSlzT5HWd77qAGmPJpjor4Hw
- 53fnlMP704fk1rlz2vFXaWv/MXLzkRRDeCY31MmSw7ZpLdeL6rLPpjQCRVtBmBya5wKF
- SOTQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qoeeRSbCIM2wELRtbBsRx7lh72W1XjEQDAZV/p2MgMk=;
+ b=D0sLwsKjizNXOsVqk0bTHhYl/JBGastzjhMCj98aSKPA0Nki7tCsZG/tUu11rk53ds
+ oTEwjq8yflLR0x0lOHVvlVbuauw2ZhIBYYn6VPdOcJ2dPGJc87vC7TVN67zXnuAymd1e
+ tjZ0bl09tANL7W8PQIcgAEWLFuvhmVFvS1w9EgY4vciUf0DPgs7RK8bsstYlaMWmVLFn
+ eLYyqnXOPtSFJO4pkYzdXp7IB3bdKdPtljlAXdIzNJtG9HhKUJFYq2zGFolhAQi70R0Y
+ SDXfwRpaTrkw/8iBAIVNAnprcwquKY8IEzo5wAtganBVaY53Pv53XONLSblAQGEhQPSZ
+ pEwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1729654474; x=1730259274;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dGHEwIIzB23tpzx5mvuqbcFlOnyFHekDP8qTyxIn24Y=;
- b=ZNITWrWpU0y06TSjYXfsVLuz5vif0BMJ7NZ+7sOThB8W32x5XJkIn7lkQEP00MBANc
- 1JawOdDTSpT3CNKxKgYMQLxpmgas89SJR8g+4am2vkn+4j9yN7Fu6GNpnsZ3807tFbYq
- spXxkw50gciwQYk26uneedHz0V3ROWJQDL+gq80GJCnxYPs+nE/VgSrJNr9wWfaxO5Z5
- fY6I6jdbg24UBVVrIpoFGbVlBocCShJNYIAiTty5g2K/k5JvTowAvHsB5KUs/VGZn/5e
- iRfHz5C2r2Qm6w82ckgMKEYlzn9FRT0Xe8wuG7XU77SBmtHM5NBLIQsOM5CZ4ypttf0Y
- bjHg==
-X-Gm-Message-State: AOJu0YxZ0mCn+9ZzgAV/n9XC9kedfN50ANcLQgr4TZAd1dY8UfZtKssT
- KVu5XQI3QZSWS6c6Y/HwVz5DlWiyrd9Zjv11VsbFxJNVwwdu+Wt3pOK5m/JXRr9ea3oJ/+4oIrs
- O
-X-Google-Smtp-Source: AGHT+IGt6ugYxhAORmhOmPY6URDJLkHhpHhJzOmu1bck0sOhzJ7sVTdfKJWybDqv+yfwWnIOd2fBew==
-X-Received: by 2002:aa7:8d9a:0:b0:71e:7258:c69b with SMTP id
- d2e1a72fcca58-71edc1f79e1mr7408117b3a.14.1729654473532; 
- Tue, 22 Oct 2024 20:34:33 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qoeeRSbCIM2wELRtbBsRx7lh72W1XjEQDAZV/p2MgMk=;
+ b=JRhz5T9RVjxIyglHx/iTvwJvdWZ5gvJYxNjGWgscdsfzRHJnHKkXnfzl6FvBA1lAM+
+ BxXpPUnmNnec01DqRBeipoQ9UJhXC+8NuHJQyn3F+DJI6mzkS0j8Xyde9d78YKgRm1og
+ 7z5tl1v1tXww1p0+rMOIAGIdXZePwfghrde8Q3gnlUDwNVKgTWkTFPw3vJZkdJKxN3VD
+ UoErNCI2xyGqb5LTyba6AhvU1d8wDpWHH72vvOKgCH8A/zuTIx/jEeMUJuKuhwz7EXib
+ NBHtYepbh/XsjGi+y5I5R7oZ7dP9dpxKqdaU/m+vpEhlwSgHyhUycUQtY9TwtndonzxR
+ q+/g==
+X-Gm-Message-State: AOJu0YwHcNJeRd9AVDko7F6E5HedqWCi+J8KTLoAF0vVzSj/va/LOyrH
+ 8MH/A2y7IfQ9vwQoFp7JGALNx5Vaaglh5ucaFV9a6pozqgbvHW0rhmOqOj1Y+ktWp99IhXysC3t
+ f
+X-Google-Smtp-Source: AGHT+IFfLxpx2601hztoL7SU0lnJAfvD0KkM7GwOapSpsmWqf+j2FEh/v4mic2wDu07j8+ctLRj+2w==
+X-Received: by 2002:a05:6870:d1c7:b0:288:6c52:ffab with SMTP id
+ 586e51a60fabf-28ccb8323aemr1293896fac.24.1729654474510; 
+ Tue, 22 Oct 2024 20:34:34 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71ec13d73b1sm5438338b3a.105.2024.10.22.20.34.32
+ d2e1a72fcca58-71ec13d73b1sm5438338b3a.105.2024.10.22.20.34.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2024 20:34:33 -0700 (PDT)
+ Tue, 22 Oct 2024 20:34:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 00/24] tcg + linux-user patch queue
-Date: Tue, 22 Oct 2024 20:34:08 -0700
-Message-ID: <20241023033432.1353830-1-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, qemu-stable@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 01/24] tcg: Reset data_gen_ptr correctly
+Date: Tue, 22 Oct 2024 20:34:09 -0700
+Message-ID: <20241023033432.1353830-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241023033432.1353830-1-richard.henderson@linaro.org>
+References: <20241023033432.1353830-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,87 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6f625ce2f21d6a1243065d236298277c56f972d5:
+This pointer needs to be reset after overflow just like
+code_buf and code_ptr.
 
-  Merge tag 'pull-request-2024-10-21' of https://gitlab.com/thuth/qemu into staging (2024-10-21 17:12:59 +0100)
+Cc: qemu-stable@nongnu.org
+Fixes: 57a269469db ("tcg: Infrastructure for managing constant pools")
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 5decd83cf4..0babae1b88 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1399,7 +1399,6 @@ TranslationBlock *tcg_tb_alloc(TCGContext *s)
+         goto retry;
+     }
+     qatomic_set(&s->code_gen_ptr, next);
+-    s->data_gen_ptr = NULL;
+     return tb;
+ }
+ 
+@@ -6172,6 +6171,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+      */
+     s->code_buf = tcg_splitwx_to_rw(tb->tc.ptr);
+     s->code_ptr = s->code_buf;
++    s->data_gen_ptr = NULL;
+ 
+ #ifdef TCG_TARGET_NEED_LDST_LABELS
+     QSIMPLEQ_INIT(&s->ldst_labels);
+-- 
+2.43.0
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241022
-
-for you to fetch changes up to 310df7a9fe400f32cde8a7edf80daad12cd9cf02:
-
-  linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN (2024-10-22 13:45:03 -0700)
-
-----------------------------------------------------------------
-tcg: Reset data_gen_ptr correctly
-tcg/riscv: Implement host vector support
-tcg/ppc: Fix tcg_out_rlw_rc
-target/i386: Walk NPT in guest real mode
-target/i386: Use probe_access_full_mmu in ptw_translate
-linux-user: Fix build failure caused by missing __u64 on musl
-linux-user: Emulate /proc/self/maps under mmap_lock
-linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN
-linux-user/ppc: Fix sigmask endianness issue in sigreturn
-
-----------------------------------------------------------------
-Alexander Graf (1):
-      target/i386: Walk NPT in guest real mode
-
-Dani Szebenyi (1):
-      tcg/ppc: Fix tcg_out_rlw_rc
-
-Huang Shiyuan (1):
-      tcg/riscv: Add basic support for vector
-
-Ilya Leoshkevich (3):
-      linux-user: Emulate /proc/self/maps under mmap_lock
-      linux-user/ppc: Fix sigmask endianness issue in sigreturn
-      linux-user: Trace rt_sigprocmask's sigsets
-
-Richard Henderson (6):
-      tcg: Reset data_gen_ptr correctly
-      disas/riscv: Fix vsetivli disassembly
-      tcg/riscv: Accept constant first argument to sub_vec
-      include/exec: Improve probe_access_full{, _mmu} documentation
-      target/i386: Use probe_access_full_mmu in ptw_translate
-      target/i386: Remove ra parameter from ptw_translate
-
-TANG Tiancheng (10):
-      util: Add RISC-V vector extension probe in cpuinfo
-      tcg/riscv: Implement vector mov/dup{m/i}
-      tcg/riscv: Add support for basic vector opcodes
-      tcg/riscv: Implement vector cmp/cmpsel ops
-      tcg/riscv: Implement vector neg ops
-      tcg/riscv: Implement vector sat/mul ops
-      tcg/riscv: Implement vector min/max ops
-      tcg/riscv: Implement vector shi/s/v ops
-      tcg/riscv: Implement vector roti/v/x ops
-      tcg/riscv: Enable native vector support for TCG host
-
-Yao Zi (2):
-      linux-user: Fix build failure caused by missing __u64 on musl
-      linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN
-
- disas/riscv.h                        |   2 +-
- host/include/riscv/host/cpuinfo.h    |   2 +
- include/exec/exec-all.h              |  29 +-
- include/tcg/tcg.h                    |   6 +
- linux-user/syscall_defs.h            |   6 +-
- tcg/riscv/tcg-target-con-set.h       |   9 +
- tcg/riscv/tcg-target-con-str.h       |   3 +
- tcg/riscv/tcg-target.h               |  78 +--
- tcg/riscv/tcg-target.opc.h           |  12 +
- disas/riscv.c                        |   2 +-
- linux-user/ppc/signal.c              |   2 +-
- linux-user/strace.c                  |  88 +++-
- linux-user/syscall.c                 |   6 +-
- target/i386/tcg/sysemu/excp_helper.c |  45 +-
- tcg/tcg.c                            |   2 +-
- util/cpuinfo-riscv.c                 |  34 +-
- linux-user/strace.list               |   3 +-
- tcg/ppc/tcg-target.c.inc             |   4 +-
- tcg/riscv/tcg-target.c.inc           | 994 ++++++++++++++++++++++++++++++++---
- 19 files changed, 1152 insertions(+), 175 deletions(-)
- create mode 100644 tcg/riscv/tcg-target.opc.h
 
