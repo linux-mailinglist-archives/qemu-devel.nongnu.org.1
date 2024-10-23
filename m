@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBE09ABC3F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8229ABC50
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3S9X-0007PE-LV; Tue, 22 Oct 2024 23:35:19 -0400
+	id 1t3S9d-0007Qs-5J; Tue, 22 Oct 2024 23:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S95-0006zp-O5
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:52 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1t3S98-00070j-MQ
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:56 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S92-0008MY-JE
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:51 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7ea68af2f62so4874617a12.3
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:47 -0700 (PDT)
+ id 1t3S92-0008Mc-TJ
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:54 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-717fd68fe33so3352584a34.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729654486; x=1730259286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729654487; x=1730259287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E9BZ1D2dqbD5itfvWww7sIn9+uEnlW5x+Ejm53Jry8E=;
- b=IkRIFIesPfdi+wUdXS20D6AKTUCXhaRJDaUPU57HaAjQb95//d0wjFK+GNMZFSp8Pp
- lfzaW3wDjk5Cd9lowBbBBTakbsN/WuxjOtBtlW0LHqruYsW+t0fEBu9KnUYWVwudCEPN
- Xlg5RhoEyVubxX9LzSxCwBHeWhvItlONF6zEcSs2+mYCrf4O3c7EXbaLuLWJvRLNNLUf
- Wd8NVLUc06EpcczL8GdC8/M5rUQL1ym2lcKvnWWQcFlicRUU7x+24OxNSXl3FqCnhHC9
- LhvsgWmzdNtrkNTfrN7XdwiGQdebYO8aCPiQvThEVKBBOC3wMKknV/stIFbVMnbKATqQ
- t75w==
+ bh=1DAeCA56AclqnO9IjlR+mT/BxP8eqo/+ZOrYIHvqWWg=;
+ b=RWgrXg/4tJlzI3/s5lZXHWhcvU/UPs2c6eRvQEScRhHi6oz+J9nLV/WwH+sNMsn4H8
+ VtzYpLhi+2+Jk+dyAmRQ+iM8TzCdjAID8AM+1qu4HFN/kr4CVFkn3l2pqYST0ad+Dfu7
+ H/vkqijBVp2CKzYl2m7qaniFIIq/+FS2ut3w+HVw4UZnK7pFpqFkO32YxHMX1oyl9Baw
+ SN2JyP7jolt00O9XnRwHJydMGgpw9GYUQbrBiuqoKpNnzrwxZGB/vRhey6bise0rC1XI
+ S371wTr9e+tDX5BmalaidePisF07tqfikDY4Een3hfphhqWdYZPgS0tcqzr6sVmP4DMC
+ 5Qlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729654486; x=1730259286;
+ d=1e100.net; s=20230601; t=1729654487; x=1730259287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E9BZ1D2dqbD5itfvWww7sIn9+uEnlW5x+Ejm53Jry8E=;
- b=YR4/k5PqBrfhfD3HczoW/55o5Uq5mLib7+R/8tab91rdM05sCHiTIdNTQrbutgZMYl
- QPAyCMySJEGXIKwhwRzKIMR40ODyyxAbt5keVtkmGMR9pNSKhT6Ozb5Fa0hbjhqMNSKH
- HybG5Mqm+/9XHSUV8ddpdsSEhg01xnmACE44HQ919SJUYTxT8gIEuipFV6qvc/dqWPhq
- 9W1jVQuixEstfvhODDuERzyyB5V22TlxYOBIDwgY1CuH1fa1INqjDU//IFzbNucw8rpK
- C0LmjC2vlQM6G4nRbPXeeK0QnUmbVMBsv87Px7NFTg17JkbnO+04L8igzf3MG6DUYlXf
- XR+w==
-X-Gm-Message-State: AOJu0YxkcFizdY8CusCZz1JqzwN9kf9Dsy3VKw+8+TMQhyUf9gMkyd9f
- ZQgGosWKkiQHas4zodPDEc7bFWY9sEg8b+EcpUGYZ/WxsjL3WjBgAqZbqlpMTtUUNK3ZpMwAqQU
- J
-X-Google-Smtp-Source: AGHT+IHzI4jDJAu5EumahZPEIqhIs+WHTEWc45oXxE4fEK0yknjTKWrGqWpyacy6p3VGpXmrp+wIxg==
-X-Received: by 2002:a05:6a21:6e41:b0:1d9:1fac:7256 with SMTP id
- adf61e73a8af0-1d978b358abmr1359260637.30.1729654486607; 
- Tue, 22 Oct 2024 20:34:46 -0700 (PDT)
+ bh=1DAeCA56AclqnO9IjlR+mT/BxP8eqo/+ZOrYIHvqWWg=;
+ b=VgdNdj65JCStNJH7x3ayFzUQuHBBwixk1R5pFLZTeQAdYj3hiVwIBXxS1CrTsHRoYg
+ Idmw2LlOAuXF3mLM2yLzWonpP9CxXnOOvuLoF+IaGLJv7CRrItnRVrFShoE04pb4CBfq
+ dQJngnr/VK0Ct7d7ujjSHNqXep/AafstvmKjai2joQwY5Xr1GUgkPgBGoNtAqRh2U9Er
+ FGg4xOpKkWU8o1Tuhedbn3nSP9vXc7OGvwqMvbxzRpgy9DDaLEmGwk8/fybkvmPBxu8L
+ H1vPwUu159OJKmp3nBAaUYcXvizu1G1ravudQlOehcQD88HxkC58kGro3FyDV9KGfUse
+ 4WKg==
+X-Gm-Message-State: AOJu0YwJKIGApyazkuhcCQQ9DUxrC4YewthjCVdXRMmdcbtelMqjCE/m
+ 6jG7JDcQrWenW5h6oytGUEtJlASvka49K6GG1BGUx3DPVVp3Z92sXTTBHdqxmiY1k42/VGiYBQS
+ h
+X-Google-Smtp-Source: AGHT+IGOvXoJrTIJonRfWvfuMf4IiiJ4qBR4Tp9xvEEqXprPSp7aKVRU8aMgz4u9iHYpdBW7w/dwYw==
+X-Received: by 2002:a05:6870:558f:b0:277:c28c:147e with SMTP id
+ 586e51a60fabf-28ccb8158fcmr1426814fac.21.1729654487311; 
+ Tue, 22 Oct 2024 20:34:47 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71ec13d73b1sm5438338b3a.105.2024.10.22.20.34.45
+ d2e1a72fcca58-71ec13d73b1sm5438338b3a.105.2024.10.22.20.34.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Oct 2024 20:34:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 16/24] include/exec: Improve probe_access_full{,
- _mmu} documentation
-Date: Tue, 22 Oct 2024 20:34:24 -0700
-Message-ID: <20241023033432.1353830-17-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, Alexander Graf <graf@amazon.com>,
+ qemu-stable@nongnu.org, Eduard Vlad <evlad@amazon.de>
+Subject: [PULL 17/24] target/i386: Walk NPT in guest real mode
+Date: Tue, 22 Oct 2024 20:34:25 -0700
+Message-ID: <20241023033432.1353830-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023033432.1353830-1-richard.henderson@linaro.org>
 References: <20241023033432.1353830-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,63 +93,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241013184733.1423747-2-richard.henderson@linaro.org>
----
- include/exec/exec-all.h | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+From: Alexander Graf <graf@amazon.com>
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 72240ef426..2e4c4cc4b4 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -368,6 +368,13 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
-  * The CPUTLBEntryFull structure returned via @pfull is transient
-  * and must be consumed or copied immediately, before any further
-  * access or changes to TLB @mmu_idx.
-+ *
-+ * This function will not fault if @nonfault is set, but will
-+ * return TLB_INVALID_MASK if the page is not mapped, or is not
-+ * accessible with @access_type.
-+ *
-+ * This function will return TLB_MMIO in order to force the access
-+ * to be handled out-of-line if plugins wish to instrument the access.
-  */
- int probe_access_full(CPUArchState *env, vaddr addr, int size,
-                       MMUAccessType access_type, int mmu_idx,
-@@ -375,22 +382,14 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
-                       CPUTLBEntryFull **pfull, uintptr_t retaddr);
+When translating virtual to physical address with a guest CPU that
+supports nested paging (NPT), we need to perform every page table walk
+access indirectly through the NPT, which we correctly do.
+
+However, we treat real mode (no page table walk) special: In that case,
+we currently just skip any walks and translate VA -> PA. With NPT
+enabled, we also need to then perform NPT walk to do GVA -> GPA -> HPA
+which we fail to do so far.
+
+The net result of that is that TCG VMs with NPT enabled that execute
+real mode code (like SeaBIOS) end up with GPA==HPA mappings which means
+the guest accesses host code and data. This typically shows as failure
+to boot guests.
+
+This patch changes the page walk logic for NPT enabled guests so that we
+always perform a GVA -> GPA translation and then skip any logic that
+requires an actual PTE.
+
+That way, all remaining logic to walk the NPT stays and we successfully
+walk the NPT in real mode.
+
+Cc: qemu-stable@nongnu.org
+Fixes: fe441054bb3f0 ("target-i386: Add NPT support")
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Reported-by: Eduard Vlad <evlad@amazon.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240921085712.28902-1-graf@amazon.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/i386/tcg/sysemu/excp_helper.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 8fb05b1f53..8cb0d80177 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -150,6 +150,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+     uint32_t pkr;
+     int page_size;
+     int error_code;
++    int prot;
  
- /**
-- * probe_access_mmu() - Like probe_access_full except cannot fault and
-- * doesn't trigger instrumentation.
-+ * probe_access_full_mmu:
-+ * Like probe_access_full, except:
-  *
-- * @env: CPUArchState
-- * @vaddr: virtual address to probe
-- * @size: size of the probe
-- * @access_type: read, write or execute permission
-- * @mmu_idx: softmmu index
-- * @phost: ptr to return value host address or NULL
-- * @pfull: ptr to return value CPUTLBEntryFull structure or NULL
-- *
-- * The CPUTLBEntryFull structure returned via @pfull is transient
-- * and must be consumed or copied immediately, before any further
-- * access or changes to TLB @mmu_idx.
-- *
-- * Returns: TLB flags as per probe_access_flags()
-+ * This function is intended to be used for page table accesses by
-+ * the target mmu itself.  Since such page walking happens while
-+ * handling another potential mmu fault, this function never raises
-+ * exceptions (akin to @nonfault true for probe_access_full).
-+ * Likewise this function does not trigger plugin instrumentation.
-  */
- int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
-                           MMUAccessType access_type, int mmu_idx,
+  restart_all:
+     rsvd_mask = ~MAKE_64BIT_MASK(0, env_archcpu(env)->phys_bits);
+@@ -298,7 +299,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+         /* combine pde and pte nx, user and rw protections */
+         ptep &= pte ^ PG_NX_MASK;
+         page_size = 4096;
+-    } else {
++    } else if (pg_mode) {
+         /*
+          * Page table level 2
+          */
+@@ -343,6 +344,15 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+         ptep &= pte | PG_NX_MASK;
+         page_size = 4096;
+         rsvd_mask = 0;
++    } else {
++        /*
++         * No paging (real mode), let's tentatively resolve the address as 1:1
++         * here, but conditionally still perform an NPT walk on it later.
++         */
++        page_size = 0x40000000;
++        paddr = in->addr;
++        prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        goto stage2;
+     }
+ 
+ do_check_protect:
+@@ -358,7 +368,7 @@ do_check_protect_pse36:
+         goto do_fault_protect;
+     }
+ 
+-    int prot = 0;
++    prot = 0;
+     if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
+         prot |= PAGE_READ;
+         if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
+@@ -420,6 +430,7 @@ do_check_protect_pse36:
+ 
+     /* merge offset within page */
+     paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
++ stage2:
+ 
+     /*
+      * Note that NPT is walked (for both paging structures and final guest
+@@ -562,7 +573,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+             addr = (uint32_t)addr;
+         }
+ 
+-        if (likely(env->cr[0] & CR0_PG_MASK)) {
++        if (likely(env->cr[0] & CR0_PG_MASK || use_stage2)) {
+             in.cr3 = env->cr[3];
+             in.mmu_idx = mmu_idx;
+             in.ptw_idx = use_stage2 ? MMU_NESTED_IDX : MMU_PHYS_IDX;
 -- 
 2.43.0
 
