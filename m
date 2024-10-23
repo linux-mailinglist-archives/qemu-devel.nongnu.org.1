@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0439ABB56
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 04:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1EB9ABB9C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 04:37:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3QpM-0001Ya-TV; Tue, 22 Oct 2024 22:10:24 -0400
+	id 1t3RDU-00052x-3w; Tue, 22 Oct 2024 22:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t3QpF-0001Xq-Gn
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 22:10:17 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t3RDE-00050v-CS; Tue, 22 Oct 2024 22:35:04 -0400
+Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t3QpB-0007dr-E4
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 22:10:15 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3e600add5dcso2357593b6e.2
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 19:10:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t3RDC-0001qE-4e; Tue, 22 Oct 2024 22:35:04 -0400
+Received: by mail-vk1-xa2a.google.com with SMTP id
+ 71dfb90a1353d-50d431b0ae2so237389e0c.1; 
+ Tue, 22 Oct 2024 19:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1729649411; x=1730254211;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1729650899; x=1730255699; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hb2OkrkcHnno8Skwipf6IKRUV4pB/qnGZMYm94e+N8U=;
- b=OJqfoMp69tzYYmeXrFVtJ2SL/96+Ub4lCRXrnyZRflKYjIViUmSU4Oh4V+rsO7N/rW
- lwfVsWTFw8Ckt24du4ZCW5KTQAEJorw2juQ0H95lbWJnUz1LX974EbDR79uDy7Gq/lGJ
- bhYqAZaf+CzS72X5v5LoItNxdfle61lA7NW/3/gjmNY9NwNeMiftrAO9RbNYsY97rseR
- t3pNWC3VrgGSGdVNJv5ApH1fRhDt8Asg3nTlV/0iOJ4XGYup61IzHiVwWtTT++Sjc4aW
- WQKXtYwdcrjG8YzW4tFYzhSXHsm3uCZvwuGW6yu2Qn+DRX8eMCuDM9+OSClmyEblXw5s
- 0gbA==
+ bh=VJLZu3wfzWsMU2KyeCkcJ12E76myWXaAn0vOgGxkH10=;
+ b=gJgimGyZ3xTOVwa3b+XGsitIxHF7wVK9ZBNcy6WcMWsY69hDRscnRtc8CuGyFo2G48
+ 2lV8wnvE1fTZOi+M+/lxI7VOFiS7Yc1ypPUKRe9GN73SEn/5yFauONiUaCN3ovG4QJ2V
+ kiK0pVmE6k8Nevlsr/ReAesOCqGyKxzqGOTOtY2IQ8SQid/YRV1i+Ei3p3RQzwM+g4ls
+ ydCdHN432pvFQArzMHzzFPZmxIlxDSwZ0OVKOqYFenIXXBRJJpBFitRHBOcvO7XdJ0lT
+ tI1kmn/Av9UkwOPaJ+GVX75Zfdi3sLna0vskR42joWbiT+lVUSkBq+dQ84N9nasNkorA
+ 1cNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729649411; x=1730254211;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1729650899; x=1730255699;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hb2OkrkcHnno8Skwipf6IKRUV4pB/qnGZMYm94e+N8U=;
- b=gb+9ZMtuN2/1p5juPQ09a5q08s0Ahx33ngDZhJ/AK2rJkyXzYGEx5guL5wBmUChzy0
- VNO54cxB118UKGfKIim4ff6iLKs21f+9SLUm2uaonIoLiOl7ADVRscvXyoJ17bsv3Puj
- Xfq3Rk+niv2P/vbu+/iVmFmXdLAMGj0UyhmR1tx0XiMWoJ86+6MkOTu42pR7DMdnFEsO
- bmoQYcXZraEGYsigYxPDVILyTmB09LmFBgpD4YRj7ZqulHD78D4y6/YjAnvx3rZDHgtl
- p0O6QYkSzVrMLYDgE4OABclGYBncGz8oF7RFOKuY4OB/rn4lA4rp9EXPMXzgVWr+isio
- 5zew==
-X-Gm-Message-State: AOJu0YwKVy3L8pvctBOvebdrl54j1RAgoYHD4yLGQf01Fuv/iYOAx8sH
- /DAWsMP0UPKKXYIA9UwJ+9syzlPMRF5iBDDEeKGHrTYuuq5kNB3ixMsXryWMasGViBw3yNhpPC8
- FQ8wBnA==
-X-Google-Smtp-Source: AGHT+IH8o55cPEB9JfYynoU0C7q9SflAqczFJsFZ4FJvgvttwPgkKnI7DsNlsuXAxjm5HWLn18fHEg==
-X-Received: by 2002:a05:6808:23c8:b0:3e6:1356:ad5e with SMTP id
- 5614622812f47-3e624500ac4mr1076410b6e.13.1729649410173; 
- Tue, 22 Oct 2024 19:10:10 -0700 (PDT)
-Received: from Hyman-Dev-Euler.zelin.local ([103.172.41.198])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7eaeab5839dsm5861849a12.47.2024.10.22.19.10.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2024 19:10:09 -0700 (PDT)
-From: yong.huang@smartx.com
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH RFC 2/2] migration: Avoid doing RAMBlock dirty sync in the
- initial iteration
-Date: Wed, 23 Oct 2024 10:09:51 +0800
-Message-Id: <76f0ea57ac7f4c2a68203d17fec1c34bb3d16a4a.1729648695.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1729648695.git.yong.huang@smartx.com>
-References: <cover.1729648695.git.yong.huang@smartx.com>
+ bh=VJLZu3wfzWsMU2KyeCkcJ12E76myWXaAn0vOgGxkH10=;
+ b=S0nxiYNsqViinlY5ZDQJYVhrxwuu8p7UblrzXtP9kmaLrfICkRFbvEOGlk01z3BiWa
+ v13AYH0H76MQueVISKZ/y0ZmTDlFP4/yzLDaEEnH6LSL6r5LATCkKFeYInFoHRT6ISXc
+ 5UELWHYtgX9tkdDKuNN2JslDI6y72Xig3fpQlI08UhRs/OasAMA1MdKThQx5R0b+We1f
+ r0/ITx+dZh7QfQMmkiVhINxLjXLSbnb4K5eT5Pd3lzMGsyj5end72xciUFC06gSQ1AxL
+ okHE5ewOnWOWJO80SSSs0TKPQNCDk9MbVU7eogWYoiX3D07xokTbg+pNG8l1jqdk64VK
+ ToUA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWq4/mCi/pus/orrxPTj5US0fssWJXy23kSi76xVurJ12eeXEDYk21nEe25EmED3aIc/+0DV0xzVskL@nongnu.org
+X-Gm-Message-State: AOJu0YxWJRimVSI6KUIrlEgmiQ3AAnaovUKpUJ64jU8/ctIZLo05s3iv
+ LnbWaxgWlJbNIqq8Fx/NVshXRn91tQh93+p67zGxfe/+K5Yf50aqSiiiIjrXOG0BnPhrlCUOvAG
+ ulyu/4OPo5vG47j4gIP9LNHmmuZs=
+X-Google-Smtp-Source: AGHT+IHf2vyEuQdzcJnt8LRAiH7NqF7MfE9waoSMNDg1s5spV7NK+SQ5ILEgXmMKNtyVsJ3F9kYZ3YVlDTILBfK/hvA=
+X-Received: by 2002:a05:6122:3221:b0:50d:45e1:f32c with SMTP id
+ 71dfb90a1353d-50fb2ef568amr5152540e0c.2.1729650899259; Tue, 22 Oct 2024
+ 19:34:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=yong.huang@smartx.com; helo=mail-oi1-x235.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20241022001134.828724-1-richard.henderson@linaro.org>
+ <20241022001134.828724-10-richard.henderson@linaro.org>
+In-Reply-To: <20241022001134.828724-10-richard.henderson@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 23 Oct 2024 12:34:33 +1000
+Message-ID: <CAKmqyKOMZQsy333uGYquoBA9SHep8yHaCFmxHH_3n42OrxHDtg@mail.gmail.com>
+Subject: Re: [PATCH v7 09/14] tcg/riscv: Accept constant first argument to
+ sub_vec
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, dbarboza@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,110 +90,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+On Tue, Oct 22, 2024 at 10:11=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Use vrsub.vi to subtract from a constant.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-KVM always returns 1 when userspace retrieves a dirty bitmap for
-the first time when KVM_DIRTY_LOG_INITIALLY_SET is enabled; in such
-scenario, the RAMBlock dirty sync of the initial iteration can be
-skipped.
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- migration/cpu-throttle.c |  3 ++-
- migration/ram.c          | 30 +++++++++++++++++++++++++++---
- 2 files changed, 29 insertions(+), 4 deletions(-)
+Alistair
 
-diff --git a/migration/cpu-throttle.c b/migration/cpu-throttle.c
-index 342681cdd4..06e3b1be78 100644
---- a/migration/cpu-throttle.c
-+++ b/migration/cpu-throttle.c
-@@ -27,6 +27,7 @@
- #include "hw/core/cpu.h"
- #include "qemu/main-loop.h"
- #include "sysemu/cpus.h"
-+#include "sysemu/kvm.h"
- #include "cpu-throttle.h"
- #include "migration.h"
- #include "migration-stats.h"
-@@ -141,7 +142,7 @@ void cpu_throttle_dirty_sync_timer_tick(void *opaque)
-      * effect on guest performance, therefore omit it to avoid
-      * paying extra for the sync penalty.
-      */
--    if (sync_cnt <= 1) {
-+    if (sync_cnt <= (kvm_dirty_log_manual_enabled() ? 0 : 1)) {
-         goto end;
-     }
- 
-diff --git a/migration/ram.c b/migration/ram.c
-index d284f63854..b312ebd69d 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -2718,7 +2718,7 @@ static void ram_list_init_bitmaps(void)
- {
-     MigrationState *ms = migrate_get_current();
-     RAMBlock *block;
--    unsigned long pages;
-+    unsigned long pages, clear_bmap_pages;
-     uint8_t shift;
- 
-     /* Skip setting bitmap if there is no RAM */
-@@ -2736,6 +2736,7 @@ static void ram_list_init_bitmaps(void)
- 
-         RAMBLOCK_FOREACH_NOT_IGNORED(block) {
-             pages = block->max_length >> TARGET_PAGE_BITS;
-+            clear_bmap_pages = clear_bmap_size(pages, shift);
-             /*
-              * The initial dirty bitmap for migration must be set with all
-              * ones to make sure we'll migrate every guest RAM page to
-@@ -2751,7 +2752,17 @@ static void ram_list_init_bitmaps(void)
-                 block->file_bmap = bitmap_new(pages);
-             }
-             block->clear_bmap_shift = shift;
--            block->clear_bmap = bitmap_new(clear_bmap_size(pages, shift));
-+            block->clear_bmap = bitmap_new(clear_bmap_pages);
-+            /*
-+             * Set the clear bitmap by default to enable dirty logging.
-+             *
-+             * Note that with KVM_DIRTY_LOG_INITIALLY_SET, dirty logging
-+             * will be enabled gradually in small chunks using
-+             * KVM_CLEAR_DIRTY_LOG
-+             */
-+            if (kvm_dirty_log_manual_enabled()) {
-+                bitmap_set(block->clear_bmap, 0, clear_bmap_pages);
-+            }
-         }
-     }
- }
-@@ -2771,6 +2782,7 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
- 
- static bool ram_init_bitmaps(RAMState *rs, Error **errp)
- {
-+    Error *local_err = NULL;
-     bool ret = true;
- 
-     qemu_mutex_lock_ramlist();
-@@ -2783,7 +2795,19 @@ static bool ram_init_bitmaps(RAMState *rs, Error **errp)
-             if (!ret) {
-                 goto out_unlock;
-             }
--            migration_bitmap_sync_precopy(false);
-+
-+            if (kvm_dirty_log_manual_enabled()) {
-+                /*
-+                 * Bypass the RAMBlock dirty sync and still publish a
-+                 * notification.
-+                 */
-+                if (precopy_notify(PRECOPY_NOTIFY_AFTER_BITMAP_SYNC,
-+                            &local_err)) {
-+                    error_report_err(local_err);
-+                }
-+            } else {
-+                migration_bitmap_sync_precopy(false);
-+            }
-         }
-     }
- out_unlock:
--- 
-2.27.0
-
+> ---
+>  tcg/riscv/tcg-target-con-set.h | 1 +
+>  tcg/riscv/tcg-target.c.inc     | 8 ++++++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/tcg/riscv/tcg-target-con-set.h b/tcg/riscv/tcg-target-con-se=
+t.h
+> index 97e6ecdb0f..d8ce5414f5 100644
+> --- a/tcg/riscv/tcg-target-con-set.h
+> +++ b/tcg/riscv/tcg-target-con-set.h
+> @@ -25,6 +25,7 @@ C_O0_I2(v, r)
+>  C_O1_I1(v, r)
+>  C_O1_I1(v, v)
+>  C_O1_I2(v, v, v)
+> +C_O1_I2(v, vK, v)
+>  C_O1_I2(v, v, vK)
+>  C_O1_I2(v, v, vL)
+>  C_O1_I4(v, v, vL, vK, vK)
+> diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+> index ce8d6d0293..1ce2f291d3 100644
+> --- a/tcg/riscv/tcg-target.c.inc
+> +++ b/tcg/riscv/tcg-target.c.inc
+> @@ -2350,7 +2350,11 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcod=
+e opc,
+>          break;
+>      case INDEX_op_sub_vec:
+>          set_vtype_len_sew(s, type, vece);
+> -        tcg_out_opc_vv(s, OPC_VSUB_VV, a0, a1, a2);
+> +        if (const_args[1]) {
+> +            tcg_out_opc_vi(s, OPC_VRSUB_VI, a0, a2, a1);
+> +        } else {
+> +            tcg_out_opc_vv(s, OPC_VSUB_VV, a0, a1, a2);
+> +        }
+>          break;
+>      case INDEX_op_and_vec:
+>          set_vtype_len(s, type);
+> @@ -2565,7 +2569,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGO=
+pcode op)
+>      case INDEX_op_xor_vec:
+>          return C_O1_I2(v, v, vK);
+>      case INDEX_op_sub_vec:
+> -        return C_O1_I2(v, v, v);
+> +        return C_O1_I2(v, vK, v);
+>      case INDEX_op_cmp_vec:
+>          return C_O1_I2(v, v, vL);
+>      case INDEX_op_cmpsel_vec:
+> --
+> 2.43.0
+>
 
