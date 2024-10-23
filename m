@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CCD9AC28C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 11:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9489AC2ED
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 11:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3XEB-0001vm-8D; Wed, 23 Oct 2024 05:00:27 -0400
+	id 1t3XER-00022j-Na; Wed, 23 Oct 2024 05:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDz-0001jf-GL
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:15 -0400
+ id 1t3XE3-0001rw-GB
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:21 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDx-0000OZ-Vg
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:15 -0400
+ id 1t3XE2-0000UE-40
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 05:00:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=AedC5yvyaKrJjlmi/7+EtW4aSwdqKKcglTh/UG0YVcU=; b=BdSxp1kAR/h6zwBo2V6tPvphO5
- +bOpxu5nd3+btKtYjQJjwmg7HC4zgq6l3zPrY37LYWIS6K453ptIAIP2/Fwru8Z8DU9sbtqAk+sbJ
- jRRIOgOz7S2DNoWy4T8XnLby/c9p5176PNPNUrD9NLSQqKE+vxIPmP5V0cpgZJO+e/FQC1bRxal/7
- /tyefyR+9DOHAVSP3TTFykP81urvdqnaNngi6OYc+Z3AnQaknT9AvWQzq1ef4gNNfv99S/HceJQcP
- YNjIwSDxg+sI2e4dL321g9SkhRFwdWbxbdrmROw7Etu5ChCIvhAYJAVTZ9u+bI35rfn8+Gj5Higea
- YuZeyvSlE8du2Rsmh2ROVPmd1sUln+q8+yfuogknv+5IVS2e7QXVdy3flgy7qSLrBscMosNR/upb2
- Ngf5xNblTw7qZcNd2g8pD2yc9BG5XeSLd6ZyJQUJ6MFu1wFJ/6vJG8m+eGMZMfW7uGPbWabwIQB4/
- 6/9QeEjYsKBA2SnyDB4uZ9STMzrhNG2FKJnQIsE2j/WtMfeRb/OXaBgKCMwlEe/xdqwQnLBpzPDc9
- iU7QvTxfwusoe+Dmb6TJcJTah6jmLanipH3iSvkE/LtQo82s1P3gS+Mwh4Of2OpJuuE/Y2PQmrgnD
- 3rqLgqzLUoZYzGPsI6KZAb+T8VFjsuBZZcGx5AXFY=;
+ bh=AIl9dcgBjs/BNzbTjDq9bdKlGEB3p1fydOhN1x9h4+4=; b=bqYUwH3wr3nfmTLttUERPnlgYi
+ x3j4hA5C58b3t5qyCbvVKx9GSE+0+KIroEJfz+JuDYCZYv7ilwmA70RPE+vYeQ9bCKwfH6qVl/kJd
+ CtCUHZkHBsGxiucMe/PXfzpEdICenHEg/u8QVtt2Sn/gju2PnHwfgozpn6B77dSBwT631MwPgEvYG
+ yPSk42cIsHTJXQokAEFdMb07iBKz4QyJo6mGFe4V9Awp1HTKqrx8Yn9HLQrAP9tWU0L4IY2VpNEqp
+ 0w7Muq2YwUv8s1KYdo5+ikERBs43Vw1S2TQFTgqF6V1exDBXP4Np0LOUCovcRui43F0/AMsL0vRJ7
+ JimSni+KQozGLvpcUa/L5X6DdUmmKDW9IrsMgv5kgprfMx2u4hmqm4qP7nCvK3ukysKUMGqDCMG4P
+ kXgw9dTWy4L1iTBFaX7wZNN+lKjT3jdVqp8S3lMcdZ3zTRQB+BDFow9dyDi0bffbj+9cyAxFYHO8v
+ AVIyevWIF2hJdUdcGdZ94/c1G7sS5X74lx2MZ/5PQTVuyQuirDemM5NbKl8UAPqkfE77gbSJy16xr
+ Gm5/MIMEWSncU+TROXcLBbujYPD/4VXz5rb9vG/msu+7TPiGIXEM2LPTusETFLrKkuU+m1vDkxLLV
+ at8SPGiDHjyeTBKkc6Fv6Scquowxz1SIjwehxgDH8=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t3XDX-0008EL-3U; Wed, 23 Oct 2024 09:59:47 +0100
+ id 1t3XDX-0008EL-QS; Wed, 23 Oct 2024 09:59:51 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 23 Oct 2024 09:58:34 +0100
-Message-Id: <20241023085852.1061031-19-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 23 Oct 2024 09:58:35 +0100
+Message-Id: <20241023085852.1061031-20-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
 References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 18/36] next-cube: rearrange NeXTState declarations to improve
- readability
+Subject: [PATCH 19/36] next-cube: convert next-pc device to use Resettable
+ interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,107 +77,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the NeXTState, next_dma and TYPE_NEXT_MACHINE definition to the same area
-at the top of next-cube.c.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/next-cube.c | 64 ++++++++++++++++++++++-----------------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ hw/m68k/next-cube.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 9541f88dca..9829f49387 100644
+index 9829f49387..c44a1c6f0c 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -38,30 +38,10 @@
- #define DPRINTF(fmt, ...) do { } while (0)
- #endif
- 
--#define TYPE_NEXT_MACHINE MACHINE_TYPE_NAME("next-cube")
--OBJECT_DECLARE_SIMPLE_TYPE(NeXTState, NEXT_MACHINE)
--
- #define ENTRY       0x0100001e
- #define RAM_SIZE    0x4000000
- #define ROM_FILE    "Rev_2.5_v66.bin"
- 
--typedef struct next_dma {
--    uint32_t csr;
--
--    uint32_t saved_next;
--    uint32_t saved_limit;
--    uint32_t saved_start;
--    uint32_t saved_stop;
--
--    uint32_t next;
--    uint32_t limit;
--    uint32_t start;
--    uint32_t stop;
--
--    uint32_t next_initbuf;
--    uint32_t size;
--} next_dma;
--
- typedef struct NextRtc {
-     int8_t phase;
-     uint8_t ram[32];
-@@ -72,18 +52,6 @@ typedef struct NextRtc {
-     uint8_t retval;
- } NextRtc;
- 
--struct NeXTState {
--    MachineState parent;
--
--    MemoryRegion rom;
--    MemoryRegion rom2;
--    MemoryRegion dmamem;
--    MemoryRegion bmapm1;
--    MemoryRegion bmapm2;
--
--    next_dma dma[10];
--};
--
- #define TYPE_NEXT_SCSI "next-scsi"
- OBJECT_DECLARE_SIMPLE_TYPE(NeXTSCSI, NEXT_SCSI)
- 
-@@ -132,6 +100,38 @@ struct NeXTPC {
-     NextRtc rtc;
+@@ -1009,9 +1009,9 @@ static const MemoryRegionOps next_dummy_en_ops = {
+     .endianness = DEVICE_BIG_ENDIAN,
  };
  
-+typedef struct next_dma {
-+    uint32_t csr;
-+
-+    uint32_t saved_next;
-+    uint32_t saved_limit;
-+    uint32_t saved_start;
-+    uint32_t saved_stop;
-+
-+    uint32_t next;
-+    uint32_t limit;
-+    uint32_t start;
-+    uint32_t stop;
-+
-+    uint32_t next_initbuf;
-+    uint32_t size;
-+} next_dma;
-+
-+#define TYPE_NEXT_MACHINE MACHINE_TYPE_NAME("next-cube")
-+OBJECT_DECLARE_SIMPLE_TYPE(NeXTState, NEXT_MACHINE)
-+
-+struct NeXTState {
-+    MachineState parent;
-+
-+    MemoryRegion rom;
-+    MemoryRegion rom2;
-+    MemoryRegion dmamem;
-+    MemoryRegion bmapm1;
-+    MemoryRegion bmapm2;
-+
-+    next_dma dma[10];
-+};
-+
- /* Thanks to NeXT forums for this */
- /*
- static const uint8_t rtc_ram3[32] = {
+-static void next_pc_reset(DeviceState *dev)
++static void next_pc_reset_hold(Object *obj, ResetType type)
+ {
+-    NeXTPC *s = NEXT_PC(dev);
++    NeXTPC *s = NEXT_PC(obj);
+ 
+     /* Set internal registers to initial values */
+     /*     0x0000XX00 << vital bits */
+@@ -1141,12 +1141,13 @@ static const VMStateDescription next_pc_vmstate = {
+ static void next_pc_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     dc->desc = "NeXT Peripheral Controller";
+     dc->realize = next_pc_realize;
+-    device_class_set_legacy_reset(dc, next_pc_reset);
+     device_class_set_props(dc, next_pc_properties);
+     dc->vmsd = &next_pc_vmstate;
++    rc->phases.hold = next_pc_reset_hold;
+ }
+ 
+ static const TypeInfo next_pc_info = {
 -- 
 2.39.5
 
