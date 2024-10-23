@@ -2,72 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9859ACBC2
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269019ACC26
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 16:21:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3brF-0004jw-79; Wed, 23 Oct 2024 09:57:05 -0400
+	id 1t3cD7-0002Qw-K4; Wed, 23 Oct 2024 10:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3br7-0004jl-GN
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:56:57 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3cCy-0002Pd-Co
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:19:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t3br4-000062-Ud
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:56:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729691815; x=1761227815;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=BILSRExVc2vLKjOp2vU2MfBWTA8vmeeUmVCagSGJ+Ds=;
- b=UMuSZT/Dc8yAtqMIFe4QZdfzN0cMYwWnPJ7j/KpdvQdFxsxhpdi9RErp
- uU79aJvqvAFFPjuFe4R+5adaMoj+lFrH18aUb9yMOzcx2HzF1RADixisV
- Fk5ndXXSK5Fghl4Utw2q6wIvTl4itTWVAl+e7JsOCnAO8n+iGoRaDpevh
- uzkT8zBqoqO2MIs2EtmE33LMSg9SwqBu6/Rn/Vk8wymQGs/8Ppw1F3878
- j4+Rd9lorfWlmla0FI1mTMX+CCRUYQNWkCdS6FxBuSpMhcKp3OdIjOcO0
- xFBY9hkr/eURzuUftSfJ2XbmNXToYXz7OG/P/FSmJLsOKx3t57o4a4A3m A==;
-X-CSE-ConnectionGUID: BXx3Yp5cTke2eqlgEeQB6w==
-X-CSE-MsgGUID: xS7ULXDSSm6h/bVk485Wsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="54683022"
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; d="scan'208";a="54683022"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2024 06:56:52 -0700
-X-CSE-ConnectionGUID: 9l3SOvbeRaOEggqKodcRzQ==
-X-CSE-MsgGUID: uU2NQ5jsQrmwT99CPf8i/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; d="scan'208";a="80617984"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 23 Oct 2024 06:56:50 -0700
-Date: Wed, 23 Oct 2024 22:13:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH v2 05/13] rust: remove uses of #[no_mangle]
-Message-ID: <ZxkEc5uDFIShBcvP@intel.com>
-References: <20241021163538.136941-1-pbonzini@redhat.com>
- <20241021163538.136941-6-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3cCv-0003ZS-UC
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:19:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729693168;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9X8a1pk6QPXgOz8I9lbIE4Pkv0zayzs8cQDEoOHjlWA=;
+ b=LYo3R2yofYlj9yauoVcZq8XV9BqBCFa86wMkes3DNBoRckqG5lPjQzAGEWfo0q6OQHhUJB
+ oqaWDo841z2bofEHFnVFzELuiTJt5z+bIz9C0fgXUbOjyvRuuix7XR+F5ZRwuT7xRb3QX9
+ flwWH6NxZEjm/WBcUOGD799zMjWWaoQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-YEGqgEfUOv6e6iXm4G_0CA-1; Wed,
+ 23 Oct 2024 10:19:26 -0400
+X-MC-Unique: YEGqgEfUOv6e6iXm4G_0CA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C1F119560B6; Wed, 23 Oct 2024 14:19:24 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.43])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3D0441955F3B; Wed, 23 Oct 2024 14:19:21 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org,
+	qemu-s390x@nongnu.org
+Subject: [PATCH] tests/functional: Fix the s390x and ppc64 tuxrun tests
+Date: Wed, 23 Oct 2024 16:19:19 +0200
+Message-ID: <20241023141919.930689-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021163538.136941-6-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,28 +76,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 06:35:30PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 21 Oct 2024 18:35:30 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 05/13] rust: remove uses of #[no_mangle]
-> X-Mailer: git-send-email 2.46.2
-> 
-> Mangled symbols do not cause any issue; disabling mangling is only useful if
-> C headers reference the Rust function, which is not the case here.
-> 
-> Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs       | 5 -----
->  rust/hw/char/pl011/src/device_class.rs | 2 --
->  rust/hw/char/pl011/src/memory_ops.rs   | 2 --
->  rust/qemu-api/src/definitions.rs       | 1 -
->  rust/qemu-api/src/device_class.rs      | 2 --
->  5 files changed, 12 deletions(-)
-> 
+I forgot to add the tests to the meson.build file and looks
+like I even managed to somehow mix up the hashsums in the
+ppc64 test!
 
-With pl011_create() fixed,
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/meson.build          | 3 +++
+ tests/functional/test_ppc64_tuxrun.py | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 5ccc1aa66d..d4b675bf63 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -23,6 +23,7 @@ test_timeouts = {
+   'ppc64_hv' : 1000,
+   'ppc64_powernv' : 240,
+   'ppc64_pseries' : 240,
++  'ppc64_tuxrun' : 240,
+   's390x_ccw_virtio' : 240,
+ }
+ 
+@@ -133,6 +134,7 @@ tests_ppc64_system_thorough = [
+   'ppc64_hv',
+   'ppc64_powernv',
+   'ppc64_pseries',
++  'ppc64_tuxrun',
+ ]
+ 
+ tests_rx_system_thorough = [
+@@ -150,6 +152,7 @@ tests_riscv64_system_thorough = [
+ tests_s390x_system_thorough = [
+   's390x_ccw_virtio',
+   's390x_topology',
++  's390x_tuxrun',
+ ]
+ 
+ tests_sh4_system_thorough = [
+diff --git a/tests/functional/test_ppc64_tuxrun.py b/tests/functional/test_ppc64_tuxrun.py
+index 552b53c97a..03b47e07f2 100755
+--- a/tests/functional/test_ppc64_tuxrun.py
++++ b/tests/functional/test_ppc64_tuxrun.py
+@@ -83,10 +83,10 @@ def ppc64_common_tuxrun(self, kernel_asset, rootfs_asset, prefix):
+ 
+     ASSET_PPC64_KERNEL = Asset(
+         'https://storage.tuxboot.com/20230331/ppc64/vmlinux',
+-        '1d953e81a4379e537fc8e41e05a0a59d9b453eef97aa03d47866c6c45b00bdff')
++        'f22a9b9e924174a4c199f4c7e5d91a2339fcfe51c6eafd0907dc3e09b64ab728')
+     ASSET_PPC64_ROOTFS = Asset(
+         'https://storage.tuxboot.com/20230331/ppc64/rootfs.ext4.zst',
+-        'f22a9b9e924174a4c199f4c7e5d91a2339fcfe51c6eafd0907dc3e09b64ab728')
++        '1d953e81a4379e537fc8e41e05a0a59d9b453eef97aa03d47866c6c45b00bdff')
+ 
+     def test_ppc64(self):
+         self.ppc64_common_tuxrun(kernel_asset=self.ASSET_PPC64_KERNEL,
+-- 
+2.47.0
 
 
