@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3501A9AC926
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CF49AC956
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:45:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ZdF-0007M9-QR; Wed, 23 Oct 2024 07:34:30 -0400
+	id 1t3Zme-0001wr-Li; Wed, 23 Oct 2024 07:44:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3ZdA-0007JA-Bv
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:24 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1t3Zmb-0001vZ-Ry
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:44:09 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3Zd5-0003A1-TD
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:34:24 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c962c3e97dso8032564a12.0
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:34:19 -0700 (PDT)
+ id 1t3ZmY-0004Ye-PC
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:44:09 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-539eb97f26aso7634143e87.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 04:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729683258; x=1730288058; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729683845; x=1730288645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pgb6ox3Ya7i122uZlocXrETTS1VOKhPW7bSAndX3jjQ=;
- b=JdoPzub4/WCKhYFUSb1nVoi7+m34EEvO83ag6ti9knbL6ovsMwky7NHVHQfw+Rrfv2
- 3epzuFWRs3F5u6c4QWKicwRujtrDuG5Ho13VmiCoK33oglTEsvt+vINXN97C1SbUDNek
- DUEdfET06yP4oxhlTerQQ7EDHujWpdr40TZinrUuxQDIzTmn7IJEaKu3H5VEKGgtFJrs
- ArcX4ICroe4ExxiKYXvtav4XEHQ/wOMF916HxSJKfpe9HeZEckI3e2Ywi8h9CnHwUZnE
- xbswocxRNRhx+nIkhYIRHbvLTLtJA+nZKUwOTJNAWMejK0tZfkTWBkVu1kX3sJcUUTBx
- o3IA==
+ bh=goM9TWkvUJk023ZZ8+wq0WOvMkki4+LOppFI2tLZ0P4=;
+ b=fxCSCLeJTdxr+MilDGuNdey1g8TG2L1+fIRl/YZ5uB5yISFNrwSsl0kKGfyB/lDh3S
+ yFPvWbUIYEfZyT80XXsxitFSUvyHp7DIb2GzbBzIxp/HH+A+ScDAnztlj4MR7363SoQz
+ Hs14NpKA5LdQIDudNRZzJ8j7sZmSB6sUSdGR8y1wmZB+tB+YD8gKkISSg/Osl9kqQyuU
+ BgIJ8kKVP414i59rkmewJvfhvERdZovzn1aYYKaxJojpUmGkPy6dUF0WKjLh+uMz3VV2
+ kuk5X6ZSeXbR4FPYlJg00mkxlb9SOpWzMxKw2JCkw4EPLc387cFmKGa8ekRR2aGW4Lht
+ 15JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729683258; x=1730288058;
+ d=1e100.net; s=20230601; t=1729683845; x=1730288645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pgb6ox3Ya7i122uZlocXrETTS1VOKhPW7bSAndX3jjQ=;
- b=veNngdlABj0m+DJBcvo591GQEooBZH+cCiELYIUFIaivAl8df2xYCFmCCS5eBz73VD
- 6EZdOu8RIylUog+yBuyRWlphUQJ/0KJH38HNEm0biZfF4CIS+b4KSW6k+kEwZl17oXYW
- CDVUesnMNaAwmbUYD2gBjifYwWsGXTiLNzubEWdzLfDEAxNDyU/1goPCRNyZmE9e1BBN
- 7Bq5cOyTaEXckbFPEH/M+0a2NLvSiM75hTDeuYVX4tlVgFWW3irHst5VujScEnVFW1/E
- Bi4MjmnWbsmY5hat2oFz8u4dq9CsfhnQ5T7ZSw1/AH0+1GpD5iyZhJZHeMSOdSRCHD/n
- cZ3A==
-X-Gm-Message-State: AOJu0YxKAiLFnlqbCc9TFLDyziYYtaq3tdQGSKyaRhbuUJ4F65gpoxKz
- Bxg8mq3Z+SXgLEnlfU1cGeGqJt/vrU2hNhZtDhxOSB3hg6GF30IVh0eisz+ankA=
-X-Google-Smtp-Source: AGHT+IGV1BmmYJYiHVOsfdD8NKiwKMyXPcWgCdf3lsOYC2w3ygGnh/9fI/TEjp6+W0G/coRG8ccRNQ==
-X-Received: by 2002:a17:907:724b:b0:a9a:49a8:f1fa with SMTP id
- a640c23a62f3a-a9abf8933f0mr220298266b.23.1729683258240; 
- Wed, 23 Oct 2024 04:34:18 -0700 (PDT)
+ bh=goM9TWkvUJk023ZZ8+wq0WOvMkki4+LOppFI2tLZ0P4=;
+ b=BxTZBzBe1ehO+uUnhoG3lggKwnW6V3pc/EG7lD/c8TqcLF8ul3fqAz4NvfowmCWxzD
+ xBKXABewG8RZ7DLUD1PXu3+AkHDK20TfGGZNAYLZngFGhz/Ub1RTJyqh+Snt6KdcTJKZ
+ A+zJkiGkz+mXMbLEWAnChDmM0Em85po6ym0Fwsi8N2FPBtAo1LmDARxg1LPP37hP7kgH
+ QVE7eBVqXN4GCbIFDUSZbD/cHjJHIhGcSwvWA+1teLEsuUQnqmU0hyBecHwx1zUmsgel
+ e9lXlu+KGjg1PIzfuzff9hHBBggEL02IsYn0we7wSJYvk4xw6CzMLjKqP7pQlfKcOGd6
+ d2fA==
+X-Gm-Message-State: AOJu0YxsO0ZRYXeo9ESeZlCrRxzXAN5Q5iJtnL1u14jR9ALX04oo41R3
+ I6N4fZv7RwyCMERUAOENfqeoIZs1WS7BE/inoD50RUeXYC5xLMHJcNa1oMlTKBo=
+X-Google-Smtp-Source: AGHT+IHDtHU0ccJr5rc5xz8My9arnYk+SlnudjoCir3kQRdzjKiDoRSU1ko8s5OGs4YQqLHIEVXPxQ==
+X-Received: by 2002:a05:6512:398a:b0:539:f2f6:c70f with SMTP id
+ 2adb3069b0e04-53b1a2fed80mr1092099e87.8.1729683844676; 
+ Wed, 23 Oct 2024 04:44:04 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912ee0f5sm463385166b.66.2024.10.23.04.34.11
+ a640c23a62f3a-a9a91370e54sm462834566b.102.2024.10.23.04.44.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 04:34:16 -0700 (PDT)
+ Wed, 23 Oct 2024 04:44:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5288E5FBDC;
+ by draig.lan (Postfix) with ESMTP id 6AE8B5FC0F;
  Wed, 23 Oct 2024 12:34:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,18 +81,17 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH v3 14/18] tests/tcg/aarch64: Use raw strings for regexes in
- test-mte.py
-Date: Wed, 23 Oct 2024 12:34:02 +0100
-Message-Id: <20241023113406.1284676-15-alex.bennee@linaro.org>
+Subject: [PATCH v3 15/18] testing: Enhance gdb probe script
+Date: Wed, 23 Oct 2024 12:34:03 +0100
+Message-Id: <20241023113406.1284676-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,33 +116,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Use Python's raw string notation instead of string literals for regex so
-it's not necessary to double backslashes when regex special forms are
-used. Raw notation is preferred for regex and easier to read.
+Use list and set comprehension to simplify code. Also, gently handle
+invalid gdb filenames.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20241015140806.385449-1-gustavo.romero@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20241022105614.839199-16-alex.bennee@linaro.org>
+Message-Id: <20241015145848.387281-1-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/aarch64/gdbstub/test-mte.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/probe-gdb-support.py | 75 +++++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 36 deletions(-)
 
-diff --git a/tests/tcg/aarch64/gdbstub/test-mte.py b/tests/tcg/aarch64/gdbstub/test-mte.py
-index a4cae6caa0..9ad98e7a54 100644
---- a/tests/tcg/aarch64/gdbstub/test-mte.py
-+++ b/tests/tcg/aarch64/gdbstub/test-mte.py
-@@ -23,8 +23,8 @@
- from test_gdbstub import arg_parser, main, report
+diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
+index 6dc58d06c7..6bcadce150 100644
+--- a/scripts/probe-gdb-support.py
++++ b/scripts/probe-gdb-support.py
+@@ -19,58 +19,61 @@
  
+ import argparse
+ import re
+-from subprocess import check_output, STDOUT
++from subprocess import check_output, STDOUT, CalledProcessError
++import sys
  
--PATTERN_0 = "Memory tags for address 0x[0-9a-f]+ match \\(0x[0-9a-f]+\\)."
--PATTERN_1 = ".*(0x[0-9a-f]+)"
-+PATTERN_0 = r"Memory tags for address 0x[0-9a-f]+ match \(0x[0-9a-f]+\)."
-+PATTERN_1 = r".*(0x[0-9a-f]+)"
+-# mappings from gdb arch to QEMU target
+-mappings = {
+-    "alpha" : "alpha",
++# Mappings from gdb arch to QEMU target
++MAP = {
++    "alpha" : ["alpha"],
+     "aarch64" : ["aarch64", "aarch64_be"],
+-    "armv7": "arm",
++    "armv7": ["arm"],
+     "armv8-a" : ["aarch64", "aarch64_be"],
+-    "avr" : "avr",
++    "avr" : ["avr"],
+     # no hexagon in upstream gdb
+-    "hppa1.0" : "hppa",
+-    "i386" : "i386",
+-    "i386:x86-64" : "x86_64",
+-    "Loongarch64" : "loongarch64",
+-    "m68k" : "m68k",
+-    "MicroBlaze" : "microblaze",
++    "hppa1.0" : ["hppa"],
++    "i386" : ["i386"],
++    "i386:x86-64" : ["x86_64"],
++    "Loongarch64" : ["loongarch64"],
++    "m68k" : ["m68k"],
++    "MicroBlaze" : ["microblaze"],
+     "mips:isa64" : ["mips64", "mips64el"],
+-    "or1k" : "or1k",
+-    "powerpc:common" : "ppc",
++    "or1k" : ["or1k"],
++    "powerpc:common" : ["ppc"],
+     "powerpc:common64" : ["ppc64", "ppc64le"],
+-    "riscv:rv32" : "riscv32",
+-    "riscv:rv64" : "riscv64",
+-    "s390:64-bit" : "s390x",
++    "riscv:rv32" : ["riscv32"],
++    "riscv:rv64" : ["riscv64"],
++    "s390:64-bit" : ["s390x"],
+     "sh4" : ["sh4", "sh4eb"],
+-    "sparc": "sparc",
+-    "sparc:v8plus": "sparc32plus",
+-    "sparc:v9a" : "sparc64",
++    "sparc": ["sparc"],
++    "sparc:v8plus": ["sparc32plus"],
++    "sparc:v9a" : ["sparc64"],
+     # no tricore in upstream gdb
+     "xtensa" : ["xtensa", "xtensaeb"]
+ }
  
++
+ def do_probe(gdb):
+-    gdb_out = check_output([gdb,
+-                            "-ex", "set architecture",
+-                            "-ex", "quit"], stderr=STDOUT)
++    try:
++        gdb_out = check_output([gdb,
++                               "-ex", "set architecture",
++                               "-ex", "quit"], stderr=STDOUT, encoding="utf-8")
++    except (OSError) as e:
++        sys.exit(e)
++    except CalledProcessError as e:
++        sys.exit(f'{e}. Output:\n\n{e.output}')
++
++    found_gdb_archs = re.search(r'Valid arguments are (.*)', gdb_out)
  
- def run_test():
+-    m = re.search(r"Valid arguments are (.*)",
+-                  gdb_out.decode("utf-8"))
++    targets = set()
++    if found_gdb_archs:
++        gdb_archs = found_gdb_archs.group(1).split(", ")
++        mapped_gdb_archs = [arch for arch in gdb_archs if arch in MAP]
+ 
+-    valid_arches = set()
++        targets = {target for arch in mapped_gdb_archs for target in MAP[arch]}
+ 
+-    if m.group(1):
+-        for arch in m.group(1).split(", "):
+-            if arch in mappings:
+-                mapping = mappings[arch]
+-                if isinstance(mapping, str):
+-                    valid_arches.add(mapping)
+-                else:
+-                    for entry in mapping:
+-                        valid_arches.add(entry)
++    # QEMU targets
++    return targets
+ 
+-    return valid_arches
+ 
+ def main() -> None:
+     parser = argparse.ArgumentParser(description='Probe GDB Architectures')
 -- 
 2.39.5
 
