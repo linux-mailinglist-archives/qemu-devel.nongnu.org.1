@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F809AC24A
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 10:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCBF9AC240
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 10:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3X5p-0000ci-8k; Wed, 23 Oct 2024 04:51:49 -0400
+	id 1t3X6g-0001KH-JB; Wed, 23 Oct 2024 04:52:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3X5n-0000c9-M9
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:47 -0400
+ id 1t3X6d-00018y-3Z
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:52:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t3X5m-00083J-58
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:51:47 -0400
+ id 1t3X6O-000877-QQ
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 04:52:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729673502;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1729673544;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vmXiOf165+njZ1qiIARlokKmafDPS99jQJnvPyjMbM8=;
- b=EB421RexkFV5jZHeoDmteSzvjtyQckaSeFEnvA47Yo5K6eXACIzdLkFMgb80slxi5PEoR5
- eZ91qV6d3rudMfqjHNRDk0Ei98HICr3ubEd5ZfZJz4IwcQBAkID6WajhxkjTDMxe6idDYx
- csiCvHA0sz6EHQv9Skwb4xLY6Sor6Zk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WxaZtbHPQyavOpKnO+WUomy9c05Zo0xqTPADtOJEKLU=;
+ b=SpzEzQtTIn9tIIirJT095CEpV9RG2fUshoGBVsDpeWlzCZK27DuRQIQKJkojYVz6eOPq4O
+ FUZDc97rwO5fJesvD3hDWogq8eC/Q7cAL5aA5kwDcrJOM6vQ7SVlJU2QpTXOZDYJnCsPwz
+ abdiFSbSbIUx9uYA3sLtZ0qwIT/HF3w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-lMz9WMH1MJagKyZaY51w4g-1; Wed,
- 23 Oct 2024 04:51:39 -0400
-X-MC-Unique: lMz9WMH1MJagKyZaY51w4g-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-qyT_Ory5MgCd3CuEPMqMqA-1; Wed,
+ 23 Oct 2024 04:52:20 -0400
+X-MC-Unique: qyT_Ory5MgCd3CuEPMqMqA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0626E195608A; Wed, 23 Oct 2024 08:51:38 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.19])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C7F0B1956056; Wed, 23 Oct 2024 08:51:34 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v3 8/8] hw/net: improve tracing of eBPF RSS setup
-Date: Wed, 23 Oct 2024 09:51:03 +0100
-Message-ID: <20241023085103.1980072-9-berrange@redhat.com>
-In-Reply-To: <20241023085103.1980072-1-berrange@redhat.com>
-References: <20241023085103.1980072-1-berrange@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62297195608C; Wed, 23 Oct 2024 08:52:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.19])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 477B5300018D; Wed, 23 Oct 2024 08:52:17 +0000 (UTC)
+Date: Wed, 23 Oct 2024 09:52:13 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+Subject: Re: [PATCH v2 4/7] ebpf: add formal error reporting to all APIs
+Message-ID: <Zxi5PeTIKh7RAh8v@redhat.com>
+References: <20240905181330.3657590-1-berrange@redhat.com>
+ <20240905181330.3657590-5-berrange@redhat.com>
+ <CACGkMEv5DJ=6eH65UE9qjbUt9KWrMnqg1TJKU-d1SBodhLsbRg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <CACGkMEv5DJ=6eH65UE9qjbUt9KWrMnqg1TJKU-d1SBodhLsbRg@mail.gmail.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -71,8 +71,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,83 +85,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds more trace events to key eBPF RSS setup operations, and
-also distinguishes events from multiple NIC instances.
+On Wed, Oct 23, 2024 at 11:55:42AM +0800, Jason Wang wrote:
+> On Fri, Sep 6, 2024 at 2:13 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >
+> > The eBPF code is currently reporting error messages through trace
+> > events. Trace events are fine for debugging, but they are not to be
+> > considered the primary error reporting mechanism, as their output
+> > is inaccessible to callers.
+> >
+> > This adds an "Error **errp" parameter to all methods which have
+> > important error scenarios to report to the caller.
+> >
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> This doesn't compile:
+> 
+> [3/84] Compiling C object libcommon.a.p/ebpf_ebpf_rss-stub.c.o
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- hw/net/trace-events | 8 +++++---
- hw/net/virtio-net.c | 9 ++++++---
- 2 files changed, 11 insertions(+), 6 deletions(-)
+Opps, I didn't update the stub for the new Error parameter.
 
-diff --git a/hw/net/trace-events b/hw/net/trace-events
-index 4c6687923e..91a3d0c054 100644
---- a/hw/net/trace-events
-+++ b/hw/net/trace-events
-@@ -394,9 +394,11 @@ virtio_net_announce_notify(void) ""
- virtio_net_announce_timer(int round) "%d"
- virtio_net_handle_announce(int round) "%d"
- virtio_net_post_load_device(void)
--virtio_net_rss_disable(void)
--virtio_net_rss_error(const char *msg, uint32_t value) "%s, value 0x%08x"
--virtio_net_rss_enable(uint32_t p1, uint16_t p2, uint8_t p3) "hashes 0x%x, table of %d, key of %d"
-+virtio_net_rss_load(void *nic, size_t nfds, void *fds) "nic=%p nfds=%zu fds=%p"
-+virtio_net_rss_attach_ebpf(void *nic, int prog_fd) "nic=%p prog-fd=%d"
-+virtio_net_rss_disable(void *nic) "nic=%p"
-+virtio_net_rss_error(void *nic, const char *msg, uint32_t value) "nic=%p msg=%s, value 0x%08x"
-+virtio_net_rss_enable(void *nic, uint32_t p1, uint16_t p2, uint8_t p3) "nic=%p hashes 0x%x, table of %d, key of %d"
- 
- # tulip.c
- tulip_reg_write(uint64_t addr, const char *name, int size, uint64_t val) "addr 0x%02"PRIx64" (%s) size %d value 0x%08"PRIx64
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index c08ae55424..60e19bffcb 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1241,6 +1241,7 @@ static bool virtio_net_attach_ebpf_to_backend(NICState *nic, int prog_fd)
-         return false;
-     }
- 
-+    trace_virtio_net_rss_attach_ebpf(nic, prog_fd);
-     return nc->info->set_steering_ebpf(nc, prog_fd);
- }
- 
-@@ -1297,12 +1298,13 @@ static void virtio_net_commit_rss_config(VirtIONet *n)
-             }
-         }
- 
--        trace_virtio_net_rss_enable(n->rss_data.hash_types,
-+        trace_virtio_net_rss_enable(n,
-+                                    n->rss_data.hash_types,
-                                     n->rss_data.indirections_len,
-                                     sizeof(n->rss_data.key));
-     } else {
-         virtio_net_detach_ebpf_rss(n);
--        trace_virtio_net_rss_disable();
-+        trace_virtio_net_rss_disable(n);
-     }
- }
- 
-@@ -1353,6 +1355,7 @@ static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
-     bool ret = false;
- 
-     if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
-+        trace_virtio_net_rss_load(n, n->nr_ebpf_rss_fds, n->ebpf_rss_fds);
-         if (n->ebpf_rss_fds) {
-             ret = virtio_net_load_ebpf_fds(n, errp);
-         } else {
-@@ -1484,7 +1487,7 @@ static uint16_t virtio_net_handle_rss(VirtIONet *n,
-     virtio_net_commit_rss_config(n);
-     return queue_pairs;
- error:
--    trace_virtio_net_rss_error(err_msg, err_value);
-+    trace_virtio_net_rss_error(n, err_msg, err_value);
-     virtio_net_disable_rss(n);
-     return 0;
- }
+I've sent a new series with the fix
+
+
+With regards,
+Daniel
 -- 
-2.46.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
