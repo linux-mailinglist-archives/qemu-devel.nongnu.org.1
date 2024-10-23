@@ -2,52 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6389AC941
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 13:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D269AC9DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 14:19:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ZiN-0005ei-VT; Wed, 23 Oct 2024 07:39:48 -0400
+	id 1t3aJH-0002M8-Ql; Wed, 23 Oct 2024 08:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1t3ZhH-0005GA-Kj
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:38:44 -0400
-Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1t3aJ8-0002Lg-4c; Wed, 23 Oct 2024 08:17:46 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1t3ZhC-0003kr-2Y
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 07:38:39 -0400
-Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 12C56260983;
- Wed, 23 Oct 2024 13:38:30 +0200 (CEST)
-X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
-Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
- by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
- with ESMTP id CUeNcroBrWNo; Wed, 23 Oct 2024 13:38:27 +0200 (CEST)
-Received: from applejack.lan (83.11.13.124.ipv4.supernova.orange.pl
- [83.11.13.124])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 39BE326059E;
- Wed, 23 Oct 2024 13:38:27 +0200 (CEST)
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v2 1/1] pcie: enable Extended tag field support
-Date: Wed, 23 Oct 2024 13:38:20 +0200
-Message-ID: <20241023113820.486017-1-marcin.juszkiewicz@linaro.org>
-X-Mailer: git-send-email 2.46.1
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1t3aIy-0001ED-VN; Wed, 23 Oct 2024 08:17:45 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49N0O2Qk018182;
+ Wed, 23 Oct 2024 12:17:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=2oYIub
+ je1s/WIebtYf+zDCBbLYyNNOGCIJaFvIBrxyE=; b=n2loIoLo7zCrJJv/kop4fs
+ Jv6yrNs+63aEzn6owe1nxIJ/8R1FS0tNusQ0accJFrcuWJuOnP4/EHImE2PZzz7n
+ EmSSRkY2M/J71mSzrg4Yl0qmoSO69RsGBS2/wHKhoQJRmKaPpUswMuJIuCvCasKG
+ +XdfljHGXnFe8Fh6tDUzg6+z0WP6tCp3vxJCjg0q+S2FwyH6d1eb93uFon5P2apt
+ JrP+UhhnV+vGCBk4ghfXqej8+mmcC/r68xcJtyNxiufMnYB08NNyVnpuxJAhQdmS
+ u7qnIwGpFsCBQidjP+y3aNjb4fQn56/Zr0uxILHWtxU4Fq4FbJvatIxwWB6yI+2A
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajjvt7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Oct 2024 12:17:22 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49NCEAoJ030959;
+ Wed, 23 Oct 2024 12:17:21 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajjvt3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Oct 2024 12:17:21 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49NBXp8A014286;
+ Wed, 23 Oct 2024 12:17:20 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emhfjs53-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Oct 2024 12:17:20 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49NCHI3G27525778
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Oct 2024 12:17:18 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD16B2004B;
+ Wed, 23 Oct 2024 12:17:18 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12ED020040;
+ Wed, 23 Oct 2024 12:17:18 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 23 Oct 2024 12:17:17 +0000 (GMT)
+Message-ID: <935ba5fe7f761e641e9bcdd2e000c6e6c0c12fba.camel@linux.ibm.com>
+Subject: Re: [PATCH] tests/tcg: Replace -mpower8-vector with -mvsx
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Kewen Lin <linkw@linux.ibm.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Date: Wed, 23 Oct 2024 14:17:17 +0200
+In-Reply-To: <56b09f33-d176-4489-989a-ddf02329636f@linaro.org>
+References: <20241021142830.486149-1-iii@linux.ibm.com>
+ <56b09f33-d176-4489-989a-ddf02329636f@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: RBK3qo4xVbVycV3-0LjAy-syZmu2D7yZ
+X-Proofpoint-GUID: Tc-Xr5rHZPn4H3UJbx5nVs1PfBDyWOZL
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=213.251.184.221;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410230072
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,105 +115,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From what I read PCI has 32 transactions, PCI Express devices can handle
-256 with Extended tag enabled (spec mentions also larger values but I
-lack PCIe knowledge).
+On Mon, 2024-10-21 at 19:59 -0700, Richard Henderson wrote:
+> On 10/21/24 07:27, Ilya Leoshkevich wrote:
+> > [1] deprecated -mpower8-vector, resulting in:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0 powerpc64-linux-gnu-gcc: warning: switch '-mpo=
+wer8-vector' is
+> > no longer supported
+> > =C2=A0=C2=A0=C2=A0=C2=A0 qemu/tests/tcg/ppc64/vsx_f2i_nan.c:4:15: error=
+: expected ';'
+> > before 'float'
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 4 | typedef vector flo=
+at vsx_float32_vec_t;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ ^~~~~~
+> >=20
+> > Similar to how this was done for the GCC testcases, replace
+> > -mpower8-vector with -mvsx.
+> >=20
+> > [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D109987
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0 tests/tcg/ppc64/Makefile.target | 10 +++++-----
+> > =C2=A0 1 file changed, 5 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/tests/tcg/ppc64/Makefile.target
+> > b/tests/tcg/ppc64/Makefile.target
+> > index 1940886c737..d1b00d2bf09 100644
+> > --- a/tests/tcg/ppc64/Makefile.target
+> > +++ b/tests/tcg/ppc64/Makefile.target
+> > @@ -6,7 +6,7 @@ VPATH +=3D $(SRC_PATH)/tests/tcg/ppc64
+> > =C2=A0=20
+> > =C2=A0 config-cc.mak: Makefile
+> > =C2=A0=C2=A0	$(quiet-@)( \
+> > -	=C2=A0=C2=A0=C2=A0 $(call cc-option,-mpower8-vector,=C2=A0=C2=A0
+> > CROSS_CC_HAS_POWER8_VECTOR); \
+> > +	=C2=A0=C2=A0=C2=A0 $(call cc-option,-mvsx,=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 CROSS_CC_HAS_VSX);
+> > \
+> > =C2=A0=C2=A0	=C2=A0=C2=A0=C2=A0 $(call cc-option,-mpower10,=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > CROSS_CC_HAS_POWER10)) 3> config-cc.mak
+>=20
+> I don't think this is quite right.
+> I think you need -mpower8 to get OPTION_MASK_P8_VECTOR set.
 
-QEMU leaves 'Extended tag field' with 0 as value:
+Do you mean -mcpu=3Dpower8? -mpower8 is a GAS option.
 
-Capabilities: [e0] Express (v1) Root Complex Integrated Endpoint, IntMsgNum 0
-        DevCap: MaxPayload 128 bytes, PhantFunc 0
-                ExtTag- RBE+ FLReset- TEE-IO-
+>=20
+> > +ifneq ($(CROSS_CC_HAS_VSX),)
+> > =C2=A0 PPC64_TESTS=3Dbcdsub non_signalling_xscv
+>=20
+> bcdsub is not in the base VSX instruction set, for instance.
+>=20
+>=20
+> r~
 
-SBSA ACS has test 824 which checks for PCIe device capabilities. BSA
-specification [1] (SBSA is on top of BSA) in section F.3.2 lists
-expected values for Device Capabilities Register:
+I was confused why -mvsx works in practice, so I spent some time and
+managed to create a "hostile" gcc build, in which this is now a
+problem, using:
 
-Device Capabilities Register     Requirement
-Role based error reporting       RCEC and RCiEP: Hardwired to 1
-Endpoint L0s acceptable latency  RCEC and RCiEP: Hardwired to 0
-L1 acceptable latency            RCEC and RCiEP: Hardwired to 0
-Captured slot power limit scale  RCEC and RCiEP: Hardwired to 0
-Captured slot power limit value  RCEC and RCiEP: Hardwired to 0
-Max payload size                 value must be compliant with PCIe spec
-Phantom functions                RCEC and RCiEP: Recommendation is to
-                                 hardwire this bit to 0.
-Extended tag field               Hardwired to 1
+    ./configure --target=3Dpowerpc64-linux-gnu --enable-checking \
+                --disable-bootstrap \
+                --with-as=3D"$(which powerpc64-linux-gnu-as)"
 
-1. https://developer.arm.com/documentation/den0094/c/
+The issue is masked by two things:
 
-This change enables Extended tag field. All versioned platforms should
-have it disabled for older versions (tested with Arm/virt).
+- GCC passes "-many" to GAS. GCC commit e154242724b0 ("[RS6000] Don't
+  pass -many to the assembler") stops --enable-checking builds from
+  doing this.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
----
- hw/core/machine.c    | 4 +++-
- hw/pci/pci.c         | 2 ++
- hw/pci/pcie.c        | 8 +++++++-
- include/hw/pci/pci.h | 2 ++
- 4 files changed, 14 insertions(+), 2 deletions(-)
+- binutils has the following line:
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index adaba17eba..8ccc74067a 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -34,7 +34,9 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_9_1[] = {};
-+GlobalProperty hw_compat_9_1[] = {
-+    { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
-+};
- const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
- 
- GlobalProperty hw_compat_9_0[] = {
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 87da35ca9b..9a3b0e4a43 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -87,6 +87,8 @@ static Property pci_props[] = {
-                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-     DEFINE_PROP_SIZE32("x-max-bounce-buffer-size", PCIDevice,
-                      max_bounce_buffer_size, DEFAULT_MAX_BOUNCE_BUFFER_SIZE),
-+    DEFINE_PROP_BIT("x-pcie-ext-tag", PCIDevice, cap_present,
-+                    QEMU_PCIE_EXT_TAG_BITNR, true),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 4b2f0805c6..9f369c2b6c 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -86,7 +86,13 @@ pcie_cap_v1_fill(PCIDevice *dev, uint8_t port, uint8_t type, uint8_t version)
-      * Specification, Revision 1.1., or subsequent PCI Express Base
-      * Specification revisions.
-      */
--    pci_set_long(exp_cap + PCI_EXP_DEVCAP, PCI_EXP_DEVCAP_RBER);
-+    uint32_t devcap = PCI_EXP_DEVCAP_RBER;
-+
-+    if (dev->cap_present & QEMU_PCIE_EXT_TAG) {
-+        devcap = PCI_EXP_DEVCAP_RBER | PCI_EXP_DEVCAP_EXT_TAG;
-+    }
-+
-+    pci_set_long(exp_cap + PCI_EXP_DEVCAP, devcap);
- 
-     pci_set_long(exp_cap + PCI_EXP_LNKCAP,
-                  (port << PCI_EXP_LNKCAP_PN_SHIFT) |
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index eb26cac810..5b14f9d375 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -213,6 +213,8 @@ enum {
-     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
- #define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-     QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
-+#define QEMU_PCIE_EXT_TAG_BITNR 13
-+    QEMU_PCIE_EXT_TAG = (1 << QEMU_PCIE_EXT_TAG_BITNR),
- };
- 
- typedef struct PCIINTxRoute {
--- 
-2.46.1
+  /* The minimum supported cpu for 64-bit little-endian is power8.  */
+  ppc_cpu |=3D ppc_parse_cpu (ppc_cpu, &sticky, "power8");
 
+  so one needs to use the big-endian toolchain to see the problem.
+
+
+I'll send a v2.
 
