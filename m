@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3639ACC42
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 16:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405A89ACD3E
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 16:49:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3cKT-0004SF-6M; Wed, 23 Oct 2024 10:27:17 -0400
+	id 1t3ceW-0001U5-QM; Wed, 23 Oct 2024 10:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1t3cKR-0004Rd-F6
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:27:15 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1t3cKQ-0004br-61
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:27:15 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3e60e57a322so2235175b6e.3
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 07:27:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729693632; x=1730298432; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VO8jVNmhKsZvR6twEKG7SAO/7UY1kiwtGMEOq/cJ9g8=;
- b=OfyN5/sbcgLDLFKXaw3OuwaPpKN6nawP1F1mhoWt/dA2CKKMeXwxdQaAoAinDI0ClP
- gqRgZwPknFLuFrdT+n9xVlVJlMlzoMd9Gk92U4hz/DXgRC0XoD3cRVC66jJw8vu36Rj+
- ayMQvnimBLHsoFmFOVx8m4NupBxYFn56tH+M2G3MbtHNgknORris5vj0PrPqFEcP80Wt
- DTFQYYwjfXCakyNFYp76/2WR4zAuYu/K+iafZLDrW0XmCbUhSi3KG+C9c++7J1KlgoZX
- c1tzoSw33O/ObdPw84KvxOTQx398RXAc+Ul0F9QH6Vu6T/az1ZiK1c5lXFY9xrbgWCDq
- 2BpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729693632; x=1730298432;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VO8jVNmhKsZvR6twEKG7SAO/7UY1kiwtGMEOq/cJ9g8=;
- b=AzoWS0ECfUEaw01CBoWZtxUMQXOgs3zD6OFH041wM3PI2r7RU2soChax2eeKs1JvzP
- OQWOHcO7MJfjYn6hWXvU1S3v42+U5/R7sDOQ53LgZotQVarA+nHmlgUGCylhrcrzzCgy
- dUFnEf3pGFhEClKJApfHYEBuyYhaMzdhj5fAMW27DJsss22rsYksop+hZPtXzARPXxH4
- e6qeE3mB5DE9RgTZnhhFCu3b4Dga8fSjvxEEhQFWpnpEU2C1XxBQ4JMmktZQtsxjr8pD
- AVacO02B7oIOf0fAO3+B5vmyT3cgO/2RJp/8H4fjlhVF+6UHZEGl1e05WMQ4Q2NV/w0G
- wkqw==
-X-Gm-Message-State: AOJu0YyRu6JAeXtqSZMLq+3SdTR5kGdmK0m5+9C1bgR7AwMPP6jUt9Mh
- wjD9kw3jzIsU460PNhuGRv/Xll14K7X+sdCpTTwTgF4vsiktHOIWCb03j4nh+C7PJEjqoff+rdI
- I9JnoT9I8EL3TB6VdJFY3POW4IucllQ==
-X-Google-Smtp-Source: AGHT+IFtDFYQyH81vHCoIcmSia/5qvBAd0j7jk9WQkWVUDAMntbJLwbMLTFa3zg95PD0ZUJK4fI23eg1STAVzuc/8ZI=
-X-Received: by 2002:a05:6808:180b:b0:3e2:8696:4b4f with SMTP id
- 5614622812f47-3e62452dd30mr2633819b6e.19.1729693632393; Wed, 23 Oct 2024
- 07:27:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t3ceS-0001Tq-8Z
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:47:56 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t3ceP-0007qv-4D
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 10:47:55 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NDtNl5004074;
+ Wed, 23 Oct 2024 14:47:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=smZkyXuolve1W0/s2YDpqysgan9A
+ ihild+i2INYNmww=; b=aBux6ih/yzCwqfT16ila8DFp21hEz0srp7e+bIYUqcY2
+ scXqpYp29ofV/g+BBFoSyrnEU/L4nYbv8Pb+xL3aXuB2WgXPbPNmA5eVSbe6jeR2
+ 2P9OcxDNyrEOXZ+AeghAUVR4nE6nNTq8JhrZJyqL9RIPHPS785TyWOT4WEyzM8NF
+ m8GpeWeyqz+ioHjRpC70pORT2S1Hvv287kpcE2bgm6GZeRvXK5577OSd6zU6jX83
+ BuFrG8UnVlNohfxtM40Az+Fs0xGGUPN9KwNfVJe4rFbphIzeEWm47FyvmIZo2qfl
+ I6LgIKbzmJfWWoIhtkPkochBS54lCU135ZB6fvopUg==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emafuhrp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Oct 2024 14:47:50 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49NBhEFI014557;
+ Wed, 23 Oct 2024 14:47:49 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk7uak6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Oct 2024 14:47:49 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49NEllmw27525682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Oct 2024 14:47:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD6E62004E;
+ Wed, 23 Oct 2024 14:47:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82C7020043;
+ Wed, 23 Oct 2024 14:47:47 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.38.72])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 23 Oct 2024 14:47:47 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH] linux-user: Fix GDB complaining about system-supplied DSO
+ string table index
+Date: Wed, 23 Oct 2024 16:46:53 +0200
+Message-ID: <20241023144744.50440-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-References: <20241008211727.49088-1-dorjoychy111@gmail.com>
- <5839222b-4d61-419b-80a2-cc7afb36abc9@amazon.com>
- <CAFfO_h5HquFuWQSo0n009dgi48Qoi_5MdRFuHOuHMGWNB2Q8+A@mail.gmail.com>
-In-Reply-To: <CAFfO_h5HquFuWQSo0n009dgi48Qoi_5MdRFuHOuHMGWNB2Q8+A@mail.gmail.com>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Wed, 23 Oct 2024 20:27:12 +0600
-Message-ID: <CAFfO_h4QCDc5qTP_U+-c0NTxPh5J53x876e5aVskMHx28OUerQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/6] AWS Nitro Enclave emulation support
-To: qemu-devel@nongnu.org
-Cc: agraf@csgraf.de, Alexander Graf <graf@amazon.com>, stefanha@redhat.com, 
- pbonzini@redhat.com, slp@redhat.com, richard.henderson@linaro.org, 
- eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com, 
- berrange@redhat.com, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=dorjoychy111@gmail.com; helo=mail-oi1-x233.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8VlX8RXCoCA2VHs5elbU6DAqE7MMCLS8
+X-Proofpoint-ORIG-GUID: 8VlX8RXCoCA2VHs5elbU6DAqE7MMCLS8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ mlxscore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230089
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,21 +105,313 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 16, 2024 at 7:58=E2=80=AFPM Dorjoy Chowdhury <dorjoychy111@gmai=
-l.com> wrote:
->
-> Ping
->
-> This patch series has been reviewed by Alex. I am not sure if it needs
-> more review. If not, maybe this can be picked up for merging. Thanks!
->
+When debugging qemu-user processes using gdbstub, the following warning
+appears every time:
 
-Gentle ping.
+    warning: BFD: warning: system-supplied DSO at 0x7f8253cc3000 has a corrupt string table index
 
-This patch series has been reviewed by Alex and there hasn't been any
-more reviews. it would be great if this could be picked up for
-merging. Thanks!
+The reason is that QEMU does not map the VDSO's section headers. The
+VDSO's ELF header's e_shoff points to zeros, which GDB fails to parse.
 
-Regards,
-Dorjoy
+The difference with the kernel's VDSO is that the latter is mapped as a
+blob, ignoring program headers - which also don't cover the section
+table. QEMU, on the other hand, loads it as an ELF file.
+
+There are multiple ways to resolve it:
+
+- Copy VDSO as a blob in load_elf_vdso(). This would require creating
+  specialized loader logic, that duplicates parts of load_elf_image().
+
+- Fix up VDSO's PHDR size in load_elf_vdso(). This would require either
+  duplicating the parsing logic, or adding an ugly parameter to
+  load_elf_image().
+
+- Fix up VDSO's PHDR size in gen-vdso. This is the simplest solution,
+  so do it. The only tricky part is byte-swaps: they need to be either
+  done on local copies or in-place, and then reverted in the end. To
+  preserve the existing code structure, do the former for Sym and Dyn,
+  and the latter for Ehdr, Phdr, and Shdr.
+
+To verify this change, I diffed the on-disk and the loaded VDSO; the
+result does not show anything unusual, except for what seems to be an
+existing oversight (which should probably be fixed separately):
+
+│  Symbol table '.dynsym' contains 8 entries:
+│     Num:    Value          Size Type    Bind   Vis      Ndx Name
+│ -     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+│ -     6: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.29
+│ +     0: 00007f61075bf000     0 NOTYPE  LOCAL  DEFAULT  UND
+│ +     6: 00007f61075bf000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.29
+
+Fixes: 2fa536d10797 ("linux-user: Add gen-vdso tool")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ linux-user/gen-vdso-elfn.c.inc | 89 ++++++++++++++++++++++------------
+ linux-user/gen-vdso.c          | 40 +++++++--------
+ 2 files changed, 79 insertions(+), 50 deletions(-)
+
+diff --git a/linux-user/gen-vdso-elfn.c.inc b/linux-user/gen-vdso-elfn.c.inc
+index 95856eb839b..82002df4fc0 100644
+--- a/linux-user/gen-vdso-elfn.c.inc
++++ b/linux-user/gen-vdso-elfn.c.inc
+@@ -68,28 +68,45 @@ static void elfN(search_symtab)(ElfN(Shdr) *shdr, unsigned sym_idx,
+                                 void *buf, bool need_bswap)
+ {
+     unsigned str_idx = shdr[sym_idx].sh_link;
+-    ElfN(Sym) *sym = buf + shdr[sym_idx].sh_offset;
+-    unsigned sym_n = shdr[sym_idx].sh_size / sizeof(*sym);
++    ElfN(Sym) *target_sym = buf + shdr[sym_idx].sh_offset;
++    unsigned sym_n = shdr[sym_idx].sh_size / sizeof(*target_sym);
+     const char *str = buf + shdr[str_idx].sh_offset;
+ 
+     for (unsigned i = 0; i < sym_n; ++i) {
+         const char *name;
++        ElfN(Sym) sym;
+ 
++        memcpy(&sym, &target_sym[i], sizeof(sym));
+         if (need_bswap) {
+-            elfN(bswap_sym)(sym + i);
++            elfN(bswap_sym)(&sym);
+         }
+-        name = str + sym[i].st_name;
++        name = str + sym.st_name;
+ 
+         if (sigreturn_sym && strcmp(sigreturn_sym, name) == 0) {
+-            sigreturn_addr = sym[i].st_value;
++            sigreturn_addr = sym.st_value;
+         }
+         if (rt_sigreturn_sym && strcmp(rt_sigreturn_sym, name) == 0) {
+-            rt_sigreturn_addr = sym[i].st_value;
++            rt_sigreturn_addr = sym.st_value;
+         }
+     }
+ }
+ 
+-static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
++static void elfN(bswap_ps_hdrs)(ElfN(Ehdr) *ehdr)
++{
++    ElfN(Phdr) *phdr = (void *)ehdr + ehdr->e_phoff;
++    ElfN(Shdr) *shdr = (void *)ehdr + ehdr->e_shoff;
++    ElfN(Half) i;
++
++    for (i = 0; i < ehdr->e_phnum; ++i) {
++        elfN(bswap_phdr)(&phdr[i]);
++    }
++
++    for (i = 0; i < ehdr->e_shnum; ++i) {
++        elfN(bswap_shdr)(&shdr[i]);
++    }
++}
++
++static void elfN(process)(FILE *outf, void *buf, long len, bool need_bswap)
+ {
+     ElfN(Ehdr) *ehdr = buf;
+     ElfN(Phdr) *phdr;
+@@ -103,24 +120,14 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+     int errors = 0;
+ 
+     if (need_bswap) {
+-        elfN(bswap_ehdr)(ehdr);
++        elfN(bswap_ehdr)(buf);
++        elfN(bswap_ps_hdrs)(buf);
+     }
+ 
+     phnum = ehdr->e_phnum;
+     phdr = buf + ehdr->e_phoff;
+-    if (need_bswap) {
+-        for (unsigned i = 0; i < phnum; ++i) {
+-            elfN(bswap_phdr)(phdr + i);
+-        }
+-    }
+-
+     shnum = ehdr->e_shnum;
+     shdr = buf + ehdr->e_shoff;
+-    if (need_bswap) {
+-        for (unsigned i = 0; i < shnum; ++i) {
+-            elfN(bswap_shdr)(shdr + i);
+-        }
+-    }
+     for (unsigned i = 0; i < shnum; ++i) {
+         switch (shdr[i].sh_type) {
+         case SHT_SYMTAB:
+@@ -154,6 +161,16 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+             fprintf(stderr, "LOAD segment not loaded at address 0\n");
+             errors++;
+         }
++        /*
++         * Extend the program header to cover the entire VDSO, so that
++         * load_elf_vdso() loads everything, including section headers.
++         */
++        if (len > phdr[i].p_filesz) {
++            phdr[i].p_filesz = len;
++        }
++        if (len > phdr[i].p_memsz) {
++            phdr[i].p_memsz = len;
++        }
+         first_segsz = phdr[i].p_filesz;
+         if (first_segsz < ehdr->e_phoff + phnum * sizeof(*phdr)) {
+             fprintf(stderr, "LOAD segment does not cover PHDRs\n");
+@@ -197,17 +214,24 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+         output_reloc(outf, buf, &phdr[i].p_paddr);
+     }
+ 
++    /* Relocate the section headers. */
++    for (unsigned i = 0; i < shnum; ++i) {
++        output_reloc(outf, buf, &shdr[i].sh_addr);
++    }
++
+     /* Relocate the DYNAMIC entries. */
+     if (dynamic_addr) {
+-        ElfN(Dyn) *dyn = buf + dynamic_ofs;
+-        __typeof(dyn->d_tag) tag;
++        ElfN(Dyn) *target_dyn = buf + dynamic_ofs;
++        __typeof(((ElfN(Dyn) *)target_dyn)->d_tag) tag;
+ 
+         do {
++            ElfN(Dyn) dyn;
+ 
++            memcpy(&dyn, target_dyn, sizeof(dyn));
+             if (need_bswap) {
+-                elfN(bswap_dyn)(dyn);
++                elfN(bswap_dyn)(&dyn);
+             }
+-            tag = dyn->d_tag;
++            tag = dyn.d_tag;
+ 
+             switch (tag) {
+             case DT_HASH:
+@@ -218,7 +242,7 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+             case DT_PLTGOT:
+             case DT_ADDRRNGLO ... DT_ADDRRNGHI:
+                 /* These entries store an address in the entry. */
+-                output_reloc(outf, buf, &dyn->d_un.d_val);
++                output_reloc(outf, buf, &target_dyn->d_un.d_val);
+                 break;
+ 
+             case DT_NULL:
+@@ -235,7 +259,7 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+                 break;
+ 
+             case DT_SYMENT:
+-                if (dyn->d_un.d_val != sizeof(ElfN(Sym))) {
++                if (dyn.d_un.d_val != sizeof(ElfN(Sym))) {
+                     fprintf(stderr, "VDSO has incorrect dynamic symbol size\n");
+                     errors++;
+                 }
+@@ -251,7 +275,7 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+                  * ??? The RISC-V toolchain will emit these even when there
+                  * are no relocations.  Validate zeros.
+                  */
+-                if (dyn->d_un.d_val != 0) {
++                if (dyn.d_un.d_val != 0) {
+                     fprintf(stderr, "VDSO has dynamic relocations\n");
+                     errors++;
+                 }
+@@ -287,7 +311,7 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+                 errors++;
+                 break;
+             }
+-            dyn++;
++            target_dyn++;
+         } while (tag != DT_NULL);
+         if (errors) {
+             exit(EXIT_FAILURE);
+@@ -296,11 +320,11 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+ 
+     /* Relocate the dynamic symbol table. */
+     if (dynsym_idx) {
+-        ElfN(Sym) *sym = buf + shdr[dynsym_idx].sh_offset;
+-        unsigned sym_n = shdr[dynsym_idx].sh_size / sizeof(*sym);
++        ElfN(Sym) *target_sym = buf + shdr[dynsym_idx].sh_offset;
++        unsigned sym_n = shdr[dynsym_idx].sh_size / sizeof(*target_sym);
+ 
+         for (unsigned i = 0; i < sym_n; ++i) {
+-            output_reloc(outf, buf, &sym[i].st_value);
++            output_reloc(outf, buf, &target_sym[i].st_value);
+         }
+     }
+ 
+@@ -311,4 +335,9 @@ static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
+     if (symtab_idx) {
+         elfN(search_symtab)(shdr, symtab_idx, buf, need_bswap);
+     }
++
++    if (need_bswap) {
++        elfN(bswap_ps_hdrs)(buf);
++        elfN(bswap_ehdr)(buf);
++    }
+ }
+diff --git a/linux-user/gen-vdso.c b/linux-user/gen-vdso.c
+index 31e333be802..721f38d5a3b 100644
+--- a/linux-user/gen-vdso.c
++++ b/linux-user/gen-vdso.c
+@@ -131,23 +131,6 @@ int main(int argc, char **argv)
+     }
+     fclose(inf);
+ 
+-    /*
+-     * Write out the vdso image now, before we make local changes.
+-     */
+-
+-    fprintf(outf,
+-            "/* Automatically generated from linux-user/gen-vdso.c. */\n"
+-            "\n"
+-            "static const uint8_t %s_image[] = {",
+-            prefix);
+-    for (long i = 0; i < total_len; ++i) {
+-        if (i % 12 == 0) {
+-            fputs("\n   ", outf);
+-        }
+-        fprintf(outf, " 0x%02x,", buf[i]);
+-    }
+-    fprintf(outf, "\n};\n\n");
+-
+     /*
+      * Identify which elf flavor we're processing.
+      * The first 16 bytes of the file are e_ident.
+@@ -179,14 +162,17 @@ int main(int argc, char **argv)
+      * Output relocation addresses as we go.
+      */
+ 
+-    fprintf(outf, "static const unsigned %s_relocs[] = {\n", prefix);
++    fprintf(outf,
++            "/* Automatically generated by linux-user/gen-vdso.c. */\n"
++            "\n"
++            "static const unsigned %s_relocs[] = {\n", prefix);
+ 
+     switch (buf[EI_CLASS]) {
+     case ELFCLASS32:
+-        elf32_process(outf, buf, need_bswap);
++        elf32_process(outf, buf, total_len, need_bswap);
+         break;
+     case ELFCLASS64:
+-        elf64_process(outf, buf, need_bswap);
++        elf64_process(outf, buf, total_len, need_bswap);
+         break;
+     default:
+         fprintf(stderr, "%s: invalid elf EI_CLASS (%u)\n",
+@@ -196,6 +182,20 @@ int main(int argc, char **argv)
+ 
+     fprintf(outf, "};\n\n");   /* end vdso_relocs. */
+ 
++    /*
++     * Write out the vdso image now, after we made local changes.
++     */
++    fprintf(outf,
++            "static const uint8_t %s_image[] = {",
++            prefix);
++    for (long i = 0; i < total_len; ++i) {
++        if (i % 12 == 0) {
++            fputs("\n   ", outf);
++        }
++        fprintf(outf, " 0x%02x,", buf[i]);
++    }
++    fprintf(outf, "\n};\n\n");
++
+     fprintf(outf, "static const VdsoImageInfo %s_image_info = {\n", prefix);
+     fprintf(outf, "    .image = %s_image,\n", prefix);
+     fprintf(outf, "    .relocs = %s_relocs,\n", prefix);
+-- 
+2.47.0
+
 
