@@ -2,67 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4933F9AC7FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 12:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87099AC80B
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 12:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Ybn-00089B-P0; Wed, 23 Oct 2024 06:28:55 -0400
+	id 1t3Yh8-0001bL-QX; Wed, 23 Oct 2024 06:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3Ybj-00088V-8W
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:28:51 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1t3Yh6-0001b7-M2
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:34:24 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3Ybd-0002CX-Nf
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:28:50 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5c9362c26d8so1260037a12.1
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 03:28:44 -0700 (PDT)
+ id 1t3Yh4-0002qM-NS
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 06:34:24 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-37d495d217bso6362358f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 03:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729679323; x=1730284123; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Toes6rdBZiqjKLHb+Mgyoe0zFFm7Szb2c/qGWoXSuvo=;
- b=C7GAVAVfNTNE4dRVwfHFjxZTQXi4GY2KqPvl+yRJiiGoPqMJ4Mbf8SePDq/tsPsWjJ
- rhlxXfqDK1DZ5DevS3xjY0C7T7M8PIP5ShJEPN/Z1sYhrjFHd74vhQ1xb2N0b695kCK5
- Xu/qcd/lYI2ZYWsHLvrZuc0GgMwJSV853OFDqIp59xi4UhOl2RZpQQroS1cPfOREZRoI
- AwlW9f03+ERWnOdcQ+dtdRORJIlAqyRnS6eRvwhq1oJ5+81yy79yLhhKqSmKukZKWp+4
- lHFfMGlQC0R0KemgEzrc2fK4fFm8uUKPe9A3WtxoJovsNE2C3qYYpzNsPMSOYQCC4C8j
- yYtg==
+ d=linaro.org; s=google; t=1729679660; x=1730284460; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=F6t0P4IRraux0i655ttAiXksDqW472MbqwgVD8WXawo=;
+ b=ao2odWd4zBVlYe9jJF/Jv0afh+wRqdudhzCXLRkO1TenTTBIblXNXY93NE7oghYCj7
+ fhvAUfA9rSLsHfq/tEgsrrGb3vshf1sUhw/biHJy6p3VKOmjYRRhUifP9efOjgToZW7x
+ MbfjLCJgxR2RPq17KA/avvRUs4rhXH6KGzGPhoXPcb5wFxDpNRnvv3NoFwkjHWL7ei6P
+ usjFVdJ8IHeQi7EH1dfaSEqSQXqV4zfVso2GljPAlUw+yTlxmAgA9sNTowUNvwGkOlOJ
+ HFAAnPfsVwQnQ8Or7wV4xrcipxFENpmRE3TPg8PxYT1PvJxTw10Swd6GQO/O0JE1sZ5Y
+ NhQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729679323; x=1730284123;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Toes6rdBZiqjKLHb+Mgyoe0zFFm7Szb2c/qGWoXSuvo=;
- b=to255YVP6Hximcxk3HgmEST5E1y0kZVf1ZElKQGRW2TZZBLdDUemWwAGwy98oish5H
- VHHFiQFIU64XPjyl1C2S3MApGEQbLuK/v2zbvVYlTRVqtz6XWPJTemo7FMKpT0WsPhDk
- c6frRCq0Am5NIwDjIJyz+8SRnkQXbCX+uZr1pnYfn2heJDIug54Ds7TRDb0tG87HBQpw
- K2OQW4qEJLZ2DrCYK20snwvZCFdyUCScKE7ARbsYz0wx/XJqEjygfRxOp4xWgoChBl+5
- QKLO3iw2YLzja3U6iqnqRABH6zLvGZmIrujcwP1Tt4HbbG2N8eGrI5Ew/75BGdzRJzQD
- qSOw==
-X-Gm-Message-State: AOJu0Yx38G23dEtGQiAwisaBk7SA0RVib5P6nml1V2nG2B7UA2KiTCBJ
- mZV9eWVkNFXNVJyKbsRjMnBUjr3NILkbyQGvVJQez1je9kHV37lUSrRyr/1Q7V2UxNvKv7UqSjS
- ODd812cU+zETDLrl9TxiE5Gg5U3WPkKDeIIBq4w==
-X-Google-Smtp-Source: AGHT+IHaQHTYsSR/6M0tqdPJYgovdog0uxprV1E15nlqSAliO8PzYeCxlR3h0+vQFSpPQpVbsiiLxDpBT2OSTUU1gA8=
-X-Received: by 2002:a17:906:c150:b0:a91:1699:f8eb with SMTP id
- a640c23a62f3a-a9abf325382mr219903166b.28.1729679322901; Wed, 23 Oct 2024
- 03:28:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20241022085359.186470-1-pbonzini@redhat.com>
-In-Reply-To: <20241022085359.186470-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1729679660; x=1730284460;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F6t0P4IRraux0i655ttAiXksDqW472MbqwgVD8WXawo=;
+ b=vE68XsqFPNGy7LnL5ot8vbBHUiHCTaALsDxaLjrHvt4eIIkpDhLvVsLvJTtkhJ4716
+ EDtNLNBfKTqTf2oTkQeED0gxuA9TC/XqXDcVsqcUL1WdL9TRKh4HsnjtF35BdzR0450U
+ TjHuU6ZTQJZ3C0047090M6OtTzjGocyTMQOAKTuVmV0m1BgNtTcgiQ5ic2NQqSFw60QR
+ 3NOGxRQn5b6pfc1wHOpmPTVpboo7V5Hf31n+4DmEsqOCu++yH6G1f3SPKBGbUtFHu2jw
+ k2OAr5rGxmzWGi2zz5x1MwoYtSThu4ynnQwMi+s/vNO2NaS9Sf51GZG0qubVeLsIWT9W
+ dk2g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWDjGSHeRUxPmXKkhJDg0uC3NIfKxDFW5ueDP1MpaT6MzDaXu0KEE/2Getwcg90Q1uST/wLugNArRSS@nongnu.org
+X-Gm-Message-State: AOJu0YzBaC+sKZ1QgLANbaA+MlF3xRANhy1cMHDoCpYiUKODez6ayPRn
+ XOySrBQKhvQqKRNbW9EwSuOUzHMZIdnwzmAyyP946c+PYSAS2d/5CnFdgJg0T6A=
+X-Google-Smtp-Source: AGHT+IE7oL8WjCyV+AXeF5TcGJEsTQZ3Q4Z04khXNHVuVJKJFQxbOrg0/KUp1dxxPsvkqkeuAO+VPg==
+X-Received: by 2002:a05:6000:546:b0:37d:61aa:67de with SMTP id
+ ffacd0b85a97d-37efcf7bf73mr1593468f8f.42.1729679660586; 
+ Wed, 23 Oct 2024 03:34:20 -0700 (PDT)
+Received: from meli-email.org (adsl-113.37.6.2.tellas.gr. [37.6.2.113])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a915a114asm454618166b.222.2024.10.23.03.34.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Oct 2024 03:34:20 -0700 (PDT)
+Date: Wed, 23 Oct 2024 13:29:50 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 23 Oct 2024 13:28:26 +0300
-Message-ID: <CAAjaMXaaRGXY4shzF_-9Mzhb69Bs5gEHuMHWGczkfmvGyfkPUA@mail.gmail.com>
-Subject: Re: [PATCH] arm: Kconfig: disable stellaris if Rust is enabled
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 01/13] meson: import rust module into a global variable
+User-Agent: meli 0.8.7
+References: <20241021163538.136941-1-pbonzini@redhat.com>
+ <20241021163538.136941-2-pbonzini@redhat.com>
+In-Reply-To: <20241021163538.136941-2-pbonzini@redhat.com>
+Message-ID: <lt1d7.lvtvfw4qqc8g@linaro.org>
+MIME-Version: 1.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,52 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Paolo,
-
-On Tue, 22 Oct 2024 at 11:54, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, 21 Oct 2024 19:35, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>---
+> meson.build                      | 1 +
+> rust/qemu-api-macros/meson.build | 2 +-
+> 2 files changed, 2 insertions(+), 1 deletion(-)
 >
-> The stellaris board requires the pl011-luminary variant of pl011,
-> which is not supported by the Rust implementation.
->
-> There are at least three possibilities: 1) implement the subclass
-> (a bit harder in Rust since the language does not have subclasses)
-> 2) change the ID to a property 3) split pl011-luminary to a separate
-> Kconfig symbol and leave the subclass as C code.
->
-> Just for the sake of starting the discussion, this RFC patch uses
-> the big axe and disables stellaris.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  hw/arm/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index e7fd9338d11..d5ade150d23 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -219,12 +219,12 @@ config STELLARIS
->      bool
->      default y
->      depends on TCG && ARM
-> +    depends on !HAVE_RUST # Rust does not implement pl011-luminary
->      imply I2C_DEVICES
->      select ARM_V7M
->      select CMSDK_APB_WATCHDOG
->      select I2C
-> -    select PL011 if !HAVE_RUST # UART
-> -    select X_PL011_RUST if HAVE_RUST # UART
-> +    select PL011 # UART
->      select PL022 # SPI
->      select PL061 # GPIO
->      select SSD0303 # OLED display
-> --
-> 2.46.2
+>diff --git a/meson.build b/meson.build
+>index d26690ce204..ffd78b6cbb3 100644
+>--- a/meson.build
+>+++ b/meson.build
+>@@ -15,6 +15,7 @@ meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
+> 
+> not_found = dependency('', required: false)
+> keyval = import('keyval')
+>+rust = import('rust')
+> ss = import('sourceset')
+> fs = import('fs')
+> 
+>diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
+>index 517b9a4d2d5..24325dea5c2 100644
+>--- a/rust/qemu-api-macros/meson.build
+>+++ b/rust/qemu-api-macros/meson.build
+>@@ -2,7 +2,7 @@ quote_dep = dependency('quote-1-rs', native: true)
+> syn_dep = dependency('syn-2-rs', native: true)
+> proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
+> 
+>-_qemu_api_macros_rs = import('rust').proc_macro(
+>+_qemu_api_macros_rs = rust.proc_macro(
+>   'qemu_api_macros',
+>   files('src/lib.rs'),
+>   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+>-- 
+>2.46.2
 >
 
+You could also change the bindgen target line:
+
+  bindings_rs = import('rust').bindgen(
+
+Either way:
+
+Tested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-
-By the way I already have a patch that adds a -luminary version,
-planning on including it with the rest of my procedural macro patches
-I will send.
 
