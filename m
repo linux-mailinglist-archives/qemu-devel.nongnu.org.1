@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0CE9ACB08
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1EE9ACAFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:19:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3bFO-0006Fn-Go; Wed, 23 Oct 2024 09:17:58 -0400
+	id 1t3bFS-0006Sk-AH; Wed, 23 Oct 2024 09:18:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFC-00069j-0x
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:17:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFF-0006Cm-2z
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:17:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFA-0002B0-23
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:17:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFD-0002BV-98
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:17:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729689463;
+ s=mimecast20190719; t=1729689466;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kyLFJBCL8uoxwg18WzHrQmP6RKBqZyA4ytuOh0evTMQ=;
- b=EECDUKDG/XrSPio4Ftz6H6UOlha258KFiD2q1SCYLXJOq6iLQShhkbYOrHUNM3dem+4sli
- 4A++bYRrbsWGyOGb/pBJeY12UIDeegMSeRNnHBGMP0JYDq5L+LcZNUd9TQvFuRRYnhcqnT
- 59IRZAP4av/V95Nor6HDS7RCFyPDI5g=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4c2+dcvwTw8EOqSLkKmGvOUFCxwmSLHABvCXafJ4CH0=;
+ b=dHF8Zo8IGRbpLCMkZ9BiFZDOrIPCM+xID54xbFY5i6czAE6yR0jPcWExwmCHFj3+C2mPuI
+ 3/quek7FK1pAu9TWWfQjyP9ZMgLoyvYLrj1fylDHWdGs4Et46mtEQ7zGYBF3Q1bKy8oYwP
+ BmAfStW2ra7gkIG2VO38dhRMhqoHMHg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-rYHG84foPQGwZYNo6chcAA-1; Wed,
- 23 Oct 2024 09:17:40 -0400
-X-MC-Unique: rYHG84foPQGwZYNo6chcAA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-QyX1nlqCPpeyPzXgIWkQsg-1; Wed,
+ 23 Oct 2024 09:17:42 -0400
+X-MC-Unique: QyX1nlqCPpeyPzXgIWkQsg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5BF1F1955DCF; Wed, 23 Oct 2024 13:17:39 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 67500195423D; Wed, 23 Oct 2024 13:17:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.43])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E74AE19560AE; Wed, 23 Oct 2024 13:17:37 +0000 (UTC)
+ id D3D2719560AE; Wed, 23 Oct 2024 13:17:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jared Rossi <jrossi@linux.ibm.com>
-Subject: [PULL 10/23] pc-bios/s390-ccw: Remove panics from DASD IPL path
-Date: Wed, 23 Oct 2024 15:16:57 +0200
-Message-ID: <20241023131710.906748-11-thuth@redhat.com>
+Subject: [PULL 11/23] pc-bios/s390-ccw: Remove panics from Netboot IPL path
+Date: Wed, 23 Oct 2024 15:16:58 +0200
+Message-ID: <20241023131710.906748-12-thuth@redhat.com>
 In-Reply-To: <20241023131710.906748-1-thuth@redhat.com>
 References: <20241023131710.906748-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,164 +81,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Remove panic-on-error from DASD IPL specific functions so that error recovery
+Remove panic-on-error from Netboot specific functions so that error recovery
 may be possible in the future.
 
 Functions that would previously panic now provide a return code.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241020012953.1380075-11-jrossi@linux.ibm.com>
+Message-ID: <20241020012953.1380075-12-jrossi@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/dasd-ipl.h |  2 +-
- pc-bios/s390-ccw/dasd-ipl.c | 66 ++++++++++++++++++++-----------------
- 2 files changed, 37 insertions(+), 31 deletions(-)
+ pc-bios/s390-ccw/s390-ccw.h   |  2 +-
+ pc-bios/s390-ccw/bootmap.c    |  1 +
+ pc-bios/s390-ccw/netmain.c    | 17 +++++++++++------
+ pc-bios/s390-ccw/virtio-net.c |  7 +++++--
+ 4 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/pc-bios/s390-ccw/dasd-ipl.h b/pc-bios/s390-ccw/dasd-ipl.h
-index c394828906..eb1898c84a 100644
---- a/pc-bios/s390-ccw/dasd-ipl.h
-+++ b/pc-bios/s390-ccw/dasd-ipl.h
-@@ -11,6 +11,6 @@
- #ifndef DASD_IPL_H
- #define DASD_IPL_H
+diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+index 3e844abd71..344ad15655 100644
+--- a/pc-bios/s390-ccw/s390-ccw.h
++++ b/pc-bios/s390-ccw/s390-ccw.h
+@@ -57,7 +57,7 @@ unsigned int get_loadparm_index(void);
+ void main(void);
  
--void dasd_ipl(SubChannelId schid, uint16_t cutype);
-+int dasd_ipl(SubChannelId schid, uint16_t cutype);
+ /* netmain.c */
+-void netmain(void);
++int netmain(void);
  
- #endif /* DASD_IPL_H */
-diff --git a/pc-bios/s390-ccw/dasd-ipl.c b/pc-bios/s390-ccw/dasd-ipl.c
-index ae751adec1..babece95ea 100644
---- a/pc-bios/s390-ccw/dasd-ipl.c
-+++ b/pc-bios/s390-ccw/dasd-ipl.c
-@@ -111,38 +111,29 @@ static void make_readipl(void)
-     ccwIplRead->count = 0x18; /* Read 0x18 bytes of data */
+ /* sclp.c */
+ void sclp_print(const char *string);
+diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
+index 652807a16a..95ef9104d0 100644
+--- a/pc-bios/s390-ccw/bootmap.c
++++ b/pc-bios/s390-ccw/bootmap.c
+@@ -1072,6 +1072,7 @@ void zipl_load(void)
+ 
+     if (virtio_get_device_type() == VIRTIO_ID_NET) {
+         netmain();
++        panic("\n! Cannot IPL from this network !\n");
+     }
+ 
+     if (ipl_scsi()) {
+diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
+index bc6ad8695f..d1a6c9a91c 100644
+--- a/pc-bios/s390-ccw/netmain.c
++++ b/pc-bios/s390-ccw/netmain.c
+@@ -464,7 +464,7 @@ static bool find_net_dev(Schib *schib, int dev_no)
+     return false;
  }
  
--static void run_readipl(SubChannelId schid, uint16_t cutype)
-+static int run_readipl(SubChannelId schid, uint16_t cutype)
+-static void virtio_setup(void)
++static bool virtio_setup(void)
  {
--    if (do_cio(schid, cutype, 0x00, CCW_FMT0)) {
--        panic("dasd-ipl: Failed to run Read IPL channel program\n");
--    }
-+    return do_cio(schid, cutype, 0x00, CCW_FMT0);
+     Schib schib;
+     int ssid;
+@@ -495,10 +495,10 @@ static void virtio_setup(void)
+         }
+     }
+ 
+-    IPL_assert(found, "No virtio net device found");
++    return found;
  }
  
- /*
-  * The architecture states that IPL1 data should consist of a psw followed by
-  * format-0 READ and TIC CCWs. Let's sanity check.
-  */
--static void check_ipl1(void)
-+static bool check_ipl1(void)
+-void netmain(void)
++int netmain(void)
  {
-     Ccw0 *ccwread = (Ccw0 *)0x08;
-     Ccw0 *ccwtic = (Ccw0 *)0x10;
+     filename_ip_t fn_ip;
+     int rc, fnlen;
+@@ -506,11 +506,15 @@ void netmain(void)
+     sclp_setup();
+     puts("Network boot starting...");
  
--    if (ccwread->cmd_code != CCW_CMD_DASD_READ ||
--        ccwtic->cmd_code != CCW_CMD_TIC) {
--        panic("dasd-ipl: IPL1 data invalid. Is this disk really bootable?\n");
--    }
-+    return (ccwread->cmd_code == CCW_CMD_DASD_READ &&
-+            ccwtic->cmd_code == CCW_CMD_TIC);
- }
- 
--static void check_ipl2(uint32_t ipl2_addr)
-+static bool check_ipl2(uint32_t ipl2_addr)
- {
-     Ccw0 *ccw = u32toptr(ipl2_addr);
- 
--    if (ipl2_addr == 0x00) {
--        panic("IPL2 address invalid. Is this disk really bootable?\n");
--    }
--    if (ccw->cmd_code == 0x00) {
--        panic("IPL2 ccw data invalid. Is this disk really bootable?\n");
--    }
-+    return (ipl2_addr != 0x00 && ccw->cmd_code != 0x00);
- }
- 
- static uint32_t read_ipl2_addr(void)
-@@ -188,52 +179,67 @@ static void ipl1_fixup(void)
-     ccwSearchTic->cda = ptr2u32(ccwSearchID);
- }
- 
--static void run_ipl1(SubChannelId schid, uint16_t cutype)
-+static int run_ipl1(SubChannelId schid, uint16_t cutype)
-  {
-     uint32_t startAddr = 0x08;
- 
--    if (do_cio(schid, cutype, startAddr, CCW_FMT0)) {
--        panic("dasd-ipl: Failed to run IPL1 channel program\n");
--    }
-+    return do_cio(schid, cutype, startAddr, CCW_FMT0);
- }
- 
--static void run_ipl2(SubChannelId schid, uint16_t cutype, uint32_t addr)
-+static int run_ipl2(SubChannelId schid, uint16_t cutype, uint32_t addr)
- {
--    if (run_dynamic_ccw_program(schid, cutype, addr)) {
--        panic("dasd-ipl: Failed to run IPL2 channel program\n");
--    }
-+    return run_dynamic_ccw_program(schid, cutype, addr);
- }
- 
- /*
-  * Limitations in vfio-ccw support complicate the IPL process. Details can
-  * be found in docs/devel/s390-dasd-ipl.rst
-  */
--void dasd_ipl(SubChannelId schid, uint16_t cutype)
-+int dasd_ipl(SubChannelId schid, uint16_t cutype)
- {
-     PSWLegacy *pswl = (PSWLegacy *) 0x00;
-     uint32_t ipl2_addr;
- 
-     /* Construct Read IPL CCW and run it to read IPL1 from boot disk */
-     make_readipl();
--    run_readipl(schid, cutype);
-+    if (run_readipl(schid, cutype)) {
-+        puts("Failed to run Read IPL channel program");
-+        return -EIO;
-+    }
-+
-     ipl2_addr = read_ipl2_addr();
--    check_ipl1();
-+
-+    if (!check_ipl1()) {
-+        puts("IPL1 invalid for DASD-IPL");
-+        return -EINVAL;
+-    virtio_setup();
++    if (!virtio_setup()) {
++        puts("No virtio net device found.");
++        return -1;
 +    }
  
-     /*
-      * Fixup IPL1 channel program to account for vfio-ccw limitations, then run
-      * it to read IPL2 channel program from boot disk.
-      */
-     ipl1_fixup();
--    run_ipl1(schid, cutype);
--    check_ipl2(ipl2_addr);
-+    if (run_ipl1(schid, cutype)) {
-+        puts("Failed to run IPL1 channel program");
-+        return -EIO;
-+    }
-+
-+    if (!check_ipl2(ipl2_addr)) {
-+        puts("IPL2 invalid for DASD-IPL");
-+        return -EINVAL;
-+    }
+     rc = net_init(&fn_ip);
+     if (rc) {
+-        panic("Network initialization failed. Halting.");
++        puts("Network initialization failed.");
++        return -1;
+     }
  
-     /*
-      * Run IPL2 channel program to read operating system code from boot disk
-      */
--    run_ipl2(schid, cutype, ipl2_addr);
-+    if (run_ipl2(schid, cutype, ipl2_addr)) {
-+        puts("Failed to run IPL2 channel program");
-+        return -EIO;
-+    }
+     fnlen = strlen(fn_ip.filename);
+@@ -528,5 +532,6 @@ void netmain(void)
+         jump_to_low_kernel();
+     }
  
-     /* Transfer control to the guest operating system */
-     pswl->mask |= PSW_MASK_EAMODE;   /* Force z-mode */
-     pswl->addr |= PSW_MASK_BAMODE;   /* ...          */
-     jump_to_low_kernel();
+-    panic("Failed to load OS from network.");
++    puts("Failed to load OS from network.");
 +    return -1;
  }
+diff --git a/pc-bios/s390-ccw/virtio-net.c b/pc-bios/s390-ccw/virtio-net.c
+index 2fcb0a58c5..f9854a22c3 100644
+--- a/pc-bios/s390-ccw/virtio-net.c
++++ b/pc-bios/s390-ccw/virtio-net.c
+@@ -54,8 +54,11 @@ int virtio_net_init(void *mac_addr)
+     vdev->guest_features[0] = VIRTIO_NET_F_MAC_BIT;
+     virtio_setup_ccw(vdev);
+ 
+-    IPL_assert(vdev->guest_features[0] & VIRTIO_NET_F_MAC_BIT,
+-               "virtio-net device does not support the MAC address feature");
++    if (!(vdev->guest_features[0] & VIRTIO_NET_F_MAC_BIT)) {
++        puts("virtio-net device does not support the MAC address feature");
++        return -1;
++    }
++
+     memcpy(mac_addr, vdev->config.net.mac, ETH_ALEN);
+ 
+     for (i = 0; i < 64; i++) {
 -- 
 2.47.0
 
