@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F189AD6B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 23:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68ED99AD6BE
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 23:31:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3iu9-0000o0-MO; Wed, 23 Oct 2024 17:28:33 -0400
+	id 1t3iwX-0003A6-8R; Wed, 23 Oct 2024 17:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t3iu1-0000nf-TV
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 17:28:25 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t3iwV-00039t-TP
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 17:30:59 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t3iu0-0007d6-0P
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 17:28:25 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7ed67cfc1fcso137477a12.1
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 14:28:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t3iwR-0007yv-C0
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 17:30:59 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20e6981ca77so1838975ad.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 14:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729718902; x=1730323702; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JjDoBTrz22e33mOfB2cbwwFtf5EJUlD0swdssSX+JS8=;
- b=GWBl75htXy8+TX3YumT9h1W3PjgC1bZZXqIi+GmIBIAzHrW/a/HQqjYelvILoxBc2G
- YZ7aQZWFVPceSUQ2YT34kuE2lH3mOKR2KIjZEj3W7z2rWcdg3Ibhdlt3H0gGGd2y+BQv
- SraIG+NH7HmV8NIFbbQx4l5ra5QMT3EOQKd2KoU/8CpTZOq2x/XPTDRSjiQ70v8lJ6HU
- 3KP4Z0eB+ew6fyiWOOyC1kyaj26R4kqD4tb0nDkiptWsuIz75bwhVQTPKVRgwHBMOLtN
- wPNLrY8jCBsTt78oERNZz852NSLb8R3X2LtlpVgAKtUQ7PgH3wF242TUuFv4dqRa9pn+
- MhYQ==
+ d=linaro.org; s=google; t=1729719054; x=1730323854; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=U7SUzEd/ydNz4alr1dGxzqjamOGOLZayKNOj7UKibqI=;
+ b=OvbZR6BkxESf5Z1+AthxxWOfOaCKyMBIwnXT41jln20/AYC7GzW5cic5PrbLXYPnBP
+ HM4Vr5RqJDLiOjXrICrts9dLQ3Wc13vjZem7jQIDg1nUMOXai2IgcF9CT6AM0FUnyU9d
+ acZqa2VyWT8UzNyxxc/17mrGmyKqPesQjwmHKfQ8ksF4ODUA5gBlU/WtojCpiqVKqPzG
+ JXANyHug+zVil3Y0RXGCUebQSXF4CdY5yNFQ0ERQnrkohaF+nQADsbzu3fhTfU/SpB7I
+ 0EXc+epCu8krx12L7c5VBbq89uhETrTUs7Q8pHflo+2Ei5ewpSjaJFsfmcRdF+MzSWTI
+ uZoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729718902; x=1730323702;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JjDoBTrz22e33mOfB2cbwwFtf5EJUlD0swdssSX+JS8=;
- b=B3CRiPKSmRFhFgsaSQRHVVCTYIJIlfoDn2XsPJglUViTAVA/JzhDVstii3BgkvtWL6
- 2qnbUZTO2b70pXPTIXGXwCMzW2X00m7XaeUrnK42XErZM/URPYimf5vfvSFeZmAtlEnJ
- hMYP9mlzaqpcGB0CkEzT4FSGdAWc2o65BZAthF7DbuLvw3T3YzRADuIGwJ7HgXTvcr2x
- 3lgR5DPe6JjRXTzUJCXhlRhbWvLPnc+nG7h02ho6xFWkpYHW4vLDhSdhQzFAEJO79JEO
- cA661p/5nYVJhkX+vjSw4NgWWTqoAfxLERgSlGjLQnNMuByRXIn/NJDELIRF0MVdFkVL
- smgQ==
-X-Gm-Message-State: AOJu0YygpwhmfoIV4kOnaTKvE8V8oHnrXQgR+OBigpUo0cfa8nVvbJeg
- dugPkHJWHHupjD+qAJMZGI1g0cMCmKlOEbTOvcuoFW5xg7JkUOw6uUg206/9YZX6fa/mwd20Moh
- tdmmKOg==
-X-Google-Smtp-Source: AGHT+IHZkQt8sP0/MaN/ffi89jTmLQLdOn3N+dWAOYN14lHLM/nGmTQIcc6mya0DXfptP6IM4FLDCg==
-X-Received: by 2002:a05:6a21:1707:b0:1d2:f09e:c15b with SMTP id
- adf61e73a8af0-1d978b3e44cmr5010913637.25.1729718902538; 
- Wed, 23 Oct 2024 14:28:22 -0700 (PDT)
-Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
+ d=1e100.net; s=20230601; t=1729719054; x=1730323854;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U7SUzEd/ydNz4alr1dGxzqjamOGOLZayKNOj7UKibqI=;
+ b=NPHjYBeZ7KhX92HS+mEKjWRCujfEPsiAuWFsfphzrhR0sdFYsexpk22YXjMBR60U75
+ /lC7d4V9ACoS1tlCW2trcpzd7LWmBL1o3GgsqF7bQiTar83AaOlBJdPi3/B6tfKk+JI+
+ MldXxaE+33iDpsfsJU9RhFNNJB2WF9GJp2kgYF5oGXWwQrDGWSnR1SKDbczoXD5zdzd5
+ c3/vDUz98GZ0Xw/SUh5YJBA+0Gf+HekAocM3QAQvnot5u0M/355aAuLCoBk3oDpIj6lg
+ cDor1cJcgYZyZ8CNLq8xfzLgoW9rCgKanonAwcY9bPEn6d/u4xnBbmOVeUafyrZo+OBW
+ 5Kbg==
+X-Gm-Message-State: AOJu0YzpmMqPersyF8rmbi7FHdVL/fOO7py7zlYh4nOs3v1wcR+JVYGC
+ gKmHr4GigeJ1z13O+UxTiZfBAG4cw0EyjJpgRhHpjqtk5aD67RHeoV3WS6u6TWg=
+X-Google-Smtp-Source: AGHT+IE+gLc7zI3kkHZvSUNZEZ3gOmgOS5vERMyAjKlfEd5vfpBbSsq0vScd3j+qi6F4TmdmJlQ59A==
+X-Received: by 2002:a17:903:1d2:b0:20b:bac2:88f3 with SMTP id
+ d9443c01a7336-20fab2da50amr56007535ad.53.1729719053640; 
+ Wed, 23 Oct 2024 14:30:53 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7eaeaafab5esm7228137a12.17.2024.10.23.14.28.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 14:28:22 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v3 3/3] contrib/plugins: remove Makefile for contrib/plugins
-Date: Wed, 23 Oct 2024 14:28:12 -0700
-Message-Id: <20241023212812.1376972-4-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241023212812.1376972-1-pierrick.bouvier@linaro.org>
-References: <20241023212812.1376972-1-pierrick.bouvier@linaro.org>
+ d9443c01a7336-20e7ef0ad34sm61853995ad.68.2024.10.23.14.30.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Oct 2024 14:30:53 -0700 (PDT)
+Message-ID: <2816a9e4-1cb0-476d-b0b1-8040086f0d3a@linaro.org>
+Date: Wed, 23 Oct 2024 14:30:51 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tap-win32: fix format-truncation warning
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+References: <20241023183009.1041419-1-pierrick.bouvier@linaro.org>
+ <875xpilhu6.fsf@draig.linaro.org>
+ <0ec19690-760a-4726-baa9-6073c193dc3c@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <0ec19690-760a-4726-baa9-6073c193dc3c@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,181 +98,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now replaced by meson build.
+On 10/23/24 13:15, Pierrick Bouvier wrote:
+> On 10/23/24 12:50, Alex Bennée wrote:
+>> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+>>
+>>> Simply increase destination buffer size so truncation can't happen.
+>>>
+>>> "cc" "-m64" "-Ilibcommon.a.p" "-Isubprojects/dtc/libfdt"
+>>> "-I../subprojects/dtc/libfdt"
+>>> "-ID:/a/_temp/msys64/mingw64/include/pixman-1"
+>>> "-ID:/a/_temp/msys64/mingw64/include/glib-2.0"
+>>> "-ID:/a/_temp/msys64/mingw64/lib/glib-2.0/include"
+>>> "-ID:/a/_temp/msys64/mingw64/include/ncursesw"
+>>> "-fdiagnostics-color=auto" "-Wall" "-Winvalid-pch" "-Werror"
+>>> "-std=gnu11" "-O2" "-g" "-fstack-protector-strong" "-Wempty-body"
+>>> "-Wendif-labels" "-Wexpansion-to-defined" "-Wformat-security"
+>>> "-Wformat-y2k" "-Wignored-qualifiers" "-Wimplicit-fallthrough=2"
+>>> "-Winit-self" "-Wmissing-format-attribute" "-Wmissing-prototypes"
+>>> "-Wnested-externs" "-Wold-style-declaration" "-Wold-style-definition"
+>>> "-Wredundant-decls" "-Wshadow=local" "-Wstrict-prototypes"
+>>> "-Wtype-limits" "-Wundef" "-Wvla" "-Wwrite-strings"
+>>> "-Wno-missing-include-dirs" "-Wno-psabi" "-Wno-shift-negative-value"
+>>> "-iquote" "." "-iquote" "D:/a/qemu/qemu" "-iquote"
+>>> "D:/a/qemu/qemu/include" "-iquote"
+>>> "D:/a/qemu/qemu/host/include/x86_64" "-iquote"
+>>> "D:/a/qemu/qemu/host/include/generic" "-iq
+>>> ../net/tap-win32.c: In function 'tap_win32_open':
+>>> ../net/tap-win32.c:343:19: error: '%s' directive output may be truncated writing up to 
+>>> 255 bytes into a region of size 176 [-Werror=format-truncation=]
+>>>    343 |              "%s\\%s\\Connection",
+>>>        |                   ^~
+>>>    344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>>>        |                                       ~~~~~~~~~
+>>> In function 'get_device_guid',
+>>>      inlined from 'tap_win32_open' at ../net/tap-win32.c:616:10:
+>>> ../net/tap-win32.c:341:9: note: 'snprintf' output between 92 and 347
+>>> bytes into a destination of size 256
+>>
+>> Is the compiler min/max maxing what UCS-16 or UTF-8 might pack into that string?
+>>>
+> 
+> Yes, enum_name (used to compose final string) is already sized 256, so result *may* be 
+> bigger. I'm not sure it would happen in the real world though.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- configure                | 18 ---------
- Makefile                 | 10 -----
- contrib/plugins/Makefile | 87 ----------------------------------------
- 3 files changed, 115 deletions(-)
- delete mode 100644 contrib/plugins/Makefile
+There are several patches for this, most recently:
 
-diff --git a/configure b/configure
-index 72d1a942250..d23587c77dc 100755
---- a/configure
-+++ b/configure
-@@ -1073,7 +1073,6 @@ if test "$plugins" != "no" && test $host_bits -eq 64; then
-         plugins="no"
-     else
-         plugins=yes
--        subdirs="$subdirs contrib/plugins"
-     fi
- fi
- 
-@@ -1699,7 +1698,6 @@ LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
- LINKS="$LINKS tests/avocado tests/data"
- LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
- LINKS="$LINKS python"
--LINKS="$LINKS contrib/plugins/Makefile "
- for f in $LINKS ; do
-     if [ -e "$source_path/$f" ]; then
-         symlink "$source_path/$f" "$f"
-@@ -1785,22 +1783,6 @@ if test "$default_targets" = "yes"; then
-   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
- fi
- 
--# contrib/plugins configuration
--echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
--echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
--echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
--echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
--echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
--if test "$host_os" = windows; then
--  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = darwin; then
--  echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = windows; then
--  echo "CONFIG_WIN32=y" >> contrib/plugins/$config_host_mak
--fi
--
- # tests/tcg configuration
- mkdir -p tests/tcg
- echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
-diff --git a/Makefile b/Makefile
-index 917c9a34d1c..b65b0bd41a8 100644
---- a/Makefile
-+++ b/Makefile
-@@ -187,11 +187,6 @@ SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
- $(SUBDIR_RULES):
- 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
- 
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--.PHONY: plugins
--plugins: contrib/plugins/all
--endif
--
- .PHONY: recurse-all recurse-clean
- recurse-all: $(addsuffix /all, $(SUBDIRS))
- recurse-clean: $(addsuffix /clean, $(SUBDIRS))
-@@ -307,11 +302,6 @@ help:
- 	$(call print-help,cscope,Generate cscope index)
- 	$(call print-help,sparse,Run sparse on the QEMU source)
- 	@echo  ''
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--	@echo  'Plugin targets:'
--	$(call print-help,plugins,Build the example TCG plugins)
--	@echo  ''
--endif
- 	@echo  'Cleaning targets:'
- 	$(call print-help,clean,Remove most generated files but keep the config)
- 	$(call print-help,distclean,Remove all generated files)
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-deleted file mode 100644
-index bbddd4800ff..00000000000
---- a/contrib/plugins/Makefile
-+++ /dev/null
-@@ -1,87 +0,0 @@
--# -*- Mode: makefile -*-
--#
--# This Makefile example is fairly independent from the main makefile
--# so users can take and adapt it for their build. We only really
--# include config-host.mak so we don't have to repeat probing for
--# programs that the main configure has already done for us.
--#
--
--include config-host.mak
--
--TOP_SRC_PATH = $(SRC_PATH)/../..
--
--VPATH += $(SRC_PATH)
--
--NAMES :=
--NAMES += bbv
--NAMES += execlog
--NAMES += hotblocks
--NAMES += hotpages
--NAMES += howvec
--
--# The lockstep example communicates using unix sockets,
--# and can't be easily made to work on windows.
--ifneq ($(CONFIG_WIN32),y)
--NAMES += lockstep
--endif
--
--NAMES += hwprofile
--NAMES += cache
--NAMES += drcov
--NAMES += ips
--NAMES += stoptrigger
--NAMES += cflow
--
--ifeq ($(CONFIG_WIN32),y)
--SO_SUFFIX := .dll
--LDLIBS += $(shell $(PKG_CONFIG) --libs glib-2.0)
--else
--SO_SUFFIX := .so
--endif
--
--SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
--
--# The main QEMU uses Glib extensively so it is perfectly fine to use it
--# in plugins (which many example do).
--PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
--PLUGIN_CFLAGS += -fPIC -Wall
--PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
--
--# Helper that honours V=1 so we get some output when compiling
--quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
--quiet-command = $(call quiet-@,$2,$3)$1
--
--# for including , in command strings
--COMMA := ,
--
--all: $(SONAMES)
--
--%.o: %.c
--	$(call quiet-command, \
--		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
--	        BUILD, plugin $@)
--
--ifeq ($(CONFIG_WIN32),y)
--lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else ifeq ($(CONFIG_DARWIN),y)
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--endif
--
--
--clean distclean:
--	rm -f *.o *$(SO_SUFFIX) *.d
--	rm -Rf .libs
--
--.PHONY: all clean
--.SECONDARY:
--- 
-2.39.5
+https://lore.kernel.org/qemu-devel/20241008202842.4478-1-shentey@gmail.com/
 
+
+r~
 
