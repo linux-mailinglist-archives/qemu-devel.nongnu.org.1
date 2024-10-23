@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35359ABFED
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 09:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37029AC023
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 09:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3Va6-0007uE-M2; Wed, 23 Oct 2024 03:14:58 -0400
+	id 1t3Vj6-0002M8-HD; Wed, 23 Oct 2024 03:24:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Va4-0007tY-KN
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 03:14:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3Vj4-0002Lt-5S
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 03:24:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3Va2-0005Rf-KI
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 03:14:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3Vj1-0006SI-R2
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 03:24:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729667691;
+ s=mimecast20190719; t=1729668250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=N6Z+mAffqpj0vCYJvVgbiQjgIzvTt0ld1iN/A72YdKs=;
- b=ELMbmB8lOjbfGRF5InQYt87Y61RSrOM2WNM+xK17e+e8IvAFHfacUg8Ztg0329tbrsexX7
- SirVql4XByY7mQkgNa3b2hKxc11461D8+8oYzcmRELr7UW9PkpMY7HYcpdtHn+ormzO6ML
- BsBSRe3jz4Uq19QNnYNXuzF3U8ZxPmY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-kAjzWdLsMhK63v5m61Flsg-1; Wed, 23 Oct 2024 03:14:47 -0400
-X-MC-Unique: kAjzWdLsMhK63v5m61Flsg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4316e2dde9eso34256045e9.2
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 00:14:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729667686; x=1730272486;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=N6Z+mAffqpj0vCYJvVgbiQjgIzvTt0ld1iN/A72YdKs=;
- b=aRSuw0ROHk7uO3PpfdoamYuDhydOb3axK29pkj/vfgvs8jHO8Oo00qQvyPHeeuyQjd
- /3Zz7Mut0W+3PVdS80i3DUhYbbTFFKYdrsYdRbYlJ9qpEukayeT91Ew3zsyVy7GQbXdw
- ToAq7Pd7nS6P75hByhwo/APx2yLkPL0UOv+uzknuK8MeUqQvDZKMV1XmOmpsz2+kravI
- ugmKPt46/oPk7fksrfb7EKBNfsCdv9SdWCAl7D9wSW1O2NUfRXiO6hiwtX9x1BIZYq55
- Kah+y9Wv4YBZdhNQ358YPSkJRsQmt6hCe7pGVleotWxwa02jfczHV8tc/iO24zJDjqBO
- tZJw==
-X-Gm-Message-State: AOJu0YyrTD3hkCS50/toUTP9aZY8xn6JF8YMkgU9Y1cmhScmrOpr4H1p
- dBkVTnTqt0GUkZotEsdqfG3xKx6MwMVt0b+tEpYTCqQIZMr2onC87eC69SqGXLKnsgXebH7l1+7
- 9ZrDKE9axMKUZG86lgBOxzop73tSCv/sTxG5W5OCJDxQ7j9OvIC446m9aWmLdMxOAoxoMPFS3ik
- VnSVA7GDqy81Er+wodrsTRhMqzsGc=
-X-Received: by 2002:a05:600c:1d82:b0:431:5ba1:a520 with SMTP id
- 5b1f17b1804b1-431841eb454mr17145285e9.3.1729667686460; 
- Wed, 23 Oct 2024 00:14:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHESdFPxso2qeEJE/VGwSQojhOOZd856x2TbQdSeLJ9hrq7nXmhUWGHwq05rcnwEbMVx9Hw2o003yBsepHhW4o=
-X-Received: by 2002:a05:600c:1d82:b0:431:5ba1:a520 with SMTP id
- 5b1f17b1804b1-431841eb454mr17145085e9.3.1729667686082; Wed, 23 Oct 2024
- 00:14:46 -0700 (PDT)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Lg1cK11UyUr2YjlwC5rqSgQC0PQiCQPtbQFrNWRQdHo=;
+ b=QI+4oy2JoqhEQPg/xBD99g6jwl3ixEZS4hx9KrpxfFFBqP3NbNMOL5HIB7etb59X+GEBF5
+ ULJBB/BI0HUW4TMQqrHqbTgD7vTTtt51kX2gatsaNlYQve9LtTtZWH7BxTbR0OVYKijZEG
+ JpfwSaterlYdU/1+HPu1bT3SrD93gDA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-JuMxaNotNj-PIeG9szFzEA-1; Wed,
+ 23 Oct 2024 03:24:04 -0400
+X-MC-Unique: JuMxaNotNj-PIeG9szFzEA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 293511955E9D; Wed, 23 Oct 2024 07:24:03 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.43])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id ED8CA1956088; Wed, 23 Oct 2024 07:24:00 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Brad Smith <brad@comstyle.com>,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] tests/vm/openbsd: Remove the "Time appears wrong" workaround
+Date: Wed, 23 Oct 2024 09:23:58 +0200
+Message-ID: <20241023072358.827714-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20241021163538.136941-1-pbonzini@redhat.com>
- <ZxgPKjakya_FwjLu@redhat.com>
-In-Reply-To: <ZxgPKjakya_FwjLu@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 23 Oct 2024 09:14:34 +0200
-Message-ID: <CABgObfa6C17wX8d-aHRGCE1qRr_mtN0_Rv9fnoqDDLEEKp+Cag@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] rust: miscellaneous cleanups + QOM integration
- tests
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
-Content-Type: multipart/alternative; boundary="000000000000023e5c06251fa432"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,119 +77,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000023e5c06251fa432
-Content-Type: text/plain; charset="UTF-8"
+Seems like the server now reports the right time again, so we have
+to drop the workaround to get the installer working again.
 
-Il mar 22 ott 2024, 22:46 Kevin Wolf <kwolf@redhat.com> ha scritto:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/vm/openbsd | 1 -
+ 1 file changed, 1 deletion(-)
 
-> Am 21.10.2024 um 18:35 hat Paolo Bonzini geschrieben:
-> > This series integrates some of the observations from the MSRV patches at
-> >
-> https://lore.kernel.org/qemu-devel/20241015131735.518771-1-pbonzini@redhat.com/
-> .
-> >
-> > The main changes here are two: first, build an integration test that
-> > actually tries to create a QOM object that is defined by Rust code;
-> > second, make the properties array immutable so that declare_properties!
-> > is enforced to use only const-friendly constructs.  These are patches
-> > 6-11; the others consist of small cleanups.
-> >
-> > Hidden in here is actually a C patch (#10) which makes the
-> > bindgen-generated prototypes use "*const" instead of "*mut".
-> >
-> > Tested with Rust nightly and (together with more patches from the
-> > RFC), with Rust 1.63.0.
-> >
-> > Unlike the MSRV patches, this should be ready for inclusion; the
-> > changes should be mostly uncontroversial.
->
-> I'm not convinced that Zeroable has sufficient justification when all it
-> does is saving us a few lines of code at the expense of making things
-> more implicit
-
-
-Implicit zero fields are used a lot in C code, including in
-VMStateDescription and various const vtable structs, so I think we need
-something of equivalent brevity.
-
-There could be other solutions, for example a more generic
-ConstDefault::DEFAULT trait. For now I went for something that resembles
-existing code, as well as the C code we're converting.
-
-. But it's used correctly as far as I can tell, so:
->
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
->
-
-Thanks!
-
-Paolo
-
-
->
-
---000000000000023e5c06251fa432
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mar 22 ott 2024, 22:46 Kevin Wolf &lt;<a href=3D"ma=
-ilto:kwolf@redhat.com">kwolf@redhat.com</a>&gt; ha scritto:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">Am 21.10.2024 um 18:35 hat Paol=
-o Bonzini geschrieben:<br>
-&gt; This series integrates some of the observations from the MSRV patches =
-at<br>
-&gt; <a href=3D"https://lore.kernel.org/qemu-devel/20241015131735.518771-1-=
-pbonzini@redhat.com/" rel=3D"noreferrer noreferrer" target=3D"_blank">https=
-://lore.kernel.org/qemu-devel/20241015131735.518771-1-pbonzini@redhat.com/<=
-/a>.<br>
-&gt; <br>
-&gt; The main changes here are two: first, build an integration test that<b=
-r>
-&gt; actually tries to create a QOM object that is defined by Rust code;<br=
->
-&gt; second, make the properties array immutable so that declare_properties=
-!<br>
-&gt; is enforced to use only const-friendly constructs.=C2=A0 These are pat=
-ches<br>
-&gt; 6-11; the others consist of small cleanups.<br>
-&gt; <br>
-&gt; Hidden in here is actually a C patch (#10) which makes the<br>
-&gt; bindgen-generated prototypes use &quot;*const&quot; instead of &quot;*=
-mut&quot;.<br>
-&gt; <br>
-&gt; Tested with Rust nightly and (together with more patches from the<br>
-&gt; RFC), with Rust 1.63.0.<br>
-&gt; <br>
-&gt; Unlike the MSRV patches, this should be ready for inclusion; the<br>
-&gt; changes should be mostly uncontroversial.<br>
-<br>
-I&#39;m not convinced that Zeroable has sufficient justification when all i=
-t<br>
-does is saving us a few lines of code at the expense of making things<br>
-more implicit</blockquote></div></div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">Implicit zero fields are used a lot in C code, including in VMSta=
-teDescription and various const vtable structs, so I think we need somethin=
-g of equivalent brevity.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->There could be other solutions, for example a more generic ConstDefault::D=
-EFAULT trait. For now I went for something that resembles existing code, as=
- well as the C code we&#39;re converting.</div><div dir=3D"auto"><br></div>=
-<div dir=3D"auto"></div><div dir=3D"auto"><div class=3D"gmail_quote"><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">. But it&#39;s used correctly a=
-s far as I can tell, so:<br>
-<br>
-Reviewed-by: Kevin Wolf &lt;<a href=3D"mailto:kwolf@redhat.com" target=3D"_=
-blank" rel=3D"noreferrer">kwolf@redhat.com</a>&gt;<br></blockquote></div></=
-div><div dir=3D"auto"><br></div><div dir=3D"auto">Thanks!</div><div dir=3D"=
-auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><d=
-iv dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
-<br>
-</blockquote></div></div></div>
-
---000000000000023e5c06251fa432--
+diff --git a/tests/vm/openbsd b/tests/vm/openbsd
+index dfd11c93f0..5e4f76f398 100755
+--- a/tests/vm/openbsd
++++ b/tests/vm/openbsd
+@@ -159,7 +159,6 @@ class OpenBSDVM(basevm.BaseVM):
+ 
+         self.print_step("Installation started now, this will take a while")
+         self.console_wait_send("Location of sets",        "done\n")
+-        self.console_wait_send("Time appears wrong.  Set to", "\n")
+ 
+         self.console_wait("successfully completed")
+         self.print_step("Installation finished, rebooting")
+-- 
+2.47.0
 
 
