@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835349ACAF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC119ACB0F
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:20:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3bG0-0007Xo-Qv; Wed, 23 Oct 2024 09:18:36 -0400
+	id 1t3bG2-0007hm-EY; Wed, 23 Oct 2024 09:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFi-0007Qh-Uc
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFm-0007Sd-NS
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFg-0002Gs-Is
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFj-0002HL-RU
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729689496;
+ s=mimecast20190719; t=1729689499;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AlisWTeQGQ6ZToRii2cnDBBtfS/haEMK8f6BSEWEyKo=;
- b=Z5TA26SDVnFyXNRIsgSEbtfXjlP/kImd/mX6ZVcMG6yVKVUkjg5genStUsbmzxtcQ1OqiR
- reY8N7YJPas8b4AETS8FzXl6ZXk0AtFyeXnNZWXZnZj93n4j28OX3+eBIMxs4nHJQ1p6Z0
- FgE+x/fOF+jkY7GEPVUS4EzunLl+azQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jZAgKjHoIK0f2Ml/A35Lz7dZewwqe78HY+smjQkjoSs=;
+ b=OtT5i4c2jsrZUrEHg2aMG/lDnSgXJQdVWYOnPRtCWQ7t1/1IyqQjr3QhxMpHhYfWT29Fh2
+ UT2KE3Qo7laSj5FA+GqkXz9jaZdXOeX3MJjvSBkLgp4eemWPont3MYcyZB2Q7J2PiKPkdM
+ LLQlhOkksfAnyAs8MOZ+JvTm5YQT0VA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-ahgd2XjvPhencQbgWssxnw-1; Wed,
- 23 Oct 2024 09:18:12 -0400
-X-MC-Unique: ahgd2XjvPhencQbgWssxnw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-emH_6pQqMwKiovvF7WHPMQ-1; Wed,
+ 23 Oct 2024 09:18:17 -0400
+X-MC-Unique: emH_6pQqMwKiovvF7WHPMQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0341193EB3C; Wed, 23 Oct 2024 13:18:05 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BFF281955BC2; Wed, 23 Oct 2024 13:18:08 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.43])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3C8B519560AE; Wed, 23 Oct 2024 13:18:02 +0000 (UTC)
+ id 7D13C19560AE; Wed, 23 Oct 2024 13:18:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jens Remus <jremus@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>
-Subject: [PULL 20/23] pc-bios/s390-ccw: Clarify alignment is in bytes
-Date: Wed, 23 Oct 2024 15:17:07 +0200
-Message-ID: <20241023131710.906748-21-thuth@redhat.com>
+Subject: [PULL 21/23] pc-bios/s390-ccw: Don't generate TEXTRELs
+Date: Wed, 23 Oct 2024 15:17:08 +0200
+Message-ID: <20241023131710.906748-22-thuth@redhat.com>
 In-Reply-To: <20241023131710.906748-1-thuth@redhat.com>
 References: <20241023131710.906748-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,47 +81,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jens Remus <jremus@linux.ibm.com>
 
-The assembler directive .align [1] has architecture-dependent behavior,
-which may be ambiguous for the reader. Some architectures perform the
-alignment in bytes, others in power of two. s390 does in bytes.
+Commit 7cd50cbe4ca3 ("pc-bios/s390-ccw: Don't use __bss_start with the
+"larl" instruction") introduced the address constant bss_start_literal
+for __bss_start in the .text section, which introduced a relocation in
+code (i.e. TEXTREL). The dedicated constant is required, as __bss_start
+may not necessarily be aligned on a 2-byte boundary (see subject commit
+for details).
 
-Use the directive .balign [2] instead, to clarify that the alignment
-request is in bytes. No functional change.
+Move the constant to the .data section to get rid of the relocation in
+the .text section. Add the linker option -z text to prevent TEXTRELs to
+get introduced in the future.
 
-[1] https://sourceware.org/binutils/docs/as/Align.html
-[2] https://sourceware.org/binutils/docs/as/Balign.html
+Note that the R_390_RELATIVE relocations are taken care of by function
+glue() in include/hw/elf_ops.h.inc introduced by commit 5dce07e1cb67
+("elf-loader: Provide the possibility to relocate s390 ELF files").
 
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 Reviewed-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Message-ID: <20241001153618.17791-2-mhartmay@linux.ibm.com>
+Message-ID: <20241001153618.17791-3-mhartmay@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/start.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ pc-bios/s390-ccw/Makefile | 2 +-
+ pc-bios/s390-ccw/start.S  | 7 +++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
+index db9e8f0892..38254e22df 100644
+--- a/pc-bios/s390-ccw/Makefile
++++ b/pc-bios/s390-ccw/Makefile
+@@ -46,7 +46,7 @@ EXTRA_CFLAGS += -fwrapv -fno-strict-aliasing -fno-asynchronous-unwind-tables
+ EXTRA_CFLAGS += -msoft-float
+ EXTRA_CFLAGS += -std=gnu99
+ EXTRA_CFLAGS += $(LIBC_INC) $(LIBNET_INC)
+-LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
++LDFLAGS += -Wl,-pie -nostdlib -z noexecstack -z text
+ 
+ cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>/dev/null
+ cc-option = if $(call cc-test, $1); then \
 diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-index 061b06591c..576fc12c06 100644
+index 576fc12c06..b70213e412 100644
 --- a/pc-bios/s390-ccw/start.S
 +++ b/pc-bios/s390-ccw/start.S
-@@ -112,7 +112,7 @@ io_new_code:
-     lctlg   %c6,%c6,0(%r15)
+@@ -113,8 +113,6 @@ io_new_code:
      br      %r14
  
--    .align  8
-+    .balign 8
- bss_start_literal:
-     .quad   __bss_start
+     .balign 8
+-bss_start_literal:
+-    .quad   __bss_start
  disabled_wait_psw:
-@@ -125,7 +125,7 @@ io_new_mask:
+     .quad   0x0002000180000000,0x0000000000000000
+ enabled_wait_psw:
+@@ -124,6 +122,11 @@ external_new_mask:
+ io_new_mask:
      .quad   0x0000000180000000
  
- .bss
--    .align  8
++.data
 +    .balign 8
++bss_start_literal:
++    .quad   __bss_start
++
+ .bss
+     .balign 8
  stack:
-     .space  STACK_SIZE
-     .size   stack,STACK_SIZE
 -- 
 2.47.0
 
