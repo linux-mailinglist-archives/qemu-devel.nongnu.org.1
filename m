@@ -2,94 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D979ACEB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 17:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D8F9ACE69
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 17:16:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3dFD-0004aD-Kj; Wed, 23 Oct 2024 11:25:55 -0400
+	id 1t3d4q-0008Bt-PF; Wed, 23 Oct 2024 11:15:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3dFB-0004a1-KO
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:25:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t3d4o-0008BN-MJ
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:15:10 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3dF9-00050K-1E
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:25:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729697149;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1/J9J/1fkxBxTIlmR7uB0SgkY56/84OFPU1dS8a/rbY=;
- b=dnSvpO/oC+qT/vrNTkB97FnGG6CymFKz8zbb0M7xhqn+AYiDF/Rj4bmdUjSt24yVNcng8l
- q3GJG5vKwOGKD7NwjCAA0vIHMwqXjYI0zbn64uBUhccwe6n1iLWi+Y4FK9UJ26dZ6TmA3T
- MwAGbJldDnw/36RiPVzUtQLemjcAeIM=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-CZEVfwHlPP-8VnyD3tw0JA-1; Wed, 23 Oct 2024 11:25:48 -0400
-X-MC-Unique: CZEVfwHlPP-8VnyD3tw0JA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-460d8f8f5d4so52890961cf.1
- for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 08:25:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729697148; x=1730301948;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1/J9J/1fkxBxTIlmR7uB0SgkY56/84OFPU1dS8a/rbY=;
- b=k/kkAn+jpUG/P5718fZqgNCHm94mpjwWbi8fLwYaJ8DaHLKmnhiN0Zia1EvRyqhyHo
- XbleHgWSAY07y1EDKfTgih4qx76g0Ci4aChzeIOimxqNanKhFv0khI9gFd4QszXi4Q0t
- VsDfC2PbiXYN5VfwxYb7v4XtF7xRGLYY9tlVnp7vRIr5O6LSYeOMln2UTCh+UHdlNL3L
- 4yyAfURgjCXSthyyVHRkLU8W9JtGqTYHqzdrGAxBOO/aTnFpiCxoE2FM2VXPCvCi+Z2c
- pYIjYMmqQI+Iq5d8ak/2FhiGJW1FN63L8DvsHWp8k43+1dGJZDANwSvtFWA/ELwrbI6n
- yZag==
-X-Gm-Message-State: AOJu0YywS/JnCeGs5CJnF/Rn5If83zUSDitKS0QGx0keJrxCdCh5OhPv
- mFHLlFKSRBgkDH9xS5Rp5mndHT8W/YMzwnF0GHhV5ojho2AqKFo8PW0bwUg2jKV4hMNS/xIwEzC
- xZAR5O4YJFdpVra4NbwJrxBMTq/vFtuN6rj6gQD3CMRCZrwIRHTRM
-X-Received: by 2002:ac8:5904:0:b0:458:2e48:b5ec with SMTP id
- d75a77b69052e-461147065dcmr46728841cf.45.1729697147901; 
- Wed, 23 Oct 2024 08:25:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqwqOwM4XqKbM/dJ9g9zF52S5V1JTuePeGB4E9N0BinJ/ZvuSHKYJcwruunMvYjYlReH7y5g==
-X-Received: by 2002:ac8:5904:0:b0:458:2e48:b5ec with SMTP id
- d75a77b69052e-461147065dcmr46728431cf.45.1729697147512; 
- Wed, 23 Oct 2024 08:25:47 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d39d54f5sm41956821cf.0.2024.10.23.08.25.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2024 08:25:47 -0700 (PDT)
-Date: Wed, 23 Oct 2024 11:25:44 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH 1/2] migration: Make all helpers in misc.h safe to use
- without migration
-Message-ID: <ZxkVeMCac87w2jR_@x1n>
-References: <20241022160720.1013543-1-peterx@redhat.com>
- <20241022160720.1013543-2-peterx@redhat.com>
- <0540c704-c2ce-41fc-bbb3-a2d84f0f2fc7@nvidia.com>
- <ZxkS0GCmPrOHN1_V@x1n>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t3d4m-0003Yt-19
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 11:15:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729696509; x=1761232509;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=dXBbQkVpOUCjH2gFM8xfJKZSyTki1cY/gXs7z1WB7Q0=;
+ b=W5+kqPsoLNKphKHB1gt0wtEcV1oitTNT35RqfBARPdRF0ygbmlIm36Zs
+ Tq0niKFvLAQQd6sgpmOi1+3gVS9LPT4zx2qHuB0c1LPRhrvyIRHvmVt0b
+ mcj73qXn4E/DxRmeJfsB8OtU1exf3NcMW9glpjeh8uT1cYmiKOkwqcjs+
+ ajABFZw3XSOv1XoppCNbTRNt8cgWjrkESzwxUI0/JzkBFME/xPsyFcZMn
+ 63BEZWq3LtKuO7DlzUBAE7dPUbgnBEMOvvnRwJ7A34OVBIW3Jb+hfYuVE
+ fNNBGKH5obyPRk0lnYKb8snKjvcvyXlPJ18VBPa9hUqqZSK/ms98pMEQ7 A==;
+X-CSE-ConnectionGUID: XNzmJOgfRkucKL6mKVKSoQ==
+X-CSE-MsgGUID: H5+HEgWOQWOuKHKyUdAH8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29070803"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29070803"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2024 08:15:05 -0700
+X-CSE-ConnectionGUID: w15DfiwGQVC87Iz25EWDMA==
+X-CSE-MsgGUID: qrvLr+hkSO2J3rgbFnRYEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; d="scan'208";a="80262241"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 23 Oct 2024 08:15:03 -0700
+Date: Wed, 23 Oct 2024 23:31:20 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH v2 06/13] rust: modernize link_section usage for ELF
+ platforms
+Message-ID: <ZxkWyN4OrbWlQXEa@intel.com>
+References: <20241021163538.136941-1-pbonzini@redhat.com>
+ <20241021163538.136941-7-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxkS0GCmPrOHN1_V@x1n>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+In-Reply-To: <20241021163538.136941-7-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,188 +84,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 23, 2024 at 11:14:24AM -0400, Peter Xu wrote:
-> On Wed, Oct 23, 2024 at 11:30:14AM +0300, Avihai Horon wrote:
-> > 
-> > On 22/10/2024 19:07, Peter Xu wrote:
-> > > External email: Use caution opening links or attachments
-> > > 
-> > > 
-> > > Migration object can be freed before some other device codes run, while we
-> > > do have a bunch of migration helpers exported in migration/misc.h that
-> > > logically can be invoked at any time of QEMU, even during destruction of a
-> > > VM.
-> > > 
-> > > Make all these functions safe to be called, especially, not crashing after
-> > > the migration object is freed.
-> > > 
-> > > Add a rich comment in the header explaining how to guarantee thread safe on
-> > > using these functions, and we choose BQL because fundamentally that's how
-> > > it's working now.  We can move to other things (e.g. RCU) whenever
-> > > necessary in the future but it's an overkill if we have BQL anyway in
-> > > most/all existing callers.
-> > > 
-> > > When at it, update some comments, e.g. migrate_announce_params() is
-> > > exported from options.c now.
-> > > 
-> > > Cc: Cédric Le Goater <clg@redhat.com>
-> > > Cc: Avihai Horon <avihaih@nvidia.com>
-> > > Cc: Fabiano Rosas <farosas@suse.de>
-> > > Cc: Dr. David Alan Gilbert <dave@treblig.org>
-> > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > > ---
-> > >   include/migration/misc.h | 33 ++++++++++++++++++++++++++++-----
-> > >   migration/migration.c    | 22 +++++++++++++++++++++-
-> > >   2 files changed, 49 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/include/migration/misc.h b/include/migration/misc.h
-> > > index bfadc5613b..8d6812b8c7 100644
-> > > --- a/include/migration/misc.h
-> > > +++ b/include/migration/misc.h
-> > > @@ -19,8 +19,26 @@
-> > >   #include "qapi/qapi-types-net.h"
-> > >   #include "migration/client-options.h"
-> > > 
-> > > -/* migration/ram.c */
-> > > +/*
-> > > + * Misc migration functions exported to be used in QEMU generic system
-> > > + * code outside migration/.
-> > > + *
-> > > + * By default, BQL is required to use below functions to avoid race
-> > > + * conditions (e.g. concurrent free of the migration object).  It's
-> > > + * caller's responsibility to make sure it's thread safe otherwise when
-> > > + * below helpers are used without BQL held.
-> > > + *
-> > > + * One example of the special case is migration_thread(), who will take a
-> > > + * refcount of the migration object.  The refcount will make sure the
-> > > + * migration object will not be freed concurrently when accessing through
-> > > + * below helpers.
-> > > + *
-> > > + * When unsure, always take BQL first before using the helpers.
-> > > + */
-> > > 
-> > > +/*
-> > > + * migration/ram.c
-> > > + */
-> > >   typedef enum PrecopyNotifyReason {
-> > >       PRECOPY_NOTIFY_SETUP = 0,
-> > >       PRECOPY_NOTIFY_BEFORE_BITMAP_SYNC = 1,
-> > > @@ -43,14 +61,19 @@ void ram_mig_init(void);
-> > >   void qemu_guest_free_page_hint(void *addr, size_t len);
-> > >   bool migrate_ram_is_ignored(RAMBlock *block);
-> > > 
-> > > -/* migration/block.c */
-> > > -
-> > > +/*
-> > > + * migration/options.c
-> > > + */
-> > >   AnnounceParameters *migrate_announce_params(void);
-> > > -/* migration/savevm.c */
-> > > 
-> > > +/*
-> > > + * migration/savevm.c
-> > > + */
-> > >   void dump_vmstate_json_to_file(FILE *out_fp);
-> > > 
-> > > -/* migration/migration.c */
-> > > +/*
-> > > + * migration/migration.c
-> > > + */
-> > >   void migration_object_init(void);
-> > >   void migration_shutdown(void);
-> > >   bool migration_is_idle(void);
-> > > diff --git a/migration/migration.c b/migration/migration.c
-> > > index bcb735869b..27341eed50 100644
-> > > --- a/migration/migration.c
-> > > +++ b/migration/migration.c
-> > > @@ -1121,6 +1121,10 @@ bool migration_is_setup_or_active(void)
-> > >   {
-> > >       MigrationState *s = current_migration;
-> > > 
-> > > +    if (!s) {
-> > > +        return false;
-> > > +    }
-> > > +
-> > >       switch (s->state) {
-> > >       case MIGRATION_STATUS_ACTIVE:
-> > >       case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-> > > @@ -1136,7 +1140,6 @@ bool migration_is_setup_or_active(void)
-> > > 
-> > >       default:
-> > >           return false;
-> > > -
-> > >       }
-> > >   }
-> > > 
-> > > @@ -1685,6 +1688,10 @@ bool migration_is_active(void)
-> > >   {
-> > >       MigrationState *s = current_migration;
-> > > 
-> > > +    if (!s) {
-> > > +        return false;
-> > > +    }
-> > > +
-> > >       return (s->state == MIGRATION_STATUS_ACTIVE ||
-> > >               s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
-> > >   }
-> > > @@ -1693,6 +1700,10 @@ bool migration_is_device(void)
-> > >   {
-> > >       MigrationState *s = current_migration;
-> > > 
-> > > +    if (!s) {
-> > > +        return false;
-> > > +    }
-> > > +
-> > >       return s->state == MIGRATION_STATUS_DEVICE;
-> > >   }
-> > > 
-> > > @@ -1700,6 +1711,11 @@ bool migration_thread_is_self(void)
-> > >   {
-> > >       MigrationState *s = current_migration;
-> > > 
-> > > +    /* If no migration object, must not be the migration thread */
-> > > +    if (!s) {
-> > > +        return false;
-> > > +    }
-> > > +
-> > >       return qemu_thread_is_self(&s->thread);
-> > >   }
-> > > 
-> > > @@ -3077,6 +3093,10 @@ void migration_file_set_error(int ret, Error *err)
-> > >   {
-> > >       MigrationState *s = current_migration;
-> > > 
-> > > +    if (!s) {
-> > > +        return;
-> > > +    }
-> > > +
-> > 
-> > I think this is not enough because current_migration is never set to NULL
-> > after it's destroyed.
-> > 
-> > Can we add "current_migration = NULL;" to migration_instance_finalize()?
+On Mon, Oct 21, 2024 at 06:35:31PM +0200, Paolo Bonzini wrote:
+> Date: Mon, 21 Oct 2024 18:35:31 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH v2 06/13] rust: modernize link_section usage for ELF
+>  platforms
+> X-Mailer: git-send-email 2.46.2
 > 
-> Good point..
+> Some newer ABI implementations do not provide .ctors; and while
+> some linkers rewrite .ctors into .init_array, not all of them do.
+> Use the newer .init_array ABI, which works more reliably, and
+> apply it to all non-Apple, non-Windows platforms.
 > 
-> I thought it was cleared already in migration_shutdown(), but now I just
-> noticed why it can't - we have too many dangling references in migration/
-> so that it needs to be there even if migration threads holds one refcount.
+> This is similar to how the ctor crate operates; without this change,
+> "#[derive(Object)]" does not work on Fedora 41.
 > 
-> I'll add one more patch as you suggested as of now and repost soon.  It's
-> not the cleanest that we clear that global pointer in a finalize(), but
-> looks like that's the only simple way forward.
+> Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api-macros/src/lib.rs  |  7 +++++--
+>  rust/qemu-api/src/definitions.rs | 14 ++++++++++----
+>  2 files changed, 15 insertions(+), 6 deletions(-)
+>
+> diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+> index 59aba592d9a..70e3f920460 100644
+> --- a/rust/qemu-api-macros/src/lib.rs
+> +++ b/rust/qemu-api-macros/src/lib.rs
+> @@ -16,8 +16,11 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
+>      let expanded = quote! {
+>          #[allow(non_upper_case_globals)]
+>          #[used]
+> -        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
+> -        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
+> +        #[cfg_attr(
+> +            not(any(target_vendor = "apple", target_os = "windows")),
 
-After a 2nd thought, it might not work.  The issue is when the last
-refcount is held by migration_thread, I _think_ it means the migration
-thread will invoke this finalize(), reset current_migration, and then it
-can race with a main thread calling any of the exported helpers again..
+EMM, "apple" vendor contains macOS, iOS and other variations of iOS.
+Do we need to consider other OSs besides macOS for now?
 
-I'll think about it and prepare something else.  Probably we'll need two
-variables for now holding the object, while the exported functions should
-only reference the global one.  Then the global one can be reset in the
-main thread always with no race possible when exit.
+And it seems that the Rust people don't like "target_vendor = 'apple'".
+(https://github.com/rust-lang/rust/issues/100343). :-)
 
--- 
-Peter Xu
+
+Otherwise,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
