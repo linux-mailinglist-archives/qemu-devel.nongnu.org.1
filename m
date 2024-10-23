@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8DB9ABC51
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBE09ABC3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 05:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3S9T-0007Om-NH; Tue, 22 Oct 2024 23:35:15 -0400
+	id 1t3S9X-0007PE-LV; Tue, 22 Oct 2024 23:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S98-00070i-Bp
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:56 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1t3S95-0006zp-O5
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:52 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t3S92-0008MU-Sc
- for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:54 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-71eb1d0e3c2so2914628b3a.2
- for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:46 -0700 (PDT)
+ id 1t3S92-0008MY-JE
+ for qemu-devel@nongnu.org; Tue, 22 Oct 2024 23:34:51 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7ea68af2f62so4874617a12.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Oct 2024 20:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1729654486; x=1730259286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wgfe8eEx0DyNMgpV+RxevSprfVFpnEpDRbWriLdWhhM=;
- b=zVk9yVz4v6sPUgy8iI5zYfP5fBmYo8DBG/vwo1xLEclmPocPLSpy4QLxUOiR1qcqzM
- bEyd85Ujc+YuQe8fqyhHhdiwBNxL1HRNMBCURUXWe7uHpULEXp/pgJWJJHTDlxMczNg1
- 9yk/1bpfqOnHQ+i9/pxPxS5lWyL3dRaTNO3LQ6AdjM2jSngAyC0DvPrszHLxTmYq1eqr
- d9tYfItZVtdXZCIHPb1q8DjTV7yzlcSRix9lcBZ0bFPSpAf4Pbo7LuRD7Ozih2gDDRrI
- pKhT5U2//d9JsfHPxsy7lrotsYArEVFC8SR5qRsNltplblzsbnp0yPYEnegOBG1gwUIR
- /AQg==
+ bh=E9BZ1D2dqbD5itfvWww7sIn9+uEnlW5x+Ejm53Jry8E=;
+ b=IkRIFIesPfdi+wUdXS20D6AKTUCXhaRJDaUPU57HaAjQb95//d0wjFK+GNMZFSp8Pp
+ lfzaW3wDjk5Cd9lowBbBBTakbsN/WuxjOtBtlW0LHqruYsW+t0fEBu9KnUYWVwudCEPN
+ Xlg5RhoEyVubxX9LzSxCwBHeWhvItlONF6zEcSs2+mYCrf4O3c7EXbaLuLWJvRLNNLUf
+ Wd8NVLUc06EpcczL8GdC8/M5rUQL1ym2lcKvnWWQcFlicRUU7x+24OxNSXl3FqCnhHC9
+ LhvsgWmzdNtrkNTfrN7XdwiGQdebYO8aCPiQvThEVKBBOC3wMKknV/stIFbVMnbKATqQ
+ t75w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1729654486; x=1730259286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wgfe8eEx0DyNMgpV+RxevSprfVFpnEpDRbWriLdWhhM=;
- b=jsLfgO27RXF8HsEFZdpqBqyeVx6inbNJyp4jYrvP3xXvSafYHP2I8qhxfDZGiRmxi/
- Kj21OLKRJyMjM0/1oAnLnllF75vSb7RbSNaFSaM4w6c+vX2FDJ3D+L0dJYF8dexeYLBi
- Kmf6lBLnRjmmg+7eVGbJ85JzT7iEOipERWsM+3SVN/uVnlh+QeibEI3VQDx+leOVAcur
- OYkQVSNw1fCvAsXj/YkFatuXyhlDjeP02NFWemb6Cj0uBIScJdqFP3HZIBtxRwsv5vIt
- pq1qVh56ok5ipphJKWeUJVwNa6IOJr9yzu/TXfFTMib2YWVg8H/XQ/otdAzEk0B71AOQ
- LCmw==
-X-Gm-Message-State: AOJu0Yw3JBhWVr8Gp4hIspfQ1GF3RN/uYbGFqlr5hQKrGAZd2os8RltP
- +TJXYlaE+FoXbyZ7WLf6vBG9msKNZ2IOrmYRu9VOJ9sqwQGQTZ3izHfm1Q/E0uQuO+Qffj6Y3q7
- N
-X-Google-Smtp-Source: AGHT+IG/lmlLGaI+y5DPzANv/9T2nVNOSsuWnTGuVilfd06AtVYZcfKuBc9tOW/rQYd5iecRLhT8EQ==
-X-Received: by 2002:a05:6a00:4fd3:b0:71e:3b51:e856 with SMTP id
- d2e1a72fcca58-72030b715d2mr2036263b3a.1.1729654485614; 
- Tue, 22 Oct 2024 20:34:45 -0700 (PDT)
+ bh=E9BZ1D2dqbD5itfvWww7sIn9+uEnlW5x+Ejm53Jry8E=;
+ b=YR4/k5PqBrfhfD3HczoW/55o5Uq5mLib7+R/8tab91rdM05sCHiTIdNTQrbutgZMYl
+ QPAyCMySJEGXIKwhwRzKIMR40ODyyxAbt5keVtkmGMR9pNSKhT6Ozb5Fa0hbjhqMNSKH
+ HybG5Mqm+/9XHSUV8ddpdsSEhg01xnmACE44HQ919SJUYTxT8gIEuipFV6qvc/dqWPhq
+ 9W1jVQuixEstfvhODDuERzyyB5V22TlxYOBIDwgY1CuH1fa1INqjDU//IFzbNucw8rpK
+ C0LmjC2vlQM6G4nRbPXeeK0QnUmbVMBsv87Px7NFTg17JkbnO+04L8igzf3MG6DUYlXf
+ XR+w==
+X-Gm-Message-State: AOJu0YxkcFizdY8CusCZz1JqzwN9kf9Dsy3VKw+8+TMQhyUf9gMkyd9f
+ ZQgGosWKkiQHas4zodPDEc7bFWY9sEg8b+EcpUGYZ/WxsjL3WjBgAqZbqlpMTtUUNK3ZpMwAqQU
+ J
+X-Google-Smtp-Source: AGHT+IHzI4jDJAu5EumahZPEIqhIs+WHTEWc45oXxE4fEK0yknjTKWrGqWpyacy6p3VGpXmrp+wIxg==
+X-Received: by 2002:a05:6a21:6e41:b0:1d9:1fac:7256 with SMTP id
+ adf61e73a8af0-1d978b358abmr1359260637.30.1729654486607; 
+ Tue, 22 Oct 2024 20:34:46 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-71ec13d73b1sm5438338b3a.105.2024.10.22.20.34.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2024 20:34:45 -0700 (PDT)
+ Tue, 22 Oct 2024 20:34:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Dani Szebenyi <szedani@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 15/24] tcg/ppc: Fix tcg_out_rlw_rc
-Date: Tue, 22 Oct 2024 20:34:23 -0700
-Message-ID: <20241023033432.1353830-16-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 16/24] include/exec: Improve probe_access_full{,
+ _mmu} documentation
+Date: Tue, 22 Oct 2024 20:34:24 -0700
+Message-ID: <20241023033432.1353830-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023033432.1353830-1-richard.henderson@linaro.org>
 References: <20241023033432.1353830-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,46 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dani Szebenyi <szedani@linux.ibm.com>
-
-The TCG IR sequence:
-
-  mov_i32 tmp97,$0xc4240000             dead: 1  pref=0xffffffff
-  mov_i32 tmp98,$0x0                    pref=0xffffffff
-  rotr_i32 tmp97,tmp97,tmp98            dead: 1 2  pref=0xffffffff
-
-was translated to `slwi r15, r14, 0` instead of `slwi r14, r14, 0`
-due to SH field overflow.  SH field is 5 bits, and tcg_out_rlw is called
-in some situations with `32-n`, when `n` is 0 it results in an overflow
-to RA field.
-
-This commit prevents overflow of that field and adds debug assertions
-for the other fields
-
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Dani Szebenyi <szedani@linux.ibm.com>
-Message-ID: <20241022133535.69351-2-szedani@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241013184733.1423747-2-richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/exec/exec-all.h | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 223f079524..9a11c26fd3 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -911,7 +911,9 @@ static void tcg_out_rld(TCGContext *s, int op, TCGReg ra, TCGReg rs,
- static void tcg_out_rlw_rc(TCGContext *s, int op, TCGReg ra, TCGReg rs,
-                            int sh, int mb, int me, bool rc)
- {
--    tcg_out32(s, op | RA(ra) | RS(rs) | SH(sh) | MB(mb) | ME(me) | rc);
-+    tcg_debug_assert((mb & 0x1f) == mb);
-+    tcg_debug_assert((me & 0x1f) == me);
-+    tcg_out32(s, op | RA(ra) | RS(rs) | SH(sh & 0x1f) | MB(mb) | ME(me) | rc);
- }
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 72240ef426..2e4c4cc4b4 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -368,6 +368,13 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+  * The CPUTLBEntryFull structure returned via @pfull is transient
+  * and must be consumed or copied immediately, before any further
+  * access or changes to TLB @mmu_idx.
++ *
++ * This function will not fault if @nonfault is set, but will
++ * return TLB_INVALID_MASK if the page is not mapped, or is not
++ * accessible with @access_type.
++ *
++ * This function will return TLB_MMIO in order to force the access
++ * to be handled out-of-line if plugins wish to instrument the access.
+  */
+ int probe_access_full(CPUArchState *env, vaddr addr, int size,
+                       MMUAccessType access_type, int mmu_idx,
+@@ -375,22 +382,14 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
+                       CPUTLBEntryFull **pfull, uintptr_t retaddr);
  
- static void tcg_out_rlw(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+ /**
+- * probe_access_mmu() - Like probe_access_full except cannot fault and
+- * doesn't trigger instrumentation.
++ * probe_access_full_mmu:
++ * Like probe_access_full, except:
+  *
+- * @env: CPUArchState
+- * @vaddr: virtual address to probe
+- * @size: size of the probe
+- * @access_type: read, write or execute permission
+- * @mmu_idx: softmmu index
+- * @phost: ptr to return value host address or NULL
+- * @pfull: ptr to return value CPUTLBEntryFull structure or NULL
+- *
+- * The CPUTLBEntryFull structure returned via @pfull is transient
+- * and must be consumed or copied immediately, before any further
+- * access or changes to TLB @mmu_idx.
+- *
+- * Returns: TLB flags as per probe_access_flags()
++ * This function is intended to be used for page table accesses by
++ * the target mmu itself.  Since such page walking happens while
++ * handling another potential mmu fault, this function never raises
++ * exceptions (akin to @nonfault true for probe_access_full).
++ * Likewise this function does not trigger plugin instrumentation.
+  */
+ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
+                           MMUAccessType access_type, int mmu_idx,
 -- 
 2.43.0
 
