@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10FF9ACAF7
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBADC9ACAF8
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Oct 2024 15:19:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3bFw-0007NF-61; Wed, 23 Oct 2024 09:18:32 -0400
+	id 1t3bG3-0007je-69; Wed, 23 Oct 2024 09:18:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFa-0007Cc-5S
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFf-0007Ma-HU
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFX-0002EF-SI
- for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3bFc-0002FW-Md
+ for qemu-devel@nongnu.org; Wed, 23 Oct 2024 09:18:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729689487;
+ s=mimecast20190719; t=1729689491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZOrPBPZ2cEU3IJjuze0yE0HxYzK5ZQRQxdoBIuqI4Wk=;
- b=Bp/soMaPjOriyAr22LDDDKqU5YO9YLJaEkntKsgoBFfEffIQDB3fdlIFtDA+aJ1O/a7VJ+
- jxOl6Wj4s82l19n3LHHNLIJYGL3fl8UxYfnONvSn0F+38SsXSvZYz2+KXgwmsdO4eaS6kS
- wYeePmh4cmwQIFiq6K/aPSiFL3pm1+0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=o7Xdq2MTkGp0eGQVrGv94zTNIl5BzH+CbbEPfqGYkj4=;
+ b=Xzxmcbc4k+BRbLELmeR0p2tm3rR1qe6SAnJHsfz1WloDFoDRBOOSgBGzdYekjAbgAtySYj
+ 6XirLf8soOMgcIFS2UflF27AOeh0mJo1/AL5I+a4pH+PSWRKMc9O7b/f0mGCz4Eb4XlaQU
+ g5z5ITDT2p0u0zWVCVvqipAh2uxQmfU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-kf-Ce2NbMraSxvZVsGB6xw-1; Wed,
- 23 Oct 2024 09:18:05 -0400
-X-MC-Unique: kf-Ce2NbMraSxvZVsGB6xw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-FRd9asa-O7evNAu_366XBw-1; Wed,
+ 23 Oct 2024 09:18:10 -0400
+X-MC-Unique: FRd9asa-O7evNAu_366XBw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5BF711937227; Wed, 23 Oct 2024 13:18:00 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BB6B51955BE1; Wed, 23 Oct 2024 13:18:02 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.43])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7B09C1954B10; Wed, 23 Oct 2024 13:17:57 +0000 (UTC)
+ id E570819560AE; Wed, 23 Oct 2024 13:18:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jared Rossi <jrossi@linux.ibm.com>
-Subject: [PULL 18/23] docs/system: Update documentation for s390x IPL
-Date: Wed, 23 Oct 2024 15:17:05 +0200
-Message-ID: <20241023131710.906748-19-thuth@redhat.com>
+Subject: [PULL 19/23] tests/qtest: Add s390x boot order tests to cdrom-test.c
+Date: Wed, 23 Oct 2024 15:17:06 +0200
+Message-ID: <20241023131710.906748-20-thuth@redhat.com>
 In-Reply-To: <20241023131710.906748-1-thuth@redhat.com>
 References: <20241023131710.906748-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,63 +81,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Update docs to show that s390x PC BIOS can support more than one boot device.
+Add two new qtests to verify that a valid IPL device can successfully boot after
+failed IPL attempts from one or more invalid devices.
+
+cdrom-test/as-fallback-device: Defines the primary boot target as a device that
+is invalid for IPL and a second boot target that is valid for IPL. Ensures that
+the valid device will be selected after the initial failed IPL.
+
+cdrom-test/as-last-option: Defines the maximum number of boot devices (8)
+where only the final entry in the boot order is valid. Ensures that a valid
+device will be selected even after multiple failed IPL attempts from both
+virtio-blk and virtio-scsi device types.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241020012953.1380075-19-jrossi@linux.ibm.com>
+Message-ID: <20241020012953.1380075-20-jrossi@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/system/bootindex.rst         | 7 ++++---
- docs/system/s390x/bootdevices.rst | 9 ++++++---
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ tests/qtest/cdrom-test.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/docs/system/bootindex.rst b/docs/system/bootindex.rst
-index 8b057f812f..988f7b3beb 100644
---- a/docs/system/bootindex.rst
-+++ b/docs/system/bootindex.rst
-@@ -49,10 +49,11 @@ Limitations
- -----------
- 
- Some firmware has limitations on which devices can be considered for
--booting.  For instance, the PC BIOS boot specification allows only one
--disk to be bootable.  If boot from disk fails for some reason, the BIOS
-+booting.  For instance, the x86 PC BIOS boot specification allows only one
-+disk to be bootable.  If boot from disk fails for some reason, the x86 BIOS
- won't retry booting from other disk.  It can still try to boot from
--floppy or net, though.
-+floppy or net, though. In the case of s390x BIOS, the BIOS will try up to
-+8 total devices, any number of which may be disks.
- 
- Sometimes, firmware cannot map the device path QEMU wants firmware to
- boot from to a boot method.  It doesn't happen for devices the firmware
-diff --git a/docs/system/s390x/bootdevices.rst b/docs/system/s390x/bootdevices.rst
-index c97efb8fc0..1a1a764c1c 100644
---- a/docs/system/s390x/bootdevices.rst
-+++ b/docs/system/s390x/bootdevices.rst
-@@ -6,9 +6,7 @@ Booting with bootindex parameter
- 
- For classical mainframe guests (i.e. LPAR or z/VM installations), you always
- have to explicitly specify the disk where you want to boot from (or "IPL" from,
--in s390x-speak -- IPL means "Initial Program Load"). In particular, there can
--also be only one boot device according to the architecture specification, thus
--specifying multiple boot devices is not possible (yet).
-+in s390x-speak -- IPL means "Initial Program Load").
- 
- So for booting an s390x guest in QEMU, you should always mark the
- device where you want to boot from with the ``bootindex`` property, for
-@@ -17,6 +15,11 @@ example::
-  qemu-system-s390x -drive if=none,id=dr1,file=guest.qcow2 \
-                    -device virtio-blk,drive=dr1,bootindex=1
- 
-+Multiple devices may have a bootindex. The lowest bootindex is assigned to the
-+device to IPL first.  If the IPL fails for the first, the device with the second
-+lowest bootindex will be tried and so on until IPL is successful or there are no
-+remaining boot devices to try.
-+
- For booting from a CD-ROM ISO image (which needs to include El-Torito boot
- information in order to be bootable), it is recommended to specify a ``scsi-cd``
- device, for example like this::
+diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
+index 9d72b24e4b..c86725a511 100644
+--- a/tests/qtest/cdrom-test.c
++++ b/tests/qtest/cdrom-test.c
+@@ -213,6 +213,30 @@ static void add_s390x_tests(void)
+                         "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
+                         "-device virtio-blk,drive=d2,bootindex=1 "
+                         "-drive if=none,id=d2,media=cdrom,file=", test_cdboot);
++    qtest_add_data_func("cdrom/boot/as-fallback-device",
++                        "-device virtio-serial -device virtio-scsi "
++                        "-device virtio-blk,drive=d1,bootindex=1 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
++                        "-device virtio-blk,drive=d2,bootindex=2 "
++                        "-drive if=none,id=d2,media=cdrom,file=", test_cdboot);
++    qtest_add_data_func("cdrom/boot/as-last-option",
++                        "-device virtio-serial -device virtio-scsi "
++                        "-device virtio-blk,drive=d1,bootindex=1 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d1 "
++                        "-device virtio-blk,drive=d2,bootindex=2 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d2 "
++                        "-device virtio-blk,drive=d3,bootindex=3 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d3 "
++                        "-device scsi-hd,drive=d4,bootindex=4 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d4 "
++                        "-device scsi-hd,drive=d5,bootindex=5 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d5 "
++                        "-device virtio-blk,drive=d6,bootindex=6 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d6 "
++                        "-device scsi-hd,drive=d7,bootindex=7 "
++                        "-drive driver=null-co,read-zeroes=on,if=none,id=d7 "
++                        "-device scsi-cd,drive=d8,bootindex=8 "
++                        "-drive if=none,id=d8,media=cdrom,file=", test_cdboot);
+     if (qtest_has_device("x-terminal3270")) {
+         qtest_add_data_func("cdrom/boot/without-bootindex",
+                             "-device virtio-scsi -device virtio-serial "
 -- 
 2.47.0
 
