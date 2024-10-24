@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9E79AE1CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD829AE1AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ua3-0001DS-Jj; Thu, 24 Oct 2024 05:56:35 -0400
+	id 1t3ua4-0001Ej-Dk; Thu, 24 Oct 2024 05:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZl-000194-OF
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:18 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1t3uZk-00018c-Gr
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:16 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZi-0003oN-Au
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:17 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a9a850270e2so111800266b.0
+ id 1t3uZi-0003o7-5D
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:15 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5cb72918bddso924291a12.3
  for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763773; x=1730368573; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729763772; x=1730368572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XK/zHX8qgXptgXry27/12QWgnPSEzecfyqvscRlng8I=;
- b=Uk8IoZjWBQqffroCcYl7dTuvjJc99N1C+USThumofJ7AUSSdA9ucF5RQIJ5GdpjPgH
- Z0xs5dwOu70SgUuaZF1fDmilPqaZO0qjHhWDJA03Bu+jCadso+QmVBsMdeZ4U37HHxI6
- UAA5DnNyY0UvArdqyj9xq07tXNtqWiGwbPbR39KvR3IDWXlHMoATeGnvPPs58o8DBwYs
- DYNR1//L5DkWW5/YTEkc4GUxj4Y0tRhfZo4Ez2vvbsJHAUvyIh2jm/HflBoiSsxV0UmD
- JzI4hbzaCwwS7mbU97hFazPaIipn4f5mXBvaKgwcnXddf4sG120GT1FPngXwu4P6k9ao
- B59g==
+ bh=oznrXdsmNzi0LevvMQ+H5t+DJg+P+IM2tS40pZyVrfA=;
+ b=x0q0xeHBKxpNhFsIyXY/YHQvE74daImtzAciR+yBHLzJAgiHzzJ0ebmyRGwzkw15PU
+ 0x6aT/xPhtr6jaByFAAIEYV/YoNWrMMV+9r7ACt0FEJR7+sEsIt20zrflEY+LKqeSRfK
+ fDrVLdArDZ4uAnB6wwustEbnF3gHfOeICQhF//o3rcYjaJ2csafvhPMa2uH4lIHouIe0
+ iIAdgtSoRlV3XDlVV7aaNi2BhYVsLDHqA5P7X005ri9nPj/2XvcU5sqrtRsONo2Xzlm6
+ IaSWEv+OnRxFbe05jjO3VjGHZOXagaImfYpDs0gZgpllKjEZBHuZPP2OB4HWFSbA+2s0
+ BThQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763773; x=1730368573;
+ d=1e100.net; s=20230601; t=1729763772; x=1730368572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XK/zHX8qgXptgXry27/12QWgnPSEzecfyqvscRlng8I=;
- b=nJLr/iwKVI3jNtQzv7DFov7KCOGeUXX0mYGedo+O8wWOvmG3x6WNgHkglyusoUTCTx
- Yhd4D+FeYXZ52q78rw75pYcKssmVTYDrsRcs4vr+9bwchi+xJQCDYhvXFJScc+sCp44c
- dqYgxiUnwF3ABBOyBVZD2iLsWaoexAbJuxd7lHq0UCoN6WH6hZiMcnynEY8M4hbxYDJ4
- 9mgN3D6Giz0yBiy6WzIbs6l6OwCTLQQMrH4NBZlruwsTSG4LKHE3bNGf7+1jZSoLqPKF
- hOcdvftcEMH5jsdiE9jVBAc/hcDSdzCLWt0WtxUp3RCty+yXoOFBw6tKGrj1pa7Dojki
- D6+A==
-X-Gm-Message-State: AOJu0YyyjZ9l5aHWDhLBtX9c2l0gvZLudN1ZFxsUIMICWWEEJlTg3Kx5
- KnKoKtf0AZ4z1E7wabjAs8e+2sXxIXIHeH6w06LNBwqdAVcdu2GPGmQPqqNANLA=
-X-Google-Smtp-Source: AGHT+IEOyQePChGWLvPydUo9luKyniLHTcp118GzZqLsR/2s04p0bWt/3Zyp/9H6Df53O9jmGDr9mg==
-X-Received: by 2002:a17:907:9405:b0:a99:ee42:1f38 with SMTP id
- a640c23a62f3a-a9abf8aefbdmr501541866b.31.1729763772859; 
+ bh=oznrXdsmNzi0LevvMQ+H5t+DJg+P+IM2tS40pZyVrfA=;
+ b=MSyT9C2rjjcykjFthMiyuDOE8lJvbsSo+gRMQRo4ObK6exJTxXv0jnh3PhH0SmhOxC
+ 5PObsgIVZVB/A4DVUBbH8KyLMExiyitBNY2dU9EWllOMo8I305o047KANhZ9NHCLbsIX
+ Rz1lPCch/CG/9VpiN9f6pea6OyIEjvyvYRAooFaJke8PDiceYcMUgjSp3JwyjFaCCk8P
+ Xch4uUUFSQ5FmOvgP2PbovNrkGrNlDog4n4wXphOReaxJX9GzjtO3mNbHPUaI0Gv7U1Y
+ EEFu9bC4GxDL8xN9cG42bV3TZQljbqOqYU0oX2YxNRBmMWeTzL9NlfXPscfakIQBmSZ1
+ sLuw==
+X-Gm-Message-State: AOJu0YxUklAfZcY40deCSuAbeoOoAz2673MnmtAMTwD1eXY9sBOg6Ggf
+ c6H/uY462VolY5QgDB4Sa7bx8J2sFr7nDqFbZNrV6u5Gp6nVf1FMn2VbhcHTTVI=
+X-Google-Smtp-Source: AGHT+IEAt4uQRfFQMY1XCHNNH9YcWuMTzIuRnlV7XfaHyMRK555hRQferXZcRgvyPr4sFdu1oGtJOA==
+X-Received: by 2002:a05:6402:254b:b0:5ca:da2:b2ca with SMTP id
+ 4fb4d7f45d1cf-5cb8acba591mr5400530a12.19.1729763772509; 
  Thu, 24 Oct 2024 02:56:12 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912d623fsm594030066b.9.2024.10.24.02.56.06
+ 4fb4d7f45d1cf-5cb66c73b50sm5442472a12.97.2024.10.24.02.56.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Oct 2024 02:56:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CC4E75F9D0;
+ by draig.lan (Postfix) with ESMTP id DF8A25F9DD;
  Thu, 24 Oct 2024 10:56:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PULL 09/17] dockerfiles: fix default targets for
- debian-loongarch-cross
-Date: Thu, 24 Oct 2024 10:55:55 +0100
-Message-Id: <20241024095603.1813285-10-alex.bennee@linaro.org>
+Subject: [PULL 10/17] gitlab: make check-[dco|patch] a little more verbose
+Date: Thu, 24 Oct 2024 10:55:56 +0100
+Message-Id: <20241024095603.1813285-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
 References: <20241024095603.1813285-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,35 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+When git fails the rather terse backtrace only indicates it failed
+without some useful context. Add some to make the log a little more
+useful.
 
-fix system target name, and remove --disable-system (which deactivates
-system target).
-
-Found using: make docker-test-build@debian-loongarch-cross V=1
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241020213759.2168248-1-pierrick.bouvier@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-10-alex.bennee@linaro.org>
+Message-Id: <20241023113406.1284676-11-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-index 79eab5621e..538ab53490 100644
---- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
-+++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-@@ -43,8 +43,8 @@ RUN curl -#SL https://github.com/loongson/build-tools/releases/download/2023.08.
- ENV PATH $PATH:/opt/cross-tools/bin
- ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib:$LD_LIBRARY_PATH
+diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
+index 632c8bcce8..d221b16bd5 100755
+--- a/.gitlab-ci.d/check-dco.py
++++ b/.gitlab-ci.d/check-dco.py
+@@ -19,10 +19,9 @@
+ reponame = os.path.basename(cwd)
+ repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
  
--ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
--ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
-+ENV QEMU_CONFIGURE_OPTS --disable-docs --disable-tools
-+ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch64-softmmu
- ENV MAKE /usr/bin/make
++print(f"adding upstream git repo @ {repourl}")
+ subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
+-subprocess.check_call(["git", "fetch", "check-dco", "master"],
+-                      stdout=subprocess.DEVNULL,
+-                      stderr=subprocess.DEVNULL)
++subprocess.check_call(["git", "fetch", "check-dco", "master"])
  
- # As a final step configure the user (if env is defined)
+ ancestor = subprocess.check_output(["git", "merge-base",
+                                     "check-dco/master", "HEAD"],
+diff --git a/.gitlab-ci.d/check-patch.py b/.gitlab-ci.d/check-patch.py
+index 39e2b403c9..68c549a146 100755
+--- a/.gitlab-ci.d/check-patch.py
++++ b/.gitlab-ci.d/check-patch.py
+@@ -19,13 +19,12 @@
+ reponame = os.path.basename(cwd)
+ repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
+ 
++print(f"adding upstream git repo @ {repourl}")
+ # GitLab CI environment does not give us any direct info about the
+ # base for the user's branch. We thus need to figure out a common
+ # ancestor between the user's branch and current git master.
+ subprocess.check_call(["git", "remote", "add", "check-patch", repourl])
+-subprocess.check_call(["git", "fetch", "check-patch", "master"],
+-                      stdout=subprocess.DEVNULL,
+-                      stderr=subprocess.DEVNULL)
++subprocess.check_call(["git", "fetch", "check-patch", "master"])
+ 
+ ancestor = subprocess.check_output(["git", "merge-base",
+                                     "check-patch/master", "HEAD"],
 -- 
 2.39.5
 
