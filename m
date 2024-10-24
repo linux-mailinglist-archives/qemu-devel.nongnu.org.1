@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0BA9AF5DC
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 01:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D099AF5E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 01:37:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t47MN-0008IA-9C; Thu, 24 Oct 2024 19:35:19 -0400
+	id 1t47MW-0008JG-Ok; Thu, 24 Oct 2024 19:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1t47ML-0008HE-8G
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:17 -0400
+ id 1t47MT-0008Iv-UN
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:25 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1t47MJ-0002rZ-O2
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1729812904; cv=none; 
+ id 1t47MS-0002sE-2F
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1729812910; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=X2frgcOnXSjBZZyiUJ4n+uzGqFa0WpD0d/TJ/LOHZCqpVA/m7nPGsGlLj5aEHde+uvFrDNiQ5DBigkr0aMxL3y3FtkShDoS9QMHHgeATUN+z0zFsNYvbGrmFXXp4/wjjZkwQlCFIZ6Jxzr5VahE5DNw+ATBLhTPDmzbMwnv0cYY=
+ b=EyccKgjgVcC5uJKvG3B7yUjrs5UwSwburo22b+QLMMfuygWf7x+aFS4nWy8kEjpAGc9We4fsdEFijHqYa3EuRFekbRhaJHfQ7jIXtw8YDLqPyjMs6xS8aC1q/YiB0OzUY87GveP9rPXxFMIXVrLBaLwf8Q0fqBoYMGk9ot1Xs0M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1729812904;
+ s=zohoarc; t=1729812910;
  h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=YX8Cx3IAbZCZCZ5QLBTfQHwoqaPoB7M3PM5VoA7yqzk=; 
- b=GN4KZWUbH6o0frr5CKPxC16tUgVPUqjwmm/9C7bei8NJcqgY5lzC0E4QzlxKTVAe7HltbssVd3wtOxyDVIKOEe21ZsaXnSZOyL6IkqgpxtpmBTcf360JD+Vf9lGgCTzapQZf9+QAxPQTaNj5j03catyivjuD4ale6jS8MxdIej8=
+ bh=LG/8TVxiYwhW0XBJ6NZdJm8JSASYt+lMAFdNV7iCJO4=; 
+ b=i6z0Q3Lu/Aw23cYY3zzbGGy3IIEHvRLqos2DJ/Kz7kzIhWqxmTDlfq8xuRXFQs2Rgv1G6JUXJHyaUYa+SwrbH/KvVslG4BK+g3QNeux2UWAxXfWkTSnydBcOCl0IZjayd/vV87QGl7iiBxvlTBxcoLZ2dNSMeIaPO/GsUCfvF1M=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729812904; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729812910; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
  h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=YX8Cx3IAbZCZCZ5QLBTfQHwoqaPoB7M3PM5VoA7yqzk=;
- b=iIeOnHGmQD9BYyqHLpdEgjRy1prWB8bZc/L8l2+lSVPbiuVltmQZmq/4JpTkpiG5
- 69zH3t5FDGaDDRSV8j5O09RhV1gHB6SacylZ1ZrxuuMhuPbxEl7zzf8vu3jmlk9z72r
- UcVMht9tIaBHCQ5M5GfFS1jxazW0TgfivHQVEgys=
-Received: by mx.zohomail.com with SMTPS id 17298129026091011.7865610905661;
- Thu, 24 Oct 2024 16:35:02 -0700 (PDT)
+ bh=LG/8TVxiYwhW0XBJ6NZdJm8JSASYt+lMAFdNV7iCJO4=;
+ b=V9RPxqGbPq0Z9KPp1SvfdUDo1wG97FAwsh//m62NI0cANNL6p/ZoLF6IgWLe2AQK
+ GXE8mpAuopoNHKo51Yi9HmgX43Rrr8Nh/2xi2aAvcZ5Rvl4N4e7wvcGPtXbRaJetAsy
+ LYEEGpbD6ZwzlmVVjTaT1/VRczORlRYkMtzmofV0=
+Received: by mx.zohomail.com with SMTPS id 1729812908754766.663591835748;
+ Thu, 24 Oct 2024 16:35:08 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -57,10 +57,9 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v3 1/6] ui/sdl2: Restore original context after new context
- creation
-Date: Fri, 25 Oct 2024 02:33:49 +0300
-Message-ID: <20241024233355.136867-2-dmitry.osipenko@collabora.com>
+Subject: [PATCH v3 2/6] ui/sdl2: Implement dpy dmabuf functions
+Date: Fri, 25 Oct 2024 02:33:50 +0300
+Message-ID: <20241024233355.136867-3-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024233355.136867-1-dmitry.osipenko@collabora.com>
 References: <20241024233355.136867-1-dmitry.osipenko@collabora.com>
@@ -92,33 +91,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SDL API changes GL context to a newly created GL context, which differs
-from other GL providers that don't switch context. Change SDL backend to
-restore the original GL context. This allows Qemu's virtio-gpu to support
-new virglrenderer async-fencing feature for Virgl contexts, otherwise
-virglrenderer's vrend creates a fence-sync context on the Qemu's
-main-loop thread that erroneously stays in-use by the main-loop after
-creation, not allowing vrend's fence-sync thread switch to this new
-context that belongs to it.
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
+If EGL is used, we can rely on dmabuf to import textures without
+doing copies.
+
+To get this working on X11, we use the existing SDL hint:
+SDL_HINT_VIDEO_X11_FORCE_EGL (because dmabuf can't be used with GLX).
+
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- ui/sdl2-gl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/ui/sdl2.h |  7 ++++++
+ meson.build       |  4 +++
+ ui/sdl2-gl.c      | 63 +++++++++++++++++++++++++++++++++++++++++++++++
+ ui/sdl2.c         | 40 ++++++++++++++++++++++++++++++
+ 4 files changed, 114 insertions(+)
 
+diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
+index dbe6e3d9739b..9daf5ecffae7 100644
+--- a/include/ui/sdl2.h
++++ b/include/ui/sdl2.h
+@@ -45,6 +45,7 @@ struct sdl2_console {
+     bool gui_keysym;
+     SDL_GLContext winctx;
+     QKbdState *kbd;
++    bool has_dmabuf;
+ #ifdef CONFIG_OPENGL
+     QemuGLShader *gls;
+     egl_fb guest_fb;
+@@ -96,5 +97,11 @@ void sdl2_gl_scanout_texture(DisplayChangeListener *dcl,
+                              void *d3d_tex2d);
+ void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
+                            uint32_t x, uint32_t y, uint32_t w, uint32_t h);
++void sdl2_gl_scanout_dmabuf(DisplayChangeListener *dcl,
++                            QemuDmaBuf *dmabuf);
++void sdl2_gl_release_dmabuf(DisplayChangeListener *dcl,
++                            QemuDmaBuf *dmabuf);
++bool sdl2_gl_has_dmabuf(DisplayChangeListener *dcl);
++void sdl2_gl_console_init(struct sdl2_console *scon);
+ 
+ #endif /* SDL2_H */
+diff --git a/meson.build b/meson.build
+index 089cbd2bb364..1ace2bfa0ebe 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1531,6 +1531,9 @@ else
+   sdl_image = not_found
+ endif
+ 
++# libx11 presents together with SDL or GTK libs on systems that support X11
++xlib = dependency('x11', required: false)
++
+ rbd = not_found
+ if not get_option('rbd').auto() or have_block
+   librados = cc.find_library('rados', required: get_option('rbd'))
+@@ -2397,6 +2400,7 @@ config_host_data.set('CONFIG_RELOCATABLE', get_option('relocatable'))
+ config_host_data.set('CONFIG_SAFESTACK', get_option('safe_stack'))
+ config_host_data.set('CONFIG_SDL', sdl.found())
+ config_host_data.set('CONFIG_SDL_IMAGE', sdl_image.found())
++config_host_data.set('CONFIG_XLIB', xlib.found())
+ config_host_data.set('CONFIG_SECCOMP', seccomp.found())
+ if seccomp.found()
+   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
 diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-index e01d9ab0c7bf..b1fe96d6af22 100644
+index b1fe96d6af22..7612af18292c 100644
 --- a/ui/sdl2-gl.c
 +++ b/ui/sdl2-gl.c
-@@ -168,6 +168,9 @@ QEMUGLContext sdl2_gl_create_context(DisplayGLCtx *dgc,
-                             SDL_GL_CONTEXT_PROFILE_ES);
-         ctx = SDL_GL_CreateContext(scon->real_window);
-     }
+@@ -26,6 +26,8 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "ui/console.h"
+ #include "ui/input.h"
+ #include "ui/sdl2.h"
+@@ -249,3 +251,64 @@ void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
+ 
+     SDL_GL_SwapWindow(scon->real_window);
+ }
 +
++void sdl2_gl_scanout_dmabuf(DisplayChangeListener *dcl,
++                            QemuDmaBuf *dmabuf)
++{
++    struct sdl2_console *scon = container_of(dcl, struct sdl2_console, dcl);
++
++    assert(scon->opengl);
 +    SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
 +
-     return (QEMUGLContext)ctx;
++    egl_dmabuf_import_texture(dmabuf);
++    if (!qemu_dmabuf_get_texture(dmabuf)) {
++        error_report("%s: failed fd=%d", __func__, qemu_dmabuf_get_fd(dmabuf));
++    }
++
++    sdl2_gl_scanout_texture(dcl, qemu_dmabuf_get_texture(dmabuf), false,
++                            qemu_dmabuf_get_width(dmabuf),
++                            qemu_dmabuf_get_height(dmabuf),
++                            0, 0,
++                            qemu_dmabuf_get_width(dmabuf),
++                            qemu_dmabuf_get_height(dmabuf),
++                            NULL);
++
++    if (qemu_dmabuf_get_allow_fences(dmabuf)) {
++        scon->guest_fb.dmabuf = dmabuf;
++    }
++}
++
++void sdl2_gl_release_dmabuf(DisplayChangeListener *dcl,
++                            QemuDmaBuf *dmabuf)
++{
++    egl_dmabuf_release_texture(dmabuf);
++}
++
++bool sdl2_gl_has_dmabuf(DisplayChangeListener *dcl)
++{
++    struct sdl2_console *scon = container_of(dcl, struct sdl2_console, dcl);
++
++    return scon->has_dmabuf;
++}
++
++void sdl2_gl_console_init(struct sdl2_console *scon)
++{
++    bool hidden = scon->hidden;
++
++    scon->hidden = true;
++    scon->surface = qemu_create_displaysurface(1, 1);
++    sdl2_window_create(scon);
++
++    /*
++     * QEMU checks whether console supports dma-buf before switching
++     * to the console.  To break this chicken-egg problem we pre-check
++     * dma-buf availability beforehand using a dummy SDL window.
++     */
++    scon->has_dmabuf = qemu_egl_has_dmabuf();
++
++    sdl2_window_destroy(scon);
++    qemu_free_displaysurface(scon->surface);
++
++    scon->surface = NULL;
++    scon->hidden = hidden;
++}
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index bd4f5a9da14a..5a1e5940c66a 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -35,6 +35,10 @@
+ #include "ui/win32-kbd-hook.h"
+ #include "qemu/log.h"
+ 
++#ifdef CONFIG_XLIB
++#include <X11/Xlib.h>
++#endif
++
+ static int sdl2_num_outputs;
+ static struct sdl2_console *sdl2_console;
+ 
+@@ -120,6 +124,9 @@ void sdl2_window_create(struct sdl2_console *scon)
+         /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
+         scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
+     }
++
++    qemu_egl_display = eglGetCurrentDisplay();
++
+     sdl_update_caption(scon);
  }
+ 
+@@ -820,6 +827,10 @@ static const DisplayChangeListenerOps dcl_gl_ops = {
+     .dpy_gl_scanout_disable  = sdl2_gl_scanout_disable,
+     .dpy_gl_scanout_texture  = sdl2_gl_scanout_texture,
+     .dpy_gl_update           = sdl2_gl_scanout_flush,
++
++    .dpy_gl_scanout_dmabuf   = sdl2_gl_scanout_dmabuf,
++    .dpy_gl_release_dmabuf   = sdl2_gl_release_dmabuf,
++    .dpy_has_dmabuf          = sdl2_gl_has_dmabuf,
+ };
+ 
+ static bool
+@@ -847,6 +858,33 @@ static void sdl2_display_early_init(DisplayOptions *o)
+     }
+ }
+ 
++static void sdl2_set_hint_x11_force_egl(void)
++{
++#if defined(SDL_HINT_VIDEO_X11_FORCE_EGL) && defined(CONFIG_OPENGL) && \
++    defined(CONFIG_XLIB)
++    Display *x_disp = XOpenDisplay(NULL);
++    EGLDisplay egl_display;
++
++    if (!x_disp) {
++        return;
++    }
++
++    /* Prefer EGL over GLX to get dma-buf support. */
++    egl_display = eglGetDisplay((EGLNativeDisplayType)x_disp);
++
++    if (egl_display != EGL_NO_DISPLAY) {
++        /*
++         * Setting X11_FORCE_EGL hint doesn't make SDL to prefer 11 over
++         * Wayland. I.e. SDL will use Wayland driver even if XWayland presents.
++         */
++        SDL_SetHint(SDL_HINT_VIDEO_X11_FORCE_EGL, "1");
++        eglTerminate(egl_display);
++    }
++
++    XCloseDisplay(x_disp);
++#endif
++}
++
+ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+ {
+     uint8_t data = 0;
+@@ -877,6 +915,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
+ #endif
+     SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
++    sdl2_set_hint_x11_force_egl();
+     SDL_EnableScreenSaver();
+     memset(&info, 0, sizeof(info));
+     SDL_VERSION(&info.version);
+@@ -923,6 +962,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+         sdl2_console[i].kbd = qkbd_state_init(con);
+         if (display_opengl) {
+             qemu_console_set_display_gl_ctx(con, &sdl2_console[i].dgc);
++            sdl2_gl_console_init(&sdl2_console[i]);
+         }
+         register_displaychangelistener(&sdl2_console[i].dcl);
  
 -- 
 2.47.0
