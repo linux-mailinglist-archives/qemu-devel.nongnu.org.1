@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42F69AF4B4
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5FF9AF4BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t45QO-0005hN-IF; Thu, 24 Oct 2024 17:31:20 -0400
+	id 1t45QQ-0005iX-RH; Thu, 24 Oct 2024 17:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QL-0005fL-5D
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:17 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QN-0005hR-Kt
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QJ-0005Zg-Lx
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QL-0005aF-Tz
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729805475;
+ s=mimecast20190719; t=1729805477;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vte9HPiXE32VhwFKsE2SGPglzqTAs5Z4orbp/UZZ2ec=;
- b=FvaLUDRBiXJRl8ITv5yw7iRjHH2dfWuUPK1qVqALa8fPwiTQi7y+iKKiFolc49LWEIDKoz
- fNQVdQ5iVpEEchlwkwMdyL2rZCYu0olnvmMDb97OQn95JhSkvo90r1e4f7k68wt4pBTbyN
- Rc0/hSjNCwXHFtoft6YnO+q5qCAhDK0=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bJXamzqrq7AiFagiu9llJXewSi82uD7Ymbaq7adW03I=;
+ b=MlqG7o+lyGN0PsuB1WNl4cAgQmJJgVcLXHcBZx7jlIGj84MZLadn0xuawu/1Boj6tCIMy5
+ tnoMXg5PwvCKOtivMhM3YwFiToA81vMw1FYQwjXsybYh+sq4zBu7Xudml96x98J7KPAHH+
+ /9tS0ApUtMztd77uUStjkp/o0hZFzgo=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-U5Q76G8nP8-8Tjuft_Q-9g-1; Thu, 24 Oct 2024 17:31:13 -0400
-X-MC-Unique: U5Q76G8nP8-8Tjuft_Q-9g-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7ac9b08cb77so207102185a.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:13 -0700 (PDT)
+ us-mta-541-o7G2DmmTMo-ADXYSKrWmPw-1; Thu, 24 Oct 2024 17:31:15 -0400
+X-MC-Unique: o7G2DmmTMo-ADXYSKrWmPw-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-460b07774a7so21584551cf.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729805473; x=1730410273;
+ d=1e100.net; s=20230601; t=1729805474; x=1730410274;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vte9HPiXE32VhwFKsE2SGPglzqTAs5Z4orbp/UZZ2ec=;
- b=PZclegvjxGBR1k+u4FSBBP9f0Y14oP32LrT7722FGpcYcxHwRa7Ri+2CFApMyorxJS
- DaWy2IGbCqEwZfbJNMK9iRae7HZffktA5Ac3PxiTBPXrpRcTgqwqZqxsON5DDjh/4xQ6
- pZdaaOnr9zC9uHY3tEKNauAGnrvA6uwwjxGKBWoaBspC0HhIY7bUcPdWlByg84Hn36tK
- zgpRyBykPBZYqsv0QbCmYlFp3J46U2YsYJ59ONe2wri3sVGUGV1LLjgYtDaM+mHoDryz
- Fz5sxEki1L7/gaF3gcH4TfcZFMZrXklu2cY5h8t9aw/lggPLRsCyf2IRxPYSxuAotq6A
- RGtQ==
-X-Gm-Message-State: AOJu0YzadpGvYyUBxccNtQDDDh/mES3YMTorcPlaO7hObSpPYjgJDbm/
- N9t+0h9BLze627YvXEuewJGq4HECtKb3yBmJ7+402pXN2TydDi9+0R9GD+8YbOOH2/kBIxnBjdj
- aM8LZF0ikjVJuLxAXCLps3jp7wSThVItHg8wlsZkB9Rem7FA6y80buw6aJz0pIoE0gop4VGWAtP
- mIyoRHqLI7vqD2t9bpQPPGFuwB5YNHSV8Vsw==
-X-Received: by 2002:ac8:5a52:0:b0:457:cab4:6e4a with SMTP id
- d75a77b69052e-4611471f04dmr108164791cf.37.1729805472866; 
- Thu, 24 Oct 2024 14:31:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQOcNK9ZtKvtLWG7+ZNpte+LVc/3X0MTpv+8D7V2VzBaT08OCRfXpMgl0wZJdfENNshehb4A==
-X-Received: by 2002:ac8:5a52:0:b0:457:cab4:6e4a with SMTP id
- d75a77b69052e-4611471f04dmr108164411cf.37.1729805472410; 
- Thu, 24 Oct 2024 14:31:12 -0700 (PDT)
+ bh=bJXamzqrq7AiFagiu9llJXewSi82uD7Ymbaq7adW03I=;
+ b=Kdq4VnNmjgZkXc8WsrLQZEbiKl+UMHYnjN8rXW+XlyuiOu35rPBnbEHvms8SMsWunm
+ nwzXm2JpXcjfqW/zvt+bJ5l6gPjjLQQP96INzDi6wCwcMnE03wEAkkxkcJdxY2SJNGwb
+ UZ0qq88puM1Jtgwy6NlVwH0gEFwuoNmPpo5KYI5t+xwbH+/qovMPDlIQhj2kJHWQQh6Z
+ Z2Onyv2UqQht1gTtsF4D4qfBgQ6gEHQkHvGfo9KN+Y7PdVDuWhbwQacOgdCjeRFly9t1
+ eZIi7rM1rnfB3TgJ9JJSocE/nP04weKE3qzWcO8KQA/GyG3mIF+OjbRq9PUwwy2XhHCY
+ yt1Q==
+X-Gm-Message-State: AOJu0Yy6a6EKnPYDg/r5X+lVdve3ZI7dM1BjqGxBtTOKNradCctoIRGE
+ xXU9ST/Lh7vjX83YELZ4QXmxDyj7QTUlw7r4rso6I4yxA/f/kJyCz5yuS4I3+052MpZGRpbqb0k
+ AonPZ/J5D7748lnFIAvOYB12MTE047JnSZu5ixDb17IRt/1tZtOaPtnfXd+bCZcdF65oPg9DBrb
+ Jtmv+NSd3DqvOC9UFg0qpqBttoxlzpoxU4OA==
+X-Received: by 2002:a05:622a:30b:b0:460:9a7c:8dd0 with SMTP id
+ d75a77b69052e-46114745ea3mr102531841cf.55.1729805474459; 
+ Thu, 24 Oct 2024 14:31:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWRcFG/xreUGKLjkXNCc+1IMxAXwaEE4kuCf0QBvjEHQYqdQt1NC5dwVPkayPhJzgdunfPJg==
+X-Received: by 2002:a05:622a:30b:b0:460:9a7c:8dd0 with SMTP id
+ d75a77b69052e-46114745ea3mr102531551cf.55.1729805474084; 
+ Thu, 24 Oct 2024 14:31:14 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.10
+ d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 14:31:11 -0700 (PDT)
+ Thu, 24 Oct 2024 14:31:13 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v3 7/8] migration: Unexport migration_is_active()
-Date: Thu, 24 Oct 2024 17:30:55 -0400
-Message-ID: <20241024213056.1395400-8-peterx@redhat.com>
+Subject: [PATCH v3 8/8] migration: Protect updates to current_migration with a
+ mutex
+Date: Thu, 24 Oct 2024 17:30:56 -0400
+Message-ID: <20241024213056.1395400-9-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241024213056.1395400-1-peterx@redhat.com>
 References: <20241024213056.1395400-1-peterx@redhat.com>
@@ -101,91 +102,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have two outside users of this API, so it's exported.
+Introduce migration_mutex, protecting concurrent updates to
+current_migration.
 
-Is it really necessary?  Does it matter whether it must be
-ACTIVE/POSTCOPY_ACTIVE/DEVICE?  I guess no.
+In reality, most of the exported migration functions are safe to access
+migration objects on capabilities, etc., e.g. many of the code is invoked
+within migration thread via different hooks (e.g., precopy notifier,
+vmstate handler hooks, etc.).
 
-The external user is trying to detect whether migration is running or not,
-as simple as that.
+So literally the mutex so far only makes sure below two APIs that are prone
+to accessing freed current_migration:
 
-To make the migration_is*() APIs even shorter, let's use
-migration_is_running() for outside worlds.
+        migration_is_running()
+        migration_file_set_error()
 
-Internally there're actually three places that literally needs
-migration_is_active() rather than running().  Keep that an internal helper.
-
-After this patch, we finally only export one helper that allows external
-world to try detect migration status, which is migration_is_running().
+Then we'll need to take the mutex too when init/free the migration object.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/misc.h | 1 -
- migration/migration.h    | 1 +
- hw/vfio/common.c         | 4 ++--
- system/dirtylimit.c      | 3 +--
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ migration/migration.h |  3 +++
+ migration/migration.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index ad1e25826a..c0e23fdac9 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -53,7 +53,6 @@ void dump_vmstate_json_to_file(FILE *out_fp);
- void migration_object_init(void);
- void migration_shutdown(void);
- 
--bool migration_is_active(void);
- bool migration_is_running(void);
- bool migration_thread_is_self(void);
- 
 diff --git a/migration/migration.h b/migration/migration.h
-index 0956e9274b..9fa26ab06a 100644
+index 9fa26ab06a..05edcf0c49 100644
 --- a/migration/migration.h
 +++ b/migration/migration.h
-@@ -492,6 +492,7 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+@@ -473,6 +473,9 @@ struct MigrationState {
+     bool rdma_migration;
+ };
  
- int migrate_init(MigrationState *s, Error **errp);
- bool migration_is_blocked(Error **errp);
-+bool migration_is_active(void);
- /* True if outgoing migration has entered postcopy phase */
- bool migration_in_postcopy(void);
- bool migration_postcopy_is_alive(MigrationStatus state);
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index cc72282c71..7eb99ebd4d 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -174,7 +174,7 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
++extern QemuMutex migration_mutex;
++#define  QEMU_MIGRATION_LOCK_GUARD()  QEMU_LOCK_GUARD(&migration_mutex)
++
+ void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
+                        MigrationStatus new_state);
+ 
+diff --git a/migration/migration.c b/migration/migration.c
+index 127b01734d..ef044968df 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -97,6 +97,14 @@ enum mig_rp_message_type {
+    migrations at once.  For now we don't need to add
+    dynamic creation of migration */
+ 
++/*
++ * Protects current_migration below.  Must be hold when using migration
++ * exported functions unless the caller knows it won't get freed.  For
++ * example, when in the context of migration_thread() it's safe to access
++ * current_migration without the mutex, because the thread holds one extra
++ * refcount of the object, so it literally pins the object in-memory.
++ */
++QemuMutex migration_mutex;
+ static MigrationState *current_migration;
+ static MigrationIncomingState *current_incoming;
+ 
+@@ -110,6 +118,17 @@ static void migrate_fd_cancel(MigrationState *s);
+ static bool close_return_path_on_source(MigrationState *s);
+ static void migration_completion_end(MigrationState *s);
+ 
++/*
++ * This is explicitly done without migration_object_init(), because it may
++ * start to use this lock already when instance_init() of the object.  The
++ * mutex is alive for the whole lifecycle of QEMU, so it's always usable
++ * and never destroyed.
++ */
++static void __attribute__((constructor)) migration_mutex_init(void)
++{
++    qemu_mutex_init(&migration_mutex);
++}
++
+ static void migration_downtime_start(MigrationState *s)
  {
-     VFIODevice *vbasedev;
+     trace_vmstate_downtime_checkpoint("src-downtime-start");
+@@ -336,6 +355,14 @@ void migration_shutdown(void)
+      * stop the migration using this structure
+      */
+     migration_cancel(NULL);
++    /*
++     * Release the refcount from the main thread.  It means it can be freed
++     * here if migration thread is not running.
++     *
++     * NOTE: we don't need QEMU_MIGRATION_LOCK_GUARD() on this access
++     * because we're sure there's one refcount.  The lock will be taken in
++     * finalize() if it triggers, so we can't take it here anyway.
++     */
+     object_unref(OBJECT(current_migration));
  
--    if (!migration_is_active()) {
-+    if (!migration_is_running()) {
-         return false;
-     }
+     /*
+@@ -1118,8 +1145,14 @@ void migrate_send_rp_resume_ack(MigrationIncomingState *mis, uint32_t value)
  
-@@ -219,7 +219,7 @@ vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer)
+ bool migration_is_running(void)
  {
-     VFIODevice *vbasedev;
++    QEMU_MIGRATION_LOCK_GUARD();
++
+     MigrationState *s = current_migration;
  
--    if (!migration_is_active()) {
-+    if (!migration_is_running()) {
-         return false;
-     }
++    if (!s) {
++        return false;
++    }
++
+     switch (s->state) {
+     case MIGRATION_STATUS_ACTIVE:
+     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+@@ -3029,8 +3062,14 @@ static MigThrError postcopy_pause(MigrationState *s)
  
-diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-index ab20da34bb..d7a855c603 100644
---- a/system/dirtylimit.c
-+++ b/system/dirtylimit.c
-@@ -80,8 +80,7 @@ static void vcpu_dirty_rate_stat_collect(void)
-     int i = 0;
-     int64_t period = DIRTYLIMIT_CALC_TIME_MS;
+ void migration_file_set_error(int ret, Error *err)
+ {
++    QEMU_MIGRATION_LOCK_GUARD();
++
+     MigrationState *s = current_migration;
  
--    if (migrate_dirty_limit() &&
--        migration_is_active()) {
-+    if (migrate_dirty_limit() && migration_is_running()) {
-         period = migrate_vcpu_dirty_limit_period();
-     }
++    if (!s) {
++        return;
++    }
++
+     WITH_QEMU_LOCK_GUARD(&s->qemu_file_lock) {
+         if (s->to_dst_file) {
+             qemu_file_set_error_obj(s->to_dst_file, ret, err);
+@@ -3835,6 +3874,8 @@ static void migration_instance_finalize(Object *obj)
+ {
+     MigrationState *ms = MIGRATION_OBJ(obj);
  
++    QEMU_MIGRATION_LOCK_GUARD();
++
+     qemu_mutex_destroy(&ms->error_mutex);
+     qemu_mutex_destroy(&ms->qemu_file_lock);
+     qemu_sem_destroy(&ms->wait_unplug_sem);
+@@ -3858,6 +3899,8 @@ static void migration_instance_init(Object *obj)
+ {
+     MigrationState *ms = MIGRATION_OBJ(obj);
+ 
++    QEMU_MIGRATION_LOCK_GUARD();
++
+     /*
+      * There can only be one migration object globally. Keep a record of
+      * the pointer in current_migration, which will be reset after the
 -- 
 2.45.0
 
