@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA2C9AF4BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 611609AF4B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t45QL-0005fM-TM; Thu, 24 Oct 2024 17:31:17 -0400
+	id 1t45QQ-0005ht-9M; Thu, 24 Oct 2024 17:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QJ-0005ev-OS
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QK-0005fD-T8
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QH-0005Z8-7O
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:15 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QJ-0005ZT-1z
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729805472;
+ s=mimecast20190719; t=1729805473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/6k9K1F4sWItx0KAORYMPzbNGOJ+dvY3NLwf36xd2l4=;
- b=YykItHm2JTlA62fZcwT4rSeS20FbAnVkwhA1vOxUAzu5s0ssM6SV9SNuTgZBKiL5t0d9TM
- Ca0fbJIhZFr48jOmCJS6H9gZx1W8bys32A/0JuI/JwYSPmPtrsXyrSys2dWCvf7VBEL5ou
- QZNdYW1tPhIPfP+0rtK7ASEYfIJKlTI=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/6xFER4Y5so64URVhMy+JgrIVvXPCbxhauceydNM1kE=;
+ b=aEUkbczaE/9ZbE1sFFayZ2r0Hsg/rJ6zYpd4rh4oDDsSytHG7DCLpfWulUJxqg/CIojFkP
+ 8BjgO7Hwa/of/3sh2XLPX1Cu4rHUt6vidwA1DfZVg/XJ2/aIibqniWrpJ10UK4AVWyZ0FL
+ qmPQT+jlxh+p905l35PPj0YhpOs4A7U=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-lCTRQEExPbCnVSwUuNEi6w-1; Thu, 24 Oct 2024 17:31:10 -0400
-X-MC-Unique: lCTRQEExPbCnVSwUuNEi6w-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-7181ca4eca5so1553388a34.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:10 -0700 (PDT)
+ us-mta-224-ZPrxl4qHM9yPLOi-VXapIw-1; Thu, 24 Oct 2024 17:31:12 -0400
+X-MC-Unique: ZPrxl4qHM9yPLOi-VXapIw-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-460dd31b4c1so20493181cf.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729805469; x=1730410269;
+ d=1e100.net; s=20230601; t=1729805471; x=1730410271;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/6k9K1F4sWItx0KAORYMPzbNGOJ+dvY3NLwf36xd2l4=;
- b=p5pG+18ShGulXr5pWdxFwLdIF3cJX502hA/aYMMHq0PbFTOMozcUtwD9fgeVX+Y8Oc
- EdsGnkk9cNYkl32DeGc4R32NGYN65zRJTAnwF/0CvYDTESN++EvdeLlUVeT35X7jKuje
- LuElrANuIYyGQuFOdy6AUHFGrUy3cXBM55xM4QO3tuAUU1K/fcv/8wRERSzqf307GI+F
- yOFoYdjZVEwynLsTBheyhM1JQcczteZmIhmN2+DqmuU9ArRBTe8MpogiYicKROSR2pae
- yQR8vOI+wsNE2ryAU8gKGzUw2XBXQDnN/POoj1TSi7yNombmpDFiCM0hWeyNv6MGFxE5
- Djxw==
-X-Gm-Message-State: AOJu0Yzv0s6N7NGei40HRQIjWXjxJnHTABdZc0OA0sAiJWydEL53Rwyg
- QGt7mRAIUEs1Oe4s9lD61svKpsUr9AWC/MphiEcnYEnHm02Rqt+L6CK75Sz1YNbVdMDgawXn2El
- U9OqDHHQcithz0MgWNrkERVoXarKhtwvKWmh+ks1UG+A35J+VghEwdmPrBCr2EzcWZLZW+B0EhT
- JVJlPZIfqTm1hpXLjzJ6VE40nyzpfMfCNe2A==
-X-Received: by 2002:a05:6358:7211:b0:197:df0e:f23c with SMTP id
- e5c5f4694b2df-1c3e4d1fd0emr265778355d.11.1729805468913; 
- Thu, 24 Oct 2024 14:31:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgNXyX+9BUC5E8HTotTZ7ubI6ph201MDCgEpTCL2YHdpRoHyl6p9kTRr3NCUYtR5o+uY242w==
-X-Received: by 2002:a05:6358:7211:b0:197:df0e:f23c with SMTP id
- e5c5f4694b2df-1c3e4d1fd0emr265776055d.11.1729805468481; 
- Thu, 24 Oct 2024 14:31:08 -0700 (PDT)
+ bh=/6xFER4Y5so64URVhMy+JgrIVvXPCbxhauceydNM1kE=;
+ b=mBQr6GrKkYfAF85STJSNzERqIC39harh9+tCMjccrYsBxRKBW5cs5EiDheNEDWzXgo
+ 7iu7kx3UK12GE6LDfVkptZduy1rhtRbyxt3tA39xgt24IRw4fMwrsS1HSHYbbm8GryE4
+ StWACVE2HSFU520u/S/NTIh+L4Oeh7+9u1tUDVD4D0GKvrJXdvf65oK8IM2p4++6JXIc
+ mtzq55VLdm0VOM0dO0Q3AKY6sLjikx04cbuAN6uwaviLY6cXHLrxyU4mMbwvfr9CZz14
+ Hw3vQyQ5wTmq/I9wBVaT//0gh6FyP8omxLQ7SQUYjHqB7S54o97KUxkrGJDomRacbozp
+ OdGA==
+X-Gm-Message-State: AOJu0Yx4G0N1tN5fLC/vrksG9VX7F7F1QYlRjGKiEWU1Tmac/TZ7uE2C
+ GwvAQqkxYsjpCg3vGQNETaeJScVH1aNx+z/g7sFy/62fXZiWfBK8wLH5qyTAuCa96hqrtNrUyRy
+ 0AhgJSPXAWunpWgE7dqWqTPSGPeiwj19K87Crev31V8VcP/UEblkXqZSw8INJaEBZatQT7Smniv
+ bq5K8nFsMQPxUTzp+gKBB1vxuSv4AUbCSu8g==
+X-Received: by 2002:ac8:58d4:0:b0:460:42f7:fa3f with SMTP id
+ d75a77b69052e-461145b938fmr109750001cf.19.1729805470827; 
+ Thu, 24 Oct 2024 14:31:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3m0nKmt3RafhxwjJOPF+IsczbS53HQlvyevm7dIpOkCCIx4ascOxYgpbvG4H7ywL2aAz2vA==
+X-Received: by 2002:ac8:58d4:0:b0:460:42f7:fa3f with SMTP id
+ d75a77b69052e-461145b938fmr109749621cf.19.1729805470431; 
+ Thu, 24 Oct 2024 14:31:10 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.06
+ d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 14:31:07 -0700 (PDT)
+ Thu, 24 Oct 2024 14:31:09 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v3 5/8] migration: Drop migration_is_idle()
-Date: Thu, 24 Oct 2024 17:30:53 -0400
-Message-ID: <20241024213056.1395400-6-peterx@redhat.com>
+Subject: [PATCH v3 6/8] migration: Drop migration_is_device()
+Date: Thu, 24 Oct 2024 17:30:54 -0400
+Message-ID: <20241024213056.1395400-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241024213056.1395400-1-peterx@redhat.com>
 References: <20241024213056.1395400-1-peterx@redhat.com>
@@ -101,123 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now with the current migration_is_running(), it will report exactly the
-opposite of what will be reported by migration_is_idle().
+This only checks the DEVICE stage, which is a very special stage, and only
+checked together with ACTIVE+POSTCOPY_ACTIVE.
 
-Drop migration_is_idle(), instead use "!migration_is_running()" which
-should be identical on functionality.
+It's debatable why this needs a separate helper just to be exported.
+Theoretically speaking, DEVICE stage is also part of ACTIVE stage, where
+we're reaching the switchover phase but waiting for some external
+operation, during which VM stopped but migration is definitely active.
 
-In reality, most of the idle check is inverted, so it's even easier to
-write with "migrate_is_running()" check.
+Report DEVICE as active too, then we can drop migration_is_device().
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
  include/migration/misc.h |  1 -
- hw/virtio/virtio-mem.c   |  2 +-
- migration/migration.c    | 21 +--------------------
- migration/ram.c          |  2 +-
- system/qdev-monitor.c    |  4 ++--
- 5 files changed, 5 insertions(+), 25 deletions(-)
+ hw/vfio/common.c         |  2 +-
+ migration/migration.c    | 19 +++++++++----------
+ 3 files changed, 10 insertions(+), 12 deletions(-)
 
 diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 86ef160f19..804eb23c06 100644
+index 804eb23c06..ad1e25826a 100644
 --- a/include/migration/misc.h
 +++ b/include/migration/misc.h
-@@ -53,7 +53,6 @@ void dump_vmstate_json_to_file(FILE *out_fp);
- void migration_object_init(void);
+@@ -54,7 +54,6 @@ void migration_object_init(void);
  void migration_shutdown(void);
  
--bool migration_is_idle(void);
  bool migration_is_active(void);
- bool migration_is_device(void);
+-bool migration_is_device(void);
  bool migration_is_running(void);
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index ae1e81d7ba..80ada89551 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -188,7 +188,7 @@ static bool virtio_mem_is_busy(void)
-      * after plugging them) until we're running on the destination (as we didn't
-      * migrate these blocks when they were unplugged).
-      */
--    return migration_in_incoming_postcopy() || !migration_is_idle();
-+    return migration_in_incoming_postcopy() || migration_is_running();
- }
+ bool migration_thread_is_self(void);
  
- typedef int (*virtio_mem_range_cb)(VirtIOMEM *vmem, void *arg,
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index dcef44fe55..cc72282c71 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -174,7 +174,7 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
+ {
+     VFIODevice *vbasedev;
+ 
+-    if (!migration_is_active() && !migration_is_device()) {
++    if (!migration_is_active()) {
+         return false;
+     }
+ 
 diff --git a/migration/migration.c b/migration/migration.c
-index 3365195def..f86c709699 100644
+index f86c709699..127b01734d 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1636,25 +1636,6 @@ bool migration_in_bg_snapshot(void)
-     return migrate_background_snapshot() && migration_is_running();
- }
+@@ -1638,17 +1638,16 @@ bool migration_in_bg_snapshot(void)
  
--bool migration_is_idle(void)
+ bool migration_is_active(void)
+ {
+-    MigrationState *s = current_migration;
+-
+-    return (s->state == MIGRATION_STATUS_ACTIVE ||
+-            s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
+-}
++    MigrationStatus state = current_migration->state;
+ 
+-bool migration_is_device(void)
 -{
 -    MigrationState *s = current_migration;
 -
--    if (!s) {
--        return true;
--    }
--
--    switch (s->state) {
--    case MIGRATION_STATUS_NONE:
--    case MIGRATION_STATUS_CANCELLED:
--    case MIGRATION_STATUS_COMPLETED:
--    case MIGRATION_STATUS_FAILED:
--        return true;
--    default:
--        return false;
--    }
--}
--
- bool migration_is_active(void)
- {
-     MigrationState *s = current_migration;
-@@ -1733,7 +1714,7 @@ static bool is_busy(Error **reasonp, Error **errp)
-     ERRP_GUARD();
+-    return s->state == MIGRATION_STATUS_DEVICE;
++    switch (state) {
++    case MIGRATION_STATUS_ACTIVE:
++    case MIGRATION_STATUS_POSTCOPY_ACTIVE:
++    case MIGRATION_STATUS_DEVICE:
++        return true;
++    default:
++        return false;
++    }
+ }
  
-     /* Snapshots are similar to migrations, so check RUN_STATE_SAVE_VM too. */
--    if (runstate_check(RUN_STATE_SAVE_VM) || !migration_is_idle()) {
-+    if (runstate_check(RUN_STATE_SAVE_VM) || migration_is_running()) {
-         error_propagate_prepend(errp, *reasonp,
-                                 "disallowing migration blocker "
-                                 "(migration/snapshot in progress) for: ");
-diff --git a/migration/ram.c b/migration/ram.c
-index 5646a0b882..504b48d584 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4498,7 +4498,7 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
-         return;
-     }
- 
--    if (!migration_is_idle()) {
-+    if (migration_is_running()) {
-         /*
-          * Precopy code on the source cannot deal with the size of RAM blocks
-          * changing at random points in time - especially after sending the
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 1310f35c9f..83fa684475 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -686,7 +686,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-         return NULL;
-     }
- 
--    if (!migration_is_idle()) {
-+    if (migration_is_running()) {
-         error_setg(errp, "device_add not allowed while migrating");
-         return NULL;
-     }
-@@ -935,7 +935,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
-+    if (migration_is_running() && !dev->allow_unplug_during_migration) {
-         error_setg(errp, "device_del not allowed while migrating");
-         return;
-     }
+ bool migration_thread_is_self(void)
 -- 
 2.45.0
 
