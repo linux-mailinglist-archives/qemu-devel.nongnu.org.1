@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A241D9ADC49
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAC59ADC44
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3rRY-0002DT-PF; Thu, 24 Oct 2024 02:35:36 -0400
+	id 1t3rRa-0002EO-KK; Thu, 24 Oct 2024 02:35:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRV-0002Cl-AY
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRY-0002DX-0x
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRT-0003PH-U3
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRW-0003Pi-9H
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729751731;
+ s=mimecast20190719; t=1729751733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vgvXZXqOU4Mf2FXVpLUnht9rnZecqWcc79dctE4trk4=;
- b=f9Btf19gXZuqPf2uB/7/C+UtDmMDz0QOXzC3c1LPeausV3B18/qlMX0WAshl8+4BMyQDnu
- YsovkzTKxN+t8KF/x32Xhf40V64pSLOi1CGwskGgQGzMe+PqoATsqmhtLHd2XJCtacW8l2
- eQGvo11s3UA4Q1rdOLcABy/moV+f7pE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UIIYfufyTERSoZd9MuCU42vmPHNhXvgS1c4cRAcBpFE=;
+ b=fPMI9uR4NwPS+kh/1wuXXZEmDjSe4fl+y0dy//Z5wrdabTiZ+uFfNzyFkT+cJpSnddC6z0
+ LXU8hUkhJQK5a1SHwSaS2ugeo7xRsu5TEfewyPsqVJ16IEvE1qFNPuIGN6XeYUMtkc/sHE
+ x9Cu9Azt6ry3D2SiUntJ+a0HkFW8vWM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-nmYO2sYSMtapAJSYGC9lxg-1; Thu,
- 24 Oct 2024 02:35:26 -0400
-X-MC-Unique: nmYO2sYSMtapAJSYGC9lxg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-sD6tjFqnO7mxwF133ISZtQ-1; Thu,
+ 24 Oct 2024 02:35:29 -0400
+X-MC-Unique: sD6tjFqnO7mxwF133ISZtQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 075501955F41; Thu, 24 Oct 2024 06:35:25 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4578B1955D94; Thu, 24 Oct 2024 06:35:27 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A67D61956056; Thu, 24 Oct 2024 06:35:23 +0000 (UTC)
+ id 6CAAF1956056; Thu, 24 Oct 2024 06:35:25 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 03/17] hw/gpio/aspeed: Support different memory region ops
-Date: Thu, 24 Oct 2024 08:34:53 +0200
-Message-ID: <20241024063507.1585765-4-clg@redhat.com>
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PULL 04/17] hw/gpio/aspeed: Fix clear incorrect interrupt status for
+ GPIO index mode
+Date: Thu, 24 Oct 2024 08:34:54 +0200
+Message-ID: <20241024063507.1585765-5-clg@redhat.com>
 In-Reply-To: <20241024063507.1585765-1-clg@redhat.com>
 References: <20241024063507.1585765-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -83,95 +83,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-It set "aspeed_gpio_ops" struct which containing read and write callbacks
-to be used when I/O is performed on the GPIO region.
+The interrupt status field is W1C, where a set bit on read indicates an
+interrupt is pending. If the bit extracted from data is set it should
+clear the corresponding bit in reg_value. However, if the extracted
+bit is clear then the value of the corresponding bit in reg_value
+should be unchanged.
 
-Besides, in the previous design of ASPEED SOCs, one register is used for
-setting one function for 32 GPIO pins.
-ex: GPIO000 is used for setting data value for GPIO A, B, C and D in AST2600.
-ex: GPIO004 is used for setting direction for GPIO A, B, C and D in AST2600.
+SHARED_FIELD_EX32() extracts the interrupt status bit from the write
+(data). reg_value is set to the set's interrupt status, which means
+that for any pin with an interrupt pending, the corresponding bit is
+set. The deposit32() call updates the bit at pin_idx in the
+reg_value, using the value extracted from the write (data).
 
-However, the register set have a significant change in AST2700.
-Each GPIO pin has their own control register. In other words, users are able to
-set one GPIO pin’s direction, interrupt enable, input mask and so on
-in one register. The aspeed_gpio_read/aspeed_gpio_write callback functions
-are not compatible AST2700.
+The result is that if multiple interrupt status bits
+were pending and the write was acknowledging specific one bit,
+then the all interrupt status bits will be cleared.
+However, it is index mode and should only clear the corresponding bit.
 
-Introduce a new "const MemoryRegionOps *" attribute in AspeedGPIOClass and
-use it in aspeed_gpio_realize function.
+For example, say we have an interrupt pending for GPIOA0, where the
+following statements are true:
+
+   set->int_status == 0b01
+   s->pending == 1
+
+Before it is acknowledged, an interrupt becomes pending for GPIOA1:
+
+   set->int_status == 0b11
+   s->pending == 2
+
+A write is issued to acknowledge the interrupt for GPIOA0. This causes
+the following sequence:
+
+   reg_value == 0b11
+   pending == 2
+   s->pending == 0
+   set->int_status == 0b00
+
+It should only clear bit 0 in index mode and the correct result
+should be as following.
+
+   set->int_status == 0b11
+   s->pending == 2
+
+   pending == 1
+   s->pending == 1
+   set->int_status == 0b10
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Suggested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- include/hw/gpio/aspeed_gpio.h | 1 +
- hw/gpio/aspeed_gpio.c         | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/gpio/aspeed_gpio.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
-index 8cd2ff54968c..e1e6c543339e 100644
---- a/include/hw/gpio/aspeed_gpio.h
-+++ b/include/hw/gpio/aspeed_gpio.h
-@@ -77,6 +77,7 @@ struct AspeedGPIOClass {
-     const AspeedGPIOReg *reg_table;
-     unsigned reg_table_count;
-     uint64_t mem_size;
-+    const MemoryRegionOps *reg_ops;
- };
- 
- struct AspeedGPIOState {
 diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
-index 564459ad4f07..8725606aecae 100644
+index 8725606aecae..16c18ea2f743 100644
 --- a/hw/gpio/aspeed_gpio.c
 +++ b/hw/gpio/aspeed_gpio.c
-@@ -1046,7 +1046,7 @@ static void aspeed_gpio_realize(DeviceState *dev, Error **errp)
+@@ -641,7 +641,7 @@ static void aspeed_gpio_write_index_mode(void *opaque, hwaddr offset,
+     uint32_t pin_idx = reg_idx_number % ASPEED_GPIOS_PER_SET;
+     uint32_t group_idx = pin_idx / GPIOS_PER_GROUP;
+     uint32_t reg_value = 0;
+-    uint32_t cleared;
++    uint32_t pending = 0;
+ 
+     set = &s->sets[set_idx];
+     props = &agc->props[set_idx];
+@@ -703,16 +703,23 @@ static void aspeed_gpio_write_index_mode(void *opaque, hwaddr offset,
+                               FIELD_EX32(data, GPIO_INDEX_REG, INT_SENS_2));
+         set->int_sens_2 = update_value_control_source(set, set->int_sens_2,
+                                                       reg_value);
+-        /* set interrupt status */
+-        reg_value = set->int_status;
+-        reg_value = deposit32(reg_value, pin_idx, 1,
+-                              FIELD_EX32(data, GPIO_INDEX_REG, INT_STATUS));
+-        cleared = ctpop32(reg_value & set->int_status);
+-        if (s->pending && cleared) {
+-            assert(s->pending >= cleared);
+-            s->pending -= cleared;
++        /* interrupt status */
++        if (FIELD_EX32(data, GPIO_INDEX_REG, INT_STATUS)) {
++            /* pending is either 1 or 0 for a 1-bit field */
++            pending = extract32(set->int_status, pin_idx, 1);
++
++            assert(s->pending >= pending);
++
++            /* No change to s->pending if pending is 0 */
++            s->pending -= pending;
++
++            /*
++             * The write acknowledged the interrupt regardless of whether it
++             * was pending or not. The post-condition is that it mustn't be
++             * pending. Unconditionally clear the status bit.
++             */
++            set->int_status = deposit32(set->int_status, pin_idx, 1, 0);
          }
-     }
- 
--    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_gpio_ops, s,
-+    memory_region_init_io(&s->iomem, OBJECT(s), agc->reg_ops, s,
-                           TYPE_ASPEED_GPIO, agc->mem_size);
- 
-     sysbus_init_mmio(sbd, &s->iomem);
-@@ -1131,6 +1131,7 @@ static void aspeed_gpio_ast2400_class_init(ObjectClass *klass, void *data)
-     agc->reg_table = aspeed_3_3v_gpios;
-     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-     agc->mem_size = 0x1000;
-+    agc->reg_ops = &aspeed_gpio_ops;
- }
- 
- static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
-@@ -1143,6 +1144,7 @@ static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
-     agc->reg_table = aspeed_3_3v_gpios;
-     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-     agc->mem_size = 0x1000;
-+    agc->reg_ops = &aspeed_gpio_ops;
- }
- 
- static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
-@@ -1155,6 +1157,7 @@ static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
-     agc->reg_table = aspeed_3_3v_gpios;
-     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-     agc->mem_size = 0x800;
-+    agc->reg_ops = &aspeed_gpio_ops;
- }
- 
- static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
-@@ -1167,6 +1170,7 @@ static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
-     agc->reg_table = aspeed_1_8v_gpios;
-     agc->reg_table_count = GPIO_1_8V_REG_ARRAY_SIZE;
-     agc->mem_size = 0x800;
-+    agc->reg_ops = &aspeed_gpio_ops;
- }
- 
- static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
-@@ -1179,6 +1183,7 @@ static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
-     agc->reg_table = aspeed_3_3v_gpios;
-     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-     agc->mem_size = 0x1000;
-+    agc->reg_ops = &aspeed_gpio_ops;
- }
- 
- static const TypeInfo aspeed_gpio_info = {
+-        set->int_status &= ~reg_value;
+         break;
+     case gpio_reg_idx_debounce:
+         reg_value = set->debounce_1;
 -- 
 2.47.0
 
