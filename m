@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374309AF2C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F99A9AF2C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t43k7-0006OG-6O; Thu, 24 Oct 2024 15:43:35 -0400
+	id 1t43kE-0006Oh-Ex; Thu, 24 Oct 2024 15:43:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t43jq-0006ME-Fn
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:43:18 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1t43jr-0006MW-1O
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:43:19 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t43jo-00081D-Vl
+ id 1t43jp-00081s-Dp
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:43:18 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-539e6c754bdso1240596e87.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 12:43:16 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2fb51e00c05so20397031fa.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 12:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729798995; x=1730403795;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729798996; x=1730403796;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DQg34qAwXV1dkoltfasHGRhCwLkvl9EuX77LcykV+9c=;
- b=PD/Uw0x75AOlCgvZmnAHgZSmESOZjZFwt8MOJqrmdurAsV2DDyzddnewexiEQQQhCA
- NA5t44gcb6bRZG3eEyZuPWATFekeZeJ0q5HkIUbXrBLK4kkHdkO+CR80H3MPCfJ1kB+Q
- GpYhOWkQvumHPdv6IfKTWY3nSmlvuargfQrnvNxkkHWv4/SW+xmRsuJ9qkpp2mRtws7t
- SssufmJxbNRkiXXJut34+PVGtOZhoRFcAQ2l8ebgjTW8IZvj8SVxqq0vc+KRx9lUpnz8
- 3OUGHYls2c7OwbBpD1CIVV5AB7i+sLaPppbfKP9r/dtlUUlx6Pj3CpaWUR6DqVXfKZnR
- KoVw==
+ bh=DQ/wvxuTvQaiavS01m+IKLgZecmKu0OzwEWLUO9nnOE=;
+ b=QC0qOy/QbhKv/rtQKfJjK1pbuAHOb2WBwwAMY7b/Eef4PvKIT3KaFbDDA8EV2mObja
+ NCd58jmuCfwCA+eyg5cvr2eiOp3ejEZ+jc4EShc6UYdah1LVlH7MbaWp5rzC+2otiVvO
+ BfBmitCt2rdMQrHXvnN2Q+JW9Kpp3b8fhIR1IQlauqHrPfyFLeURfclbbwsYmLbJW+UV
+ o6GHokSA8sNBXkAvy13z1Qgx8fRvzCd3j3XQUbFD/6HRfcNXvc0bDbqkY86natcoV5yJ
+ t3yooTzt+TvURIJI/22eky/LFuN8bmL/pnwB1nk67oDPXb2nBhUeteO42xVEnAUW9wqB
+ s4jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729798995; x=1730403795;
+ d=1e100.net; s=20230601; t=1729798996; x=1730403796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DQg34qAwXV1dkoltfasHGRhCwLkvl9EuX77LcykV+9c=;
- b=HltpY2SYrtFcCOBZX/a3dl8QiKtPlIFsda43rgbwNKAW48eXqtRFIjH5F2IOPPy+dJ
- JCM49xu0ChTk7LTd2xe+EaGyuQDU+kZHIWU1eg5fy814eQkfwM0jYTgE7wj23Dio+R+R
- kXjH6yo8r7gsuzXUNZB+Nl/wmFbCYjXXEI7V8p6xyUuKfMYLlo3Sl4tQK9WtUDTbwKBC
- gzOXZpVxWPGcobDUV7L+wq6HXf0nu4kM7N5rkO7fLNJ0tW3qpB798trECYyUyF/jMrix
- U8e3IyasxovW16+1rjM+CF2WYOvQNlCRDnUC8m41ae4S05dtHbjv6l73rQUmIUrlffFs
- 8uxA==
-X-Gm-Message-State: AOJu0Yw0UBMEOtY9nOBILOb6cY/YfAMHKtkhG49Io0VexhrEtDTxUcM8
- AtvT0+wmtlJZ0Ke1S3MSoJK5WmNOu8U4lPBjquKbcKP2nF23zCBzLmrfLd1Y8VWud7Z25l0kbwl
- ufg==
-X-Google-Smtp-Source: AGHT+IFa/c5x5Y4RpZADd72eqSIkPb0kJta9ubAFoaeky0eYE0NG+YFmMmwui8HaOrH5lLLZpt8d5w==
-X-Received: by 2002:a05:6512:3510:b0:53b:1fc6:3cf4 with SMTP id
- 2adb3069b0e04-53b1fc64039mr2620513e87.41.1729798994732; 
- Thu, 24 Oct 2024 12:43:14 -0700 (PDT)
+ bh=DQ/wvxuTvQaiavS01m+IKLgZecmKu0OzwEWLUO9nnOE=;
+ b=hRc/ys6hcSBUm5Bxwbbn+Mqczs3+Pr134XOq5Ezp0slZQ1+AfVEzeX78UKJfG4CbyD
+ O3O4blVRHjmsHQe/oI9r841HSc0J2LtiSksO6oSCyEFr1TIN3qYO4FUYYUtmVXWfwsUf
+ 6IJL87DSYdZdSNJBw3hEESKtA7W2Dcma+nhOECtC/BGbRaj3SbjBdJgtbVM/KpeX8Mi7
+ 7DxUFoeqKNNhBGjTvbG2UJoespRC9suHeBBUqEqvSESRWz9ngMMltQrK5jFBxLMg405d
+ L6vgCp9oUdCWhbubf3jUqNckySEo5O5O9UkC9tc74nCdrvvMLhX1ydURezakZvWJ1Ed6
+ YC/w==
+X-Gm-Message-State: AOJu0YzkbKlSSlvm1RmWq652xDXFfNvcsVjJn9i9pyddNXn+Ch6vcpDV
+ ZCN6PN5kvW1KxBcIxcu3STxvyeHQQEflKG4wj0D0LWqHEjr8HMouezso/G9jp9W5wymKZtJrA21
+ OsA==
+X-Google-Smtp-Source: AGHT+IErPCr1lx2PKut7PFBXRgnYuP3JhIurv8PkEvGIdyWlUCU16/GfguBhyg5L41TSSwR7lLEADA==
+X-Received: by 2002:a2e:b8c5:0:b0:2fb:3960:9671 with SMTP id
+ 38308e7fff4ca-2fc9d31a99bmr70046091fa.15.1729798995571; 
+ Thu, 24 Oct 2024 12:43:15 -0700 (PDT)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912d6545sm652536866b.31.2024.10.24.12.43.13
+ a640c23a62f3a-a9a912d6545sm652536866b.31.2024.10.24.12.43.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Oct 2024 12:43:14 -0700 (PDT)
+ Thu, 24 Oct 2024 12:43:15 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 3/4] i386/hvf: Raise exception on error setting APICBASE
-Date: Thu, 24 Oct 2024 21:43:02 +0200
-Message-Id: <20241024194303.32100-4-phil@philjordan.eu>
+Subject: [PATCH 4/4] i386/hvf: Removes duplicate/shadowed variables in
+ hvf_vcpu_exec
+Date: Thu, 24 Oct 2024 21:43:03 +0200
+Message-Id: <20241024194303.32100-5-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 In-Reply-To: <20241024194303.32100-1-phil@philjordan.eu>
 References: <20241024194303.32100-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::133;
- envelope-from=phil@philjordan.eu; helo=mail-lf1-x133.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::233;
+ envelope-from=phil@philjordan.eu; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -93,39 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When setting the APICBASE MSR to an illegal value, the APIC
-implementation will return an error. This change forwards that report
-to the guest as an exception rather than ignoring it when using the hvf
-accelerator.
+Pointers to the x86 CPU state already exist at the function scope,
+no need to re-obtain them in individual exit reason cases.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/x86_emu.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index be675bcfb71..015f760acb3 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -794,9 +794,16 @@ void simulate_wrmsr(CPUX86State *env)
-     switch (msr) {
-     case MSR_IA32_TSC:
-         break;
--    case MSR_IA32_APICBASE:
--        cpu_set_apic_base(cpu->apic_state, data);
-+    case MSR_IA32_APICBASE: {
-+        int r;
-+
-+        r = cpu_set_apic_base(cpu->apic_state, data);
-+        if (r < 0) {
-+            raise_exception(env, EXCP0D_GPF, 0);
-+        }
-+
-         break;
-+    }
-     case MSR_APIC_START ... MSR_APIC_END: {
-         int ret;
-         int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 8527bce6eef..c5d025d5576 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -586,8 +586,6 @@ int hvf_vcpu_exec(CPUState *cpu)
+             break;
+         }
+         case EXIT_REASON_XSETBV: {
+-            X86CPU *x86_cpu = X86_CPU(cpu);
+-            CPUX86State *env = &x86_cpu->env;
+             uint32_t eax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
+             uint32_t ecx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
+             uint32_t edx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
+@@ -644,7 +642,6 @@ int hvf_vcpu_exec(CPUState *cpu)
+                 break;
+             }
+             case 8: {
+-                X86CPU *x86_cpu = X86_CPU(cpu);
+                 if (exit_qual & 0x10) {
+                     RRX(env, reg) = cpu_get_apic_tpr(x86_cpu->apic_state);
+                 } else {
 -- 
 2.39.3 (Apple Git-145)
 
