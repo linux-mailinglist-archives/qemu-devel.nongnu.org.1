@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D179AF344
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8369AF350
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:04:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t442S-0006Dh-3b; Thu, 24 Oct 2024 16:02:32 -0400
+	id 1t444C-0000ne-Lb; Thu, 24 Oct 2024 16:04:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t442O-00060A-UC
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:02:28 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4448-0000mt-Ao
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:04:16 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t442M-0002MY-28
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:02:27 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-71e983487a1so967958b3a.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 13:02:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4446-0002W2-IL
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:04:15 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-207115e3056so11020225ad.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 13:04:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729800144; x=1730404944; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729800253; x=1730405053; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lM192urMKvFZLAw9PHjSiOx9wCOdV7JWBRsyrwZY1VE=;
- b=QDV/DxIQp8MZ6uGP5gOyy0h3tZSwkgNCgFYk/9Er9TvbabM01jUkUKm1vljVvIGtxa
- jqh+g8Q6ByoQTwiOchED9Qv748Pc59LEJS98cRIl3QNLCuUvIJ2Zv2TEFM2diGZv+zvM
- hevsFPLHQxMx8eXsr9N1Wd1x9q2yGz2FH/ZTNeNr0qWiKB/Yi5fFFF2Q0o0w4Fpa9YMT
- qsgDxTIi1yF3xYOWHPUpqKl6nii9Zz8192VOtAex2/RiKhMF5xms+zFWqJ6GNFLHvEWF
- nGLCnamvI2Ca5XkeMZFzdbFTmUf9FfsIjwQOJ+ppl4OEGUNt+IzXk+v5MGND2FGlK0Cp
- GTkQ==
+ bh=M8CVWV5WMwNuWfH+MyVrQqyAEZ/XBW52hhqZADqu3CY=;
+ b=jje+Otuejw3WyDdVjS9IMtT/ud9Gl5sZLaI+ZBt9nMdN9Z0Ptnz41AAvqxXexLx72V
+ BCPaleQEcjTGNCPMe5/s0TanASpifFmHnQccN8XD9mavx2JPWL1lYUyZaRqRmbCmnW+A
+ m/K/2d5Vf8rl5B+rel/m6o1vAnNzxYivuTcS018w5k/vlQeyktyjoa7uloAzLZCJF8H6
+ MVNrkSjsa5I0XWynnWVSjiMuaQHg/jbS8mvwyq337WKhVUUzQbGSfOZwIxmZKwA2IsOJ
+ cOEne1ZqRiVC7lVbJlDUobZOkSNjOpcYU3zfHR6ngBy0doAzjXn4IPHZ6cxehEjv6zsD
+ 9Qvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729800144; x=1730404944;
+ d=1e100.net; s=20230601; t=1729800253; x=1730405053;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lM192urMKvFZLAw9PHjSiOx9wCOdV7JWBRsyrwZY1VE=;
- b=NL7YQequJl6Bj5OX3OxNBlGmjwUQoWfMaAkAczz3NyKJU6csjIOcnBYnm78U8mz8dr
- t9SLJT84bPzrcmT8AOeeSIogvPyXFMqw/9pJ+zaqmd/DIBo9A01sIHHd+w0lmHweSRln
- ZWNp2paek19pU+j3/BPLiwMsuSD8iJdXhtv/GS1mvCm7pVxRB2ZGHLiwkIbq+eqZNySD
- 54fhwurde2YYYB4hXOqOY+CBJUzS2OhcGoQOkTJeuVi25A4KaR+xvKLeufiZKIhWa3xD
- 8K4ShRjfgDEq3LNJPzuvSt/+YiSi4Syzk5FMjSlDBDNgJl3a1rEu2U9Ypn4XVWU93gY6
- VLrA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVqloLTEkKFgKksWKy9llGFDwQm1TvQM1j0Z8po1Phtjz0vlyIODgYevfdNsd2F3VwhsAuiL6S4nzCh@nongnu.org
-X-Gm-Message-State: AOJu0Yz2XuKvW5BfPyXtK7+XNuJR8ogMmvWXlG8qTaJUGCH7N/kxT2Hl
- +luNjlHwYV80hiPi0kl24Z4LPS1HsyVQ65PicGqTsHqJhBnyeDPzEHQxsk42DnI=
-X-Google-Smtp-Source: AGHT+IEshyE2WmBSiOGFokGIrgHmcIz1UhcR9teScQTlkjcIDK/u9JFoQsgCdbJiughfxWGVrNofFg==
-X-Received: by 2002:a05:6a00:1495:b0:71e:5b92:b036 with SMTP id
- d2e1a72fcca58-72030b61a33mr10171202b3a.22.1729800144451; 
- Thu, 24 Oct 2024 13:02:24 -0700 (PDT)
+ bh=M8CVWV5WMwNuWfH+MyVrQqyAEZ/XBW52hhqZADqu3CY=;
+ b=H8XmwCRdoOXAKL0iC/eAEbLkX//LUVoud6XviEdbQaQGteLx/Z5HFGnrSOf5+fywM4
+ r+BMTAYzWo2DC3VEasQVvWP+PmtfZD+TaLhGyFOGwETAx928pGFcj3n6ANx0sXhS1G09
+ x062Aech7Lx2ZZkjdArUpPFTIVcDEwYXmBfdhOGIYwnNnEBubA90svq+Lzs/lgcDicuY
+ GYcvW4209LJA7chmn3jg2iLMuHSKq3mnVZc87wEStg85BO3z+eYZzbuTxYBEZ52bY3g4
+ GoYAINwn1bzIqQxkaM/Dq2hwRW9922KYLe3yO6VXL50fq6fLC1TgiIKnklgCJI3cgtDq
+ 5sdA==
+X-Gm-Message-State: AOJu0YyBjWh+E8hXwtT4kMKQaRKOG29Wp4fX809Ksl3oapqPejWcFSVy
+ qlpixmsUH/Re3jGP0bVk6E14qJXd8X9rYpNnQEo8s/LBSuC86tbyh9cww5wJ5WlOeDEIuwyJh53
+ i
+X-Google-Smtp-Source: AGHT+IEkloBI+75K9SDbz3mcXQyui5LLaGD92vEGjm4kjiU6SGLPpWkH3dA00MxKSxjwCkOPiYDHCw==
+X-Received: by 2002:a17:902:ea0e:b0:20c:9bf9:1d97 with SMTP id
+ d9443c01a7336-20fb9b41d28mr34011635ad.60.1729800252630; 
+ Thu, 24 Oct 2024 13:04:12 -0700 (PDT)
 Received: from [192.168.100.49] ([45.176.88.171])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71ec13ea28fsm8613358b3a.141.2024.10.24.13.02.20
+ 41be03b00d2f7-7eaeaafbed0sm8891677a12.10.2024.10.24.13.04.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Oct 2024 13:02:24 -0700 (PDT)
-Message-ID: <20dec12b-69e0-4996-9962-6aac9d40fc07@linaro.org>
-Date: Thu, 24 Oct 2024 17:02:19 -0300
+ Thu, 24 Oct 2024 13:04:12 -0700 (PDT)
+Message-ID: <5d99392c-1b3c-4086-9ce9-463ed7f4162e@linaro.org>
+Date: Thu, 24 Oct 2024 17:04:09 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] qom: TYPE_SINGLETON interface
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Fabiano Rosas <farosas@suse.de>, Igor Mammedov <imammedo@redhat.com>,
- Juraj Marcin <jmarcin@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20241024165627.1372621-1-peterx@redhat.com>
- <20241024165627.1372621-2-peterx@redhat.com>
+Subject: Re: [PATCH] target/mips: Introduce disas_mt_available()
+To: qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Aleksandar Rikalo <arikalo@gmail.com>
+References: <20241024195447.44600-1-philmd@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241024165627.1372621-2-peterx@redhat.com>
+In-Reply-To: <20241024195447.44600-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-pf1-x432.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -102,104 +93,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
-
-(Cc'ing Mark)
-
-On 24/10/24 13:56, Peter Xu wrote:
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+On 24/10/24 16:54, Philippe Mathieu-Daudé wrote:
+> Similarly to commit 17c2c320f3c ("Introduce ase_mt_available helper"),
+> introduce the disas_mt_available() one which takes a DisasContext
+> argument to determine whether Multi-Threading is available by
+> checking the MT bit of the CP0_Config3 register.
+> 
+> Remove the then unused ASE_MT definition.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/qom/object_interfaces.h | 47 +++++++++++++++++++++++++++++++++
->   qom/object.c                    |  3 +++
->   qom/object_interfaces.c         | 24 +++++++++++++++++
->   qom/qom-qmp-cmds.c              | 22 ++++++++++++---
->   system/qdev-monitor.c           |  7 +++++
->   5 files changed, 100 insertions(+), 3 deletions(-)
+>   target/mips/mips-defs.h     |   1 -
+>   target/mips/tcg/translate.h |   5 ++
+>   target/mips/tcg/translate.c | 136 ++++++++++++++++++------------------
+>   target/mips/cpu-defs.c.inc  |   4 +-
+>   4 files changed, 75 insertions(+), 71 deletions(-)
 
 
-> +/**
-> + * SingletonClass:
-> + *
-> + * @parent_class: the base class
-> + * @get_instance: fetch the singleton instance if it is created,
-> + *                NULL otherwise.
-> + *
-> + * Singleton class describes the type of object classes that can only
-> + * provide one instance for the whole lifecycle of QEMU.  It will fail the
-> + * operation if one attemps to create more than one instance.
-> + *
-> + * One can fetch the single object using class's get_instance() callback if
-> + * it was created before.  This can be useful for operations like QMP
-> + * qom-list-properties, where dynamically creating an object might not be
-> + * feasible.
-> + */
-> +struct SingletonClass {
-> +    /* <private> */
-> +    InterfaceClass parent_class;
-> +    /* <public> */
-> +    Object *(*get_instance)(Error **errp);
-
-IMHO asking get_instance() is overkill ...
-
-> +};
-> +
-> +/**
-> + * object_class_is_singleton:
-> + *
-> + * @class: the class to detect singleton
-> + *
-> + * Returns: true if it's a singleton class, false otherwise.
-> + */
-> +bool object_class_is_singleton(ObjectClass *class);
-> +
-> +/**
-> + * singleton_get_instance:
-> + *
-> + * @class: the class to fetch singleton instance
-> + *
-> + * Returns: the object* if the class is a singleton class and the singleton
-> + *          object is created, NULL otherwise.
-> + */
-> +Object *singleton_get_instance(ObjectClass *class);
-> +
+> diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+> index 5d196e69ac4..b613726ea42 100644
+> --- a/target/mips/tcg/translate.h
+> +++ b/target/mips/tcg/translate.h
+> @@ -228,6 +228,11 @@ bool decode_ext_octeon(DisasContext *ctx, uint32_t insn);
 >   #endif
-
-> diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-> index e0833c8bfe..6766060d0a 100644
-> --- a/qom/object_interfaces.c
-> +++ b/qom/object_interfaces.c
-> @@ -354,6 +354,23 @@ void user_creatable_cleanup(void)
->       object_unparent(object_get_objects_root());
->   }
+>   bool decode_ext_vr54xx(DisasContext *ctx, uint32_t insn);
 >   
-> +bool object_class_is_singleton(ObjectClass *class)
+> +static inline bool disas_mt_available(DisasContext *ctx)
 > +{
-> +    return !!object_class_dynamic_cast(class, TYPE_SINGLETON);
-> +}
-> +
-> +Object *singleton_get_instance(ObjectClass *class)
-> +{
-
-... when we can use object_resolve_type_unambiguous:
-
-       return 
-object_resolve_type_unambiguous(object_class_get_name(class, NULL));
-
-BTW should we pass Error** argument to singleton_get_instance()?
-
-> +    SingletonClass *singleton =
-> +        (SingletonClass *)object_class_dynamic_cast(class, TYPE_SINGLETON);
-> +
-> +    if (!singleton) {
-> +        return NULL;
-> +    }
-> +
-> +    return singleton->get_instance(&error_abort);
+> +    return ctx->CP0_Config3 & (1 << CP0C3_MT);
 > +}
 
-Alternatively call object_resolve_type_unambiguous() in instance_init()?
+BTW I considered inlining it in translate.c but the MT code will
+eventually be converted to decodetree so better keep this helper
+in the translate.h header.
 
-Regards,
-
-Phil.
 
