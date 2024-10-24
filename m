@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201689ADC4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42279ADC47
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3rRe-0002Ft-DB; Thu, 24 Oct 2024 02:35:42 -0400
+	id 1t3rRg-0002Hd-Dj; Thu, 24 Oct 2024 02:35:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRb-0002F0-Qo
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:39 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRd-0002Fs-QO
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRZ-0003QD-Mi
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:39 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRc-0003Qn-6Y
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729751736;
+ s=mimecast20190719; t=1729751739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+CjJjh8yo35Osl1DFFOQzmYrF1ZAO1HLrRuitC5CgSg=;
- b=JnT/qwmn3/+y703D6y0Dhl1dy4iJoy1zDUoFo3OO9ohAtkJd4qMlXqZoPP/QzDG20Ifi73
- FYMboZjlOV/WdZxIkp3HGHmUYGG56A951DCWkdtQf4wedNarTX/IYiojTFYC4TGvd+JVXr
- lnamW0YYa/9L7fWU0F+rfKdw6afPWXA=
+ bh=rHdefSFaAlfcO7ZPYCUUPbcDnd5WonG7FdA9aimFitw=;
+ b=PVy+3AMShA3D/2fZXM0+PQT5P8OQtc1NFvSSW4SRi4BuiaMs3QQA/xZuyFMZjBBiClKA1J
+ rgxedYkb2AgbrJahUN+59J5X3R0btWx6CVQOBtXROfkKgkMm0DcpgQx+jnsY74jqunM3Qu
+ vhGYhxL/JtApBEmH55RpL7egWWSVeVM=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-lQTr5GDFOvmDHcGcEwQm2w-1; Thu,
- 24 Oct 2024 02:35:35 -0400
-X-MC-Unique: lQTr5GDFOvmDHcGcEwQm2w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-NETfFMVEMeaLTJQQHnJ-nA-1; Thu,
+ 24 Oct 2024 02:35:37 -0400
+X-MC-Unique: NETfFMVEMeaLTJQQHnJ-nA-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 106F31955F42; Thu, 24 Oct 2024 06:35:34 +0000 (UTC)
+ id 2B8821955F41; Thu, 24 Oct 2024 06:35:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7DF9E1955F43; Thu, 24 Oct 2024 06:35:32 +0000 (UTC)
+ id 770001956056; Thu, 24 Oct 2024 06:35:34 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/17] aspeed/soc: Support GPIO for AST2700
-Date: Thu, 24 Oct 2024 08:34:57 +0200
-Message-ID: <20241024063507.1585765-8-clg@redhat.com>
+Subject: [PULL 08/17] tests/qtest:ast2700-gpio-test: Add GPIO test case for
+ AST2700
+Date: Thu, 24 Oct 2024 08:34:58 +0200
+Message-ID: <20241024063507.1585765-9-clg@redhat.com>
 In-Reply-To: <20241024063507.1585765-1-clg@redhat.com>
 References: <20241024063507.1585765-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,53 +84,153 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Add GPIO model for AST2700 GPIO support. The GPIO controller registers base
-address is start at 0x14C0_B000 and its address space is 0x1000.
+Add GPIO test cases to test output and input pins from A0 to D7 for AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+[ clg: - Updated MAINTAINERS ]
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ MAINTAINERS                     |  1 +
+ tests/qtest/ast2700-gpio-test.c | 95 +++++++++++++++++++++++++++++++++
+ tests/qtest/meson.build         |  3 ++
+ 3 files changed, 99 insertions(+)
+ create mode 100644 tests/qtest/ast2700-gpio-test.c
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 99135edc1ed2..dca660eb6be2 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -62,6 +62,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_GIC_REDIST]    =  0x12280000,
-     [ASPEED_DEV_ADC]       =  0x14C00000,
-     [ASPEED_DEV_I2C]       =  0x14C0F000,
-+    [ASPEED_DEV_GPIO]      =  0x14C0B000,
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3bfa132fd6e..bcaf36e525df 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1123,6 +1123,7 @@ F: hw/net/ftgmac100.c
+ F: include/hw/net/ftgmac100.h
+ F: docs/system/arm/aspeed.rst
+ F: tests/*/*aspeed*
++F: tests/*/*ast2700*
+ F: hw/arm/fby35.c
  
- #define AST2700_MAX_IRQ 288
-@@ -372,6 +373,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
- 
-     snprintf(typename, sizeof(typename), "aspeed.i2c-%s", socname);
-     object_initialize_child(obj, "i2c", &s->i2c, typename);
+ NRF51
+diff --git a/tests/qtest/ast2700-gpio-test.c b/tests/qtest/ast2700-gpio-test.c
+new file mode 100644
+index 000000000000..92758455641f
+--- /dev/null
++++ b/tests/qtest/ast2700-gpio-test.c
+@@ -0,0 +1,95 @@
++/*
++ * QTest testcase for the ASPEED AST2700 GPIO Controller.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (C) 2024 ASPEED Technology Inc.
++ */
 +
-+    snprintf(typename, sizeof(typename), "aspeed.gpio-%s", socname);
-+    object_initialize_child(obj, "gpio", &s->gpio, typename);
- }
- 
- /*
-@@ -657,6 +661,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
-     }
- 
-+    /* GPIO */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
-+        return;
++#include "qemu/osdep.h"
++#include "qemu/bitops.h"
++#include "qemu/timer.h"
++#include "qapi/qmp/qdict.h"
++#include "libqtest-single.h"
++
++#define AST2700_GPIO_BASE 0x14C0B000
++#define GPIOA0_CONTROL 0x180
++
++static void test_output_pins(const char *machine, const uint32_t base)
++{
++    QTestState *s = qtest_init(machine);
++    uint32_t offset = 0;
++    uint32_t value = 0;
++    uint32_t pin = 0;
++
++    for (char c = 'A'; c <= 'D'; c++) {
++        for (int i = 0; i < 8; i++) {
++            offset = base + (pin * 4);
++
++            /* output direction and output hi */
++            qtest_writel(s, offset, 0x00000003);
++            value = qtest_readl(s, offset);
++            g_assert_cmphex(value, ==, 0x00000003);
++
++            /* output direction and output low */
++            qtest_writel(s, offset, 0x00000002);
++            value = qtest_readl(s, offset);
++            g_assert_cmphex(value, ==, 0x00000002);
++            pin++;
++        }
 +    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->gpio), 0,
-+                    sc->memmap[ASPEED_DEV_GPIO]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
 +
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
++    qtest_quit(s);
++}
++
++static void test_input_pins(const char *machine, const uint32_t base)
++{
++    QTestState *s = qtest_init(machine);
++    char name[16];
++    uint32_t offset = 0;
++    uint32_t value = 0;
++    uint32_t pin = 0;
++
++    for (char c = 'A'; c <= 'D'; c++) {
++        for (int i = 0; i < 8; i++) {
++            sprintf(name, "gpio%c%d", c, i);
++            offset = base + (pin * 4);
++            /* input direction */
++            qtest_writel(s, offset, 0);
++
++            /* set input */
++            qtest_qom_set_bool(s, "/machine/soc/gpio", name, true);
++            value = qtest_readl(s, offset);
++            g_assert_cmphex(value, ==, 0x00002000);
++
++            /* clear input */
++            qtest_qom_set_bool(s, "/machine/soc/gpio", name, false);
++            value = qtest_readl(s, offset);
++            g_assert_cmphex(value, ==, 0);
++            pin++;
++        }
++    }
++
++    qtest_quit(s);
++}
++
++static void test_2700_input_pins(void)
++{
++    test_input_pins("-machine ast2700-evb",
++                    AST2700_GPIO_BASE + GPIOA0_CONTROL);
++}
++
++static void test_2700_output_pins(void)
++{
++    test_output_pins("-machine ast2700-evb",
++                     AST2700_GPIO_BASE + GPIOA0_CONTROL);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    qtest_add_func("/ast2700/gpio/input_pins", test_2700_input_pins);
++    qtest_add_func("/ast2700/gpio/output_pins", test_2700_output_pins);
++
++    return g_test_run();
++}
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index e8be8b3942d7..f7a19032f7d8 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -210,6 +210,8 @@ qtests_aspeed = \
+   ['aspeed_hace-test',
+    'aspeed_smc-test',
+    'aspeed_gpio-test']
++qtests_aspeed64 = \
++  ['ast2700-gpio-test']
+ 
+ qtests_stm32l4x5 = \
+   ['stm32l4x5_exti-test',
+@@ -248,6 +250,7 @@ qtests_aarch64 = \
+   (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test', 'bcm2835-i2c-test'] : []) +  \
+   (config_all_accel.has_key('CONFIG_TCG') and                                            \
+    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
++  (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
+   ['arm-cpu-features',
+    'numa-test',
+    'boot-serial-test',
 -- 
 2.47.0
 
