@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D9B9AF2A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D5D9AF2C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t43bu-0005Al-Sc; Thu, 24 Oct 2024 15:35:06 -0400
+	id 1t43jw-0006M8-Ui; Thu, 24 Oct 2024 15:43:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t43bi-0005AC-0r
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:34:54 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t43jn-0006Ln-VC
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:43:15 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t43be-0006hG-IF
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:34:52 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B959D1F787;
- Thu, 24 Oct 2024 19:34:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729798488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=c5fFYRQAYtIhnGGHF8K5qNteNi/a/teNfac/F/xGxfA=;
- b=C5Ww95CfT7ymBEJttV/qOHBc40+vpNSfIV3eu3I6GH5xOz6P2nW6GfUiFse7FY62gPBeO9
- oBzVZJDv31GBqkQdm2hOChlF+AJNIu2HZFAZAhCcC5DdH0LIkZlgn63pvO1kV1KYsJGilx
- Caf6K4PmD6eWC3OreZUpRq8iiKsz0QI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729798488;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=c5fFYRQAYtIhnGGHF8K5qNteNi/a/teNfac/F/xGxfA=;
- b=Vy2D5jX23is2mIXR0MueNP0xjW6IBeWzNrcNVhAgOjcy1Nu8weiNsmj1PhIGYM8S1KXUiy
- AEMht2HkimrkzhAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1729798488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=c5fFYRQAYtIhnGGHF8K5qNteNi/a/teNfac/F/xGxfA=;
- b=C5Ww95CfT7ymBEJttV/qOHBc40+vpNSfIV3eu3I6GH5xOz6P2nW6GfUiFse7FY62gPBeO9
- oBzVZJDv31GBqkQdm2hOChlF+AJNIu2HZFAZAhCcC5DdH0LIkZlgn63pvO1kV1KYsJGilx
- Caf6K4PmD6eWC3OreZUpRq8iiKsz0QI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1729798488;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=c5fFYRQAYtIhnGGHF8K5qNteNi/a/teNfac/F/xGxfA=;
- b=Vy2D5jX23is2mIXR0MueNP0xjW6IBeWzNrcNVhAgOjcy1Nu8weiNsmj1PhIGYM8S1KXUiy
- AEMht2HkimrkzhAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F37501368E;
- Thu, 24 Oct 2024 19:34:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id oU/eLFehGmeuDAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 24 Oct 2024 19:34:47 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Igor Mammedov <imammedo@redhat.com>, Juraj Marcin
- <jmarcin@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Dr . David
- Alan Gilbert" <dave@treblig.org>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>, Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Alex
- Williamson <alex.williamson@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 4/4] migration: Reset current_migration properly
-In-Reply-To: <20241024165627.1372621-5-peterx@redhat.com>
-References: <20241024165627.1372621-1-peterx@redhat.com>
- <20241024165627.1372621-5-peterx@redhat.com>
-Date: Thu, 24 Oct 2024 16:34:44 -0300
-Message-ID: <875xphfg6j.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t43jl-0007za-8Q
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:43:15 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-37d4ac91d97so1067076f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 12:43:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729798991; x=1730403791;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PFMhArkOKIBuKv4PTRu+D2zkI2eDhHGS4f1WZUn3U5A=;
+ b=DwRRdvjDtZ9sMNj+9Bx4hjoLRNI7MKHdWdk99ZvC6c9ap51KuBhJSvWA1d0tu80Wqb
+ izr4zVYE4EHTd6PR9F6qW/FyIc80eMiC4uVRZBdjPIOtZVGjJYojI8LLOMvwTifPCP2l
+ kIHLlLfyNJq6nCCrh1yraXZVr3KUUAsD+Ya6iWbkT9RBo0Kd91t97FKjZId3cOiZvgSC
+ /jRHy+e9PgrT9XPi9i9jMOblBUiejBG4FHTF6eBYPABt3ycg6690ct2AEBFITw/sjyRm
+ ceMQYwqbRgRzc0m8GQeRkZdOtCSvTOMz+MvVGVRLyuoh0JgEA0zIfIKFGqvRe5lTPkGc
+ VXlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729798991; x=1730403791;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PFMhArkOKIBuKv4PTRu+D2zkI2eDhHGS4f1WZUn3U5A=;
+ b=RlRky1vPfZnHanBtlpprvR36yoipraNdDapsk1uTwyGbAzFntbDTVmTidDYv8Y49HB
+ y9xcAdqeALkKL1iAGjvzSUmpVtAqRDIxyijhoJ/zEtjvhw+e9gaOF+DP1DzI1Q9QhDL9
+ djWBo3/3jXBoro+/VKX16h9mbuq3PIjJ4Kb0F6KZgg5Wrr/zX+94VCHUOgfw99FVrR1W
+ CHg281rDFlA6BqqTmg2YYV/KkQhzm0IgpTpcBfU1r55F7Yq1ynmZ1/Ga4KRGWLIemJqj
+ pB38Tt2fIFomsehDNtXD11M14Q4IdxasbB/Fa+zRoYiPrlOBV2OuXWSJ0hHsWEcip+w9
+ HzIQ==
+X-Gm-Message-State: AOJu0YwwqKDanEpdFKMSGpQQf/DIpqPR6Ch5GaLSgdn7NCU4dsQpegBZ
+ 341kixv1mgW4/ss3wdn62mDCcznTFPptvBd9x//pEb4lZLffeK50ULLFh1wThV590JhTN0xF4rl
+ osw==
+X-Google-Smtp-Source: AGHT+IE1fiECvprywQnEUtK1oSYC7ojC8NxTXgGvULWuq3FC/Lttt0aq1T5rzRT9XLuPQeDWWGo3rw==
+X-Received: by 2002:a5d:58e9:0:b0:37d:4619:f975 with SMTP id
+ ffacd0b85a97d-37efcf05df6mr6187940f8f.19.1729798991304; 
+ Thu, 24 Oct 2024 12:43:11 -0700 (PDT)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a912d6545sm652536866b.31.2024.10.24.12.43.10
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 24 Oct 2024 12:43:10 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: dirty@apple.com, rbolshakov@ddn.com,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH 0/4] i386/hvf: x2apic support and some small fixes
+Date: Thu, 24 Oct 2024 21:42:59 +0200
+Message-Id: <20241024194303.32100-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_TWELVE(0.00)[14]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- TO_DN_SOME(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::42c;
+ envelope-from=phil@philjordan.eu; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,77 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+This is a loose collection of patches against the x86 hvf accel. They
+can be applied/pulled independently from one another.
 
-> current_migration is never reset, even if the migration object is freed
-> already.  It means anyone references that can trigger UAF and it'll be hard
-> to debug.
->
-> Properly clear the pointer now, so far the only way to do is via
-> finalize() as we know there's only one instance of it, meanwhile QEMU won't
-> know who holds the refcount, so it can't reset the variable manually but
-> only in finalize().
->
-> To make it more readable, also initialize the variable in the
-> instance_init() so it's very well paired at least.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  migration/migration.c | 23 ++++++++++++++++++++---
->  1 file changed, 20 insertions(+), 3 deletions(-)
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 1b5285af95..74812ca785 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -233,9 +233,11 @@ static int migration_stop_vm(MigrationState *s, RunState state)
->  
->  void migration_object_init(void)
->  {
-> -    /* This can only be called once. */
-> -    assert(!current_migration);
-> -    current_migration = MIGRATION_OBJ(object_new(TYPE_MIGRATION));
-> +    /* This creates the singleton migration object */
-> +    object_new(TYPE_MIGRATION);
-> +
-> +    /* This should be set now when initialize the singleton object */
-> +    assert(current_migration);
->  
->      /*
->       * Init the migrate incoming object as well no matter whether
-> @@ -3886,12 +3888,27 @@ static void migration_instance_finalize(Object *obj)
->      qemu_sem_destroy(&ms->rp_state.rp_pong_acks);
->      qemu_sem_destroy(&ms->postcopy_qemufile_src_sem);
->      error_free(ms->error);
-> +
-> +    /*
-> +     * We know we only have one intance of migration, and when reaching
+Patch 1 is a repost of a patch I've submitted a bunch of times already.
+It wires up and enables x2APIC mode in conjunction with HVF - the
+software APIC implementation in QEMU gained the feature earlier this
+year but hvf wasn't included.
+The change typically improves performance with modern SMP guest OSes by
+a 2-digit percentage. (Exact values depend on workload.)
 
-instance
+Patch 2 fixes a minor one-off memory leak during hvf startup.
 
-> +     * here it means migration object is gone.  Clear the global reference
-> +     * to reflect that.
+Patch 3 ever so slightly improves APIC correctness under hvf: when
+setting the APICBASE MSR, if the APIC deems the new value invalid,
+we raise an exception (as per spec) rather than silently doing
+nothing. This fixes a failing kvm-unit-tests test case.
 
-Not really gone at this point. The free only happens when this function
-returns.
+Patch 4 removes some unnecessary duplication and type-rechecking in
+HVF's inner loop. (No need to cast the cpu state pointer to X86CPU
+within, the hvf_vcp_exec function already does that once at the top.)
 
-> +     */
-> +    current_migration = NULL;
->  }
->  
->  static void migration_instance_init(Object *obj)
->  {
->      MigrationState *ms = MIGRATION_OBJ(obj);
->  
-> +    /*
-> +     * There can only be one migration object globally. Keep a record of
-> +     * the pointer in current_migration, which will be reset after the
-> +     * object finalize().
-> +     */
-> +    assert(!current_migration);
-> +    current_migration = ms;
-> +
->      ms->state = MIGRATION_STATUS_NONE;
->      ms->mbps = -1;
->      ms->pages_per_second = -1;
+This work has been sponsored by Sauce Labs Inc.
+
+Phil Dennis-Jordan (4):
+  i386/hvf: Integrates x2APIC support with hvf accel
+  i386/hvf: Fixes startup memory leak (vmcs caps)
+  i386/hvf: Raise exception on error setting APICBASE
+  i386/hvf: Removes duplicate/shadowed variables in hvf_vcpu_exec
+
+ target/i386/hvf/hvf.c       |  7 +++----
+ target/i386/hvf/x86_cpuid.c |  4 ++--
+ target/i386/hvf/x86_emu.c   | 42 +++++++++++++++++++++++++++++++++++--
+ 3 files changed, 45 insertions(+), 8 deletions(-)
+
+-- 
+2.39.3 (Apple Git-145)
+
 
