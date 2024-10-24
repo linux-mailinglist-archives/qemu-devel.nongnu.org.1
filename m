@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD769AF343
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D179AF344
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4412-0003OO-Au; Thu, 24 Oct 2024 16:01:04 -0400
+	id 1t442S-0006Dh-3b; Thu, 24 Oct 2024 16:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440n-0003JI-VD
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:54 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440m-0002Cx-4I
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:49 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49ODjSt4017938;
- Thu, 24 Oct 2024 20:00:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=ud2XViQor+Fwa7K2K
- YwJD4usr9XUAowA5ebJCQIVY1U=; b=bYddljm/TPMYf8d08IHOvjmdjwGtrOaYV
- QcnUmVDdkLbCq8PfjyIl8zA1mzA/JkQs7XU0v26C1vGMvGTlAyIacI0jPG2fDIDM
- PRe6u5ES6nzMyzfQuYXp/MwAc+5r5cRAXNkdCUtoNFhBLt9BYvVy1pJCJacRfXzd
- 7z9LVbex8Wf+qLG/OXx6zTIk5iVLnZpmkSy3YdsW14kxc8qGPT8/VJCzmUdj5ig3
- leK50ng7OOE2itb+mutE684F65AtChvEN21cy4P2Sx77YYXCd6WBfy2p1bXkJkbI
- 1jIJg4C7qHMliM6lnx3+EJn0jdg8MHYlp4bxh7yHHRrE474ZUJCIg==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajtkhc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2024 20:00:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHiLra008769;
- Thu, 24 Oct 2024 20:00:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emkat87j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2024 20:00:39 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49OK0cDR48169216
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Oct 2024 20:00:38 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CC1720040;
- Thu, 24 Oct 2024 20:00:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 90A6B20043;
- Thu, 24 Oct 2024 20:00:37 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.25.135])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 24 Oct 2024 20:00:37 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 8/8] tests/tcg: Add late gdbstub attach test
-Date: Thu, 24 Oct 2024 21:59:15 +0200
-Message-ID: <20241024200031.80327-9-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241024200031.80327-1-iii@linux.ibm.com>
-References: <20241024200031.80327-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t442O-00060A-UC
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:02:28 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t442M-0002MY-28
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:02:27 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-71e983487a1so967958b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 13:02:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729800144; x=1730404944; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lM192urMKvFZLAw9PHjSiOx9wCOdV7JWBRsyrwZY1VE=;
+ b=QDV/DxIQp8MZ6uGP5gOyy0h3tZSwkgNCgFYk/9Er9TvbabM01jUkUKm1vljVvIGtxa
+ jqh+g8Q6ByoQTwiOchED9Qv748Pc59LEJS98cRIl3QNLCuUvIJ2Zv2TEFM2diGZv+zvM
+ hevsFPLHQxMx8eXsr9N1Wd1x9q2yGz2FH/ZTNeNr0qWiKB/Yi5fFFF2Q0o0w4Fpa9YMT
+ qsgDxTIi1yF3xYOWHPUpqKl6nii9Zz8192VOtAex2/RiKhMF5xms+zFWqJ6GNFLHvEWF
+ nGLCnamvI2Ca5XkeMZFzdbFTmUf9FfsIjwQOJ+ppl4OEGUNt+IzXk+v5MGND2FGlK0Cp
+ GTkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729800144; x=1730404944;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lM192urMKvFZLAw9PHjSiOx9wCOdV7JWBRsyrwZY1VE=;
+ b=NL7YQequJl6Bj5OX3OxNBlGmjwUQoWfMaAkAczz3NyKJU6csjIOcnBYnm78U8mz8dr
+ t9SLJT84bPzrcmT8AOeeSIogvPyXFMqw/9pJ+zaqmd/DIBo9A01sIHHd+w0lmHweSRln
+ ZWNp2paek19pU+j3/BPLiwMsuSD8iJdXhtv/GS1mvCm7pVxRB2ZGHLiwkIbq+eqZNySD
+ 54fhwurde2YYYB4hXOqOY+CBJUzS2OhcGoQOkTJeuVi25A4KaR+xvKLeufiZKIhWa3xD
+ 8K4ShRjfgDEq3LNJPzuvSt/+YiSi4Syzk5FMjSlDBDNgJl3a1rEu2U9Ypn4XVWU93gY6
+ VLrA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVqloLTEkKFgKksWKy9llGFDwQm1TvQM1j0Z8po1Phtjz0vlyIODgYevfdNsd2F3VwhsAuiL6S4nzCh@nongnu.org
+X-Gm-Message-State: AOJu0Yz2XuKvW5BfPyXtK7+XNuJR8ogMmvWXlG8qTaJUGCH7N/kxT2Hl
+ +luNjlHwYV80hiPi0kl24Z4LPS1HsyVQ65PicGqTsHqJhBnyeDPzEHQxsk42DnI=
+X-Google-Smtp-Source: AGHT+IEshyE2WmBSiOGFokGIrgHmcIz1UhcR9teScQTlkjcIDK/u9JFoQsgCdbJiughfxWGVrNofFg==
+X-Received: by 2002:a05:6a00:1495:b0:71e:5b92:b036 with SMTP id
+ d2e1a72fcca58-72030b61a33mr10171202b3a.22.1729800144451; 
+ Thu, 24 Oct 2024 13:02:24 -0700 (PDT)
+Received: from [192.168.100.49] ([45.176.88.171])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71ec13ea28fsm8613358b3a.141.2024.10.24.13.02.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Oct 2024 13:02:24 -0700 (PDT)
+Message-ID: <20dec12b-69e0-4996-9962-6aac9d40fc07@linaro.org>
+Date: Thu, 24 Oct 2024 17:02:19 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: neI7kd3CxsK0cL6AKzlm2llEF4rVeTtb
-X-Proofpoint-GUID: neI7kd3CxsK0cL6AKzlm2llEF4rVeTtb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410240159
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] qom: TYPE_SINGLETON interface
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Fabiano Rosas <farosas@suse.de>, Igor Mammedov <imammedo@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+References: <20241024165627.1372621-1-peterx@redhat.com>
+ <20241024165627.1372621-2-peterx@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241024165627.1372621-2-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,163 +102,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
-Make sure that host_interrupt_signal is not visible to the guest.
+Hi Peter,
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/guest-debug/run-test.py              | 15 ++++++--
- tests/tcg/multiarch/Makefile.target        |  9 ++++-
- tests/tcg/multiarch/gdbstub/late-attach.py | 28 +++++++++++++++
- tests/tcg/multiarch/late-attach.c          | 41 ++++++++++++++++++++++
- 4 files changed, 90 insertions(+), 3 deletions(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
- create mode 100644 tests/tcg/multiarch/late-attach.c
+(Cc'ing Mark)
 
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index 5a091db8be9..75e9c92e036 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -36,6 +36,8 @@ def get_args():
-     parser.add_argument("--gdb-args", help="Additional gdb arguments")
-     parser.add_argument("--output", help="A file to redirect output to")
-     parser.add_argument("--stderr", help="A file to redirect stderr to")
-+    parser.add_argument("--no-suspend", action="store_true",
-+                        help="Ask the binary to not wait for GDB connection")
- 
-     return parser.parse_args()
- 
-@@ -73,10 +75,19 @@ def log(output, msg):
- 
-     # Launch QEMU with binary
-     if "system" in args.qemu:
-+        if args.no_suspend:
-+            suspend = ''
-+        else:
-+            suspend = ' -S'
-         cmd = f'{args.qemu} {args.qargs} {args.binary}' \
--            f' -S -gdb unix:path={socket_name},server=on'
-+            f'{suspend} -gdb unix:path={socket_name},server=on'
-     else:
--        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
-+        if args.no_suspend:
-+            suspend = ',suspend=n'
-+        else:
-+            suspend = ''
-+        cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
-+            f' {args.binary}'
- 
-     log(output, "QEMU CMD: %s" % (cmd))
-     inferior = subprocess.Popen(shlex.split(cmd))
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 78b83d5575a..29433470fcf 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -127,6 +127,13 @@ run-gdbstub-follow-fork-mode-parent: follow-fork-mode
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
- 	following parents on fork)
- 
-+run-gdbstub-late-attach: late-attach
-+	$(call run-test, $@, env LATE_ATTACH_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" --no-suspend \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/late-attach.py, \
-+	attaching to a running process)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
-@@ -136,7 +143,7 @@ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
- 	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
- 	      run-gdbstub-follow-fork-mode-parent \
--	      run-gdbstub-qxfer-siginfo-read
-+	      run-gdbstub-qxfer-siginfo-read run-gdbstub-late-attach
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/late-attach.py b/tests/tcg/multiarch/gdbstub/late-attach.py
-new file mode 100644
-index 00000000000..1d40efb5ec8
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/late-attach.py
-@@ -0,0 +1,28 @@
-+"""Test attaching GDB to a running process.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    try:
-+        phase = gdb.parse_and_eval("phase").string()
-+    except gdb.error:
-+        # Assume the guest did not reach main().
-+        phase = "start"
-+
-+    if phase == "start":
-+        gdb.execute("break sigwait")
-+        gdb.execute("continue")
-+        phase = gdb.parse_and_eval("phase").string()
-+    report(phase == "sigwait", "{} == \"sigwait\"".format(phase))
-+
-+    gdb.execute("signal SIGUSR1")
-+
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/late-attach.c b/tests/tcg/multiarch/late-attach.c
-new file mode 100644
-index 00000000000..20a364034b5
---- /dev/null
-+++ b/tests/tcg/multiarch/late-attach.c
-@@ -0,0 +1,41 @@
-+/*
-+ * Test attaching GDB to a running process.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+static const char *phase = "start";
-+
-+int main(void)
-+{
-+    sigset_t set;
-+    int sig;
-+
-+    assert(sigfillset(&set) == 0);
-+    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
-+
-+    /* Let GDB know it can send SIGUSR1. */
-+    phase = "sigwait";
-+    if (getenv("LATE_ATTACH_PY")) {
-+        assert(sigwait(&set, &sig) == 0);
-+        if (sig != SIGUSR1) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    /* Check that the guest does not see host_interrupt_signal. */
-+    assert(sigpending(&set) == 0);
-+    for (sig = 1; sig < NSIG; sig++) {
-+        if (sigismember(&set, sig)) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.47.0
+On 24/10/24 13:56, Peter Xu wrote:
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   include/qom/object_interfaces.h | 47 +++++++++++++++++++++++++++++++++
+>   qom/object.c                    |  3 +++
+>   qom/object_interfaces.c         | 24 +++++++++++++++++
+>   qom/qom-qmp-cmds.c              | 22 ++++++++++++---
+>   system/qdev-monitor.c           |  7 +++++
+>   5 files changed, 100 insertions(+), 3 deletions(-)
 
+
+> +/**
+> + * SingletonClass:
+> + *
+> + * @parent_class: the base class
+> + * @get_instance: fetch the singleton instance if it is created,
+> + *                NULL otherwise.
+> + *
+> + * Singleton class describes the type of object classes that can only
+> + * provide one instance for the whole lifecycle of QEMU.  It will fail the
+> + * operation if one attemps to create more than one instance.
+> + *
+> + * One can fetch the single object using class's get_instance() callback if
+> + * it was created before.  This can be useful for operations like QMP
+> + * qom-list-properties, where dynamically creating an object might not be
+> + * feasible.
+> + */
+> +struct SingletonClass {
+> +    /* <private> */
+> +    InterfaceClass parent_class;
+> +    /* <public> */
+> +    Object *(*get_instance)(Error **errp);
+
+IMHO asking get_instance() is overkill ...
+
+> +};
+> +
+> +/**
+> + * object_class_is_singleton:
+> + *
+> + * @class: the class to detect singleton
+> + *
+> + * Returns: true if it's a singleton class, false otherwise.
+> + */
+> +bool object_class_is_singleton(ObjectClass *class);
+> +
+> +/**
+> + * singleton_get_instance:
+> + *
+> + * @class: the class to fetch singleton instance
+> + *
+> + * Returns: the object* if the class is a singleton class and the singleton
+> + *          object is created, NULL otherwise.
+> + */
+> +Object *singleton_get_instance(ObjectClass *class);
+> +
+>   #endif
+
+> diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+> index e0833c8bfe..6766060d0a 100644
+> --- a/qom/object_interfaces.c
+> +++ b/qom/object_interfaces.c
+> @@ -354,6 +354,23 @@ void user_creatable_cleanup(void)
+>       object_unparent(object_get_objects_root());
+>   }
+>   
+> +bool object_class_is_singleton(ObjectClass *class)
+> +{
+> +    return !!object_class_dynamic_cast(class, TYPE_SINGLETON);
+> +}
+> +
+> +Object *singleton_get_instance(ObjectClass *class)
+> +{
+
+... when we can use object_resolve_type_unambiguous:
+
+       return 
+object_resolve_type_unambiguous(object_class_get_name(class, NULL));
+
+BTW should we pass Error** argument to singleton_get_instance()?
+
+> +    SingletonClass *singleton =
+> +        (SingletonClass *)object_class_dynamic_cast(class, TYPE_SINGLETON);
+> +
+> +    if (!singleton) {
+> +        return NULL;
+> +    }
+> +
+> +    return singleton->get_instance(&error_abort);
+> +}
+
+Alternatively call object_resolve_type_unambiguous() in instance_init()?
+
+Regards,
+
+Phil.
 
