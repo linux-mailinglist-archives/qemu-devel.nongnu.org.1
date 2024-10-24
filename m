@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBFC9AF346
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 285779AF340
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4412-0003OK-AI; Thu, 24 Oct 2024 16:01:04 -0400
+	id 1t4411-0003Nc-FU; Thu, 24 Oct 2024 16:01:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440n-0003JF-By
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440n-0003JE-A9
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:54 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440k-0002CU-8b
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440k-0002Ck-JI
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:49 -0400
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OGfQqM025195;
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OFT8fc025960;
  Thu, 24 Oct 2024 20:00:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=xvhZ7yFLH6hYKp5Eo9/xHj9SAGvkN7MQn1Sdldtlb
- i8=; b=Bpkd1eRd76Bx1cjVd6o3q0J5sA3KbYtZMdLI+BQ4y+HtBNtejUHynvqIQ
- cQBSmV7KmbmZarssOzufV4g9HQWC/li8qr8+FrzYGu9eS03gSQmjR3xFe6dnIzHF
- hdmFVQ12vfRiRT685hym0Ch66MkreMGT94YOwqqqyPB0nqmkFEUQMcElb/gD+VrE
- acZ4eDO9Af3kBRsSifMkRfy1eiPdZV8iisxy4hGKMAqm2DFDFl5epnY4Sfe3r72c
- lioYvAdSQWBEeUQMZ8YhKYHpsc3Gvd6fUGIeNk2S7Fl79JvRqDvmPlHuMBrAh9gW
- FJ+B1T0CK7quOpudGVoYf7oJuxWrA==
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=lO25S/v/sot13hRVf
+ hJPR9LwACWELrDf2dF3196MJzs=; b=Cn+J2A7q2246TAyDZ9B0JcTOstLIAe5zQ
+ Wrd1tJH878SIexk2/F4HttCCKxAmCnLartNZgMlnXW5SZ6BRvqJ5JDb0SjrV9Cg8
+ CRreChauR3/NsnVVGVGM90z26B54fvl5Lzbm+pph4nBi42wIRklJ/8rbUPgw0lOb
+ Xb0M2dbLj8LWRAP9eer88eXSN39ijvGMOO0TqPblJQak3vglXqBQaaM6KMgUHF5Y
+ f1hHKISX3y29ofvXeF03fmgVrOEEWrhwJg2F1UfZZP+rRtLfHswoV+9tjs23OfG/
+ PcvK91zL6jJfd2iaaIX62GEo4ur7aiC7+eivt4qoJzOv0fVmzuk3g==
 Received: from ppma22.wdc07v.mail.ibm.com
  (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emaf2jye-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emaf2jyf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 24 Oct 2024 20:00:36 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHq1uP014603;
- Thu, 24 Oct 2024 20:00:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk827d7-1
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHsDYo014565;
+ Thu, 24 Oct 2024 20:00:36 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk827da-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2024 20:00:35 +0000
+ Thu, 24 Oct 2024 20:00:36 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49OK0XrF50266372
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49OK0YfW7209444
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Oct 2024 20:00:33 GMT
+ Thu, 24 Oct 2024 20:00:34 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8FD582004B;
- Thu, 24 Oct 2024 20:00:33 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2E3C120043;
+ Thu, 24 Oct 2024 20:00:34 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1BEA020040;
+ by IMSVA (Postfix) with ESMTP id A3E5E20040;
  Thu, 24 Oct 2024 20:00:33 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.25.135])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -62,23 +62,24 @@ To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 0/8] gdbstub: Allow late attachment
-Date: Thu, 24 Oct 2024 21:59:07 +0200
-Message-ID: <20241024200031.80327-1-iii@linux.ibm.com>
+Subject: [PATCH 1/8] gdbstub: Allow the %d placeholder in the socket path
+Date: Thu, 24 Oct 2024 21:59:08 +0200
+Message-ID: <20241024200031.80327-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xapfuRtYHXNS-u3j201IO7o5xMpjRkBm
-X-Proofpoint-ORIG-GUID: xapfuRtYHXNS-u3j201IO7o5xMpjRkBm
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20241024200031.80327-1-iii@linux.ibm.com>
+References: <20241024200031.80327-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nm9pEREpzZZ2oiDkLd9JGMm601Oe7Yip
+X-Proofpoint-ORIG-GUID: nm9pEREpzZZ2oiDkLd9JGMm601Oe7Yip
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=483
- priorityscore=1501 suspectscore=0 clxscore=1011 impostorscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=956
+ priorityscore=1501 suspectscore=0 clxscore=1015 impostorscore=0
  bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410240159
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
@@ -106,64 +107,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Just like for QEMU_LOG_FILENAME, replace %d with PID in the GDB socket
+path. This allows running multi-process applications with, e.g.,
+export QEMU_GDB=/tmp/qemu-%d.sock. Currently this is not possible,
+since the first process will cause the subsequent ones to fail due to
+not being able to bind() the GDB socket.
 
-This series adds the ability to attach GDB to a running qemu-user
-instance. This is useful for debugging multi-process apps.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ gdbstub/user.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Patches 1 and 2 implement a small related feature: the ability to
-create individual UNIX sockets for each child process.
-
-Patches 3-5 add the required infrastructure. In particular, we need
-to reserve a host signal for waking up threads, as discussed in [1].
-By the way, the problem with atomicity of checking for pending signals
-and invoking syscalls that I'm describing in that thread seems to
-have already been solved by the safe_syscall infrastructure, so the
-changes are fairly simple.
-
-If this series is accepted, I will rebase the all-stop series on top
-of it.
-
-Patch 6 is the implementation, patch 7 is a documentation update,
-patch 8 is a test. I tested this series on Linux and only
-compile-tested on the BSDs.
-
-Best regards,
-Ilya
-
-[1] https://lore.kernel.org/qemu-devel/94ebebf2-e775-4fd2-8fcf-921610261a7e@linaro.org/
-
-Ilya Leoshkevich (8):
-  gdbstub: Allow the %d placeholder in the socket path
-  gdbstub: Try unlinking the unix socket before binding
-  user: Introduce user/signal.h
-  user: Introduce host_interrupt_signal
-  osdep: Introduce qemu_kill_thread()
-  gdbstub: Allow late attachment
-  docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
-  tests/tcg: Add late gdbstub attach test
-
- bsd-user/main.c                            |   1 -
- bsd-user/signal-common.h                   |   1 -
- bsd-user/signal.c                          |  13 ++
- docs/user/main.rst                         |  16 ++-
- gdbstub/user.c                             | 131 +++++++++++++++++++--
- include/qemu/osdep.h                       |   9 ++
- include/user/signal.h                      |  25 ++++
- linux-user/main.c                          |   1 -
- linux-user/signal-common.h                 |   1 -
- linux-user/signal.c                        |  12 ++
- linux-user/syscall.c                       |   1 +
- tests/guest-debug/run-test.py              |  15 ++-
- tests/tcg/multiarch/Makefile.target        |   9 +-
- tests/tcg/multiarch/gdbstub/late-attach.py |  28 +++++
- tests/tcg/multiarch/late-attach.c          |  41 +++++++
- util/oslib-posix.c                         |  15 +++
- 16 files changed, 299 insertions(+), 20 deletions(-)
- create mode 100644 include/user/signal.h
- create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
- create mode 100644 tests/tcg/multiarch/late-attach.c
-
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 0b4bfa9c488..cdf5affae15 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -316,9 +316,19 @@ static bool gdb_accept_socket(int gdb_fd)
+ 
+ static int gdbserver_open_socket(const char *path)
+ {
++    g_autoptr(GString) buf = g_string_new("");
+     struct sockaddr_un sockaddr = {};
++    char *pid_placeholder;
+     int fd, ret;
+ 
++    pid_placeholder = strstr(path, "%d");
++    if (pid_placeholder != NULL) {
++        g_string_append_len(buf, path, pid_placeholder - path);
++        g_string_append_printf(buf, "%d", getpid());
++        g_string_append(buf, pid_placeholder + 2);
++        path = buf->str;
++    }
++
+     fd = socket(AF_UNIX, SOCK_STREAM, 0);
+     if (fd < 0) {
+         perror("create socket");
 -- 
 2.47.0
 
