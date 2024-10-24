@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2688C9AE726
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 16:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFFA9AE72A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 16:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3yRa-0007Cu-IL; Thu, 24 Oct 2024 10:04:06 -0400
+	id 1t3yRY-0007CT-JL; Thu, 24 Oct 2024 10:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3yRO-00079u-Ca
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:04:00 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1t3yRR-0007A2-3v
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:04:01 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3yRL-0003xf-TO
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:03:53 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a9acafdb745so196016766b.0
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 07:03:51 -0700 (PDT)
+ id 1t3yRP-0003xn-4I
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:03:56 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9454f3bfaso1106930a12.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 07:03:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729778630; x=1730383430; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729778634; x=1730383434; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8Qgg42N8SuToqImklsCIv0xNcAbCllJIjfd+s7ENKDE=;
- b=YvwCchidzJFAYBLkeCggH3glPoFBSqVKI6wNXScIUyeEPtfBJofvenTSA9YFJd/zC3
- M4iev+BUW95yK35WAQY7omYfYcfp7DfsisNi5hbIaTV4lLcBqsfoALfu8hwOdtXkld87
- yIYz7Qqlvf6dB03QULBMjVhKo9/jGP9yoCSvanvT1TDlXURjHoO2Gb8Liu3ADTG28d4o
- 3tmvOlipagZEEFEOxCoR47+w9TEkTAhR2gsiJWX6u8H1z9Mn2YXAx9G8B4NOqWDPGlAi
- 1LiZgeUNKWc7h7Um/KsDm+5xPle6FiExulsXA8YM3VykoNdvulySDfYH7roZn7GHrGb9
- J7Ow==
+ :reply-to; bh=P6v2Co+JCkBUSGoUJI3FUDr2BSiZdpBcLeYpZLITdCA=;
+ b=QU7pUCNu5hr7fssiGl3qik1gmMhMfEQb39Vq7TK9G+cUq2o3gktZ3JK3AB6xDiBeQk
+ 7zKAoJ0+mbVkkQiZHDHPNi0jzJtlZcofXr/QR/aZFTSUzWxWgL8YTIEOtKN5/VnJpa6y
+ EaD8V9OOe5dEsLjo5id/xugCjwVgXSkcNjWHclYNzWGkLi5+swLeBAzSPkz2tH9YWdhQ
+ go/n2pjZOWYUoXmqynEz+EXv428VWdew1+QLKgFS+xYuL1J66ntxkW/4kiwjS1FXUHD1
+ rsGtepe2ZP5afyLL1CMpGj1pDg73MSKZuAVvBY2T4REDTGFcdDRB4j4G7ynFz45tlfGz
+ lbsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729778630; x=1730383430;
+ d=1e100.net; s=20230601; t=1729778634; x=1730383434;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8Qgg42N8SuToqImklsCIv0xNcAbCllJIjfd+s7ENKDE=;
- b=RxW3hg7ECeQTh1hqZkW+Odz+HpXh4T2SJOJucDmEUqgyOkON68FCx7tbNmNGNz4IZD
- IKZPVvT1QA81sEU9eNSaPK0k5Pvs/C2QLGs/t/+UX7NbmvMRHca1p5CUYHljuam/QX7t
- taQmNOBusK35Faq9ZTjZ/M0xZR511pJjVghgwtXA2Yel1v7wwNN+Tf4FIGzmT78pgUYu
- de9eV8dBix0pfL2kTyrMkGHdxV6HXMwG/fZecX35Zy1/gus5n869Y1er8RCNGYFfQesI
- noerPOCWsh/3w9qt/V/Nnnyszs0z/hX3xDqkTGLZBPSu/9Lr6uGy9X0L5Mfs48i5EuqT
- L+FA==
-X-Gm-Message-State: AOJu0Yyw414YxajHwX7No7Z9gzPUxxCUS7VAM6AMSw6IdlwCxJaR1UxU
- L4jrBhkCi/GAi9evGwTD0usQN3ZG0oxNjBVss0olWOFg4lNgCRHEzUptU38UjwE=
-X-Google-Smtp-Source: AGHT+IFXmSbnHJhHsJg856w4Wo5guxUQvrw+8QKSwCcJ6BivTfnSyFN3SBBQpSQeunB3GnJnVqSuLg==
-X-Received: by 2002:a17:906:db0d:b0:a99:fcbe:c96b with SMTP id
- a640c23a62f3a-a9ad1a5eee0mr225800166b.25.1729778629072; 
- Thu, 24 Oct 2024 07:03:49 -0700 (PDT)
+ bh=P6v2Co+JCkBUSGoUJI3FUDr2BSiZdpBcLeYpZLITdCA=;
+ b=nYqbevQV4OCR1FjTwkMXeww/F8WaPl9+g7aIrEI+6TQooDp+hbcBQMlL4IADf2nKuo
+ YXJZj3klDIruapv+m1IztprGhvOi5ovVdsaes7PwxmWherRVI2d6578oYPquQGcd/PVH
+ YVbViryWBRuRNzgNpNaM8FVasM1EecSRdqK1VKh8WuqxbsarSVu8TsDOSoVfuZlGhohV
+ 8Iw/nTZqs61fMnILu/nbzC6KQYZbavBi6sKpO7h5FWZ4Oji73JIEWtXMo48fzpVn8SwJ
+ 1mr0+NDhlFr6//makfXtvdT9rWYOmxrPyeiwQ33zE7IeoA/Bta5SS0DNw5Da7zoVbnIL
+ Cv+Q==
+X-Gm-Message-State: AOJu0YyTLXtRR9vNG9sDgChwRN0FyzrbZJFWp2w6//f+r6sjRxdjcf2q
+ /2G7YDBwoVuFJWM5Fi8Ui3ErLnJiSXkEz9lEgpc2gTfjUY8Hmdwq35+1znGye7w=
+X-Google-Smtp-Source: AGHT+IFRnERUtukvp4G+Z711fIrDuHFwABPP3sJHPHNJiv+AZCggeRVFxL2S2nuDQr/qf9n6x43Xcg==
+X-Received: by 2002:a17:906:f590:b0:a99:f750:bf79 with SMTP id
+ a640c23a62f3a-a9abf8aefa7mr629785366b.34.1729778631898; 
+ Thu, 24 Oct 2024 07:03:51 -0700 (PDT)
 Received: from [127.0.1.1] (adsl-113.37.6.2.tellas.gr. [37.6.2.113])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912f6878sm621407566b.86.2024.10.24.07.03.46
+ a640c23a62f3a-a9a912f6878sm621407566b.86.2024.10.24.07.03.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 07:03:48 -0700 (PDT)
+ Thu, 24 Oct 2024 07:03:51 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Oct 2024 17:03:07 +0300
-Subject: [PATCH 09/11] rust/pl011: Use correct masks for IBRD and FBRD
+Date: Thu, 24 Oct 2024 17:03:08 +0300
+Subject: [PATCH 10/11] rust/qemu-api: add log module
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-rust-round-2-v1-9-051e7a25b978@linaro.org>
+Message-Id: <20241024-rust-round-2-v1-10-051e7a25b978@linaro.org>
 References: <20241024-rust-round-2-v1-0-051e7a25b978@linaro.org>
 In-Reply-To: <20241024-rust-round-2-v1-0-051e7a25b978@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,30 +79,30 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Gustavo Romero <gustavo.romero@linaro.org>, 
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 X-Mailer: b4 0.15-dev-12fc5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=926;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7789;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=NKJsSY6EnujOR9+vYFNGnvQMyXTGi/+JMzK/b442IcI=;
+ bh=PnKwn5RfvPLyaFLPXzkFaOcLVrtk0owxj+F4Pzht9MM=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm5HbE9qdjQrZ3JWeElma0w3ODB4SzlUSWpFd0s4CllWcFh1UzllLzNLenpETysw
- K1dKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnhwVG93QUt
- DUkIzS2Nkd2YzNEowRWdGRC85TUZuN0svSnNwMEVVUUxZTml2QTZKVVJabnNqbWI5ZSt2dE82VA
- pOU3plNUNISmY3SklzamM4d0ZaK1VqcUpVWEZSd3k3bkZCYUdvYVQ2MzI1Y3gyUUhuMHh0VUl0a
- m5LeHNKUDBLCkdoeWpPT0Q5bnRoTUVHRGE1dFN6UFgwbXNEbCtBN0JOSGxCcThSRXVNWGhlMDJt
- c0lKYU5DZFBSWTJJZzV0cDUKUnZvcUdqSVFEKzdxdFJSVVJGK1lrb2YvVHpoVUdJYzJFWFQ3QVp
- PbnJwNzZ0TjQvWlAzTDM3dy9nMjdrbjNUQQpOVzlndHA1NXR0eDMrN3NENHp6SnJLTVF4MWdmMX
- FlOWZmcEhoZkxQYU1qWVp6SE1iM2FnZTUvQ0pBMnhiZFFVCjVtOXd2cE5DT3hMQVZhekZHYkx5b
- nVFNkZiMWtiZWNTMWMrRjdQYTRFR2cyN1paMTNodFNyazNJTXB6QkdId3cKeW5WRzNrTFpRNVdQ
- RGtvVjlTbFdOY0lKQTJVY1BhTXJESlRic05NV25YVGlQQWtEYnMyR0lXUnhCSm84QTR6NQpVUVF
- CQzRieHAxNXRDOWkreHc4T2VEWkRDR0h0VzkwL0E1TWNYTlNuTXRWRkgyaStLVGN4dktvQUZrSn
- FiMGU1Cmh4aGN5OGwyMStYcTZwcWlZbU5kMzA5eE9RcFlKWk1DMzM4MzV4K1QySnpVelZpQ1M3b
- lVFNEFoY3N5alRhYUwKQi8veTR5eC9tK0pmS0hzYTAyb0Q5SzBENjd2a3VpYVdjR2g4N24zbnZO
- aUsrQWhORUdPdjg2M29NV0VpeUMweApnYjdGYmxVMjV1djdyWGJuSW95c0RLM0k2NUdiTWhwNUh
- yWGp4TGNOOXFlbURZWjZOQlg0M1IxMm9wbGZ6NmwxCjI5eUxSUT09Cj0wVHd2Ci0tLS0tRU5EIF
+ 25RQWNzbVlnQm5HbE9qTndYdUxYWVhLSk5CcllMalZEVFkxTXY2Ck5SU2pIOGhkRzdFMktXZTQ4
+ bG1KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnhwVG93QUt
+ DUkIzS2Nkd2YzNEowQnJaRUFDUHdvSVAwMnNqc3RtdXQ4NjJCVFdLM21rYXNPdlVyM0tRaWpJWg
+ pmWkRCOWh5bFBUa1lGTVpFdGFPaU11K1I2VlhEMnU3b05wV1NQWVpKWmJUUzFqQmRDVk9mYmhvb
+ 2xha3kyTExKClI2ZHNtbWJ4Rm8rZlkydjMyamNCSkQzd1pvREIzemMvWGRMY0V5ZmNEUGZTaGZU
+ ckg2cFlYUHNJZURnOGZJS0oKUEw0ZzNIdlBCKzlkT2JtdUhsTUlmU2tWZ3VGQ3RORXRXYU52UVA
+ wbTNpdmdYR2E0OXAybHJRaTB1WkRGK01iMApDQzBhSUtXbU5QMEptbENwNlFVMXp1bGdBdDFFYj
+ N5dE1id0RFcUxWbmpicml0QVkvVkl1eTFQSHJreGQxRkFVCmNpOFlmVC9qY2ZWQXpBNFRoYkZMT
+ k91b3pydUg0a1RtcDZ0dFYwSVY0ZEZhYXBLZmFiQTY3VTVCWU9Tdmd4aFgKUkpYS3hVQ3QvdDJo
+ S2ovTkFFeXloZzlESDVDSENjRGJKRlNCQldyblZoUVZaY2pqcjZURVdKeVpNM2ZDUmlHMwpKbnZ
+ HampjUGEwbklFVUNDMk5KWGVjVFVMVlNUamdBYU9WZFpRblJtNjhRM3B6bHp0SHl1UXkyTnh1eD
+ J1SFpmCjhNTGFqV2xTcUVFUG9XKzFtUEtSWVg0RmtocTJXR1h5UTVUMlVvRkVHYVorb1FPYmpMa
+ Ud4L3owVVQvZC9MeEcKV1crUmN1NmtQYlhsaDA2d3dDVFJLcGpyUjErRFU2WldFZ1ZWNUhUbThk
+ RTRkRVVQVmRHVWthU2JKemJ4QTFFegpKTDNvTlR3ckhCMURLTFVMcTE2NXlzVE1talI2NG5HOFh
+ HbE5GaUMwRmdWVk5JQStvS25QUGpMZFlNeEpTMmpqCkZKV25NUT09Cj1ab2VQCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,33 +125,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Port fix from commit cd247eae16ab1b9ce97fd34c000c1b883feeda45
-"hw/char/pl011: Use correct masks for IBRD and FBRD"
+Logging in QEMU is done by function-like C macros, which we cannot use
+directly from Rust with bindgen.
 
-Related issue: <https://gitlab.com/qemu-project/qemu/-/issues/2610>
+This commit adds a new qemu_api module, `log`, that provides the
+following interfaces:
+
+- a `LogMask` enum type that uses the mask values from the generated
+  bindings, and makes sure the rust enum variant names and values will
+  match.
+- `LogMask` aliases `LogMask::GUEST_ERROR` and `LogMask::UNIMPLEMENTED`
+  for convenience.
+- a private qemu_loglevel_mask() function, counterpart of
+  `qemu_loglevel_mask` in `include/qemu/log-for-trace.h`, which we
+  cannot use from bindgen since it's a static inline item.
+- public qemu_log(), qemu_log_mask() and qemu_log_mask_and_addr()
+  functions that should act like the C equivalent:
+
+  pub fn qemu_log_mask_and_addr(log_mask: LogMask, address: u64, str: &str);
+  pub fn qemu_log_mask(log_mask: LogMask, str: &str);
+  pub fn qemu_log(str: &str);
+
+  It takes a 'static or allocated string slice as argument, but in the
+  feature we will introduce better log macros in Rust that make use of
+  Rust's format arguments. This is not really a bad compromise since
+  generating a log item is not a hot path so allocating here is fine.
+
+Example usage will be:
+
+```rust
+qemu_log_mask(LogMask::GUEST_ERROR, "device XYZ failed spectacularly");
+
+qemu_log_mask(
+ LogMask::UNIMPLEMENTED,
+ &format!(
+   "We haven't implemented this feature in {file}:{line} out of pure laziness.",
+   file = file!(),
+   line = line!()
+ )
+);
+```
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- rust/hw/char/pl011/src/device.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/wrapper.h            |   1 +
+ rust/qemu-api/meson.build |   1 +
+ rust/qemu-api/src/lib.rs  |   1 +
+ rust/qemu-api/src/log.rs  | 140 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 143 insertions(+)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index cf1964fecdfd6d9dae3378890aa8b515a1ddc036..6d1353dafc14bfe73703b5cff7e1ff7659de220e 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -21,10 +21,10 @@
- };
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index 77e40213efb686d23f6b768b78602e4337623280..8f76ef26f111d5e1f308268f445696acc7ddbfef 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -32,6 +32,7 @@
  
- /// Integer Baud Rate Divider, `UARTIBRD`
--const IBRD_MASK: u32 = 0x3f;
-+const IBRD_MASK: u32 = 0xffff;
+ #include "qemu/osdep.h"
+ #include "qemu/module.h"
++#include "qemu/log.h"
+ #include "qemu-io.h"
+ #include "sysemu/sysemu.h"
+ #include "hw/sysbus.h"
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 11984abb878bef18be3c819f61da24ce1405ea59..a82ff0d39a2263d15bda312aa0a2d46c77b2501f 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -3,6 +3,7 @@ _qemu_api_rs = static_library(
+   structured_sources(
+     [
+       'src/lib.rs',
++      'src/log.rs',
+       'src/objects.rs',
+       'src/vmstate.rs',
+     ],
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index d276adfb6622eee6e42494e089e1f20b0b5cdf08..c3eb464f66361ee2349e636c49e38d3a6b57ad97 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -29,6 +29,7 @@ unsafe impl Sync for bindings::VMStateDescription {}
+ unsafe impl Sync for bindings::VMStateField {}
+ unsafe impl Sync for bindings::VMStateInfo {}
  
- /// Fractional Baud Rate Divider, `UARTFBRD`
--const FBRD_MASK: u32 = 0xffff;
-+const FBRD_MASK: u32 = 0x3f;
++pub mod log;
+ pub mod objects;
+ pub mod vmstate;
  
- const DATA_BREAK: u32 = 1 << 10;
- 
+diff --git a/rust/qemu-api/src/log.rs b/rust/qemu-api/src/log.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..50525ac6b7f49786c2975843b7dc70b91c18d5a0
+--- /dev/null
++++ b/rust/qemu-api/src/log.rs
+@@ -0,0 +1,140 @@
++// Copyright 2024, Linaro Limited
++// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++//! Logging functionality.
++//!
++//! This module provides:
++//!
++//! - a [`LogMask`] enum type that uses the mask values from the generated
++//!   bindings, and makes sures the rust enum variant names and values will
++//!   match.
++//! - [`LogMask`] aliases [`LogMask::GUEST_ERROR`] and [`LogMask::UNIMPLEMENTED`]
++//!   for convenience.
++//! - a private `qemu_loglevel_mask()` function, counterpart of
++//!   `qemu_loglevel_mask` in `include/qemu/log-for-trace.h`, which we
++//!   cannot use from bindgen since it's a `static inline` item.
++//! - public [`qemu_log`], [`qemu_log_mask`] and [`qemu_log_mask_and_addr`] functions that act like
++//!   the C equivalents.
++//!
++//! # Examples
++//!
++//! ```rust
++//! # use qemu_api::log::*;
++//! # fn main() {
++//! qemu_log_mask(LogMask::GUEST_ERROR, "device XYZ failed spectacularly");
++//!
++//! qemu_log_mask(
++//!  LogMask::UNIMPLEMENTED,
++//!  &format!(
++//!    "We haven't implemented this feature in {file}:{line} out of pure laziness.",
++//!    file = file!(),
++//!    line = line!()
++//!  )
++//! );
++//! # }
++//! ```
++
++use crate::bindings;
++
++macro_rules! mask_variants {
++    ($(#[$outer:meta])*
++     pub enum $name:ident {
++         $(
++             $(#[$attrs:meta])*
++             $symbol:ident
++         ),*$(,)*
++     }) => {
++        $(#[$outer])*
++            pub enum $name {
++                $(
++                    $(#[$attrs])*
++                    $symbol = bindings::$symbol
++                ),*
++            }
++    };
++}
++
++mask_variants! {
++    /// A wrapper type for the various log mask `#defines` in the C code base.
++    #[allow(non_camel_case_types)]
++    #[derive(Copy, Clone, Eq, PartialEq, Debug)]
++    #[repr(u32)]
++    pub enum LogMask {
++        CPU_LOG_TB_OUT_ASM,
++        CPU_LOG_TB_IN_ASM,
++        CPU_LOG_TB_OP,
++        CPU_LOG_TB_OP_OPT,
++        CPU_LOG_INT,
++        CPU_LOG_EXEC,
++        CPU_LOG_PCALL,
++        CPU_LOG_TB_CPU,
++        CPU_LOG_RESET,
++        LOG_UNIMP,
++        LOG_GUEST_ERROR,
++        CPU_LOG_MMU,
++        CPU_LOG_TB_NOCHAIN,
++        CPU_LOG_PAGE,
++        LOG_TRACE,
++        CPU_LOG_TB_OP_IND,
++        CPU_LOG_TB_FPU,
++        CPU_LOG_PLUGIN,
++        /// For user-mode strace logging.
++        LOG_STRACE,
++        LOG_PER_THREAD,
++        CPU_LOG_TB_VPU,
++        LOG_TB_OP_PLUGIN,
++    }
++}
++
++impl LogMask {
++    /// Alias.
++    pub const GUEST_ERROR: Self = LogMask::LOG_GUEST_ERROR;
++    /// Alias.
++    pub const UNIMPLEMENTED: Self = LogMask::LOG_UNIMP;
++}
++
++/// Returns `true` if a bit is set in the current loglevel mask.
++///
++/// Counterpart of `qemu_loglevel_mask` in `include/qemu/log-for-trace.h`.
++fn qemu_loglevel_mask(mask: LogMask) -> bool {
++    // SAFETY: This is an internal global variable. We only read from it and reading invalid values
++    // is not a concern here.
++    let current_level = unsafe { bindings::qemu_loglevel };
++    let mask = mask as ::core::ffi::c_int;
++
++    (current_level & mask) != 0
++}
++
++/// Log a message in QEMU's log, given a specific log mask.
++pub fn qemu_log_mask(log_mask: LogMask, str: &str) {
++    if qemu_loglevel_mask(log_mask) {
++        qemu_log(str);
++    }
++}
++
++/// Log a message in QEMU's log only if a bit is set on the current loglevel mask and we are in the
++/// address range we care about.
++pub fn qemu_log_mask_and_addr(log_mask: LogMask, address: u64, str: &str) {
++    if qemu_loglevel_mask(log_mask) && {
++        // SAFETY: This function reads global variables/system state but an error here is not a
++        // concern.
++        unsafe { bindings::qemu_log_in_addr_range(address) }
++    } {
++        qemu_log(str);
++    }
++}
++
++/// Log a message in QEMU's log, without a log mask.
++pub fn qemu_log(str: &str) {
++    let Ok(cstr) = ::std::ffi::CString::new(str) else {
++        panic!(
++            "qemu_log_mask: Converting passed string {:?} to CString failed.",
++            str
++        );
++    };
++    // SAFETY: We're passing two valid CStr pointers. The second argument for the variadic
++    // `qemu_log` function must be a `*const c_char` since the format specifier is `%s`.
++    // Therefore this is a safe call.
++    unsafe { bindings::qemu_log(c"%s\n".as_ptr(), cstr.as_ptr()) };
++}
 
 -- 
 2.45.2
