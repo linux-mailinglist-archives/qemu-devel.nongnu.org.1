@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E309AF435
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FB09AF43B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:06:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t450c-00017i-U5; Thu, 24 Oct 2024 17:04:42 -0400
+	id 1t450W-0000z2-TN; Thu, 24 Oct 2024 17:04:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1t450b-00016v-Bw
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:04:41 -0400
+ id 1t450U-0000yc-6T
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:04:34 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1t450Z-0002Db-P9
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:04:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1729803850; cv=none; 
+ id 1t450S-0002DJ-Lp
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:04:33 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1729803858; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=DAv29XuBnLS4vXAM4wv7miReN9Pv5p/ErshGRP/eRo2vtEa/6yLuB0GQmITNaQ1U5Q1m+K2jo4dummKws7JU02CkbiOI4VGms7mTQbRsnnRyMO6CzDBLW07d+Zik8KWoaCj+KrvBOak3j3MGoNgOWXQN8msOqxn5YFsdZsh00a8=
+ b=H8JkCBIzuBLWP5pKC2CQdPuS+mKqKEqeMEhVGbgiQLCoyFKI0fzHjDCzoxcco/ahlKlBtX6d6NPtPlJhDFg4nk4JHFUs8RiiDW1mgOXSEyuG4xC+vpneXjDO8q5LPCaa6xSSK3rZteHd3UQOjrzP8AU1/for+Z0zQ6QpChbHg+U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1729803850;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=XVmyrLXRqVwpYbrvGtEpbvb4gydn1N79PY4d8dOtZtk=; 
- b=cRn1lkX5NvknS5rsLlGRuQ3xIYRrSGCmgBbU5hkoyAqJTNGXvK6FuIwZCdk6xaYZNMmqN0r6ZQbPsJDkmvHTxFhdosrmKtD1XO3LXbEkN3pFG4ecO43xRHg+FmwDCnL90GvF9UPcQwgBSOHgs0mIskkVMyjk7+paRUneR08itsc=
+ s=zohoarc; t=1729803858;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=y4Jw21x3x9ljkXhXTWvqNVGKGaZfeN5EiJHR2v24JlQ=; 
+ b=Sa4Jt++tL0ns9MgOmnzlFGc64PulmM6H/BbRycirORgEaUSXMYSDUHvXJSd8wJfkSwSGbpX4ArnI+r4W3SduaqbrdBVG9GjA4YoAzDaTyg1UI92nuy55jaAAolXT4xSB2Lk1u5qJu/PMFb1G/1SskgwOfv+DDNWLt/B84H7E/Ek=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729803850; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729803858; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=XVmyrLXRqVwpYbrvGtEpbvb4gydn1N79PY4d8dOtZtk=;
- b=QbSutGVUpCIMxbcE/0ere4Q0jCMOCTK3iuAHKoAyGf1sufbw70oQ/5yR3E+XFwjS
- EF8nmxkVcDOP5Ntyd+02eAR10I9kplVuS+Mw3b8Z5aD2vqXH7N9tW5/al/3oMARTtps
- 9jdFc8mnofYHH/sztK3FyPGzMHklsvq5X/zrMr5M=
-Received: by mx.zohomail.com with SMTPS id 1729803849092276.324105421285;
- Thu, 24 Oct 2024 14:04:09 -0700 (PDT)
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=y4Jw21x3x9ljkXhXTWvqNVGKGaZfeN5EiJHR2v24JlQ=;
+ b=FdQx0B7acxTSpDxz7btsiIk7W3R01PSw0uSvw4lD2tqgwP4HhHi0VsEQd7qlZCxP
+ PnxkVFbz17xiABmAj4cyp3e8eeZffnlwhM1asWLsb0QsBBkRSCzohvRQC6JKF6rXMGO
+ OI2VUczJxPu2X3Rxqdur25jLj7KK3igslmAbWrYI=
+Received: by mx.zohomail.com with SMTPS id 1729803856256299.5685638436321;
+ Thu, 24 Oct 2024 14:04:16 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -60,15 +60,14 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v18 06/13] virtio-gpu: Use pkgconfig version to decide which
- virgl features are available
-Date: Fri, 25 Oct 2024 00:03:04 +0300
-Message-ID: <20241024210311.118220-7-dmitry.osipenko@collabora.com>
+Subject: [PATCH v18 07/13] virtio-gpu: Support context-init feature with
+ virglrenderer
+Date: Fri, 25 Oct 2024 00:03:05 +0300
+Message-ID: <20241024210311.118220-8-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024210311.118220-1-dmitry.osipenko@collabora.com>
 References: <20241024210311.118220-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 Received-SPF: pass client-ip=136.143.188.112;
@@ -96,47 +95,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-New virglrerenderer features were stabilized with release of v1.0.0.
-Presence of symbols in virglrenderer.h doesn't guarantee ABI compatibility
-with pre-release development versions of libvirglerender. Use virglrenderer
-version to decide reliably which virgl features are available.
+From: Huang Rui <ray.huang@amd.com>
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+feature flags. Expose this feature and support creating virglrenderer
+context with flags using context_id if libvirglrenderer is new enough.
+
+Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+Signed-off-by: Huang Rui <ray.huang@amd.com>
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-virgl.c | 2 +-
- meson.build                   | 5 +----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ hw/display/virtio-gpu-gl.c    |  4 ++++
+ hw/display/virtio-gpu-virgl.c | 20 ++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
+diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+index 753b35ed69fd..bf87ba423283 100644
+--- a/hw/display/virtio-gpu-gl.c
++++ b/hw/display/virtio-gpu-gl.c
+@@ -147,6 +147,10 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
+     VIRTIO_GPU_BASE(g)->virtio_config.num_capsets =
+         virtio_gpu_virgl_get_num_capsets(g);
+ 
++#if VIRGL_VERSION_MAJOR >= 1
++    g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED;
++#endif
++
+     virtio_gpu_device_realize(qdev, errp);
+ }
+ 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index a63d1f540f04..ca6f4d6cbb58 100644
+index ca6f4d6cbb58..b3aa444bcfa5 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -171,7 +171,7 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
-         struct virgl_renderer_resource_info info;
-         void *d3d_tex2d = NULL;
+@@ -106,8 +106,24 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+     trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+                                     cc.debug_name);
  
--#ifdef HAVE_VIRGL_D3D_INFO_EXT
+-    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+-                                  cc.debug_name);
++    if (cc.context_init) {
++        if (!virtio_gpu_context_init_enabled(g->parent_obj.conf)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: context_init disabled",
++                          __func__);
++            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
++            return;
++        }
++
 +#if VIRGL_VERSION_MAJOR >= 1
-         struct virgl_renderer_resource_info_ext ext;
-         memset(&ext, 0, sizeof(ext));
-         ret = virgl_renderer_resource_get_info_ext(ss.resource_id, &ext);
-diff --git a/meson.build b/meson.build
-index c26c417de16a..089cbd2bb364 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2429,10 +2429,7 @@ config_host_data.set('CONFIG_VNC', vnc.found())
- config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
- config_host_data.set('CONFIG_VNC_SASL', sasl.found())
- if virgl.found()
--  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT',
--                       cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
--                                     prefix: '#include <virglrenderer.h>',
--                                     dependencies: virgl))
-+  config_host_data.set('VIRGL_VERSION_MAJOR', virgl.version().split('.')[0])
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
++        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
++                                                 cc.context_init,
++                                                 cc.nlen,
++                                                 cc.debug_name);
++        return;
++#endif
++    }
++
++    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
+ }
+ 
+ static void virgl_cmd_context_destroy(VirtIOGPU *g,
 -- 
 2.47.0
 
