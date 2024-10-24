@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1536B9AE1AD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F05B9AE1BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:58:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ua4-0001Ek-Jd; Thu, 24 Oct 2024 05:56:36 -0400
+	id 1t3uZv-0001AW-DX; Thu, 24 Oct 2024 05:56:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZi-00017s-CI
+ id 1t3uZh-00017q-BP
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:15 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZf-0003my-QT
+ id 1t3uZf-0003mr-Pr
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:13 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5c941623a5aso3166406a12.0
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:11 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a9a628b68a7so104777366b.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763770; x=1730368570; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729763768; x=1730368568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WuPv/uXk8QTOtd5rNfjJz9xPAaD3KPuwf7iO+KnrLkg=;
- b=wfQEW69eG+mQvNAazfIKrfp29Z6eUgqpHNt+Ja5vKBJPl636fk4UTNrEypeckAeQb7
- ZuGv39nm3voKUjXqA3MbLZ/KvZs5EW9//QU7gd2p3kjh2t/eFSCrcjQWVP/adH/4iey9
- 1DTGm4FhxmsShQnQ6ZcuwGLNqMej40hqUtDO3MKDkXs6gNFxpMFfurYEPZBEbm2Pi7A3
- sUtEdwEw7Orm3shDURbhcETffCwHbwptakofW/+3e83i56H7oiCaCdJIFJ7qWi5kxC6m
- TS1XfDltaEPt/ClQiD93XOx4veSwTuVBmg7DxDS0/ph2Ciau7EvTzFu4gHUshGzBsN4v
- uyxg==
+ bh=+1eumqy3h/5b4LE5b3DAzQ7GuSzOPVfRg6wnoYa9yiE=;
+ b=L3mPNGEbQYtJmA4WvyeWfTc30HYhrNzmr45+we6l4UB25MbKbsL/wbKxtHhjSlOcEi
+ hKgZiIS6YiOGrl3PHssFrn+8L1b8YiXu41PT1ilMzavv1nsmptusilJgI4P5VWlV629d
+ T1jaM+N6xVng/B/yOfJyVagls3CEx7NTlWPCbSmhHNWShNiALKpHHLLjgShHukHtFZg7
+ uIv4QSR9y2k+Uepxf4WUzDu8aUu8bnpY3RSzPf55EqEK4tQ9MLodUqxFc6bYeNea2vaH
+ 73gC5oNpKOJHXdsu03Kf7o/l3Dt5mgOModRAj1gje71ZxlOasEQ73SNZnyljXQO75Tqn
+ u9/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763770; x=1730368570;
+ d=1e100.net; s=20230601; t=1729763768; x=1730368568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WuPv/uXk8QTOtd5rNfjJz9xPAaD3KPuwf7iO+KnrLkg=;
- b=kg++Ilvfwt6tIYUimirsWXA5MFrJCKlWQPeXCHWXkgpEv9RXglECSMkW5DwqW0Ivo/
- 5AdTMyug4sDYFe7ZhdamF92UAeFyafFl9eVI+xGfHkC+0ETJ+C/Se1e7NI8+vjVfly2i
- Cl7O5dc+IOB8CAsfcsSaBKfTWh1W5zDBd3p6GxDYZo+mnhOHOXMbyjr83m5b+f2kBkLL
- Xchu5okQbF2jQx5RadhWiodX4J6Z7vIzPpYO3SMaCIvLgEAQk6lDC6WwnFE26aMzipZA
- na58Z4OoVXKtGIqEQuITNLm2VLRPvgxZiPGxF6cHex+wR9v3mb+dK8l44ETg/Jbipi3f
- G6fA==
-X-Gm-Message-State: AOJu0Ywsga7z/ro3qmQJviUL+urJRit0t8/tenIiOIwJSf56N/hB1qhc
- LKTUqGK2cg3Bjynrl+DhHFEi1E89/OrC6iasNSYdzh78h43oCoFkcRpFhJ8IVYU=
-X-Google-Smtp-Source: AGHT+IGb+p8drTF+pi2SEgMn3a70w61fJDUo5Lty2W+rJpJ+ghEy9r0nwLvRtHhXrEVJlUdKE5VDNw==
-X-Received: by 2002:a05:6402:2486:b0:5c9:7f41:eb1b with SMTP id
- 4fb4d7f45d1cf-5cba2110569mr1905298a12.17.1729763770192; 
- Thu, 24 Oct 2024 02:56:10 -0700 (PDT)
+ bh=+1eumqy3h/5b4LE5b3DAzQ7GuSzOPVfRg6wnoYa9yiE=;
+ b=Ui5BXfgAmjlokoUq6plXps4YzcJDkXIKXj9kCYN3ivxuOinenvWkZES33Z/8St8Xrz
+ dd0M9UjZj60JyCUUaZ3Kgt540cZYjYqYBlGslrla13/K4GVYBYM06pnm4/6jZf7/Il5j
+ 8Jn0lWG+H+D+UokLaDKAluzoGxaTEmeKiFl+9e+PUbSoz1P5KSd1c9EWlphJ2/x8Ia32
+ +C3quVhEQY2edHEeDc5H70Rj8uJOnPF3Tjqjv0LHijLgjsVbo8xeZaZpwL72pItVbfPl
+ av0TEDluw/OmrOz+Pe7NIoYPH73ZRdEWDev7x5D7gnoqkSU8+DYXJgnb6auBdvMOm15o
+ NOfA==
+X-Gm-Message-State: AOJu0YwZqFZGBHNr2x3XPkA85RdmkS93/BCaFsyDTT/IPDj+94l51iCy
+ OViDm2WA4t6xVJuJu0ciDXLgkwsjM6GdCXOvMXDnlG8FAt8Bf9vsN1NEBiFcbZE=
+X-Google-Smtp-Source: AGHT+IF+lY7005x5dQ/iX9CFmRlF58PSCa65ez4p6JHJVbueoM5TIursVEXyTNthXx5cdVwyQvl1Xg==
+X-Received: by 2002:a17:907:869f:b0:a9a:4ff6:44c0 with SMTP id
+ a640c23a62f3a-a9abf94d4f7mr548883466b.49.1729763768557; 
+ Thu, 24 Oct 2024 02:56:08 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cb66c725dfsm5478729a12.81.2024.10.24.02.56.05
+ a640c23a62f3a-a9a9159a214sm596616066b.213.2024.10.24.02.56.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Oct 2024 02:56:07 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 748805F913;
+ by draig.lan (Postfix) with ESMTP id 89CF75F925;
  Thu, 24 Oct 2024 10:56:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 05/17] docs/devel: update tsan build documentation
-Date: Thu, 24 Oct 2024 10:55:51 +0100
-Message-Id: <20241024095603.1813285-6-alex.bennee@linaro.org>
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PULL 06/17] scripts/ci: remove architecture checks for
+ build-environment updates
+Date: Thu, 24 Oct 2024 10:55:52 +0100
+Message-Id: <20241024095603.1813285-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
 References: <20241024095603.1813285-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,64 +99,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+We were missing s390x here. There isn't much point testing for the
+architecture here as we will fail anyway if the appropriate package
+list is missing.
 
-Mention it's now possible to build with gcc, instead of clang, and
-explain how to build a sanitized glib version.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240910174013.1433331-4-pierrick.bouvier@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-6-alex.bennee@linaro.org>
+Message-Id: <20241023113406.1284676-7-alex.bennee@linaro.org>
 
-diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index 09725e8ea9..91f4dc61fb 100644
---- a/docs/devel/testing/main.rst
-+++ b/docs/devel/testing/main.rst
-@@ -628,20 +628,38 @@ Building and Testing with TSan
- It is possible to build and test with TSan, with a few additional steps.
- These steps are normally done automatically in the docker.
+diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
+index edf1900b3e..56b51609e3 100644
+--- a/scripts/ci/setup/ubuntu/build-environment.yml
++++ b/scripts/ci/setup/ubuntu/build-environment.yml
+@@ -39,7 +39,6 @@
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '22.04'
+-        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
  
--There is a one time patch needed in clang-9 or clang-10 at this time:
-+TSan is supported for clang and gcc.
-+One particularity of sanitizers is that all the code, including shared objects
-+dependencies, should be built with it.
-+In the case of TSan, any synchronization primitive from glib (GMutex for
-+instance) will not be recognized, and will lead to false positives.
-+
-+To build a tsan version of glib:
+     - name: Install packages for QEMU on Ubuntu 22.04
+       package:
+@@ -47,7 +46,6 @@
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '22.04'
+-        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
  
- .. code::
- 
--  sed -i 's/^const/static const/g' \
--      /usr/lib/llvm-10/lib/clang/10.0.0/include/sanitizer/tsan_interface.h
-+   $ git clone --depth=1 --branch=2.81.0 https://github.com/GNOME/glib.git
-+   $ cd glib
-+   $ CFLAGS="-O2 -g -fsanitize=thread" meson build
-+   $ ninja -C build
- 
- To configure the build for TSan:
- 
- .. code::
- 
--  ../configure --enable-tsan --cc=clang-10 --cxx=clang++-10 \
-+  ../configure --enable-tsan \
-                --disable-werror --extra-cflags="-O0"
- 
-+When executing qemu, don't forget to point to tsan glib:
-+
-+.. code::
-+
-+   $ glib_dir=/path/to/glib
-+   $ export LD_LIBRARY_PATH=$glib_dir/build/gio:$glib_dir/build/glib:$glib_dir/build/gmodule:$glib_dir/build/gobject:$glib_dir/build/gthread
-+   # check correct version is used
-+   $ ldd build/qemu-x86_64 | grep glib
-+   $ qemu-system-x86_64 ...
-+
- The runtime behavior of TSAN is controlled by the TSAN_OPTIONS environment
- variable.
- 
+     - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 22.04
+       package:
 -- 
 2.39.5
 
