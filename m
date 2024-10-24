@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32699ADC4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1269ADC56
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3rRq-0002LD-46; Thu, 24 Oct 2024 02:35:54 -0400
+	id 1t3rRt-0002Mg-2l; Thu, 24 Oct 2024 02:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRo-0002Km-0M
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:52 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRr-0002Lu-1t
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRm-0003Si-Ej
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:51 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRp-0003TM-Lc
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729751749;
+ s=mimecast20190719; t=1729751753;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vSWlToqPCAWVXccB0955bor5gnfBy3VynEI6kLZqWCM=;
- b=K1pJvZwoQeh+uq62KWDJFPnoNaLNbu/ELN66ahps4ViHkfDp7UYAcNaSDt6pfDtS9oiVcR
- tpQVXSCe2tsa4MuQ58YQ0m6FnfPYy2l0EoF3ahL80hfmZYiOx9sUBN90xNvHa4N1OjeUY+
- mWEY2p4d1CkT586cbT7SXtvKpd0L1eg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WbhhRUF62kOLvxWM5hzY8wOq5z3/LLYtRuVsdsVtn0A=;
+ b=Xb4bak0AkSS8RZOkRuSLs+ci5F2p19yCVsJZrsq8VJuNpbh79bfpyqmE37H5VIZVYt4bFp
+ 5qpcT7m5WbVGryk/4s9xun2Zt2LXNeSjgHruiRONwvHjJqwAPNcLAlmH+rZYg7QpPjNjF4
+ 1pPzQKgPpAMmPeddxGB8Nlx23KghSOc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-8qlckcPVMhKNfpPOs-UDmw-1; Thu,
- 24 Oct 2024 02:35:45 -0400
-X-MC-Unique: 8qlckcPVMhKNfpPOs-UDmw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-26--n86GMDZNvCg4ThqfmOtww-1; Thu,
+ 24 Oct 2024 02:35:47 -0400
+X-MC-Unique: -n86GMDZNvCg4ThqfmOtww-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B11EC1956088; Thu, 24 Oct 2024 06:35:44 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A7F51955D42; Thu, 24 Oct 2024 06:35:46 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E33B1956056; Thu, 24 Oct 2024 06:35:43 +0000 (UTC)
+ id 05BE91956056; Thu, 24 Oct 2024 06:35:44 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 12/17] hw/block:m25p80: Fix coding style
-Date: Thu, 24 Oct 2024 08:35:02 +0200
-Message-ID: <20241024063507.1585765-13-clg@redhat.com>
+Subject: [PULL 13/17] hw/block:m25p80: Support write status register 2 command
+ (0x31) for w25q01jvq
+Date: Thu, 24 Oct 2024 08:35:03 +0200
+Message-ID: <20241024063507.1585765-14-clg@redhat.com>
 In-Reply-To: <20241024063507.1585765-1-clg@redhat.com>
 References: <20241024063507.1585765-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +66,7 @@ X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,83 +84,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Fix coding style issues from checkpatch.pl
+According to the w25q01jv datasheet at page 16, it is required to set QE bit
+in "Status Register 2" to enable quad mode.
+
+Currently, m25p80 support users utilize "Write Status Register 1(0x01)" command
+to set QE bit in "Status Register 2" and utilize "Read Status Register 2(0x35)"
+command to get the QE bit status.
+
+However, some firmware directly utilize "Status Register 2(0x31)" command to
+set QE bit. To fully support quad mode for w25q01jvq, adds WRSR2 command.
+
+Update collecting data needed 1 byte for WRSR2 command in decode_new_cmd
+function and verify QE bit at the first byte of collecting data bit 2 in
+complete_collecting_data.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/block/m25p80.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ hw/block/m25p80.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
 diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index f7123f9e6878..3f55b8f38561 100644
+index 3f55b8f38561..411d810d3b1b 100644
 --- a/hw/block/m25p80.c
 +++ b/hw/block/m25p80.c
-@@ -61,7 +61,8 @@ typedef struct FlashPartInfo {
-      */
-     uint8_t id[SPI_NOR_MAX_ID_LEN];
-     uint8_t id_len;
--    /* there is confusion between manufacturers as to what a sector is. In this
+@@ -430,6 +430,11 @@ typedef enum {
+     RDCR_EQIO = 0x35,
+     RSTQIO = 0xf5,
+ 
 +    /*
-+     * there is confusion between manufacturers as to what a sector is. In this
-      * device model, a "sector" is the size that is erased by the ERASE_SECTOR
-      * command (opcode 0xd8).
-      */
-@@ -168,7 +169,7 @@ typedef struct FlashPartInfo {
- /*
-  * Spansion read mode command length in bytes,
-  * the mode is currently not supported.
--*/
-+ */
++     * Winbond: 0x31 - write status register 2
++     */
++    WRSR2 = 0x31,
++
+     RNVCR = 0xB5,
+     WNVCR = 0xB1,
  
- #define SPANSION_CONTINUOUS_READ_MODE_CMD_LEN 1
- #define WINBOND_CONTINUOUS_READ_MODE_CMD_LEN 1
-@@ -189,7 +190,8 @@ static const FlashPartInfo known_devices[] = {
+@@ -821,6 +826,15 @@ static void complete_collecting_data(Flash *s)
+             s->write_enable = false;
+         }
+         break;
++    case WRSR2:
++        switch (get_man(s)) {
++        case MAN_WINBOND:
++            s->quad_enable = !!(s->data[0] & 0x02);
++            break;
++        default:
++            break;
++        }
++        break;
+     case BRWR:
+     case EXTEND_ADDR_WRITE:
+         s->ear = s->data[0];
+@@ -1280,7 +1294,31 @@ static void decode_new_cmd(Flash *s, uint32_t value)
+         }
+         s->pos = 0;
+         break;
++    case WRSR2:
++        /*
++         * If WP# is low and status_register_write_disabled is high,
++         * status register writes are disabled.
++         * This is also called "hardware protected mode" (HPM). All other
++         * combinations of the two states are called "software protected mode"
++         * (SPM), and status register writes are permitted.
++         */
++        if ((s->wp_level == 0 && s->status_register_write_disabled)
++            || !s->write_enable) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "M25P80: Status register 2 write is disabled!\n");
++            break;
++        }
  
-     { INFO("at45db081d",  0x1f2500,      0,  64 << 10,  16, ER_4K) },
- 
--    /* Atmel EEPROMS - it is assumed, that don't care bit in command
-+    /*
-+     * Atmel EEPROMS - it is assumed, that don't care bit in command
-      * is set to 0. Block protection is not supported.
-      */
-     { INFO("at25128a-nonjedec", 0x0,     0,         1, 131072, EEPROM) },
-@@ -275,10 +277,13 @@ static const FlashPartInfo known_devices[] = {
-     { INFO_STACKED("n25q00a",   0x20bb21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
-     { INFO_STACKED("mt25ql01g", 0x20ba21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
-     { INFO_STACKED("mt25qu01g", 0x20bb21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
--    { INFO_STACKED("mt25ql02g", 0x20ba22, 0x1040, 64 << 10, 4096, ER_4K | ER_32K, 2) },
--    { INFO_STACKED("mt25qu02g", 0x20bb22, 0x1040, 64 << 10, 4096, ER_4K | ER_32K, 2) },
-+    { INFO_STACKED("mt25ql02g", 0x20ba22, 0x1040, 64 << 10, 4096,
-+                   ER_4K | ER_32K, 2) },
-+    { INFO_STACKED("mt25qu02g", 0x20bb22, 0x1040, 64 << 10, 4096,
-+                   ER_4K | ER_32K, 2) },
- 
--    /* Spansion -- single (large) sector size only, at least
-+    /*
-+     * Spansion -- single (large) sector size only, at least
-      * for the chips listed here (without boot sectors).
-      */
-     { INFO("s25sl032p",   0x010215, 0x4d00,  64 << 10,  64, ER_4K) },
-@@ -549,7 +554,8 @@ static void blk_sync_complete(void *opaque, int ret)
-     qemu_iovec_destroy(iov);
-     g_free(iov);
- 
--    /* do nothing. Masters do not directly interact with the backing store,
-+    /*
-+     * do nothing. Masters do not directly interact with the backing store,
-      * only the working copy so no mutexing required.
-      */
- }
-@@ -1843,7 +1849,7 @@ static void m25p80_register_types(void)
- 
-     type_register_static(&m25p80_info);
-     for (i = 0; i < ARRAY_SIZE(known_devices); ++i) {
--        TypeInfo ti = {
-+        const TypeInfo ti = {
-             .name       = known_devices[i].part_name,
-             .parent     = TYPE_M25P80,
-             .class_init = m25p80_class_init,
++        switch (get_man(s)) {
++        case MAN_WINBOND:
++            s->needed_bytes = 1;
++            s->state = STATE_COLLECTING_DATA;
++            s->pos = 0;
++            break;
++        default:
++            break;
++        }
++        break;
+     case WRDI:
+         s->write_enable = false;
+         if (get_man(s) == MAN_SST) {
 -- 
 2.47.0
 
