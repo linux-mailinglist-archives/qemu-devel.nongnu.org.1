@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEE69ADC43
+	by mail.lfdr.de (Postfix) with ESMTPS id 302349ADC41
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:36:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3rRN-0002B3-2c; Thu, 24 Oct 2024 02:35:25 -0400
+	id 1t3rRM-0002Am-So; Thu, 24 Oct 2024 02:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRK-0002AD-N6
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRK-0002A4-L0
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRH-0003Ni-Ef
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRJ-0003Nv-3W
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729751718;
+ s=mimecast20190719; t=1729751720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=gDyN81GG/SlZBjHxjbJ1emtC0s2m4m1L48hRVxtrkkw=;
- b=A7nKRx2b+ymcqU1/klPmHqCXPVSqsum0JiuggBmitQ9rsC2doIhl4waZQD1VUH1WNtTpQB
- 2riz+vH5TEykiTM+kPws+9t0ynHyVzUZjjTCCv18vM1mW0gKkSQDpK3fpmXnB3XAF5n3xG
- BzWOvxZIxkfx+/vTaSI/ixA6xdU87Qw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T0lVlu+eMJsQdP/Q1q6A6P5+EtI3xEgthgzuNfzvp/c=;
+ b=XFCb4deeHjtB14avXwo64TiW4FMpRXDxEvyGqpDumTAggCGyqukBShH+TMiC1O1TA5OCH/
+ H9bms7UEIHo3EEpU2g26Ao99JmEJxOM/OCE1hxMGvCIuFSx8ozEBOvT6yTDGsDejrfbB8a
+ AAuh2GmKf0HCNOE/bFx893ave4tuBr8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-_O2zTeOgM2qdF66VFmEIjA-1; Thu,
- 24 Oct 2024 02:35:14 -0400
-X-MC-Unique: _O2zTeOgM2qdF66VFmEIjA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-tMLoxUPYPZWhuEwMa4Eptw-1; Thu,
+ 24 Oct 2024 02:35:16 -0400
+X-MC-Unique: tMLoxUPYPZWhuEwMa4Eptw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4255B19560B7; Thu, 24 Oct 2024 06:35:13 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E2E71955D42; Thu, 24 Oct 2024 06:35:15 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0B0E41956056; Thu, 24 Oct 2024 06:35:09 +0000 (UTC)
+ id A82E01956056; Thu, 24 Oct 2024 06:35:13 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/17] aspeed queue
-Date: Thu, 24 Oct 2024 08:34:50 +0200
-Message-ID: <20241024063507.1585765-1-clg@redhat.com>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 01/17] hw/gpio/aspeed: Fix coding style
+Date: Thu, 24 Oct 2024 08:34:51 +0200
+Message-ID: <20241024063507.1585765-2-clg@redhat.com>
+In-Reply-To: <20241024063507.1585765-1-clg@redhat.com>
+References: <20241024063507.1585765-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -61,7 +65,7 @@ X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,75 +81,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6f625ce2f21d6a1243065d236298277c56f972d5:
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-  Merge tag 'pull-request-2024-10-21' of https://gitlab.com/thuth/qemu into staging (2024-10-21 17:12:59 +0100)
+Fix coding style issues from checkpatch.pl
 
-are available in the Git repository at:
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/gpio/aspeed_gpio.h | 2 +-
+ hw/gpio/aspeed_gpio.c         | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20241024
-
-for you to fetch changes up to 1df52a9ac0897687cff7c38705007b2b58065042:
-
-  test/qtest/aspeed_smc-test: Fix coding style (2024-10-24 07:57:47 +0200)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* Fixed GPIO interrupt status when in index mode
-* Added GPIO support for the AST2700 SoC and specific test cases
-* Fixed crypto controller (HACE) Accumulative hash function
-* Converted Aspeed machine avocado tests to the new functional
-  framework. SDK tests still to be addressed.
-* Fixed issue in the SSI controller when doing writes in user mode
-* Added support for the WRSR2 register of Winbond flash devices
-* Added SFDP table for the Windbond w25q80bl flash device
-* Changed flash device models for the ast1030-a1 EVB
-
-----------------------------------------------------------------
-Alejandro Zeise (1):
-      hw/misc/aspeed_hace: Fix SG Accumulative hashing
-
-Cédric Le Goater (1):
-      tests/functional: Convert most Aspeed machine tests
-
-Jamin Lin (15):
-      hw/gpio/aspeed: Fix coding style
-      hw/gpio/aspeed: Support to set the different memory size
-      hw/gpio/aspeed: Support different memory region ops
-      hw/gpio/aspeed: Fix clear incorrect interrupt status for GPIO index mode
-      hw/gpio/aspeed: Add AST2700 support
-      aspeed/soc: Correct GPIO irq 130 for AST2700
-      aspeed/soc: Support GPIO for AST2700
-      tests/qtest:ast2700-gpio-test: Add GPIO test case for AST2700
-      aspeed/smc: Fix write incorrect data into flash in user mode
-      hw/block:m25p80: Fix coding style
-      hw/block:m25p80: Support write status register 2 command (0x31) for w25q01jvq
-      hw/block/m25p80: Add SFDP table for w25q80bl flash
-      hw/arm/aspeed: Correct spi_model w25q256 for ast1030-a1 EVB.
-      hw/arm/aspeed: Correct fmc_model w25q80bl for ast1030-a1 EVB
-      test/qtest/aspeed_smc-test: Fix coding style
-
- MAINTAINERS                         |   1 +
- hw/block/m25p80_sfdp.h              |   2 +-
- include/hw/gpio/aspeed_gpio.h       |   4 +-
- include/hw/misc/aspeed_hace.h       |   4 +
- include/hw/ssi/aspeed_smc.h         |   1 +
- hw/arm/aspeed.c                     |   4 +-
- hw/arm/aspeed_ast27x0.c             |  18 +-
- hw/block/m25p80.c                   |  63 +++++-
- hw/block/m25p80_sfdp.c              |  36 +++
- hw/gpio/aspeed_gpio.c               | 427 ++++++++++++++++++++++++++++++++++--
- hw/misc/aspeed_hace.c               | 104 +++++----
- hw/ssi/aspeed_smc.c                 |  40 +++-
- tests/qtest/aspeed_smc-test.c       |   6 +-
- tests/qtest/ast2700-gpio-test.c     |  95 ++++++++
- tests/avocado/machine_aspeed.py     | 292 ------------------------
- tests/functional/meson.build        |   2 +
- tests/functional/test_arm_aspeed.py | 282 ++++++++++++++++++++++++
- tests/qtest/meson.build             |   3 +
- 18 files changed, 1002 insertions(+), 382 deletions(-)
- create mode 100644 tests/qtest/ast2700-gpio-test.c
- create mode 100644 tests/functional/test_arm_aspeed.py
+diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
+index 90a12ae3182a..39febda9eaea 100644
+--- a/include/hw/gpio/aspeed_gpio.h
++++ b/include/hw/gpio/aspeed_gpio.h
+@@ -88,7 +88,7 @@ struct AspeedGPIOState {
+     qemu_irq irq;
+     qemu_irq gpios[ASPEED_GPIO_MAX_NR_SETS][ASPEED_GPIOS_PER_SET];
+ 
+-/* Parallel GPIO Registers */
++    /* Parallel GPIO Registers */
+     uint32_t debounce_regs[ASPEED_GPIO_NR_DEBOUNCE_REGS];
+     struct GPIOSets {
+         uint32_t data_value; /* Reflects pin values */
+diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
+index 71756664dd69..00fb72a509ef 100644
+--- a/hw/gpio/aspeed_gpio.c
++++ b/hw/gpio/aspeed_gpio.c
+@@ -340,7 +340,8 @@ static void aspeed_gpio_set_pin_level(AspeedGPIOState *s, uint32_t set_idx,
+         value &= ~pin_mask;
+     }
+ 
+-    aspeed_gpio_update(s, &s->sets[set_idx], value, ~s->sets[set_idx].direction);
++    aspeed_gpio_update(s, &s->sets[set_idx], value,
++                       ~s->sets[set_idx].direction);
+ }
+ 
+ /*
+@@ -629,7 +630,6 @@ static uint64_t aspeed_gpio_read(void *opaque, hwaddr offset, uint32_t size)
+ static void aspeed_gpio_write_index_mode(void *opaque, hwaddr offset,
+                                                 uint64_t data, uint32_t size)
+ {
+-
+     AspeedGPIOState *s = ASPEED_GPIO(opaque);
+     AspeedGPIOClass *agc = ASPEED_GPIO_GET_CLASS(s);
+     const GPIOSetProperties *props;
+@@ -963,7 +963,7 @@ static void aspeed_gpio_set_pin(Object *obj, Visitor *v, const char *name,
+     aspeed_gpio_set_pin_level(s, set_idx, pin, level);
+ }
+ 
+-/****************** Setup functions ******************/
++/* Setup functions */
+ static const GPIOSetProperties ast2400_set_props[ASPEED_GPIO_MAX_NR_SETS] = {
+     [0] = {0xffffffff,  0xffffffff,  {"A", "B", "C", "D"} },
+     [1] = {0xffffffff,  0xffffffff,  {"E", "F", "G", "H"} },
+-- 
+2.47.0
 
 
