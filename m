@@ -2,52 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52749AE14E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B049AE0B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:28:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3uOk-00044n-2e; Thu, 24 Oct 2024 05:44:54 -0400
+	id 1t3u82-0000aw-RJ; Thu, 24 Oct 2024 05:27:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t3uOi-00044K-Kb
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:44:52 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t3uOf-0002ZF-9T
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:44:52 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxaeALFxpnIG4KAA--.3561S3;
- Thu, 24 Oct 2024 17:44:43 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxPMICFxpnHi0PAA--.1186S8;
- Thu, 24 Oct 2024 17:44:42 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 6/6] target/loongarch: Add steal time support on migration
-Date: Thu, 24 Oct 2024 17:26:25 +0800
-Message-Id: <20241024092626.1328049-7-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20241024092626.1328049-1-gaosong@loongson.cn>
-References: <20241024092626.1328049-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1t3u7v-0000ag-HM
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:27:33 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1t3u7s-0000BI-62
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:27:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+ Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Iy9F29ZncgNGpBMpge/TfQcHTfrCkFTh9+oquJ+L1Lc=; t=1729762048; x=1730366848; 
+ b=jeSVytY3ieTD7qSWUabKENUsuTnkKqUo+/66431H7j9ZhO0RkBjYmR9YxWRhN5VoWmflkupIRgr
+ IZIpK6z2sJwhfLw6xDJ4hQrHrTqhRNQW8PLEWkZPLDu6th6rMevS+xeVPZ33EP3gJbfsQGkP/aN3z
+ 0io9Lxo4q/m1v1s0vMQ21mdLp6lAJ0P9OH7XifqFy8Wqox0fTHlashoyQV94VZnZ8/zW6078tIUtG
+ mCDp3C+lFbB4cHULsHNe7O57JKwO+wfVR4boCL5UDhCyux39QGx4vsPu5rY5+50neihmvvrGUWjlS
+ R+HAoPM2TnEPJEn6xb5F03SFDgaQpvu/OGbg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.98) with esmtps (TLS1.3)
+ tls TLS_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1t3u7l-00000003bLN-3Cu8; Thu, 24 Oct 2024 11:27:21 +0200
+Received: from p57bd904e.dip0.t-ipconnect.de ([87.189.144.78]
+ helo=[192.168.178.20]) by inpost2.zedat.fu-berlin.de (Exim 4.98)
+ with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1t3u7l-00000003yo9-2KED; Thu, 24 Oct 2024 11:27:21 +0200
+Message-ID: <e208e9b36c0d66d1c689617c46b9659d56ad4bf5.camel@physik.fu-berlin.de>
+Subject: Re: Please put qemu-system-sh4eb back.
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Rob Landley <rob@landley.net>, qemu-devel@nongnu.org, jeff@coresemi.io, 
+ peter.maydell@linaro.org
+Date: Thu, 24 Oct 2024 11:27:20 +0200
+In-Reply-To: <9f8b2357-a28a-4b80-aa5c-ff1725e364d9@redhat.com>
+References: <d6755445-1060-48a8-82b6-2f392c21f9b9@landley.net>
+ <9f8b2357-a28a-4b80-aa5c-ff1725e364d9@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxPMICFxpnHi0PAA--.1186S8
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.144.78
+X-ZEDAT-Hint: PO
+Received-SPF: pass client-ip=130.133.4.66;
+ envelope-from=glaubitz@zedat.fu-berlin.de; helo=outpost1.zedat.fu-berlin.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,152 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+Hi Thomas,
 
-With pv steal time supported, VM machine needs get physical address
-of each vcpu and notify new host during migration. Here two
-functions kvm_get_stealtime/kvm_set_stealtime, and guest steal time
-physical address is only updated on KVM_PUT_FULL_STATE stage.
+On Thu, 2024-10-24 at 07:44 +0200, Thomas Huth wrote:
+> On 24/10/2024 02.11, Rob Landley wrote:
+> > I use it, and ship system images for it:
+> >=20
+> >  =C2=A0 https://landley.net/bin/mkroot/latest/sh4eb.tgz
+>=20
+> Oh, that's interesting, I've been told that the r2d machine does not work=
+ in=20
+> big endian mode:
+>=20
+>   https://lore.kernel.org/qemu-devel/87a5fwjjew.wl-ysato@users.sourceforg=
+e.jp/
+>=20
+> But yes, your binaries apparently work there, so sorry for the confusion.
+> I'll send a patch to revert the removal.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240930064040.753929-1-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu.h     |  3 ++
- target/loongarch/kvm/kvm.c | 65 ++++++++++++++++++++++++++++++++++++++
- target/loongarch/machine.c |  6 ++--
- 3 files changed, 72 insertions(+), 2 deletions(-)
+With my SuperH kernel maintainer hat on, let me say thank you for sorting t=
+his
+out so quickly! Much appreciated.
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 95be58dd66..86c86c6c95 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -364,6 +364,9 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    struct {
-+        uint64_t guest_addr;
-+    } stealtime;
- 
- #ifdef CONFIG_TCG
-     float_status fp_status;
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 8bda8ae540..ff81806ca3 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -34,6 +34,55 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_LAST_INFO
- };
- 
-+static int kvm_get_stealtime(CPUState *cs)
-+{
-+    CPULoongArchState *env = cpu_env(cs);
-+    int err;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
-+        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
-+        .addr = (uint64_t)&env->stealtime.guest_addr,
-+    };
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
-+    if (err) {
-+        return 0;
-+    }
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, attr);
-+    if (err) {
-+        error_report("PVTIME: KVM_GET_DEVICE_ATTR: %s", strerror(errno));
-+        return err;
-+    }
-+
-+    return 0;
-+}
-+
-+static int kvm_set_stealtime(CPUState *cs)
-+{
-+    CPULoongArchState *env = cpu_env(cs);
-+    int err;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
-+        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
-+        .addr = (uint64_t)&env->stealtime.guest_addr,
-+    };
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
-+    if (err) {
-+        return 0;
-+    }
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_SET_DEVICE_ATTR, attr);
-+    if (err) {
-+        error_report("PVTIME: KVM_SET_DEVICE_ATTR %s with gpa "TARGET_FMT_lx,
-+                      strerror(errno), env->stealtime.guest_addr);
-+        return err;
-+    }
-+
-+    return 0;
-+}
-+
- static int kvm_loongarch_get_regs_core(CPUState *cs)
- {
-     int ret = 0;
-@@ -670,6 +719,11 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-         return ret;
-     }
- 
-+    ret = kvm_get_stealtime(cs);
-+    if (ret) {
-+        return ret;
-+    }
-+
-     ret = kvm_loongarch_get_mpstate(cs);
-     return ret;
- }
-@@ -703,6 +757,17 @@ int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
-         return ret;
-     }
- 
-+    if (level >= KVM_PUT_FULL_STATE) {
-+        /*
-+         * only KVM_PUT_FULL_STATE is required, kvm kernel will clear
-+         * guest_addr for KVM_PUT_RESET_STATE
-+         */
-+        ret = kvm_set_stealtime(cs);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     ret = kvm_loongarch_put_mpstate(cs);
-     return ret;
- }
-diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
-index 3d5c84ae9c..efb20e2fbe 100644
---- a/target/loongarch/machine.c
-+++ b/target/loongarch/machine.c
-@@ -168,8 +168,8 @@ static const VMStateDescription vmstate_tlb = {
- /* LoongArch CPU state */
- const VMStateDescription vmstate_loongarch_cpu = {
-     .name = "cpu",
--    .version_id = 2,
--    .minimum_version_id = 2,
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
-         VMSTATE_UINTTL(env.pc, LoongArchCPU),
-@@ -232,6 +232,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
-         VMSTATE_UINT64(env.CSR_DSAVE, LoongArchCPU),
- 
-         VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
-+        /* PV steal time */
-+        VMSTATE_UINT64(env.stealtime.guest_addr, LoongArchCPU),
- 
-         VMSTATE_END_OF_LIST()
-     },
--- 
-2.34.1
+Adrian
 
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
