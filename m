@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD829AE1AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A19639AE1A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ua4-0001Ej-Dk; Thu, 24 Oct 2024 05:56:36 -0400
+	id 1t3ua0-0001BI-U0; Thu, 24 Oct 2024 05:56:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZk-00018c-Gr
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:16 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1t3uZn-00019f-0r
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:19 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZi-0003o7-5D
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:15 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5cb72918bddso924291a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:13 -0700 (PDT)
+ id 1t3uZk-0003oo-60
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:18 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a9a6b4ca29bso73774666b.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763772; x=1730368572; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729763775; x=1730368575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oznrXdsmNzi0LevvMQ+H5t+DJg+P+IM2tS40pZyVrfA=;
- b=x0q0xeHBKxpNhFsIyXY/YHQvE74daImtzAciR+yBHLzJAgiHzzJ0ebmyRGwzkw15PU
- 0x6aT/xPhtr6jaByFAAIEYV/YoNWrMMV+9r7ACt0FEJR7+sEsIt20zrflEY+LKqeSRfK
- fDrVLdArDZ4uAnB6wwustEbnF3gHfOeICQhF//o3rcYjaJ2csafvhPMa2uH4lIHouIe0
- iIAdgtSoRlV3XDlVV7aaNi2BhYVsLDHqA5P7X005ri9nPj/2XvcU5sqrtRsONo2Xzlm6
- IaSWEv+OnRxFbe05jjO3VjGHZOXagaImfYpDs0gZgpllKjEZBHuZPP2OB4HWFSbA+2s0
- BThQ==
+ bh=FhQHhqHevFKxT3wc53Jhmtmk1x6HH6VYaEHocgPtTIY=;
+ b=oIQ5/t3lKl2bjVlc03tsKAuFZq/vICRqO6/Ccy8ScjVVcDXsUglROmk3t42u++5uCW
+ LHblbJ1UrvcKmyUJwY9AlIbFD/eyL2OHXx5FCmgSvL3HXvuW/tTKiho1gdzDQJKEd8f0
+ +rw1OuAVllVKWIaHgmavOfmB8sRofqgttmqMBU0+RzaksQ34iKF4Ujq0VPptq+0dKEJq
+ S5PU7dYV4Jzl+fnFGuahlYRT1KWMu+DY2s1yEXePSe1kHGFcmFoT6GXss2oNC6bnLRM/
+ vSnRKR5qnThJCwnS2ORNxkrvDCCrj7InbVoT2Usw6Og8opL/0REEWY+MPcyEEz8qLZhu
+ xt5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763772; x=1730368572;
+ d=1e100.net; s=20230601; t=1729763775; x=1730368575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oznrXdsmNzi0LevvMQ+H5t+DJg+P+IM2tS40pZyVrfA=;
- b=MSyT9C2rjjcykjFthMiyuDOE8lJvbsSo+gRMQRo4ObK6exJTxXv0jnh3PhH0SmhOxC
- 5PObsgIVZVB/A4DVUBbH8KyLMExiyitBNY2dU9EWllOMo8I305o047KANhZ9NHCLbsIX
- Rz1lPCch/CG/9VpiN9f6pea6OyIEjvyvYRAooFaJke8PDiceYcMUgjSp3JwyjFaCCk8P
- Xch4uUUFSQ5FmOvgP2PbovNrkGrNlDog4n4wXphOReaxJX9GzjtO3mNbHPUaI0Gv7U1Y
- EEFu9bC4GxDL8xN9cG42bV3TZQljbqOqYU0oX2YxNRBmMWeTzL9NlfXPscfakIQBmSZ1
- sLuw==
-X-Gm-Message-State: AOJu0YxUklAfZcY40deCSuAbeoOoAz2673MnmtAMTwD1eXY9sBOg6Ggf
- c6H/uY462VolY5QgDB4Sa7bx8J2sFr7nDqFbZNrV6u5Gp6nVf1FMn2VbhcHTTVI=
-X-Google-Smtp-Source: AGHT+IEAt4uQRfFQMY1XCHNNH9YcWuMTzIuRnlV7XfaHyMRK555hRQferXZcRgvyPr4sFdu1oGtJOA==
-X-Received: by 2002:a05:6402:254b:b0:5ca:da2:b2ca with SMTP id
- 4fb4d7f45d1cf-5cb8acba591mr5400530a12.19.1729763772509; 
- Thu, 24 Oct 2024 02:56:12 -0700 (PDT)
+ bh=FhQHhqHevFKxT3wc53Jhmtmk1x6HH6VYaEHocgPtTIY=;
+ b=avphdvWLp2B61p/kwkODuCQ/FYkTJ/TpyPMtVOCHT7/+EssFmMy7TE7bRPjHygnOjM
+ SFCBk0ahG/2FHlukV3/dhOlSOk/lgt49z3m2qP6rtb6I3lgy2lTxxo5TWtgbIm6Z0jHw
+ qHs7zw2p2zUHTowYVFhTmj8414nBo4kSD2ORrrL/xbEdsKPhdo2wMQGV/OBb6iSC58Pk
+ pEK7izQpOF6ucsWG7Pg1K7XcRmgWuTJmy4WYYjlbXySYdqzFQuRl/lC35DGDbzkxJn6C
+ Cx1ZYJjBfEBPW4nUE/tSTTKvXf+q6RlJrTPVy+DuqYBGkkwlhPnZlpvkA8haSDnxaPfK
+ Tz0Q==
+X-Gm-Message-State: AOJu0YyY3Ln1g1hJbrq1t00SkHPPr8piBTtuc6V/aFD2Sf4MutQjlVZS
+ QF9TzBCevVVy5pib891vmmxWzKkW4uILIXQwFRBkJH65K1bjeJym/sqYTgDImdk=
+X-Google-Smtp-Source: AGHT+IGp9X2kKIjWNxGXRtVWNZ/XN4045hxggZ7+x5tHr0FmH9J7a+QEALpb0GCGMsktJR465maIEQ==
+X-Received: by 2002:a17:907:7290:b0:a9a:478:2ee3 with SMTP id
+ a640c23a62f3a-a9abf92f3b4mr516951566b.40.1729763774607; 
+ Thu, 24 Oct 2024 02:56:14 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cb66c73b50sm5442472a12.97.2024.10.24.02.56.06
+ a640c23a62f3a-a9a91599362sm594433766b.197.2024.10.24.02.56.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 02:56:08 -0700 (PDT)
+ Thu, 24 Oct 2024 02:56:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DF8A25F9DD;
+ by draig.lan (Postfix) with ESMTP id F381D5F9EC;
  Thu, 24 Oct 2024 10:56:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PULL 10/17] gitlab: make check-[dco|patch] a little more verbose
-Date: Thu, 24 Oct 2024 10:55:56 +0100
-Message-Id: <20241024095603.1813285-11-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 11/17] MAINTAINERS: mention my gdbstub/next tree
+Date: Thu, 24 Oct 2024 10:55:57 +0100
+Message-Id: <20241024095603.1813285-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
 References: <20241024095603.1813285-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,51 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When git fails the rather terse backtrace only indicates it failed
-without some useful context. Add some to make the log a little more
-useful.
+Make it easy for people to see what is already queued.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-11-alex.bennee@linaro.org>
+Message-Id: <20241023113406.1284676-12-alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
-index 632c8bcce8..d221b16bd5 100755
---- a/.gitlab-ci.d/check-dco.py
-+++ b/.gitlab-ci.d/check-dco.py
-@@ -19,10 +19,9 @@
- reponame = os.path.basename(cwd)
- repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ef1678a1a8..7eea7b7954 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2984,6 +2984,7 @@ F: gdb-xml/
+ F: tests/tcg/multiarch/gdbstub/*
+ F: scripts/feature_to_c.py
+ F: scripts/probe-gdb-support.py
++T: git https://gitlab.com/stsquad/qemu gdbstub/next
  
-+print(f"adding upstream git repo @ {repourl}")
- subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
--subprocess.check_call(["git", "fetch", "check-dco", "master"],
--                      stdout=subprocess.DEVNULL,
--                      stderr=subprocess.DEVNULL)
-+subprocess.check_call(["git", "fetch", "check-dco", "master"])
- 
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-dco/master", "HEAD"],
-diff --git a/.gitlab-ci.d/check-patch.py b/.gitlab-ci.d/check-patch.py
-index 39e2b403c9..68c549a146 100755
---- a/.gitlab-ci.d/check-patch.py
-+++ b/.gitlab-ci.d/check-patch.py
-@@ -19,13 +19,12 @@
- reponame = os.path.basename(cwd)
- repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
- 
-+print(f"adding upstream git repo @ {repourl}")
- # GitLab CI environment does not give us any direct info about the
- # base for the user's branch. We thus need to figure out a common
- # ancestor between the user's branch and current git master.
- subprocess.check_call(["git", "remote", "add", "check-patch", repourl])
--subprocess.check_call(["git", "fetch", "check-patch", "master"],
--                      stdout=subprocess.DEVNULL,
--                      stderr=subprocess.DEVNULL)
-+subprocess.check_call(["git", "fetch", "check-patch", "master"])
- 
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-patch/master", "HEAD"],
+ Memory API
+ M: Paolo Bonzini <pbonzini@redhat.com>
 -- 
 2.39.5
 
