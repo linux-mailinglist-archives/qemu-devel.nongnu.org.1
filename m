@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087019AF4B6
+	by mail.lfdr.de (Postfix) with ESMTPS id 0543E9AF4B5
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t45QK-0005ew-R3; Thu, 24 Oct 2024 17:31:16 -0400
+	id 1t45QK-0005et-N7; Thu, 24 Oct 2024 17:31:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QD-0005dJ-82
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QD-0005dK-7v
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45Q7-0005Wu-Jm
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:05 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45Q8-0005X4-Ab
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729805461;
+ s=mimecast20190719; t=1729805463;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=waK0SxLlCMZvH2Z6KuwzI6H9OudIUBdj1ATI1NdvFQ4=;
- b=Uu962HiQtJeDmS4yvQREwvlfwfQAdTt/iMqroptFRixRaB+4POegVCYE6v/uqfggW4xlJE
- E5l7xXMVBxsTVtVCKOUkTy7Mvii2nZ1Zx/wayiDcVKHEMHbPyU6qW8hlKRtgmNcyL0zPTz
- FX+uvdojmlV0ivDtxHlpZ338FJPMoPc=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kQuiqCDFP7O6dGnJw0uzIfXFNnqGc/QZrj0NrKoRZoA=;
+ b=dapSrsSveM0iMTkcX1KDAJQut2OaUhp5eJXyNMjgLIALxraleysE03Rk1rNdV6rMzWiV/1
+ +jhEUj+wLBVC+3X99gXGDAvsBLxvQHPdIMTY3SSMY6DaSrUMNIXEnNxafhWu2Ci/DH3sV4
+ f4UoIjEvGQHycrNLR1TPonpnbC+8jQ4=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-237-a8cRkvS2PxmfXfHCtgg1-g-1; Thu, 24 Oct 2024 17:31:00 -0400
-X-MC-Unique: a8cRkvS2PxmfXfHCtgg1-g-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-e2e3321aae0so2618093276.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:00 -0700 (PDT)
+ us-mta-115-i2T0jw7OPSqRnFb0-FQumA-1; Thu, 24 Oct 2024 17:31:01 -0400
+X-MC-Unique: i2T0jw7OPSqRnFb0-FQumA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-460afc4747bso26777841cf.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729805459; x=1730410259;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=waK0SxLlCMZvH2Z6KuwzI6H9OudIUBdj1ATI1NdvFQ4=;
- b=OhhUJDXT+5ENKa+vTEyn+2V0geUWMeLAfRInG9fYPOBB/9VQdI6+7Prm4jpkiFeTrL
- XKCxiN/WT9si9vkjx3ZpPX5oPUFM+Su8GzA3Nei6xUYLCKx8OCT0uTsd1oVIs6dKPSAX
- qpnCZ2/M1nohU4flQVe3sWSos8cZfEmd0qPQn/YO0aihV+SEu+V2ipa6AqQ7nLu0ZNbj
- s6Y/Te7cyQUmVaYLfddEJdw+nm36G+USvqPiQL9kRm+ESpD57BkslbCjncLxpaKv2Fmq
- B3JArZd7sYq2ixwVktSoB/1gw8MpRstB/IyyrNNCaMFu4mC8fdkJe2JeVCTSjltOEX72
- 4vrQ==
-X-Gm-Message-State: AOJu0YyHb9w9poQjPF/47hwHJuIys81K6lCzHrARHfqxGw8ZGAnoCto/
- fXeedxgRJ6RBnM2sc6/TCm7fKLPoVwFxElzdhNR8oJ9HEkETwJFCQNAG1j4LxetNzzM04yiQ7LI
- z9Lj5e49bWYFnH6wQwHDdYvZIndijubks54L/UaKyEMqOn0mLupjX7/2d227UflXw7NeZVMoEXs
- MopjJML+EsAVm0uyGHbI0u59t9xgrQfb3CeA==
-X-Received: by 2002:a05:6902:843:b0:e24:9b99:c006 with SMTP id
- 3f1490d57ef6-e2e3a601342mr8269532276.3.1729805458835; 
- Thu, 24 Oct 2024 14:30:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAffsIwdgyRZLUo2z96rekBL01Pjyela9VDnxBhnPuWdmgizaV/OnqMNhsbBkgoIx0x67OLA==
-X-Received: by 2002:a05:6902:843:b0:e24:9b99:c006 with SMTP id
- 3f1490d57ef6-e2e3a601342mr8269500276.3.1729805458232; 
- Thu, 24 Oct 2024 14:30:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729805461; x=1730410261;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kQuiqCDFP7O6dGnJw0uzIfXFNnqGc/QZrj0NrKoRZoA=;
+ b=KsCCkVVM8Q5HwBAwVS3EHPiKf9i6oeFOxTc2/flXkHwdfnBFE14pIN4FbB5oOFfyiY
+ DyEmvKksMOfZkKHoalsQahFGSqFtVGnVCgTLCVNsCPLQ17agG8Rg/MNNL5NJDd/QyzE/
+ wKrjnw8JH7DVD2LBDVyLh6hgxhMr2lVUf3ZafXuc/zE/gtsggGmnkFbCNemLNgwQG4nP
+ 7UWoDtLmIhygVTlmlaC8dUt1DzzITiV3a+VkRg48QeWo4yP4/X7YpTcGF60lRDL8qPvy
+ sjJcpznZz4BwPi6EIg5bJCoIzKTrlSS5nOo+aGZbUqgjVCsy5x0Y73qLPWtGQuEk3LMs
+ 5/kA==
+X-Gm-Message-State: AOJu0Yw2MU/Oc3bUeLJq+sXvwUqeHCPPhVWKYblGTSshJaMuo7u9WQii
+ BpqP4m64OXrPHfTYAFQFWKXa1KV+31LFFuKaWWN/00aVpHKIRyd4Mip3YLZyTuRrH2T3F0AXzIz
+ ehhhOC6og+8QWOFzcZJ0zStYYts/O4PZBQfOQrQ5TAAvva9dX6A+NeayoI/JCeGe+KIE+dk1G7j
+ 4wB7hy4NFc98yFQ0qBWVMVpeQ9ghllSGDXMA==
+X-Received: by 2002:a05:622a:1992:b0:460:a82a:39c9 with SMTP id
+ d75a77b69052e-4612525f1d1mr52367221cf.10.1729805460731; 
+ Thu, 24 Oct 2024 14:31:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHs0Kkco9NPHLR6DyTeQgaXjiAae4BYQ7N0k1m99KfGVb8p8HZ/bVQIkjtE0mJV4IjUFEz3vQ==
+X-Received: by 2002:a05:622a:1992:b0:460:a82a:39c9 with SMTP id
+ d75a77b69052e-4612525f1d1mr52366921cf.10.1729805460308; 
+ Thu, 24 Oct 2024 14:31:00 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.30.57
+ d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.30.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 14:30:57 -0700 (PDT)
+ Thu, 24 Oct 2024 14:30:59 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v3 0/8] Migration: Make misc.h helpers available for whole VM
- lifecycle
-Date: Thu, 24 Oct 2024 17:30:48 -0400
-Message-ID: <20241024213056.1395400-1-peterx@redhat.com>
+Subject: [PATCH v3 1/8] migration: Take migration object refcount earlier for
+ threads
+Date: Thu, 24 Oct 2024 17:30:49 -0400
+Message-ID: <20241024213056.1395400-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20241024213056.1395400-1-peterx@redhat.com>
+References: <20241024213056.1395400-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -100,60 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20241024165627.1372621-1-peterx@redhat.com>
-CI:       https://gitlab.com/peterx/qemu/-/pipelines/1511349805
+Both migration thread or background snapshot thread will take a refcount of
+the migration object at the entrace of the thread function.
 
-This is a follow up of below patch from Avihai as a replacement:
+That makes sense, because it protects the object from being freed by the
+main thread in migration_shutdown() later, but it might still race with it
+if the thread is scheduled too late.  Consider the case right after
+pthread_create() happened, VM shuts down with the object released, but
+right after that the migration thread finally got created, referencing
+MigrationState* in the opaque pointer which is already freed.
 
-https://lore.kernel.org/qemu-devel/20241020130108.27148-3-avihaih@nvidia.com/
+The only 100% safe way to make sure it won't get freed is taking the
+refcount right before the thread is created, meanwhile when BQL is held.
 
-This is v3 of the series, and it happened again: changelog doesn't make
-sense to compare to v2 because it's rewritten.  Meanwhile, now this series
-is based on the other TYPE_SINGLETON series I posted just now:
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-https://lore.kernel.org/r/20241024165627.1372621-1-peterx@redhat.com
-
-It turns out I found more things to cleanup, as the versions spin up.
-
-Patch 1:     I found that object_ref() in migration thread is actually also
-             racy..  this should fix it.
-
-Patch 2-7:   It turns out I decided to clean things up first, then it'll
-             make my last patch easier on adding the mutex protection for
-             the current_migration reference
-
-Patch 8:     The fix for NULL-dereference / race for the exported
-             functions.  VFIO can hit it only because VFIO's specialty
-             in using migration helpers in vmstate handlers, I guess.  I
-             found most functions always safe because even if they're used
-             outside migration/ they're most likely still invoked with
-             migration thread context.  So I found only two functions that
-             really need protections, exactly what VFIO is using.
-
-Comments welcomed, thanks.
-
-Peter Xu (8):
-  migration: Take migration object refcount earlier for threads
-  migration: Unexport dirty_bitmap_mig_init()
-  migration: Unexport ram_mig_init()
-  migration: Drop migration_is_setup_or_active()
-  migration: Drop migration_is_idle()
-  migration: Drop migration_is_device()
-  migration: Unexport migration_is_active()
-  migration: Protect updates to current_migration with a mutex
-
- include/migration/misc.h |  11 +---
- migration/migration.h    |   8 +++
- migration/ram.h          |   1 +
- hw/vfio/common.c         |   6 +-
- hw/virtio/virtio-mem.c   |   2 +-
- migration/migration.c    | 118 +++++++++++++++++++--------------------
- migration/ram.c          |   7 +--
- net/vhost-vdpa.c         |   3 +-
- system/dirtylimit.c      |   3 +-
- system/qdev-monitor.c    |   4 +-
- 10 files changed, 81 insertions(+), 82 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index 74812ca785..e82ffa8cf3 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3491,7 +3491,6 @@ static void *migration_thread(void *opaque)
+ 
+     rcu_register_thread();
+ 
+-    object_ref(OBJECT(s));
+     update_iteration_initial_status(s);
+ 
+     if (!multifd_send_setup()) {
+@@ -3629,7 +3628,6 @@ static void *bg_migration_thread(void *opaque)
+     int ret;
+ 
+     rcu_register_thread();
+-    object_ref(OBJECT(s));
+ 
+     migration_rate_set(RATE_LIMIT_DISABLED);
+ 
+@@ -3841,6 +3839,14 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+         }
+     }
+ 
++    /*
++     * Take a refcount to make sure the migration object won't get freed by
++     * the main thread already in migration_shutdown().
++     *
++     * The refcount will be released at the end of the thread function.
++     */
++    object_ref(OBJECT(s));
++
+     if (migrate_background_snapshot()) {
+         qemu_thread_create(&s->thread, MIGRATION_THREAD_SNAPSHOT,
+                 bg_migration_thread, s, QEMU_THREAD_JOINABLE);
 -- 
 2.45.0
 
