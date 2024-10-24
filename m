@@ -2,71 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2869ADF17
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB389ADF15
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 10:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3tCH-0004BJ-Ed; Thu, 24 Oct 2024 04:27:57 -0400
+	id 1t3tCm-0004JK-JM; Thu, 24 Oct 2024 04:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3tCF-0004B3-17
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 04:27:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t3tCi-0004H6-VM
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 04:28:25 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3tCD-0000R2-II
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 04:27:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729758470;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XziFmZ+lAwRWE/bkSVGhRiGMCujQABPJVmK1c0C+ayA=;
- b=VgbsbL482gYN0XbMdp+3gdlk9awL+46UGqhauHC41K9VjXBGFIqYuwCBPnvgqCla9J48bR
- G3eUoYjQ58sn86ua2KPX3ynVkQxKy5lHYQ7LSkspiBCwVRLBJivZiEIOnocDfuM15Gyef9
- CJKX8Zxhy1YP31x3vhihbZJ6t84UPiU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-D6jJnA9aMHu4aD66tRe8Rw-1; Thu,
- 24 Oct 2024 04:27:46 -0400
-X-MC-Unique: D6jJnA9aMHu4aD66tRe8Rw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7F7B61956080; Thu, 24 Oct 2024 08:27:44 +0000 (UTC)
-Received: from thuth-p1g4.str.redhat.com (dhcp-192-239.str.redhat.com
- [10.33.192.239])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 87697195607C; Thu, 24 Oct 2024 08:27:42 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Rob Landley <rob@landley.net>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Subject: [PATCH 2/2] tests/functional: Add a test for sh4eb
-Date: Thu, 24 Oct 2024 10:27:35 +0200
-Message-ID: <20241024082735.42324-3-thuth@redhat.com>
-In-Reply-To: <20241024082735.42324-1-thuth@redhat.com>
-References: <20241024082735.42324-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t3tCh-0000Ud-H0
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 04:28:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=yFSS7L4qg1XDGGjFiLSrLBSBmCbxochLDhENmKuzUmg=; b=WQQvGJQqd1YC0Q8L5xAYbPHFDw
+ o+4rOIGc2IX59vJRVrRVUSzBBsuCZjQHE+/Veeef+YdQYirjlwVTWY750s2LF2Xoae/5b04RH1sYa
+ GMJhihN0X4EYi48TC+tmAOWkuV2DGxoQgolG17ZnYQXmVuNhAXTcGSQu0+U4bWQKAEVWfS1MHJZNL
+ 7hgjbZzLe07fkcYo1FfRf0OjPkqgKPyc5zTjSSJlwAUJblSjFVhFhbQvDmN5eTnaJpkbReQECPOJE
+ A+RDE4pHE3tiIHHFfwnGMKi/iL/EogDxiRvatkPQC2Ma9BpNQ95/8GfQxSNwLH2izWFPabffRibp0
+ Gw3kGF9+FG7/NMdYB6BPAChvJvCCgb8gwZ3yFwYQINZsKepvP4iLTTGvAYKJVSkh+gGsvyy9gMhS+
+ KKmnsMf2U+FtlYMmJhq/uhceYAnhOOjf/WiHG6IIt8QgOWy6r5JzqYMixrmm8ygxdetaKxK/6mgKE
+ gBbqvrzZoosA2R0uaGo3p5iP3U6l6Ve/KM/q7eD766LmKo2yFEMyidDKl+85VWwkpPgZBtrnLBPSr
+ TunW2nwe6H5G3nA0kdNJt5uVeYM9/mbo9lrbbgqkWA67vfwyV+r97VmBSjMOWmk1qmBM4UdDGl+t9
+ V6g6ExOKU6dTNp5YalzVeE0vWscjhtX2fNrIrqqUY=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t3tCI-000CUp-9t; Thu, 24 Oct 2024 09:28:02 +0100
+Message-ID: <bbac88ac-42aa-4bd0-9ba8-65221db36bf9@ilande.co.uk>
+Date: Thu, 24 Oct 2024 09:28:10 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: huth@tuxfamily.org, qemu-devel@nongnu.org
+References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
+ <20241023085852.1061031-27-mark.cave-ayland@ilande.co.uk>
+ <c604eddc-f8d8-88b1-8130-291433e3ac94@eik.bme.hu>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <c604eddc-f8d8-88b1-8130-291433e3ac94@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 26/36] next-cube: don't use rtc phase value of -1
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,71 +103,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we are aware of binaries that are available for sh4eb,
-we should make sure that there are no regressions with this
-target and test it regularly in our CI.
+On 23/10/2024 11:37, BALATON Zoltan wrote:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/meson.build       |  3 +++
- tests/functional/test_sh4eb_r2d.py | 33 ++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
- create mode 100755 tests/functional/test_sh4eb_r2d.py
+> On Wed, 23 Oct 2024, Mark Cave-Ayland wrote:
+>> The rtc phase value of -1 is directly equivalent to using a phase value of 0 so
+>> simplify the logic to use an initial rtc phase of 0.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>> hw/m68k/next-cube.c | 5 +----
+>> 1 file changed, 1 insertion(+), 4 deletions(-)
+>>
+>> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+>> index 43b2c775c0..e4d0083eb0 100644
+>> --- a/hw/m68k/next-cube.c
+>> +++ b/hw/m68k/next-cube.c
+>> @@ -265,9 +265,6 @@ static void next_scr2_rtc_update(NeXTPC *s)
+>>
+>>     if (scr2_2 & 0x1) {
+>>         /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+>> -        if (rtc->phase == -1) {
+>> -            rtc->phase = 0;
+>> -        }
+>>         /* If we are in going down clock... do something */
+>>         if (((old_scr2 & SCR2_RTCLK) != (scr2_2 & SCR2_RTCLK)) &&
+>>                 ((scr2_2 & SCR2_RTCLK) == 0)) {
+>> @@ -282,7 +279,7 @@ static void next_scr2_rtc_update(NeXTPC *s)
+>>         }
+>>     } else {
+>>         /* else end or abort */
+>> -        rtc->phase = -1;
+>> +        rtc->phase = 0;
+>>         rtc->command = 0;
+>>         rtc->value = 0;
+>>     }
+> 
+> Additionally, maybe it would be simpler to invert the if condition and move this else 
+> branch up there to the beginning so you can return early after this reset (the 
+> deposit at the end does nothing after the else case as it's just storing back the 
+> unmodified value) and then you can deindent the big if where most of the 
+> functionality is now.
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index d4b675bf63..d642c11516 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -160,6 +160,9 @@ tests_sh4_system_thorough = [
-   'sh4_tuxrun',
- ]
- 
-+tests_sh4eb_system_thorough = [
-+  'sh4eb_r2d',
-+]
- 
- tests_sparc_system_thorough = [
-   'sparc_sun4m',
-diff --git a/tests/functional/test_sh4eb_r2d.py b/tests/functional/test_sh4eb_r2d.py
-new file mode 100755
-index 0000000000..d9c022c8b8
---- /dev/null
-+++ b/tests/functional/test_sh4eb_r2d.py
-@@ -0,0 +1,33 @@
-+#!/usr/bin/env python3
-+#
-+# Boot a Linux kernel on a r2d sh4eb machine and check the console
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+import shutil
-+
-+from qemu_test import LinuxKernelTest, Asset
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test.utils import archive_extract
-+from unittest import skipUnless
-+
-+class R2dEBTest(LinuxKernelTest):
-+
-+    ASSET_TGZ = Asset(
-+        'https://landley.net/bin/mkroot/0.8.11/sh4eb.tgz',
-+        'be8c6cb5aef8406899dc5aa5e22b6aa45840eb886cdd3ced51555c10577ada2c')
-+
-+    def test_sh4eb_r2d(self):
-+        self.set_machine('r2d')
-+        file_path = self.ASSET_TGZ.fetch()
-+        archive_extract(file_path, self.workdir)
-+        self.vm.add_args('-append', 'console=ttySC1 noiotrap')
-+        self.launch_kernel(os.path.join(self.workdir, 'sh4eb/linux-kernel'),
-+                           initrd=os.path.join(self.workdir, 'sh4eb/initramfs.cpio.gz'),
-+                           console_index=1, wait_for='Type exit when done')
-+        exec_command_and_wait_for_pattern(self, 'exit', 'Restarting system')
-+        shutil.rmtree(os.path.join(self.workdir, 'sh4eb'))
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
--- 
-2.47.0
+I didn't change the layout of the outer if() mainly because Bryce reversed engineered 
+a lot of this from Mach/NetBSD, and wasn't 100% confident that there was any other 
+logic that needed to be applied to bit 0. It's also worth pointing out that by the 
+end of the series all of the functionality has been moved to gpios, so all the 
+complexity within the big if() disappears anyway.
+
+
+ATB,
+
+Mark.
 
 
