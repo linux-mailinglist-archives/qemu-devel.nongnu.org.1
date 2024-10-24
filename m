@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A6D9AED5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 19:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866D69AEE20
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 19:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t41MZ-0002V8-E6; Thu, 24 Oct 2024 13:11:07 -0400
+	id 1t41gm-0007np-C5; Thu, 24 Oct 2024 13:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t41MW-0002Nv-Bc
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 13:11:04 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t41MP-0005Bn-PZ
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 13:11:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729789858; x=1761325858;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=O2ZNMy9Y9IiaYrhs1yGTsX5VnUyHDrH1DZJ9cJnUBAo=;
- b=dy+Xis5VAASST3CPefqU3mUq4vMdhb1Cdrm4yelUR833hHw8Bc/C4bcW
- AFLQdyRTjictKKo+WLJcFZVMF82zaYjyF3eMyt3rOU6sctlEzRfQERDuU
- BiTD8NEwnSqbdAygNJnKrtXFnkaVaXmIoMXaP9ovrixeSd1dAc4ZsdBBp
- mPwafU4bVH4qiyZQXKFmfzPjUhZ42z4if2ueH7q6cnD8UZsMux5zQG5IH
- 54/POquoXrV0N3Tf0FwzvWQ0SFqWwsxeA38H4VqOIj3l3FkthDMhlhHNY
- 4wMKcZEB0XdUlGV5lGfNBXDq8l3RzcMhST1xafEdlNanDkWYyQSZXO9IY Q==;
-X-CSE-ConnectionGUID: PuJ8SCo+SEmnlty8JLm1PQ==
-X-CSE-MsgGUID: +TG49pAmR+iZk962KleAkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="17063780"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; d="scan'208";a="17063780"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2024 10:10:55 -0700
-X-CSE-ConnectionGUID: R72qKFlpSJe9eqWLUukpnQ==
-X-CSE-MsgGUID: qFrt4v4tQBOYhn5+OJE/pg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; d="scan'208";a="118121548"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 24 Oct 2024 10:10:51 -0700
-Date: Fri, 25 Oct 2024 01:27:08 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
- Junjie Mao <junjie.mao@intel.com>, Kevin Wolf <kwolf@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH 06/11] rust/pl011: add TYPE_PL011_LUMINARY device
-Message-ID: <ZxqDbLfd+ACnvDgr@intel.com>
-References: <20241024-rust-round-2-v1-0-051e7a25b978@linaro.org>
- <20241024-rust-round-2-v1-6-051e7a25b978@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t41gi-0007mz-Ug
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 13:31:56 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t41gh-00080f-Fz
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 13:31:56 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20c8c50fdd9so14431795ad.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 10:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729791114; x=1730395914; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ex1eq2dXKoKZNOU0o1C06Yv7ZF6tTCKwzI2J53l4+GM=;
+ b=QS4YqghvcCqM9kB2QU4tO9Ndv3ddLhvUFwWBy1oWdW5Cif5Hb7zHM4RQN47E6Ah0En
+ Tppt0nb/v9wx3yxOeh4k74AvBurTR0rXUxzt9+OsTYrRitLVd1SaLxWIVn9qlM0+utba
+ A4tZUK2rMR6q3kJEvEKgizfC9H1I4JOuZS7krYcFmQI8zY3ldIGatuVDwfH6y4FySanU
+ ysy20d+NABB9fDnDtV1Ib/ltG+7gtHrLSOR3t0VswuiC5e6ku3IIunPA47nNKnXYNR2E
+ OLHT+9wuLV2lZyiKdk+W2YYCccPkzGtcMeiht8yyOPAK9lxKi57FrnswBMFInr4ds0qp
+ ffrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729791114; x=1730395914;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ex1eq2dXKoKZNOU0o1C06Yv7ZF6tTCKwzI2J53l4+GM=;
+ b=vdmCVrwro95EjgEBX+SYpmANC3eUznbpf6j15dCWbZtVaoFcuFJhfMS3X6Wlwzg4Hn
+ nvHwVJPMGM2YBS+y2VuOK+N3nTF01Ze8RYcpn0ttGkvDKyIhK6YHzJl2wfSm2h4gXCHO
+ RPKkgedbnihnaQHRM+ESMOx+HthU9M5l1PHt4RDCQ9ZGuEo/WRpFSQfhDxaTI8GVJPaz
+ L2+D/KE0RE9qDTjEwo5bxokEVnCYvo3j0y8R7wnGKqCXZ5h8vy2ScllSLkrSkpze9TjM
+ Tm23CRhwqdXfnIxUYptFGWuBWugc9rQ4SEX4ZoQU43gnf9iwoJajoguAIjlCd4XaAb2X
+ uIDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWD9P/8oTlHQQHE9FOpP4CjymGSd0JVXYHRJ2bWn8wpWg/ZEo5XnShb9bFITMOaTmzfZ6M+sqY/TWA+@nongnu.org
+X-Gm-Message-State: AOJu0Yyptpvh9g7x3WtrPBNdZBW6RQR6HB+DQmKFdsN29EXT+AZmiCnM
+ 45TSKKM8j8V/eGjnJHywluJ7LHIaEbMaEEdqb3f8Cjf/Jr9OZHGBkqT3XewPYFY=
+X-Google-Smtp-Source: AGHT+IEcnU85hpfpG09I5j1Zg/mGrURc/ShV6X7JE74sguCMNSijNb3zWz+iQAB5FtRveKBaepuBGA==
+X-Received: by 2002:a17:90a:d40e:b0:2d8:b043:9414 with SMTP id
+ 98e67ed59e1d1-2e77e7b1407mr4599208a91.18.1729791113839; 
+ Thu, 24 Oct 2024 10:31:53 -0700 (PDT)
+Received: from [192.168.100.49] ([45.176.88.171])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2e5df4162ddsm4082128a91.0.2024.10.24.10.31.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Oct 2024 10:31:53 -0700 (PDT)
+Message-ID: <c789363c-38aa-4754-8a2d-a75eb0bfdf76@linaro.org>
+Date: Thu, 24 Oct 2024 14:31:48 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024-rust-round-2-v1-6-051e7a25b978@linaro.org>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/s390x: Re-enable the pci-bridge device on s390x
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org, Boris Fiuczynski <fiuczy@linux.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20241024130405.62134-1-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241024130405.62134-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,26 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 24, 2024 at 05:03:04PM +0300, Manos Pitsidianakis wrote:
-> Date: Thu, 24 Oct 2024 17:03:04 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [PATCH 06/11] rust/pl011: add TYPE_PL011_LUMINARY device
-> X-Mailer: b4 0.15-dev-12fc5
+On 24/10/24 10:04, Thomas Huth wrote:
+> Commit e779e5c05a ("hw/pci-bridge: Add a Kconfig switch for the
+> normal PCI bridge") added a config switch for the pci-bridge, so
+> that the device is not included in the s390x target anymore (since
+> the pci-bridge is not really useful on s390x).
 > 
-> Add a device specialization for the Luminary UART device.
+> However, it seems like libvirt is still adding pci-bridge devices
+> automatically to the guests' XML definitions (when adding a PCI
+> device to a non-zero PCI bus), so these guests are now broken due
+> to the missing pci-bridge in the QEMU binary.
 > 
-> This commit adds a DeviceId enum that utilizes the Index trait to return
-> different bytes depending on what device id the UART has (Arm -default-
-> or Luminary)
+> To avoid disruption of the users, let's re-enable the pci-bridge
+> device on s390x for the time being. We could maybe disable it later
+> again if libvirt does not add the pci-bridge device automatically
+> to the guests anymore in the future.
 > 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  rust/hw/char/pl011/src/device.rs | 59 ++++++++++++++++++++++++++++++++++++++--
->  rust/hw/char/pl011/src/lib.rs    |  1 +
->  2 files changed, 57 insertions(+), 3 deletions(-)
-> 
+>   hw/s390x/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 
-This device type is required by qtest-arm/qom-test & qtest-aarch64/qom-test!
-I will pick it up for testing on my side.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
