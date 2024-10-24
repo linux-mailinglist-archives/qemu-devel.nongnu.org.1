@@ -2,107 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521979AE738
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 16:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4CD9AE84B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 16:22:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3yRX-0007CN-Rr; Thu, 24 Oct 2024 10:04:03 -0400
+	id 1t3yiD-0008Vj-H4; Thu, 24 Oct 2024 10:21:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3yRU-0007AI-EJ
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:04:01 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t3yiB-0008VS-6S
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:21:15 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1t3yRS-0003y1-Q1
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:04:00 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-539f58c68c5so1719687e87.3
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 07:03:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t3yi8-0006OY-8N
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 10:21:14 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5c903f5bd0eso1827700a12.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 07:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729778637; x=1730383437; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=10FS6ba90SAfmfgqA/GoqytJLsUTvwlTO03Bcs2OdSo=;
- b=t7E4R9dyiCoCeNrMyEfiuapGVXLjaVV3VMQVhXIJ1FVZLliNLUiAxWIGYduFtBS3M7
- enzpo9ndmAKvti2vr1MW1olYoJ06ArQw3yAx8kd/6//LQI9fLz+rpRnHBiWzbYagqomH
- BUTwyNHiBP5xmfM4fDkeEpVWHGCYl9AnDHkCFP7ltxlFFQdao+KJb9dQYQI9kyFuehz7
- hit1SLU7P+pNjbjydJJLZUftf9Xc4V/nUU/8ylm/QrKMLSz5Li8ghHv1bIxiClBpQUmd
- eDyFJewGX1axLd3WjPhPPa2ye4Yi6LbH76JHtn3X0os4qIneAc/vDT0ijT/5xs6P/eGY
- okVQ==
+ d=linaro.org; s=google; t=1729779670; x=1730384470; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=01LNpV0J5i2+mW4L0tTjXQrlSr+AmryCspQKyFFkmyk=;
+ b=ELDZlrdw+rf57/jperjqVFo44D0P0yDZqgfWpzTySqNgu/qsAx/6kvNha2hqqJ+dg0
+ 5crcbpQpMryD1IerwGuH9aoBjs2q9oyg/fg1uxag0jmU1Gyj860FTQ7S3VDm0YTvi7Lf
+ uahcuYwZm7VZeIvt/Ogy/cs20JfYAMLuRZhR/PGmVXICDZle9fj5ZCdtkL9ETxrULDuW
+ QSEEIcF5Oi6BbUJXdNeUwKx3jIX0L4yaZCHE3uVLNG95VdFrF+Xxk8kHhQNiYOAEgddt
+ 2y8iKY8ZGVLewDIyRpcwd+NDw8lBzkNP5Etq9mrGQwt2oGIebgLpJ5MhknkjsAu1Nml2
+ NZ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729778637; x=1730383437;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1729779670; x=1730384470;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=10FS6ba90SAfmfgqA/GoqytJLsUTvwlTO03Bcs2OdSo=;
- b=JiHXfpSj0P5GWmVW9eIaBsSVIvyUK7Hm5hRPWFNs3xwb6yTg+t9dtHoS5xAuc5AUqC
- bakr9T76yxU5Eig1ATARBNyCVjdHn/zlZysLfM/woeA4hzYduD0Aju/6icULRDlflrhK
- L2BVIhZeP2sTe2b/Vm1dtaXp6ORll/b9Bc5erZepEN2pyqDTXOcG1tQ8TsNroAVz7Gvi
- wuwugKBN5d8qa/4tdphwToh+V6v1AlrTafDsYC/RJ8uMYNcAjRoV+95UnULjGeoSq17i
- xYjrRuDAaetsl8xtfWrIsZREMoGf7/leS/p2zif9mOH0Mn3+heNOLJwgjx9kJSMLs9G+
- LATQ==
-X-Gm-Message-State: AOJu0YxUgD6D77bW6h1cYY8n56GM/wFLXrH7JgXuJNTJNgAVnepVYKDs
- 15GeJboLG+vSe4U+R8ZA5nF5U6vgEH6mqk53CI2eCV/vHtFG98EdzIi9iY8KTxU=
-X-Google-Smtp-Source: AGHT+IF/X6Ld09RtROSNXWtaw4b8x85ob/Ww0GPDmQEOLwkcFq3XSO+EWSUbg/IhA25BoWQkhro2Wg==
-X-Received: by 2002:a05:6512:104c:b0:536:53e3:feae with SMTP id
- 2adb3069b0e04-53b1a315e5bmr5989441e87.11.1729778634976; 
- Thu, 24 Oct 2024 07:03:54 -0700 (PDT)
-Received: from [127.0.1.1] (adsl-113.37.6.2.tellas.gr. [37.6.2.113])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912f6878sm621407566b.86.2024.10.24.07.03.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 07:03:54 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Oct 2024 17:03:09 +0300
-Subject: [PATCH 11/11] rust/pl011: log guest/unimp errors
+ bh=01LNpV0J5i2+mW4L0tTjXQrlSr+AmryCspQKyFFkmyk=;
+ b=U49UNvOsOwPkfgXSXxXZWD+qsjj0vmHTgvFht28pq51XVVQiu+t4PniZnx5cmTgB92
+ zsONMwGYC+utSKH9WVVHGBSy9GO7/41gIwlbW5jcPwx3y3ueAP9+kHiHaIwxB14ct2zx
+ fNbOgoqyvoxBJhFvnPVcdPdm73HmL/LGP7I5cGbxqQ2lH8jOLlKb7qzrrtlq9LYMPaVC
+ 0/aZUDmMd04y1u2B9FfnkqeVvuYyknJHuPswZ8MjC2SLMKYM8onXFix2JYHwKsmrjrnH
+ 7LNqqOTqMwnZf0mX4T0LRk+lflo0ipqKsIvY+6bKWS7u4qAJ8RYs8blvRQYb4n61p4+l
+ /Vxg==
+X-Gm-Message-State: AOJu0Yx4pD6nqgkv8hf4/mnRjKfiJXNP9gtwBjoa+WeUzGynR/pViNjq
+ b/rUsS4QxAqS2oa4mQhuE/VY4vJidxKeFxynJOESXL7u0qnjm7shG4kqCKPg2bkgSj8GIvR6Beb
+ rn7MoXyJppkIURIKrZk5fxnNTIdBpuI8ZcYfbSw==
+X-Google-Smtp-Source: AGHT+IGHhq6Qvof2pqDPVtU75qSOjwxphckJbPYbk9jVwNcKPCIbH+nSHpef7liMF0YUjq6SBIn/l/gDbYlxwu/npgk=
+X-Received: by 2002:a05:6402:2344:b0:5c9:59e6:e908 with SMTP id
+ 4fb4d7f45d1cf-5cb8ac5e8ebmr6287169a12.6.1729779670156; Thu, 24 Oct 2024
+ 07:21:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-rust-round-2-v1-11-051e7a25b978@linaro.org>
-References: <20241024-rust-round-2-v1-0-051e7a25b978@linaro.org>
-In-Reply-To: <20241024-rust-round-2-v1-0-051e7a25b978@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>, 
- Junjie Mao <junjie.mao@intel.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Kevin Wolf <kwolf@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Gustavo Romero <gustavo.romero@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-X-Mailer: b4 0.15-dev-12fc5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3497;
- i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=7/quJHuk1AVNPeKw9d+kvD8KhgiKTwdd6ez7kP/JrJw=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm5HbE9rMGpsSGgzQ1FTLzI0UEliREVZTTB0WTlFCjNsaXBqempXNjhrcFN3N25G
- M0dKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnhwVHBBQUt
- DUkIzS2Nkd2YzNEowQVRYRC80eGduSlhmcEkvWTJrL0lEWitIVUZSRlFyWHRQNExWWWxkUWxyQw
- pnSXZjclVEelErdmlabkdTQkVMcGE5c1dYajFIUk9lSGVoRFZGMCsyZ0o3NlFhSkFjL05UZ3Fvc
- GQrNTVweDZKClBDbDgrWHdJU2FBZjFJWkJqZlA0anRobzhvZzZCbWJTcTNOVlB3WmkvZ3A2M1BE
- YWc2Q2U3SGwzbkxOa3EvVCsKcGNJOWNobU5YS1djUThvd0ZCS0VIMkt4ZGFvYlpZeHB0dy8zUjQ
- 0VTZ4SGM3eXJnNW9jREp4dkpaRGwxM3BsegpndFhHOEpaUUNCWmZ1K3dOUjFWQWlMcmZhbG9UbV
- JzRWZncGNrK2ZHZ0FkRzR0Uzk0bWpWVGltd2RoS2owbTBCClB2QVNlY3ZpNWh2N0ZOdGVZVWhOd
- 2Z3OERCeExDcEg3WXA1dENwZEdvZWtJYW81UHhTMUZlTXQydDNJYys0djUKM2RSVE1uUXY2UXBE
- WlRvWGxpa1E2dWVJWHBPMENPTTJrcDNpVjRVd3kxRDdmVThrVURCYWZVWU5MTjVMRlh4aApGaWE
- wV3Fsc1V5OWYrQjkrRVdHQ0xZV3ViQXZ1YytWTmRMUW84dXpvRktkaW1GNCtBZ1p5SEVHaVRNS0
- 1yR1VwCmFqRGpZT3Zia3BkTXg5eFEySiswSzJTdXk1SElaV0MvTmkyMDFSRkVPemxsKzB4bEh6a
- ExjMVByK082UWovYngKYmptQUtGZ2FVKys0QW93VFM3YzJuRkszend6T2ZtWTlhMXhTcVNFa3Vz
- UlpPUnl5aGNHSGg5L1d0M0xOYkwzQwpMdzhKL2Y0dDBKOTcxMVdaYTdsNS9wbElQcFQvczREeW4
- vbTdtZFdDcFcrTHRQWCtUdU9jWkdvb2xwZFJKcndqCmRyVTMvdz09Cj1xanY5Ci0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
- fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12d.google.com
+References: <20241022152415.1632556-1-berrange@redhat.com>
+In-Reply-To: <20241022152415.1632556-1-berrange@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Oct 2024 15:20:58 +0100
+Message-ID: <CAFEAcA-nWDcFrLy21cme6+T1H_9oaHtYE3MtT8D5ucr+o2kn9A@mail.gmail.com>
+Subject: Re: [PULL 00/14] Misc fixes patches
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,91 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the qemu_log_mask() functions introduced in previous commit to log
-errors like the C pl011 device does.
+On Tue, 22 Oct 2024 at 16:24, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> The following changes since commit cc5adbbd50d81555b8eb73602ec16fde40b55b=
+e4:
+>
+>   Merge tag 'pull-tpm-2024-10-18-1' of https://github.com/stefanberger/qe=
+mu-tpm into staging (2024-10-18 15:45:02 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/berrange/qemu tags/misc-fixes-pull-request
+>
+> for you to fetch changes up to c64df333f92798823c4897ae6d4bd7f49d060225:
+>
+>   gitlab: enable afalg tests in fedora system test (2024-10-22 13:02:33 +=
+0100)
+>
+> ----------------------------------------------------------------
+> Misc sockets, crypto and VNC fixes
+>
+> * Fix rare EADDRINUSE failures on OpenBSD platforms seen
+>   with migration
+> * Fix & test overwriting of hash output buffer
+> * Close connection instead of returning empty SASL mechlist to
+>   VNC clients
+> * Fix handling of SASL SSF on VNC server UNIX sockets
+> * Fix handling of NULL SASL server data in VNC server
+> * Validate trailing NUL padding byte from SASL client
+> * Fix & test AF_ALG crypto backend build
+> * Remove unused code in sockets and crypto subsystems
+>
+> ----------------------------------------------------------------
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- rust/hw/char/pl011/src/device.rs | 37 +++++++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 6d1353dafc14bfe73703b5cff7e1ff7659de220e..57b38f44f90d74d0c1a94bb9144eff08db94fadf 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -9,6 +9,7 @@
- 
- use qemu_api::{
-     bindings::{self, *},
-+    log::*,
-     objects::*,
-     vmstate_clock, vmstate_fields, vmstate_int32, vmstate_subsections, vmstate_uint32,
-     vmstate_uint32_array, vmstate_unused,
-@@ -343,7 +344,14 @@ pub fn read(
-                 u64::from(self.device_id[(offset - 0xfe0) >> 2])
-             }
-             Err(_) => {
--                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-+                qemu_log_mask(
-+                    LogMask::GUEST_ERROR,
-+                    &format!(
-+                        "pl011:{file}:{line}: Bad offset 0x{offset:x}",
-+                        file = file!(),
-+                        line = line!(),
-+                    ),
-+                );
-                 0
-             }
-             Ok(DR) => {
-@@ -389,15 +397,30 @@ pub fn read(
-     }
- 
-     pub fn write(&mut self, offset: hwaddr, value: u64) {
--        // eprintln!("write offset {offset} value {value}");
-         use RegisterOffset::*;
-         let value: u32 = value as u32;
-         match RegisterOffset::try_from(offset) {
-             Err(_bad_offset) => {
--                eprintln!("write bad offset {offset} value {value}");
-+                qemu_log_mask(
-+                    LogMask::GUEST_ERROR,
-+                    &format!(
-+                        "pl011:{file}:{line}: Bad write offset 0x{offset:x} of value 0x:{value:x}",
-+                        file = file!(),
-+                        line = line!(),
-+                    ),
-+                );
-             }
-             Ok(DR) => {
--                // ??? Check if transmitter is enabled.
-+                // Check if transmitter is enabled.
-+                if !self.control.enable_uart() {
-+                    qemu_log_mask(LogMask::GUEST_ERROR, "PL011 data written to disabled UART");
-+                }
-+                if !self.control.enable_transmit() {
-+                    qemu_log_mask(
-+                        LogMask::GUEST_ERROR,
-+                        "PL011 data written to disabled TX UART",
-+                    );
-+                }
-                 let ch: u8 = value as u8;
-                 // XXX this blocks entire thread. Rewrite to use
-                 // qemu_chr_fe_write and background I/O callbacks
-@@ -474,8 +497,10 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-             Ok(DMACR) => {
-                 self.dmacr = value;
-                 if value & 3 > 0 {
--                    // qemu_log_mask(LOG_UNIMP, "pl011: DMA not implemented\n");
--                    eprintln!("pl011: DMA not implemented");
-+                    qemu_log_mask(
-+                        LogMask::UNIMPLEMENTED,
-+                        "pl011: DMA functionality is not implemented",
-+                    );
-                 }
-             }
-         }
+Applied, thanks.
 
--- 
-2.45.2
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
+-- PMM
 
