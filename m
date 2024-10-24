@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC839AF4B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48A59AF4B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t45QM-0005gR-Kt; Thu, 24 Oct 2024 17:31:18 -0400
+	id 1t45QM-0005fE-1L; Thu, 24 Oct 2024 17:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QF-0005dY-Ob
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QF-0005dX-OP
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QB-0005XZ-UF
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QC-0005YA-Vu
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729805465;
+ s=mimecast20190719; t=1729805467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aQi0jNBi64+93LR6lEvSe205PyBWXB4O7JAmokml2GE=;
- b=g9FugSj754VdO0tswSuKFzQkHiQ9Z3LRern8Xx42cEF67rDHwoqo074Ue6UN0xdan9Q8J7
- c1d3gw/dqq/c+u+e3L08KEUNTohvxM6B4KPPh1Oqy7aX9yn7npjCqBJIAO82I9BZQEHKt4
- pzV5hEL5UF6AH591Me4VScjBfpl9UTM=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h5qDUbT0oI/ii3wep25YhtJ0lpIyWNP4aqcokwUdLXo=;
+ b=V3XPPWa/RwDQXoZZ1GmjkzSlKSBoLMJIywQJpkcOw1GDB2Od5ClJBaELjO3jm/caqScHCb
+ WIpcBmNmXMfYTmFwGN0M+MldlyLDsLTBfXSMOWUany21KAM2RWS5GTgfwV10hDtny7B2Wa
+ bJRsXoL3yKlud/1tdtSXhgtEOc9/6ZA=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-wAFJxnQiMJimptAh-OgsPw-1; Thu, 24 Oct 2024 17:31:04 -0400
-X-MC-Unique: wAFJxnQiMJimptAh-OgsPw-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-4a470b7ff49so444714137.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:04 -0700 (PDT)
+ us-mta-441-rHNI_zGZN3OM1ViNBm0c7g-1; Thu, 24 Oct 2024 17:31:06 -0400
+X-MC-Unique: rHNI_zGZN3OM1ViNBm0c7g-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-460dd31b4c1so20491691cf.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729805463; x=1730410263;
+ d=1e100.net; s=20230601; t=1729805465; x=1730410265;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aQi0jNBi64+93LR6lEvSe205PyBWXB4O7JAmokml2GE=;
- b=dxfVcMUWk+a2pFY2IVTg8JFuDC9hXFrNlMKTQqZdzg/6qfCCmpEULNOK3JwW4U2MGy
- pni/m+xocAyYQBRQuzR7ho7PJBD9+/c4fev+Wd41dug0OGI8RM7w2MDFPKC+Bz5I1dZS
- UMgxcppSvyVJ2ojusfaJ/wt/P9wGoSoTihicche1d9bI1ojGUIkGAXmshLD1kHMEYItO
- LLzNMJlhrZq0UU/tYipYMP5a4OykTEnOIhJIQmHSOoNMRyafy9prFtfVXaCRvM9R+ORo
- Z7x8mAN4sxFsfitTQJ+cIRkQISGCXQ4UcuA0Tq4bfXCH2ZWw7UzJ/L9/jAyEieH36t0b
- XULQ==
-X-Gm-Message-State: AOJu0YwJEgj0uCECyR8DpJrqcZ6ET2djphLdK4pKO2A+9uBDJf58HlIh
- CdA1AS4GtGD6lfa+OGE/fAIoxz83cb2qS9xX9YNMCxhfliUUCMAkp9u7ein8RstQD8t3cElVc/x
- DVHBX2W0i4f0P53bfKk8t3JgUVcruuz5ObfzF8WTmyufT93VTNnaZepzbMOfEoUUeNun1DmqmDS
- dzTHs0/51Aw5QgH52sSTQnf/9IM05rEfScsA==
-X-Received: by 2002:a05:6102:955:b0:4a7:4900:4b83 with SMTP id
- ada2fe7eead31-4a751c0b89cmr9617324137.15.1729805462797; 
- Thu, 24 Oct 2024 14:31:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEB6u934XPonhdzpQjPiG5vkxK3ZjOKaQEkToJjnesu6BmSqva8uW+Wru+VQEuSP6n9jWapow==
-X-Received: by 2002:a05:6102:955:b0:4a7:4900:4b83 with SMTP id
- ada2fe7eead31-4a751c0b89cmr9617289137.15.1729805462382; 
- Thu, 24 Oct 2024 14:31:02 -0700 (PDT)
+ bh=h5qDUbT0oI/ii3wep25YhtJ0lpIyWNP4aqcokwUdLXo=;
+ b=RbmDk25tLd52eTskvKqWIHWKT64MnvANl6PwqYxjlhXw5MeocRJYwL9/dN0Dw3yokC
+ 0F488vRr7BadMAF9XhZNSd93Jy0/WhlFoTLk0EUXPniEv0348EhnPVjwbAvGajWAPjoc
+ xmcPxKkgwhBK77AH8aiQoVa+1AcroV09/ScDfHvU5K3Wi/rNDJD5L854Kk5yXIDzCKFb
+ qH/r0eON95r+RXH3ylGRGYnn58LFZ7GBc70wE0acGXpzkFEB39vrHJzH0M8ilFPooVBR
+ nMiv0RFMImoFlmrNGoTt9UtbGXUHXkDBZDbQLNQuRSBtgHlCBAcP2TFEuv26JPl39AEe
+ Y8eg==
+X-Gm-Message-State: AOJu0YzuL+fwXoRpuSygfeAZZtGSHs1iEmdStxRrMfloL6KlQPut3vGd
+ ooQEARPVUi+X68T+l/DhHg3w0QI/vWvG9zYhuQ8W1mz/+HQR86wCC7o5dQdy4Ianyz3q3tlfrgN
+ RwgnnEMQaNIJJd1RgQnaQzEpd2RgcGCZ+i5LNpkT667ZpiJYT48CR92MIMK70aUjH8VJP+r3UPQ
+ vXKhuPi8WBT22+axOB5vXY5zinkfatNZH/FA==
+X-Received: by 2002:a05:622a:14cc:b0:45e:ff67:e058 with SMTP id
+ d75a77b69052e-46114715486mr89951351cf.44.1729805464947; 
+ Thu, 24 Oct 2024 14:31:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9Ya/zv4qjiQLCLXoG1QByfJGhOsaXZRQq+Kw5POUEhex2J1GYkXh31NxoWNv1VOfKsrT/Sw==
+X-Received: by 2002:a05:622a:14cc:b0:45e:ff67:e058 with SMTP id
+ d75a77b69052e-46114715486mr89951091cf.44.1729805464543; 
+ Thu, 24 Oct 2024 14:31:04 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.00
+ d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 14:31:01 -0700 (PDT)
+ Thu, 24 Oct 2024 14:31:03 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v3 2/8] migration: Unexport dirty_bitmap_mig_init()
-Date: Thu, 24 Oct 2024 17:30:50 -0400
-Message-ID: <20241024213056.1395400-3-peterx@redhat.com>
+Subject: [PATCH v3 3/8] migration: Unexport ram_mig_init()
+Date: Thu, 24 Oct 2024 17:30:51 -0400
+Message-ID: <20241024213056.1395400-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241024213056.1395400-1-peterx@redhat.com>
 References: <20241024213056.1395400-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -102,40 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's only used within migration/, so it shouldn't be exported.
+It's only used within migration/.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/misc.h | 3 ---
- migration/migration.h    | 4 ++++
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/migration/misc.h | 1 -
+ migration/ram.h          | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/migration/misc.h b/include/migration/misc.h
-index bfadc5613b..df57be6b5e 100644
+index df57be6b5e..e8490e3af5 100644
 --- a/include/migration/misc.h
 +++ b/include/migration/misc.h
-@@ -108,7 +108,4 @@ bool migration_incoming_postcopy_advised(void);
- /* True if background snapshot is active */
- bool migration_in_bg_snapshot(void);
+@@ -39,7 +39,6 @@ void precopy_add_notifier(NotifierWithReturn *n);
+ void precopy_remove_notifier(NotifierWithReturn *n);
+ int precopy_notify(PrecopyNotifyReason reason, Error **errp);
  
--/* migration/block-dirty-bitmap.c */
--void dirty_bitmap_mig_init(void);
--
- #endif
-diff --git a/migration/migration.h b/migration/migration.h
-index 7dc59c5e8d..0956e9274b 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -552,4 +552,8 @@ int migration_rp_wait(MigrationState *s);
- void migration_rp_kick(MigrationState *s);
+-void ram_mig_init(void);
+ void qemu_guest_free_page_hint(void *addr, size_t len);
+ bool migrate_ram_is_ignored(RAMBlock *block);
  
- void migration_bitmap_sync_precopy(bool last_stage);
-+
-+/* migration/block-dirty-bitmap.c */
-+void dirty_bitmap_mig_init(void);
-+
- #endif
+diff --git a/migration/ram.h b/migration/ram.h
+index bc0318b834..0d1981f888 100644
+--- a/migration/ram.h
++++ b/migration/ram.h
+@@ -44,6 +44,7 @@ extern XBZRLECacheStats xbzrle_counters;
+     INTERNAL_RAMBLOCK_FOREACH(block)                   \
+         if (!qemu_ram_is_migratable(block)) {} else
+ 
++void ram_mig_init(void);
+ int xbzrle_cache_resize(uint64_t new_size, Error **errp);
+ uint64_t ram_bytes_remaining(void);
+ uint64_t ram_bytes_total(void);
 -- 
 2.45.0
 
