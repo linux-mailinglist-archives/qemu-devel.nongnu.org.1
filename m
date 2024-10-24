@@ -2,61 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14389ADB89
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 07:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C61019ADBA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 07:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3qSi-0003cZ-9T; Thu, 24 Oct 2024 01:32:44 -0400
+	id 1t3qeP-0007VC-Gw; Thu, 24 Oct 2024 01:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3qSN-0003aT-HP
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 01:32:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3qeM-0007Uf-FL
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 01:44:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3qSL-0004Ir-3n
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 01:32:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t3qeK-0005el-Ml
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 01:44:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729747938;
+ s=mimecast20190719; t=1729748683;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+souKmcZN+Lo+w+ANXk5mddlUb65rie89cG9hWlfyN4=;
- b=M9S8vp3F2Jn0V2lDJvYSa0iMDi4hoQmxDTp/t4D3HSIxc0QyDKMzL9cBllX76FBZTlPao7
- iLLKKfC0MzJdWztbY5MTTVVPNNNV71D0XMaU/O0V6JeGgQm29p/vWoaPF8TAiLj3alcIyT
- ZHnOtV8s8KkC7yUYefgYTJjPNEwCY6Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-K2jo41xvP7CTikE85_7kNg-1; Thu,
- 24 Oct 2024 01:32:16 -0400
-X-MC-Unique: K2jo41xvP7CTikE85_7kNg-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8D53819560A2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 05:32:15 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 38A0F1956056; Thu, 24 Oct 2024 05:32:14 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 4/4] vfio/helpers: Align mmaps
-Date: Thu, 24 Oct 2024 07:32:03 +0200
-Message-ID: <20241024053203.1559456-5-clg@redhat.com>
-In-Reply-To: <20241024053203.1559456-1-clg@redhat.com>
-References: <20241024053203.1559456-1-clg@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=LhDSc78mbj/tVU33sqYHlS7jBB5c6NG8lTPb2n97Oc8=;
+ b=Axu3IL5kYqebA0SdWwC5hD4foCXhkonIAIqBkwHzMLA5i5petSgsha1nIS7KenjQqfoWNv
+ YnCZWywpC56dbYIv90xooUDYQRo47jUEg/H0hkM9IeyMMtbyz44S4Cr+R+uppRRJiT3CHr
+ jdvf8xNSF4aRP4/fcaBqjQ81CHNkXt8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-ZvfyN3k-O4yZXDPe0EdYcQ-1; Thu, 24 Oct 2024 01:44:39 -0400
+X-MC-Unique: ZvfyN3k-O4yZXDPe0EdYcQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a9a2a81ab82so26909066b.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Oct 2024 22:44:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729748678; x=1730353478;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LhDSc78mbj/tVU33sqYHlS7jBB5c6NG8lTPb2n97Oc8=;
+ b=oYEnUN80X5bysROKyr0xQtibWuswxy2c8tTV9yfEfWtyyYpzu+FxiCFW4b3AQz8Mss
+ Ywj+qjYMmU3fq/0jChK60LhReaVmS6A2oEROUSSWTcIZLioyPm8CjhhklOsB8L15QOPj
+ 8xJ/IxnivbjkuCpddM5tSKxhYPF4HzlEiR1d1QORSYOWrwJbkc90lOWIyLjTMEUNzS8U
+ 0p60YNKU7GMRYotp6S9CSWCPKuQuOuM1GaaG8sLgVc7BxxbM6aGFjwp3kY9ebCG98JxP
+ 9d9h691xIRxaSzzLGkYHPYkMkklXgIFA2RrrTypHsk01esE8p6JbL2kPqsSYH0bKI+XZ
+ fvGw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX/bul48tXENdpTqhVMg1SsQbAugMC27dJpOf3JFfEKpRXnSR3ldiKyyOcSL5Tt1qvLZDPzsab5S8SQ@nongnu.org
+X-Gm-Message-State: AOJu0YxQ4kXG2+WJ2gtzCtrsDXDvPVqVgSzRMyYSAL/EDSCQKSsp/Kco
+ vmgbDP72Xfv3n/PZhYR8nzYgi2AiOGsfb8Ug3MSf7K5NmWhPITVL+vPGLbUB7C5K2xLYYoE9GWQ
+ 3FqOCL/BqTc1vJBbnc2Xoo9apprrpBXWex/bo1unT4NRjr6rfuRhz
+X-Received: by 2002:a17:906:f58d:b0:a99:4aa7:4d6f with SMTP id
+ a640c23a62f3a-a9ad2709897mr66793566b.12.1729748678373; 
+ Wed, 23 Oct 2024 22:44:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNrT+XQYGunJTt46EQSenuz+QQ936OeTfE9OaIHAXI8161EL5zC3hzwo+It6euVG7YHkifAg==
+X-Received: by 2002:a17:906:f58d:b0:a99:4aa7:4d6f with SMTP id
+ a640c23a62f3a-a9ad2709897mr66791666b.12.1729748677981; 
+ Wed, 23 Oct 2024 22:44:37 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-40-241-30.web.vodafone.de.
+ [109.40.241.30]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a91559dfcsm560497666b.132.2024.10.23.22.44.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Oct 2024 22:44:37 -0700 (PDT)
+Message-ID: <9f8b2357-a28a-4b80-aa5c-ff1725e364d9@redhat.com>
+Date: Thu, 24 Oct 2024 07:44:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: Please put qemu-system-sh4eb back.
+To: Rob Landley <rob@landley.net>, qemu-devel@nongnu.org, jeff@coresemi.io,
+ peter.maydell@linaro.org, glaubitz@physik.fu-berlin.de
+References: <d6755445-1060-48a8-82b6-2f392c21f9b9@landley.net>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <d6755445-1060-48a8-82b6-2f392c21f9b9@landley.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -81,86 +144,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Williamson <alex.williamson@redhat.com>
+On 24/10/2024 02.11, Rob Landley wrote:
+> I use it, and ship system images for it:
+> 
+>    https://landley.net/bin/mkroot/latest/sh4eb.tgz
 
-Thanks to work by Peter Xu, support is introduced in Linux v6.12 to
-allow pfnmap insertions at PMD and PUD levels of the page table.  This
-means that provided a properly aligned mmap, the vfio driver is able
-to map MMIO at significantly larger intervals than PAGE_SIZE.  For
-example on x86_64 (the only architecture currently supporting huge
-pfnmaps for PUD), rather than 4KiB mappings, we can map device MMIO
-using 2MiB and even 1GiB page table entries.
+Oh, that's interesting, I've been told that the r2d machine does not work in 
+big endian mode:
 
-Typically mmap will already provide PMD aligned mappings, so devices
-with moderately sized MMIO ranges, even GPUs with standard 256MiB BARs,
-will already take advantage of this support.  However in order to better
-support devices exposing multi-GiB MMIO, such as 3D accelerators or GPUs
-with resizable BARs enabled, we need to manually align the mmap.
+  https://lore.kernel.org/qemu-devel/87a5fwjjew.wl-ysato@users.sourceforge.jp/
 
-There doesn't seem to be a way for userspace to easily learn about PMD
-and PUD mapping level sizes, therefore this takes the simple approach
-to align the mapping to the power-of-two size of the region, up to 1GiB,
-which is currently the maximum alignment we care about.
+But yes, your binaries apparently work there, so sorry for the confusion.
+I'll send a patch to revert the removal.
 
-Cc: Peter Xu <peterx@redhat.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/helpers.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+  Thomas
 
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index b9e606e364a2dd267bacd63094cdedae5dd7d8b2..913796f437f84eece8711cb4b4b654a44040d17c 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -27,6 +27,7 @@
- #include "trace.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "qemu/units.h"
- #include "monitor/monitor.h"
- 
- /*
-@@ -406,8 +407,35 @@ int vfio_region_mmap(VFIORegion *region)
-     prot |= region->flags & VFIO_REGION_INFO_FLAG_WRITE ? PROT_WRITE : 0;
- 
-     for (i = 0; i < region->nr_mmaps; i++) {
--        region->mmaps[i].mmap = mmap(NULL, region->mmaps[i].size, prot,
--                                     MAP_SHARED, region->vbasedev->fd,
-+        size_t align = MIN(1ULL << ctz64(region->mmaps[i].size), 1 * GiB);
-+        void *map_base, *map_align;
-+
-+        /*
-+         * Align the mmap for more efficient mapping in the kernel.  Ideally
-+         * we'd know the PMD and PUD mapping sizes to use as discrete alignment
-+         * intervals, but we don't.  As of Linux v6.12, the largest PUD size
-+         * supporting huge pfnmap is 1GiB (ARCH_SUPPORTS_PUD_PFNMAP is only set
-+         * on x86_64).  Align by power-of-two size, capped at 1GiB.
-+         *
-+         * NB. qemu_memalign() and friends actually allocate memory, whereas
-+         * the region size here can exceed host memory, therefore we manually
-+         * create an oversized anonymous mapping and clean it up for alignment.
-+         */
-+        map_base = mmap(0, region->mmaps[i].size + align, PROT_NONE,
-+                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+        if (map_base == MAP_FAILED) {
-+            ret = -errno;
-+            goto no_mmap;
-+        }
-+
-+        map_align = (void *)ROUND_UP((uintptr_t)map_base, (uintptr_t)align);
-+        munmap(map_base, map_align - map_base);
-+        munmap(map_align + region->mmaps[i].size,
-+               align - (map_align - map_base));
-+
-+        region->mmaps[i].mmap = mmap(map_align, region->mmaps[i].size, prot,
-+                                     MAP_SHARED | MAP_FIXED,
-+                                     region->vbasedev->fd,
-                                      region->fd_offset +
-                                      region->mmaps[i].offset);
-         if (region->mmaps[i].mmap == MAP_FAILED) {
--- 
-2.47.0
+> And here's me recentish-ly debugging an issue via it:
+> 
+>   https://landley.net/notes-2024.html#24-05-2024
+> 
+> (Compile/test cycles are WAY easier there than copying files onto an sd card 
+> to test on actual hardware.)
+> 
+> There was a big-endian issue breaking r2d last year, but it also broke big 
+> endian mips and some other targets too, and it got fixed. The binary I built 
+> a few months ago was working fine for me with vanilla qemu git source? (I 
+> don't _think_ I had local changes?) I can try to build the version removed 
+> to check that...
+> 
+> Yes I should be better about pushing local patches upstream. For example, 
+> here's the kernel patch I use to run fdpic binaries under qemu:
+> 
+> https://landley.net/bin/mkroot/latest/linux-patches/0002-sh4-fdpic.patch
+> 
+> Which lets you enable the FDPIC loader on an mmu kernel, which is useful for 
+> testing j-core userspace under qemu.
+> 
+> Rob
+> 
 
 
