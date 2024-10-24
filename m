@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1889AF33E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A14C09AF345
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t440y-0003N2-9T; Thu, 24 Oct 2024 16:01:00 -0400
+	id 1t4415-0003PL-Uy; Thu, 24 Oct 2024 16:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440m-0003Iv-Cs
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:48 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440q-0003Jd-PX
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:54 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440k-0002CV-5Z
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:47 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OE7MBv016731;
- Thu, 24 Oct 2024 20:00:38 GMT
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440o-0002Dn-TB
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:52 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHuol7027146;
+ Thu, 24 Oct 2024 20:00:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=+lZO/kr23txJutfPt
- JANExb2DZrWJj9SqMj8mnToQBM=; b=bfMABa5o6Zsmf+A0D22qzgh3+XuWC1rcl
- SANoFVrFjpeQlz/1Ty9QR9Za13Nfp4SGFcrRPyG+zxwewiHhY9Wtyy4IdM069eRn
- PvrQFjkVE8GFVijxuUUugn0979m8UD1K6ROkMPkFIjPvE7SU0iDMPtQcZCOQAkxI
- 8+eO/n9IQk2tKiFudPWAkjbCzXTDbBPWw7XUoJGwK3Vvm8tIsd2iad/VK8rjZ2u1
- RUkrWfhCEbTMWLOoperrgAJGzeYjKDJthP3xp1og+tcboYIiGsr/dZfW49OutSOS
- AEsq5jbONMQMUgmASQZPPAPkzplwg/Vr+1f+yfH7ganzPtFpOrTgA==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajtkh4-1
+ :mime-version:references:subject:to; s=pp1; bh=gXPMKOYMZnvmSB4pd
+ Nmk37nyU93FpLtqLe/ASu2oIvY=; b=q+V9MNhwa/ZoT1WfhF+nFxGfvYidKeGgm
+ lA5o0XtbtWY5Scm0TblAda6E7RhV8MnDU7pdjmiS6Nrs714qVw57NDL6kM3yg+aa
+ Y45+EP0FEiDLmUdDu3GQTHPlgIc/Iukz66oqlNKvy1cjYgXk9dV5v0s8c9nvIyA7
+ M18X2q0wqlF2juzWASpYb4/PEnw0cLfWhQlcvf2Q+JD3MGF4hECTdgGc/oXh8S2k
+ lJpK2w37GqFLH9/5abKziZV5oJME4whgWVmhcZHrlKilGg4sGLYskB08XbYVI6cu
+ vuNkT0kd87H2JgXe4329IGXCDFB0kwEw5ctFQY8py2+wdjJEGJxHQ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42fhxnukx6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2024 20:00:38 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHmu8Z001516;
- Thu, 24 Oct 2024 20:00:37 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emk9j7bs-1
+ Thu, 24 Oct 2024 20:00:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHx1QJ012603;
+ Thu, 24 Oct 2024 20:00:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emhfj8xg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2024 20:00:37 +0000
+ Thu, 24 Oct 2024 20:00:38 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 49OK0ZtZ26214922
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49OK0ajp56623398
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 24 Oct 2024 20:00:36 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7E0C20043;
- Thu, 24 Oct 2024 20:00:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 67D6420040;
+ Thu, 24 Oct 2024 20:00:36 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 61C9820040;
+ by IMSVA (Postfix) with ESMTP id EAC8C2004B;
  Thu, 24 Oct 2024 20:00:35 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.25.135])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -62,28 +62,28 @@ To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 4/8] user: Introduce host_interrupt_signal
-Date: Thu, 24 Oct 2024 21:59:11 +0200
-Message-ID: <20241024200031.80327-5-iii@linux.ibm.com>
+Subject: [PATCH 5/8] osdep: Introduce qemu_kill_thread()
+Date: Thu, 24 Oct 2024 21:59:12 +0200
+Message-ID: <20241024200031.80327-6-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024200031.80327-1-iii@linux.ibm.com>
 References: <20241024200031.80327-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: E1DzbJSDmSJh46NHkAColofH41Kq1YrQ
-X-Proofpoint-GUID: E1DzbJSDmSJh46NHkAColofH41Kq1YrQ
+X-Proofpoint-ORIG-GUID: W0eNdIaH7aQ0Fpy5Y2V3hUEQenoK9SMD
+X-Proofpoint-GUID: W0eNdIaH7aQ0Fpy5Y2V3hUEQenoK9SMD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=831 bulkscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410240159
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ spamscore=0 adultscore=0
+ mlxlogscore=875 malwarescore=0 impostorscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240159
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -107,129 +107,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Attaching to the gdbstub of a running process requires stopping its
-threads. For threads that run on a CPU, cpu_exit() is enough, but the
-only way to grab attention of a thread that is stuck in a long-running
-syscall is to interrupt it with a signal.
-
-Reserve a host realtime signal for this, just like it's already done
-for TARGET_SIGABRT on Linux. This may reduce the number of available
-guest realtime signals by one, but this is acceptable, since there are
-quite a lot of them, and it's unlikely that there are apps that need
-them all.
-
-Set signal_pending for the safe_sycall machinery to prevent invoking
-the syscall. This is a lie, since we don't queue a guest signal, but
-process_pending_signals() can handle the absence of pending signals.
-The syscall returns with QEMU_ERESTARTSYS errno, which arranges for
-the automatic restart. This is important, because it helps avoiding
-disturbing poorly written guests.
+Add a function for sending signals to individual threads. It does not make
+sense on Windows, so do not provide an implementation, so that if someone
+uses it by accident, they will get a linker error.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- bsd-user/signal.c     | 12 ++++++++++++
- include/user/signal.h |  2 ++
- linux-user/signal.c   | 11 +++++++++++
- 3 files changed, 25 insertions(+)
+ include/qemu/osdep.h |  9 +++++++++
+ util/oslib-posix.c   | 15 +++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index a2b11a97131..992736df5c5 100644
---- a/bsd-user/signal.c
-+++ b/bsd-user/signal.c
-@@ -49,6 +49,8 @@ static inline int sas_ss_flags(TaskState *ts, unsigned long sp)
-         on_sig_stack(ts, sp) ? SS_ONSTACK : 0;
- }
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index fe7c3c5f673..2350477787a 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -626,6 +626,15 @@ bool qemu_write_pidfile(const char *pidfile, Error **errp);
  
-+int host_interrupt_signal = SIGRTMAX;
+ int qemu_get_thread_id(void);
+ 
++/**
++ * qemu_kill_thread:
++ * @tid: thread id.
++ * @sig: host signal.
++ *
++ * Send @sig to one of QEMU's own threads with identifier @tid.
++ */
++int qemu_kill_thread(int tid, int sig);
 +
- /*
-  * The BSD ABIs use the same signal numbers across all the CPU architectures, so
-  * (unlike Linux) these functions are just the identity mapping. This might not
-@@ -489,6 +491,12 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
-     uintptr_t pc = 0;
-     bool sync_sig = false;
- 
-+    if (host_sig == host_interrupt_signal) {
-+        ts->signal_pending = 1;
-+        cpu_exit(thread_cpu);
-+        return;
-+    }
-+
-     /*
-      * Non-spoofed SIGSEGV and SIGBUS are synchronous, and need special
-      * handling wrt signal blocking and unwinding.
-@@ -852,6 +860,9 @@ void signal_init(void)
- 
-     for (i = 1; i <= TARGET_NSIG; i++) {
-         host_sig = target_to_host_signal(i);
-+        if (host_sig == host_interrupt_signal) {
-+            continue;
-+        }
-         sigaction(host_sig, NULL, &oact);
-         if (oact.sa_sigaction == (void *)SIG_IGN) {
-             sigact_table[i - 1]._sa_handler = TARGET_SIG_IGN;
-@@ -870,6 +881,7 @@ void signal_init(void)
-             sigaction(host_sig, &act, NULL);
-         }
-     }
-+    sigaction(host_interrupt_signal, &act, NULL);
- }
- 
- static void handle_pending_signal(CPUArchState *env, int sig,
-diff --git a/include/user/signal.h b/include/user/signal.h
-index 19b6b9e5ddc..7fa33b05d91 100644
---- a/include/user/signal.h
-+++ b/include/user/signal.h
-@@ -20,4 +20,6 @@
-  */
- int target_to_host_signal(int sig);
- 
-+extern int host_interrupt_signal;
-+
+ #ifndef CONFIG_IOVEC
+ struct iovec {
+     void *iov_base;
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 11b35e48fb8..32a41fa8640 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -111,6 +111,21 @@ int qemu_get_thread_id(void)
  #endif
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 84bb8a34808..f0bcbd367d5 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -514,6 +514,8 @@ static int core_dump_signal(int sig)
-     }
  }
  
-+int host_interrupt_signal;
++int qemu_kill_thread(int tid, int sig)
++{
++#if defined(__linux__)
++    return syscall(__NR_tgkill, getpid(), tid, sig);
++#elif defined(__FreeBSD__)
++    return thr_kill2(getpid(), tid, sig);
++#elif defined(__NetBSD__)
++    return _lwp_kill(tid, sig);
++#elif defined(__OpenBSD__)
++    return thrkill(tid, sig, NULL);
++#else
++    return kill(tid, sig);
++#endif
++}
 +
- static void signal_table_init(void)
+ int qemu_daemon(int nochdir, int noclose)
  {
-     int hsig, tsig, count;
-@@ -540,6 +542,7 @@ static void signal_table_init(void)
-     hsig = SIGRTMIN;
-     host_to_target_signal_table[SIGABRT] = 0;
-     host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
-+    host_interrupt_signal = hsig++;
- 
-     for (tsig = TARGET_SIGRTMIN;
-          hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
-@@ -619,6 +622,8 @@ void signal_init(void)
-         }
-         sigact_table[tsig - 1]._sa_handler = thand;
-     }
-+
-+    sigaction(host_interrupt_signal, &act, NULL);
- }
- 
- /* Force a synchronously taken signal. The kernel force_sig() function
-@@ -966,6 +971,12 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
-     bool sync_sig = false;
-     void *sigmask;
- 
-+    if (host_sig == host_interrupt_signal) {
-+        ts->signal_pending = 1;
-+        cpu_exit(thread_cpu);
-+        return;
-+    }
-+
-     /*
-      * Non-spoofed SIGSEGV and SIGBUS are synchronous, and need special
-      * handling wrt signal blocking and unwinding.  Non-spoofed SIGILL,
+     return daemon(nochdir, noclose);
 -- 
 2.47.0
 
