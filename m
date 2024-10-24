@@ -2,80 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8AA9AE1AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F50F9AE228
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:10:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ua3-0001Eh-PE; Thu, 24 Oct 2024 05:56:35 -0400
+	id 1t3umP-0004MR-5t; Thu, 24 Oct 2024 06:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZo-0001AG-BQ
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:20 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1t3umI-0004M2-Mr
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:09:14 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZm-0003pc-Bg
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:19 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a9a1b71d7ffso104950366b.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:17 -0700 (PDT)
+ id 1t3umH-0005Pw-5L
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:09:14 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a9a0c7abaa6so80573266b.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763777; x=1730368577; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1729764551; x=1730369351; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WhyVCt5uiJi85ejZ/liwkfrDbqe1iEIJ3VaYNksmEf8=;
- b=KGCauwgxMeLcAMQpET/y7GQ3CRSX460Fykcw8GA6Ssl0eeTVh9ZZfj6Drwlqv8Wtjf
- yUz+Cp/jlxvFWtoMQ6PKL/kx158T6I/s5DwZHLQnYN/cDCLRCk59IVxpORtlvO6W7zJw
- Bmf7/4sKDV1XnFiACOSN1XGUwW6uc/j3SQvDzPwaIdoKvCvWSz6TntQcU8VPdkpgbCj1
- dv2pVVzZDHkRuHaqaZPwPEgUxHwcoSdyYOVlXHXtTKZL3DRoFfO97ZkrDp78CoJNRMjZ
- yT0leupqxhICUNWUqTtRMKVgofoD+UgBA015tuJ2LnruubSjJxUVc8ShcSmmFXZoAfYL
- EPHQ==
+ bh=fzmDY01L3a4QW8U3i7R5j0APsDf/UzCDPnfjlygwr+A=;
+ b=KRjQwUnzn0PakMuputudVkQvZdYjfNymlXt3PtvuvZL7mE3XX0cegCxV6bpI0YcPg2
+ PBQD19qQwHxFG58iKz6x1wvys2yajDheoY8TCbneOubGapN816Zs9X9/r/mec4WdHdoN
+ g9dmxzz+ssbrvyBvmfWpQr46t64rl+VcNog8+j4q56qGqPm1LI/7WmNH2Nbyu4MLi1XD
+ gAIuoMoXslO2Tpvi3wB6Zq0A0QwHhXc3evR3lV7r4ir4oLjgZtIPIQi5yrb4lyvYC5DX
+ Q4WNuQ5wRgv7AcC3lmC1rOT4gN/f7C+R41jRhdY9eGpM3BX+Ort4+Y3Vu357yCvyS/uq
+ T34Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763777; x=1730368577;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WhyVCt5uiJi85ejZ/liwkfrDbqe1iEIJ3VaYNksmEf8=;
- b=CkHT/8rVP6ihXnwCHowj/M8FC8Qpi32BuRIRmjaHQflwtyoesut1VX+r3jB6w58Twc
- aN42XS2CP4S/vKqjAvddLngJu/Vj8yvxOqNE24wOn3ww6gAdU0F2qaFwAkSXJU8EO1vP
- 3ncdNq+46h1hL4D7MDkO2r5NniCG/KzUZpHsKZlmYf+pJvxKgYO7bBLf2hP79YPdtDXQ
- vrl0rBamdkK25R+8801Tv9Y4mHsg2QrJ5V0b+qNe5zRda6SxJvBxLvOm4GBk+AETCSmF
- oJ3kYOiWpL/RgViS8vqt0Nnw0d4Z280KRor6M3PizaIRg5Vp33Tbc/8ulUflmyvyrDCp
- x4WQ==
-X-Gm-Message-State: AOJu0YzmzVChnpVN36eAXoXpV8YsdJTgoePnFg+NHSnXlvAdNHz6Vz5Y
- NXQEGHV/F0f92YMduSkd6UOEmHriaw9en2Umed/JNK7D/sz6sJEujhFVbquDKKg=
-X-Google-Smtp-Source: AGHT+IGCeuP6tz39a/1oAphVljr37cgXvwnlFyGo7pPmvkn6YhDqvl9o0PqOocbWZE9euzvxzmsvfw==
-X-Received: by 2002:a17:906:db02:b0:a9a:f53:a5c6 with SMTP id
- a640c23a62f3a-a9abf96b501mr572318266b.65.1729763776966; 
- Thu, 24 Oct 2024 02:56:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729764551; x=1730369351;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=fzmDY01L3a4QW8U3i7R5j0APsDf/UzCDPnfjlygwr+A=;
+ b=n6ezquZ3NNgb+2qrI6e7zIOVQkXqk2gddTxzam2gI0qNOIXMH6OOD4xT1n8RHMf/58
+ bkB8Gd6lZToB6yRENipSBuJ+tIDTqwwWt8eNOhFCkGFEcb/pVcCzDNyxISOGHtOCtOKa
+ Rs3mPH4XtNALrwtL9zhXxogBb7Sp0OsPYTgASfvrOU87XJhsR39OAWlTwd8Z8qfhVgQ2
+ hZZSvP5S01yseoR0JHJ8mVs0UnBcQO193rZRrKEHzL6hsEkUGGq5vbC9+sRe6NWZLz1w
+ eJByrctSLxWeq8OMKXpbdI+k4n4LP2eiBweglT4cHdtG08mrqJt9QAWIVODxdiuny0H8
+ sF8Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV/O88dwGmQRNNfBSDyci82sUGDkj6sHahAbIzKAOnbACcq1MHwBjCB+7+sSGXVyXD87fsUp7fOizYc@nongnu.org
+X-Gm-Message-State: AOJu0YwvPM+LWKJEEt0MAHhpKMFoQcivnKcvRUnFYGyjg/5+LoS95rs/
+ JTBLxapg/UhvqKVKRvHJoD6PlPoIkAZ+fcmndzlwXBZ6i5nzyXiUqQH4HBoyTHQ=
+X-Google-Smtp-Source: AGHT+IFcmyWzyE73dsLk57UjkbHveswh6uh2TAVcE1okyBdmTqPtConvn3N0to7DcWpPDXn3EJi8Iw==
+X-Received: by 2002:a17:907:9405:b0:a99:ee42:1f38 with SMTP id
+ a640c23a62f3a-a9abf8aefbdmr505233566b.31.1729764551455; 
+ Thu, 24 Oct 2024 03:09:11 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a913706b2sm592190766b.121.2024.10.24.02.56.10
+ a640c23a62f3a-a9a9159a2bbsm591820066b.216.2024.10.24.03.09.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 02:56:14 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7A0F45FC19;
- Thu, 24 Oct 2024 10:56:05 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Robbin Ehn <rehn@rivosinc.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 17/17] plugins: fix qemu_plugin_reset
-Date: Thu, 24 Oct 2024 10:56:03 +0100
-Message-Id: <20241024095603.1813285-18-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
-References: <20241024095603.1813285-1-alex.bennee@linaro.org>
+ Thu, 24 Oct 2024 03:09:10 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0BB045F897;
+ Thu, 24 Oct 2024 11:09:10 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  Huang Rui
+ <ray.huang@amd.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Gert Wollny <gert.wollny@collabora.com>,
+ qemu-devel@nongnu.org,  Gurchetan Singh <gurchetansingh@chromium.org>,
+ Alyssa Ross <hi@alyssa.is>,  Roger Pau =?utf-8?Q?Monn=C3=A9?=
+ <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,  Stefano Stabellini
+ <stefano.stabellini@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,  Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>,  Honglei Huang
+ <honglei1.huang@amd.com>,  Julia Zhang <julia.zhang@amd.com>,  Chen Jiqian
+ <Jiqian.Chen@amd.com>,  Rob Clark <robdclark@gmail.com>,  Yiwei Zhang
+ <zzyiwei@chromium.org>,  Sergio Lopez Pascual <slp@redhat.com>
+Subject: Re: [PATCH v2 0/6] Support virtio-gpu DRM native context
+In-Reply-To: <20241015043238.114034-1-dmitry.osipenko@collabora.com> (Dmitry
+ Osipenko's message of "Tue, 15 Oct 2024 07:32:32 +0300")
+References: <20241015043238.114034-1-dmitry.osipenko@collabora.com>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Thu, 24 Oct 2024 11:09:09 +0100
+Message-ID: <87ikthke2i.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,45 +113,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
 
-34e5e1 refactored the plugin context initialization. After this change,
-tcg_ctx->plugin_insn is not reset inconditionnally anymore, but only if
-one plugin at least is active.
+> This patchset adds DRM native context support to VirtIO-GPU on Qemu.
+> It's based on the pending Venus v17 patches [1] that bring host blobs
+> support to virtio-gpu-gl device.
+>
+> Based-on: 20240822185110.1757429-1-dmitry.osipenko@collabora.com
+>
+> [1]
+> https://lore.kernel.org/qemu-devel/20240822185110.1757429-1-dmitry.osipen=
+ko@collabora.com/
 
-When uninstalling the last plugin active, we stopped reinitializing
-tcg_ctx->plugin_insn, which leads to memory callbacks being emitted.
-This results in an error as they don't appear in a plugin op sequence as
-expected.
+Now the tree is open are you going to re-base with the tags and get it
+merged? We don't have long before softfreeze for 9.2!
 
-The correct fix is to make sure we reset plugin translation variables
-after current block translation ends. This way, we can catch any
-potential misuse of those after a given block, in more than fixing the
-current bug.
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2570
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Robbin Ehn <rehn@rivosinc.com>
-Message-Id: <20241015003819.984601-1-pierrick.bouvier@linaro.org>
-[AJB: trim patch version details from commit msg]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-19-alex.bennee@linaro.org>
-
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 2ee4c22bef..0f47bfbb48 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -467,4 +467,8 @@ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
- 
-     /* inject the instrumentation at the appropriate places */
-     plugin_gen_inject(ptb);
-+
-+    /* reset plugin translation state (plugin_tb is reused between blocks) */
-+    tcg_ctx->plugin_db = NULL;
-+    tcg_ctx->plugin_insn = NULL;
- }
--- 
-2.39.5
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
