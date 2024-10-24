@@ -2,80 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547009AF30B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBFC9AF346
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 22:02:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t43v9-0001zn-Cz; Thu, 24 Oct 2024 15:54:59 -0400
+	id 1t4412-0003OK-AI; Thu, 24 Oct 2024 16:01:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t43v6-0001zZ-SH
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:54:57 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t43v4-0001KX-Cl
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:54:56 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20cbb1cf324so10540385ad.0
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 12:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729799692; x=1730404492; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=fGQe9LgCzinjcSkVA4DthbYV5GUCfqC+fO5Ksg2Wis0=;
- b=Aro3V1FCPTn6lYiiC+/PsQsyzXU9kD8bfsAPizZjfbHJWYlGZeY0HeK/ml/7CxlWW4
- VFze7OHON2iuq6usJQuzOBGuJa8ut0PipHujfEyei6NatyfLBwjLdScRia4+6MO2r8wp
- CXImSRMgy93TkwZlG3Wd+wAMfjJaMhlAniDe8A4ulyVEDtH9ZTsSaWBl7BbSZJl+gxhi
- 8We5cJ6S/YyeA/EZ0QikiY53/tAHYcIw7GsmC+t772Ffq96uYPIxKiQGkv8iAPTJTlhC
- U6DC20N3pr5k9UfhbTpA6ERzp8ICgvOU9EiS4us7ErbPzTpulWa9/m2pibNFYPBOuFlS
- 4Vpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729799692; x=1730404492;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fGQe9LgCzinjcSkVA4DthbYV5GUCfqC+fO5Ksg2Wis0=;
- b=aqVm9QcWGZFbeoJ37rpONfNOZtkMft0Vxqk1H1JK4KuXLmVygCApIkplUEIo/VYrY5
- ivdr5oaWQOKnFZuDmEVsLwIsPN1w3uF9hAy7BSGUvW/nPBQUu440xtP1oGCnBOLKt926
- MVVhujsBwk4KcwxmLI03VB1zLVXz022N2eVXvNQoNdPo2EwHmH67Z99JbNEVv8LzA7Gr
- lfrx8driNlAgPgU4VjCD0orjXrj06Xh928MKXjXRLQW9oMtlvwmj0Ln2iB5OW5b2leMd
- T951MdVCuAg6g+eAt9DEj5cnGkZhOTEqXuNIvbPjz5RUmg2jADZK+9hD8/xoqElJD7qT
- 76Lg==
-X-Gm-Message-State: AOJu0YztTCtXYSOMVKCYngKSd8d68oKnctpPcshcST/hbPqZ5Y7aAC7V
- 39sJtRV897eX5QE3hVtokg20cd3ISu1zCN3l6io1rFPuSD+D4yzo00Uvwp3CVIBIHBL2ah+YpDn
- W
-X-Google-Smtp-Source: AGHT+IHM79ZOnFG5okB3pzVYocxlb25bNJzBF6AW3Ux2d4LkOtd3qy6Lg6HXtdiVsgEuh7i9XjxExg==
-X-Received: by 2002:a17:903:32cb:b0:20c:8abc:733a with SMTP id
- d9443c01a7336-20fb9a3b790mr39606845ad.53.1729799691693; 
- Thu, 24 Oct 2024 12:54:51 -0700 (PDT)
-Received: from localhost.localdomain ([45.176.88.171])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20e7f0de4f5sm75989015ad.192.2024.10.24.12.54.49
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Oct 2024 12:54:51 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] target/mips: Introduce disas_mt_available()
-Date: Thu, 24 Oct 2024 16:54:47 -0300
-Message-ID: <20241024195447.44600-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440n-0003JF-By
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:54 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t440k-0002CU-8b
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 16:00:49 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OGfQqM025195;
+ Thu, 24 Oct 2024 20:00:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=xvhZ7yFLH6hYKp5Eo9/xHj9SAGvkN7MQn1Sdldtlb
+ i8=; b=Bpkd1eRd76Bx1cjVd6o3q0J5sA3KbYtZMdLI+BQ4y+HtBNtejUHynvqIQ
+ cQBSmV7KmbmZarssOzufV4g9HQWC/li8qr8+FrzYGu9eS03gSQmjR3xFe6dnIzHF
+ hdmFVQ12vfRiRT685hym0Ch66MkreMGT94YOwqqqyPB0nqmkFEUQMcElb/gD+VrE
+ acZ4eDO9Af3kBRsSifMkRfy1eiPdZV8iisxy4hGKMAqm2DFDFl5epnY4Sfe3r72c
+ lioYvAdSQWBEeUQMZ8YhKYHpsc3Gvd6fUGIeNk2S7Fl79JvRqDvmPlHuMBrAh9gW
+ FJ+B1T0CK7quOpudGVoYf7oJuxWrA==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emaf2jye-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Oct 2024 20:00:36 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OHq1uP014603;
+ Thu, 24 Oct 2024 20:00:35 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk827d7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Oct 2024 20:00:35 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49OK0XrF50266372
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Oct 2024 20:00:33 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FD582004B;
+ Thu, 24 Oct 2024 20:00:33 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1BEA020040;
+ Thu, 24 Oct 2024 20:00:33 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.25.135])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Oct 2024 20:00:33 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/8] gdbstub: Allow late attachment
+Date: Thu, 24 Oct 2024 21:59:07 +0200
+Message-ID: <20241024200031.80327-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xapfuRtYHXNS-u3j201IO7o5xMpjRkBm
+X-Proofpoint-ORIG-GUID: xapfuRtYHXNS-u3j201IO7o5xMpjRkBm
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=483
+ priorityscore=1501 suspectscore=0 clxscore=1011 impostorscore=0
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240159
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,527 +106,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to commit 17c2c320f3c ("Introduce ase_mt_available helper"),
-introduce the disas_mt_available() one which takes a DisasContext
-argument to determine whether Multi-Threading is available by
-checking the MT bit of the CP0_Config3 register.
+Hi,
 
-Remove the then unused ASE_MT definition.
+This series adds the ability to attach GDB to a running qemu-user
+instance. This is useful for debugging multi-process apps.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/mips-defs.h     |   1 -
- target/mips/tcg/translate.h |   5 ++
- target/mips/tcg/translate.c | 136 ++++++++++++++++++------------------
- target/mips/cpu-defs.c.inc  |   4 +-
- 4 files changed, 75 insertions(+), 71 deletions(-)
+Patches 1 and 2 implement a small related feature: the ability to
+create individual UNIX sockets for each child process.
 
-diff --git a/target/mips/mips-defs.h b/target/mips/mips-defs.h
-index 6b5cd0d8f53..9d4d292586c 100644
---- a/target/mips/mips-defs.h
-+++ b/target/mips/mips-defs.h
-@@ -30,7 +30,6 @@
- #define ASE_DSP           0x0000000008000000ULL
- #define ASE_DSP_R2        0x0000000010000000ULL
- #define ASE_DSP_R3        0x0000000020000000ULL
--#define ASE_MT            0x0000000040000000ULL
- #define ASE_SMARTMIPS     0x0000000080000000ULL
- #define ASE_MICROMIPS     0x0000000100000000ULL
- /*
-diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index 5d196e69ac4..b613726ea42 100644
---- a/target/mips/tcg/translate.h
-+++ b/target/mips/tcg/translate.h
-@@ -228,6 +228,11 @@ bool decode_ext_octeon(DisasContext *ctx, uint32_t insn);
- #endif
- bool decode_ext_vr54xx(DisasContext *ctx, uint32_t insn);
- 
-+static inline bool disas_mt_available(DisasContext *ctx)
-+{
-+    return ctx->CP0_Config3 & (1 << CP0C3_MT);
-+}
-+
- /*
-  * Helpers for implementing sets of trans_* functions.
-  * Defer the implementation of NAME to FUNC, with optional extra arguments.
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 9e0c319bb23..dd8918d1a31 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -5315,17 +5315,17 @@ static void gen_mfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Index";
-             break;
-         case CP0_REG00__MVPCONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpcontrol(arg, tcg_env);
-             register_name = "MVPControl";
-             break;
-         case CP0_REG00__MVPCONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpconf0(arg, tcg_env);
-             register_name = "MVPConf0";
-             break;
-         case CP0_REG00__MVPCONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpconf1(arg, tcg_env);
-             register_name = "MVPConf1";
-             break;
-@@ -5346,37 +5346,37 @@ static void gen_mfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Random";
-             break;
-         case CP0_REG01__VPECONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEControl));
-             register_name = "VPEControl";
-             break;
-         case CP0_REG01__VPECONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEConf0));
-             register_name = "VPEConf0";
-             break;
-         case CP0_REG01__VPECONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEConf1));
-             register_name = "VPEConf1";
-             break;
-         case CP0_REG01__YQMASK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load64(arg, offsetof(CPUMIPSState, CP0_YQMask));
-             register_name = "YQMask";
-             break;
-         case CP0_REG01__VPESCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load64(arg, offsetof(CPUMIPSState, CP0_VPESchedule));
-             register_name = "VPESchedule";
-             break;
-         case CP0_REG01__VPESCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load64(arg, offsetof(CPUMIPSState, CP0_VPEScheFBack));
-             register_name = "VPEScheFBack";
-             break;
-         case CP0_REG01__VPEOPT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEOpt));
-             register_name = "VPEOpt";
-             break;
-@@ -5403,37 +5403,37 @@ static void gen_mfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "EntryLo0";
-             break;
-         case CP0_REG02__TCSTATUS:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcstatus(arg, tcg_env);
-             register_name = "TCStatus";
-             break;
-         case CP0_REG02__TCBIND:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcbind(arg, tcg_env);
-             register_name = "TCBind";
-             break;
-         case CP0_REG02__TCRESTART:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcrestart(arg, tcg_env);
-             register_name = "TCRestart";
-             break;
-         case CP0_REG02__TCHALT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tchalt(arg, tcg_env);
-             register_name = "TCHalt";
-             break;
-         case CP0_REG02__TCCONTEXT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tccontext(arg, tcg_env);
-             register_name = "TCContext";
-             break;
-         case CP0_REG02__TCSCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcschedule(arg, tcg_env);
-             register_name = "TCSchedule";
-             break;
-         case CP0_REG02__TCSCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcschefback(arg, tcg_env);
-             register_name = "TCScheFBack";
-             break;
-@@ -6072,17 +6072,17 @@ static void gen_mtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Index";
-             break;
-         case CP0_REG00__MVPCONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_mvpcontrol(tcg_env, arg);
-             register_name = "MVPControl";
-             break;
-         case CP0_REG00__MVPCONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             /* ignored */
-             register_name = "MVPConf0";
-             break;
-         case CP0_REG00__MVPCONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             /* ignored */
-             register_name = "MVPConf1";
-             break;
-@@ -6102,39 +6102,39 @@ static void gen_mtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Random";
-             break;
-         case CP0_REG01__VPECONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpecontrol(tcg_env, arg);
-             register_name = "VPEControl";
-             break;
-         case CP0_REG01__VPECONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeconf0(tcg_env, arg);
-             register_name = "VPEConf0";
-             break;
-         case CP0_REG01__VPECONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeconf1(tcg_env, arg);
-             register_name = "VPEConf1";
-             break;
-         case CP0_REG01__YQMASK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_yqmask(tcg_env, arg);
-             register_name = "YQMask";
-             break;
-         case CP0_REG01__VPESCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_st_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPESchedule));
-             register_name = "VPESchedule";
-             break;
-         case CP0_REG01__VPESCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_st_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPEScheFBack));
-             register_name = "VPEScheFBack";
-             break;
-         case CP0_REG01__VPEOPT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeopt(tcg_env, arg);
-             register_name = "VPEOpt";
-             break;
-@@ -6149,37 +6149,37 @@ static void gen_mtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "EntryLo0";
-             break;
-         case CP0_REG02__TCSTATUS:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcstatus(tcg_env, arg);
-             register_name = "TCStatus";
-             break;
-         case CP0_REG02__TCBIND:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcbind(tcg_env, arg);
-             register_name = "TCBind";
-             break;
-         case CP0_REG02__TCRESTART:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcrestart(tcg_env, arg);
-             register_name = "TCRestart";
-             break;
-         case CP0_REG02__TCHALT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tchalt(tcg_env, arg);
-             register_name = "TCHalt";
-             break;
-         case CP0_REG02__TCCONTEXT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tccontext(tcg_env, arg);
-             register_name = "TCContext";
-             break;
-         case CP0_REG02__TCSCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcschedule(tcg_env, arg);
-             register_name = "TCSchedule";
-             break;
-         case CP0_REG02__TCSCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcschefback(tcg_env, arg);
-             register_name = "TCScheFBack";
-             break;
-@@ -6822,17 +6822,17 @@ static void gen_dmfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Index";
-             break;
-         case CP0_REG00__MVPCONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpcontrol(arg, tcg_env);
-             register_name = "MVPControl";
-             break;
-         case CP0_REG00__MVPCONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpconf0(arg, tcg_env);
-             register_name = "MVPConf0";
-             break;
-         case CP0_REG00__MVPCONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_mvpconf1(arg, tcg_env);
-             register_name = "MVPConf1";
-             break;
-@@ -6853,40 +6853,40 @@ static void gen_dmfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Random";
-             break;
-         case CP0_REG01__VPECONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEControl));
-             register_name = "VPEControl";
-             break;
-         case CP0_REG01__VPECONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEConf0));
-             register_name = "VPEConf0";
-             break;
-         case CP0_REG01__VPECONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEConf1));
-             register_name = "VPEConf1";
-             break;
-         case CP0_REG01__YQMASK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_ld_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_YQMask));
-             register_name = "YQMask";
-             break;
-         case CP0_REG01__VPESCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_ld_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPESchedule));
-             register_name = "VPESchedule";
-             break;
-         case CP0_REG01__VPESCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_ld_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPEScheFBack));
-             register_name = "VPEScheFBack";
-             break;
-         case CP0_REG01__VPEOPT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_VPEOpt));
-             register_name = "VPEOpt";
-             break;
-@@ -6902,37 +6902,37 @@ static void gen_dmfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "EntryLo0";
-             break;
-         case CP0_REG02__TCSTATUS:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcstatus(arg, tcg_env);
-             register_name = "TCStatus";
-             break;
-         case CP0_REG02__TCBIND:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mfc0_tcbind(arg, tcg_env);
-             register_name = "TCBind";
-             break;
-         case CP0_REG02__TCRESTART:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_dmfc0_tcrestart(arg, tcg_env);
-             register_name = "TCRestart";
-             break;
-         case CP0_REG02__TCHALT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_dmfc0_tchalt(arg, tcg_env);
-             register_name = "TCHalt";
-             break;
-         case CP0_REG02__TCCONTEXT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_dmfc0_tccontext(arg, tcg_env);
-             register_name = "TCContext";
-             break;
-         case CP0_REG02__TCSCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_dmfc0_tcschedule(arg, tcg_env);
-             register_name = "TCSchedule";
-             break;
-         case CP0_REG02__TCSCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_dmfc0_tcschefback(arg, tcg_env);
-             register_name = "TCScheFBack";
-             break;
-@@ -7539,17 +7539,17 @@ static void gen_dmtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Index";
-             break;
-         case CP0_REG00__MVPCONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_mvpcontrol(tcg_env, arg);
-             register_name = "MVPControl";
-             break;
-         case CP0_REG00__MVPCONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             /* ignored */
-             register_name = "MVPConf0";
-             break;
-         case CP0_REG00__MVPCONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             /* ignored */
-             register_name = "MVPConf1";
-             break;
-@@ -7569,39 +7569,39 @@ static void gen_dmtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "Random";
-             break;
-         case CP0_REG01__VPECONTROL:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpecontrol(tcg_env, arg);
-             register_name = "VPEControl";
-             break;
-         case CP0_REG01__VPECONF0:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeconf0(tcg_env, arg);
-             register_name = "VPEConf0";
-             break;
-         case CP0_REG01__VPECONF1:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeconf1(tcg_env, arg);
-             register_name = "VPEConf1";
-             break;
-         case CP0_REG01__YQMASK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_yqmask(tcg_env, arg);
-             register_name = "YQMask";
-             break;
-         case CP0_REG01__VPESCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_st_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPESchedule));
-             register_name = "VPESchedule";
-             break;
-         case CP0_REG01__VPESCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             tcg_gen_st_tl(arg, tcg_env,
-                           offsetof(CPUMIPSState, CP0_VPEScheFBack));
-             register_name = "VPEScheFBack";
-             break;
-         case CP0_REG01__VPEOPT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_vpeopt(tcg_env, arg);
-             register_name = "VPEOpt";
-             break;
-@@ -7616,37 +7616,37 @@ static void gen_dmtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             register_name = "EntryLo0";
-             break;
-         case CP0_REG02__TCSTATUS:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcstatus(tcg_env, arg);
-             register_name = "TCStatus";
-             break;
-         case CP0_REG02__TCBIND:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcbind(tcg_env, arg);
-             register_name = "TCBind";
-             break;
-         case CP0_REG02__TCRESTART:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcrestart(tcg_env, arg);
-             register_name = "TCRestart";
-             break;
-         case CP0_REG02__TCHALT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tchalt(tcg_env, arg);
-             register_name = "TCHalt";
-             break;
-         case CP0_REG02__TCCONTEXT:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tccontext(tcg_env, arg);
-             register_name = "TCContext";
-             break;
-         case CP0_REG02__TCSCHEDULE:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcschedule(tcg_env, arg);
-             register_name = "TCSchedule";
-             break;
-         case CP0_REG02__TCSCHEFBACK:
--            CP0_CHECK(ctx->insn_flags & ASE_MT);
-+            CP0_CHECK(disas_mt_available(ctx));
-             gen_helper_mtc0_tcschefback(tcg_env, arg);
-             register_name = "TCScheFBack";
-             break;
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index 09bd62d430a..922fc39138d 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -314,7 +314,7 @@ const mips_def_t mips_defs[] =
-                     (0x3fe << CP0SRSC4_SRS14) | (0x3fe << CP0SRSC4_SRS13),
-         .SEGBITS = 32,
-         .PABITS = 32,
--        .insn_flags = CPU_MIPS32R2 | ASE_MIPS16 | ASE_DSP | ASE_MT,
-+        .insn_flags = CPU_MIPS32R2 | ASE_MIPS16 | ASE_DSP,
-         .mmu_type = MMU_TYPE_R4000,
-     },
-     {
-@@ -543,7 +543,7 @@ const mips_def_t mips_defs[] =
-         .SEGBITS = 32,
-         .PABITS = 32,
-         .insn_flags = CPU_MIPS32R6 | ISA_NANOMIPS32 |
--                      ASE_DSP | ASE_DSP_R2 | ASE_DSP_R3 | ASE_MT,
-+                      ASE_DSP | ASE_DSP_R2 | ASE_DSP_R3,
-         .mmu_type = MMU_TYPE_R4000,
-     },
- #if defined(TARGET_MIPS64)
+Patches 3-5 add the required infrastructure. In particular, we need
+to reserve a host signal for waking up threads, as discussed in [1].
+By the way, the problem with atomicity of checking for pending signals
+and invoking syscalls that I'm describing in that thread seems to
+have already been solved by the safe_syscall infrastructure, so the
+changes are fairly simple.
+
+If this series is accepted, I will rebase the all-stop series on top
+of it.
+
+Patch 6 is the implementation, patch 7 is a documentation update,
+patch 8 is a test. I tested this series on Linux and only
+compile-tested on the BSDs.
+
+Best regards,
+Ilya
+
+[1] https://lore.kernel.org/qemu-devel/94ebebf2-e775-4fd2-8fcf-921610261a7e@linaro.org/
+
+Ilya Leoshkevich (8):
+  gdbstub: Allow the %d placeholder in the socket path
+  gdbstub: Try unlinking the unix socket before binding
+  user: Introduce user/signal.h
+  user: Introduce host_interrupt_signal
+  osdep: Introduce qemu_kill_thread()
+  gdbstub: Allow late attachment
+  docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+  tests/tcg: Add late gdbstub attach test
+
+ bsd-user/main.c                            |   1 -
+ bsd-user/signal-common.h                   |   1 -
+ bsd-user/signal.c                          |  13 ++
+ docs/user/main.rst                         |  16 ++-
+ gdbstub/user.c                             | 131 +++++++++++++++++++--
+ include/qemu/osdep.h                       |   9 ++
+ include/user/signal.h                      |  25 ++++
+ linux-user/main.c                          |   1 -
+ linux-user/signal-common.h                 |   1 -
+ linux-user/signal.c                        |  12 ++
+ linux-user/syscall.c                       |   1 +
+ tests/guest-debug/run-test.py              |  15 ++-
+ tests/tcg/multiarch/Makefile.target        |   9 +-
+ tests/tcg/multiarch/gdbstub/late-attach.py |  28 +++++
+ tests/tcg/multiarch/late-attach.c          |  41 +++++++
+ util/oslib-posix.c                         |  15 +++
+ 16 files changed, 299 insertions(+), 20 deletions(-)
+ create mode 100644 include/user/signal.h
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+ create mode 100644 tests/tcg/multiarch/late-attach.c
+
 -- 
-2.45.2
+2.47.0
 
 
