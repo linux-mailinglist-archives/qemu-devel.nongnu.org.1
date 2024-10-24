@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F35F9AE1C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8EB9AE20D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3ua3-0001ED-5m; Thu, 24 Oct 2024 05:56:35 -0400
+	id 1t3uha-0002W5-H2; Thu, 24 Oct 2024 06:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZn-00019h-3h
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:19 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1t3uhW-0002VA-7A
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:04:19 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZk-0003os-ED
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:18 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a9a0ec0a94fso89118466b.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:16 -0700 (PDT)
+ id 1t3uhT-0004hc-NP
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:04:17 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-37d473c4bb6so615374f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:04:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763775; x=1730368575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729764254; x=1730369054; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QHD6OSG9G96Lp9DOw44GLfWhawl8Jnq29lPwNBLaOd0=;
- b=MQZ55JRv9Ay9zhaQVyQeHfLFEoxDVNeLkSId7qSgmu5vYGKfERxlMo4lZrSWOvNTZX
- xz2O17oz58msUE0CwFzxJSm1O3ghK1ntNNeBnupT7jPqbWHYOQrvSWutof5cTRBY51Ww
- rwsh18C+mcLzBIsw+4KO9uwPtCvY616RxiiTSufQAJKcy3cbu1b2alnaznJ/+uiFC8xS
- OtI8Tc5Yquf0eFExchKDOT38ruzg7bkQOBfLKMiYgcTkRAz151OyDzAi2UhHtWCc2F6M
- NAfwAUoSIwx9SIaheOvJO3KEwwnCFWESPpUDr+lyNgYufKdhrtUdYIQ0UruUEg7qDNtk
- I4Eg==
+ bh=/bDjSLop2+Mv88gsL28Dq0gY1HwGEOHZaaOiGIRGhO4=;
+ b=aFBnmU1GJGmmX+ONiYx0nSwfmJyZnVEvqIfxmJV3ZPDYEuz/Ws5JyJVEAneU1lkBXb
+ DzwraBsVC110h833WZ+vLK6po7aAynSkzY5HkFTg5wbLF4SN0wIV2QIs8moZW6GkpR2j
+ jbg3y8cO0ZsJqRe6Y1PDgaUZmyU/HxSq2gNueXtHyKCbnv5khEGt2gwViU043OiFUs3E
+ omI7Q3PZKZN3T98eo8lRZC/oHP4FHauWDJto65fhyIeWZLd75pwQUoPkFTQ89/qJtQCc
+ hKYBwjECj9W66Sc6A8Om/+udmyMZPdVHQs48y+lgvEO/M4/lrMBRuB4GVqhZ+4NF4bLB
+ mW9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763775; x=1730368575;
+ d=1e100.net; s=20230601; t=1729764254; x=1730369054;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QHD6OSG9G96Lp9DOw44GLfWhawl8Jnq29lPwNBLaOd0=;
- b=wcZmAOMyuTLayo27AHey/6qvFcTmMuYP/1DQR9HiBpDeqjonU3JfUDn7IKQvcD4i+p
- i2W91gJlnLwlwXUzoCuuyc+dRvezhkbU5sXbxluVA+PkcPs4qTwm8nKbuXxZCWGsPdIN
- p6iuA7RsbUNeSXqol/5tR87ZotC3wrGTpMbbRfeLoSSvo3HrSU4EynFuo2eflUYfj8OA
- fqTtlnQ12RfiKJ+UfPM1rKyiY6d7HJI5wztO0IGI3OzLkYQs89KlPrePerjWggHd7GFW
- xeVR3Vdz8T/RqFKENZ1w0PD2gL8zo5RW04cyYlFAxewiFzw1p6Bx4ZJtvM0UiWToZqhe
- 7ljQ==
-X-Gm-Message-State: AOJu0YzMcMpTebnHc8UzCI8SMN1PVYRxVzrUARm4gTiPRIMTOUJWB2hk
- ntDQouNsFi+4A5ntzJ0Q/Xq4KmOe+8j3HscVcnBHymR2FBgpWhUyClrhqZ8xwEI=
-X-Google-Smtp-Source: AGHT+IGCsaMbmOTOf+3c/DMi6woJkuHw4MIY73V/BSGn9M/Lh7e4Pb3FyGCd9VVVVXJBajnEQ6qGRQ==
-X-Received: by 2002:a17:907:1c19:b0:a9a:8a4:e090 with SMTP id
- a640c23a62f3a-a9ad2813d7cmr134421466b.50.1729763774960; 
- Thu, 24 Oct 2024 02:56:14 -0700 (PDT)
+ bh=/bDjSLop2+Mv88gsL28Dq0gY1HwGEOHZaaOiGIRGhO4=;
+ b=BBcAKzcfjO70AqpFmhoJC3qv5TalZPIOnzTrAR6OKDAaEMKAZiSVuAFl3tQgumpap8
+ /iVcUj08Y9JMcdWkGhwhLBSY9e56XjbfUtPUaUuwXw/1w0aZSb9eXSHLRzpa9FyM9v8K
+ NODZgZa5Xuo3PhJChYNzjZPl6xgZMDeU/A5vkwRnsey4kY8NTgzUR3BnaC0q9Nnp45NV
+ qFzRRYRKQkS2+vJTOjIGDWCHFczv2RYqoFezFOeaG1YXbRBL1HZIBBmTLg3QKcUiRKaC
+ ZRRUME67zPqgGGhlvgibLTQpeuEesXBqDvcsl3koonF9VNk5qXK68PnRJRPs2w/zX3JP
+ a7GQ==
+X-Gm-Message-State: AOJu0YwTDvwp1dqGgyoTs4603y+Xb0T9+aLaC1iKNcFXJwrCGZrWSPSU
+ 8n5+4k489+7y1tebPHXctarYRoM0nGXWr2JdtEEdE35fJ8/S6GHqA/0WYDTGX2Q=
+X-Google-Smtp-Source: AGHT+IFjUxXUDvKTBNYDbMnyfVMcNwydMZOy8lY/C9qD3+uYIbolltXGmV6OCLOM8eVIK9SvDfaRRw==
+X-Received: by 2002:a5d:4f84:0:b0:37d:3e6d:6a00 with SMTP id
+ ffacd0b85a97d-37efcf84845mr4685390f8f.47.1729764253961; 
+ Thu, 24 Oct 2024 03:04:13 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a91370e04sm590077066b.108.2024.10.24.02.56.09
+ a640c23a62f3a-a9a91571ebdsm603839766b.148.2024.10.24.03.04.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 02:56:12 -0700 (PDT)
+ Thu, 24 Oct 2024 03:04:13 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 50D515FC0F;
+ by draig.lan (Postfix) with ESMTP id 62EFD5FC11;
  Thu, 24 Oct 2024 10:56:05 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 15/17] testing: Enhance gdb probe script
-Date: Thu, 24 Oct 2024 10:56:01 +0100
-Message-Id: <20241024095603.1813285-16-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 16/17] MAINTAINERS: mention my plugins/next tree
+Date: Thu, 24 Oct 2024 10:56:02 +0100
+Message-Id: <20241024095603.1813285-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
 References: <20241024095603.1813285-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,119 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+Make it easier to find where plugin patches are being staged.
 
-Use list and set comprehension to simplify code. Also, gently handle
-invalid gdb filenames.
-
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241015145848.387281-1-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-16-alex.bennee@linaro.org>
+Message-Id: <20241023113406.1284676-17-alex.bennee@linaro.org>
 
-diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
-index 6dc58d06c7..6bcadce150 100644
---- a/scripts/probe-gdb-support.py
-+++ b/scripts/probe-gdb-support.py
-@@ -19,58 +19,61 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7eea7b7954..5b6c722a20 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3708,6 +3708,7 @@ F: include/tcg/
  
- import argparse
- import re
--from subprocess import check_output, STDOUT
-+from subprocess import check_output, STDOUT, CalledProcessError
-+import sys
- 
--# mappings from gdb arch to QEMU target
--mappings = {
--    "alpha" : "alpha",
-+# Mappings from gdb arch to QEMU target
-+MAP = {
-+    "alpha" : ["alpha"],
-     "aarch64" : ["aarch64", "aarch64_be"],
--    "armv7": "arm",
-+    "armv7": ["arm"],
-     "armv8-a" : ["aarch64", "aarch64_be"],
--    "avr" : "avr",
-+    "avr" : ["avr"],
-     # no hexagon in upstream gdb
--    "hppa1.0" : "hppa",
--    "i386" : "i386",
--    "i386:x86-64" : "x86_64",
--    "Loongarch64" : "loongarch64",
--    "m68k" : "m68k",
--    "MicroBlaze" : "microblaze",
-+    "hppa1.0" : ["hppa"],
-+    "i386" : ["i386"],
-+    "i386:x86-64" : ["x86_64"],
-+    "Loongarch64" : ["loongarch64"],
-+    "m68k" : ["m68k"],
-+    "MicroBlaze" : ["microblaze"],
-     "mips:isa64" : ["mips64", "mips64el"],
--    "or1k" : "or1k",
--    "powerpc:common" : "ppc",
-+    "or1k" : ["or1k"],
-+    "powerpc:common" : ["ppc"],
-     "powerpc:common64" : ["ppc64", "ppc64le"],
--    "riscv:rv32" : "riscv32",
--    "riscv:rv64" : "riscv64",
--    "s390:64-bit" : "s390x",
-+    "riscv:rv32" : ["riscv32"],
-+    "riscv:rv64" : ["riscv64"],
-+    "s390:64-bit" : ["s390x"],
-     "sh4" : ["sh4", "sh4eb"],
--    "sparc": "sparc",
--    "sparc:v8plus": "sparc32plus",
--    "sparc:v9a" : "sparc64",
-+    "sparc": ["sparc"],
-+    "sparc:v8plus": ["sparc32plus"],
-+    "sparc:v9a" : ["sparc64"],
-     # no tricore in upstream gdb
-     "xtensa" : ["xtensa", "xtensaeb"]
- }
- 
-+
- def do_probe(gdb):
--    gdb_out = check_output([gdb,
--                            "-ex", "set architecture",
--                            "-ex", "quit"], stderr=STDOUT)
-+    try:
-+        gdb_out = check_output([gdb,
-+                               "-ex", "set architecture",
-+                               "-ex", "quit"], stderr=STDOUT, encoding="utf-8")
-+    except (OSError) as e:
-+        sys.exit(e)
-+    except CalledProcessError as e:
-+        sys.exit(f'{e}. Output:\n\n{e.output}')
-+
-+    found_gdb_archs = re.search(r'Valid arguments are (.*)', gdb_out)
- 
--    m = re.search(r"Valid arguments are (.*)",
--                  gdb_out.decode("utf-8"))
-+    targets = set()
-+    if found_gdb_archs:
-+        gdb_archs = found_gdb_archs.group(1).split(", ")
-+        mapped_gdb_archs = [arch for arch in gdb_archs if arch in MAP]
- 
--    valid_arches = set()
-+        targets = {target for arch in mapped_gdb_archs for target in MAP[arch]}
- 
--    if m.group(1):
--        for arch in m.group(1).split(", "):
--            if arch in mappings:
--                mapping = mappings[arch]
--                if isinstance(mapping, str):
--                    valid_arches.add(mapping)
--                else:
--                    for entry in mapping:
--                        valid_arches.add(entry)
-+    # QEMU targets
-+    return targets
- 
--    return valid_arches
- 
- def main() -> None:
-     parser = argparse.ArgumentParser(description='Probe GDB Architectures')
+ TCG Plugins
+ M: Alex Bennée <alex.bennee@linaro.org>
++T: git https://gitlab.com/stsquad/qemu plugins/next
+ R: Alexandre Iooss <erdnaxe@crans.org>
+ R: Mahmoud Mandour <ma.mandourr@gmail.com>
+ R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 -- 
 2.39.5
 
