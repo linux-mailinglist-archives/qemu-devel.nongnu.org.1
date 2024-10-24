@@ -2,134 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAB99AF543
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 00:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652219AF5DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 01:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t46B3-0006i2-VH; Thu, 24 Oct 2024 18:19:34 -0400
+	id 1t47MK-0008Gd-Tn; Thu, 24 Oct 2024 19:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1t46B1-0006hu-Ca
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 18:19:31 -0400
-Received: from mail-dm6nam11on2062b.outbound.protection.outlook.com
- ([2a01:111:f403:2415::62b]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1t47MJ-0008G4-Kn
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:15 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1t46Ax-0002V1-Uq
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 18:19:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PXwVInD2J0Y5AuVQcSjFeQqQZ2Hzh/6SstzmUOC1nWapk7g1YjXqz2gh+FsGvC6zgOZtym5FiX1NxmMXdW1Oy3wqDZ+Lf+dratV1SdNMum38KhxfA2ZYgi5Ri8ZIOiA2XHJMwKI1i3MpSg05or8OEJJY7Lq00YGsk0UHgGOxXbt7EQyZHMZpZKtHf8KhFkqUQPaMnUEBk7kvxHrBbu5CUBRpskUtMXg7fvUNKjiWuLH/FyF1qJKfteAFD7J97x0e4zkkDJYTBBPdHiRup2iD1rKubgE4foHqBJwU78HqAbSp8bytuUDwVlyhjTkFRjbLWl6xmEcJzd9MotLa535M1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/SC5ieKJRPIibYIsk8+PDlwLCXhwPUcg4QmSo0r2BD0=;
- b=J0wBin5XtgZjCRzBzt3ku9JTcs19Br+av81Nfz0xSRTYnZJEcjyiataiIjXORj86S6rw7VzszzRY3Q8LcAkc1UScXJWHY7+wQsR2MSrktpdDOi2euyzAXl3J/K1HEtWgYwJRvDl/roVBhQ/a7e/1g9jsw+c16qJssSzMUTllFICcL/RuFMI9JjVGRAJdEYNNN0lxlD8/I7qHvZbvNXXdfb4lTmbe7aIBvreuoR+LAz0EEkHV2kqBSG6n26rzBSQpYtBrgmDaIOze+7DRbR84d1uZDsu+Vs3DzwOpIoYIdT9ntkcCfwm0KbEI6LVNkt5uONL1ykUrPohXsD8tNacoYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/SC5ieKJRPIibYIsk8+PDlwLCXhwPUcg4QmSo0r2BD0=;
- b=mnOiTk4fWbE5g1ZgoM4yv/QJwyjxFqlMYke3UYDLrp2LtnuEZ0qeEbjWWfLHfj3RVaEoHd6h0G/YXK5RtS30mnVTgnlCUnUYNvLaPohQ4Am1dFI04qxyRu27SnPX7bbGqs1XRPugZz0bRaP7mvMQB2Fs6AUZoZIHxPAYx47N3qs=
-Received: from MN2PR13CA0036.namprd13.prod.outlook.com (2603:10b6:208:160::49)
- by MW3PR12MB4475.namprd12.prod.outlook.com (2603:10b6:303:55::24)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29; Thu, 24 Oct
- 2024 22:19:20 +0000
-Received: from BN2PEPF000055DD.namprd21.prod.outlook.com
- (2603:10b6:208:160:cafe::77) by MN2PR13CA0036.outlook.office365.com
- (2603:10b6:208:160::49) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.8 via Frontend
- Transport; Thu, 24 Oct 2024 22:19:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000055DD.mail.protection.outlook.com (10.167.245.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8114.2 via Frontend Transport; Thu, 24 Oct 2024 22:19:19 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 24 Oct
- 2024 17:19:19 -0500
-From: Babu Moger <babu.moger@amd.com>
-To: <pbonzini@redhat.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v3 7/7] target/i386: Add support for EPYC-Turin model
-Date: Thu, 24 Oct 2024 17:18:25 -0500
-Message-ID: <be03f724136345f27d43f3d49f6154b239c06628.1729807947.git.babu.moger@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1729807947.git.babu.moger@amd.com>
-References: <cover.1729807947.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1t47MH-0002rN-7t
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 19:35:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1729812898; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=dHbp8wg2AcrFDP2wl1GT+iuRitSnhEoof6hZRrGzlMr9b+eScOsTwYYN/AEDz2vPBN5i1B+UtOgjO4D0XWKtmCBVZ0quumZyfTrjsNopryJg8HzMDr/IKBEX6OdnZ6JqZH+1UGr2sGdHt3olVXEQY9JTP5VXNgtirM/cG2leDyQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1729812898;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=E2b8CbCWKUrYfXCQ0gikGV2oBssBosdH+21z5JvsTvE=; 
+ b=kaYlaLlM3m1T4sG8wOduaIF0Qmz8o3sl2jbZGEQDQYKtkuz4Iw0NpoZlEPr1oznTlYgOTfA3V2A5wB23dFIkGAnJgvcw3QZKDP9BGieAcYPli3DFHqhoRACW+6WfFu3YZwt3XrZ7v8a2GH3tU4y/3q4vd7iNN9Uww7B6Nfz/YHk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729812898; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=E2b8CbCWKUrYfXCQ0gikGV2oBssBosdH+21z5JvsTvE=;
+ b=LABx9T6o+9luiBDzpeOogqVAfIyYSLoSD7MCpIS+M11Rk0FuTTrYfDg16SPLUk4e
+ A0/PkMKgy/APxTeOQDdrTTExk2byj+vcRy/9+wOWQafzgYC+xFjwq0XXU3bVjt0QN7O
+ MFh3c81KWitZxJ8xCoEYwuwHR8P93mruh57G7WoA=
+Received: by mx.zohomail.com with SMTPS id 1729812896360132.5397881193137;
+ Thu, 24 Oct 2024 16:34:56 -0700 (PDT)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
+Subject: [PATCH v3 0/6] Support virtio-gpu DRM native context
+Date: Fri, 25 Oct 2024 02:33:48 +0300
+Message-ID: <20241024233355.136867-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DD:EE_|MW3PR12MB4475:EE_
-X-MS-Office365-Filtering-Correlation-Id: 259b5d2e-c705-46a4-1314-08dcf479e7fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2Ocxaoa/Yc3oecUgSbN324OrxawjtB52CYd9iTbimOu3XIu/Z7zAGwGFnMSA?=
- =?us-ascii?Q?Rn9xJ48C0xUtBe9EWHIxLVGVlsPFokZT6+Het5bt0sTvvp0YiRD2nB5zEitT?=
- =?us-ascii?Q?bf6Z2fG7BijsOYRy/iHjVwYOllQG2BDhQIUaLAuhby7wCZyupgMT642pEKCV?=
- =?us-ascii?Q?BDGHnB4sBgoPmYl5sIs1qMSXphFZ5pc6JfkYT2tCnA0RbVDl8Ji0KiCOJ/gr?=
- =?us-ascii?Q?xhyqcjEUULo4lg/vLrhztANmGRZPGPmiEF+bVtKPVzBIIV5adSDhZrJxSh/q?=
- =?us-ascii?Q?fTsidpyrN0PMZ89NS3qqFMacRyFguKIZm7Pvx01CucLlXhXVHbn/d69tqwBN?=
- =?us-ascii?Q?FwNLvJb0zwqcDkBYsSTn3qRSr3pn9o7mZaaKMEB3PWsgxaMarUBfltRuJDrx?=
- =?us-ascii?Q?MTKKcAyYhuPcdleZAzXzu+pA57J8VsfxBPwIuB/hr5jPCa1A45MdkSmh+TyA?=
- =?us-ascii?Q?bOHtKq/CqjHHd8wCqabS6zcB8I8j49x19V9QWks2qfg+uSrbRVYZgEDBKOPd?=
- =?us-ascii?Q?tbz4bx+SsOGdXNXV3rvBjVFVX9gdr7aVZfb1HI2KoP/VY0GK/qbVD3Bm/YlU?=
- =?us-ascii?Q?K9QVVdxx20z48eDqzjNjLOY0slTlhwDudmET3qxDHwqaXjhCL2AslPiplTm6?=
- =?us-ascii?Q?42W8rDFL19z0QCxOinaQVa8RxU8fFKhQTV0A/Gnx/4ozjYeW8RGi9ftNLpdw?=
- =?us-ascii?Q?ga+4aXNU2vht05K7G++aT13txwGdlMBIPPbByu2H0Z/LwOrJizr3ISNCEvgn?=
- =?us-ascii?Q?LiSaeV1xjRgLDb/BbnVVJLDc8sZc7KQyG4BjFNhZ75N4fzHcU7nFaLMlFV63?=
- =?us-ascii?Q?+25X2TeixeIbRXdrOtlxBFKWwduE5NFtkNgM415Fk8/bP1zznR78aFaBDYK+?=
- =?us-ascii?Q?9AW7dP/31l9wX3Nd/nJpAesGF6ryR/17Dtpq4eW48BEoV6d0SHiKlE0pXcG2?=
- =?us-ascii?Q?a80lIZmuDkWyKmYq9uLxtnGK5doAfZK/b++5SxPuEXpOpnJAmXFXEHujZr4M?=
- =?us-ascii?Q?4w/l8cuUDlqMq0Cyja68OuWkVlTOPSan8ZCKwsd33sTH294cXOfbfOTftRcE?=
- =?us-ascii?Q?Ij+YL5odzJ+CE7qi1UrqQL2i0zfsOe1YXJrKPMwNiuiQqDxBxWfoBlIPiiGL?=
- =?us-ascii?Q?0n9udCO7CGzkGUr2ZhvPNnkSmxL5KaUEBsl6KO2mnT2uLyvY2qF5WCyab8f7?=
- =?us-ascii?Q?mqoJ9GkaJCUum/nlV5kn2qN9eV13JVvIIupW14ok1vCmXexBJTKtuJ5TuevP?=
- =?us-ascii?Q?jnBb5t0WPRstsAyvsrEhDME1YCERqJkJ2Yb954NsYxQB3RgSHs6S14TKEA3t?=
- =?us-ascii?Q?mSk6rE+jEm6IupMlUlTEfKXSTMJH/BuyKx0Bz8u4dzXRIwv1LIbUN5WG6OQR?=
- =?us-ascii?Q?zJfqPANN/FIp23GgJE0GUXr0efBe+WTG8QI1AuR/xCa2zwDjEyZnKLgxENRO?=
- =?us-ascii?Q?B5/ELbbvVkU=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 22:19:19.9354 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 259b5d2e-c705-46a4-1314-08dcf479e7fb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000055DD.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4475
-Received-SPF: permerror client-ip=2a01:111:f403:2415::62b;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,192 +89,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the support for AMD EPYC zen 5 processors (EPYC-Turin).
+This patchset adds DRM native context support to VirtIO-GPU on Qemu.
+It's based on the pending Venus v18 patches [1] that bring host blobs
+support to virtio-gpu-gl device.
 
-Add the following new feature bits on top of the feature bits from
-the previous generation EPYC models.
+Based-on: 20241024210311.118220-1-dmitry.osipenko@collabora.com
 
-movdiri             : Move Doubleword as Direct Store Instruction
-movdir64b           : Move 64 Bytes as Direct Store Instruction
-avx512-vp2intersect : AVX512 Vector Pair Intersection to a Pair
-                      of Mask Register
-avx-vnni            : AVX VNNI Instruction
-sbpb                : Selective Branch Predictor Barrier
-ibpb-brtype         : IBPB includes branch type prediction flushing
-srso-user-kernel-no : Not vulnerable to SRSO at the user-kernel boundary
-eraps               : Enhanced Return Address Predictor Security
-rapsize             : Return Address Predictor size. RapSize x 8 is the
-                      minimum number of CALL instructions software needs
-                      to execute to flush the RAP
+[1] https://lore.kernel.org/qemu-devel/20241024210311.118220-1-dmitry.osipenko@collabora.com/
 
-Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
-Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
-Signed-off-by: Babu Moger <babu.moger@amd.com>
----
-v3: Removed Zhao's Reviewed-by as the patch has changed,
-    Added sbpb, ibpb-brtype, srso-user-kernel-no, eraps, rapsize
+Contarary to Virgl and Venus contexts which mediate high level GFX APIs,
+DRM native context [2] mediates lower level kernel driver UAPI, which
+reflects in a less CPU overhead and less/simpler code needed to support it.
+DRM context consists of a host and guest parts that have to be implemented
+for each GPU driver. On a guest side, DRM context presents a virtual GPU as
+a real/native host GPU device for GL/VK applications.
 
-v2: Fixed minor typo.
-    Added Zhao's Reviewed-by.
----
- target/i386/cpu.c | 136 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 136 insertions(+)
+[2] https://www.youtube.com/watch?v=9sFP_yddLLQ
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 5bfa07adbf..eb49650450 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2411,6 +2411,60 @@ static const CPUCaches epyc_genoa_cache_info = {
-     },
- };
- 
-+static const CPUCaches epyc_turin_cache_info = {
-+    .l1d_cache = &(CPUCacheInfo) {
-+        .type = DATA_CACHE,
-+        .level = 1,
-+        .size = 48 * KiB,
-+        .line_size = 64,
-+        .associativity = 12,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .self_init = 1,
-+        .no_invd_sharing = true,
-+        .share_level = CPU_TOPO_LEVEL_CORE,
-+    },
-+    .l1i_cache = &(CPUCacheInfo) {
-+        .type = INSTRUCTION_CACHE,
-+        .level = 1,
-+        .size = 32 * KiB,
-+        .line_size = 64,
-+        .associativity = 8,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .self_init = 1,
-+        .no_invd_sharing = true,
-+        .share_level = CPU_TOPO_LEVEL_CORE,
-+    },
-+    .l2_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 2,
-+        .size = 1 * MiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 1024,
-+        .lines_per_tag = 1,
-+        .share_level = CPU_TOPO_LEVEL_CORE,
-+    },
-+    .l3_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 3,
-+        .size = 32 * MiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 32768,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .inclusive = true,
-+        .complex_indexing = false,
-+        .share_level = CPU_TOPO_LEVEL_DIE,
-+    },
-+};
-+
- /* The following VMX features are not supported by KVM and are left out in the
-  * CPU definitions:
-  *
-@@ -5329,6 +5383,88 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             { /* end of list */ }
-         }
-     },
-+    {
-+        .name = "EPYC-Turin",
-+        .level = 0xd,
-+        .vendor = CPUID_VENDOR_AMD,
-+        .family = 26,
-+        .model = 0,
-+        .stepping = 0,
-+        .features[FEAT_1_ECX] =
-+            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
-+            CPUID_EXT_XSAVE | CPUID_EXT_AES |  CPUID_EXT_POPCNT |
-+            CPUID_EXT_MOVBE | CPUID_EXT_SSE42 | CPUID_EXT_SSE41 |
-+            CPUID_EXT_PCID | CPUID_EXT_CX16 | CPUID_EXT_FMA |
-+            CPUID_EXT_SSSE3 | CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ |
-+            CPUID_EXT_SSE3,
-+        .features[FEAT_1_EDX] =
-+            CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX | CPUID_CLFLUSH |
-+            CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA | CPUID_PGE |
-+            CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 | CPUID_MCE |
-+            CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE | CPUID_DE |
-+            CPUID_VME | CPUID_FP87,
-+        .features[FEAT_6_EAX] =
-+            CPUID_6_EAX_ARAT,
-+        .features[FEAT_7_0_EBX] =
-+            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_AVX2 |
-+            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ERMS |
-+            CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_AVX512F |
-+            CPUID_7_0_EBX_AVX512DQ | CPUID_7_0_EBX_RDSEED | CPUID_7_0_EBX_ADX |
-+            CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_AVX512IFMA |
-+            CPUID_7_0_EBX_CLFLUSHOPT | CPUID_7_0_EBX_CLWB |
-+            CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
-+            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
-+        .features[FEAT_7_0_ECX] =
-+            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU |
-+            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
-+            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
-+            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
-+            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
-+            CPUID_7_0_ECX_RDPID | CPUID_7_0_ECX_MOVDIRI |
-+            CPUID_7_0_ECX_MOVDIR64B,
-+        .features[FEAT_7_0_EDX] =
-+            CPUID_7_0_EDX_FSRM | CPUID_7_0_EDX_AVX512_VP2INTERSECT,
-+        .features[FEAT_7_1_EAX] =
-+            CPUID_7_1_EAX_AVX_VNNI | CPUID_7_1_EAX_AVX512_BF16,
-+        .features[FEAT_8000_0001_ECX] =
-+            CPUID_EXT3_OSVW | CPUID_EXT3_3DNOWPREFETCH |
-+            CPUID_EXT3_MISALIGNSSE | CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
-+            CPUID_EXT3_CR8LEG | CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM |
-+            CPUID_EXT3_TOPOEXT | CPUID_EXT3_PERFCORE,
-+        .features[FEAT_8000_0001_EDX] =
-+            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
-+            CPUID_EXT2_FFXSR | CPUID_EXT2_MMXEXT | CPUID_EXT2_NX |
-+            CPUID_EXT2_SYSCALL,
-+        .features[FEAT_8000_0007_EBX] =
-+            CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR,
-+        .features[FEAT_8000_0008_EBX] =
-+            CPUID_8000_0008_EBX_CLZERO | CPUID_8000_0008_EBX_XSAVEERPTR |
-+            CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_IBPB |
-+            CPUID_8000_0008_EBX_IBRS | CPUID_8000_0008_EBX_STIBP |
-+            CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
-+            CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
-+        .features[FEAT_8000_0021_EAX] =
-+            CPUID_8000_0021_EAX_NO_NESTED_DATA_BP |
-+            CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
-+            CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
-+            CPUID_8000_0021_EAX_AUTO_IBRS |
-+            CPUID_8000_0021_EAX_ERAPS | CPUID_8000_0021_EAX_SBPB |
-+            CPUID_8000_0021_EAX_IBPB_BRTYPE |
-+            CPUID_8000_0021_EAX_SRSO_USER_KERNEL_NO,
-+        .features[FEAT_8000_0021_EBX] =
-+            CPUID_8000_0021_EBX_RAPSIZE,
-+        .features[FEAT_8000_0022_EAX] =
-+            CPUID_8000_0022_EAX_PERFMON_V2,
-+        .features[FEAT_XSAVE] =
-+            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
-+            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES,
-+        .features[FEAT_SVM] =
-+            CPUID_SVM_NPT | CPUID_SVM_NRIPSAVE | CPUID_SVM_VNMI |
-+            CPUID_SVM_SVME_ADDR_CHK,
-+        .xlevel = 0x80000022,
-+        .model_id = "AMD EPYC-Turin Processor",
-+        .cache_info = &epyc_turin_cache_info,
-+    },
- };
- 
- /*
+Today there are four known DRM native context drivers existing in a wild:
+
+  - Freedreno (Qualcomm SoC GPUs), completely upstreamed
+  - AMDGPU, mostly merged into upstreams
+  - Intel (i915), merge requests are opened
+  - Asahi (Apple SoC GPUs), WIP status
+
+
+# How to try out DRM context:
+
+1. Like Venus and Virgl context, DRM context requires applying WIP
+KVM patches [3] to host kernel, otherwise mapping of GPU memory blobs
+will likely fail.
+
+[3] https://lore.kernel.org/all/20241010182427.1434605-1-seanjc@google.com/
+
+2. Use latest libvirglrenderer from upstream git/main for Freedreno
+and AMDGPU native contexts. For Intel use patches [4].
+
+[4] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1384
+
+3. On guest, use latest Mesa version for Freedreno. For AMDGPU use
+Mesa patches [5], for Intel [6].
+
+[5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21658
+[6] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29870
+
+4. On guest, use latest Linux kernel v6.6+. Apply patch [7] if you're
+   running Xorg in guest.
+
+[7] https://lore.kernel.org/dri-devel/20241020224725.179937-1-dmitry.osipenko@collabora.com/
+
+Example Qemu cmdline that enables DRM context:
+
+  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm=on \
+      -machine q35,accel=kvm,memory-backend=mem1 \
+      -object memory-backend-memfd,id=mem1,size=8G -m 8G
+
+
+# Note about known performance problem in Qemu:
+
+DRM contexts are mapping host blobs extensively and these mapping
+operations work slowly in Qemu. Exact reason is unknown. Mappings work
+fast on Crosvm For DRM contexts this problem is more visible than for
+Venus/Virgl.
+
+Changelog:
+
+v3: - Improved EGL presence-check code on X11 systems for the SDL2
+      hint that prefers EGL over GLX by using better ifdefs and checking
+      Xlib presence at a build time to avoid build failure if lib SDL2
+      and system are configured with a disabled X11 support. Also added
+      clarifying comment telling that X11 hint doesn't affect Wayland
+      systems. Suggested by Akihiko Odaki.
+
+    - Corrected strerror(err) that used negative error where it should
+      be positive and vice versa that was caught by Akihiko Odaki. Added
+      clarifying comment for the case where we get positive error code
+      from virglrenderer that differs from other virglrenderer API functions.
+
+    - Improved QSLIST usage by dropping mutex protecting the async fence
+      list and using atomic variant of QSLIST helpers instead. Switched away
+      from using FOREACH helper to improve readability of the code, showing
+      that we don't precess list in unoptimal way. Like was suggested by
+      Akihiko Odaki.
+
+    - Updated patchset base to Venus v18.
+
+v2: - Updated SDL2-dmabuf patch by making use of error_report() and
+      checking presense of X11+EGL in the system before making SDL2
+      to prefer EGL backend over GLX, suggested by Akihiko Odaki.
+
+    - Improved SDL2's dmabuf-presence check that wasn't done properly
+      in v1, where EGL was set up only after first console was fully
+      inited, and thus, SDL's display .has_dmabuf callback didn't work
+      for the first console. Now dmabuf support status is pre-checked
+      before console is registered.
+
+    - Updated commit description of the patch that fixes SDL2's context
+      switching logic with a more detailed explanation of the problem.
+      Suggested by Akihiko Odaki.
+
+    - Corrected rebase typo in the async-fencing patch and switched
+      async-fencing to use a sigle-linked list instead of the double,
+      as was suggested by Akihiko Odaki.
+
+    - Replaced "=true" with "=on" in the DRM native context documentation
+      example and made virtio_gpu_virgl_init() to fail with a error message
+      if DRM context can't be initialized instead of giving a warning
+      message, as was suggested by Akihiko Odaki.
+
+    - Added patchew's dependecy tag to the cover letter as was suggested by
+      Akihiko Odaki.
+
+Dmitry Osipenko (5):
+  ui/sdl2: Restore original context after new context creation
+  linux-headers: Update to Linux v6.12-rc1
+  virtio-gpu: Handle virgl fence creation errors
+  virtio-gpu: Support asynchronous fencing
+  virtio-gpu: Support DRM native context
+
+Pierre-Eric Pelloux-Prayer (1):
+  ui/sdl2: Implement dpy dmabuf functions
+
+ docs/system/devices/virtio-gpu.rst            |  11 +
+ hw/display/virtio-gpu-gl.c                    |   5 +
+ hw/display/virtio-gpu-virgl.c                 | 154 ++++++++++--
+ hw/display/virtio-gpu.c                       |  15 ++
+ include/hw/virtio/virtio-gpu.h                |  16 ++
+ include/standard-headers/drm/drm_fourcc.h     |  43 ++++
+ include/standard-headers/linux/const.h        |  17 ++
+ include/standard-headers/linux/ethtool.h      | 226 ++++++++++++++++++
+ include/standard-headers/linux/fuse.h         |  22 +-
+ .../linux/input-event-codes.h                 |   2 +
+ include/standard-headers/linux/pci_regs.h     |  41 +++-
+ .../standard-headers/linux/virtio_balloon.h   |  16 +-
+ include/standard-headers/linux/virtio_gpu.h   |   1 +
+ include/ui/sdl2.h                             |   7 +
+ linux-headers/asm-arm64/mman.h                |   9 +
+ linux-headers/asm-arm64/unistd.h              |  25 +-
+ linux-headers/asm-generic/unistd.h            |   6 +-
+ linux-headers/asm-loongarch/kvm.h             |  24 ++
+ linux-headers/asm-loongarch/unistd.h          |   4 +-
+ linux-headers/asm-riscv/kvm.h                 |   7 +
+ linux-headers/asm-riscv/unistd.h              |  41 +---
+ linux-headers/asm-x86/kvm.h                   |   2 +
+ linux-headers/asm-x86/unistd_64.h             |   1 +
+ linux-headers/asm-x86/unistd_x32.h            |   1 +
+ linux-headers/linux/bits.h                    |   3 +
+ linux-headers/linux/const.h                   |  17 ++
+ linux-headers/linux/iommufd.h                 | 143 +++++++++--
+ linux-headers/linux/kvm.h                     |  23 +-
+ linux-headers/linux/mman.h                    |   1 +
+ linux-headers/linux/psp-sev.h                 |  28 +++
+ meson.build                                   |   4 +
+ ui/sdl2-gl.c                                  |  66 +++++
+ ui/sdl2.c                                     |  40 ++++
+ 33 files changed, 914 insertions(+), 107 deletions(-)
+
 -- 
-2.34.1
+2.47.0
 
 
