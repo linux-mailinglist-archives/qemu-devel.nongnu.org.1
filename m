@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0480B9AE292
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4F09AE282
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:29:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3v5H-0000y2-GW; Thu, 24 Oct 2024 06:28:51 -0400
+	id 1t3v5L-0000zn-Do; Thu, 24 Oct 2024 06:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t3v5C-0000vJ-VK
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:47 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1t3v5G-0000xt-Lj
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:50 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t3v5A-0008FJ-9A
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:46 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5cb15b84544so901986a12.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:28:43 -0700 (PDT)
+ id 1t3v5D-0008H5-Ov
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:50 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a9a6b4ca29bso77412166b.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729765723; x=1730370523;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729765726; x=1730370526;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bz/mNzSry4lLD1G1310RMOxW7TAxrgxHRhUSMqGbbHA=;
- b=TRbGQNs0qupd5El4aVQelvVhL1SsqF2nYPJX1PeoRjaEPYcIwSPj65fZXG3tRgpMPs
- srm8GlvrRsr7t5Y+iPs2aesl9lF1zxOYfRDMs493NjG70RTKc13uZJr9Ny4Bss/P4JeX
- 7Ah3SaRXmS2ZYITjiLUj78GCDObOZWjtI+H1q5dlluNca8Vdc2rCTtvMM8FNjTiIgaBS
- TZTzwr77OMOCFhDlMqbYCTlnkHMGeLQhFN3L9E00MBDrVV9YbBwEpvpLO5ByA8uNTsFQ
- 57vFffjp0j+DUe2WimetYHWUl+v5ZctzLg6u0/CMUFnbnh/gKDvqZ4gBzWqxZplAprc0
- 9RdA==
+ bh=srotUHyJbBG14YJnMiXmtjlIkN3kjov0nscN29OW7AI=;
+ b=DvjPynz+jThEzZCWFU3jQuJF/Ek+k6YaOs2mlvfMzmBqUWGSPjC3yDNqtJf9ZPW497
+ Q0FXU4QHIyw31/3jOGjx5ThZNICr8ggTNGCfCkLedJePyq168lvmjluXb4x5rG3mJnfI
+ HYqpnvLv45iyYqIQQyBj1yWJeHjWyqpCIWVRH4e4GPZdnn2/ReliuUv6Jr7i4/6e+DYa
+ Vc4oP/9CrRPR7sSvLv7iHsPn987uX9NpQQPoLimIFSrMGrMxjEvYZaf+ti6MhS1Ieyby
+ +EoRx7ryqoOdy3Jomhx3w9ophgufm7itNXdCiq0VagHPnjF3g/rKCagbcAv2gn359LUu
+ 3KZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729765723; x=1730370523;
+ d=1e100.net; s=20230601; t=1729765726; x=1730370526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bz/mNzSry4lLD1G1310RMOxW7TAxrgxHRhUSMqGbbHA=;
- b=WJG65mvRyZCyj6D7fRsf7UUascDoZcSi93E0xk4ys/DwvlUJy5DyneWcdE393bs/p+
- sBoiFhOoU4gjAXYpzI9FBrvqQfiN5zcF6OLjklwJ+AhcEA0f6E7mlLLYvgXbT0lhbW7A
- CzPJWTpKm5VG+WY2hElGyI9VvHzVL6bUQlpbibvtJaGvPuhyGcnUs/22mhEkHv9V8p+T
- wO7CXRuaCvf/1vLAxjihuGSWZVK6FvJCU/abwmO2MQLUap8taP7iOGs7QK3nh0i2uzbG
- G3hOBF17+ZXqxnpUIeL35X/RxCNHqcnXeauUkt0NPDbHwBsxEGl86ticXMGi6lzgwIuN
- s81w==
-X-Gm-Message-State: AOJu0Yy+vsxIvAl42OIr3bgf+XvybULMbLUBxuUPbPd2mE6XvLm1YgKS
- XWZUJ8lVf1JZMOicmyTQ7DF9ykZCYxI7uKkmuXl4xdljScjYeXdmCGUmwHSTr5ilFH223dL4VnV
- qOQ==
-X-Google-Smtp-Source: AGHT+IFTJ3JbC76Lz9f6bCIHNSmAZscoc70vg71xHP5TjAOQPwmP9JkODwDIiQun5SA/Ijq0+2qq3A==
-X-Received: by 2002:a17:907:1c16:b0:a99:55ab:b666 with SMTP id
- a640c23a62f3a-a9abf8aa246mr495232566b.34.1729765722581; 
- Thu, 24 Oct 2024 03:28:42 -0700 (PDT)
+ bh=srotUHyJbBG14YJnMiXmtjlIkN3kjov0nscN29OW7AI=;
+ b=oSKGv/+J0Hq91R9bOsarIx5N0WxnjtRTz72uiZxsqkWplJrGe29B2S55HUea5nb3aT
+ 2BaaBMRLil258uQr0Zffp6gjEKp0LIqhRf0H1nm+JMjO2eRPRSyAUQwj4SNrXT5YBdeH
+ /hg/n8Tkud80Qkh5P694D2IzI4ZZQSVOuaiMdIjxgqrQfT5Gummt/SJCc4ak7TB75gRp
+ A5cHcjgp03hZ4Ex1VlokE14FHlwg+oS87Jk/kwA0Ut8gY/xy7TUKNebo/LCrRwKHkQbx
+ uahfQ5d8mFrFiU1GUmQQVRXPZ6V9xB6lEYlgYRVqF75AFBfZMxzK3Yky3VNs2pBsLBk8
+ 7XLg==
+X-Gm-Message-State: AOJu0Yyh0j+eP2Ds3rUbjRbDHdeD/qMimDYIsNAMi+1hsuYdtc/IJHNg
+ ZuHzpNIPdl1Q619qClHFoTcjIHLKrUWsqGZNkrB+DuISTfWhcl//HpKyBNQgIZ+N2OzGf14hLWM
+ j4A==
+X-Google-Smtp-Source: AGHT+IG+xwOJgxIJNc587NrJWxSFXaSN4m5mNRoAAv0dE3NxTtrHvVS9tN5C79/fYwQwg/cA1twqNw==
+X-Received: by 2002:a17:906:c115:b0:a9a:e6:a031 with SMTP id
+ a640c23a62f3a-a9abf964e1amr533555166b.59.1729765726244; 
+ Thu, 24 Oct 2024 03:28:46 -0700 (PDT)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a913706d3sm601019066b.134.2024.10.24.03.28.40
+ a640c23a62f3a-a9a913706d3sm601019066b.134.2024.10.24.03.28.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Oct 2024 03:28:42 -0700 (PDT)
+ Thu, 24 Oct 2024 03:28:45 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
@@ -72,16 +72,17 @@ Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
  jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, Alexander Graf <graf@amazon.com>
-Subject: [PATCH v4 09/15] gpex: Allow more than 4 legacy IRQs
-Date: Thu, 24 Oct 2024 12:28:07 +0200
-Message-Id: <20241024102813.9855-10-phil@philjordan.eu>
+Subject: [PATCH v4 10/15] hw/vmapple/aes: Introduce aes engine
+Date: Thu, 24 Oct 2024 12:28:08 +0200
+Message-Id: <20241024102813.9855-11-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 In-Reply-To: <20241024102813.9855-1-phil@philjordan.eu>
 References: <20241024102813.9855-1-phil@philjordan.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::533;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x533.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62f;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -105,357 +106,696 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Graf <graf@amazon.com>
 
-Some boards such as vmapple don't do real legacy PCI IRQ swizzling.
-Instead, they just keep allocating more board IRQ lines for each new
-legacy IRQ. Let's support that mode by giving instantiators a new
-"nr_irqs" property they can use to support more than 4 legacy IRQ lines.
-In this mode, GPEX will export more IRQ lines, one for each device.
+VMApple contains an "aes" engine device that it uses to encrypt and
+decrypt its nvram. It has trivial hard coded keys it uses for that
+purpose.
+
+Add device emulation for this device model.
 
 Signed-off-by: Alexander Graf <graf@amazon.com>
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
+v3:
+
+ * Rebased on latest upstream and fixed minor breakages.
+ * Replaced legacy device reset method with Resettable method
 
 v4:
 
- * Turned pair of IRQ arrays into array of structs.
- * Simplified swizzling logic selection.
+ * Improved logging of unimplemented functions and guest errors.
+ * Better adherence to naming and coding conventions.
+ * Cleaner error handling and recovery, including using g_autoptr
 
- hw/arm/sbsa-ref.c          |  2 +-
- hw/arm/virt.c              |  2 +-
- hw/i386/microvm.c          |  2 +-
- hw/loongarch/virt.c        |  2 +-
- hw/mips/loongson3_virt.c   |  2 +-
- hw/openrisc/virt.c         | 12 +++++------
- hw/pci-host/gpex.c         | 43 ++++++++++++++++++++++++++++++--------
- hw/riscv/virt.c            | 12 +++++------
- hw/xtensa/virt.c           |  2 +-
- include/hw/pci-host/gpex.h |  7 +++----
- 10 files changed, 55 insertions(+), 31 deletions(-)
+ hw/vmapple/Kconfig      |   2 +
+ hw/vmapple/aes.c        | 572 ++++++++++++++++++++++++++++++++++++++++
+ hw/vmapple/meson.build  |   1 +
+ hw/vmapple/trace-events |  16 ++
+ include/qemu/cutils.h   |  15 ++
+ util/hexdump.c          |  14 +
+ 6 files changed, 620 insertions(+)
+ create mode 100644 hw/vmapple/aes.c
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index e3195d54497..7e7322486c2 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -673,7 +673,7 @@ static void create_pcie(SBSAMachineState *sms)
-     /* Map IO port space */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, base_pio);
+diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
+index 8b137891791..a73504d5999 100644
+--- a/hw/vmapple/Kconfig
++++ b/hw/vmapple/Kconfig
+@@ -1 +1,3 @@
++config VMAPPLE_AES
++    bool
  
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            qdev_get_gpio_in(sms->gic, irq + i));
-         gpex_set_irq_num(GPEX_HOST(dev), i, irq + i);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 8b2b991d978..bd3b17be2ea 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1547,7 +1547,7 @@ static void create_pcie(VirtMachineState *vms)
-     /* Map IO port space */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, base_pio);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            qdev_get_gpio_in(vms->gic, irq + i));
-         gpex_set_irq_num(GPEX_HOST(dev), i, irq + i);
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index 693099f2256..b3a348bee09 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -139,7 +139,7 @@ static void create_gpex(MicrovmMachineState *mms)
-                                     mms->gpex.mmio64.base, mmio64_alias);
-     }
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            x86ms->gsi[mms->gpex.irq + i]);
-     }
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 9a635d1d3d3..50056384994 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -741,7 +741,7 @@ static void virt_devices_init(DeviceState *pch_pic,
-     memory_region_add_subregion(get_system_memory(), VIRT_PCI_IO_BASE,
-                                 pio_alias);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(d, i,
-                            qdev_get_gpio_in(pch_pic, 16 + i));
-         gpex_set_irq_num(GPEX_HOST(gpex_dev), i, 16 + i);
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index f3b6326cc59..884b5f23a99 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -458,7 +458,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
-                                 virt_memmap[VIRT_PCIE_PIO].base, s->pio_alias);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, virt_memmap[VIRT_PCIE_PIO].base);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         irq = qdev_get_gpio_in(pic, PCIE_IRQ_BASE + i);
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-         gpex_set_irq_num(GPEX_HOST(dev), i, PCIE_IRQ_BASE + i);
-diff --git a/hw/openrisc/virt.c b/hw/openrisc/virt.c
-index 47d2c9bd3c7..6f053bf48e0 100644
---- a/hw/openrisc/virt.c
-+++ b/hw/openrisc/virt.c
-@@ -318,7 +318,7 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
- {
-     int pin, dev;
-     uint32_t irq_map_stride = 0;
--    uint32_t full_irq_map[GPEX_NUM_IRQS * GPEX_NUM_IRQS * 6] = {};
-+    uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 6] = {};
-     uint32_t *irq_map = full_irq_map;
- 
-     /*
-@@ -330,11 +330,11 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
-      * possible slot) seeing the interrupt-map-mask will allow the table
-      * to wrap to any number of devices.
-      */
--    for (dev = 0; dev < GPEX_NUM_IRQS; dev++) {
-+    for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-         int devfn = dev << 3;
- 
--        for (pin = 0; pin < GPEX_NUM_IRQS; pin++) {
--            int irq_nr = irq_base + ((pin + PCI_SLOT(devfn)) % GPEX_NUM_IRQS);
-+        for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-+            int irq_nr = irq_base + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
-             /* Fill PCI address cells */
-@@ -357,7 +357,7 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
-     }
- 
-     qemu_fdt_setprop(fdt, nodename, "interrupt-map", full_irq_map,
--                     GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+                     PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
- 
-     qemu_fdt_setprop_cells(fdt, nodename, "interrupt-map-mask",
-@@ -409,7 +409,7 @@ static void openrisc_virt_pcie_init(OR1KVirtState *state,
-     memory_region_add_subregion(get_system_memory(), pio_base, alias);
- 
-     /* Connect IRQ lines. */
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         pcie_irq = get_per_cpu_irq(cpus, num_cpus, irq_base + i);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, pcie_irq);
-diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
-index e9cf455bf52..cd63aa2d3cf 100644
---- a/hw/pci-host/gpex.c
-+++ b/hw/pci-host/gpex.c
-@@ -32,6 +32,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/irq.h"
-+#include "hw/pci/pci_bus.h"
- #include "hw/pci-host/gpex.h"
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
-@@ -41,20 +42,25 @@
-  * GPEX host
-  */
- 
-+struct GPEXIrq {
-+    qemu_irq irq;
-+    int irq_num;
+diff --git a/hw/vmapple/aes.c b/hw/vmapple/aes.c
+new file mode 100644
+index 00000000000..59cdcd65f90
+--- /dev/null
++++ b/hw/vmapple/aes.c
+@@ -0,0 +1,572 @@
++/*
++ * QEMU Apple AES device emulation
++ *
++ * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "trace.h"
++#include "crypto/hash.h"
++#include "crypto/aes.h"
++#include "crypto/cipher.h"
++#include "hw/irq.h"
++#include "hw/sysbus.h"
++#include "migration/vmstate.h"
++#include "qemu/cutils.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "sysemu/dma.h"
++
++#define TYPE_AES          "apple-aes"
++OBJECT_DECLARE_SIMPLE_TYPE(AESState, AES)
++
++#define MAX_FIFO_SIZE     9
++
++#define CMD_KEY           0x1
++#define CMD_KEY_CONTEXT_SHIFT    27
++#define CMD_KEY_CONTEXT_MASK     (0x1 << CMD_KEY_CONTEXT_SHIFT)
++#define CMD_KEY_SELECT_MAX_IDX   0x7
++#define CMD_KEY_SELECT_SHIFT     24
++#define CMD_KEY_SELECT_MASK      (CMD_KEY_SELECT_MAX_IDX << CMD_KEY_SELECT_SHIFT)
++#define CMD_KEY_KEY_LEN_NUM      4u
++#define CMD_KEY_KEY_LEN_SHIFT    22
++#define CMD_KEY_KEY_LEN_MASK     ((CMD_KEY_KEY_LEN_NUM - 1u) << CMD_KEY_KEY_LEN_SHIFT)
++#define CMD_KEY_ENCRYPT_SHIFT    20
++#define CMD_KEY_ENCRYPT_MASK     (0x1 << CMD_KEY_ENCRYPT_SHIFT)
++#define CMD_KEY_BLOCK_MODE_SHIFT 16
++#define CMD_KEY_BLOCK_MODE_MASK  (0x3 << CMD_KEY_BLOCK_MODE_SHIFT)
++#define CMD_IV            0x2
++#define CMD_IV_CONTEXT_SHIFT     26
++#define CMD_IV_CONTEXT_MASK      (0x3 << CMD_KEY_CONTEXT_SHIFT)
++#define CMD_DSB           0x3
++#define CMD_SKG           0x4
++#define CMD_DATA          0x5
++#define CMD_DATA_KEY_CTX_SHIFT   27
++#define CMD_DATA_KEY_CTX_MASK    (0x1 << CMD_DATA_KEY_CTX_SHIFT)
++#define CMD_DATA_IV_CTX_SHIFT    25
++#define CMD_DATA_IV_CTX_MASK     (0x3 << CMD_DATA_IV_CTX_SHIFT)
++#define CMD_DATA_LEN_MASK        0xffffff
++#define CMD_STORE_IV      0x6
++#define CMD_STORE_IV_ADDR_MASK   0xffffff
++#define CMD_WRITE_REG     0x7
++#define CMD_FLAG          0x8
++#define CMD_FLAG_STOP_MASK       BIT(26)
++#define CMD_FLAG_RAISE_IRQ_MASK  BIT(27)
++#define CMD_FLAG_INFO_MASK       0xff
++#define CMD_MAX           0x10
++
++#define CMD_SHIFT         28
++
++#define REG_STATUS            0xc
++#define REG_STATUS_DMA_READ_RUNNING     BIT(0)
++#define REG_STATUS_DMA_READ_PENDING     BIT(1)
++#define REG_STATUS_DMA_WRITE_RUNNING    BIT(2)
++#define REG_STATUS_DMA_WRITE_PENDING    BIT(3)
++#define REG_STATUS_BUSY                 BIT(4)
++#define REG_STATUS_EXECUTING            BIT(5)
++#define REG_STATUS_READY                BIT(6)
++#define REG_STATUS_TEXT_DPA_SEEDED      BIT(7)
++#define REG_STATUS_UNWRAP_DPA_SEEDED    BIT(8)
++
++#define REG_IRQ_STATUS        0x18
++#define REG_IRQ_STATUS_INVALID_CMD      BIT(2)
++#define REG_IRQ_STATUS_FLAG             BIT(5)
++#define REG_IRQ_ENABLE        0x1c
++#define REG_WATERMARK         0x20
++#define REG_Q_STATUS          0x24
++#define REG_FLAG_INFO         0x30
++#define REG_FIFO              0x200
++
++static const uint32_t key_lens[CMD_KEY_KEY_LEN_NUM] = {
++    [0] = 16,
++    [1] = 24,
++    [2] = 32,
++    [3] = 64,
 +};
 +
- static void gpex_set_irq(void *opaque, int irq_num, int level)
- {
-     GPEXHost *s = opaque;
- 
--    qemu_set_irq(s->irq[irq_num], level);
-+    qemu_set_irq(s->irq[irq_num].irq, level);
- }
- 
- int gpex_set_irq_num(GPEXHost *s, int index, int gsi)
- {
--    if (index >= GPEX_NUM_IRQS) {
-+    if (index >= s->num_irqs) {
-         return -EINVAL;
-     }
- 
--    s->irq_num[index] = gsi;
-+    s->irq[index].irq_num = gsi;
-     return 0;
- }
- 
-@@ -62,7 +68,7 @@ static PCIINTxRoute gpex_route_intx_pin_to_irq(void *opaque, int pin)
- {
-     PCIINTxRoute route;
-     GPEXHost *s = opaque;
--    int gsi = s->irq_num[pin];
-+    int gsi = s->irq[pin].irq_num;
- 
-     route.irq = gsi;
-     if (gsi < 0) {
-@@ -74,6 +80,13 @@ static PCIINTxRoute gpex_route_intx_pin_to_irq(void *opaque, int pin)
-     return route;
- }
- 
-+static int gpex_swizzle_map_irq_fn(PCIDevice *pci_dev, int pin)
-+{
-+    PCIBus *bus = pci_device_root_bus(pci_dev);
++typedef struct Key {
++    uint32_t key_len;
++    uint8_t key[32];
++} Key;
 +
-+    return (PCI_SLOT(pci_dev->devfn) + pin) % bus->nirq;
++typedef struct IV {
++    uint32_t iv[4];
++} IV;
++
++static Key builtin_keys[CMD_KEY_SELECT_MAX_IDX + 1] = {
++    [1] = {
++        .key_len = 32,
++        .key = { 0x1 },
++    },
++    [2] = {
++        .key_len = 32,
++        .key = { 0x2 },
++    },
++    [3] = {
++        .key_len = 32,
++        .key = { 0x3 },
++    }
++};
++
++struct AESState {
++    SysBusDevice parent_obj;
++
++    qemu_irq irq;
++    MemoryRegion iomem1;
++    MemoryRegion iomem2;
++    AddressSpace *as;
++
++    uint32_t status;
++    uint32_t q_status;
++    uint32_t irq_status;
++    uint32_t irq_enable;
++    uint32_t watermark;
++    uint32_t flag_info;
++    uint32_t fifo[MAX_FIFO_SIZE];
++    uint32_t fifo_idx;
++    Key key[2];
++    IV iv[4];
++    bool is_encrypt;
++    QCryptoCipherMode block_mode;
++};
++
++static void aes_update_irq(AESState *s)
++{
++    qemu_set_irq(s->irq, !!(s->irq_status & s->irq_enable));
 +}
 +
- static void gpex_host_realize(DeviceState *dev, Error **errp)
- {
-     PCIHostState *pci = PCI_HOST_BRIDGE(dev);
-@@ -82,6 +95,8 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
-     PCIExpressHost *pex = PCIE_HOST_BRIDGE(dev);
-     int i;
- 
-+    s->irq = g_malloc0_n(s->num_irqs, sizeof(*s->irq));
-+
-     pcie_host_mmcfg_init(pex, PCIE_MMCFG_SIZE_MAX);
-     sysbus_init_mmio(sbd, &pex->mmio);
- 
-@@ -128,19 +143,27 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
-         sysbus_init_mmio(sbd, &s->io_ioport);
-     }
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
--        sysbus_init_irq(sbd, &s->irq[i]);
--        s->irq_num[i] = -1;
-+    for (i = 0; i < s->num_irqs; i++) {
-+        sysbus_init_irq(sbd, &s->irq[i].irq);
-+        s->irq[i].irq_num = -1;
-     }
- 
-     pci->bus = pci_register_root_bus(dev, "pcie.0", gpex_set_irq,
--                                     pci_swizzle_map_irq_fn, s, &s->io_mmio,
--                                     &s->io_ioport, 0, 4, TYPE_PCIE_BUS);
-+                                     gpex_swizzle_map_irq_fn,
-+                                     s, &s->io_mmio, &s->io_ioport, 0,
-+                                     s->num_irqs, TYPE_PCIE_BUS);
- 
-     pci_bus_set_route_irq_fn(pci->bus, gpex_route_intx_pin_to_irq);
-     qdev_realize(DEVICE(&s->gpex_root), BUS(pci->bus), &error_fatal);
- }
- 
-+static void gpex_host_unrealize(DeviceState *dev)
++static uint64_t aes1_read(void *opaque, hwaddr offset, unsigned size)
 +{
-+    GPEXHost *s = GPEX_HOST(dev);
++    AESState *s = opaque;
++    uint64_t res = 0;
 +
-+    g_free(s->irq);
++    switch (offset) {
++    case REG_STATUS:
++        res = s->status;
++        break;
++    case REG_IRQ_STATUS:
++        res = s->irq_status;
++        break;
++    case REG_IRQ_ENABLE:
++        res = s->irq_enable;
++        break;
++    case REG_WATERMARK:
++        res = s->watermark;
++        break;
++    case REG_Q_STATUS:
++        res = s->q_status;
++        break;
++    case REG_FLAG_INFO:
++        res = s->flag_info;
++        break;
++
++    default:
++        qemu_log_mask(LOG_UNIMP, "%s: Unknown AES MMIO offset %" PRIx64 "\n",
++                      __func__, offset);
++        break;
++    }
++
++    trace_aes_read(offset, res);
++
++    return res;
 +}
 +
- static const char *gpex_host_root_bus_path(PCIHostState *host_bridge,
-                                           PCIBus *rootbus)
- {
-@@ -166,6 +189,7 @@ static Property gpex_host_properties[] = {
-                        gpex_cfg.mmio64.base, 0),
-     DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MMIO_SIZE, GPEXHost,
-                      gpex_cfg.mmio64.size, 0),
-+    DEFINE_PROP_UINT8("num-irqs", GPEXHost, num_irqs, PCI_NUM_PINS),
-     DEFINE_PROP_END_OF_LIST(),
- };
++static void fifo_append(AESState *s, uint64_t val)
++{
++    if (s->fifo_idx == MAX_FIFO_SIZE) {
++        /* Exceeded the FIFO. Bail out */
++        return;
++    }
++
++    s->fifo[s->fifo_idx++] = val;
++}
++
++static bool has_payload(AESState *s, uint32_t elems)
++{
++    return s->fifo_idx >= (elems + 1);
++}
++
++static bool cmd_key(AESState *s)
++{
++    uint32_t cmd = s->fifo[0];
++    uint32_t key_select = (cmd & CMD_KEY_SELECT_MASK) >> CMD_KEY_SELECT_SHIFT;
++    uint32_t ctxt = (cmd & CMD_KEY_CONTEXT_MASK) >> CMD_KEY_CONTEXT_SHIFT;
++    uint32_t key_len;
++
++    switch ((cmd & CMD_KEY_BLOCK_MODE_MASK) >> CMD_KEY_BLOCK_MODE_SHIFT) {
++    case 0:
++        s->block_mode = QCRYPTO_CIPHER_MODE_ECB;
++        break;
++    case 1:
++        s->block_mode = QCRYPTO_CIPHER_MODE_CBC;
++        break;
++    default:
++        return false;
++    }
++
++    s->is_encrypt = cmd & CMD_KEY_ENCRYPT_MASK;
++    key_len = key_lens[((cmd & CMD_KEY_KEY_LEN_MASK) >> CMD_KEY_KEY_LEN_SHIFT)];
++
++    if (key_select) {
++        trace_aes_cmd_key_select_builtin(ctxt, key_select,
++                                         s->is_encrypt ? "en" : "de",
++                                         QCryptoCipherMode_str(s->block_mode));
++        s->key[ctxt] = builtin_keys[key_select];
++    } else {
++        trace_aes_cmd_key_select_new(ctxt, key_len,
++                                     s->is_encrypt ? "en" : "de",
++                                     QCryptoCipherMode_str(s->block_mode));
++        if (key_len > sizeof(s->key[ctxt].key)) {
++            return false;
++        }
++        if (!has_payload(s, key_len / sizeof(uint32_t))) {
++            /* wait for payload */
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: No payload\n", __func__);
++            return false;
++        }
++        memcpy(&s->key[ctxt].key, &s->fifo[1], key_len);
++        s->key[ctxt].key_len = key_len;
++    }
++
++    return true;
++}
++
++static bool cmd_iv(AESState *s)
++{
++    uint32_t cmd = s->fifo[0];
++    uint32_t ctxt = (cmd & CMD_IV_CONTEXT_MASK) >> CMD_IV_CONTEXT_SHIFT;
++
++    if (!has_payload(s, 4)) {
++        /* wait for payload */
++        return false;
++    }
++    memcpy(&s->iv[ctxt].iv, &s->fifo[1], sizeof(s->iv[ctxt].iv));
++    trace_aes_cmd_iv(ctxt, s->fifo[1], s->fifo[2], s->fifo[3], s->fifo[4]);
++
++    return true;
++}
++
++static void dump_data(const char *desc, const void *p, size_t len)
++{
++    static const size_t MAX_LEN = 0x1000;
++    char hex[MAX_LEN * 2 + 1] = "";
++
++    if (len > MAX_LEN) {
++        return;
++    }
++
++    qemu_hexdump_to_buffer(hex, sizeof(hex), p, len);
++    trace_aes_dump_data(desc, hex);
++}
++
++static bool cmd_data(AESState *s)
++{
++    uint32_t cmd = s->fifo[0];
++    uint32_t ctxt_iv = 0;
++    uint32_t ctxt_key = (cmd & CMD_DATA_KEY_CTX_MASK) >> CMD_DATA_KEY_CTX_SHIFT;
++    uint32_t len = cmd & CMD_DATA_LEN_MASK;
++    uint64_t src_addr = s->fifo[2];
++    uint64_t dst_addr = s->fifo[3];
++    QCryptoCipherAlgo alg;
++    g_autoptr(QCryptoCipher) cipher = NULL;
++    g_autoptr(GByteArray) src = NULL;
++    g_autoptr(GByteArray) dst = NULL;
++    MemTxResult r;
++
++    src_addr |= ((uint64_t)s->fifo[1] << 16) & 0xffff00000000ULL;
++    dst_addr |= ((uint64_t)s->fifo[1] << 32) & 0xffff00000000ULL;
++
++    trace_aes_cmd_data(ctxt_key, ctxt_iv, src_addr, dst_addr, len);
++
++    if (!has_payload(s, 3)) {
++        /* wait for payload */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: No payload\n", __func__);
++        return false;
++    }
++
++    if (ctxt_key >= ARRAY_SIZE(s->key) ||
++        ctxt_iv >= ARRAY_SIZE(s->iv)) {
++        /* Invalid input */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid key or iv\n", __func__);
++        return false;
++    }
++
++    src = g_byte_array_sized_new(len);
++    g_byte_array_set_size(src, len);
++    dst = g_byte_array_sized_new(len);
++    g_byte_array_set_size(dst, len);
++
++    r = dma_memory_read(s->as, src_addr, src->data, len, MEMTXATTRS_UNSPECIFIED);
++    if (r != MEMTX_OK) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: DMA read of %"PRIu32" bytes "
++                      "from 0x%"PRIx64" failed. (r=%d)\n",
++                      __func__, len, src_addr, r);
++        return false;
++    }
++
++    dump_data("cmd_data(): src_data=", src->data, len);
++
++    switch (s->key[ctxt_key].key_len) {
++    case 128 / 8:
++        alg = QCRYPTO_CIPHER_ALGO_AES_128;
++        break;
++    case 192 / 8:
++        alg = QCRYPTO_CIPHER_ALGO_AES_192;
++        break;
++    case 256 / 8:
++        alg = QCRYPTO_CIPHER_ALGO_AES_256;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid key length\n", __func__);
++        return false;
++    }
++    cipher = qcrypto_cipher_new(alg, s->block_mode,
++                                s->key[ctxt_key].key,
++                                s->key[ctxt_key].key_len, NULL);
++    if (!cipher) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Failed to create cipher object\n",
++                      __func__);
++        return false;
++    }
++    if (s->block_mode != QCRYPTO_CIPHER_MODE_ECB) {
++        if (qcrypto_cipher_setiv(cipher, (void *)s->iv[ctxt_iv].iv,
++                                 sizeof(s->iv[ctxt_iv].iv), NULL) != 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Failed to set IV\n", __func__);
++            return false;
++        }
++    }
++    if (s->is_encrypt) {
++        if (qcrypto_cipher_encrypt(cipher, src->data, dst->data, len, NULL) != 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Encryption failed\n", __func__);
++            return false;
++        }
++    } else {
++        if (qcrypto_cipher_decrypt(cipher, src->data, dst->data, len, NULL) != 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Decryption failed\n", __func__);
++            return false;
++        }
++    }
++
++    dump_data("cmd_data(): dst_data=", dst->data, len);
++    r = dma_memory_write(s->as, dst_addr, dst->data, len, MEMTXATTRS_UNSPECIFIED);
++    if (r != MEMTX_OK) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: DMA write of %"PRIu32" bytes "
++                      "to 0x%"PRIx64" failed. (r=%d)\n",
++                      __func__, len, src_addr, r);
++        return false;
++    }
++
++    return true;
++}
++
++static bool cmd_store_iv(AESState *s)
++{
++    uint32_t cmd = s->fifo[0];
++    uint32_t ctxt = (cmd & CMD_IV_CONTEXT_MASK) >> CMD_IV_CONTEXT_SHIFT;
++    uint64_t addr = s->fifo[1];
++
++    if (!has_payload(s, 1)) {
++        /* wait for payload */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: No payload\n", __func__);
++        return false;
++    }
++
++    if (ctxt >= ARRAY_SIZE(s->iv)) {
++        /* Invalid context selected */
++        return false;
++    }
++
++    addr |= ((uint64_t)cmd << 32) & 0xff00000000ULL;
++    cpu_physical_memory_write(addr, &s->iv[ctxt].iv, sizeof(s->iv[ctxt].iv));
++
++    trace_aes_cmd_store_iv(ctxt, addr, s->iv[ctxt].iv[0], s->iv[ctxt].iv[1],
++                           s->iv[ctxt].iv[2], s->iv[ctxt].iv[3]);
++
++    return true;
++}
++
++static bool cmd_flag(AESState *s)
++{
++    uint32_t cmd = s->fifo[0];
++    uint32_t raise_irq = cmd & CMD_FLAG_RAISE_IRQ_MASK;
++
++    /* We always process data when it's coming in, so fire an IRQ immediately */
++    if (raise_irq) {
++        s->irq_status |= REG_IRQ_STATUS_FLAG;
++    }
++
++    s->flag_info = cmd & CMD_FLAG_INFO_MASK;
++
++    trace_aes_cmd_flag(!!raise_irq, s->flag_info);
++
++    return true;
++}
++
++static void fifo_process(AESState *s)
++{
++    uint32_t cmd = s->fifo[0] >> CMD_SHIFT;
++    bool success = false;
++
++    if (!s->fifo_idx) {
++        return;
++    }
++
++    switch (cmd) {
++    case CMD_KEY:
++        success = cmd_key(s);
++        break;
++    case CMD_IV:
++        success = cmd_iv(s);
++        break;
++    case CMD_DATA:
++        success = cmd_data(s);
++        break;
++    case CMD_STORE_IV:
++        success = cmd_store_iv(s);
++        break;
++    case CMD_FLAG:
++        success = cmd_flag(s);
++        break;
++    default:
++        s->irq_status |= REG_IRQ_STATUS_INVALID_CMD;
++        break;
++    }
++
++    if (success) {
++        s->fifo_idx = 0;
++    }
++
++    trace_aes_fifo_process(cmd, success ? 1 : 0);
++}
++
++static void aes1_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
++{
++    AESState *s = opaque;
++
++    trace_aes_write(offset, val);
++
++    switch (offset) {
++    case REG_IRQ_STATUS:
++        s->irq_status &= ~val;
++        break;
++    case REG_IRQ_ENABLE:
++        s->irq_enable = val;
++        break;
++    case REG_FIFO:
++        fifo_append(s, val);
++        fifo_process(s);
++        break;
++    default:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Unknown AES MMIO offset %"PRIx64", data %"PRIx64"\n",
++                      __func__, offset, val);
++        return;
++    }
++
++    aes_update_irq(s);
++}
++
++static const MemoryRegionOps aes1_ops = {
++    .read = aes1_read,
++    .write = aes1_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 8,
++    },
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
++static uint64_t aes2_read(void *opaque, hwaddr offset, unsigned size)
++{
++    uint64_t res = 0;
++
++    switch (offset) {
++    case 0:
++        res = 0;
++        break;
++    default:
++        trace_aes_2_read_unknown(offset);
++        break;
++    }
++
++    trace_aes_2_read(offset, res);
++
++    return res;
++}
++
++static void aes2_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
++{
++    trace_aes_2_write(offset, val);
++
++    switch (offset) {
++    default:
++        trace_aes_2_write_unknown(offset);
++        return;
++    }
++}
++
++static const MemoryRegionOps aes2_ops = {
++    .read = aes2_read,
++    .write = aes2_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 8,
++    },
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
++static void aes_reset(Object *obj, ResetType type)
++{
++    AESState *s = AES(obj);
++
++    s->status = 0x3f80;
++    s->q_status = 2;
++    s->irq_status = 0;
++    s->irq_enable = 0;
++    s->watermark = 0;
++}
++
++static void aes_init(Object *obj)
++{
++    AESState *s = AES(obj);
++
++    memory_region_init_io(&s->iomem1, obj, &aes1_ops, s, TYPE_AES, 0x4000);
++    memory_region_init_io(&s->iomem2, obj, &aes2_ops, s, TYPE_AES, 0x4000);
++    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem1);
++    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem2);
++    sysbus_init_irq(SYS_BUS_DEVICE(s), &s->irq);
++    s->as = &address_space_memory;
++}
++
++static void aes_class_init(ObjectClass *klass, void *data)
++{
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    rc->phases.hold = aes_reset;
++}
++
++static const TypeInfo aes_info = {
++    .name          = TYPE_AES,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(AESState),
++    .class_init    = aes_class_init,
++    .instance_init = aes_init,
++};
++
++static void aes_register_types(void)
++{
++    type_register_static(&aes_info);
++}
++
++type_init(aes_register_types)
+diff --git a/hw/vmapple/meson.build b/hw/vmapple/meson.build
+index e69de29bb2d..bcd4dcb28d2 100644
+--- a/hw/vmapple/meson.build
++++ b/hw/vmapple/meson.build
+@@ -0,0 +1 @@
++system_ss.add(when: 'CONFIG_VMAPPLE_AES',  if_true: files('aes.c'))
+diff --git a/hw/vmapple/trace-events b/hw/vmapple/trace-events
+index 9ccc5790487..12757bc0852 100644
+--- a/hw/vmapple/trace-events
++++ b/hw/vmapple/trace-events
+@@ -1,2 +1,18 @@
+ # See docs/devel/tracing.rst for syntax documentation.
  
-@@ -176,6 +200,7 @@ static void gpex_host_class_init(ObjectClass *klass, void *data)
++# aes.c
++aes_read(uint64_t offset, uint64_t res) "offset=0x%"PRIx64" res=0x%"PRIx64
++aes_cmd_key_select_builtin(uint32_t ctx, uint32_t key_id, const char *direction, const char *cipher) "[%d] Selecting builtin key %d to %scrypt with %s"
++aes_cmd_key_select_new(uint32_t ctx, uint32_t key_len, const char *direction, const char *cipher) "[%d] Selecting new key size=%d to %scrypt with %s"
++aes_cmd_iv(uint32_t ctx, uint32_t iv0, uint32_t iv1, uint32_t iv2, uint32_t iv3) "[%d] 0x%08x 0x%08x 0x%08x 0x%08x"
++aes_cmd_data(uint32_t key, uint32_t iv, uint64_t src, uint64_t dst, uint32_t len) "[key=%d iv=%d] src=0x%"PRIx64" dst=0x%"PRIx64" len=0x%x"
++aes_cmd_store_iv(uint32_t ctx, uint64_t addr, uint32_t iv0, uint32_t iv1, uint32_t iv2, uint32_t iv3) "[%d] addr=0x%"PRIx64"x -> 0x%08x 0x%08x 0x%08x 0x%08x"
++aes_cmd_flag(uint32_t raise, uint32_t flag_info) "raise=%d flag_info=0x%x"
++aes_fifo_process(uint32_t cmd, uint32_t success) "cmd=%d success=%d"
++aes_write(uint64_t offset, uint64_t val) "offset=0x%"PRIx64" val=0x%"PRIx64
++aes_2_read_unknown(uint64_t offset) "offset=0x%"PRIx64
++aes_2_read(uint64_t offset, uint64_t res) "offset=0x%"PRIx64" res=0x%"PRIx64
++aes_2_write_unknown(uint64_t offset) "offset=0x%"PRIx64
++aes_2_write(uint64_t offset, uint64_t val) "offset=0x%"PRIx64" val=0x%"PRIx64
++aes_dump_data(const char *desc, const char *hex) "%s%s"
++
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 34a9b9b2204..36c68ce86c5 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -302,4 +302,19 @@ GString *qemu_hexdump_line(GString *str, const void *buf, size_t len,
+ void qemu_hexdump(FILE *fp, const char *prefix,
+                   const void *bufptr, size_t size);
  
-     hc->root_bus_path = gpex_host_root_bus_path;
-     dc->realize = gpex_host_realize;
-+    dc->unrealize = gpex_host_unrealize;
-     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-     dc->fw_name = "pci";
-     device_class_set_props(dc, gpex_host_properties);
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index ee3129f3b31..08832dc2359 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -167,7 +167,7 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
- {
-     int pin, dev;
-     uint32_t irq_map_stride = 0;
--    uint32_t full_irq_map[GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+    uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS *
-                           FDT_MAX_INT_MAP_WIDTH] = {};
-     uint32_t *irq_map = full_irq_map;
- 
-@@ -179,11 +179,11 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
-      * possible slot) seeing the interrupt-map-mask will allow the table
-      * to wrap to any number of devices.
-      */
--    for (dev = 0; dev < GPEX_NUM_IRQS; dev++) {
-+    for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-         int devfn = dev * 0x8;
- 
--        for (pin = 0; pin < GPEX_NUM_IRQS; pin++) {
--            int irq_nr = PCIE_IRQ + ((pin + PCI_SLOT(devfn)) % GPEX_NUM_IRQS);
-+        for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-+            int irq_nr = PCIE_IRQ + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
-             /* Fill PCI address cells */
-@@ -209,7 +209,7 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
++/**
++ * qemu_hexdump_to_buffer:
++ * @buffer: output string buffer
++ * @buffer_size: amount of available space in buffer. Must be at least
++ *               data_size*2+1.
++ * @data: input bytes
++ * @data_size: number of bytes in data
++ *
++ * Converts the @data_size bytes in @data into hex digit pairs, writing them to
++ * @buffer. Finally, a nul terminating character is written; @buffer therefore
++ * needs space for (data_size*2+1) chars.
++ */
++void qemu_hexdump_to_buffer(char *restrict buffer, size_t buffer_size,
++                            const uint8_t *restrict data, size_t data_size);
++
+ #endif
+diff --git a/util/hexdump.c b/util/hexdump.c
+index ae0d4992dcf..86345db20a8 100644
+--- a/util/hexdump.c
++++ b/util/hexdump.c
+@@ -97,3 +97,17 @@ void qemu_hexdump(FILE *fp, const char *prefix,
      }
  
-     qemu_fdt_setprop(fdt, nodename, "interrupt-map", full_irq_map,
--                     GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+                     PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
- 
-     qemu_fdt_setprop_cells(fdt, nodename, "interrupt-map-mask",
-@@ -1157,7 +1157,7 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
- 
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, pio_base);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         irq = qdev_get_gpio_in(irqchip, PCIE_IRQ + i);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-index 5310a888613..8f5c2009d29 100644
---- a/hw/xtensa/virt.c
-+++ b/hw/xtensa/virt.c
-@@ -93,7 +93,7 @@ static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
-     /* Connect IRQ lines. */
-     extints = xtensa_get_extints(env);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         void *q = extints[irq_base + i];
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, q);
-diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-index dce883573ba..84471533af0 100644
---- a/include/hw/pci-host/gpex.h
-+++ b/include/hw/pci-host/gpex.h
-@@ -32,8 +32,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(GPEXHost, GPEX_HOST)
- #define TYPE_GPEX_ROOT_DEVICE "gpex-root"
- OBJECT_DECLARE_SIMPLE_TYPE(GPEXRootState, GPEX_ROOT_DEVICE)
- 
--#define GPEX_NUM_IRQS 4
--
- struct GPEXRootState {
-     /*< private >*/
-     PCIDevice parent_obj;
-@@ -49,6 +47,7 @@ struct GPEXConfig {
-     PCIBus      *bus;
- };
- 
-+typedef struct GPEXIrq GPEXIrq;
- struct GPEXHost {
-     /*< private >*/
-     PCIExpressHost parent_obj;
-@@ -60,8 +59,8 @@ struct GPEXHost {
-     MemoryRegion io_mmio;
-     MemoryRegion io_ioport_window;
-     MemoryRegion io_mmio_window;
--    qemu_irq irq[GPEX_NUM_IRQS];
--    int irq_num[GPEX_NUM_IRQS];
-+    GPEXIrq *irq;
-+    uint8_t num_irqs;
- 
-     bool allow_unmapped_accesses;
- 
+ }
++
++void qemu_hexdump_to_buffer(char *restrict buffer, size_t buffer_size,
++                            const uint8_t *restrict data, size_t data_size)
++{
++    size_t i;
++
++    assert(buffer_size >= data_size * 2 + 1 && buffer_size > data_size);
++    for (i = 0; i < data_size; i++) {
++        uint8_t val = data[i];
++        *(buffer++) = hexdump_nibble(val >> 4);
++        *(buffer++) = hexdump_nibble(val & 0xf);
++    }
++    *buffer = '\0';
++}
 -- 
 2.39.3 (Apple Git-145)
 
