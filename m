@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B239AE4F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 14:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5720F9AE4F7
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 14:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3x3j-000426-Ng; Thu, 24 Oct 2024 08:35:24 -0400
+	id 1t3x3s-00043n-Vr; Thu, 24 Oct 2024 08:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3x3a-0003yy-Ay
+ id 1t3x3a-0003zA-Da
  for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:35:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t3x3T-0000EL-QA
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:35:10 -0400
+ id 1t3x3U-0000Ed-QQ
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:35:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729773306;
+ s=mimecast20190719; t=1729773307;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/IqAdLZglfKpF6mjDCcx9wZhknDWLZEahtdtuSLLUoE=;
- b=ISLhFzB1/ra4oVzIgrzlemaRMqX922/CKWnGKoJiks9DMaEob1vz3TCLV7p2ULXUsFHFu/
- 0hioxJjl8pVSDBqCekD1zaSizDYi8X4IJf+vpPJJDeDw3oSJwKTpXX1WUg0NU+/SOdVG41
- KAJFYcF3L8WQdPEuGbRrU0bb0WVi5gU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mViewCgOGDMlHRXHm6Ff3nuWR7zUwAwAF9HzbBfp5Ik=;
+ b=gEkD2Yt314W2X9MeT0dig1Ac7k65ub8iJ/iZbwSBQJ3R6w65RhaAc6hQGaGc39/br5hFqk
+ 8XG5y2PU/J5eJ3owgvXxB+8YaVgPx3c1t0w8on8+FroBw9u7J+veMb0HNLCAc/Pgw90z5C
+ Hk+gyRgxcoHQcZoOhvrTlLbgW2Xj8no=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-GU77_GaeP1Kh_mcYXGrf2w-1; Thu, 24 Oct 2024 08:35:05 -0400
-X-MC-Unique: GU77_GaeP1Kh_mcYXGrf2w-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43157cff1d1so6924395e9.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 05:35:05 -0700 (PDT)
+ us-mta-269-PTwV4MSgP1Gsxmqf8VFRSg-1; Thu, 24 Oct 2024 08:35:06 -0400
+X-MC-Unique: PTwV4MSgP1Gsxmqf8VFRSg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43152cd2843so6413595e9.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 05:35:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729773303; x=1730378103;
+ d=1e100.net; s=20230601; t=1729773304; x=1730378104;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/IqAdLZglfKpF6mjDCcx9wZhknDWLZEahtdtuSLLUoE=;
- b=pbtPCSEOZc8dLpgUSTh6kVCXfx8nz62//KAvnYE6i66ftS1kjMB4LNxTrWDAwRxdmB
- 1nNFejHc8QucTpzp844fzCI4FejW/Mwnzqmhwv4K1v0KdU6OwUbd6tdFD1rKqMyo99Pe
- zXkkBhYAlfvJjZmGoPE61u7bDw+7IepEbxpl7GFN10yOUgSj8YLpN3zC6OE146+57DTT
- qnZ7QSJcZNZEWTe3ubjHEoBVHnHKXxpYDpN/0+j3E7Qmclx7rp8WJlvQ1yfHcgszuFEK
- ZZoJsDQTRUdaIX6DHxkwYSECGV33fM3HrANNUPl3a4JbvwQvY+Am4aMGrpeWaHtPiQ0i
- spcg==
-X-Gm-Message-State: AOJu0YzK1fJ0aZ+WFv1XMq6OQ8Y/DT6YCvZbGlTNe7uhIMqf4DzDKUWn
- zyHaDol/FU1GLyeN+L5TTysgl1+Bq7sCOxnaclCXTaBu3TWydOLfYjOm4AFpmq6IVrpEjLdryN1
- GOcyJjjs4bKS6VeWVZAjVpIxxkMiDWouaSMvbOTNhdB7fd+ibp5wZdfh+dmGVbIRhlCZzwEgBIe
- 3LLW+WNZO270OP9fKuzQftAiruhJ93EXeaNrRDKkY=
-X-Received: by 2002:a05:600c:1c11:b0:42c:a574:6360 with SMTP id
- 5b1f17b1804b1-431841aff4emr52466015e9.29.1729773302878; 
- Thu, 24 Oct 2024 05:35:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9bGGUeqi0HkJhxwXe67VNrAzubglPXelqgAxyEJYiDrtE9Va8432Ftm9vVaOMIiLSQiEjqA==
-X-Received: by 2002:a05:600c:1c11:b0:42c:a574:6360 with SMTP id
- 5b1f17b1804b1-431841aff4emr52465745e9.29.1729773302417; 
- Thu, 24 Oct 2024 05:35:02 -0700 (PDT)
+ bh=mViewCgOGDMlHRXHm6Ff3nuWR7zUwAwAF9HzbBfp5Ik=;
+ b=PuKDZA/iYRUBdh6aF1cX0AEjCM5I7qy1Hrv90FDni3zOpyPkdWehS4pAOrUeZk6V0s
+ gcTyZYb48l2kT7+4YWM+zJJiuVTTFf3safzdxyr5IZEEm+J5py4TrtjBRVMA+XA43vz9
+ rSHVxth0xPPw11qCZJydocvPvcqN1yY+rflGh8JjtlkOHuyZMl/VazrH0z4x8ERcfjeG
+ 2HC6FzcEv5tuqOtuaQSb/lbshbLIrBXLMDVs97eEpr+GvBfw7FnIRWSBp13/tdQGvqYG
+ lW1uGZTO6ZxqzzYorQA1YwFcNvkm8TGYxEZc24m75p780loTZ7fza9dB5YAR/yBAy4yC
+ lqHA==
+X-Gm-Message-State: AOJu0YwYhTr0izsm0T4lLQ9LTFH595InI6aiB8V7AgZJ/bDoEfYGr/sJ
+ A2z39uEyizOrcenO9BZLBcbqbYPD4GWM3QhnDNawK4dJqvToPnWI/16WPsgcPa1EI8s0a2cd7t2
+ hx9jvf9/LQZE6PEFJrrJDZW8pwYx4Eoor/VE8pyF/DKiWE/hYKNC+TyZ9B2frTK8HF74MGWJgKe
+ mYnzv/fYC0PDNzPb7Wb9IxocMUPuQ9xS7mSpAfGeg=
+X-Received: by 2002:a05:600c:3550:b0:42c:b16e:7a22 with SMTP id
+ 5b1f17b1804b1-4318413f0ccmr54328945e9.12.1729773304049; 
+ Thu, 24 Oct 2024 05:35:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzYigG4QorSGEqrdTm/SDW/W3DNQjw1NBLSiWDmfXeF+ImapImv+hNlY/zGfQz8g7RbYStZg==
+X-Received: by 2002:a05:600c:3550:b0:42c:b16e:7a22 with SMTP id
+ 5b1f17b1804b1-4318413f0ccmr54328685e9.12.1729773303515; 
+ Thu, 24 Oct 2024 05:35:03 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.99.171])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37ee0a37935sm11212187f8f.17.2024.10.24.05.35.01
+ 5b1f17b1804b1-4318b567977sm16188305e9.27.2024.10.24.05.35.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Oct 2024 05:35:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 1/8] stubs: avoid duplicate symbols in libqemuutil.a
-Date: Thu, 24 Oct 2024 14:34:52 +0200
-Message-ID: <20241024123459.59350-2-pbonzini@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PULL 2/8] sockets: Remove deadcode
+Date: Thu, 24 Oct 2024 14:34:53 +0200
+Message-ID: <20241024123459.59350-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024123459.59350-1-pbonzini@redhat.com>
 References: <20241024123459.59350-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,39 +100,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qapi_event_send_device_deleted is always included (together with the
-rest of QAPI) in libqemuutil.a if either system-mode emulation or tools
-are being built, and in that case the stub causes a duplicate symbol
-to appear in libqemuutil.a.
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Add the symbol only if events are not being requested.
+socket_remote_address hasn't been used since it was added in
+  17c55decec ("sockets: add helpers for creating SocketAddress from a socket")
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
+inet_connect hasn't been used since 2017's
+  8ecc2f9eab ("sheepdog: Use SocketAddress and socket_connect()")
+
+Remove them.
+
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Link: https://lore.kernel.org/r/20240918232633.463861-1-dave@treblig.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/meson.build | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/qemu/sockets.h | 16 ----------------
+ util/qemu-sockets.c    | 35 -----------------------------------
+ 2 files changed, 51 deletions(-)
 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 772a3e817df..e91614a874d 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -55,7 +55,12 @@ endif
- if have_user
-   # Symbols that are used by hw/core.
-   stub_ss.add(files('cpu-synchronize-state.c'))
--  stub_ss.add(files('qdev.c'))
-+
-+  # Stubs for QAPI events.  Those can always be included in the build, but
-+  # they are not built at all for --disable-system --disable-tools builds.
-+  if not (have_system or have_tools)
-+    stub_ss.add(files('qdev.c'))
-+  endif
- endif
+diff --git a/include/qemu/sockets.h b/include/qemu/sockets.h
+index d935fd80da8..c562690d893 100644
+--- a/include/qemu/sockets.h
++++ b/include/qemu/sockets.h
+@@ -61,7 +61,6 @@ int socket_set_fast_reuse(int fd);
+ int inet_ai_family_from_address(InetSocketAddress *addr,
+                                 Error **errp);
+ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp);
+-int inet_connect(const char *str, Error **errp);
+ int inet_connect_saddr(InetSocketAddress *saddr, Error **errp);
  
- if have_system
+ NetworkAddressFamily inet_netfamily(int family);
+@@ -117,21 +116,6 @@ socket_sockaddr_to_address(struct sockaddr_storage *sa,
+  */
+ SocketAddress *socket_local_address(int fd, Error **errp);
+ 
+-/**
+- * socket_remote_address:
+- * @fd: the socket file handle
+- * @errp: pointer to uninitialized error object
+- *
+- * Get the string representation of the remote socket
+- * address. A pointer to the allocated address information
+- * struct will be returned, which the caller is required to
+- * release with a call qapi_free_SocketAddress() when no
+- * longer required.
+- *
+- * Returns: the socket address struct, or NULL on error
+- */
+-SocketAddress *socket_remote_address(int fd, Error **errp);
+-
+ /**
+  * socket_address_flatten:
+  * @addr: the socket address to flatten
+diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
+index 60c44b2b56b..c1b162b0560 100644
+--- a/util/qemu-sockets.c
++++ b/util/qemu-sockets.c
+@@ -707,26 +707,6 @@ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp)
+ }
+ 
+ 
+-/**
+- * Create a blocking socket and connect it to an address.
+- *
+- * @str: address string
+- * @errp: set in case of an error
+- *
+- * Returns -1 in case of error, file descriptor on success
+- **/
+-int inet_connect(const char *str, Error **errp)
+-{
+-    int sock = -1;
+-    InetSocketAddress *addr = g_new(InetSocketAddress, 1);
+-
+-    if (!inet_parse(addr, str, errp)) {
+-        sock = inet_connect_saddr(addr, errp);
+-    }
+-    qapi_free_InetSocketAddress(addr);
+-    return sock;
+-}
+-
+ #ifdef CONFIG_AF_VSOCK
+ static bool vsock_parse_vaddr_to_sockaddr(const VsockSocketAddress *vaddr,
+                                           struct sockaddr_vm *svm,
+@@ -1421,21 +1401,6 @@ SocketAddress *socket_local_address(int fd, Error **errp)
+ }
+ 
+ 
+-SocketAddress *socket_remote_address(int fd, Error **errp)
+-{
+-    struct sockaddr_storage ss;
+-    socklen_t sslen = sizeof(ss);
+-
+-    if (getpeername(fd, (struct sockaddr *)&ss, &sslen) < 0) {
+-        error_setg_errno(errp, errno, "%s",
+-                         "Unable to query remote socket address");
+-        return NULL;
+-    }
+-
+-    return socket_sockaddr_to_address(&ss, sslen, errp);
+-}
+-
+-
+ SocketAddress *socket_address_flatten(SocketAddressLegacy *addr_legacy)
+ {
+     SocketAddress *addr;
 -- 
 2.47.0
 
