@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0543E9AF4B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC839AF4B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 23:32:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t45QK-0005et-N7; Thu, 24 Oct 2024 17:31:16 -0400
+	id 1t45QM-0005gR-Kt; Thu, 24 Oct 2024 17:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QD-0005dK-7v
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:09 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QF-0005dY-Ob
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45Q8-0005X4-Ab
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:07 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t45QB-0005XZ-UF
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 17:31:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729805463;
+ s=mimecast20190719; t=1729805465;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kQuiqCDFP7O6dGnJw0uzIfXFNnqGc/QZrj0NrKoRZoA=;
- b=dapSrsSveM0iMTkcX1KDAJQut2OaUhp5eJXyNMjgLIALxraleysE03Rk1rNdV6rMzWiV/1
- +jhEUj+wLBVC+3X99gXGDAvsBLxvQHPdIMTY3SSMY6DaSrUMNIXEnNxafhWu2Ci/DH3sV4
- f4UoIjEvGQHycrNLR1TPonpnbC+8jQ4=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aQi0jNBi64+93LR6lEvSe205PyBWXB4O7JAmokml2GE=;
+ b=g9FugSj754VdO0tswSuKFzQkHiQ9Z3LRern8Xx42cEF67rDHwoqo074Ue6UN0xdan9Q8J7
+ c1d3gw/dqq/c+u+e3L08KEUNTohvxM6B4KPPh1Oqy7aX9yn7npjCqBJIAO82I9BZQEHKt4
+ pzV5hEL5UF6AH591Me4VScjBfpl9UTM=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-i2T0jw7OPSqRnFb0-FQumA-1; Thu, 24 Oct 2024 17:31:01 -0400
-X-MC-Unique: i2T0jw7OPSqRnFb0-FQumA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-460afc4747bso26777841cf.0
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:01 -0700 (PDT)
+ us-mta-449-wAFJxnQiMJimptAh-OgsPw-1; Thu, 24 Oct 2024 17:31:04 -0400
+X-MC-Unique: wAFJxnQiMJimptAh-OgsPw-1
+Received: by mail-vs1-f70.google.com with SMTP id
+ ada2fe7eead31-4a470b7ff49so444714137.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 14:31:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729805461; x=1730410261;
+ d=1e100.net; s=20230601; t=1729805463; x=1730410263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kQuiqCDFP7O6dGnJw0uzIfXFNnqGc/QZrj0NrKoRZoA=;
- b=KsCCkVVM8Q5HwBAwVS3EHPiKf9i6oeFOxTc2/flXkHwdfnBFE14pIN4FbB5oOFfyiY
- DyEmvKksMOfZkKHoalsQahFGSqFtVGnVCgTLCVNsCPLQ17agG8Rg/MNNL5NJDd/QyzE/
- wKrjnw8JH7DVD2LBDVyLh6hgxhMr2lVUf3ZafXuc/zE/gtsggGmnkFbCNemLNgwQG4nP
- 7UWoDtLmIhygVTlmlaC8dUt1DzzITiV3a+VkRg48QeWo4yP4/X7YpTcGF60lRDL8qPvy
- sjJcpznZz4BwPi6EIg5bJCoIzKTrlSS5nOo+aGZbUqgjVCsy5x0Y73qLPWtGQuEk3LMs
- 5/kA==
-X-Gm-Message-State: AOJu0Yw2MU/Oc3bUeLJq+sXvwUqeHCPPhVWKYblGTSshJaMuo7u9WQii
- BpqP4m64OXrPHfTYAFQFWKXa1KV+31LFFuKaWWN/00aVpHKIRyd4Mip3YLZyTuRrH2T3F0AXzIz
- ehhhOC6og+8QWOFzcZJ0zStYYts/O4PZBQfOQrQ5TAAvva9dX6A+NeayoI/JCeGe+KIE+dk1G7j
- 4wB7hy4NFc98yFQ0qBWVMVpeQ9ghllSGDXMA==
-X-Received: by 2002:a05:622a:1992:b0:460:a82a:39c9 with SMTP id
- d75a77b69052e-4612525f1d1mr52367221cf.10.1729805460731; 
- Thu, 24 Oct 2024 14:31:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHs0Kkco9NPHLR6DyTeQgaXjiAae4BYQ7N0k1m99KfGVb8p8HZ/bVQIkjtE0mJV4IjUFEz3vQ==
-X-Received: by 2002:a05:622a:1992:b0:460:a82a:39c9 with SMTP id
- d75a77b69052e-4612525f1d1mr52366921cf.10.1729805460308; 
- Thu, 24 Oct 2024 14:31:00 -0700 (PDT)
+ bh=aQi0jNBi64+93LR6lEvSe205PyBWXB4O7JAmokml2GE=;
+ b=dxfVcMUWk+a2pFY2IVTg8JFuDC9hXFrNlMKTQqZdzg/6qfCCmpEULNOK3JwW4U2MGy
+ pni/m+xocAyYQBRQuzR7ho7PJBD9+/c4fev+Wd41dug0OGI8RM7w2MDFPKC+Bz5I1dZS
+ UMgxcppSvyVJ2ojusfaJ/wt/P9wGoSoTihicche1d9bI1ojGUIkGAXmshLD1kHMEYItO
+ LLzNMJlhrZq0UU/tYipYMP5a4OykTEnOIhJIQmHSOoNMRyafy9prFtfVXaCRvM9R+ORo
+ Z7x8mAN4sxFsfitTQJ+cIRkQISGCXQ4UcuA0Tq4bfXCH2ZWw7UzJ/L9/jAyEieH36t0b
+ XULQ==
+X-Gm-Message-State: AOJu0YwJEgj0uCECyR8DpJrqcZ6ET2djphLdK4pKO2A+9uBDJf58HlIh
+ CdA1AS4GtGD6lfa+OGE/fAIoxz83cb2qS9xX9YNMCxhfliUUCMAkp9u7ein8RstQD8t3cElVc/x
+ DVHBX2W0i4f0P53bfKk8t3JgUVcruuz5ObfzF8WTmyufT93VTNnaZepzbMOfEoUUeNun1DmqmDS
+ dzTHs0/51Aw5QgH52sSTQnf/9IM05rEfScsA==
+X-Received: by 2002:a05:6102:955:b0:4a7:4900:4b83 with SMTP id
+ ada2fe7eead31-4a751c0b89cmr9617324137.15.1729805462797; 
+ Thu, 24 Oct 2024 14:31:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEB6u934XPonhdzpQjPiG5vkxK3ZjOKaQEkToJjnesu6BmSqva8uW+Wru+VQEuSP6n9jWapow==
+X-Received: by 2002:a05:6102:955:b0:4a7:4900:4b83 with SMTP id
+ ada2fe7eead31-4a751c0b89cmr9617289137.15.1729805462382; 
+ Thu, 24 Oct 2024 14:31:02 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.30.58
+ d75a77b69052e-460d3c3a434sm55465091cf.19.2024.10.24.14.31.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 14:30:59 -0700 (PDT)
+ Thu, 24 Oct 2024 14:31:01 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v3 1/8] migration: Take migration object refcount earlier for
- threads
-Date: Thu, 24 Oct 2024 17:30:49 -0400
-Message-ID: <20241024213056.1395400-2-peterx@redhat.com>
+Subject: [PATCH v3 2/8] migration: Unexport dirty_bitmap_mig_init()
+Date: Thu, 24 Oct 2024 17:30:50 -0400
+Message-ID: <20241024213056.1395400-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241024213056.1395400-1-peterx@redhat.com>
 References: <20241024213056.1395400-1-peterx@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -102,59 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both migration thread or background snapshot thread will take a refcount of
-the migration object at the entrace of the thread function.
+It's only used within migration/, so it shouldn't be exported.
 
-That makes sense, because it protects the object from being freed by the
-main thread in migration_shutdown() later, but it might still race with it
-if the thread is scheduled too late.  Consider the case right after
-pthread_create() happened, VM shuts down with the object released, but
-right after that the migration thread finally got created, referencing
-MigrationState* in the opaque pointer which is already freed.
-
-The only 100% safe way to make sure it won't get freed is taking the
-refcount right before the thread is created, meanwhile when BQL is held.
-
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/migration/misc.h | 3 ---
+ migration/migration.h    | 4 ++++
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 74812ca785..e82ffa8cf3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3491,7 +3491,6 @@ static void *migration_thread(void *opaque)
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index bfadc5613b..df57be6b5e 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -108,7 +108,4 @@ bool migration_incoming_postcopy_advised(void);
+ /* True if background snapshot is active */
+ bool migration_in_bg_snapshot(void);
  
-     rcu_register_thread();
+-/* migration/block-dirty-bitmap.c */
+-void dirty_bitmap_mig_init(void);
+-
+ #endif
+diff --git a/migration/migration.h b/migration/migration.h
+index 7dc59c5e8d..0956e9274b 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -552,4 +552,8 @@ int migration_rp_wait(MigrationState *s);
+ void migration_rp_kick(MigrationState *s);
  
--    object_ref(OBJECT(s));
-     update_iteration_initial_status(s);
- 
-     if (!multifd_send_setup()) {
-@@ -3629,7 +3628,6 @@ static void *bg_migration_thread(void *opaque)
-     int ret;
- 
-     rcu_register_thread();
--    object_ref(OBJECT(s));
- 
-     migration_rate_set(RATE_LIMIT_DISABLED);
- 
-@@ -3841,6 +3839,14 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-         }
-     }
- 
-+    /*
-+     * Take a refcount to make sure the migration object won't get freed by
-+     * the main thread already in migration_shutdown().
-+     *
-+     * The refcount will be released at the end of the thread function.
-+     */
-+    object_ref(OBJECT(s));
+ void migration_bitmap_sync_precopy(bool last_stage);
 +
-     if (migrate_background_snapshot()) {
-         qemu_thread_create(&s->thread, MIGRATION_THREAD_SNAPSHOT,
-                 bg_migration_thread, s, QEMU_THREAD_JOINABLE);
++/* migration/block-dirty-bitmap.c */
++void dirty_bitmap_mig_init(void);
++
+ #endif
 -- 
 2.45.0
 
