@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AE09AE4BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 14:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3819AE4F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 14:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3wxG-00024o-Hs; Thu, 24 Oct 2024 08:28:42 -0400
+	id 1t3x3d-0003zZ-IA; Thu, 24 Oct 2024 08:35:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3wxD-00024C-3l
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:28:39 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t3x3Z-0003yp-Mr
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:35:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t3wxB-0007Sz-9L
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:28:38 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t3x3T-0000E4-BZ
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 08:35:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729772914;
+ s=mimecast20190719; t=1729773305;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AAT7Hxc+iGl1Qt/9IXDFCeZ6dAiIxI4tkwA5K5eMJtI=;
- b=i0xl8aw+1vPyQxoF9ULa5NsondYgOIHjTs8myLtbdiOcwWfcfNm1Hu55vFQMfiosiCfjbg
- 8vOEm4HitMZXeczd5qwzuAJVYFQ7YncJj2/cuINS7PP7PLcGFOftjSivE1sc0whBJARYPe
- 7Hp9CHUS6Nf0fvJTmdwFgo65NkPeV28=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/7NveKnRDAKPGGd4b03SCDQFk5aU68T1AT0dV4Vi2Sk=;
+ b=iQxiAOjfkX40BgatEPBVf3MIXii2gWt4oqU8uDKQS+aOqgtHe98nRRPWCohJ7TBloPi3mw
+ J1Rfq7tSDlg+9LXykeZOJHoj76WiZjqDJh5hQIrc9BQaVe0UGfunB0P5ETOu63HEYL6I4I
+ ChcmRjNb+Zuy1eSkrYeCQgD2IznXDq0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-YzS1fC-yN5qBew8JT-kzfQ-1; Thu, 24 Oct 2024 08:28:33 -0400
-X-MC-Unique: YzS1fC-yN5qBew8JT-kzfQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7b15c2e3ca1so113962685a.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 05:28:33 -0700 (PDT)
+ us-mta-433-mHB_-HXUOSynUnrU-1DyEQ-1; Thu, 24 Oct 2024 08:35:03 -0400
+X-MC-Unique: mHB_-HXUOSynUnrU-1DyEQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4314f023f55so7156485e9.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 05:35:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729772913; x=1730377713;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AAT7Hxc+iGl1Qt/9IXDFCeZ6dAiIxI4tkwA5K5eMJtI=;
- b=RoALWOHSQgjQ4BJbkSqvRR/OMI+fJ9WK8hsxnbaYbHgaP33ka+MXWS3PRaLWCk1hi6
- 2OURGyC4SDBGDAnstOW+EuhROiEZJdDfXI1f6IlY95lqd4gKCVfe7cT8w+1VVcSIAyL9
- R5/slIUYAw7OUv9dqEGIzZHDSnhv9VoFY8dlgJSAiQYyjGOBA1wyNbzI14lzJT8qrLML
- 7ZpS/eyqou7lAvpEqLZKGoeo2nTwXPh5MADt9B4Y6mRG8FwqSEMzhiT1cMDX3TFmAO17
- KcQHOpfNH2mTIM4f1S/KKz+LB6F1CuYez9UfFMAvi+vAMCNEzDuMzAq+PhC9mw/yQbB0
- u+ww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXNyzpqEuYqhyFEgLqef6/BMMyDt5UvJEXyZ6cKxFvrbMxQxvQqIPHzntmYaq+5REkbsUF7YsoDcg9i@nongnu.org
-X-Gm-Message-State: AOJu0Yw4yOb/lfCba39M4U051UzGRFRylidBxsteXvd2pT0LzxxmjDaU
- qyOd0b47Lh2l7AosSriLzR6fpSq0RhV9eWjYQ9pyg4wqV+ypHI+aN9mEJytb1hrBXlXd/i3zl0L
- q6Bf+OmbtmcsYfUI60yBEzdsdn8JZyY+taXqPh3XxiJoGr99fml4a
-X-Received: by 2002:a05:620a:4090:b0:7ac:d663:f664 with SMTP id
- af79cd13be357-7b17e5279bcmr703303085a.1.1729772912987; 
- Thu, 24 Oct 2024 05:28:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRZZHDfdLuN3SplkVMGZT7vbALKsux9mPZRDlQ1/lfOoDdp1YOsYmBR2Y66jH5srFzSLeyRw==
-X-Received: by 2002:a05:620a:4090:b0:7ac:d663:f664 with SMTP id
- af79cd13be357-7b17e5279bcmr703301485a.1.1729772912665; 
- Thu, 24 Oct 2024 05:28:32 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b165a8800csm482451985a.125.2024.10.24.05.28.31
+ d=1e100.net; s=20230601; t=1729773302; x=1730378102;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/7NveKnRDAKPGGd4b03SCDQFk5aU68T1AT0dV4Vi2Sk=;
+ b=TzE2vzN80O0iyGpOZ9Yi2v2wKxVW8dG1jjlNOx+i9F1+ctDy1XJnIdP1FFMA4VNhdn
+ /ATmASKpWrmwPcPSRYRDsLF40fyaNRy0+Wy7w5UzxweG/nlbIJgHWzADB/K2+JrIpWhw
+ 4JYVI3aBkcx4e04DcmfOd4sXpmPofPt294vjDSl6LA6sGyyOInkRhCBSfs2kADDtQoGj
+ REuvVjvEBcGf7y9I0SbZUsZarcslF7o8nWdxDo3x1hfUU4u46M+V7mmgMT9CzYSNDOFA
+ ik8GaYSiNc94Y6Pv5xae5Bt2zvvTliP4+VDywQy+I46X9AjYvRXoLWPByjVrHWBUDNMz
+ TOtQ==
+X-Gm-Message-State: AOJu0Yx9qiT05/9WubE8CC3xbGv6FsPZUeICDWmWm1y8EqbARu5tlb6S
+ jo1WE84CWxMnhaFcb/txyzV6/JOFiEBbuPNKcxfok+SHGBWcb4F/4Gw07c9aD9X/uWif807GYwO
+ OIJ0lkZ+JKaKjmAHlUKvsXlKLJ2gZldBqtRqTAF0I1bcTLowWl6JUL9IjNSmaXPN3tYLb726rn6
+ 77Kf1c68eh+PEA9AD+avjoDZ82YsaIK0eZs3QqWh0=
+X-Received: by 2002:a05:600c:4f90:b0:42c:b7f9:4bbd with SMTP id
+ 5b1f17b1804b1-4318c7568e6mr16377035e9.26.1729773301843; 
+ Thu, 24 Oct 2024 05:35:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHbHoqxJA+TOwtKcQCzMEA7SLNngOh3kCnk6S0wCi5kWwZMXATUYOcolGw5b5QhQvGyafdnQ==
+X-Received: by 2002:a05:600c:4f90:b0:42c:b7f9:4bbd with SMTP id
+ 5b1f17b1804b1-4318c7568e6mr16376695e9.26.1729773301286; 
+ Thu, 24 Oct 2024 05:35:01 -0700 (PDT)
+Received: from [192.168.10.3] ([151.95.99.171])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43186c0e0d5sm45113035e9.31.2024.10.24.05.35.00
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Oct 2024 05:28:32 -0700 (PDT)
-Date: Thu, 24 Oct 2024 08:28:30 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Yong Huang <yong.huang@smartx.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 0/5] Guestperf: miscellaneous refinement and enrichment
-Message-ID: <Zxo9boa0OXqXv94S@x1n>
-References: <cover.1729562974.git.yong.huang@smartx.com>
- <87sesmdfl4.fsf@suse.de>
- <CAK9dgmZU+KuJmvqXYjcyFPOQkcH3v-ZfdZEQ6YobTJW7MkPyfw@mail.gmail.com>
+ Thu, 24 Oct 2024 05:35:00 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/8] Misc fixes for 2024-10-24
+Date: Thu, 24 Oct 2024 14:34:51 +0200
+Message-ID: <20241024123459.59350-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK9dgmZU+KuJmvqXYjcyFPOQkcH3v-ZfdZEQ6YobTJW7MkPyfw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -40
 X-Spam_score: -4.1
@@ -101,17 +97,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 24, 2024 at 10:06:51AM +0800, Yong Huang wrote:
-> Indeed, we could document how to build and use the guestperf,
-> refining it to be more convenient to use.
+The following changes since commit f1dd640896ee2b50cb34328f2568aad324702954:
 
-If to do so, please feel free to add a "test" entry in devel/migration too
-no matter to put the doc there, or just add a reference to where the doc
-locates.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-10-18 10:42:56 +0100)
 
-Thanks,
+are available in the Git repository at:
 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 5c952562af6717bb4d206dc2c7ba2daa2fcd899d:
+
+  qdev: make properties array "const" (2024-10-24 14:33:55 +0200)
+
+----------------------------------------------------------------
+* target/i386: fixes for -cpu pentium3
+* qdev: allow making Properties arrays const
+* rust: enable rust in the Fedora system build job
+* sockets: Remove dead code
+* configure: Fix typo
+* stubs: avoid duplicate symbols in libqemuutil.a
+* remove erroneous file that breaks git clone on Windows
+
+----------------------------------------------------------------
+Daniel P. Berrangé (2):
+      tests: add 'rust' and 'bindgen' to CI package list
+      ci: enable rust in the Fedora system build job
+
+Dr. David Alan Gilbert (1):
+      sockets: Remove deadcode
+
+Kevin Wolf (1):
+      configure: Replace literally printed '\n' with newline
+
+Paolo Bonzini (3):
+      stubs: avoid duplicate symbols in libqemuutil.a
+      target/i386: fix CPUID check for LFENCE and SFENCE
+      qdev: make properties array "const"
+
+Pierrick Bouvier (1):
+      scripts: remove erroneous file that breaks git clone on Windows
+
+ configure                                          |  3 +-
+ include/hw/qdev-core.h                             |  4 +--
+ include/hw/qdev-properties.h                       |  4 +--
+ include/qemu/sockets.h                             | 16 ----------
+ hw/core/qdev-properties.c                          | 26 ++++++++--------
+ system/qdev-monitor.c                              |  2 +-
+ util/qemu-sockets.c                                | 35 ----------------------
+ target/i386/tcg/decode-new.c.inc                   |  4 +--
+ .gitlab-ci.d/buildtest.yml                         |  2 +-
+ .gitlab-ci.d/cirrus/freebsd-14.vars                |  2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars                  |  2 +-
+ .gitlab-ci.d/cirrus/macos-15.vars                  |  2 +-
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml   |  2 ++
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml     |  2 ++
+ scripts/meson-buildoptions.                        |  0
+ stubs/meson.build                                  |  7 ++++-
+ tests/docker/dockerfiles/alpine.docker             |  2 ++
+ tests/docker/dockerfiles/centos9.docker            |  2 ++
+ tests/docker/dockerfiles/debian-amd64-cross.docker |  3 ++
+ tests/docker/dockerfiles/debian-arm64-cross.docker |  3 ++
+ tests/docker/dockerfiles/debian-armhf-cross.docker |  3 ++
+ tests/docker/dockerfiles/debian-i686-cross.docker  |  3 ++
+ .../dockerfiles/debian-mips64el-cross.docker       |  3 ++
+ .../docker/dockerfiles/debian-mipsel-cross.docker  |  3 ++
+ .../docker/dockerfiles/debian-ppc64el-cross.docker |  3 ++
+ tests/docker/dockerfiles/debian-s390x-cross.docker |  3 ++
+ tests/docker/dockerfiles/debian.docker             |  2 ++
+ .../docker/dockerfiles/fedora-rust-nightly.docker  |  2 ++
+ tests/docker/dockerfiles/fedora-win64-cross.docker |  2 ++
+ tests/docker/dockerfiles/fedora.docker             |  2 ++
+ tests/docker/dockerfiles/opensuse-leap.docker      |  2 ++
+ tests/docker/dockerfiles/ubuntu2204.docker         |  2 ++
+ tests/lcitool/projects/qemu.yml                    |  2 ++
+ tests/vm/generated/freebsd.json                    |  2 ++
+ 34 files changed, 80 insertions(+), 77 deletions(-)
+ delete mode 100644 scripts/meson-buildoptions.
 -- 
-Peter Xu
+2.47.0
 
 
