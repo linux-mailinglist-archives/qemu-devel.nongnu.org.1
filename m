@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B85F9ADC42
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 201689ADC4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 08:37:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3rRc-0002F9-LA; Thu, 24 Oct 2024 02:35:40 -0400
+	id 1t3rRe-0002Ft-DB; Thu, 24 Oct 2024 02:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRa-0002EQ-Jj
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRb-0002F0-Qo
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRZ-0003Q8-AA
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t3rRZ-0003QD-Mi
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 02:35:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1729751736;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I1oB/OfCv79w1hba7mjaeNA30HkpQTP75ZffIS+cv40=;
- b=Vn3swze2Q98dRY9QZNGAcaoLSB6VI8bRVVq7q7TL7HNMHhr8tQF57DMTIsMMMPt14xsMZI
- /HaJYLCh5heGWm0taoOXGgYT/sF2tFNdxYQDIdSkSdRtcTtfKahSnFtKpZHgAGNPmeH477
- zIJZsn10LtUNUhqJUH/zR6rZpZ8///Y=
+ bh=+CjJjh8yo35Osl1DFFOQzmYrF1ZAO1HLrRuitC5CgSg=;
+ b=JnT/qwmn3/+y703D6y0Dhl1dy4iJoy1zDUoFo3OO9ohAtkJd4qMlXqZoPP/QzDG20Ifi73
+ FYMboZjlOV/WdZxIkp3HGHmUYGG56A951DCWkdtQf4wedNarTX/IYiojTFYC4TGvd+JVXr
+ lnamW0YYa/9L7fWU0F+rfKdw6afPWXA=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-1q3qFdwdPdmy2AyCw-JmxQ-1; Thu,
- 24 Oct 2024 02:35:34 -0400
-X-MC-Unique: 1q3qFdwdPdmy2AyCw-JmxQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-lQTr5GDFOvmDHcGcEwQm2w-1; Thu,
+ 24 Oct 2024 02:35:35 -0400
+X-MC-Unique: lQTr5GDFOvmDHcGcEwQm2w-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 360C21955F2E; Thu, 24 Oct 2024 06:35:32 +0000 (UTC)
+ id 106F31955F42; Thu, 24 Oct 2024 06:35:34 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 624CA1956056; Thu, 24 Oct 2024 06:35:30 +0000 (UTC)
+ id 7DF9E1955F43; Thu, 24 Oct 2024 06:35:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 06/17] aspeed/soc: Correct GPIO irq 130 for AST2700
-Date: Thu, 24 Oct 2024 08:34:56 +0200
-Message-ID: <20241024063507.1585765-7-clg@redhat.com>
+Subject: [PULL 07/17] aspeed/soc: Support GPIO for AST2700
+Date: Thu, 24 Oct 2024 08:34:57 +0200
+Message-ID: <20241024063507.1585765-8-clg@redhat.com>
 In-Reply-To: <20241024063507.1585765-1-clg@redhat.com>
 References: <20241024063507.1585765-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,47 +83,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The register set of GPIO have a significant change since AST2700.
-Each GPIO pin has their own individual control register and users are able to
-set one GPIO pin’s direction, interrupt enable, input mask and so on in the
-same one control register.
-
-AST2700 does not have GPIO18_XXX registers for GPIO 1.8v, removes
-ASPEED_DEV_GPIO_1_8V. It is enough to only have ASPEED_DEV_GPIO
-device in AST2700.
-
-The AST2700 GPIO controller interrupt is connected to GICINT130_INTC at
-bit 18. Therefore, correct GPIO irq 130.
+Add GPIO model for AST2700 GPIO support. The GPIO controller registers base
+address is start at 0x14C0_B000 and its address space is 0x1000.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 761ee116579c..99135edc1ed2 100644
+index 99135edc1ed2..dca660eb6be2 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -87,8 +87,7 @@ static const int aspeed_soc_ast2700_irqmap[] = {
-     [ASPEED_DEV_ADC]       = 130,
-     [ASPEED_DEV_XDMA]      = 5,
-     [ASPEED_DEV_EMMC]      = 15,
--    [ASPEED_DEV_GPIO]      = 11,
--    [ASPEED_DEV_GPIO_1_8V] = 130,
-+    [ASPEED_DEV_GPIO]      = 130,
-     [ASPEED_DEV_RTC]       = 13,
-     [ASPEED_DEV_TIMER1]    = 16,
-     [ASPEED_DEV_TIMER2]    = 17,
-@@ -124,7 +123,7 @@ static const int aspeed_soc_ast2700_gic128_intcmap[] = {
- static const int aspeed_soc_ast2700_gic130_intcmap[] = {
-     [ASPEED_DEV_I2C]        = 0,
-     [ASPEED_DEV_ADC]        = 16,
--    [ASPEED_DEV_GPIO_1_8V]  = 18,
-+    [ASPEED_DEV_GPIO]       = 18,
+@@ -62,6 +62,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_GIC_REDIST]    =  0x12280000,
+     [ASPEED_DEV_ADC]       =  0x14C00000,
+     [ASPEED_DEV_I2C]       =  0x14C0F000,
++    [ASPEED_DEV_GPIO]      =  0x14C0B000,
  };
  
- /* GICINT 131 */
+ #define AST2700_MAX_IRQ 288
+@@ -372,6 +373,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+ 
+     snprintf(typename, sizeof(typename), "aspeed.i2c-%s", socname);
+     object_initialize_child(obj, "i2c", &s->i2c, typename);
++
++    snprintf(typename, sizeof(typename), "aspeed.gpio-%s", socname);
++    object_initialize_child(obj, "gpio", &s->gpio, typename);
+ }
+ 
+ /*
+@@ -657,6 +661,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
+     }
+ 
++    /* GPIO */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
++        return;
++    }
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->gpio), 0,
++                    sc->memmap[ASPEED_DEV_GPIO]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
++                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
++
+     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
+     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
+     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
 -- 
 2.47.0
 
