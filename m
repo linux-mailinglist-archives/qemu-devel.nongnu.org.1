@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84679AE0B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D1E9AE1D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:59:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3u8P-0000cg-S1; Thu, 24 Oct 2024 05:28:01 -0400
+	id 1t3uZr-0001AH-Ua; Thu, 24 Oct 2024 05:56:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t3u8N-0000cT-Ep
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:27:59 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t3uZg-00017W-NP
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:12 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t3u8L-0000LN-EP
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:27:59 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2fb443746b8so6587301fa.0
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:27:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t3uZc-0003ls-Q5
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:12 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a93c1cc74fdso87097566b.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729762074; x=1730366874; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8Vw44/IGDHGVtbRZSIkwW6dgCJnRfKhP9Fg+fqXK0gU=;
- b=ECs+4OS1bhsy8H1jVTHm2tCwOkqAMAqE+GkDRBYbBIJthQQSdKhPvqObrpYCg6HMv1
- n+kZ/nJCfVGOwEC0LGwFMF6BYx66tfR8iEArOF0VTAVeCymoMdBkmWmhuZ93YKcSRTY5
- +4G9gAA4bohwkp2wgxgq5jPsUSmvZNV78vzuqPKd56heeLrnqG7+Hom3nTLTf/JrLsh2
- DCKZ85PqdwM4uo1ekJY+6yGMNu5RurvnvE6yEH9MKTO6Ca6KaUaSg6qHeuvngh7+itEX
- J5qMgIolk344q/JtUSj4bOz3fwmoUFrDhqjjIuQCCVRr/HBLsVQxi0N7Yxi7efuR35xN
- uQwQ==
+ d=linaro.org; s=google; t=1729763765; x=1730368565; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ubj0KrnDnw0bOLO2d2mSz0oiHM9+bY4+4PII9kohX1c=;
+ b=cJwKUZL2skUAAoTE4LnrVXlqYR2DhD13sGPnAUpZ32wdehFB8f3D2DbwEflNOnQxwB
+ NpLHJc54DIybX1uXeO2/UMLgUiDUxXARKQjXwo45V6TiIo96/xvY2ow4LmB5q6iW1wV2
+ teyheKQyfJkoNvKH8VFkiidpjWkyQwdLWlji/Bo2o9OCwPn24BSf2HE2lMWZo2weVzxR
+ SdlKGZP3nHtEx/KDB9hIhjdH6WXWNJpixewokqRTXrs8E/k/zQplX5YTTh9vjO0NMYMk
+ 9sWz9o5mFgNrzVkBwP2O7piYy4ZXuC+NPN7tRFH/ycbv84qjz05DpcFKKP45uzVq0MN4
+ Dybw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729762074; x=1730366874;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8Vw44/IGDHGVtbRZSIkwW6dgCJnRfKhP9Fg+fqXK0gU=;
- b=qmvruwAEIh/ndEWAM1Md44qvu2lA6ZkR9TrIvguLVa71v0sQa/o3wg257xwj78Bm1n
- B6iTGpRo1HXO7Pa/ZH9LiMVJDifAioSRerlYKeoY3LrTKa6tDu+U6CtOB8M6tpD41K7K
- RCReafPAEQs9Wa9bW3bQJ22kF3BBMG99RGkAgU2Q//nqKLYzBRqDITaR5oCjsCLhnh8R
- PTNGkh0N7Nzt2AwAD0eL+8KXWLmeZHsn0E6fyh/rvkSCmcXrAEa7HRoA0qpDzA7DmMbV
- RHtG1ZECjkElC7bhz6fCp6wPpM5XCqHMjZ+9f9ikwOonjP/1MehcNJrI73VV/b1RJqKM
- HidQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU9T42xZPKINxzsJxPxzfZKoDTz1P+XBiEt+n+CNqOwRk7AdUNpp5VK2Qm3WKXnSIbGQEOTesSsIqAH@nongnu.org
-X-Gm-Message-State: AOJu0YwDHCABHS236ZbVo+ChxJmC/R+bWox7/73xLGucF96sXuCZc7vx
- ilRYi3PAwOgkP4SnhaBa+uD0fLULaNDoBC2V27kqJKoB+ubZkpLTvVCsenwFBQK5cZckUiZXLHv
- TineSZe7VmJEDkWATwcwMdSlvj/lANwwqSMgwlw==
-X-Google-Smtp-Source: AGHT+IHetJOx2pidhQpRaDpIjNHeL/hydkQIWL3Z96hrsPJKCCIgS3TJEmBSK/+jaQfDgZHeC3TUOPN5XVLUK3SwxLs=
-X-Received: by 2002:a2e:6112:0:b0:2fb:5ac6:90f0 with SMTP id
- 38308e7fff4ca-2fca8264708mr7213521fa.34.1729762074061; Thu, 24 Oct 2024
- 02:27:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729763765; x=1730368565;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ubj0KrnDnw0bOLO2d2mSz0oiHM9+bY4+4PII9kohX1c=;
+ b=Qtk1rqJ6a4o0AWRhB5wUX4rpnc0fCRrMTaibClK6LCRbUogxBYyo7wbKAzLIjn3Oxv
+ /fjMQh2ioq8DYjakq1taTxxpNy4OUo0AB0/J5RIT9dUbQiySmtws6lYkrmygZOl3REN6
+ /GgzRk7HlKlHLfj/oFHKZ9WFBFb8uyd9F82AhE0AZkwOEX/83lopp/NzdTK1owowkTlo
+ yoXBp/SJi9oKrpMD6xTMV0Eu8l1y7Rcl3y2abP2C7WqIih1ITEWudyMtnSlUfx+n89P/
+ 19kUVJr//4YZWiUJOcV9jOW9rHJi4DlIcz8ACh8XwONzjLNdSHcFspxFPy/OStb4e6wg
+ YCLw==
+X-Gm-Message-State: AOJu0YwgIZY5i8JkOBk0DGF8VuPSfRu+XUidVFbVP/UTlB6k1Q4eUtYh
+ SGKujtqchKSJeCrQW1fMkyilLZkv1jU58DSgxyVO1H4HJ2nxdN2pR8PoIgqko0E=
+X-Google-Smtp-Source: AGHT+IGAzzwNmhZYU1I2o3o8t8CP6igjGTcpoy6SqdFuEmUZzh3iSG8fTpfDU3aFv99ZE0s/Vai6vw==
+X-Received: by 2002:a17:906:f590:b0:a99:f750:bf79 with SMTP id
+ a640c23a62f3a-a9abf8aefa7mr554658666b.34.1729763765459; 
+ Thu, 24 Oct 2024 02:56:05 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9a91370547sm593197466b.128.2024.10.24.02.56.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Oct 2024 02:56:04 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0767C5F897;
+ Thu, 24 Oct 2024 10:56:04 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/17] testing, gdbstub and plugin updates
+Date: Thu, 24 Oct 2024 10:55:46 +0100
+Message-Id: <20241024095603.1813285-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <CA+G9fYt86bUAu_v5dXPWnDUwQNVipj+Wq3Djir1KUSKdr9QLNg@mail.gmail.com>
- <CA+G9fYsMg0fA-jraEvC==0a-22J97o-uBmbLJt16_ZKBpOT8EQ@mail.gmail.com>
- <4730e562-7d14-4f12-897a-e23783d094af@app.fastmail.com>
- <87bjzalhzc.fsf@draig.linaro.org>
-In-Reply-To: <87bjzalhzc.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 24 Oct 2024 10:27:43 +0100
-Message-ID: <CAFEAcA_+9gA3AqJseY5=5hHOA3OjuGS8bjbGMbpkzFyy7Ggzyw@mail.gmail.com>
-Subject: Re: Qemu v9.0.2: Boot failed qemu-arm with Linux next-20241017 tag.
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
- open list <linux-kernel@vger.kernel.org>, 
- Linux ARM <linux-arm-kernel@lists.infradead.org>, lkft-triage@lists.linaro.org,
- Linux Regressions <regressions@lists.linux.dev>, qemu-devel@nongnu.org, 
- Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
- Aishwarya TCV <Aishwarya.TCV@arm.com>, Anders Roxell <anders.roxell@linaro.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, 
- Geert Uytterhoeven <geert@linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,27 +91,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 23 Oct 2024 at 20:47, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
-> Agreed. However I think we were masking a calling issue that:
->
->     /* Actual RAM size depends on initial RAM and device memory settings =
-*/
->     [VIRT_MEM] =3D                { GiB, LEGACY_RAMLIMIT_BYTES },
->
-> And:
->
->   -m 4G
->
-> make no sense with no ARM_LPAE (which the kernel didn't have)
+The following changes since commit 6f625ce2f21d6a1243065d236298277c56f972d5:
 
-QEMU can't tell if the guest the user wants to boot
-understands LPAE or not; it just provides the 4GB
-of RAM, PCIe window above 4GB, etc, and describes them
-in the dtb. It's up to the guest kernel to correctly
-handle the >32bit addresses in the dtb, i.e. if it is
-non-LPAE to ignore those resources it can't access
-because they're out of range.
+  Merge tag 'pull-request-2024-10-21' of https://gitlab.com/thuth/qemu into staging (2024-10-21 17:12:59 +0100)
 
--- PMM
+are available in the Git repository at:
+
+  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-oct-misc-241024-1
+
+for you to fetch changes up to b56f7dd203c301231d3bb2d071b4e32b345f49d6:
+
+  plugins: fix qemu_plugin_reset (2024-10-24 10:04:09 +0100)
+
+----------------------------------------------------------------
+testing, gdbstub and plugin updates
+
+  - update MAINTAINERS with pointers to foo/next
+  - add NOFETCH to help test custom docker builds
+  - update microblaze toolchain with atomic fixes
+  - update tsan build and documentation
+  - don't restrict build-environment by arch unless needed
+  - add cross-modifying code test
+  - add tracepoints for cpu_step_atomic fallbacks
+  - fix defaults for loongarch cross build
+  - make check-[dco|patch] a little more verbose
+  - fix gdbstub bug preventing aarch64_be-linux-user starting
+  - add basic test for aarch64_be
+  - clean up some gdbstub test scripts
+  - fix qemu_plugin_reset
+
+----------------------------------------------------------------
+Alex Bennée (9):
+      tests/docker: add NOFETCH env variable for testing
+      MAINTAINERS: mention my testing/next tree
+      scripts/ci: remove architecture checks for build-environment updates
+      accel/tcg: add tracepoints for cpu_loop_exit_atomic
+      gitlab: make check-[dco|patch] a little more verbose
+      MAINTAINERS: mention my gdbstub/next tree
+      config/targets: update aarch64_be-linux-user gdb XML list
+      tests/tcg: enable basic testing for aarch64_be-linux-user
+      MAINTAINERS: mention my plugins/next tree
+
+Gustavo Romero (2):
+      tests/tcg/aarch64: Use raw strings for regexes in test-mte.py
+      testing: Enhance gdb probe script
+
+Ilya Leoshkevich (2):
+      tests/docker: Fix microblaze atomics
+      tests/tcg/x86_64: Add cross-modifying code test
+
+Pierrick Bouvier (4):
+      meson: hide tsan related warnings
+      docs/devel: update tsan build documentation
+      dockerfiles: fix default targets for debian-loongarch-cross
+      plugins: fix qemu_plugin_reset
+
+ MAINTAINERS                                        |  3 +
+ docs/devel/testing/main.rst                        | 26 +++++--
+ configure                                          |  5 ++
+ configs/targets/aarch64_be-linux-user.mak          |  2 +-
+ meson.build                                        | 10 ++-
+ accel/tcg/plugin-gen.c                             |  4 ++
+ accel/tcg/user-exec.c                              |  2 +-
+ tests/tcg/aarch64_be/hello.c                       | 35 ++++++++++
+ tests/tcg/x86_64/cross-modifying-code.c            | 80 ++++++++++++++++++++++
+ accel/tcg/ldst_atomicity.c.inc                     |  9 +++
+ .gitlab-ci.d/check-dco.py                          |  5 +-
+ .gitlab-ci.d/check-patch.py                        |  5 +-
+ accel/tcg/trace-events                             | 12 ++++
+ scripts/ci/setup/ubuntu/build-environment.yml      |  2 -
+ scripts/probe-gdb-support.py                       | 75 ++++++++++----------
+ tests/docker/Makefile.include                      |  5 +-
+ .../dockerfiles/debian-loongarch-cross.docker      |  4 +-
+ .../debian-microblaze-cross.d/build-toolchain.sh   |  8 +++
+ tests/docker/dockerfiles/debian-toolchain.docker   |  7 ++
+ tests/tcg/Makefile.target                          |  7 +-
+ tests/tcg/aarch64/gdbstub/test-mte.py              |  4 +-
+ tests/tcg/aarch64_be/Makefile.target               | 17 +++++
+ tests/tcg/x86_64/Makefile.target                   |  4 ++
+ 23 files changed, 273 insertions(+), 58 deletions(-)
+ create mode 100644 tests/tcg/aarch64_be/hello.c
+ create mode 100644 tests/tcg/x86_64/cross-modifying-code.c
+ create mode 100644 tests/tcg/aarch64_be/Makefile.target
+
+-- 
+2.39.5
+
 
