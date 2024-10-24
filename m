@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE569AE2A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7E39AE284
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 12:30:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3v5E-0000vV-LG; Thu, 24 Oct 2024 06:28:48 -0400
+	id 1t3v5F-0000wq-Mv; Thu, 24 Oct 2024 06:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t3v5A-0000sM-Dg
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:44 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1t3v5B-0000u1-Ff
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:45 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t3v56-0008Cq-1c
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:44 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a9a2209bd7fso86920366b.2
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:28:39 -0700 (PDT)
+ id 1t3v58-0008Dy-Bn
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 06:28:45 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a9a850270e2so116231766b.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 03:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729765718; x=1730370518;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1729765721; x=1730370521;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ZB/+Sc9m5mjoqV4Si29Zg65y5ttl3uRlQNwxYZ9Scg=;
- b=B50kEjd5bPoiatm/yiDK1/v9GuVaX4d0vO7nP58kjX88gaqet8kn8uhLAqHhdsJy1f
- 0OZJXfCA/VOtTgVgqvHUpDkCnuIKqFYMuAmn0HOjpZymimP5EI0W0/bfpgb3dVtiPBJp
- JZA69f35/1iIPee9fGzL4u9oL1MwTg2IKLM8P/9z6VZqAisIhyf+l0MbvHmkqr5F84nH
- u31U5i6ltLRTf8jvxqBZyMdieVkxUjS0gltdrwE3hDD0Gl3/ChAvIGIiXozKAET42GSm
- 2HfFk/kCPbFJTphOhMjZQwzI462eJrqeYvBAdw/XkWoSFkRY8sn5jmAbcpHEPdeqB3p2
- cH/g==
+ bh=IOlf/wzEJ+wM7g5BTurCACeEWddAq/2jF0kyAkwof9o=;
+ b=vAA6hRr3XWSmin7ZVcfpnmVNjqHtCHIbbQRY0AtipYtqiGTfjGKnYZcCM/Q16W0x75
+ kVhRXxwgbMLEya4K/nwiZ2FzbAlGIXUusFTfCC2Eqklhk0PH+N2DHV4lM4bth7d2/Kk2
+ bemb2UzU7LI6Me4Eg1fXbAj0v7SQxl6ga0ebmMLnMDql3IpXSAeSw746Cl4b4PX6+qne
+ M6Y+0YORPmKwAKeio1+w7ikPvlactifOAlJ1OCcIJ3rvzKZzLoJHG8Jt5EigkmgJ3XLV
+ 7UEiFp+oSQjyPbgIhkPF3uvUHG7pdNb2GxD7+OxG79gbbseKkYbtYnk1VdFeFlKEaFxI
+ 8BPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729765718; x=1730370518;
+ d=1e100.net; s=20230601; t=1729765721; x=1730370521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ZB/+Sc9m5mjoqV4Si29Zg65y5ttl3uRlQNwxYZ9Scg=;
- b=ozijjVwSgD6u2QXs0aZCacUinirLXtsCiwtFskldJcGy9mMkR1tNKFOuxcww15xGSm
- BOEYuSWoHFKpQK4mIzc7UsqJmnc3GeKigzt44ph35arm0pbSE3RqYGEG0sfAOkcwnK5g
- 9g2emeV8G2GjmYmtgZsNuYQzkrTEtiOGI/o6X7h+VNp5D7zQk4h36NSkqicKnVn7XjWF
- GY4Xa07BDB3D+K4TImQW0pI+9Nj95xRww3pQ9plaRkL5hRJK94SMGOUckLcc0tcdDW+D
- /Xg2EPUmNEHbn7oZPw84wGQ6pICy+w/h55iCQSg7zQ6fXnSImcjRDjLdHJ0ItS/qxIEn
- cRIA==
-X-Gm-Message-State: AOJu0YzLbs/exO5XrMoTsMwmG9MrF0+fC+ptJYOkgXDbfZ29P28QoRdb
- bbmhvJHROxO2J04yd0yQ5YEf44geKxi1iF9Cg42lNKT/1qOrJys1gpWFpM+OyMnyo9eOE+wuIWA
- Zyw==
-X-Google-Smtp-Source: AGHT+IH+iI1Lv/Zp5TojNnTWlXfqM1Ibi563uASESdJeRr6tXeDptt83uR87vdeZctHxm+o+seYTYQ==
-X-Received: by 2002:a17:906:d554:b0:a9a:2afc:e4e4 with SMTP id
- a640c23a62f3a-a9ad285fd4amr122434666b.59.1729765718508; 
- Thu, 24 Oct 2024 03:28:38 -0700 (PDT)
+ bh=IOlf/wzEJ+wM7g5BTurCACeEWddAq/2jF0kyAkwof9o=;
+ b=huZUBAi09c9DsfZQ3XHWADEviZhDrYoKdAjy9hPCZYXUuhlTaSnNeuULwDAAV8D5RG
+ vNmYjCOdsRdOkImeWSzwhYCMBYrx4jXl/GV2Oi0aEo37Sh3s2/3CPT6FdOKf4hWyu3cS
+ R6W8q2fRp/DYMmSwBeJCc1josX7WNLgz4zQ3+sydT2Hzt/GLPM2V+4U6sRnxK/IeHw0m
+ j+Oq+8/zb0ZcLUmK+421Ri56AXeQ9aaXZpHw1j9J83h1HOOS5AqDoMNdoKrATbgm6Z6S
+ Da53dZO/XkHifsMFdp6b0YyvCh5BcZVRcMCBFdPAyzW+evTMh+JNlK1rzx+ljOCKedQw
+ lrqQ==
+X-Gm-Message-State: AOJu0YyL+5317vJefew4h9TcwJzvrlEsb5o8xs5dWQ8fT2kU3m/XPVsn
+ 0pqSh3p7yokCAbFlXzFuP3f2zYJCCPgx3YhecRiyrrAzRXegFQzBCZp2T1OsHpe7BasRlqhDAsQ
+ 8hg==
+X-Google-Smtp-Source: AGHT+IEW8XvWl7WjK5L6NTaQiRxCXYwncONlzs/TAiw6pzsr5QrMaAH6KgMxVt0rkKJqjqOk0fXWnQ==
+X-Received: by 2002:a17:907:7247:b0:a9a:33c:f6e1 with SMTP id
+ a640c23a62f3a-a9abf851e2dmr534891566b.5.1729765720535; 
+ Thu, 24 Oct 2024 03:28:40 -0700 (PDT)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a913706d3sm601019066b.134.2024.10.24.03.28.36
+ a640c23a62f3a-a9a913706d3sm601019066b.134.2024.10.24.03.28.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Oct 2024 03:28:38 -0700 (PDT)
+ Thu, 24 Oct 2024 03:28:40 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
@@ -72,17 +72,16 @@ Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
  jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, Alexander Graf <graf@amazon.com>
-Subject: [PATCH v4 07/15] hw/misc/pvpanic: Add MMIO interface
-Date: Thu, 24 Oct 2024 12:28:05 +0200
-Message-Id: <20241024102813.9855-8-phil@philjordan.eu>
+Subject: [PATCH v4 08/15] hvf: arm: Ignore writes to CNTP_CTL_EL0
+Date: Thu, 24 Oct 2024 12:28:06 +0200
+Message-Id: <20241024102813.9855-9-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 In-Reply-To: <20241024102813.9855-1-phil@philjordan.eu>
 References: <20241024102813.9855-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62f;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62f.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62e;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -106,128 +105,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Graf <graf@amazon.com>
 
-In addition to the ISA and PCI variants of pvpanic, let's add an MMIO
-platform device that we can use in embedded arm environments.
+MacOS unconditionally disables interrupts of the physical timer on boot
+and then continues to use the virtual one. We don't really want to support
+a full physical timer emulation, so let's just ignore those writes.
 
 Signed-off-by: Alexander Graf <graf@amazon.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/misc/Kconfig           |  4 +++
- hw/misc/meson.build       |  1 +
- hw/misc/pvpanic-mmio.c    | 61 +++++++++++++++++++++++++++++++++++++++
- include/hw/misc/pvpanic.h |  1 +
- 4 files changed, 67 insertions(+)
- create mode 100644 hw/misc/pvpanic-mmio.c
+ target/arm/hvf/hvf.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 1f1baa5dde9..5a6c1603b60 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -145,6 +145,10 @@ config PVPANIC_ISA
-     depends on ISA_BUS
-     select PVPANIC_COMMON
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 6cea483d422..b45b764dfd0 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -11,6 +11,7 @@
  
-+config PVPANIC_MMIO
-+    bool
-+    select PVPANIC_COMMON
-+
- config AUX
-     bool
-     select I2C
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index d02d96e403b..4de4db0a600 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -122,6 +122,7 @@ system_ss.add(when: 'CONFIG_ARMSSE_MHU', if_true: files('armsse-mhu.c'))
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qemu/log.h"
  
- system_ss.add(when: 'CONFIG_PVPANIC_ISA', if_true: files('pvpanic-isa.c'))
- system_ss.add(when: 'CONFIG_PVPANIC_PCI', if_true: files('pvpanic-pci.c'))
-+system_ss.add(when: 'CONFIG_PVPANIC_MMIO', if_true: files('pvpanic-mmio.c'))
- system_ss.add(when: 'CONFIG_AUX', if_true: files('auxbus.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_hace.c',
-diff --git a/hw/misc/pvpanic-mmio.c b/hw/misc/pvpanic-mmio.c
-new file mode 100644
-index 00000000000..56738efee53
---- /dev/null
-+++ b/hw/misc/pvpanic-mmio.c
-@@ -0,0 +1,61 @@
-+/*
-+ * QEMU simulated pvpanic device (MMIO frontend)
-+ *
-+ * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+
-+#include "hw/qdev-properties.h"
-+#include "hw/misc/pvpanic.h"
-+#include "hw/sysbus.h"
-+#include "standard-headers/misc/pvpanic.h"
-+
-+OBJECT_DECLARE_SIMPLE_TYPE(PVPanicMMIOState, PVPANIC_MMIO_DEVICE)
-+
-+#define PVPANIC_MMIO_SIZE 0x2
-+
-+struct PVPanicMMIOState {
-+    SysBusDevice parent_obj;
-+
-+    PVPanicState pvpanic;
-+};
-+
-+static void pvpanic_mmio_initfn(Object *obj)
-+{
-+    PVPanicMMIOState *s = PVPANIC_MMIO_DEVICE(obj);
-+
-+    pvpanic_setup_io(&s->pvpanic, DEVICE(s), PVPANIC_MMIO_SIZE);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->pvpanic.mr);
-+}
-+
-+static Property pvpanic_mmio_properties[] = {
-+    DEFINE_PROP_UINT8("events", PVPanicMMIOState, pvpanic.events,
-+                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void pvpanic_mmio_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    device_class_set_props(dc, pvpanic_mmio_properties);
-+    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-+}
-+
-+static const TypeInfo pvpanic_mmio_info = {
-+    .name          = TYPE_PVPANIC_MMIO_DEVICE,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(PVPanicMMIOState),
-+    .instance_init = pvpanic_mmio_initfn,
-+    .class_init    = pvpanic_mmio_class_init,
-+};
-+
-+static void pvpanic_register_types(void)
-+{
-+    type_register_static(&pvpanic_mmio_info);
-+}
-+
-+type_init(pvpanic_register_types)
-diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index 9a71a5ad0d7..049a94c1125 100644
---- a/include/hw/misc/pvpanic.h
-+++ b/include/hw/misc/pvpanic.h
-@@ -26,6 +26,7 @@
- 
- #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
- #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
-+#define TYPE_PVPANIC_MMIO_DEVICE "pvpanic-mmio"
- 
- #define PVPANIC_IOPORT_PROP "ioport"
- 
+ #include "sysemu/runstate.h"
+ #include "sysemu/hvf.h"
+@@ -184,6 +185,7 @@ void hvf_arm_init_debug(void)
+ #define SYSREG_OSLSR_EL1      SYSREG(2, 0, 1, 1, 4)
+ #define SYSREG_OSDLR_EL1      SYSREG(2, 0, 1, 3, 4)
+ #define SYSREG_CNTPCT_EL0     SYSREG(3, 3, 14, 0, 1)
++#define SYSREG_CNTP_CTL_EL0   SYSREG(3, 3, 14, 2, 1)
+ #define SYSREG_PMCR_EL0       SYSREG(3, 3, 9, 12, 0)
+ #define SYSREG_PMUSERENR_EL0  SYSREG(3, 3, 9, 14, 0)
+ #define SYSREG_PMCNTENSET_EL0 SYSREG(3, 3, 9, 12, 1)
+@@ -1620,6 +1622,13 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+     case SYSREG_OSLAR_EL1:
+         env->cp15.oslsr_el1 = val & 1;
+         return 0;
++    case SYSREG_CNTP_CTL_EL0:
++        /*
++         * Guests should not rely on the physical counter, but macOS emits
++         * disable writes to it. Let it do so, but ignore the requests.
++         */
++        qemu_log_mask(LOG_UNIMP, "Unsupported write to CNTP_CTL_EL0\n");
++        return 0;
+     case SYSREG_OSDLR_EL1:
+         /* Dummy register */
+         return 0;
 -- 
 2.39.3 (Apple Git-145)
 
