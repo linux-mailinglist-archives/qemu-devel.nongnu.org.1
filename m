@@ -2,71 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4999AF24E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4539AF27F
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 21:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t43IL-0008La-Ir; Thu, 24 Oct 2024 15:14:53 -0400
+	id 1t43Ni-0003HB-4p; Thu, 24 Oct 2024 15:20:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t43IH-0008Jh-Q0
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:14:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t43IG-0003v1-0K
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:14:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729797287;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rTcAeviql/3tm0IXeaeMsOfPiKVWLb4wdru+n2gv3EA=;
- b=X1acjI0l+1y9aFT407lI1YZm6hwCrPyTcGDuoNbOiF+ir7wDsU3sA3HNGcd8MCk5HxYENA
- LJRdUmlo+Zht4FkghRPY1t3hYWYY3Rs809lYtUUVbx7my7bT9eoJwELJNnmoasBpavaC/l
- jFuwcCVg0lLactCl0jMBFkcPue2e5k4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-n3bFx2cFPqiW5zT-kU_NWg-1; Thu,
- 24 Oct 2024 15:14:44 -0400
-X-MC-Unique: n3bFx2cFPqiW5zT-kU_NWg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t43Nh-0003H2-1h
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:20:25 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t43Nf-0004kR-Dc
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 15:20:24 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB99719560B4; Thu, 24 Oct 2024 19:14:42 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.9])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DE29C196BB7D; Thu, 24 Oct 2024 19:14:40 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Kowal <kowal@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 2/2] MAINTAINERS: Remove myself from XIVE
-Date: Thu, 24 Oct 2024 21:14:32 +0200
-Message-ID: <20241024191432.1802089-3-clg@redhat.com>
-In-Reply-To: <20241024191432.1802089-1-clg@redhat.com>
-References: <20241024191432.1802089-1-clg@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0DBEA21DA7;
+ Thu, 24 Oct 2024 19:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1729797618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TJoq6RfU36y5XSqopLcYMfLzOj9ASAJIjo6bo1CLbU8=;
+ b=X6jOA4f0DMveq12+8jrCXd04/26h+UkKS/qLVviEtODTnzmtPGOX0dMPTph3bOC4yJSF2i
+ 25FWZ/7BRohhLRvWe/YQu94t6AW35PH+IhCqNy53uqNoy+yVgHT8V9Pyc5Nas1Bg2L+bYL
+ PtVc+8iw94Atq6qz0x99xY1LW0wlq94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1729797618;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TJoq6RfU36y5XSqopLcYMfLzOj9ASAJIjo6bo1CLbU8=;
+ b=Dawsbw97knpXcMqXQn3OVHcX8WUMHeka1v3Dc38g74uWhEpW/nXPhUQelSE0fIta0wA2gE
+ 6rT1FPiGC+ILNdDw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=X6jOA4f0;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Dawsbw97
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1729797618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TJoq6RfU36y5XSqopLcYMfLzOj9ASAJIjo6bo1CLbU8=;
+ b=X6jOA4f0DMveq12+8jrCXd04/26h+UkKS/qLVviEtODTnzmtPGOX0dMPTph3bOC4yJSF2i
+ 25FWZ/7BRohhLRvWe/YQu94t6AW35PH+IhCqNy53uqNoy+yVgHT8V9Pyc5Nas1Bg2L+bYL
+ PtVc+8iw94Atq6qz0x99xY1LW0wlq94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1729797618;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TJoq6RfU36y5XSqopLcYMfLzOj9ASAJIjo6bo1CLbU8=;
+ b=Dawsbw97knpXcMqXQn3OVHcX8WUMHeka1v3Dc38g74uWhEpW/nXPhUQelSE0fIta0wA2gE
+ 6rT1FPiGC+ILNdDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4E03F1368E;
+ Thu, 24 Oct 2024 19:20:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VknsAPGdGmevCAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 24 Oct 2024 19:20:17 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Igor Mammedov <imammedo@redhat.com>, Juraj Marcin
+ <jmarcin@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Dr . David
+ Alan Gilbert" <dave@treblig.org>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>, Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alex
+ Williamson <alex.williamson@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 3/4] migration: Make migration object a singleton object
+In-Reply-To: <20241024165627.1372621-4-peterx@redhat.com>
+References: <20241024165627.1372621-1-peterx@redhat.com>
+ <20241024165627.1372621-4-peterx@redhat.com>
+Date: Thu, 24 Oct 2024 16:20:14 -0300
+Message-ID: <878qudfgup.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 0DBEA21DA7
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCPT_COUNT_TWELVE(0.00)[14]; MIME_TRACE(0.00)[0:+];
+ RCVD_TLS_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,32 +127,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Working on XIVE has been one of the most complex and fascinating
-experiences for me. It's been a real journey, and now it's time for
-IBM to take over and guide its future. I'm stepping back as the
-maintainer of XIVE.
+Peter Xu <peterx@redhat.com> writes:
 
-Cc: Michael Kowal <kowal@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+> This makes the migration object a singleton unit.  After this, we can do
+> something slightly tricky later on with the guarantee that nobody will be
+> able to create the object twice.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/migration.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/migration/migration.c b/migration/migration.c
+> index bcb735869b..1b5285af95 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -45,6 +45,7 @@
+>  #include "qapi/qmp/qerror.h"
+>  #include "qapi/qmp/qnull.h"
+>  #include "qemu/rcu.h"
+> +#include "qom/object_interfaces.h"
+>  #include "postcopy-ram.h"
+>  #include "qemu/thread.h"
+>  #include "trace.h"
+> @@ -3855,11 +3856,19 @@ fail:
+>      migrate_fd_cleanup(s);
+>  }
+>  
+> +static Object* migration_get_instance(Error **errp)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b157a5c17b98414e8fb179c918626d5da54e2f76..e0c0574441a276637d3d52c9aeab04339ea74d88 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2609,7 +2609,6 @@ F: tests/qtest/fw_cfg-test.c
- T: git https://github.com/philmd/qemu.git fw_cfg-next
- 
- XIVE
--M: Cédric Le Goater <clg@kaod.org>
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
--- 
-2.47.0
+static Object *migration_get_instance(Error **errp)
+              ^
 
+> +{
+> +    return OBJECT(current_migration);
+> +}
+> +
+>  static void migration_class_init(ObjectClass *klass, void *data)
+>  {
+>      DeviceClass *dc = DEVICE_CLASS(klass);
+> +    SingletonClass *singleton = SINGLETON_CLASS(klass);
+>  
+>      dc->user_creatable = false;
+> +    singleton->get_instance = migration_get_instance;
+> +
+>      device_class_set_props(dc, migration_properties);
+>  }
+>  
+> @@ -3932,6 +3941,10 @@ static const TypeInfo migration_type = {
+>      .instance_size = sizeof(MigrationState),
+>      .instance_init = migration_instance_init,
+>      .instance_finalize = migration_instance_finalize,
+> +    .interfaces = (InterfaceInfo[]) {
+> +        { TYPE_SINGLETON },
+> +        { }
+> +    }
+>  };
+>  
+>  static void register_migration_types(void)
 
