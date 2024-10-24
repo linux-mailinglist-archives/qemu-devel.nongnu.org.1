@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4EF9AE1A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9E79AE1CB
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Oct 2024 11:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t3uZn-000191-1q; Thu, 24 Oct 2024 05:56:19 -0400
+	id 1t3ua3-0001DS-Jj; Thu, 24 Oct 2024 05:56:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZi-00017r-CI
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:16 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1t3uZl-000194-OF
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:18 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t3uZg-0003n7-Bp
- for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:14 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a99cc265e0aso90920866b.3
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:11 -0700 (PDT)
+ id 1t3uZi-0003oN-Au
+ for qemu-devel@nongnu.org; Thu, 24 Oct 2024 05:56:17 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a9a850270e2so111800266b.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 02:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729763771; x=1730368571; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729763773; x=1730368573; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZqKopH4arkGRC9gLv/9n1TSlUFMfVszFCtTC30nfocI=;
- b=qPmNTHk6Vf1NQF/0IrPsiO0cxkWAL5cfiDpsxN7FUoI6dXBfC8IBVrPoxOW7GTwhM/
- 0yVgHG0UfX150JbNE0iecquUKG6p+YHDa7tYmiKF2KkxKTY/Pq9bIcIQb7JvNyXEaXL3
- EpLSosioYQNEFC8rsvwZyTTSVNZbqqKr6eH8lzkvA2lIPMBURjGBDsnPL0EYAPLd53xt
- Gaula5Gs1/POqlzWfT/sk8fH9inWiUBgfWdtiuzCAesGWT60zOvIg8HCRmhULfrFifCW
- ayFaw4azalapR7Gj4XRUWep5r53amyH72UdfLMFDSVqCWy6ZTQh5AJvmsaqWmpip6qPa
- knvA==
+ bh=XK/zHX8qgXptgXry27/12QWgnPSEzecfyqvscRlng8I=;
+ b=Uk8IoZjWBQqffroCcYl7dTuvjJc99N1C+USThumofJ7AUSSdA9ucF5RQIJ5GdpjPgH
+ Z0xs5dwOu70SgUuaZF1fDmilPqaZO0qjHhWDJA03Bu+jCadso+QmVBsMdeZ4U37HHxI6
+ UAA5DnNyY0UvArdqyj9xq07tXNtqWiGwbPbR39KvR3IDWXlHMoATeGnvPPs58o8DBwYs
+ DYNR1//L5DkWW5/YTEkc4GUxj4Y0tRhfZo4Ez2vvbsJHAUvyIh2jm/HflBoiSsxV0UmD
+ JzI4hbzaCwwS7mbU97hFazPaIipn4f5mXBvaKgwcnXddf4sG120GT1FPngXwu4P6k9ao
+ B59g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729763771; x=1730368571;
+ d=1e100.net; s=20230601; t=1729763773; x=1730368573;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZqKopH4arkGRC9gLv/9n1TSlUFMfVszFCtTC30nfocI=;
- b=Iiq2VeNQuL8NlyCTiq73zSDOkkXyiDGA9WIofTRssbMlalQM54/YCvjJTPHfQDrYTl
- 8rMZJMd+sd3q1zcBZpVcZsi270IehVSg0ENIN21ZyKMvR0c91MHPU1EkZA27f37OS20M
- DmyFo0Lf8f0fLJwe9I4g2IpXTtoZIqWCBFGkZPxVEUWXxTde/Hha2i9wQg0K1JREofbJ
- w6OHd8GeCK/YOT53xCUkeTooucQXBCo7UV+YQ+/uXR/Z+GZwSx/BoYJDFmbYmd4F9pkN
- DxYJUhpN/Fy3FaMmII7JUOazN3CUE+tr5sYg7b57DGvJCcTo3mXCQh33Y5WyGQOh/tut
- YScg==
-X-Gm-Message-State: AOJu0Yzhpo0L0ivE4/A7QwwkLSR/UEZKWEgVtsLmCYbNcActdIGETpZ8
- isNI6QrwzgxejZWReAr120RrTEFfGr8fGjrzq5Ci+JJamftWi6xe2JN/tLnRkZc=
-X-Google-Smtp-Source: AGHT+IH3L57uMPNEc5ciPkQ6Z6wKF8jvnpf0tCdMWPVSnLqDnskZjGBVZMguPh/NVov8hdxYdjsAeQ==
-X-Received: by 2002:a17:907:97cb:b0:a9a:1792:f24 with SMTP id
- a640c23a62f3a-a9ad27317d7mr119974866b.24.1729763770701; 
- Thu, 24 Oct 2024 02:56:10 -0700 (PDT)
+ bh=XK/zHX8qgXptgXry27/12QWgnPSEzecfyqvscRlng8I=;
+ b=nJLr/iwKVI3jNtQzv7DFov7KCOGeUXX0mYGedo+O8wWOvmG3x6WNgHkglyusoUTCTx
+ Yhd4D+FeYXZ52q78rw75pYcKssmVTYDrsRcs4vr+9bwchi+xJQCDYhvXFJScc+sCp44c
+ dqYgxiUnwF3ABBOyBVZD2iLsWaoexAbJuxd7lHq0UCoN6WH6hZiMcnynEY8M4hbxYDJ4
+ 9mgN3D6Giz0yBiy6WzIbs6l6OwCTLQQMrH4NBZlruwsTSG4LKHE3bNGf7+1jZSoLqPKF
+ hOcdvftcEMH5jsdiE9jVBAc/hcDSdzCLWt0WtxUp3RCty+yXoOFBw6tKGrj1pa7Dojki
+ D6+A==
+X-Gm-Message-State: AOJu0YyyjZ9l5aHWDhLBtX9c2l0gvZLudN1ZFxsUIMICWWEEJlTg3Kx5
+ KnKoKtf0AZ4z1E7wabjAs8e+2sXxIXIHeH6w06LNBwqdAVcdu2GPGmQPqqNANLA=
+X-Google-Smtp-Source: AGHT+IEOyQePChGWLvPydUo9luKyniLHTcp118GzZqLsR/2s04p0bWt/3Zyp/9H6Df53O9jmGDr9mg==
+X-Received: by 2002:a17:907:9405:b0:a99:ee42:1f38 with SMTP id
+ a640c23a62f3a-a9abf8aefbdmr501541866b.31.1729763772859; 
+ Thu, 24 Oct 2024 02:56:12 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9a912ee061sm593766466b.63.2024.10.24.02.56.06
+ a640c23a62f3a-a9a912d623fsm594030066b.9.2024.10.24.02.56.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Oct 2024 02:56:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B71765F942;
+ by draig.lan (Postfix) with ESMTP id CC4E75F9D0;
  Thu, 24 Oct 2024 10:56:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>
-Subject: [PULL 08/17] accel/tcg: add tracepoints for cpu_loop_exit_atomic
-Date: Thu, 24 Oct 2024 10:55:54 +0100
-Message-Id: <20241024095603.1813285-9-alex.bennee@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PULL 09/17] dockerfiles: fix default targets for
+ debian-loongarch-cross
+Date: Thu, 24 Oct 2024 10:55:55 +0100
+Message-Id: <20241024095603.1813285-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
 References: <20241024095603.1813285-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,152 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We try to avoid using cpu_loop_exit_atomic as it brings in an all-core
-sync point. However on some cpu/kernel/benchmark combinations it is
-starting to show up in the performance profile. To make it easier to
-see whats going on add tracepoints for the slow path so we can see
-what is triggering the wait.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-It seems for a modern CPU it can be quite a bit, for example:
+fix system target name, and remove --disable-system (which deactivates
+system target).
 
-./qemu-system-aarch64 \
-           -machine type=virt,virtualization=on,pflash0=rom,pflash1=efivars,gic-version=max \
-           -smp 4 \
-           -accel tcg \
-           -device virtio-net-pci,netdev=unet \
-           -device virtio-scsi-pci \
-           -device scsi-hd,drive=hd \
-           -netdev user,id=unet,hostfwd=tcp::2222-:22 \
-           -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=/dev/zen-ssd2/trixie-arm64,discard=unmap \
-           -serial mon:stdio \
-           -blockdev node-name=rom,driver=file,filename=(pwd)/pc-bios/edk2-aarch64-code.fd,read-only=true \
-           -blockdev node-name=efivars,driver=file,filename=$HOME/images/qemu-arm64-efivars \
-           -m 8192 \
-           -object memory-backend-memfd,id=mem,size=8G,share=on \
-           -kernel /home/alex/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image -append "root=/dev/sda2 console=ttyAMA0 systemd.unit=benchmark-stress-ng.service" \
-           -display none -d trace:load_atom\*_fallback,trace:store_atom\*_fallback
+Found using: make docker-test-build@debian-loongarch-cross V=1
 
-With:
-
-  -cpu neoverse-v1,pauth-impdef=on => 2203343
-
-With:
-
-  -cpu cortex-a76 => 0
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20241020213759.2168248-1-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-9-alex.bennee@linaro.org>
+Message-Id: <20241023113406.1284676-10-alex.bennee@linaro.org>
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 51b2c16dbe..aa8af52cc3 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -29,7 +29,7 @@
- #include "exec/page-protection.h"
- #include "exec/helper-proto.h"
- #include "qemu/atomic128.h"
--#include "trace/trace-root.h"
-+#include "trace.h"
- #include "tcg/tcg-ldst.h"
- #include "internal-common.h"
- #include "internal-target.h"
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 134da3c1da..c735add261 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -168,6 +168,7 @@ static uint64_t load_atomic8_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
- #endif
+diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+index 79eab5621e..538ab53490 100644
+--- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
++++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+@@ -43,8 +43,8 @@ RUN curl -#SL https://github.com/loongson/build-tools/releases/download/2023.08.
+ ENV PATH $PATH:/opt/cross-tools/bin
+ ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib:$LD_LIBRARY_PATH
  
-     /* Ultimate fallback: re-execute in serial context. */
-+    trace_load_atom8_or_exit_fallback(ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
+-ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+-ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
++ENV QEMU_CONFIGURE_OPTS --disable-docs --disable-tools
++ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch64-softmmu
+ ENV MAKE /usr/bin/make
  
-@@ -212,6 +213,7 @@ static Int128 load_atomic16_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
-     }
- 
-     /* Ultimate fallback: re-execute in serial context. */
-+    trace_load_atom16_or_exit_fallback(ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -519,6 +521,7 @@ static uint64_t load_atom_8(CPUState *cpu, uintptr_t ra,
-         if (HAVE_al8) {
-             return load_atom_extract_al8x2(pv);
-         }
-+        trace_load_atom8_fallback(memop, ra);
-         cpu_loop_exit_atomic(cpu, ra);
-     default:
-         g_assert_not_reached();
-@@ -563,6 +566,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
-         break;
-     case MO_64:
-         if (!HAVE_al8) {
-+            trace_load_atom16_fallback(memop, ra);
-             cpu_loop_exit_atomic(cpu, ra);
-         }
-         a = load_atomic8(pv);
-@@ -570,6 +574,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
-         break;
-     case -MO_64:
-         if (!HAVE_al8) {
-+            trace_load_atom16_fallback(memop, ra);
-             cpu_loop_exit_atomic(cpu, ra);
-         }
-         a = load_atom_extract_al8x2(pv);
-@@ -897,6 +902,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
-         g_assert_not_reached();
-     }
- 
-+    trace_store_atom2_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -961,6 +967,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
-                 return;
-             }
-         }
-+        trace_store_atom4_fallback(memop, ra);
-         cpu_loop_exit_atomic(cpu, ra);
-     default:
-         g_assert_not_reached();
-@@ -1029,6 +1036,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
-     default:
-         g_assert_not_reached();
-     }
-+    trace_store_atom8_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -1107,5 +1115,6 @@ static void store_atom_16(CPUState *cpu, uintptr_t ra,
-     default:
-         g_assert_not_reached();
-     }
-+    trace_store_atom16_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
-diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
-index 4e9b450520..14f638810c 100644
---- a/accel/tcg/trace-events
-+++ b/accel/tcg/trace-events
-@@ -12,3 +12,15 @@ memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
- 
- # translate-all.c
- translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
-+
-+# ldst_atomicity
-+load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom8_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+load_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
+ # As a final step configure the user (if env is defined)
 -- 
 2.39.5
 
