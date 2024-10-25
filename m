@@ -2,71 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9399B08FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAD39B08F3
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:56:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Me9-0005sI-AY; Fri, 25 Oct 2024 11:54:41 -0400
+	id 1t4MeP-00061k-Et; Fri, 25 Oct 2024 11:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4Me7-0005ru-Hn
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:54:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4Me5-0003k2-Rq
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:54:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729871677;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=/lFV9fR2HLgDFz1YhJ6SVXR3we9EMselYTvMofuJhsM=;
- b=ODneIMWurAZndz8Hrzws+fL68+cEshbGvEfBDTWkOVvDPSzF64MBgV3aMEZ47RcKUHPULZ
- hRXeaP27xrdz3d+0ONO7vwYK0zRM+AJYrbRRvlMulK2DB1QUNKbQDkgqlX+FTe7fzaI2aC
- crlsyK8g+3A+YjnapTUl/KJT+RllAUk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-KTUrCqv0Op6zkQvDfwu2nw-1; Fri,
- 25 Oct 2024 11:54:32 -0400
-X-MC-Unique: KTUrCqv0Op6zkQvDfwu2nw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 231F8195608F; Fri, 25 Oct 2024 15:54:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.164])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7E1431955F43; Fri, 25 Oct 2024 15:54:29 +0000 (UTC)
-Date: Fri, 25 Oct 2024 16:54:26 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org
-Subject: Re: cpr-transfer with caveats
-Message-ID: <Zxu_MqXqm78v3zJE@redhat.com>
-References: <87b1beba-4e03-45c7-b6ce-2772dcb117d1@oracle.com>
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1t4MeM-00060v-96; Fri, 25 Oct 2024 11:54:54 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1t4MeK-0003lB-Q7; Fri, 25 Oct 2024 11:54:54 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2e3d523a24dso1695570a91.0; 
+ Fri, 25 Oct 2024 08:54:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729871690; x=1730476490; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EmNitsDmnY1x5cCTcNSoGI3ApEz86Deu5rvkm83X2t0=;
+ b=VySR7QaYM/qx2C/b77g5H7dIhVx//gVhLxG7G4EGcABkOOopT9OPpO4b/8qYu0NM7K
+ IpoCKhBAsGGoYOTiQ02IR1ALrnFOnqTQ4xEYkXmYg/0o5VUlOTcApOONU6J8JjfVQVHf
+ Iue+BGPy6ARhXz6vE91UsXpcX1tQ/trLBitUToCfOP7yoE23l7ioL2/9/tBDeobq0IOl
+ l9+lWBDSiWdq+I7W9BkDSaitY11cTQHMyiPValLXUdJPqjryogwGrvBGP81AoCd8YKiS
+ BfAVu167iDgsbbOI4IaMDz5J0Q4zl9QlqQ2aYhNSBhSZWpmvnrVXRviwf9Uki3r9fK3b
+ Kk8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729871690; x=1730476490;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EmNitsDmnY1x5cCTcNSoGI3ApEz86Deu5rvkm83X2t0=;
+ b=b+NMynJXsMeKi//d4mwJHc6OsY8NQm0Q3/02pkMxgwKobaCOF18Ia03SjY9yZ6G9uO
+ fyZoBvKYjaEy5PVht6qUK+vJXfN1TDoyYQRpbscdJRWOiWKhXvkO/yYsf73+ZDFEdaJ0
+ OgWKk+pEsVc/3yYItZxWOWkqn+ETp05KjVXiQWm2Hw/BVpw0kaVOtiQ+/sYlWO7b524j
+ Uolkem7+sMVLRgkm9L0YcRHb/Zz5oUJYpNjZzjMfr6ULcFQGKwoTs0Hs7v5my/lJYLAI
+ 6Et3MGi7EG9MqIG9l18Mr3SbCA1VskBE8Jnbcp8ZVa6b7ddudPimqv+ZT6Z4xkXi8lBi
+ Hcwg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUiuyYf6UE/DwtOXcgoqjyDyg96Na1+zkunBX/GIMutpNs/gXaQX7PHR2A6BusgsGmmTmLGzUlrhrij@nongnu.org,
+ AJvYcCWEaSx164aA0nKc+A9DtA/i4ZrJ1uYhw0B6KotowI3kha7/ZsMMvHxp3LRMxW5iLw89B8MIOVhXAS6Caw==@nongnu.org,
+ AJvYcCXgLEofsEtRtqPdn8cm5PQ2/U1QPpytZk+9CcyNFnlK6RBZPSyKlJeoGdFnjkobPFRMLibT/LcQ0gg=@nongnu.org
+X-Gm-Message-State: AOJu0Yy1Q+16U1+iy6hMOaQG0LEbQeyqHsAfj9F5fUFk+R0kY63qDXSg
+ 1tKNKjoX21ltnoEhqV7blQL4wQTkHXJt79PYalW4ORfPbfxEbr+kV7hgOXaGwKMFNI+7ENfV8fa
+ oQ3t6DkBqMGfqyhQLAleTQTizC+Q=
+X-Google-Smtp-Source: AGHT+IGmgu91ap8rnjy5z32bZYwPYzaTfW/kM34EqlqKrDdWiIg1yZPUxZYNjDPDBtvD0kjJnVbBMIcsPBNNcTN0mRY=
+X-Received: by 2002:a17:90b:110d:b0:2e2:d5fc:2847 with SMTP id
+ 98e67ed59e1d1-2e77f710f93mr6733204a91.30.1729871690074; Fri, 25 Oct 2024
+ 08:54:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87b1beba-4e03-45c7-b6ce-2772dcb117d1@oracle.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241025141254.2141506-1-peter.maydell@linaro.org>
+ <20241025141254.2141506-15-peter.maydell@linaro.org>
+In-Reply-To: <20241025141254.2141506-15-peter.maydell@linaro.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 25 Oct 2024 08:54:40 -0700
+Message-ID: <CAMo8BfJT82ztbZfHwT8UkpJpaK-4H60MwOk2T_F_tptnLg907A@mail.gmail.com>
+Subject: Re: [PATCH 14/21] target/xtensa: Explicitly set 2-NaN propagation rule
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Song Gao <gaosong@loongson.cn>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Aleksandar Rikalo <arikalo@gmail.com>, Stafford Horne <shorne@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, qemu-ppc@nongnu.org, 
+ qemu-s390x@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.866,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,45 +103,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 25, 2024 at 11:01:27AM -0400, Steven Sistare wrote:
-> Hi Peter, are you OK if we proceed with cpr-transfer as is, without the
-> precreate phase?  Here are the problems that motivated it:
-> 
-> * migration test wants to enable migration events on the dest.
->   fix: enable on dest qemu using -global.  only for the test.
-> 
-> * migration test needs to fetch the dynamically assigned migration
->     listen port number
->   Fix: require unix domain socket for cpr-transfer, or a fixed port
->   number. Document it.
-> 
-> * migration test hangs connecting to the qtest socket.
->   fix: in the qtest code, defer connection.
-> 
-> Document that one cannot set migration caps or params on the dest
-> for cpr-transfer.
-> 
-> Document that for -incoming defer, mgmt must send the migrate command
-> to the src first (so dest reads cpr state and progresses to start the
-> monitor), then send the hotplug monitor commands to the dest.
-> 
-> Daniel, are you OK with that last bit?
+On Fri, Oct 25, 2024 at 7:13=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> Set the NaN propagation rule explicitly in xtensa_use_first_nan().
+>
+> (When we convert the softfloat pickNaNMulAdd routine to also
+> select a NaN propagation rule at runtime, we will be able to
+> remove the use_first_nan flag because the propagation rules
+> will handle everything.)
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  target/xtensa/fpu_helper.c     |  2 ++
+>  fpu/softfloat-specialize.c.inc | 12 +-----------
+>  2 files changed, 3 insertions(+), 11 deletions(-)
 
-I guess it depends on what happens inside QEMU between reading the
-cpr state and libvirt being able to access the monitor. Libvirt does
-various things with the monitor during QEMU startup, before guest
-vCPUs start. Mostly this is around host resource placement/mgmt
-that needs to be done before the guest CPUs start.
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Thanks.
+-- Max
 
