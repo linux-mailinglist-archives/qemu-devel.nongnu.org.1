@@ -2,72 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1419AFE2B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FF79AFE5E
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4GbT-00054q-2L; Fri, 25 Oct 2024 05:27:31 -0400
+	id 1t4GlG-0000b0-V2; Fri, 25 Oct 2024 05:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4GbC-0004zC-QO
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:27:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1t4GlE-0000ak-9q
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:37:36 -0400
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4GbA-0001k0-2q
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:27:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729848431;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=++SvW500SGFWsn1sWBh4jLVUUJBC7dHn3VXHDDXIfEE=;
- b=CZDZe2yKRlGefxlvOomj8g7VCG2uRZgRfxx9IZs+UzP35yp+/6qvPpyfwXQVvyiLJ3gdnc
- 2aHZIfqgoWrbBc4U4wlTkPInR1/lWOLi+Qt3X1boXb9l0+T8LMMY4lIltQFpWbPQKbpCxd
- hbPxyDUXvfONo8q3AMyPCQTFacH9YuE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-NGcizsYAMJGcdCiU7btuyQ-1; Fri,
- 25 Oct 2024 05:27:08 -0400
-X-MC-Unique: NGcizsYAMJGcdCiU7btuyQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 280471955F43; Fri, 25 Oct 2024 09:27:08 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.164])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A53A31956056; Fri, 25 Oct 2024 09:27:06 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 2/2] tests/functional: make cached asset files read-only
-Date: Fri, 25 Oct 2024 10:26:59 +0100
-Message-ID: <20241025092659.2312118-3-berrange@redhat.com>
-In-Reply-To: <20241025092659.2312118-1-berrange@redhat.com>
-References: <20241025092659.2312118-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1t4Gl9-0002yK-6F
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:37:36 -0400
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 4AAE7A0128; Fri, 25 Oct 2024 11:30:15 +0200 (CEST)
+Date: Fri, 25 Oct 2024 11:30:15 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Lei Huang <Lei.Huang@amd.com>
+cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
+ pierre-eric.pelloux-prayer@amd.com, ken.xue@amd.com
+Subject: Re: [PATCH] ui/sdl: Mouse event optimization
+In-Reply-To: <20241025065205.1222-1-Lei.Huang@amd.com>
+Message-ID: <alpine.LMD.2.03.2410251127250.22275@eik.bme.hu>
+References: <20241025065205.1222-1-Lei.Huang@amd.com>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,43 +55,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This ensures that if a functional test runs QEMU with a writable
-disk pointing to a cached asset, an error will be reported, rather
-than silently modifying the cache file.
+On Fri, 25 Oct 2024, Lei Huang wrote:
+> Use a convergence factor to make the VM's input
+> global coordinates more closely approach the global
+> coordinates of DOM0.
 
-As an example, tweaking test_sbsaref.py to set snapshot=off,
-results in a clear error:
+Dom0 is some Xen terminology. Do you mean "host" which is more often used 
+in QEMU?
 
-  Command: ./build/qemu-system-aarch64 ...snip... -drive file=/var/home/berrange/.cache/qemu/download/44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461,format=raw,snapshot=off -cpu max,pauth=off
-  Output: qemu-system-aarch64: Could not open '/var/home/berrange/.cache/qemu/download/44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461': Permission denied
+> Change-Id: I2c3f12f1fe7dfb9306d1fc40c4fd4d299937f4c6
+> Signed-off-by: Lei Huang <Lei.Huang@amd.com>
+> ---
+> ui/sdl2.c | 32 ++++++++++++++++++++++++++++++--
+> 1 file changed, 30 insertions(+), 2 deletions(-)
+>
+> diff --git a/ui/sdl2.c b/ui/sdl2.c
+> index bd4f5a9da14..8f504dd8727 100644
+> --- a/ui/sdl2.c
+> +++ b/ui/sdl2.c
+> @@ -303,6 +303,34 @@ static void sdl_mouse_mode_change(Notifier *notify, void *data)
+>     }
+> }
+>
+> +/*
+> + *guest_x and guest_y represent the global coordinates on the VM side,
+> + *while x and y represent the global coordinates on the dom0 side.
+> + *The goal of this entire process is to align the global coordinates of
+> + *the VM with those of dom0 using dx and dy. The current approach aims
+> + *for precise calibration in once attempt; however, because guest_x
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- tests/functional/qemu_test/asset.py | 3 +++
- 1 file changed, 3 insertions(+)
+"in one attempt" also add a space after the * at the beginning of lines.
 
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index e47bfac035..f126cd5863 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -8,6 +8,7 @@
- import hashlib
- import logging
- import os
-+import stat
- import subprocess
- import sys
- import unittest
-@@ -143,6 +144,8 @@ def fetch(self):
-             raise Exception("Hash of %s does not match %s" %
-                             (self.url, self.hash))
-         tmp_cache_file.replace(self.cache_file)
-+        # Remove write perms to stop tests accidentally modifying them
-+        os.chmod(self.cache_file, stat.S_IRUSR | stat.S_IRGRP)
- 
-         self.log.info("Cached %s at %s" % (self.url, self.cache_file))
-         return str(self.cache_file)
--- 
-2.46.0
+> + *and guest_y are non-zero values, they are not accurate values when
+> + *they are counted out to become negative.Therefore, achieving perfect
+> + *alignment in one attempt is impossible.Since the same calibration method
+> + *is used each time, repeated attempts cannot achieve alignment either.
+> + *By introducing a convergence factor, guest_x and guest_y can be made to
+> + *approach dom0's x and y indefinitely.
+> + *
+> + *                   QEMU                       (dx,dy)  VM
+> + *calculates dx and dy using guest_x and guest_y ---->  input driver
+> + *           ^                                            |
+> + *           |                                            |
+> + *           |                                            V
+> + *           |     update
+> + *           | guest_x,guest_y              input dispatcher ---> WindowManager
+> + *           |                                            |                 |
+> + *           |                                            |                 |
+> + *           |                 libdrm                     V                 |
+> + *       virtio-gpu  <------ drmModeMoveCursor <------ compositor <-------  |
+> + *                           (guest_x,guest_y)   calculates guest_x and
+> + *                                               guest_y dy using dx and dy
+> + */
 
+What about other display devices than virtio-gpu? Does this work with 
+those or do they need some update? If this is independent of graphics 
+device maybe add a note that virtio-gpu is an example and could be any 
+graphics device.
+
+Regards,
+BALATON Zoltan
+
+> +#define CONVERGENCE_FACTOR 3
+> static void sdl_send_mouse_event(struct sdl2_console *scon, int dx, int dy,
+>                                  int x, int y, int state)
+> {
+> @@ -331,8 +359,8 @@ static void sdl_send_mouse_event(struct sdl2_console *scon, int dx, int dy,
+>             y -= guest_y;
+>             guest_x += x;
+>             guest_y += y;
+> -            dx = x;
+> -            dy = y;
+> +            dx = x / CONVERGENCE_FACTOR;
+> +            dy = y / CONVERGENCE_FACTOR;
+>         }
+>         qemu_input_queue_rel(scon->dcl.con, INPUT_AXIS_X, dx);
+>         qemu_input_queue_rel(scon->dcl.con, INPUT_AXIS_Y, dy);
+> -- 
+> 2.45.2
+>
+>
+>
 
