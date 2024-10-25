@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5EE9AFF2C
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB79AFED9
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4H5L-0008Ig-Qm; Fri, 25 Oct 2024 05:58:23 -0400
+	id 1t4GwQ-0005Zb-Lj; Fri, 25 Oct 2024 05:49:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
- id 1t4H5E-0008I9-GD
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:58:17 -0400
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t4GwN-0005Z3-EA
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:49:07 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
- id 1t4H5C-0006Bn-SS
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:58:16 -0400
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.whiteo.stw.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <jlu@pengutronix.de>)
- id 1t4H4x-0008CR-CF; Fri, 25 Oct 2024 11:57:59 +0200
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
- by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
- (envelope-from <jlu@pengutronix.de>) id 1t4H4w-000LLu-0V;
- Fri, 25 Oct 2024 11:57:58 +0200
-Received: from localhost ([127.0.0.1])
- by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
- (envelope-from <jlu@pengutronix.de>) id 1t4H4v-006Mwp-1O;
- Fri, 25 Oct 2024 11:57:58 +0200
-Message-ID: <600baa43c3dd3547338934717cfb57c5e12b0d23.camel@pengutronix.de>
-Subject: Re: [PATCH 0/2] arm: Add collie and sx functional tests
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Guenter Roeck <linux@roeck-us.net>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Thomas Huth
- <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley
- <joel@jms.id.au>
-Date: Fri, 25 Oct 2024 11:57:57 +0200
-In-Reply-To: <07664ec3-6b46-4b27-9d8c-9e2ff34c9dbe@kaod.org>
-References: <20241017163247.711244-1-peter.maydell@linaro.org>
- <dcf06645-dac0-4099-8946-38ca9deaeccf@redhat.com>
- <ec2cb5e8-77be-435e-8aa7-4314cf412c4d@redhat.com>
- <CAFEAcA8MY8DWABNuYuzH57k-nv3J4s0eMR=FuRt1TVd8P2GU2g@mail.gmail.com>
- <a65a224e-4f54-436d-b555-734a8926d941@roeck-us.net>
- <aa7755a2-e6fa-4d23-bcac-a630e6da98db@linaro.org>
- <d9f18091-aee1-4b32-ba72-e1028fe433c9@roeck-us.net>
- <5262a33d-d0c5-452b-9869-f8f482b1c857@linaro.org>
- <07664ec3-6b46-4b27-9d8c-9e2ff34c9dbe@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0 (by Flathub.org) 
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t4GwL-0004u7-Pz
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:49:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729849746; x=1761385746;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=m3Wfu3++iK9KnA4c8PdVi4vqpS66wqp4zYKoFwGFA1c=;
+ b=Vy38ux8MtHjiiwtYdGNt7DF4L0QaW7ecfpJegVxbW0IIkkEhDFcylnu7
+ keXA68yeZ9cCgiFtnFm+BZOdKMo+8jH/REeX9kqWjcr5UGup/nl/SgXkH
+ U6XPM3O4bICET6WATdub8JhKlaN8rka5cIkYwd3wtDQY+jmWQkrktlHWv
+ wjDOlCmk1OleS6Dk8zh3NT4cTZqSVJseGmdhg5JTBblYsgg9VRk0nyMvW
+ PdfCwyQOk+Z2J98AepIJpyceSsilVayHJ3L/AmBsZPVR7P/JwLWbjeKar
+ Wo8O6hREbAuPZL5+FLnpKRgy6Q6iTFLtpo7PeqmPLoPfutyJjQwNIYyVX Q==;
+X-CSE-ConnectionGUID: ks/Nr0VURK+WIBRZHNEnhA==
+X-CSE-MsgGUID: wh0iIVMHTr+VjIEulVTtNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29374427"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29374427"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Oct 2024 02:49:04 -0700
+X-CSE-ConnectionGUID: wVXFr2yXT9SEG2WpzMmw+g==
+X-CSE-MsgGUID: O43oNQbLSFOkL4U0fH05kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="85429399"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa005.fm.intel.com with ESMTP; 25 Oct 2024 02:49:02 -0700
+Date: Fri, 25 Oct 2024 18:05:20 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH v2 13/13] rust: do not use TYPE_CHARDEV unnecessarily
+Message-ID: <ZxttYDRNxfLg/gUe@intel.com>
+References: <20241021163538.136941-1-pbonzini@redhat.com>
+ <20241021163538.136941-14-pbonzini@redhat.com>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: jlu@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: qemu-devel@nongnu.org
-Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
- envelope-from=jlu@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021163538.136941-14-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,95 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Mon, Oct 21, 2024 at 06:35:38PM +0200, Paolo Bonzini wrote:
+> Date: Mon, 21 Oct 2024 18:35:38 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH v2 13/13] rust: do not use TYPE_CHARDEV unnecessarily
+> X-Mailer: git-send-email 2.46.2
+> 
+> In the invocation of qdev_prop_set_chr(), "chardev" is the name of a
+> property rather than a type and has to match the name of the property
+> in device_class.rs.  Do not use TYPE_CHARDEV here, just like in the C
+> version of pl011_create.
+> 
+> Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Fri, 2024-10-25 at 08:55 +0200, C=C3=A9dric Le Goater wrote:
-> On 10/24/24 19:59, Philippe Mathieu-Daud=C3=A9 wrote:
-> > Cc'ing Jan.
-> >=20
-> > On 22/10/24 12:04, Guenter Roeck wrote:
-> > > On 10/21/24 21:09, Philippe Mathieu-Daud=C3=A9 wrote:
-> > > > Hi Guenter,
-> > > >=20
-> > > > On 21/10/24 11:02, Guenter Roeck wrote:
-> > > >=20
-> > > > > Unrelated to this, but I found that the sd emulation in 9.1 is al=
-so broken
-> > > > > for loongarch and sifive_u, and partially for ast2600-evb (it has=
- two
-> > > > > controllers, with one of them no longer working). That is too muc=
-h for me
-> > > > > to track down quickly, so this is just a heads-up.
->=20
-> It would greatly help if we could merge some of your testsuite under QEMU=
-.
->=20
-> > > > Please Cc me with reproducer or assign Gitlab issues to me,
-> > > > I'll have a look.
-> > > >=20
-> > >=20
-> > > If it wasn't funny, it would be sad.
-> > >=20
-> > > hw/sd/sd.c:sd_reset() calls sd_bootpart_offset() t determine the boot=
- partition
-> > > offset. That function needs to have sd->ext_csd[EXT_CSD_PART_CONFIG] =
-configured.
-> > > However, the value is only set later in sd_reset() with the call to s=
-c->set_csd().
-> > > One of the parameters of that function is the previously calculated s=
-ize.
-> > >=20
-> > > So in other words there is a circular dependency. The call to sd_boot=
-part_offset()
-> > > returns 0 because sd->ext_csd[EXT_CSD_PART_CONFIG] isn't set, then
-> > > the call to sc->set_csd() sets it ... too late. Subsequent calls to
-> > > sd_bootpart_offset() will then return the expected offset.
-
-> oh. I didn't realize that :/ I guess we only tested our own scenario when
-> we were working on the ast2600 bringup.
-
-Ah, I missed that early call to sd_bootpart_offset() as well.
-
-As this function calculates the *runtime* offset which changes as the
-guest switches between accessing the main user data area and the boot
-partitions by writing to the EXT_CSD_PART_CONFIG_ACC_MASK bits, it
-shouldn't be involved in the calculations in sd_reset() at all.
-
-> I think the change in the reset handler should be :
->=20
-> -=C2=A0=C2=A0=C2=A0 size -=3D sd_bootpart_offset(sd);
-> +=C2=A0=C2=A0=C2=A0 if (sd_is_emmc(sd)) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 size -=3D sd->boot_part_size =
-* 2;
-> +=C2=A0=C2=A0=C2=A0 }
-
-Yes, that seems correct.
-
-> > > I have no idea how this is supposed to work, and I don't think it wor=
-ks
-> > > as implemented. I'll revert commit e32ac563b83 in my local copy of qe=
-mu.
-> > > Jan, can you have a look at this bug report please? Otherwise I'll
-> > > have a look during soft freeze.
-
-Guenter, just to make sure: In your case [1], you had "boot-emmc" (see
-aspeed_machine_ast2600_class_emmc_init) enabled, right? Otherwise the
-boot partition size would be 0, meaning that the eMMC has no boot
-partitions.
-
-In that configuration, your backing file needs to have space for the
-boot partitions at the start (2*1MiB) and the rootfs starts at the 2
-MiB offset.
-
-Jan
-
-[1]https://lore.kernel.org/qemu-devel/8f3536a0-2685-4aa4-b26d-f460e738d387@=
-roeck-us.net/#t
---=20
-Pengutronix e.K.                        |                             |
-Steuerwalder Str. 21                    | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany               | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686        | Fax:   +49-5121-206917-5555 |
-
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
