@@ -2,80 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C437D9AFEFD
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5EE9AFF2C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:59:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Gys-0006IO-4X; Fri, 25 Oct 2024 05:51:42 -0400
+	id 1t4H5L-0008Ig-Qm; Fri, 25 Oct 2024 05:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4Gyp-0006I7-Cq
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:51:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
+ id 1t4H5E-0008I9-GD
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:58:17 -0400
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4Gyn-0005O3-6e
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:51:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729849895;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=gfCI+jBoKgZoxOzjfirNXbWX+PJWDpumJDC27cv25gs=;
- b=HFQ/w2aOnx9A725aCp1qp+ZRLnOAkNO5DQXZun6uyfKDsNoMgbUBf9w8NlCDZH0N9Tths7
- GELfsaCXVhrP8yjxPTFKT4sDm9Hc+l/HsT7hae5n76FM1UugPWHwbsynubZlU0p2wtEIRJ
- D0REcUld/DlMAsAxHF+6gF15TcEg27M=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-bHhSfcOKP8OFtB9bwriiHw-1; Fri,
- 25 Oct 2024 05:51:32 -0400
-X-MC-Unique: bHhSfcOKP8OFtB9bwriiHw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 397851955E70; Fri, 25 Oct 2024 09:51:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.164])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8653196BBC1; Fri, 25 Oct 2024 09:51:25 +0000 (UTC)
-Date: Fri, 25 Oct 2024 10:51:21 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Igor Mammedov <imammedo@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/4] qom: TYPE_SINGLETON interface
-Message-ID: <ZxtqGQbd4Hq4APtm@redhat.com>
-References: <20241024165627.1372621-1-peterx@redhat.com>
- <20241024165627.1372621-2-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
+ id 1t4H5C-0006Bn-SS
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:58:16 -0400
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.whiteo.stw.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <jlu@pengutronix.de>)
+ id 1t4H4x-0008CR-CF; Fri, 25 Oct 2024 11:57:59 +0200
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+ by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
+ (envelope-from <jlu@pengutronix.de>) id 1t4H4w-000LLu-0V;
+ Fri, 25 Oct 2024 11:57:58 +0200
+Received: from localhost ([127.0.0.1])
+ by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
+ (envelope-from <jlu@pengutronix.de>) id 1t4H4v-006Mwp-1O;
+ Fri, 25 Oct 2024 11:57:58 +0200
+Message-ID: <600baa43c3dd3547338934717cfb57c5e12b0d23.camel@pengutronix.de>
+Subject: Re: [PATCH 0/2] arm: Add collie and sx functional tests
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Guenter Roeck <linux@roeck-us.net>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Thomas Huth
+ <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley
+ <joel@jms.id.au>
+Date: Fri, 25 Oct 2024 11:57:57 +0200
+In-Reply-To: <07664ec3-6b46-4b27-9d8c-9e2ff34c9dbe@kaod.org>
+References: <20241017163247.711244-1-peter.maydell@linaro.org>
+ <dcf06645-dac0-4099-8946-38ca9deaeccf@redhat.com>
+ <ec2cb5e8-77be-435e-8aa7-4314cf412c4d@redhat.com>
+ <CAFEAcA8MY8DWABNuYuzH57k-nv3J4s0eMR=FuRt1TVd8P2GU2g@mail.gmail.com>
+ <a65a224e-4f54-436d-b555-734a8926d941@roeck-us.net>
+ <aa7755a2-e6fa-4d23-bcac-a630e6da98db@linaro.org>
+ <d9f18091-aee1-4b32-ba72-e1028fe433c9@roeck-us.net>
+ <5262a33d-d0c5-452b-9869-f8f482b1c857@linaro.org>
+ <07664ec3-6b46-4b27-9d8c-9e2ff34c9dbe@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.0 (by Flathub.org) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241024165627.1372621-2-peterx@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: jlu@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: qemu-devel@nongnu.org
+Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
+ envelope-from=jlu@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,166 +80,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 24, 2024 at 12:56:24PM -0400, Peter Xu wrote:
+Hi,
 
-Adding significant new functionality to QOM should really come
-with a commit message explaining the rationale and the design
-choices
+On Fri, 2024-10-25 at 08:55 +0200, C=C3=A9dric Le Goater wrote:
+> On 10/24/24 19:59, Philippe Mathieu-Daud=C3=A9 wrote:
+> > Cc'ing Jan.
+> >=20
+> > On 22/10/24 12:04, Guenter Roeck wrote:
+> > > On 10/21/24 21:09, Philippe Mathieu-Daud=C3=A9 wrote:
+> > > > Hi Guenter,
+> > > >=20
+> > > > On 21/10/24 11:02, Guenter Roeck wrote:
+> > > >=20
+> > > > > Unrelated to this, but I found that the sd emulation in 9.1 is al=
+so broken
+> > > > > for loongarch and sifive_u, and partially for ast2600-evb (it has=
+ two
+> > > > > controllers, with one of them no longer working). That is too muc=
+h for me
+> > > > > to track down quickly, so this is just a heads-up.
+>=20
+> It would greatly help if we could merge some of your testsuite under QEMU=
+.
+>=20
+> > > > Please Cc me with reproducer or assign Gitlab issues to me,
+> > > > I'll have a look.
+> > > >=20
+> > >=20
+> > > If it wasn't funny, it would be sad.
+> > >=20
+> > > hw/sd/sd.c:sd_reset() calls sd_bootpart_offset() t determine the boot=
+ partition
+> > > offset. That function needs to have sd->ext_csd[EXT_CSD_PART_CONFIG] =
+configured.
+> > > However, the value is only set later in sd_reset() with the call to s=
+c->set_csd().
+> > > One of the parameters of that function is the previously calculated s=
+ize.
+> > >=20
+> > > So in other words there is a circular dependency. The call to sd_boot=
+part_offset()
+> > > returns 0 because sd->ext_csd[EXT_CSD_PART_CONFIG] isn't set, then
+> > > the call to sc->set_csd() sets it ... too late. Subsequent calls to
+> > > sd_bootpart_offset() will then return the expected offset.
 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  include/qom/object_interfaces.h | 47 +++++++++++++++++++++++++++++++++
->  qom/object.c                    |  3 +++
->  qom/object_interfaces.c         | 24 +++++++++++++++++
->  qom/qom-qmp-cmds.c              | 22 ++++++++++++---
->  system/qdev-monitor.c           |  7 +++++
->  5 files changed, 100 insertions(+), 3 deletions(-)
+> oh. I didn't realize that :/ I guess we only tested our own scenario when
+> we were working on the ast2600 bringup.
 
-snip
+Ah, I missed that early call to sd_bootpart_offset() as well.
 
-> + * Singleton class describes the type of object classes that can only
-> + * provide one instance for the whole lifecycle of QEMU.  It will fail the
-> + * operation if one attemps to create more than one instance.
-> + *
-> + * One can fetch the single object using class's get_instance() callback if
-> + * it was created before.  This can be useful for operations like QMP
-> + * qom-list-properties, where dynamically creating an object might not be
-> + * feasible.
+As this function calculates the *runtime* offset which changes as the
+guest switches between accessing the main user data area and the boot
+partitions by writing to the EXT_CSD_PART_CONFIG_ACC_MASK bits, it
+shouldn't be involved in the calculations in sd_reset() at all.
 
-snip
+> I think the change in the reset handler should be :
+>=20
+> -=C2=A0=C2=A0=C2=A0 size -=3D sd_bootpart_offset(sd);
+> +=C2=A0=C2=A0=C2=A0 if (sd_is_emmc(sd)) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 size -=3D sd->boot_part_size =
+* 2;
+> +=C2=A0=C2=A0=C2=A0 }
 
-> +/**
-> + * singleton_get_instance:
-> + *
-> + * @class: the class to fetch singleton instance
-> + *
-> + * Returns: the object* if the class is a singleton class and the singleton
-> + *          object is created, NULL otherwise.
-> + */
-> +Object *singleton_get_instance(ObjectClass *class);
+Yes, that seems correct.
 
-With this design, all code that uses a given type needs to know
-whether or not it is intended to be a singleton. If some code
-somewhere mistakenly calls 'object_new' instead of 'singleton_get_instance',
-the singleton type  is no longer a singleton, except you handle this by
-adding an assert in object_initialize_with_type.
+> > > I have no idea how this is supposed to work, and I don't think it wor=
+ks
+> > > as implemented. I'll revert commit e32ac563b83 in my local copy of qe=
+mu.
+> > > Jan, can you have a look at this bug report please? Otherwise I'll
+> > > have a look during soft freeze.
 
-This is still a bit of a loaded foot-gun IMHO, as we don't want random
-code asserting.
+Guenter, just to make sure: In your case [1], you had "boot-emmc" (see
+aspeed_machine_ast2600_class_emmc_init) enabled, right? Otherwise the
+boot partition size would be 0, meaning that the eMMC has no boot
+partitions.
 
-> diff --git a/qom/object.c b/qom/object.c
-> index 11424cf471..ded299ae1a 100644
-> --- a/qom/object.c
-> +++ b/qom/object.c
-> @@ -553,6 +553,9 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
->      g_assert(type->abstract == false);
->      g_assert(size >= type->instance_size);
->  
-> +    /* Singleton class can only create one object */
-> +    g_assert(!singleton_get_instance(type->class));
-> +
->      memset(obj, 0, type->instance_size);
->      obj->class = type->class;
->      object_ref(obj);
+In that configuration, your backing file needs to have space for the
+boot partitions at the start (2*1MiB) and the rootfs starts at the 2
+MiB offset.
 
-> diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-> index e91a235347..ecc1cf781c 100644
-> --- a/qom/qom-qmp-cmds.c
-> +++ b/qom/qom-qmp-cmds.c
-> @@ -126,6 +126,7 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
->      ObjectProperty *prop;
->      ObjectPropertyIterator iter;
->      ObjectPropertyInfoList *prop_list = NULL;
-> +    bool create;
->  
->      klass = module_object_class_by_name(typename);
->      if (klass == NULL) {
-> @@ -141,7 +142,15 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
->          return NULL;
->      }
->  
-> -    obj = object_new(typename);
-> +    /* Avoid creating multiple instances if the class is a singleton */
-> +    create = !object_class_is_singleton(klass) ||
-> +        !singleton_get_instance(klass);
-> +
-> +    if (create) {
-> +        obj = object_new(typename);
-> +    } else {
-> +        obj = singleton_get_instance(klass);
-> +    }
+Jan
 
-This is the first foot-gun example.
+[1]https://lore.kernel.org/qemu-devel/8f3536a0-2685-4aa4-b26d-f460e738d387@=
+roeck-us.net/#t
+--=20
+Pengutronix e.K.                        |                             |
+Steuerwalder Str. 21                    | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany               | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686        | Fax:   +49-5121-206917-5555 |
 
-I really strongly dislike that the design pattern forces us to
-create code like this, as we can never be confident we've
-correctly identified all the places which may call object_new
-on a singleton...
-
-> @@ -172,7 +181,9 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
->          QAPI_LIST_PREPEND(prop_list, info);
->      }
->  
-> -    object_unref(obj);
-> +    if (create) {
-> +        object_unref(obj);
-> +    }
-
-...and this just compounds the ugliness.
-
-> @@ -199,7 +210,12 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
->          return NULL;
->      }
->  
-> -    if (object_class_is_abstract(klass)) {
-> +    /*
-> +     * Abstract classes are not for instantiations, meanwhile avoid
-> +     * creating temporary singleton objects because it can cause conflicts
-> +     * if there's already one created.
-> +     */
-
-Another example of the foot-gun firing at random code
-
-> +    if (object_class_is_abstract(klass) || object_class_is_singleton(klass)) {
->          object_class_property_iter_init(&iter, klass);
->      } else {
->          obj = object_new(typename);
-
-
-With changes to QOM, I think it is generally informative to look at how
-GLib has handled the problem, since the QOM design has heavily borrowed
-from its GObject design.
-
-In GObject, singletons are handled in a very differnt way. It has a
-concept of a "constructor" function against the class, which is what is
-responsible for allocating the object. By default the 'constructor' will
-call g_new0, but a class which wishes to become a singleton will override
-the 'constructor' function to allocate on first call, and return the
-cached object on subsequent calls. This is illustrated here:
-
-  https://gitlab.gnome.org/GNOME/glib/-/blob/main/gobject/gobject.h#L297
-
-The key benefit of this is that everything can carry on calling
-g_object_new() as before, as it will just "do the right thing"
-in terms of allocation.
-
-In QOM, we don't have a 'constructor' class function, we just directly
-call g_malloc from object_new_with_type. This is because at the time,
-we didn't see an immediate need for it. We could easily change that
-though to introduce the concept of a 'constructor', which could
-probably make singletons work without needing updates to existing code.
-
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
