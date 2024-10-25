@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A359B091A
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00019B0919
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4MmI-0001q2-OF; Fri, 25 Oct 2024 12:03:06 -0400
+	id 1t4Mmh-00026Z-4d; Fri, 25 Oct 2024 12:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MmG-0001om-0l
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t4MmP-00021T-5y
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MmE-0004pZ-KB
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:03 -0400
+ id 1t4MmN-0004q1-1Y
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729872181;
+ s=mimecast20190719; t=1729872190;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5jVDymogFtNuVLT1QLTECiV9TKaEM7wWr4YXUEOhTmY=;
- b=VkqRujfB2lw/3soQYkkhZCRJYb4dWFtQTofCVXzJ5DAAa6pbILtBTyJSQ0ibwXIcsDJ5Ad
- XPmlpWPpibBSejJG+6kouKdF322CmhEOcEWjdvhLAZ/2meWYDNkXV3ExDTuQFF/wwa8r/T
- kQa42MhA6ZxfPTnzxbpE76cRtweY8j4=
+ bh=SHZpikGNVFgjiDhFQjm7CP2c0blb3vG5jwdwFgYBZPE=;
+ b=fMXHGwEII2A4LEfkEGMa+HzfYgDAVcygC6keRYW892XSGyYxSNKh6uvWJfcV6lt1vEZIbV
+ P9JbAnQ9PCVJHAIMuthujJFZnC6f8piCI3QCOP5r+DvZMnwB7TWhCkMqPc+EJwEaopO6NG
+ Jd+4KIu19mJAJnvIR8rHj6cdap6Eg8Y=
 Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
  [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-nFehYEbfOteI1kwCn6qJeg-1; Fri, 25 Oct 2024 12:03:00 -0400
-X-MC-Unique: nFehYEbfOteI1kwCn6qJeg-1
+ us-mta-156-UvFP4-YYPFWQz4SQ3HjI-g-1; Fri, 25 Oct 2024 12:03:09 -0400
+X-MC-Unique: UvFP4-YYPFWQz4SQ3HjI-g-1
 Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2fb5035169dso20398271fa.3
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:03:00 -0700 (PDT)
+ 38308e7fff4ca-2fb4e2da8baso17579021fa.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:03:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729872178; x=1730476978;
+ d=1e100.net; s=20230601; t=1729872186; x=1730476986;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5jVDymogFtNuVLT1QLTECiV9TKaEM7wWr4YXUEOhTmY=;
- b=GyRcZFs3sd3nlMTsjRy1Y2t5CDCgUbhFmzZXseMiqCyS9nsEwenxK1QMVHhhSvrGcq
- uHIzA0UkXPzFkjIxFmDi0emMPTMXgJehfx1YWqtxpsGCRNf6YyF7RQzCEAJ3QOOTijkH
- nlR3HKX9427uydsZ9KYXbVijIQn2cnAePEbI88CCRDQPffZ9bCFqEGLvUWdH/rKufqFE
- DMsNpyQFEskUY3QO2ljIE6w6t/yOjXscfS000sbM48tlCE4aYr0vHM2astoD9S0OCDJv
- a4OvF0S+GHN66jPhK9ykiDq6//s+MUPvra2dkfdIz7LHqPpH3S9t3gIaMuNMaulxQPpH
- wHMA==
-X-Gm-Message-State: AOJu0YzGaM4hYELlX98vJ91OB71Ob9f9nl3lYYsOqy8OvO4Fn4A4C1gU
- kWxrBXFY7FRmi2fRVaBcby5fAXdrIqMCdgepvVutnl3Oj/O7XJR88oYs/DWkoex5bM5QU7586/W
- r6sS0yaW9gFJbpvRhXsHWIEQ38EksXAC885t7dhsSn9DxLuJPH0Ng7JPcIlFhgqL2dHFhEbQqNr
- YwLqGb3p+e+cYcKN7D8gTZVucyRHQ+Uln7MLFmSH0=
-X-Received: by 2002:a2e:b8c5:0:b0:2fb:3960:9671 with SMTP id
- 38308e7fff4ca-2fc9d31a99bmr97521581fa.15.1729872177358; 
- Fri, 25 Oct 2024 09:02:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQUrUv9f0GtDtwEjkNavU5VZBRD5UB8MEcTlzGgKrp5gIfxBE8rhtDEevdwt+08r0o9gUCXw==
-X-Received: by 2002:a2e:b8c5:0:b0:2fb:3960:9671 with SMTP id
- 38308e7fff4ca-2fc9d31a99bmr97519301fa.15.1729872175334; 
- Fri, 25 Oct 2024 09:02:55 -0700 (PDT)
+ bh=SHZpikGNVFgjiDhFQjm7CP2c0blb3vG5jwdwFgYBZPE=;
+ b=xAGIbh6N1NwroBeIOoz14sXM1ZzewC+3+9gAl3JJVi57OeY6SEDT0cxIYdqcvr7Eil
+ 9r9GDEplpjSHYMR50IPyWofZR9MhWf+8vZpwiFuCc2icZhn0vA8QkVFy4idsms/VPdoi
+ dN9fvj/KswcuukYvTk/E0ZI4zkVIzZek72bc1NTO09Nj7jszcZPlVuNIxy9XH1FAdSf6
+ jOwYT5ifVMVa34zI3TtCWMRhjyDNPBEvxuszKKEO5UHJdPG8gDDzxMrrH2poIf4BtI2M
+ CYNDfhikJsFsc7AL/MWXpSOfNv7le77HBdXjRCCPuNwXq9HmWOOjAZ2cVvE+SNWhfhKx
+ hhzQ==
+X-Gm-Message-State: AOJu0Yzny8I7Fy0IdqGyn/xi+k3MrqTpxTFft9HdWLrKhm0aKp1KykYt
+ UKfW1rt6OEA7rgFhP7I4ap8ZrMMoKzvV8/fWgUNdjrm7rxaDiTryVRNkYrXNMzD8WJY231/3UPv
+ 8VmTkEabUpmem7ouz94iuuNNC6Ty/eIWDwLXW0MJReRGBSfQFyLYLZyMuEMOv41LDJ84MtV/bbt
+ QJ64HuXQ/4qL3Gsg7uZHXqZ5V++daWfMPJOpBgx6c=
+X-Received: by 2002:a2e:4619:0:b0:2fa:cc86:f217 with SMTP id
+ 38308e7fff4ca-2fca8264714mr32733971fa.35.1729872185197; 
+ Fri, 25 Oct 2024 09:03:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGX0SK+dO0ES1KpzNxs1DZBihiCSdKwZn6wpiDNWGJRyJMfizHisBCqJ4cJpyuuEPZOWRVyiw==
+X-Received: by 2002:a2e:4619:0:b0:2fa:cc86:f217 with SMTP id
+ 38308e7fff4ca-2fca8264714mr32732591fa.35.1729872182953; 
+ Fri, 25 Oct 2024 09:03:02 -0700 (PDT)
 Received: from [192.168.10.47] ([151.81.112.43])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9b1f2971e8sm84354366b.125.2024.10.25.09.02.45
+ 4fb4d7f45d1cf-5cbb62c4860sm752003a12.54.2024.10.25.09.02.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 09:02:50 -0700 (PDT)
+ Fri, 25 Oct 2024 09:02:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
  junjie.mao@hotmail.com, berrange@redhat.com
-Subject: [PATCH 07/23] rust/pl011: Use correct masks for IBRD and FBRD
-Date: Fri, 25 Oct 2024 18:01:52 +0200
-Message-ID: <20241025160209.194307-8-pbonzini@redhat.com>
+Subject: [PATCH 08/23] rust: patch bilge-impl to allow compilation with 1.63.0
+Date: Fri, 25 Oct 2024 18:01:53 +0200
+Message-ID: <20241025160209.194307-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
 References: <20241025160209.194307-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,39 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Apply a patch that removes "let ... else" constructs, replacing them with
+"if let ... else" or "let ... =3D match ...".  "let ... else" was stabilize=
+d in
+Rust 1.65.0.
 
-Port fix from commit cd247eae16ab1b9ce97fd34c000c1b883feeda45
-"hw/char/pl011: Use correct masks for IBRD and FBRD"
-
-Related issue: <https://gitlab.com/qemu-project/qemu/-/issues/2610>
-
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-9-051e7a25b978@lin=
-aro.org
 ---
- rust/hw/char/pl011/src/device.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .gitattributes                                |  2 +
+ subprojects/bilge-impl-0.2-rs.wrap            |  1 +
+ .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
-ce.rs
-index 98357db04e8..788b47203b1 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -19,10 +19,10 @@
- };
-=20
- /// Integer Baud Rate Divider, `UARTIBRD`
--const IBRD_MASK: u32 =3D 0x3f;
-+const IBRD_MASK: u32 =3D 0xffff;
-=20
- /// Fractional Baud Rate Divider, `UARTFBRD`
--const FBRD_MASK: u32 =3D 0xffff;
-+const FBRD_MASK: u32 =3D 0x3f;
-=20
- const DATA_BREAK: u32 =3D 1 << 10;
-=20
+diff --git a/.gitattributes b/.gitattributes
+index 6dc6383d3d1..9ce7a19581a 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -5,3 +5,5 @@
+ *.rs            diff=3Drust
+ *.rs.inc        diff=3Drust
+ Cargo.lock      diff=3Dtoml merge=3Dbinary
++
++*.patch         -text -whitespace
+diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.=
+2-rs.wrap
+index eefb10c36c2..b24c34a9043 100644
+--- a/subprojects/bilge-impl-0.2-rs.wrap
++++ b/subprojects/bilge-impl-0.2-rs.wrap
+@@ -5,3 +5,4 @@ source_filename =3D bilge-impl-0.2.0.tar.gz
+ source_hash =3D feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000=
+adb2d8
+ #method =3D cargo
+ patch_directory =3D bilge-impl-0.2-rs
++diff_files =3D bilge-impl-1.63.0.patch
+diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects=
+/packagefiles/bilge-impl-1.63.0.patch
+new file mode 100644
+index 00000000000..987428a6d65
+--- /dev/null
++++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
+@@ -0,0 +1,45 @@
++--- a/src/shared/discriminant_assigner.rs
+++++ b/src/shared/discriminant_assigner.rs
++@@ -26,20 +26,20 @@
++         let discriminant_expr =3D &discriminant.1;
++         let variant_name =3D &variant.ident;
++=20
++-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discriminan=
+t_expr else {
+++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discrimi=
+nant_expr {
+++            let discriminant_value: u128 =3D int.base10_parse().unwrap_or=
+_else(unreachable);
+++            if discriminant_value > self.max_value() {
+++                abort!(variant, "Value of variant exceeds the given numbe=
+r of bits")
+++            }
+++
+++            Some(discriminant_value)
+++        } else {
++             abort!(
++                 discriminant_expr,
++                 "variant `{}` is not a number", variant_name;
++                 help =3D "only literal integers currently supported"
++             )
++-        };
++-
++-        let discriminant_value: u128 =3D int.base10_parse().unwrap_or_els=
+e(unreachable);
++-        if discriminant_value > self.max_value() {
++-            abort!(variant, "Value of variant exceeds the given number of=
+ bits")
++         }
++-
++-        Some(discriminant_value)
++     }
++=20
++     fn assign(&mut self, variant: &Variant) -> u128 {
++--- a/src/shared/fallback.rs
+++++ b/src/shared/fallback.rs
++@@ -22,8 +22,9 @@
++             }
++             Unnamed(fields) =3D> {
++                 let variant_fields =3D fields.unnamed.iter();
++-                let Ok(fallback_value) =3D variant_fields.exactly_one() e=
+lse {
++-                    abort!(variant, "fallback variant must have exactly o=
+ne field"; help =3D "use only one field or change to a unit variant")
+++                let fallback_value =3D match variant_fields.exactly_one()=
+ {
+++                    Ok(ok) =3D> ok,
+++                    _ =3D> abort!(variant, "fallback variant must have ex=
+actly one field"; help =3D "use only one field or change to a unit variant")
++                 };
++=20
++                 if !is_last_variant {
 --=20
 2.47.0
 
