@@ -2,120 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7528B9B008D
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 12:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 305AA9B0118
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 13:22:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Huq-0005g2-TK; Fri, 25 Oct 2024 06:51:36 -0400
+	id 1t4IMz-0002IV-KB; Fri, 25 Oct 2024 07:20:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t4Huo-0005fb-AN; Fri, 25 Oct 2024 06:51:34 -0400
-Received: from fout-a5-smtp.messagingengine.com ([103.168.172.148])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1t4IMl-0002He-7L
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:20:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t4Hul-0004A9-A3; Fri, 25 Oct 2024 06:51:33 -0400
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal
- [10.202.2.41])
- by mailfout.phl.internal (Postfix) with ESMTP id 525F41380147;
- Fri, 25 Oct 2024 06:51:27 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-01.internal (MEProxy); Fri, 25 Oct 2024 06:51:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:subject:subject:to:to; s=fm2; t=1729853487; x=
- 1729939887; bh=K1HsLM0w0dLUOiVJq2rqs7rAKcCVgY8sabIVebI1pJ8=; b=M
- zFJS6urK89KnmQIBY3eb7FYo3qguvvb4UyLKaB6yxhXnW+iSH/R6c+qU2cyC2WUZ
- Hbt0CF9jgvA8fBctbCuYW8ubVBaYn+yLmDhOCbXHLX4Hp73uegvcFVUWSihcM/Aq
- 4sIebQ5i0FhruN8RnzNzW4ickwHSf/v6Ajjjjv0GsZKOiZor5JdrEuUEdwCOZTgx
- YPvE2t5lt4a2E57/BNNXirNoOnbOND/EDhzwjTaPQFdM3+4y/JKLtNfi97GlMVOA
- giXqqyBanuUm5NuwLi5neHwfBXai22SzVM4EcqVhbuTewbgZx2rcv56cyKji2Rea
- d3vu+5PLfc/G1yWLdalzg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1729853487; x=1729939887; bh=K1HsLM0w0dLUO
- iVJq2rqs7rAKcCVgY8sabIVebI1pJ8=; b=Gi8JaVaNjlPGJkedQTPtB2UWsU7Id
- cV0JDp6H/a0TpuhnZElDVZZ3Ssk1qnpxGV6QsM8K19kXPXL60if3nPlx5fDKSUXA
- EnkQAstQRtg7ExiXGeP4ttBT5NZG6EN+u/EoPW1hHNLgzz9IBs4xqoVMaLsYfm5v
- c4ft6JQUQ0HR0NE50EArCpiqieww1tuhuhH2YsL5DbXB+V6EjwgCuNnU5p0uwEfm
- axvf8qu5WTm/K8Wzeq90OqQBLfPmWE9tmoLTdtTB1GNn3HcimvbLB1H59EadkzXq
- UvTjQt11BKU86AMt/UqHFDLT1VDZ4oklAs/ErBxdBtErNNtQzheBd3ZLw==
-X-ME-Sender: <xms:LngbZ7j2_3-CkFB6eTVjLAMvZ2t1LqXYl0m2o_LmnxCCBhWg7oyYwQ>
- <xme:LngbZ4B4O8F1MtMLYwj-12sC1I_sd9Fq1ysi2ocFHWuFDKWuBVpwUmcy36A9xBeTb
- YY6qh27wgne9cB57dk>
-X-ME-Received: <xmr:LngbZ7Gm9cEFsCgO2XU52xKO14s7c6kaAMatTgzDRfPIlvNjqAzqYMGhVswPdID5Mk-NWP-W6M9Di9TNLfc-WDc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejvddgfeefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecu
- hfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrug
- hkqeenucggtffrrghtthgvrhhnpefgjedtvdelkeegudelkedttedtffevfefhgefhtdeu
- vdevuefhhfefuddvveffieenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluh
- hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgv
- lhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpd
- hrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohep
- khgsuhhstghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjfihkohiirggtiihukh
- esghhmrghilhdrtghomhdprhgtphhtthhopehithhssehirhhrvghlvghvrghnthdrughk
- pdhrtghpthhtohepqhgvmhhuqdhsthgrsghlvgesnhhonhhgnhhurdhorhhgpdhrtghpth
- htohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdprhgtphhtthhopehfohhs
- shesuggvfhhmrggtrhhordhithdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonh
- hgnhhurdhorhhg
-X-ME-Proxy: <xmx:LngbZ4RrareDQuV_JwJwpPOCzjGq7prxnBBkb8A9UroyMFPWF03LeQ>
- <xmx:LngbZ4wj3Iaz5Ue0wLMKPo7vzR7fpiN68wr57XKtbLL_sBi7WF56rQ>
- <xmx:LngbZ-6GoeFa9jxjlkDzd9T_KN7Il0heptplLwetZBLhbVC94OgWuA>
- <xmx:LngbZ9zYBWsC5na61E-1hFf9Y8z0Z49npDE4YLBvWKpzY4WWcFqrnQ>
- <xmx:L3gbZ3mdj0ocCDGLh4GHK8OwmtzkKjVGL5TezZgDT7-BAEyDtOvkwT65>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Oct 2024 06:51:25 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-Date: Fri, 25 Oct 2024 12:50:45 +0200
-Subject: [PATCH] hw/nvme: fix handling of over-committed queues
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1t4IMi-0008I1-Dz
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:20:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729855221;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hHnEz/f3YQfou2LqvuZk2Z4s45GI7GWtMls5LlbQas0=;
+ b=f8VPJBfhUCUT0R57QfftoWNTV6WwDoz4Nqxz/X1egU2OJ/uBOg1LUge9fKRWBPiT1acnGL
+ a6fADi20xm4+hita0HiJjXcUNBhJP1VGMPjMNObGg3j/J5zFkrbGzCULxIabB9YbsBneFI
+ vnwnab9kOmZtO6trzGfW+tffKP6zQZY=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-146-H4y0c9szM4So_1nh3gtWLA-1; Fri, 25 Oct 2024 07:20:20 -0400
+X-MC-Unique: H4y0c9szM4So_1nh3gtWLA-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-6e9bbe92d44so23133687b3.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 04:20:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729855220; x=1730460020;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hHnEz/f3YQfou2LqvuZk2Z4s45GI7GWtMls5LlbQas0=;
+ b=ClHKDxxvngrYsWeAbUdCEMR8Y9lM92E6s9xalP/y8rHxMHVbCf8bSoqPB2M/EMb449
+ IVHv0XZDXExSpB4C/KKasxdxnpXW/EpuSZk3mzCD75HA2JYUCGUq+Hw/BtIyJ3gT7atb
+ Ta4zUJ4KpOdssY1vM/EGzS10fRv8r1DycHARRCV9exUJdoQXR+kOf7SwMy9uu5kSItK9
+ gYZNlnHYCenF9lZYVyDXNpg5YX5rcGJThhj/4CtMyl48K752p+Sap4lJn2ktoEge8QD2
+ PP0W63dshpJW6WfIbImjnKaeb2fU24Px+z0ub+gqqTS+lJDBL9j7OmIOLzPE7yohBacO
+ 8xqw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEH92wmpJzcK2yG3qknIxuvbi2UuFqre4GI6oLUSNGZpimzPWjgmH5GNr97nohWk79LMei+WK4+vGi@nongnu.org
+X-Gm-Message-State: AOJu0Yw+iJSyrHJusWAWuaTU0FBWXAU8M5BZjesKKwH1b3gUpsxtr3bU
+ wA+H2NTkAGtXoynznBkDMrRnuf+BDNfmR9VBDtt2LL6e/T3AdJhAqnwhi/V9yzIPXQ83fMKj6mg
+ aYyPjWbhxOhc8DgVOddX/E0mZD9dRvfY8r9295iX6FHc0jgyDEfQHeKbSzIXzajXysurmTChiLL
+ RbC1aYQV63ha5QK1NiUstL8lhIPss=
+X-Received: by 2002:a05:6902:2511:b0:e29:2a45:1e83 with SMTP id
+ 3f1490d57ef6-e2e3a6657b5mr8640929276.31.1729855219952; 
+ Fri, 25 Oct 2024 04:20:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHagD4B0aVEmnChXDMqJvFTUpyFpy30Yl90eWStuZ3jRGkOLyNtEmXY7YiWzSudG9RbMXn0WNQg2FrK5fB0oaw=
+X-Received: by 2002:a05:6902:2511:b0:e29:2a45:1e83 with SMTP id
+ 3f1490d57ef6-e2e3a6657b5mr8640844276.31.1729855218637; Fri, 25 Oct 2024
+ 04:20:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241025-issue-2388-v1-1-16707e0d3342@samsung.com>
-X-B4-Tracking: v=1; b=H4sIAAR4G2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDAyNT3czi4tJUXSNjCwvdpBQDE3MTC/M0c5NkJaCGgqLUtMwKsGHRsbW
- 1ABgV8VNcAAAA
-X-Change-ID: 20241025-issue-2388-bd047487f74c
-To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
- Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org, 
- qemu-devel@nongnu.org
-Cc: Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org, 
- Waldemar Kozaczuk <jwkozaczuk@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3886; i=k.jensen@samsung.com; 
- h=from:subject:message-id;
- bh=mCvhtCzEj6dSkBH8aSEomtZHCEU/6z19GmVHUHtKu1g=; 
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFaTCtrQTBEQUFvQlRlR3ZNV
- zFQRGVrQnl5WmlBR2NiZUN4bmJyc2t6ekNCb3k3VWhoelZjZHpWClVXUmg4NzdTQm9HYWhEeE1K
- TXBUYllrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbkczZ3N
- BQW9KRUUzaHJ6RnRUdzNwSjRJSC9qSDBYMmxsSDdzN0hXNFlJV3dJWUlYMEJ4dTl3WW1MQ3BXWg
- pKSWN0VmtNSCswaGtnK3g5QkNoT05VZVM2aDJBeTZHdmpvcmhFejlhNU5pTmdzTXBhRkxjeitCc
- FI3QXU2UWQzCkZaSUNON0Rva0NVbzhmYjMwYUFGVkZ1SXJvSE91bGh0ZkNDS1BQcFVMUmpIVlVH
- aUdBV2RUNkttQzdORTRpUy8KRCtzbzBqdVZIRFdqWVZkbml2azZ1ZjI3WlJTVWI4R2lKTWxSREF
- ud3VpeUhxRUZ3dnZ6SzAwTHFjbHM2VklReApVcGtIeHRTWnNOREx6bzJEWWFHYTRjdmFZR0VrRG
- ZqRlA1dE9TZnRpalZ3eW92K3RCN21BZjhYNkdXR2YzL2tPClBpY1cyRzhjZElad0prWEF5SS9Db
- lh0RExBRmo4ZFd3MVFoSlRtcnRIaHdldUl1MnpXR3NuYVFPCj14MHJ2Ci0tLS0tRU5EIFBHUCBN
- RVNTQUdFLS0tLS0K
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
-Received-SPF: pass client-ip=103.168.172.148; envelope-from=its@irrelevant.dk;
- helo=fout-a5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20241025073525.976136-1-d-tatianin@yandex-team.ru>
+In-Reply-To: <20241025073525.976136-1-d-tatianin@yandex-team.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Fri, 25 Oct 2024 15:20:07 +0400
+Message-ID: <CAMxuvaz9XOhJ4cW9Fc3YRDq4pG3jn7D9b=WH5i5iEeFN0uxa1A@mail.gmail.com>
+Subject: Re: [PATCH 0/2] finalize 'reconnect' deprecation
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: devel@lists.libvirt.org, Jason Wang <jasowang@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
+ Corey Minyard <minyard@acm.org>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,101 +105,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+On Fri, Oct 25, 2024 at 11:36=E2=80=AFAM Daniil Tatianin
+<d-tatianin@yandex-team.ru> wrote:
+>
+> We've deprecated the 'reconnect' property in c8e2b6b4d7e, but all the
+> tests, as well as the stream netdev were still left using it. This
+> series finalizes the deprecation and replaces all local usage and docs
+> metions of 'reconnect' with 'reconnect-ms'.
+>
+> Daniil Tatianin (2):
+>   net/stream: deprecate 'reconnect' in favor of 'reconnect-ms'
+>   chardev: finalize 'reconnect' deprecation
 
-If a host chooses to use the SQHD "hint" in the CQE to know if there is
-room in the submission queue for additional commands, it may result in a
-situation where there are not enough internal resources (struct
-NvmeRequest) available to process the command. For a lack of a better
-term, the host may "over-commit" the device (i.e., it may have more
-inflight commands than the queue size).
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-For example, assume a queue with N entries. The host submits N commands
-and all are picked up for processing, advancing the head and emptying
-the queue. Regardless of which of these N commands complete first, the
-SQHD field of that CQE will indicate to the host that the queue is
-empty, which allows the host to issue N commands again. However, if the
-device has not posted CQEs for all the previous commands yet, the device
-will have less than N resources available to process the commands, so
-queue processing is suspended.
-
-And here lies an 11 year latent bug. In the absense of any additional
-tail updates on the submission queue, we never schedule the processing
-bottom-half again unless we observe a head update on an associated full
-completion queue. This has been sufficient to handle N-to-1 SQ/CQ setups
-(in the absense of over-commit of course). Incidentially, that "kick all
-associated SQs" mechanism can now be killed since we now just schedule
-queue processing when we return a processing resource to a non-empty
-submission queue, which happens to cover both edge cases.
-
-So, apparently, no previous driver tested with hw/nvme has ever used
-SQHD (e.g., neither the Linux NVMe driver or SPDK uses it). But then OSv
-shows up with the driver that actually does. I salute you.
-
-Fixes: f3c507adcd7b ("NVMe: Initial commit for new storage interface")
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2388
-Reported-by: Waldemar Kozaczuk <jwkozaczuk@gmail.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
-
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f4e89203c1a6e3b051fd7185cbf01ec9bae9684a..b13585c4da911b9e8ae4a722761fd85dfa24be4d 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -1520,9 +1520,16 @@ static void nvme_post_cqes(void *opaque)
-             stl_le_p(&n->bar.csts, NVME_CSTS_FAILED);
-             break;
-         }
-+
-         QTAILQ_REMOVE(&cq->req_list, req, entry);
-+
-         nvme_inc_cq_tail(cq);
-         nvme_sg_unmap(&req->sg);
-+
-+        if (QTAILQ_EMPTY(&sq->req_list) && !nvme_sq_empty(sq)) {
-+            qemu_bh_schedule(sq->bh);
-+        }
-+
-         QTAILQ_INSERT_TAIL(&sq->req_list, req, entry);
-     }
-     if (cq->tail != cq->head) {
-@@ -7950,7 +7957,6 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-         /* Completion queue doorbell write */
- 
-         uint16_t new_head = val & 0xffff;
--        int start_sqs;
-         NvmeCQueue *cq;
- 
-         qid = (addr - (0x1000 + (1 << 2))) >> 3;
-@@ -8001,18 +8007,10 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
- 
-         trace_pci_nvme_mmio_doorbell_cq(cq->cqid, new_head);
- 
--        start_sqs = nvme_cq_full(cq) ? 1 : 0;
-         cq->head = new_head;
-         if (!qid && n->dbbuf_enabled) {
-             stl_le_pci_dma(pci, cq->db_addr, cq->head, MEMTXATTRS_UNSPECIFIED);
-         }
--        if (start_sqs) {
--            NvmeSQueue *sq;
--            QTAILQ_FOREACH(sq, &cq->sq_list, entry) {
--                qemu_bh_schedule(sq->bh);
--            }
--            qemu_bh_schedule(cq->bh);
--        }
- 
-         if (cq->tail == cq->head) {
-             if (cq->irq_enabled) {
-
----
-base-commit: e67b7aef7c7f67ecd0282e903e0daff806d5d680
-change-id: 20241025-issue-2388-bd047487f74c
-
-Best regards,
--- 
-Klaus Jensen <k.jensen@samsung.com>
+>
+>  docs/COLO-FT.txt              |  4 +--
+>  docs/about/deprecated.rst     | 10 ++++++++
+>  docs/system/ppc/powernv.rst   |  2 +-
+>  net/stream.c                  | 34 +++++++++++++++++---------
+>  qapi/net.json                 | 13 +++++++++-
+>  qemu-options.hx               | 46 +++++++++++++++++------------------
+>  tests/qtest/ipmi-bt-test.c    |  2 +-
+>  tests/qtest/netdev-socket.c   |  2 +-
+>  tests/qtest/vhost-user-test.c |  2 +-
+>  tests/unit/test-char.c        |  8 +++---
+>  10 files changed, 77 insertions(+), 46 deletions(-)
+>
+> --
+> 2.34.1
+>
 
 
