@@ -2,71 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487009AFD77
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC789AFDEE
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4GBm-00087j-60; Fri, 25 Oct 2024 05:00:58 -0400
+	id 1t4GRt-0002Xb-An; Fri, 25 Oct 2024 05:17:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t4GBk-00087K-Np
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:00:56 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t4GBi-0006nx-44
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:00:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729846854; x=1761382854;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=c0QQ8g61bxMXaaZZ4l90yw1V8kdF6DShClTArY7IdnA=;
- b=VgErU5eib/nC0FqVE5jLuRboym/q+y/OEARyt0jh0IKU+Y+xfZzQ7WoW
- m5XUeOYuL7F/csNYx6kniR5kxSnpQUPgQRv/zIW/b3WvZYcIxozmNZrF8
- UFONn+bTL5ymVTIxrVSXXIGAg32hJVhXcnjcIyB3QkizuM0ZPf59+SwmJ
- 7KGmlI1pJbRblNwykEOHAM3Tytg+bhTWpVEtZfv30m5VlCZLm8dAyaR3u
- eGwbqRnLQmYzlEMvmfr4eGiDDSHxeL+s8UBgyC4fmyfRH2YCAbkGiV4ka
- estm/wM5g/DQ4dRVcAbrQ3ZNqoaLBTDQPhylHHJ1srBaOW27fcTzCgHly Q==;
-X-CSE-ConnectionGUID: I36uDbvRSh6bxU3+7X9qtw==
-X-CSE-MsgGUID: 2duvOm8dSzaagTVu73WqeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52064441"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52064441"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2024 02:00:52 -0700
-X-CSE-ConnectionGUID: LcDkDpjFTs+4eIERXoH4xA==
-X-CSE-MsgGUID: nzAP4tcNR7eRqD0Hw/sE8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="85439751"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 25 Oct 2024 02:00:50 -0700
-Date: Fri, 25 Oct 2024 17:17:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH v2 09/13] rust: clean up define_property macro
-Message-ID: <ZxtiE63/pf80umxa@intel.com>
-References: <20241021163538.136941-1-pbonzini@redhat.com>
- <20241021163538.136941-10-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t4GRk-0002WZ-23
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:17:28 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t4GRi-0000Nu-F2
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:17:27 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9c28c1e63so2177180a12.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 02:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729847844; x=1730452644; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SeBP8uld+Y18cRxY/zh1caFnXNNzWPZdwKC99KPZ3E0=;
+ b=JI8vR13jmFHrcdMomjJz6axshzvFQeS+IuwCmT0f754dvq+60NbHxQWHY0lSlcfTs6
+ yUg+0ROTyZ8pFm4pGCN9t1jTAuqS1K1wT17gt682GFceU/A81L8/KMr2oESu2Tq8WtPk
+ tmULr3ZBOmqF2VQrP3pYGS4yvB21m+lR0S/cYebqQzWrnE3o6jFX9usDPil8e+o2eBvH
+ 4UVdwU4uX//4LVH7J8jkZfCRk4syevKXTcqQG5JRhKkDMvDEUAnrSK/6SXah8KToHKPq
+ saSndwWaXkR3fau9b2w9OkJeUdSumqApA/LhHq161v+IFFZpmCyHOerUfHokUjmPMIHQ
+ Mj9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729847844; x=1730452644;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=SeBP8uld+Y18cRxY/zh1caFnXNNzWPZdwKC99KPZ3E0=;
+ b=A/oVGVxis+6skRgcDNzZFoBhyEUn9kGtBI9jRyVCAVXypo1zd9/74lgSuWtRjxTkCx
+ BbFmm215Pv7CAnljfEAss3i5eRhOgGyV1nLIpYBBqNnIrfKwrKRPS08W1ha5JoludJPo
+ zjDtGuyYt4miLJ7RT8DCuqlSsanP1v5ebEc5C6LfbI0pbHItrWbgtUC7thr2MD/TUQH9
+ GmQvQPSwzjjWBYAeM2prT8MD0V8pPVvIcIvj/1Qd/J78tK2dKwTJdtLjgkanfZ5vUeAf
+ MaSSt1tlsavI7zqh1S66+AoZVf9/YS9nv5Ck0LdeY0EXy9bSB69U2TtHfEig5zzLdJGc
+ WTQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVIaxX04DKTLC2+PKv7/FvewV54qOlge7u9no6YsEBZSo4PAY1/az8xkT0/jwvD5oGvJInhzaAONoFC@nongnu.org
+X-Gm-Message-State: AOJu0YzsR0IBeO8z10dQyajgVADVhMMvbZN0AlOD0LT3j/pjHsxt+T33
+ hyjkZ0Y055Qu/XHPy5N+h7BPqUIrIIScSqNH70tkwBSrRUQLRwWBRJ/RHXdJvN4=
+X-Google-Smtp-Source: AGHT+IEKFkUVFuwOtmaJhCWGO6bV8mCUE+b8SJ3JPptaEBfBTDD5+9VVGg+cGhCqOKEAllpHeTq3pQ==
+X-Received: by 2002:a17:907:9452:b0:a9a:3d5b:dc1a with SMTP id
+ a640c23a62f3a-a9abf869709mr918375966b.15.1729847844009; 
+ Fri, 25 Oct 2024 02:17:24 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9b3a0887fasm46858866b.210.2024.10.25.02.17.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Oct 2024 02:17:23 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 857B95F856;
+ Fri, 25 Oct 2024 10:17:22 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  Huang Rui
+ <ray.huang@amd.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Antonio Caggiano
+ <quic_acaggian@quicinc.com>,  "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>,  Robert Beckett <bob.beckett@collabora.com>,  Gert
+ Wollny <gert.wollny@collabora.com>,  qemu-devel@nongnu.org,  Gurchetan
+ Singh <gurchetansingh@chromium.org>,  ernunes@redhat.com,  Alyssa Ross
+ <hi@alyssa.is>,  Roger Pau =?utf-8?Q?Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,  Stefano Stabellini
+ <stefano.stabellini@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,  Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>,  Honglei Huang
+ <honglei1.huang@amd.com>,  Julia Zhang <julia.zhang@amd.com>,  Chen Jiqian
+ <Jiqian.Chen@amd.com>,  Yiwei Zhang <zzyiwei@chromium.org>
+Subject: Re: [PATCH v18 00/13] Support blob memory and venus on qemu
+In-Reply-To: <20241024210311.118220-1-dmitry.osipenko@collabora.com> (Dmitry
+ Osipenko's message of "Fri, 25 Oct 2024 00:02:58 +0300")
+References: <20241024210311.118220-1-dmitry.osipenko@collabora.com>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Fri, 25 Oct 2024 10:17:22 +0100
+Message-ID: <87ed44ilst.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021163538.136941-10-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,21 +114,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 06:35:34PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 21 Oct 2024 18:35:34 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 09/13] rust: clean up define_property macro
-> X-Mailer: git-send-email 2.46.2
-> 
-> Use the "struct update" syntax to initialize most of the fields to zero,
-> and simplify the handmade type-checking of $name.
-> 
-> Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/device_class.rs | 29 ++++++-----------------------
->  1 file changed, 6 insertions(+), 23 deletions(-)
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Hello,
+>
+> This series enables Vulkan Venus context support on virtio-gpu.
+>
+> All virglrender and almost all Linux kernel prerequisite changes
+> needed by Venus are already in upstream. For kernel there is a pending
+> KVM patchset that fixes mapping of compound pages needed for DRM drivers
+> using TTM or huge pages [1], othewrwise hostmem blob mapping will fail
+> with a KVM error from Qemu.
 
+While we wait for someone to volunteer to maintain for virtio-gpu I'm
+happy to get this series in for 9.2, hence:
+
+Queued to maintainer/for-9.2, thanks.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
