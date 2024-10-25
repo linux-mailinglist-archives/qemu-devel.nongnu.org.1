@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962AB9B0916
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919059B0918
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Mln-0001Sx-Qi; Fri, 25 Oct 2024 12:02:35 -0400
+	id 1t4Mlt-0001dQ-RT; Fri, 25 Oct 2024 12:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4Mlk-0001D6-2s
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:02:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t4Mlp-0001Yx-1H
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:02:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4Mli-0004m5-8z
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:02:31 -0400
+ id 1t4Mln-0004mV-2Y
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:02:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729872149;
+ s=mimecast20190719; t=1729872154;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hYenrZdbFRD95Cc02SvS7HaWNevX9ALocJClM8PQTC8=;
- b=I5HWimJwBXKGW7mLZgDwcJfO1Y9gHZ4Y2Pzkm9EEoDmuPqNqgtNYiAJ34Ri/mcqG/FA5MK
- 3VZsY3xSHdre07EHBjv+IAoSmTryhAxj5f/24ztFVWllEZ+zlmdk+UjD+PfT7m15hRqGgE
- FxNxMX0ectNzht11mYXIX48jn7ZHBek=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=my1BNlvD0bq7YqmljScKQm6jXcf+70EOh6w75o23M+w=;
+ b=YzaRxR6Vpf1ILf8W22e2GoLylHPapDtf0Tx2tlRk2jPwCJm+iklWRoHPjT1+Cz54kcpl7K
+ isk0Iz1UEmU8zdrf5SRZpv66LMwNgAXRolFOXySQfLj7sqVsGn4p4Q5y48IQ3hCY7L83pT
+ CpeBlYOMVgdL6PO7vM8o0tkX3rTnuo0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-mxOG-sIaMYqIZtxJFplhPg-1; Fri, 25 Oct 2024 12:02:27 -0400
-X-MC-Unique: mxOG-sIaMYqIZtxJFplhPg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a9a1af73615so154493066b.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:02:27 -0700 (PDT)
+ us-mta-578-CZUBCKq4MvCVzJRQNCK42Q-1; Fri, 25 Oct 2024 12:02:33 -0400
+X-MC-Unique: CZUBCKq4MvCVzJRQNCK42Q-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a99fa9f0c25so151873866b.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:02:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729872146; x=1730476946;
+ d=1e100.net; s=20230601; t=1729872151; x=1730476951;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hYenrZdbFRD95Cc02SvS7HaWNevX9ALocJClM8PQTC8=;
- b=pcHuNVQ6q2CFV6cKtIF38hfv4xrOPULV8tykp+q5NHB4rCF821ykCeOuhSEuvDcPsp
- 528jSRKDWX0lbWClonGUBjbaEOsiHxvqsEBVRhGgTb+SsdS4yVwIFm4fPQRvBu7umQb3
- vwOQB2627B4BdBwnFU+RZ/qBI1zzHm/CdgRDjx2eaoHMbAnPZ0gVRH5m74OnixwJpBhM
- v4peM8To6YTLoHwRpnHTpQ8Pe0Mh3haIs5wmhyW05Hc3pM0pJI2h5Rb6Vp3hV6wDHWMz
- scXeeqwOtmpwwjX2kEI798MlCsHerKl7g2cemH8UuAMzJNMH4Hv/S7CIssaZkDmkmLGK
- IeRg==
-X-Gm-Message-State: AOJu0Yxe/m2/moEfJ4bORgFBZSMLP5bV0dS4W/L9qsEOVeNlBwLxA4Xt
- IORbPFVlKxtYORFXAHoexbhFM18DFK51xLgO6LGygHXrX0yKKdX9YURbLcxEt74Ieii4RPqjnPZ
- kEE5N4ywlcuTKk0h2NHV7dHHvL3hkFICKIxObReKptIkMjfx/E1mytA4QYBTPzLv+VxD+t642kq
- 0sPds+0tWp9mRHyjKfUr4H3HnS1S8ucdL9Tg87vHc=
-X-Received: by 2002:a17:907:3e90:b0:a9a:634:dd2 with SMTP id
- a640c23a62f3a-a9ad281453bmr586356466b.43.1729872145703; 
- Fri, 25 Oct 2024 09:02:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFL1lIau8hjALEK5IsTkElQQJC8q6g69yC5YJmYQHzu0crs5ECA7I1tmkRyqwGvxbCkwVvRGg==
-X-Received: by 2002:a17:907:3e90:b0:a9a:634:dd2 with SMTP id
- a640c23a62f3a-a9ad281453bmr586348866b.43.1729872145027; 
- Fri, 25 Oct 2024 09:02:25 -0700 (PDT)
+ bh=my1BNlvD0bq7YqmljScKQm6jXcf+70EOh6w75o23M+w=;
+ b=V+GTtLphY1fXuvmzi2PwSalgTGnCRn1Cw2QYOo84I9CnQZdiUAbr9BrRw30WmTq3QE
+ lNItckbtGSZfkESO8q1AKjnY0fjjDb9XqRaNgOVe2XPK9FV0hccyRf55alIsp/IOzk2Q
+ PFTWKqdVQOYdV/qbuLpHJy91Fb4oMeUCpo01uvtja4f5hIUNmruO/RyVEHGw6ngvRUfb
+ 0itIlkszOEqpvhUKrz8zHEdHz/YDZ6muxW0Zq0mzziArIbLKytY9KKktigiYte6sIScs
+ S+9GMUSPoVqzw0D079L1Y6d63PooZRuzh/nMduL7vJMLuWqHGsBJzK8PtmgKNWEMZON+
+ qj0A==
+X-Gm-Message-State: AOJu0YziqwGMRn5MkQV6bCSEUEvQbo+CbtChTHykAM5ZhppTFLPH3R38
+ ofa4vjjMe5QMOZz+gfwwHFLMSR4Xy1zRke3jUiB1/YWpQdybcPoihNKXFOQMYQpo1pr64wXBM+v
+ 5FTJ+Mxj87p5B8wDYMpsolY0KZTtbCfH3u/oqjj2rVkd3Ey35zPoh5iyW5Bj/lGN36dbz7Tj9Jn
+ 7oo+ZnVvcNdej+aenNOjej5Y9dTcXUWernZKsvSSc=
+X-Received: by 2002:a17:906:da8e:b0:a9a:6477:bd03 with SMTP id
+ a640c23a62f3a-a9ad275f71dmr545271366b.38.1729872150941; 
+ Fri, 25 Oct 2024 09:02:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH186Ru82zC7u7sKHihGHGrJe37yeYvhaAYIWHCvCLRUJGODQuajGTT/T/7ZkNM6LOBTxBhww==
+X-Received: by 2002:a17:906:da8e:b0:a9a:6477:bd03 with SMTP id
+ a640c23a62f3a-a9ad275f71dmr545264166b.38.1729872150235; 
+ Fri, 25 Oct 2024 09:02:30 -0700 (PDT)
 Received: from [192.168.10.47] ([151.81.112.43])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9b1f03878bsm85143466b.87.2024.10.25.09.02.23
+ a640c23a62f3a-a9b1f0683edsm86084566b.93.2024.10.25.09.02.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 09:02:24 -0700 (PDT)
+ Fri, 25 Oct 2024 09:02:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
  junjie.mao@hotmail.com, berrange@redhat.com
-Subject: [PATCH 03/23] rust/pl011: add support for migration
-Date: Fri, 25 Oct 2024 18:01:48 +0200
-Message-ID: <20241025160209.194307-4-pbonzini@redhat.com>
+Subject: [PATCH 04/23] rust/pl011: move CLK_NAME static to function scope
+Date: Fri, 25 Oct 2024 18:01:49 +0200
+Message-ID: <20241025160209.194307-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
 References: <20241025160209.194307-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,156 +103,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Declare the vmstate description of the PL011 device.
-
-Based on a patch by Manos Pitsidianakis.
+We do not need to have CLK_NAME public nor a static. No functional change.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-4-051e7a25b978@lin=
+Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-5-051e7a25b978@lin=
 aro.org
 ---
- rust/hw/char/pl011/src/device.rs       | 27 ++++++++++
- rust/hw/char/pl011/src/device_class.rs | 68 +++++++++++++++++++++++---
- 2 files changed, 89 insertions(+), 6 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
 ce.rs
-index b3d8bc004e0..dd9145669dc 100644
+index dd9145669dc..f91790ff185 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -20,6 +20,12 @@
-=20
- static PL011_ID_ARM: [c_uchar; 8] =3D [0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0,=
- 0x05, 0xb1];
-=20
-+/// Integer Baud Rate Divider, `UARTIBRD`
-+const IBRD_MASK: u32 =3D 0x3f;
-+
-+/// Fractional Baud Rate Divider, `UARTFBRD`
-+const FBRD_MASK: u32 =3D 0xffff;
-+
- const DATA_BREAK: u32 =3D 1 << 10;
-=20
- /// QEMU sourced constant.
-@@ -492,6 +498,27 @@ pub fn update(&self) {
-             unsafe { qemu_set_irq(*irq, i32::from(flags & i !=3D 0)) };
-         }
-     }
-+
-+    pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
-+        /* Sanity-check input state */
-+        if self.read_pos >=3D self.read_fifo.len() || self.read_count > se=
-lf.read_fifo.len() {
-+            return Err(());
-+        }
-+
-+        if !self.fifo_enabled() && self.read_count > 0 && self.read_pos > =
-0 {
-+            // Older versions of PL011 didn't ensure that the single
-+            // character in the FIFO in FIFO-disabled mode is in
-+            // element 0 of the array; convert to follow the current
-+            // code's assumptions.
-+            self.read_fifo[0] =3D self.read_fifo[self.read_pos];
-+            self.read_pos =3D 0;
-+        }
-+
-+        self.ibrd &=3D IBRD_MASK;
-+        self.fbrd &=3D FBRD_MASK;
-+
-+        Ok(())
-+    }
+@@ -102,9 +102,6 @@ impl qemu_api::definitions::Class for PL011Class {
+     > =3D None;
  }
 =20
- /// Which bits in the interrupt status matter for each outbound IRQ line ?
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/sr=
-c/device_class.rs
-index 9282dc4d151..27cabbd6651 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -2,16 +2,73 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
-=20
--use core::ptr::NonNull;
-+use core::{
-+    ffi::{c_int, c_void},
-+    ptr::NonNull,
-+};
-=20
--use qemu_api::{bindings::*, definitions::ObjectImpl, zeroable::Zeroable};
-+use qemu_api::{
-+    bindings::*, vmstate_clock, vmstate_fields, vmstate_int32, vmstate_sub=
-sections, vmstate_uint32,
-+    vmstate_uint32_array, vmstate_unused, zeroable::Zeroable,
-+};
-=20
--use crate::device::PL011State;
-+use crate::device::{PL011State, PL011_FIFO_DEPTH};
-+
-+extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
-+    unsafe {
-+        debug_assert!(!opaque.is_null());
-+        let state =3D NonNull::new_unchecked(opaque.cast::<PL011State>());
-+        state.as_ref().migrate_clock
-+    }
-+}
-+
-+/// Migration subsection for [`PL011State`] clock.
-+pub static VMSTATE_PL011_CLOCK: VMStateDescription =3D VMStateDescription {
-+    name: c"pl011/clock".as_ptr(),
-+    version_id: 1,
-+    minimum_version_id: 1,
-+    needed: Some(pl011_clock_needed),
-+    fields: vmstate_fields! {
-+        vmstate_clock!(clock, PL011State),
-+    },
-+    ..Zeroable::ZERO
-+};
-+
-+extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c=
-_int {
-+    unsafe {
-+        debug_assert!(!opaque.is_null());
-+        let mut state =3D NonNull::new_unchecked(opaque.cast::<PL011State>=
-());
-+        let result =3D state.as_mut().post_load(version_id as u32);
-+        if result.is_err() { -1 } else { 0 }
-+    }
-+}
-=20
 -#[used]
- pub static VMSTATE_PL011: VMStateDescription =3D VMStateDescription {
--    name: PL011State::TYPE_INFO.name,
--    unmigratable: true,
-+    name: c"pl011".as_ptr(),
-+    version_id: 2,
-+    minimum_version_id: 2,
-+    post_load: Some(pl011_post_load),
-+    fields: vmstate_fields! {
-+        vmstate_unused!(::core::mem::size_of::<u32>()),
-+        vmstate_uint32!(flags, PL011State),
-+        vmstate_uint32!(line_control, PL011State),
-+        vmstate_uint32!(receive_status_error_clear, PL011State),
-+        vmstate_uint32!(control, PL011State),
-+        vmstate_uint32!(dmacr, PL011State),
-+        vmstate_uint32!(int_enabled, PL011State),
-+        vmstate_uint32!(int_level, PL011State),
-+        vmstate_uint32_array!(read_fifo, PL011State, PL011_FIFO_DEPTH),
-+        vmstate_uint32!(ilpr, PL011State),
-+        vmstate_uint32!(ibrd, PL011State),
-+        vmstate_uint32!(fbrd, PL011State),
-+        vmstate_uint32!(ifl, PL011State),
-+        vmstate_int32!(read_pos, PL011State),
-+        vmstate_int32!(read_count, PL011State),
-+        vmstate_int32!(read_trigger, PL011State),
-+    },
-+    subsections: vmstate_subsections! {
-+        VMSTATE_PL011_CLOCK
-+    },
-     ..Zeroable::ZERO
- };
-=20
+-pub static CLK_NAME: &CStr =3D c"clk";
+-
+ impl PL011State {
+     /// Initializes a pre-allocated, unitialized instance of `PL011State`.
+     ///
+@@ -114,7 +111,9 @@ impl PL011State {
+     /// `PL011State` type. It must not be called more than once on the same
+     /// location/instance. All its fields are expected to hold unitialized
+     /// values with the sole exception of `parent_obj`.
+-    pub unsafe fn init(&mut self) {
++    unsafe fn init(&mut self) {
++        const CLK_NAME: &CStr =3D c"clk";
++
+         let dev =3D addr_of_mut!(*self).cast::<DeviceState>();
+         // SAFETY:
+         //
 --=20
 2.47.0
 
