@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00019B0919
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFBD9B0924
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:04:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Mmh-00026Z-4d; Fri, 25 Oct 2024 12:03:32 -0400
+	id 1t4Mn2-0002Vh-H5; Fri, 25 Oct 2024 12:03:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MmP-00021T-5y
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:13 -0400
+ id 1t4Mmg-0002Gs-Gu
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MmN-0004q1-1Y
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:12 -0400
+ id 1t4Mme-0004rJ-5E
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:03:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729872190;
+ s=mimecast20190719; t=1729872207;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SHZpikGNVFgjiDhFQjm7CP2c0blb3vG5jwdwFgYBZPE=;
- b=fMXHGwEII2A4LEfkEGMa+HzfYgDAVcygC6keRYW892XSGyYxSNKh6uvWJfcV6lt1vEZIbV
- P9JbAnQ9PCVJHAIMuthujJFZnC6f8piCI3QCOP5r+DvZMnwB7TWhCkMqPc+EJwEaopO6NG
- Jd+4KIu19mJAJnvIR8rHj6cdap6Eg8Y=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JRpYd5gLU5pnd2gn0TumqBM3kJhFe2BgTXzKLOcnZGg=;
+ b=WD2n3WVRfI5YkzaCGCzoK7G86WjlcdptbLVRqWCSfsfjhyhO3R1Z6O9MKaWvUJs8s2C0SG
+ t6nLnPR8sbfaf0NAJ6+uTixAlxlbLW1bzvzfVQO3uRZtTMrEe26QTzIxF+0bo5ZpArH5Sl
+ 0gTvAYJnSOv0fJsBE8+LnOMrLuReSI4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-UvFP4-YYPFWQz4SQ3HjI-g-1; Fri, 25 Oct 2024 12:03:09 -0400
-X-MC-Unique: UvFP4-YYPFWQz4SQ3HjI-g-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2fb4e2da8baso17579021fa.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:03:08 -0700 (PDT)
+ us-mta-548-Cm8Df4srMIqyHq_jvTusWg-1; Fri, 25 Oct 2024 12:03:24 -0400
+X-MC-Unique: Cm8Df4srMIqyHq_jvTusWg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a9a194d672bso159445666b.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:03:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729872186; x=1730476986;
+ d=1e100.net; s=20230601; t=1729872201; x=1730477001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SHZpikGNVFgjiDhFQjm7CP2c0blb3vG5jwdwFgYBZPE=;
- b=xAGIbh6N1NwroBeIOoz14sXM1ZzewC+3+9gAl3JJVi57OeY6SEDT0cxIYdqcvr7Eil
- 9r9GDEplpjSHYMR50IPyWofZR9MhWf+8vZpwiFuCc2icZhn0vA8QkVFy4idsms/VPdoi
- dN9fvj/KswcuukYvTk/E0ZI4zkVIzZek72bc1NTO09Nj7jszcZPlVuNIxy9XH1FAdSf6
- jOwYT5ifVMVa34zI3TtCWMRhjyDNPBEvxuszKKEO5UHJdPG8gDDzxMrrH2poIf4BtI2M
- CYNDfhikJsFsc7AL/MWXpSOfNv7le77HBdXjRCCPuNwXq9HmWOOjAZ2cVvE+SNWhfhKx
- hhzQ==
-X-Gm-Message-State: AOJu0Yzny8I7Fy0IdqGyn/xi+k3MrqTpxTFft9HdWLrKhm0aKp1KykYt
- UKfW1rt6OEA7rgFhP7I4ap8ZrMMoKzvV8/fWgUNdjrm7rxaDiTryVRNkYrXNMzD8WJY231/3UPv
- 8VmTkEabUpmem7ouz94iuuNNC6Ty/eIWDwLXW0MJReRGBSfQFyLYLZyMuEMOv41LDJ84MtV/bbt
- QJ64HuXQ/4qL3Gsg7uZHXqZ5V++daWfMPJOpBgx6c=
-X-Received: by 2002:a2e:4619:0:b0:2fa:cc86:f217 with SMTP id
- 38308e7fff4ca-2fca8264714mr32733971fa.35.1729872185197; 
- Fri, 25 Oct 2024 09:03:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGX0SK+dO0ES1KpzNxs1DZBihiCSdKwZn6wpiDNWGJRyJMfizHisBCqJ4cJpyuuEPZOWRVyiw==
-X-Received: by 2002:a2e:4619:0:b0:2fa:cc86:f217 with SMTP id
- 38308e7fff4ca-2fca8264714mr32732591fa.35.1729872182953; 
- Fri, 25 Oct 2024 09:03:02 -0700 (PDT)
+ bh=JRpYd5gLU5pnd2gn0TumqBM3kJhFe2BgTXzKLOcnZGg=;
+ b=fLInT2+6QJE23q/IEUSjzlkJV+4FpZ6SFqh69l4TJEzEloqVY+NSNOjoxb2kk9pi6I
+ HhLbu4B+Y7hdtOBVvxFyX0XdldyD/5c+BxX32WOCoCht2p7JT0bda+/kGp5HgMrh7wkl
+ hoFKqJwR3mdmRKGndKHDaLkLASSo/TFec1IGvv5STxBz3t5qU5nHZJELtZk9mmUg59kd
+ 9Ml3GfDJ8bqxTMmJ/mMwAOSo/kKfab35svq4QJWkHJJ65RtjqFh5tH4gK2xuHxl2W/xe
+ 1V5NmKXr7kWhP4W479osMRHSUkf8MsL0rVk+QcFTusF27qJsPREFmSpPukdksbPOg1pz
+ f5hg==
+X-Gm-Message-State: AOJu0YzrqnhiNRtI3ARNA1s5elWG2fCSS/zozyq283eKpmPxSNihNh0V
+ 5JydCedseAksfTXuqucYFq2F7tbgNtTO/bJQE56OEwfVruXN3uAxt30Wq7r41A2ORpqOVDgDiVg
+ 5HYmytsJBcrXD7LP4YLyxfqcSbmReiEI7KiioL4fKQtE8SbHsn37qh0etEMy5PVe30fkOH1K8Xr
+ qJ7mCVuWe2cv/Na3PaYLoi4jhjbnaFJfFiZJaavLU=
+X-Received: by 2002:a17:907:5015:b0:a9d:e1d6:42a1 with SMTP id
+ a640c23a62f3a-a9de1d6435emr21190166b.30.1729872201011; 
+ Fri, 25 Oct 2024 09:03:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyt2JvE9VYA2xkI3VIFOyVoR52tOPHTdEzenqsysH29mMicK8aICqmXcRNSvL5Hv7W8Z+0rw==
+X-Received: by 2002:a17:907:5015:b0:a9d:e1d6:42a1 with SMTP id
+ a640c23a62f3a-a9de1d6435emr21186166b.30.1729872200346; 
+ Fri, 25 Oct 2024 09:03:20 -0700 (PDT)
 Received: from [192.168.10.47] ([151.81.112.43])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cbb62c4860sm752003a12.54.2024.10.25.09.02.56
+ a640c23a62f3a-a9b1f0698c0sm85027666b.95.2024.10.25.09.03.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 09:02:57 -0700 (PDT)
+ Fri, 25 Oct 2024 09:03:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
  junjie.mao@hotmail.com, berrange@redhat.com
-Subject: [PATCH 08/23] rust: patch bilge-impl to allow compilation with 1.63.0
-Date: Fri, 25 Oct 2024 18:01:53 +0200
-Message-ID: <20241025160209.194307-9-pbonzini@redhat.com>
+Subject: [PATCH 10/23] rust: use std::os::raw instead of core::ffi
+Date: Fri, 25 Oct 2024 18:01:55 +0200
+Message-ID: <20241025160209.194307-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
 References: <20241025160209.194307-1-pbonzini@redhat.com>
@@ -101,104 +101,375 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apply a patch that removes "let ... else" constructs, replacing them with
-"if let ... else" or "let ... =3D match ...".  "let ... else" was stabilize=
-d in
-Rust 1.65.0.
+core::ffi::c_* types were introduced in Rust 1.64.0.  Use the older types
+in std::os::raw, which are now aliases of the types in core::ffi.  There is
+no need to compile QEMU as no_std, so this is acceptable as long as we supp=
+ort
+a version of Debian with Rust 1.63.0.
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitattributes                                |  2 +
- subprojects/bilge-impl-0.2-rs.wrap            |  1 +
- .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
- 3 files changed, 48 insertions(+)
- create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+ meson.build                          |  3 +--
+ rust/hw/char/pl011/src/device.rs     | 35 +++++++++++-----------------
+ rust/hw/char/pl011/src/lib.rs        |  4 ++--
+ rust/hw/char/pl011/src/memory_ops.rs | 14 +++--------
+ rust/qemu-api/src/definitions.rs     |  2 +-
+ rust/qemu-api/src/device_class.rs    |  6 ++---
+ rust/qemu-api/src/lib.rs             | 11 +++++----
+ rust/qemu-api/src/vmstate.rs         | 10 ++++----
+ rust/qemu-api/tests/tests.rs         |  9 ++++---
+ 9 files changed, 39 insertions(+), 55 deletions(-)
 
-diff --git a/.gitattributes b/.gitattributes
-index 6dc6383d3d1..9ce7a19581a 100644
---- a/.gitattributes
-+++ b/.gitattributes
-@@ -5,3 +5,5 @@
- *.rs            diff=3Drust
- *.rs.inc        diff=3Drust
- Cargo.lock      diff=3Dtoml merge=3Dbinary
-+
-+*.patch         -text -whitespace
-diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.=
-2-rs.wrap
-index eefb10c36c2..b24c34a9043 100644
---- a/subprojects/bilge-impl-0.2-rs.wrap
-+++ b/subprojects/bilge-impl-0.2-rs.wrap
-@@ -5,3 +5,4 @@ source_filename =3D bilge-impl-0.2.0.tar.gz
- source_hash =3D feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000=
-adb2d8
- #method =3D cargo
- patch_directory =3D bilge-impl-0.2-rs
-+diff_files =3D bilge-impl-1.63.0.patch
-diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects=
-/packagefiles/bilge-impl-1.63.0.patch
-new file mode 100644
-index 00000000000..987428a6d65
---- /dev/null
-+++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
-@@ -0,0 +1,45 @@
-+--- a/src/shared/discriminant_assigner.rs
-++++ b/src/shared/discriminant_assigner.rs
-+@@ -26,20 +26,20 @@
-+         let discriminant_expr =3D &discriminant.1;
-+         let variant_name =3D &variant.ident;
-+=20
-+-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discriminan=
-t_expr else {
-++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) =3D discrimi=
-nant_expr {
-++            let discriminant_value: u128 =3D int.base10_parse().unwrap_or=
-_else(unreachable);
-++            if discriminant_value > self.max_value() {
-++                abort!(variant, "Value of variant exceeds the given numbe=
-r of bits")
-++            }
-++
-++            Some(discriminant_value)
-++        } else {
-+             abort!(
-+                 discriminant_expr,
-+                 "variant `{}` is not a number", variant_name;
-+                 help =3D "only literal integers currently supported"
-+             )
-+-        };
-+-
-+-        let discriminant_value: u128 =3D int.base10_parse().unwrap_or_els=
-e(unreachable);
-+-        if discriminant_value > self.max_value() {
-+-            abort!(variant, "Value of variant exceeds the given number of=
- bits")
-+         }
-+-
-+-        Some(discriminant_value)
-+     }
-+=20
-+     fn assign(&mut self, variant: &Variant) -> u128 {
-+--- a/src/shared/fallback.rs
-++++ b/src/shared/fallback.rs
-+@@ -22,8 +22,9 @@
-+             }
-+             Unnamed(fields) =3D> {
-+                 let variant_fields =3D fields.unnamed.iter();
-+-                let Ok(fallback_value) =3D variant_fields.exactly_one() e=
-lse {
-+-                    abort!(variant, "fallback variant must have exactly o=
-ne field"; help =3D "use only one field or change to a unit variant")
-++                let fallback_value =3D match variant_fields.exactly_one()=
+diff --git a/meson.build b/meson.build
+index 5e2b0fb82b2..e819148f36c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3933,14 +3933,13 @@ if have_rust and have_system
+   bindgen_args =3D [
+     '--disable-header-comment',
+     '--raw-line', '// @generated',
+-    '--ctypes-prefix', 'core::ffi',
++    '--ctypes-prefix', 'std::os::raw',
+     '--formatter', 'rustfmt',
+     '--generate-block',
+     '--generate-cstr',
+     '--impl-debug',
+     '--merge-extern-blocks',
+     '--no-doc-comments',
+-    '--use-core',
+     '--with-derive-default',
+     '--no-layout-tests',
+     '--no-prepend-enum-name',
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/devi=
+ce.rs
+index 788b47203b1..036757f7f3a 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -2,9 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+=20
+-use core::{
+-    ffi::{c_int, c_uchar, c_uint, c_void, CStr},
+-    ptr::{addr_of, addr_of_mut, NonNull},
++use core::ptr::{addr_of, addr_of_mut, NonNull};
++use std::{
++    ffi::CStr,
++    os::raw::{c_int, c_uchar, c_uint, c_void},
+ };
+=20
+ use qemu_api::{
+@@ -117,11 +118,10 @@ pub struct PL011Class {
+ }
+=20
+ impl qemu_api::definitions::Class for PL011Class {
+-    const CLASS_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
+-    > =3D Some(crate::device_class::pl011_class_init);
++    const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass,=
+ data: *mut c_void)> =3D
++        Some(crate::device_class::pl011_class_init);
+     const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
++        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+     > =3D None;
+ }
+=20
+@@ -176,11 +176,7 @@ unsafe fn init(&mut self) {
+         }
+     }
+=20
+-    pub fn read(
+-        &mut self,
+-        offset: hwaddr,
+-        _size: core::ffi::c_uint,
+-    ) -> std::ops::ControlFlow<u64, u64> {
++    pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::Con=
+trolFlow<u64, u64> {
+         use RegisterOffset::*;
+=20
+         std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset=
+) {
+@@ -562,11 +558,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Resul=
+t<(), ()> {
+ /// readable/writeable from one thread at any time.
+ ///
+ /// The buffer and size arguments must also be valid.
+-pub unsafe extern "C" fn pl011_receive(
+-    opaque: *mut core::ffi::c_void,
+-    buf: *const u8,
+-    size: core::ffi::c_int,
+-) {
++pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf: *const u8=
+, size: c_int) {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+         let mut state =3D NonNull::new_unchecked(opaque.cast::<PL011State>=
+());
+@@ -585,7 +577,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Result=
+<(), ()> {
+ /// We expect the FFI user of this function to pass a valid pointer, that =
+has
+ /// the same size as [`PL011State`]. We also expect the device is
+ /// readable/writeable from one thread at any time.
+-pub unsafe extern "C" fn pl011_event(opaque: *mut core::ffi::c_void, event=
+: QEMUChrEvent) {
++pub unsafe extern "C" fn pl011_event(opaque: *mut c_void, event: QEMUChrEv=
+ent) {
+     unsafe {
+         debug_assert!(!opaque.is_null());
+         let mut state =3D NonNull::new_unchecked(opaque.cast::<PL011State>=
+());
+@@ -656,11 +648,10 @@ pub struct PL011LuminaryClass {
+ }
+=20
+ impl qemu_api::definitions::Class for PL011LuminaryClass {
+-    const CLASS_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
+-    > =3D None;
++    const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass,=
+ data: *mut c_void)> =3D
++        None;
+     const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core::ffi=
+::c_void),
++        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+     > =3D None;
+ }
+=20
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index c6bb76a7926..a539062aa30 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -45,8 +45,8 @@
+ pub mod device_class;
+ pub mod memory_ops;
+=20
+-pub const TYPE_PL011: &::core::ffi::CStr =3D c"pl011";
+-pub const TYPE_PL011_LUMINARY: &::core::ffi::CStr =3D c"pl011_luminary";
++pub const TYPE_PL011: &::std::ffi::CStr =3D c"pl011";
++pub const TYPE_PL011_LUMINARY: &::std::ffi::CStr =3D c"pl011_luminary";
+=20
+ /// Offset of each register from the base memory address of the device.
+ ///
+diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/=
+memory_ops.rs
+index fc69922fbf3..169d485a4d2 100644
+--- a/rust/hw/char/pl011/src/memory_ops.rs
++++ b/rust/hw/char/pl011/src/memory_ops.rs
+@@ -3,6 +3,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+=20
+ use core::ptr::NonNull;
++use std::os::raw::{c_uint, c_void};
+=20
+ use qemu_api::{bindings::*, zeroable::Zeroable};
+=20
+@@ -22,11 +23,7 @@
+     },
+ };
+=20
+-unsafe extern "C" fn pl011_read(
+-    opaque: *mut core::ffi::c_void,
+-    addr: hwaddr,
+-    size: core::ffi::c_uint,
+-) -> u64 {
++unsafe extern "C" fn pl011_read(opaque: *mut c_void, addr: hwaddr, size: c=
+_uint) -> u64 {
+     assert!(!opaque.is_null());
+     let mut state =3D unsafe { NonNull::new_unchecked(opaque.cast::<PL011S=
+tate>()) };
+     let val =3D unsafe { state.as_mut().read(addr, size) };
+@@ -43,12 +40,7 @@
+     }
+ }
+=20
+-unsafe extern "C" fn pl011_write(
+-    opaque: *mut core::ffi::c_void,
+-    addr: hwaddr,
+-    data: u64,
+-    _size: core::ffi::c_uint,
+-) {
++unsafe extern "C" fn pl011_write(opaque: *mut c_void, addr: hwaddr, data: =
+u64, _size: c_uint) {
+     unsafe {
+         assert!(!opaque.is_null());
+         let mut state =3D NonNull::new_unchecked(opaque.cast::<PL011State>=
+());
+diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitio=
+ns.rs
+index 064afe60549..26597934bbd 100644
+--- a/rust/qemu-api/src/definitions.rs
++++ b/rust/qemu-api/src/definitions.rs
+@@ -4,7 +4,7 @@
+=20
+ //! Definitions required by QEMU when registering a device.
+=20
+-use ::core::ffi::{c_void, CStr};
++use std::{ffi::CStr, os::raw::c_void};
+=20
+ use crate::bindings::{Object, ObjectClass, TypeInfo};
+=20
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_c=
+lass.rs
+index 3d40256f60f..cb4573ca6ef 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -7,7 +7,7 @@ macro_rules! device_class_init {
+     ($func:ident, props =3D> $props:ident, realize_fn =3D> $realize_fn:exp=
+r, legacy_reset_fn =3D> $legacy_reset_fn:expr, vmsd =3D> $vmsd:ident$(,)*) =
+=3D> {
+         pub unsafe extern "C" fn $func(
+             klass: *mut $crate::bindings::ObjectClass,
+-            _: *mut ::core::ffi::c_void,
++            _: *mut ::std::os::raw::c_void,
+         ) {
+             let mut dc =3D
+                 ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::D=
+eviceClass>()).unwrap();
+@@ -26,7 +26,7 @@ macro_rules! define_property {
+     ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default =
+=3D $defval:expr$(,)*) =3D> {
+         $crate::bindings::Property {
+             // use associated function syntax for type checking
+-            name: ::core::ffi::CStr::as_ptr($name),
++            name: ::std::ffi::CStr::as_ptr($name),
+             info: $prop,
+             offset: ::core::mem::offset_of!($state, $field) as isize,
+             set_default: true,
+@@ -37,7 +37,7 @@ macro_rules! define_property {
+     ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr$(,)*) =3D>=
  {
-++                    Ok(ok) =3D> ok,
-++                    _ =3D> abort!(variant, "fallback variant must have ex=
-actly one field"; help =3D "use only one field or change to a unit variant")
-+                 };
-+=20
-+                 if !is_last_variant {
+         $crate::bindings::Property {
+             // use associated function syntax for type checking
+-            name: ::core::ffi::CStr::as_ptr($name),
++            name: ::std::ffi::CStr::as_ptr($name),
+             info: $prop,
+             offset: ::core::mem::offset_of!($state, $field) as isize,
+             set_default: false,
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 10ab3d7e639..ed840ee2f72 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -34,7 +34,10 @@ unsafe impl Sync for bindings::VMStateInfo {}
+ pub mod vmstate;
+ pub mod zeroable;
+=20
+-use std::alloc::{GlobalAlloc, Layout};
++use std::{
++    alloc::{GlobalAlloc, Layout},
++    os::raw::c_void,
++};
+=20
+ #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
+ extern "C" {
+@@ -48,8 +51,8 @@ fn g_aligned_alloc0(
+=20
+ #[cfg(not(HAVE_GLIB_WITH_ALIGNED_ALLOC))]
+ extern "C" {
+-    fn qemu_memalign(alignment: usize, size: usize) -> *mut ::core::ffi::c=
+_void;
+-    fn qemu_vfree(ptr: *mut ::core::ffi::c_void);
++    fn qemu_memalign(alignment: usize, size: usize) -> *mut c_void;
++    fn qemu_vfree(ptr: *mut c_void);
+ }
+=20
+ extern "C" {
+@@ -114,7 +117,7 @@ fn default() -> Self {
+ }
+=20
+ // Sanity check.
+-const _: [(); 8] =3D [(); ::core::mem::size_of::<*mut ::core::ffi::c_void>=
+()];
++const _: [(); 8] =3D [(); ::core::mem::size_of::<*mut c_void>()];
+=20
+ unsafe impl GlobalAlloc for QemuAllocator {
+     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 2a626137e25..5dd783a902a 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -55,7 +55,7 @@ macro_rules! vmstate_single_test {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), 0)
+                 .as_bytes()
+-                .as_ptr() as *const ::core::ffi::c_char,
++                .as_ptr() as *const ::std::os::raw::c_char,
+             err_hint: ::core::ptr::null(),
+             offset: ::core::mem::offset_of!($struct_name, $field_name),
+             size: $size,
+@@ -132,7 +132,7 @@ macro_rules! vmstate_array {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), 0)
+                 .as_bytes()
+-                .as_ptr() as *const ::core::ffi::c_char,
++                .as_ptr() as *const ::std::os::raw::c_char,
+             err_hint: ::core::ptr::null(),
+             offset: ::core::mem::offset_of!($struct_name, $field_name),
+             size: $size,
+@@ -180,7 +180,7 @@ macro_rules! vmstate_struct_pointer_v {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), 0)
+                 .as_bytes()
+-                .as_ptr() as *const ::core::ffi::c_char,
++                .as_ptr() as *const ::std::os::raw::c_char,
+             err_hint: ::core::ptr::null(),
+             offset: ::core::mem::offset_of!($struct_name, $field_name),
+             size: ::core::mem::size_of::<*const $type>(),
+@@ -205,7 +205,7 @@ macro_rules! vmstate_array_of_pointer {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), 0)
+                 .as_bytes()
+-                .as_ptr() as *const ::core::ffi::c_char,
++                .as_ptr() as *const ::std::os::raw::c_char,
+             version_id: $version_id,
+             num: $num as _,
+             info: $info,
+@@ -230,7 +230,7 @@ macro_rules! vmstate_array_of_pointer_to_struct {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), 0)
+                 .as_bytes()
+-                .as_ptr() as *const ::core::ffi::c_char,
++                .as_ptr() as *const ::std::os::raw::c_char,
+             version_id: $version_id,
+             num: $num as _,
+             vmsd: $vmsd,
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 37c4dd44f81..c7089f0cf21 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -2,7 +2,7 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+=20
+-use core::ffi::CStr;
++use std::{ffi::CStr, os::raw::c_void};
+=20
+ use qemu_api::{
+     bindings::*,
+@@ -64,11 +64,10 @@ impl ObjectImpl for DummyState {
+     }
+=20
+     impl Class for DummyClass {
+-        const CLASS_INIT: Option<
+-            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core:=
+:ffi::c_void),
+-        > =3D Some(dummy_class_init);
++        const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectCl=
+ass, data: *mut c_void)> =3D
++            Some(dummy_class_init);
+         const CLASS_BASE_INIT: Option<
+-            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut core:=
+:ffi::c_void),
++            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_voi=
+d),
+         > =3D None;
+     }
+=20
 --=20
 2.47.0
 
