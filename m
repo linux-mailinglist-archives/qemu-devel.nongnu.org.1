@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0859B0F94
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 22:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E41F9B0F97
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 22:13:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Qf4-0003iJ-LV; Fri, 25 Oct 2024 16:11:54 -0400
+	id 1t4Qgh-0004Oh-R8; Fri, 25 Oct 2024 16:13:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4Qf1-0003hv-DU
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:11:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t4QgQ-0004Jt-FW; Fri, 25 Oct 2024 16:13:18 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4Qez-0001Xn-OY
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:11:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729887107;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OHDOcyPfOFgO6bWvoZpBHME4TzQRzjTPWiHANMuyQUU=;
- b=GcrrLyI8yzisHl361kwalplTX4V5VgbWqX5nqoMQtI6xF95WS17MxsDjhdVRDPbUFDt1fO
- qJmkxVn+0FAZL5sVkT/1uf/lBuseanHFHDyr85cbKluk71ywqKqqhgUamqoaFVdBia6o5Y
- NpxintoYPb/Yu5XqoAxm4fBN6TPsRmQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-W2qMyCNYNemj8f4ebdWe7A-1; Fri, 25 Oct 2024 16:11:44 -0400
-X-MC-Unique: W2qMyCNYNemj8f4ebdWe7A-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d5a3afa84so1321247f8f.3
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 13:11:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729887103; x=1730491903;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OHDOcyPfOFgO6bWvoZpBHME4TzQRzjTPWiHANMuyQUU=;
- b=WLvXWOHUu3dO2wkCBAr64hYm86R5mJf7ZQ4+S7P0xYacQkXUQ3mEdiGFP3JfT5Ako4
- Zhd5oww/wNUXuzFXmBcNDrFnMnHw/O3vpGITz8iIt2v9ajITTm0um9ZL4wYm9dTBYMWM
- b2JX5oaPpa6/r5ktNdpuJEezUZap1jroP8WbRNV60Qi0AhjOV5IXmbYZL248tt0N8bCd
- GzZIjzLKSuHmxlZ8XTBHwociXzwZvvjtLk2pDsgqSVEADx/2x9yvxu2O+DtG8nM6PpVA
- XgAHrVrle5jVfAaGQBHc7F3HiI6s9Zoh6mmKZ9inDtZW5d4mOfZ1S/eyX4v+8crMu2XD
- e1tg==
-X-Gm-Message-State: AOJu0Yxd+Au46JSmavB8qmy6wiW9K5zBfsqp42XaciNM7uMijggwzEIE
- JzOSgAoKYMn2O8vYVBd7cGFe5MUC/O+nbaa0gWq1EQklSzl15bEq9reNakw9Qf2IWE07+JWYKry
- 8hIY5EsZUVlZWSscoYy0MFXs1hH0aig7RD9+pHxa7sTYs6L8ceLe4bEJpr1wCvNub/X1oyyhV28
- dI5hyBISkY2gADujq/o0lRoJmqCHw=
-X-Received: by 2002:a05:6000:e04:b0:37d:4c8f:2e1 with SMTP id
- ffacd0b85a97d-38061137605mr442239f8f.22.1729887103392; 
- Fri, 25 Oct 2024 13:11:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKlpsOVoElcQqcrPw5R5cim+fNeOybZXP/8bJxd/zJ070exVl9H0xh2SSZgx0X7qipfdeVKF7yRPG6Andc534=
-X-Received: by 2002:a05:6000:e04:b0:37d:4c8f:2e1 with SMTP id
- ffacd0b85a97d-38061137605mr442226f8f.22.1729887103063; Fri, 25 Oct 2024
- 13:11:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t4QgN-0001fG-Ud; Fri, 25 Oct 2024 16:13:18 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PHKM7J003071;
+ Fri, 25 Oct 2024 20:13:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=vSw9fDKcZKzqM94QiJRAU/Ko1dNKC3t+FbdTNkjJJ
+ xE=; b=mKbL1MqNUkqGKvKLqbjimjp2AMbJe2UXxn4vnl3EKpr4EU54HvJhq7Juk
+ 6eyCaHV67QVv4gyyjPGaudZyOolfo9+ZPGiC4FizBiIlbTuXYnE3agrm2IhS/68f
+ VCYKOcxojlBBNH1hE61cEk5VxmJ78FvMWNQBOABInknY/MWIz/jg+mo/fKle+y3T
+ +egN3TDb37dfe720lDLERNQGK9YfS5J7GTpfDjghrf0LOpHAsj9ikbNRIOpaNmZ6
+ SqcFyy839yBKNYB/U9rWrSQsbyODT6mXY3F7IBufArrjLuL+yNNVEdP3WQPp9w4f
+ 0v4mM6KY6vZJycEo6igj4To3W6tvw==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42g5kxkyfd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Oct 2024 20:13:03 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49PHamYB014571;
+ Fri, 25 Oct 2024 20:13:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk87hta-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Oct 2024 20:13:02 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 49PKD1eu52560354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Oct 2024 20:13:01 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F8CD5805A;
+ Fri, 25 Oct 2024 20:13:01 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 184B458051;
+ Fri, 25 Oct 2024 20:13:01 +0000 (GMT)
+Received: from gfwa829.aus.stglabs.ibm.com (unknown [9.3.84.19])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 25 Oct 2024 20:13:01 +0000 (GMT)
+From: dan tan <dantan@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, clg@kaod.org,
+ lvivier@redhat.com, farosas@suse.de, pbonzini@redhat.com
+Subject: [PATCH v2 0/3] *** TPM TIS SPI pull request ***
+Date: Fri, 25 Oct 2024 15:12:44 -0500
+Message-Id: <20241025201247.29574-1-dantan@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20241025160209.194307-1-pbonzini@redhat.com>
- <20241025160209.194307-20-pbonzini@redhat.com>
- <b86de87b-99f3-4fce-9a33-3580d37d90dc@tls.msk.ru>
-In-Reply-To: <b86de87b-99f3-4fce-9a33-3580d37d90dc@tls.msk.ru>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 25 Oct 2024 22:11:32 +0200
-Message-ID: <CABgObfbYf8vEJd=QhvXvhy0o0Xt5-bPJ7jdd0NRVUh_-tXApuQ@mail.gmail.com>
-Subject: Re: [PATCH 19/23] rust: do not use --generate-cstr
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel <qemu-devel@nongnu.org>, 
- Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, 
- Junjie Mao <junjie.mao@hotmail.com>, "P. Berrange,
- Daniel" <berrange@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000047b73f062552ba76"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -SgmhAcIjmBTocnM2dfnUypqEmsOk1Xl
+X-Proofpoint-GUID: -SgmhAcIjmBTocnM2dfnUypqEmsOk1Xl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=531
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410250152
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=dantan@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,63 +102,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000047b73f062552ba76
-Content-Type: text/plain; charset="UTF-8"
+Version 2 summary,
+    addressed the following review comments:
+    - break up patch into 3 separate commits;
+    - add more details in the commit logs;
+      - I added links to the TCG TPM standard documents as this device
+        model communicates to the TPM device (hw / swtpm) via
+        tpm_tis_commom.c which is standard compliant;
+      - the TPM SPI model implementation in itself is not platform
+        specific. However, the SPI interface is via the PowerNV SPI
+        bus master, thus it is only supported on the PowerNV platform
+    - change all qemu_log() calls to trace events;
+    - move static global variables to the TPMStateSPI struct;
+    - fixed code formatting (verified by scripts/checkpatch.pl);
+    - per requests, make the code more readable by using self-
+      explanatory #defines and adding comments;
+    - added some documentation support (tpm.rst);
+    - beefed up the unit test exercising major supported locality
+      functionality
 
-Il ven 25 ott 2024, 22:03 Michael Tokarev <mjt@tls.msk.ru> ha scritto:
+Tests: 'make check' and 'make check-avocado'
 
-> 25.10.2024 19:02, Paolo Bonzini wrote:
-> > --generate-cstr is a good idea and generally the right thing to do,
-> > but it is not available in Debian 12 and Ubuntu 22.04.  Work around
-> > the absence.
->
-> Can't we just install a more recent bindgen and use all the current
-> features of it, like it's done in patch 22 for ubuntu?
->
+dan tan (3):
+  tpm/tpm_tis_spi: Support TPM for SPI (Serial Peripheral Interface)
+  tpm/tpm_tis_spi: activation for the PowerNV machines
+  tests/qtest/tpm: add unit test to tis-spi
 
-The idea is that Ubuntu will get the memo and add an updated bindgen, since
-they did update rustc to 1.75.0... so hopefully even that change in patch
-22 is temporary.
+ docs/specs/tpm.rst                 |  15 +
+ include/sysemu/tpm.h               |   3 +
+ hw/tpm/tpm_tis_spi.c               | 328 ++++++++++++++
+ tests/qtest/tpm-tis-spi-pnv-test.c | 700 +++++++++++++++++++++++++++++
+ hw/ppc/Kconfig                     |   1 +
+ hw/tpm/Kconfig                     |   6 +
+ hw/tpm/meson.build                 |   1 +
+ hw/tpm/trace-events                |   7 +
+ tests/qtest/meson.build            |   3 +-
+ 9 files changed, 1063 insertions(+), 1 deletion(-)
+ create mode 100644 hw/tpm/tpm_tis_spi.c
+ create mode 100644 tests/qtest/tpm-tis-spi-pnv-test.c
 
-This patch is only a minor nuisance and we'll only need it for about a year.
-
-Paolo
-
-/mjt
->
->
-
---00000000000047b73f062552ba76
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il ven 25 ott 2024, 22:03 Michael Tokarev &lt;<a href=
-=3D"mailto:mjt@tls.msk.ru">mjt@tls.msk.ru</a>&gt; ha scritto:<br></div><blo=
-ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
-:1px solid rgb(204,204,204);padding-left:1ex">25.10.2024 19:02, Paolo Bonzi=
-ni wrote:<br>
-&gt; --generate-cstr is a good idea and generally the right thing to do,<br=
->
-&gt; but it is not available in Debian 12 and Ubuntu 22.04.=C2=A0 Work arou=
-nd<br>
-&gt; the absence.<br>
-<br>
-Can&#39;t we just install a more recent bindgen and use all the current<br>
-features of it, like it&#39;s done in patch 22 for ubuntu?<br></blockquote>=
-</div></div><div dir=3D"auto"><br></div><div dir=3D"auto">The idea is that =
-Ubuntu will get the memo and add an updated bindgen, since they did update =
-rustc to 1.75.0... so hopefully even that change in patch 22 is temporary.<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">This patch is only a min=
-or nuisance and we&#39;ll only need it for about a year.</div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><di=
-v dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote"=
- style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
-adding-left:1ex">
-/mjt<br>
-<br>
-</blockquote></div></div></div>
-
---00000000000047b73f062552ba76--
+-- 
+2.39.5
 
 
