@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE349B0367
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 15:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569109B027F
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 14:36:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4K3U-0001qi-1d; Fri, 25 Oct 2024 09:08:40 -0400
+	id 1t4JWv-0007rS-Uw; Fri, 25 Oct 2024 08:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stest6905@gmail.com>)
- id 1t4Czh-0007Sz-OJ
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 01:36:17 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t4JWs-0007qc-Bk
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 08:34:58 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stest6905@gmail.com>)
- id 1t4Czg-0001AX-2a
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 01:36:17 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3e5ffea2699so1270647b6e.1
- for <qemu-devel@nongnu.org>; Thu, 24 Oct 2024 22:36:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t4JWp-00011B-Kr
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 08:34:58 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9404c0d50so2221877a12.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 05:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1729834573; x=1730439373; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=1hsFhprj+EVmsewaGyAnDovq+HwLa9nlVD4mzDv+Bg8=;
- b=WPxR6vsTPDlokMrl1/BFmV84f6JJXC2p2ilkax8wfRiHwgPnfqFLLQQ2+nEe7cE9GD
- evZiX+6GQriWLx8rLk+2jYxt1XdH05V45h5fESrvWM9RHLAsLegyLWHAwkKyyNLl/Ccv
- BQMhxnxSZEhOxEutgFr6yyEoUYQNopVp1MxdHPvuhKf9qcHPmfMbVa1vcKlD5Rqh2G5c
- mFDL9oJal88Fzc1WapOkAMw86DJlKCSRM//Qz9VfdfsMGdsc4/qRg7KR6MiWKE48718S
- 3mVkxmjvROUX22hPb5YfADlitH0E9SBaQC6uThSx1R83y6pBuKYD7s9e0uprSNTcy5dK
- kzrA==
+ d=linaro.org; s=google; t=1729859691; x=1730464491; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pKtoknJaRkBKpxNjIfUPtTkPP3ApBWXlXqHh3ivUFSw=;
+ b=RkhdzzFCYBHzsYBJy5cQoebT+4EBdasP/tUOWeAJ9q/tNgOjyErBSdajnJcANe6xCE
+ VqVvK8fIitOn614xy688uJnJcJXp3+KLhj/rGmSX+LsbYFI1whQ1OFiW64XpmSN0s+oE
+ hzOV8dOOiLWKR0nyW22z5kycJdyDCK08T/rTTaomMMAvQNKwWP2A6ZQuRwBWl6Z/t5if
+ kU3wCHGa5KBvCD1/3YEjI+dmiRbnf59Eznao6Q9ivnVoxLn6+FvBX2FsB8jjRSUQvGbb
+ TUuTvEN1dX54xDXnWZ19AnsTcd9ZyUySfKa8zo6EjSRPY36UPJjQZ4zyDT8TbkFzYMak
+ 0eww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729834573; x=1730439373;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1hsFhprj+EVmsewaGyAnDovq+HwLa9nlVD4mzDv+Bg8=;
- b=QPI6gzpmYb+Pxks0UZ6oteLftfaXO5QyAfHeFJRRGYUGa/q/p72a4snIzSpW/aJi69
- W2nrrFkFkyCD7ZRTzuy7VPpyn1EPFOPMqLLeiqraj7nqVgCNgEG7oxDmIgV7lyG5Vf9C
- Fae56GKBRcqIsTFDnO9VrH0Gf9xktHDGz4JLfF5mHOlnlJMbpT2LG2CtdaPUfiHgex7j
- h2MMbYJJPe6LL+45mtYwolhCz73v8qAVCo3+1czWwrTkAfkkRFhENPs/zioScRe0VqRs
- KRTn8HcHaLh6B5BxpI3DxVmyUiSvwgqYYXUjcdF5lB7831nIWeglGwn1C6RQ37oRRA2V
- g4XQ==
-X-Gm-Message-State: AOJu0YxdBd4dM2tU/vn6N3CgDVhUskWm91zmOmveLheI306jbW+pMNkH
- 1L2kLski7HqOHKkG1Vy3ksbn+LfnQSwgYnqkWiYHcawUADhOY6/e5HqZCPlUWcNSFY8sXG3ApuU
- MEhdoD9DeWrXTPD8lRVazy/9zNXZajSs7
-X-Google-Smtp-Source: AGHT+IH2SPgyCXpBdkd1b4bICLM2W7qasrOi+fzxO+mUcWIbuFo9Bl3qiGWC3K+WMxwHmvsrzcX7onNZ5PDPhNBSZFE=
-X-Received: by 2002:a05:6808:1597:b0:3e5:f9e9:43c4 with SMTP id
- 5614622812f47-3e62c5adec5mr2497187b6e.18.1729834572905; Thu, 24 Oct 2024
- 22:36:12 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729859691; x=1730464491;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pKtoknJaRkBKpxNjIfUPtTkPP3ApBWXlXqHh3ivUFSw=;
+ b=ZKvgggtVkmbxK+5p5Lkh5l+ejUtlkxcXEgF9VmVyJE7SmVc+xnJ0+YC1T/ZMgwP8dk
+ 77nEAypZCAmHacJ4uf6vU8A/5XmfAjw1tKim1F00L8CizNyg1Z0WYlJ/tbLul5TUgKa6
+ nZuQ9RGq+LSYmnJTdZwpLuFmfZ5dAwPQ7upNOoFlxDKSsRzP7eC3NNWhqSIGZ9XFIhek
+ A9B4L90k4MZM4VSgNNetXXAyZRc+ZTzs1CDoOFM5RRhTEf6YYQTMQ2+tAle9D+hexOQX
+ 2kDJY55w34svCp1q216kxu/OX/13Pu3VHqHvvDeblP11eF86pDqrKYWXSp4LskeCTOS+
+ XY+A==
+X-Gm-Message-State: AOJu0YzUlsTuzsdhU03BrrX3WMVrY+VA5RxzRy7KtAsl+5AdnRbxEImb
+ 1agWxvdyHZYZ2rJKa8e3U8R1Cq8icbrm/96S8qVo/SVRCOvtIn/gunRNfz6w1lOw7rQEOGbAASA
+ cdnQhFdz2zNbYQNuxuecMzGUiTWkobUxdAdbx4Q==
+X-Google-Smtp-Source: AGHT+IFc2Op9efT7XB1MaMvSzihGqwwIa7ZKO0J2V89gm6BwuU7fgVwVzkr+ZAcMTo37AzRn3M36ExowDrORdYyd8cI=
+X-Received: by 2002:a05:6402:2548:b0:5cb:7295:49b with SMTP id
+ 4fb4d7f45d1cf-5cba24ad1b7mr3094665a12.34.1729859690465; Fri, 25 Oct 2024
+ 05:34:50 -0700 (PDT)
 MIME-Version: 1.0
-From: Test Inventory <stest6905@gmail.com>
-Date: Fri, 25 Oct 2024 08:35:47 +0300
-Message-ID: <CAGawYL8BdRnc_O7R-bFyc6py7E8kM7MGaUXgjSRxqfOOUv3xww@mail.gmail.com>
-Subject: Problem starting emulation
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000003d04e30625467f1f"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=stest6905@gmail.com; helo=mail-oi1-x234.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20241023033432.1353830-1-richard.henderson@linaro.org>
+In-Reply-To: <20241023033432.1353830-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 25 Oct 2024 13:34:39 +0100
+Message-ID: <CAFEAcA9rLJFbYez5b6_d0snNqzE1n9jCZUbKf7hYCoHvWfZziQ@mail.gmail.com>
+Subject: Re: [PULL 00/24] tcg + linux-user patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 25 Oct 2024 09:08:34 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,58 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003d04e30625467f1f
-Content-Type: text/plain; charset="UTF-8"
+On Wed, 23 Oct 2024 at 04:34, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The following changes since commit 6f625ce2f21d6a1243065d236298277c56f972d5:
+>
+>   Merge tag 'pull-request-2024-10-21' of https://gitlab.com/thuth/qemu into staging (2024-10-21 17:12:59 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241022
+>
+> for you to fetch changes up to 310df7a9fe400f32cde8a7edf80daad12cd9cf02:
+>
+>   linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN (2024-10-22 13:45:03 -0700)
+>
+> ----------------------------------------------------------------
+> tcg: Reset data_gen_ptr correctly
+> tcg/riscv: Implement host vector support
+> tcg/ppc: Fix tcg_out_rlw_rc
+> target/i386: Walk NPT in guest real mode
+> target/i386: Use probe_access_full_mmu in ptw_translate
+> linux-user: Fix build failure caused by missing __u64 on musl
+> linux-user: Emulate /proc/self/maps under mmap_lock
+> linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN
+> linux-user/ppc: Fix sigmask endianness issue in sigreturn
+>
 
-Hello.
-I recently discovered your emulator, I mostly use "VirtualBox". I wanted to
-run an image file from this site (https://solar-assistant.io/) with the
-following options
-"
-*qemu-system-arm.exe -M versatilepb -cpu arm1176 -drive
-format=raw,file=D:\2024-08-14-solar-assistant-rpi64\2024-08-14-solar-assistant-rpi64.img
--kernel kernel-qemu -m 192 -append "root=/dev/sda2" -dtb versatile-pb.dtb *
-"
-but I got this error
-"
 
+Applied, thanks.
 
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
-
-
-*C:\Program Files\qemu>run.batC:\Program Files\qemu>qemu-system-arm.exe -M
-versatilepb -cpu arm1176 -drive
-format=raw,file=D:\2024-08-14-solar-assistant-rpi64\2024-08-14-solar-assistant-rpi64.img
--kernel kernel-qemu -m 192 -append "root=/dev/sda2" -dtb
-versatile-pb.dtbdsound: Could not initialize DirectSoundCapturedsound:
-Reason: No sound driver is available for use, or the given GUID is not a
-valid DirectSound device IDqemu-system-arm.exe: could not load kernel
-'kernel-qemu'C:\Program Files\qemu>*
-"
-Tell me what I'm doing wrong? I will be grateful for any help.
-Have a good day.
-
---0000000000003d04e30625467f1f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello.<br>I recently discovered your emulator, I mostly us=
-e &quot;VirtualBox&quot;. I wanted to run an image file from this site (<a =
-href=3D"https://solar-assistant.io/">https://solar-assistant.io/</a>) with =
-the following options<br>&quot;<br><b>qemu-system-arm.exe -M versatilepb -c=
-pu arm1176 -drive format=3Draw,file=3DD:\2024-08-14-solar-assistant-rpi64\2=
-024-08-14-solar-assistant-rpi64.img -kernel kernel-qemu -m 192 -append &quo=
-t;root=3D/dev/sda2&quot; -dtb versatile-pb.dtb </b><br>&quot;<br>but I got =
-this error<br>&quot;<br><b>C:\Program Files\qemu&gt;run.bat<br>C:\Program F=
-iles\qemu&gt;qemu-system-arm.exe -M versatilepb -cpu arm1176 -drive format=
-=3Draw,file=3DD:\2024-08-14-solar-assistant-rpi64\2024-08-14-solar-assistan=
-t-rpi64.img -kernel kernel-qemu -m 192 -append &quot;root=3D/dev/sda2&quot;=
- -dtb versatile-pb.dtb<br>dsound: Could not initialize DirectSoundCapture<b=
-r>dsound: Reason: No sound driver is available for use, or the given GUID i=
-s not a valid DirectSound device ID<br>qemu-system-arm.exe: could not load =
-kernel &#39;kernel-qemu&#39;<br>C:\Program Files\qemu&gt;</b><br>&quot;<br>=
-Tell me what I&#39;m doing wrong? I will be grateful for any help.<br>Have =
-a good day.</div>
-
---0000000000003d04e30625467f1f--
+-- PMM
 
