@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F5E9B01BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 13:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B39B01C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 13:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4IuC-0007iS-Ig; Fri, 25 Oct 2024 07:55:00 -0400
+	id 1t4Ium-0000J6-9X; Fri, 25 Oct 2024 07:55:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t4Iu8-0007i3-2j
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:54:56 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1t4Iuk-0000Ih-Iw
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:55:34 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t4Iu6-0003rW-19
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:54:55 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-539983beb19so2490044e87.3
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 04:54:53 -0700 (PDT)
+ id 1t4Iuj-00045S-07
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 07:55:34 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4315baec69eso19780005e9.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 04:55:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729857292; x=1730462092; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729857331; x=1730462131; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gV0weLqdYjYguMdfnEZHguqNLd9J0cbVHGY9mtum1P4=;
- b=tqgNfT2OigpivR2UuBBsHIOR9v3ONHqa73OTDthU/hgetoqL68c0EgQJ9rG0WrCIdY
- l97KFJzSzwbQ01Z6QoEHLRGSFgKRvV+tL+N4W/KFu6s4do3jhdUYbIM8sIV8KkJttFVO
- +iUNQ23PNjrZIDnNvnFvrbvoeJIgsYKK1QyqDEQqjD+VmaXAFiCojVf5qypue7SGzaW+
- vPGET0YcooGml+cciei8BlqviMAAxMy1155uZnjE/9MZgcVhoiXCV/zS6PbT7SrTPL6e
- 9+r5yi5gZi8x4shq9ZKPfzE5QKjTtz3B74tbhXcxDTEz5vLmQkjc63hc3KrZX4qhA8wI
- 13lA==
+ bh=6dDwzFdfFtGh2Y46LgafwADGO+ut0nhEisFfSK3GnEk=;
+ b=b+NIgHT9WDm+dGtUMuZYVT8MXDiMF5L9xLz4CUpZ+xAaDunFQimzDfAwwixJ2g9p+z
+ hx/DMaB1AQmmOSk46XjrRlfo+cD4W7iLWq+NJSx24g5guZtw8lagWMBB5UNvhieRiXtH
+ 3CPdiVgT+hNu229YLh1SYtq8cgtFoNw40MItTQokOlHEhgKcc2G4heen+doRZOMGUAAL
+ k8QT+0dtjpJfuPSHSYGsf4jugwPl4n0sKSSNIEzABzeieLul4j3B1Tigw9+CnC47G1F1
+ dpgh1lE50uXKeQsN5cO1i09P27HxETyMkE4RE7PF0L5hwKm6DRiSMLbEu718AK7b+OsE
+ 7ssQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729857292; x=1730462092;
+ d=1e100.net; s=20230601; t=1729857331; x=1730462131;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gV0weLqdYjYguMdfnEZHguqNLd9J0cbVHGY9mtum1P4=;
- b=vNxy89pCUitCRROkzPMMQiZsGn26kIAOqCiOmBayzTBcJp/htxnHOYf90UXSrkmpUm
- lgoRStb4j/KURKyZY8aekKOJvIQ514mUedYVigP1qh6WzdWrT/WzBNLxf6aJzcfM+59R
- uvRjTz2uoE/XCATeRIploXsvFCHctu+gwbsT6riC4n02pURneyLBJNajpnGN9KYp3fb0
- a9ZALSiSPraYf+erdvj28b5s/CqSEWf6CfS/4ZgguhWPn7UpVReBq+wW62vUqk4NVL6y
- KXHuNOgbZKn1Nzxm/HHfrt7gUoXLIiPWPsRMSACeiMP6pjOeCc1xa+/XKCfmjJfaj0qH
- bSRw==
+ bh=6dDwzFdfFtGh2Y46LgafwADGO+ut0nhEisFfSK3GnEk=;
+ b=IvSuiK6Egzg7bPC5HW0V9FS/iU2wxsW9f3uCiRZYvpbg+O8Cx3pHcfPao1UjUS9LHt
+ G08eB0qdqLn4DrbwVSRrN2NsnaxYGEGVPOyhB3sIPcvvEM47tV2JckrgYkRONaor/m4B
+ /iEKc8v/Bv4KiDGHGjNINmOwcQl/vcpR7V+6Pu77mH9Zfs25kGAQdIrO8yAGD2UBWcYG
+ nU9rdrHomi6dWIfiYz2Rj+B7Cw6iU63nzmyNyvDGQHiVcejRqYACRLdjtm3+8xjyLyog
+ GfNUNuv6k/YUfBACvNyAfQzTHbtuJ2O9EsAHRE3AFvZe8dGWIzt2OJhnXqyIutjCDoJ4
+ Eccw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYrVJpe9T/I1zxmAWjoyEGLofdKatvGRImYffpQWWmgC0Ge7CZhsiXv3k9WvfNugQin3svU+N1C21+@nongnu.org
-X-Gm-Message-State: AOJu0YxA687lGdq1KitUonYZ049AQN/elyCzeTpFRI3w5wxbY9aLCNgm
- IN+MuMwjKoSkt9FyUOHlHUHVtSAkUIJnPEVk/PO3GKuM9aq/OS+azH538Iok37k=
-X-Google-Smtp-Source: AGHT+IFfvicRStwgbW6AwNYtv8DFcBKvlKFoWa/WDxPY6pDzI7Cw4e7CJ+6AGwdqtV0N5yzLRskPnQ==
-X-Received: by 2002:a05:6512:239d:b0:53a:d8b:95c0 with SMTP id
- 2adb3069b0e04-53b1a32c66amr5856745e87.30.1729857291942; 
- Fri, 25 Oct 2024 04:54:51 -0700 (PDT)
+ AJvYcCVbmi/2HZtvlj5FOcAmx93cpRtJBa3hlALfskePthgqJUXUjkYRIukVuhrGKxMVa8LS2Cp1Hs0YlnGJ@nongnu.org
+X-Gm-Message-State: AOJu0Yz5wsYGY50XACSKdVzPcTW8JY8UArVYGFji9E6aiEJPX/pgt69C
+ ChmZf97VdsQujOPrLV2Lx8J3knDG5Kz2gKNE5f72b35aEVQpzZofq9gVLWu6hp4cBYwE2YI+xgB
+ OrEI=
+X-Google-Smtp-Source: AGHT+IGGw5CDxkw48w465lpqmSYHh+QXAY09YsEwcmcxT1Rd4ZXlUea6a3N9f+P1d2DMVWACGYOD1w==
+X-Received: by 2002:a05:600c:511c:b0:431:5f3b:6ae4 with SMTP id
+ 5b1f17b1804b1-4318421fb96mr92944795e9.17.1729857331400; 
+ Fri, 25 Oct 2024 04:55:31 -0700 (PDT)
 Received: from [192.168.200.153] ([185.201.60.218])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43193573ce2sm15832995e9.10.2024.10.25.04.54.50
+ 5b1f17b1804b1-4318b55f719sm45434155e9.15.2024.10.25.04.55.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Oct 2024 04:54:50 -0700 (PDT)
-Message-ID: <da5c449f-5226-4894-91a1-867d61d05778@linaro.org>
-Date: Fri, 25 Oct 2024 12:54:47 +0100
+ Fri, 25 Oct 2024 04:55:31 -0700 (PDT)
+Message-ID: <5dfc6df8-dd40-4ec2-b3ca-6c428130e449@linaro.org>
+Date: Fri, 25 Oct 2024 12:55:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/2] cpu: ensure we don't call start_exclusive from
@@ -73,8 +74,8 @@ From: Richard Henderson <richard.henderson@linaro.org>
 In-Reply-To: <20241023222026.1430014-3-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,7 +119,8 @@ On 10/23/24 23:20, Pierrick Bouvier wrote:
 >           current_cpu->exclusive_context_count++;
 >           return;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Actually, current_cpu had better be non-null from the very next line.
+
 
 r~
 
