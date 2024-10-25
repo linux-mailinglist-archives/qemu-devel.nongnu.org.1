@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6656F9B0C62
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 20:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2F29B0C64
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 20:00:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Oad-0002ew-9n; Fri, 25 Oct 2024 13:59:11 -0400
+	id 1t4ObH-0002u8-JV; Fri, 25 Oct 2024 13:59:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t4Oab-0002eF-KE
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 13:59:09 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1t4ObF-0002sK-5f
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 13:59:49 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t4OaZ-0002Kv-JX
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 13:59:09 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-7eda47b7343so1499583a12.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 10:59:07 -0700 (PDT)
+ id 1t4ObD-0002Ni-NP
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 13:59:48 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5ebc1af8e91so1174922eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 10:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729879146; x=1730483946; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qAOVHCwTqvGVM4ACuCCX8FruNg1taG4au+Wt+fsR7+4=;
- b=qo4i4cjrxJA0rv0Y1i0ljzkSW/Co7Wf+lBGraFcpk1uceR6DzYKNKctzNcdlEOfYJa
- BKfD2c5DMR2tk7d7RuBBPu6a6tSEF5UwC6RFjHNGN9fo8LOC7PF4J8A/pY2z5vg2oq97
- CqhlCXyhx7JZFgNxZ+Z4r5f2dI89IX/mRpu0NBP1hDXqypJzZQZ4UYyfd1xe06hlgFZq
- eVZ3T4725effT7kW6NGR2k08MIuhJ2Nk0IEveD6Qx8DgX+QTlV+GQ4iZs6mwuEd9upob
- u5m423BVqpPsLqnkcCzP/J5W3EGAFSA2OmQ8soFKOK9G2qdpRkd0c/aiPvP8+hqu14BB
- pIhA==
+ d=linaro.org; s=google; t=1729879186; x=1730483986; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aPjC8EoA5VgdPyxmzDMvo5GAQnHdNsnFgI+pzOnJD3o=;
+ b=FnDCVmRYfvfIW7Mq2w424qbLmzY9xh8xgexO69AFShdpeUopAkpRtgezjB5LQSwlqL
+ 1onJrO/B9PTjh4DFsnZ9VG/9f1z6Q/V3Gq/AwBzvY1lwBiUuY7rIJkRA2sXn0LJ+w7Vv
+ 17deeJRTb7gdSTRKuybR/t5b9F1kKdYb8bAXplZJ3Jf41fxfk/s0mAO7Zz3gW/UqigT/
+ Z1qjTpv2CYspywr+zS1we+3EmXDvzNZwnFp0ErghwspZJnDYAeRTvugZTycXGt2QX/3c
+ ThNheu9uzAVqmJ/vsuP5WVbtPKG6W1pIsVYnamRaAYMvZoU6UFCqk7FG/2VY0t9tHsXK
+ NXjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729879146; x=1730483946;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qAOVHCwTqvGVM4ACuCCX8FruNg1taG4au+Wt+fsR7+4=;
- b=X7QbcN3jgCYrJVrkHczGnD1WmJDCXYDq+Qm57dlL871oa5AEO9E8WSrBI6UvO3SkSe
- 36gGbUQW3Li/a/vLxji0ICw9Wy4FniRrGPgxOiGBeqcklVvIROe7x0bBRi9WwPhfHnkR
- YkJppkbmaVsWzNkIRPrDiSTRvuo8w8zvwh2WpK6s/gOQQMlP+CO0uyEDUUnPhBHXJOuL
- nUbh+LVYkfYs0kWFIqrPOkD0al+y/BR9hGy/52dE2bDy6MNwBVGpCHOzFseH1t6B8gpq
- WOQAThrOe4IcexcfF5lu8hnogp/IIvDsct3Th+qjWeasHfMnFBwFWog41+M8QSe2FctM
- ugJQ==
-X-Gm-Message-State: AOJu0YzrtwlOL40FOFRQNPg+7ImqDzzrkwDo4VA9KnXoP1cW1BWEPU3R
- GoBH1QqbXs3kDi275sDkIxmRysG7z++ZEJNze8fw0vsVXuyb7L88CowMQF5bbSG7uqdz4j2lk6C
- 05XVbww==
-X-Google-Smtp-Source: AGHT+IEjRkcxbszPnEgyonvOq5XBYIbXh8O3CHSEczuMSre4Z2oZSbl+PIA1Y5ReoVdpjuc3Ba4N6Q==
-X-Received: by 2002:a05:6a21:478b:b0:1d9:3456:b71d with SMTP id
- adf61e73a8af0-1d9a852201fmr48491637.50.1729879146208; 
- Fri, 25 Oct 2024 10:59:06 -0700 (PDT)
-Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7edc8679eecsm1358056a12.26.2024.10.25.10.59.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 10:59:05 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 2/2] cpu: ensure we don't call start_exclusive from cpu_exec
-Date: Fri, 25 Oct 2024 10:58:57 -0700
-Message-Id: <20241025175857.2554252-3-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241025175857.2554252-1-pierrick.bouvier@linaro.org>
-References: <20241025175857.2554252-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1729879186; x=1730483986;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aPjC8EoA5VgdPyxmzDMvo5GAQnHdNsnFgI+pzOnJD3o=;
+ b=ZyrTBKRB0DQcdrYfbZai6HCU6cHXAd4tAfq2B0g611w9TkD4ZkZL2b3Lk38MKVfC3p
+ 8e2AzOu1odw3xlNnwx7NtOqLG0SeRJUSX8V+OdPzmima5fDhUmkDpKGTuLFonJB1aLtX
+ Nko3en/EF9hECismeeXvcMmY5LaniVa1ZLhs2WW7oQW2csT3/7uM2R3fD66fCYeyTcAI
+ 881wkROkg6ZqdS080ENvTmem9WFiYAdSiUZPWJ90R3gfQUMtAEOaNT1zDLuBiaeR5Lj/
+ MKvETPf9b0T6cQrhsNVwhkvte1tm6Ij4z/IQIjP4aukQvEifMJ5vVe7SZzQVnTBdAT3t
+ Z0sw==
+X-Gm-Message-State: AOJu0YyPILLepmwWzYU+EnihuJqeSrrN1OGay2c9B6x3hTKSNObBoLT/
+ zizTMzcX9Wqus9pMumYEPiDv2U08ocInLfp3abVHFpIZ7kv//cuUvIP7lqUNIiYcpfxxU83hlBG
+ lk3R/DA==
+X-Google-Smtp-Source: AGHT+IGGttXCQq59/A76A6eoeRs9BNWmSf0QzhYZN8KC28whe8AamEy+GGh1/8O7EekyOTOKl2bt8w==
+X-Received: by 2002:a05:6870:1605:b0:270:129f:8e65 with SMTP id
+ 586e51a60fabf-29051d75ad8mr354210fac.34.1729879186169; 
+ Fri, 25 Oct 2024 10:59:46 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7edc8495cabsm1379708a12.0.2024.10.25.10.59.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Oct 2024 10:59:45 -0700 (PDT)
+Message-ID: <784b2fab-a7ad-4e52-a3bc-60351cb7ecf2@linaro.org>
+Date: Fri, 25 Oct 2024 10:59:45 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x533.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] target/i386: fix hang when using slow path for
+ ptw_setl
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20241025175334.2549425-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241025175334.2549425-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,27 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- cpu-common.c | 3 +++
- 1 file changed, 3 insertions(+)
+On 10/25/24 10:53, Pierrick Bouvier wrote:
+> Most of the details are available in first patch. Second one is there to ensure
+> we'll have a useful error message if start_exclusive is called from cpu_exec
+> again.
+> 
+> I'm a bit puzzled that we never triggered this hang before. Is there something
+> wrong with the potential slow path for ptw_setl, or is it simply very uncommon?
+> 
+> v2:
+> - get current cpu from local variable instead of current_cpu global var.
+> - change condition to check cpu is running as current_cpu will never be NULL.
+> 
+> Pierrick Bouvier (2):
+>    target/i386: fix hang when using slow path for ptw_setl
+>    cpu: ensure we don't call start_exclusive from cpu_exec
+> 
+>   cpu-common.c                         | 3 +++
+>   target/i386/tcg/sysemu/excp_helper.c | 4 ++++
+>   2 files changed, 7 insertions(+)
+> 
 
-diff --git a/cpu-common.c b/cpu-common.c
-index 6b262233a3b..0d607bbe493 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -194,6 +194,9 @@ void start_exclusive(void)
-     CPUState *other_cpu;
-     int running_cpus;
- 
-+    /* Ensure we are not running, or start_exclusive will be blocked. */
-+    g_assert(!current_cpu->running);
-+
-     if (current_cpu->exclusive_context_count) {
-         current_cpu->exclusive_context_count++;
-         return;
--- 
-2.39.5
-
+Pushed from my old branch (same as v1), please see v3 instead.
 
