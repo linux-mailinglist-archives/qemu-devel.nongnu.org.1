@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D299B0926
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F27E9B092A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Mnw-00043w-IA; Fri, 25 Oct 2024 12:04:49 -0400
+	id 1t4MoU-0004Re-UQ; Fri, 25 Oct 2024 12:05:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MnZ-0003p2-0h
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:04:30 -0400
+ id 1t4Mnl-0003zV-MF
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:04:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t4MnV-0004vu-QS
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:04:23 -0400
+ id 1t4Mni-0004x1-Nq
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:04:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729872260;
+ s=mimecast20190719; t=1729872274;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lF4rdAhy19DxRdx2p8FMvfbjzQhye5OhOp5HNVlQP1w=;
- b=KekOjGP/BADpWaDXD0RZQd3W1hfjc+7HKHX8fmzqdXYcubfduksfcUAoefybMzZ97s6QT4
- PHe8DM78ig2QxfYFCOl3Hb6lKqJWaPCxkdBk/SKhmIaOgmreUs1FuhCxImvhPxevf2tzMa
- yiT8w+F/8OeQ6g/bnP5PBQNnXsLwRMM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5bGJBtVVkGQYWHGxYnD41tlCY5KrVJ/GvB7hkFSkEs4=;
+ b=gqYWEywVtrHDG3I+h8ZKzUMxtdRLtQPAWkDDV5ocycCqskuuBrw+TRXMdvW/8gzwE6mYnp
+ pXs6Gv+W/0iyP7ry2FAAKcE9iMXJvQ+U+43/q7mm6jZEFiBSFQa6+e5ZPFwRWSJpW4Auew
+ OQ9SgxydYqcUyIpDvU8wZNWn/sR4XYs=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-AumjB-COPB21fnArr_yBKQ-1; Fri, 25 Oct 2024 12:04:19 -0400
-X-MC-Unique: AumjB-COPB21fnArr_yBKQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5cbb0b2c6e8so684114a12.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:04:18 -0700 (PDT)
+ us-mta-176-0-3JnyTuNc63VAeNG7HVPg-1; Fri, 25 Oct 2024 12:04:31 -0400
+X-MC-Unique: 0-3JnyTuNc63VAeNG7HVPg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5c938ae4152so3691159a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:04:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729872256; x=1730477056;
+ d=1e100.net; s=20230601; t=1729872269; x=1730477069;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lF4rdAhy19DxRdx2p8FMvfbjzQhye5OhOp5HNVlQP1w=;
- b=Otm0sUnzPGBFUoh5ejsQk1FMN6w3vjJmTUWZAXh+hQD/gSRqNT+K1+IyCqZ4N6Qwgd
- qr5+Wt9WceVNGADJjRc+8PFdyZ7LwarCBf+CVBNEmAf4EU6PA65XKqxCco8qfnZZ3q0Q
- QzvMda3cT0Elp7202DnIYKcCfYHg/V9hfALfEnPbAVMeuxqlGQGg1agHDeJZ47KAGGJp
- PNoP7HPjcn/uVnMM5QvY3Gjy+alRzs+16DVKPwqxlD4jbcxIxmMD4mxx+cL0L01fLNxw
- fzq21GFSPQgMxe59xexFjBG4y5VKeHCOIggWsYEjIeadNpHdMW+CpVJ9jRmuNrBxxdWM
- AjcQ==
-X-Gm-Message-State: AOJu0YxIGQMRm77JpVnfMMKcS/seiZ+L08S2PbTrWskraQBRfgYTd2Uk
- A+Dxq6a8UDSsoUGJCQWgKeiwVqqoLaZa+U9LWdxJcok8EXJaL8WgnsmR/JjAkLr0OOr0pLzf3WE
- eaWTDSLueFzr9asy8CQ9TpRv3PmOoUh5WGfrktNxn5JtDJXznIdR6cq/Ick8oHzsfcCMvvI59dW
- ETUCdtinDvXQE65PfPUc/u9Rq8z5ZIz5dD0ZxOB0U=
-X-Received: by 2002:a05:6402:13d3:b0:5ca:e5b:bbdb with SMTP id
- 4fb4d7f45d1cf-5cb8acb7b16mr7338545a12.18.1729872256013; 
- Fri, 25 Oct 2024 09:04:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXy8L7yHeeXU1+w6XKn+whHOxFUNpZvJl/XFf2YkNAfAUz7/57mtu9FzHvuOujom4wD7U/xg==
-X-Received: by 2002:a05:6402:13d3:b0:5ca:e5b:bbdb with SMTP id
- 4fb4d7f45d1cf-5cb8acb7b16mr7338506a12.18.1729872255524; 
- Fri, 25 Oct 2024 09:04:15 -0700 (PDT)
+ bh=5bGJBtVVkGQYWHGxYnD41tlCY5KrVJ/GvB7hkFSkEs4=;
+ b=cx4Ky6XkMuS+TpGW2v7SBXvrRYu+ffmbz1M6uFnbWBZhBUDSXbLIoUYiFA79sLBkB0
+ z36zlbfGpZTVMjAtk4jjT2hlcxhHnC4DmgJHU51ZnVQE6SWHMMWv5zUVJYR1Sp+qx+xN
+ NY4CBtMFkhMH7PJQ8rx8cLzt4vMr0zCTQ5QZnxOFXktCZlb9ylqDtAkBueglHDdLeUcV
+ vBHjcZ+b6RKxtcJfJuWABYyWQ6WJY+hIg9YM+s8DBBCMYwPP5t9Z3JITMV4LV4VH1r9Y
+ SZ22OZKsZWcHm6kfsnPNdQyMamzwJ9J1LSHxv7dCol7IoQCD8Rs+ffV5GInlN6A90TiO
+ yzTw==
+X-Gm-Message-State: AOJu0YzXWVgjjRbB6fLU+drGNx26YhsrtTGcJx+PUb/pWSsnMs31MF99
+ u024k1ussgbW+vkP2hSsIBHYbHG8VxAZpZMtbza+xupyRmabAtSWJ187hTuabAbNyi3RPFT57eo
+ lmitF6fOdx5VXCrnbAuYZoizugetiWHOsFEmegKlpP2JU95gsZhsJCwjyUZbW1Cyl0FyNvOXgDj
+ HlXNUqEY9JAfXPQxeq+Q2bBT5/LUorj8s/RaOpjCI=
+X-Received: by 2002:a17:907:2d89:b0:a9a:dfa5:460e with SMTP id
+ a640c23a62f3a-a9de3917fc6mr1934866b.34.1729872268843; 
+ Fri, 25 Oct 2024 09:04:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG876xCoOxcgMaCnTKx/b1U91+hWy1WNVNj6Q3ISjbqAMuGa/ZbTGE5v2+cwFYjR4OgbSW7AQ==
+X-Received: by 2002:a17:907:2d89:b0:a9a:dfa5:460e with SMTP id
+ a640c23a62f3a-a9de3917fc6mr1930666b.34.1729872268302; 
+ Fri, 25 Oct 2024 09:04:28 -0700 (PDT)
 Received: from [192.168.10.47] ([151.81.112.43])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cbb6348ec6sm758523a12.87.2024.10.25.09.04.01
+ a640c23a62f3a-a9b1f029617sm84911666b.81.2024.10.25.09.04.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 09:04:03 -0700 (PDT)
+ Fri, 25 Oct 2024 09:04:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
  junjie.mao@hotmail.com, berrange@redhat.com
-Subject: [PATCH 16/23] rust: do not use MaybeUninit::zeroed()
-Date: Fri, 25 Oct 2024 18:02:01 +0200
-Message-ID: <20241025160209.194307-17-pbonzini@redhat.com>
+Subject: [PATCH 17/23] rust: clean up detection of the language
+Date: Fri, 25 Oct 2024 18:02:02 +0200
+Message-ID: <20241025160209.194307-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
 References: <20241025160209.194307-1-pbonzini@redhat.com>
@@ -101,128 +101,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MaybeUninit::zeroed() is handy but is not available as a "const" function
-until Rust 1.75.0.
-
-Remove the default implementation of Zeroable::ZERO, and write by hand
-the definitions for those types that need it.  It may be possible to
-add automatic implementation of the trait, via a procedural macro and/or
-a trick similar to offset_of!, but do it the easy way for now.
+Disable the detection code altogether if have_system =3D=3D false.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/zeroable.rs | 91 +++++++++++++++++++++++++++++------
- 1 file changed, 77 insertions(+), 14 deletions(-)
+ meson.build | 42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
-index 45ec95c9f70..13cdb2ccba5 100644
---- a/rust/qemu-api/src/zeroable.rs
-+++ b/rust/qemu-api/src/zeroable.rs
-@@ -1,23 +1,86 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/meson.build b/meson.build
+index 69b8367eb3c..d199bcdd824 100644
+--- a/meson.build
++++ b/meson.build
+@@ -53,6 +53,17 @@ cpu =3D host_machine.cpu_family()
 =20
-+use std::ptr;
-+
- /// Encapsulates the requirement that
--/// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause
--/// undefined behavior.
-+/// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause undefined
-+/// behavior.  This trait in principle could be implemented as just:
-+///
-+/// ```
-+///     const ZERO: Self =3D unsafe {
-+///         ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed=
-().assume_init()
-+///     },
-+/// ```
-+///
-+/// The need for a manual implementation is only because `zeroed()` cannot
-+/// be used as a `const fn` prior to Rust 1.75.0. Once we can assume a new
-+/// enough version of the compiler, we could provide a `#[derive(Zeroable)=
-]`
-+/// macro to check at compile-time that all struct fields are Zeroable, and
-+/// use the above blanket implementation of the `ZERO` constant.
- ///
- /// # Safety
- ///
--/// Do not add this trait to a type unless all-zeroes is
--/// a valid value for the type.  In particular, remember that raw
--/// pointers can be zero, but references and `NonNull<T>` cannot
--/// unless wrapped with `Option<>`.
-+/// Because the implementation of `ZERO` is manual, it does not make
-+/// any assumption on the safety of `zeroed()`.  However, other users of t=
-he
-+/// trait could use it that way.  Do not add this trait to a type unless
-+/// all-zeroes is a valid value for the type.  In particular, remember that
-+/// raw pointers can be zero, but references and `NonNull<T>` cannot
- pub unsafe trait Zeroable: Default {
--    /// SAFETY: If the trait was added to a type, then by definition
--    /// this is safe.
--    const ZERO: Self =3D unsafe { ::core::mem::MaybeUninit::<Self>::zeroed=
-().assume_init() };
-+    const ZERO: Self;
- }
+ target_dirs =3D config_host['TARGET_DIRS'].split()
 =20
--unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {}
--unsafe impl Zeroable for crate::bindings::Property {}
--unsafe impl Zeroable for crate::bindings::VMStateDescription {}
--unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {}
--unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {}
-+unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {
-+    const ZERO: Self =3D Self { i: 0 };
-+}
++# type of binaries to build
++have_linux_user =3D false
++have_bsd_user =3D false
++have_system =3D false
++foreach target : target_dirs
++  have_linux_user =3D have_linux_user or target.endswith('linux-user')
++  have_bsd_user =3D have_bsd_user or target.endswith('bsd-user')
++  have_system =3D have_system or target.endswith('-softmmu')
++endforeach
++have_user =3D have_linux_user or have_bsd_user
 +
-+unsafe impl Zeroable for crate::bindings::Property {
-+    const ZERO: Self =3D Self {
-+        name: ptr::null(),
-+        info: ptr::null(),
-+        offset: 0,
-+        bitnr: 0,
-+        bitmask: 0,
-+        set_default: false,
-+        defval: Zeroable::ZERO,
-+        arrayoffset: 0,
-+        arrayinfo: ptr::null(),
-+        arrayfieldsize: 0,
-+        link_type: ptr::null(),
-+    };
-+}
+ ############
+ # Programs #
+ ############
+@@ -71,11 +82,13 @@ if host_os =3D=3D 'darwin' and \
+   all_languages +=3D ['objc']
+   objc =3D meson.get_compiler('objc')
+ endif
+-have_rust =3D false
+-if not get_option('rust').disabled() and add_languages('rust', required: g=
+et_option('rust'), native: false) \
+-    and add_languages('rust', required: get_option('rust'), native: true)
 +
-+unsafe impl Zeroable for crate::bindings::VMStateDescription {
-+    const ZERO: Self =3D Self {
-+        name: ptr::null(),
-+        unmigratable: false,
-+        early_setup: false,
-+        version_id: 0,
-+        minimum_version_id: 0,
-+        priority: crate::bindings::MigrationPriority::MIG_PRI_DEFAULT,
-+        pre_load: None,
-+        post_load: None,
-+        pre_save: None,
-+        post_save: None,
-+        needed: None,
-+        dev_unplug_pending: None,
-+        fields: ptr::null(),
-+        subsections: ptr::null(),
-+    };
-+}
-+
-+unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {
-+    const ZERO: Self =3D Self {
-+        min_access_size: 0,
-+        max_access_size: 0,
-+        unaligned: false,
-+        accepts: None,
-+    };
-+}
-+
-+unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {
-+    const ZERO: Self =3D Self {
-+        min_access_size: 0,
-+        max_access_size: 0,
-+        unaligned: false,
-+    };
-+}
++have_rust =3D add_languages('rust', native: false,
++    required: get_option('rust').disable_auto_if(not have_system))
++have_rust =3D have_rust and add_languages('rust', native: true,
++    required: get_option('rust').disable_auto_if(not have_system))
++if have_rust
+   rustc =3D meson.get_compiler('rust')
+-  have_rust =3D true
+   if rustc.version().version_compare('<1.80.0')
+     if get_option('rust').enabled()
+       error('rustc version ' + rustc.version() + ' is unsupported: Please =
+upgrade to at least 1.80.0')
+@@ -186,17 +199,6 @@ have_vhost_net_vdpa =3D have_vhost_vdpa and get_option=
+('vhost_net').allowed()
+ have_vhost_net_kernel =3D have_vhost_kernel and get_option('vhost_net').al=
+lowed()
+ have_vhost_net =3D have_vhost_net_kernel or have_vhost_net_user or have_vh=
+ost_net_vdpa
+=20
+-# type of binaries to build
+-have_linux_user =3D false
+-have_bsd_user =3D false
+-have_system =3D false
+-foreach target : target_dirs
+-  have_linux_user =3D have_linux_user or target.endswith('linux-user')
+-  have_bsd_user =3D have_bsd_user or target.endswith('bsd-user')
+-  have_system =3D have_system or target.endswith('-softmmu')
+-endforeach
+-have_user =3D have_linux_user or have_bsd_user
+-
+ have_tools =3D get_option('tools') \
+   .disable_auto_if(not have_system) \
+   .allowed()
+@@ -3317,7 +3319,7 @@ endif
+=20
+ genh +=3D configure_file(output: 'config-host.h', configuration: config_ho=
+st_data)
+=20
+-if have_rust and have_system
++if have_rust
+   rustc_args =3D run_command(
+     find_program('scripts/rust/rustc_args.py'),
+     '--config-headers', meson.project_build_root() / 'config-host.h',
+@@ -3937,7 +3939,7 @@ common_all =3D static_library('common',
+                             implicit_include_directories: false,
+                             dependencies: common_ss.all_dependencies())
+=20
+-if have_rust and have_system
++if have_rust
+   bindgen_args =3D [
+     '--disable-header-comment',
+     '--raw-line', '// @generated',
+@@ -4091,7 +4093,7 @@ foreach target : target_dirs
+   arch_srcs +=3D target_specific.sources()
+   arch_deps +=3D target_specific.dependencies()
+=20
+-  if have_rust and have_system
++  if have_rust and target_type =3D=3D 'system'
+     target_rust =3D rust_devices_ss.apply(config_target, strict: false)
+     crates =3D []
+     foreach dep : target_rust.dependencies()
+@@ -4453,9 +4455,9 @@ else
+ endif
+ summary_info +=3D {'Rust support':      have_rust}
+ if have_rust
+-  summary_info +=3D {'rustc version':   rustc.version()}
+-  summary_info +=3D {'rustc':           ' '.join(rustc.cmd_array())}
+   summary_info +=3D {'Rust target':     config_host['RUST_TARGET_TRIPLE']}
++  summary_info +=3D {'rustc':           ' '.join(rustc.cmd_array())}
++  summary_info +=3D {'rustc version':   rustc.version()}
+ endif
+ option_cflags =3D (get_option('debug') ? ['-g'] : [])
+ if get_option('optimization') !=3D 'plain'
 --=20
 2.47.0
 
