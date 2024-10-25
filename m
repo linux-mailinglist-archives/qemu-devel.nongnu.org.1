@@ -2,71 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB79AFED9
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 11:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7059AFF8A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 12:08:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4GwQ-0005Zb-Lj; Fri, 25 Oct 2024 05:49:10 -0400
+	id 1t4HD2-000183-E0; Fri, 25 Oct 2024 06:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t4GwN-0005Z3-EA
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:49:07 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1t4HD0-00017j-7M
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 06:06:18 -0400
+Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t4GwL-0004u7-Pz
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 05:49:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729849746; x=1761385746;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=m3Wfu3++iK9KnA4c8PdVi4vqpS66wqp4zYKoFwGFA1c=;
- b=Vy38ux8MtHjiiwtYdGNt7DF4L0QaW7ecfpJegVxbW0IIkkEhDFcylnu7
- keXA68yeZ9cCgiFtnFm+BZOdKMo+8jH/REeX9kqWjcr5UGup/nl/SgXkH
- U6XPM3O4bICET6WATdub8JhKlaN8rka5cIkYwd3wtDQY+jmWQkrktlHWv
- wjDOlCmk1OleS6Dk8zh3NT4cTZqSVJseGmdhg5JTBblYsgg9VRk0nyMvW
- PdfCwyQOk+Z2J98AepIJpyceSsilVayHJ3L/AmBsZPVR7P/JwLWbjeKar
- Wo8O6hREbAuPZL5+FLnpKRgy6Q6iTFLtpo7PeqmPLoPfutyJjQwNIYyVX Q==;
-X-CSE-ConnectionGUID: ks/Nr0VURK+WIBRZHNEnhA==
-X-CSE-MsgGUID: wh0iIVMHTr+VjIEulVTtNQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29374427"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29374427"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2024 02:49:04 -0700
-X-CSE-ConnectionGUID: wVXFr2yXT9SEG2WpzMmw+g==
-X-CSE-MsgGUID: O43oNQbLSFOkL4U0fH05kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="85429399"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 25 Oct 2024 02:49:02 -0700
-Date: Fri, 25 Oct 2024 18:05:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH v2 13/13] rust: do not use TYPE_CHARDEV unnecessarily
-Message-ID: <ZxttYDRNxfLg/gUe@intel.com>
-References: <20241021163538.136941-1-pbonzini@redhat.com>
- <20241021163538.136941-14-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1t4HCx-00071j-7D
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 06:06:17 -0400
+Received: from [10.100.100.22] (6.251-180-91.adsl-dyn.isp.belgacom.be
+ [91.180.251.6])
+ by apollo.dupie.be (Postfix) with ESMTPSA id 243AD1520F22;
+ Fri, 25 Oct 2024 12:06:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
+ t=1729850767;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5W3SBC77UdL1OyQAR0jxXQxeIZjeKIcAX4p0/HLnXJ4=;
+ b=Hw68HvVTcXVwyCZkkMFO7iBDDtrs9Fgv/TCXHfNaHE8Ttv1VBT9frbDmvM2FK2E1LhlKT6
+ WMrUg00KTBQdE7baiFNxUchfM9Q0TpL1h9x7Wy48TQrqMd4yRsWZTMO8Arz46IsK5HZsKD
+ pBChhCnhxF3+LDxYvzww28ghclBDRJkXQFx8qLlUlSCGqRtu4HyW2svVd0TKzm+qxay+QZ
+ gEUd/I2h+KlzO0BINd27C9y5JISCllIAWpCSAAxQoyIfCt/qYKCSbJNoNffvK08uT6e3wa
+ T30NrNmcwILjUC49I6QWLAt7dY6RCxiakTVS2FwTTFxvQ9DpjniQKmPsCZkeXQ==
+Message-ID: <33d6a951-033d-4827-9d85-88fba69bf839@dupond.be>
+Date: Fri, 25 Oct 2024 12:06:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021163538.136941-14-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.263,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH] qga: skip bind mounts in fs list
+From: Jean-Louis Dupond <jean-louis@dupond.be>
+To: qemu-devel@nongnu.org, michael.roth@amd.com, kkostiuk@redhat.com
+References: <20241002100634.162499-2-jean-louis@dupond.be>
+ <b0a518bc-a600-4d0d-b1c9-5b43f95c90b9@dupond.be>
+Content-Language: en-US
+In-Reply-To: <b0a518bc-a600-4d0d-b1c9-5b43f95c90b9@dupond.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
+ envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,23 +70,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 21, 2024 at 06:35:38PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 21 Oct 2024 18:35:38 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 13/13] rust: do not use TYPE_CHARDEV unnecessarily
-> X-Mailer: git-send-email 2.46.2
-> 
-> In the invocation of qdev_prop_set_chr(), "chardev" is the name of a
-> property rather than a type and has to match the name of the property
-> in device_class.rs.  Do not use TYPE_CHARDEV here, just like in the C
-> version of pl011_create.
-> 
-> Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 9/10/2024 10:34, Jean-Louis Dupond wrote:
+> On 2/10/2024 12:06, Jean-Louis Dupond wrote:
+>> The filesystem list in build_fs_mount_list should skip bind mounts.
+>> This because we end up in locking situations when doing fsFreeze. Like
+>> mentioned in [1] and [2].
+>>
+>> Next to that, the build_fs_mount_list call did a fallback via
+>> build_fs_mount_list_from_mtab if mountinfo did not exist.
+>> There it skipped bind mounts, but this is broken for newer OS.
+>> This as mounts does not return the path of the bind mount but the
+>> underlying dev/partition, so S_ISDIR will never return true in
+>> dev_major_minor call.
+>>
+>> This patch simply checks the existing devmajor:devminor tuple in the
+>> mounts, and if it already exists, this means we have the same devices
+>> mounted again, a bind mount. So skip this.
+>>
+>> Same approach is used in open-vm-tools [3].
+>>
+>> [1]: https://gitlab.com/qemu-project/qemu/-/issues/592
+>> [2]: https://gitlab.com/qemu-project/qemu/-/issues/520
+>> [3]: 
+>> https://github.com/vmware/open-vm-tools/commit/d58847b497e212737007958c945af1df22a8ab58
+>>
+>> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+>> ---
+>>   qga/commands-linux.c | 25 +++++++++++++++++++++++++
+>>   1 file changed, 25 insertions(+)
+>>
+>> diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+>> index 51d5e3d927..426b040ab8 100644
+>> --- a/qga/commands-linux.c
+>> +++ b/qga/commands-linux.c
+>> @@ -59,6 +59,22 @@ static int dev_major_minor(const char *devpath,
+>>       return -1;
+>>   }
+>>   +/*
+>> + * Check if we already have the devmajor:devminor in the mounts
+>> + * If thats the case return true.
+>> + */
+>> +static bool dev_exists(FsMountList *mounts, unsigned int devmajor, 
+>> unsigned int devminor)
+>> +{
+>> +    FsMount *mount;
+>> +
+>> +    QTAILQ_FOREACH(mount, mounts, next) {
+>> +        if (mount->devmajor == devmajor && mount->devminor == 
+>> devminor) {
+>> +            return true;
+>> +        }
+>> +    }
+>> +    return false;
+>> +}
+>> +
+>>   static bool build_fs_mount_list_from_mtab(FsMountList *mounts, 
+>> Error **errp)
+>>   {
+>>       struct mntent *ment;
+>> @@ -89,6 +105,10 @@ static bool 
+>> build_fs_mount_list_from_mtab(FsMountList *mounts, Error **errp)
+>>               /* Skip bind mounts */
+>>               continue;
+>>           }
+>> +        if (dev_exists(mounts, devmajor, devminor)) {
+>> +            /* Skip already existing devices (bind mounts) */
+>> +            continue;
+>> +        }
+>>             mount = g_new0(FsMount, 1);
+>>           mount->dirname = g_strdup(ment->mnt_dir);
+>> @@ -172,6 +192,11 @@ bool build_fs_mount_list(FsMountList *mounts, 
+>> Error **errp)
+>>               }
+>>           }
+>>   +        if (dev_exists(mounts, devmajor, devminor)) {
+>> +            /* Skip already existing devices (bind mounts) */
+>> +            continue;
+>> +        }
+>> +
+>>           mount = g_new0(FsMount, 1);
+>>           mount->dirname = g_strdup(line + dir_s);
+>>           mount->devtype = g_strdup(dash + type_s);
+>
+>
+> Ping + add kkostiuk@redhat.com as I missed him in the initial mail.
+>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Any chance on a review or getting it merged?
+Think it's a good (of course ;)) improvement.
 
 
