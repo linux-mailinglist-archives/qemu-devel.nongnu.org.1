@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424269B0548
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5666A9B0549
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:14:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4L3q-00040t-Jo; Fri, 25 Oct 2024 10:13:06 -0400
+	id 1t4L3o-0003y8-EI; Fri, 25 Oct 2024 10:13:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3l-0003wo-Pj
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:01 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1t4L3m-0003xX-Ik
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:02 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3i-0007lE-89
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:01 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4315eac969aso14573155e9.1
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 07:12:57 -0700 (PDT)
+ id 1t4L3j-0007la-78
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:02 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-539f84907caso2337218e87.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 07:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729865576; x=1730470376; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FpcQQjq66hc60h15t5XebYBsiuHjNC9wWkvbtWI3lC4=;
- b=Bt4+d1RniQy9YgpP3WXQGCvc+eQJOoxdns7iAdki09E63yR25ZgSlwsvLL8T5A+gYc
- YH2Z4vIwRKnaHGpEeKGnEby6RVKDjb5im55N58zbUwi0YN64nmK7P2ouv3mBqYQqtcWh
- bOa/jpXZ/qufE9BmzvEayhR8ttTsXC3qsqhweIoXI+nQRe/rOl84AiNBzr/Pg948WJv/
- kpVdDsaduIBYBsC1U2pkNQTPrPyuAQWqYtwYJSf4vHQ8SsyZljIHeC2BsOIan8dkGAW3
- 5BNlH4H2rD8oTBDtTflzsTR+wVqQYI2cl6kwQANrNexyw3udn+SGy4j7ULKNfoC6Wjmv
- vm/Q==
+ d=linaro.org; s=google; t=1729865577; x=1730470377; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=noOStqS92L5He4WhIYZl74MdTVJ5AKWtfARpcTTpidc=;
+ b=jIhxsrh0Q9fiBWSZU64t9sphn+NM7dy+v/xo5GSp1NNHDnTMBF3106VMe9ZsHwYYKa
+ M4dfbMjksRz8kLSaQsPxtJ1EV/wp64XX97FeMOFis7LrEj5ZADG38L1lc2r0D/gpNs+K
+ cR7jlbEzPvHmsycHZ5NRqbxTku+79j3jYj5y2LheOJXX3aRh6HGNHcj+5XB4zvSaEGPY
+ LyEvYltrUo6s7Y/DNXeXVDw1OqL2qJpZs7B3AL8LoZm+SeRyxPtOGs5yIWoTnQ02FJEI
+ s7fChd4DGHMmYsZPWkZ0tJeO1uu7b+/qdRv40hyN5au2Ln/2EuqWq8CfPgmUddyHh5WD
+ Inqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729865576; x=1730470376;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FpcQQjq66hc60h15t5XebYBsiuHjNC9wWkvbtWI3lC4=;
- b=cAUc3qxDaC7KQGvMKLmojqitTYIzqgOJx0eAKD3ELKPM086mvkxFBGLcgD/2416NEN
- Gern69Fe9Z8boDBKs3dT+2OaOSo9FmMXtNic2gTXFoibBfH8BzSaB5omWJvtWQ+xanrA
- JV9Mv44C0nt2gPWlpxT5Sy9k8A0Tvl1PMdc/nXwDESv3fcwolO7ECKpKN9V44RtUrgZX
- iTyzNbq2Xq/+lTSSv6SFvpue9PIVgWnManbs71dIaqMtKKdRvjgo5WQZnf2msJ6eWnfF
- p0+RZQmMweCFU3FVdimqXuTYkCvy4Hdgkefqo60hBVe0epF2cYNNoLUMCEgc8azjzuIu
- gJDg==
+ d=1e100.net; s=20230601; t=1729865577; x=1730470377;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=noOStqS92L5He4WhIYZl74MdTVJ5AKWtfARpcTTpidc=;
+ b=Q0K5OmIsM89efTeTqsACGa0agMZAGFaDinjY5Pb/P/FV3W/0oGq3Fx+wZPis1ply4k
+ brA99RUQTICtcJHpHgE3e99HHxzxQ5rHTp6XqWeRvl+ItanVNAZegeqBG29KJpfi2SCG
+ GhcEI4RrQcMARPNHIIaf7P1cu0xz3xrK4JECPqx5kljAFPbfZL66beovyzkLakaIpwtK
+ maqersNFVubUE85r5d1qYKkUV91ve60NFpUrIgoHGL9ckVg1Ckh334or7uLX3mTM6Z9e
+ dK6P1BORWLQpGE6/MVQWOD5Gu82o9yl6ymRdlf6rvWi+RNPQLCIc0yzejSx2esaqXqB+
+ BEZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzycRSxY2gCRjZfEUOa8p+ftEWTpr2cS4G0Vv3O8kficV6FHJwEXOIzYR2O9LexBPRvKhKPnSJAC2s@nongnu.org
-X-Gm-Message-State: AOJu0YzN17fXkf6NFKZgY/bbd2PE9EWHz32DCI2qyhH97lMUiHHQifoV
- 4cC9tK9xT3Hl+sivR9/J/EnMGoT8FoP/9IdyZJXU/4i7YtTNj0U1oovFltXdfM0=
-X-Google-Smtp-Source: AGHT+IH7LJ/mqCUO19u/3mAYHeI4tLr5gb2ZtoYG2LWPCYbt06cffRXNGH3Nlz2ob5gZraHXDu5Eig==
-X-Received: by 2002:a05:600c:35c3:b0:431:4a82:97f2 with SMTP id
- 5b1f17b1804b1-4318b5a42edmr44666555e9.6.1729865576232; 
- Fri, 25 Oct 2024 07:12:56 -0700 (PDT)
+ AJvYcCWyiUHWNTRPGJRpL9XhwV/Id5dLjOPibgmJbkpKfuqce2wwtAQbjfwGXwZiwBAz0lMOjxXS9cJnW3/a@nongnu.org
+X-Gm-Message-State: AOJu0Yw5UtFlCJarIuY09LD+1gzTAR2hu5uQm9XToCG3cjA8HCQ0cvLs
+ /fGriq3K3Fp66ajHnNNfPDCXt8YZhsk99P1TrMz+qUFYH1czvOI+s0t82bi4ob8=
+X-Google-Smtp-Source: AGHT+IEeTDoH+lv09QPl3M7voGp1ePYFrgCHuZNvYkKI6PkEGUSkS+m2xyZ4/tfaTm+qUHXOaX/VXQ==
+X-Received: by 2002:a05:6512:1048:b0:53b:1f90:576f with SMTP id
+ 2adb3069b0e04-53b23dfcfb6mr3139601e87.22.1729865577170; 
+ Fri, 25 Oct 2024 07:12:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.12.55
+ 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.12.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 07:12:55 -0700 (PDT)
+ Fri, 25 Oct 2024 07:12:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -75,15 +76,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
  qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 00/21] softfloat: Set 2-NaN propagation rule in float_status,
- not at compile time
-Date: Fri, 25 Oct 2024 15:12:33 +0100
-Message-Id: <20241025141254.2141506-1-peter.maydell@linaro.org>
+Subject: [PATCH 01/21] softfloat: Allow 2-operand NaN propagation rule to be
+ set at runtime
+Date: Fri, 25 Oct 2024 15:12:34 +0100
+Message-Id: <20241025141254.2141506-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241025141254.2141506-1-peter.maydell@linaro.org>
+References: <20241025141254.2141506-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,125 +114,388 @@ result if both operands of a 2-operand operation are NaNs.  As a
 result different architectures have ended up with different rules for
 propagating NaNs.
 
-QEMU currently hardcodes the NaN propagation logic into the binary,
+QEMU currently hardcodes the NaN propagation logic into the binary
 because pickNaN() has an ifdef ladder for different targets.  We want
 to make the propagation rule instead be selectable at runtime,
 because:
  * this will let us have multiple targets in one QEMU binary
- * the Arm FEAT_AFP architectural feature includes letting the guest
-   select a NaN propagation rule at runtime
- * x86 specifies different propagation rules for x87 FPU ops and for
-   SSE ops, and specifying the rule in the float_status would let us
-   emulate this, instead of wrongly using the x87 rules everywhere
- * xtensa allows selection of NaN propagation rule at runtime;
-   currently we implement this with the use_first_nan flag which
-   is only used by xtensa; providing a general facility will let us
-   remove this limited-purpose handling
-                                                           
-This series switches pickNaN away from the ifdef ladder. Instead
-targets must always set a 2-NaN propagation rule via the new
-set_float_2nan_prop_rule(), unless they are using default_nan_mode.
-Patch 1 implements this in core softfloat (with a transitional
-fallback to "use the old ifdef ladder logic" if the target doesn't
-specify the propagation rule). Then subsequent patches convert
-all the targets to set the rule explicitly. The final patch then
-removes the remnants of the transitional logic.
+ * the Arm FEAT_AFP architectural feature includes letting
+   the guest select a NaN propagation rule at runtime
+ * x86 specifies different propagation rules for x87 FPU ops
+   and for SSE ops, and specifying the rule in the float_status
+   would let us emulate this, instead of wrongly using the
+   x87 rules everywhere
 
-I have included a couple of minor fixes for sparc, xtensa, m68k.
-This is intended as a no-behaviour-change patchset, so although there
-are a few places where I have noticed that the current behaviour
-is not correct I have left these as TODO comments. A summary of
-those TODOs and other oddities I have noticed but not tried to
-tackle is:
+In this commit we add an enum for the propagation rule, the field in
+float_status, and the corresponding getters and setters.  We change
+pickNaN to honour this, but because all targets still leave this
+field at its default 0 value, the fallback logic will pick the rule
+type with the old ifdef ladder.
 
- * hppa really ought to implement a CPU reset method
- * alpha also doesn't implement CPU reset
- * ppc sets tininess_before_rounding on fp_status but not on
-   vec_status, so its behaviour there will vary between
-   guest instructions; unclear to me if this is intended
- * x86 should set the float_2nan_prop_ab rule on env->sse_status
-   (and maybe env->mmx_status, though 3DNow! insns don't handle
-   NaNs in a documented way anyway)
- * alpha never had a case in the ifdef ladder so it uses the
-   x87 propagation rule. It ought to use float_2nan_prop_ba.
- * openrisc didn't have an ifdef and also uses the x87 rule;
-   this is probably wrong but I couldn't find anything documenting
-   what it actually does
- * rx didn't have an ifdef and also uses the x87 rule;
-   again, probably wrong
+It's valid not to set a propagation rule if default_nan_mode is
+enabled, because in that case there's no need to pick a NaN; all the
+callers of pickNaN() catch this case and skip calling it.  So we can
+already assert that we don't get into the "no rule defined" codepath
+for our four targets which always set default_nan_mode: Hexagon,
+RiscV, SH4 and Tricore, and for the one target which does not have FP
+at all: avr.  These targets will not need to be updated to call
+set_float_2nan_prop_rule().
 
-The next stage after this patchset, obviously, is to do the
-same thing with pickNaNMulAdd(). That is a little trickier
-because currently we ask it to do two things:
- * handle the "infinity * zero + NaN" corner case
- * pick a NaN when more than one operand is a NaN
-My intention is to separate these out so that targets specify
-both separately. This gives more orthogonality (e.g. Arm,
-MIPS with !snan_bit_is_one and loongarch64 all have the same
-"prefer SNaN over QNaN, prefer C over A over B" NaN selection
-logic but they have different ideas about the infzero case).
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+Reindent means a couple of slightly long lines in comments,
+but those will move again in a later patch, so seemed clearer to
+not re-wrap the comment and then re-rewrap it later.
+---
+ include/fpu/softfloat-helpers.h |  11 ++
+ include/fpu/softfloat-types.h   |  42 ++++++
+ fpu/softfloat-specialize.c.inc  | 229 ++++++++++++++++++--------------
+ 3 files changed, 185 insertions(+), 97 deletions(-)
 
-(Once pickNaNMulAdd() is converted we will be able to remove
-the current xtensa-specific use_first_nan flag.)
-
-thanks
--- PMM
-
-Peter Maydell (21):
-  softfloat: Allow 2-operand NaN propagation rule to be set at runtime
-  tests/fp: Explicitly set 2-NaN propagation rule
-  target/arm: Explicitly set 2-NaN propagation rule
-  target/mips: Explicitly set 2-NaN propagation rule
-  target/loongarch: Explicitly set 2-NaN propagation rule
-  target/hppa: Explicitly set 2-NaN propagation rule
-  target/s390x: Explicitly set 2-NaN propagation rule
-  target/ppc: Explicitly set 2-NaN propagation rule
-  target/m68k: Explicitly set 2-NaN propagation rule
-  target/m68k: Initialize float_status fields in gdb set/get functions
-  target/sparc: Move cpu_put_fsr(env, 0) call to reset
-  target/sparc: Explicitly set 2-NaN propagation rule
-  target/xtensa: Factor out calls to set_use_first_nan()
-  target/xtensa: Explicitly set 2-NaN propagation rule
-  target/i386: Set 2-NaN propagation rule explicitly
-  target/alpha: Explicitly set 2-NaN propagation rule
-  target/microblaze: Move setting of float rounding mode to reset
-  target/microblaze: Explicitly set 2-NaN propagation rule
-  target/openrisc: Explicitly set 2-NaN propagation rule
-  target/rx: Explicitly set 2-NaN propagation rule
-  softfloat: Remove fallback rule from pickNaN()
-
- include/fpu/softfloat-helpers.h   |  11 +++
- include/fpu/softfloat-types.h     |  38 ++++++++
- target/i386/cpu.h                 |   3 +
- target/mips/fpu_helper.h          |  22 +++++
- target/xtensa/cpu.h               |   6 ++
- linux-user/arm/nwfpe/fpa11.c      |  18 ++++
- target/alpha/cpu.c                |  11 +++
- target/arm/cpu.c                  |  25 +++--
- target/hppa/fpu_helper.c          |   6 ++
- target/i386/cpu.c                 |   4 +
- target/i386/tcg/fpu_helper.c      |  40 ++++++++
- target/loongarch/tcg/fpu_helper.c |   1 +
- target/m68k/cpu.c                 |  16 +++
- target/m68k/fpu_helper.c          |   1 +
- target/m68k/helper.c              |   4 +-
- target/microblaze/cpu.c           |  10 +-
- target/mips/cpu.c                 |   2 +-
- target/mips/msa.c                 |  17 ++++
- target/openrisc/cpu.c             |   6 ++
- target/ppc/cpu_init.c             |   8 ++
- target/rx/cpu.c                   |   7 ++
- target/s390x/cpu.c                |   1 +
- target/sparc/cpu.c                |  10 +-
- target/sparc/fop_helper.c         |  10 +-
- target/xtensa/cpu.c               |   2 +-
- target/xtensa/fpu_helper.c        |  35 ++++---
- tests/fp/fp-bench.c               |   2 +
- tests/fp/fp-test-log2.c           |   1 +
- tests/fp/fp-test.c                |   2 +
- fpu/softfloat-specialize.c.inc    | 156 +++++++++++-------------------
- 30 files changed, 346 insertions(+), 129 deletions(-)
-
+diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
+index 94cbe073ec5..453188de70b 100644
+--- a/include/fpu/softfloat-helpers.h
++++ b/include/fpu/softfloat-helpers.h
+@@ -75,6 +75,12 @@ static inline void set_floatx80_rounding_precision(FloatX80RoundPrec val,
+     status->floatx80_rounding_precision = val;
+ }
+ 
++static inline void set_float_2nan_prop_rule(Float2NaNPropRule rule,
++                                            float_status *status)
++{
++    status->float_2nan_prop_rule = rule;
++}
++
+ static inline void set_flush_to_zero(bool val, float_status *status)
+ {
+     status->flush_to_zero = val;
+@@ -126,6 +132,11 @@ get_floatx80_rounding_precision(float_status *status)
+     return status->floatx80_rounding_precision;
+ }
+ 
++static inline Float2NaNPropRule get_float_2nan_prop_rule(float_status *status)
++{
++    return status->float_2nan_prop_rule;
++}
++
+ static inline bool get_flush_to_zero(float_status *status)
+ {
+     return status->flush_to_zero;
+diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
+index 0884ec4ef7a..5cd5a0d0ae1 100644
+--- a/include/fpu/softfloat-types.h
++++ b/include/fpu/softfloat-types.h
+@@ -170,6 +170,47 @@ typedef enum __attribute__((__packed__)) {
+     floatx80_precision_s,
+ } FloatX80RoundPrec;
+ 
++/*
++ * 2-input NaN propagation rule. Individual architectures have
++ * different rules for which input NaN is propagated to the output
++ * when there is more than one NaN on the input.
++ *
++ * If default_nan_mode is enabled then it is valid not to set a
++ * NaN propagation rule, because the softfloat code guarantees
++ * not to try to pick a NaN to propagate in default NaN mode.
++ *
++ * For transition, currently the 'none' rule will cause us to
++ * fall back to picking the propagation rule based on the existing
++ * ifdef ladder. When all targets are converted it will be an error
++ * not to set the rule in float_status unless in default_nan_mode,
++ * and we will assert if we need to handle an input NaN and no
++ * rule was selected.
++ */
++typedef enum __attribute__((__packed__)) {
++    /* No propagation rule specified */
++    float_2nan_prop_none = 0,
++    /* Prefer SNaN over QNaN, then operand A over B */
++    float_2nan_prop_s_ab,
++    /* Prefer SNaN over QNaN, then operand B over A */
++    float_2nan_prop_s_ba,
++    /* Prefer A over B regardless of SNaN vs QNaN */
++    float_2nan_prop_ab,
++    /* Prefer B over A regardless of SNaN vs QNaN */
++    float_2nan_prop_ba,
++    /*
++     * This implements x87 NaN propagation rules:
++     * SNaN + QNaN => return the QNaN
++     * two SNaNs => return the one with the larger significand, silenced
++     * two QNaNs => return the one with the larger significand
++     * SNaN and a non-NaN => return the SNaN, silenced
++     * QNaN and a non-NaN => return the QNaN
++     *
++     * If we get down to comparing significands and they are the same,
++     * return the NaN with the positive sign bit (if any).
++     */
++    float_2nan_prop_x87,
++} Float2NaNPropRule;
++
+ /*
+  * Floating Point Status. Individual architectures may maintain
+  * several versions of float_status for different functions. The
+@@ -181,6 +222,7 @@ typedef struct float_status {
+     uint16_t float_exception_flags;
+     FloatRoundMode float_rounding_mode;
+     FloatX80RoundPrec floatx80_rounding_precision;
++    Float2NaNPropRule float_2nan_prop_rule;
+     bool tininess_before_rounding;
+     /* should denormalised results go to zero and set the inexact flag? */
+     bool flush_to_zero;
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index 4e279b9bc40..fae6794a152 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -390,118 +390,153 @@ bool float32_is_signaling_nan(float32 a_, float_status *status)
+ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+                    bool aIsLargerSignificand, float_status *status)
+ {
+-#if defined(TARGET_ARM) || defined(TARGET_MIPS) || defined(TARGET_HPPA) || \
+-    defined(TARGET_LOONGARCH64) || defined(TARGET_S390X)
+-    /* ARM mandated NaN propagation rules (see FPProcessNaNs()), take
+-     * the first of:
+-     *  1. A if it is signaling
+-     *  2. B if it is signaling
+-     *  3. A (quiet)
+-     *  4. B (quiet)
+-     * A signaling NaN is always quietened before returning it.
+-     */
+-    /* According to MIPS specifications, if one of the two operands is
+-     * a sNaN, a new qNaN has to be generated. This is done in
+-     * floatXX_silence_nan(). For qNaN inputs the specifications
+-     * says: "When possible, this QNaN result is one of the operand QNaN
+-     * values." In practice it seems that most implementations choose
+-     * the first operand if both operands are qNaN. In short this gives
+-     * the following rules:
+-     *  1. A if it is signaling
+-     *  2. B if it is signaling
+-     *  3. A (quiet)
+-     *  4. B (quiet)
+-     * A signaling NaN is always silenced before returning it.
+-     */
+-    if (is_snan(a_cls)) {
+-        return 0;
+-    } else if (is_snan(b_cls)) {
+-        return 1;
+-    } else if (is_qnan(a_cls)) {
+-        return 0;
+-    } else {
+-        return 1;
+-    }
+-#elif defined(TARGET_PPC) || defined(TARGET_M68K)
+-    /* PowerPC propagation rules:
+-     *  1. A if it sNaN or qNaN
+-     *  2. B if it sNaN or qNaN
+-     * A signaling NaN is always silenced before returning it.
+-     */
+-    /* M68000 FAMILY PROGRAMMER'S REFERENCE MANUAL
+-     * 3.4 FLOATING-POINT INSTRUCTION DETAILS
+-     * If either operand, but not both operands, of an operation is a
+-     * nonsignaling NaN, then that NaN is returned as the result. If both
+-     * operands are nonsignaling NaNs, then the destination operand
+-     * nonsignaling NaN is returned as the result.
+-     * If either operand to an operation is a signaling NaN (SNaN), then the
+-     * SNaN bit is set in the FPSR EXC byte. If the SNaN exception enable bit
+-     * is set in the FPCR ENABLE byte, then the exception is taken and the
+-     * destination is not modified. If the SNaN exception enable bit is not
+-     * set, setting the SNaN bit in the operand to a one converts the SNaN to
+-     * a nonsignaling NaN. The operation then continues as described in the
+-     * preceding paragraph for nonsignaling NaNs.
+-     */
+-    if (is_nan(a_cls)) {
+-        return 0;
+-    } else {
+-        return 1;
+-    }
+-#elif defined(TARGET_SPARC)
+-    /* Prefer SNaN over QNaN, order B then A. */
+-    if (is_snan(b_cls)) {
+-        return 1;
+-    } else if (is_snan(a_cls)) {
+-        return 0;
+-    } else if (is_qnan(b_cls)) {
+-        return 1;
+-    } else {
+-        return 0;
+-    }
+-#elif defined(TARGET_XTENSA)
++    Float2NaNPropRule rule = status->float_2nan_prop_rule;
++
+     /*
+-     * Xtensa has two NaN propagation modes.
+-     * Which one is active is controlled by float_status::use_first_nan.
++     * We guarantee not to require the target to tell us how to
++     * pick a NaN if we're always returning the default NaN.
+      */
+-    if (status->use_first_nan) {
++    assert(!status->default_nan_mode);
++
++    if (rule == float_2nan_prop_none) {
++        /* target didn't set the rule: fall back to old ifdef choices */
++#if defined(TARGET_AVR) || defined(TARGET_HEXAGON) \
++    || defined(TARGET_RISCV) || defined(TARGET_SH4) \
++    || defined(TARGET_TRICORE)
++        g_assert_not_reached();
++#elif defined(TARGET_ARM) || defined(TARGET_MIPS) || defined(TARGET_HPPA) || \
++    defined(TARGET_LOONGARCH64) || defined(TARGET_S390X)
++        /*
++         * ARM mandated NaN propagation rules (see FPProcessNaNs()), take
++         * the first of:
++         *  1. A if it is signaling
++         *  2. B if it is signaling
++         *  3. A (quiet)
++         *  4. B (quiet)
++         * A signaling NaN is always quietened before returning it.
++         */
++        /*
++         * According to MIPS specifications, if one of the two operands is
++         * a sNaN, a new qNaN has to be generated. This is done in
++         * floatXX_silence_nan(). For qNaN inputs the specifications
++         * says: "When possible, this QNaN result is one of the operand QNaN
++         * values." In practice it seems that most implementations choose
++         * the first operand if both operands are qNaN. In short this gives
++         * the following rules:
++         *  1. A if it is signaling
++         *  2. B if it is signaling
++         *  3. A (quiet)
++         *  4. B (quiet)
++         * A signaling NaN is always silenced before returning it.
++         */
++        rule = float_2nan_prop_s_ab;
++#elif defined(TARGET_PPC) || defined(TARGET_M68K)
++        /*
++         * PowerPC propagation rules:
++         *  1. A if it sNaN or qNaN
++         *  2. B if it sNaN or qNaN
++         * A signaling NaN is always silenced before returning it.
++         */
++        /*
++         * M68000 FAMILY PROGRAMMER'S REFERENCE MANUAL
++         * 3.4 FLOATING-POINT INSTRUCTION DETAILS
++         * If either operand, but not both operands, of an operation is a
++         * nonsignaling NaN, then that NaN is returned as the result. If both
++         * operands are nonsignaling NaNs, then the destination operand
++         * nonsignaling NaN is returned as the result.
++         * If either operand to an operation is a signaling NaN (SNaN), then the
++         * SNaN bit is set in the FPSR EXC byte. If the SNaN exception enable bit
++         * is set in the FPCR ENABLE byte, then the exception is taken and the
++         * destination is not modified. If the SNaN exception enable bit is not
++         * set, setting the SNaN bit in the operand to a one converts the SNaN to
++         * a nonsignaling NaN. The operation then continues as described in the
++         * preceding paragraph for nonsignaling NaNs.
++         */
++        rule = float_2nan_prop_ab;
++#elif defined(TARGET_SPARC)
++        /* Prefer SNaN over QNaN, order B then A. */
++        rule = float_2nan_prop_s_ba;
++#elif defined(TARGET_XTENSA)
++        /*
++         * Xtensa has two NaN propagation modes.
++         * Which one is active is controlled by float_status::use_first_nan.
++         */
++        if (status->use_first_nan) {
++            rule = float_2nan_prop_ab;
++        } else {
++            rule = float_2nan_prop_ba;
++        }
++#else
++        rule = float_2nan_prop_x87;
++#endif
++    }
++
++    switch (rule) {
++    case float_2nan_prop_s_ab:
++        if (is_snan(a_cls)) {
++            return 0;
++        } else if (is_snan(b_cls)) {
++            return 1;
++        } else if (is_qnan(a_cls)) {
++            return 0;
++        } else {
++            return 1;
++        }
++        break;
++    case float_2nan_prop_s_ba:
++        if (is_snan(b_cls)) {
++            return 1;
++        } else if (is_snan(a_cls)) {
++            return 0;
++        } else if (is_qnan(b_cls)) {
++            return 1;
++        } else {
++            return 0;
++        }
++        break;
++    case float_2nan_prop_ab:
+         if (is_nan(a_cls)) {
+             return 0;
+         } else {
+             return 1;
+         }
+-    } else {
++        break;
++    case float_2nan_prop_ba:
+         if (is_nan(b_cls)) {
+             return 1;
+         } else {
+             return 0;
+         }
+-    }
+-#else
+-    /* This implements x87 NaN propagation rules:
+-     * SNaN + QNaN => return the QNaN
+-     * two SNaNs => return the one with the larger significand, silenced
+-     * two QNaNs => return the one with the larger significand
+-     * SNaN and a non-NaN => return the SNaN, silenced
+-     * QNaN and a non-NaN => return the QNaN
+-     *
+-     * If we get down to comparing significands and they are the same,
+-     * return the NaN with the positive sign bit (if any).
+-     */
+-    if (is_snan(a_cls)) {
+-        if (is_snan(b_cls)) {
+-            return aIsLargerSignificand ? 0 : 1;
+-        }
+-        return is_qnan(b_cls) ? 1 : 0;
+-    } else if (is_qnan(a_cls)) {
+-        if (is_snan(b_cls) || !is_qnan(b_cls)) {
+-            return 0;
++        break;
++    case float_2nan_prop_x87:
++        /*
++         * This implements x87 NaN propagation rules:
++         * SNaN + QNaN => return the QNaN
++         * two SNaNs => return the one with the larger significand, silenced
++         * two QNaNs => return the one with the larger significand
++         * SNaN and a non-NaN => return the SNaN, silenced
++         * QNaN and a non-NaN => return the QNaN
++         *
++         * If we get down to comparing significands and they are the same,
++         * return the NaN with the positive sign bit (if any).
++         */
++        if (is_snan(a_cls)) {
++            if (is_snan(b_cls)) {
++                return aIsLargerSignificand ? 0 : 1;
++            }
++            return is_qnan(b_cls) ? 1 : 0;
++        } else if (is_qnan(a_cls)) {
++            if (is_snan(b_cls) || !is_qnan(b_cls)) {
++                return 0;
++            } else {
++                return aIsLargerSignificand ? 0 : 1;
++            }
+         } else {
+-            return aIsLargerSignificand ? 0 : 1;
++            return 1;
+         }
+-    } else {
+-        return 1;
++    default:
++        g_assert_not_reached();
+     }
+-#endif
+ }
+ 
+ /*----------------------------------------------------------------------------
 -- 
 2.34.1
 
