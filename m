@@ -2,96 +2,205 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592CC9B1265
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 00:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C75859B1331
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 01:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4SYs-0004LF-JD; Fri, 25 Oct 2024 18:13:38 -0400
+	id 1t4Tib-00021U-Mj; Fri, 25 Oct 2024 19:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t4SYq-0004L4-3C
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 18:13:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1t4TiY-000207-JP; Fri, 25 Oct 2024 19:27:42 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t4SYo-0000Wj-99
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 18:13:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729894412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=71MMRyoOdcTDLt/kWNkS1VmFNpq4ydnjiFqi1EXnK4U=;
- b=JM5SPfnAsbnJvYPAdl6SLNP++vRJkZFy8a1M+ItRgTEfsCGZGMm1bhurnAZNuLsk1qwYgv
- mffe/tl7klpo+fSt2LE/zvmRcVMgtgAqPqgfD0eShvuddeAmegwdJSRIoG+DMTZgdiBdWR
- lJSJSy3/c8Ac6k2zjoQQ0nf/hdXg2rQ=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-1Mfg2IlSPR-v23PhYMSELA-1; Fri, 25 Oct 2024 18:13:29 -0400
-X-MC-Unique: 1Mfg2IlSPR-v23PhYMSELA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6cbe7713563so34222976d6.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 15:13:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729894409; x=1730499209;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=71MMRyoOdcTDLt/kWNkS1VmFNpq4ydnjiFqi1EXnK4U=;
- b=KqdhiFhDDqtbHH0zVvK2uxNUmlA11mYEgGZ+pc1pQfF1ZHqeNW4BTpOiAI7udZW35y
- 9LuKl2Kv40gnP1cPGJMeF7Ehgz6O/kZZBABYFZRlVb3KstYMUUAMtOijoxFJ1cc8NJaA
- OlaopctIHzRwo2MBUcYjX8Yv8Mbcpq/le4dvrIkZAG8EfnX+yaA7FxzuPX0tIfNpmwoh
- +dh65Bdwc8R+RWM3u0wvvebTdQbEbAXzAtmVBJV1FATEuvcF4Dv3x1FeFjLqjkN+KmD+
- jswlYtjn4oxsB/8lbbidPFbFji9UsLFYtj4o9qQbG7Og70kq3FocvsaDQNkTB3bfoqaC
- OOdA==
-X-Gm-Message-State: AOJu0YzRLMfIkm4j4qDYt1+ulh3pKnKBpqyPhcC13r2rvfbxOj4UfMlj
- fAs1ICjFAXwgeo4a0nZ2z7XxRy7wOMUiFzN0pE37LmZDsOiod+BewCmffHfNpkqwCJy2hfXz9LL
- 0eOpMSa2bbP/hm1F1ynOX5ovZGBBBb82HQwZeBP/YC7s8lOUsO2t8
-X-Received: by 2002:a05:6214:5887:b0:6cb:83a5:8403 with SMTP id
- 6a1803df08f44-6d1858559b7mr13607376d6.50.1729894408998; 
- Fri, 25 Oct 2024 15:13:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvk/drgDiLKvVuAFiQfP7Bbz1HneXz2xUprC/acwR7Q0tsyy832LneVfISu9Zsp7f+VLC9vA==
-X-Received: by 2002:a05:6214:5887:b0:6cb:83a5:8403 with SMTP id
- 6a1803df08f44-6d1858559b7mr13606976d6.50.1729894408605; 
- Fri, 25 Oct 2024 15:13:28 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d17972f51csm9858196d6.3.2024.10.25.15.13.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 15:13:27 -0700 (PDT)
-Date: Fri, 25 Oct 2024 18:13:25 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Igor Mammedov <imammedo@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/4] x86/iommu: Make x86-iommu a singleton object
-Message-ID: <ZxwYBeLGDLkTL0PJ@x1n>
-References: <20241024165627.1372621-1-peterx@redhat.com>
- <20241024165627.1372621-3-peterx@redhat.com>
- <87jzdwlekc.fsf@pond.sub.org> <ZxwT79JG0NzsDmPn@x1n>
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1t4TiV-0000cS-Gl; Fri, 25 Oct 2024 19:27:42 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PJdTej009560;
+ Fri, 25 Oct 2024 23:27:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=corp-2023-11-20; bh=XUt9vzmbeF1UWIhZaK
+ pLuQL+OWw1vvla+iCxAO2OppM=; b=f2DX7ZH3+RBiNqP8p/0qGfIbyDuWidPJez
+ EP3B4PQ+HZJdcwTWJRXcJbzAxa7HNrEjngqcaNJfHAMA5ie+BI1m7HqaeMByl6TO
+ uKjjqERRZKXYbQ8+1Hzwd8m5fAv5UH5fvzr8EoBjxLbiiYoJ6+lptjKzSqrV4D15
+ PqqldIiD5ASh2gA5Nh/Gv5aTd7lMbGC7UBEpEIOTosJ+mFdFjb4v2ZJ22NhxvOxD
+ gpeLb3G0IOIlFmFwbixZxksyUFGkRPpm4spqemtre39BVCxlc9QSDi7t6zdB/xQ/
+ aQZirJDipnbQ2nTj71fBmcyWehhyheoaEUJLB9rVUm7rFUKwYanw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c55v62y6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Oct 2024 23:27:32 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 49PMArn4016585; Fri, 25 Oct 2024 23:27:31 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02lp2048.outbound.protection.outlook.com [104.47.56.48])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 42emhefasg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Oct 2024 23:27:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Oh+hWzhF3GLX9Ajcg4E9Jp+8ZG/KC9Od5t17xxbEzbp+vxsqBqNzLX1t1U5QFoGtM0Fppw83RCFE0TD4zxyZOeHAkZRCbOc25RXJY5ubZrSfjsr5nWjOId7YtcMOTzhonOaT40xQTYTxXmTxM8isdfpG0r8N2Io4z6O5NSDWvd8kOD5zgUxaEtbYPEvTvWVcTC+BplFFpzNOOkp7F998iQbK1tq1WD4eNoC1fw5Xz+glLcHYEN+MUaKuj8KTpqR6o8gzaqR7pPkipHku4xw6a4RiVxO98FOoMSDOJ+A8gjAnFgHY7SBFu8Ox/VtLdzLJIQfj74N7HmMt4cE9WY4BrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XUt9vzmbeF1UWIhZaKpLuQL+OWw1vvla+iCxAO2OppM=;
+ b=qT6JJzj+j92LA4n/WGNXTNkY7s5O9Z00WA0e/nH+h2LLqJGrELOv/OhA/8EHsYB8wp0ztUAIem4z4rfSYtaTINqRVOYYs5oYIHZ5Z/h7BMeG6eBdoI986Nts1I1Ct4QHxu8DmuwXXh6qUxubRrtH7Gbaa69eWgOqR4P8EzTI1BH5o2Eib60VBhM9rRgBHKPGslIn0sCtdsr/JqBrAUKgFTc8Jyp+c8uCT5F2NNiT+YrzZsAVzyC8KbJ4HRrwiJfySvK8VvrdvT3iF/mN1Nwu7Y6DtrniNcXe59HF3mTG4HfgPwSK22a4Af29pCSY7Ph3yOUy9O9o7xKMyy84QxcekQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XUt9vzmbeF1UWIhZaKpLuQL+OWw1vvla+iCxAO2OppM=;
+ b=X8FKfWwEK5Yb7zLJPjkdWHHfxC9d+eMQM6CZRtlSFbph75uOa0pwUfnEibs98xNXqqqFUl0fDlBa8ZtAEnhCUQJllXSuV4hgjk2bG4V/q6cmogSvjS4QLmiFBDeCGU7v0u4yjPRVnmTCCGghnLLDCQwKCS96o9rMlogwjzW6kQ0=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by MN6PR10MB8141.namprd10.prod.outlook.com (2603:10b6:208:4f9::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Fri, 25 Oct
+ 2024 23:27:28 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%4]) with mapi id 15.20.8093.014; Fri, 25 Oct 2024
+ 23:27:28 +0000
+Content-Type: multipart/alternative;
+ boundary="------------hgY5tBYnC80xFaueadyA07yr"
+Message-ID: <9b17600d-4473-4bb6-841f-00f93d86f720@oracle.com>
+Date: Sat, 26 Oct 2024 01:27:25 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/4] accel/kvm: Keep track of the HWPoisonPage page_size
+To: David Hildenbrand <david@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
+ joao.m.martins@oracle.com
+References: <ZwalK7Dq_cf-EA_0@x1n>
+ <20241022213503.1189954-1-william.roche@oracle.com>
+ <20241022213503.1189954-3-william.roche@oracle.com>
+ <a0fda9e7-d55b-455b-aeaa-27162b6cdc65@redhat.com>
+Content-Language: en-US, fr
+From: William Roche <william.roche@oracle.com>
+In-Reply-To: <a0fda9e7-d55b-455b-aeaa-27162b6cdc65@redhat.com>
+X-ClientProxiedBy: PR3P193CA0059.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:102:51::34) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZxwT79JG0NzsDmPn@x1n>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MN6PR10MB8141:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73b00a9b-d44a-4760-e7c2-08dcf54c9729
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|7416014|366016|8096899003; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z1pWU0x0WGMwK2pZQkxyOWg0QjZuTHF4ZlB1N3I5K3B5QjdpVUZ2aUNtKzll?=
+ =?utf-8?B?aG42czZOUkg2VWt6TFlSQWlLTk8vZTZSdUJScEQrell3bStEM0ZtYS9pMmx6?=
+ =?utf-8?B?ZlFnTkVDNlM5Q2c0cUU2UzE4RjQwUytpMnlzVzRONVVRSlRtZEpYaGttZGZM?=
+ =?utf-8?B?QVBlbEIyeVgxTGExV3NENWpwRER6WFVqZGF3YkROcXlicFltcnoxb2NnMEkv?=
+ =?utf-8?B?ejlqeVJKOXd3YUZGT3k5TnhFVi9MekFQblpTN1RlNW9OaGVFVnJWWFF4UGtV?=
+ =?utf-8?B?R0FHSEQ3Y2RYb2c4SWIwRGZxZUczeGQ1QldkdmhVODloK1pkejB1aWpkZGJK?=
+ =?utf-8?B?NXpuTUdJZTF1R3VMU0tyWDZjZ0JIT3dtVGtPYW0rWlBjcHNnMmNnQk9FTVpr?=
+ =?utf-8?B?UjJmSmRzRWkyUXFxbWRzUzRuUjcvTVV2NWdrQUZPTHNGSVlTdUdmR2xPdDlL?=
+ =?utf-8?B?cEFTUWFYaEt5WGFaaElpRTNZZXJJWGR1TG5INlkvMGdDZ0JkeE8wWVBuL0hw?=
+ =?utf-8?B?Q1RMeTl1TmtpZVlDcGdQbmx1Y3RTaEZlV2dkUnRjaVBlem16TUNmak1TU1Jo?=
+ =?utf-8?B?TEd0b1lzbEpVRlQyL1RjUTBCSGtxRzNOeXFPdGZSZFJIYmdJQWdMNFFPUFdk?=
+ =?utf-8?B?UXk4NlpIK0Y2dXdHTnZSVkd4a1dCWjcwRmlIajcxZDdCNU1WNXRiK2hFbng1?=
+ =?utf-8?B?UGZsTnA1MHRKaVNteHpucGhnUHhHUkp5UFFNMExIQXdwM1JUV2tHM2s2OW1l?=
+ =?utf-8?B?MzJ1cmRvT2FGcEQ0TFRYV2dnMXBEbWF4bjFkQk53NjhQSFJKcWlGaDNtT2lm?=
+ =?utf-8?B?blBxMElBczV4TFhNb2d4THhUVUJuTDlSdzBjYVVTZ0FyWG9kSWxVcEdxMXVl?=
+ =?utf-8?B?eTg2OHJyeFlhNWZZMEFIYzNNU3hBdkxUd3ZvUVcrMmRicG5CQnNzeTFlSlRZ?=
+ =?utf-8?B?eXdXK3JlelB0eWphZ05FZTRPbzhtWlc1dTRoS3hLSFp1dWpVWEtpZWFIbkVD?=
+ =?utf-8?B?R2ZNWFB2bWovdmVIRjNtUDBvUkJOWTJ4V0pvZEJlOHYxTzVTVklpdERJUE43?=
+ =?utf-8?B?UXpkZDZ2d3Q3QXpGZjFCNVdUS1pRUGV4UEMwaEtDdmZJenVadHdidk1zT0Vw?=
+ =?utf-8?B?NkgzRlJJQU5adXc1S3FYYnJOeEJ4NkdDc3MvVk9pNTZ1WnpCWWlaeWZOQnJR?=
+ =?utf-8?B?Tk1WQjFOSkM0NkJFWnluK09FOXhaYTk0RkIzak91aktSMnQxSmdNNkZ5eG5h?=
+ =?utf-8?B?MlFxcnBnUitjOUgvTnoveUVmcjBhUXB6T3daR1FpSUJuamVlT21TdWJ0ZmRC?=
+ =?utf-8?B?Ly8vcHdLSTRYU013N3FGdE1kSkZpbUdxU1I3R0JKTEo5aFhCUHJoYnRTck5S?=
+ =?utf-8?B?d3dwV29YL1JMNXh4Z0JTRm9Zb0V2QjEwVTV6T085bnIxeWlOWHFpenJXaTRX?=
+ =?utf-8?B?MGlnZXdYcEFtK0Z6R0tCUHhaYnBuT1AvZkk0MnFIMEh1VUF0NmhMb3VqZDBj?=
+ =?utf-8?B?Sko3a1p4bnQ2Qm43UnRucXlpUDJxNlczdjJQODBTYUM0QzAxaG5TVWJqUFV5?=
+ =?utf-8?B?RWY4Nk9vbzQ4c2lhNFNXZlFuc1VtTWJLWlBtR1Fwekc1aWg1ZHJpZ0p6YWhZ?=
+ =?utf-8?B?MkVUVkxTdUpjYmhxVDVzK0s0WWJKMkQrenBidUl3TVJObTVlU0FwdW1Odm95?=
+ =?utf-8?B?S1dPNjhiVUJqcStVVDhMdjM5SDE5NWRWdmhqaFBxeU9rZXZWTnBuZjgyZ3Nl?=
+ =?utf-8?Q?UP/J9ZxS3sG8rTQspXhi0R9NUVKbzzfntIlgMoP?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR10MB7329.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016)(8096899003); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M3NKMDloY2Z2bDZVKzN1WDRWU0lEYWU2UXp1OVZqQnUzeWNuSUdQT29vQmR1?=
+ =?utf-8?B?RnNkOWF6VEpDY0piemlxZytvSWp3RTYybHkvak82OEFqNldMYUV3aHVRS1BZ?=
+ =?utf-8?B?NVd4bWtRbnFoTmNxNDJCM3YwUGJlSzk4V3VTczhUTDFZOVlNNGNGUWFkUmh5?=
+ =?utf-8?B?SXRnaU1Jc0dQemRyanpoZFVCYmJGa1JQRUhCbk1peXE1MzR5R2dKbmsvMU9v?=
+ =?utf-8?B?YnR2SytqS2o5dnBzcCtTMUFlaTg2UVp3bzYvQTVEaHRNM2tQd0hOVngyNGdh?=
+ =?utf-8?B?Ui9BMUpHQkR2cEhvYlVGYlhMOWZRVUp2bTBCQ3RDS2ZjM2pEREoyK3ZSWFJL?=
+ =?utf-8?B?alVYM0JtMXJRc3B3YmlJUHhDOGVFYVI2akxkQVd6L0MweGVnSm5ZNjhrcnR2?=
+ =?utf-8?B?WkVEcUxrYmxYSDB1RGVQbzBrWFhhM1VNSzhsdmFrUDNSMUM2c2NsS0FkVExV?=
+ =?utf-8?B?ZzlyMndOTmdqQStNeS9ZMnhLQ3N5RmRFWWtSTE1sUlptSGs0RnZmR01kV3lW?=
+ =?utf-8?B?UEk2ckZXQjVOM3NtUXdqbDdDNk1uUGE3UFdxR1ZIdnpQbm1WWEpIa0NBU2xq?=
+ =?utf-8?B?UjFyZ2R2NzU0SFAxQnJWZWlaODhITXFuZ2lZZzBQZ3VBOGZidjA0Sm53QWU3?=
+ =?utf-8?B?dXBlSnlnRGNIbytqYnNTWkt1Wm9YWlhUdlFSQjdFQWFEZmZYaTlFcmdvcGVZ?=
+ =?utf-8?B?enBjTEJYNm4rOW90NHJsYXJFclEyazhsZENibzFLNGtOK1BtTW05Mm9qWmNp?=
+ =?utf-8?B?bDlpTlVOZnorRXhjN1g0QlZzQlpIZGNXd3kwSG1vaVVXMWFhOTA2dkZaQnIw?=
+ =?utf-8?B?cys1bkdqMGdJdysreWIwZEZJVGpUemd6bmxWLzllSE1ON25RVk9XblRGNENP?=
+ =?utf-8?B?bzVsVFBxS1JqTEd0VUNiazFzanREVmFiN1p5TEVzeVpUdWRHSWl6MU4xbW95?=
+ =?utf-8?B?L2VMT3pzbWU0LzhBTjZIM212NVlxYlpha0dqYkJqZG41SFUxdUxEc1NEQTNv?=
+ =?utf-8?B?Um9pYjFWbjZwTEI2YjMvSklKd2NjdzRVSkJIeU8rTHgzRXhxUEJ0eUhtVzZF?=
+ =?utf-8?B?MlM5WURwU3g0bDl4Tm1Da003aWZCVElEeUlDbGNFWnlWelN0MXVtTEM3V25q?=
+ =?utf-8?B?UkFYbnRRSGg1V2JBa1VoOWJEem9YdThIL21wWVlGcmt2K3NzUzY4YlhCL1hz?=
+ =?utf-8?B?VDBPeUptVlZnbU1jY2VsbVNyK1dVU01ZTzRuVGJ3bWRMMnN1eVFGN3pDbHVy?=
+ =?utf-8?B?bHptaTZCQnZwbW85alZ4M0F6WjF6LzluOUQ3WnpNdTB1Z3UvVGxQdXlTa0lE?=
+ =?utf-8?B?VTUxa0FJMytMNjVRY0h1WHhmbXZSOERNak1PZDJWM1I5dGJWZGVEQmNIZjAx?=
+ =?utf-8?B?cnljQjBqaGJwWjhwK1BBR25nK2x4bGYvc3FMWllPUkJOMkdiMEhtWGRSa1cz?=
+ =?utf-8?B?RXRJWXp5c0xqNXlXODg0bDdwVG9Dc05DTUR2T2lITElGb0ZPYStRNTFVTUJ4?=
+ =?utf-8?B?WkZ0QXFObnByalZOMy9KMExSdWNMT205TTdiUXlxalRPcWNFaG55OEJrR0cv?=
+ =?utf-8?B?NzgyR3ZsQ3FFRG5wUXUrNEI1Y25ZdWdjZVozV1M5TlJ3TUdrNjhSWFpoZFpm?=
+ =?utf-8?B?bzlGRVRqZ0ZWbm01aG94TGVkSTc0QURqcUVqMmpsM2JOK3piaGNVdVpoZWlE?=
+ =?utf-8?B?TDdzRitZRkNxbFJKMEVnNXdWYnRlU0hYQ0g0QWhmVWd6bWxtWmNVVmxqR0J5?=
+ =?utf-8?B?cDRGTmFWeU5OSlpPOHdsOGNWZWNBdExYSkxZV3dJdUNkdlVVeERWZmJoQldB?=
+ =?utf-8?B?NlppK0pFOVljbjl5S3QvTllrVlloNEdQMHdKbVNFM2lkcloxZmxjeCtTWFBt?=
+ =?utf-8?B?WnN4cnc3ZDdUOE5obktyY2JTaUtidEszd0lWTHE0ZnBvd3RNdmtCWjgwSldt?=
+ =?utf-8?B?S1Z4eXBqQm5Rc0wwcCsyM2NRN3hxdFB4U0F6ci9paE1ZYmtnOFZpaUppN0M3?=
+ =?utf-8?B?MC9Gc0RpZG0xaGYzYkpGSm5wWGZYcms4VzZJNnF0bWJNL0xwR3Bucjk2U0RQ?=
+ =?utf-8?B?bHRpUDlFbTRWQ0lMY0dVS0dYWDRYVi9IMEZ6VzJWaXEraWhONktZcndPbmhN?=
+ =?utf-8?B?VGFPQzFzaEwvVHdOMXVTbTc3dlFLZHJIekZpUW44MHFTT0t2VEY4cWx6RHFU?=
+ =?utf-8?B?d3c9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: nmA+4CxO2yWz3wdSIbE5hmLhYwPA5kOPPybj2k4jVsAyEkVccG8dgxqDy/SqjWKfhaO0Jdu38xyAt6MSwZcWanuizvWloen5eFWADcS4o4hMg6phiQwtx5QkicloZRSml7P7ATj9KhyMK5g4KF+g8K8gU+qr6aKmlxRf6B8y5CuiBmkYvEZZp9yu+TWKyuG9KOlD0McFGfevjlOlkOLXCo3CiJd9zF1Mpp89CxnBzKZTbBTDudUSMQ/pqrL5kIRp0a8akbmjicK64kSjuRrf43Rm1JREEjp2igDJ5OBY7RIBgu/Aa+e0uBuD5eYTHfnlk+0QMU8sv7e6J9grHv7RKS48vOHSWiT01dMGVjkZLalisNDiSC3xqj/tPGYWu3Wq3Wt6utRdiOjPlNsO2AFvCn3/6IdwyuwqbdgV04xdINZ2HqyjrriPolfq2ZxYLEtz9w4XIYgkUEY/YOfzupUrex3hXMoUSeNJp9MWlcG54ThsjgA/ip7qrSZPNd7OnULf2r4N+VUjV5s38RK3UDnrjYSfZVl3aqv4knCgncwo+0pbtbcFIp/isA+/IM0AgMc95ApXbg7U1FabHCa7XdoZ2jIiseSxtB4J/PebxWjOS+k=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73b00a9b-d44a-4760-e7c2-08dcf54c9729
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 23:27:28.4817 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CKRDIFhU38R+BuToVn2NQrL1nxjDINATQPXZjO1vP1WC2qIS5XCduproZ3yI805gVmTRM8Q1EYrqaWaLRjFY3ZzxBwkqkT1M/q9uGvRFm00=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB8141
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-25_14,2024-10-25_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410250181
+X-Proofpoint-GUID: XocW-tgS5B1Vu3SLqm4wVNj--h3YGVix
+X-Proofpoint-ORIG-GUID: XocW-tgS5B1Vu3SLqm4wVNj--h3YGVix
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=william.roche@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_PH_BODY_ACCOUNTS_PRE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,171 +216,271 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 25, 2024 at 05:55:59PM -0400, Peter Xu wrote:
-> On Fri, Oct 25, 2024 at 11:25:23AM +0200, Markus Armbruster wrote:
-> > Peter Xu <peterx@redhat.com> writes:
-> > 
-> > > X86 IOMMUs cannot be created more than one on a system yet.  Make it a
-> > > singleton so it guards the system from accidentally create yet another
-> > > IOMMU object when one already presents.
-> > >
-> > > Now if someone tries to create more than one, e.g., via:
-> > >
-> > >   ./qemu -M q35 -device intel-iommu -device intel-iommu
-> > >
-> > > The error will change from:
-> > >
-> > >   qemu-system-x86_64: -device intel-iommu: QEMU does not support multiple vIOMMUs for x86 yet.
-> > >
-> > > To:
-> > >
-> > >   qemu-system-x86_64: -device intel-iommu: Class 'intel-iommu' only supports one instance
-> > >
-> > > Unfortunately, yet we can't remove the singleton check in the machine
-> > > hook (pc_machine_device_pre_plug_cb), because there can also be
-> > > virtio-iommu involved, which doesn't share a common parent class yet.
-> > >
-> > > But with this, it should be closer to reach that goal to check singleton by
-> > > QOM one day.
-> > >
-> > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > 
-> > $ qemu-system-x86_64 -device amd-iommu,help
-> > /work/armbru/qemu/include/hw/boards.h:24:MACHINE: Object 0x56473906f960 is not an instance of type machine
-> > Aborted (core dumped)
-> > 
-> > (gdb) bt
-> > #0  0x00007ffff4e43834 in __pthread_kill_implementation () at /lib64/libc.so.6
-> > #1  0x00007ffff4df18ee in raise () at /lib64/libc.so.6
-> > #2  0x00007ffff4dd98ff in abort () at /lib64/libc.so.6
-> > #3  0x0000555555f75ef3 in object_dynamic_cast_assert
-> >     (obj=0x555557e03960, typename=0x5555563c403e "machine", file=0x5555563c4018 "/work/armbru/qemu/include/hw/boards.h", line=24, func=0x5555563c4290 <__func__.7> "MACHINE") at ../qom/object.c:936
-> > #4  0x0000555555d5db0f in MACHINE (obj=0x555557e03960)
-> >     at /work/armbru/qemu/include/hw/boards.h:24
-> > #5  0x0000555555d5e030 in x86_iommu_get_default () at ../hw/i386/x86-iommu.c:83
-> > #6  0x0000555555d5e262 in x86_iommu_get_instance
-> >     (errp=0x5555573d4918 <error_abort>) at ../hw/i386/x86-iommu.c:139
-> > #7  0x0000555555f7c27c in singleton_get_instance (class=0x555557e00320)
-> >     at ../qom/object_interfaces.c:371
-> > #8  0x000055555612a842 in qmp_device_list_properties
-> >     (typename=0x555557e001d0 "amd-iommu", errp=0x7fffffffda38)
-> >     at ../qom/qom-qmp-cmds.c:147
-> > #9  0x0000555555bf20b2 in qdev_device_help (opts=0x555557e001f0)
-> >     at ../system/qdev-monitor.c:314
-> > #10 0x0000555555bfe06d in device_help_func
-> >     (opaque=0x0, opts=0x555557e001f0, errp=0x0) at ../system/vl.c:1208
-> > #11 0x0000555556217186 in qemu_opts_foreach
-> >     (list=0x55555729e5c0 <qemu_device_opts>, func=0x555555bfe04d <device_help_func>, opaque=0x0, errp=0x0) at ../util/qemu-option.c:1135
-> > #12 0x0000555555c01d56 in qemu_process_help_options () at ../system/vl.c:2555
-> > #13 0x0000555555c04d81 in qemu_init (argc=3, argv=0x7fffffffde28)
-> >     at ../system/vl.c:3654
-> > #14 0x000055555612ffae in main (argc=3, argv=0x7fffffffde28)
-> >     at ../system/main.c:47
-> > 
-> 
-> Thanks for the report!
-> 
-> It turns out that qdev_get_machine() cannot be invoked too early, and the
-> singleton code can make it earlier..
-> 
-> We may want a pre-requisite patch to allow qdev_get_machine() to be invoked
-> anytime, like:
-> 
-> ===8<===
-> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-> index db36f54d91..7ceae47139 100644
-> --- a/hw/core/qdev.c
-> +++ b/hw/core/qdev.c
-> @@ -831,6 +831,16 @@ Object *qdev_get_machine(void)
->  {
->      static Object *dev;
->  
-> +    if (!phase_check(PHASE_MACHINE_CREATED)) {
-> +        /*
-> +         * When the machine is not created, below can wrongly create
-> +         * /machine to be a container.. this enables qdev_get_machine() to
-> +         * be used at any time and return NULL properly when machine is not
-> +         * created.
-> +         */
-> +        return NULL;
-> +    }
-> +
->      if (dev == NULL) {
->          dev = container_get(object_get_root(), "/machine");
->      }
-> ===8<===
-> 
-> I hope it makes sense on its own.
+--------------hgY5tBYnC80xFaueadyA07yr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-My apologies, spoke too soon here.  This helper is used too after machine
-is created, but right before switching to PHASE_MACHINE_CREATE stage..
+On 10/23/24 09:28, David Hildenbrand wrote:
 
-So we need another way, like:
+> On 22.10.24 23:35, “William Roche wrote:
+>> From: William Roche <william.roche@oracle.com>
+>>
+>> Add the page size information to the hwpoison_page_list elements.
+>> As the kernel doesn't always report the actual poisoned page size,
+>> we adjust this size from the backend real page size.
+>> We take into account the recorded page size to adjust the size
+>> and location of the memory hole.
+>>
+>> Signed-off-by: William Roche <william.roche@oracle.com>
+>> ---
+>>   accel/kvm/kvm-all.c       | 14 ++++++++++----
+>>   include/exec/cpu-common.h |  1 +
+>>   include/sysemu/kvm.h      |  3 ++-
+>>   include/sysemu/kvm_int.h  |  3 ++-
+>>   system/physmem.c          | 20 ++++++++++++++++++++
+>>   target/arm/kvm.c          |  8 ++++++--
+>>   target/i386/kvm/kvm.c     |  8 ++++++--
+>>   7 files changed, 47 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>> index 2adc4d9c24..40117eefa7 100644
+>> --- a/accel/kvm/kvm-all.c
+>> +++ b/accel/kvm/kvm-all.c
+>> @@ -1266,6 +1266,7 @@ int kvm_vm_check_extension(KVMState *s, 
+>> unsigned int extension)
+>>    */
+>>   typedef struct HWPoisonPage {
+>>       ram_addr_t ram_addr;
+>> +    size_t     page_size;
+>>       QLIST_ENTRY(HWPoisonPage) list;
+>>   } HWPoisonPage;
+>>   @@ -1278,15 +1279,18 @@ static void kvm_unpoison_all(void *param)
+>>         QLIST_FOREACH_SAFE(page, &hwpoison_page_list, list, next_page) {
+>>           QLIST_REMOVE(page, list);
+>> -        qemu_ram_remap(page->ram_addr, TARGET_PAGE_SIZE);
+>> +        qemu_ram_remap(page->ram_addr, page->page_size);
+>
+> Can't we just use the page size from the RAMBlock in qemu_ram_remap? 
+> There we lookup the RAMBlock, and all pages in a RAMBlock have the 
+> same size.
 
-===8<===
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index db36f54d91..36a9fdb428 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -832,7 +832,13 @@ Object *qdev_get_machine(void)
-     static Object *dev;
- 
-     if (dev == NULL) {
--        dev = container_get(object_get_root(), "/machine");
-+        /*
-+         * NOTE: dev can keep being NULL if machine is not yet created!
-+         * In which case the function will properly return NULL.
-+         *
-+         * Whenever machine object is created and found once, we cache it.
-+         */
-+        dev = object_resolve_path_component(object_get_root(), "machine");
-     }
- 
-     return dev;
-===8<===
 
-The idea is still the same.  Meanwhile I'll test more to see whether it has
-other issues.
+Yes, we could use the page size from the RAMBlock in qemu_ram_remap() 
+that is called when the VM is resetting. I think that knowing the 
+information about the size of poisoned chunk of memory when the poison 
+is created is useful to give a trace of what is going on, before seeing 
+maybe other pages being reported as poisoned. That's the 4th patch goal 
+to give an information as soon as we get it.
+It also helps to filter the new errors reported and only create an entry 
+in the hwpoison_page_list for new large pages.
+Now we could delay the page size retrieval until we are resetting and 
+present the information (post mortem). I do think that having the 
+information earlier is better in this case.
 
-Thanks,
 
-> Then callers who can be invoked earlier
-> could then handle NULL properly, in this case..
-> 
-> ===8<===
-> diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-> index 4bfeb08705..fceb7adfe0 100644
-> --- a/hw/i386/x86-iommu.c
-> +++ b/hw/i386/x86-iommu.c
-> @@ -80,9 +80,15 @@ void x86_iommu_irq_to_msi_message(X86IOMMUIrq *irq, MSIMessage *msg_out)
->  
->  X86IOMMUState *x86_iommu_get_default(void)
->  {
-> -    MachineState *ms = MACHINE(qdev_get_machine());
-> -    PCMachineState *pcms =
-> -        PC_MACHINE(object_dynamic_cast(OBJECT(ms), TYPE_PC_MACHINE));
-> +    Object *machine = qdev_get_machine();
-> +    PCMachineState *pcms;
-> +
-> +    /* If machine has not been created, so is the vIOMMU */
-> +    if (!machine) {
-> +        return NULL;
-> +    }
-> +
-> +    pcms = PC_MACHINE(object_dynamic_cast(machine, TYPE_PC_MACHINE));
->  
->      if (pcms &&
->          object_dynamic_cast(OBJECT(pcms->iommu), TYPE_X86_IOMMU_DEVICE)) {
-> ===8<===
-> 
-> I'll make sure this works if I'll repost.
-> 
-> Thanks,
-> 
-> -- 
-> Peter Xu
+>
+> I'll note that qemu_ram_remap() is rather stupid and optimized only 
+> for private memory (not shmem etc).
+>
+> mmap(MAP_FIXED|MAP_SHARED, fd) will give you the same poisoned page 
+> from the pagecache; you'd have to punch a hole instead.
+>
+> It might be better to use ram_block_discard_range() in the long run. 
+> Memory preallocation + page pinning is tricky, but we could simply 
+> bail out in these cases (preallocation failing, ram discard being 
+> disabled).
 
--- 
-Peter Xu
 
+I see that ram_block_discard_range() adds more control before discarding 
+the RAM region and can also call madvise() in addition to the fallocate 
+punch hole for standard sized memory pages. Now as the range is supposed 
+to be recreated, I'm not convinced that these madvise calls are necessary.
+
+But we can also notice that this function will report the following 
+warning in all cases of not shared file backends:
+"ram_block_discard_range: Discarding RAM in private file mappings is 
+possibly dangerous, because it will modify the underlying file and will 
+affect other users of the file"
+Which means that hugetlbfs configurations do see this new cryptic 
+warning message on reboot if it is impacted by a memory poisoning.
+So I would prefer to leave the fallocate call in the qemu_ram_remap() 
+function. Or would you prefer to enhance ram_block_discard_range()code 
+to avoid the message in a reset situation (when called from qemu_ram_remap)?
+
+
+>
+> qemu_ram_remap() might be problematic with page pinning (vfio) as is 
+> in any way :(
+
+I agree. If qemu_ram_remap() fails, Qemu is ended either abort() or 
+exit(1). Do you say that memory pinning could be detected by 
+ram_block_discard_range() or maybe mmap call for the impacted region and 
+make one of them fail ? This would be an additional reason to call 
+ram_block_discard_range() from qemu_ram_remap().   Is it what you are 
+suggesting ?
+
+--------------hgY5tBYnC80xFaueadyA07yr
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>On 10/23/24 09:28, David Hildenbrand wrote:</p>
+    <blockquote type="cite" cite="mid:a0fda9e7-d55b-455b-aeaa-27162b6cdc65@redhat.com">On
+      22.10.24 23:35, “William Roche wrote:
+      <br>
+      <blockquote type="cite">From: William Roche
+        <a class="moz-txt-link-rfc2396E" href="mailto:william.roche@oracle.com">&lt;william.roche@oracle.com&gt;</a>
+        <br>
+        <br>
+        Add the page size information to the hwpoison_page_list
+        elements.
+        <br>
+        As the kernel doesn't always report the actual poisoned page
+        size,
+        <br>
+        we adjust this size from the backend real page size.
+        <br>
+        We take into account the recorded page size to adjust the size
+        <br>
+        and location of the memory hole.
+        <br>
+        <br>
+        Signed-off-by: William Roche <a class="moz-txt-link-rfc2396E" href="mailto:william.roche@oracle.com">&lt;william.roche@oracle.com&gt;</a>
+        <br>
+        ---
+        <br>
+        &nbsp; accel/kvm/kvm-all.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 14 ++++++++++----
+        <br>
+        &nbsp; include/exec/cpu-common.h |&nbsp; 1 +
+        <br>
+        &nbsp; include/sysemu/kvm.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 3 ++-
+        <br>
+        &nbsp; include/sysemu/kvm_int.h&nbsp; |&nbsp; 3 ++-
+        <br>
+        &nbsp; system/physmem.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 20 ++++++++++++++++++++
+        <br>
+        &nbsp; target/arm/kvm.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 8 ++++++--
+        <br>
+        &nbsp; target/i386/kvm/kvm.c&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 8 ++++++--
+        <br>
+        &nbsp; 7 files changed, 47 insertions(+), 10 deletions(-)
+        <br>
+        <br>
+        diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+        <br>
+        index 2adc4d9c24..40117eefa7 100644
+        <br>
+        --- a/accel/kvm/kvm-all.c
+        <br>
+        +++ b/accel/kvm/kvm-all.c
+        <br>
+        @@ -1266,6 +1266,7 @@ int kvm_vm_check_extension(KVMState *s,
+        unsigned int extension)
+        <br>
+        &nbsp;&nbsp; */
+        <br>
+        &nbsp; typedef struct HWPoisonPage {
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ram_addr_t ram_addr;
+        <br>
+        +&nbsp;&nbsp;&nbsp; size_t&nbsp;&nbsp;&nbsp;&nbsp; page_size;
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; QLIST_ENTRY(HWPoisonPage) list;
+        <br>
+        &nbsp; } HWPoisonPage;
+        <br>
+        &nbsp; @@ -1278,15 +1279,18 @@ static void kvm_unpoison_all(void
+        *param)
+        <br>
+        &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; QLIST_FOREACH_SAFE(page, &amp;hwpoison_page_list, list,
+        next_page) {
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; QLIST_REMOVE(page, list);
+        <br>
+        -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; qemu_ram_remap(page-&gt;ram_addr, TARGET_PAGE_SIZE);
+        <br>
+        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; qemu_ram_remap(page-&gt;ram_addr, page-&gt;page_size);
+        <br>
+      </blockquote>
+      <br>
+      Can't we just use the page size from the RAMBlock in
+      qemu_ram_remap? There we lookup the RAMBlock, and all pages in a
+      RAMBlock have the same size.
+      <br>
+    </blockquote>
+    <p><font face="monospace"><br>
+        Yes, we could use the page size from the RAMBlock in
+        qemu_ram_remap() that is called when the VM is resetting. I
+        think that knowing the information about the size of poisoned
+        chunk of memory when the poison is created is useful to give a
+        trace of what is going on, before seeing maybe other pages being
+        reported as poisoned. That's the 4th patch goal to give an
+        information as soon as we get it.<br>
+        It also helps to filter the new errors reported and only create
+        an entry in the <span style="white-space: pre-wrap">hwpoison_page_list for new large pages.
+</span><br>
+        Now we could delay the page size retrieval until we are
+        resetting and present the information (post mortem). I do think
+        that having the information earlier is better in this case.</font><br>
+    </p>
+    <p><br>
+    </p>
+    <blockquote type="cite" cite="mid:a0fda9e7-d55b-455b-aeaa-27162b6cdc65@redhat.com">
+      <br>
+      I'll note that qemu_ram_remap() is rather stupid and optimized
+      only for private memory (not shmem etc).
+      <br>
+      <br>
+      mmap(MAP_FIXED|MAP_SHARED, fd) will give you the same poisoned
+      page from the pagecache; you'd have to punch a hole instead.
+      <br>
+      <br>
+      It might be better to use ram_block_discard_range() in the long
+      run. Memory preallocation + page pinning is tricky, but we could
+      simply bail out in these cases (preallocation failing, ram discard
+      being disabled).
+      <br>
+    </blockquote>
+    <p><font face="monospace"><br>
+        I see that ram_block_discard_range() adds more control before
+        discarding the RAM region and can also call madvise() in
+        addition to the fallocate punch hole for standard sized memory
+        pages. Now as the range is supposed to be recreated, I'm not
+        convinced that these madvise calls are necessary.<br>
+      </font></p>
+    <p><font face="monospace">But we can also notice that this function
+        will report the following warning in all cases of not shared
+        file backends:<br>
+        &quot;ram_block_discard_range: Discarding RAM in private file
+        mappings is possibly dangerous, because it will modify the
+        underlying file and will affect other users of the file&quot;<br>
+        Which means that hugetlbfs configurations do see this new
+        cryptic warning message on reboot if it is impacted by a memory
+        poisoning.<br>
+        So I would prefer to leave the fallocate call in the
+        qemu_ram_remap() function. Or would you prefer to enhance </font><font face="monospace">ram_block_discard_range()</font><font face="monospace"> code to avoid the message in a reset situation
+        (when called from </font><font face="monospace">qemu_ram_remap)</font><font face="monospace"> ?<br>
+        <br>
+        <br>
+      </font></p>
+    <blockquote type="cite" cite="mid:a0fda9e7-d55b-455b-aeaa-27162b6cdc65@redhat.com">
+      <br>
+      qemu_ram_remap() might be problematic with page pinning (vfio) as
+      is in any way :(
+      <br>
+    </blockquote>
+    <p><font face="monospace">I agree. If qemu_ram_remap() fails, Qemu
+        is ended either abort() or exit(1). Do you say that memory
+        pinning could be detected by ram_block_discard_range() or maybe
+        mmap call for the impacted region and make one of them fail ?
+        This would be an additional reason to call </font><font face="monospace">ram_block_discard_range() from </font><font face="monospace">qemu_ram_remap().&nbsp;&nbsp; Is it what you are
+        suggesting ?<br>
+      </font></p>
+  </body>
+</html>
+
+--------------hgY5tBYnC80xFaueadyA07yr--
 
