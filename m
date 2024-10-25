@@ -2,101 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD419B0952
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B359B09A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 18:18:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Msu-0003EO-EF; Fri, 25 Oct 2024 12:09:56 -0400
+	id 1t4N03-0002rG-Dt; Fri, 25 Oct 2024 12:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rob@landley.net>) id 1t4MsQ-0002yp-Mu
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:09:26 -0400
-Received: from iguana.tulip.relay.mailchannels.net ([23.83.218.253])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t4Mzw-0002r2-N2
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:17:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rob@landley.net>) id 1t4MsO-0005PR-EW
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:09:26 -0400
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 40A2F1C27F3;
- Fri, 25 Oct 2024 16:09:22 +0000 (UTC)
-Received: from pdx1-sub0-mail-a233.dreamhost.com
- (trex-0.trex.outbound.svc.cluster.local [100.99.209.54])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id AA1E01C303C;
- Fri, 25 Oct 2024 16:09:21 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1729872561; a=rsa-sha256;
- cv=none;
- b=ao3uzSJcrzGzcfs4hqpaT7nBfChvbj5E7FyV6QRJqGoDbu1hyV0M0oLwK4yyTHm4AtrlR+
- rn1wEtyy5NHvJBjNWg9wEZw++APztW9F0neCfEnNnZG6SCbC1JZENtdqY3WA5eZ1UGMnWc
- GwiDObi8s7PDs2U+D0gfzOQZu9NdsrjR4hjh6TIHV8/o/iUUQl15PCNb8cKqm/fXteYwMM
- Dlhq0Q5tjDboWZgZsEmxcFvRLAF7f9qDuFz/l/OLXcxawN4xS0gWfbVJtyEN9rtiE77bTw
- OzsPjFa1RfA2e17UHg6nYCd1kmlQaL400g89SpztcsBokP496BUHeDUUGFC6hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1729872561;
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t4Mzu-0006eE-9F
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 12:17:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729873028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=IdmirYyRblDuI+AZaBO+p4heqJBXcuAld70rKQqHWYo=;
- b=YWPSe0kZ4g9SpYFWCOXrN5RSWiSIQJ4nT8zKqupmoNlwYNVv7sYRTkLxBf4hbuqHL9qaDs
- lt3QLaqHALMingf0k0eVNZNj0QO4kJF0VUUr4RrY0fWQQz2MpF/OZU5AhXH6tSlAwIaarQ
- GehreLXok+ic0Yuho8h1Q9dQ2ZfLKkbv/+K6tKNTF/5qlo+bsTrWppqsQkRtSC/GhSuITA
- gdISC5j6cgijqcXtaWP5daBG7Un/sbdwEukVp1wCovzkW+CIsE2uPybzJz/JCzphvoRsQI
- lK4kCZhAriYaDukPZ/fx6TPb+E2SpUx11zB5oW3qmbOtB11+CtDbdlTLL/kDdQ==
-ARC-Authentication-Results: i=1; rspamd-547c589df-6fk22;
- auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
-X-MailChannels-Auth-Id: dreamhost
-X-Eight-Stretch: 71241ae648e0fd8a_1729872562090_1195396160
-X-MC-Loop-Signature: 1729872562090:2375849557
-X-MC-Ingress-Time: 1729872562090
-Received: from pdx1-sub0-mail-a233.dreamhost.com (pop.dreamhost.com
- [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.99.209.54 (trex/7.0.2); Fri, 25 Oct 2024 16:09:22 +0000
-Received: from [172.22.7.54] (unknown [198.232.126.195])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- (Authenticated sender: rob@landley.net)
- by pdx1-sub0-mail-a233.dreamhost.com (Postfix) with ESMTPSA id 4XZnm101DTz4h; 
- Fri, 25 Oct 2024 09:09:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
- s=dreamhost; t=1729872561;
- bh=IdmirYyRblDuI+AZaBO+p4heqJBXcuAld70rKQqHWYo=;
- h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
- b=rIBm0akqPE/KxyZJtniobhWghvIiQJjfGY5KoS6VcbW2dGQpO6LnvqPZWEAlHoQLt
- TodWOG2hvG6OKIFRiVo8ZQcfSwQortgrLNHw7ou/Eoc87/Uwi8JjvzCgWxKVShhJsS
- WHAsSqdX0qfV2OxXWGqmz5qCzLEOEYv6XG8zT/iHBxZHDyl9Zmo7pGvP4jP2CNSfMB
- HDdCWYU7TadzlreSaw5g5DXstKasG9/Ew26+LPzBI2S/QdbozkbrMCK7bae5Cz04c2
- 0Zh+7qIAezkbCIG+We8ooSQyYLEXQYwyknuaYn+BAQdLavK2lM17sul9MFD+S7lrOL
- p1reLfcbFgweg==
-Message-ID: <b45ff481-bae0-413d-a3a6-bf5a308aae76@landley.net>
-Date: Fri, 25 Oct 2024 11:09:19 -0500
+ in-reply-to:in-reply-to:references:references;
+ bh=eRhFszuGnY4+CeOiYI2fU8xruu5vtjRmneLAWaUqBG8=;
+ b=h6OYIFbGhK6BUjaA5EwUe36aeV6579aisUiKyzwTinnG0Ehy6aIKBhp37mTulzSvA3Krgk
+ reuDfXQQkU8DCaZVe5TK3w0kYOAQ+XilX0mCNxdJUPc3wFzvScdT7YnFTLdUreJ1yEb7TV
+ W2TjyRVpzpcDkIQCZmztfzZ/m2oeuYg=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-pImvQ-BSNOO_922lmEIR1Q-1; Fri, 25 Oct 2024 12:17:07 -0400
+X-MC-Unique: pImvQ-BSNOO_922lmEIR1Q-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-460ba8f6a5aso35328131cf.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 09:17:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729873026; x=1730477826;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eRhFszuGnY4+CeOiYI2fU8xruu5vtjRmneLAWaUqBG8=;
+ b=wVUUdfuuU5+nbO83HG0HGY8n+znO2rPKVJdpQzsCZc3sbwtm2eujvOOjv2B0oPLpFU
+ zOWp+aUXvbvFEvi3aAaeRwK1HC4iLsFsnIF3eyvp5RD3p3bjAECbVLwnyZD6ktNgpvNo
+ esRpKn8Jfj51A2XB+lsE99iNscDMRTQ0iwEFYEIN6+hZf34EsxzPyXRn/45cVzDjle79
+ cdK6bvG6myOCJBFqd301pPytOAqYB7Rvv1gBDntqYkUYrkKiCrp9KjtyijLjQMEGh4UL
+ qoKi08aC25+/KYKIl0aTUtQuIsmCQQWfu4SKZ/MMpeRhmmOYls9kFVsbqfkaSfILK21J
+ SANg==
+X-Gm-Message-State: AOJu0Yz4SPgcAj8zfztV5ZBmrc/Jtwq1SOi/q4/sLlT34pAihZZoBLrt
+ CZ5Oe8iSvPjFr8hKRtwjB6XoEe6jbCHEf+b6SaAcL0H3M9VgM/xtHmEpaWlYCS0vnheyD9qe4Pu
+ t+3sJGW/qjqK7RxU4d8tuGOoy6UuwrXIKd8teuoTEJOMIYZ+WnS3y
+X-Received: by 2002:ac8:4504:0:b0:461:16ce:7de2 with SMTP id
+ d75a77b69052e-46116ce807amr99311831cf.0.1729873026520; 
+ Fri, 25 Oct 2024 09:17:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgaSkxMEASyafylq3UdYZtv5NfVxzQ1a9444qfDpLx8MvB5CEOKc9DG8yASrmjH1wwmvfhag==
+X-Received: by 2002:ac8:4504:0:b0:461:16ce:7de2 with SMTP id
+ d75a77b69052e-46116ce807amr99311381cf.0.1729873026028; 
+ Fri, 25 Oct 2024 09:17:06 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-461357007d4sm5165691cf.88.2024.10.25.09.17.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Oct 2024 09:17:05 -0700 (PDT)
+Date: Fri, 25 Oct 2024 12:17:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Igor Mammedov <imammedo@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/4] qom: TYPE_SINGLETON interface
+Message-ID: <ZxvEfrj5B59J5HHj@x1n>
+References: <20241024165627.1372621-1-peterx@redhat.com>
+ <20241024165627.1372621-2-peterx@redhat.com>
+ <ZxtqGQbd4Hq4APtm@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] Revert "Remove the unused sh4eb target"
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-References: <20241024082735.42324-1-thuth@redhat.com>
- <20241024082735.42324-2-thuth@redhat.com>
-Content-Language: en-US
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <20241024082735.42324-2-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=23.83.218.253; envelope-from=rob@landley.net;
- helo=iguana.tulip.relay.mailchannels.net
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZxtqGQbd4Hq4APtm@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -115,18 +109,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/24/24 03:27, Thomas Huth wrote:
-> This reverts commit 73ceb12960e686b763415f0880cc5171ccce01cf.
+On Fri, Oct 25, 2024 at 10:51:21AM +0100, Daniel P. Berrangé wrote:
+> On Thu, Oct 24, 2024 at 12:56:24PM -0400, Peter Xu wrote:
 > 
-> The "r2d" machine can work in big endian mode, see:
+> Adding significant new functionality to QOM should really come
+> with a commit message explaining the rationale and the design
+> choices
 > 
->   https://lore.kernel.org/qemu-devel/d6755445-1060-48a8-82b6-2f392c21f9b9@landley.net/
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >  include/qom/object_interfaces.h | 47 +++++++++++++++++++++++++++++++++
+> >  qom/object.c                    |  3 +++
+> >  qom/object_interfaces.c         | 24 +++++++++++++++++
+> >  qom/qom-qmp-cmds.c              | 22 ++++++++++++---
+> >  system/qdev-monitor.c           |  7 +++++
+> >  5 files changed, 100 insertions(+), 3 deletions(-)
 > 
-> So the reasoning for removing sh4eb was wrong.
+> snip
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > + * Singleton class describes the type of object classes that can only
+> > + * provide one instance for the whole lifecycle of QEMU.  It will fail the
+> > + * operation if one attemps to create more than one instance.
+> > + *
+> > + * One can fetch the single object using class's get_instance() callback if
+> > + * it was created before.  This can be useful for operations like QMP
+> > + * qom-list-properties, where dynamically creating an object might not be
+> > + * feasible.
+> 
+> snip
+> 
+> > +/**
+> > + * singleton_get_instance:
+> > + *
+> > + * @class: the class to fetch singleton instance
+> > + *
+> > + * Returns: the object* if the class is a singleton class and the singleton
+> > + *          object is created, NULL otherwise.
+> > + */
+> > +Object *singleton_get_instance(ObjectClass *class);
+> 
+> With this design, all code that uses a given type needs to know
+> whether or not it is intended to be a singleton. If some code
+> somewhere mistakenly calls 'object_new' instead of 'singleton_get_instance',
+> the singleton type  is no longer a singleton, except you handle this by
+> adding an assert in object_initialize_with_type.
 
-Signed-off-by: Rob Landley <rob@landley.net>
+Yes, that's really the current goal, and why I added that assert(), so it
+fails any attempts trying to create one more instance of it, because
+normally it's by accident.  The theory issue to solve is when some class is
+not ready for being created more than once, so it must not happen.
 
-Rob
+My plan was to properly guard qdev creation with this which can fail
+pretty, so it's a "programming error" otherwise.
+
+> 
+> This is still a bit of a loaded foot-gun IMHO, as we don't want random
+> code asserting.
+> 
+> > diff --git a/qom/object.c b/qom/object.c
+> > index 11424cf471..ded299ae1a 100644
+> > --- a/qom/object.c
+> > +++ b/qom/object.c
+> > @@ -553,6 +553,9 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
+> >      g_assert(type->abstract == false);
+> >      g_assert(size >= type->instance_size);
+> >  
+> > +    /* Singleton class can only create one object */
+> > +    g_assert(!singleton_get_instance(type->class));
+> > +
+> >      memset(obj, 0, type->instance_size);
+> >      obj->class = type->class;
+> >      object_ref(obj);
+> 
+> > diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+> > index e91a235347..ecc1cf781c 100644
+> > --- a/qom/qom-qmp-cmds.c
+> > +++ b/qom/qom-qmp-cmds.c
+> > @@ -126,6 +126,7 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+> >      ObjectProperty *prop;
+> >      ObjectPropertyIterator iter;
+> >      ObjectPropertyInfoList *prop_list = NULL;
+> > +    bool create;
+> >  
+> >      klass = module_object_class_by_name(typename);
+> >      if (klass == NULL) {
+> > @@ -141,7 +142,15 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+> >          return NULL;
+> >      }
+> >  
+> > -    obj = object_new(typename);
+> > +    /* Avoid creating multiple instances if the class is a singleton */
+> > +    create = !object_class_is_singleton(klass) ||
+> > +        !singleton_get_instance(klass);
+> > +
+> > +    if (create) {
+> > +        obj = object_new(typename);
+> > +    } else {
+> > +        obj = singleton_get_instance(klass);
+> > +    }
+> 
+> This is the first foot-gun example.
+> 
+> I really strongly dislike that the design pattern forces us to
+> create code like this, as we can never be confident we've
+> correctly identified all the places which may call object_new
+> on a singleton...
+
+Yeah I agree it's not pretty, IMHO it's a trade-off comparing to glib's,
+I'll comment below for that.
+
+Meanwhile I hope there should be very limited places in QEMU to randomly
+create "any" object on the fly.. so far only qom/device-list-properties
+that I see.
+
+> 
+> > @@ -172,7 +181,9 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+> >          QAPI_LIST_PREPEND(prop_list, info);
+> >      }
+> >  
+> > -    object_unref(obj);
+> > +    if (create) {
+> > +        object_unref(obj);
+> > +    }
+> 
+> ...and this just compounds the ugliness.
+> 
+> > @@ -199,7 +210,12 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
+> >          return NULL;
+> >      }
+> >  
+> > -    if (object_class_is_abstract(klass)) {
+> > +    /*
+> > +     * Abstract classes are not for instantiations, meanwhile avoid
+> > +     * creating temporary singleton objects because it can cause conflicts
+> > +     * if there's already one created.
+> > +     */
+> 
+> Another example of the foot-gun firing at random code
+> 
+> > +    if (object_class_is_abstract(klass) || object_class_is_singleton(klass)) {
+> >          object_class_property_iter_init(&iter, klass);
+> >      } else {
+> >          obj = object_new(typename);
+> 
+> 
+> With changes to QOM, I think it is generally informative to look at how
+> GLib has handled the problem, since the QOM design has heavily borrowed
+> from its GObject design.
+> 
+> In GObject, singletons are handled in a very differnt way. It has a
+> concept of a "constructor" function against the class, which is what is
+> responsible for allocating the object. By default the 'constructor' will
+> call g_new0, but a class which wishes to become a singleton will override
+> the 'constructor' function to allocate on first call, and return the
+> cached object on subsequent calls. This is illustrated here:
+> 
+>   https://gitlab.gnome.org/GNOME/glib/-/blob/main/gobject/gobject.h#L297
+> 
+> The key benefit of this is that everything can carry on calling
+> g_object_new() as before, as it will just "do the right thing"
+> in terms of allocation.
+> 
+> In QOM, we don't have a 'constructor' class function, we just directly
+> call g_malloc from object_new_with_type. This is because at the time,
+> we didn't see an immediate need for it. We could easily change that
+> though to introduce the concept of a 'constructor', which could
+> probably make singletons work without needing updates to existing code.
+
+I think glib's implementation is not thread safe on its own... consider two
+threads invoke g_object_new() on the singleton without proper locking.  I
+am guessing it could be relevant to glib's heavy event model.
+
+And that's fundamentally what I want to have for QEMU's migration object,
+so that it doesn't need locking on its own of the singleton idea: the
+locking, if necessary, should be done in get_instance(), in this case.
+So I did it wrong indeed in this current series at least there, where it
+should need to take migration's new mutex, then take a refcount before
+return, rightfully as Markus pointed out elsewhere.
+
+The other concern I have with glib's singleton is, fundamentally
+object_new() didn't really create a new object, which can be against the
+gut feelings of whoever read it.  I'm not sure whether that's really what
+we want.. or maybe that's only my own concern, so it might be subjective.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
