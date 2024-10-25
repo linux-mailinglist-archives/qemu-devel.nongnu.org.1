@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9B59B0584
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1D39B0562
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:16:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4L3v-00046D-9J; Fri, 25 Oct 2024 10:13:11 -0400
+	id 1t4L3x-00048O-Ul; Fri, 25 Oct 2024 10:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3s-00042v-4j
+ id 1t4L3s-00042x-57
  for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:08 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3l-0007mm-KH
+ id 1t4L3m-0007nI-CA
  for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:07 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-431548bd1b4so20390635e9.3
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4315c1c7392so21121825e9.1
  for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 07:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729865580; x=1730470380; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729865581; x=1730470381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oxpTyYZBHeinKYjs0KLdQZTFPyy0lkXjTFzf5hZbbFo=;
- b=CGBuWOgnxSzMdPYu0Rqs/8R6Pw7jLtC2XSAHErJjZbnCk75QLKtNPWZlryveWc0Ile
- 8V0uW9QhvS1i9bzN67Xkl3k8KZAzaZVGiLeC9Uy+KEp1uJ+O88fJM9nmTi7rgAXLnYl1
- TuSuikrcAK7V12/E9k6/cpFuxzbC4gHCCKr3tYZAhjvywF6djZoX+qQg7UcVzoSA0LIT
- DqYKreg8VrONjmnCnNcS2Prx9ZsCD6nVzgLLMxNP+S46puGCq1w4Rvmzg8648k9Ze1sR
- I94Z22WNprp5IfK2t0L4oZvUnmdGlM2Ok2c/JpRBN0GPWncUOSMY0zA+dCPvAiAvVkFP
- R7cQ==
+ bh=YDlbbvylJyMrU/YJShcxhMfUmai1iRbva+PhQ15qan4=;
+ b=O2s93LMAgXPvuN0338XpNBLW0UNo2M5/Kgk+ROvEM52yyeaN5uzbmk2gYnF9lHu2Lc
+ JDouInfGo/lSWGLNW0EqQiXo/1ZnwSUYL2+3D48lEkb0qKDNZytlqyByju9SP5TAXYWn
+ wHsfh7G2sBpR7j6xBihiAFL13b4ug89XNOW5jTMBgVu2UovagfCoq+npfffyeEjcdGnW
+ 1QKBwiCn0Dlctx6oLTOYZOxqZEttcN91LdKz+jblhqItmYpQzk0P47Hy6UdHx17qy4LZ
+ N0y3MAI/1G+kHb069gIRHXrzJ1SB0rGR99wpG7SZdF4vGf8BNOHl5x+pZIloTamiL0WQ
+ /VGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729865580; x=1730470380;
+ d=1e100.net; s=20230601; t=1729865581; x=1730470381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oxpTyYZBHeinKYjs0KLdQZTFPyy0lkXjTFzf5hZbbFo=;
- b=G+B9gMOZs4tGVGMRPIb0rEzKxO0lvxZEGi4FnSyOzxDdcDDcVYkD6bAMqDp6J0aXqA
- 4DDb8uXwgHcey+AIL22r8rGHetFnmvNWkC+Px9AmhhNBTv9WVxu6cEx8VUYM2zOwgjJH
- e4NeGEBO7MraixUCuCHUIWCllPUlQjaZoCMLIox3K9JGR570uh82l31KiDyiGWNji4Bd
- apu37jyb0oSTNcxSTb5u3M7FpVdMs7EboSnsfAI+S7N0aKLGmXzvXaf/wqcpGnUntiU6
- 88S7H+x/mEDMNu20xjz5TrnGYhLG5fR6tvo56FXYvvPmpMSnlhfUjf66ib8CI+CdHGr4
- F4oA==
+ bh=YDlbbvylJyMrU/YJShcxhMfUmai1iRbva+PhQ15qan4=;
+ b=AFzUpNvbQjzVdq82GrTYvl1NBTvgYGr0cJtOmzuDJy2fe9yK05ZyhF/TZtTLA1WPmJ
+ Qdqmpr5NEEz8kg9KXjswRUOGGijXA6yiClDCFXQLXOOOh1Pq/7px+5jc41YyEB42FhW/
+ FR441V7Tpc9oltjkefnKZY2VWtxojj+900AOQUN7B21pecwI4hqs1cxu2mlfGKYVE3RS
+ ZPoRjuMq11LDK4kBOlotbNc4Re3HBlzOF1xXlYCK8fi9r1RvCcvMVtPcHZ3J2nDJu++P
+ O+JtbEwpgAQrKs+NZm+YktiaQQjDOP8szqCnkhTz1JHsE4Zak/Q4IVh58VOB0UfOFzqN
+ DiGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWXPWGFVi1/fCPJJs0bfVYrNA2bxGymiuoVLR3ujuTFSxM17Yf8NzDJJVt7GskVmGv0fjwCSLQWlncG@nongnu.org
-X-Gm-Message-State: AOJu0YyjQrWL02OHU7qXJZ6DkZYPh7IpRsJJV1D/utI4SmLWvh5MNUkR
- +S8GZEp3aHmLV80Vp8RcrlxMSiAY4nfvgbYBgbL3XYhLNhzc7DzK1/dDgGzGV/A=
-X-Google-Smtp-Source: AGHT+IFmo0A/cK7mxek7qVmenyHyXSHRnCM6HvcgZruK2l+y0NWBmuNTPj3PU5VnMspDYKzexoWsSw==
-X-Received: by 2002:a05:600c:511c:b0:42f:823d:dddd with SMTP id
- 5b1f17b1804b1-4318423b856mr71363435e9.27.1729865580016; 
+ AJvYcCUcNaRht+KrRATa1kshZL7CE3UIzImIPJCbMX9wXDii7DiICbKEB4jEMnWOqk9ipuFDUJH7SSDVmPP8@nongnu.org
+X-Gm-Message-State: AOJu0Yzzt223NZSYxzzJqVNlc6yYZj/ZTl5B0q6RujqB8nDYLLGqUcg5
+ uKmDLiDEXaJKRM2CNkxTkqEJU9y04lfB4RKovsvFOiKsVFD+POyVIRKwsSoqXbU=
+X-Google-Smtp-Source: AGHT+IGhrCfW0xMsmU6S61HVoy3sW36vUuPi9HltT0dQ13BCpWIevBn1kVk6idl0Da/qYmgJw0nA8w==
+X-Received: by 2002:a05:600c:1c03:b0:42b:af5a:109 with SMTP id
+ 5b1f17b1804b1-4318424eb98mr90790405e9.24.1729865580849; 
  Fri, 25 Oct 2024 07:13:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.12.59
+ 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.13.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 07:12:59 -0700 (PDT)
+ Fri, 25 Oct 2024 07:13:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -76,23 +76,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
  qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 04/21] target/mips: Explicitly set 2-NaN propagation rule
-Date: Fri, 25 Oct 2024 15:12:37 +0100
-Message-Id: <20241025141254.2141506-5-peter.maydell@linaro.org>
+Subject: [PATCH 05/21] target/loongarch: Explicitly set 2-NaN propagation rule
+Date: Fri, 25 Oct 2024 15:12:38 +0100
+Message-Id: <20241025141254.2141506-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241025141254.2141506-1-peter.maydell@linaro.org>
 References: <20241025141254.2141506-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,126 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the 2-NaN propagation rule explicitly in the float_status words
-we use.
+Set the 2-NaN propagation rule explicitly in the float_status word we
+use.
 
-For active_fpu.fp_status, we do this in a new fp_reset() function
-which mirrors the existing msa_reset() function in doing "first call
-restore to set the fp status parts that depend on CPU state, then set
-the fp status parts that are constant".
+(There are a couple of places in fpu_helper.c where we create a
+dummy float_status word with "float_status *s = { };", but these
+are only used for calling float*_is_quiet_nan() so it doesn't
+matter that we don't set a 2-NaN propagation rule there.)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/mips/fpu_helper.h       | 22 ++++++++++++++++++++++
- target/mips/cpu.c              |  2 +-
- target/mips/msa.c              | 17 +++++++++++++++++
- fpu/softfloat-specialize.c.inc | 18 ++----------------
- 4 files changed, 42 insertions(+), 17 deletions(-)
+ target/loongarch/tcg/fpu_helper.c | 1 +
+ fpu/softfloat-specialize.c.inc    | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/mips/fpu_helper.h b/target/mips/fpu_helper.h
-index ad1116e8c10..7c3c7897b45 100644
---- a/target/mips/fpu_helper.h
-+++ b/target/mips/fpu_helper.h
-@@ -44,6 +44,28 @@ static inline void restore_fp_status(CPUMIPSState *env)
-     restore_snan_bit_mode(env);
+diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
+index f6753c5875b..21bc3b04a96 100644
+--- a/target/loongarch/tcg/fpu_helper.c
++++ b/target/loongarch/tcg/fpu_helper.c
+@@ -31,6 +31,7 @@ void restore_fp_status(CPULoongArchState *env)
+     set_float_rounding_mode(ieee_rm[(env->fcsr0 >> FCSR0_RM) & 0x3],
+                             &env->fp_status);
+     set_flush_to_zero(0, &env->fp_status);
++    set_float_2nan_prop_rule(float_2nan_prop_s_ab, &env->fp_status);
  }
  
-+static inline void fp_reset(CPUMIPSState *env)
-+{
-+    restore_fp_status(env);
-+
-+    /*
-+     * According to MIPS specifications, if one of the two operands is
-+     * a sNaN, a new qNaN has to be generated. This is done in
-+     * floatXX_silence_nan(). For qNaN inputs the specifications
-+     * says: "When possible, this QNaN result is one of the operand QNaN
-+     * values." In practice it seems that most implementations choose
-+     * the first operand if both operands are qNaN. In short this gives
-+     * the following rules:
-+     *  1. A if it is signaling
-+     *  2. B if it is signaling
-+     *  3. A (quiet)
-+     *  4. B (quiet)
-+     * A signaling NaN is always silenced before returning it.
-+     */
-+    set_float_2nan_prop_rule(float_2nan_prop_s_ab,
-+                             &env->active_fpu.fp_status);
-+}
-+
- /* MSA */
- 
- enum CPUMIPSMSADataFormat {
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 9724e71a5e0..d0a43b6d5c7 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -407,9 +407,9 @@ static void mips_cpu_reset_hold(Object *obj, ResetType type)
-     }
- 
-     msa_reset(env);
-+    fp_reset(env);
- 
-     compute_hflags(env);
--    restore_fp_status(env);
-     restore_pamask(env);
-     cs->exception_index = EXCP_NONE;
- 
-diff --git a/target/mips/msa.c b/target/mips/msa.c
-index 61f1a9a5936..9dffc428f5c 100644
---- a/target/mips/msa.c
-+++ b/target/mips/msa.c
-@@ -49,6 +49,23 @@ void msa_reset(CPUMIPSState *env)
-     set_float_detect_tininess(float_tininess_after_rounding,
-                               &env->active_tc.msa_fp_status);
- 
-+    /*
-+     * According to MIPS specifications, if one of the two operands is
-+     * a sNaN, a new qNaN has to be generated. This is done in
-+     * floatXX_silence_nan(). For qNaN inputs the specifications
-+     * says: "When possible, this QNaN result is one of the operand QNaN
-+     * values." In practice it seems that most implementations choose
-+     * the first operand if both operands are qNaN. In short this gives
-+     * the following rules:
-+     *  1. A if it is signaling
-+     *  2. B if it is signaling
-+     *  3. A (quiet)
-+     *  4. B (quiet)
-+     * A signaling NaN is always silenced before returning it.
-+     */
-+    set_float_2nan_prop_rule(float_2nan_prop_s_ab,
-+                             &env->active_tc.msa_fp_status);
-+
-     /* clear float_status exception flags */
-     set_float_exception_flags(0, &env->active_tc.msa_fp_status);
- 
+ int ieee_ex_to_loongarch(int xcpt)
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 70cd3628b54..c60b999aa3d 100644
+index c60b999aa3d..bbc3b70fa9d 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -402,24 +402,10 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+@@ -402,10 +402,10 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
          /* target didn't set the rule: fall back to old ifdef choices */
  #if defined(TARGET_AVR) || defined(TARGET_HEXAGON) \
      || defined(TARGET_RISCV) || defined(TARGET_SH4) \
--    || defined(TARGET_TRICORE) || defined(TARGET_ARM)
-+    || defined(TARGET_TRICORE) || defined(TARGET_ARM) || defined(TARGET_MIPS)
+-    || defined(TARGET_TRICORE) || defined(TARGET_ARM) || defined(TARGET_MIPS)
++    || defined(TARGET_TRICORE) || defined(TARGET_ARM) || defined(TARGET_MIPS) \
++    || defined(TARGET_LOONGARCH64)
          g_assert_not_reached();
--#elif defined(TARGET_MIPS) || defined(TARGET_HPPA) || \
-+#elif defined(TARGET_HPPA) || \
-     defined(TARGET_LOONGARCH64) || defined(TARGET_S390X)
--        /*
--         * According to MIPS specifications, if one of the two operands is
--         * a sNaN, a new qNaN has to be generated. This is done in
--         * floatXX_silence_nan(). For qNaN inputs the specifications
--         * says: "When possible, this QNaN result is one of the operand QNaN
--         * values." In practice it seems that most implementations choose
--         * the first operand if both operands are qNaN. In short this gives
--         * the following rules:
--         *  1. A if it is signaling
--         *  2. B if it is signaling
--         *  3. A (quiet)
--         *  4. B (quiet)
--         * A signaling NaN is always silenced before returning it.
--         */
+-#elif defined(TARGET_HPPA) || \
+-    defined(TARGET_LOONGARCH64) || defined(TARGET_S390X)
++#elif defined(TARGET_HPPA) || defined(TARGET_S390X)
          rule = float_2nan_prop_s_ab;
  #elif defined(TARGET_PPC) || defined(TARGET_M68K)
          /*
