@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45F49B0F90
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 22:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD7F9B0F93
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 22:11:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4QcH-0001Ix-9H; Fri, 25 Oct 2024 16:09:01 -0400
+	id 1t4Qdp-000353-Mg; Fri, 25 Oct 2024 16:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t4QcF-0001HO-1A
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:08:59 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t4QcD-00012o-Ih
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:08:58 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20c70abba48so20320945ad.0
- for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 13:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729886936; x=1730491736; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tbUb6ngdrt7cd3FL66J1JQgQ6vqA8vQccN+11IX7wI0=;
- b=L7lTRfKmq/8LuKcuKSwKx47pWHAoZlwgpHc9/KJgIcE67u8HfRZ4NmRNt46xOlWi3h
- sUzeV8SYXyQNpIADQX5SMoFrDWJgnmayAvq9ZmaZLlRRf6/xy/UoL/HLdl61oPolXIfF
- Rqz17ohuBLG4xgiiV0Pl9psj1Jykd1W4SZrbMzjUKS3Vgt/Xju/SCuSp3jyqdXk3Xo5f
- E8UxyilnFObEOi59SpvNb7eOtBlS53sji+NeSYfQ1topoG4CVTTAftiKMcrx0hk5M8U+
- gXafOm2FP6qZ/xMN9b/T8H9yunqJGb7Wp/uEFq/dFawHC5w3Ahae64htj9EAn0VxpYLh
- DwIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729886936; x=1730491736;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tbUb6ngdrt7cd3FL66J1JQgQ6vqA8vQccN+11IX7wI0=;
- b=ZNQgxC8H2NDDQ18mXetYxy2WMshnhJiMXyY3INbDmpZ5EnzYQB+cB18GmV/V71hk/W
- 3pPW7b9F+5NjXVxH0qGaUpZ+zKTHniFswAIN9iehquZhH6eKK7wPghS6rmpaEQtQtjym
- GbRBZCoW+RzjXGOCoJCcwHmHG1KXJp6ylxwbuf5zJVpUy6DFBL6tHoZfK8G54+k2z2Wx
- rcGX6fevS2RPPJp1wBNT4Rf5uc3UymA1HTL1OD9HlgwoMY0Lk1qigxPYx1adPnrOjoVy
- I+NwYqAFQDtYSy2BCZwbrCdjP1LqKJzlMtIptbVdwocrB5ozMkxUwyF+GKpStLtAlZaX
- GhAw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEovMBPhkfGie24kMQj0HQ+Ng5R1AwW01NJf0sU/PhddkxyisB2/avhTqBHmCI5goC0O6jx+dzgAcF@nongnu.org
-X-Gm-Message-State: AOJu0YxGi3QpfHqjge9ozIukDioVoCc2btCf121g8836fQnBfJ4f8UZR
- 3w8RYcU3dNBlcrJIWR60tdafFTXXJjtyP+pr5zNMZn6iR0zqC2EoQN520HFFcEo=
-X-Google-Smtp-Source: AGHT+IEoiR9EOtVasy/zSIPz/sDj5ItG5+TOlisE6k2pO+kq8VP+lazuw+lJK2L6Bx8OpFqJPzmFcg==
-X-Received: by 2002:a17:902:f683:b0:20c:93c2:9175 with SMTP id
- d9443c01a7336-210c6c1e21bmr4562895ad.30.1729886936021; 
- Fri, 25 Oct 2024 13:08:56 -0700 (PDT)
-Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
- [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-210bc02ecc8sm12994355ad.222.2024.10.25.13.08.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Oct 2024 13:08:55 -0700 (PDT)
-Message-ID: <060dbc04-ca34-4c1d-9272-aff02a70ed01@linaro.org>
-Date: Fri, 25 Oct 2024 13:08:54 -0700
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t4Qdd-00034N-AB
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:10:26 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t4Qdb-0001Lj-OA
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 16:10:25 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 46F789C3F2;
+ Fri, 25 Oct 2024 23:09:47 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8930015D59F;
+ Fri, 25 Oct 2024 23:10:20 +0300 (MSK)
+Message-ID: <89bfa733-4496-4128-bace-94099b96a9db@tls.msk.ru>
+Date: Fri, 25 Oct 2024 23:10:20 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/23] ci: enable rust in the Debian and Ubuntu system
- build job
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 19/23] rust: do not use --generate-cstr
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
  junjie.mao@hotmail.com, berrange@redhat.com
 References: <20241025160209.194307-1-pbonzini@redhat.com>
- <20241025160209.194307-24-pbonzini@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241025160209.194307-24-pbonzini@redhat.com>
+ <20241025160209.194307-20-pbonzini@redhat.com>
+ <b86de87b-99f3-4fce-9a33-3580d37d90dc@tls.msk.ru>
+ <3a0a5685-8c8b-46ad-8933-0fff8715f47d@linaro.org>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <3a0a5685-8c8b-46ad-8933-0fff8715f47d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +106,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/25/24 09:02, Paolo Bonzini wrote:
-> We have fixed all incompatibilities with older versions of rustc
-> and bindgen.  Enable Rust on Debian to check that the minimum
-> supported version of Rust is indeed 1.63.0, and 0.60.x for bindgen.
+25.10.2024 23:06, Pierrick Bouvier wrote:
+> On 10/25/24 13:03, Michael Tokarev wrote:
+>> 25.10.2024 19:02, Paolo Bonzini wrote:
+>>> --generate-cstr is a good idea and generally the right thing to do,
+>>> but it is not available in Debian 12 and Ubuntu 22.04.  Work around
+>>> the absence.
+>>
+>> Can't we just install a more recent bindgen and use all the current
+>> features of it, like it's done in patch 22 for ubuntu?
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   .gitlab-ci.d/buildtest.yml | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index aba65ff833a..8deaf9627cb 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -40,7 +40,7 @@ build-system-ubuntu:
->       job: amd64-ubuntu2204-container
->     variables:
->       IMAGE: ubuntu2204
-> -    CONFIGURE_ARGS: --enable-docs
-> +    CONFIGURE_ARGS: --enable-docs --enable-rust
->       TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
->       MAKE_CHECK_ARGS: check-build
->   
-> @@ -71,7 +71,7 @@ build-system-debian:
->       job: amd64-debian-container
->     variables:
->       IMAGE: debian
-> -    CONFIGURE_ARGS: --with-coroutine=sigaltstack
-> +    CONFIGURE_ARGS: --with-coroutine=sigaltstack --enable-rust
->       TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4-softmmu
->         sparc-softmmu xtensa-softmmu
->       MAKE_CHECK_ARGS: check-build
+> Users yes, but distros expect to be able to use their packaged version.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Pretty please do not target rust in qemu for *currently* supported
+distros.  For debian bookworm it is already way too late, - for
+bookworm as a distro, qemu with rust is hopeless, it is possible
+only with trixie and up.
+
+Users wishing to experiment can install more recent packages, for
+qemu ci it is the way to go too using the way in patch 22, and that's
+it.  There's no need to sacrifice qemu rust code for current debian
+stable.  rust is already too volatile by its own, and targeting
+that wide range of versions is insane.
+
+/mjt
+
 
