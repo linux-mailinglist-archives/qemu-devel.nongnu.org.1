@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFC89B0545
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953989B0561
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 16:16:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4L41-0004C7-5g; Fri, 25 Oct 2024 10:13:17 -0400
+	id 1t4L43-0004Fb-Gh; Fri, 25 Oct 2024 10:13:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3y-0004A7-DH
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:14 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1t4L3z-0004C3-Np
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:15 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t4L3q-0007pw-F8
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:14 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-431695fa98bso20341545e9.3
+ id 1t4L3r-0007qa-TS
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 10:13:15 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4315abed18aso20415545e9.2
  for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 07:13:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729865585; x=1730470385; darn=nongnu.org;
+ d=linaro.org; s=google; t=1729865586; x=1730470386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LWQTkVIYoMx387TeXW3tDVaYyEBBg7QXyfQFYBePRB4=;
- b=lkAQl2earbkay8EYGVF02u13RWSiTiD0htE/yj8EOZ8ReUAM4/U91P8KDfFobko5la
- CPrcz2i3MdCG0iZCkI5mmv9xZZaeRB1FHD/Rsn72T4WFWyOwZkCkGVj/HNXYXEvC+RZd
- AtGE9Elskx0r4978Zhm2KD1y4NvCbuJ7sTd4hRgOsPH/OL++YSb8k2DlAfsu6TIlC+FT
- tURhSW9NsqeNVeu9JezMvxUCl5+iPTPUPdV25YCUBgqAQyWaZUr6FF9ZIZCOHwPv9rjd
- EJkMTY3EXCxgE6lV9x0oVPwSzFtBe2a9SbmrFhKpkN8zubZB+IbvU8uxzCcd3IxilvhE
- cLoQ==
+ bh=jjOM3QYK37qULOvoMpKikOAGRTQIulU/PhbW7+12E+A=;
+ b=CLdBiU/1Fe8HGeL5xo32mAHXZwY5KCAkRLjHEkm3BRA+m/gnZH6OHrvtNw7cziYpaV
+ b0cp29vrbJL8opXePKe9Fsqy20IZpfaGVEh8Sosq/1fBUW+Mrrds6xLlARLRBlDFht8k
+ LW/2kU35JWF4kHP6tpf4cFzCUlFuGZMCMJfINohy8W18Ry5NBbhJuzpipdgcQW3BPdoP
+ uzFxmaPHwuiHNEQjVyUhdQ7OPjS14voWjtPZOMMkX6ZPM4Y/fYMw+2IyaRy2TCiVCUSb
+ +EHo2chM0Paf9j1pJbx63PPimIkkwzi6l7Wu2mRGoIpvFonGSbSRnaKb5H2uU/BkXj4z
+ fpDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729865585; x=1730470385;
+ d=1e100.net; s=20230601; t=1729865586; x=1730470386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LWQTkVIYoMx387TeXW3tDVaYyEBBg7QXyfQFYBePRB4=;
- b=SBblkma8woPJpjgtVxCa3cWGQ9EJmQt//vjqgTAHIQerb35NuNlhNSd1IpnZJsV/SL
- rIG8Vm8IFlVavYPOVrAAZ60wU1jhNJEme8zlhsrGKJoZLyX9NBdZ73U4kReRe1E3Yjy2
- eyLXrnBDEgwTQVWMae71mk6jme0RzTeLThIAvZIGHKudCdj/cqywmEVwOijqz8bGQ6JL
- B5Kfb3E5aob05qvgWDnENYW6HqD4gj7vvNLSH2vWKkY1Yrm8JVhfxWACZkF6qkyaK4rx
- N8/G4e2MuVUE0/8BpdfRyZsDJ4EdRbg+rlwFdEw/O1vYxS+qG6A138rk4uvD+hD6cVgk
- cuIw==
+ bh=jjOM3QYK37qULOvoMpKikOAGRTQIulU/PhbW7+12E+A=;
+ b=OiDYAz7qfheGe/MialAtHQN5Z3oQIRM42B2Qd1zPYg9E85AhBASCEWccyXvchpVxFR
+ EsqEYr6M9m+ZgGh2c8PdfrV/smAay8tJ5cSNn6j9L9O5MW4FTyz6GTEwSTFBLgKOq3Hp
+ D+s934GE9pcJZ9nK98DyMKekQ/yhBYVTxs+4PKfP+tDYPjbcwv9i3ADqLpJyRyJjP+m8
+ G/jrN80OYphzA3daWc+nZUzYNtPC4foHK90J2gjlwoMizqUgkZrdOnaQScG4VL6bG3cY
+ 2t5pFBg5YhAQwpstgpnCVAMQ2LQlionQO02eESHdISr/tqKMMdjsi8wjmBVH65SzXEwn
+ NWdg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWeplKb4XgcXcaaj5ZOTvdXBFBmJo0sUWeNO2H9Sas8RnrbucSbUKvO5ztY2ZX3T5D4FlT7/gUdfZjW@nongnu.org
-X-Gm-Message-State: AOJu0YzmlymYcBmwiN48qA+9evGUE0zGT75LmKgwKL9VHp4UWKU780Dk
- 0lvPmhAjj4Mxq1fFenzTd9N35p0MwPdLJcbCdV+CxmCV6bOayTrwG9NvzxEA4rg=
-X-Google-Smtp-Source: AGHT+IHSPtYopQuk24YCPV4j/3lLijdSJYW/1g+JfHiVm9QFLT6tmDk6VCMAGDw3f+ncfW6XOWoYQw==
-X-Received: by 2002:a05:600c:6d19:b0:425:7bbf:fd07 with SMTP id
- 5b1f17b1804b1-4318c8cd0bamr52618515e9.5.1729865585055; 
+ AJvYcCV+PCrGbRhb6/SU/oyXd3jdEgBCjOer0liX/AvZmr70u+kJtaDBf108U83I+XLu4JpU4p/ACpe1sHAQ@nongnu.org
+X-Gm-Message-State: AOJu0Yy3pifFiUffbmSPimsgarB/OV2JGhoFZKAoBvTfr8dmarvwxu7l
+ c9xSu3hNdY9PkNlVHITmQxYrPFShSOIJ7u8jh3hKZm/VSIOXZWrNOQ92T7uB/zs=
+X-Google-Smtp-Source: AGHT+IElcpmJ1LU46tPdnbNHuTc3BFBmHYJc+kaPi4JdihFLfSRZx1lONZoPeZB6hUVJoUrQ/Pjf/w==
+X-Received: by 2002:a05:600c:5118:b0:431:3a6d:b84a with SMTP id
+ 5b1f17b1804b1-431841e12cdmr75651695e9.4.1729865585974; 
  Fri, 25 Oct 2024 07:13:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.13.04
+ 5b1f17b1804b1-4318b57b051sm50104535e9.42.2024.10.25.07.13.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Oct 2024 07:13:04 -0700 (PDT)
+ Fri, 25 Oct 2024 07:13:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -76,17 +76,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
  qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 10/21] target/m68k: Initialize float_status fields in gdb
- set/get functions
-Date: Fri, 25 Oct 2024 15:12:43 +0100
-Message-Id: <20241025141254.2141506-11-peter.maydell@linaro.org>
+Subject: [PATCH 11/21] target/sparc: Move cpu_put_fsr(env, 0) call to reset
+Date: Fri, 25 Oct 2024 15:12:44 +0100
+Message-Id: <20241025141254.2141506-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241025141254.2141506-1-peter.maydell@linaro.org>
 References: <20241025141254.2141506-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,44 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In cf_fpu_gdb_get_reg() and cf_fpu_gdb_set_reg() we use a temporary
-float_status variable to pass to floatx80_to_float64() and
-float64_to_floatx80(), but we don't initialize it, meaning that those
-functions could access uninitialized data.  Zero-init the structs.
+Currently we call cpu_put_fsr(0) in sparc_cpu_realizefn(), which
+initializes various fields in the CPU struct:
+ * fsr_cexc_ftt
+ * fcc[]
+ * fsr_qne
+ * fsr
+It also sets the rounding mode in env->fp_status.
 
-(We don't need to set a NaN-propagation rule here because we
-don't use these with a 2-argument fpu operation.)
+This is largely pointless, because when we later reset the CPU
+this will zero out all the fields up until the "end_reset_fields"
+label, which includes all of these (but not fp_status!)
+
+Move the cpu_put_fsr(env, 0) call to reset, because that expresses
+the logical requirement: we want to reset FSR to 0 on every reset.
+This isn't a behaviour change because the fields are all zero anyway.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-Spotted by code-inspection while I was doing the 2-NaN propagation
-patches.
----
- target/m68k/helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/sparc/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 9d3db8419de..9bfc6ae97c0 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -36,7 +36,7 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-     CPUM68KState *env = &cpu->env;
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 54cb269e0af..e7f4068a162 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -76,6 +76,7 @@ static void sparc_cpu_reset_hold(Object *obj, ResetType type)
+     env->npc = env->pc + 4;
+ #endif
+     env->cache_control = 0;
++    cpu_put_fsr(env, 0);
+ }
  
-     if (n < 8) {
--        float_status s;
-+        float_status s = {};
-         return gdb_get_reg64(mem_buf, floatx80_to_float64(env->fregs[n].d, &s));
-     }
-     switch (n) {
-@@ -56,7 +56,7 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     CPUM68KState *env = &cpu->env;
+ #ifndef CONFIG_USER_ONLY
+@@ -805,7 +806,6 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
+     env->version |= env->def.maxtl << 8;
+     env->version |= env->def.nwindows - 1;
+ #endif
+-    cpu_put_fsr(env, 0);
  
-     if (n < 8) {
--        float_status s;
-+        float_status s = {};
-         env->fregs[n].d = float64_to_floatx80(ldq_be_p(mem_buf), &s);
-         return 8;
-     }
+     cpu_exec_realizefn(cs, &local_err);
+     if (local_err != NULL) {
 -- 
 2.34.1
 
