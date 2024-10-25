@@ -2,76 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1870C9B08EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAB29B08EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:55:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4Maf-0004JP-Aa; Fri, 25 Oct 2024 11:51:05 -0400
+	id 1t4Mdo-0005dk-Ns; Fri, 25 Oct 2024 11:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4MaZ-0004Hx-2D
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:51:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4MaX-0003Q1-Fa
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:50:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729871454;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6FvhmmA6psm5Cd4vegaSeof9B4Z+518jhtoT5JJvhB4=;
- b=Abni3FZxFqQ4RGcH6w71EJka/rUo/2w6FIt1AeojSBqAB5lJPFmFTlDkYT+CgXJ8sEfJ5S
- KDJ8gLrzfyOuWTBw7jPmPR6NRq2kLbcj734mts0851uvzfXSf4oi7FXkKxfr4mOB51KT4c
- NxDLo8I395ug3uXELpvuD5d4vtOerro=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-iS8kAUS7PkaGErimOnLTDQ-1; Fri,
- 25 Oct 2024 11:50:48 -0400
-X-MC-Unique: iS8kAUS7PkaGErimOnLTDQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 992A819560B0; Fri, 25 Oct 2024 15:50:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.164])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 23E15300018D; Fri, 25 Oct 2024 15:50:45 +0000 (UTC)
-Date: Fri, 25 Oct 2024 16:50:42 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: 'make check-functional' uses lots of disk space in build tree
-Message-ID: <Zxu-UlT2nvreKvBT@redhat.com>
-References: <CAFEAcA8DE=i5X_=GxqrupOMqrQ6-BoL2HWo_GPe1pNhL15QU5g@mail.gmail.com>
- <ZxujrN9bHOboZzZT@redhat.com>
- <ac44d70d-2f57-4845-8638-f0939b0c1ea3@linaro.org>
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1t4Mdm-0005cy-5c; Fri, 25 Oct 2024 11:54:18 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1t4Mdk-0003hA-QN; Fri, 25 Oct 2024 11:54:17 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20c714cd9c8so21206385ad.0; 
+ Fri, 25 Oct 2024 08:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729871654; x=1730476454; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qDI54KTdFRpNej9YaQfxoWTqRblPMpcIvzw4SOwLtec=;
+ b=YfjgAAzK2mR07UcrY88FOML0Af3SMtV6JtJ8VR9W+3oJflX+mhZRljsjfryLOEzT+n
+ SMoncOnSv9dkuXK2K8BNa9Zbv+Kp4cHUSzuGNTzpU1rEp29i47W/lNW5+I761IZ12Ags
+ 6hmaNOykdCNFfdjzAv67547r++8PwafggzTuquJj9lVVRu2XNj/h+Cn/3JtFvEnpAkkV
+ 8nEGWKqKTLEReKJKPUGTgcUpIye7esNlaD7Yu/uSEUl7KB8NtVi5zoyiUDlYfTGY16BY
+ 8aGU07WxKYjNz8yQkTkhomMzy+H4ocQXi3NHkX+yHvLBliKN0DhQHBjUmnwtYh0d2oTM
+ tC4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729871654; x=1730476454;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qDI54KTdFRpNej9YaQfxoWTqRblPMpcIvzw4SOwLtec=;
+ b=whEPjKYq1uhhRwEwOa9FnkI845iaDthX9G/X2DQ+A1xCX6QwcSnE+IzUojBilwrLPI
+ JGzQ2wp1zUDAiFZbumko8cI250DEc9kMMdHb0m81uYvVQ5XfRIGaX2N0WwpfaI3WWur1
+ BqJUzZo22ykUnXYctUrNmybgLCujBa8Sc1UPSHfpIn6oOZQ4V51DB8clWEaDPgYUsCb5
+ 19/9Xmt7AedEi6FkHiQjOFS8gC2yVzs678e9Dd6vi+9IsCOconDDpH8xXDhLjyUlixmi
+ 3hkFdksYMfjkuJq3DZ1tN/DPEP1Uq149RT/6XUx/pYl70MV/shDF851FeHB9MQubMZos
+ Ui/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUexwm9KLlph23Yql/IWlovr64Yrul53ByKvEC37D4uxiDz3N1Xvnd+GcIqLqH9o2kQgdyfPyo9SWTP@nongnu.org,
+ AJvYcCUm4bfKjvX1eVbHEMiUkA67EUSbL5iN7SIdXtb826ViElLL+M4CJqd50f3uIKVxTiD5UYhZin6uIQqMkQ==@nongnu.org,
+ AJvYcCXAthWKchL1LrFbC4YGpNITrpv/VjPOv1Zcmv3GOd0yogFBt3B6gp9jtjvX14EGSdKqO0iMu9w3/A4=@nongnu.org
+X-Gm-Message-State: AOJu0Yxr4vuzJYswnMY88fX0/kkHULQeMnNRFCh2OvrSdMyFz0OcF8os
+ zKdrNZzp/RDfVxv1coqWad7ruQ+loRamTwdp2xZrrb5Fet5v6fCmes3B1Wq9yxuPk60aqVQFG45
+ Scf3ZXPOBo0Z5HKcXCqj5qplCSh8=
+X-Google-Smtp-Source: AGHT+IF64cda8/CX7HuY9GCD6+i5F9X3dCRHi9cKjZBXlUdfcsjk4LFg04CSvxxK4GilcKFWrW34xOFk3lYcPoihi1M=
+X-Received: by 2002:a17:902:ceca:b0:20c:528d:7063 with SMTP id
+ d9443c01a7336-20fa9e0aa82mr139767605ad.19.1729871653972; Fri, 25 Oct 2024
+ 08:54:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac44d70d-2f57-4845-8638-f0939b0c1ea3@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241025141254.2141506-1-peter.maydell@linaro.org>
+ <20241025141254.2141506-14-peter.maydell@linaro.org>
+In-Reply-To: <20241025141254.2141506-14-peter.maydell@linaro.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 25 Oct 2024 08:54:03 -0700
+Message-ID: <CAMo8BfJvoCri2+Xh-2e8E0UKVTJW00nJHzTskzdk6OZhXcd90Q@mail.gmail.com>
+Subject: Re: [PATCH 13/21] target/xtensa: Factor out calls to
+ set_use_first_nan()
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Song Gao <gaosong@loongson.cn>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Aleksandar Rikalo <arikalo@gmail.com>, Stafford Horne <shorne@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, qemu-ppc@nongnu.org, 
+ qemu-s390x@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.866,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,41 +104,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 25, 2024 at 12:29:13PM -0300, Philippe Mathieu-Daudé wrote:
-> On 25/10/24 10:57, Daniel P. Berrangé wrote:
-> > On Fri, Oct 25, 2024 at 02:50:50PM +0100, Peter Maydell wrote:
-> > > I notice that with the recent migration to check-functional we
-> > > seem to be using a lot of disk space in the build tree: for
-> > > one of my build trees
-> > >   du -h build/arm-clang/tests/functional/
-> > > returns a total of 4.5GB used, for instance, most of which seems
-> > > to be guest binary files.
-> > > 
-> > > Shouldn't something be cleaning these up after a test run?
-> > 
-> > The big problem seems to be tests/functional/test_aarch64_sbsaref.py
-> > which is creating a pair of 256 MB firmware files on every test
-> > and not deleting them.
-> > 
-> > The tests/functional/test_arm_raspi2.py is also uncompressing some
-> > archives and not deleting them.
-> 
-> Some files could be added back to the cache (with the proper hash)
-> so we don't need to re-extract or re-create them everytime.
+On Fri, Oct 25, 2024 at 7:13=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> In xtensa we currently call set_use_first_nan() in a lot of
+> places where we want to switch the NaN-propagation handling.
+> We're about to change the softfloat API we use to do that,
+> so start by factoring all the calls out into a single
+> xtensa_use_first_nan() function.
+>
+> The bulk of this change was done with
+>  sed -i -e 's/set_use_first_nan(\([^,]*\),[^)]*)/xtensa_use_first_nan(env=
+, \1)/'  target/xtensa/fpu_helper.c
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  target/xtensa/cpu.h        |  6 ++++++
+>  target/xtensa/cpu.c        |  2 +-
+>  target/xtensa/fpu_helper.c | 33 +++++++++++++++++++--------------
+>  3 files changed, 26 insertions(+), 15 deletions(-)
 
-Unless we've seen a significant time penalty from the extraction,
-I think we shouldn't complicate our cache handling. Simplicity
-is of great value when it comes to debugging problems with tests.
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Thanks.
+-- Max
 
