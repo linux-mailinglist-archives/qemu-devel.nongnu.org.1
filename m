@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FA29B0366
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 15:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23DE9B03A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 15:15:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4K2D-0001Ko-WD; Fri, 25 Oct 2024 09:07:22 -0400
+	id 1t4K97-0003my-4B; Fri, 25 Oct 2024 09:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4K1y-0001Jc-Cg
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 09:07:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t4K8t-0003mD-9L
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 09:14:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t4K1u-0006jk-Pl
- for qemu-devel@nongnu.org; Fri, 25 Oct 2024 09:07:05 -0400
+ id 1t4K8n-0007dI-79
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 09:14:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1729861619;
+ s=mimecast20190719; t=1729862045;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=xsCzoibnSTl/nXMnbdZJ3n//wdWYLvbIDAUZDZZBDm4=;
- b=JKFRgFvNVrq0f+ACXGIyOP+uOeOpfJCnqzolgVW1UnY1RGuFb7RFRaTAOH4aySLnlGPFOc
- ICFOo1D6XWrq7yimLZNzMXQkcwujJ+BaBUhyBaD2EqUZmY7yTWtsRbuWJjNy8PrisP/UzL
- 8eVW96Lgfi6i3bWoVSykqwZDvBqiONM=
+ bh=utmRzVQoxVVn0L+FQtdN5VmsyzaSJviEhgivbzjdJxU=;
+ b=fe5DbSDWRRQAihw+DNiXXSpajwYLOCA8fGoAjp6FhLlk9pkAWQO+uY9zDBnD9/kZfVV2/b
+ NHbeUIGM0/M29N7YLe35JhD9zBRWy0r9VsXVvUVgiwjcdADiVVol1fgd5Z15IbI65zsOkq
+ Ah3nLOCYnX0EAqXhEhNr+kZl00g+7to=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-5XZE1yUWNaW-rEI11PDeNg-1; Fri,
- 25 Oct 2024 09:06:55 -0400
-X-MC-Unique: 5XZE1yUWNaW-rEI11PDeNg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-ec0_NatpMH6YYRXoxfo7ag-1; Fri,
+ 25 Oct 2024 09:14:03 -0400
+X-MC-Unique: ec0_NatpMH6YYRXoxfo7ag-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9294D1955F06; Fri, 25 Oct 2024 13:06:53 +0000 (UTC)
+ id 80FB91956080; Fri, 25 Oct 2024 13:14:01 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.164])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A8051956088; Fri, 25 Oct 2024 13:06:44 +0000 (UTC)
-Date: Fri, 25 Oct 2024 14:06:42 +0100
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AA92C196BB7D; Fri, 25 Oct 2024 13:13:56 +0000 (UTC)
+Date: Fri, 25 Oct 2024 14:13:53 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Eric Auger <eric.auger@redhat.com>
 Cc: eric.auger.pro@gmail.com, cohuck@redhat.com, qemu-devel@nongnu.org,
@@ -54,24 +54,24 @@ Cc: eric.auger.pro@gmail.com, cohuck@redhat.com, qemu-devel@nongnu.org,
  armbru@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
  shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
  pbonzini@redhat.com
-Subject: Re: [RFC 18/21] arm/cpu: Introduce a customizable kvm host cpu model
-Message-ID: <ZxuX4i9NjVRizB72@redhat.com>
+Subject: Re: [RFC 21/21] arm/cpu-features: Document custom vcpu model
+Message-ID: <ZxuZkUFz_bwAA1pf@redhat.com>
 References: <20241025101959.601048-1-eric.auger@redhat.com>
- <20241025101959.601048-19-eric.auger@redhat.com>
+ <20241025101959.601048-22-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241025101959.601048-19-eric.auger@redhat.com>
+In-Reply-To: <20241025101959.601048-22-eric.auger@redhat.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -90,45 +90,45 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 25, 2024 at 12:17:37PM +0200, Eric Auger wrote:
-> This new cpu model takes by default the host cpu values.
-> However it exposes uint64 SYSREG properties for writable ID reg
-> fields exposed by the host kernel. Properties are named
-> SYSREG_<REG>_<FIELD> with REG and FIELD being those used
-> in linux arch/arm64/tools/sysreg. This done by matching the
-> writable fields retrieved from the host kernel against the
-> generated description of sysregs.
+On Fri, Oct 25, 2024 at 12:17:40PM +0200, Eric Auger wrote:
+> From: Cornelia Huck <cohuck@redhat.com>
 > 
-> An example of invocation is:
-> -cpu custom,SYSREG_ID_AA64ISAR0_EL1_DP=0x0
-> which sets DP field of ID_AA64ISAR0_EL1 to 0.
-
-"SYSREG_" feels kinda redundant to repeat on every single
-feature. 
-
-Also, is this naming convention really the same one that users
-will see when they look at /proc/cpuinfo to view features ? It
-feels pretty low level to me ?  Naming after the registers &
-fields, would be like configuring x86 CPU features by asking
-for "SYSREG_EAX_1_ECX_20" instead of saying "vmx" which is the
-human friendly name.
-
-
+> Add some documentation for the custom model.
+> 
 > Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> 
 > ---
-> 
-> At the moment, the custom model does not support legacy options
-> of the host cpu model. We need to understand what we do with those
-> latter (SVE, ...). This means that related KVM ioctl are
-> not called yet.
+>  docs/system/arm/cpu-features.rst | 55 +++++++++++++++++++++++++++-----
+>  1 file changed, 47 insertions(+), 8 deletions(-)
 
-It will be pretty painful to have to use different feature
-terminology for different CPU models. Everything in libvirt
-assuming feature terminology varies per-arch, not per-CPU
-model.
 
+> @@ -167,6 +196,16 @@ disabling many SVE vector lengths would be quite verbose, the ``sve<N>`` CPU
+>  properties have special semantics (see "SVE CPU Property Parsing
+>  Semantics").
+>  
+> +The ``custom`` CPU model needs to be configured via individual ID register
+> +field properties, for example::
+> +
+> +  $ qemu-system-aarch64 -M virt -cpu custom,SYSREG_ID_AA64ISAR0_EL1_DP=0x0
+> +
+> +This forces ID_AA64ISAR0_EL1 DP field to 0.
+
+What is the "baseline" featureset implied by 'custom' ?
+
+On x86 we have the named CPU models each setting a baseline that matches
+some corresponding real world silicon. Arm has that too, with TCG at
+least. So that way you know what the baseline is that you're toggling
+features against.
+
+Experiance on x86 was that making arbitrary feature changes on top of the
+named models could often backfire, as there are too many scenarios where
+code will check for feature "Y", and assume that existance of "Y" implies
+existance of "A", "B" and "C" too. So if you invent custom models where
+Y is set, but B is missing, there's decent risk of things going wrong in
+horrible to debug ways.  With that in mind, best practice is to try to
+just the vanilla named CPU models to the greatest extent possible, and
+keep feature toggling to an absolute minimum.  This 'custom' model does
+not seem to give us such ability for arm.
 
 With regards,
 Daniel
