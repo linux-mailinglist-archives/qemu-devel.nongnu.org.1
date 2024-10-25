@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D196E9B0858
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A81A09B0878
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Oct 2024 17:38:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4MIG-0008FR-Bm; Fri, 25 Oct 2024 11:32:04 -0400
+	id 1t4MNH-0001CW-9X; Fri, 25 Oct 2024 11:37:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t4MIB-0008F5-Mp; Fri, 25 Oct 2024 11:31:59 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t4MNF-0001CC-4T
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:37:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t4MIA-0001I7-7n; Fri, 25 Oct 2024 11:31:59 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DAB199C2F8;
- Fri, 25 Oct 2024 18:31:22 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DB9A015D37E;
- Fri, 25 Oct 2024 18:31:55 +0300 (MSK)
-Message-ID: <e4e1507d-26c7-4b70-9ff0-65568bc7813c@tls.msk.ru>
-Date: Fri, 25 Oct 2024 18:31:55 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t4MND-0001vQ-J3
+ for qemu-devel@nongnu.org; Fri, 25 Oct 2024 11:37:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729870629;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CaQTCEqsfZ+6HSH6ERGUkS6mDWs5zP1bAjIaMcG3DE4=;
+ b=XSzTSd3xnO4S2NAnC+YsSDSlnA31xb3dEd6WcWMcpqK5lczEe7DLAX9FxgZ3mgQJKGgHNf
+ 0ATkY+17Xh4F9Zk9qIBEyrH+KG3d4uiJSMEpSs+mLLNl5w2TC6dhKvoiki0yipYoiVkDSz
+ AmfUocUqR2hNVjAttt8yNfvSrQEqjNs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-98-Lh7dWMybMN6gll5QM44mqw-1; Fri, 25 Oct 2024 11:37:07 -0400
+X-MC-Unique: Lh7dWMybMN6gll5QM44mqw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43157e3521dso14594065e9.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Oct 2024 08:37:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729870626; x=1730475426;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CaQTCEqsfZ+6HSH6ERGUkS6mDWs5zP1bAjIaMcG3DE4=;
+ b=IJEISoSPvtgcqj2Du3ZzZSLddPhTwCmi06WIvyL6LAGKrktLkmORoQY1+4rmcHsIfg
+ 3azWhPyYMzHUmNy8+Kw60Rilcn8DRj//3cXqbz+LGaqC5eti6V8yt/HTFEcvtSNwAopz
+ bEMwVhBZVO2vo2n+UGp8RpcTESWyN0lzk++I8sUVGXl6RGCNgCkT3LrMS+9oBv9dGZ4S
+ PL6EgVWh+4N3bQ3IPFIgPoZ8NTGgFGvyirA0FsgiRqTwO2nkUlGXaVXUZ6Oa1s9+63Cy
+ O6dSc7yGazKU5fshYc6gLcZflsQiHfuYCiZ+4slkF8LwXCX/Us7DXgPiOzB8m3y3F1B2
+ 9BsQ==
+X-Gm-Message-State: AOJu0YwIjXi008e4YjmHZgDNEA9FQHMij9qupk9pr7Xo6Rw8QKvNko+E
+ 2Phn9PVowatNzchss7DJ0UBVeyVOaxkjSet/BM+XrbIKU3y/spiAInGY0gnpsz+4POR6c7eNFPp
+ yh61Zc+LO23RtvXkYGqnIWGAfHx4ADO2PEKHoCiUkK8/i34fKmBxbxwO1Oofdhhc=
+X-Received: by 2002:a05:600c:584b:b0:431:9397:9ace with SMTP id
+ 5b1f17b1804b1-43193979de0mr24469125e9.10.1729870625872; 
+ Fri, 25 Oct 2024 08:37:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4CRmTt1x0IrNWGrzCEn+ucImYuSbLnm2PM+bdub2Gh10vXJzBqX+cupirFXEWqx/cUG1FDg==
+X-Received: by 2002:a05:600c:584b:b0:431:9397:9ace with SMTP id
+ 5b1f17b1804b1-43193979de0mr24468985e9.10.1729870625521; 
+ Fri, 25 Oct 2024 08:37:05 -0700 (PDT)
+Received: from [192.168.10.47] ([151.81.112.43])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4318b5430edsm51468545e9.2.2024.10.25.08.37.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Oct 2024 08:37:04 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] MAINTAINERS: Add myself as a reviewer of x86 general
+ architecture support
+Date: Fri, 25 Oct 2024 17:36:56 +0200
+Message-ID: <20241025153655.188892-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241022023628.1743686-1-zhao1.liu@intel.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] target/i386/tcg: Use DPL-level accesses for
- interrupts and call gates
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, rrh.henry@gmail.com, richard.henderson@linaro.org, 
- qemu-stable <qemu-stable@nongnu.org>
-References: <20240710062920.73063-1-pbonzini@redhat.com>
- <20240710062920.73063-8-pbonzini@redhat.com>
- <806baf9d-5549-4298-99e7-f50fdf69f99d@tls.msk.ru>
- <c82f5323-9fa8-4c65-83dd-fbfa38d26f4b@tls.msk.ru>
- <CABgObfb7aoChrq=TgUqfjTkPMxhbeoW70EYFq188hUcsdUT-zA@mail.gmail.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <CABgObfb7aoChrq=TgUqfjTkPMxhbeoW70EYFq188hUcsdUT-zA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,19 +100,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-25.10.2024 18:28, Paolo Bonzini wrote:
+Queued, thanks for offering to help!
 
-> Hi! No, this is totally ok for 9.1.x; it missed 9.1 but it was already
-> submitted back then and it's okay to apply it there.
-> 
-> On the other hand, Richard wrote some large cleanup patches to enable
-> this relatively small patch. The bug has been there for many years, we
-> can keep it in 9.0.x and earlier.
-
-Aha. That makes good sense.
-
-Thank you for the follow-up and for clearing my confusion :)
-
-/mjt
+Paolo
 
 
