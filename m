@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5839B1A2E
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 19:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A8D9B1A28
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 19:55:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4kzA-0008Mp-E3; Sat, 26 Oct 2024 13:54:00 -0400
+	id 1t4kzI-0008Or-F8; Sat, 26 Oct 2024 13:54:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4kz8-0008MW-Ew
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:53:58 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4kzF-0008Ns-Gm
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:54:05 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4kz7-0003is-0B
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:53:58 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2e30db524c2so2292702a91.1
- for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 10:53:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4kzD-0003js-O5
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:54:05 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-20c805a0753so29554265ad.0
+ for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 10:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729965234; x=1730570034; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=20F5Gu/eBrEEfio2iNByM6idYfdt22xkEdJwFN0eM/0=;
- b=P4kRVCSSmeopdehH8w1FscnAKeVtByU5MzqET7WFuhMwddgCOIFLA/s2JTIp9kS3kt
- IVUkmVDRHeaUYnvM7YYckDzUyahTVT9YVI24+sKdVo667PwtewvHuBEsXbV8didJw4CC
- 3Nx5kSecheFJ1KamLIrZQuycLPTv56fstLc69uwfAiuJJYmVrFz2WEscNzcUubeF2+az
- 6/3JvfStrQJL8SliqyURt6glIF0PzHm/4hmlQORTZ2rPOIjufM/tKgIFwcxtK4+qxewI
- jnqH4oDmnGyyfenqqPuY74wTwDsMhdXWHeE3+IHnrx0alC0NaYo8CT/CpD0jIFVOb1Xe
- Qc2Q==
+ d=linaro.org; s=google; t=1729965242; x=1730570042; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KpfAMGmyWm4pigvyIOxRZMUq0CTvdaeELUk7R48DMKQ=;
+ b=VTHV8y87dPbSTG2T6XnXMR9xtzQjgJYLGU51nvj7CY3D8cLKsA7pM0a0iVl99oyO1i
+ cJYTFeB0NubPG8wet7QYvH/MzdQjFL/hdy2GEbXZh5plahoDqPNNKBarfdBKGzEoJ/DY
+ AKCKx/pbjIMuiEIJCsSDyiaCdPkpUtYMfB0gXCFj6MmQtOfr0s+DVX2uCI2SDrlvRFK3
+ OqqwZLaNthOtzkQbbXpBhmSx+QGqf/ikSfzu88bLWsJJNEmDbJ1KiiWQ514KybV3H7hw
+ 7pBMZ5lwP1JhpzoGBpRSEWl+sNtvReOeWtuZoeaBg2JIsSwBWSlmXS3ZfU8ETS81U/j2
+ vQpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729965234; x=1730570034;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=20F5Gu/eBrEEfio2iNByM6idYfdt22xkEdJwFN0eM/0=;
- b=SxV7gVXA+BMPdle625vi6r8AmW08ot8IM9BE90U8EhfKbp2+LRvaCsZ2WtVheHa46I
- TQVb1YruhDi+ob/TMjP6XLaypWE0iVX6oiS9KBQEL/IxAzRW+YM/RFcv6z0nUZR2XzPq
- iH6aeqmLhlKKTRptODRL+pUSjcRPytOJ4FgU0xgSmxrVzaIxDPM8mHb1ezydopeTX68G
- UGTQ6zPpYxNmHdkTvEz0DoOmOvlvkT2E+z32Q8X5xR60+P32al3KHO+MCuvTI5/9YaSQ
- On+9Vc1BTYOXoGkVHsq9C9IwGE8QNQiEBNO/0xWRYxCS2vUHzeYjCcGgW0x3XaRzZE2Q
- jJEg==
-X-Gm-Message-State: AOJu0YyP/eu3wfdXqezu6M0QxCgl3ayPk0lxSFu0n3NVaMc7fKkmOrmS
- Fs5pzPGS/ZvR3c35NtdUJHT4p53fJ3mNSvZxTU6GIm+1STOzpshKGAjFsHHlQ2GzOJaTtuTKCYI
- G
-X-Google-Smtp-Source: AGHT+IFaVOTz7nlxdqTVvGy+5dJMDnc5ndeX7MHMagxBFu1FS0UWDOKnDDmGDR9RzeoAjOOovmQkbw==
-X-Received: by 2002:a17:90a:c089:b0:2e2:b69c:2a9 with SMTP id
- 98e67ed59e1d1-2e8f11ac969mr3847746a91.26.1729965234643; 
- Sat, 26 Oct 2024 10:53:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1729965242; x=1730570042;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KpfAMGmyWm4pigvyIOxRZMUq0CTvdaeELUk7R48DMKQ=;
+ b=kAowXKggxhcosuaj4KJ39OhLQItEbbomulfRT6EDh4zX5u+eNG8gavZDCw5+mdhTaK
+ HtwU/HImFO1b0Yz4yx+0dGISxAk8HZmWr3z80rj+3IARlu//Hf3Milft3LZSTI+ouZ4/
+ 2xR+tti7rCTXEBMXufUth+KfNy1+IXj9nslF1O7ETrJUEHn/tNRjpRvelJuP4wEjvsU/
+ XwmP34dHhY45pIt7SaHp2fNz1MYrJjMDFSDBlP7iwUYTx3/N0uWy6QpczJWMDFSzO8Vp
+ kCZZ3w6Wa01pFyWAF9uwGNLRITYkdzcB5tErhgp4Owu/juZP4TB9T4tXBa6HDmRVudy8
+ g9FQ==
+X-Gm-Message-State: AOJu0Yzjmt1/92Bjitvgaim/eVGHW9Q1VehkvGJimAbfl8lMJecsW5d2
+ TW7vbM45v7rlKzmpgDJeZgK4QvzxF/NX8njq8LTp1c03JWh6pxpAvA1Hzp+vAdi4q1sC0g/t/W0
+ Y
+X-Google-Smtp-Source: AGHT+IEKCgv2GcJkl5toeLO9WZV+4NK/JDm0V5bLon8tKImk90vZUGMteiWImRLXG5d+CIJWYCkI8g==
+X-Received: by 2002:a17:902:dac9:b0:20e:57c8:6aae with SMTP id
+ d9443c01a7336-210c6879841mr50526365ad.3.1729965241944; 
+ Sat, 26 Oct 2024 10:54:01 -0700 (PDT)
 Received: from localhost.localdomain ([45.176.88.169])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e77e48c18csm5899775a91.5.2024.10.26.10.53.52
+ d9443c01a7336-210bbf84597sm26208485ad.111.2024.10.26.10.54.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 26 Oct 2024 10:53:54 -0700 (PDT)
+ Sat, 26 Oct 2024 10:54:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
@@ -61,16 +62,17 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH v3 0/9] target/mips: Convert Loongson LEXT opcodes to
- decodetree
-Date: Sat, 26 Oct 2024 14:53:40 -0300
-Message-ID: <20241026175349.84523-1-philmd@linaro.org>
+Subject: [PATCH v3 1/9] target/mips: Extract decode_64bit_enabled() helper
+Date: Sat, 26 Oct 2024 14:53:41 -0300
+Message-ID: <20241026175349.84523-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241026175349.84523-1-philmd@linaro.org>
+References: <20241026175349.84523-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -93,40 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 1 & 9
+Extract the decode_64bit_enabled() helper which detects
+whether CPUs can run 64-bit instructions.
 
-Since v2:
-- Extract decode_64bit_enabled()
-- Remove unreachable 32-bit code
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/mips/tcg/translate.h | 2 ++
+ target/mips/tcg/translate.c | 7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Since v1:
-- Fixed '!is_double' check (rth)
-- Rebased (removing tcg_temp_free calls)
-- Simplified MULT[U].G (rth)
-- Added R-b
-
-Philippe Mathieu-Daudé (9):
-  target/mips: Extract decode_64bit_enabled() helper
-  target/mips: Simplify Loongson MULTU.G opcode
-  target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
-  target/mips: Convert Loongson DDIV.G opcodes to decodetree
-  target/mips: Convert Loongson DIV.G opcodes to decodetree
-  target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
-  target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
-  target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
-  target/mips: Remove unreachable 32-bit code on 64-bit Loongson Ext
-
- target/mips/tcg/translate.h       |   3 +
- target/mips/tcg/godson2.decode    |  27 +++
- target/mips/tcg/loong-ext.decode  |  28 +++
- target/mips/tcg/loong_translate.c | 271 ++++++++++++++++++++++++++++++
- target/mips/tcg/translate.c       | 271 ++----------------------------
- target/mips/tcg/meson.build       |   3 +
- 6 files changed, 348 insertions(+), 255 deletions(-)
- create mode 100644 target/mips/tcg/godson2.decode
- create mode 100644 target/mips/tcg/loong-ext.decode
- create mode 100644 target/mips/tcg/loong_translate.c
-
+diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+index 5d196e69ac4..ae6c25aa0c4 100644
+--- a/target/mips/tcg/translate.h
++++ b/target/mips/tcg/translate.h
+@@ -217,6 +217,8 @@ void msa_translate_init(void);
+ void mxu_translate_init(void);
+ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn);
+ 
++bool decode_64bit_enabled(DisasContext *ctx);
++
+ /* decodetree generated */
+ bool decode_isa_rel6(DisasContext *ctx, uint32_t insn);
+ bool decode_ase_msa(DisasContext *ctx, uint32_t insn);
+diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+index d92fc418edd..6c881af5618 100644
+--- a/target/mips/tcg/translate.c
++++ b/target/mips/tcg/translate.c
+@@ -1645,13 +1645,18 @@ static inline void check_ps(DisasContext *ctx)
+     check_cp1_64bitmode(ctx);
+ }
+ 
++bool decode_64bit_enabled(DisasContext *ctx)
++{
++    return ctx->hflags & MIPS_HFLAG_64;
++}
++
+ /*
+  * This code generates a "reserved instruction" exception if cpu is not
+  * 64-bit or 64-bit instructions are not enabled.
+  */
+ void check_mips_64(DisasContext *ctx)
+ {
+-    if (unlikely((TARGET_LONG_BITS != 64) || !(ctx->hflags & MIPS_HFLAG_64))) {
++    if (unlikely((TARGET_LONG_BITS != 64) || !decode_64bit_enabled(ctx))) {
+         gen_reserved_instruction(ctx);
+     }
+ }
 -- 
 2.45.2
 
