@@ -2,71 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E419B1628
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 09:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8579B162D
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 10:02:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4bhj-000310-TC; Sat, 26 Oct 2024 03:59:23 -0400
+	id 1t4bjz-0003tH-Sz; Sat, 26 Oct 2024 04:01:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t4bhi-00030q-Ei
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 03:59:22 -0400
-Received: from mail-ej1-f50.google.com ([209.85.218.50])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t4bhh-0000He-7M
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 03:59:22 -0400
-Received: by mail-ej1-f50.google.com with SMTP id
- a640c23a62f3a-a99eb8b607aso313963466b.2
- for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 00:59:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729929560; x=1730534360;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZKN1Wl3QDtFGorESZA1Pr+OsMhR3bRrXiqVEnNvEiJs=;
- b=VYyDW5DV36zPyxb9v7BP1YWLH15z87hSVjriZ0gMj2bO5yzAVq6a8rLG6FB2nVoZlf
- ZRbeLLbrqDLjqzh/dM9GcP8z3F40HhCE5euba4HGyyVf0Ki/+goV1s0bsIiZlR47Dols
- l5bC4ySf2WdLJGEvyL48KwZBppxqCiS2b1p5IXU6a1nLCZUJ4Q/BJzW1DWz4Nj9oCeJP
- Sf67GtltLj1DBKsvyGoEyZtw7Nco3DAqp2xesZR8oU5q92ie02762Df4OD8Nj/mmmNqR
- 37UlC82TwbyVISzLpUUoroggmXeASuT+cORMFgnpxlkKcs++AlTyNV3xBuGN+XylEwRo
- yXVQ==
-X-Gm-Message-State: AOJu0YxAY2N7nGaj3OBV0br7cCrHJt34FhlUCuVnfi+XlUyrfguDzOsr
- 9LEPwbI1CNUJud+5MB6X/AJKXzHntUMRYXB1sLQ3mvOVmJtSn4AO
-X-Google-Smtp-Source: AGHT+IHZZnH76JPpWpjRaunT8z7fX9JE0lgc4BC3mw90sF4S/NNUOtfVzY4fpAfDmWWHvVJ2PQvJ3w==
-X-Received: by 2002:a17:906:794b:b0:a99:5601:7dc1 with SMTP id
- a640c23a62f3a-a9de61d4377mr132888966b.49.1729929559322; 
- Sat, 26 Oct 2024 00:59:19 -0700 (PDT)
-Received: from tpx1 (ip-109-40-241-30.web.vodafone.de. [109.40.241.30])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9b1f0298e7sm149883166b.75.2024.10.26.00.59.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 26 Oct 2024 00:59:19 -0700 (PDT)
-Date: Sat, 26 Oct 2024 09:59:17 +0200
-From: Thomas Huth <huth@tuxfamily.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/36] next-cube: remove cpu parameter from
- next_scsi_init()
-Message-ID: <20241026095917.4b704393@tpx1>
-In-Reply-To: <20241023085852.1061031-5-mark.cave-ayland@ilande.co.uk>
-References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
- <20241023085852.1061031-5-mark.cave-ayland@ilande.co.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t4bjs-0003sd-5d
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 04:01:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t4bjq-0000hw-B3
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 04:01:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1729929691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=f4PyAyBJaHugbx1x7u2ocpgp5PBMgkaN7C66cN9lymg=;
+ b=ZI76C42L9+gUEgXuUUBAWzortITWJ83+bf9fn/mBPid5bK6rJdf5rd8PSB6wrDryy1qphI
+ XA0HHRhMQLtOatbLTTvTu8q0MFEBc5gLiYKr3jupvEUg8xGVNwHeWI/clZ90JXlPa4H1fG
+ xFK+RH/D1tpYGs58gz32l/gmxBMuMxs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-TJ2_egVwN82Kz8o3g4mcQQ-1; Sat,
+ 26 Oct 2024 04:01:28 -0400
+X-MC-Unique: TJ2_egVwN82Kz8o3g4mcQQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8C982195608F
+ for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 08:01:27 +0000 (UTC)
+Received: from server.redhat.com (unknown [10.72.112.45])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8B70319560A3; Sat, 26 Oct 2024 08:01:24 +0000 (UTC)
+From: Cindy Lu <lulu@redhat.com>
+To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v3 0/4] virtio_net: Add the check for vdpa's mac address
+Date: Sat, 26 Oct 2024 15:59:58 +0800
+Message-ID: <20241026080121.461781-1-lulu@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.218.50; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f50.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.17, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.454,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.697,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,15 +75,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed, 23 Oct 2024 09:58:20 +0100
-schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+When using a VDPA device, it is important to ensure that the MAC
+address is correctly set.Here we add Add a new parameter to 
+enable this check.
+There are only three acceptable situations for MAC setup; any other
+configuration will fail to boot.
 
-> The parameter is not used.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->  hw/m68k/next-cube.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+The usage is:
+....
+-netdev type=vhost-vdpa,vhostdev=/dev/vhost-vdpa-0,id=vhost-vdpa0,macstrickcheck=true\
+-device virtio-net-pci,netdev=vhost-vdpa0\
+....
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+tested by ConnectX-6 Dx device
+
+change in v3
+1. add a new parameter to enable the check and keep the old behavior
+2. adjust the comment and make it more clear
+
+Cindy Lu (4):
+  vhost_vdpa : Add a new parameter to enable check mac address
+  virtio_net: Add the check for vdpa's mac address
+  virtio_net: Add the 2rd acceptable situation for Mac setup.
+  virtio_net: Add the 3rd acceptable situation for Mac setup.
+
+ hw/net/virtio-net.c | 67 ++++++++++++++++++++++++++++++++++++++++++++-
+ include/net/net.h   |  1 +
+ net/vhost-vdpa.c    |  4 +++
+ qapi/net.json       |  5 ++++
+ 4 files changed, 76 insertions(+), 1 deletion(-)
+
+-- 
+2.45.0
+
 
