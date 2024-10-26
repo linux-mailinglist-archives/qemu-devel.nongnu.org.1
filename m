@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468AE9B1A30
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 19:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D748E9B1A32
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Oct 2024 19:56:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t4l0S-0001l2-Ov; Sat, 26 Oct 2024 13:55:20 -0400
+	id 1t4l0l-0002hM-Vq; Sat, 26 Oct 2024 13:55:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4l0I-0001Zn-0k
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:55:12 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4l0e-0002bb-4x
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:55:32 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4l0G-000414-Cv
- for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:55:09 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7204dff188eso1804445b3a.1
- for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 10:55:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t4l0c-00042T-1k
+ for qemu-devel@nongnu.org; Sat, 26 Oct 2024 13:55:31 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20c805a0753so29558445ad.0
+ for <qemu-devel@nongnu.org>; Sat, 26 Oct 2024 10:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1729965306; x=1730570106; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=24+esFE6+JL8RGwya1e53/JfhayCv7uvb5v74uRmx/E=;
- b=J+rwYP8J+0luC+jAv2dTgPqG2WNzBgg+bWUyGHmidDIhWkDM4FNlazSqmAcOxOgfAf
- lfozgfwZRr11wERLPpg0hO2NXzKcjSwKvNXVRpS/V+HadIP3Yz8eO5D6rJ041iPWsBTw
- 9DwxNYIH8Mj0hBnymHON0wCLWnvlk7kP8u+FMT6f4UKGBGWuxvlv8LOyKh6ENFwbCOyG
- Aed0OFoNUYuyvgosIwhlwpOE0kn6dhAVWM2Gw6X4lO8V32lgwne+63Shb7KAwt8jub6u
- iOImvWtg+8c/QSDH5KVIx2gcRgFeIl840xWZvMznuxAYEE6E8x/6701VlHvhP7nQJYsY
- RJ1A==
+ d=linaro.org; s=google; t=1729965328; x=1730570128; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8iaYxHeBs9DQ6rjsGSBSfC3gqL47ENyDEW+pnN7ImEQ=;
+ b=XOfQMvvmnazFCbAr2TkpOxIuU2LOCEdTsPVMliPR6uf4oC0pPNjeyuI3COCG3IcdIU
+ gVeTaI5UA+W2YK9yKBTuUNRhBu9jSbPsFysmyreBPR8XYhBPVebUFPatPCnghyat7eNe
+ uWOjQMGSuGrQo7APuHVGLL6X5bbcXs894hPR8UPlNgQLnASRj+ibIFGTwq23fqsl64/X
+ oLT8Wgm3HCMAZG+dKpO6WQrZw7a/K9uKvTsm2gaE6LCSraVtWE0e0c0lha/kbUt1kisw
+ m1UqQlO9PyA9GxBGpETtK+pkaS7KQW9WPCRGjgJRzyxkz4N2ckgym2GLxZ5lgqM/LvUE
+ Vh+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1729965306; x=1730570106;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=24+esFE6+JL8RGwya1e53/JfhayCv7uvb5v74uRmx/E=;
- b=GgNhIED17HQl96kNSExKZxn5CcJRf/7lCJgC1BLOyTc0+cX6xPGSdUFH1jhIBNwSAv
- Wdbkc1fRq28+nRhOPMepPrwlvDWBULpT5gl34Up1zbNaSuFWksgpAV16Co7KWbno9SVx
- 9eQgQI1kZCHGkbCJW48Bjsoxu3G6ojhnm+G8HbEjIcvbdEXl3tvquGsAWoFGH0RGU2ix
- tSyHmbBWdk02uGJsm2FY6nvxmou7KcqfdwxsKQTUnmip6IPIJBRj9OqB9IRZukDso3dl
- pl8byby7tSiZ76rs/wzR+Z+AqHMjSIpgDevDsSkTYZ8lNQwABrmtrT/RpG5WCG9eOiC/
- /Fgw==
-X-Gm-Message-State: AOJu0YxRDZ/VWixYR7K50OAOZp8TOs0sa3FPxWSpJZi1jJeAgOJtDo3R
- ulArtHpoE5j3LDo1DemRLD3z1ae+01uAuLwUjZU6bl5twQm3d+8L1E29RyugCkUFKwzEa+PEthU
- o
-X-Google-Smtp-Source: AGHT+IH1iPbQO3sFvgxurbYVYwhhnPmnUfGRsVkQ42fv+zflTQv11fFcZi4UjnCSZUbEh5SB3bRbwg==
-X-Received: by 2002:a05:6a20:4499:b0:1d9:1f51:faeb with SMTP id
- adf61e73a8af0-1d9a85349ecmr4471366637.39.1729965306584; 
- Sat, 26 Oct 2024 10:55:06 -0700 (PDT)
-Received: from localhost.localdomain ([45.176.88.169])
+ d=1e100.net; s=20230601; t=1729965328; x=1730570128;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8iaYxHeBs9DQ6rjsGSBSfC3gqL47ENyDEW+pnN7ImEQ=;
+ b=pka9xQxaIh8aqIFN+LvH1B+Gui5BJT+wb+oNY8O435zKZoCw7YO8OKeVTe98ovteKy
+ UuP26kojfzrYYpD5MMemx8hsqhLpoyD7/y/UukjfO8A1qWtrQhIdOowo1+I9KJvSn+vm
+ SSYnqTvkqxBXPNXybZAEOcCUyd31CZx+qxsxSJGg0QC2Rngll6FfJ+PqtH5NmDiOVqHz
+ pfmoSkEwEknlQDaCQzZK5SscQyH2pZ/zDGZhgUR8Vb58lqfCP5pLZfBp5/znnrPPdHY/
+ 5RMFG9F7dMm519Cy7CHhSfIDAx0AiozUr75Hf1QSreMzmfZPd9JdQd5yv1sSAFug/f3D
+ HiEQ==
+X-Gm-Message-State: AOJu0YwFHyT/dvUY/JPTihGf4+xsEEGQR4tzuduIQg36YiR+Me4mTFk6
+ UscpSR0Z0gc+lMRMzw1KFVIpGCKi6zlXedTpcLmNUMfLkDfmeDqZXOTz9QS/0aHYiHOak9ZY+3m
+ C
+X-Google-Smtp-Source: AGHT+IEVOzGoWpFZ2VCoyFGoIYslHdGiJIyw75kH9Oifg1SnXhUfAxITp+tZbw1JYO7Ll/1jt9sHTA==
+X-Received: by 2002:a17:902:d543:b0:20c:7661:dcbf with SMTP id
+ d9443c01a7336-210c6c95170mr35353335ad.55.1729965327699; 
+ Sat, 26 Oct 2024 10:55:27 -0700 (PDT)
+Received: from [192.168.100.49] ([45.176.88.169])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7edc8a77412sm2936620a12.94.2024.10.26.10.55.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 26 Oct 2024 10:55:06 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ 41be03b00d2f7-7edc8679ce9sm3011095a12.29.2024.10.26.10.55.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 26 Oct 2024 10:55:27 -0700 (PDT)
+Message-ID: <1327c220-e7e0-436f-a04e-840be8a04845@linaro.org>
+Date: Sat, 26 Oct 2024 14:55:24 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/9] target/mips: Convert Loongson LEXT opcodes to
+ decodetree
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 9/9] target/mips: Remove unreachable 32-bit code on 64-bit
- Loongson Ext
-Date: Sat, 26 Oct 2024 14:53:49 -0300
-Message-ID: <20241026175349.84523-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241026175349.84523-1-philmd@linaro.org>
+ Aleksandar Rikalo <arikalo@gmail.com>
 References: <20241026175349.84523-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241026175349.84523-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -97,111 +96,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Loongson fixed-point multiplies and divisions opcodes are
-specific to 64-bit cores (Loongson-2 and Loongson-3 families).
-Simplify by removing the 32-bit checks.
+On 26/10/24 14:53, Philippe Mathieu-Daudé wrote:
 
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/tcg/loong_translate.c | 41 ++-----------------------------
- 1 file changed, 2 insertions(+), 39 deletions(-)
+>   target/mips/tcg/translate.h       |   3 +
+>   target/mips/tcg/godson2.decode    |  27 +++
+>   target/mips/tcg/loong-ext.decode  |  28 +++
+>   target/mips/tcg/loong_translate.c | 271 ++++++++++++++++++++++++++++++
+>   target/mips/tcg/translate.c       | 271 ++----------------------------
 
-diff --git a/target/mips/tcg/loong_translate.c b/target/mips/tcg/loong_translate.c
-index c02e60bb15b..a005c279a3e 100644
---- a/target/mips/tcg/loong_translate.c
-+++ b/target/mips/tcg/loong_translate.c
-@@ -31,13 +31,6 @@ static bool gen_lext_DIV_G(DisasContext *s, int rd, int rs, int rt,
-     TCGv t0, t1;
-     TCGLabel *l1, *l2, *l3;
- 
--    if (is_double) {
--        if (TARGET_LONG_BITS != 64) {
--            return false;
--        }
--        check_mips_64(s);
--    }
--
-     if (rd == 0) {
-         /* Treat as NOP. */
-         return true;
-@@ -61,8 +54,7 @@ static bool gen_lext_DIV_G(DisasContext *s, int rd, int rs, int rt,
-     tcg_gen_br(l3);
-     gen_set_label(l1);
- 
--    tcg_gen_brcondi_tl(TCG_COND_NE, t0, is_double && TARGET_LONG_BITS == 64
--                                        ? LLONG_MIN : INT_MIN, l2);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t0, is_double ? LLONG_MIN : INT_MIN, l2);
-     tcg_gen_brcondi_tl(TCG_COND_NE, t1, -1LL, l2);
-     tcg_gen_mov_tl(cpu_gpr[rd], t0);
- 
-@@ -93,13 +85,6 @@ static bool gen_lext_DIVU_G(DisasContext *s, int rd, int rs, int rt,
-     TCGv t0, t1;
-     TCGLabel *l1, *l2;
- 
--    if (is_double) {
--        if (TARGET_LONG_BITS != 64) {
--            return false;
--        }
--        check_mips_64(s);
--    }
--
-     if (rd == 0) {
-         /* Treat as NOP. */
-         return true;
-@@ -147,13 +132,6 @@ static bool gen_lext_MOD_G(DisasContext *s, int rd, int rs, int rt,
-     TCGv t0, t1;
-     TCGLabel *l1, *l2, *l3;
- 
--    if (is_double) {
--        if (TARGET_LONG_BITS != 64) {
--            return false;
--        }
--        check_mips_64(s);
--    }
--
-     if (rd == 0) {
-         /* Treat as NOP. */
-         return true;
-@@ -173,8 +151,7 @@ static bool gen_lext_MOD_G(DisasContext *s, int rd, int rs, int rt,
-         tcg_gen_ext32u_tl(t1, t1);
-     }
-     tcg_gen_brcondi_tl(TCG_COND_EQ, t1, 0, l1);
--    tcg_gen_brcondi_tl(TCG_COND_NE, t0, is_double && TARGET_LONG_BITS == 64
--                                        ? LLONG_MIN : INT_MIN, l2);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t0, is_double ? LLONG_MIN : INT_MIN, l2);
-     tcg_gen_brcondi_tl(TCG_COND_NE, t1, -1LL, l2);
-     gen_set_label(l1);
-     tcg_gen_movi_tl(cpu_gpr[rd], 0);
-@@ -205,13 +182,6 @@ static bool gen_lext_MODU_G(DisasContext *s, int rd, int rs, int rt,
-     TCGv t0, t1;
-     TCGLabel *l1, *l2;
- 
--    if (is_double) {
--        if (TARGET_LONG_BITS != 64) {
--            return false;
--        }
--        check_mips_64(s);
--    }
--
-     if (rd == 0) {
-         /* Treat as NOP. */
-         return true;
-@@ -257,13 +227,6 @@ static bool gen_lext_MULT_G(DisasContext *s, int rd, int rs, int rt,
- {
-     TCGv t0, t1;
- 
--    if (is_double) {
--        if (TARGET_LONG_BITS != 64) {
--            return false;
--        }
--        check_mips_64(s);
--    }
--
-     if (rd == 0) {
-         /* Treat as NOP. */
-         return true;
--- 
-2.45.2
+Amusing diff-stat =)
+
+>   target/mips/tcg/meson.build       |   3 +
+>   6 files changed, 348 insertions(+), 255 deletions(-)
 
 
