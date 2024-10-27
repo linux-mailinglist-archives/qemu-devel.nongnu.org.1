@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C00B9B1D10
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 11:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765B79B1D3B
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 11:27:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t50Ax-0005j9-KH; Sun, 27 Oct 2024 06:07:12 -0400
+	id 1t50T5-0002IX-6f; Sun, 27 Oct 2024 06:25:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t50Au-0005im-Ck
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:07:08 -0400
-Received: from mail-ej1-f42.google.com ([209.85.218.42])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t50Su-0002IG-Ib
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:25:44 -0400
+Received: from mail-oo1-f54.google.com ([209.85.161.54])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t50Ar-0000gv-9Q
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:07:07 -0400
-Received: by mail-ej1-f42.google.com with SMTP id
- a640c23a62f3a-a86e9db75b9so476526966b.1
- for <qemu-devel@nongnu.org>; Sun, 27 Oct 2024 03:07:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t50Ss-0003YI-OF
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:25:44 -0400
+Received: by mail-oo1-f54.google.com with SMTP id
+ 006d021491bc7-5ec1ee25504so666319eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 27 Oct 2024 03:25:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730023623; x=1730628423;
+ d=1e100.net; s=20230601; t=1730024741; x=1730629541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0JBkHBkBTn+xLdFJgcE/bo400NVJM1YHn8lUs6xePI0=;
- b=Q/VfeCdRdJ18pEKH3QyE2TptEknUTB96iXnrxKvJDCAL93N4n9BYgKUax7WIA0C4GR
- fNeOoEWvqFj7aLPFEE4lD4KIb5lEUAJlbXPpUx/QBbEhrBYwJdDJFCkw3aQDn0/DH66P
- ZyiSb9AUEllQjQ0w/KNt+n/7qWnGBOSVjaHgh2bqQuHdQ/qd16ZETBbv7N8hkxn7ZWYQ
- iCMZl2/2phD2KJZhwkVbpCN9YIqKf6gVMIC26nLAirCJKB9uR33brx9u1CJTYb/tqb0d
- K+zaitbHKbLalfE8jMUAezYOGSG0EJhZRx5GG1G4/+dm7izZjvAFPM9SxmKQQ9gjfUfG
- musw==
-X-Gm-Message-State: AOJu0Yz0x5KQfY5f//zEeZlFGv8GkK+GzRJuLEeNM3hFjdO39VnWWDIQ
- /cesquCkg6IXg82hFNquNywAwDZeYAFhCSED9PaLbJqf05S6XBONFRzn7Q==
-X-Google-Smtp-Source: AGHT+IHZNzTQXrmLHTWatAByLPOX+dyaIpxSVkHmt2mWrTJVT0FtQskSN9bSi4ERZLF2lLt8PEhV/g==
-X-Received: by 2002:a17:906:c14d:b0:a99:e98f:e73d with SMTP id
- a640c23a62f3a-a9de5ee15f8mr402969366b.37.1730023623089; 
- Sun, 27 Oct 2024 03:07:03 -0700 (PDT)
+ bh=yyvR9QAUL9q1MqrZ6V1/n4eHMd0qose9TrWGI90P8+M=;
+ b=dsq2KidpbpxHkoCIN/AoDU0CfCAtb66B7c/iwhi2TSOMJ/tuek9rQn+lVUUBE/V1SQ
+ Sh6oDBpxK7FfYKRrv3YjWrDr76oYkYhikRLoyPbekCw2sz9P6WReJ1EB1c+JOrgmW/PA
+ uohCNvNdTwcJ0bY2Sq7G7AhjzeBi/u67cIlDHXOcV6Djh9TxaFC/1TAtR6qbFezH0a0W
+ IAkMjCQHUyRG1GdL05IiszdJJwfym9CfQaSDBQI+Di8YmL72Crpzv/4gU68GbiCyxfh3
+ H7XGeIR9w30TIH3zOKwaqIYcX4EslW0ZQUaaXxPNAwogNcsrbms2JfxMP1TKETXvo20y
+ J66g==
+X-Gm-Message-State: AOJu0YwOCm0vY7/Cu+7+DHP331/Pxu5S1qpBh3TKy3SYtlfnGf3MDpyO
+ ApM6DAPjZtz7v43e6wYD7KJ5NwbHuXt9Y6rxIbl+5X31wADua9Eo
+X-Google-Smtp-Source: AGHT+IF0xkG6r1QqhGeC0MwVLBA7hVk5d/cvjoMu1sPOMkBcnh8vJtWE8st0cbGM2vxZRzAFMkd23Q==
+X-Received: by 2002:a05:6820:1b8f:b0:5eb:d1ac:21c6 with SMTP id
+ 006d021491bc7-5ec23a66c3bmr2551524eaf.5.1730024740973; 
+ Sun, 27 Oct 2024 03:25:40 -0700 (PDT)
 Received: from tpx1 (ip-109-40-241-30.web.vodafone.de. [109.40.241.30])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cbb629d76asm2228092a12.23.2024.10.27.03.07.01
+ 006d021491bc7-5ec186fcf2fsm1147513eaf.36.2024.10.27.03.25.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Oct 2024 03:07:02 -0700 (PDT)
-Date: Sun, 27 Oct 2024 11:07:01 +0100
+ Sun, 27 Oct 2024 03:25:40 -0700 (PDT)
+Date: Sun, 27 Oct 2024 11:25:36 +0100
 From: Thomas Huth <huth@tuxfamily.org>
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 06/36] next-cube: move next_scsi_init() to
- next_pc_realize()
-Message-ID: <20241027110701.6ef54acf@tpx1>
-In-Reply-To: <20241023085852.1061031-7-mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH 07/36] next-cube: introduce next_pc_init() object init
+ function
+Message-ID: <20241027112536.66bb97b7@tpx1>
+In-Reply-To: <20241023085852.1061031-8-mark.cave-ayland@ilande.co.uk>
 References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
- <20241023085852.1061031-7-mark.cave-ayland@ilande.co.uk>
+ <20241023085852.1061031-8-mark.cave-ayland@ilande.co.uk>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.218.42; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f42.google.com
+Received-SPF: pass client-ip=209.85.161.54; envelope-from=th.huth@gmail.com;
+ helo=mail-oo1-f54.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -82,16 +82,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed, 23 Oct 2024 09:58:22 +0100
+Am Wed, 23 Oct 2024 09:58:23 +0100
 schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-> This reflects that the SCSI interface exists within the NeXT Peripheral
-> Controller (PC).
+> Move initialisation of the memory regions and GPIOs from next_pc_realize() to
+> the new next_pc_init() function.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->  hw/m68k/next-cube.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  hw/m68k/next-cube.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+> index 0c3f8780a1..3b4c361156 100644
+> --- a/hw/m68k/next-cube.c
+> +++ b/hw/m68k/next-cube.c
+> @@ -897,20 +897,24 @@ static void next_pc_reset(DeviceState *dev)
+>  
+>  static void next_pc_realize(DeviceState *dev, Error **errp)
+>  {
+> -    NeXTPC *s = NEXT_PC(dev);
+> -    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> +    /* SCSI */
+> +    next_scsi_init(dev);
+> +}
+> +
+> +static void next_pc_init(Object *obj)
+> +{
+> +    NeXTPC *s = NEXT_PC(obj);
+> +    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+>  
+> -    qdev_init_gpio_in(dev, next_irq, NEXT_NUM_IRQS);
+> +    qdev_init_gpio_in(DEVICE(obj), next_irq, NEXT_NUM_IRQS);
+>  
+>      memory_region_init_io(&s->mmiomem, OBJECT(s), &next_mmio_ops, s,
+>                            "next.mmio", 0x9000);
+>      memory_region_init_io(&s->scrmem, OBJECT(s), &next_scr_ops, s,
+>                            "next.scr", 0x20000);
+> +
+>      sysbus_init_mmio(sbd, &s->mmiomem);
+>      sysbus_init_mmio(sbd, &s->scrmem);
+> -
+> -    /* SCSI */
+> -    next_scsi_init(dev);
+>  }
+>  
+>  /*
+> @@ -972,6 +976,7 @@ static void next_pc_class_init(ObjectClass *klass, void *data)
+>  static const TypeInfo next_pc_info = {
+>      .name = TYPE_NEXT_PC,
+>      .parent = TYPE_SYS_BUS_DEVICE,
+> +    .instance_init = next_pc_init,
+>      .instance_size = sizeof(NeXTPC),
+>      .class_init = next_pc_class_init,
+>  };
 
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
