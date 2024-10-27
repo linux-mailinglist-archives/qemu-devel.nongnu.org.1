@@ -2,95 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C464C9B1D03
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 10:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A17F89B1D24
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Oct 2024 11:10:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5021-00044v-DW; Sun, 27 Oct 2024 05:57:57 -0400
+	id 1t50DP-0006e7-VC; Sun, 27 Oct 2024 06:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t501n-00044b-5I
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 05:57:43 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1t501l-0008PJ-Gf
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 05:57:42 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 52E5E9CAFE;
- Sun, 27 Oct 2024 12:57:03 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E55BA15E602;
- Sun, 27 Oct 2024 12:57:38 +0300 (MSK)
-Message-ID: <f37d8c73-14fd-4fd5-adf0-1a42ea0df91c@tls.msk.ru>
-Date: Sun, 27 Oct 2024 12:57:38 +0300
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t50DO-0006dz-Ov
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:09:42 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t50DN-0000t3-7q
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 06:09:42 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c94a7239cfso1845096a12.3
+ for <qemu-devel@nongnu.org>; Sun, 27 Oct 2024 03:09:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730023779; x=1730628579; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=45jJyrf+k0ekMIw8rF2RayCK0+i1R6R/c0i+okPzUEQ=;
+ b=NyhroGrfUktwo7yVGjejwxKovRYhyByGJu/6WCj7qXbJTfb/G6P0mbB9FjXpPvj3TA
+ WqSEOQ5z+OxwJNYW9t2RbIGFnsnLytcDtHBiGvdPtxQyBibyERi6e10j67qlHn9JWohU
+ xOOvbDeo+GCqy1twA8Vpn/LLUoEj3o+wMvq8D+Jq7dZQI3uAcRivJK4Y/hYWfUT/GJzY
+ X7OtAfaUTc6wNyS9WKGNzFLf2AanBSXyP0uV16q+s7TUx0yqsRN9MJOj/sTvybjHvCjr
+ GJ2GB1NNKJks/jfIPBkI8+WK2tJZGnh9ZaRazB4LAOvEL2EdkZqFGno/O+SmKIWSh4Zh
+ ElOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730023779; x=1730628579;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=45jJyrf+k0ekMIw8rF2RayCK0+i1R6R/c0i+okPzUEQ=;
+ b=SZ5zGDDyXSz4R5lARu1j/3D6RbKNoCM0fhVbtjubyIqzZ0mbB/zTmvSdJrItjdzqr5
+ CQrxknyanZ2Xf+kpNCxi89j8JpO5NwaD0latYEk62ccyl844BDHmFxy9X2jc2PteLhtr
+ ioRoP6JgkntSC0fc9JXJr4U17mvCgMJ7oXcz6AQPHLuMBekRTirikpRxrPvmj0HaGbq2
+ IzNUe163hGY8iqLC+RhjQ3m+E9la8u3IQg/YGCpsEgPHHjjMohU/RcIKS/wT5Ef5ksJd
+ e3qXM35HdBnirY2iUNQbwiVOU7MqDEBcwe+9atVg7zAry58YQEusnY661/bgCwdhl07G
+ e5vA==
+X-Gm-Message-State: AOJu0YxOf1FZDFFhlby2GFnVgQgyGR7bNFSdEvFaMSjH42coFsmrPtS2
+ 5a0nRFzbwe/OTOR2vNKkXXDaVKgBS7ufXu6xVBi9+Qw+fHMlk2lqJw9kyIbcYDHjIH0JLA2loDc
+ T+UQ=
+X-Google-Smtp-Source: AGHT+IGRnDrN86VEN58PEkW/+mf6/JXXSkWPyxnAvm00rouFkVX6JDsSrSjSkgls1/ddWW4fh4tC3g==
+X-Received: by 2002:a05:6402:26c1:b0:5c9:1beb:b971 with SMTP id
+ 4fb4d7f45d1cf-5cbbfa71a95mr4952937a12.24.1730023778744; 
+ Sun, 27 Oct 2024 03:09:38 -0700 (PDT)
+Received: from meli-email.org (adsl-161.109.242.225.tellas.gr.
+ [109.242.225.161]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9b1dec79aasm262804666b.40.2024.10.27.03.09.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 27 Oct 2024 03:09:38 -0700 (PDT)
+Date: Sun, 27 Oct 2024 12:02:04 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: <axelheider@git.sr.ht>, qemu-trivial@nongnu.org
+Subject: Re: [PATCH qemu.git 1/1] docs/devel/reset: add missing words
+User-Agent: meli 0.8.7
+References: <172998683323.20070.572834413126431721-0@git.sr.ht>
+ <172998683323.20070.572834413126431721-1@git.sr.ht>
+In-Reply-To: <172998683323.20070.572834413126431721-1@git.sr.ht>
+Message-ID: <m0ew1.ywldxlj9rdms@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/23] rust: fix CI + allow older versions of rustc and
- bindgen
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20241025160209.194307-1-pbonzini@redhat.com>
- <95b07b6b-0980-4a32-86fd-602985750104@tls.msk.ru>
- <CABgObfb2qZnH6CKp37pxr8Dq5x39ug=0ND8K4_STerXKxxd6Vw@mail.gmail.com>
- <e4ce3a76-80f8-486a-894f-fe006e97c577@tls.msk.ru>
- <a5644958-907d-4940-818d-40a9b55a8297@tls.msk.ru>
-Content-Language: en-US, ru-RU
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <a5644958-907d-4940-818d-40a9b55a8297@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,23 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-27.10.2024 12:42, Michael Tokarev пишет:
-> 27.10.2024 12:38, Michael Tokarev wrote:
->> 27.10.2024 11:00, Paolo Bonzini wrpte:
->>
->> [rustc-web]
->>
->>> Thanks for pointing it out! It is indeed better, however it does not
->>> support mipsel.
->>
->> mipsel?  do you mean mips64el?
+Hello Axel,
 
-Please note upstream rust does not provide rustup binaries for mipsel.
-So there's really no way to bootstrap mipsel rust currently.
+On Thu, 17 Oct 2024 20:58, ~axelheider <axelheider@git.sr.ht> wrote:
+>From: Axel Heider <axel.heider@codasip.com>
+>
+>Signed-off-by: Axel Heider <axel.heider@codasip.com>
+>---
+> docs/devel/reset.rst | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
+>index 74c7c0171a..3e64a7259f 100644
+>--- a/docs/devel/reset.rst
+>+++ b/docs/devel/reset.rst
+>@@ -286,7 +286,7 @@ every reset child of the given resettable object. All children must be
+> resettable too. Additional parameters (a reset type and an opaque pointer) must
+> be passed to the callback too.
+> 
+>-In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located
+>+In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located in the
+> ``DeviceState`` and ``BusState`` structure. ``child_foreach()`` is implemented
+> to follow the bus hierarchy; for a bus, it calls the function on every child
+> device; for a device, it calls the function on every bus child. When we reset
+>-- 
+>2.45.2
+>
 
-And mipsel is gone in debian.
+FYI: the `[PATCH ...]` part of the patch subject does not need the 
+`qemu.git` string inside it, I suspect it was added by some tooling you 
+were using however.
 
-It looks like we should not expect rust to work on mipsel.
+If you decide to spin this patch in a new version I suggest also making 
+this separate change: (adding a plural `s` suffix at `structure`)
 
-/mjt
+- ``DeviceState`` and ``BusState`` structure. ``child_foreach()`` is implemented
++ ``DeviceState`` and ``BusState`` structures. ``child_foreach()`` is implemented
+
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
