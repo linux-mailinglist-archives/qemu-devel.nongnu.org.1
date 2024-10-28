@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057F89B33AB
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 718D99B3391
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:32:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Qle-0001B4-C4; Mon, 28 Oct 2024 10:30:50 -0400
+	id 1t5QmK-0001lS-RJ; Mon, 28 Oct 2024 10:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5Qkz-0000IG-5J
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:15 -0400
+ id 1t5Ql3-0000LV-3w
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5Qkr-0003jW-Ay
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:04 -0400
+ id 1t5Qkt-0003ko-8d
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730125799;
+ s=mimecast20190719; t=1730125802;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tGF/WI0T5FqI0OdtDWGfVkUzBUUfYU7X4tQjp4ynrPQ=;
- b=esBk3OvvyhXMxq47d7qVGhkxxVcATVYfgb76aX0kUwrWJ2Js7y7OCNIRbS3s8oMkszqiQO
- QArzKRK3uOUUMZo71VtZod0g81R8e+7ATasBlIiPp0IU3g5FmoYUzBUevndS/pk2NvtGzZ
- WRd2h+mjtPYvD9yZu04xci/JgLRVfww=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DB7G90+Tf57PYu9+1OIot/PufKxyTD249TZ0dYeOJQU=;
+ b=gydlhh933Az2jxlldHH9QI7WLTJtFh/U5/RDILGn6Fvd7RCcqK2hu4mRbpPnrQXtX0fq83
+ R9zEfaYFSBqKOKU8c76iVp0Ibu3vV4Cm9AIz1Xnv7Mod8/+sPeRUZVsawWrlawngm2pWod
+ 4ZBA3PfPzOJuse707JToL/GuSp9KWp0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-1pVFd_CoNzC6oSxgwQeIfg-1; Mon, 28 Oct 2024 10:29:58 -0400
-X-MC-Unique: 1pVFd_CoNzC6oSxgwQeIfg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4314f023f55so33634125e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:29:58 -0700 (PDT)
+ us-mta-302-lA0ePlZaMteFSeLjfgbDMA-1; Mon, 28 Oct 2024 10:30:01 -0400
+X-MC-Unique: lA0ePlZaMteFSeLjfgbDMA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d603515cfso2081260f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125796; x=1730730596;
+ d=1e100.net; s=20230601; t=1730125799; x=1730730599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tGF/WI0T5FqI0OdtDWGfVkUzBUUfYU7X4tQjp4ynrPQ=;
- b=d/GB2HqXosiLcYc4Kc8TvvC9b0MfUi+oxJJfviaJybL8sEwNJ2KGyTk747TNu+12i6
- yXzymP3UsGaJdnL8tbopi5sF8IoVh9++8chSF1axm0ytBeWLRl+57vgPiSPPDsFTjwWq
- QqJXjW+Bwj1zq1stabX58FiSllIe4DZUP+giuSWuMdOtWv6oNELpD2V8BOggFwy3I57W
- BoZdCfsljuIcpI5SrfnFcLRNqjMEHK/cm3JxOJcElfdgqSWw/OrHRpPUPQMLgsZUiaoW
- sMmn9GQvR/aW/xFT7KIDyqHAyi/TtB+e38MBRlgVg2LSXKQQBnycZLm4lac+Y6Gc5q2m
- ipJw==
-X-Gm-Message-State: AOJu0YyB4D44yLGM3w6I969/Zb+zXzo+tf7SdytfOkBDlBfOciVWQp00
- gJU3N4tOkXAwq/fNElH19q4KCFP0Bar7rRfzKKVlrjNAw7WnKHfeaXjWBj5V7Fw6DK2VL/Wy2jV
- LcPrB3TfeJTNifIv4TCQwjFmUDMgH/2ceMnpJT54ItBKdugyAI2QWvhAUmorZQZqB7Ji0IoOvCm
- ssaUxS806mol4039iyhfpo8v56OmdX/e6iVKDI3jE=
-X-Received: by 2002:a05:600c:1c01:b0:431:12a8:7f1a with SMTP id
- 5b1f17b1804b1-4319acadc13mr86604835e9.16.1730125796451; 
- Mon, 28 Oct 2024 07:29:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdP2G/Y/b2FdfR09qmGclwq9MAHOLyqLYsf/A/eHC72mJPkJa3jcWjiUCJgNf8so9qT+I8AA==
-X-Received: by 2002:a05:600c:1c01:b0:431:12a8:7f1a with SMTP id
- 5b1f17b1804b1-4319acadc13mr86604565e9.16.1730125796050; 
- Mon, 28 Oct 2024 07:29:56 -0700 (PDT)
+ bh=DB7G90+Tf57PYu9+1OIot/PufKxyTD249TZ0dYeOJQU=;
+ b=isnsZParup5Uh8s52QtY8f7vevApi2LQIM7oNIfBmh7JP9hcAgJOTb1zunJZhpBj7I
+ 7std1pRXUH2cTk/guRt8aB+Z2Q25mqOVRFZfiZWPqulEePCUKaIgb6V2Ao6/X8p0Qyno
+ joW0nPI4MpoULZ46cOABganOVzADQJkbr1a3qMIWPCy9hsRDYQGUpUj85qjskugBfGoo
+ mGZLji0fwbPLhq608L5dg3SYFl5RyG4cyamCz+L1Ui3PKAORzJA+CzieuyAWl+YYeQpK
+ C3FJNdzvMQHynFehvR9eEaYA21/DJaTFuexihxw2mg4mxAgc97Ua+98dI+WsNIqsLI71
+ kWmQ==
+X-Gm-Message-State: AOJu0YyjKLOEDfSqPp4L9jLREGtQLxvrLRCzNBilHbfhGdmy7Y6Ks//P
+ s6y3lWtkMpCtlFsJ9SYk/0qg05katlZf6isKdIEr91W6CKkp97gudNMdeVeZOG8XkEiZ3sJUAMz
+ MSIl5godvXqxWwnsiJhZ5LWJh2nXHcr81U7QL4AFU8AjJlW9KFOC0bed+Oox97rN44F/XDd7mJW
+ gaqGto8+94hrFAy6Nabn1thf2tL3DrjT4qdQ1FilE=
+X-Received: by 2002:a5d:4e0e:0:b0:37c:c842:a16e with SMTP id
+ ffacd0b85a97d-380610f7b1dmr6225907f8f.5.1730125799330; 
+ Mon, 28 Oct 2024 07:29:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwhh5EdlAVH/Ky9t3ZwsbmWYYg2rAZN3hghsz81PMkxVKW7pA9r8O1NN8WlvIx5ju5mS3nwg==
+X-Received: by 2002:a5d:4e0e:0:b0:37c:c842:a16e with SMTP id
+ ffacd0b85a97d-380610f7b1dmr6225887f8f.5.1730125798876; 
+ Mon, 28 Oct 2024 07:29:58 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431935f8820sm112096405e9.30.2024.10.28.07.29.52
+ ffacd0b85a97d-38058bb4461sm9561669f8f.113.2024.10.28.07.29.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 07:29:53 -0700 (PDT)
+ Mon, 28 Oct 2024 07:29:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Kevin Wolf <kwolf@redhat.com>
-Subject: [PULL 09/24] meson: import rust module into a global variable
-Date: Mon, 28 Oct 2024 15:29:16 +0100
-Message-ID: <20241028142932.363687-10-pbonzini@redhat.com>
+Cc: Junjie Mao <junjie.mao@hotmail.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PULL 10/24] meson: remove repeated search for rust_root_crate.sh
+Date: Mon, 28 Oct 2024 15:29:17 +0100
+Message-ID: <20241028142932.363687-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028142932.363687-1-pbonzini@redhat.com>
 References: <20241028142932.363687-1-pbonzini@redhat.com>
@@ -101,50 +101,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Avoid repeated lines of the form
+
+Program scripts/rust/rust_root_crate.sh found: YES (/home/pbonzini/work/upstream/qemu/scripts/rust/rust_root_crate.sh)
+
+in the meson logs.
+
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                      | 3 ++-
- rust/qemu-api-macros/meson.build | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index c26c417de16..891590353c4 100644
+index 891590353c4..0f1de0db2d9 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -15,6 +15,7 @@ meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
+@@ -3977,6 +3977,7 @@ endif
  
- not_found = dependency('', required: false)
- keyval = import('keyval')
-+rust = import('rust')
- ss = import('sourceset')
- fs = import('fs')
  
-@@ -3963,7 +3964,7 @@ if have_rust and have_system
-   # this case you must pass the path to `clang` and `libclang` to your build
-   # command invocation using the environment variables CLANG_PATH and
-   # LIBCLANG_PATH
--  bindings_rs = import('rust').bindgen(
-+  bindings_rs = rust.bindgen(
-     input: 'rust/wrapper.h',
-     dependencies: common_ss.all_dependencies(),
-     output: 'bindings.rs',
-diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
-index 517b9a4d2d5..24325dea5c2 100644
---- a/rust/qemu-api-macros/meson.build
-+++ b/rust/qemu-api-macros/meson.build
-@@ -2,7 +2,7 @@ quote_dep = dependency('quote-1-rs', native: true)
- syn_dep = dependency('syn-2-rs', native: true)
- proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
+ feature_to_c = find_program('scripts/feature_to_c.py')
++rust_root_crate = find_program('scripts/rust/rust_root_crate.sh')
  
--_qemu_api_macros_rs = import('rust').proc_macro(
-+_qemu_api_macros_rs = rust.proc_macro(
-   'qemu_api_macros',
-   files('src/lib.rs'),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+ if host_os == 'darwin'
+   entitlement = find_program('scripts/entitlement.sh')
+@@ -4078,7 +4079,7 @@ foreach target : target_dirs
+     if crates.length() > 0
+       rlib_rs = custom_target('rust_' + target.underscorify() + '.rs',
+                               output: 'rust_' + target.underscorify() + '.rs',
+-                              command: [find_program('scripts/rust/rust_root_crate.sh')] + crates,
++                              command: [rust_root_crate, crates],
+                               capture: true,
+                               build_by_default: true,
+                               build_always_stale: true)
 -- 
 2.47.0
 
