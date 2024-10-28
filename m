@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A847E9B2331
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C249B2332
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 03:52:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Fqj-0006E0-1o; Sun, 27 Oct 2024 22:51:21 -0400
+	id 1t5Fql-0006Ed-ID; Sun, 27 Oct 2024 22:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5Fqh-0006Dm-1r
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 22:51:19 -0400
+ id 1t5Fqi-0006ED-UF
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 22:51:20 -0400
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5FqR-0003WL-C7
- for qemu-devel@nongnu.org; Sun, 27 Oct 2024 22:51:04 -0400
+ id 1t5Fqh-0003XK-4d
+ for qemu-devel@nongnu.org; Sun, 27 Oct 2024 22:51:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730083863; x=1761619863;
+ t=1730083879; x=1761619879;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XtpX2GHXwFhj3VWx8YvGq8lBGqq25COB6qA38BPWld4=;
- b=nsMshaUJsqtzw4vK5hxUncXh+hEIRJlTBPI/wzng/wT8eyTtkAnpMCN2
- OAsQY1xlWyeAxZ0QTXQSUNRyBSiJK397Q1tLt81UTN+gNxFBo+HbpIrQw
- 8xIto7lY+jMN5954ev46EXdAk/dNUaLS4WisDNLYrExuVsQBbfz3DNUZb
- z+7j6Vg9kADfTb6Jq3Z5BMe+ICs5whAfWmm15Byxp0Ztal6cZpDOVwrnP
- VJB+wnvKh7pJcu/q/YpqYrGLuyYsGsB+jQELzuaNLAsK54YX+5e25mC4/
- y4wYNDoiljXWQUFYWt/RlT1GYm3OWJZve+Azd5nqKHSasXddR2b2KZn96 Q==;
-X-CSE-ConnectionGUID: jI5cEMZxQx2eIWOqs1C0ZQ==
-X-CSE-MsgGUID: hZEcEtktQMKOKmrgDNXPUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="40249475"
-X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="40249475"
+ bh=rp03Uwl7l03pPj4HY9BuMvQ1YdrKKOFrRjevx8nf8/s=;
+ b=HSAhEO+GuaVj9ZnhvsfZ+IHp1svEmJTimWDYUQPfWcTIZOZmEqAgYzyZ
+ X3TwMwM89RlkJlrAUhLr8x6t+Ox6hkmR80FXlxFUgE7Avyj/O6XetomnH
+ TVHjgsyr1qNFSmAW0VR9HkbO83EBz2BEvL77pxQOEaF5fDuxZQb6P02/S
+ 0fX1wPjVQafH5ok0DZRLuZyozRPpZAJ5PzuLro57IfT8Q418dgM0fdwLQ
+ 8TKIWxUdwxHilc4RWU/85pRTo8O144/Bkiz0ftI4RVe87hCAaSzk1iGnQ
+ m14FUFt1QAYTlhAY+TdmOjfDL+0O+4l77R8TsuNKPOm0caGsQCbl+cMkf Q==;
+X-CSE-ConnectionGUID: QaHNSbK2RnGcNdJgxsET4w==
+X-CSE-MsgGUID: 1TrsxcjtTmCVFlwi6ENLqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="40249478"
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="40249478"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2024 19:51:03 -0700
-X-CSE-ConnectionGUID: zeRy5jCsRgiTRHy98DzptQ==
-X-CSE-MsgGUID: 4DhdYU6YRJGIUeJ75BpXWQ==
+ 27 Oct 2024 19:51:05 -0700
+X-CSE-ConnectionGUID: DDpFGIdcT9ujjbRSzhG3Cg==
+X-CSE-MsgGUID: zTjI3JZVQmeColUNzejurA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="81420953"
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="81420959"
 Received: from st-server.bj.intel.com ([10.240.193.102])
- by orviesa009.jf.intel.com with ESMTP; 27 Oct 2024 19:51:01 -0700
+ by orviesa009.jf.intel.com with ESMTP; 27 Oct 2024 19:51:02 -0700
 From: Tao Su <tao1.su@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, xiaoyao.li@intel.com,
  xuelian.guo@intel.com, tao1.su@linux.intel.com
-Subject: [PATCH 5/6] target/i386: Add support for AVX10 in CPUID enumeration
-Date: Mon, 28 Oct 2024 10:45:11 +0800
-Message-Id: <20241028024512.156724-6-tao1.su@linux.intel.com>
+Subject: [PATCH 6/6] target/i386: Introduce GraniteRapids-v2 model
+Date: Mon, 28 Oct 2024 10:45:12 +0800
+Message-Id: <20241028024512.156724-7-tao1.su@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028024512.156724-1-tao1.su@linux.intel.com>
 References: <20241028024512.156724-1-tao1.su@linux.intel.com>
@@ -79,34 +79,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intel AVX10 represents the first major new vector ISA since the
-introduction of Intel AVX512, which will establish a common, converged
-vector instruction set across all Intel architectures.
-
-AVX10 enable bit is enumerated via CPUID.(EAX=7,ECX=1):EDX[bit 19]. Add
-the CPUID definition for AVX10 enable bit, AVX10 will be enabled
-automatically when using '-cpu host' and KVM advertises AVX10 to
-userspace.
+Update GraniteRapids CPU model to add AVX10 and the missing features(ss,
+tsc-adjust, cldemote, movdiri, movdir64b).
 
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
 ---
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/cpu.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9666dbf29c..adde98fd26 100644
+index adde98fd26..8d72c08b66 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1133,7 +1133,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "avx-vnni-int8", "avx-ne-convert", NULL, NULL,
-             "amx-complex", NULL, "avx-vnni-int16", NULL,
-             NULL, NULL, "prefetchiti", NULL,
--            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, "avx10",
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
+@@ -4375,6 +4375,23 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .model_id = "Intel Xeon Processor (GraniteRapids)",
+         .versions = (X86CPUVersionDefinition[]) {
+             { .version = 1 },
++            {
++                .version = 2,
++                .props = (PropValue[]) {
++                    { "ss", "on" },
++                    { "tsc-adjust", "on" },
++                    { "cldemote", "on" },
++                    { "movdiri", "on" },
++                    { "movdir64b", "on" },
++                    { "avx10", "on" },
++                    { "avx10-128", "on" },
++                    { "avx10-256", "on" },
++                    { "avx10-512", "on" },
++                    { "avx10-version", "1" },
++                    { "stepping", "1" },
++                    { /* end of list */ }
++                }
++            },
+             { /* end of list */ },
+         },
+     },
 -- 
 2.34.1
 
