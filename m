@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F6E9B33C1
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD6F9B3393
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:33:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Qli-0001bo-IX; Mon, 28 Oct 2024 10:30:54 -0400
+	id 1t5QlP-0000Fl-9Z; Mon, 28 Oct 2024 10:30:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5Qkg-0000A7-RA
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:29:53 -0400
+ id 1t5Qkl-0000AX-P7
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:29:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5Qkd-0003hi-Dd
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:29:48 -0400
+ id 1t5Qkg-0003iR-Su
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:29:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730125786;
+ s=mimecast20190719; t=1730125790;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=leQodRwO8cbwBZJdEKIZ8FGqkROJiM0fBvAauKBAI60=;
- b=EI9CXy9K1ZztLesE7kIdQSq5M7KgVSRLnhgt57LRqbu2Fxmsi0/YtkJwOYAxI/RBGgofhc
- NMNkMMABY4AVeLvGY1KMm7PVG6kxnxZi3hT+bGkJKyrbeYFNuOQVVry7Gi7fGqCYFLfYta
- lpbEhJ/7G2fQwwxVYHYYELysrcRxbgo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=j+Vr9TnjLU2a58qM6D2/5EPfpLYLf3sVQLHOXY3Mmj8=;
+ b=fsJ+z9SRyyqmiMPB9a7FnrX11RtJq1vhn3BoII0PXahw26gqYcKKQA60lOIYMWqXwR4ab/
+ 1RSzhtU7dgp7Qc6X+wyP4GX3W/eKplNnMOyQPLV1nxBHXW3Gl/30G6gFxuCctHsEnFFt+l
+ kCRGDFd9di8BId6eRkxPqT5yQFZoy/M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-mUwID2gbO6-Iy4HjarRLRg-1; Mon, 28 Oct 2024 10:29:45 -0400
-X-MC-Unique: mUwID2gbO6-Iy4HjarRLRg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4316300bb15so31636605e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:29:45 -0700 (PDT)
+ us-mta-42-xM5EpvVWNbC2N3jwXuMlKA-1; Mon, 28 Oct 2024 10:29:49 -0400
+X-MC-Unique: xM5EpvVWNbC2N3jwXuMlKA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d603515cfso2081151f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:29:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125783; x=1730730583;
+ d=1e100.net; s=20230601; t=1730125786; x=1730730586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=leQodRwO8cbwBZJdEKIZ8FGqkROJiM0fBvAauKBAI60=;
- b=a24cv3zEJ+brBZul1zavwcnxHbSU/ENlDEXATD0v5jP7gbfc3glk/SVGO0TIIt5U3p
- hhcuKbREH+UJ1n9B6lbsQ2EXSHLz2vHMTcjD9Q7bcyz4BughxQb+nYo+snK3xVo2IXR1
- 6rzpSc2oOrfee3QyntPynqCJOXoE8ZIZHKUzZPWNgjcyj+Qfkfo/YSMNxXpeceNhH711
- Zqy53lSIsJL3+4RfhV7c8Pq1fNIFsML7B5STrw5DdCdk6OMliLb+Qu91XddZtPm0VNRR
- naMRok3N/JHfWbaKLXwAPtO0zqJtFdEOcoUtLtAI+ktP7W5cIwCUP7G4TLqaGUP2xtje
- UbYA==
-X-Gm-Message-State: AOJu0Ywjqs9jr/bc7ydVMcEEk1cX9kr6/R8Cj1Ncnq0B8UVZKTy95Va+
- Du4Zoyjrzv5VtFIZvGqznwfkA954cAiZlO1NYSbja7E/MCuPgjcTeDz31ypkKIGzmdtxpTxB0mu
- ABMNdxf3tcqAXMA7tgXzMpLDtmvIyNg5iy13CphII42R1EZkEwnWF+AP969TNOm4iRJbr+VjR1R
- TIal4R93IHLQ9Od5SpeQ04Yx9UVkvuh5d/lTpfdfU=
-X-Received: by 2002:a05:600c:4fcb:b0:425:7bbf:fd07 with SMTP id
- 5b1f17b1804b1-4319ac6fb93mr75564295e9.5.1730125783434; 
- Mon, 28 Oct 2024 07:29:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkqOiMteeZAG64gjpGhsiJtC9EI5wFxYF1p8Igk1vRJ9aTYtoaYTiu/+o6406SpoT5m7bYAg==
-X-Received: by 2002:a05:600c:4fcb:b0:425:7bbf:fd07 with SMTP id
- 5b1f17b1804b1-4319ac6fb93mr75564005e9.5.1730125782859; 
- Mon, 28 Oct 2024 07:29:42 -0700 (PDT)
+ bh=j+Vr9TnjLU2a58qM6D2/5EPfpLYLf3sVQLHOXY3Mmj8=;
+ b=RQ9jLOCzb/Y9/PoBjtjcfjMOfl72HugUuOzdRRsls97OINeDZAnhPf4QDznQCj/ZzP
+ hMGxcOvc17d5XaXV2kpdzM3MfYtvMASkXX1t/V2iM9c8AyvkNMefNbfSH83G5uLxPZRT
+ kfOTPdsijen4HlcGnYGVh3ySj6dip0FyDC1D+FXkhMm2SdmRvqJJTCJ4mo5XJZf/gXNg
+ 8CCD6lKRAo6qgA2dv+JtJ1iXKA1ddXaD5O3NYGwj3EJoJrgHKR1/PE9yv+X5mSSw/cbg
+ DnKo3jt6Y7qDkMxCJwlClglm0wCfIl9SbWm4oBljecNLmSD3WbErwx+GHKibZbjlgGDI
+ KYow==
+X-Gm-Message-State: AOJu0YyR3spXHAm33T9teSNAomwfaKGHYur8An2XXHK9yXCbwmNluFkk
+ Vc/cYj371ED2+sICoSxz8R/J36JoV+GgQdcEiMiKOd3PBpZO1WzWL4UG7uMJcVrkZBQluq224aD
+ fhDU6bAXWfWq8nhemIQpVeZtjzYfJ0ctcqcoZHSf95QBzkDYePA+nSJSlnpKat6MgVtmfgTljVH
+ 53ir04i46NaDr5FsfKsaEh6a2irhQkBeCKQZj83AE=
+X-Received: by 2002:adf:e04d:0:b0:37d:509e:8742 with SMTP id
+ ffacd0b85a97d-380610f81abmr6316738f8f.1.1730125786118; 
+ Mon, 28 Oct 2024 07:29:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/CXwrMFQdSkB6/fmNR9k2EjB4T2i7dgE+/E7muL7rwJ0LrXajM490vFiP992I/0tYGDmuIw==
+X-Received: by 2002:adf:e04d:0:b0:37d:509e:8742 with SMTP id
+ ffacd0b85a97d-380610f81abmr6316724f8f.1.1730125785704; 
+ Mon, 28 Oct 2024 07:29:45 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b55f719sm140140155e9.15.2024.10.28.07.29.40
+ ffacd0b85a97d-38058b4a3cesm9562946f8f.63.2024.10.28.07.29.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 07:29:41 -0700 (PDT)
+ Mon, 28 Oct 2024 07:29:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Guenter Roeck <linux@roeck-us.net>,
-	qemu-stable@nongnu.org
-Subject: [PULL 04/24] target/i386: fix CPUID check for LFENCE and SFENCE
-Date: Mon, 28 Oct 2024 15:29:11 +0100
-Message-ID: <20241028142932.363687-5-pbonzini@redhat.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 05/24] scripts: remove erroneous file that breaks git clone on
+ Windows
+Date: Mon, 28 Oct 2024 15:29:12 +0100
+Message-ID: <20241028142932.363687-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028142932.363687-1-pbonzini@redhat.com>
 References: <20241028142932.363687-1-pbonzini@redhat.com>
@@ -85,7 +85,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,34 +101,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LFENCE and SFENCE were introduced with the original SSE instruction set;
-marking them incorrectly as cpuid(SSE2) causes failures for CPU models
-that lack SSE2, for example pentium3.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Cc: qemu-stable@nongnu.org
+This file was created by mistake in recent ed7667188 (9p: remove
+'proxy' filesystem backend driver).
+
+When cloning the repository using native git for windows, we see this:
+Error: error: invalid path 'scripts/meson-buildoptions.'
+Error: The process 'C:\Program Files\Git\bin\git.exe' failed with exit code 128
+Link: https://lore.kernel.org/r/20241023073914.895438-1-pierrick.bouvier@linaro.org
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/meson-buildoptions. | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 scripts/meson-buildoptions.
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 1f193716468..48bf730cd3e 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -345,9 +345,9 @@ static void decode_group15(DisasContext *s, CPUX86State *env, X86OpEntry *entry,
-         [1] = X86_OP_ENTRYw(RDxxBASE,   R,y, cpuid(FSGSBASE) chk(o64) p_f3),
-         [2] = X86_OP_ENTRYr(WRxxBASE,   R,y, cpuid(FSGSBASE) chk(o64) p_f3 zextT0),
-         [3] = X86_OP_ENTRYr(WRxxBASE,   R,y, cpuid(FSGSBASE) chk(o64) p_f3 zextT0),
--        [5] = X86_OP_ENTRY0(LFENCE,          cpuid(SSE2) p_00),
-+        [5] = X86_OP_ENTRY0(LFENCE,          cpuid(SSE) p_00),
-         [6] = X86_OP_ENTRY0(MFENCE,          cpuid(SSE2) p_00),
--        [7] = X86_OP_ENTRY0(SFENCE,          cpuid(SSE2) p_00),
-+        [7] = X86_OP_ENTRY0(SFENCE,          cpuid(SSE) p_00),
-     };
- 
-     static const X86OpEntry group15_mem[8] = {
+diff --git a/scripts/meson-buildoptions. b/scripts/meson-buildoptions.
+deleted file mode 100644
+index e69de29bb2d..00000000000
 -- 
 2.47.0
 
