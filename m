@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1869B422C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 07:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8749B4249
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 07:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5fRa-0001fi-Dg; Tue, 29 Oct 2024 02:11:06 -0400
+	id 1t5fRX-0001bM-Cc; Tue, 29 Oct 2024 02:11:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t5fRQ-0001Va-Lw
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:10:56 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1t5fRS-0001YY-Vc
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:10:58 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t5fRO-0007D8-B9
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:10:56 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43169902057so49040955e9.0
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 23:10:52 -0700 (PDT)
+ id 1t5fRP-0007Dv-Cj
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:10:58 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4315e9e9642so46980605e9.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 23:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730182251; x=1730787051; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730182254; x=1730787054; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1F1wQfyGlx2dTe0Op+HmZFdGoAZYpgptW9U5JoHUQ6Q=;
- b=eRIr5Gtc3mTX+c+pzVOkpUONV07yXnrMWu8TAYNvyRveALhHJlU3WZCwNLQEArArI8
- nRYrgsRTa/MwbLw1zPLnTu34SsEsgdvAOyS7nKWEiRZwybmyLHHCu2h6fAh+08y6c168
- u4gExahLLlCTCThJ8SnuteXPzJStuAuoJ3n67mBpV/sGvegIrUomVkNqWYmtL8UU3pnc
- hFKZ/uQ818rPoa7J4la5cpRK+VnhCTrvOBbMAQAB2aXFLSUoKW2Ucagl0t8TEvqsFnkw
- v5/rvv4CkJLlxTmL9d2o9IRrmFw2dytGTn/Gu5kdf9L+U4rOcwzmgXLsUKqafAkwKSix
- 16TQ==
+ bh=vdprgcuz7bb7byZBLscoga4XNpSMzSOLnmRWmYyTOpo=;
+ b=OilPDfmTj+yYdXn1psQ4AY/AD6KyQB73LQxX8fMTO7xYbJCtB0C8rqllr9Xe6vIey8
+ arznfWYS48d8LAUe3zwNA41tZLdHCABXjjswKoIKH3LV1pOKq0a/t3OXOe75tHrl0WEb
+ BFQfTy+I5lI8jXU3YQpAT8G8LQkGieDRv8mQ+YWI7UCYeeEf+j+Qs2+ypKKQNlaRHSgF
+ I7+9kkbWmxXffcYsq36NXlKxMOLEuq9BGVOOIfLLoKZfVVyt6wCrKZoLN5Ff6qJGJFQf
+ A6W7vrNsgmLhM0+7vvXysy1h1LM7/VYZsJaq1VT74vg7/6arPNyiozrhy1TFIXhoKi8V
+ hbbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730182251; x=1730787051;
+ d=1e100.net; s=20230601; t=1730182254; x=1730787054;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1F1wQfyGlx2dTe0Op+HmZFdGoAZYpgptW9U5JoHUQ6Q=;
- b=mHlXj4r1UCKQOoZgH/9//YQQN9KkMNATi+T6ocGhKjKPYJuc+OSBWCypP45E6baUCJ
- WOjBWjhQ/QWFi3upnZ3zpvoHFgUl55Bb5oHeGP2nQVrGesxIk6PaejKP9X1keC3ECuxT
- pjCAOnsvJmlQPmL2s14hTC0cSaEyKQstEvkyp+zOZMIhUGS9eksVpxWU+HggBEYmtwSt
- RKdU+vgq+73Coy8A2jv/8OEBvGgGN+GTfAxu59hwxsTUMF25GlTmPeIubiTJpypVeDra
- MKfsP2JyiYhPUwSOKq5tfUx/o5azhKPS2aR7uOAux+JJz+rfXkewWblEcdHJGpKw9gVo
- 9/ng==
+ bh=vdprgcuz7bb7byZBLscoga4XNpSMzSOLnmRWmYyTOpo=;
+ b=dAc7u1ut4Pm1a5SKRZMeOwXdTqAHgWkmK+aDQBkPcUPV0vx5fQP9af6rGYcLyY3FH4
+ DIwcGL5DMX7820tj2WQN8WkVls3y7A1vUTE2on0u7BtX/HKndvO8X39xPvYq4tNFVO/1
+ ykyvaiKT76I7a3X3CQHNuOrJ+acxynCzy4ewUmEhNghLMK5z5kbeh/dZohIZ6fYfaaYL
+ hm4WgvBhHbih3UUX4aH+2deVVQRJdhwBcOEFnJi7HGti9eaA5KL68dltlBUOxKCT6n//
+ 15otrtOU8SA6xLlQ2GL2lHFr1po2phWu1SQ6S6SForVIte2JGM/yjmoCM9tncgg60Py+
+ 38LQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV01f2CpZmS9raHC8F7YXTTpH0tS0OB32Kqyr9sa/2hHlQwz7i4SPd3dNbsj03Mo8eMeV2QaFeGZOhV@nongnu.org
-X-Gm-Message-State: AOJu0Yy+KQbWYh/TPKNG10mBcvncDbOqQWPmIhBsgUDYEcctpRdmD/an
- jysXQEi5sGbydyOG3Ocho/xQRfvMuIkCCE3PQURNjMmodoaNnvvJyRySyJIRDzM=
-X-Google-Smtp-Source: AGHT+IF/XEB3t8rDOX9R8wrFa9AB5OgvhKOca5YZ5ZgPCiex9iqGl6fRuzz5nlT11jaQr2JRP8bScQ==
-X-Received: by 2002:a05:600c:4fcb:b0:431:5ed4:7e7d with SMTP id
- 5b1f17b1804b1-4319acad048mr72454495e9.18.1730182251258; 
- Mon, 28 Oct 2024 23:10:51 -0700 (PDT)
+ AJvYcCVrJDrY+MTR6rjQgzDi42uampBBDPDP8/TAGJw66z46znPQvPiBJQJIFv2JS1TQkI3XwAqpqjjW8yMe@nongnu.org
+X-Gm-Message-State: AOJu0YxDucYOOjtVbAItC4f5SFcE1rzZgat41q5q17Rde6aYr8A5eo2q
+ yX4x4loQP3H/7p9GbjlQGfI5WTQn022BNW22qV2DwC34IvL68YQgN4Z0b7EJfGU=
+X-Google-Smtp-Source: AGHT+IEttoKAn4x9RZQWbeBvw17DYN/C8JqnY0VyjPOAUVm1zU6rk9Ah9WZu50EGFYDOw0wFxBGzpg==
+X-Received: by 2002:a05:600c:35cd:b0:431:5863:4240 with SMTP id
+ 5b1f17b1804b1-4319ad0f10cmr90532585e9.24.1730182253825; 
+ Mon, 28 Oct 2024 23:10:53 -0700 (PDT)
 Received: from [192.168.21.227] ([90.197.151.65])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b55f5e1sm165298915e9.14.2024.10.28.23.10.48
+ 5b1f17b1804b1-4318b55f5e1sm165298915e9.14.2024.10.28.23.10.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Oct 2024 23:10:50 -0700 (PDT)
-Message-ID: <797f110c-8615-4e43-aec6-62564a654c47@linaro.org>
-Date: Mon, 28 Oct 2024 12:20:15 +0000
+ Mon, 28 Oct 2024 23:10:53 -0700 (PDT)
+Message-ID: <74a8c6b7-9a4c-4595-b3b0-c900dcb01560@linaro.org>
+Date: Mon, 28 Oct 2024 12:20:56 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/21] target/sparc: Move cpu_put_fsr(env, 0) call to reset
+Subject: Re: [PATCH 12/21] target/sparc: Explicitly set 2-NaN propagation rule
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -80,14 +80,14 @@ Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
  qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
 References: <20241025141254.2141506-1-peter.maydell@linaro.org>
- <20241025141254.2141506-12-peter.maydell@linaro.org>
+ <20241025141254.2141506-13-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241025141254.2141506-12-peter.maydell@linaro.org>
+In-Reply-To: <20241025141254.2141506-13-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -111,27 +111,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/25/24 15:12, Peter Maydell wrote:
-> Currently we call cpu_put_fsr(0) in sparc_cpu_realizefn(), which
-> initializes various fields in the CPU struct:
->   * fsr_cexc_ftt
->   * fcc[]
->   * fsr_qne
->   * fsr
-> It also sets the rounding mode in env->fp_status.
+> Set the NaN propagation rule explicitly in the float_status
+> words we use.
 > 
-> This is largely pointless, because when we later reset the CPU
-> this will zero out all the fields up until the "end_reset_fields"
-> label, which includes all of these (but not fp_status!)
-> 
-> Move the cpu_put_fsr(env, 0) call to reset, because that expresses
-> the logical requirement: we want to reset FSR to 0 on every reset.
-> This isn't a behaviour change because the fields are all zero anyway.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
+>   target/sparc/cpu.c             |  8 ++++++++
+>   target/sparc/fop_helper.c      | 10 ++++++++--
+>   fpu/softfloat-specialize.c.inc |  6 ++----
+>   3 files changed, 18 insertions(+), 6 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
