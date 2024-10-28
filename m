@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDE19B33B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36E09B3403
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:50:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Qm1-0001g1-TO; Mon, 28 Oct 2024 10:31:16 -0400
+	id 1t5R2u-0000WY-Ip; Mon, 28 Oct 2024 10:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlU-0000iC-Nl
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t5R2p-0000WJ-C4
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:48:36 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlT-00041V-97
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730125838;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ANrTQw6sylLk0MOtalh3eFn5kIjq1iikw1mOMtK6UAY=;
- b=iS0ubircX4y0UWJXDD3CxNfy/hzwXkLY/k2PqD04Ke6Hdygaq1lSmtv3KdJ9qIg3L6j4SF
- QnL5gek/+A5f8O8+dcQbQILIvakWRaL5w46+/FlskUtTUegd6u1B+aP83CA9CVJimrM/+5
- jHno5bhT47yuX/8rY2aJ4gy8SyUBXKs=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-jaNMWRIYPBmHbOsBTQlaqw-1; Mon, 28 Oct 2024 10:30:37 -0400
-X-MC-Unique: jaNMWRIYPBmHbOsBTQlaqw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d5606250aso2171946f8f.2
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125835; x=1730730635;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ANrTQw6sylLk0MOtalh3eFn5kIjq1iikw1mOMtK6UAY=;
- b=pTze3OMoVzXmWqa8JDJ7eQnFSlQi/H5S0Pl5qUtMcqUFdKlXkD10G8bM2XrReN3m8i
- f7WT00Sf1GYtSSy2pVLe89a0WnEjWAMxqmjFiYkTUPvJl4JS1Ym1UkTjYRiXwV7HbAd8
- EGjJYXc3U4aCgHDsE9AEEJKwig5e6DcKh3SJP2HIcZgpxmACeb25kG5LQfZSVgqgrMLV
- f6KC3khOKfB2uTY9EnGoNuCCf2RHO7rNcmyDrnYZvkbAJbQW89LdOFevsaQCaert6fHm
- qEMFszvVrDxMWFYFrHOyhRaQp6DyJUW8t3U89Bx7vxT8XmHHIhoWLdUtIPwY1vOOLUrJ
- jpNg==
-X-Gm-Message-State: AOJu0YxX3RKVCQSV7ujBa3AOLnCPQZ0/JIXF5DESAh4LcJqqGosaaKlF
- Gj8rbxTLTetWotpkbaWTbjCNWnOTBBHGzylPNYsgMoVbojF8tjPADYnB7drgCSFSMrRTteFUB3i
- bweko+9fkzPAKiRZMzrkJ0SPOyzg6fR2VA+XGfGzLCyqWdY3Ix7vBBz9wOt1EC1ZL/kRX8Vw3Uz
- VZNGpdNmraWLdGsk2Xwf6dFj2HTHadZORIVPgRsqM=
-X-Received: by 2002:adf:ce0d:0:b0:37d:5046:565 with SMTP id
- ffacd0b85a97d-3806120085fmr6710308f8f.40.1730125835096; 
- Mon, 28 Oct 2024 07:30:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZEbzKaqxkHSPWqbBy/nv/SzGNxiAlvAwg+MTqSgxU7md2VRQkxlk9g0APXSIVS9wVskFRxQ==
-X-Received: by 2002:adf:ce0d:0:b0:37d:5046:565 with SMTP id
- ffacd0b85a97d-3806120085fmr6710262f8f.40.1730125834339; 
- Mon, 28 Oct 2024 07:30:34 -0700 (PDT)
-Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38058b91ff2sm9629177f8f.96.2024.10.28.07.30.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 07:30:32 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 24/24] MAINTAINERS: Add myself as a reviewer of x86 general
- architecture support
-Date: Mon, 28 Oct 2024 15:29:31 +0100
-Message-ID: <20241028142932.363687-25-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028142932.363687-1-pbonzini@redhat.com>
-References: <20241028142932.363687-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t5R2l-0005gE-KR
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:48:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730126912; x=1761662912;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=DJL8wQQzsb0xYiPOXsVHauDQKrxuOxW7vpHL52cjzF0=;
+ b=ek2mb8RpviM/w+6OjfgDlLcX3mzV/av9m41jnPOLo5uOPpBxnqtQFk0j
+ JU9P/2A6Z/eCSea9O8qLpKz3QRKPL5ybyNRuHnipAmBq2/7aCi1TiPb+S
+ tdgRr2tGJBrBJq7VgLjwFuoRrE6E3Bz/ujM3VXD0frWjYgNRkQMr7rm+1
+ myWhZGl8Pm0uKwbufsM307ZpHB/xZeBjOMWd5GPc/7+V4dZUmk2xhOHEm
+ 2pI7ItuTKAy3iQpGoMef5nPrrh7lfeiHrpfqOWV3e70QDN6HR9NWqoqhF
+ g0tFknJTc4C01FZhFDsQuNs2f3k1n4KxN3jCr1kPbS8sLWe4NxllfD2B1 A==;
+X-CSE-ConnectionGUID: XMafktynRZy+IfyxbECVgQ==
+X-CSE-MsgGUID: zpH0lCecSOCI24A7RW9f5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="40302148"
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="40302148"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 07:48:27 -0700
+X-CSE-ConnectionGUID: kCjLcRMXRUy5TpZ0I4KHzg==
+X-CSE-MsgGUID: /zlekO4FRO+jtqRyvMx0Rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="82066902"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.227.172])
+ ([10.124.227.172])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 07:48:24 -0700
+Message-ID: <14c432e8-5049-4051-ba1f-303f76bfbe19@intel.com>
+Date: Mon, 28 Oct 2024 22:48:21 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/6] target/i386: Add feature dependencies for AVX10
+To: Paolo Bonzini <pbonzini@redhat.com>, Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, mtosatti@redhat.com, xuelian.guo@intel.com
+References: <20241028024512.156724-1-tao1.su@linux.intel.com>
+ <20241028024512.156724-5-tao1.su@linux.intel.com>
+ <b9ca7c3e-86e6-4a25-9295-573dbacf0ce1@redhat.com>
+ <Zx9hPncYMxsF3Hkh@linux.bj.intel.com>
+ <340b5b33-8b77-43ab-b0dc-c6e9f610b4a2@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <340b5b33-8b77-43ab-b0dc-c6e9f610b4a2@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.782, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,31 +87,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 10/28/2024 6:45 PM, Paolo Bonzini wrote:
+> On 10/28/24 11:02, Tao Su wrote:
+>> On Mon, Oct 28, 2024 at 09:45:39AM +0100, Paolo Bonzini wrote:
+>>> On 10/28/24 03:45, Tao Su wrote:
+>>>> Since the highest supported vector length for a processor implies that
+>>>> all lesser vector lengths are also supported, add the dependencies of
+>>>> the supported vector lengths. If all vector lengths aren't supported,
+>>>> clear AVX10 enable bit as well.
+>>>>
+>>>> Note that the order of AVX10 related dependencies should be kept as:
+>>>>           CPUID_24_0_EBX_AVX10_128     -> CPUID_24_0_EBX_AVX10_256,
+>>>>           CPUID_24_0_EBX_AVX10_256     -> CPUID_24_0_EBX_AVX10_512,
+>>>>           CPUID_24_0_EBX_AVX10_VL_MASK -> CPUID_7_1_EDX_AVX10,
+>>>
+>>> I think you need to add a set of dependencies so that avx10 cannot be 
+>>> set,
+>>> unless all the older AVX features that it's composed of are 
+>>> available.  From
+>>> the manual these are
+>>>
+>>> AVX512F, AVX512CD, AVX512VW, AVX512DQ, AVX512_VBMI, AVX512_IFMA,
+>>> AVX512_VNNI, AVX512_BF16, AVX512_VPOPCNTDQ, AVX512_VBMI2, VAES, GFNI,
+>>> VPCLMULQDQ, AVX512_BITALG, AVX512_FP16.
+>>
+>> Thanks for such a quick review!!
+>>
+>> AVX10.1 spec said:
+>> Intel AVX-512 will continue to be supported on P-core-only processors for
+>> the foreseeable future to support legacy applications. However, new 
+>> vector
+>> ISA features will only be added to the Intel AVX10 ISA moving forward.
+>> While Intel AVX10/512 includes all Intel AVX-512 instructions, it
+>> important to note that applications compiled to Intel AVX-512 with vector
+>> length limited to 256 bits are not guaranteed to be compatible on an 
+>> Intel
+>> AVX10/256 processor.
+>>
+>> I.e. AVX10/256 processors will support old AVX-512 instructions
+>> (limited to 256 bits and enumerated by AVX10) but not set AVX-512 related
+>> CPUIDs. So, I think we can't add these dependencies…
+> 
+> Of course you're right about AVX10 in general, you still need to add the 
+> dependency but only for CPUID_24_0_EBX_AVX10_512.
 
-X86 architecture has always been a focus of my work. I would like to
-help to review more related patches.
+What if future E-core processor starts to support AVX10/512 but not 
+enumerating any individual AVX512 bit? (AVX10.1 spec only states the 
+compatibility behavior for P-core-only processors)
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20241022023628.1743686-1-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c3bfa132fd6..db2880253d0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -132,6 +132,7 @@ F: configs/targets/mips*
- 
- X86 general architecture support
- M: Paolo Bonzini <pbonzini@redhat.com>
-+R: Zhao Liu <zhao1.liu@intel.com>
- S: Maintained
- F: configs/devices/i386-softmmu/default.mak
- F: configs/targets/i386-softmmu.mak
--- 
-2.47.0
+> Paolo
+> 
 
 
