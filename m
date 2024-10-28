@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD85A9B34B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 16:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD8C9B34B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 16:21:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5RX3-0000JF-QD; Mon, 28 Oct 2024 11:19:49 -0400
+	id 1t5RX4-0000QZ-W6; Mon, 28 Oct 2024 11:19:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5RWu-0008NI-Ez
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 11:19:43 -0400
+ id 1t5RWy-0008SC-9y
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 11:19:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5RWs-0000rf-Ra
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 11:19:40 -0400
+ id 1t5RWu-0000s1-IR
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 11:19:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730128776;
+ s=mimecast20190719; t=1730128779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UiNRCJcj6y5gkOMCLNt04TYjymilyV5BG77bHcu2074=;
- b=OcNU5SlYWN5wzqAG7wn9UYmpffu9YySVlE+25qJS/+k6p0W72mYFa7Nl60Ouk6NxVkQRoL
- 2SrsKgFYKNnGEs6K1t1GQuUEaKcXemYbrQdLAIuJIBoqqjetzkewJltdY+dPQSoqPwwOOc
- 0LTGsL6xfSzrmuSkOwNU7QXFcaxWhdE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=i+7hpjh8zyx3zlcLNxjdL89izQCWDrDMLuGY9zVgw6o=;
+ b=JseBk6tiSfrANck7a8rqxiv+ZS9LfSkXrDjbEL0GLCLJUrJZYX/DjsnPYVtXNDGEXW+Etr
+ Yuh3tUYwNnHlzURWgKEt12us4MgVD7AOygbXldZqOpqkDQA9Oowknttauo/8OBMKHNKEZk
+ WOFMIBAnOdk4GJOrujehVXYFq5mtGaA=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-G5ZPMZmDMbaWJ8rB71LuZA-1; Mon, 28 Oct 2024 11:19:35 -0400
-X-MC-Unique: G5ZPMZmDMbaWJ8rB71LuZA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d56061a4cso2434622f8f.2
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 08:19:35 -0700 (PDT)
+ us-mta-589-tKzgR1HOM-WglE8tA8xVrQ-1; Mon, 28 Oct 2024 11:19:38 -0400
+X-MC-Unique: tKzgR1HOM-WglE8tA8xVrQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539f067414fso3171525e87.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 08:19:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730128773; x=1730733573;
+ d=1e100.net; s=20230601; t=1730128777; x=1730733577;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UiNRCJcj6y5gkOMCLNt04TYjymilyV5BG77bHcu2074=;
- b=LbeWW44eEs0nZ6z6r+l5j09Q2D0n/Vb47ZS05Unn56p8RPd2kZmuYxln+AaYmIY2eA
- g5tre3bbsLYEER/7fGsYmxzLf/NldzuZFJV8GWf09RCRL3dZBXjD8hTlMaHKC/FQ+Fl9
- ao8NEVS3LaED7zbE1a5sG7F9vXRzR9I8tsbNDdhBu8lJ3WlLvTPWPtGgNSyF6EtgGTyC
- IsmwJH06F17lVTSwqOe3DNfX3Ke72Fud6ChH/71hqQXseZBaU8iZE0RoqcKymCYfkrqO
- oBPyfsNQeh/izxhAGOy3vkDmFWoOZ5aQvXHAlrJLV7XxC+b8yD6nCyV9q1uSNh2h0aHK
- JN6w==
-X-Gm-Message-State: AOJu0YwV1yrL32IRVwXvMZtE0lvSDDSJ2/J4vpw1zAnGf13cPUA/Hmpq
- AhhyW+0BOiDgNH98hhM7ummzoLIBfe0XgTotoMGmrLkTVJyj2X6Vd1Ys+oQzRhvp8gsixibGrfg
- ZmvdPKZbmHFzepwD5ljDspsatn8bOMTnHjDCdRHzlNFaI4X4RWyQDeiNQCPYx228a8dbCezcnLM
- FXDZEyej0MspKQfse69fL3Ez5lKODppRztNYYI6J0=
-X-Received: by 2002:a5d:4c46:0:b0:378:89be:1825 with SMTP id
- ffacd0b85a97d-380611f55a1mr5450283f8f.49.1730128773302; 
- Mon, 28 Oct 2024 08:19:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2O952Wyn20plbBwesyIVVMgDcqmoYAw5bUTLzjkYmZQAiA/AzU9Vu+DGR4Nq1xuIYHaURQw==
-X-Received: by 2002:a5d:4c46:0:b0:378:89be:1825 with SMTP id
- ffacd0b85a97d-380611f55a1mr5450262f8f.49.1730128772857; 
- Mon, 28 Oct 2024 08:19:32 -0700 (PDT)
+ bh=i+7hpjh8zyx3zlcLNxjdL89izQCWDrDMLuGY9zVgw6o=;
+ b=DzDLaY+yPLv2GL1aSaBnWlz9JaZYrkpbVzqWqTszT0sPOZC7ZbI8pyZ8no5dgHl63U
+ 4vTJG6iBBjkOO2yUd0sOPODY/6ylCE5P2EmVZnAmSDGjQ2rFFLXfLKh/ubE5YhO0Otpi
+ VGJ6CH6GRaALKNYWkfmpDbm+2oxhhs816C7gF04gf80+B9SQw2z5gwlqbNvfgnKyyVZk
+ icOSQfqt568bbGyZQMS46H8nbmStVi9kibuTtikU4ClMCPe1q2INFqD5ZyOXzNuVf8wS
+ 2tZbn7oCn+aYiUTaBXnj5RwERxafSEERcjjWzuMp634bX8s9WhEnOsiAFPSMhUYUqR+K
+ XF6w==
+X-Gm-Message-State: AOJu0YwMCdsa6a8Lu7X5FlIhVWSDoMoYllEWxZBAY6IXDL007VofXQfH
+ 6Jj++L4VlDiSv7uv1I/iEmnbtmm0rUcWWHNUrMpqCu3ElhSsm9XKhT9isnELwykftaEk8qq/Z99
+ H3lcQFTs36/m/Xdn67P1sV25KGBPpjFUN9Ptaz6lGsykUnAnTspYfaEinbFlbHnRY0nouJH4cag
+ n7L1Y4UMqUeprFkBNTrFope77OquIGRVkAQboE1dI=
+X-Received: by 2002:a05:6512:4022:b0:539:e333:1822 with SMTP id
+ 2adb3069b0e04-53b348b7dc7mr3866866e87.4.1730128776525; 
+ Mon, 28 Oct 2024 08:19:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHt90scYUFvRudPh6eWb+hfE0Xbe8bpn1bFyiED3MEfMXz+HnhK4WNE6kaNpindxo6qdHPNeA==
+X-Received: by 2002:a05:6512:4022:b0:539:e333:1822 with SMTP id
+ 2adb3069b0e04-53b348b7dc7mr3866839e87.4.1730128775987; 
+ Mon, 28 Oct 2024 08:19:35 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38058bb433bsm9729282f8f.112.2024.10.28.08.19.32
+ 5b1f17b1804b1-4318b56ef06sm143691335e9.30.2024.10.28.08.19.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 08:19:32 -0700 (PDT)
+ Mon, 28 Oct 2024 08:19:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 13/14] target/i386: use higher-precision arithmetic to compute
- CF
-Date: Mon, 28 Oct 2024 16:18:50 +0100
-Message-ID: <20241028151851.376355-14-pbonzini@redhat.com>
+Subject: [PATCH 14/14] target/i386: use + to put flags together
+Date: Mon, 28 Oct 2024 16:18:51 +0100
+Message-ID: <20241028151851.376355-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028151851.376355-1-pbonzini@redhat.com>
 References: <20241028151851.376355-1-pbonzini@redhat.com>
@@ -101,110 +100,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the operands of the arithmetic instruction fit within a half-register,
-it's easiest to use a comparison instruction to compute the carry.
-`
+This gives greater opportunity for reassociation on x86 targets,
+since addition can use the LEA instruction.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/cc_helper_template.h.inc | 37 ++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ target/i386/tcg/cc_helper_template.h.inc | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/target/i386/tcg/cc_helper_template.h.inc b/target/i386/tcg/cc_helper_template.h.inc
-index 8af8b8539f9..f29a6dfb77c 100644
+index f29a6dfb77c..d7672c8840a 100644
 --- a/target/i386/tcg/cc_helper_template.h.inc
 +++ b/target/i386/tcg/cc_helper_template.h.inc
-@@ -22,12 +22,17 @@
- #if DATA_BITS == 8
- #define SUFFIX b
- #define DATA_TYPE uint8_t
-+#define WIDER_TYPE uint32_t
- #elif DATA_BITS == 16
- #define SUFFIX w
- #define DATA_TYPE uint16_t
-+#define WIDER_TYPE uint32_t
- #elif DATA_BITS == 32
- #define SUFFIX l
- #define DATA_TYPE uint32_t
-+#if HOST_LONG_BITS <= 64
-+#define WIDER_TYPE uint64_t
-+#endif
- #elif DATA_BITS == 64
- #define SUFFIX q
- #define DATA_TYPE uint64_t
-@@ -62,9 +67,18 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
-                                          DATA_TYPE src3)
- {
-     uint32_t cf, pf, af, zf, sf, of;
-+
-+#ifdef WIDER_TYPE
-+    WIDER_TYPE src13 = (WIDER_TYPE) src1 + (WIDER_TYPE) src3;
-+    DATA_TYPE src2 = dst - src13;
-+
-+    cf = dst < src13;
-+#else
-     DATA_TYPE src2 = dst - src1 - src3;
+@@ -55,7 +55,7 @@ static uint32_t glue(compute_all_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = lshift((src1 ^ src2 ^ -1) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
  
-     cf = (src3 ? dst <= src1 : dst < src1);
-+#endif
-+
-     pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & 0x10;
+ static int glue(compute_c_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -84,7 +84,7 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
      zf = (dst == 0) << 6;
-@@ -76,7 +90,13 @@ static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+     sf = lshift(dst, 8 - DATA_BITS) & 0x80;
+     of = lshift((src1 ^ src2 ^ -1) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
  static int glue(compute_c_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
-                                        DATA_TYPE src3)
- {
-+#ifdef WIDER_TYPE
-+    WIDER_TYPE src13 = (WIDER_TYPE) src1 + (WIDER_TYPE) src3;
-+
-+    return dst < src13;
-+#else
-     return src3 ? dst <= src1 : dst < src1;
-+#endif
+@@ -110,7 +110,7 @@ static uint32_t glue(compute_all_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = lshift((src1 ^ src2) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
  }
  
- static uint32_t glue(compute_all_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
-@@ -104,9 +124,18 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
-                                          DATA_TYPE src3)
- {
-     uint32_t cf, pf, af, zf, sf, of;
-+
-+#ifdef WIDER_TYPE
-+    WIDER_TYPE src23 = (WIDER_TYPE) src2 + (WIDER_TYPE) src3;
-+    DATA_TYPE src1 = dst + src23;
-+
-+    cf = src1 < src23;
-+#else
-     DATA_TYPE src1 = dst + src2 + src3;
- 
-     cf = (src3 ? src1 <= src2 : src1 < src2);
-+#endif
-+
-     pf = compute_pf(dst);
-     af = (dst ^ src1 ^ src2) & 0x10;
+ static int glue(compute_c_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
+@@ -141,7 +141,7 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
      zf = (dst == 0) << 6;
-@@ -118,9 +147,16 @@ static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
- static int glue(compute_c_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
-                                        DATA_TYPE src3)
- {
-+#ifdef WIDER_TYPE
-+    WIDER_TYPE src23 = (WIDER_TYPE) src2 + (WIDER_TYPE) src3;
-+    DATA_TYPE src1 = dst + src23;
-+
-+    return src1 < src23;
-+#else
-     DATA_TYPE src1 = dst + src2 + src3;
- 
-     return (src3 ? src1 <= src2 : src1 < src2);
-+#endif
+     sf = lshift(dst, 8 - DATA_BITS) & 0x80;
+     of = lshift((src1 ^ src2) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
  }
  
- static uint32_t glue(compute_all_logic, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-@@ -258,3 +294,4 @@ static int glue(compute_c_blsi, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
- #undef DATA_TYPE
- #undef DATA_MASK
- #undef SUFFIX
-+#undef WIDER_TYPE
+ static int glue(compute_c_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
+@@ -169,7 +169,7 @@ static uint32_t glue(compute_all_logic, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = 0;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static uint32_t glue(compute_all_inc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -185,7 +185,7 @@ static uint32_t glue(compute_all_inc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = (dst == SIGN_MASK) * CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static uint32_t glue(compute_all_dec, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -201,7 +201,7 @@ static uint32_t glue(compute_all_dec, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = (dst == SIGN_MASK - 1) * CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static uint32_t glue(compute_all_shl, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -215,7 +215,7 @@ static uint32_t glue(compute_all_shl, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     /* of is defined iff shift count == 1 */
+     of = lshift(src1 ^ dst, 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static int glue(compute_c_shl, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -234,7 +234,7 @@ static uint32_t glue(compute_all_sar, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     /* of is defined iff shift count == 1 */
+     of = lshift(src1 ^ dst, 12 - DATA_BITS) & CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ /* NOTE: we compute the flags like the P4. On olders CPUs, only OF and
+@@ -250,7 +250,7 @@ static uint32_t glue(compute_all_mul, SUFFIX)(DATA_TYPE dst, target_long src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = cf * CC_O;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static uint32_t glue(compute_all_bmilg, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -263,7 +263,7 @@ static uint32_t glue(compute_all_bmilg, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = 0;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static int glue(compute_c_bmilg, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+@@ -281,7 +281,7 @@ static int glue(compute_all_blsi, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
+     zf = (dst == 0) * CC_Z;
+     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
+     of = 0;
+-    return cf | pf | af | zf | sf | of;
++    return cf + pf + af + zf + sf + of;
+ }
+ 
+ static int glue(compute_c_blsi, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
 -- 
 2.47.0
 
