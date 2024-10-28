@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747D09B33C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642FB9B33A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Qo5-00037I-Rb; Mon, 28 Oct 2024 10:33:22 -0400
+	id 1t5QmU-00021V-Ja; Mon, 28 Oct 2024 10:31:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlL-0000XU-Ks
+ id 1t5QlH-0000X7-Bs
  for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlI-0003zx-DQ
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:31 -0400
+ id 1t5QlF-0003zY-P9
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730125827;
+ s=mimecast20190719; t=1730125824;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A9+GxjZBE101yDjjA0Qt1X0NpiGdJaUq+zHWXHIOAas=;
- b=O2qF7tJOSOBRsED24rj0AGrImNnNGob6vXCxx38ZuqSjNr8jTnGOq4JSuiyfOTdqQD7H7l
- q8aQuOwvjmYKKqGFaR4LEW3QC6DhOwgrudmyONgjdRk+wsurgl16slaRirZrUmmbGoqIzf
- Z8Ug7NrdsmoO4yZGhP52zTCnJ6UA0VQ=
+ bh=Pk/ExTQ6ucVRc/G0SIy96rszaYTtvZQeQUouajsdp/c=;
+ b=gU/w9mEjUSRslODDV+LRCv+zb+cDGGszbQ+mAGWacdcpqhm1kZ4fZ5zbEgPr5Xqx2pe3yB
+ Uvv4v3I5ZcMSGGcqwnMQCwhqGpzDMXyqy94LtgSJCn61dkI9u/JUBGIHrViFDN4KfJDbd/
+ rCzpRitQ7pJTlM6aHpg0NjoLwbARXq4=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-FYBOiREsOAWwiGgFbXeLFQ-1; Mon, 28 Oct 2024 10:30:22 -0400
-X-MC-Unique: FYBOiREsOAWwiGgFbXeLFQ-1
+ us-mta-631-kJYvjULUMyiwCEFbJ2Cnug-1; Mon, 28 Oct 2024 10:30:23 -0400
+X-MC-Unique: kJYvjULUMyiwCEFbJ2Cnug-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43157e3521dso29925645e9.1
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:19 -0700 (PDT)
+ 5b1f17b1804b1-43151e4ef43so29228445e9.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125818; x=1730730618;
+ d=1e100.net; s=20230601; t=1730125821; x=1730730621;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A9+GxjZBE101yDjjA0Qt1X0NpiGdJaUq+zHWXHIOAas=;
- b=P/f8AbscXMeUvWeg0BI4Qiy9niMigTazCLtotMEqSR7jYUp92+tHzTyNOR3ubtErB7
- GZLOquPjG9cpYnHVpna6IIcts8E8pFlH72YdQd69OWVtNof8vdqoYQMTPCmRxdRIUms8
- oNi32nV50hMoWQOk0F+FqFKN6SoETiLPHyjzDnoyoApENqnRpdWsHtY/WhxOJPLeb5dD
- 3DMfJ9yON7c0GS68Llfe14a5n5/6iuXkXUaOFFJTFwzi3Yhbx6Ak+koUKo48K1d7UR4i
- DLXgW34Skw5pnOOcBibi+D6dOwhze14horQ3ziuTuWGkSvyl8CXoyjLWl03gF7f/Riyg
- Jh5w==
-X-Gm-Message-State: AOJu0Yz5ZZPp5LKDf9AakpMpuVfSDqNv0CluQSFA12jYbwBfPGyzgyWM
- fgEoU3GNOeycJXDflZvYQmd79YnEvSRoQJTxlGwYjvtR58l6HbEMqNs0p/MNvaCOYIcjzodHTqD
- 8FZsqBESh+OSiYAE7o3THgH/IkHGWUKlNq3X8lukPF6g63OpFE5B/fB0vk7gMOpuMk8sC25Tczc
- fkHsuifErm7Z5tHaPdjQl+SzNBYDt48HaS2WBPttE=
-X-Received: by 2002:a05:600c:46d0:b0:431:5465:807b with SMTP id
- 5b1f17b1804b1-4319ad237dfmr74624965e9.32.1730125817783; 
- Mon, 28 Oct 2024 07:30:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzQaYLtSYN6+sszzTqo4y23qXBh5kqUQ/zCFFpiRZ27NlM8Sf/57HFSif9gsvbWLwPeaX3xQ==
-X-Received: by 2002:a05:600c:46d0:b0:431:5465:807b with SMTP id
- 5b1f17b1804b1-4319ad237dfmr74624715e9.32.1730125817372; 
- Mon, 28 Oct 2024 07:30:17 -0700 (PDT)
+ bh=Pk/ExTQ6ucVRc/G0SIy96rszaYTtvZQeQUouajsdp/c=;
+ b=oefe8RoS6+0+LiCg0QObPSeDKplSB6Zi1LzKICXIn/PRr9Lc69weOfmbaxvOPK1Ukp
+ g4gRO/5jsKfk90jQcVRuhOgumi+LVzN4npW4JGqP9/1oOd5xsB6dNhEa8KjI8qaVGwNU
+ +/ScsXAE97Dh5wpD/URmhY47YGvz2bjZn+VZkWnTuH19TkpKZ1JmJ52g1akf5+7zM/L7
+ JMP7ude+5i+IpsdjvPMQi7jJcTlCSu+w1upJyQl//5Da4R5+5K1kKy/KdXKe6RZ1ptD7
+ eftprG7oGbkLTK+BzTcSDpjvPtzDAObIeYalnGxAUxWa60R+H2SgCbkGCap7MHmzeKgI
+ bCdQ==
+X-Gm-Message-State: AOJu0YwSvmjPZrjWi5Au9/rSBkdYaOmSLyTFfqKq0a/AXghNIvBRpkxp
+ 8Sr3/d0s/2K4SmQuzzhurg0Jb9kXHXJ6GCKNMaCjG61wG2qflJByfKL+h500lOXX8QhkKcpuxLZ
+ zug+6reVScPGIwhuMLHt87z92J45qY2FNmT4tJI/xZvok9Tg7cvJEunFBhylgXQiInREJkiUGTC
+ pLbyjhXjL0ipzy6YF5ZzvDhYH4fX7CNbSQTrmcFbg=
+X-Received: by 2002:a05:600c:35cd:b0:431:5863:4240 with SMTP id
+ 5b1f17b1804b1-4319ad0f10cmr71826835e9.24.1730125820935; 
+ Mon, 28 Oct 2024 07:30:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwkn0iLfnA9Cyx3xl6Bz568wmEr3A8/4dZfsNLCpF9Ns4X1pK1fBQVC7b/jmexd0ZvgmERxQ==
+X-Received: by 2002:a05:600c:35cd:b0:431:5863:4240 with SMTP id
+ 5b1f17b1804b1-4319ad0f10cmr71826605e9.24.1730125820538; 
+ Mon, 28 Oct 2024 07:30:20 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4318b5430b6sm141801965e9.3.2024.10.28.07.30.14
+ 5b1f17b1804b1-4318b567838sm143777595e9.23.2024.10.28.07.30.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 07:30:14 -0700 (PDT)
+ Mon, 28 Oct 2024 07:30:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Junjie Mao <junjie.mao@hotmail.com>,
 	Kevin Wolf <kwolf@redhat.com>
-Subject: [PULL 17/24] rust: cleanup module_init!, use it from #[derive(Object)]
-Date: Mon, 28 Oct 2024 15:29:24 +0100
-Message-ID: <20241028142932.363687-18-pbonzini@redhat.com>
+Subject: [PULL 18/24] rust: clean up define_property macro
+Date: Mon, 28 Oct 2024 15:29:25 +0100
+Message-ID: <20241028142932.363687-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028142932.363687-1-pbonzini@redhat.com>
 References: <20241028142932.363687-1-pbonzini@redhat.com>
@@ -101,154 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the duplicate code by using the module_init! macro; at the same time,
-simplify how module_init! is used, by taking inspiration from the implementation
-of #[derive(Object)].
+Use the "struct update" syntax to initialize most of the fields to zero,
+and simplify the handmade type-checking of $name.
 
 Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/src/lib.rs  | 33 +++-------------
- rust/qemu-api/src/definitions.rs | 65 +++++++++++++-------------------
- 2 files changed, 32 insertions(+), 66 deletions(-)
+ rust/qemu-api/src/device_class.rs | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
-diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index 70e3f920460..a4bc5d01ee8 100644
---- a/rust/qemu-api-macros/src/lib.rs
-+++ b/rust/qemu-api-macros/src/lib.rs
-@@ -3,43 +3,20 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
- use proc_macro::TokenStream;
--use quote::{format_ident, quote};
-+use quote::quote;
- use syn::{parse_macro_input, DeriveInput};
- 
- #[proc_macro_derive(Object)]
- pub fn derive_object(input: TokenStream) -> TokenStream {
-     let input = parse_macro_input!(input as DeriveInput);
--
-     let name = input.ident;
--    let module_static = format_ident!("__{}_LOAD_MODULE", name);
- 
-     let expanded = quote! {
--        #[allow(non_upper_case_globals)]
--        #[used]
--        #[cfg_attr(
--            not(any(target_vendor = "apple", target_os = "windows")),
--            link_section = ".init_array"
--        )]
--        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
--        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
--        pub static #module_static: extern "C" fn() = {
--            extern "C" fn __register() {
--                unsafe {
--                    ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::definitions::ObjectImpl>::TYPE_INFO);
--                }
-+        ::qemu_api::module_init! {
-+            MODULE_INIT_QOM => unsafe {
-+                ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::definitions::ObjectImpl>::TYPE_INFO);
-             }
--
--            extern "C" fn __load() {
--                unsafe {
--                    ::qemu_api::bindings::register_module_init(
--                        Some(__register),
--                        ::qemu_api::bindings::module_init_type::MODULE_INIT_QOM
--                    );
--                }
--            }
--
--            __load
--        };
-+        }
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index 2219b9f73d0..aab60484096 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -29,44 +29,27 @@ macro_rules! device_class_init {
+ macro_rules! define_property {
+     ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
+         $crate::bindings::Property {
+-            name: {
+-                #[used]
+-                static _TEMP: &::core::ffi::CStr = $name;
+-                _TEMP.as_ptr()
+-            },
++            // use associated function syntax for type checking
++            name: ::core::ffi::CStr::as_ptr($name),
+             info: $prop,
+             offset: ::core::mem::offset_of!($state, $field)
+                 .try_into()
+                 .expect("Could not fit offset value to type"),
+-            bitnr: 0,
+-            bitmask: 0,
+             set_default: true,
+-            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval.into() },
+-            arrayoffset: 0,
+-            arrayinfo: ::core::ptr::null(),
+-            arrayfieldsize: 0,
+-            link_type: ::core::ptr::null(),
++            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
++            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
+         }
      };
- 
-     TokenStream::from(expanded)
-diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
-index 3323a665d92..064afe60549 100644
---- a/rust/qemu-api/src/definitions.rs
-+++ b/rust/qemu-api/src/definitions.rs
-@@ -29,51 +29,40 @@ pub trait Class {
- 
- #[macro_export]
- macro_rules! module_init {
--    ($func:expr, $type:expr) => {
--        #[used]
--        #[cfg_attr(
--            not(any(target_vendor = "apple", target_os = "windows")),
--            link_section = ".init_array"
--        )]
--        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
--        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
--        pub static LOAD_MODULE: extern "C" fn() = {
--            extern "C" fn __load() {
--                unsafe {
--                    $crate::bindings::register_module_init(Some($func), $type);
--                }
--            }
--
--            __load
--        };
--    };
--    (qom: $func:ident => $body:block) => {
--        // NOTE: To have custom identifiers for the ctor func we need to either supply
--        // them directly as a macro argument or create them with a proc macro.
--        #[used]
--        #[cfg_attr(
--            not(any(target_vendor = "apple", target_os = "windows")),
--            link_section = ".init_array"
--        )]
--        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
--        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
--        pub static LOAD_MODULE: extern "C" fn() = {
--            extern "C" fn __load() {
--                unsafe extern "C" fn $func() {
-+    ($type:ident => $body:block) => {
-+        const _: () = {
-+            #[used]
-+            #[cfg_attr(
-+                not(any(target_vendor = "apple", target_os = "windows")),
-+                link_section = ".init_array"
-+            )]
-+            #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
-+            #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
-+            pub static LOAD_MODULE: extern "C" fn() = {
-+                extern "C" fn init_fn() {
-                     $body
-                 }
- 
--                unsafe {
--                    $crate::bindings::register_module_init(
--                        Some($func),
--                        $crate::bindings::module_init_type::MODULE_INIT_QOM,
--                    );
-+                extern "C" fn ctor_fn() {
-+                    unsafe {
-+                        $crate::bindings::register_module_init(
-+                            Some(init_fn),
-+                            $crate::bindings::module_init_type::$type,
-+                        );
-+                    }
-                 }
--            }
- 
--            __load
-+                ctor_fn
-+            };
-         };
+     ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr$(,)*) => {
+         $crate::bindings::Property {
+-            name: {
+-                #[used]
+-                static _TEMP: &::core::ffi::CStr = $name;
+-                _TEMP.as_ptr()
+-            },
++            // use associated function syntax for type checking
++            name: ::core::ffi::CStr::as_ptr($name),
+             info: $prop,
+             offset: ::core::mem::offset_of!($state, $field)
+                 .try_into()
+                 .expect("Could not fit offset value to type"),
+-            bitnr: 0,
+-            bitmask: 0,
+             set_default: false,
+-            defval: $crate::bindings::Property__bindgen_ty_1 { i: 0 },
+-            arrayoffset: 0,
+-            arrayinfo: ::core::ptr::null(),
+-            arrayfieldsize: 0,
+-            link_type: ::core::ptr::null(),
++            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() }
+         }
      };
-+
-+    // shortcut because it's quite common that $body needs unsafe {}
-+    ($type:ident => unsafe $body:block) => {
-+        $crate::module_init! {
-+            $type => { unsafe { $body } }
-+        }
-+    };
  }
- 
- #[macro_export]
 -- 
 2.47.0
 
