@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB229B37A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 18:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7939B377B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 18:15:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5TYg-00008T-8k; Mon, 28 Oct 2024 13:29:38 -0400
+	id 1t5TK2-0004l1-EU; Mon, 28 Oct 2024 13:14:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <oliver.upton@linux.dev>)
- id 1t5T3H-0000Nt-1O
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:57:11 -0400
-Received: from out-189.mta1.migadu.com ([2001:41d0:203:375::bd])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <oliver.upton@linux.dev>)
- id 1t5T3D-00032M-MY
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:57:10 -0400
-Date: Mon, 28 Oct 2024 09:56:51 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1730134621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/KOhnqIpYwSqkh+if8TVn48GnX568QbnMCx/zN5PUM4=;
- b=cCvZSEcFd/1XGsQIynCXj1VZLmsOYP6o3327svSfwJaceesyFRqzjIO6goaWG2ST7TPqHO
- 8RV5bF238tMqz1xocrZBoQ5YPb4CYfFjXZ0WlGrD50G1L/rUtASS+lTVhayvg+go7wmbgx
- +srcoP8+vCGtfmwRcmYlVuiW7ho49zY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- cohuck@redhat.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- kvmarm@lists.linux.dev, richard.henderson@linaro.org,
- alex.bennee@linaro.org, maz@kernel.org, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
- mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
-Subject: Re: [RFC 18/21] arm/cpu: Introduce a customizable kvm host cpu model
-Message-ID: <Zx_CU9eeQByANMRW@linux.dev>
-References: <20241025101959.601048-1-eric.auger@redhat.com>
- <20241025101959.601048-19-eric.auger@redhat.com>
- <ZxuX4i9NjVRizB72@redhat.com>
- <cb6c8f62-c5dc-416d-865f-fbdf96164dac@redhat.com>
- <Zxub7ol4p8P_sWF8@redhat.com>
- <CAFEAcA_wQu17y0PyQwxw0wuf2H5y2VE5aX16nLP2-u7QUP2ggA@mail.gmail.com>
- <Zx-9WxXkmkMuGIlQ@redhat.com>
- <CAFEAcA9w0mb5bcU8p+fScQony-=oqLmNurGWpnL_sBneQCzxUg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t5TK0-0004kd-1I
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 13:14:28 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t5TJy-0004TP-3S
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 13:14:27 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5c95a962c2bso5645315a12.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 10:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730135660; x=1730740460; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=NT/W8+XS1o8vdJgjgTnk3e2WX5NTY76VytvXA/yxizM=;
+ b=s2HAd3dgWGdPcCcHwxUPBa5pffq6Ic+HdYq91x5NK3IypUKiOK3dz4SWSU9ufnnRc+
+ uAAoMmE3MHp59Riw12Jhk6xH4zYleOdl8JU0L1DrZoD5T8oV5K8rVXn6icLLhZal/d7f
+ dU1NYy6la/xnMt+qLHgY4ejZOI7coGxN1tIVeZn7GAI83t7KJ4BPWAf+kxLk2RfRgRDo
+ DwHEGoKOZW7xVUI5Letj7VLC7wGloECRLDQ0Ag0TJoaHsIaOP+14R/x88DO2/CflmS3k
+ 209rwzzqZmRYo66fiEyEQN71yzpsxcMTZ3fZguRAVZ9MUpzBNqjtftB+b57++N/N8AcS
+ jPEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730135660; x=1730740460;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NT/W8+XS1o8vdJgjgTnk3e2WX5NTY76VytvXA/yxizM=;
+ b=Obg7G9G/xVIbG0Nxb31cuoV+jLlMYvfksr1TAinWwnkQ3vJ7/5XBMW8RbLE9ubgGwe
+ uViz3N5KJOHruQCqNCPPV6g/XgKmo3E5utkIw1VwMwece0qTEDhTydLWighOL75NCfCY
+ EeT2Dy2G37ieoVtvNHUEaBRlKMz85CI2KNUA7tspDBg30STgRONqhnpl3lEIa/+TBY7a
+ eiTIOCX/QZn1Gf+XBOvhK4bFbSQaI2amPtbTc312zoZefG90eZWHYvS0djTarZSr3c3K
+ NaJpyqwga/ElB7Z4LQOttzksGYK73GgnhIeS3b3Xjl16LPtQQ6gRP7VevvFWAzi5SxZ7
+ g7XQ==
+X-Gm-Message-State: AOJu0YxeNEYjkm/SyUTNVY00kjArcMeJ1i06itamqPt69D47eRcH6ogZ
+ X9T6Qg9cirKns/sMcXbezWDLHgyLjmqq7tVd5lwh3TRRtk23iz/XutMUSbH+LbOpk8PRbT183Ft
+ ZOSKv5f2yeYmruOGqFEjL+TSftC/wLgIgVbWISsfoqNCd4Hhy
+X-Google-Smtp-Source: AGHT+IG7WuHluoMmpjWd1kVITats3wzQaNMSPGEWTYwHH17I/1LaG+pINeV9pFvfwYaQbi0Sp66dYaLO1EsluioIIDQ=
+X-Received: by 2002:a05:6402:42ce:b0:5cb:687a:1abc with SMTP id
+ 4fb4d7f45d1cf-5cbbf892404mr6582266a12.1.1730135659740; Mon, 28 Oct 2024
+ 10:14:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA9w0mb5bcU8p+fScQony-=oqLmNurGWpnL_sBneQCzxUg@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:203:375::bd;
- envelope-from=oliver.upton@linux.dev; helo=out-189.mta1.migadu.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 28 Oct 2024 17:14:08 +0000
+Message-ID: <CAFEAcA_Z+o3HYfjapAeADAmjJqTYvswAfAbtj8i=3rSBDLwsyA@mail.gmail.com>
+Subject: check-function failing on func-arm-arm_aspeed
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 28 Oct 2024 13:29:26 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,57 +83,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 28, 2024 at 04:48:18PM +0000, Peter Maydell wrote:
-> On Mon, 28 Oct 2024 at 16:35, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Mon, Oct 28, 2024 at 04:16:31PM +0000, Peter Maydell wrote:
-> > > On Fri, 25 Oct 2024 at 14:24, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > > > On Fri, Oct 25, 2024 at 03:18:25PM +0200, Eric Auger wrote:
-> > > > > On 10/25/24 15:06, Daniel P. Berrangé wrote:
-> > > > > > Also, is this naming convention really the same one that users
-> > > > > > will see when they look at /proc/cpuinfo to view features ? It
-> > > > > No it is not. I do agree that the custom cpu model is very low level. It
-> > > > > is very well suited to test all series turning ID regs as writable but
-> > > > > this would require an extra layer that adapts /proc/cpuinfo feature
-> > > > > level to this regid/field abstraction.
-> > > > >
-> > > > > In /cpu/proc you will see somethink like:
-> > > > >  Features    : fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp
-> > > > > asimdhp cpuid asimdrdm lrcpc dcpop asimddp
-> > > >
-> > > > Right, IMHO, this is the terminology that QEMU must use in user
-> > > > facing APIs.
-> > >
-> > > /proc/cpuinfo's naming is rather weird for historical
-> > > reasons (for instance there is only one FEAT_FP16 feature
-> > > but cpuinfo lists "fphp" and "asimdhp" separately).
-> >
-> > There's plenty of wierd history in x86 too. In this
-> > case I might suggest just picking one of the two
-> > common names, and ignoring the other.
-> >
-> > If we really wanted to, we could alias the 2nd name
-> > to the first, but its likely not worth the bother.
-> 
-> Or we could use the standard set of architectural
-> feature names, and not have the problem at all, and not
-> have to document what we mean by our nonstandard names.
+Trying a "make check-functional" I find that the func-arm-arm_aspeed
+test seems to hit a timeout:
 
-+1
+18/18 qemu:func-thorough+func-arm-thorough+thorough /
+func-arm-arm_aspeed              TIMEOUT        600.08s   killed by
+signal 15 SIGTERM
 
-There's existing documentation [*] for the standard feature names, which
-provides:
+This is with commit cea8ac78545a.
 
- - A short description of what the feature does
- - Any dependencies a particular feature has (e.g.FEAT_VHE implies
-   FEAT_LSE, FEAT_Debugv8p1, and FEAT_AA64EL2)
- - The register fields/values that are used to discover the feature.
+Does anybody else see this, or is it some oddity happening only
+on my local dev machine?
 
-This seems like the most user-friendly option...
+The "full log" in testlog-thorough.txt doesn't seem to be
+very full. All it has for this test is:
 
-[*]: https://developer.arm.com/documentation/109697/2024_09
+=================================== 18/18 ====================================
+test:         qemu:func-thorough+func-arm-thorough+thorough /
+func-arm-arm_aspeed
+start time:   16:54:50
+duration:     600.08s
+result:       killed by signal 15 SIGTERM
+command:      G_TEST_SLOW=1
+PYTHONPATH=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/python:/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional
+UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1
+MALLOC_PERTURB_=238
+ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1
+MESON_TEST_ITERATION=1
+QEMU_TEST_QEMU_IMG=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/qemu-img
+MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1
+QEMU_TEST_QEMU_BINARY=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/qemu-system-arm
+QEMU_BUILD_ROOT=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/pyvenv/bin/python3
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/test_arm_aspeed.py
+----------------------------------- stdout -----------------------------------
+TAP version 13
+ok 1 test_arm_aspeed.AST1030Machine.test_ast1030_zephyros_1_04
+ok 2 test_arm_aspeed.AST1030Machine.test_ast1030_zephyros_1_07
+ok 3 test_arm_aspeed.AST2x00Machine.test_arm_ast2400_palmetto_openbmc_v2_9_0
+==============================================================================
 
--- 
-Thanks,
-Oliver
+Is it possible to get the log to include a pointer to the
+actual log for the test (including the guest console output)?
+It's hard to debug tests if they don't report what they're doing.
+
+thanks
+-- PMM
 
