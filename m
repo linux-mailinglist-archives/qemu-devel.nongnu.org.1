@@ -2,61 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7013E9B2FEF
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 13:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC0B9B3047
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 13:29:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Oek-0000zu-PR; Mon, 28 Oct 2024 08:15:34 -0400
+	id 1t5Orc-0003fs-HX; Mon, 28 Oct 2024 08:28:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1t5Oeh-0000zi-RP
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 08:15:31 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5OrX-0003fa-Sh
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 08:28:48 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1t5Oee-0002UM-Nd
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 08:15:31 -0400
-Received: from [IPV6:2a00:1c98:fff1:1001:aee7:ee9c:3ae8:78e2] (unknown
- [IPv6:2a00:1c98:fff1:1001:aee7:ee9c:3ae8:78e2])
- by apollo.dupie.be (Postfix) with ESMTPSA id A66BA1520F2C;
- Mon, 28 Oct 2024 13:15:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1730117719;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Npmui7R0ZJojKtl9M40/JdyKwbEDIPldT3zvdmxfNs4=;
- b=eQHYLArPbnXaqnUZaOOgcklWSrtD8kme3gxEhd6MZP41ok2whz+nSFjHDLyN9/ot+3qsUt
- OC899++eIoYt9TnJMu1nROMtvjfWCQvVct5oNr9biD/mf7bdFrxgyVuitx908PDX5vimrA
- u/vGaDq45fNRAxCh8JCoP1mQoN2zvSl033u6gn85y9tcYbhdfNleclIIOqNJEEqDsFzIEv
- FHynGXPielywl9snnRA4Cp1jBMP7YOb7piNrrt7BjYBpuChf2/86Lq2nKmWvhtcEbIK+ZA
- 0iB2vMLATz/8V0TI7AIrqBNSvrgRhpJyahMlzCeyoxbOPDYuTXqdoQzgIn6vOA==
-Content-Type: multipart/alternative;
- boundary="------------zyxahYZQFeG5UReIOQ2KDn3t"
-Message-ID: <25723cba-8c60-401e-8b9a-731430f0970d@dupond.be>
-Date: Mon, 28 Oct 2024 13:15:18 +0100
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5OrV-0003xs-C7
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 08:28:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730118526; x=1761654526;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=siFmZi8VcZLVYXar2GiMWlREwVrrPWOHJ5ZLBL7DrX0=;
+ b=DIN97rxpRYaB8x/J5hkenShLw8jxZK2kJ5b/I6zRtrAYrdT1rk/1FCya
+ ddGnd2DeId9doaiTZqnO9YQV2qnS7WKlaA4uS0VxzXypi9UGHQ4xgmsoP
+ OmgsUly9zyR7jwj0tJBS57xzQMf+QVN/u8J6WUfYLfggdvPxseHpOTrFD
+ fzrXe5kEpik1d6iF5yngZQaY87UArqrjog/8V3A1J2FWwXdQwrKRaeV9M
+ 0CDOwl79cz/Grx/oJS2b/5e3rQ51+GbKtyrkB+04vkDNVGb7r5MZTPpY+
+ YW2NSW31DT8BLqVYORMM6WuLaNbDJ8KFY478WtMsqVHEZUKsTx2bUHzjY g==;
+X-CSE-ConnectionGUID: EJryCDo0RuO+licfkig42g==
+X-CSE-MsgGUID: o2v4pFDPTweWFkQI+pYyug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="55118167"
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="55118167"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 05:28:43 -0700
+X-CSE-ConnectionGUID: fqwgcN1ISr6ULAzo/kZWnA==
+X-CSE-MsgGUID: tEN0GPGGS9qykskwM7ntMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="119065573"
+Received: from linux.bj.intel.com ([10.238.157.71])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 05:28:41 -0700
+Date: Mon, 28 Oct 2024 20:23:33 +0800
+From: Tao Su <tao1.su@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, mtosatti@redhat.com, xiaoyao.li@intel.com,
+ xuelian.guo@intel.com
+Subject: Re: [PATCH 4/6] target/i386: Add feature dependencies for AVX10
+Message-ID: <Zx+CRVe8fYzCnCqt@linux.bj.intel.com>
+References: <20241028024512.156724-1-tao1.su@linux.intel.com>
+ <20241028024512.156724-5-tao1.su@linux.intel.com>
+ <b9ca7c3e-86e6-4a25-9295-573dbacf0ce1@redhat.com>
+ <Zx9hPncYMxsF3Hkh@linux.bj.intel.com>
+ <340b5b33-8b77-43ab-b0dc-c6e9f610b4a2@redhat.com>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH] qga: skip bind mounts in fs list
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com
-References: <20241002100634.162499-2-jean-louis@dupond.be>
- <b0a518bc-a600-4d0d-b1c9-5b43f95c90b9@dupond.be>
- <33d6a951-033d-4827-9d85-88fba69bf839@dupond.be>
- <CAPMcbCrkzq3dGSJBkYZ_bU8qYTvXDokgJGkh563gg8OHGqB1wQ@mail.gmail.com>
-Content-Language: en-US
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <CAPMcbCrkzq3dGSJBkYZ_bU8qYTvXDokgJGkh563gg8OHGqB1wQ@mail.gmail.com>
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <340b5b33-8b77-43ab-b0dc-c6e9f610b4a2@redhat.com>
+Received-SPF: none client-ip=192.198.163.7;
+ envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,349 +85,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------zyxahYZQFeG5UReIOQ2KDn3t
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Mon, Oct 28, 2024 at 11:45:25AM +0100, Paolo Bonzini wrote:
+> On 10/28/24 11:02, Tao Su wrote:
+> > On Mon, Oct 28, 2024 at 09:45:39AM +0100, Paolo Bonzini wrote:
+> > > On 10/28/24 03:45, Tao Su wrote:
+> > > > Since the highest supported vector length for a processor implies that
+> > > > all lesser vector lengths are also supported, add the dependencies of
+> > > > the supported vector lengths. If all vector lengths aren't supported,
+> > > > clear AVX10 enable bit as well.
+> > > > 
+> > > > Note that the order of AVX10 related dependencies should be kept as:
+> > > >           CPUID_24_0_EBX_AVX10_128     -> CPUID_24_0_EBX_AVX10_256,
+> > > >           CPUID_24_0_EBX_AVX10_256     -> CPUID_24_0_EBX_AVX10_512,
+> > > >           CPUID_24_0_EBX_AVX10_VL_MASK -> CPUID_7_1_EDX_AVX10,
+> > > 
+> > > I think you need to add a set of dependencies so that avx10 cannot be set,
+> > > unless all the older AVX features that it's composed of are available.  From
+> > > the manual these are
+> > > 
+> > > AVX512F, AVX512CD, AVX512VW, AVX512DQ, AVX512_VBMI, AVX512_IFMA,
+> > > AVX512_VNNI, AVX512_BF16, AVX512_VPOPCNTDQ, AVX512_VBMI2, VAES, GFNI,
+> > > VPCLMULQDQ, AVX512_BITALG, AVX512_FP16.
+> > 
+> > Thanks for such a quick review!!
+> > 
+> > AVX10.1 spec said:
+> > Intel AVX-512 will continue to be supported on P-core-only processors for
+> > the foreseeable future to support legacy applications. However, new vector
+> > ISA features will only be added to the Intel AVX10 ISA moving forward.
+> > While Intel AVX10/512 includes all Intel AVX-512 instructions, it
+> > important to note that applications compiled to Intel AVX-512 with vector
+> > length limited to 256 bits are not guaranteed to be compatible on an Intel
+> > AVX10/256 processor.
+> > 
+> > I.e. AVX10/256 processors will support old AVX-512 instructions
+> > (limited to 256 bits and enumerated by AVX10) but not set AVX-512 related
+> > CPUIDs. So, I think we can't add these dependencies…
+> 
+> Of course you're right about AVX10 in general, you still need to add the
+> dependency but only for CPUID_24_0_EBX_AVX10_512.
+> 
 
-Hi Konstantin,
+I agree, will add in v2, thanks!
 
-Thanks for your response.
-What I observed was when running CloudLinux is that with a /tmp on a 
-loop device, is that the underlying fs was first freezed, and then the 
-/tmp was getting a freeze call.
-But this was hanging, because it couldn't freeze as the underlying fs 
-was already freezed.
-
-So the whole system became unresponsive expect if you send a unfreeze 
-via sysrq.
-
-Build a qemu-ga with this patch included, and then it worked fine.
-Because it skips the bind mounts and therefor made sure that the loop 
-device was first freezed and afterwards the underlying fs.
-Which works fine :)
-
-I did not see real kernel crashes, so that was not debugged/tested.
-
-Thanks
-Jean-Louis
-
-On 28/10/2024 11:57, Konstantin Kostiuk wrote:
-> Hi Jean-Louis,
->
-> Thanks for your patch. I hope next week, I will test and review this 
-> patch.
->
-> Just a question, did you have a chance to test that this patch fix 
-> kernel crash?
->
-> Best Regards,
-> Konstantin Kostiuk.
->
->
-> On Fri, Oct 25, 2024 at 1:06 PM Jean-Louis Dupond 
-> <jean-louis@dupond.be> wrote:
->
->     On 9/10/2024 10:34, Jean-Louis Dupond wrote:
->     > On 2/10/2024 12:06, Jean-Louis Dupond wrote:
->     >> The filesystem list in build_fs_mount_list should skip bind mounts.
->     >> This because we end up in locking situations when doing
->     fsFreeze. Like
->     >> mentioned in [1] and [2].
->     >>
->     >> Next to that, the build_fs_mount_list call did a fallback via
->     >> build_fs_mount_list_from_mtab if mountinfo did not exist.
->     >> There it skipped bind mounts, but this is broken for newer OS.
->     >> This as mounts does not return the path of the bind mount but the
->     >> underlying dev/partition, so S_ISDIR will never return true in
->     >> dev_major_minor call.
->     >>
->     >> This patch simply checks the existing devmajor:devminor tuple
->     in the
->     >> mounts, and if it already exists, this means we have the same
->     devices
->     >> mounted again, a bind mount. So skip this.
->     >>
->     >> Same approach is used in open-vm-tools [3].
->     >>
->     >> [1]: https://gitlab.com/qemu-project/qemu/-/issues/592
->     >> [2]: https://gitlab.com/qemu-project/qemu/-/issues/520
->     >> [3]:
->     >>
->     https://github.com/vmware/open-vm-tools/commit/d58847b497e212737007958c945af1df22a8ab58
->     >>
->     >> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
->     >> ---
->     >>   qga/commands-linux.c | 25 +++++++++++++++++++++++++
->     >>   1 file changed, 25 insertions(+)
->     >>
->     >> diff --git a/qga/commands-linux.c b/qga/commands-linux.c
->     >> index 51d5e3d927..426b040ab8 100644
->     >> --- a/qga/commands-linux.c
->     >> +++ b/qga/commands-linux.c
->     >> @@ -59,6 +59,22 @@ static int dev_major_minor(const char *devpath,
->     >>       return -1;
->     >>   }
->     >>   +/*
->     >> + * Check if we already have the devmajor:devminor in the mounts
->     >> + * If thats the case return true.
->     >> + */
->     >> +static bool dev_exists(FsMountList *mounts, unsigned int
->     devmajor,
->     >> unsigned int devminor)
->     >> +{
->     >> +    FsMount *mount;
->     >> +
->     >> +    QTAILQ_FOREACH(mount, mounts, next) {
->     >> +        if (mount->devmajor == devmajor && mount->devminor ==
->     >> devminor) {
->     >> +            return true;
->     >> +        }
->     >> +    }
->     >> +    return false;
->     >> +}
->     >> +
->     >>   static bool build_fs_mount_list_from_mtab(FsMountList *mounts,
->     >> Error **errp)
->     >>   {
->     >>       struct mntent *ment;
->     >> @@ -89,6 +105,10 @@ static bool
->     >> build_fs_mount_list_from_mtab(FsMountList *mounts, Error **errp)
->     >>               /* Skip bind mounts */
->     >>               continue;
->     >>           }
->     >> +        if (dev_exists(mounts, devmajor, devminor)) {
->     >> +            /* Skip already existing devices (bind mounts) */
->     >> +            continue;
->     >> +        }
->     >>             mount = g_new0(FsMount, 1);
->     >>           mount->dirname = g_strdup(ment->mnt_dir);
->     >> @@ -172,6 +192,11 @@ bool build_fs_mount_list(FsMountList *mounts,
->     >> Error **errp)
->     >>               }
->     >>           }
->     >>   +        if (dev_exists(mounts, devmajor, devminor)) {
->     >> +            /* Skip already existing devices (bind mounts) */
->     >> +            continue;
->     >> +        }
->     >> +
->     >>           mount = g_new0(FsMount, 1);
->     >>           mount->dirname = g_strdup(line + dir_s);
->     >>           mount->devtype = g_strdup(dash + type_s);
->     >
->     >
->     > Ping + add kkostiuk@redhat.com as I missed him in the initial mail.
->     >
->
->     Any chance on a review or getting it merged?
->     Think it's a good (of course ;)) improvement.
->
---------------zyxahYZQFeG5UReIOQ2KDn3t
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Hi Konstantin,</p>
-    <p>Thanks for your response.<br>
-      What I observed was when running CloudLinux is that with a /tmp on
-      a loop device, is that the underlying fs was first freezed, and
-      then the /tmp was getting a freeze call.<br>
-      But this was hanging, because it couldn't freeze as the underlying
-      fs was already freezed.<br>
-      <br>
-      So the whole system became unresponsive expect if you send a
-      unfreeze via sysrq.<br>
-      <br>
-      Build a qemu-ga with this patch included, and then it worked fine.<br>
-      Because it skips the bind mounts and therefor made sure that the
-      loop device was first freezed and afterwards the underlying fs.<br>
-      Which works fine :)<br>
-      <br>
-      I did not see real kernel crashes, so that was not
-      debugged/tested.<br>
-      <br>
-      Thanks<br>
-      Jean-Louis<br>
-    </p>
-    <div class="moz-cite-prefix">On 28/10/2024 11:57, Konstantin Kostiuk
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAPMcbCrkzq3dGSJBkYZ_bU8qYTvXDokgJGkh563gg8OHGqB1wQ@mail.gmail.com">
-      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-      <div dir="ltr">
-        <div>Hi Jean-Louis,</div>
-        <div><br>
-        </div>
-        <div>Thanks for your patch. I hope next week, I will test and
-          review this patch. <br>
-        </div>
-        <div><br>
-        </div>
-        <div>Just a question, did you have a chance to test that this
-          patch fix kernel crash? <br>
-        </div>
-        <div><br>
-        </div>
-        <div>
-          <div>
-            <div dir="ltr" class="gmail_signature"
-              data-smartmail="gmail_signature">
-              <div dir="ltr">
-                <div>Best Regards,</div>
-                <div>Konstantin Kostiuk.</div>
-              </div>
-            </div>
-          </div>
-          <br>
-        </div>
-      </div>
-      <br>
-      <div class="gmail_quote">
-        <div dir="ltr" class="gmail_attr">On Fri, Oct 25, 2024 at
-          1:06 PM Jean-Louis Dupond &lt;<a
-            href="mailto:jean-louis@dupond.be" moz-do-not-send="true"
-            class="moz-txt-link-freetext">jean-louis@dupond.be</a>&gt;
-          wrote:<br>
-        </div>
-        <blockquote class="gmail_quote"
-style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On
-          9/10/2024 10:34, Jean-Louis Dupond wrote:<br>
-          &gt; On 2/10/2024 12:06, Jean-Louis Dupond wrote:<br>
-          &gt;&gt; The filesystem list in build_fs_mount_list should
-          skip bind mounts.<br>
-          &gt;&gt; This because we end up in locking situations when
-          doing fsFreeze. Like<br>
-          &gt;&gt; mentioned in [1] and [2].<br>
-          &gt;&gt;<br>
-          &gt;&gt; Next to that, the build_fs_mount_list call did a
-          fallback via<br>
-          &gt;&gt; build_fs_mount_list_from_mtab if mountinfo did not
-          exist.<br>
-          &gt;&gt; There it skipped bind mounts, but this is broken for
-          newer OS.<br>
-          &gt;&gt; This as mounts does not return the path of the bind
-          mount but the<br>
-          &gt;&gt; underlying dev/partition, so S_ISDIR will never
-          return true in<br>
-          &gt;&gt; dev_major_minor call.<br>
-          &gt;&gt;<br>
-          &gt;&gt; This patch simply checks the existing
-          devmajor:devminor tuple in the<br>
-          &gt;&gt; mounts, and if it already exists, this means we have
-          the same devices<br>
-          &gt;&gt; mounted again, a bind mount. So skip this.<br>
-          &gt;&gt;<br>
-          &gt;&gt; Same approach is used in open-vm-tools [3].<br>
-          &gt;&gt;<br>
-          &gt;&gt; [1]: <a
-            href="https://gitlab.com/qemu-project/qemu/-/issues/592"
-            rel="noreferrer" target="_blank" moz-do-not-send="true"
-            class="moz-txt-link-freetext">https://gitlab.com/qemu-project/qemu/-/issues/592</a><br>
-          &gt;&gt; [2]: <a
-            href="https://gitlab.com/qemu-project/qemu/-/issues/520"
-            rel="noreferrer" target="_blank" moz-do-not-send="true"
-            class="moz-txt-link-freetext">https://gitlab.com/qemu-project/qemu/-/issues/520</a><br>
-          &gt;&gt; [3]: <br>
-          &gt;&gt; <a
-href="https://github.com/vmware/open-vm-tools/commit/d58847b497e212737007958c945af1df22a8ab58"
-            rel="noreferrer" target="_blank" moz-do-not-send="true"
-            class="moz-txt-link-freetext">https://github.com/vmware/open-vm-tools/commit/d58847b497e212737007958c945af1df22a8ab58</a><br>
-          &gt;&gt;<br>
-          &gt;&gt; Signed-off-by: Jean-Louis Dupond &lt;<a
-            href="mailto:jean-louis@dupond.be" target="_blank"
-            moz-do-not-send="true" class="moz-txt-link-freetext">jean-louis@dupond.be</a>&gt;<br>
-          &gt;&gt; ---<br>
-          &gt;&gt;   qga/commands-linux.c | 25 +++++++++++++++++++++++++<br>
-          &gt;&gt;   1 file changed, 25 insertions(+)<br>
-          &gt;&gt;<br>
-          &gt;&gt; diff --git a/qga/commands-linux.c
-          b/qga/commands-linux.c<br>
-          &gt;&gt; index 51d5e3d927..426b040ab8 100644<br>
-          &gt;&gt; --- a/qga/commands-linux.c<br>
-          &gt;&gt; +++ b/qga/commands-linux.c<br>
-          &gt;&gt; @@ -59,6 +59,22 @@ static int dev_major_minor(const
-          char *devpath,<br>
-          &gt;&gt;       return -1;<br>
-          &gt;&gt;   }<br>
-          &gt;&gt;   +/*<br>
-          &gt;&gt; + * Check if we already have the devmajor:devminor in
-          the mounts<br>
-          &gt;&gt; + * If thats the case return true.<br>
-          &gt;&gt; + */<br>
-          &gt;&gt; +static bool dev_exists(FsMountList *mounts, unsigned
-          int devmajor, <br>
-          &gt;&gt; unsigned int devminor)<br>
-          &gt;&gt; +{<br>
-          &gt;&gt; +    FsMount *mount;<br>
-          &gt;&gt; +<br>
-          &gt;&gt; +    QTAILQ_FOREACH(mount, mounts, next) {<br>
-          &gt;&gt; +        if (mount-&gt;devmajor == devmajor
-          &amp;&amp; mount-&gt;devminor == <br>
-          &gt;&gt; devminor) {<br>
-          &gt;&gt; +            return true;<br>
-          &gt;&gt; +        }<br>
-          &gt;&gt; +    }<br>
-          &gt;&gt; +    return false;<br>
-          &gt;&gt; +}<br>
-          &gt;&gt; +<br>
-          &gt;&gt;   static bool
-          build_fs_mount_list_from_mtab(FsMountList *mounts, <br>
-          &gt;&gt; Error **errp)<br>
-          &gt;&gt;   {<br>
-          &gt;&gt;       struct mntent *ment;<br>
-          &gt;&gt; @@ -89,6 +105,10 @@ static bool <br>
-          &gt;&gt; build_fs_mount_list_from_mtab(FsMountList *mounts,
-          Error **errp)<br>
-          &gt;&gt;               /* Skip bind mounts */<br>
-          &gt;&gt;               continue;<br>
-          &gt;&gt;           }<br>
-          &gt;&gt; +        if (dev_exists(mounts, devmajor, devminor))
-          {<br>
-          &gt;&gt; +            /* Skip already existing devices (bind
-          mounts) */<br>
-          &gt;&gt; +            continue;<br>
-          &gt;&gt; +        }<br>
-          &gt;&gt;             mount = g_new0(FsMount, 1);<br>
-          &gt;&gt;           mount-&gt;dirname =
-          g_strdup(ment-&gt;mnt_dir);<br>
-          &gt;&gt; @@ -172,6 +192,11 @@ bool
-          build_fs_mount_list(FsMountList *mounts, <br>
-          &gt;&gt; Error **errp)<br>
-          &gt;&gt;               }<br>
-          &gt;&gt;           }<br>
-          &gt;&gt;   +        if (dev_exists(mounts, devmajor,
-          devminor)) {<br>
-          &gt;&gt; +            /* Skip already existing devices (bind
-          mounts) */<br>
-          &gt;&gt; +            continue;<br>
-          &gt;&gt; +        }<br>
-          &gt;&gt; +<br>
-          &gt;&gt;           mount = g_new0(FsMount, 1);<br>
-          &gt;&gt;           mount-&gt;dirname = g_strdup(line + dir_s);<br>
-          &gt;&gt;           mount-&gt;devtype = g_strdup(dash +
-          type_s);<br>
-          &gt;<br>
-          &gt;<br>
-          &gt; Ping + add <a href="mailto:kkostiuk@redhat.com"
-            target="_blank" moz-do-not-send="true"
-            class="moz-txt-link-freetext">kkostiuk@redhat.com</a> as I
-          missed him in the initial mail.<br>
-          &gt;<br>
-          <br>
-          Any chance on a review or getting it merged?<br>
-          Think it's a good (of course ;)) improvement.<br>
-          <br>
-        </blockquote>
-      </div>
-    </blockquote>
-  </body>
-</html>
-
---------------zyxahYZQFeG5UReIOQ2KDn3t--
 
