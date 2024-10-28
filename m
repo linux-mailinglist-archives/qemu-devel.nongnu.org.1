@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107699B370C
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 17:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6408D9B3719
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 17:51:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Suz-0005sr-GP; Mon, 28 Oct 2024 12:48:37 -0400
+	id 1t5SxV-0007EU-Rk; Mon, 28 Oct 2024 12:51:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5Suu-0005rL-F9
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:48:32 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5Sus-0001z2-Qu
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:48:32 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c9c28c1ecbso6167116a12.0
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 09:48:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730134109; x=1730738909; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7KnUNLueAKjDgxYCEbUwQTT/VPUr4XHGzj00PvTOp+E=;
- b=q8v9oMMshiB2s24u1h2W9+rU7KXnzhMZGoYy/cMn2yTAlgOQPetqsm7EQoN7cW6KaT
- OvqwBdsoz3dug+Hpv7FzvsqdfGHNvAqJPeVz+siXJPkmu0cLIvR3dLIYmwAeNBUThpAX
- G4gfZy8PCfbMdcbEStH6ta5BH/dqYLTtBKhYWpXRTU/6SCHqaUVypoP13PU17WLKAuAg
- 9ULJ6wS9UjBC8CgX0Vc8fndP6kMeaxidKPFkh57snUXL0hMTDKmQB5suHbVqeWXDIN/I
- ENctnRviruasgITUO1ko82PqArpVhOUennfs9Od1SX6QsAR9o8fm6rH6KLYMRML5bJc7
- mdGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730134109; x=1730738909;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7KnUNLueAKjDgxYCEbUwQTT/VPUr4XHGzj00PvTOp+E=;
- b=naz0uzE78z9FSUFbhYXekXIqOSAooDxDMXvBo7hTH+WHFVRzxM4uH66YKSwdlKWfmt
- 5IDJWlNH3qWp9BeQbVwIRu0+Tg41Jw6jkrWJpYGwAaB/bGeSiUVo4SVO7OM8GGLzDczt
- 7QyGiSEwTTGflxYvWcYYgwkcylR14YNz5gkfjL7mYgCHexiFjALvY8dVUGYFXPhNOJAz
- HhWeLGrpNpxEf0fBMjhNDFzBL84Nz2Nm8Nk5CuXvvFq4pmnQJ7RvPQ3g8mEGYsgXe0Ou
- CO+dScs22SS0NKzIH/1E6L2wrcifNF5uWftNr2IbBk45MZNxuWXg25QcrxzD3lXVOHBw
- afiw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUCtOdHCyjK8MZQJ5HR6Y9cczqsB03rJ2NGF19vjqOrWAuFr9CmTUWA6yVnZ/+fg54FJ0UvcWRa5fxc@nongnu.org
-X-Gm-Message-State: AOJu0YxOiUOSnEmQHc6nf3NHDXriU3gyZ8jL5Di0JqO3Tnb+zP9aQ4NR
- sIodarmE4bMSdS9mPEvkWXCFZ9iMolSRVc2Ns7XBneuz9662cE9p0Kvp5KOvZQmkUf4WA4aBoJ3
- rNApe3WNpQ4UL4CfJ35W51J6yUGIx6X9QLT87aw==
-X-Google-Smtp-Source: AGHT+IGfJV04ZqowAK9zEadNBVsMz49bjr9g5V5cwHxrCIWiztesrHX+uwsDooy37BW15MpUHvqKweovZtxtaKLQHXA=
-X-Received: by 2002:a05:6402:26c9:b0:5cb:69be:db47 with SMTP id
- 4fb4d7f45d1cf-5cbbf922bb5mr7338589a12.28.1730134108942; Mon, 28 Oct 2024
- 09:48:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t5SxM-0007BW-4c
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:51:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t5SxK-0002NH-BR
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 12:51:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730134261;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=JQMC1mQcAhmDS1b3Sr7x2toWr8eGybYiYqGnezOUii8=;
+ b=Y/DmBAVis7aHFCrMH/i1mLRCCSDSrMdxf0J6KlFjpctqeTzulReZqW6MIYZtGXJ4FpyOl0
+ 1H/r09LXFO7kZV+2FVATFgNLohacweY59O4/+14M6EWQUNJoj0qTxQmRa8r9E+D7MorCvE
+ WNPWKuUlq8/PQwG0rfGuwKuRBQ2jv3A=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136--nb_znoVOd68WKLGUlImvQ-1; Mon,
+ 28 Oct 2024 12:49:18 -0400
+X-MC-Unique: -nb_znoVOd68WKLGUlImvQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DA0B41955F56; Mon, 28 Oct 2024 16:49:16 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.86])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A44911956086; Mon, 28 Oct 2024 16:49:10 +0000 (UTC)
+Date: Mon, 28 Oct 2024 16:49:07 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/3] qdev-properties: Accept bool for OnOffAuto
+Message-ID: <Zx_Ag0_MFem7Qn3a@redhat.com>
+References: <20241022-virtio-v2-0-b2394236e053@daynix.com>
+ <20241022-virtio-v2-1-b2394236e053@daynix.com>
 MIME-Version: 1.0
-References: <20241025101959.601048-1-eric.auger@redhat.com>
- <20241025101959.601048-19-eric.auger@redhat.com> <ZxuX4i9NjVRizB72@redhat.com>
- <cb6c8f62-c5dc-416d-865f-fbdf96164dac@redhat.com>
- <Zxub7ol4p8P_sWF8@redhat.com>
- <CAFEAcA_wQu17y0PyQwxw0wuf2H5y2VE5aX16nLP2-u7QUP2ggA@mail.gmail.com>
- <Zx-9WxXkmkMuGIlQ@redhat.com>
-In-Reply-To: <Zx-9WxXkmkMuGIlQ@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 28 Oct 2024 16:48:18 +0000
-Message-ID: <CAFEAcA9w0mb5bcU8p+fScQony-=oqLmNurGWpnL_sBneQCzxUg@mail.gmail.com>
-Subject: Re: [RFC 18/21] arm/cpu: Introduce a customizable kvm host cpu model
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- cohuck@redhat.com, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev, 
- richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org, 
- oliver.upton@linux.dev, sebott@redhat.com, 
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com, 
- jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com, 
- philmd@linaro.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241022-virtio-v2-1-b2394236e053@daynix.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +88,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 28 Oct 2024 at 16:35, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Mon, Oct 28, 2024 at 04:16:31PM +0000, Peter Maydell wrote:
-> > On Fri, 25 Oct 2024 at 14:24, Daniel P. Berrang=C3=A9 <berrange@redhat.=
-com> wrote:
-> > > On Fri, Oct 25, 2024 at 03:18:25PM +0200, Eric Auger wrote:
-> > > > On 10/25/24 15:06, Daniel P. Berrang=C3=A9 wrote:
-> > > > > Also, is this naming convention really the same one that users
-> > > > > will see when they look at /proc/cpuinfo to view features ? It
-> > > > No it is not. I do agree that the custom cpu model is very low leve=
-l. It
-> > > > is very well suited to test all series turning ID regs as writable =
-but
-> > > > this would require an extra layer that adapts /proc/cpuinfo feature
-> > > > level to this regid/field abstraction.
-> > > >
-> > > > In /cpu/proc you will see somethink like:
-> > > >  Features    : fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics f=
-php
-> > > > asimdhp cpuid asimdrdm lrcpc dcpop asimddp
-> > >
-> > > Right, IMHO, this is the terminology that QEMU must use in user
-> > > facing APIs.
-> >
-> > /proc/cpuinfo's naming is rather weird for historical
-> > reasons (for instance there is only one FEAT_FP16 feature
-> > but cpuinfo lists "fphp" and "asimdhp" separately).
->
-> There's plenty of wierd history in x86 too. In this
-> case I might suggest just picking one of the two
-> common names, and ignoring the other.
->
-> If we really wanted to, we could alias the 2nd name
-> to the first, but its likely not worth the bother.
+The parent msg was sent off-list orignially, so below is a copy
+of my feedback to that off-list posting.
 
-Or we could use the standard set of architectural
-feature names, and not have the problem at all, and not
-have to document what we mean by our nonstandard names.
-(cpuinfo names do actually mostly line up with the
-standard names, just not 100%. Similarly gcc/clang command
-line options are mostly the architectural feature name.)
+On Tue, Oct 22, 2024 at 01:50:38PM +0900, Akihiko Odaki wrote:
+> Accept bool literals for OnOffAuto properties for consistency with bool
+> properties. This enables users to set the "on" or "off" value in a
+> uniform syntax without knowing whether the "auto" value is accepted.
+> This behavior is especially useful when converting an existing bool
+> property to OnOffAuto or vice versa.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  hw/core/qdev-properties.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+> index 86a583574dd0..f0a270bb4f61 100644
+> --- a/hw/core/qdev-properties.c
+> +++ b/hw/core/qdev-properties.c
+> @@ -491,6 +491,21 @@ const PropertyInfo qdev_prop_string = {
+>      .set   = set_string,
+>  };
+>  
+> +static void set_on_off_auto(Object *obj, Visitor *v, const char *name,
+> +                            void *opaque, Error **errp)
+> +{
+> +    Property *prop = opaque;
+> +    int *ptr = object_field_prop_ptr(obj, prop);
+> +    bool value;
+> +
+> +    if (visit_type_bool(v, name, &value, NULL)) {
+> +        *ptr = value ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
+> +        return;
+> +    }
+> +
+> +    qdev_propinfo_set_enum(obj, v, name, opaque, errp);
+> +}
 
-thanks
--- PMM
+My feedback is the same as last time this was posted.
+
+This is adding redundant new input-only & secret syntax for every
+usage of OnOffAuto across QEMU.
+
+"consistency with bool" isn't a expressing a compelling advantage.
+
+The new permitted values are invisible to applications, beacuse
+introspecting QAPI schema for the "OnOffAuto" type will never
+report them, and querying the value of a property will also never
+report them.
+
+I'm not seeing an advantage, or clear problem solved, by adding
+this.
+
+> +
+>  /* --- on/off/auto --- */
+>  
+>  const PropertyInfo qdev_prop_on_off_auto = {
+> @@ -498,7 +513,7 @@ const PropertyInfo qdev_prop_on_off_auto = {
+>      .description = "on/off/auto",
+>      .enum_table = &OnOffAuto_lookup,
+>      .get = qdev_propinfo_get_enum,
+> -    .set = qdev_propinfo_set_enum,
+> +    .set = set_on_off_auto,
+>      .set_default_value = qdev_propinfo_set_default_value_enum,
+>  };
+>  
+> 
+> -- 
+> 2.47.0
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
