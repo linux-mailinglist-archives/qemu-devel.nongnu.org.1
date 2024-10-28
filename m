@@ -2,76 +2,163 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C639B332F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D67EC9B3381
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:29:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5QZh-0005E5-99; Mon, 28 Oct 2024 10:18:29 -0400
+	id 1t5QjT-0007KW-UI; Mon, 28 Oct 2024 10:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5QZR-0005DQ-Uv
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:18:18 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5QZM-0002Ye-Ug
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:18:10 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c9850ae22eso5693483a12.3
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730125087; x=1730729887; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2NN1HtcuKk4u4sxYooYNjjpywbUCw7RG+vZTvUxvFaA=;
- b=hQXfuvk4TU65pTReEyIt6mEXlkKWyWl3Q9dprEoYALFuG2bkqCDkiDFEBSBZr6Ofpm
- G3mtEqU7kACsjBN5WA+GWeJvgEipM0UO9im7ZXMgJ4JcNKsfif/QemkBozh/EppQtiy2
- 9ygsc9m1NrbiBChSLIGX/SF5HZk+YtkpjVmQ6cAZPqsEVYmWwUBp8LQNqZZg89CSYrB2
- 05t+IcE1D/hYDXcyNGRUbuR5cYw9iuFt0Xus3yN2BU6Cc7Z7Bty8aXPsZ2BBnPkf9s+E
- bjbGxtRBRx+EWDT+IVjsJS9hYG9D53nlW5MezhQKU2Ps60KgvO0GYdEFwGEIH8R7A8Yq
- fJ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125087; x=1730729887;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2NN1HtcuKk4u4sxYooYNjjpywbUCw7RG+vZTvUxvFaA=;
- b=wNHFv17O0pUSZZhAukj+oUMZ9wcaCiB5LiCrZfX2RfiezZ6kcfjQoPz+5xqH4cFgjA
- QzlSAYoSLqjpB+KC8kFDpu+iYa12ot0eDGEf3eedX21IGQlRFymcKB40QTbHwK6an3CW
- Z2wnVXoXTyh/PF0Av3fDV4Km6pnSnGz1TCVMmud7s/gLKkf5UjqJ0aCWSUx0yYMwYuqd
- CjcsnCpNwFUHVyCH4kq0TYeGbfCS0n+MFQaG+M+MtqjI8lTJMoOPnVFppkLTlxG/9BfM
- EBPA9PjuNZHBsNZfeYQC33LfZqqfbte/QmvyuA78n13I5bfOF31H/3cgz76Rm8qQuJN0
- BkWQ==
-X-Gm-Message-State: AOJu0YwR7jgoQIM9Bmk9KJ7kSZ0INBaEKP4dtiQxWtZ/g2/6+sbxJsPv
- LYnXKyS5fol9QVMiCSkstGwJjI7km3ckh9hPWQiatfE9A+Ym+S2UvFABKoriDbrqmEaf+86McSH
- V2egojF5krAN9Tm/o6pQJ7XJcnhBgiL78kfqwBA==
-X-Google-Smtp-Source: AGHT+IE3KuIo7ZwznkrHyccFF6gnnfFRuY85mk8h9FFkhccxfKLgBR3Mf62OSUsihXV+pRWrNzthxyyDhB7RoieMxL8=
-X-Received: by 2002:a05:6402:5011:b0:5c9:3026:cf85 with SMTP id
- 4fb4d7f45d1cf-5cbbf92077amr7536536a12.22.1730125086885; Mon, 28 Oct 2024
- 07:18:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1t5QjQ-0007Jn-T1
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:28:32 -0400
+Received: from mail-mw2nam10on2084.outbound.protection.outlook.com
+ ([40.107.94.84] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1t5QjP-0003Z9-9R
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:28:32 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RSTC6sl1ZfOM1f65EoXQ5IYPxyVoQtRRidon/krvOb34yAiX0nCAJW1ekjJwky17bh5NwhqiyuCC/hNX+jCjHN4PM/5VMdUsX9Ljxaqk5Ro0FRZXd24CKrDq9BLfThCU4QDXeQBM4o6M6O8f6Jojp+THHK5wKocY/f/qnxB780UydLaHuCQHHAJuyA5pKtWXq1uf6Wgj53L28qYJiFC5+Yw6MPeDcqrGRwXEQI5sXoGh96DHHwssiw1dyBKaKDeBg6tNYs84XeE7+p0XZ5rsiCHeSveTS/rryrIb1f1+bqryfvLkwfQhTbKTe57fcN9Jn2tzknxtilFgwOvMkk9l3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ngOYfgK3YXABmkTycnflPThmzFVqqUyg9/NtVQeZbuA=;
+ b=Y79ASWmrZuah7moMzjMVUEVrid/zlYEk/SV3UeUxeYGobzewUPntGDFkYHzhKLpzWX2tw6yK2AQyxCgCH8w5f0oiVXHwXSUJG5AxHMR7hRZ4tQ/C5RZZtuh/mIarzjwKB7di7a8QwwCLEwvECasVL3RGaojMWFMlmBTDAXGisP9/fuUyxSM8/4TEojvhmHq0CyoveebUHdcacMtdFFcZcn20oQoNqj0fxlkHovJm67IewBHSCOD9M01pwjM8Y7Sus0B1wQTBehEvLWubxb260VQ/MsgduaehOmHDBjHkGC7MWxwwfbM6mf/Y+fQ2mc2IbGEcCgurTeczhZYaErbVOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ngOYfgK3YXABmkTycnflPThmzFVqqUyg9/NtVQeZbuA=;
+ b=r2WuM9llSK5ET8gDSgNNC3EpX6e2+gqfi20O7wQj+a7rFZGX6X6McFPVbRbAdlKLsCe7GOd6AwkBNOzl9eEZv3H19tFex49S+NCfC0Rjb8xmpAfUfLyvc0voxrfzNTYYZnftzhoDDM3j+5Gz6gol/v937+wMIKBu3Dwbd/BobTI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by SJ0PR12MB5661.namprd12.prod.outlook.com (2603:10b6:a03:422::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Mon, 28 Oct
+ 2024 14:23:19 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87%5]) with mapi id 15.20.8093.023; Mon, 28 Oct 2024
+ 14:23:19 +0000
+Message-ID: <24ea79dc-1a15-4e54-a741-e88332476646@amd.com>
+Date: Mon, 28 Oct 2024 09:23:16 -0500
+User-Agent: Mozilla Thunderbird
+From: "Moger, Babu" <babu.moger@amd.com>
+Subject: Re: [PATCH v3 0/7] target/i386: Add support for perfmon-v2, RAS bits
+ and EPYC-Turin CPU model
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <cover.1729807947.git.babu.moger@amd.com>
+ <b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com>
+Content-Language: en-US
+In-Reply-To: <b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN6PR05CA0033.namprd05.prod.outlook.com
+ (2603:10b6:805:de::46) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
 MIME-Version: 1.0
-References: <20241024095603.1813285-1-alex.bennee@linaro.org>
-In-Reply-To: <20241024095603.1813285-1-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 28 Oct 2024 14:17:55 +0000
-Message-ID: <CAFEAcA82w6FHUFOC=nTudph7-0vz830dT59MGd89YHYvQUSFNw@mail.gmail.com>
-Subject: Re: [PULL 00/17] testing, gdbstub and plugin updates
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|SJ0PR12MB5661:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25591403-eef6-4d11-63c1-08dcf75c11dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UENFRDk3TGsxeWY0aUIzOUp2NXpONWVXbk5DdHkzMXBqeHRHc3dBNDlGZUFv?=
+ =?utf-8?B?MEF0QmpQTllobjFTbUlkQmdNOWZtb2srb0JyK1R6b2dFdllhcUI5ZStMSEVX?=
+ =?utf-8?B?TlJJU2hqa0k0cUFzOEREaDNGUExYQUgyZlBtcmRsenhTY1BPc0VURkFNV1NC?=
+ =?utf-8?B?b0VQVzRRMTlkTHBuVGZCZU94QnhtYkhhdHE3bCtLdWdQOFVrYnpsYU5uT28w?=
+ =?utf-8?B?M2JmcnAvcDczeEhCZFRpZC9kOURtLzMzVnloc0d3RnNUM3NFMVRCK09HSFkw?=
+ =?utf-8?B?Y1VUQWxOY1REd0toenFra2RsaWNPQlQwQkVUS2ZDMlVTNGJpUUxScFd2NU9q?=
+ =?utf-8?B?YzlxUVlRQ2x5ejJXTWRmUzVTTzdESSt6dndhUURnemF2OXNDY1U3T0RPRDZk?=
+ =?utf-8?B?aUV0VmNOVHIySEduUmFramNERlEzRWk3bjdNcXZYSzlxN3hQRGJxNTdQdXJW?=
+ =?utf-8?B?TmluUFdlY0ZZSTJ5U2pTZXFiSjlyTWdXOG4vc3piWC8vQUlJeWJHMjFCVk9P?=
+ =?utf-8?B?L3crWjRyckVpQUtScWQxMDdKTHZiUFFaM29NMGFNMDNsTGZ2aXkrZnhna0li?=
+ =?utf-8?B?YmZRQkVTdlVJMWhCU2FaWThPYVNRd1lDWlNGUFdjNnozMFhlaXRoa1RhWld0?=
+ =?utf-8?B?aWc4czR3U3l3bkZyTjJDMGpQWHNSVUplcGdUOWMraDd2N0VoTUFHOWtoVWJH?=
+ =?utf-8?B?T0dFQ1ZWeEo4Tzc4RnZ3RGhZN3NNTk4xWTE5ZkptaS9MWk16WW1Vb2R6Mk5v?=
+ =?utf-8?B?WU91d1lzM3hQcG1aSmFXRmR3dDFqb1haWWlKQ2RkY3M1OEhENk8wYVAwbG9u?=
+ =?utf-8?B?M2UwZFRVSE1VZFhYbW54OTBPbGR0WW9tMVJDblQweHhPSHkvYk9aTUkyUXFs?=
+ =?utf-8?B?dzl2Q3MxeE92NnVDZTRuK2UyM0ZvaVZlOEpXQ2k2cHBCeWJwUnZnNEtxQlBO?=
+ =?utf-8?B?NkhwczJGYStNZk9TTWdWSy9NY2c3cXU3aXFEVVVTcUF0UW1mZlZVMjlLUFNu?=
+ =?utf-8?B?UzBQd3hhRS9XUElCSExGN053THJhckkzK1Roejc0alEraXRoejZ2bjJyVkxE?=
+ =?utf-8?B?dDdCSnFJZGEvWmdrUlMxWEtsQUJWcXBZcndyTERYL2VncTNoSytoM2g0UW92?=
+ =?utf-8?B?RW1PeEZ6Z3pySlR0anRWaFN1anRTZmY4cW1LNzlMNDVoSzhJKzV4YzNPZ3V3?=
+ =?utf-8?B?N0hWaVpYVWFtS1FoRWpnR3JXZWFITzFqdGdtSi9vblQzV2x6TjBvY21OcTNS?=
+ =?utf-8?B?RmxPMG9weTNIOXMySGlxODd2a3lIczVZeUFOZk8vdWZ3YXpRckhuL1djMXlB?=
+ =?utf-8?B?YUhDTGpRRjRYbTdWd2o1YUFucFJFc0JSOFVrRG1Yb21iT21HOUZXREUzaHQ1?=
+ =?utf-8?B?ZS95d241OGFoVzJnbXM3Z3RWWkdCdnF5bUZPcXRFcThIQm1DTytsWWlZWHF0?=
+ =?utf-8?B?bUgvVmErRko4ajJ2d3ZCVU5ML3VXcElMSnBiWS9LaVpWbUR2N1NnbU9iSjFv?=
+ =?utf-8?B?VGdJaTRGZTFBYU1CcGpTWXlJVU9CYmZUQm0vUzNZVGNRbWRTSDM0UzJZRFJZ?=
+ =?utf-8?B?QWVsZUxaSlhnZ2pQM0JDK21ZdERGRTEwRmZUaEgxTnA5emdvdklDNHNkT3ZR?=
+ =?utf-8?B?VXFyWi8xMUZXcWtvOTQxZ3UwS2FuelQ3R3pTZ2crbzFJcnJXU2ZBMS9SdFlP?=
+ =?utf-8?B?U3Brd1c4ekk2VHlpQkVRU3BZZDJyOHVOSjFGaVFaalh6QlZKUXlnTzh5bTNL?=
+ =?utf-8?Q?L3pv8jFR8zC+0wsriAd0nrKDArQICjs9rhL+ur5?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dWhjK1FMa0srN3lmT1BWM2g2MUJiTXdjc3JRN0NJRXJMVTJ1U0Zoa0hSM3lz?=
+ =?utf-8?B?N1BQN1huYjkvM05qT012OGtBYm5LMEZvK1R5eUlUN050cmY4cnI3bnVmTlZH?=
+ =?utf-8?B?MFNvOE90NTlhK29aeC9NbFFQOTc3SHFlZWtzTVUvQmQ1MlBKYXpzVkxYQ3Jr?=
+ =?utf-8?B?R3pQM2hpbTNna0E1UVJ6WDYrclc4YUczSzRzakRnL0Mwa1dYNjlNUExWb0JF?=
+ =?utf-8?B?Yk84ZXJQbEIyN2tnUFAyN0o1NE1FODNqMXFKZThDUkJuNEpUNVArd1BINFE1?=
+ =?utf-8?B?STRxN2Nxck4yaGVxb2pkV0VkWnRXaEx6RTd4SXNnUjZ6MWh2QTlnaWgvTDJE?=
+ =?utf-8?B?WXh1Y2RWRU1kU3BkcXlybFVyR2lodUx1MEVQaFlvYXh4VDUzcEdTaVpLNHIx?=
+ =?utf-8?B?VU5LbnpxU1oxM3JhZnlSMFdJSXp2OHlOT3c2NEhGYlpLRnZ6N1B3cktHQVRY?=
+ =?utf-8?B?eG4yTnlXdEllY0xOdlRVejE2b2t2Qjh5QXR3bUl2a1FpS2VNT3BqcGlTVDBS?=
+ =?utf-8?B?QU1yWjROQ1gyZHRzdXpIWGZ3bmEwTVdwMlNyT1B2TkYzRFJHUmtJY3FSRTRt?=
+ =?utf-8?B?dGh4K3lERkNJMmZOcklSdHZZTVE2YlFBVkZ5NkoyUmN3b28yWU1kYVhCdnQ1?=
+ =?utf-8?B?WVdBbDNJQUlXRGF1cmU2dVA0dEx2ZURiajlwYk45c1ZMWFRVN2hhdm9pUVpn?=
+ =?utf-8?B?d2FzWk1TQzRPTGRlUUtZcVlpMzVOc3lWdzMwdDJicEFFWXBSYmEvWUFMeWhk?=
+ =?utf-8?B?Qk8xT1U5TVhORndsK1M3NFBWaVhIOExnUHBudnBwcFNDU1FsVXZLeVFjOUVl?=
+ =?utf-8?B?K2FlVDdjUzRBMFZPRDFETjVwWFE2WGlwRUtkMjZwaHlSckhwdkRHWmVzdDh1?=
+ =?utf-8?B?dm5BdXZmVTM0dnhGTVM1NkJLb2FCVGJ1dlhCTWgvTi9YUnBoajdGN2pIUE5F?=
+ =?utf-8?B?ajlZQWVwOEVxdnhPOTVwNVFvM3JZeU9Zc2MyVklVQ05obnEzMDIvckhxRTB2?=
+ =?utf-8?B?QXdVWmxEZHByZTNoRU1PL2tpRWJJQ3JSTGlyanhaMExBOU81eTlQQytxZ0R0?=
+ =?utf-8?B?UHBwRFlaSiszQWJzUXZscU44eU9OV1NTR2hkNFAzWGsrMWtDRUUwRmtDUGRL?=
+ =?utf-8?B?T1FQb202OWNoZmlHcTgrTGZFRWJORXEyYjdSN0pQMGhqZzZpL1h5K0lWSy9K?=
+ =?utf-8?B?SDRlRFZXV3p4UkNYbHpnWVVWVmdIN0NwM3ljTk5zeVN3WjZnem9xTytzSnFO?=
+ =?utf-8?B?NkFpZUwzSk11RzB0OW11L3VCeHBOYmJaR3pLWVJ1K1NuQVdEMTNuSjAyMkt3?=
+ =?utf-8?B?dVY5MGpBWGZ1UFRsRy8xOCtLZE0vTmR5eGhMTHRJQ0JyUjFNUUtkYnluZVRC?=
+ =?utf-8?B?cFo1ZVpaYWVVWVJDZFYxeGRuUW00MDRXRUprY1RycFlRRWVtR3pPbmRsYVY3?=
+ =?utf-8?B?b3ovQ0hyV0EvdnJGaGJkWXNOUHpFNGxyTUt0NWVQNDlnWU5uYkNVZXlwTVI1?=
+ =?utf-8?B?aUFMdHdCU05QbmUrYlJwbmZacWpOa1V4SmZzam50cmE5RXRBRzZBanRrajd6?=
+ =?utf-8?B?WUZ0RW1aWFR2MWFlTGNjQUhtMmphOXhEVDN4SmdDaGRIV1RoWTZnd2RlZGgz?=
+ =?utf-8?B?TUJtdThVUExrRTRtRFZIZTNaMUlPRlBBbXR5Q1hRdHB3TnN1WWZDNldMbUJT?=
+ =?utf-8?B?Z2tZT1JxL29tUlA2SU82amc2L3U5SDg0cnJZRkd1Nm9QMDErcjBpeEY4ZWg5?=
+ =?utf-8?B?YXN0aWxqSnoxQmk3dDBINmE3RTBsU1MvWFBLVzNHMitXeDRXQk1WNlJtY01h?=
+ =?utf-8?B?Mnp5TnVtV0NGVFh3UFV2eUpkanhwMjZJTGRqb3RRU2ZsRWRiaFBCNGNFemta?=
+ =?utf-8?B?V3A5K2M0OXd6SlNnVEtKVE9icGdWa1p1MTg2UStCc2pOelNrY2c3ODhZL1J0?=
+ =?utf-8?B?dzE2VGxBcGhIOTlwWHBtWGcwWFE5cFB1Y0FhbWZNZXh3UFY2dHdJYWx3SU95?=
+ =?utf-8?B?eHZ5eG52UGNSWmRoR0kvY3R2a1hTZDZtYzViRkQydEdlN1podFBsQkNRUFhu?=
+ =?utf-8?B?clV4VFJLVWx5bnh1TE9QTDNBMG00U2l2TkRBVlZZODlRZ1NqMWFXd0dFV0JR?=
+ =?utf-8?Q?3LJ4=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25591403-eef6-4d11-63c1-08dcf75c11dd
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 14:23:18.9979 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gscni9YTFERFxifzRqCJs6UGHVQlMRtgoYCSFeXeYrqkaJgwAbeAyyBZzfixFZ7d
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5661
+Received-SPF: permerror client-ip=40.107.94.84;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,47 +171,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 24 Oct 2024 at 10:58, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> The following changes since commit 6f625ce2f21d6a1243065d236298277c56f972=
-d5:
->
->   Merge tag 'pull-request-2024-10-21' of https://gitlab.com/thuth/qemu in=
-to staging (2024-10-21 17:12:59 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-oct-misc-24102=
-4-1
->
-> for you to fetch changes up to b56f7dd203c301231d3bb2d071b4e32b345f49d6:
->
->   plugins: fix qemu_plugin_reset (2024-10-24 10:04:09 +0100)
->
-> ----------------------------------------------------------------
-> testing, gdbstub and plugin updates
->
->   - update MAINTAINERS with pointers to foo/next
->   - add NOFETCH to help test custom docker builds
->   - update microblaze toolchain with atomic fixes
->   - update tsan build and documentation
->   - don't restrict build-environment by arch unless needed
->   - add cross-modifying code test
->   - add tracepoints for cpu_step_atomic fallbacks
->   - fix defaults for loongarch cross build
->   - make check-[dco|patch] a little more verbose
->   - fix gdbstub bug preventing aarch64_be-linux-user starting
->   - add basic test for aarch64_be
->   - clean up some gdbstub test scripts
->   - fix qemu_plugin_reset
+Hi Paolo,
 
+On 10/28/24 03:37, Paolo Bonzini wrote:
+> On 10/25/24 00:18, Babu Moger wrote:
+>>
+>> This series adds the support for following features in qemu.
+>> 1. RAS feature bits (SUCCOR, McaOverflowRecov)
+>> 2. perfmon-v2
+>> 3. Update EPYC-Genoa to support perfmon-v2 and RAS bits
+>> 4. Support for bits related to SRSO (sbpb, ibpb-brtype,
+>> srso-user-kernel-no)
+>> 5. Added support for feature bits CPUID_Fn80000021_EAX/CPUID_Fn80000021_EBX
+>>     to address CPUID enforcement requirement in Turin platforms.
+>> 6. Add support for EPYC-Turin.
+> 
+> Queued, thanks.  I looked at
 
+Thanks.
 
-Applied to target-arm.next, thanks.
+> https://gitlab.com/qemu-project/qemu/-/issues/2571 and I think it's caused
+> by the ignore_msrs=1 parameter on the KVM kernel module.
 
--- PMM
+Thanks again.
+
+> 
+> However, can you look into adding new CPUID_SVM_* bits?
+
+I normally pickup bits when it is added in kernel/kvm. Are you thinking of
+any specific bits here?
+Thanks
+Babu
 
