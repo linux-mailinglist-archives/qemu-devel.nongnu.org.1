@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC969B33B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E869B33B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 15:37:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Qo8-0003OM-9l; Mon, 28 Oct 2024 10:33:24 -0400
+	id 1t5Qoc-0004EN-UL; Mon, 28 Oct 2024 10:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlR-0000dz-5J
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:37 -0400
+ id 1t5Qla-00012b-Jl
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5QlO-00040b-Tj
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:36 -0400
+ id 1t5QlZ-00041o-2j
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 10:30:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730125833;
+ s=mimecast20190719; t=1730125841;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cnNbN2/GG/cHatir8SHvYVVNQ8/dSXQusHp7oYcZdJw=;
- b=R0b9ManYnK5JH2M1DHCkAQIZ1aBA4Wa/S6jw+ly1it2EScdBWoqD1z/CTRcAZT/DSitIJx
- pOpF7DsOWb/iLhaUHWW5mYvb6EB8m5rHhFN8JPuV8BlHSVHi9E26nKvyDg0Q2jp2qenFOO
- cOeeq6jAYB52m+sLxexGaAaKraG5+0A=
+ bh=gd7P+eFQmuapc72Z+2YjooQQ3wuGxiAok9a2Yw5g+xQ=;
+ b=YCoZCRTsp3gfQ+tF+2i0oDCNceGTJMcwMCtbfcURBv6/Txs4+CNDQ0E/aW39T/FqZcNkc8
+ AIlkWcLXhnfyRyo8YIVzvQVBEm9tp/A2p5iiVZsTN2d3BIUFIdHCge6YdFs5922AG0d0z3
+ BQQ42VecrxczeW3qMuAvUnmuRhAdCzw=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-N_2Eh0skOB20H3OBA8vycA-1; Mon, 28 Oct 2024 10:30:30 -0400
-X-MC-Unique: N_2Eh0skOB20H3OBA8vycA-1
+ us-mta-424-F4RPQimWPWSuWTrBx8IZrA-1; Mon, 28 Oct 2024 10:30:31 -0400
+X-MC-Unique: F4RPQimWPWSuWTrBx8IZrA-1
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d432f9f5eso2434022f8f.0
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:30 -0700 (PDT)
+ ffacd0b85a97d-37d462b64e3so2250607f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 07:30:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730125828; x=1730730628;
+ d=1e100.net; s=20230601; t=1730125829; x=1730730629;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cnNbN2/GG/cHatir8SHvYVVNQ8/dSXQusHp7oYcZdJw=;
- b=ZNkD3gJAb/qEfFsanMtKu2dG3nzOD9G5p0C/ALau46FuBhdw1Ls0UoWKUnKogoyu+l
- 90WEpflBqiq14r/j2MTSgczc/zoLCFr7BJa6kHPiBCbN5PVvrOePHbhBt/abg7CsFHGm
- mTglGQu9jSVZC+fmLWcXyYVbQupYpMiECSYTXGk03iBzCnZw6AtmpG54Pwvu6xptklc1
- txI08IQdcnHJVs5IdKPE9Di8RKFY7PAEXQggFhrqhfka4t915Boxdyl5AX/G7gaqSefN
- iaj7ohlwXoytZW34a6adkkiF0rBdxeEUZvJ1txkwkfIOvkQIKDs/nvW+enUI8E/t6r8G
- ezuQ==
-X-Gm-Message-State: AOJu0YyB5A1FSbnojhnujpBu+znM5pIMtbFpDjJau+a+k0qlPbYrWL+I
- CV16QFHm4T1KAVvBQVrNeuGNH2J1V5uYcJq+sUHDrrsk9q5sVlBA/AWT8yp3000oO36hdBJOpmg
- hT06q3UqXuyrfbjqy6U80ARsAjMFGHcwPFFsGbmVfBDHbr7q/fp0DtpmNSitUWwYqdHtm6w85xp
- 7eqtIO2i1k7WFVVApb3dEnIacomIvMCBd3mo+H2QU=
-X-Received: by 2002:a05:6000:c06:b0:380:54f2:3408 with SMTP id
- ffacd0b85a97d-38061143056mr6529030f8f.25.1730125828241; 
+ bh=gd7P+eFQmuapc72Z+2YjooQQ3wuGxiAok9a2Yw5g+xQ=;
+ b=eXxYLG47qjc2KFeAiGVIuinPxy6oGF16vkEGOWT0UDqbTfK1Mf92S3rmCHtyk/3R6I
+ 76N0mFa6dNAiECN7/fmF9NrduGPmoA/YzFIFuZsh5AifR0oqWOKx/dDj78R+L9pV1LL2
+ yB6DN4dbaQ+DMdTDsKQlhUhvc5bpdCrzlZP3i0gT9W8iJjUTwgdvux2QaG2Ffnnuj13/
+ bzoYnvS0uwwk7WbOp7LcGf/ilqpPSScD5lCWnWCLgJovcqRaKPDO/IQD1gEfjkjRQIem
+ 7FdjpyfKfgvGXc5VUwKqaA7cZm4lfHzRNZzRoA+Rdz6pZHKLuX6zHLzyxlVKO3aPX1Ck
+ x6kw==
+X-Gm-Message-State: AOJu0Yw26v5AzIU6uEEH7RmTPF/pzlJwjIHu9J31PumZIxNgrrsOuvjt
+ 6EI+l152fO6iDsb2ydve6RTNydU1h/uWKXeWYiFeAFyoagBiY9GKbz8uiZAVyYKAwB9fSO1dqRx
+ PqWYAgnEQk4W1cxDrS5VmeZylzZfG80zPxRTuCKmrGvif6JAbqBAxZ7EFMAT72orTTnlW/L8fHU
+ WzNjcuOG4PxyGyrz30kB7Zz2wgLQzETcjuuYrtlzc=
+X-Received: by 2002:a5d:5391:0:b0:37d:890c:f485 with SMTP id
+ ffacd0b85a97d-38061162d72mr6476378f8f.25.1730125829235; 
+ Mon, 28 Oct 2024 07:30:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGD7Gj5WO7V6EX+8ZjUPc/eSSiWS84x1CfoC9Paju/tvMIiiuTDMtqHhwXAR4IfRk55Zn5t+g==
+X-Received: by 2002:a5d:5391:0:b0:37d:890c:f485 with SMTP id
+ ffacd0b85a97d-38061162d72mr6476356f8f.25.1730125828824; 
  Mon, 28 Oct 2024 07:30:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjsyH6bB1qi6q0kO0/Doh1av82wreuGOUMs/tD2LCHzJwljal3gYBDqY8F45UnGhU43Ssc3g==
-X-Received: by 2002:a05:6000:c06:b0:380:54f2:3408 with SMTP id
- ffacd0b85a97d-38061143056mr6529004f8f.25.1730125827786; 
- Mon, 28 Oct 2024 07:30:27 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38058b70bc1sm9687269f8f.70.2024.10.28.07.30.25
+ ffacd0b85a97d-38058b46bffsm9584193f8f.46.2024.10.28.07.30.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2024 07:30:25 -0700 (PDT)
+ Mon, 28 Oct 2024 07:30:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Junjie Mao <junjie.mao@hotmail.com>,
-	Kevin Wolf <kwolf@redhat.com>
-Subject: [PULL 21/24] rust: do not use TYPE_CHARDEV unnecessarily
-Date: Mon, 28 Oct 2024 15:29:28 +0100
-Message-ID: <20241028142932.363687-22-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 22/24] configure: detect 64-bit MIPS
+Date: Mon, 28 Oct 2024 15:29:29 +0100
+Message-ID: <20241028142932.363687-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028142932.363687-1-pbonzini@redhat.com>
 References: <20241028142932.363687-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -101,31 +101,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the invocation of qdev_prop_set_chr(), "chardev" is the name of a
-property rather than a type and has to match the name of the property
-in device_class.rs.  Do not use TYPE_CHARDEV here, just like in the C
-version of pl011_create.
+While right now 64-bit MIPS and 32-bit MIPS share the code in QEMU,
+Rust uses different rules for the target.  Set $cpu correctly to
+either mips or mips64 (--cpu=mips64* is already accepted in the case
+statement that canonicalizes cpu/host_arch/linux_arch), and adjust
+the checks to account for the different between $cpu (which handles
+mips/mips64 separately) and $host_arch (which does not).
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Fixes: 1a6ef6ff624 ("configure, meson: detect Rust toolchain", 2024-10-11)
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ configure | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 0347a027c5f..b3d8bc004e0 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -573,7 +573,7 @@ pub fn update(&self) {
-         let dev: *mut DeviceState = qdev_new(PL011State::TYPE_INFO.name);
-         let sysbus: *mut SysBusDevice = dev.cast::<SysBusDevice>();
+diff --git a/configure b/configure
+index 0918147156b..89ac9e78b86 100755
+--- a/configure
++++ b/configure
+@@ -395,7 +395,11 @@ elif check_define _ARCH_PPC ; then
+     cpu="ppc"
+   fi
+ elif check_define __mips__ ; then
+-  cpu="mips"
++  if check_define __mips64 ; then
++    cpu="mips64"
++  else
++    cpu="mips"
++  fi
+ elif check_define __s390__ ; then
+   if check_define __s390x__ ; then
+     cpu="s390x"
+@@ -1230,7 +1234,7 @@ EOF
+       fi
+     fi
  
--        qdev_prop_set_chr(dev, bindings::TYPE_CHARDEV.as_ptr(), chr);
-+        qdev_prop_set_chr(dev, c"chardev".as_ptr(), chr);
-         sysbus_realize_and_unref(sysbus, addr_of!(error_fatal) as *mut *mut Error);
-         sysbus_mmio_map(sysbus, 0, addr);
-         sysbus_connect_irq(sysbus, 0, irq);
+-    case "$host_arch" in
++    case "$cpu" in
+     arm)
+       # e.g. arm-unknown-linux-gnueabi, arm-unknown-linux-gnueabihf
+       write_c_skeleton
+@@ -1278,7 +1282,7 @@ EOF
+     test "$rust_arch" = arm && test "$rust_os" != linux && rust_arch=armv7
+     ;;
+ 
+-  mips|mips64)
++  mips)
+     # preserve ISA version (mipsisa64r6 etc.) and include endianness
+     rust_arch=${raw_cpu%el}
+     test "$bigendian" = no && rust_arch=${rust_arch}el
 -- 
 2.47.0
 
