@@ -2,127 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212F29B2A7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 09:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF429B2A90
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 09:42:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5LGT-0005jd-39; Mon, 28 Oct 2024 04:38:17 -0400
+	id 1t5LJc-00075H-AF; Mon, 28 Oct 2024 04:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5LGC-0005is-7T
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 04:38:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
+ id 1t5LJZ-00074t-1a
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 04:41:29 -0400
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5LGA-0002S1-85
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 04:38:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730104676;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=RY1ABRLjLkvXF8gaN0ioWPJwQqdicQnkO7mCEKvqIhc=;
- b=HkUwYlXuq4ioGOLOIcbRuz3Xpqp0xUZQkwOe+T/ZLInAxjFTfWTlbhf2iM9L4YhGSABjvJ
- kAtXyXlksTta6FtjW5nyWrAZ6Av+OzOwdWs04I3fyqKQEanXNNRfTjbLhzgpwqZfhyE9zw
- wgVa+gC06O0JlGJ9GEcifVK2duFQ80g=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-XmpYYJ8bPrm4EiaYScptjg-1; Mon, 28 Oct 2024 04:37:53 -0400
-X-MC-Unique: XmpYYJ8bPrm4EiaYScptjg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-539e13b8143so3119891e87.0
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 01:37:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730104672; x=1730709472;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RY1ABRLjLkvXF8gaN0ioWPJwQqdicQnkO7mCEKvqIhc=;
- b=EGSAMmHZGrHvtfdvD9xiVV1W2gKrSHye46WMidcXNMJZ5Uy2PRSIfew5UChbDl1tZe
- kRCqXkhmuE8+k4H0FhnYTDxLNr5iFrLmfULTGGhe17Z8YsfmxP7ED5dCXnL4tqpuoSSw
- DOl5FYxh+d+hY/455acYAZ5XbW9QJ008nrqdva/pnLdSAIxemG4tFSpHbYUzfiwEww3T
- RLYRtlxyfIQfSqZWblk+hNxM6PpfTZddjGv0fUSmJ9YN61XMTCMUqMkmZShvjD+BQrU6
- xGaD02dOLnnkf79YyCfun66/URc32393DJrXQzbehv1xaPOidjUHlLX1FfCNzXb71GoB
- H6cQ==
-X-Gm-Message-State: AOJu0YwVC2M3GGqjbOM5odtD3Uaah1LZvuhNDZtceKBDzLNYyWGHMalz
- D2q5VfHsZ1RBpfZRflk4AqqVwk0N0GIxQPkJGtNz13OKfSfKOmDA1fTaYU64/COqAo90Xaf555P
- HkXVgBoAWpYmOt6XJ7kKBgwhw8/5rjz9qTBbLtPmOJpaPGmHxafwp
-X-Received: by 2002:a05:6512:3b91:b0:52e:e3c3:643f with SMTP id
- 2adb3069b0e04-53b348c6ffcmr2321004e87.2.1730104671842; 
- Mon, 28 Oct 2024 01:37:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOq4MiF8TCFj1BNE++QMkF/v8IAqU+DpzD0MN/ig4TzeNEfXQ5RUp0fq3mv4Sk4XWRjqb0pg==
-X-Received: by 2002:a05:6512:3b91:b0:52e:e3c3:643f with SMTP id
- 2adb3069b0e04-53b348c6ffcmr2320983e87.2.1730104671329; 
- Mon, 28 Oct 2024 01:37:51 -0700 (PDT)
-Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-38058b1cc0asm8944578f8f.10.2024.10.28.01.37.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Oct 2024 01:37:50 -0700 (PDT)
-Message-ID: <b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com>
-Date: Mon, 28 Oct 2024 09:37:49 +0100
+ (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
+ id 1t5LJX-0002pB-I8
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 04:41:28 -0400
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.whiteo.stw.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <jlu@pengutronix.de>)
+ id 1t5LJA-00020f-Oi; Mon, 28 Oct 2024 09:41:04 +0100
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+ by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
+ (envelope-from <jlu@pengutronix.de>) id 1t5LJ9-000orQ-2Y;
+ Mon, 28 Oct 2024 09:41:03 +0100
+Received: from localhost ([127.0.0.1])
+ by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
+ (envelope-from <jlu@pengutronix.de>) id 1t5LJ9-008dmI-0C;
+ Mon, 28 Oct 2024 09:41:03 +0100
+Message-ID: <670fa7bf052d8f292f9bd25c330c8d7bdba02770.camel@pengutronix.de>
+Subject: Re: [PATCH 0/2] arm: Add collie and sx functional tests
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: Guenter Roeck <linux@roeck-us.net>, =?ISO-8859-1?Q?C=E9dric?= Le Goater	
+ <clg@kaod.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Thomas Huth
+ <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley
+ <joel@jms.id.au>, qemu-block <qemu-block@nongnu.org>
+Date: Mon, 28 Oct 2024 09:41:03 +0100
+In-Reply-To: <4246f82b-597c-4a5d-9a55-18a584e7d8c7@roeck-us.net>
+References: <20241017163247.711244-1-peter.maydell@linaro.org>
+ <ec2cb5e8-77be-435e-8aa7-4314cf412c4d@redhat.com>
+ <CAFEAcA8MY8DWABNuYuzH57k-nv3J4s0eMR=FuRt1TVd8P2GU2g@mail.gmail.com>
+ <a65a224e-4f54-436d-b555-734a8926d941@roeck-us.net>
+ <aa7755a2-e6fa-4d23-bcac-a630e6da98db@linaro.org>
+ <d9f18091-aee1-4b32-ba72-e1028fe433c9@roeck-us.net>
+ <5262a33d-d0c5-452b-9869-f8f482b1c857@linaro.org>
+ <07664ec3-6b46-4b27-9d8c-9e2ff34c9dbe@kaod.org>
+ <600baa43c3dd3547338934717cfb57c5e12b0d23.camel@pengutronix.de>
+ <84c32f2d-7d9a-4e5a-8b67-1f954dd493f6@roeck-us.net>
+ <b67f302a11a679c3fdb02318eb9ef0be559d14ce.camel@pengutronix.de>
+ <53cbb597-e7f2-4742-bf85-928c704ddbcf@linaro.org>
+ <443f1b0c-8184-4bf4-9f68-c23d7de3bc36@roeck-us.net>
+ <1bce4c22-9281-44c5-8acb-860881dc271c@kaod.org>
+ <c27fbed6-596e-4ce7-a6ca-6d12d7205e99@roeck-us.net>
+ <86fa6e68-5861-4d4d-941f-95b278074eb6@kaod.org>
+ <1c917e4a-de50-45b9-ac9c-eb04d51401a2@roeck-us.net>
+ <00997cca-6f4a-4b99-9616-2af6a25cd4fb@kaod.org>
+ <4246f82b-597c-4a5d-9a55-18a584e7d8c7@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1 (by Flathub.org) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/7] target/i386: Add support for perfmon-v2, RAS bits
- and EPYC-Turin CPU model
-To: Babu Moger <babu.moger@amd.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <cover.1729807947.git.babu.moger@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
- CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
- hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
- DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
- P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
- Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
- UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
- tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
- wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
- UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
- 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
- jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
- VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
- CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
- SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
- AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
- AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
- nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
- bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
- KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
- m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
- tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
- dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
- JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
- sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
- OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
- GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
- Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
- usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
- xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
- JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
- dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
- b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <cover.1729807947.git.babu.moger@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: jlu@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: qemu-devel@nongnu.org
+Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
+ envelope-from=jlu@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,55 +93,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/25/24 00:18, Babu Moger wrote:
-> 
-> This series adds the support for following features in qemu.
-> 1. RAS feature bits (SUCCOR, McaOverflowRecov)
-> 2. perfmon-v2
-> 3. Update EPYC-Genoa to support perfmon-v2 and RAS bits
-> 4. Support for bits related to SRSO (sbpb, ibpb-brtype, srso-user-kernel-no)
-> 5. Added support for feature bits CPUID_Fn80000021_EAX/CPUID_Fn80000021_EBX
->     to address CPUID enforcement requirement in Turin platforms.
-> 6. Add support for EPYC-Turin.
+On Sun, 2024-10-27 at 20:32 -0700, Guenter Roeck wrote:
+> On 10/27/24 15:26, C=C3=A9dric Le Goater wrote:
+> > On 10/27/24 23:11, Guenter Roeck wrote:
+> > > On 10/27/24 14:13, C=C3=A9dric Le Goater wrote:
+> > > > On 10/26/24 17:32, Guenter Roeck wrote:
+> > > > > On 10/26/24 03:02, C=C3=A9dric Le Goater wrote:
+> > > > > [ ... ]
+> > > > >=20
+> > > > > >=20
+> > > > > Works for me, though, and it is much better than mandating the ex=
+istence
+> > > > > of boot partitions.
+> > > >=20
+> > > > Yes. However, if the emmc device was user creatable, we could use :
+> > > >=20
+> > > > =C2=A0=C2=A0 -blockdev node-name=3Demmc0,driver=3Dfile,filename=3Dm=
+mc-ast2600-evb-noboot.raw \
+> > > > =C2=A0=C2=A0 -device emmc,bus=3Dsdhci-bus.2,drive=3Demmc0
+> > > >=20
+> > > > and with boot partitions:
+> > > >=20
+> > > > =C2=A0=C2=A0 -M boot-emmc=3Dtrue \
+> > > > =C2=A0=C2=A0 -blockdev node-name=3Demmc0,driver=3Dfile,filename=3Dm=
+mc-ast2600-evb.raw \
+> > > > =C2=A0=C2=A0 -device emmc,bus=3Dsdhci-bus.2,drive=3Demmc0,boot-part=
+ition-size=3D1048576,boot-config=3D8
+> > > >=20
+> > > > The above would be my preferred approach if acceptable. The "sd-bus=
+"
+> > > > bus identifier should be changed in other machines tough.
+> > >=20
+> > > No real preference here, though my understanding is that emmc devices
+> > > are by definition built-in, and that is what emmc_class_init() says a=
+s well.
+> > > Also, there does not seem to be an sdhci-bus, only sd-bus, and that d=
+oes
+> > > not support any index values. That may be just my lack of knowledge, =
+though.
+> >=20
+> > No, you are right. On a real ast2600-evb, the eMMC device is indeed
+> > soldered on the board. But, for testing purposes, it is sometime
+> > interesting to add some flexibility in the machine definition and
+> > in the modeling too. This avoids "hard-coding" default devices in
+> > the machines and lets the user define its own variant models using
+> > the QEMU command line.
+>=20
+> I would agree, but I had a number of my patches rejected because while
+> they would be useful for testing they would not accurately reflect the
+> hardware. So nowadays I gave up even trying to upstream such changes.
 
-Queued, thanks.  I looked at 
-https://gitlab.com/qemu-project/qemu/-/issues/2571 and I think it's 
-caused by the ignore_msrs=1 parameter on the KVM kernel module.
+My patch to make eMMCs user creatable [1] was applied to target-
+arm.next by Peter Maydell [2] last week.
 
-However, can you look into adding new CPUID_SVM_* bits?
+Jan
 
-Thanks,
+[1] https://lore.kernel.org/qemu-devel/20241015135649.4189256-1-jlu@pengutr=
+onix.de/
+[2] https://lore.kernel.org/qemu-devel/CAFEAcA9sjszCj=3DFu-A-=3DqQV_jawnomJ=
+-Nqnd=3DVx2vLKmYZ1-nQ@mail.gmail.com/
 
-Paolo
+--=20
+Pengutronix e.K.                        |                             |
+Steuerwalder Str. 21                    | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany               | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686        | Fax:   +49-5121-206917-5555 |
 
-> Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
-> Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
-> ---
-> v3: Added SBPB, IBPB_BRTYPE, SRSO_USER_KERNEL_NO, ERAPS and RAPSIZE bits
->      to EPYC-Turin.
-> 
-> v2: Fixed couple of typos.
->      Added Reviewed-by tag from Zhao.
->      Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
-> 
-> v2: https://lore.kernel.org/kvm/cover.1723068946.git.babu.moger@amd.com/
->    
-> v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
-> 
-> Babu Moger (6):
->    target/i386: Fix minor typo in NO_NESTED_DATA_BP feature bit
->    target/i386: Add RAS feature bits on EPYC CPU models
->    target/i386: Enable perfmon-v2 and RAS feature bits on EPYC-Genoa
->    target/i386: Expose bits related to SRSO vulnerability
->    target/i386: Expose new feature bits in CPUID 8000_0021_EAX/EBX
->    target/i386: Add support for EPYC-Turin model
-> 
-> Sandipan Das (1):
->    target/i386: Add PerfMonV2 feature bit
-> 
->   target/i386/cpu.c | 222 +++++++++++++++++++++++++++++++++++++++++++++-
->   target/i386/cpu.h |  27 +++++-
->   2 files changed, 242 insertions(+), 7 deletions(-)
-> 
 
 
