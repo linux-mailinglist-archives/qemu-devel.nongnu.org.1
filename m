@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08ECE9B38FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 19:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F799B3904
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 19:22:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5ULD-0007Sk-Tc; Mon, 28 Oct 2024 14:19:48 -0400
+	id 1t5UMQ-0000Y3-5R; Mon, 28 Oct 2024 14:21:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1t5UKr-0007LI-By
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 14:19:30 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t5UMB-0000Rz-PK
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 14:20:48 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1t5UKp-0003Fn-OQ
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 14:19:25 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-539e66ba398so2785e87.0
- for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 11:19:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t5UM9-0003bE-Uk
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 14:20:47 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-20ca388d242so41053565ad.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 11:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1730139558; x=1730744358; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=I9KpKqmLLGgWQg4P3FM7fUf1XDrH/wvRuXnmbYM3Wa0=;
- b=TrtiJPS2nMYzDDJifz04HGa+6f7RJl1gILbrX6K+3pe38Rtik+0bu8HebCHD9hNI6H
- alJEApvBJ6dsrlgHYmU8FrguH7bvmOu5cv1ehEprz+DfSD2SqKczErlGIP5HcXfpqtk6
- wLdilKuzZAR6yMYSzOEXGru0P6qzskWmdLb12cH35ePzPV0w6LbPrQT69WTwGnGctQhw
- jOeCw3/Hg6mkxjOzIpM3IDpewxZ4J8Bhf8vwjNRtiSzK/k/i+eOdl6AEULLS4zGjawGi
- znuBSapldFQMlWr4//S2niiSTCeiXP751kn+/1yO9LZcPzK+DxGpVN/zvPpxCm0lDqun
- 3vOA==
+ d=ventanamicro.com; s=google; t=1730139644; x=1730744444; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CJ6rHcf/1KoOYa/3BNifuPz7aV72D8TPQslFOO51rUk=;
+ b=IhGtABbx0FJElT7u3xHxTS+mtrIya9e15PNL80bzltMqVOjHmvYNxFmNvYohYf1XS5
+ dmD9p5nbaAbUTznHHZuo+YDL/eGfybv2KH7UWUqsIT0xVmzCoGwyYV37NI3elrnoQfPh
+ MeBQSg2tqe7pOJ5lYbxeYBT9ncY4c6K56tG9zK9mVyrAxLh0DjOk58NY36VpNNwWP9/C
+ 964bftRnLRT9+E05GD7pEp1oEN1VRgRK9QtT9wsX+3qKB48LEmzkJ8/Gi5nUFPyyESGI
+ 4KuU8V6fHyB33yo06ZJbev4t9Cdf+tS9Wxr0N2RejSSkzBgcEHyMXz48ViYbc7mn2f5p
+ gytw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730139558; x=1730744358;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1730139644; x=1730744444;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=I9KpKqmLLGgWQg4P3FM7fUf1XDrH/wvRuXnmbYM3Wa0=;
- b=SyIgpwwfm6mxm5FA1jZiv4k4nJgVKEvnBeo4fcdXSLg+C5FdOMkqhPuNbMBrnd9JO5
- weSdK9RhlAC6nio5bXwYMq3uUS/AovxcBeruL3xyj7V+HmjPKNRYK1k1hHDPPkOzHQ5V
- qbVnizNxIMRKK7jcuiGSEVkXfMbKg8ZL0EJZ5Pn9BxgI1ZcyWH7U67JALh7bpK7ykfTs
- k7HOxl+0wGgHe6p9lCYUihcNmyovvKfXS0LwQ6nyWbZEcaMsGXPZrXY0lOjNXK/Gvsh5
- HInwQtDTVWmqErF58FUHNE71k1a5YWFz8jd/r0T/+K871heTQg032xeya0ch60AvC0LK
- 1bgg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXuN0Qw+7VX7mVn9UaaZqZJUowdMQwamCW4IlmWIyrhWzKUaTLOnY4WpmPYQumQk1VhL8Ul1s3qmCLN@nongnu.org
-X-Gm-Message-State: AOJu0YyZR/8cXYUgaGQhKKVbarwge9G6J/ORw26Bq8Kk3iuaU/pdqK9c
- mCY2SnZ3+a4WCgI6NjLczwUY2JuVa9jkDkdhmIwN0jJI6O0nOtCSeud2B1Rn9nFr3gBOufNQcJD
- tu/X52oHrd5IE73npsaPoHlC6G1WMh1MDgyvD
-X-Google-Smtp-Source: AGHT+IFSow7/H7wTYdQYqWSsLp7XO0afeI9AEYp5qH8pO3c6CIBoAy8TE/PH7Ky5liOdOYn2WRdF5m8X+1t1KmRHj2A=
-X-Received: by 2002:a05:6512:4017:b0:538:9e44:3034 with SMTP id
- 2adb3069b0e04-53b480a3b88mr19500e87.6.1730139557940; Mon, 28 Oct 2024
- 11:19:17 -0700 (PDT)
+ bh=CJ6rHcf/1KoOYa/3BNifuPz7aV72D8TPQslFOO51rUk=;
+ b=V7sEYMk7w8xLiSHJsgzC84sAL5dB2YSCi8OPf0BnPOu455cg7NCiDZsXjibhT6UnDW
+ hKPuqvecs6a5F+rTclmTemwks9exlrrA/zhaepC1cgGe634kyD2pxbO60l0mWeqNDKza
+ mFMPLh9B5/2g6Ro9k/5Jthi6U9/AIwNTN+KDZXh8UuiW+iW4RhL+5SQGRCJL1vBETrfv
+ E/wUmGarkmG11xqNgUWVHBnw49EtqlCktGhw/sWMUMRC6nI0GIt4dr0HcEicYoxj8T01
+ /Yih2sALCn3TPwBaSt4XaxFr/5LtgCwBXqVFf9UH+SBfHAG7hQEN53+LnPGXY6jKYzK2
+ MKqg==
+X-Gm-Message-State: AOJu0YzHB6bXLzGJbOZEdXRKvHiXtVY/wiK1CyoUWkwkyuMhUThWPVOV
+ GkOv0r6pOqUyJ4nJPsJDhWQc3bWkPbqpqmXmNXfWWtibG8xUATzVoJJM232mXCSzUe28vpMtv3c
+ n
+X-Google-Smtp-Source: AGHT+IHnqW7yKVjSqPaRRcA8WO3WNiiuOj+xvoGqyfijjsqgR1C8P1emJnZ97LmqR04qCay8OgFWaA==
+X-Received: by 2002:a17:902:db04:b0:20b:3f70:2e05 with SMTP id
+ d9443c01a7336-210c6c3f16cmr121921565ad.41.1730139643807; 
+ Mon, 28 Oct 2024 11:20:43 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([191.8.109.222])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-210bbf471fesm53637505ad.51.2024.10.28.11.20.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Oct 2024 11:20:43 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/2] target/riscv/kvm: riscv-aia fixes
+Date: Mon, 28 Oct 2024 15:20:35 -0300
+Message-ID: <20241028182037.290171-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241028181420.1438938-1-venture@google.com>
-In-Reply-To: <20241028181420.1438938-1-venture@google.com>
-From: Hao Wu <wuhaotsh@google.com>
-Date: Mon, 28 Oct 2024 11:19:03 -0700
-Message-ID: <CAGcCb13zjuH4dAspE=dAdWZXG88b5e3OkGFaE+KcwcWDjioyUQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm: enable at24c with aspeed
-To: Patrick Leis <venture@google.com>
-Cc: clg@kaod.org, peter.maydell@linaro.org, steven_lee@aspeedtech.com, 
- leetroy@gmail.co, jamin_lin@aspeedtech.com, andrew@codeconstruct.com.au, 
- joel@jms.id.au, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000c3bb9306258d814a"
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=wuhaotsh@google.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,81 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000c3bb9306258d814a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Mon, Oct 28, 2024 at 11:15=E2=80=AFAM Patrick Leis <venture@google.com> =
-wrote:
+In this second version we removed patches 3 and 4 from v1. The reasoning
+behind is that the deprecation process is too harsh in comparison with
+the user benefit from using bools instead of strings.
 
-> Enable AT24C with ASPEED in the KConfig because the boards build this
-> device.
->
-> Signed-off-by: Patrick Leis <venture@google.com>
->
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
+We'll expose the string property as bools when it's time to expose them
+in QMP and users will keep using the existing str prop.
 
-> ---
->  hw/arm/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index e7fd9338d1..1b25e73578 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -539,6 +539,7 @@ config ASPEED_SOC
->      select PMBUS
->      select MAX31785
->      select FSI_APB2OPB_ASPEED
-> +    select AT24C
->
->  config MPS2
->      bool
-> --
-> 2.47.0.163.g1226f6d8fa-goog
->
->
->
+Patches based on alistair/riscv-to-apply.next.
 
---000000000000c3bb9306258d814a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Changes from v1:
+- patches 3 and 4 from v1: dropped
+- v1 link: https://lore.kernel.org/qemu-riscv/20240924124407.766495-1-dbarboza@ventanamicro.com/
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 28, 2024 at 11:15=E2=80=
-=AFAM Patrick Leis &lt;<a href=3D"mailto:venture@google.com">venture@google=
-.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">Enable AT24C with ASPEED in the KConfig because the boards build this<b=
-r>
-device.<br>
-<br>
-Signed-off-by: Patrick Leis &lt;<a href=3D"mailto:venture@google.com" targe=
-t=3D"_blank">venture@google.com</a>&gt;<br></blockquote><div>Reviewed-by: H=
-ao Wu &lt;<a href=3D"mailto:wuhaotsh@google.com">wuhaotsh@google.com</a>&gt=
-;=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0hw/arm/Kconfig | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig<br>
-index e7fd9338d1..1b25e73578 100644<br>
---- a/hw/arm/Kconfig<br>
-+++ b/hw/arm/Kconfig<br>
-@@ -539,6 +539,7 @@ config ASPEED_SOC<br>
-=C2=A0 =C2=A0 =C2=A0select PMBUS<br>
-=C2=A0 =C2=A0 =C2=A0select MAX31785<br>
-=C2=A0 =C2=A0 =C2=A0select FSI_APB2OPB_ASPEED<br>
-+=C2=A0 =C2=A0 select AT24C<br>
-<br>
-=C2=A0config MPS2<br>
-=C2=A0 =C2=A0 =C2=A0bool<br>
--- <br>
-2.47.0.163.g1226f6d8fa-goog<br>
-<br>
-<br>
-</blockquote></div></div>
+Daniel Henrique Barboza (2):
+  target/riscv/kvm: set 'aia_mode' to default in error path
+  target/riscv/kvm: clarify how 'riscv-aia' default works
 
---000000000000c3bb9306258d814a--
+ target/riscv/kvm/kvm-cpu.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+-- 
+2.45.2
+
 
