@@ -2,100 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BC79B2AE5
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 10:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F349B2AC4
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 09:52:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5Ldt-0003R1-MW; Mon, 28 Oct 2024 05:02:29 -0400
+	id 1t5LU3-0001Cc-4e; Mon, 28 Oct 2024 04:52:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t5LdO-0003G6-Ur; Mon, 28 Oct 2024 05:01:59 -0400
-Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5LTO-00018L-Io; Mon, 28 Oct 2024 04:51:38 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t5LdM-0004kn-Kh; Mon, 28 Oct 2024 05:01:58 -0400
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal
- [10.202.2.50])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 801F911400EE;
- Mon, 28 Oct 2024 05:01:52 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-10.internal (MEProxy); Mon, 28 Oct 2024 05:01:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1730106112; x=
- 1730192512; bh=Idf3Nj/bO1IyFzKv+FUd0O2tGj5dP9t7iccKDcM7npM=; b=C
- wbnXR2C9jSY41sqZHgIJu7DcH+4GGw8Sk5xdc0/ThypjSx3asKhwAJ04Bo/EnTKD
- LPVxhJrbrzU8j1AMjOUm7FaQKK+sQdJi36n/PJN6QuY6zChBU2d3lV2oPW7LlvTF
- AtyZiFAt6pHDPFAh2XPXHQMRxz0P5MjcYPX8L8WFH5Cr5ITE4pn88ZEWfoMF8jg6
- M7NM07HVgG5TpnJcvikQqc9AF4GXgN9g7PcWn6raWq5tPbfFHOjnKHae31z3ciZG
- jB7NcqEP/PRqMIp3Hn2tuxuSwsWHyyu/mJpDfMqzqbGWJ7V/yLhqXCkIhSarXvIi
- ndWDVT3Vs3If6SZwWAY7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1730106112; x=1730192512; bh=Idf3Nj/bO1IyFzKv+FUd0O2tGj5d
- P9t7iccKDcM7npM=; b=fzw5/5RVs0Kw9sspurc9V49Eu+WrQFScPrrLMW6kIZz6
- 3A+N5WgND5TqUVowBmk5U0Fp4hGZedAWpwiifBWatThMOhvgKmSzw97WeZzBn0dG
- 1CSYuihrC9E3orkLmyx25eJ5Xpb3QenBBPv/I60g3FiIfLhVsu+n9/wccOjgTpns
- 6BdD+xIFlzfFQ6QuARZxfmKnl4loL1YxBm4r+/Jgsm7ekchjbOTi6UFPyaIzih5X
- 571GlEEbUV3+/MpEwFyGrfwJeZIieH8ncHXRwRp6QfXHbFUu448fq2GFemDqmmO9
- 7AmvIFyula4EVpytUWf5GEd8YA/63oD/7T8GKA03+Q==
-X-ME-Sender: <xms:_1IfZ0rlqzblbpffYC-7A_-LA8f2EAJ8oQyVSeNmVPTT1R82q-4l7Q>
- <xme:_1IfZ6o4X4tqI1Vito4-wJKR0Vi5brEJb8kS62-yFVUA2o4sEa4k-oZOV66BW2vKC
- INfFBdPskjEbCRrPdg>
-X-ME-Received: <xmr:_1IfZ5M0jIQiRyxB_uqKSqtV9FGImd-0thSDaryibi3wMO-KYsi69e3mGtCX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejjedguddvkecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
- uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdej
- necuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnth
- drughkqeenucggtffrrghtthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeev
- jeevtdduudegieegteffffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
- epmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphht
- thhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehksghushgthheskhgvrh
- hnvghlrdhorhhgpdhrtghpthhtohepfhhoshhsseguvghfmhgrtghrohdrihhtpdhrtghp
- thhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvg
- hmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvghn
- sehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepqhgvmhhuqdhsthgrsghlvgesnhhonh
- hgnhhurdhorhhgpdhrtghpthhtohepjhifkhhoiigrtgiiuhhksehgmhgrihhlrdgtohhm
- pdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:_1IfZ77gVZ2URGJBq53EUw_Xof14gwm-Yze2LxcqLFZcr4VScxounA>
- <xmx:_1IfZz4p51R8ZPo8mBIYZA6llPJa6Qi1S003D88mq2rieqXyv54E8g>
- <xmx:_1IfZ7jfiB-vm6oG3r4oIplFvJAgmwM49Vw-uIr4C1wp-PLX8ZgkWA>
- <xmx:_1IfZ94ihKYsfcic4EXe0fqbS-fiBvwevaRhyvbPbKli915iegYODg>
- <xmx:AFMfZ9tnTerXx6cVvnqazJyOtKOKzboDbqU_aO3uaOJNp--OezFDrMie>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Oct 2024 05:01:51 -0400 (EDT)
-Date: Mon, 28 Oct 2024 10:01:50 +0100
-From: Klaus Jensen <its@irrelevant.dk>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
- qemu-stable@nongnu.org, Waldemar Kozaczuk <jwkozaczuk@gmail.com>
-Subject: Re: [PATCH] hw/nvme: fix handling of over-committed queues
-Message-ID: <Zx9S_tOkgB9MoY7J@AALNPWKJENSEN.aal.scsc.local>
-References: <20241025-issue-2388-v1-1-16707e0d3342@samsung.com>
- <ZxvLQ5rSQtDAfE-H@kbusch-mbp.dhcp.thefacebook.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5LTM-0003j6-9n; Mon, 28 Oct 2024 04:51:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730105496; x=1761641496;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=8L1Qggk0cO/GX078OJ6a+iuYdWikW0TufL29lkP9RIA=;
+ b=Te/8pyjy0vwLL+XYJnePuwpTzBVabLow/3biMzayid0ktfW8hpTp3XJV
+ crIS9Kxhw6zqSPf8okI2mfF5HyWazoTtRE8/+l1uXTvANSTPSL8/JIyos
+ aylEtnmI8z/gEwnfyws/dCfaxIFV6AYFU/hWtn5RA/pW5QVpl47FFxiH/
+ qjX92DFtba7vWRxGLjhW2TAa8+pGGeFd6eBwrJ2WNVKY93fMKOJAirsi5
+ dvP7gqjiuzrDMHzwLUx7QIQKxRPVaR63kJ9z2q6VuyA/E62x6N9o0UhAP
+ hoOouzYmEyDFarKa5r6yfvRLzxSEvBYd0qu8Z/eSWI0eUcwuG/fBswPDO A==;
+X-CSE-ConnectionGUID: SZ1t2BNnT3ictlLBvHCrkQ==
+X-CSE-MsgGUID: MV8OeAYhSCmTwAcofk7YPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="40269541"
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="40269541"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 01:51:33 -0700
+X-CSE-ConnectionGUID: UYTJblKwRC616HMCP7KpUQ==
+X-CSE-MsgGUID: WiGWNA21TKaiDYgaMfHyDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; d="scan'208";a="112388082"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa001.fm.intel.com with ESMTP; 28 Oct 2024 01:51:27 -0700
+Date: Mon, 28 Oct 2024 17:07:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>
+Subject: Re: [PATCH v4 0/9] Introduce SMP Cache Topology
+Message-ID: <Zx9UYrOeF5Jij0NB@intel.com>
+References: <20241022135151.2052198-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="4rmTWXwfm5UFA8lh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZxvLQ5rSQtDAfE-H@kbusch-mbp.dhcp.thefacebook.com>
-Received-SPF: pass client-ip=103.168.172.155; envelope-from=its@irrelevant.dk;
- helo=fhigh-a4-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+In-Reply-To: <20241022135151.2052198-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,48 +94,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Kindly Ping.
 
---4rmTWXwfm5UFA8lh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+(Hi miantainers, all the patches have received Jonathan's review. Could
+this series be accepted?)
 
-On Oct 25 10:45, Keith Busch wrote:
-> On Fri, Oct 25, 2024 at 12:50:45PM +0200, Klaus Jensen wrote:
-> > @@ -1520,9 +1520,16 @@ static void nvme_post_cqes(void *opaque)
-> >          nvme_inc_cq_tail(cq);
-> >          nvme_sg_unmap(&req->sg);
-> > +
-> > +        if (QTAILQ_EMPTY(&sq->req_list) && !nvme_sq_empty(sq)) {
-> > +            qemu_bh_schedule(sq->bh);
-> > +        }
-> > +
-> >          QTAILQ_INSERT_TAIL(&sq->req_list, req, entry);
-> >      }
->=20
-> Shouldn't we schedule the bottom half after the req has been added to
-> the list? I think everything the callback needs to be written prior to
-> calling qemu_bh_schedule().
->=20
+Thanks,
+Zhao
 
-Not as far as I know. It is only queued up; it won't be executed
-immediately. It might run next (ASAP) if we are already in a bottom
-half, but not before whatever context we are in returns.
-
---4rmTWXwfm5UFA8lh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmcfUvsACgkQTeGvMW1P
-DemzpwgAmKqdTeoViyfn55mhRNdrKIVcCDDc1xI9F10cFU5QxWKcsZFla5+VYGo1
-83db4ZnhYllD2u3ujOk/SG2YMzxIAjIWNvEiHTht5mhS302BUhu8ntNWDhGzimOg
-dsGFaNvutJ7yu0PBvwTq5sAQQlg1yY2lE/GZcGTfxejWcbGV3NxqXMsG7vuI7La7
-udf1/MyOjgm5/W6pvQV3R1W33OTmbxkUWl7fKIKx/3zL3M4v2WX4+mYNUMIgkn+Y
-U6i/QkPg/VDLlQLczowICzkoRORZLmcvdsbZKXPQBcJxU1DTJ7U7uUOyF1hzD24z
-MaxI/OaiIcS2i9oyRo18CwRCzSkAWw==
-=dvxT
------END PGP SIGNATURE-----
-
---4rmTWXwfm5UFA8lh--
+On Tue, Oct 22, 2024 at 09:51:42PM +0800, Zhao Liu wrote:
+> Date: Tue, 22 Oct 2024 21:51:42 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH v4 0/9] Introduce SMP Cache Topology
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi all,
+> 
+> Compared with v3 [1], the v4 mainly changes these places:
+> 
+>  * Don't expose "invalid" enumeration in QAPI and define it by a
+>    macro instead. (new patch 1, and updated patch 2)
+> 
+>  * Check cache topology after the arch machine loads the user-
+>    configured cache model from MachineState.smp_cache and consumes
+>    the special "default" level by replacing it with the specific level.
+>    (new patch 5, and updated patch 7)
+> 
+>  * Describ the omitting cache will use "default" level and describ
+>    the default cache topology model of i386 PC machine. (updated
+>    patch 8)
+> 
+> All the above changes are tested and the interface design has remained
+> stable.
+> 
+> Meanwhile, ARM side has also worked a lot on the smp-cache based on
+> this series [2].
+> 
+> This series is based on the commit cc5adbbd50d8 ("Merge tag
+> 'pull-tpm-2024-10-18-1' of https://github.com/stefanberger/qemu-tpm into
+> staging").
+> 
+> Welcome your feedback, and I appreciate your reviews. Hope our series
+> can catch up with the 9.2 cycle. :)
+> 
+> 
+> Background
+> ==========
+> 
+> The x86 and ARM (RISCV) need to allow user to configure cache properties
+> (current only topology):
+>  * For x86, the default cache topology model (of max/host CPU) does not
+>    always match the Host's real physical cache topology. Performance can
+>    increase when the configured virtual topology is closer to the
+>    physical topology than a default topology would be.
+>  * For ARM, QEMU can't get the cache topology information from the CPU
+>    registers, then user configuration is necessary. Additionally, the
+>    cache information is also needed for MPAM emulation (for TCG) to
+>    build the right PPTT. (Originally from Jonathan)
+> 
+> 
+> About smp-cache
+> ===============
+> 
+> The API design has been discussed heavily in [3].
+> 
+> Now, smp-cache is implemented as a array integrated in -machine. Though
+> -machine currently can't support JSON format, this is the one of the
+> directions of future.
+> 
+> An example is as follows:
+> 
+> smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
+> 
+> "cache" specifies the cache that the properties will be applied on. This
+> field is the combination of cache level and cache type. Now it supports
+> "l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+> cache) and "l3" (L3 unified cache).
+> 
+> "topology" field accepts CPU topology levels including "thread", "core",
+> "module", "cluster", "die", "socket", "book", "drawer" and a special
+> value "default".
+> 
+> The "default" is introduced to make it easier for libvirt to set a
+> default parameter value without having to care about the specific
+> machine (because currently there is no proper way for machine to
+> expose supported topology levels and caches).
+> 
+> If "default" is set, then the cache topology will follow the
+> architecture's default cache topology model. If other CPU topology level
+> is set, the cache will be shared at corresponding CPU topology level.
+> 
+> Welcome your feedback and review!
+> 
+> [1]: Patch v3: https://lore.kernel.org/qemu-devel/20241012104429.1048908-1-zhao1.liu@intel.com/
+> [2]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20241010111822.345-1-alireza.sanaee@huawei.com/
+> [3]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
+> 
+> Thanks and Best Regards,
+> Zhao
+> ---
+> Changelog:
+> 
+> Main changes since Patch v3:
+>  * Stopped exposing "invalid" enumeration in QAPI and define it by a
+>    macro instead. (Dainel)
+>  * Checked cache topology after the arch machine loads the
+>    user-configured cache model from MachineState.smp_cache and consumes
+>    the special "default" level by replacing it with the specific level.
+>    (Daniel)
+>  * Described the omitting cache will use "default" level and described
+>    the default cache topology model of i386 PC machine. (Daniel)
+> 
+> Main changes since Patch v2:
+>  * Updated version of new QAPI structures to v9.2. (Jonathan)
+>  * Merged the QAPI change and smp-cache property support of machine
+>    into one commit. (Jonathan)
+>  * Picked Alireza's patch to add a has_caches flag.
+>  * Polished english and coding style. (Jonathan)
+> 
+> Main changes since Patch v1:
+>  * Dropped handwriten smp-cache object and integrated cache properties
+>    list into MachineState and used -machine to configure SMP cache
+>    properties. (Markus)
+>  * Dropped prefix of CpuTopologyLevel enumeration. (Markus)
+>  * Rename CPU_TOPO_LEVEL_* to CPU_TOPOLOGY_LEVEL_* to match the QAPI's
+>    generated code. (Markus)
+>  * Renamed SMPCacheProperty/SMPCacheProperties (QAPI structures) to
+>    SmpCacheProperties/SmpCachePropertiesWrapper. (Markus)
+>  * Renamed SMPCacheName (QAPI structure) to SmpCacheLevelAndType and
+>    dropped prefix. (Markus)
+>  * Renamed 'name' field in SmpCacheProperties to 'cache', since the
+>    type and level of the cache in SMP system could be able to specify
+>    all of these kinds of cache explicitly enough.
+>  * Renamed 'topo' field in SmpCacheProperties to 'topology'. (Markus)
+>  * Returned error information when user repeats setting cache
+>    properties. (Markus)
+>  * Renamed SmpCacheLevelAndType to CacheLevelAndType, since this
+>    representation is general across SMP or hybrid system.
+>  * Dropped machine_check_smp_cache_support() and did the check when
+>    -machine parses smp-cache in machine_parse_smp_cache().
+> 
+> Main changes since RFC v2:
+>  * Dropped cpu-topology.h and cpu-topology.c since QAPI has the helper
+>    (CpuTopologyLevel_str) to convert enum to string. (Markus)
+>  * Fixed text format in machine.json (CpuTopologyLevel naming, 2 spaces
+>    between sentences). (Markus)
+>  * Added a new level "default" to de-compatibilize some arch-specific
+>    topo settings. (Daniel)
+>  * Moved CpuTopologyLevel to qapi/machine-common.json, at where the
+>    cache enumeration and smp-cache object would be added.
+>    - If smp-cache object is defined in qapi/machine.json, storage-daemon
+>      will complain about the qmp cmds in qapi/machine.json during
+>      compiling.
+>  * Referred to Daniel's suggestion to introduce cache JSON list, though
+>    as a standalone object since -smp/-machine can't support JSON.
+>  * Linked machine's smp_cache to smp-cache object instead of a builtin
+>    structure. This is to get around the fact that the keyval format of
+>    -machine can't support JSON.
+>  * Wrapped the cache topology level access into a helper.
+>  * Split as a separate commit to just include compatibility checking and
+>    topology checking.
+>  * Allow setting "default" topology level even though the cache
+>    isn't supported by machine. (Daniel)
+>  * Rewrote the document of smp-cache object.
+> 
+> Main changes since RFC v1:
+>  * Split CpuTopology renaimg out of this RFC.
+>  * Use QAPI to enumerate CPU topology levels.
+>  * Drop string_to_cpu_topo() since QAPI will help to parse the topo
+>    levels.
+>  * Set has_*_cache field in machine_get_smp(). (JeeHeng)
+>  * Use "*_cache=topo_level" as -smp example as the original "level"
+>    term for a cache has a totally different meaning. (Jonathan)
+> ---
+> Alireza Sanaee (1):
+>   i386/cpu: add has_caches flag to check smp_cache configuration
+> 
+> Zhao Liu (8):
+>   i386/cpu: Don't enumerate the "invalid" CPU topology level
+>   hw/core: Make CPU topology enumeration arch-agnostic
+>   qapi/qom: Define cache enumeration and properties for machine
+>   hw/core: Check smp cache topology support for machine
+>   hw/core: Add a helper to check the cache topology level
+>   i386/cpu: Support thread and module level cache topology
+>   i386/cpu: Update cache topology with machine's configuration
+>   i386/pc: Support cache topology in -machine for PC machine
+> 
+>  hw/core/machine-smp.c      | 128 +++++++++++++++++++++
+>  hw/core/machine.c          |  44 ++++++++
+>  hw/i386/pc.c               |   4 +
+>  hw/i386/x86-common.c       |   4 +-
+>  include/hw/boards.h        |  19 ++++
+>  include/hw/i386/topology.h |  22 +---
+>  qapi/machine-common.json   |  94 +++++++++++++++-
+>  qemu-options.hx            |  31 ++++-
+>  target/i386/cpu.c          | 225 ++++++++++++++++++++++++-------------
+>  target/i386/cpu.h          |   4 +-
+>  10 files changed, 474 insertions(+), 101 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
+> 
 
