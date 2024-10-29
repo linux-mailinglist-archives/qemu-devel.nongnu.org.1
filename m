@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFC39B4D79
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFDF9B4D7E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:20:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5o0a-0006UJ-Fb; Tue, 29 Oct 2024 11:19:50 -0400
+	id 1t5o0u-0007ct-Vj; Tue, 29 Oct 2024 11:20:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5o08-0005lA-C7
+ id 1t5o08-0005l8-6t
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:19:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t5o04-0000Qc-BS
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:19:20 -0400
+ id 1t5o05-0000Ql-Gq
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:19:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730215154;
+ s=mimecast20190719; t=1730215156;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xl4RsPzTl9gqZQz0/OF4MHqmFAvJIOosnl1EsnMQjuA=;
- b=B6mlgpVAimzbheuALr92uAOBvqBnhgmwdjPG7pD/GgyneoCcZbLSxztZnunjigTRUzrN2b
- 4yAQQKyFIsljgsPXq0UhrULtIbT35gUnjoN/j6gV9AqCOF3634fbXfBLNfgzLwU4JKLolb
- LlylTA/KEiz22NwONBcY8w1VEBp5W7w=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Iqwu/d/vVs0Cnefe08Zu3g6DyPdDcSfsVDU4s2l0BtY=;
+ b=eWLC2UPagQIpftiHtIxK5shMco5nIWpqPxBGNrgPqQlmwgWhJRU2fmRv6F71GPXf5R25Zt
+ HWMJe3d7RyBdlQbt4wPxm/+ILbAS3m4xwxRmqNNvyOLLVtLH2gdovHiCKOqfTOvUkuOy3M
+ 5sz9dVADVYZb3QDmR8p8HmUU/ILCZ7I=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-xpS_tTX_NcGpFHuAq_ZrOA-1; Tue, 29 Oct 2024 11:19:13 -0400
-X-MC-Unique: xpS_tTX_NcGpFHuAq_ZrOA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d4d51b4efso2532846f8f.3
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:19:13 -0700 (PDT)
+ us-mta-55-p1Nrhv3PNeykDaP9DZ3K6w-1; Tue, 29 Oct 2024 11:19:14 -0400
+X-MC-Unique: p1Nrhv3PNeykDaP9DZ3K6w-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d52ca258eso2984244f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:19:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730215152; x=1730819952;
+ d=1e100.net; s=20230601; t=1730215153; x=1730819953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xl4RsPzTl9gqZQz0/OF4MHqmFAvJIOosnl1EsnMQjuA=;
- b=WeEuTwZNChXA13NabnIAnd8cBAViuCq7/yB5Fx3J8SdeaREggFcI6NeKMBlIat9s78
- cZhalR5Yx6fAvYY3Rh2E3czrwk7tgze4aMkIlDDppYMC7BKr90E/Xaq/352iY9+8Yp7q
- E+92GCBKpkQmljA00WtOQFZgOme2NqLR/5ykzO+UkXwRnbW7Wlg0zfXv1LaNbbCXao7r
- jpCRD7PG/vmZ4CN2g2R+Isj1Km5VRlnOHlCyAorsCyCVry+qVvN/cGLW6oi+r74fWJVU
- x9brIuEY8OvS6PSF0IOzJ+Wd2EK+7RHDplJIq8k3ahjodJ8j9TXKsOjkp6dfYKtAFG1I
- XMew==
-X-Gm-Message-State: AOJu0YyTGp3wO/KzYGvZ2odS/YCaAJL1NnX488ujyuAd2JwyvMoc0zlv
- TPGZkR4UFOJnp3Zb9IRWP1OtrbVxTLczbnetw/XxBHql54FCToCWw9n5y0BzBKf+wXY3IvqpvGh
- OFLj7BJdA9u161Yp+6cxOGXQhpUf1FwJqn+0F+HEovl9S8zK/BHsIoEefHEknDXNz4WhqQWBscw
- zKPySP4BpBEZlatG6tY9KVySlpdPXYfCnj91aVQC8=
-X-Received: by 2002:adf:ce89:0:b0:37d:476d:2d58 with SMTP id
- ffacd0b85a97d-380611e56aemr8716814f8f.45.1730215151672; 
- Tue, 29 Oct 2024 08:19:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4wg9p2eEfzZsuqKc/Zds5oNZ1sCpx+RzELh5coGNHGtE/YZIBwyglL7sHISQKGja0zw+2HA==
-X-Received: by 2002:adf:ce89:0:b0:37d:476d:2d58 with SMTP id
- ffacd0b85a97d-380611e56aemr8716789f8f.45.1730215151160; 
- Tue, 29 Oct 2024 08:19:11 -0700 (PDT)
+ bh=Iqwu/d/vVs0Cnefe08Zu3g6DyPdDcSfsVDU4s2l0BtY=;
+ b=vxZy3wo1xa5lCMyt3Vvr/Ig2aFPZVK3ePdLBUtRV6pDRxf+Xxn7d38YxCIAE5oL+Lp
+ 10bOHt526xIHh0lVPg6GpvtKqhpQQ3fyd+sWpj/UYTert4lcS9nFqhkkFj7rgvPmFeKw
+ DLDO8UHP86BlvOj9O//nJLUcR8EXbbeAaQZP/3vBIvSgteBHgXr1j1akDiVTFfyac7Z6
+ Y7hKhdJ3j7PlJGvmo7TCmNN/c9PGDxbJwl2KkYwzfH43wS4HhoKS1jXTQipR6x8nQTeM
+ uGEKkUzjiM0o0917V1eBFYRomTZVrB2fCAxah8ZpKflAJEYAG6wo0ODik8HY8OL3tKz/
+ txvA==
+X-Gm-Message-State: AOJu0Yz0u6RBOvvduZmldRcUu1U7Y0xCOrFIa4PKbql5s2X7daWz0Tkc
+ QMzT5sKyidv/ocv9HsMmcJo6/fUoocFutm/aNZGo8T1as3Pq/1OnXj2D24Ob5A1sKoxSbA0I/G5
+ SUGwqjgbqHdyADVPIMWQY/K0PabJelaAPP/HrK27jfSZW5uvd3xYLmiTkeAecCZXB3NaNNpSKTc
+ rt7V2BrNIihB9JN8w1EdLoydjpGno+H7S3LrCn0Pw=
+X-Received: by 2002:a05:6000:ac1:b0:37d:3280:203a with SMTP id
+ ffacd0b85a97d-381b7057644mr33351f8f.10.1730215152842; 
+ Tue, 29 Oct 2024 08:19:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyRkkN3T57Xw3R83w57A719dOnWaF70XOz5sMw1ShQMcHHQ/15AinK0icAmoal8xCmkPUdJA==
+X-Received: by 2002:a05:6000:ac1:b0:37d:3280:203a with SMTP id
+ ffacd0b85a97d-381b7057644mr33331f8f.10.1730215152425; 
+ Tue, 29 Oct 2024 08:19:12 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38058b0ea58sm12868467f8f.15.2024.10.29.08.19.08
+ ffacd0b85a97d-38058b4ad08sm12792202f8f.64.2024.10.29.08.19.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Oct 2024 08:19:09 -0700 (PDT)
+ Tue, 29 Oct 2024 08:19:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: tao1.su@linux.intel.com,
 	zhao1.liu@intel.com,
 	xiaoyao.li@intel.com
-Subject: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version property
-Date: Tue, 29 Oct 2024 16:18:54 +0100
-Message-ID: <20241029151858.550269-5-pbonzini@redhat.com>
+Subject: [PATCH 5/8] target/i386: add CPUID.24 features for AVX10
+Date: Tue, 29 Oct 2024 16:18:55 +0100
+Message-ID: <20241029151858.550269-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241029151858.550269-1-pbonzini@redhat.com>
 References: <20241029151858.550269-1-pbonzini@redhat.com>
@@ -104,216 +104,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tao Su <tao1.su@linux.intel.com>
 
-When AVX10 enable bit is set, the 0x24 leaf will be present as "AVX10
-Converged Vector ISA leaf" containing fields for the version number and
-the supported vector bit lengths.
-
-Introduce avx10-version property so that avx10 version can be controlled
-by user and cpu model. Per spec, avx10 version can never be 0, the default
-value of avx10-version is set to 0 to determine whether it is specified by
-user.  The default can come from the device model or, for the max model,
-from KVM's reported value.
+Introduce features for the supported vector bit lengths.
 
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
 Link: https://lore.kernel.org/r/20241028024512.156724-3-tao1.su@linux.intel.com
 Link: https://lore.kernel.org/r/20241028024512.156724-4-tao1.su@linux.intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h     |  4 +++
- target/i386/cpu.c     | 64 ++++++++++++++++++++++++++++++++++++++-----
- target/i386/kvm/kvm.c |  3 +-
- 3 files changed, 63 insertions(+), 8 deletions(-)
+ target/i386/cpu.h |  8 ++++++++
+ target/i386/cpu.c | 15 +++++++++++++++
+ 2 files changed, 23 insertions(+)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index a0a122cb5bf..72e98b25114 100644
+index 72e98b25114..f8f97fe9330 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -975,6 +975,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_7_1_EDX_AMX_COMPLEX       (1U << 8)
- /* PREFETCHIT0/1 Instructions */
- #define CPUID_7_1_EDX_PREFETCHITI       (1U << 14)
-+/* Support for Advanced Vector Extensions 10 */
-+#define CPUID_7_1_EDX_AVX10             (1U << 19)
- /* Flexible return and event delivery (FRED) */
- #define CPUID_7_1_EAX_FRED              (1U << 17)
- /* Load into IA32_KERNEL_GS_BASE (LKGS) */
-@@ -1954,6 +1956,8 @@ typedef struct CPUArchState {
-     uint32_t cpuid_vendor3;
-     uint32_t cpuid_version;
-     FeatureWordArray features;
-+    /* AVX10 version */
-+    uint8_t avx10_version;
-     /* Features that were explicitly enabled/disabled */
-     FeatureWordArray user_features;
-     uint32_t cpuid_model[12];
+@@ -665,6 +665,7 @@ typedef enum FeatureWord {
+     FEAT_XSAVE_XSS_HI,     /* CPUID[EAX=0xd,ECX=1].EDX */
+     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
+     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
++    FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
+     FEATURE_WORDS,
+ } FeatureWord;
+ 
+@@ -993,6 +994,13 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ /* Packets which contain IP payload have LIP values */
+ #define CPUID_14_0_ECX_LIP              (1U << 31)
+ 
++/* AVX10 128-bit vector support is present */
++#define CPUID_24_0_EBX_AVX10_128        (1U << 16)
++/* AVX10 256-bit vector support is present */
++#define CPUID_24_0_EBX_AVX10_256        (1U << 17)
++/* AVX10 512-bit vector support is present */
++#define CPUID_24_0_EBX_AVX10_512        (1U << 18)
++
+ /* RAS Features */
+ #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
+ #define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c2f6045ec1c..fdbfcc59da4 100644
+index fdbfcc59da4..3f7fed8e485 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -46,6 +46,9 @@
- #include "cpu-internal.h"
+@@ -901,6 +901,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+ #define TCG_SGX_12_0_EAX_FEATURES 0
+ #define TCG_SGX_12_0_EBX_FEATURES 0
+ #define TCG_SGX_12_1_EAX_FEATURES 0
++#define TCG_24_0_EBX_FEATURES 0
  
- static void x86_cpu_realizefn(DeviceState *dev, Error **errp);
-+static void x86_cpu_get_supported_cpuid(uint32_t func, uint32_t index,
-+                                        uint32_t *eax, uint32_t *ebx,
-+                                        uint32_t *ecx, uint32_t *edx);
- 
- /* Helpers for building CPUID[2] descriptors: */
- 
-@@ -1132,7 +1135,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "avx-vnni-int8", "avx-ne-convert", NULL, NULL,
-             "amx-complex", NULL, "avx-vnni-int16", NULL,
-             NULL, NULL, "prefetchiti", NULL,
--            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, "avx10",
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-@@ -1989,6 +1992,7 @@ typedef struct X86CPUDefinition {
-     int family;
-     int model;
-     int stepping;
-+    int avx10_version;
-     FeatureWordArray features;
-     const char *model_id;
-     const CPUCaches *const cache_info;
-@@ -5338,6 +5342,8 @@ static Property max_x86_cpu_properties[] = {
- static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
- {
-     Object *obj = OBJECT(dev);
-+    X86CPU *cpu = X86_CPU(dev);
-+    CPUX86State *env = &cpu->env;
- 
-     if (!object_property_get_int(obj, "family", &error_abort)) {
-         if (X86_CPU(obj)->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-@@ -5351,6 +5357,14 @@ static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
-         }
-     }
- 
-+    if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && !env->avx10_version) {
-+        uint32_t eax, ebx, ecx, edx;
-+        x86_cpu_get_supported_cpuid(0x24, 0,
-+                                    &eax, &ebx, &ecx, &edx);
-+
-+        env->avx10_version = ebx & 0xff;
-+    }
-+
-     x86_cpu_realizefn(dev, errp);
- }
- 
-@@ -6331,6 +6345,9 @@ static void x86_cpu_load_model(X86CPU *cpu, X86CPUModel *model)
-      */
-     object_property_set_str(OBJECT(cpu), "vendor", def->vendor, &error_abort);
- 
-+    object_property_set_int(OBJECT(cpu), "avx10-version", def->avx10_version,
-+                            &error_abort);
-+
-     x86_cpu_apply_version_props(cpu, model);
- 
-     /*
-@@ -6859,6 +6876,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         break;
-     }
-+    case 0x24: {
-+        *eax = 0;
-+        *ebx = 0;
-+        *ecx = 0;
-+        *edx = 0;
-+        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-+            *ebx = env->avx10_version;
-+        }
-+        break;
-+    }
-     case 0x40000000:
-         /*
-          * CPUID code in kvm_arch_init_vcpu() ignores stuff
-@@ -7513,6 +7540,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1F);
-         }
- 
-+        /* Advanced Vector Extensions 10 (AVX10) requires CPUID[0x24] */
-+        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-+            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x24);
-+        }
-+
-         /* SVM requires CPUID[0x8000000A] */
-         if (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_SVM) {
-             x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000000A);
-@@ -7563,6 +7595,10 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-     CPUX86State *env = &cpu->env;
-     FeatureWord w;
-     const char *prefix = NULL;
-+    bool have_filtered_features;
-+
-+    uint32_t eax_0, ebx_0, ecx_0, edx_0;
-+    uint32_t eax_1, ebx_1, ecx_1, edx_1;
- 
-     if (verbose) {
-         prefix = accel_uses_host_cpuid()
-@@ -7584,13 +7620,10 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-      */
-     if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT) &&
-         kvm_enabled()) {
--        uint32_t eax_0, ebx_0, ecx_0, edx_0_unused;
--        uint32_t eax_1, ebx_1, ecx_1_unused, edx_1_unused;
--
-         x86_cpu_get_supported_cpuid(0x14, 0,
--                                    &eax_0, &ebx_0, &ecx_0, &edx_0_unused);
-+                                    &eax_0, &ebx_0, &ecx_0, &edx_0);
-         x86_cpu_get_supported_cpuid(0x14, 1,
--                                    &eax_1, &ebx_1, &ecx_1_unused, &edx_1_unused);
-+                                    &eax_1, &ebx_1, &ecx_1, &edx_1);
- 
-         if (!eax_0 ||
-            ((ebx_0 & INTEL_PT_MINIMAL_EBX) != INTEL_PT_MINIMAL_EBX) ||
-@@ -7611,7 +7644,23 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-         }
-     }
- 
--    return x86_cpu_have_filtered_features(cpu);
-+    have_filtered_features = x86_cpu_have_filtered_features(cpu);
-+
-+    if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-+        x86_cpu_get_supported_cpuid(0x24, 0,
-+                                    &eax_0, &ebx_0, &ecx_0, &edx_0);
-+        uint8_t version = ebx_0 & 0xff;
-+
-+        if (version < env->avx10_version) {
-+            if (prefix) {
-+                warn_report("%s: avx10.%d", prefix, env->avx10_version);
-+            }
-+            env->avx10_version = version;
-+            have_filtered_features = true;
-+        }
-+    }
-+
-+    return have_filtered_features;
- }
- 
- static void x86_cpu_hyperv_realize(X86CPU *cpu)
-@@ -8395,6 +8444,7 @@ static Property x86_cpu_properties[] = {
-     DEFINE_PROP_UINT32("min-level", X86CPU, env.cpuid_min_level, 0),
-     DEFINE_PROP_UINT32("min-xlevel", X86CPU, env.cpuid_min_xlevel, 0),
-     DEFINE_PROP_UINT32("min-xlevel2", X86CPU, env.cpuid_min_xlevel2, 0),
-+    DEFINE_PROP_UINT8("avx10-version", X86CPU, env.avx10_version, 0),
-     DEFINE_PROP_UINT64("ucode-rev", X86CPU, ucode_rev, 0),
-     DEFINE_PROP_BOOL("full-cpuid-auto-level", X86CPU, full_cpuid_auto_level, true),
-     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index fd9f1988920..8e17942c3ba 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1923,7 +1923,8 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
-         case 0x7:
-         case 0x14:
-         case 0x1d:
--        case 0x1e: {
-+        case 0x1e:
-+        case 0x24: {
-             uint32_t times;
- 
-             c->function = i;
+ #if defined CONFIG_USER_ONLY
+ #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
+@@ -1166,6 +1167,20 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         },
+         .tcg_features = TCG_7_2_EDX_FEATURES,
+     },
++    [FEAT_24_0_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            [16] = "avx10-128",
++            [17] = "avx10-256",
++            [18] = "avx10-512",
++        },
++        .cpuid = {
++            .eax = 0x24,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EBX,
++        },
++        .tcg_features = TCG_24_0_EBX_FEATURES,
++    },
+     [FEAT_8000_0007_EDX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
 -- 
 2.47.0
 
