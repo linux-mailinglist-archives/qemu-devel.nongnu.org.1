@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823229B4D3C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 836059B4D52
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:15:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nsh-0001BO-1l; Tue, 29 Oct 2024 11:11:40 -0400
+	id 1t5ntp-0002LD-5l; Tue, 29 Oct 2024 11:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5ns2-0000cm-P7
+ id 1t5ns3-0000co-4i
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:02 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5nrx-0007fr-Rv
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:10:57 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-539e59dadebso6613955e87.0
+ id 1t5nry-0007g5-Il
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:10:58 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-539e3f35268so6622067e87.3
  for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730214652; x=1730819452; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=f2QKx5PpJ0hXtnqWhwoUN1/2lKp8MIaOWL67xtGys9o=;
- b=E1Nyz3YmZGywQBNltH5GKjLZVLTJ1jNxOqrCRchR0IjdHTpXdbGzF2dsOmSoWoSA31
- CM35yhzaZAfa56AjZK8xZzxwJKyt7FabY/1h0EAbCbU7FcWriZ6171pAXTr39baCqfxp
- h0Wiv9KSORtDGR8nda9z5+psxXZGi+dkY5SidjgJTem0a3bk6ujxYd/vLLF7mQgWneay
- ONLfgPFnf/xiLuYongMZMwu08Ff3I7vjjTSWR9HMD2iMzuRogKuN2KMsNisxCiMtgUZV
- FuJeElbbQtywcGcwp8Z8DjdHzxyFucvj70u34gfVWSkAbdzsrCTtdTtSQc1SYUqpWLMH
- xtyw==
+ :reply-to; bh=Mn+Xz1D2FUsiusPJC2SlclU8g8noCDEQAV1urES3kd8=;
+ b=b0t7fMnrjPZLilMjagCrX7NXp/LoXisyj7cHNlIemC0xsxuZkF7QssSdhtRz4vxxzD
+ lyByXm2wji+WmrNaezmt8GXrAEIgmGoJ0i7kfkLM414AS/o927B00d8DTIb5jsOHf8k7
+ IJKemtcRCQYPnTO2hJ1SN+ZjyT7bsfZ4ls1z4rY+Mn28HRHXPRgNtLLdg0IoVHLgvejS
+ JiQVi3PZ7ATCyMG57sr2JD6ukfsP00ttJ7yKLFXS42X0EuNTRaawB8OKxYh2eO/zt4wz
+ ulyKponb8SF0lxyEdMi0aFA6UF5aFTn3lYDKZRtZdvL3qcGdj+CyqvnQokJ3WfMOz/7r
+ IXcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730214652; x=1730819452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f2QKx5PpJ0hXtnqWhwoUN1/2lKp8MIaOWL67xtGys9o=;
- b=t+LMNmMNN2OFLN4V3XMecTeCTrkwWX5WzABPxUnb8H6dQQq2ubrk9v9wbkFkclXEXo
- 7GMcNnMC1ax2pJI6UwbE8ok/P6lBF/3H5zWwhYvVFaYtWRCDNLbBuqUwwQBjbcXjoTeN
- E5uwyPsPaplNNP0CECHxtYA1XbtJPJOah99dWddXRdMYPxR31cEWp8yo9+vqbRXf4Fzp
- JQzw+Y3UlfFbwV95hNtyQk4ux1O8AYUZEA/inc8R8EAqjvYNMfe2/xkKBW6UrjsIb7eW
- G2YH62vMa9XWfdb7M6CUpKkOPpr+Fwi1UvAhwtoLOdAh1tH095la+xNUg0Q9n+m6nZV+
- F/9A==
+ bh=Mn+Xz1D2FUsiusPJC2SlclU8g8noCDEQAV1urES3kd8=;
+ b=o5Nr6OC/LFPsFuyvMsOUEOXAz3NgozmGoUJuqSTzwAAucFK0ZppifZLA25R7Du3P/7
+ FF1VwOvabXSaKV+DUFOGvqtCvoCT9HEWykqK6H4skVE2wzTKMSw218TDOA8nbwQDnvdF
+ zdNOaA41m3Tg01az0AjY6ekfM67BHd3CAHlPaIFoNBVrD/lGftYnO/sE1uZbSr2CvE2l
+ OGXc2Q16bU8bF2whCDKsaKX2tLR2ZPfSs3SHc1jncxSYMVxZtkyu63dyQ8zz7eZX/9wW
+ iExb4yKl4prZc5YrmW7O8gvRd33VWC46sCTdpO+9soVnru/6qr/Q1G+KXmXLkammhDhr
+ ko/g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUhMAIRXd9pXQcR/zR8G5QPDvLwtmlO6WDVBv+VFflXunKKlJhUgwHW8VLHtuckbfO+gxjVGYGi8RHj@nongnu.org
-X-Gm-Message-State: AOJu0YwGn0m9wrL80phJ73+F2xtQqx6Ne+6blzBE1gFoIQD/SD2kG+rG
- GEleHu90SVbpVSFFrbn+Z86U6ZTw1PxtW/M1COW1E+qQH+2mxNOyQb/gNAp+nBY=
-X-Google-Smtp-Source: AGHT+IE6Wsxffs1U0fP35sK4re6uBkFb3OJvbZUdFxO1gEBa/1SQH2NGXCKzJtzq2IsQs4gTj2qrJQ==
-X-Received: by 2002:a05:6512:e91:b0:536:54df:bffa with SMTP id
- 2adb3069b0e04-53b34c5f7e3mr5416157e87.45.1730214651888; 
- Tue, 29 Oct 2024 08:10:51 -0700 (PDT)
+ AJvYcCUFCuuw8QzzaivDG730nt6pLQDXTQTLmTR9mdYB06/pp7Xk8OyurpsyqCVBXLS8J+omuacONjtINdYX@nongnu.org
+X-Gm-Message-State: AOJu0YxdwAk+AFx9iy2edOJ3oAhVCxAGd7E6NjF/zgrzZ//gba8HGxwP
+ X3TOMRn1Hnc6F8GtFGwPFvdOvQb8Ng/eWyHgJF20MS6UYNy6jfRaC2ymS2qhV1vsf0NcWOzBRF+
+ D
+X-Google-Smtp-Source: AGHT+IGXO0iltyo3erh/VaUsX0EJDZ/rcXUTJr4OuDTd9mF6DRjJjStH2en8PBpe9ZPzi6rVSN7gMQ==
+X-Received: by 2002:a05:6512:398d:b0:535:68ab:7fdd with SMTP id
+ 2adb3069b0e04-53b348ceb33mr6201931e87.19.1730214652423; 
+ Tue, 29 Oct 2024 08:10:52 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.51
+ 5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Oct 2024 08:10:51 -0700 (PDT)
+ Tue, 29 Oct 2024 08:10:52 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 04/18] target/arm: Don't assert in regime_is_user() for E10
- mmuidx values
-Date: Tue, 29 Oct 2024 15:10:34 +0000
-Message-Id: <20241029151048.1047247-5-peter.maydell@linaro.org>
+Subject: [PULL 05/18] hw/sd/omap_mmc: Don't use sd_cmd_type_t
+Date: Tue, 29 Oct 2024 15:10:35 +0000
+Message-Id: <20241029151048.1047247-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
 References: <20241029151048.1047247-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,66 +94,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In regime_is_user() we assert if we're passed an ARMMMUIdx_E10_*
-mmuidx value. This used to make sense because we only used this
-function in ptw.c and would never use it on this kind of stage 1+2
-mmuidx, only for an individual stage 1 or stage 2 mmuidx.
+In commit 1ab08790bb75e4 we did some refactoring of the SD card
+implementation, which included a rearrangement of the sd_cmd_type_t
+enum values.  Unfortunately we didn't notice that this enum is not
+used solely inside the SD card model itself, but is also used by the
+OMAP MMC controller device.  In the OMAP MMC controller, it is used
+to implement the handling of the Type field of the MMC_CMD register,
+so changing the enum values so that they no longer lined up with the
+bit definitions for that register field broke the controller model.
+The effect is that Linux fails to boot from an SD card on the "sx1"
+machine.
 
-However, when we implemented FEAT_E0PD we added a callsite in
-aa64_va_parameters(), which means this can now be called for
-stage 1+2 mmuidx values if the guest sets the TCG_ELX.{E0PD0,E0PD1}
-bits to enable use of the feature. This will then result in
-an assertion failure later, for instance on a TLBI operation:
-
-#6  0x00007ffff6d0e70f in g_assertion_message_expr
-    (domain=0x0, file=0x55555676eeba "../../target/arm/internals.h", line=978, func=0x555556771d48 <__func__.5> "regime_is_user", expr=<optimised out>)
-    at ../../../glib/gtestutils.c:3279
-#7  0x0000555555f286d2 in regime_is_user (env=0x555557f2fe00, mmu_idx=ARMMMUIdx_E10_0) at ../../target/arm/internals.h:978
-#8  0x0000555555f3e31c in aa64_va_parameters (env=0x555557f2fe00, va=18446744073709551615, mmu_idx=ARMMMUIdx_E10_0, data=true, el1_is_aa32=false)
-    at ../../target/arm/helper.c:12048
-#9  0x0000555555f3163b in tlbi_aa64_get_range (env=0x555557f2fe00, mmuidx=ARMMMUIdx_E10_0, value=106721347371041) at ../../target/arm/helper.c:5214
-#10 0x0000555555f317e8 in do_rvae_write (env=0x555557f2fe00, value=106721347371041, idxmap=21, synced=true) at ../../target/arm/helper.c:5260
-#11 0x0000555555f31925 in tlbi_aa64_rvae1is_write (env=0x555557f2fe00, ri=0x555557fbeae0, value=106721347371041) at ../../target/arm/helper.c:5302
-#12 0x0000555556036f8f in helper_set_cp_reg64 (env=0x555557f2fe00, rip=0x555557fbeae0, value=106721347371041) at ../../target/arm/tcg/op_helper.c:965
-
-Since we do know whether these mmuidx values are for usermode
-or not, we can easily make regime_is_user() handle them:
-ARMMMUIdx_E10_0 is user, and the other two are not.
+Give omap-mmc its own enum which we can document as needing to match
+the encoding used in this device's register, so it isn't sharing
+sd_cmd_type_t with the SD card model any more.  We can then move
+sd_cmd_type_t's definition out of sd.h and into sd.c, which is the
+only place that uses it.
 
 Cc: qemu-stable@nongnu.org
-Fixes: e4c93e44ab103f ("target/arm: Implement FEAT_E0PD")
+Fixes: 1ab08790bb75 ("hw/sd/sdcard: Store command type in SDProto")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20241017172331.822587-1-peter.maydell@linaro.org
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241017162755.710698-1-peter.maydell@linaro.org
 ---
- target/arm/internals.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ include/hw/sd/sd.h |  8 --------
+ hw/sd/omap_mmc.c   | 22 ++++++++++++++++------
+ hw/sd/sd.c         |  8 ++++++++
+ 3 files changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 299a96a81a7..fd8f7c82aa3 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -963,6 +963,7 @@ static inline uint32_t regime_el(CPUARMState *env, ARMMMUIdx mmu_idx)
- static inline bool regime_is_user(CPUARMState *env, ARMMMUIdx mmu_idx)
- {
-     switch (mmu_idx) {
-+    case ARMMMUIdx_E10_0:
-     case ARMMMUIdx_E20_0:
-     case ARMMMUIdx_Stage1_E0:
-     case ARMMMUIdx_MUser:
-@@ -972,10 +973,6 @@ static inline bool regime_is_user(CPUARMState *env, ARMMMUIdx mmu_idx)
-         return true;
-     default:
-         return false;
--    case ARMMMUIdx_E10_0:
--    case ARMMMUIdx_E10_1:
--    case ARMMMUIdx_E10_1_PAN:
--        g_assert_not_reached();
+diff --git a/include/hw/sd/sd.h b/include/hw/sd/sd.h
+index d35a839f5ef..f2458f37b3c 100644
+--- a/include/hw/sd/sd.h
++++ b/include/hw/sd/sd.h
+@@ -75,14 +75,6 @@ typedef enum  {
+     UHS_III             = 3,    /* currently not supported */
+ } sd_uhs_mode_t;
+ 
+-typedef enum {
+-    sd_spi,
+-    sd_bc,     /* broadcast -- no response */
+-    sd_bcr,    /* broadcast with response */
+-    sd_ac,     /* addressed -- no data transfer */
+-    sd_adtc,   /* addressed with data transfer */
+-} sd_cmd_type_t;
+-
+ typedef struct {
+     uint8_t cmd;
+     uint32_t arg;
+diff --git a/hw/sd/omap_mmc.c b/hw/sd/omap_mmc.c
+index 91e9a3f1c6a..1d4e30e6b7b 100644
+--- a/hw/sd/omap_mmc.c
++++ b/hw/sd/omap_mmc.c
+@@ -103,6 +103,7 @@ static void omap_mmc_fifolevel_update(struct omap_mmc_s *host)
      }
  }
  
++/* These must match the encoding of the MMC_CMD Response field */
+ typedef enum {
+     sd_nore = 0,	/* no response */
+     sd_r1,		/* normal response command */
+@@ -112,8 +113,17 @@ typedef enum {
+     sd_r1b = -1,
+ } sd_rsp_type_t;
+ 
++/* These must match the encoding of the MMC_CMD Type field */
++typedef enum {
++    SD_TYPE_BC = 0,     /* broadcast -- no response */
++    SD_TYPE_BCR = 1,    /* broadcast with response */
++    SD_TYPE_AC = 2,     /* addressed -- no data transfer */
++    SD_TYPE_ADTC = 3,   /* addressed with data transfer */
++} MMCCmdType;
++
+ static void omap_mmc_command(struct omap_mmc_s *host, int cmd, int dir,
+-                sd_cmd_type_t type, int busy, sd_rsp_type_t resptype, int init)
++                             MMCCmdType type, int busy,
++                             sd_rsp_type_t resptype, int init)
+ {
+     uint32_t rspstatus, mask;
+     int rsplen, timeout;
+@@ -128,7 +138,7 @@ static void omap_mmc_command(struct omap_mmc_s *host, int cmd, int dir,
+     if (resptype == sd_r1 && busy)
+         resptype = sd_r1b;
+ 
+-    if (type == sd_adtc) {
++    if (type == SD_TYPE_ADTC) {
+         host->fifo_start = 0;
+         host->fifo_len = 0;
+         host->transfer = 1;
+@@ -433,10 +443,10 @@ static void omap_mmc_write(void *opaque, hwaddr offset,
+         for (i = 0; i < 8; i ++)
+             s->rsp[i] = 0x0000;
+         omap_mmc_command(s, value & 63, (value >> 15) & 1,
+-                (sd_cmd_type_t) ((value >> 12) & 3),
+-                (value >> 11) & 1,
+-                (sd_rsp_type_t) ((value >> 8) & 7),
+-                (value >> 7) & 1);
++                         (MMCCmdType)((value >> 12) & 3),
++                         (value >> 11) & 1,
++                         (sd_rsp_type_t) ((value >> 8) & 7),
++                         (value >> 7) & 1);
+         omap_mmc_update(s);
+         break;
+ 
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index a5d2d929a8a..b2e2d58e013 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -71,6 +71,14 @@ typedef enum {
+     sd_illegal = -2,
+ } sd_rsp_type_t;
+ 
++typedef enum {
++    sd_spi,
++    sd_bc,     /* broadcast -- no response */
++    sd_bcr,    /* broadcast with response */
++    sd_ac,     /* addressed -- no data transfer */
++    sd_adtc,   /* addressed with data transfer */
++} sd_cmd_type_t;
++
+ enum SDCardModes {
+     sd_inactive,
+     sd_card_identification_mode,
 -- 
 2.34.1
 
