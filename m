@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602E89B4CBA
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 15:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBEF9B4CC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:00:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5ngQ-0006F5-IV; Tue, 29 Oct 2024 10:58:58 -0400
+	id 1t5ngS-0006Fi-1r; Tue, 29 Oct 2024 10:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ngM-0006CN-Jd
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:58:54 -0400
+ id 1t5ngN-0006Cw-3Y
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:58:55 -0400
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ngJ-0004fN-Ft
+ id 1t5ngJ-0004gg-Iy
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:58:54 -0400
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ng0-000000014Cl-3i32; Tue, 29 Oct 2024 15:58:32 +0100
+ id 1t5ng6-000000014Cw-07kk; Tue, 29 Oct 2024 15:58:38 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH 2/4] migration/ram: Add load start trace event
-Date: Tue, 29 Oct 2024 15:58:14 +0100
-Message-ID: <94ddfa7ecb83a78f73b82867dd30c8767592d257.1730203967.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH 3/4] migration/multifd: Zero p->flags before starting filling
+ a packet
+Date: Tue, 29 Oct 2024 15:58:15 +0100
+Message-ID: <1c96b6cdb797e6f035eb1a4ad9bfc24f4c7f5df8.1730203967.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1730203967.git.maciej.szmigiero@oracle.com>
 References: <cover.1730203967.git.maciej.szmigiero@oracle.com>
@@ -65,36 +66,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-There's a RAM load complete trace event but there wasn't its start equivalent.
+This way there aren't stale flags there.
 
+p->flags can't contain SYNC to be sent at the next RAM packet since syncs
+are now handled separately in multifd_send_thread.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/ram.c        | 1 +
- migration/trace-events | 1 +
- 2 files changed, 2 insertions(+)
+ migration/multifd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 326ce7eb791f..72cd1dbb22c4 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4294,6 +4294,7 @@ static int ram_load(QEMUFile *f, void *opaque, int version_id)
-      * it will be necessary to reduce the granularity of this
-      * critical section.
-      */
-+    trace_ram_load_start();
-     WITH_RCU_READ_LOCK_GUARD() {
-         if (postcopy_running) {
-             /*
-diff --git a/migration/trace-events b/migration/trace-events
-index c65902f042bd..2a99a7baaea6 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -115,6 +115,7 @@ colo_flush_ram_cache_end(void) ""
- save_xbzrle_page_skipping(void) ""
- save_xbzrle_page_overflow(void) ""
- ram_save_iterate_big_wait(uint64_t milliconds, int iterations) "big wait: %" PRIu64 " milliseconds, %d iterations"
-+ram_load_start(void) ""
- ram_load_complete(int ret, uint64_t seq_iter) "exit_code %d seq iteration %" PRIu64
- ram_write_tracking_ramblock_start(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
- ram_write_tracking_ramblock_stop(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 9b200f4ad912..c9b24caa64bc 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -600,6 +600,7 @@ static void *multifd_send_thread(void *opaque)
+          * qatomic_store_release() in multifd_send().
+          */
+         if (qatomic_load_acquire(&p->pending_job)) {
++            p->flags = 0;
+             p->iovs_num = 0;
+             assert(!multifd_payload_empty(p->data));
+ 
+@@ -651,7 +652,6 @@ static void *multifd_send_thread(void *opaque)
+                 }
+                 /* p->next_packet_size will always be zero for a SYNC packet */
+                 stat64_add(&mig_stats.multifd_bytes, p->packet_len);
+-                p->flags = 0;
+             }
+ 
+             qatomic_set(&p->pending_sync, false);
 
