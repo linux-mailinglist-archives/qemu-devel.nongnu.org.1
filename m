@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A349B4D4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:14:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BFA9B4D6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:18:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nvU-0005io-1K; Tue, 29 Oct 2024 11:14:32 -0400
+	id 1t5nvm-000675-Jm; Tue, 29 Oct 2024 11:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5nsA-0000os-N5
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:09 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1t5nsB-0000p6-Ps
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:11 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5ns3-0007j3-09
+ id 1t5ns3-0007j7-A6
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:06 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43162cf1eaaso73109255e9.0
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43168d9c6c9so56029445e9.3
  for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730214657; x=1730819457; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730214658; x=1730819458; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=t1ofx0L3R12Y3Qfk5twMRKrNngXzbSoAXzZlWcI4ZBk=;
- b=vgm/JWXIWfYS1U68XdgB528xBrv/DBHGqUiIzoHP93RPyU43F9xD3bQyIbzpuihs3g
- 1OzeuXC0NKgs8ujnC4VSqAhG39Y7d5tOHqIAFHixP3b+VQCQSCiEzzeDprj3CuW/jkJs
- QIDqjY+PN4KuanUUcLSBodzGVwg32R4jDHUF1SpQDJn52LrMfsNVooJZoKfBa8/u+TMt
- U5Uf04FYNvSPjp5inpfXjhPT1AJ/DkIOp80dgIBZGo8EnYPDhzgNDYFB1w7S33oiorpr
- dx85ut6BFzHQfVuVUncuIMwDfMH0oSAbm9Wu7MUHgyuQjVNPEW87DLzKWX7TtI4KB+B/
- vpdw==
+ :reply-to; bh=pxi72wEBVWIssBlyuwhwklhEOKwU4BGfiI/BxT6XvHQ=;
+ b=vYcNeXQ9NyXJ1ZJ4xc26ZUdIsfu1km2C9fYooFvpGgu8kju24KbFht1G7QstOOq8C6
+ evFALRLvLiw1CqtFWm6yiXRuoKlN1V0eRZY3e1tR7LJ0LE6ijxAx7g5amiI+GX/ZQ2qS
+ +qmr0j14ZVJ/eGYtV0pYK5Gl9XABSk46YNPoZDquCM58AAKXg5fuqtOth9Mo+ZuzI5My
+ x7r10jvm+93erlrxRrhC/DaCduWige9wtzj23bGi5hYCbdi0/UKyIDLTuY0NHLj1OHea
+ u8TkoXV3SYMS0p/UfKdMMgN5fUhe7WauyVhd2nZ3rRm4K04svabZcK2H7B0DKF3cQzwq
+ wsRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730214657; x=1730819457;
+ d=1e100.net; s=20230601; t=1730214658; x=1730819458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t1ofx0L3R12Y3Qfk5twMRKrNngXzbSoAXzZlWcI4ZBk=;
- b=Bv1B+eNQvlgkPF7EBfaHze+uzxnJ4Y/uoMkQHALHqhT5BsBFSd0AMzW++1gYFrdVkV
- bI0Ba0RjIlRF7JwufoRe7UgtQaE7/IxJbMigRPPMKaMw1S1nh7i3k0terHRI77ARfjOr
- vmT3HgSmrssJ371qqtQfzTnRZcvRioVT+PQxsq25/lrIGKjkMiz5mPOsLVQHUoty/PIl
- n0nVHVHFa4x5+IbHeUkpcuYEnPGPMu9Pkb5qb+qnMhEqwZKszsH10rEb8CZZtaKMmwFg
- z2N2wezGPde+t+l9/kuwTrbq6mA6wZ83dRBoAQeOF1VXMiraF7MPAxKkpISiiiYcA6iz
- C68A==
+ bh=pxi72wEBVWIssBlyuwhwklhEOKwU4BGfiI/BxT6XvHQ=;
+ b=L7qf6icOOZ8x8G2RC2RsrER5vjCwZhTJVeMVxPSivlEwkzEphL7lHCjsuc+TaegQGE
+ npNbeGt2pcGQYkPx02HfZ1vsuugIE8sN2RrrpWnXH0DBHa+eQwv9RQnV2vKNYL980egw
+ 1dZxwMW+13KKz5gYFM1Opox7w2x0e6BbY+HRgh8VORFOJsbe9PXvvdn4uc9tM7l0oCQU
+ gDb/hoEPBzf87Z2XM7pXNVQHnZsQbWAs+9s8cMZIra2s6JLeDadxsLJ9Xj+Clr5ChvRI
+ hpoPT5IdBPBFHldF0R8G/1gnJCsBBZxZlkbdrcGqHm1PRdiqMiyENSRG5M0tq5tw++Qz
+ 4usQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXebe4IRULmj2vUhSIIKDcC+lxZIdcHXNCjKXPk8fplhjvodNMO7Vl2sEPobqaZfa3NsU5r0wDBc0RW@nongnu.org
-X-Gm-Message-State: AOJu0YwdRbHSlFDvMdJfVDy6M0bhVQBprHwRups9AFadeTpPJ+JoYqkK
- i6b+4uX3VhlCE2a9P05Z8PXrB/V7x9YbvU8DJacR7Z8ubiT2aogQkPkHdPPwKoQ=
-X-Google-Smtp-Source: AGHT+IEhIZ0FKHQDbPf3PTcCdVQCu7AWtY8kYPVxwfWAhSoE/P99YHMpWrkgsdxZEgKQk1O5N4rw0w==
-X-Received: by 2002:a05:600c:358e:b0:42f:75e0:780e with SMTP id
- 5b1f17b1804b1-4319ac9a68cmr140317295e9.10.1730214657109; 
+ AJvYcCVIeKFtA99NiqLxQbkNfp0TWusOZdICKRRqXh7w5+5u78EQkExxUV9UXFTa98xjdXinnkCGAq3O+9jP@nongnu.org
+X-Gm-Message-State: AOJu0YxM8VMStZiTmVxiyGBMdIRphnlGv4HhD561XOU1N3zwhk8cyuw4
+ sZmQTZsulTywn4fsm+/pz4TA4Vb+4bYSzw2JrGYCTUth5I3HJ3zwYiGlWDpaD44=
+X-Google-Smtp-Source: AGHT+IGurcefVrmrukjbRawbZ4xMJgNOT5IZOgiC43vWNuEifnSFIB6bVdsjzSmeEGo25/zBELFVFw==
+X-Received: by 2002:a05:600c:5253:b0:431:46fe:4cc1 with SMTP id
+ 5b1f17b1804b1-4319aca42bemr111677735e9.10.1730214657629; 
  Tue, 29 Oct 2024 08:10:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.56
+ 5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Oct 2024 08:10:56 -0700 (PDT)
+ Tue, 29 Oct 2024 08:10:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 14/18] docs/system/arm: Add placeholder docs for mcimx6ul-evk
- and mcimx7d-sabre
-Date: Tue, 29 Oct 2024 15:10:44 +0000
-Message-Id: <20241029151048.1047247-15-peter.maydell@linaro.org>
+Subject: [PULL 15/18] docs/system/target-arm.rst: Remove "many boards are
+ undocumented" note
+Date: Tue, 29 Oct 2024 15:10:45 +0000
+Message-Id: <20241029151048.1047247-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
 References: <20241029151048.1047247-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,77 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add placeholder docs for the mcimx6ul-evk and mcimx7d-sabre boards.
+We now have at least placeholder documentation for every Arm board,
+so we can remove the apologetic note that says that there are
+undocumented ones which you can only find out about via the
+``--machine help`` option.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-id: 20241018141332.942844-7-peter.maydell@linaro.org
+Message-id: 20241018141332.942844-8-peter.maydell@linaro.org
 ---
- MAINTAINERS                       | 2 ++
- docs/system/arm/mcimx6ul-evk.rst  | 5 +++++
- docs/system/arm/mcimx7d-sabre.rst | 5 +++++
- docs/system/target-arm.rst        | 2 ++
- 4 files changed, 14 insertions(+)
- create mode 100644 docs/system/arm/mcimx6ul-evk.rst
- create mode 100644 docs/system/arm/mcimx7d-sabre.rst
+ docs/system/target-arm.rst | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 66c7572c27b..1e88b5738cb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -791,6 +791,7 @@ F: hw/arm/fsl-imx6ul.c
- F: hw/misc/imx6ul_ccm.c
- F: include/hw/arm/fsl-imx6ul.h
- F: include/hw/misc/imx6ul_ccm.h
-+F: docs/system/arm/mcimx6ul-evk.rst
- 
- MCIMX7D SABRE / i.MX7
- M: Peter Maydell <peter.maydell@linaro.org>
-@@ -804,6 +805,7 @@ F: include/hw/arm/fsl-imx7.h
- F: include/hw/misc/imx7_*.h
- F: hw/pci-host/designware.c
- F: include/hw/pci-host/designware.h
-+F: docs/system/arm/mcimx7d-sabre.rst
- 
- MPS2 / MPS3
- M: Peter Maydell <peter.maydell@linaro.org>
-diff --git a/docs/system/arm/mcimx6ul-evk.rst b/docs/system/arm/mcimx6ul-evk.rst
-new file mode 100644
-index 00000000000..8871138ab3e
---- /dev/null
-+++ b/docs/system/arm/mcimx6ul-evk.rst
-@@ -0,0 +1,5 @@
-+NXP MCIMX6UL-EVK (``mcimx6ul-evk``)
-+===================================
-+
-+The ``mcimx6ul-evk`` machine models the NXP i.MX6UltraLite Evaluation Kit
-+MCIMX6UL-EVK development board. It has a single Cortex-A7 CPU.
-diff --git a/docs/system/arm/mcimx7d-sabre.rst b/docs/system/arm/mcimx7d-sabre.rst
-new file mode 100644
-index 00000000000..c5d35af1d44
---- /dev/null
-+++ b/docs/system/arm/mcimx7d-sabre.rst
-@@ -0,0 +1,5 @@
-+NXP MCIMX7D Sabre (``mcimx7d-sabre``)
-+=====================================
-+
-+The ``mcimx7d-sabre`` machine models the NXP SABRE Board MCIMX7SABRE,
-+based an an i.MX7Dual SoC.
 diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index ace36d1b17d..1f806cf4a46 100644
+index 1f806cf4a46..9aaa9c414c9 100644
 --- a/docs/system/target-arm.rst
 +++ b/docs/system/target-arm.rst
-@@ -97,6 +97,8 @@ undocumented; you can get a complete list by running
-    arm/nrf
-    arm/nuvoton
-    arm/imx25-pdk
-+   arm/mcimx6ul-evk
-+   arm/mcimx7d-sabre
-    arm/orangepi
-    arm/raspi
-    arm/collie
+@@ -63,10 +63,6 @@ large amounts of RAM. It also supports 64-bit CPUs.
+ Board-specific documentation
+ ============================
+ 
+-Unfortunately many of the Arm boards QEMU supports are currently
+-undocumented; you can get a complete list by running
+-``qemu-system-aarch64 --machine help``.
+-
+ ..
+    This table of contents should be kept sorted alphabetically
+    by the title text of each file, which isn't the same ordering
 -- 
 2.34.1
 
