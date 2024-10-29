@@ -2,93 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D611D9B3DBA
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Oct 2024 23:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0D19B3EC4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 01:02:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5YEX-00028Q-8E; Mon, 28 Oct 2024 18:29:09 -0400
+	id 1t5Zfj-0008NY-Fl; Mon, 28 Oct 2024 20:01:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t5YEU-000285-UC
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 18:29:07 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t5Zfh-0008NO-5s
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 20:01:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t5YET-0003zS-7U
- for qemu-devel@nongnu.org; Mon, 28 Oct 2024 18:29:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=/wXX8Y+cP1zNs8PZmc0ODTnEVpgArysQj+1HbjJ7Mwg=; b=MKVK0z83+WH+vY7U0od7/JmmjQ
- EH++spqMYN+jenC6kXyZa5XcBM3FUd3K7oOIpXiSYEa244FG7WQpV/OXvbIbUOhFpegft649l3Wxp
- MnXdwskgnkKWGN3MadvdRTDvfqknCV62KWAqFxY9hkxyI+dfPdSSZO4ljUoWl//s/2Dp8VPPOR4D2
- XMEEtX0KIMwjK/GcStHybylHl89qyQkOT7A7fQAnXq2mZgOmlRE/LWooSvIJRhNaUe7m+fP0+GX8v
- Z4hJ7OXJGC7gCg3hSZNxYouNqEA5Zvyeiy91RXEeA9pmhLUYDNShvy0qVDFPP4kO4m3r5521qo/Fh
- OKjVxV1wxQlKYnOB4b0S7suombCHMay7Xfv5bKWMndPJW6j1lQBI7uFc4gv6AnPdzq/9cAw+oFXN1
- iLlLiTCnr9z9tGF5jczYxxc+azxzCwMvUygKf7GZpebYl0HlZqyqg8eirhAA4KfwdrL35mLKZzMiA
- gXMtOa7hEMZlaLU5f4xnJLF/SHlMNrADNC/hk6Iv6pmNIb9vVKC++TKN6SACCxz4ilnD3I/Iz376+
- CZz80Frss6471gXxwesYfTNkTTlpSn/FiVfsb8NdIb1IsVc0gyZWQcwTOqHLEMrKZnLfDZaDaq36N
- spX7QLMbuNvj4cAWK+Jpij/xmBvTekyA7Z+B0A58c=;
-Received: from [2a00:23c4:8bb8:f600:b5e6:5818:bcfd:7571]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t5YE6-0006Zb-16; Mon, 28 Oct 2024 22:28:46 +0000
-Message-ID: <0e056742-396c-4bc8-91a8-e0a9a4dfb805@ilande.co.uk>
-Date: Mon, 28 Oct 2024 22:28:58 +0000
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t5Zff-0007PR-Bk
+ for qemu-devel@nongnu.org; Mon, 28 Oct 2024 20:01:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730160073;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ve/bWMagi2UauByStQ7ucEE19C8pbx0bo+KnRxxoALU=;
+ b=VtiB79ky8QFQEBCD+14fJc6wSLVI1kQs8V5E2S3sn49HBK509mG9wIRkk7vuXGekoyXde1
+ W0E4WohFCwgZjLJbFP3N12G8VRKZy8+sLneC+dEDZk0ezufSisWt7naUEOZrtNuPDlXyPK
+ xgQ60RSxRBZMRpHBbfs35XULigGEkig=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-ZP3si6M6P9qUjs-kzN9YXg-1; Mon, 28 Oct 2024 20:01:07 -0400
+X-MC-Unique: ZP3si6M6P9qUjs-kzN9YXg-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4615d80492eso14679071cf.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Oct 2024 17:01:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730160066; x=1730764866;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ve/bWMagi2UauByStQ7ucEE19C8pbx0bo+KnRxxoALU=;
+ b=fk0MLameWZv5YeT3siamH3VrdPE7qq8Ep2eE4Zl8LCcGUiBEtz6cVETFnlijutugFc
+ 51A83Tj1rK6Z7IlX8n3dFn1TtRXVEJB/gG3/6Jor/tL3GK2n4iptxz9nksib50rtJ90J
+ OhlKcxvsamMrG6oYjvrC4U1YLwcPedDDBYWxFi20vH1qck51uMm0M5qq6eec5xNqr3oI
+ nEopj6Pwts7+uPyhvLi6PI84kBntNViJLnVptrPB12xs71rNs2fQ1fsnqDr5BoiW8i/t
+ E/TGnL8IjgyUb4OoSweNslpDWBqJs55je4aMigCc8gN+GkidsDEwJ+h6UZl5c9Hfd4yc
+ gwBA==
+X-Gm-Message-State: AOJu0YzrVX6qBGKnVpTtMtPYXFKFIBPOIeQp7Ne3NrcSSOHnN58RzTor
+ b2gW/yOUaUE7xwJArFQWuaJ7T+Cy486PvW0RUD7eLl7LeLPaqu6z/odK+5j2ankDkuror6ONtEk
+ GPPN9Nq5N8i/Ju/2CCqlotWemzC9u6fifwZTr8biQW9ww5EMznVhN
+X-Received: by 2002:ac8:580f:0:b0:460:e907:ed4a with SMTP id
+ d75a77b69052e-4613c176f43mr187378531cf.46.1730160066324; 
+ Mon, 28 Oct 2024 17:01:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2wgn8nvTYAtMX0HwI4wCcd5PL929QcGEZjwX1HBPxlOXwuD7p7N81rh9d6/n5HFKxPtfYlw==
+X-Received: by 2002:ac8:580f:0:b0:460:e907:ed4a with SMTP id
+ d75a77b69052e-4613c176f43mr187378101cf.46.1730160065899; 
+ Mon, 28 Oct 2024 17:01:05 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4613211a0fasm39385461cf.10.2024.10.28.17.01.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Oct 2024 17:01:04 -0700 (PDT)
+Date: Mon, 28 Oct 2024 20:01:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Igor Mammedov <imammedo@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/4] qom: TYPE_SINGLETON interface
+Message-ID: <ZyAlvozM73CY7oYn@x1n>
+References: <20241024165627.1372621-1-peterx@redhat.com>
+ <20241024165627.1372621-2-peterx@redhat.com>
+ <ZxtqGQbd4Hq4APtm@redhat.com> <ZxvEfrj5B59J5HHj@x1n>
+ <ZxvFqYASUdSNtlr6@redhat.com> <ZxwXZmrZN9EW6LIn@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Thomas Huth <huth@tuxfamily.org>
-Cc: qemu-devel@nongnu.org
-References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
- <20241023085852.1061031-14-mark.cave-ayland@ilande.co.uk>
- <20241028173939.6fada306@tpx1>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20241028173939.6fada306@tpx1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:f600:b5e6:5818:bcfd:7571
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 13/36] next-cube: move ESCC to be QOM child of next-pc
- device
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZxwXZmrZN9EW6LIn@x1n>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,125 +110,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/2024 16:39, Thomas Huth wrote:
-> Am Wed, 23 Oct 2024 09:58:29 +0100
-> schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+On Fri, Oct 25, 2024 at 06:10:46PM -0400, Peter Xu wrote:
+> On Fri, Oct 25, 2024 at 05:22:01PM +0100, Daniel P. Berrangé wrote:
+> > On Fri, Oct 25, 2024 at 12:17:02PM -0400, Peter Xu wrote:
+> > > On Fri, Oct 25, 2024 at 10:51:21AM +0100, Daniel P. Berrangé wrote:
+> > > > > diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+> > > > > index e91a235347..ecc1cf781c 100644
+> > > > > --- a/qom/qom-qmp-cmds.c
+> > > > > +++ b/qom/qom-qmp-cmds.c
+> > > > > @@ -126,6 +126,7 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+> > > > >      ObjectProperty *prop;
+> > > > >      ObjectPropertyIterator iter;
+> > > > >      ObjectPropertyInfoList *prop_list = NULL;
+> > > > > +    bool create;
+> > > > >  
+> > > > >      klass = module_object_class_by_name(typename);
+> > > > >      if (klass == NULL) {
+> > > > > @@ -141,7 +142,15 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+> > > > >          return NULL;
+> > > > >      }
+> > > > >  
+> > > > > -    obj = object_new(typename);
+> > > > > +    /* Avoid creating multiple instances if the class is a singleton */
+> > > > > +    create = !object_class_is_singleton(klass) ||
+> > > > > +        !singleton_get_instance(klass);
+> > > > > +
+> > > > > +    if (create) {
+> > > > > +        obj = object_new(typename);
+> > > > > +    } else {
+> > > > > +        obj = singleton_get_instance(klass);
+> > > > > +    }
+> > > > 
+> > > > This is the first foot-gun example.
+> > > > 
+> > > > I really strongly dislike that the design pattern forces us to
+> > > > create code like this, as we can never be confident we've
+> > > > correctly identified all the places which may call object_new
+> > > > on a singleton...
+> > > 
+> > > Yeah I agree it's not pretty, IMHO it's a trade-off comparing to glib's,
+> > > I'll comment below for that.
+> > > 
+> > > Meanwhile I hope there should be very limited places in QEMU to randomly
+> > > create "any" object on the fly.. so far only qom/device-list-properties
+> > > that I see.
+> > 
+> > There's -object/-device CLI, and their corresponding object_add
+> > / device_add commands.
 > 
->> Since the ESCC is part of the next-pc device, move the ESCC to be a QOM child
->> of the next-pc device.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/m68k/next-cube.c | 54 ++++++++++++++++++++++-----------------------
->>   1 file changed, 26 insertions(+), 28 deletions(-)
->>
->> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
->> index 7f714640da..915dd80f6f 100644
->> --- a/hw/m68k/next-cube.c
->> +++ b/hw/m68k/next-cube.c
->> @@ -124,6 +124,8 @@ struct NeXTPC {
->>       qemu_irq scsi_reset;
->>       qemu_irq scsi_dma;
->>   
->> +    ESCCState escc;
->> +
->>       NextRtc rtc;
->>   };
->>   
->> @@ -978,31 +980,6 @@ static const MemoryRegionOps next_floppy_ops = {
->>       .endianness = DEVICE_BIG_ENDIAN,
->>   };
->>   
->> -static void next_escc_init(DeviceState *pcdev)
->> -{
->> -    NeXTPC *next_pc = NEXT_PC(pcdev);
->> -    DeviceState *dev;
->> -    SysBusDevice *s;
->> -
->> -    dev = qdev_new(TYPE_ESCC);
->> -    qdev_prop_set_uint32(dev, "disabled", 0);
->> -    qdev_prop_set_uint32(dev, "frequency", 9600 * 384);
->> -    qdev_prop_set_uint32(dev, "it_shift", 0);
->> -    qdev_prop_set_bit(dev, "bit_swap", true);
->> -    qdev_prop_set_chr(dev, "chrB", serial_hd(1));
->> -    qdev_prop_set_chr(dev, "chrA", serial_hd(0));
->> -    qdev_prop_set_uint32(dev, "chnBtype", escc_serial);
->> -    qdev_prop_set_uint32(dev, "chnAtype", escc_serial);
->> -
->> -    s = SYS_BUS_DEVICE(dev);
->> -    sysbus_realize_and_unref(s, &error_fatal);
->> -    sysbus_connect_irq(s, 0, qdev_get_gpio_in(pcdev, NEXT_SCC_I));
->> -    sysbus_connect_irq(s, 1, qdev_get_gpio_in(pcdev, NEXT_SCC_DMA_I));
->> -
->> -    memory_region_add_subregion(&next_pc->scrmem, 0x18000,
->> -                                sysbus_mmio_get_region(s, 0));
->> -}
->> -
->>   static void next_pc_reset(DeviceState *dev)
->>   {
->>       NeXTPC *s = NEXT_PC(dev);
->> @@ -1043,6 +1020,28 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
->>       /* Floppy */
->>       memory_region_add_subregion(&s->scrmem, 0x14108,
->>                                   &s->floppy_mem);
->> +
->> +    /* ESCC */
->> +    d = DEVICE(object_resolve_path_component(OBJECT(dev), "escc"));
->> +    qdev_prop_set_uint32(d, "disabled", 0);
->> +    qdev_prop_set_uint32(d, "frequency", 9600 * 384);
->> +    qdev_prop_set_uint32(d, "it_shift", 0);
->> +    qdev_prop_set_bit(d, "bit_swap", true);
->> +    qdev_prop_set_chr(d, "chrB", serial_hd(1));
->> +    qdev_prop_set_chr(d, "chrA", serial_hd(0));
->> +    qdev_prop_set_uint32(d, "chnBtype", escc_serial);
->> +    qdev_prop_set_uint32(d, "chnAtype", escc_serial);
->> +
->> +    sbd = SYS_BUS_DEVICE(d);
->> +    if (!sysbus_realize(sbd, errp)) {
->> +        return;
->> +    }
->> +    sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(dev, NEXT_SCC_I));
->> +    sysbus_connect_irq(sbd, 1, qdev_get_gpio_in(dev, NEXT_SCC_DMA_I));
->> +
->> +    memory_region_add_subregion(&s->scrmem, 0x18000,
->> +                                sysbus_mmio_get_region(sbd, 0));
+> Ah I didn't mention that when reply, but this patch blocks properly any
+> device-add for singleton objects for more than once.  Please see the change
+> in qdev_device_add_from_qdict().
 > 
-> You could also keep the next_escc_init() function, and call next_escc_init()
-> here?
-
-Normally a non-QOM _init() function suffix is used to both init() and realize() a 
-device, whereas here since the ESCC device is a child of the next-pc device these 
-operations must be separate. I think I can see why this convention is used elsewhere 
-in the codebase, as otherwise you end up calling a function with a _init() prefix 
-from _realize() which can get confusing with respect to the QOM model...
-
-
-ATB,
-
-Mark.
-
->>   }
->>   
->>   static void next_pc_init(Object *obj)
->> @@ -1064,6 +1063,8 @@ static void next_pc_init(Object *obj)
->>   
->>       memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
->>                             "next.floppy", 4);
->> +
->> +    object_initialize_child(obj, "escc", &s->escc, TYPE_ESCC);
->>   }
->>   
->>   /*
->> @@ -1201,9 +1202,6 @@ static void next_cube_init(MachineState *machine)
->>           }
->>       }
->>   
->> -    /* Serial */
->> -    next_escc_init(pcdev);
->> -
->>       /* TODO: */
->>       /* Network */
->>   
+> For migration object, it means it'll always fail because migration object
+> is created very early, before someone can try to create it.  Not to mention
+> it also has dc->hotpluggable==false, so things like -device will never work
+> on migration object.
 > 
+> For object-add, IIUC migration object should always be safe because it has
+> no USER_CREATABLE interface.
+> 
+> > 
+> > They are not relevant for the migration object, but you're adding
+> > this feature to QOM, so we have to take them into account. If anyone
+> > defines another Object or Device class as a singleton, we will have
+> > quite a few places where we can trigger the assert. This is especially
+> > bad if we trigger it from anything in QMP as that kills a running
+> > guest.
+
+Sorry, for some reason I think I didn't notice the 2nd paragraph.. And
+somehow I was only thinking the migration use case.
+
+Indeed this part is not easy to get right.  I hope this is not a blocker
+yet so far.  We can have a look when I send the new version; I'll start to
+mark the series RFC.
+
+Meanwhile I'll have a closer look, hopefully object_class_is_abstract() is
+a good point of reference where I can track most of dynamic creations of
+objects, and I'll go from there.
+
+My current plan is we can have one helper object_new_allowed(), where it
+should contain both the check over abstract & singleton classes before any
+instantiations happen.
+
+-- 
+Peter Xu
 
 
