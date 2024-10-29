@@ -2,53 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80159B4CBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 15:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8689B4C5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 15:42:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5ngS-0006Fq-E8; Tue, 29 Oct 2024 10:59:00 -0400
+	id 1t5nQT-0008Ii-4k; Tue, 29 Oct 2024 10:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ngN-0006E2-RS
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:58:55 -0400
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5nQP-0008IR-L6
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:42:25 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ngL-0004hG-E3
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:58:55 -0400
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t5ngB-000000014D7-0isB; Tue, 29 Oct 2024 15:58:43 +0100
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH 4/4] migration: Document the BQL behavior of load
- SaveVMHandlers
-Date: Tue, 29 Oct 2024 15:58:16 +0100
-Message-ID: <6976f129df610c8207da4e531c8c0475ec204fa4.1730203967.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1730203967.git.maciej.szmigiero@oracle.com>
-References: <cover.1730203967.git.maciej.szmigiero@oracle.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5nQN-0002SG-Sp
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 10:42:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730212944; x=1761748944;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=F9SVe03MZxrtt9HZ3hsiH9rUrtmSsLapZSBJTlOfKp4=;
+ b=TXsn0tbQPP2vKFCLIIg1eyp+KHetqlSkOlBp5wuVHplTRwyeQlR/mGif
+ ay53LjLxpbJRDtsb6gS3DEiF2EhOT+nWEDrsStAI605u6+In8DZlONlN3
+ mIwQ9YYUjgnjqgsYFlEaH1FvZukFCtjZ60X/fJ0i3VJdk9YdcLuPdnAuq
+ YkU/ThySb6+IuRE0eCvojmd6PHx8ayBRX91/gWIJE9htjTPV4spZD8SKN
+ WpVE4MGdm4eTgyP+hFnOy4T7gsUTtAknqS+RcHlOF8vNzWjEXDdMddI7M
+ 46/Jx8Wr6+Hn+HxGjPrLsdlvVhGQSzQufA1CqGGoVgHeZzN/Y+0Wxs6aH A==;
+X-CSE-ConnectionGUID: iN7u2biPSSiWEy2GoGCH+g==
+X-CSE-MsgGUID: 1TqG0FfMSmOZtn9xJu0ZCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="32710233"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="32710233"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 07:42:21 -0700
+X-CSE-ConnectionGUID: aT53TqF1Scafnh+1hUDMIw==
+X-CSE-MsgGUID: ZVxS8IYBQfCjuYsDDWRrKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="86752315"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa005.jf.intel.com with ESMTP; 29 Oct 2024 07:42:19 -0700
+Date: Tue, 29 Oct 2024 22:58:39 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ xiaoyao.li@intel.com, xuelian.guo@intel.com
+Subject: Re: [PATCH 6/6] target/i386: Introduce GraniteRapids-v2 model
+Message-ID: <ZyD4HyATnm1CfZZN@intel.com>
+References: <20241028024512.156724-1-tao1.su@linux.intel.com>
+ <20241028024512.156724-7-tao1.su@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028024512.156724-7-tao1.su@linux.intel.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,36 +82,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On Mon, Oct 28, 2024 at 10:45:12AM +0800, Tao Su wrote:
+> Date: Mon, 28 Oct 2024 10:45:12 +0800
+> From: Tao Su <tao1.su@linux.intel.com>
+> Subject: [PATCH 6/6] target/i386: Introduce GraniteRapids-v2 model
+> X-Mailer: git-send-email 2.34.1
+> 
+> Update GraniteRapids CPU model to add AVX10 and the missing features(ss,
+> tsc-adjust, cldemote, movdiri, movdir64b).
 
-Some of these SaveVMHandlers were missing the BQL behavior annotation,
-making people wonder what it exactly is.
+Do you have datasheet link? It's better to add the link in the commit
+message for easy comparison checking.
 
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- include/migration/register.h | 4 ++++
- 1 file changed, 4 insertions(+)
+> Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+> ---
+>  target/i386/cpu.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index adde98fd26..8d72c08b66 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -4375,6 +4375,23 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+>          .model_id = "Intel Xeon Processor (GraniteRapids)",
+>          .versions = (X86CPUVersionDefinition[]) {
+>              { .version = 1 },
+> +            {
+> +                .version = 2,
+> +                .props = (PropValue[]) {
+> +                    { "ss", "on" },
+> +                    { "tsc-adjust", "on" },
+> +                    { "cldemote", "on" },
+> +                    { "movdiri", "on" },
+> +                    { "movdir64b", "on" },
+> +                    { "avx10", "on" },
+> +                    { "avx10-128", "on" },
+> +                    { "avx10-256", "on" },
+> +                    { "avx10-512", "on" },
+> +                    { "avx10-version", "1" },
+> +                    { "stepping", "1" },
+> +                    { /* end of list */ }
+> +                }
+> +            },
+>              { /* end of list */ },
+>          },
+>      },
+> -- 
+> 2.34.1
+> 
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index f60e797894e5..c411d84876ec 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -210,6 +210,8 @@ typedef struct SaveVMHandlers {
-     void (*state_pending_exact)(void *opaque, uint64_t *must_precopy,
-                                 uint64_t *can_postcopy);
- 
-+    /* This runs inside the BQL. */
-+
-     /**
-      * @load_state
-      *
-@@ -227,6 +229,8 @@ typedef struct SaveVMHandlers {
-      */
-     int (*load_state)(QEMUFile *f, void *opaque, int version_id);
- 
-+    /* The following handlers run inside the BQL. */
-+
-     /**
-      * @load_setup
-      *
+LGTM,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+BTW, Could you please update the CPU model you added in
+docs/system/cpu-models-x86.rst.inc (section "Preferred CPU models for
+Intel x86 hosts") as well? Although this document has been inactive for
+some time, it hasn't been deprecated, and we can pick it up again to
+continue updating it, helping QEMU users understand QEMU's support for
+x86 CPU/features.
+
+Thanks,
+Zhao
+
 
