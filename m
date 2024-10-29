@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE369B44F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02A89B4494
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:45:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hzG-0005Md-BL; Tue, 29 Oct 2024 04:54:02 -0400
+	id 1t5hp7-0002yP-EQ; Tue, 29 Oct 2024 04:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1t5hzC-0005LT-17
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:53:58 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1t5hzA-0000ZC-Ep
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:53:57 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20caea61132so43756435ad.2
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 01:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1730192034; x=1730796834; darn=nongnu.org;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QleYexr9+tm5N5SA4HTO2UkzwktUaJf0v24qt9fMIW8=;
- b=fJRalSfX1UZ87iydapoZly7xBTYy1M1Dtpv92O11TD2qGsdWfNWLWztzWsuwHDF7Dx
- zdktlJs+vZB1UUMQs0ccF8BRF9dhcQ+GnuwaX/QLOdomxGe4YECYuWuHfRYHBOvDEwUG
- DPtyY1M2SzCulIs+2eFNbM8yyie+VCu4f7YWXOyghUl6UF2rYJZ5ymJpAv3FOdIWTv7A
- 2K5OrG6iJ6jJB3pt8Ll/o5inAXE0oBM4A0PtlUZAAgQ00Sw4KiHHGxrYSuF8aIYjiSBb
- Foo67/sNtwb/TRhAgDerrRA9MXtfAuyOmKxOjQrq+ahPfd5oGdL4BNDW0PC2J+S9G9RZ
- +aAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730192034; x=1730796834;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QleYexr9+tm5N5SA4HTO2UkzwktUaJf0v24qt9fMIW8=;
- b=gcvWt79nHQnhV737DvjnrXQ90H7iuMx9mehj9xEJmpiI3ahnaDhlYp9K9bgUmmH9sH
- bTt69k1MR6VCkPHBTG85kj2h71xTWlOjaVKOr31kmhXiA6MT8I/tR7o1JEDZq5BwCjgw
- xA3aSYFWYa0GmYK1mDRb0Dtk/Nd81L00U+z166TdjMDO0GJ1JaiwUtboZprJ2n1SgxMQ
- n1UJblJjXThB2aG4HYdUQWs0kOKutO00mJTHjaYDkfM8qwgAx3PrNkgxvng3xkjMJqFG
- tQXGR/qVcmh1JHKBtiVEEmZou1GDPPknJLZ+3yXq3gY/+iT5/OySGnUHbrwo9dvEFpZQ
- kWvQ==
-X-Gm-Message-State: AOJu0Yzbji59IDV5TOtDduXuYnqidVNXEh4ARxCFx6kAWU+yiierkR4A
- 4R6qx+0F9ri0nwgcv0DYi+E4sND1cPEwVw+owvo0KvsoxEPZt6I6eLewoLxtUuX63g3ju1oYihj
- mXDw313zyU2uRBeyPf4Z4+5/5Q4EVNADd7SpgsvXkjvSqz3X3WxtRj9zAJp4elMcfYNF5N6Qp1J
- g8sAWCpvPx9MVkLBED/J5jGbqxJNdlC0IReOPr/0YRnYVI
-X-Google-Smtp-Source: AGHT+IH3EicZQRzCcIvKA0rU2PmLB+if3q4tB9zgSXXKMlnEHz5yb8hMSoP+Mrtoemgt6vyTKzKF0Q==
-X-Received: by 2002:a05:6a20:5512:b0:1d9:c5de:9089 with SMTP id
- adf61e73a8af0-1d9c5de9213mr6907544637.5.1730192034410; 
- Tue, 29 Oct 2024 01:53:54 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72057a3cf5asm7070760b3a.201.2024.10.29.01.53.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Oct 2024 01:53:54 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, frank.chang@sifive.com,
- jim.shu@sifive.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2 1/1] hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum
- write emulation
-Date: Tue, 29 Oct 2024 16:53:47 +0800
-Message-Id: <20241029085349.30412-1-yongxuan.wang@sifive.com>
-X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=yongxuan.wang@sifive.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5hp5-0002yF-G7
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:31 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5hp2-00081u-V3
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730191409; x=1761727409;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IV4WAegibAS+UAKVxOis9RjDvyidOF8SEP2kN4jecmA=;
+ b=S8whtPY+EVoBHhAwETOS3xpLXiZlkaUkMCmlfNZAzJrxQYMPnkK+hWvL
+ jQV3RfY7jz2xmkhrooZybtS5Qaqi903SyCiCIK5nChmioNf/RD3aBXUYY
+ lIq/nYKp/60fbct50FHjQ1xtnGGzfxOnejLPX2e+q+WA/HlkQprlYd5Wo
+ EnilS6IPQqwjFcvEjnwYG+i+5s3y+iUN+poSznaL8jmmk+/yosUY02r0l
+ ATqOCWmKxaL4rAMhDRjYdSjbToUDyPtzFF6bPLOKmwLkK0oRBiaC2o5Dx
+ jfjwSHcSMYua4MluAFOlHo9lNUInWA1jWP/eZ7h94Nw9v7jQyX3V/P/AS w==;
+X-CSE-ConnectionGUID: dkc+k1IeSFGvKH5d2qWHpg==
+X-CSE-MsgGUID: NVdPBQ7GSfCUx+/gTtPlRg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592765"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592765"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 01:43:24 -0700
+X-CSE-ConnectionGUID: yV1aO2YDSs+pIKIvwD+Cvg==
+X-CSE-MsgGUID: RNjehk3vSH6r0jKVRqNCig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847097"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:22 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 00/16] qom/object: Deprecate type_register()
+Date: Tue, 29 Oct 2024 16:59:18 +0800
+Message-Id: <20241029085934.2799066-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,55 +80,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the section "4.7 Precise effects on interrupt-pending bits"
-of the RISC-V AIA specification defines that:
+Hi maintainers,
 
-"If the source mode is Level1 or Level0 and the interrupt domain
-is configured in MSI delivery mode (domaincfg.DM = 1):
-The pending bit is cleared whenever the rectified input value is
-low, when the interrupt is forwarded by MSI, or by a relevant
-write to an in_clrip register or to clripnum."
+This series is trying to deprecate type_register() and just keep
+type_register_static() to register QOM type.
 
-Update the riscv_aplic_set_pending() to match the spec.
+This series chosen to deprecate type_register() since changes required
+to deprecate type_register() are smaller. (type_register_static() needs
+1000+ LOC changes.)
 
-Fixes: bf31cf06eb ("hw/intc/riscv_aplic: Fix setipnum_le write emulation for APLIC MSI-mode")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+The two main changes are patch 15 and 16, while the others are trivial
+replacements.
+
+This series is based on commit fdf250e5a37830 ("Merge tag
+'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/stsquad/qemu
+into staging").
+
+
+Introduction
+============
+
+The type_register() and type_register_static() have existed since the
+birth of QOM (commit 2f28d2ff9dce ("qom: add the base Object class
+(v2)")).
+
+In the code implementation, type_register_static() has always been just
+a wrapper around type_register(), and they are essentially the same.
+
+The only difference between them is described in the documentation 
+(include/qom/object.h):
+
+* type_register_static()
+
+> @info and all of the strings it points to should exist for the life time
+> that the type is registered.
+
+* type_register()
+
+> Unlike type_register_static(), this call does not require @info or its
+> string members to continue to exist after the call returns.
+
+From the documentation, the difference between these two interfaces
+arises from the lifetime of 2 cases:
+
+1. the strings contained in the TypeInfo parameter.
+
+The *_static variant requires the strings to have a long lifetime
+(static).
+
+I reviewed the discussions on the mailing list about the QOM v1 patch
+[1], and I understand that the consideration for static is due to
+Anthony's idea that in certain cases, the string field could be "const
+char *", allowing the address to be directly copied to the created
+Type/TypeImpl.
+
+However, this consideration seems unnecessary in the merged v2 version,
+as Anthony followed Paolo's suggestion to pass all string fields by
+copying them via g_strdup() to the created TypeImple. This remains true
+to this day.
+
+[1]: https://lore.kernel.org/qemu-devel/4EF1EEA4.40209@us.ibm.com/
+
+
+2. the function pointer and a special item called "class_data" in
+TypeInfo
+
+I suppose that there are currently no lifetime issues about these items
+in QEMU, as neither type_register() nor type_register_static()
+explicitly checks whether the parameters are static. If there were any
+issues, they would likely be easily detected.
+
+Furthermore, I haven't seen any preference for these items in the usage
+of type_register() and type_register_static().
+
+
+Based on points 1 and 2, I think it is sufficient to explain that
+type_register() and type_register_static() are redundant in usage and do
+not require distinction. Additionally, since they are consistent in the
+code, it is safe to deprecate either one.
+
+Since the changes required to deprecate type_register() are smaller,
+choose to deprecate type_register() and delete the requirement about
+string lifetime from the documentation.
+
+
+Thanks and Best Regards,
+Zhao
 ---
-v2:
-- add fixes tag (Daniel)
-- follow the suggestion from https://lore.kernel.org/kvm/CAAhSdy3NmwbHY9Qef9LUeXfr0iE7wC-u0d_fHzC47PXk-MzmRg@mail.gmail.com/
-  (Anup)
----
- hw/intc/riscv_aplic.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Zhao Liu (16):
+  arm: Replace type_register() with type_register_static()
+  hw/block: Replace type_register() with type_register_static()
+  hw/net: Replace type_register() with type_register_static()
+  ppc: Replace type_register() with type_register_static()
+  hw/rtc: Replace type_register() with type_register_static()
+  hw/scsi: Replace type_register() with type_register_static()
+  hw/sensor: Replace type_register() with type_register_static()
+  hw/usb: Replace type_register() with type_register_static()
+  hw/virtio: Replace type_register() with type_register_static()
+  i386: Replace type_register() with type_register_static()
+  target/mips: Replace type_register() with type_register_static()
+  target/sparc: Replace type_register() with type_register_static()
+  target/xtensa: Replace type_register() with type_register_static()
+  ui: Replace type_register() with type_register_static()
+  script/codeconverter/qom_type_info: Deprecate MakeTypeRegisterStatic
+    and MakeTypeRegisterNotStatic
+  qom/object: Deprecate type_register()
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 4a262c82f078..74c82a841101 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -248,9 +248,12 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
- 
-     if ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
-         (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
--        if (!aplic->msimode || (aplic->msimode && !pending)) {
-+        if (!aplic->msimode) {
-             return;
-         }
-+        if (aplic->msimode && !pending) {
-+            goto noskip_write_pending;
-+        }
-         if ((aplic->state[irq] & APLIC_ISTATE_INPUT) &&
-             (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
-             return;
-@@ -261,6 +264,7 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
-         }
-     }
- 
-+noskip_write_pending:
-     riscv_aplic_set_pending_raw(aplic, irq, pending);
- }
- 
+ hw/arm/armsse.c                               |  2 +-
+ hw/arm/smmuv3.c                               |  4 ++--
+ hw/block/m25p80.c                             |  2 +-
+ hw/net/e1000.c                                |  2 +-
+ hw/net/eepro100.c                             |  2 +-
+ hw/ppc/spapr.c                                |  2 +-
+ hw/rtc/m48t59-isa.c                           |  2 +-
+ hw/rtc/m48t59.c                               |  2 +-
+ hw/scsi/megasas.c                             |  2 +-
+ hw/scsi/mptsas.c                              |  2 +-
+ hw/sensor/tmp421.c                            |  2 +-
+ hw/usb/hcd-ehci-pci.c                         |  2 +-
+ hw/usb/hcd-uhci.c                             |  2 +-
+ hw/virtio/virtio-pci.c                        |  8 ++++----
+ include/hw/i386/pc.h                          |  4 ++--
+ include/qom/object.h                          | 14 -------------
+ qom/object.c                                  |  7 +------
+ .../codeconverter/qom_type_info.py            | 20 -------------------
+ target/arm/cpu.c                              |  2 +-
+ target/arm/cpu64.c                            |  2 +-
+ target/i386/cpu.c                             |  2 +-
+ target/mips/cpu.c                             |  2 +-
+ target/ppc/kvm.c                              |  2 +-
+ target/sparc/cpu.c                            |  2 +-
+ target/xtensa/helper.c                        |  2 +-
+ ui/console-vc.c                               |  2 +-
+ ui/dbus.c                                     |  2 +-
+ ui/gtk.c                                      |  2 +-
+ ui/spice-app.c                                |  2 +-
+ 29 files changed, 32 insertions(+), 71 deletions(-)
+
 -- 
-2.17.1
+2.34.1
 
 
