@@ -2,54 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FF29B4616
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475BE9B4662
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 11:05:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5ivD-0004xH-Ho; Tue, 29 Oct 2024 05:53:55 -0400
+	id 1t5j5S-0000cS-5v; Tue, 29 Oct 2024 06:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t5iv5-0004wI-NO
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:53:47 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t5iv3-0007ND-9M
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:53:47 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxLOKksCBnBJYbAA--.56989S3;
- Tue, 29 Oct 2024 17:53:40 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxyOKfsCBnMz0mAA--.95S6;
- Tue, 29 Oct 2024 17:53:40 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
- Xianglai Li <lixianglai@loongson.cn>
-Subject: [PATCH v2 4/4] hw/loongarch/virt: Enable cpu hotplug feature on virt
- machine
-Date: Tue, 29 Oct 2024 17:53:35 +0800
-Message-Id: <20241029095335.2219343-5-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20241029095335.2219343-1-maobibo@loongson.cn>
-References: <20241029095335.2219343-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t5j5K-0000bz-Q7
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 06:04:22 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t5j5I-0000LD-NG
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 06:04:22 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5cb6ca2a776so7027558a12.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 03:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730196256; x=1730801056; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TGQzTH7cvAXMRunlAKMoaanSSwnYgM4Ity1oRMAKsj8=;
+ b=Td0Tt94jPu4qRMtqph8+AFzJXMK16KG1OjQEJGdv6IpzL6Pl9rP2FvFZmNiwKnVFjc
+ t4nUc0FQDN25EhKHHT+7MHYrBVJdU249sJyyPYl5riPk7aXfTO31VP1XBJdkCmEqOMEO
+ MAuNDllw/nHEtP4zwe9ZIM1hgm9hu6UZFlI9okCLJltv565n9UTPDdGz+v22VYWrYoAl
+ 5/rwK3PSSpbky0++Rr7IWhI6kwOLNlDOiTAkQbpF/Agp/E4apxD/KonX7E4rAnOXo+m+
+ rhruReaKRImyTtCeZkEJKxzLvQQo3WrmAIJkzgrx8t7U7lcLj0eppF5eAcKKnGyq3/K0
+ /21Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730196256; x=1730801056;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TGQzTH7cvAXMRunlAKMoaanSSwnYgM4Ity1oRMAKsj8=;
+ b=LXSjwcQVkIjOfVPuyB2B2zhXtwAMg2fkgvlsZgojn5BiwQ72oVm27ksAky6ucN8ZwT
+ VREvmRqFAidU3/1jR8ohosCuaDi5JaWctTkFWC3OwwzuMB977xCiqjuNCbwTWSRpTIL6
+ QUoCKwPkfF7Adrmt7kBQAHek9X6lKdRUwVc+efEVsAbdkqW7wiDvKMEd+B5R2wLbtcuw
+ OYeu33NauIGNp1QopxKm++2LVKnYvtdWM9WCZyknaRRLKnwyMoRgEDLJaWbxxEELI924
+ Qarj6QBCxu90M4/6DFzu8ftmuyt57QitcXyRPKtEdEv69tjfmQUgQnBni54U0Ieik0Cm
+ p6rQ==
+X-Gm-Message-State: AOJu0YzIPrvfgyNsL8xuVM4ZQ3bZqMinnrcW9ypkodJUJPQGYrcf7eER
+ o/Ngjv7iH5k2I0sapqzSy7LohCRZbnC+0+93liLRl6dROi6oJouH59n8Hv2INJK2Sun6d6Dp9wq
+ s8K7VOsTHZlodBGAHQMTjq0lNQCB5BnxTYiKtmw==
+X-Google-Smtp-Source: AGHT+IEtqvjk/uM+3Pc+5/ku12OgVS1YMi4Wy3ARsVIMlyGecyJsdXptv2hsSRvb+6u6mIJzAAqwFxF4Sgb2l58erGE=
+X-Received: by 2002:a05:6402:42c6:b0:5c5:cbfd:b3a8 with SMTP id
+ 4fb4d7f45d1cf-5cbbf87607dmr8138469a12.1.1730196256019; Tue, 29 Oct 2024
+ 03:04:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxyOKfsCBnMz0mAA--.95S6
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241018130852.931509-1-peter.maydell@linaro.org>
+ <153648b2-1978-45ca-9731-b922da98d81d@linaro.org>
+In-Reply-To: <153648b2-1978-45ca-9731-b922da98d81d@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 29 Oct 2024 10:04:04 +0000
+Message-ID: <CAFEAcA-s4uji7rufaE394=kWMxEtWA3+XQMozfjx0uHscpnO5Q@mail.gmail.com>
+Subject: Re: [PATCH v4] scripts/symlink-install-tree.py: Fix MESONINTROSPECT
+ parsing
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Christophe Lyon <christophe.lyon@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,148 +88,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On virt machine, enable cpu hotplug feature has_hotpluggable_cpus.
-For hot-added cpu after power on, interrupt pin of extioi and ipi
-interrupt controller need connect to pins of new cpu.
+On Mon, 28 Oct 2024 at 19:43, Pierrick Bouvier
+<pierrick.bouvier@linaro.org> wrote:
+>
+> On 10/18/24 06:08, Peter Maydell wrote:
+> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >
+> > The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
+> > must be parsed with shlex.split().  Otherwise the script will fail if
+> > the build directory has a character like "~" in it.
+> >
+> > Note: this fix cannot be backported directly to any stable branch
+> > that doesn't require Meson version 1.4.0 or better; otherwise it will
+> > work OK on Linux but will break on Windows hosts.
+> >
+> > (Unfortunately, Meson prior to version 1.4.0 was inconsistent between
+> > host OSes about how it quoted arguments, and used a different quoting
+> > process on Windows hosts.  Our current git trunk already requires
+> > 1.5.0 as of commit 07f0d32641e ("Require meson version 1.5.0"), but
+> > the stable branches are still on older Meson.)
+> >
+> > Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
+> > Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > [PMM: Updated commit message to give all the detail about the
+> > Meson version compability requirements.]
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> > This is essentially back to version 1 of Akihiko's patch, now we
+> > have a new enough Meson; I just updated the commit message.
+> >   https://patchew.org/QEMU/20230812061540.5398-1-akihiko.odaki@daynix.com/
+> > (I have dropped the various reviewed-by and tested-by headers because
+> > I figured the passage of time was enough to make them moot.)
+> >
+> >   scripts/symlink-install-tree.py | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
+> > index 8ed97e3c943..b72563895c5 100644
+> > --- a/scripts/symlink-install-tree.py
+> > +++ b/scripts/symlink-install-tree.py
+> > @@ -4,6 +4,7 @@
+> >   import errno
+> >   import json
+> >   import os
+> > +import shlex
+> >   import subprocess
+> >   import sys
+> >
+> > @@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
+> >       return str(PurePath(d1, *PurePath(d2).parts[1:]))
+> >
+> >   introspect = os.environ.get('MESONINTROSPECT')
+> > -out = subprocess.run([*introspect.split(' '), '--installed'],
+> > +out = subprocess.run([*shlex.split(introspect), '--installed'],
+> >                        stdout=subprocess.PIPE, check=True).stdout
+> >   for source, dest in json.loads(out).items():
+> >       bundle_dest = destdir_join('qemu-bundle', dest)
+>
+> Hi,
+>
+> would that be possible to pull this patch please?
+> It's currently blocking the devs who reported it initially.
 
-Also change num-cpu property of extioi and ipi from smp.cpus to
-smp.max_cpus
+Yes, I'll put it in my upcoming pullreq.
 
-Co-developed-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/loongarch/virt.c         | 68 ++++++++++++++++++++++++++++++++++---
- include/hw/loongarch/virt.h |  2 ++
- 2 files changed, 66 insertions(+), 4 deletions(-)
-
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 655312b0fe..cecb12786b 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -851,8 +851,9 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
- 
-     /* Create IPI device */
-     ipi = qdev_new(TYPE_LOONGARCH_IPI);
--    qdev_prop_set_uint32(ipi, "num-cpu", ms->smp.cpus);
-+    qdev_prop_set_uint32(ipi, "num-cpu", ms->smp.max_cpus);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-+    lvms->ipi = ipi;
- 
-     /* IPI iocsr memory region */
-     memory_region_add_subregion(&lvms->system_iocsr, SMP_IPI_MAILBOX,
-@@ -877,11 +878,12 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
- 
-     /* Create EXTIOI device */
-     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
--    qdev_prop_set_uint32(extioi, "num-cpu", ms->smp.cpus);
-+    qdev_prop_set_uint32(extioi, "num-cpu", ms->smp.max_cpus);
-     if (virt_is_veiointc_enabled(lvms)) {
-         qdev_prop_set_bit(extioi, "has-virtualization-extension", true);
-     }
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
-+    lvms->extioi = extioi;
-     memory_region_add_subregion(&lvms->system_iocsr, APIC_BASE,
-                     sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 0));
-     if (virt_is_veiointc_enabled(lvms)) {
-@@ -1382,8 +1384,40 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
-      }
- 
-     if (cpu->phy_id == UNSET_PHY_ID) {
--        error_setg(&local_err, "CPU hotplug not supported");
--        goto out;
-+        if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
-+            error_setg(&local_err,
-+                       "Invalid thread-id %u specified, must be in range 1:%u",
-+                       cpu->thread_id, ms->smp.threads - 1);
-+            goto out;
-+        }
-+
-+        if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
-+            error_setg(&local_err,
-+                       "Invalid core-id %u specified, must be in range 1:%u",
-+                       cpu->core_id, ms->smp.cores - 1);
-+            goto out;
-+        }
-+
-+        if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
-+            error_setg(&local_err,
-+                       "Invalid socket-id %u specified, must be in range 1:%u",
-+                       cpu->socket_id, ms->smp.sockets - 1);
-+            goto out;
-+        }
-+
-+        topo.socket_id = cpu->socket_id;
-+        topo.core_id = cpu->core_id;
-+        topo.thread_id = cpu->thread_id;
-+        arch_id =  virt_get_arch_id_from_topo(ms, &topo);
-+        cpu_slot = virt_find_cpu_slot(ms, arch_id, &index);
-+        if (CPU(cpu_slot->cpu)) {
-+            error_setg(&local_err,
-+                       "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
-+                       cs->cpu_index, cpu->socket_id, cpu->core_id,
-+                       cpu->thread_id, cpu_slot->arch_id);
-+            goto out;
-+        }
-+        cpu->phy_id = arch_id;
-     } else {
-         /*
-          * For non hot-add cpu, topo property is not set. And only physical id
-@@ -1465,8 +1499,33 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
-                                 DeviceState *dev, Error **errp)
- {
-     CPUArchId *cpu_slot;
-+    Error *local_err = NULL;
-     LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    CPUState *cs = CPU(cpu);
-+    CPULoongArchState *env;
-     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(hotplug_dev);
-+    int pin;
-+
-+    if (lvms->acpi_ged) {
-+        env = &(cpu->env);
-+        env->address_space_iocsr = &lvms->as_iocsr;
-+
-+        /* connect ipi irq to cpu irq, logic cpu index used here */
-+        qdev_connect_gpio_out(lvms->ipi, cs->cpu_index,
-+                              qdev_get_gpio_in(dev, IRQ_IPI));
-+        env->ipistate = lvms->ipi;
-+
-+        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
-+            qdev_connect_gpio_out(lvms->extioi, (cs->cpu_index * 8 + pin),
-+                                  qdev_get_gpio_in(dev, pin + 2));
-+        }
-+
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &local_err);
-+        if (local_err) {
-+            error_propagate(errp, local_err);
-+           return;
-+        }
-+    }
- 
-     cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id, NULL);
-     cpu_slot->cpu = CPU(dev);
-@@ -1652,6 +1711,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
-     mc->numa_mem_supported = true;
-     mc->auto_enable_numa_with_memhp = true;
-     mc->auto_enable_numa_with_memdev = true;
-+    mc->has_hotpluggable_cpus = true;
-     mc->get_hotplug_handler = virt_get_hotplug_handler;
-     mc->default_nic = "virtio-net-pci";
-     hc->plug = virt_device_plug_cb;
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 861034d614..79a85723c9 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -61,6 +61,8 @@ struct LoongArchVirtMachineState {
-     MemoryRegion iocsr_mem;
-     AddressSpace as_iocsr;
-     struct loongarch_boot_info bootinfo;
-+    DeviceState *ipi;
-+    DeviceState *extioi;
- };
- 
- #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
--- 
-2.39.3
-
+thanks
+-- PMM
 
