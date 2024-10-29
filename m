@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BFA9B4D6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:18:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2FD9B4D64
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:16:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nvm-000675-Jm; Tue, 29 Oct 2024 11:14:52 -0400
+	id 1t5nvy-0006YJ-Nv; Tue, 29 Oct 2024 11:15:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5nsB-0000p6-Ps
+ id 1t5nsC-0000pD-0N
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:11 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5ns3-0007j7-A6
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:06 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43168d9c6c9so56029445e9.3
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:58 -0700 (PDT)
+ id 1t5ns3-0007jX-Kv
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:07 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4319399a411so42333895e9.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730214658; x=1730819458; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pxi72wEBVWIssBlyuwhwklhEOKwU4BGfiI/BxT6XvHQ=;
- b=vYcNeXQ9NyXJ1ZJ4xc26ZUdIsfu1km2C9fYooFvpGgu8kju24KbFht1G7QstOOq8C6
- evFALRLvLiw1CqtFWm6yiXRuoKlN1V0eRZY3e1tR7LJ0LE6ijxAx7g5amiI+GX/ZQ2qS
- +qmr0j14ZVJ/eGYtV0pYK5Gl9XABSk46YNPoZDquCM58AAKXg5fuqtOth9Mo+ZuzI5My
- x7r10jvm+93erlrxRrhC/DaCduWige9wtzj23bGi5hYCbdi0/UKyIDLTuY0NHLj1OHea
- u8TkoXV3SYMS0p/UfKdMMgN5fUhe7WauyVhd2nZ3rRm4K04svabZcK2H7B0DKF3cQzwq
- wsRw==
+ :reply-to; bh=T+ZkiB0yRpxPAiy0AdprSxhYgetza8NXjghFFGQPPbg=;
+ b=WBmPB+j+ECukrqDHMt76xJCIllMoxxVXrr4mBIfCYv835SIQi8E3h8KQcZOe+pOhfB
+ 3mnsjYvKL4585C/neGFSXsM4ikJU5jmdujBhnuJRjPIQTLR9kVRZBIawp1/v2YMr7D5c
+ 6p9XGXIOHRQU2GJBUvvyDZLigy0oz1XtOwpk3oMSDgdfUB1hlYhj/3VxXcj2oPbVDocW
+ AhuzVOyONsFwXV4Q6gyRt6OVQ4QIvjQwKoCN+a9LPJBrPc5pZvPPV63Soie4DF1XjfSF
+ HMI/XHufUa/4qWFtfQswWNmSyRCAaF7h6zIpxcBFxvGV2hgUwixDmPMLrdXtBk8vsVMX
+ 2IGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730214658; x=1730819458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pxi72wEBVWIssBlyuwhwklhEOKwU4BGfiI/BxT6XvHQ=;
- b=L7qf6icOOZ8x8G2RC2RsrER5vjCwZhTJVeMVxPSivlEwkzEphL7lHCjsuc+TaegQGE
- npNbeGt2pcGQYkPx02HfZ1vsuugIE8sN2RrrpWnXH0DBHa+eQwv9RQnV2vKNYL980egw
- 1dZxwMW+13KKz5gYFM1Opox7w2x0e6BbY+HRgh8VORFOJsbe9PXvvdn4uc9tM7l0oCQU
- gDb/hoEPBzf87Z2XM7pXNVQHnZsQbWAs+9s8cMZIra2s6JLeDadxsLJ9Xj+Clr5ChvRI
- hpoPT5IdBPBFHldF0R8G/1gnJCsBBZxZlkbdrcGqHm1PRdiqMiyENSRG5M0tq5tw++Qz
- 4usQ==
+ bh=T+ZkiB0yRpxPAiy0AdprSxhYgetza8NXjghFFGQPPbg=;
+ b=h6BT3kCX4UyxiE/OXCiaZ4DYby7yCffUDjm/mOqzsBPUXqxlYn42V8SkMV4C9l9jbp
+ xd44p2eMwQAYuPEyPbpEAvw4hBLnx8NymRNKPQS7NzMmcG9VeiMOvtnJSw9StdFT+mGI
+ W7iH/9c6tCTh2EOZ9MyGNeuySnJfY4t1HeTNcZpGIBSlP0yPuyjPawXpbWb8Wlm4ikAi
+ +35CfY1hXrdpoZxmPzuPWIosqktIjJid+cjsYhfD1M3NwQ8vh/uFlgY76gJi4XTaz07A
+ Xaub4wKzUACUtpyzNbu5ekMHaUFZez/G/U7mz0Tqn/Kn5iCjIzlDTPpEgWUYZ2rmNr1O
+ q2hw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVIeKFtA99NiqLxQbkNfp0TWusOZdICKRRqXh7w5+5u78EQkExxUV9UXFTa98xjdXinnkCGAq3O+9jP@nongnu.org
-X-Gm-Message-State: AOJu0YxM8VMStZiTmVxiyGBMdIRphnlGv4HhD561XOU1N3zwhk8cyuw4
- sZmQTZsulTywn4fsm+/pz4TA4Vb+4bYSzw2JrGYCTUth5I3HJ3zwYiGlWDpaD44=
-X-Google-Smtp-Source: AGHT+IGurcefVrmrukjbRawbZ4xMJgNOT5IZOgiC43vWNuEifnSFIB6bVdsjzSmeEGo25/zBELFVFw==
-X-Received: by 2002:a05:600c:5253:b0:431:46fe:4cc1 with SMTP id
- 5b1f17b1804b1-4319aca42bemr111677735e9.10.1730214657629; 
- Tue, 29 Oct 2024 08:10:57 -0700 (PDT)
+ AJvYcCVIpG9bthRGP6RuUk9COY8BT6auyaHpiqVIuMiq2wQNuQnXcTWr0A3bZnhKCeF4pWE9oabG8XAxFSOC@nongnu.org
+X-Gm-Message-State: AOJu0YzsI8soAY823Kw9rQBbN2Qe87mwfDjxo3PJhxdXTxX5O9iyqKvu
+ +P42UqwE173/+1QS6Ta7BsWCwuhfexwFDtKFNwQDfz7jxDSw6Jj7idmuyZk8+zmaH67V90O0tm8
+ i
+X-Google-Smtp-Source: AGHT+IFLVrKnjhl6V/CAmcCcTnVMiNhXdDcchzfEkLM310aXBoSI0dQsighiwi/TkMWXYXVt02EjgA==
+X-Received: by 2002:a05:600c:1c95:b0:42f:6d3d:399f with SMTP id
+ 5b1f17b1804b1-4319acbab55mr111741305e9.21.1730214658108; 
+ Tue, 29 Oct 2024 08:10:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.57
@@ -60,25 +61,23 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/18] docs/system/target-arm.rst: Remove "many boards are
- undocumented" note
-Date: Tue, 29 Oct 2024 15:10:45 +0000
-Message-Id: <20241029151048.1047247-16-peter.maydell@linaro.org>
+Subject: [PULL 16/18] target/arm: Fix arithmetic underflow in SETM instruction
+Date: Tue, 29 Oct 2024 15:10:46 +0000
+Message-Id: <20241029151048.1047247-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
 References: <20241029151048.1047247-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,35 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We now have at least placeholder documentation for every Arm board,
-so we can remove the apologetic note that says that there are
-undocumented ones which you can only find out about via the
-``--machine help`` option.
+From: Ido Plat <ido.plat1@ibm.com>
 
+Pass the stage size to step function callback, otherwise do_setm
+would hang when size is larger then page size because stage size
+would underflow.  This fix changes do_setm to be more inline with
+do_setp.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 0e92818887dee ("target/arm: Implement the SET* instructions")
+Signed-off-by: Ido Plat <ido.plat1@ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20241025024909.799989-1-ido.plat1@ibm.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-id: 20241018141332.942844-8-peter.maydell@linaro.org
 ---
- docs/system/target-arm.rst | 4 ----
- 1 file changed, 4 deletions(-)
+ target/arm/tcg/helper-a64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index 1f806cf4a46..9aaa9c414c9 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -63,10 +63,6 @@ large amounts of RAM. It also supports 64-bit CPUs.
- Board-specific documentation
- ============================
- 
--Unfortunately many of the Arm boards QEMU supports are currently
--undocumented; you can get a complete list by running
--``qemu-system-aarch64 --machine help``.
--
- ..
-    This table of contents should be kept sorted alphabetically
-    by the title text of each file, which isn't the same ordering
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 56b431faf57..8f42a28d07b 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -1348,7 +1348,7 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
+     /* Do the actual memset: we leave the last partial page to SETE */
+     stagesetsize = setsize & TARGET_PAGE_MASK;
+     while (stagesetsize > 0) {
+-        step = stepfn(env, toaddr, setsize, data, memidx, &mtedesc, ra);
++        step = stepfn(env, toaddr, stagesetsize, data, memidx, &mtedesc, ra);
+         toaddr += step;
+         setsize -= step;
+         stagesetsize -= step;
 -- 
 2.34.1
 
