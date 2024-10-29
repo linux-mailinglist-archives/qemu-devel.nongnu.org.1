@@ -2,73 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B48B9B45CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB069B4610
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:54:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5icx-00025B-Ro; Tue, 29 Oct 2024 05:35:04 -0400
+	id 1t5iur-0004uc-Oe; Tue, 29 Oct 2024 05:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5icr-00024X-FP
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:34:57 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5ico-0005Ac-AF
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:34:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730194495; x=1761730495;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=iyF6A1sgRes/+ZiuBNspbvQj3dBjXzgUb+GiLIIG9RE=;
- b=dSKHabZiu15Ju4C/kWIzM0edtD3YvKu61euWeKXHb2K4M/vqCH5IDsyL
- +2sdeaZyMnyLmSRlu3ozYjxNEcgxbJblbSbMMMi768uWSBnCE6hCwGJ4n
- cUab1YDeymABwizrKXDaS1WCE/EwKgGbg4q3BCNri3ciy3H+JADb36B38
- mPMDv/kaEa0WM5So3Cayi4231c/scgcjWLNpze6J1iUbtx3Ra3kqEqO52
- R2j/ItJFmk4GS5V84R0xJr6ejiGQN8Ceb3RaUuLJhkcDraj3F0YVQlQ57
- vP51ffORp0hJ+O+HrU13i4B/8flbDuKVM3bNZCBuLdvkaWKPW3xo8htuT A==;
-X-CSE-ConnectionGUID: Z/5AxfqAQqiX4hNdLvn2Cw==
-X-CSE-MsgGUID: HuTA0il+QNmiNHW+zjWbOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40359856"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40359856"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 02:34:52 -0700
-X-CSE-ConnectionGUID: 2gnySOCTTZGbZHfF/vnpAw==
-X-CSE-MsgGUID: FEzgbkhFRGycjiKJKaAf+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="112710455"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 02:34:50 -0700
-Date: Tue, 29 Oct 2024 17:29:44 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, mtosatti@redhat.com, xiaoyao.li@intel.com,
- xuelian.guo@intel.com
-Subject: Re: [PATCH 1/6] target/i386: Add AVX512 state when AVX10 is supported
-Message-ID: <ZyCrCEmNbzjWVFHp@linux.bj.intel.com>
-References: <20241028024512.156724-1-tao1.su@linux.intel.com>
- <20241028024512.156724-2-tao1.su@linux.intel.com>
- <3adc6dab-25c2-4303-b382-153e843123bf@redhat.com>
- <Zx9Yof/RWnub4Lmi@linux.bj.intel.com>
- <f31b8bd3-07f1-4661-ae11-fc7fd2d6a90d@redhat.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1t5iup-0004uQ-6B
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:53:31 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1t5ium-0007Kr-NY
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:53:30 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxDeOKsCBnw5UbAA--.56700S3;
+ Tue, 29 Oct 2024 17:53:14 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMAxnsKJsCBn_jwmAA--.55458S2;
+ Tue, 29 Oct 2024 17:53:13 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, richard.henderson@linaro.org, peter.maydell@linaro.org,
+ jiaxun.yang@flygoat.com, maobibo@loongson.cn, pbonzini@redhat.com,
+ armbru@redhat.com, lixianglai@loongson.cn
+Subject: [PATCH 1/1] hw/loongarch/boot: Use warn_report when no kernel filename
+Date: Tue, 29 Oct 2024 17:35:01 +0800
+Message-Id: <20241029093501.3980927-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f31b8bd3-07f1-4661-ae11-fc7fd2d6a90d@redhat.com>
-Received-SPF: none client-ip=198.175.65.11;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAxnsKJsCBn_jwmAA--.55458S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,64 +63,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 29, 2024 at 09:49:39AM +0100, Paolo Bonzini wrote:
-> On 10/28/24 10:25, Tao Su wrote:
-> > On Mon, Oct 28, 2024 at 09:41:14AM +0100, Paolo Bonzini wrote:
-> > > On 10/28/24 03:45, Tao Su wrote:
-> > > > AVX10 state enumeration in CPUID leaf D and enabling in XCR0 register
-> > > > are identical to AVX512 state regardless of the supported vector lengths.
-> > > > 
-> > > > Given that some E-cores will support AVX10 but not support AVX512, add
-> > > > AVX512 state components to guest when AVX10 is enabled.
-> > > > 
-> > > > Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-> > > > Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> > > > ---
-> > > >    target/i386/cpu.c | 14 ++++++++++++++
-> > > >    target/i386/cpu.h |  2 ++
-> > > >    2 files changed, 16 insertions(+)
-> > > > 
-> > > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > > index 1ff1af032e..d845ff5e4e 100644
-> > > > --- a/target/i386/cpu.c
-> > > > +++ b/target/i386/cpu.c
-> > > > @@ -7177,6 +7177,13 @@ static void x86_cpu_reset_hold(Object *obj, ResetType type)
-> > > >            }
-> > > >            if (env->features[esa->feature] & esa->bits) {
-> > > >                xcr0 |= 1ull << i;
-> > > > +            continue;
-> > > > +        }
-> > > > +        if (i == XSTATE_OPMASK_BIT || i == XSTATE_ZMM_Hi256_BIT ||
-> > > > +            i == XSTATE_Hi16_ZMM_BIT) {
-> > > 
-> > > Can you confirm that XSTATE_ZMM_Hi256_BIT depends on AVX10 and not
-> > > AVX10-512?
-> > > 
-> > 
-> > Sorry, I should attach AVX10.2 spec [*].
-> > 
-> > In 3.1.3, spec said Intel AVX10 state enumeration in CPUID leaf 0xD and
-> > enabling in XCR0 register are identical to Intel AVX-512 regardless of the
-> > maximum vector length supported.
-> > 
-> > So XSTATE_ZMM_Hi256_BIT doesn't depend on AVX10-512.
-> > 
-> > [*] https://cdrdv2.intel.com/v1/dl/getContent/828965
-> 
-> Ok, thanks.
-> 
-> Another related issue is that kvm_cpu_xsave_init() is using esa->feature and
-> esa->bits, which misses these three features.
+When we run “qemu-system-loongarch64 -qmp stdio -vnc none -S”,
+we get an error message “Need kernel filename” and then we can't use qmp cmd to query some information.
+So, we just throw a warning and then the cpus starts running from address VIRT_FLASH0_BASE.
 
-Yes, it has issue if AVX512F is not reported but AVX10 is reported, thanks for
-pointing out!
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/boot.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> 
-> I think we need to change the code to not look at esa->feature at all. I'll
-> send a v2 of your series.
-> 
-
-Yes, ExtSaveArea can't set more feature bits, which makes the code a bit ugly.
-Looking forward to the better implementation :-)
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index cb668703bd..9c37abed3a 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -278,7 +278,7 @@ static void init_boot_rom(struct loongarch_boot_info *info, void *p)
+ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
+ {
+     void *p, *bp;
+-    int64_t kernel_addr = 0;
++    int64_t kernel_addr = VIRT_FLASH0_BASE;
+     LoongArchCPU *lacpu;
+     CPUState *cs;
+ 
+@@ -286,8 +286,7 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
+         kernel_addr = load_kernel_info(info);
+     } else {
+         if(!qtest_enabled()) {
+-            error_report("Need kernel filename\n");
+-            exit(1);
++            warn_report("Need kernel filename\n");
+         }
+     }
+ 
+-- 
+2.34.1
 
 
