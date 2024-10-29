@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F829B494E
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 13:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C09A9B4931
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 13:11:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5l3V-0004Z0-Q7; Tue, 29 Oct 2024 08:10:37 -0400
+	id 1t5l3f-0004as-1f; Tue, 29 Oct 2024 08:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t5l3T-0004Yn-Q8
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:35 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1t5l3W-0004Zd-Iw
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:38 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t5l3S-0007Rt-59
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:35 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-37ed3bd6114so3453531f8f.2
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 05:10:33 -0700 (PDT)
+ id 1t5l3V-0007SQ-28
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:38 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4315abed18aso51218855e9.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 05:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730203832; x=1730808632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730203835; x=1730808635; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hV9bRORlikllwDGAZFR9/+PU9WimawpPGHP7OfCvCPA=;
- b=ElYp8KhdKz3DWg+8lsZsvpMmGg8Mdhdjym8tLBHzzl2//u6ef+HloMumst3EqHRPaS
- ZoMAzxDfjhy5PQ8B4jjYQCiwcT3BqSs+gp4F/3smLpI8XPtM0g6W3KReQyGaqIIB2el3
- 5tJYNLICcDLzYKvWWg+nHmSm/yY7hqUxxkcbdImeripI5GAK4JKm1zrKQtxfgXCYP55P
- OOIQDt5EhRPrk/ILBePqnnN0Eu/BuMzofbfhoV0pLf0ecn7ZOA/X8ndwGZ+r0U4TBzEe
- mZNVLj0hGnPHPPBw/bqP07vihDv9ot/gq8VI0fUzL+NE6KRnvG97h6U82XrAS9WNl94T
- KElw==
+ bh=XPzMIRyHHPYrwvugSrdgfTS150qXNc9bgO1rDL0GqR8=;
+ b=R5Tk4LwSLjn1ujGeBKBzeq4YEmiLnPfzPFYKOJPl7g9RmRTpKALF5e2dg5E3IRPBsE
+ YlR9EP0f0dXjvcowZbgDyPWIBcEkV8jDbdYKzMZk7DBbjdOz5yv/PGmThqEmn7SjaiXF
+ cOprKLYktWGOJ2FSxZ83E6clkP2dmLhqU7twpNXWwgcp69hYzofuQcW71Xi63d2AhEd/
+ GQSx5Wit+v68Tj1twWnTlZOrmE6izOMuvK3uKq6f/9msLxiz4ECynfiZJ6OYKf3yD2G+
+ N0AU7sMqUeOy5lvEfLlnUwHh7NPLoNIGDvYxuAXnq9BOh/75uZ7iYWmyaIfnZpFfQrS1
+ LP0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730203832; x=1730808632;
+ d=1e100.net; s=20230601; t=1730203835; x=1730808635;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hV9bRORlikllwDGAZFR9/+PU9WimawpPGHP7OfCvCPA=;
- b=XfyE9LNWpoOA9FROts5lrVO9JMyo8UDNCulvzQ5K8NoZ8n4CEbPnAqddpe8DgWmDF0
- AQxoqvM8PgUeToPnmA+JkCrJn5/jZ/UrAu352eSS0vbdtSroTeS1L4XhXWZc3G1WuW59
- 6yI7OjV+dMq/DhL9ELJYZO7KLrJ3bg2/MuGEVQo6IEsJ8uYRjPSVDpf5nSgxKWwpVGfA
- kzUw7JdnFn+WVErthtLh4MBLFqe8fJWAQtFS1PJl5S7HZScMn4tqdjXNV5cbqKmx5eAE
- l7uPzGJMYeoNkxc07I2suDyen+Z95gdnL3gTmqG7W/fXV+UajlsJoNL9vhmEfccRGQ0T
- D7tw==
-X-Gm-Message-State: AOJu0YzwafIIxMq5YJWg6Gbqpf0AjsGc1Y74gvNTQacMAG9ZmJS8w2Sr
- nH4nA+eItgnYc6AlHb1Q/nodm+W7tLyUl9LNMymk+VkR9+78LNCD/FosrUQnlkA=
-X-Google-Smtp-Source: AGHT+IHQLA7fIJiqVOeqriyBOSdR9N5/LutdhMIjBZCRakAEoM38pKvwKwokVuNf5Muk/cencb41tA==
-X-Received: by 2002:adf:e543:0:b0:37d:54d0:1f20 with SMTP id
- ffacd0b85a97d-38061158e30mr8505650f8f.24.1730203832597; 
- Tue, 29 Oct 2024 05:10:32 -0700 (PDT)
+ bh=XPzMIRyHHPYrwvugSrdgfTS150qXNc9bgO1rDL0GqR8=;
+ b=GmY4hs6rUBNmAcnAX85LferH70E4SvejyRkk9ivLQvuuUUXl6BQXyv+DzFeuV7eKV5
+ a0Q1/BAEaiEieJGu3/Qed3jXF+MVKkLow49OZFXrWq9wfiU4VKfptf+ad3PFEqr+XGRM
+ OFDAhZl1Murw5gEfc3QYFVCFHSdlxE56uQRY0CEONgvv95BvBmQiahhjMUSNmPIM6PG1
+ Rt6Or1Nj0tRnryelcsvJ+P18J6tyNZxtw1BWRFn8hHHJPOM+VdBOYgCrjYxHjhozSwhv
+ GH9YXLnhzz1NZq2afGWcyakkwR349HpcJz2YIdhr8EGUQv+GhtcpsdiIjiGFnetpGvoD
+ i4RQ==
+X-Gm-Message-State: AOJu0Yx8Jk6+DRd5fPcdWkNwuxYgVNkzS6zC/YqZef7u8MNFQoAKjHLQ
+ UrxWcveggbbpAJ12XRWarcTi0lctqAkZkA4rypj7eMOLbZ9aHDwTHPk9Wyf53gqNRI+ZhkgPfqt
+ R
+X-Google-Smtp-Source: AGHT+IGf1EhwNTYrSBor1mLywv2aKwGNAwxy5d1jkpLDBB654F5xps6JwoigQFNdX1GAzI5aOU7IwQ==
+X-Received: by 2002:adf:e0c2:0:b0:37d:940c:7391 with SMTP id
+ ffacd0b85a97d-380611e75b9mr9050584f8f.41.1730203835415; 
+ Tue, 29 Oct 2024 05:10:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38058b712bfsm12319579f8f.79.2024.10.29.05.10.31
+ ffacd0b85a97d-38058b47a86sm12344746f8f.53.2024.10.29.05.10.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Oct 2024 05:10:31 -0700 (PDT)
+ Tue, 29 Oct 2024 05:10:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D2D8B5FAA9;
+ by draig.lan (Postfix) with ESMTP id E6E8D5FABB;
  Tue, 29 Oct 2024 12:10:30 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 04/13] virtio-gpu: Handle virtio_gpu_virgl_init() failure
-Date: Tue, 29 Oct 2024 12:10:21 +0000
-Message-Id: <20241029121030.4007014-5-alex.bennee@linaro.org>
+Subject: [PULL 05/13] virtio-gpu: Unrealize GL device
+Date: Tue, 29 Oct 2024 12:10:22 +0000
+Message-Id: <20241029121030.4007014-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241029121030.4007014-1-alex.bennee@linaro.org>
 References: <20241029121030.4007014-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,101 +99,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-virtio_gpu_virgl_init() may fail, leading to a further Qemu crash
-because Qemu assumes it never fails. Check virtio_gpu_virgl_init()
-return code and don't execute virtio commands on error. Failed
-virtio_gpu_virgl_init() will result in a timed out virtio commands
-for a guest OS.
+Even though GL GPU doesn't support hotplugging today, free virgl
+resources when GL device is unrealized. For consistency.
 
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Message-Id: <20241024210311.118220-5-dmitry.osipenko@collabora.com>
+Message-Id: <20241024210311.118220-6-dmitry.osipenko@collabora.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 18b6c3b3a2..71775243e9 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -222,11 +222,18 @@ struct VirtIOGPUClass {
-                              Error **errp);
- };
- 
-+/* VirtIOGPUGL renderer states */
-+typedef enum {
-+    RS_START,       /* starting state */
-+    RS_INIT_FAILED, /* failed initialisation */
-+    RS_INITED,      /* initialised and working */
-+    RS_RESET,       /* inited and reset pending, moves to start after reset */
-+} RenderState;
-+
- struct VirtIOGPUGL {
-     struct VirtIOGPU parent_obj;
- 
--    bool renderer_inited;
--    bool renderer_reset;
-+    RenderState renderer_state;
- 
-     QEMUTimer *fence_poll;
-     QEMUTimer *print_stats;
 diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 29d20b0132..ea3413aa56 100644
+index ea3413aa56..753b35ed69 100644
 --- a/hw/display/virtio-gpu-gl.c
 +++ b/hw/display/virtio-gpu-gl.c
-@@ -29,9 +29,14 @@ static void virtio_gpu_gl_update_cursor_data(VirtIOGPU *g,
-                                              struct virtio_gpu_scanout *s,
-                                              uint32_t resource_id)
- {
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-     uint32_t width, height;
-     uint32_t pixels, *data;
+@@ -156,6 +156,22 @@ static Property virtio_gpu_gl_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+    if (gl->renderer_state != RS_INITED) {
-+        return;
++static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
++{
++    VirtIOGPU *g = VIRTIO_GPU(qdev);
++    VirtIOGPUGL *gl = VIRTIO_GPU_GL(qdev);
++
++    if (gl->renderer_state >= RS_INITED) {
++        if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
++            timer_free(gl->print_stats);
++        }
++        timer_free(gl->fence_poll);
++        virgl_renderer_cleanup(NULL);
 +    }
 +
-     data = virgl_renderer_get_cursor_data(resource_id, &width, &height);
-     if (!data) {
-         return;
-@@ -65,13 +70,22 @@ static void virtio_gpu_gl_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
-         return;
-     }
- 
--    if (!gl->renderer_inited) {
--        virtio_gpu_virgl_init(g);
--        gl->renderer_inited = true;
--    }
--    if (gl->renderer_reset) {
--        gl->renderer_reset = false;
-+    switch (gl->renderer_state) {
-+    case RS_RESET:
-         virtio_gpu_virgl_reset(g);
-+        /* fallthrough */
-+    case RS_START:
-+        if (virtio_gpu_virgl_init(g)) {
-+            gl->renderer_state = RS_INIT_FAILED;
-+            return;
-+        }
++    gl->renderer_state = RS_START;
++}
 +
-+        gl->renderer_state = RS_INITED;
-+        break;
-+    case RS_INIT_FAILED:
-+        return;
-+    case RS_INITED:
-+        break;
-     }
+ static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -169,6 +185,7 @@ static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
+     vgc->update_cursor_data = virtio_gpu_gl_update_cursor_data;
  
-     cmd = virtqueue_pop(vq, sizeof(struct virtio_gpu_ctrl_command));
-@@ -98,9 +112,9 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
-      * GL functions must be called with the associated GL context in main
-      * thread, and when the renderer is unblocked.
-      */
--    if (gl->renderer_inited && !gl->renderer_reset) {
-+    if (gl->renderer_state == RS_INITED) {
-         virtio_gpu_virgl_reset_scanout(g);
--        gl->renderer_reset = true;
-+        gl->renderer_state = RS_RESET;
-     }
+     vdc->realize = virtio_gpu_gl_device_realize;
++    vdc->unrealize = virtio_gpu_gl_device_unrealize;
+     vdc->reset = virtio_gpu_gl_reset;
+     device_class_set_props(dc, virtio_gpu_gl_properties);
  }
- 
 -- 
 2.39.5
 
