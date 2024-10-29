@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219379B4498
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A545C9B448D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hpD-00031N-SM; Tue, 29 Oct 2024 04:43:40 -0400
+	id 1t5hpF-000325-VS; Tue, 29 Oct 2024 04:43:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hp9-00030B-RR
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:35 -0400
+ id 1t5hpC-000310-LR
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:38 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hp8-00081u-69
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:35 -0400
+ id 1t5hpB-00081u-2f
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730191414; x=1761727414;
+ t=1730191417; x=1761727417;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2A5Haq33d7m1AJtNI3w75MshOhOiNodMu4lutbKPFLg=;
- b=CG9PVb+GcRSCAVshL/3Ch26wTV1/vnKGSXK164MpdNkkN+H9GOsapB0y
- zPLd32tFl3J2TzNeh9nuvgR5gNMCTBIe0UTgFcrAKMIpkn/hPpvWHi6Ev
- 9UDViP34mM2Mls6WdVfKaI/eJEizg5CexDfXDKhEcSHMfPTAxapQ11LlA
- rWu0RBea77QY8/Dv5ScnV/sh31PmjkSk0GZIzbc3rRDBvzUd9e2NYpFYB
- O17hH8W4KoEtgumvXXr7Z1FD+cTe86o3QHIUJ9MIM76WJhoUefk2n2sCB
- z0JffSiyUdlgMWMyLfu62VzHeZl2niAI/PCG8JTWJRPcvMsLHJa3Y5Zl/ w==;
-X-CSE-ConnectionGUID: lQfL1ipNQNuk9XDU+GR8sA==
-X-CSE-MsgGUID: 9hKntnrLR1aC7Y2hNPr3ig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592799"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592799"
+ bh=Rnz6R4FgIlH4YI0tBu1NrnmfxYTvCccvvkVAtxUSMQE=;
+ b=eNbNrMaaZiuhWK1sGZDTm7SVMmCXrdXzwfCehYIweGxISn2shMOwrB+y
+ Whlp3zr599XtuMRQsAKqP7rlnrvY/gCz3M7yfyAKPXvusyVj6f7dtqpxH
+ oqXs5z/TgdRVosreZB6g6M8DC9iYAs9/WNZIHTyuB19el2FBPyWccvnye
+ 6eFW4mLBckXDz5qi4qdK80sczWSRBnybsi1nYODtVkqJp+MhbRCvYlgRO
+ f7dgMKbePlwpZCPh4SYDQLizSYAVev/6W5SqNChk6AG6OnX+pUBuQyz+j
+ bOX2KIspZ2jzvB36cZuLMsPqslXDiW+MrK6EolfiwCbFN9Pg0/qC2Q7CK w==;
+X-CSE-ConnectionGUID: FnKqjB4tSVOxzWHweLW0FA==
+X-CSE-MsgGUID: QlLNunbjQh6zVjHQjMV/Hg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592802"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592802"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 01:43:33 -0700
-X-CSE-ConnectionGUID: 1HaF+PFOR3S9Z3x7B4yr6g==
-X-CSE-MsgGUID: 8cduvls7RO+cgaCGOguJYw==
+ 29 Oct 2024 01:43:35 -0700
+X-CSE-ConnectionGUID: vxj9VGx9R4ia+Yd8Z5qx4g==
+X-CSE-MsgGUID: UxiJgwwGRf2HtJAVLYq2MQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847177"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847182"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:31 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:33 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 06/16] hw/scsi: Replace type_register() with
+Subject: [PATCH 07/16] hw/sensor: Replace type_register() with
  type_register_static()
-Date: Tue, 29 Oct 2024 16:59:24 +0800
-Message-Id: <20241029085934.2799066-7-zhao1.liu@intel.com>
+Date: Tue, 29 Oct 2024 16:59:25 +0800
+Message-Id: <20241029085934.2799066-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029085934.2799066-1-zhao1.liu@intel.com>
 References: <20241029085934.2799066-1-zhao1.liu@intel.com>
@@ -83,41 +83,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace type_register() with type_register_static() because\
+Replace type_register() with type_register_static() because
 type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/scsi/megasas.c | 2 +-
- hw/scsi/mptsas.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/sensor/tmp421.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 221b06d6aaf6..b72d2f8cdf39 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -2586,7 +2586,7 @@ static void megasas_register_types(void)
-         type_info.class_init = megasas_class_init;
-         type_info.interfaces = info->interfaces;
- 
--        type_register(&type_info);
-+        type_register_static(&type_info);
+diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
+index b6f0b62ab11b..82e604279c5a 100644
+--- a/hw/sensor/tmp421.c
++++ b/hw/sensor/tmp421.c
+@@ -384,7 +384,7 @@ static void tmp421_register_types(void)
+             .class_init = tmp421_class_init,
+             .class_data = (void *) &devices[i],
+         };
+-        type_register(&ti);
++        type_register_static(&ti);
      }
  }
  
-diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
-index 361b75e633ae..c6bc3479e997 100644
---- a/hw/scsi/mptsas.c
-+++ b/hw/scsi/mptsas.c
-@@ -1450,7 +1450,7 @@ static const TypeInfo mptsas_info = {
- 
- static void mptsas_register_types(void)
- {
--    type_register(&mptsas_info);
-+    type_register_static(&mptsas_info);
- }
- 
- type_init(mptsas_register_types)
 -- 
 2.34.1
 
