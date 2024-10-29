@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6279B4D40
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EB19B4D53
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:15:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nuF-0003V4-Fs; Tue, 29 Oct 2024 11:13:15 -0400
+	id 1t5nu1-0002z0-J7; Tue, 29 Oct 2024 11:13:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5nsD-0000qF-Bk
+ id 1t5nsE-0000qM-0b
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:11 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5ns7-0007k5-2U
+ id 1t5ns7-0007kR-2K
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:09 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-37d4fd00574so3624564f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:59 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4314f38d274so72966795e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:11:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730214659; x=1730819459; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hIn8TWQshR4xk0eH6ep1S0A+hm2DkFGROZexRTXqVg4=;
- b=H4lExa5A0RsdnzyMzJtjzhKvjyt73g1ZtZtZE9dJEO2+nS4oXL3G30TxHfgFHyk/Yy
- MQn6nK9Hw8ckctr4a0IttIupiyJNav0I2WtjWhN/dW4ypSoAJyjlwseQb37rGfie66Op
- AO+3LSAHL3/HvSOAiaKxRfHENqzEJPvtuB1T68OaamUKPTpTZsqxVO7zewmu4BFfgjA+
- U4AFo1OXpznfL2ikYa/Deads5gkepMJDcP2d59v3P328pmgfihN7878qjHp1360el7C3
- Axqn5M+RZ12151pxwBsE0xNUjkYO/NPCSz8JJ3FOCkEnyhyfFEA+i2TLSbO06lu8lenc
- 7Yrg==
+ :reply-to; bh=uWF1bVue0jp3RIgvuBCykNspwtoTgYc0dfBnutz7ERk=;
+ b=fLBQDEtvf44K4GlWtqJCpbBlCfW0Ln7nU5Rx2zN/lVmBKl5m4SvviMAkCnvZLakOH4
+ yMfE/vuqtXI41RUU8k1NIs+RoFLjXFpHb2HxFWOY68fHtuaOl/XH+0XLJe+GOrbrMKpq
+ qC621i0DMBmPGpSfw5Kssj+6tb5bWnzgXAUIAdpNQjR7crr35zeKzmfIwiJLfPRlgrcV
+ oPZ9kwLyiqDKdNcY2Aax2lw2lONcI2zys4IitWodcGIJqeo9bp6cASLBGaKram9DwNIR
+ LLjrf8bi/v99YEiezcuO2uohQdVX9MLgmJ8Jg9OI7dj4Xn8hRRxANcL/y0R3iCQywTz2
+ fQig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730214659; x=1730819459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hIn8TWQshR4xk0eH6ep1S0A+hm2DkFGROZexRTXqVg4=;
- b=AllDJ76lywmQSyl2D9Co0FyU3qDZqC7vX6VfLtxdlY74XM/swFGlY4b8c1EfjT0Q8Z
- pSCuBpnB1E92/TF3jweWcGTsvppf2iJItfgibpcdLyS8n6vddxJueHLr8EaBjUb7+v5A
- nt6EZXOz80xMcHKxfh/kxhgqPVsHexWOObuOF8Qg1pW+hb0yZtvXeB5COigLZNoenL81
- cFhJTqmbxVtgTZ7Z0A4ULHv1jcy9PbVLyMVMgfxv3qM1lTcCdJKq/Jm9cE4zaIhAoks+
- 5biCj7Pi8Ew76tVBwPYzkcdlwi8eioQ3h0T83krzKdbF1Mhl9bq61o4ImjiR+UIY3Nnv
- 7fdQ==
+ bh=uWF1bVue0jp3RIgvuBCykNspwtoTgYc0dfBnutz7ERk=;
+ b=tmYR8yFEQrGo8V67HsAFTu1QKh7rTOE4octwHD+9QMVJTYvpVYeGqaXiAXLQPkjwwu
+ 6Gg+nIPmDX3mmNHzkGEA/4dONzaIILPT13ye0JC02eYyXHe30uE1Obyh31XunSLv5mw6
+ LN9mR2eSMLXF8f7o7t/Z0YwpT3dxtTVCg9BC7ydGMEB4OPM8CEqI8LInOveLlRo8JIPy
+ ZAeloge7FSTXYdXuGIRWnz0pcYDpIoSjZ7GZFoU4Mhl2OAdP0MQMm2aLjsfhJoKa/Z2T
+ EA7549E8011NugUDg+w6S6RMz2izBVv9JGyk9hbF/26+y00KFicD8iA2GhgjSn1251bv
+ p5gw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUKmCGwEdwxgftYQ/KzXXb5y6HBWgOUK4tLAy7kESrLRw369sHu3GRHrhMAwCKfMTmhI+fLX9UPKjEC@nongnu.org
-X-Gm-Message-State: AOJu0YzY21Jf/VxYhpbqF4QlcY/284X5VGddNQpNsy8XHtg2T/BsTZAc
- ANDYzjTTmSb3jvzxNS/mysd33ZwnYnNSO1xvC89j4E/sXadbwJlxAVTF7mzD8Yg=
-X-Google-Smtp-Source: AGHT+IH/iU/ZQm3dWa9FBVK1hQmkAqHmFea1NQGXfCibzteKAJ8OXTV6pb4SWfnM6/iSZc5j4Sa3sw==
-X-Received: by 2002:adf:ea52:0:b0:374:b6e4:16a7 with SMTP id
- ffacd0b85a97d-38159d6e341mr2167784f8f.8.1730214658615; 
- Tue, 29 Oct 2024 08:10:58 -0700 (PDT)
+ AJvYcCWJ38+Ah4yiK0ZuQtVrqA1LBR7vAL65LyUUF7/IxdCD15MCPdPJdrqy6jlhu3U+9qhlbxqYa1l7QIsV@nongnu.org
+X-Gm-Message-State: AOJu0YxIi6npE6cWyhaK5kc72HrcvrWQqGQz3YNh/Iv60hh26f52QLi0
+ TajeM/VhmZdrX5GwTliF+ozbtayUM2mAYklZALJYom9iFA2M8PtAfmmyDBCC1PzCaNjuMgK69hR
+ e
+X-Google-Smtp-Source: AGHT+IHesOqiNZf7/muW4vtiOXktibG9kP49U+9Z2jLrofLw5/lMiFCNSHx3Ap2ta5sCucdyCl0QJg==
+X-Received: by 2002:a05:6000:1ccc:b0:37d:4f69:c9b with SMTP id
+ ffacd0b85a97d-380611e0c40mr10835699f8f.35.1730214659106; 
+ Tue, 29 Oct 2024 08:10:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.58
@@ -60,23 +61,23 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 17/18] docs/devel/reset: Fix minor grammatical error
-Date: Tue, 29 Oct 2024 15:10:47 +0000
-Message-Id: <20241029151048.1047247-18-peter.maydell@linaro.org>
+Subject: [PULL 18/18] target/arm: kvm: require KVM_CAP_DEVICE_CTRL
+Date: Tue, 29 Oct 2024 15:10:48 +0000
+Message-Id: <20241029151048.1047247-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
 References: <20241029151048.1047247-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,33 +93,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix a minor grammatical error in the reset documentation:
-a couple of missing words and a singular/plural swap.
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Signed-off-by: Axel Heider <axel.heider@codasip.com>
-Message-id: 173006362760.28451.11319467059840843945-1@git.sr.ht
-[PMM: squashed two patches into one, tweaked commit message]
+The device control API was added in 2013, assume that it is present.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-id: 20241024113126.44343-1-pbonzini@redhat.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/devel/reset.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/kvm_arm.h  | 16 +++++++---------
+ hw/intc/arm_gic_kvm.c |  9 +--------
+ target/arm/kvm.c      | 17 +++++------------
+ 3 files changed, 13 insertions(+), 29 deletions(-)
 
-diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-index 74c7c0171ad..adefd59ef97 100644
---- a/docs/devel/reset.rst
-+++ b/docs/devel/reset.rst
-@@ -286,8 +286,8 @@ every reset child of the given resettable object. All children must be
- resettable too. Additional parameters (a reset type and an opaque pointer) must
- be passed to the callback too.
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 4d293618a78..2e6b49bf137 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -22,17 +22,15 @@
+  * @devid: the KVM device ID
+  * @group: device control API group for setting addresses
+  * @attr: device control API address type
+- * @dev_fd: device control device file descriptor (or -1 if not supported)
++ * @dev_fd: device control device file descriptor
+  * @addr_ormask: value to be OR'ed with resolved address
+  *
+- * Remember the memory region @mr, and when it is mapped by the
+- * machine model, tell the kernel that base address using the
+- * KVM_ARM_SET_DEVICE_ADDRESS ioctl or the newer device control API.  @devid
+- * should be the ID of the device as defined by KVM_ARM_SET_DEVICE_ADDRESS or
+- * the arm-vgic device in the device control API.
+- * The machine model may map
+- * and unmap the device multiple times; the kernel will only be told the final
+- * address at the point where machine init is complete.
++ * Remember the memory region @mr, and when it is mapped by the machine
++ * model, tell the kernel that base address using the device control API.
++ * @devid should be the ID of the device as defined by  the arm-vgic device
++ * in the device control API.  The machine model may map and unmap the device
++ * multiple times; the kernel will only be told the final address at the
++ * point where machine init is complete.
+  */
+ void kvm_arm_register_device(MemoryRegion *mr, uint64_t devid, uint64_t group,
+                              uint64_t attr, int dev_fd, uint64_t addr_ormask);
+diff --git a/hw/intc/arm_gic_kvm.c b/hw/intc/arm_gic_kvm.c
+index 53defee7d59..e2a73337b1e 100644
+--- a/hw/intc/arm_gic_kvm.c
++++ b/hw/intc/arm_gic_kvm.c
+@@ -547,17 +547,10 @@ static void kvm_arm_gic_realize(DeviceState *dev, Error **errp)
+                               KVM_DEV_ARM_VGIC_CTRL_INIT, NULL, true,
+                               &error_abort);
+         }
+-    } else if (kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
++    } else {
+         error_setg_errno(errp, -ret, "error creating in-kernel VGIC");
+         error_append_hint(errp,
+                           "Perhaps the host CPU does not support GICv2?\n");
+-    } else if (ret != -ENODEV && ret != -ENOTSUP) {
+-        /*
+-         * Very ancient kernel without KVM_CAP_DEVICE_CTRL: assume that
+-         * ENODEV or ENOTSUP mean "can't create GICv2 with KVM_CREATE_DEVICE",
+-         * and that we will get a GICv2 via KVM_CREATE_IRQCHIP.
+-         */
+-        error_setg_errno(errp, -ret, "error creating in-kernel VGIC");
+         return;
+     }
  
--In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located
--``DeviceState`` and ``BusState`` structure. ``child_foreach()`` is implemented
-+In ``DeviceClass`` and ``BusClass`` the ``ResettableState`` is located in the
-+``DeviceState`` and ``BusState`` structures. ``child_foreach()`` is implemented
- to follow the bus hierarchy; for a bus, it calls the function on every child
- device; for a device, it calls the function on every bus child. When we reset
- the main system bus, we reset the whole machine bus tree.
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 000afa03631..7b6812c0de2 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -42,6 +42,7 @@
+ #include "migration/blocker.h"
+ 
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
++    KVM_CAP_INFO(DEVICE_CTRL),
+     KVM_CAP_LAST_INFO
+ };
+ 
+@@ -691,19 +692,11 @@ static void kvm_arm_set_device_addr(KVMDevice *kd)
+ {
+     struct kvm_device_attr *attr = &kd->kdattr;
+     int ret;
++    uint64_t addr = kd->kda.addr;
+ 
+-    /* If the device control API is available and we have a device fd on the
+-     * KVMDevice struct, let's use the newer API
+-     */
+-    if (kd->dev_fd >= 0) {
+-        uint64_t addr = kd->kda.addr;
+-
+-        addr |= kd->kda_addr_ormask;
+-        attr->addr = (uintptr_t)&addr;
+-        ret = kvm_device_ioctl(kd->dev_fd, KVM_SET_DEVICE_ATTR, attr);
+-    } else {
+-        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_SET_DEVICE_ADDR, &kd->kda);
+-    }
++    addr |= kd->kda_addr_ormask;
++    attr->addr = (uintptr_t)&addr;
++    ret = kvm_device_ioctl(kd->dev_fd, KVM_SET_DEVICE_ATTR, attr);
+ 
+     if (ret < 0) {
+         fprintf(stderr, "Failed to set device address: %s\n",
 -- 
 2.34.1
 
