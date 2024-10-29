@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E17A9B458C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D259B457B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:19:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5iMD-0000Ws-SS; Tue, 29 Oct 2024 05:17:45 -0400
+	id 1t5iMH-0000YO-RB; Tue, 29 Oct 2024 05:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMB-0000WE-0N; Tue, 29 Oct 2024 05:17:43 -0400
+ id 1t5iMD-0000X6-Ne; Tue, 29 Oct 2024 05:17:45 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iM9-0003A3-Iy; Tue, 29 Oct 2024 05:17:42 -0400
+ id 1t5iMC-0003A3-6D; Tue, 29 Oct 2024 05:17:45 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 29 Oct
@@ -32,9 +32,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 1/8] aspeed/soc: Support RTC for AST2700
-Date: Tue, 29 Oct 2024 17:17:22 +0800
-Message-ID: <20241029091729.3317512-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 2/8] hw/timer/aspeed: Fix coding style
+Date: Tue, 29 Oct 2024 17:17:23 +0800
+Message-ID: <20241029091729.3317512-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
 References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
@@ -66,51 +66,65 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The RTC controller between AST2600 and AST2700 are identical. Add RTC model for
-AST2700 RTC support. The RTC controller registers base address is start at
-0x12C0_F000 and its alarm interrupt is connected to GICINT13.
+Fix coding style issues from checkpatch.pl
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ hw/timer/aspeed_timer.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index dca660eb6b..7ab4bec644 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -63,6 +63,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_ADC]       =  0x14C00000,
-     [ASPEED_DEV_I2C]       =  0x14C0F000,
-     [ASPEED_DEV_GPIO]      =  0x14C0B000,
-+    [ASPEED_DEV_RTC]       =  0x12C0F000,
- };
+diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
+index b1f860ecfb..5af268ea9e 100644
+--- a/hw/timer/aspeed_timer.c
++++ b/hw/timer/aspeed_timer.c
+@@ -276,7 +276,8 @@ static void aspeed_timer_set_value(AspeedTimerCtrlState *s, int timer, int reg,
+         old_reload = t->reload;
+         t->reload = calculate_min_ticks(t, value);
  
- #define AST2700_MAX_IRQ 288
-@@ -376,6 +377,8 @@ static void aspeed_soc_ast2700_init(Object *obj)
- 
-     snprintf(typename, sizeof(typename), "aspeed.gpio-%s", socname);
-     object_initialize_child(obj, "gpio", &s->gpio, typename);
-+
-+    object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
+-        /* If the reload value was not previously set, or zero, and
++        /*
++         * If the reload value was not previously set, or zero, and
+          * the current value is valid, try to start the timer if it is
+          * enabled.
+          */
+@@ -312,7 +313,8 @@ static void aspeed_timer_set_value(AspeedTimerCtrlState *s, int timer, int reg,
+     }
  }
  
- /*
-@@ -670,6 +673,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
-                        aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+-/* Control register operations are broken out into helpers that can be
++/*
++ * Control register operations are broken out into helpers that can be
+  * explicitly called on aspeed_timer_reset(), but also from
+  * aspeed_timer_ctrl_op().
+  */
+@@ -396,7 +398,8 @@ static void aspeed_timer_set_ctrl(AspeedTimerCtrlState *s, uint32_t reg)
+     AspeedTimer *t;
+     const uint8_t enable_mask = BIT(op_enable);
  
-+    /* RTC */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->rtc), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->rtc), 0, sc->memmap[ASPEED_DEV_RTC]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->rtc), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_RTC));
-+
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
+-    /* Handle a dependency between the 'enable' and remaining three
++    /*
++     * Handle a dependency between the 'enable' and remaining three
+      * configuration bits - i.e. if more than one bit in the control set has
+      * changed, including the 'enable' bit, then we want either disable the
+      * timer and perform configuration, or perform configuration and then
+@@ -582,7 +585,6 @@ static void aspeed_2600_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
+     case 0x3C:
+         aspeed_timer_set_ctrl(s, s->ctrl & ~tv);
+         break;
+-
+     case 0x38:
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+@@ -623,7 +625,8 @@ static void aspeed_timer_reset(DeviceState *dev)
+ 
+     for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+         AspeedTimer *t = &s->timers[i];
+-        /* Explicitly call helpers to avoid any conditional behaviour through
++        /*
++         * Explicitly call helpers to avoid any conditional behaviour through
+          * aspeed_timer_set_ctrl().
+          */
+         aspeed_timer_ctrl_enable(t, false);
 -- 
 2.34.1
 
