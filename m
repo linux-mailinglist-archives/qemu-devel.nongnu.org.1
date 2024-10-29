@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7659B43C8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB8E9B43D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:09:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hGy-00089T-Ag; Tue, 29 Oct 2024 04:08:16 -0400
+	id 1t5hH0-0008FG-OC; Tue, 29 Oct 2024 04:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hGv-000822-IX
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:08:13 -0400
+ id 1t5hGw-000898-Nq
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:08:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hGu-00040l-1S
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:08:13 -0400
+ id 1t5hGu-00040w-JV
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:08:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730189291;
+ s=mimecast20190719; t=1730189292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZBBmtqtTKH4d7OHrzObTmIJ4MV6c5JVpaNlUUe+FMpA=;
- b=FXF7zWoUQidPOXMlHBFJfxzYcteNATlTCa0QWQenk9aAyLTkAS0jueNg162hvh1OYivTNq
- fuJEMgATEIE+Xl9gudWzGIlkwUAMsY5fHpVXWrF5alMh/qi+FHva7blIHVAmXcHyQS+eZt
- tZkcx2oTH51s580TFmHhaQW3qLJZGs4=
+ bh=Cg9TwerykTSJbPE6c3qr1RPsNckTMzBJY7S+3A7WOzM=;
+ b=i1C4nwbN4EAyedUThZUpA/lfVR2IVM7E1X2QqCupM0JfXiLdkqksE7SHom/ykOvKlAyMnC
+ zaz+6nizLYinkBWKO+zcpnDJcJT10YT/DxLeTF95dfsScfoFN/2BFwizRd/sqjnkx3XH7I
+ P+BHvouy8Afs+5nSl+qo1tFaHGcqvLM=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-o3rpijPDNCiA_F5eTujXrw-1; Tue,
- 29 Oct 2024 04:08:03 -0400
-X-MC-Unique: o3rpijPDNCiA_F5eTujXrw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-xsIMiUBzP5ONoQjT7yiPJw-1; Tue,
+ 29 Oct 2024 04:08:06 -0400
+X-MC-Unique: xsIMiUBzP5ONoQjT7yiPJw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 90B6E1955F69; Tue, 29 Oct 2024 08:08:02 +0000 (UTC)
+ id B8B1E19560BE; Tue, 29 Oct 2024 08:08:05 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.36])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 209F21956086; Tue, 29 Oct 2024 08:07:58 +0000 (UTC)
+ id 6A7791956086; Tue, 29 Oct 2024 08:08:02 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Weil <sw@weilnetz.de>, qemu-stable@nongnu.org,
- Zhang Chen <chen.zhang@intel.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 13/14] Fix calculation of minimum in colo_compare_tcp
-Date: Tue, 29 Oct 2024 16:07:04 +0800
-Message-ID: <20241029080705.3238-14-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 14/14] virtio-net: Avoid indirection_table_mask overflow
+Date: Tue, 29 Oct 2024 16:07:05 +0800
+Message-ID: <20241029080705.3238-15-jasowang@redhat.com>
 In-Reply-To: <20241029080705.3238-1-jasowang@redhat.com>
 References: <20241029080705.3238-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -82,34 +81,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil <sw@weilnetz.de>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-GitHub's CodeQL reports a critical error which is fixed by using the MIN macro:
+We computes indirections_len by adding 1 to indirection_table_mask, but
+it may overflow indirection_table_mask is UINT16_MAX. Check if
+indirection_table_mask is small enough before adding 1.
 
-    Unsigned difference expression compared to zero
-
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+Fixes: 590790297c0d ("virtio-net: implement RSS configuration command")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/colo-compare.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/net/virtio-net.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/colo-compare.c b/net/colo-compare.c
-index c4ad0ab71f..39f90c4065 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s, Connection *conn)
-      * can ensure that the packet's payload is acknowledged by
-      * primary and secondary.
-     */
--    uint32_t min_ack = conn->pack - conn->sack > 0 ?
--                       conn->sack : conn->pack;
-+    uint32_t min_ack = MIN(conn->pack, conn->sack);
- 
- pri:
-     if (g_queue_is_empty(&conn->primary_list)) {
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 60e19bffcb..f2104ed364 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1406,17 +1406,17 @@ static uint16_t virtio_net_handle_rss(VirtIONet *n,
+     n->rss_data.hash_types = virtio_ldl_p(vdev, &cfg.hash_types);
+     n->rss_data.indirections_len =
+         virtio_lduw_p(vdev, &cfg.indirection_table_mask);
+-    n->rss_data.indirections_len++;
+     if (!do_rss) {
+-        n->rss_data.indirections_len = 1;
++        n->rss_data.indirections_len = 0;
+     }
+-    if (!is_power_of_2(n->rss_data.indirections_len)) {
+-        err_msg = "Invalid size of indirection table";
++    if (n->rss_data.indirections_len >= VIRTIO_NET_RSS_MAX_TABLE_LEN) {
++        err_msg = "Too large indirection table";
+         err_value = n->rss_data.indirections_len;
+         goto error;
+     }
+-    if (n->rss_data.indirections_len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
+-        err_msg = "Too large indirection table";
++    n->rss_data.indirections_len++;
++    if (!is_power_of_2(n->rss_data.indirections_len)) {
++        err_msg = "Invalid size of indirection table";
+         err_value = n->rss_data.indirections_len;
+         goto error;
+     }
 -- 
 2.42.0
 
