@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F169B4951
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 13:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0AD9B4947
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 13:12:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5l3Y-0004Zh-Hi; Tue, 29 Oct 2024 08:10:40 -0400
+	id 1t5l3Y-0004Zs-Pr; Tue, 29 Oct 2024 08:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t5l3U-0004Yy-UT
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:36 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1t5l3V-0004ZE-A8
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:37 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t5l3S-0007Rm-5R
+ id 1t5l3T-0007S3-GB
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 08:10:36 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43193678216so40866065e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 05:10:33 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-539f7606199so5777677e87.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 05:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730203832; x=1730808632; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3Qn3VnlLWDra9koZ9LR5i1hb7kIkeKEhWw6Jyi9oumY=;
- b=kvDuLxs2ksdkYxt1OFNG1qE1o8CDD2fBMBLReMW1GK1PWHbcprdzKE+sMbA5pkr4UN
- IKHhMyVKFvdlsdxZBMje3/3W+Sc06PXJvgy13DRIpk35nqYDbv0WaupZcsJkj+wArNr8
- fajNvh3oy6V+UOanO1hUGHTMNmqOvwIZXKwOkb9kEnmeVX9zTARIZsV6uVv/4LMNHYTQ
- 8jDoQn01XCKx6EnsBi3y3h6eiWjQznBYpeum71zYsq/e3IxwoRde0eSdZNYOw1RyxWX5
- QGIffRuHG/UghFK6gtwNk9Ji3rs1H8JhR1K+vwwLxXCPH0a1k4Tr0as3/EAXe0oebyY7
- mdPA==
+ d=linaro.org; s=google; t=1730203833; x=1730808633; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yA1TnKmdYIVh4QgM+44m/kYyl/YIszs+Fc2n46GOLvM=;
+ b=JFdMRnP4EOj7RewedcCvJSGsmxqwqa669Nbbs9pBeCeqhB+OrfEk0YVJj+gsmgIj6C
+ 4CaSSY6r6RBtY5Td3PvTUplr6d/Sx/xRPB80ODOHKm1+aTPNE6A1fGK3xIhA0WYBwMEC
+ hwk6ynAXf0YkvdagSCC55WU8MorKmWY48b0E9dYqs+gxFj+8GUN07Org9hmBnts+H+eP
+ WS3JgKqj6G6WrKY2da1Dxef6as2aTetGInKoxh3N3FtAv0lmiG7kojza+qM4zOndrdDo
+ v85vv1x+lGN0i2GZxhyFK9n3TQkjVSWdgtonFyyXLhDgPoj5mdSno8+Ka7EUJur3QgI7
+ wReQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730203832; x=1730808632;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3Qn3VnlLWDra9koZ9LR5i1hb7kIkeKEhWw6Jyi9oumY=;
- b=nhsyRghNMrwnTtMmoAJy4hVugl1pdYQhkfV95ObI2IBsX9vxxNFPT0rwLX44DgoYJ7
- c0HRzsDf0ceK/j7X/+LO36GQHBhOe2rkHsfFmlpszVkZgmlObUp+s9SkQm+UJAN+xUQP
- H+9q/TKc1cH9VqNTw7bmTWqeH3X3RPcQkknQv4H/8/0DlvWAzxA8tDe5rgX+PZ1xs1of
- 8rPCOfPfqB7bly4UY3JM44nWOCEhzMC99Gu0BACYRcY21DcOajeXXyHrOOn4dC9Xipac
- rrfgyVKfgwq1Y95OCvUjAgNA09OwHXa0otXXpUVDdg37JigZBySdSfIyYrjpbvvyAN8i
- CX+A==
-X-Gm-Message-State: AOJu0YwwMejk/TwMnwfPAg/bIotbwDm/avzcVlOO4ghycebd6AmWvQBM
- RvookyLeoLWK0wttP4WNbQS7sK1S4f6wLj5EqL60y/Ks0GEN2dAbhqg4/U1rMKDqMtprjLGP3lV
- 8
-X-Google-Smtp-Source: AGHT+IELqIgGR3Ny8//GN7zkjzF3NQGG0Uy4ofKGbc1GjxCYUpeNbbg49hQW75VSMF1Ao05vrUf6/Q==
-X-Received: by 2002:a05:600c:4f83:b0:42c:c28c:e477 with SMTP id
- 5b1f17b1804b1-4319ad089b0mr83155255e9.23.1730203832329; 
+ d=1e100.net; s=20230601; t=1730203833; x=1730808633;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yA1TnKmdYIVh4QgM+44m/kYyl/YIszs+Fc2n46GOLvM=;
+ b=rNoL0IpSI6Y6fgs4SuUAfPGkmdjw+uVR+UUkRWGlkohlwvvoINcRVtsxA+nbRLJBNU
+ eGqKSzMnwz0VEZMg3C6GgoigF1b8Al1vvUksA3YchJKZmKiI20svL1Vhiuf8MURhRtzY
+ eB5vy0dtOuqfJzG7yuP1tfbeE9oitO8J1qg3EX718rHqARd/ARR6vwsd90e0c+RUfm+f
+ 2YJ2NAItrCPJhoniYJzG0mkJI5ayAFTqs5hC4hhTbSK5upsTFIAqkGO+V36SAItSsEMp
+ k9s99L+4fz3Tg0Jrh0tZpjxo22aAXLQ6bv6TjYwh/JcZwLsRFTXKm/G9rL0v3y24751k
+ gRKg==
+X-Gm-Message-State: AOJu0Yxky2diYqc/HXbls8NbfZMowVwUKB7WJLTuEk2tGRG6ZOmBsQkK
+ DmrFrQ4IvpphHeCRv3M4x5GLKq/OVQOjkTEHzpOXEQbct9gwhZka8cpMlGv/bCE=
+X-Google-Smtp-Source: AGHT+IHKWmMBCflfS6OWMR5fxPo+gpUEkW5EOgVP3PAaiLEOCZPZhRos29mPm/JbT7RUOVP8Sp9lhA==
+X-Received: by 2002:a05:6512:3404:b0:53b:27ba:2d11 with SMTP id
+ 2adb3069b0e04-53b348cb2cbmr6486997e87.16.1730203832896; 
  Tue, 29 Oct 2024 05:10:32 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431935f7213sm142369085e9.32.2024.10.29.05.10.31
+ 5b1f17b1804b1-43193572932sm145210695e9.1.2024.10.29.05.10.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 29 Oct 2024 05:10:31 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 79E3B5F860;
+ by draig.lan (Postfix) with ESMTP id 910F95F929;
  Tue, 29 Oct 2024 12:10:30 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/13] virtio-gpu vulkan support
-Date: Tue, 29 Oct 2024 12:10:17 +0000
-Message-Id: <20241029121030.4007014-1-alex.bennee@linaro.org>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PULL 01/13] virtio-gpu: Use trace events for tracking number of
+ in-flight fences
+Date: Tue, 29 Oct 2024 12:10:18 +0000
+Message-Id: <20241029121030.4007014-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241029121030.4007014-1-alex.bennee@linaro.org>
+References: <20241029121030.4007014-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,71 +98,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit fdf250e5a37830615e324017cb3a503e84b3712c:
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-  Merge tag 'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/stsquad/qemu into staging (2024-10-25 19:12:06 +0100)
+Replace printf's used for tracking of in-flight fence inc/dec events
+with tracing, for consistency with the rest of virtio-gpu code that
+uses tracing.
 
-are available in the Git repository at:
+Suggested-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Message-Id: <20241024210311.118220-2-dmitry.osipenko@collabora.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-virtio-gpu-vulkan-291024-1
-
-for you to fetch changes up to 94d0ea1c19289d76ced934711fccd2269e69bb29:
-
-  virtio-gpu: Support Venus context (2024-10-28 16:56:36 +0000)
-
-----------------------------------------------------------------
-virtio-gpu: add venus/vulkan capability
-
-We are currently lacking a declared maintainer for the sub-system so
-while we look for one I'm merging after testing locally.
-
-  - convert some fprintfs to proper trace events
-  - move timers used by GL devices into GL structures
-  - handle virtio_gpu_virgl_init() failure better
-  - implement unrealize for GL devices
-  - use virgl version numbering to gate features
-  - support context-init feature
-  - don't require udmabuf for virgl only
-  - add virgl resource tracker
-  - allow command submission to be suspended
-  - handle resource blob commands
-  - dynamically handle capabilit sets
-  - add venus context support for passing vulkan
-
-----------------------------------------------------------------
-Antonio Caggiano (1):
-      virtio-gpu: Support Venus context
-
-Dmitry Osipenko (8):
-      virtio-gpu: Use trace events for tracking number of in-flight fences
-      virtio-gpu: Move fence_poll timer to VirtIOGPUGL
-      virtio-gpu: Move print_stats timer to VirtIOGPUGL
-      virtio-gpu: Handle virtio_gpu_virgl_init() failure
-      virtio-gpu: Unrealize GL device
-      virtio-gpu: Use pkgconfig version to decide which virgl features are available
-      virtio-gpu: Don't require udmabuf when blobs and virgl are enabled
-      virtio-gpu: Support suspension of commands processing
-
-Huang Rui (2):
-      virtio-gpu: Support context-init feature with virglrenderer
-      virtio-gpu: Add virgl resource management
-
-Pierre-Eric Pelloux-Prayer (1):
-      virtio-gpu: Register capsets dynamically
-
-Robert Beckett (1):
-      virtio-gpu: Handle resource blob commands
-
- docs/system/devices/virtio-gpu.rst |  11 +
- meson.build                        |   5 +-
- include/hw/virtio/virtio-gpu.h     |  32 +-
- hw/display/virtio-gpu-gl.c         |  62 +++-
- hw/display/virtio-gpu-virgl.c      | 585 +++++++++++++++++++++++++++++++++++--
- hw/display/virtio-gpu.c            |  44 ++-
- hw/display/trace-events            |   3 +
- 7 files changed, 685 insertions(+), 57 deletions(-)
-
-
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 9f34d0e661..14091b191e 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -525,7 +525,7 @@ static void virgl_write_fence(void *opaque, uint32_t fence)
+         g_free(cmd);
+         g->inflight--;
+         if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
+-            fprintf(stderr, "inflight: %3d (-)\r", g->inflight);
++            trace_virtio_gpu_dec_inflight_fences(g->inflight);
+         }
+     }
+ }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 49fd803393..3fcc434732 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1046,7 +1046,7 @@ void virtio_gpu_process_cmdq(VirtIOGPU *g)
+                 if (g->stats.max_inflight < g->inflight) {
+                     g->stats.max_inflight = g->inflight;
+                 }
+-                fprintf(stderr, "inflight: %3d (+)\r", g->inflight);
++                trace_virtio_gpu_inc_inflight_fences(g->inflight);
+             }
+         } else {
+             g_free(cmd);
+@@ -1066,7 +1066,7 @@ static void virtio_gpu_process_fenceq(VirtIOGPU *g)
+         g_free(cmd);
+         g->inflight--;
+         if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
+-            fprintf(stderr, "inflight: %3d (-)\r", g->inflight);
++            trace_virtio_gpu_dec_inflight_fences(g->inflight);
+         }
+     }
+ }
+diff --git a/hw/display/trace-events b/hw/display/trace-events
+index 781f8a3320..e212710284 100644
+--- a/hw/display/trace-events
++++ b/hw/display/trace-events
+@@ -53,6 +53,8 @@ virtio_gpu_cmd_ctx_submit(uint32_t ctx, uint32_t size) "ctx 0x%x, size %d"
+ virtio_gpu_update_cursor(uint32_t scanout, uint32_t x, uint32_t y, const char *type, uint32_t res) "scanout %d, x %d, y %d, %s, res 0x%x"
+ virtio_gpu_fence_ctrl(uint64_t fence, uint32_t type) "fence 0x%" PRIx64 ", type 0x%x"
+ virtio_gpu_fence_resp(uint64_t fence) "fence 0x%" PRIx64
++virtio_gpu_inc_inflight_fences(uint32_t inflight) "in-flight+ %u"
++virtio_gpu_dec_inflight_fences(uint32_t inflight) "in-flight- %u"
+ 
+ # qxl.c
+ disable qxl_io_write_vga(int qid, const char *mode, uint32_t addr, uint32_t val) "%d %s addr=%u val=%u"
 -- 
 2.39.5
 
