@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E589B4D6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A349B4D4F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:14:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nul-0004pD-SQ; Tue, 29 Oct 2024 11:13:49 -0400
+	id 1t5nvU-0005io-1K; Tue, 29 Oct 2024 11:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5nsB-0000p8-Tm
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:11 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1t5nsA-0000os-N5
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:09 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t5ns3-0007jZ-KT
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:07 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4316cce103dso72805575e9.3
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:59 -0700 (PDT)
+ id 1t5ns3-0007j3-09
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:11:06 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43162cf1eaaso73109255e9.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:10:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730214658; x=1730819458; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730214657; x=1730819457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y+/gn5PrRHI6aUAYrICmiO61nI9SeFkHZ/jV7ZOSLYc=;
- b=cgi33KTsNbCX/IQC/79Vf6VDoKV76NWLPJR1uS4CbpjDlSnAsGPVtZaXRa+jB+1ERe
- JEInaVfmXvv+hAqEbkQDGKv7Reeast3O2si4mpKqWMCjP9LphZvg/FckHj/K7OWgXQp5
- xYyRCzQdLjdY8416AahrMuXX+bvor0X35xKvC2+MGIy/OGyX99TqkAX5JvUkUVGmnG2J
- w50UR5tK+pIMvZT3p5itd0LMr0b86y9Ha1SlQpDrA9afYxJqJExuqlgVI5ZoN1DfX59F
- 7ew/IoBeR6UfVZcOZfJFomJEir1kWNkfcsm0frsXZI/S5Yx5CRIxhk4ibCHzuZ1XN8i1
- jutg==
+ :reply-to; bh=t1ofx0L3R12Y3Qfk5twMRKrNngXzbSoAXzZlWcI4ZBk=;
+ b=vgm/JWXIWfYS1U68XdgB528xBrv/DBHGqUiIzoHP93RPyU43F9xD3bQyIbzpuihs3g
+ 1OzeuXC0NKgs8ujnC4VSqAhG39Y7d5tOHqIAFHixP3b+VQCQSCiEzzeDprj3CuW/jkJs
+ QIDqjY+PN4KuanUUcLSBodzGVwg32R4jDHUF1SpQDJn52LrMfsNVooJZoKfBa8/u+TMt
+ U5Uf04FYNvSPjp5inpfXjhPT1AJ/DkIOp80dgIBZGo8EnYPDhzgNDYFB1w7S33oiorpr
+ dx85ut6BFzHQfVuVUncuIMwDfMH0oSAbm9Wu7MUHgyuQjVNPEW87DLzKWX7TtI4KB+B/
+ vpdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730214658; x=1730819458;
+ d=1e100.net; s=20230601; t=1730214657; x=1730819457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y+/gn5PrRHI6aUAYrICmiO61nI9SeFkHZ/jV7ZOSLYc=;
- b=kilYqqhuHeAkijeJZKrOgCrXRJ+gaW1xnP5P0t5OKUAERKrttcVvhsLRNKqwVLhcq7
- 0Go2eAeTZ33CfLJJNKCxKaMy3xy/xRoEKrDt++6PldtI630WIVhwFJs2J+Vh3dXtKd+H
- SFAjK6c3ntTGiJ3Rt5fxl7UOVt6CCdKDE1m3c77WRBh/SsXbI1lGmBC/tpwCty2vubbB
- BJx9TwtDTrgt9uM3MBorNfsyUVmtAEqsZzv1oKwh6+U7xytI8dC7FE2yfNt/osLq4rzT
- 9feJqhCRqRsgmdapfCKAjq4KKk4uV8o4tDr7llJhCrvwhemJkqNxTV8x5j44QjZJULOc
- qH3Q==
+ bh=t1ofx0L3R12Y3Qfk5twMRKrNngXzbSoAXzZlWcI4ZBk=;
+ b=Bv1B+eNQvlgkPF7EBfaHze+uzxnJ4Y/uoMkQHALHqhT5BsBFSd0AMzW++1gYFrdVkV
+ bI0Ba0RjIlRF7JwufoRe7UgtQaE7/IxJbMigRPPMKaMw1S1nh7i3k0terHRI77ARfjOr
+ vmT3HgSmrssJ371qqtQfzTnRZcvRioVT+PQxsq25/lrIGKjkMiz5mPOsLVQHUoty/PIl
+ n0nVHVHFa4x5+IbHeUkpcuYEnPGPMu9Pkb5qb+qnMhEqwZKszsH10rEb8CZZtaKMmwFg
+ z2N2wezGPde+t+l9/kuwTrbq6mA6wZ83dRBoAQeOF1VXMiraF7MPAxKkpISiiiYcA6iz
+ C68A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXbVGOT1Sjw+Fchhs98CtyrXAlEveK3AmPJpR5w+gZfhyZWPdMwcMqI+jpdqISBwfzzf5QBprE2Jzqg@nongnu.org
-X-Gm-Message-State: AOJu0YyRRz8qaj+HYVNPa0bn+WtUklc465zaqwNQQlwA2sHyVQ5DKeSe
- MIm7EBupJoinAlOPf2JlXwdhSU5ebsB9tJwo4nrVVaydFWmtClFDpk04F3153GQ=
-X-Google-Smtp-Source: AGHT+IE+CaNX/WMNehglY/nJSdvtbdvAFLTDFWDDHJbUc9dGNE6OcA4MkwV/1gBimOveI5BmsbRJxA==
+ AJvYcCXebe4IRULmj2vUhSIIKDcC+lxZIdcHXNCjKXPk8fplhjvodNMO7Vl2sEPobqaZfa3NsU5r0wDBc0RW@nongnu.org
+X-Gm-Message-State: AOJu0YwdRbHSlFDvMdJfVDy6M0bhVQBprHwRups9AFadeTpPJ+JoYqkK
+ i6b+4uX3VhlCE2a9P05Z8PXrB/V7x9YbvU8DJacR7Z8ubiT2aogQkPkHdPPwKoQ=
+X-Google-Smtp-Source: AGHT+IEhIZ0FKHQDbPf3PTcCdVQCu7AWtY8kYPVxwfWAhSoE/P99YHMpWrkgsdxZEgKQk1O5N4rw0w==
 X-Received: by 2002:a05:600c:358e:b0:42f:75e0:780e with SMTP id
- 5b1f17b1804b1-4319ac9a68cmr140317035e9.10.1730214656641; 
- Tue, 29 Oct 2024 08:10:56 -0700 (PDT)
+ 5b1f17b1804b1-4319ac9a68cmr140317295e9.10.1730214657109; 
+ Tue, 29 Oct 2024 08:10:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4319360cc2esm146835865e9.44.2024.10.29.08.10.56
@@ -60,25 +60,25 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 13/18] docs/system/arm: Add placeholder doc for xlnx-zcu102
- board
-Date: Tue, 29 Oct 2024 15:10:43 +0000
-Message-Id: <20241029151048.1047247-14-peter.maydell@linaro.org>
+Subject: [PULL 14/18] docs/system/arm: Add placeholder docs for mcimx6ul-evk
+ and mcimx7d-sabre
+Date: Tue, 29 Oct 2024 15:10:44 +0000
+Message-Id: <20241029151048.1047247-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
 References: <20241029151048.1047247-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,69 +94,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a placeholder doc for the xlnx-zcu102 board.
+Add placeholder docs for the mcimx6ul-evk and mcimx7d-sabre boards.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-id: 20241018141332.942844-6-peter.maydell@linaro.org
+Message-id: 20241018141332.942844-7-peter.maydell@linaro.org
 ---
- MAINTAINERS                     |  1 +
- docs/system/arm/xlnx-zcu102.rst | 19 +++++++++++++++++++
- docs/system/target-arm.rst      |  1 +
- 3 files changed, 21 insertions(+)
- create mode 100644 docs/system/arm/xlnx-zcu102.rst
+ MAINTAINERS                       | 2 ++
+ docs/system/arm/mcimx6ul-evk.rst  | 5 +++++
+ docs/system/arm/mcimx7d-sabre.rst | 5 +++++
+ docs/system/target-arm.rst        | 2 ++
+ 4 files changed, 14 insertions(+)
+ create mode 100644 docs/system/arm/mcimx6ul-evk.rst
+ create mode 100644 docs/system/arm/mcimx7d-sabre.rst
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2b524d7af54..66c7572c27b 100644
+index 66c7572c27b..1e88b5738cb 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1018,6 +1018,7 @@ F: include/hw/ssi/xilinx_spips.h
- F: hw/display/dpcd.c
- F: include/hw/display/dpcd.h
- F: docs/system/arm/xlnx-versal-virt.rst
-+F: docs/system/arm/xlnx-zcu102.rst
+@@ -791,6 +791,7 @@ F: hw/arm/fsl-imx6ul.c
+ F: hw/misc/imx6ul_ccm.c
+ F: include/hw/arm/fsl-imx6ul.h
+ F: include/hw/misc/imx6ul_ccm.h
++F: docs/system/arm/mcimx6ul-evk.rst
  
- Xilinx Versal OSPI
- M: Francisco Iglesias <francisco.iglesias@amd.com>
-diff --git a/docs/system/arm/xlnx-zcu102.rst b/docs/system/arm/xlnx-zcu102.rst
+ MCIMX7D SABRE / i.MX7
+ M: Peter Maydell <peter.maydell@linaro.org>
+@@ -804,6 +805,7 @@ F: include/hw/arm/fsl-imx7.h
+ F: include/hw/misc/imx7_*.h
+ F: hw/pci-host/designware.c
+ F: include/hw/pci-host/designware.h
++F: docs/system/arm/mcimx7d-sabre.rst
+ 
+ MPS2 / MPS3
+ M: Peter Maydell <peter.maydell@linaro.org>
+diff --git a/docs/system/arm/mcimx6ul-evk.rst b/docs/system/arm/mcimx6ul-evk.rst
 new file mode 100644
-index 00000000000..534cd1dc887
+index 00000000000..8871138ab3e
 --- /dev/null
-+++ b/docs/system/arm/xlnx-zcu102.rst
-@@ -0,0 +1,19 @@
-+Xilinx ZynqMP ZCU102 (``xlnx-zcu102``)
-+======================================
++++ b/docs/system/arm/mcimx6ul-evk.rst
+@@ -0,0 +1,5 @@
++NXP MCIMX6UL-EVK (``mcimx6ul-evk``)
++===================================
 +
-+The ``xlnx-zcu102`` board models the Xilinx ZynqMP ZCU102 board.
-+This board has 4 Cortex-A53 CPUs and 2 Cortex-R5F CPUs.
++The ``mcimx6ul-evk`` machine models the NXP i.MX6UltraLite Evaluation Kit
++MCIMX6UL-EVK development board. It has a single Cortex-A7 CPU.
+diff --git a/docs/system/arm/mcimx7d-sabre.rst b/docs/system/arm/mcimx7d-sabre.rst
+new file mode 100644
+index 00000000000..c5d35af1d44
+--- /dev/null
++++ b/docs/system/arm/mcimx7d-sabre.rst
+@@ -0,0 +1,5 @@
++NXP MCIMX7D Sabre (``mcimx7d-sabre``)
++=====================================
 +
-+Machine-specific options
-+""""""""""""""""""""""""
-+
-+The following machine-specific options are supported:
-+
-+secure
-+  Set ``on``/``off`` to enable/disable emulating a guest CPU which implements the
-+  Arm Security Extensions (TrustZone). The default is ``off``.
-+
-+virtualization
-+  Set ``on``/``off`` to enable/disable emulating a guest CPU which implements the
-+  Arm Virtualization Extensions. The default is ``off``.
-+
++The ``mcimx7d-sabre`` machine models the NXP SABRE Board MCIMX7SABRE,
++based an an i.MX7Dual SoC.
 diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index a7f88c8f317..ace36d1b17d 100644
+index ace36d1b17d..1f806cf4a46 100644
 --- a/docs/system/target-arm.rst
 +++ b/docs/system/target-arm.rst
-@@ -107,6 +107,7 @@ undocumented; you can get a complete list by running
-    arm/xenpvh
-    arm/xlnx-versal-virt
-    arm/xlnx-zynq
-+   arm/xlnx-zcu102
- 
- Emulated CPU architecture support
- =================================
+@@ -97,6 +97,8 @@ undocumented; you can get a complete list by running
+    arm/nrf
+    arm/nuvoton
+    arm/imx25-pdk
++   arm/mcimx6ul-evk
++   arm/mcimx7d-sabre
+    arm/orangepi
+    arm/raspi
+    arm/collie
 -- 
 2.34.1
 
