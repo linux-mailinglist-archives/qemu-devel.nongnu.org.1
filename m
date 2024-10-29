@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68BB9B449F
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D11729B4495
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:45:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hpH-00032j-3p; Tue, 29 Oct 2024 04:43:43 -0400
+	id 1t5hpG-000326-Cr; Tue, 29 Oct 2024 04:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hpD-00031U-Ag
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:39 -0400
+ id 1t5hpE-00031u-OX
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:40 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hpB-00083O-MW
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:39 -0400
+ id 1t5hpD-00083P-4N
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730191418; x=1761727418;
+ t=1730191419; x=1761727419;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b3ghL1kjS2+0w0jZmmgjLxWWfkCh8dYffVl5sBe8rfI=;
- b=feip1Mb2T8TEkpwLouXBY2ksVz6LobRsyTU6ar0Oe6TWVVFdWKqOEUCQ
- bcUGd3QAe9JXSwNgpnZs8Zay9BYppytBQCCUdXo7hA9W3GHCk9E5KovxZ
- xTPUT4Tcy4Cj8R+W5X65+wKkDONWxt9kfN4/P9nHNGiDu6WA5UyTMC577
- aeqwduv6TzdcuM/AVHIyS5P6RbMuUeeRfro+6bLfmsycQXIlgsmjTPCf/
- 98ezze+VjTI/SuDVRt097y5G+0FE7hQPHSYT8dVuyvyDMwpv3ROrHCKEG
- GEtTxS0UtZ27S6XvSpQtCTCztwUzmCyH+hjvzUXvPijrcUVUaUdxsuYck g==;
-X-CSE-ConnectionGUID: Zxq2saP5SMi2dG/CyV87Yw==
-X-CSE-MsgGUID: Bwg9dMbURsC5yWR+0JjPeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592807"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592807"
+ bh=tK36CO+mnwx3UfyesQ659HajFWB+D+B7nljlDYn8dyc=;
+ b=Lwf2ewuN+ye2TJG7+fxMZBNMkBMo+8YLbnrY9NDmucWSl4FhpuWig0Sz
+ gHrvc5Xo0RclFS2XvkNrnN8sCDwhe3fc33ZQsYaHF7Q40NToXg9OrM0vm
+ ltSs8wlOGs5kiCey32+SnF7wd+y3YNEU0vrwhKFFnF+IlQ3X/NxaTq+Hm
+ CtefNbPWPnNHyGf3QhqPq0Il1D7BpVfJj91njaXyB62qL86aJQwInbXGO
+ jgdGr6/jWG0eADC82ZUEojxQQCKj0YStrMNA9LlYu8boulCZc8OxTkhtb
+ KBo7G1HpokD+P9wY89Zc6rDAzlv8qQs/RI4xAK9tfEOw2YUyRcm27QOfC w==;
+X-CSE-ConnectionGUID: 09NR5Z4rRLebWwUI32frrg==
+X-CSE-MsgGUID: fD83p55JR0Sj1NLyPNWGIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592813"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592813"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 01:43:36 -0700
-X-CSE-ConnectionGUID: Gw1v7kf4RcOYYIbVXgxJOg==
-X-CSE-MsgGUID: Ume+FI35ThWzhNDLcrc3Ng==
+ 29 Oct 2024 01:43:38 -0700
+X-CSE-ConnectionGUID: VP1IhmV/QtCkcdo/miMBew==
+X-CSE-MsgGUID: lorqoSSvRsi8MKm63yTs7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847193"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847198"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:35 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:36 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 08/16] hw/usb: Replace type_register() with
+Subject: [PATCH 09/16] hw/virtio: Replace type_register() with
  type_register_static()
-Date: Tue, 29 Oct 2024 16:59:26 +0800
-Message-Id: <20241029085934.2799066-9-zhao1.liu@intel.com>
+Date: Tue, 29 Oct 2024 16:59:27 +0800
+Message-Id: <20241029085934.2799066-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029085934.2799066-1-zhao1.liu@intel.com>
 References: <20241029085934.2799066-1-zhao1.liu@intel.com>
@@ -88,36 +88,43 @@ type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/usb/hcd-ehci-pci.c | 2 +-
- hw/usb/hcd-uhci.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/virtio/virtio-pci.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
-index c94fc9f6c587..dd06451e234f 100644
---- a/hw/usb/hcd-ehci-pci.c
-+++ b/hw/usb/hcd-ehci-pci.c
-@@ -228,7 +228,7 @@ static void ehci_pci_register_types(void)
-     for (i = 0; i < ARRAY_SIZE(ehci_pci_info); i++) {
-         ehci_type_info.name = ehci_pci_info[i].name;
-         ehci_type_info.class_data = ehci_pci_info + i;
--        type_register(&ehci_type_info);
-+        type_register_static(&ehci_type_info);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 4d832fe8455d..21ff7c5f6a9f 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2492,9 +2492,9 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         base_type_info.class_data = (void *)t;
      }
- }
  
-diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
-index 3d0339af7b9e..65c1f93cc9f3 100644
---- a/hw/usb/hcd-uhci.c
-+++ b/hw/usb/hcd-uhci.c
-@@ -1362,7 +1362,7 @@ static void uhci_register_types(void)
-     for (i = 0; i < ARRAY_SIZE(uhci_info); i++) {
-         uhci_type_info.name = uhci_info[i].name;
-         uhci_type_info.class_data = uhci_info + i;
--        type_register(&uhci_type_info);
-+        type_register_static(&uhci_type_info);
+-    type_register(&base_type_info);
++    type_register_static(&base_type_info);
+     if (generic_type_info.name) {
+-        type_register(&generic_type_info);
++        type_register_static(&generic_type_info);
      }
- }
  
+     if (t->non_transitional_name) {
+@@ -2508,7 +2508,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+                 { }
+             },
+         };
+-        type_register(&non_transitional_type_info);
++        type_register_static(&non_transitional_type_info);
+     }
+ 
+     if (t->transitional_name) {
+@@ -2525,7 +2525,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+                 { }
+             },
+         };
+-        type_register(&transitional_type_info);
++        type_register_static(&transitional_type_info);
+     }
+     g_free(base_name);
+ }
 -- 
 2.34.1
 
