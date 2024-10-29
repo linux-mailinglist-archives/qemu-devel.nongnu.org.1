@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB40D9B4485
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1861D9B4491
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:45:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hpJ-00033C-43; Tue, 29 Oct 2024 04:43:45 -0400
+	id 1t5hpS-00033w-OQ; Tue, 29 Oct 2024 04:43:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hpG-00032b-BA
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:42 -0400
+ id 1t5hpR-00033i-6k
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:53 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hpE-000848-QE
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:42 -0400
+ id 1t5hpP-00083P-Eg
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730191421; x=1761727421;
+ t=1730191431; x=1761727431;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=43WK+abTbNMifGNpLd4Svq5BTo5rTuY6AzMRimA/3NA=;
- b=AQ9FLfIV4uASuw7fmo3qjAsAQsPv8p5PEkXXbNdxT13bGZHypF+rSTcC
- UOzEoBRk+06dbJuHrv9IFEpCXRL5wNXvdvor6leFGbyUTeOIwG7Pxgt97
- bGcquQiVZAAQ/XK6Ps9C33GXgb4AsBajWNguENhyGhH7itwNPoVE6msM4
- qn/EB4zS4kzY6LfjwGydNFvYAuSRPSZDvw/e+oTWa8aC8EYOMBqdtuAjH
- /KtXdUZKoKLUtOQUyqQS5HxNDMVwYFHhgizkftC1sF9lo4K6sTn5ABZiF
- 0LovX17htJlv3YQvZTWDdO3TSdfySSQZUOgHr2X3pkvJmRfKcMpsbbjh3 w==;
-X-CSE-ConnectionGUID: 6gcS49eTQTCmLMIHhKA6Mg==
-X-CSE-MsgGUID: /tb8305eQJWrcO5NzpcZhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592817"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592817"
+ bh=fzNuBXULCODz/FU9wq/GkP4Ss2qGsps+MsRx2BwEg6s=;
+ b=Wx9FtCI5UtZ5tX/FMKo22AlKdnJdclS7JpsgJRAkCbDIAvQ4ysu1SSlW
+ ITeIW30YRCvGwrA0iAibS8UgPRG91O2Le8YN72B5V40JyOTF1rlnmK/dz
+ nDJlHWRC6mFAWDSlzcVi3O9SD1T2hBJ083s2KmVZLuAZ3yMDpb0m0L/LA
+ hiu6R3/5MlY3FEwRyrfotAVjab+vCpbWbWT1b+cDEGwlvHLSxaoVauDfj
+ HNiu9UavRYxY3P6lbs/laOZlV2okebZ5SFBBfda1patDZMQnaV7/gQl6B
+ NkpLYAl5GO2/PZ9ckzQyiEwyemXKkKtDW7LN6MTefr2nVXLU5b01L9wgq Q==;
+X-CSE-ConnectionGUID: Yu3o6vtoTd2Z39kHnJYWcw==
+X-CSE-MsgGUID: CmqGR7IATMO+HocZIkSsEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592822"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592822"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 01:43:39 -0700
-X-CSE-ConnectionGUID: 0fZAUPKqRASBD1NDMbj68Q==
-X-CSE-MsgGUID: 68T131g+S+eyD/L3pN12nA==
+ 29 Oct 2024 01:43:41 -0700
+X-CSE-ConnectionGUID: ifxcJGuySaClaF603DHHiA==
+X-CSE-MsgGUID: GHzK+cUrQmuXRIFtrIu8tg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847208"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847213"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:38 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:39 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 10/16] i386: Replace type_register() with
+Subject: [PATCH 11/16] target/mips: Replace type_register() with
  type_register_static()
-Date: Tue, 29 Oct 2024 16:59:28 +0800
-Message-Id: <20241029085934.2799066-11-zhao1.liu@intel.com>
+Date: Tue, 29 Oct 2024 16:59:29 +0800
+Message-Id: <20241029085934.2799066-12-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029085934.2799066-1-zhao1.liu@intel.com>
 References: <20241029085934.2799066-1-zhao1.liu@intel.com>
@@ -88,44 +88,21 @@ type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/i386/pc.h | 4 ++--
- target/i386/cpu.c    | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/mips/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 14ee06287da3..b3477ad6a291 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -316,7 +316,7 @@ extern const size_t pc_compat_2_3_len;
-     }; \
-     static void pc_machine_init_##suffix(void) \
-     { \
--        type_register(&pc_machine_type_##suffix); \
-+        type_register_static(&pc_machine_type_##suffix); \
-     } \
-     type_init(pc_machine_init_##suffix)
- 
-@@ -344,7 +344,7 @@ extern const size_t pc_compat_2_3_len;
-     static void MACHINE_VER_SYM(register, namesym, __VA_ARGS__)(void) \
-     { \
-         MACHINE_VER_DELETION(__VA_ARGS__); \
--        type_register(&MACHINE_VER_SYM(info, namesym, __VA_ARGS__)); \
-+        type_register_static(&MACHINE_VER_SYM(info, namesym, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, namesym, __VA_ARGS__));
- 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1ff1af032eaa..241bbef5d60b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6347,7 +6347,7 @@ static void x86_register_cpu_model_type(const char *name, X86CPUModel *model)
-         .class_data = model,
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 9724e71a5e0f..80ad4ae1084c 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -626,7 +626,7 @@ static void mips_register_cpudef_type(const struct mips_def_t *def)
+         .class_data = (void *)def,
      };
  
 -    type_register(&ti);
 +    type_register_static(&ti);
+     g_free(typename);
  }
- 
  
 -- 
 2.34.1
