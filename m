@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DE49B457C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:19:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8821C9B459A
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:22:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5iMk-0000ik-9P; Tue, 29 Oct 2024 05:18:18 -0400
+	id 1t5iMm-0000ld-09; Tue, 29 Oct 2024 05:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMT-0000bY-Fm; Tue, 29 Oct 2024 05:18:04 -0400
+ id 1t5iMX-0000cX-TZ; Tue, 29 Oct 2024 05:18:07 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMS-0003A3-1d; Tue, 29 Oct 2024 05:18:01 -0400
+ id 1t5iMW-0003A3-8N; Tue, 29 Oct 2024 05:18:05 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 29 Oct
- 2024 17:17:31 +0800
+ 2024 17:17:32 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 29 Oct 2024 17:17:31 +0800
+ Transport; Tue, 29 Oct 2024 17:17:32 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 7/8] hw/arm/aspeed: Invert sdhci write protected pin for
- AST2600 and AST2500 EVBs
-Date: Tue, 29 Oct 2024 17:17:28 +0800
-Message-ID: <20241029091729.3317512-8-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 8/8] aspeed: Support create flash devices via command line
+ for AST1030
+Date: Tue, 29 Oct 2024 17:17:29 +0800
+Message-ID: <20241029091729.3317512-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
 References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
@@ -67,66 +67,50 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Write Protect pin of SDHCI model is default active low to match the SDHCI
-spec. So, write enable the bit 19 should be 1 and write protected the bit 19
-should be 0 at the Present State Register (0x24).
-
-According to the design of AST2500 and AST2600 EVBs, the Write Protected pin
-is active high by default. To support it, introduces a new sdhci_wp_invert
-property in ASPEED MACHINE state and set it true for AST2500 and AST2600 EVBs
-and set "wp_invert" property true of sdhci-generic model.
+Add a "if-statement" in aspeed_minibmc_machine_init function. If users add
+"-nodefaults" in command line, the flash devices should be created by users
+setting. Otherwise, the flash devices are created at machine init.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed.c         | 8 ++++++++
- include/hw/arm/aspeed.h | 1 +
- 2 files changed, 9 insertions(+)
+ hw/arm/aspeed.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index b4b1ce9efb..0468602d95 100644
+index 0468602d95..e161e6b1c5 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -403,6 +403,12 @@ static void aspeed_machine_init(MachineState *machine)
-                              OBJECT(get_system_memory()), &error_abort);
-     object_property_set_link(OBJECT(bmc->soc), "dram",
-                              OBJECT(machine->ram), &error_abort);
-+    if (amc->sdhci_wp_invert) {
-+        for (i = 0; i < bmc->soc->sdhci.num_slots; i++) {
-+            object_property_set_bool(OBJECT(&bmc->soc->sdhci.slots[i]),
-+                                     "wp-invert", true, &error_abort);
-+        }
+@@ -1602,18 +1602,20 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
+     connect_serial_hds_to_uarts(bmc);
+     qdev_realize(DEVICE(bmc->soc), NULL, &error_abort);
+ 
+-    aspeed_board_init_flashes(&bmc->soc->fmc,
+-                              bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
+-                              amc->num_cs,
+-                              0);
++    if (defaults_enabled()) {
++        aspeed_board_init_flashes(&bmc->soc->fmc,
++                            bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
++                            amc->num_cs,
++                            0);
+ 
+-    aspeed_board_init_flashes(&bmc->soc->spi[0],
+-                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
+-                              amc->num_cs, amc->num_cs);
++        aspeed_board_init_flashes(&bmc->soc->spi[0],
++                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
++                            amc->num_cs, amc->num_cs);
+ 
+-    aspeed_board_init_flashes(&bmc->soc->spi[1],
+-                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
+-                              amc->num_cs, (amc->num_cs * 2));
++        aspeed_board_init_flashes(&bmc->soc->spi[1],
++                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
++                            amc->num_cs, (amc->num_cs * 2));
 +    }
-     if (machine->kernel_filename) {
-         /*
-          * When booting with a -kernel command line there is no u-boot
-@@ -1308,6 +1314,7 @@ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc, void *data)
-     amc->fmc_model = "mx25l25635e";
-     amc->spi_model = "mx25l25635f";
-     amc->num_cs    = 1;
-+    amc->sdhci_wp_invert = true;
-     amc->i2c_init  = ast2500_evb_i2c_init;
-     mc->default_ram_size       = 512 * MiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-@@ -1409,6 +1416,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 1;
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
-                      ASPEED_MAC3_ON;
-+    amc->sdhci_wp_invert = true;
-     amc->i2c_init  = ast2600_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index cbeacb214c..879bdb96ee 100644
---- a/include/hw/arm/aspeed.h
-+++ b/include/hw/arm/aspeed.h
-@@ -39,6 +39,7 @@ struct AspeedMachineClass {
-     uint32_t macs_mask;
-     void (*i2c_init)(AspeedMachineState *bmc);
-     uint32_t uart_default;
-+    bool sdhci_wp_invert;
- };
  
- 
+     if (amc->i2c_init) {
+         amc->i2c_init(bmc);
 -- 
 2.34.1
 
