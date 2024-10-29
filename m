@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC729B448A
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 672EE9B448E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hp9-0002zm-HY; Tue, 29 Oct 2024 04:43:35 -0400
+	id 1t5hp9-0002zb-3p; Tue, 29 Oct 2024 04:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hp6-0002yO-OD
+ id 1t5hp6-0002yQ-Qg
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:32 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5hp4-000823-Ab
+ id 1t5hp5-00082C-5K
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:43:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730191410; x=1761727410;
+ t=1730191411; x=1761727411;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=18pQ9+SfnSigWSBylZF9eBI8bbh5P/JEEPJ4cx3fM/A=;
- b=VR6GhBUiM5QBLvXtx5ChGYQ/On7FnATKKQN83oDZZwfueA6SsIgqiAC/
- Oh3TlQqgeltQIrw5dxDFSA74mIvqzrBy3YATVKl6jyaPUsUE0yAu/ExKA
- LtaxW3Dxf8WF3DmXNqNTR88nkQjBv/fgJPHXuug0E4B+i/uubbF4PsBXw
- oCMuDyQgTq7clz4Sh4JJgdvou121iF2YJorXdGthBcZkL2CZFolpK4Nc0
- kU9q4oCt1c2bGZ2RoDlLoyXPpMN0yZt9/Wa9VmzbGcrfVmYdtGwJ76KGE
- rWB21t76/Dc4DLr8FZl0Gt0/XRWgpJFpWE8Oxy+KjCkHp6dZ1wbbEgS0y w==;
-X-CSE-ConnectionGUID: bXbGLT+nQB6dFtb6zBLrsQ==
-X-CSE-MsgGUID: ekISJSmsS7iE15cF/v3zNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592770"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592770"
+ bh=yIyb1abKVnDFJMflWs366PCqnWxkWmaMhCPGF5VbeKc=;
+ b=cXqOJNS6Rhgtp2CDX52QQ5j3sk6xanATw3g47cObUvju7PJn2lCp4H8/
+ /koLJvWyK820nWPvFSe9XNbPCiBy1+7lhWwxFFYjcB/nmUpEP6AeCTCJM
+ y/0xg9cBQVr9g3D/6/9OXL1ll1k3Y7Yr50Ory61LAmUmMcZ2JAtY7MO3S
+ zuIBN/PIl0UNkX3l3/sxTTPFoya/Md+w7B7o8CXOQU5vvcKj9cjtt4hJU
+ NQDw0TE2eKax1p4p5wrrD17fk0cumWQScE0Of0pQ9MESW59M+IpC0mHEV
+ ABocYuTTq0DJowVHXyOn8lFiGeS2mlALEV+5vJlDgmG12cgMMcCyj60Wn w==;
+X-CSE-ConnectionGUID: /ZtrOBH1SyGwUCQ9oN0Frw==
+X-CSE-MsgGUID: Zn38FSwCTtaBiN7PiTSnWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29592774"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29592774"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 01:43:25 -0700
-X-CSE-ConnectionGUID: q1TPc99zQ6OUBM19J8sHfQ==
-X-CSE-MsgGUID: +VW8Tz3wRAmRqD2ApeHdjg==
+ 29 Oct 2024 01:43:27 -0700
+X-CSE-ConnectionGUID: 6vq/QPBkRbG/5rlI1kn72Q==
+X-CSE-MsgGUID: lOZi8fveSjegZ71TBuSZKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847110"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="85847119"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:24 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 29 Oct 2024 01:43:25 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 01/16] arm: Replace type_register() with type_register_static()
-Date: Tue, 29 Oct 2024 16:59:19 +0800
-Message-Id: <20241029085934.2799066-2-zhao1.liu@intel.com>
+Subject: [PATCH 02/16] hw/block: Replace type_register() with
+ type_register_static()
+Date: Tue, 29 Oct 2024 16:59:20 +0800
+Message-Id: <20241029085934.2799066-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029085934.2799066-1-zhao1.liu@intel.com>
 References: <20241029085934.2799066-1-zhao1.liu@intel.com>
@@ -87,64 +88,20 @@ type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/arm/armsse.c    | 2 +-
- hw/arm/smmuv3.c    | 4 ++--
- target/arm/cpu.c   | 2 +-
- target/arm/cpu64.c | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ hw/block/m25p80.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
-index 255346a595a7..58ed504b2bc3 100644
---- a/hw/arm/armsse.c
-+++ b/hw/arm/armsse.c
-@@ -1731,7 +1731,7 @@ static void armsse_register_types(void)
-             .class_init = armsse_class_init,
-             .class_data = (void *)&armsse_variants[i],
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index e2e84f8b5f8d..748594524e3f 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -1894,7 +1894,7 @@ static void m25p80_register_types(void)
+             .class_init = m25p80_class_init,
+             .class_data = (void *)&known_devices[i],
          };
 -        type_register(&ti);
 +        type_register_static(&ti);
      }
- }
- 
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 4c49b5a885f1..6e847e8773d8 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -2065,8 +2065,8 @@ static const TypeInfo smmuv3_iommu_memory_region_info = {
- 
- static void smmuv3_register_types(void)
- {
--    type_register(&smmuv3_type_info);
--    type_register(&smmuv3_iommu_memory_region_info);
-+    type_register_static(&smmuv3_type_info);
-+    type_register_static(&smmuv3_iommu_memory_region_info);
- }
- 
- type_init(smmuv3_register_types)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 1320fd8c8fea..38ad3fcacd33 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2738,7 +2738,7 @@ void arm_cpu_register(const ARMCPUInfo *info)
-     };
- 
-     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
--    type_register(&type_info);
-+    type_register_static(&type_info);
-     g_free((void *)type_info.name);
- }
- 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 458d1cee0120..c1cac912a088 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -841,7 +841,7 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
-     };
- 
-     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
--    type_register(&type_info);
-+    type_register_static(&type_info);
-     g_free((void *)type_info.name);
  }
  
 -- 
