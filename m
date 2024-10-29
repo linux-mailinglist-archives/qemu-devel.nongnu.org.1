@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5803D9B43E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:11:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E7B9B43CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:09:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hG7-00078Q-Ri; Tue, 29 Oct 2024 04:07:24 -0400
+	id 1t5hGJ-00079v-GI; Tue, 29 Oct 2024 04:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hG4-00077q-OH
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:20 -0400
+ id 1t5hGH-00079Z-GW
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hG3-0003vf-7g
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:20 -0400
+ id 1t5hGF-0003wV-Ol
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730189237;
+ s=mimecast20190719; t=1730189251;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4ZjB3Af3Eu7jTZIe/vhr6IHTcD6ismi5yenfs4fh47Q=;
- b=OAZDNqlw5QGtI7P66fbx1+ncMWK999KyGvpuKRwLgYnL9MUsREXewESbfrtZdg0A71xPlU
- /+Zcnp7D9XzXLNIZHdkdn/Z8/a0ZPI2qcMwsS255zavl5msvYN1R+8Ai7/5NPoIupm6EBu
- aPB5UGvfwCL/ZFE9PQvi2vilhODlaQI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1bv3Ni3J1teSkGbpGS4vKRXQ+UmcTRKnZUd/nHd5DYY=;
+ b=UOx0fhUNr9N4t4JufYo+T2FCYFnf5MCetymSwNs61M/HPGJbVGc1Uz9RjiE/ZYAsS2dg2M
+ aT/C26A7h1b07zMC8VV3rWEE3ALu7rgw5PiPlyO0Ba28og8OkAFagYWsrbpbbZ/d5RlI8v
+ tCiqE1sMu/eRCwQ5cX0bQjDqWu84+KA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-216-_9t5xDVFPZ-mOBR7Ad9T-w-1; Tue,
- 29 Oct 2024 04:07:15 -0400
-X-MC-Unique: _9t5xDVFPZ-mOBR7Ad9T-w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-UOQ1082XMmeVbf4_98UQmw-1; Tue,
+ 29 Oct 2024 04:07:24 -0400
+X-MC-Unique: UOQ1082XMmeVbf4_98UQmw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AF88B1955F10
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:07:14 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 81BEE1955F3B; Tue, 29 Oct 2024 08:07:18 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.36])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7DB6A1956086; Tue, 29 Oct 2024 08:07:11 +0000 (UTC)
+ id 963B81956086; Tue, 29 Oct 2024 08:07:15 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 01/14] net: fix build when libbpf is disabled,
- but libxdp is enabled
-Date: Tue, 29 Oct 2024 16:06:52 +0800
-Message-ID: <20241029080705.3238-2-jasowang@redhat.com>
+Subject: [PULL 02/14] hw/net: fix typo s/epbf/ebpf/ in virtio-net
+Date: Tue, 29 Oct 2024 16:06:53 +0800
+Message-ID: <20241029080705.3238-3-jasowang@redhat.com>
 In-Reply-To: <20241029080705.3238-1-jasowang@redhat.com>
 References: <20241029080705.3238-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -86,68 +85,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The net/af-xdp.c code is enabled when the libxdp library is present,
-however, it also has direct API calls to bpf_xdp_query_id &
-bpf_xdp_detach which are provided by the libbpf library.
-
-As a result if building with --disable-libbpf, but libxdp gets
-auto-detected, we'll fail to link QEMU
-
-  /usr/bin/ld: libcommon.a.p/net_af-xdp.c.o: undefined reference to symbol 'bpf_xdp_query_id@@LIBBPF_0.7.0'
-
-There are two bugs here
-
- * Since we have direct libbpf API calls, when building
-   net/af-xdp.c, we must tell meson that libbpf is a
-   dependancy, so that we directly link to it, rather
-   than relying on indirect linkage.
-
- * When must skip probing for libxdp at all, when libbpf
-   is not found, raising an error if --enable-libxdp was
-   given explicitly.
-
-Fixes: cb039ef3d9e3112da01e1ecd9b136ac9809ef733
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- meson.build     | 10 ++++++++--
- net/meson.build |  2 +-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ hw/net/virtio-net.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index c26c417de1..9432c5f173 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2164,8 +2164,14 @@ endif
- # libxdp
- libxdp = not_found
- if not get_option('af_xdp').auto() or have_system
--    libxdp = dependency('libxdp', required: get_option('af_xdp'),
--                        version: '>=1.4.0', method: 'pkg-config')
-+    if libbpf.found()
-+        libxdp = dependency('libxdp', required: get_option('af_xdp'),
-+                            version: '>=1.4.0', method: 'pkg-config')
-+    else
-+        if get_option('af_xdp').enabled()
-+            error('libxdp requested, but libbpf is not available')
-+        endif
-+    endif
- endif
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index fb84d142ee..7c050246ea 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1254,7 +1254,7 @@ static void rss_data_to_rss_config(struct VirtioNetRssData *data,
+     config->default_queue = data->default_queue;
+ }
  
- # libdw
-diff --git a/net/meson.build b/net/meson.build
-index e0cd71470e..bb97b4dcbe 100644
---- a/net/meson.build
-+++ b/net/meson.build
-@@ -39,7 +39,7 @@ if have_netmap
-   system_ss.add(files('netmap.c'))
- endif
+-static bool virtio_net_attach_epbf_rss(VirtIONet *n)
++static bool virtio_net_attach_ebpf_rss(VirtIONet *n)
+ {
+     struct EBPFRSSConfig config = {};
  
--system_ss.add(when: libxdp, if_true: files('af-xdp.c'))
-+system_ss.add(when: [libxdp, libbpf], if_true: files('af-xdp.c'))
+@@ -1276,7 +1276,7 @@ static bool virtio_net_attach_epbf_rss(VirtIONet *n)
+     return true;
+ }
  
- if have_vhost_net_user
-   system_ss.add(when: 'CONFIG_VIRTIO_NET', if_true: files('vhost-user.c'), if_false: files('vhost-user-stub.c'))
+-static void virtio_net_detach_epbf_rss(VirtIONet *n)
++static void virtio_net_detach_ebpf_rss(VirtIONet *n)
+ {
+     virtio_net_attach_ebpf_to_backend(n->nic, -1);
+ }
+@@ -1286,8 +1286,8 @@ static void virtio_net_commit_rss_config(VirtIONet *n)
+     if (n->rss_data.enabled) {
+         n->rss_data.enabled_software_rss = n->rss_data.populate_hash;
+         if (n->rss_data.populate_hash) {
+-            virtio_net_detach_epbf_rss(n);
+-        } else if (!virtio_net_attach_epbf_rss(n)) {
++            virtio_net_detach_ebpf_rss(n);
++        } else if (!virtio_net_attach_ebpf_rss(n)) {
+             if (get_vhost_net(qemu_get_queue(n->nic)->peer)) {
+                 warn_report("Can't load eBPF RSS for vhost");
+             } else {
+@@ -1300,7 +1300,7 @@ static void virtio_net_commit_rss_config(VirtIONet *n)
+                                     n->rss_data.indirections_len,
+                                     sizeof(n->rss_data.key));
+     } else {
+-        virtio_net_detach_epbf_rss(n);
++        virtio_net_detach_ebpf_rss(n);
+         trace_virtio_net_rss_disable();
+     }
+ }
 -- 
 2.42.0
 
