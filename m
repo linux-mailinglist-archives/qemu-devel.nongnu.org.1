@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739789B4D14
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E749B4D1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 16:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5nqk-0006WJ-AM; Tue, 29 Oct 2024 11:09:38 -0400
+	id 1t5nqu-0006Y4-A9; Tue, 29 Oct 2024 11:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1t5nqi-0006Vr-Uf
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:09:36 -0400
+ id 1t5nqr-0006XR-6W
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:09:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1t5nqf-0007K3-Es
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:09:36 -0400
+ id 1t5nql-0007LC-Nn
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 11:09:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730214572;
+ s=mimecast20190719; t=1730214578;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EawrAMiqZPHCdfZ9f5osnaUKjQDNMwjBz2dwMHPU2NM=;
- b=RwzE2gh55IAmilFoiSQiDPtthMRMTbw3w6Kej3+5OUUw6gpgITXl49eNe00KqVssw66cGu
- 0foiVu7wCXrr5so18nx0RO8icU7nBoiWTYt5NwCGLJ3Ru2uN9A31cJb9ozRGaS2UqZug/b
- GJWuufp+GzV+SsSX4MaRUH2mRs0u8jo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=gnKvSAGsXn7wVbU9jG9Lh0cUI9aeI16g1oxT5Kl0Gq8=;
+ b=OogzQWEU5Dw3T2nEvuqPWxdQkkqSgP96lscRcJN5yNVLFXbCsQ8GiGURHv11hJj2hVfUm+
+ p+enFbX1uN1FF+CbWefKR6p/KBfxLQxXvumlqo4bSPC4h8fVBhNQrf4vEh039qMKhkei8S
+ yrvEJ0XF+r52Gha1v5zlwQTa9sMvnOA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-Sf4MOfgjPmKRKAhmnb6HKQ-1; Tue,
- 29 Oct 2024 11:09:29 -0400
-X-MC-Unique: Sf4MOfgjPmKRKAhmnb6HKQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-X9M4qPLePCKOWphul-yhjw-1; Tue,
+ 29 Oct 2024 11:09:33 -0400
+X-MC-Unique: X9M4qPLePCKOWphul-yhjw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2228F195609D; Tue, 29 Oct 2024 15:09:28 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F28201955F42; Tue, 29 Oct 2024 15:09:32 +0000 (UTC)
 Received: from kaapi.redhat.com (unknown [10.74.16.130])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B9EF51956086; Tue, 29 Oct 2024 15:09:23 +0000 (UTC)
+ id D3AB61956086; Tue, 29 Oct 2024 15:09:28 +0000 (UTC)
 From: Prasad Pandit <ppandit@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH 2/5] migration/postcopy: magic value for postcopy channel
-Date: Tue, 29 Oct 2024 20:39:05 +0530
-Message-ID: <20241029150908.1136894-3-ppandit@redhat.com>
+Subject: [PATCH 3/5] migration: remove multifd check with postcopy
+Date: Tue, 29 Oct 2024 20:39:06 +0530
+Message-ID: <20241029150908.1136894-4-ppandit@redhat.com>
 In-Reply-To: <20241029150908.1136894-1-ppandit@redhat.com>
 References: <20241029150908.1136894-1-ppandit@redhat.com>
 MIME-Version: 1.0
@@ -83,62 +83,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Prasad Pandit <pjp@fedoraproject.org>
 
-During migration, the precopy and the multifd channels
-send magic value (4-bytes) to the destination side,
-for it to identify the channel and properly establish
-connection. But Postcopy channel did not send such value.
+Remove multifd capability check with Postcopy mode.
+This helps to enable both multifd and postcopy together.
 
-Introduce a magic value to be sent on the postcopy channel.
-It helps to identify channels when both multifd and postcopy
-migration are enabled together. An explicitly defined magic
-value makes code easier to follow, because it is consistent
-with the other channels.
+Update migrate_multifd() to return false when migration
+reaches Postcopy phase. In Postcopy phase, source guest
+is paused, so the migration threads on the source stop
+sending/pushing data on the channels. The destination
+guest starts running and Postcopy threads there begin
+to request/pull data from the source side.
 
 Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 ---
- migration/postcopy-ram.c | 7 +++++++
- migration/postcopy-ram.h | 3 +++
- 2 files changed, 10 insertions(+)
+ migration/options.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 83f6160a36..5bc19b541c 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1580,6 +1580,9 @@ void postcopy_unregister_shared_ufd(struct PostCopyFD *pcfd)
- 
- void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file)
+diff --git a/migration/options.c b/migration/options.c
+index ad8d6989a8..47c5137d5f 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -266,7 +266,8 @@ bool migrate_multifd(void)
  {
-+    if (mis->postcopy_qemufile_dst) {
-+        return;
-+    }
-     /*
-      * The new loading channel has its own threads, so it needs to be
-      * blocked too.  It's by default true, just be explicit.
-@@ -1612,6 +1615,10 @@ postcopy_preempt_send_channel_done(MigrationState *s,
-      * postcopy_qemufile_src to know whether it failed or not.
-      */
-     qemu_sem_post(&s->postcopy_qemufile_src_sem);
-+
-+    /* Send magic value to identify postcopy channel on the destination */
-+    uint32_t magic = cpu_to_be32(POSTCOPY_MAGIC);
-+    qio_channel_write_all(ioc, (char *)&magic, sizeof(magic), NULL);
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
++    return s->capabilities[MIGRATION_CAPABILITY_MULTIFD]
++            && !migration_in_postcopy();
  }
  
- static void
-diff --git a/migration/postcopy-ram.h b/migration/postcopy-ram.h
-index a6df1b2811..49e2982558 100644
---- a/migration/postcopy-ram.h
-+++ b/migration/postcopy-ram.h
-@@ -15,6 +15,9 @@
+ bool migrate_pause_before_switchover(void)
+@@ -479,11 +480,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             error_setg(errp, "Postcopy is not compatible with ignore-shared");
+             return false;
+         }
+-
+-        if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-            error_setg(errp, "Postcopy is not yet compatible with multifd");
+-            return false;
+-        }
+     }
  
- #include "qapi/qapi-types-migration.h"
- 
-+/* Magic value to identify postcopy channel on the destination */
-+#define POSTCOPY_MAGIC  0x55667788U
-+
- /* Return true if the host supports everything we need to do postcopy-ram */
- bool postcopy_ram_supported_by_host(MigrationIncomingState *mis,
-                                     Error **errp);
+     if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
 -- 
 2.47.0
 
