@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB319B4252
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 07:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD129B4257
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 07:19:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5fZ3-0007KZ-N3; Tue, 29 Oct 2024 02:18:49 -0400
+	id 1t5fZo-0001ne-WF; Tue, 29 Oct 2024 02:19:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5fYp-0006wa-7G
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:18:40 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ id 1t5fZm-0001jd-0p
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:19:34 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5fYl-00083g-P4
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:18:34 -0400
+ id 1t5fZk-00086w-8s
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 02:19:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730182711; x=1761718711;
+ t=1730182772; x=1761718772;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lFfcfmuQyvY4bgk9I4IOtFQg4Da8L1MCrKWR7fphgAo=;
- b=UBxpCQarPARbhuQalCUEMsQ2tySFnJx0MIfXSFwNENWvaKlfBHLCEaui
- wfc+rdHEzguDDaRwdE2G2yiCoLzrPUNK6Fs/xhDrfBhMVoG6nKpKhLWBq
- BJLL1M/bYuQ4/o92NWkvthqq2CLeG1FityuIr/dODW28jt3ActlbToHpj
- C6tHuCTNL8UR7DkCcwW9hx1Z4Ogf052uJjfUC2fWeuheXdM3WDXgc3t/z
- h6//v6Q89G+SU/WerRvvIyImYutbN+2GkcfKP62GJLWEJJZW0ykbBMItD
- hZ4PiaoBD24S0SeusrKNe56JtEjtNQSMtobwKpo5yMQ23NzdCO110jFLh g==;
-X-CSE-ConnectionGUID: dwx13zAvTPiKP06LigU7pQ==
-X-CSE-MsgGUID: f6Fyz8BuRRGA8PU1N6D6xA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="30017896"
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="30017896"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2024 23:18:24 -0700
-X-CSE-ConnectionGUID: LZr0GMjQSfSDGJZVowXQxw==
-X-CSE-MsgGUID: MGID8DFQTseKBrrjmgSWAw==
+ bh=za1muQm4U7f4LIt8RWK3PHQpDP1rimCjsfRVMU7u0P4=;
+ b=LbxY0coQuR29nsl3BJATe9nVURNOjyW1k48hsNq//nuKkDSqAgS9bytR
+ 5rBYaAWtiE9yiwpewto+o8jqKA/lJe2UbMbSLfaMm2yawbgj+F5gaqySv
+ n2uxRqck8F5BOfiXbwMuJvKs7f5CCBBj3rwMzAQeKe1WP5ijeoPlRqBj+
+ ZDRaXN/N5KrLTkRJ2Ex//8hwlySzd6q/5soehx/7cqqgAwOVk0Q5pZ1un
+ OYlrp+8U7iXfE4PDuZ61kA8bDN9RMZjkMurMQgfBEg6Z7dTm7UU68R7yR
+ 4RT0rrt2bSzBru1KJ+Da4lK76tg/BSe4MV9qcZfEcIXYHGUlDxmamDEP1 Q==;
+X-CSE-ConnectionGUID: i+66eHJeTBm4jiID1odv3g==
+X-CSE-MsgGUID: JCBC4G/3T1ix2T1O90It7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32662541"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="32662541"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 23:19:30 -0700
+X-CSE-ConnectionGUID: 2+hduodWREOWNFRi2hV8vw==
+X-CSE-MsgGUID: s+ynI1FnQkauZP3ICXnoHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="119312702"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; d="scan'208";a="112660275"
 Received: from linux.bj.intel.com ([10.238.157.71])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2024 23:18:22 -0700
-Date: Tue, 29 Oct 2024 14:13:16 +0800
+ 28 Oct 2024 23:19:28 -0700
+Date: Tue, 29 Oct 2024 14:14:23 +0800
 From: Tao Su <tao1.su@linux.intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
  xuelian.guo@intel.com
-Subject: Re: [PATCH 3/6] target/i386: Add CPUID.24 leaf for AVX10
-Message-ID: <ZyB8/BJZ/hIDb186@linux.bj.intel.com>
+Subject: Re: [PATCH 2/6] target/i386: add avx10-version property
+Message-ID: <ZyB9P83M1TrQ24Ou@linux.bj.intel.com>
 References: <20241028024512.156724-1-tao1.su@linux.intel.com>
- <20241028024512.156724-4-tao1.su@linux.intel.com>
- <c9d9414c-41aa-4ee5-be23-9a12b9bb768d@intel.com>
+ <20241028024512.156724-3-tao1.su@linux.intel.com>
+ <65cd917f-b0d2-40f3-9818-a52b340b32e6@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c9d9414c-41aa-4ee5-be23-9a12b9bb768d@intel.com>
-Received-SPF: none client-ip=192.198.163.14;
+In-Reply-To: <65cd917f-b0d2-40f3-9818-a52b340b32e6@intel.com>
+Received-SPF: none client-ip=192.198.163.13;
  envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -82,72 +82,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 28, 2024 at 11:04:07PM +0800, Xiaoyao Li wrote:
+On Mon, Oct 28, 2024 at 11:10:45PM +0800, Xiaoyao Li wrote:
 > On 10/28/2024 10:45 AM, Tao Su wrote:
-> > +    case 0x24: {
-> > +        *eax = 0;
-> > +        *ebx = 0;
-> > +        *ecx = 0;
-> > +        *edx = 0;
-> > +        if (!(env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
-> > +            break;
-> > +        }
-> > +
-> > +        if (count == 0) {
-> > +            uint8_t v = kvm_arch_get_supported_cpuid(cs->kvm_state, 0x24,
-> > +                                                     0, R_EBX);
-> > +            if (env->avx10_version && env->avx10_version < v) {
-> > +                v = env->avx10_version;
-> > +            }
+> > Introduce avx10-version property so that avx10 version can be controlled
+> > by user and cpu model. Per spec, avx10 version can never be 0, the default
+> > value of avx10-version is set to 0 to determine whether it is specified by
+> > user.
 > 
-> Here, if user specified avx10_version is >= kvm reported value, it uses
-> KVM's reported value silently.
+> I think it's better to merge this patch into next one. It's intact to show
+> how avx10_version is supposed to work.
 > 
-> I think it's not good. It'd better to validate if user specified value can
-> be satisfied or not, and emit a warning when not. e.g., in
-> x86_cpu_filter_features() or in kvm_cpu_realizefn(). Also we can put the
-> behavior along with it that "use KVM reported maximum value when
-> avx10_version is 0 "
-> 
-> then, here we can simply do
-> 
-> 	*ebx = env->features[FEAT_24_0_EBX] | env->avx10_version;
 
-Is it necessary to add enforce_cpuid for avx10_version too?
-
-How about checking this in x86_cpu_realizefn, because I see this may be a
-more suitable place to implement check_cpuid and enforce_cpuid.
-
-
-@@ -7816,6 +7810,29 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-
-     x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid);
-
-+    if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-+        uint8_t version =
-+            kvm_arch_get_supported_cpuid(cs->kvm_state, 0x24, 0, R_EBX);
-+
-+        if (!env->avx10_version) {
-+            env->avx10_version = version;
-+        }
-+
-+        if (version < env->avx10_version) {
-+            const char *msg = accel_uses_host_cpuid()
-+                              ? "Host doesn't support requested feature"
-+                              : "TCG doesn't support requested feature";
-+            if (cpu->enforce_cpuid) {
-+                error_setg(&local_err, "%s: avx10.%d", msg,
-+                           env->avx10_version);
-+                goto out;
-+            } else if (cpu->check_cpuid) {
-+                warn_report("%s: avx10.%d", msg, env->avx10_version);
-+            }
-+            env->avx10_version = version;
-+        }
-+    }
-+
-     if (cpu->enforce_cpuid && x86_cpu_have_filtered_features(cpu)) {
-         error_setg(&local_err,
-                    accel_uses_host_cpuid() ?
+Will do in v2, thanks for this suggestion!
 
 
