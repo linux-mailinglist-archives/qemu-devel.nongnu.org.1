@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175E29B43C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:08:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5803D9B43E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 09:11:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5hG8-00078Y-W3; Tue, 29 Oct 2024 04:07:25 -0400
+	id 1t5hG7-00078Q-Ri; Tue, 29 Oct 2024 04:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hG5-00077y-7M
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t5hG4-00077q-OH
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1t5hG3-0003vJ-IH
+ id 1t5hG3-0003vf-7g
  for qemu-devel@nongnu.org; Tue, 29 Oct 2024 04:07:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730189233;
+ s=mimecast20190719; t=1730189237;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=xRGU1/PKHnT+zecFiTMSRSVysT1vsqIO0bA5hROvo5I=;
- b=RxXW7q7eosGePrq5hwyGs79t/hnjeMXebld6LAJNkdLgFb4x8Iez7wD8dwqMFZ/WNEnbiU
- N2bia9fmqFciZ8V9XKK7LvCiEeGEPIRWXwjVsDEks8lzeXZDAORsiigGtRrH15xANfqTZG
- ql1hYurdDoiQxw5zKtX4YNOGv4OmuiM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4ZjB3Af3Eu7jTZIe/vhr6IHTcD6ismi5yenfs4fh47Q=;
+ b=OAZDNqlw5QGtI7P66fbx1+ncMWK999KyGvpuKRwLgYnL9MUsREXewESbfrtZdg0A71xPlU
+ /+Zcnp7D9XzXLNIZHdkdn/Z8/a0ZPI2qcMwsS255zavl5msvYN1R+8Ai7/5NPoIupm6EBu
+ aPB5UGvfwCL/ZFE9PQvi2vilhODlaQI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-HpUasczWPByrchTzLtMj6w-1; Tue,
- 29 Oct 2024 04:07:12 -0400
-X-MC-Unique: HpUasczWPByrchTzLtMj6w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-216-_9t5xDVFPZ-mOBR7Ad9T-w-1; Tue,
+ 29 Oct 2024 04:07:15 -0400
+X-MC-Unique: _9t5xDVFPZ-mOBR7Ad9T-w-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D32091955BD0
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:07:10 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF88B1955F10
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 08:07:14 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.36])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 24D241956086; Tue, 29 Oct 2024 08:07:07 +0000 (UTC)
+ id 7DB6A1956086; Tue, 29 Oct 2024 08:07:11 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>
-Subject: [PULL 00/14] Net patches
-Date: Tue, 29 Oct 2024 16:06:51 +0800
-Message-ID: <20241029080705.3238-1-jasowang@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 01/14] net: fix build when libbpf is disabled,
+ but libxdp is enabled
+Date: Tue, 29 Oct 2024 16:06:52 +0800
+Message-ID: <20241029080705.3238-2-jasowang@redhat.com>
+In-Reply-To: <20241029080705.3238-1-jasowang@redhat.com>
+References: <20241029080705.3238-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,78 +84,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit cea8ac78545a83e1f01c94d89d6f5a3f6b5c05d2:
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-  Merge tag 'pull-aspeed-20241024' of https://github.com/legoater/qemu into staging (2024-10-25 13:35:22 +0100)
+The net/af-xdp.c code is enabled when the libxdp library is present,
+however, it also has direct API calls to bpf_xdp_query_id &
+bpf_xdp_detach which are provided by the libbpf library.
 
-are available in the Git repository at:
+As a result if building with --disable-libbpf, but libxdp gets
+auto-detected, we'll fail to link QEMU
 
-  https://github.com/jasowang/qemu.git tags/net-pull-request
+  /usr/bin/ld: libcommon.a.p/net_af-xdp.c.o: undefined reference to symbol 'bpf_xdp_query_id@@LIBBPF_0.7.0'
 
-for you to fetch changes up to cd76e8fcbe1a340776ae61b4e182be3a45b26219:
+There are two bugs here
 
-  virtio-net: Avoid indirection_table_mask overflow (2024-10-29 15:53:29 +0800)
+ * Since we have direct libbpf API calls, when building
+   net/af-xdp.c, we must tell meson that libbpf is a
+   dependancy, so that we directly link to it, rather
+   than relying on indirect linkage.
 
-----------------------------------------------------------------
------BEGIN PGP SIGNATURE-----
+ * When must skip probing for libxdp at all, when libbpf
+   is not found, raising an error if --enable-libxdp was
+   given explicitly.
 
-iQEzBAABCAAdFiEEIV1G9IJGaJ7HfzVi7wSWWzmNYhEFAmcglKYACgkQ7wSWWzmN
-YhEm/wf/cYA7i3asKMUoYqlff5mBiY3aFCWzTR5qHLBcWfnB33f9FYpAW6RgDwMa
-3aFAJm1VZAynmUWgz+f537+e+7900M+P54zbD7kHCthAy7l/E7t9SkKNpe6jZHEA
-P4hB09CSKm/TY1XtsFMvO5tkF9IgY51VEO+mZJesO1H2X2+3ulJYusx9fh/P6yST
-bG8sbXr55v23R3z4UOovqfkuskPETwRh3qoiOLPPBy8CWkBVze8J+siC7HC+eFIo
-KrQ+jhUYpIK8CAgHV09ZnlurLo6UZ0+vlo9IcJN+GQp/gsmg8OErjvzPdKKbynC/
-1zjvkgyW27aHsei+baTMXGCE0P8dIw==
-=6+yo
------END PGP SIGNATURE-----
+Fixes: cb039ef3d9e3112da01e1ecd9b136ac9809ef733
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ meson.build     | 10 ++++++++--
+ net/meson.build |  2 +-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-----------------------------------------------------------------
-Akihiko Odaki (2):
-      net: Check if nc is NULL in qemu_get_vnet_hdr_len()
-      virtio-net: Avoid indirection_table_mask overflow
-
-Bernhard Beschow (1):
-      net/tap-win32: Fix gcc 14 format truncation errors
-
-Daniel P. Berrangé (8):
-      net: fix build when libbpf is disabled, but libxdp is enabled
-      hw/net: fix typo s/epbf/ebpf/ in virtio-net
-      ebpf: drop redundant parameter checks in static methods
-      ebpf: improve error trace events
-      ebpf: add formal error reporting to all APIs
-      hw/net: report errors from failing to use eBPF RSS FDs
-      ebpf: improve trace event coverage to all key operations
-      hw/net: improve tracing of eBPF RSS setup
-
-Daniil Tatianin (2):
-      net/stream: deprecate 'reconnect' in favor of 'reconnect-ms'
-      chardev: finalize 'reconnect' deprecation
-
-Stefan Weil (1):
-      Fix calculation of minimum in colo_compare_tcp
-
- docs/COLO-FT.txt              |   4 +-
- docs/about/deprecated.rst     |  10 ++++
- docs/system/ppc/powernv.rst   |   2 +-
- ebpf/ebpf_rss-stub.c          |   8 +--
- ebpf/ebpf_rss.c               | 118 +++++++++++++++++++++++++++---------------
- ebpf/ebpf_rss.h               |  10 ++--
- ebpf/trace-events             |   8 ++-
- hw/net/trace-events           |   8 +--
- hw/net/virtio-net.c           |  75 +++++++++++++++++----------
- meson.build                   |  10 +++-
- net/colo-compare.c            |   3 +-
- net/meson.build               |   2 +-
- net/net.c                     |   4 ++
- net/stream.c                  |  34 +++++++-----
- net/tap-win32.c               |  15 +++---
- qapi/net.json                 |  13 ++++-
- qemu-options.hx               |  46 ++++++++--------
- tests/qtest/ipmi-bt-test.c    |   2 +-
- tests/qtest/netdev-socket.c   |   2 +-
- tests/qtest/vhost-user-test.c |   2 +-
- tests/unit/test-char.c        |   8 +--
- 21 files changed, 245 insertions(+), 139 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index c26c417de1..9432c5f173 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2164,8 +2164,14 @@ endif
+ # libxdp
+ libxdp = not_found
+ if not get_option('af_xdp').auto() or have_system
+-    libxdp = dependency('libxdp', required: get_option('af_xdp'),
+-                        version: '>=1.4.0', method: 'pkg-config')
++    if libbpf.found()
++        libxdp = dependency('libxdp', required: get_option('af_xdp'),
++                            version: '>=1.4.0', method: 'pkg-config')
++    else
++        if get_option('af_xdp').enabled()
++            error('libxdp requested, but libbpf is not available')
++        endif
++    endif
+ endif
+ 
+ # libdw
+diff --git a/net/meson.build b/net/meson.build
+index e0cd71470e..bb97b4dcbe 100644
+--- a/net/meson.build
++++ b/net/meson.build
+@@ -39,7 +39,7 @@ if have_netmap
+   system_ss.add(files('netmap.c'))
+ endif
+ 
+-system_ss.add(when: libxdp, if_true: files('af-xdp.c'))
++system_ss.add(when: [libxdp, libbpf], if_true: files('af-xdp.c'))
+ 
+ if have_vhost_net_user
+   system_ss.add(when: 'CONFIG_VIRTIO_NET', if_true: files('vhost-user.c'), if_false: files('vhost-user-stub.c'))
+-- 
+2.42.0
 
 
