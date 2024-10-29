@@ -2,55 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2309B5463
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 21:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC639B54A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 22:01:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5t8B-0001fY-Fm; Tue, 29 Oct 2024 16:47:59 -0400
+	id 1t5tIk-0003Zr-Gl; Tue, 29 Oct 2024 16:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <castet.matthieu@free.fr>)
- id 1t5t7l-0001Qf-2K; Tue, 29 Oct 2024 16:47:51 -0400
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <castet.matthieu@free.fr>)
- id 1t5t7e-0004Zg-Sg; Tue, 29 Oct 2024 16:47:32 -0400
-Received: from zimbra83-e15.priv.proxad.net (unknown [172.20.243.252])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 26D9FB00571;
- Tue, 29 Oct 2024 21:47:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
- s=smtp-20201208; t=1730234829;
- bh=v1TWAZb8OQG85dxrs0Bpz+2OwcB3hwa+95QE6bHQBWQ=;
- h=Date:From:To:Cc:In-Reply-To:Subject:From;
- b=NpeQpjVNekdk3JY11mQ9HiM9iFpxgRJ5aD8+eAV4GNPEkHuOjc8OkmolL3Nl/DZo3
- hvEkKY4U/w2PJ24oRp3MsQBsURIE4uCxM/2gLUi9MIUwlb7G5Ci09Suxqie9m4+Wfa
- 4Wo/mXSN/4qcVZoxcEXh1nLadV6jL8K/ubL1exMXxZ+goPyuXGA/mkzH8fqlBOEawU
- WlzHVrgVyp2DQZzjAbj3BKmug1ORtACamNC6Hz5YHSYkfTMLbJFilyQ69GgeXu9Hqk
- XlMw9ygeSlZljxt71JGPCsl/AOWlhany49QC4o/J9PC/e6dxKVYDHBW27zCvjdZuD/
- ZBZJHZzfkh3uA==
-Date: Tue, 29 Oct 2024 21:47:09 +0100 (CET)
-From: castet.matthieu@free.fr
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, "open list:ARM cores" <qemu-arm@nongnu.org>
-Message-ID: <605361231.417554090.1730234829057.JavaMail.root@zimbra83-e15.priv.proxad.net>
-In-Reply-To: <CAFEAcA9JQNJBfk+g8iYcczVcTSqEOJZ5=LGtBupHqreUX-2MkA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] target/arm: Add cortex-m0+ support
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t5tIc-0003VR-Nx
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 16:58:48 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t5tIW-0005Ux-DZ
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 16:58:46 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5c95a962c2bso7172746a12.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 13:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730235518; x=1730840318;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BlPEE4VvmPRo01gdIIULTIDETDXaoLtFzhG/BMqPsAg=;
+ b=HZmxhyNnV/a7y2eBmluEyGmNsh3AOLR9gTWN83DWk/54GY2y/VqMArRifl0pKgf5Nd
+ +3+Vv+lV1WvgbnkJvtDXYTOCkaX+aSWSttieCHfGNHa55Hzxgi2NEiidMGdBVbnLHYUr
+ roTevFV52r/WhA4ZG2fUI44ac/kzE0RCLoQfluUhmFZIf8aGYvKoN4zYO5GQ/jkvXU0d
+ K7u7ycO/glQtPY9n/nAN0InAwSaM1BQECXU57aojIhGcLx/Q+KDS8BqTMdCi8QQaTgpM
+ /iyg0MkBB0onMolYH2inmA/2MGimtKLMcnHa6cbsseeK90V71s6eyfujLtWwJiJow3yS
+ Kdig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730235518; x=1730840318;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BlPEE4VvmPRo01gdIIULTIDETDXaoLtFzhG/BMqPsAg=;
+ b=TGe0UsTaMhPzRPs9sYEE5gFh4L8J5Sa0RsAImeIxsYnGiPNJtrypYsAdKhBlYWXG3k
+ JLHiq7cgiiDAc/dr2iR9uyR6SXmW7zHvgNg8HRSw4UyF+xUBYK+JFK0SrxkFqRzL2a4f
+ 6sWdIKn05nD7GhlefGM4uq7pkARPfNAX65+JAg1Wt5/f4LmQFk8i42W2JPXlajXASb8a
+ 3JCTGIuCtkfRC6nCathFua/Sdj+CdUyyjaqXDMRbndKhQUt7NTg2rBoCS07B3w/+mhBV
+ 7z2LfWv1G238VUSbNHWj7gk9j1/XAIdwwzK/2AXWYAQJzDq+izCX4dBjTiigHQ0sm4YE
+ DRsg==
+X-Gm-Message-State: AOJu0YzzCnZo2Ehtk87gUdgmZpzk3hBTRITLY/Wp0pTP5IebI/G/Vavd
+ IV4xNYOdI9ffwf2lF96JPkE4+u7F8X1fTM0pmgLhlBT3i0vDy3efJp59SCEfmaZp7j3dNH6I5I8
+ WiQ==
+X-Google-Smtp-Source: AGHT+IGajg7GlMrV4NWMN4giD5BZ+DRxfPInN7ExwJEN4W7Y51x6LG3U8f/02ZOGQLh0cAiTLnBlrQ==
+X-Received: by 2002:a05:6402:5c6:b0:5cb:6b2c:c139 with SMTP id
+ 4fb4d7f45d1cf-5cbbf8c4e94mr8947182a12.13.1730235518281; 
+ Tue, 29 Oct 2024 13:58:38 -0700 (PDT)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5cbb629d5besm4217341a12.33.2024.10.29.13.58.36
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 29 Oct 2024 13:58:37 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
+ pbonzini@redhat.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, stefanha@redhat.com, mst@redhat.com,
+ slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, gaosong@loongson.cn, jiaxun.yang@flygoat.com,
+ chenhuacai@kernel.org, kwolf@redhat.com, hreitz@redhat.com,
+ philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: [PATCH v5 00/15] macOS PV Graphics and new vmapple machine type
+Date: Tue, 29 Oct 2024 21:58:04 +0100
+Message-Id: <20241029205819.69888-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [2a01:cb00:13da:d200:7cf5:aa34:e526:681b]
-X-Mailer: Zimbra 7.2.0-GA2598 (ZimbraWebClient - FF3.0 (Linux)/7.2.0-GA2598)
-X-Authenticated-User: castet.matthieu@free.fr
-Received-SPF: pass client-ip=2a01:e0c:1:1599::10;
- envelope-from=castet.matthieu@free.fr; helo=smtp1-g21.free.fr
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::536;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,358 +101,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+This patch set introduces a new ARM and macOS HVF specific machine type
+called "vmapple", as well as a family of display devices based on the
+ParavirtualizedGraphics.framework in macOS. One of the display adapter
+variants, apple-gfx-mmio, is required for the new machine type, while
+apple-gfx-pci can be used to enable 3D graphics acceleration with x86-64
+macOS guest OSes.
 
->On Tue, 22 Oct 2024 at 21:34, Matthieu Castet <castet.matthieu@free.fr> wrote:
->>
->> Signed-off-by: Matthieu Castet<castet.matthieu@free.fr>
->
->Hi; thanks for this patch. I have some initial code review comments,
->but the change looks broadly correct to me and I don't think
->there's anything obvious missing.
->
->The commit message body here is empty. Commits should
->almost always have some description in the body of
->what they are doing and why.
+Previous versions of this patch set were submitted semi-separately:
+the original vmapple patch set by Alexander Graf included a monolithic
+implementation of apple-gfx-mmio. I subsequently reviewed and reworked
+the latter to support the PCI variant of the device as well and submitted
+the result in isolation. As requested in subsequent review, I have now
+recombined this with the original vmapple patch set, which I have updated
+and improved in a few ways as well.
 
-Thanks for the review. When I sent the patch, I didn't put my
-last version and some of your comment were already fixed.
-Sorry for that.
+The vmapple machine type approximates the configuration in macOS's own
+Virtualization.framework when running arm64 macOS guests. In addition to
+generic components such as a GICv3 and an XHCI USB controller, it
+includes nonstandard extensions to the virtio block device, a special
+"hardware" aes engine, a configuration device, a pvpanic variant, a
+"backdoor" interface, and of course the apple-gfx paravirtualised display
+adapter.
 
->
->(You don't need a separate cover-letter email for
->single-patch patches, by the way -- only for multi-patch series.)
->
+There are currently a few limitations to this which aren't intrinsic,
+just imperfect emulation of the VZF, but it's good enough to be just
+about usable for some purposes:
 
-ok
+ * macOS 12 guests only. Versions 13+ currently fail during early boot.
+ * macOS 11+ arm64 hosts only, with hvf accel. (Perhaps some differences
+   between Apple M series CPUs and TCG's aarch64 implementation? macOS
+   hosts only because ParavirtualizedGraphics.framework is a black box
+   implementing most of the logic behind the apple-gfx device.)
+ * PCI devices use legacy IRQs, not MSI/MSI-X. As far as I can tell,
+   we'd need to include the GICv3 ITS, but it's unclear to me what
+   exactly needs wiring up.
+ * Due to lack of MSI(-X), event delivery from USB devices to the guest
+   macOS isn't working correctly. My current conclusion is that the
+   OS's XHCI driver simply was never designed to work with legacy IRQs.
+   The upshot is that keyboard and mouse/tablet input is very laggy.
+   The solution would be to implement MSI(-X) support or figure out how
+   to make hcd-xhci-sysbus work with the macOS guest, if at all possible.
+   (EHCI and UHCI/OHCI controllers are not an option as the VMAPPLE
+   guest kernel does not include drivers for these.)
+ * The guest OS must first be provisioned using Virtualization.framework;
+   the disk images can subsequently be used in Qemu. (See docs.)
 
->> ---
->>  hw/intc/armv7m_nvic.c    | 38 +++++++++++++++++++++++++++++++++-----
->>  target/arm/cpu.c         |  4 ++--
->>  target/arm/ptw.c         | 23 +++++++++++++++++++----
->>  target/arm/tcg/cpu-v7m.c | 21 ++++++++++++++++++++-
->>  4 files changed, 74 insertions(+), 12 deletions(-)
->>
->> diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
->> index 98f3cf59bc..ed084e9db3 100644
->> --- a/hw/intc/armv7m_nvic.c
->> +++ b/hw/intc/armv7m_nvic.c
->> @@ -1386,7 +1386,7 @@ static uint32_t nvic_readl(NVICState *s, uint32_t offset, MemTxAttrs attrs)
->>          }
->>          return (cpu->env.pmsav7.drbar[region] & ~0x1f) | (region & 0xf);
->>      }
->> -    case 0xda0: /* MPU_RASR (v7M), MPU_RLAR (v8M) */
->> +    case 0xda0: /* MPU_RASR (v6M/v7M), MPU_RLAR (v8M) */
->>      case 0xda8: /* MPU_RASR_A1 (v7M), MPU_RLAR_A1 (v8M) */
->>      case 0xdb0: /* MPU_RASR_A2 (v7M), MPU_RLAR_A2 (v8M) */
->>      case 0xdb8: /* MPU_RASR_A3 (v7M), MPU_RLAR_A3 (v8M) */
->
->The v6M spec says that it doesn't have the _A* aliases
->for RBAR and RASR so we should have a check to make those
->goto bad_offset in both read and write functions.
+The apple-gfx device can be used independently from the vmapple machine
+type, at least in the PCI variant. It mainly targets x86-64 macOS guests
+from version 11 on, but also includes a UEFI bootrom for basic
+framebuffer mode. macOS 11 is also required on the host side, as well
+as a GPU that supports the Metal API. On the guest side, this provides
+3D acceleration/GPGPU support with a baseline Metal feature set,
+irrespective of the host GPU's feature set. A few limitations in the
+current integration:
 
-ok, I will add the bad_offset to read
+ * Although it works fine with TCG, it does not work correctly
+   cross-architecture: x86-64 guests on arm64 hosts appear to make
+   some boot progress, but rendering is corrupted. I suspect
+   incompatible texture memory layouts; I have no idea if this is
+   fixable.
+ * ParavirtualizedGraphics.framework and the guest driver support
+   multi-headed configurations. The current Qemu integration always
+   connects precisely 1 display.
+ * State serialisation and deserialisation is currently not
+   implemented, though supported in principle by the framework.
+   Both apple-gfx variants thus set up a migration blocker.
+ * Rendering efficiency could be better. The GPU-rendered guest
+   framebuffer is copied to system memory and uses Qemu's usual
+   CPU-based drawing. For maximum efficiency, the Metal texture
+   containing the guest framebuffer could be drawn directly to
+   a Metal view in the host window, staying on the GPU. (Similar
+   to the OpenGL/virgl render path on other platforms.)
 
+My part of this work has been sponsored by Sauce Labs Inc.
 
+---
 
->
->> @@ -1876,6 +1876,14 @@ static void nvic_writel(NVICState *s, uint32_t offset, uint32_t value,
->>              return;
->>          }
->>
->> +        if (!arm_feature(&s->cpu->env, ARM_FEATURE_V7)) {
->> +                if (offset != 0xd9c)
->> +                        goto bad_offset;
->
->Our coding style says all if() statements need braces, even
->one-line ones. The indentation here also seems to be off --
->our indent is four-space.
->
+v2 -> v3:
 
-I will fix the code
+ * Merged the apple-gfx and vmapple patchsets.
+ * Squashed a bunch of later apple-gfx patches into the main one.
+   (dGPU support, queried MMIO area size, host GPU picking logic.)
+ * Rebased on latest upstream, fixing any breakages due to internal
+   Qemu API changes.
+ * apple-gfx: Switched to re-entrant MMIO. This is supported by the
+   underlying framework and simplifies the MMIO forwarding code which
+   was previously different on x86-64 vs aarch64.
+ * vmapple: Fixes for minor bugs and comments from the last round of
+   review.
+ * vmapple aes, conf, apple-gfx: Switched reset methods to implement
+   the ResettableClass base's interface.
+ * vmapple: switched from virtio-hid to an XHCI USB controller and
+   USB mouse and tablet devices. macOS does not provide drivers for
+   virtio HID devices, at least not in version 12's vmapple kernel.
+   So input now sort of works (interrupt issues) rather than not
+   at all. Use network-based remote access to the guest OS as a
+   work-around.
 
->> +
->> +                /* do not support size less than 256 */
->> +                value &= ~0xe0;
->
->This line doesn't look like it does what the comment suggests.
->A region size of 256 bytes would be a SIZE field of 7, where
->the size field is bits [5:1]. This &= ~0xe0 will (unless I've
->got confused) zero bits [3:1], which would turn a SIZE of 7
->into an invalid SIZE of 0.
+v3 -> v4:
 
-The code is checking region address alignement, not region size.
-ADDR is encoded on bits [31:8] on armv6-m and bits [31:5]
-on armv7-m.
+ * Complete rework of the mechanism for handling runloop/libdispatch
+   events on the main thread. PV graphics now work with the SDL UI.
+ * Renamed 'apple-gfx-vmapple' device to 'apple-gfx-mmio'
+ * hw/display/apple-gfx: threading model overhaul to be more consistent,
+   safer, and more QEMU-idiomatic.
+ * display-modes property on the apple-gfx devices now uses the
+   native array property mechanism and works on both device variants.
+ * hw/vmapple/aes: Improvements to logging and error handling.
+ * hw/vmapple/cfg: Bug fixes around device property default values.
+ * hw/vmapple/{aes,cfg,virtio-blk/vmapple}: Most header code moved into
+   .c files, only a single vmapple.h now contains the #defines for the
+   vmapple machine model-specific device type names.
+ * hw/block/virtio-blk: New patch for replacing virtio_blk_free_request
+   with g_free. (Optional)
+ * Various smaller changes following comments in v3 code review in
+   apple-gfx, aes, cfg, bdif, virtio-blk-vmapple, and the vmapple
+   machine type itself. See patch-specific v4 change notes for details.
 
-I will update the comment to 
+v4 -> v5:
 
-                /* armv6-m do not support region address with alignement 
-                 * less than 256. Force alignement.
-                 */
+ * Simplified the main thread runloop mechanism. Back to setting
+	 qemu_main directly, but narrowing the scope of what it needs to do,
+	 and it can now be NULL. (Meaning run the QEMU main event loop on
+	 the main thread as is traditional.)
+ * hw/display/apple-gfx: Further improvements to the BH based job code bridging
+   the libdispatch & QEMU thread synchronisation impedance mismatch.
+ * hw/display/apple-gfx: Thread safety and object lifetime improvements.
+ * hw/display/apple-gfx-*: Better buffer and error handling in display mode
+   property setters and getters.
+ * hw/vmapple/aes: More consistent and safer logging/tracing
+ * hw/vmapple/cfg: Better error reporting on overlong property strings.
+ * hw/vmapple/virtio-blk: Fixed theoretically-unaligned write to config buffer.
+ * vmapple machine type: Moved ecam region into machine state, improved device
+   property setting error handling, improved ECID/UUID extraction script and
+   docs.
+ * Various smaller fixes in apple-gfx/-mmio, apple-gfx-pci, vmapple/aes,
+   vmapple/cfg, vmapple/virtio-blk, and vmapple machine type.
+ * Added SPDX license identifiers where they were missing.
 
+Alexander Graf (9):
+  hw: Add vmapple subdir
+  hw/misc/pvpanic: Add MMIO interface
+  hvf: arm: Ignore writes to CNTP_CTL_EL0
+  gpex: Allow more than 4 legacy IRQs
+  hw/vmapple/aes: Introduce aes engine
+  hw/vmapple/bdif: Introduce vmapple backdoor interface
+  hw/vmapple/cfg: Introduce vmapple cfg region
+  hw/vmapple/virtio-blk: Add support for apple virtio-blk
+  hw/vmapple/vmapple: Add vmapple machine type
 
->
->More generally: in QEMU if we're enforcing limits on the
->values a register field can hold we typically do it on the
->guest-write path. Then the read path can just return the
->value in the register, which we already know to be in-range.
+Phil Dennis-Jordan (6):
+  ui & main loop: Redesign of system-specific main thread event handling
+  hw/display/apple-gfx: Introduce ParavirtualizedGraphics.Framework
+    support
+  hw/display/apple-gfx: Adds PCI implementation
+  hw/display/apple-gfx: Adds configurable mode list
+  MAINTAINERS: Add myself as maintainer for apple-gfx, reviewer for HVF
+  hw/block/virtio-blk: Replaces request free function with g_free
 
-Ok
+ MAINTAINERS                    |  15 +
+ contrib/vmapple/uuid.sh        |   9 +
+ docs/system/arm/vmapple.rst    |  60 +++
+ docs/system/target-arm.rst     |   1 +
+ hw/Kconfig                     |   1 +
+ hw/arm/sbsa-ref.c              |   2 +-
+ hw/arm/virt.c                  |   2 +-
+ hw/block/virtio-blk.c          |  58 ++-
+ hw/display/Kconfig             |  13 +
+ hw/display/apple-gfx-mmio.m    | 395 +++++++++++++++
+ hw/display/apple-gfx-pci.m     | 156 ++++++
+ hw/display/apple-gfx.h         |  91 ++++
+ hw/display/apple-gfx.m         | 870 +++++++++++++++++++++++++++++++++
+ hw/display/meson.build         |   5 +
+ hw/display/trace-events        |  30 ++
+ hw/i386/microvm.c              |   2 +-
+ hw/loongarch/virt.c            |   2 +-
+ hw/meson.build                 |   1 +
+ hw/mips/loongson3_virt.c       |   2 +-
+ hw/misc/Kconfig                |   4 +
+ hw/misc/meson.build            |   1 +
+ hw/misc/pvpanic-mmio.c         |  61 +++
+ hw/openrisc/virt.c             |  12 +-
+ hw/pci-host/gpex.c             |  43 +-
+ hw/riscv/virt.c                |  12 +-
+ hw/vmapple/Kconfig             |  32 ++
+ hw/vmapple/aes.c               | 578 ++++++++++++++++++++++
+ hw/vmapple/bdif.c              | 261 ++++++++++
+ hw/vmapple/cfg.c               | 203 ++++++++
+ hw/vmapple/meson.build         |   5 +
+ hw/vmapple/trace-events        |  21 +
+ hw/vmapple/trace.h             |   1 +
+ hw/vmapple/virtio-blk.c        | 226 +++++++++
+ hw/vmapple/vmapple.c           | 659 +++++++++++++++++++++++++
+ hw/xtensa/virt.c               |   2 +-
+ include/hw/misc/pvpanic.h      |   1 +
+ include/hw/pci-host/gpex.h     |   7 +-
+ include/hw/pci/pci_ids.h       |   1 +
+ include/hw/virtio/virtio-blk.h |  11 +-
+ include/hw/vmapple/vmapple.h   |  25 +
+ include/qemu-main.h            |   3 +-
+ include/qemu/cutils.h          |  15 +
+ include/qemu/typedefs.h        |   1 +
+ meson.build                    |   5 +
+ system/main.c                  |  56 ++-
+ target/arm/hvf/hvf.c           |   9 +
+ ui/cocoa.m                     |  58 +--
+ ui/sdl2.c                      |   4 +
+ util/hexdump.c                 |  18 +
+ 49 files changed, 3942 insertions(+), 108 deletions(-)
+ create mode 100755 contrib/vmapple/uuid.sh
+ create mode 100644 docs/system/arm/vmapple.rst
+ create mode 100644 hw/display/apple-gfx-mmio.m
+ create mode 100644 hw/display/apple-gfx-pci.m
+ create mode 100644 hw/display/apple-gfx.h
+ create mode 100644 hw/display/apple-gfx.m
+ create mode 100644 hw/misc/pvpanic-mmio.c
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/aes.c
+ create mode 100644 hw/vmapple/bdif.c
+ create mode 100644 hw/vmapple/cfg.c
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+ create mode 100644 hw/vmapple/trace.h
+ create mode 100644 hw/vmapple/virtio-blk.c
+ create mode 100644 hw/vmapple/vmapple.c
+ create mode 100644 include/hw/vmapple/vmapple.h
 
+-- 
+2.39.3 (Apple Git-145)
 
-
->> -    case 0xda0: /* MPU_RASR (v7M), MPU_RLAR (v8M) */
->> -    case 0xda8: /* MPU_RASR_A1 (v7M), MPU_RLAR_A1 (v8M) */
->> -    case 0xdb0: /* MPU_RASR_A2 (v7M), MPU_RLAR_A2 (v8M) */
->> -    case 0xdb8: /* MPU_RASR_A3 (v7M), MPU_RLAR_A3 (v8M) */
->> +    case 0xda0: /* MPU_RASR (v6M/v7M), MPU_RLAR (v8M) */
->> +    case 0xda8: /* MPU_RASR_A1 (v6M/v7M), MPU_RLAR_A1 (v8M) */
->> +    case 0xdb0: /* MPU_RASR_A2 (v6M/v7M), MPU_RLAR_A2 (v8M) */
->> +    case 0xdb8: /* MPU_RASR_A3 (v6M/v7M), MPU_RLAR_A3 (v8M) */
->
->v6M doesn't have the RASR_A* aliases, so those lines shouldn't change.
-
-ok
-
-
->
->>      {
->>          int region = cpu->env.pmsav7.rnr[attrs.secure];
->> +        int rsize;
->>
->>          if (arm_feature(&cpu->env, ARM_FEATURE_V8)) {
->>              /* PMSAv8M handling of the aliases is different from v7M:
->> @@ -1926,6 +1935,25 @@ static void nvic_writel(NVICState *s, uint32_t offset, uint32_t value,
->>              return;
->>          }
->>
->> +        rsize = extract32(value, 1, 5);
->> +        if (!arm_feature(&s->cpu->env, ARM_FEATURE_V7)) {
->> +            if (offset != 0xda0)
->> +                goto bad_offset;
->> +            /* for armv6-m rsize >= 7 (min 256) */
->> +            if (rsize < 7) {
->> +                qemu_log_mask(LOG_GUEST_ERROR,
->> +                        "MPU region size too small %d\n", rsize);
->> +                return;
->> +            }
->> +        }
->> +
->> +        /* for armv7-m rsize >= 4 (min 32) */
->> +        if (rsize < 4) {
->> +            qemu_log_mask(LOG_GUEST_ERROR,
->> +                    "MPU region size too small %d\n", rsize);
->> +            return;
->> +        }
->
->You don't need to handle and log too-large region
->sizes both in the register-set codepath and then again
->later when we do the address translation. If you're ruling
->them out here then they'll never happen later.
-
-Ok, let's handle it here in the write path.
-
-
->
->Duplicating the qemu_log_mask() line is awkward -- maybe
->better to have
->  rsize_min = arm_feature(&s->cpu->env, ARM_FEATURE_V7) ? 4 : 7;
->  if (rsize < rsize_min) {
->      qemu_log_mask(...)
->  }
->
-
-Ok, I will do that
-
-
-
->> +
->>          if (region >= cpu->pmsav7_dregion) {
->>              return;
->>          }
->> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
->> index 1320fd8c8f..875e3aab69 100644
->> --- a/target/arm/cpu.c
->> +++ b/target/arm/cpu.c
->> @@ -508,7 +508,7 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
->>                             sizeof(*env->pmsav8.rlar[M_REG_S])
->>                             * cpu->pmsav7_dregion);
->>                  }
->> -            } else if (arm_feature(env, ARM_FEATURE_V7)) {
->> +            } else if (arm_feature(env, ARM_FEATURE_M)) {
->>                  memset(env->pmsav7.drbar, 0,
->>                         sizeof(*env->pmsav7.drbar) * cpu->pmsav7_dregion);
->>                  memset(env->pmsav7.drsr, 0,
->> @@ -2454,7 +2454,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
->>      }
->>
->>      if (arm_feature(env, ARM_FEATURE_PMSA) &&
->> -        arm_feature(env, ARM_FEATURE_V7)) {
->> +        arm_feature(env, ARM_FEATURE_M)) {
->>          uint32_t nr = cpu->pmsav7_dregion;
->>
->>          if (nr > 0xff) {
->
->These changes don't look correct -- they will break the handling
->of R-profile PMSAv7 CPUs like the Cortex-R5.
-
-You are right, I changed it to : 
-
-
-
-@@ -508,7 +508,8 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
-                            sizeof(*env->pmsav8.rlar[M_REG_S])
-                            * cpu->pmsav7_dregion);
-                 }
--            } else if (arm_feature(env, ARM_FEATURE_V7)) {
-+            } else if (arm_feature(env, ARM_FEATURE_V7) ||
-+                       arm_feature(env, ARM_FEATURE_M)) {
-                 memset(env->pmsav7.drbar, 0,
-                        sizeof(*env->pmsav7.drbar) * cpu->pmsav7_dregion);
-                 memset(env->pmsav7.drsr, 0,
-@@ -2454,7 +2455,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-     }
- 
-     if (arm_feature(env, ARM_FEATURE_PMSA) &&
--        arm_feature(env, ARM_FEATURE_V7)) {
-+        (arm_feature(env, ARM_FEATURE_V7) || arm_feature(env, ARM_FEATURE_M))) {
-         uint32_t nr = cpu->pmsav7_dregion;
- 
-         if (nr > 0xff) {
-
-
-Is that correct ?
-
->
->> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
->> index dd40268397..fa771907e3 100644
->> --- a/target/arm/ptw.c
->> +++ b/target/arm/ptw.c
->> @@ -2383,6 +2383,13 @@ static bool pmsav7_use_background_region(ARMCPU *cpu, ARMMMUIdx mmu_idx,
->>      return regime_sctlr(env, mmu_idx) & SCTLR_BR;
->>  }
->>
->> +/* armv6m PMSAv6 is mostly compatible with PMSAv7,
->> + * main difference :
->> + * - min region size is 256 instead of 32
->> + * - TEX can be only 0 (Tex not used by qemu)
->> + * - no alias register
->> + * - HardFault instead of MemManage
->> + */
->
->Our coding style for multiline comments says
->/*
-> * they look like this, with the opening and closing markers on
-> * lines of their own
-> */
-
-I will changed that.
-
-It do not seem to be followed in In hw/intc/armv7m_nvic.c, but my new comment should also follow
-this rule in this file ?
-
-
->
->This comment might be better placed at the point below where
->we call get_phys_addr_psav7(), because it is the explanation
->for why on M-profile we call that function even if we don't
->have PMSAv7.
-
-ok
-
->
->>  static bool get_phys_addr_pmsav7(CPUARMState *env,
->>                                   S1Translate *ptw,
->>                                   uint32_t address,
->> @@ -2423,11 +2430,19 @@ static bool get_phys_addr_pmsav7(CPUARMState *env,
->>                  continue;
->>              }
->>
->> -            if (!rsize) {
->> +            /* Issue warning for invalid values
->> +             * for armv7-m rsize >= 4 (min 32)
->> +             * for armv6-m rsize >= 7 (min 256)
->> +             */
->> +            if (!rsize ||
->> +                (arm_feature(env, ARM_FEATURE_M) && (
->> +                       rsize < 7 ||
->> +                       (rsize < 4 && !arm_feature(env, ARM_FEATURE_V7))))) {
->>                  qemu_log_mask(LOG_GUEST_ERROR,
->> -                              "DRSR[%d]: Rsize field cannot be 0\n", n);
->> +                              "DRSR[%d]: Rsize field cannot be %d\n", n, rsize);
->>                  continue;
->>              }
->> +
->>              rsize++;
->>              rmask = (1ull << rsize) - 1;
-
-I will remove this modification. Size check is done in write.
-
-
->>
->> @@ -3515,8 +3530,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
->>              /* PMSAv8 */
->>              ret = get_phys_addr_pmsav8(env, ptw, address, access_type,
->>                                         result, fi);
->> -        } else if (arm_feature(env, ARM_FEATURE_V7)) {
->> -            /* PMSAv7 */
->> +        } else if (arm_feature(env, ARM_FEATURE_V7) || arm_feature(env, ARM_FEATURE_M)) {
->> +            /* PMSAv7 or PMSAv6 */
->
->This is specifically M-profile PMSAv6. R-profile PMSAv6
->(which we do not implement) is a bit different.
-
-I change the comment to "armv6-m PMSAv6".
-
-
-
->>  static void cortex_m3_initfn(Object *obj)
->>  {
->>      ARMCPU *cpu = ARM_CPU(obj);
->> @@ -111,6 +125,7 @@ static void cortex_m4_initfn(Object *obj)
->>      set_feature(&cpu->env, ARM_FEATURE_THUMB_DSP);
->>      cpu->midr = 0x410fc240; /* r0p0 */
->>      cpu->pmsav7_dregion = 8;
->> +    /* VFPv4-SP */
->>      cpu->isar.mvfr0 = 0x10110021;
->>      cpu->isar.mvfr1 = 0x11000011;
->>      cpu->isar.mvfr2 = 0x00000000;
->> @@ -141,6 +156,7 @@ static void cortex_m7_initfn(Object *obj)
->>      set_feature(&cpu->env, ARM_FEATURE_THUMB_DSP);
->>      cpu->midr = 0x411fc272; /* r1p2 */
->>      cpu->pmsav7_dregion = 8;
->> +    /* VFPv5 DP */
->>      cpu->isar.mvfr0 = 0x10110221;
->>      cpu->isar.mvfr1 = 0x12000011;
->>      cpu->isar.mvfr2 = 0x00000040;
->> @@ -173,6 +189,7 @@ static void cortex_m33_initfn(Object *obj)
->>      cpu->midr = 0x410fd213; /* r0p3 */
->>      cpu->pmsav7_dregion = 16;
->>      cpu->sau_sregion = 8;
->> +    /* VFPv5 DP */
->>      cpu->isar.mvfr0 = 0x10110021;
->>      cpu->isar.mvfr1 = 0x11000011;
->>      cpu->isar.mvfr2 = 0x00000040;
->> @@ -209,7 +226,7 @@ static void cortex_m55_initfn(Object *obj)
->>      cpu->revidr = 0;
->>      cpu->pmsav7_dregion = 16;
->>      cpu->sau_sregion = 8;
->> -    /* These are the MVFR* values for the FPU + full MVE configuration */
->> +    /* These are the MVFR* values for the FPv5-D16-M + full MVE configuration */
->>      cpu->isar.mvfr0 = 0x10110221;
->>      cpu->isar.mvfr1 = 0x12100211;
->>      cpu->isar.mvfr2 = 0x00000040;
->
->These comment additions/changes don't seem to be related to the
->Cortex-M0+. If you want to make them, put them in a
->separate commit with its own commit message saying why.
-
-I will remove this comments, and may be send them in extra patch.
-
-If everything is ok, I will send a V2 patch with your review.
-
-Thanks
-
-Matthieu
 
