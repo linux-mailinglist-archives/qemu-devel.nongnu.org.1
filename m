@@ -2,54 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8821C9B459A
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBE29B45AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:25:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5iMm-0000ld-09; Tue, 29 Oct 2024 05:18:20 -0400
+	id 1t5iTV-0007Up-M9; Tue, 29 Oct 2024 05:25:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMX-0000cX-TZ; Tue, 29 Oct 2024 05:18:07 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t5iTF-0007UV-Ar
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:25:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMW-0003A3-8N; Tue, 29 Oct 2024 05:18:05 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 29 Oct
- 2024 17:17:32 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 29 Oct 2024 17:17:32 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Bin Meng <bmeng.cn@gmail.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 8/8] aspeed: Support create flash devices via command line
- for AST1030
-Date: Tue, 29 Oct 2024 17:17:29 +0800
-Message-ID: <20241029091729.3317512-9-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
-References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t5iTD-00041u-Jv
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 05:25:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730193897;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=pDqm5tGJHLI99NCJhRksDoPlTzxjaCsSqC+s9KVgds8=;
+ b=N1ROIMVNykxVlwkL0W2u9RGRP8yyrjkdByVoTIbhymF0NiEBUT7grC5psUZyl1s4ru1IVM
+ nUOMYzp/Ufw/iHKHQ1az0KYtZuDF4Mgt9WoimF6Owap8eYH9fIA+0x8PFjHj2eZ4bdrDhg
+ Fuhpa1Ek3izFA+fJS/Y5pNvwLO+gG3s=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-oLQzv7XfMcu8y0K0TE0Jkw-1; Tue,
+ 29 Oct 2024 05:24:50 -0400
+X-MC-Unique: oLQzv7XfMcu8y0K0TE0Jkw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 01D171955EA5; Tue, 29 Oct 2024 09:24:47 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.191])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CB61719560AA; Tue, 29 Oct 2024 09:24:42 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, Joel Stanley <joel@jms.id.au>
+Subject: [PATCH 0/2] Convert the BananaPi and OrangePi Avacodo tests
+Date: Tue, 29 Oct 2024 10:24:38 +0100
+Message-ID: <20241029092440.25021-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.373,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,56 +74,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a "if-statement" in aspeed_minibmc_machine_init function. If users add
-"-nodefaults" in command line, the flash devices should be created by users
-setting. Otherwise, the flash devices are created at machine init.
+Some of the URLs in the Avocado tests stopped working since the
+original assets have been removed from the servers or moved location,
+see:
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/arm/aspeed.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ https://lore.kernel.org/qemu-devel/CACPK8Xc=jsz5iT_WR7s-rcu1cRzryiK+-0o=6vUK_D_qMMrP3A@mail.gmail.com/
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 0468602d95..e161e6b1c5 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1602,18 +1602,20 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
-     connect_serial_hds_to_uarts(bmc);
-     qdev_realize(DEVICE(bmc->soc), NULL, &error_abort);
- 
--    aspeed_board_init_flashes(&bmc->soc->fmc,
--                              bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
--                              amc->num_cs,
--                              0);
-+    if (defaults_enabled()) {
-+        aspeed_board_init_flashes(&bmc->soc->fmc,
-+                            bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
-+                            amc->num_cs,
-+                            0);
- 
--    aspeed_board_init_flashes(&bmc->soc->spi[0],
--                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                              amc->num_cs, amc->num_cs);
-+        aspeed_board_init_flashes(&bmc->soc->spi[0],
-+                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
-+                            amc->num_cs, amc->num_cs);
- 
--    aspeed_board_init_flashes(&bmc->soc->spi[1],
--                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                              amc->num_cs, (amc->num_cs * 2));
-+        aspeed_board_init_flashes(&bmc->soc->spi[1],
-+                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
-+                            amc->num_cs, (amc->num_cs * 2));
-+    }
- 
-     if (amc->i2c_init) {
-         amc->i2c_init(bmc);
+Since we are currently in progress of converting the Avocado tests
+to the new functional framework, this is a good opportunity to convert
+these tests and adjust the URLs (and hashsums) along the way to make
+these tests work again.
+
+Thomas Huth (2):
+  tests/functional: Convert BananaPi tests to the functional framework
+  tests/functional: Convert the OrangePi tests to the functional
+    framework
+
+ MAINTAINERS                           |   1 +
+ tests/avocado/boot_linux_console.py   | 411 --------------------------
+ tests/functional/meson.build          |   4 +
+ tests/functional/qemu_test/utils.py   |  21 ++
+ tests/functional/test_arm_bpim2u.py   | 206 +++++++++++++
+ tests/functional/test_arm_orangepi.py | 270 +++++++++++++++++
+ 6 files changed, 502 insertions(+), 411 deletions(-)
+ create mode 100755 tests/functional/test_arm_bpim2u.py
+ create mode 100755 tests/functional/test_arm_orangepi.py
+
 -- 
-2.34.1
+2.47.0
 
 
