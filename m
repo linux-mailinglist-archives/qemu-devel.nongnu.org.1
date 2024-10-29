@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58E89B4581
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 592539B4586
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Oct 2024 10:20:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5iMi-0000ho-Iv; Tue, 29 Oct 2024 05:18:16 -0400
+	id 1t5iMm-0000mF-CB; Tue, 29 Oct 2024 05:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMM-0000aR-Io; Tue, 29 Oct 2024 05:17:54 -0400
+ id 1t5iMQ-0000bU-Dh; Tue, 29 Oct 2024 05:18:04 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5iMJ-0003A3-SA; Tue, 29 Oct 2024 05:17:53 -0400
+ id 1t5iMO-0003A3-Rx; Tue, 29 Oct 2024 05:17:58 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 29 Oct
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 5/8] hw/sd/sdhci: Introduce a new Write Protected pin
- inverted property
-Date: Tue, 29 Oct 2024 17:17:26 +0800
-Message-ID: <20241029091729.3317512-6-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 6/8] hw/sd/aspeed_sdhci: Introduce Capabilities Register 2
+ for SD slot 0 and 1
+Date: Tue, 29 Oct 2024 17:17:27 +0800
+Message-ID: <20241029091729.3317512-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
 References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
@@ -67,60 +67,105 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Write Protect pin of SDHCI model is default active low to match the SDHCI
-spec. So, write enable the bit 19 should be 1 and write protected the bit 19
-should be 0 at the Present State Register (0x24). However, some board are
-design Write Protected pin active high. In other words, write enable the bit 19
-should be 0 and write protected the bit 19 should be 1 at the
-Present State Register (0x24). To support it, introduces a new "wp_invert"
-property and set it false by default.
+The size of SDHCI capabilities register is 64bits, so introduces new
+Capabilities Register 2 for SD slot 0 (0x144) and SD slot1 (0x244).
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/sd/sdhci.c         | 6 ++++++
- include/hw/sd/sdhci.h | 5 +++++
- 2 files changed, 11 insertions(+)
+ hw/sd/aspeed_sdhci.c | 40 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 29 insertions(+), 11 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index db7d547156..bdf5cbfb80 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -275,6 +275,10 @@ static void sdhci_set_readonly(DeviceState *dev, bool level)
+diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+index 427e5336a8..b73c18fbff 100644
+--- a/hw/sd/aspeed_sdhci.c
++++ b/hw/sd/aspeed_sdhci.c
+@@ -24,8 +24,10 @@
+ #define  ASPEED_SDHCI_DEBOUNCE_RESET 0x00000005
+ #define ASPEED_SDHCI_BUS             0x08
+ #define ASPEED_SDHCI_SDIO_140        0x10
++#define ASPEED_SDHCI_SDIO_144        0x14
+ #define ASPEED_SDHCI_SDIO_148        0x18
+ #define ASPEED_SDHCI_SDIO_240        0x20
++#define ASPEED_SDHCI_SDIO_244        0x24
+ #define ASPEED_SDHCI_SDIO_248        0x28
+ #define ASPEED_SDHCI_WP_POL          0xec
+ #define ASPEED_SDHCI_CARD_DET        0xf0
+@@ -35,21 +37,27 @@
+ 
+ static uint64_t aspeed_sdhci_read(void *opaque, hwaddr addr, unsigned int size)
  {
-     SDHCIState *s = (SDHCIState *)dev;
+-    uint32_t val = 0;
++    uint64_t val = 0;
+     AspeedSDHCIState *sdhci = opaque;
  
-+    if (s->wp_invert) {
-+        level = !level;
-+    }
-+
-     if (level) {
-         s->prnsts &= ~SDHC_WRITE_PROTECT;
-     } else {
-@@ -1551,6 +1555,8 @@ static Property sdhci_sysbus_properties[] = {
-                      false),
-     DEFINE_PROP_LINK("dma", SDHCIState,
-                      dma_mr, TYPE_MEMORY_REGION, MemoryRegion *),
-+    DEFINE_PROP_BOOL("wp-invert", SDHCIState,
-+                     wp_invert, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
+     switch (addr) {
+     case ASPEED_SDHCI_SDIO_140:
+-        val = (uint32_t)sdhci->slots[0].capareg;
++        val = extract64(sdhci->slots[0].capareg, 0, 32);
++        break;
++    case ASPEED_SDHCI_SDIO_144:
++        val = extract64(sdhci->slots[0].capareg, 32, 32);
+         break;
+     case ASPEED_SDHCI_SDIO_148:
+-        val = (uint32_t)sdhci->slots[0].maxcurr;
++        val = extract64(sdhci->slots[0].maxcurr, 0, 32);
+         break;
+     case ASPEED_SDHCI_SDIO_240:
+-        val = (uint32_t)sdhci->slots[1].capareg;
++        val = extract64(sdhci->slots[1].capareg, 0, 32);
++        break;
++    case ASPEED_SDHCI_SDIO_244:
++        val = extract64(sdhci->slots[1].capareg, 32, 32);
+         break;
+     case ASPEED_SDHCI_SDIO_248:
+-        val = (uint32_t)sdhci->slots[1].maxcurr;
++         val = extract64(sdhci->slots[1].maxcurr, 0, 32);
+         break;
+     default:
+         if (addr < ASPEED_SDHCI_REG_SIZE) {
+@@ -61,9 +69,9 @@ static uint64_t aspeed_sdhci_read(void *opaque, hwaddr addr, unsigned int size)
+         }
+     }
  
-diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 6cd2822f1d..d68f4788e7 100644
---- a/include/hw/sd/sdhci.h
-+++ b/include/hw/sd/sdhci.h
-@@ -100,6 +100,11 @@ struct SDHCIState {
-     uint8_t sd_spec_version;
-     uint8_t uhs_mode;
-     uint8_t vendor;        /* For vendor specific functionality */
-+    /*
-+     * Write Protect pin default active low for detecting SD card
-+     * to be protected. Set wp_invert to true inverted the signal.
-+     */
-+    bool wp_invert;
- };
- typedef struct SDHCIState SDHCIState;
+-    trace_aspeed_sdhci_read(addr, size, (uint64_t) val);
++    trace_aspeed_sdhci_read(addr, size, val);
  
+-    return (uint64_t)val;
++    return val;
+ }
+ 
+ static void aspeed_sdhci_write(void *opaque, hwaddr addr, uint64_t val,
+@@ -79,16 +87,26 @@ static void aspeed_sdhci_write(void *opaque, hwaddr addr, uint64_t val,
+         sdhci->regs[TO_REG(addr)] = (uint32_t)val & ~ASPEED_SDHCI_INFO_RESET;
+         break;
+     case ASPEED_SDHCI_SDIO_140:
+-        sdhci->slots[0].capareg = (uint64_t)(uint32_t)val;
++    sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 0, 32, val);
++    break;
++    case ASPEED_SDHCI_SDIO_144:
++    sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 32, 32, val);
+         break;
+     case ASPEED_SDHCI_SDIO_148:
+-        sdhci->slots[0].maxcurr = (uint64_t)(uint32_t)val;
++        sdhci->slots[0].maxcurr = deposit64(sdhci->slots[0].maxcurr,
++                                            0, 32, val);
+         break;
+     case ASPEED_SDHCI_SDIO_240:
+-        sdhci->slots[1].capareg = (uint64_t)(uint32_t)val;
++        sdhci->slots[1].capareg = deposit64(sdhci->slots[1].capareg,
++                                            0, 32, val);
++        break;
++    case ASPEED_SDHCI_SDIO_244:
++        sdhci->slots[1].capareg = deposit64(sdhci->slots[1].capareg,
++                                            32, 32, val);
+         break;
+     case ASPEED_SDHCI_SDIO_248:
+-        sdhci->slots[1].maxcurr = (uint64_t)(uint32_t)val;
++        sdhci->slots[1].maxcurr = deposit64(sdhci->slots[0].maxcurr,
++                                            0, 32, val);
+         break;
+     default:
+         if (addr < ASPEED_SDHCI_REG_SIZE) {
 -- 
 2.34.1
 
