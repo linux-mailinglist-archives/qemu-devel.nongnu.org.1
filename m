@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098D49B5E52
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 09:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C269B5E06
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 09:39:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t64W6-00029z-0y; Wed, 30 Oct 2024 04:57:26 -0400
+	id 1t64Do-0006vH-Hw; Wed, 30 Oct 2024 04:38:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t64W1-00029k-63
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:57:21 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t64Dh-0006ut-Hn
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:38:25 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t64Vy-0003MJ-WB
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:57:20 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t64Dg-0000z9-3D
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:38:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730278639; x=1761814639;
+ t=1730277504; x=1761813504;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=gnQAA5U0KTcw0z2+r+5S6MD0e6ySVmg4Mc0bTHzLNAU=;
- b=md3tAB32KVOzBEDi4VZnT1Kp3FlZJFIMllTavmedY00LONCzUqR/fsEf
- iiVuVp3OoL9nxJKJnoKSU1XSuBsxhdaI5/SSnvGoIinDAyRNaKp9QShbp
- wUIIkJFDKd0AU0IPhWQWjzemnTi+j5/haCYvHzQVAKfafKReQAoIYtjsp
- hCSMCnriLZtDEVODipuhx9pakC/SveLfxdCZm7c/K29l424wjmtcT2b64
- rNsz6evGeC7JnUC3MhJYICaP2BwEz6MP5dZO5fHo0h6P0wILYVOubp1Om
- I+pBNGDalEj+kXSBHyv+AfJpw21NzW1ogsJUcbZwBh3owF6gKmJxPePXL g==;
-X-CSE-ConnectionGUID: 4vXqnbW7Tmux/hc1diJoFQ==
-X-CSE-MsgGUID: wR16qGZwT8erNfm8BlDo7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="33894873"
-X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="33894873"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 01:57:14 -0700
-X-CSE-ConnectionGUID: Bl8qx19qQcKBTRTNLZ4APA==
-X-CSE-MsgGUID: x9+jm6q8QeKMUYEVpHXRcg==
+ bh=kCWpwSoH8/QxyQAdbgqCWPxs0u19d5JyPUtRBeyKLFg=;
+ b=SUKnsbVjj/HW1WB0pZJbUEE+NaKw6k5Srhxo/33D/97TekEVTn5wBqv4
+ ln+OuCmB8w/ot2I2P6hfwSiYKJ3RDXd0Vxa6YY9GGRVXAMApf6VO++7Gw
+ 9iJH8Lmi/GFzFoGxzjWkSB+2Q5mz4qJgA6I4eK6hGERpvYhqUAph2gM8R
+ X3puQlqDGowKWOVPMH7oWCJLBS+ajaKBrLlNpNPBZl6bYRaOeUPhkzW7U
+ yI7M/BGK6oFAHOuGbgCywPfkiQKtZzO4scKs1d3dBbksEiRMnu+UsHQWs
+ Akzes8VpaVbcfF7vjeTahy9A4iQR7vqtPtSFFXnrQajc0JP5PKHwUUy5U Q==;
+X-CSE-ConnectionGUID: VQ8+QjWGTMie62FCcck+RQ==
+X-CSE-MsgGUID: eg/z7o8STBiyHJgrcHdgjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="30178497"
+X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="30178497"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2024 01:38:22 -0700
+X-CSE-ConnectionGUID: 5/YOCTMWQK+T7tTo82Cw9Q==
+X-CSE-MsgGUID: gC9LwmpTR/GkdzzoERlyBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="119718797"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 01:57:13 -0700
-Date: Wed, 30 Oct 2024 16:52:07 +0800
-From: Tao Su <tao1.su@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="86845104"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 30 Oct 2024 01:38:20 -0700
+Date: Wed, 30 Oct 2024 16:54:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Zhao Liu <zhao1.liu@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v2 0/8] Add AVX10.1 CPUID support and GraniteRapids-v2
- model
-Message-ID: <ZyHzt9Cig4egc2OL@linux.bj.intel.com>
+Cc: qemu-devel@nongnu.org, tao1.su@linux.intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 7/8] target/i386: Add AVX512 state when AVX10 is supported
+Message-ID: <ZyH0UBMCOCLcXVx1@intel.com>
 References: <20241029151858.550269-1-pbonzini@redhat.com>
- <ZyGlhjFULPac5hpi@linux.bj.intel.com>
- <CABgObfbrKz1=bqdRYfZB7t5e8_Azr8Y0j_Jr1Sw__7-EA-OzMQ@mail.gmail.com>
+ <20241029151858.550269-8-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABgObfbrKz1=bqdRYfZB7t5e8_Azr8Y0j_Jr1Sw__7-EA-OzMQ@mail.gmail.com>
-Received-SPF: none client-ip=192.198.163.12;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
+In-Reply-To: <20241029151858.550269-8-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
 X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,16 +81,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 30, 2024 at 09:35:43AM +0100, Paolo Bonzini wrote:
-> Il mer 30 ott 2024, 04:23 Tao Su <tao1.su@linux.intel.com> ha scritto:
+On Tue, Oct 29, 2024 at 04:18:57PM +0100, Paolo Bonzini wrote:
+> Date: Tue, 29 Oct 2024 16:18:57 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 7/8] target/i386: Add AVX512 state when AVX10 is supported
+> X-Mailer: git-send-email 2.47.0
 > 
-> > > I don't have a Granite Rapids machine, so please test! :)
-> >
-> > I test it on Granite Rapids and all meet expection with my minor changes on
-> > patch4 :)
-> >
+> From: Tao Su <tao1.su@linux.intel.com>
 > 
-> Thanks, can you send v3?
+> AVX10 state enumeration in CPUID leaf D and enabling in XCR0 register
+> are identical to AVX512 state regardless of the supported vector lengths.
+> 
+> Given that some E-cores will support AVX10 but not support AVX512, add
+> AVX512 state components to guest when AVX10 is enabled.
+> 
+> Based on a patch by Tao Su <tao1.su@linux.intel.com>
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  target/i386/cpu.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 
-Sure, I will.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
