@@ -2,71 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3820F9B5D3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 08:55:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630499B5DFE
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 09:36:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t63WQ-00019z-9p; Wed, 30 Oct 2024 03:53:42 -0400
+	id 1t64BU-0006GD-HE; Wed, 30 Oct 2024 04:36:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t63WO-00019r-Fw
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 03:53:40 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t64BS-0006G2-6l
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:36:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t63WM-0004zK-4f
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 03:53:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730274818; x=1761810818;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=L6iHFxtT6MaDuU0qehbs8622ZoPkgsX/GeUhCCkJYpo=;
- b=VjuQCGReg3vFanjzr8Qtg8cLcK7CVM6rl4LC1WgDNsbRETp4l2BJFxsZ
- nRDZHplxOSUyIkZNfPV1Ioo/wQuTbqtgYHPcZU4aMjCM4a7q1ewNo0M2N
- m8XWPUoGEzt9QnBUUwi0NGXl767BqDu/zAYY+M+DXGqrNMAx8vYxFCuJt
- L0tUtNbq7guXGECZ0aeEuuz267lMc7lKCkyrrg43RmMd0h2gpUsnPQEh7
- WJ4TuNC5kHwMwXtlFVONEMBgIKF0uQ4eeJstKV4burDppccfYrQKvXn2W
- GJ1XJkMLINxUO8dGrFeiUcnyITmWAfoE+HI5xcWwAdHzKgpFxEWavJ+t+ A==;
-X-CSE-ConnectionGUID: 4lW1odzZTOCHBzdMj3tWQw==
-X-CSE-MsgGUID: Pgezc3fyQb6XD1oktdFqYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="29861914"
-X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="29861914"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 00:53:34 -0700
-X-CSE-ConnectionGUID: CGhg8ikvRaWsPGtubPN0mA==
-X-CSE-MsgGUID: dMIOjkyFSHOcR5nIXXL1Ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; d="scan'208";a="86788924"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 30 Oct 2024 00:53:33 -0700
-Date: Wed, 30 Oct 2024 16:09:53 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- xiaoyao.li@intel.com
-Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
- property
-Message-ID: <ZyHp0Yl4zSMkJpU3@intel.com>
-References: <20241029151858.550269-1-pbonzini@redhat.com>
- <20241029151858.550269-5-pbonzini@redhat.com>
- <ZyGic6S+/lcuR36v@linux.bj.intel.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t64BP-0000th-QA
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 04:36:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730277360;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=s1lwP6jZ//D1Bl9KVKkhgwZ/9P2m79ydfG2aUgpdwqw=;
+ b=DRykLfJ93vwTgCFqZYF+fTjPxH7NKl/cJbhuJ0gqvflv9niHJNsEVKg6Zp6kmCnZUjIyeU
+ X8ClBnAfl9ah7lm75YyZvfEhIBPMCLo0VG0xkmtbiSUDACPIhvyMEBkxnZaudaCh/P+2yo
+ YAdA6d/GDwQ6AcPsJUjjf8KlrsYS1us=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-053XDMlZNaCSKXSR9CQmXQ-1; Wed, 30 Oct 2024 04:35:58 -0400
+X-MC-Unique: 053XDMlZNaCSKXSR9CQmXQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d531a19a9so3261552f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 01:35:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730277357; x=1730882157;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s1lwP6jZ//D1Bl9KVKkhgwZ/9P2m79ydfG2aUgpdwqw=;
+ b=PtSOhmdAluLLolC2cShKCfkhGnlLuoPMUAh+cReYtQxC1kp3pG+c/gl+BLDmjefh/k
+ 4wLgRPiCyOchd4AyO30ewVcoP+DohGPiYtRHlroSOSy2G6MKd4ZtZ8OAl6Gt9plIEP96
+ SLQjno9gOSABqNS5OgUVtuu8QJm2Agtp433YWx87k7D8JAbPvRbPNEysU0WnR2/auVJ5
+ rYi0LYiVf3VD63MsDpC0gsuqOGKf8V23VUv2s2hzGGcvawHu/JHK05AfmrkMAC79Gaws
+ zRN0FwVcvq+UsxX0ZKFF0ttYcoK97aS5EzdxzrNC0Fpc2M0Q4TJQaCgoMxw5RwaWmppU
+ 2FJQ==
+X-Gm-Message-State: AOJu0YynO8mhtmwne3HyJLfGE1oZ+37tPJrGWXbngCWY8F4lhxSPkLg2
+ oKLZ6/IoTuyD9WS3fhAQfM/CTmWAphRycuMvqqA4Tf8TmWD3X/DsV2fwsdk3U/P3ESQs2CZjEUa
+ z2LfIWgbSN5siH0HatBf1BAl580prCIrIJ2z/+iqfiOBAPT7uWKMphERiPfMLEFnUHFVSa49vis
+ F8LCBkL/9g00s/4tCykpwiURNrtZ8=
+X-Received: by 2002:adf:ea81:0:b0:37c:cc67:8b1f with SMTP id
+ ffacd0b85a97d-3806121fad6mr10450782f8f.48.1730277356754; 
+ Wed, 30 Oct 2024 01:35:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPV3MSh9pfRoYZbBrxA1uLf+TXo754S+fpVzjKVKmIaw7M/dnE52/RVWdBIZYpUwVTiTBCctApol9N9HsScfs=
+X-Received: by 2002:adf:ea81:0:b0:37c:cc67:8b1f with SMTP id
+ ffacd0b85a97d-3806121fad6mr10450769f8f.48.1730277356462; Wed, 30 Oct 2024
+ 01:35:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyGic6S+/lcuR36v@linux.bj.intel.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+References: <20241029151858.550269-1-pbonzini@redhat.com>
+ <ZyGlhjFULPac5hpi@linux.bj.intel.com>
+In-Reply-To: <ZyGlhjFULPac5hpi@linux.bj.intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 30 Oct 2024 09:35:43 +0100
+Message-ID: <CABgObfbrKz1=bqdRYfZB7t5e8_Azr8Y0j_Jr1Sw__7-EA-OzMQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Add AVX10.1 CPUID support and GraniteRapids-v2
+ model
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Zhao Liu <zhao1.liu@intel.com>, 
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: multipart/alternative; boundary="00000000000032050c0625ad9723"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,37 +97,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 30, 2024 at 11:05:23AM +0800, Tao Su wrote:
-> Date: Wed, 30 Oct 2024 11:05:23 +0800
-> From: Tao Su <tao1.su@linux.intel.com>
-> Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
->  property
-> 
-> On Tue, Oct 29, 2024 at 04:18:54PM +0100, Paolo Bonzini wrote:
-> > From: Tao Su <tao1.su@linux.intel.com>
-> 
-> [ ... ]
-> 
-> >  static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
-> >  {
-> >      Object *obj = OBJECT(dev);
-> > +    X86CPU *cpu = X86_CPU(dev);
-> > +    CPUX86State *env = &cpu->env;
-> >  
-> >      if (!object_property_get_int(obj, "family", &error_abort)) {
-> >          if (X86_CPU(obj)->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-> > @@ -5351,6 +5357,14 @@ static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
-> >          }
-> >      }
-> >  
-> > +    if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && !env->avx10_version) {
-> 
-> CPUID_7_1_EDX_AVX10 is not set now and will be set in x86_cpu_realizefn().
-> How about just checking !env->avx10_version? Because cpu_x86_cpuid will
-> also check (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10).
+--00000000000032050c0625ad9723
+Content-Type: text/plain; charset="UTF-8"
 
-If you explicitly turn on avx10 via -cpu max,+avx10, then CPUID_7_1_EDX_AVX10
-will be there. But I agree, this is not a good place to check avx10 and
-avx10_version.
+Il mer 30 ott 2024, 04:23 Tao Su <tao1.su@linux.intel.com> ha scritto:
+
+> > I don't have a Granite Rapids machine, so please test! :)
+>
+> I test it on Granite Rapids and all meet expection with my minor changes on
+> patch4 :)
+>
+
+Thanks, can you send v3?
+
+Paolo
+
+>
+> > Paolo
+> >
+> > Paolo Bonzini (3):
+> >   target/i386: cpu: set correct supported XCR0 features for TCG
+> >   target/i386: do not rely on ExtSaveArea for accelerator-supported XCR0
+> bits
+> >   target/i386: return bool from x86_cpu_filter_features
+> >
+> > Tao Su (5):
+> >   target/i386: add AVX10 feature and AVX10 version property
+> >   target/i386: add CPUID.24 features for AVX10
+> >   target/i386: Add feature dependencies for AVX10
+> >   target/i386: Add AVX512 state when AVX10 is supported
+> >   target/i386: Introduce GraniteRapids-v2 model
+> >
+> >  target/i386/cpu.h         |  16 ++++
+> >  target/i386/cpu.c         | 175 ++++++++++++++++++++++++++++++++++----
+> >  target/i386/kvm/kvm-cpu.c |   8 --
+> >  target/i386/kvm/kvm.c     |   3 +-
+> >  4 files changed, 175 insertions(+), 27 deletions(-)
+> >
+> > --
+> > 2.47.0
+> >
+>
+>
+
+--00000000000032050c0625ad9723
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mer 30 ott 2024, 04:23 Tao Su &lt;<a href=3D"mailto=
+:tao1.su@linux.intel.com">tao1.su@linux.intel.com</a>&gt; ha scritto:</div>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; I don&#39;t have a Granite Rapids machine, so please test! :)<br>
+<br>
+I test it on Granite Rapids and all meet expection with my minor changes on=
+<br>
+patch4 :)<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">Thanks, can you send v3?</div><div dir=3D"auto"><br></div><div di=
+r=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cl=
+ass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; <br>
+&gt; Paolo<br>
+&gt; <br>
+&gt; Paolo Bonzini (3):<br>
+&gt;=C2=A0 =C2=A0target/i386: cpu: set correct supported XCR0 features for =
+TCG<br>
+&gt;=C2=A0 =C2=A0target/i386: do not rely on ExtSaveArea for accelerator-su=
+pported XCR0 bits<br>
+&gt;=C2=A0 =C2=A0target/i386: return bool from x86_cpu_filter_features<br>
+&gt; <br>
+&gt; Tao Su (5):<br>
+&gt;=C2=A0 =C2=A0target/i386: add AVX10 feature and AVX10 version property<=
+br>
+&gt;=C2=A0 =C2=A0target/i386: add CPUID.24 features for AVX10<br>
+&gt;=C2=A0 =C2=A0target/i386: Add feature dependencies for AVX10<br>
+&gt;=C2=A0 =C2=A0target/i386: Add AVX512 state when AVX10 is supported<br>
+&gt;=C2=A0 =C2=A0target/i386: Introduce GraniteRapids-v2 model<br>
+&gt; <br>
+&gt;=C2=A0 target/i386/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 16 ++=
+++<br>
+&gt;=C2=A0 target/i386/cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 175 +++++++=
++++++++++++++++++++++++++++----<br>
+&gt;=C2=A0 target/i386/kvm/kvm-cpu.c |=C2=A0 =C2=A08 --<br>
+&gt;=C2=A0 target/i386/kvm/kvm.c=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A03 +-<br>
+&gt;=C2=A0 4 files changed, 175 insertions(+), 27 deletions(-)<br>
+&gt; <br>
+&gt; -- <br>
+&gt; 2.47.0<br>
+&gt; <br>
+<br>
+</blockquote></div></div></div>
+
+--00000000000032050c0625ad9723--
 
 
