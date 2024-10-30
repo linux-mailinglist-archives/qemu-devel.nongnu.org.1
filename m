@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED079B5A34
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 04:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DABBC9B5A54
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 04:24:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5z6U-0007bT-LM; Tue, 29 Oct 2024 23:10:38 -0400
+	id 1t5zJB-0001lm-Eb; Tue, 29 Oct 2024 23:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5z6R-0007bC-Uq
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:10:35 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1t5zJ8-0001jn-9O
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:23:42 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t5z6P-00018a-J7
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:10:35 -0400
+ id 1t5zJ5-0002Dd-TA
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:23:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730257834; x=1761793834;
+ t=1730258620; x=1761794620;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=8EpwmkFImI3e1XkNUJVl3CvS4Bm6xI+t2Vp/geJvKS4=;
- b=BPwSTUvgIAn/CmA57GRafn1cVBXJgBKUavuLeFIja0YprK9xvl03pq91
- QUSL2e/aI8UhU/uXzRpcGZ+JmX/wjAQdHEsqJV03VHct/aAz1vwsFma+3
- cdzhZCZNuqv79eFVbw/QIJBl08Prr3vptVF+uGMVs6mkMCzgE+70r/Sde
- knQk48FWmZwuAUcqlMFccl6AmfbfeLTMG/XyMwxg7yg1z/Z7Rqz211CdO
- 2R2MgNRkP0EasIOUlDUB6UrY2iqgzSpOw+V6Vbt4r517apnSh6nInIMka
- 3CB3TFfLi66IROFjNz9LUBkLO8CNNReoGrBppOaKATQ+I0Z54sD97pZ6c w==;
-X-CSE-ConnectionGUID: AIixHNP1RnG9vuDLh6lxNw==
-X-CSE-MsgGUID: ttetuTJ5T9WKoUs6mALWSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52504460"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52504460"
+ bh=N4q/a7OLrilMA1oLa4pLlbn9zxUSJtdU1OzPO7GRQGU=;
+ b=VcfE7xF6VrlQkMfsptrw9zZC796OEKVkgBr8xjTfgmbLd6ozJIWgzW9R
+ /m3x6jJkh0pWvv+O9lJD6UD55RoIJ/63hIeqCEAt4tsyiokf6ZK1i673L
+ wIX0GzckZvNIGbc9DnBcY9p0GhimVyYFNgAjpAi1KgM2OyD281iH+wuEP
+ mjuyFFM/TRoLyWFfcZZT8GB6UHhixlJfogg9w+OSi58SxoFd3SIngKJ15
+ 4xKw7+IVHB3k/hsNgcIdCvMJfL/5dE9305vtAavzLjV+0G9AAUcUGmEg8
+ nPYrvN415HcTj30zaQQOBr0j++HBbV4Y7ip890K4YGSJRLxHvZ55XL6+i Q==;
+X-CSE-ConnectionGUID: JU11/VqITaaABbOAnn8ccw==
+X-CSE-MsgGUID: nIZ1fbjgTnqnNm6+pGAN7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30085711"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30085711"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 20:10:31 -0700
-X-CSE-ConnectionGUID: mDgo7/lyRiiAT0DGQdISiA==
-X-CSE-MsgGUID: kSU00hZvRBqNLwyI2gyjPA==
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 20:23:37 -0700
+X-CSE-ConnectionGUID: enUlSaS1QKuMQH30j5HMCA==
+X-CSE-MsgGUID: FVmM0jCTTXeY1aiObrJf1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="86727971"
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="86731071"
 Received: from linux.bj.intel.com ([10.238.157.71])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 20:10:29 -0700
-Date: Wed, 30 Oct 2024 11:05:23 +0800
+ 29 Oct 2024 20:23:36 -0700
+Date: Wed, 30 Oct 2024 11:18:30 +0800
 From: Tao Su <tao1.su@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, zhao1.liu@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
- property
-Message-ID: <ZyGic6S+/lcuR36v@linux.bj.intel.com>
+Subject: Re: [PATCH v2 0/8] Add AVX10.1 CPUID support and GraniteRapids-v2
+ model
+Message-ID: <ZyGlhjFULPac5hpi@linux.bj.intel.com>
 References: <20241029151858.550269-1-pbonzini@redhat.com>
- <20241029151858.550269-5-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241029151858.550269-5-pbonzini@redhat.com>
-Received-SPF: none client-ip=198.175.65.9;
+In-Reply-To: <20241029151858.550269-1-pbonzini@redhat.com>
+Received-SPF: none client-ip=198.175.65.16;
  envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
@@ -81,71 +80,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 29, 2024 at 04:18:54PM +0100, Paolo Bonzini wrote:
-> From: Tao Su <tao1.su@linux.intel.com>
+On Tue, Oct 29, 2024 at 04:18:50PM +0100, Paolo Bonzini wrote:
+> Most of the patches here are from Tao Su's v1.  The main issue in his
+> version were two:
+> 
+> - overlooking kvm_cpu_xsave_init(), which currently looks at ExtSaveArea.
+>   This would get a bit ugly for extended save states that are enabled
+>   by both AVX512 and AVX10.  Patches 1-2 change kvm_cpu_xsave_init()
+>   to look at ExtSaveArea's size field instead of testing features.
+> 
+> - downgrading silently to KVM reported value if the avx10_version property
+>   is >= kvm reported value.  Xiaoyao Li suggested basing this on
+>   cpu->check_cpuid and cpu->enforce_cpuid.  Also, the check must accept
+>   any accelerator and not just KVM.  I moved the check to
+>   x86_cpu_filter_features in patch 4.
+> 
+> I don't have a Granite Rapids machine, so please test! :)
 
-[ ... ]
+I test it on Granite Rapids and all meet expection with my minor changes on
+patch4 :)
 
->  static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
->  {
->      Object *obj = OBJECT(dev);
-> +    X86CPU *cpu = X86_CPU(dev);
-> +    CPUX86State *env = &cpu->env;
->  
->      if (!object_property_get_int(obj, "family", &error_abort)) {
->          if (X86_CPU(obj)->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-> @@ -5351,6 +5357,14 @@ static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
->          }
->      }
->  
-> +    if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && !env->avx10_version) {
-
-CPUID_7_1_EDX_AVX10 is not set now and will be set in x86_cpu_realizefn().
-How about just checking !env->avx10_version? Because cpu_x86_cpuid will
-also check (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10).
-
-> +        uint32_t eax, ebx, ecx, edx;
-> +        x86_cpu_get_supported_cpuid(0x24, 0,
-> +                                    &eax, &ebx, &ecx, &edx);
-> +
-> +        env->avx10_version = ebx & 0xff;
-> +    }
-> +
->      x86_cpu_realizefn(dev, errp);
->  }
->  
-> @@ -6331,6 +6345,9 @@ static void x86_cpu_load_model(X86CPU *cpu, X86CPUModel *model)
->       */
->      object_property_set_str(OBJECT(cpu), "vendor", def->vendor, &error_abort);
->  
-> +    object_property_set_int(OBJECT(cpu), "avx10-version", def->avx10_version,
-> +                            &error_abort);
-
-NIT: avx10-version is defined as UINT8, is it better to use object_property_set_uint?
-
-> +
->      x86_cpu_apply_version_props(cpu, model);
->  
->      /*
-> @@ -6859,6 +6876,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->          }
->          break;
->      }
-> +    case 0x24: {
-> +        *eax = 0;
-> +        *ebx = 0;
-> +        *ecx = 0;
-> +        *edx = 0;
-> +        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-> +            *ebx = env->avx10_version;
-> +        }
-
-The CPUIDs of vector lengths are missing here, according to your previous
-comment, it should be:
-
-+        if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && count == 0) {
-+            *ebx = env->features[FEAT_24_0_EBX] | env->avx10_version;
-+        }
-
-[ ... ]
+> 
+> Paolo
+> 
+> Paolo Bonzini (3):
+>   target/i386: cpu: set correct supported XCR0 features for TCG
+>   target/i386: do not rely on ExtSaveArea for accelerator-supported XCR0 bits
+>   target/i386: return bool from x86_cpu_filter_features
+> 
+> Tao Su (5):
+>   target/i386: add AVX10 feature and AVX10 version property
+>   target/i386: add CPUID.24 features for AVX10
+>   target/i386: Add feature dependencies for AVX10
+>   target/i386: Add AVX512 state when AVX10 is supported
+>   target/i386: Introduce GraniteRapids-v2 model
+> 
+>  target/i386/cpu.h         |  16 ++++
+>  target/i386/cpu.c         | 175 ++++++++++++++++++++++++++++++++++----
+>  target/i386/kvm/kvm-cpu.c |   8 --
+>  target/i386/kvm/kvm.c     |   3 +-
+>  4 files changed, 175 insertions(+), 27 deletions(-)
+> 
+> -- 
+> 2.47.0
+> 
 
