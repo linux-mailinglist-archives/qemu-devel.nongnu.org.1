@@ -2,73 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA4B9B5923
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4855E9B5945
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:42:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5xW2-0003mn-Au; Tue, 29 Oct 2024 21:28:54 -0400
+	id 1t5xiE-0006p2-G9; Tue, 29 Oct 2024 21:41:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t5xVy-0003mR-6x
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:28:50 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t5xVu-0008KR-V0
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:28:49 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxaeHGiyFnSUAdAA--.60675S3;
- Wed, 30 Oct 2024 09:28:38 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMAxreDEiyFnTjIoAA--.2240S3;
- Wed, 30 Oct 2024 09:28:36 +0800 (CST)
-Subject: Re: [PATCH 1/1] hw/loongarch/boot: Use warn_report when no kernel
- filename
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- jiaxun.yang@flygoat.com, maobibo@loongson.cn, pbonzini@redhat.com,
- armbru@redhat.com, lixianglai@loongson.cn
-References: <20241029093501.3980927-1-gaosong@loongson.cn>
- <5232854c-c3d7-44c0-ab1d-ed46d8a7b1c9@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <b735cbe2-e048-9208-557d-998b18b61415@loongson.cn>
-Date: Wed, 30 Oct 2024 09:29:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5xiB-0006om-8i; Tue, 29 Oct 2024 21:41:27 -0400
+Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5xi8-0001LP-U9; Tue, 29 Oct 2024 21:41:26 -0400
+Received: by mail-vs1-xe2d.google.com with SMTP id
+ ada2fe7eead31-4a47240d31aso1765723137.3; 
+ Tue, 29 Oct 2024 18:41:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730252483; x=1730857283; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Kf3H2QnSzAnyrekx2Ol+MGx2tn8+4DiQSqnuvwn2oeY=;
+ b=MBSMgaeTXX72VbD3yo/7gok4SLRRaRvG6/XVEzMyojjxedxO91vBQqapnrNIBzXQd3
+ qMVYJWql/jKF/R28cnYh5qCVC334Bc3MlCAlWsGz4b3IgLbSMJgg+GtETsrrj9+X/eAU
+ LOLaPkCK6GC/JfzAXp3pKN0cfzLzAYP1gkvYoaYHw0C4DjjfFuAe1NByG3o43GHqzqBx
+ DENbSuTSBXy3a+lbVWpsbFo4horhO1WHxRMjo+KIpAPx5Fc7jS5c4zn++UmroqZlET+s
+ xT6W3bwlZcA/QeztpTqGsVWisTGXp1UUqlRFhq05Y6l+1pEom3hxKfnOSwi0lEprXN3e
+ LivQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730252483; x=1730857283;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Kf3H2QnSzAnyrekx2Ol+MGx2tn8+4DiQSqnuvwn2oeY=;
+ b=ul6oxNljjY6gnSiEBroJ/VO0kG9vvT0QQ935HrejsEobd02OTJd4LarABnyf4SqQKj
+ B3GvmDxBVSRmgLi/wsh4iqyYos3uQ6r4m03fE3irTQVNx1iskH81DYNO/vES37dCXa45
+ B4UxoCBByZTiTPhzm15NrkEuVhvCRFKruVG0hSeCWwBZBaq8YQw5ijRAcfT9SI/AXLel
+ uK6gqlcXjhy7/hPocnBeDf6IV6Sdqr8PJusqW3UDQXg+NxkrTbaThHHLWbaYl46s7HL1
+ 1xvPw44I30oxtjwADOffG+/3+zBEJMJs7LQU+BTefPkBJ/tyv1f5YTMRqOpSW69krBFA
+ vzhg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXx4KMNwkdKRGUZRdkC2zqLXr7bEkglwjyKgw2986iGCjMa1uSZjT4+CT+70ejBpgwriRqviGsc9ttk@nongnu.org
+X-Gm-Message-State: AOJu0YzJB6p6igIYjA8QJzwrL95HSAYk4fPgKGY0Q4QXLPeiT9vpaYY2
+ If/qkd3K5Ox2XGn+pDxfjew2Beaq1XlNHypoj0PBaKjOHdDQ4EnNX3cEd4rCr08cOeqG2AFgHS2
+ wzUuAiuxvZFUV1Z5M0b5fBC2Q6IQ=
+X-Google-Smtp-Source: AGHT+IHafc9TvAG5esdN6kl+X2sNvhciVVHXil4BNZ1vpBzH+ZBIvfwVT7yO/502Li7Ilg8SGwo8DHOmiyye5vhC5YU=
+X-Received: by 2002:a05:6102:f14:b0:4a4:8d45:684e with SMTP id
+ ada2fe7eead31-4a8cfd5fbb5mr12880963137.29.1730252483284; Tue, 29 Oct 2024
+ 18:41:23 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <5232854c-c3d7-44c0-ab1d-ed46d8a7b1c9@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMAxreDEiyFnTjIoAA--.2240S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7urWxurWxKF45ArW7Gr4DGFX_yoW8Ar18pr
- n7ZryDJrZ5JF1kWw1UJ347WFyDJr4UKa1agFnrXa48J3yUXr1jqr18Xr9F9FyUtw4rKF1j
- vr15J34avF1UJagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-e5UU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.804,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240924124407.766495-1-dbarboza@ventanamicro.com>
+ <20240924124407.766495-4-dbarboza@ventanamicro.com>
+ <CAKmqyKMMRCFvWYa1GjwkbJsBh8q_OgtA2UVdaNEJsr=N66hvkQ@mail.gmail.com>
+ <b7271701-195a-461d-ba64-e2a02c634177@ventanamicro.com>
+In-Reply-To: <b7271701-195a-461d-ba64-e2a02c634177@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 30 Oct 2024 11:40:57 +1000
+Message-ID: <CAKmqyKPvfm7fxa7cCtNWpQaw_=SBvmUFJ15hfJemNg=-YQCbNA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] target/riscv/kvm: add kvm-aia bools props
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,49 +93,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2024/10/30 上午3:48, Philippe Mathieu-Daudé 写道:
-> On 29/10/24 06:35, Song Gao wrote:
->> When we run “qemu-system-loongarch64 -qmp stdio -vnc none -S”,
->> we get an error message “Need kernel filename” and then we can't use 
->> qmp cmd to query some information.
->> So, we just throw a warning and then the cpus starts running from 
->> address VIRT_FLASH0_BASE.
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   hw/loongarch/boot.c | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
->> index cb668703bd..9c37abed3a 100644
->> --- a/hw/loongarch/boot.c
->> +++ b/hw/loongarch/boot.c
->> @@ -278,7 +278,7 @@ static void init_boot_rom(struct 
->> loongarch_boot_info *info, void *p)
->>   static void loongarch_direct_kernel_boot(struct loongarch_boot_info 
->> *info)
->>   {
->>       void *p, *bp;
->> -    int64_t kernel_addr = 0;
->> +    int64_t kernel_addr = VIRT_FLASH0_BASE;
->>       LoongArchCPU *lacpu;
->>       CPUState *cs;
->>   @@ -286,8 +286,7 @@ static void loongarch_direct_kernel_boot(struct 
->> loongarch_boot_info *info)
->>           kernel_addr = load_kernel_info(info);
->>       } else {
->>           if(!qtest_enabled()) {
->> -            error_report("Need kernel filename\n");
->> -            exit(1);
->> +            warn_report("Need kernel filename\n");
+On Fri, Oct 11, 2024 at 9:19=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> Either nothing or "No kernel provided, booting from flash drive"?
 >
-I will change the message.
+>
+> On 10/10/24 10:57 PM, Alistair Francis wrote:
+> > On Tue, Sep 24, 2024 at 10:46=E2=80=AFPM Daniel Henrique Barboza
+> > <dbarboza@ventanamicro.com> wrote:
+> >>
+> >> Boolean properties are preferrable in comparision to string properties
+> >> since they don't require a string parsing.
+> >>
+> >> Add three bools that represents the available kvm-aia mode:
+> >> riscv-aia-emul, riscv-aia-hwaccel, riscv-aia-auto. They work like the
+> >> existing riscv-aia string property, i.e. if no bool is set we'll defau=
+lt
+> >> to riscv-aia-auto, if the host supports it.
+> >>
+> >> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >> ---
+> >>   target/riscv/kvm/kvm-cpu.c | 77 ++++++++++++++++++++++++++++++++++++=
+++
+> >>   1 file changed, 77 insertions(+)
+> >>
+> >> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> >> index 32f3dd6a43..e256e3fc48 100644
+> >> --- a/target/riscv/kvm/kvm-cpu.c
+> >> +++ b/target/riscv/kvm/kvm-cpu.c
+> >> @@ -1671,6 +1671,62 @@ static void riscv_set_kvm_aia(Object *obj, cons=
+t char *val, Error **errp)
+> >>       }
+> >>   }
+> >>
+> >> +static void riscv_set_kvm_aia_bool(uint32_t aia_bool, bool val)
+> >> +{
+> >> +    bool default_aia_mode =3D KVM_DEV_RISCV_AIA_MODE_AUTO;
+> >> +
+> >> +    g_assert(aia_bool <=3D KVM_DEV_RISCV_AIA_MODE_AUTO);
+> >> +
+> >> +    if (val) {
+> >> +        aia_mode =3D aia_bool;
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    /*
+> >> +     * Setting an aia_bool to 'false' does nothing if
+> >> +     * aia_mode isn't set to aia_bool.
+> >> +     */
+> >> +    if (aia_mode !=3D aia_bool) {
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    /*
+> >> +     * Return to default value if we're disabling the
+> >> +     * current set aia_mode.
+> >> +     */
+> >> +    aia_mode =3D default_aia_mode;
+> >> +}
+> >> +
+> >> +static bool riscv_get_kvm_aia_emul(Object *obj, Error **errp)
+> >> +{
+> >> +    return aia_mode =3D=3D KVM_DEV_RISCV_AIA_MODE_EMUL;
+> >> +}
+> >> +
+> >> +static void riscv_set_kvm_aia_emul(Object *obj,  bool val, Error **er=
+rp)
+> >> +{
+> >> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_EMUL, val);
+> >> +}
+> >> +
+> >> +static bool riscv_get_kvm_aia_hwaccel(Object *obj, Error **errp)
+> >> +{
+> >> +    return aia_mode =3D=3D KVM_DEV_RISCV_AIA_MODE_HWACCEL;
+> >> +}
+> >> +
+> >> +static void riscv_set_kvm_aia_hwaccel(Object *obj,  bool val, Error *=
+*errp)
+> >> +{
+> >> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_HWACCEL, val);
+> >> +}
+> >> +
+> >> +static bool riscv_get_kvm_aia_auto(Object *obj, Error **errp)
+> >> +{
+> >> +    return aia_mode =3D=3D KVM_DEV_RISCV_AIA_MODE_AUTO;
+> >> +}
+> >> +
+> >> +static void riscv_set_kvm_aia_auto(Object *obj,  bool val, Error **er=
+rp)
+> >> +{
+> >> +    riscv_set_kvm_aia_bool(KVM_DEV_RISCV_AIA_MODE_AUTO, val);
+> >> +}
+> >> +
+> >>   void kvm_arch_accel_class_init(ObjectClass *oc)
+> >>   {
+> >>       object_class_property_add_str(oc, "riscv-aia", riscv_get_kvm_aia=
+,
+> >> @@ -1681,6 +1737,27 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
+> >>           "if the host supports it");
+> >>       object_property_set_default_str(object_class_property_find(oc, "=
+riscv-aia"),
+> >>                                       "auto");
+> >> +
+> >> +    object_class_property_add_bool(oc, "riscv-aia-emul",
+> >> +                                   riscv_get_kvm_aia_emul,
+> >> +                                   riscv_set_kvm_aia_emul);
+> >> +    object_class_property_set_description(oc, "riscv-aia-emul",
+> >> +        "Set KVM AIA mode to 'emul'. Changing KVM AIA modes relies on=
+ host "
+> >> +        "support. Default mode is 'auto' if the host supports it");
+> >> +
+> >> +    object_class_property_add_bool(oc, "riscv-aia-hwaccel",
+> >> +                                   riscv_get_kvm_aia_hwaccel,
+> >> +                                   riscv_set_kvm_aia_hwaccel);
+> >> +    object_class_property_set_description(oc, "riscv-aia-hwaccel",
+> >> +        "Set KVM AIA mode to 'hwaccel'. Changing KVM AIA modes relies=
+ on host "
+> >> +        "support. Default mode is 'auto' if the host supports it");
+> >> +
+> >> +    object_class_property_add_bool(oc, "riscv-aia-auto",
+> >> +                                   riscv_get_kvm_aia_auto,
+> >> +                                   riscv_set_kvm_aia_auto);
+> >> +    object_class_property_set_description(oc, "riscv-aia-auto",
+> >> +        "Set KVM AIA mode to 'auto'. Changing KVM AIA modes "
+> >> +        "relies on host support");
+> >
+> > This seems more confusing. What should happen if a user sets multiple t=
+o true?
+>
+> It'll work like most options in QEMU: the last setting will overwrite the=
+ previous
+> ones. "-accel kvm,riscv-aia-hwaccel=3Dtrue,riscv-aia-emul=3Dtrue" will se=
+t the mode
+> to 'emul'. This is the same behavior that we have with the existing 'risc=
+v-aia'
+> string option.
 
-Thanks.
-Song Gao
->>           }
->>       }
+To me, reading "-accel kvm,riscv-aia-hwaccel=3Dtrue,riscv-aia-emul=3Dtrue"
+means that the `riscv-aia-hwaccel` and the `riscv-aia-emul` features
+are enabled.
 
+Converting a single multi-option property to a range of bools just
+feels strange. It seems more confusing to users.
+
+I agree that not requiring string parsing is nice, but this doesn't
+really seem worth it
+
+>
+> In case someone tries it out with multiple -accel options, this doesn't w=
+ork. Only
+> the first '-accel <type>' are parsed. This happens due to a known command=
+ line
+> parsing/accel globals issue that I tried to fix in [1] and [2].
+>
+> For now, using the existing 'riscv-aia' string option:
+>
+> -accel kvm,riscv-aia=3Demul -accel kvm,riscv-aia=3Dhwaccel -accel kvm,ris=
+cv-aia=3Dauto
+>
+> This will set riscv-aia to "emul" because all other "-accel kvm" options =
+aren't
+> being parsed. You can do silly stuff like:
+>
+> -accel kvm,riscv-aia=3Demul -accel kvm,riscv-aia=3Dthis_is_not_an_option
+>
+> And the guest will boot normally, setting riscv-aia to 'emul'.
+
+Both of those are unfortunate, but I do at least feel that reading
+them it's clear that something is wrong as the user has listed `-accel
+kvm...` multiple times.
+
+Alistair
 
