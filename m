@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02379B68A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:59:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE6D9B68BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 17:00:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6B4y-0003XU-1s; Wed, 30 Oct 2024 11:57:52 -0400
+	id 1t6B4y-0003Xk-L7; Wed, 30 Oct 2024 11:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4w-0003XC-Bc
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4w-0003XL-Si
  for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4u-0007m1-VF
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4v-0007lx-CK
  for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1730303868;
@@ -22,67 +22,66 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+OC04zWrmLQv9jlMFCWvGBK923Zpyicv5m+dwVSdRYg=;
- b=Sf/bMb0kmbR4AokovOe9prJN5ydwTbg20Z0jEqzSmdObLLJzWZ161jEcHg7WYwdjbmz5RN
- UxcEJ03GJHMjbW9QFOvTlQcaDXjABiau07FuM4pSjerpin/5QwZMDVWffQHgtuUXyiXgKw
- RZtXZEplBFxYQiy4oI/o05R2Yba1clg=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LPVTPWOgvdRxt04d1ASLhb7X2V2plDFvoFd5bfX+Z30=;
+ b=O/JT2bM97RQHgvm1la8F2gOteDQ0eGCqAm6gFKc0keXLvUJY0ZvzQEVKzVGqLnqMuW4217
+ bNC3QHSR/wPaBKjx5ETRn4dYp5ozFhJDDdiRSpJxVvJTqB3+8SHE0E78fP/sK45f/fZc4d
+ 9bWM+rDaahs/8YIWMKtkBZEqhcnLwD4=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-88-aj5LybM6OcqsWRz0pnEzpA-1; Wed, 30 Oct 2024 11:57:45 -0400
-X-MC-Unique: aj5LybM6OcqsWRz0pnEzpA-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3e60970ed1dso31291b6e.0
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:45 -0700 (PDT)
+ us-mta-225-vRu3npNEMiygzj8w3sbVcg-1; Wed, 30 Oct 2024 11:57:46 -0400
+X-MC-Unique: vRu3npNEMiygzj8w3sbVcg-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6d35062e1fcso59336d6.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730303864; x=1730908664;
+ d=1e100.net; s=20230601; t=1730303866; x=1730908666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+OC04zWrmLQv9jlMFCWvGBK923Zpyicv5m+dwVSdRYg=;
- b=oW4VMqZcFz1rrtPidxUiUIjFXbYJpyQ0hkModsvuwmpGcwbEZueG5vcwlf65IgNIQC
- OrrF60KodZXIGiYK/vuGtOanDRuLpIxzvgUwTrHg/iifKinOrv8E5Ak9u5s72eszA+E3
- FhqKVY7gzL63SQW3XamJjejFEsk50QfOLgENJGAemy1Ne7vhGnmE7kaSyaYgEp6HEMaO
- 8jQ4UZ9nSidAvNYEQo7hmaQ9hedPPBlelCrSWtUxoZW5O8kQAcyLdRIQ3xpD7MBbdHkD
- ZgckCchJlCi2c/i/aNizWU+7nhL+kd/btd46hJHyh75JbhB1ry9PzDYEitl3n56cqKrt
- 74EQ==
-X-Gm-Message-State: AOJu0YxK+JPfY1RTr1+B7JSmgF8gvdS84c28bFaY26ZT1XsyxiqKXjgQ
- to/8o0wVd+035Dh4evmAecNp7hsq9OFAaUdI+Jaq7wNTrgiR7UzxxGyv3p6pq8lXoAc22ZB0CaM
- tD6M5V7cgDgiuq/FRDu03/jKu+KRTNg/93ymQS0uxv0QKzeKjpMvkiwiyjljr9wBfCTn9egON4J
- dEL1xZf2q44wKwTwDkGA4skWodHyIWUSCb3w==
-X-Received: by 2002:a05:6808:1487:b0:3e6:77d:2ea1 with SMTP id
- 5614622812f47-3e6384b9564mr13946819b6e.45.1730303863788; 
- Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwb7zFYkHxM6wk6In87GHjFcARRYE4qSE/uLqcjwNOdUP4FcyGQfpy56ffwQp4s4S6u2SneQ==
-X-Received: by 2002:a05:6808:1487:b0:3e6:77d:2ea1 with SMTP id
- 5614622812f47-3e6384b9564mr13946787b6e.45.1730303863338; 
- Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
+ bh=LPVTPWOgvdRxt04d1ASLhb7X2V2plDFvoFd5bfX+Z30=;
+ b=PGvmSkb+L/hqdFd88kxeH3c+HQnqRaT6PAzp2kOm7oRQwlu6cbQxE++Ph39NasgjF3
+ zY20NJoNKrQCm+eSKJu2wPb+yjYoKPdVpJ6Lrr9QzMJFJiSokA6NphFZfiUzbz2oebbU
+ DVgJG1hh1b3XBS3mDWGCoEwK5tySwMgGI2pCTITyKNcfghQ723MoZHTvt1Hf7gZRcbVD
+ Jbki48e7tvdpZP/LVFkgcyqitMxH6dGTHCJQH/ZhgchVpXzQ/Xgd8EwFsfWagTQNimou
+ H5UPX3RyyAmG/ByyUNj5w98l75sjtmElHTQ3YqjI4VQ7Jd5q741Jf/5oPfEJxsLO2YFO
+ qiwA==
+X-Gm-Message-State: AOJu0YyK2/wj0u++WunCu9P8NxoBeD0ukyM41gwgzd92CK2nB7tTNMce
+ ZCCSQkO25icRjvH9yp/xEEge4NJNCJn8zpbxQX4EkysP0ipDPG5QS+zCy8NtwncoUIZ/7LsLLZx
+ Gzs6vvs0W82ukb8YI4JQYIaljJ8r7LTi19/HGBKLGQZHZwCGK97HNo39T5elkbKio0tV9Iqy+8Z
+ BMoAtKGaeyesHcPhdjgwWudrvwwlwJV9bVVQ==
+X-Received: by 2002:a05:6214:5a0b:b0:6cc:2d3c:6472 with SMTP id
+ 6a1803df08f44-6d1856b4898mr207007696d6.14.1730303865797; 
+ Wed, 30 Oct 2024 08:57:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIszSgVBjS+zerSZyizB+9+ynJ/mMCVgJPmtbKtXxBQCXLHsgEuEo4q3PtErowkRb+Df7Ezw==
+X-Received: by 2002:a05:6214:5a0b:b0:6cc:2d3c:6472 with SMTP id
+ 6a1803df08f44-6d1856b4898mr207007416d6.14.1730303865389; 
+ Wed, 30 Oct 2024 08:57:45 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.41
+ 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 08:57:42 -0700 (PDT)
+ Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
  Hyman Huang <yong.huang@smartx.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 04/18] accel/tcg/icount-common: Remove the reference to the
- unused header file
-Date: Wed, 30 Oct 2024 11:57:20 -0400
-Message-ID: <20241030155734.2141398-5-peterx@redhat.com>
+Subject: [PULL 05/18] migration: Stop CPU throttling conditionally
+Date: Wed, 30 Oct 2024 11:57:21 -0400
+Message-ID: <20241030155734.2141398-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241030155734.2141398-1-peterx@redhat.com>
 References: <20241030155734.2141398-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,26 +101,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
+Since CPU throttling only occurs when auto-converge
+is on, stop it conditionally.
+
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/5e33b423d0b8506e5cb33fff42b50aa301b7731b.1729146786.git.yong.huang@smartx.com
+Link: https://lore.kernel.org/r/f0c787080bb9ab0c37952f0ca5bfaa525d5ddd14.1729146786.git.yong.huang@smartx.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- accel/tcg/icount-common.c | 1 -
- 1 file changed, 1 deletion(-)
+ migration/migration.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index 8d3d3a7e9d..30bf8500dc 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -36,7 +36,6 @@
- #include "sysemu/runstate.h"
- #include "hw/core/cpu.h"
- #include "sysemu/cpu-timers.h"
--#include "sysemu/cpu-throttle.h"
- #include "sysemu/cpu-timers-internal.h"
+diff --git a/migration/migration.c b/migration/migration.c
+index 7609e0feed..e81c70b9d2 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3295,7 +3295,9 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ static void migration_iteration_finish(MigrationState *s)
+ {
+     /* If we enabled cpu throttling for auto-converge, turn it off. */
+-    cpu_throttle_stop();
++    if (migrate_auto_converge()) {
++        cpu_throttle_stop();
++    }
  
- /*
+     bql_lock();
+     switch (s->state) {
 -- 
 2.45.0
 
