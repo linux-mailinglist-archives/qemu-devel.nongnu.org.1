@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573C39B59A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0ABA9B59B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5xry-0002uL-FJ; Tue, 29 Oct 2024 21:51:34 -0400
+	id 1t5xwX-0003k0-Ht; Tue, 29 Oct 2024 21:56:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t5xrv-0002u8-HH
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:51:31 -0400
+ id 1t5xwT-0003jh-3g
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:56:13 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t5xrs-0002EA-Ai
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:51:31 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1t5xwQ-0002no-QM
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:56:12 -0400
 Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxeeAckSFn7kcdAA--.60211S3;
- Wed, 30 Oct 2024 09:51:24 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Axjq82kiFnZEkdAA--.36959S3;
+ Wed, 30 Oct 2024 09:56:06 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMCx98AakSFnkjwoAA--.23043S3;
- Wed, 30 Oct 2024 09:51:22 +0800 (CST)
-Subject: Re: [PATCH v2 2/4] hw/loongarch/virt: Implement cpu plug interface
+ by front1 (Coremail) with SMTP id qMiowMCxLEc2kiFnrT4oAA--.23203S3;
+ Wed, 30 Oct 2024 09:56:06 +0800 (CST)
+Subject: Re: [PATCH v2 4/4] hw/loongarch/virt: Enable cpu hotplug feature on
+ virt machine
 To: Zhao Liu <zhao1.liu@intel.com>
 Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
  Xianglai Li <lixianglai@loongson.cn>, Igor Mammedov <imammedo@redhat.com>
 References: <20241029095335.2219343-1-maobibo@loongson.cn>
- <20241029095335.2219343-3-maobibo@loongson.cn> <ZyDlDjkO8ewhiE/m@intel.com>
+ <20241029095335.2219343-5-maobibo@loongson.cn> <ZyDnpk3tmG4KECWc@intel.com>
 From: maobibo <maobibo@loongson.cn>
-Message-ID: <6e53ba79-041a-3294-3656-9f5d5c41ad19@loongson.cn>
-Date: Wed, 30 Oct 2024 09:50:56 +0800
+Message-ID: <ce111d21-7400-80c0-0984-ee2bc0286f40@loongson.cn>
+Date: Wed, 30 Oct 2024 09:55:40 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <ZyDlDjkO8ewhiE/m@intel.com>
+In-Reply-To: <ZyDnpk3tmG4KECWc@intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCx98AakSFnkjwoAA--.23043S3
+X-CM-TRANSID: qMiowMCxLEc2kiFnrT4oAA--.23203S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGryUXF13tw4rKw18tr45XFc_yoW5XrWDpF
- Z7tFyaqFyDZrn7A34ft3WrWry0gwn7Wa17Wws5JFnxAws8Ar18GF1UKw4Y9F15C340vry0
- va13Aa4kZF1Y9agCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW7uryftF4kKFWUXw17Cry7CFX_yoW8Aw4kpr
+ 4UJ34DZ3WUAF1Fv3yFga4qgFy0qw1rXay7u3yvqa47A3Zakrn5tF1jkw4YgF4fAa10gaya
+ 9Fs8WFnF9F4qqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
  0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
  e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
  6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAF
+ wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
  CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
  67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E
  14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j83kZU
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07josjUU
  UUUU=
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
  helo=mail.loongson.cn
@@ -83,88 +84,62 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Hi Zhao,
 
-On 2024/10/29 下午9:37, Zhao Liu wrote:
-> (CC Igor since I want to refer his comment on hotplug design.)
-> 
-> Hi Bibo,
-> 
-> I have some comments about your hotplug design.
-> 
+On 2024/10/29 下午9:48, Zhao Liu wrote:
 > [snip]
 > 
->> +static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
->> +                              DeviceState *dev, Error **errp)
->> +{
->> +    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(hotplug_dev);
->> +    MachineState *ms = MACHINE(OBJECT(hotplug_dev));
->> +    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
->> +    CPUState *cs = CPU(dev);
->> +    CPUArchId *cpu_slot;
->> +    Error *local_err = NULL;
->> +    LoongArchCPUTopo topo;
->> +    int arch_id, index = 0;
-> 
-> [snip]
-> 
->> +    if (cpu->phy_id == UNSET_PHY_ID) {
->> +        error_setg(&local_err, "CPU hotplug not supported");
->> +        goto out;
->> +    } else {
->> +        /*
->> +         * For non hot-add cpu, topo property is not set. And only physical id
->> +         * property is set, setup topo information from physical id.
->> +         *
->> +         * Supposing arch_id is equal to cpu slot index
->> +         */
->> +        arch_id = cpu->phy_id;
->> +        virt_get_topo_from_index(ms, &topo, arch_id);
->> +        cpu->socket_id = topo.socket_id;
->> +        cpu->core_id   = topo.core_id;
->> +        cpu->thread_id = topo.thread_id;
+>> @@ -1382,8 +1384,40 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>>        }
+>>   
+>>       if (cpu->phy_id == UNSET_PHY_ID) {
+>> -        error_setg(&local_err, "CPU hotplug not supported");
+>> -        goto out;
+>> +        if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
+>> +            error_setg(&local_err,
+>> +                       "Invalid thread-id %u specified, must be in range 1:%u",
+>> +                       cpu->thread_id, ms->smp.threads - 1);
+>> +            goto out;
+>> +        }
+>> +
+>> +        if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
+>> +            error_setg(&local_err,
+>> +                       "Invalid core-id %u specified, must be in range 1:%u",
+>> +                       cpu->core_id, ms->smp.cores - 1);
+>> +            goto out;
+>> +        }
+>> +
+>> +        if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
+>> +            error_setg(&local_err,
+>> +                       "Invalid socket-id %u specified, must be in range 1:%u",
+>> +                       cpu->socket_id, ms->smp.sockets - 1);
+>> +            goto out;
+>> +        }
+>> +
+>> +        topo.socket_id = cpu->socket_id;
+>> +        topo.core_id = cpu->core_id;
+>> +        topo.thread_id = cpu->thread_id;
+>> +        arch_id =  virt_get_arch_id_from_topo(ms, &topo);
 >> +        cpu_slot = virt_find_cpu_slot(ms, arch_id, &index);
->> +    }
+>> +        if (CPU(cpu_slot->cpu)) {
+>> +            error_setg(&local_err,
+>> +                       "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
+>> +                       cs->cpu_index, cpu->socket_id, cpu->core_id,
+>> +                       cpu->thread_id, cpu_slot->arch_id);
+>> +            goto out;
+>> +        }
+>> +        cpu->phy_id = arch_id;
+>>       } else {
 > 
-> It seems you want to use "phy_id" (instead of topology IDs as for now)
-> as the parameter to plug CPU. And IIUC in previous patch, "phy_id" is
-> essentially the CPU index.
-> 
-> Igor has previously commented [1] on ARM's hotplug design that the
-> current QEMU should use the topology-id (socket-id/core-id/thread-id) as
-> the parameters, not the CPU index or the x86-like apic id.
-> 
-> So I think his comment can apply on loongarch, too.
-Yes, I agree. This piece of code is for cold-plug CPUs which is added 
-during VM power-on stage, not hot-plugged cpu. For hot-plugged cpu, 
-value of cpu->phy_id is UNSET_PHY_ID.
+> Here you allow user to specify topology IDs, but "else" still indicates
+> user could use "phy_id" instead of topology IDs, right?
+"else" for cold-plug CPUs which is created with index from [0 -- smp.cpus)
 
-Topology-id (socket-id/core-id/thread-id) is not set for cold-plug CPUs.
-For cold-plug CPUs topology-id is calculated from archid.
+> 
+> Is it necessary to expose "phy_id" to user?
+We will remove phy_id property and unexpose it to user.
 
 Regards
-Bibo
-
-> 
->  From my own understanding, the CPU index lacks topological intuition,
-> and the APIC ID for x86 is even worse, as its sometimes even
-> discontinuous. Requiring the user to specify topology ids would allow
-> for clearer localization to CPU slots.
-> 
-> [1]: https://lore.kernel.org/qemu-devel/20240812101556.1a395712@imammedo.users.ipa.redhat.com/
-> 
->> +    /*
->> +     * update cpu_index calculation method since it is easily used as index
->> +     * with possible_cpus array by function virt_cpu_index_to_props
->> +     */
->> +    cs->cpu_index = index;
->> +    numa_cpu_pre_plug(cpu_slot, dev, &local_err);
->> +    return ;
->> +
->> +out:
->> +    error_propagate(errp, local_err);
->> +}
->> +
+Bibo Mao
 > 
 > Thanks,
 > Zhao
