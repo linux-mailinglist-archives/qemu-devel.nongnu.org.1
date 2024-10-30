@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B759B68A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD9F9B68A9
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:59:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6B5B-0003bh-WE; Wed, 30 Oct 2024 11:58:06 -0400
+	id 1t6B5C-0003d1-Ha; Wed, 30 Oct 2024 11:58:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B54-0003aS-Hz
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B55-0003au-Js
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B52-0007nM-Sc
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:58 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B54-0007no-5l
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730303876;
+ s=mimecast20190719; t=1730303877;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D04sswxuA64dl9ZML7ycu/fX/0EMcgaz7cJ3EQ22hfI=;
- b=T5eblZPkCxqLCgD/JZ28CKQhfeEFM+7N8WdxinQRRmLPLlwS9YhbxvBO2+Kv3U9YoN3MTC
- H8vWR17DzJahF3u1kumkow8wrm9Ul0huRq5QtPpB6sB7KonYD7f0XMydlS2mwYXptXNMGZ
- +sxnBZJsB1RIf9xWZQKHlof0oBTNX/Q=
+ bh=XauRfFIHmI+9xXD3oz2X/URcYPURxAnB3bljaFQ+418=;
+ b=TQtHGDGT6QxVFgd+salpTg/31IdEy+EyofNRi4aV0EBml0jt5VqykzRKFfWGPnf7a7I3IT
+ WB6haGXqczPT/l1jC9Y4ZcgeWB5EMNtJxDMpZaEsqSuY3SaSElxJAeUFkc/VjoOzCkrzOY
+ xyhDE/UoPUZvhHpNHzN/9Q4nbt0o8lc=
 Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
  [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-_JZ0IR-pO1O5gxBQvdI4Fw-1; Wed, 30 Oct 2024 11:57:53 -0400
-X-MC-Unique: _JZ0IR-pO1O5gxBQvdI4Fw-1
+ us-mta-244-LWT9xeeNOA-Tep8P1pnefg-1; Wed, 30 Oct 2024 11:57:55 -0400
+X-MC-Unique: LWT9xeeNOA-Tep8P1pnefg-1
 Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6cbed928402so84811836d6.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:53 -0700 (PDT)
+ 6a1803df08f44-6ce30559894so49776d6.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730303872; x=1730908672;
+ d=1e100.net; s=20230601; t=1730303874; x=1730908674;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D04sswxuA64dl9ZML7ycu/fX/0EMcgaz7cJ3EQ22hfI=;
- b=ASdAciRRy7zlE1bF5ahAaUeQUA8drNN6bU9neuWDkPI2vd/WBeN78w46lmKkZsN8pZ
- DeyizoNwllO31UoBeRg2GDg5r6cXS34+mA4us48Mkru4UOIIB2j1iMD8U7WNl0831Dak
- GXgCpc16ZpNgarorcTLh7qzpC0e7MifEmuMzMTBHNnVO4HemsXdHKERoRF//143snEyz
- 3RnlGLOYGwX5ZIr9joGGzv7RmEbxKrrpeSR1yMBM28idzYbtuQvtgbiWowu7kJWHn7gV
- 1VsOiP3Xhw13082BausA8gpYN5uFrfcrBJo8z9COwWIoKyFICmCGNRln4DhxgD1at+bX
- C4EQ==
-X-Gm-Message-State: AOJu0YyuHIQOolGov3uxHKlPMXY3vpd/QeHsrSvxahey+8UvPTZzW7Yx
- 22oPcbtFR5UH2Bb3szavMe9inphxqwLIWflBlpJZvgbiHG5bnVulcO+FkyBmR8keQqqboyZrtgC
- DzMzPieqDLu7FMsuU+7upUj1UOXOZUySP28K7QHO/AyCr6IrlsMLn/vvwWRN+Fg+MjMYNszpXRH
- GMZpHLI1OtaHUNOy/ZjBXXhTcSyuZOjCM6Ag==
-X-Received: by 2002:a05:6214:2f01:b0:6cc:4136:205 with SMTP id
- 6a1803df08f44-6d1856f3f3cmr326332626d6.26.1730303872641; 
- Wed, 30 Oct 2024 08:57:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZyOG+p6mdeNoMIurYOPKldNYJffEmFXjA6H0JYnamYdreGP9Rd3uz+LSqS+FZ0V8YZefCOw==
-X-Received: by 2002:a05:6214:2f01:b0:6cc:4136:205 with SMTP id
- 6a1803df08f44-6d1856f3f3cmr326332186d6.26.1730303872168; 
- Wed, 30 Oct 2024 08:57:52 -0700 (PDT)
+ bh=XauRfFIHmI+9xXD3oz2X/URcYPURxAnB3bljaFQ+418=;
+ b=vwTh95irK7aqNnzdlpZZL5WsU/3NEsCFbeAf+S5Cafekr6V9j8Hal665fYafm1ArRM
+ vkDD48vRggSRvIC1FGHOeR0l1xta6LynIOtkpySBWsXA08PpIJnJTVdPDGLbyV0q9k6L
+ 577vxqk1j2hdyaQ452LgVoZk8qtG3XJ1azzrn2szOsrT2VrU9J0U/rUSfDIsRlqp2aeI
+ F9+1jdn1qUf25tV/cPbLIabS0USXJVHrE7yLxFVIa8miVJGbPTH6sG4Dmv0q3EWFovy7
+ +UwyYzMutPnJhousvjTQ6ZZmmgjAymCZDkcI0PDH/Mt7OqXCgy5+FFvsorI+4t9ipVXD
+ xAYQ==
+X-Gm-Message-State: AOJu0YzCST+0wnxq/hESppppHpvNzE32LBKt2G+4+kR8cbr08lU6q1kJ
+ VmULaDErQ0g8FFISeIee097GfNfTq5NUu2KP77zhOxKghy50BIxP62YXmF9WWd8eCch5Xy0mlLE
+ 2/ga20hNg28Pox+wj7wyprhhaalP1wYieJ3zkeqmqDExzWTIQP48iN07oEpRKb6fsvwepg6HnEr
+ ElIg9orSG0bTLyDnmE036PPi78kB1sZ9anHg==
+X-Received: by 2002:a05:6214:3a84:b0:6d3:447f:db4c with SMTP id
+ 6a1803df08f44-6d3447fe633mr52796036d6.43.1730303874488; 
+ Wed, 30 Oct 2024 08:57:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnoqywHpvrLl8Pz1Pyfms3dap5PkftBtddYq6tMt2MCTXCkxDRzED3gPZ2LLhRk5HoccAnKQ==
+X-Received: by 2002:a05:6214:3a84:b0:6d3:447f:db4c with SMTP id
+ 6a1803df08f44-6d3447fe633mr52795716d6.43.1730303874125; 
+ Wed, 30 Oct 2024 08:57:54 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.50
+ 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 08:57:51 -0700 (PDT)
+ Wed, 30 Oct 2024 08:57:52 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
- Hyman Huang <yong.huang@smartx.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 09/18] tests/migration: Add case for periodic ramblock dirty
- sync
-Date: Wed, 30 Oct 2024 11:57:25 -0400
-Message-ID: <20241030155734.2141398-10-peterx@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 10/18] migration/dirtyrate: Silence warning about strcpy() on
+ OpenBSD
+Date: Wed, 30 Oct 2024 11:57:26 -0400
+Message-ID: <20241030155734.2141398-11-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241030155734.2141398-1-peterx@redhat.com>
 References: <20241030155734.2141398-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,67 +101,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+From: Thomas Huth <thuth@redhat.com>
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/cb61504f1a1e9d5f2ca4dac12e518deb076ce9f3.1729146786.git.yong.huang@smartx.com
+The linker on OpenBSD complains:
+
+ ld: warning: dirtyrate.c:447 (../src/migration/dirtyrate.c:447)(...):
+ warning: strcpy() is almost always misused, please use strlcpy()
+
+It's currently not a real problem in this case since both arrays
+have the same size (256 bytes). But just in case somebody changes
+the size of the source array in the future, let's better play safe
+and use g_strlcpy() here instead, with an additional check that the
+string has been copied as a whole.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Hyman Huang <yong.huang@smartx.com>
+Link: https://lore.kernel.org/r/20241022063402.184213-1-thuth@redhat.com
+[peterx: Fix over-80 chars]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-test.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ migration/dirtyrate.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 95e45b5029..e6a2803e71 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2791,6 +2791,8 @@ static void test_migrate_auto_converge(void)
-      * so we need to decrease a bandwidth.
-      */
-     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
-+    uint64_t prev_dirty_sync_cnt, dirty_sync_cnt;
-+    int max_try_count, hit = 0;
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+index a74a6aeb56..f7e86686fc 100644
+--- a/migration/dirtyrate.c
++++ b/migration/dirtyrate.c
+@@ -437,6 +437,7 @@ static void get_ramblock_dirty_info(RAMBlock *block,
+                                     struct DirtyRateConfig *config)
+ {
+     uint64_t sample_pages_per_gigabytes = config->sample_pages_per_gigabytes;
++    gsize len;
  
-     if (test_migrate_start(&from, &to, uri, &args)) {
-         return;
-@@ -2827,6 +2829,36 @@ static void test_migrate_auto_converge(void)
-     } while (true);
-     /* The first percentage of throttling should be at least init_pct */
-     g_assert_cmpint(percentage, >=, init_pct);
-+
-+    /*
-+     * End the loop when the dirty sync count greater than 1.
-+     */
-+    while ((dirty_sync_cnt = get_migration_pass(from)) < 2) {
-+        usleep(1000 * 1000);
-+    }
-+
-+    prev_dirty_sync_cnt = dirty_sync_cnt;
-+
-+    /*
-+     * The RAMBlock dirty sync count must changes in 5 seconds, here we set
-+     * the timeout to 10 seconds to ensure it changes.
-+     *
-+     * Note that migrate_ensure_non_converge set the max-bandwidth to 3MB/s,
-+     * while the qtest mem is >= 100MB, one iteration takes at least 33s (100/3)
-+     * to complete; this ensures that the RAMBlock dirty sync occurs.
-+     */
-+    max_try_count = 10;
-+    while (--max_try_count) {
-+        dirty_sync_cnt = get_migration_pass(from);
-+        if (dirty_sync_cnt != prev_dirty_sync_cnt) {
-+            hit = 1;
-+            break;
-+        }
-+        prev_dirty_sync_cnt = dirty_sync_cnt;
-+        sleep(1);
-+    }
-+    g_assert_cmpint(hit, ==, 1);
-+
-     /* Now, when we tested that throttling works, let it converge */
-     migrate_ensure_converge(from);
+     /* Right shift 30 bits to calc ramblock size in GB */
+     info->sample_pages_count = (qemu_ram_get_used_length(block) *
+@@ -445,7 +446,9 @@ static void get_ramblock_dirty_info(RAMBlock *block,
+     info->ramblock_pages = qemu_ram_get_used_length(block) >>
+                            qemu_target_page_bits();
+     info->ramblock_addr = qemu_ram_get_host_addr(block);
+-    strcpy(info->idstr, qemu_ram_get_idstr(block));
++    len = g_strlcpy(info->idstr, qemu_ram_get_idstr(block),
++                    sizeof(info->idstr));
++    g_assert(len < sizeof(info->idstr));
+ }
  
+ static void free_ramblock_dirty_info(struct RamblockDirtyInfo *infos, int count)
 -- 
 2.45.0
 
