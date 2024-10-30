@@ -2,55 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3F79B6454
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 14:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B07829B6557
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 15:11:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t68uY-0006z2-Nl; Wed, 30 Oct 2024 09:38:58 -0400
+	id 1t69Ph-0004fe-LI; Wed, 30 Oct 2024 10:11:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1t68uV-0006x4-L8
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 09:38:55 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t69Pe-0004fI-En
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 10:11:06 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1t68uQ-0004gx-Es
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 09:38:53 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 766EE4E600E;
- Wed, 30 Oct 2024 14:38:44 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id NYy-M8Pw9tsH; Wed, 30 Oct 2024 14:38:42 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 78B624E600F; Wed, 30 Oct 2024 14:38:42 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 76D8A746F60;
- Wed, 30 Oct 2024 14:38:42 +0100 (CET)
-Date: Wed, 30 Oct 2024 14:38:42 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Lei Huang <Lei.Huang@amd.com>
-cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
- pierre-eric.pelloux-prayer@amd.com, ken.xue@amd.com, 
- Howard Spoelstra <hsp.cat7@gmail.com>
-Subject: Re: [PATCH v2] ui/sdl: Mouse event optimization
-In-Reply-To: <20241030034353.1588-1-Lei.Huang@amd.com>
-Message-ID: <73cd533a-8818-4212-f7ea-0f89bd2b78cd@eik.bme.hu>
-References: <20241030032014.1564-1-Lei.Huang@amd.com>
- <20241030034353.1588-1-Lei.Huang@amd.com>
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t69Pa-0000p7-2q
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 10:11:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730297462; x=1761833462;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=LSWj6FdvsCasDmywKZm4FU/GW8dVrlo82UsJX9yOfBM=;
+ b=Vx9WQd2+Z5PSDOtZ+KB42qhvSNnz600048d6MnSCRWRBs+9F4YcBlHeA
+ V5hj/4PkX6gT7Pfe8VaA3sAtMoqa0bOBi24KdeQo6AvcbAlHozI+ZyH4y
+ G9FrU8ujxYzcRp7ZfxwFHNmOQdId0uOAat4BLaNCecVCwBekwn+eblFBC
+ dD7aLvM88MCpmPihWTO1J77BGlqBKNh+UZPuL3ZdpelUMjXd6NlXrudd6
+ fFwy8n/ErQfWvtJOLcUmoCU0xCFjvGYGUfzQ2daTBtGJJgG/7sPnMp5zQ
+ TQuPshFiJihQ4S6sDZB1TwRM1nBkOwa7uaAKJW7r+y7B5BSL94vX2Le9q w==;
+X-CSE-ConnectionGUID: iybHEWmXQRqBkZFO8SnGpA==
+X-CSE-MsgGUID: XOQHJxspRueyPxD0Ifb58Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="47461728"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="47461728"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2024 07:11:00 -0700
+X-CSE-ConnectionGUID: pkQ//O7dT8+SQFmOJnpRwg==
+X-CSE-MsgGUID: R6D2QVVcTYaY2NhFWctUUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82237513"
+Received: from linux.bj.intel.com ([10.238.157.71])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2024 07:10:58 -0700
+Date: Wed, 30 Oct 2024 22:05:51 +0800
+From: Tao Su <tao1.su@linux.intel.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ xiaoyao.li@intel.com
+Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
+ property
+Message-ID: <ZyI9P1ftFOTUhDzb@linux.bj.intel.com>
+References: <20241029151858.550269-1-pbonzini@redhat.com>
+ <20241029151858.550269-5-pbonzini@redhat.com>
+ <ZyHyBnPvOHsSdh8D@intel.com> <ZyH+RB3v55cQ43+S@linux.bj.intel.com>
+ <ZyIy4OGSGPhAZutK@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZyIy4OGSGPhAZutK@intel.com>
+Received-SPF: none client-ip=198.175.65.10;
+ envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,108 +85,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 30 Oct 2024, Lei Huang wrote:
-> Use a convergence factor to make the VM's input
-> global coordinates more closely approach the global
-> coordinates of host.
->
-> Change-Id: I2c3f12f1fe7dfb9306d1fc40c4fd4d299937f4c6
-> Signed-off-by: Lei Huang <Lei.Huang@amd.com>
-> ---
-> ui/sdl2.c | 32 ++++++++++++++++++++++++++++++--
-> 1 file changed, 30 insertions(+), 2 deletions(-)
->
-> diff --git a/ui/sdl2.c b/ui/sdl2.c
-> index bd4f5a9da14..ea3fd74dd63 100644
-> --- a/ui/sdl2.c
-> +++ b/ui/sdl2.c
-> @@ -303,6 +303,34 @@ static void sdl_mouse_mode_change(Notifier *notify, void *data)
->     }
-> }
->
-> +/*
-> + * guest_x and guest_y represent the global coordinates on the VM side,
-> + * while x and y represent the global coordinates on the host side.
-> + * The goal of this entire process is to align the global coordinates of
-> + * the VM with those of host using dx and dy. The current approach aims
-> + * for precise calibration in once attempt; however, because guest_x
+On Wed, Oct 30, 2024 at 09:21:36PM +0800, Zhao Liu wrote:
+> > > > Introduce avx10-version property so that avx10 version can be controlled
+> > > > by user and cpu model. Per spec, avx10 version can never be 0, the default
+> > > > value of avx10-version is set to 0 to determine whether it is specified by
+> > > > user.
+> > > 
+> > > The default value of 0 does not reflect whether the user has set it to 0.
+> > > According to the description here, the spec clearly prohibits 0, so
+> > > should we report an error when the user sets it to 0?
+> > > 
+> > > If so, it might be better to change the default value to -1 and adjust
+> > > based on the host's support.
+> > > 
+> > 
+> > If user sets version to 0, it will directly use reported version, this
+> > should be a more neat and intuitive way?
+> 
+> The code implementation is actually similar for different initial
+> values. And about this:
+> 
+> > If user sets version to 0, it will directly use reported version", 
+> 
+> It's defining a special behavior for the API, which is based on the
+> special 0 value, and there needs to be documentation to let the user
+> know that 0 will be considered legal as well as that it will be quietly
+> overridden... But AFAIK there doesn't seem to be any place to add
+> documentation for the property ...
+> 
+> There may be similar problems with -1, e.g. if the user writes -1, there
+> is no way to report an error for the user's behavior. But it's better
+> than 0. After all, no one would think that a version of -1 is correct.
+> Topology IDs have been initialized to -1 to include the user's 0 value
+> in the check.
 
-There's still another one here. You can say "in one attempt" or "at once" 
-but combining the two is not correct.
+Thanks for your explanation, but I really think the users who set
+avx10-version should also know avx10.0 doesn’t exist, so using 0 is same
+as -1…
 
-> + * and guest_y are non-zero values, they are not accurate values when
-> + * they are counted out to become negative. Therefore, achieving perfect
-> + * alignment in one attempt is impossible. Since the same calibration method
-> + * is used each time, repeated attempts cannot achieve alignment either.
-> + * By introducing a convergence factor, guest_x and guest_y can be made to
-> + * approach host x and y indefinitely.
-> + *
-> + *                   QEMU                       (dx,dy)  VM
-> + * calculates dx and dy using guest_x and guest_y ---->  input driver
-> + *            ^                                            |
-> + *            |                                            |
-> + *            |                                            V
-> + *            |     update
-> + *            | guest_x,guest_y              input dispatcher ---> WindowManager
-> + *            |                                            |                 |
-> + *            |                                            |                 |
-> + *            |                 libdrm                     V                 |
-> + *    display device  <------ drmModeMoveCursor <------ compositor <-------  |
-> + *                            (guest_x,guest_y)   calculates guest_x and
-> + *                                                guest_y dy using dx and dy
+To solve the initial value issue fundamentally, maybe we can add get/set
+callbacks when adding avx10-version property? It should be simpler to
+limit what users set.
 
-Maybe adding (e.g. virtio-gpu) below display device would make it clearer. 
-Also under compositor there's "guest_y dy" where the dy seems to be left 
-there by mistake from some editing or I don't get this sentence. (Did 
-checkpatch.pl complain about too long lines? Maybe you could shorten the 
-arrows a bit and wrap the text under QEMU in two lines to try to fit in 80 
-chars.)
+[ ... ]
 
-Sorry that I can only comment on the comments and not the actual change 
-but I've cc'd Howard who I think saw this issue before so may be able to 
-give it a test.
+> > > @@ -7674,13 +7682,21 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+> > >                                      &eax_0, &ebx_0, &ecx_0, &edx_0);
+> > >          uint8_t version = ebx_0 & 0xff;
+> > > 
+> > > -        if (version < env->avx10_version) {
+> > > +        if (!env->avx10_version) {
+> > > +            env->avx10_version = version;
+> > 
+> > x86_cpu_filter_features() is not a good place to assign avx10_version, I
+> > still tend to set it in max_x86_cpu_realize().
+> 
+> It's not proper to get the host's version when AVX10 cannot be enabled,
+> even maybe host doesn't support AVX10.
+> 
+> As you found out earlier, max_x86_cpu_realize doesn't know if AVX10 can
+> be enabled or not.
+> 
 
-> + */
-> +#define CONVERGENCE_FACTOR 3
-> static void sdl_send_mouse_event(struct sdl2_console *scon, int dx, int dy,
->                                  int x, int y, int state)
-> {
-> @@ -331,8 +359,8 @@ static void sdl_send_mouse_event(struct sdl2_console *scon, int dx, int dy,
->             y -= guest_y;
->             guest_x += x;
->             guest_y += y;
-> -            dx = x;
-> -            dy = y;
-> +            dx = x / CONVERGENCE_FACTOR;
-> +            dy = y / CONVERGENCE_FACTOR;
+How about moving to x86_cpu_expand_features()? We can set when checking
+cpu->max_features.
 
-Looking at this calculation I don't quite get what's intended here and I 
-think this could be simplified. Originally in 47c03744b37 it seems the 
-qemu_input_queue_rel() was called with the modified value of x and y but 
-then afbc0dd6498 have introduced dx, dy. After that changing x and y seems 
-unnecessary as they are locals never used after this calculation. If I try 
-to expand these equations I get:
-
-x = x - guest_x;
-guest_x = guest_x + x - guest_x;
-
-So isn't this equivalent to just:
-
-dx = x - guest_x;
-guest_x = x;
-
-which seems to make more sense but I don't know if it's correct.
-
-Then this patch takes the third of dx to avoid it overshooting the desired 
-value. The question is what causes this overshoot and can we calculate the 
-actual value of it to compensate for it in one calculation? Isn't it the 
-other line that sets guest_x to x that needs some correction?
-
-Regards,
-BALATON Zoltan
-
->         }
->         qemu_input_queue_rel(scon->dcl.con, INPUT_AXIS_X, dx);
->         qemu_input_queue_rel(scon->dcl.con, INPUT_AXIS_Y, dy);
->
+[ ... ]
 
