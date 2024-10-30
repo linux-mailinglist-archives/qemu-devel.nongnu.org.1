@@ -2,53 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F7B9B5944
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF78C9B592B
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 02:33:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5xj5-00070s-1H; Tue, 29 Oct 2024 21:42:23 -0400
+	id 1t5xaU-0005Dy-IK; Tue, 29 Oct 2024 21:33:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t5xj3-0006yb-1Z
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:42:21 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t5xj0-0001NW-1u
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:42:20 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxCeH0jiFnrUQdAA--.60254S3;
- Wed, 30 Oct 2024 09:42:12 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxVcDyjiFntjcoAA--.22949S2;
- Wed, 30 Oct 2024 09:42:11 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org,
-	philmd@linaro.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- jiaxun.yang@flygoat.com, maobibo@loongson.cn, pbonzini@redhat.com,
- armbru@redhat.com, lixianglai@loongson.cn
-Subject: [PATCH v2] hw/loongarch/boot: Use warn_report when no kernel filename
-Date: Wed, 30 Oct 2024 09:23:59 +0800
-Message-Id: <20241030012359.4040817-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5xaR-0005Dq-Qw
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:33:27 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5xaP-0000Ok-4V
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 21:33:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730252005; x=1761788005;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=z2P0U/8mUkG39DfQ491blLTMEkVTyrhIBMZJ2F9krM4=;
+ b=Uzi5UNgXvEXts6vO1DYZF47tKaQs5TQkjvxwlfUPcTvsqUz2FscED9/q
+ KWUczK/W0vgFBFXNT4d4o1UnyeemJOQ5Ac214/fcs2mN3KOI1AAMII8LE
+ oEqEpM7E5gEnEQS5ALAsEvnvITzyWrwScWupocxNDd8cFSe3cqLiqu2Qp
+ mWyOdHjR652LxTDN/SwGMwLMhHq3RxpQlUa3Gtmry8GnYQokRNa+N956G
+ 6D2FnLjPnHJIlmDtu1pQoIZcuNSC+PZlgqmfjSaPxhGDNL4g7MiReMbzv
+ e6udw9u5eTislomq4uk2pPmt6AofYaE/7vx+2wSTYO0kSDGP/LTKH6Wws w==;
+X-CSE-ConnectionGUID: GwaSdyJxQv6k3gvds/dbRA==
+X-CSE-MsgGUID: S9z+pP/lRbCc1Ne11q/6+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="33732060"
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="33732060"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 18:33:23 -0700
+X-CSE-ConnectionGUID: NLrlIXE5S+qE6bvw0hrvhQ==
+X-CSE-MsgGUID: FjN4udZRRqimcEsEfQb1qQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="112951107"
+Received: from linux.bj.intel.com ([10.238.157.71])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 18:33:21 -0700
+Date: Wed, 30 Oct 2024 09:28:14 +0800
+From: Tao Su <tao1.su@linux.intel.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ xiaoyao.li@intel.com, xuelian.guo@intel.com
+Subject: Re: [PATCH 6/6] target/i386: Introduce GraniteRapids-v2 model
+Message-ID: <ZyGLrphgAQd6ubKL@linux.bj.intel.com>
+References: <20241028024512.156724-1-tao1.su@linux.intel.com>
+ <20241028024512.156724-7-tao1.su@linux.intel.com>
+ <ZyD4HyATnm1CfZZN@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxVcDyjiFntjcoAA--.22949S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZyD4HyATnm1CfZZN@intel.com>
+Received-SPF: none client-ip=198.175.65.14;
+ envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,39 +82,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we run “qemu-system-loongarch64 -qmp stdio -vnc none -S”,
-we get an error message “Need kernel filename” and then we can't use qmp cmd to query some information.
-So, we just throw a warning and then the cpus starts running from address VIRT_FLASH0_BASE.
+On Tue, Oct 29, 2024 at 10:58:39PM +0800, Zhao Liu wrote:
+> On Mon, Oct 28, 2024 at 10:45:12AM +0800, Tao Su wrote:
+> > Date: Mon, 28 Oct 2024 10:45:12 +0800
+> > From: Tao Su <tao1.su@linux.intel.com>
+> > Subject: [PATCH 6/6] target/i386: Introduce GraniteRapids-v2 model
+> > X-Mailer: git-send-email 2.34.1
+> > 
+> > Update GraniteRapids CPU model to add AVX10 and the missing features(ss,
+> > tsc-adjust, cldemote, movdiri, movdir64b).
+> 
+> Do you have datasheet link? It's better to add the link in the commit
+> message for easy comparison checking.
+> 
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/loongarch/boot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Sorry, I think we can get new CPUIDs in ISE[*], but as far as I know,
+there is no datasheet which lists all CPUIDs.
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index cb668703bd..5f194e1a77 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -278,7 +278,7 @@ static void init_boot_rom(struct loongarch_boot_info *info, void *p)
- static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
- {
-     void *p, *bp;
--    int64_t kernel_addr = 0;
-+    int64_t kernel_addr = VIRT_FLASH0_BASE;
-     LoongArchCPU *lacpu;
-     CPUState *cs;
- 
-@@ -286,8 +286,7 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
-         kernel_addr = load_kernel_info(info);
-     } else {
-         if(!qtest_enabled()) {
--            error_report("Need kernel filename\n");
--            exit(1);
-+            warn_report("No kernel provided, booting from flash drive. \n");
-         }
-     }
- 
--- 
-2.34.1
+[*] https://cdrdv2.intel.com/v1/dl/getContent/671368
 
+> > Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+> > Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+> > ---
+> >  target/i386/cpu.c | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index adde98fd26..8d72c08b66 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -4375,6 +4375,23 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+> >          .model_id = "Intel Xeon Processor (GraniteRapids)",
+> >          .versions = (X86CPUVersionDefinition[]) {
+> >              { .version = 1 },
+> > +            {
+> > +                .version = 2,
+> > +                .props = (PropValue[]) {
+> > +                    { "ss", "on" },
+> > +                    { "tsc-adjust", "on" },
+> > +                    { "cldemote", "on" },
+> > +                    { "movdiri", "on" },
+> > +                    { "movdir64b", "on" },
+> > +                    { "avx10", "on" },
+> > +                    { "avx10-128", "on" },
+> > +                    { "avx10-256", "on" },
+> > +                    { "avx10-512", "on" },
+> > +                    { "avx10-version", "1" },
+> > +                    { "stepping", "1" },
+> > +                    { /* end of list */ }
+> > +                }
+> > +            },
+> >              { /* end of list */ },
+> >          },
+> >      },
+> > -- 
+> > 2.34.1
+> > 
+> 
+> LGTM,
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> BTW, Could you please update the CPU model you added in
+> docs/system/cpu-models-x86.rst.inc (section "Preferred CPU models for
+> Intel x86 hosts") as well? Although this document has been inactive for
+> some time, it hasn't been deprecated, and we can pick it up again to
+> continue updating it, helping QEMU users understand QEMU's support for
+> x86 CPU/features.
+
+Yes, thanks for this suggestion! I think I can update the doc when I
+introduce new CPU models (e.g. upcoming Clearwater Forest).
 
