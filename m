@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0E09B59D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 03:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2659B59B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 03:03:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5yI9-0000p9-Hl; Tue, 29 Oct 2024 22:18:37 -0400
+	id 1t5y2r-0005zO-Cz; Tue, 29 Oct 2024 22:02:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t5yI7-0000of-Bx
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:18:35 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t5yI5-0004ex-SG
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:18:35 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-53b34ed38easo3426765e87.0
- for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 19:18:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730254711; x=1730859511; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vYNg6hKKWSpSdBr1RhBKFNY0TW3DbmNv6pu3nvWdUuo=;
- b=ctqCmPCACtGYqWuXvU7td5YHC8w20zxzP7EaxU6MwjojfH0ThOAivUOqbN67UKfs20
- XDjqPc765xZokENjWVGVvYwUNNMhLX9/YaD2DoR5RFAmU7ysUwOjkBqMWVMMUvUYjwag
- b762iPCS11HmN7BCq2KCH8D955YNjmo1N58B6VtMghYnIqozSkmocArbNR1hJ3DvQeUI
- X24vJ649H6uUSZMAfQhmoU9IjCCg+iAhyQJvRVjGsJd5+6Ro2MtYqENEPxc89O7VULw7
- uSWZptDeMlZqXlyiG7Bd8gA3FRVz5C3ebbIxfzMscx7Ua2V9N9QDszFcDGL8cWr+/1E0
- 87zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730254711; x=1730859511;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vYNg6hKKWSpSdBr1RhBKFNY0TW3DbmNv6pu3nvWdUuo=;
- b=AB1+RkbJ5+JddgWJ/ok5DKcLCID0mcPS58/2BYJwUoTELJIcgUJ+8WzUjkKJ1MzdOG
- ciZMbKev4WMLS/3LrV2POsgiBWMscG0aCfJ2Cf//U/0hQwsOovtr8nNLvkeFfY1uMAV5
- R/o33G2KOk9yStKk+byirPXJNDAHS8IiqYuTIdZYM3rrzfWK3QZiI2M1uSHzsDIrMFFw
- MAOHokAmMaBHsldlYG13PL3UptMRd5ay/e3kJs3A6ELW0s+WeTIDigCcQAlnuzjOweE/
- UyIe5W1ph7BpRYJ7T4iyqei1oNB4B3Q8D6+sB5U+Hwq5HgUCi7dHgSMXhz8gGuTNd9kJ
- Ipqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVThclfsfZnhEs9Mikqsk0kgF45ryPVNGS3JiEoiZ9gVFFDjhh0YgkbbIq4W/CGBT5jM+b8Pb7+KTdl@nongnu.org
-X-Gm-Message-State: AOJu0Yy35D6Fj2ITMsrzA/m9kX/2bDeiLK3tY3UKQ/G494/RbNMXq2Z8
- EXjsJeua+DPZfg2M31JDTrQEJVbl8qe3jMIX97v0DyXvO0Hw5AFVmGc/9bdoWrE=
-X-Google-Smtp-Source: AGHT+IG3jCgNmG+WxpxNI03ppSiUYzmHnaAEnGcWYLl1rA9vAXriOYOF6SB5cD18DRvafAbO3f+Ojg==
-X-Received: by 2002:a05:6512:1390:b0:539:e6bf:ca9a with SMTP id
- 2adb3069b0e04-53b348b7e12mr6791736e87.6.1730254710116; 
- Tue, 29 Oct 2024 19:18:30 -0700 (PDT)
-Received: from [192.168.98.226] ([91.209.212.192])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53bb81906c8sm107258e87.39.2024.10.29.19.18.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Oct 2024 19:18:28 -0700 (PDT)
-Message-ID: <1eb668d7-50a1-49ab-b94b-752ad68de2e2@linaro.org>
-Date: Tue, 29 Oct 2024 23:18:17 -0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5y2j-0005yy-3K
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:02:43 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t5y2U-0003Iy-9q
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:02:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730253747; x=1761789747;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Qjv+HswENlmONLqlkWunBSVpg0CP2VyAXvqK1Ycy0b4=;
+ b=eIhiF5jSsH+xtliHM06p8g4vZRgLpFVTLL3zvTCnmqpQ6b9JY340pLgj
+ zqmgEqXGWtGzeOpZ3RWRmQm56NyEMxtYpjMYyAYzLZZc2KPv2umDhgAyw
+ A3q4MfF83rgomqK+MK0gkUouVJuxeiBai9eDiaE12zz+DcV0KLkhl2emN
+ /+mpKZS4rUYGP7eZXW/Lb5lZ4y8Z9kwVdymNv3sHUKLFqVS8WLpFq6lfV
+ TCGO2sI+O3skfbF8bcZPyMCYW2vecv8khfC/RvYjeSW+QWoXCaZZgzfRf
+ O6sTqemX23+ENFgq9iuhKLNYRyvPD1vRocLvTB/5Qs6enSXIATZMqa3Oc g==;
+X-CSE-ConnectionGUID: BnWOrrlCRJ+7qEojCQaMng==
+X-CSE-MsgGUID: Apcl0hdCQqusBodZ1G3GxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30132449"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30132449"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 19:02:22 -0700
+X-CSE-ConnectionGUID: Byjy0873QMW1sKBlP24Fag==
+X-CSE-MsgGUID: dc0tX8yVT4CNFqENoq+e1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="81792975"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 29 Oct 2024 19:02:20 -0700
+Date: Wed, 30 Oct 2024 10:18:39 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: maobibo <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
+ Xianglai Li <lixianglai@loongson.cn>, Igor Mammedov <imammedo@redhat.com>
+Subject: Re: [PATCH v2 4/4] hw/loongarch/virt: Enable cpu hotplug feature on
+ virt machine
+Message-ID: <ZyGXf93mWV9GOjue@intel.com>
+References: <20241029095335.2219343-1-maobibo@loongson.cn>
+ <20241029095335.2219343-5-maobibo@loongson.cn>
+ <ZyDnpk3tmG4KECWc@intel.com>
+ <ce111d21-7400-80c0-0984-ee2bc0286f40@loongson.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/loongarch/boot: Use warn_report when no kernel
- filename
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- jiaxun.yang@flygoat.com, maobibo@loongson.cn, pbonzini@redhat.com,
- armbru@redhat.com, lixianglai@loongson.cn
-References: <20241030012359.4040817-1-gaosong@loongson.cn>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241030012359.4040817-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ce111d21-7400-80c0-0984-ee2bc0286f40@loongson.cn>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,31 +86,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/10/24 22:23, Song Gao wrote:
-> When we run “qemu-system-loongarch64 -qmp stdio -vnc none -S”,
-> we get an error message “Need kernel filename” and then we can't use qmp cmd to query some information.
-> So, we just throw a warning and then the cpus starts running from address VIRT_FLASH0_BASE.
+> > > @@ -1382,8 +1384,40 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
+> > >        }
+> > >       if (cpu->phy_id == UNSET_PHY_ID) {
+> > > -        error_setg(&local_err, "CPU hotplug not supported");
+> > > -        goto out;
+> > > +        if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
+> > > +            error_setg(&local_err,
+> > > +                       "Invalid thread-id %u specified, must be in range 1:%u",
+> > > +                       cpu->thread_id, ms->smp.threads - 1);
+> > > +            goto out;
+> > > +        }
+> > > +
+> > > +        if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
+> > > +            error_setg(&local_err,
+> > > +                       "Invalid core-id %u specified, must be in range 1:%u",
+> > > +                       cpu->core_id, ms->smp.cores - 1);
+> > > +            goto out;
+> > > +        }
+> > > +
+> > > +        if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
+> > > +            error_setg(&local_err,
+> > > +                       "Invalid socket-id %u specified, must be in range 1:%u",
+> > > +                       cpu->socket_id, ms->smp.sockets - 1);
+> > > +            goto out;
+> > > +        }
+> > > +
+> > > +        topo.socket_id = cpu->socket_id;
+> > > +        topo.core_id = cpu->core_id;
+> > > +        topo.thread_id = cpu->thread_id;
+> > > +        arch_id =  virt_get_arch_id_from_topo(ms, &topo);
+> > > +        cpu_slot = virt_find_cpu_slot(ms, arch_id, &index);
+> > > +        if (CPU(cpu_slot->cpu)) {
+> > > +            error_setg(&local_err,
+> > > +                       "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
+> > > +                       cs->cpu_index, cpu->socket_id, cpu->core_id,
+> > > +                       cpu->thread_id, cpu_slot->arch_id);
+> > > +            goto out;
+> > > +        }
+> > > +        cpu->phy_id = arch_id;
+> > >       } else {
+> > 
+> > Here you allow user to specify topology IDs, but "else" still indicates
+> > user could use "phy_id" instead of topology IDs, right?
+> "else" for cold-plug CPUs which is created with index from [0 -- smp.cpus)
 > 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   hw/loongarch/boot.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > Is it necessary to expose "phy_id" to user?
+> We will remove phy_id property and unexpose it to user.
+> 
 
+Thanks! The issue lies with the property itself. Even if you try to
+support a hotplug scheme based on topology IDs, users can actually use
+phy_id for hotplugging. Removing it seems fine.
 
-> @@ -286,8 +286,7 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
->           kernel_addr = load_kernel_info(info);
->       } else {
->           if(!qtest_enabled()) {
-> -            error_report("Need kernel filename\n");
-> -            exit(1);
-> +            warn_report("No kernel provided, booting from flash drive. \n");
-
-Stripping trailing " \n",
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->           }
->       }
->   
+Regards,
+Zhao
 
 
