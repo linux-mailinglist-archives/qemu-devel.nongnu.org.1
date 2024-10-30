@@ -2,177 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0629B59F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 03:33:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45409B5A23
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 03:56:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5yVD-0002VD-Vn; Tue, 29 Oct 2024 22:32:08 -0400
+	id 1t5yrw-0005lH-HL; Tue, 29 Oct 2024 22:55:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5yV9-0002U9-MT; Tue, 29 Oct 2024 22:32:03 -0400
-Received: from mail-eastasiaazlp170110002.outbound.protection.outlook.com
- ([2a01:111:f403:c400::2] helo=HK3PR03CU002.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1t5yV7-00061L-At; Tue, 29 Oct 2024 22:32:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fNSN5W0bcjtNGzDgX9tr/NfQ4gHcy0p6srwmY+tgXzH9BWaZemf9rXcNJ60eN6hwQLrWiY6PY0eO5vLmdZvb/ZdBwcwtZ6LJthSbIjiqd6iw3agMKVIM/1zlMQ7nno2rTg4Vg5BFNWjHo7bYBAoVPN0eqaCIfPGrlp3rr7N+jhMKTlhx9np1EmXIxz7gi+qydu8FHMGaL9Ds87s7iYHKYXLjker2zk0F4odhdOHGOR4+iPSsxpn3t3Ug+GShCQA2/eqHPnHqCq9ggbdK70v5AyLk1Pv5jpsbUmiIyEe+FjSogkdINK3Arj3x1hKgoj75kwmgV6uEU7eYvF9QVG8hKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WIg2zVG4lcRWL0nIi3AhIqKTQoJBf5ikjeVnGdnab7k=;
- b=hStMsWMdI1uyys3t/4yiui0YGHJKQ7RhtNTZjXCptNkeUo3F74wqcVbzCUthcgocgKxmy13Kd6zSuRmtkstc1xjQI3H/FtZkxxW747Imyo/40efTcfkcMTwDZVi9nyXbKCEcMCUjA6rf9hvBfQet1k3TP79K/kyD37BUKw+XCBSPV7eeKHj3hsVT5Rga3wbKMHctFx1wmXUIzopiFkhOGeH3jGee4WTqTsSGV7/u3dg2ekI6xf8+TnMB2SGkh00sXDgIWZnql9qUCHoywriEzZhVauJ6OaUCahvV/4KI9LCHsadVgd30YU7p+ebXkGhvNEln1x0uR1XTwTlMWMfzbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WIg2zVG4lcRWL0nIi3AhIqKTQoJBf5ikjeVnGdnab7k=;
- b=M7jMJsHojGQKKYIHh+KEgjbV6+ni9PxQ+UOkxvjeAuTgoAYEyp1DB7riqsy0G0Q/o0B0w367j1ntMcBKdly5HRQ/lpme/xiqu2cDk4H3BvY6UnIf6Hy5Jwg6jjn4ezmpkkykK6xrTn+KP1qbnIj0WgY8ggTmEa40qbmQbUlgzwJu9fOW5gJnBEzw9s86SfFo+YjS/QchnCB8gc8/qGbXHHUHdx2eIfxIT/sadGN+tL/T4ts3XSVb1CvRHwLAIoJ9EBDchsyvx11+spcZVtGkxBuIt6uYbG5GbiQRNR1eRGafwQKoVwTYzw+iPsj/mSwB1kIDyCvtUKpohXDdyKrQNw==
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
- SEYPR06MB6335.apcprd06.prod.outlook.com (2603:1096:101:13c::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8114.15; Wed, 30 Oct 2024 02:31:49 +0000
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56%5]) with mapi id 15.20.8114.015; Wed, 30 Oct 2024
- 02:31:49 +0000
-From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Joel Stanley <joel@jms.id.au>,
- =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Bin Meng
- <bmeng.cn@gmail.com>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open
- list:All patches CC here" <qemu-devel@nongnu.org>, "open list:SD (Secure
- Card)" <qemu-block@nongnu.org>
-CC: Troy Lee <troy_lee@aspeedtech.com>, Yunlin Tang
- <yunlin.tang@aspeedtech.com>
-Subject: RE: [PATCH v1 7/8] hw/arm/aspeed: Invert sdhci write protected pin
- for AST2600 and AST2500 EVBs
-Thread-Topic: [PATCH v1 7/8] hw/arm/aspeed: Invert sdhci write protected pin
- for AST2600 and AST2500 EVBs
-Thread-Index: AQHbKeNrXQX2oYiH5U6yrCsbg24cbrKebz0AgAAkQvA=
-Date: Wed, 30 Oct 2024 02:31:49 +0000
-Message-ID: <SI2PR06MB50414C9ED2B489859B1ECEB3FC542@SI2PR06MB5041.apcprd06.prod.outlook.com>
-References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
- <20241029091729.3317512-8-jamin_lin@aspeedtech.com>
- <c834ae3efff1cd5f51499b5852a49e5332b796a1.camel@codeconstruct.com.au>
-In-Reply-To: <c834ae3efff1cd5f51499b5852a49e5332b796a1.camel@codeconstruct.com.au>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|SEYPR06MB6335:EE_
-x-ms-office365-filtering-correlation-id: 7f801a8d-f7d3-41c6-a6ab-08dcf88b01ac
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|7416014|1800799024|38070700018|921020; 
-x-microsoft-antispam-message-info: =?utf-8?B?RzBQc3lhQ3ZzR1MrVG1oRTlXNHRVY0tjUzhtelBsOUNOb0NkeDFiUlcyUjYw?=
- =?utf-8?B?TFFTY3FMSnMyL3RKcHJkMWpnT1doZGkyMkErUzE2VElOMVhQakhSOG9Kallk?=
- =?utf-8?B?bjNudE11NFlwT3c2eXRqazV6UGVnd21Fc3U4YnVaUi9rMTZzcjJiRUdwdEJ0?=
- =?utf-8?B?VkNPNTlJb2UzTzNNT1B1MDVVaFRNWkd0Ykt0dmNhSFFLSkkwdm44SExsYUY1?=
- =?utf-8?B?Rzh3bktlNm85dEZ6ek93Vk52MXNRaUtpRGlSYnZucEhUaERFMWV1TlQ2UHQ3?=
- =?utf-8?B?VFNjTkpYM2h3bG56akRPMU50UjJ0S3pzalZ1ZElMZEl6QWZSeHBpRCsybW5S?=
- =?utf-8?B?Qzd1SW0zNEFjYkhVUnpYdmo3QXV4ZHVxVWV6SjlXZE5sTi9NblpGWHdWWUtN?=
- =?utf-8?B?bXhPOUkwZTh0RFhiL2dmbkY2RGp4MEQwOGRWaGpXRUFwa1lrQzdWVmlCOVUy?=
- =?utf-8?B?QUJ2bDhGcGRiZHZqZlYza0JrSWNZL0FTbVhuT0FtYnBNV1BTUjFiOWNSWkR3?=
- =?utf-8?B?V2dDYkpwSWZ1c004Q3g1UGVwUHBVV3FhdlpXTHJwVEp2c2RTMjJkSHN4OGoy?=
- =?utf-8?B?dnd6UkNqaWlsYlU2SFNtNVlpT0tIRnN4c3ZrbjdnOXArTjNvVFh4SEpsK0tm?=
- =?utf-8?B?ZURVclI5ZkkyVWJmTjh5clRTL3JUT1ZhMndaeUZ3a3p2SWtuYlBaYlZBYVlQ?=
- =?utf-8?B?RTlYQ2QxNjFtYXNPMDFWQzJVTXV0VTUxZmY1Y0lDb2M0Q09RR1AwK1FoMkd6?=
- =?utf-8?B?ZW5HeHZhTUwzbEZNRXhNSEtwWmFBRGFFNEUyYW5QUTFFQTk3NkJRUExzV0ln?=
- =?utf-8?B?WmJHbTQzckpPY0FLRmZXejZCODEyTE9VL3N5Q05aaXJ6ZHA2eTQwRUVGeXox?=
- =?utf-8?B?TjFsSWhPVndTcWt5N21SS3RHQXFKZ1BLMUN1T2t5U3BHNmtObmNJcVZXZ2Fk?=
- =?utf-8?B?SjJycUJUUjJjWlQ0MU8wVHZjQm5mNXpqcDV3dHAxOG41ZHVCdklIdExWZXRx?=
- =?utf-8?B?NTJVUEJYSFB4bkRYR2NSSGxBVnBEdndiam5JNkJWdkRLcktlRG9qNkFqRDA5?=
- =?utf-8?B?UldKWXpHbWRtWHpVajlDZktvMTJDR1FPd2ZkQkV1aUtsQzdwL3orYXd4VjQy?=
- =?utf-8?B?VG1PU1U1RU1iSlNGTVluTTQ1a1dsNGc4L2FzejVCRW1TU3NQOFp3ZEZObHNI?=
- =?utf-8?B?TDhCS1VBV2JSbkYzMWpyQWUyZnBQMlFCQ3dwNDY5MFFOOUZVT1V4WDZQWC9Y?=
- =?utf-8?B?SENCdzlqUDdmVEt0akNNbDYrNE5lelBhQ010dGdHOVdvSjV5alNzWUkwUHNt?=
- =?utf-8?B?MWRJTVFzTDJvQlpBTHAwVnFHbENOMkJ0Y2l1dStSWi9TOUdCRG9WQXhZY3hO?=
- =?utf-8?B?NCt2aG1UR0FwYmV5MWVzYnRWdmNEZUJSZFNMWXR2MUhJNE5KUTUxT3hPVjJw?=
- =?utf-8?B?YXFzM29QSW91SFgzWTJYcTBoKzEvck0xWVg3OUJaaDVQcGZDN0VldXRpWXFN?=
- =?utf-8?B?Nnd1anQxV0lRU3BSTjBoVldBQWpjT0RNdjVOOE5xcGZqQmhHV00xZ2ZyaXNR?=
- =?utf-8?B?VnFQeDdQaG9JYVU2UzJLdWs2Z3o0R2lNaW9Jejd5TmpKYXUzMSs0NXl4T2xn?=
- =?utf-8?B?UnpJSUNlaDZvTHI0eWx1eTgxZWkzZlVZSWZDdk5sNlI0M0FRbklvWi9mNzRm?=
- =?utf-8?B?VzYybjFzL2lDNWxtbGkvL1owNi9qZEZyM1JwL3ZiSzkwK2VITlh0bXdvOVBM?=
- =?utf-8?B?aTNxSFhwdm5yemgzZktsZEQzRUJ4c3VOVkpOamRxS3FJRUxqR1RhbHZvSXdt?=
- =?utf-8?B?UDdrRUxHSzlDcW96V1FDSG04YmZwYlNZbmd1UWpPZ0U2cGI4SmdWYzZPYW5I?=
- =?utf-8?Q?7m6hnzulBDBLJ?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
- SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
- CAT:NONE;
- SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018)(921020);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RmFNL0xzTmN1NFVQNVhZL2tKRVczUUZCNGtzK2tsazBSUjE2cllDdmZsMmJ6?=
- =?utf-8?B?MHVoRDNaVHpKYXA0WENLeXNNd043QzZtYzh5cWxHcXpaejY2d0dlamJwRTNX?=
- =?utf-8?B?dDdGaHBDbzI3UHZ2WFRMTWJWNHFYamtINzRvZnl1M056VGNqdmlaNDRiSkhT?=
- =?utf-8?B?N01HOU5Yam5OdGpkV3U3Sm9iVzdXNTdiZ2tlUzJMV1h6VzliRGFyNnZSb3hW?=
- =?utf-8?B?dk0yNDU2RzFqQUdmWWpQQmZsV3lEaEFrZ2xoaU1MMzBpMmhRZ0R1TEtJNWhn?=
- =?utf-8?B?S0tlVzRLdjIrQXY1T1pzTGk4UlVrMGJiZjJiY2Vvb29NeWFBc2hJcDJ2RjRP?=
- =?utf-8?B?czArNklwempuODlsQzJZbnBUNWFwS01GWmw5alpBZ1hiL0E5cEh5SDROS25H?=
- =?utf-8?B?bEJKUlBqREM5NG91VmVXK3grYWFEVHJ2WWJSZ0I3YTNoWjZ5SC94OWlZdmhm?=
- =?utf-8?B?ZzZCS3h0WlFGTHl5YSs3VHVJUk9rV1UxT0wyb3JBd3E0dkc4T3A2RE53OEdR?=
- =?utf-8?B?aVdzZ2NHWlIxTmlMb01kdVZqa3NkNXlXVnIzMGZJQlFaREhmWW9EVGh4YkJW?=
- =?utf-8?B?Yk85c1RYTFkzOEZqWVRYREh3MHpsanJSNkdObjRMWEhzaXppc2gwd2t0KzJp?=
- =?utf-8?B?S0gwbzBjMTUvZXVJOTVTdVlWZGxFM2cweWVzNW1XamtWeDNaUmZORVY4elRC?=
- =?utf-8?B?SFVaQVQ0TmNBd2lqcGU2M0FTWWdVbXNlU0NpeFluTlB2SWlSRXNPTzV1STNs?=
- =?utf-8?B?M2ZtbzBJcHlybnZOU0hJTFhuS0xMRm5zT01SdXpiYUx3ejFORUJ3c29TVDFs?=
- =?utf-8?B?dm5QUFRETHJ0L2JKdXJ4aDVxRFJkaENEWmRUS0VWWkhhSEdiSmdVdGhoMWJh?=
- =?utf-8?B?YTJiNldESjh2cDZRbjlZQzZrSFYvWURhUGlKMFBWMXkvK0dRcnVDNHpvclQx?=
- =?utf-8?B?dE9hSmZvSXFYN1VRek1qMEVQcHZuV1lqckIxbGZSZFkrNGxGMURRZ1dwTS9U?=
- =?utf-8?B?Uy9zU3pseE9kbk9CbjJoWjl4VGdFdTR5a2d1NTdXc0xqSHFGZHNoOXdZaFRy?=
- =?utf-8?B?a0E3RUZndGl4Z1hiOUthR3FlMTdybjFTN0lKL2gwamh6dnZPWEJNdmI2ZjlK?=
- =?utf-8?B?ZnFCVWNNc084M003VkQyOW5NQ25pLzJHdEdmUWVSL3JFTWtQM0dDN3Btblk5?=
- =?utf-8?B?ZGtoMmtjRFZ4ek5abjBWbm84R05uKysyOWxRelBaL1FjVmdja3BWUXN6b0Ey?=
- =?utf-8?B?dzd4eXlRY28zb0lyVHlDTXo3OWZnaFlGUW52SHZlbkJZTzZWa3VHbDZCTGxP?=
- =?utf-8?B?VEJIODB4a1JkT1oxanJrakEvUVZjcjByYUFmcS9CMVNGMHdQSHFsQWlFOCsw?=
- =?utf-8?B?RnJIZlN4MlI3WU9YSm1nWmJnRXI4d1NYM2tjdkJrb2dFdmhxV2JhL2k4R0F1?=
- =?utf-8?B?aFhiY1NVRHovV3A5WjhxYmh0LzBUeVZuRkRCYVhyQ0xhamRqamRFRm1MQVls?=
- =?utf-8?B?TStIL1k2NXJsMndlVFMxQ1Zsb0pxc09jaTVLS3ltTS9qUmJ3bzQzUkZPa0pt?=
- =?utf-8?B?WWlzMWlYdDBXNE5FRDBHcFVMakFrN1VqSWZEaVM4TVdpMlJLL3Q3Z3M4NFdM?=
- =?utf-8?B?QVRzYVVaTDA4SUxDeks2TTgyU3QwYnVaOXRXZzNGdjRZNmlva294VXllVXEx?=
- =?utf-8?B?OUlSYmprK2NWRG5RR2VRY2FxNXV6aE81anFycWQrdkdoWlkyUHlkK2pyOWIr?=
- =?utf-8?B?eGpsY25qYjYvWWxKbHdqSnk0cVBJT3UvbHVGK0lwQ0lab0J2VXJRaXBNNVpK?=
- =?utf-8?B?MjF2V2ZacXdESmx2NGJiMVU3SHBxeGFxa2Rkb01zQ0M5K1hvN1R5SERlWEZC?=
- =?utf-8?B?dUZtSE5xbE04a1BBTmg5RjlwaHFEc0RHUE1XdTJ2bHEzc2VCUlE3Z0hqSzVE?=
- =?utf-8?B?djg5Q3cvdmJPMDF3eFY5Q0t0YVpVSE44cW5aOUJnSGJLU1M2VFlxT3IzVmhu?=
- =?utf-8?B?TjBDUGpzM0JhRERyYmhBMkQ3VVNNZEloaHFrRmUwdDQ1ZnRVQjQwRCt5NmFR?=
- =?utf-8?B?UGhqb2ZoYTZPMHNZZU5tb25JeGNYRkJKZFRtKzV5U3kvUnkwMUFyK0dpWG9z?=
- =?utf-8?Q?N5VT4BUOtbfrys7vOGMMVAPKX?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5yrg-0005kf-Pu; Tue, 29 Oct 2024 22:55:21 -0400
+Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5yre-00089g-Dk; Tue, 29 Oct 2024 22:55:20 -0400
+Received: by mail-vk1-xa35.google.com with SMTP id
+ 71dfb90a1353d-51013e05707so1212743e0c.2; 
+ Tue, 29 Oct 2024 19:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730256914; x=1730861714; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SOiLdnbNBp/QLSwIISh4RlGRu4Sblzr1MCgttwRjjjo=;
+ b=S/TxErbd4ucz4auGIyA+++/kVVBD9FwS03S3WElkIupSxyeT/Hg/GQWbw+Ek0xPxdu
+ RfZFPSFwpjjqVFmyl4YbTdULrTGFI2uAmgjSjEVXZDjgi1G4hysT6jl7OsMs+aULy2uA
+ 84rNX5QhTdxmB00q5AMClyVU1eAlFYsDRzA9vZdcDxH95H01pBEj6IpxNx6YaJO4TGBr
+ ZNQaGs2HB78tp4/LYXQ//ROXYqyLm3XfTHMrRIC5ukBWI/Q08lXQbDV60fHBbywiMHgD
+ HBYvtCY1Gv2iAdQ0J6IDi99N/y41T7GjlgSZ/2TCGh671mbQ4T16Oa3i8KdH5Bb4m/qg
+ V6Cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730256914; x=1730861714;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SOiLdnbNBp/QLSwIISh4RlGRu4Sblzr1MCgttwRjjjo=;
+ b=ZAbVmxqTyJ0hDypm/x+AYh/zFF8u9ANAs87OtjSpGlIV6LDA60/IDdGP0S5pEPilQJ
+ lLlGrgxZVEyrKW7cVvwvhHTImi2AH+5WlQSYDB4mPQ5I0PUuZtIN7mqVXiDB4FDPR9SL
+ SyQXq4xBg5UEWArS+C/cW1zFZSsLqa39oWImlTDKR1iAnUBhsjnow/1iJ6yYWNMGfUI5
+ P5FmE7sabVu0RBt01jasRxkL3ZzenvbleUsiVRqiV/hEiFWro/Ew/j7b9Gk4q0wFw20I
+ PlGLZW9UoQkC/yWIku3b8cWuSB5XfRjrRD5cG8NTQ+H/wXBYe6hki4zJ3z73sA2rPkyN
+ Byyw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCHevzmYBe/JyK0qwY1K+AyDEzouoLK2V4ssZQ8EID7GTTz7BJlPBZ7ts8q/iiIGbsgkzOhMn23mi3@nongnu.org
+X-Gm-Message-State: AOJu0Yxh7B+id1VASE8UPFGpltudc9NKm6ourIHubsnweQxjQUurg05p
+ KsZUlQCVJHs6WTCki2IIbJlo3D/j8hG++eQn8bvLbhQs4UZGM1GvzoR88G5a6G9a+Q2VGfm+8gv
+ SLOqOWC39UdFNAZILtoVBfujLIuQ=
+X-Google-Smtp-Source: AGHT+IFfBOLo47QM/+uEd4a/Rt9rOi4tWKQvjFW1bqBKmVslOv739PJeVZX1ktuW4RG/aTtrjv7dnQxO6CAloAhxBmw=
+X-Received: by 2002:a05:6122:3101:b0:50d:35d9:ad55 with SMTP id
+ 71dfb90a1353d-5101535b2f7mr11379899e0c.13.1730256914241; Tue, 29 Oct 2024
+ 19:55:14 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f801a8d-f7d3-41c6-a6ab-08dcf88b01ac
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Oct 2024 02:31:49.1799 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CA4VlsLotQBGZ37xeVmsRz2poLIL4RXB14NbCr0HCTaaSu7DhuW3mmGae7Zv8Fy+wQsNww6I32TAiNs5NWPo4DMZCE8+InGYc940piVj+lQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB6335
-Received-SPF: pass client-ip=2a01:111:f403:c400::2;
- envelope-from=jamin_lin@aspeedtech.com;
- helo=HK3PR03CU002.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20241017072507.4033413-1-sai.pavan.boddu@amd.com>
+In-Reply-To: <20241017072507.4033413-1-sai.pavan.boddu@amd.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 30 Oct 2024 12:54:47 +1000
+Message-ID: <CAKmqyKNfoakaJ66PCN49x5+=gVkAnQVV1UWTdPe7ARr3RA8ouA@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/riscv: Add Microblaze V 32bit virt board
+To: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Michal Simek <michal.simek@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -188,68 +93,387 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQW5kcmV3LA0KDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjEgNy84XSBody9hcm0vYXNwZWVk
-OiBJbnZlcnQgc2RoY2kgd3JpdGUgcHJvdGVjdGVkIHBpbg0KPiBmb3IgQVNUMjYwMCBhbmQgQVNU
-MjUwMCBFVkJzDQo+IA0KPiBPbiBUdWUsIDIwMjQtMTAtMjkgYXQgMTc6MTcgKzA4MDAsIEphbWlu
-IExpbiB3cm90ZToNCj4gPiBUaGUgV3JpdGUgUHJvdGVjdCBwaW4gb2YgU0RIQ0kgbW9kZWwgaXMg
-ZGVmYXVsdCBhY3RpdmUgbG93IHRvIG1hdGNoDQo+ID4gdGhlIFNESENJIHNwZWMuIFNvLCB3cml0
-ZSBlbmFibGUgdGhlIGJpdCAxOSBzaG91bGQgYmUgMSBhbmQgd3JpdGUNCj4gPiBwcm90ZWN0ZWQg
-dGhlIGJpdCAxOSBzaG91bGQgYmUgMCBhdCB0aGUgUHJlc2VudCBTdGF0ZSBSZWdpc3RlciAoMHgy
-NCkuDQo+ID4NCj4gPiBBY2NvcmRpbmcgdG8gdGhlIGRlc2lnbiBvZiBBU1QyNTAwIGFuZCBBU1Qy
-NjAwIEVWQnMsIHRoZSBXcml0ZQ0KPiA+IFByb3RlY3RlZCBwaW4gaXMgYWN0aXZlIGhpZ2ggYnkg
-ZGVmYXVsdC4gVG8gc3VwcG9ydCBpdCwgaW50cm9kdWNlcyBhDQo+ID4gbmV3IHNkaGNpX3dwX2lu
-dmVydCBwcm9wZXJ0eSBpbiBBU1BFRUQgTUFDSElORSBzdGF0ZSBhbmQgc2V0IGl0IHRydWUNCj4g
-PiBmb3IgQVNUMjUwMCBhbmQNCj4gPiBBU1QyNjAwIEVWQnMNCj4gPiBhbmQgc2V0ICJ3cF9pbnZl
-cnQiIHByb3BlcnR5IHRydWUgb2Ygc2RoY2ktZ2VuZXJpYyBtb2RlbC4NCj4gPg0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IEphbWluIExpbiA8amFtaW5fbGluQGFzcGVlZHRlY2guY29tPg0KPiA+IC0tLQ0K
-PiA+IMKgaHcvYXJtL2FzcGVlZC5jwqDCoMKgwqDCoMKgwqDCoCB8IDggKysrKysrKysNCj4gPiDC
-oGluY2x1ZGUvaHcvYXJtL2FzcGVlZC5oIHwgMSArDQo+ID4gwqAyIGZpbGVzIGNoYW5nZWQsIDkg
-aW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3L2FybS9hc3BlZWQuYyBiL2h3
-L2FybS9hc3BlZWQuYyBpbmRleA0KPiA+IGI0YjFjZTllZmIuLjA0Njg2MDJkOTUgMTAwNjQ0DQo+
-ID4gLS0tIGEvaHcvYXJtL2FzcGVlZC5jDQo+ID4gKysrIGIvaHcvYXJtL2FzcGVlZC5jDQo+ID4g
-QEAgLTQwMyw2ICs0MDMsMTIgQEAgc3RhdGljIHZvaWQgYXNwZWVkX21hY2hpbmVfaW5pdChNYWNo
-aW5lU3RhdGUNCj4gPiAqbWFjaGluZSkNCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIE9CSkVDVChnZXRfc3lzdGVtX21lbW9yeSgN
-Cj4gKSksDQo+ID4gJmVycm9yX2Fib3J0KTsNCj4gPiDCoMKgwqDCoCBvYmplY3RfcHJvcGVydHlf
-c2V0X2xpbmsoT0JKRUNUKGJtYy0+c29jKSwgImRyYW0iLA0KPiA+IMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgT0JKRUNUKG1hY2hpbmUt
-PnJhbSksDQo+ICZlcnJvcl9hYm9ydCk7DQo+ID4gK8KgwqDCoCBpZiAoYW1jLT5zZGhjaV93cF9p
-bnZlcnQpIHsNCj4gPiArwqDCoMKgwqDCoMKgwqAgZm9yIChpID0gMDsgaSA8IGJtYy0+c29jLT5z
-ZGhjaS5udW1fc2xvdHM7IGkrKykgew0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG9iamVj
-dF9wcm9wZXJ0eV9zZXRfYm9vbChPQkpFQ1QoJmJtYy0+c29jLQ0KPiA+ID5zZGhjaS5zbG90c1tp
-XSksDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAid3AtaW52ZXJ0IiwgdHJ1ZSwNCj4gPiAmZXJyb3Jf
-YWJvcnQpOw0KPiA+ICvCoMKgwqDCoMKgwqDCoCB9DQo+ID4gK8KgwqDCoCB9DQo+ID4gwqDCoMKg
-wqAgaWYgKG1hY2hpbmUtPmtlcm5lbF9maWxlbmFtZSkgew0KPiA+IMKgwqDCoMKgwqDCoMKgwqAg
-LyoNCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqAgKiBXaGVuIGJvb3Rpbmcgd2l0aCBhIC1rZXJuZWwg
-Y29tbWFuZCBsaW5lIHRoZXJlIGlzIG5vIHUtDQo+ID4gYm9vdCBAQCAtMTMwOCw2ICsxMzE0LDcg
-QEAgc3RhdGljIHZvaWQNCj4gPiBhc3BlZWRfbWFjaGluZV9hc3QyNTAwX2V2Yl9jbGFzc19pbml0
-KE9iamVjdENsYXNzICpvYywgdm9pZCAqZGF0YSkNCj4gPiDCoMKgwqDCoCBhbWMtPmZtY19tb2Rl
-bCA9ICJteDI1bDI1NjM1ZSI7DQo+ID4gwqDCoMKgwqAgYW1jLT5zcGlfbW9kZWwgPSAibXgyNWwy
-NTYzNWYiOw0KPiA+IMKgwqDCoMKgIGFtYy0+bnVtX2NzwqDCoMKgID0gMTsNCj4gPiArwqDCoMKg
-IGFtYy0+c2RoY2lfd3BfaW52ZXJ0ID0gdHJ1ZTsNCj4gPiDCoMKgwqDCoCBhbWMtPmkyY19pbml0
-wqAgPSBhc3QyNTAwX2V2Yl9pMmNfaW5pdDsNCj4gPiDCoMKgwqDCoCBtYy0+ZGVmYXVsdF9yYW1f
-c2l6ZcKgwqDCoMKgwqDCoCA9IDUxMiAqIE1pQjsNCj4gPiDCoMKgwqDCoCBhc3BlZWRfbWFjaGlu
-ZV9jbGFzc19pbml0X2NwdXNfZGVmYXVsdHMobWMpOw0KPiA+IEBAIC0xNDA5LDYgKzE0MTYsNyBA
-QCBzdGF0aWMgdm9pZA0KPiA+IGFzcGVlZF9tYWNoaW5lX2FzdDI2MDBfZXZiX2NsYXNzX2luaXQo
-T2JqZWN0Q2xhc3MgKm9jLCB2b2lkICpkYXRhKQ0KPiA+IMKgwqDCoMKgIGFtYy0+bnVtX2NzwqDC
-oMKgID0gMTsNCj4gPiDCoMKgwqDCoCBhbWMtPm1hY3NfbWFzayA9IEFTUEVFRF9NQUMwX09OIHwg
-QVNQRUVEX01BQzFfT04gfA0KPiBBU1BFRURfTUFDMl9PTg0KPiA+IHwNCj4gPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgQVNQRUVEX01BQzNfT047DQo+ID4gK8Kg
-wqDCoCBhbWMtPnNkaGNpX3dwX2ludmVydCA9IHRydWU7DQo+ID4gwqDCoMKgwqAgYW1jLT5pMmNf
-aW5pdMKgID0gYXN0MjYwMF9ldmJfaTJjX2luaXQ7DQo+ID4gwqDCoMKgwqAgbWMtPmRlZmF1bHRf
-cmFtX3NpemUgPSAxICogR2lCOw0KPiA+IMKgwqDCoMKgIGFzcGVlZF9tYWNoaW5lX2NsYXNzX2lu
-aXRfY3B1c19kZWZhdWx0cyhtYyk7DQo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvaHcvYXJtL2Fz
-cGVlZC5oIGIvaW5jbHVkZS9ody9hcm0vYXNwZWVkLmggaW5kZXgNCj4gPiBjYmVhY2IyMTRjLi44
-NzliZGI5NmVlIDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvaHcvYXJtL2FzcGVlZC5oDQo+ID4g
-KysrIGIvaW5jbHVkZS9ody9hcm0vYXNwZWVkLmgNCj4gPiBAQCAtMzksNiArMzksNyBAQCBzdHJ1
-Y3QgQXNwZWVkTWFjaGluZUNsYXNzIHsNCj4gPiDCoMKgwqDCoCB1aW50MzJfdCBtYWNzX21hc2s7
-DQo+ID4gwqDCoMKgwqAgdm9pZCAoKmkyY19pbml0KShBc3BlZWRNYWNoaW5lU3RhdGUgKmJtYyk7
-DQo+ID4gwqDCoMKgwqAgdWludDMyX3QgdWFydF9kZWZhdWx0Ow0KPiA+ICvCoMKgwqAgYm9vbCBz
-ZGhjaV93cF9pbnZlcnQ7DQo+IA0KPiBPdGhlciB0aGFuIGFsc28gY2FsbGluZyB0aGlzIGBzZGhj
-aV93cF9pbnZlcnRlZGAgdG8gbWF0Y2ggbXkgY29tbWVudCBvbiB0aGUNCj4gZWFybGllciBwYXRj
-aCBhYm91dCB0aGUgbW9kZWwgcHJvcGVydHkgYW5kIGRldmljZXRyZWUgYmluZGluZ3MsDQo+IA0K
-VGhhbmtzIGZvciByZXZpZXcgYW5kIHN1Z2dlc3Rpb24uDQpXaWxsIHVwZGF0ZSBpdCB0byAic2Ro
-Y2lfd3BfaW52ZXJ0ZWQiDQoNCkphbWluDQo+IFJldmlld2VkLWJ5OiBBbmRyZXcgSmVmZmVyeSA8
-YW5kcmV3QGNvZGVjb25zdHJ1Y3QuY29tLmF1Pg0K
+On Thu, Oct 17, 2024 at 5:26=E2=80=AFPM Sai Pavan Boddu <sai.pavan.boddu@am=
+d.com> wrote:
+>
+> Add a basic board with interrupt controller (intc), timer, serial
+> (uartlite), small memory called LMB@0 (128kB) and DDR@0x80000000
+> (configured via command line eg. -m 2g).
+> This is basic configuration which matches HW generated out of AMD Vivado
+> (design tools). But initial configuration is going beyond what it is
+> configured by default because validation should be done on other
+> configurations too. That's why wire also additional uart16500, axi
+> ethernet(with axi dma).
+> GPIOs, i2c and qspi is also listed for completeness.
+>
+> IRQ map is: (addr)
+> 0 - timer (0x41c00000)
+> 1 - uartlite (0x40600000)
+> 2 - i2c (0x40800000)
+> 3 - qspi (0x44a00000)
+> 4 - uart16550 (0x44a10000)
+> 5 - emaclite (0x40e00000)
+> 6 - timer2 (0x41c10000)
+> 7 - axi emac (0x40c00000)
+> 8 - axi dma (0x41e00000)
+> 9 - axi dma
+> 10 - gpio (0x40000000)
+> 11 - gpio2 (0x40010000)
+> 12 - gpio3 (0x40020000)
+>
+> Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+> Signed-off-by: Michal Simek <michal.simek@amd.com>
+> ---
+> Changes for V2:
+>     Make changes to support -cpu switch
+>     Remove setting of default board
+>     Include doc to toctree
+>     Remove setting of 'imac' extensions as they are available by default.
+>
+>  MAINTAINERS                             |   6 +
+>  docs/system/riscv/microblaze-v-virt.rst |  39 +++++
+>  docs/system/target-riscv.rst            |   1 +
+>  hw/riscv/microblaze-v-virt.c            | 181 ++++++++++++++++++++++++
+>  hw/riscv/Kconfig                        |   8 ++
+>  hw/riscv/meson.build                    |   1 +
+>  6 files changed, 236 insertions(+)
+>  create mode 100644 docs/system/riscv/microblaze-v-virt.rst
+>  create mode 100644 hw/riscv/microblaze-v-virt.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d7a11fe6017..b104b6d0f7f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1274,6 +1274,12 @@ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+>  S: Maintained
+>  F: hw/microblaze/petalogix_ml605_mmu.c
+>
+> +amd-microblaze-v-virt
+
+This should probably be more like
+
+"AMD Microblaze-V Virt Board"
+
+Also, this should be with the RISC-V boards
+
+> +M: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+> +S: Maintained
+> +F: hw/riscv/microblaze-v-virt.c
+> +F: docs/system/riscv/microblaze-v-virt.rst
+> +
+>  MIPS Machines
+>  -------------
+>  Overall MIPS Machines
+> diff --git a/docs/system/riscv/microblaze-v-virt.rst b/docs/system/riscv/=
+microblaze-v-virt.rst
+> new file mode 100644
+> index 00000000000..d2ad6a60266
+> --- /dev/null
+> +++ b/docs/system/riscv/microblaze-v-virt.rst
+> @@ -0,0 +1,39 @@
+> +Microblaze-V virt board (``amd-microblaze-v-virt``)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> +The AMD MicroBlaze=E2=84=A2 V processor is a soft-core RISC-V processor =
+IP for AMD adaptive SoCs and FPGAs.
+> +The MicroBlaze V processor is based on a 32-bit RISC-V instruction set a=
+rchitecture (ISA).
+> +
+> +More details here:
+> +https://docs.amd.com/r/en-US/ug1629-microblaze-v-user-guide/MicroBlaze-V=
+-Architecture
+> +
+> +The microblaze-v virt board in QEMU is a virtual board with
+> +following supported devices
+> +
+> +Implemented CPU cores:
+> +
+> +1 RISCV32 core
+
+Maybe details on the extensions supported?
+
+> +
+> +Implemented devices:
+> +
+> +    - timer
+> +    - uartlite
+> +    - uart16550
+> +    - emaclite
+> +    - timer2
+> +    - axi emac
+> +    - axi dma
+> +
+> +Running
+> +"""""""
+> +Running U-boot
+> +
+> +.. code-block:: bash
+> +
+> +
+> +   $ qemu-system-riscv32 -M amd-microblaze-v-virt \
+> +     -display none \
+> +     -device loader,addr=3D0x80000000,file=3Du-boot-spl.bin,cpu-num=3D0 =
+\
+> +     -device loader,addr=3D0x80200000,file=3Du-boot.img \
+> +     -serial mon:stdio \
+> +     -device loader,addr=3D0x83000000,file=3Dsystem.dtb \
+> +     -m 2g
+> diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
+> index ba195f1518a..cd5c5ce1883 100644
+> --- a/docs/system/target-riscv.rst
+> +++ b/docs/system/target-riscv.rst
+> @@ -66,6 +66,7 @@ undocumented; you can get a complete list by running
+>  .. toctree::
+>     :maxdepth: 1
+>
+> +   riscv/microblaze-v-virt
+>     riscv/microchip-icicle-kit
+>     riscv/shakti-c
+>     riscv/sifive_u
+> diff --git a/hw/riscv/microblaze-v-virt.c b/hw/riscv/microblaze-v-virt.c
+> new file mode 100644
+> index 00000000000..6603e6d6b06
+> --- /dev/null
+> +++ b/hw/riscv/microblaze-v-virt.c
+> @@ -0,0 +1,181 @@
+> +/*
+> + * QEMU model of Microblaze V (32bit version)
+> + *
+> + * based on hw/microblaze/petalogix_ml605_mmu.c
+
+Just a question, are you sure the virt board should be based on the
+petalogix_ml605_mmu?
+
+This will be the reference Microblaze V implementation in QEMU, and
+the petalogix_ml605_mmu might be a bit old now. It also uses a lot of
+the Microblaze architecture components (like the interrupt controller)
+compared to the RISC-V architecture components which might cause
+issues for you in the future.
+
+Just something to keep in mind
+
+> + *
+> + * Copyright (c) 2011 Michal Simek <monstr@monstr.eu>
+> + * Copyright (c) 2011 PetaLogix
+> + * Copyright (c) 2009 Edgar E. Iglesias.
+> + * Copyright (C) 2024, Advanced Micro Devices, Inc.
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+
+I think the SPDX-License-Identifier should be at the top of the file
+
+> + * Written by Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+> + *     and by Michal Simek <michal.simek@amd.com>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "qapi/error.h"
+> +#include "cpu.h"
+> +#include "hw/sysbus.h"
+> +#include "sysemu/sysemu.h"
+> +#include "net/net.h"
+> +#include "hw/boards.h"
+> +#include "hw/char/serial-mm.h"
+> +#include "exec/address-spaces.h"
+> +#include "hw/char/xilinx_uartlite.h"
+> +#include "hw/misc/unimp.h"
+> +
+> +#define LMB_BRAM_SIZE (128 * KiB)
+> +#define MEMORY_BASEADDR 0x80000000
+> +#define INTC_BASEADDR 0x41200000
+> +#define TIMER_BASEADDR 0x41c00000
+> +#define TIMER_BASEADDR2 0x41c10000
+> +#define UARTLITE_BASEADDR 0x40600000
+> +#define ETHLITE_BASEADDR 0x40e00000
+> +#define UART16550_BASEADDR 0x44a10000
+> +#define AXIENET_BASEADDR 0x40c00000
+> +#define AXIDMA_BASEADDR 0x41e00000
+> +#define GPIO_BASEADDR 0x40000000
+> +#define GPIO_BASEADDR2 0x40010000
+> +#define GPIO_BASEADDR3 0x40020000
+> +#define I2C_BASEADDR 0x40800000
+> +#define QSPI_BASEADDR 0x44a00000
+> +
+> +#define TIMER_IRQ           0
+> +#define UARTLITE_IRQ        1
+> +#define UART16550_IRQ       4
+> +#define ETHLITE_IRQ         5
+> +#define TIMER_IRQ2          6
+> +#define AXIENET_IRQ         7
+> +#define AXIDMA_IRQ1         8
+> +#define AXIDMA_IRQ0         9
+> +
+> +static void mb_v_virt_init(MachineState *machine)
+> +{
+> +    ram_addr_t ram_size =3D machine->ram_size;
+> +    DeviceState *dev, *dma, *eth0;
+> +    Object *ds, *cs;
+> +    int i;
+> +    RISCVCPU *cpu;
+> +    hwaddr ddr_base =3D MEMORY_BASEADDR;
+> +    MemoryRegion *phys_lmb_bram =3D g_new(MemoryRegion, 1);
+> +    MemoryRegion *phys_ram =3D g_new(MemoryRegion, 1);
+> +    qemu_irq irq[32];
+> +    MemoryRegion *sysmem =3D get_system_memory();
+> +
+> +    cpu =3D RISCV_CPU(object_new(machine->cpu_type));
+> +    qdev_realize(DEVICE(cpu), NULL, &error_abort);
+> +    /* Attach emulated BRAM through the LMB.  */
+> +    memory_region_init_ram(phys_lmb_bram, NULL,
+> +                           "mb_v.lmb_bram", LMB_BRAM_SIZE,
+> +                           &error_fatal);
+> +    memory_region_add_subregion(sysmem, 0x00000000, phys_lmb_bram);
+> +
+> +    memory_region_init_ram(phys_ram, NULL, "mb_v.ram",
+> +                           ram_size, &error_fatal);
+> +    memory_region_add_subregion(sysmem, ddr_base, phys_ram);
+> +
+> +    dev =3D qdev_new("xlnx.xps-intc");
+> +    qdev_prop_set_uint32(dev, "kind-of-intr",
+> +                         1 << UARTLITE_IRQ);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, INTC_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
+> +                       qdev_get_gpio_in(DEVICE(cpu), 11));
+> +    for (i =3D 0; i < 32; i++) {
+> +        irq[i] =3D qdev_get_gpio_in(dev, i);
+> +    }
+> +
+> +    /* Uartlite */
+> +    dev =3D qdev_new(TYPE_XILINX_UARTLITE);
+> +    qdev_prop_set_chr(dev, "chardev", serial_hd(0));
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, UARTLITE_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[UARTLITE_IRQ]);
+> +
+> +    /* Full uart */
+> +    serial_mm_init(sysmem, UART16550_BASEADDR + 0x1000, 2,
+> +                   irq[UART16550_IRQ], 115200, serial_hd(1),
+> +                   DEVICE_LITTLE_ENDIAN);
+> +
+> +    /* 2 timers at irq 0 @ 100 Mhz.  */
+> +    dev =3D qdev_new("xlnx.xps-timer");
+> +    qdev_prop_set_uint32(dev, "one-timer-only", 0);
+> +    qdev_prop_set_uint32(dev, "clock-frequency", 100000000);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, TIMER_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
+> +
+> +    /* 2 timers at irq 3 @ 100 Mhz.  */
+> +    dev =3D qdev_new("xlnx.xps-timer");
+> +    qdev_prop_set_uint32(dev, "one-timer-only", 0);
+> +    qdev_prop_set_uint32(dev, "clock-frequency", 100000000);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, TIMER_BASEADDR2);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ2]);
+> +
+> +    /* Emaclite */
+> +    dev =3D qdev_new("xlnx.xps-ethernetlite");
+> +    qemu_configure_nic_device(dev, true, NULL);
+> +    qdev_prop_set_uint32(dev, "tx-ping-pong", 0);
+> +    qdev_prop_set_uint32(dev, "rx-ping-pong", 0);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, ETHLITE_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[ETHLITE_IRQ]);
+> +
+> +    /* axi ethernet and dma initialization. */
+> +    eth0 =3D qdev_new("xlnx.axi-ethernet");
+> +    dma =3D qdev_new("xlnx.axi-dma");
+> +
+> +    /* FIXME: attach to the sysbus instead */
+> +    object_property_add_child(qdev_get_machine(), "xilinx-eth", OBJECT(e=
+th0));
+> +    object_property_add_child(qdev_get_machine(), "xilinx-dma", OBJECT(d=
+ma));
+> +
+> +    ds =3D object_property_get_link(OBJECT(dma),
+> +                                  "axistream-connected-target", NULL);
+> +    cs =3D object_property_get_link(OBJECT(dma),
+> +                                  "axistream-control-connected-target", =
+NULL);
+> +    qemu_configure_nic_device(eth0, true, NULL);
+> +    qdev_prop_set_uint32(eth0, "rxmem", 0x1000);
+> +    qdev_prop_set_uint32(eth0, "txmem", 0x1000);
+> +    object_property_set_link(OBJECT(eth0), "axistream-connected", ds,
+> +                             &error_abort);
+> +    object_property_set_link(OBJECT(eth0), "axistream-control-connected"=
+, cs,
+> +                             &error_abort);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(eth0), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(eth0), 0, AXIENET_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(eth0), 0, irq[AXIENET_IRQ]);
+> +
+> +    ds =3D object_property_get_link(OBJECT(eth0),
+> +                                  "axistream-connected-target", NULL);
+> +    cs =3D object_property_get_link(OBJECT(eth0),
+> +                                  "axistream-control-connected-target", =
+NULL);
+> +    qdev_prop_set_uint32(dma, "freqhz", 100000000);
+> +    object_property_set_link(OBJECT(dma), "axistream-connected", ds,
+> +                             &error_abort);
+> +    object_property_set_link(OBJECT(dma), "axistream-control-connected",=
+ cs,
+> +                             &error_abort);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dma), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dma), 0, AXIDMA_BASEADDR);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dma), 0, irq[AXIDMA_IRQ0]);
+> +    sysbus_connect_irq(SYS_BUS_DEVICE(dma), 1, irq[AXIDMA_IRQ1]);
+> +
+> +    /* unimplemented devices */
+> +    create_unimplemented_device("gpio", GPIO_BASEADDR, 0x10000);
+> +    create_unimplemented_device("gpio2", GPIO_BASEADDR2, 0x10000);
+> +    create_unimplemented_device("gpio3", GPIO_BASEADDR3, 0x10000);
+> +    create_unimplemented_device("i2c", I2C_BASEADDR, 0x10000);
+> +    create_unimplemented_device("qspi", QSPI_BASEADDR, 0x10000);
+> +}
+> +
+> +static void mb_v_virt_machine_init(MachineClass *mc)
+> +{
+> +    mc->desc =3D "AMD Microblaze-V Virt platform";
+> +    mc->init =3D mb_v_virt_init;
+> +    mc->min_cpus =3D 1;
+> +    mc->max_cpus =3D 1;
+> +    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE32;
+> +    mc->default_cpus =3D 1;
+> +}
+> +
+> +DEFINE_MACHINE("amd-microblaze-v-virt", mb_v_virt_machine_init)
+> diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+> index 44695ff9f2c..5424803a82e 100644
+> --- a/hw/riscv/Kconfig
+> +++ b/hw/riscv/Kconfig
+> @@ -22,6 +22,14 @@ config MICROCHIP_PFSOC
+>      select SIFIVE_PLIC
+>      select UNIMP
+>
+> +config MICROBLAZE_V
+> +    bool
+> +    default y
+> +    depends on RISCV32
+> +    select XILINX
+> +    select XILINX_AXI
+> +    select XILINX_ETHLITE
+> +
+>  config OPENTITAN
+>      bool
+>      default y
+> diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
+> index f872674093a..8ea0412a376 100644
+> --- a/hw/riscv/meson.build
+> +++ b/hw/riscv/meson.build
+> @@ -10,5 +10,6 @@ riscv_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('s=
+ifive_u.c'))
+>  riscv_ss.add(when: 'CONFIG_SPIKE', if_true: files('spike.c'))
+>  riscv_ss.add(when: 'CONFIG_MICROCHIP_PFSOC', if_true: files('microchip_p=
+fsoc.c'))
+>  riscv_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
+> +riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-v=
+irt.c'))
+>
+>  hw_arch +=3D {'riscv': riscv_ss}
+> --
+> 2.34.1
+>
+>
 
