@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A499B6806
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6DF9B68A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:58:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6AnD-0008Si-IJ; Wed, 30 Oct 2024 11:39:31 -0400
+	id 1t6B4t-0003WH-Fk; Wed, 30 Oct 2024 11:57:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6An5-0008SY-Rn
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:39:23 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4q-0003Vc-QI
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6An3-0004ET-H6
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:39:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730302761; x=1761838761;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Z2jAtlX+nm/qSFEmDG9JflN3eBD/+R6/qmApMimO224=;
- b=hgdr97+NriAShXnzcv5sJrC9qE9NkZSqps/yTIkE12ZWfpk7xorEPad4
- n7w6VnvEJ6QCvzC/MJfRhWeRIWEdGdq64vsLfEAKV5UCnx9yKVu8579vA
- U4jYrHce6Lenw5psICsquIo2eXTewpYtujmMs6D/VruwO351NwPdXTwGT
- 5sKlUKcKlUBB2Hjj7OKa9w3g7hjDbSk3ppebAsp8FrzfJK1wY1V9mUmMG
- wrsZTLsL+kEG4qKLAo1QF85eVbnBU0MKL4kIKLoecZsGoBK93cnRTiElp
- bfbdMNKM4W6wc3XC5hjkEqAlx5HeDJvoChCS865yhr9S78VtBQJ1Qgs7y g==;
-X-CSE-ConnectionGUID: 1+BHHp0DRViqAGEDWM9JAA==
-X-CSE-MsgGUID: DYE1J2McQgiFVEdPkyRhGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="30224597"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="30224597"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 08:39:16 -0700
-X-CSE-ConnectionGUID: IY1MFOacR/imT59PApECfg==
-X-CSE-MsgGUID: /U8DLxNdTqmLtf+pVZs1fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="87500440"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 08:39:14 -0700
-Date: Wed, 30 Oct 2024 23:55:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- xiaoyao.li@intel.com
-Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
- property
-Message-ID: <ZyJW9nGgpEXqiyli@intel.com>
-References: <20241029151858.550269-1-pbonzini@redhat.com>
- <20241029151858.550269-5-pbonzini@redhat.com>
- <ZyHyBnPvOHsSdh8D@intel.com> <ZyH+RB3v55cQ43+S@linux.bj.intel.com>
- <ZyIy4OGSGPhAZutK@intel.com> <ZyI9P1ftFOTUhDzb@linux.bj.intel.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4o-0007kX-Cz
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730303861;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=G1yNXxsh8dTvITSx4+B06H/+QaPAvo9R+7WdzcB0NcI=;
+ b=EPQ4R1BmC4fC8nuacrJ7sR3r0RXKR+QMzFl8/gk4lPNfN5zvlKWl1YJqJirLLWm7w8/L29
+ ZVYjbmHBDDjiCk1GF0E0YRKTNvBHR8/Q/gFKGnHiJ3loNse7EUGCt8yKvmNMveLp9Es6QG
+ 250uNo4Dr2vHJYqHUWri2M9nmhXV210=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-Ay1XWW5sMxSp-OPi81BmtA-1; Wed, 30 Oct 2024 11:57:38 -0400
+X-MC-Unique: Ay1XWW5sMxSp-OPi81BmtA-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6cbd2cb2f78so391406d6.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730303856; x=1730908656;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G1yNXxsh8dTvITSx4+B06H/+QaPAvo9R+7WdzcB0NcI=;
+ b=Hpfg0vpN1hNA5TTEQUeST0fD0CHzR906hHtEJgnulDCvLcCH91o5qOF3VyPSsQgDMu
+ pK41QgadsETQpBoCDzNBY1hI46R49eixGjRogfLfSISeMJloJg6s69AlPL7HD8Zx+3tp
+ hBg9O1hM8VDGbiCX1ZQsK9v8TXhT9KNlP/UvXIq8bKSclvmH1tne7Cyj4gpopxYmcKhA
+ s41gkhskNXCyt2T6yakZjz+D+sRyaLFU73QXmWayrKDP/mVo18NS4MnuUSVizTTz3jpJ
+ /Ri7CBdOk4/FeBb+LcEj0dojenOASmicLI9lal6IrmIiWVdBGfu6h+iRU+S9etZ/1rce
+ LPiA==
+X-Gm-Message-State: AOJu0YwJ5l8voykq/WFL/QMKEhVBziVBeQQ56pTgsbK80OvJ5h58HskT
+ rLjOe3JQ2feM6IvalagYk6V+F2boUHXgxi4SaGH+vWQugBopengM21ebYBLjX3OQYwAJ2eqREbK
+ dg4HLaZkGP8hBjGTrJa4JfusWxZqwYejnPt9qJqbPhVnCjutEcAv871xW/eTRP9As/e1AthrdFJ
+ sji0oXXNFGzafvtSd65MjSVCSzC4+aaldP8g==
+X-Received: by 2002:a05:6214:5690:b0:6cc:255:2038 with SMTP id
+ 6a1803df08f44-6d2d91a53f2mr88763346d6.4.1730303856363; 
+ Wed, 30 Oct 2024 08:57:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuiw55GRoIrPM+ou+c3z4K9pNheyGVO/c5c+UzxQ4cDlEQ+WdPJTxScliHxDrC8jkhuM6gyA==
+X-Received: by 2002:a05:6214:5690:b0:6cc:255:2038 with SMTP id
+ 6a1803df08f44-6d2d91a53f2mr88762986d6.4.1730303855916; 
+ Wed, 30 Oct 2024 08:57:35 -0700 (PDT)
+Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Oct 2024 08:57:35 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 00/18] Migration 20241030 patches
+Date: Wed, 30 Oct 2024 11:57:16 -0400
+Message-ID: <20241030155734.2141398-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZyI9P1ftFOTUhDzb@linux.bj.intel.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,88 +97,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 30, 2024 at 10:05:51PM +0800, Tao Su wrote:
-> Date: Wed, 30 Oct 2024 22:05:51 +0800
-> From: Tao Su <tao1.su@linux.intel.com>
-> Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
->  property
-> 
-> On Wed, Oct 30, 2024 at 09:21:36PM +0800, Zhao Liu wrote:
-> > > > > Introduce avx10-version property so that avx10 version can be controlled
-> > > > > by user and cpu model. Per spec, avx10 version can never be 0, the default
-> > > > > value of avx10-version is set to 0 to determine whether it is specified by
-> > > > > user.
-> > > > 
-> > > > The default value of 0 does not reflect whether the user has set it to 0.
-> > > > According to the description here, the spec clearly prohibits 0, so
-> > > > should we report an error when the user sets it to 0?
-> > > > 
-> > > > If so, it might be better to change the default value to -1 and adjust
-> > > > based on the host's support.
-> > > > 
-> > > 
-> > > If user sets version to 0, it will directly use reported version, this
-> > > should be a more neat and intuitive way?
-> > 
-> > The code implementation is actually similar for different initial
-> > values. And about this:
-> > 
-> > > If user sets version to 0, it will directly use reported version", 
-> > 
-> > It's defining a special behavior for the API, which is based on the
-> > special 0 value, and there needs to be documentation to let the user
-> > know that 0 will be considered legal as well as that it will be quietly
-> > overridden... But AFAIK there doesn't seem to be any place to add
-> > documentation for the property ...
-> > 
-> > There may be similar problems with -1, e.g. if the user writes -1, there
-> > is no way to report an error for the user's behavior. But it's better
-> > than 0. After all, no one would think that a version of -1 is correct.
-> > Topology IDs have been initialized to -1 to include the user's 0 value
-> > in the check.
-> 
-> Thanks for your explanation, but I really think the users who set
-> avx10-version should also know avx10.0 doesn¡¯t exist, so using 0 is same
-> as -1¡­
+The following changes since commit cc5adbbd50d81555b8eb73602ec16fde40b55be4:
 
-I see. "Per spec, avx10 version can never be 0", so showing the warning
-for avx10-version=0 is as it should be.
+  Merge tag 'pull-tpm-2024-10-18-1' of https://github.com/stefanberger/qemu-tpm into staging (2024-10-18 15:45:02 +0100)
 
-> To solve the initial value issue fundamentally, maybe we can add get/set
-> callbacks when adding avx10-version property? It should be simpler to
-> limit what users set.
+are available in the Git repository at:
 
-It's unnecessary. Similar cases using -1 are already common, such as for
-APIC ID, NUMA node ID, topology IDs, etc. The initial value is -1 simply
-because we need to handle the case where users explicitly set it to 0.
-If you don¡¯t want to see -1, you can define a macro like APIC ID did
-(#define UNSET_AVX10_VERSION -1).
+  https://gitlab.com/peterx/qemu.git tags/migration-20241030-pull-request
 
-> > > > @@ -7674,13 +7682,21 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-> > > >                                      &eax_0, &ebx_0, &ecx_0, &edx_0);
-> > > >          uint8_t version = ebx_0 & 0xff;
-> > > > 
-> > > > -        if (version < env->avx10_version) {
-> > > > +        if (!env->avx10_version) {
-> > > > +            env->avx10_version = version;
-> > > 
-> > > x86_cpu_filter_features() is not a good place to assign avx10_version, I
-> > > still tend to set it in max_x86_cpu_realize().
-> > 
-> > It's not proper to get the host's version when AVX10 cannot be enabled,
-> > even maybe host doesn't support AVX10.
-> > 
-> > As you found out earlier, max_x86_cpu_realize doesn't know if AVX10 can
-> > be enabled or not.
-> > 
-> 
-> How about moving to x86_cpu_expand_features()? We can set when checking
-> cpu->max_features.
+for you to fetch changes up to 53a60118d2654dd8e595e61f4e767ff747fd0b69:
 
-The feature bit set in x86_cpu_expand_features() is unstable since it
-may be masked later in x86_cpu_filter_features(). :)
+  migration/multifd: Zero p->flags before starting filling a packet (2024-10-30 11:32:41 -0400)
 
-Thanks,
-Zhao
+----------------------------------------------------------------
+Migration pull request for softfreeze
+
+NOTE: checkpatch.pl could report a false positive on this branch:
+
+  WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+  #21:
+   {include/sysemu => migration}/cpu-throttle.h | 0
+
+That's covered by "F: migration/" entry.
+
+Changelog:
+
+- Peter's cleanup patch on migrate_fd_cleanup()
+- Peter's cleanup patch to introduce thread name macros
+- Hanna's error path fix for vmstate subsection save()s
+- Hyman's auto converge enhancement on background dirty sync
+- Peter's additional tracepoints for save state entries
+- Thomas's build fix for OpenBSD in dirtyrate.c
+- Peter's deprecation of query-migrationthreads command
+- Peter's cleanup/fixes from the "export misc.h" series
+- Maciej's two small patches from multifd+vfio series
+
+----------------------------------------------------------------
+
+Hanna Czenczek (1):
+  migration: Ensure vmstate_save() sets errp
+
+Hyman Huang (6):
+  accel/tcg/icount-common: Remove the reference to the unused header
+    file
+  migration: Stop CPU throttling conditionally
+  migration: Move cpu-throttole.c from system to migration
+  migration: Remove "rs" parameter in migration_bitmap_sync_precopy
+  migration: Support periodic RAMBlock dirty bitmap sync
+  tests/migration: Add case for periodic ramblock dirty sync
+
+Maciej S. Szmigiero (2):
+  migration/ram: Add load start trace event
+  migration/multifd: Zero p->flags before starting filling a packet
+
+Peter Xu (8):
+  migration: Cleanup migrate_fd_cleanup() on accessing to_dst_file
+  migration: Put thread names together with macros
+  migration: Deprecate query-migrationthreads command
+  migration: Take migration object refcount earlier for threads
+  migration: Unexport dirty_bitmap_mig_init()
+  migration: Unexport ram_mig_init()
+  migration: Drop migration_is_setup_or_active()
+  migration: Drop migration_is_idle()
+
+Thomas Huth (1):
+  migration/dirtyrate: Silence warning about strcpy() on OpenBSD
+
+ docs/about/deprecated.rst                    |   8 ++
+ qapi/migration.json                          |   7 +-
+ include/migration/misc.h                     |   9 +-
+ {include/sysemu => migration}/cpu-throttle.h |  14 ++
+ migration/migration.h                        |  19 +++
+ migration/ram.h                              |   1 +
+ accel/tcg/icount-common.c                    |   1 -
+ hw/vfio/common.c                             |   2 +-
+ hw/virtio/virtio-mem.c                       |   2 +-
+ migration/colo.c                             |   3 +-
+ {system => migration}/cpu-throttle.c         |  72 +++++++++-
+ migration/dirtyrate.c                        |  11 +-
+ migration/migration.c                        | 130 ++++++++-----------
+ migration/multifd.c                          |   8 +-
+ migration/postcopy-ram.c                     |   6 +-
+ migration/ram.c                              |  21 +--
+ migration/savevm.c                           |   3 +-
+ migration/vmstate.c                          |  13 +-
+ net/vhost-vdpa.c                             |   3 +-
+ system/cpu-timers.c                          |   3 -
+ system/qdev-monitor.c                        |   4 +-
+ tests/qtest/migration-test.c                 |  32 +++++
+ migration/meson.build                        |   1 +
+ migration/trace-events                       |   5 +
+ system/meson.build                           |   1 -
+ system/trace-events                          |   3 -
+ 26 files changed, 257 insertions(+), 125 deletions(-)
+ rename {include/sysemu => migration}/cpu-throttle.h (87%)
+ rename {system => migration}/cpu-throttle.c (64%)
+
+-- 
+2.45.0
 
 
