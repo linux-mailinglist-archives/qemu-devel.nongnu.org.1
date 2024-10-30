@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26ADC9B68A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02379B68A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 16:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6B4w-0003XA-4p; Wed, 30 Oct 2024 11:57:50 -0400
+	id 1t6B4y-0003XU-1s; Wed, 30 Oct 2024 11:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4t-0003WI-6J
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:47 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4w-0003XC-Bc
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4r-0007lL-Df
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6B4u-0007m1-VF
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 11:57:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730303864;
+ s=mimecast20190719; t=1730303868;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eLmfXxT/DLKKNW5bJqVMU68mP3Y9rc7URGbbAHO3xiw=;
- b=XHh6A3BgcpGpjOG9zCU2YO5Qnjr6FReMSecwhpbnkTqCc+wep+lp5xFvfypyusvsgQ/hZv
- T76m4CrR8t2Tf73n0y0KR43B28rrgtAPYI0WiccW9aLSO9aKyux2p4Iv8lnBq6HxB7mJkZ
- xbHCzhFmqJujV2mDDmGofa4MJdrUItY=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+OC04zWrmLQv9jlMFCWvGBK923Zpyicv5m+dwVSdRYg=;
+ b=Sf/bMb0kmbR4AokovOe9prJN5ydwTbg20Z0jEqzSmdObLLJzWZ161jEcHg7WYwdjbmz5RN
+ UxcEJ03GJHMjbW9QFOvTlQcaDXjABiau07FuM4pSjerpin/5QwZMDVWffQHgtuUXyiXgKw
+ RZtXZEplBFxYQiy4oI/o05R2Yba1clg=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-daP6YJLGPoS1nr4zShGGbw-1; Wed, 30 Oct 2024 11:57:43 -0400
-X-MC-Unique: daP6YJLGPoS1nr4zShGGbw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6cbe933e877so166076d6.1
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
+ us-mta-88-aj5LybM6OcqsWRz0pnEzpA-1; Wed, 30 Oct 2024 11:57:45 -0400
+X-MC-Unique: aj5LybM6OcqsWRz0pnEzpA-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3e60970ed1dso31291b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 08:57:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730303862; x=1730908662;
+ d=1e100.net; s=20230601; t=1730303864; x=1730908664;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eLmfXxT/DLKKNW5bJqVMU68mP3Y9rc7URGbbAHO3xiw=;
- b=Pc/xCueM5uNw0Q/iHb+oh0BmCO3BKVt7SJEPzLvuEZS1X96/QvZP/dJHzhwvpqXAZx
- LGwMvPkgK49suxUP7SrxXyVnGqaAdYZi/vmFWW8M9bsMKx9QU9qgr6IOk4H6s1L7mSGD
- aISSPGhdbIdKiKVHjf+U295A1xqukf39RkT5gMY7NfIb6fxQDXp5/W3lyoGss8hkorQW
- 24clm/JR1leyH6WQAwcZYGjn7//FpP0JJuniri0qoyhoWkNHZkU0k8AWekBuO/5Q4eCL
- JSoL+DJIHOHBm8vV796s0V2Mn4aH7lYVoh78cfXSqPnH/vb0Ne6/6FQc/tlNs8F5k5iR
- uCbA==
-X-Gm-Message-State: AOJu0Yxs+KpKI90j+ruAebhzSLaic4++D1EJ4seytMQu0AzjzcTWVZUQ
- zTgCNto1jVNJjXaxHsSCzUxvlrVU4kzZCXRdftKFFawhQM4cMKTqrP/g14ojaedTnTropUsySjv
- WLmqTBk/KmAF9iGlOnWG2B070SPVwO22PpC/5ouvjpUZjayeHJd6WncmHDMCEhYlE1d2rTdP4dD
- lsDKD2E3yTktdzpMYwRbTRfPQ9lVhYVz4xRw==
-X-Received: by 2002:a05:6214:4305:b0:6cb:e53d:dd7 with SMTP id
- 6a1803df08f44-6d1856e6b8bmr179609066d6.19.1730303861969; 
- Wed, 30 Oct 2024 08:57:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnviHexEz2UeiXDo12oy/A+rfrNlg3wuIuaqp6JVOyBblkIp8xqc67ZFRVY8/vY6arTtYzWg==
-X-Received: by 2002:a05:6214:4305:b0:6cb:e53d:dd7 with SMTP id
- 6a1803df08f44-6d1856e6b8bmr179608876d6.19.1730303861565; 
- Wed, 30 Oct 2024 08:57:41 -0700 (PDT)
+ bh=+OC04zWrmLQv9jlMFCWvGBK923Zpyicv5m+dwVSdRYg=;
+ b=oW4VMqZcFz1rrtPidxUiUIjFXbYJpyQ0hkModsvuwmpGcwbEZueG5vcwlf65IgNIQC
+ OrrF60KodZXIGiYK/vuGtOanDRuLpIxzvgUwTrHg/iifKinOrv8E5Ak9u5s72eszA+E3
+ FhqKVY7gzL63SQW3XamJjejFEsk50QfOLgENJGAemy1Ne7vhGnmE7kaSyaYgEp6HEMaO
+ 8jQ4UZ9nSidAvNYEQo7hmaQ9hedPPBlelCrSWtUxoZW5O8kQAcyLdRIQ3xpD7MBbdHkD
+ ZgckCchJlCi2c/i/aNizWU+7nhL+kd/btd46hJHyh75JbhB1ry9PzDYEitl3n56cqKrt
+ 74EQ==
+X-Gm-Message-State: AOJu0YxK+JPfY1RTr1+B7JSmgF8gvdS84c28bFaY26ZT1XsyxiqKXjgQ
+ to/8o0wVd+035Dh4evmAecNp7hsq9OFAaUdI+Jaq7wNTrgiR7UzxxGyv3p6pq8lXoAc22ZB0CaM
+ tD6M5V7cgDgiuq/FRDu03/jKu+KRTNg/93ymQS0uxv0QKzeKjpMvkiwiyjljr9wBfCTn9egON4J
+ dEL1xZf2q44wKwTwDkGA4skWodHyIWUSCb3w==
+X-Received: by 2002:a05:6808:1487:b0:3e6:77d:2ea1 with SMTP id
+ 5614622812f47-3e6384b9564mr13946819b6e.45.1730303863788; 
+ Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwb7zFYkHxM6wk6In87GHjFcARRYE4qSE/uLqcjwNOdUP4FcyGQfpy56ffwQp4s4S6u2SneQ==
+X-Received: by 2002:a05:6808:1487:b0:3e6:77d:2ea1 with SMTP id
+ 5614622812f47-3e6384b9564mr13946787b6e.45.1730303863338; 
+ Wed, 30 Oct 2024 08:57:43 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.39
+ 6a1803df08f44-6d19c57c1ffsm22802276d6.89.2024.10.30.08.57.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 08:57:40 -0700 (PDT)
+ Wed, 30 Oct 2024 08:57:42 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
- Hanna Czenczek <hreitz@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 03/18] migration: Ensure vmstate_save() sets errp
-Date: Wed, 30 Oct 2024 11:57:19 -0400
-Message-ID: <20241030155734.2141398-4-peterx@redhat.com>
+ Hyman Huang <yong.huang@smartx.com>, Peter Xu <peterx@redhat.com>
+Subject: [PULL 04/18] accel/tcg/icount-common: Remove the reference to the
+ unused header file
+Date: Wed, 30 Oct 2024 11:57:20 -0400
+Message-ID: <20241030155734.2141398-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241030155734.2141398-1-peterx@redhat.com>
 References: <20241030155734.2141398-1-peterx@redhat.com>
@@ -99,83 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hanna Czenczek <hreitz@redhat.com>
+From: Hyman Huang <yong.huang@smartx.com>
 
-migration/savevm.c contains some calls to vmstate_save() that are
-followed by migrate_set_error() if the integer return value indicates an
-error.  migrate_set_error() requires that the `Error *` object passed to
-it is set.  Therefore, vmstate_save() is assumed to always set *errp on
-error.
-
-Right now, that assumption is not met: vmstate_save_state_v() (called
-internally by vmstate_save()) will not set *errp if
-vmstate_subsection_save() or vmsd->post_save() fail.  Fix that by adding
-an *errp parameter to vmstate_subsection_save(), and by generating a
-generic error in case post_save() fails (as is already done for
-pre_save()).
-
-Without this patch, qemu will crash after vmstate_subsection_save() or
-post_save() have failed inside of a vmstate_save() call (unless
-migrate_set_error() then happen to discard the new error because
-s->error is already set).  This happens e.g. when receiving the state
-from a virtio-fs back-end (virtiofsd) fails.
-
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Link: https://lore.kernel.org/r/20241015170437.310358-1-hreitz@redhat.com
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/5e33b423d0b8506e5cb33fff42b50aa301b7731b.1729146786.git.yong.huang@smartx.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/vmstate.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ accel/tcg/icount-common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index ff5d589a6d..fa002b24e8 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -22,7 +22,8 @@
- #include "trace.h"
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index 8d3d3a7e9d..30bf8500dc 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -36,7 +36,6 @@
+ #include "sysemu/runstate.h"
+ #include "hw/core/cpu.h"
+ #include "sysemu/cpu-timers.h"
+-#include "sysemu/cpu-throttle.h"
+ #include "sysemu/cpu-timers-internal.h"
  
- static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
--                                   void *opaque, JSONWriter *vmdesc);
-+                                   void *opaque, JSONWriter *vmdesc,
-+                                   Error **errp);
- static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-                                    void *opaque);
- 
-@@ -441,12 +442,13 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-         json_writer_end_array(vmdesc);
-     }
- 
--    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc);
-+    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
- 
-     if (vmsd->post_save) {
-         int ps_ret = vmsd->post_save(opaque);
--        if (!ret) {
-+        if (!ret && ps_ret) {
-             ret = ps_ret;
-+            error_setg(errp, "post-save failed: %s", vmsd->name);
-         }
-     }
-     return ret;
-@@ -518,7 +520,8 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
- }
- 
- static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
--                                   void *opaque, JSONWriter *vmdesc)
-+                                   void *opaque, JSONWriter *vmdesc,
-+                                   Error **errp)
- {
-     const VMStateDescription * const *sub = vmsd->subsections;
-     bool vmdesc_has_subsections = false;
-@@ -546,7 +549,7 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
-             qemu_put_byte(f, len);
-             qemu_put_buffer(f, (uint8_t *)vmsdsub->name, len);
-             qemu_put_be32(f, vmsdsub->version_id);
--            ret = vmstate_save_state(f, vmsdsub, opaque, vmdesc);
-+            ret = vmstate_save_state_with_err(f, vmsdsub, opaque, vmdesc, errp);
-             if (ret) {
-                 return ret;
-             }
+ /*
 -- 
 2.45.0
 
