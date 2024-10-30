@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778289B5A05
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 03:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED079B5A34
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 04:11:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5ydX-00049a-Rq; Tue, 29 Oct 2024 22:40:43 -0400
+	id 1t5z6U-0007bT-LM; Tue, 29 Oct 2024 23:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5ydV-00049E-PA
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:40:41 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5z6R-0007bC-Uq
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:10:35 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5ydT-0006pR-1W
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 22:40:41 -0400
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1t5z6P-00018a-J7
+ for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:10:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730256039; x=1761792039;
+ t=1730257834; x=1761793834;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lz8GrKfLF5V+ioLtIjqKCp22h9psB09WZcRigAiFrU8=;
- b=T1Nz0gB3PHQX4whUlJ6isAM52LZQrwQ59tMjmre5APAxJfLcDrs763u0
- mlRW8BSB9WnIRET++uTBGaI09P0H5ojeu163rjtuzno5kIbGLKyul5NYA
- mfrKut/5GQ0bO1X8QPHiWKfPwsO099JUm9Q3LADcEYtcMAjfVdHGv76g9
- hBsZ6VbeSeZRJZqFJwPYFIsj6lly9cHgpG/rCpGS+M3tF4qg1pG02HJ4z
- QRU7/gzjmjiyyDbP+UGKYADX3Uf2PGRCWgEZNfocYix8cahq51CCEuiTv
- uZtLK1PLggXulVO+Pdrj1ArJLwncXRlwcqrdHBiKmWOPWQejIfw24FT/l g==;
-X-CSE-ConnectionGUID: mIZ6czvLTECgQDfwjmYYcw==
-X-CSE-MsgGUID: YRNB/QxcToyrTCEXWoc/Qg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30135613"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30135613"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 19:40:35 -0700
-X-CSE-ConnectionGUID: ZtUGH0uqSs6JqYaQudwywA==
-X-CSE-MsgGUID: fq0VWX+jQESAT7r5kkxG6g==
+ bh=8EpwmkFImI3e1XkNUJVl3CvS4Bm6xI+t2Vp/geJvKS4=;
+ b=BPwSTUvgIAn/CmA57GRafn1cVBXJgBKUavuLeFIja0YprK9xvl03pq91
+ QUSL2e/aI8UhU/uXzRpcGZ+JmX/wjAQdHEsqJV03VHct/aAz1vwsFma+3
+ cdzhZCZNuqv79eFVbw/QIJBl08Prr3vptVF+uGMVs6mkMCzgE+70r/Sde
+ knQk48FWmZwuAUcqlMFccl6AmfbfeLTMG/XyMwxg7yg1z/Z7Rqz211CdO
+ 2R2MgNRkP0EasIOUlDUB6UrY2iqgzSpOw+V6Vbt4r517apnSh6nInIMka
+ 3CB3TFfLi66IROFjNz9LUBkLO8CNNReoGrBppOaKATQ+I0Z54sD97pZ6c w==;
+X-CSE-ConnectionGUID: AIixHNP1RnG9vuDLh6lxNw==
+X-CSE-MsgGUID: ttetuTJ5T9WKoUs6mALWSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52504460"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52504460"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 20:10:31 -0700
+X-CSE-ConnectionGUID: mDgo7/lyRiiAT0DGQdISiA==
+X-CSE-MsgGUID: kSU00hZvRBqNLwyI2gyjPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="86941863"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 29 Oct 2024 19:40:34 -0700
-Date: Wed, 30 Oct 2024 10:56:53 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="86727971"
+Received: from linux.bj.intel.com ([10.238.157.71])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2024 20:10:29 -0700
+Date: Wed, 30 Oct 2024 11:05:23 +0800
+From: Tao Su <tao1.su@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, tao1.su@linux.intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 1/8] target/i386: cpu: set correct supported XCR0
- features for TCG
-Message-ID: <ZyGgdYUrwg+uAhtj@intel.com>
+Cc: qemu-devel@nongnu.org, zhao1.liu@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 4/8] target/i386: add AVX10 feature and AVX10 version
+ property
+Message-ID: <ZyGic6S+/lcuR36v@linux.bj.intel.com>
 References: <20241029151858.550269-1-pbonzini@redhat.com>
- <20241029151858.550269-2-pbonzini@redhat.com>
+ <20241029151858.550269-5-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241029151858.550269-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+In-Reply-To: <20241029151858.550269-5-pbonzini@redhat.com>
+Received-SPF: none client-ip=198.175.65.9;
+ envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,19 +81,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 29, 2024 at 04:18:51PM +0100, Paolo Bonzini wrote:
-> Date: Tue, 29 Oct 2024 16:18:51 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 1/8] target/i386: cpu: set correct supported XCR0 features
->  for TCG
-> X-Mailer: git-send-email 2.47.0
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/cpu.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
+On Tue, Oct 29, 2024 at 04:18:54PM +0100, Paolo Bonzini wrote:
+> From: Tao Su <tao1.su@linux.intel.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+[ ... ]
 
+>  static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
+>  {
+>      Object *obj = OBJECT(dev);
+> +    X86CPU *cpu = X86_CPU(dev);
+> +    CPUX86State *env = &cpu->env;
+>  
+>      if (!object_property_get_int(obj, "family", &error_abort)) {
+>          if (X86_CPU(obj)->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+> @@ -5351,6 +5357,14 @@ static void max_x86_cpu_realize(DeviceState *dev, Error **errp)
+>          }
+>      }
+>  
+> +    if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && !env->avx10_version) {
+
+CPUID_7_1_EDX_AVX10 is not set now and will be set in x86_cpu_realizefn().
+How about just checking !env->avx10_version? Because cpu_x86_cpuid will
+also check (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10).
+
+> +        uint32_t eax, ebx, ecx, edx;
+> +        x86_cpu_get_supported_cpuid(0x24, 0,
+> +                                    &eax, &ebx, &ecx, &edx);
+> +
+> +        env->avx10_version = ebx & 0xff;
+> +    }
+> +
+>      x86_cpu_realizefn(dev, errp);
+>  }
+>  
+> @@ -6331,6 +6345,9 @@ static void x86_cpu_load_model(X86CPU *cpu, X86CPUModel *model)
+>       */
+>      object_property_set_str(OBJECT(cpu), "vendor", def->vendor, &error_abort);
+>  
+> +    object_property_set_int(OBJECT(cpu), "avx10-version", def->avx10_version,
+> +                            &error_abort);
+
+NIT: avx10-version is defined as UINT8, is it better to use object_property_set_uint?
+
+> +
+>      x86_cpu_apply_version_props(cpu, model);
+>  
+>      /*
+> @@ -6859,6 +6876,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          }
+>          break;
+>      }
+> +    case 0x24: {
+> +        *eax = 0;
+> +        *ebx = 0;
+> +        *ecx = 0;
+> +        *edx = 0;
+> +        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
+> +            *ebx = env->avx10_version;
+> +        }
+
+The CPUIDs of vector lengths are missing here, according to your previous
+comment, it should be:
+
++        if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && count == 0) {
++            *ebx = env->features[FEAT_24_0_EBX] | env->avx10_version;
++        }
+
+[ ... ]
 
