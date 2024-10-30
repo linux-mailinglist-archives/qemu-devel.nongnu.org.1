@@ -2,70 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E169B5A65
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 04:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DAB49B5A92
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Oct 2024 05:08:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t5zT0-0003mN-NI; Tue, 29 Oct 2024 23:33:54 -0400
+	id 1t5zz7-0008ID-Kg; Wed, 30 Oct 2024 00:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5zSx-0003lv-UU
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:33:52 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t5zSv-000373-BS
- for qemu-devel@nongnu.org; Tue, 29 Oct 2024 23:33:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730259229; x=1761795229;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=vj083Zi6n+Z84b6DtfTG/RDIrqN14QpAbExOTQeiB6I=;
- b=MekMkCejF4vpb0J/6do6zw5e32pw57iPzd6/kn/0S1bhtc0D281D1Trz
- KVvLJ6BcJqdZgOtoUheuA3yIm4pF+JfARVPkVXU3+9RXBEisq/4REWkPY
- nbC0omFRSIfVNl7zz0YEb4Stx3IXeqZcxujdEd1NV9YIPOoUf+w8hzYzS
- gLORvbVV76D7+afZY8UWGTuADMOqwT5vHIcuLJ75QSaJKrBrDkw8VkYSo
- 42MrWwqsrXmvXfxTWva73uRaHsex9MFizFhaO//yk2MpXQIz8epR64pjI
- PhH0G1mq23Z8RbzEJLlHM1gZV1cmkmGAIMCnhYRVGKNYkPsZiBziI3v0A g==;
-X-CSE-ConnectionGUID: ANuHBzcXQKmi99MuEhJbjw==
-X-CSE-MsgGUID: Rq/v44NcSAu1jrNvniJeFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="33867741"
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="33867741"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2024 20:33:43 -0700
-X-CSE-ConnectionGUID: wVvrJ8SHR5yetpfrVSoZCQ==
-X-CSE-MsgGUID: ViL0M3BTSWOfN9OeuLdp3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; d="scan'208";a="87312093"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 29 Oct 2024 20:33:42 -0700
-Date: Wed, 30 Oct 2024 11:50:01 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, tao1.su@linux.intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 2/8] target/i386: do not rely on ExtSaveArea for
- accelerator-supported XCR0 bits
-Message-ID: <ZyGs6YTRpKtwWG/x@intel.com>
-References: <20241029151858.550269-1-pbonzini@redhat.com>
- <20241029151858.550269-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5zys-0008Hm-ID
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 00:06:54 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1t5zyr-0006uH-4z
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 00:06:50 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-4a46d662fccso2061026137.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Oct 2024 21:06:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730261207; x=1730866007; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qKNag8kvCVAwcSFrD5wZs2oqPhzGbSq/NfVP+BmorYo=;
+ b=Y9q4Q4edydFw1maHSnFlJspRr+j4phKkUKxxsKhzq3mLscMNPwXJbDHrYoy8q9oxNy
+ IE5Bx2cGS1HIXnKhNyWWtqk2Y9OZ1/5aXSZIfuU/QSF91sbPwqwgfTwZWGBk+ioml3LC
+ 3TmJmJn/7A9fmVNgwPirDbkvelmPxz/cfZR7rUHJHqiSRg2v9Kf7aopQqhQKzlDQUHqJ
+ n/9KdUji1t0Pv7tKkQjIqoygsuthSZKRbez7oTledPxRMk9orc697UgQ2OeGGJd8WgBi
+ S48JIugXpcaHabl06F5YcEtlogork/3uaBA4srQqQ8+ESHys3TJH6TbCeZ1Le3BSL+dA
+ S4wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730261207; x=1730866007;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qKNag8kvCVAwcSFrD5wZs2oqPhzGbSq/NfVP+BmorYo=;
+ b=Lya8IyfIszIKNf2fRnVPf6n06qTiJgFWwwX4QQYgarhRu3MUMKqtOudz0z/L7Ww0xA
+ xLPfqc4oGTr9PQFDdJ0OlM3TddMMiT7ebXV9b7XFRJEQY5jEnb70eJYoimPuCL4fjyCm
+ 6j/W1aRLixuXb381MqqDvT4i3sg9eTphpFZFyR7brmwUNzTtukmGp70iPgssDw+HLYrj
+ EgucTuiWKQ+IHlFQ9WQY7KUzl5x2y72HsiDRJ0/vmItoBlcHH2FySn99y35Es0s6KjE6
+ NGfnqufMch0VEVbIN4XO9I2J0c2lfGT/CHbJlWfpsOgTlWkOyqmLkGBF39eNpMl9m1cT
+ g2Cg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV3b0uO6vqznkpaDyGNWGHJl8agAYR9HNBjSi0/MSYKtZBG9VNRzO3MJhUCOKbxEPNsL86YV9KFtPjl@nongnu.org
+X-Gm-Message-State: AOJu0YzxHGZds1dcAXs7vbQvAhbq9FZHJp8HeXMZonCx6uL0HPODiiOY
+ zflchcoHOCsI+wjtw+g3HDerLp1qcsBeMsA/wMpco+19zoLYxpB7dLEGSjWRuvPXPwZ/Mp7Rrz9
+ ldenfy7bDIUKaIohpklNJN/BdxnY=
+X-Google-Smtp-Source: AGHT+IESIki4URh1tyrqlvYWsOUWqoV4EL82z199gSIWFBO1H1UgDaGfZbX3YEhkyuQt2a4QEK1i1joSDZTDG4XeHF0=
+X-Received: by 2002:a05:6102:418a:b0:4a4:8d6d:a37d with SMTP id
+ ada2fe7eead31-4a8cfd888a5mr14038027137.28.1730261207295; Tue, 29 Oct 2024
+ 21:06:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241029151858.550269-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.302,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241028023809.1554405-1-maobibo@loongson.cn>
+ <20241028023809.1554405-2-maobibo@loongson.cn>
+ <b5f4a39a-278a-1918-29f2-b9da197ce055@loongson.cn>
+ <08fa5950-8ca4-b6fc-fac7-77bc5c16893a@loongson.cn>
+ <8b7dfe0f-f4cd-d61a-c850-d92b5aec39e8@loongson.cn>
+In-Reply-To: <8b7dfe0f-f4cd-d61a-c850-d92b5aec39e8@loongson.cn>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 30 Oct 2024 14:06:21 +1000
+Message-ID: <CAKmqyKOGcjOFqUMiySYxtCyx-5_Rbx3=w9BYeUuS8mSrQ0bhxg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] linux-headers: Add unistd_64.h
+To: gaosong <gaosong@loongson.cn>
+Cc: maobibo <maobibo@loongson.cn>, Peter Maydell <peter.maydell@linaro.org>, 
+ Alistair Francis <alistair.francis@wdc.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,29 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 29, 2024 at 04:18:52PM +0100, Paolo Bonzini wrote:
-> Date: Tue, 29 Oct 2024 16:18:52 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 2/8] target/i386: do not rely on ExtSaveArea for
->  accelerator-supported XCR0 bits
-> X-Mailer: git-send-email 2.47.0
-> 
-> Right now, QEMU is using the "feature" and "bits" fields of ExtSaveArea
-> to query the accelerator for the support status of extended save areas.
-> This is a problem for AVX10, which attaches two feature bits (AVX512F
-> and AVX10) to the same extended save states.
-> 
-> To keep the AVX10 hacks to the minimum, limit usage of esa->features
-> and esa->bits.  Instead, just query the accelerator for the 0xD leaf.
-> Do it in common code and clear esa->size if an extended save state is
-> unsupported.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/cpu.c         | 33 +++++++++++++++++++++++++++++++--
->  target/i386/kvm/kvm-cpu.c |  4 ----
->  2 files changed, 31 insertions(+), 6 deletions(-)
+On Wed, Oct 30, 2024 at 11:47=E2=80=AFAM gaosong <gaosong@loongson.cn> wrot=
+e:
+>
+> =E5=9C=A8 2024/10/28 =E4=B8=8B=E5=8D=885:55, maobibo =E5=86=99=E9=81=93:
+> >
+> >
+> > On 2024/10/28 =E4=B8=8B=E5=8D=883:39, gaosong wrote:
+> >> =E5=9C=A8 2024/10/28 =E4=B8=8A=E5=8D=8810:38, Bibo Mao =E5=86=99=E9=81=
+=93:
+> >>> since 6.11, unistd.h includes header file unistd_64.h directly on
+> >>> some platforms, here add unistd_64.h on these platforms. Affected
+> >>> platforms are ARM64, LoongArch64 and Riscv. Otherwise there will
+> >>> be compiling error such as:
+> >>>
+> >>> linux-headers/asm/unistd.h:3:10: fatal error: asm/unistd_64.h: No
+> >>> such file or directory
+> >>>   #include <asm/unistd_64.h>
+> >> Hi,  Bibo
+> >>
+> >> Could you help tested this patch on ARM machine? I don't have an ARM
+> >> machine.
+> > yeap, I test on arm64 machine, it passes to compile with header files
+> > updated. However there is no riscv machine by hand.
+> >
+> Thank you,
+>
+> @Peter and  @Alistair Francis Could you help tested this patch on RISCV
+> machine?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+I don't have a RISC-V machine either unfortunately.
 
+You can test it with QEMU though
+
+Alistair
 
