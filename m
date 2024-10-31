@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3046B9B8202
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CD29B81F4
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:58:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZNO-0003RQ-Sb; Thu, 31 Oct 2024 13:54:31 -0400
+	id 1t6ZO9-0006Mr-RO; Thu, 31 Oct 2024 13:55:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMc-0002Ab-SG
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t6ZMe-0002Cy-JJ
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMZ-0007Qe-R1
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:41 -0400
+ id 1t6ZMd-0007Qs-6h
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397219;
+ s=mimecast20190719; t=1730397222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=is5CdaaNMr3Jm3fsNDTy10/40GRNhVSMMooCmQjIYFY=;
- b=RFW+gwbL20x5HKdRDAVHmuAJ9TDXxAz6cexipzBNwwv9ULsmtOvfpgNuQL6YMVgLdoVAp1
- RxcJ744v7vLi0wQUvGsY+lkopaUiOMNFMZLaWJwyemJKgpblTGLFbkrp5/P0QJrs+bnPAz
- bvr0qLCToPKXr2ZsISgSDIcaqiJX2dU=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CfEeFlk+R8zAtiR5LLisxBU0J+MuZk7bSGG/G+70Ejc=;
+ b=fqR5FNy1A0zDBnPx1HJmXlVBqdaX4zToT7x4ZjFT27k1KinCXnDmKHpK2foox/T5rOfHtN
+ 9Ye0iqESnMLrkpoq7kVm3troQ2TpuzYjxJScLaJ93qr+aBuN/5qfr5LEWY19abftm1G1NE
+ 9bYrWDVOAHC60kU9oPerI7ghSOwsLII=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-lCf523r8N0miI6ITa1_1BQ-1; Thu, 31 Oct 2024 13:53:37 -0400
-X-MC-Unique: lCf523r8N0miI6ITa1_1BQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5c937403b2bso835985a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:37 -0700 (PDT)
+ us-mta-587-qKMKySbROpCKqWaVv6Re6A-1; Thu, 31 Oct 2024 13:53:40 -0400
+X-MC-Unique: qKMKySbROpCKqWaVv6Re6A-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-539ebb67c28so867046e87.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397215; x=1731002015;
+ d=1e100.net; s=20230601; t=1730397218; x=1731002018;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=is5CdaaNMr3Jm3fsNDTy10/40GRNhVSMMooCmQjIYFY=;
- b=QEeCB49bOFCTVt6I5DBfU0CWZWKlcdFY+Bl4+/B7/AclWTnsvJyToir3WaInKLGXBJ
- NV257lq+8JdtzpKhDfFk7OMuR5Ju8tWNuGqDHny794JJVlFcfvo3vNhq1cJllM1hVIyD
- RMKxJKf41bgwOFmDwHZSwyka0wla+ID1VB6xwNUV3ggBMLuaKvTDZVVDfehGEgMJ+fdB
- 4pD1wDGz7YOk3LCdtMCtf7AoVhY5ny/VFO4XJQ53Lv6sQShlux78raoaqxwMUIMI0Ms/
- WIqYX+81eLun02dQgxuHo3fAI5jKMf1CjIA09RBTRRdu57eKD86QLUQeBrHjkZxWSrjM
- SlIQ==
-X-Gm-Message-State: AOJu0YzxNWgYSsp9r6h2hz496r32OBoaGs2chczPL5BqUMgfDk6FIXG2
- EHIzmt7RNO4hGSp8saeRypXFGyLcy7UbFXbTEl6oLs+PYN/BfWQZ2X4GEIkqNyFuDQDc7/uIbwA
- F8gXAk9cU7GYTfl0mYOJXn8rPi6FgdSJInIvRc0bdwlqARwSywwn7XF1oOzzBSbenekaJZW2dN9
- xmj5xNWBLHmUlf8MEqGSYob9i7KIaBkRDVHJeXYQU=
-X-Received: by 2002:a17:907:97ce:b0:a9a:e91:68c5 with SMTP id
- a640c23a62f3a-a9e5093efccmr392120766b.33.1730397215510; 
- Thu, 31 Oct 2024 10:53:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/oljysjkBcGYDfLRJ1zR7svkShlI6QWn+ltmncMOXWF4XPwL14B7TyTsfEHdZ3N0h1LNTNA==
-X-Received: by 2002:a17:907:97ce:b0:a9a:e91:68c5 with SMTP id
- a640c23a62f3a-a9e5093efccmr392118266b.33.1730397215037; 
- Thu, 31 Oct 2024 10:53:35 -0700 (PDT)
+ bh=CfEeFlk+R8zAtiR5LLisxBU0J+MuZk7bSGG/G+70Ejc=;
+ b=s3mFnjM6Wn2Bf0W5iGfwU8KUMi3qEp7QzOgtB+x5jpK86mJnYkq659Mf+cGF+DxbIM
+ B+sdy64D5A4QcqYNdxD6hqsirkby6kgMAd6UDQcvnNGKxZDFBFzSo7N7i3KVAnL7KeZJ
+ B9XGgYKAekdtLl+eYWzgVXdNp0Ey+qZlIpUWj2elVIDuyIHAtp9oW/5n8b8mTYVBbI3j
+ ZYWIhzGbjaD5Edf6tic3ArkDHE5PQO6ot2W6DcIf9p2Brm9HPaNFTo5sN7lSS4OVOgeK
+ hwbrlvHePbw752mtKH8wVPBh6Yz96pjMbuXW989y/4FjSIuEO21dGFYq/qyJjnLjcprG
+ jJbg==
+X-Gm-Message-State: AOJu0YyQ3lT46jxM3x9fB9wlkKtRHb/K48XlfsKMFsMTw20Vo3NOchC3
+ qD91r39+VU9f+CSG+L79pfsltIGnIbk0BTTxMMXCN918W5R53MKgPHH9z6Msj2q39AEcsApZe1v
+ /JB/hY6OeXAZO2WRRcVVk3wuO4fjVZ+4cCZ4PqUHZ1mj4yOemMyfu7/W7ZvwLo972mkiEEm4FkQ
+ de0ONz7kzy9YbonMFt4q3npmoslH9jCdhEU47ZCPM=
+X-Received: by 2002:a05:6512:1150:b0:539:de0d:1e35 with SMTP id
+ 2adb3069b0e04-53d65dd0926mr643293e87.1.1730397218250; 
+ Thu, 31 Oct 2024 10:53:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGYXaep6CJhsFfQm1gg7rF6r/EhfsuVtciyLHvoL1opdrd2iBcI+ntav+jw1ldxahjggZL/g==
+X-Received: by 2002:a05:6512:1150:b0:539:de0d:1e35 with SMTP id
+ 2adb3069b0e04-53d65dd0926mr643265e87.1.1730397217713; 
+ Thu, 31 Oct 2024 10:53:37 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e566993c0sm89676066b.222.2024.10.31.10.53.34
+ 4fb4d7f45d1cf-5ceac74ced8sm769988a12.17.2024.10.31.10.53.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:53:34 -0700 (PDT)
+ Thu, 31 Oct 2024 10:53:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 36/49] target/i386: add a few more trivial CCPrepare cases
-Date: Thu, 31 Oct 2024 18:52:00 +0100
-Message-ID: <20241031175214.214455-37-pbonzini@redhat.com>
+Subject: [PULL 37/49] target/i386: add a note about gen_jcc1
+Date: Thu, 31 Oct 2024 18:52:01 +0100
+Message-ID: <20241031175214.214455-38-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,30 +103,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/i386/tcg/translate.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index d3bbcf7317c..6e89d4faef1 100644
+index 6e89d4faef1..5d729e68c98 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -993,6 +993,7 @@ static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_src2,
-                              .no_setcond = true };
-+    case CC_OP_LOGICB ... CC_OP_LOGICQ:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
-     case CC_OP_MULB ... CC_OP_MULQ:
-@@ -1021,6 +1022,8 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
-         }
-         gen_helper_cc_compute_nz(reg, cpu_cc_dst, cpu_cc_src, cpu_cc_op);
-         return (CCPrepare) { .cond = TCG_COND_EQ, .reg = reg, .imm = 0 };
-+    case CC_OP_POPCNT:
-+        return (CCPrepare) { .cond = TCG_COND_EQ, .reg = cpu_cc_dst };
-     default:
-         {
-             MemOp size = cc_op_size(s->cc_op);
+@@ -1193,6 +1193,10 @@ static inline void gen_jcc1(DisasContext *s, int b, TCGLabel *l1)
+ {
+     CCPrepare cc = gen_prepare_cc(s, b, NULL);
+ 
++    /*
++     * Note that this must be _after_ gen_prepare_cc, because it
++     * can change the cc_op from CC_OP_DYNAMIC to CC_OP_EFLAGS!
++     */
+     gen_update_cc_op(s);
+     if (cc.use_reg2) {
+         tcg_gen_brcond_tl(cc.cond, cc.reg, cc.reg2, l1);
 -- 
 2.47.0
 
