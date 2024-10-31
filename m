@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889479B735E
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:01:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1EB9B7353
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:59:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MGI-0007M6-9v; Wed, 30 Oct 2024 23:54:18 -0400
+	id 1t6MGK-0007Mj-Sh; Wed, 30 Oct 2024 23:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MGF-0007LG-AN
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:15 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1t6MGI-0007M8-5B
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:18 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MGD-0003w7-B0
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:15 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-20c6f492d2dso5819435ad.0
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:13 -0700 (PDT)
+ id 1t6MGG-0003wY-Df
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:17 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-20c714cd9c8so5782715ad.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346852; x=1730951652; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346855; x=1730951655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AktGiR8ovsGryNkBXTUT4evAW3zZcrfX6pzkUArGLbo=;
- b=R6B4F+NYYEtXXaEpekmTiBIDCE31sj0pZ3lQ0R6Lwc4+OMI7bZrmA/xfAeYufNmGIJ
- Rb4BnctPKv7xbr1xjpcWsTOG1mNKvWj3oDLqoPyaMOHN06H1uVwPIeMAYe0+t+RELlf5
- z4fCP6sVEb6obSnTgju6k66O2SlKWeCt75KA9bdeETlf1CLxM2TSI6Es3Tq1AdrLPuu0
- pY3dnFwd8UE6dd+1zSTaf1+dDFOlQcPijZxRFTiGB1q9q6fIi6Rkv5jqvzwYywv1WRa/
- Ldc0D4Bqp1WA3AXMzfsRlP7HGIvlbZcXNHj86/h4jBz3JQhD/Zk9T/C7zFj7Zay00x8c
- MWfw==
+ bh=HvHndEIaR1hHXVQ49EQ5dLHaTlYB46mZYAbDe9hCdeQ=;
+ b=GzYGZMT4iQd3IgFlGWxGIFUo3rg7wdLI0wioF2oaLHsZXz/paQQSEokKRpMLCEDLU+
+ c6cATtsZ2WBxTgFqwcHmNlrTAtoguIdB6Hb6nZuJTSUtOG6mEq7aew/wVPR9yxiKM8c2
+ XTAamSNGwy8J81m5rU4ccjreQbUsc93OQmf/TXVTr2MmFZOm3s3JkFzU1FexkyiYzs1B
+ 6nZC4yBE04GU4MV7TtoY3iwNhUl2O70KhkxQJoIn1TA5VlFWLNAQTsOnv3tAXshtm+3C
+ EB9jpkXREnK5x9onloUwqum0ufPbcmh2D2QaR3XlsMWg/E6MDN6zEPoJub3nBeetbBxE
+ mp4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346852; x=1730951652;
+ d=1e100.net; s=20230601; t=1730346855; x=1730951655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AktGiR8ovsGryNkBXTUT4evAW3zZcrfX6pzkUArGLbo=;
- b=LXJsQ+DB5mZZ0+ub+2NB+YtxdCR7D5C/rg1NgXFs685ulrisnAjdGj95EDYrtlpo8s
- q1M8cQHVBzHdrzf6/yHz9vpuMGJzm+hj1oMtZa41AliD0N5xGw4EOC7Yoru0l3sjZUjV
- s/H7Ka/nDzBlORe7m+bLBW8xtdD2ZfwyRm7DdmH/0Hvn1v5YnWV+9mbTEbJPfz5VXEAh
- +P5dWKQ/FE585JPM0NHI0pzPJ44kb+/nhz4hZ4xfszpA2SCQ87gGL+XAyr6fJRKPWICd
- Kmt8QeE1Gpa9i7k8dMjZUPnBgXyKv5WznivP7MVQFSQdXjlBb86Mo4zIYoPO2H9xSbaa
- 1pmg==
-X-Gm-Message-State: AOJu0YxFKnf1SMg0WN3mrtfPu8oSJHjIeSwwglKiZ43ReMlXv/wKbHXu
- TbBFjCEL/35eGoDSGH+UEu0KFDi3gAK9EQTTD/kMixGEhVmETt8yuTP8nhi/
-X-Google-Smtp-Source: AGHT+IFUSJZBuh0VkTrSktvMuWsYyQZqi4Sp8DVDy0BJQ8wqTMKlc+WSjwoxfjAXxv8b7V0h6DOLSw==
-X-Received: by 2002:a17:903:240b:b0:20c:c9ac:bd05 with SMTP id
- d9443c01a7336-210c689b948mr235408795ad.15.1730346851854; 
- Wed, 30 Oct 2024 20:54:11 -0700 (PDT)
+ bh=HvHndEIaR1hHXVQ49EQ5dLHaTlYB46mZYAbDe9hCdeQ=;
+ b=gvQKTlHvPovcIf8DEMXEaWrSaIgeXtPbFfAYl7l54KZx3Ceeml04ByQFH3UjgjIyqQ
+ XxUdOHmMp8YvsGXzFuTcJ0mfkp/RLssnAna+2FaueJkcEooZi095wrT9GyyW4ToSkNmL
+ +7x4wW3uZisREITxYMpGBBV9G/sLGtQ13qn38N5i91Glyiq5VJ9uH0llxvPZOJbpDwz0
+ cwEmOV7BEeORV4CJTTRSeAopg+W+hgvyjoz4TT6Qyor3A/Vvkiqnkz43brZs4iy9Yx7Q
+ kPnr/AK1qLWaDNgtKXSb6zEQ+1u+brelUZ1UFG8zbOymfTD+D6+GkFqoKcuNNkeBYAZS
+ 8XLw==
+X-Gm-Message-State: AOJu0Yyk7oHUVdCOsaYw4HnaaSnuBr+Z7RjWKWwN7mh1EHTlw11x4Mnd
+ hIcGqdNXIF/V8NJ1MIORc/8PaN7Utyz5uGSHEBrkxd0HWlvWxjBJTRh4YVdE
+X-Google-Smtp-Source: AGHT+IF8vguwJRn/S/5S9k7HIqfjJ2ev9JGySXmzlJdP724znFQcnZnIZmbnppDgIKezE5ePOJ45CQ==
+X-Received: by 2002:a17:903:41ce:b0:20c:9821:69b6 with SMTP id
+ d9443c01a7336-210c6ca1ba9mr238892585ad.58.1730346854836; 
+ Wed, 30 Oct 2024 20:54:14 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.54.09
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.54.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:54:11 -0700 (PDT)
+ Wed, 30 Oct 2024 20:54:14 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/50] hw/char: sifive_uart: Print uart characters async
-Date: Thu, 31 Oct 2024 13:52:43 +1000
-Message-ID: <20241031035319.731906-16-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Deepak Gupta <debug@rivosinc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 16/50] target/riscv: expose *envcfg csr and priv to qemu-user
+ as well
+Date: Thu, 31 Oct 2024 13:52:44 +1000
+Message-ID: <20241031035319.731906-17-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,251 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current approach of using qemu_chr_fe_write() and ignoring the
-return values results in dropped characters [1].
+From: Deepak Gupta <debug@rivosinc.com>
 
-Let's update the SiFive UART to use a async sifive_uart_xmit() function
-to transmit the characters and apply back pressure to the guest with
-the SIFIVE_UART_TXFIFO_FULL status.
+Execution environment config CSR controlling user env and current
+privilege state shouldn't be limited to qemu-system only. *envcfg
+CSRs control enabling of features in next lesser mode. In some cases
+bits *envcfg CSR can be lit up by kernel as part of kernel policy or
+software (user app) can choose to opt-in by issuing a system call
+(e.g. prctl). In case of qemu-user, it should be no different because
+qemu is providing underlying execution environment facility and thus
+either should provide some default value in *envcfg CSRs or react to
+system calls (prctls) initiated from application. priv is set to PRV_U
+and menvcfg/senvcfg set to 0 for qemu-user on reest.
 
-This should avoid dropped characters and more realisticly model the
-hardware.
+`henvcfg` has been left for qemu-system only because it is not expected
+that someone will use qemu-user where application is expected to have
+hypervisor underneath which is controlling its execution environment. If
+such a need arises then `henvcfg` could be exposed as well.
 
-1: https://gitlab.com/qemu-project/qemu/-/issues/2114
+Relevant discussion:
+https://lore.kernel.org/all/CAKmqyKOTVWPFep2msTQVdUmJErkH+bqCcKEQ4hAnyDFPdWKe0Q@mail.gmail.com/
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240910045419.1252277-3-alistair.francis@wdc.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241008225010.1861630-2-debug@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/char/sifive_uart.h | 16 +++++-
- hw/char/sifive_uart.c         | 97 ++++++++++++++++++++++++++++++++---
- 2 files changed, 105 insertions(+), 8 deletions(-)
+ target/riscv/cpu.h | 9 +++++----
+ target/riscv/cpu.c | 5 +++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/char/sifive_uart.h b/include/hw/char/sifive_uart.h
-index 7f6c79f8bd..0846cf6218 100644
---- a/include/hw/char/sifive_uart.h
-+++ b/include/hw/char/sifive_uart.h
-@@ -24,6 +24,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "qemu/fifo8.h"
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index a63a29744c..b7b082833d 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -234,8 +234,12 @@ struct CPUArchState {
+     uint32_t elf_flags;
+ #endif
  
- enum {
-     SIFIVE_UART_TXFIFO        = 0,
-@@ -48,9 +49,13 @@ enum {
-     SIFIVE_UART_IP_RXWM       = 2  /* Receive watermark interrupt pending */
- };
+-#ifndef CONFIG_USER_ONLY
+     target_ulong priv;
++    /* CSRs for execution environment configuration */
++    uint64_t menvcfg;
++    target_ulong senvcfg;
++
++#ifndef CONFIG_USER_ONLY
+     /* This contains QEMU specific information about the virt state. */
+     bool virt_enabled;
+     target_ulong geilen;
+@@ -445,12 +449,9 @@ struct CPUArchState {
+     target_ulong upmmask;
+     target_ulong upmbase;
  
-+#define SIFIVE_UART_TXFIFO_FULL    0x80000000
-+
- #define SIFIVE_UART_GET_TXCNT(txctrl)   ((txctrl >> 16) & 0x7)
- #define SIFIVE_UART_GET_RXCNT(rxctrl)   ((rxctrl >> 16) & 0x7)
-+
- #define SIFIVE_UART_RX_FIFO_SIZE 8
-+#define SIFIVE_UART_TX_FIFO_SIZE 8
- 
- #define TYPE_SIFIVE_UART "riscv.sifive.uart"
- OBJECT_DECLARE_SIMPLE_TYPE(SiFiveUARTState, SIFIVE_UART)
-@@ -63,13 +68,20 @@ struct SiFiveUARTState {
-     qemu_irq irq;
-     MemoryRegion mmio;
-     CharBackend chr;
--    uint8_t rx_fifo[SIFIVE_UART_RX_FIFO_SIZE];
--    uint8_t rx_fifo_len;
-+
-+    uint32_t txfifo;
-     uint32_t ie;
-     uint32_t ip;
-     uint32_t txctrl;
-     uint32_t rxctrl;
-     uint32_t div;
-+
-+    uint8_t rx_fifo[SIFIVE_UART_RX_FIFO_SIZE];
-+    uint8_t rx_fifo_len;
-+
-+    Fifo8 tx_fifo;
-+
-+    QEMUTimer *fifo_trigger_handle;
- };
- 
- SiFiveUARTState *sifive_uart_create(MemoryRegion *address_space, hwaddr base,
-diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index 7fc6787f69..aeb45d3601 100644
---- a/hw/char/sifive_uart.c
-+++ b/hw/char/sifive_uart.c
-@@ -26,6 +26,8 @@
- #include "hw/char/sifive_uart.h"
- #include "hw/qdev-properties-system.h"
- 
-+#define TX_INTERRUPT_TRIGGER_DELAY_NS 100
-+
- /*
-  * Not yet implemented:
-  *
-@@ -64,6 +66,72 @@ static void sifive_uart_update_irq(SiFiveUARTState *s)
+-    /* CSRs for execution environment configuration */
+-    uint64_t menvcfg;
+     uint64_t mstateen[SMSTATEEN_MAX_COUNT];
+     uint64_t hstateen[SMSTATEEN_MAX_COUNT];
+     uint64_t sstateen[SMSTATEEN_MAX_COUNT];
+-    target_ulong senvcfg;
+     uint64_t henvcfg;
+ #endif
+     target_ulong cur_pmmask;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 2a78cd639b..f0e32c4e6e 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1004,7 +1004,12 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
      }
- }
  
-+static gboolean sifive_uart_xmit(void *do_not_use, GIOCondition cond,
-+                                 void *opaque)
-+{
-+    SiFiveUARTState *s = opaque;
-+    int ret;
-+    const uint8_t *characters;
-+    uint32_t numptr = 0;
+     pmp_unlock_entries(env);
++#else
++    env->priv = PRV_U;
++    env->senvcfg = 0;
++    env->menvcfg = 0;
+ #endif
 +
-+    /* instant drain the fifo when there's no back-end */
-+    if (!qemu_chr_fe_backend_connected(&s->chr)) {
-+        fifo8_reset(&s->tx_fifo);
-+        return G_SOURCE_REMOVE;
-+    }
-+
-+    if (fifo8_is_empty(&s->tx_fifo)) {
-+        return G_SOURCE_REMOVE;
-+    }
-+
-+    /* Don't pop the FIFO in case the write fails */
-+    characters = fifo8_peek_bufptr(&s->tx_fifo,
-+                                   fifo8_num_used(&s->tx_fifo), &numptr);
-+    ret = qemu_chr_fe_write(&s->chr, characters, numptr);
-+
-+    if (ret >= 0) {
-+        /* We wrote the data, actually pop the fifo */
-+        fifo8_pop_bufptr(&s->tx_fifo, ret, NULL);
-+    }
-+
-+    if (!fifo8_is_empty(&s->tx_fifo)) {
-+        guint r = qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP,
-+                                        sifive_uart_xmit, s);
-+        if (!r) {
-+            fifo8_reset(&s->tx_fifo);
-+            return G_SOURCE_REMOVE;
-+        }
-+    }
-+
-+    /* Clear the TX Full bit */
-+    if (!fifo8_is_full(&s->tx_fifo)) {
-+        s->txfifo &= ~SIFIVE_UART_TXFIFO_FULL;
-+    }
-+
-+    sifive_uart_update_irq(s);
-+    return G_SOURCE_REMOVE;
-+}
-+
-+static void sifive_uart_write_tx_fifo(SiFiveUARTState *s, const uint8_t *buf,
-+                                      int size)
-+{
-+    uint64_t current_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+
-+    if (size > fifo8_num_free(&s->tx_fifo)) {
-+        size = fifo8_num_free(&s->tx_fifo);
-+        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow");
-+    }
-+
-+    fifo8_push_all(&s->tx_fifo, buf, size);
-+
-+    if (fifo8_is_full(&s->tx_fifo)) {
-+        s->txfifo |= SIFIVE_UART_TXFIFO_FULL;
-+    }
-+
-+    timer_mod(s->fifo_trigger_handle, current_time +
-+                  TX_INTERRUPT_TRIGGER_DELAY_NS);
-+}
-+
- static uint64_t
- sifive_uart_read(void *opaque, hwaddr addr, unsigned int size)
- {
-@@ -82,7 +150,7 @@ sifive_uart_read(void *opaque, hwaddr addr, unsigned int size)
-         return 0x80000000;
- 
-     case SIFIVE_UART_TXFIFO:
--        return 0; /* Should check tx fifo */
-+        return s->txfifo;
-     case SIFIVE_UART_IE:
-         return s->ie;
-     case SIFIVE_UART_IP:
-@@ -106,12 +174,10 @@ sifive_uart_write(void *opaque, hwaddr addr,
- {
-     SiFiveUARTState *s = opaque;
-     uint32_t value = val64;
--    unsigned char ch = value;
- 
-     switch (addr) {
-     case SIFIVE_UART_TXFIFO:
--        qemu_chr_fe_write(&s->chr, &ch, 1);
--        sifive_uart_update_irq(s);
-+        sifive_uart_write_tx_fifo(s, (uint8_t *) &value, 1);
-         return;
-     case SIFIVE_UART_IE:
-         s->ie = val64;
-@@ -131,6 +197,13 @@ sifive_uart_write(void *opaque, hwaddr addr,
-                   __func__, (int)addr, (int)value);
- }
- 
-+static void fifo_trigger_update(void *opaque)
-+{
-+    SiFiveUARTState *s = opaque;
-+
-+    sifive_uart_xmit(NULL, G_IO_OUT, s);
-+}
-+
- static const MemoryRegionOps sifive_uart_ops = {
-     .read = sifive_uart_read,
-     .write = sifive_uart_write,
-@@ -197,6 +270,9 @@ static void sifive_uart_realize(DeviceState *dev, Error **errp)
- {
-     SiFiveUARTState *s = SIFIVE_UART(dev);
- 
-+    s->fifo_trigger_handle = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                          fifo_trigger_update, s);
-+
-     qemu_chr_fe_set_handlers(&s->chr, sifive_uart_can_rx, sifive_uart_rx,
-                              sifive_uart_event, sifive_uart_be_change, s,
-                              NULL, true);
-@@ -206,12 +282,18 @@ static void sifive_uart_realize(DeviceState *dev, Error **errp)
- static void sifive_uart_reset_enter(Object *obj, ResetType type)
- {
-     SiFiveUARTState *s = SIFIVE_UART(obj);
-+
-+    s->txfifo = 0;
-     s->ie = 0;
-     s->ip = 0;
-     s->txctrl = 0;
-     s->rxctrl = 0;
-     s->div = 0;
-+
-     s->rx_fifo_len = 0;
-+
-+    memset(s->rx_fifo, 0, SIFIVE_UART_RX_FIFO_SIZE);
-+    fifo8_create(&s->tx_fifo, SIFIVE_UART_TX_FIFO_SIZE);
- }
- 
- static void sifive_uart_reset_hold(Object *obj, ResetType type)
-@@ -222,8 +304,8 @@ static void sifive_uart_reset_hold(Object *obj, ResetType type)
- 
- static const VMStateDescription vmstate_sifive_uart = {
-     .name = TYPE_SIFIVE_UART,
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(rx_fifo, SiFiveUARTState,
-                             SIFIVE_UART_RX_FIFO_SIZE),
-@@ -233,6 +315,9 @@ static const VMStateDescription vmstate_sifive_uart = {
-         VMSTATE_UINT32(txctrl, SiFiveUARTState),
-         VMSTATE_UINT32(rxctrl, SiFiveUARTState),
-         VMSTATE_UINT32(div, SiFiveUARTState),
-+        VMSTATE_UINT32(txfifo, SiFiveUARTState),
-+        VMSTATE_FIFO8(tx_fifo, SiFiveUARTState),
-+        VMSTATE_TIMER_PTR(fifo_trigger_handle, SiFiveUARTState),
-         VMSTATE_END_OF_LIST()
-     },
- };
+     env->xl = riscv_cpu_mxl(env);
+     riscv_cpu_update_mask(env);
+     cs->exception_index = RISCV_EXCP_NONE;
 -- 
 2.47.0
 
