@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703769B733B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F22FF9B735B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:00:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MIF-0006gP-M1; Wed, 30 Oct 2024 23:56:19 -0400
+	id 1t6MGK-0007Ma-6B; Wed, 30 Oct 2024 23:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MI4-0005X7-IC
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:09 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MGI-0007MM-Sc
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:18 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MI3-0004Hi-2n
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:08 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20ce65c8e13so6045505ad.1
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:56:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MGG-0003wU-Je
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:18 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-539f72c913aso785961e87.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346965; x=1730951765; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f8Zz+Kse6TIUA+P8z+LFTfIC7op8OwD/N4ZO0gt+jmY=;
- b=JqDPiMNgBskjPITMrDhwS25+3mKwVMqPfz1uTC74KBVQv6rElK4SATsMvXj/hMGLLe
- mhIA6RAw52GuQHHEDJQjDXO6el+wR4ZtccsQibGncwnd1Mp0BQ9wxu555205UWmVokV/
- U6r10H9rKdTYg6sbtYjDnHPGQsRoyisb4q5YXt3BQz49VhCNgpChUxh88pTS8tsDFFXq
- uKLpVOUXnNpnfB9h/zWa5DxdwJdhRXiX8CNd+K1cpt8E3imuHzV/CQttCu0mz1KvqB65
- c3ibQ+qO1II8FVp+977tonVJJeLuTDufRHE2XhMFoFtU+efN5VX6k/9Zew/dKrgqEKGF
- vZnw==
+ d=linaro.org; s=google; t=1730346854; x=1730951654; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cNSOgPK/LUOornui0xSrRZ2dvpsKphrF5tK8UB5/hEY=;
+ b=jFxBtlx2ocJdGw88JuXgu9hak8rEksHU8BeeshwhP22FA8pyih/wdJALRAG8fnrnzN
+ MfN36MiyeHHj8XU1zNPx54EiwZTP0SnGqNtpXYe1PXn+MiZiPMB31/FBki9W2X61BQpx
+ EL4e0slcs05sytkANyCXm5qkZz3mUekZYa9+DVBsksLhaN5t6yAK4uAGIMHQ0okkjcyK
+ Da56L1YdvjHqcAM9bHg0qglr+SmDPDX2gaQ4K+GOXdAF2tws4v16SFyJAv+hruaOGl2A
+ Hz1MeTWL/n6+6BRb4i2rmWQAijrDGJQFuTva3eo4MWWO/17lzh+x0xcTjC4x0HP2iAZc
+ VGsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346965; x=1730951765;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=f8Zz+Kse6TIUA+P8z+LFTfIC7op8OwD/N4ZO0gt+jmY=;
- b=u0EuvBC/Ya7fgF0fEVe1TMwX0GJaIlEVn6DZ+tmnwoqWbNXotWg/WxVMBQfQ18rU9V
- IoYP/EfhzD5axntq2pOBr/LONsOgrG6rl7pZleVh8YjkBtHRvFwVJkW4JjY+zwaZu5lK
- UwOaMTjM4NTjjoPorfzJk4WruovOY7OHhfM8AoaN0Fm3KdPuUtkRfQLy58+vgdEhxUTn
- 6zvVe+UA3vdhUC7b3i1dKcygf9tOimnlpLBhYzXq9eyhl3dCtz8VZ5Jdk1vmLpWLQhOH
- vpAH54QR4nD+y2K9PFQIJiCWwh2AN1MYSjJOhIypjetBbTAQwOe5nfM827KbOnyIa5QX
- oxXQ==
-X-Gm-Message-State: AOJu0YwC+ztK/tUdrw0oJKa5ea6qIU23A9Vmc5w9Rhu6PUc4zk2E3r0i
- PHzWIzLlhDZ53uiUH2VY8pUkYAEctDucbEC+50ij+HkqVpC46mDWxLl5zj7L
-X-Google-Smtp-Source: AGHT+IEK02abrvO8IZCYLg22bAfLi1mJ/teppqSzxjxRwb3C7Vq8ElvDQVkBWuATBeYweMKSyudNrg==
-X-Received: by 2002:a17:902:ce07:b0:205:709e:1949 with SMTP id
- d9443c01a7336-21103cc0a4emr18580765ad.57.1730346965319; 
- Wed, 30 Oct 2024 20:56:05 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ d=1e100.net; s=20230601; t=1730346854; x=1730951654;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cNSOgPK/LUOornui0xSrRZ2dvpsKphrF5tK8UB5/hEY=;
+ b=OkAyjasMhbgUEa1Dwue5it+4B5n8ZNSp9OYw6VLWmMtXd4AxwiRabRnfbilseSDZLM
+ fxP2APbIfKCqyVvJ9o8qqoxeZsJDkmSQiEVyUyKW4J083ZwUC9boiuFFrVLuPgVPlsrb
+ W159V0aDAU8K3IH/QUYLyOm7Lg0RCCyjhp/nJpjktnwcptLIjlAxPAXSWnI3FvOj1tlI
+ mmXfVhs17PhkbDo2ekJ3JDpJYOkpe28aJ8nxwaH4g2wqDjOr3hUEnbt+MU2QxjWVVskk
+ 3ZiGX3BLY4RN7V0IBJ7dOaCSuwbg+LO4W/TqbNtgnnHxcJ8OFocj6tR/q8pY5H5BMDrp
+ GUcg==
+X-Gm-Message-State: AOJu0Yyk7FTC/MJspNZ06F3wYkOEAqLtGiRMIEU2os8YvF1Cz5hosZPU
+ gK03gZl8oKM1COVXpTlBnJ4n9iDK9ljE1FFZRo+q/OzfzqrJ5zg50J7RfgqZaWggIFiXRC7Pn0T
+ W
+X-Google-Smtp-Source: AGHT+IEUAe7DSdkllbC9uM0SBKBzVKpcvUAX5zSFXs9WsHupPUQWRPwY3mJX1Bfq0sjFbZJx26Ztkg==
+X-Received: by 2002:a05:6512:1324:b0:539:f807:ada1 with SMTP id
+ 2adb3069b0e04-53b34c463c1mr7155464e87.58.1730346854187; 
+ Wed, 30 Oct 2024 20:54:14 -0700 (PDT)
+Received: from [192.168.21.226] ([91.223.100.208])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.56.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:56:04 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Anton Blanchard <antonb@tenstorrent.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 50/50] target/riscv: Fix vcompress with rvv_ta_all_1s
-Date: Thu, 31 Oct 2024 13:53:18 +1000
-Message-ID: <20241031035319.731906-51-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
-References: <20241031035319.731906-1-alistair.francis@wdc.com>
+ 2adb3069b0e04-53c7bc95998sm73215e87.24.2024.10.30.20.54.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Oct 2024 20:54:13 -0700 (PDT)
+Message-ID: <eeed4a8d-d0e1-491a-8c24-665f5e531ab3@linaro.org>
+Date: Thu, 31 Oct 2024 00:54:07 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/9] target/mips: Convert Loongson LEXT opcodes to
+ decodetree
+To: qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>
+References: <20241026175349.84523-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241026175349.84523-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,37 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Blanchard <antonb@tenstorrent.com>
+On 26/10/24 14:53, Philippe Mathieu-Daudé wrote:
 
-vcompress packs vl or less fields into vd, so the tail starts after the
-last packed field. This could be more clearly expressed in the ISA,
-but for now this thread helps to explain it:
+> Philippe Mathieu-Daudé (9):
+>    target/mips: Extract decode_64bit_enabled() helper
+>    target/mips: Simplify Loongson MULTU.G opcode
+>    target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
+>    target/mips: Convert Loongson DDIV.G opcodes to decodetree
+>    target/mips: Convert Loongson DIV.G opcodes to decodetree
+>    target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
+>    target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
+>    target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
+>    target/mips: Remove unreachable 32-bit code on 64-bit Loongson Ext
 
-https://github.com/riscv/riscv-v-spec/issues/796
-
-Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241030043538.939712-1-antonb@tenstorrent.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/vector_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 072bd444b1..ccb32e6122 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -5132,7 +5132,7 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,               \
-     }                                                                     \
-     env->vstart = 0;                                                      \
-     /* set tail elements to 1s */                                         \
--    vext_set_elems_1s(vd, vta, vl * esz, total_elems * esz);              \
-+    vext_set_elems_1s(vd, vta, num * esz, total_elems * esz);             \
- }
- 
- /* Compress into vd elements of vs2 where vs1 is enabled */
--- 
-2.47.0
-
+Series queued.
 
