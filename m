@@ -2,95 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682149B8177
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:45:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A19419B818C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZDW-0005nb-0B; Thu, 31 Oct 2024 13:44:18 -0400
+	id 1t6ZIB-0006tV-Fp; Thu, 31 Oct 2024 13:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t6ZDS-0005mn-0g; Thu, 31 Oct 2024 13:44:14 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHx-0006pS-9s
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:48:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t6ZDP-0005tU-RV; Thu, 31 Oct 2024 13:44:13 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 29D939E431;
- Thu, 31 Oct 2024 20:43:27 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EAB981613B3;
- Thu, 31 Oct 2024 20:44:08 +0300 (MSK)
-Message-ID: <3e316030-0b87-4027-adf9-c4ca25c3e766@tls.msk.ru>
-Date: Thu, 31 Oct 2024 20:44:08 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHs-0006YJ-NS
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:48:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730396923;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=AqECK0tko97l+yBziUM2ubdbKh32uMSLuYLNjpHQNTg=;
+ b=PyCgfIi+Kj5M1EckcJtfKokzXEEPn0Cna2h59tJG4lc5021afAkywNcVzXitUIy+SwrmUM
+ N3ScSbZFTePb/AD5YLtM3qPOOiJtG74VdNuhXMy8POK/ro7M3uSA4xFKZjZdyCRYSVyLJt
+ YwZMfZE50LL3snm2S+L1X1hFmkaqqJs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-QyxGzwLKMpedeinLWM6MKQ-1; Thu,
+ 31 Oct 2024 13:48:37 -0400
+X-MC-Unique: QyxGzwLKMpedeinLWM6MKQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C4A7A1955F69; Thu, 31 Oct 2024 17:48:36 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.53])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 69B3C300018D; Thu, 31 Oct 2024 17:48:34 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/14] Misc patches (functional tests, next-cube machine, ...)
+Date: Thu, 31 Oct 2024 18:48:18 +0100
+Message-ID: <20241031174832.6574-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 03/18] target/arm: Store FPSR cumulative exception bits in
- env->vfp.fpsr
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20241029151048.1047247-1-peter.maydell@linaro.org>
- <20241029151048.1047247-4-peter.maydell@linaro.org>
- <95086c66-9e1c-4013-86d6-373d68d55441@tls.msk.ru>
- <CAFEAcA_xoSkhk-dGUXw3-0hQyb1NF+6qRP-+6TpoQkFPOBs8Jg@mail.gmail.com>
- <1a18a816-ba21-4838-a9c0-fb8362ee5e17@tls.msk.ru>
- <CAFEAcA8YC82WdP_cesZVM_Luf3WBdQH8dpJHrRThE-DLzaAqng@mail.gmail.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <CAFEAcA8YC82WdP_cesZVM_Luf3WBdQH8dpJHrRThE-DLzaAqng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,21 +76,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-31.10.2024 20:40, Peter Maydell:
+The following changes since commit 58d49b5895f2e0b5cfe4b2901bf24f3320b74f29:
 
->> 8.2 is in ubuntu noble (LTS), so it might be with us a bit longer
->> than some other series, but in ubuntu they build with KVM support,
->> so the bug isn't there.
-> 
-> Note that the bug is not in "TCG + KVM" or "TCG only"
-> configs, but specifically "KVM without TCG" (i.e
-> you configured with '--disable-tcg' on an aarch64 host).
+  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-10-29 14:00:43 +0000)
 
-Yeah, what I meant is "they build with tcg *AND* KVM", -- they enable
-KVM *too*", so the bug doesn't exist in their config, so we can ignore
-ubuntu in this context.
+are available in the Git repository at:
 
-Thanks,
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-10-31
 
-/mjt
+for you to fetch changes up to d73ad1b1c0e62976d4790606ee29725a0d8a8906:
+
+  tests/functional: Convert the riscv_opensbi avocado test into a standalone test (2024-10-31 07:57:47 +0100)
+
+----------------------------------------------------------------
+* Remove the redundant macOS-15 CI job
+* Various fixes, improvements and additions for the functional test suite
+* Restore the sh4eb target
+* Fix the OpenBSD VM test
+* Re-enable the pci-bridge device on s390x
+* Minor clean-ups / fixes for the next-cube machine
+
+----------------------------------------------------------------
+Daniel P. Berrangé (2):
+      tests/functional: make tuxrun disk images writable
+      tests/functional: make cached asset files read-only
+
+Mark Cave-Ayland (2):
+      next-cube: fix up compilation when DEBUG_NEXT is enabled
+      next-cube: remove cpu parameter from next_scsi_init()
+
+Thomas Huth (10):
+      .gitlab-ci.d/cirrus: Remove the macos-15 job
+      Revert "Remove the unused sh4eb target"
+      tests/functional: Add a test for sh4eb
+      tests/vm/openbsd: Remove the "Time appears wrong" workaround
+      tests/functional: Fix the s390x and ppc64 tuxrun tests
+      hw/s390x: Re-enable the pci-bridge device on s390x
+      tests/functional: Convert the tcg_plugins test
+      tests/functional: Convert BananaPi tests to the functional framework
+      tests/functional: Convert the OrangePi tests to the functional framework
+      tests/functional: Convert the riscv_opensbi avocado test into a standalone test
+
+ MAINTAINERS                                        |   4 +-
+ configs/devices/sh4eb-softmmu/default.mak          |   3 +
+ configs/targets/sh4eb-softmmu.mak                  |   2 +
+ qapi/machine.json                                  |   2 +-
+ hw/m68k/next-cube.c                                |  14 +-
+ tests/qtest/endianness-test.c                      |   1 +
+ tests/qtest/machine-none-test.c                    |   1 +
+ .gitlab-ci.d/buildtest.yml                         |   2 +-
+ .gitlab-ci.d/cirrus.yml                            |  22 +-
+ .gitlab-ci.d/cirrus/macos-15.vars                  |  16 -
+ .gitlab-ci.d/crossbuilds.yml                       |   2 +-
+ .travis.yml                                        |   2 +-
+ hw/s390x/Kconfig                                   |   1 +
+ tests/avocado/boot_linux_console.py                | 411 ---------------------
+ tests/avocado/riscv_opensbi.py                     |  63 ----
+ tests/functional/meson.build                       |  22 +-
+ tests/functional/qemu_test/asset.py                |   3 +
+ tests/functional/qemu_test/tuxruntest.py           |  10 +-
+ tests/functional/qemu_test/utils.py                |  21 ++
+ .../test_aarch64_tcg_plugins.py}                   |  37 +-
+ tests/functional/test_arm_bpim2u.py                | 206 +++++++++++
+ tests/functional/test_arm_orangepi.py              | 270 ++++++++++++++
+ tests/functional/test_ppc64_tuxrun.py              |   4 +-
+ tests/functional/test_riscv_opensbi.py             |  36 ++
+ tests/functional/test_sh4eb_r2d.py                 |  33 ++
+ tests/lcitool/refresh                              |   1 -
+ tests/qemu-iotests/testenv.py                      |   1 +
+ tests/qtest/meson.build                            |   1 +
+ tests/vm/openbsd                                   |   1 -
+ 29 files changed, 641 insertions(+), 551 deletions(-)
+ create mode 100644 configs/devices/sh4eb-softmmu/default.mak
+ create mode 100644 configs/targets/sh4eb-softmmu.mak
+ delete mode 100644 .gitlab-ci.d/cirrus/macos-15.vars
+ delete mode 100644 tests/avocado/riscv_opensbi.py
+ rename tests/{avocado/tcg_plugins.py => functional/test_aarch64_tcg_plugins.py} (78%)
+ mode change 100644 => 100755
+ create mode 100755 tests/functional/test_arm_bpim2u.py
+ create mode 100755 tests/functional/test_arm_orangepi.py
+ create mode 100755 tests/functional/test_riscv_opensbi.py
+ create mode 100755 tests/functional/test_sh4eb_r2d.py
+
 
