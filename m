@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA05C9B73CC
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C39B73CB
 	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:22:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6Mgu-0006WB-UM; Thu, 31 Oct 2024 00:21:48 -0400
+	id 1t6MhB-0006Xr-G5; Thu, 31 Oct 2024 00:22:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Mgt-0006W2-2w
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:21:47 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Mh9-0006XS-DF
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:22:03 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Mgr-0006pF-31
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:21:46 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-539ee1acb86so531673e87.0
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:21:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Mh6-0006pu-Kh
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:22:03 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-539f53973fdso463422e87.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:22:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730348502; x=1730953302; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=M7oPehoUXUYuGOIvRvIXcbR6GBA549zaEK6MYXZJM+E=;
- b=aLQCCBvl/+vc3lKNvwtN9fujlKyHllVmbjYl+m1nXan391pfCQeYe/kCJvlobA+IYQ
- 5orJRfe757b+QbrI4yZmchiDiOdGhKDbvKxLfSrNqOUebPvaIB6lFH2yVk6Z5XJ6HvYp
- 96rlNptqhi3n2CsnZ1sc56hteGumEcXyrFung70iQyoqiggjjsu4TXICyz82SBWkquO8
- TUZe1WICW5wAm7/olQQM0bUflq7T7/syGdX+l9/xtUBLDgG6rj8/0wYHdDJ5abME/wD8
- FCQvWRjlc1tfGIdfAbsqeOrlbHetTSFMK786Wce7slKK3GhYdBJaI7kmGFD/3R9FzOyT
- /IVg==
+ d=linaro.org; s=google; t=1730348518; x=1730953318; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rNeqiCOGTFAEwkUEnfoTPzEYRHaxcy1ybzEL1jmSNcs=;
+ b=hd+KRJBx1haaDZjQr9vZvEvAdiBeMvJDX0LlFejf6IyFcgKqc+8I0EDVboipSBY/7S
+ EbHlR+bCCNGLjq147MC1sJIo2gXw/XBXnfil5A5ijTtWh2oginrfdRYCWlCLV4Wu0lc7
+ Fkhrk+LnAaO0Qzj/1GLjDPOTB5XZx14LJYxSY4Ey716pggfHsRJfmbydMTuEeY2qqbkr
+ 3NXuG/Oz+mOCuNtOq5VnNdQ1tiX8eOAbhWBIlp8dbGi9iQ0KTkidc/IXbK3MV306IYhW
+ x/xW4GsW6vwjfz7eP1VHn8pZBZJVxHMoImQvvGHJIlCRLrfQSLspwS6ch6qRWakc6zPc
+ x4qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730348502; x=1730953302;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=M7oPehoUXUYuGOIvRvIXcbR6GBA549zaEK6MYXZJM+E=;
- b=h7MWrsb+KP2l9dVPVWCignmanHDEL5Ir3OHmniyXNXdHVkE0SDlX+fPpOk5r/cCmjy
- X2FuBkiOAdvrGhT0GjOfm3HYeHkDeHs/UbHw7zXnVjm3EF/77DwXiuv7Hv3U1Fvk1ADo
- DfjeLivyhnQJDk2Q+/L+MHrlpZIbnf6hJk0TgPB3xyQWwfz7bJw7E/F1BqJhoqEicFuD
- 2WP/qj8zmckMLp8lTOXD5v18uSC28xvKFulizMaZQ8GBI4jSBt1E4kJE+eubNMBzOO7q
- dplHlA4yTdpb2Vcv/U3WYttgQcxCUxzLERY2PvUk9DMhVYIyqPdeq8ZTeB7IpeVypaAz
- W0rg==
-X-Gm-Message-State: AOJu0YyULF9nRzai/B+ieaIRCr4nTLKB57BbEU4F0+Svi4sHK1oyCqGV
- zR6KmfbrZp3DktvzkqmtYfr9mp5NOIeVd1bActrVvDXNI/uLsdcGtKLUoVgzgQZJVbvkDDapyyP
- 2
-X-Google-Smtp-Source: AGHT+IFsFvDghagLR1lbVoDQd8RunamCI4uB7id5/ZbNBnE7xyHFQ0TPCNMkgxwcY3k9GsNjyCGe+w==
-X-Received: by 2002:a05:6512:3e11:b0:535:66ff:c681 with SMTP id
- 2adb3069b0e04-53b34a1b681mr8728786e87.48.1730348502235; 
- Wed, 30 Oct 2024 21:21:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1730348518; x=1730953318;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rNeqiCOGTFAEwkUEnfoTPzEYRHaxcy1ybzEL1jmSNcs=;
+ b=UD0leziesAGwyvWwnOxyS5jrx8dZJaPywQQBPkkc0ncdEtELppQ71ecLWjfyup63Vw
+ hkRL9juuvlrWmDCmoVcZepQY8b8Ki9XwbWigX/7Ub/nS1uptgIa84wG90y23Ggjy5V8z
+ cXFH11tDd1OmzhtP5s84H9DL/X6piOI16ZFD+KxACbrJ2NdFMRVxVNkomQ/eUj8OpDFl
+ +5bXm3ohbmhf8MVGGrKodv3/NtQyOk1Gi75jPSFPDvHKGoM9qsIvkUrQDCxPUPyyl/1j
+ LaFiv4Usmyi+ozmfRspcwpSQZe6UsWfMF6v3f16oxFbZum7XCDeir3iljAVxbEt7AdTa
+ YfNw==
+X-Gm-Message-State: AOJu0Yz3yJckpVhhKORhRlMERU2NB1QtNbmqxolinNcXGB8fZbVN1lkC
+ T7mHYZmteLsiJg90zq+9g65v+xQnzciCQNnHRNPeFO+AG1IIGkEynV2oKCnLe+d8RdUqOheeUHf
+ 8
+X-Google-Smtp-Source: AGHT+IHNcdEDadsP5tw69YLuznnaDEq/bRWd9h75I/NO6zV9dh/vz+jNv5X3cB6ygSCr+/B6H46vLg==
+X-Received: by 2002:a19:5f04:0:b0:533:415e:cd9a with SMTP id
+ 2adb3069b0e04-53c7bc0c91dmr219786e87.23.1730348518203; 
+ Wed, 30 Oct 2024 21:21:58 -0700 (PDT)
 Received: from localhost.localdomain ([91.223.100.208])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53c7bdcf1e0sm74685e87.216.2024.10.30.21.21.38
+ 2adb3069b0e04-53c7bc958b5sm79608e87.41.2024.10.30.21.21.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 30 Oct 2024 21:21:41 -0700 (PDT)
+ Wed, 30 Oct 2024 21:21:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/14] MIPS patches for 2024-10-31
-Date: Thu, 31 Oct 2024 01:21:16 -0300
-Message-ID: <20241031042130.98450-1-philmd@linaro.org>
+Cc: Yongbok Kim <yongbok.kim@mips.com>,
+ Aleksandar Markovic <amarkovic@wavecomp.com>,
+ Aleksandar Rakic <aleksandar.rakic@htecgroup.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/14] target/mips: Migrate TLB MemoryMapID register
+Date: Thu, 31 Oct 2024 01:21:17 -0300
+Message-ID: <20241031042130.98450-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241031042130.98450-1-philmd@linaro.org>
+References: <20241031042130.98450-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,64 +95,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 58d49b5895f2e0b5cfe4b2901bf24f3320b74f29:
+From: Yongbok Kim <yongbok.kim@mips.com>
 
-  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-10-29 14:00:43 +0000)
+Include CP0 MemoryMapID register in migration state.
 
-are available in the Git repository at:
+Fixes: 99029be1c28 ("target/mips: Add implementation of GINVT instruction")
+Signed-off-by: Yongbok Kim <yongbok.kim@mips.com>
+Signed-off-by: Aleksandar Markovic <amarkovic@wavecomp.com>
+Signed-off-by: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
+Reviewed-by: Aleksandar Rikalo <arikalo@gmail.com>
+Message-ID: <AM9PR09MB4851FB6034EDB7FA191BA47E84402@AM9PR09MB4851.eurprd09.prod.outlook.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/mips/sysemu/machine.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-  https://github.com/philmd/qemu.git tags/mips-20241031
-
-for you to fetch changes up to dcc3c68c844fef7bc018ab53f0993b8d44137d77:
-
-  target/mips: Remove unused CPUMIPSState::current_fpu field (2024-10-31 00:48:45 -0300)
-
-----------------------------------------------------------------
-MIPS patches queue
-
-- Migrate missing CP0 TLB MemoryMapID register (Yongbok)
-- Enable MSA ASE for mips32r6-generic (Aleksandar)
-- Convert Loongson LEXT opcodes to decodetree (Phil)
-- Introduce ase_3d_available and disas_mt_available helpers (Phil)
-
-----------------------------------------------------------------
-
-Aleksandar Markovic (1):
-  target/mips: Enable MSA ASE for mips32r6-generic
-
-Philippe Mathieu-Daudé (12):
-  target/mips: Extract decode_64bit_enabled() helper
-  target/mips: Simplify Loongson MULTU.G opcode
-  target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
-  target/mips: Convert Loongson DDIV.G opcodes to decodetree
-  target/mips: Convert Loongson DIV.G opcodes to decodetree
-  target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
-  target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
-  target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
-  target/mips: Remove unreachable 32-bit code on 64-bit Loongson Ext
-  target/mips: Introduce ase_3d_available() helper
-  target/mips: Introduce disas_mt_available()
-  target/mips: Remove unused CPUMIPSState::current_fpu field
-
-Yongbok Kim (1):
-  target/mips: Migrate TLB MemoryMapID register
-
- target/mips/cpu.h                         |   7 +-
- target/mips/mips-defs.h                   |   2 -
- target/mips/tcg/translate.h               |   8 +
- target/mips/tcg/godson2.decode            |  27 ++
- target/mips/tcg/loong-ext.decode          |  28 ++
- target/mips/sysemu/machine.c              |   9 +-
- target/mips/tcg/loong_translate.c         | 271 ++++++++++++++
- target/mips/tcg/translate.c               | 415 +++++-----------------
- target/mips/cpu-defs.c.inc                |  16 +-
- target/mips/tcg/micromips_translate.c.inc |   5 +-
- target/mips/tcg/meson.build               |   3 +
- 11 files changed, 452 insertions(+), 339 deletions(-)
- create mode 100644 target/mips/tcg/godson2.decode
- create mode 100644 target/mips/tcg/loong-ext.decode
- create mode 100644 target/mips/tcg/loong_translate.c
-
+diff --git a/target/mips/sysemu/machine.c b/target/mips/sysemu/machine.c
+index 213fd637fcb..91cd9f19002 100644
+--- a/target/mips/sysemu/machine.c
++++ b/target/mips/sysemu/machine.c
+@@ -142,6 +142,7 @@ static int get_tlb(QEMUFile *f, void *pv, size_t size,
+     qemu_get_betls(f, &v->VPN);
+     qemu_get_be32s(f, &v->PageMask);
+     qemu_get_be16s(f, &v->ASID);
++    qemu_get_be32s(f, &v->MMID);
+     qemu_get_be16s(f, &flags);
+     v->G = (flags >> 10) & 1;
+     v->C0 = (flags >> 7) & 3;
+@@ -167,6 +168,7 @@ static int put_tlb(QEMUFile *f, void *pv, size_t size,
+     r4k_tlb_t *v = pv;
+ 
+     uint16_t asid = v->ASID;
++    uint32_t mmid = v->MMID;
+     uint16_t flags = ((v->EHINV << 15) |
+                       (v->RI1 << 14) |
+                       (v->RI0 << 13) |
+@@ -183,6 +185,7 @@ static int put_tlb(QEMUFile *f, void *pv, size_t size,
+     qemu_put_betls(f, &v->VPN);
+     qemu_put_be32s(f, &v->PageMask);
+     qemu_put_be16s(f, &asid);
++    qemu_put_be32s(f, &mmid);
+     qemu_put_be16s(f, &flags);
+     qemu_put_be64s(f, &v->PFN[0]);
+     qemu_put_be64s(f, &v->PFN[1]);
+@@ -204,8 +207,8 @@ static const VMStateInfo vmstate_info_tlb = {
+ 
+ static const VMStateDescription vmstate_tlb = {
+     .name = "cpu/tlb",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(nb_tlb, CPUMIPSTLBContext),
+         VMSTATE_UINT32(tlb_in_use, CPUMIPSTLBContext),
 -- 
 2.45.2
 
