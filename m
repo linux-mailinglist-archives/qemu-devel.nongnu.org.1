@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C499B7339
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EEF9B7361
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:01:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MFr-0007GI-Hs; Wed, 30 Oct 2024 23:53:51 -0400
+	id 1t6MFt-0007Gl-4O; Wed, 30 Oct 2024 23:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFo-0007FL-PL
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:49 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1t6MFq-0007GM-UO
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:51 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFm-0003td-Iu
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:48 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-20e576dbc42so5429865ad.0
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:46 -0700 (PDT)
+ id 1t6MFp-0003tn-D4
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:50 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-71e6cec7227so392290b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346825; x=1730951625; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346828; x=1730951628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i8Ikw2NcsgZpzTmcdbGYuA7GcCItNURSpq5TPRbUd/s=;
- b=AYEH3vg7x+YF/28pVjmrARmqcw8pdbWXQxlZxTtZ1OEfmON8sqvJ+Ui3wVxTBip+Vk
- fsEl7sbDZtoKT+r+aCz30j8wk2SjK1fMra8f3gumxo//EXAkN0gLUGdmbFTFB3UG+xWe
- bX1I7h4z/qqHzmJxziXBEd0cEmGnyUS43WqkWrw6kSkVqswwzpWsPh+MIlQi+9phSYAf
- qxWIYpAdfeL/KD85G0IIPAk+PpqXAlGhDY1/Fu7sQH5sjYpieFqg/o3YH4zmTeGdicGr
- Uewl5RZSNaFAcufXgcxH3HdjwRn8bK58MpbVOLQlRT1mIFot3aCrt8bCsPzYBoVxoMiG
- 2u5A==
+ bh=0gb/JqbpikR1+WgRi3jNu9TsaWD1IY/ZLQT0qI8W7o0=;
+ b=L2ZgpL3woHwW8dlMeAPrMReld+H42xLJuj6cC1CkOf3h0iWtcomy61T8B/+SXQmskI
+ OenjoVPX7dWXtRfBI1I031eDGcM+r7peRZOr5C4NFMo6pPSqKwTLs3xny6fd4/B7Ul0M
+ qa1e7K+qt3y6CH5DiwDpTZkFjP6PDyLTuDD3c+aaXHo6RDHEHvk73+QjR8tw5GFp2qm2
+ 0jLcHeRwED9ujHiY6JwRbSOncuPpKTOmaEHvwagKzWgkJpElf6Rq+maKxBg9ayMq8xg3
+ cZdSVZXhxdpKG7FcD8S5nBLAxjO5dU/EvrqztdGGJKIlCbqVjt2X+Jkj8c6ZHHCgGO52
+ ykIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346825; x=1730951625;
+ d=1e100.net; s=20230601; t=1730346828; x=1730951628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i8Ikw2NcsgZpzTmcdbGYuA7GcCItNURSpq5TPRbUd/s=;
- b=G9BzP6N/1Y+El0QB84KbNBwBcPmSnuzAN6JQCnqK5e+vN4VcjeHuXMWodii+pesC9Y
- dB9FyrG+8PC0c4I6mCQUNB+z3TBXAPgqoP5YjLo4DxTAJDS2jyqm9lkoJi38uurkkdSY
- hcLCAmrU74TlPEln5+TkncNrfc3Bp5BoedFsIJr+UzyXYE/dUUk/TC4u7SId1Y4kOVT/
- ABZU5o8auYLdVgR1zNY3IX2Y4GGJJAkZ7ZKmCAUMnf0RRC6ug4Hpo/j3Avou+UyioXN5
- /W8uSz5PLP9iJuBUPyars0rSXb82bJ5JWZQ5L4VdoYmY4DYKsKz/P9PCWfU6xggcshPI
- sjlQ==
-X-Gm-Message-State: AOJu0YyLeEO+gBlM9GZFLy+eYrYXk8LRkOTPMbx+4ITE8q0Kn97NHhUv
- XJ9u0MwA5jOVKfUAEt3KfqMMQTVT0fnDxo3Xg4fss+jkVoJpcsNv79kIpYDv
-X-Google-Smtp-Source: AGHT+IHFPwHe2b10sA90Ce0axRItyk/2Jvz0H5iVMUl98Tvz+xt3/ttku0z3tq6/MDTye3zr66ZQrQ==
-X-Received: by 2002:a17:902:ce07:b0:205:709e:1949 with SMTP id
- d9443c01a7336-21103cc0a4emr18540615ad.57.1730346824762; 
- Wed, 30 Oct 2024 20:53:44 -0700 (PDT)
+ bh=0gb/JqbpikR1+WgRi3jNu9TsaWD1IY/ZLQT0qI8W7o0=;
+ b=PQHI9LJUZL+qxhhGeE25iK1bhllKVYVZ+F7Rjk/ObEfzJG3EQSs9f8WdtkuBMh+1hY
+ PkmuNOuTG29ooX6Bk1a0XG9yYaASU/av9RIVQ7ukSgDKihTvcFzGw7ZG02wLC6b7pkbO
+ 3v41b4QUrOcFFzZlw72Ek5uWIzluXcaxu2VSCzeNOF8hJt+gs0nCovYtBmLz9wiqXUdl
+ 1RlR2PXE8nhpMYDwPQzgjq5zXfNFiK+nUc0OdQItwVi2gsaYHd67IbIllBql2G4NNpGT
+ yR3xT70wvmlltCGhBPM97qiNPCPJWk1f0vBwex8iDQMDCFDYNXUosyM3KuDWwcgaqeBw
+ fyng==
+X-Gm-Message-State: AOJu0YyvlPD49FQQl8SjQPfSOmvfgCR8A6HBgT1QD33Tb+2OQTnsbTOY
+ TzSZdJpv/up4ERQ7puBNpvAfZN2gs3EbkExX+ovsgsV3WJcAGWDa47qIwSFd
+X-Google-Smtp-Source: AGHT+IEDwffmxmbV+5n0eNTfrTUcP454s4c8X5VXUjVCsTXy2DrDEPxvu8nvDddYuIPiXgI4oQRv+Q==
+X-Received: by 2002:a05:6a21:3a82:b0:1d9:8275:cd70 with SMTP id
+ adf61e73a8af0-1d9a84d0918mr21152521637.40.1730346827845; 
+ Wed, 30 Oct 2024 20:53:47 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.42
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:53:44 -0700 (PDT)
+ Wed, 30 Oct 2024 20:53:47 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 06/50] target/riscv: Correct mcause/scause bit width for RV32
- in RV64 QEMU
-Date: Thu, 31 Oct 2024 13:52:34 +1000
-Message-ID: <20241031035319.731906-7-alistair.francis@wdc.com>
+Subject: [PULL 07/50] target/riscv: Enable RV32 CPU support in RV64 QEMU
+Date: Thu, 31 Oct 2024 13:52:35 +1000
+Message-ID: <20241031035319.731906-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,51 +99,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
-Ensure mcause high bit is correctly set by using 32-bit width for RV32
-mode and 64-bit width for RV64 mode.
+Add gdb XML files and adjust CPU initialization to allow running RV32 CPUs
+in RV64 QEMU.
 
 Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240919055048.562-6-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240919055048.562-7-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ configs/targets/riscv64-softmmu.mak |  2 +-
+ target/riscv/cpu.c                  | 16 +++++++++++++---
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 621bf4c1b8..203c0a92ab 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1677,6 +1677,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     target_ulong tinst = 0;
-     target_ulong htval = 0;
-     target_ulong mtval2 = 0;
-+    int sxlen = 0;
-+    int mxlen = 0;
+diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
+index 917980e63e..6c5de72e03 100644
+--- a/configs/targets/riscv64-softmmu.mak
++++ b/configs/targets/riscv64-softmmu.mak
+@@ -2,6 +2,6 @@ TARGET_ARCH=riscv64
+ TARGET_BASE_ARCH=riscv
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_KVM_HAVE_GUEST_DEBUG=y
+-TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
++TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml gdb-xml/riscv-32bit-cpu.xml gdb-xml/riscv-32bit-virtual.xml
+ # needed by boot.c
+ TARGET_NEED_FDT=y
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 658bdb4ae1..44288013cc 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -615,7 +615,10 @@ static void rv64e_bare_cpu_init(Object *obj)
+     riscv_cpu_set_misa_ext(env, RVE);
+ }
  
-     if (!async) {
-         /* set tval to badaddr for traps with address information */
-@@ -1805,7 +1807,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         s = set_field(s, MSTATUS_SPP, env->priv);
-         s = set_field(s, MSTATUS_SIE, 0);
-         env->mstatus = s;
--        env->scause = cause | ((target_ulong)async << (TARGET_LONG_BITS - 1));
-+        sxlen = 16 << riscv_cpu_sxl(env);
-+        env->scause = cause | ((target_ulong)async << (sxlen - 1));
-         env->sepc = env->pc;
-         env->stval = tval;
-         env->htval = htval;
-@@ -1836,7 +1839,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         s = set_field(s, MSTATUS_MPP, env->priv);
-         s = set_field(s, MSTATUS_MIE, 0);
-         env->mstatus = s;
--        env->mcause = cause | ~(((target_ulong)-1) >> async);
-+        mxlen = 16 << riscv_cpu_mxl(env);
-+        env->mcause = cause | ((target_ulong)async << (mxlen - 1));
-         env->mepc = env->pc;
-         env->mtval = tval;
-         env->mtval2 = mtval2;
+-#else /* !TARGET_RISCV64 */
++#endif /* !TARGET_RISCV64 */
++
++#if defined(TARGET_RISCV32) || \
++    (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
+ 
+ static void rv32_base_cpu_init(Object *obj)
+ {
+@@ -2941,6 +2944,12 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     },
+ #if defined(TARGET_RISCV32)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV32,  riscv_max_cpu_init),
++#elif defined(TARGET_RISCV64)
++    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV64,  riscv_max_cpu_init),
++#endif
++
++#if defined(TARGET_RISCV32) || \
++    (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,    MXL_RV32,  rv32_base_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_IBEX,       MXL_RV32,  rv32_ibex_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E31, MXL_RV32,  rv32_sifive_e_cpu_init),
+@@ -2948,8 +2957,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U34, MXL_RV32,  rv32_sifive_u_cpu_init),
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV32I,        MXL_RV32,  rv32i_bare_cpu_init),
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV32E,        MXL_RV32,  rv32e_bare_cpu_init),
+-#elif defined(TARGET_RISCV64)
+-    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV64,  riscv_max_cpu_init),
++#endif
++
++#if defined(TARGET_RISCV64)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,    MXL_RV64,  rv64_base_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E51, MXL_RV64,  rv64_sifive_e_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U54, MXL_RV64,  rv64_sifive_u_cpu_init),
 -- 
 2.47.0
 
