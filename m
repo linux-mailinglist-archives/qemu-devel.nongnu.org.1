@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B679B736F
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF84B9B736D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:05:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MQp-0003iO-NR; Thu, 31 Oct 2024 00:05:11 -0400
+	id 1t6MQw-0003po-9S; Thu, 31 Oct 2024 00:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQi-0003eU-Ba
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:04 -0400
+ id 1t6MQi-0003ef-RB
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:07 -0400
 Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQg-0004qT-GI
+ id 1t6MQh-0004qs-4Z
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:04 -0400
 Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-20c8b557f91so5319605ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:05:01 -0700 (PDT)
+ d9443c01a7336-20cbb1cf324so4545895ad.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730347501; x=1730952301; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730347502; x=1730952302; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s8/FoORAU+MbCzBkiE+YK/dNQraWToWCvs2DtBwW02Y=;
- b=M+u9yDEEMZfeVUY41bCuihIlEqXL3E744K4MGrk+PF7YhSNnXFx7cin8upM+xipYo2
- HjqwMJ2LUkn0FAx4sg0KeA+TWW5LZ5ORhDvcIrbRpXxqk5vyOPrleDQfAgHWCoM1+nAb
- 87hJFpyt8Cuw1/ALbDu8KU8wbnrWc4iph+EXOSba4vaRgoChfngXnWPHw4OdDaAP6yS8
- qdOaL2TgyzdCLz2KzYY54BYLi5ZMHy/f+gFasU2Az6a3TSpXTqCWT1o7Yn7DuawCDwzQ
- xdzJM8kGalI8GQLc2wAmsLWGVjLc9l3Jg+teWVg91gPyeAdL+qnpb1sgBqxtlWgEEVTE
- laCg==
+ bh=stB6xsCXZvGGgXKJAPY9QdgEF+16xwQAb0j6tVuAwQI=;
+ b=QJ3fHpt2h4XeDHUo0UbLB4hh7VNbO1TvqaAuymV3ZpFgjA7R1yVesL31n0Y7R7JDqX
+ UcKymBK60J80KUcKtYH9SYgKhNPd3OOUwOEoLINp5C3HMXwqPWmOiHO5E4ww7Y9IPBt3
+ geIDUwuLz87JBx6ZvxyEPSCXliaJH48DNGHBJ7gt9go9KU5+GAdKu2Cb1uEQAATj1KqT
+ phQ1OghgGaFT3BJeYd6u9Y5N/gtPdjzYeCFdYhnyy3RGnkyF+/wo3jWiwyBBr81I4+xq
+ BoQSBv/EhXqqQHKEoSKvyc1RthM1ba8ADO0lFrWbP6kxJ9syFYkqxzOWuBXplGs2NMI1
+ 5dMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730347501; x=1730952301;
+ d=1e100.net; s=20230601; t=1730347502; x=1730952302;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s8/FoORAU+MbCzBkiE+YK/dNQraWToWCvs2DtBwW02Y=;
- b=SP0f8nKuw8Jgj9kmbPRcqblDhr2gTwyuK6iXoTn2l6tQUkmj685WZfQdfDEeWuwhgO
- e/Wg1LsfUCA5oJghGynUjpq5MYG6NKMVDe5TZmmvZO6Xdkxjd2sk9u+RQ1Zaj0ez5Adn
- aJydUtoN3OrJabZs1bKw/r7MScDWk6KvNoXmt7g/QYbcDCiSPAgS5dDFIR7hxL3z36Ci
- aoXtiDpl2UT9tgPZHMexaTJJkGaDn92PaTH1NeZE7E9ETnXt5FhH/tiPEotSO/YbTK95
- f1Cj5J9YZ5uFH+yhDvO1COgmn4kyVjRMGxzQGwDqYO8NkhpaYfVDJb8nx8tUnJyU05dO
- 9ULQ==
-X-Gm-Message-State: AOJu0YxZH7Q0O9NQXvZGuhyJyIAynnCmgsBkJumG8X1VOKUGGOdv/2zd
- eSYZDnUXj4jwAxsmbMmCvfB605tmWwRHfPtVbRL1Ogl1YyeKBG8ZM+LxLEsy0FY1JCnBPrwSWqA
- wLHZePw==
-X-Google-Smtp-Source: AGHT+IG2rAYEErvzHSg3m0qkWXFcFOScpXKMPZL5dHjMebkKHgSGcvDogxFZVUhdAVzXSb4ClNN3sQ==
-X-Received: by 2002:a17:903:228d:b0:20b:9062:7b08 with SMTP id
- d9443c01a7336-210c6c6e7edmr287969295ad.45.1730347500835; 
- Wed, 30 Oct 2024 21:05:00 -0700 (PDT)
+ bh=stB6xsCXZvGGgXKJAPY9QdgEF+16xwQAb0j6tVuAwQI=;
+ b=w2rwUJf44AkCP7F+EaQV2YwL8IE4K32AECRQFtq5n2jQFdE/dDNN7+k6QPFKvmhdZC
+ IiQTDS3ZjBMQBxAEXfIQriFsvQIxgf1j3YhhTIqFVFSuzV2jaxeKCqjli8dfSkNiwq5F
+ LLhL/0LrsLNyym1x6KNisc0+hYkIRH+TmAnGGeHTnRgVRqCJDGYqvGrbPDSL2BPU1J8d
+ DHNahCYI1CMMlP4/ef1DhxPPZcD00UxV44Cmbz3wE6MqMe1s2OOw/tVsXLQs0O1mvdRG
+ Pzk1TGrJG4BOeJHv8Vj3beOXYWNVqxcw6k7VZ2rzet7mxsOPQeO3b8pE62f2PPgvqbqF
+ FViQ==
+X-Gm-Message-State: AOJu0YwwCVt5/SFa1y9VVStO5wCErgN17yKza2Rc96AE7lSTYx4FV0Yk
+ dydK7CCwnLcA7saGA0kfPIfxqac04FbwHRLZFeO2/w4IiWzTgEof+sUx0MOYVzPebJ02XxVbZpX
+ LZZc2tg==
+X-Google-Smtp-Source: AGHT+IEyNjojfk3YLrfbuYwwa6l3GsRh8rmuKIQ9uchPrZ0E4gGV0nFH3OnCIuZG5z3c0+Wx+bkACw==
+X-Received: by 2002:a17:902:eccb:b0:20e:5792:32ed with SMTP id
+ d9443c01a7336-210c6c6cf5bmr217904555ad.41.1730347501863; 
+ Wed, 30 Oct 2024 21:05:01 -0700 (PDT)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.59
+ 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.05.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 21:05:00 -0700 (PDT)
+ Wed, 30 Oct 2024 21:05:01 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -71,15 +71,14 @@ Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 04/12] contrib/plugins: remove Makefile for contrib/plugins
-Date: Wed, 30 Oct 2024 21:04:18 -0700
-Message-Id: <20241031040426.772604-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 05/12] qga: fix -Wsometimes-uninitialized windows warning
+Date: Wed, 30 Oct 2024 21:04:19 -0700
+Message-Id: <20241031040426.772604-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
  envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
@@ -104,182 +103,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now replaced by meson build.
+Reported by clang, but not gcc.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+[5123/5678] Compiling C object qga/qemu-ga.exe.p/commands-windows-ssh.c.obj
+FAILED: qga/qemu-ga.exe.p/commands-windows-ssh.c.obj
+"cc" "-Iqga/qemu-ga.exe.p" "-Iqga" "-I../qga" "-I." "-Iqapi" "-Itrace" "-Iu=
+i" "-Iui/shader" "-IC:/msys64/clangarm64/include/glib-2.0" "-IC:/msys64/cla=
+ngarm64/lib/glib-2.0/include" "-fdiagnostics-color=3Dauto" "-Wall" "-Winval=
+id-pch" "-Werror" "-std=3Dgnu11" "-O2" "-g" "-fstack-protector-strong" "-We=
+mpty-body" "-Wendif-labels" "-Wexpansion-to-defined" "-Wformat-security" "-=
+Wformat-y2k" "-Wignored-qualifiers" "-Winit-self" "-Wmissing-format-attribu=
+te" "-Wmissing-prototypes" "-Wnested-externs" "-Wold-style-definition" "-Wr=
+edundant-decls" "-Wstrict-prototypes" "-Wtype-limits" "-Wundef" "-Wvla" "-W=
+write-strings" "-Wno-gnu-variable-sized-type-not-at-end" "-Wno-initializer-=
+overrides" "-Wno-missing-include-dirs" "-Wno-psabi" "-Wno-shift-negative-va=
+lue" "-Wno-string-plus-int" "-Wno-tautological-type-limit-compare" "-Wno-ty=
+pedef-redefinition" "-Wthread-safety" "-iquote" "." "-iquote" "C:/w/qemu" "=
+-iquote" "C:/w/qemu/include" "-iquote" "C:/w/qemu/host/include/aarch64" "-i=
+quote" "C:/w/qemu/host/include/generic" "-iquote" "C:/w/qemu/tcg/aarch64" "=
+-D_GNU_SOURCE" "-D_FILE_OFFSET_BITS=3D64" "-D_LARGEFILE_SOURCE" "-fno-stric=
+t-aliasing" "-fno-common" "-fwrapv" "-fno-pie" "-ftrivial-auto-var-init=3Dz=
+ero" "-fzero-call-used-regs=3Dused-gpr" -MD -MQ qga/qemu-ga.exe.p/commands-=
+windows-ssh.c.obj -MF "qga/qemu-ga.exe.p/commands-windows-ssh.c.obj.d" -o q=
+ga/qemu-ga.exe.p/commands-windows-ssh.c.obj "-c" ../qga/commands-windows-ss=
+h.c
+../qga/commands-windows-ssh.c:383:9: error: variable 'userPSID' is used uni=
+nitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitializ=
+ed]
+  383 |     if (!create_acl(userInfo, &pACL, errp)) {
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../qga/commands-windows-ssh.c:415:15: note: uninitialized use occurs here
+  415 |     LocalFree(userPSID);
+      |               ^~~~~~~~
+../qga/commands-windows-ssh.c:383:5: note: remove the 'if' if its condition=
+ is always false
+  383 |     if (!create_acl(userInfo, &pACL, errp)) {
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  384 |         goto error;
+      |         ~~~~~~~~~~~
+  385 |     }
+      |     ~
+../qga/commands-windows-ssh.c:380:18: note: initialize the variable 'userPS=
+ID' to silence this warning
+  380 |     PSID userPSID;
+      |                  ^
+      |                   =3D NULL
+1 error generated.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- configure                | 18 ---------
- Makefile                 | 10 -----
- contrib/plugins/Makefile | 87 ----------------------------------------
- 3 files changed, 115 deletions(-)
- delete mode 100644 contrib/plugins/Makefile
+ qga/commands-windows-ssh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/configure b/configure
-index 4a0159e1832..8f0ba505187 100755
---- a/configure
-+++ b/configure
-@@ -1073,7 +1073,6 @@ if test "$plugins" != "no" && test $host_bits -eq 64; then
-         plugins="no"
-     else
-         plugins=yes
--        subdirs="$subdirs contrib/plugins"
-     fi
- fi
- 
-@@ -1704,7 +1703,6 @@ LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
- LINKS="$LINKS tests/avocado tests/data"
- LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
- LINKS="$LINKS python"
--LINKS="$LINKS contrib/plugins/Makefile "
- for f in $LINKS ; do
-     if [ -e "$source_path/$f" ]; then
-         symlink "$source_path/$f" "$f"
-@@ -1790,22 +1788,6 @@ if test "$default_targets" = "yes"; then
-   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
- fi
- 
--# contrib/plugins configuration
--echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
--echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
--echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
--echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
--echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
--if test "$host_os" = windows; then
--  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = darwin; then
--  echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = windows; then
--  echo "CONFIG_WIN32=y" >> contrib/plugins/$config_host_mak
--fi
--
- # tests/tcg configuration
- mkdir -p tests/tcg
- echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
-diff --git a/Makefile b/Makefile
-index 917c9a34d1c..b65b0bd41a8 100644
---- a/Makefile
-+++ b/Makefile
-@@ -187,11 +187,6 @@ SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
- $(SUBDIR_RULES):
- 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
- 
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--.PHONY: plugins
--plugins: contrib/plugins/all
--endif
--
- .PHONY: recurse-all recurse-clean
- recurse-all: $(addsuffix /all, $(SUBDIRS))
- recurse-clean: $(addsuffix /clean, $(SUBDIRS))
-@@ -307,11 +302,6 @@ help:
- 	$(call print-help,cscope,Generate cscope index)
- 	$(call print-help,sparse,Run sparse on the QEMU source)
- 	@echo  ''
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--	@echo  'Plugin targets:'
--	$(call print-help,plugins,Build the example TCG plugins)
--	@echo  ''
--endif
- 	@echo  'Cleaning targets:'
- 	$(call print-help,clean,Remove most generated files but keep the config)
- 	$(call print-help,distclean,Remove all generated files)
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-deleted file mode 100644
-index bbddd4800ff..00000000000
---- a/contrib/plugins/Makefile
-+++ /dev/null
-@@ -1,87 +0,0 @@
--# -*- Mode: makefile -*-
--#
--# This Makefile example is fairly independent from the main makefile
--# so users can take and adapt it for their build. We only really
--# include config-host.mak so we don't have to repeat probing for
--# programs that the main configure has already done for us.
--#
--
--include config-host.mak
--
--TOP_SRC_PATH = $(SRC_PATH)/../..
--
--VPATH += $(SRC_PATH)
--
--NAMES :=
--NAMES += bbv
--NAMES += execlog
--NAMES += hotblocks
--NAMES += hotpages
--NAMES += howvec
--
--# The lockstep example communicates using unix sockets,
--# and can't be easily made to work on windows.
--ifneq ($(CONFIG_WIN32),y)
--NAMES += lockstep
--endif
--
--NAMES += hwprofile
--NAMES += cache
--NAMES += drcov
--NAMES += ips
--NAMES += stoptrigger
--NAMES += cflow
--
--ifeq ($(CONFIG_WIN32),y)
--SO_SUFFIX := .dll
--LDLIBS += $(shell $(PKG_CONFIG) --libs glib-2.0)
--else
--SO_SUFFIX := .so
--endif
--
--SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
--
--# The main QEMU uses Glib extensively so it is perfectly fine to use it
--# in plugins (which many example do).
--PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
--PLUGIN_CFLAGS += -fPIC -Wall
--PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
--
--# Helper that honours V=1 so we get some output when compiling
--quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
--quiet-command = $(call quiet-@,$2,$3)$1
--
--# for including , in command strings
--COMMA := ,
--
--all: $(SONAMES)
--
--%.o: %.c
--	$(call quiet-command, \
--		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
--	        BUILD, plugin $@)
--
--ifeq ($(CONFIG_WIN32),y)
--lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else ifeq ($(CONFIG_DARWIN),y)
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--endif
--
--
--clean distclean:
--	rm -f *.o *$(SO_SUFFIX) *.d
--	rm -Rf .libs
--
--.PHONY: all clean
--.SECONDARY:
--- 
+diff --git a/qga/commands-windows-ssh.c b/qga/commands-windows-ssh.c
+index 6a642e3ba81..df45c17b757 100644
+--- a/qga/commands-windows-ssh.c
++++ b/qga/commands-windows-ssh.c
+@@ -377,7 +377,7 @@ error:
+ static bool set_file_permissions(PWindowsUserInfo userInfo, Error **errp)
+ {
+     PACL pACL =3D NULL;
+-    PSID userPSID;
++    PSID userPSID =3D NULL;
+=20
+     /* Creates the access control structure */
+     if (!create_acl(userInfo, &pACL, errp)) {
+--=20
 2.39.5
 
 
