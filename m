@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0048B9B7370
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A289B7378
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:08:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MQo-0003hR-RN; Thu, 31 Oct 2024 00:05:11 -0400
+	id 1t6MQs-0003lK-I8; Thu, 31 Oct 2024 00:05:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQg-0003dR-IB
+ id 1t6MQg-0003dU-RU
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:03 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQe-0004ph-MB
+ id 1t6MQf-0004q1-2s
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:02 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2e30116efc9so392169a91.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:04:59 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2e56750bb0dso381466a91.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:05:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730347498; x=1730952298; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730347500; x=1730952300; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WpgvBPyGx65kpjq48fx4MpdW5Aw7ymp2tboHQxxKolQ=;
- b=FM//VtgL48k9OtEeWPfmQ3f0wtXsDJ2O8rPQNzK6SxUhLgPzaV5TTlx3gLvBd8bvCO
- l0zzzKjUVw12e19SDEatsOuccsFVhu6JslcAZWTCXGuvlHTZ64EPnsEAq0Hzi0JpqJkk
- 36sKnzS1x0np1nsEw57InouMvDTZjSzbwvoMeMToaaH4MOWLLUzfxsByo6pWDG2CxWaH
- ZfD/X1h9wM47E1ILEXiQu+I1yUZosEe9Mt8lXeLlE56H28Ucksh1rjgsVk0oW863Xgir
- Vh/tT33ODlBgwbzvD+cmpom0z7nxA2aDgabvmNcg6ppCMdYk3u1ArX71ibi6VfpZhtim
- PNfw==
+ bh=fv7fP7ICWyfxL2x/CP9SZRa4THtQuAFnXp8RQEnngd8=;
+ b=BJCL8X/lA4a8SS5Y57Zp/+YXEwlvrqdmuWrdCnynK/ZZYsZlzh6AT46FZ0uqSuPW+G
+ EyvItsTlhYQh+NVMLBQvhba8byYj2l4n+nPx68wshcVBiw0tCMoGwi0tQEo+jr+9bRux
+ oncAjkv5yKI+kt02BosphueN8+chuYdH1yZC/jqRyTDYzCwsr3fqEZY/TYYukncktwPW
+ XVMbouGinVUsuWx/Phs0s1YZGVzpy2iR/y51+ZakxH3WWDJhZEE/FI1e5W2QdoiSftcL
+ gtqFLaDxi4HUYdyIZHryVzMTZ3H/E9TneUWNRGXZTUlrP+l1rdXgKMyAIQo/3YBZjFMy
+ Dumg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730347498; x=1730952298;
+ d=1e100.net; s=20230601; t=1730347500; x=1730952300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WpgvBPyGx65kpjq48fx4MpdW5Aw7ymp2tboHQxxKolQ=;
- b=cI7bDcW2MKaJPBJyR+uwMfeqhbYG9pJYU+dYNXgEnBctFDr6N4+DdpctUR06Iyngbf
- XXQBMfslcQRz5Sbo0U00I+Yl7tGaC9/20fqkhl05Mb8FGTMSb4gDGuo3YC7prtPBZAE+
- YANbm277cLYfxJl6n1T6kEXfqydydxgJw5Rp+iPyEZwTlzDzcNzz89Po9xcImfo6T02T
- MPml1+KvtPFy2ZaVDyVSBczOk1R8aieylxy1ZQmYa9ytzjMZwew9ksA1PpxR51whNcqY
- swUf1oyHyQrkKNj9xQ+TL4AGUXQguchHmNyJeSe5iJheXQKMF+5UDAb/d26963QWZ/Y7
- PDUA==
-X-Gm-Message-State: AOJu0YzYxISZRl7a68edi13MZ4kzJlq3MUZIjvq1vYDGi3dtTQqOECMr
- b7QuklIfezAT5M+dYeclDenq/XB76abcWaLeXAILr3RdivJsqcS5jven3a+OYhYeOU0vTpWipDt
- IdjBYgw==
-X-Google-Smtp-Source: AGHT+IGKeVwrQKTxPrVzUsznsDEhBcZ6belWBpoT0d+OrQfk+qtv6nOpV+TR2yOmlRGGGAYWdHteEg==
-X-Received: by 2002:a17:90a:e154:b0:2e2:e148:3d30 with SMTP id
- 98e67ed59e1d1-2e8f107354amr21150840a91.23.1730347498653; 
- Wed, 30 Oct 2024 21:04:58 -0700 (PDT)
+ bh=fv7fP7ICWyfxL2x/CP9SZRa4THtQuAFnXp8RQEnngd8=;
+ b=mbUkjh0zPXkzYmhfqPiamKEaqtxujvN0TQ6HDBay5CgSMW1O9s1wt5IoXWqwVcNMo2
+ mne7XdA8OPfvHZrssZ1/miDwGSsh/tNtVGnnRVl7qzBx8I7juhMC+y7UnXE/M7GxA6+A
+ 6z8xEtwKiTxA3IHKySf8jHkg6jjbCh47pFiauGCkEdH3ErcBoLCaqIhvkZFVhp2nN7Pz
+ lxWVdi5FGCubXwQRfIzNTl/AG8vDV4/MQ9440cw1kxN9Ee2KAN9WUTDLAd7AL677hSKF
+ dRDKgYQ3bWmqn5d01FFQlO3tJaVtPx+RUgAteuABIjHvkfcLN/piTudtTePtUVM/rWyo
+ /4XA==
+X-Gm-Message-State: AOJu0YwSzh0NVegB27GfedA01GE6+GGf758zIt72ctffIgOJY4gK2ZEj
+ eN7xRowLM4v2hSSf4UQZtREJsIqPHzZgSnldHf0ms5uaFfYNukJ0A/rbhUaqIWW4yOofkIENfOS
+ fwVSOLg==
+X-Google-Smtp-Source: AGHT+IFpQxDk8p2VP4nriXIupYuXJBOVQI3fMflZN8u0ftZ0x8kXb92WWWiHWfBfhK898FPlWB2tsw==
+X-Received: by 2002:a17:90b:2741:b0:2e2:b64e:f506 with SMTP id
+ 98e67ed59e1d1-2e8f105b461mr21551918a91.13.1730347499654; 
+ Wed, 30 Oct 2024 21:04:59 -0700 (PDT)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.57
+ 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 21:04:58 -0700 (PDT)
+ Wed, 30 Oct 2024 21:04:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -71,17 +71,17 @@ Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 02/12] contrib/plugins/cflow: fix warning
-Date: Wed, 30 Oct 2024 21:04:16 -0700
-Message-Id: <20241031040426.772604-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH 03/12] meson: build contrib/plugins with meson
+Date: Wed, 30 Oct 2024 21:04:17 -0700
+Message-Id: <20241031040426.772604-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,44 +104,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-contrib/plugins/cflow.c: In function ‘plugin_exit’:
-contrib/plugins/cflow.c:167:19: error: declaration of ‘n’ shadows a previous local [-Werror=shadow=local]
-  167 |         NodeData *n = l->data;
-      |                   ^
-contrib/plugins/cflow.c:139:9: note: shadowed declaration is here
-  139 |     int n = 0;
-      |         ^
+Tried to unify this meson.build with tests/tcg/plugins/meson.build but
+the resulting modules are not output in the right directory.
 
+Originally proposed by Anton Kochkov, thank you!
+
+Solves: https://gitlab.com/qemu-project/qemu/-/issues/1710
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/cflow.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ meson.build                 |  4 ++++
+ contrib/plugins/meson.build | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 contrib/plugins/meson.build
 
-diff --git a/contrib/plugins/cflow.c b/contrib/plugins/cflow.c
-index 6faa55d10d1..b39974d1cf3 100644
---- a/contrib/plugins/cflow.c
-+++ b/contrib/plugins/cflow.c
-@@ -136,7 +136,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     g_autoptr(GString) result = g_string_new("collected ");
-     GList *data;
-     GCompareFunc sort = &hottest;
--    int n = 0;
-+    int i = 0;
+diff --git a/meson.build b/meson.build
+index f7d45175212..d8af08299e0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3684,6 +3684,10 @@ subdir('accel')
+ subdir('plugins')
+ subdir('ebpf')
  
-     g_mutex_lock(&node_lock);
-     g_string_append_printf(result, "%d control flow nodes in the hash table\n",
-@@ -162,8 +162,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     data = g_list_sort(data, sort);
++if 'CONFIG_TCG' in config_all_accel
++  subdir('contrib/plugins')
++endif
++
+ common_user_inc = []
  
-     for (GList *l = data;
--         l != NULL && n < topn;
--         l = l->next, n++) {
-+         l != NULL && i < topn;
-+         l = l->next, i++) {
-         NodeData *n = l->data;
-         const char *type = n->mid_count ? "sync fault" : "branch";
-         g_string_append_printf(result, "  addr: 0x%"PRIx64 " %s: %s (%s)\n",
+ subdir('common-user')
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+new file mode 100644
+index 00000000000..63a32c2b4f0
+--- /dev/null
++++ b/contrib/plugins/meson.build
+@@ -0,0 +1,28 @@
++contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
++                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
++if host_os != 'windows'
++  # lockstep uses socket.h
++  contrib_plugins += 'lockstep'
++endif
++
++t = []
++if get_option('plugins')
++  foreach i : contrib_plugins
++    if host_os == 'windows'
++      t += shared_module(i, files(i + '.c') + 'win32_linker.c',
++                        include_directories: '../../include/qemu',
++                        link_depends: [win32_qemu_plugin_api_lib],
++                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
++                        dependencies: glib)
++    else
++      t += shared_module(i, files(i + '.c'),
++                        include_directories: '../../include/qemu',
++                        dependencies: glib)
++    endif
++  endforeach
++endif
++if t.length() > 0
++  alias_target('contrib-plugins', t)
++else
++  run_target('contrib-plugins', command: find_program('true'))
++endif
 -- 
 2.39.5
 
