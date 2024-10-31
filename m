@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082839B76F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 10:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816099B76FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 10:00:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6R1E-0000pH-Kt; Thu, 31 Oct 2024 04:59:05 -0400
+	id 1t6R1H-0000sw-42; Thu, 31 Oct 2024 04:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6R16-0000lk-8q
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:58:57 -0400
+ id 1t6R18-0000m7-M4
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:58:59 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6R13-0003GX-TZ
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:58:56 -0400
+ id 1t6R16-0003GX-Rp
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:58:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730365134; x=1761901134;
+ t=1730365137; x=1761901137;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BjgUHeb+QxtWbqmhNFPKp+hAK9Yqmy9MNVj33Q2H5jo=;
- b=Ev7Mry7A9r6RxsIR0tIcWSJ/eIACTrI9eo22FralJUKEAluj0exsx5Pa
- 7DgLgbbbfgQxhYDHdWUFWmA8kOp27S3vLQ0pDEriYMGzti9j09kurnf95
- P3w8eadwrKGgOr4/zuO17eH25hmWv68BNqwULKomJD4pqC5MO+BFlcZLS
- QeGf9PUiSorjgCpdbk9Ni1vl7Lbxs20uUEZdzYqxAQeipf+hdGMBhfqsF
- V5hLQBspLO+SALRHL1LY6ykeat2+dgSlu3E1puE7boVXmHg/+sv+K7LZt
- 9plvSFN0POY0SsOolngXmSUT+EmI7kSh54Sc3LtJ9LIUCH0U0/pTgfeQw A==;
-X-CSE-ConnectionGUID: ZSXGVEXiTmS/Mfcl4zizIA==
-X-CSE-MsgGUID: j8OUy4g8RqOWzKZoFodrzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="55492718"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="55492718"
+ bh=O+ps4gCQE+MIUJn7vxlxvfPld8Y2qokFJ/P0+6xKo2k=;
+ b=WLGxoXFienHry37dADWmZA0tz86+QibccR87D3R2qeuA/lmBqm8yWH3e
+ U6bseQrRGn9HeKNYUdqeBtW+SFIAbFaF9if6FM4ZoCb/+KL8o1yI8SRpJ
+ 0xFcA7CS1HXDmHHzYdyWQtXCSdc99ueo3pkhRr0/P6ndTtBu6m8XP+2bN
+ 5I5sG8PGQ/8LSWZryzGH/U4csYO3fb5rykcN/+8+Ps1L1Hu+rkTtpbGXm
+ CF3V+UMR0SOkzhPJ6ZsOJ7HRj8Zl3iIVeHleBPKyPSMuVAeH/mLaJXuBa
+ +esjjUGwo5DROLzXcvO71BkDABlQacCh47F93sxIaiwU8eNWl1CR87JTj Q==;
+X-CSE-ConnectionGUID: HM//nMkZQ/KZlVcbZ4YcVQ==
+X-CSE-MsgGUID: 5ec3n6D0SSy+A1nU0I3mBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="55492759"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="55492759"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 01:58:34 -0700
-X-CSE-ConnectionGUID: kmin5mpBRca/vH3+wU8iMQ==
-X-CSE-MsgGUID: nOUsool0RvKeSU1VKzDMaA==
+ 31 Oct 2024 01:58:36 -0700
+X-CSE-ConnectionGUID: rcJGz0P2RVyuMBIxEhv2fw==
+X-CSE-MsgGUID: 9MkbZiopTOC8FY7CLgf8Hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82489542"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82489564"
 Received: from st-server.bj.intel.com ([10.240.193.102])
- by orviesa010.jf.intel.com with ESMTP; 31 Oct 2024 01:58:32 -0700
+ by orviesa010.jf.intel.com with ESMTP; 31 Oct 2024 01:58:34 -0700
 From: Tao Su <tao1.su@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, xiaoyao.li@intel.com,
  zhao1.liu@intel.com, xuelian.guo@intel.com, tao1.su@linux.intel.com
-Subject: [PATCH v3 6/8] target/i386: Add feature dependencies for AVX10
-Date: Thu, 31 Oct 2024 16:52:31 +0800
-Message-Id: <20241031085233.425388-7-tao1.su@linux.intel.com>
+Subject: [PATCH v3 7/8] target/i386: Add AVX512 state when AVX10 is supported
+Date: Thu, 31 Oct 2024 16:52:32 +0800
+Message-Id: <20241031085233.425388-8-tao1.su@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241031085233.425388-1-tao1.su@linux.intel.com>
 References: <20241031085233.425388-1-tao1.su@linux.intel.com>
@@ -79,76 +79,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the highest supported vector length for a processor implies that
-all lesser vector lengths are also supported, add the dependencies of
-the supported vector lengths. If all vector lengths aren't supported,
-clear AVX10 enable bit as well.
+AVX10 state enumeration in CPUID leaf D and enabling in XCR0 register
+are identical to AVX512 state regardless of the supported vector lengths.
 
-Note that the order of AVX10 related dependencies should be kept as:
-        CPUID_24_0_EBX_AVX10_128     -> CPUID_24_0_EBX_AVX10_256,
-        CPUID_24_0_EBX_AVX10_256     -> CPUID_24_0_EBX_AVX10_512,
-        CPUID_24_0_EBX_AVX10_VL_MASK -> CPUID_7_1_EDX_AVX10,
-        CPUID_7_1_EDX_AVX10          -> CPUID_24_0_EBX,
-so that prevent user from setting weird CPUID combinations, e.g. 256-bits
-and 512-bits are supported but 128-bits is not, no vector lengths are
-supported but AVX10 enable bit is still set.
+Given that some E-cores will support AVX10 but not support AVX512, add
+AVX512 state components to guest when AVX10 is enabled.
 
-Since AVX10_128 will be reserved as 1, adding these dependencies has the
-bonus that when user sets -cpu host,-avx10-128, CPUID_7_1_EDX_AVX10 and
-CPUID_24_0_EBX will be disabled automatically.
+Based on a patch by Tao Su <tao1.su@linux.intel.com>
 
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028024512.156724-5-tao1.su@linux.intel.com
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 16 ++++++++++++++++
- target/i386/cpu.h |  4 ++++
- 2 files changed, 20 insertions(+)
+ target/i386/cpu.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 762c69d0b9..d8d86edd67 100644
+index d8d86edd67..cc7e4ce665 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1765,6 +1765,22 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-         .to = { FEAT_SGX_12_1_EAX,          ~0ull },
-     },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_128 },
-+        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_256 },
-+    },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_256 },
-+        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_512 },
-+    },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_VL_MASK },
-+        .to = { FEAT_7_1_EDX,               CPUID_7_1_EDX_AVX10 },
-+    },
-+    {
-+        .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
-+        .to = { FEAT_24_0_EBX,              ~0ull },
-+    },
- };
+@@ -7123,7 +7123,15 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
+         return false;
+     }
  
- typedef struct X86RegisterInfo32 {
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 5566a13f4f..e4c947b478 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -997,6 +997,10 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_24_0_EBX_AVX10_256        (1U << 17)
- /* AVX10 512-bit vector support is present */
- #define CPUID_24_0_EBX_AVX10_512        (1U << 18)
-+/* AVX10 vector length support mask */
-+#define CPUID_24_0_EBX_AVX10_VL_MASK    (CPUID_24_0_EBX_AVX10_128 | \
-+                                         CPUID_24_0_EBX_AVX10_256 | \
-+                                         CPUID_24_0_EBX_AVX10_512)
+-    return (env->features[esa->feature] & esa->bits);
++    if (env->features[esa->feature] & esa->bits) {
++        return true;
++    }
++    if (esa->feature == FEAT_7_0_EBX && esa->bits == CPUID_7_0_EBX_AVX512F
++        && (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
++        return true;
++    }
++
++    return false;
+ }
  
- /* RAS Features */
- #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
+ static void x86_cpu_reset_hold(Object *obj, ResetType type)
 -- 
 2.34.1
 
