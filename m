@@ -2,71 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2829B7D2A
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 15:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3E29B7E16
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 16:16:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6WNN-0000iG-Ft; Thu, 31 Oct 2024 10:42:17 -0400
+	id 1t6WtB-0007WW-IQ; Thu, 31 Oct 2024 11:15:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6WNK-0000hs-TK
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:42:15 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6Wt6-0007U7-TO
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:15:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6WNI-0006jE-7X
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:42:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730385732; x=1761921732;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KRXxxUtsXLtlaP7XhwfUMjqSa8q2H5R35Nxxu/rLzw8=;
- b=PLWlSmYhsSrWwODIhZvOCJcSsnZptlMjocXmL6p9F/NreL1o2XE7ulQk
- w5EPJwiPdG58DYC5GIqxeqMM73jd8vPHJ7PbG0BUsLfRMTRggzt5zAPp8
- fuEkPJEP0BzVRYUuvXi2PhSU/P2nwkAquR65sKzRrb82ZXPENMn489NeH
- OvCZjIatqeoje1NsUNyRUPUoD7TcuiC0Xka/k3iKJVYYF7VY2qxbUxBOb
- 0y7pxJHK+D5c4idK3FiX73C5zSsAkvO2keKd49xncGWDaCkDpzEutRab5
- dvUjGU7Po4DXyphrUrGZoB+bYazNULxU0lSTlHavNzSd/cS6I/BjMgp9V g==;
-X-CSE-ConnectionGUID: WxuR/dJfQq2yZoJmmJm81A==
-X-CSE-MsgGUID: LtrfOvPJTJSPvVrIBt+a+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30343517"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="30343517"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 07:42:09 -0700
-X-CSE-ConnectionGUID: PlrwYunITtGMtmRRx+6L2w==
-X-CSE-MsgGUID: 0jFFnuJnRc6UoJxTHxAqmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="86564427"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 31 Oct 2024 07:42:07 -0700
-Date: Thu, 31 Oct 2024 22:58:28 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
- junjie.mao@hotmail.com, berrange@redhat.com
-Subject: Re: [PATCH 05/23] rust/pl011: add TYPE_PL011_LUMINARY device
-Message-ID: <ZyObFKPfEaaDrxrS@intel.com>
-References: <20241025160209.194307-1-pbonzini@redhat.com>
- <20241025160209.194307-6-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t6Wt3-0001hO-Ru
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:15:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730387700;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7+2RgRCMsLXEZ91EIrYaInPbo6yFVhrE/6NPOwPJMfo=;
+ b=WGMcTHehLvwCayyXJg3eeesz5M80Wxrz5ZPoERYlYHMwYpyZ+VbS/hysWQ5lX38PIs4CIk
+ eiUSsjdZS4hxHmMXyGfk2Fs3qojIro98R2vQ/GNfntNf/swYVr7IPt2VpAWhrOmp5hMGlK
+ Px8rfvoXKQoZbQlDvn8vXpIRqOvJJ74=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-YsoDrCbdP3iwVbl_3aOLMg-1; Thu, 31 Oct 2024 11:14:59 -0400
+X-MC-Unique: YsoDrCbdP3iwVbl_3aOLMg-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7b19e18cc0aso184678085a.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 08:14:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730387698; x=1730992498;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7+2RgRCMsLXEZ91EIrYaInPbo6yFVhrE/6NPOwPJMfo=;
+ b=p6w8zJWm/6ARA8sdBWKStJEJO5B/zgafIXY1AG/NHGglb1n86h5BI9a8QajCLXdW1D
+ l6fFR9ptkEikztpXlcYniKX+uwYUeEF5esqYJcKBL9a8NMA6CKqknNeCwpeUST7fEUfO
+ 8nf86cSY2X17vqxexDogbqCS7N79+uxv/tz/udNcHVn5hfFoYCOdN5pdRfHFBW4SpimW
+ 7Flxtik6R/9GIZeX34lT8lIPw/7WBxiwp0Pg6R0gY4YrpB1A11uJYSbsf+TKzqJQSf8r
+ aLmipJtbKVbhhXFO48YgLpnw8DLjEmhLXIjUqO2cn0teMm86SnHqNjHbFn49V1qCijcP
+ XyZw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVcp2p6oWq7PDGWG6MXaTXNVx0T5ZR2ocreTv1dVaN8qwXgLJATlE9hObNwDYZsoUY1hzP1RFZr6Siu@nongnu.org
+X-Gm-Message-State: AOJu0YykMFOpShY/ipLNOzhwn8RQ4fRjYW0zlKnjbf6q3ThHWRYt62N/
+ bmJmGXmg2qGP320NQGqqoDTNzI1aGcOEj+7C8QF2pGqjpn5OgICQaKFsGYPpjx2U3B+5zukMj/H
+ OPsiq/33TGlfRCG3p12A+GexK0p7p/t7ppE/1TtqfUa6+w7lQ/fBN
+X-Received: by 2002:a05:620a:40d6:b0:7b1:7838:940f with SMTP id
+ af79cd13be357-7b2fb9896b3mr1565885a.33.1730387698426; 
+ Thu, 31 Oct 2024 08:14:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8PJsu1SiZYli25B5aFtCoviWaQTvNrx1S2uVulZKYNPjOriSCNN3ddesdZqPfUSaaOUsazw==
+X-Received: by 2002:a05:620a:40d6:b0:7b1:7838:940f with SMTP id
+ af79cd13be357-7b2fb9896b3mr1561785a.33.1730387698038; 
+ Thu, 31 Oct 2024 08:14:58 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b2f39f8fffsm77709685a.29.2024.10.31.08.14.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Oct 2024 08:14:57 -0700 (PDT)
+Date: Thu, 31 Oct 2024 11:14:49 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Yong Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PULL 00/18] Migration 20241030 patches
+Message-ID: <ZyOe6RJyWSlx0awf@x1n>
+References: <20241030155734.2141398-1-peterx@redhat.com>
+ <CAFEAcA_p+LiT6wz2UaPBUs14XBnuCM9x46piOLSJP6WivMMbAQ@mail.gmail.com>
+ <ZyOZTDUB-GfyRYo9@x1n>
+ <CAFEAcA-HCha9cnKvB8Xh5bQMspcEeyYr65i__MCg=2OsYdH9zA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241025160209.194307-6-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+In-Reply-To: <CAFEAcA-HCha9cnKvB8Xh5bQMspcEeyYr65i__MCg=2OsYdH9zA@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 25, 2024 at 06:01:50PM +0200, Paolo Bonzini wrote:
-> Date: Fri, 25 Oct 2024 18:01:50 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 05/23] rust/pl011: add TYPE_PL011_LUMINARY device
-> X-Mailer: git-send-email 2.47.0
+On Thu, Oct 31, 2024 at 02:52:28PM +0000, Peter Maydell wrote:
+> On Thu, 31 Oct 2024 at 14:50, Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Thu, Oct 31, 2024 at 01:28:31PM +0000, Peter Maydell wrote:
+> > > Hi; this fails to build on macos:
+> > >
+> > > https://gitlab.com/qemu-project/qemu/-/jobs/8237753019
+> > >
+> > > ../ui/cocoa.m:40:10: fatal error: 'sysemu/cpu-throttle.h' file not found
+> > >     40 | #include "sysemu/cpu-throttle.h"
+> > >        |          ^~~~~~~~~~~~~~~~~~~~~~~
+> > > 1 error generated.
+> >
+> > Errr, cocoa.m used cpu-throttle for Speed feature.. so it needs it to be
+> > exported.
+> >
+> > Luckily cocoa.m is only compiled in system_ss.  The simplest fix so far is
+> > to only move cpu-throttle.c, not cpu-throttle.h yet in the commit:
+> >
+> > "migration: Move cpu-throttole.c from system to migration"
+> >
+> > Fixup patch to be squashed:
+> >
+> > ===8<===
+> > From 68515db81e28832cbd24b1cdbc12aeb618c9de54 Mon Sep 17 00:00:00 2001
+> > From: Peter Xu <peterx@redhat.com>
+> > Date: Thu, 31 Oct 2024 10:37:29 -0400
+> > Subject: [PATCH] fixup! migration: Move cpu-throttole.c from system to
+> >  migration
 > 
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> 
-> Add a device specialization for the Luminary UART device.
-> 
-> This commit adds a DeviceId enum that utilizes the Index trait to return
-> different bytes depending on what device id the UART has (Arm -default-
-> or Luminary)
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-6-051e7a25b978@linaro.org
-> ---
->  rust/hw/char/pl011/src/device.rs | 77 ++++++++++++++++++++++++++++++--
->  rust/hw/char/pl011/src/lib.rs    |  1 +
->  2 files changed, 75 insertions(+), 3 deletions(-)
+> If you're fixing up that commit anyway you could also fix
+> the typo in the commit message: s/throttole/throttle/.
 
-Great! All tests passed on my side (x86 platform).
+Will do.
 
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
+-- 
+Peter Xu
 
 
