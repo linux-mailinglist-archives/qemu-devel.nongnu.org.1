@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CD99B81FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636699B821C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZNy-0005aV-5O; Thu, 31 Oct 2024 13:55:06 -0400
+	id 1t6ZNy-0005Wi-6B; Thu, 31 Oct 2024 13:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMW-00027q-Ti
+ id 1t6ZMW-00027o-Im
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMV-0007Q7-3V
+ id 1t6ZMV-0007Q4-3O
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1730397214;
@@ -24,65 +24,65 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hXWKUxEScRO0x2Vpd3yUytpTHeCcdbqyX30ALU4opb4=;
- b=dWIo2p4+1aX2eQDLdHXxpC+lxxpTmY/fw+NKndi3CGOmm/rpYHo9tppdZCEpDmHetShFMa
- ccq1zm7GqhnLlFmvaowRVsl58kqV8vOTy63QiXraSVPNfhYtSKV9/XZWZZzTzTtC4Q4nV5
- IMJGTCmdZnmhQBOMv1CTRuHligotuR0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Zrwani3gonZTzKYpMi2oDrb/LZf4DCY0YAe5CLjmoRA=;
+ b=IvIMJp6e5EBrIVEkKyzn16h9mqdcp2GxkHM67OHKAEG/cgUQEa8OSrwqamQojnqdYGuTvM
+ jHtoYtM1m4gzvq2zhilpwENvIjhkxW10IvsKEDSysnB7LBys+Ey/d0AzpJ7pylCKiMBlbJ
+ S9eb8SiJnNOXjvu41TX9/jiDbMVKwNI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-195-LHR7PSVXNX-FG5SxNURLEw-1; Thu, 31 Oct 2024 13:53:30 -0400
-X-MC-Unique: LHR7PSVXNX-FG5SxNURLEw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d531a19a9so613776f8f.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:30 -0700 (PDT)
+ us-mta-456-vYY9Vg2WPF-6q0FCiKaLrA-1; Thu, 31 Oct 2024 13:53:33 -0400
+X-MC-Unique: vYY9Vg2WPF-6q0FCiKaLrA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d4cf04bcfso530798f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397208; x=1731002008;
+ d=1e100.net; s=20230601; t=1730397211; x=1731002011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hXWKUxEScRO0x2Vpd3yUytpTHeCcdbqyX30ALU4opb4=;
- b=SUyG9ZNMx8tqiJRmGnltQ/wGyZWMikfu8rL/LueXou8tRKTpLh2Hkz1vgTKPePAEp7
- RAeKHotNucHrDTISaJVhZFo0jA08JT+Q7ggoKd0ZJVyRo6FMojrpEJDyt4bc9O4MnbHh
- YMH/hUMO0ttnZtJhyAVPxK3Ju6Uy/IfxYip5pxRIsKJhytK+AD1QkQWBrxB0n125cRM6
- ZRRzZd3UVHc8d1VIGB5XEa/SYV5O/cDyeTqyLOQ8KaYkX/Q8hF2+jNeu3vXEd3xw4piI
- xEWx6C+SQN0H1Fus4XyM7RGPDAkhgjCy/4mex6lfpPZXiymsUoujduJY+w1S4thzx4hS
- z7kg==
-X-Gm-Message-State: AOJu0YxGn4CBE/m/9dnRF2Cwh+H5XyTzUegPW1FeSG1xDHiNQOA8bom8
- Auvwg3uamsAxfaxopZbUsqVn1FKD25DC0j5/PiMrv+tj/czG3Pad2lOpzF5rqWJsob+/xfACxCY
- gyU/f5urvqndl4lbFgIKFGqlG/2+7XhCMT7DqtiwAgLnxa0ntgAlDhcfioEC+d/ZnPnqo0ZZZXQ
- nesezRZ+wx1+HEiuVYwmirb/RwYrhHdkwIBtVcKD0=
-X-Received: by 2002:a05:6000:410a:b0:37d:2d45:b3d4 with SMTP id
- ffacd0b85a97d-381bea1093fmr4193548f8f.52.1730397208538; 
- Thu, 31 Oct 2024 10:53:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFR9bYcjySqFre0Qvml4dmdhID4w5TiWwVlbrMegxo99F93TXniKXN/crFY0ZrkuAMRfiIX2g==
-X-Received: by 2002:a05:6000:410a:b0:37d:2d45:b3d4 with SMTP id
- ffacd0b85a97d-381bea1093fmr4193517f8f.52.1730397207844; 
- Thu, 31 Oct 2024 10:53:27 -0700 (PDT)
+ bh=Zrwani3gonZTzKYpMi2oDrb/LZf4DCY0YAe5CLjmoRA=;
+ b=WolpHb+Ua0BgEt5Ss1tefVGU9Uwz8L34hZLGNDIhEAq3Cl3Dwz8V15pUFe4h6GEx9I
+ I+GItF+OUSD1it+wo9LbFdGNYiGU3RZSmeLy/fJUVTIxGKXQMMFfsdSs+bnK7W+hM4FO
+ XPdMVGsAxCqgQCi4Iqn0OGLYrjwZRFMm+Iql9oDr9/XxEWhQYZDTA4JLuFgb9/BXr2Y5
+ 0bptOhi7nGOsMNm9JlxqbQ4/ZaeAMza5zg180iVwfVVMLoMqertCjglLylrI3FoJ3yhD
+ 9vyQUXhURuXA0VZVYGxMgzojbvRuh03YkoZyiX8yhm9kpfAV/1n/isA5GF6ow2vpDlj3
+ Sy7Q==
+X-Gm-Message-State: AOJu0Yz7IxSDmTw28c8ymcZaHebhRfJamtbByH1VYo40Pbdh84dDsss7
+ YfHMUasQxhrX9f3Q7bvKed9soWRTLh3Z8uxSYFc3x817BZ06jiR1vtWNQangNzokwpOFCgy6Emf
+ NvMYRj3KRB+p49T7LB3dyZd5Um5VGp2pTUXXfLvmAA+QDOT7ptn0AMtr3MydqnT54UU4cVkif3t
+ A6uD9gVqTODKUe/EXjy+MZsowR8HdsAAae09W3OLQ=
+X-Received: by 2002:a5d:59ae:0:b0:37d:4436:4505 with SMTP id
+ ffacd0b85a97d-381c7a6da29mr739290f8f.32.1730397210665; 
+ Thu, 31 Oct 2024 10:53:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEn720lFpxwXXmYPeftT9K7xbkpwIFi9wUEKExOBKrfIA9+9EBEVC+IXCwexSEWG+jlKb6CQA==
+X-Received: by 2002:a5d:59ae:0:b0:37d:4436:4505 with SMTP id
+ ffacd0b85a97d-381c7a6da29mr739267f8f.32.1730397210104; 
+ Thu, 31 Oct 2024 10:53:30 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10ea91bsm2777007f8f.61.2024.10.31.10.53.25
+ ffacd0b85a97d-381c10b7b97sm2819130f8f.2.2024.10.31.10.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:53:26 -0700 (PDT)
+ Thu, 31 Oct 2024 10:53:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 32/49] target/i386: Introduce cc_op_size
-Date: Thu, 31 Oct 2024 18:51:56 +0100
-Message-ID: <20241031175214.214455-33-pbonzini@redhat.com>
+Subject: [PULL 33/49] target/i386: Wrap cc_op_live with a validity check
+Date: Thu, 31 Oct 2024 18:51:57 +0100
+Message-ID: <20241031175214.214455-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,157 +102,115 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Replace arithmetic on cc_op with a helper function.
-Assert that the op has a size and that it is valid
-for the configuration.
+Assert that op is known and that cc_op_live_ is populated.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240701025115.1265117-6-richard.henderson@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h           | 17 ++++++++++++++++-
- target/i386/tcg/translate.c | 17 +++++++----------
- target/i386/tcg/emit.c.inc  |  5 +++--
- 3 files changed, 26 insertions(+), 13 deletions(-)
+ target/i386/cpu.h                |  1 -
+ target/i386/tcg/translate.c      | 21 ++++++++++++++++++---
+ target/i386/tcg/decode-new.c.inc |  2 +-
+ target/i386/tcg/emit.c.inc       |  4 ++--
+ 4 files changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 6ec63380473..1bf4dfdc5bb 100644
+index 1bf4dfdc5bb..a0a122cb5bf 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -24,6 +24,7 @@
- #include "cpu-qom.h"
- #include "kvm/hyperv-proto.h"
- #include "exec/cpu-defs.h"
-+#include "exec/memop.h"
- #include "hw/i386/topology.h"
- #include "qapi/qapi-types-common.h"
- #include "qemu/cpu-float.h"
-@@ -1304,7 +1305,9 @@ typedef enum {
-     CC_OP_ADOX = 2,    /* CC_SRC2 = O, CC_SRC = rest.  */
-     CC_OP_ADCOX = 3,   /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
- 
--    CC_OP_MULB, /* modify all flags, C, O = (CC_SRC != 0) */
-+    /* Low 2 bits = MemOp constant for the size */
-+#define CC_OP_FIRST_BWLQ CC_OP_MULB
-+    CC_OP_MULB = 4, /* modify all flags, C, O = (CC_SRC != 0) */
-     CC_OP_MULW,
-     CC_OP_MULL,
-     CC_OP_MULQ,
-@@ -1374,6 +1377,7 @@ typedef enum {
-     CC_OP_POPCNTL__,
-     CC_OP_POPCNTQ__,
-     CC_OP_POPCNT = sizeof(target_ulong) == 8 ? CC_OP_POPCNTQ__ : CC_OP_POPCNTL__,
-+#define CC_OP_LAST_BWLQ CC_OP_POPCNTQ__
+@@ -1380,7 +1380,6 @@ typedef enum {
+ #define CC_OP_LAST_BWLQ CC_OP_POPCNTQ__
  
      CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
-     CC_OP_NB,
-@@ -1382,6 +1386,17 @@ typedef enum {
- /* See X86DecodedInsn.cc_op, using int8_t. */
- QEMU_BUILD_BUG_ON(CC_OP_DYNAMIC > INT8_MAX);
+-    CC_OP_NB,
+ } CCOp;
  
-+static inline MemOp cc_op_size(CCOp op)
-+{
-+    MemOp size = op & 3;
-+
-+    QEMU_BUILD_BUG_ON(CC_OP_FIRST_BWLQ & 3);
-+    assert(op >= CC_OP_FIRST_BWLQ && op <= CC_OP_LAST_BWLQ);
-+    assert(size <= MO_TL);
-+
-+    return size;
-+}
-+
- typedef struct SegmentCache {
-     uint32_t selector;
-     target_ulong base;
+ /* See X86DecodedInsn.cc_op, using int8_t. */
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index a20fbb019c8..46062002c02 100644
+index 46062002c02..1a9a2fe709e 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -885,7 +885,7 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+@@ -291,7 +291,7 @@ enum {
+ };
  
-     case CC_OP_ADDB ... CC_OP_ADDQ:
-         /* (DATA_TYPE)CC_DST < (DATA_TYPE)CC_SRC */
--        size = s->cc_op - CC_OP_ADDB;
-+        size = cc_op_size(s->cc_op);
-         tcg_gen_ext_tl(cpu_cc_dst, cpu_cc_dst, size);
-         tcg_gen_ext_tl(cpu_cc_src, cpu_cc_src, size);
-         return (CCPrepare) { .cond = TCG_COND_LTU, .reg = cpu_cc_dst,
-@@ -902,7 +902,7 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+ /* Bit set if the global variable is live after setting CC_OP to X.  */
+-static const uint8_t cc_op_live[CC_OP_NB] = {
++static const uint8_t cc_op_live_[] = {
+     [CC_OP_DYNAMIC] = USES_CC_DST | USES_CC_SRC | USES_CC_SRC2,
+     [CC_OP_EFLAGS] = USES_CC_SRC,
+     [CC_OP_MULB ... CC_OP_MULQ] = USES_CC_DST | USES_CC_SRC,
+@@ -312,6 +312,21 @@ static const uint8_t cc_op_live[CC_OP_NB] = {
+     [CC_OP_POPCNT] = USES_CC_DST,
+ };
  
-     case CC_OP_SHLB ... CC_OP_SHLQ:
-         /* (CC_SRC >> (DATA_BITS - 1)) & 1 */
--        size = s->cc_op - CC_OP_SHLB;
-+        size = cc_op_size(s->cc_op);
-         return gen_prepare_sign_nz(cpu_cc_src, size);
- 
-     case CC_OP_MULB ... CC_OP_MULQ:
-@@ -910,11 +910,11 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
-                              .reg = cpu_cc_src };
- 
-     case CC_OP_BMILGB ... CC_OP_BMILGQ:
--        size = s->cc_op - CC_OP_BMILGB;
-+        size = cc_op_size(s->cc_op);
-         return gen_prepare_val_nz(cpu_cc_src, size, true);
- 
-     case CC_OP_BLSIB ... CC_OP_BLSIQ:
--        size = s->cc_op - CC_OP_BLSIB;
-+        size = cc_op_size(s->cc_op);
-         return gen_prepare_val_nz(cpu_cc_src, size, false);
- 
-     case CC_OP_ADCX:
-@@ -966,10 +966,7 @@ static CCPrepare gen_prepare_eflags_s(DisasContext *s, TCGv reg)
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
-     default:
--        {
--            MemOp size = (s->cc_op - CC_OP_ADDB) & 3;
--            return gen_prepare_sign_nz(cpu_cc_dst, size);
--        }
-+        return gen_prepare_sign_nz(cpu_cc_dst, cc_op_size(s->cc_op));
++static uint8_t cc_op_live(CCOp op)
++{
++    uint8_t result;
++    assert(op >= 0 && op < ARRAY_SIZE(cc_op_live_));
++
++    /*
++     * Check that the array is fully populated.  A zero entry would correspond
++     * to a fixed value of EFLAGS, which can be obtained with CC_OP_EFLAGS
++     * as well.
++     */
++    result = cc_op_live_[op];
++    assert(result);
++    return result;
++}
++
+ static void set_cc_op_1(DisasContext *s, CCOp op, bool dirty)
+ {
+     int dead;
+@@ -321,7 +336,7 @@ static void set_cc_op_1(DisasContext *s, CCOp op, bool dirty)
      }
- }
  
-@@ -1007,7 +1004,7 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
-                              .imm = CC_Z };
-     default:
-         {
--            MemOp size = (s->cc_op - CC_OP_ADDB) & 3;
-+            MemOp size = cc_op_size(s->cc_op);
-             return gen_prepare_val_nz(cpu_cc_dst, size, true);
+     /* Discard CC computation that will no longer be used.  */
+-    dead = cc_op_live[s->cc_op] & ~cc_op_live[op];
++    dead = cc_op_live(s->cc_op) & ~cc_op_live(op);
+     if (dead & USES_CC_DST) {
+         tcg_gen_discard_tl(cpu_cc_dst);
+     }
+@@ -808,7 +823,7 @@ static void gen_mov_eflags(DisasContext *s, TCGv reg)
+     src2 = cpu_cc_src2;
+ 
+     /* Take care to not read values that are not live.  */
+-    live = cc_op_live[s->cc_op] & ~USES_CC_SRCT;
++    live = cc_op_live(s->cc_op) & ~USES_CC_SRCT;
+     dead = live ^ (USES_CC_DST | USES_CC_SRC | USES_CC_SRC2);
+     if (dead) {
+         TCGv zero = tcg_constant_tl(0);
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 48bf730cd3e..cda32ee6784 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -2865,7 +2865,7 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+             tcg_gen_mov_i32(cpu_cc_op, decode.cc_op_dynamic);
          }
+         set_cc_op(s, decode.cc_op);
+-        cc_live = cc_op_live[decode.cc_op];
++        cc_live = cc_op_live(decode.cc_op);
+     } else {
+         cc_live = 0;
      }
-@@ -1028,7 +1025,7 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
-     switch (s->cc_op) {
-     case CC_OP_SUBB ... CC_OP_SUBQ:
-         /* We optimize relational operators for the cmp/jcc case.  */
--        size = s->cc_op - CC_OP_SUBB;
-+        size = cc_op_size(s->cc_op);
-         switch (jcc_op) {
-         case JCC_BE:
-             tcg_gen_ext_tl(s->cc_srcT, s->cc_srcT, size);
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 790307dbba8..45ac5edb1ae 100644
+index 45ac5edb1ae..785ff63f2ac 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -1466,7 +1466,7 @@ static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src, TCGv
-          */
-         decode->cc_src = tcg_temp_new();
-         decode->cc_dst = cpu_cc_dst;
--        decode->cc_op = ((s->cc_op - CC_OP_MULB) & 3) + CC_OP_SARB;
-+        decode->cc_op = CC_OP_SARB + cc_op_size(s->cc_op);
-         tcg_gen_shr_tl(decode->cc_src, src, s->T1);
+@@ -3777,13 +3777,13 @@ static void gen_shift_dynamic_flags(DisasContext *s, X86DecodedInsn *decode, TCG
+     decode->cc_op_dynamic = tcg_temp_new_i32();
+ 
+     assert(decode->cc_dst == s->T0);
+-    if (cc_op_live[s->cc_op] & USES_CC_DST) {
++    if (cc_op_live(s->cc_op) & USES_CC_DST) {
+         decode->cc_dst = tcg_temp_new();
+         tcg_gen_movcond_tl(TCG_COND_EQ, decode->cc_dst, count, tcg_constant_tl(0),
+                            cpu_cc_dst, s->T0);
      }
- }
-@@ -3346,7 +3346,8 @@ static bool gen_eflags_adcox(DisasContext *s, X86DecodedInsn *decode, bool want_
-          * bit, we might as well fish CF out of EFLAGS and save a shift.
-          */
-         if (want_carry && (!need_flags || s->cc_op == CC_OP_SHLB + MO_TL)) {
--            tcg_gen_shri_tl(decode->cc_dst, cpu_cc_src, (8 << (s->cc_op - CC_OP_SHLB)) - 1);
-+            MemOp size = cc_op_size(s->cc_op);
-+            tcg_gen_shri_tl(decode->cc_dst, cpu_cc_src, (8 << size) - 1);
-             got_cf = true;
-         }
-         gen_mov_eflags(s, decode->cc_src);
+ 
+-    if (cc_op_live[s->cc_op] & USES_CC_SRC) {
++    if (cc_op_live(s->cc_op) & USES_CC_SRC) {
+         tcg_gen_movcond_tl(TCG_COND_EQ, decode->cc_src, count, tcg_constant_tl(0),
+                            cpu_cc_src, decode->cc_src);
+     }
 -- 
 2.47.0
 
