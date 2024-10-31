@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EE69B8188
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FE59B8196
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:51:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZIA-0006tK-2b; Thu, 31 Oct 2024 13:49:06 -0400
+	id 1t6ZI8-0006sZ-Cr; Thu, 31 Oct 2024 13:49:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHy-0006pa-TT
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHy-0006pb-UA
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:48:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHu-0006Z1-J6
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZHu-0006Z9-T5
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:48:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730396928;
+ s=mimecast20190719; t=1730396929;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f18VlroP+2/9plIWS1LsPNd420rKbbEytRLGtTUsV5c=;
- b=a4f0qyiO/AE6hR/YYvEg4FZ20Kg+DJ6TNAcGK2rao2xJGiBUuyYiGQtjwHGN8cBLZgxKK5
- S4n2sghquXacP27X+rtXmoUfGFUCYiI0OzLoyXdcYBe7CpjyvSg7Oh+lvOKSB7pNrLqzCe
- C7Wy3XXlExzV/KVAVBAqO0cP2Wkg+xE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DIeJpJYetRWB3Ydo/rm7jVePyZl+N1a+y9j3UeHrfRQ=;
+ b=a3hh+BaDhGc05Vd47EhCID6PH3cu+/nZ8mywu9DAuHEfVM9n6f1/M+myHHvAtnZAm2X+uQ
+ /qxIdtI4hfdTvtvy4pYTQCBOyeV79Os4PYHQn89ODDmQvvLRgyFScP+whDi67Mxp8Ft0nA
+ P56O4NJdZUAvFnWVYVC3ZbqDUYiGXfs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-LvxqagD1OBG1g2xuQPVWbQ-1; Thu,
- 31 Oct 2024 13:48:43 -0400
-X-MC-Unique: LvxqagD1OBG1g2xuQPVWbQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-mDwbBLrPOrmf0VCvNuNjMg-1; Thu,
+ 31 Oct 2024 13:48:47 -0400
+X-MC-Unique: mDwbBLrPOrmf0VCvNuNjMg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB7A81955F42; Thu, 31 Oct 2024 17:48:42 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 797A419560AE; Thu, 31 Oct 2024 17:48:46 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.53])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6BC0B300018D; Thu, 31 Oct 2024 17:48:41 +0000 (UTC)
+ id 8F2B2300018D; Thu, 31 Oct 2024 17:48:43 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 02/14] tests/functional: make tuxrun disk images writable
-Date: Thu, 31 Oct 2024 18:48:20 +0100
-Message-ID: <20241031174832.6574-3-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 03/14] tests/functional: make cached asset files read-only
+Date: Thu, 31 Oct 2024 18:48:21 +0100
+Message-ID: <20241031174832.6574-4-thuth@redhat.com>
 In-Reply-To: <20241031174832.6574-1-thuth@redhat.com>
 References: <20241031174832.6574-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,51 +83,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The zstd command will preserve the input archive permissions on the
-output file. So when we decompress the readonly cached image, the
-resulting per-test run private disk image will also be readonly.
-We need it to be writable, so make it so.
+This ensures that if a functional test runs QEMU with a writable
+disk pointing to a cached asset, an error will be reported, rather
+than silently modifying the cache file.
+
+As an example, tweaking test_sbsaref.py to set snapshot=off,
+results in a clear error:
+
+  Command: ./build/qemu-system-aarch64 ...snip... -drive file=/var/home/berrange/.cache/qemu/download/44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461,format=raw,snapshot=off -cpu max,pauth=off
+  Output: qemu-system-aarch64: Could not open '/var/home/berrange/.cache/qemu/download/44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461': Permission denied
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241025092659.2312118-2-berrange@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20241025092659.2312118-3-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/tuxruntest.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/functional/qemu_test/asset.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index 904da6f609..f05aa96ad7 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -10,6 +10,7 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index e47bfac035..f126cd5863 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -8,6 +8,7 @@
+ import hashlib
+ import logging
  import os
 +import stat
- import time
+ import subprocess
+ import sys
+ import unittest
+@@ -143,6 +144,8 @@ def fetch(self):
+             raise Exception("Hash of %s does not match %s" %
+                             (self.url, self.hash))
+         tmp_cache_file.replace(self.cache_file)
++        # Remove write perms to stop tests accidentally modifying them
++        os.chmod(self.cache_file, stat.S_IRUSR | stat.S_IRGRP)
  
- from qemu_test import QemuSystemTest
-@@ -77,12 +78,17 @@ def fetch_tuxrun_assets(self, kernel_asset, rootfs_asset, dtb_asset=None):
-         kernel_image =  kernel_asset.fetch()
-         disk_image_zst = rootfs_asset.fetch()
- 
-+        disk_image = self.workdir + "/rootfs.ext4"
-+
-         run_cmd([self.zstd, "-f", "-d", disk_image_zst,
--                 "-o", self.workdir + "/rootfs.ext4"])
-+                 "-o", disk_image])
-+        # zstd copies source archive permissions for the output
-+        # file, so must make this writable for QEMU
-+        os.chmod(disk_image, stat.S_IRUSR | stat.S_IWUSR)
- 
-         dtb = dtb_asset.fetch() if dtb_asset is not None else None
- 
--        return (kernel_image, self.workdir + "/rootfs.ext4", dtb)
-+        return (kernel_image, disk_image, dtb)
- 
-     def prepare_run(self, kernel, disk, drive, dtb=None, console_index=0):
-         """
+         self.log.info("Cached %s at %s" % (self.url, self.cache_file))
+         return str(self.cache_file)
 -- 
 2.47.0
 
