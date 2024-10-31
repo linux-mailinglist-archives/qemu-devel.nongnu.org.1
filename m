@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E959B81A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC58D9B81A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:53:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZLf-0007PB-IW; Thu, 31 Oct 2024 13:52:43 -0400
+	id 1t6ZLg-0007Tu-Js; Thu, 31 Oct 2024 13:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLd-0007Mo-IF
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:41 -0400
+ id 1t6ZLe-0007N9-5p
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLc-0007Ec-3v
+ id 1t6ZLc-0007Eg-K3
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397159;
+ s=mimecast20190719; t=1730397160;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=faIyTxbRB6QuJWpBey5wc66gbOje3wGKa0Lss9bWK1k=;
- b=HPnp34HoPIdkAfd9eeUQ2FnBVVJDGWPiQ5n/RJzaQHbvWc96dsdkz4kNmZxtMiuEWXO5Pj
- P/4cJfYjdSd8fTlNf2338UfTt7YP21pQd05pxjgZYlXJIjOeazMQnYr5NIfi9wbgYUuDQH
- 1r9H6Tbrf/cbqIhTGmB7sLl7IY4ABpg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Yy9bORYpCijIRXD12pq3hathdMu3AKwAgv2Oft99Il0=;
+ b=N+v7x2lSX5pk7kkqmTNgZyQN24VtzDA+io3ZWb/5M36fc0lJJ3+QBNTnnTIUrT/MW4NVme
+ mQ8f2EVdxIDdzb+3c36NQgGr941NO8h8aNgVvgTSDyNDuRBvkIthBvZE3ntoXOI57mPqPm
+ h4pkjGyYFge7kZ48a3w4dkqaA9ipMCM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-0KYGdkkHNqqURH7mskUASA-1; Thu, 31 Oct 2024 13:52:37 -0400
-X-MC-Unique: 0KYGdkkHNqqURH7mskUASA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d45de8bbfso805517f8f.3
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:37 -0700 (PDT)
+ us-mta-584-L3Oqr0K3NZG82ZA_nuZmGg-1; Thu, 31 Oct 2024 13:52:38 -0400
+X-MC-Unique: L3Oqr0K3NZG82ZA_nuZmGg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4315c1b5befso7225915e9.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730397156; x=1731001956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=faIyTxbRB6QuJWpBey5wc66gbOje3wGKa0Lss9bWK1k=;
- b=ki90BSyR7v6cIE0oXoK6CYJ7QDBHrxZY6nfbtcd8SBI4zxVstnZRccVZ7USoxRly9i
- lL9Mvb59HVDzPG/GJFGmRbSkGq9BsHl63iAtdP0yVpInMEbN+oDZ0fjhn82mFPB1B56u
- T6N3c7dcgrGyjxINjbPM6k5lkEil22/AhCCbf8iobFwF2+9mqoFUnwsFwa8vyYPs0j1X
- 93Qid/eNpRnFkx5UGGS4Yfz9QKyNIvJLKvxm5ruIny3RRVbKe0TstoI3xGnNgfwNjcSq
- kzh5NeFZI55cPF1Hs9h+UdR9ZeSlKbGnfwM2/U59e+H4cRXrmxKSD9vpE9Koj5/UW1ZE
- 9T/A==
-X-Gm-Message-State: AOJu0YyHpgd4lt7hlkg7bZuk/IHaVnPN0Kh1/Hl5zscdcDX0tHRHeBx4
- PqeHw66mulk0cZecYj7Cl6WK1gCYbwwt2l5eTBCz2YidABDTpQDwJGOjANE07Gv1evjzQR8fEYI
- dKhnlRQMkIQ+FdA+y5ngzjGZONhGMbk8vJ5THI8jm9AvKf829I5idBStOx5uCdkxk3qh1tpDpsk
- It1x0h6DIW3sUBccPPukxjPX1DBk2bB+R+M7PoAWc=
-X-Received: by 2002:a5d:6da6:0:b0:374:c1c5:43ca with SMTP id
- ffacd0b85a97d-381c7a6c662mr863630f8f.32.1730397154356; 
- Thu, 31 Oct 2024 10:52:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyqZ0rl4laehGL6nE4IVNATmjJWqOkdAfwn76DnrWq7l+ulmMb1As3xFiC+0o+DFDd0q3GKA==
-X-Received: by 2002:a5d:6da6:0:b0:374:c1c5:43ca with SMTP id
- ffacd0b85a97d-381c7a6c662mr863608f8f.32.1730397153949; 
- Thu, 31 Oct 2024 10:52:33 -0700 (PDT)
+ bh=Yy9bORYpCijIRXD12pq3hathdMu3AKwAgv2Oft99Il0=;
+ b=HzHWXxuZpZbHAlV7Sp624TbUMdmklG7NLbXQY4BY2g/EWZgIMUabu7S2C5bTxEsElr
+ JCRm8cNQkMFBUPtRDz2fUhIy+UTyufC6RdtfXWaNg4ZrAtE4Kc43HqklAapw0GuhKEQN
+ peZ5XarCl5vDpWKaoW2V+nXWF5RktXPRevlqbdnDAqCx2j/8WDSdCgeS71Kz5zy/PpiA
+ UlhFrmDpeNE3WsNbPj7ezpr0mfE/PAjjeU/I1mEzcsFpm7CY/SPK3i2iIdbRbJwgF0Ys
+ aRUb/1OCXTTXOTn5phgv77UmiENnx8sjsq6UI+M8qWzgNJDj9SkOMN5S5qfJ3IfCckS8
+ tsvA==
+X-Gm-Message-State: AOJu0YyCHrow8Lv0fb7i5uOM+KW8COVzpUv7yTpLfJKPC7wcvSi3E3KL
+ /SmIWZYmFQo6ujr0FzhxO48Wb24cqzJRP3Fm0CNox48uVQl2ntJE3Uq/WIsk06XPhCpuz009W/m
+ eTNIY56aKrnHzSOzBqC6Q1yuP+gfE4W8DcDK36DIHtvFVLsOK+bryTJnJVIj/lUqOS5+1R1+4JT
+ 7tNn1jcTS7NkV1YSONu4xNlNfMJ3BKiYoDzHop9lM=
+X-Received: by 2002:a05:600c:3b14:b0:426:8884:2c58 with SMTP id
+ 5b1f17b1804b1-4319ac6fb0amr171446505e9.4.1730397156165; 
+ Thu, 31 Oct 2024 10:52:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGM0FjCyxkL3mu4e2caFPVYkosfEO3X7QBTE+vQYFmLazsceaifmSGvYbqd6l7I8WexkcOdSg==
+X-Received: by 2002:a05:600c:3b14:b0:426:8884:2c58 with SMTP id
+ 5b1f17b1804b1-4319ac6fb0amr171446285e9.4.1730397155815; 
+ Thu, 31 Oct 2024 10:52:35 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7e1bsm2801295f8f.1.2024.10.31.10.52.32
+ ffacd0b85a97d-381c116b181sm2762993f8f.107.2024.10.31.10.52.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:32 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:35 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 09/49] accel: remove dead statement and useless assertion
-Date: Thu, 31 Oct 2024 18:51:33 +0100
-Message-ID: <20241031175214.214455-10-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 10/49] i386/cpu: Drop the check of phys_bits in
+ host_cpu_realizefn()
+Date: Thu, 31 Oct 2024 18:51:34 +0100
+Message-ID: <20241031175214.214455-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -101,52 +102,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ops is assigned again just below, and the result of the assignment must
-be non-NULL.
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Originally, the check for NULL was meant to be a check for the existence
-of the ops class:
+The check of cpu->phys_bits to be in range between
+[32, TARGET_PHYS_ADDR_SPACE_BITS] in host_cpu_realizefn()
+is duplicated with check in x86_cpu_realizefn().
 
-    ops = ACCEL_OPS_CLASS(object_class_by_name(ops_name));
-    ...
-    g_assert(ops != NULL);
+Since the ckeck in x86_cpu_realizefn() is called later and can cover all
+the x86 cases. Remove the one in host_cpu_realizefn().
 
-(where the ops assignment begot the one that I am removing); but this is
-meaningless now that oc is checked to be non-NULL before ops is assigned
-(commit 5141e9a23fc, "accel: abort if we fail to load the accelerator
-plugin", 2022-11-06).
+Opportunistically adjust cpu->phys_bits directly in
+host_cpu_adjust_phys_bits(), which matches more with the function name.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20240929085747.2023198-1-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/accel-system.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/i386/host-cpu.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index f6c947dd821..61d689935e1 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -73,19 +73,17 @@ void accel_system_init_ops_interfaces(AccelClass *ac)
-     g_assert(ac_name != NULL);
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 8b8bf5afecc..03b9d1b169a 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -42,7 +42,7 @@ static uint32_t host_cpu_phys_bits(void)
+     return host_phys_bits;
+ }
  
-     ops_name = g_strdup_printf("%s" ACCEL_OPS_SUFFIX, ac_name);
--    ops = ACCEL_OPS_CLASS(module_object_class_by_name(ops_name));
-     oc = module_object_class_by_name(ops_name);
-     if (!oc) {
-         error_report("fatal: could not load module for type '%s'", ops_name);
-         exit(1);
+-static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
++static void host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
+     uint32_t phys_bits = cpu->phys_bits;
+@@ -66,7 +66,7 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+         }
      }
-     g_free(ops_name);
--    ops = ACCEL_OPS_CLASS(oc);
-     /*
-      * all accelerators need to define ops, providing at least a mandatory
-      * non-NULL create_vcpu_thread operation.
-      */
--    g_assert(ops != NULL);
-+    ops = ACCEL_OPS_CLASS(oc);
-     if (ops->ops_init) {
-         ops->ops_init(ops);
+ 
+-    return phys_bits;
++    cpu->phys_bits = phys_bits;
+ }
+ 
+ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+@@ -75,17 +75,7 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+     CPUX86State *env = &cpu->env;
+ 
+     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+-        uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
+-
+-        if (phys_bits &&
+-            (phys_bits > TARGET_PHYS_ADDR_SPACE_BITS ||
+-             phys_bits < 32)) {
+-            error_setg(errp, "phys-bits should be between 32 and %u "
+-                       " (but is %u)",
+-                       TARGET_PHYS_ADDR_SPACE_BITS, phys_bits);
+-            return false;
+-        }
+-        cpu->phys_bits = phys_bits;
++        host_cpu_adjust_phys_bits(cpu);
      }
+     return true;
+ }
 -- 
 2.47.0
 
