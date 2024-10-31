@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B921C9B81D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3C49B81E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:57:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZM8-0000is-Mn; Thu, 31 Oct 2024 13:53:12 -0400
+	id 1t6ZMH-0001Fi-GN; Thu, 31 Oct 2024 13:53:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZM2-0000TN-LL
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t6ZM6-0000hZ-7b
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZM0-0007Mb-Sd
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:06 -0400
+ id 1t6ZM2-0007Mi-KU
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1730397184;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OytefNi0XjPduWjiCssRXrev09eWdMweqq0y4XRkrq0=;
- b=dW87q8ThdnmK7UJp63ZCUsLxsqSZjWyTZ1xEOfDvbjmCyaXkf3DS/UdOWxQhyIW6BEXe1Q
- C+uBoN7OL8H39AxitXOkwqzaSx/PHIhDdSH/S9hx/anO1F7DeFAg6/Ha9AdK5syprk1TYu
- quYbNnpGuzgr+4+Wb9xHSmmvTuoaIDI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3IWcSy6/NrB9sOZzfSkvV75pWE0ul/hmIAgB5vMw3bo=;
+ b=aIhQPWFwaJ/KFYmMzHc5GxlZDZiCthMyUBVWAp1vawtTGPAUqEPgMq3BOLtKwRddssR26L
+ nKgijS/jYD79q6QsTTIapuCc9i7r65ajXQSqi2H43qaR3k34mDz9u3KpZquDx79EpUkEg5
+ vDOAYiCmM7T/rtDsSkVKpAeJubPhbYA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-xbcoYmKmMzWZdFxVnpuf8A-1; Thu, 31 Oct 2024 13:53:02 -0400
-X-MC-Unique: xbcoYmKmMzWZdFxVnpuf8A-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d3e8dccc9so629648f8f.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:02 -0700 (PDT)
+ us-mta-283-F1zB_5VZNvqNXK_UuJGT3w-1; Thu, 31 Oct 2024 13:53:03 -0400
+X-MC-Unique: F1zB_5VZNvqNXK_UuJGT3w-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4314f1e0f2bso7564035e9.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397180; x=1731001980;
+ d=1e100.net; s=20230601; t=1730397181; x=1731001981;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OytefNi0XjPduWjiCssRXrev09eWdMweqq0y4XRkrq0=;
- b=faieu7TQA+25TDIgfxhyf8p0vTc8YOPE6nmQfxEbXoppMlnpQ6IRcbNebNwzwkj6mX
- Mzw+4labYkfF37FVc1iAwPBF749YHqp0hfK6dYFPg0xTG1X81XzXHEr2CoOXAAdxPpub
- rgiC76VV0qBmc8jcuhbg8YFW0tyFCjFN3UD6baGuD4IJ3YWsAk0Rvggy/w6nZKSEV1h3
- Yn8qX05ftGUOGZx128V0FaNXyn6hGxe5jAnXQpYFJXXgTd0WWwQzZSFoopmqy2kDev2g
- eKkAmAQSvSpZKMzF0WQA6C0IyeWg10A+hYTrjVmnxRucu5uZSbr74Moou1DeOMIviPqT
- D5aQ==
-X-Gm-Message-State: AOJu0Yx/r9b1GQUmsH59JlMIfYxxfAQgLx4c/gZiLH+q42HQlosb0WsO
- FQB7ducS2IeEuD3yYwTHZtfMuPVVAz7pv80h3XJ6RMsVKK56H+gQCrlcA8VdpTMboj0OmK1tbBo
- HcA5Obz+sl+aYfPlJyUajHWWeq4vmSCCxs9jts7e+X84gJ+0G8ACBl7Qp1SKa1cONV+OFC81cdL
- nik2rm4aRBZZsAaz7x9qsNAqV44UbAcdvceTXMgug=
-X-Received: by 2002:a5d:64c8:0:b0:37c:cc96:d1ce with SMTP id
- ffacd0b85a97d-381be7c863amr3611600f8f.24.1730397180261; 
+ bh=3IWcSy6/NrB9sOZzfSkvV75pWE0ul/hmIAgB5vMw3bo=;
+ b=tEXNRbol3AdD77lCXa84Nt4rg1Hmnp7esl/Pv1KIgdMzC4euNx1m8KBNbFBYAFy6y/
+ rSDYseE4gdnP1YPxm38SYmNqkarkHKLp4LmlQ8Ef/Nwdr85Xd6qXF5wYhvqdwWfL5lJ9
+ tmaydZ/HlK5YeInt0/w4Pv1/QC4X5ly1ZCTGxbtGDOXH6MXs4G8QVInUCW0KhcrKky0C
+ 3EtKk3kzaTLBqDroaPpKkho+a12cIvwrFUeVWmm6mQuQrpWSSrH/stUQd14UY8ZgAS6S
+ AdywlH2u3vd4/vCL5kZVK1Pu4wJz3dVYlu2IFypcF369NDUgZaZH3XmVbnHyqPqPeEa3
+ Yf5g==
+X-Gm-Message-State: AOJu0Yzi89vAly6fZ8zKE7ESe6xaMWa+F9VtiIOogvj8+uqCgnAZmb+I
+ uZRU8oWzlm+G/hLqzuwhif7DQk/rgiuxlZYERS9sb3K9xbH7H+dumpc6tF/yHk4/9ISABfWDTC/
+ UMWdBnIODK1UEVUP2buAQ4y7XPW7cyolpc/pjbVM+Zts4GAO7YXaQZiPyQCslfYn1vQwgjCyDwJ
+ lUraUQ5+d1joOzVc46F7pMdSj2EvStNfJ5X/m8z6k=
+X-Received: by 2002:a05:600c:1987:b0:431:6083:cd2a with SMTP id
+ 5b1f17b1804b1-4328324d6bfmr5706185e9.15.1730397181337; 
+ Thu, 31 Oct 2024 10:53:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXLsWqEigyNW7xTHyPiX/JSLrh08SZnxkeKjsk2IIJdspgK3eHq26UCoQDFaeAgIZtXHPjpw==
+X-Received: by 2002:a05:600c:1987:b0:431:6083:cd2a with SMTP id
+ 5b1f17b1804b1-4328324d6bfmr5705995e9.15.1730397180822; 
  Thu, 31 Oct 2024 10:53:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGthLsuZ3dNzuuob55FcOzm1op8cu4vGdTL/ErWgv5yNa8LqnTqdfT/ghJNi/x70/wbIRi8w==
-X-Received: by 2002:a5d:64c8:0:b0:37c:cc96:d1ce with SMTP id
- ffacd0b85a97d-381be7c863amr3611581f8f.24.1730397179767; 
- Thu, 31 Oct 2024 10:52:59 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd8e7f33sm63968315e9.6.2024.10.31.10.52.59
+ 5b1f17b1804b1-431bd9cab13sm65728325e9.48.2024.10.31.10.53.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:59 -0700 (PDT)
+ Thu, 31 Oct 2024 10:53:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <lists@philjordan.eu>
-Subject: [PULL 20/49] target/i386/hvf: fix handling of XSAVE-related CPUID bits
-Date: Thu, 31 Oct 2024 18:51:44 +0100
-Message-ID: <20241031175214.214455-21-pbonzini@redhat.com>
+Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Alexander Graf <graf@amazon.com>
+Subject: [PULL 21/49] tests/lcitool: Update libvirt-ci and add libcbor
+ dependency
+Date: Thu, 31 Oct 2024 18:51:45 +0100
+Message-ID: <20241031175214.214455-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,154 +104,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The call to xgetbv() is passing the ecx value for cpuid function 0xD,
-index 0. The xgetbv call thus returns false (OSXSAVE is bit 27, which is
-well out of the range of CPUID[0xD,0].ECX) and eax is not modified. While
-fixing it, cache the whole computation of supported XCR0 bits since it
-will be used for more than just CPUID leaf 0xD.
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 
-Furthermore, unsupported subleafs of CPUID 0xD (including all those
-corresponding to zero bits in host's XCR0) must be hidden; if OSXSAVE
-is not set at all, the whole of CPUID leaf 0xD plus the XSAVE bit must
-be hidden.
+libcbor dependecy is necessary for adding virtio-nsm and nitro-enclave
+machine support in the following commits. libvirt-ci has already been
+updated with the dependency upstream and this commit updates libvirt-ci
+submodule in QEMU to latest upstream. Also the libcbor dependency has
+been added to tests/lcitool/projects/qemu.yml.
 
-Finally, unconditionally drop XSTATE_BNDREGS_MASK and XSTATE_BNDCSR_MASK;
-real hardware will only show them if the MPX bit is set in CPUID;
-this is never the case for hvf_get_supported_cpuid() because QEMU's
-Hypervisor.framework support does not handle the VMX fields related to
-MPX (even in the unlikely possibility that the host has MPX enabled).
-So hide those bits in the new cache_host_xcr0().
-
-Cc: Phil Dennis-Jordan <lists@philjordan.eu>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Reviewed-by: Alexander Graf <graf@amazon.com>
+Link: https://lore.kernel.org/r/20241008211727.49088-2-dorjoychy111@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- host/include/i386/host/cpuinfo.h |  1 +
- target/i386/hvf/x86_cpuid.c      | 56 +++++++++++++++++++-------------
- util/cpuinfo-i386.c              |  1 +
- 3 files changed, 35 insertions(+), 23 deletions(-)
+ .gitlab-ci.d/cirrus/macos-14.vars                     | 2 +-
+ .gitlab-ci.d/cirrus/macos-15.vars                     | 2 +-
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml      | 1 +
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml        | 1 +
+ tests/docker/dockerfiles/alpine.docker                | 1 +
+ tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-i686-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 +
+ tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian.docker                | 1 +
+ tests/docker/dockerfiles/fedora-rust-nightly.docker   | 1 +
+ tests/docker/dockerfiles/fedora.docker                | 1 +
+ tests/docker/dockerfiles/opensuse-leap.docker         | 1 +
+ tests/docker/dockerfiles/ubuntu2204.docker            | 1 +
+ tests/lcitool/projects/qemu.yml                       | 1 +
+ 19 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 81771733eaa..9541a64da61 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -9,6 +9,7 @@
- /* Digested version of <cpuid.h> */
- 
- #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
-+#define CPUINFO_OSXSAVE         (1u << 1)
- #define CPUINFO_MOVBE           (1u << 2)
- #define CPUINFO_LZCNT           (1u << 3)
- #define CPUINFO_POPCNT          (1u << 4)
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index e56cd8411ba..3a116548a3d 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -21,28 +21,38 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/cpuid.h"
-+#include "host/cpuinfo.h"
- #include "cpu.h"
- #include "x86.h"
- #include "vmx.h"
- #include "sysemu/hvf.h"
- #include "hvf-i386.h"
- 
--static bool xgetbv(uint32_t cpuid_ecx, uint32_t idx, uint64_t *xcr)
-+static bool cached_xcr0;
-+static uint64_t supported_xcr0;
-+
-+static void cache_host_xcr0()
- {
--    uint32_t xcrl, xcrh;
--
--    if (cpuid_ecx & CPUID_EXT_OSXSAVE) {
--        /*
--         * The xgetbv instruction is not available to older versions of
--         * the assembler, so we encode the instruction manually.
--         */
--        asm(".byte 0x0f, 0x01, 0xd0" : "=a" (xcrl), "=d" (xcrh) : "c" (idx));
--
--        *xcr = (((uint64_t)xcrh) << 32) | xcrl;
--        return true;
-+    if (cached_xcr0) {
-+        return;
-     }
- 
--    return false;
-+    if (cpuinfo & CPUINFO_OSXSAVE) {
-+        uint64_t host_xcr0 = xgetbv_low(0);
-+
-+        /* Only show xcr0 bits corresponding to usable features.  */
-+        supported_xcr0 = host_xcr0 & (XSTATE_FP_MASK |
-+                                      XSTATE_SSE_MASK | XSTATE_YMM_MASK |
-+                                      XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK |
-+                                      XSTATE_Hi16_ZMM_MASK);
-+        if ((supported_xcr0 & (XSTATE_FP_MASK | XSTATE_SSE_MASK)) !=
-+            (XSTATE_FP_MASK | XSTATE_SSE_MASK)) {
-+            supported_xcr0 = 0;
-+        }
-+    }
-+
-+    cached_xcr0 = true;
- }
- 
- uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-@@ -51,6 +61,7 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-     uint64_t cap;
-     uint32_t eax, ebx, ecx, edx;
- 
-+    cache_host_xcr0();
-     host_cpuid(func, idx, &eax, &ebx, &ecx, &edx);
- 
-     switch (func) {
-@@ -66,7 +77,8 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-         ecx &= CPUID_EXT_SSE3 | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSSE3 |
-              CPUID_EXT_FMA | CPUID_EXT_CX16 | CPUID_EXT_PCID |
-              CPUID_EXT_SSE41 | CPUID_EXT_SSE42 | CPUID_EXT_MOVBE |
--             CPUID_EXT_POPCNT | CPUID_EXT_AES | CPUID_EXT_XSAVE |
-+             CPUID_EXT_POPCNT | CPUID_EXT_AES |
-+             (supported_xcr0 ? CPUID_EXT_XSAVE : 0) |
-              CPUID_EXT_AVX | CPUID_EXT_F16C | CPUID_EXT_RDRAND;
-         ecx |= CPUID_EXT_HYPERVISOR;
-         break;
-@@ -107,16 +119,14 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-         eax = 0;
-         break;
-     case 0xD:
-+        if (!supported_xcr0 ||
-+            (idx > 1 && !(supported_xcr0 & (1 << idx)))) {
-+            eax = ebx = ecx = edx = 0;
-+            break;
-+        }
-+
-         if (idx == 0) {
--            uint64_t host_xcr0;
--            if (xgetbv(ecx, 0, &host_xcr0)) {
--                uint64_t supp_xcr0 = host_xcr0 & (XSTATE_FP_MASK |
--                                  XSTATE_SSE_MASK | XSTATE_YMM_MASK |
--                                  XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
--                                  XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK |
--                                  XSTATE_Hi16_ZMM_MASK);
--                eax &= supp_xcr0;
--            }
-+            eax = supported_xcr0;
-         } else if (idx == 1) {
-             hv_vmx_read_capability(HV_VMX_CAP_PROCBASED2, &cap);
-             eax &= CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XGETBV1;
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index 90f92a42dc8..c8c8a1b3705 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -35,6 +35,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-         __cpuid(1, a, b, c, d);
- 
-         info |= (d & bit_SSE2 ? CPUINFO_SSE2 : 0);
-+        info |= (c & bit_OSXSAVE ? CPUINFO_OSXSAVE : 0);
-         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
-         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
-         info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
+diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
+index 1fd03d68b97..25dff322e6a 100644
+--- a/.gitlab-ci.d/cirrus/macos-14.vars
++++ b/.gitlab-ci.d/cirrus/macos-14.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/.gitlab-ci.d/cirrus/macos-15.vars b/.gitlab-ci.d/cirrus/macos-15.vars
+index b6b6d71d473..a72e9ed024d 100644
+--- a/.gitlab-ci.d/cirrus/macos-15.vars
++++ b/.gitlab-ci.d/cirrus/macos-15.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+index dd89ba1b3a7..f4647940f8c 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+@@ -36,6 +36,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+index 74f14d8d0fe..fe2995c19bd 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+@@ -36,6 +36,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 9ce7b5280c0..f87c40fbfe3 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -45,6 +45,7 @@ RUN apk update && \
+         libaio-dev \
+         libbpf-dev \
+         libcap-ng-dev \
++        libcbor-dev \
+         libdrm-dev \
+         libepoxy-dev \
+         libffi-dev \
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index b86949b2e6c..d3b58c3e90d 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:amd64 \
+                       libcap-ng-dev:amd64 \
+                       libcapstone-dev:amd64 \
++                      libcbor-dev:amd64 \
+                       libcmocka-dev:amd64 \
+                       libcurl4-gnutls-dev:amd64 \
+                       libdaxctl-dev:amd64 \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 68789791121..4a6785bf5b4 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:arm64 \
+                       libcap-ng-dev:arm64 \
+                       libcapstone-dev:arm64 \
++                      libcbor-dev:arm64 \
+                       libcmocka-dev:arm64 \
+                       libcurl4-gnutls-dev:arm64 \
+                       libdaxctl-dev:arm64 \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index e38b8fcc412..52e8831326f 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:armhf \
+                       libcap-ng-dev:armhf \
+                       libcapstone-dev:armhf \
++                      libcbor-dev:armhf \
+                       libcmocka-dev:armhf \
+                       libcurl4-gnutls-dev:armhf \
+                       libdaxctl-dev:armhf \
+diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
+index b4d06187390..1326e8a5ca9 100644
+--- a/tests/docker/dockerfiles/debian-i686-cross.docker
++++ b/tests/docker/dockerfiles/debian-i686-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:i386 \
+                       libcap-ng-dev:i386 \
+                       libcapstone-dev:i386 \
++                      libcbor-dev:i386 \
+                       libcmocka-dev:i386 \
+                       libcurl4-gnutls-dev:i386 \
+                       libdaxctl-dev:i386 \
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 4f6c816b3fe..0ba542112eb 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -93,6 +93,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mips64el \
+                       libcap-ng-dev:mips64el \
+                       libcapstone-dev:mips64el \
++                      libcbor-dev:mips64el \
+                       libcmocka-dev:mips64el \
+                       libcurl4-gnutls-dev:mips64el \
+                       libdaxctl-dev:mips64el \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index a238526b4c5..59b5d2655b4 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -93,6 +93,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mipsel \
+                       libcap-ng-dev:mipsel \
+                       libcapstone-dev:mipsel \
++                      libcbor-dev:mipsel \
+                       libcmocka-dev:mipsel \
+                       libcurl4-gnutls-dev:mipsel \
+                       libdaxctl-dev:mipsel \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index b6c6f5b7b00..8680b35c5a7 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:ppc64el \
+                       libcap-ng-dev:ppc64el \
+                       libcapstone-dev:ppc64el \
++                      libcbor-dev:ppc64el \
+                       libcmocka-dev:ppc64el \
+                       libcurl4-gnutls-dev:ppc64el \
+                       libdaxctl-dev:ppc64el \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 14f169984eb..384a2b425e7 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:s390x \
+                       libcap-ng-dev:s390x \
+                       libcapstone-dev:s390x \
++                      libcbor-dev:s390x \
+                       libcmocka-dev:s390x \
+                       libcurl4-gnutls-dev:s390x \
+                       libdaxctl-dev:s390x \
+diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
+index 22b064cbf01..505330a9e22 100644
+--- a/tests/docker/dockerfiles/debian.docker
++++ b/tests/docker/dockerfiles/debian.docker
+@@ -42,6 +42,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+index c2029cc4c6e..9180c8b5222 100644
+--- a/tests/docker/dockerfiles/fedora-rust-nightly.docker
++++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+@@ -62,6 +62,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                libbpf-devel \
+                libcacard-devel \
+                libcap-ng-devel \
++               libcbor-devel \
+                libcmocka-devel \
+                libcurl-devel \
+                libdrm-devel \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index 1980421f6ae..b64399af662 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -62,6 +62,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                libbpf-devel \
+                libcacard-devel \
+                libcap-ng-devel \
++               libcbor-devel \
+                libcmocka-devel \
+                libcurl-devel \
+                libdrm-devel \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index 53b94610308..4d5fb3e3a14 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -47,6 +47,7 @@ RUN zypper update -y && \
+            libbz2-devel \
+            libcacard-devel \
+            libcap-ng-devel \
++           libcbor-devel \
+            libcmocka-devel \
+            libcurl-devel \
+            libdrm-devel \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index ce3aa39d4f3..94697bd036b 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -42,6 +42,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 6852918642e..80bcac09027 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -43,6 +43,7 @@ packages:
+  - libc-static
+  - libcacard
+  - libcap-ng
++ - libcbor
+  - libcurl
+  - libdrm
+  - libepoxy
 -- 
 2.47.0
 
