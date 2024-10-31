@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD069B7359
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83A89B7355
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:59:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MI9-0005ck-FE; Wed, 30 Oct 2024 23:56:13 -0400
+	id 1t6MIA-0005rr-LZ; Wed, 30 Oct 2024 23:56:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MHw-0004lu-A6
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:00 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1t6MHz-00051i-1E
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:03 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MHu-0004H7-Ao
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:00 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-20cdda5cfb6so4884665ad.3
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:55:57 -0700 (PDT)
+ id 1t6MHx-0004HJ-8R
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:56:02 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-20ca1b6a80aso4919695ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:56:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346957; x=1730951757; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346960; x=1730951760; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z+o3lCvLW9WsHGBD9qvHFJODJe/o7XQJnqoUKD43VUc=;
- b=KF+5bZMaDHEZfHY6sv/ddn9YrZ0TE9GiXgbpqzPumCoe0nPgFeEztbQ+u9swWVgExV
- JOelDrKBquf6OJ9DfhYB1b4wv4NjKxt8PcEnR1+oJbs7VtQ1cncqYDgQegprM59gUPsG
- DGQPcIerB6gCKRidigIV9WBCbjzuS04vbiRaMkpraCZPUI0FPaDqL3pz7Vrhi/HLqTxW
- JTubL33qhrpPC4IA7JxPtqBhG6UMIsMGHSAIamcLVYO3fNffVO0u7k74pJl0ITNZvKm8
- QvacFXAnjA7M6G4zIEU5tqjhkMdX3c0X9XUFAHeIkrEty5dU+7VwunA+lzIj9hoXp+zT
- oy1Q==
+ bh=3aKG6/GDIk+GibaacYIfY/1qVD+NPgMlgMMI0fejrUs=;
+ b=MuMNXn/Mv18q0aUVMpTEkKKr9bsGCl3f1tGYPWJzu5cGt3avkTy7BdzDPuoTPQXUPQ
+ wtmAr8Yx++UQ29y3/LbKF6860hxYX8M5qUoYSEvmLmD5pPpa+pp1Yk7aHjk4WFE/mm6I
+ qhJhciC3nzm4Her7OpOVP/Z7Ztmb+/WoamVJM8s1QVkNC5bgE1LXNBp1RHBquppsXmzL
+ xFwqvIrfuo4Q6VG//Y8FYqEqn+xVsQXaGpUB0e7ymNBzqY0Ouvz/hd+1vB4FwOKixWTM
+ t/WK2KkISYDm6mMe+bQxxiiOn0oo+dnipb7m3qoxm092STtDWFRXWG7QnahpoyO5oGiv
+ N1yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346957; x=1730951757;
+ d=1e100.net; s=20230601; t=1730346960; x=1730951760;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z+o3lCvLW9WsHGBD9qvHFJODJe/o7XQJnqoUKD43VUc=;
- b=CoHaeOAeCaOcK4v5NNjw6fVuFEkp2qepzmTMq55Y936aPNGGeS9I1QxySjIvK4qu/M
- DiLBP6ieCQoaPOl8x9JvYWbIXIianSEsvvwfNmUzXZOEclbADdtCKpXwzcGK9jqjnsXG
- IgYZWMp0pXbPqxzwfdnL8WOAiJCQtbBdlGPDN1DvNhzky8k3MJJzwrE4o10Deu/WndXm
- XUoyBqIc4uyFcZWuXujsC89dbOjoAbKtvtNyWW3iplYYNFdh2Pp4eGR4eaZR0R3tJ9gJ
- O2GdSd+Kd2l8Uokt6uNeNwFn109nvLJUm1D58FK01YCVq9R/ysjvXEObo4KGFhpamNhW
- Y+VA==
-X-Gm-Message-State: AOJu0YzFKyLqRg4iVgSeACUI1h9BA74QhZsauK762R3/y4R2KZAnyesH
- 94ThM9Rx7QSB0cUMKHTdnuR1eulM1hDajyOiMhCTgh5qtT+WqFTX4kgcqLHf
-X-Google-Smtp-Source: AGHT+IF41D5a7WNUdUXM3pRiyeEwR5EV95qu0fPT0BgqqTWZRG652m3GhZS8FLV9OWTMut16fy7qNQ==
-X-Received: by 2002:a17:902:e747:b0:20c:a44b:3221 with SMTP id
- d9443c01a7336-21103ace14amr23819065ad.15.1730346956692; 
- Wed, 30 Oct 2024 20:55:56 -0700 (PDT)
+ bh=3aKG6/GDIk+GibaacYIfY/1qVD+NPgMlgMMI0fejrUs=;
+ b=U2iIfqhRRa7ki/DU7S1IeFt/FhVlKBe+zmxkkgVIu4W0ZcUscLoI5FDjB1u5oST4m+
+ l4l6KxelkOfal607MJpq3oCOpEEOGGL1BEcX3Uj54hes+azU8UzSUfUOvwYfHRpyfNn4
+ PBNDUB7jZu5k/dvXwsQ1Xey+rAaIWgduos0M00HMD5W/zUZUgmJOCbUj8jBc1DurZSB0
+ BleY9JeWredaP9TO2BBtVqVuHjN3l4j+Milhx6YwkkwEpF/Da3UOHEGNAGrb3FwaFBfK
+ rdrNfJKruQ32ZLFo5eHE95bc8M0Po1pY7VVlfMZ17ZIEEnHg3Grro9mcvaxcrcVeqp6f
+ BVcA==
+X-Gm-Message-State: AOJu0YzMdfOWaz8lFCSy/zf9cxrHdx1f7/0XaOVaS7buPUmIFolFCH6t
+ Rha0ywLI8xiA29okPw1ZsA74IYcIYAbO2OEmx+McWXYQqlnbKTWam9pfhEkD
+X-Google-Smtp-Source: AGHT+IHQF4f8x6/5BZ/KzbYJL3ZkT3+wvI1rUU+uuidfU3ohnMrShMCaZM/Bd0CoZCbVjYFNV4qu8w==
+X-Received: by 2002:a17:902:e883:b0:20c:895d:b41c with SMTP id
+ d9443c01a7336-210c6c7596bmr238668575ad.41.1730346959613; 
+ Wed, 30 Oct 2024 20:55:59 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.55.54
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.55.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:55:56 -0700 (PDT)
+ Wed, 30 Oct 2024 20:55:59 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 47/50] docs/specs: add riscv-iommu
-Date: Thu, 31 Oct 2024 13:53:15 +1000
-Message-ID: <20241031035319.731906-48-alistair.francis@wdc.com>
+Subject: [PULL 48/50] target/riscv/kvm: set 'aia_mode' to default in error path
+Date: Thu, 31 Oct 2024 13:53:16 +1000
+Message-ID: <20241031035319.731906-49-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,151 +98,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Add a simple guideline to use the existing RISC-V IOMMU support we just
-added.
+When failing to set the selected AIA mode, 'aia_mode' is left untouched.
+This means that 'aia_mode' will not reflect the actual AIA mode,
+retrieved in 'default_aia_mode',
 
-This doc will be updated once we add the riscv-iommu-sys device.
+This is benign for now, but it will impact QMP query commands that will
+expose the 'aia_mode' value, retrieving the wrong value.
+
+Set 'aia_mode' to 'default_aia_mode' if we fail to change the AIA mode
+in KVM.
+
+While we're at it, rework the log/warning messages to be a bit less
+verbose. Instead of:
+
+KVM AIA: default mode is emul
+qemu-system-riscv64: warning: KVM AIA: failed to set KVM AIA mode
+
+We can use a single warning message:
+
+qemu-system-riscv64: warning: KVM AIA: failed to set KVM AIA mode 'auto', using default host mode 'emul'
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241016204038.649340-13-dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241028182037.290171-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- docs/specs/index.rst       |  1 +
- docs/specs/riscv-iommu.rst | 90 ++++++++++++++++++++++++++++++++++++++
- docs/system/riscv/virt.rst | 13 ++++++
- 3 files changed, 104 insertions(+)
- create mode 100644 docs/specs/riscv-iommu.rst
+ target/riscv/kvm/kvm-cpu.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 6495ed5ed9..ff5a1f03da 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -36,3 +36,4 @@ guest hardware that is specific to QEMU.
-    vmgenid
-    rapl-msr
-    rocker
-+   riscv-iommu
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-new file mode 100644
-index 0000000000..463f4cffb6
---- /dev/null
-+++ b/docs/specs/riscv-iommu.rst
-@@ -0,0 +1,90 @@
-+.. _riscv-iommu:
-+
-+RISC-V IOMMU support for RISC-V machines
-+========================================
-+
-+QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
-+version 1.0 `iommu1.0`_.
-+
-+The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
-+RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
-+device.
-+
-+riscv-iommu-pci reference device
-+--------------------------------
-+
-+This device implements the RISC-V IOMMU emulation as recommended by the section
-+"Integrating an IOMMU as a PCIe device" of `iommu1.0`_: a PCI device with base
-+class 08h, sub-class 06h and programming interface 00h.
-+
-+As a reference device it doesn't implement anything outside of the specification,
-+so it uses a generic default PCI ID given by QEMU: 1b36:0014.
-+
-+To include the device in the 'virt' machine:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt -device riscv-iommu-pci,[optional_pci_opts] (...)
-+
-+This will add a RISC-V IOMMU PCI device in the board following any additional
-+PCI parameters (like PCI bus address).  The behavior of the RISC-V IOMMU is
-+defined by the spec but its operation is OS dependent.
-+
-+As of this writing the existing Linux kernel support `linux-v8`_, not yet merged,
-+does not have support for features like VFIO passthrough.  The IOMMU emulation
-+was tested using a public Ventana Micro Systems kernel repository in
-+`ventana-linux`_.  This kernel is based on `linux-v8`_ with additional patches that
-+enable features like KVM VFIO passthrough with irqbypass.  Until the kernel support
-+is feature complete feel free to use the kernel available in the Ventana Micro Systems
-+mirror.
-+
-+The current Linux kernel support will use the IOMMU device to create IOMMU groups
-+with any eligible cards available in the system, regardless of factors such as the
-+order in which the devices are added in the command line.
-+
-+This means that these command lines are equivalent as far as the current
-+IOMMU kernel driver behaves:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 \
-+        -M virt,aia=aplic-imsic,aia-guests=5 \
-+        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-+        -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
-+        -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
-+        (...)
-+
-+  $ qemu-system-riscv64 \
-+        -M virt,aia=aplic-imsic,aia-guests=5 \
-+        -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
-+        -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
-+        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-+        (...)
-+
-+Both will create iommu groups for the two e1000e cards.
-+
-+Another thing to notice on `linux-v8`_ and `ventana-linux`_ is that the kernel driver
-+considers an IOMMU identified as a Rivos device, i.e. it uses Rivos vendor ID.  To
-+use the riscv-iommu-pci device with the existing kernel support we need to emulate
-+a Rivos PCI IOMMU by setting 'vendor-id' and 'device-id':
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt	\
-+     -device riscv-iommu-pci,vendor-id=0x1efd,device-id=0xedf1 (...)
-+
-+Several options are available to control the capabilities of the device, namely:
-+
-+- "bus": the bus that the IOMMU device uses
-+- "ioatc-limit": size of the Address Translation Cache (default to 2Mb)
-+- "intremap": enable/disable MSI support
-+- "ats": enable ATS support
-+- "off" (Out-of-reset translation mode: 'on' for DMA disabled, 'off' for 'BARE' (passthrough))
-+- "s-stage": enable s-stage support
-+- "g-stage": enable g-stage support
-+
-+.. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
-+
-+.. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-+
-+.. _ventana-linux: https://github.com/ventanamicro/linux/tree/dev-upstream
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index 9a06f95a34..8e9a2e4dda 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -84,6 +84,19 @@ none``, as in
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 8233a32102..acc713c56a 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1711,18 +1711,26 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+         error_report("KVM AIA: failed to get current KVM AIA mode");
+         exit(1);
+     }
+-    qemu_log("KVM AIA: default mode is %s\n",
+-             kvm_aia_mode_str(default_aia_mode));
  
- Firmware images used for pflash must be exactly 32 MiB in size.
+-    if (default_aia_mode != aia_mode) {
++    if (default_aia_mode == aia_mode) {
++        qemu_log("KVM AIA: using default host mode '%s'\n",
++                  kvm_aia_mode_str(default_aia_mode));
++    } else {
+         ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+                                 KVM_DEV_RISCV_AIA_CONFIG_MODE,
+                                 &aia_mode, true, NULL);
+-        if (ret < 0)
+-            warn_report("KVM AIA: failed to set KVM AIA mode");
+-        else
+-            qemu_log("KVM AIA: set current mode to %s\n",
++        if (ret < 0) {
++            warn_report("KVM AIA: failed to set KVM AIA mode '%s', using "
++                        "default host mode '%s'",
++                        kvm_aia_mode_str(aia_mode),
++                        kvm_aia_mode_str(default_aia_mode));
++
++            /* failed to change AIA mode, use default */
++            aia_mode = default_aia_mode;
++        } else {
++            qemu_log("KVM AIA: setting current mode to %s\n",
+                      kvm_aia_mode_str(aia_mode));
++        }
+     }
  
-+riscv-iommu support
-+-------------------
-+
-+The board has support for the riscv-iommu-pci device by using the following
-+command line:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
-+
-+Refer to :ref:`riscv-iommu` for more information on how the RISC-V IOMMU support
-+works.
-+
- Machine-specific options
- ------------------------
- 
+     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
 -- 
 2.47.0
 
