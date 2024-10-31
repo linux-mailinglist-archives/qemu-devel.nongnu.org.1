@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14799B7343
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F52B9B732A
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:54:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MFw-0007Hn-6C; Wed, 30 Oct 2024 23:53:56 -0400
+	id 1t6MFy-0007I3-OF; Wed, 30 Oct 2024 23:53:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFu-0007HI-15
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:54 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1t6MFx-0007Hv-4A
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:57 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFs-0003u6-Jl
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:53 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20c7edf2872so12555165ad.1
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:52 -0700 (PDT)
+ id 1t6MFv-0003uP-KI
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:56 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-20cb89a4e4cso4238615ad.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346831; x=1730951631; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346834; x=1730951634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GoOUpbadKCnmPOJWCrARYtALSWKgna2VartF8KROWEg=;
- b=TL///P2fDwCJIeLZO/iaid757SpChXneA4y8qWlXk7Ab9l5d3ujU+A9+ZrmP8wsJIZ
- VdAoX1+NZdWu+/3mNa9yujcVlKTTFcI7eEzGbBGX5pyh//ZX3CrkqvSloPKdbJvR7283
- 0VfFiTgUQPPeQqtBI8NrYtQNFbXKGVRPDWbFCahJV2zyNe8ShxSHC1FWsM7pj547yyUP
- r96f6VsUOf7RA+OEOI1NGKVoKwQ3wdoirb4/DyYXn6JvqKpZ/pY7a0dzCdfzT0kqcXZy
- ACVBA+Y7l74E7MmLTiR12fZqfoG2GjmKsONV1mp5dC67PgC6G9oGqCaeqn6khpCARngS
- aa6g==
+ bh=JH0jRHToVF3C8lmDDZmUohZ5ReWzqmRHE5aVJm2dCjo=;
+ b=clivB+/2ehshLhlGMP9qm65rZs2dCuQsmNzIoIQeIOghw7rCB+h/Es8N3h2e/1UWQj
+ qp4zLA9p/hrkvdr0GM2hPUAaYSStZIqDOzYWI7ER8HY/wEc9RSLZBpIoItdKb/GE/clP
+ /fc3VjqnGqKxiQKgt5YJcz3BtjKLKsCRCqCOCTS4Veq5rkOnB14Tda67TgK03G51/rgF
+ 5Vo/r5/oKzY3hP8Gj/c/AJt9vWu2oQzsVyDJMh0aBTNRGwc6FiSZY5451u0Gnn+DcPcB
+ +3jzx8q8IWrd33dY81Fod9YGX5/As1+ptsuJdqvMu1077jcEI39LvLBDKimXxjtgAORU
+ fFaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346831; x=1730951631;
+ d=1e100.net; s=20230601; t=1730346834; x=1730951634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GoOUpbadKCnmPOJWCrARYtALSWKgna2VartF8KROWEg=;
- b=rKllWXjq3zflLzPsEhyRCxk29G1HMkvPi+PpPf0tJa77lMJALKZRFIJtgj+asMJeBu
- Wn8z4s83kOUkQYZEBcV2DNomuFzMm5LbY/XIW+WhLl94dlU2NE1wLFdqcoXQRu0R+l/b
- LdKPtrk5eqbw09Zc2G5jiZaowwrgiD4p5fbokXAg4chzMCMjGl//ls04+NRAaDTMa4J/
- IH02UReJYrI5zOMPWppu+BnLIbN3YmIEqeViY+Q+SIIb4cEZBWGwv5dIJBbqyONUe5np
- oJ0/SAh49STAwGLHS1Vqbbmv13bi+QgzSnStr72rEI1TQFxJ0Bk9C60KX/G9KcF1r9/3
- 8Y9Q==
-X-Gm-Message-State: AOJu0YzD1TvVSQbQk0zeAQ9DuKYUxzcefIrgopFYrJFAegLdRzXybWdM
- p1wjRGw4fK3AEd9nlZpdDt8OEl9JFElrE6+5s1vO43F5/qhV63HoUCHt23xb
-X-Google-Smtp-Source: AGHT+IEC5EpqeuGUHnxpB/ZzkjSrLIz1ZUffszO5U59jpsUmBFpFEgbZ7jyQzifKWn6mI/oly0HJww==
-X-Received: by 2002:a17:902:d483:b0:205:8b84:d5e8 with SMTP id
- d9443c01a7336-211057336d4mr15955375ad.18.1730346830976; 
- Wed, 30 Oct 2024 20:53:50 -0700 (PDT)
+ bh=JH0jRHToVF3C8lmDDZmUohZ5ReWzqmRHE5aVJm2dCjo=;
+ b=wfO9Gw+2t2CJyjc3ij2O+j0j+zVMHdu8iPB4KgI/z/H8AwetPet+km204ehBTKD46P
+ 3QY/XsR8Jdr+SWddaL8n7CJAsJ1t2dbpn+3JidKj5Nd3CX56JgwNnYtBFW76BY8+LyGU
+ nwmrfbQehbrMeFssodH/YJPLa7be/NFBaNtPM9HnopDuEZ1G4m1pO48pIhvzyPb8UPYa
+ 0d8Ob/12YGLTLa9bRxuA+MYU2vHIqQsOXXdfIG2YApg4Lg2ES9M/nzmLUVdly7jGvXMk
+ URrPSlwQjOTSWXtWekV8hVT7vKnh02LrSyP45vD/16NCdU8ND99Iexdxgf6GS0kEbdqk
+ ctgg==
+X-Gm-Message-State: AOJu0YzyP4C4zoxTrGJ0Urc5lvtEnlV7Ipw0jF+C2OHbUGDWwaPwAI6x
+ BCEKxubqqc9xci1z8r83VZlNnKbcSzoYLsYqBewGY5LLxslJp1r9o0Q4fbYk
+X-Google-Smtp-Source: AGHT+IGZfc+cl+nWT+b1TgT1INzemUp8OW1FODf/n2GrLZDCPTG3gyvTqNd1NTnjoOJeB7uhdTs5Fw==
+X-Received: by 2002:a17:903:1205:b0:20b:a6f5:2780 with SMTP id
+ d9443c01a7336-210c689c390mr214042315ad.17.1730346834002; 
+ Wed, 30 Oct 2024 20:53:54 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.48
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:53:50 -0700 (PDT)
+ Wed, 30 Oct 2024 20:53:53 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 08/50] target/riscv: Add max32 CPU for RV64 QEMU
-Date: Thu, 31 Oct 2024 13:52:36 +1000
-Message-ID: <20241031035319.731906-9-alistair.francis@wdc.com>
+Subject: [PULL 09/50] tests/avocado: Boot Linux for RV32 cpu on RV64 QEMU
+Date: Thu, 31 Oct 2024 13:52:37 +1000
+Message-ID: <20241031035319.731906-10-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,67 +99,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-We may need 32-bit max for RV64 QEMU. Thus we add these two CPUs
-for RV64 QEMU.
-
-The reason we don't expose them to RV32 QEMU is that we already have
-max cpu with the same configuration. Another reason is that we want
-to follow the RISC-V custom where addw instruction doesn't exist in
-RV32 CPU.
+make check-avocado AVOCADO_TESTS=tests/avocado/tuxrun_baselines.py: \
+TuxRunBaselineTest:test_riscv64_rv32
 
 Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240919055048.562-8-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240919055048.562-9-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 12 +++++++-----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ tests/avocado/tuxrun_baselines.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 4464c0fd7a..62115375cd 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -30,6 +30,7 @@
- #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
- 
- #define TYPE_RISCV_CPU_MAX              RISCV_CPU_TYPE_NAME("max")
-+#define TYPE_RISCV_CPU_MAX32            RISCV_CPU_TYPE_NAME("max32")
- #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
- #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 44288013cc..0c8e017f71 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -449,11 +449,9 @@ static void riscv_max_cpu_init(Object *obj)
- 
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
--#ifdef TARGET_RISCV32
--    set_satp_mode_max_supported(cpu, VM_1_10_SV32);
--#else
--    set_satp_mode_max_supported(cpu, VM_1_10_SV57);
--#endif
-+    set_satp_mode_max_supported(RISCV_CPU(obj),
-+        riscv_cpu_mxl(&RISCV_CPU(obj)->env) == MXL_RV32 ?
-+        VM_1_10_SV32 : VM_1_10_SV57);
- #endif
- }
- 
-@@ -2959,6 +2957,10 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV32E,        MXL_RV32,  rv32e_bare_cpu_init),
- #endif
- 
-+#if (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
-+    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX32,     MXL_RV32,  riscv_max_cpu_init),
-+#endif
+diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
+index 38064840da..366c262e32 100644
+--- a/tests/avocado/tuxrun_baselines.py
++++ b/tests/avocado/tuxrun_baselines.py
+@@ -222,3 +222,19 @@ def test_arm64be(self):
+                  "rootfs.ext4.zst" :
+                  "e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7"}
+         self.common_tuxrun(csums=sums)
 +
- #if defined(TARGET_RISCV64)
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,    MXL_RV64,  rv64_base_cpu_init),
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E51, MXL_RV64,  rv64_sifive_e_cpu_init),
++    def test_riscv64_rv32(self):
++        """
++        :avocado: tags=arch:riscv64
++        :avocado: tags=machine:virt
++        :avocado: tags=tuxboot:riscv32
++        :avocado: tags=cpu:rv32
++        """
++        sums = { "Image" :
++                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a3d6deccbd5",
++                 "fw_jump.elf" :
++                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b18936676985",
++                 "rootfs.ext4.zst" :
++                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31bb13108cba" }
++
++        self.common_tuxrun(csums=sums)
 -- 
 2.47.0
 
