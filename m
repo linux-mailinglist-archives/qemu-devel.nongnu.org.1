@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE1C9B7D53
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 15:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2829B7D2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 15:43:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6WXX-00043X-So; Thu, 31 Oct 2024 10:52:47 -0400
+	id 1t6WNN-0000iG-Ft; Thu, 31 Oct 2024 10:42:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6WXV-000437-57
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:52:45 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6WXT-0007m2-D8
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:52:44 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5c96b2a10e1so1516008a12.2
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 07:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730386361; x=1730991161; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zJgLVJmeePWa4W+iUyK3ZvX400I8PGqGDpOgiFC8j24=;
- b=K3QHVu4Go5Lt3MyKSYWjbL6GQO1Tb0YUBfA571iNwaBJZ/gKXEIV3gulMcF+DIC6kK
- 3vQNqaJBKKXjWz3of4uQU5TBO3aa/RGswl1m8Kgi3lXwZF7m7Lgc7vQjmkLlo4QleJi0
- TfeC2ueJKM0/0V2ZcP8ugsazoYhn7TaPGYMY0YWjsWaOdaNHZXRuGcQUMz38YXdK52Ph
- Ld0DzwCP+T4jJHcIKZA+ykvwD5ytrY/XVX9YuZrYm3dYtOEJBDoLVMNya45gdfZZx/Bd
- hQe9HU/2cAuq9vXr34xpdfXOt/5MRM5gBiQcZJ6ZPiwHWUY54OufzNyc8eSJXpJ7ifab
- tO1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730386361; x=1730991161;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zJgLVJmeePWa4W+iUyK3ZvX400I8PGqGDpOgiFC8j24=;
- b=Q93Pv1hFjNAWINIWSOfG7MpBjWeuUg5twIxjr5EnoDxqOC2U3lMNSztykGsL4cqpDH
- XzL3o9T68nX/zhXq4rsBBsv5plD0vhC1MmXSiblCC+NtdkCMo09TEJ47yT73uWuXwFFI
- 8an7ALif9PbjY+HidYe4kwcbzyEgOr8M7ZQZoEsUgKQSt/75OyjXFCwYH8hK9PWkKUX6
- 8b+2qMTTJXvFlcbPz7fXfawjM6jS9Wk+ATp2zM5/W1aJoEwX0yy/uErLWCop1pAs4dDs
- GjXFcg3WkvndD5X9z1HvQPfnV/IsiXAsNJ8DWDrDi6/JPD5jingMy/bEFMD+CuUcpcQU
- b4uQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUfFU3Boh4qbHd2/R4iWLH9vC3FGvtIZQIgq/YQiWmGDGB0ZJQO9npGQyA7v1hsFgFgsyZFmepvONjN@nongnu.org
-X-Gm-Message-State: AOJu0Yw7+C3la0pZcWEHe6WfAtb7NeIStGgdcgRqdEnPJcaefalF0u4F
- inA6lw0FXEi7svusFQdU75kcnZzjWYRl3n2seNuSZp7TGxr9+BH+o7iLuC+LohpRcJJscIsc77R
- XMRSAyz2fIYRPVxHkGo8vxOn/l9O3YQ6og8X9Yw==
-X-Google-Smtp-Source: AGHT+IFwR+A/kGV8kX2wywIUJN3dR7Phmd92hBldmHEhb85QCOs1IPg4HsHV0kCU/Wir051iCdp86XgAdkZubCHkqg4=
-X-Received: by 2002:a05:6402:90c:b0:5cb:e53e:9d86 with SMTP id
- 4fb4d7f45d1cf-5cbe53e9eb4mr10412424a12.21.1730386360676; Thu, 31 Oct 2024
- 07:52:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6WNK-0000hs-TK
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:42:15 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6WNI-0006jE-7X
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 10:42:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730385732; x=1761921732;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=KRXxxUtsXLtlaP7XhwfUMjqSa8q2H5R35Nxxu/rLzw8=;
+ b=PLWlSmYhsSrWwODIhZvOCJcSsnZptlMjocXmL6p9F/NreL1o2XE7ulQk
+ w5EPJwiPdG58DYC5GIqxeqMM73jd8vPHJ7PbG0BUsLfRMTRggzt5zAPp8
+ fuEkPJEP0BzVRYUuvXi2PhSU/P2nwkAquR65sKzRrb82ZXPENMn489NeH
+ OvCZjIatqeoje1NsUNyRUPUoD7TcuiC0Xka/k3iKJVYYF7VY2qxbUxBOb
+ 0y7pxJHK+D5c4idK3FiX73C5zSsAkvO2keKd49xncGWDaCkDpzEutRab5
+ dvUjGU7Po4DXyphrUrGZoB+bYazNULxU0lSTlHavNzSd/cS6I/BjMgp9V g==;
+X-CSE-ConnectionGUID: WxuR/dJfQq2yZoJmmJm81A==
+X-CSE-MsgGUID: LtrfOvPJTJSPvVrIBt+a+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30343517"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="30343517"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 07:42:09 -0700
+X-CSE-ConnectionGUID: PlrwYunITtGMtmRRx+6L2w==
+X-CSE-MsgGUID: 0jFFnuJnRc6UoJxTHxAqmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="86564427"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 31 Oct 2024 07:42:07 -0700
+Date: Thu, 31 Oct 2024 22:58:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
+ junjie.mao@hotmail.com, berrange@redhat.com
+Subject: Re: [PATCH 05/23] rust/pl011: add TYPE_PL011_LUMINARY device
+Message-ID: <ZyObFKPfEaaDrxrS@intel.com>
+References: <20241025160209.194307-1-pbonzini@redhat.com>
+ <20241025160209.194307-6-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20241030155734.2141398-1-peterx@redhat.com>
- <CAFEAcA_p+LiT6wz2UaPBUs14XBnuCM9x46piOLSJP6WivMMbAQ@mail.gmail.com>
- <ZyOZTDUB-GfyRYo9@x1n>
-In-Reply-To: <ZyOZTDUB-GfyRYo9@x1n>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Oct 2024 14:52:28 +0000
-Message-ID: <CAFEAcA-HCha9cnKvB8Xh5bQMspcEeyYr65i__MCg=2OsYdH9zA@mail.gmail.com>
-Subject: Re: [PULL 00/18] Migration 20241030 patches
-To: Peter Xu <peterx@redhat.com>
-Cc: Yong Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org, 
- Fabiano Rosas <farosas@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241025160209.194307-6-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,37 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Oct 2024 at 14:50, Peter Xu <peterx@redhat.com> wrote:
->
-> On Thu, Oct 31, 2024 at 01:28:31PM +0000, Peter Maydell wrote:
-> > Hi; this fails to build on macos:
-> >
-> > https://gitlab.com/qemu-project/qemu/-/jobs/8237753019
-> >
-> > ../ui/cocoa.m:40:10: fatal error: 'sysemu/cpu-throttle.h' file not found
-> >     40 | #include "sysemu/cpu-throttle.h"
-> >        |          ^~~~~~~~~~~~~~~~~~~~~~~
-> > 1 error generated.
->
-> Errr, cocoa.m used cpu-throttle for Speed feature.. so it needs it to be
-> exported.
->
-> Luckily cocoa.m is only compiled in system_ss.  The simplest fix so far is
-> to only move cpu-throttle.c, not cpu-throttle.h yet in the commit:
->
-> "migration: Move cpu-throttole.c from system to migration"
->
-> Fixup patch to be squashed:
->
-> ===8<===
-> From 68515db81e28832cbd24b1cdbc12aeb618c9de54 Mon Sep 17 00:00:00 2001
-> From: Peter Xu <peterx@redhat.com>
-> Date: Thu, 31 Oct 2024 10:37:29 -0400
-> Subject: [PATCH] fixup! migration: Move cpu-throttole.c from system to
->  migration
+On Fri, Oct 25, 2024 at 06:01:50PM +0200, Paolo Bonzini wrote:
+> Date: Fri, 25 Oct 2024 18:01:50 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 05/23] rust/pl011: add TYPE_PL011_LUMINARY device
+> X-Mailer: git-send-email 2.47.0
+> 
+> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> 
+> Add a device specialization for the Luminary UART device.
+> 
+> This commit adds a DeviceId enum that utilizes the Index trait to return
+> different bytes depending on what device id the UART has (Arm -default-
+> or Luminary)
+> 
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-6-051e7a25b978@linaro.org
+> ---
+>  rust/hw/char/pl011/src/device.rs | 77 ++++++++++++++++++++++++++++++--
+>  rust/hw/char/pl011/src/lib.rs    |  1 +
+>  2 files changed, 75 insertions(+), 3 deletions(-)
 
-If you're fixing up that commit anyway you could also fix
-the typo in the commit message: s/throttole/throttle/.
+Great! All tests passed on my side (x86 platform).
 
--- PMM
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
+
 
