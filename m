@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA749B81C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24CC9B821D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZM5-0000Q9-UY; Thu, 31 Oct 2024 13:53:10 -0400
+	id 1t6ZM6-0000Yi-CP; Thu, 31 Oct 2024 13:53:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLs-00005S-TH
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:57 -0400
+ id 1t6ZLv-0000EA-CC
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLq-0007J6-R5
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:56 -0400
+ id 1t6ZLt-0007KC-R8
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397173;
+ s=mimecast20190719; t=1730397177;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VAf9Rw9T2ciU5LDleiHhXlQ4Sh6dCoA/J7BuqxW01SY=;
- b=gIkdRZ7ZUGWg5Pk+X9wejFnYiUTE9vbt8BB6g+IAjAurXFMQRPx/fwzbXrGE7R7mouDADN
- mHtwZfxoS+SHSAO+lMe+N6+m7xivTVHqSb/bbs/P1cXF2zNtGE91puwOepv07zq+CX5s+S
- N1YOw44L1tuRG0T3W6Je/5pR2cgg3ws=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DpiS+KiNNyocJM5727DUTMhKbqIwBGE9ctY55O9ci58=;
+ b=fCoiaHJJKxHgn71W/iPCGkTmS+ixm4C1DgJfqHI1KXYYXtdzgm9dDL/D3tlbVak3XTFDbw
+ /NEqa+8i3cBXPSDDcwUEljHARHBU0tQWehCSxQfaV5jDwZstlabZVBA/dA878D+8WukFy4
+ U0qslu1JjJLl/HhWwI2D1qDYCx/wq64=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-PZxhPfgJPruU6pY3SzE7uQ-1; Thu, 31 Oct 2024 13:52:52 -0400
-X-MC-Unique: PZxhPfgJPruU6pY3SzE7uQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43157cff1d1so8657995e9.2
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:51 -0700 (PDT)
+ us-mta-371-oCa4fALrNrqw0TC_4CFt5A-1; Thu, 31 Oct 2024 13:52:55 -0400
+X-MC-Unique: oCa4fALrNrqw0TC_4CFt5A-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-539ec1a590fso1021422e87.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397170; x=1731001970;
+ d=1e100.net; s=20230601; t=1730397174; x=1731001974;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VAf9Rw9T2ciU5LDleiHhXlQ4Sh6dCoA/J7BuqxW01SY=;
- b=SiR+NqRBJ74PzVly1SCTx6S2Ol4B60UZE0NZSkDY475lG7r0Je0HokUvEXtyfTf9PY
- e2iH+m8tbTiJRFUtGtPhOP/vVkwbHZCWdWeZwoTTi8xDGeA6j7NaM7OEmh5BnFZV0WaO
- 2e7f2qsA8BYq4YucENVSBbo47HKXuSF+6tfd++6Yc227mQm5A0NrHhfi+IZ43uL6h0yK
- N5shhlYBy0LmHEaijsVid4iCs1hAG4r/cIpmLLWsqZckkqggC3pbex1kQwFoa35FRSAk
- IyhVGAaWEmWcpp8ta5MVWH+z8KK4KcckRJQDcJOn/0dFbiJcxor5/gi1BFx4LzcHvIPJ
- yaUw==
-X-Gm-Message-State: AOJu0Yym7pmimcEViklNCWVbC7wLdLxbH7rK2SitPtGovoLBAX8a65no
- FT3mDJNWrx5/wsrw+dmDtNG6wgiZSsDBW+ugslaHdvPtY9qyCPjea1pNSbXIKxvZZdIb2HyHtGO
- q1v/dltlD2bJ/Przef1hjs1cwAcCCHPwIAXaAw9I+Ntgknd3G105SnFR5kL679lideFKQNatfQp
- I8aIb25KRN4+YQTVhdWXaReKh1yv4NVEeI3xKwpuI=
-X-Received: by 2002:a05:600c:46cf:b0:431:58bc:ad5e with SMTP id
- 5b1f17b1804b1-4327b80c8bamr31313555e9.28.1730397170098; 
- Thu, 31 Oct 2024 10:52:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHFVRilZ/WGc/Jk37hYCkpBL7vnxcMIuV+FGyMJlBZaErCn/Zsx6+8Osyi0Gg9+0fuWZhseg==
-X-Received: by 2002:a05:600c:46cf:b0:431:58bc:ad5e with SMTP id
- 5b1f17b1804b1-4327b80c8bamr31313445e9.28.1730397169728; 
- Thu, 31 Oct 2024 10:52:49 -0700 (PDT)
+ bh=DpiS+KiNNyocJM5727DUTMhKbqIwBGE9ctY55O9ci58=;
+ b=rCOWlS9+jqDPc/XQZ9xUeLDS2gIXwtQSKYqg5HNQhAb1GFQsqSc9S4VU4g5piTDOCv
+ 7xZl4WDOjgodljaTA9jCdhmRKixLwfvnmfN96+DMWIxyImfkNdwO5vOuh3mpbXpn8d1e
+ BrfhE70UQhWdha8rVPWfazi6p+vBbLqxTePd0jlCNflDbPJ7oEt2KIHa1UrY/dzpRxiY
+ d+UU0no93d5uX7wUrbHAu9NjEGFN189unDEFR5OhUUT1M3UGGzmv1pSlHCq85RgJnVbA
+ hOW/JTRNcum29SkOTVQ4VmqWbbrpHrra2Jsie1zE6hn22PhA5MWClVT+P8UtKAzU4HDx
+ qVkQ==
+X-Gm-Message-State: AOJu0Yx5k6rSJ4P+lCNph+MHr0/i5YINeMTnsLr5W2R2qelzn2T+weeV
+ EUf47zt82YNywmnTH6VFRblSsbHcCw/B6VcBocPs/AJ1DLWksVfKF/efwxMjMv0P+u6BUgjVoTj
+ fei9WOGDVYAMX0FeL6X7c+wq551ja2uwV1R9LK+S4RI0J9mA79Jll7qOEHL8xaQSHaBH3ED/QLZ
+ dPoaeT7EQCBM/YCli8W9vvG5GcbeGHkieQWrIQlxU=
+X-Received: by 2002:a05:6512:3f0c:b0:53b:1369:fcf8 with SMTP id
+ 2adb3069b0e04-53b348f96e8mr10899435e87.15.1730397172324; 
+ Thu, 31 Oct 2024 10:52:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwbJA4137dp2Sc2D3hAYP1y+mVnSFK2dyKTePpGMInfTY4234jZwc1i8B0a+YxVuDXyNgb4g==
+X-Received: by 2002:a05:6512:3f0c:b0:53b:1369:fcf8 with SMTP id
+ 2adb3069b0e04-53b348f96e8mr10899420e87.15.1730397171824; 
+ Thu, 31 Oct 2024 10:52:51 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7b97sm2817710f8f.2.2024.10.31.10.52.47
+ 5b1f17b1804b1-431bd9ca747sm64005985e9.45.2024.10.31.10.52.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:47 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/49] qom: allow user-creatable classes to be in modules
-Date: Thu, 31 Oct 2024 18:51:39 +0100
-Message-ID: <20241031175214.214455-16-pbonzini@redhat.com>
+Cc: Babu Moger <babu.moger@amd.com>
+Subject: [PULL 16/49] target/i386: Fix minor typo in NO_NESTED_DATA_BP feature
+ bit
+Date: Thu, 31 Oct 2024 18:51:40 +0100
+Message-ID: <20241031175214.214455-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
@@ -100,44 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no real reason to make user-creatable classes different
-from other backends in this respect.  This also allows modularized
-character devices to be treated by qom-list-properties just like
-builtin ones.
+From: Babu Moger <babu.moger@amd.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Rename CPUID_8000_0021_EAX_No_NESTED_DATA_BP to
+       CPUID_8000_0021_EAX_NO_NESTED_DATA_BP.
+
+No functional change intended.
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Link: https://lore.kernel.org/r/a6749acd125670d3930f4ca31736a91b1d965f2f.1729807947.git.babu.moger@amd.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qom/object_interfaces.c | 2 +-
- qom/qom-qmp-cmds.c      | 2 +-
+ target/i386/cpu.h | 2 +-
+ target/i386/cpu.c | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index 1f2aa133066..1a6f29c053e 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -90,7 +90,7 @@ Object *user_creatable_add_type(const char *type, const char *id,
-         return NULL;
-     }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 74886d1580f..9eb45faa654 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1014,7 +1014,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_8000_0008_EBX_AMD_PSFD    (1U << 28)
  
--    klass = object_class_by_name(type);
-+    klass = module_object_class_by_name(type);
-     if (!klass) {
-         error_setg(errp, "invalid object type: %s", type);
-         return NULL;
-diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-index 69a8e17aa80..46e4562300c 100644
---- a/qom/qom-qmp-cmds.c
-+++ b/qom/qom-qmp-cmds.c
-@@ -186,7 +186,7 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
-     ObjectPropertyIterator iter;
-     ObjectPropertyInfoList *prop_list = NULL;
- 
--    klass = object_class_by_name(typename);
-+    klass = module_object_class_by_name(typename);
-     if (klass == NULL) {
-         error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
-                   "Class '%s' not found", typename);
+ /* Processor ignores nested data breakpoints */
+-#define CPUID_8000_0021_EAX_No_NESTED_DATA_BP    (1U << 0)
++#define CPUID_8000_0021_EAX_NO_NESTED_DATA_BP    (1U << 0)
+ /* LFENCE is always serializing */
+ #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
+ /* Null Selector Clears Base */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1ff1af032ea..94faff83cd8 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5226,7 +5226,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
+             CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
+         .features[FEAT_8000_0021_EAX] =
+-            CPUID_8000_0021_EAX_No_NESTED_DATA_BP |
++            CPUID_8000_0021_EAX_NO_NESTED_DATA_BP |
+             CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
+             CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
+             CPUID_8000_0021_EAX_AUTO_IBRS,
 -- 
 2.47.0
 
