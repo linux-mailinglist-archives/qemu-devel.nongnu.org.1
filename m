@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22FF9B735B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDE19B7366
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MGK-0007Ma-6B; Wed, 30 Oct 2024 23:54:20 -0400
+	id 1t6MOC-0008R6-2h; Thu, 31 Oct 2024 00:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MGI-0007MM-Sc
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:18 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MNq-00085B-Ac
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:02:09 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MGG-0003wU-Je
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:18 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-539f72c913aso785961e87.1
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MNo-0004iu-Ae
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:02:05 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2fb5be4381dso3818221fa.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:02:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730346854; x=1730951654; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730347322; x=1730952122; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cNSOgPK/LUOornui0xSrRZ2dvpsKphrF5tK8UB5/hEY=;
- b=jFxBtlx2ocJdGw88JuXgu9hak8rEksHU8BeeshwhP22FA8pyih/wdJALRAG8fnrnzN
- MfN36MiyeHHj8XU1zNPx54EiwZTP0SnGqNtpXYe1PXn+MiZiPMB31/FBki9W2X61BQpx
- EL4e0slcs05sytkANyCXm5qkZz3mUekZYa9+DVBsksLhaN5t6yAK4uAGIMHQ0okkjcyK
- Da56L1YdvjHqcAM9bHg0qglr+SmDPDX2gaQ4K+GOXdAF2tws4v16SFyJAv+hruaOGl2A
- Hz1MeTWL/n6+6BRb4i2rmWQAijrDGJQFuTva3eo4MWWO/17lzh+x0xcTjC4x0HP2iAZc
- VGsA==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=X7eYAc6TdS7hLtLGSAnN7NlD5+j5bytNo++zI/J2PzE=;
+ b=nBBN1MHcnLeifddm20ttSKqmH892+gINGg21BdnEi4Y7s1f0tMAYTITvymw7JBhEIE
+ MTNV3DAncjWhID5+E14W8jRFr/BDvfiTXpZx1F+maQhbFw50er+ZVTdh23ZicvcYWyat
+ oKOIhk4jJZ1Ty77ijp0kbn94oQFsAx5iRr8XtrUMHG5EYc9zQitUedeH6DaMEnRcJLaA
+ 8e6M1gfb/VNxg3rvOGgaaPQ6GafbRNjrieUrceX9tPLADQIgL0+QPL2x/k396IgmM9ZV
+ ItMWiSodPU0rkm47Eutf14NpxfKhtOowgO1DsNjxRhbyi3xjLpkYxWPLGTQ3PBeE7GnS
+ tfYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346854; x=1730951654;
+ d=1e100.net; s=20230601; t=1730347322; x=1730952122;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cNSOgPK/LUOornui0xSrRZ2dvpsKphrF5tK8UB5/hEY=;
- b=OkAyjasMhbgUEa1Dwue5it+4B5n8ZNSp9OYw6VLWmMtXd4AxwiRabRnfbilseSDZLM
- fxP2APbIfKCqyVvJ9o8qqoxeZsJDkmSQiEVyUyKW4J083ZwUC9boiuFFrVLuPgVPlsrb
- W159V0aDAU8K3IH/QUYLyOm7Lg0RCCyjhp/nJpjktnwcptLIjlAxPAXSWnI3FvOj1tlI
- mmXfVhs17PhkbDo2ekJ3JDpJYOkpe28aJ8nxwaH4g2wqDjOr3hUEnbt+MU2QxjWVVskk
- 3ZiGX3BLY4RN7V0IBJ7dOaCSuwbg+LO4W/TqbNtgnnHxcJ8OFocj6tR/q8pY5H5BMDrp
- GUcg==
-X-Gm-Message-State: AOJu0Yyk7FTC/MJspNZ06F3wYkOEAqLtGiRMIEU2os8YvF1Cz5hosZPU
- gK03gZl8oKM1COVXpTlBnJ4n9iDK9ljE1FFZRo+q/OzfzqrJ5zg50J7RfgqZaWggIFiXRC7Pn0T
- W
-X-Google-Smtp-Source: AGHT+IEUAe7DSdkllbC9uM0SBKBzVKpcvUAX5zSFXs9WsHupPUQWRPwY3mJX1Bfq0sjFbZJx26Ztkg==
-X-Received: by 2002:a05:6512:1324:b0:539:f807:ada1 with SMTP id
- 2adb3069b0e04-53b34c463c1mr7155464e87.58.1730346854187; 
- Wed, 30 Oct 2024 20:54:14 -0700 (PDT)
+ bh=X7eYAc6TdS7hLtLGSAnN7NlD5+j5bytNo++zI/J2PzE=;
+ b=h3CZ0B1bXtsOQGI4cRTuUCfwD1aCQWBHCx0/kv6p+AHOrODYfkkOpfRr0bqMj5kBAk
+ AkWQe1Dn4i0YYuwlVV5qtJJHvFvO64se3foAzddYI6EgPD0YZQfGLib/YN9To6INcztR
+ JuOEX8/Y6gDmm2WGgR7s8LSioZBVIag46puvTTBhF2Va5Rp45+xsWsnIB/8CegAIolau
+ cpUnHv0jaNG8xQqZbPx0kquZpcMh+DuKWGJ8at8bPGtvDovwRQHvK+7xTJb3NSrKoAWi
+ vtEon0xdWbYOK1Fe1pDgx/T+zm2TUl2s+/4joukqlntVQh840MlbcIuo1o8avj+aUuUC
+ YwJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV5DuJ0tfO1LBZqjJ+s2V6y3wxawYC6eSTybqOEX0NaZLCoI9xa1Ui+3MrVa2naBcOD5J4kG0LMTeRR@nongnu.org
+X-Gm-Message-State: AOJu0YxDMPEVj4rKPt8QY/J2tnCzHrhY8oL0eMk/HuL/l9u14RsGtUIC
+ ocD9lrqAnq8E9tpDu4lHW1NSi6PH7gOVb0aLhuJP7rr6FixgpCJhYC8yszTc1H8eibDDzL1w7if
+ C
+X-Google-Smtp-Source: AGHT+IF5fSXPPPmU1w2gas2P7MoebE3Nkga2aFryq4ON0bhR90KFQNwbLFonxwkFM63f0oScchR9aw==
+X-Received: by 2002:a2e:701:0:b0:2f7:7ef7:7434 with SMTP id
+ 38308e7fff4ca-2fcbe095e65mr73007481fa.37.1730347321956; 
+ Wed, 30 Oct 2024 21:02:01 -0700 (PDT)
 Received: from [192.168.21.226] ([91.223.100.208])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53c7bc95998sm73215e87.24.2024.10.30.20.54.10
+ 38308e7fff4ca-2fdef3beb5asm931541fa.6.2024.10.30.21.01.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Oct 2024 20:54:13 -0700 (PDT)
-Message-ID: <eeed4a8d-d0e1-491a-8c24-665f5e531ab3@linaro.org>
-Date: Thu, 31 Oct 2024 00:54:07 -0300
+ Wed, 30 Oct 2024 21:02:00 -0700 (PDT)
+Message-ID: <25228ae2-eaaa-4693-9668-a42e91529446@linaro.org>
+Date: Thu, 31 Oct 2024 01:01:52 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] target/mips: Convert Loongson LEXT opcodes to
- decodetree
-To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-References: <20241026175349.84523-1-philmd@linaro.org>
+Subject: Re: [PATCH 2/2] crypto: perform runtime check for hash/hmac support
+ in gcrypt
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20241030101150.3023300-1-berrange@redhat.com>
+ <20241030101150.3023300-3-berrange@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241026175349.84523-1-philmd@linaro.org>
+In-Reply-To: <20241030101150.3023300-3-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,18 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/10/24 14:53, Philippe Mathieu-Daudé wrote:
+On 30/10/24 07:11, Daniel P. Berrangé wrote:
+> gcrypto has the ability to dynamically disable hash/hmac algorithms
+> at runtime, so QEMU must perform a runtime check.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   crypto/hash-gcrypt.c | 2 +-
+>   crypto/hmac-gcrypt.c | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
 
-> Philippe Mathieu-Daudé (9):
->    target/mips: Extract decode_64bit_enabled() helper
->    target/mips: Simplify Loongson MULTU.G opcode
->    target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
->    target/mips: Convert Loongson DDIV.G opcodes to decodetree
->    target/mips: Convert Loongson DIV.G opcodes to decodetree
->    target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
->    target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
->    target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
->    target/mips: Remove unreachable 32-bit code on 64-bit Loongson Ext
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Series queued.
 
