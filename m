@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066189B8216
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA749B81C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:55:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZP3-000827-Uw; Thu, 31 Oct 2024 13:56:14 -0400
+	id 1t6ZM5-0000Q9-UY; Thu, 31 Oct 2024 13:53:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZOm-0007rJ-IA
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:55:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t6ZLs-00005S-TH
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZOj-0007r6-36
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:55:56 -0400
+ id 1t6ZLq-0007J6-R5
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397351;
+ s=mimecast20190719; t=1730397173;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d/tt1SqqlB8D25bYmN5xYX/10Qo5xVW9NDVEd5fn2uc=;
- b=Si06bMlzRIw7YsCwfhuoqh9wUfqQBzODRp9wxmC+cogRDv5HYWL1uYcg8kroLU8XrOly5q
- UMXbijEExjo3C6uxE3T83bRyNO8lv/Ot7Rlray0KJYQZ8yZ5VN9PUvPdilfCqwAiUWIiyg
- +W4E6RsDVzXPF72D6SfG+GTWFEzZma4=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VAf9Rw9T2ciU5LDleiHhXlQ4Sh6dCoA/J7BuqxW01SY=;
+ b=gIkdRZ7ZUGWg5Pk+X9wejFnYiUTE9vbt8BB6g+IAjAurXFMQRPx/fwzbXrGE7R7mouDADN
+ mHtwZfxoS+SHSAO+lMe+N6+m7xivTVHqSb/bbs/P1cXF2zNtGE91puwOepv07zq+CX5s+S
+ N1YOw44L1tuRG0T3W6Je/5pR2cgg3ws=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-smfmtXyhMG-9BKuhus3L-Q-1; Thu, 31 Oct 2024 13:52:49 -0400
-X-MC-Unique: smfmtXyhMG-9BKuhus3L-Q-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-539e13b8143so1297822e87.0
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:49 -0700 (PDT)
+ us-mta-219-PZxhPfgJPruU6pY3SzE7uQ-1; Thu, 31 Oct 2024 13:52:52 -0400
+X-MC-Unique: PZxhPfgJPruU6pY3SzE7uQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43157cff1d1so8657995e9.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397167; x=1731001967;
+ d=1e100.net; s=20230601; t=1730397170; x=1731001970;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d/tt1SqqlB8D25bYmN5xYX/10Qo5xVW9NDVEd5fn2uc=;
- b=TCbXekujd7vfk2JJOwRkDZpH/imt/ngax9xAiPC9sMHNYtUjcgffQbdDwh/OURO+Px
- NoJONSAVoz2laN0zphovyUrOFe015Qjh5J+pykwuqmDfcGuvjYpkE1zjm1hJU8xk9crZ
- Xt68cPetusLvUYmViHVJVvgKXprsmfViii9p+xrR66eS1OgekRr92PXGArSkcz59B8oZ
- qYYtNK+Ldy55pheYLt9Xce4JXU+GQzK1NZ9O+YPJGqmqKITRsJxYtcykGtXLEVSp8zC0
- P2DTE5NCv84kINnSg8tPElqPLBIJXl1JXpeprIjFOsp5glImSAAdVnOQCS84dV7ZPaAG
- upKQ==
-X-Gm-Message-State: AOJu0YyoRolrhXx9vchluQ5Mvy1ASLkN1VuYU4SPKHyoW2uqqJVt0plL
- hg2i74ntVkIEa0tas7TGY49xvi0aRx0jfC64+7xncfW1eR6qKpMM0O7j5gWC1r2xUWyFxOYt+Dh
- AMn656hWkUplgWxEjZG/qBFc9EldXU2mMCUoWqBa/rVeJzXbI6RVJo4TYNr9wM8Y2dkTKeUVW17
- 0S0ADxiAGEzpdd8+5SoQOo37s0IxZS7YibIi0qzd8=
-X-Received: by 2002:a05:6512:2211:b0:539:fcf9:6326 with SMTP id
- 2adb3069b0e04-53c79e159c2mr2595768e87.6.1730397167176; 
- Thu, 31 Oct 2024 10:52:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKmtxxF0OpvT1OXJnK39G4TArnNRvO75s6fpV2sNE76ySrbKp/qr0z0YUXcPR9BUZd1LBhCg==
-X-Received: by 2002:a05:6512:2211:b0:539:fcf9:6326 with SMTP id
- 2adb3069b0e04-53c79e159c2mr2595750e87.6.1730397166589; 
- Thu, 31 Oct 2024 10:52:46 -0700 (PDT)
+ bh=VAf9Rw9T2ciU5LDleiHhXlQ4Sh6dCoA/J7BuqxW01SY=;
+ b=SiR+NqRBJ74PzVly1SCTx6S2Ol4B60UZE0NZSkDY475lG7r0Je0HokUvEXtyfTf9PY
+ e2iH+m8tbTiJRFUtGtPhOP/vVkwbHZCWdWeZwoTTi8xDGeA6j7NaM7OEmh5BnFZV0WaO
+ 2e7f2qsA8BYq4YucENVSBbo47HKXuSF+6tfd++6Yc227mQm5A0NrHhfi+IZ43uL6h0yK
+ N5shhlYBy0LmHEaijsVid4iCs1hAG4r/cIpmLLWsqZckkqggC3pbex1kQwFoa35FRSAk
+ IyhVGAaWEmWcpp8ta5MVWH+z8KK4KcckRJQDcJOn/0dFbiJcxor5/gi1BFx4LzcHvIPJ
+ yaUw==
+X-Gm-Message-State: AOJu0Yym7pmimcEViklNCWVbC7wLdLxbH7rK2SitPtGovoLBAX8a65no
+ FT3mDJNWrx5/wsrw+dmDtNG6wgiZSsDBW+ugslaHdvPtY9qyCPjea1pNSbXIKxvZZdIb2HyHtGO
+ q1v/dltlD2bJ/Przef1hjs1cwAcCCHPwIAXaAw9I+Ntgknd3G105SnFR5kL679lideFKQNatfQp
+ I8aIb25KRN4+YQTVhdWXaReKh1yv4NVEeI3xKwpuI=
+X-Received: by 2002:a05:600c:46cf:b0:431:58bc:ad5e with SMTP id
+ 5b1f17b1804b1-4327b80c8bamr31313555e9.28.1730397170098; 
+ Thu, 31 Oct 2024 10:52:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHFVRilZ/WGc/Jk37hYCkpBL7vnxcMIuV+FGyMJlBZaErCn/Zsx6+8Osyi0Gg9+0fuWZhseg==
+X-Received: by 2002:a05:600c:46cf:b0:431:58bc:ad5e with SMTP id
+ 5b1f17b1804b1-4327b80c8bamr31313445e9.28.1730397169728; 
+ Thu, 31 Oct 2024 10:52:49 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7a9esm2807084f8f.21.2024.10.31.10.52.45
+ ffacd0b85a97d-381c10b7b97sm2817710f8f.2.2024.10.31.10.52.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:46 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/49] qom: let object_new use a module if the type is not
- present
-Date: Thu, 31 Oct 2024 18:51:38 +0100
-Message-ID: <20241031175214.214455-15-pbonzini@redhat.com>
+Subject: [PULL 15/49] qom: allow user-creatable classes to be in modules
+Date: Thu, 31 Oct 2024 18:51:39 +0100
+Message-ID: <20241031175214.214455-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,60 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-object_initialize() can use modules (it was added there because
-virtio-gpu-device is a child device of virtio-gpu-pci; commit
-64f7aece8ea, "object_initialize: try module load", 2020-09-15).
-object_new() cannot; make things consistent.
-
-qdev_new() is now just a simple wrapper that returns DeviceState.
+There is no real reason to make user-creatable classes different
+from other backends in this respect.  This also allows modularized
+character devices to be treated by qom-list-properties just like
+builtin ones.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/core/qdev.c | 16 ----------------
- qom/object.c   |  2 +-
- 2 files changed, 1 insertion(+), 17 deletions(-)
+ qom/object_interfaces.c | 2 +-
+ qom/qom-qmp-cmds.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 2f740fa55e9..5f13111b77c 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -146,22 +146,6 @@ bool qdev_set_parent_bus(DeviceState *dev, BusState *bus, Error **errp)
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index 1f2aa133066..1a6f29c053e 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -90,7 +90,7 @@ Object *user_creatable_add_type(const char *type, const char *id,
+         return NULL;
+     }
  
- DeviceState *qdev_new(const char *name)
- {
--    ObjectClass *oc = object_class_by_name(name);
--#ifdef CONFIG_MODULES
--    if (!oc) {
--        int rv = module_load_qom(name, &error_fatal);
--        if (rv > 0) {
--            oc = object_class_by_name(name);
--        } else {
--            error_report("could not find a module for type '%s'", name);
--            exit(1);
--        }
--    }
--#endif
--    if (!oc) {
--        error_report("unknown type '%s'", name);
--        abort();
--    }
-     return DEVICE(object_new(name));
- }
+-    klass = object_class_by_name(type);
++    klass = module_object_class_by_name(type);
+     if (!klass) {
+         error_setg(errp, "invalid object type: %s", type);
+         return NULL;
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index 69a8e17aa80..46e4562300c 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -186,7 +186,7 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
+     ObjectPropertyIterator iter;
+     ObjectPropertyInfoList *prop_list = NULL;
  
-diff --git a/qom/object.c b/qom/object.c
-index 29155c64639..9edc06d391f 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -790,7 +790,7 @@ Object *object_new_with_class(ObjectClass *klass)
- 
- Object *object_new(const char *typename)
- {
--    TypeImpl *ti = type_get_by_name_noload(typename);
-+    TypeImpl *ti = type_get_or_load_by_name(typename, &error_fatal);
- 
-     return object_new_with_type(ti);
- }
+-    klass = object_class_by_name(typename);
++    klass = module_object_class_by_name(typename);
+     if (klass == NULL) {
+         error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
+                   "Class '%s' not found", typename);
 -- 
 2.47.0
 
