@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDE19B7366
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 246359B7369
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MOC-0008R6-2h; Thu, 31 Oct 2024 00:02:28 -0400
+	id 1t6MQm-0003do-Dd; Thu, 31 Oct 2024 00:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MNq-00085B-Ac
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:02:09 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t6MQe-0003bT-Uc
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:00 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6MNo-0004iu-Ae
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:02:05 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2fb5be4381dso3818221fa.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:02:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t6MQc-0004pL-CM
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:04:59 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2e2dc61bc41so372645a91.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730347322; x=1730952122; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=X7eYAc6TdS7hLtLGSAnN7NlD5+j5bytNo++zI/J2PzE=;
- b=nBBN1MHcnLeifddm20ttSKqmH892+gINGg21BdnEi4Y7s1f0tMAYTITvymw7JBhEIE
- MTNV3DAncjWhID5+E14W8jRFr/BDvfiTXpZx1F+maQhbFw50er+ZVTdh23ZicvcYWyat
- oKOIhk4jJZ1Ty77ijp0kbn94oQFsAx5iRr8XtrUMHG5EYc9zQitUedeH6DaMEnRcJLaA
- 8e6M1gfb/VNxg3rvOGgaaPQ6GafbRNjrieUrceX9tPLADQIgL0+QPL2x/k396IgmM9ZV
- ItMWiSodPU0rkm47Eutf14NpxfKhtOowgO1DsNjxRhbyi3xjLpkYxWPLGTQ3PBeE7GnS
- tfYQ==
+ d=linaro.org; s=google; t=1730347496; x=1730952296; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LIqRYMniRHSpc4jxRLdABFuGNlRPDwzw9GuJDNkhcRs=;
+ b=dv2TOKsbRyLtmnQwN+rCn+xvon0AIKmlrc8M2/U3tSpldd0To9Ez6t1DHaHAgm/U2G
+ 9xPVsyJ/qQ8De8QGyvNkWe0msiud41dvTLzPV25QTQcDCJK+82IsWvltJc0IIqINVwnw
+ NWmOLIK0kKL3cbWrezDXvPRhoFCAVLClBdlksX/Rl42WIEqD0g4vedemOZfTm4njtoCu
+ KAsErnuu6uDB8BD6Ar7pDO6YnCrc0OprdtrzjSx0XifDmSFT/o1lT3ANQyEpV7g3zTJH
+ ZFQiP0C74a9iAyyv1kmZbhuGkTlUxD1Y7SqE2v9a10z1kJDGC0HStvTFp8tW+zP/f1Pg
+ 8e8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730347322; x=1730952122;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X7eYAc6TdS7hLtLGSAnN7NlD5+j5bytNo++zI/J2PzE=;
- b=h3CZ0B1bXtsOQGI4cRTuUCfwD1aCQWBHCx0/kv6p+AHOrODYfkkOpfRr0bqMj5kBAk
- AkWQe1Dn4i0YYuwlVV5qtJJHvFvO64se3foAzddYI6EgPD0YZQfGLib/YN9To6INcztR
- JuOEX8/Y6gDmm2WGgR7s8LSioZBVIag46puvTTBhF2Va5Rp45+xsWsnIB/8CegAIolau
- cpUnHv0jaNG8xQqZbPx0kquZpcMh+DuKWGJ8at8bPGtvDovwRQHvK+7xTJb3NSrKoAWi
- vtEon0xdWbYOK1Fe1pDgx/T+zm2TUl2s+/4joukqlntVQh840MlbcIuo1o8avj+aUuUC
- YwJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV5DuJ0tfO1LBZqjJ+s2V6y3wxawYC6eSTybqOEX0NaZLCoI9xa1Ui+3MrVa2naBcOD5J4kG0LMTeRR@nongnu.org
-X-Gm-Message-State: AOJu0YxDMPEVj4rKPt8QY/J2tnCzHrhY8oL0eMk/HuL/l9u14RsGtUIC
- ocD9lrqAnq8E9tpDu4lHW1NSi6PH7gOVb0aLhuJP7rr6FixgpCJhYC8yszTc1H8eibDDzL1w7if
- C
-X-Google-Smtp-Source: AGHT+IF5fSXPPPmU1w2gas2P7MoebE3Nkga2aFryq4ON0bhR90KFQNwbLFonxwkFM63f0oScchR9aw==
-X-Received: by 2002:a2e:701:0:b0:2f7:7ef7:7434 with SMTP id
- 38308e7fff4ca-2fcbe095e65mr73007481fa.37.1730347321956; 
- Wed, 30 Oct 2024 21:02:01 -0700 (PDT)
-Received: from [192.168.21.226] ([91.223.100.208])
+ d=1e100.net; s=20230601; t=1730347497; x=1730952297;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LIqRYMniRHSpc4jxRLdABFuGNlRPDwzw9GuJDNkhcRs=;
+ b=Bj1/JCedOFZRP+i4aWnvc4dFWYxRq9ztjQoIV5QnQHIa/uKGc1aBW57gNdEu/LzBqz
+ wjzXiNwNED6LmtQUF4XtvQsi1pLqqIMM++FxITY/E4lo65JV2YKvkKEOX/iCnXLhmQwg
+ FRQyOMxJSBVAgYqcNJ+47ILZdYFLwLVuwX0gQuBW9XnmDqpof2mR6i/oWTAfBsyfO8y9
+ abhruDtBc0vMSuuRxNW6dD9teaWGttrzd7LO/IuYcdL9HBhyaCfLvGTzq0STXwxqBJKF
+ 5Er8JAe0iSBnPCPbTwFyWwIAr5WjA1I7h+G/JDL6I/DBUQOJpGbnoCaqp/+v/OhtX2v7
+ iASg==
+X-Gm-Message-State: AOJu0YyDR7IUMcT3sCzY4iE/xNCttylLLcFNVnem+G5X9SRO1swIWtmt
+ PA7uzQcSAUnYZZ+Qn42eWSgSTBoJfkvg2zqV6thkGZFl9wnWkzlBu2J0zJGjEm7hbWwhguU8tGk
+ FNg8OAQ==
+X-Google-Smtp-Source: AGHT+IEx/enbsSncgD3k2F4sNV+xavjywTPy2Pi+MDfNhAeb5O5v7M2rUt1urELEHLGVAZaesBi/hw==
+X-Received: by 2002:a17:90b:3e84:b0:2e2:b719:d581 with SMTP id
+ 98e67ed59e1d1-2e8f0f53db8mr20061860a91.5.1730347496436; 
+ Wed, 30 Oct 2024 21:04:56 -0700 (PDT)
+Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2fdef3beb5asm931541fa.6.2024.10.30.21.01.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Oct 2024 21:02:00 -0700 (PDT)
-Message-ID: <25228ae2-eaaa-4693-9668-a42e91529446@linaro.org>
-Date: Thu, 31 Oct 2024 01:01:52 -0300
+ 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Oct 2024 21:04:56 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 00/12] Enable building plugins on Windows with Clang
+Date: Wed, 30 Oct 2024 21:04:14 -0700
+Message-Id: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] crypto: perform runtime check for hash/hmac support
- in gcrypt
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-References: <20241030101150.3023300-1-berrange@redhat.com>
- <20241030101150.3023300-3-berrange@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241030101150.3023300-3-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,16 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/10/24 07:11, Daniel P. Berrangé wrote:
-> gcrypto has the ability to dynamically disable hash/hmac algorithms
-> at runtime, so QEMU must perform a runtime check.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   crypto/hash-gcrypt.c | 2 +-
->   crypto/hmac-gcrypt.c | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+For now, it was only possible to build plugins using GCC on Windows. However,
+windows-aarch64 only supports Clang.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The first patches (already posted and normally pulled) are fixes and
+prerequisite to build plugins with meson. They are integrated here because it's
+not possible to have two based-on in the cover letter.
+
+Then, we fix compilation warnings on Windows.
+After that, we can enable linking with Clang on Windows.
+
+Finally, we enhanced the plugin symbols export list (automatically generated,
+and not a static file), and we report some of the information we discovered on
+the path in the documentation.
+
+Built and tested on Windows (all msys env)/Linux/MacOS for x86_64 and aarch64
+hosts.
+
+Pierrick Bouvier (12):
+  scripts: remove erroneous file that breaks git clone on Windows
+  contrib/plugins/cflow: fix warning
+  meson: build contrib/plugins with meson
+  contrib/plugins: remove Makefile for contrib/plugins
+  qga: fix -Wsometimes-uninitialized windows warning
+  qga: fix missing static and prototypes windows warnings
+  win32: use compiler option instead of attribute gcc_struct
+  plugins: enable linking with clang/lld
+  plugins: add missing export for qemu_plugin_num_vcpus
+  plugins: detect qemu plugin API symbols from header
+  plugins: eradicate qemu-plugins.symbols static file
+  docs: add information on how to setup build environments
+
+ MAINTAINERS                               |   1 +
+ docs/about/build-platforms.rst            |   4 +-
+ docs/devel/build-system.rst               | 100 ++++++++++++++++++++++
+ configure                                 |  18 ----
+ Makefile                                  |  10 ---
+ meson.build                               |  14 ++-
+ include/qemu/compiler.h                   |   7 +-
+ include/qemu/qemu-plugin.h                |   1 +
+ subprojects/libvhost-user/libvhost-user.h |   6 +-
+ contrib/plugins/cflow.c                   |   6 +-
+ qga/commands-windows-ssh.c                |   2 +-
+ contrib/plugins/Makefile                  |  87 -------------------
+ contrib/plugins/meson.build               |  28 ++++++
+ plugins/meson.build                       |  36 ++++++--
+ plugins/qemu-plugins.symbols              |  59 -------------
+ qga/vss-win32/install.cpp                 |   6 +-
+ qga/vss-win32/provider.cpp                |   5 +-
+ qga/vss-win32/requester.cpp               |   8 +-
+ scripts/meson-buildoptions.               |   0
+ scripts/qemu-plugin-symbols.py            |  45 ++++++++++
+ tests/tcg/plugins/meson.build             |   3 +-
+ 21 files changed, 238 insertions(+), 208 deletions(-)
+ delete mode 100644 contrib/plugins/Makefile
+ create mode 100644 contrib/plugins/meson.build
+ delete mode 100644 plugins/qemu-plugins.symbols
+ delete mode 100644 scripts/meson-buildoptions.
+ create mode 100755 scripts/qemu-plugin-symbols.py
+
+-- 
+2.39.5
 
 
