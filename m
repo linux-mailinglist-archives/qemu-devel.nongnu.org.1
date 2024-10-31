@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739A89B8214
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FF69B8230
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:06:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZO3-00069N-ML; Thu, 31 Oct 2024 13:55:11 -0400
+	id 1t6ZYU-0004qd-Jw; Thu, 31 Oct 2024 14:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZN4-0003Bk-3Q
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZN2-0007Un-Lf
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397248;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=psVFGgFhVUbUQBk/PeikeiUyvdkwchfRV6l+warlRyo=;
- b=eEptYj4UatyAGBZWALoWn13Ztlj6zJBys5EGwsZ5DnVHReuf/FBQ8xY467F1J5gM24tMmE
- x1mtUOGY7d2fSBHw0QphDZUVlSRX9MxQI8DNeNAkqx8cfcNrf8i8xl9d9vYt6RVwiLyUHa
- byF/IYVKSE1nujDzGbjr6g5N/k/m15c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-x0RtH86MMHyWh3VpeWzpwg-1; Thu, 31 Oct 2024 13:54:07 -0400
-X-MC-Unique: x0RtH86MMHyWh3VpeWzpwg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4314a22ed8bso8565325e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:54:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t6ZYS-0004n4-Fv
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 14:05:56 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1t6ZYQ-0000Xn-ST
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 14:05:56 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20cbb1cf324so10074365ad.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 11:05:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730397953; x=1731002753; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h9oPZAZniln+PAgrYPVd6iEPVhV25QEZ3fIV7f9+xgk=;
+ b=uAdoQ2gNrybaNKMvQaTdIf6xFxqSd4+tA/ksPaMczw4+DklpxtWEe8o1LopdccfXjU
+ a2LVCcYcIKzcPUucIhkdKVNzocATkrP0d0I78uJVVe9WfjPllBKYjXxSr8fFsWqoJb+c
+ tkg+Nez7ZUnXg6r/Q2mfujfLTK8KOmPQxJg6eGFn2fN6PxsTrPUKXkaIyS4FYkWIjqMj
+ aWtP+8JBpZMpjQcSvCmyBVBpZfIvG4T6nLqQA6FZMqgKrC23deAl4jLa4b40aoyRmdUN
+ jpNe0zFdUE/sRwMGR3Wrer8E1j9gAuhG8WEk7Z5OTR26eU2EBgSv/yMC64EpT51FUGZO
+ ZJLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397245; x=1731002045;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=psVFGgFhVUbUQBk/PeikeiUyvdkwchfRV6l+warlRyo=;
- b=EHLxc7opt1A+SE4Rmtp5d+zvdjGpwsilqV7FSGqW8l/mgvkujVSjsMtZbZW3O/JGQj
- QdHUK8UxFeUO2HMEjvNH4BBXGpSZ0e4MxuxhNomoZA6K0s7kDgfHcwYlXQ5tDWwlGNc9
- mhr9m9cOWSP9pNfJR8SjQQz5/9da/prbr2hd//ost/daqZ/weOkpBEgg6Cm1GMINN0rp
- dBKxVHPfA2VMNASi8xtkdRJgUYYPJBJZ6rnhRTT49iuXwQ7Zt0AzIWTVDiZVyMMp2CPM
- e7hz1KVXILZ/jv9FpgXTJ3Uc7PIlb9tdiB7TB85Y80Qn4bXT4GkLX8DYSZeLmr7x0yEC
- Rtfw==
-X-Gm-Message-State: AOJu0Ywpar8hCIeY8sX0uvuCt29+STUv5MRZTBSjaXalVnFw+LNFyRGx
- asFFgJGf390onFxkGOHi+t3ZeHIuz5Tc0/4ak0aSbA6uFO3sICVHe49cjYKfA36VuwQ3SOVYDQV
- sht9mf2iayz720VQDd55qXMy/LXS6REIdELD4RqMCHNP6uAZfSnTvF5Gokv4NrBvmBoMCU70WUi
- E7xhzo7rCNqjCMwZ0haG20zFB1650w/jvsnSLDurU=
-X-Received: by 2002:a05:600c:1c04:b0:431:5bf2:2d4 with SMTP id
- 5b1f17b1804b1-4327b8000efmr40936855e9.29.1730397245047; 
- Thu, 31 Oct 2024 10:54:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcxMLpMdKP6qtulA2lscBoYWViQjYyiT/pIjgB/nzl3wnqTEUAz36pxezAntnuf0C1oH0Yyg==
-X-Received: by 2002:a05:600c:1c04:b0:431:5bf2:2d4 with SMTP id
- 5b1f17b1804b1-4327b8000efmr40936685e9.29.1730397244541; 
- Thu, 31 Oct 2024 10:54:04 -0700 (PDT)
-Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7a9esm2809521f8f.21.2024.10.31.10.54.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:54:03 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Tao Su <tao1.su@linux.intel.com>, Xuelian Guo <xuelian.guo@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 49/49] target/i386: Introduce GraniteRapids-v2 model
-Date: Thu, 31 Oct 2024 18:52:13 +0100
-Message-ID: <20241031175214.214455-50-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
-References: <20241031175214.214455-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1730397953; x=1731002753;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h9oPZAZniln+PAgrYPVd6iEPVhV25QEZ3fIV7f9+xgk=;
+ b=G/ymzr+PKV5p7SsiS5hROIrU4X80WEgHVq4ouF9KS6F5T2iSfHxRex2u/nFTEc4G43
+ R2T0929kfff7tN1xSZpK+JGwNfKhfXmNMQrsXcqc+ATMoti8JAZc4SmggJ7kqLS4qCG3
+ YGeTPqGOS8J/wQlzsV0GDcL+VH/Roqj8klSetQOm9jAhbMFT6lbNV6nbE8nycd5DkPgT
+ F0aXqrLnmhUHsQlHVmux4S4sWcMFeVMeZkwAvQJkst6uci+dPPE/v0130j+SDCqV4FWz
+ mjhA8mvJRP+yB+unBRLukjHWAS2L57Po4KmtqnClt4n8Q4zcKVCWmfuMnxpjAcwq16Vi
+ zScg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUlwlOTHjGnohJ0H8L+eaILDtncLK97Pm6TByZwbJvxG22cskGF//lC4a96lpYHEaRkQqOXIieN9wDr@nongnu.org
+X-Gm-Message-State: AOJu0YyHDDi9rt+LFO98w1i4l2V2RiJGMEmczlNgB1ocIpepk2O5bN95
+ EJ5vZOugeGfF3XT3DZUeNLY6V9LX9jXP40zapzyxXRzfP87zzx/x/0ZJkHU9Bv8=
+X-Google-Smtp-Source: AGHT+IHMuCu577YawCps6GQpHbFIeyy48omL1MO+dx9d+ynldhNb82BmK6IOfouK9f56aQltHlhbZw==
+X-Received: by 2002:a17:902:c946:b0:20c:d1ec:aeb with SMTP id
+ d9443c01a7336-210c69e33c3mr241878325ad.21.1730397952813; 
+ Thu, 31 Oct 2024 11:05:52 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-211057d469bsm11116095ad.271.2024.10.31.11.05.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Oct 2024 11:05:52 -0700 (PDT)
+Message-ID: <ca5cbfa8-f729-41fe-89ec-4b7fa86ff790@linaro.org>
+Date: Thu, 31 Oct 2024 11:05:51 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts: remove erroneous file that breaks git clone on
+ Windows
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org
+References: <20241023073914.895438-1-pierrick.bouvier@linaro.org>
+ <02bf77ef-9136-4976-b961-ffb889ed1181@linaro.org>
+ <9ea39adf-e276-484e-9c92-b7db2019ace8@tls.msk.ru>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <9ea39adf-e276-484e-9c92-b7db2019ace8@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,51 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tao Su <tao1.su@linux.intel.com>
+On 10/31/24 04:01, Michael Tokarev wrote:
+> 29.10.2024 21:09, Pierrick Bouvier wrote:
+>> On 10/23/24 00:39, Pierrick Bouvier wrote:
+>>> This file was created by mistake in recent ed7667188 (9p: remove
+>>> 'proxy' filesystem backend driver).
+>>>
+>>> When cloning the repository using native git for windows, we see this:
+>>> Error: error: invalid path 'scripts/meson-buildoptions.'
+> 
+>> cc qemu-stable
+> 
+> Yeah, I noticed this patch already.  Thankfully, the mentioned
+> commit isn't in any released version yet (it's past 9.1), so
+> the wrong file doesn't need to be deleted in any stable series.
+> 
 
-Update GraniteRapids CPU model to add AVX10 and the missing features(ss,
-tsc-adjust, cldemote, movdiri, movdir64b).
+Thanks for checking this Michael.
 
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028024512.156724-7-tao1.su@linux.intel.com
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241031085233.425388-9-tao1.su@linux.intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> But thank you for caring for stable series, much appreciated!
+> 
+> /mjt
+> 
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7666a50bf06..3baa95481fb 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -4403,6 +4403,23 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-         .model_id = "Intel Xeon Processor (GraniteRapids)",
-         .versions = (X86CPUVersionDefinition[]) {
-             { .version = 1 },
-+            {
-+                .version = 2,
-+                .props = (PropValue[]) {
-+                    { "ss", "on" },
-+                    { "tsc-adjust", "on" },
-+                    { "cldemote", "on" },
-+                    { "movdiri", "on" },
-+                    { "movdir64b", "on" },
-+                    { "avx10", "on" },
-+                    { "avx10-128", "on" },
-+                    { "avx10-256", "on" },
-+                    { "avx10-512", "on" },
-+                    { "avx10-version", "1" },
-+                    { "stepping", "1" },
-+                    { /* end of list */ }
-+                }
-+            },
-             { /* end of list */ },
-         },
-     },
--- 
-2.47.0
-
+Regards,
+Pierrick
 
