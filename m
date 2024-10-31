@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37569B7A53
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 13:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF65E9B7A78
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 13:26:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6U35-0003Zc-55; Thu, 31 Oct 2024 08:13:11 -0400
+	id 1t6UEk-0005o8-28; Thu, 31 Oct 2024 08:25:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t6U33-0003YP-Nn
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:13:09 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1t6U2y-000510-MU
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:13:06 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-539f6e1f756so905252e87.0
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 05:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730376781; x=1730981581; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2eMWNaXkjORX+GkvdRZhTuaMZ7RsIVw64uLi9HVA9lU=;
- b=FHpprGQo36ElrIDDKCHV4o0Ds/7F4HV008RN/9OTTLpfc85EOYYEMeUjcHDg6Y8v98
- UHKDZ3GAI6Bq+O4g1G6K6KufdTfALuBiC6hn0MIVRQQCKNsFcHNgayPeGFXG20UcZ23W
- RcC7T0lCzRKJGug3v8gpZeseDbCneB8XOXBbjV+Vk/kxlJ/Fwfym+52CW5Gn1+5/kT7V
- llNqhycHggXXrSqOqxQtAIc7Ma5RL1d8g7Lt5sVzZTJy3cGZ2KGRDGYEY4YOZpP7rUPT
- ULS+ZysX6tElkG0MfyC5XRsdbOVtzBffie4+ph/wSL/hUfSfND23PqEaclfvpVW2L3CS
- p+zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730376781; x=1730981581;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2eMWNaXkjORX+GkvdRZhTuaMZ7RsIVw64uLi9HVA9lU=;
- b=uXc9gA87OXsiqwLBYKbEJDNeA8BzzoOFh+E4NLsR46xan8Dw0m+sqxlrkwFZ5tvTSx
- hWNzLkn+zu2A0I8fVJYfudXyIl0c+5l43KiEpOFWPJpvR1QzamEblZqKRhOImxb5cYVW
- OQS6tn8mZpefWijTlsnEebZH3GWgurjoHJLjfVJCgZXS6d5p3J8nvjhxCllaGStM2veW
- dMF5ND4A4hlmNolg7eZH6ZLPhDgZvUGYHTfc1J9hGtj69mS02ELDx1NnFlBCXNgvb1br
- kf8WsbJwsD9gDevx0jybEvB78Glkq/pIi6VMsKqFTpw8XOPuZ4VNwlwf1Eoa66/72F1e
- GMGA==
-X-Gm-Message-State: AOJu0Yw1HRDROJfhIuT2Ycm36G4uFD1CMfFmFpPGBrt8NaQOBW2td528
- fSwjNTds9Jt+DwUCpjfKzpZ2hD8vAzlX8wT2nS8HGMcQMHfluL9M3sJzOWQeQ2L1Ta5N86RRZL1
- LVZ6xa7vXG3ZR3ipLNe98ZowarO0=
-X-Google-Smtp-Source: AGHT+IFiecuTcolYLuTc2NjJwKKyfwxmP0hetafQfoT900SxfIEOiOx4jABsVtoRM3alJm8c8PbBE7qwFoJt0nPKh/c=
-X-Received: by 2002:a05:6512:ad6:b0:539:fb6f:cb8d with SMTP id
- 2adb3069b0e04-53b348e1452mr9799747e87.27.1730376780876; Thu, 31 Oct 2024
- 05:13:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1t6UEc-0005kQ-Ib
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:25:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1t6UEb-0006Rz-6N
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:25:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730377497;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KPd7oDcX9eG7TVtE1AQlSacTh7/i7Z+qfMhr0px/qxo=;
+ b=TiPecWKq0o3/ypSC0VlwdbZP0Oh/nTb5xMTCE836UT0CuMwjT0thixAoCpQUVSsXEPt2Wc
+ Ogq4skR7lS11q4BgRDd2VDau93ohjZyZJHFNiH4olRI5dMdXvVHxaj9FNJGuVyPk5VkAO9
+ 3KSTcqYCkvm614rMohvWERpNyanxRAc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-410-oLV_MKhvOJit6ANUPC0mtw-1; Thu,
+ 31 Oct 2024 08:24:51 -0400
+X-MC-Unique: oLV_MKhvOJit6ANUPC0mtw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 562F919560BC; Thu, 31 Oct 2024 12:24:48 +0000 (UTC)
+Received: from pinwheel (unknown [10.39.194.127])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AB1821956054; Thu, 31 Oct 2024 12:24:40 +0000 (UTC)
+Date: Thu, 31 Oct 2024 13:24:37 +0100
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
+ sebott@redhat.com, shameerali.kolothum.thodi@huawei.com,
+ armbru@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [RFC 21/21] arm/cpu-features: Document custom vcpu model
+Message-ID: <ZyN3A6dAEDkx51yb@pinwheel>
+References: <20241025101959.601048-1-eric.auger@redhat.com>
+ <20241025101959.601048-22-eric.auger@redhat.com>
+ <ZxuZkUFz_bwAA1pf@redhat.com>
+ <0700af51-a1a6-4b11-a4bf-0eaf6e279c6d@redhat.com>
+ <Zxudl5-fZV1vIaEL@redhat.com> <87y128nrfr.fsf@redhat.com>
+ <Zx-3OUioG1l47hW3@redhat.com> <87plnknqco.fsf@redhat.com>
 MIME-Version: 1.0
-References: <20241017144316.517709-1-r.peniaev@gmail.com>
- <CACZ9PQXT9xxuX40u_4J22d66hP73x4r8gUunPsMzhMS=MMTn9Q@mail.gmail.com>
- <CAJ+F1CKtXFiYyoT3QkubESiTUo4VxYt2Ed0g_QjgU8YasAeZjw@mail.gmail.com>
-In-Reply-To: <CAJ+F1CKtXFiYyoT3QkubESiTUo4VxYt2Ed0g_QjgU8YasAeZjw@mail.gmail.com>
-From: Roman Penyaev <r.peniaev@gmail.com>
-Date: Thu, 31 Oct 2024 13:10:39 +0100
-Message-ID: <CACZ9PQV5ZkKsCJRd5U8aj1B0txmPyha3CQDHeM3j75Kj4hJWfg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/8] chardev: implement backend chardev multiplexing
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=r.peniaev@gmail.com; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87plnknqco.fsf@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kchamart@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,36 +95,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 31, 2024 at 12:34=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@gmail.com> wrote:
->
-> Hi Roman
->
-> On Thu, Oct 31, 2024 at 3:12=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.co=
-m> wrote:
->>
->> Hi Marc-Andr=C3=A9,
->>
->> In this 5th version of the mux-be series it seems I addressed all the
->> comments and concerns. Could you please take a look once again?
->>
->
-> I am not sure adding a "mux-be-id" option to all chardevs is the way to g=
-o. To me it feels like working around the issue that arrays are not support=
-ed on the CLI.
+On Mon, Oct 28, 2024 at 05:29:11PM +0100, Cornelia Huck wrote:
+> On Mon, Oct 28 2024, Daniel P. Berrangé <berrange@redhat.com> wrote:
 
-With CLI it seems not a problem: you can always use the ',,' sequence, or w=
-e
-can introduce another separator, for example ':'. With JSON I could not fin=
-d
-a working array example, but probably the same trick with any separator in =
-a
-string can work as well. What do you think?
+[...]
 
-> I would like others to comment..
+> >> We could consolidate that to the current "host" model, once we figure
+> >> out how to handle the currently already existing properties. Models
+> >> based on the different architecture extensions would probably be more
+> >> useable in the long run; maybe "custom" has a place for testing.
+> >
+> > If you can set the features against "host", then any testing could
+> > be done with "host" surely, making 'custom' pointless ?
+> 
+> We might differentiate between "do some consistency checks" and "allow
+> a completely weird wolpertinger"; if we agree that we don't need it,
+> then we surely could drop it again.
 
-Probably makes sense to ping them once again.
+Yeah, FWIW, I agree that it's best to drop "custom" if all the
+meaningful tests can be handled by being able to add/remove CPU flags
+from `-cpu host`.
 
---
-Roman
+
+Related: I don't see any mention of `-cpu max` here.  Is it not
+relevant?  It is currently defined as: "enables all features supported
+by the accelerator in the current host".  Does it make sense for `max`
+to allow disabling features?  Or is the idea that, why would you choose
+`-cpu max` if you want to disable features?  In that case, go with
+either:
+
+    -cpu host,feat1=off
+
+Or:
+
+    -cpu some_future_named_model,$feat1=off
+
+?
+
+-- 
+/kashyap
+
 
