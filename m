@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504159B8208
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B921C9B81D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZMI-0001LA-US; Thu, 31 Oct 2024 13:53:22 -0400
+	id 1t6ZM8-0000is-Mn; Thu, 31 Oct 2024 13:53:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZM4-0000b2-FI
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:08 -0400
+ id 1t6ZM2-0000TN-LL
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZM2-0007Mw-K9
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:08 -0400
+ id 1t6ZM0-0007Mb-Sd
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397186;
+ s=mimecast20190719; t=1730397184;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mlTNwfMj7hGCg59mSHIfPfGyST8jSaHvHWyfrTkr92c=;
- b=GVK7dfx/jqfVP3+cpBNRD9YA9/TJb700WZX6wTMqkHFMmT0pchDis0BKYvBIudHhWIvQIa
- DrC3zyt9aouwJawg0IxHEIYgQyHDD3xM4kzeIvG59VJ+wl2GkU69mJg80fRMY5cS8tK45T
- pXnjjF611OP46I490o5BH/Np++HyxYA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OytefNi0XjPduWjiCssRXrev09eWdMweqq0y4XRkrq0=;
+ b=dW87q8ThdnmK7UJp63ZCUsLxsqSZjWyTZ1xEOfDvbjmCyaXkf3DS/UdOWxQhyIW6BEXe1Q
+ C+uBoN7OL8H39AxitXOkwqzaSx/PHIhDdSH/S9hx/anO1F7DeFAg6/Ha9AdK5syprk1TYu
+ quYbNnpGuzgr+4+Wb9xHSmmvTuoaIDI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-AaHSZChUPxWpA9873HebUw-1; Thu, 31 Oct 2024 13:53:03 -0400
-X-MC-Unique: AaHSZChUPxWpA9873HebUw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4314f1e0f2bso7564085e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:03 -0700 (PDT)
+ us-mta-20-xbcoYmKmMzWZdFxVnpuf8A-1; Thu, 31 Oct 2024 13:53:02 -0400
+X-MC-Unique: xbcoYmKmMzWZdFxVnpuf8A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d3e8dccc9so629648f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397182; x=1731001982;
+ d=1e100.net; s=20230601; t=1730397180; x=1731001980;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mlTNwfMj7hGCg59mSHIfPfGyST8jSaHvHWyfrTkr92c=;
- b=ILI2EdnjwKCL+p6hfwgPdJ5S2s+FTXOkYX/9d4rgaf9YDsDJAENIjXwaHUz2y6Nnyo
- hKCZ2Zuo4EqR1UI/u1RVMxYrVbSeMfd/9EK2vr8hDz+uwzI4jM2VoBoSr5xZayQKpeMO
- oVSM6ZTRamV5ApbhoUOQKZ1M5WwCS7b6oQApoVG1ZracRMtGFyuvUgj9jwVewGMgQ5eG
- pCbMCeEsIRp99LCKvC3Nx9Lxf37zTLRn3pmSyjysdP76pb50QS3VulTvZFvrMDRkBLRa
- AdD6A9gK3W5P2+GKMBw7i68aejri5k5fFRrX9GHzF6HDnpjCdobCGMRgtmtDWy7Jyvgy
- WJ1g==
-X-Gm-Message-State: AOJu0Yx18jhGdLiJhIMM9c8eS/2ZbnYIeVAcm83vjaWg6TpVL5q8nCFa
- 5RovtxHVHCuYQCD0m0veTKUuSCpra8ZPPaMBFBugU6neRFdM9ntxj2qj+ICGO15pLHKWlnnhcTb
- uTLlYLlB47m1hYWegfWyFAB4fQNqFe2nhX+00dZ6ehFCShB+paYu2tGylH+l++cZyxtFjRlHndi
- x6MvFtFHOC7UnL+uHfjwmRObycXDA3ZjX+9TiKm10=
-X-Received: by 2002:a05:6000:788:b0:37d:4cee:55b with SMTP id
- ffacd0b85a97d-381c7ae3095mr702888f8f.59.1730397180534; 
+ bh=OytefNi0XjPduWjiCssRXrev09eWdMweqq0y4XRkrq0=;
+ b=faieu7TQA+25TDIgfxhyf8p0vTc8YOPE6nmQfxEbXoppMlnpQ6IRcbNebNwzwkj6mX
+ Mzw+4labYkfF37FVc1iAwPBF749YHqp0hfK6dYFPg0xTG1X81XzXHEr2CoOXAAdxPpub
+ rgiC76VV0qBmc8jcuhbg8YFW0tyFCjFN3UD6baGuD4IJ3YWsAk0Rvggy/w6nZKSEV1h3
+ Yn8qX05ftGUOGZx128V0FaNXyn6hGxe5jAnXQpYFJXXgTd0WWwQzZSFoopmqy2kDev2g
+ eKkAmAQSvSpZKMzF0WQA6C0IyeWg10A+hYTrjVmnxRucu5uZSbr74Moou1DeOMIviPqT
+ D5aQ==
+X-Gm-Message-State: AOJu0Yx/r9b1GQUmsH59JlMIfYxxfAQgLx4c/gZiLH+q42HQlosb0WsO
+ FQB7ducS2IeEuD3yYwTHZtfMuPVVAz7pv80h3XJ6RMsVKK56H+gQCrlcA8VdpTMboj0OmK1tbBo
+ HcA5Obz+sl+aYfPlJyUajHWWeq4vmSCCxs9jts7e+X84gJ+0G8ACBl7Qp1SKa1cONV+OFC81cdL
+ nik2rm4aRBZZsAaz7x9qsNAqV44UbAcdvceTXMgug=
+X-Received: by 2002:a5d:64c8:0:b0:37c:cc96:d1ce with SMTP id
+ ffacd0b85a97d-381be7c863amr3611600f8f.24.1730397180261; 
  Thu, 31 Oct 2024 10:53:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7Pa9ZFgr44qMJdHH0v4uIFIeKZL5PtcARu06rIu4A2JKhdJEBlGOSSjNrINcqI8TEdLC72g==
-X-Received: by 2002:a05:6000:788:b0:37d:4cee:55b with SMTP id
- ffacd0b85a97d-381c7ae3095mr702825f8f.59.1730397178611; 
- Thu, 31 Oct 2024 10:52:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGthLsuZ3dNzuuob55FcOzm1op8cu4vGdTL/ErWgv5yNa8LqnTqdfT/ghJNi/x70/wbIRi8w==
+X-Received: by 2002:a5d:64c8:0:b0:37c:cc96:d1ce with SMTP id
+ ffacd0b85a97d-381be7c863amr3611581f8f.24.1730397179767; 
+ Thu, 31 Oct 2024 10:52:59 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e595sm2797733f8f.77.2024.10.31.10.52.56
+ 5b1f17b1804b1-431bd8e7f33sm63968315e9.6.2024.10.31.10.52.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:57 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Babu Moger <babu.moger@amd.com>
-Subject: [PULL 19/49] target/i386: Expose new feature bits in CPUID
- 8000_0021_EAX/EBX
-Date: Thu, 31 Oct 2024 18:51:43 +0100
-Message-ID: <20241031175214.214455-20-pbonzini@redhat.com>
+Cc: Phil Dennis-Jordan <lists@philjordan.eu>
+Subject: [PULL 20/49] target/i386/hvf: fix handling of XSAVE-related CPUID bits
+Date: Thu, 31 Oct 2024 18:51:44 +0100
+Message-ID: <20241031175214.214455-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
@@ -101,109 +100,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Babu Moger <babu.moger@amd.com>
+The call to xgetbv() is passing the ecx value for cpuid function 0xD,
+index 0. The xgetbv call thus returns false (OSXSAVE is bit 27, which is
+well out of the range of CPUID[0xD,0].ECX) and eax is not modified. While
+fixing it, cache the whole computation of supported XCR0 bits since it
+will be used for more than just CPUID leaf 0xD.
 
-Newer AMD CPUs support ERAPS (Enhanced Return Address Prediction Security)
-feature that enables the auto-clear of RSB entries on a TLB flush, context
-switches and VMEXITs. The number of default RSP entries is reflected in
-RapSize.
+Furthermore, unsupported subleafs of CPUID 0xD (including all those
+corresponding to zero bits in host's XCR0) must be hidden; if OSXSAVE
+is not set at all, the whole of CPUID leaf 0xD plus the XSAVE bit must
+be hidden.
 
-Add the feature bit and feature word to support these features.
+Finally, unconditionally drop XSTATE_BNDREGS_MASK and XSTATE_BNDCSR_MASK;
+real hardware will only show them if the MPX bit is set in CPUID;
+this is never the case for hvf_get_supported_cpuid() because QEMU's
+Hypervisor.framework support does not handle the VMX fields related to
+MPX (even in the unlikely possibility that the host has MPX enabled).
+So hide those bits in the new cache_host_xcr0().
 
-CPUID_Fn80000021_EAX
-Bits   Feature Description
-24     ERAPS:
-       Indicates support for enhanced return address predictor security.
-
-CPUID_Fn80000021_EBX
-Bits   Feature Description
-31-24  Reserved
-23:16  RapSize:
-       Return Address Predictor size. RapSize x 8 is the minimum number
-       of CALL instructions software needs to execute to flush the RAP.
-15-00  MicrocodePatchSize. Read-only.
-       Reports the size of the Microcode patch in 16-byte multiples.
-       If 0, the size of the patch is at most 5568 (15C0h) bytes.
-
-Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/7c62371fe60af1e9bbd853f5f8e949bf2d908bd0.1729807947.git.babu.moger@amd.com
+Cc: Phil Dennis-Jordan <lists@philjordan.eu>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  9 +++++++++
- target/i386/cpu.c | 11 +++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ host/include/i386/host/cpuinfo.h |  1 +
+ target/i386/hvf/x86_cpuid.c      | 56 +++++++++++++++++++-------------
+ util/cpuinfo-i386.c              |  1 +
+ 3 files changed, 35 insertions(+), 23 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 792518b62d4..e2e10f55b2e 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -634,6 +634,7 @@ typedef enum FeatureWord {
-     FEAT_8000_0007_EDX, /* CPUID[8000_0007].EDX */
-     FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
-     FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
-+    FEAT_8000_0021_EBX, /* CPUID[8000_0021].EBX */
-     FEAT_8000_0022_EAX, /* CPUID[8000_0022].EAX */
-     FEAT_C000_0001_EDX, /* CPUID[C000_0001].EDX */
-     FEAT_KVM,           /* CPUID[4000_0001].EAX (KVM_CPUID_FEATURES) */
-@@ -1022,6 +1023,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
- /* Automatic IBRS */
- #define CPUID_8000_0021_EAX_AUTO_IBRS                    (1U << 8)
-+/* Enhanced Return Address Predictor Scurity */
-+#define CPUID_8000_0021_EAX_ERAPS                        (1U << 24)
- /* Selective Branch Predictor Barrier */
- #define CPUID_8000_0021_EAX_SBPB                         (1U << 27)
- /* IBPB includes branch type prediction flushing */
-@@ -1031,6 +1034,12 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- /* Not vulnerable to SRSO at the user-kernel boundary */
- #define CPUID_8000_0021_EAX_SRSO_USER_KERNEL_NO          (1U << 30)
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index 81771733eaa..9541a64da61 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -9,6 +9,7 @@
+ /* Digested version of <cpuid.h> */
  
-+/*
-+ * Return Address Predictor size. RapSize x 8 is the minimum number of
-+ * CALL instructions software needs to execute to flush the RAP.
-+ */
-+#define CPUID_8000_0021_EBX_RAPSIZE    (8U << 16)
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
++#define CPUINFO_OSXSAVE         (1u << 1)
+ #define CPUINFO_MOVBE           (1u << 2)
+ #define CPUINFO_LZCNT           (1u << 3)
+ #define CPUINFO_POPCNT          (1u << 4)
+diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
+index e56cd8411ba..3a116548a3d 100644
+--- a/target/i386/hvf/x86_cpuid.c
++++ b/target/i386/hvf/x86_cpuid.c
+@@ -21,28 +21,38 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/cpuid.h"
++#include "host/cpuinfo.h"
+ #include "cpu.h"
+ #include "x86.h"
+ #include "vmx.h"
+ #include "sysemu/hvf.h"
+ #include "hvf-i386.h"
+ 
+-static bool xgetbv(uint32_t cpuid_ecx, uint32_t idx, uint64_t *xcr)
++static bool cached_xcr0;
++static uint64_t supported_xcr0;
 +
- /* Performance Monitoring Version 2 */
- #define CPUID_8000_0022_EAX_PERFMON_V2  (1U << 0)
++static void cache_host_xcr0()
+ {
+-    uint32_t xcrl, xcrh;
+-
+-    if (cpuid_ecx & CPUID_EXT_OSXSAVE) {
+-        /*
+-         * The xgetbv instruction is not available to older versions of
+-         * the assembler, so we encode the instruction manually.
+-         */
+-        asm(".byte 0x0f, 0x01, 0xd0" : "=a" (xcrl), "=d" (xcrh) : "c" (idx));
+-
+-        *xcr = (((uint64_t)xcrh) << 32) | xcrl;
+-        return true;
++    if (cached_xcr0) {
++        return;
+     }
  
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 8d4d3d9e3d5..5886b44fcf7 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1220,13 +1220,19 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
--            NULL, NULL, NULL, "sbpb",
-+            "eraps", NULL, NULL, "sbpb",
-             "ibpb-brtype", "srso-no", "srso-user-kernel-no", NULL,
-         },
-         .cpuid = { .eax = 0x80000021, .reg = R_EAX, },
-         .tcg_features = 0,
-         .unmigratable_flags = 0,
-     },
-+    [FEAT_8000_0021_EBX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .cpuid = { .eax = 0x80000021, .reg = R_EBX, },
-+        .tcg_features = 0,
-+        .unmigratable_flags = 0,
-+    },
-     [FEAT_8000_0022_EAX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-@@ -7069,8 +7075,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
+-    return false;
++    if (cpuinfo & CPUINFO_OSXSAVE) {
++        uint64_t host_xcr0 = xgetbv_low(0);
++
++        /* Only show xcr0 bits corresponding to usable features.  */
++        supported_xcr0 = host_xcr0 & (XSTATE_FP_MASK |
++                                      XSTATE_SSE_MASK | XSTATE_YMM_MASK |
++                                      XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK |
++                                      XSTATE_Hi16_ZMM_MASK);
++        if ((supported_xcr0 & (XSTATE_FP_MASK | XSTATE_SSE_MASK)) !=
++            (XSTATE_FP_MASK | XSTATE_SSE_MASK)) {
++            supported_xcr0 = 0;
++        }
++    }
++
++    cached_xcr0 = true;
+ }
+ 
+ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+@@ -51,6 +61,7 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+     uint64_t cap;
+     uint32_t eax, ebx, ecx, edx;
+ 
++    cache_host_xcr0();
+     host_cpuid(func, idx, &eax, &ebx, &ecx, &edx);
+ 
+     switch (func) {
+@@ -66,7 +77,8 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+         ecx &= CPUID_EXT_SSE3 | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSSE3 |
+              CPUID_EXT_FMA | CPUID_EXT_CX16 | CPUID_EXT_PCID |
+              CPUID_EXT_SSE41 | CPUID_EXT_SSE42 | CPUID_EXT_MOVBE |
+-             CPUID_EXT_POPCNT | CPUID_EXT_AES | CPUID_EXT_XSAVE |
++             CPUID_EXT_POPCNT | CPUID_EXT_AES |
++             (supported_xcr0 ? CPUID_EXT_XSAVE : 0) |
+              CPUID_EXT_AVX | CPUID_EXT_F16C | CPUID_EXT_RDRAND;
+         ecx |= CPUID_EXT_HYPERVISOR;
          break;
-     case 0x80000021:
-+        *eax = *ebx = *ecx = *edx = 0;
-         *eax = env->features[FEAT_8000_0021_EAX];
--        *ebx = *ecx = *edx = 0;
-+        *ebx = env->features[FEAT_8000_0021_EBX];
+@@ -107,16 +119,14 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+         eax = 0;
          break;
-     default:
-         /* reserved values: zero */
+     case 0xD:
++        if (!supported_xcr0 ||
++            (idx > 1 && !(supported_xcr0 & (1 << idx)))) {
++            eax = ebx = ecx = edx = 0;
++            break;
++        }
++
+         if (idx == 0) {
+-            uint64_t host_xcr0;
+-            if (xgetbv(ecx, 0, &host_xcr0)) {
+-                uint64_t supp_xcr0 = host_xcr0 & (XSTATE_FP_MASK |
+-                                  XSTATE_SSE_MASK | XSTATE_YMM_MASK |
+-                                  XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
+-                                  XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK |
+-                                  XSTATE_Hi16_ZMM_MASK);
+-                eax &= supp_xcr0;
+-            }
++            eax = supported_xcr0;
+         } else if (idx == 1) {
+             hv_vmx_read_capability(HV_VMX_CAP_PROCBASED2, &cap);
+             eax &= CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XGETBV1;
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index 90f92a42dc8..c8c8a1b3705 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -35,6 +35,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         __cpuid(1, a, b, c, d);
+ 
+         info |= (d & bit_SSE2 ? CPUINFO_SSE2 : 0);
++        info |= (c & bit_OSXSAVE ? CPUINFO_OSXSAVE : 0);
+         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
+         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+         info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
 -- 
 2.47.0
 
