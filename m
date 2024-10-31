@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30CA9B7376
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FEA9B736B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MQy-0003r5-IZ; Thu, 31 Oct 2024 00:05:20 -0400
+	id 1t6MQz-0003sP-DM; Thu, 31 Oct 2024 00:05:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQn-0003i8-Dd
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:09 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1t6MQp-0003kW-43
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:11 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQl-000539-Hq
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:09 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2e2ad9825a7so409644a91.0
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:05:07 -0700 (PDT)
+ id 1t6MQn-00053e-5A
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:10 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2e91403950dso392295a91.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:05:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730347506; x=1730952306; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730347507; x=1730952307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5Etq9dXgBLnq7Fjrg4VPpsKmiULD2dA0vZBWi1xVOs4=;
- b=FPLWlXsEtBdOKQcSXQSIxaHfL6tGgMtdtCjgEDArrybaHV4zvkjTxIQvDd9yVfxLWE
- Y5PqpSqQ8d7D6Bmeyg8jyVkd/6S+/2lgy7OWM7nFuyQ+vWGUpOvEuKHBlDa9K4lqri4Q
- v+tmirX4f3hP/SX8XJc/RS0rSOIM/3Enb7kIR/diOy6ZFdaTRf/A2NTHxhNYL7m9OBb7
- svSbmjlfh746cy0p0yZ0j1pqX1Yf33AvchfE7JY2nH4aUYhWgCRfIP3JixlWbeOrM6lM
- VKhtIk93wT6FYwQNc/DYxvQcaDmD8CQHfsUA9ub4Cmq45I6D+Z8d9wWIBDjoK9P6d86o
- 1gmg==
+ bh=2sPdHdQJ35Fr/SOKKnyBguzQdXGmWsCiWtlEfDPVHMQ=;
+ b=eqhjkCZ5x0rnw1R4BkY/zmAK2bN604e2aRg5MdiXurbRxcr/V0iKEsj56O8h+M+5Gb
+ NcqiWa4m6fvfpcYDQG056R1Y1sMt/LPyw6z8TzXXbgsSxIhhA8LHEJjXdZ7WMtxsrkZu
+ P1vkV9LuMwLrX0GA2AHVzUonzjJjFhlDx+a74PjTnJYcXG0hE/R7zsqiUmjTVNksfAIt
+ +iuiCU5Bjmq0Ue7Rit8xVCatW0/IXsQAifXfxNQyuRc+GbKEydBvPL6mUOmLOX04x9d2
+ q0NiHHtSDexLuJHKILvCeh1rhdf9EZZPGW+yDHT/dwpZt/0hWxsY4QdRTQUIbGtuseh9
+ gTpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730347506; x=1730952306;
+ d=1e100.net; s=20230601; t=1730347507; x=1730952307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5Etq9dXgBLnq7Fjrg4VPpsKmiULD2dA0vZBWi1xVOs4=;
- b=OKo7a5tT/xpQ1bAmpky8V6+l9HlXlv0F1JpXdHOhyWtkRP8+cEGpiq7f7VQN4fgsKZ
- N13E5xu1apS5neW8QjgX0CHvHamfbGKgSgikTY9MhXynJet9CFpGmXfGuN2lyZMkMUj7
- kjCqORIXAaDt2dbZeENAHCZBQB0DoZ+jGTBdc+ZcdJ5TQLCyw+cj9vY2xz4bxItZ4tbv
- ggGqd0SXDml4bt7+b1iFex9zhG15uDX4QxYfEqiyifuxJ+R6mlsAH5iHV/GVVO8f0Z7M
- +4q4j8t8Dr49Aym0Hk/exYhgsGOHzbkYYXPEO+nb1Ywesz0o9kUfvD1hHg3LWcO092UE
- srMw==
-X-Gm-Message-State: AOJu0YyBWySKJ+WxED/1D9IXdX5WrXHXJgqqV0NyFe4YoATk8R0gKeAS
- ksS1TMctLZ2qHrRvX9wfzrs3AxH5a+9iMZjOmByArvSis8C48DgkqKgdyw8rX3Co8fCE0aF9j7Y
- JNJydCQ==
-X-Google-Smtp-Source: AGHT+IFoQli6iUGkV26XRQDlHT2bJYFggKWojFg9urvSjvzTYD2+9EIDbSTsWGTEc/u6pjKnwG8pug==
-X-Received: by 2002:a17:90b:315:b0:2e2:ba35:356c with SMTP id
- 98e67ed59e1d1-2e8f11dceb8mr18783247a91.39.1730347506141; 
- Wed, 30 Oct 2024 21:05:06 -0700 (PDT)
+ bh=2sPdHdQJ35Fr/SOKKnyBguzQdXGmWsCiWtlEfDPVHMQ=;
+ b=vLvZqAxXbgGW0kZG55O9bElB2tFUc4WpC85XOR0Q5lH8I8+agJ3MDnXN6Bda7czmSF
+ 8ik3xlGkpCVsDcxFwF6WP9BfiyX3f7ny2tB/YH9ZkoPRvrMfnbNPLzeNhSic4fVeiehZ
+ oIQjx9Syk3CEymSwSJXNBef1nRIPhfo9xpWHpV6+c4/tmq+7AksVOWqJZ0M6z413Ks3g
+ VKz9WV20dYtaof9YfyRmRxCafriCNGtrK+kA+vZ0kIwB6oLOlhF9dcCDd17r0NwANLqj
+ IpEZqnU1tGHIy9vol7Vp55VJx7fUygxiJ8Ng6KH2Q8LipGsMwHZpylt5scxHqY3gW4Er
+ d/8g==
+X-Gm-Message-State: AOJu0YxhvEsAgkJNPkTQzCrYlMG2wiqWUmR2XiXrhcgA6evRGFNpVtZ/
+ PWG1EV3Czu6Qs8Av+pONai4krkuZnFkawYhMPf/+dcpG4Dq6iqef94m7Rd4ONjHI/9dQg4DLG62
+ A9+jozQ==
+X-Google-Smtp-Source: AGHT+IHuNs/tznTYNp/AUVQMJ6NqDV9uYOqGmX0xPvakJbIHYFI2CFPqQ3UO41+4oI0oxgBxhgTN2g==
+X-Received: by 2002:a17:90a:d481:b0:2e0:d957:1b9d with SMTP id
+ 98e67ed59e1d1-2e8f1071c8dmr21944997a91.13.1730347507133; 
+ Wed, 30 Oct 2024 21:05:07 -0700 (PDT)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.05.05
+ 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.05.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 21:05:05 -0700 (PDT)
+ Wed, 30 Oct 2024 21:05:06 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -71,16 +71,16 @@ Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 09/12] plugins: add missing export for qemu_plugin_num_vcpus
-Date: Wed, 30 Oct 2024 21:04:23 -0700
-Message-Id: <20241031040426.772604-10-pierrick.bouvier@linaro.org>
+Subject: [PATCH 10/12] plugins: detect qemu plugin API symbols from header
+Date: Wed, 30 Oct 2024 21:04:24 -0700
+Message-Id: <20241031040426.772604-11-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,23 +103,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Instead of using a static file (error prone and hard to keep in sync),
+we generate it using a script.
+
+Note: if a symbol is not exported, we'll now notice it when linking for
+Windows/MacOS platforms.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/qemu-plugin.h | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS                    |  1 +
+ plugins/meson.build            | 12 ++++++---
+ scripts/qemu-plugin-symbols.py | 45 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 3 deletions(-)
+ create mode 100755 scripts/qemu-plugin-symbols.py
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 622c9a02327..0fba36ae028 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -803,6 +803,7 @@ void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
-                                     qemu_plugin_udata_cb_t cb, void *userdata);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f48d9142b8a..d34b6606e95 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3719,6 +3719,7 @@ F: plugins/
+ F: tests/tcg/plugins/
+ F: tests/avocado/tcg_plugins.py
+ F: contrib/plugins/
++F: scripts/qemu-plugin-symbols.py
  
- /* returns how many vcpus were started at this point */
-+QEMU_PLUGIN_API
- int qemu_plugin_num_vcpus(void);
+ AArch64 TCG target
+ M: Richard Henderson <richard.henderson@linaro.org>
+diff --git a/plugins/meson.build b/plugins/meson.build
+index 51297582f93..d60be2a4d6d 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -2,11 +2,17 @@ if not get_option('plugins')
+   subdir_done()
+ endif
  
- /**
++qemu_plugin_symbols = configure_file(
++  input: files('../include/qemu/qemu-plugin.h'),
++  output: 'qemu-plugin.symbols',
++  capture: true,
++  command: [files('../scripts/qemu-plugin-symbols.py'), '@INPUT@'])
++
+ # Modules need more symbols than just those in plugins/qemu-plugins.symbols
+ if not enable_modules
+   if host_os == 'darwin'
+     configure_file(
+-      input: files('qemu-plugins.symbols'),
++      input: qemu_plugin_symbols,
+       output: 'qemu-plugins-ld64.symbols',
+       capture: true,
+       command: ['sed', '-ne', 's/^[[:space:]]*\\(qemu_.*\\);/_\\1/p', '@INPUT@'])
+@@ -15,7 +21,7 @@ if not enable_modules
+     # LLVM/lld does not support exporting specific symbols. However, it works
+     # out of the box with dllexport/dllimport attribute we set in the code.
+   else
+-    emulator_link_args += ['-Xlinker', '--dynamic-list=' + (meson.project_source_root() / 'plugins/qemu-plugins.symbols')]
++    emulator_link_args += ['-Xlinker', '--dynamic-list=' + qemu_plugin_symbols.full_path()]
+   endif
+ endif
+ 
+@@ -24,7 +30,7 @@ if host_os == 'windows'
+   # First, create a .def file listing all the symbols a plugin should expect to have
+   # available in qemu
+   win32_plugin_def = configure_file(
+-    input: files('qemu-plugins.symbols'),
++    input: qemu_plugin_symbols,
+     output: 'qemu_plugin_api.def',
+     capture: true,
+     command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
+diff --git a/scripts/qemu-plugin-symbols.py b/scripts/qemu-plugin-symbols.py
+new file mode 100755
+index 00000000000..e285ebb8f9e
+--- /dev/null
++++ b/scripts/qemu-plugin-symbols.py
+@@ -0,0 +1,45 @@
++#!/usr/bin/env python3
++# -*- coding: utf-8 -*-
++#
++# Extract QEMU Plugin API symbols from a header file
++#
++# Copyright 2024 Linaro Ltd
++#
++# Author: Pierrick Bouvier <pierrick.bouvier@linaro.org>
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++import argparse
++import re
++
++def extract_symbols(plugin_header):
++    with open(plugin_header) as file:
++        content = file.read()
++    # Remove QEMU_PLUGIN_API macro definition.
++    content = content.replace('#define QEMU_PLUGIN_API', '')
++    expected = content.count('QEMU_PLUGIN_API')
++    # Find last word between QEMU_PLUGIN_API and (, matching on several lines.
++    # We use *? non-greedy quantifier.
++    syms = re.findall(r'QEMU_PLUGIN_API.*?(\w+)\s*\(', content, re.DOTALL)
++    syms.sort()
++    # Ensure we found as many symbols as API markers.
++    assert len(syms) == expected
++    return syms
++
++def main() -> None:
++    parser = argparse.ArgumentParser(description='Extract QEMU plugin symbols')
++    parser.add_argument('plugin_header', help='Path to QEMU plugin header.')
++    args = parser.parse_args()
++
++    syms = extract_symbols(args.plugin_header)
++
++    print('{')
++    for s in syms:
++        print("  {};".format(s))
++    print('};')
++
++if __name__ == '__main__':
++    main()
 -- 
 2.39.5
 
