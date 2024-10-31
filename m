@@ -2,60 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36D39B7A64
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 13:17:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5564D9B79B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:30:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6U6w-0004Yy-ON; Thu, 31 Oct 2024 08:17:10 -0400
+	id 1t6TNA-00025E-BP; Thu, 31 Oct 2024 07:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
- id 1t6U6t-0004Yo-Nb
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:17:07 -0400
-Received: from mx.astralinux.ru ([89.232.161.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
- id 1t6U6r-0005cP-4h
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 08:17:07 -0400
-Received: from gca-yc-ruca-srv-mail05.astralinux.ru ([10.177.185.111]
- helo=new-mail.astralinux.ru)
- by mx.astralinux.ru with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <abelova@astralinux.ru>)
- id 1t6U6a-005Z0O-5U; Thu, 31 Oct 2024 15:16:48 +0300
-Received: from smtpclient.apple (unknown [10.198.45.243])
- by new-mail.astralinux.ru (Postfix) with ESMTPA id 4XfNK24pD9z1c0mR;
- Thu, 31 Oct 2024 15:16:54 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-Message-Id: <73CD4EAC-F520-4062-AD35-F4657D7649C7@astralinux.ru>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_881A7665-AB5F-452A-BCFD-40EE80585EE5"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH] monitor: fix cases in switch in memory_dump
-Date: Thu, 31 Oct 2024 14:26:38 +0300
-In-Reply-To: <CAGCz3vuqRAkPtRRpqbPM+3z5iqVHOkr5fYotmva=6uqA7JnGcQ@mail.gmail.com>
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-devel@nongnu.org,
- sdl.qemu@linuxtesting.org
-To: Phil Dennis-Jordan <lists@philjordan.eu>
-References: <20241030140656.36540-1-abelova@astralinux.ru>
- <CAGCz3vuqRAkPtRRpqbPM+3z5iqVHOkr5fYotmva=6uqA7JnGcQ@mail.gmail.com>
-X-Mailer: Apple Mail (2.3776.700.51.11.1)
-X-DrWeb-SpamScore: 0
-X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecunecujfgurhephffktgggufffjgevvfhfofesrgdtmherhhdtjeenucfhrhhomheptehnrghsthgrshhirgcuuegvlhhovhgruceorggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruheqnecuggftrfgrthhtvghrnhepfedvteeiheeihfelfeekveffhfehhffgtdfhhfetffefgfelleejhfejvdfhueetnecuffhomhgrihhnpehlihhnuhigthgvshhtihhnghdrohhrghenucfkphepuddtrdduleekrdeghedrvdegfeenucfrrghrrghmpehhvghlohepshhmthhptghlihgvnhhtrdgrphhplhgvpdhinhgvthepuddtrdduleekrdeghedrvdegfeemhedvuddtjedpmhgrihhlfhhrohhmpegrsggvlhhovhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhishhtshesphhhihhljhhorhgurghnrdgvuhdprhgtphhtthhopegurghvvgesthhrvggslhhighdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepshgulhdrqhgvmhhusehlihhnuhigthgvshhtihhnghdrohhrghenucffrhdrhggvsgcutehnthhishhprghmmecunecuvfgrghhsme
-X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.8.202410220#1730372906
-X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128,
- SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12231671,
- Updated: 2024-Oct-31 10:53:31 UTC]
-Received-SPF: pass client-ip=89.232.161.68; envelope-from=abelova@astralinux.ru;
- helo=mx.astralinux.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t6TN5-00024x-OX
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:29:47 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t6TN2-0005ov-PO
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:29:46 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2fb3c3d5513so7646021fa.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 04:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730374182; x=1730978982; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tnqznWKtV9KFBvGbTyJqcobMEec0XRwzrLdpjMaWxP0=;
+ b=mjOAIRqw2KKAOwnfvS5bhF+rgClxKaJwO2P86GYCiLb30n+dlxxjdiDr0R+Js7QfsJ
+ QtMzhb/rxAWyK3Si+VoklZRPWVIL5O9fbyGZRYp5AF85Jn353JR1SGJ0uN7d8w+dXqk8
+ XV5EgwJTHfE2ek2tdOQfmjIU1GOuzTmIZMY4GOGvQmWQqirrO8EmiZFP9y0diy8WGldZ
+ tkzdAo06rF0lrxnX33TGSvhc1aBt5kRhKVoj/5kvobZAw+SbxJTeCi8AKTbTZhmIofWp
+ e0Ss23oleEfk3dLfmNkFvuy2Y6yJ+jFpNEFVR3B1OANqWKiLS7JI2i0764475RXEOXGR
+ VeIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730374182; x=1730978982;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tnqznWKtV9KFBvGbTyJqcobMEec0XRwzrLdpjMaWxP0=;
+ b=dd5hlssov3cd6YzJtB9kX2h4Zkcg/OMBRAoXbvsdHe6ZSMnAaAw7m85bMFPq3YHlNm
+ VGV258WiLyGc2dLVsNVm/Fv7/DZFSYvSr5nmPIKboUZtPG6VsVN8MsfrAVslrO0YHld2
+ dKtJOi8O/3j2IIFcMUYpi4iKYMrRvl6fAmzh+G3wjN89NRFFHi4M7cLHdTY0fA1A5rNy
+ HLc8tWlr5b02y03IraP72lBbsFLgdS4WjoEsL2r4bFMANCHPdYGXOiNvUidhqSXWOGvD
+ bvsZn4Q4O881uc0XxphlpwBxQoO+uTNfmUJ690IP7Hot0Vl1qVycqfHaGaWpAVAzPS0B
+ ypdg==
+X-Gm-Message-State: AOJu0Yy3Yq45iu/cKvFgFSanPeAd4zSB2EflBzy/LMQjjncPHieiBmaN
+ G3hRRfXdlOuuPjgnvVQsYDwRv22HeNmIP8iavBGnb6FoLygmwiMOGGIIux/UhT49mofGQco5Pu8
+ Dcxh+bSaPVbdw0Hl18q/gnxGWqSOXBVnsoN9Urg==
+X-Google-Smtp-Source: AGHT+IFWz0qVh5bQvLm3SaD7i0TA4DZn/2rVA6yoTRdtpqDsicQnBF9C1Ts5BHzywhAqQoxpfnZA1kKEaNmv/tMAydg=
+X-Received: by 2002:a2e:a58f:0:b0:2fb:51a2:4f63 with SMTP id
+ 38308e7fff4ca-2fdecbf1a46mr16939991fa.34.1730374182522; Thu, 31 Oct 2024
+ 04:29:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20241029121030.4007014-1-alex.bennee@linaro.org>
+In-Reply-To: <20241029121030.4007014-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 31 Oct 2024 11:29:31 +0000
+Message-ID: <CAFEAcA8j21vvgpp7T0QoSna+dLv_OKExcVjVbZ0TmHgaf40ebg@mail.gmail.com>
+Subject: Re: [PULL 00/13] virtio-gpu vulkan support
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,189 +87,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 29 Oct 2024 at 12:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> The following changes since commit fdf250e5a37830615e324017cb3a503e84b371=
+2c:
+>
+>   Merge tag 'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/sts=
+quad/qemu into staging (2024-10-25 19:12:06 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/stsquad/qemu.git tags/pull-virtio-gpu-vulkan-291024-=
+1
+>
+> for you to fetch changes up to 94d0ea1c19289d76ced934711fccd2269e69bb29:
+>
+>   virtio-gpu: Support Venus context (2024-10-28 16:56:36 +0000)
+>
+> ----------------------------------------------------------------
+> virtio-gpu: add venus/vulkan capability
+>
+> We are currently lacking a declared maintainer for the sub-system so
+> while we look for one I'm merging after testing locally.
+>
+>   - convert some fprintfs to proper trace events
+>   - move timers used by GL devices into GL structures
+>   - handle virtio_gpu_virgl_init() failure better
+>   - implement unrealize for GL devices
+>   - use virgl version numbering to gate features
+>   - support context-init feature
+>   - don't require udmabuf for virgl only
+>   - add virgl resource tracker
+>   - allow command submission to be suspended
+>   - handle resource blob commands
+>   - dynamically handle capabilit sets
+>   - add venus context support for passing vulkan
 
---Apple-Mail=_881A7665-AB5F-452A-BCFD-40EE80585EE5
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
 
+Applied, thanks.
 
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
-> 30 =D0=BE=D0=BA=D1=82. 2024=E2=80=AF=D0=B3., =D0=B2 22:03, Phil =
-Dennis-Jordan <lists@philjordan.eu> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=
-=BB(=D0=B0):
->=20
->=20
-> On Wed 30. Oct 2024 at 15:09, Anastasia Belova <abelova@astralinux.ru> =
-wrote:
-> default case has no condition. So if it is placed
-> higher that other cases, they are unreachable.
->=20
-> Move dafult case down.
->=20
-> The stylistic merits might be debatable, but: the order of cases in a =
-switch block in C does not matter, the default case can appear anywhere. =
-The other cases are still reachable. So at minimum, the commit message =
-is incorrect.
->=20
-
-You=E2=80=99re right, I didn=E2=80=99t know about this. Thank you for =
-reply and patience!
-
-Anastasia Belova
-
-> Found by Linux Verification Center (linuxtesting.org)
->=20
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> ---
-> monitor/hmp-cmds-target.c | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-> index ff01cf9d8d..eea8ca047b 100644
-> --- a/monitor/hmp-cmds-target.c
-> +++ b/monitor/hmp-cmds-target.c
-> @@ -189,7 +189,6 @@ static void memory_dump(Monitor *mon, int count, =
-int format, int wsize,
->       i =3D 0;
->       while (i < l) {
->           switch(wsize) {
-> -            default:
->           case 1:
->               v =3D ldub_p(buf + i);
->               break;
-> @@ -202,6 +201,9 @@ static void memory_dump(Monitor *mon, int count, =
-int format, int wsize,
->           case 8:
->               v =3D ldq_p(buf + i);
->               break;
-> +            default:
-> +                v =3D ldub_p(buf + i);
-> +                break;
->           }
->           monitor_printf(mon, " ");
->           switch(format) {
-> --=20
-> 2.47.0
-
---Apple-Mail=_881A7665-AB5F-452A-BCFD-40EE80585EE5
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html><head><meta charset=3D"UTF-8"><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><br style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0);"><br style=3D"font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: auto; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: auto; word-spacing: =
-0px; -webkit-text-stroke-width: 0px; text-decoration: none; caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0);"><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: auto; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: auto; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">30 =D0=BE=D0=BA=D1=
-=82. 2024=E2=80=AF=D0=B3., =D0=B2 22:03, Phil Dennis-Jordan =
-&lt;lists@philjordan.eu&gt; =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=BB(=D0=
-=B0):<br><br><br>On Wed 30. Oct 2024 at 15:09, Anastasia Belova =
-&lt;abelova@astralinux.ru&gt; wrote:<br>default case has no condition. =
-So if it is placed<br>higher that other cases, they are =
-unreachable.<br><br>Move dafult case down.<br><br>The stylistic merits =
-might be debatable, but: the order of cases in a switch block in C does =
-not matter, the default case can appear anywhere. The other cases are =
-still reachable. So at minimum, the commit message is =
-incorrect.<br><br></blockquote><br style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0);"><span style=3D"font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: auto; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: auto; word-spacing: =
-0px; -webkit-text-stroke-width: 0px; text-decoration: none; caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0); float: none; display: inline =
-!important;">You=E2=80=99re right, I didn=E2=80=99t know about this. =
-Thank you for reply and patience!</span><br style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0);"><br style=3D"font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: auto; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: auto; word-spacing: =
-0px; -webkit-text-stroke-width: 0px; text-decoration: none; caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0);"><span style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-float: none; display: inline !important;">Anastasia Belova</span><br =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: auto; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: auto; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0);"><br style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0);"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">Found by Linux Verification Center =
-(linuxtesting.org)<br><br>Signed-off-by: Anastasia Belova =
-&lt;abelova@astralinux.ru&gt;<br>---<br>monitor/hmp-cmds-target.c | 4 =
-+++-<br>1 file changed, 3 insertions(+), 1 deletion(-)<br><br>diff --git =
-a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c<br>index =
-ff01cf9d8d..eea8ca047b 100644<br>--- a/monitor/hmp-cmds-target.c<br>+++ =
-b/monitor/hmp-cmds-target.c<br>@@ -189,7 +189,6 @@ static void =
-memory_dump(Monitor *mon, int count, int format, int =
-wsize,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i =3D =
-0;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (i &lt; l) =
-{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(ws=
-ize) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:=
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case =
-1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;v =3D ldub_p(buf + =
-i);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;break;<br>@@ -202,6 +201,9 @@ static void =
-memory_dump(Monitor *mon, int count, int format, int =
-wsize,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case=
- =
-8:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;v =3D ldq_p(buf + =
-i);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;break;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:=
-<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;v =3D ldub_p(buf + i);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;monitor_printf(mon, " =
-");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(=
-format) {<br>--<span =
-class=3D"Apple-converted-space">&nbsp;</span><br>2.47.0</blockquote></body=
-></html>=
-
---Apple-Mail=_881A7665-AB5F-452A-BCFD-40EE80585EE5--
+-- PMM
 
