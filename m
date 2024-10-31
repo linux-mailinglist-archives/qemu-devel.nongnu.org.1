@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F309B7338
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C499B7339
 	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:56:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MFm-0007Ey-Ja; Wed, 30 Oct 2024 23:53:46 -0400
+	id 1t6MFr-0007GI-Hs; Wed, 30 Oct 2024 23:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFk-0007Em-Vc
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:44 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1t6MFo-0007FL-PL
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:49 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MFj-0003tP-9K
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:44 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-20ca1b6a80aso4908805ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:42 -0700 (PDT)
+ id 1t6MFm-0003td-Iu
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:53:48 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-20e576dbc42so5429865ad.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:53:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346822; x=1730951622; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346825; x=1730951625; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ppmjnBV+ZwGtUBNsYIvDijQ5bVMFS/e+QNA+9LIDzCQ=;
- b=SB329mmUFDwN5yLzteBsrKGKPQwptBlesSbaKtl/1z8TYiygVANRnmu8TBRAMgEycz
- UEVM3p8HVBXdm+qInxpGl1YLx+l/OXd3X2iEYPofTmdmIdM4ru1yxlJXh6IOTSD2jW2S
- ia+Ago6GZC/eTAms6ouYMUY9X6lLTdFoKkwtZD7TCLVv+PQM9VC1qS5kLMWUPaEbmYdk
- hvw0FAjDxAtWNnDg2syEaGo57+/18GUkD4XBh1rXUJFBKEB+W5DPUVru4eFB3W+HRILe
- NgjHk8ha5xZhDdsGUPv/aD8Ck/a+SQRQl2xVm9/nKSNNUInt6BAh8KbY+w8M4sadJRoJ
- QAbA==
+ bh=i8Ikw2NcsgZpzTmcdbGYuA7GcCItNURSpq5TPRbUd/s=;
+ b=AYEH3vg7x+YF/28pVjmrARmqcw8pdbWXQxlZxTtZ1OEfmON8sqvJ+Ui3wVxTBip+Vk
+ fsEl7sbDZtoKT+r+aCz30j8wk2SjK1fMra8f3gumxo//EXAkN0gLUGdmbFTFB3UG+xWe
+ bX1I7h4z/qqHzmJxziXBEd0cEmGnyUS43WqkWrw6kSkVqswwzpWsPh+MIlQi+9phSYAf
+ qxWIYpAdfeL/KD85G0IIPAk+PpqXAlGhDY1/Fu7sQH5sjYpieFqg/o3YH4zmTeGdicGr
+ Uewl5RZSNaFAcufXgcxH3HdjwRn8bK58MpbVOLQlRT1mIFot3aCrt8bCsPzYBoVxoMiG
+ 2u5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346822; x=1730951622;
+ d=1e100.net; s=20230601; t=1730346825; x=1730951625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ppmjnBV+ZwGtUBNsYIvDijQ5bVMFS/e+QNA+9LIDzCQ=;
- b=RoJFKbDP/6trIXojX7CTU5TH4jMqSg3wOkm/jibzrhxoj3CRU4ikh5oCSgdOOtw6IA
- lkKb9t19atTij597H+dq6c11yyGwu5AH1eII+vvxO0Yi+0goolKC/ObpOO3XaVpQihoy
- oHywuTqFAL7whqGKNJfCZb7InkrBvzY+Cogca4lyQmbUSOJkBReZVZ8wzEVJIrEFcMhV
- wXMQ6THnRI9jVmC1Mr4Ik2iBSAO+k/EnZatcHLrO5UZ3uLzkUP4hicrUQuEp5Z+Zkpzm
- MOOdlKiBTGGOyVgIj5eVFhwSv/W1dqPrHdUNkxxwoDR2uyF7deeP11SD/ebtT4sOXpRj
- 65SQ==
-X-Gm-Message-State: AOJu0YyN//24E8nYezaL4fs151xL+BU79g03btYDMGtemfYZgKL1c39k
- 2TRhS5b1v6OZbNVpaXayeHHOZgQ6ZW7bo1SKPHEiyb/nnsAAoFcAD7yewHTD
-X-Google-Smtp-Source: AGHT+IFXi4k01eXY7SNftpzidxtwjCrbmsfTB9nWkOOEnVzihDt0KqrzNwQ/OMke8Bf/+uNv16kFsA==
-X-Received: by 2002:a17:903:244b:b0:20c:ce9c:bbb0 with SMTP id
- d9443c01a7336-210c6724215mr225965435ad.0.1730346821747; 
- Wed, 30 Oct 2024 20:53:41 -0700 (PDT)
+ bh=i8Ikw2NcsgZpzTmcdbGYuA7GcCItNURSpq5TPRbUd/s=;
+ b=G9BzP6N/1Y+El0QB84KbNBwBcPmSnuzAN6JQCnqK5e+vN4VcjeHuXMWodii+pesC9Y
+ dB9FyrG+8PC0c4I6mCQUNB+z3TBXAPgqoP5YjLo4DxTAJDS2jyqm9lkoJi38uurkkdSY
+ hcLCAmrU74TlPEln5+TkncNrfc3Bp5BoedFsIJr+UzyXYE/dUUk/TC4u7SId1Y4kOVT/
+ ABZU5o8auYLdVgR1zNY3IX2Y4GGJJAkZ7ZKmCAUMnf0RRC6ug4Hpo/j3Avou+UyioXN5
+ /W8uSz5PLP9iJuBUPyars0rSXb82bJ5JWZQ5L4VdoYmY4DYKsKz/P9PCWfU6xggcshPI
+ sjlQ==
+X-Gm-Message-State: AOJu0YyLeEO+gBlM9GZFLy+eYrYXk8LRkOTPMbx+4ITE8q0Kn97NHhUv
+ XJ9u0MwA5jOVKfUAEt3KfqMMQTVT0fnDxo3Xg4fss+jkVoJpcsNv79kIpYDv
+X-Google-Smtp-Source: AGHT+IHFPwHe2b10sA90Ce0axRItyk/2Jvz0H5iVMUl98Tvz+xt3/ttku0z3tq6/MDTye3zr66ZQrQ==
+X-Received: by 2002:a17:902:ce07:b0:205:709e:1949 with SMTP id
+ d9443c01a7336-21103cc0a4emr18540615ad.57.1730346824762; 
+ Wed, 30 Oct 2024 20:53:44 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.39
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.53.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:53:41 -0700 (PDT)
+ Wed, 30 Oct 2024 20:53:44 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/50] target/riscv: Detect sxl to set bit width for RV32 in
- RV64
-Date: Thu, 31 Oct 2024 13:52:33 +1000
-Message-ID: <20241031035319.731906-6-alistair.francis@wdc.com>
+Subject: [PULL 06/50] target/riscv: Correct mcause/scause bit width for RV32
+ in RV64 QEMU
+Date: Thu, 31 Oct 2024 13:52:34 +1000
+Message-ID: <20241031035319.731906-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,71 +100,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
-Ensure correct bit width based on sxl when running RV32 on RV64 QEMU.
-This is required as MMU address translations run in S-mode.
+Ensure mcause high bit is correctly set by using 32-bit width for RV32
+mode and 64-bit width for RV64 mode.
 
 Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240919055048.562-5-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240919055048.562-6-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ target/riscv/cpu_helper.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index a935377b4a..621bf4c1b8 100644
+index 621bf4c1b8..203c0a92ab 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -890,12 +890,14 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+@@ -1677,6 +1677,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+     target_ulong tinst = 0;
+     target_ulong htval = 0;
+     target_ulong mtval2 = 0;
++    int sxlen = 0;
++    int mxlen = 0;
  
-     CPUState *cs = env_cpu(env);
-     int va_bits = PGSHIFT + levels * ptidxbits + widened;
-+    int sxlen = 16 << riscv_cpu_sxl(env);
-+    int sxlen_bytes = sxlen / 8;
- 
-     if (first_stage == true) {
-         target_ulong mask, masked_msbs;
- 
--        if (TARGET_LONG_BITS > (va_bits - 1)) {
--            mask = (1L << (TARGET_LONG_BITS - (va_bits - 1))) - 1;
-+        if (sxlen > (va_bits - 1)) {
-+            mask = (1L << (sxlen - (va_bits - 1))) - 1;
-         } else {
-             mask = 0;
-         }
-@@ -964,7 +966,7 @@ restart:
- 
-         int pmp_prot;
-         int pmp_ret = get_physical_address_pmp(env, &pmp_prot, pte_addr,
--                                               sizeof(target_ulong),
-+                                               sxlen_bytes,
-                                                MMU_DATA_LOAD, PRV_S);
-         if (pmp_ret != TRANSLATE_SUCCESS) {
-             return TRANSLATE_PMP_FAIL;
-@@ -1116,7 +1118,7 @@ restart:
-          *   it is no longer valid and we must re-walk the page table.
-          */
-         MemoryRegion *mr;
--        hwaddr l = sizeof(target_ulong), addr1;
-+        hwaddr l = sxlen_bytes, addr1;
-         mr = address_space_translate(cs->as, pte_addr, &addr1, &l,
-                                      false, MEMTXATTRS_UNSPECIFIED);
-         if (memory_region_is_ram(mr)) {
-@@ -1128,7 +1130,12 @@ restart:
-              */
-             *pte_pa = pte = updated_pte;
- #else
--            target_ulong old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
-+            target_ulong old_pte;
-+            if (riscv_cpu_sxl(env) == MXL_RV32) {
-+                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
-+            } else {
-+                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
-+            }
-             if (old_pte != pte) {
-                 goto restart;
-             }
+     if (!async) {
+         /* set tval to badaddr for traps with address information */
+@@ -1805,7 +1807,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+         s = set_field(s, MSTATUS_SPP, env->priv);
+         s = set_field(s, MSTATUS_SIE, 0);
+         env->mstatus = s;
+-        env->scause = cause | ((target_ulong)async << (TARGET_LONG_BITS - 1));
++        sxlen = 16 << riscv_cpu_sxl(env);
++        env->scause = cause | ((target_ulong)async << (sxlen - 1));
+         env->sepc = env->pc;
+         env->stval = tval;
+         env->htval = htval;
+@@ -1836,7 +1839,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+         s = set_field(s, MSTATUS_MPP, env->priv);
+         s = set_field(s, MSTATUS_MIE, 0);
+         env->mstatus = s;
+-        env->mcause = cause | ~(((target_ulong)-1) >> async);
++        mxlen = 16 << riscv_cpu_mxl(env);
++        env->mcause = cause | ((target_ulong)async << (mxlen - 1));
+         env->mepc = env->pc;
+         env->mtval = tval;
+         env->mtval2 = mtval2;
 -- 
 2.47.0
 
