@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A485D9B7967
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:11:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5379B79AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:28:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6T4d-0004w4-UJ; Thu, 31 Oct 2024 07:10:43 -0400
+	id 1t6TKF-0001N6-Gp; Thu, 31 Oct 2024 07:26:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1t6T4U-0004u1-Li
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:10:36 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t6TK8-0001Mk-Cf
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:26:44 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1t6T4R-0003SP-85
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:10:34 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-539ee1acb86so821662e87.0
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 04:10:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t6TK4-0005aU-VQ
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:26:43 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a9a5f555cfbso54477066b.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 04:26:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730373028; x=1730977828; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=rETJV9+KIqR5YA/MkCI+vDownHRPVSloNnbyhKq0WnU=;
- b=wVyTltky1w7N7G+N8Xq0w/G5Mbf9XCLtYQJTEbZzYxKpkNUe/DkbsFa8GrxH8+iOwR
- 8Q2wns7PAhVZDw8sms5dX3W9PwjvcPh8na/2kxamy7aJLB4O/5Jtsrs9RayxAY6LDbIH
- rciFoCOgDEY7bk9YyqTz2+rOp+7g9jmYepkn0UAFZBx+4nSfc6AQ6c/ciD2T8chjAMKw
- j8eG/4NNVaGhv1YBGZjv6k5O4WHz9C2YRdTManr1aqF8H7i+wcwTPfxABt4Jc85vvgO0
- RRjqWczq2PiRHzCDXcBOof4f1FMDXNhznRi/The9Acvr0G9oBfd4a5LswSaobZb+bEZV
- wVGg==
+ d=linaro.org; s=google; t=1730373998; x=1730978798; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JWnVP/zKgV5anlLtKlKjpjtCQBPMoRPfku0Dgugsdn0=;
+ b=RM+FZt72V86rkkOgYHYtsn6QaRvTjvj6t0uYfopHjDOvbVRYP96NqAGv5advvccRic
+ 1EVGLL8cTKNiCp6x4/XuyVFb12ubT1ZdAiOgAqoS2lGbhsd9VMYAIrRb2JEn4Fn3AZln
+ p1hF0vNtQX7YsXCY2QxZzK1E7muAJ8Ib1PSvcumwxNCgm3Jo7LkTmPNGcgubOopFB5pp
+ IWZWKrSMgbS0BcpWevjn1/Zi1fz+dTQGCfhiA3vd6e9p9VlrlR9GDV+CBK6WtKhhBL5v
+ 6kyRctHq5PGjQB/3+SPJ7Vww9FI4iWOwJruzavdfSC+6b3qvVopdGUuZuWUhqrM3+VuC
+ oTyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730373028; x=1730977828;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1730373998; x=1730978798;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=rETJV9+KIqR5YA/MkCI+vDownHRPVSloNnbyhKq0WnU=;
- b=MpkiTi2Mx5ptkYJ6q5kRrg+/Kkcsy6mOgNAl7J+Vt+BFzO7ch2/31/bYYkkimgx2vs
- OmrK+xYU3Gk3eq7uWjcQXKRVzhAyi1Y1JlE84qcvw4TJbuv8z30FPRRYeEsU0kkzZQOy
- BbsaqP83sB94JkswVzbDyguIvJxZ0CaLXhjCKYqK5DqlpzHzlgzRo9xLau40rIu7kCKH
- zyPCQ9dZLgk28KJYgANXTyrmKBGiU7LtF6TZbMz5acjUcHnF1F7YjqvIERdr9KUageBR
- TvsLvx21+R9FAomFtZsHnoO6iucdgqorvgXB3FFLM20bDNffHnH3t64q75FIum0pxnPp
- mnUQ==
-X-Gm-Message-State: AOJu0Ywec6bJxgIB/yflgpHs6Ujbewkxqgeqo+jQ8nAY7XeJjO5s60YF
- CUBnmoq5/OA6afQhgUfjigGOiICaZXnunFTBUq66RmLbPUHSomAqGRe0zjYjzAsNMvzB+QZcta/
- S
-X-Google-Smtp-Source: AGHT+IGzuxrub5SE/fpi4fkWiG3D0BBzaAhKW5moBsYYOxKKA8S+ymXKX+d/xAn1GSjjbgFZ3aEoCw==
-X-Received: by 2002:a05:6512:e99:b0:536:a583:2777 with SMTP id
- 2adb3069b0e04-53b348c0e4emr9136980e87.9.1730373027766; 
- Thu, 31 Oct 2024 04:10:27 -0700 (PDT)
-Received: from [192.168.210.26] (83.11.19.101.ipv4.supernova.orange.pl.
- [83.11.19.101]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53c7bc958cbsm169073e87.52.2024.10.31.04.10.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Oct 2024 04:10:27 -0700 (PDT)
-Message-ID: <0a77763b-94b0-42de-96a3-5fc6882be06c@linaro.org>
-Date: Thu, 31 Oct 2024 12:10:26 +0100
+ bh=JWnVP/zKgV5anlLtKlKjpjtCQBPMoRPfku0Dgugsdn0=;
+ b=TiJRjx0TRx3QNzotRnbdNh5nHRMtQq/s48OL58UJIPl4WCgIIR33SW/YkZXvUSAOhG
+ 8dB8waJ9lAddDz+vfgNFk2a+TCpHYRiWVXuYP95VKLIDkzB59dn9EFNo5dze2mwoxVwf
+ FSM8l8NXTk9vLhCdNt37NX58zzQp+Kpif4Dk8eEUS0RSuQzU41nz34NnfzF5vLqr+4VZ
+ cA7kxBSzvmgBS3whLb0E5bPSyxk0W3w6hfecM/4lAYNc0398D4cjdMFPZn9O+pdRzARj
+ JcsguBNaAGsOuRkHlI/TErUKt7jGi+wivq2k62ReS4EXszbqeY43dTqhUpVsa+p0cWQc
+ 4Qig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVbKD6XY8ayxE58VLvVB4hhQlFWisWqXy93mhm4vDXFNeoNZtXVovMMInD0+XL1RDGqJ9kyuzxPGMkp@nongnu.org
+X-Gm-Message-State: AOJu0Yz6y4VlY2M6FAj8WqeAgBYeSLMs1dHJrFtNFAS3f0Mz6b2waaNG
+ LTdS92ahcu//YE9W+gP57651/gKOrJALpPJZdrOksijJFNkGvrT4Wd0OV8hMbFbQx82PHKxsm/c
+ 2LEfqLhCgvnI0E3d4HuMGewEljkPuv5g++DL17g==
+X-Google-Smtp-Source: AGHT+IFjn2blNlMfpQACHivKsp9BQJZP9JW3FhAnDyjxf1eGfx5X38Wob8Qvh0daJtNTWXk/basa/cFFqdXDZJVE/hs=
+X-Received: by 2002:a05:6402:26c9:b0:5cb:7318:aa2a with SMTP id
+ 4fb4d7f45d1cf-5cbbf8897c5mr19439818a12.7.1730373997823; Thu, 31 Oct 2024
+ 04:26:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] pcie: enable Extended tag field support
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20241023113820.486017-1-marcin.juszkiewicz@linaro.org>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Content-Language: pl-PL, en-GB
-Organization: Linaro
-In-Reply-To: <20241023113820.486017-1-marcin.juszkiewicz@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x136.google.com
+References: <20241030140656.36540-1-abelova@astralinux.ru>
+ <CAGCz3vuqRAkPtRRpqbPM+3z5iqVHOkr5fYotmva=6uqA7JnGcQ@mail.gmail.com>
+ <ZyLPzbDy_0cI7HyD@gallifrey>
+ <CAFEAcA8r-TtExvoxU7qDV+QpjU3fPFH2hexsog+kbpRo++V3gQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA8r-TtExvoxU7qDV+QpjU3fPFH2hexsog+kbpRo++V3gQ@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 31 Oct 2024 11:26:26 +0000
+Message-ID: <CAFEAcA-3+jX3=TmM=yYq9D+4nh5yKZa2kRtw9qpxjBeFmMSYDQ@mail.gmail.com>
+Subject: Re: [PATCH] monitor: fix cases in switch in memory_dump
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Phil Dennis-Jordan <lists@philjordan.eu>,
+ Anastasia Belova <abelova@astralinux.ru>, qemu-devel@nongnu.org, 
+ sdl.qemu@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,107 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 23.10.2024 o 13:38, Marcin Juszkiewicz pisze:
->  From what I read PCI has 32 transactions, PCI Express devices can handle
-> 256 with Extended tag enabled (spec mentions also larger values but I
-> lack PCIe knowledge).
+On Thu, 31 Oct 2024 at 10:52, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Thu, 31 Oct 2024 at 00:32, Dr. David Alan Gilbert <dave@treblig.org> wrote:
+> >
+> > * Phil Dennis-Jordan (lists@philjordan.eu) wrote:
+> > > On Wed 30. Oct 2024 at 15:09, Anastasia Belova <abelova@astralinux.ru>
+> > > wrote:
+> > >
+> > > > default case has no condition. So if it is placed
+> > > > higher that other cases, they are unreachable.
+> > > >
+> > > > Move dafult case down.
+> > > >
+> > >
+> > > The stylistic merits might be debatable, but: the order of cases in a
+> > > switch block in C does not matter, the default case can appear anywhere.
+> > > The other cases are still reachable. So at minimum, the commit message is
+> > > incorrect.
+> >
+> > I'd agree;  the analysis is wrong - it works as intended.
+> > As for style, I'd normally agree that 'default' at end makes sense,
+> > but:
+> >   a) I hate duplicating code
+> >   b) in a way this reads nicely:
+> >                  default:
+> >                  case 1:
+> >
+> >       'default is the same as case 1'.
+>
+> Is it actually possible to get here with a wsize that
+> isn't 1,2,4 or 8, though? This function is used only
+> by the hmp 'x' and 'xp' commands. Those document that
+> the valid size specifications are b, h, w or g (for
+> 8, 16, 32 or 64 bits), and monitor_parse_arguments()
+> doesn't seem to have any undocumented handling that
+> would result in a different size value. And the
+> code in memory_dump() doesn't do anything sensible
+> with a wsize other than 1, 2, 4 or 8 -- if you hand
+> it a wsize of 3, for instance, I think it will print
+> every third byte.
+>
+> So I think that probably the default case here should
+> be g_assert_not_reached().
 
-Ping?
+...better still, we could replace the whole switch(wsize)
+with "v = ldn_p(buf + i, wsize);".
 
-
-> QEMU leaves 'Extended tag field' with 0 as value:
-> 
-> Capabilities: [e0] Express (v1) Root Complex Integrated Endpoint, IntMsgNum 0
->          DevCap: MaxPayload 128 bytes, PhantFunc 0
->                  ExtTag- RBE+ FLReset- TEE-IO-
-> 
-> SBSA ACS has test 824 which checks for PCIe device capabilities. BSA
-> specification [1] (SBSA is on top of BSA) in section F.3.2 lists
-> expected values for Device Capabilities Register:
-> 
-> Device Capabilities Register     Requirement
-> Role based error reporting       RCEC and RCiEP: Hardwired to 1
-> Endpoint L0s acceptable latency  RCEC and RCiEP: Hardwired to 0
-> L1 acceptable latency            RCEC and RCiEP: Hardwired to 0
-> Captured slot power limit scale  RCEC and RCiEP: Hardwired to 0
-> Captured slot power limit value  RCEC and RCiEP: Hardwired to 0
-> Max payload size                 value must be compliant with PCIe spec
-> Phantom functions                RCEC and RCiEP: Recommendation is to
->                                   hardwire this bit to 0.
-> Extended tag field               Hardwired to 1
-> 
-> 1. https://developer.arm.com/documentation/den0094/c/
-> 
-> This change enables Extended tag field. All versioned platforms should
-> have it disabled for older versions (tested with Arm/virt).
-> 
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> ---
->   hw/core/machine.c    | 4 +++-
->   hw/pci/pci.c         | 2 ++
->   hw/pci/pcie.c        | 8 +++++++-
->   include/hw/pci/pci.h | 2 ++
->   4 files changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index adaba17eba..8ccc74067a 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -34,7 +34,9 @@
->   #include "hw/virtio/virtio-iommu.h"
->   #include "audio/audio.h"
->   
-> -GlobalProperty hw_compat_9_1[] = {};
-> +GlobalProperty hw_compat_9_1[] = {
-> +    { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
-> +};
->   const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
->   
->   GlobalProperty hw_compat_9_0[] = {
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 87da35ca9b..9a3b0e4a43 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -87,6 +87,8 @@ static Property pci_props[] = {
->                       QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
->       DEFINE_PROP_SIZE32("x-max-bounce-buffer-size", PCIDevice,
->                        max_bounce_buffer_size, DEFAULT_MAX_BOUNCE_BUFFER_SIZE),
-> +    DEFINE_PROP_BIT("x-pcie-ext-tag", PCIDevice, cap_present,
-> +                    QEMU_PCIE_EXT_TAG_BITNR, true),
->       DEFINE_PROP_END_OF_LIST()
->   };
->   
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 4b2f0805c6..9f369c2b6c 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -86,7 +86,13 @@ pcie_cap_v1_fill(PCIDevice *dev, uint8_t port, uint8_t type, uint8_t version)
->        * Specification, Revision 1.1., or subsequent PCI Express Base
->        * Specification revisions.
->        */
-> -    pci_set_long(exp_cap + PCI_EXP_DEVCAP, PCI_EXP_DEVCAP_RBER);
-> +    uint32_t devcap = PCI_EXP_DEVCAP_RBER;
-> +
-> +    if (dev->cap_present & QEMU_PCIE_EXT_TAG) {
-> +        devcap = PCI_EXP_DEVCAP_RBER | PCI_EXP_DEVCAP_EXT_TAG;
-> +    }
-> +
-> +    pci_set_long(exp_cap + PCI_EXP_DEVCAP, devcap);
->   
->       pci_set_long(exp_cap + PCI_EXP_LNKCAP,
->                    (port << PCI_EXP_LNKCAP_PN_SHIFT) |
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index eb26cac810..5b14f9d375 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -213,6 +213,8 @@ enum {
->       QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
->   #define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
->       QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
-> +#define QEMU_PCIE_EXT_TAG_BITNR 13
-> +    QEMU_PCIE_EXT_TAG = (1 << QEMU_PCIE_EXT_TAG_BITNR),
->   };
->   
->   typedef struct PCIINTxRoute {
-
+-- PMM
 
