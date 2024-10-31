@@ -2,93 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667269B7942
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C76CA9B796B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:12:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6Svi-0002J3-53; Thu, 31 Oct 2024 07:01:30 -0400
+	id 1t6T5j-0005Q6-Mm; Thu, 31 Oct 2024 07:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t6Svd-0002Hp-Ig; Thu, 31 Oct 2024 07:01:25 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t6Svb-0001r1-Nv; Thu, 31 Oct 2024 07:01:25 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0A2709E26D;
- Thu, 31 Oct 2024 14:00:29 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 88E1916117B;
- Thu, 31 Oct 2024 14:01:10 +0300 (MSK)
-Message-ID: <9ea39adf-e276-484e-9c92-b7db2019ace8@tls.msk.ru>
-Date: Thu, 31 Oct 2024 14:01:10 +0300
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t6T5S-0005Kr-Me
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:11:34 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1t6T5Q-0003Yv-NW
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:11:34 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-539f4d8ef84so1028763e87.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 04:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730373090; x=1730977890; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Akj3cIQJJohptA+ixAnzPlQ1QYu7yfnHtV2Ht8J8iDI=;
+ b=U1qNDvV9YdDIMB6XQKHZ/cIGmr3quFdVAgG1GQ/fX8mKJzqzAOpUy/zKLWg+5M5dTE
+ 8o87dBzACYZ3Z50Y03O23Z9kX5tFVaJz3z1QbWBhl+K2V8V5MOcScWKddyaLCzbydy+a
+ Df41zRd6+zVeafjwFMpPpgiNaI2u9VF30ZH7yfzKq7PKBTHpI+73HUQpo0nkI4GEqIye
+ kS3RrFtUJFpmdOPI3b0HnYA4Y58HYXMUio+f/o6K2iQLp98TRrWRAZ4lIXzf+jqe9dej
+ DB8ReDG3DFHPp2TXa9hZOKrECCzIlExh9SPOsKF5H0/AP+GL1HuHJBieTmRHMkyVri7g
+ mFlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730373090; x=1730977890;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Akj3cIQJJohptA+ixAnzPlQ1QYu7yfnHtV2Ht8J8iDI=;
+ b=e9T2eoqiIbS/mspIyK7Qt/oxf0NnUimH3d2qW7Nb1sikfX4VLw7jBJaU365PCTZg1I
+ jD0rGEUuV/quq83GFiT69J6rYOGG571enk8RIoEmEuHwy6IL/unwNsnI7vvFdf9w8aI7
+ 6g0SxaRviS9bqqiT2lBGeO2m6tkl06wANKyHuop57xgZDCuNxCSPQwhi8yttmfjcppaq
+ VKOf2gFn0ih9cOwg5lCqiFrm7z8ZCnJlkUK015GvFb2of0XOCG5sWUIsNcTGD9FmmuyN
+ TBc8noA/zKp6OFqnzXUrOUHPjRHHVCfa38vfZw9PlahMuzgawmum7crr2/7mjJmB/+sI
+ wB4Q==
+X-Gm-Message-State: AOJu0YxdR6rdc5dMQpfgD8Md/wdedsiaoek0FVfTiwnHFIHYHR1D7nXj
+ gQXpZWJXCGHwMCOyzOqwRhfIP5xDAzeGRH9CRQ+rUginzrhhSnldsnLlVfsu+8C+iihFWXMw1IE
+ ICvggkPJ9FAnfVzLhcqVf8ghxxAkeAylHLlg0jA==
+X-Google-Smtp-Source: AGHT+IFjoqVXZ62UiELHx3A+tPelEZcM0FUxLXVgEhM4oidJkCbZ/llZssjiQZCwVEGBASLhXcRoXNxQ+K/oiVdJug8=
+X-Received: by 2002:a05:6512:138e:b0:536:53f0:2f8e with SMTP id
+ 2adb3069b0e04-53c79e8ecbdmr1337539e87.37.1730373090124; Thu, 31 Oct 2024
+ 04:11:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scripts: remove erroneous file that breaks git clone on
- Windows
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, Richard Henderson <richard.henderson@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org
-References: <20241023073914.895438-1-pierrick.bouvier@linaro.org>
- <02bf77ef-9136-4976-b961-ffb889ed1181@linaro.org>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <02bf77ef-9136-4976-b961-ffb889ed1181@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241017144316.517709-1-r.peniaev@gmail.com>
+In-Reply-To: <20241017144316.517709-1-r.peniaev@gmail.com>
+From: Roman Penyaev <r.peniaev@gmail.com>
+Date: Thu, 31 Oct 2024 12:09:09 +0100
+Message-ID: <CACZ9PQXT9xxuX40u_4J22d66hP73x4r8gUunPsMzhMS=MMTn9Q@mail.gmail.com>
+Subject: Re: [PATCH v5 0/8] chardev: implement backend chardev multiplexing
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=r.peniaev@gmail.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,22 +87,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.10.2024 21:09, Pierrick Bouvier wrote:
-> On 10/23/24 00:39, Pierrick Bouvier wrote:
->> This file was created by mistake in recent ed7667188 (9p: remove
->> 'proxy' filesystem backend driver).
->>
->> When cloning the repository using native git for windows, we see this:
->> Error: error: invalid path 'scripts/meson-buildoptions.'
+Hi Marc-Andr=C3=A9,
 
-> cc qemu-stable
+In this 5th version of the mux-be series it seems I addressed all the
+comments and concerns. Could you please take a look once again?
 
-Yeah, I noticed this patch already.  Thankfully, the mentioned
-commit isn't in any released version yet (it's past 9.1), so
-the wrong file doesn't need to be deleted in any stable series.
+--
+Roman
 
-But thank you for caring for stable series, much appreciated!
-
-/mjt
-
+On Thu, Oct 17, 2024 at 4:45=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.com>=
+ wrote:
+>
+> Mux is a character backend (host side) device, which multiplexes
+> multiple frontends with one backend device. The following is a
+> few lines from the QEMU manpage [1]:
+>
+>   A multiplexer is a "1:N" device, and here the "1" end is your
+>   specified chardev backend, and the "N" end is the various parts
+>   of QEMU that can talk to a chardev.
+>
+> But sadly multiple backends are not supported.
+>
+> This work implements multiplexing capability of several backend
+> devices, which opens up an opportunity to use a single frontend
+> device on the guest, which can be manipulated from several
+> backend devices.
+>
+> The motivation is the EVE project [2], where it would be very
+> convenient to have a virtio console frontend device on the guest that
+> can be controlled from multiple backend devices, namely VNC and local
+> TTY emulator. The following is an example of the QEMU command line:
+>
+>    -chardev mux-be,id=3Dmux0 \
+>    -chardev socket,path=3D/tmp/sock,server=3Don,wait=3Doff,id=3Dsock0,mux=
+-be-id=3Dmux0 \
+>    -chardev vc,id=3Dvc0,mux-be-id=3Dmux0 \
+>    -device virtconsole,chardev=3Dmux0 \
+>    -vnc 0.0.0.0:0
+>
+> Which creates two backend devices:
+>
+> * Text virtual console (`vc0`)
+> * A socket (`sock0`) connected to the single virtio hvc console with the
+>   help of the backend multiplexer (`mux0`)
+>
+> `vc0` renders text to an image, which can be shared over the VNC protocol=
+.
+> `sock0` is a socket backend which provides bidirectional communication to
+> the virtio hvc console.
+>
+> Once QEMU starts, the VNC client and any TTY emulator can be used to
+> control a single hvc console. For example, these two different
+> consoles should have similar input and output due to the buffer
+> multiplexing:
+>
+>    # VNC client
+>    vncviewer :0
+>
+>    # TTY emulator
+>    socat unix-connect:/tmp/sock pty,link=3D/tmp/pty
+>    tio /tmp/pty
+>
+> v4 .. v5:
+>
+> * Spelling fixes in qemu-options description
+> * Memory leaks fixes in mux-be tests
+> * Add sanity checks to chardev to avoid stacking of mux devices
+> * Add corresponding unit test case to cover the creation of stacked
+>   muxers: `-chardev mux-be,mux-id-be=3DID`, which is forbidden
+> * Reflect the fact that stacking is not supported in the documentation
+>
+> v3 .. v4:
+>
+> * Rebase on latest chardev changes
+> * Add unit tests which test corner cases:
+>    * Inability to remove mux with active frontend
+>    * Inability to add more chardevs to a mux than `MUX_MAX`
+>    * Inability to mix mux-fe and mux-be for the same chardev
+>
+> v2 .. v3:
+>
+> * Split frontend and backend multiplexer implementations and
+>   move them to separate files: char-mux-fe.c and char-mux-be.c
+>
+> v1 .. v2:
+>
+> * Separate type for the backend multiplexer `mux-be`
+> * Handle EAGAIN on write to the backend device
+> * Support of watch of previously failed backend device
+> * Proper json support of the `mux-be-id` option
+> * Unit test for the `mux-be` multiplexer
+>
+> [1] https://www.qemu.org/docs/master/system/qemu-manpage.html#hxtool-6
+> [2] https://github.com/lf-edge/eve
+>
+> Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+> Cc: "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com>
+> Cc: qemu-devel@nongnu.org
+>
+> Roman Penyaev (8):
+>   chardev/char: rename `MuxChardev` struct to `MuxFeChardev`
+>   chardev/char: rename `char-mux.c` to `char-mux-fe.c`
+>   chardev/char: move away mux suspend/resume calls
+>   chardev/char: rename frontend mux calls
+>   chardev/char: introduce `mux-be-id=3DID` option
+>   chardev/char-mux: implement backend chardev multiplexing
+>   tests/unit/test-char: add unit test for the `mux-be` multiplexer
+>   qemu-options.hx: describe multiplexing of several backend devices
+>
+>  chardev/char-fe.c                     |  25 +-
+>  chardev/char-mux-be.c                 | 290 +++++++++++++++++++++++
+>  chardev/{char-mux.c =3D> char-mux-fe.c} | 157 ++++---------
+>  chardev/char.c                        | 139 +++++++++--
+>  chardev/chardev-internal.h            |  55 ++++-
+>  chardev/meson.build                   |   3 +-
+>  include/chardev/char.h                |   8 +-
+>  qapi/char.json                        |  31 ++-
+>  qemu-options.hx                       |  80 +++++--
+>  system/vl.c                           |   4 +-
+>  tests/unit/test-char.c                | 323 +++++++++++++++++++++++++-
+>  11 files changed, 947 insertions(+), 168 deletions(-)
+>  create mode 100644 chardev/char-mux-be.c
+>  rename chardev/{char-mux.c =3D> char-mux-fe.c} (71%)
+>
+> --
+> 2.34.1
+>
 
