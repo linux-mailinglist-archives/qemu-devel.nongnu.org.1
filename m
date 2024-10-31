@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914659B7FCF
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565539B8020
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:30:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6Xr4-0006f7-Cc; Thu, 31 Oct 2024 12:17:02 -0400
+	id 1t6Y2o-0001j3-Ad; Thu, 31 Oct 2024 12:29:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Xr0-0006eg-Ib
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:16:58 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t6Xqy-00017G-PE
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:16:58 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-71e467c3996so875214b3a.2
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 09:16:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730391415; x=1730996215; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VfZ7/Ord9Q8h0h5GU2lWOt3rg0jcM9+XNU9aSGGnko0=;
- b=sVwI83tQ5afKJSZEZ7MyQsR/dvd8tMpLEeiNXrUNTzKT/vq6UiEAikJIim6chOEnJH
- KcU15aF0TMwYOXTBa9CBEkQ8NpVYZwDoS7eDottTwFIdXicDtcuLJy9IWHoWYZ1zSRRc
- P9jMsYj9381vro3opJhXt6IAVkvvKrif+qSyUfnlPG+Pg8VnLaJlfF99WPo2UCiWjBvZ
- HVZR6sWlmtyDPbtzAu6BMZk4yAJpsg+86WWalT+xEcNK7xqZfZwv1xPPRQ9D+I8K3dCJ
- 0RzBZ+Y/RyHPfk2LGiOUZf7+xliLmUURsPJbonudoF879gh+aJ5gv10I7VK32GGYpref
- RAyg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t6Y2m-0001iO-MP
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:29:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t6Y2k-0002ty-KR
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:29:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730392145;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SfeeMAMU4m+uL/At8yEFn9cCeFJ7ktwzowe9PnW2klc=;
+ b=Xw4KxGmCAewJ3LTRKzyX8InItEq9UnfKHVvTMOZMNJAdDkihecZYeaiNV4xCAPU8zOeo8g
+ Eh/Bfy7Lh7wiCQVmIOEij4xpxx+c6Rl5XUwHJDMPgHsHfDBv5QLHqcQkUTYP2VWjRLL1CN
+ 7/xOxWlRuqAm45jfZEbEoIJ3AN+MwJs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-272-55Ta9gKUOSKs1xCTIv2ApA-1; Thu, 31 Oct 2024 12:29:03 -0400
+X-MC-Unique: 55Ta9gKUOSKs1xCTIv2ApA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4315e8e9b1cso6390245e9.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 09:29:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730391415; x=1730996215;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VfZ7/Ord9Q8h0h5GU2lWOt3rg0jcM9+XNU9aSGGnko0=;
- b=wu/idPVweJLnJmKLmHfmg0Ue3NvWcBp1L03ryR/A39kgecuccAFSZ4O/6fs+QV76mN
- cAkpdT/PGfOXtsIUBVWukvVfytfwtjPdnjSMFQ2ARdn7gK8WTDjlJgawBE+I6qHCTPMo
- /nv7ckfJFuyfW0LuIjYQmVjBBu3re3Z0gBZ02h6Mp6SrBDsKLrN8I5ocQHeqZc4uTWBg
- X5H+Y0X/lXgDpuyWrHCgzfEQ5oYhgMBMcxy9mror1T0yfQA1NbTeYufidCRwf1q7J6Av
- BKSMlnNYv+ll7pRgvWj1giROLCzp/Y1VsxBZkjyJn4hEE+/YpmFoERMOv8XX9IHoRJ2b
- nRFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUU2d3WQ/2Yn3iSlKaDlJUq+cr4YItCScj86myf7RTxcVnUNdVZOAtq59NvMuBkhLR2Oy6/BYvQtiBl@nongnu.org
-X-Gm-Message-State: AOJu0YwlTYf5jJboeIZkagNzmsv/AOaX8pJQygKkmhrGLjt7eQsPc1nM
- TBNo8jN/C2DED8ix1A6paO/4w+Zvp4vvJwxoxqBTV1KVHdk3Xshk9PgGkw87EBA=
-X-Google-Smtp-Source: AGHT+IEayCxP5ugVBphu7BQy5CmKCeLHz5VpBQuu/3NXPn+8JyhyDvvyZGO3mJZkP+hiO1nKI5FrzQ==
-X-Received: by 2002:a05:6a00:18a0:b0:71e:786c:3fa9 with SMTP id
- d2e1a72fcca58-72062a5d8e2mr30563372b3a.0.1730391414719; 
- Thu, 31 Oct 2024 09:16:54 -0700 (PDT)
-Received: from [10.0.12.195] ([190.210.133.43])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-720bc313888sm1292215b3a.185.2024.10.31.09.16.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Oct 2024 09:16:54 -0700 (PDT)
-Message-ID: <971b47d0-949b-4454-884b-28ec070f9365@linaro.org>
-Date: Thu, 31 Oct 2024 13:16:07 -0300
+ d=1e100.net; s=20230601; t=1730392142; x=1730996942;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SfeeMAMU4m+uL/At8yEFn9cCeFJ7ktwzowe9PnW2klc=;
+ b=ijm/zDYxOgmybLyGh8XzVbI1JNVgLVoz2pjA1QU7nWt0uVOJ0plA6ZQVGofZzwBZPE
+ EKrt/8VWEvpvL8cFuqeJYgtMFcxhoLHXtXmnsl43bVKRdGP3+oAHjUvWJOIDesIcPoXP
+ Q7MAFs9YGDRKuxRVo5OuOREz++GZCDsD/VtHPSkvMYWIXuITqeGqzeK9y4iyW/sp3N/+
+ aLFWDsolqFvQW6rjkZQbJPF4PERroDNJR+vUK4pfn9IWUkXEDHB6291/+15okiOmele5
+ m1lktS2xWcF6OUvsxanLPFYaddURO+6mc0Es+gVYZDK4CsoPlFLRlaZPJ64/NcXfetZa
+ tIbw==
+X-Gm-Message-State: AOJu0YzSTqd7qKvi6+XmrG/ZfcqAeiWAP8/zomyj2Wh84CewVGEmRbDk
+ ib18JV3CRiKOFdk/m0WQBblcT5qHlVpwuj5gySOlPVA5K1hAzZ/EO3ODju6aOOR+XIw8YrJhFmU
+ Pf860HirTI3yBmFZoI1zyJyQXjz/pKGRGyvmTgnNKhksIIjLHeD2vXYL2fwbAO2C5pPw3csuOCv
+ 1JWY/Trm/Ovxk8i9ZoWG2nGyu4Cxs=
+X-Received: by 2002:a05:600c:1c26:b0:42c:b603:422 with SMTP id
+ 5b1f17b1804b1-4327daa3649mr26995275e9.8.1730392142256; 
+ Thu, 31 Oct 2024 09:29:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWg1Jmwmu2WT/3cHPsbmle5nBbF8i/zC+2xGeqHEMsg4x6dYM5450nuZHh6jpshPW866pvHJJqh3sOtAFC+BM=
+X-Received: by 2002:a05:600c:1c26:b0:42c:b603:422 with SMTP id
+ 5b1f17b1804b1-4327daa3649mr26994985e9.8.1730392141901; Thu, 31 Oct 2024
+ 09:29:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/loongarch/virt: Add reset interface for virt-machine
-To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20241031065418.3111892-1-maobibo@loongson.cn>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241031065418.3111892-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20241025160209.194307-1-pbonzini@redhat.com>
+ <CAAjaMXa+fyKHyufwmEQG5dqvFWW+uHtu9PDMkznD=3iViV6L1g@mail.gmail.com>
+In-Reply-To: <CAAjaMXa+fyKHyufwmEQG5dqvFWW+uHtu9PDMkznD=3iViV6L1g@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 31 Oct 2024 17:28:49 +0100
+Message-ID: <CABgObfb7=ZxgiasgB=dE8yV+bhd5-pd51n4qGpP8OFNBS3iMXQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/23] rust: fix CI + allow older versions of rustc and
+ bindgen
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, zhao1.liu@intel.com, junjie.mao@hotmail.com, 
+ berrange@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,134 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing Peter who is working on the Reset API.
+Manos,
 
-On 31/10/24 03:54, Bibo Mao wrote:
-> With generic cpu reset interface, pc register is entry of FLASH for
-> UEFI BIOS. However with direct kernel booting requirement, there is
-> little different, pc register of primary cpu is entry address of ELF
-> file.
-> 
-> At the same time with requirement of cpu hotplug, hot-added CPU should
-> register reset interface for this cpu object. Now reset callback is
-> not registered for hot-added CPU.
-> 
-> With this patch reset callback for CPU is register when CPU instance
-> is created, and reset interface is added for virt-machine board. In
-> reset interface of virt-machine, reset for direct kernel booting
-> requirement is called.
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/loongarch/boot.c         |  9 +--------
->   hw/loongarch/virt.c         | 14 ++++++++++++++
->   include/hw/loongarch/boot.h |  1 +
->   target/loongarch/cpu.c      | 10 ++++++++++
->   4 files changed, 26 insertions(+), 8 deletions(-)
-> 
-> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-> index cb668703bd..cbb4e3737d 100644
-> --- a/hw/loongarch/boot.c
-> +++ b/hw/loongarch/boot.c
-> @@ -216,12 +216,11 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
->       return kernel_entry;
->   }
->   
-> -static void reset_load_elf(void *opaque)
-> +void reset_load_elf(void *opaque)
->   {
->       LoongArchCPU *cpu = opaque;
->       CPULoongArchState *env = &cpu->env;
->   
-> -    cpu_reset(CPU(cpu));
->       if (env->load_elf) {
->   	if (cpu == LOONGARCH_CPU(first_cpu)) {
->               env->gpr[4] = env->boot_info->a0;
-> @@ -320,12 +319,6 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
->   void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
->   {
->       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
-> -    int i;
-> -
-> -    /* register reset function */
-> -    for (i = 0; i < ms->smp.cpus; i++) {
-> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
-> -    }
->   
->       info->kernel_filename = ms->kernel_filename;
->       info->kernel_cmdline = ms->kernel_cmdline;
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 9a635d1d3d..80680d178c 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -1434,6 +1434,19 @@ static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
->       }
->   }
->   
-> +static void virt_reset(MachineState *machine, ResetType type)
-> +{
-> +    CPUState *cs;
-> +
-> +    /* Reset all devices including CPU devices */
-> +    qemu_devices_reset(type);
-> +
-> +    /* Reset PC and register context for kernel direct booting method */
-> +    CPU_FOREACH(cs) {
-> +        reset_load_elf(LOONGARCH_CPU(cs));
-> +    }
-> +}
-> +
->   static void virt_class_init(ObjectClass *oc, void *data)
->   {
->       MachineClass *mc = MACHINE_CLASS(oc);
-> @@ -1457,6 +1470,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
->       mc->auto_enable_numa_with_memdev = true;
->       mc->get_hotplug_handler = virt_get_hotplug_handler;
->       mc->default_nic = "virtio-net-pci";
-> +    mc->reset = virt_reset;
->       hc->plug = virt_device_plug_cb;
->       hc->pre_plug = virt_device_pre_plug;
->       hc->unplug_request = virt_device_unplug_request;
-> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
-> index b3b870df1f..c7020ec9bb 100644
-> --- a/include/hw/loongarch/boot.h
-> +++ b/include/hw/loongarch/boot.h
-> @@ -115,5 +115,6 @@ struct memmap_entry {
->   };
->   
->   void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info);
-> +void reset_load_elf(void *opaque);
->   
->   #endif /* HW_LOONGARCH_BOOT_H */
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index 7212fb5f8f..f7f8fcc024 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -592,6 +592,13 @@ static void loongarch_cpu_disas_set_info(CPUState *s, disassemble_info *info)
->       info->print_insn = print_insn_loongarch;
->   }
->   
-> +#ifndef CONFIG_USER_ONLY
-> +static void loongarch_cpu_reset_cb(void *opaque)
-> +{
-> +    cpu_reset((CPUState *) opaque);
-> +}
-> +#endif
-> +
->   static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->   {
->       CPUState *cs = CPU(dev);
-> @@ -607,6 +614,9 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->       loongarch_cpu_register_gdb_regs_for_features(cs);
->   
->       cpu_reset(cs);
-> +#ifndef CONFIG_USER_ONLY
-> +    qemu_register_reset(loongarch_cpu_reset_cb, dev);
-> +#endif
->       qemu_init_vcpu(cs);
->   
->       lacc->parent_realize(dev, errp);
-> 
-> base-commit: 58d49b5895f2e0b5cfe4b2901bf24f3320b74f29
+I apologize for extracting these parts of your code without making my
+intention fully clear with you first. My intention was to move the CI
+integration forward while you focused on the procedural macros,
+because right now the partial CI is limiting other potential
+contributors.
+
+In order to fix this in the 9.2 release, I would like to include the
+extracted patches in a pull request before soft freeze. They implement
+the core functionality required by the tests, and they have been
+tested already.
+
+During the freeze we can evaluate how to best structure the remaining
+changes, including improved QOM bindings and your procedural macro
+work.
+
+Thanks,
+
+Paolo
+
+
+On Fri, Oct 25, 2024 at 6:24=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> Paolo, you picked up my patches without us first talking about it.
+> This is not how things should work.
+>
 
 
