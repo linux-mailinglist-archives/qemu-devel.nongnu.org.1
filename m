@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59359B8198
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B1E9B8191
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:50:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZID-0006v2-Nv; Thu, 31 Oct 2024 13:49:09 -0400
+	id 1t6ZIt-0007GM-2w; Thu, 31 Oct 2024 13:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIC-0006us-F9
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIK-0006x8-En
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIA-0006b5-Vj
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIJ-0006ci-2m
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730396946;
+ s=mimecast20190719; t=1730396954;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y00hq7hGBjG7fuZG5v3i0QznRo5r2TQUBU556fEvdt0=;
- b=dRYMdrSWAclZN0mSNl/ZQUo7svsos0ujmbdMVnsW6hPBBoMUC051U4n+htSfmWEpJlyrF0
- wQYrmBNwx2tr5FEG1PavisTrGvP0rfx7PLoPLAm38X5m2L1zt4XTQUvJ5hxnyykIdvyPwl
- e3KDahkNU1kBb6h/gqcamY17GagKPcE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=kIHchk5A+qmFPbVcaW/HDCHq1ocANqAi6V5O6CgBR6s=;
+ b=fYgVO6xdvnISfPqdooqv0WjxpGvHNyzk1WnOlzwmLFm3vYDHHNfaiQVj3XlK56vtNmMir6
+ u9kNBbvV5l2z6iLD7Vt3q50xw9QBFdkzrITEkRM4S8v6Jryku+WJ4bLTqpqqT2GQAX/AfJ
+ o+vpLeCuOhDa75CwkQyNuiDK+1ADwFg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-aT35lCtyNCm56niOusXv_Q-1; Thu,
- 31 Oct 2024 13:49:00 -0400
-X-MC-Unique: aT35lCtyNCm56niOusXv_Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-9UFnUiuFPK6z10Mj6pLjlQ-1; Thu,
+ 31 Oct 2024 13:49:04 -0400
+X-MC-Unique: 9UFnUiuFPK6z10Mj6pLjlQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B5284195609D; Thu, 31 Oct 2024 17:48:59 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5DDE41955F41; Thu, 31 Oct 2024 17:49:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.53])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EF580300019D; Thu, 31 Oct 2024 17:48:56 +0000 (UTC)
+ id 8175930001A3; Thu, 31 Oct 2024 17:48:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Boris Fiuczynski <fiuczy@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/14] hw/s390x: Re-enable the pci-bridge device on s390x
-Date: Thu, 31 Oct 2024 18:48:26 +0100
-Message-ID: <20241031174832.6574-9-thuth@redhat.com>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <huth@tuxfamily.org>
+Subject: [PULL 09/14] next-cube: fix up compilation when DEBUG_NEXT is enabled
+Date: Thu, 31 Oct 2024 18:48:27 +0100
+Message-ID: <20241031174832.6574-10-thuth@redhat.com>
 In-Reply-To: <20241031174832.6574-1-thuth@redhat.com>
 References: <20241031174832.6574-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -82,40 +80,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e779e5c05a ("hw/pci-bridge: Add a Kconfig switch for the
-normal PCI bridge") added a config switch for the pci-bridge, so
-that the device is not included in the s390x target anymore (since
-the pci-bridge is not really useful on s390x).
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-However, it seems like libvirt is still adding pci-bridge devices
-automatically to the guests' XML definitions (when adding a PCI
-device to a non-zero PCI bus), so these guests are now broken due
-to the missing pci-bridge in the QEMU binary.
+These were accidentally introduced by my last series.
 
-To avoid disruption of the users, let's re-enable the pci-bridge
-device on s390x for the time being.
-
-Message-ID: <20241024130405.62134-1-thuth@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Boris Fiuczynski <fiuczy@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Message-ID: <20241023085852.1061031-2-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ hw/m68k/next-cube.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index 3bbf4ae56e..82afdaa9dc 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
-@@ -7,6 +7,7 @@ config S390_CCW_VIRTIO
-     imply VFIO_AP
-     imply VFIO_CCW
-     imply WDT_DIAG288
-+    imply PCI_BRIDGE
-     imply PCIE_DEVICES
-     imply IOMMUFD
-     select PCI_EXPRESS
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index 9832213e7e..7a503e0707 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -404,7 +404,7 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
+ 
+     switch (addr) {
+     case 0x14108:
+-        DPRINTF("FDCSR Write: %x\n", value);
++        DPRINTF("FDCSR Write: %"PRIx64 "\n", val);
+         if (val == 0x0) {
+             /* qemu_irq_raise(s->fd_irq[0]); */
+         }
+@@ -468,15 +468,15 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
+             /* int_mask |= 0x1000; */
+             /* s->scsi_csr_1 |= 0x80; */
+         }
+-        DPRINTF("SCSICSR Write: %x\n", val);
++        DPRINTF("SCSICSR Write: %"PRIx64 "\n", val);
+         /* s->scsi_csr_1 = val; */
+         break;
+ 
+     /* Hardware timer latch - not implemented yet */
+     case 0x1a000:
+     default:
+-        DPRINTF("BMAP Write @ 0x%x with 0x%x size %u\n", (unsigned int)addr,
+-                val, size);
++        DPRINTF("BMAP Write @ 0x%x with 0x%"PRIx64 " size %u\n",
++                (unsigned int)addr, val, size);
+     }
+ }
+ 
+@@ -585,7 +585,7 @@ static void next_dma_write(void *opaque, hwaddr addr, uint64_t val,
+         break;
+ 
+     default:
+-        DPRINTF("DMA write @ %x w/ %x\n", (unsigned)addr, (unsigned)value);
++        DPRINTF("DMA write @ %x w/ %x\n", (unsigned)addr, (unsigned)val);
+     }
+ }
+ 
 -- 
 2.47.0
 
