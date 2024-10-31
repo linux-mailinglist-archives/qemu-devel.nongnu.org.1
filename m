@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EF59B81A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6419B81D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:56:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZLZ-0007Jt-QI; Thu, 31 Oct 2024 13:52:37 -0400
+	id 1t6ZLb-0007La-V4; Thu, 31 Oct 2024 13:52:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLW-0007Bl-P1
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t6ZLZ-0007K5-At
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLV-0007DQ-7K
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:34 -0400
+ id 1t6ZLX-0007Db-O4
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397152;
+ s=mimecast20190719; t=1730397155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bnl1YZedKs8GMr8W+kHSAthdIC7YbZ63USIqcJYma/4=;
- b=KJRjswmmpBsAX7hZBisBZrvnHKznwcalGuSYYB9w2mxSOdNZmEhRRfFZWIC+RV0ufPr+YF
- BX3R3I3y9MaLCZuK0xA6DlnTRc9FOBPLfDcCmbyeTbNAGQimqoDnHnzha896D2X2TffwHW
- cu2H17lAIc2qmTd7InU5iYEzmmQxtUM=
+ bh=ZCIBueuJ/pcmxe+TRoueGGm2RCVvnQkhXWm8H+WbDa8=;
+ b=MwXr++QQNcV6/gYSlnN38+DYgAOvOjWZRa6kEC9AE7NS8/MSPIMU2Krp0LLia6qM0woAgn
+ uMKC3563CmfnfR0L38OolZhIABxk7aFIsi8kWdui9KYVrYScSABHVEKgEQHXvzEdOYBzvv
+ /Td3y27cZVS9H4mFbTWD3ag9haQFzPw=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-XdGUW7c6MhuGul3gOhQrig-1; Thu, 31 Oct 2024 13:52:31 -0400
-X-MC-Unique: XdGUW7c6MhuGul3gOhQrig-1
+ us-mta-115-mTeZk3mNORWzfuGOewHZ7w-1; Thu, 31 Oct 2024 13:52:33 -0400
+X-MC-Unique: mTeZk3mNORWzfuGOewHZ7w-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315af466d9so7500715e9.3
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:31 -0700 (PDT)
+ 5b1f17b1804b1-431518e6d8fso7613715e9.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397149; x=1731001949;
+ d=1e100.net; s=20230601; t=1730397152; x=1731001952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Bnl1YZedKs8GMr8W+kHSAthdIC7YbZ63USIqcJYma/4=;
- b=M3K5O82y5Lp9JmZKYyCUqg0c/4KIYhbViUtADrlys+yAPqNlhLcVwaYerUd8E0LvRt
- 74xldom5jy8rdrZrac2AT0z29qcibwVDqg60tRGVQnj6DBqzy/J6Zry8dPGIQh0uDFdY
- TBNSm+P6o2d4W96mqvEIfZD08OaSCtcELmui5ceukMmrg8Jk9gcSA/9Prn4O+UMaCDjw
- 6b0M8XFAeyK/uKHtbMi5kfHPjOWfvsD8HIJR5YeobFfMuuzGTXwDjeaEJ/+HKG1fbOO1
- CCtEmWmY75oDJ3ww765RBaUR3z/KSFcmgDTHX4byVJIJqIi8p65m3lp6xn1F6oPFyQaM
- gKHg==
-X-Gm-Message-State: AOJu0YweNKZTYSYq4owYqrAn7MKXKmnTUvpe/5zcBXgIXfGhG4O5zuQ3
- 1WuK0tW2TBgzycIHpk5ttoJhq95MwFy2eTe/kWIpNw/x2szHs0SffvswA87KVIkKM+A8r+1dBWJ
- ELAO0lKqIrgKm6wwT2mknVO8i5jbpNZkMlqWdfnU6ZnwxSKoE00TCicJFLYk9fLGv8jKUBbilcR
- l4jRfDRVmWdJ1fHFCUElKeJ1rvXkBKu/aZdSdOfuQ=
-X-Received: by 2002:a05:600c:4e91:b0:431:5f1b:a7c4 with SMTP id
- 5b1f17b1804b1-432832990e5mr6185135e9.34.1730397149380; 
- Thu, 31 Oct 2024 10:52:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEeG976qDKZv/ZitVVJFWL5GvyTHszY+IjtvrRv9MBEMnSm9oejMMekBjQ5+NZnNYyWoZe7Vg==
-X-Received: by 2002:a05:600c:4e91:b0:431:5f1b:a7c4 with SMTP id
- 5b1f17b1804b1-432832990e5mr6184965e9.34.1730397148931; 
- Thu, 31 Oct 2024 10:52:28 -0700 (PDT)
+ bh=ZCIBueuJ/pcmxe+TRoueGGm2RCVvnQkhXWm8H+WbDa8=;
+ b=RKw3/s5Jx3yGEtwXi5gkdqSzQSn9XTCqFVXngnHWjgSDDj/BiF1npTg/QrEuAYzFo4
+ lKEhvQAgx55iWIn7sUDQs0gNc1Dz4NS1QynaLN2XTntpE0+U0VpgUl96ijjLE2mVxMpg
+ 9CeEY9bNKxwi8/1fz4ajK0tz3axPTu5j8SfykAOtMnQYUglE7+jo/rzQ+vpENXZeAawH
+ RiBxo/qYrKIWVMo+VSu28YOf0siq+Tb5z/Z7A6SNJDKybVNZ2VvBVsEuPUz+pbDiPAeP
+ v5J5yLgGwfbmAW+9pOd0zGlSXtRm/gY7DZkbnHTorgKdERWZn+WYqtNIutd/Idey4xdk
+ HRvQ==
+X-Gm-Message-State: AOJu0YwEji7CAl85+U+y1sqAHsgCEcQ7kpakopswQiDzRxkOaWSmi/Bg
+ 3Wi9WcoZFx9KCP0+TAkqKtwRIBkw9xg9EnZm2v/xONFDIDPvZQ/qw07p9frJSNwSgCTJ797BNJI
+ nlGP2EnZxb+3LwzYafQcomHXhevvhYnyVFz2KSQYHwByaMOlXvbm+h8mXNQ6KlDg05OrziMWC+H
+ 5rwt7GFjKLqiENd74WozltUoSaRhwKSxzVZM6gzkQ=
+X-Received: by 2002:a05:600c:45ce:b0:431:4f29:9542 with SMTP id
+ 5b1f17b1804b1-4328323f81amr5370675e9.6.1730397151959; 
+ Thu, 31 Oct 2024 10:52:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEnxZ+A635LUGRJH808Ax7yFl+rECJ5qqTCSGSNsB+Y+PdstK+1lFMSbiWfc8RGjsIDBJXHw==
+X-Received: by 2002:a05:600c:45ce:b0:431:4f29:9542 with SMTP id
+ 5b1f17b1804b1-4328323f81amr5370565e9.6.1730397151488; 
+ Thu, 31 Oct 2024 10:52:31 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d6852d9sm33684665e9.37.2024.10.31.10.52.25
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-431bd9403bfsm64423495e9.21.2024.10.31.10.52.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:26 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/49] configure, meson: deprecate 32-bit MIPS
-Date: Thu, 31 Oct 2024 18:51:31 +0100
-Message-ID: <20241031175214.214455-8-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 08/49] MAINTAINERS: Add myself as a reviewer of x86 general
+ architecture support
+Date: Thu, 31 Oct 2024 18:51:32 +0100
+Message-ID: <20241031175214.214455-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,78 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mipsel architecture is not available in Debian Trixie, and it will
-likely be a hard failure as soon as we drop support for the old Rust
-toolchain in Debian Bookworm.  Prepare by deprecating 32-bit little
-endian MIPS in QEMU 9.2.
+From: Zhao Liu <zhao1.liu@intel.com>
 
+X86 architecture has always been a focus of my work. I would like to
+help to review more related patches.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20241022023628.1743686-1-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/about/build-platforms.rst |  2 +-
- docs/about/deprecated.rst      | 12 ++++++++----
- meson.build                    |  8 ++++++++
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
-index 8fd7da140a3..b779eb54934 100644
---- a/docs/about/build-platforms.rst
-+++ b/docs/about/build-platforms.rst
-@@ -41,7 +41,7 @@ Those hosts are officially supported, with various accelerators:
-      - Accelerators
-    * - Arm
-      - kvm (64 bit only), tcg, xen
--   * - MIPS (little endian only)
-+   * - MIPS (64 bit little endian only)
-      - kvm, tcg
-    * - PPC
-      - kvm, tcg
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 1e1e9f5f18b..7c2be893255 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -164,15 +164,19 @@ property types.
- Host Architectures
- ------------------
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f48d9142b8a..58c71f753ac 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -132,6 +132,7 @@ F: configs/targets/mips*
  
--BE MIPS (since 7.2)
--'''''''''''''''''''
-+Big endian MIPS since 7.2; 32-bit little endian MIPS since 9.2
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
- As Debian 10 ("Buster") moved into LTS the big endian 32 bit version of
- MIPS moved out of support making it hard to maintain our
- cross-compilation CI tests of the architecture. As we no longer have
- CI coverage support may bitrot away before the deprecation process
--completes. The little endian variants of MIPS (both 32 and 64 bit) are
--still a supported host architecture.
-+completes.
-+
-+Likewise, the little endian variant of 32 bit MIPS is not supported by
-+Debian 13 ("Trixie") and newer.
-+
-+64 bit little endian MIPS is still a supported host architecture.
- 
- System emulation on 32-bit x86 hosts (since 8.0)
- ''''''''''''''''''''''''''''''''''''''''''''''''
-diff --git a/meson.build b/meson.build
-index f7d45175212..bae7a4370de 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4720,6 +4720,14 @@ if host_arch == 'unknown'
-     message('configure has succeeded and you can continue to build, but')
-     message('QEMU will use a slow interpreter to emulate the target CPU.')
-   endif
-+elif host_arch == 'mips'
-+  message()
-+  warning('DEPRECATED HOST CPU')
-+  message()
-+  message('Support for CPU host architecture ' + cpu + ' is going to be')
-+  message('dropped as soon as the QEMU project stops supporting Debian 12')
-+  message('("Bookworm"). Going forward, the QEMU project will not guarantee')
-+  message('that QEMU will compile or work on this host CPU.')
- endif
- 
- if not supported_oses.contains(host_os)
+ X86 general architecture support
+ M: Paolo Bonzini <pbonzini@redhat.com>
++R: Zhao Liu <zhao1.liu@intel.com>
+ S: Maintained
+ F: configs/devices/i386-softmmu/default.mak
+ F: configs/targets/i386-softmmu.mak
 -- 
 2.47.0
 
