@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82099B818D
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59359B8198
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:51:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZIB-0006tR-A0; Thu, 31 Oct 2024 13:49:07 -0400
+	id 1t6ZID-0006v2-Nv; Thu, 31 Oct 2024 13:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZI8-0006sr-2J
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIC-0006us-F9
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZI6-0006aS-EX
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t6ZIA-0006b5-Vj
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:49:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730396940;
+ s=mimecast20190719; t=1730396946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XH1GgGjDp+xxAqKtBIbSQCCLqfrsivZ/A77zYmXt3zg=;
- b=cevsdjoN7Vscb2Gc5rONLwqStVBOAKlkyWFADt7lccgoKvWFUqYrFtbUheU8XjGP2s4+Qw
- bDOPdjOI4WUG4uCnqQkEmrX7FmQArF0Z+h5ay4bJHloKQlX63YdFc3y9yU05xXZbs+zm2d
- 4oX/VNPWGEBimUHdD2fDgKHXuqjG9/k=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=y00hq7hGBjG7fuZG5v3i0QznRo5r2TQUBU556fEvdt0=;
+ b=dRYMdrSWAclZN0mSNl/ZQUo7svsos0ujmbdMVnsW6hPBBoMUC051U4n+htSfmWEpJlyrF0
+ wQYrmBNwx2tr5FEG1PavisTrGvP0rfx7PLoPLAm38X5m2L1zt4XTQUvJ5hxnyykIdvyPwl
+ e3KDahkNU1kBb6h/gqcamY17GagKPcE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-pMFh6ZanNFmQVjj9ZkR-mw-1; Thu,
- 31 Oct 2024 13:48:57 -0400
-X-MC-Unique: pMFh6ZanNFmQVjj9ZkR-mw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-aT35lCtyNCm56niOusXv_Q-1; Thu,
+ 31 Oct 2024 13:49:00 -0400
+X-MC-Unique: aT35lCtyNCm56niOusXv_Q-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 792981955D5F; Thu, 31 Oct 2024 17:48:56 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B5284195609D; Thu, 31 Oct 2024 17:48:59 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.53])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 690F430001A5; Thu, 31 Oct 2024 17:48:55 +0000 (UTC)
+ id EF580300019D; Thu, 31 Oct 2024 17:48:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 07/14] tests/functional: Fix the s390x and ppc64 tuxrun tests
-Date: Thu, 31 Oct 2024 18:48:25 +0100
-Message-ID: <20241031174832.6574-8-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Boris Fiuczynski <fiuczy@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/14] hw/s390x: Re-enable the pci-bridge device on s390x
+Date: Thu, 31 Oct 2024 18:48:26 +0100
+Message-ID: <20241031174832.6574-9-thuth@redhat.com>
 In-Reply-To: <20241031174832.6574-1-thuth@redhat.com>
 References: <20241031174832.6574-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,62 +82,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I forgot to add the tests to the meson.build file and looks
-like I even managed to somehow mix up the hashsums in the
-ppc64 test!
+Commit e779e5c05a ("hw/pci-bridge: Add a Kconfig switch for the
+normal PCI bridge") added a config switch for the pci-bridge, so
+that the device is not included in the s390x target anymore (since
+the pci-bridge is not really useful on s390x).
 
-Message-ID: <20241023141919.930689-1-thuth@redhat.com>
+However, it seems like libvirt is still adding pci-bridge devices
+automatically to the guests' XML definitions (when adding a PCI
+device to a non-zero PCI bus), so these guests are now broken due
+to the missing pci-bridge in the QEMU binary.
+
+To avoid disruption of the users, let's re-enable the pci-bridge
+device on s390x for the time being.
+
+Message-ID: <20241024130405.62134-1-thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Boris Fiuczynski <fiuczy@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/meson.build          | 3 +++
- tests/functional/test_ppc64_tuxrun.py | 4 ++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ hw/s390x/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index a9f1addf77..2ae4e415ce 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -24,6 +24,7 @@ test_timeouts = {
-   'ppc64_hv' : 1000,
-   'ppc64_powernv' : 240,
-   'ppc64_pseries' : 240,
-+  'ppc64_tuxrun' : 240,
-   's390x_ccw_virtio' : 240,
- }
- 
-@@ -135,6 +136,7 @@ tests_ppc64_system_thorough = [
-   'ppc64_hv',
-   'ppc64_powernv',
-   'ppc64_pseries',
-+  'ppc64_tuxrun',
- ]
- 
- tests_rx_system_thorough = [
-@@ -152,6 +154,7 @@ tests_riscv64_system_thorough = [
- tests_s390x_system_thorough = [
-   's390x_ccw_virtio',
-   's390x_topology',
-+  's390x_tuxrun',
- ]
- 
- tests_sh4_system_thorough = [
-diff --git a/tests/functional/test_ppc64_tuxrun.py b/tests/functional/test_ppc64_tuxrun.py
-index 552b53c97a..03b47e07f2 100755
---- a/tests/functional/test_ppc64_tuxrun.py
-+++ b/tests/functional/test_ppc64_tuxrun.py
-@@ -83,10 +83,10 @@ def ppc64_common_tuxrun(self, kernel_asset, rootfs_asset, prefix):
- 
-     ASSET_PPC64_KERNEL = Asset(
-         'https://storage.tuxboot.com/20230331/ppc64/vmlinux',
--        '1d953e81a4379e537fc8e41e05a0a59d9b453eef97aa03d47866c6c45b00bdff')
-+        'f22a9b9e924174a4c199f4c7e5d91a2339fcfe51c6eafd0907dc3e09b64ab728')
-     ASSET_PPC64_ROOTFS = Asset(
-         'https://storage.tuxboot.com/20230331/ppc64/rootfs.ext4.zst',
--        'f22a9b9e924174a4c199f4c7e5d91a2339fcfe51c6eafd0907dc3e09b64ab728')
-+        '1d953e81a4379e537fc8e41e05a0a59d9b453eef97aa03d47866c6c45b00bdff')
- 
-     def test_ppc64(self):
-         self.ppc64_common_tuxrun(kernel_asset=self.ASSET_PPC64_KERNEL,
+diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
+index 3bbf4ae56e..82afdaa9dc 100644
+--- a/hw/s390x/Kconfig
++++ b/hw/s390x/Kconfig
+@@ -7,6 +7,7 @@ config S390_CCW_VIRTIO
+     imply VFIO_AP
+     imply VFIO_CCW
+     imply WDT_DIAG288
++    imply PCI_BRIDGE
+     imply PCIE_DEVICES
+     imply IOMMUFD
+     select PCI_EXPRESS
 -- 
 2.47.0
 
