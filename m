@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510279B7374
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0048B9B7370
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 05:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MQm-0003e4-BT; Thu, 31 Oct 2024 00:05:08 -0400
+	id 1t6MQo-0003hR-RN; Thu, 31 Oct 2024 00:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQe-0003bP-Tc
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:00 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1t6MQg-0003dR-IB
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:03 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6MQc-0004pY-UC
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:00 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2e2b549799eso388287a91.3
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:04:58 -0700 (PDT)
+ id 1t6MQe-0004ph-MB
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 00:05:02 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2e30116efc9so392169a91.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 21:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730347497; x=1730952297; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730347498; x=1730952298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=njeHlPS1UvDHI0dHkOZk8rvt6i94v/W7laKq7UySnIM=;
- b=JzZOmVclvLooWgo5QSYOns/4x7NWLfWP9GnrYGq6tbRg/jmYpamxy9dVB74mmwY1t2
- xgp6MtCeIxL6YyFPeFzQww+4LZDNP41oDmCp0XI4yYUOqFTVzKBJtNtj9qz0IxEmfWax
- zXvZyUuiPNDChNmdnJbDQlIB4Ny0avqiZWfnmE1viQuk03rPLOgTFMp0auZx5k33c/Wx
- cXyfd0wh7HJtxCRgrUVcs/dBQ0n8r3sDtwyz8XoVChFRxjl99kVE+76WNgHZgbjDL/rZ
- zn+gAyL6SIzZ3S8cEN/4njWV8LEYJnfkrRsDKVhtHSS1ZRWFApEfEWV3d1m3m+2W1f22
- 9WxA==
+ bh=WpgvBPyGx65kpjq48fx4MpdW5Aw7ymp2tboHQxxKolQ=;
+ b=FM//VtgL48k9OtEeWPfmQ3f0wtXsDJ2O8rPQNzK6SxUhLgPzaV5TTlx3gLvBd8bvCO
+ l0zzzKjUVw12e19SDEatsOuccsFVhu6JslcAZWTCXGuvlHTZ64EPnsEAq0Hzi0JpqJkk
+ 36sKnzS1x0np1nsEw57InouMvDTZjSzbwvoMeMToaaH4MOWLLUzfxsByo6pWDG2CxWaH
+ ZfD/X1h9wM47E1ILEXiQu+I1yUZosEe9Mt8lXeLlE56H28Ucksh1rjgsVk0oW863Xgir
+ Vh/tT33ODlBgwbzvD+cmpom0z7nxA2aDgabvmNcg6ppCMdYk3u1ArX71ibi6VfpZhtim
+ PNfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730347497; x=1730952297;
+ d=1e100.net; s=20230601; t=1730347498; x=1730952298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=njeHlPS1UvDHI0dHkOZk8rvt6i94v/W7laKq7UySnIM=;
- b=Qro7pbAbDBWv1qdrotRrarUZAdn8gqjsPQ2KMWz6tQscwEOcp5ED8OklLtkiGnH8df
- Rc0hYnDGU78lutiumJKvQyQ5iC0UUMPQ9gPpXbwrRl65o1TRuJf/IDCOqVckInpTQusP
- c5KtWJEejviKb2ZsoxmpCNsTGFwqwrN6oBiyoaRk3JKRMSVTXgFaPSDACOVWcnp5WCFV
- UwGORe+HBSQeyd1lwk/ucJvEwvDYCWLq/KJvyOHH6/aclquPZ+s57Tz4Vu3DU2TUdo0z
- adu8jL76xxSx52U/jrcRGlA485rjF19mHscU/pHmuem+jXbMEzfEtSI5BtdNSCSXmxUF
- 36Bg==
-X-Gm-Message-State: AOJu0YzPLK9k2uv3UgrLaUCKLF+0HpCUT2ypXnUCStTKi+Hlnca0ETHw
- 3Jp/XjZeDzNH6oZkXWIqhynDmhBh0t219wqcQp0AGIx45iFyI/Sf/1abUMCPyUYa8iR11KXrKIi
- 3XtVWOw==
-X-Google-Smtp-Source: AGHT+IGXvHOS0yU16i74618zHhJXoSd4NN9X2CvpmbDDMkWmfg/y7mI5sERLC29xPOX+IyUKKhQ/3A==
-X-Received: by 2002:a17:90a:df0b:b0:2e0:f896:9d6d with SMTP id
- 98e67ed59e1d1-2e8f106fd8cmr19013294a91.16.1730347497564; 
- Wed, 30 Oct 2024 21:04:57 -0700 (PDT)
+ bh=WpgvBPyGx65kpjq48fx4MpdW5Aw7ymp2tboHQxxKolQ=;
+ b=cI7bDcW2MKaJPBJyR+uwMfeqhbYG9pJYU+dYNXgEnBctFDr6N4+DdpctUR06Iyngbf
+ XXQBMfslcQRz5Sbo0U00I+Yl7tGaC9/20fqkhl05Mb8FGTMSb4gDGuo3YC7prtPBZAE+
+ YANbm277cLYfxJl6n1T6kEXfqydydxgJw5Rp+iPyEZwTlzDzcNzz89Po9xcImfo6T02T
+ MPml1+KvtPFy2ZaVDyVSBczOk1R8aieylxy1ZQmYa9ytzjMZwew9ksA1PpxR51whNcqY
+ swUf1oyHyQrkKNj9xQ+TL4AGUXQguchHmNyJeSe5iJheXQKMF+5UDAb/d26963QWZ/Y7
+ PDUA==
+X-Gm-Message-State: AOJu0YzYxISZRl7a68edi13MZ4kzJlq3MUZIjvq1vYDGi3dtTQqOECMr
+ b7QuklIfezAT5M+dYeclDenq/XB76abcWaLeXAILr3RdivJsqcS5jven3a+OYhYeOU0vTpWipDt
+ IdjBYgw==
+X-Google-Smtp-Source: AGHT+IGKeVwrQKTxPrVzUsznsDEhBcZ6belWBpoT0d+OrQfk+qtv6nOpV+TR2yOmlRGGGAYWdHteEg==
+X-Received: by 2002:a17:90a:e154:b0:2e2:e148:3d30 with SMTP id
+ 98e67ed59e1d1-2e8f107354amr21150840a91.23.1730347498653; 
+ Wed, 30 Oct 2024 21:04:58 -0700 (PDT)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.56
+ 98e67ed59e1d1-2e93db3a023sm428438a91.49.2024.10.30.21.04.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 21:04:57 -0700 (PDT)
+ Wed, 30 Oct 2024 21:04:58 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -71,17 +71,17 @@ Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 01/12] scripts: remove erroneous file that breaks git clone on
- Windows
-Date: Wed, 30 Oct 2024 21:04:15 -0700
-Message-Id: <20241031040426.772604-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH 02/12] contrib/plugins/cflow: fix warning
+Date: Wed, 30 Oct 2024 21:04:16 -0700
+Message-Id: <20241031040426.772604-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,23 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This file was created by mistake in recent ed7667188 (9p: remove
-'proxy' filesystem backend driver).
+contrib/plugins/cflow.c: In function ‘plugin_exit’:
+contrib/plugins/cflow.c:167:19: error: declaration of ‘n’ shadows a previous local [-Werror=shadow=local]
+  167 |         NodeData *n = l->data;
+      |                   ^
+contrib/plugins/cflow.c:139:9: note: shadowed declaration is here
+  139 |     int n = 0;
+      |         ^
 
-When cloning the repository using native git for windows, we see this:
-Error: error: invalid path 'scripts/meson-buildoptions.'
-Error: The process 'C:\Program Files\Git\bin\git.exe' failed with exit code 128
-
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- scripts/meson-buildoptions. | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- delete mode 100644 scripts/meson-buildoptions.
+ contrib/plugins/cflow.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/meson-buildoptions. b/scripts/meson-buildoptions.
-deleted file mode 100644
-index e69de29bb2d..00000000000
+diff --git a/contrib/plugins/cflow.c b/contrib/plugins/cflow.c
+index 6faa55d10d1..b39974d1cf3 100644
+--- a/contrib/plugins/cflow.c
++++ b/contrib/plugins/cflow.c
+@@ -136,7 +136,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     g_autoptr(GString) result = g_string_new("collected ");
+     GList *data;
+     GCompareFunc sort = &hottest;
+-    int n = 0;
++    int i = 0;
+ 
+     g_mutex_lock(&node_lock);
+     g_string_append_printf(result, "%d control flow nodes in the hash table\n",
+@@ -162,8 +162,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     data = g_list_sort(data, sort);
+ 
+     for (GList *l = data;
+-         l != NULL && n < topn;
+-         l = l->next, n++) {
++         l != NULL && i < topn;
++         l = l->next, i++) {
+         NodeData *n = l->data;
+         const char *type = n->mid_count ? "sync fault" : "branch";
+         g_string_append_printf(result, "  addr: 0x%"PRIx64 " %s: %s (%s)\n",
 -- 
 2.39.5
 
