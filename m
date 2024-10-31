@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6939D9B8032
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4019B8000
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:25:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6Y7E-0002Yi-09; Thu, 31 Oct 2024 12:33:44 -0400
+	id 1t6XyM-0000Lg-81; Thu, 31 Oct 2024 12:24:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6Y75-0002Y3-9I
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:33:36 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6Y72-0003XR-PX
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:33:35 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5c948c41edeso1355903a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 09:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730392410; x=1730997210; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aOnP5kSk9F0m1RRBTQfYEC5+vbo9OQCaCNQBmkX967g=;
- b=gdktMZxJQbjKWMPXDQPmvVHKdd6CbKpZwoT+OQRAd4NCHFPSovEnNBSafGIbDKfzDv
- 7FIPGPedsHyQ7gCVGgJVxIwlBFHnUJ47cbH6k0nLaebqIoAQxIPiDrnWz8Yzrk/oxIqp
- d6Rt8oWK6IPhSElS1iL6bddA7yyiaD5/uqWnkIjTVFWh08v1g89my4tFM6N5Km/hn0b2
- 7aK3CKJa1PcvfPdhMQ1gDHTR84k7Sw0ju8wJwoK3+Fil95NnQcY7hpl7Z19ZDgpFIbM4
- OW64UDy2GRlGXI3T2gxi7QP6E3GuwdtrmqCmmrIacGKqDCE6CyXqWdLTOpFaaT/A/zTK
- NY3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730392410; x=1730997210;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aOnP5kSk9F0m1RRBTQfYEC5+vbo9OQCaCNQBmkX967g=;
- b=JbztULTOBr9GOtEiYx+zNRJXU4/LtwyKdbldBY4FpRwgY/CuSrTN48kw5K/95DdGKV
- QuRNZSls/Sqzn3t3h2Sq/8XRQoK84UzEmeEE64GgDIM7eA63L0jM/P6CzSSZ6XCMPxiQ
- b6iCWIADvfus5TfFhyeOYSUFdrWbDcXD654Mty/OROpZPfo4KZaABZx5i8OH8g+5mu2O
- 7JwsbvJP3rImsT+FFJoT8BmuDxST5NFQ91fGdyzVfEo/za58K5lRtVFov1QvoXisbVAV
- GhIyUyIm+Jx4uP1i8EV0P2/yc6pbR3Ra7rT/YlXgy4iYKvGr8xnxPTt/NVWVQgpbC6LQ
- TvJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU0C49JsLnilvuoGGS8T1voVhkUvA0oCOTQteieoxLKcn6ZIn6X5vIV4N3umdYbh2JZ+ikO99bahe9H@nongnu.org
-X-Gm-Message-State: AOJu0Ywy8FFzF48D9T9xThWZt2/n+hmeNep6R3cZb45odwLkr2TM566X
- Z7Hzgv+50YR0HwUsv7THFA+U+Hh0apf7dq5bISZGdFc5zTUZeY+QWWizxPxeyu5IirlcsrQbCxq
- KU2Anzezm9BYsbOjylPXTuPBH2Pki1YEEDkENFw5f3B0MZZ0z
-X-Google-Smtp-Source: AGHT+IFFwzFZZYB5kBYw7WvE4JzRr3TDoUF2hV1ESxkkC6tSmGCg8yQ/TK6DAxb+LO6DC9vMEe35PhJAgzW5iUtFg4g=
-X-Received: by 2002:a05:6402:254b:b0:5c9:4281:4515 with SMTP id
- 4fb4d7f45d1cf-5cea9687be9mr3044678a12.17.1730392408282; Thu, 31 Oct 2024
- 09:33:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6Xy7-0000Ji-OT
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:24:23 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6Xy0-00024G-Oa
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:24:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730391853; x=1761927853;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=SaMSW5dqKpu1S/+h0T6Umguv0j6pHee0GJQFILgnvbc=;
+ b=KbIiXrZkaWpxHgImTd2JEbiMZnNW7S8MpylArx+DpDfM0FOQHqNHxF/V
+ XrhX7tEXp5RjHDPmkkLzvW9DWtZQYrZ2FnJU9WnDFmVVZma6FSGXapZ84
+ FLfEj+lmRzPXMUOWAXlnz1ErMy5j+ZzMS/XyYdu9g8hyJe/f1bLL9DJe7
+ XLyrJd1R2jta+mWsf8pOMSiS+tRrcNpqt+qZBZYS2bexxab+SlZEwKoQV
+ uggyVTVqpPRmz2Siph46Z6J50Nb9ND/eKNEz5LUKJH6Fe90bilmuSYAEQ
+ W9V3cO2tk6a9dPpktgL1MXV7bW6j3X8Mzi0ja1NHscRAhcyLjZw93+e1U g==;
+X-CSE-ConnectionGUID: yMCkz/t3Q+GsSEoaFSnvqg==
+X-CSE-MsgGUID: 8oFj9pP8Rsajz+pSkL+OLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30258925"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="30258925"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 09:24:08 -0700
+X-CSE-ConnectionGUID: ae4nvHklSYS0LYth8nlHxQ==
+X-CSE-MsgGUID: XTlmUYvnTsGG4cmd50YCpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="86606598"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 31 Oct 2024 09:24:07 -0700
+Date: Fri, 1 Nov 2024 00:41:57 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
+ junjie.mao@hotmail.com, berrange@redhat.com
+Subject: Re: [PATCH v3 00/23] rust: fix CI + allow older versions of rustc
+ and bindgen
+Message-ID: <ZyOzVYpqHYx8O6Yc@intel.com>
+References: <20241025160209.194307-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20241029151048.1047247-1-peter.maydell@linaro.org>
-In-Reply-To: <20241029151048.1047247-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Oct 2024 16:33:17 +0000
-Message-ID: <CAFEAcA8C6vZvQ9qymGehfMswfZQ3hT7DGP0f2Qg5bgj44iOz3Q@mail.gmail.com>
-Subject: Re: [PULL 00/18] target-arm queue
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,39 +82,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Oct 2024 at 15:10, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> The following changes since commit fdf250e5a37830615e324017cb3a503e84b3712c:
->
->   Merge tag 'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/stsquad/qemu into staging (2024-10-25 19:12:06 +0100)
->
-> are available in the Git repository at:
->
->   https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241029
->
-> for you to fetch changes up to 84f298ea3e2f0627c09871561e55068db9ff9180:
->
->   target/arm: kvm: require KVM_CAP_DEVICE_CTRL (2024-10-29 15:04:47 +0000)
->
-> ----------------------------------------------------------------
-> target-arm queue:
->  * arm/kvm: add support for MTE
->  * docs/system/cpu-hotplug: Update example's socket-id/core-id
->  * target/arm: Store FPSR cumulative exception bits in env->vfp.fpsr
->  * target/arm: Don't assert in regime_is_user() for E10 mmuidx values
->  * hw/sd/omap_mmc: Fix breakage of OMAP MMC controller
->  * tests/functional: Add functional tests for collie, sx1
->  * scripts/symlink-install-tree.py: Fix MESONINTROSPECT parsing
->  * docs/system/arm: Document remaining undocumented boards
->  * target/arm: Fix arithmetic underflow in SETM instruction
->  * docs/devel/reset: Fix minor grammatical error
->  * target/arm: kvm: require KVM_CAP_DEVICE_CTRL
->
+> This series can be found at branch rust-next of my git repository
+> (https://gitlab.com/bonzini/qemu.git), which also helps with the
+> problems in applying patch 8.  Everything up to commit f6a46d2a4eb
+> ("rust: do not use TYPE_CHARDEV unnecessarily", 2024-10-25) will be
+> my next pull request, which I will send early next week (to give
+> people some more days to complain).
+> 
+> Paolo
+> 
+> Supersedes: <20241022100956.196657-1-pbonzini@redhat.com>
+> 
+> CI: https://gitlab.com/bonzini/qemu/-/pipelines/1512732399
 
-Applied, thanks.
+Compiled with v1.63 and ran "make check" on my x86 platform.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
+Everything looks good!
 
--- PMM
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
+
 
