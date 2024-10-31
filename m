@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FB29B76F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 10:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AF69B7765
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 10:26:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6R1G-0000rP-4a; Thu, 31 Oct 2024 04:59:06 -0400
+	id 1t6RQ0-0008Eh-4V; Thu, 31 Oct 2024 05:24:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6R1A-0000mJ-DI
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:59:00 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t6RPx-0008EW-9N
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 05:24:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6R18-0003Gu-Mo
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 04:59:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730365139; x=1761901139;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=X/D2vNdScCHmz0+RWJ9LwHGG/iCwnHpfrXS7AkXMf9I=;
- b=C93mkFydpJXkWEMn6CryTrCFX8H8r+XGezBEqEc2nZbpgdqFZAx/4Vf2
- OXjq+XDulsUgeH+MgJ60bWrpVF+22nt0HpA3P2axvWXus+cgkWaFZvc3+
- tNvrfF2/BAHLze1aBSz7pb+j2HgnKfhI57P18/RI9xY626J4H1ZSReefA
- A0ZP2UOakwC4or4WPSkbjvzzQVV0kJ9VLoY95YBFQoQsq8oXBbWW8VMcw
- AxQ4Di0INfIBQn5iry9CTU/uyNONsxxyWUXWmBySBiIuRbL299zNhGUt7
- vVAb72wswHdgoEo7IgQThJRaX+FvfdAc/JiQJ5AtCV+kG8cIP9v6i4rsM w==;
-X-CSE-ConnectionGUID: UbiHwaeLRIeAP4zcK0ozAw==
-X-CSE-MsgGUID: LPbobEWCTLmdlCOFFadN0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="55492766"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="55492766"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 01:58:38 -0700
-X-CSE-ConnectionGUID: BJQPn5EbQYiRKqRP8vXgLw==
-X-CSE-MsgGUID: Un6EcnpVQAqn66k/DCBiXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82489581"
-Received: from st-server.bj.intel.com ([10.240.193.102])
- by orviesa010.jf.intel.com with ESMTP; 31 Oct 2024 01:58:36 -0700
-From: Tao Su <tao1.su@linux.intel.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, xiaoyao.li@intel.com,
- zhao1.liu@intel.com, xuelian.guo@intel.com, tao1.su@linux.intel.com
-Subject: [PATCH v3 8/8] target/i386: Introduce GraniteRapids-v2 model
-Date: Thu, 31 Oct 2024 16:52:33 +0800
-Message-Id: <20241031085233.425388-9-tao1.su@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241031085233.425388-1-tao1.su@linux.intel.com>
-References: <20241031085233.425388-1-tao1.su@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t6RPu-0005jV-Fh
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 05:24:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730366672;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=J+PLAWtljOuWqYsKj3xmVjVe02UVdBJxvgTY4hrbnV8=;
+ b=cNvQVdWccd/G/pOcav3MXLfyaPyuVwv0X9v6Te9D5vD8gidrH/srCFaOoSp6JN0m1ZUhMN
+ KPMiOkuB9RGDQcxBkv4Ql9HK2XJLNb7CZIDpmbisGVrioRfxPdYMoN0TcXgHC3Sx8t7BRY
+ 4OuiPYCXfnEZ1SOMNpKPQivbB+ATxQA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-262-rYxDAs58NPeIfbFnT00QhA-1; Thu,
+ 31 Oct 2024 05:24:28 -0400
+X-MC-Unique: rYxDAs58NPeIfbFnT00QhA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 49F4519560B8; Thu, 31 Oct 2024 09:24:25 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.18])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECAF7195605F; Thu, 31 Oct 2024 09:24:19 +0000 (UTC)
+Date: Thu, 31 Oct 2024 09:24:15 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: Re: [PATCH 12/12] docs: add information on how to setup build
+ environments
+Message-ID: <ZyNMv46rHcmT8ILm@redhat.com>
+References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
+ <20241031040426.772604-13-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.7;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241031040426.772604-13-pierrick.bouvier@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,50 +91,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update GraniteRapids CPU model to add AVX10 and the missing features(ss,
-tsc-adjust, cldemote, movdiri, movdir64b).
+On Wed, Oct 30, 2024 at 09:04:26PM -0700, Pierrick Bouvier wrote:
+> MacOS and Linux are straightforward, but Windows needs a bit more
+> details.
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  docs/about/build-platforms.rst |   4 +-
+>  docs/devel/build-system.rst    | 100 +++++++++++++++++++++++++++++++++
+>  2 files changed, 103 insertions(+), 1 deletion(-)
 
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028024512.156724-7-tao1.su@linux.intel.com
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> +Windows
+> +-------
+> +
+> +You first need to install `MSYS2 <https://www.msys2.org/>`_.
+> +MSYS2 offers `different environments <https://www.msys2.org/docs/environments/>`_.
+> +x86_64 environments are based on GCC, while aarch64 is based on Clang.
+> +
+> +We recommend to use UCRT64 for windows-x86_64 and CLANGARM64 for windows-aarch64
+> +(only available on windows-aarch64 hosts).
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index cc7e4ce665..8846314775 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -4381,6 +4381,23 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-         .model_id = "Intel Xeon Processor (GraniteRapids)",
-         .versions = (X86CPUVersionDefinition[]) {
-             { .version = 1 },
-+            {
-+                .version = 2,
-+                .props = (PropValue[]) {
-+                    { "ss", "on" },
-+                    { "tsc-adjust", "on" },
-+                    { "cldemote", "on" },
-+                    { "movdiri", "on" },
-+                    { "movdir64b", "on" },
-+                    { "avx10", "on" },
-+                    { "avx10-128", "on" },
-+                    { "avx10-256", "on" },
-+                    { "avx10-512", "on" },
-+                    { "avx10-version", "1" },
-+                    { "stepping", "1" },
-+                    { /* end of list */ }
-+                }
-+            },
-             { /* end of list */ },
-         },
-     },
+I don't believe we should be recommending ucrt64 for windows. We have two
+testing jobs, one cross compiled from Mingw Fedora, and one native under
+Msys2, both of which are validating mingw64. We have no ucrt64 testing.
+IIUC, Stefan's QEMU installer binaries are also mingw32/mingw64 based,
+not ucrt64.
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
