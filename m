@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC58D9B81A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FCC9B81A1
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:52:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZLg-0007Tu-Js; Thu, 31 Oct 2024 13:52:44 -0400
+	id 1t6ZLk-0007hG-2D; Thu, 31 Oct 2024 13:52:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLe-0007N9-5p
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:42 -0400
+ id 1t6ZLh-0007YZ-BJ
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZLc-0007Eg-K3
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:41 -0400
+ id 1t6ZLf-0007FS-Vg
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:52:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397160;
+ s=mimecast20190719; t=1730397163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yy9bORYpCijIRXD12pq3hathdMu3AKwAgv2Oft99Il0=;
- b=N+v7x2lSX5pk7kkqmTNgZyQN24VtzDA+io3ZWb/5M36fc0lJJ3+QBNTnnTIUrT/MW4NVme
- mQ8f2EVdxIDdzb+3c36NQgGr941NO8h8aNgVvgTSDyNDuRBvkIthBvZE3ntoXOI57mPqPm
- h4pkjGyYFge7kZ48a3w4dkqaA9ipMCM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/DX6VzlduT4scaePbyxo91UmVO28eeh5cZacUuHGwBY=;
+ b=JXDHWJSG+hZNRehvPH3W7EA7rVwUEtUlhuEd7CMe3gIqS1gSUJ7Rvvk4xqR+NqHiYlod+R
+ eLl5gTOvYuDivfOvStUwXYvWwXR6vNJBzGIylb94kAK+Xou/0/zZXpWMxbkNN0yclukAKA
+ RYbe+v9Q0J8Dj5/RRoUCkz17nIcfnUM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-L3Oqr0K3NZG82ZA_nuZmGg-1; Thu, 31 Oct 2024 13:52:38 -0400
-X-MC-Unique: L3Oqr0K3NZG82ZA_nuZmGg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315c1b5befso7225915e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:38 -0700 (PDT)
+ us-mta-292-n-6m4vbJPqiuAyykof8ZBg-1; Thu, 31 Oct 2024 13:52:42 -0400
+X-MC-Unique: n-6m4vbJPqiuAyykof8ZBg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d67f4bf98so521686f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:52:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397156; x=1731001956;
+ d=1e100.net; s=20230601; t=1730397159; x=1731001959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yy9bORYpCijIRXD12pq3hathdMu3AKwAgv2Oft99Il0=;
- b=HzHWXxuZpZbHAlV7Sp624TbUMdmklG7NLbXQY4BY2g/EWZgIMUabu7S2C5bTxEsElr
- JCRm8cNQkMFBUPtRDz2fUhIy+UTyufC6RdtfXWaNg4ZrAtE4Kc43HqklAapw0GuhKEQN
- peZ5XarCl5vDpWKaoW2V+nXWF5RktXPRevlqbdnDAqCx2j/8WDSdCgeS71Kz5zy/PpiA
- UlhFrmDpeNE3WsNbPj7ezpr0mfE/PAjjeU/I1mEzcsFpm7CY/SPK3i2iIdbRbJwgF0Ys
- aRUb/1OCXTTXOTn5phgv77UmiENnx8sjsq6UI+M8qWzgNJDj9SkOMN5S5qfJ3IfCckS8
- tsvA==
-X-Gm-Message-State: AOJu0YyCHrow8Lv0fb7i5uOM+KW8COVzpUv7yTpLfJKPC7wcvSi3E3KL
- /SmIWZYmFQo6ujr0FzhxO48Wb24cqzJRP3Fm0CNox48uVQl2ntJE3Uq/WIsk06XPhCpuz009W/m
- eTNIY56aKrnHzSOzBqC6Q1yuP+gfE4W8DcDK36DIHtvFVLsOK+bryTJnJVIj/lUqOS5+1R1+4JT
- 7tNn1jcTS7NkV1YSONu4xNlNfMJ3BKiYoDzHop9lM=
-X-Received: by 2002:a05:600c:3b14:b0:426:8884:2c58 with SMTP id
- 5b1f17b1804b1-4319ac6fb0amr171446505e9.4.1730397156165; 
- Thu, 31 Oct 2024 10:52:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGM0FjCyxkL3mu4e2caFPVYkosfEO3X7QBTE+vQYFmLazsceaifmSGvYbqd6l7I8WexkcOdSg==
-X-Received: by 2002:a05:600c:3b14:b0:426:8884:2c58 with SMTP id
- 5b1f17b1804b1-4319ac6fb0amr171446285e9.4.1730397155815; 
- Thu, 31 Oct 2024 10:52:35 -0700 (PDT)
+ bh=/DX6VzlduT4scaePbyxo91UmVO28eeh5cZacUuHGwBY=;
+ b=EK9qGaabrmXSafaukjMhqR2TADGYrAuI33c5FwyG/T5Py0BBEJqK8aN8Cji5JIOeVG
+ h4lEpiIUGNLusAXWVdKE1guhPysR0PjckTFP75ciDzmULyzVsulY135KZ0ujCoZNaIWS
+ 1Mazd4MV4NvJGtDmfdN5qsTceUBHOLngM/B5AAnL20l9LbNovyxWj7gFCx5tsSWmAslg
+ Jx46GmTOadiGSAXBjaC1AUO2pwfwuezwrxxpVOaPA/XuVINv3hC2Onws8w/wmPCL+vrE
+ 7dzkgxWcsaEimHhuQ0uy3FLHEcJH8khtIHvXuZ8qxJr8N7CHy31UXJXnp1BUSPrKzEL9
+ 8+jg==
+X-Gm-Message-State: AOJu0YzYerIxxMDQs5P5JeTtb9x0gFv8CkJoUtJZm2r/BYYY3wGTeeWt
+ sggdwj+mhLb7iqt/zbRC0RXbj86IrnVu+B5Duv4rCqz56Qen+GVbh2QANfao5rWRdHjDcDo5dcK
+ Qf7febqlxhpO6sRAo0o/m07udypSk/FHWYHtQ7FhbCJzmCVrSNOp8zW+F2rYbd2ScOpF0IFdrsR
+ 6jO1MvKrTtAw+i391arBIhtJVUEU1UMUWNLg72Y1M=
+X-Received: by 2002:a5d:5cce:0:b0:37d:446a:9e60 with SMTP id
+ ffacd0b85a97d-38060ffe8cbmr14406879f8f.0.1730397159473; 
+ Thu, 31 Oct 2024 10:52:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6a9Xnk/9SdBVWW7VYxASdLXCJIiY/CHuBtpBO6JP6q1VJatf9FVsT+zVs0Fe7lbCD1a8zXg==
+X-Received: by 2002:a5d:5cce:0:b0:37d:446a:9e60 with SMTP id
+ ffacd0b85a97d-38060ffe8cbmr14406855f8f.0.1730397159004; 
+ Thu, 31 Oct 2024 10:52:39 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c116b181sm2762993f8f.107.2024.10.31.10.52.34
+ ffacd0b85a97d-381c1188569sm2752436f8f.113.2024.10.31.10.52.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:52:35 -0700 (PDT)
+ Thu, 31 Oct 2024 10:52:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Igor Mammedov <imammedo@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 10/49] i386/cpu: Drop the check of phys_bits in
- host_cpu_realizefn()
-Date: Thu, 31 Oct 2024 18:51:34 +0100
-Message-ID: <20241031175214.214455-11-pbonzini@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 11/49] qom: remove unused function
+Date: Thu, 31 Oct 2024 18:51:35 +0100
+Message-ID: <20241031175214.214455-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -102,68 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+The function has been unused since commit 4fa28f23906 ("ppc/pnv:
+Instantiate cores separately", 2019-12-17).  The idea was that
+you could use it to build an array of objects via pointer
+arithmetic, but no one is doing it anymore.
 
-The check of cpu->phys_bits to be in range between
-[32, TARGET_PHYS_ADDR_SPACE_BITS] in host_cpu_realizefn()
-is duplicated with check in x86_cpu_realizefn().
-
-Since the ckeck in x86_cpu_realizefn() is called later and can cover all
-the x86 cases. Remove the one in host_cpu_realizefn().
-
-Opportunistically adjust cpu->phys_bits directly in
-host_cpu_adjust_phys_bits(), which matches more with the function name.
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20240929085747.2023198-1-xiaoyao.li@intel.com
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/host-cpu.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ include/qom/object.h | 8 --------
+ qom/object.c         | 8 --------
+ 2 files changed, 16 deletions(-)
 
-diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
-index 8b8bf5afecc..03b9d1b169a 100644
---- a/target/i386/host-cpu.c
-+++ b/target/i386/host-cpu.c
-@@ -42,7 +42,7 @@ static uint32_t host_cpu_phys_bits(void)
-     return host_phys_bits;
- }
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 2af9854675c..43c135984a6 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -2032,14 +2032,6 @@ int object_child_foreach_recursive(Object *obj,
+  */
+ Object *container_get(Object *root, const char *path);
  
--static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
-+static void host_cpu_adjust_phys_bits(X86CPU *cpu)
- {
-     uint32_t host_phys_bits = host_cpu_phys_bits();
-     uint32_t phys_bits = cpu->phys_bits;
-@@ -66,7 +66,7 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
-         }
-     }
- 
--    return phys_bits;
-+    cpu->phys_bits = phys_bits;
- }
- 
- bool host_cpu_realizefn(CPUState *cs, Error **errp)
-@@ -75,17 +75,7 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
-     CPUX86State *env = &cpu->env;
- 
-     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
--        uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
+-/**
+- * object_type_get_instance_size:
+- * @typename: Name of the Type whose instance_size is required
+- *
+- * Returns the instance_size of the given @typename.
+- */
+-size_t object_type_get_instance_size(const char *typename);
 -
--        if (phys_bits &&
--            (phys_bits > TARGET_PHYS_ADDR_SPACE_BITS ||
--             phys_bits < 32)) {
--            error_setg(errp, "phys-bits should be between 32 and %u "
--                       " (but is %u)",
--                       TARGET_PHYS_ADDR_SPACE_BITS, phys_bits);
--            return false;
--        }
--        cpu->phys_bits = phys_bits;
-+        host_cpu_adjust_phys_bits(cpu);
-     }
-     return true;
+ /**
+  * object_property_help:
+  * @name: the name of the property
+diff --git a/qom/object.c b/qom/object.c
+index 11424cf4711..8b269414488 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -262,14 +262,6 @@ static size_t type_object_get_align(TypeImpl *ti)
+     return 0;
  }
+ 
+-size_t object_type_get_instance_size(const char *typename)
+-{
+-    TypeImpl *type = type_get_by_name(typename);
+-
+-    g_assert(type != NULL);
+-    return type_object_get_size(type);
+-}
+-
+ static bool type_is_ancestor(TypeImpl *type, TypeImpl *target_type)
+ {
+     assert(target_type);
 -- 
 2.47.0
 
