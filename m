@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD459B7F53
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 16:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AC59B7F4B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 16:54:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6XUr-0005Mi-JY; Thu, 31 Oct 2024 11:54:05 -0400
+	id 1t6XUx-0005Na-8J; Thu, 31 Oct 2024 11:54:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t6XUq-0005MA-2H
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:54:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1t6XUv-0005My-73
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:54:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t6XUo-0006K7-D8
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:54:03 -0400
+ id 1t6XUt-0006KV-5S
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 11:54:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730390041;
+ s=mimecast20190719; t=1730390046;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nJlRx6Y+wtG+T3LLQeEE1rg8875ZaX09z0Et7RmwsCI=;
- b=fxF3TEaSATVz1UZglnzdCeZwKuPg5MdQ9KjY7yE678b3PEKvaG8wE8w0DlZ+bkfIy34Pio
- IFEQgo3wd3qG+FX8ZBuO9xUHaKgok1oZ8VptPzrpapukAYxhdLVIM6i4R2yMogSAnQjckA
- NWMX+NF9N7MOYkPfwM/OhDnj2Qwhjdk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jx77iETQYs06DrQ8yZJRqTrlVINZpRE4CtA3A5HTGPg=;
+ b=FdbAXTx5kBv63+yxTh+vXoX37P4uNeWQdDOwFZA+VVmoxf5gba6bg2VPl9iWKSa63QOxJ0
+ cPNrTiZ8mp+vuwUtDWDmOTmz8jEa18tzNXoofrAEiXfrv4D19NMJ1bMCn72wonVQxyH8RO
+ GqHqO8rCrf1m8fZyyvdxwQh5z4fMrTs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-1nXQIbvGO1WlTgF3c5lEmQ-1; Thu,
- 31 Oct 2024 11:53:59 -0400
-X-MC-Unique: 1nXQIbvGO1WlTgF3c5lEmQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-Vm1DpznDO8KEu6coV4aH0g-1; Thu,
+ 31 Oct 2024 11:54:00 -0400
+X-MC-Unique: Vm1DpznDO8KEu6coV4aH0g-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDA3A19560B1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 15:53:57 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 16D83195609D
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 15:54:00 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.18])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5D97C195605F; Thu, 31 Oct 2024 15:53:56 +0000 (UTC)
+ id 6909D1956054; Thu, 31 Oct 2024 15:53:58 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC 2/5] qom: allow failure of object_new_with_class
-Date: Thu, 31 Oct 2024 15:53:47 +0000
-Message-ID: <20241031155350.3240361-3-berrange@redhat.com>
+Subject: [RFC 3/5] convert code to object_new_dynamic() where appropriate
+Date: Thu, 31 Oct 2024 15:53:48 +0000
+Message-ID: <20241031155350.3240361-4-berrange@redhat.com>
 In-Reply-To: <20241031155350.3240361-1-berrange@redhat.com>
 References: <20241031155350.3240361-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,227 +83,337 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since object_new_with_class() accepts a non-const parameter for
-the class, callers should be prepared for failures from unexpected
-input. Add an Error parameter for this and make callers check.
-If the caller does not already have an Error parameter, it is
-satisfactory to use &error_abort if the class parameter choice is
-not driven by untrusted user input.
+In cases where object_new() is not being passed a static, const
+string, the caller cannot be sure what type they are instantiating.
+There is a risk that instantiation could fail, if it is an abstract
+type.
+
+Convert such cases over to use object_new_dynamic() such that they
+are forced to expect failure. In some cases failure can be easily
+propagated, but in others using &error_abort maintainers existing
+behaviour.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- accel/accel-user.c               |  3 ++-
- include/qom/object.h             |  9 +++++++--
- net/net.c                        | 10 ++++++----
- qom/object.c                     |  4 ++--
- system/vl.c                      |  6 ++++--
- target/i386/cpu-apic.c           |  8 +++++++-
- target/i386/cpu-sysemu.c         | 11 ++++++++---
- target/i386/cpu.c                |  4 ++--
- target/s390x/cpu_models_sysemu.c |  7 +++++--
- 9 files changed, 43 insertions(+), 19 deletions(-)
+ chardev/char.c                   |  5 ++++-
+ hw/core/bus.c                    |  2 +-
+ hw/core/cpu-common.c             |  2 +-
+ hw/core/qdev.c                   |  4 ++--
+ hw/i386/x86-common.c             |  5 ++++-
+ hw/i386/xen/xen-pvh.c            |  2 +-
+ hw/vfio/common.c                 |  6 +++++-
+ hw/vfio/container.c              |  6 +++++-
+ qom/object_interfaces.c          |  7 ++-----
+ qom/qom-qmp-cmds.c               | 15 +++++++++------
+ tests/unit/check-qom-interface.c |  3 ++-
+ tests/unit/test-smp-parse.c      | 20 ++++++++++----------
+ 12 files changed, 46 insertions(+), 31 deletions(-)
 
-diff --git a/accel/accel-user.c b/accel/accel-user.c
-index 22b6a1a1a8..04ba4ab920 100644
---- a/accel/accel-user.c
-+++ b/accel/accel-user.c
-@@ -18,7 +18,8 @@ AccelState *current_accel(void)
-         AccelClass *ac = accel_find("tcg");
+diff --git a/chardev/char.c b/chardev/char.c
+index a1722aa076..4de9a496a2 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -996,7 +996,10 @@ static Chardev *chardev_new(const char *id, const char *typename,
+     assert(g_str_has_prefix(typename, "chardev-"));
+     assert(id);
  
-         g_assert(ac != NULL);
--        accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac)));
-+        accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac),
-+                                            &error_abort));
-     }
-     return accel;
- }
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 2af9854675..222c60e205 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -606,14 +606,19 @@ struct InterfaceClass
- /**
-  * object_new_with_class:
-  * @klass: The class to instantiate.
-+ * @errp: pointer to be filled with error details on failure
-  *
-  * This function will initialize a new object using heap allocated memory.
-  * The returned object has a reference count of 1, and will be freed when
-  * the last reference is dropped.
-  *
-- * Returns: The newly allocated and instantiated object.
-+ * If an instance of @klass is not permitted to be instantiated, an
-+ * error will be raised. This can happen if @klass is abstract.
-+ *
-+ * Returns: The newly allocated and instantiated object, or NULL
-+ * on error.
-  */
--Object *object_new_with_class(ObjectClass *klass);
-+Object *object_new_with_class(ObjectClass *klass, Error **errp);
- 
- /**
-  * object_new:
-diff --git a/net/net.c b/net/net.c
-index d9b23a8f8c..7fb5e966f3 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -944,11 +944,13 @@ GPtrArray *qemu_get_nic_models(const char *device_type)
-              * create this property during instance_init, so we have to create
-              * a temporary instance here to be able to check it.
-              */
--            Object *obj = object_new_with_class(OBJECT_CLASS(dc));
--            if (object_property_find(obj, "netdev")) {
--                g_ptr_array_add(nic_models, (gpointer)name);
-+            Object *obj = object_new_with_class(OBJECT_CLASS(dc), NULL);
-+            if (obj) {
-+                if (object_property_find(obj, "netdev")) {
-+                    g_ptr_array_add(nic_models, (gpointer)name);
-+                }
-+                object_unref(obj);
-             }
--            object_unref(obj);
-         }
-         next = list->next;
-         g_slist_free_1(list);
-diff --git a/qom/object.c b/qom/object.c
-index 8eed5f6ed3..1f139aa9c8 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -795,9 +795,9 @@ static Object *object_new_with_type(Type type, Error **errp)
-     return obj;
- }
- 
--Object *object_new_with_class(ObjectClass *klass)
-+Object *object_new_with_class(ObjectClass *klass, Error **errp)
- {
--    return object_new_with_type(klass->type, &error_abort);
-+    return object_new_with_type(klass->type, errp);
- }
- 
- Object *object_new(const char *typename)
-diff --git a/system/vl.c b/system/vl.c
-index d217b3d64d..f4eec7f35c 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2117,7 +2117,8 @@ static void qemu_create_machine(QDict *qdict)
-     MachineClass *machine_class = select_machine(qdict, &error_fatal);
-     object_set_machine_compat_props(machine_class->compat_props);
- 
--    current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
-+    current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class),
-+                                                    &error_fatal));
-     object_property_add_child(object_get_root(), "machine",
-                               OBJECT(current_machine));
-     object_property_add_child(container_get(OBJECT(current_machine),
-@@ -2327,7 +2328,8 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
-         }
-         goto bad;
-     }
--    accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac)));
-+    accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac),
-+                                        &error_fatal));
-     object_apply_compat_props(OBJECT(accel));
-     qemu_opt_foreach(opts, accelerator_set_property,
-                      accel,
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index d397ec94dc..8a518c50c7 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -43,12 +43,18 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
- {
-     APICCommonState *apic;
-     APICCommonClass *apic_class = apic_get_class(errp);
-+    Object *apicobj;
- 
-     if (!apic_class) {
-         return;
-     }
- 
--    cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
-+    apicobj = object_new_with_class(OBJECT_CLASS(apic_class),
-+                                    errp);
-+    if (!apicobj) {
-+        return;
+-    obj = object_new(typename);
++    if (!(obj = object_new_dynamic(typename, errp))) {
++        return NULL;
 +    }
-+    cpu->apic_state = DEVICE(apicobj);
-     object_property_add_child(OBJECT(cpu), "lapic",
-                               OBJECT(cpu->apic_state));
-     object_unref(OBJECT(cpu->apic_state));
-diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 227ac021f6..612ff09e57 100644
---- a/target/i386/cpu-sysemu.c
-+++ b/target/i386/cpu-sysemu.c
-@@ -156,15 +156,20 @@ static X86CPU *x86_cpu_from_model(const char *model, QObject *props,
++    
+     chr = CHARDEV(obj);
+     chr->handover_yank_instance = handover_yank_instance;
+     chr->label = g_strdup(id);
+diff --git a/hw/core/bus.c b/hw/core/bus.c
+index b9d89495cd..2de714b274 100644
+--- a/hw/core/bus.c
++++ b/hw/core/bus.c
+@@ -163,7 +163,7 @@ BusState *qbus_new(const char *typename, DeviceState *parent, const char *name)
  {
-     X86CPU *xc = NULL;
-     X86CPUClass *xcc;
-+    Object *xcobj;
+     BusState *bus;
+ 
+-    bus = BUS(object_new(typename));
++    bus = BUS(object_new_dynamic(typename, &error_abort));
+     qbus_init_internal(bus, parent, name);
+ 
+     return bus;
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 09c7903594..8768ae39ed 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -57,7 +57,7 @@ bool cpu_exists(int64_t id)
+ CPUState *cpu_create(const char *typename)
+ {
      Error *err = NULL;
- 
-     xcc = X86_CPU_CLASS(cpu_class_by_name(TYPE_X86_CPU, model));
-     if (xcc == NULL) {
--        error_setg(&err, "CPU model '%s' not found", model);
--        goto out;
-+        error_setg(errp, "CPU model '%s' not found", model);
-+        return NULL;
+-    CPUState *cpu = CPU(object_new(typename));
++    CPUState *cpu = CPU(object_new_dynamic(typename, &error_abort));
+     if (!qdev_realize(DEVICE(cpu), NULL, &err)) {
+         error_report_err(err);
+         object_unref(OBJECT(cpu));
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index db36f54d91..a143d8b721 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -162,7 +162,7 @@ DeviceState *qdev_new(const char *name)
+         error_report("unknown type '%s'", name);
+         abort();
      }
+-    return DEVICE(object_new(name));
++    return DEVICE(object_new_dynamic(name, &error_abort));
+ }
  
--    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc)));
-+    xcobj = object_new_with_class(OBJECT_CLASS(xcc), errp);
-+    if (!xcobj) {
-+        return NULL;
-+    }
-+    xc = X86_CPU(xcobj);
-     if (props) {
-         object_apply_props(OBJECT(xc), props, props_arg_name, &err);
-         if (err) {
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1ff1af032e..8760f408fa 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5894,7 +5894,7 @@ static GSList *get_sorted_cpu_model_list(void)
+ DeviceState *qdev_try_new(const char *name)
+@@ -170,7 +170,7 @@ DeviceState *qdev_try_new(const char *name)
+     if (!module_object_class_by_name(name)) {
+         return NULL;
+     }
+-    return DEVICE(object_new(name));
++    return DEVICE(object_new_dynamic(name, &error_abort));
+ }
  
- static char *x86_cpu_class_get_model_id(X86CPUClass *xc)
+ static QTAILQ_HEAD(, DeviceListener) device_listeners
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index b86c38212e..b75443ec26 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -55,7 +55,10 @@ static size_t pvh_start_addr;
+ 
+ static void x86_cpu_new(X86MachineState *x86ms, int64_t apic_id, Error **errp)
  {
--    Object *obj = object_new_with_class(OBJECT_CLASS(xc));
-+    Object *obj = object_new_with_class(OBJECT_CLASS(xc), &error_abort);
-     char *r = object_property_get_str(obj, "model-id", &error_abort);
-     object_unref(obj);
-     return r;
-@@ -5992,7 +5992,7 @@ static void x86_cpu_class_check_missing_features(X86CPUClass *xcc,
-         return;
-     }
- 
--    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc)));
-+    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc), &error_abort));
- 
-     x86_cpu_expand_features(xc, &err);
-     if (err) {
-diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index f6df691b66..7fe3093056 100644
---- a/target/s390x/cpu_models_sysemu.c
-+++ b/target/s390x/cpu_models_sysemu.c
-@@ -69,7 +69,7 @@ static void create_cpu_model_list(ObjectClass *klass, void *opaque)
-     if (cpu_list_data->model) {
-         Object *obj;
-         S390CPU *sc;
--        obj = object_new_with_class(klass);
-+        obj = object_new_with_class(klass, &error_abort);
-         sc = S390_CPU(obj);
-         if (sc->model) {
-             info->has_unavailable_features = true;
-@@ -116,7 +116,10 @@ static void cpu_model_from_info(S390CPUModel *model, const CpuModelInfo *info,
-         error_setg(errp, "The CPU definition '%s' requires KVM", info->name);
-         return;
-     }
--    obj = object_new_with_class(oc);
-+    obj = object_new_with_class(oc, errp);
-+    if (!obj) {
+-    Object *cpu = object_new(MACHINE(x86ms)->cpu_type);
++    Object *cpu = object_new_dynamic(MACHINE(x86ms)->cpu_type, errp);
++    if (!cpu) {
 +        return;
 +    }
-     cpu = S390_CPU(obj);
  
-     if (!cpu->model) {
+     if (!object_property_set_uint(cpu, "apic-id", apic_id, errp)) {
+         goto out;
+diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
+index f1f02d3311..9aeb4e430b 100644
+--- a/hw/i386/xen/xen-pvh.c
++++ b/hw/i386/xen/xen-pvh.c
+@@ -28,7 +28,7 @@ struct XenPVHx86State {
+ static DeviceState *xen_pvh_cpu_new(MachineState *ms,
+                                     int64_t apic_id)
+ {
+-    Object *cpu = object_new(ms->cpu_type);
++    Object *cpu = object_new_dynamic(ms->cpu_type, &error_abort);
+ 
+     object_property_add_child(OBJECT(ms), "cpu[*]", cpu);
+     object_property_set_uint(cpu, "apic-id", apic_id, &error_fatal);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 36d0cf6585..d57097a194 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1550,7 +1550,11 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+ 
+ 
+     if (!vbasedev->mdev) {
+-        hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
++        Object *obj = object_new_dynamic(ops->hiod_typename, errp);
++        if (!obj) {
++            return false;
++        }
++        hiod = HOST_IOMMU_DEVICE(obj);
+         vbasedev->hiod = hiod;
+     }
+ 
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 9ccdb639ac..5964009a3c 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -419,6 +419,7 @@ static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
+ {
+     int iommu_type;
+     const char *vioc_name;
++    Object *obj;
+     VFIOContainer *container;
+ 
+     iommu_type = vfio_get_iommu_type(fd, errp);
+@@ -432,7 +433,10 @@ static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
+ 
+     vioc_name = vfio_get_iommu_class_name(iommu_type);
+ 
+-    container = VFIO_IOMMU_LEGACY(object_new(vioc_name));
++    if (!(obj = object_new_dynamic(vioc_name, NULL))) {
++        return NULL;
++    }
++    container = VFIO_IOMMU_LEGACY(obj);
+     container->fd = fd;
+     container->iommu_type = iommu_type;
+     return container;
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index e0833c8bfe..756fca3649 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -102,13 +102,10 @@ Object *user_creatable_add_type(const char *type, const char *id,
+         return NULL;
+     }
+ 
+-    if (object_class_is_abstract(klass)) {
+-        error_setg(errp, "object type '%s' is abstract", type);
++    assert(qdict);
++    if (!(obj = object_new_dynamic(type, errp))) {
+         return NULL;
+     }
+-
+-    assert(qdict);
+-    obj = object_new(type);
+     object_set_properties_from_qdict(obj, qdict, v, &local_err);
+     if (local_err) {
+         goto out;
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index e91a235347..b1590231d7 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -134,14 +134,15 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+         return NULL;
+     }
+ 
+-    if (!object_class_dynamic_cast(klass, TYPE_DEVICE)
+-        || object_class_is_abstract(klass)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "typename",
+-                   "a non-abstract device type");
++    if (!object_class_dynamic_cast(klass, TYPE_DEVICE)) {
++        error_setg(errp, "Object type '%s' is not a device",
++                   typename);
+         return NULL;
+     }
+ 
+-    obj = object_new(typename);
++    if (!(obj = object_new_dynamic(typename, errp))) {
++        return NULL;
++    }
+ 
+     object_property_iter_init(&iter, obj);
+     while ((prop = object_property_iter_next(&iter))) {
+@@ -202,7 +203,9 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
+     if (object_class_is_abstract(klass)) {
+         object_class_property_iter_init(&iter, klass);
+     } else {
+-        obj = object_new(typename);
++        if (!(obj = object_new_dynamic(typename, errp))) {
++            return NULL;
++        }
+         object_property_iter_init(&iter, obj);
+     }
+     while ((prop = object_property_iter_next(&iter))) {
+diff --git a/tests/unit/check-qom-interface.c b/tests/unit/check-qom-interface.c
+index c99be97ed8..e4532ae814 100644
+--- a/tests/unit/check-qom-interface.c
++++ b/tests/unit/check-qom-interface.c
+@@ -13,6 +13,7 @@
+ 
+ #include "qom/object.h"
+ #include "qemu/module.h"
++#include "qapi/error.h"
+ 
+ 
+ #define TYPE_TEST_IF "test-interface"
+@@ -67,7 +68,7 @@ static const TypeInfo intermediate_impl_info = {
+ 
+ static void test_interface_impl(const char *type)
+ {
+-    Object *obj = object_new(type);
++    Object *obj = object_new_dynamic(type, &error_abort);
+     TestIf *iobj = TEST_IF(obj);
+     TestIfClass *ioc = TEST_IF_GET_CLASS(iobj);
+ 
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index f9bccb56ab..f4893d5f24 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -1008,7 +1008,7 @@ static void machine_full_topo_class_init(ObjectClass *oc, void *data)
+ static void test_generic_valid(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1027,7 +1027,7 @@ static void test_generic_valid(const void *opaque)
+ static void test_generic_invalid(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1046,7 +1046,7 @@ static void test_generic_invalid(const void *opaque)
+ static void test_with_modules(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1096,7 +1096,7 @@ static void test_with_modules(const void *opaque)
+ static void test_with_dies(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1146,7 +1146,7 @@ static void test_with_dies(const void *opaque)
+ static void test_with_modules_dies(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1207,7 +1207,7 @@ static void test_with_modules_dies(const void *opaque)
+ static void test_with_clusters(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1257,7 +1257,7 @@ static void test_with_clusters(const void *opaque)
+ static void test_with_books(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1307,7 +1307,7 @@ static void test_with_books(const void *opaque)
+ static void test_with_drawers(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1357,7 +1357,7 @@ static void test_with_drawers(const void *opaque)
+ static void test_with_drawers_books(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+@@ -1418,7 +1418,7 @@ static void test_with_drawers_books(const void *opaque)
+ static void test_full_topo(const void *opaque)
+ {
+     const char *machine_type = opaque;
+-    Object *obj = object_new(machine_type);
++    Object *obj = object_new_dynamic(machine_type, &error_abort);
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
 -- 
 2.46.0
 
