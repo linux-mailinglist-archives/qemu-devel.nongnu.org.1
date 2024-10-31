@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5564D9B79B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BB19B797B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 12:16:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6TNA-00025E-BP; Thu, 31 Oct 2024 07:29:52 -0400
+	id 1t6T9I-0007Q3-DJ; Thu, 31 Oct 2024 07:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6TN5-00024x-OX
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:29:47 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t6TN2-0005ov-PO
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:29:46 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2fb3c3d5513so7646021fa.1
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 04:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730374182; x=1730978982; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tnqznWKtV9KFBvGbTyJqcobMEec0XRwzrLdpjMaWxP0=;
- b=mjOAIRqw2KKAOwnfvS5bhF+rgClxKaJwO2P86GYCiLb30n+dlxxjdiDr0R+Js7QfsJ
- QtMzhb/rxAWyK3Si+VoklZRPWVIL5O9fbyGZRYp5AF85Jn353JR1SGJ0uN7d8w+dXqk8
- XV5EgwJTHfE2ek2tdOQfmjIU1GOuzTmIZMY4GOGvQmWQqirrO8EmiZFP9y0diy8WGldZ
- tkzdAo06rF0lrxnX33TGSvhc1aBt5kRhKVoj/5kvobZAw+SbxJTeCi8AKTbTZhmIofWp
- e0Ss23oleEfk3dLfmNkFvuy2Y6yJ+jFpNEFVR3B1OANqWKiLS7JI2i0764475RXEOXGR
- VeIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730374182; x=1730978982;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tnqznWKtV9KFBvGbTyJqcobMEec0XRwzrLdpjMaWxP0=;
- b=dd5hlssov3cd6YzJtB9kX2h4Zkcg/OMBRAoXbvsdHe6ZSMnAaAw7m85bMFPq3YHlNm
- VGV258WiLyGc2dLVsNVm/Fv7/DZFSYvSr5nmPIKboUZtPG6VsVN8MsfrAVslrO0YHld2
- dKtJOi8O/3j2IIFcMUYpi4iKYMrRvl6fAmzh+G3wjN89NRFFHi4M7cLHdTY0fA1A5rNy
- HLc8tWlr5b02y03IraP72lBbsFLgdS4WjoEsL2r4bFMANCHPdYGXOiNvUidhqSXWOGvD
- bvsZn4Q4O881uc0XxphlpwBxQoO+uTNfmUJ690IP7Hot0Vl1qVycqfHaGaWpAVAzPS0B
- ypdg==
-X-Gm-Message-State: AOJu0Yy3Yq45iu/cKvFgFSanPeAd4zSB2EflBzy/LMQjjncPHieiBmaN
- G3hRRfXdlOuuPjgnvVQsYDwRv22HeNmIP8iavBGnb6FoLygmwiMOGGIIux/UhT49mofGQco5Pu8
- Dcxh+bSaPVbdw0Hl18q/gnxGWqSOXBVnsoN9Urg==
-X-Google-Smtp-Source: AGHT+IFWz0qVh5bQvLm3SaD7i0TA4DZn/2rVA6yoTRdtpqDsicQnBF9C1Ts5BHzywhAqQoxpfnZA1kKEaNmv/tMAydg=
-X-Received: by 2002:a2e:a58f:0:b0:2fb:51a2:4f63 with SMTP id
- 38308e7fff4ca-2fdecbf1a46mr16939991fa.34.1730374182522; Thu, 31 Oct 2024
- 04:29:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6T96-0007O2-9a
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:15:21 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6T91-0004EL-42
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 07:15:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730373316; x=1761909316;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tw9eIcIn49m5DnJkgd+UYwuXkMe8QSLIQifeqZSrvdM=;
+ b=TMB3Iu6rRenStaNfCnHxgiNTukKbAaqtqVMnosA1GVIKlvkikRN4ZN0C
+ u0Y61bDTrbb2//dYSvEszL4WvZRYq5gUUIH00IC4ZRJFb6/iehOfmj9Mg
+ xgnvuIcMFwdSZot8n7qCnmwT9S8z+ZOb+Fmc9ff4MDiEMLoSl3I5BFtSP
+ G/DqV7dk0VN9KnroukvS+YTrXgFx6bu4q2gIxzwVLKYO40vqqn317owVm
+ Y/t6Ncshmtw/5Q/N2cjsFbQ9UqdeEVvGuRVRtcasFC5OdQ8Jyn0gaymK/
+ gFstH8EGIXtKlDbd7lrEblrUXK1dS9xcXO3A3UDsdMak4J3dkTduvUP2+ A==;
+X-CSE-ConnectionGUID: WsqkYZYVQxquhsHx+VBvLA==
+X-CSE-MsgGUID: Cac/dwsUTzq1nNaih1dfEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52659498"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52659498"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 04:15:12 -0700
+X-CSE-ConnectionGUID: fJsT1pKLRg+wrUbw9hu0uQ==
+X-CSE-MsgGUID: 0dthywenT3exf9sYYz3S0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="113447174"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa001.fm.intel.com with ESMTP; 31 Oct 2024 04:15:10 -0700
+Date: Thu, 31 Oct 2024 19:31:30 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
+ junjie.mao@hotmail.com, berrange@redhat.com
+Subject: Re: [PATCH 13/23] rust: synchronize dependencies between subprojects
+ and Cargo.lock
+Message-ID: <ZyNqkmgGR3lgIWm7@intel.com>
+References: <20241025160209.194307-1-pbonzini@redhat.com>
+ <20241025160209.194307-14-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20241029121030.4007014-1-alex.bennee@linaro.org>
-In-Reply-To: <20241029121030.4007014-1-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Oct 2024 11:29:31 +0000
-Message-ID: <CAFEAcA8j21vvgpp7T0QoSna+dLv_OKExcVjVbZ0TmHgaf40ebg@mail.gmail.com>
-Subject: Re: [PULL 00/13] virtio-gpu vulkan support
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241025160209.194307-14-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,48 +83,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Oct 2024 at 12:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> The following changes since commit fdf250e5a37830615e324017cb3a503e84b371=
-2c:
->
->   Merge tag 'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/sts=
-quad/qemu into staging (2024-10-25 19:12:06 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/stsquad/qemu.git tags/pull-virtio-gpu-vulkan-291024-=
-1
->
-> for you to fetch changes up to 94d0ea1c19289d76ced934711fccd2269e69bb29:
->
->   virtio-gpu: Support Venus context (2024-10-28 16:56:36 +0000)
->
-> ----------------------------------------------------------------
-> virtio-gpu: add venus/vulkan capability
->
-> We are currently lacking a declared maintainer for the sub-system so
-> while we look for one I'm merging after testing locally.
->
->   - convert some fprintfs to proper trace events
->   - move timers used by GL devices into GL structures
->   - handle virtio_gpu_virgl_init() failure better
->   - implement unrealize for GL devices
->   - use virgl version numbering to gate features
->   - support context-init feature
->   - don't require udmabuf for virgl only
->   - add virgl resource tracker
->   - allow command submission to be suspended
->   - handle resource blob commands
->   - dynamically handle capabilit sets
->   - add venus context support for passing vulkan
+On Fri, Oct 25, 2024 at 06:01:58PM +0200, Paolo Bonzini wrote:
+> Date: Fri, 25 Oct 2024 18:01:58 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 13/23] rust: synchronize dependencies between subprojects
+>  and Cargo.lock
+> X-Mailer: git-send-email 2.47.0
+> 
+> The next commit will introduce a new build.rs dependency for rust/qemu-api,
+> version_check.  Before adding it, ensure that all dependencies are
+> synchronized between the Meson- and cargo-based build systems.
+> 
+> Note that it's not clear whether in the long term we'll use Cargo for
+> anything; it seems that the three main uses (clippy, rustfmt, rustdoc)
 
+not sure whether cargo update could help to know if the dependenies can
+be updated or not...
 
-Applied, thanks.
+> can all be invoked manually---either via glue code in QEMU, or by
+> extending Meson to gain the relevant functionality.  However, for
+> the time being we're stuck with Cargo so it should at least look at
+> the same code as the rest of the build system.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/Cargo.lock   |  3 +++
+>  rust/qemu-api-macros/Cargo.lock |  9 ++++---
+>  rust/qemu-api/Cargo.lock        | 47 +++++++++++++++++++++++++++++++++
+>  rust/qemu-api/Cargo.toml        |  1 +
+>  4 files changed, 56 insertions(+), 4 deletions(-)
+> 
+> diff --git a/rust/hw/char/pl011/Cargo.lock b/rust/hw/char/pl011/Cargo.lock
+> index b58cebb186e..9f43b33e8b8 100644
+> --- a/rust/hw/char/pl011/Cargo.lock
+> +++ b/rust/hw/char/pl011/Cargo.lock
+> @@ -91,6 +91,9 @@ dependencies = [
+>  [[package]]
+>  name = "qemu_api"
+>  version = "0.1.0"
+> +dependencies = [
+> + "qemu_api_macros",
+> +]
+>  
+>  [[package]]
+>  name = "qemu_api_macros"
+> diff --git a/rust/qemu-api-macros/Cargo.lock b/rust/qemu-api-macros/Cargo.lock
+> index fdc0fce116c..f989e25829f 100644
+> --- a/rust/qemu-api-macros/Cargo.lock
+> +++ b/rust/qemu-api-macros/Cargo.lock
+> @@ -4,9 +4,9 @@ version = 3
+>  
+>  [[package]]
+>  name = "proc-macro2"
+> -version = "1.0.86"
+> +version = "1.0.84"
+>  source = "registry+https://github.com/rust-lang/crates.io-index"
+> -checksum = "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77"
+> +checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
+>  dependencies = [
+>   "unicode-ident",
+>  ]
+> @@ -18,6 +18,7 @@ dependencies = [
+>   "proc-macro2",
+>   "quote",
+>   "syn",
+> + "unicode-ident",
+>  ]
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
+With cargo build, it seems this dependency doesn't need to be added here.
 
--- PMM
+I compared the versions and checksums of the wrap files, and I also
+built it using cargo build based on this commit. The only change by
+Cargo is the one mentioned above; everything else looks good.
+
+With the nit fixed or otherwise,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
