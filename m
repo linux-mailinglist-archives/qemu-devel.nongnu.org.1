@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025039B8209
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BC69B81E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:57:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZNy-0005mC-Ti; Thu, 31 Oct 2024 13:55:07 -0400
+	id 1t6ZNl-0004Cs-Ud; Thu, 31 Oct 2024 13:54:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZN0-00031u-LB
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:07 -0400
+ id 1t6ZN3-00039o-C4
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMz-0007UJ-27
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:06 -0400
+ id 1t6ZN1-0007Uf-S0
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:54:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397244;
+ s=mimecast20190719; t=1730397247;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z0YNaMgrK6T8XHe5FTddjNKEZY5EX0fxm0EqQLnMbu4=;
- b=Xfkc0gwjzN+dLdhEQ0qjuXsRA2tmwEP3qWX2baqP8Bvu0kyp3C/D15msliVhUAAem1nB78
- 1mxSu1+CGua/ownmltbJx6cyCHUGfVmH+rOFHT6A2sDaAROvAnlrkB76Gn0ZpvUcZfHcB0
- mR/bJxm54vz3ktD9xQpb5q+UkOKG8rA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6jSXAMlOSOXDfcDW9peFIbeG+9mklECY0bfsbGQ9WRs=;
+ b=IlflAdRk25PSABfpYmAylSwQBfWgCg0AT2wRboPO4Fug/g0D3j0gowtJ+6BXG9Wq3k1BT/
+ +Gyu0M0dtekgoQIxkKyIVQXs8Ed64QaA9wl+JP2Hgxbz8MsQ0AhU2/VpkBMJfN3yRPjeTU
+ TgV8hPpbX1Ic6DegLaozi0DU+Xk+EL0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-slbGntrQMGWhfoYPfHDTXg-1; Thu, 31 Oct 2024 13:54:02 -0400
-X-MC-Unique: slbGntrQMGWhfoYPfHDTXg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315dd8fe7fso9848585e9.3
- for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:54:02 -0700 (PDT)
+ us-mta-642-4Wozo2tHPWWIg1YSqJwgEg-1; Thu, 31 Oct 2024 13:54:04 -0400
+X-MC-Unique: 4Wozo2tHPWWIg1YSqJwgEg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4315af466d9so7508835e9.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:54:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730397241; x=1731002041;
+ d=1e100.net; s=20230601; t=1730397243; x=1731002043;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z0YNaMgrK6T8XHe5FTddjNKEZY5EX0fxm0EqQLnMbu4=;
- b=o0I6VfQ9hRYHnjt/XTYKbO1oOBzbXuVLbCzGRLT3Hj+gzQ6KHNnCG28+U2g3zKpHN6
- nk7ITmVyXg7gm2L8HnCAHnXQsW4hec6fwzf/WN3ycPM1BvQuhQz+aD9/wOzmI+IiRA0d
- 5HelfobqEeNeSeRcANrCwPy1Swp1ASGE8iXQG/L7/SKRyBiwZIRLNaPHvhj3PbsksR1v
- o0ls37KaA3FYhPbO5FuJKRYzugfGgSe+r80bF1EGbpF0Nf3je0d7s2yf+JYu/quVKC4Q
- JARaqpAaytQl1ZM9o/IlCLcAkOzORMe8MPQ7XUHT9CtwlL+1stcoJ84a0KrO3QRUr7AY
- Jpsw==
-X-Gm-Message-State: AOJu0YxjMbuaBqgIIb+XwXupezK+a31h+lKB9SDjy4c7ivcUOai63tGR
- S77A2IQ2V2QGBiaVUT5QdS0ucKdmukOSnZrjvtyvqzI2Tf4D1iCa2khM6EbU4mlQ7VBmpjnJeks
- XwWg2hmym8LUZVEVzftEncREJq3oEixbwcmGfmhN0dBfB/6dHeM+dHB6U+f7GQnMcs7b6M019VD
- G99iWSe/7fUeEsMXYHY1EmrJR/nRgIWkv6To8euZ4=
-X-Received: by 2002:a7b:c459:0:b0:431:5f8c:ccb9 with SMTP id
- 5b1f17b1804b1-43283255a2cmr8938755e9.17.1730397240725; 
- Thu, 31 Oct 2024 10:54:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsV7zqMOs6TNX+8XYyZLj3BHogW7DgG4pz9J7MyjboCtb8dGdxKphEDaYmiwleLZvO+JNAag==
-X-Received: by 2002:a7b:c459:0:b0:431:5f8c:ccb9 with SMTP id
- 5b1f17b1804b1-43283255a2cmr8938515e9.17.1730397240263; 
- Thu, 31 Oct 2024 10:54:00 -0700 (PDT)
+ bh=6jSXAMlOSOXDfcDW9peFIbeG+9mklECY0bfsbGQ9WRs=;
+ b=CoMO0kN+SB81MlN5O+kLa+J4lxeh+ejeLDbqAQjnIylUZHZ6dYhYuaQKekmFoYjTys
+ SvUb+/kYjFl691YD4efopE93+Wanqw52kkE4h5BGq3pbCpXFN5jRh39lwfVHGx16MoJl
+ U3OlfS+Ebk1uoRPAYyhqdzdw3kQ5TausltG15J1CgbTYOyFJGfQf6VhAbzgrd6E486Sp
+ WWvn6Cq4587IM04t8kTLEc99BOJewx0J+HOKagJnf6a9SCn1xSImxjsPevA3tXIz2MxV
+ DkqihL/ZooSkTzq5ESKTjvPsKosxPgHn6XpCwOfVx70ftDYhj7ySpoT8Gg7H6uSJShMn
+ vKVQ==
+X-Gm-Message-State: AOJu0Yws96AQeiZrZcqnFptNs77jFmMVkJCBvMefXr9kVOJ/qCI0Q5Az
+ teMcPFhQotqmGX0HfHYPflRC23HiHOKSlfh0cH06DkEwsa6Ilz7Ud+sq6L4jmcpz1CpNbUsJp9l
+ kcZi9KkfqXfBxyFs91kEF5wKGErHifCQ+P80hMyZrrZKL1CgUIPHsZYaI2ndegs2GjGAN5wyrgx
+ N8/v8in2IGkFJQWVEoDyA+qZ8b6xp1perJ3gie9PM=
+X-Received: by 2002:a05:600c:3b8c:b0:431:52f5:f497 with SMTP id
+ 5b1f17b1804b1-43284aedac9mr2537785e9.9.1730397242947; 
+ Thu, 31 Oct 2024 10:54:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH6MIfkPv8NB3i7IfQmm/IkZwjNiz+XqsmIpfAib0JegqwoKuErp6E6+6qKFUTFEPxjELiZzA==
+X-Received: by 2002:a05:600c:3b8c:b0:431:52f5:f497 with SMTP id
+ 5b1f17b1804b1-43284aedac9mr2537465e9.9.1730397242456; 
+ Thu, 31 Oct 2024 10:54:02 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd9aa611sm64164425e9.34.2024.10.31.10.53.59
+ 5b1f17b1804b1-431bd9ca818sm64186645e9.40.2024.10.31.10.54.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:53:59 -0700 (PDT)
+ Thu, 31 Oct 2024 10:54:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Tao Su <tao1.su@linux.intel.com>, Xuelian Guo <xuelian.guo@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 47/49] target/i386: Add feature dependencies for AVX10
-Date: Thu, 31 Oct 2024 18:52:11 +0100
-Message-ID: <20241031175214.214455-48-pbonzini@redhat.com>
+Cc: Tao Su <tao1.su@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Xuelian Guo <xuelian.guo@intel.com>
+Subject: [PULL 48/49] target/i386: Add AVX512 state when AVX10 is supported
+Date: Thu, 31 Oct 2024 18:52:12 +0100
+Message-ID: <20241031175214.214455-49-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
@@ -103,78 +103,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tao Su <tao1.su@linux.intel.com>
 
-Since the highest supported vector length for a processor implies that
-all lesser vector lengths are also supported, add the dependencies of
-the supported vector lengths. If all vector lengths aren't supported,
-clear AVX10 enable bit as well.
+AVX10 state enumeration in CPUID leaf D and enabling in XCR0 register
+are identical to AVX512 state regardless of the supported vector lengths.
 
-Note that the order of AVX10 related dependencies should be kept as:
-        CPUID_24_0_EBX_AVX10_128     -> CPUID_24_0_EBX_AVX10_256,
-        CPUID_24_0_EBX_AVX10_256     -> CPUID_24_0_EBX_AVX10_512,
-        CPUID_24_0_EBX_AVX10_VL_MASK -> CPUID_7_1_EDX_AVX10,
-        CPUID_7_1_EDX_AVX10          -> CPUID_24_0_EBX,
-so that prevent user from setting weird CPUID combinations, e.g. 256-bits
-and 512-bits are supported but 128-bits is not, no vector lengths are
-supported but AVX10 enable bit is still set.
+Given that some E-cores will support AVX10 but not support AVX512, add
+AVX512 state components to guest when AVX10 is enabled.
 
-Since AVX10_128 will be reserved as 1, adding these dependencies has the
-bonus that when user sets -cpu host,-avx10-128, CPUID_7_1_EDX_AVX10 and
-CPUID_24_0_EBX will be disabled automatically.
+Based on a patch by Tao Su <tao1.su@linux.intel.com>
 
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028024512.156724-5-tao1.su@linux.intel.com
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241031085233.425388-7-tao1.su@linux.intel.com
+Link: https://lore.kernel.org/r/20241031085233.425388-8-tao1.su@linux.intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  4 ++++
- target/i386/cpu.c | 16 ++++++++++++++++
- 2 files changed, 20 insertions(+)
+ target/i386/cpu.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index f8f97fe9330..59959b8b7a4 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1000,6 +1000,10 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_24_0_EBX_AVX10_256        (1U << 17)
- /* AVX10 512-bit vector support is present */
- #define CPUID_24_0_EBX_AVX10_512        (1U << 18)
-+/* AVX10 vector length support mask */
-+#define CPUID_24_0_EBX_AVX10_VL_MASK    (CPUID_24_0_EBX_AVX10_128 | \
-+                                         CPUID_24_0_EBX_AVX10_256 | \
-+                                         CPUID_24_0_EBX_AVX10_512)
- 
- /* RAS Features */
- #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3731155c2d5..d056285a034 100644
+index d056285a034..7666a50bf06 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1787,6 +1787,22 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-         .to = { FEAT_SGX_12_1_EAX,          ~0ull },
-     },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_128 },
-+        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_256 },
-+    },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_256 },
-+        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_512 },
-+    },
-+    {
-+        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_VL_MASK },
-+        .to = { FEAT_7_1_EDX,               CPUID_7_1_EDX_AVX10 },
-+    },
-+    {
-+        .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
-+        .to = { FEAT_24_0_EBX,              ~0ull },
-+    },
- };
+@@ -7156,7 +7156,15 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
+         return false;
+     }
  
- typedef struct X86RegisterInfo32 {
+-    return (env->features[esa->feature] & esa->bits);
++    if (env->features[esa->feature] & esa->bits) {
++        return true;
++    }
++    if (esa->feature == FEAT_7_0_EBX && esa->bits == CPUID_7_0_EBX_AVX512F
++        && (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
++        return true;
++    }
++
++    return false;
+ }
+ 
+ static void x86_cpu_reset_hold(Object *obj, ResetType type)
 -- 
 2.47.0
 
