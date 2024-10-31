@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4019B8000
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CA49B8033
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 17:34:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6XyM-0000Lg-81; Thu, 31 Oct 2024 12:24:34 -0400
+	id 1t6Y7z-0003IO-JP; Thu, 31 Oct 2024 12:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6Xy7-0000Ji-OT
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:24:23 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ id 1t6Y7x-0003Hv-Pi
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:34:29 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6Xy0-00024G-Oa
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:24:17 -0400
+ id 1t6Y7v-0003cR-Fu
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 12:34:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730391853; x=1761927853;
+ t=1730392467; x=1761928467;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SaMSW5dqKpu1S/+h0T6Umguv0j6pHee0GJQFILgnvbc=;
- b=KbIiXrZkaWpxHgImTd2JEbiMZnNW7S8MpylArx+DpDfM0FOQHqNHxF/V
- XrhX7tEXp5RjHDPmkkLzvW9DWtZQYrZ2FnJU9WnDFmVVZma6FSGXapZ84
- FLfEj+lmRzPXMUOWAXlnz1ErMy5j+ZzMS/XyYdu9g8hyJe/f1bLL9DJe7
- XLyrJd1R2jta+mWsf8pOMSiS+tRrcNpqt+qZBZYS2bexxab+SlZEwKoQV
- uggyVTVqpPRmz2Siph46Z6J50Nb9ND/eKNEz5LUKJH6Fe90bilmuSYAEQ
- W9V3cO2tk6a9dPpktgL1MXV7bW6j3X8Mzi0ja1NHscRAhcyLjZw93+e1U g==;
-X-CSE-ConnectionGUID: yMCkz/t3Q+GsSEoaFSnvqg==
-X-CSE-MsgGUID: 8oFj9pP8Rsajz+pSkL+OLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30258925"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="30258925"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 09:24:08 -0700
-X-CSE-ConnectionGUID: ae4nvHklSYS0LYth8nlHxQ==
-X-CSE-MsgGUID: XTlmUYvnTsGG4cmd50YCpQ==
+ bh=VfnEEUUhVdUUg7uJ4ZRBdXwR6X5yL6+HA2L8AeYb8So=;
+ b=K7yT/W4h6SSS3D98868I4WcgSRtyP8+8d+Phk/o9vy4N90EKpHsS5Sf2
+ 589x3Mdbs+0SyZZuFDTNLfa9Tet/taTOlw+/XeBJSJpvQ1s+wPAUO1fWi
+ 2lRHBSfDEpn7smKkMIRCdgSUJ/xy4OPOBPGUxAW5XWoGa1fQwzYRusCQC
+ Uu9pFR2/q0hdS6Y7sMylRhfN8Ug7g7QeIKu4aaY2BqfKo6Fh43g6ZFsdi
+ nZnryVPuHtsMAAl6/pRai5/D/XdNDzGtQnrYvoWjO/SFxG6AolDtEWHy/
+ T1AkkZDszWpovcEDLNYCgRZ/b6cXtb599WyNULDONrUHwAiYxx7hLJxXa A==;
+X-CSE-ConnectionGUID: mwR1k+7tRL2XCMm0gBtndw==
+X-CSE-MsgGUID: 6+EEmrTRTWyRuVAm0aN2Vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29916930"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29916930"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 09:34:24 -0700
+X-CSE-ConnectionGUID: t/09Yy58R/a3etlin0Dl0g==
+X-CSE-MsgGUID: zGrpsy+RQ4id/SL677IEvQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="86606598"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="83106813"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 31 Oct 2024 09:24:07 -0700
-Date: Fri, 1 Nov 2024 00:41:57 +0800
+ by orviesa007.jf.intel.com with ESMTP; 31 Oct 2024 09:34:23 -0700
+Date: Fri, 1 Nov 2024 00:52:12 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
- junjie.mao@hotmail.com, berrange@redhat.com
-Subject: Re: [PATCH v3 00/23] rust: fix CI + allow older versions of rustc
- and bindgen
-Message-ID: <ZyOzVYpqHYx8O6Yc@intel.com>
-References: <20241025160209.194307-1-pbonzini@redhat.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ xiaoyao.li@intel.com, xuelian.guo@intel.com
+Subject: Re: [PATCH v3 4/8] target/i386: add AVX10 feature and AVX10 version
+ property
+Message-ID: <ZyO1vL0o0SxgcW8q@intel.com>
+References: <20241031085233.425388-1-tao1.su@linux.intel.com>
+ <20241031085233.425388-5-tao1.su@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241025160209.194307-1-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241031085233.425388-5-tao1.su@linux.intel.com>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -82,23 +83,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> This series can be found at branch rust-next of my git repository
-> (https://gitlab.com/bonzini/qemu.git), which also helps with the
-> problems in applying patch 8.  Everything up to commit f6a46d2a4eb
-> ("rust: do not use TYPE_CHARDEV unnecessarily", 2024-10-25) will be
-> my next pull request, which I will send early next week (to give
-> people some more days to complain).
-> 
-> Paolo
-> 
-> Supersedes: <20241022100956.196657-1-pbonzini@redhat.com>
-> 
-> CI: https://gitlab.com/bonzini/qemu/-/pipelines/1512732399
+> @@ -7578,7 +7607,27 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+>          }
+>      }
+>  
+> -    return x86_cpu_have_filtered_features(cpu);
+> +    have_filtered_features = x86_cpu_have_filtered_features(cpu);
+> +
+> +    if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
+> +        x86_cpu_get_supported_cpuid(0x24, 0,
+> +                                    &eax_0, &ebx_0, &ecx_0, &edx_0);
+> +        uint8_t version = ebx_0 & 0xff;
+> +
+> +        if (version < env->avx10_version) {
+> +            if (prefix) {
+> +                warn_report("%s: avx10.%d. Adjust to avx10.%d",
+> +                            prefix, env->avx10_version, version);
+> +            }
+> +            env->avx10_version = version;
+> +            have_filtered_features = true;
+> +        }
+> +    } else if (env->avx10_version && prefix) {
+> +        warn_report("%s: avx10.%d.", prefix, env->avx10_version);
+> +        have_filtered_features = true;
+> +    }
 
-Compiled with v1.63 and ran "make check" on my x86 platform.
+prefix is just used to print warning. So here we should check prefix
+for warn_report.
 
-Everything looks good!
++    } else if (env->avx10_version) {
++        if (prefix) {
++            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
++        }
++        have_filtered_features = true;
++    }
 
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
+With this nit fixed,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+Thanks.
+Zhao
+
 
 
