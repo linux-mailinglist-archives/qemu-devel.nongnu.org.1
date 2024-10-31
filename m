@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671D49B7330
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5379B733A
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 04:56:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6MGk-0000Vk-5J; Wed, 30 Oct 2024 23:54:46 -0400
+	id 1t6MGm-0000ht-7d; Wed, 30 Oct 2024 23:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MGg-0000Kh-Dj
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:42 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1t6MGj-0000Zg-LE
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:45 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t6MGe-0003zA-RB
- for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:42 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-20caea61132so4507785ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:40 -0700 (PDT)
+ id 1t6MGh-0003zY-FI
+ for qemu-devel@nongnu.org; Wed, 30 Oct 2024 23:54:44 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-20ca388d242so5282965ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Oct 2024 20:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730346879; x=1730951679; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730346882; x=1730951682; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hUFYAnMlwMh44G0Dm0q4MjR85GAccOS8JzSj07Dds3s=;
- b=MlV6WtLmDWNrrxpjoigkSOmEbnaBhro1D+yDtto5YbDzJukKRmjcMEyAm4W6fkiFIH
- 8s+qJTHs9LM6xcXXW0KDD7ftVYQEKVKSSVugYpcas83/NaQLtMQbu8e4NSs8ZFpgDpfI
- wq94P4aEIKF8ijoE4e4fzvrwCXY8KbhJ6u9jvxIOFpIi8hiJMaEzqewhw7nEQLjWyjX6
- XzvETLQ53QchgwVU649K3Fx75VCO7/TAyRroYZBpYUHTr8ZJJj5MCaxq32Gu0gQ/Ln4w
- JmwYJ2FS/+uVXl3BjrHfE/sqPa6H1L12irl739Gw7a5fM/L7VKCbcLYveCwp05h1NO2V
- VPpQ==
+ bh=Y/PW3fIgA/mqOmh+ReEA9cKJU38Sv2BOJ1Nhu0vSIdE=;
+ b=AbgjLVBzpCx3QWPeSGF0gC6gSUr/IRSo76NX5bFskTjyb9EYeHR43qHBMm8RevtTYM
+ qr8yGLnKmkQQy4aNTHWy6otiQYbCNNZnMkxOqqnAOlc59kBBqA/sJ/iyTIvep58RVz7A
+ xLMqhrR0QF41IY7splui8vQ2z3NU+RMObEA+YZV6KZPFT5bpNmHUfYVnHQk44cs76QZm
+ 0lRf8pRvgt56+fjkt702rBz0YyHiGQ/ykX8sHPIKh5+Blgb9jkEM7/KC21xptf65Sth9
+ 7Bu/5nKakvOn1ulfaAKVHotn/3L+bJTM8+obydflUDd1JVrYQRbQB6iM346tnY55TuhC
+ KbKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730346879; x=1730951679;
+ d=1e100.net; s=20230601; t=1730346882; x=1730951682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hUFYAnMlwMh44G0Dm0q4MjR85GAccOS8JzSj07Dds3s=;
- b=N5S8S82f/yUwYDjdYsN3toXnMm/g8K/SGTxrKbfKKWwmUcETPV2eobERg/HMPb4/C9
- nzp5Bh6rv01+VQDYcbAm4rMP94wXrJsQyd6AsyFdF5Wug9el9a1EXHYA40ZNBh6xx9sH
- h25/RflamuDJlLZCYR4aRwm92q/aMa8uoQFjdnkKJpuuiRZRy6mM2q5sRzsVL4nlPS1f
- fTvPOq2kDXtB6i5LHafZ3pWqCbNKl6GPtRQf5LFeJA9GsngwZeKtkATUCoFpPGhBRk1e
- JBW9x6JbYr/XzIVbAUpADRFtr/PxNDHcWEBr1mPOFWXVJOhm1uLbSllbQwCTZa/AoBMa
- RM2w==
-X-Gm-Message-State: AOJu0YyJuRlzKIF7P6vkTfEDTFuS1ub9em+/UKJxhBt9r36UBbyjIdtX
- i98uSmdth38m+H3O4IVztyfiD8afeazUFwZR6tkbPNmuAfrvyGpvx2311cbG
-X-Google-Smtp-Source: AGHT+IHAeMx9s25GFa/sEwYGUw2r5kQq91y/HBSQLtn5bN9WwJetUkuYtp7QpiNjrrZHc0qfh6vilw==
-X-Received: by 2002:a17:902:ec82:b0:20c:e262:2568 with SMTP id
- d9443c01a7336-210c6874b8emr217005175ad.5.1730346879292; 
- Wed, 30 Oct 2024 20:54:39 -0700 (PDT)
+ bh=Y/PW3fIgA/mqOmh+ReEA9cKJU38Sv2BOJ1Nhu0vSIdE=;
+ b=tct/GKp61ybPRwwgS+ZgE/sjX3tDOZEAN/zsjTVLjFNHTTir7GyP2msgz9VRasyFsk
+ QRtfABRPC/Qn99ACInvC8aDjTHPDtSuOnVL/iKUmXylNGh7YsbQ2iC0t2lM2FXAzGVX2
+ T8en2YioNHZWKmVLpjaD6q8JF6xzU5gR4yyXBTvkSNkwPJ6ZpmBWBR0rPXNjU3ya4NZ5
+ 6aRyg5asJKvPt4QnDUv3DWfNM+sSLdAhxeX/ZaytraY8qFLvMIt3/bWOZd8eB4sWPQqb
+ Bcaa9NYaEktLvU5XIL0GHJ72E1FY9l9fZfL97IG16QgeipSvtAJh7wGYL02DugKgQfxg
+ zVSQ==
+X-Gm-Message-State: AOJu0YzGoJBgnUzTZTXP4olDIkzBUx0e4OqdY5VHrlYfIKnezCqKsPNV
+ +SFuRhSRYqu09xcJiFaHNdfyzxYo48M16Nflz4Y0JH8JBzi9yFYx65s44pOQ
+X-Google-Smtp-Source: AGHT+IHaxgxfgvls7zkz/qG68uKDUBfI+DfSN2B2A3in9fv85T6QjQk1qUvGg/f0JWfBlMWOSNnfvQ==
+X-Received: by 2002:a17:902:dace:b0:20b:a41f:6e48 with SMTP id
+ d9443c01a7336-210c69ed062mr245348585ad.27.1730346881977; 
+ Wed, 30 Oct 2024 20:54:41 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.54.36
+ d9443c01a7336-21105707064sm3022795ad.70.2024.10.30.20.54.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Oct 2024 20:54:38 -0700 (PDT)
+ Wed, 30 Oct 2024 20:54:41 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Deepak Gupta <debug@rivosinc.com>,
- Jim Shu <jim.shu@sifive.com>, Andy Chiu <andy.chiu@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 23/50] disas/riscv: enable `lpad` disassembly
-Date: Thu, 31 Oct 2024 13:52:51 +1000
-Message-ID: <20241031035319.731906-24-alistair.francis@wdc.com>
+Subject: [PULL 24/50] target/riscv: Expose zicfilp extension as a cpu property
+Date: Thu, 31 Oct 2024 13:52:52 +1000
+Message-ID: <20241031035319.731906-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031035319.731906-1-alistair.francis@wdc.com>
 References: <20241031035319.731906-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,94 +99,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Deepak Gupta <debug@rivosinc.com>
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Co-developed-by: Jim Shu <jim.shu@sifive.com>
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241008225010.1861630-9-debug@rivosinc.com>
+Message-ID: <20241008225010.1861630-10-debug@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.h |  2 ++
- disas/riscv.c | 18 +++++++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 0d1f89ce8a..ae78352e38 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -166,6 +166,7 @@ typedef enum {
-     rv_codec_r2_immhl,
-     rv_codec_r2_imm2_imm5,
-     rv_codec_fli,
-+    rv_codec_lp,
- } rv_codec;
- 
- /* structures */
-@@ -228,6 +229,7 @@ enum {
- #define rv_fmt_rs1_rs2                "O\t1,2"
- #define rv_fmt_rd_imm                 "O\t0,i"
- #define rv_fmt_rd_uimm                "O\t0,Ui"
-+#define rv_fmt_imm                    "O\ti"
- #define rv_fmt_rd_offset              "O\t0,o"
- #define rv_fmt_rd_uoffset             "O\t0,Uo"
- #define rv_fmt_rd_rs1_rs2             "O\t0,1,2"
-diff --git a/disas/riscv.c b/disas/riscv.c
-index fc0331b90b..513225129c 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -976,6 +976,7 @@ typedef enum {
-     rv_op_amocas_h  = 945,
-     rv_op_wrs_sto = 946,
-     rv_op_wrs_nto = 947,
-+    rv_op_lpad = 948,
- } rv_op;
- 
- /* register names */
-@@ -2236,6 +2237,7 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "wrs.sto", rv_codec_none, rv_fmt_none, NULL, 0, 0, 0 },
-     { "wrs.nto", rv_codec_none, rv_fmt_none, NULL, 0, 0, 0 },
-+    { "lpad", rv_codec_lp, rv_fmt_imm, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2929,7 +2931,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             case 7: op = rv_op_andi; break;
-             }
-             break;
--        case 5: op = rv_op_auipc; break;
-+        case 5:
-+            op = rv_op_auipc;
-+            if (dec->cfg->ext_zicfilp &&
-+                (((inst >> 7) & 0b11111) == 0b00000)) {
-+                op = rv_op_lpad;
-+            }
-+            break;
-         case 6:
-             switch ((inst >> 12) & 0b111) {
-             case 0: op = rv_op_addiw; break;
-@@ -4488,6 +4496,11 @@ static uint32_t operand_tbl_index(rv_inst inst)
-     return ((inst << 54) >> 56);
- }
- 
-+static uint32_t operand_lpl(rv_inst inst)
-+{
-+    return inst >> 12;
-+}
-+
- /* decode operands */
- 
- static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-@@ -4875,6 +4888,9 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         dec->imm = sextract32(operand_rs2(inst), 0, 5);
-         dec->imm1 = operand_imm2(inst);
-         break;
-+    case rv_codec_lp:
-+        dec->imm = operand_lpl(inst);
-+        break;
-     };
- }
- 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 27fbbd11b9..ee6646848b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1471,6 +1471,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+     MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
+     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
++    MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
+     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
 -- 
 2.47.0
 
