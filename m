@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44179B81C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 18:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D25E9B820A
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Oct 2024 19:00:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6ZMb-0001fv-EP; Thu, 31 Oct 2024 13:53:44 -0400
+	id 1t6ZMu-0002KH-4c; Thu, 31 Oct 2024 13:54:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZMG-0001Tz-4d
+ id 1t6ZMG-0001UC-5K
  for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t6ZM9-0007Nx-54
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:16 -0400
+ id 1t6ZMA-0007O2-Dh
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 13:53:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730397192;
+ s=mimecast20190719; t=1730397193;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oOhX9QDYc2WhWb7tFh95czaxrgxiuLVdrwaG2qR+uuc=;
- b=gQ5PFK3KfjrqmXGGxFm/KdY0yGt74Enu9hU+t0ejp0IxeOfokkyxNrdfbewr0TBeFd2Flz
- 5wbpfKivnVasvE7HqJQy6R8fIzXXx+dpttTMdI1WBqfnjDJ9UyfzyYYjeVhj8Y6EeXmFvm
- 1KBVZkYJuCYsskvRKkfA1357a9D9KMA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MkfppaPFQdn9iyhClfe7ogToYCdG3Og5N/a4TPV6LpQ=;
+ b=V0RL+jldDOLK48UNly9QOpO6jpuT+hKs7GehvKqet+BFJlv7dqqGgKsyRmLeHvu9AL0IZk
+ KLDCOwKki/Xo+96pa7lh4fkD/RB7wvF8E7MUSkWAaOIWenPUaWZrbtFHIqPC10RkdOerAH
+ 3zUjSIP1jgLpHhRmUnFD0qPhjQx3fg4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-IXMuS5PvPHyonbraea9qgQ-1; Thu, 31 Oct 2024 13:53:11 -0400
-X-MC-Unique: IXMuS5PvPHyonbraea9qgQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d4922d8c7so571055f8f.1
+ us-mta-70-HIVlcJpcOHeMnXi_a63LvQ-1; Thu, 31 Oct 2024 13:53:11 -0400
+X-MC-Unique: HIVlcJpcOHeMnXi_a63LvQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43154a0886bso7609355e9.0
  for <qemu-devel@nongnu.org>; Thu, 31 Oct 2024 10:53:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730397189; x=1731001989;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oOhX9QDYc2WhWb7tFh95czaxrgxiuLVdrwaG2qR+uuc=;
- b=Oh1SvgKXE7CMRjUSbXqoA+IdUU/t5KiAGS6gDF7iHsp53yYQfD5Ax//Ez/IC30g/Qu
- QiajoT/sTa+UiyvEDj8ugUzLRrizyIPQB1jKgsszDwNyoN3UNsydSlEuxQF4PdgscTLd
- l5/kH8R0eKg1pdG36TxKLRCvQ1KnC/HayYg4+rSsoEve1J6te2lk9idM1+vdy/kwpwyb
- 0OO+Z6+wm+r6aC6lk5WAQ1ZJl2eXP4dvKjNiuMnE+JqJoCXBGmOMcsy5RnIqGSnskFua
- PD+0vbhJQeG0lKX+NAwWo4DLWDjq9etF90SUiaIqnEzIR7jmOqLItBsWApD60fA9LYe6
- 6cPg==
-X-Gm-Message-State: AOJu0YysfV4avAyZohX+7ssiNLHbkgb2pxPQr/LFmYerb3c5rHrI0/Ud
- F6YWf/tF7yame0CKg/C5vkhZgDmuRqW0DUzNUr+r1JEpcNGOqPDcPW8WbnRPObqje3mk2zPUlzk
- s3qZecRi8h3uznLM0/gaX3FPBhYK076ufZgPpqGTSXAKOuEpQx+LHvF7X6qLc70fT+03CZUR4nA
- 4HYD7fLwXQA0OnGputmKjqQS3NwWo+u2IfjAJ/Ers=
-X-Received: by 2002:a5d:6dab:0:b0:37d:5338:872c with SMTP id
- ffacd0b85a97d-381c7a3a4a9mr732836f8f.1.1730397188233; 
+ bh=MkfppaPFQdn9iyhClfe7ogToYCdG3Og5N/a4TPV6LpQ=;
+ b=GMomJLmh+90e7BrP9dMJ/c7WvCVdf6lxGcQNYD6s9pLCODYU3AQAKX2wN9tDxAp1/e
+ zhoE3BAo9hdfIhQxDHpBLoMj41yUlGbQAxTOsotdvhbLmRlaSEJLV5VlDXjFTe/aunLb
+ eqBksUHWYxd9MzPd1tB7tU4fIFHYUKJ06xX9ba0/GQSu9Ch57NLjHhXKVFTcCUKyGsBl
+ pQ3VgwgmnvurU2Xg+1/evXkOhfEaa9+b0yR9+pUppIsjjDX+dolxvfL/2UdDnmrlT/C3
+ 8P0XikJk6ERl2BiJ/BHj5EXBbVVNkZcbjniW68KlauCEC68dQf3SZGs3Ljp1OeOUxuDy
+ /Xqg==
+X-Gm-Message-State: AOJu0Yx3lejT8z+eLhI0R+g788d1pXM6rwPmmM/KwsBXwGFKjAtYbNFJ
+ wjOhUi8MKtyyMS4no2NahxC/RTUZY9NHEtuuDIXoNtCc3qnp18p91EHYAFCnCtsl5q/eh7sz73t
+ 4sWwT0pXy6GFNL1kri764hS34pDW0Ys7r/5Ybg307I8eo/n2PH/h4pTuljolT06qoqi6YtbCi6b
+ Af3Y3iEets6hH79i5ZDPJdwW4viZI0iE0Nj92w4og=
+X-Received: by 2002:a05:600c:5121:b0:42d:a024:d6bb with SMTP id
+ 5b1f17b1804b1-4328325681fmr6269905e9.20.1730397188699; 
  Thu, 31 Oct 2024 10:53:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzTb9+YPGJE+W+CtucyTkzjipVw6UpTmJ1lf77Ke8B+q3FjzucbbGkmiy10xfz+AloS4nUmQ==
-X-Received: by 2002:a5d:6dab:0:b0:37d:5338:872c with SMTP id
- ffacd0b85a97d-381c7a3a4a9mr732795f8f.1.1730397186856; 
- Thu, 31 Oct 2024 10:53:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/pRJsEjEC2NtCVS2qIEH8QbqzAqx16ZK4LYHnWpayEoOTFFoO0k7EbX76NFADMF1Tgtv38g==
+X-Received: by 2002:a05:600c:5121:b0:42d:a024:d6bb with SMTP id
+ 5b1f17b1804b1-4328325681fmr6269685e9.20.1730397188213; 
+ Thu, 31 Oct 2024 10:53:08 -0700 (PDT)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5c6623sm33766765e9.20.2024.10.31.10.53.05
+ 5b1f17b1804b1-4327d6852fdsm33549295e9.34.2024.10.31.10.53.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 10:53:05 -0700 (PDT)
+ Thu, 31 Oct 2024 10:53:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>, Alexander Graf <graf@amazon.com>
-Subject: [PULL 23/49] hw/core: Add Enclave Image Format (EIF) related helpers
-Date: Thu, 31 Oct 2024 18:51:47 +0100
-Message-ID: <20241031175214.214455-24-pbonzini@redhat.com>
+Subject: [PULL 24/49] core/machine: Make create_default_memdev machine a
+ virtual method
+Date: Thu, 31 Oct 2024 18:51:48 +0100
+Message-ID: <20241031175214.214455-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241031175214.214455-1-pbonzini@redhat.com>
 References: <20241031175214.214455-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,860 +103,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 
-An EIF (Enclave Image Format)[1] file is used to boot an AWS nitro
-enclave[2] virtual machine. The EIF file contains the necessary kernel,
-cmdline, ramdisk(s) sections to boot.
-
-Some helper functions have been introduced for extracting the necessary
-sections from an EIF file and then writing them to temporary files as
-well as computing SHA384 hashes from the section data. These will be
-used in the following commit to add support for nitro-enclave machine
-type in QEMU.
-
-The files added in this commit are not compiled yet but will be added
-to the hw/core/meson.build file in the following commit where
-CONFIG_NITRO_ENCLAVE will be introduced.
-
-[1] https://github.com/aws/aws-nitro-enclaves-image-format
-[2] https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html
+This is in preparation for the next commit where the nitro-enclave
+machine type will need to instead use a memfd backend, for the built-in
+vhost-user-vsock device to work.
 
 Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 Reviewed-by: Alexander Graf <graf@amazon.com>
-Link: https://lore.kernel.org/r/20241008211727.49088-4-dorjoychy111@gmail.com
+Link: https://lore.kernel.org/r/20241008211727.49088-5-dorjoychy111@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS         |   7 +
- meson.build         |   1 +
- hw/core/eif.h       |  22 ++
- hw/core/eif.c       | 719 ++++++++++++++++++++++++++++++++++++++++++++
- Kconfig.host        |   3 +
- hw/core/Kconfig     |   4 +
- hw/core/meson.build |   1 +
- 7 files changed, 757 insertions(+)
- create mode 100644 hw/core/eif.h
- create mode 100644 hw/core/eif.c
+ include/hw/boards.h      |  2 ++
+ include/sysemu/hostmem.h |  2 ++
+ backends/hostmem-memfd.c |  2 --
+ hw/core/machine.c        | 71 +++++++++++++++++++++-------------------
+ 4 files changed, 42 insertions(+), 35 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 649bd5ab1a8..19b7d54a193 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1834,6 +1834,13 @@ F: hw/i386/microvm.c
- F: include/hw/i386/microvm.h
- F: pc-bios/bios-microvm.bin
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 5966069baab..91f2edd3924 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -314,6 +314,8 @@ struct MachineClass {
+     int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
+     ram_addr_t (*fixup_ram_size)(ram_addr_t size);
+     uint64_t smbios_memory_device_size;
++    bool (*create_default_memdev)(MachineState *ms, const char *path,
++                                  Error **errp);
+ };
  
-+nitro-enclave
-+M: Alexander Graf <graf@amazon.com>
-+M: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-+S: Maintained
-+F: hw/core/eif.c
-+F: hw/core/eif.h
+ /**
+diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
+index de47ae59e4b..67f45abe392 100644
+--- a/include/sysemu/hostmem.h
++++ b/include/sysemu/hostmem.h
+@@ -39,6 +39,8 @@ OBJECT_DECLARE_TYPE(HostMemoryBackend, HostMemoryBackendClass,
+  */
+ #define TYPE_MEMORY_BACKEND_FILE "memory-backend-file"
+ 
++#define TYPE_MEMORY_BACKEND_MEMFD "memory-backend-memfd"
 +
- Machine core
- M: Eduardo Habkost <eduardo@habkost.net>
- M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-diff --git a/meson.build b/meson.build
-index 2739cc4964a..5bb519ea155 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3137,6 +3137,7 @@ host_kconfig = \
-   (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
-   (opengl.found() ? ['CONFIG_OPENGL=y'] : []) + \
-   (libcbor.found() ? ['CONFIG_LIBCBOR=y'] : []) + \
-+  (gnutls.found() ? ['CONFIG_GNUTLS=y'] : []) + \
-   (x11.found() ? ['CONFIG_X11=y'] : []) + \
-   (fdt.found() ? ['CONFIG_FDT=y'] : []) + \
-   (have_vhost_user ? ['CONFIG_VHOST_USER=y'] : []) + \
-diff --git a/hw/core/eif.h b/hw/core/eif.h
-new file mode 100644
-index 00000000000..fed3cb55140
---- /dev/null
-+++ b/hw/core/eif.h
-@@ -0,0 +1,22 @@
-+/*
-+ * EIF (Enclave Image Format) related helpers
-+ *
-+ * Copyright (c) 2024 Dorjoy Chowdhury <dorjoychy111@gmail.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+
-+#ifndef HW_CORE_EIF_H
-+#define HW_CORE_EIF_H
-+
-+bool read_eif_file(const char *eif_path, const char *machine_initrd,
-+                   char **kernel_path, char **initrd_path,
-+                   char **kernel_cmdline, uint8_t *image_sha384,
-+                   uint8_t *bootstrap_sha384, uint8_t *app_sha384,
-+                   uint8_t *fingerprint_sha384, bool *signature_found,
-+                   Error **errp);
-+
-+#endif
-+
-diff --git a/hw/core/eif.c b/hw/core/eif.c
-new file mode 100644
-index 00000000000..7f3b2edc9a7
---- /dev/null
-+++ b/hw/core/eif.c
-@@ -0,0 +1,719 @@
-+/*
-+ * EIF (Enclave Image Format) related helpers
-+ *
-+ * Copyright (c) 2024 Dorjoy Chowdhury <dorjoychy111@gmail.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/bswap.h"
-+#include "qapi/error.h"
-+#include "crypto/hash.h"
-+#include "crypto/x509-utils.h"
-+#include <zlib.h> /* for crc32 */
-+#include <cbor.h>
-+
-+#include "hw/core/eif.h"
-+
-+#define MAX_SECTIONS 32
-+
-+/* members are ordered according to field order in .eif file */
-+typedef struct EifHeader {
-+    uint8_t  magic[4]; /* must be .eif in ascii i.e., [46, 101, 105, 102] */
-+    uint16_t version;
-+    uint16_t flags;
-+    uint64_t default_memory;
-+    uint64_t default_cpus;
-+    uint16_t reserved;
-+    uint16_t section_cnt;
-+    uint64_t section_offsets[MAX_SECTIONS];
-+    uint64_t section_sizes[MAX_SECTIONS];
-+    uint32_t unused;
-+    uint32_t eif_crc32;
-+} QEMU_PACKED EifHeader;
-+
-+/* members are ordered according to field order in .eif file */
-+typedef struct EifSectionHeader {
-+    /*
-+     * 0 = invalid, 1 = kernel, 2 = cmdline, 3 = ramdisk, 4 = signature,
-+     * 5 = metadata
-+     */
-+    uint16_t section_type;
-+    uint16_t flags;
-+    uint64_t section_size;
-+} QEMU_PACKED EifSectionHeader;
-+
-+enum EifSectionTypes {
-+    EIF_SECTION_INVALID = 0,
-+    EIF_SECTION_KERNEL = 1,
-+    EIF_SECTION_CMDLINE = 2,
-+    EIF_SECTION_RAMDISK = 3,
-+    EIF_SECTION_SIGNATURE = 4,
-+    EIF_SECTION_METADATA = 5,
-+    EIF_SECTION_MAX = 6,
-+};
-+
-+static const char *section_type_to_string(uint16_t type)
+ 
+ /**
+  * HostMemoryBackendClass:
+diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
+index 6a3c89a12b2..9f890a813e1 100644
+--- a/backends/hostmem-memfd.c
++++ b/backends/hostmem-memfd.c
+@@ -18,8 +18,6 @@
+ #include "qapi/error.h"
+ #include "qom/object.h"
+ 
+-#define TYPE_MEMORY_BACKEND_MEMFD "memory-backend-memfd"
+-
+ OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendMemfd, MEMORY_BACKEND_MEMFD)
+ 
+ 
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17ebac..222799bc46e 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1001,6 +1001,39 @@ void machine_add_audiodev_property(MachineClass *mc)
+                                           "Audiodev to use for default machine devices");
+ }
+ 
++static bool create_default_memdev(MachineState *ms, const char *path,
++                                  Error **errp)
 +{
-+    const char *str;
-+    switch (type) {
-+    case EIF_SECTION_INVALID:
-+        str = "invalid";
-+        break;
-+    case EIF_SECTION_KERNEL:
-+        str = "kernel";
-+        break;
-+    case EIF_SECTION_CMDLINE:
-+        str = "cmdline";
-+        break;
-+    case EIF_SECTION_RAMDISK:
-+        str = "ramdisk";
-+        break;
-+    case EIF_SECTION_SIGNATURE:
-+        str = "signature";
-+        break;
-+    case EIF_SECTION_METADATA:
-+        str = "metadata";
-+        break;
-+    default:
-+        str = "unknown";
-+        break;
-+    }
++    Object *obj;
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
++    bool r = false;
 +
-+    return str;
-+}
-+
-+static bool read_eif_header(FILE *f, EifHeader *header, uint32_t *crc,
-+                            Error **errp)
-+{
-+    size_t got;
-+    size_t header_size = sizeof(*header);
-+
-+    got = fread(header, 1, header_size, f);
-+    if (got != header_size) {
-+        error_setg(errp, "Failed to read EIF header");
-+        return false;
-+    }
-+
-+    if (memcmp(header->magic, ".eif", 4) != 0) {
-+        error_setg(errp, "Invalid EIF image. Magic mismatch.");
-+        return false;
-+    }
-+
-+    /* Exclude header->eif_crc32 field from CRC calculation */
-+    *crc = crc32(*crc, (uint8_t *)header, header_size - 4);
-+
-+    header->version = be16_to_cpu(header->version);
-+    header->flags = be16_to_cpu(header->flags);
-+    header->default_memory = be64_to_cpu(header->default_memory);
-+    header->default_cpus = be64_to_cpu(header->default_cpus);
-+    header->reserved = be16_to_cpu(header->reserved);
-+    header->section_cnt = be16_to_cpu(header->section_cnt);
-+
-+    for (int i = 0; i < MAX_SECTIONS; ++i) {
-+        header->section_offsets[i] = be64_to_cpu(header->section_offsets[i]);
-+    }
-+
-+    for (int i = 0; i < MAX_SECTIONS; ++i) {
-+        header->section_sizes[i] = be64_to_cpu(header->section_sizes[i]);
-+    }
-+
-+    header->unused = be32_to_cpu(header->unused);
-+    header->eif_crc32 = be32_to_cpu(header->eif_crc32);
-+    return true;
-+}
-+
-+static bool read_eif_section_header(FILE *f, EifSectionHeader *section_header,
-+                                    uint32_t *crc, Error **errp)
-+{
-+    size_t got;
-+    size_t section_header_size = sizeof(*section_header);
-+
-+    got = fread(section_header, 1, section_header_size, f);
-+    if (got != section_header_size) {
-+        error_setg(errp, "Failed to read EIF section header");
-+        return false;
-+    }
-+
-+    *crc = crc32(*crc, (uint8_t *)section_header, section_header_size);
-+
-+    section_header->section_type = be16_to_cpu(section_header->section_type);
-+    section_header->flags = be16_to_cpu(section_header->flags);
-+    section_header->section_size = be64_to_cpu(section_header->section_size);
-+    return true;
-+}
-+
-+/*
-+ * Upon success, the caller is responsible for unlinking and freeing *tmp_path.
-+ */
-+static bool get_tmp_file(const char *template, char **tmp_path, Error **errp)
-+{
-+    int tmp_fd;
-+
-+    *tmp_path = NULL;
-+    tmp_fd = g_file_open_tmp(template, tmp_path, NULL);
-+    if (tmp_fd < 0 || *tmp_path == NULL) {
-+        error_setg(errp, "Failed to create temporary file for template %s",
-+                   template);
-+        return false;
-+    }
-+
-+    close(tmp_fd);
-+    return true;
-+}
-+
-+static void safe_fclose(FILE *f)
-+{
-+    if (f) {
-+        fclose(f);
-+    }
-+}
-+
-+static void safe_unlink(char *f)
-+{
-+    if (f) {
-+        unlink(f);
-+    }
-+}
-+
-+/*
-+ * Upon success, the caller is reponsible for unlinking and freeing *kernel_path
-+ */
-+static bool read_eif_kernel(FILE *f, uint64_t size, char **kernel_path,
-+                            uint8_t *kernel, uint32_t *crc, Error **errp)
-+{
-+    size_t got;
-+    FILE *tmp_file = NULL;
-+
-+    *kernel_path = NULL;
-+    if (!get_tmp_file("eif-kernel-XXXXXX", kernel_path, errp)) {
-+        goto cleanup;
-+    }
-+
-+    tmp_file = fopen(*kernel_path, "wb");
-+    if (tmp_file == NULL) {
-+        error_setg_errno(errp, errno, "Failed to open temporary file %s",
-+                         *kernel_path);
-+        goto cleanup;
-+    }
-+
-+    got = fread(kernel, 1, size, f);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to read EIF kernel section data");
-+        goto cleanup;
-+    }
-+
-+    got = fwrite(kernel, 1, size, tmp_file);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to write EIF kernel section data to temporary"
-+                   " file");
-+        goto cleanup;
-+    }
-+
-+    *crc = crc32(*crc, kernel, size);
-+    fclose(tmp_file);
-+
-+    return true;
-+
-+ cleanup:
-+    safe_fclose(tmp_file);
-+
-+    safe_unlink(*kernel_path);
-+    g_free(*kernel_path);
-+    *kernel_path = NULL;
-+
-+    return false;
-+}
-+
-+static bool read_eif_cmdline(FILE *f, uint64_t size, char *cmdline,
-+                             uint32_t *crc, Error **errp)
-+{
-+    size_t got = fread(cmdline, 1, size, f);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to read EIF cmdline section data");
-+        return false;
-+    }
-+
-+    *crc = crc32(*crc, (uint8_t *)cmdline, size);
-+    return true;
-+}
-+
-+static bool read_eif_ramdisk(FILE *eif, FILE *initrd, uint64_t size,
-+                             uint8_t *ramdisk, uint32_t *crc, Error **errp)
-+{
-+    size_t got;
-+
-+    got = fread(ramdisk, 1, size, eif);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to read EIF ramdisk section data");
-+        return false;
-+    }
-+
-+    got = fwrite(ramdisk, 1, size, initrd);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to write EIF ramdisk data to temporary file");
-+        return false;
-+    }
-+
-+    *crc = crc32(*crc, ramdisk, size);
-+    return true;
-+}
-+
-+static bool get_signature_fingerprint_sha384(FILE *eif, uint64_t size,
-+                                             uint8_t *sha384,
-+                                             uint32_t *crc,
-+                                             Error **errp)
-+{
-+    size_t got;
-+    g_autofree uint8_t *sig = NULL;
-+    g_autofree uint8_t *cert = NULL;
-+    cbor_item_t *item = NULL;
-+    cbor_item_t *pcr0 = NULL;
-+    size_t len;
-+    size_t hash_len = QCRYPTO_HASH_DIGEST_LEN_SHA384;
-+    struct cbor_pair *pair;
-+    struct cbor_load_result result;
-+    bool ret = false;
-+
-+    sig = g_malloc(size);
-+    got = fread(sig, 1, size, eif);
-+    if ((uint64_t) got != size) {
-+        error_setg(errp, "Failed to read EIF signature section data");
-+        goto cleanup;
-+    }
-+
-+    *crc = crc32(*crc, sig, size);
-+
-+    item = cbor_load(sig, size, &result);
-+    if (!item || result.error.code != CBOR_ERR_NONE) {
-+        error_setg(errp, "Failed to load signature section data as CBOR");
-+        goto cleanup;
-+    }
-+    if (!cbor_isa_array(item) || cbor_array_size(item) < 1) {
-+        error_setg(errp, "Invalid signature CBOR");
-+        goto cleanup;
-+    }
-+    pcr0 = cbor_array_get(item, 0);
-+    if (!pcr0) {
-+        error_setg(errp, "Failed to get PCR0 signature");
-+        goto cleanup;
-+    }
-+    if (!cbor_isa_map(pcr0) || cbor_map_size(pcr0) != 2) {
-+        error_setg(errp, "Invalid signature CBOR");
-+        goto cleanup;
-+    }
-+    pair = cbor_map_handle(pcr0);
-+    if (!cbor_isa_string(pair->key) || cbor_string_length(pair->key) != 19 ||
-+        memcmp(cbor_string_handle(pair->key), "signing_certificate", 19) != 0) {
-+        error_setg(errp, "Invalid signautre CBOR");
-+        goto cleanup;
-+    }
-+    if (!cbor_isa_array(pair->value)) {
-+        error_setg(errp, "Invalid signature CBOR");
-+        goto cleanup;
-+    }
-+    len = cbor_array_size(pair->value);
-+    if (len == 0) {
-+        error_setg(errp, "Invalid signature CBOR");
-+        goto cleanup;
-+    }
-+    cert = g_malloc(len);
-+    for (int i = 0; i < len; ++i) {
-+        cbor_item_t *tmp = cbor_array_get(pair->value, i);
-+        if (!tmp) {
-+            error_setg(errp, "Invalid signature CBOR");
-+            goto cleanup;
++    obj = object_new(path ? TYPE_MEMORY_BACKEND_FILE : TYPE_MEMORY_BACKEND_RAM);
++    if (path) {
++        if (!object_property_set_str(obj, "mem-path", path, errp)) {
++            goto out;
 +        }
-+        if (!cbor_isa_uint(tmp) || cbor_int_get_width(tmp) != CBOR_INT_8) {
-+            cbor_decref(&tmp);
-+            error_setg(errp, "Invalid signature CBOR");
-+            goto cleanup;
-+        }
-+        cert[i] = cbor_get_uint8(tmp);
-+        cbor_decref(&tmp);
 +    }
++    if (!object_property_set_int(obj, "size", ms->ram_size, errp)) {
++        goto out;
++    }
++    object_property_add_child(object_get_objects_root(), mc->default_ram_id,
++                              obj);
++    /* Ensure backend's memory region name is equal to mc->default_ram_id */
++    if (!object_property_set_bool(obj, "x-use-canonical-path-for-ramblock-id",
++                             false, errp)) {
++        goto out;
++    }
++    if (!user_creatable_complete(USER_CREATABLE(obj), errp)) {
++        goto out;
++    }
++    r = object_property_set_link(OBJECT(ms), "memory-backend", obj, errp);
 +
-+    if (qcrypto_get_x509_cert_fingerprint(cert, len, QCRYPTO_HASH_ALGO_SHA384,
-+                                          sha384, &hash_len, errp)) {
-+        goto cleanup;
-+    }
-+
-+    ret = true;
-+
-+ cleanup:
-+    if (pcr0) {
-+        cbor_decref(&pcr0);
-+    }
-+    if (item) {
-+        cbor_decref(&item);
-+    }
-+    return ret;
++out:
++    object_unref(obj);
++    return r;
 +}
 +
-+/* Expects file to have offset 0 before this function is called */
-+static long get_file_size(FILE *f, Error **errp)
-+{
-+    long size;
+ static void machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -1020,6 +1053,8 @@ static void machine_class_init(ObjectClass *oc, void *data)
+      */
+     mc->numa_mem_align_shift = 23;
+ 
++    mc->create_default_memdev = create_default_memdev;
 +
-+    if (fseek(f, 0, SEEK_END) != 0) {
-+        error_setg_errno(errp, errno, "Failed to seek to the end of file");
-+        return -1;
-+    }
+     object_class_property_add_str(oc, "kernel",
+         machine_get_kernel, machine_set_kernel);
+     object_class_property_set_description(oc, "kernel",
+@@ -1413,38 +1448,6 @@ MemoryRegion *machine_consume_memdev(MachineState *machine,
+     return ret;
+ }
+ 
+-static bool create_default_memdev(MachineState *ms, const char *path, Error **errp)
+-{
+-    Object *obj;
+-    MachineClass *mc = MACHINE_GET_CLASS(ms);
+-    bool r = false;
+-
+-    obj = object_new(path ? TYPE_MEMORY_BACKEND_FILE : TYPE_MEMORY_BACKEND_RAM);
+-    if (path) {
+-        if (!object_property_set_str(obj, "mem-path", path, errp)) {
+-            goto out;
+-        }
+-    }
+-    if (!object_property_set_int(obj, "size", ms->ram_size, errp)) {
+-        goto out;
+-    }
+-    object_property_add_child(object_get_objects_root(), mc->default_ram_id,
+-                              obj);
+-    /* Ensure backend's memory region name is equal to mc->default_ram_id */
+-    if (!object_property_set_bool(obj, "x-use-canonical-path-for-ramblock-id",
+-                             false, errp)) {
+-        goto out;
+-    }
+-    if (!user_creatable_complete(USER_CREATABLE(obj), errp)) {
+-        goto out;
+-    }
+-    r = object_property_set_link(OBJECT(ms), "memory-backend", obj, errp);
+-
+-out:
+-    object_unref(obj);
+-    return r;
+-}
+-
+ const char *machine_class_default_cpu_type(MachineClass *mc)
+ {
+     if (mc->valid_cpu_types && !mc->valid_cpu_types[1]) {
+@@ -1548,7 +1551,9 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+                 machine_class->default_ram_id);
+             return;
+         }
+-        if (!create_default_memdev(current_machine, mem_path, errp)) {
 +
-+    size = ftell(f);
-+    if (size == -1) {
-+        error_setg_errno(errp, errno, "Failed to get offset");
-+        return -1;
-+    }
-+
-+    if (fseek(f, 0, SEEK_SET) != 0) {
-+        error_setg_errno(errp, errno, "Failed to seek back to the start");
-+        return -1;
-+    }
-+
-+    return size;
-+}
-+
-+static bool get_SHA384_digest(GList *list, uint8_t *digest, Error **errp)
-+{
-+    size_t digest_len = QCRYPTO_HASH_DIGEST_LEN_SHA384;
-+    size_t list_len = g_list_length(list);
-+    struct iovec *iovec_list = g_new0(struct iovec, list_len);
-+    bool ret = true;
-+    GList *l;
-+    int i;
-+
-+    for (i = 0, l = list; l != NULL; l = l->next, i++) {
-+        iovec_list[i] = *(struct iovec *) l->data;
-+    }
-+
-+    if (qcrypto_hash_bytesv(QCRYPTO_HASH_ALGO_SHA384, iovec_list, list_len,
-+                            &digest, &digest_len, errp) < 0) {
-+        ret = false;
-+    }
-+
-+    g_free(iovec_list);
-+    return ret;
-+}
-+
-+static void free_iovec(struct iovec *iov)
-+{
-+    if (iov) {
-+        g_free(iov->iov_base);
-+        g_free(iov);
-+    }
-+}
-+
-+/*
-+ * Upon success, the caller is reponsible for unlinking and freeing
-+ * *kernel_path, *initrd_path and freeing *cmdline.
-+ */
-+bool read_eif_file(const char *eif_path, const char *machine_initrd,
-+                   char **kernel_path, char **initrd_path, char **cmdline,
-+                   uint8_t *image_sha384, uint8_t *bootstrap_sha384,
-+                   uint8_t *app_sha384, uint8_t *fingerprint_sha384,
-+                   bool *signature_found, Error **errp)
-+{
-+    FILE *f = NULL;
-+    FILE *machine_initrd_f = NULL;
-+    FILE *initrd_path_f = NULL;
-+    long machine_initrd_size;
-+    uint32_t crc = 0;
-+    EifHeader eif_header;
-+    bool seen_sections[EIF_SECTION_MAX] = {false};
-+    /* kernel + ramdisks + cmdline sha384 hash */
-+    GList *iov_PCR0 = NULL;
-+    /* kernel + boot ramdisk + cmdline sha384 hash */
-+    GList *iov_PCR1 = NULL;
-+    /* application ramdisk(s) hash */
-+    GList *iov_PCR2 = NULL;
-+    uint8_t *ptr = NULL;
-+    struct iovec *iov_ptr = NULL;
-+
-+    *signature_found = false;
-+    *kernel_path = *initrd_path = *cmdline = NULL;
-+
-+    f = fopen(eif_path, "rb");
-+    if (f == NULL) {
-+        error_setg_errno(errp, errno, "Failed to open %s", eif_path);
-+        goto cleanup;
-+    }
-+
-+    if (!read_eif_header(f, &eif_header, &crc, errp)) {
-+        goto cleanup;
-+    }
-+
-+    if (eif_header.version < 4) {
-+        error_setg(errp, "Expected EIF version 4 or greater");
-+        goto cleanup;
-+    }
-+
-+    if (eif_header.flags != 0) {
-+        error_setg(errp, "Expected EIF flags to be 0");
-+        goto cleanup;
-+    }
-+
-+    if (eif_header.section_cnt > MAX_SECTIONS) {
-+        error_setg(errp, "EIF header section count must not be greater than "
-+                   "%d but found %d", MAX_SECTIONS, eif_header.section_cnt);
-+        goto cleanup;
-+    }
-+
-+    for (int i = 0; i < eif_header.section_cnt; ++i) {
-+        EifSectionHeader hdr;
-+        uint16_t section_type;
-+
-+        if (fseek(f, eif_header.section_offsets[i], SEEK_SET) != 0) {
-+            error_setg_errno(errp, errno, "Failed to offset to %" PRIu64 " in EIF file",
-+                             eif_header.section_offsets[i]);
-+            goto cleanup;
-+        }
-+
-+        if (!read_eif_section_header(f, &hdr, &crc, errp)) {
-+            goto cleanup;
-+        }
-+
-+        if (hdr.flags != 0) {
-+            error_setg(errp, "Expected EIF section header flags to be 0");
-+            goto cleanup;
-+        }
-+
-+        if (eif_header.section_sizes[i] != hdr.section_size) {
-+            error_setg(errp, "EIF section size mismatch between header and "
-+                       "section header: header %" PRIu64 ", section header %" PRIu64,
-+                       eif_header.section_sizes[i],
-+                       hdr.section_size);
-+            goto cleanup;
-+        }
-+
-+        section_type = hdr.section_type;
-+
-+        switch (section_type) {
-+        case EIF_SECTION_KERNEL:
-+            if (seen_sections[EIF_SECTION_KERNEL]) {
-+                error_setg(errp, "Invalid EIF image. More than 1 kernel "
-+                           "section");
-+                goto cleanup;
-+            }
-+
-+            ptr = g_malloc(hdr.section_size);
-+
-+            iov_ptr = g_malloc(sizeof(struct iovec));
-+            iov_ptr->iov_base = ptr;
-+            iov_ptr->iov_len = hdr.section_size;
-+
-+            iov_PCR0 = g_list_append(iov_PCR0, iov_ptr);
-+            iov_PCR1 = g_list_append(iov_PCR1, iov_ptr);
-+
-+            if (!read_eif_kernel(f, hdr.section_size, kernel_path, ptr, &crc,
-+                                 errp)) {
-+                goto cleanup;
-+            }
-+
-+            break;
-+        case EIF_SECTION_CMDLINE:
-+        {
-+            uint64_t size;
-+            uint8_t *cmdline_copy;
-+            if (seen_sections[EIF_SECTION_CMDLINE]) {
-+                error_setg(errp, "Invalid EIF image. More than 1 cmdline "
-+                           "section");
-+                goto cleanup;
-+            }
-+            size = hdr.section_size;
-+            *cmdline = g_malloc(size + 1);
-+            if (!read_eif_cmdline(f, size, *cmdline, &crc, errp)) {
-+                goto cleanup;
-+            }
-+            (*cmdline)[size] = '\0';
-+
-+            /*
-+             * We make a copy of '*cmdline' for putting it in iovecs so that
-+             * we can easily free all the iovec entries later as we cannot
-+             * free '*cmdline' which is used by the caller.
-+             */
-+            cmdline_copy = g_memdup2(*cmdline, size);
-+
-+            iov_ptr = g_malloc(sizeof(struct iovec));
-+            iov_ptr->iov_base = cmdline_copy;
-+            iov_ptr->iov_len = size;
-+
-+            iov_PCR0 = g_list_append(iov_PCR0, iov_ptr);
-+            iov_PCR1 = g_list_append(iov_PCR1, iov_ptr);
-+            break;
-+        }
-+        case EIF_SECTION_RAMDISK:
-+        {
-+            if (!seen_sections[EIF_SECTION_RAMDISK]) {
-+                /*
-+                 * If this is the first time we are seeing a ramdisk section,
-+                 * we need to create the initrd temporary file.
-+                 */
-+                if (!get_tmp_file("eif-initrd-XXXXXX", initrd_path, errp)) {
-+                    goto cleanup;
-+                }
-+                initrd_path_f = fopen(*initrd_path, "wb");
-+                if (initrd_path_f == NULL) {
-+                    error_setg_errno(errp, errno, "Failed to open file %s",
-+                                     *initrd_path);
-+                    goto cleanup;
-+                }
-+            }
-+
-+            ptr = g_malloc(hdr.section_size);
-+
-+            iov_ptr = g_malloc(sizeof(struct iovec));
-+            iov_ptr->iov_base = ptr;
-+            iov_ptr->iov_len = hdr.section_size;
-+
-+            iov_PCR0 = g_list_append(iov_PCR0, iov_ptr);
-+            /*
-+             * If it's the first ramdisk, we need to hash it into bootstrap
-+             * i.e., iov_PCR1, otherwise we need to hash it into app i.e.,
-+             * iov_PCR2.
-+             */
-+            if (!seen_sections[EIF_SECTION_RAMDISK]) {
-+                iov_PCR1 = g_list_append(iov_PCR1, iov_ptr);
-+            } else {
-+                iov_PCR2 = g_list_append(iov_PCR2, iov_ptr);
-+            }
-+
-+            if (!read_eif_ramdisk(f, initrd_path_f, hdr.section_size, ptr,
-+                                  &crc, errp)) {
-+                goto cleanup;
-+            }
-+
-+            break;
-+        }
-+        case EIF_SECTION_SIGNATURE:
-+            *signature_found = true;
-+            if (!get_signature_fingerprint_sha384(f, hdr.section_size,
-+                                                  fingerprint_sha384, &crc,
++        if (!machine_class->create_default_memdev(current_machine, mem_path,
 +                                                  errp)) {
-+                goto cleanup;
-+            }
-+            break;
-+        default:
-+            /* other sections including invalid or unknown sections */
-+        {
-+            uint8_t *buf;
-+            size_t got;
-+            uint64_t size = hdr.section_size;
-+            buf = g_malloc(size);
-+            got = fread(buf, 1, size, f);
-+            if ((uint64_t) got != size) {
-+                g_free(buf);
-+                error_setg(errp, "Failed to read EIF %s section data",
-+                           section_type_to_string(section_type));
-+                goto cleanup;
-+            }
-+            crc = crc32(crc, buf, size);
-+            g_free(buf);
-+            break;
-+        }
-+        }
-+
-+        if (section_type < EIF_SECTION_MAX) {
-+            seen_sections[section_type] = true;
-+        }
-+    }
-+
-+    if (!seen_sections[EIF_SECTION_KERNEL]) {
-+        error_setg(errp, "Invalid EIF image. No kernel section.");
-+        goto cleanup;
-+    }
-+    if (!seen_sections[EIF_SECTION_CMDLINE]) {
-+        error_setg(errp, "Invalid EIF image. No cmdline section.");
-+        goto cleanup;
-+    }
-+    if (!seen_sections[EIF_SECTION_RAMDISK]) {
-+        error_setg(errp, "Invalid EIF image. No ramdisk section.");
-+        goto cleanup;
-+    }
-+
-+    if (eif_header.eif_crc32 != crc) {
-+        error_setg(errp, "CRC mismatch. Expected %u but header has %u.",
-+                   crc, eif_header.eif_crc32);
-+        goto cleanup;
-+    }
-+
-+    /*
-+     * Let's append the initrd file from "-initrd" option if any. Although
-+     * we pass the crc pointer to read_eif_ramdisk, it is not useful anymore.
-+     * We have already done the crc mismatch check above this code.
-+     */
-+    if (machine_initrd) {
-+        machine_initrd_f = fopen(machine_initrd, "rb");
-+        if (machine_initrd_f == NULL) {
-+            error_setg_errno(errp, errno, "Failed to open initrd file %s",
-+                             machine_initrd);
-+            goto cleanup;
-+        }
-+
-+        machine_initrd_size = get_file_size(machine_initrd_f, errp);
-+        if (machine_initrd_size == -1) {
-+            goto cleanup;
-+        }
-+
-+        ptr = g_malloc(machine_initrd_size);
-+
-+        iov_ptr = g_malloc(sizeof(struct iovec));
-+        iov_ptr->iov_base = ptr;
-+        iov_ptr->iov_len = machine_initrd_size;
-+
-+        iov_PCR0 = g_list_append(iov_PCR0, iov_ptr);
-+        iov_PCR2 = g_list_append(iov_PCR2, iov_ptr);
-+
-+        if (!read_eif_ramdisk(machine_initrd_f, initrd_path_f,
-+                              machine_initrd_size, ptr, &crc, errp)) {
-+            goto cleanup;
-+        }
-+    }
-+
-+    if (!get_SHA384_digest(iov_PCR0, image_sha384, errp)) {
-+        goto cleanup;
-+    }
-+    if (!get_SHA384_digest(iov_PCR1, bootstrap_sha384, errp)) {
-+        goto cleanup;
-+    }
-+    if (!get_SHA384_digest(iov_PCR2, app_sha384, errp)) {
-+        goto cleanup;
-+    }
-+
-+    /*
-+     * We only need to free iov_PCR0 entries because iov_PCR1 and
-+     * iov_PCR2 iovec entries are subsets of iov_PCR0 iovec entries.
-+     */
-+    g_list_free_full(iov_PCR0, (GDestroyNotify) free_iovec);
-+    g_list_free(iov_PCR1);
-+    g_list_free(iov_PCR2);
-+    fclose(f);
-+    fclose(initrd_path_f);
-+    safe_fclose(machine_initrd_f);
-+    return true;
-+
-+ cleanup:
-+    g_list_free_full(iov_PCR0, (GDestroyNotify) free_iovec);
-+    g_list_free(iov_PCR1);
-+    g_list_free(iov_PCR2);
-+
-+    safe_fclose(f);
-+    safe_fclose(initrd_path_f);
-+    safe_fclose(machine_initrd_f);
-+
-+    safe_unlink(*kernel_path);
-+    g_free(*kernel_path);
-+    *kernel_path = NULL;
-+
-+    safe_unlink(*initrd_path);
-+    g_free(*initrd_path);
-+    *initrd_path = NULL;
-+
-+    g_free(*cmdline);
-+    *cmdline = NULL;
-+
-+    return false;
-+}
-diff --git a/Kconfig.host b/Kconfig.host
-index ccd84be60f6..842cbe0d6c5 100644
---- a/Kconfig.host
-+++ b/Kconfig.host
-@@ -8,6 +8,9 @@ config LINUX
- config LIBCBOR
-     bool
- 
-+config GNUTLS
-+    bool
-+
- config OPENGL
-     bool
- 
-diff --git a/hw/core/Kconfig b/hw/core/Kconfig
-index 24411f59306..d1bdf765ee8 100644
---- a/hw/core/Kconfig
-+++ b/hw/core/Kconfig
-@@ -34,3 +34,7 @@ config REGISTER
- 
- config SPLIT_IRQ
-     bool
-+
-+config EIF
-+    bool
-+    depends on LIBCBOR && GNUTLS
-diff --git a/hw/core/meson.build b/hw/core/meson.build
-index a3d9bab9f42..9fd0b5aaa5e 100644
---- a/hw/core/meson.build
-+++ b/hw/core/meson.build
-@@ -24,6 +24,7 @@ system_ss.add(when: 'CONFIG_REGISTER', if_true: files('register.c'))
- system_ss.add(when: 'CONFIG_SPLIT_IRQ', if_true: files('split-irq.c'))
- system_ss.add(when: 'CONFIG_XILINX_AXI', if_true: files('stream.c'))
- system_ss.add(when: 'CONFIG_PLATFORM_BUS', if_true: files('sysbus-fdt.c'))
-+system_ss.add(when: 'CONFIG_EIF', if_true: [files('eif.c'), zlib, libcbor, gnutls])
- 
- system_ss.add(files(
-   'cpu-sysemu.c',
+             return;
+         }
+     }
 -- 
 2.47.0
 
