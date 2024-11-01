@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E1D9B96A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 18:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA479B96A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 18:38:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6vaH-00011b-CT; Fri, 01 Nov 2024 13:37:17 -0400
+	id 1t6vaL-00012y-0c; Fri, 01 Nov 2024 13:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaD-0000zJ-7k
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaH-00011l-4i
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaA-0000tA-Fn
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:12 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaF-0000td-K2
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730482627;
+ s=mimecast20190719; t=1730482633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=6cEQXUG082XzKLilEz14APYugcqUROKrmhZsSn33FSk=;
- b=XV4ogsu2L5aqDA+d/tIxOxGzu83j71gbK0dtEPSsATGQUf99MleR3yEvB50y5Z82KK9I57
- zpriokAqYYtJGJXHkvfvBpIzXeypKR1RAx8RBIB92Mmv9TyYIUMX5nXRx2PA+TSj0nCSqf
- QiI8LI2QxwyXkRzcBHUs+KpZS3XB+SI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1JTZbZYy6ImkNKJq/XkeUnNUFIK0Js3jEKrdJ97rSp4=;
+ b=BpNBUOCemDAMWjEP9GMl6v6D0Hl4LGeH2otRutfUZXIfPCj7ALOwJKNb7KpDLYxlzG4LCI
+ ZScuhYOqwvnNbcRl+uS0EoAefNrmh3Ef0pIyoVUAQDcC1jtR3DGgs/DVbO7kOF40GJWkxu
+ /EQ2cOFq4jPc2Yby/indbba1KOQwPqQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-h7eWQu0LOke7hEa16RE_NA-1; Fri,
- 01 Nov 2024 13:37:06 -0400
-X-MC-Unique: h7eWQu0LOke7hEa16RE_NA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-h2BtjwanOni8G7sI-h9QVw-1; Fri,
+ 01 Nov 2024 13:37:09 -0400
+X-MC-Unique: h2BtjwanOni8G7sI-h9QVw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C2FC195608A; Fri,  1 Nov 2024 17:37:04 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 10AA519560AD; Fri,  1 Nov 2024 17:37:07 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.82.62])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8D3A119560A2; Fri,  1 Nov 2024 17:37:02 +0000 (UTC)
+ id 2FB1A19560A2; Fri,  1 Nov 2024 17:37:04 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 0/4] python: update linting for new mypy/pylint releases
-Date: Fri,  1 Nov 2024 13:36:56 -0400
-Message-ID: <20241101173700.965776-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/4] iotests: reflow ReproducibleTestRunner arguments
+Date: Fri,  1 Nov 2024 13:36:57 -0400
+Message-ID: <20241101173700.965776-2-jsnow@redhat.com>
+In-Reply-To: <20241101173700.965776-1-jsnow@redhat.com>
+References: <20241101173700.965776-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -78,39 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Various python tests in the "check-python-tox" test case on GitLab have=0D
-begun failing due to newer package versions. This patch set corrects=0D
-those issues and also improves the reliability of local developer tests=0D
-which may be using these tooling versions outside of GitLab pinned=0D
-version tests.=0D
-=0D
-There are remaining issues with the "check-dev" test I have yet to=0D
-rectify, but appear unrelated to linter versions specifically and will=0D
-be handled separately.=0D
-=0D
-As a result of this patch, the optionally-run and may-fail=0D
-"check-python-tox" test case on GitLab will become green again, and=0D
-local invocations of "make check-tox" in the python subdirectory will=0D
-also pass again. "check-python-minreqs" on GitLab and "make=0D
-check-minreqs" in the local developer environment were/are=0D
-unaffected. local iotest invocations for test case #297 ought to now=0D
-begin passing on developer workstations with bleeding-edge python=0D
-packages.=0D
-=0D
-John Snow (4):=0D
-  iotests: reflow ReproducibleTestRunner arguments=0D
-  iotests: correct resultclass type in ReproducibleTestRunner=0D
-  python: disable too-many-positional-arguments warning=0D
-  python: silence pylint raising-non-exception error=0D
-=0D
- python/scripts/mkvenv.py      |  3 +++=0D
- python/setup.cfg              |  1 +=0D
- tests/qemu-iotests/iotests.py | 11 +++++++----=0D
- tests/qemu-iotests/pylintrc   |  1 +=0D
- 4 files changed, 12 insertions(+), 4 deletions(-)=0D
-=0D
--- =0D
-2.47.0=0D
-=0D
+Trivial reflow to let the type names breathe.
+
+(I need to add a longer type name.)
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ tests/qemu-iotests/iotests.py | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index ea48af4a7b6..673bbcd3563 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -1614,10 +1614,13 @@ def write(self, arg=None):
+         self.stream.write(arg)
+ 
+ class ReproducibleTestRunner(unittest.TextTestRunner):
+-    def __init__(self, stream: Optional[TextIO] = None,
+-                 resultclass: Type[unittest.TestResult] =
+-                 ReproducibleTestResult,
+-                 **kwargs: Any) -> None:
++    def __init__(
++        self,
++        stream: Optional[TextIO] = None,
++        resultclass: Type[unittest.TestResult] =
++        ReproducibleTestResult,
++        **kwargs: Any
++    ) -> None:
+         rstream = ReproducibleStreamWrapper(stream or sys.stdout)
+         super().__init__(stream=rstream,           # type: ignore
+                          descriptions=True,
+-- 
+2.47.0
 
 
