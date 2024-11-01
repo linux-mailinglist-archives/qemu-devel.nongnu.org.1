@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2B89B9A8A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 23:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED2B9B9A89
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 23:01:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6zhh-0004LY-Dj; Fri, 01 Nov 2024 18:01:13 -0400
+	id 1t6zhh-0004LL-1u; Fri, 01 Nov 2024 18:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t6zhd-0004KX-RJ
+ id 1t6zhe-0004Kn-79
  for qemu-devel@nongnu.org; Fri, 01 Nov 2024 18:01:10 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t6zhZ-0002nn-CD
+ id 1t6zhc-0002oH-U7
  for qemu-devel@nongnu.org; Fri, 01 Nov 2024 18:01:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=+d773DwhBknavPzpCmrrvLZ47FDvAPTWHJ8AGBcn2Ss=; b=Uers8bq6snMVzs2hw0jo49FpJR
- L3ska1TuvMetzciUTUAttZqgsU4hP/V4+XjFstycj0RI+qUcIpveES11HMlJ/0VBzPBBxzZZjTwwl
- T5L1YnJeT3NyJJS8eoQ0f1wvpwiAX/aLbE+m/8EX/RHoRAAlpR38nwTgOU+F0lGIwEFud1HpNi5h1
- RVJ1ZwLiUJQUAWyWYC/2TL/676LmmvmBYOn4MkJNKFuvg/4y97/OqTzzgA5fV9ls+XiVXbNRVRVmG
- Mvt3WPXFDS2hvwb8tWpCNEmAbBR/QkV74/k/gIROqWkb0spB+ifHfUkKjAZ4laXa3nCaToWE0XY07
- WQnSZKv0MwMVp9DsfaW4mmn3MxjihPMLURNvuXGC0XQYHov2W6bOEgngFMw93yeWHN3dQ4wadiAeZ
- rHTWgMGFg27d++QGOzys7kQKUUGaZEREhpH0bevuKIwNnrFgBQvvW6qHEcSFtWobwNEmlq/N6havW
- 1KyUORZg9eg0Xeus677BJMD/HdE55vmPlZ6yADHoVkdAzBux0dGYAF69yXX+bbwXwh/S5TksVIbGN
- 1AtH4JjvefYNbvSggA9TTWmwYBtwk5mWOx4SmjqST81CTvcDcn07IVZ4mGVWriKo4vQraw8IRCF2k
- +m/4kBOjUOzjFdIU8KauAz4RmG4ThMisOHzNnLbu0=;
+ bh=8wl31vWEym+Plbj9w5jpEhR79vNFKay4sFyDrn0ogbU=; b=xjrU9aHq+owXYS+RYQT3kWOwP5
+ 0ip2442C2Hp/4FuRZj6FzHshUTfVn5sUSjCSdq0vy+QYoWu9IrDRbNzVtz2Y70aqtPe3eKFVsOPju
+ VGJsKff+bx/15ZJ7QOKQxTPPpOgD4mTcXbwQg7Vtn88MpGE8vQenkFgMnV0l5yC/en+Neko0S+aiM
+ DDRtbStXvjeO+1unS9+YqOxEUpOrqaYXV3uO8M+DpfYUFSRkmo6zJ/ESKXFedrC53kjPOZhKwrtJQ
+ epIX9MqR2kNiAmz8bUBZSgKmrhf9hjDMqoPh15nyyClIYUvAoK65HkWVrfNE1JM1LmvLG/FBw+8Yl
+ BJ8pfxF9uZJ0kmr6YD1l+B3axWR7KYfuRERLQtUPmhSN7hdrVB3lWa25r5LwVe85Gm61c5AInykX7
+ 1mDJJJLT/+Fwd0ndyVSZk3FUy/xO6e7TbUfTDOl/gwOcQZCE4o75KqwxQzW5IAo6Oikrt5oYyGNSF
+ 2jEhJ6T/73akFBPU3MExJwwKx+bRaZLHYgtEW0LBYAeQYhaHld1dwJ1drIr5P0qINv7d23rTdx/T6
+ NoI4YKIL+vUPZF2iMy54XR/n1grV2WLCz/znNxCIy7yJVnih0M+UDRxG42wHiIp6XOGmMlBQE5Usp
+ vpRPU/N6DIlOgWLjjilt3TrmddNjCoPRGzGXMMsj8=;
 Received: from [2a00:23c4:8bb8:f600:91a1:336d:3931:745]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1t6zhC-0002pk-ER; Fri, 01 Nov 2024 22:00:42 +0000
+ id 1t6zhC-0002pk-OL; Fri, 01 Nov 2024 22:00:46 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	fam@euphon.net,
 	qemu-devel@nongnu.org
-Date: Fri,  1 Nov 2024 22:00:48 +0000
-Message-Id: <20241101220052.1463805-2-mark.cave-ayland@ilande.co.uk>
+Date: Fri,  1 Nov 2024 22:00:49 +0000
+Message-Id: <20241101220052.1463805-3-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241101220052.1463805-1-mark.cave-ayland@ilande.co.uk>
 References: <20241101220052.1463805-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:f600:91a1:336d:3931:745
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 1/5] esp.c: only raise IRQ in esp_transfer_data() for CMD_SEL,
- CMD_SELATN and CMD_TI commands
+Subject: [PATCH 2/5] esp.c: improve comment in esp_transfer_data()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,9 +77,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clarify the logic in esp_transfer_data() to ensure that the deferred interrupt code
-can only be triggered for CMD_SEL, CMD_SELATN and CMD_TI commands. This should already
-be the case, but make it explicit to ensure the logic isn't triggered unexpectedly.
+Whilst working on the previous patch, the existing comment was not enough to
+document when the TI command codepath was being used. Update and improve the
+comment accordingly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
@@ -88,37 +87,21 @@ Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index ac841dc32e..5723290d62 100644
+index 5723290d62..36e92dcd7b 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -1015,6 +1015,7 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-              */
-              s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-              s->rregs[ESP_RSEQ] = SEQ_CD;
-+             esp_raise_irq(s);
-              break;
- 
-         case CMD_SELATNS | CMD_DMA:
-@@ -1025,6 +1026,7 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-              */
-              s->rregs[ESP_RINTR] |= INTR_BS;
-              s->rregs[ESP_RSEQ] = SEQ_MO;
-+             esp_raise_irq(s);
-              break;
- 
+@@ -1032,8 +1032,9 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
          case CMD_TI | CMD_DMA:
-@@ -1035,10 +1037,9 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+         case CMD_TI:
+             /*
+-             * Bus service interrupt raised because of initial change to
+-             * DATA phase
++             * If the final COMMAND phase data was transferred using a TI
++             * command, clear ESP_CMD to terminate the TI command and raise
++             * the completion interrupt
               */
              s->rregs[ESP_CMD] = 0;
              s->rregs[ESP_RINTR] |= INTR_BS;
-+            esp_raise_irq(s);
-             break;
-         }
--
--        esp_raise_irq(s);
-     }
- 
-     /*
 -- 
 2.39.5
 
