@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33DD9B893B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 03:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967809B895B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 03:38:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6hEf-0008Ep-8q; Thu, 31 Oct 2024 22:18:01 -0400
+	id 1t6hWd-0003kJ-Nv; Thu, 31 Oct 2024 22:36:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6hEb-0008EK-Fu
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:17:57 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ id 1t6hWY-0003k4-4K
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:36:31 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6hET-0004Ti-7O
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:17:57 -0400
+ id 1t6hWR-0006U5-Hq
+ for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:36:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730427469; x=1761963469;
+ t=1730428583; x=1761964583;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=6ooPQhm53VX9qB17TDVsMifOx9rBOzRULxkeKvrnBuA=;
- b=IzW/Qlhj2FPQLDdR7lNZsxcLYyUXAP67IJtyjak7t7Y4FdOt8hbTe3RI
- dHKtpgfy9tGhkkOIpDRAnY2TTdH0scl/OHq/onu1sua+CQuufrW3VO+u1
- Qt9O2hikn7PIGtno+wQOp/u6PMjVCLZ7r4DicImEfE52xjnCiFUqLH8lX
- TqreH0WkzOt23npZSujcy6pmJK1XSdGPICbjJislgTTcsLDv2vGbOoGrz
- XANu7BAJIOQfUFLa5ZXWAlHA9qWhyafEC8LX6nz8HcwGNg5W6WA9L9/+c
- rrj7xR7cjf7iErqZ39ArxVSoJzqBWdQT6I8w6s2Q65j5b8j+fRKHEiB6B w==;
-X-CSE-ConnectionGUID: fHDdVCUBTZKj4oXTOGMCSA==
-X-CSE-MsgGUID: Ctv28hviSqWh/yzDfiBprw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="41583981"
-X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="41583981"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 19:17:46 -0700
-X-CSE-ConnectionGUID: WWBj5JdgRB6+wzodPsBzYw==
-X-CSE-MsgGUID: IBo4H9+QR+ayfsUxbjEY0w==
+ bh=oyqqdzEzzaRkh4CKa83T/wDIvOinbaPxWRO2/2V0FlY=;
+ b=TC5PjJQa1msLe3ggKkmpEJvy4lNGsgAgyi4BWWkusN6zZf8MAxQTfMh7
+ D3b8CcBY/7KaSXopRcv9qMdfuiubKcOyirY4iK1zaJ8Sm0Z1veG9eJYCb
+ P6yZoT1oKivFeQ3GMPtiw6JGLX/VHYQBszu8/ISJ0UORfhfnvxvHbEBjd
+ IQPPfmUIqoSezopJSPOaA9NFuDL5v6l6HFw+IoBHjljRzK4gUrM/97gX3
+ 3BsNCVFg7c36iC9jcq4ivaoW8WRgIvAGnW6JRv/m4An3imh6o2k0inKHA
+ 31aW7lRuvDXG9x7AN0K+nkHRkOSfLqSmLe59q/OwT6qqOB+kpv5ZqIUus A==;
+X-CSE-ConnectionGUID: vF3oghkNQaKbLlSxUrt7bg==
+X-CSE-MsgGUID: cMBwD+/PR52PZttxV22KNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="34126875"
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="34126875"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 19:36:20 -0700
+X-CSE-ConnectionGUID: mKzLAeDjQ2Wt0wQ2MsRetw==
+X-CSE-MsgGUID: hd2X4rd6SOSStsXvEI4olw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="113667856"
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="83260128"
 Received: from linux.bj.intel.com ([10.238.157.71])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 19:14:17 -0700
-Date: Fri, 1 Nov 2024 10:09:11 +0800
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 19:36:19 -0700
+Date: Fri, 1 Nov 2024 10:31:12 +0800
 From: Tao Su <tao1.su@linux.intel.com>
 To: Zhao Liu <zhao1.liu@intel.com>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
  xiaoyao.li@intel.com, xuelian.guo@intel.com
 Subject: Re: [PATCH v3 4/8] target/i386: add AVX10 feature and AVX10 version
  property
-Message-ID: <ZyQ4RzWX4oJB3vP0@linux.bj.intel.com>
+Message-ID: <ZyQ9cNUgUMyekQu7@linux.bj.intel.com>
 References: <20241031085233.425388-1-tao1.su@linux.intel.com>
  <20241031085233.425388-5-tao1.su@linux.intel.com>
- <ZyO1vL0o0SxgcW8q@intel.com>
+ <ZyO1vL0o0SxgcW8q@intel.com> <ZyQ4RzWX4oJB3vP0@linux.bj.intel.com>
+ <ZyRAhxjaeizc+FWm@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZyO1vL0o0SxgcW8q@intel.com>
-Received-SPF: none client-ip=198.175.65.12;
+In-Reply-To: <ZyRAhxjaeizc+FWm@intel.com>
+Received-SPF: none client-ip=192.198.163.12;
  envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -83,43 +84,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 01, 2024 at 12:52:12AM +0800, Zhao Liu wrote:
-> > @@ -7578,7 +7607,27 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-> >          }
-> >      }
-> >  
-> > -    return x86_cpu_have_filtered_features(cpu);
-> > +    have_filtered_features = x86_cpu_have_filtered_features(cpu);
-> > +
-> > +    if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-> > +        x86_cpu_get_supported_cpuid(0x24, 0,
-> > +                                    &eax_0, &ebx_0, &ecx_0, &edx_0);
-> > +        uint8_t version = ebx_0 & 0xff;
-> > +
-> > +        if (version < env->avx10_version) {
-> > +            if (prefix) {
-> > +                warn_report("%s: avx10.%d. Adjust to avx10.%d",
-> > +                            prefix, env->avx10_version, version);
-> > +            }
-> > +            env->avx10_version = version;
-> > +            have_filtered_features = true;
-> > +        }
-> > +    } else if (env->avx10_version && prefix) {
-> > +        warn_report("%s: avx10.%d.", prefix, env->avx10_version);
-> > +        have_filtered_features = true;
-> > +    }
+On Fri, Nov 01, 2024 at 10:44:23AM +0800, Zhao Liu wrote:
+> > > prefix is just used to print warning. So here we should check prefix
+> > > for warn_report.
+> > > 
+> > > +    } else if (env->avx10_version) {
+> > > +        if (prefix) {
+> > > +            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
+> > > +        }
+> > > +        have_filtered_features = true;
+> > > +    }
+> > > 
+> > 
+> > Yes, thanks for pointing out! But I see this patch set is already pulled,
+> > not sure whether it is easy to change...
 > 
-> prefix is just used to print warning. So here we should check prefix
-> for warn_report.
-> 
-> +    } else if (env->avx10_version) {
-> +        if (prefix) {
-> +            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
-> +        }
-> +        have_filtered_features = true;
-> +    }
-> 
+> I will soon have another clean-up series, and I can include this part.
+> You can send me your patch, or I can help you with it.
 
-Yes, thanks for pointing out! But I see this patch set is already pulled,
-not sure whether it is easy to change...
+Please help me do that, thanks! :-)
+
 
