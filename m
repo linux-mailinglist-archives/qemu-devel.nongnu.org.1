@@ -2,73 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967809B895B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 03:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5745B9B8946
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 03:21:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6hWd-0003kJ-Nv; Thu, 31 Oct 2024 22:36:36 -0400
+	id 1t6hHt-0000fr-Uq; Thu, 31 Oct 2024 22:21:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6hWY-0003k4-4K
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:36:31 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6hHp-0000fH-DT; Thu, 31 Oct 2024 22:21:17 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t6hWR-0006U5-Hq
- for qemu-devel@nongnu.org; Thu, 31 Oct 2024 22:36:29 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t6hHm-0004sb-3a; Thu, 31 Oct 2024 22:21:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730428583; x=1761964583;
+ t=1730427674; x=1761963674;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=oyqqdzEzzaRkh4CKa83T/wDIvOinbaPxWRO2/2V0FlY=;
- b=TC5PjJQa1msLe3ggKkmpEJvy4lNGsgAgyi4BWWkusN6zZf8MAxQTfMh7
- D3b8CcBY/7KaSXopRcv9qMdfuiubKcOyirY4iK1zaJ8Sm0Z1veG9eJYCb
- P6yZoT1oKivFeQ3GMPtiw6JGLX/VHYQBszu8/ISJ0UORfhfnvxvHbEBjd
- IQPPfmUIqoSezopJSPOaA9NFuDL5v6l6HFw+IoBHjljRzK4gUrM/97gX3
- 3BsNCVFg7c36iC9jcq4ivaoW8WRgIvAGnW6JRv/m4An3imh6o2k0inKHA
- 31aW7lRuvDXG9x7AN0K+nkHRkOSfLqSmLe59q/OwT6qqOB+kpv5ZqIUus A==;
-X-CSE-ConnectionGUID: vF3oghkNQaKbLlSxUrt7bg==
-X-CSE-MsgGUID: cMBwD+/PR52PZttxV22KNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="34126875"
-X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="34126875"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 19:36:20 -0700
-X-CSE-ConnectionGUID: mKzLAeDjQ2Wt0wQ2MsRetw==
-X-CSE-MsgGUID: hd2X4rd6SOSStsXvEI4olw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=f5edtnaWl0000c3Tv65SjcYIpMNCaJtIb4m9wYByLX8=;
+ b=ePV5flvjCVnmkS5CcblCdBZU+Rbp11OEMBej53fJ8Jh5yzzOhYE60vd2
+ Q3cZALcAK2yc8Xto3RylZAFVHkqxRpRMZxIhHccc/2/RzkrhcF61HKTo4
+ L4PCPlntf+LiuEnvPdjB6PfEL2w+lvO1QnUMIsXrcNQKya9ijxVo9lDCw
+ akTgdzuYlNi8nX5A6OYjVyrH6eX0frp9iSikHtMzckX5D5CbskCZZquCI
+ 1mHHI4l28OR/1uPQGyRpmih4OgZ/TT53z0PSx/QP6ZZ2HZxVHNjgXOy1t
+ a5S5ZcqMwQPoDMS2ABIazq35n5u0Ni0hnkAMe9y+6qbBaZt3Uv7olblE3 A==;
+X-CSE-ConnectionGUID: CyK4vJ7aQoO5b/Ntpo0tdg==
+X-CSE-MsgGUID: EwCUIV4yQRS0DbGqPs8UWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30082694"
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="30082694"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 19:21:11 -0700
+X-CSE-ConnectionGUID: FmrdQIZqQ9a0t/TsjpyEKg==
+X-CSE-MsgGUID: nzCFyinlQqu3gqOKIYVunQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="83260128"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 19:36:19 -0700
-Date: Fri, 1 Nov 2024 10:31:12 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
- xiaoyao.li@intel.com, xuelian.guo@intel.com
-Subject: Re: [PATCH v3 4/8] target/i386: add AVX10 feature and AVX10 version
- property
-Message-ID: <ZyQ9cNUgUMyekQu7@linux.bj.intel.com>
-References: <20241031085233.425388-1-tao1.su@linux.intel.com>
- <20241031085233.425388-5-tao1.su@linux.intel.com>
- <ZyO1vL0o0SxgcW8q@intel.com> <ZyQ4RzWX4oJB3vP0@linux.bj.intel.com>
- <ZyRAhxjaeizc+FWm@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; d="scan'208";a="82502436"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 31 Oct 2024 19:21:05 -0700
+Date: Fri, 1 Nov 2024 10:38:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v4 2/9] hw/core: Make CPU topology enumeration
+ arch-agnostic
+Message-ID: <ZyQ/QJnTPvo9wO+H@intel.com>
+References: <20241022135151.2052198-1-zhao1.liu@intel.com>
+ <20241022135151.2052198-3-zhao1.liu@intel.com>
+ <31e8dc51-f70f-44eb-a768-61cfa50eed5b@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZyRAhxjaeizc+FWm@intel.com>
-Received-SPF: none client-ip=192.198.163.12;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <31e8dc51-f70f-44eb-a768-61cfa50eed5b@linaro.org>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.366,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,24 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 01, 2024 at 10:44:23AM +0800, Zhao Liu wrote:
-> > > prefix is just used to print warning. So here we should check prefix
-> > > for warn_report.
-> > > 
-> > > +    } else if (env->avx10_version) {
-> > > +        if (prefix) {
-> > > +            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
-> > > +        }
-> > > +        have_filtered_features = true;
-> > > +    }
-> > > 
-> > 
-> > Yes, thanks for pointing out! But I see this patch set is already pulled,
-> > not sure whether it is easy to change...
-> 
-> I will soon have another clean-up series, and I can include this part.
-> You can send me your patch, or I can help you with it.
+Hi Phil,
 
-Please help me do that, thanks! :-)
+> > -static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+> > +static uint32_t cpuid1f_topo_type(enum CpuTopologyLevel topo_level)
+> >   {
+> >       switch (topo_level) {
+> > -    case CPU_TOPO_LEVEL_INVALID:
+> > +    case CPU_TOPOLOGY_LEVEL_INVALID:
+> 
+> Since we use an enum, I'd rather directly use CPU_TOPOLOGY_LEVEL__MAX.
+>
+> Or maybe in this case ...
+> 
+> >           return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
+> > -    case CPU_TOPO_LEVEL_SMT:
+> > +    case CPU_TOPOLOGY_LEVEL_THREAD:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+> > -    case CPU_TOPO_LEVEL_CORE:
+> > +    case CPU_TOPOLOGY_LEVEL_CORE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> > -    case CPU_TOPO_LEVEL_MODULE:
+> > +    case CPU_TOPOLOGY_LEVEL_MODULE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_MODULE;
+> > -    case CPU_TOPO_LEVEL_DIE:
+> > +    case CPU_TOPOLOGY_LEVEL_DIE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+> >       default:
+>            /* Other types are not supported in QEMU. */
+>            g_assert_not_reached();
+> 
+> ... return CPUID_1F_ECX_TOPO_LEVEL_INVALID as default.
+
+I prefer the first way you mentioned since I want "default" to keep
+to detact unimplemented levels.
+
+> Can be cleaned on top, so:
+
+Yes, I'll rebase (now there's the conflict) with this fixed.
+
+> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Thanks!
+
+Regards,
+Zhao
 
 
