@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F06C9B8CCD
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 09:17:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A729B8CD9
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 09:18:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6mpW-0004r8-9k; Fri, 01 Nov 2024 04:16:26 -0400
+	id 1t6mpW-0004ss-RC; Fri, 01 Nov 2024 04:16:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6mpB-0004nF-No; Fri, 01 Nov 2024 04:16:08 -0400
+ id 1t6mpF-0004nc-5c; Fri, 01 Nov 2024 04:16:09 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t6mp8-0001N2-FV; Fri, 01 Nov 2024 04:16:05 -0400
+ id 1t6mpC-0001O6-TV; Fri, 01 Nov 2024 04:16:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730448963; x=1761984963;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=OeRYF2apaD+NDr933mJ/vBCoF1Va5KOdDbSi5mJxQUk=;
- b=gkSzPysj4x6WrKei9bZ9DEujBxM05JiJtFrQKfbox7PCKWtgnpafjqxN
- wYtPsAvHrs1v7wOTKDWk2MYn/UskOlrZJXOgS3ZFSA0jxQBu6VBwVkZkq
- 76flgOA/LHd/jqZNbf4YGTgia+g61vP6ou1E9Ych3ndDjMSzt2MFvZj24
- MtK60Rp2gt9ZEFIrvbVdWxHqAMtgA7MxoB9aKIm2rc8VYHPH+PepWJ6P9
- u9tp3AA2Lr1KtU4UmUAy1+6X0hf6FURKXo2Gl0rL5nBjwNbVR9IKVmhSK
- 3l3dchGxXpiQMXqIQw0BCX7dYwM5OLi/LcIRW3Iy9AgPsNE/tKfVM27hv Q==;
-X-CSE-ConnectionGUID: +BZgc/hWQvK2JyvV1pYlfg==
-X-CSE-MsgGUID: xDzZMAweSE2uoCRKF0Hxvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17845999"
-X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; d="scan'208";a="17845999"
+ t=1730448967; x=1761984967;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=1dPWfn08NUNqOZ5PO7IBAQYY2uK5uWynR2m08PGiW3k=;
+ b=bw4rN5AAvNfOIXYcRU/EkOXz68rRXH9AAa/hfeAehTlZgn7crrKxNS/B
+ x8D3w2wJqVXQ85LAQkmvv4mN1IS4jisH6+zl4RUZANsfGjScI3Sjn1f6t
+ rmElxnjibVJWRc1Q7OnF6H/SOj6XwKrLkxsJrUuA7D8mmg0esKHcoDa1n
+ DpTvg6X0fKC4qQC0h9/8LThmg8eEVduKzsOCdJEr8GxRc7OkSLUZmjGSM
+ hk+MRDaFpaUc4TehzqO8JKV4Rdidc06NWAkYEinEKwmpvqWFZDuQGox2b
+ haWKQQSaECV6gwhwS9kc3gibHeYDyURaaLOApRqR8omHezYmhRpOBysfu Q==;
+X-CSE-ConnectionGUID: xgOUzljpRlK/ZrGprPOCBQ==
+X-CSE-MsgGUID: h+ALsnE1S4SORHx29wPjiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17846010"
+X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; d="scan'208";a="17846010"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Nov 2024 01:15:59 -0700
-X-CSE-ConnectionGUID: FKT23MALQ2CRulJ7gc80ig==
-X-CSE-MsgGUID: t3SK6hiQRqeSZcJtirYTcQ==
+ 01 Nov 2024 01:16:04 -0700
+X-CSE-ConnectionGUID: LUBhdBhGQwKOVlizCOoROQ==
+X-CSE-MsgGUID: R3gWI9O9St23dpn0CDALbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; d="scan'208";a="86834534"
+X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; d="scan'208";a="86834558"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 01 Nov 2024 01:15:54 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 01 Nov 2024 01:15:59 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -60,12 +60,14 @@ To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 0/9] Introduce SMP Cache Topology
-Date: Fri,  1 Nov 2024 16:33:22 +0800
-Message-Id: <20241101083331.340178-1-zhao1.liu@intel.com>
+Subject: [PATCH v5 1/9] i386/cpu: Don't enumerate the "invalid" CPU topology
+ level
+Date: Fri,  1 Nov 2024 16:33:23 +0800
+Message-Id: <20241101083331.340178-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241101083331.340178-1-zhao1.liu@intel.com>
+References: <20241101083331.340178-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -92,180 +94,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+In the follow-up change, the CPU topology enumeration will be moved to
+QAPI. And considerring "invalid" should not be exposed to QAPI as an
+unsettable item, so, as a preparation for future changes, remove
+"invalid" level from the current CPU topology enumeration structure
+and define it by a macro instead.
 
-This is my v5, if you think it's okay, could this feature get the final
-merge? (Before the 9.2 cycle ends) :-)
+Due to the removal of the enumeration of "invalid", bit 0 of
+CPUX86State.avail_cpu_topo bitmap will no longer correspond to "invalid"
+level, but will start at the SMT level. Therefore, to honor this change,
+update the encoding rule for CPUID[0x1F].
 
-Compared with v4 [1], there's no more changes except rebase and adding
-Acked/Reviewed-by tags (thanks!).
-
-ARM side has also worked a lot on the smp-cache based on this series [2].
-
-This series is based on the Paolo's for-upstream-i386 (commit 1a519388a882
-("target/i386: Introduce GraniteRapids-v2 model")).
-
-Since AMD's Turin model hasn't been picked, there's actually no conflict
-at the moment, and this series can be applied to the master as well
-
-
-Background
-==========
-
-The x86 and ARM (RISCV) need to allow user to configure cache properties
-(current only topology):
- * For x86, the default cache topology model (of max/host CPU) does not
-   always match the Host's real physical cache topology. Performance can
-   increase when the configured virtual topology is closer to the
-   physical topology than a default topology would be.
- * For ARM, QEMU can't get the cache topology information from the CPU
-   registers, then user configuration is necessary. Additionally, the
-   cache information is also needed for MPAM emulation (for TCG) to
-   build the right PPTT. (Originally from Jonathan)
-
-
-About smp-cache
-===============
-
-The API design has been discussed heavily in [3].
-
-Now, smp-cache is implemented as a array integrated in -machine. Though
--machine currently can't support JSON format, this is the one of the
-directions of future.
-
-An example is as follows:
-
-smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
-
-"cache" specifies the cache that the properties will be applied on. This
-field is the combination of cache level and cache type. Now it supports
-"l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
-cache) and "l3" (L3 unified cache).
-
-"topology" field accepts CPU topology levels including "thread", "core",
-"module", "cluster", "die", "socket", "book", "drawer" and a special
-value "default".
-
-The "default" is introduced to make it easier for libvirt to set a
-default parameter value without having to care about the specific
-machine (because currently there is no proper way for machine to
-expose supported topology levels and caches).
-
-If "default" is set, then the cache topology will follow the
-architecture's default cache topology model. If other CPU topology level
-is set, the cache will be shared at corresponding CPU topology level.
-
-
-[1]: Patch v4: https://lore.kernel.org/qemu-devel/20241022135151.2052198-1-zhao1.liu@intel.com/
-[2]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20241010111822.345-1-alireza.sanaee@huawei.com/
-[3]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
-
-Thanks and Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-Changelog:
-
-Changes since Patch v4:
- * Added Acked/Reviewed-by tags.
- * Rebased on Paolo's for-upstream-i386 tag.
-
-Main changes since Patch v3:
- * Stopped exposing "invalid" enumeration in QAPI and define it by a
-   macro instead. (Dainel)
- * Checked cache topology after the arch machine loads the
-   user-configured cache model from MachineState.smp_cache and consumes
-   the special "default" level by replacing it with the specific level.
-   (Daniel)
- * Described the omitting cache will use "default" level and described
-   the default cache topology model of i386 PC machine. (Daniel)
-
-Main changes since Patch v2:
- * Updated version of new QAPI structures to v9.2. (Jonathan)
- * Merged the QAPI change and smp-cache property support of machine
-   into one commit. (Jonathan)
- * Picked Alireza's patch to add a has_caches flag.
- * Polished english and coding style. (Jonathan)
-
-Main changes since Patch v1:
- * Dropped handwriten smp-cache object and integrated cache properties
-   list into MachineState and used -machine to configure SMP cache
-   properties. (Markus)
- * Dropped prefix of CpuTopologyLevel enumeration. (Markus)
- * Rename CPU_TOPO_LEVEL_* to CPU_TOPOLOGY_LEVEL_* to match the QAPI's
-   generated code. (Markus)
- * Renamed SMPCacheProperty/SMPCacheProperties (QAPI structures) to
-   SmpCacheProperties/SmpCachePropertiesWrapper. (Markus)
- * Renamed SMPCacheName (QAPI structure) to SmpCacheLevelAndType and
-   dropped prefix. (Markus)
- * Renamed 'name' field in SmpCacheProperties to 'cache', since the
-   type and level of the cache in SMP system could be able to specify
-   all of these kinds of cache explicitly enough.
- * Renamed 'topo' field in SmpCacheProperties to 'topology'. (Markus)
- * Returned error information when user repeats setting cache
-   properties. (Markus)
- * Renamed SmpCacheLevelAndType to CacheLevelAndType, since this
-   representation is general across SMP or hybrid system.
- * Dropped machine_check_smp_cache_support() and did the check when
-   -machine parses smp-cache in machine_parse_smp_cache().
-
-Main changes since RFC v2:
- * Dropped cpu-topology.h and cpu-topology.c since QAPI has the helper
-   (CpuTopologyLevel_str) to convert enum to string. (Markus)
- * Fixed text format in machine.json (CpuTopologyLevel naming, 2 spaces
-   between sentences). (Markus)
- * Added a new level "default" to de-compatibilize some arch-specific
-   topo settings. (Daniel)
- * Moved CpuTopologyLevel to qapi/machine-common.json, at where the
-   cache enumeration and smp-cache object would be added.
-   - If smp-cache object is defined in qapi/machine.json, storage-daemon
-     will complain about the qmp cmds in qapi/machine.json during
-     compiling.
- * Referred to Daniel's suggestion to introduce cache JSON list, though
-   as a standalone object since -smp/-machine can't support JSON.
- * Linked machine's smp_cache to smp-cache object instead of a builtin
-   structure. This is to get around the fact that the keyval format of
-   -machine can't support JSON.
- * Wrapped the cache topology level access into a helper.
- * Split as a separate commit to just include compatibility checking and
-   topology checking.
- * Allow setting "default" topology level even though the cache
-   isn't supported by machine. (Daniel)
- * Rewrote the document of smp-cache object.
-
-Main changes since RFC v1:
- * Split CpuTopology renaimg out of this RFC.
- * Use QAPI to enumerate CPU topology levels.
- * Drop string_to_cpu_topo() since QAPI will help to parse the topo
-   levels.
- * Set has_*_cache field in machine_get_smp(). (JeeHeng)
- * Use "*_cache=topo_level" as -smp example as the original "level"
-   term for a cache has a totally different meaning. (Jonathan)
+Tested by the following cases to ensure 0x1f's behavior hasn't
+changed:
+  -smp cpus=24,sockets=2,dies=3,modules=2,cores=2,threads=1
+  -smp cpus=24,sockets=2,dies=1,modules=3,cores=2,threads=2
+  -smp cpus=24,sockets=2,modules=3,cores=2,threads=2
+  -smp cpus=24,sockets=2,dies=3,modules=1,cores=2,threads=2
+  -smp cpus=24,sockets=2,dies=3,cores=2,threads=2
 ---
-Alireza Sanaee (1):
-  i386/cpu: add has_caches flag to check smp_cache configuration
+Changes since Patch v3:
+  * Now commit to stop exposing "invalid" enumeration in QAPI. (Daniel)
+---
+ include/hw/i386/topology.h |  3 ++-
+ target/i386/cpu.c          | 13 ++++++++-----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-Zhao Liu (8):
-  i386/cpu: Don't enumerate the "invalid" CPU topology level
-  hw/core: Make CPU topology enumeration arch-agnostic
-  qapi/qom: Define cache enumeration and properties for machine
-  hw/core: Check smp cache topology support for machine
-  hw/core: Add a helper to check the cache topology level
-  i386/cpu: Support thread and module level cache topology
-  i386/cpu: Update cache topology with machine's configuration
-  i386/pc: Support cache topology in -machine for PC machine
-
- hw/core/machine-smp.c      | 128 +++++++++++++++++++++
- hw/core/machine.c          |  44 ++++++++
- hw/i386/pc.c               |   4 +
- hw/i386/x86-common.c       |   4 +-
- include/hw/boards.h        |  19 ++++
- include/hw/i386/topology.h |  22 +---
- qapi/machine-common.json   |  94 +++++++++++++++-
- qemu-options.hx            |  31 ++++-
- target/i386/cpu.c          | 225 ++++++++++++++++++++++++-------------
- target/i386/cpu.h          |   4 +-
- 10 files changed, 474 insertions(+), 101 deletions(-)
-
+diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+index dff49fce1154..48b43edc5a90 100644
+--- a/include/hw/i386/topology.h
++++ b/include/hw/i386/topology.h
+@@ -62,6 +62,8 @@ typedef struct X86CPUTopoInfo {
+     unsigned threads_per_core;
+ } X86CPUTopoInfo;
+ 
++#define CPU_TOPO_LEVEL_INVALID CPU_TOPO_LEVEL_MAX
++
+ /*
+  * CPUTopoLevel is the general i386 topology hierarchical representation,
+  * ordered by increasing hierarchical relationship.
+@@ -69,7 +71,6 @@ typedef struct X86CPUTopoInfo {
+  * or AMD (CPUID[0x80000026]).
+  */
+ enum CPUTopoLevel {
+-    CPU_TOPO_LEVEL_INVALID,
+     CPU_TOPO_LEVEL_SMT,
+     CPU_TOPO_LEVEL_CORE,
+     CPU_TOPO_LEVEL_MODULE,
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3baa95481fbc..ca13cf66a787 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -370,20 +370,21 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+                                 uint32_t *ecx, uint32_t *edx)
+ {
+     X86CPU *cpu = env_archcpu(env);
+-    unsigned long level, next_level;
++    unsigned long level, base_level, next_level;
+     uint32_t num_threads_next_level, offset_next_level;
+ 
+-    assert(count + 1 < CPU_TOPO_LEVEL_MAX);
++    assert(count <= CPU_TOPO_LEVEL_PACKAGE);
+ 
+     /*
+      * Find the No.(count + 1) topology level in avail_cpu_topo bitmap.
+-     * The search starts from bit 1 (CPU_TOPO_LEVEL_INVALID + 1).
++     * The search starts from bit 0 (CPU_TOPO_LEVEL_SMT).
+      */
+-    level = CPU_TOPO_LEVEL_INVALID;
++    level = CPU_TOPO_LEVEL_SMT;
++    base_level = level;
+     for (int i = 0; i <= count; i++) {
+         level = find_next_bit(env->avail_cpu_topo,
+                               CPU_TOPO_LEVEL_PACKAGE,
+-                              level + 1);
++                              base_level);
+ 
+         /*
+          * CPUID[0x1f] doesn't explicitly encode the package level,
+@@ -394,6 +395,8 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+             level = CPU_TOPO_LEVEL_INVALID;
+             break;
+         }
++        /* Search the next level. */
++        base_level = level + 1;
+     }
+ 
+     if (level == CPU_TOPO_LEVEL_INVALID) {
 -- 
 2.34.1
 
