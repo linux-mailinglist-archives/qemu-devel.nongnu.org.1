@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470C69B9746
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 19:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A819B975A
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 19:23:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6wE8-0005tq-Q7; Fri, 01 Nov 2024 14:18:28 -0400
+	id 1t6wIY-00076r-J4; Fri, 01 Nov 2024 14:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6wE6-0005tV-UL
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 14:18:26 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1t6wIW-00076R-Cv
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 14:23:00 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t6wE4-0005AM-NE
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 14:18:26 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2e2ed59a35eso1801616a91.0
- for <qemu-devel@nongnu.org>; Fri, 01 Nov 2024 11:18:24 -0700 (PDT)
+ id 1t6wIU-0005fd-Og
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 14:23:00 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-71e5a1c9071so2002851b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Nov 2024 11:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730485102; x=1731089902; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730485377; x=1731090177; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EHALLruCPYNcR7crLmfNk0HOaV84UIms6V7q6OHvPwk=;
- b=BwFkxbyLtQQwALeChRzSp5g7YJdDrxhwGZMpd6MXNlQTi2lvoll/uwzuo/LwXiNtkj
- QTXsRpzcGeaNPATSV4tQb5I/0TxlqXMUAF+iw4qoWS+8jvowfx5q/KeQSJpGYh0hu2ke
- kjHBmgneIcKV0ykv//fSQma2/eVb+mVUfTXQvHGgrp4xYKN8DEoQgD7ZPyHA/0o+v/XS
- wwW7f5LKVuZGv/uOdwEk3JSsGHFkFlp05xcDnPLywnyLNTDiCgVa4CtQYN2cNMgGSc5H
- AnXhJ3y3eeeh1YaYjZ5bADccVDzCsSEJqEr8qnCqB3cq8GeyTt2U2E56oPFRZAup8RYp
- WBEg==
+ bh=lUDvt9zB2u2y5ROb3kv7PLYaVN7QRM7k7c1aVoW9TuE=;
+ b=vkS6QY0HUojHCahlqzi1tEg8Cl0iu8l29io8M6O9AKjccUdRNLJdtkn++T7TMgBUg7
+ 5407SuQKHqjK2/0ooUFcJcIPUr7vt/LAAb+mkMPZRiBqmp/qJDpSo2BfHh2EdZM4oWm1
+ CtPjsTqn1X5m9bNphvCRzxkoVLRoxq2PJX5HePaujXpLTvhpr8Yj3/14UK/XiuqX5eV2
+ Obf+Cxx6QW3JOJNqJ2fBc8yGerVVoZh15fIRm+A7b705EFOUcM6r0e0xk7gEBvZQqomc
+ 0hUcMLep+92xwcvpY8y4j5iqu/jkPs7uxo+3XbMeDfE1+mRtNCufvgxRaUDIMk8L/25u
+ 15XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730485102; x=1731089902;
+ d=1e100.net; s=20230601; t=1730485377; x=1731090177;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EHALLruCPYNcR7crLmfNk0HOaV84UIms6V7q6OHvPwk=;
- b=tTzqK6GKmxrJNblS0jz4GatUflLLvBgzRoWy7EV919GvhHJnKVkf3qFcr+A8bCK/Ph
- LuN5/mlE1WQ9xzx4kWyJU3FKuj3lXmC4LAoLIrTEC1HpW5TUwmlqr8L3sK39++AM4Dlt
- qdl3ILWlyFVMrVHPgduRbn2aC/KQFYjZtZ525xLR1XkdjstLHS1R/o1pkUp+isKO126W
- 00HTWP6rLkZ0GVBr46G/WOix0gMbIwbGkC5NJivueb83ntxV89RaMGn57uNqQyNyBfFA
- 6oNOeSXTprynW4B0njD7eAfZEG1s896c+EdbP4UODXJ3u5kK4kl6mjNo4Omo9+oWXRYt
- RSLA==
+ bh=lUDvt9zB2u2y5ROb3kv7PLYaVN7QRM7k7c1aVoW9TuE=;
+ b=pUwjOQAeQQTnlEZ3HbNpUr+1s22uuNtd5xV7NxdSaoqLOnVLHkZqinGCWZY3EjWx6b
+ g6kg/HdhpPrLXby1zk1Gb5ktEK7WTKNi31lhSDc7hPHtqcjzRQ+QaNgwg7X0f+46XaBS
+ BwpzPog+23d6STiZBk/kK5pypKfO09rdcITtJn5QGQZ+pSu7WM1u9SGvjOWuyOj9vpjn
+ IAVxlcKZbbzq9XsKMlEVRPgw+BvnjIW+5HyDO+OqCzXfkTnBJgd6+OVbBPc061lAdaAZ
+ mFrHLhpWdP8GGvIrQOWp6xNrfP0HMjTmMf3NAscTa6dFNtzNx6Axs2lu5I/dXPmG28aJ
+ 99PQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUl4jvtHHEDzvv0SxJcL7I8m/TfkYpZZlXxeyCJdCViYouwYuy94WX64VHD1W3LqEkuG+t9Zepq+pzJ@nongnu.org
-X-Gm-Message-State: AOJu0Yzapk/WQ7FBf324PwwUb7konNXaxEQi6Gq8RUMJUKSw7Q8Mnwq/
- Q+96BuWKHCu7v9zOlq28h/UAYUf/dKk1sHrhwt1K9NQzE1ZH5ap7vflxytfBOgU=
-X-Google-Smtp-Source: AGHT+IGRsMXyq1rTcIC60xphH0vpO8XLKX2sheCLjkpgAmfZsI7V3WzNP7ajj+7BJ42FSwppwrLpdw==
-X-Received: by 2002:a17:90a:b30e:b0:2e2:daab:cc69 with SMTP id
- 98e67ed59e1d1-2e8f105e941mr24119775a91.12.1730485101793; 
- Fri, 01 Nov 2024 11:18:21 -0700 (PDT)
+ AJvYcCUaM6cOlnFtquKU5fIm+HjaowVRaeAhN0rZbMIoBGWOntqeay+LORgt2evYPxcNqk8RwTka5MiS4lLJ@nongnu.org
+X-Gm-Message-State: AOJu0Yyi/5Y8ToKvyP3W1klZIrueVx/+/r1yqy+/DHhru5SFQbgtOKwQ
+ Wj8txBdYxyMjQTBoMIEPc1WS30Hx09MzaIAZB7nLr+m26mEej/rCpcr8jmGYzJk=
+X-Google-Smtp-Source: AGHT+IHHsvWaJFpnQqgRMfmoAmiUvm+RUFjIUVP3W+jPhdkEHBSLHFvQjsBHyG1uNGDhQ4zuO88deQ==
+X-Received: by 2002:a05:6a21:78e:b0:1d9:832b:e28e with SMTP id
+ adf61e73a8af0-1d9eecbe578mr15489370637.23.1730485377113; 
+ Fri, 01 Nov 2024 11:22:57 -0700 (PDT)
 Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
  [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e93db17b19sm2981861a91.38.2024.11.01.11.18.21
+ 98e67ed59e1d1-2e93daac954sm3032501a91.23.2024.11.01.11.22.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Nov 2024 11:18:21 -0700 (PDT)
-Message-ID: <497a69fe-e792-45c6-a629-f4872d86322a@linaro.org>
-Date: Fri, 1 Nov 2024 11:18:20 -0700
+ Fri, 01 Nov 2024 11:22:56 -0700 (PDT)
+Message-ID: <e3264752-c334-404f-9063-9a17bd9238ef@linaro.org>
+Date: Fri, 1 Nov 2024 11:22:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] plugins: add plugin API to get args passed to binary
+Subject: Re: [PATCH 1/2] hw/arm/aspeed_ast27x0: Use bsa.h for PPI definitions
 Content-Language: en-US
-To: "demin.han" <demin.han@starfivetech.com>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com
-References: <20241101090032.1413255-1-demin.han@starfivetech.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>
+References: <20241101161125.1901394-1-peter.maydell@linaro.org>
+ <20241101161125.1901394-2-peter.maydell@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241101090032.1413255-1-demin.han@starfivetech.com>
+In-Reply-To: <20241101161125.1901394-2-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,93 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Demin,
 
-thanks for your contribution.
 
-On 11/1/24 02:00, demin.han wrote:
-> Why we need args?
-> When plugin outputs log files, only binary path can't distinguish multiple
-> runs if the binary passed with different args.
-> This is bad for CI using plugin.
->
-
-Can it be solved simply by encoding this in name of log file from the CI 
-run script?
-$ cmd="/usr/bin/echo Hello world"
-$ out_file="$(echo "$cmd" | sed -e 's/\s/_/').log"
-$ qemu -plugin... -d plugin -D "$out_file" $cmd
-
-I can see some good points to add this new API, but for the use case 
-presented in commit message, I'm not sure to see what it solves.
-
-> Signed-off-by: demin.han <demin.han@starfivetech.com>
-> ---
->   include/qemu/qemu-plugin.h   | 11 +++++++++++
->   plugins/api.c                | 16 ++++++++++++++++
->   plugins/qemu-plugins.symbols |  1 +
->   3 files changed, 28 insertions(+)
+On 11/1/24 09:11, Peter Maydell wrote:
+> Use the private peripheral interrupt definitions from bsa.h instead
+> of defining them locally.
 > 
-> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-> index 622c9a0232..daf75c9f5a 100644
-> --- a/include/qemu/qemu-plugin.h
-> +++ b/include/qemu/qemu-plugin.h
-> @@ -837,6 +837,17 @@ bool qemu_plugin_bool_parse(const char *name, const char *val, bool *ret);
->   QEMU_PLUGIN_API
->   const char *qemu_plugin_path_to_binary(void);
+> Note that bsa.h defines these values as INTID values, which are all
+> 16 greater than the PPI values that we were previously using.  So we
+> refactor the code to use INTID-based values to match that.
+> 
+> This is the same thing we did in commit d40ab068c07d9 for sbsa-ref.
+> It removes the "same constant, different values" confusion where this
+> board code and bsa.h both define an ARCH_GIC_MAINT_IRQ, and allows us
+> to use symbolic names for the timer interrupt IDs.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   hw/arm/aspeed_ast27x0.c | 19 ++++++++++---------
+>   1 file changed, 10 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index dca660eb6be..5638a7a5781 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -13,6 +13,7 @@
+>   #include "qapi/error.h"
+>   #include "hw/misc/unimp.h"
+>   #include "hw/arm/aspeed_soc.h"
+> +#include "hw/arm/bsa.h"
+>   #include "qemu/module.h"
+>   #include "qemu/error-report.h"
+>   #include "hw/i2c/aspeed_i2c.h"
+> @@ -416,28 +417,28 @@ static bool aspeed_soc_ast2700_gic_realize(DeviceState *dev, Error **errp)
 >   
-> +/**
-> + * qemu_plugin_argv_to_binary() - argv to binary file being executed
-> + *
-> + * Return a string array representing the argv to the binary. For user-mode
-> + * this is the main executable's argv. For system emulation we currently
-> + * return NULL. The user should g_free() the string array once no longer
-> + * needed.
-> + */
-> +QEMU_PLUGIN_API
-> +const char **qemu_plugin_argv_to_binary(void);
-> +
->   /**
->    * qemu_plugin_start_code() - returns start of text segment
->    *
-> diff --git a/plugins/api.c b/plugins/api.c
-> index 24ea64e2de..fa2735db03 100644
-> --- a/plugins/api.c
-> +++ b/plugins/api.c
-> @@ -485,6 +485,22 @@ const char *qemu_plugin_path_to_binary(void)
->       return path;
->   }
+>       for (i = 0; i < sc->num_cpus; i++) {
+>           DeviceState *cpudev = DEVICE(&a->cpu[i]);
+> -        int NUM_IRQS = 256, ARCH_GIC_MAINT_IRQ = 9, VIRTUAL_PMU_IRQ = 7;
+> -        int ppibase = NUM_IRQS + i * GIC_INTERNAL + GIC_NR_SGIS;
+> +        int NUM_IRQS = 256;
+> +        int intidbase = NUM_IRQS + i * GIC_INTERNAL;
 >   
-> +const char **qemu_plugin_argv_to_binary(void)
-> +{
-> +    const char **argv = NULL;
-> +#ifdef CONFIG_USER_ONLY
-> +    int i, argc;
-> +    TaskState *ts = get_task_state(current_cpu);
-> +    argc = ts->bprm->argc;
-> +    argv = g_malloc(sizeof(char *) * (argc + 1));
-> +    for (i = 0; i < argc; ++i) {
-> +        argv[i] = g_strdup(ts->bprm->argv[i]);
-> +    }
-> +    argv[argc] = NULL;
-> +#endif
-> +    return argv;
-> +}
-> +
->   uint64_t qemu_plugin_start_code(void)
->   {
->       uint64_t start = 0;
-> diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-> index 032661f9ea..532582effe 100644
-> --- a/plugins/qemu-plugins.symbols
-> +++ b/plugins/qemu-plugins.symbols
-> @@ -1,4 +1,5 @@
->   {
-> +  qemu_plugin_argv_to_binary;
->     qemu_plugin_bool_parse;
->     qemu_plugin_end_code;
->     qemu_plugin_entry_code;
+>           const int timer_irq[] = {
+> -            [GTIMER_PHYS] = 14,
+> -            [GTIMER_VIRT] = 11,
+> -            [GTIMER_HYP]  = 10,
+> -            [GTIMER_SEC]  = 13,
+> +            [GTIMER_PHYS] = ARCH_TIMER_NS_EL1_IRQ,
+> +            [GTIMER_VIRT] = ARCH_TIMER_VIRT_IRQ,
+> +            [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
+> +            [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
+>           };
+>           int j;
+>   
+>           for (j = 0; j < ARRAY_SIZE(timer_irq); j++) {
+>               qdev_connect_gpio_out(cpudev, j,
+> -                    qdev_get_gpio_in(gicdev, ppibase + timer_irq[j]));
+> +                    qdev_get_gpio_in(gicdev, intidbase + timer_irq[j]));
+>           }
+>   
+>           qemu_irq irq = qdev_get_gpio_in(gicdev,
+> -                                        ppibase + ARCH_GIC_MAINT_IRQ);
+> +                                        intidbase + ARCH_GIC_MAINT_IRQ);
+>           qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt",
+>                                       0, irq);
+>           qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
+> -                qdev_get_gpio_in(gicdev, ppibase + VIRTUAL_PMU_IRQ));
+> +                qdev_get_gpio_in(gicdev, intidbase + VIRTUAL_PMU_IRQ));
+>   
+>           sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+>           sysbus_connect_irq(gicbusdev, i + sc->num_cpus,
 
-Regards,
-Pierrick
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
