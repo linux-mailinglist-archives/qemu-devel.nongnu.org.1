@@ -2,96 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB529B96A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 18:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E1D9B96A3
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 18:37:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6vYu-0000IC-Ir; Fri, 01 Nov 2024 13:35:52 -0400
+	id 1t6vaH-00011b-CT; Fri, 01 Nov 2024 13:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t6vYr-0000Hc-P6
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:35:50 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t6vYq-0000r6-79
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:35:49 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-72041ff06a0so1913598b3a.2
- for <qemu-devel@nongnu.org>; Fri, 01 Nov 2024 10:35:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1730482546; x=1731087346; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6YQgS2hpBgZ5ghGtSY895dOQSRXnBOOFFhhl2VnynL8=;
- b=H/TOz9s2DVdCqmCPm3fDRlEinrVTUngoO/1uvxkF3qyJLXIn4kBz0xiviXszmEgHxA
- qK3sq5DZEfp3W/Ag/dBG2/w8Tc19dDSql2tYnOa7w/SMikzrkhTWiDD4b7Anb9kSt+Gs
- Pdkz1+OvjPXXSDWK2Ey7In6NWnizXdMUmqh7vPbgsO4g1Ob7gdq4ta96O4zeTS7I8peH
- qpaCEAoBpA9VRc2DMFurp0CnTXMRLtBirtZ6lYq974hTLxoow/bfD67aTGZQX+kqx8ci
- r8XAxnki7wkHYo6kn4SPirg/8mGl+e160D8aFnCAIgbtQSA/d94PIMz5PJpU4lgm4+Zi
- jIWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730482546; x=1731087346;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6YQgS2hpBgZ5ghGtSY895dOQSRXnBOOFFhhl2VnynL8=;
- b=pFhNbeanV6JjzJQdqItH5TiaRh6bI2EkkwmJR/bn6Ba8x1kdJTsrpf65GCak9NYK7O
- L21yOSRdSgPV9ph0DU3mXPoRpQstMCB5TgLI1WVZJx4MmLYGHA9PpZP5pupUtoDufOGC
- QGpr2PPWNuIYhpTzWlqFZ7S3VN3jHcL9vWDf+GmpECHsoYaatLi5PcEFbYO/vvqH4pWg
- 8VGYzTKFtg2wpaX4CtxDVv5shHGbGX7dGOWJ98nhQ1I+3l0AMPzG6VcEadM1lldgHmp1
- ocPaRntHsD2mhg1HyztM+sQMsM0DxMtpaOSfwjlP4vxAQqUCSiiPDeIcSdOZbNUQydwM
- P2Jw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU2Aj9DiunodXiDXjrYEL0qO8eIyF/OtGfuZsDzVe0I0bulhV5XfwnEXm6hvWvTQwGeRCvDkPY5dnk7@nongnu.org
-X-Gm-Message-State: AOJu0YzjxwXEcYcdSONURuJoKrvdPxilPa4L6CDaF14cCyjnsGdqiKEM
- mGpBdh4+rZP4KCh0Kmfool93VH4hF29n7DhRbyrf7Slx79yJp2O0W3R4U5fxgZE=
-X-Google-Smtp-Source: AGHT+IELvEhUGxN2DyqiJrfWAiRULu6kPLHSQ3UCZnMCGCUHRFiKsdd2k104fIYcMfKGmMuYVw/TNg==
-X-Received: by 2002:a05:6a21:3a43:b0:1d8:ae07:bf8 with SMTP id
- adf61e73a8af0-1dba54a496dmr4690461637.31.1730482546557; 
- Fri, 01 Nov 2024 10:35:46 -0700 (PDT)
-Received: from [192.168.68.110] ([191.8.109.222])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0de9csm2677061a12.78.2024.11.01.10.35.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Nov 2024 10:35:46 -0700 (PDT)
-Message-ID: <2e1af830-a90a-447f-ab47-1c3d49463134@ventanamicro.com>
-Date: Fri, 1 Nov 2024 14:35:39 -0300
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaD-0000zJ-7k
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1t6vaA-0000tA-Fn
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 13:37:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730482627;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6cEQXUG082XzKLilEz14APYugcqUROKrmhZsSn33FSk=;
+ b=XV4ogsu2L5aqDA+d/tIxOxGzu83j71gbK0dtEPSsATGQUf99MleR3yEvB50y5Z82KK9I57
+ zpriokAqYYtJGJXHkvfvBpIzXeypKR1RAx8RBIB92Mmv9TyYIUMX5nXRx2PA+TSj0nCSqf
+ QiI8LI2QxwyXkRzcBHUs+KpZS3XB+SI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-h7eWQu0LOke7hEa16RE_NA-1; Fri,
+ 01 Nov 2024 13:37:06 -0400
+X-MC-Unique: h7eWQu0LOke7hEa16RE_NA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C2FC195608A; Fri,  1 Nov 2024 17:37:04 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.82.62])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8D3A119560A2; Fri,  1 Nov 2024 17:37:02 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 0/4] python: update linting for new mypy/pylint releases
+Date: Fri,  1 Nov 2024 13:36:56 -0400
+Message-ID: <20241101173700.965776-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/riscv: fix build error with clang
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, qemu-riscv@nongnu.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, John Snow <jsnow@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Konstantin Kostiuk <kkostiuk@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Michael Roth <michael.roth@amd.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-References: <20241101170833.1074954-1-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20241101170833.1074954-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,57 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Various python tests in the "check-python-tox" test case on GitLab have=0D
+begun failing due to newer package versions. This patch set corrects=0D
+those issues and also improves the reliability of local developer tests=0D
+which may be using these tooling versions outside of GitLab pinned=0D
+version tests.=0D
+=0D
+There are remaining issues with the "check-dev" test I have yet to=0D
+rectify, but appear unrelated to linter versions specifically and will=0D
+be handled separately.=0D
+=0D
+As a result of this patch, the optionally-run and may-fail=0D
+"check-python-tox" test case on GitLab will become green again, and=0D
+local invocations of "make check-tox" in the python subdirectory will=0D
+also pass again. "check-python-minreqs" on GitLab and "make=0D
+check-minreqs" in the local developer environment were/are=0D
+unaffected. local iotest invocations for test case #297 ought to now=0D
+begin passing on developer workstations with bleeding-edge python=0D
+packages.=0D
+=0D
+John Snow (4):=0D
+  iotests: reflow ReproducibleTestRunner arguments=0D
+  iotests: correct resultclass type in ReproducibleTestRunner=0D
+  python: disable too-many-positional-arguments warning=0D
+  python: silence pylint raising-non-exception error=0D
+=0D
+ python/scripts/mkvenv.py      |  3 +++=0D
+ python/setup.cfg              |  1 +=0D
+ tests/qemu-iotests/iotests.py | 11 +++++++----=0D
+ tests/qemu-iotests/pylintrc   |  1 +=0D
+ 4 files changed, 12 insertions(+), 4 deletions(-)=0D
+=0D
+-- =0D
+2.47.0=0D
+=0D
 
-
-On 11/1/24 2:08 PM, Pierrick Bouvier wrote:
-> Introduced in 0c54ac, "hw/riscv: add RISC-V IOMMU base emulation"
-> 
-> ../hw/riscv/riscv-iommu.c:187:17: error: redefinition of '_pext_u64'
-> 
->    187 | static uint64_t _pext_u64(uint64_t val, uint64_t ext)
-> 
->        |                 ^
-> 
-> D:/a/_temp/msys64/clang64/lib/clang/18/include/bmi2intrin.h:217:1: note: previous definition is here
-> 
->    217 | _pext_u64(unsigned long long __X, unsigned long long __Y)
-> 
->        | ^
-> 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   hw/riscv/riscv-iommu.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-> index feb650549ac..f738570bac2 100644
-> --- a/hw/riscv/riscv-iommu.c
-> +++ b/hw/riscv/riscv-iommu.c
-> @@ -184,7 +184,7 @@ static void riscv_iommu_pri(RISCVIOMMUState *s,
->   }
->   
->   /* Portable implementation of pext_u64, bit-mask extraction. */
-> -static uint64_t _pext_u64(uint64_t val, uint64_t ext)
-> +static uint64_t pext_u64(uint64_t val, uint64_t ext)
-
-I suggest name it 'riscv_iommu_pext_u64' to be clear that this is a local scope function,
-not to be mistaken with anything available in clang or any other compiler.
-
-
-Thanks,
-
-Daniel
-
->   {
->       uint64_t ret = 0;
->       uint64_t rot = 1;
-> @@ -528,7 +528,7 @@ static MemTxResult riscv_iommu_msi_write(RISCVIOMMUState *s,
->       int cause;
->   
->       /* Interrupt File Number */
-> -    intn = _pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
-> +    intn = pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
->       if (intn >= 256) {
->           /* Interrupt file number out of range */
->           res = MEMTX_ACCESS_ERROR;
 
