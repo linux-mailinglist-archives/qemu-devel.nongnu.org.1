@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E209B9230
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 14:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450839B9231
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Nov 2024 14:41:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t6rsa-00032F-OP; Fri, 01 Nov 2024 09:39:56 -0400
+	id 1t6rtb-0003Yd-To; Fri, 01 Nov 2024 09:41:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t6rsY-00031w-L2
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 09:39:54 -0400
+ id 1t6rt4-0003Qt-Om
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 09:40:28 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t6rsW-0000wB-LT
- for qemu-devel@nongnu.org; Fri, 01 Nov 2024 09:39:54 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xg23L2VXPz6K6Qk;
- Fri,  1 Nov 2024 21:37:18 +0800 (CST)
+ id 1t6rt1-0001Am-Pk
+ for qemu-devel@nongnu.org; Fri, 01 Nov 2024 09:40:26 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xg25D69gwz6JB7S;
+ Fri,  1 Nov 2024 21:38:56 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id DE5A6140A36;
- Fri,  1 Nov 2024 21:39:49 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C30AE140A9C;
+ Fri,  1 Nov 2024 21:40:20 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Nov 2024 14:39:49 +0100
+ 15.1.2507.39; Fri, 1 Nov 2024 14:40:20 +0100
 To: <linux-cxl@vger.kernel.org>, <mst@redhat.com>, <qemu-devel@nongnu.org>,
  Esifiel <esifiel@gmail.com>
 CC: Fan Ni <fan.ni@samsung.com>, <linuxarm@huawei.com>
-Subject: [PATCH qemu 01/10] hw/cxl: Check size of input data to dynamic
- capacity mailbox commands
-Date: Fri, 1 Nov 2024 13:39:08 +0000
-Message-ID: <20241101133917.27634-2-Jonathan.Cameron@huawei.com>
+Subject: [PATCH qemu 02/10] hw/cxl: Check input includes at least the header
+ in cmd_features_set_feature()
+Date: Fri, 1 Nov 2024 13:39:09 +0000
+Message-ID: <20241101133917.27634-3-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241101133917.27634-1-Jonathan.Cameron@huawei.com>
 References: <20241101133917.27634-1-Jonathan.Cameron@huawei.com>
@@ -70,67 +70,30 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cxl_cmd_dcd_release_dyn_cap() and cmd_dcd_add_dyn_cap_rsp() are missing
-input message size checks.  These must be done in the individual
-commands when the command has a variable length input payload.
-
-A buggy or malicious guest might send undersized messages via the mailbox.
-As that size is used to take a copy of the mailbox content, each command
-must check there is sufficient data. In this case the first check is that
-there is enough data to read how many extents there are, and the second
-that there is enough for those elements to be accessed.
+A buggy guest might write an insufficiently large message.
+Check the header is present. Whilst zero data after the header is very
+odd it will just result in failure to copy any data.
 
 Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 97cb8bbcec..17924410dd 100644
+index 17924410dd..e63140aefe 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -2465,11 +2465,20 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
-     uint64_t dpa, len;
-     CXLRetCode ret;
+@@ -1238,6 +1238,9 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+     CXLType3Dev *ct3d;
+     uint16_t count;
  
-+    if (len_in < sizeof(*in)) {
++    if (len_in < sizeof(*hdr)) {
 +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
 +    }
-+
-     if (in->num_entries_updated == 0) {
-         cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-         return CXL_MBOX_SUCCESS;
-     }
  
-+    if (len_in <
-+        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-+
-     /* Adding extents causes exceeding device's extent tracking ability. */
-     if (in->num_entries_updated + ct3d->dc.total_extent_count >
-         CXL_NUM_EXTENTS_SUPPORTED) {
-@@ -2624,10 +2633,19 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-     uint32_t updated_list_size;
-     CXLRetCode ret;
- 
-+    if (len_in < sizeof(*in)) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-+
-     if (in->num_entries_updated == 0) {
-         return CXL_MBOX_INVALID_INPUT;
-     }
- 
-+    if (len_in <
-+        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-+
-     ret = cxl_detect_malformed_extent_list(ct3d, in);
-     if (ret != CXL_MBOX_SUCCESS) {
-         return ret;
+     if (!object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
+         return CXL_MBOX_UNSUPPORTED;
 -- 
 2.43.0
 
