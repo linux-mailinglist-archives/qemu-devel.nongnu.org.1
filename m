@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665FF9B9DD9
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 09:07:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAC19B9DE7
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 09:29:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t799C-0007LI-GI; Sat, 02 Nov 2024 04:06:14 -0400
+	id 1t79Tz-0005zk-Rv; Sat, 02 Nov 2024 04:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t7999-0007Jo-Lr
- for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:11 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t7995-0001zT-Mg
- for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:11 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxmeFr3SVndH0nAA--.16444S3;
- Sat, 02 Nov 2024 16:06:03 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAx7uBh3SVnzZA1AA--.18827S10;
- Sat, 02 Nov 2024 16:06:02 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL v2 8/8] target/loongarch: Add steal time support on migration
-Date: Sat,  2 Nov 2024 15:47:37 +0800
-Message-Id: <20241102074737.1394884-9-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20241102074737.1394884-1-gaosong@loongson.cn>
-References: <20241102074737.1394884-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t79Tx-0005zS-7B
+ for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:27:41 -0400
+Received: from mail-wr1-f53.google.com ([209.85.221.53])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t79Tv-0006b1-EM
+ for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:27:40 -0400
+Received: by mail-wr1-f53.google.com with SMTP id
+ ffacd0b85a97d-37d49ffaba6so1784544f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Nov 2024 01:27:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730536058; x=1731140858;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cZMRMRIpzHOCc++FNywspFrBJekG7HjAqziCIWx/r7M=;
+ b=QtpHPeXf7L5Bm5C4wUlqLQttPl8/zeG6rpZRurk67kPPlw1IZnjacb46l2Pwv2fwgN
+ pI8aeBmMGku3mwzUewPY4QLroO6FWsta1wBCiKehmjjOecYs2VqH8h+Hqv0de+2idnLB
+ OhLwEP/R0BBmFKFxf5EZR+55tb2dwJu6Vnsj/QUzqAfklITJgbGCdVfqHSWZHmgyl5AE
+ /tu4yNjnJsf7Zp6lCPU7s+28PvZqghGlh+PFSDQ9E1IL03uIIQJGGf2wCAiiaQK5TRol
+ GZ8wyFyUsxvhoJEYxSckPNFK4/J8G25GI1FKDDi9JD7C9oAQYRWQXIYp5sA0HZJ2AnC+
+ Bu3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW/VnSOl9oKJBqqRaDPRx7RdbTdaMGE5KNarWRh7OiYGrl8LPG2RnqUpaLl5bfb9Q4WsuPPKzziDQqT@nongnu.org
+X-Gm-Message-State: AOJu0Yz+EjNoU2mg6xGm0PglXf+y3dMYldAP2xcWi20tl6SCnjS1VfII
+ a/XIo4zy71IyjITC7ZcqbvNgbeV1CTAiSWgnviuzRkqtlPyJNXhm
+X-Google-Smtp-Source: AGHT+IF3NP4P+bWq4josTQmSd6ffEdmIuq5iA+v3vREh4to0U7416keSbu4ijqsM++9FtZ6Fw5GgOg==
+X-Received: by 2002:a05:6000:b4c:b0:37d:3735:8fe7 with SMTP id
+ ffacd0b85a97d-381b708b14bmr8301350f8f.32.1730536057673; 
+ Sat, 02 Nov 2024 01:27:37 -0700 (PDT)
+Received: from tpx1 (ip-109-42-48-251.web.vodafone.de. [109.42.48.251])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-431bd910357sm120928995e9.11.2024.11.02.01.27.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 02 Nov 2024 01:27:36 -0700 (PDT)
+Date: Sat, 2 Nov 2024 09:27:34 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: peter.maydell@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 1/2] next-kbd: convert to use
+ qemu_input_handler_register()
+Message-ID: <20241102092734.03fde080@tpx1>
+In-Reply-To: <20241101201106.1432336-2-mark.cave-ayland@ilande.co.uk>
+References: <20241101201106.1432336-1-mark.cave-ayland@ilande.co.uk>
+ <20241101201106.1432336-2-mark.cave-ayland@ilande.co.uk>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAx7uBh3SVnzZA1AA--.18827S10
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=209.85.221.53; envelope-from=th.huth@gmail.com;
+ helo=mail-wr1-f53.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,152 +84,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+Am Fri,  1 Nov 2024 20:11:05 +0000
+schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-With pv steal time supported, VM machine needs get physical address
-of each vcpu and notify new host during migration. Here two
-functions kvm_get_stealtime/kvm_set_stealtime, and guest steal time
-physical address is only updated on KVM_PUT_FULL_STATE stage.
+> Convert the next-kbd device from the legacy UI qemu_add_kbd_event_handler()
+> function to use qemu_input_handler_register().
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>  hw/m68k/next-kbd.c | 166 ++++++++++++++++++++++++++++++---------------
+>  1 file changed, 111 insertions(+), 55 deletions(-)
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240930064040.753929-1-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu.h     |  3 ++
- target/loongarch/kvm/kvm.c | 65 ++++++++++++++++++++++++++++++++++++++
- target/loongarch/machine.c |  6 ++--
- 3 files changed, 72 insertions(+), 2 deletions(-)
-
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 95be58dd66..86c86c6c95 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -364,6 +364,9 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    struct {
-+        uint64_t guest_addr;
-+    } stealtime;
- 
- #ifdef CONFIG_TCG
-     float_status fp_status;
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 8bda8ae540..ff81806ca3 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -34,6 +34,55 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_LAST_INFO
- };
- 
-+static int kvm_get_stealtime(CPUState *cs)
-+{
-+    CPULoongArchState *env = cpu_env(cs);
-+    int err;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
-+        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
-+        .addr = (uint64_t)&env->stealtime.guest_addr,
-+    };
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
-+    if (err) {
-+        return 0;
-+    }
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, attr);
-+    if (err) {
-+        error_report("PVTIME: KVM_GET_DEVICE_ATTR: %s", strerror(errno));
-+        return err;
-+    }
-+
-+    return 0;
-+}
-+
-+static int kvm_set_stealtime(CPUState *cs)
-+{
-+    CPULoongArchState *env = cpu_env(cs);
-+    int err;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
-+        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
-+        .addr = (uint64_t)&env->stealtime.guest_addr,
-+    };
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
-+    if (err) {
-+        return 0;
-+    }
-+
-+    err = kvm_vcpu_ioctl(cs, KVM_SET_DEVICE_ATTR, attr);
-+    if (err) {
-+        error_report("PVTIME: KVM_SET_DEVICE_ATTR %s with gpa "TARGET_FMT_lx,
-+                      strerror(errno), env->stealtime.guest_addr);
-+        return err;
-+    }
-+
-+    return 0;
-+}
-+
- static int kvm_loongarch_get_regs_core(CPUState *cs)
- {
-     int ret = 0;
-@@ -670,6 +719,11 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-         return ret;
-     }
- 
-+    ret = kvm_get_stealtime(cs);
-+    if (ret) {
-+        return ret;
-+    }
-+
-     ret = kvm_loongarch_get_mpstate(cs);
-     return ret;
- }
-@@ -703,6 +757,17 @@ int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
-         return ret;
-     }
- 
-+    if (level >= KVM_PUT_FULL_STATE) {
-+        /*
-+         * only KVM_PUT_FULL_STATE is required, kvm kernel will clear
-+         * guest_addr for KVM_PUT_RESET_STATE
-+         */
-+        ret = kvm_set_stealtime(cs);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     ret = kvm_loongarch_put_mpstate(cs);
-     return ret;
- }
-diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
-index 3d5c84ae9c..efb20e2fbe 100644
---- a/target/loongarch/machine.c
-+++ b/target/loongarch/machine.c
-@@ -168,8 +168,8 @@ static const VMStateDescription vmstate_tlb = {
- /* LoongArch CPU state */
- const VMStateDescription vmstate_loongarch_cpu = {
-     .name = "cpu",
--    .version_id = 2,
--    .minimum_version_id = 2,
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
-         VMSTATE_UINTTL(env.pc, LoongArchCPU),
-@@ -232,6 +232,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
-         VMSTATE_UINT64(env.CSR_DSAVE, LoongArchCPU),
- 
-         VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
-+        /* PV steal time */
-+        VMSTATE_UINT64(env.stealtime.guest_addr, LoongArchCPU),
- 
-         VMSTATE_END_OF_LIST()
-     },
--- 
-2.34.1
-
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
