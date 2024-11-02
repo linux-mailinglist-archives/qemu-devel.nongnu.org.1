@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A162C9BA083
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB50D9BA062
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E15-0003Jm-PF; Sat, 02 Nov 2024 09:18:11 -0400
+	id 1t7E1B-0003Yr-Pr; Sat, 02 Nov 2024 09:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0x-0003Cd-Bg; Sat, 02 Nov 2024 09:18:03 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1t7E0y-0003DL-A9; Sat, 02 Nov 2024 09:18:04 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0v-00022M-SE; Sat, 02 Nov 2024 09:18:03 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a99f3a5a44cso378959166b.3; 
- Sat, 02 Nov 2024 06:18:00 -0700 (PDT)
+ id 1t7E0w-00022r-QI; Sat, 02 Nov 2024 09:18:04 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a9a0f198d38so437994366b.1; 
+ Sat, 02 Nov 2024 06:18:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553479; x=1731158279; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553480; x=1731158280; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XUm8qjOgywmx7gvdmgv03kZ9/zFDrArayrTzSFDEf8g=;
- b=Vwbi71CYTVH1cgw4KOUxs6FBs3+G7TJe+mZOtBG8TiZRZjuBBTN1RJfzy9ju1htIU7
- DSLSKzRC8BEjfVH8kPolXN4mXl7OVorNyeIGZvYH9Snmsnsk3auUxXulvGbCcUcZPzsr
- dSgVuHAqE20oSEoKY07uZwg7X242rJeswwLmY9X6ofeChSZNKreOEI/mTKW9PvA5OA+A
- OCdLU9P88nxmANX8+uR/y+gVGkMkzlrrMaZ/cR6cHHI19fiGH7d4kKpM8eydxay5JN8g
- z6apnoFDD0joWNyjTe+GiuzmuH5urqRWoxbC18zRyaYKXKmlE+vTxqr8h+Y4HLFR6bWf
- 1APA==
+ bh=tZZ+5ovmnVpC5NTiYuiewUtYnzTYhlFm/LIFM9Feu0w=;
+ b=mJxTvW21uoBNQo37IZMR/3KURVEf6SGa9wbVUZDbWZTmZg2iVNmVkEzT18N5H1eqC+
+ CkAtl0RrdqPKl35HSiJulJf+rtR2KUx8JYA6DZ3hdCNSO+kUOxjm5pTk3V6yYzNOYzs1
+ rUCrtXt03n/0XxnqDIXGA+0HUiSPYYAoscqeNDaHJdQ+tRlXZ4cY0bAFn7vCQNYOXmFc
+ ECbi4ioZ4iD0gNZbf9k6GAEDVtg1+0tRUN+kiBjwoiWVxWkaLy6ENRBtL0RfM6QSIRli
+ hkRYqFDKRKCl7Q2wZXS0rguUIj8o2rGUogBOVG0x3K8uB8JRCfn3JtLBcyv9KIYOi1Yf
+ Vhyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553479; x=1731158279;
+ d=1e100.net; s=20230601; t=1730553480; x=1731158280;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XUm8qjOgywmx7gvdmgv03kZ9/zFDrArayrTzSFDEf8g=;
- b=Ue2aJivvYfcnf9e/XWdDT5DC+w6LFQHwyC+hRynMI4OQ4wCNlhnGsxQGG4NK8DLaAn
- Tw0igBDYjppLX0y8lQpgIaisZ8Bv2aSWTiINxs5W62yH9ITr4GfewZlvsjGakuu+IA9F
- zDKQd0w2t4m5YsmWoqgCYwF27YwqR+LumshUweorrjEtaiEgWcwFOdWzYpXmE8hM9Xu3
- Y5Py13Vec1HgdlFaXXkbWz25hG8Wx7n4pT3sCK83Fbbr7swgSpkmknEOF68wXOhhNox1
- H8RaVFxP9/ofExRwFxKl9iP72pOImoE0XzdgAZpTgwSer8QzeaIsMFU8bDw9AvttFyhr
- lYLA==
+ bh=tZZ+5ovmnVpC5NTiYuiewUtYnzTYhlFm/LIFM9Feu0w=;
+ b=vFfXlHYUdZUkMQowvnGS7RJ9+3QfybefNOTMO42YFIWpmNthjnsQtzSaCwksVy4Iyu
+ c4eqHlPIAJdWbOPKwHn3ZHeMtBETcUrC3sH3DaN3sQy83NV99ikA5q6p4YpRfRj/IPK7
+ HmgCXjaNP1LBg12XAJlGxwn5/TMUSLz15WaDAeZXhB8Mgi6NVT/Ng6WYr/r6ZJzIcfXd
+ tS+BfQSMWtdQ1khE5s1nhMg1CNTWAKLHFCkB/YiYJBn4FPMT1r1DG80iBvNfTjHxjVlS
+ WeNcJWkl4Ohh6JaZdMTy08IadABPk73fHjoQXRn4FGfiQfaaQUtyMT0ZXpUc/kqsk6Dh
+ zZdg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX7+8ZEy9D9V4/gYnVqW2n4SnYs5/Bm6T1S4o6zwogRFRcZdWdJBtW7/fOYAx6dlS+xhGPprT4S8TMX@nongnu.org,
- AJvYcCXui6lh3ZuEIk5n7A9MLXYNKFaxTzLuL7j6FcB5X3O8WVEXzf0GXZhl/A09p22+Bk61xZRSaDEIiLs=@nongnu.org
-X-Gm-Message-State: AOJu0YyvYhWv3mEKgHyXcG9MZkyS74FBdJOKHxc1b3JEuX6zoo/4CP3o
- WIKR71UOOD77PtBv02M3Z+gCbwAgXt6sZXfQw6LMHdAtUOkIbZwAs8mOXA==
-X-Google-Smtp-Source: AGHT+IFSs1F7VA7Fsy1GjJjGW/RL7wWm5sFOwhjWJKnYkvHtFSxVAslTGo5TJB9Pvf3myPzzPLGeZQ==
-X-Received: by 2002:a17:907:7dab:b0:a9a:55dd:4d52 with SMTP id
- a640c23a62f3a-a9de633078bmr2039459366b.63.1730553479141; 
- Sat, 02 Nov 2024 06:17:59 -0700 (PDT)
+ AJvYcCUAsc287hOEzdkb1in/S0/tYup4qWBa8pVRp9D9PQJ5qrdzVFaqLCtRAf918cdDEDkxBeivHOJ2FkwT@nongnu.org,
+ AJvYcCUysmX1iLp7BD+xmT+UExTt+b9//g7v8wLLtgUw1LhCKYgQ81t7twZVuDqCHlWflrTTg/Xq9IgpILU=@nongnu.org
+X-Gm-Message-State: AOJu0YxmJf8oBZskOc4ukzu7NU0NnFRPN0pcXXbcpKm09xSHsC0c+YS2
+ TZlcRMyytClXOLL6rK5anmIBOX0RGrsbNO8KBTMfJymxA3gjXPV5zfw4cA==
+X-Google-Smtp-Source: AGHT+IEbTuNte3+yzDCLPvNybPA71+5Bp9DMg0Md9ijXvAmgES/u4yIHdInF4foVrMZOkAqom7LZQQ==
+X-Received: by 2002:a17:906:f596:b0:a99:5773:3612 with SMTP id
+ a640c23a62f3a-a9e65507131mr558075366b.36.1730553480366; 
+ Sat, 02 Nov 2024 06:18:00 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.57
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:58 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:59 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,17 +68,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 22/26] hw/i2c/smbus_eeprom: Prefer DEFINE_TYPES() macro
-Date: Sat,  2 Nov 2024 14:17:11 +0100
-Message-ID: <20241102131715.548849-23-shentey@gmail.com>
+Subject: [PATCH v3 23/26] hw/rtc/ds1338: Prefer DEFINE_TYPES() macro
+Date: Sat,  2 Nov 2024 14:17:12 +0100
+Message-ID: <20241102131715.548849-24-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,44 +100,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i2c/smbus_eeprom.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ hw/rtc/ds1338.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/hw/i2c/smbus_eeprom.c b/hw/i2c/smbus_eeprom.c
-index 9e62c27a1a..1d4d9704bf 100644
---- a/hw/i2c/smbus_eeprom.c
-+++ b/hw/i2c/smbus_eeprom.c
-@@ -151,19 +151,16 @@ static void smbus_eeprom_class_initfn(ObjectClass *klass, void *data)
-     dc->user_creatable = false;
+diff --git a/hw/rtc/ds1338.c b/hw/rtc/ds1338.c
+index a5fe221418..6de13caf99 100644
+--- a/hw/rtc/ds1338.c
++++ b/hw/rtc/ds1338.c
+@@ -14,7 +14,6 @@
+ #include "hw/i2c/i2c.h"
+ #include "migration/vmstate.h"
+ #include "qemu/bcd.h"
+-#include "qemu/module.h"
+ #include "qom/object.h"
+ #include "sysemu/rtc.h"
+ 
+@@ -227,16 +226,13 @@ static void ds1338_class_init(ObjectClass *klass, void *data)
+     dc->vmsd = &vmstate_ds1338;
  }
  
--static const TypeInfo smbus_eeprom_info = {
--    .name          = TYPE_SMBUS_EEPROM,
--    .parent        = TYPE_SMBUS_DEVICE,
--    .instance_size = sizeof(SMBusEEPROMDevice),
--    .class_init    = smbus_eeprom_class_initfn,
+-static const TypeInfo ds1338_info = {
+-    .name          = TYPE_DS1338,
+-    .parent        = TYPE_I2C_SLAVE,
+-    .instance_size = sizeof(DS1338State),
+-    .class_init    = ds1338_class_init,
 +static const TypeInfo types[] = {
 +    {
-+        .name          = TYPE_SMBUS_EEPROM,
-+        .parent        = TYPE_SMBUS_DEVICE,
-+        .instance_size = sizeof(SMBusEEPROMDevice),
-+        .class_init    = smbus_eeprom_class_initfn,
++        .name          = TYPE_DS1338,
++        .parent        = TYPE_I2C_SLAVE,
++        .instance_size = sizeof(DS1338State),
++        .class_init    = ds1338_class_init,
 +    },
  };
  
--static void smbus_eeprom_register_types(void)
+-static void ds1338_register_types(void)
 -{
--    type_register_static(&smbus_eeprom_info);
+-    type_register_static(&ds1338_info);
 -}
 -
--type_init(smbus_eeprom_register_types)
+-type_init(ds1338_register_types)
 +DEFINE_TYPES(types)
- 
- void smbus_eeprom_init_one(I2CBus *smbus, uint8_t address, uint8_t *eeprom_buf)
- {
 -- 
 2.47.0
 
