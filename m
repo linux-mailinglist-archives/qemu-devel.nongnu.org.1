@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372F19BA0F5
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 16:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4669BA0F6
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 16:03:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7Fdz-0008Mw-98; Sat, 02 Nov 2024 11:02:27 -0400
+	id 1t7Fex-0000SS-BS; Sat, 02 Nov 2024 11:03:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=uVOK=R5=kaod.org=clg@ozlabs.org>)
- id 1t7Fdx-0008Md-W5; Sat, 02 Nov 2024 11:02:26 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ id 1t7FeU-0000Cd-IH; Sat, 02 Nov 2024 11:02:59 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=uVOK=R5=kaod.org=clg@ozlabs.org>)
- id 1t7Fdw-0004Y3-0J; Sat, 02 Nov 2024 11:02:25 -0400
+ id 1t7FeR-0004aK-Fk; Sat, 02 Nov 2024 11:02:56 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Xggtz1F1pz4x8g;
- Sun,  3 Nov 2024 02:02:19 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4XggvZ68n4z4x8R;
+ Sun,  3 Nov 2024 02:02:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xggtt65g2z4x7H;
- Sun,  3 Nov 2024 02:02:14 +1100 (AEDT)
-Message-ID: <1c9a6356-4164-4c44-bea6-5c6a789f4673@kaod.org>
-Date: Sat, 2 Nov 2024 16:02:14 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4XggvV3Z8Tz4wxf;
+ Sun,  3 Nov 2024 02:02:46 +1100 (AEDT)
+Message-ID: <de5b9cd4-ed9f-4398-86d8-b4ad15849223@kaod.org>
+Date: Sat, 2 Nov 2024 16:02:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v1 6/8] hw/sd/aspeed_sdhci: Introduce Capabilities
- Register 2 for SD slot 0 and 1
+Subject: Re: [SPAM] [PATCH v1 8/8] aspeed: Support create flash devices via
+ command line for AST1030
 To: Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
@@ -41,20 +41,19 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>,
  <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
 Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
 References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
- <20241029091729.3317512-7-jamin_lin@aspeedtech.com>
+ <20241029091729.3317512-9-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20241029091729.3317512-7-jamin_lin@aspeedtech.com>
+In-Reply-To: <20241029091729.3317512-9-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=uVOK=R5=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
 X-Spam_bar: ----
 X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
  HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,12 +71,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/29/24 10:17, Jamin Lin wrote:
-> The size of SDHCI capabilities register is 64bits, so introduces new
-> Capabilities Register 2 for SD slot 0 (0x144) and SD slot1 (0x244).
+> Add a "if-statement" in aspeed_minibmc_machine_init function. If users add
+> "-nodefaults" in command line, the flash devices should be created by users
+> setting. Otherwise, the flash devices are created at machine init.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 
-I will fix the code alignment issues.
+
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
@@ -86,99 +86,43 @@ Thanks,
 C.
 
 > ---
->   hw/sd/aspeed_sdhci.c | 40 +++++++++++++++++++++++++++++-----------
->   1 file changed, 29 insertions(+), 11 deletions(-)
+>   hw/arm/aspeed.c | 22 ++++++++++++----------
+>   1 file changed, 12 insertions(+), 10 deletions(-)
 > 
-> diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
-> index 427e5336a8..b73c18fbff 100644
-> --- a/hw/sd/aspeed_sdhci.c
-> +++ b/hw/sd/aspeed_sdhci.c
-> @@ -24,8 +24,10 @@
->   #define  ASPEED_SDHCI_DEBOUNCE_RESET 0x00000005
->   #define ASPEED_SDHCI_BUS             0x08
->   #define ASPEED_SDHCI_SDIO_140        0x10
-> +#define ASPEED_SDHCI_SDIO_144        0x14
->   #define ASPEED_SDHCI_SDIO_148        0x18
->   #define ASPEED_SDHCI_SDIO_240        0x20
-> +#define ASPEED_SDHCI_SDIO_244        0x24
->   #define ASPEED_SDHCI_SDIO_248        0x28
->   #define ASPEED_SDHCI_WP_POL          0xec
->   #define ASPEED_SDHCI_CARD_DET        0xf0
-> @@ -35,21 +37,27 @@
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index 0468602d95..e161e6b1c5 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -1602,18 +1602,20 @@ static void aspeed_minibmc_machine_init(MachineState *machine)
+>       connect_serial_hds_to_uarts(bmc);
+>       qdev_realize(DEVICE(bmc->soc), NULL, &error_abort);
 >   
->   static uint64_t aspeed_sdhci_read(void *opaque, hwaddr addr, unsigned int size)
->   {
-> -    uint32_t val = 0;
-> +    uint64_t val = 0;
->       AspeedSDHCIState *sdhci = opaque;
+> -    aspeed_board_init_flashes(&bmc->soc->fmc,
+> -                              bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
+> -                              amc->num_cs,
+> -                              0);
+> +    if (defaults_enabled()) {
+> +        aspeed_board_init_flashes(&bmc->soc->fmc,
+> +                            bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
+> +                            amc->num_cs,
+> +                            0);
 >   
->       switch (addr) {
->       case ASPEED_SDHCI_SDIO_140:
-> -        val = (uint32_t)sdhci->slots[0].capareg;
-> +        val = extract64(sdhci->slots[0].capareg, 0, 32);
-> +        break;
-> +    case ASPEED_SDHCI_SDIO_144:
-> +        val = extract64(sdhci->slots[0].capareg, 32, 32);
->           break;
->       case ASPEED_SDHCI_SDIO_148:
-> -        val = (uint32_t)sdhci->slots[0].maxcurr;
-> +        val = extract64(sdhci->slots[0].maxcurr, 0, 32);
->           break;
->       case ASPEED_SDHCI_SDIO_240:
-> -        val = (uint32_t)sdhci->slots[1].capareg;
-> +        val = extract64(sdhci->slots[1].capareg, 0, 32);
-> +        break;
-> +    case ASPEED_SDHCI_SDIO_244:
-> +        val = extract64(sdhci->slots[1].capareg, 32, 32);
->           break;
->       case ASPEED_SDHCI_SDIO_248:
-> -        val = (uint32_t)sdhci->slots[1].maxcurr;
-> +         val = extract64(sdhci->slots[1].maxcurr, 0, 32);
->           break;
->       default:
->           if (addr < ASPEED_SDHCI_REG_SIZE) {
-> @@ -61,9 +69,9 @@ static uint64_t aspeed_sdhci_read(void *opaque, hwaddr addr, unsigned int size)
->           }
->       }
+> -    aspeed_board_init_flashes(&bmc->soc->spi[0],
+> -                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
+> -                              amc->num_cs, amc->num_cs);
+> +        aspeed_board_init_flashes(&bmc->soc->spi[0],
+> +                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
+> +                            amc->num_cs, amc->num_cs);
 >   
-> -    trace_aspeed_sdhci_read(addr, size, (uint64_t) val);
-> +    trace_aspeed_sdhci_read(addr, size, val);
+> -    aspeed_board_init_flashes(&bmc->soc->spi[1],
+> -                              bmc->spi_model ? bmc->spi_model : amc->spi_model,
+> -                              amc->num_cs, (amc->num_cs * 2));
+> +        aspeed_board_init_flashes(&bmc->soc->spi[1],
+> +                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
+> +                            amc->num_cs, (amc->num_cs * 2));
+> +    }
 >   
-> -    return (uint64_t)val;
-> +    return val;
->   }
->   
->   static void aspeed_sdhci_write(void *opaque, hwaddr addr, uint64_t val,
-> @@ -79,16 +87,26 @@ static void aspeed_sdhci_write(void *opaque, hwaddr addr, uint64_t val,
->           sdhci->regs[TO_REG(addr)] = (uint32_t)val & ~ASPEED_SDHCI_INFO_RESET;
->           break;
->       case ASPEED_SDHCI_SDIO_140:
-> -        sdhci->slots[0].capareg = (uint64_t)(uint32_t)val;
-> +    sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 0, 32, val);
-> +    break;
-> +    case ASPEED_SDHCI_SDIO_144:
-> +    sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 32, 32, val);
->           break;
->       case ASPEED_SDHCI_SDIO_148:
-> -        sdhci->slots[0].maxcurr = (uint64_t)(uint32_t)val;
-> +        sdhci->slots[0].maxcurr = deposit64(sdhci->slots[0].maxcurr,
-> +                                            0, 32, val);
->           break;
->       case ASPEED_SDHCI_SDIO_240:
-> -        sdhci->slots[1].capareg = (uint64_t)(uint32_t)val;
-> +        sdhci->slots[1].capareg = deposit64(sdhci->slots[1].capareg,
-> +                                            0, 32, val);
-> +        break;
-> +    case ASPEED_SDHCI_SDIO_244:
-> +        sdhci->slots[1].capareg = deposit64(sdhci->slots[1].capareg,
-> +                                            32, 32, val);
->           break;
->       case ASPEED_SDHCI_SDIO_248:
-> -        sdhci->slots[1].maxcurr = (uint64_t)(uint32_t)val;
-> +        sdhci->slots[1].maxcurr = deposit64(sdhci->slots[0].maxcurr,
-> +                                            0, 32, val);
->           break;
->       default:
->           if (addr < ASPEED_SDHCI_REG_SIZE) {
+>       if (amc->i2c_init) {
+>           amc->i2c_init(bmc);
 
 
