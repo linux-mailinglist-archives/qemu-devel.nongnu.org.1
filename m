@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3A99BA079
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BAF9BA064
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E14-0003Iu-4o; Sat, 02 Nov 2024 09:18:10 -0400
+	id 1t7E1H-0003qE-3Q; Sat, 02 Nov 2024 09:18:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0v-0003Bu-12; Sat, 02 Nov 2024 09:18:01 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1t7E0w-0003CX-Ca; Sat, 02 Nov 2024 09:18:03 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0r-00021G-Jq; Sat, 02 Nov 2024 09:18:00 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a9e44654ae3so335543366b.1; 
- Sat, 02 Nov 2024 06:17:56 -0700 (PDT)
+ id 1t7E0t-00021Z-Jq; Sat, 02 Nov 2024 09:18:02 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a9a0c40849cso466753266b.3; 
+ Sat, 02 Nov 2024 06:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553475; x=1731158275; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553476; x=1731158276; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
- b=GIADIxgRD3TAXKh8jHxDhfmxxZWmVPKqIj0rkXF84eB0GYeAFPLe4/vuGTymgyccRE
- OM3pJdHeGMhk7Spxq87xLtN2padKkoFVd38dkoU1ImplfMmCisGYUUmdx31uqP3nSVTi
- qUpbhXFDgOxSEucvOR4190ESJ/J+R8XhnzAaIGVPQck81cCDAJpkpJ4c31LItzjT3Sn9
- RjWt6/tAA9xB3NHJHVEB1jOVaUjD+lLNM3iebYJ296X73AS3YmTMHmshc2Zxlri+SGL3
- 72cWXN66wqxlAnsu2uMKaErpfr2YX1akSQY+wMglFjhoQGkpl6QsOi33TlYtU0maSVzI
- fjOg==
+ bh=80K8OEm+6o8+JzT+l+kkS4hvMpMoaCr4IlAQyLMMIO0=;
+ b=BFfG5T/rUvOzrgrN75/IYmqpYe3ifhGfePovRTpqu8n2C79AiVupW1slomcMSHuG7u
+ gG0GmqLm11T64pBzOhF9xMgt/LN77tEhDq8q+1gxs4Fn8NMlxzjICLSReemShzkXsPew
+ hyqPPnYvWhYors8T7ZlvUNoye3AZzWmD3c6zWKj2OvU9aYHdHfJnOrn6l+8fj2+cGZ/9
+ sCPNpgA1Fw1szgRsCgySkg39wiOwPxofLQetc+TMYyd/Gb68EEMxsxZoj9r3EGcN0Iia
+ H7VyO3lyimT8H253NKLs4nF+bA+1PQ1CHA3IL/oJmgrACrW7xJByQviJJGcRUFKvhKLi
+ Z93g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553475; x=1731158275;
+ d=1e100.net; s=20230601; t=1730553476; x=1731158276;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
- b=YIMom4rEx0Ll2LWcNcO3RCJxjr6+RGTZqP15slMCJ4hdYRMFQkJM1I0jiWJfrjVulZ
- 77oRg8tHn290miF4Cwrza3X7jHQ/Zb9mUk5COrwRLM+5abTtnuanHsb6LbSMU5L3CGrE
- 6kDE897zyeKc6HRs2Vwl/mbTl+8lOSenodnJBbVcIh9OvObkywMeIieCBH5IFYRmmDOo
- ZYHgbw9aNspTCt7SAlyDJHl1K7Mo2jd3pry82xAxZ7PfDl3pj+g3fRuYAi3DnNu4jy7A
- 44/1xIGz7JRp8qjfF7kIozsYAK+Omw3aEdRmOT/8gyPVQ87871JAMdcGgnOUlTpzJgky
- fWZQ==
+ bh=80K8OEm+6o8+JzT+l+kkS4hvMpMoaCr4IlAQyLMMIO0=;
+ b=rIRheHFJMT3kdoYlAb8JdtzmFxPXuYGi+P4N6ho1BmYrjIeO63vW6wDARBqMxvoosT
+ eizTUUrgVz9tpzakts0pL+Rqb6wBdlHarqso+E0KSrSI8SG8E0zH6I9vnst7PpqpEkWf
+ vUiH6NuTCBk5ZRAiZmkhThnbkaFicS+DwJMmfmzpkmRwyUJN9WVR1XqjtGsKkXF3X3mz
+ P4+C/02lzpF3kyncjIEiiVqgbACbY0ae+nOvTiLCAtPCVBPcoR8Hwjj0IquzLGGPifv0
+ vJmBA/INVtoMPRM629gbrratmSODgeOqH3JBzGqrDaXxzYpw3VPvCelQOs4ruKDvgrI9
+ gsHw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUHEVmrQ9hSQorCGKTztriOkgnPy1Cl1nq8C3CTuSVrQMgaWEkMU+7noFHlbSRcOReOo0ImFk8iYB8X@nongnu.org,
- AJvYcCX2XIv5C2lKVZKOMKLWjCIFfboUFARjBOzeefV5Hy+KbznjHzaNLqu+5FXfVP/AkFkRwPqeH5qctnA=@nongnu.org
-X-Gm-Message-State: AOJu0Yy+p0FmtGjXmR7nb3MfseFuEGywYRCBtWHLc7XyQ3UfMHtujSyr
- 9mwqzk3CWOEJn1+V0aH8dO1ZiQOx7sU32WksSeeLf6MqdRQRLTxI5GmFbQ==
-X-Google-Smtp-Source: AGHT+IGvCirtSErn9CReobBS4ri5Ijp0aVXZl4rPi6i4m6alC70/1VgOsRcJ82+K/f7vtRkQAEXLAQ==
-X-Received: by 2002:a17:907:3f19:b0:a9a:835:b4eb with SMTP id
- a640c23a62f3a-a9e50973610mr964153266b.38.1730553474734; 
- Sat, 02 Nov 2024 06:17:54 -0700 (PDT)
+ AJvYcCVkiVJ0MtjiPAMLpN7xnJDB5RK7T8x7yErWHUfXkrto6NNqIvDJdPIEXHeRe6c0Hb3R3h4cvToEcO/B@nongnu.org,
+ AJvYcCWOf02X0VJiCyuBqNO6RL0BnKbsndmwCSbkldV2BqnkEf+tvdRuP8T6uir4Nzf8JYuAtjhPL3DxReg=@nongnu.org
+X-Gm-Message-State: AOJu0Yzz4ouA9n76g65+Rfy3whe7eStiZPMipftXywlgAakele8qR9WM
+ HOVwMC2w+e86DHnM0LREjPKXyH9Yw5vRekym5YSnmn6TRV4PurujTzlJtg==
+X-Google-Smtp-Source: AGHT+IF7MDxOK6ZyXd9DeicGn8UMo/EyghaXt22av+4QTbbaetScuZ5Elw8H4a1AJwqr9pLayDfjnw==
+X-Received: by 2002:a17:907:9722:b0:a99:403e:2578 with SMTP id
+ a640c23a62f3a-a9e3a57531amr1445849466b.5.1730553475978; 
+ Sat, 02 Nov 2024 06:17:55 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.53
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:54 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:55 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,18 +68,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 19/26] hw/intc: Guard openpic_kvm.c by dedicated
- OPENPIC_KVM Kconfig switch
-Date: Sat,  2 Nov 2024 14:17:08 +0100
-Message-ID: <20241102131715.548849-20-shentey@gmail.com>
+Subject: [PATCH v3 20/26] hw/sd/sdhci: Prefer DEFINE_TYPES() macro
+Date: Sat,  2 Nov 2024 14:17:09 +0100
+Message-ID: <20241102131715.548849-21-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,58 +101,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows to clearly mark code sections relying on this device type.
-
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/e500.c       | 2 +-
- hw/intc/Kconfig     | 4 ++++
- hw/intc/meson.build | 3 +--
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ hw/sd/sdhci.c | 62 +++++++++++++++++++++------------------------------
+ 1 file changed, 26 insertions(+), 36 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index f640195e62..f12329feda 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -826,7 +826,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
- static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
-                                           Error **errp)
- {
--#ifdef CONFIG_KVM
-+#ifdef CONFIG_OPENPIC_KVM
-     DeviceState *dev;
-     CPUState *cs;
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index ed01499391..aa89513796 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -37,7 +37,6 @@
+ #include "migration/vmstate.h"
+ #include "sdhci-internal.h"
+ #include "qemu/log.h"
+-#include "qemu/module.h"
+ #include "trace.h"
+ #include "qom/object.h"
  
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index dd405bdb5d..a3df98ae59 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -16,6 +16,10 @@ config OPENPIC
-     bool
-     select MSI_NONBROKEN
+@@ -1598,15 +1597,6 @@ static void sdhci_sysbus_class_init(ObjectClass *klass, void *data)
+     sdhci_common_class_init(klass, data);
+ }
  
-+config OPENPIC_KVM
-+    bool
-+    depends on OPENPIC && KVM
-+
- config APIC
-     bool
-     select MSI_NONBROKEN
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 6bfdc4eb33..b9de6bf5c6 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -48,8 +48,7 @@ specific_ss.add(when: 'CONFIG_IOAPIC', if_true: files('ioapic.c'))
- specific_ss.add(when: 'CONFIG_LOONGSON_LIOINTC', if_true: files('loongson_liointc.c'))
- specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gic.c'))
- specific_ss.add(when: 'CONFIG_OMPIC', if_true: files('ompic.c'))
--specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_OPENPIC'],
--		if_true: files('openpic_kvm.c'))
-+specific_ss.add(when: 'CONFIG_OPENPIC_KVM', if_true: files('openpic_kvm.c'))
- specific_ss.add(when: 'CONFIG_POWERNV', if_true: files('xics_pnv.c', 'pnv_xive.c', 'pnv_xive2.c'))
- specific_ss.add(when: 'CONFIG_PPC_UIC', if_true: files('ppc-uic.c'))
- specific_ss.add(when: 'CONFIG_RX_ICU', if_true: files('rx_icu.c'))
+-static const TypeInfo sdhci_sysbus_info = {
+-    .name = TYPE_SYSBUS_SDHCI,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(SDHCIState),
+-    .instance_init = sdhci_sysbus_init,
+-    .instance_finalize = sdhci_sysbus_finalize,
+-    .class_init = sdhci_sysbus_class_init,
+-};
+-
+ /* --- qdev bus master --- */
+ 
+ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
+@@ -1617,13 +1607,6 @@ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
+     sbc->set_readonly = sdhci_set_readonly;
+ }
+ 
+-static const TypeInfo sdhci_bus_info = {
+-    .name = TYPE_SDHCI_BUS,
+-    .parent = TYPE_SD_BUS,
+-    .instance_size = sizeof(SDBus),
+-    .class_init = sdhci_bus_class_init,
+-};
+-
+ /* --- qdev i.MX eSDHC --- */
+ 
+ #define USDHC_MIX_CTRL                  0x48
+@@ -1882,12 +1865,6 @@ static void imx_usdhc_init(Object *obj)
+     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
+ }
+ 
+-static const TypeInfo imx_usdhc_info = {
+-    .name = TYPE_IMX_USDHC,
+-    .parent = TYPE_SYSBUS_SDHCI,
+-    .instance_init = imx_usdhc_init,
+-};
+-
+ /* --- qdev Samsung s3c --- */
+ 
+ #define S3C_SDHCI_CONTROL2      0x80
+@@ -1946,18 +1923,31 @@ static void sdhci_s3c_init(Object *obj)
+     s->io_ops = &sdhci_s3c_mmio_ops;
+ }
+ 
+-static const TypeInfo sdhci_s3c_info = {
+-    .name = TYPE_S3C_SDHCI  ,
+-    .parent = TYPE_SYSBUS_SDHCI,
+-    .instance_init = sdhci_s3c_init,
++static const TypeInfo types[] = {
++    {
++        .name = TYPE_SDHCI_BUS,
++        .parent = TYPE_SD_BUS,
++        .instance_size = sizeof(SDBus),
++        .class_init = sdhci_bus_class_init,
++    },
++    {
++        .name = TYPE_SYSBUS_SDHCI,
++        .parent = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(SDHCIState),
++        .instance_init = sdhci_sysbus_init,
++        .instance_finalize = sdhci_sysbus_finalize,
++        .class_init = sdhci_sysbus_class_init,
++    },
++    {
++        .name = TYPE_IMX_USDHC,
++        .parent = TYPE_SYSBUS_SDHCI,
++        .instance_init = imx_usdhc_init,
++    },
++    {
++        .name = TYPE_S3C_SDHCI,
++        .parent = TYPE_SYSBUS_SDHCI,
++        .instance_init = sdhci_s3c_init,
++    },
+ };
+ 
+-static void sdhci_register_types(void)
+-{
+-    type_register_static(&sdhci_sysbus_info);
+-    type_register_static(&sdhci_bus_info);
+-    type_register_static(&imx_usdhc_info);
+-    type_register_static(&sdhci_s3c_info);
+-}
+-
+-type_init(sdhci_register_types)
++DEFINE_TYPES(types)
 -- 
 2.47.0
 
