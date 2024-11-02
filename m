@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBE39BA07B
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFB9BA082
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:24:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E10-0003F7-Ee; Sat, 02 Nov 2024 09:18:06 -0400
+	id 1t7E15-0003KJ-V4; Sat, 02 Nov 2024 09:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0m-00036v-8E; Sat, 02 Nov 2024 09:17:54 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1t7E0m-000372-Te; Sat, 02 Nov 2024 09:17:54 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0k-0001zJ-5Q; Sat, 02 Nov 2024 09:17:51 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a99eb8b607aso334153366b.2; 
- Sat, 02 Nov 2024 06:17:48 -0700 (PDT)
+ id 1t7E0l-0001zV-AR; Sat, 02 Nov 2024 09:17:52 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9404c0d50so3216098a12.3; 
+ Sat, 02 Nov 2024 06:17:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553467; x=1731158267; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553469; x=1731158269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ER63OFaSbqJru3HFylC612MYJYy6isDGIUx/mkHzX+E=;
- b=gjw6ILCPtPJLkayXIC8yMhiG7RaPcMp5DD79EccVp5mrv/5er75rWIqs/frS4trcU4
- 781tJtCwGjQcBVr4sDsrsOqN4NtSNzpiROMrxRkvJ35tTzGK98hNO4rpiErPC3gX/9E0
- dqxZR8DVECHcJnp64WrVI6zntXPtKu7wkFQXWm1AD6XLMFFSyG6uLvKBLMYdk6C80jsl
- l2tOET1OktNQpMAuO+ixNo23nPUFFI1b6ldGSGpdPqMXMzuSBq0lBKhJuolzWySQdQM/
- n3ai+72oX0C/zrrCasMPa2n49qN2Ygp3Co5aS/x3HZKjy75iQutweIM0b14Ec3vrFca0
- ZbJw==
+ bh=J0Kw1RPTj8Nz7cZMeaQp/Ezl77GlQeYj69gIDIMTTxE=;
+ b=eEBU0QWITOgVeN8Tk3NJFZG8+LeWrlwBLZqMyZykuF5ei3/z/jZQ28iSek4h7Zvwut
+ k7Rv4hk5Mnm+kFsM2k7XZ0LzQb9rSgYkQ5qw3Fna5yNLmccVpyElHvr1gW8GjI2IPUeO
+ A2vS7kKGsicJEdnhFLq0pnMqjxYiypeINcrEdKnrP3NKZ/wB5YGLW8qX/7NvGsyd6HN6
+ Fpy1T8wdQv4RqF+e0Nq5iGZU9i1osUcsMUnFg/WS+fReuPvrjt59bjr9Dd8g0EtrOCwq
+ 4UAHcGTmiWodHBDf8sNwAXHT8Q4ACW/8QGzse2zAqDRwFGggbbK4w4H8v+/1jnWvNsE1
+ XewQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553467; x=1731158267;
+ d=1e100.net; s=20230601; t=1730553469; x=1731158269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ER63OFaSbqJru3HFylC612MYJYy6isDGIUx/mkHzX+E=;
- b=LQUEtulvuwL6RAxgHD1qYeq3aUoDHfOZKUFQ/u4DTXQh/NSWEL4ag3XpsqB+3rlAY0
- apxibnfd8mdOVDiNRv8QqYEnTUd5HnbfCMO9Gd7Dg9U92vFaTwvq3CtJ5rwR8TMw0FIH
- CfDPniddH9WxMMbwmFi4/5iAbFikuTo3ks6M4P3LhNDKfP25+kV3bNF7s3+t3OZ0QQJG
- 3BkbB4G1ri2RXoD72SBUl1jg1zab7gS2wrkb+1qSbYpmpqlB4v+IUxS0UBpX3z4wQFDM
- EGVTPeOOeRPjAYUumbEsYIljbCe6SQEALJ49AscHOrykVuO6iGQ3Xy1eD2J8LT78HQbp
- X3Qw==
+ bh=J0Kw1RPTj8Nz7cZMeaQp/Ezl77GlQeYj69gIDIMTTxE=;
+ b=T7e+sBrQzvED8ZRy/IhOGl33FXi0CvURV+YgGlfVDdB3/oIT4DjmHEH7tgTElfKLIx
+ qNGwyxYyGa8kGXkn/4Dg/dT/gQ0bfYfPZh1DQ/3gTdc2Bd1Xo73TWjJND35kaf7mReK+
+ B/I+2wKWh2kfvsNK/++aEKUhqEmg7KM1N76KlcnVi1O2cowB0VRZkHC2878NMr6S3oSp
+ 09RpEouG//fJvZcSqaiQrj7aMpcOoBvQTyuqwdfCIpO8jHbeNzq5/RLv8q9bibPBGGBn
+ DD5L+3ILFx518BhKMJXiXwVYp1bVuK5Vr2OLiT5vfGG/p9VsZsxgMs2Vygtyz3Ij5Kuz
+ 9pGQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVviFqcbukapbyHSWU8F84ppkMJeMfdNd/p4w93ij7efnq/VtltQB3c+H1tqYWdl1AtZXeXz8u/T7w=@nongnu.org,
- AJvYcCXUUWMYUFBDGOKkdiKpNFuqQ/JNkuDRkIWD7WdY7oKp4xciIErASaEhE9V2VQULu51bnB+DcV2FW35m@nongnu.org
-X-Gm-Message-State: AOJu0Yz/TZAGHBi8KM4RNJFnmGxRs/r7jbxNMMKbFYdWhtiXeoG2kSnC
- ZodNAVwl06sbBDlNuyUIYmyLNvSGFCp94yNVWfHiO3Yy7Anmo8hL/K3oLg==
-X-Google-Smtp-Source: AGHT+IFH3oFSU6oJ/SmEK/L9bQyBHPh3p++0+orlfBFNKHJLlmGm32gOWC51mBxm3bfeTgUV1J4Cdg==
-X-Received: by 2002:a17:906:dc95:b0:a99:f28f:687 with SMTP id
- a640c23a62f3a-a9de61d1a52mr2507519366b.40.1730553466792; 
- Sat, 02 Nov 2024 06:17:46 -0700 (PDT)
+ AJvYcCWX6a9MNm7NDHM3PwF8ivgJxqcTk7Y2gIRlaxBF1vQgQMN8YCv/DwXI6voSQngcQbG5FyFKnlMRDZs=@nongnu.org,
+ AJvYcCXDBhtdk4pth9ohkgfK+I9PSYAArQr2IQ9Mst5b3z+4MnMjjCQhddYq7C/B6CQaJ8dC9dQeo98RZ+hG@nongnu.org
+X-Gm-Message-State: AOJu0Yx6d6BtWVj2NSNL5EC87OJwfdhzNeiNcGfzcmKnNdZ26Q7ufDT7
+ nAzaHLsTGNQq0EkJnyE39mKBdKl3enbuLCSo0fwFYGCNxI7m6iIIhK+CxA==
+X-Google-Smtp-Source: AGHT+IELY7UBHI4VOSJQkl3jqiquusfrGZoRJ2Dd/2s2Om+3vynANJgOG8Xe7wml05gqO6OJ4UfywA==
+X-Received: by 2002:a17:906:c106:b0:a99:ff43:ca8f with SMTP id
+ a640c23a62f3a-a9de5d659cdmr2566919966b.10.1730553468807; 
+ Sat, 02 Nov 2024 06:17:48 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.45
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:46 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:47 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -67,18 +67,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
- Corey Minyard <cminyard@mvista.com>, BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 13/26] hw/pci-host/ppce500: Reuse TYPE_PPC_E500_PCI_BRIDGE
- define
-Date: Sat,  2 Nov 2024 14:17:02 +0100
-Message-ID: <20241102131715.548849-14-shentey@gmail.com>
+ Corey Minyard <cminyard@mvista.com>
+Subject: [PATCH v3 14/26] hw/pci-host/ppce500: Prefer DEFINE_TYPES() macro
+Date: Sat,  2 Nov 2024 14:17:03 +0100
+Message-ID: <20241102131715.548849-15-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,27 +101,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer a macro rather than a string literal when instantiaging device models.
-
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/ppce500.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci-host/ppce500.c | 42 ++++++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
 diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index 97e5d47cec..d7ff2ba778 100644
+index d7ff2ba778..1ce79ea20c 100644
 --- a/hw/pci-host/ppce500.c
 +++ b/hw/pci-host/ppce500.c
-@@ -475,7 +475,7 @@ static void e500_pcihost_realize(DeviceState *dev, Error **errp)
-     address_space_init(&s->bm_as, &s->bm, "pci-bm");
-     pci_setup_iommu(b, &ppce500_iommu_ops, s);
+@@ -21,7 +21,6 @@
+ #include "hw/pci/pci_device.h"
+ #include "hw/pci/pci_host.h"
+ #include "qemu/bswap.h"
+-#include "qemu/module.h"
+ #include "hw/pci-host/ppce500.h"
+ #include "qom/object.h"
  
--    pci_create_simple(b, 0, "e500-host-bridge");
-+    pci_create_simple(b, 0, TYPE_PPC_E500_PCI_BRIDGE);
+@@ -508,17 +507,6 @@ static void e500_host_bridge_class_init(ObjectClass *klass, void *data)
+     dc->user_creatable = false;
+ }
  
-     memory_region_init(&s->container, OBJECT(h), "pci-container", PCIE500_ALL_SIZE);
-     memory_region_init_io(&h->conf_mem, OBJECT(h), &pci_host_conf_be_ops, h,
+-static const TypeInfo e500_host_bridge_info = {
+-    .name          = TYPE_PPC_E500_PCI_BRIDGE,
+-    .parent        = TYPE_PCI_DEVICE,
+-    .instance_size = sizeof(PPCE500PCIBridgeState),
+-    .class_init    = e500_host_bridge_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { },
+-    },
+-};
+-
+ static Property pcihost_properties[] = {
+     DEFINE_PROP_UINT32("first_slot", PPCE500PCIState, first_slot, 0x11),
+     DEFINE_PROP_UINT32("first_pin_irq", PPCE500PCIState, first_pin_irq, 0x1),
+@@ -535,17 +523,23 @@ static void e500_pcihost_class_init(ObjectClass *klass, void *data)
+     dc->vmsd = &vmstate_ppce500_pci;
+ }
+ 
+-static const TypeInfo e500_pcihost_info = {
+-    .name          = TYPE_PPC_E500_PCI_HOST_BRIDGE,
+-    .parent        = TYPE_PCI_HOST_BRIDGE,
+-    .instance_size = sizeof(PPCE500PCIState),
+-    .class_init    = e500_pcihost_class_init,
++static const TypeInfo types[] = {
++    {
++        .name          = TYPE_PPC_E500_PCI_BRIDGE,
++        .parent        = TYPE_PCI_DEVICE,
++        .instance_size = sizeof(PPCE500PCIBridgeState),
++        .class_init    = e500_host_bridge_class_init,
++        .interfaces    = (InterfaceInfo[]) {
++            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++            { },
++        },
++    },
++    {
++        .name          = TYPE_PPC_E500_PCI_HOST_BRIDGE,
++        .parent        = TYPE_PCI_HOST_BRIDGE,
++        .instance_size = sizeof(PPCE500PCIState),
++        .class_init    = e500_pcihost_class_init,
++    },
+ };
+ 
+-static void e500_pci_register_types(void)
+-{
+-    type_register_static(&e500_pcihost_info);
+-    type_register_static(&e500_host_bridge_info);
+-}
+-
+-type_init(e500_pci_register_types)
++DEFINE_TYPES(types)
 -- 
 2.47.0
 
