@@ -2,71 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002199B9D9B
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 08:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6996C9B9DDA
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 09:07:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t78Wr-0002ai-4q; Sat, 02 Nov 2024 03:26:37 -0400
+	id 1t799B-0007L6-SZ; Sat, 02 Nov 2024 04:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t78Wo-0002aS-Iu
- for qemu-devel@nongnu.org; Sat, 02 Nov 2024 03:26:34 -0400
-Received: from mail-wr1-f51.google.com ([209.85.221.51])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t78Wm-00054n-Hx
- for qemu-devel@nongnu.org; Sat, 02 Nov 2024 03:26:34 -0400
-Received: by mail-wr1-f51.google.com with SMTP id
- ffacd0b85a97d-37ec4e349f4so1649657f8f.0
- for <qemu-devel@nongnu.org>; Sat, 02 Nov 2024 00:26:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730532391; x=1731137191;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rai0llbqwDtjVqw61Uu1KRkRB2U74DYIfZtCvJM2jkI=;
- b=ntgXWpj01JWAi+AzhwgVCDcemr5yvYl4d/LnnifyoZhuOyu57uXVHfyI9W/LrlubOU
- IAyB+3WWfB/8tUOZBy523gzBgbXlTPsMSx7lz5rZejz+E8MHDqL1+cOk0ImR0EQSW8ts
- heb7mnMy3PeGwLojbgXLDj2iPv6Xi26H9f88ey4FahvvJvYnm2QsTTzPVmC1+hJz8rLG
- bwMbRWBvLIZAoFb4Xw+v+HfEiLJNJbLEkWOtvw+jzwtRtzq9G3mJ5tc65TnLzEu2WfQy
- UG5lo8IaeFOu+5thTmJYXhBXbKkN6Jsymab6RZ4slZVog8O+uwBg4UVf2ybyf4tN0Eop
- lY0w==
-X-Gm-Message-State: AOJu0YxXueSi1YfwuuXW7yeOXywG3Ywxi2S5LFr9s/6JPE5vsgxowGPK
- 4K3GLAdpjLYrSizZa5ryd7vQLOLotG41CqDRbx1c5lzY7jRKQ14rB9MLmA==
-X-Google-Smtp-Source: AGHT+IENdNW3LZzfqOFsuFCDM5zpkDc/OqqYD+qkMQNMjwO7K++gummMcFYHUSNXufspVUN/4i3eew==
-X-Received: by 2002:a5d:47a4:0:b0:37d:4894:6878 with SMTP id
- ffacd0b85a97d-381c7a47dd6mr4777579f8f.10.1730532390577; 
- Sat, 02 Nov 2024 00:26:30 -0700 (PDT)
-Received: from tpx1 (ip-109-42-48-251.web.vodafone.de. [109.42.48.251])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d685308sm83664705e9.33.2024.11.02.00.26.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 00:26:29 -0700 (PDT)
-Date: Sat, 2 Nov 2024 08:26:28 +0100
-From: Thomas Huth <huth@tuxfamily.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 15/36] next-cube: move en ethernet MMIO to separate
- memory region on next-pc device
-Message-ID: <20241102082628.5998c97b@tpx1>
-In-Reply-To: <20241023085852.1061031-16-mark.cave-ayland@ilande.co.uk>
-References: <20241023085852.1061031-1-mark.cave-ayland@ilande.co.uk>
- <20241023085852.1061031-16-mark.cave-ayland@ilande.co.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1t7998-0007J3-D4
+ for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:10 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1t7994-0001yy-Ht
+ for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:10 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxTOJm3SVnUn0nAA--.14339S3;
+ Sat, 02 Nov 2024 16:05:58 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMAx7uBh3SVnzZA1AA--.18827S2;
+ Sat, 02 Nov 2024 16:05:54 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL v2 0/8] loongarch-to-apply queue
+Date: Sat,  2 Nov 2024 15:47:29 +0800
+Message-Id: <20241102074737.1394884-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.221.51; envelope-from=th.huth@gmail.com;
- helo=mail-wr1-f51.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAx7uBh3SVnzZA1AA--.18827S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,16 +61,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed, 23 Oct 2024 09:58:31 +0100
-schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+The following changes since commit 92ec7805190313c9e628f8fc4eb4f932c15247bd:
 
-> Move the en ethernet MMIO accesses to a separate memory region on the next-pc
-> device instead of being part of the next.scr MMIO memory region.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->  hw/m68k/next-cube.c | 48 +++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 40 insertions(+), 8 deletions(-)
+  Merge tag 'pull-riscv-to-apply-20241031-1' of https://github.com/alistair23/qemu into staging (2024-10-31 16:34:25 +0000)
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20241102
+
+for you to fetch changes up to 47b54e15bbe78722c62dfafc3e04deded820c05e:
+
+  target/loongarch: Add steal time support on migration (2024-11-02 15:45:45 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20241102
+
+V2: Fix no 'asm/unistd_64.h' build error.
+    Add a new patch (hw/loongarch/boot: Use warn_report when no kernel filename).
+----------------------------------------------------------------
+Bibo Mao (7):
+      target/loongarch: Add loongson binary translation feature
+      target/loongarch: Implement lbt registers save/restore function
+      target/loongarch/kvm: Implement LoongArch PMU extension
+      linux-headers: Add unistd_64.h
+      linux-headers: loongarch: Add kvm_para.h
+      linux-headers: Update to Linux v6.12-rc5
+      target/loongarch: Add steal time support on migration
+
+Song Gao (1):
+      hw/loongarch/boot: Use warn_report when no kernel filename
+
+ hw/loongarch/boot.c                                |   5 +-
+ include/standard-headers/drm/drm_fourcc.h          |  43 +++
+ include/standard-headers/linux/const.h             |  17 ++
+ include/standard-headers/linux/ethtool.h           | 226 ++++++++++++++
+ include/standard-headers/linux/fuse.h              |  22 +-
+ include/standard-headers/linux/input-event-codes.h |   2 +
+ include/standard-headers/linux/pci_regs.h          |  41 ++-
+ include/standard-headers/linux/virtio_balloon.h    |  16 +-
+ include/standard-headers/linux/virtio_gpu.h        |   1 +
+ linux-headers/asm-arm64/mman.h                     |   9 +
+ linux-headers/asm-arm64/unistd.h                   |  25 +-
+ linux-headers/asm-arm64/unistd_64.h                | 324 ++++++++++++++++++++
+ linux-headers/asm-generic/unistd.h                 |   6 +-
+ linux-headers/asm-loongarch/kvm.h                  |  24 ++
+ linux-headers/asm-loongarch/kvm_para.h             |  21 ++
+ linux-headers/asm-loongarch/unistd.h               |   4 +-
+ linux-headers/asm-loongarch/unistd_64.h            | 320 ++++++++++++++++++++
+ linux-headers/asm-riscv/kvm.h                      |   7 +
+ linux-headers/asm-riscv/unistd.h                   |  41 +--
+ linux-headers/asm-riscv/unistd_32.h                | 315 ++++++++++++++++++++
+ linux-headers/asm-riscv/unistd_64.h                | 325 +++++++++++++++++++++
+ linux-headers/asm-x86/kvm.h                        |   2 +
+ linux-headers/asm-x86/unistd_64.h                  |   1 +
+ linux-headers/asm-x86/unistd_x32.h                 |   1 +
+ linux-headers/linux/bits.h                         |   3 +
+ linux-headers/linux/const.h                        |  17 ++
+ linux-headers/linux/iommufd.h                      | 143 +++++++--
+ linux-headers/linux/kvm.h                          |  23 +-
+ linux-headers/linux/mman.h                         |   1 +
+ linux-headers/linux/psp-sev.h                      |  28 ++
+ scripts/update-linux-headers.sh                    |   7 +
+ target/loongarch/cpu.c                             |  43 +++
+ target/loongarch/cpu.h                             |  23 ++
+ target/loongarch/kvm/kvm.c                         | 225 +++++++++++++-
+ target/loongarch/loongarch-qmp-cmds.c              |   2 +-
+ target/loongarch/machine.c                         |  30 +-
+ 36 files changed, 2243 insertions(+), 100 deletions(-)
+ create mode 100644 linux-headers/asm-arm64/unistd_64.h
+ create mode 100644 linux-headers/asm-loongarch/kvm_para.h
+ create mode 100644 linux-headers/asm-loongarch/unistd_64.h
+ create mode 100644 linux-headers/asm-riscv/unistd_32.h
+ create mode 100644 linux-headers/asm-riscv/unistd_64.h
+
 
