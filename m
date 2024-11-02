@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFB9BA082
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923369BA074
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:22:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E15-0003KJ-V4; Sat, 02 Nov 2024 09:18:12 -0400
+	id 1t7E1C-0003eG-GC; Sat, 02 Nov 2024 09:18:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0m-000372-Te; Sat, 02 Nov 2024 09:17:54 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1t7E0o-00037P-Kl; Sat, 02 Nov 2024 09:17:54 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0l-0001zV-AR; Sat, 02 Nov 2024 09:17:52 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5c9404c0d50so3216098a12.3; 
- Sat, 02 Nov 2024 06:17:50 -0700 (PDT)
+ id 1t7E0m-0001zq-Od; Sat, 02 Nov 2024 09:17:54 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5ceca7df7f0so584295a12.1; 
+ Sat, 02 Nov 2024 06:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553469; x=1731158269; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553470; x=1731158270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J0Kw1RPTj8Nz7cZMeaQp/Ezl77GlQeYj69gIDIMTTxE=;
- b=eEBU0QWITOgVeN8Tk3NJFZG8+LeWrlwBLZqMyZykuF5ei3/z/jZQ28iSek4h7Zvwut
- k7Rv4hk5Mnm+kFsM2k7XZ0LzQb9rSgYkQ5qw3Fna5yNLmccVpyElHvr1gW8GjI2IPUeO
- A2vS7kKGsicJEdnhFLq0pnMqjxYiypeINcrEdKnrP3NKZ/wB5YGLW8qX/7NvGsyd6HN6
- Fpy1T8wdQv4RqF+e0Nq5iGZU9i1osUcsMUnFg/WS+fReuPvrjt59bjr9Dd8g0EtrOCwq
- 4UAHcGTmiWodHBDf8sNwAXHT8Q4ACW/8QGzse2zAqDRwFGggbbK4w4H8v+/1jnWvNsE1
- XewQ==
+ bh=FdlRSFSVE5+jilPfwmoz97fjdKJLulipSEMWN67GtgY=;
+ b=CVWIrmkYi0KYpKuOMb1qHxYC1pXe3XDmen5iar5Jdkv/6wqiSeW/p74Rvk9LV2Bpgx
+ nXvTadtsvI6cRiB6w/g6DN/ghUGhUqLwG5/ya7Advoy2llfouEILlUBAgfu8JYascu42
+ HG4l7XZ4d5PSwbR9+Nlk51E3oATWiVMOcodPL1r3B1nQ1V15kuitC68OZmkIeMTw0WOc
+ 7Ba8fRbFPMSzvCSFlUwepa74rftC2458INif55LSM0tbwO3VP0xEGLY89Fbt8HjOyu+9
+ 2zciP03G5R6t3n/BaBLt+2iDugk9Y53768iCw+eMHKxyawDAMnCGaG1XysyZQD9Whuk3
+ 9kMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553469; x=1731158269;
+ d=1e100.net; s=20230601; t=1730553470; x=1731158270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J0Kw1RPTj8Nz7cZMeaQp/Ezl77GlQeYj69gIDIMTTxE=;
- b=T7e+sBrQzvED8ZRy/IhOGl33FXi0CvURV+YgGlfVDdB3/oIT4DjmHEH7tgTElfKLIx
- qNGwyxYyGa8kGXkn/4Dg/dT/gQ0bfYfPZh1DQ/3gTdc2Bd1Xo73TWjJND35kaf7mReK+
- B/I+2wKWh2kfvsNK/++aEKUhqEmg7KM1N76KlcnVi1O2cowB0VRZkHC2878NMr6S3oSp
- 09RpEouG//fJvZcSqaiQrj7aMpcOoBvQTyuqwdfCIpO8jHbeNzq5/RLv8q9bibPBGGBn
- DD5L+3ILFx518BhKMJXiXwVYp1bVuK5Vr2OLiT5vfGG/p9VsZsxgMs2Vygtyz3Ij5Kuz
- 9pGQ==
+ bh=FdlRSFSVE5+jilPfwmoz97fjdKJLulipSEMWN67GtgY=;
+ b=NvMqgiECz4J/eE/YhpfJcCoDEa/vg06t5HnSEAwZot3xJ6fYD0dg+hgoAgU1zOM6o+
+ u8Y62NxtojC4KXaaVpq9IpdPTvrjXQ8+KiWypRk+3jnLSzADoAurCLZXS+z5746TW+Jc
+ 9UJsRVRF3P/UpZogH27j+evw7F4sxcFaY1sGwU9Nl1RU3e8yXDFVYnPxuyYfCFJ5/g2S
+ DgFcc2T+7MfxFa1qwptwVwNJXgoFzrf3bIx87MdBGnF3I5z5RQpdi6Eu1OJV799jCA3B
+ 7SYFvY603lRxaQqUFbGu4YyG6FM9O99g1+Jxyka9zlT5L2ZRT0P8bADmU+7O26vvFii0
+ hJcA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWX6a9MNm7NDHM3PwF8ivgJxqcTk7Y2gIRlaxBF1vQgQMN8YCv/DwXI6voSQngcQbG5FyFKnlMRDZs=@nongnu.org,
- AJvYcCXDBhtdk4pth9ohkgfK+I9PSYAArQr2IQ9Mst5b3z+4MnMjjCQhddYq7C/B6CQaJ8dC9dQeo98RZ+hG@nongnu.org
-X-Gm-Message-State: AOJu0Yx6d6BtWVj2NSNL5EC87OJwfdhzNeiNcGfzcmKnNdZ26Q7ufDT7
- nAzaHLsTGNQq0EkJnyE39mKBdKl3enbuLCSo0fwFYGCNxI7m6iIIhK+CxA==
-X-Google-Smtp-Source: AGHT+IELY7UBHI4VOSJQkl3jqiquusfrGZoRJ2Dd/2s2Om+3vynANJgOG8Xe7wml05gqO6OJ4UfywA==
-X-Received: by 2002:a17:906:c106:b0:a99:ff43:ca8f with SMTP id
- a640c23a62f3a-a9de5d659cdmr2566919966b.10.1730553468807; 
- Sat, 02 Nov 2024 06:17:48 -0700 (PDT)
+ AJvYcCXFV0PvnW6+9dpbuJ8EMF4unAll3rgx8l25MFAK4aG8pojYiq62RNkpoTGqIBsz5q1dQu/0y9ijxW78@nongnu.org,
+ AJvYcCXUvytAgyWSnzhZVqTONEYe7Mz+GRJSi8g9nVeKrFedZfS/QXsckReryngX2qwCKYdnbjuaqM7TzNQ=@nongnu.org
+X-Gm-Message-State: AOJu0YwqsMaVuhpGRtkeVhBhj5Z7kRnq5IoohzG6mxIfb7wxZ6wCFtUr
+ 67EyKn7Uz9wj5CIVpR5tMHNAgtuTi/+JqiebDL+10FnldFjjv5RJwZb+8w==
+X-Google-Smtp-Source: AGHT+IHWAmadtq2H8x8vkXXajemY4CQNXF+sufmMYE8SBjrdsSdHgXnfrD3qtu/EGtdZe3bNK+Bcug==
+X-Received: by 2002:a17:907:9407:b0:a77:c30c:341 with SMTP id
+ a640c23a62f3a-a9e652a2f0dmr654804166b.0.1730553469923; 
+ Sat, 02 Nov 2024 06:17:49 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.46
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:47 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:49 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,17 +68,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 14/26] hw/pci-host/ppce500: Prefer DEFINE_TYPES() macro
-Date: Sat,  2 Nov 2024 14:17:03 +0100
-Message-ID: <20241102131715.548849-15-shentey@gmail.com>
+Subject: [PATCH v3 15/26] hw/net/fsl_etsec/miim: Reuse MII constants
+Date: Sat,  2 Nov 2024 14:17:04 +0100
+Message-ID: <20241102131715.548849-16-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,78 +100,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Instead of defining redundant constants and using magic numbers reuse the
+existing MII constants.
+
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/ppce500.c | 42 ++++++++++++++++++------------------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ hw/net/fsl_etsec/miim.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index d7ff2ba778..1ce79ea20c 100644
---- a/hw/pci-host/ppce500.c
-+++ b/hw/pci-host/ppce500.c
-@@ -21,7 +21,6 @@
- #include "hw/pci/pci_device.h"
- #include "hw/pci/pci_host.h"
- #include "qemu/bswap.h"
--#include "qemu/module.h"
- #include "hw/pci-host/ppce500.h"
- #include "qom/object.h"
+diff --git a/hw/net/fsl_etsec/miim.c b/hw/net/fsl_etsec/miim.c
+index b48d2cb57b..4e9169907a 100644
+--- a/hw/net/fsl_etsec/miim.c
++++ b/hw/net/fsl_etsec/miim.c
+@@ -29,13 +29,6 @@
  
-@@ -508,17 +507,6 @@ static void e500_host_bridge_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = false;
- }
+ /* #define DEBUG_MIIM */
  
--static const TypeInfo e500_host_bridge_info = {
--    .name          = TYPE_PPC_E500_PCI_BRIDGE,
--    .parent        = TYPE_PCI_DEVICE,
--    .instance_size = sizeof(PPCE500PCIBridgeState),
--    .class_init    = e500_host_bridge_class_init,
--    .interfaces = (InterfaceInfo[]) {
--        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
--        { },
--    },
--};
+-#define MIIM_CONTROL    0
+-#define MIIM_STATUS     1
+-#define MIIM_PHY_ID_1   2
+-#define MIIM_PHY_ID_2   3
+-#define MIIM_T2_STATUS  10
+-#define MIIM_EXT_STATUS 15
 -
- static Property pcihost_properties[] = {
-     DEFINE_PROP_UINT32("first_slot", PPCE500PCIState, first_slot, 0x11),
-     DEFINE_PROP_UINT32("first_pin_irq", PPCE500PCIState, first_pin_irq, 0x1),
-@@ -535,17 +523,23 @@ static void e500_pcihost_class_init(ObjectClass *klass, void *data)
-     dc->vmsd = &vmstate_ppce500_pci;
- }
+ static void miim_read_cycle(eTSEC *etsec)
+ {
+     uint8_t  phy;
+@@ -47,14 +40,14 @@ static void miim_read_cycle(eTSEC *etsec)
+     addr = etsec->regs[MIIMADD].value & 0x1F;
  
--static const TypeInfo e500_pcihost_info = {
--    .name          = TYPE_PPC_E500_PCI_HOST_BRIDGE,
--    .parent        = TYPE_PCI_HOST_BRIDGE,
--    .instance_size = sizeof(PPCE500PCIState),
--    .class_init    = e500_pcihost_class_init,
-+static const TypeInfo types[] = {
-+    {
-+        .name          = TYPE_PPC_E500_PCI_BRIDGE,
-+        .parent        = TYPE_PCI_DEVICE,
-+        .instance_size = sizeof(PPCE500PCIBridgeState),
-+        .class_init    = e500_host_bridge_class_init,
-+        .interfaces    = (InterfaceInfo[]) {
-+            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-+            { },
-+        },
-+    },
-+    {
-+        .name          = TYPE_PPC_E500_PCI_HOST_BRIDGE,
-+        .parent        = TYPE_PCI_HOST_BRIDGE,
-+        .instance_size = sizeof(PPCE500PCIState),
-+        .class_init    = e500_pcihost_class_init,
-+    },
- };
+     switch (addr) {
+-    case MIIM_CONTROL:
++    case MII_BMCR:
+         value = etsec->phy_control;
+         break;
+-    case MIIM_STATUS:
++    case MII_BMSR:
+         value = etsec->phy_status;
+         break;
+-    case MIIM_T2_STATUS:
+-        value = 0x1800;           /* Local and remote receivers OK */
++    case MII_STAT1000:
++        value = MII_STAT1000_LOK | MII_STAT1000_ROK;
+         break;
+     default:
+         value = 0x0;
+@@ -84,8 +77,8 @@ static void miim_write_cycle(eTSEC *etsec)
+ #endif
  
--static void e500_pci_register_types(void)
--{
--    type_register_static(&e500_pcihost_info);
--    type_register_static(&e500_host_bridge_info);
--}
--
--type_init(e500_pci_register_types)
-+DEFINE_TYPES(types)
+     switch (addr) {
+-    case MIIM_CONTROL:
+-        etsec->phy_control = value & ~(0x8100);
++    case MII_BMCR:
++        etsec->phy_control = value & ~(MII_BMCR_RESET | MII_BMCR_FD);
+         break;
+     default:
+         break;
 -- 
 2.47.0
 
