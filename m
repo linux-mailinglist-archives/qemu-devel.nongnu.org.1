@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220B59BA066
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0399B9BA077
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E19-0003Pu-LZ; Sat, 02 Nov 2024 09:18:15 -0400
+	id 1t7E1E-0003jj-79; Sat, 02 Nov 2024 09:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0q-0003A5-Aa; Sat, 02 Nov 2024 09:17:56 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1t7E0r-0003AJ-7R; Sat, 02 Nov 2024 09:17:58 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0o-00020G-O8; Sat, 02 Nov 2024 09:17:56 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3807dd08cfcso2276488f8f.1; 
- Sat, 02 Nov 2024 06:17:52 -0700 (PDT)
+ id 1t7E0p-00020Y-8O; Sat, 02 Nov 2024 09:17:56 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a9a628b68a7so414962966b.2; 
+ Sat, 02 Nov 2024 06:17:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553471; x=1731158271; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553472; x=1731158272; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pyBZgo+H9vb+N+fytpA0S3Ymlld/fAbgfJZrmoRBkU8=;
- b=cnad/3dErhlR1nya1UDUF9+LWHssO6eBtJVOdIC1GAWqKKkkojCyHJHQvhYS3vsAco
- JO4MnJ+iYRgFTIl+RpVscVHWsSxnJWBwyf50t3pAk34fLuj67PR+wIAfpgxjoMmIRJGd
- OwtWyo3ij3A5cFD7TlP3joYPTMac12lQ3qhfYlejOl1UErudb+byNkyLV/ByuqQoTrWg
- XKy46Of8eNXFVAhuT0Dx4V8hm/YB+E9CiWt6GIOXKRKzJBQxp85LHzdxWO0l46HkWVFu
- Oxgr8OfLoqas/2Gs0ykx6fAe1VdFK00SbPXQHD4vPGPjVHFyjWtFoSFLaP6XJNYru09P
- TMHA==
+ bh=81MfAqqbp66dFfi7sHbuaRksnlomjizHjiUJECLfYTw=;
+ b=LZRyGwOSfekWRcdmRPt/WQpFVCFJZM7lXRN0g8XnVWO2figG0tjqMdMfZQp7hzWMJY
+ tLdeWmKKur/qt7j7mTyS20Wn+1atcakWL7/uXePqw4u9+IAoA94EQK76yGkeQDPZMbLr
+ UJg07qCUHo0PJzq6YzpwrmDi5c62AXMMVjZwS15r19z2Qk9ZlLSeJJdm0b+kP5nNIjr9
+ NN0bd5vSzwWpsj8Xzx8M1ybixkEGKZXzVfRrGlIBC+5cJoWox/bPBmDSbfI/SweNaBYR
+ 4jS1qQKV8SjloE37hkMttAAiCLwvMhtzjFAq4nBX/3AAt1HOuBVINqofisekWcE5vmF1
+ oUcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553471; x=1731158271;
+ d=1e100.net; s=20230601; t=1730553472; x=1731158272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pyBZgo+H9vb+N+fytpA0S3Ymlld/fAbgfJZrmoRBkU8=;
- b=S7LJED5OWjFEN4mER8V3F24OJGd9/q2evvxEYBLYMnizqL87q0IANmrAvfgsVn4ml5
- ieqJqO6dO6p3VneSzVIL1RkFJyHKCQgpI21c1JxmNCwOUxWbnfG9LMvXYc+sF+mcQhtc
- UNmca0UH/orq0mKhQD37JrDjut07YP36c9aziYEXACm8jR8dpMXZzfh4ekgJTQC9H8Gm
- IXVX/GpO/+E/PDtsTpDh3dB2grIhQH2Z2WZ3c5Lttp1LZ3hGFzcM1ZvcykepC93e5vIP
- wJcmC9YNi+AJOwqnOu0uyk3LXpjZsWEb3dPVTwqUJPoBZ2XifdkUDXsxDs1k4OHvDb/t
- m78Q==
+ bh=81MfAqqbp66dFfi7sHbuaRksnlomjizHjiUJECLfYTw=;
+ b=dHcO8kKKD7mJNxlXHfTTwyW8dUHUZsxh1+DLIX2IyJOX1OqyU3hlLFy99LY+fLl84T
+ f7Z3mSJSYFhJsHNgZrUg+faESaK2DbgMahz8RTGe51705tLNpnmt9VhAhy/VHa6OLzaP
+ MAMTOCVftAPlxnM/xDtDPD04tj9w6LN+enJ7wPCv8nbFfSUO7ZjEoV9bVLlUZE530+2R
+ /oOLhpqrs45F0X9jL5MmW6SPbBBavTOmtqzL3oGF89up0eDIjhKCVBeUmxOxsh4jI1k6
+ vMLOigF2VQMr2ECwYQiufEHNNmztj48HDDzVOtEKPTkH9Mwb6RjlRP9zOS8NB8eSJOOu
+ nagg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWwPnhQmpRxgx6GdbfoBWGQrKeu1I9MkkJzo23Mjnph5N9VcWArdpCBOFync6AhQE8eaH8kKj4tqkDH@nongnu.org,
- AJvYcCXKrHJUNRXEXBQqJ2G8jMk8ledIha7hD2y7RtEZ8lZ2bN4McNJyyC9Q/HBU7ezQ7seLrPJBnIvFiuk=@nongnu.org
-X-Gm-Message-State: AOJu0Yw2+Qgf4EHhFMTvl3dkGRZFlQ9BWLttwWCkLMu6xAvf7gP6CZFX
- AT+aV7UjlkIGTGHZKH5gBymP4F81Bpjn18aFovLeXl/mzRFqILhvJYmE6g==
-X-Google-Smtp-Source: AGHT+IFmo85UhsYj7yM/t9jVFu3LpfoBltx4O9rUXGdXmiiFp+UENhvv8OH+qjBlv8JKsxZ9VkUkAw==
-X-Received: by 2002:a5d:6d0f:0:b0:37d:9565:4db2 with SMTP id
- ffacd0b85a97d-381c7a469cemr7604057f8f.6.1730553471197; 
- Sat, 02 Nov 2024 06:17:51 -0700 (PDT)
+ AJvYcCVqXsBjOTQ9GWGsDf1wxdK1sehQ29P/cosxSDolMsc241uJaUeSIA9rvjfQ6L93NzU2IyrYsslWYhA=@nongnu.org,
+ AJvYcCX7otU6dwiz91HB2Agec3eqRk4VTU1gHxk67Q93qmucuIbO0cgLof6xgKTvCcIToY3Lw5DXi3Buza4P@nongnu.org
+X-Gm-Message-State: AOJu0YywQIwklGT5L19rJ6A5GM9YdKszxwud0x3soj6QoXvrxbl2mSLg
+ AymNWlIN4HLlA+vdj8rra18aY9Ynr+/sSEssFJTKzbkJlvM2vd7gHoqqiA==
+X-Google-Smtp-Source: AGHT+IGE+U9QLMZXheb9qhqDWZ0xMGD2baRMHOfNGy182m2Nn36MBGXMuDzpAjG7Y04w5uDblWgdfg==
+X-Received: by 2002:a17:906:6a1e:b0:a77:c95e:9b1c with SMTP id
+ a640c23a62f3a-a9e654f89b5mr586975966b.27.1730553472375; 
+ Sat, 02 Nov 2024 06:17:52 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.50
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:50 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:51 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,17 +68,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 16/26] hw/net/fsl_etsec/etsec: Prefer DEFINE_TYPES() macro
-Date: Sat,  2 Nov 2024 14:17:05 +0100
-Message-ID: <20241102131715.548849-17-shentey@gmail.com>
+Subject: [PATCH v3 17/26] hw/gpio/mpc8xxx: Prefer DEFINE_TYPES() macro
+Date: Sat,  2 Nov 2024 14:17:06 +0100
+Message-ID: <20241102131715.548849-18-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,47 +104,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/net/fsl_etsec/etsec.c | 22 +++++++++-------------
+ hw/gpio/mpc8xxx.c | 22 +++++++++-------------
  1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
-index 3fdd16ef2e..9bd886b996 100644
---- a/hw/net/fsl_etsec/etsec.c
-+++ b/hw/net/fsl_etsec/etsec.c
-@@ -36,7 +36,6 @@
- #include "registers.h"
- #include "qapi/error.h"
- #include "qemu/log.h"
+diff --git a/hw/gpio/mpc8xxx.c b/hw/gpio/mpc8xxx.c
+index 63b7a5c881..de183c3be5 100644
+--- a/hw/gpio/mpc8xxx.c
++++ b/hw/gpio/mpc8xxx.c
+@@ -23,7 +23,6 @@
+ #include "hw/irq.h"
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
 -#include "qemu/module.h"
+ #include "qom/object.h"
  
- /* #define HEX_DUMP */
- /* #define DEBUG_REGISTER */
-@@ -431,17 +430,14 @@ static void etsec_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = true;
+ #define TYPE_MPC8XXX_GPIO "mpc8xxx_gpio"
+@@ -208,17 +207,14 @@ static void mpc8xxx_gpio_class_init(ObjectClass *klass, void *data)
+     device_class_set_legacy_reset(dc, mpc8xxx_gpio_reset);
  }
  
--static const TypeInfo etsec_info = {
--    .name                  = TYPE_ETSEC_COMMON,
--    .parent                = TYPE_SYS_BUS_DEVICE,
--    .instance_size         = sizeof(eTSEC),
--    .class_init            = etsec_class_init,
--    .instance_init         = etsec_instance_init,
+-static const TypeInfo mpc8xxx_gpio_info = {
+-    .name          = TYPE_MPC8XXX_GPIO,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(MPC8XXXGPIOState),
+-    .instance_init = mpc8xxx_gpio_initfn,
+-    .class_init    = mpc8xxx_gpio_class_init,
 +static const TypeInfo types[] = {
 +    {
-+        .name          = TYPE_ETSEC_COMMON,
++        .name          = TYPE_MPC8XXX_GPIO,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(eTSEC),
-+        .class_init    = etsec_class_init,
-+        .instance_init = etsec_instance_init,
++        .instance_size = sizeof(MPC8XXXGPIOState),
++        .instance_init = mpc8xxx_gpio_initfn,
++        .class_init    = mpc8xxx_gpio_class_init,
 +    },
  };
  
--static void etsec_register_types(void)
+-static void mpc8xxx_gpio_register_types(void)
 -{
--    type_register_static(&etsec_info);
+-    type_register_static(&mpc8xxx_gpio_info);
 -}
 -
--type_init(etsec_register_types)
+-type_init(mpc8xxx_gpio_register_types)
 +DEFINE_TYPES(types)
 -- 
 2.47.0
