@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6C09B9DDF
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 09:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 804279B9DE0
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 09:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t799A-0007Js-58; Sat, 02 Nov 2024 04:06:12 -0400
+	id 1t799A-0007K1-9d; Sat, 02 Nov 2024 04:06:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t7998-0007J0-6Y
- for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:10 -0400
+ id 1t7997-0007Is-NR
+ for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:09 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t7995-0001zE-0T
+ (envelope-from <gaosong@loongson.cn>) id 1t7994-0001zG-DP
  for qemu-devel@nongnu.org; Sat, 02 Nov 2024 04:06:09 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxGeBp3SVnaX0nAA--.14677S3;
- Sat, 02 Nov 2024 16:06:01 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxeeBq3SVnbH0nAA--.14517S3;
+ Sat, 02 Nov 2024 16:06:02 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAx7uBh3SVnzZA1AA--.18827S6;
+ by front1 (Coremail) with SMTP id qMiowMAx7uBh3SVnzZA1AA--.18827S7;
  Sat, 02 Nov 2024 16:06:01 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL v2 4/8] linux-headers: Add unistd_64.h
-Date: Sat,  2 Nov 2024 15:47:33 +0800
-Message-Id: <20241102074737.1394884-5-gaosong@loongson.cn>
+Subject: [PULL v2 5/8] linux-headers: loongarch: Add kvm_para.h
+Date: Sat,  2 Nov 2024 15:47:34 +0800
+Message-Id: <20241102074737.1394884-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20241102074737.1394884-1-gaosong@loongson.cn>
 References: <20241102074737.1394884-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAx7uBh3SVnzZA1AA--.18827S6
+X-CM-TRANSID: qMiowMAx7uBh3SVnzZA1AA--.18827S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,46 +65,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-since 6.11, unistd.h includes header file unistd_64.h directly on
-some platforms, here add unistd_64.h on these platforms. Affected
-platforms are ARM64, LoongArch64 and Riscv. Otherwise there will
-be compiling error such as:
-
-linux-headers/asm/unistd.h:3:10: fatal error: asm/unistd_64.h: No such file or directory
- #include <asm/unistd_64.h>
+KVM LBT supports on LoongArch depends on the linux-header file
+kvm_para.h, add header file kvm_para.h here.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Acked-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20241028023809.1554405-2-maobibo@loongson.cn>
+Message-Id: <20241028023809.1554405-3-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- scripts/update-linux-headers.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ scripts/update-linux-headers.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
-index c34ac6454e..203f48d089 100755
+index 203f48d089..99a8d9fa4c 100755
 --- a/scripts/update-linux-headers.sh
 +++ b/scripts/update-linux-headers.sh
-@@ -163,6 +163,7 @@ EOF
+@@ -190,6 +190,7 @@ EOF
+         cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-riscv/"
      fi
-     if [ $arch = arm64 ]; then
-         cp "$hdrdir/include/asm/sve_context.h" "$output/linux-headers/asm-arm64/"
-+        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-arm64/"
-     fi
-     if [ $arch = x86 ]; then
-         cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-x86/"
-@@ -185,6 +186,11 @@ EOF
-     fi
-     if [ $arch = riscv ]; then
-         cp "$hdrdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
-+        cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-riscv/"
-+        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-riscv/"
-+    fi
-+    if [ $arch = loongarch ]; then
-+        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-loongarch/"
+     if [ $arch = loongarch ]; then
++        cp "$hdrdir/include/asm/kvm_para.h" "$output/linux-headers/asm-loongarch/"
+         cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-loongarch/"
      fi
  done
- arch=
 -- 
 2.34.1
 
