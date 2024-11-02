@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC35E9BA01D
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 13:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 362FF9BA01C
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 13:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7DhO-0004Ls-0C; Sat, 02 Nov 2024 08:57:50 -0400
+	id 1t7DhO-0004Lw-4k; Sat, 02 Nov 2024 08:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7DhG-0004K9-IS; Sat, 02 Nov 2024 08:57:42 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1t7DhH-0004Km-TE; Sat, 02 Nov 2024 08:57:44 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7DhE-0003X1-U0; Sat, 02 Nov 2024 08:57:42 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a9a0ef5179dso432236566b.1; 
- Sat, 02 Nov 2024 05:57:40 -0700 (PDT)
+ id 1t7DhG-0003XE-6J; Sat, 02 Nov 2024 08:57:43 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a9a68480164so405294766b.3; 
+ Sat, 02 Nov 2024 05:57:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730552259; x=1731157059; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730552260; x=1731157060; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mx+nl2IW6DkUrQc3MJ4fS8N2lPDs89yRdABbw5KHKCs=;
- b=iYqTr+dmBrFDPbvB3563KDcSLNQ3ocqJp4gJO4Rkthu2YTqn9YgANWoMNwwNVHpdz5
- QzXdj2NUAAOsEgwy3vP+H1KT5P6ZlWhnHaDFtiCQR5fSp8q6yA4L4nYzFbxE+DsbM7xd
- ZBLcMWIsCmHkaJ705M5JLt8c5l6dUkDs8RLRpuU30OnhPVas6MU2HZ0QseTMiG/kJ2Mo
- jlPltxBtjBib0FrrIIwuvlt4KZvISETg+5VzXm9//mozn6fNaS0qLC/uF053AlWZ4F8n
- 6+naYVfZUs6XWpRdSHqV7J9DuQU/D7oJ4TXjqK25S3UWt2wWaSKWzH2TFO50NvgXYKrJ
- jm2w==
+ bh=PEJit+n3Bz7TMfJTRDNgLiFEZd/dM54jh7Ah9LBdETI=;
+ b=ct6vKB45+i0eaK3pgUvgF/oiGCNPsHSDfM5IPDvsp9xiR1G0uuLAxKEZkbjjBoKJuo
+ tE+/z2TplQSX9GneSNMgiERA3OZsZpaoMfl/gXMiHG1aUAlQhBPQDkjFaWWcVmYENJ6g
+ OzT4WZYN/yp47DLii6qfzDDAmxH5cDj/TpNn3LW0II+Prcy4x879dNCB6MJNvV+lwJoW
+ MNH5ErbbJh0Xunh3CGKk4Ko93sOV6F00nn6shvCJX4Gsf9e/eKcgDBMh8CF9XIj/HUJn
+ UV4QBspzWgh98ZnMWAvOePygcJoI8kJZubdO0/adTuAU85Er+2/XCQvvjnpulgYfDBiv
+ +JRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730552259; x=1731157059;
+ d=1e100.net; s=20230601; t=1730552260; x=1731157060;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mx+nl2IW6DkUrQc3MJ4fS8N2lPDs89yRdABbw5KHKCs=;
- b=O1HyXIc/f81OdqlF4w0QDN5f3JEkVNwUVqo3wo3K5RgzjUGk4FDdzxZ4Feda7MSGgj
- VYC1C8SbheWxTBgBMaWKfHhnsHAaeyCTlKBpRSZRfIclYPw43gFRrOB6NwBX7zbWtwQl
- gj/bvtK20fUtpSCnYp+9ex2VyTPyKKkSPppraR2MbNkE0LEu3N0msbQLFZO48aUN8CPz
- JJig9J8zR39HM1xllZk51LXS3JPAhFUDFG5sgPPX0IGvRjAixEtX+Si76EE0CTITOW9R
- mpKyU4/wU9YWP6WkTIRu+TbCdVkdpFGzAavl6lQy5z5+L32AE3l+4auUcHwvoQ1wumY7
- llXQ==
+ bh=PEJit+n3Bz7TMfJTRDNgLiFEZd/dM54jh7Ah9LBdETI=;
+ b=nuIyzkxmzXvmQe81balOAnM3OcbeMVXKq19cI/q0Xl9bOnSyVE3Bo5VewzHMBhFmne
+ CzEQRCNJAGs7z5+l9X3rnCRtt3DncglYIq0x/Lyrgq9raK1Tcr2OUuplrGQtTLMWoEdv
+ 0KIY/960ulBM2FLVJYtsUcUcepmzwx30UxZmIPG0AZqVBqNvRvfvUnUdjDofHtQEte92
+ hdNH13OFLATe42JNwFX8iPXBnPr0ea/tR4UzSu3998tK/syvPce1q4CEDn/YA45xr8/d
+ 86d+H16uLCA8EEhaRV1QcOuD/nRPJkAgyciTrjOPQG3EThkP7yWQwYj8/LnvBxV5kXl0
+ ukRg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVhkB6KPuqKrcCsh3v7Oi2na3yVTOivnDMcv38JgFZSylqKbF7kQzbymaMMR3riKiM4vojmqP8hkg==@nongnu.org
-X-Gm-Message-State: AOJu0YwCnXm6Bd20MsDltJAL92cie+H9CjGggUBkFrhcakRktnMow+BB
- kQtqGw+1xo19qCejAkWVtY6sfa2YLmV2FK2oxgN1mqG+fHjJr/T8Onz8Ag==
-X-Google-Smtp-Source: AGHT+IGYVWdqoqKX4lchw/3I5lA7Q8kKq276xS3DBKxf3NI0T1nZYpmnYOjIf2Ub78WWfBUc6CQLog==
-X-Received: by 2002:a17:907:9719:b0:a9a:67a9:dc45 with SMTP id
- a640c23a62f3a-a9de5d6eb93mr2624029066b.3.1730552258571; 
- Sat, 02 Nov 2024 05:57:38 -0700 (PDT)
+ AJvYcCXFnqI/sarJ5GiA5grjDgWx7svMoRx+cwNEtDVUYibGSvBR3MdSPBVdCMrIh7sDAZlQDQ3Samsb1Q==@nongnu.org
+X-Gm-Message-State: AOJu0Yz0aG8dAR/pSfKo3H62myegiYBpCVngKlEPDdlQpsNQyrXWi5VK
+ tyRwWiAT6H9L7ghTx3s9CGZ+yCHSd56iR84W+K393rkJ/pzWrYJ6K35ofQ==
+X-Google-Smtp-Source: AGHT+IHwXhP5hKHqaAkT0ZHi7DyXwIGWluEZ9ovphRnTKFV+4rq6cX0VjB/wRuKpqgVpKBC/XfLUxg==
+X-Received: by 2002:a17:907:3e1a:b0:a99:f4be:7a6c with SMTP id
+ a640c23a62f3a-a9de61669cdmr2706319666b.52.1730552259871; 
+ Sat, 02 Nov 2024 05:57:39 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e566846a7sm305836666b.206.2024.11.02.05.57.37
+ a640c23a62f3a-a9e566846a7sm305836666b.206.2024.11.02.05.57.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 05:57:37 -0700 (PDT)
+ Sat, 02 Nov 2024 05:57:39 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Guenter Roeck <linux@roeck-us.net>,
  qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 3/5] hw/net/lan9118_phy: Fix off-by-one error in MII_ANLPAR
- register
-Date: Sat,  2 Nov 2024 13:57:22 +0100
-Message-ID: <20241102125724.532843-4-shentey@gmail.com>
+Subject: [PATCH v3 4/5] hw/net/lan9118_phy: Reuse MII constants
+Date: Sat,  2 Nov 2024 13:57:23 +0100
+Message-ID: <20241102125724.532843-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102125724.532843-1-shentey@gmail.com>
 References: <20241102125724.532843-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,28 +94,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Turns 0x70 into 0xe0 (== 0x70 << 1) which adds the missing MII_ANLPAR_TX and
-fixes the MSB of selector field to be zero, as specified in the datasheet.
+Prefer named constants over magic values for better readability.
 
-Fixes: 2a424990170b "LAN9118 emulation"
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/net/lan9118_phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/net/mii.h |  6 +++++
+ hw/net/lan9118_phy.c | 63 ++++++++++++++++++++++++++++----------------
+ 2 files changed, 46 insertions(+), 23 deletions(-)
 
+diff --git a/include/hw/net/mii.h b/include/hw/net/mii.h
+index f7feddac9b..55bf7c92a1 100644
+--- a/include/hw/net/mii.h
++++ b/include/hw/net/mii.h
+@@ -71,6 +71,7 @@
+ #define MII_BMSR_JABBER     (1 << 1)  /* Jabber detected */
+ #define MII_BMSR_EXTCAP     (1 << 0)  /* Ext-reg capability */
+ 
++#define MII_ANAR_RFAULT     (1 << 13) /* Say we can detect faults */
+ #define MII_ANAR_PAUSE_ASYM (1 << 11) /* Try for asymmetric pause */
+ #define MII_ANAR_PAUSE      (1 << 10) /* Try for pause */
+ #define MII_ANAR_TXFD       (1 << 8)
+@@ -78,6 +79,7 @@
+ #define MII_ANAR_10FD       (1 << 6)
+ #define MII_ANAR_10         (1 << 5)
+ #define MII_ANAR_CSMACD     (1 << 0)
++#define MII_ANAR_SELECT     (0x001f)  /* Selector bits */
+ 
+ #define MII_ANLPAR_ACK      (1 << 14)
+ #define MII_ANLPAR_PAUSEASY (1 << 11) /* can pause asymmetrically */
+@@ -112,6 +114,10 @@
+ #define RTL8201CP_PHYID1    0x0000
+ #define RTL8201CP_PHYID2    0x8201
+ 
++/* SMSC LAN9118 */
++#define SMSCLAN9118_PHYID1  0x0007
++#define SMSCLAN9118_PHYID2  0xc0d1
++
+ /* RealTek 8211E */
+ #define RTL8211E_PHYID1     0x001c
+ #define RTL8211E_PHYID2     0xc915
 diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
-index d2dcd732ac..d8fc9ddd3a 100644
+index d8fc9ddd3a..874dae4155 100644
 --- a/hw/net/lan9118_phy.c
 +++ b/hw/net/lan9118_phy.c
-@@ -54,7 +54,7 @@ uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg)
+@@ -14,6 +14,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "hw/net/lan9118_phy.h"
++#include "hw/net/mii.h"
+ #include "hw/irq.h"
+ #include "hw/resettable.h"
+ #include "migration/vmstate.h"
+@@ -38,26 +39,28 @@ uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg)
+     uint16_t val;
+ 
+     switch (reg) {
+-    case 0: /* Basic Control */
++    case MII_BMCR:
+         val = s->control;
+         break;
+-    case 1: /* Basic Status */
++    case MII_BMSR:
+         val = s->status;
+         break;
+-    case 2: /* ID1 */
+-        val = 0x0007;
++    case MII_PHYID1:
++        val = SMSCLAN9118_PHYID1;
+         break;
+-    case 3: /* ID2 */
+-        val = 0xc0d1;
++    case MII_PHYID2:
++        val = SMSCLAN9118_PHYID2;
+         break;
+-    case 4: /* Auto-neg advertisement */
++    case MII_ANAR:
          val = s->advertise;
          break;
-     case 5: /* Auto-neg Link Partner Ability */
--        val = 0x0f71;
-+        val = 0x0fe1;
+-    case 5: /* Auto-neg Link Partner Ability */
+-        val = 0x0fe1;
++    case MII_ANLPAR:
++        val = MII_ANLPAR_PAUSEASY | MII_ANLPAR_PAUSE | MII_ANLPAR_T4 |
++              MII_ANLPAR_TXFD | MII_ANLPAR_TX | MII_ANLPAR_10FD |
++              MII_ANLPAR_10 | MII_ANLPAR_CSMACD;
          break;
-     case 6: /* Auto-neg Expansion */
-         val = 1;
+-    case 6: /* Auto-neg Expansion */
+-        val = 1;
++    case MII_ANER:
++        val = MII_ANER_NWAY;
+         break;
+     case 29: /* Interrupt source. */
+         val = s->ints;
+@@ -92,19 +95,24 @@ void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val)
+     trace_lan9118_phy_write(val, reg);
+ 
+     switch (reg) {
+-    case 0: /* Basic Control */
+-        if (val & 0x8000) {
++    case MII_BMCR:
++        if (val & MII_BMCR_RESET) {
+             lan9118_phy_reset(s);
+         } else {
+-            s->control = val & 0x7980;
++            s->control = val & (MII_BMCR_LOOPBACK | MII_BMCR_SPEED100 |
++                                MII_BMCR_AUTOEN | MII_BMCR_PDOWN | MII_BMCR_FD |
++                                MII_BMCR_CTST);
+             /* Complete autonegotiation immediately. */
+-            if (val & 0x1000) {
+-                s->status |= 0x0020;
++            if (val & MII_BMCR_AUTOEN) {
++                s->status |= MII_BMSR_AN_COMP;
+             }
+         }
+         break;
+-    case 4: /* Auto-neg advertisement */
+-        s->advertise = (val & 0x2d7f) | 0x80;
++    case MII_ANAR:
++        s->advertise = (val & (MII_ANAR_RFAULT | MII_ANAR_PAUSE_ASYM |
++                               MII_ANAR_PAUSE | MII_ANAR_10FD | MII_ANAR_10 |
++                               MII_ANAR_SELECT))
++                     | MII_ANAR_TX;
+         break;
+     case 30: /* Interrupt mask */
+         s->int_mask = val & 0xff;
+@@ -131,11 +139,11 @@ void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down)
+     /* Autonegotiation status mirrors link status. */
+     if (link_down) {
+         trace_lan9118_phy_update_link("down");
+-        s->status &= ~0x0024;
++        s->status &= ~(MII_BMSR_AN_COMP | MII_BMSR_LINK_ST);
+         s->ints |= PHY_INT_DOWN;
+     } else {
+         trace_lan9118_phy_update_link("up");
+-        s->status |= 0x0024;
++        s->status |= MII_BMSR_AN_COMP | MII_BMSR_LINK_ST;
+         s->ints |= PHY_INT_ENERGYON;
+         s->ints |= PHY_INT_AUTONEG_COMPLETE;
+     }
+@@ -146,9 +154,18 @@ void lan9118_phy_reset(Lan9118PhyState *s)
+ {
+     trace_lan9118_phy_reset();
+ 
+-    s->control = 0x3000;
+-    s->status = 0x7809;
+-    s->advertise = 0x01e1;
++    s->control = MII_BMCR_AUTOEN | MII_BMCR_SPEED100;
++    s->status = MII_BMSR_100TX_FD
++                | MII_BMSR_100TX_HD
++                | MII_BMSR_10T_FD
++                | MII_BMSR_10T_HD
++                | MII_BMSR_AUTONEG
++                | MII_BMSR_EXTCAP;
++    s->advertise = MII_ANAR_TXFD
++                   | MII_ANAR_TX
++                   | MII_ANAR_10FD
++                   | MII_ANAR_10
++                   | MII_ANAR_CSMACD;
+     s->int_mask = 0;
+     s->ints = 0;
+     lan9118_phy_update_link(s, s->link_down);
 -- 
 2.47.0
 
