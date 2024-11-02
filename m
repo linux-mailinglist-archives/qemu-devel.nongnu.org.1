@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390349BA0F7
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 16:03:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DC99BA0FA
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 16:06:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7Ff6-0000n6-O9; Sat, 02 Nov 2024 11:03:36 -0400
+	id 1t7Fhn-0002mU-Et; Sat, 02 Nov 2024 11:06:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=uVOK=R5=kaod.org=clg@ozlabs.org>)
- id 1t7Ff4-0000lr-4k; Sat, 02 Nov 2024 11:03:34 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ id 1t7Fhg-0002lS-Gw; Sat, 02 Nov 2024 11:06:16 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=uVOK=R5=kaod.org=clg@ozlabs.org>)
- id 1t7Ff2-0004jV-JS; Sat, 02 Nov 2024 11:03:33 -0400
+ id 1t7Fhe-000606-Tc; Sat, 02 Nov 2024 11:06:16 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4XggwF6hGGz4x8R;
- Sun,  3 Nov 2024 02:03:25 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4XggzQ1Kysz4x8W;
+ Sun,  3 Nov 2024 02:06:10 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xggw92DkSz4wxf;
- Sun,  3 Nov 2024 02:03:21 +1100 (AEDT)
-Message-ID: <9cf62dd0-2e88-4692-8a16-544b75665b6c@kaod.org>
-Date: Sat, 2 Nov 2024 16:03:20 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4XggzL5tqDz4x7G;
+ Sun,  3 Nov 2024 02:06:06 +1100 (AEDT)
+Message-ID: <9fa94cbc-8010-4805-be44-939ce35182dc@kaod.org>
+Date: Sat, 2 Nov 2024 16:06:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v1 0/8] Support RTC for AST2700
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+Subject: Re: [PATCH] hw/sd/sdcard: Fix calculation of size when using eMMC
+ boot partitions
+To: Jan Luebbe <jlu@pengutronix.de>, qemu-devel@nongnu.org
+Cc: Guenter Roeck <linux@roeck-us.net>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org, qemu-block@nongnu.org
+References: <1bce4c22-9281-44c5-8acb-860881dc271c@kaod.org>
+ <20241028162308.2152712-1-jlu@pengutronix.de>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20241029091729.3317512-1-jamin_lin@aspeedtech.com>
+In-Reply-To: <20241028162308.2152712-1-jlu@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=uVOK=R5=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
 X-Spam_bar: ----
 X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
  HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,40 +67,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/29/24 10:17, Jamin Lin wrote:
-> change from v1:
-> 1. Support RTC for AST2700.
-> 2. Support SDHCI write protected pin inverted for AST2500 and AST2600.
-> 3. Introduce Capabilities Register 2 for SD slot 0 and 1.
-> 4. Support create flash devices via command line for AST1030.
-> 
-> Jamin Lin (8):
->    aspeed/soc: Support RTC for AST2700
->    hw/timer/aspeed: Fix coding style
->    hw/timer/aspeed: Fix interrupt status does not be cleared for AST2600
->    hw/sd/sdhci: Fix coding style
->    hw/sd/sdhci: Introduce a new Write Protected pin inverted property
->    hw/sd/aspeed_sdhci: Introduce Capabilities Register 2 for SD slot 0
->      and 1
->    hw/arm/aspeed: Invert sdhci write protected pin for AST2600 and
->      AST2500 EVBs
->    aspeed: Support create flash devices via command line for AST1030
-> 
->   hw/arm/aspeed.c         | 30 ++++++++++++------
->   hw/arm/aspeed_ast27x0.c | 11 +++++++
->   hw/sd/aspeed_sdhci.c    | 40 ++++++++++++++++-------
->   hw/sd/sdhci.c           | 70 ++++++++++++++++++++++++++++-------------
->   hw/timer/aspeed_timer.c | 15 +++++----
->   include/hw/arm/aspeed.h |  1 +
->   include/hw/sd/sdhci.h   |  5 +++
->   7 files changed, 123 insertions(+), 49 deletions(-)
-> 
+Philippe,
 
-Applied 1,2,3,6,8 to aspeed-next.
+I can take this patch through the aspeed branch.
 
 Thanks,
 
 C.
 
+On 10/28/24 17:23, Jan Luebbe wrote:
+> The sd_bootpart_offset() function calculates the *runtime* offset which
+> changes as the guest switches between accessing the main user data area
+> and the boot partitions by writing to the EXT_CSD_PART_CONFIG_ACC_MASK
+> bits, so it shouldn't be used to calculate the main user data area size.
+> 
+> Instead, subtract the boot_part_size directly (twice, as there are two
+> identical boot partitions defined by the eMMC spec).
+> 
+> Suggested-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> --->   hw/sd/sd.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+> index 2d3467c3d956..8430d5ae361c 100644
+> --- a/hw/sd/sd.c
+> +++ b/hw/sd/sd.c
+> @@ -826,7 +826,9 @@ static void sd_reset(DeviceState *dev)
+>           sect = 0;
+>       }
+>       size = sect << HWBLOCK_SHIFT;
+> -    size -= sd_bootpart_offset(sd);
+> +    if (sd_is_emmc(sd)) {
+> +        size -= sd->boot_part_size * 2;
+> +    }
+>   
+>       sect = sd_addr_to_wpnum(size) + 1;
+>   
 
 
