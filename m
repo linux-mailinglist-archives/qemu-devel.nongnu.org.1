@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BAF9BA064
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A79C9BA07A
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E1H-0003qE-3Q; Sat, 02 Nov 2024 09:18:23 -0400
+	id 1t7E14-0003Ix-GV; Sat, 02 Nov 2024 09:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0w-0003CX-Ca; Sat, 02 Nov 2024 09:18:03 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1t7E0w-0003Cc-VT; Sat, 02 Nov 2024 09:18:03 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0t-00021Z-Jq; Sat, 02 Nov 2024 09:18:02 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a9a0c40849cso466753266b.3; 
- Sat, 02 Nov 2024 06:17:57 -0700 (PDT)
+ id 1t7E0v-000226-Db; Sat, 02 Nov 2024 09:18:02 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5cb6704ff6bso3692481a12.3; 
+ Sat, 02 Nov 2024 06:17:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553476; x=1731158276; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553478; x=1731158278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=80K8OEm+6o8+JzT+l+kkS4hvMpMoaCr4IlAQyLMMIO0=;
- b=BFfG5T/rUvOzrgrN75/IYmqpYe3ifhGfePovRTpqu8n2C79AiVupW1slomcMSHuG7u
- gG0GmqLm11T64pBzOhF9xMgt/LN77tEhDq8q+1gxs4Fn8NMlxzjICLSReemShzkXsPew
- hyqPPnYvWhYors8T7ZlvUNoye3AZzWmD3c6zWKj2OvU9aYHdHfJnOrn6l+8fj2+cGZ/9
- sCPNpgA1Fw1szgRsCgySkg39wiOwPxofLQetc+TMYyd/Gb68EEMxsxZoj9r3EGcN0Iia
- H7VyO3lyimT8H253NKLs4nF+bA+1PQ1CHA3IL/oJmgrACrW7xJByQviJJGcRUFKvhKLi
- Z93g==
+ bh=aMacwjv/1tKmK7lCv+ouUwchF1w/lla9CPW970fanmM=;
+ b=cnBX5jFiMlhYxMkorxY2T92m/Up9BmsdU2HbeCVbTA56rKxux3r/HPsMX/Adt8fDTs
+ tCqNR2mnOBnnQ1H1cgdbG67YXdEiETOF8G0nE4GXuIlAP8AxxatGcCYn/03jgeaABj6L
+ dOQC3xuk7n1MT/xMBu2Z7DDLSlklY6nJrzMYlfXmgpAQkdfEYHiPnC+fe9xYpbPuEtUT
+ hBronKnFV7w3xnJQg9Ghme0on/O++liWyfYjimI0ZGxDNxi6l42LqwtGkJNDp6RrQvjL
+ iNtlQtNv3YNsyoFfGJ/OSt/gDeXM/HMk21PYHZ9W1iamurp5aP3VPOCemX5jt3kp/ref
+ 481g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553476; x=1731158276;
+ d=1e100.net; s=20230601; t=1730553478; x=1731158278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=80K8OEm+6o8+JzT+l+kkS4hvMpMoaCr4IlAQyLMMIO0=;
- b=rIRheHFJMT3kdoYlAb8JdtzmFxPXuYGi+P4N6ho1BmYrjIeO63vW6wDARBqMxvoosT
- eizTUUrgVz9tpzakts0pL+Rqb6wBdlHarqso+E0KSrSI8SG8E0zH6I9vnst7PpqpEkWf
- vUiH6NuTCBk5ZRAiZmkhThnbkaFicS+DwJMmfmzpkmRwyUJN9WVR1XqjtGsKkXF3X3mz
- P4+C/02lzpF3kyncjIEiiVqgbACbY0ae+nOvTiLCAtPCVBPcoR8Hwjj0IquzLGGPifv0
- vJmBA/INVtoMPRM629gbrratmSODgeOqH3JBzGqrDaXxzYpw3VPvCelQOs4ruKDvgrI9
- gsHw==
+ bh=aMacwjv/1tKmK7lCv+ouUwchF1w/lla9CPW970fanmM=;
+ b=C3fYL2/OVM0WwkjTWp7q9z2oIxAAhwYF7bzbmNe/6gvpg4s+KTvVSbiTAAPbbPsBVh
+ KnHLrevoHbNKPRv7YTQ+k/51wvClOJxohgSox/uVN52qMaNFzWupbgR7IW0t7A6Ntz06
+ LbKO0fTit8Gn6Aea6+xAMH4Wx2e011IE/o+wApX59fulm3oPLQc3pInKy69xM19yGrik
+ Ms747qUnFOmdE8/MP8+jvb6FBCA872+fkb/OcllOfTbDB+VYb/uUszmd/phnovvDqdZL
+ 4qkrVx8aTdRHXd2nnVxaFqB4/vgYay5kUZatHFAHQR7JaJTpoYZ9hoKbOqZKghBS/aqQ
+ l8cA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVkiVJ0MtjiPAMLpN7xnJDB5RK7T8x7yErWHUfXkrto6NNqIvDJdPIEXHeRe6c0Hb3R3h4cvToEcO/B@nongnu.org,
- AJvYcCWOf02X0VJiCyuBqNO6RL0BnKbsndmwCSbkldV2BqnkEf+tvdRuP8T6uir4Nzf8JYuAtjhPL3DxReg=@nongnu.org
-X-Gm-Message-State: AOJu0Yzz4ouA9n76g65+Rfy3whe7eStiZPMipftXywlgAakele8qR9WM
- HOVwMC2w+e86DHnM0LREjPKXyH9Yw5vRekym5YSnmn6TRV4PurujTzlJtg==
-X-Google-Smtp-Source: AGHT+IF7MDxOK6ZyXd9DeicGn8UMo/EyghaXt22av+4QTbbaetScuZ5Elw8H4a1AJwqr9pLayDfjnw==
-X-Received: by 2002:a17:907:9722:b0:a99:403e:2578 with SMTP id
- a640c23a62f3a-a9e3a57531amr1445849466b.5.1730553475978; 
- Sat, 02 Nov 2024 06:17:55 -0700 (PDT)
+ AJvYcCUH3BmpGxpvSuDWeq0dexOZvCgGhqUmfgk8Xk90Th92G2eNEv3WQ1ta/HJDMLmd3HzzIeo0cRNQV6Q=@nongnu.org,
+ AJvYcCVDNnBtdKZnfHBnDoA13+2ayvqgxSFaAezP587/wTa1EYmdnIoyesQygcdoD8sflokwW9QBMd3SpKH+@nongnu.org
+X-Gm-Message-State: AOJu0YxBUGX1ubt8z2rHiDudFjZNdttnW4MLXgovLPTdNzW9F3TaA2Du
+ Q/Ijp0k86+5Rcjh9J7J9fcIcWUPu1CKbvfj7qzGd9aLvO4/GuxgVSl0YnA==
+X-Google-Smtp-Source: AGHT+IHmzBK2nHNbkuuv3TBwHol7fRMYRf6oiJXrXY1RJZroGDeb3A+rQl1bIiKjTU9hg84bo3RpFg==
+X-Received: by 2002:a17:906:db08:b0:a9a:1165:1bb with SMTP id
+ a640c23a62f3a-a9e658c1759mr685727666b.65.1730553477526; 
+ Sat, 02 Nov 2024 06:17:57 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.54
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:55 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:56 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,17 +68,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 20/26] hw/sd/sdhci: Prefer DEFINE_TYPES() macro
-Date: Sat,  2 Nov 2024 14:17:09 +0100
-Message-ID: <20241102131715.548849-21-shentey@gmail.com>
+Subject: [PATCH v3 21/26] hw/block/pflash_cfi01: Prefer DEFINE_TYPES() macro
+Date: Sat,  2 Nov 2024 14:17:10 +0100
+Message-ID: <20241102131715.548849-22-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,111 +102,53 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sdhci.c | 62 +++++++++++++++++++++------------------------------
- 1 file changed, 26 insertions(+), 36 deletions(-)
+ hw/block/pflash_cfi01.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index ed01499391..aa89513796 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -37,7 +37,6 @@
- #include "migration/vmstate.h"
- #include "sdhci-internal.h"
+diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+index 7b6ec64442..cf11dada29 100644
+--- a/hw/block/pflash_cfi01.c
++++ b/hw/block/pflash_cfi01.c
+@@ -47,7 +47,6 @@
+ #include "qemu/bitops.h"
+ #include "qemu/host-utils.h"
  #include "qemu/log.h"
 -#include "qemu/module.h"
- #include "trace.h"
- #include "qom/object.h"
- 
-@@ -1598,15 +1597,6 @@ static void sdhci_sysbus_class_init(ObjectClass *klass, void *data)
-     sdhci_common_class_init(klass, data);
+ #include "qemu/option.h"
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
+@@ -947,20 +946,16 @@ static void pflash_cfi01_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
  }
  
--static const TypeInfo sdhci_sysbus_info = {
--    .name = TYPE_SYSBUS_SDHCI,
--    .parent = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(SDHCIState),
--    .instance_init = sdhci_sysbus_init,
--    .instance_finalize = sdhci_sysbus_finalize,
--    .class_init = sdhci_sysbus_class_init,
--};
 -
- /* --- qdev bus master --- */
- 
- static void sdhci_bus_class_init(ObjectClass *klass, void *data)
-@@ -1617,13 +1607,6 @@ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
-     sbc->set_readonly = sdhci_set_readonly;
- }
- 
--static const TypeInfo sdhci_bus_info = {
--    .name = TYPE_SDHCI_BUS,
--    .parent = TYPE_SD_BUS,
--    .instance_size = sizeof(SDBus),
--    .class_init = sdhci_bus_class_init,
--};
--
- /* --- qdev i.MX eSDHC --- */
- 
- #define USDHC_MIX_CTRL                  0x48
-@@ -1882,12 +1865,6 @@ static void imx_usdhc_init(Object *obj)
-     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
- }
- 
--static const TypeInfo imx_usdhc_info = {
--    .name = TYPE_IMX_USDHC,
--    .parent = TYPE_SYSBUS_SDHCI,
--    .instance_init = imx_usdhc_init,
--};
--
- /* --- qdev Samsung s3c --- */
- 
- #define S3C_SDHCI_CONTROL2      0x80
-@@ -1946,18 +1923,31 @@ static void sdhci_s3c_init(Object *obj)
-     s->io_ops = &sdhci_s3c_mmio_ops;
- }
- 
--static const TypeInfo sdhci_s3c_info = {
--    .name = TYPE_S3C_SDHCI  ,
--    .parent = TYPE_SYSBUS_SDHCI,
--    .instance_init = sdhci_s3c_init,
+-static const TypeInfo pflash_cfi01_info = {
+-    .name           = TYPE_PFLASH_CFI01,
+-    .parent         = TYPE_SYS_BUS_DEVICE,
+-    .instance_size  = sizeof(PFlashCFI01),
+-    .class_init     = pflash_cfi01_class_init,
 +static const TypeInfo types[] = {
 +    {
-+        .name = TYPE_SDHCI_BUS,
-+        .parent = TYPE_SD_BUS,
-+        .instance_size = sizeof(SDBus),
-+        .class_init = sdhci_bus_class_init,
-+    },
-+    {
-+        .name = TYPE_SYSBUS_SDHCI,
-+        .parent = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(SDHCIState),
-+        .instance_init = sdhci_sysbus_init,
-+        .instance_finalize = sdhci_sysbus_finalize,
-+        .class_init = sdhci_sysbus_class_init,
-+    },
-+    {
-+        .name = TYPE_IMX_USDHC,
-+        .parent = TYPE_SYSBUS_SDHCI,
-+        .instance_init = imx_usdhc_init,
-+    },
-+    {
-+        .name = TYPE_S3C_SDHCI,
-+        .parent = TYPE_SYSBUS_SDHCI,
-+        .instance_init = sdhci_s3c_init,
++        .name           = TYPE_PFLASH_CFI01,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(PFlashCFI01),
++        .class_init     = pflash_cfi01_class_init,
 +    },
  };
  
--static void sdhci_register_types(void)
+-static void pflash_cfi01_register_types(void)
 -{
--    type_register_static(&sdhci_sysbus_info);
--    type_register_static(&sdhci_bus_info);
--    type_register_static(&imx_usdhc_info);
--    type_register_static(&sdhci_s3c_info);
+-    type_register_static(&pflash_cfi01_info);
 -}
 -
--type_init(sdhci_register_types)
+-type_init(pflash_cfi01_register_types)
 +DEFINE_TYPES(types)
+ 
+ PFlashCFI01 *pflash_cfi01_register(hwaddr base,
+                                    const char *name,
 -- 
 2.47.0
 
