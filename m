@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE4B9BA07C
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3A99BA079
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Nov 2024 14:23:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7E1E-0003lW-Oa; Sat, 02 Nov 2024 09:18:20 -0400
+	id 1t7E14-0003Iu-4o; Sat, 02 Nov 2024 09:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0t-0003Aj-3p; Sat, 02 Nov 2024 09:17:59 -0400
+ id 1t7E0v-0003Bu-12; Sat, 02 Nov 2024 09:18:01 -0400
 Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7E0q-00020l-6P; Sat, 02 Nov 2024 09:17:57 -0400
+ id 1t7E0r-00021G-Jq; Sat, 02 Nov 2024 09:18:00 -0400
 Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a99f1fd20c4so359053766b.0; 
- Sat, 02 Nov 2024 06:17:55 -0700 (PDT)
+ a640c23a62f3a-a9e44654ae3so335543366b.1; 
+ Sat, 02 Nov 2024 06:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730553474; x=1731158274; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730553475; x=1731158275; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tLhvTnGk1a2G1u/15BCaoUHmTdjX5JW0/q8sRHtkRz0=;
- b=Dud91Jgb9zX17GtYQTgj0PxozZaT7fObBx2+zgRSFZhmbFm4DaRASPZjrIKvFnFgzb
- zxB1mHedo5B+zwMX8dtKA0PEtPvNFGgIi+hfnX88hSlKedE/wZKkFeBnPvEE+jjNZc8D
- j0gWMMkn2GC6Wb8jZqIwRRw3tPR6KApyPkaM4Ukt4gXUNobi7CiMl1h+wUF1tI9tFeTy
- Bm1UDzl8iZLsnqJkpCNKhe9BenM+geGgwrvHI1OLLElpZ72KoMLPNmjGCy9Cz6TD5ZlZ
- hWy+a3ICsAoQAoKeYLsIdE8KAF9iJVzLy3Rp32oC7WNZSOXaxVinXh2gAIMAtDNBaYyM
- esaA==
+ bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
+ b=GIADIxgRD3TAXKh8jHxDhfmxxZWmVPKqIj0rkXF84eB0GYeAFPLe4/vuGTymgyccRE
+ OM3pJdHeGMhk7Spxq87xLtN2padKkoFVd38dkoU1ImplfMmCisGYUUmdx31uqP3nSVTi
+ qUpbhXFDgOxSEucvOR4190ESJ/J+R8XhnzAaIGVPQck81cCDAJpkpJ4c31LItzjT3Sn9
+ RjWt6/tAA9xB3NHJHVEB1jOVaUjD+lLNM3iebYJ296X73AS3YmTMHmshc2Zxlri+SGL3
+ 72cWXN66wqxlAnsu2uMKaErpfr2YX1akSQY+wMglFjhoQGkpl6QsOi33TlYtU0maSVzI
+ fjOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730553474; x=1731158274;
+ d=1e100.net; s=20230601; t=1730553475; x=1731158275;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tLhvTnGk1a2G1u/15BCaoUHmTdjX5JW0/q8sRHtkRz0=;
- b=pd+njKRAYyFiWlW4n1bkyN5TvSXc8hEbB++VQIawtS1Qoew0zAW8v3l/S/mCk6Y3jI
- DdD5KhQsLzEGlHAMvuuIWl0/tOTLyNtPkzdD0YptqnXl0/ze6yqhTtWPhM80aEAOadEV
- BdfXb4Ooab2ZELtb6SK411gXVvBhshjYdGBmgUadIghSPUgZ6DLWZQkHSD4UVo34NoLq
- 7MaXZmIS9/npY+uQO23ygSbg7K2WD6OvEigUWfLqLZ99ZMRC6JsbYYC50I6BUlYwodNw
- tIhdYU5XqZJhcxzoiYCnR/o+TdD1GMtUZMOos04vH7pHgXGXY7HtvN4z7p7l12cqK/uh
- x3Ww==
+ bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
+ b=YIMom4rEx0Ll2LWcNcO3RCJxjr6+RGTZqP15slMCJ4hdYRMFQkJM1I0jiWJfrjVulZ
+ 77oRg8tHn290miF4Cwrza3X7jHQ/Zb9mUk5COrwRLM+5abTtnuanHsb6LbSMU5L3CGrE
+ 6kDE897zyeKc6HRs2Vwl/mbTl+8lOSenodnJBbVcIh9OvObkywMeIieCBH5IFYRmmDOo
+ ZYHgbw9aNspTCt7SAlyDJHl1K7Mo2jd3pry82xAxZ7PfDl3pj+g3fRuYAi3DnNu4jy7A
+ 44/1xIGz7JRp8qjfF7kIozsYAK+Omw3aEdRmOT/8gyPVQ87871JAMdcGgnOUlTpzJgky
+ fWZQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUm58i/i08iEH/+J/TppvWdlJZDZtYFeJcH1B7nEfLutQAdZ4CXCAlTL7/FrLm+REQz50NGNrZCB1c=@nongnu.org,
- AJvYcCVkWWwvmClF+W35OozY1h1AUtf9OKVBD1kk/jputFDh0DONij7SWwPG2IUIUKNbP6JPpS5hMkUeXtv+@nongnu.org
-X-Gm-Message-State: AOJu0YxalX60z7AS+efTVCxeez6hfVBS7PydTAEMaCJDHcakqRVuy8rC
- WUWvqfEKg+O9Wh7i/uGWFD1WJr6zR9HzrpvKmUw9zBaFPvjEBJLObykQsw==
-X-Google-Smtp-Source: AGHT+IG4TqofOzMYlylLy2GxOiNDxCKKG+UEqxBvjxycuEV1l1cK0Pd3FKjpCN8Hz+2FMmc7qUgjow==
-X-Received: by 2002:a17:907:d1a:b0:a9a:c691:dcb7 with SMTP id
- a640c23a62f3a-a9e5092d45emr808853166b.30.1730553473527; 
- Sat, 02 Nov 2024 06:17:53 -0700 (PDT)
+ AJvYcCUHEVmrQ9hSQorCGKTztriOkgnPy1Cl1nq8C3CTuSVrQMgaWEkMU+7noFHlbSRcOReOo0ImFk8iYB8X@nongnu.org,
+ AJvYcCX2XIv5C2lKVZKOMKLWjCIFfboUFARjBOzeefV5Hy+KbznjHzaNLqu+5FXfVP/AkFkRwPqeH5qctnA=@nongnu.org
+X-Gm-Message-State: AOJu0Yy+p0FmtGjXmR7nb3MfseFuEGywYRCBtWHLc7XyQ3UfMHtujSyr
+ 9mwqzk3CWOEJn1+V0aH8dO1ZiQOx7sU32WksSeeLf6MqdRQRLTxI5GmFbQ==
+X-Google-Smtp-Source: AGHT+IGvCirtSErn9CReobBS4ri5Ijp0aVXZl4rPi6i4m6alC70/1VgOsRcJ82+K/f7vtRkQAEXLAQ==
+X-Received: by 2002:a17:907:3f19:b0:a9a:835:b4eb with SMTP id
+ a640c23a62f3a-a9e50973610mr964153266b.38.1730553474734; 
+ Sat, 02 Nov 2024 06:17:54 -0700 (PDT)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.52
+ a640c23a62f3a-a9e5664350esm307859066b.159.2024.11.02.06.17.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Nov 2024 06:17:52 -0700 (PDT)
+ Sat, 02 Nov 2024 06:17:54 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -68,9 +68,10 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v3 18/26] hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
-Date: Sat,  2 Nov 2024 14:17:07 +0100
-Message-ID: <20241102131715.548849-19-shentey@gmail.com>
+Subject: [PATCH v3 19/26] hw/intc: Guard openpic_kvm.c by dedicated
+ OPENPIC_KVM Kconfig switch
+Date: Sat,  2 Nov 2024 14:17:08 +0100
+Message-ID: <20241102131715.548849-20-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102131715.548849-1-shentey@gmail.com>
 References: <20241102131715.548849-1-shentey@gmail.com>
@@ -101,49 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Allows to clearly mark code sections relying on this device type.
+
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/mpc8544_guts.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/ppc/e500.c       | 2 +-
+ hw/intc/Kconfig     | 4 ++++
+ hw/intc/meson.build | 3 +--
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
-index c02b34ccde..cf2317b3ab 100644
---- a/hw/ppc/mpc8544_guts.c
-+++ b/hw/ppc/mpc8544_guts.c
-@@ -18,7 +18,6 @@
-  */
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index f640195e62..f12329feda 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -826,7 +826,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
+ static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
+                                           Error **errp)
+ {
+-#ifdef CONFIG_KVM
++#ifdef CONFIG_OPENPIC_KVM
+     DeviceState *dev;
+     CPUState *cs;
  
- #include "qemu/osdep.h"
--#include "qemu/module.h"
- #include "qemu/log.h"
- #include "sysemu/runstate.h"
- #include "cpu.h"
-@@ -141,16 +140,13 @@ static void mpc8544_guts_initfn(Object *obj)
-     sysbus_init_mmio(d, &s->iomem);
- }
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index dd405bdb5d..a3df98ae59 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -16,6 +16,10 @@ config OPENPIC
+     bool
+     select MSI_NONBROKEN
  
--static const TypeInfo mpc8544_guts_info = {
--    .name          = TYPE_MPC8544_GUTS,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(GutsState),
--    .instance_init = mpc8544_guts_initfn,
-+static const TypeInfo types[] = {
-+    {
-+        .name          = TYPE_MPC8544_GUTS,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(GutsState),
-+        .instance_init = mpc8544_guts_initfn,
-+    },
- };
- 
--static void mpc8544_guts_register_types(void)
--{
--    type_register_static(&mpc8544_guts_info);
--}
--
--type_init(mpc8544_guts_register_types)
-+DEFINE_TYPES(types)
++config OPENPIC_KVM
++    bool
++    depends on OPENPIC && KVM
++
+ config APIC
+     bool
+     select MSI_NONBROKEN
+diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+index 6bfdc4eb33..b9de6bf5c6 100644
+--- a/hw/intc/meson.build
++++ b/hw/intc/meson.build
+@@ -48,8 +48,7 @@ specific_ss.add(when: 'CONFIG_IOAPIC', if_true: files('ioapic.c'))
+ specific_ss.add(when: 'CONFIG_LOONGSON_LIOINTC', if_true: files('loongson_liointc.c'))
+ specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gic.c'))
+ specific_ss.add(when: 'CONFIG_OMPIC', if_true: files('ompic.c'))
+-specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_OPENPIC'],
+-		if_true: files('openpic_kvm.c'))
++specific_ss.add(when: 'CONFIG_OPENPIC_KVM', if_true: files('openpic_kvm.c'))
+ specific_ss.add(when: 'CONFIG_POWERNV', if_true: files('xics_pnv.c', 'pnv_xive.c', 'pnv_xive2.c'))
+ specific_ss.add(when: 'CONFIG_PPC_UIC', if_true: files('ppc-uic.c'))
+ specific_ss.add(when: 'CONFIG_RX_ICU', if_true: files('rx_icu.c'))
 -- 
 2.47.0
 
