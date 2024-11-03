@@ -2,97 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998249BA58C
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3949C9BA5B4
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:40:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7aJH-0001NO-RB; Sun, 03 Nov 2024 08:06:27 -0500
+	id 1t7akm-00066H-B8; Sun, 03 Nov 2024 08:34:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7aJF-0001Mw-0e; Sun, 03 Nov 2024 08:06:25 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1t7akf-00065d-VZ; Sun, 03 Nov 2024 08:34:46 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7aJD-0005FR-6e; Sun, 03 Nov 2024 08:06:24 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-37d447de11dso2709940f8f.1; 
- Sun, 03 Nov 2024 05:06:21 -0800 (PST)
+ id 1t7akd-0001Cz-SB; Sun, 03 Nov 2024 08:34:45 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a86e9db75b9so529133366b.1; 
+ Sun, 03 Nov 2024 05:34:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730639179; x=1731243979; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bq5B6yvFu13g38UC/HuP3IL/2ofZP8iKYXLutfjrIAw=;
- b=CAlcUylsBaz1zXtm+HbubUvCv6oj62I9wWpIzlL+R1pjnXs0LhCsvpVAv3TXTQKZsh
- M10Wpomr4xZkDOdVgVpKK8TwwtYUdm6fPzYXdTbqG3rtqhPzV1nrCHVukC1N4Z2EE/ra
- Qbf3kO4tp/JyPqUNot8TKmUkUNUVVH6DM3Vt8FZX9dLnufayJ2MdbB+b/2xIBwf7rxVM
- Mr1TKLocO3Lrrs/NoDZAaYg1hEPVl0bdxStD4kj/bCWlinRrRXDMhkW6qi2GaHAJnqgf
- +gA8v11KBFLpMENPJweUqNxPhLiqYmQSRPr8Wxsy+cHULW5ZKf/r0b8bgfSwD7EsUhGP
- bxyA==
+ d=gmail.com; s=20230601; t=1730640881; x=1731245681; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ubvVYqxGpdaNkoauT3AWCkvRpExFF88myWzlqAkC6Vg=;
+ b=Dfg7BQJAzh5Ddgmh89gFId/6sX3rBR2cz0jv0IR1FS9E7WDmecUU+vJQ5+d8poYYhf
+ C8Nol/kFgHceSGWz/z6zLLdqQFIxqYiMNhLfD6hac3j5SGjD6GxfM3VRBEfn+VL3Lj7F
+ a3N67DWisjynXUl8zscUFH2LB6SkjguIeOEHwy4WWQ7zCEe/Gwx3+76fRVj5gMQ4/wdV
+ 8ELtDbkexxQH7tOZNGqkkptGYjzm/lnA5of375WniAFDVLep4u1Cr23YoB8j4wjNXefx
+ iSLrzMfCFGZPJcrKvGpRb1AipiNZ1GsVJt1ApZnoqRsaEcYCZ8SH3P0s8WEtZcmZsLWy
+ GGdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730639179; x=1731243979;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bq5B6yvFu13g38UC/HuP3IL/2ofZP8iKYXLutfjrIAw=;
- b=wCTUS6Ju5E2i+elZ108clzGUvjNt1kPXewLw4Ck/hE3S8Y7lp+q6y8sYVAFQzpMwKS
- vTcUlVrYe1FTDkzku/skO9PC70oFWW8xIhTSLm6gyr84KEKOVRh8OHdtm1lp2dgcoMLK
- /jG+x6PKCfbcnB2Qz3MCdCtkc0IktCe4VuRFvdwspNZFY7NDSRQ/G0sAKXRqh0SnEg/C
- 1wf5YFSSItMlGU5RXMaffuIs9JYfTHu4amCw29FDM8no0pwfr+dLgvAlINcfoDhZe+uf
- XWbfXO5i0WPXM2SkkU6OItonhT7I50zTrGLCpOubvm4IfvXX2241HvxOQkfhbiQXXcsj
- 8CYA==
+ d=1e100.net; s=20230601; t=1730640881; x=1731245681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ubvVYqxGpdaNkoauT3AWCkvRpExFF88myWzlqAkC6Vg=;
+ b=cyAmZsi0mG9CBd/br5tYvg5pZwyfalu1lpT3PVhNtzANGkSS/mLC5iT1qRko5C03KE
+ KivciHeIg8R+lAogBTwVgutHbIcumoIL2IAMFOqWtcdz2Ycn1fhd0Q3s5aCOFvnPUwHC
+ FXJLyOMa6FXE89eL+/3MELvjdJUjqCpDAs6CtePo2WPVGJgZ/BByiqkfWR+jo9WI7FsH
+ ZeHOf608civ5l7n2ViaxKoRk4/Lavk9Yv7dT2a+cs6GISTeCCUicUwzQJnwgcRC4nWLN
+ HR3Qxf5WJMhRBpnm3c12bBYvVmD77dX0s4h9jfmTcWnpBDyMjrFQ/GBg+4HDj3dRs51x
+ ONLg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWUrFMgUwskH9PCb1l/F6XSM5rBzh4vqC08nBxD1RErXTFikkZJrO04nSpcCuXExpEEKNcfnqIp+oQ=@nongnu.org,
- AJvYcCWgeFAJawd6WVOGsAbeUku1zoOg5+DAjzyeKgScA17pLslxjZANQZsCtJiP2HT5p1npaZIF/szKhkt7@nongnu.org
-X-Gm-Message-State: AOJu0Ywu/0/sE76s0j9jSZKrh7Uw8qHiyZMh4f0u33FUbELTAiNkkhrf
- YyfLb0lpxJc8Mo/cO1CHnz7JxuSDvRrGTpcalDcpL1qVSNzLVftt
-X-Google-Smtp-Source: AGHT+IH6zS3zJnj+CSyx+fI8sd75D39WC7dXb8BsYPc+r4Yq2RFHZHpX1Nm4ITGMzXCSoiQyNGMerg==
-X-Received: by 2002:a05:6000:2a1:b0:37d:4e59:549a with SMTP id
- ffacd0b85a97d-381be7c7350mr11168118f8f.16.1730639179121; 
- Sun, 03 Nov 2024 05:06:19 -0800 (PST)
-Received: from ?IPv6:::1?
- (p200300faaf0043008d496915e5ce0c3d.dip0.t-ipconnect.de.
- [2003:fa:af00:4300:8d49:6915:e5ce:c3d])
+ AJvYcCXH9ArjxyogLU3GnUBo4Lb6XofyXviwGhBPZXUvnTyhahY08j2ybYlL5eKfrf4/Drw1wCd/gEIaEWLi@nongnu.org,
+ AJvYcCXZr95dC1Gc01skXGXi/VxSZ6YwUK15rwepcBOFfmS6ndrIHeOJT1S7smBGK/CcycROsiTTbpwr+nw=@nongnu.org
+X-Gm-Message-State: AOJu0YxdRXPy2FPaU4i9IH4iU7WDxDO820lzgbup8+G8m2uHFoDN8NTN
+ LX2TMIdir7I/suhWO7J4f2S2k8rfO+8Iar7rfa0RwW8R9Oh4tsvtY2k2Kw==
+X-Google-Smtp-Source: AGHT+IFuElUhF+xBM4OiJaNvzoaCxa/tbtJM8LemeSBmZ1jq+xtzvJiJISlf9j6+nkpWxrvJKDsqEg==
+X-Received: by 2002:a17:907:9482:b0:a9a:5a50:3e42 with SMTP id
+ a640c23a62f3a-a9e508a0648mr1415070566b.12.1730640881118; 
+ Sun, 03 Nov 2024 05:34:41 -0800 (PST)
+Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c116ad6fsm10529660f8f.98.2024.11.03.05.06.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 03 Nov 2024 05:06:18 -0800 (PST)
-Date: Sun, 03 Nov 2024 13:06:18 +0000
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 03 Nov 2024 05:34:40 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
-To: Corey Minyard <corey@minyard.net>
-CC: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- qemu-block@nongnu.org, Bin Meng <bmeng.cn@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, qemu-ppc@nongnu.org,
- Corey Minyard <cminyard@mvista.com>
-Subject: Re: [PATCH v3 22/26] hw/i2c/smbus_eeprom: Prefer DEFINE_TYPES() macro
-In-Reply-To: <EAD2880C-8F56-4EBA-8664-5844E9FFE14B@gmail.com>
-References: <20241102131715.548849-1-shentey@gmail.com>
- <20241102131715.548849-23-shentey@gmail.com>
- <CAB9gMfrd+E=yv6L4JZ6KuTJv496omKdN3DAw+AyWQG6vjac5Bg@mail.gmail.com>
- <F35089BE-2008-4C0B-AECE-067A732EEFE6@gmail.com>
- <EAD2880C-8F56-4EBA-8664-5844E9FFE14B@gmail.com>
-Message-ID: <0989F1AD-E584-4750-8966-76DD86E70738@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Corey Minyard <cminyard@mvista.com>,
+ Kevin Wolf <kwolf@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PATCH v4 00/26] E500 Cleanup
+Date: Sun,  3 Nov 2024 14:33:46 +0100
+Message-ID: <20241103133412.73536-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,96 +98,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 3=2E November 2024 11:52:40 UTC schrieb Bernhard Beschow <shentey@gmail=
-=2Ecom>:
->
->
->Am 3=2E November 2024 07:51:46 UTC schrieb Bernhard Beschow <shentey@gmai=
-l=2Ecom>:
->>
->>
->>Am 2=2E November 2024 17:24:25 UTC schrieb Corey Minyard <corey@minyard=
-=2Enet>:
->>>On Sat, Nov 2, 2024 at 8:25=E2=80=AFAM Bernhard Beschow <shentey@gmail=
-=2Ecom> wrote:
->>>>
->>>> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat=2Ecom>
->>>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->>>> ---
->>>>  hw/i2c/smbus_eeprom=2Ec | 19 ++++++++-----------
->>>>  1 file changed, 8 insertions(+), 11 deletions(-)
->>>>
->>>> diff --git a/hw/i2c/smbus_eeprom=2Ec b/hw/i2c/smbus_eeprom=2Ec
->>>> index 9e62c27a1a=2E=2E1d4d9704bf 100644
->>>> --- a/hw/i2c/smbus_eeprom=2Ec
->>>> +++ b/hw/i2c/smbus_eeprom=2Ec
->>>> @@ -151,19 +151,16 @@ static void smbus_eeprom_class_initfn(ObjectCla=
-ss *klass, void *data)
->>>>      dc->user_creatable =3D false;
->>>>  }
->>>>
->>>> -static const TypeInfo smbus_eeprom_info =3D {
->>>> -    =2Ename          =3D TYPE_SMBUS_EEPROM,
->>>> -    =2Eparent        =3D TYPE_SMBUS_DEVICE,
->>>> -    =2Einstance_size =3D sizeof(SMBusEEPROMDevice),
->>>> -    =2Eclass_init    =3D smbus_eeprom_class_initfn,
->>>> +static const TypeInfo types[] =3D {
->>>
->>>This is better, but why did you change the name to "types"=2E  The
->>>previous name was fairly descriptive, though you might change "info"
->>>to "types"=2E
->>
->>I took inspiration from https://lore=2Ekernel=2Eorg/qemu-devel/202402151=
-75752=2E82828-20-philmd@linaro=2Eorg =2E I could preserve the old names (al=
-so in the other patches) by simply converting to plural form=2E Here it wou=
-ld be: smbus_eeprom_infos=2E OK?
->
->Well, the plural form of " info" is also "info"=2E So I'll keep the names=
- in the patches as they are in master, except when multiple types are defin=
-ed where I'll draw inspiration from the file names=2E
-
-Checking other usages of DEFINE_TYPES(), the majority by far uses a "types=
-" suffix while qom=2Erst suggests "info"=2E Still, 2nd place is "infos" suf=
-fix=2E I'll go with "types" suffix then which makes hcd-ehci-sysbus consist=
-ent with hcd-ohci-sysbus=2E
-
-Best regards,
-Bernhard
-
->
->Best regards,
->Bernhard
->
->>
->>Best regards,
->>Bernhard
->>
->>>
->>>-corey
->>>
->>>> +    {
->>>> +        =2Ename          =3D TYPE_SMBUS_EEPROM,
->>>> +        =2Eparent        =3D TYPE_SMBUS_DEVICE,
->>>> +        =2Einstance_size =3D sizeof(SMBusEEPROMDevice),
->>>> +        =2Eclass_init    =3D smbus_eeprom_class_initfn,
->>>> +    },
->>>>  };
->>>>
->>>> -static void smbus_eeprom_register_types(void)
->>>> -{
->>>> -    type_register_static(&smbus_eeprom_info);
->>>> -}
->>>> -
->>>> -type_init(smbus_eeprom_register_types)
->>>> +DEFINE_TYPES(types)
->>>>
->>>>  void smbus_eeprom_init_one(I2CBus *smbus, uint8_t address, uint8_t *=
-eeprom_buf)
->>>>  {
->>>> --
->>>> 2=2E47=2E0
->>>>
->>>>
+This series is part of a bigger series exploring data-driven machine creati=
+on=0D
+using device tree blobs on top of the e500 machines [1]. It contains patche=
+s to=0D
+make this exploration easier which are also expected to provide value in=0D
+themselves.=0D
+=0D
+The cleanup starts with the e500 machine class itself, then proceeds with=0D
+machine-specific device models and concludes with more or less loosely rela=
+ted=0D
+devices. Device cleanup mostly consists of using the DEFINE_TYPES() macro.=
+=0D
+=0D
+Patches still missing R-b tags: 1,2,6,8,9,15,23,26=0D
+=0D
+v4:=0D
+* Pick up R-b tags (thanks, Corey!)=0D
+* Keep descriptive names for TypeInfo arrays (Corey)=0D
+=0D
+v3:=0D
+* Pick up R-B tags (Kevin, Zoltan -- thanks!)=0D
+* Rely on trace events only and drop unimp logging in CCSR space after=0D
+  discussion=0D
+* Merge https://patchew.org/QEMU/20241005100228.28094-1-shentey@gmail.com/ =
+since=0D
+  ARM now mostly unaffected=0D
+* Add patch to reuse MII constants in etsec device=0D
+=0D
+Testing done:=0D
+* Build qemu_ppc64_e5500_defconfig in Buildroot, run it in the ppce500 mach=
+ine=0D
+  and issue the `poweroff` command. Observe that QEMU is shut down cleanly.=
+=0D
+=0D
+v2:=0D
+* Add R-b tags (Cedric, Zoltan -- thanks!)=0D
+* Add missing S-o-b tag to ds1338 patch (Cedric)=0D
+* Populate POR PLL ratio status register with real-world values (Zoltan)=0D
+* Rephrase one commit message (Zoltan)=0D
+* Also rename header of ppce500_ccsr to match struct name=0D
+* Don't mention ppc440_bamboo in license since unrelated (Zoltan)=0D
+* Various style changes (Zoltan)=0D
+=0D
+Supersedes: 20241005100228.28094-1-shentey@gmail.com=0D
+=0D
+Bernhard Beschow (26):=0D
+  hw/ppc/e500: Do not leak struct boot_info=0D
+  hw/ppc/e500: Remove firstenv variable=0D
+  hw/ppc/e500: Prefer QOM cast=0D
+  hw/ppc/e500: Remove unused "irqs" parameter=0D
+  hw/ppc/e500: Add missing device tree properties to i2c controller node=0D
+  hw/ppc/e500: Reuse TYPE_GPIO_PWR=0D
+  hw/ppc/e500: Use SysBusDevice API to access TYPE_CCSR's internal=0D
+    resources=0D
+  hw/ppc/e500: Extract ppce500_ccsr.c=0D
+  hw/ppc/ppce500_ccsr: Trace access to CCSR region=0D
+  hw/ppc/mpc8544_guts: Populate POR PLL ratio status register=0D
+  hw/i2c/mpc_i2c: Convert DPRINTF to trace events for register access=0D
+  hw/i2c/mpc_i2c: Prefer DEFINE_TYPES() macro=0D
+  hw/pci-host/ppce500: Reuse TYPE_PPC_E500_PCI_BRIDGE define=0D
+  hw/pci-host/ppce500: Prefer DEFINE_TYPES() macro=0D
+  hw/net/fsl_etsec/miim: Reuse MII constants=0D
+  hw/net/fsl_etsec/etsec: Prefer DEFINE_TYPES() macro=0D
+  hw/gpio/mpc8xxx: Prefer DEFINE_TYPES() macro=0D
+  hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro=0D
+  hw/intc: Guard openpic_kvm.c by dedicated OPENPIC_KVM Kconfig switch=0D
+  hw/sd/sdhci: Prefer DEFINE_TYPES() macro=0D
+  hw/block/pflash_cfi01: Prefer DEFINE_TYPES() macro=0D
+  hw/i2c/smbus_eeprom: Prefer DEFINE_TYPES() macro=0D
+  hw/rtc/ds1338: Prefer DEFINE_TYPES() macro=0D
+  hw/usb/hcd-ehci-sysbus: Prefer DEFINE_TYPES() macro=0D
+  hw/vfio/platform: Let vfio_start_eventfd_injection() take=0D
+    VFIOPlatformDevice pointer=0D
+  MAINTAINERS: Add hw/gpio/gpio_pwr.c=0D
+=0D
+ MAINTAINERS                            |   3 +-=0D
+ hw/ppc/e500.h                          |   9 +-=0D
+ hw/ppc/{e500-ccsr.h =3D> ppce500_ccsr.h} |   8 +-=0D
+ hw/block/pflash_cfi01.c                |  21 ++---=0D
+ hw/gpio/mpc8xxx.c                      |  22 ++---=0D
+ hw/i2c/mpc_i2c.c                       |  29 +++---=0D
+ hw/i2c/smbus_eeprom.c                  |  19 ++--=0D
+ hw/net/fsl_etsec/etsec.c               |  22 ++---=0D
+ hw/net/fsl_etsec/miim.c                |  19 ++--=0D
+ hw/pci-host/ppce500.c                  |  54 +++++------=0D
+ hw/ppc/e500.c                          |  81 +++++------------=0D
+ hw/ppc/mpc8544_guts.c                  |  32 ++++---=0D
+ hw/ppc/ppce500_ccsr.c                  |  57 ++++++++++++=0D
+ hw/rtc/ds1338.c                        |  20 ++---=0D
+ hw/sd/sdhci.c                          |  62 ++++++-------=0D
+ hw/usb/hcd-ehci-sysbus.c               | 118 +++++++++++--------------=0D
+ hw/vfio/platform.c                     |   7 +-=0D
+ hw/i2c/trace-events                    |   5 ++=0D
+ hw/intc/Kconfig                        |   4 +=0D
+ hw/intc/meson.build                    |   3 +-=0D
+ hw/ppc/Kconfig                         |   1 +=0D
+ hw/ppc/meson.build                     |   1 +=0D
+ hw/ppc/trace-events                    |   3 +=0D
+ 23 files changed, 290 insertions(+), 310 deletions(-)=0D
+ rename hw/ppc/{e500-ccsr.h =3D> ppce500_ccsr.h} (71%)=0D
+ create mode 100644 hw/ppc/ppce500_ccsr.c=0D
+=0D
+-- =0D
+2.47.0=0D
+=0D
 
