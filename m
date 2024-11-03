@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CF29BA5C0
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2749BA5BE
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7alK-0006lq-8C; Sun, 03 Nov 2024 08:35:26 -0500
+	id 1t7alH-0006iz-FM; Sun, 03 Nov 2024 08:35:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7alB-0006cM-2u; Sun, 03 Nov 2024 08:35:17 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1t7alC-0006dn-Iy; Sun, 03 Nov 2024 08:35:18 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7al9-0001Wl-Dg; Sun, 03 Nov 2024 08:35:16 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a9a2209bd7fso590743666b.2; 
- Sun, 03 Nov 2024 05:35:14 -0800 (PST)
+ id 1t7alA-0001XS-QP; Sun, 03 Nov 2024 08:35:18 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5cebcf96fabso2304244a12.3; 
+ Sun, 03 Nov 2024 05:35:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640913; x=1731245713; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640914; x=1731245714; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uvB/npsxlbJ9QKuMcZU24QB6i/ks5OjN7Y8RG67aRzw=;
- b=geiTZZt8q5FoxiktTZOKe0/TRRxqDSibcrPONEVc6uVTIhU66DdF60zien22qt5v/f
- Q6osiCu+paLZWbiaW1eewLd7tKvejOcDVS25a6s8chVaD3EUubD7cu4I1LjHRrmwsKRb
- 9/76NusJuHg+zasfDoRb3hE8/1AILFNThD7U/GzWhu572DnL7TyoGIuohRW/Modpsfd5
- JE3e/i66UVLdiHvaDhUHo4cqjdPeIUIvJVdoEW0jKydKifZP1b9hVOV2mWniW6KAPyRY
- sQoOqR/A4DvXduZOdxQRVK6TO3lC2AcTAx7ZFVDdVrpOkao238ln84VOvv1/ebLjCzZ5
- XMVw==
+ bh=Hys/7KjvfIPIAYUIaZOYNBC8Ed9q/VILcwQ4ObN64sY=;
+ b=h1/YkUMgCeR2g72D97l70MLgGnAzrXnh84qbxup/wgwXJbqQ4TiDIXp+GclcraKlA+
+ qwfyMXs48m5M6tQM+wUMS9GCSIjAO7/tp4dryAQAQzrcx+XK9zwj6gK055h9FZXgqujT
+ MWKO8798kt9zRAuHaaQmmWijOF+fyGPWYjkz/dfyBiynsqV08lPCOlTE5sjSts9OV7kj
+ IxJmdbhE3seHOcG3dB1qrp3gLoGAe1zhG0w/isGvnDHOzzNHV4GaENeuv3QF7gsT5z5Y
+ S7UKfT7CqXTRHv4Yz0B8ySybhOrTU4UPUd8x/bU1aN5lHm3ebgUrr5uDgjHymMw/xSx+
+ wVKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640913; x=1731245713;
+ d=1e100.net; s=20230601; t=1730640914; x=1731245714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uvB/npsxlbJ9QKuMcZU24QB6i/ks5OjN7Y8RG67aRzw=;
- b=iRwE7iEcKcAxpbHfoeAiusDigVjP1yueuiZ3ryhJpucXapiXfrAH1t9e3qeEIFu4Wk
- uVvuLI0XNUGowzGcdpGRGMEW5E2uEW7DUxpAQhoPx25pUhWMZptEjS2oPDFBXcnWGokV
- R5T7qzfID5gYM6qAjs5sj1aRU1qkVDfMmFwJlqzUOrEO0odKwpJCom2IZx6jQT1EbL1q
- K9bK9J51i3T3yXFfZeFZsWQweB3fEeHFz0SaBwnba4TyuGUgNfaxUNdY+BMLSh1JF4k0
- mMablU8Ql3sckVrq9//TrELZsUhyUauqzeBKkTa6V5w2/3s1ywu3xfTo3I/j/Cd1HKRz
- vbSw==
+ bh=Hys/7KjvfIPIAYUIaZOYNBC8Ed9q/VILcwQ4ObN64sY=;
+ b=KCfbuOUcyv0D4dHk9yf4KCi1mfVeqr8JIqnvWhT3HhZA2aLWCim76Y0M1vsiRby45k
+ 7mJDxpk6DkmotPAg4JCldiAeftO7q6Y59Xp5pEgLmipmoJpH35YQoibwCiEA4HVYoCuJ
+ PsbNUOLSDHL0a/5S/5dSstkPc+Ryb8Q2WSxZoaokRIZyimwMxk/cybCIxs+5jgVQzFNx
+ iq2/SteT8qWq/0xYEnjBSUBHF7NAxcHTHrjErPujwjQlLo7cDdFaOpjA9A+QZGS9SEhO
+ 44mFxAH4Duzb9b6rNRHQW8DwBFH3Rk1fOWhYFrFMDbdCO+ohg67KkEdo1rvV9Vdx51Vm
+ 1rwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUl+JoIEFWekg/KEo4Q3sYmzKgyxC2yWMC0Yh2Ay4aF1d6UKvJFNcZy/eZw3dAysT0tdBlt1rUirJKk@nongnu.org,
- AJvYcCXKliMSNB8r6DA/zpGQs9C1wPQyLi1p3dtBT10YQvxL6ZLYnsz0Ywpj3Tuqgs+QdY87sWsQ/SjJ2+0=@nongnu.org
-X-Gm-Message-State: AOJu0YzHGDRwjIRufhh4H/Rv+dwfTWma9z3bBPhSRf+i3jCLHEQwoeB+
- LKdfckdC+IfOmCQr+0PRxM9QrxV7p/2KpJf4Z5DSbekshf3d6VB2WWWY8A==
-X-Google-Smtp-Source: AGHT+IH//ZaAoLMQDViGf3sbi7kLGwX6e5QLPY1oWf6RMj9CL2sW8TG/69ANColW7aNzMzDoGjPg2g==
-X-Received: by 2002:a17:907:7e8b:b0:a99:fd32:11dc with SMTP id
- a640c23a62f3a-a9de5d858aemr2955587066b.24.1730640912848; 
- Sun, 03 Nov 2024 05:35:12 -0800 (PST)
+ AJvYcCUxii9lc4FUi8l6+ki6iQJ4VOSab86PNuEo6c6IpTuPRthtwj0zO0MpvaerFbgenOxNsHgHq0tLNaQ=@nongnu.org,
+ AJvYcCVATMhQ4sAIg5UwQyhW6S/Nb30VER4nmzb5u5O8+tYP4CsLyso9esGkPxIX+M4vKwJnekrzA9m4DUkM@nongnu.org
+X-Gm-Message-State: AOJu0YzV3hk4fGBy/6ly/yIkCO5utESfZJu7l4xnlNRBKamuF9FyEACA
+ VotEdKwXd4qxYHVQRJ/fPvBQYYSI57U7Q9x8+p+tSk6xDFRMLeNpXY9wDA==
+X-Google-Smtp-Source: AGHT+IHwqqTdl88p6B2thIs7lnXeozEZZcKdLjFr19fMDQeKLzhh4hmeXCQPtJHMoudFFufGJhWU8Q==
+X-Received: by 2002:a17:907:6e94:b0:a9a:67aa:31f5 with SMTP id
+ a640c23a62f3a-a9e508aaa56mr1256145166b.10.1730640914015; 
+ Sun, 03 Nov 2024 05:35:14 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.11
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:35:12 -0800 (PST)
+ Sun, 03 Nov 2024 05:35:13 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -68,16 +68,17 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 23/26] hw/rtc/ds1338: Prefer DEFINE_TYPES() macro
-Date: Sun,  3 Nov 2024 14:34:09 +0100
-Message-ID: <20241103133412.73536-24-shentey@gmail.com>
+Subject: [PATCH v4 24/26] hw/usb/hcd-ehci-sysbus: Prefer DEFINE_TYPES() macro
+Date: Sun,  3 Nov 2024 14:34:10 +0100
+Message-ID: <20241103133412.73536-25-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,48 +101,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The naming of the TypeInfo array is inspired by hcd-ohci-sysbus.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/rtc/ds1338.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/usb/hcd-ehci-sysbus.c | 118 +++++++++++++++++----------------------
+ 1 file changed, 50 insertions(+), 68 deletions(-)
 
-diff --git a/hw/rtc/ds1338.c b/hw/rtc/ds1338.c
-index a5fe221418..13472c5670 100644
---- a/hw/rtc/ds1338.c
-+++ b/hw/rtc/ds1338.c
-@@ -14,7 +14,6 @@
- #include "hw/i2c/i2c.h"
+diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
+index 2b1652f7a8..eb7df93ac2 100644
+--- a/hw/usb/hcd-ehci-sysbus.c
++++ b/hw/usb/hcd-ehci-sysbus.c
+@@ -19,7 +19,6 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/usb/hcd-ehci.h"
  #include "migration/vmstate.h"
- #include "qemu/bcd.h"
 -#include "qemu/module.h"
- #include "qom/object.h"
- #include "sysemu/rtc.h"
  
-@@ -227,16 +226,13 @@ static void ds1338_class_init(ObjectClass *klass, void *data)
-     dc->vmsd = &vmstate_ds1338;
+ static const VMStateDescription vmstate_ehci_sysbus = {
+     .name        = "ehci-sysbus",
+@@ -97,17 +96,6 @@ static void ehci_sysbus_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
  }
  
--static const TypeInfo ds1338_info = {
--    .name          = TYPE_DS1338,
--    .parent        = TYPE_I2C_SLAVE,
--    .instance_size = sizeof(DS1338State),
--    .class_init    = ds1338_class_init,
-+static const TypeInfo ds1338_types[] = {
+-static const TypeInfo ehci_type_info = {
+-    .name          = TYPE_SYS_BUS_EHCI,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(EHCISysBusState),
+-    .instance_init = ehci_sysbus_init,
+-    .instance_finalize = ehci_sysbus_finalize,
+-    .abstract      = true,
+-    .class_init    = ehci_sysbus_class_init,
+-    .class_size    = sizeof(SysBusEHCIClass),
+-};
+-
+ static void ehci_platform_class_init(ObjectClass *oc, void *data)
+ {
+     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
+@@ -118,12 +106,6 @@ static void ehci_platform_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_platform_type_info = {
+-    .name          = TYPE_PLATFORM_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_platform_class_init,
+-};
+-
+ static void ehci_exynos4210_class_init(ObjectClass *oc, void *data)
+ {
+     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
+@@ -134,12 +116,6 @@ static void ehci_exynos4210_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_exynos4210_type_info = {
+-    .name          = TYPE_EXYNOS4210_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_exynos4210_class_init,
+-};
+-
+ static void ehci_aw_h3_class_init(ObjectClass *oc, void *data)
+ {
+     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
+@@ -150,12 +126,6 @@ static void ehci_aw_h3_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_aw_h3_type_info = {
+-    .name          = TYPE_AW_H3_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_aw_h3_class_init,
+-};
+-
+ static void ehci_npcm7xx_class_init(ObjectClass *oc, void *data)
+ {
+     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
+@@ -168,12 +138,6 @@ static void ehci_npcm7xx_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_npcm7xx_type_info = {
+-    .name          = TYPE_NPCM7XX_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_npcm7xx_class_init,
+-};
+-
+ static void ehci_tegra2_class_init(ObjectClass *oc, void *data)
+ {
+     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
+@@ -184,12 +148,6 @@ static void ehci_tegra2_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_tegra2_type_info = {
+-    .name          = TYPE_TEGRA2_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_tegra2_class_init,
+-};
+-
+ static void ehci_ppc4xx_init(Object *o)
+ {
+     EHCISysBusState *s = SYS_BUS_EHCI(o);
+@@ -207,13 +165,6 @@ static void ehci_ppc4xx_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_ppc4xx_type_info = {
+-    .name          = TYPE_PPC4xx_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .class_init    = ehci_ppc4xx_class_init,
+-    .instance_init = ehci_ppc4xx_init,
+-};
+-
+ /*
+  * Faraday FUSBH200 USB 2.0 EHCI
+  */
+@@ -282,24 +233,55 @@ static void fusbh200_ehci_class_init(ObjectClass *oc, void *data)
+     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+ }
+ 
+-static const TypeInfo ehci_fusbh200_type_info = {
+-    .name          = TYPE_FUSBH200_EHCI,
+-    .parent        = TYPE_SYS_BUS_EHCI,
+-    .instance_size = sizeof(FUSBH200EHCIState),
+-    .instance_init = fusbh200_ehci_init,
+-    .class_init    = fusbh200_ehci_class_init,
++static const TypeInfo ehci_sysbus_types[] = {
 +    {
-+        .name          = TYPE_DS1338,
-+        .parent        = TYPE_I2C_SLAVE,
-+        .instance_size = sizeof(DS1338State),
-+        .class_init    = ds1338_class_init,
++        .name          = TYPE_SYS_BUS_EHCI,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(EHCISysBusState),
++        .instance_init = ehci_sysbus_init,
++        .instance_finalize = ehci_sysbus_finalize,
++        .abstract      = true,
++        .class_init    = ehci_sysbus_class_init,
++        .class_size    = sizeof(SysBusEHCIClass),
++    },
++    {
++        .name          = TYPE_PLATFORM_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_platform_class_init,
++    },
++    {
++        .name          = TYPE_EXYNOS4210_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_exynos4210_class_init,
++    },
++    {
++        .name          = TYPE_AW_H3_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_aw_h3_class_init,
++    },
++    {
++        .name          = TYPE_NPCM7XX_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_npcm7xx_class_init,
++    },
++    {
++        .name          = TYPE_TEGRA2_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_tegra2_class_init,
++    },
++    {
++        .name          = TYPE_PPC4xx_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .class_init    = ehci_ppc4xx_class_init,
++        .instance_init = ehci_ppc4xx_init,
++    },
++    {
++        .name          = TYPE_FUSBH200_EHCI,
++        .parent        = TYPE_SYS_BUS_EHCI,
++        .instance_size = sizeof(FUSBH200EHCIState),
++        .instance_init = fusbh200_ehci_init,
++        .class_init    = fusbh200_ehci_class_init,
 +    },
  };
  
--static void ds1338_register_types(void)
+-static void ehci_sysbus_register_types(void)
 -{
--    type_register_static(&ds1338_info);
+-    type_register_static(&ehci_type_info);
+-    type_register_static(&ehci_platform_type_info);
+-    type_register_static(&ehci_exynos4210_type_info);
+-    type_register_static(&ehci_aw_h3_type_info);
+-    type_register_static(&ehci_npcm7xx_type_info);
+-    type_register_static(&ehci_tegra2_type_info);
+-    type_register_static(&ehci_ppc4xx_type_info);
+-    type_register_static(&ehci_fusbh200_type_info);
 -}
 -
--type_init(ds1338_register_types)
-+DEFINE_TYPES(ds1338_types)
+-type_init(ehci_sysbus_register_types)
++DEFINE_TYPES(ehci_sysbus_types)
 -- 
 2.47.0
 
