@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A2B9BA5BC
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 850669BA5B9
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7al5-0006Ur-Io; Sun, 03 Nov 2024 08:35:11 -0500
+	id 1t7al6-0006W5-DP; Sun, 03 Nov 2024 08:35:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7akx-0006GM-16; Sun, 03 Nov 2024 08:35:03 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1t7aky-0006I8-0U; Sun, 03 Nov 2024 08:35:04 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7akv-0001H2-Gk; Sun, 03 Nov 2024 08:35:02 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a9aa8895facso590133666b.2; 
- Sun, 03 Nov 2024 05:34:59 -0800 (PST)
+ id 1t7akw-0001Hh-HF; Sun, 03 Nov 2024 08:35:03 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a9a2209bd7fso590720566b.2; 
+ Sun, 03 Nov 2024 05:35:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640898; x=1731245698; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640900; x=1731245700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ewKz4XWNmQIqUkyxTbXCUQmadauWdqAWF9aPgS8rmA8=;
- b=YmjqKjDjVYZ2nof3T68N+GUulIKE5u9JVbyO7lQ8Ba3BY7AbfJejjezgMyiCA/568H
- PyWeGxx45SIYizKbLoSeonMYx+zGIbgy01yYo5yuv7OMowHyedPYMBHnBwdOh+ZD3/V5
- EfKeQ1eBWqnnKftpW9xfK+sQtTXelrvqxqKr0z3+9yioO880TfgeEMpfsgbhPmH89/eH
- Zh8FxTeWCx2NszI9O6cKm22AMMEurdE4SLH+jraQg63GxePo9w3Kk1Jj1aJLyE86p3KT
- 1RH1N4eWd41b+2r+9KMDD2XJ7h1MtVvN7b8TnzcHEmv/VcMbFzBU6K9PfwIrnChD/vUg
- YQrA==
+ bh=ER63OFaSbqJru3HFylC612MYJYy6isDGIUx/mkHzX+E=;
+ b=Z5jikzpC9DT26OF1Lr3zmTorrb3IaCt+a/H7h2+xykrmRCM49rYQ6cX6z+AKcHgTd3
+ DVM4TTZD7kZYFhmYKWJFzlT+njz4ZJfUa8bz2rrbB7+tqvHeXsrQc0vehXUjdt3Tspn7
+ 4y8zJsLp0q+nlA6jBuovsASjmb3bFHy41Fb1B0nmYDuIphOuDUnRs0Pkyb3NHc1DO4NJ
+ 0Hz5A353SB+z3MIY6MX8Qd+Q4ykec9LNKZd3L0GVFhoGeb4x/J36DOOITANckN+8XpAS
+ TkV85RFzbOSQwxMyQDYc9RPtje/kpG5hUT4UDhboxW4WyZCs+O2GAJIJ86uxkwS/qjoq
+ jKEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640898; x=1731245698;
+ d=1e100.net; s=20230601; t=1730640900; x=1731245700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ewKz4XWNmQIqUkyxTbXCUQmadauWdqAWF9aPgS8rmA8=;
- b=kF9YDQ47hE0Kn2DQ5UQRtyfMRScbpf3BQCg6TVYLUs1zDWez6280y/LwgTZP3387FR
- g+T8sa6ddCqkBvPqTsqbeeIdO7UEfmq0fY5EFa1LK5ibUiZYo5f6Kfft6ND8topky5D2
- vQbHYvFh2N9fF7e1KT4PQDqNyj8QNwjkqUjYkW26J0PM9cjkMNWbsM1W4azyVXIWJPDj
- SLJkiABXaqIo6QtTH+p+7EoSoi0yTaViA4GOAyCahK2Y8xPeXmVyXwcqOdVi1XdTMYQC
- t35lX+Lml6eDAOepzs6u02XK6JV9+bg2v1kwPIWmmN5310gK3BVKLg51m0Xml3VoJmYs
- vrnA==
+ bh=ER63OFaSbqJru3HFylC612MYJYy6isDGIUx/mkHzX+E=;
+ b=NzX+nJ3dNNAajp8n7wdQZjxUmNjUcaUhEBit+41u2HUpJDaQEMBlQ4+7aE2fv3H7pC
+ UWbkfu962fIKqCR26nETkCQ2jmDKL2d7oe8P/0SZkPuSH+AarZ7RCDosyDZZ6vjbFwBz
+ 4T4Poglsop/zLHdTSHuoA0LEDap8QspBvpf38L10NkxmbkTogNPj364lhtGC/k3vJg6x
+ Y9EUkIhGDN/sxSStlniZo5rPoRtI6uN4rwBH0KW5ygvpVHSex1vJM3YPtf2w/k++sRSJ
+ lRFKOtYTpZ3rPBki2wzBx1PE7Zud/Td3emKyCYnyyBxqZfWJ0qeyHm7aKjWqA48kDvJd
+ WU6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWwCR/WSg0hm/Yoissi0EYJEeuZWAq9mq9DP5Qia0wQNJEYYsmTdssHjQFu/ni1VUGsEbtsQSF/bLg=@nongnu.org,
- AJvYcCXTLU3Cm070atJ+6q+B/HVcC0XbQC39lWBkehqhXm6/vrJqLfZnyxpRqKlA36dPOV3xdbavRd/F6IDk@nongnu.org
-X-Gm-Message-State: AOJu0YwL60C+nzJJVaTh8hDkWGNoZYx13tAUCDKVcroqDWWUmu6Vb65i
- IIJsGSUMpY3XHm0SpDcXcJuj+fl8cEYZCdt5ib/FAyhCeP3YfDnDWrS51w==
-X-Google-Smtp-Source: AGHT+IHBZYbIlmSk/W+Ev6sJI8xKi/KLvDdhEKIfo4tDQ9a1dh6S5fFew5CHRITwGbgXcfA/2ht3jw==
-X-Received: by 2002:a17:906:730f:b0:a9a:1565:1051 with SMTP id
- a640c23a62f3a-a9de5d6e1fdmr2942272466b.10.1730640898202; 
- Sun, 03 Nov 2024 05:34:58 -0800 (PST)
+ AJvYcCUo41KRSs6LqvmHT/qOH5As8rIu8tVC6mb0GBQToa7D0bzqR8pnD9sila8uP3nD8L88mfPvsPAwL+kt@nongnu.org,
+ AJvYcCUyTRyimiocxIxz8Q2x6XB097ExE1bv/JJukwDP/9fKozPNoFdc8NQAVWhvNInxw/3T+M69xQw4/dM=@nongnu.org
+X-Gm-Message-State: AOJu0YyrVFBi7bsKEUDXgyn7J3qGyKlBlcHG3UDRR0aVjWELRqGtF5+P
+ sDibsGIOQ5aM/K15yiFOYvsX913fpIz8D/9nzqpy3iN6Y5Rw+s5fypdiUQ==
+X-Google-Smtp-Source: AGHT+IG+AeFB/YT9Y7oMfdxq0o20C3QD+REAbj1Km5aeSINDXdqdJX5piKSzPElCQf5E3xMywqVpBA==
+X-Received: by 2002:a17:906:6a15:b0:a9a:a891:b43e with SMTP id
+ a640c23a62f3a-a9de616dfeamr3071310366b.50.1730640899523; 
+ Sun, 03 Nov 2024 05:34:59 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.56
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:34:57 -0800 (PST)
+ Sun, 03 Nov 2024 05:34:58 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -67,18 +67,19 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 12/26] hw/i2c/mpc_i2c: Prefer DEFINE_TYPES() macro
-Date: Sun,  3 Nov 2024 14:33:58 +0100
-Message-ID: <20241103133412.73536-13-shentey@gmail.com>
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v4 13/26] hw/pci-host/ppce500: Reuse TYPE_PPC_E500_PCI_BRIDGE
+ define
+Date: Sun,  3 Nov 2024 14:33:59 +0100
+Message-ID: <20241103133412.73536-14-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,49 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Prefer a macro rather than a string literal when instantiaging device models.
+
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i2c/mpc_i2c.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/pci-host/ppce500.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i2c/mpc_i2c.c b/hw/i2c/mpc_i2c.c
-index 3d79c15653..913d044ac1 100644
---- a/hw/i2c/mpc_i2c.c
-+++ b/hw/i2c/mpc_i2c.c
-@@ -20,7 +20,6 @@
- #include "qemu/osdep.h"
- #include "hw/i2c/i2c.h"
- #include "hw/irq.h"
--#include "qemu/module.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
- #include "qom/object.h"
-@@ -345,16 +344,13 @@ static void mpc_i2c_class_init(ObjectClass *klass, void *data)
-     dc->desc = "MPC I2C Controller";
- }
+diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
+index 97e5d47cec..d7ff2ba778 100644
+--- a/hw/pci-host/ppce500.c
++++ b/hw/pci-host/ppce500.c
+@@ -475,7 +475,7 @@ static void e500_pcihost_realize(DeviceState *dev, Error **errp)
+     address_space_init(&s->bm_as, &s->bm, "pci-bm");
+     pci_setup_iommu(b, &ppce500_iommu_ops, s);
  
--static const TypeInfo mpc_i2c_type_info = {
--    .name          = TYPE_MPC_I2C,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(MPCI2CState),
--    .class_init    = mpc_i2c_class_init,
-+static const TypeInfo mpc_i2c_types[] = {
-+    {
-+        .name          = TYPE_MPC_I2C,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(MPCI2CState),
-+        .class_init    = mpc_i2c_class_init,
-+    },
- };
+-    pci_create_simple(b, 0, "e500-host-bridge");
++    pci_create_simple(b, 0, TYPE_PPC_E500_PCI_BRIDGE);
  
--static void mpc_i2c_register_types(void)
--{
--    type_register_static(&mpc_i2c_type_info);
--}
--
--type_init(mpc_i2c_register_types)
-+DEFINE_TYPES(mpc_i2c_types)
+     memory_region_init(&s->container, OBJECT(h), "pci-container", PCIE500_ALL_SIZE);
+     memory_region_init_io(&h->conf_mem, OBJECT(h), &pci_host_conf_be_ops, h,
 -- 
 2.47.0
 
