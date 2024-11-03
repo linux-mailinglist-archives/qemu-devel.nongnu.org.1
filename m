@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2B19BA5BF
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FDF9BA5B8
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7alA-0006ZU-4c; Sun, 03 Nov 2024 08:35:16 -0500
+	id 1t7al8-0006Xn-3b; Sun, 03 Nov 2024 08:35:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7al3-0006T9-O2; Sun, 03 Nov 2024 08:35:10 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1t7al5-0006Us-05; Sun, 03 Nov 2024 08:35:11 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7al2-0001UC-8F; Sun, 03 Nov 2024 08:35:09 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a9e8522445dso192814466b.1; 
- Sun, 03 Nov 2024 05:35:07 -0800 (PST)
+ id 1t7al3-0001UZ-Au; Sun, 03 Nov 2024 08:35:10 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a99f3a5a44cso469352266b.3; 
+ Sun, 03 Nov 2024 05:35:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640906; x=1731245706; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640907; x=1731245707; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8PJZHCBpLf+Ed1Y0PojeiRWpqZynqPn/D87ewATJ+qo=;
- b=RnyLBvPmxX+pdSP8zVeG3MJzVduF+W6eOqNn9dhd5fs4GBKS3M3W8aeeUxppeHXrND
- haxNgrfCSn5lhD4dv/DUgcDs0SpyWcdIYRlmJRc0UXBvY1ghGI6hOMgxlFExUZM+CPEL
- 5usTXKoTXKWzJZNo446t+pP5VCPTKmBOIg77Or9O0HGisA/Yz38npX9A8yIChJlp2Vh5
- mJDPNkKtBbRZdZCz+A9xD+gS1wJjmsWsv2uH3aQMDpYNrwHol1a3uZDjXVn5pIfEiieI
- DRaUpV0RUR92TPjLxFZo0ewQO2SIaXLUZgsTW8zqJpSnzI6dqbwbrfkfBv7JVmkNW6tV
- 7AXg==
+ bh=3PcD3MeN7oG/a16flPfYAPmHTWpb8xl6Fwk4sXiy6/A=;
+ b=eOqXZfAQMaBNU7CljxkHRXN/PR3RLnYHDoxZHOWiafsuoSW1GbIbRSWjpertEmlJ5u
+ 84bEvxiFycNfD8wb009bLGDqSBD+ksZ/7TzDzOiq8TpUErA8NikuNCWr9TVwoDmzZbVG
+ lUTaOYFYfGMVNeWKCbPP6y7VWFflpEzLOFtRvKb7n2xhmczkkLi+1lY4CLsC+0R8CLmH
+ LCHNonm7TF33JSDCEt8kmvoOt/Bae/gByUERnApsna2Y2ODA/LAoAVyXbwwH0ITFQrHa
+ qC9LdQ3z5PHqzV594+l541jStxmjLSRoMwluO7Y3oWw094aKpJRvn27K9+mhKIcgg6RR
+ RReQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640906; x=1731245706;
+ d=1e100.net; s=20230601; t=1730640907; x=1731245707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8PJZHCBpLf+Ed1Y0PojeiRWpqZynqPn/D87ewATJ+qo=;
- b=QTiq8HynetDDDz5TG67qTgj5GmyFIononfnMoYGgFmVOQd/5xCzEDzFpATgRcZ1IQ8
- mN4irgaatUr6rnBp5F2jub1VkfMk/JzuJ5rw9uI2WJTmJPWsDEonN0e2Vvp0i+sZHgPT
- JFQEk0e3fz6LxIJLjlUXcURcTgWoPlhnJiGtemRfoZVQ9nmLWNd93UAjt9picHJS43M9
- twZt8xakCG7LWfHp0Xk833+e2Kk20xLkuxah4CFV0rQqSHzy3yXoZMseaKfqe+zCwzl3
- jlpWLPftfPAshdlPUNhUVqheW8buyml/8jv362OI9KHh6a2QpmIatvY0SnASP2aWlUgx
- vyrg==
+ bh=3PcD3MeN7oG/a16flPfYAPmHTWpb8xl6Fwk4sXiy6/A=;
+ b=Ov6HfdJfIt1ssVASNNJ7Hpy195kQ/sTsXgVJJhwkK6bu+64wW18UiEKMUYshVf59PL
+ Eph4MBGVMywU/mVhHiCH9fuetOgsQzk/6J3ZZRPXyZeRZTMXgyitiK5BB3jN2O5V8HME
+ IB90egyaZD+C+UXVWB0y+aWXi90OBuX8FAwca0MZun4ecm0PsLkIqc4oQqPRoeaenbBz
+ GdKANTTT2USaGWvcStsxEf6/2dBxHQI05mWb5Vpzcxr01gRLVmbEyKIanLz0dnSBzeq4
+ qZTlc1qbyPUZkQ+4phvJuW7MWggHNC8+PiWkpYM3TuODOwd6iCLPr8gt7Wj8hp8UK4BY
+ e4Og==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLFS7gFsylDR/ubAi5fGLFL5DqApWc+qdUKzmL8sD5Ke+63hce6V31kxxDIlEMHbC3ebmN42zvMhr3@nongnu.org,
- AJvYcCXKsSs+bcnsIVhX9sNv0qOqt3TAhqsnCPfxPJ42AZkQSduoIWAScTg/lMaiMiO/yVXcaYkK1+UyFLs=@nongnu.org
-X-Gm-Message-State: AOJu0YwU2arnRFZ57hFTEB8ZoZvht2os22opcmEfPeR11hHiMEc1f5JH
- AwWsV3lvRagr237NlJAVH4c/Sxan/pb1H7H3VxB6ASe6+lK9j27IgBA0Jw==
-X-Google-Smtp-Source: AGHT+IGtOLKgCt1GasDdGC2u2sCykJLirj/8W1heSBaSiaAYbStoa7SZh26WnkebgprhCvPOiEFYtw==
-X-Received: by 2002:a17:907:3f20:b0:a9a:33c:f6e1 with SMTP id
- a640c23a62f3a-a9e6553c10amr937310766b.5.1730640905543; 
- Sun, 03 Nov 2024 05:35:05 -0800 (PST)
+ AJvYcCUvrx3pgOaf33mHNaR29naqvr4/2vefCDTiAcTdYbItgL/StiUxq8314EmQu6XRlS5qAzKTZDFIvUs=@nongnu.org,
+ AJvYcCX6H2zSNsD3yLKw4FCYlDrJpmihRW65uylYNRsyNEGpDMO+zdqo0vC3Yxa3+hBxGcYC5g2hRtG1m72q@nongnu.org
+X-Gm-Message-State: AOJu0YxfAYyepqcWjHrIZQD3CkQ+kw7QZoMD1JMI2oaVpta+WPQGoQLz
+ RyoQq2XsBlqUVJTIul+o4FPUZWu5eEWIY8MsrsbNjvsjR3q2ko13CkzhyQ==
+X-Google-Smtp-Source: AGHT+IHhEnFrAMNswLgLPjjmt4ftcJL5pxp/zi4FxJ6cPugFHYitTFt8hrglJ4Cvl3dRGVfM/ykosA==
+X-Received: by 2002:a17:907:9405:b0:a9a:a3a:6c58 with SMTP id
+ a640c23a62f3a-a9de5ed3e2emr2958689466b.22.1730640906800; 
+ Sun, 03 Nov 2024 05:35:06 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.04
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:35:04 -0800 (PST)
+ Sun, 03 Nov 2024 05:35:06 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -68,17 +68,17 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 17/26] hw/gpio/mpc8xxx: Prefer DEFINE_TYPES() macro
-Date: Sun,  3 Nov 2024 14:34:03 +0100
-Message-ID: <20241103133412.73536-18-shentey@gmail.com>
+Subject: [PATCH v4 18/26] hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
+Date: Sun,  3 Nov 2024 14:34:04 +0100
+Message-ID: <20241103133412.73536-19-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,48 +104,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/gpio/mpc8xxx.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ hw/ppc/mpc8544_guts.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/hw/gpio/mpc8xxx.c b/hw/gpio/mpc8xxx.c
-index 63b7a5c881..a3c1d2fbf4 100644
---- a/hw/gpio/mpc8xxx.c
-+++ b/hw/gpio/mpc8xxx.c
-@@ -23,7 +23,6 @@
- #include "hw/irq.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
--#include "qemu/module.h"
- #include "qom/object.h"
+diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
+index c02b34ccde..e3c51458e6 100644
+--- a/hw/ppc/mpc8544_guts.c
++++ b/hw/ppc/mpc8544_guts.c
+@@ -18,7 +18,6 @@
+  */
  
- #define TYPE_MPC8XXX_GPIO "mpc8xxx_gpio"
-@@ -208,17 +207,14 @@ static void mpc8xxx_gpio_class_init(ObjectClass *klass, void *data)
-     device_class_set_legacy_reset(dc, mpc8xxx_gpio_reset);
+ #include "qemu/osdep.h"
+-#include "qemu/module.h"
+ #include "qemu/log.h"
+ #include "sysemu/runstate.h"
+ #include "cpu.h"
+@@ -141,16 +140,13 @@ static void mpc8544_guts_initfn(Object *obj)
+     sysbus_init_mmio(d, &s->iomem);
  }
  
--static const TypeInfo mpc8xxx_gpio_info = {
--    .name          = TYPE_MPC8XXX_GPIO,
+-static const TypeInfo mpc8544_guts_info = {
+-    .name          = TYPE_MPC8544_GUTS,
 -    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(MPC8XXXGPIOState),
--    .instance_init = mpc8xxx_gpio_initfn,
--    .class_init    = mpc8xxx_gpio_class_init,
-+static const TypeInfo mpc8xxx_gpio_types[] = {
+-    .instance_size = sizeof(GutsState),
+-    .instance_init = mpc8544_guts_initfn,
++static const TypeInfo mpc8544_guts_types[] = {
 +    {
-+        .name          = TYPE_MPC8XXX_GPIO,
++        .name          = TYPE_MPC8544_GUTS,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(MPC8XXXGPIOState),
-+        .instance_init = mpc8xxx_gpio_initfn,
-+        .class_init    = mpc8xxx_gpio_class_init,
++        .instance_size = sizeof(GutsState),
++        .instance_init = mpc8544_guts_initfn,
 +    },
  };
  
--static void mpc8xxx_gpio_register_types(void)
+-static void mpc8544_guts_register_types(void)
 -{
--    type_register_static(&mpc8xxx_gpio_info);
+-    type_register_static(&mpc8544_guts_info);
 -}
 -
--type_init(mpc8xxx_gpio_register_types)
-+DEFINE_TYPES(mpc8xxx_gpio_types)
+-type_init(mpc8544_guts_register_types)
++DEFINE_TYPES(mpc8544_guts_types)
 -- 
 2.47.0
 
