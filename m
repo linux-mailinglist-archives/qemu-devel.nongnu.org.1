@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB409BA5A2
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109069BA5A7
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:37:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7akz-0006KX-K4; Sun, 03 Nov 2024 08:35:05 -0500
+	id 1t7al0-0006Mp-KB; Sun, 03 Nov 2024 08:35:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7aks-0006C6-DT; Sun, 03 Nov 2024 08:34:59 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1t7akv-0006EC-7l; Sun, 03 Nov 2024 08:35:01 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7akq-0001Fz-Pl; Sun, 03 Nov 2024 08:34:58 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a99f3a5a44cso469338066b.3; 
- Sun, 03 Nov 2024 05:34:55 -0800 (PST)
+ id 1t7aks-0001GH-K2; Sun, 03 Nov 2024 08:35:00 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a7aa086b077so392509566b.0; 
+ Sun, 03 Nov 2024 05:34:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640894; x=1731245694; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640895; x=1731245695; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4LrsAVgiHNYWHzjycHLAubvkskxhUaO0hAeiKijzufc=;
- b=OTfSeM0ieNxm+o8dhgsRUtA+iYXAx9H3tr8HaGNErkOoru+iciDxeCJR7O/G4wVjJS
- 5uacOl8ruRuJH38Lbe2LHMGH5S9pGIN0xcSu11UW05oddPoHbNZHvAKzoyW0V6ibvM4l
- K8GOk+qG9Mu2IrM2hb4PsdWJb/FoIqQ4yeZVuZnHb0ktWTpjezyLKJEJFYcbbUT2GNiX
- 71jFnXfNVeHL37JFA4F2AvY0xnkJEK03gBITtwJhh6uF0R0lkZB44tCIrZEQ0gRTy9L0
- EQ7W/fmh1Ubbw5QWUws2v7nNvx12YrN7zpOzzl7KbJcztBKtfEWxrfyuIkdtO9hRjJRo
- MYBg==
+ bh=ek6CJz/W/BZPJLQDBSj5hrEIX9vzfAv/et55GzS0YMU=;
+ b=HX8XAsNb23G7vjga9CHfq1rLCNSNF4MQYiVtUzUjq8uJ4TJvMRlm1vJomnlURVjVvP
+ mo9lVtwhKvwDetARdRCzKtK5UWmrDNEJRYs+vQ8iofcVuCkYjzG4aKYQxRKJiUqSJJKL
+ ir+8AeVpYCyc8mdEP0bqgXSO+stj0J1FOY6mr7t9OXwyiflRbBdBtprrubvQ1l6xYU+O
+ FxV2UlrbAKoNgdPfzpHuH5GgD6W98dF9ekRG6hcEaAAE8+kIDv7YlMvThb99C++BWZwR
+ WS3PyV4R9cPG6TCuV0lbbqcyaL9GFnsxRHnzZL0QdTYEqPamHextT+aIYH6/Kl5iWde+
+ DRQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640894; x=1731245694;
+ d=1e100.net; s=20230601; t=1730640895; x=1731245695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4LrsAVgiHNYWHzjycHLAubvkskxhUaO0hAeiKijzufc=;
- b=AxozvTQ/BatnJw50K19h9qsiqHwWG83SPrMJgwRHThi3vDww3JL/q4dyAIbbeHPO2d
- czOBCkmD1ZX8kNY8728/clzb+vifK2iwUP0xdG6EKU/k/PW/r9VlyTGjywvc+DwjUlNC
- zm2AUHV8kNo4qdzZ4Mq/SDCY988/kw+9V62dLfbQWSeVRhBhce+4aPcT1Igrea/Kt/BA
- PMt6xEaBJSvETZMm7DbJEqR95fWYQfy7o2vkY6uReBYs+Hb8Ghp+U0Fh4ugP7hCSmfJt
- NXAMkq5lqDd64s32zR15fXSGW6WYIPPw2qaBJ7Hsyi7kO2A7sDUJ0yrCeEdf9P9+Txkz
- cH5Q==
+ bh=ek6CJz/W/BZPJLQDBSj5hrEIX9vzfAv/et55GzS0YMU=;
+ b=j+DCeG+EUxQB9p5Yo1epW2E4gqpHdzDKpso8EDF3ps7BJ3pbvQ37mKAjdsO3pQgVTn
+ 4WI4B+0Kpad8ZoEKJCkbwvKHWsGDMI/T9mgHR5uXPOw+Y6FSQbrnt3fR1VFzGfEfzCun
+ +VYa5w+RfF/+Fgns7tKJ5X9DipivwGIulAJ/wH/ihl9FDYIu2ElEaheqZWrmjobxrL9Y
+ QEvaX4/GwmXpF0KGQ2Vs/ot18l1FOLkp5JGT94YP2cg4Y6nOJGFBSE6H1nUeLX8VPt05
+ POdbepMYGqPbFOdM7dgHww6pFVFw6ZHqfwp7nh3RAyBrHWNtqxraRESHiwqM7miIVQu/
+ ClZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVI2nbwgoLGGAyU3qFvF8jGiiS1o3uN28aXUmNNQkB9RNVXtdaikuj6N1sMh3Ke/p1iidULd36JGVQj@nongnu.org,
- AJvYcCXHAfLRJ5YpuLaylcPmDfuyyJ8Ki548tkv7NFq0scRmL8dWJY7fKkjDArS1m3p1Toh7rsHhFbMkmJA=@nongnu.org
-X-Gm-Message-State: AOJu0YxCsOqOX3JS73J+wEPO6xjQC08bcXBspfh4VnP8gi9EIJRidknP
- oWYYjm6A7WwqzJXtt2JLDPgcjDBpX9uXU2VtY1H2Um4LiDLBgeo2TPyZEA==
-X-Google-Smtp-Source: AGHT+IGGqec/lBlZhlqUjJJtcC2SRULsfxWaoxXKs3/e50EAVjutNghDuXtXSNX6EdSwnl2VhJBuPQ==
-X-Received: by 2002:a17:907:9413:b0:a9a:1f8:6c9b with SMTP id
- a640c23a62f3a-a9de5fe7455mr2899437166b.37.1730640893838; 
- Sun, 03 Nov 2024 05:34:53 -0800 (PST)
+ AJvYcCWWeGqh/tuDNCIvR9WcADU6AYdIILei7HAkHU7Ka4/BFIzrBzgvAc3MTNFFnV/mNgqYlkNBi7k5kwo=@nongnu.org,
+ AJvYcCXDImv7Wmyk4ajO1IFMe9Zabdr7JKovOq18EohLmEoqJykqMkfCvetj/AQ1xKI2WGZqQs/vQMm08ck+@nongnu.org
+X-Gm-Message-State: AOJu0YxVbu0QKZtqStojm7gPwyUJRusTpkC9OaqZTBmXkW9TLCu+gAzO
+ n5ycEo+PJn/h9YFl3bLJuJLpLNWBSSIDGj7RABYXoC0ggWiH1/Z3DEkd2g==
+X-Google-Smtp-Source: AGHT+IHU1zHgnSJYKblp4Y2Phk1qGDzo9lmKgHdHvby6tWb3uuE0Pzqbi12wiCC0k3hd9DC9+Y4wZg==
+X-Received: by 2002:a17:906:6a12:b0:a99:f746:385 with SMTP id
+ a640c23a62f3a-a9e3a573d11mr1837250766b.1.1730640895195; 
+ Sun, 03 Nov 2024 05:34:55 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.52
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:34:53 -0800 (PST)
+ Sun, 03 Nov 2024 05:34:54 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -67,17 +67,19 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 09/26] hw/ppc/ppce500_ccsr: Trace access to CCSR region
-Date: Sun,  3 Nov 2024 14:33:55 +0100
-Message-ID: <20241103133412.73536-10-shentey@gmail.com>
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v4 10/26] hw/ppc/mpc8544_guts: Populate POR PLL ratio status
+ register
+Date: Sun,  3 Nov 2024 14:33:56 +0100
+Message-ID: <20241103133412.73536-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,71 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CCSR space is just a container which is meant to be covered by platform
-device memory regions. However, QEMU only implements a subset of these devices.
-Add some tracing to see which unimplemented devices a guest attempts to access.
+Populate this read-only register with some arbitrary values which avoids
+U-Boot's get_clocks() to hang().
 
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/ppce500_ccsr.c | 25 ++++++++++++++++++++++++-
- hw/ppc/trace-events   |  3 +++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ hw/ppc/mpc8544_guts.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/hw/ppc/ppce500_ccsr.c b/hw/ppc/ppce500_ccsr.c
-index b1fb4090c0..31efc7bee8 100644
---- a/hw/ppc/ppce500_ccsr.c
-+++ b/hw/ppc/ppce500_ccsr.c
-@@ -13,12 +13,35 @@
+diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
+index e3540b0281..c02b34ccde 100644
+--- a/hw/ppc/mpc8544_guts.c
++++ b/hw/ppc/mpc8544_guts.c
+@@ -29,6 +29,12 @@
+ #define MPC8544_GUTS_RSTCR_RESET      0x02
  
- #include "qemu/osdep.h"
- #include "ppce500_ccsr.h"
-+#include "trace.h"
+ #define MPC8544_GUTS_ADDR_PORPLLSR    0x00
++REG32(GUTS_PORPLLSR, 0x00)
++    FIELD(GUTS_PORPLLSR, E500_1_RATIO, 24, 6)
++    FIELD(GUTS_PORPLLSR, E500_0_RATIO, 16, 6)
++    FIELD(GUTS_PORPLLSR, DDR_RATIO, 9, 5)
++    FIELD(GUTS_PORPLLSR, PLAT_RATIO, 1, 5)
 +
-+static uint64_t ppce500_ccsr_io_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uint64_t value = 0;
-+
-+    trace_ppce500_ccsr_io_read(addr, value, size);
-+
-+    return value;
-+}
-+
-+static void ppce500_ccsr_io_write(void *opaque, hwaddr addr, uint64_t value,
-+                                  unsigned size)
-+{
-+    trace_ppce500_ccsr_io_write(addr, value, size);
-+}
-+
-+static const MemoryRegionOps ppce500_ccsr_ops = {
-+    .read = ppce500_ccsr_io_read,
-+    .write = ppce500_ccsr_io_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
+ #define MPC8544_GUTS_ADDR_PORBMSR     0x04
+ #define MPC8544_GUTS_ADDR_PORIMPSCR   0x08
+ #define MPC8544_GUTS_ADDR_PORDEVSR    0x0C
+@@ -75,6 +81,12 @@ static uint64_t mpc8544_guts_read(void *opaque, hwaddr addr,
  
- static void ppce500_ccsr_init(Object *obj)
- {
-     PPCE500CCSRState *s = CCSR(obj);
- 
--    memory_region_init(&s->ccsr_space, obj, "e500-ccsr", MPC85XX_CCSRBAR_SIZE);
-+    memory_region_init_io(&s->ccsr_space, obj, &ppce500_ccsr_ops, obj,
-+                          "e500-ccsr", MPC85XX_CCSRBAR_SIZE);
-     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->ccsr_space);
- }
- 
-diff --git a/hw/ppc/trace-events b/hw/ppc/trace-events
-index 1f125ce841..ca4c231c9f 100644
---- a/hw/ppc/trace-events
-+++ b/hw/ppc/trace-events
-@@ -143,6 +143,9 @@ ppc_irq_cpu(const char *action) "%s"
- ppc_dcr_read(uint32_t addr, uint32_t val) "DRCN[0x%x] -> 0x%x"
- ppc_dcr_write(uint32_t addr, uint32_t val) "DRCN[0x%x] <- 0x%x"
- 
-+ppce500_ccsr_io_read(uint32_t index, uint32_t val, uint8_t size) "[0x%" PRIx32 "] -> 0x%08x (size: 0x%" PRIu8 ")"
-+ppce500_ccsr_io_write(uint32_t index, uint32_t val, uint8_t size) "[0x%" PRIx32 "] <- 0x%08x (size: 0x%" PRIu8 ")"
-+
- # prep_systemio.c
- prep_systemio_read(uint32_t addr, uint32_t val) "read addr=0x%x val=0x%x"
- prep_systemio_write(uint32_t addr, uint32_t val) "write addr=0x%x val=0x%x"
+     addr &= MPC8544_GUTS_MMIO_SIZE - 1;
+     switch (addr) {
++    case MPC8544_GUTS_ADDR_PORPLLSR:
++        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_1_RATIO, 6); /* 3:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_0_RATIO, 6); /* 3:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, DDR_RATIO, 12); /* 12:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, PLAT_RATIO, 6); /* 6:1 */
++        break;
+     case MPC8544_GUTS_ADDR_PVR:
+         value = env->spr[SPR_PVR];
+         break;
 -- 
 2.47.0
 
