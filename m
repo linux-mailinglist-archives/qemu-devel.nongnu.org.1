@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FDF9BA5B8
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:42:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BDB9BA5A5
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:37:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7al8-0006Xn-3b; Sun, 03 Nov 2024 08:35:14 -0500
+	id 1t7alB-0006c2-Or; Sun, 03 Nov 2024 08:35:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7al5-0006Us-05; Sun, 03 Nov 2024 08:35:11 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1t7al8-0006Yp-Bb; Sun, 03 Nov 2024 08:35:14 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7al3-0001UZ-Au; Sun, 03 Nov 2024 08:35:10 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a99f3a5a44cso469352266b.3; 
- Sun, 03 Nov 2024 05:35:08 -0800 (PST)
+ id 1t7al6-0001VJ-BA; Sun, 03 Nov 2024 08:35:14 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a9a0ec0a94fso537705466b.1; 
+ Sun, 03 Nov 2024 05:35:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640907; x=1731245707; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640910; x=1731245710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3PcD3MeN7oG/a16flPfYAPmHTWpb8xl6Fwk4sXiy6/A=;
- b=eOqXZfAQMaBNU7CljxkHRXN/PR3RLnYHDoxZHOWiafsuoSW1GbIbRSWjpertEmlJ5u
- 84bEvxiFycNfD8wb009bLGDqSBD+ksZ/7TzDzOiq8TpUErA8NikuNCWr9TVwoDmzZbVG
- lUTaOYFYfGMVNeWKCbPP6y7VWFflpEzLOFtRvKb7n2xhmczkkLi+1lY4CLsC+0R8CLmH
- LCHNonm7TF33JSDCEt8kmvoOt/Bae/gByUERnApsna2Y2ODA/LAoAVyXbwwH0ITFQrHa
- qC9LdQ3z5PHqzV594+l541jStxmjLSRoMwluO7Y3oWw094aKpJRvn27K9+mhKIcgg6RR
- RReQ==
+ bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
+ b=cjV38T4Wor8TYsBHs1CnkdRDsq82kQrjIlRRaIRZm3M8mFVFobUUhkM1gOZ5iB+7GH
+ EhSX08M8mzCiroD4k9kPQY62D3CqjIf7LXA02QKquit3iSwQ1V5cXOo6BcKQEX8f5fAp
+ aa86vqKdy3Be7Ev0BaCvdFJtCh7nph25e8U441gdmKqbgeGzgOFaYG+h9daRvMMda7d6
+ X7EdMzEJOc5aIWsJPp0IOX8nc5YGiqhcGT+Yo+SxjlLEBvStxmrNYEq0WdRSuwZq6lP+
+ 8/0woP6P7ZEGjx/twTX1nJaSREnL8yXKL4ehvON9nwl6IzpX/sTesQdKD6VRkPWy6SI8
+ mKdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640907; x=1731245707;
+ d=1e100.net; s=20230601; t=1730640910; x=1731245710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3PcD3MeN7oG/a16flPfYAPmHTWpb8xl6Fwk4sXiy6/A=;
- b=Ov6HfdJfIt1ssVASNNJ7Hpy195kQ/sTsXgVJJhwkK6bu+64wW18UiEKMUYshVf59PL
- Eph4MBGVMywU/mVhHiCH9fuetOgsQzk/6J3ZZRPXyZeRZTMXgyitiK5BB3jN2O5V8HME
- IB90egyaZD+C+UXVWB0y+aWXi90OBuX8FAwca0MZun4ecm0PsLkIqc4oQqPRoeaenbBz
- GdKANTTT2USaGWvcStsxEf6/2dBxHQI05mWb5Vpzcxr01gRLVmbEyKIanLz0dnSBzeq4
- qZTlc1qbyPUZkQ+4phvJuW7MWggHNC8+PiWkpYM3TuODOwd6iCLPr8gt7Wj8hp8UK4BY
- e4Og==
+ bh=9EXWyrH8f7oP41/W4xeKAhIRvW+hPSPt58Osc1OjMy8=;
+ b=Pmfs2Ilzsorm8wGV0Vqn0K3VAdqx8x92pcCGJuYmNfYOpQUJpKV/uXVnBrt394AjH0
+ QMipGXbTz9WzMftigNgUmSBoU3F4u1SfqEuCrss33HUBnj2oQKv96KQmGoItUX+Eb2OV
+ z8pOQY3oN2O701+D3ga8ll+SIeuvCebvKycRdgkn16icWTuBFlyYGLGXbcJfTaKodFyv
+ loEsvrn3Nc10Z4RWzRSwBYLCITzpEQ4G9EtUqH/RWVca1Sl7Fkw/f08RuLyVWFLof8g+
+ Loc+wK53gDxoNorKaFHD9T77bpfMAVu8AZaiuhHR1bRklMq/H3l3QxCB+yhnEGMKTZde
+ j01w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvrx3pgOaf33mHNaR29naqvr4/2vefCDTiAcTdYbItgL/StiUxq8314EmQu6XRlS5qAzKTZDFIvUs=@nongnu.org,
- AJvYcCX6H2zSNsD3yLKw4FCYlDrJpmihRW65uylYNRsyNEGpDMO+zdqo0vC3Yxa3+hBxGcYC5g2hRtG1m72q@nongnu.org
-X-Gm-Message-State: AOJu0YxfAYyepqcWjHrIZQD3CkQ+kw7QZoMD1JMI2oaVpta+WPQGoQLz
- RyoQq2XsBlqUVJTIul+o4FPUZWu5eEWIY8MsrsbNjvsjR3q2ko13CkzhyQ==
-X-Google-Smtp-Source: AGHT+IHhEnFrAMNswLgLPjjmt4ftcJL5pxp/zi4FxJ6cPugFHYitTFt8hrglJ4Cvl3dRGVfM/ykosA==
-X-Received: by 2002:a17:907:9405:b0:a9a:a3a:6c58 with SMTP id
- a640c23a62f3a-a9de5ed3e2emr2958689466b.22.1730640906800; 
- Sun, 03 Nov 2024 05:35:06 -0800 (PST)
+ AJvYcCUbi5H7uP6wRSCV4Oyvu+yo+jifxHWm6chTjcImiUl/MUN8QxjkhzGEOQSxp1MKnE7PS97UGgv3piuV@nongnu.org,
+ AJvYcCViJj0Zq01mZdp3eTk8joPdDakoOTANV8k//6k4pPGhWT1D09RXlrgiSfh14ibD/fA5F0xdXfIu/9M=@nongnu.org
+X-Gm-Message-State: AOJu0Yy4WFbboJHueM+4NHCoO/3GD4McJQMxlxULtoJNuS5JvWG2V3hG
+ /naXCVqgBm7qPRHesY2Vwmya69eyVdpLScGpB53H1lmwKo0B1PcL60b5tQ==
+X-Google-Smtp-Source: AGHT+IHV/tZqpLoOKKUt58bZGrLOzCxYv81Fnu3Tg9rweTAyPHqh1/zoWbGPg5e3Ee1zp+QYJLdKcg==
+X-Received: by 2002:a17:907:9729:b0:a9a:7f92:782 with SMTP id
+ a640c23a62f3a-a9de61ea441mr2791292266b.52.1730640907941; 
+ Sun, 03 Nov 2024 05:35:07 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.05
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.35.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:35:06 -0800 (PST)
+ Sun, 03 Nov 2024 05:35:07 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -68,17 +68,18 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 18/26] hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
-Date: Sun,  3 Nov 2024 14:34:04 +0100
-Message-ID: <20241103133412.73536-19-shentey@gmail.com>
+Subject: [PATCH v4 19/26] hw/intc: Guard openpic_kvm.c by dedicated
+ OPENPIC_KVM Kconfig switch
+Date: Sun,  3 Nov 2024 14:34:05 +0100
+Message-ID: <20241103133412.73536-20-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,49 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Allows to clearly mark code sections relying on this device type.
+
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/mpc8544_guts.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/ppc/e500.c       | 2 +-
+ hw/intc/Kconfig     | 4 ++++
+ hw/intc/meson.build | 3 +--
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
-index c02b34ccde..e3c51458e6 100644
---- a/hw/ppc/mpc8544_guts.c
-+++ b/hw/ppc/mpc8544_guts.c
-@@ -18,7 +18,6 @@
-  */
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index f640195e62..f12329feda 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -826,7 +826,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
+ static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
+                                           Error **errp)
+ {
+-#ifdef CONFIG_KVM
++#ifdef CONFIG_OPENPIC_KVM
+     DeviceState *dev;
+     CPUState *cs;
  
- #include "qemu/osdep.h"
--#include "qemu/module.h"
- #include "qemu/log.h"
- #include "sysemu/runstate.h"
- #include "cpu.h"
-@@ -141,16 +140,13 @@ static void mpc8544_guts_initfn(Object *obj)
-     sysbus_init_mmio(d, &s->iomem);
- }
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index dd405bdb5d..a3df98ae59 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -16,6 +16,10 @@ config OPENPIC
+     bool
+     select MSI_NONBROKEN
  
--static const TypeInfo mpc8544_guts_info = {
--    .name          = TYPE_MPC8544_GUTS,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(GutsState),
--    .instance_init = mpc8544_guts_initfn,
-+static const TypeInfo mpc8544_guts_types[] = {
-+    {
-+        .name          = TYPE_MPC8544_GUTS,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(GutsState),
-+        .instance_init = mpc8544_guts_initfn,
-+    },
- };
- 
--static void mpc8544_guts_register_types(void)
--{
--    type_register_static(&mpc8544_guts_info);
--}
--
--type_init(mpc8544_guts_register_types)
-+DEFINE_TYPES(mpc8544_guts_types)
++config OPENPIC_KVM
++    bool
++    depends on OPENPIC && KVM
++
+ config APIC
+     bool
+     select MSI_NONBROKEN
+diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+index 6bfdc4eb33..b9de6bf5c6 100644
+--- a/hw/intc/meson.build
++++ b/hw/intc/meson.build
+@@ -48,8 +48,7 @@ specific_ss.add(when: 'CONFIG_IOAPIC', if_true: files('ioapic.c'))
+ specific_ss.add(when: 'CONFIG_LOONGSON_LIOINTC', if_true: files('loongson_liointc.c'))
+ specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gic.c'))
+ specific_ss.add(when: 'CONFIG_OMPIC', if_true: files('ompic.c'))
+-specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_OPENPIC'],
+-		if_true: files('openpic_kvm.c'))
++specific_ss.add(when: 'CONFIG_OPENPIC_KVM', if_true: files('openpic_kvm.c'))
+ specific_ss.add(when: 'CONFIG_POWERNV', if_true: files('xics_pnv.c', 'pnv_xive.c', 'pnv_xive2.c'))
+ specific_ss.add(when: 'CONFIG_PPC_UIC', if_true: files('ppc-uic.c'))
+ specific_ss.add(when: 'CONFIG_RX_ICU', if_true: files('rx_icu.c'))
 -- 
 2.47.0
 
