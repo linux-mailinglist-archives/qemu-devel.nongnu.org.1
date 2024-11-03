@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3415A9BA5C1
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 780B89BA5B6
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 14:41:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7akv-0006D1-UR; Sun, 03 Nov 2024 08:35:02 -0500
+	id 1t7aks-0006Af-2p; Sun, 03 Nov 2024 08:34:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7aki-000678-Nc; Sun, 03 Nov 2024 08:34:50 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1t7akj-00067c-QG; Sun, 03 Nov 2024 08:34:50 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7akg-0001DE-JG; Sun, 03 Nov 2024 08:34:47 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5ceb03aadb1so3463643a12.0; 
- Sun, 03 Nov 2024 05:34:45 -0800 (PST)
+ id 1t7akh-0001DI-7B; Sun, 03 Nov 2024 08:34:49 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a99ebb390a5so807653966b.1; 
+ Sun, 03 Nov 2024 05:34:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730640884; x=1731245684; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730640885; x=1731245685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OSUXdq93xqCIzRVUO2sgZ5ZRdMkGuWMIHhF5tQTYyjM=;
- b=QQfeeZbaXBZBXD52GqBcCsyDcpX69eJBddMpbZh8ShWe4I+e7/D91lPKoImRcs/TXH
- tTvi4pYvhOZppokSOqbOgFXo5yySckkdGjyTBNrXS0U2PbSwMdU+slR4NB9RKxYHimuw
- 2V4E9u46V0ueCLFjB5UVtUBhgbk8xiVJckQRk+Ay7pN1e35PxAe0/F0e7TA9wX9w4A51
- JgIMLtg+h7I6DuvguJspyIExjKLYhjEPxs4XBnV9pp/dcNZrEXX2+Bb9Y1hViZWkfbiH
- rTozv/Z+W6qMngYZa0cVzr4mzScKeFcAtOUcMzDP2Wm4DwL310UF9y6dbqN4m0HLBEcv
- qPWA==
+ bh=tfVJw2OTp+OS1+DvQbkRZgABrzKigE/SljuSUg2aBz4=;
+ b=JNdxFE6FS1oI7/GgVhiZg8wg9cJ9pfMt6eTc8uSAMUeh87sNpIg1FsMSrzCF1MYwyi
+ AiBqmLfiaG8lcdG0lLDmEiUsGZ64bDj0EYSgDo/TUVvNTYfjJ8a+ThW5hr+C45QNKNE+
+ rb/MSBYyYYPWe8rcOkjrrdBbNH0fWMjT3ngmbYyUYO3Lw8RW/akbjbxHOVqVfuvhEGxP
+ ORBXUhsVXKsAuMuqaosVfpTL0TjSkGfSPnePYhfBAEE2eTkcX5skW9yozailxJC0tIVv
+ cmudQl4krq1ceF9A92TPppjy9VcR8F1Lt46kaprHr25lVpXuMlP+QGBbDXdLfzBT4b8S
+ +VCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730640884; x=1731245684;
+ d=1e100.net; s=20230601; t=1730640885; x=1731245685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OSUXdq93xqCIzRVUO2sgZ5ZRdMkGuWMIHhF5tQTYyjM=;
- b=WXRQJSz6k5aiQ59OFy9EO2YKPqu0HsUDOBclWytGrLY6TXQVaP6rlZfmO04la6o3uk
- UD2djZoWKTFTv3zLtlAJ1C8MfduWvidlbLCW/inPwiSb8D1NxdX39i0/3zacUGjb5XlU
- gV545EtJh3PtM+xyrXZJQtonlbhdbJpWl+Mv6CkISDTQmJGUa2589L7Mz085a52Xvnk/
- 1X+ixrSkty8a5ns7aOf0TyfNVaeTT2T+ALdJGqmVsQX9UITeNAG6njUQX5mVVTJZAn22
- /AN5ODZtDpXCX9NsGEAmlICWV8geJKT2EZX3//ovpbN6F86RP/cXcD/27083HGBALMXj
- s+fg==
+ bh=tfVJw2OTp+OS1+DvQbkRZgABrzKigE/SljuSUg2aBz4=;
+ b=m4FGCAUIQU9YIAIXtmLoc2K3nC0h062TBTF/kHN1AW5ml7mkpAKdpttXaXUtaWb504
+ /8DKePhBNFrBOS5ZMKlduwnwdmM0ywca7hXD6Sb3zMbQtHdk58036vskA1G6axpkXaQY
+ pEZf8SZ+taJcVkC8t2igK9WlYtepzUE+tnV01ZQ57ykq9U4wqNX7bUeMQpMB0LLILrds
+ cFiMK7qg3iPvYrWjmSgIOuCBZ67WxV7VTvcZ/RUOslFUiFR2ltMxM9twLr0ZBVnbDMv/
+ S3hfPRrvHEtaXaZ4SP1CTXC0PiT8kiLixnm3AFLKcRcQbOhITyvlOEBqn9UoaGc3tE7a
+ u98Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWRaIrWdasinJePcYvH56hadVcS0M02HdpRXBcOyCCmQcyvUT8VN1JICeBBy49EbPGLgQjmi/yWp8w5@nongnu.org,
- AJvYcCXzaXdXe4XGzhvmeHfa5SCtKd4ocFQsnIbNkTpRqrMsx+9M/U7I0ltCP0zJ9ngz2fFYolabz3xGu2Y=@nongnu.org
-X-Gm-Message-State: AOJu0YygDor/tfWacS7Wg/ptx6+yrl6/ZTab9JOEZMhZBumdcTIqao0i
- 8rJJ/ylikoVR4mBjrT/ioqFmesugOjZZNj5/3uWFVa9p3Al+33bjiBhj6A==
-X-Google-Smtp-Source: AGHT+IFFoIXH+FAuPZ0vMVjN6afjo2lrtHwnrDcUbLgHXdwoGxTX3b9Sdqk6MQMli648IJ17O7cSTQ==
-X-Received: by 2002:a17:907:e87:b0:a99:ea2c:59d1 with SMTP id
- a640c23a62f3a-a9e5092959amr1331511766b.26.1730640883543; 
- Sun, 03 Nov 2024 05:34:43 -0800 (PST)
+ AJvYcCUy0uG/2sISGAPnoZmYrE9vSbWcFidR6/pxZ7kjICdwLIcGxgNilZyvCv2m2m7YTuKX0kYR7S+9x2VP@nongnu.org,
+ AJvYcCV/xhHX2Tj4CXh7gIj6vAw+ZjLrdGMRWPOu7q+qJs2ZC5SYfUgIFJBX1sGKZVz4/kBpOrcBP34Pufk=@nongnu.org
+X-Gm-Message-State: AOJu0Yx4EvA+Nbq3+AoBUFueQo+EdJNTuo1PB2DZ0PmEbtW5HgLIn6QO
+ YjZ2KmX9PAck53YNhCvxC0m4JEMokt1pGE1mZSggho/5b9S3AHsuHnaLHg==
+X-Google-Smtp-Source: AGHT+IFvTXV0EwHb4m6teKcmqQtNjmvUTA5vih6cGGIDbVNCE6KjCTB5izxfXaLpqP8Q9feG66VAGw==
+X-Received: by 2002:a17:907:3f87:b0:a9a:cea7:1294 with SMTP id
+ a640c23a62f3a-a9e65436316mr813080866b.21.1730640884521; 
+ Sun, 03 Nov 2024 05:34:44 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.42
+ a640c23a62f3a-a9e5664350esm424328866b.159.2024.11.03.05.34.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 05:34:43 -0800 (PST)
+ Sun, 03 Nov 2024 05:34:44 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
@@ -67,17 +67,18 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
  Alex Williamson <alex.williamson@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v4 02/26] hw/ppc/e500: Remove firstenv variable
-Date: Sun,  3 Nov 2024 14:33:48 +0100
-Message-ID: <20241103133412.73536-3-shentey@gmail.com>
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v4 03/26] hw/ppc/e500: Prefer QOM cast
+Date: Sun,  3 Nov 2024 14:33:49 +0100
+Message-ID: <20241103133412.73536-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103133412.73536-1-shentey@gmail.com>
 References: <20241103133412.73536-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,62 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The firstenv variable is never read, so remove it. The env variable is then only
-used inside the loop, so move it there to restrict its scope.
-
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/e500.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ hw/ppc/e500.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index ba83f33033..0683629ac0 100644
+index 0683629ac0..964a22c5b7 100644
 --- a/hw/ppc/e500.c
 +++ b/hw/ppc/e500.c
-@@ -899,7 +899,6 @@ void ppce500_init(MachineState *machine)
-     const PPCE500MachineClass *pmc = PPCE500_MACHINE_GET_CLASS(machine);
-     MachineClass *mc = MACHINE_CLASS(pmc);
-     PCIBus *pci_bus;
--    CPUPPCState *env = NULL;
-     uint64_t loadaddr;
-     hwaddr kernel_base = -1LL;
-     int kernel_size = 0;
-@@ -921,7 +920,6 @@ void ppce500_init(MachineState *machine)
-     IrqLines *irqs;
-     DeviceState *dev, *mpicdev;
-     DriveInfo *dinfo;
--    CPUPPCState *firstenv = NULL;
-     MemoryRegion *ccsr_addr_space;
-     SysBusDevice *s;
-     PPCE500CCSRState *ccsr;
-@@ -930,6 +928,7 @@ void ppce500_init(MachineState *machine)
-     irqs = g_new0(IrqLines, smp_cpus);
-     for (i = 0; i < smp_cpus; i++) {
-         PowerPCCPU *cpu;
-+        CPUPPCState *env;
-         CPUState *cs;
+@@ -1008,7 +1008,7 @@ void ppce500_init(MachineState *machine)
+     sysbus_connect_irq(s, 0, qdev_get_gpio_in(mpicdev, MPC8544_I2C_IRQ));
+     memory_region_add_subregion(ccsr_addr_space, MPC8544_I2C_REGS_OFFSET,
+                                 sysbus_mmio_get_region(s, 0));
+-    i2c = (I2CBus *)qdev_get_child_bus(dev, "i2c");
++    i2c = I2C_BUS(qdev_get_child_bus(dev, "i2c"));
+     i2c_slave_create_simple(i2c, "ds1338", RTC_REGS_OFFSET);
  
-         cpu = POWERPC_CPU(object_new(machine->cpu_type));
-@@ -950,10 +949,6 @@ void ppce500_init(MachineState *machine)
-                                  &error_abort);
-         qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
+     /* eSDHC */
+@@ -1057,7 +1057,7 @@ void ppce500_init(MachineState *machine)
+     memory_region_add_subregion(ccsr_addr_space, MPC8544_PCI_REGS_OFFSET,
+                                 sysbus_mmio_get_region(s, 0));
  
--        if (!firstenv) {
--            firstenv = env;
--        }
--
-         irqs[i].irq[OPENPIC_OUTPUT_INT] =
-             qdev_get_gpio_in(DEVICE(cpu), PPCE500_INPUT_INT);
-         irqs[i].irq[OPENPIC_OUTPUT_CINT] =
-@@ -974,8 +969,6 @@ void ppce500_init(MachineState *machine)
-         }
-     }
+-    pci_bus = (PCIBus *)qdev_get_child_bus(dev, "pci.0");
++    pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+     if (!pci_bus)
+         printf("couldn't create PCI controller!\n");
  
--    env = firstenv;
--
-     if (!QEMU_IS_ALIGNED(machine->ram_size, RAM_SIZES_ALIGN)) {
-         error_report("RAM size must be multiple of %" PRIu64, RAM_SIZES_ALIGN);
-         exit(EXIT_FAILURE);
 -- 
 2.47.0
 
