@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED189BA5F6
+	by mail.lfdr.de (Postfix) with ESMTPS id 623169BA5F7
 	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 15:36:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7bgW-0000SH-Fn; Sun, 03 Nov 2024 09:34:32 -0500
+	id 1t7bgY-0000TB-QV; Sun, 03 Nov 2024 09:34:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7bgV-0000RG-6L; Sun, 03 Nov 2024 09:34:31 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1t7bgX-0000Sf-B7; Sun, 03 Nov 2024 09:34:33 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7bgT-0001wr-RG; Sun, 03 Nov 2024 09:34:30 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5ceccffadfdso983268a12.2; 
- Sun, 03 Nov 2024 06:34:28 -0800 (PST)
+ id 1t7bgV-0001xQ-OH; Sun, 03 Nov 2024 09:34:33 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9362c26d8so6801802a12.1; 
+ Sun, 03 Nov 2024 06:34:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730644467; x=1731249267; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730644469; x=1731249269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AQqur4ICLRRHD8Fc52q1dC6WTnMWn9RJygPTgDiWU8I=;
- b=Xc+NpWIq1JRjN+xsraS9D++v+aQEbg+fO1viMC3UvoIY3tSDn98RCh3c4mOVgUlioQ
- chVGSw13idnBvWAkT7H59IDhNdlkmzcyazOUJ9eAqm3c5qPNgiryd/Ad+0eY0MMqJMWD
- jW/Jrwn4Jt2ZhIde1oF517dvRfAIkFI6KevwpMp47juO3e4zpVoUIzF0f8TcJIH1rdUP
- IKX3O1ukf+CCC1Do6/0kDz88rr0i6hOSUtWBK5G3hr+8LWSLfIOW1x/Cg5NjmdiNbMxW
- OtsPvlyeNBWy25+NKhnYO/nUc2XUkE/j7rNjT/NAiP4RbAGFrNSuYJ22pJbAn6IrXPzb
- UnuA==
+ bh=MK2+7m6Ph4dw8VXtBR6y8ZzWbe55VMIAgVQqAY/2DDs=;
+ b=A/oZD2xnXvZWnBIlJOKm/F0v3nXWpuxdrSpA+hiDUCILYJ69LTc7LpALGLv9f0TpNb
+ 6EiFG7S/tgWLdSVnyJwiKHcikFxvpYQutqV9zngn5kafhJYlaMol9vw7OXticm2W4RXP
+ +dfyA5BNlzjx0Wk7xuOg/isxR2xL3wJA5VyFEV4BUhRR8I2fjkGEeXkuDdPQcsFe2AtY
+ u5+QsGGC2f7hrf5m03BYUNuW0rC2A3sQJKHyoxYhAvnjwM1K3XjvIgeCirREkLB1IxJo
+ ZjrnU0ZM/3GKBw1g4DzE5/6HVTsfT0H5Ey2WWGCIAOiu/v+ntLHrscliVnVJF9lkNdHc
+ 6fag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730644467; x=1731249267;
+ d=1e100.net; s=20230601; t=1730644469; x=1731249269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AQqur4ICLRRHD8Fc52q1dC6WTnMWn9RJygPTgDiWU8I=;
- b=WwlsmBIXPzJdVYL97517FrztQRx/ImwiBugyGMmPQJRY164XN2fbUqVP8WRLxG/Dbq
- yHULaHbn1HNoE4Ih02pT4epzmmFtsCrHTsFLC6px/BqJ6iHNU5fS49po9DgsFH5Jh4de
- DCuWZlk+GLVzZMX3ePiDavgOmPd6y3U0cJa0xvk1zzNH4HUvz8OgyrE7EndOi0ue1Nms
- TCXDPnNTaetvaGqXiQhZHkBTktBBVVZJtCwJHaQxwbpcjzp1o6yqvuluEwYtCX+s1Ajn
- v+XKM77z+6KP5oK/gdnDOUA0mGl3Q/IADgW6QQDer0QurMhEZCr8MNlTCMQUZfkPvj0c
- epDQ==
+ bh=MK2+7m6Ph4dw8VXtBR6y8ZzWbe55VMIAgVQqAY/2DDs=;
+ b=OD/2BWU9XhP5FZMwR7lfA4jo2p2svSLKHuTwZ4Req1xq+ucUI+mRhup6DkORKctsqQ
+ aenQduwHeB3BmhOMj5NXAGsbiwdcW2yoAW2ViCgVfPWr+B3e3Cp/f3JVQZs9j6w6ZH7E
+ /W3FWSu6nAnwVrPedjWQf/C5oX72ctP/4Nqye69wPFcHvgrSd7b40vuIWs1DSuRQLkbm
+ FRfNMtHeP/mtx8KVFiKv3dp0Gr6prqFazh1BVJNu6sig45ESr3yNb4s0PacSM3nFGdcm
+ 9sBBozRg6Kuv+bNpg+wY5Ol6ReD2yhcWxm/qp0DSLh3urHenmF+MyZrYrqN5tAZoDHpb
+ sc2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4mZjY8CZlwI6UzZeNCyINIlDp9sGwi2eR+MRXeH9AJI2fO3MmvgzPcBCtT7MhgdcxBtjW5V4YQQ==@nongnu.org,
- AJvYcCVR1gzRgiRAtyFTWw+Y7ELARcm7w1gHqAFIMTFmuOSJT8/QqoBKo8hVq3GttJPxYHzvWIv9gtce85pA4fGg@nongnu.org
-X-Gm-Message-State: AOJu0Yw/QmGrjbd7YykhgHvOG20rHGjg29icZ3QrL49htx3MSJRGLXaK
- tThLNaLABcIA0wHN/cMcMxydUrAXQfafqd7WMV4/lLyk80NYXciJjMWRsA==
-X-Google-Smtp-Source: AGHT+IEnVh9PaahL0QIiANBx4wv0jvr0LzdLsXaHuQP9Aa50Y5IxO5U3TVqbLXn7SjxpjIzy94LWvg==
-X-Received: by 2002:a05:6402:274b:b0:5ce:cffa:2ba9 with SMTP id
- 4fb4d7f45d1cf-5cecffa2c90mr3010800a12.24.1730644467110; 
- Sun, 03 Nov 2024 06:34:27 -0800 (PST)
+ AJvYcCWz31zIO1CDwdjVhnXPG4tTgPzu38HPEhYVFLUT0Ja7I/E7k2/csO8fYib5JslIRagl1/WJOMrVFg==@nongnu.org,
+ AJvYcCX08g4c/V4yvi/L/3ucRwR0zdfA3oRiHWi5Mwxy/5tv3tTiHP4OKIR5noqo6c5Fw5lVrjXaQQ6lfeDK+L3P@nongnu.org
+X-Gm-Message-State: AOJu0YxpJGgNI+4FLoTIqQPmW+N9yYTMuLjKY9AdY5ZBLPnEemOWtXHC
+ NWVfb1yOP/8N2YUU5iJQwqOqfIB35Yn3thJbcKcUdcyoc8XbaJLv0DSS0Q==
+X-Google-Smtp-Source: AGHT+IF2sEqLJPr1efjsk7AEl8NUpOC2UjVnkBYQqcHq6BSA3lSSViDKMfBxctDn1E/AltBcLdDCig==
+X-Received: by 2002:a05:6402:1e8a:b0:5ce:caa1:ca55 with SMTP id
+ 4fb4d7f45d1cf-5cecaa1cda1mr4871181a12.1.1730644469044; 
+ Sun, 03 Nov 2024 06:34:29 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ceac74c667sm3350723a12.20.2024.11.03.06.34.25
+ 4fb4d7f45d1cf-5ceac74c667sm3350723a12.20.2024.11.03.06.34.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 06:34:26 -0800 (PST)
+ Sun, 03 Nov 2024 06:34:28 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -67,17 +67,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v2 3/4] hw/watchdog/wdt_imx2: Remove redundant assignment
-Date: Sun,  3 Nov 2024 15:33:29 +0100
-Message-ID: <20241103143330.123596-4-shentey@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 4/4] hw/sensor/tmp105: Convert printf() to trace event,
+ add tracing for read/write access
+Date: Sun,  3 Nov 2024 15:33:30 +0100
+Message-ID: <20241103143330.123596-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241103143330.123596-1-shentey@gmail.com>
 References: <20241103143330.123596-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,27 +101,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The same statement is executed unconditionally right before the if statement.
+printf() unconditionally prints to the console which disturbs `-serial stdio`.
+Fix that by converting into a trace event. While at it, add some tracing for
+read and write access.
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 7e7c5e4c1ba5 "Nokia N800 machine support (ARM)."
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/watchdog/wdt_imx2.c | 1 -
- 1 file changed, 1 deletion(-)
+ meson.build            | 1 +
+ hw/sensor/trace.h      | 1 +
+ hw/sensor/tmp105.c     | 7 ++++++-
+ hw/sensor/trace-events | 6 ++++++
+ 4 files changed, 14 insertions(+), 1 deletion(-)
+ create mode 100644 hw/sensor/trace.h
+ create mode 100644 hw/sensor/trace-events
 
-diff --git a/hw/watchdog/wdt_imx2.c b/hw/watchdog/wdt_imx2.c
-index be63d421da..8162d58afa 100644
---- a/hw/watchdog/wdt_imx2.c
-+++ b/hw/watchdog/wdt_imx2.c
-@@ -39,7 +39,6 @@ static void imx2_wdt_expired(void *opaque)
+diff --git a/meson.build b/meson.build
+index 2c9086a3fe..19df8d7125 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3476,6 +3476,7 @@ if have_system
+     'hw/s390x',
+     'hw/scsi',
+     'hw/sd',
++    'hw/sensor',
+     'hw/sh4',
+     'hw/sparc',
+     'hw/sparc64',
+diff --git a/hw/sensor/trace.h b/hw/sensor/trace.h
+new file mode 100644
+index 0000000000..e4721560b0
+--- /dev/null
++++ b/hw/sensor/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_sensor.h"
+diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
+index 9d7b911f59..ef2824f3e1 100644
+--- a/hw/sensor/tmp105.c
++++ b/hw/sensor/tmp105.c
+@@ -27,6 +27,7 @@
+ #include "qapi/visitor.h"
+ #include "qemu/module.h"
+ #include "hw/registerfields.h"
++#include "trace.h"
  
-     /* Perform watchdog action if watchdog is enabled */
-     if (s->wcr & IMX2_WDT_WCR_WDE) {
--        s->wrsr = IMX2_WDT_WRSR_TOUT;
-         watchdog_perform_action();
+ FIELD(CONFIG, SHUTDOWN_MODE,        0, 1)
+ FIELD(CONFIG, THERMOSTAT_MODE,      1, 1)
+@@ -150,17 +151,21 @@ static void tmp105_read(TMP105State *s)
+         s->buf[s->len++] = ((uint16_t) s->limit[1]) >> 0;
+         break;
      }
++
++    trace_tmp105_read(s->i2c.address, s->pointer);
  }
+ 
+ static void tmp105_write(TMP105State *s)
+ {
++    trace_tmp105_write(s->i2c.address, s->pointer);
++
+     switch (s->pointer & 3) {
+     case TMP105_REG_TEMPERATURE:
+         break;
+ 
+     case TMP105_REG_CONFIG:
+         if (FIELD_EX8(s->buf[0] & ~s->config, CONFIG, SHUTDOWN_MODE)) {
+-            printf("%s: TMP105 shutdown\n", __func__);
++            trace_tmp105_write_shutdown(s->i2c.address);
+         }
+         s->config = FIELD_DP8(s->buf[0], CONFIG, ONE_SHOT, 0);
+         s->faults = tmp105_faultq[FIELD_EX8(s->config, CONFIG, FAULT_QUEUE)];
+diff --git a/hw/sensor/trace-events b/hw/sensor/trace-events
+new file mode 100644
+index 0000000000..a3fe54fa6d
+--- /dev/null
++++ b/hw/sensor/trace-events
+@@ -0,0 +1,6 @@
++# See docs/devel/tracing.rst for syntax documentation.
++
++# tmp105.c
++tmp105_read(uint8_t dev, uint8_t addr) "device: 0x%02x, addr: 0x%02x"
++tmp105_write(uint8_t dev, uint8_t addr) "device: 0x%02x, addr 0x%02x"
++tmp105_write_shutdown(uint8_t dev) "device: 0x%02x"
 -- 
 2.47.0
 
