@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB65A9BA5F3
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 15:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561869BA5F5
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Nov 2024 15:36:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7bgT-0000PL-2Y; Sun, 03 Nov 2024 09:34:29 -0500
+	id 1t7bgT-0000Pn-K3; Sun, 03 Nov 2024 09:34:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7bgQ-0000ON-Dz; Sun, 03 Nov 2024 09:34:26 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1t7bgR-0000Ol-Sm; Sun, 03 Nov 2024 09:34:27 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1t7bgO-0001vb-Tt; Sun, 03 Nov 2024 09:34:26 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a9a5f555cfbso262794866b.1; 
- Sun, 03 Nov 2024 06:34:23 -0800 (PST)
+ id 1t7bgQ-0001vr-AD; Sun, 03 Nov 2024 09:34:27 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5c937b5169cso5433519a12.1; 
+ Sun, 03 Nov 2024 06:34:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730644462; x=1731249262; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=l1tRuAZZ7aREu/MsJgTHobQvvKWIyq2PiRipCLDoKy8=;
- b=C8wVVQzahyXhnDw/YXcCpE6XRKdVAU4l6TE9+tlp7mDlklEKbAPV8BLigGRoY7FKvL
- JFJEuzoTpgEoR3nN+I1qteTay58wSEbS+cjqZ6FxjKMFp6jD2Rz9p7SuZlFAsxl0leC8
- +5v3kxA3Vu5fTgnv7fyrlX3nZt36eVztisL4xKVGcn0+DOKX0MIPFy3lmtrv9ae+0mrn
- ArdlOtS987cfFBzslgaiiCJiE3KeZ3Kw9k7RXJ76mHi2yVPt7wQc3HoHyl4YzyTdAiC2
- yHRR8BMmRTC93qxAWMvfqV89eBWQhJELUVh3I+3XxEykMdtfxQ1isi1m+nVFrze1mXOm
- wi4w==
+ d=gmail.com; s=20230601; t=1730644464; x=1731249264; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fPt9Z7KYXI4DBocHxmfd6avL+IjBwj9070TCXrToHt8=;
+ b=CZMQLACjamOj37fHPcvwC+s/L0ci2DCVBjBKyn8uNhTfId03XjOsetr3lqLlkPCNzE
+ //++433A42DWYDu/5+qEyd3HNpoylEOlfi+UP8UiQNZAJoS6rXuCbb9iTYMUJEAjwwrX
+ g8FCvTiW4/9/FOkyk4TFdPDkLU2ZihveLQYOXRrN7Ngvx7tdFCB5BfFULRs1RRukKjym
+ TRy2P2Q2tRxMrSyAl2xlYgK+ZGo4p/CyxgM2uVQfA2qjSCwtGEWRfMog/ymzCnbLAhkX
+ FPJe44HICySjrepfqtruEE1iy7RSKwX8tMEzVDtpj923NhfA9RXXGM8KBONvbHa+pOxh
+ AveA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730644462; x=1731249262;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=l1tRuAZZ7aREu/MsJgTHobQvvKWIyq2PiRipCLDoKy8=;
- b=rrXFuny9T0JN7q0+OB+v1x5z6PjTTa5thR+Mx3g4VaFfnUR48Y5kzDIVfoZzsLSqiA
- ceAHa4nAzDgGB5YWaPBOuKsfHq+Sk/YA/SXkFSmnsA1TpA6ew/JyEEuWrYmTm+qiMnBm
- PFcC+Ps8rwWyiJHdWWf6FMRLns4aPXc8goLShh0AbN+PIsXINH+KFrwrVzkYUeQevOaG
- i7PHsYc+aMkLRa0ywyrovfe5AzUDAnFuDsVtc6bn+ZjFoMXZxCrdmLHlwPqUKu7514sY
- n9KiRuHyTwcfwKxi518NZo1vmnqM1CLKGdMYuEMCPvk8N9t6ZzQ/+iSTlU6MqmlBaBb6
- 2Now==
+ d=1e100.net; s=20230601; t=1730644464; x=1731249264;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fPt9Z7KYXI4DBocHxmfd6avL+IjBwj9070TCXrToHt8=;
+ b=wxDPfilzEsrFyqIm+5w/R2BynvH8nT8AV1ahgaKPDrjyp/rC4Z3LF8fonWSI1L3SFq
+ +goQl9QDzaBngAovsGJMh245PJkCd0oDpMPcgNtd1Exn+HpdOk/w3oOnJBE/ITceT4SS
+ /HL0x6+zZ0acyR/kuPER9TMHA+DK3xsBSAxijEd+MWjq6VAfesnAPigVW0bYuio7du3R
+ ZdiBJ9820tzJzomhafyeMqN40A7wPHMUD/pRCQsHh2MG9dT2jhO0fET4Qy2EVXEwPXi7
+ W1J2Lm0EagWaWC+Wcn5KumPuA3bVc41e58g1Mf4xQ7IoOrZC5hPVIclQtPJIKAypVTc/
+ jTnA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX1XnPe1P9dKD89w93UJOyT7DnZrR+PtjXg9rxd4gdzsk7eOl1ZYqrgLtmR8+fDBKJZudVoIyzd5w==@nongnu.org,
- AJvYcCXiG9htq6uDcOE7U9SGtiYDb1gnMNFXAIZ83BINMuUMGEoTOB/fp5tnPXp8/8KHvPoC/0xf4Yuh8D24c6VI@nongnu.org
-X-Gm-Message-State: AOJu0YznvY7nJvp7LoPU+wsrM62u98uR6QPhrk2eG1aMBJOs80SU8ZNn
- OZrdbuhaxUmPxa9LMz3WgkgpSfVbPjPXAOLbM6F7Px48Ijp9splPTEaT8g==
-X-Google-Smtp-Source: AGHT+IH9ND1cBglwCCn9TJ35CYz/VyZMeSzd2DaFAW2djoO3WLQwLy3HONZ9TBF1vJTqQwHbg6w3LQ==
-X-Received: by 2002:a05:6402:51ca:b0:5cb:728e:926b with SMTP id
- 4fb4d7f45d1cf-5ceb92a38f5mr11181518a12.17.1730644462250; 
- Sun, 03 Nov 2024 06:34:22 -0800 (PST)
+ AJvYcCUT6b6hgxgajqyZDX4JFV77jKnDNBRy0MZoXe/mmACzBcZXkW0hxGkLVHIes5xTOhIfXFYYkmrJlA==@nongnu.org,
+ AJvYcCVVgcmikvv51f/sKqMcUCn5o10n2r2zb5xOY69eZDmAEu3WlNYMC4bv9eTNuX0OIxNtH812zvCbnasWNoFP@nongnu.org
+X-Gm-Message-State: AOJu0Yyu6w1sDrG21J2Ywa1vYHVeNwwzF4O/IYlcCsCSTzDovzXUbFpk
+ yV6JWgQE+sw4y4ai3KI8tyGUpCAB8YvWoik7pkkTKEaKTXYfvx+1NlnhCw==
+X-Google-Smtp-Source: AGHT+IGfNnAb1wz1FykA4re1f2cCF/TioZqTvCkc4RdPmcvDh496y7K3GgwxabxlDoyJhMDiQitfpw==
+X-Received: by 2002:a05:6402:2811:b0:5c9:3f1:e5cd with SMTP id
+ 4fb4d7f45d1cf-5ceb8b49f3fmr9232940a12.0.1730644463696; 
+ Sun, 03 Nov 2024 06:34:23 -0800 (PST)
 Received: from archlinux.. (pd9ed7f6d.dip0.t-ipconnect.de. [217.237.127.109])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ceac74c667sm3350723a12.20.2024.11.03.06.34.21
+ 4fb4d7f45d1cf-5ceac74c667sm3350723a12.20.2024.11.03.06.34.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 06:34:21 -0800 (PST)
+ Sun, 03 Nov 2024 06:34:22 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -67,15 +68,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 0/4] Trivial ARM changes
-Date: Sun,  3 Nov 2024 15:33:26 +0100
-Message-ID: <20241103143330.123596-1-shentey@gmail.com>
+Subject: [PATCH v2 1/4] hw/rtc/ds1338: Trace send and receive operations
+Date: Sun,  3 Nov 2024 15:33:27 +0100
+Message-ID: <20241103143330.123596-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241103143330.123596-1-shentey@gmail.com>
+References: <20241103143330.123596-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series improves the tracing experience in three devices used in ARM=0D
-context. It also removes a duplicate statement in an IMX watchdog.=0D
-=0D
-v2:=0D
-* Fix format strings in trace events for imx_gpt (Phil)=0D
-* Add patch for tmp105 which improves tracing=0D
-=0D
-Bernhard Beschow (4):=0D
-  hw/rtc/ds1338: Trace send and receive operations=0D
-  hw/timer/imx_gpt: Convert DPRINTF to trace events=0D
-  hw/watchdog/wdt_imx2: Remove redundant assignment=0D
-  hw/sensor/tmp105: Convert printf() to trace event, add tracing for=0D
-    read/write access=0D
-=0D
- meson.build            |  1 +=0D
- hw/sensor/trace.h      |  1 +=0D
- hw/rtc/ds1338.c        |  6 ++++++=0D
- hw/sensor/tmp105.c     |  7 ++++++-=0D
- hw/timer/imx_gpt.c     | 18 +++++-------------=0D
- hw/watchdog/wdt_imx2.c |  1 -=0D
- hw/rtc/trace-events    |  4 ++++=0D
- hw/sensor/trace-events |  6 ++++++=0D
- hw/timer/trace-events  |  6 ++++++=0D
- 9 files changed, 35 insertions(+), 15 deletions(-)=0D
- create mode 100644 hw/sensor/trace.h=0D
- create mode 100644 hw/sensor/trace-events=0D
-=0D
--- =0D
-2.47.0=0D
-=0D
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/rtc/ds1338.c     | 6 ++++++
+ hw/rtc/trace-events | 4 ++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/hw/rtc/ds1338.c b/hw/rtc/ds1338.c
+index a5fe221418..929a92f7bd 100644
+--- a/hw/rtc/ds1338.c
++++ b/hw/rtc/ds1338.c
+@@ -17,6 +17,7 @@
+ #include "qemu/module.h"
+ #include "qom/object.h"
+ #include "sysemu/rtc.h"
++#include "trace.h"
+ 
+ /* Size of NVRAM including both the user-accessible area and the
+  * secondary register area.
+@@ -126,6 +127,9 @@ static uint8_t ds1338_recv(I2CSlave *i2c)
+     uint8_t res;
+ 
+     res  = s->nvram[s->ptr];
++
++    trace_ds1338_recv(s->ptr, res);
++
+     inc_regptr(s);
+     return res;
+ }
+@@ -134,6 +138,8 @@ static int ds1338_send(I2CSlave *i2c, uint8_t data)
+ {
+     DS1338State *s = DS1338(i2c);
+ 
++    trace_ds1338_send(s->ptr, data);
++
+     if (s->addr_byte) {
+         s->ptr = data & (NVRAM_SIZE - 1);
+         s->addr_byte = false;
+diff --git a/hw/rtc/trace-events b/hw/rtc/trace-events
+index ebb311a5b0..8012afe102 100644
+--- a/hw/rtc/trace-events
++++ b/hw/rtc/trace-events
+@@ -22,6 +22,10 @@ pl031_set_alarm(uint32_t ticks) "alarm set for %u ticks"
+ aspeed_rtc_read(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
+ aspeed_rtc_write(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
+ 
++# ds1338.c
++ds1338_recv(uint32_t addr, uint8_t value) "[0x%" PRIx32 "] -> 0x%02" PRIx8
++ds1338_send(uint32_t addr, uint8_t value) "[0x%" PRIx32 "] <- 0x%02" PRIx8
++
+ # m48t59.c
+ m48txx_nvram_io_read(uint64_t addr, uint64_t value) "io read addr:0x%04" PRIx64 " value:0x%02" PRIx64
+ m48txx_nvram_io_write(uint64_t addr, uint64_t value) "io write addr:0x%04" PRIx64 " value:0x%02" PRIx64
+-- 
+2.47.0
+
 
