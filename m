@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26E79BB194
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA4F9BB1A8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:53:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7ufq-0001E7-SM; Mon, 04 Nov 2024 05:51:06 -0500
+	id 1t7uhh-0001ub-64; Mon, 04 Nov 2024 05:53:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t7ufk-0001Dk-UI
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:51:00 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t7uhc-0001uE-QY
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:52:57 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t7ufg-0003Q4-R8
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:50:59 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5ceb03aaddeso4207266a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 02:50:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t7uhb-0003iI-03
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:52:56 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43158625112so34807815e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 02:52:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730717453; x=1731322253; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=gclXQ6NgDPQejj3W6tl371AcJXzxEWWNEMLWWOTGKfk=;
- b=E2seSSsms6uNeODnYpAA0rDx0BVgbGmhqzldTbPwUXlF7y0ik2ft5JdG5OKJw4cs0W
- mg3KjodX9zDHI8CPiCEyBl39LGxpDBEzzSK5Z1AR7+n1lljHsvASS2rWdMkLBalA+vHm
- A1AResLYdN3njaYJMRjBzfjwYRmy8W0+FN9Lern488pmiCz7rC0lkgeXEAS47kaJH0j6
- s6/XAlvaxFkx9esQzwZJ56FMCg6ClzcvtLeyKTlbWu64K9Cu3bvJVX+NEEWIVE0X0xc6
- uwZS3ZG+/ndK0PrJ06m14ijzclwqR12q2Et1daaw64mqT1KnI+C06lddfapIIEGZOmFc
- hJKA==
+ d=linaro.org; s=google; t=1730717572; x=1731322372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uXg6I8+Mf7JKf5rDCZkbMm0QzGm5w0BG1ynSEr7i7rQ=;
+ b=Qr39WXAV5U0sPzkjaexA7tE+jFg3GQRfNYFCYnVgGo+SB2XUwpJkbFTsZqpwwDs+ol
+ lx6qPkZDyEK3TEhwu+A9g4v4SY0gyCLDlrAx89CqX0yZka44TQ/0JDGsc5lM5IGt1hFE
+ 4T9rWzC5izo1maUTr6ssJ2SFWxU+mQO+PjQvKjI//2CE7lwtnIInhTk7/FaxOEMHwSjh
+ 8AcEPzYXY2mwUg/3VYdyPAqV50vUfM0lKERDL2P/gjlhOatww3oH6NgrojX1RZpL0Hyf
+ Db9MA02qWD3STAq0r7Smra7P8MiYi1V3l81C0y3daFVTEg3L+IikB0kvopswWPmQbXxc
+ 2LlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730717453; x=1731322253;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gclXQ6NgDPQejj3W6tl371AcJXzxEWWNEMLWWOTGKfk=;
- b=wWO2QsaptgyZnXeXJ/YHe/yNI0mmqxb158dGO75WVyV6ilc+Zy6yTJ2xtWBwOcugt7
- tOsQrOiOHNOzQc1CJ/wV2D/Z/zVG25K76/IqclGJUVKz18KTGOdCYxuUeVui/3KuRuju
- ymONEmNRjzoqe96o8yvH0wAzL593TqU9cI7i0mRr/7h4NVDz+4HfLb2UTnbKhzgQ67Pv
- tcG70N2AwOSNxcq3T0vogb+VAXbDHCZuVoESNn1n/zMpxhkKtk3oDiGv0iRlaIu8oG9n
- CalBDywsdZ/uxa9XEHW1o5FAOMIgbAHDjG6TjN5e8mvIRzWs9hRaPI9cwk7UmDwv7gTX
- dTYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWlLXMxIcUhpc4rOBipLmY8cb+ynz0yRwE7bJ2WWEt4mdaQPLkggoZeiwTtK98A/XLryukt2bgjjb2g@nongnu.org
-X-Gm-Message-State: AOJu0YxhoWMm2NT6xq76ysCglizFWTJSaoO937Vu+BZMuT5Z2agWdsTg
- TMDlp1NyjOjp1aZi2KngZbyqwVgsHsPOEvBVkO9ZJ9VZcqx8+XzIzXSBJvFQEoo=
-X-Google-Smtp-Source: AGHT+IEV9ywGBbr15GOvc6rij4jjEQpde9nyt4wfhpIYatlIVTQFcFdSd9PmFKzcmYJL/u72lycQJg==
-X-Received: by 2002:a05:6402:40c4:b0:5ce:b113:f38d with SMTP id
- 4fb4d7f45d1cf-5ceb113f6acmr11890018a12.28.1730717453059; 
- Mon, 04 Nov 2024 02:50:53 -0800 (PST)
-Received: from [192.168.21.227] ([91.223.100.66])
+ d=1e100.net; s=20230601; t=1730717572; x=1731322372;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uXg6I8+Mf7JKf5rDCZkbMm0QzGm5w0BG1ynSEr7i7rQ=;
+ b=XPCZKrZOqhTpb48ewolnNI6SkamfNkOJOdJfXrW8cjXP1WyPJX3zvjIs4ULFDRbV2b
+ 0iL81HfQEqRj0SqdG/ncS01d8u4h4SBOn7XN10NOEwTEq6lUfDwhlPAdPsPdWNWO52q2
+ QtK1GtHdESJ/YscUgilaNtYj4wX88/Ka4u2J/La+hYxK9WLOjqgjndgfTwlr7OMcksj6
+ OtnhdWFejByMmI7HPjFyqMYtox5dTWwk8Qi5SVXBYtGPsU5PNxz2OYYOAmX5MiLhrA08
+ nS/NRHivgze2jLy1HpAZq2zBxmCerIMlUnYPZOTJuiNNXW7jpdl4JfRuQ7FEUrcIZN6h
+ xCUw==
+X-Gm-Message-State: AOJu0YycwzWSYECY7m4+EJpoZcIuMpojYyOle1gCewbgkgYkuKfk7KT9
+ Y7ODznms4zuBwLXrcI/nHIRxQvmipZJ9WJ4YbS/lONAPHculbQS3BtVFQw8K5/v4jpUKdBUpFc5
+ k2sE=
+X-Google-Smtp-Source: AGHT+IE8aQ6unZOwXmVYTEvz5C8xDBJrY0PMVQJSCP3x59c0toOTh9uJasLhvXtStoGM0bM9+FqKSw==
+X-Received: by 2002:a05:600c:1909:b0:431:542d:2592 with SMTP id
+ 5b1f17b1804b1-4328327eba3mr95842405e9.27.1730717572212; 
+ Mon, 04 Nov 2024 02:52:52 -0800 (PST)
+Received: from localhost.localdomain ([176.176.145.27])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ceac76fb46sm4066687a12.26.2024.11.04.02.50.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Nov 2024 02:50:51 -0800 (PST)
-Message-ID: <0e767aee-f9c6-4efe-a91d-40fef98a285b@linaro.org>
-Date: Mon, 4 Nov 2024 10:50:48 +0000
+ 5b1f17b1804b1-431bd9403bfsm179491605e9.21.2024.11.04.02.52.51
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 04 Nov 2024 02:52:51 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/14] MIPS patches for 2024-11-04
+Date: Mon,  4 Nov 2024 11:52:44 +0100
+Message-ID: <20241104105250.57818-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/arm: Add new MMU indexes for AArch32 Secure
- PL1&0
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20241101142845.1712482-1-peter.maydell@linaro.org>
- <20241101142845.1712482-3-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241101142845.1712482-3-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,64 +88,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/24 14:28, Peter Maydell wrote:
-> Our current usage of MMU indexes when EL3 is AArch32 is confused.
-> Architecturally, when EL3 is AArch32, all Secure code runs under the
-> Secure PL1&0 translation regime:
->   * code at EL3, which might be Mon, or SVC, or any of the
->     other privileged modes (PL1)
->   * code at EL0 (Secure PL0)
-> 
-> This is different from when EL3 is AArch64, in which case EL3 is its
-> own translation regime, and EL1 and EL0 (whether AArch32 or AArch64)
-> have their own regime.
-> 
-> We claimed to be mapping Secure PL1 to our ARMMMUIdx_EL3, but didn't
-> do anything special about Secure PL0, which meant it used the same
-> ARMMMUIdx_EL10_0 that NonSecure PL0 does.  This resulted in a bug
-> where arm_sctlr() incorrectly picked the NonSecure SCTLR as the
-> controlling register when in Secure PL0, which meant we were
-> spuriously generating alignment faults because we were looking at the
-> wrong SCTLR control bits.
-> 
-> The use of ARMMMUIdx_EL3 for Secure PL1 also resulted in the bug that
-> we wouldn't honour the PAN bit for Secure PL1, because there's no
-> equivalent _PAN mmu index for it.
-> 
-> Fix this by adding two new MMU indexes:
->   * ARMMMUIdx_E30_0 is for Secure PL0
->   * ARMMMUIdx_E30_3_PAN is for Secure PL1 when PAN is enabled
-> The existing ARMMMUIdx_E3 is used to mean "Secure PL1 without PAN"
-> (and would be named ARMMMUIdx_E30_3 in an AArch32-centric scheme).
-> 
-> These extra two indexes bring us up to the maximum of 16 that the
-> core code can currently support.
-> 
-> This commit:
->   * adds the new MMU index handling to the various places
->     where we deal in MMU index values
->   * adds assertions that we aren't AArch32 EL3 in a couple of
->     places that currently use the E10 indexes, to document why
->     they don't also need to handle the E30 indexes
->   * documents in a comment why regime_has_2_ranges() doesn't need
->     updating
-> 
-> Notes for backporting: this commit depends on the preceding revert of
-> 4c2c04746932; that revert and this commit should probably be
-> backported to everywhere that we originally backported 4c2c04746932.
-> 
-> Cc:qemu-stable@nongnu.org
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/2326
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
-> The regime_has_2_ranges() part is correct but does leave a minor
-> beartrap for the future if we ever do for some reason need to
-> identify "has 2 ranges" in an AArch32 codepath...
-> ---
+The following changes since commit 92ec7805190313c9e628f8fc4eb4f932c15247bd:
 
-Series:
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  Merge tag 'pull-riscv-to-apply-20241031-1' of https://github.com/alistair23/qemu into staging (2024-10-31 16:34:25 +0000)
 
+are available in the Git repository at:
 
-r~
+  https://github.com/philmd/qemu.git tags/mips-20241104
+
+for you to fetch changes up to a144a3baa61e3fca1a7946685128c349dd92c76f:
+
+  target/mips: Remove unused CPUMIPSState::current_fpu field (2024-11-03 05:52:49 -0300)
+
+----------------------------------------------------------------
+MIPS patches queue
+
+- Migrate missing CP0 TLB MemoryMapID register (Yongbok)
+- Enable MSA ASE for mips32r6-generic (Aleksandar)
+- Convert Loongson LEXT opcodes to decodetree (Philippe)
+- Introduce ase_3d_available and disas_mt_available helpers (Philippe)
+
+----------------------------------------------------------------
+
+Aleksandar Markovic (1):
+  target/mips: Enable MSA ASE for mips32r6-generic
+
+Philippe Mathieu-Daudé (12):
+  target/mips: Extract decode_64bit_enabled() helper
+  target/mips: Simplify Loongson MULTU.G opcode
+  target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
+  target/mips: Convert Loongson DDIV.G opcodes to decodetree
+  target/mips: Convert Loongson DIV.G opcodes to decodetree
+  target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
+  target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
+  target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
+  target/mips: Remove unreachable 32-bit code on 64-bit Loongson Ext
+  target/mips: Introduce ase_3d_available() helper
+  target/mips: Introduce disas_mt_available()
+  target/mips: Remove unused CPUMIPSState::current_fpu field
+
+Yongbok Kim (1):
+  target/mips: Migrate TLB MemoryMapID register
+
+ target/mips/cpu.h                         |   7 +-
+ target/mips/mips-defs.h                   |   2 -
+ target/mips/tcg/translate.h               |   8 +
+ target/mips/tcg/godson2.decode            |  27 ++
+ target/mips/tcg/loong-ext.decode          |  28 ++
+ target/mips/sysemu/machine.c              |   9 +-
+ target/mips/tcg/loong_translate.c         | 271 ++++++++++++++
+ target/mips/tcg/translate.c               | 415 +++++-----------------
+ target/mips/cpu-defs.c.inc                |  16 +-
+ target/mips/tcg/micromips_translate.c.inc |   5 +-
+ target/mips/tcg/meson.build               |   3 +
+ 11 files changed, 452 insertions(+), 339 deletions(-)
+ create mode 100644 target/mips/tcg/godson2.decode
+ create mode 100644 target/mips/tcg/loong-ext.decode
+ create mode 100644 target/mips/tcg/loong_translate.c
+
+-- 
+2.45.2
+
 
