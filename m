@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55BE9BA9FE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6809BA9DA
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:25:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kqI-00026Z-3o; Sun, 03 Nov 2024 19:21:14 -0500
+	id 1t7kqK-0002KX-Hy; Sun, 03 Nov 2024 19:21:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqD-0001rV-OK; Sun, 03 Nov 2024 19:21:09 -0500
+ id 1t7kqH-00029q-17; Sun, 03 Nov 2024 19:21:13 -0500
 Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqC-0002fI-4J; Sun, 03 Nov 2024 19:21:09 -0500
+ id 1t7kqF-0002fk-KK; Sun, 03 Nov 2024 19:21:12 -0500
 Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-71ec997ad06so2939425b3a.3; 
- Sun, 03 Nov 2024 16:21:07 -0800 (PST)
+ d2e1a72fcca58-71e4c2e36daso3001145b3a.0; 
+ Sun, 03 Nov 2024 16:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679666; x=1731284466; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679670; x=1731284470; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u3pa1qIAf5Pto6BGGrw30p+Tnm3/DG2zMWLpFWSye10=;
- b=XX3erpPobRwA5Ye1LPsZdWC2IYEmPwHoawyZR1aqgo12NTIzpEqoClQVyxR72pS7R5
- B+6O3qRhc765pbBOJWxTEPzpmU8Gtxb1LV9fMq2Mx/+lRSFUT9UDE8us0NfQYZnqikyQ
- FhmNObTbZmXXg2nDmMSRjPtL69AS8K6c9yPiiUYBzTm84unSA7QhWdyPgQs9oj25nlpq
- h6zO2yzNgab3CORxxDzN5xmSfMyYsteWQRVu6nQ2GA5EghAeOls//5kmUG4fXbOty5wd
- wjEfA6QBZ2am4h8wFJEXHmGtzeG/1VGw1h22Z7sPqpHfgyaFTk0wwYmDUJzhECcN8U6l
- AJIQ==
+ bh=eS5e0cmJm70PoeOBdgGBzyGD/H9fRXlahMrxXsRoESI=;
+ b=Kls0iBlXDPLpA2AS+Hrz4Mwi8QeGPt1DpfsSAVoB/LmD53V7nlTSghBU9FeXpYh+1q
+ YqoFgyT6WcQwO6iQDevLP4KvmRG6dK59uk6KFElaOG3teEHS/XWocCmxBJmH1Vuqt4Qf
+ FFLEpK0y0FRulz+QBi0nrQfkO7nhJ7dmp2oSgZeH+oVaDEvLDLrMeCoIxMGgzT6KExZi
+ Xk3o3aMpGmjRtmpQrzxctbQnBbCwQtNSEEhNTlS28XNtLCSsbV6t1VgkClHatxNNG4xQ
+ gWM8l9Aae52kjEXPSsTAskLZ8KSlGtc2xGgmUyuepNuCEgoIkv4wC68BgiwtocS5c//E
+ KqNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679666; x=1731284466;
+ d=1e100.net; s=20230601; t=1730679670; x=1731284470;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u3pa1qIAf5Pto6BGGrw30p+Tnm3/DG2zMWLpFWSye10=;
- b=inVrDY1m9HI0TbyxJvYYB78YIRzMim/vQ+8ZG9IJLmCUiRdgLmZywAV0VIxPmP/MH1
- 9jwPk4wW6SHzNbDZkAB7XKIFSZCp83HstmBZBzzP4YSigrm4pG2uRhWz8iCefYztB96x
- HPmD42OfGgk2Q1dIxOzEi87Wx6qE7aPzmGnGyTMBPsOelWRPB4SYdP1sxktVhBigAP0n
- H085NmfBYqrZ2YP2siaHW5qyd3vnV2G+jKB0C/HvYre7hpmKXZtWihC890t0Kllk/zkZ
- c5uqIOadU/lkUvxbCcLHN8q9yHiNwRA6P3DiAVw1SKvg53c2MrpZx7S567jdExkPsGM2
- U9jw==
+ bh=eS5e0cmJm70PoeOBdgGBzyGD/H9fRXlahMrxXsRoESI=;
+ b=AwDKg3yApt7rGjCEIa1KnPa4w4iJc9+HrjemaY88PCeUKPsd+fXUJ2znYUbW4Pwtgg
+ Uhk+dJ93zwuMEtyupVq+C4dBkZ2GOxhpjutrjcsijiO0l2yWD1A2+2mCfkf2bZoh3DOt
+ eyIh8D+TXCfWuNfTLrN4sitRNwKk6V1NFI/xPryVZ+kRfgFpfy8iMdPx3s6OEMB0hSF0
+ xC8WGnzttOPjJW3lA2K/dCraDy0d6qIGEFhSN1BqjYCCNyw2O+USijH5YnCyWb+4KMMG
+ Q+hyra62oxWrGMmxHfgp/Efrlpcl4F2qrZDpP0JtLlKCfGWwcIGRUCgWMRocyUPiVMIu
+ nsEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYPTByga8uMIQVVICiatHeF+3401IF0GmO/YzPIe1IfapY8L1zICcMhMNb2N8SkO06meqyMfTSLw==@nongnu.org
-X-Gm-Message-State: AOJu0Yw8isFfAJAhE0a++QrLundCqFwHgcn4IadTtnE8HUeXfVhZVzfG
- OnrDaqqwMMxq5zvCeWzsKd6IDVAkKEryrPQ4LKFE4IMpDI6o7X8Zo7YfAg==
-X-Google-Smtp-Source: AGHT+IET1csJaGF2C0ZH+VPDc3vWD4I1j/hmk/cc23QpAKmN6gkK5HDH4+nBNDiLRESCaEpmCSjOMg==
-X-Received: by 2002:a05:6a00:331b:b0:721:19bc:4bf4 with SMTP id
- d2e1a72fcca58-72119bc986cmr5677850b3a.23.1730679665811; 
- Sun, 03 Nov 2024 16:21:05 -0800 (PST)
+ AJvYcCUiASuwPdP3jkPrEVlY18E6++DvgHCRlkhG9DQMdsLXRF22x4x7AH9qDG4kXSKD33fG2pWl/khvig==@nongnu.org
+X-Gm-Message-State: AOJu0Ywbdj2xmuMy/ODMp4SMtQwPeMMdRDk2VB6uKf7bmJrOikZcPuci
+ lTd5nzO4YDEKkt1LSBkf5Jw9YAyxxN1BZ1GKzaV+mJdRDmZmU7MBUOyiow==
+X-Google-Smtp-Source: AGHT+IGBRdiqul7jiaZZZ1AkxZdusZUpcOV5ncl5HpqghuyoJO2uqGmoV7NgACPhz0GmVEtEgymy3A==
+X-Received: by 2002:a05:6a20:7289:b0:1d7:86c:189e with SMTP id
+ adf61e73a8af0-1dba41828fcmr15888482637.12.1730679669695; 
+ Sun, 03 Nov 2024 16:21:09 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.02
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:05 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:09 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Aditya Gupta <adityag@linux.ibm.com>,
  Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PULL 31/67] target/ppc: Introduce
- 'PowerPCCPUClass::spapr_logical_pvr'
-Date: Mon,  4 Nov 2024 10:18:20 +1000
-Message-ID: <20241104001900.682660-32-npiggin@gmail.com>
+Subject: [PULL 32/67] target/ppc: Fix regression due to Power10 and Power11
+ having same PCR
+Date: Mon,  4 Nov 2024 10:18:21 +1000
+Message-ID: <20241104001900.682660-33-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
@@ -96,70 +96,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Aditya Gupta <adityag@linux.ibm.com>
 
-Introduce 'PnvChipClass::spapr_logical_pvr' to know corresponding logical
-PVR of a PowerPC CPU.
-This helps to have a one-to-one mapping between PVR and logical PVR for
-a CPU, and used in a later commit to handle cases where PCR of two
-generations of Power chip is same, which causes regressions with
-compat-mode.
+Power11 has the same PCR (Processor Compatibility Register) value, as
+Power10.
+
+Due to this, QEMU considers Power11 as a valid compat-mode for Power10,
+ie. earlier it was possible to run QEMU with
+'-M pseries,max-compat-mode=power11 --cpu power10'
+
+Same PCR also introduced a regression where `-M pseries --cpu power10`
+boots as Power11 (ie. logical PVR is of Power11, even though PVR is
+Power10).  The regression was due to 'do_client_architecture_support'
+checking for valid compat modes and finding Power11 to be a valid compat
+mode for Power10 (it happens even without passing 'max-compat-mode'
+explicitly).
+
+Fix compat-mode issue and regression, by ensuring a future Power
+processor (with a higher logical_pvr value, eg. P11) cannot be valid
+compat-mode for an older Power processor (eg. P10)
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h      | 1 +
- target/ppc/cpu_init.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ target/ppc/compat.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index b838bc2ab9..daa12f8733 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1473,6 +1473,7 @@ struct PowerPCCPUClass {
-     void (*parent_parse_features)(const char *type, char *str, Error **errp);
- 
-     uint32_t pvr;
-+    uint32_t spapr_logical_pvr;
-     /*
-      * If @best is false, match if pcc is in the family of pvr
-      * Else match only if pcc is the best match for pvr in this family.
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 7c3716b56f..bc8ec77fa0 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6154,6 +6154,7 @@ POWERPC_FAMILY(POWER7)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER7";
-     dc->desc = "POWER7";
-+    pcc->spapr_logical_pvr = CPU_POWERPC_LOGICAL_2_06_PLUS;
-     pcc->pvr_match = ppc_pvr_match_power7;
-     pcc->pcr_mask = PCR_VEC_DIS | PCR_VSX_DIS | PCR_COMPAT_2_05;
-     pcc->pcr_supported = PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-@@ -6317,6 +6318,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER8";
-     dc->desc = "POWER8";
-+    pcc->spapr_logical_pvr = CPU_POWERPC_LOGICAL_2_07;
-     pcc->pvr_match = ppc_pvr_match_power8;
-     pcc->pcr_mask = PCR_TM_DIS | PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-     pcc->pcr_supported = PCR_COMPAT_2_07 | PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-@@ -6510,6 +6512,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER9";
-     dc->desc = "POWER9";
-+    pcc->spapr_logical_pvr = CPU_POWERPC_LOGICAL_3_00;
-     pcc->pvr_match = ppc_pvr_match_power9;
-     pcc->pcr_mask = PPC_PCR_MASK_POWER9;
-     pcc->pcr_supported = PPC_PCR_SUPPORTED_POWER9;
-@@ -6644,6 +6647,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER10";
-     dc->desc = "POWER10";
-+    pcc->spapr_logical_pvr = CPU_POWERPC_LOGICAL_3_10;
-     pcc->pvr_match = ppc_pvr_match_power10;
-     pcc->pcr_mask = PPC_PCR_MASK_POWER10;
-     pcc->pcr_supported = PPC_PCR_SUPPORTED_POWER10;
+diff --git a/target/ppc/compat.c b/target/ppc/compat.c
+index ebef2cccec..5b20fd7ef0 100644
+--- a/target/ppc/compat.c
++++ b/target/ppc/compat.c
+@@ -132,6 +132,10 @@ static bool pcc_compat(PowerPCCPUClass *pcc, uint32_t compat_pvr,
+         /* Outside specified range */
+         return false;
+     }
++    if (compat->pvr > pcc->spapr_logical_pvr) {
++        /* Older CPU cannot support a newer processor's compat mode */
++        return false;
++    }
+     if (!(pcc->pcr_supported & compat->pcr_level)) {
+         /* Not supported by this CPU */
+         return false;
 -- 
 2.45.2
 
