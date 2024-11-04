@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21AB9BB0CE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAEDB9BB0CB
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:17:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7u7M-0000ir-RZ; Mon, 04 Nov 2024 05:15:28 -0500
+	id 1t7u7L-0000ic-Bi; Mon, 04 Nov 2024 05:15:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7C-0000hA-Vz
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7B-0000gp-OY
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7A-0006XO-W7
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:18 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7A-0006X2-Az
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730715316;
+ s=mimecast20190719; t=1730715315;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+N0l3/VFbJLlzTSBf3h/Tyd7n9TFYqg74WR1kiyhgZg=;
- b=ToDIdE/xRgIgLWAyueCItvegI96By4R8WUnixhjXrE0oK0nQMmrejtuEF/YbZew8dbPMyr
- y17jMQ2IcOaATocE2+ZdyDoqaj2PRYyCS2EZTiNBnBZ8BiENa/2v9OVe67kk5VKQj0mO1K
- mnx8UrI55PWUvWAR1RlyuvBNOA8JGqE=
+ bh=xzjU1g3JiGJotP6otX8pU85ptag0kOQoUbS3ylFujAw=;
+ b=dFeS3xqa8hqF9VNSaQkunP4HV1UJjViQSr8TrqW89YKFw0x28+xxdOxcCti4XwWgVibVgl
+ 4CR2uJ+mc96Vd6mEsw1uxxF98TDUe1ilpaWIlyWhlyjXmTKFitPf536fwM6sILwLAPLTnM
+ MCrSFTMd1Ajqgz0/CGUfOFJ9MgJHQy4=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-Um-2wqQKMH6DvfkVAta5Gw-1; Mon,
- 04 Nov 2024 05:15:11 -0500
-X-MC-Unique: Um-2wqQKMH6DvfkVAta5Gw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-89-aVbhNOiedmt5namBC3Q-1; Mon,
+ 04 Nov 2024 05:15:12 -0500
+X-MC-Unique: 89-aVbhNOiedmt5namBC3Q-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 858281944EAC; Mon,  4 Nov 2024 10:15:08 +0000 (UTC)
+ id 4D00A1944DE5; Mon,  4 Nov 2024 10:15:11 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.67])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 74E941956052; Mon,  4 Nov 2024 10:15:06 +0000 (UTC)
+ id EF71C1955F40; Mon,  4 Nov 2024 10:15:08 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Patrick Leis <venture@google.com>, Hao Wu <wuhaotsh@google.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/10] hw/arm: enable at24c with aspeed
-Date: Mon,  4 Nov 2024 11:14:52 +0100
-Message-ID: <20241104101501.2487001-2-clg@redhat.com>
+Cc: Jan Luebbe <jlu@pengutronix.de>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 02/10] hw/sd/sdcard: Fix calculation of size when using eMMC
+ boot partitions
+Date: Mon,  4 Nov 2024 11:14:53 +0100
+Message-ID: <20241104101501.2487001-3-clg@redhat.com>
 In-Reply-To: <20241104101501.2487001-1-clg@redhat.com>
 References: <20241104101501.2487001-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,31 +84,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Patrick Leis <venture@google.com>
+From: Jan Luebbe <jlu@pengutronix.de>
 
-Enable AT24C with ASPEED in the KConfig because the boards build this
-device.
+The sd_bootpart_offset() function calculates the *runtime* offset which
+changes as the guest switches between accessing the main user data area
+and the boot partitions by writing to the EXT_CSD_PART_CONFIG_ACC_MASK
+bits, so it shouldn't be used to calculate the main user data area size.
 
-Signed-off-by: Patrick Leis <venture@google.com>
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Instead, subtract the boot_part_size directly (twice, as there are two
+identical boot partitions defined by the eMMC spec).
+
+Suggested-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Fixes: c8cb19876d3e ("hw/sd/sdcard: Support boot area in emmc image")
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ hw/sd/sd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index e7fd9338d11d..1b25e73578e7 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -539,6 +539,7 @@ config ASPEED_SOC
-     select PMBUS
-     select MAX31785
-     select FSI_APB2OPB_ASPEED
-+    select AT24C
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index b2e2d58e013e..f9bd03f3fd9e 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -834,7 +834,9 @@ static void sd_reset(DeviceState *dev)
+         sect = 0;
+     }
+     size = sect << HWBLOCK_SHIFT;
+-    size -= sd_bootpart_offset(sd);
++    if (sd_is_emmc(sd)) {
++        size -= sd->boot_part_size * 2;
++    }
  
- config MPS2
-     bool
+     sect = sd_addr_to_wpnum(size) + 1;
+ 
 -- 
 2.47.0
 
