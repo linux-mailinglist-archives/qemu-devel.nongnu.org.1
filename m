@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B559BBF64
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8459BBF9A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84JC-0003Se-Bi; Mon, 04 Nov 2024 16:08:22 -0500
+	id 1t84JF-0003kR-Kh; Mon, 04 Nov 2024 16:08:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84J4-00034h-Bc
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:15 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84J8-0003LT-58
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84J2-0005SR-Sd
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:14 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84J6-0005Sd-9t
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754491;
+ s=mimecast20190719; t=1730754495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=LphtSZRM9Hmq0/3hV/+VD4mIq6AHbSOEG0NTeD+XVjw=;
- b=Ag9LrUE/guM/U5RaK5ROVL6j+zSXIq+jjZTj0TjAAs8d+mDgEjVrHD9owaVqKYoZgfdCKp
- eu8Le+UHc+N2P2jnY1iRA5auj1oto/pJW9Ybzf+xk1tnOLg4IkNJwbW1Pnr3Z4bNjZQYh/
- uqWiZxBsAT/F7n/Xadbxnjx/z9dIvxg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5hR+ACnXBxInDGsaK6RI1lemH57wgeYS/tmIS32BvoE=;
+ b=NBjAOaVvHtVnkCxaAOKFIb8uGMexaoa9RLp4iw3exHjMhh4kKrqFLdVDw6UmdW4WKAhvVR
+ TQFwTTo/xXamHjSV+NzzhgavTgkAmYMOaqkfhEG8Pio0EGkB2uexdyZ7JnYd/2Wht1tqyu
+ Ok+8jFDEIsWR/AVPjsNThGdHRKRbUWg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-mJaWzp0qNsmanZB452TOvg-1; Mon, 04 Nov 2024 16:08:10 -0500
-X-MC-Unique: mJaWzp0qNsmanZB452TOvg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43157cff1d1so34460275e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:10 -0800 (PST)
+ us-mta-149-llUoWFuFOLeemTAOw89cUw-1; Mon, 04 Nov 2024 16:08:14 -0500
+X-MC-Unique: llUoWFuFOLeemTAOw89cUw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4315c1b5befso29856085e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754489; x=1731359289;
+ d=1e100.net; s=20230601; t=1730754493; x=1731359293;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LphtSZRM9Hmq0/3hV/+VD4mIq6AHbSOEG0NTeD+XVjw=;
- b=Q1G+FR6wl+kY7WIWJNnwTvowD7hXEp3sE+Mckp/up9eKVItawv1vMltKN08SlQr+SP
- Gqb6kdKKfeNWXFRnOJkI/o3aFw/8pBDr85U3zj47bY4T8uym8hbQW7ZHQVHN72cqfqxr
- HbtJtlsjf+aeLib5p3S9720mLK+P+xigEIbJ/ojORD5Fff9LaYxXF+J9eNbvtsLrcYQV
- glPBz1s5a+k/ZVVehDTEk+w/xdEYzbunzVXJhUEt30zUUE4FubJddBzujz/OPQP/veKa
- SHVaonUVjZ4nzp2BsJw8HinU0tZlXMamzyZlQS6QLGWJdw89PuKY3j2JeIWe9ULklSWr
- D1SQ==
-X-Gm-Message-State: AOJu0Yz+1U0JSwM9YVtgV/rNYMUSSYgbr0LcQVNW7WlFOcaUUGxKuiIs
- UEjYoPPayBdoiW/KVLYr3B7XCAY5jGj85RYBRaC9gTWgSxe5J8L/88ji4dIRcyIV8RYutaJcMe/
- luxDxPpa8SQh+PDbp9iW9yEBpItZMvSmEGZp38GQw7HH0JdY2+skEmRlV0qvNET8hWFArnLfCWm
- PmgaV2FLTM9m6Chk7VPKlxPRjqsRui4w==
-X-Received: by 2002:a5d:5988:0:b0:37d:30e7:3865 with SMTP id
- ffacd0b85a97d-381be7d63e0mr13752497f8f.34.1730754489001; 
- Mon, 04 Nov 2024 13:08:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHse1DTdtj6DQWEZkiG7Juxs1RZjnkGxjXTOl9gxl2FH1oBeQKwEbrS3o8Qe1YD7Wly7WnjLA==
-X-Received: by 2002:a5d:5988:0:b0:37d:30e7:3865 with SMTP id
- ffacd0b85a97d-381be7d63e0mr13752459f8f.34.1730754488530; 
- Mon, 04 Nov 2024 13:08:08 -0800 (PST)
+ bh=5hR+ACnXBxInDGsaK6RI1lemH57wgeYS/tmIS32BvoE=;
+ b=gX1p8GbZETSx2gGL5omFvAr/fOH8bi6rSFM1uWBc3Xc3ZstqzMG/MR2HqknE18Hj+6
+ x5nERf5BoN8zH6gYoJ4ddTUqIRD++Clghn2tG4cQF8i7xeoq1GnaaxkC+jalrwkPzT+R
+ 5wsXo7gdUwaS7+afIwbJfnfsua9OeO2pudsv4VpZNoeJirk7Po8bl0mVCEuoHjefXazc
+ a/6IH/RE7oNcIRSwY7lnKBJDc14naFRwUqZK7U8InX/pdsvWrRe4W5h49d+B1XLxu2IP
+ AnGT85tUAnP0ZTti+GWINNMWf/N18ZSN43/NUC+QWUAM80FW7Vm9lQtXzH+YFAkDn8Hq
+ 9GFQ==
+X-Gm-Message-State: AOJu0Yz4upiqLHxGZO+kU5qbFXCRW9WZoW7/dPgKKTuSsfVah0r0Nykj
+ d+Anlr5vD8Xn653vL85T+c3iw265wT64a8KHmxOOnMDLlc44l/8bprefZsDMPjHO5P3GzgdcQIw
+ 8vFJx9gTHkHEv1wVIhiX+H5pwKEsedluWuvHQFNMYRLffxnr4SKkArigERTg9qK8aMwQsbzX5rr
+ hDvp1IjwAUN6kTVyTnw2K+Tva/K8s3lg==
+X-Received: by 2002:a5d:4b02:0:b0:37c:d183:a8f8 with SMTP id
+ ffacd0b85a97d-3806113cfedmr25094721f8f.19.1730754492707; 
+ Mon, 04 Nov 2024 13:08:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENF2S8LFp7vg+zKgY7podnNTHV8WgZiOkwvinKde2tNFfcP88gm6xhwxNY41b/Clfr7fRPNQ==
+X-Received: by 2002:a5d:4b02:0:b0:37c:d183:a8f8 with SMTP id
+ ffacd0b85a97d-3806113cfedmr25094700f8f.19.1730754492187; 
+ Mon, 04 Nov 2024 13:08:12 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d42adsm14083391f8f.40.2024.11.04.13.08.06
+ ffacd0b85a97d-381c10e565csm14118677f8f.48.2024.11.04.13.08.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:07 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:05 -0500
+ Mon, 04 Nov 2024 13:08:11 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:08:08 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 38/65] hw/mem/cxl_type3: Fix More flag setting for dynamic
- capacity event records
-Message-ID: <80ee960f8d646505385bce8ed143a9bb8ea36d1d.1730754238.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 39/65] hw/cxl/cxl-mailbox-utils: Fix for device DDR5 ECS
+ control feature tables
+Message-ID: <d1853190db5c59ad5b0537a2ac59c8d4494cbd98.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,43 +101,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Per cxl spec r3.1, for multiple dynamic capacity event records grouped via
-the More flag, the last record in the sequence should clear the More flag.
+CXL spec 3.1 section 8.2.9.9.11.2 describes the DDR5 Error Check Scrub (ECS)
+control feature.
 
-Before the change, the More flag of the event record is cleared before
-the loop of inserting records into the event log, which will leave the flag
-always set once it is set in the loop.
+ECS log capabilities field in following ECS tables, which is common for all
+memory media FRUs in a CXL device.
 
-Fixes: d0b9b28a5b9f ("hw/cxl/events: Add qmp interfaces to add/release dynamic capacity extents")
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Link: https://lore.kernel.org/r/20240827164304.88876-2-nifan.cxl@gmail.com
+Fix struct CXLMemECSReadAttrs and struct CXLMemECSWriteAttrs to make
+log entry type field common.
+
+Fixes: 2d41ce38fb9a ("hw/cxl/cxl-mailbox-utils: Add device DDR5 ECS control feature")
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241014121902.2146424-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20241014121902.2146424-6-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/mem/cxl_type3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/cxl/cxl_device.h | 36 ++++++++++++++++++++++--------------
+ hw/cxl/cxl-mailbox-utils.c  | 24 +++++++++---------------
+ hw/mem/cxl_type3.c          |  9 ++++-----
+ 3 files changed, 35 insertions(+), 34 deletions(-)
 
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index e14e56ae4b..561b375dc8 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -463,18 +463,6 @@ typedef struct CXLMemPatrolScrubWriteAttrs {
+ #define CXL_MEMDEV_PS_ENABLE_DEFAULT    0
+ 
+ /* CXL memory device DDR5 ECS control attributes */
+-typedef struct CXLMemECSReadAttrs {
+-        uint8_t ecs_log_cap;
+-        uint8_t ecs_cap;
+-        uint16_t ecs_config;
+-        uint8_t ecs_flags;
+-} QEMU_PACKED CXLMemECSReadAttrs;
+-
+-typedef struct CXLMemECSWriteAttrs {
+-   uint8_t ecs_log_cap;
+-    uint16_t ecs_config;
+-} QEMU_PACKED CXLMemECSWriteAttrs;
+-
+ #define CXL_ECS_GET_FEATURE_VERSION    0x01
+ #define CXL_ECS_SET_FEATURE_VERSION    0x01
+ #define CXL_ECS_LOG_ENTRY_TYPE_DEFAULT    0x01
+@@ -483,6 +471,26 @@ typedef struct CXLMemECSWriteAttrs {
+ #define CXL_ECS_MODE_DEFAULT    0
+ #define CXL_ECS_NUM_MEDIA_FRUS   3 /* Default */
+ 
++typedef struct CXLMemECSFRUReadAttrs {
++    uint8_t ecs_cap;
++    uint16_t ecs_config;
++    uint8_t ecs_flags;
++} QEMU_PACKED CXLMemECSFRUReadAttrs;
++
++typedef struct CXLMemECSReadAttrs {
++    uint8_t ecs_log_cap;
++    CXLMemECSFRUReadAttrs fru_attrs[CXL_ECS_NUM_MEDIA_FRUS];
++} QEMU_PACKED CXLMemECSReadAttrs;
++
++typedef struct CXLMemECSFRUWriteAttrs {
++    uint16_t ecs_config;
++} QEMU_PACKED CXLMemECSFRUWriteAttrs;
++
++typedef struct CXLMemECSWriteAttrs {
++    uint8_t ecs_log_cap;
++    CXLMemECSFRUWriteAttrs fru_attrs[CXL_ECS_NUM_MEDIA_FRUS];
++} QEMU_PACKED CXLMemECSWriteAttrs;
++
+ #define DCD_MAX_NUM_REGION 8
+ 
+ typedef struct CXLDCExtentRaw {
+@@ -575,8 +583,8 @@ struct CXLType3Dev {
+     CXLMemPatrolScrubReadAttrs patrol_scrub_attrs;
+     CXLMemPatrolScrubWriteAttrs patrol_scrub_wr_attrs;
+     /* ECS control attributes */
+-    CXLMemECSReadAttrs ecs_attrs[CXL_ECS_NUM_MEDIA_FRUS];
+-    CXLMemECSWriteAttrs ecs_wr_attrs[CXL_ECS_NUM_MEDIA_FRUS];
++    CXLMemECSReadAttrs ecs_attrs;
++    CXLMemECSWriteAttrs ecs_wr_attrs;
+ 
+     struct dynamic_capacity {
+         HostMemoryBackend *host_dc;
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 3a93966e77..67041f45d3 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -1133,10 +1133,8 @@ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
+                          (struct CXLSupportedFeatureEntry) {
+                 .uuid = ecs_uuid,
+                 .feat_index = index,
+-                .get_feat_size = CXL_ECS_NUM_MEDIA_FRUS *
+-                                    sizeof(CXLMemECSReadAttrs),
+-                .set_feat_size = CXL_ECS_NUM_MEDIA_FRUS *
+-                                    sizeof(CXLMemECSWriteAttrs),
++                .get_feat_size = sizeof(CXLMemECSReadAttrs),
++                .set_feat_size = sizeof(CXLMemECSWriteAttrs),
+                 .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE,
+                 .get_feat_version = CXL_ECS_GET_FEATURE_VERSION,
+                 .set_feat_version = CXL_ECS_SET_FEATURE_VERSION,
+@@ -1204,13 +1202,10 @@ static CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
+                (uint8_t *)&ct3d->patrol_scrub_attrs + get_feature->offset,
+                bytes_to_copy);
+     } else if (qemu_uuid_is_equal(&get_feature->uuid, &ecs_uuid)) {
+-        if (get_feature->offset >=  CXL_ECS_NUM_MEDIA_FRUS *
+-                                sizeof(CXLMemECSReadAttrs)) {
++        if (get_feature->offset >= sizeof(CXLMemECSReadAttrs)) {
+             return CXL_MBOX_INVALID_INPUT;
+         }
+-        bytes_to_copy = CXL_ECS_NUM_MEDIA_FRUS *
+-                        sizeof(CXLMemECSReadAttrs) -
+-                            get_feature->offset;
++        bytes_to_copy = sizeof(CXLMemECSReadAttrs) - get_feature->offset;
+         bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
+         memcpy(payload_out,
+                (uint8_t *)&ct3d->ecs_attrs + get_feature->offset,
+@@ -1299,18 +1294,17 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+ 
+         ecs_set_feature = (void *)payload_in;
+         ecs_write_attrs = ecs_set_feature->feat_data;
+-        memcpy((uint8_t *)ct3d->ecs_wr_attrs + hdr->offset,
++        memcpy((uint8_t *)&ct3d->ecs_wr_attrs + hdr->offset,
+                ecs_write_attrs,
+                bytes_to_copy);
+         set_feat_info->data_size += bytes_to_copy;
+ 
+         if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
+             data_transfer_flag ==  CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
++            ct3d->ecs_attrs.ecs_log_cap = ct3d->ecs_wr_attrs.ecs_log_cap;
+             for (count = 0; count < CXL_ECS_NUM_MEDIA_FRUS; count++) {
+-                ct3d->ecs_attrs[count].ecs_log_cap =
+-                                  ct3d->ecs_wr_attrs[count].ecs_log_cap;
+-                ct3d->ecs_attrs[count].ecs_config =
+-                                  ct3d->ecs_wr_attrs[count].ecs_config & 0x1F;
++                ct3d->ecs_attrs.fru_attrs[count].ecs_config =
++                        ct3d->ecs_wr_attrs.fru_attrs[count].ecs_config & 0x1F;
+             }
+         }
+     } else {
+@@ -1324,7 +1318,7 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+         if (qemu_uuid_is_equal(&hdr->uuid, &patrol_scrub_uuid)) {
+             memset(&ct3d->patrol_scrub_wr_attrs, 0, set_feat_info->data_size);
+         } else if (qemu_uuid_is_equal(&hdr->uuid, &ecs_uuid)) {
+-            memset(ct3d->ecs_wr_attrs, 0, set_feat_info->data_size);
++            memset(&ct3d->ecs_wr_attrs, 0, set_feat_info->data_size);
+         }
+         set_feat_info->data_transfer_flag = 0;
+         set_feat_info->data_saved_across_reset = false;
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 16c60b9b0d..6911d13fe6 100644
+index 6911d13fe6..5cf754b38f 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -2064,11 +2064,11 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-     stw_le_p(&dCap.host_id, hid);
-     /* only valid for DC_REGION_CONFIG_UPDATED event */
-     dCap.updated_region_id = 0;
--    dCap.flags = 0;
-     for (i = 0; i < num_extents; i++) {
-         memcpy(&dCap.dynamic_capacity_extent, &extents[i],
-                sizeof(CXLDCExtentRaw));
+@@ -920,16 +920,15 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+     ct3d->patrol_scrub_attrs.scrub_flags = CXL_MEMDEV_PS_ENABLE_DEFAULT;
  
-+        dCap.flags = 0;
-         if (i < num_extents - 1) {
-             /* Set "More" flag */
-             dCap.flags |= BIT(0);
+     /* Set default value for DDR5 ECS read attributes */
++    ct3d->ecs_attrs.ecs_log_cap = CXL_ECS_LOG_ENTRY_TYPE_DEFAULT;
+     for (count = 0; count < CXL_ECS_NUM_MEDIA_FRUS; count++) {
+-        ct3d->ecs_attrs[count].ecs_log_cap =
+-                            CXL_ECS_LOG_ENTRY_TYPE_DEFAULT;
+-        ct3d->ecs_attrs[count].ecs_cap =
++        ct3d->ecs_attrs.fru_attrs[count].ecs_cap =
+                             CXL_ECS_REALTIME_REPORT_CAP_DEFAULT;
+-        ct3d->ecs_attrs[count].ecs_config =
++        ct3d->ecs_attrs.fru_attrs[count].ecs_config =
+                             CXL_ECS_THRESHOLD_COUNT_DEFAULT |
+                             (CXL_ECS_MODE_DEFAULT << 3);
+         /* Reserved */
+-        ct3d->ecs_attrs[count].ecs_flags = 0;
++        ct3d->ecs_attrs.fru_attrs[count].ecs_flags = 0;
+     }
+ 
+     return;
 -- 
 MST
 
