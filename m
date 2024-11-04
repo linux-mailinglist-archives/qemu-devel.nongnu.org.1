@@ -2,54 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02CA9BAC9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 07:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500279BACC4
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 07:44:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7qfx-0003r7-28; Mon, 04 Nov 2024 01:34:57 -0500
+	id 1t7qoi-0000MQ-0B; Mon, 04 Nov 2024 01:44:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t7qft-0003q6-Ca
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 01:34:53 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t7qfq-0007r3-Qb
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 01:34:53 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxieEGayhnUK0tAA--.27892S3;
- Mon, 04 Nov 2024 14:34:46 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMAxjkf8aihn7bY9AA--.50651S7;
- Mon, 04 Nov 2024 14:34:46 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Igor Mammedov <imammedo@redhat.com>,
- Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-Subject: [PATCH v3 5/5] hw/loongarch/virt: Enable cpu hotplug feature on virt
- machine
-Date: Mon,  4 Nov 2024 14:34:35 +0800
-Message-Id: <20241104063435.4130262-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20241104063435.4130262-1-maobibo@loongson.cn>
-References: <20241104063435.4130262-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t7qoe-0000J6-8M; Mon, 04 Nov 2024 01:43:56 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t7qoa-0000N0-Rn; Mon, 04 Nov 2024 01:43:55 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A44e9ec016144;
+ Mon, 4 Nov 2024 06:43:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=6KnuTEh/BAzEpw0FjNT94ifGalPYTQ++2vIufQK4N
+ hg=; b=YRw7WSpp5l6mGztrDW1CGyN2oXK/yqKBBrDfrgt9tjlJxlRHI8PSFJ0Co
+ Y0u03huR3vUcjoH1lCxkUuLYgnds3B/3RaVIuLDQfuL7SCzH0czSowyP1c0Zphus
+ PQUpFqjMRK8yOG5xj9PGw94UQdORTIVkTojsRZqG1Ygl7a+AZmfBsr50w2hQaKKN
+ HwdcXf04/vOvaBWR370bykaCPbXVtLsdm/4Yu2rprhVz1TElG9u+znkbTjeFPDLe
+ OplzEeSGnTcwSihB/2M/lvFFoTkERNlq3a/efRNTxGdnfaUONEMjWgCpOqNvAoK8
+ xucBVKV0CDdi3Q1iu+TwMnJEjkC2A==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42pqej0b12-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Nov 2024 06:43:42 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A40xnC3023412;
+ Mon, 4 Nov 2024 06:43:42 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p140shcn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Nov 2024 06:43:42 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A46hfCR2163298
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 4 Nov 2024 06:43:41 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 52BC65804E;
+ Mon,  4 Nov 2024 06:43:41 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E38165803F;
+ Mon,  4 Nov 2024 06:43:40 +0000 (GMT)
+Received: from gfwa829.aus.stglabs.ibm.com (unknown [9.3.84.19])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  4 Nov 2024 06:43:40 +0000 (GMT)
+From: dan tan <dantan@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
+ farosas@suse.de, lvivier@redhat.com, clg@kaod.org, dantan@linux.ibm.com
+Subject: [PATCH v5 0/3] TPM TIS SPI Support
+Date: Mon,  4 Nov 2024 00:43:31 -0600
+Message-Id: <20241104064334.21468-1-dantan@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxjkf8aihn7bY9AA--.50651S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4w7G6rz0EKTIy8jwadKToguuMApY0te_
+X-Proofpoint-ORIG-GUID: 4w7G6rz0EKTIy8jwadKToguuMApY0te_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 mlxscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 bulkscore=0 mlxlogscore=886
+ phishscore=0 malwarescore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411040057
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=dantan@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,138 +102,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On virt machine, enable CPU hotplug feature has_hotpluggable_cpus. For
-hot-added CPUs after power on, interrupt pin of extioi and ipi interrupt
-controller need connect to pins of new CPU.
+*** BLURB HERE ***
+Version 5 summary:
+    1/3 tpm/tpm_tis_spi: Support TPM for SPI
+        - removed DEFINE_PROP_UINT32("irq", TPMStateSPI, tpm_state.irq_num, 0)
+          from tpm_tis_spi_properties
+        - In tpm.rst document, under section 'The QEMU TPM emulator device',
+          moved the 'PowerNV machine' section to immeidately below 'pSeriese
+          machine'.
+    3/3 tests/qtest/tpm: add unit test to tis-spi
+        - modified tpm_reg_readl() by
+          - removing the special case for TPM_TIS_REG_DID_VID.
+            - however, I did not use the more efficient 32bit access due
+              to the SPI bus master implementation. The 16bit register
+              still require special treatment with the SPI RWX bits.
+          - correcting tpm_reg_readb() with uint16_t reg
+        - tpm_set_verify_loc() added checking for TPM_TIS_CAPABILITIES_SUPPORTED2_0
+        - test_spi_tpm_transmit_test() added
+          - TPM_TIS_STS_TPM_FAMILY2_0 check in status register
+          - TPM responses verification
+        - fixed the PowerNV stdout msg from running qtest-ppc64/tpm-tis-spi-pnv-test
 
-Also change num-cpu property of extioi and ipi from smp.cpus to
-smp.max_cpus
+Revision 4 summary:
+    - fold v3 commit 4/5 into 1/5
+    - fold v3 commit 5/5 into 3/5
 
-Co-developed-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/loongarch/virt.c         | 57 +++++++++++++++++++++++++++++++++----
- include/hw/loongarch/virt.h |  2 ++
- 2 files changed, 54 insertions(+), 5 deletions(-)
+Revision 3 summary:
+  device support:
+    - moved variable tis_addr from TPMStateSPI struct to local
+    - added the VM suspend/resume support:
+      - added vmstate_tpm_tis_spi declaration
+      - added tpm_tis_spi_pre_save() function
+    - fixed trace formatting string
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index e73f689c83..6673493109 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -891,8 +891,9 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
- 
-     /* Create IPI device */
-     ipi = qdev_new(TYPE_LOONGARCH_IPI);
--    qdev_prop_set_uint32(ipi, "num-cpu", ms->smp.cpus);
-+    qdev_prop_set_uint32(ipi, "num-cpu", ms->smp.max_cpus);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-+    lvms->ipi = ipi;
- 
-     /* IPI iocsr memory region */
-     memory_region_add_subregion(&lvms->system_iocsr, SMP_IPI_MAILBOX,
-@@ -905,11 +906,12 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
- 
-     /* Create EXTIOI device */
-     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
--    qdev_prop_set_uint32(extioi, "num-cpu", ms->smp.cpus);
-+    qdev_prop_set_uint32(extioi, "num-cpu", ms->smp.max_cpus);
-     if (virt_is_veiointc_enabled(lvms)) {
-         qdev_prop_set_bit(extioi, "has-virtualization-extension", true);
-     }
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
-+    lvms->extioi = extioi;
-     memory_region_add_subregion(&lvms->system_iocsr, APIC_BASE,
-                     sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 0));
-     if (virt_is_veiointc_enabled(lvms)) {
-@@ -1403,8 +1405,40 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
-      }
- 
-     if (cpu->phy_id == UNSET_PHY_ID) {
--        error_setg(&local_err, "CPU hotplug not supported");
--        goto out;
-+        if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
-+            error_setg(&local_err,
-+                       "Invalid thread-id %u specified, must be in range 1:%u",
-+                       cpu->thread_id, ms->smp.threads - 1);
-+            goto out;
-+        }
-+
-+        if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
-+            error_setg(&local_err,
-+                       "Invalid core-id %u specified, must be in range 1:%u",
-+                       cpu->core_id, ms->smp.cores - 1);
-+            goto out;
-+        }
-+
-+        if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
-+            error_setg(&local_err,
-+                       "Invalid socket-id %u specified, must be in range 1:%u",
-+                       cpu->socket_id, ms->smp.sockets - 1);
-+            goto out;
-+        }
-+
-+        topo.socket_id = cpu->socket_id;
-+        topo.core_id = cpu->core_id;
-+        topo.thread_id = cpu->thread_id;
-+        arch_id =  virt_get_arch_id_from_topo(ms, &topo);
-+        cpu_slot = virt_find_cpu_slot(ms, arch_id, &index);
-+        if (CPU(cpu_slot->cpu)) {
-+            error_setg(&local_err,
-+                       "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
-+                       cs->cpu_index, cpu->socket_id, cpu->core_id,
-+                       cpu->thread_id, cpu_slot->arch_id);
-+            goto out;
-+        }
-+        cpu->phy_id = arch_id;
-     } else {
-         /*
-          * For cold-add cpu, topo property is not set. And only physical id
-@@ -1484,10 +1518,22 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
-                                 DeviceState *dev, Error **errp)
- {
-     CPUArchId *cpu_slot;
-+    Error *local_err = NULL;
-     LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    MachineState *ms = MACHINE(hotplug_dev);
-     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(hotplug_dev);
- 
--    cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id, NULL);
-+    if (lvms->acpi_ged) {
-+        /* Connect irq to cpu, including ipi and extioi irqchip */
-+        virt_init_cpu_irq(ms, CPU(cpu));
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &local_err);
-+        if (local_err) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-+    }
-+
-+    cpu_slot = virt_find_cpu_slot(ms, cpu->phy_id, NULL);
-     cpu_slot->cpu = CPU(dev);
-     return;
- }
-@@ -1671,6 +1717,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
-     mc->numa_mem_supported = true;
-     mc->auto_enable_numa_with_memhp = true;
-     mc->auto_enable_numa_with_memdev = true;
-+    mc->has_hotpluggable_cpus = true;
-     mc->get_hotplug_handler = virt_get_hotplug_handler;
-     mc->default_nic = "virtio-net-pci";
-     hc->plug = virt_device_plug_cb;
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 861034d614..79a85723c9 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -61,6 +61,8 @@ struct LoongArchVirtMachineState {
-     MemoryRegion iocsr_mem;
-     AddressSpace as_iocsr;
-     struct loongarch_boot_info bootinfo;
-+    DeviceState *ipi;
-+    DeviceState *extioi;
- };
- 
- #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+  qtest:
+    - removed the function prototypes declaration
+    - fixed code format to comply with convention
+    - changed function names and variable names to be the same
+      as the tpm-tis-i2c test.
+    - change hard coded numbers to #define's with meaningful
+      names that are identifiable with spec documentation
+
+Version 2 summary,
+    addressed the following review comments:
+    - break up patch into 3 separate commits;
+    - add more details in the commit logs;
+      - I added links to the TCG TPM standard documents as this device
+        model communicates to the TPM device (hw / swtpm) via
+        tpm_tis_commom.c which is standard compliant;
+      - the TPM SPI model implementation in itself is not platform
+        specific. However, the SPI interface is via the PowerNV SPI
+        bus master, thus it is only supported on the PowerNV platform
+    - change all qemu_log() calls to trace events;
+    - move static global variables to the TPMStateSPI struct;
+    - fixed code formatting (verified by scripts/checkpatch.pl);
+    - per requests, make the code more readable by using self-
+      explanatory #defines and adding comments;
+    - added some documentation support (tpm.rst);
+    - beefed up the unit test exercising major supported locality
+      functionality
+
+dan tan (3):
+  tpm/tpm_tis_spi: Support TPM for SPI (Serial Peripheral Interface)
+  tpm/tpm_tis_spi: activation for the PowerNV machines
+  tests/qtest/tpm: add unit test to tis-spi
+
+ docs/specs/tpm.rst                 |  15 +
+ include/sysemu/tpm.h               |   3 +
+ hw/tpm/tpm_tis_spi.c               | 359 +++++++++++++++
+ tests/qtest/tpm-tis-spi-pnv-test.c | 713 +++++++++++++++++++++++++++++
+ hw/ppc/Kconfig                     |   1 +
+ hw/tpm/Kconfig                     |   6 +
+ hw/tpm/meson.build                 |   1 +
+ hw/tpm/trace-events                |   7 +
+ tests/qtest/meson.build            |   2 +
+ 9 files changed, 1107 insertions(+)
+ create mode 100644 hw/tpm/tpm_tis_spi.c
+ create mode 100644 tests/qtest/tpm-tis-spi-pnv-test.c
+
 -- 
-2.39.3
+2.39.5
 
 
