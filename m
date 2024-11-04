@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC999BBC06
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C629BBC14
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:35:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sb-0006V0-4V; Mon, 04 Nov 2024 12:28:41 -0500
+	id 1t80sY-0006FW-OT; Mon, 04 Nov 2024 12:28:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sT-0005vw-5n
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t80sU-00065m-RZ
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sQ-0000OU-Pl
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:32 -0500
+ id 1t80sS-0000Or-Rs
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741309;
+ s=mimecast20190719; t=1730741312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3lFu90NjWg0SYteCDLmbz/R+IMonQxZkD/nPXECqYIo=;
- b=QiBIU70+cphWbGy/HUEP43RTU4Xnywzfnp2xThjIKYJeHoIq2srCjVwe70EqcNh4lBLW0a
- TXizQw4o13m1cEBBI8/4hKykeWttFnNtQ7+yHc75l8C8jpskZAjaiI7J9B1/eOul6D3PWf
- FmxqH4L1xHz1iox2NBo70mfdjCPzMy8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LdHMmVfohK45Fr50VMfZShEdcQTZfzv07i8pTppE0kM=;
+ b=GQY2Hw1ux5HE/piWQFJZoAbU4w9m1kmNPIPYjjj37uJnc3gVslSJD74XpI9+4YHmmCbymb
+ bxUzK1AFlNmXeFS2zwC1ZQloUVPAGYGJ32ak6EKsf3AsqBeOoWvY5hWXot+iAEoTK4I3IG
+ d91ZEtU7zmJ0it6iFkQpYdR4KLdW+uY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-ZBIq9ld6Ma--gUdGCqix-Q-1; Mon, 04 Nov 2024 12:28:28 -0500
-X-MC-Unique: ZBIq9ld6Ma--gUdGCqix-Q-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d5116f0a6so2225260f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:28 -0800 (PST)
+ us-mta-298-tW6MRQIuM2Se0cMouWuQVQ-1; Mon, 04 Nov 2024 12:28:30 -0500
+X-MC-Unique: tW6MRQIuM2Se0cMouWuQVQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4316e2dde9eso38309135e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741307; x=1731346107;
+ d=1e100.net; s=20230601; t=1730741309; x=1731346109;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3lFu90NjWg0SYteCDLmbz/R+IMonQxZkD/nPXECqYIo=;
- b=vVKcG/BK9ZzH/Dp93zbNhTMQ6yAC8CNBRajSMVBPj4oqpNNfy3ImMTEsbLFpKBoffs
- acjfGuI2RvPcpfObQjWlRtskD4qKt3jPLQz9mxA12xzmuUt8NJLkoNWaoXaHiIoBcvxL
- zwujGQ7/wbumR6Ev3tTfEiE26N9IgYc9+WYpFzQZ4e0VHWSsvkSTeG6sNVSoZcClr8pn
- bQU2C7dxVxbYNrp+tulbmonNNNdw9RHR8KmI7iSjiyP9qOd/NDmBx8MTHrWK2Xux+4EM
- gwk+UOUCkfXYsuBrpaEY2rN7KH7McRLB27sV/37qC+63PGzljbG7j9kiJmaUU2q/oZQ/
- /nAw==
-X-Gm-Message-State: AOJu0YzYWFWxOZ/UCQKl6Fjg9k/QtUqGwGXO/41u5IzRZS5NUMZW5wHW
- 8fi34JaDILpuVp9m/HFzG/Aji9O/Sh6FSx1GM2cJUV+SZtbuJNj7R3yGDcpzxrNDb+5yu53NJ11
- fXmCY5gHvgkHiAOAdjThAXHrgeVVgzwNOAsvDY6Mug0jVP8hzXM2imxdfLq3dOr91Wh/lvlC/7L
- ZXsB7Op1jbtPy/2APhHBST/V0rV2XZMy+ZU7+cKT4=
-X-Received: by 2002:a05:6000:4027:b0:37d:4ebe:164a with SMTP id
- ffacd0b85a97d-381c7ac7704mr11244110f8f.50.1730741306752; 
- Mon, 04 Nov 2024 09:28:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHWX9YvBoN2s2gc9thcdztDytmiVtAAfFVQut6N7TQ2ig1lwfrSbQvrt0IfyY4vpP1XrneOig==
-X-Received: by 2002:a05:6000:4027:b0:37d:4ebe:164a with SMTP id
- ffacd0b85a97d-381c7ac7704mr11244067f8f.50.1730741306273; 
- Mon, 04 Nov 2024 09:28:26 -0800 (PST)
+ bh=LdHMmVfohK45Fr50VMfZShEdcQTZfzv07i8pTppE0kM=;
+ b=o3T98bYjx4iE9RF2PRVshqDx40O3tP7YVGfJien5yulvxT+7QXF3jNA6+HS4HqszKD
+ SdJondPGLqDnTdYTZ4qaAVvXAcpsSZJ2B0adJ/0w8671xHgvHgHVNeqtMh2yv5uGJeMz
+ gHa/+FS0x7XXT6womu6PTOoZZ1BPTAQv/JwSC69nV9gqXr1r6/xHbFBLWap3YVTCRiHT
+ O+P94VSiEmmKJRHaW07V+qypzGYUDLHqsKAZeD/U8KkZiNOiyeJ4J/FQSUyg9uwx91ot
+ IIyla+xkZkG2De2whbIvGkD1r7YmQPdAcE9QCPzzl4SFbkskHUCUYZ99+JIWp1BAtD9B
+ aUdg==
+X-Gm-Message-State: AOJu0YwBgNt12Ez//8bwf+p6aRsRB7p8393Q1OlOnuY2SnseNIgf3Z+b
+ h/2Fgd2RvBydFNtYZPk4tFQO6WLv5CnHgo7C8Gw7u15uF8r/zMzD1A6kYFS4SBBI8U//0YzPQnz
+ yycXmujoO8ockhCExYIHW74LHZ7tuDXTr+k9AMvhd3n3d2h5XTor+nv/vpmVmUJqGzakLUj2AGs
+ m1gyqbnCKejpuyOCEBOYwRJ+3WjhGQMFCefUd3DNk=
+X-Received: by 2002:a05:600c:4f03:b0:431:4847:47c0 with SMTP id
+ 5b1f17b1804b1-43283242c79mr132381675e9.7.1730741308732; 
+ Mon, 04 Nov 2024 09:28:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3U3PhA9oiqybUevLrWXLbkRca0oltLj3nmErSUOHX/BRWgfJUQgQYWGgKrFO6uWOOYEX+1Q==
+X-Received: by 2002:a05:600c:4f03:b0:431:4847:47c0 with SMTP id
+ 5b1f17b1804b1-43283242c79mr132381335e9.7.1730741308303; 
+ Mon, 04 Nov 2024 09:28:28 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7bf7sm13917889f8f.9.2024.11.04.09.28.24
+ 5b1f17b1804b1-4327d5bf225sm158612575e9.11.2024.11.04.09.28.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:24 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:27 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,23 +71,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 29/40] rust: silence unknown warnings for the sake of old
- compilers
-Date: Mon,  4 Nov 2024 18:27:08 +0100
-Message-ID: <20241104172721.180255-30-pbonzini@redhat.com>
+Subject: [PULL 30/40] rust: synchronize dependencies between subprojects and
+ Cargo.lock
+Date: Mon,  4 Nov 2024 18:27:09 +0100
+Message-ID: <20241104172721.180255-31-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,90 +105,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Occasionally, we may need to silence warnings and clippy lints that
-were only introduced in newer Rust compiler versions.  However, this
-would fail when compiling with an older rustc:
+The next commit will introduce a new build.rs dependency for rust/qemu-api,
+version_check.  Before adding it, ensure that all dependencies are
+synchronized between the Meson- and cargo-based build systems.
 
-error: unknown lint: `non_local_definitions`
-   --> rust/qemu-api/rust-qemu-api-tests.p/structured/offset_of.rs:79:17
-
-So by default we need to block the unknown_lints warning.  To avoid
-misspelled lints or other similar issues, re-enable it in the CI job
-that uses nightly rust.
+Note that it's not clear whether in the long term we'll use Cargo for
+anything; it seems that the three main uses (clippy, rustfmt, rustdoc)
+can all be invoked manually---either via glue code in QEMU, or by
+extending Meson to gain the relevant functionality.  However, for
+the time being we're stuck with Cargo so it should at least look at
+the same code as the rest of the build system.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 8 ++++++++
- .gitlab-ci.d/buildtest.yml    | 2 +-
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 4 ++++
- 4 files changed, 15 insertions(+), 1 deletion(-)
+ rust/hw/char/pl011/Cargo.lock   |  3 +++
+ rust/qemu-api-macros/Cargo.lock |  8 +++---
+ rust/qemu-api/Cargo.lock        | 47 +++++++++++++++++++++++++++++++++
+ rust/qemu-api/Cargo.toml        |  1 +
+ 4 files changed, 55 insertions(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index aa0b0fc5584..2f7e0550105 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3341,6 +3341,14 @@ if have_rust and have_system
-   # Prohibit code that is forbidden in Rust 2024
-   rustc_args += ['-D', 'unsafe_op_in_unsafe_fn']
+diff --git a/rust/hw/char/pl011/Cargo.lock b/rust/hw/char/pl011/Cargo.lock
+index b58cebb186e..9f43b33e8b8 100644
+--- a/rust/hw/char/pl011/Cargo.lock
++++ b/rust/hw/char/pl011/Cargo.lock
+@@ -91,6 +91,9 @@ dependencies = [
+ [[package]]
+ name = "qemu_api"
+ version = "0.1.0"
++dependencies = [
++ "qemu_api_macros",
++]
  
-+  # Occasionally, we may need to silence warnings and clippy lints that
-+  # were only introduced in newer Rust compiler versions.  Do not croak
-+  # in that case; a CI job with rust_strict_lints == true ensures that
-+  # we do not have misspelled allow() attributes.
-+  if not get_option('strict_rust_lints')
-+    rustc_args += ['-A', 'unknown_lints']
-+  endif
+ [[package]]
+ name = "qemu_api_macros"
+diff --git a/rust/qemu-api-macros/Cargo.lock b/rust/qemu-api-macros/Cargo.lock
+index fdc0fce116c..73c334e7ce9 100644
+--- a/rust/qemu-api-macros/Cargo.lock
++++ b/rust/qemu-api-macros/Cargo.lock
+@@ -4,9 +4,9 @@ version = 3
+ 
+ [[package]]
+ name = "proc-macro2"
+-version = "1.0.86"
++version = "1.0.84"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77"
++checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
+ dependencies = [
+  "unicode-ident",
+ ]
+@@ -31,9 +31,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "syn"
+-version = "2.0.72"
++version = "2.0.66"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "dc4b9b9bf2add8093d3f2c0204471e951b2285580335de42f9d2534f3ae7a8af"
++checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+diff --git a/rust/qemu-api/Cargo.lock b/rust/qemu-api/Cargo.lock
+index e9c51a243a8..e407911cdd1 100644
+--- a/rust/qemu-api/Cargo.lock
++++ b/rust/qemu-api/Cargo.lock
+@@ -2,6 +2,53 @@
+ # It is not intended for manual editing.
+ version = 3
+ 
++[[package]]
++name = "proc-macro2"
++version = "1.0.84"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
++dependencies = [
++ "unicode-ident",
++]
 +
-   # Apart from procedural macros, our Rust executables will often link
-   # with C code, so include all the libraries that C code needs.  This
-   # is safe; https://github.com/rust-lang/rust/pull/54675 says that
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 19ba5b9c818..aba65ff833a 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -128,7 +128,7 @@ build-system-fedora-rust-nightly:
-     job: amd64-fedora-rust-nightly-container
-   variables:
-     IMAGE: fedora-rust-nightly
--    CONFIGURE_ARGS: --disable-docs --enable-rust
-+    CONFIGURE_ARGS: --disable-docs --enable-rust --enable-strict-rust-lints
-     TARGETS: aarch64-softmmu
-     MAKE_CHECK_ARGS: check-build
-   allow_failure: true
-diff --git a/meson_options.txt b/meson_options.txt
-index 0ee4d7bb86b..e46199a3232 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -376,3 +376,5 @@ option('x86_version', type : 'combo', choices : ['0', '1', '2', '3', '4'], value
+ [[package]]
+ name = "qemu_api"
+ version = "0.1.0"
++dependencies = [
++ "qemu_api_macros",
++]
++
++[[package]]
++name = "qemu_api_macros"
++version = "0.1.0"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
++[[package]]
++name = "quote"
++version = "1.0.36"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
++dependencies = [
++ "proc-macro2",
++]
++
++[[package]]
++name = "syn"
++version = "2.0.66"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "unicode-ident",
++]
++
++[[package]]
++name = "unicode-ident"
++version = "1.0.12"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index 3677def3fe2..db594c64083 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -14,6 +14,7 @@ keywords = []
+ categories = []
  
- option('rust', type: 'feature', value: 'disabled',
-        description: 'Rust support')
-+option('strict_rust_lints', type: 'boolean', value: false,
-+       description: 'Enable stricter set of Rust warnings')
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 6d08605b771..e898b20307d 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -47,6 +47,8 @@ meson_options_help() {
-   printf "%s\n" '                           getrandom()'
-   printf "%s\n" '  --enable-safe-stack      SafeStack Stack Smash Protection (requires'
-   printf "%s\n" '                           clang/llvm and coroutine backend ucontext)'
-+  printf "%s\n" '  --enable-strict-rust-lints'
-+  printf "%s\n" '                           Enable stricter set of Rust warnings'
-   printf "%s\n" '  --enable-strip           Strip targets on install'
-   printf "%s\n" '  --enable-tcg-interpreter TCG with bytecode interpreter (slow)'
-   printf "%s\n" '  --enable-trace-backends=CHOICES'
-@@ -490,6 +492,8 @@ _meson_option_parse() {
-     --disable-spice-protocol) printf "%s" -Dspice_protocol=disabled ;;
-     --enable-stack-protector) printf "%s" -Dstack_protector=enabled ;;
-     --disable-stack-protector) printf "%s" -Dstack_protector=disabled ;;
-+    --enable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=true ;;
-+    --disable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=false ;;
-     --enable-strip) printf "%s" -Dstrip=true ;;
-     --disable-strip) printf "%s" -Dstrip=false ;;
-     --sysconfdir=*) quote_sh "-Dsysconfdir=$2" ;;
+ [dependencies]
++qemu_api_macros = { path = "../qemu-api-macros" }
+ 
+ [features]
+ default = []
 -- 
 2.47.0
 
