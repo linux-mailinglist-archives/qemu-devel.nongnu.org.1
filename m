@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF81B9BB0D0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:17:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB44A9BB0D9
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 11:19:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7u7n-0000rY-7h; Mon, 04 Nov 2024 05:15:55 -0500
+	id 1t7uAX-0008Iz-Mg; Mon, 04 Nov 2024 05:18:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7W-0000nP-IP
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t7u7S-0006da-TD
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:15:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730715334;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tVjafkZnyxLi3ipSWKwXdxnsAegwe+glEiTN1gXul0Y=;
- b=Qe0Q+X6YV/VWRsRQRRb0EZuZor9u3yy5tP8jugwVyiLImH19UA5Q/RkluyWC4Mk4y2/1d5
- Jmeqj3GQDXhj6JTy/uBObiy/YujyAnPaBJ+eMVzAmKgiMjs/qa3Mv1S2NHYZ1dRDtLxhSr
- CHzURy5FPnUqj1hJs04ZLu+eVbZLlSA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-MzM_2Z0OMz6-inl4uFfUgQ-1; Mon,
- 04 Nov 2024 05:15:30 -0500
-X-MC-Unique: MzM_2Z0OMz6-inl4uFfUgQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59295193587B; Mon,  4 Nov 2024 10:15:29 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.67])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 612661956052; Mon,  4 Nov 2024 10:15:27 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Jan Luebbe <jlu@pengutronix.de>, Guenter Roeck <linux@roeck-us.net>
-Subject: [PULL 10/10] aspeed: Don't set always boot properties of the emmc
- device
-Date: Mon,  4 Nov 2024 11:15:01 +0100
-Message-ID: <20241104101501.2487001-11-clg@redhat.com>
-In-Reply-To: <20241104101501.2487001-1-clg@redhat.com>
-References: <20241104101501.2487001-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t7uAT-0008GK-JM
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:18:41 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t7uAR-0007Dy-N5
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 05:18:41 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43162cf1eaaso49377565e9.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 02:18:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730715518; x=1731320318; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=iGv//PzjHkQ7LKwoyx7XOEi7VsKrmG3iVK86N7xLLpw=;
+ b=zUOumPw8Vm/8mxoZ7kB4QqMUT3dr5e0rGqWgcBwf64AwsYykM1PJjetWcvG7+OLfoq
+ YE7RUpxCOL3toq8qvuKF1zWU7THPxKnn5h/szb8bEIwZH2C0vwIdlK1pH+OmTYHS3lrL
+ JwJfqjf5eMeSbMpQ4FnRvxwxSDG9qXaYQyeDrlDfDoEnAozItsaTPqLJv/2XtL7yIeV3
+ nd+IJZCPtHB1L4Xv4jmwOVd2Ej9VdX6/de0mF41zkeJWa7OjO1eubZTjY9BJ3Zg1bxU9
+ pZsDMPP83bY1kdFaUbnX8VIc66V4WVHB/MoKrtbSdGM69JFCMvizkEwadSxf8TQf+Dky
+ yoWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730715518; x=1731320318;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iGv//PzjHkQ7LKwoyx7XOEi7VsKrmG3iVK86N7xLLpw=;
+ b=J4HHR1q3vGjmFZ8HnGznFOdkzEm0WQaEpiLGZDp6bTM+zYPadctAdr5iuVU+miYLN2
+ 6WfWSar7xJmeBtJj9tfQapRzT8zwQditHnH+eMomRFPYk/TIcLhVRC5cfPXZnJJ1xYS/
+ Iggxf09RLZuenm/KFgDHX7F7yWWj2eETPlKRxMRqdAC2yGNlYUhs41AqV6Zh2LPm72Qb
+ 1QwJpimWensgbEficiLYsC41zEURN3RlcfzIyl/vg7JNx2nd9IA8L/WzSWc4Fk5q6pig
+ vdzJcUaXndcyhd932dsqr4tYxeP1RjNkH+NCPWdJThVx/b2eGOW4ifmUbpyVJdCUnNt+
+ OqoA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW63fTHYRhrOvTHKZBkkniPBHk9CIR/4kCQlCvAtCF3ryrakX184MJumH9FB9KQGqsPvB5DRZMtiYP9@nongnu.org
+X-Gm-Message-State: AOJu0Yy6+wTIsA4WJrPmXE2fO1cb/r4Ql5Jf8W/V4je858E/OtfEUT7Z
+ a8EXPokrvCdXfHevUXAG+XQ6O+Y6WaXMdTOkUOC8f+C27fI+f2hlbcc9kGx2FIg=
+X-Google-Smtp-Source: AGHT+IGR4HbaHYQd3mxLzAOLLuiEi3qZdHDVD6wNImKMAbpSXJBRhhWC612oHEWx5jOERNNKyrxGWA==
+X-Received: by 2002:a05:600c:1d1e:b0:431:604d:b22 with SMTP id
+ 5b1f17b1804b1-43283255922mr120989675e9.16.1730715517752; 
+ Mon, 04 Nov 2024 02:18:37 -0800 (PST)
+Received: from [192.168.69.126] ([176.176.145.27])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-431bd9479ebsm176876595e9.23.2024.11.04.02.18.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Nov 2024 02:18:37 -0800 (PST)
+Message-ID: <396b6a26-0127-479f-af5a-00feb4103a26@linaro.org>
+Date: Mon, 4 Nov 2024 11:18:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] aspeed: Don't set always boot properties of the emmc
+ device
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Jan Luebbe <jlu@pengutronix.de>, Guenter Roeck <linux@roeck-us.net>
+References: <20241103210829.2307729-1-clg@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241103210829.2307729-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,74 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e554e45b4478 ("aspeed: Tune eMMC device properties to reflect
-HW strapping") added support to boot from an eMMC device by setting
-the boot properties of the eMMC device. This change made the
-assumption that the device always has boot areas.
+On 3/11/24 18:08, Cédric Le Goater wrote:
+> Commit e554e45b4478 ("aspeed: Tune eMMC device properties to reflect
+> HW strapping") added support to boot from an eMMC device by setting
+> the boot properties of the eMMC device. This change made the
+> assumption that the device always has boot areas.
+> 
+> However, if the machine boots from the flash device (or -kernel) and
+> uses an eMMC device without boot areas, support would be broken. This
+> impacts the ast2600-evb machine which can choose to boot from flash or
+> eMMC using the "boot-emmc" machine option.
+> 
+> To provide some flexibility for Aspeed machine users to use different
+> flavors of eMMC devices (with or without boot areas), do not set the
+> eMMC device boot properties when the machine is not configured to boot
+> from eMMC. However, this approach makes another assumption about eMMC
+> devices, namely that eMMC devices from which the machine does not boot
+> do not have boot areas.
+> 
+> A preferable alternative would be to add support for user creatable
+> eMMC devices and define the device boot properties on the QEMU command
+> line :
+> 
+>    -blockdev node-name=emmc0,driver=file,filename=mmc-ast2600-evb.raw \
+>    -device emmc,bus=sdhci-bus.2,drive=emmc0,boot-partition-size=1048576,boot-config=8
+> 
+> This is a global change requiring more thinking. Nevertheless, in the
+> case of the ast2600-evb machine booting from an eMMC device and when
+> default devices are created, the proposed change still makes sense
+> since the device is required to have boot areas.
+> 
+> Cc: Jan Luebbe <jlu@pengutronix.de>
+> Fixes: e554e45b4478 ("aspeed: Tune eMMC device properties to reflect
+> HW strapping")
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> 
+>   Changes in v2:
+> 
+>   - Simplified "boot-config setting
+> 
+>   hw/arm/aspeed.c | 16 +++++++++++++---
+>   1 file changed, 13 insertions(+), 3 deletions(-)
 
-However, if the machine boots from the flash device (or -kernel) and
-uses an eMMC device without boot areas, support would be broken. This
-impacts the ast2600-evb machine which can choose to boot from flash or
-eMMC using the "boot-emmc" machine option.
-
-To provide some flexibility for Aspeed machine users to use different
-flavors of eMMC devices (with or without boot areas), do not set the
-eMMC device boot properties when the machine is not configured to boot
-from eMMC. However, this approach makes another assumption about eMMC
-devices, namely that eMMC devices from which the machine does not boot
-do not have boot areas.
-
-A preferable alternative would be to add support for user creatable
-eMMC devices and define the device boot properties on the QEMU command
-line :
-
-  -blockdev node-name=emmc0,driver=file,filename=mmc-ast2600-evb.raw \
-  -device emmc,bus=sdhci-bus.2,drive=emmc0,boot-partition-size=1048576,boot-config=8
-
-This is a global change requiring more thinking. Nevertheless, in the
-case of the ast2600-evb machine booting from an eMMC device and when
-default devices are created, the proposed change still makes sense
-since the device is required to have boot areas.
-
-Cc: Jan Luebbe <jlu@pengutronix.de>
-Fixes: e554e45b4478 ("aspeed: Tune eMMC device properties to reflect
-HW strapping")
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jan Luebbe <jlu@pengutronix.de>
----
- hw/arm/aspeed.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index e447923536b4..6ca145362cbd 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -338,10 +338,20 @@ static void sdhci_attach_drive(SDHCIState *sdhci, DriveInfo *dinfo, bool emmc,
-             return;
-         }
-         card = qdev_new(emmc ? TYPE_EMMC : TYPE_SD_CARD);
--        if (emmc) {
-+
-+        /*
-+         * Force the boot properties of the eMMC device only when the
-+         * machine is strapped to boot from eMMC. Without these
-+         * settings, the machine would not boot.
-+         *
-+         * This also allows the machine to use an eMMC device without
-+         * boot areas when booting from the flash device (or -kernel)
-+         * Ideally, the device and its properties should be defined on
-+         * the command line.
-+         */
-+        if (emmc && boot_emmc) {
-             qdev_prop_set_uint64(card, "boot-partition-size", 1 * MiB);
--            qdev_prop_set_uint8(card, "boot-config",
--                                boot_emmc ? 0x1 << 3 : 0x0);
-+            qdev_prop_set_uint8(card, "boot-config", 0x1 << 3);
-         }
-         qdev_prop_set_drive_err(card, "drive", blk_by_legacy_dinfo(dinfo),
-                                 &error_fatal);
--- 
-2.47.0
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
