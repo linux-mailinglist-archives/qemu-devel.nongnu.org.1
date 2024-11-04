@@ -2,78 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FB19BBAA3
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391A29BBAAE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:58:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80Ky-00053J-KK; Mon, 04 Nov 2024 11:53:56 -0500
+	id 1t80PL-0007jS-ES; Mon, 04 Nov 2024 11:58:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t80Kv-00052S-HK
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:53 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t80PI-0007ik-Nx
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:58:24 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t80Ku-0004gd-1y
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:53 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a9abe139088so687875166b.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:53:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t80PH-00058V-0N
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:58:24 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-37d43a9bc03so3024549f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:58:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730739230; x=1731344030; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lB8vB/PMzeP5scWej6wNyd9gn12J752qtp8raWtHWDs=;
- b=rXY+5ddm2uT0pfKnU7GomqUon4As2T2RGhMZsTdpdC8Hd0+B0hEkIbsli1Fa4NFSMc
- UIBedh1gXW85y63Tp3SThPEbwJS/POm9SFk2FYAwChi15mx7UBwbFQthxQt7LqCF/dVZ
- nYdHmpCE8zUFbdvrJDyj3G7QchDRiQ0c3aRmLph7JCQtMrHfUlIZLJbbRNKhZnk+yIvO
- Wk86bwT+W8jj7qF23HY2SIM2bQUbs+uTqEbf9M8/UAudR2Do2PCCnur4bHMxNfGhLtT3
- evwiFxhThQOu6fq7pUmD/HDd46i2nIJV2fSoMtPbR2mk/O7Q56SlPnsc2mJX+u6cOT2l
- 1G7g==
+ d=linaro.org; s=google; t=1730739501; x=1731344301; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=m0o2RgKkHP9t1oVMWCUj0yrb8kc+cMF2/vR0PNGAOy4=;
+ b=oW081eo2RibRnUuGIrhpG6TJtKY5U0a0R5ZtsiKlf8utQaUFBh2Asb2T9HuAKVpEq8
+ 4JllTfaTpVA0bbKXtIgk0p96Z3QKsO8MV+smoK56DUNSwmtT73fb+E5Uul8J52QzXqa3
+ g07btOXEYsAGuhBjt8C9vVpbk3Vj6h5dQLpY+jmXnUKbwXiGQ9UqMexQNh5Fq3oq4XM4
+ sobgZvL4YMaJbS6z3wgSd+NlJXDxqILSLrfEpXZc2ar0VgCYGBMcTO9mZ+TlPQtPubQ4
+ IRxzcUpPX4KGMX/lrdD67ZxBWzhbHJ1Gv0gigGvwlIm8CSJEG92l7BzWXaIUfAAYQ5z0
+ EUQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730739230; x=1731344030;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lB8vB/PMzeP5scWej6wNyd9gn12J752qtp8raWtHWDs=;
- b=Kn+/1VsVQFfCo5GPSUiHXnAuawgPIbne2CiDhCwn1Nk/PGJR/necF9Ci+kqoLtjPLY
- RvVTPBvG1tjNvho3YwBqaT7vABqYl7X1lA0f144INOl1t/XlQFrbtqPy3DBmJU6eewzt
- p1g7oeLJFNY12ZPIsiLWFwD4MiJlevEA8ovzGZsranKK5Xu6QXujVVBhwCoNSvLR8Ed6
- UNYZBgU8dfuoltz1+0q7ixIelCucQGedOmDF0pFxZeUm37K5OGvTX2RmLvx5qSp39yCZ
- jsuaJgfU9gME9WeUupcoKekTjryZ5//bXGhs/KzVw0VQpicVXpIVDvCc7+4YgJyV4faa
- yA5Q==
-X-Gm-Message-State: AOJu0Yy4gAgD9IdOi8eMBN0Wx9v9ug+paMRZK78WLHFqCWhJWR7NmtQw
- bNuOQ2biEbpl7R6xe2JB9WLo/1dWkxwAwSIzH9IrM99jUXZ8PIXcfMmBe0qTuac=
-X-Google-Smtp-Source: AGHT+IE6xFMS48rSdWjpI+kN2STgUhu7Kzmv4KaSjCmAhsUcJ/SfX0elJCRcYy1zjxWT1kaMEV1zrg==
-X-Received: by 2002:a17:907:e8b:b0:a9a:714:4399 with SMTP id
- a640c23a62f3a-a9de6167a45mr3222665566b.51.1730739230016; 
- Mon, 04 Nov 2024 08:53:50 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9eb17cecb5sm4199966b.99.2024.11.04.08.53.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 08:53:49 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7864A5F8CF;
- Mon,  4 Nov 2024 16:53:48 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH 2/2] hw/display: check frame buffer can hold blob
-Date: Mon,  4 Nov 2024 16:53:48 +0000
-Message-Id: <20241104165348.2361299-3-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241104165348.2361299-1-alex.bennee@linaro.org>
-References: <20241104165348.2361299-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1730739501; x=1731344301;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m0o2RgKkHP9t1oVMWCUj0yrb8kc+cMF2/vR0PNGAOy4=;
+ b=OdbXHsB6DdWbcVRyxslAzmkTxZO0mICMbw61iFI0cgyqMYvWvy+eRuN252MXdwSsNH
+ 63PCg3cW/w26fFFZRwPI5Kw9m6xC/6L58/taBmpq9F2Oc/9/51rnGs/xEb6L94996vJl
+ QzB6QXNPkNuw5XumB3UMX7vXPyb/Mf1ejsYiuja+2ksy1u3WuHpTO40Vv/Wa01hq+RT+
+ I+E97GYClqvtvWPPqm205rY27W57G1DROhd1ON3yC1DUXfrLkG3mYQQhGe7qocBy4yy0
+ G9NWkun8CkI4Zy6LqQ+w/td+1yfGakyu/77v/DPuxCBp3EoQ3AG8CmzJchtNVsNNheL6
+ MzOg==
+X-Gm-Message-State: AOJu0YxyBdXqCWjrqV8dj5euPvYhEOwD92SXkpNtaEEgx/iaFjzjoETI
+ ExittvafUVkNlxn8HGsAkiSVi6wifBIUy1DJDNaS/UqtT1sAaYdyxBiLnkZNWpVKwOd0txBiCk3
+ SvoVge0J0SEhE69sNfix4fKBPXNTruG/e+bBW3g==
+X-Google-Smtp-Source: AGHT+IHlfbypLypjDRbkkufLGEWuzBXtPvG95UdaIRb7uMNRkLJ7lPcNZa3L/SUhBsFDrRudH6xZAFIYXSNCpA65k5Y=
+X-Received: by 2002:a05:6000:4027:b0:37d:4ebe:1646 with SMTP id
+ ffacd0b85a97d-381c7ac74d2mr10870950f8f.48.1730739500855; Mon, 04 Nov 2024
+ 08:58:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+References: <20241104142606.941638-1-gustavo.romero@linaro.org>
+In-Reply-To: <20241104142606.941638-1-gustavo.romero@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 4 Nov 2024 16:58:09 +0000
+Message-ID: <CAFEAcA85mXoskBCnackKpMAe936qGHwdkSpSRsOBespzeAFBjw@mail.gmail.com>
+Subject: Re: [PATCH v2] target/arm: Enable FEAT_CMOW for -cpu max
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alex.bennee@linaro.org, 
+ richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,42 +86,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reports  (CID 1564769, 1564770) that  we potentially overflow
-by doing some 32x32 multiplies for something that ends up in a 64 bit
-value. Fix this by casting the first input to uint64_t to ensure a 64
-bit multiply is used.
+On Mon, 4 Nov 2024 at 14:26, Gustavo Romero <gustavo.romero@linaro.org> wrote:
+>
+> FEAT_CMOW introduces support for controlling cache maintenance
+> instructions executed in EL0/1 and is mandatory from Armv8.8.
+>
+> On real hardware, the main use for this feature is to prevent processes
+> from invalidating or flushing cache lines for addresses they only have
+> read permission, which can impact the performance of other processes.
+>
+> QEMU implements all cache instructions as NOPs, and, according to rule
+> [1], which states that generating any Permission fault when a cache
+> instruction is implemented as a NOP is implementation-defined, no
+> Permission fault is generated for any cache instruction when it lacks
+> read and write permissions.
+>
+> QEMU does not model any cache topology, so the PoU and PoC are before
+> any cache, and rules [2] apply. These rules state that generating any
+> MMU fault for cache instructions in this topology is also
+> implementation-defined. Therefore, for FEAT_CMOW, we do not generate any
+> MMU faults either, instead, we only advertise it in the feature
+> register.
+>
+> [1] Rule R_HGLYG of section D8.14.3, Arm ARM K.a.
+> [2] Rules R_MZTNR and R_DNZYL of section D8.14.3, Arm ARM K.a.
+>
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-While we are at it note why we split the calculation into stride and
-bytes_pp parts.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e7ca8fd1cf..572e4d92c6 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -741,9 +741,14 @@ bool virtio_gpu_scanout_blob_to_fb(struct virtio_gpu_framebuffer *fb,
-     fb->stride = ss->strides[0];
-     fb->offset = ss->offsets[0] + ss->r.x * fb->bytes_pp + ss->r.y * fb->stride;
- 
-+    /*
-+     * We calculate fb->stride for every line but the last which we
-+     * calculate purely by its width. The stride will often be larger
-+     * than width to meet alignment requirements.
-+     */
-     fbend = fb->offset;
--    fbend += fb->stride * (ss->r.height - 1);
--    fbend += fb->bytes_pp * ss->r.width;
-+    fbend += (uint64_t) fb->stride * (ss->r.height - 1);
-+    fbend += (uint64_t) fb->bytes_pp * ss->r.width;
- 
-     if (fbend > blob_size) {
-         qemu_log_mask(LOG_GUEST_ERROR,
--- 
-2.39.5
+Applied to target-arm.next, thanks.
 
+-- PMM
 
