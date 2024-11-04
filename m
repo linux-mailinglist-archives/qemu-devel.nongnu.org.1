@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C17F9BBC00
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3964B9BBC04
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80tK-0000Hz-I8; Mon, 04 Nov 2024 12:29:26 -0500
+	id 1t80tH-0008PH-Lh; Mon, 04 Nov 2024 12:29:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sp-00083J-GT
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:57 -0500
+ id 1t80ss-00089b-Oq
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sn-0000TE-Rj
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:55 -0500
+ id 1t80sr-0000TW-5v
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741331;
+ s=mimecast20190719; t=1730741335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qtmTBH9nUwoIxrYW0EKHYqdJrQ1Dt9cCZWdrafrESwA=;
- b=KGIWyau7ORsBR64NVCWtZJbI2HmgQbQdyJkeWeVykFbiANeBH9sxM+b580bYvLZlC470I4
- T0pZe8Ks5UgSFZcW5ROoHamP8ulGwK07KdDBNUC7jurClDSZE0ahXwr0W3rLIOU3u8PmkX
- sLtPaEn4Wtnxm7oHBJ2rcfY4smCZgSk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CGWRmX3rMWBrx19dauoWAvIXhk+Rz6c9rIxN6h0dBpU=;
+ b=TwgtsqUXExU/5sTO32eeAjhqeThoARY0FDVn/1bjNpWZePY9Th0bXaMfzQjj7ZNy70WK9O
+ cW44Yx+j2ZFA1vk3GzT3hNE9QRS+KChFn0llnmJDtYl2OWVjX6ExwvO06mvo8HqC3VTu6Q
+ X7UIC5Zsv0aB7W+DYQnZNW8YzN2/f+4=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-JcAfapVyNQCF0NnhWHFVAw-1; Mon, 04 Nov 2024 12:28:50 -0500
-X-MC-Unique: JcAfapVyNQCF0NnhWHFVAw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4314c6ca114so33071255e9.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:50 -0800 (PST)
+ us-mta-655-IF2r7xVjPWilAdXzkf7O9Q-1; Mon, 04 Nov 2024 12:28:54 -0500
+X-MC-Unique: IF2r7xVjPWilAdXzkf7O9Q-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539eb3416cdso4699779e87.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741329; x=1731346129;
+ d=1e100.net; s=20230601; t=1730741332; x=1731346132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qtmTBH9nUwoIxrYW0EKHYqdJrQ1Dt9cCZWdrafrESwA=;
- b=JP9VxfRjD0wdfe5NHunUSOPYAAQHtjh8iColdKvxMA0WzCYVPrOFZfE/h6wmEBg7Ru
- GLNJrlvy/h6jxIBpAEh71yxaPyJkuKCR6bdzK7R1zrQJm9ppyimo2V+OKADQI+SRDoN/
- vNjAUT8SDBCDinBQfyxacUg4kTg857iupTHdLljwUqOV8FOOiwVGh1fX82YP6s8sySct
- 2HMOpStpAZMKcSJoijVrJPAvRJ/dtwHqG0Ew0neCX/HjG9nlU7sD0wIx4l5SpSyx7ubx
- iRubuV9tn0jrunUBMM9SE0Qb0bBni+zzELjl9dW4fuc1LG3nH1UmdkOm3AEMWZNRNOEW
- RgHA==
-X-Gm-Message-State: AOJu0YyzfCuWXdC5YNZJ6CJuERs5z7cOjffF1LP3jJ5pRxBOxFoKPcG4
- iyONj/zvajX28u1GY/J8CuZS6PmwNCOVSeMn1Oq2faJTws2+vGAv4Hlg2+WuP688gEMFs+cdDst
- /gJ6f4JCnAACYf99MSP7+51WBZOZuoxC/v8aH1AhC4KgrTgznBlp5mUCy9LQYTYLKhBb5OWXplf
- Ic6ND0at2djqHEWrYMu9EmJtSiwEnwR6NpG51gDFE=
-X-Received: by 2002:a05:600c:4f04:b0:42c:acb0:dda5 with SMTP id
- 5b1f17b1804b1-4327b6f9574mr141362675e9.1.1730741329259; 
- Mon, 04 Nov 2024 09:28:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAHuBStURnLfYbcKDuQlvcoWwYo7TPZLJ9DbvsDyYolksHHUu89Hum8zQqG3RneWh745AqPw==
-X-Received: by 2002:a05:600c:4f04:b0:42c:acb0:dda5 with SMTP id
- 5b1f17b1804b1-4327b6f9574mr141362405e9.1.1730741328821; 
- Mon, 04 Nov 2024 09:28:48 -0800 (PST)
+ bh=CGWRmX3rMWBrx19dauoWAvIXhk+Rz6c9rIxN6h0dBpU=;
+ b=Djp5W9WWVdIG9hOXBjmptyA8pfWjaYXaR/k3w2M1DojmyAFi/QScbXNSJtbIi5n5IN
+ rH7j6/Zffc3iDQwaVKD2vY55zBGCeFPvAwrqGbeKHnVKNTIyDKCdDtoT6kk/sy1ky3jl
+ PJ7rBoVpPtHYWefqPJ7vatJlF6AEunSvtBnyvO1QBh7Y2ojcLPr0eqVJvmVWP6Tf6/5F
+ 09oEV2FKumxEVUYelYEOBdi6wQJhH4yqVZOu13wfEu/tBUMMS4vvR9fiM/n5iUZnPp8b
+ Wl5xh7FGmC91Y/5aqSnVbXMJSuyamkHk8vFFVzWYh4E/LrvNqTp7QiffqmPL4x2PTZBn
+ FNeg==
+X-Gm-Message-State: AOJu0Yztwww3osktU1PTCUG2pe0g62RWWJV0X0nbro9dq2hOVKT+q/X2
+ 6t/Lm0KdG+mHpDOSlIvw70tWUNdj7a3KMMAc4u8yo1MS/HkeoQajPUuDTXStytqEJAtW7CpbM84
+ hDKeb6Gp4UKwTY1CQh6Qq0ZRHir4NuA5ePdew7dSPLT6+hKYXT2SuRxxodLV4DkUiawColq14j1
+ UdYNlYcxGsvlE7LM44FLDoQHOhGHYxiVQdoy4ASFY=
+X-Received: by 2002:a05:6512:12d3:b0:539:fb49:c47a with SMTP id
+ 2adb3069b0e04-53b348c38b0mr18004264e87.4.1730741331763; 
+ Mon, 04 Nov 2024 09:28:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEvXcC5nQC1vtlOzI2/O8BSyCzrrLMkJgRWoPoLQ1i66qToryZaXzmr1qtCNt7nPD7Ov/Nv8A==
+X-Received: by 2002:a05:6512:12d3:b0:539:fb49:c47a with SMTP id
+ 2adb3069b0e04-53b348c38b0mr18004212e87.4.1730741330923; 
+ Mon, 04 Nov 2024 09:28:50 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5ac387sm164540165e9.1.2024.11.04.09.28.47
+ ffacd0b85a97d-381c113e51csm13814117f8f.79.2024.11.04.09.28.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:47 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:49 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 39/40] dockerfiles: install bindgen from cargo on Ubuntu 22.04
-Date: Mon,  4 Nov 2024 18:27:18 +0100
-Message-ID: <20241104172721.180255-40-pbonzini@redhat.com>
+Subject: [PULL 40/40] ci: enable rust in the Debian and Ubuntu system build job
+Date: Mon,  4 Nov 2024 18:27:19 +0100
+Message-ID: <20241104172721.180255-41-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,112 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because Ubuntu 22.04 has a very old version of bindgen, that
-does not have the important option --allowlist-file, it will
-not be able to use --enable-rust out of the box.  Instead,
-install the latest version of bindgen-cli via "cargo install"
-in the container, following QEMU's own documentation.
+We have fixed all incompatibilities with older versions of rustc
+and bindgen.  Enable Rust on Debian to check that the minimum
+supported version of Rust is indeed 1.63.0, and 0.60.x for bindgen.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml |  1 -
- scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml   |  1 -
- tests/docker/dockerfiles/ubuntu2204.docker       |  6 +++++-
- tests/lcitool/mappings.yml                       |  4 ++++
- tests/lcitool/refresh                            | 11 ++++++++++-
- 5 files changed, 19 insertions(+), 4 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
-index dd89ba1b3a7..31078f96462 100644
---- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
-+++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
-@@ -7,7 +7,6 @@
- packages:
-   - bash
-   - bc
--  - bindgen
-   - bison
-   - bsdextrautils
-   - bzip2
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
-index 74f14d8d0fe..fdd50d03e88 100644
---- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
-+++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
-@@ -7,7 +7,6 @@
- packages:
-   - bash
-   - bc
--  - bindgen
-   - bison
-   - bsdextrautils
-   - bzip2
-diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
-index ce3aa39d4f3..5f8a811788a 100644
---- a/tests/docker/dockerfiles/ubuntu2204.docker
-+++ b/tests/docker/dockerfiles/ubuntu2204.docker
-@@ -13,7 +13,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get install --no-install-recommends -y \
-                       bash \
-                       bc \
--                      bindgen \
-                       bison \
-                       bsdextrautils \
-                       bzip2 \
-@@ -149,6 +148,11 @@ ENV LANG "en_US.UTF-8"
- ENV MAKE "/usr/bin/make"
- ENV NINJA "/usr/bin/ninja"
- ENV PYTHON "/usr/bin/python3"
-+ENV CARGO_HOME=/usr/local/cargo
-+ENV PATH=$CARGO_HOME/bin:$PATH
-+RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-+  apt install -y --no-install-recommends cargo
-+RUN cargo install bindgen-cli
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index 9c5ac87c1c2..c90b23a00f1 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -1,4 +1,8 @@
- mappings:
-+  # Too old on Ubuntu 22.04; we install it from cargo instead
-+  bindgen:
-+    Ubuntu2204:
-+
-   flake8:
-     OpenSUSELeap15:
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aba65ff833a..8deaf9627cb 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -40,7 +40,7 @@ build-system-ubuntu:
+     job: amd64-ubuntu2204-container
+   variables:
+     IMAGE: ubuntu2204
+-    CONFIGURE_ARGS: --enable-docs
++    CONFIGURE_ARGS: --enable-docs --enable-rust
+     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
+     MAKE_CHECK_ARGS: check-build
  
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 0f16f4d525c..a46cbbdca41 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -137,6 +137,14 @@ fedora_rustup_nightly_extras = [
-     'RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli\n',
- ]
- 
-+ubuntu2204_bindgen_extras = [
-+    "ENV CARGO_HOME=/usr/local/cargo\n",
-+    'ENV PATH=$CARGO_HOME/bin:$PATH\n',
-+    "RUN DEBIAN_FRONTEND=noninteractive eatmydata \\\n",
-+    "  apt install -y --no-install-recommends cargo\n",
-+    'RUN cargo install bindgen-cli\n',
-+]
-+
- def cross_build(prefix, targets):
-     conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
-     targets = "ENV DEF_TARGET_LIST %s\n" % (targets)
-@@ -157,7 +165,8 @@ try:
-                         trailer="".join(debian12_extras))
-     generate_dockerfile("fedora", "fedora-40")
-     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
--    generate_dockerfile("ubuntu2204", "ubuntu-2204")
-+    generate_dockerfile("ubuntu2204", "ubuntu-2204",
-+                        trailer="".join(ubuntu2204_bindgen_extras))
- 
-     #
-     # Non-fatal Rust-enabled build
+@@ -71,7 +71,7 @@ build-system-debian:
+     job: amd64-debian-container
+   variables:
+     IMAGE: debian
+-    CONFIGURE_ARGS: --with-coroutine=sigaltstack
++    CONFIGURE_ARGS: --with-coroutine=sigaltstack --enable-rust
+     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4-softmmu
+       sparc-softmmu xtensa-softmmu
+     MAKE_CHECK_ARGS: check-build
 -- 
 2.47.0
 
