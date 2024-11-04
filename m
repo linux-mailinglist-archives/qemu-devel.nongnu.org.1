@@ -2,97 +2,201 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F4A9BAAC4
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 03:18:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B869F9BAB00
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 03:46:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7mej-0007dI-HT; Sun, 03 Nov 2024 21:17:25 -0500
+	id 1t7n5t-0002fH-O3; Sun, 03 Nov 2024 21:45:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
- id 1t7meg-0007d3-W7; Sun, 03 Nov 2024 21:17:23 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1t7n5l-0002cN-JR
+ for qemu-devel@nongnu.org; Sun, 03 Nov 2024 21:45:23 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
- id 1t7med-00065T-UV; Sun, 03 Nov 2024 21:17:22 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A42G34s012761;
- Mon, 4 Nov 2024 02:17:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=V+eXW7
- s+WQsy5wMyNHRPfo2cRHChnF/QwFCape/eLDs=; b=EyLy+P56tZ92GeadSryFqI
- J8gnI/xQnwWWfhokumpMGmKGudajd8okdqnX635Ancx5pNEI9r+UpXq1SZO+iBRk
- gYpPE0olhhpUEpraZEBlz1jKARiM6FlhzlzL4IvxAz67FMYQBbLWniuaibxaAMfr
- Rgbdz1Ub5dSDJJgQDX6sBmH75RA6pV8WI14rkllHTfoxMRdUbXhCHaTidHH9MB/j
- d+NlXk/oymkP2/ggulJRgEBc5xlFXI1+ou2kh5v9pmzTomUkNJ4HzZOsh929iPE7
- ct6S2a3eO815D600eUC7e0QUQcfMQSZtBVLaJShsYgXtjqzBrk7cLfkgdzA1FaAg
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42pmt4r2hj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 02:17:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A3HQHPH031474;
- Mon, 4 Nov 2024 02:17:05 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmhc1g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 02:17:05 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A42H4sO56099072
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Nov 2024 02:17:04 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C1F05804B;
- Mon,  4 Nov 2024 02:17:04 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DFF65805B;
- Mon,  4 Nov 2024 02:17:03 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Nov 2024 02:17:03 +0000 (GMT)
-MIME-Version: 1.0
-Date: Sun, 03 Nov 2024 20:17:03 -0600
-From: dan tan <dantan@linux.ibm.com>
-To: undisclosed-recipients:;
-Subject: Re: [PATCH v4 1/3] tpm/tpm_tis_spi: Support TPM for SPI (Serial
- Peripheral Interface)
-In-Reply-To: <78c4eb21-855a-494d-bc83-049914bbacfb@linux.ibm.com>
-References: <20241101202727.9023-1-dantan@linux.vnet.ibm.com>
- <20241101202727.9023-2-dantan@linux.vnet.ibm.com>
- <78c4eb21-855a-494d-bc83-049914bbacfb@linux.ibm.com>
-Message-ID: <081c8b4ca303ca36af018e252351f745@linux.ibm.com>
-X-Sender: dantan@linux.ibm.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1t7n5g-0000Is-39
+ for qemu-devel@nongnu.org; Sun, 03 Nov 2024 21:45:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730688316; x=1762224316;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=vOJwKJ0zq4hz40II/6Orf8iEOvzn6EGFrJJD6/khfgc=;
+ b=kWxysl2bo16iZw/VBzU1QfB22GpaUk+iSK14DNQUP2QE0yJIx2kWxZdG
+ phQDKxClaUoyn5MKnMZv9c04MtmSWOscrj+ojnQ9o7oM0Z9uZ71c4xycB
+ cNzS0eC5bfS72nENPydolq/B16C/88rDusqA+oFpgYkB3kx5avRrfvOR+
+ rGm3jut8IitoIlQ0QZWSyVF7x+6s/s5XD7iL+w7FbgKf8G025fQl30AyL
+ kc6EXh2G8Shjm5UScMRrbFZvEK7wDI9vtYFRFi6C9JKmvVvXevVrJX45O
+ xeP1IKFzQwO19p4XoTeDxrtcsvkuE3XyvP3Sj/jQRs2p37jnMUsS3VQzn w==;
+X-CSE-ConnectionGUID: i1OPQw+jQbSeGazIVExejQ==
+X-CSE-MsgGUID: ceq1ohzLSeiCK5HJUX07HA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="29800236"
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; d="scan'208";a="29800236"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2024 18:45:10 -0800
+X-CSE-ConnectionGUID: b7RMeh0uRuGz2fyXPclr6w==
+X-CSE-MsgGUID: cXq3aF9xQmyuT4yaxUdnRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; d="scan'208";a="84327666"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 03 Nov 2024 18:45:08 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sun, 3 Nov 2024 18:45:07 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sun, 3 Nov 2024 18:45:07 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sun, 3 Nov 2024 18:45:07 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qThK/guNwcn5U4nFMPfADbNL5n2OHaJ1cQ4go23vytkkHSjhawljUKL0C3DcDYc082OIGKu6LnildRN4R3ircRZi6tg60sBvIM4f7CzqChsS4S5OjHOXN6HXi7FLrxtZRVQiWhKw51PGApVCs4PQMbRx8lo8Zb8taN25VWNQ8DrfKzh2/rs3aq/mxRFaKuNfJb62qIlIttbVAeKi8oRiHS40xcJN+pM4eVI2w7QMfWiysPMRjgGdXVqvRz6ojgW0hzE2HUndCtByRHaBgaK4h2gGWKjA9+X3LONzp1U93k/7smDTaLjNWMmOglcFSMtfzw/TKtlhaKB9RL2Px9sGbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rieYxCujH+XhYjssfCZMLwP5/HJUq2weWqIni4HMQ/w=;
+ b=uqlWOG4uJjwrFy9ubLObgRSjHzWhupqC6eI2s+st0HL4rN52fJCbUBZMz740dY/1sXlPga86jB8X0G8WwX5FcPzGiNUlb+eWKjARFYhB6lnQrIsGkbUm26LfuWmQ9QX0WtOUA1jN3smESmq9VwDdmDNnlQ6uOacj9E6JCIEXCVPX067Lq5X+/Hbn486EH73NcuWfyv4n93kWuuP8rqXqpRkfU/4rzvtkaVwxYAaB64vpfYatyGIHkdVR/9A1Xa5UsIRjOW5En5HwUpIX962A3ECeztVZ5HXA0ub4RWR9KQA50DpY05xtA+3nlm1BxfkQlrYOdoua7bVamlrhrUg1Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
+ by SJ0PR11MB5070.namprd11.prod.outlook.com (2603:10b6:a03:2d5::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
+ 2024 02:45:05 +0000
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a%6]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 02:44:58 +0000
+Message-ID: <3bb9da3b-f1de-4a3a-bdd8-37937ed15d50@intel.com>
+Date: Mon, 4 Nov 2024 10:49:32 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/17] intel_iommu: Flush stage-2 cache in
+ PASID-selective PASID-based iotlb invalidation
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>
+CC: <alex.williamson@redhat.com>, <clg@redhat.com>, <eric.auger@redhat.com>,
+ <mst@redhat.com>, <peterx@redhat.com>, <jasowang@redhat.com>,
+ <jgg@nvidia.com>, <nicolinc@nvidia.com>, <joao.m.martins@oracle.com>,
+ <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
+ <chao.p.peng@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, "Richard
+ Henderson" <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
+ <20240930092631.2997543-5-zhenzhong.duan@intel.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20240930092631.2997543-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Y7dGoQ1rmBBUhre4owONvPgCZWIEGDDB
-X-Proofpoint-GUID: Y7dGoQ1rmBBUhre4owONvPgCZWIEGDDB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 malwarescore=0 mlxscore=0 clxscore=1011
- priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411040015
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=dantan@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-ClientProxiedBy: SG2PR06CA0228.apcprd06.prod.outlook.com
+ (2603:1096:4:68::36) To DS0PR11MB7529.namprd11.prod.outlook.com
+ (2603:10b6:8:141::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|SJ0PR11MB5070:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c8a5df5-53ad-4a2d-9b1f-08dcfc7aabdb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NFB1WGUrb2NvTE5zQ05iMVdpNmt4Q2VzalF2OTU3V0NBcXNEVW5JbUo1ZGps?=
+ =?utf-8?B?UElVWDNBQkRiczRBSzlHeXU2dkI4TStyUnFRbVc5VGZvb3RRYll4ZmpuLy9R?=
+ =?utf-8?B?RUgxQVgxVUdGbnZ5OWpjN2JjRktPRWtpa2RhYVI3aTJUbGdsK0hiOE9kbkE4?=
+ =?utf-8?B?cjZKT0tleFo0UlBaYWVUeDl5bXJENUw4TkE3Um05ZjVKMlVPTXdDVDUwNDU2?=
+ =?utf-8?B?MlE4QUhac25ya3VReU9wc25VVHRsdFRQaWRnbHRubHpFOEpnd3FCejJtMTJO?=
+ =?utf-8?B?b0s4MUlKZVNreWJxQU1wcEJrMVZHRjNDNk9XaHQzNDFQam9Pcml3cTB2dXdW?=
+ =?utf-8?B?Um1vQ3JIUUxmaDkrb2FOUTNQQ0gxcml0VzYya21aekttaWVVOVIrR3JySm4v?=
+ =?utf-8?B?eWZsSXBPeDZLRUt3NmliWUltSlk3NVBWOWxMTUFtNDVXMGZES2cxRDZYSm5I?=
+ =?utf-8?B?ZTd0YzB5akxPMm5zdytHRkFabm5Yenl0ZnI0VkpYWHRyRFdBWFlETUtrdVNv?=
+ =?utf-8?B?MWlxbzhSeGlyVC9Idm0rNVVhYWFDUGxNK0ZhNEI0dmNncUVyV0hzNHRVbUpa?=
+ =?utf-8?B?U09kNmtWODZPVlRpbFpKZGZuL0MwY01hSExKUkhsU3NKaTFqSVl2eFdrSW80?=
+ =?utf-8?B?SHlJaGZyWDU0UW0yNDc5YmxCRmI4T0gyakdZZUF1TzZENVpuYjFlM0dHTlI2?=
+ =?utf-8?B?UXNBVEhYMnlsTUp1aUlGb0ZSWEtvQVpWVWl0b0pRZDRqMm9yalVtalNaNzFP?=
+ =?utf-8?B?WFhxOUI4eGdtWnJsRXl5WlNLL1c0aTlySkRvbGtkUFhhRktSL0E1U0pJZk1K?=
+ =?utf-8?B?QWFET3hJc0xRaWxTTVFPSFV4SnV3NHdoZkRUd0tkakJSTGprQ0ZOdC8rNW53?=
+ =?utf-8?B?V1dXSjlNalUxSTlQWjdjUUxldmk1c1A4SEU3dVBSb1NaYUJlU1JzMk42aGhB?=
+ =?utf-8?B?VDBvVGE0SDdCSlRQdEtCZXZUN3FFUEt0cThDaFJRaUFRWTZob1dpaWpKOTlm?=
+ =?utf-8?B?cDN1NmdsMTRYTnlnb043RzNJVVhCWm4yRkwvSEJuNG9NRUtIVCszQUNkZ2E0?=
+ =?utf-8?B?ZVlwbkF3M1d3aWtzekdmcHZCVHV2MDBOZ0ZBNVdZR041ciszaFRUWUhPMkt1?=
+ =?utf-8?B?Q2pGRG94TW0rK0RVb2MyZkxxUUJxbnpsVTR3RXVEdWphUm5SK2Q1eXdhcEdz?=
+ =?utf-8?B?VkswSWJPa3B5cmFhazdrMjNjOHgveVRJMzJ6NVc2NTNWdERzWFJVK0x1anVK?=
+ =?utf-8?B?YndvL0ZRNmRkQTZ3Zlpyd2l1VnFDWnpRM3FUeXNxL01pSGdhbTkxekVQSTdi?=
+ =?utf-8?B?a0Q3bTNyRytLd1hXR05YMXk3N1dXSHFMYmRZV1NGL1E3UGMzTnRBZ3NLRTVj?=
+ =?utf-8?B?aWt6QnJROWtkaXBpVTA5MFh4dXZWc0lnWUJKQWlQSmxYYUFHSldvaVpDSFdF?=
+ =?utf-8?B?Rk5pQ016Y042bGxIVXg5bnBFN0JEUkQ0cVYrcmh4SG9UaE5TbThoVlVRUVll?=
+ =?utf-8?B?Z0grcjdJYmNCVXBka0pKSUNzbVpScjNIWStyUHhXWExXbjN3a0YzMkVzQnlr?=
+ =?utf-8?B?Lzl2YVFhL3pkY0pLMXlVWGxqck1rbEhOSnA1SWRiam10aUMzNGFlM1hHcVN6?=
+ =?utf-8?B?enBNeUd4OU1tdjZFQWVKcHU3YUxKalRxa05QWUZiY0s1bFhkc0xDUHRweENC?=
+ =?utf-8?B?SDAyRzByYVBadVQ5d2NKYll6Z0o1SkEzSXFRZjNKSytZNllmcldSWk9pK29k?=
+ =?utf-8?Q?CQU8GCKzpcNm5fR8zNh9x5Me4NT3x2WX+j8C/VB?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(7416014)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Slg5N2MxdHVIT0xna1FoUEplL05VSXdUTXVEY3BXbHZnNHdmRXJwbURaa3hp?=
+ =?utf-8?B?MHdFMzA3UTJTcVU2N3dMbjZxMTVhWlJIekFBcWF0WVBYWG5FVmxma2wxODQ4?=
+ =?utf-8?B?ekZ2MVhDNDhtU1oveEJLVklXc1BVOWpxOTBvSlhuVGZ2alM2cURsOGlLZThv?=
+ =?utf-8?B?b0RHYkZrYk84WkhOeGNodGY0WmVQaUt2WE5qdlB3SWRuTXIwbko4aDZ0VTcr?=
+ =?utf-8?B?c0EzbzhpbGV3eVhwbUwyTGQ3QktHZ2drQzkrbHo3OTdQNmZYUlJCRmZTalNG?=
+ =?utf-8?B?azBHK2RVUktpK3hldHFNZzVmOEV3dlhPQWRxNVRtbHlOVUdtOEZOY3kvU003?=
+ =?utf-8?B?dzlzVElSangvNHBYRWdlYlpybllGeU95cFBzckJYU2ZyWEorZk5WOVMrYnhD?=
+ =?utf-8?B?TVBKWDJ0V0VKQmh2Q3NldVNSdW5nN3g2M09BN3NmTHhhb1ZPVVV1M3VzT3hY?=
+ =?utf-8?B?UXAwSnJ3Z3BtbFQ4a21mdUM5NmhyUTVDOVdhWXBnMExkc3lsVnlSeDNEVm5X?=
+ =?utf-8?B?VnJSdHBXVjNyZ1V1MFVQNkZQNHhOcVdKZlAzZDZhcWJ0bWVZOGpXd0Y3WmlY?=
+ =?utf-8?B?a1dsL1lZdy95R1Fmd3laYzJnWk5qMUlaMFh1WGJ3L09tRGRzMkJBcEtQenNE?=
+ =?utf-8?B?MXhCZzdjcHR5LzNHQ0NGMW4zZkI2MHQxSzU0ZVhnTENFNk02c244ZXphdzRN?=
+ =?utf-8?B?cmZhSTM1aTY1THl3akRGK1JTMzVMaU5YZHBsdklaaGt3cEI4UG9WZlBxcWZk?=
+ =?utf-8?B?WHAzQTNHZzg0U1NYcHowVEE3djRSRGF0dTc2QU96WEpuR0YwMHgxQi9CZi8y?=
+ =?utf-8?B?QjJwMEFUVGJ1K1BPL0xPNzJ1NTVqbGJKRFo5YzEwNWwyVS9SdkNmeXQwQmdE?=
+ =?utf-8?B?dmZkZzcrWHA0eVdxQkRCZ2FPZEJLZFpVSWE3blA2Q2lsWU9TRkRrdm11VmVK?=
+ =?utf-8?B?YUhSaWY5ZktobWprVy95QXZhQzdMR0xXNzg1T0QwaC9wcldnR2JDakZraUc0?=
+ =?utf-8?B?dDY5cnF4VzdzU1ZMZVBjV3ZVTVd6eTlTUXRJUmpJdFJITUdmWXIxYVZDVWt4?=
+ =?utf-8?B?L2gwdG1vNlpMVmQzMXRTeVlXa2JlWmlNY2N1dDZZWCt4c0ZuZXcrbXFSODFl?=
+ =?utf-8?B?Sng2SWp2b3dCclYzK3BvWjQxemh6VTJQbGRKKzJTYXA1eEMwU0JWVUdWQUps?=
+ =?utf-8?B?NVE1KzgwNTdJMXVrRkhJbklNblQ4NHpTb2JsTXBaam5KOEl0dHJUQmxiOHd5?=
+ =?utf-8?B?bWtEYzh3aU9BNE1hcDJ2SEZyTFZ3YlF0OUxJWU1tVWxtclJ2NlQ5NjU5cDlm?=
+ =?utf-8?B?NW1jcXJxNmZTb0xLd3JCWmJ5cDZQSlVrcHQzSnNRVzFORTRhQUVtQ2s2SjlM?=
+ =?utf-8?B?V1ZvSUNDdk5LK012TEhjRSt3c05Ua0Jaa21WTndzRitCQlNtU2s4WW13bmtt?=
+ =?utf-8?B?Z2t5UW0yNFBBSUNneUl6NWR5NjBwUmZucVpBM0Z2MWdBanVsNmI2VlNodmNi?=
+ =?utf-8?B?aHJtby8yQ2w2c0UvdlZ0SEI2b29QYzVsRjFINHA5UDI1SFh6Y0pwUjJwWHFI?=
+ =?utf-8?B?S2tsQ2N4cE81WWlMZFF4aVlKdGlkejBBbnhVMXg3TjNTTUN3VkFjY1R0TmNq?=
+ =?utf-8?B?ZXo0UzFTVXVBN3lCcVFtYUM4aG5vYUUyNmpSVGgvcTR5NVN3UTBsL2QvY2cw?=
+ =?utf-8?B?WlJIeFJVRW5TdTFaV0lnTVozUDA3YS90SHJXMW04U2Y2SGZNa3JoZUtZUTFt?=
+ =?utf-8?B?YnlNRTkzOVdKQm9tNzJWWTdxOXFkSlFxVmtjLy9kVyswRTZhbmpDQ08vR2hL?=
+ =?utf-8?B?ZVJaVXUraU45djJVZDY1MHNJSVNFY1doQWEzcUhUVDBPWDJlSnVrVnd0SElO?=
+ =?utf-8?B?Z3Z5a2ZoVzlBQ1l4NXJmMVY5UGF4eG0waGNVaGhjOVU1Q05QTkhIMHA3cjBr?=
+ =?utf-8?B?U0VpaEVXZmFCOVEvQy9iK0NCNHhXQk96ZVVBdjJUc0VtNVRCTG13eXhsZ0M5?=
+ =?utf-8?B?QTdSYmVhVkdpSjVIVC8ySGFFT1NpWlkrbzlCeFFlZWlIUjJZNGpaanAvSTZV?=
+ =?utf-8?B?cEdTWkNOaWtMT1liNlFreXRlbGIrclB5c1djMjBwZzRTWWphUnJtbmN6d1pI?=
+ =?utf-8?Q?xhYkVV0YNr4usugSPi8HmqXm8?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c8a5df5-53ad-4a2d-9b1f-08dcfc7aabdb
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 02:44:58.3628 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eG6KCPofhhHyReaEo0yjoSuVcYidHxLyvEcyTvafTXv3p9vwImdibTPOKoRI6kD1gdln8jzbs0uGZcyWowgHlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5070
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,626 +212,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-11-02 09:19, Stefan Berger wrote:
-> On 11/1/24 4:27 PM, dan tan wrote:
->> Implement support for TPM via SPI interface. The SPI bus master
->> is provided by PowerNV SPI device which is an SSI peripheral.
->> It can uses the tpm_emulator driver backend with the external
->> swtpm.
->> 
->> Although the implementation is endian neutral, the SPI
->> bus master provider, pnv_spi.c is only supported on the
->> PowerNV platform, thus, is big endian specific.
->> 
-> 
-> Did you try running this with Linux? Did the Linux TPM driver work?
-> 
+On 2024/9/30 17:26, Zhenzhong Duan wrote:
+> Per spec 6.5.2.4, PADID-selective PASID-based iotlb invalidation will
+> flush stage-2 iotlb entries with matching domain id and pasid.
 
-I am assuming that you mean, if I boot Linux on this PowerNV
-virtual machine, will this TPM device interact with the Linux
-TPM driver just like a hardware tpm device. The answer is I don't
-know.
+Also, call out it's per table Table 21. PASID-based-IOTLB Invalidation of
+VT-d spec 4.1.
 
-Our hypervisor has extensive interactions with the TPM device during
-its secure boot IPL. I have the trace enabled on "tpm_*". After Linux
-takes over, I don't see any access request in the QEMU trace, however,
-the following appears on the Linux console:
-
-[    0.884411] Key type encrypted registered^M
-[    0.884570] Secure boot mode disabled^M
-[    0.884678] ima: No TPM chip found, activating TPM-bypass!^M
-
-I am not sure if "No TPM chip found" is the result of the partition
-firmare not presenting it to the operating system, or there is other
-reason. There is no error or failure in the earlier hypervisor exchange
-and there is no request directed at the TPM device prior to the chip
-not found message. If this is important, I will spend sometime to
-chase it down.
-
->> tpm/tpm_tis_spi: Support TPM for SPI (rev 4)
+> With scalable modern mode introduced, guest could send PASID-selective
+> PASID-based iotlb invalidation to flush both stage-1 and stage-2 entries.
 > 
-> Remove this. It seems to be from your patch merge.
-> 
+> By this chance, remove old IOTLB related definitions which were unused.
 
-done
 
->> 
->> - moved variable tis_addr from TPMStateSPI struct to local
->> - added the VM suspend/resume support:
->>    - added vmstate_tpm_tis_spi declaration
->>    - added tpm_tis_spi_pre_save() function
->> - fixed trace formatting string
-> 
-> Move this below your Signed-off-by after the dashes '---'
-> 
->> 
->> Signed-off-by: dan tan <dantan@linux.vnet.ibm.com>
-> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+> Acked-by: Jason Wang <jasowang@redhat.com>
 > ---
+>   hw/i386/intel_iommu_internal.h | 14 ++++--
+>   hw/i386/intel_iommu.c          | 88 +++++++++++++++++++++++++++++++++-
+>   2 files changed, 96 insertions(+), 6 deletions(-)
 > 
-> v3:
->  - moved variable tis_addr from TPMStateSPI struct to local
->  - added the VM suspend/resume support:
->     - added vmstate_tpm_tis_spi declaration
->     - added tpm_tis_spi_pre_save() function
->  - fixed trace formatting string
-> 
+> diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+> index d0f9d4589d..eec8090190 100644
+> --- a/hw/i386/intel_iommu_internal.h
+> +++ b/hw/i386/intel_iommu_internal.h
+> @@ -403,11 +403,6 @@ typedef union VTDInvDesc VTDInvDesc;
+>   #define VTD_INV_DESC_IOTLB_AM(val)      ((val) & 0x3fULL)
+>   #define VTD_INV_DESC_IOTLB_RSVD_LO      0xffffffff0000f100ULL
+>   #define VTD_INV_DESC_IOTLB_RSVD_HI      0xf80ULL
+> -#define VTD_INV_DESC_IOTLB_PASID_PASID  (2ULL << 4)
+> -#define VTD_INV_DESC_IOTLB_PASID_PAGE   (3ULL << 4)
+> -#define VTD_INV_DESC_IOTLB_PASID(val)   (((val) >> 32) & VTD_PASID_ID_MASK)
+> -#define VTD_INV_DESC_IOTLB_PASID_RSVD_LO      0xfff00000000001c0ULL
+> -#define VTD_INV_DESC_IOTLB_PASID_RSVD_HI      0xf80ULL
+>   
+>   /* Mask for Device IOTLB Invalidate Descriptor */
+>   #define VTD_INV_DESC_DEVICE_IOTLB_ADDR(val) ((val) & 0xfffffffffffff000ULL)
+> @@ -433,6 +428,15 @@ typedef union VTDInvDesc VTDInvDesc;
+>   #define VTD_SPTE_LPAGE_L3_RSVD_MASK(aw) \
+>           (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
+>   
+> +/* Masks for PIOTLB Invalidate Descriptor */
+> +#define VTD_INV_DESC_PIOTLB_G             (3ULL << 4)
+> +#define VTD_INV_DESC_PIOTLB_ALL_IN_PASID  (2ULL << 4)
+> +#define VTD_INV_DESC_PIOTLB_PSI_IN_PASID  (3ULL << 4)
+> +#define VTD_INV_DESC_PIOTLB_DID(val)      (((val) >> 16) & VTD_DOMAIN_ID_MASK)
+> +#define VTD_INV_DESC_PIOTLB_PASID(val)    (((val) >> 32) & 0xfffffULL)
+> +#define VTD_INV_DESC_PIOTLB_RSVD_VAL0     0xfff000000000f1c0ULL
+> +#define VTD_INV_DESC_PIOTLB_RSVD_VAL1     0xf80ULL
+> +
+>   /* Information about page-selective IOTLB invalidate */
+>   struct VTDIOTLBPageInvInfo {
+>       uint16_t domain_id;
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 9e6ef0cb99..72c9c91d4f 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -2656,6 +2656,86 @@ static bool vtd_process_iotlb_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+>       return true;
+>   }
+>   
+> +static gboolean vtd_hash_remove_by_pasid(gpointer key, gpointer value,
+> +                                         gpointer user_data)
+> +{
+> +    VTDIOTLBEntry *entry = (VTDIOTLBEntry *)value;
+> +    VTDIOTLBPageInvInfo *info = (VTDIOTLBPageInvInfo *)user_data;
+> +
+> +    return ((entry->domain_id == info->domain_id) &&
+> +            (entry->pasid == info->pasid));
+> +}
+> +
+> +static void vtd_piotlb_pasid_invalidate(IntelIOMMUState *s,
+> +                                        uint16_t domain_id, uint32_t pasid)
+> +{
+> +    VTDIOTLBPageInvInfo info;
+> +    VTDAddressSpace *vtd_as;
+> +    VTDContextEntry ce;
+> +
+> +    info.domain_id = domain_id;
+> +    info.pasid = pasid;
+> +
+> +    vtd_iommu_lock(s);
+> +    g_hash_table_foreach_remove(s->iotlb, vtd_hash_remove_by_pasid,
+> +                                &info);
+> +    vtd_iommu_unlock(s);
+> +
+> +    QLIST_FOREACH(vtd_as, &s->vtd_as_with_notifiers, next) {
+> +        if (!vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
+> +                                      vtd_as->devfn, &ce) &&
+> +            domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
+> +            uint32_t rid2pasid = VTD_CE_GET_RID2PASID(&ce);
+> +
+> +            if ((vtd_as->pasid != PCI_NO_PASID || pasid != rid2pasid) &&
+> +                vtd_as->pasid != pasid) {
+> +                continue;
+> +            }
+> +
+> +            if (!s->scalable_modern) {
+> +                vtd_address_space_sync(vtd_as);
+> +            }
+> +        }
+> +    }
+> +}
+> +
+> +static bool vtd_process_piotlb_desc(IntelIOMMUState *s,
+> +                                    VTDInvDesc *inv_desc)
+> +{
+> +    uint16_t domain_id;
+> +    uint32_t pasid;
+> +
+> +    if ((inv_desc->val[0] & VTD_INV_DESC_PIOTLB_RSVD_VAL0) ||
+> +        (inv_desc->val[1] & VTD_INV_DESC_PIOTLB_RSVD_VAL1) ||
+> +        inv_desc->val[2] || inv_desc->val[3]) {
+> +        error_report_once("%s: invalid piotlb inv desc val[3]=0x%"PRIx64
+> +                          " val[2]=0x%"PRIx64" val[1]=0x%"PRIx64
+> +                          " val[0]=0x%"PRIx64" (reserved bits unzero)",
+> +                          __func__, inv_desc->val[3], inv_desc->val[2],
+> +                          inv_desc->val[1], inv_desc->val[0]);
+> +        return false;
+> +    }
 
-done
+Need to consider the below behaviour as well.
 
->> ---
->>   docs/specs/tpm.rst   |  15 ++
->>   include/sysemu/tpm.h |   3 +
->>   hw/tpm/tpm_tis_spi.c | 360 
->> +++++++++++++++++++++++++++++++++++++++++++
->>   hw/tpm/Kconfig       |   6 +
->>   hw/tpm/meson.build   |   1 +
->>   hw/tpm/trace-events  |   7 +
->>   6 files changed, 392 insertions(+)
->>   create mode 100644 hw/tpm/tpm_tis_spi.c
->> 
->> diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
->> index 1ad36ad709..63c3a43c7d 100644
->> --- a/docs/specs/tpm.rst
->> +++ b/docs/specs/tpm.rst
->> @@ -24,6 +24,7 @@ QEMU files related to TPM TIS interface:
->>    - ``hw/tpm/tpm_tis_isa.c``
->>    - ``hw/tpm/tpm_tis_sysbus.c``
->>    - ``hw/tpm/tpm_tis_i2c.c``
->> + - ``hw/tpm/tpm_tis_spi.c``
->>    - ``hw/tpm/tpm_tis.h``
->>     Both an ISA device and a sysbus device are available. The former 
->> is
->> @@ -33,6 +34,9 @@ Arm virt machine.
->>   An I2C device support is also provided which can be instantiated in 
->> the Arm
->>   based emulation machines. This device only supports the TPM 2 
->> protocol.
->>   +A Serial Peripheral Interface (SPI) device support has been added 
->> to the
->> +PowerNV emulation machines. This device only supports the TPM 2 
->> protocol.
->> +
->>   CRB interface
->>   -------------
->>   @@ -371,6 +375,17 @@ attached to I2C bus, use the following command 
->> line:
->>       echo tpm_tis_i2c 0x2e > /sys/bus/i2c/devices/i2c-12/new_device
->>   +In case a PowerNV machine is emulated and you want to use a TPM 
->> device
->> +attached to SPI bus, use the following command line (SPI bus master 
->> is
->> +provided by PowerNV SPI device):
->> +
->> +.. code-block:: console
->> +
->> +  qemu-system-ppc64 -m 2G -machine powernv10 -nographic \
->> +    -chardev socket,id=chrtpm,path=/tmp/mytpm1/swtpm-sock \
->> +    -tpmdev emulator,id=tpm0,chardev=chrtpm \
->> +    -device tpm-tis-spi,tpmdev=tpm0,bus=pnv-spi-bus.4
->> +
-> 
-> 
-> If you move this a bit further up to after the 'pSeries machine' then
-> we have the ppc64 stuff in one place.
-> 
+"
+This
+descriptor is a 256-bit descriptor and will result in an invalid descriptor 
+error if submitted in an IQ that
+is setup to provide hardware with 128-bit descriptors (IQA_REG.DW=0)
+"
 
-done
+Also there are descriptions about the old inv desc types (e.g.
+iotlb_inv_desc) that can be either 128bits or 256bits.
 
->>   In case SeaBIOS is used as firmware, it should show the TPM menu 
->> item
->>   after entering the menu with 'ESC'.
->>   diff --git a/include/sysemu/tpm.h b/include/sysemu/tpm.h
->> index 1ee568b3b6..22b05110e2 100644
->> --- a/include/sysemu/tpm.h
->> +++ b/include/sysemu/tpm.h
->> @@ -49,6 +49,7 @@ struct TPMIfClass {
->>   #define TYPE_TPM_CRB                "tpm-crb"
->>   #define TYPE_TPM_SPAPR              "tpm-spapr"
->>   #define TYPE_TPM_TIS_I2C            "tpm-tis-i2c"
->> +#define TYPE_TPM_TIS_SPI            "tpm-tis-spi"
->>     #define TPM_IS_TIS_ISA(chr)                         \
->>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_ISA)
->> @@ -60,6 +61,8 @@ struct TPMIfClass {
->>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_SPAPR)
->>   #define TPM_IS_TIS_I2C(chr)                      \
->>       object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_I2C)
->> +#define TPM_IS_TIS_SPI(chr)                      \
->> +    object_dynamic_cast(OBJECT(chr), TYPE_TPM_TIS_SPI)
->>     /* returns NULL unless there is exactly one TPM device */
->>   static inline TPMIf *tpm_find(void)
->> diff --git a/hw/tpm/tpm_tis_spi.c b/hw/tpm/tpm_tis_spi.c
->> new file mode 100644
->> index 0000000000..4aee1c6d6c
->> --- /dev/null
->> +++ b/hw/tpm/tpm_tis_spi.c
->> @@ -0,0 +1,360 @@
->> +/*
->> + * QEMU PowerPC SPI TPM 2.0 model
->> + *
->> + * Copyright (c) 2024, IBM Corporation.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +
->> +#define IBM_PONQ
->> +
->> +#include "qemu/osdep.h"
->> +#include "qemu/log.h"
->> +#include "hw/sysbus.h"
->> +#include "hw/acpi/tpm.h"
->> +#include "tpm_prop.h"
->> +#include "qemu/log.h"
->> +#include "trace.h"
->> +#include "tpm_tis.h"
->> +#include "hw/ssi/ssi.h"
->> +#include "migration/vmstate.h"
->> +
->> +typedef struct TPMStateSPI {
->> +    /*< private >*/
->> +    SSIPeripheral parent_object;
->> +
->> +    uint8_t     byte_offset;     /* byte offset in transfer */
->> +    uint8_t     wait_state_cnt;  /* wait state counter */
->> +    uint8_t     xfer_size;       /* data size of transfer */
->> +    uint32_t    reg_addr;        /* register address of transfer */
->> +
->> +    uint8_t     spi_state;       /* READ / WRITE / IDLE */
->> +#define SPI_STATE_IDLE   0
->> +#define SPI_STATE_WRITE  1
->> +#define SPI_STATE_READ   2
->> +
->> +    bool        command;
->> +
->> +    /*< public >*/
->> +    TPMState    tpm_state;       /* not a QOM object */
->> +
->> +} TPMStateSPI;
->> +
->> +#define CMD_BYTE_WRITE          (1 << 7)
->> +#define CMD_BYTE_XFER_SZ_MASK   0x1f
->> +#define TIS_SPI_HIGH_ADDR_BYTE  0xd4
->> +
->> +DECLARE_INSTANCE_CHECKER(TPMStateSPI, TPM_TIS_SPI, TYPE_TPM_TIS_SPI)
->> +
->> +static int tpm_tis_spi_pre_save(void *opaque)
->> +{
->> +    TPMStateSPI *spist = opaque;
->> +
->> +    return tpm_tis_pre_save(&spist->tpm_state);
->> +}
->> +
->> +static const VMStateDescription vmstate_tpm_tis_spi = {
->> +     .name = "tpm-tis-spi",
->> +     .version_id = 0,
->> +     .pre_save  = tpm_tis_spi_pre_save,
->> +     .fields = (const VMStateField[]) {
->> +         VMSTATE_BUFFER(tpm_state.buffer, TPMStateSPI),
->> +         VMSTATE_UINT16(tpm_state.rw_offset, TPMStateSPI),
->> +         VMSTATE_UINT8(tpm_state.active_locty, TPMStateSPI),
->> +         VMSTATE_UINT8(tpm_state.aborting_locty, TPMStateSPI),
->> +         VMSTATE_UINT8(tpm_state.next_locty, TPMStateSPI),
->> +
->> +         VMSTATE_STRUCT_ARRAY(tpm_state.loc, TPMStateSPI,
->> +                              TPM_TIS_NUM_LOCALITIES, 0,
->> +                              vmstate_locty, TPMLocality),
->> +
->> +         /* spi specifics */
->> +         VMSTATE_UINT8(byte_offset, TPMStateSPI),
->> +         VMSTATE_UINT8(wait_state_cnt, TPMStateSPI),
->> +         VMSTATE_UINT8(xfer_size, TPMStateSPI),
->> +         VMSTATE_UINT32(reg_addr, TPMStateSPI),
->> +         VMSTATE_UINT8(spi_state, TPMStateSPI),
->> +         VMSTATE_BOOL(command, TPMStateSPI),
->> +
->> +         VMSTATE_END_OF_LIST()
->> +     }
->> +};
->> +
->> +static inline void tpm_tis_spi_clear_data(TPMStateSPI *spist)
->> +{
->> +    spist->spi_state = SPI_STATE_IDLE;
->> +    spist->byte_offset = 0;
->> +    spist->wait_state_cnt = 0;
->> +    spist->xfer_size = 0;
->> +    spist->reg_addr = 0;
->> +
->> +    return;
->> +}
->> +
->> +/* Callback from TPM to indicate that response is copied */
->> +static void tpm_tis_spi_request_completed(TPMIf *ti, int ret)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(ti);
->> +    TPMState *s = &spist->tpm_state;
->> +
->> +    /* Inform the common code. */
->> +    tpm_tis_request_completed(s, ret);
->> +}
->> +
->> +static enum TPMVersion tpm_tis_spi_get_tpm_version(TPMIf *ti)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(ti);
->> +    TPMState *s = &spist->tpm_state;
->> +
->> +    return tpm_tis_get_tpm_version(s);
->> +}
->> +
->> +/*
->> + * TCG PC Client Platform TPM Profile Specification for TPM 2.0 ver 
->> 1.05 rev 14
->> + *
->> + * For system Software, the TPM has a 64-bit address of 
->> 0x0000_0000_FED4_xxxx.
->> + * On SPI, the chipset passes the least significant 24 bits to the 
->> TPM.
->> + * The upper bytes will be used by the chipset to select the TPM’s 
->> SPI CS#
->> + * signal. Table 9 shows the locality based on the 16 least 
->> significant address
->> + * bits and assume that either the LPC TPM sync or SPI TPM CS# is 
->> used.
->> + *
->> + */
->> +static void tpm_tis_spi_write(TPMStateSPI *spist, uint32_t addr, 
->> uint8_t val)
->> +{
->> +    TPMState *tpm_st = &spist->tpm_state;
->> +
->> +    trace_tpm_tis_spi_write(addr, val);
->> +    tpm_tis_write_data(tpm_st, addr, val, 1);
->> +}
->> +
->> +static uint8_t tpm_tis_spi_read(TPMStateSPI *spist, uint32_t addr)
->> +{
->> +    TPMState *tpm_st = &spist->tpm_state;
->> +    uint8_t data;
->> +
->> +    data = tpm_tis_read_data(tpm_st, addr, 1);
->> +    trace_tpm_tis_spi_read(addr, data);
->> +    return data;
->> +}
->> +
->> +static Property tpm_tis_spi_properties[] = {
->> +    DEFINE_PROP_TPMBE("tpmdev", TPMStateSPI, tpm_state.be_driver),
->> +    DEFINE_PROP_UINT32("irq", TPMStateSPI, tpm_state.irq_num, 0),
-> 
-> Please remove this line.
-> 
+"If a 128-bit
+version of this descriptor is submitted into an IQ that is setup to provide 
+hardware with 256-bit
+descriptors or vice-versa it will result in an invalid descriptor error.
+"
 
-done
+If DW==1, vIOMMU fetches 32 bytes per desc. In such case, if the guest
+submits 128bits desc, then the high 128bits would be non-zero if there is
+more than one desc. But if there is only one desc in the queue, then the
+high 128bits would be zero as well. While, it may be captured by the
+tail register update. Bit4 is reserved when DW==1, and guest would use
+bit4 when it only submits one desc.
 
->> +    DEFINE_PROP_END_OF_LIST(),
->> +};
->> +
->> +static void tpm_tis_spi_reset(DeviceState *dev)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(dev);
->> +    TPMState *s = &spist->tpm_state;
->> +
->> +    tpm_tis_spi_clear_data(spist);
->> +    return tpm_tis_reset(s);
->> +}
->> +
->> +static uint32_t tpm_transfer(SSIPeripheral *ss, uint32_t tx)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(ss);
->> +    uint32_t rx = 0;
->> +    uint8_t byte;       /* reversed byte value */
->> +    uint8_t offset = 0; /* offset of byte in payload */
->> +    uint8_t index;      /* index of data byte in transfer */
->> +    uint32_t tis_addr;  /* tis address including locty */
->> +
->> +    /* new transfer or not */
->> +    if (spist->command) {   /* new transfer start */
->> +        if (spist->spi_state != SPI_STATE_IDLE) {
->> +            qemu_log_mask(LOG_GUEST_ERROR, "unexpected new 
->> transfer\n");
->> +        }
->> +        spist->byte_offset = 0;
->> +        spist->wait_state_cnt = 0;
->> +    }
->> +    /*
->> +     * Explanation of wait_state:
->> +     * The original TPM model did not have wait state or "flow 
->> control" support
->> +     * built in.  If you wanted to read a TPM register through SPI 
->> you sent
->> +     * the first byte with the read/write bit and size, then three 
->> address bytes
->> +     * and any additional bytes after that were don't care bytes for 
->> reads and
->> +     * the model would begin returning byte data to the SPI reader 
->> from the
->> +     * register address provided.  In the real world this would mean 
->> that a
->> +     * TPM device had only the time between the 31st clock and the 
->> 32nd clock
->> +     * to fetch the register data that it had to provide to SPI MISO 
->> starting
->> +     * with the 32nd clock.
->> +     *
->> +     * In reality the TPM begins introducing a wait state at the 31st 
->> clock
->> +     * by holding MISO low.  This is how it controls the "flow" of 
->> the
->> +     * operation. Once the data the TPM needs to return is ready it 
->> will
->> +     * select bit 31 + (8*N) to send back a 1 which indicates that it 
->> will
->> +     * now start returning data on MISO.
->> +     *
->> +     * The same wait states are applied to writes.  In either the 
->> read or write
->> +     * case the wait state occurs between the command+address (4 
->> bytes) and the
->> +     * data (1-n bytes) sections of the SPI frame.  The code below 
->> introduces
->> +     * the support for a 32 bit wait state for P10.  All reads and 
->> writes
->> +     * through the SPI interface MUST now be aware of the need to do 
->> flow
->> +     * control in order to use the TPM via SPI.
->> +     *
->> +     * In conjunction with these changes there were changes made to 
->> the SPIM
->> +     * engine that was introduced in P10 to support the 6x op code 
->> which is
->> +     * used to receive wait state 0s on the MISO line until it sees 
->> the b'1'
->> +     * come back before continuing to read real data from the SPI 
->> device(TPM).
->> +     */
->> +
->> +    trace_tpm_tis_spi_transfer_data("Payload byte_offset", 
->> spist->byte_offset);
->> +    /* process payload data */
->> +    while (offset < 4) {
->> +        spist->command = false;
->> +        byte = (tx >> (24 - 8 * offset)) & 0xFF;
->> +        trace_tpm_tis_spi_transfer_data("Extracted byte", byte);
->> +        trace_tpm_tis_spi_transfer_data("Payload offset", offset);
->> +        switch (spist->byte_offset) {
->> +        case 0:    /* command byte */
->> +            if ((byte & CMD_BYTE_WRITE) == 0) {  /* bit-7 */
->> +                spist->spi_state = SPI_STATE_WRITE;
->> +                trace_tpm_tis_spi_transfer_event("spi write");
->> +            } else {
->> +                spist->spi_state = SPI_STATE_READ;
->> +                trace_tpm_tis_spi_transfer_event("spi read");
->> +            }
->> +            spist->xfer_size = (byte & CMD_BYTE_XFER_SZ_MASK) + 1;
->> +            trace_tpm_tis_spi_transfer_data("xfer_size", 
->> spist->xfer_size);
->> +            break;
->> +        case 1:     /* 1st address byte */
->> +            if (byte != TIS_SPI_HIGH_ADDR_BYTE) {
->> +                qemu_log_mask(LOG_GUEST_ERROR, "incorrect high 
->> address 0x%x\n",
->> +                              byte);
->> +            }
->> +            spist->reg_addr = byte << 16;
->> +            trace_tpm_tis_spi_transfer_data("first addr byte", byte);
->> +            trace_tpm_tis_spi_transfer_addr("reg_addr", 
->> spist->reg_addr);
->> +            break;
->> +        case 2:     /* 2nd address byte */
->> +            spist->reg_addr |= byte << 8;
->> +            trace_tpm_tis_spi_transfer_data("second addr byte", 
->> byte);
->> +            trace_tpm_tis_spi_transfer_addr("reg_addr", 
->> spist->reg_addr);
->> +            break;
->> +        case 3:     /* 3rd address byte */
->> +            spist->reg_addr |= byte;
->> +            trace_tpm_tis_spi_transfer_data("third addr byte", byte);
->> +            trace_tpm_tis_spi_transfer_addr("reg_addr", 
->> spist->reg_addr);
->> +            break;
->> +        default:    /* data bytes */
->> +            if (spist->wait_state_cnt < 4) {
->> +                spist->wait_state_cnt++;
->> +                if (spist->wait_state_cnt == 4) {
->> +                    trace_tpm_tis_spi_transfer_data("wait complete, 
->> count",
->> +                                                     
->> spist->wait_state_cnt);
->> +                    rx = rx | (0x01 << (24 - offset * 8));
->> +                    return rx;
->> +                } else {
->> +                    trace_tpm_tis_spi_transfer_data("in wait state, 
->> count",
->> +                                                     
->> spist->wait_state_cnt);
->> +                    rx = 0;
->> +                }
->> +            } else {
->> +                index = spist->byte_offset - 4;
->> +                trace_tpm_tis_spi_transfer_data("index", index);
->> +                trace_tpm_tis_spi_transfer_data("data byte", byte);
->> +                trace_tpm_tis_spi_transfer_addr("reg_addr", 
->> spist->reg_addr);
->> +                if (index >= spist->xfer_size) {
->> +                    /*
->> +                     * SPI SSI framework limits both rx and tx
->> +                     * to fixed 4-byte with each xfer
->> +                     */
->> +                    trace_tpm_tis_spi_transfer_event("index exceeds 
->> xfer_size");
->> +                    return rx;
->> +                }
->> +                tis_addr = spist->reg_addr + (index % 4);
->> +                if (spist->spi_state == SPI_STATE_WRITE) {
->> +                    tpm_tis_spi_write(spist, tis_addr, byte);
->> +                } else {
->> +                    byte = tpm_tis_spi_read(spist, tis_addr);
->> +                    rx = rx | (byte << (24 - offset * 8));
->> +                    trace_tpm_tis_spi_transfer_data("byte added to 
->> response",
->> +                                                     byte);
->> +                    trace_tpm_tis_spi_transfer_data("offset", 
->> offset);
->> +                }
->> +            }
->> +            break;
->> +        }
->> +        if ((spist->wait_state_cnt == 0) || (spist->wait_state_cnt == 
->> 4)) {
->> +            offset++;
->> +            spist->byte_offset++;
->> +        } else {
->> +            break;
->> +        }
->> +    }
->> +    return rx;
->> +}
->> +
->> +static int tpm_cs(SSIPeripheral *ss, bool select)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(ss);
->> +
->> +    if (select) {
->> +        spist->command = false;
->> +        spist->spi_state = SPI_STATE_IDLE;
->> +    } else {
->> +        spist->command = true;
->> +    }
->> +    return 0;
->> +}
->> +
->> +static void tpm_realize(SSIPeripheral *dev, Error **errp)
->> +{
->> +    TPMStateSPI *spist = TPM_TIS_SPI(dev);
->> +    TPMState *s = &spist->tpm_state;
->> +
->> +    if (!tpm_find()) {
->> +        error_setg(errp, "at most one TPM device is permitted");
->> +        return;
->> +    }
->> +
->> +    s->be_driver = qemu_find_tpm_be("tpm0");
->> +
->> +    if (!s->be_driver) {
->> +        error_setg(errp, "unable to find tpm backend device");
->> +        return;
->> +    }
->> +}
->> +
->> +static void tpm_tis_spi_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +    TPMIfClass *tc = TPM_IF_CLASS(klass);
->> +    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
->> +
->> +    k->transfer = tpm_transfer;
->> +    k->realize = tpm_realize;
->> +    k->set_cs = tpm_cs;
->> +    k->cs_polarity = SSI_CS_LOW;
->> +
->> +    device_class_set_legacy_reset(dc, tpm_tis_spi_reset);
->> +    device_class_set_props(dc, tpm_tis_spi_properties);
->> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->> +
->> +    dc->desc = "SPI TPM";
->> +    dc->vmsd = &vmstate_tpm_tis_spi;
->> +
->> +    tc->model = TPM_MODEL_TPM_TIS;
->> +    tc->request_completed = tpm_tis_spi_request_completed;
->> +    tc->get_version = tpm_tis_spi_get_tpm_version;
->> +}
->> +
->> +static const TypeInfo tpm_tis_spi_info = {
->> +    .name          = TYPE_TPM_TIS_SPI,
->> +    .parent        = TYPE_SSI_PERIPHERAL,
->> +    .instance_size = sizeof(TPMStateSPI),
->> +    .class_init    = tpm_tis_spi_class_init,
->> +    .interfaces    = (InterfaceInfo[]) {
->> +        { TYPE_TPM_IF },
->> +        { }
->> +    }
->> +};
->> +
->> +static void tpm_tis_spi_register_types(void)
->> +{
->> +    type_register_static(&tpm_tis_spi_info);
->> +}
->> +
->> +type_init(tpm_tis_spi_register_types)
->> diff --git a/hw/tpm/Kconfig b/hw/tpm/Kconfig
->> index a46663288c..5951c225cc 100644
->> --- a/hw/tpm/Kconfig
->> +++ b/hw/tpm/Kconfig
->> @@ -5,6 +5,12 @@ config TPM_TIS_I2C
->>       select I2C
->>       select TPM_TIS
->>   +config TPM_TIS_SPI
->> +    bool
->> +    depends on TPM
->> +    select TPM_BACKEND
->> +    select TPM_TIS
->> +
->>   config TPM_TIS_ISA
->>       bool
->>       depends on TPM && ISA_BUS
->> diff --git a/hw/tpm/meson.build b/hw/tpm/meson.build
->> index 6968e60b3f..e03cfb11b9 100644
->> --- a/hw/tpm/meson.build
->> +++ b/hw/tpm/meson.build
->> @@ -2,6 +2,7 @@ system_ss.add(when: 'CONFIG_TPM_TIS', if_true: 
->> files('tpm_tis_common.c'))
->>   system_ss.add(when: 'CONFIG_TPM_TIS_ISA', if_true: 
->> files('tpm_tis_isa.c'))
->>   system_ss.add(when: 'CONFIG_TPM_TIS_SYSBUS', if_true: 
->> files('tpm_tis_sysbus.c'))
->>   system_ss.add(when: 'CONFIG_TPM_TIS_I2C', if_true: 
->> files('tpm_tis_i2c.c'))
->> +system_ss.add(when: 'CONFIG_TPM_TIS_SPI', if_true: 
->> files('tpm_tis_spi.c'))
->>   system_ss.add(when: 'CONFIG_TPM_CRB', if_true: files('tpm_crb.c'))
->>   system_ss.add(when: 'CONFIG_TPM_TIS', if_true: files('tpm_ppi.c'))
->>   system_ss.add(when: 'CONFIG_TPM_CRB', if_true: files('tpm_ppi.c'))
->> diff --git a/hw/tpm/trace-events b/hw/tpm/trace-events
->> index fa882dfefe..0324ceb6d0 100644
->> --- a/hw/tpm/trace-events
->> +++ b/hw/tpm/trace-events
->> @@ -42,3 +42,10 @@ tpm_tis_i2c_recv(uint8_t data) "TPM I2C read: 0x%X"
->>   tpm_tis_i2c_send(uint8_t data) "TPM I2C write: 0x%X"
->>   tpm_tis_i2c_event(const char *event) "TPM I2C event: %s"
->>   tpm_tis_i2c_send_reg(const char *name, int reg) "TPM I2C write 
->> register: %s(0x%X)"
->> +
->> +# tpm_tis_spi.c
->> +tpm_tis_spi_write(uint32_t addr, uint8_t val) "TPM SPI write - 
->> addr:0x%08X 0x%02x"
->> +tpm_tis_spi_read(uint32_t addr, uint8_t val) "TPM SPI read - 
->> addr:0x%08X 0x%02x"
->> +tpm_tis_spi_transfer_event(const char *event) "TPM SPI XFER event: 
->> %s"
->> +tpm_tis_spi_transfer_data(const char *name, uint8_t val) "TPM SPI 
->> XFER: %s = 0x%02x"
->> +tpm_tis_spi_transfer_addr(const char *name, uint32_t addr) "TPM SPI 
->> XFER: %s = 0x%08x"
-> 
-> 
-> The rest looks good to me.
+If DW==0, vIOMMU fetchs 16bytes per desc. If guest submits 256bits desc,
+it would appear to be two descs from vIOMMU p.o.v. The first 128bits
+can be identified as valid except for the types that does not requires
+256bits. The higher 128bits would be subjected to the desc sanity check
+as well.
+
+Based on the above, I think you may need to add two more checks. If DW==0,
+vIOMMU should fail the inv types that requires 256bits; If DW==1, you
+should check the inv_desc->val[2] and inv_desc->val[3]. You've already
+done it in this patch.
+
+Thoughts are welcomed here.
+
+> +
+> +    domain_id = VTD_INV_DESC_PIOTLB_DID(inv_desc->val[0]);
+> +    pasid = VTD_INV_DESC_PIOTLB_PASID(inv_desc->val[0]);
+> +    switch (inv_desc->val[0] & VTD_INV_DESC_PIOTLB_G) {
+> +    case VTD_INV_DESC_PIOTLB_ALL_IN_PASID:
+> +        vtd_piotlb_pasid_invalidate(s, domain_id, pasid);
+> +        break;
+> +
+> +    case VTD_INV_DESC_PIOTLB_PSI_IN_PASID:
+> +        break;
+> +
+> +    default:
+> +        error_report_once("%s: invalid piotlb inv desc: hi=0x%"PRIx64
+> +                          ", lo=0x%"PRIx64" (type mismatch: 0x%llx)",
+> +                          __func__, inv_desc->val[1], inv_desc->val[0],
+> +                          inv_desc->val[0] & VTD_INV_DESC_IOTLB_G);
+> +        return false;
+> +    }
+> +    return true;
+> +}
+> +
+>   static bool vtd_process_inv_iec_desc(IntelIOMMUState *s,
+>                                        VTDInvDesc *inv_desc)
+>   {
+> @@ -2766,6 +2846,13 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+>           }
+>           break;
+>   
+> +    case VTD_INV_DESC_PIOTLB:
+> +        trace_vtd_inv_desc("p-iotlb", inv_desc.val[1], inv_desc.val[0]);
+> +        if (!vtd_process_piotlb_desc(s, &inv_desc)) {
+> +            return false;
+> +        }
+> +        break;
+> +
+>       case VTD_INV_DESC_WAIT:
+>           trace_vtd_inv_desc("wait", inv_desc.hi, inv_desc.lo);
+>           if (!vtd_process_wait_desc(s, &inv_desc)) {
+> @@ -2793,7 +2880,6 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+>        * iommu driver) work, just return true is enough so far.
+>        */
+>       case VTD_INV_DESC_PC:
+> -    case VTD_INV_DESC_PIOTLB:
+>           if (s->scalable_mode) {
+>               break;
+>           }
+
+-- 
+Regards,
+Yi Liu
 
