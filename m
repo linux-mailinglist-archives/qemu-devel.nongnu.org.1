@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85419BBF53
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA419BBF80
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84IF-0007iT-0x; Mon, 04 Nov 2024 16:07:23 -0500
+	id 1t84IM-0008J5-2v; Mon, 04 Nov 2024 16:07:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IA-0007O6-V0
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:19 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IF-00081w-B2
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84I9-0005NY-DB
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:18 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84ID-0005Nv-Jv
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754436;
+ s=mimecast20190719; t=1730754441;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=K1MI5dfaWHJA3BO6melGD3KT8KGOimCWraUvc5kNsY4=;
- b=SS9bXXHUm/4YhM7W7ztiYHncGSyf4XNinuMHs2NrwyLV237H1VDFNuhYLWMQf0fmJM45x0
- GTKFDZOJc39BcdIgzF7195uS/VaDNdCW82hA9r8XcmtZvR+3kxXpWBHCavW+f+zoZf1MxK
- JXywOQaPpZeW7vXomNk3g2RhwwPtb24=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vprvKklVU3XFH5cq7J6dxp5ZuQRvYtysugY4oc0x0dU=;
+ b=WEZw2/moKyF6KLHK2Z0gesoaXmU8AAchaRm/jdToLlG/WcOjNFm2DxwEVLlLla3N/C1P9W
+ qYy3zQ1PmOU94fodznNPZklseroINkKODoOOqKn6oD+PtlYWwm8R74RMjsj90Pzq1hxy8W
+ qIFzSP+BcGrkoCmVJs8KdDV+SW5weI0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-rf57GuzCN72w1tSdMy5ffQ-1; Mon, 04 Nov 2024 16:07:15 -0500
-X-MC-Unique: rf57GuzCN72w1tSdMy5ffQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d5a3afa84so2327306f8f.3
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:15 -0800 (PST)
+ us-mta-661-T20wPS8cM-uDMVXnysvk9w-1; Mon, 04 Nov 2024 16:07:19 -0500
+X-MC-Unique: T20wPS8cM-uDMVXnysvk9w-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4317391101aso30654405e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754434; x=1731359234;
+ d=1e100.net; s=20230601; t=1730754438; x=1731359238;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K1MI5dfaWHJA3BO6melGD3KT8KGOimCWraUvc5kNsY4=;
- b=YgCeYRwwit5SZalimsOy6nSewv3OsC+AQu6nG9tq4crPMIb/OlaBDZpAHINbylCIt/
- UvExkcmELpGA4H3vkJhlF/3oCUC9dvJQ+/yMFmMkbOGD+jEcF3dBLb0vW9gvHA9HN2mQ
- O6NO4iNo/bo2Pe32MdUxl3bGMvMD2KSEQfwsSibOqDO+LWK5dCaDJGwScavtWExfTFKZ
- 0NSFk50H9jbcvU9NeYMv2IpFYuO5cWtAd+ouLKu3NfI+DNjCqvOmuk/895KhJIOmNQve
- dPLUGoIxo0qj2kOiBhwJzBdPgH/UC0oiKfJ64vygJg92EHNeNlHGSXoCHYC/Ur5trakU
- +EbA==
-X-Gm-Message-State: AOJu0YzTQk64yp2yj/MmuR+ca8mJkYNGYRlxDwTYqs8w/JxdQx2+8D5x
- weR6Xkyn+s6bhwHoP1anYeD7gdKUYqDCV19M7EpA+7H4IZOq898nE+dt7r/jO4hC5kmz0CE1ltR
- D42Djq9OZUIBhJYXRGa+x4N8q5xnN9qAC16j2gyPEAG18eqmzgsTec/VbJE/aSCeSIoAdM673bq
- sxLaLRn/ALg1+M5W4OT5VDWnDq63dIhQ==
-X-Received: by 2002:a5d:5c01:0:b0:37d:461d:b1ea with SMTP id
- ffacd0b85a97d-381c7ab30b1mr11789044f8f.48.1730754433815; 
- Mon, 04 Nov 2024 13:07:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFBBv6P2WdADcM4FRlqc4uwtAXrJxj/k1/pIzNCcGxac9zjNsWn0zB/jP1y8+T5aBQlEdQoRA==
-X-Received: by 2002:a5d:5c01:0:b0:37d:461d:b1ea with SMTP id
- ffacd0b85a97d-381c7ab30b1mr11789025f8f.48.1730754433301; 
- Mon, 04 Nov 2024 13:07:13 -0800 (PST)
+ bh=vprvKklVU3XFH5cq7J6dxp5ZuQRvYtysugY4oc0x0dU=;
+ b=s+XwURI4Jew4edrUDob8ujTwKra7Ao1ywnYU267Zl6k8LuxevqEAAKKsdB7BfRTLfM
+ Hs7G5HuYJQMT039XkRldI4umbEfpsb0aIu2XFX1QMXkEGTtbFsXAiAOzmRd2IX1lviCK
+ Kl00KvWwp9o9ucEp6SxrYZLJgZQixGwIgZiN9ic2DB7FMV3AfkaJjvJx/t13dS5izM4q
+ sBe6bVxhoqAVgBqva39+a2TGNVdK9s0WhUK1EAQueadT9WkbNOF8bmncPsm9A3tv49OB
+ AaGwqcoRMvDiOyUR57eJOTTZqP9SwZQqDR39tVcnK4454lGpeAR7KLUoi8vZRhb2R9V5
+ OXvQ==
+X-Gm-Message-State: AOJu0YzK3E0ramuiwRJi2Fk74GGLMNGngv8zQaRLd3MGZGAOmHt+qQbH
+ 36Wn8OG5kaLBdbMWGBR+0S4bF9N8+AVueofHCWnKJt+9aERetERrMHFw044V6WuLArUMcyacAPt
+ +IqspjrTOSWiFf8+ZmcAdEJR3nGO8FNTEVg/h6WFyf4FiJyhXSv08pb3v5NPjCvK/lDJ2w3ybc6
+ RiSeFI7eoH3nCn+nZ4DQ+rJi+Oyulfbg==
+X-Received: by 2002:a05:600c:1c14:b0:431:57e5:b245 with SMTP id
+ 5b1f17b1804b1-4328328492amr109793445e9.23.1730754438222; 
+ Mon, 04 Nov 2024 13:07:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFFxAqhEribnYGDcnTMzrSVWxFFC4H2juyyO/DSj5olVabGJGa+Y+9TE73CsxJ5J3tyQe5Fjg==
+X-Received: by 2002:a05:600c:1c14:b0:431:57e5:b245 with SMTP id
+ 5b1f17b1804b1-4328328492amr109793105e9.23.1730754437712; 
+ Mon, 04 Nov 2024 13:07:17 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e67csm14147402f8f.75.2024.11.04.13.07.11
+ 5b1f17b1804b1-431bd8e853esm198914825e9.8.2024.11.04.13.07.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:07:12 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:07:09 -0500
+ Mon, 04 Nov 2024 13:07:17 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:07:13 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ricardo Ribalda <ribalda@chromium.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 25/65] tests/acpi: pc: allow DSDT acpi table changes
-Message-ID: <d944497b5519cdefe2d38cf68317b93e14dd388a.1730754238.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 26/65] hw/i386/acpi-build: return a non-var package from _PRT()
+Message-ID: <7916bb54319a56be5c5eca0c890a4d2aa22b9bef.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,38 +108,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-Id: <20240924132417.739809-2-ribalda@chromium.org>
+Windows XP seems to have issues when _PRT() returns a variable package.
+We know in advance the size, so we can return a fixed package instead.
+https://lore.kernel.org/qemu-devel/c82d9331-a8ce-4bb0-b51f-2ee789e27c86@ilande.co.uk/T/#m541190c942676bccf7a7f7fbcb450d94a4e2da53
 
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: 99cb2c6c7b ("hw/i386/acpi-build: Return a pre-computed _PRT table")
+Closes: https://lore.kernel.org/all/eb11c984-ebe4-4a09-9d71-1e9db7fe7e6f@ilande.co.uk/
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-Id: <20240924132417.739809-3-ribalda@chromium.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ hw/i386/acpi-build.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..6fef8e558b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,17 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/pc/DSDT",
-+"tests/data/acpi/x86/pc/DSDT.acpierst",
-+"tests/data/acpi/x86/pc/DSDT.acpihmat",
-+"tests/data/acpi/x86/pc/DSDT.bridge",
-+"tests/data/acpi/x86/pc/DSDT.cphp",
-+"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-+"tests/data/acpi/x86/pc/DSDT.hpbridge",
-+"tests/data/acpi/x86/pc/DSDT.hpbrroot",
-+"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-+"tests/data/acpi/x86/pc/DSDT.memhp",
-+"tests/data/acpi/x86/pc/DSDT.nohpet",
-+"tests/data/acpi/x86/pc/DSDT.numamem",
-+"tests/data/acpi/x86/pc/DSDT.roothp",
-+"tests/data/acpi/x86/q35/DSDT.cxl",
-+"tests/data/acpi/x86/q35/DSDT.viot",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index d01e704162..508a6094aa 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -740,7 +740,8 @@ static Aml *build_prt(bool is_pci0_prt)
+     int pin;
+ 
+     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+-    rt_pkg = aml_varpackage(nroutes);
++    assert(nroutes < 256);
++    rt_pkg = aml_package(nroutes);
+ 
+     for (pin = 0; pin < nroutes; pin++) {
+         Aml *pkg = aml_package(4);
 -- 
 MST
 
