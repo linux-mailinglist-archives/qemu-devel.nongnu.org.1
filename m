@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A96D9BB685
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 14:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110289BB688
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 14:43:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7xLS-000184-GK; Mon, 04 Nov 2024 08:42:16 -0500
+	id 1t7xLi-0001AZ-0g; Mon, 04 Nov 2024 08:42:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1t7xLB-00016Z-1A
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:57 -0500
+ id 1t7xLC-00017B-MJ
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1t7xL8-0002nK-Fj
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:56 -0500
+ id 1t7xLA-0002ns-Oj
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730727713;
+ s=mimecast20190719; t=1730727715;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XCxCbwJhT84ro2F56D8d8/42Ll9ptQpTH8wGx4HWQFQ=;
- b=TB+wsJGeB+ga1fdVoDLBHTyQ/qEne+kb0QYIl/zpr7WUEEWI+0d7DDd0aLPmDWsyVcG6lV
- ajV96MklNLGsInX0MuHXJ6xNjOBqeEpPeq/XNYkZ3D8QUcpTPRRfJlRcfAvmi4TiSzD7/z
- kdvk+rsmonm4nW+FSDtZF4bycBMDyUs=
+ bh=IPgNMdwUA++5yD6QxalWg4dt+r96xlnr7ZEePzXiCwk=;
+ b=J0KAGhEsqmcDnU53WaMGOwbFlzFc78vIrVJWxOAjvC/o3Is4XCi2jnx9+hc5mSfo/rOUgm
+ 32wbV/4Hfo7Rr7jHaJMCpa9FIi0Mz8bfhNRGTfSfsSRg4t4mmGUVpubQFGw2f6OVHNzOOq
+ Xp5v2GXmKoomIQUOISUfdwHtKZuNaZc=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-ABTYQ7DlNaqBLDdMOlJMCg-1; Mon,
- 04 Nov 2024 08:41:50 -0500
-X-MC-Unique: ABTYQ7DlNaqBLDdMOlJMCg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-SZ_qWaJlOR-ukP5RbUN8SQ-1; Mon,
+ 04 Nov 2024 08:41:52 -0500
+X-MC-Unique: SZ_qWaJlOR-ukP5RbUN8SQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 908411956096; Mon,  4 Nov 2024 13:41:49 +0000 (UTC)
+ id CFDF21955EE8; Mon,  4 Nov 2024 13:41:51 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.226.47])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EEEE21956086; Mon,  4 Nov 2024 13:41:47 +0000 (UTC)
+ id 179021956086; Mon,  4 Nov 2024 13:41:49 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 2/3] qga: fix missing static and prototypes windows warnings
-Date: Mon,  4 Nov 2024 15:41:38 +0200
-Message-ID: <20241104134139.225514-3-kkostiuk@redhat.com>
+Subject: [PULL 3/3] qemu-ga: Fix a SIGSEGV in ga_run_command() helper
+Date: Mon,  4 Nov 2024 15:41:39 +0200
+Message-ID: <20241104134139.225514-4-kkostiuk@redhat.com>
 In-Reply-To: <20241104134139.225514-1-kkostiuk@redhat.com>
 References: <20241104134139.225514-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -82,132 +82,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Sunil Nimmagadda <sunil@nimmagadda.net>
 
-Reported by clang++, but not by g++.
+qemu-ga on a NetBSD -current VM terminates with a SIGSEGV upon receiving
+'guest-set-time' command...
 
-../qga/vss-win32/provider.cpp:48:6: error: no previous prototype for function 'LockModule' [-Werror,-Wmissing-prototypes]
-   48 | void LockModule(BOOL lock)
-      |      ^
-../qga/vss-win32/provider.cpp:48:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   48 | void LockModule(BOOL lock)
-      | ^
-      | static
-../qga/vss-win32/provider.cpp:531:13: error: no previous prototype for function 'DllMain' [-Werror,-Wmissing-prototypes]
-  531 | BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved)
-      |             ^
-../qga/vss-win32/provider.cpp:531:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-  531 | BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved)
-      | ^
-      | static
+Core was generated by `qemu-ga'.
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  0x000000000cd37a40 in ga_pipe_read_str (fd=fd@entry=0xffffff922a20, str=str@entry=0xffffff922a18)
+    at ../qga/commands-posix.c:88
+88	        *str[len] = '\0';
+[Current thread is 1 (process 1112)]
+(gdb) bt
+#0  0x000000000cd37a40 in ga_pipe_read_str (fd=fd@entry=0xffffff922a20, str=str@entry=0xffffff922a18)
+    at ../qga/commands-posix.c:88
+#1  0x000000000cd37b60 in ga_run_command (argv=argv@entry=0xffffff922a90,
+    action=action@entry=0xcda34b8 "set hardware clock to system time", errp=errp@entry=0xffffff922a70, in_str=0x0)
+    at ../qga/commands-posix.c:164
+#2  0x000000000cd380c4 in qmp_guest_set_time (has_time=<optimized out>, time_ns=<optimized out>,
+    errp=errp@entry=0xffffff922ad0) at ../qga/commands-posix.c:304
+#3  0x000000000cd253d8 in qmp_marshal_guest_set_time (args=<optimized out>, ret=<optimized out>, errp=0xffffff922b48)
+    at qga/qga-qapi-commands.c:193
+#4  0x000000000cd4e71c in qmp_dispatch (cmds=cmds@entry=0xcdf5b18 <ga_commands>, request=request@entry=0xf3c711a4b000,
+    allow_oob=allow_oob@entry=false, cur_mon=cur_mon@entry=0x0) at ../qapi/qmp-dispatch.c:220
+#5  0x000000000cd36524 in process_event (opaque=0xf3c711a79000, obj=0xf3c711a4b000, err=0x0) at ../qga/main.c:677
+#6  0x000000000cd526f0 in json_message_process_token (lexer=lexer@entry=0xf3c711a79018, input=0xf3c712072480,
+    type=type@entry=JSON_RCURLY, x=28, y=1) at ../qobject/json-streamer.c:99
+#7  0x000000000cd93860 in json_lexer_feed_char (lexer=lexer@entry=0xf3c711a79018, ch=125 '}', flush=flush@entry=false)
+    at ../qobject/json-lexer.c:313
+#8  0x000000000cd93a00 in json_lexer_feed (lexer=lexer@entry=0xf3c711a79018,
+    buffer=buffer@entry=0xffffff922d10 "{\"execute\":\"guest-set-time\"}\n", size=<optimized out>)
+    at ../qobject/json-lexer.c:350
+#9  0x000000000cd5290c in json_message_parser_feed (parser=parser@entry=0xf3c711a79000,
+    buffer=buffer@entry=0xffffff922d10 "{\"execute\":\"guest-set-time\"}\n", size=<optimized out>)
+    at ../qobject/json-streamer.c:121
+#10 0x000000000cd361fc in channel_event_cb (condition=<optimized out>, data=0xf3c711a79000) at ../qga/main.c:703
+#11 0x000000000cd3710c in ga_channel_client_event (channel=<optimized out>, condition=<optimized out>, data=0xf3c711b2d300)
+    at ../qga/channel-posix.c:94
+#12 0x0000f3c7120d9bec in g_main_dispatch () from /usr/pkg/lib/libglib-2.0.so.0
+#13 0x0000f3c7120dd25c in g_main_context_iterate_unlocked.constprop () from /usr/pkg/lib/libglib-2.0.so.0
+#14 0x0000f3c7120ddbf0 in g_main_loop_run () from /usr/pkg/lib/libglib-2.0.so.0
+#15 0x000000000cda00d8 in run_agent_once (s=0xf3c711a79000) at ../qga/main.c:1522
+#16 run_agent (s=0xf3c711a79000) at ../qga/main.c:1559
+#17 main (argc=<optimized out>, argv=<optimized out>) at ../qga/main.c:1671
+(gdb)
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The commandline options used on the host machine...
+qemu-system-aarch64 \
+   -machine type=virt,pflash0=rom \
+   -m 8G \
+   -cpu host \
+   -smp 8 \
+   -accel hvf \
+   -device virtio-net-pci,netdev=unet \
+   -device virtio-blk-pci,drive=hd \
+   -drive file=netbsd.qcow2,if=none,id=hd \
+   -netdev user,id=unet,hostfwd=tcp::2223-:22 \
+   -object rng-random,filename=/dev/urandom,id=viornd0 \
+   -device virtio-rng-pci,rng=viornd0 \
+   -serial mon:stdio \
+   -display none \
+   -blockdev node-name=rom,driver=file,filename=/opt/homebrew/Cellar/qemu/9.0.2/share/qemu/edk2-aarch64-code.fd,read-only=true \
+   -chardev socket,path=/tmp/qga_netbsd.sock,server=on,wait=off,id=qga0 \
+   -device virtio-serial \
+   -device virtconsole,chardev=qga0,name=org.qemu.guest_agent.0
+
+This patch rectifies the operator precedence while assigning the NUL
+terminator.
+
+Fixes: c3f32c13a325f1ca9a0b08c19fefe9e5cc04289d
+
+Signed-off-by: Sunil Nimmagadda <sunil@nimmagadda.net>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Link: https://lore.kernel.org/r/20241031040426.772604-7-pierrick.bouvier@linaro.org
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Link: https://lore.kernel.org/r/m15xppk9qg.fsf@nimmagadda.net
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/vss-win32/install.cpp   | 6 +++++-
- qga/vss-win32/provider.cpp  | 5 ++++-
- qga/vss-win32/requester.cpp | 8 ++++----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ qga/commands-posix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index 84944133f7..5cea5bcf74 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -39,7 +39,7 @@ const GUID CLSID_WbemLocator = { 0x4590f811, 0x1d3a, 0x11d0,
- const GUID IID_IWbemLocator = { 0xdc12a687, 0x737f, 0x11cf,
-     {0x88, 0x4d, 0x00, 0xaa, 0x00, 0x4b, 0x2e, 0x24} };
- 
--void errmsg(DWORD err, const char *text)
-+static void errmsg(DWORD err, const char *text)
- {
-     /*
-      * `text' contains function call statement when errmsg is called via chk().
-@@ -242,6 +242,7 @@ out:
- }
- 
- /* Unregister this module from COM+ Applications Catalog */
-+STDAPI COMUnregister(void);
- STDAPI COMUnregister(void)
- {
-     qga_debug_begin;
-@@ -256,6 +257,7 @@ out:
- }
- 
- /* Register this module to COM+ Applications Catalog */
-+STDAPI COMRegister(void);
- STDAPI COMRegister(void)
- {
-     qga_debug_begin;
-@@ -380,11 +382,13 @@ out:
-     return hr;
- }
- 
-+STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int);
- STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int)
- {
-     COMRegister();
- }
- 
-+STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int);
- STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int)
- {
-     COMUnregister();
-diff --git a/qga/vss-win32/provider.cpp b/qga/vss-win32/provider.cpp
-index cc72e5ef1b..a102a23fbf 100644
---- a/qga/vss-win32/provider.cpp
-+++ b/qga/vss-win32/provider.cpp
-@@ -45,7 +45,7 @@ const IID IID_IVssEnumObject = { 0xAE1C7110, 0x2F60, 0x11d3,
-     {0x8A, 0x39, 0x00, 0xC0, 0x4F, 0x72, 0xD8, 0xE3} };
- 
- 
--void LockModule(BOOL lock)
-+static void LockModule(BOOL lock)
- {
-     if (lock) {
-         InterlockedIncrement(&g_nComObjsInUse);
-@@ -527,6 +527,9 @@ STDAPI DllCanUnloadNow()
-     return g_nComObjsInUse == 0 ? S_OK : S_FALSE;
- }
- 
-+EXTERN_C
-+BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved);
-+
- EXTERN_C
- BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved)
- {
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index 9884c65e70..4401d55e3a 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -254,8 +254,8 @@ out:
-     qga_debug_end;
- }
- 
--DWORD get_reg_dword_value(HKEY baseKey, LPCSTR subKey, LPCSTR valueName,
--                          DWORD defaultData)
-+static DWORD get_reg_dword_value(HKEY baseKey, LPCSTR subKey, LPCSTR valueName,
-+                                 DWORD defaultData)
- {
-     qga_debug_begin;
- 
-@@ -272,12 +272,12 @@ DWORD get_reg_dword_value(HKEY baseKey, LPCSTR subKey, LPCSTR valueName,
-     return dwordData;
- }
- 
--bool is_valid_vss_backup_type(VSS_BACKUP_TYPE vssBT)
-+static bool is_valid_vss_backup_type(VSS_BACKUP_TYPE vssBT)
- {
-     return (vssBT > VSS_BT_UNDEFINED && vssBT < VSS_BT_OTHER);
- }
- 
--VSS_BACKUP_TYPE get_vss_backup_type(
-+static VSS_BACKUP_TYPE get_vss_backup_type(
-     VSS_BACKUP_TYPE defaultVssBT = DEFAULT_VSS_BACKUP_TYPE)
- {
-     qga_debug_begin;
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 389c5eeb5d..636307bedf 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -84,7 +84,7 @@ static ssize_t ga_pipe_read_str(int fd[2], char **str)
+         *str = g_realloc(*str, len + n + 1);
+         memcpy(*str + len, buf, n);
+         len += n;
+-        *str[len] = '\0';
++        (*str)[len] = '\0';
+     }
+     close(fd[0]);
+     fd[0] = -1;
 -- 
 2.47.0
 
