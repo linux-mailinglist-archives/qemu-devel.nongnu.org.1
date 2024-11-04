@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718789BBFB8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 964DE9BBFC3
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84JN-00059i-8j; Mon, 04 Nov 2024 16:08:33 -0500
+	id 1t84Jb-00071b-7y; Mon, 04 Nov 2024 16:08:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JK-0004wh-IN
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:30 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JX-0006ri-MM
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JI-0005TI-NE
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:30 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JW-0005U0-8e
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754507;
+ s=mimecast20190719; t=1730754521;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=DreMzE5l8O9RuGS8oEwWkZEzopXOO7MX3eO79wqdwag=;
- b=aqLwKdNxosxZZGaeday49iLfAcLtOTSylZ6IeL4+RlsZg2K6xfScbCDeVKWU20Jp++CpQp
- +BjUpcIkBzo6/zLEULcFu8mexUKgLmhxBSmFxlxb5JkB7H0NLn8pc6gn37o3awkB8KowBK
- P94H3czbcDndSZbpKg0waDBS0RZstjY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2USYzZLIHQIzWKoyt995uWr9ICCZOVYtkrr3QOPenyA=;
+ b=Udf5VWHp6RIhgLWosGU1K3cVtlU/wajSN1MCY2AXzts+n/zlBkqtdiYlk6ahJTOLJbFS+R
+ m77731yWM5GYFGQLFnfkldhT8zO4tkdCTTe8ytDw6XEAPc7mRgnwkMmkWsFd3qLblIGfRy
+ KPX9/ZD0mAAzEwO+sKSWS48Tjb2Qi/g=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-1VtKnJMnPhyHCIex6-exig-1; Mon, 04 Nov 2024 16:08:26 -0500
-X-MC-Unique: 1VtKnJMnPhyHCIex6-exig-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43157cff1d1so34461725e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:26 -0800 (PST)
+ us-mta-605-QCQiwaDDPV-CbojRqd2iYg-1; Mon, 04 Nov 2024 16:08:39 -0500
+X-MC-Unique: QCQiwaDDPV-CbojRqd2iYg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-539eb3416cdso4957842e87.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754505; x=1731359305;
+ d=1e100.net; s=20230601; t=1730754517; x=1731359317;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DreMzE5l8O9RuGS8oEwWkZEzopXOO7MX3eO79wqdwag=;
- b=pfE81RWkgGdoVQElWwtLhpNssSI+MORpcw2oVCXfwCghlHsxllbj6+LsnF/ePyunMN
- 3XcN+ykkhMrj55w4mv7AbdKqHbHRca2l/kgQA8l5Dwf6BvVszHhw32zEiIP+z1PbCxHj
- nBUIG/v56A/Cb0zMWBIPu/Azk1N6jbK/IJPcQBlV3bSkb/IllnW2pXUhW4vxv1By6nNJ
- rBkjdbqpXguOFf7zbLqmcvPBxMBMp1owfr7wmnbcZpmq4sYFlwghwbXYAUpNHqIHTCjn
- PuYltrGomR6x0reMV+bRTAgX/vPGOW5DlAqBe6AUp4tDyP/gphyNbAMpexvB9/0LJ9MM
- JPTg==
-X-Gm-Message-State: AOJu0YySjxUUdDf6eqJwsci8WfRc0W3EYoK1yIJxNQdDEs6CldNl+iro
- zZMPW0BfQ+TWTzRzocltEbb6GpIkSXLiKLQePHEP1Gg8lZCV8O7LV2/Zcxr/FYbJJPMpPFSIUng
- GsFSYZ+rBJSD4xeaPVRep1DaA3X+RIe8X4EwHlNhLQhGz//JLZHoB48eRee6T2lUOfqmEB2R/pi
- 4cLUO/YyUvSKG9Uik5IZ+6xGJL5GlgsA==
-X-Received: by 2002:a05:600c:a41:b0:431:5021:32 with SMTP id
- 5b1f17b1804b1-4327b6f9564mr136272385e9.6.1730754505028; 
- Mon, 04 Nov 2024 13:08:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5BfoHcABNNuxPmbIEF3HHjRET8q5SOeMgJ7vx6hop8SHt4ixfDa7XVntgZxKzdv2OPjulPQ==
-X-Received: by 2002:a05:600c:a41:b0:431:5021:32 with SMTP id
- 5b1f17b1804b1-4327b6f9564mr136272205e9.6.1730754504579; 
- Mon, 04 Nov 2024 13:08:24 -0800 (PST)
+ bh=2USYzZLIHQIzWKoyt995uWr9ICCZOVYtkrr3QOPenyA=;
+ b=PC1Sbt47/GkZZfCLFHbcGr2vy9Cv8G/l9cz0uc315JxmObSB0bDEB2pdZcEqthljFM
+ 9aiz4nXb6Mg5xrbj9UTclArYDMreewl9PWQuU2r8uv+aCchPgc4vPFc1A0dc8URSML+/
+ 8B27IaEZQCtpVSVtaja0D1yRkdMWW4I06JslnrNW07d9u4H8PtjXHWRgn0D70IxauVLq
+ tzG7Z+SHwWleMePgoZPikXyrJ3CNxu1TGchjsFLZ8qjz/IAgEwg5NlgFlhy2IVwe6ZOq
+ 6ACe+d1AhwczxNlvZfopkvMSExd5wN0Nw1/9vcUI2lA/BqQNmOdReMjlCRHef5jzYTzH
+ 55/g==
+X-Gm-Message-State: AOJu0Yz8Hbr+BNTcm8pcQVv24N0Re9fscExwUAp85oSu8gZ2J5WPYbc3
+ ijMErQMz859yyrSFVjo+N6YW5RzeX753UYSQIGiDv5ztNgtUFJSHdsgJTtB3Ahp3jfErPZ31LGE
+ duasS/A1hZAXSmhv2aw8LqmMyeum+WpNfxn0nHqGHEyUQCrnUosk7l4cDxtVDncAlzClTkkrieY
+ XeLGNJHIzFvrFA4f1swW+NTMf73FD+aQ==
+X-Received: by 2002:a05:6512:ac5:b0:539:fda6:fa0a with SMTP id
+ 2adb3069b0e04-53b348c382bmr16259263e87.9.1730754517099; 
+ Mon, 04 Nov 2024 13:08:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHZ6ig/RTupJ5PVAb3ZQ4qG5p3//jKxQ/JhZYTkZ5CajGeMpi+3tsxQPgTzG1i4jRUCU/j+FA==
+X-Received: by 2002:a05:6512:ac5:b0:539:fda6:fa0a with SMTP id
+ 2adb3069b0e04-53b348c382bmr16259243e87.9.1730754516584; 
+ Mon, 04 Nov 2024 13:08:36 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432a26f51d4sm1020455e9.1.2024.11.04.13.08.22
+ 5b1f17b1804b1-431bd8e7f33sm194173955e9.6.2024.11.04.13.08.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:23 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:20 -0500
+ Mon, 04 Nov 2024 13:08:35 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:08:33 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Albert Esteve <aesteve@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 42/65] vhost-user: fix shared object return values
-Message-ID: <eea5aeef84e1b74f515b474d3a86377701f93750.1730754238.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL 45/65] cxl/cxl-mailbox-utils: Fix size check for
+ cmd_firmware_update_get_info
+Message-ID: <0564019bf1d9dd76ee7d212c26cf40e73eb3a00c.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,73 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Albert Esteve <aesteve@redhat.com>
+From: Fan Ni <fan.ni@samsung.com>
 
-VHOST_USER_BACKEND_SHARED_OBJECT_ADD and
-VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE state
-in the spec that they return 0 for successful
-operations, non-zero otherwise. However,
-implementation relies on the return types
-of the virtio-dmabuf library, with opposite
-semantics (true if everything is correct,
-false otherwise). Therefore, current
-implementation violates the specification.
+In the function cmd_firmware_update_get_info for handling Get FW info
+command (0x0200h), the vmem, pmem and DC capacity size check were
+incorrect. The size should be aligned to 256MiB, not smaller than
+256MiB.
 
-Revert the logic so that the implementation
-of the vhost-user handling methods matches
-the specification.
-
-Fixes: 043e127a126bb3ceb5fc753deee27d261fd0c5ce
-Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
-Message-Id: <20241022124615.585596-1-aesteve@redhat.com>
+Signed-off-by: Fan Ni <fan.ni@samsung.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20241101132005.26633-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-user.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index d1b0893b4d..f170f0b25b 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1623,9 +1623,14 @@ vhost_user_backend_handle_shared_object_add(struct vhost_dev *dev,
-     QemuUUID uuid;
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 5f63099724..8bb0d2dd29 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -649,9 +649,9 @@ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
+     } QEMU_PACKED *fw_info;
+     QEMU_BUILD_BUG_ON(sizeof(*fw_info) != 0x50);
  
-     memcpy(uuid.data, object->uuid, sizeof(object->uuid));
--    return virtio_add_vhost_device(&uuid, dev);
-+    return !virtio_add_vhost_device(&uuid, dev);
- }
- 
-+/*
-+ * Handle VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE backend requests.
-+ *
-+ * Return: 0 on success, 1 on error.
-+ */
- static int
- vhost_user_backend_handle_shared_object_remove(struct vhost_dev *dev,
-                                                VhostUserShared *object)
-@@ -1639,16 +1644,16 @@ vhost_user_backend_handle_shared_object_remove(struct vhost_dev *dev,
-         struct vhost_dev *owner = virtio_lookup_vhost_device(&uuid);
-         if (dev != owner) {
-             /* Not allowed to remove non-owned entries */
--            return 0;
-+            return 1;
-         }
-         break;
-     }
-     default:
-         /* Not allowed to remove non-owned entries */
--        return 0;
-+        return 1;
+-    if ((cxl_dstate->vmem_size < CXL_CAPACITY_MULTIPLIER) ||
+-        (cxl_dstate->pmem_size < CXL_CAPACITY_MULTIPLIER) ||
+-        (ct3d->dc.total_capacity < CXL_CAPACITY_MULTIPLIER)) {
++    if (!QEMU_IS_ALIGNED(cxl_dstate->vmem_size, CXL_CAPACITY_MULTIPLIER) ||
++        !QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER) ||
++        !QEMU_IS_ALIGNED(ct3d->dc.total_capacity, CXL_CAPACITY_MULTIPLIER)) {
+         return CXL_MBOX_INTERNAL_ERROR;
      }
  
--    return virtio_remove_resource(&uuid);
-+    return !virtio_remove_resource(&uuid);
- }
- 
- static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
 -- 
 MST
 
