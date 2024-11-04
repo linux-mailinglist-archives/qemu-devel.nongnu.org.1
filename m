@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2779BA9E4
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B859BA9FC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:30:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7ksk-00025r-8i; Sun, 03 Nov 2024 19:23:47 -0500
+	id 1t7ksv-0002Rf-66; Sun, 03 Nov 2024 19:24:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7ksG-0001gz-Cp; Sun, 03 Nov 2024 19:23:17 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1t7ksG-0001h8-J2; Sun, 03 Nov 2024 19:23:17 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7ksE-0002rg-IP; Sun, 03 Nov 2024 19:23:16 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-720d5ada03cso2294366b3a.1; 
- Sun, 03 Nov 2024 16:23:11 -0800 (PST)
+ id 1t7ksF-0002rm-5f; Sun, 03 Nov 2024 19:23:16 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20cd76c513cso27134195ad.3; 
+ Sun, 03 Nov 2024 16:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679790; x=1731284590; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679792; x=1731284592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kQvvTBs9o0+GQ/IwCIJ/WgPOMyuLV1oDDUGAzHCQ7y8=;
- b=cAHgmpgV0UsE4dmyigW8WVoLberXmD82C7wMXJmE8ZNLkABR10GW5cmSwbT/BHiTO9
- pMYA28vPIlj+3PmgPH4CGzEIr2JOIKnaA/8bTRSjtVeom3vehyEnVSLOzS0GlAyCC1Ds
- YoOYcTuRLhHFU6ytoP3iR9qtVtAGzV5Wjg8Fkg5wt0zRaMFH4JyeYwan9cVde/zOGwLW
- JIItvCvv1R8etp5Y41yGc5wumNeTiz9BGE8fWOXupmCoXwBxUYHDheyKCTEdJmSp3CES
- sXdZ7PARffl1AezKt4Zbmpg+rn6oQTcHvrMPIt+H0aFM6CIVh3dJ2jZh86Zu80dAq+ew
- ndqw==
+ bh=NeqjtniyFe+naXM0wN5zvD9S7mKNuzwkdgW2O7zUpxg=;
+ b=GSgl8X4S9O+cpNGiu4GIm9OhD2H6X8THT230gg0UfYQntNRtZlP6/KfGJO8yx1qFum
+ BF0W8KPnP9qAO2sLM8UzYQDl0XodTIC9Mtp6bdawAdlbgpJHYOQ2eMCWvFw/5CaLN04j
+ Qz26Rsrw5rshvRtBEc1Rz+T6OMArsTDbsyRfHhy/u2pNBtjXAQghBPhGEK6LFXc6u6YM
+ Z0feeCFe+gQcar5UjCBOam1Qd7/uac8YiGGmMBYKSwrSQbDMMHoiebRIYkPb659EMNld
+ SCLBESxtMY+Niz5gc8VTrqZJQEqleTkp48Q/BBzUPPyvsPDt3+2LyHnvPx95rBbWFFud
+ e1QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679790; x=1731284590;
+ d=1e100.net; s=20230601; t=1730679792; x=1731284592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kQvvTBs9o0+GQ/IwCIJ/WgPOMyuLV1oDDUGAzHCQ7y8=;
- b=kmZYJdxpXc7BMHqpcN6lJetxWge3LyUKrlSSnjk+uU/BBVDmOUZEyxW8X/te+WDjUD
- s08FLcdbBMOiZhY5a1MeoeQdp8zRJzBnRXMqo+HYMRBROk9oPDzkLvShsczls5Ihi6yS
- axf07keBoQoMKZOp3rHJ9VN/ZkCzaREMCvwF/OM2aGfbCEttNab/kjbeBKNaT9f437cg
- NWU5Bso19wpkHAK8XrQFfis0joDhsp3Em8vh6/CgoIJEZoKkXfOx50dn2mp4SEoQaLhK
- EOg26ahgREjyezOTFHy5DvrY/vRQLHaMoU2R74CM3iVh+o6R/FkGvIx2rKPuG8qe8nNj
- 1aOg==
+ bh=NeqjtniyFe+naXM0wN5zvD9S7mKNuzwkdgW2O7zUpxg=;
+ b=p2m5Q6m8I8fQGusj0JzLKLmXNxcL6FIptEpp0cvmVd5qw43/fBj/d+40sxg4NnJJn2
+ w1CJ47kpMLV+Y9vrwrrsN7mTe2IS5uSWvuZr3g+kJYRAMdMP/b0FdPJyHeSaRU53VcmV
+ iGshEaSl5mghbYEGClxnOM2wePXJRhZRqxvR2Iz5A5Ovogw1nqA/TLzC7q0ChIu+xWxx
+ ii1vERP0XVQnLjbVInpEk3+WAsLvVSk8m/m2RQDO5HS6eR+WYfrXayOBOVfzwdWPj3wa
+ i1KoqcM66WDC75jEiftmEzn6QQlCcARZmxUv0BXSGIXtC+xFM6hYZLLTMwNFksz3kiOD
+ 4eVg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXpVy4mhjOunlgm1VGGe8Ofsc9FkW0bkNJnJMhkUEMdANj5cAkLrKvOkAnAANEe+Rvc+IfL5eVQvQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yy7PHrw+IzoBHPXsWRxsGkdccBY/CAbLILpqwtaCI2HQgNeDQXM
- 56y7QTbUycCVWh7e41BQQbH04Rxs0SUancSNNlimKtENSDIXrUuYvfos8A==
-X-Google-Smtp-Source: AGHT+IGOyBcaFl4ICxeZZhHqBgL5UPV28AiP5bTcNaCZ5cYzHR37tcJpUSyai9vK8rxvMYQ2ZXRkOQ==
-X-Received: by 2002:a05:6a00:92a1:b0:71e:4414:eb21 with SMTP id
- d2e1a72fcca58-720b9db35a3mr20566009b3a.17.1730679788463; 
- Sun, 03 Nov 2024 16:23:08 -0800 (PST)
+ AJvYcCWJDbmDFxRuwh2y+ui4CcM8x5/22miBZ5kRAKPJTDHBLkRLulg1U/gbYMNHnDI1bsxORX+A7VYnIA==@nongnu.org
+X-Gm-Message-State: AOJu0YyjXtgGAVO7omOWtC9M2mS7YaYpY3bBT/ekY6QcoJ0nPu4z0Lrl
+ gO68Hyn2uF/ENRx7D/tPrBPgMoZGE7M1QAKUOHYcgpLKGBUmYnlZwUhj/w==
+X-Google-Smtp-Source: AGHT+IEtBE06YU7PZoGPaNAsB65o7X9omExtWF2/sRQQigapfkdHtn8lnVaQijgwcH3mOmG6sGKVtQ==
+X-Received: by 2002:a17:903:124d:b0:20c:b9ca:c12d with SMTP id
+ d9443c01a7336-210f76d685fmr254347285ad.38.1730679791692; 
+ Sun, 03 Nov 2024 16:23:11 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.23.05
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.23.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:23:08 -0800 (PST)
+ Sun, 03 Nov 2024 16:23:11 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Kowal <kowal@linux.ibm.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PULL 66/67] MAINTAINERS: Remove myself from XIVE
-Date: Mon,  4 Nov 2024 10:18:55 +1000
-Message-ID: <20241104001900.682660-67-npiggin@gmail.com>
+ David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 67/67] MAINTAINERS: Remove myself as reviewer
+Date: Mon,  4 Nov 2024 10:18:56 +1000
+Message-ID: <20241104001900.682660-68-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: David Gibson <david@gibson.dropbear.id.au>
 
-Working on XIVE has been one of the most complex and fascinating
-experiences for me. It's been a real journey, and now it's time for
-IBM to take over and guide its future. I'm stepping back as the
-maintainer of XIVE.
+I've now well and truly moved on from ppc and qemu maintenance.  I'm
+occupied with other things and am pretty much just ignoring mails on these
+topics I'm CCed on.  Time to remove myself.
 
-Cc: Michael Kowal <kowal@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
+I'm still listed as a reviewer for Device Tree, I'll keep this for now,
+since I do have some interest and it's lower volume.
+
+Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index baf8c9b379..840eebc944 100644
+index 840eebc944..a4ad10226f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2618,7 +2618,6 @@ F: tests/qtest/fw_cfg-test.c
- T: git https://github.com/philmd/qemu.git fw_cfg-next
- 
- XIVE
--M: Cédric Le Goater <clg@kaod.org>
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
+@@ -1471,7 +1471,6 @@ F: tests/functional/test_ppc_40p.py
+ sPAPR (pseries)
+ M: Nicholas Piggin <npiggin@gmail.com>
+ R: Daniel Henrique Barboza <danielhb413@gmail.com>
+-R: David Gibson <david@gibson.dropbear.id.au>
+ R: Harsh Prateek Bora <harshpb@linux.ibm.com>
  L: qemu-ppc@nongnu.org
  S: Odd Fixes
+@@ -1562,7 +1561,6 @@ F: tests/functional/test_ppc_amiga.py
+ 
+ Virtual Open Firmware (VOF)
+ M: Alexey Kardashevskiy <aik@ozlabs.ru>
+-R: David Gibson <david@gibson.dropbear.id.au>
+ L: qemu-ppc@nongnu.org
+ S: Odd Fixes
+ F: hw/ppc/spapr_vof*
 -- 
 2.45.2
 
