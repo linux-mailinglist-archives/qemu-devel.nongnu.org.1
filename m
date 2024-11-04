@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EB89BA9EB
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269C99BA9FB
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:29:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kry-0000M8-Nh; Sun, 03 Nov 2024 19:22:58 -0500
+	id 1t7ks2-0000hd-T6; Sun, 03 Nov 2024 19:23:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7krZ-00070C-8w; Sun, 03 Nov 2024 19:22:35 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1t7krd-00070z-5c; Sun, 03 Nov 2024 19:22:40 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7krX-0002nH-2F; Sun, 03 Nov 2024 19:22:32 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7ee020ec76dso3124786a12.3; 
- Sun, 03 Nov 2024 16:22:30 -0800 (PST)
+ id 1t7krb-0002nh-DT; Sun, 03 Nov 2024 19:22:36 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-71e7086c231so3039888b3a.0; 
+ Sun, 03 Nov 2024 16:22:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679749; x=1731284549; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679752; x=1731284552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wt9sdYER6slUStoqyOAXgzU/BryYr6CLR9YuB/Abd7M=;
- b=fOcIms3B6J85R3gfpWJMyLLitJ/55Te7f7wyytxtz2NrzstAkYx5g4M5vptMIQOIUx
- wya0hBCP/laoVAwD0D4Bbl1AGS3cqYoc6qaHs7GfB/XdAuaIQapkmTNtZvZQTpAW/Fel
- XEX+SbIXkFKLS2M6g7JKNx5LyyieXo+/ntdPvq+dEU1EJpCXQbxLEPXRtDeRz73BGLJ2
- 4K3RJQC711BvGyXrGufkuLfcLnKdZZ0AnWBO/uf15JYPLAiP28TqAx9qt+uziLtBC8Vu
- cvGcmNJrZhHoSs+HmbO4BgkZNVhdqI6KKeiE2BV+KWSq2k7LjUIfRjoFzSBRrJMkjNWI
- oX6w==
+ bh=w839eVO4scFP/y3Tya9yuKryETH0D2suBlVY2rkyxeY=;
+ b=m3yRiYyEeMT2BQVTq/FzMtxmPTDXEjUqFjThctuE3ifZ1tJ0uqkww1UQLRcPmi5Qb6
+ mEevBH8khIdMcpZvnfXq9l0Vdibkdv1Angeb8qhfRYjqx8WD3SYH0tnfebeHbYloPtRf
+ jSopovta97PysiULh4/SbGGOXKP+f34LqQfJibxKZmdJNbWQRFBFxlLn4tXVBGJaS7XW
+ cgoox+Fk6MNiUzE27VCgUwcb0Isu0KtsNHvFPBYGM8BUMWAzsY5i1bKSzIXP4e5X1KnK
+ GCgVey8V8ZSnAq/mNZdz6fWRUCCZ5Slgq6Md5+/LMXBHaPvFR5vqJBej5LfvloAZjq1Q
+ NlTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679749; x=1731284549;
+ d=1e100.net; s=20230601; t=1730679752; x=1731284552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wt9sdYER6slUStoqyOAXgzU/BryYr6CLR9YuB/Abd7M=;
- b=ONE2pg1ZxMQJ6Auzc9NCLqweu8rXIt5S8fBeSnYxABqGALANMJjH5QqJ5Y87bcLr43
- NKzqHvq2MHwA1uMYdoml3hzZWlquoVXzAP8504u/XjMLdLliarPMibceMxrHUguLwGSx
- Bj5VhwMth3pKgRQxslK7cTS6UgEu0koj6uOXZYk7OjZAarejwMJZPQ3TDDY20R/vcbjH
- z+jcY05Gwdw+rNFgnD/cOmzwBoDr0VNM61WKKuw38HswGw7HOTUG0V/5sgkUiVvtxbd4
- z/6L5YcBAmAbG7QtCHIbWSIjJloCPjZbNOy4nP0swBmsWEtYLLA60sVu3AcndvnZpNX2
- R9Tg==
+ bh=w839eVO4scFP/y3Tya9yuKryETH0D2suBlVY2rkyxeY=;
+ b=sNOzViylDnyH/kbVwMTzf2qdZUWa5fEDgaLIKjiqZW21u7yLBSEAvs4aS/qJ7RNrBm
+ NMEfX6eta+92mFAJa8DXFNPTPUUdrwBpldNZaxmgZegp568kAZVjasiLaTeSwQi29z4g
+ kcrTmLfaaFLIh4/8zLXRFL76ki8kIu5eJHKeIQosroCauXtRwVkAh7pw/4Xxpo0DT2BR
+ LRHEeIopCJMqK+8oRzj7cBjalhN8+wJKN9l8OASGCVgdeTK8u+CoUnzfkGYYF68TJGWL
+ i81RIk8t1hVCH3KNQ08oM9ecoiml5eTJ1CcgYaU5zOfv3ORTstgnAcZvfGYccxFaw9K9
+ TPtQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXEFETx8eSQBfXIC9P6KymrjzyHRU3t/WUBnvHxGYw6vgAu54eQg2Ih+jBU7dk34Tod4cyP4gXSBg==@nongnu.org
-X-Gm-Message-State: AOJu0Yy0tgsXlgbQbPkE6R5GWGnFNbaww8Qlzas9rnccC/SU605nSbrB
- 3EZYmtGCMuK8Cz6jN2BPixcaZyMPYIuSOK7mJODkQVRnLO9ibWxqSYJhdA==
-X-Google-Smtp-Source: AGHT+IF6yFW9UGSiGayhSuk4WOEDSLWB8TnTnMA5XOqJhktXAMpbbi7cYHror7armlc6hzLOMnJv8w==
-X-Received: by 2002:a05:6a20:db0a:b0:1d2:e81c:adc0 with SMTP id
- adf61e73a8af0-1d9a8506e15mr43299036637.46.1730679748992; 
- Sun, 03 Nov 2024 16:22:28 -0800 (PST)
+ AJvYcCURe2d7im9e5yHyHR/g8zOhMQDRv8GsX/TLaXbQ+QsDuciEu3P9LAG/j5HlSh6wWn5y9VD79CYsug==@nongnu.org
+X-Gm-Message-State: AOJu0YxWJwqFFb9wmQd+MbArbTfCUGqodcyzrzfCi7LCADzdIgSJpeka
+ IqXnleSugg0Vw6T6I/Se0dtOShQKTsU3Vg/tCV4Ka8vOTuMhD6ffuFgf5w==
+X-Google-Smtp-Source: AGHT+IGTtER2P8Sfc+lIUt/uBMzAd0WWFASgxaREa0wUfFNe87d3Q7umQ3mkCncEMRNHMR9X9DztjQ==
+X-Received: by 2002:a05:6a20:361f:b0:1d9:c7df:3b1d with SMTP id
+ adf61e73a8af0-1d9c7df3c73mr26347960637.12.1730679752247; 
+ Sun, 03 Nov 2024 16:22:32 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.22.25
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.22.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:22:28 -0800 (PST)
+ Sun, 03 Nov 2024 16:22:31 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Glenn Miles <milesg@linux.vnet.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 55/67] ppc/xive2: Support "Pull Thread Context to Register"
- operation
-Date: Mon,  4 Nov 2024 10:18:44 +1000
-Message-ID: <20241104001900.682660-56-npiggin@gmail.com>
+Subject: [PULL 56/67] ppc/xive2: Change context/ring specific functions to be
+ generic
+Date: Mon,  4 Nov 2024 10:18:45 +1000
+Message-ID: <20241104001900.682660-57-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,84 +95,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-Adds support for single byte read of offset 0x838 of the TIMA address
-space.  According to the XIVE2 Specification, this causes the hardware
-to atomically:
-  1. Read the number of bytes requested (lbz or lhz are supported).
-  2. Reset the valid bit of the thread context.
-  3. Return the number of bytes requested in step 1 to a register.
+Some the functions that have been created are specific to a ring or context. Some
+of these same functions are being changed to operate on any ring/context. This  will
+simplify the next patch sets that are adding additional ring/context operations.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive.c             | 15 +++++++++++++++
- include/hw/ppc/xive_regs.h |  2 ++
- 2 files changed, 17 insertions(+)
+ hw/intc/xive.c        |  6 +++---
+ hw/intc/xive2.c       | 20 ++++++++++----------
+ include/hw/ppc/xive.h |  2 +-
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 574ac685c3..774e624160 100644
+index 774e624160..84240d3c3e 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -179,6 +179,17 @@ static uint64_t xive_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-     return qw2w2;
+@@ -114,7 +114,7 @@ static void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring)
+     }
  }
  
-+static uint64_t xive_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                      hwaddr offset, unsigned size)
-+{
-+    uint8_t qw3b8_prev = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-+    uint8_t qw3b8;
-+
-+    qw3b8 = qw3b8_prev & ~TM_QW3B8_VT;
-+    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8;
-+    return qw3b8;
-+}
-+
- static void xive_tm_vt_push(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
-                             uint64_t value, unsigned size)
+-void xive_tctx_reset_os_signal(XiveTCTX *tctx)
++void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring)
  {
-@@ -527,6 +538,8 @@ static const XiveTmOp xive_tm_operations[] = {
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
-                                                      xive_tm_pull_pool_ctx },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
-+                                                     xive_tm_pull_phys_ctx },
- };
+     /*
+      * Lower the External interrupt. Used when pulling an OS
+@@ -122,7 +122,7 @@ void xive_tctx_reset_os_signal(XiveTCTX *tctx)
+      * context. It should be raised again when re-pushing the OS
+      * context.
+      */
+-    qemu_irq_lower(xive_tctx_output(tctx, TM_QW1_OS));
++    qemu_irq_lower(xive_tctx_output(tctx, ring));
+ }
  
- static const XiveTmOp xive2_tm_operations[] = {
-@@ -566,6 +579,8 @@ static const XiveTmOp xive2_tm_operations[] = {
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_OL,     1, xive2_tm_pull_os_ctx_ol,
-                                                      NULL },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
-+                                                     xive_tm_pull_phys_ctx },
- };
+ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+@@ -424,7 +424,7 @@ static uint64_t xive_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     qw1w2_new = xive_set_field32(TM_QW1W2_VO, qw1w2, 0);
+     xive_tctx_set_os_cam(tctx, qw1w2_new);
  
- static const XiveTmOp *xive_tm_find_op(XivePresenter *xptr, hwaddr offset,
-diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
-index f8f05deafd..558a5ae742 100644
---- a/include/hw/ppc/xive_regs.h
-+++ b/include/hw/ppc/xive_regs.h
-@@ -101,6 +101,7 @@
- #define   TM_QW3W2_LP           PPC_BIT32(6)
- #define   TM_QW3W2_LE           PPC_BIT32(7)
- #define   TM_QW3W2_T            PPC_BIT32(31)
-+#define   TM_QW3B8_VT           PPC_BIT8(0)
+-    xive_tctx_reset_os_signal(tctx);
++    xive_tctx_reset_signal(tctx, TM_QW1_OS);
+     return qw1w2;
+ }
+ 
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 8d3d69a0db..c5aa784fe8 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -270,13 +270,14 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
+  *     the NVP by changing the H bit while the context is enabled
+  */
+ 
+-static void xive2_tctx_save_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+-                                   uint8_t nvp_blk, uint32_t nvp_idx)
++static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
++                                uint8_t nvp_blk, uint32_t nvp_idx,
++                                uint8_t ring)
+ {
+     CPUPPCState *env = &POWERPC_CPU(tctx->cs)->env;
+     uint32_t pir = env->spr_cb[SPR_PIR].default_value;
+     Xive2Nvp nvp;
+-    uint8_t *regs = &tctx->regs[TM_QW1_OS];
++    uint8_t *regs = &tctx->regs[ring];
+ 
+     if (xive2_router_get_nvp(xrtr, nvp_blk, nvp_idx, &nvp)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVP %x/%x\n",
+@@ -321,8 +322,8 @@ static void xive2_tctx_save_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 1);
+ }
+ 
+-static void xive2_os_cam_decode(uint32_t cam, uint8_t *nvp_blk,
+-                                uint32_t *nvp_idx, bool *vo, bool *ho)
++static void xive2_cam_decode(uint32_t cam, uint8_t *nvp_blk,
++                             uint32_t *nvp_idx, bool *vo, bool *ho)
+ {
+     *nvp_blk = xive2_nvp_blk(cam);
+     *nvp_idx = xive2_nvp_idx(cam);
+@@ -330,7 +331,6 @@ static void xive2_os_cam_decode(uint32_t cam, uint8_t *nvp_blk,
+     *ho = !!(cam & TM2_QW1W2_HO);
+ }
+ 
+-
+ /*
+  * Encode the HW CAM line with 7bit or 8bit thread id. The thread id
+  * width and block id width is configurable at the IC level.
+@@ -363,7 +363,7 @@ uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     bool vo;
+     bool do_save;
+ 
+-    xive2_os_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_save);
++    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_save);
+ 
+     if (!vo) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid NVP %x/%x !?\n",
+@@ -375,10 +375,10 @@ uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2_new, 4);
+ 
+     if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
+-        xive2_tctx_save_os_ctx(xrtr, tctx, nvp_blk, nvp_idx);
++        xive2_tctx_save_ctx(xrtr, tctx, nvp_blk, nvp_idx, TM_QW1_OS);
+     }
+ 
+-    xive_tctx_reset_os_signal(tctx);
++    xive_tctx_reset_signal(tctx, TM_QW1_OS);
+     return qw1w2;
+ }
+ 
+@@ -573,7 +573,7 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     bool vo;
+     bool do_restore;
+ 
+-    xive2_os_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
++    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
+ 
+     /* First update the thead context */
+     memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2, 4);
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index 3a65c2f29a..ebee982528 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -533,7 +533,7 @@ Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
+ void xive_tctx_reset(XiveTCTX *tctx);
+ void xive_tctx_destroy(XiveTCTX *tctx);
+ void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb);
+-void xive_tctx_reset_os_signal(XiveTCTX *tctx);
++void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring);
  
  /*
-  * In addition to normal loads to "peek" and writes (only when invalid)
-@@ -128,6 +129,7 @@
- #define TM_SPC_PULL_POOL_CTX    0x828   /* Load32/Load64 Pull/Invalidate Pool */
-                                         /* context to reg                     */
- #define TM_SPC_ACK_HV_REG       0x830   /* Load16 ack HV irq to reg           */
-+#define TM_SPC_PULL_PHYS_CTX    0x838   /* Pull phys ctx to reg               */
- #define TM_SPC_PULL_USR_CTX_OL  0xc08   /* Store8 Pull/Inval usr ctx to odd   */
-                                         /* line                               */
- #define TM_SPC_ACK_OS_EL        0xc10   /* Store8 ack OS irq to even line     */
+  * KVM XIVE device helpers
 -- 
 2.45.2
 
