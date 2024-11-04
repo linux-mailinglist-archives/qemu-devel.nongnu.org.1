@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1B49BA9C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31C79BA9D3
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7koj-00078i-Lt; Sun, 03 Nov 2024 19:19:37 -0500
+	id 1t7kol-00079x-8g; Sun, 03 Nov 2024 19:19:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7koh-00078Q-Lu; Sun, 03 Nov 2024 19:19:35 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1t7koj-00079S-Nw; Sun, 03 Nov 2024 19:19:37 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kog-0002G5-78; Sun, 03 Nov 2024 19:19:35 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-72061bfec2dso3400875b3a.2; 
- Sun, 03 Nov 2024 16:19:33 -0800 (PST)
+ id 1t7koi-0002GV-7V; Sun, 03 Nov 2024 19:19:37 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-71e592d7f6eso2831456b3a.3; 
+ Sun, 03 Nov 2024 16:19:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679571; x=1731284371; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679574; x=1731284374; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YRtDdUtAOQ8hbWJDgTNy6ROc/6VA9Q2cPv4bY78jXvQ=;
- b=Y3PSFh2PLeI4YXXXfzq4y+S57WjxxAZpNneVdcBQS6UhLV9m53DmHAkPh7fhOYV0/b
- N1tHDJ8kgzdgKAiH10hTPW7FtjONfGD57ci04ezI73QAJsvpATmAAh8ZH5rikKLm0RZg
- EfimqEVh4L25zeCZMw2u0BG9v8869kx4M4RS13im+DtK6n2eLuKmPauTBADOgspYNJyx
- RX0KIo98FPTiK0kWGpLZVjfLNgDlCg+82ZSVIDV9ojrslq3HjLmcWXOReRU6A0X2DtGc
- +9K2QJXPjAXpvx5OVprKwsFOnRPHPtHQ9b/Id8BbD513gs5kk8d2uAkhOxOjXBbk+1Ux
- /7WA==
+ bh=OjJKXaqs1iegzxz1bDudDPZPn8CH5RdfS7pWj3NCT6c=;
+ b=mdwhBkTX9bdupTqil03ICE++p36e34Kxmw1X0eYY+bGSK6cQw1NTlBzWzp4JeEEW6Q
+ a/6Vf44aCVXz3PWx6f0xQYJgUH+iF+4W07IF9ne62qvh0QqBcs5sAMzcmCYBUVdGhXIF
+ SuerSkZEZzm76lSyvTisO3IuirfYkbbWSbgqZJGnQJ5Opm+DMAZrO6TV4RruUKxCSWz5
+ GWKFi9iaZ1OLFRvN6Qn4+5rDxV1R4TjqCNW8MGkdhHz43b6tutPZk6jP21nogizPAUbq
+ xi++zfY8rv6+pwceqZ1EZfqvo6vrJGXWnDi7hOcQqIFf047TkfvGr3EVAGFYqRJ9piYE
+ FYAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679571; x=1731284371;
+ d=1e100.net; s=20230601; t=1730679574; x=1731284374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YRtDdUtAOQ8hbWJDgTNy6ROc/6VA9Q2cPv4bY78jXvQ=;
- b=wgeeSZr89/gnZQc7W7LooD60vKh45wq7bMp2IVZlU79vKOF4WICX7qYAsWPnRR6hWU
- q2XQXrwpnJ+t6zo4J5kmr68a76StK5aDf6KcfdppCZ+WVLgJF4ujYU6+mKV2a2gO/oxH
- OJZLZArYQS3/Dt/6pnpdt8QvPIqFpAdqX+7LKfJ4aTzdAK4aJYy3SMO4IqqXiqKFxQjZ
- 3AxWck3XAa6/TWsYGCESzdKiJYeId+6Bji6mpMdDvZkWbbqy8IkiY7D02AXQoQIEPcj0
- /a6tGbNxXebEKUwsfVRZ9DxNrQoKb/sOgy4EcOXy1gQ4LMKVighPgCKztnJ7rIr1pRD0
- +goQ==
+ bh=OjJKXaqs1iegzxz1bDudDPZPn8CH5RdfS7pWj3NCT6c=;
+ b=P7uu7PzT5Kq6P5+Cz5wpY5/o5d4Jn4SKAKPasqGSL4B1fQC53exlGUItGSuytD0fhq
+ OQkjIdN2GS0l9jQ7MjbqATh9CCpyAHGCFQusXEDNVApIS4A2kAdG31o1Fnqlq2s0AP29
+ bn+raIdXexmtHMKwZd8y3nn+yxr3NZmkXI/JGNsE5ysMjxneSfjbBJLQJzRblu117crV
+ evjecgpK1C/MpfLuF3FsoCE8xb91wo+eWjCE2V3Ebo2Lhlb9QNxzOJYZZ5nbFFcNotwZ
+ zRvFTOKqz7QrQ2ZrY/RhHDPoRWDo+kXIt2jNvPPy5JkRKHZQANvDL6kjfCBwrmZkNGBW
+ EqVw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWcCzL5CiWjUklAnv6ywNOUCnOPZEzqx7gm05vXlvaxDbyCEePxyRRJowxuU738VtP0WpsvWFA1/g==@nongnu.org,
- AJvYcCWpopvkQiHv33O99aPZVZJtGzemXsxxd2fv8vejQRxqWwQZMM9EedkLfaFdlsu1VAlMbfDNi2S1FN4Q5U8=@nongnu.org
-X-Gm-Message-State: AOJu0YwE7XQliDhrsCVOAwvWCnyQbPESHSZEIThryqsZU2WzUd5yJ7w+
- SmXcBZ28V9BGWpRIGkPKI/6D1jIpe90QMSY/Rb5PbawujM3+7+WiukSN6w==
-X-Google-Smtp-Source: AGHT+IEYPUgF/yuVF6HC9OqFpJJti0BFo84aY+nmCP39Pt56CW1TWjaQTHKNO2JifwZ+2LNa1caG4Q==
-X-Received: by 2002:a05:6a00:4fc4:b0:720:36c5:b53b with SMTP id
- d2e1a72fcca58-720c99b5c7fmr14477718b3a.17.1730679570929; 
- Sun, 03 Nov 2024 16:19:30 -0800 (PST)
+ AJvYcCUoI1ADHwffNO2pZ+FuumlCyMz7vOlRB7UBXp4hDsAhKUMWGjDt048O8nc8yZidvZgBRXYVtQpzyA==@nongnu.org
+X-Gm-Message-State: AOJu0YzIcOR/dB3tq0Z9LXtIPQxspPKBVQW5vpPHNqgnwpfWHtvIgrGm
+ Ri0U8JTJAI8XIz6KdIsGnHmKYwyrj+PT2pR73Z85mOI3qiYrbW1n5BOPOg==
+X-Google-Smtp-Source: AGHT+IEoVzhlMMyBp9YZXRbcCvsLDWNK9jeXh/6O4VQJBpgF+hfJUUBI9y7GWCoYMVqhF9oEq7HOeA==
+X-Received: by 2002:a05:6a21:78d:b0:1d8:aca7:912 with SMTP id
+ adf61e73a8af0-1dba5409a21mr15403489637.28.1730679574367; 
+ Sun, 03 Nov 2024 16:19:34 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.27
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:19:30 -0800 (PST)
+ Sun, 03 Nov 2024 16:19:33 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/67] target/ppc: Fix mtDPDES targeting SMT siblings
-Date: Mon,  4 Nov 2024 10:17:54 +1000
-Message-ID: <20241104001900.682660-6-npiggin@gmail.com>
+Subject: [PULL 06/67] target/ppc: PMIs are level triggered
+Date: Mon,  4 Nov 2024 10:17:55 +1000
+Message-ID: <20241104001900.682660-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A typo in the loop over SMT threads to set irq level for doorbells
-when storing to DPDES meant everything was aimed at the CPU executing
-the instruction.
+In Book-S / Power processors, the performance monitor interrupts are
+driven by the MMCR0[PMAO] bit, which is level triggered and not cleared
+by the interrupt.
 
-Cc: qemu-stable@nongnu.org
-Fixes: d24e80b2ae ("target/ppc: Add msgsnd/p and DPDES SMT support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Others may have different performance monitor architecture, but none of
+those are implemented by QEMU.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/misc_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/excp_helper.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 1b83971375..f0ca80153b 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -288,7 +288,7 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
-         PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-         uint32_t thread_id = ppc_cpu_tir(ccpu);
- 
--        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-+        ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-     }
-     bql_unlock();
- }
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index f33fc36db2..701abe1b6d 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2187,7 +2187,6 @@ static void p7_deliver_interrupt(CPUPPCState *env, int interrupt)
+         powerpc_excp(cpu, POWERPC_EXCP_DECR);
+         break;
+     case PPC_INTERRUPT_PERFM:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
+         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+         break;
+     case 0:
+@@ -2250,7 +2249,6 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
+         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
+         break;
+     case PPC_INTERRUPT_PERFM:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
+         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+         break;
+     case PPC_INTERRUPT_EBB: /* EBB exception */
+@@ -2330,7 +2328,6 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
+         break;
+     case PPC_INTERRUPT_PERFM:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
+         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+         break;
+     case PPC_INTERRUPT_EBB: /* EBB exception */
+@@ -2444,7 +2441,6 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
+         break;
+     case PPC_INTERRUPT_PERFM:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
+         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+         break;
+     case PPC_INTERRUPT_THERM:  /* Thermal interrupt */
 -- 
 2.45.2
 
