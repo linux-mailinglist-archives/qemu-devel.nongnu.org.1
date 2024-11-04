@@ -2,94 +2,201 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8889BACC7
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 07:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0599BACE7
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 07:57:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7qom-0000Nh-Ho; Mon, 04 Nov 2024 01:44:04 -0500
+	id 1t7r0k-0004aY-Ls; Mon, 04 Nov 2024 01:56:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
- id 1t7qof-0000LT-Ha; Mon, 04 Nov 2024 01:43:57 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1t7r0g-0004Zp-UN
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 01:56:23 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
- id 1t7qob-0000NL-Ah; Mon, 04 Nov 2024 01:43:57 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A46BhHw017209;
- Mon, 4 Nov 2024 06:43:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=SCIjfIJbHksVe3DWp
- N2XNoTD579kqcACg34ZmkwzfSU=; b=n2UEVfmaaFw2S4JtMQWUgCL4nPDrHe1T3
- gqcxdk+VKBpdllbIffRvKZFoJwBPXYDrWtrbznQ3xByGAYwcTsjKBqfNdV1P+p1Y
- x49DJJ3Ka/IEklbkJ0D8x7+4Bsnpgefm8Q1n4XHXLe5lROrioblItJmcm/F8Txzf
- Y1criqUYHQDjZ1JEYBN6ii+o7vBTRUZgZhJHRtg6nl7g9Sp3wBesgz3iKDvgigZL
- Pcg90UeFO2ss1r7S+2Fjjm0+QkpEflwnElA1wHAo5rkraK96CABTVDPLpM/cAdv3
- t5C/ZQLW+AR4MqQbdiI3XFQP5Ib2+GMsD/jq2jJm9ydIo5fDH9MWw==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42prscg2dj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 06:43:44 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A3HUeZW032050;
- Mon, 4 Nov 2024 06:43:44 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmhmmg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 06:43:44 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A46hh8H40567156
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Nov 2024 06:43:43 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A17C5804E;
- Mon,  4 Nov 2024 06:43:43 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89FCB5803F;
- Mon,  4 Nov 2024 06:43:42 +0000 (GMT)
-Received: from gfwa829.aus.stglabs.ibm.com (unknown [9.3.84.19])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Nov 2024 06:43:42 +0000 (GMT)
-From: dan tan <dantan@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
- farosas@suse.de, lvivier@redhat.com, clg@kaod.org, dantan@linux.ibm.com
-Subject: [PATCH v5 3/3] tests/qtest/tpm: add unit test to tis-spi
-Date: Mon,  4 Nov 2024 00:43:34 -0600
-Message-Id: <20241104064334.21468-4-dantan@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241104064334.21468-1-dantan@linux.vnet.ibm.com>
-References: <20241104064334.21468-1-dantan@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I0ZQ-S7qVypR8SriIwMfLR7P3-bD-lEO
-X-Proofpoint-GUID: I0ZQ-S7qVypR8SriIwMfLR7P3-bD-lEO
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1t7r0c-0001wv-8w
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 01:56:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730703378; x=1762239378;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=puS61UENsavjj20OypV+IWu0X4IHQH8rwmgGPUYuE68=;
+ b=gcpdUgfUiv2HOEpUB096kJa55r3m0m5PMelR5SBzEosjsY3wilaZ6Sxi
+ h81MHxlvIUjkfqnwi4uX5xjtx7qXAtlkXFF9gHQtiGYYLpKq3jpVgcRBT
+ ROSWQYIHfT2RN4re0H+Z08AXHKipQh+R9wzOe67LcejO5lyqsNC0iJ45a
+ OoN+9qlNMBzpxBx5t2Gh9snT7B9Ca4DkKZ+IHavzY6MiSQDVH8vqAULqQ
+ cYnt6GNg0e/vX5En4vUGiJdvOOCggUdA6Bjl48a75pMXAnYhA8FivxUa9
+ HMTaCdoohNl15bZBXUC3efox4I13TC2witvawBg+WeC16OE78uTZUgtJM Q==;
+X-CSE-ConnectionGUID: Nqc4ZFtrTW2oETn5OoFA/A==
+X-CSE-MsgGUID: AGzkgqNHQXON77ewtChC3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="30496463"
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; d="scan'208";a="30496463"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2024 22:56:14 -0800
+X-CSE-ConnectionGUID: e5r89Y+XRtmbzAuj7riqiw==
+X-CSE-MsgGUID: GWQcSZDPT9+gQat+i30IRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; d="scan'208";a="83087413"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 03 Nov 2024 22:56:14 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sun, 3 Nov 2024 22:56:13 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sun, 3 Nov 2024 22:56:13 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.48) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sun, 3 Nov 2024 22:56:13 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TYA7SMYcd4jroEYkE7368hCO5lUUmWkk6wwoXNZcZ20FylurzRUtUiAdjnyz4Z5rJR+9TjOVi/syVaW58e7dZ3EHm+L55ahMF8F/Vjc7nZ1amDs1qhG7y5EO1I4UrVkX9qNnlMRKGYAVLxVKsn5Hs9b9IgNcYjGL0ffELzFHbYYk3JZB9ZqT9m9KYwO52wssrnQSogahc0qw5ZGCsLiTPGgHoyuOZtyJQYiEdDR65Rr3+/Pt3QS7gDcTZI4YWlOP/BJ8L6vojfJeEMn1yorEn/F0RiiTyxyJx2GgH0wpIR7I/vehIGBWcWfRqh2CzAs45Iszes1rqzoqtaax7V9HtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fvqqm3dS3FTHqhXdfItoJXtCc+qqL/O0HG+6+6hyYss=;
+ b=TN//m3JkZzH3Gt+6ZFUXchm/6RqdI++ZgCop0C/Fna3upxT9SaaE/wuO/002kNWPK3mVypFaL+DbeK+sYsjNgTZDqMBRfM0PMSicszfkiYexdrbOPWYStL5H73MIilqg4SinwRLWyX/MBxGIqQS49afVSHay/JosMUxwd5IqBRq2OfHlb8Pc4GjQEp8dZlFFtUqnbavxb88cJ4tBd5/7lBeaulI9zf2uWyb2CGySi8jOz2HzwfU3qeancC3xDYugdrp09jmVYfP/NaaCYtFzNoRiWVkQmRcd+NwFZ8Ad3Gb6BBfHaBAWQgs5sroka0UThRUzmv7WDG/aAvhX3z1c6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
+ by SN7PR11MB6875.namprd11.prod.outlook.com (2603:10b6:806:2a6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.29; Mon, 4 Nov
+ 2024 06:56:11 +0000
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a%6]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 06:56:10 +0000
+Message-ID: <ef0e97df-5b88-4329-906a-c8d0cab8bbdd@intel.com>
+Date: Mon, 4 Nov 2024 15:00:44 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 16/17] intel_iommu: Introduce a property to control
+ FS1GP cap bit setting
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>
+CC: <alex.williamson@redhat.com>, <clg@redhat.com>, <eric.auger@redhat.com>,
+ <mst@redhat.com>, <peterx@redhat.com>, <jasowang@redhat.com>,
+ <jgg@nvidia.com>, <nicolinc@nvidia.com>, <joao.m.martins@oracle.com>,
+ <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
+ <chao.p.peng@intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>
+References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
+ <20240930092631.2997543-17-zhenzhong.duan@intel.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20240930092631.2997543-17-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+X-ClientProxiedBy: SG2PR02CA0089.apcprd02.prod.outlook.com
+ (2603:1096:4:90::29) To DS0PR11MB7529.namprd11.prod.outlook.com
+ (2603:10b6:8:141::20)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 adultscore=0 malwarescore=0 clxscore=1015
- spamscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411040053
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=dantan@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|SN7PR11MB6875:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a8670d0-24e2-4508-4179-08dcfc9dc3c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RmthWVRBbHN1VFZCWTBiUTArSEpYT1JSc2RQcFdYOHpSK2JVaDNqQmZXc1c4?=
+ =?utf-8?B?V1ZzeFZUOExXSkJoMitaMEl6NkFNdXVSV1hqUWNvV1lUT0I4MUNiSENTaCsy?=
+ =?utf-8?B?YkVQdGZseEh0YmhHWk5SY3JlVkV4RmFidEdWQUVEM2NBdjVsdllndW5ieWw2?=
+ =?utf-8?B?bkxUanMxVy9SVVl1Nng2STQrdkhYMVpzR0FJU1dOSnBhS3pOcnhvWXMvVFJJ?=
+ =?utf-8?B?MGZmaGVObmgrWTdKWlRaaU13THhDeGVFd0g5ZVhWdUR6Z2ZDNmNmRWprYzdT?=
+ =?utf-8?B?Y3pJZkkwb2wyQWdQbm9zRkZCN2U4Rm82WFFVT2ZTeUFiMm92M09Wc3Y3ajR6?=
+ =?utf-8?B?MUlpNWY2ODd0QnJvdHZ4bFFwZGJUTDRkUHpEQm1yR09idnhLbHFtOTgzVml0?=
+ =?utf-8?B?bFdCdWdmY2Vyb3QwZTJ4U244N0ZINXpxQWNtN1JqL2s3cmJ0ZGM4QWpDNlVS?=
+ =?utf-8?B?L2d1VU04alhvMGcwaDgzbmV2ckhUMkV3eEVrQW9Cem1FVlJ6ODZRT05Ra1FU?=
+ =?utf-8?B?QmRFcUYyc3BnQTJjaVQ4Q2Q2TGIybUJoNklXdGpmcWFaODk5NXVBY0QxQTUy?=
+ =?utf-8?B?MkNWN2lyb3lGM3YwOXczUVlsUWU4T1o5QVlPcU0rNlBmeHpDaTVFWGdLYkht?=
+ =?utf-8?B?M1YzNWhjQUc4UGgrSi9ZN2lBZ2tLemQ4M1hFL2FtdDkzeUwwcVc5K3lvSzA4?=
+ =?utf-8?B?MHRNNGJuUTI2VTU2ZUJVK25xRmdURHA4SGdleUZ3VTM0bXNHaWJ4L245Yi9h?=
+ =?utf-8?B?UHd1M1k2SHRSNUtselVlMWlGa1VIdXpLRi9neEkraDZnTjRuZHNESk5Zbnlm?=
+ =?utf-8?B?RVZIVURuSm5GbWxSc2l4WTdTQStUcFJmZ2I4U21iY3FkaXZQNEZUTzdXaTlh?=
+ =?utf-8?B?U2loSThJZ0ExYkpkQ1cxT0orM2ttT3A5Y1JUbnRFUnVKcjJXSzZYaUwxV0VH?=
+ =?utf-8?B?YWQwdjdVNURHaGxITHBzWXdJdDlPOTlTK1RjT0lQb21CT0plT0JCREFadlhV?=
+ =?utf-8?B?Q05yTDBJNVYrZjE4OWQ0QmNwRHJtYUd5T3JmdFI1N2gzSzlEaEJVV1RqVktp?=
+ =?utf-8?B?SENJYUw4WWJWS21xanZDL1ljOVRXazIyQ2ZLQUNJa3dmcDFZaFM3Q2c0QWFO?=
+ =?utf-8?B?VmlibGZBczFid2thazBoempianIxeUZDSGRwS2c1QVFQbWRIcFAwTGUrRlRG?=
+ =?utf-8?B?L3ErSGxnUDk4aEJ3aWRGRmV1OUdkczM1M0FyOUZ4QVdYemdlWk9wdFk5SkJS?=
+ =?utf-8?B?YU1yb3RSZ0oydGEzUjVJY1lCWmM4MVFQd1dnaGI0aFhCR09Jd3VySUd2aGY5?=
+ =?utf-8?B?TTFtRlFMNDlrRWtnbm83LytLSHhMcTloT3hjbHZFYkR5NjUwYnJBMis2Zm03?=
+ =?utf-8?B?Q2lNQi9ybTNTMWF1SXplSHZ4a3haQzhLVVpoUnVwVEt0MUNibmxteVhrbFJ2?=
+ =?utf-8?B?NE0yMW1IZGd2WCtPUHY5R1VhMHBYQWt1VWgzT2pIdTdOc09GODVmUjljVlJr?=
+ =?utf-8?B?UGVRQm9UbTkzMFRnVmpqeGR6Y09HNm5QU2I3RElBRnFtanRSMXZaOHd1NmJQ?=
+ =?utf-8?B?MWZSYmVzNEZLVUM5V1dTVlJJTzdHb3Vkd0NrWHBtaGJxZERUNExsWnhlQ0Fp?=
+ =?utf-8?B?WXFFZ29IZGVPZkszbHcrQk91S2sraHVZRCtaOFVqdUQzTlJzendCU0hTR291?=
+ =?utf-8?B?eTlSR2JiR2Y0Q2JIbllxNXNCdGZ6ajVjZlZaQXpZTndFeGVPcGwwZGhJNE1L?=
+ =?utf-8?Q?gTuDMUSF2KQHv2GXuXKiZrEt9lvlYx98IQkBQWZ?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(7416014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b3NxYkl0L1hBc2lqRERPd0toeTVNNU4yVTUyR3BsblJNblBpMk92NmRsL1or?=
+ =?utf-8?B?MS9laFdvTW1iSVB1NFZubEcwYjNRNXdjazd6bzErNXJFNWVyYVFaWEk3bld2?=
+ =?utf-8?B?enVEWk5pR1lJK2x2Z0p3VS9RYTB1REt1cjUzR0xxdlRVejRGNS9LbWxQcGtM?=
+ =?utf-8?B?SWt5TEhtWFZSUndueUcxamNuMWJsNi9IUnlQRmJVd01wT3M4Q3FlSGRKaTFu?=
+ =?utf-8?B?MkVGbGR6YVVSZUNlU0FVSTdMMnFCTXM0bDljNnpTRDJBNitFV0wxVEc1UGp6?=
+ =?utf-8?B?UHJFMDVXd1JmU2VudVpCc1NoOFJuRzlNYXRqQ2phUzlxUWdER1VSZGt2U0pS?=
+ =?utf-8?B?SUZVeXlTUGVzU0plb1VsM2FOQXFidHRMTGVsTHh5Mk1FWXN5MjIySGM3RVlC?=
+ =?utf-8?B?MG5VcVlDNDFsY2p2eU15andkZjRWNmozRS9MR3cxNmdBRnhVNUtieWp1QU1y?=
+ =?utf-8?B?UldYMHpNVGw4dGppY2tpNHRXSm9HTU9VTnBFaUxoa3RrNWo2aDErZy9Qd0k5?=
+ =?utf-8?B?Q2FKb2EvTTFEdUVrSGdhUVR2OG9FL2dsRllQMndPTVQ1dEVhY2YzZXdOWE1Q?=
+ =?utf-8?B?NXFhcG9icjkxVC94M0pMN0RHV2U0TzZWRGYxTk1XMjB0c20wbHErcVUzRGhV?=
+ =?utf-8?B?ckY0M0FjRXRrWmRhcU1nSDh4RnUyelB6RXpBaEUvTnVQZEw3SEJtWVdpblFt?=
+ =?utf-8?B?NzZOQ3FxZUdMdmc0b3AzaXNyMGhwaXJjcXFjUGwzTk5kMkVzRmkxZ3U5KzlM?=
+ =?utf-8?B?UEZhMXdTYTE2UktURGdLRjNPYzY3OE9EL1ZnankrRi81Qmk5elliUnptT2ZM?=
+ =?utf-8?B?Y3FPajgzN1l5OFBVNlpLSmJ2QXJlSEVHQXpXT0YrWGZXb2pVTGhRM0dqdHBk?=
+ =?utf-8?B?MG1SWjlRWDF0MG9WMzFQNUJiWFY3WEZYZ2FoLzNveDlyMmJsZGNJUFBHYThW?=
+ =?utf-8?B?bG80V2VSczlIV0xVRzZ1VGxjZncrc095Sjloc1B2clB4b3J3NnFWNEZQNE8z?=
+ =?utf-8?B?a1ZaUVA5YnZpRml4YUV1L29HWld1UFE1eEZzeWphR1Q2b0Q0U3lxVTRyN3dO?=
+ =?utf-8?B?V1pvNE0xSVRCQzNUTzlTYTZDRlNvRkhlRlMzektTRUJGc25ld2R1ajlveHJY?=
+ =?utf-8?B?ZDVGd0h2bjZrL1BaaW9MODd4c3lnNlVQUHl0a3dFVU5CQ2I5Ymk4dHl3V0Uv?=
+ =?utf-8?B?R2NjVWpwcDBGUFhPWFFpam5UaTFqOWtYZmUwdldQeC9ILzBOa2E1akljZHBu?=
+ =?utf-8?B?TnJhWFpQUVppTFpad3hZZHFmcit2RHpxOFFHVDV2WXNYM0RLUzBCNCtqY2M3?=
+ =?utf-8?B?SVlnTmlaeU9OR3NIS1crQTRrRTkyYjNpM1V2K1hTa0grQzV1OVdyVXl4N2h1?=
+ =?utf-8?B?QkFsYUJVTGFwVkNoOEVWVnpURVpCWVYzZ2dWQVEwUHB3Q2Z1b2xrRHNFQVlE?=
+ =?utf-8?B?Q3FoYzZFWEs3dUliUEQzVmpXQjYzOHlteEpPTitCNEhobnpvdlFvdHkzdHAv?=
+ =?utf-8?B?NnVyWUpQVWZHWUFUSmJpVnU3QUczNjB3K1RmM0VuWEpZNzhMOW95ckFoeUpm?=
+ =?utf-8?B?SFRtNXp0NUJWUHQ3TDN1YkVWdFZVOXZCdncvS1ZlbitqRDFLUnE2akdWUml4?=
+ =?utf-8?B?STVTTHZTOUJwQ0NzNkczSHRiWGUwZ0JvQ1VDWWxpL2l3V2NKSExYMzJpQlU3?=
+ =?utf-8?B?Q0FjcXU0QjN3N0IwTkhXYkpzY2hkeUxpSmFjQm5yUzJoR1RsVmh5N2JSb1pP?=
+ =?utf-8?B?Y2xkTnRTc3hUWEF1YUFsc3ZLWFF1MFhHU3VnL0JVNjNqTTVORkNaSFpyc09w?=
+ =?utf-8?B?TDVpakNDZHMwVXlLQkl0dkdBM1U2NnhUdjF3K2FpcVcwRHB6bEx6SHRaN3FL?=
+ =?utf-8?B?Wk5sNFVEOG9vWnBybkJ2dnFjeTV2eGt3SEZNd2h0dVhFb3EwY3lQcTRTOERG?=
+ =?utf-8?B?NVN4dzNDai9ydVVDcWdISloxa3IzdkUwdFprVzYzSUtBRkwrZktvV3RobEts?=
+ =?utf-8?B?VEF0Nkxxc09JNFFPVVNFNFpWZnMrOEZFM0d6dFdWSlFXbXBhWjROZkFzL3Zo?=
+ =?utf-8?B?Uk1nV3dzTWpuYWRZZVo4VjR3bEpBanFRZWlpSGJ0UjczekhUTFYzcEtseTFW?=
+ =?utf-8?Q?5QdnaQz61aAieBrSO01GWmO43?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a8670d0-24e2-4508-4179-08dcfc9dc3c4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 06:56:10.7953 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lv3yBQM6oACULIjzmz/TP0/y7asRhDuMVY3dKD24V/zb0KxYFJoxj5Dz/VitRZGzKQefRy7OKZwptlR5A9B2yQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6875
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,786 +212,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add qtest cases to exercise main TPM functionality
-The TPM device emulation is provided by swtpm, which is TCG
-TPM 2.0, and TCG TPM TIS compliant. See
-https://trustedcomputinggroup.org/wp-content/uploads/TCG_PC_Client_Platform_TPM_Profile_PTP_2.0_r1.03_v22.pdf
-https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientTPMInterfaceSpecification_TIS__1-3_27_03212013.pdf
-The SPI registers are specific to the PowerNV platform
-architecture
+On 2024/9/30 17:26, Zhenzhong Duan wrote:
+> This gives user flexibility to turn off FS1GP for debug purpose.
+> 
+> It is also useful for future nesting feature. When host IOMMU doesn't
+> support FS1GP but vIOMMU does, nested page table on host side works
+> after turn FS1GP off in vIOMMU.
 
-Signed-off-by: dan tan <dantan@linux.vnet.ibm.com>
----
+s/turn/turning
 
-v3:
-- removed the function prototypes declaration
-- fixed code format to comply with convention
-- changed function names and variable names to be the same
-  as the tpm-tis-i2c test.
-- change hard coded numbers to #define's with meaningful
-  names that are identifiable with spec documentation
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 
-v4:
-- git commit amend only
+> This property has no effect when vIOMMU isn't in scalable modern
+> mode.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+> ---
+>   include/hw/i386/intel_iommu.h | 1 +
+>   hw/i386/intel_iommu.c         | 5 ++++-
+>   2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+> index 48134bda11..4d6acb2314 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -307,6 +307,7 @@ struct IntelIOMMUState {
+>       bool dma_drain;                 /* Whether DMA r/w draining enabled */
+>       bool dma_translation;           /* Whether DMA translation supported */
+>       bool pasid;                     /* Whether to support PASID */
+> +    bool fs1gp;                     /* First Stage 1-GByte Page Support */
+>   
+>       /*
+>        * Protects IOMMU states in general.  Currently it protects the
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 14578655e1..f8f196aeed 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3785,6 +3785,7 @@ static Property vtd_properties[] = {
+>       DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
+>       DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
+>       DEFINE_PROP_BOOL("dma-translation", IntelIOMMUState, dma_translation, true),
+> +    DEFINE_PROP_BOOL("fs1gp", IntelIOMMUState, fs1gp, true),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> @@ -4513,7 +4514,9 @@ static void vtd_cap_init(IntelIOMMUState *s)
+>       /* TODO: read cap/ecap from host to decide which cap to be exposed. */
+>       if (s->scalable_modern) {
+>           s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
+> -        s->cap |= VTD_CAP_FS1GP;
+> +        if (s->fs1gp) {
+> +            s->cap |= VTD_CAP_FS1GP;
+> +        }
+>       } else if (s->scalable_mode) {
+>           s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
+>       }
 
-v5:
-- modified tpm_reg_readl() by
-  - removing the special case for TPM_TIS_REG_DID_VID.
-    - however, I did not use the more efficient 32bit access due
-      to the SPI bus master implementation. The 16bit register
-      still require special treatment with the SPI RWX bits.
-  - correcting tpm_reg_readb() with uint16_t reg
-- tpm_set_verify_loc() added checking for TPM_TIS_CAPABILITIES_SUPPORTED2_0
-- test_spi_tpm_transmit_test() added
-  - TPM_TIS_STS_TPM_FAMILY2_0 check in status register
-  - TPM responses verification
-- fixed the PowerNV stdout msg from running qtest-ppc64/tpm-tis-spi-pnv-test
----
- tests/qtest/tpm-tis-spi-pnv-test.c | 713 +++++++++++++++++++++++++++++
- tests/qtest/meson.build            |   2 +
- 2 files changed, 715 insertions(+)
- create mode 100644 tests/qtest/tpm-tis-spi-pnv-test.c
-
-diff --git a/tests/qtest/tpm-tis-spi-pnv-test.c b/tests/qtest/tpm-tis-spi-pnv-test.c
-new file mode 100644
-index 0000000000..9eeeea41f7
---- /dev/null
-+++ b/tests/qtest/tpm-tis-spi-pnv-test.c
-@@ -0,0 +1,713 @@
-+/*
-+ * QTest testcase for a Nuvoton NPCT75x TPM SPI device
-+ *                      running on the PowerNV machine.
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include "qemu/osdep.h"
-+#include <glib/gstdio.h>
-+#include "libqtest-single.h"
-+#include "hw/acpi/tpm.h"
-+#include "hw/pci/pci_ids.h"
-+#include "qtest_aspeed.h"
-+#include "tpm-emu.h"
-+#include "hw/ssi/pnv_spi_regs.h"
-+#include "pnv-xscom.h"
-+
-+#define SPI_TPM_BASE            0xc0080
-+#define SPI_SHIFT_COUNTER_N1    0x30000000
-+#define SPI_SHIFT_COUNTER_N2    0x40000000
-+#define SPI_RWX_OPCODE_SHIFT    56
-+#define SPI_RWX_ADDR_SHIFT      32
-+#define SPI_CMD_DATA_SHIFT      56
-+
-+#define CFG_COUNT_COMPARE_1     0x0000000200000000
-+#define MM_REG_RDR_MATCH        0x00000000ff01ff00
-+#define SEQ_OP_REG_BASIC        0x1134416200100000
-+
-+#define TPM_TIS_8BITS_MASK      0xff
-+#define SPI_TPM_TIS_ADDR        0xd40000
-+#define SPI_EXTEND              0x03
-+#define TPM_WRITE_OP            0x0
-+#define TPM_READ_OP             0x80
-+
-+#define SHORT_MAX_RETRIES       5
-+#define LONG_MAX_RETRIES        10
-+
-+static const uint8_t TPM_CMD[12] =
-+                     "\x80\x01\x00\x00\x00\x0c\x00\x00\x01\x44\x00\x00";
-+
-+#define DPRINTF(fmt, ...) do { \
-+    if (DEBUG_TIS_TEST) { \
-+        printf(fmt, ## __VA_ARGS__); \
-+    } \
-+} while (0)
-+
-+#define DEBUG_TIS_TEST 0
-+
-+#define DPRINTF_ACCESS \
-+    DPRINTF("%s: %d: locty=%d l=%d access=0x%02x pending_request_flag=0x%x\n", \
-+            __func__, __LINE__, locty, l, access, pending_request_flag)
-+
-+#define DPRINTF_STS \
-+    DPRINTF("%s: %d: sts = 0x%08x\n", __func__, __LINE__, sts)
-+
-+static uint64_t pnv_spi_tpm_read(const PnvChip *chip, uint32_t reg)
-+{
-+    uint32_t pcba = SPI_TPM_BASE + reg;
-+
-+    return qtest_readq(global_qtest, pnv_xscom_addr(chip, pcba));
-+}
-+
-+static void pnv_spi_tpm_write(const PnvChip *chip,
-+                              uint32_t reg,
-+                              uint64_t val)
-+{
-+    uint32_t pcba = SPI_TPM_BASE + reg;
-+
-+    qtest_writeq(global_qtest, pnv_xscom_addr(chip, pcba), val);
-+}
-+
-+static void spi_op_complete(const PnvChip *chip)
-+{
-+    uint64_t cfg_reg;
-+
-+    cfg_reg = pnv_spi_tpm_read(chip, SPI_CLK_CFG_REG);
-+    g_assert_cmpuint(CFG_COUNT_COMPARE_1, ==, cfg_reg);
-+    pnv_spi_tpm_write(chip, SPI_CLK_CFG_REG, 0);
-+}
-+
-+static void spi_write_reg(const PnvChip *chip, uint64_t val)
-+{
-+    int i;
-+    uint64_t spi_sts;
-+
-+    for (i = 0; i < LONG_MAX_RETRIES; i++) {
-+        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
-+        if (GETFIELD(SPI_STS_TDR_FULL, spi_sts) == 1) {
-+            sleep(0.5);
-+        } else {
-+            break;
-+        }
-+    }
-+    /* cannot write if SPI_STS_TDR_FULL bit is still set */
-+    g_assert_cmpuint(0, ==, GETFIELD(SPI_STS_TDR_FULL, spi_sts));
-+    pnv_spi_tpm_write(chip, SPI_XMIT_DATA_REG, val);
-+
-+    for (i = 0; i < SHORT_MAX_RETRIES; i++) {
-+        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
-+        if (GETFIELD(SPI_STS_SHIFTER_FSM, spi_sts) & FSM_DONE) {
-+            break;
-+        } else {
-+            sleep(0.1);
-+        }
-+    }
-+    /* it should be done given the amount of time */
-+    g_assert_cmpuint(0, ==, GETFIELD(SPI_STS_SHIFTER_FSM, spi_sts) & FSM_DONE);
-+    spi_op_complete(chip);
-+}
-+
-+static uint64_t spi_read_reg(const PnvChip *chip)
-+{
-+    int i;
-+    uint64_t spi_sts, val = 0;
-+
-+    for (i = 0; i < LONG_MAX_RETRIES; i++) {
-+        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
-+        if (GETFIELD(SPI_STS_RDR_FULL, spi_sts) == 1) {
-+            val = pnv_spi_tpm_read(chip, SPI_RCV_DATA_REG);
-+            break;
-+        }
-+        sleep(0.5);
-+    }
-+    for (i = 0; i < SHORT_MAX_RETRIES; i++) {
-+        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
-+        if (GETFIELD(SPI_STS_RDR_FULL, spi_sts) == 1) {
-+            sleep(0.1);
-+        } else {
-+            break;
-+        }
-+    }
-+    /* SPI_STS_RDR_FULL bit should be reset after read */
-+    g_assert_cmpuint(0, ==, GETFIELD(SPI_STS_RDR_FULL, spi_sts));
-+    spi_op_complete(chip);
-+    return val;
-+}
-+
-+static void spi_access_start(const PnvChip *chip,
-+                             bool n2,
-+                             uint8_t bytes,
-+                             uint8_t tpm_op,
-+                             uint32_t tpm_reg)
-+{
-+    uint64_t cfg_reg;
-+    uint64_t reg_op;
-+    uint64_t seq_op = SEQ_OP_REG_BASIC;
-+
-+    cfg_reg = pnv_spi_tpm_read(chip, SPI_CLK_CFG_REG);
-+    if (cfg_reg != CFG_COUNT_COMPARE_1) {
-+        pnv_spi_tpm_write(chip, SPI_CLK_CFG_REG, CFG_COUNT_COMPARE_1);
-+    }
-+    /* bytes - sequencer operation register bits 24:31 */
-+    if (n2) {
-+        seq_op |= SPI_SHIFT_COUNTER_N2 | (bytes << 0x18);
-+    } else {
-+        seq_op |= SPI_SHIFT_COUNTER_N1 | (bytes << 0x18);
-+    }
-+    pnv_spi_tpm_write(chip, SPI_SEQ_OP_REG, seq_op);
-+    pnv_spi_tpm_write(chip, SPI_MM_REG, MM_REG_RDR_MATCH);
-+    pnv_spi_tpm_write(chip, SPI_CTR_CFG_REG, (uint64_t)0);
-+    reg_op = ((uint64_t)tpm_op << SPI_RWX_OPCODE_SHIFT) |
-+             ((uint64_t)tpm_reg << SPI_RWX_ADDR_SHIFT);
-+    pnv_spi_tpm_write(chip, SPI_XMIT_DATA_REG, reg_op);
-+}
-+
-+static inline void tpm_reg_writeb(const PnvChip *c,
-+                                  uint8_t locty,
-+                                  uint8_t reg,
-+                                  uint8_t val)
-+{
-+    uint32_t tpm_reg_locty = SPI_TPM_TIS_ADDR |
-+                             (locty << TPM_TIS_LOCALITY_SHIFT);
-+
-+    spi_access_start(c, false, 1, TPM_WRITE_OP, tpm_reg_locty | reg);
-+    spi_write_reg(c, (uint64_t) val << SPI_CMD_DATA_SHIFT);
-+}
-+
-+static inline uint8_t tpm_reg_readb(const PnvChip *c,
-+                                    uint8_t locty,
-+                                    uint16_t reg)
-+{
-+    uint32_t tpm_reg_locty = SPI_TPM_TIS_ADDR |
-+                             (locty << TPM_TIS_LOCALITY_SHIFT);
-+
-+    spi_access_start(c, true, 1, TPM_READ_OP, tpm_reg_locty | reg);
-+    return spi_read_reg(c);
-+}
-+
-+static inline void tpm_reg_writel(const PnvChip *c,
-+                                  uint8_t locty,
-+                                  uint16_t reg,
-+                                  uint32_t val)
-+{
-+    int i;
-+
-+    for (i = 0; i < 4; i++) {
-+        tpm_reg_writeb(c, locty, reg + i, ((val >> (8 * i)) & 0xff));
-+    }
-+}
-+
-+static inline uint32_t tpm_reg_readl(const PnvChip *c,
-+                                     uint8_t locty,
-+                                     uint16_t reg)
-+{
-+    uint32_t val = 0;
-+    int i;
-+
-+    for (i = 0; i < 4; i++) {
-+        val |= tpm_reg_readb(c, locty, reg + i) << (8 * i);
-+    }
-+    return val;
-+}
-+
-+static void tpm_set_verify_loc(const PnvChip *chip, uint8_t loc)
-+{
-+    uint8_t access;
-+    uint32_t tpm_sts, capability;
-+
-+    g_test_message("TPM locality %d tests:", loc);
-+    access = tpm_reg_readb(chip, loc, TPM_TIS_REG_ACCESS);
-+    g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+    capability = tpm_reg_readl(chip, loc, TPM_TIS_REG_INTF_CAPABILITY);
-+    g_assert_cmpint(capability, ==, TPM_TIS_CAPABILITIES_SUPPORTED2_0);
-+
-+    tpm_reg_writeb(chip, loc, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_SEIZE);
-+    tpm_reg_writeb(chip, loc, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_REQUEST_USE);
-+
-+    access = tpm_reg_readb(chip, loc, TPM_TIS_REG_ACCESS);
-+    g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+    g_test_message("\tACCESS REG = 0x%x checked", access);
-+
-+    /* test tpm status register */
-+    tpm_sts = tpm_reg_readl(chip, loc, TPM_TIS_REG_STS);
-+    g_assert_cmpuint((tpm_sts & TPM_TIS_8BITS_MASK), ==, 0);
-+    g_test_message("\tTPM STATUS: 0x%x, verified", tpm_sts);
-+
-+    /* release access */
-+    tpm_reg_writeb(chip, loc, TPM_TIS_REG_ACCESS,
-+                   TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+    access = tpm_reg_readb(chip, loc, TPM_TIS_REG_ACCESS);
-+    g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+    g_test_message("\tRELEASED ACCESS: 0x%x, checked", access);
-+}
-+
-+static void test_spi_tpm_locality(const void *data)
-+{
-+    const PnvChip *chip = &pnv_chips[3];
-+    uint8_t locality;
-+
-+    /* Locality 4 has special security restrictions, testing 0-3 */
-+    for (locality = 0; locality < TPM_TIS_NUM_LOCALITIES - 1; locality++) {
-+        tpm_set_verify_loc(chip, locality);
-+    }
-+}
-+
-+static void test_spi_tpm_basic(const void *data)
-+{
-+    const PnvChip *chip = &pnv_chips[3];
-+    uint32_t didvid, tpm_sts, en_int;
-+    uint8_t access;
-+
-+    g_test_message("TPM TIS SPI interface basic tests:");
-+    /* vendor ID and device ID ... check against the known value*/
-+    didvid = tpm_reg_readl(chip, 0, TPM_TIS_REG_DID_VID);
-+    g_assert_cmpint(didvid, ==, (1 << 16) | PCI_VENDOR_ID_IBM);
-+    g_test_message("\tDID_VID = 0x%x, verified", didvid);
-+
-+    /* access register, default see TCG TIS Spec (v1.3) table-14 */
-+    access = tpm_reg_readb(chip, 0, TPM_TIS_REG_ACCESS);
-+    g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+    g_test_message("\tACCESS REG = 0x%x, checked", access);
-+
-+    /* interrupt enable register, default see TCG TIS Spec (v1.3) table-19 */
-+    en_int = tpm_reg_readl(chip, 0, TPM_TIS_REG_INT_ENABLE);
-+    g_assert_cmpuint(en_int, ==, TPM_TIS_INT_POLARITY_LOW_LEVEL);
-+    g_test_message("\tINT ENABLE REG: 0x%x, verified", en_int);
-+
-+    /* status register, default see TCG TIS Spec (v1.3) table-15 */
-+    tpm_sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+    /* for no active locality */
-+    g_assert_cmpuint(tpm_sts, ==, 0xffffffff);
-+    g_test_message("\tTPM STATUS: 0x%x, verified", tpm_sts);
-+}
-+
-+/*
-+ * Test case for seizing access by a higher number locality
-+ */
-+static void test_spi_tpm_access_seize_test(const void *data)
-+{
-+    const PnvChip *chip = &pnv_chips[3];
-+    int locty, l;
-+    uint8_t access;
-+    uint8_t pending_request_flag;
-+
-+    g_test_message("TPM TIS SPI access seize tests:");
-+    /* do not test locality 4 (hw only) */
-+    for (locty = 0; locty < TPM_TIS_NUM_LOCALITIES - 1; locty++) {
-+        pending_request_flag = 0;
-+
-+        access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+        g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                    TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+        /* request use of locality */
-+        tpm_reg_writeb(chip, locty, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_REQUEST_USE);
-+
-+        access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+        g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                    TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                    TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+        /* lower localities cannot seize access */
-+        for (l = 0; l < locty; l++) {
-+            /* lower locality is not active */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* try to request use from 'l' */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_REQUEST_USE);
-+
-+            /*
-+             * requesting use from 'l' was not possible;
-+             * we must see REQUEST_USE and possibly PENDING_REQUEST
-+             */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_REQUEST_USE |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /*
-+             * locality 'locty' must be unchanged;
-+             * we must see PENDING_REQUEST
-+             */
-+            access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        TPM_TIS_ACCESS_PENDING_REQUEST |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* try to seize from 'l' */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_SEIZE);
-+            /* seize from 'l' was not possible */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_REQUEST_USE |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* locality 'locty' must be unchanged */
-+            access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        TPM_TIS_ACCESS_PENDING_REQUEST |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /*
-+             * on the next loop we will have a PENDING_REQUEST flag
-+             * set for locality 'l'
-+             */
-+            pending_request_flag = TPM_TIS_ACCESS_PENDING_REQUEST;
-+        }
-+
-+        /*
-+         * higher localities can 'seize' access but not 'request use';
-+         * note: this will activate first l+1, then l+2 etc.
-+         */
-+        for (l = locty + 1; l < TPM_TIS_NUM_LOCALITIES - 1; l++) {
-+            /* try to 'request use' from 'l' */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_REQUEST_USE);
-+
-+            /*
-+             * requesting use from 'l' was not possible; we should see
-+             * REQUEST_USE and may see PENDING_REQUEST
-+             */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_REQUEST_USE |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /*
-+             * locality 'l-1' must be unchanged; we should always
-+             * see PENDING_REQUEST from 'l' requesting access
-+             */
-+            access = tpm_reg_readb(chip, l - 1, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        TPM_TIS_ACCESS_PENDING_REQUEST |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* try to seize from 'l' */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_SEIZE);
-+
-+            /* seize from 'l' was possible */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* l - 1 should show that it has BEEN_SEIZED */
-+            access = tpm_reg_readb(chip, l - 1, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_BEEN_SEIZED |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* clear the BEEN_SEIZED flag and make sure it's gone */
-+            tpm_reg_writeb(chip, l - 1, TPM_TIS_REG_ACCESS,
-+                                        TPM_TIS_ACCESS_BEEN_SEIZED);
-+
-+            access = tpm_reg_readb(chip, l - 1, TPM_TIS_REG_ACCESS);
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+        }
-+
-+        /*
-+         * PENDING_REQUEST will not be set if locty = 0 since all localities
-+         * were active; in case of locty = 1, locality 0 will be active
-+         * but no PENDING_REQUEST anywhere
-+         */
-+        if (locty <= 1) {
-+            pending_request_flag = 0;
-+        }
-+
-+        /* release access from l - 1; this activates locty - 1 */
-+        l--;
-+
-+        access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+        DPRINTF_ACCESS;
-+
-+        DPRINTF("%s: %d: relinquishing control on l = %d\n",
-+                __func__, __LINE__, l);
-+        tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+
-+        access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+        DPRINTF_ACCESS;
-+        g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                    pending_request_flag |
-+                                    TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+        for (l = locty - 1; l >= 0; l--) {
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+            /* release this locality */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+
-+            if (l == 1) {
-+                pending_request_flag = 0;
-+            }
-+        }
-+
-+        /* no locality may be active now */
-+        for (l = 0; l < TPM_TIS_NUM_LOCALITIES - 1; l++) {
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+        }
-+        g_test_message("\tTPM locality %d seize tests: passed", locty);
-+    }
-+}
-+
-+/*
-+ * Test case for getting access when higher number locality relinquishes access
-+ */
-+static void test_spi_tpm_access_release_test(const void *data)
-+{
-+    const PnvChip *chip = &pnv_chips[3];
-+    int locty, l;
-+    uint8_t access;
-+    uint8_t pending_request_flag;
-+
-+    g_test_message("TPM TIS SPI access release tests:");
-+    /* do not test locality 4 (hw only) */
-+    for (locty = TPM_TIS_NUM_LOCALITIES - 2; locty >= 0; locty--) {
-+        pending_request_flag = 0;
-+
-+        access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+        g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                    TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+        /* request use of locality */
-+        tpm_reg_writeb(chip, locty, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_REQUEST_USE);
-+        access = tpm_reg_readb(chip, locty, TPM_TIS_REG_ACCESS);
-+        g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                    TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                    TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+        /* request use of all other localities */
-+        for (l = 0; l < TPM_TIS_NUM_LOCALITIES - 1; l++) {
-+            if (l == locty) {
-+                continue;
-+            }
-+            /*
-+             * request use of locality 'l' -- we MUST see REQUEST USE and
-+             * may see PENDING_REQUEST
-+             */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_REQUEST_USE);
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_REQUEST_USE |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+            pending_request_flag = TPM_TIS_ACCESS_PENDING_REQUEST;
-+        }
-+        /* release locality 'locty' */
-+        tpm_reg_writeb(chip, locty, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+        /*
-+         * highest locality should now be active; release it and make sure the
-+         * next highest locality is active afterwards
-+         */
-+        for (l = TPM_TIS_NUM_LOCALITIES - 2; l >= 0; l--) {
-+            if (l == locty) {
-+                continue;
-+            }
-+            /* 'l' should be active now */
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+            /* 'l' relinquishes access */
-+            tpm_reg_writeb(chip, l, TPM_TIS_REG_ACCESS,
-+                                    TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+            access = tpm_reg_readb(chip, l, TPM_TIS_REG_ACCESS);
-+            DPRINTF_ACCESS;
-+            if (l == 1 || (locty <= 1 && l == 2)) {
-+                pending_request_flag = 0;
-+            }
-+            g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                        pending_request_flag |
-+                                        TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+        }
-+        g_test_message("\tTPM locality %d seize tests: passed", locty);
-+    }
-+}
-+
-+/*
-+ * Test case for transmitting packets
-+ */
-+static void test_spi_tpm_transmit_test(const void *data)
-+{
-+    const struct TPMTestState *s = data;
-+    const PnvChip *chip = &pnv_chips[3];
-+    uint16_t bcount;
-+    uint8_t access;
-+    uint32_t sts;
-+    int i;
-+
-+    g_test_message("TPM TIS SPI transmit tests:");
-+    /* request use of locality 0 */
-+    tpm_reg_writeb(chip, 0, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_REQUEST_USE);
-+    access = tpm_reg_readb(chip, 0, TPM_TIS_REG_ACCESS);
-+    g_assert_cmpint(access, ==, TPM_TIS_ACCESS_TPM_REG_VALID_STS |
-+                                TPM_TIS_ACCESS_ACTIVE_LOCALITY |
-+                                TPM_TIS_ACCESS_TPM_ESTABLISHMENT);
-+
-+    sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+    DPRINTF_STS;
-+
-+    g_assert_cmpint(sts & 0xff, ==, 0);
-+    g_assert_cmpint(sts & TPM_TIS_STS_TPM_FAMILY_MASK, ==,
-+                    TPM_TIS_STS_TPM_FAMILY2_0);
-+
-+    bcount = (sts >> 8) & 0xffff;
-+    g_test_message("\t\tbcount: %x, sts: %x", bcount, sts);
-+    g_assert_cmpint(bcount, >=, 128);
-+
-+    tpm_reg_writel(chip, 0, TPM_TIS_REG_STS, TPM_TIS_STS_COMMAND_READY);
-+    sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+    DPRINTF_STS;
-+    g_assert_cmpint(sts & 0xff, ==, TPM_TIS_STS_COMMAND_READY);
-+
-+    /* transmit command */
-+    for (i = 0; i < sizeof(TPM_CMD); i++) {
-+        tpm_reg_writeb(chip, 0, TPM_TIS_REG_DATA_FIFO, TPM_CMD[i]);
-+        sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+        DPRINTF_STS;
-+        if (i < sizeof(TPM_CMD) - 1) {
-+            g_assert_cmpint(sts & 0xff, ==, TPM_TIS_STS_EXPECT |
-+                                            TPM_TIS_STS_VALID);
-+        } else {
-+            g_assert_cmpint(sts & 0xff, ==, TPM_TIS_STS_VALID);
-+        }
-+        /* since STS is read byte-by-byte bcount will be constant 0xff */
-+        g_assert_cmpint((sts >> 8) & 0xffff, ==, 0xff);
-+    }
-+    g_test_message("\ttransmit tests, check TPM_TIS_STS_EXPECT");
-+
-+    /* start processing */
-+    tpm_reg_writel(chip, 0, TPM_TIS_REG_STS, TPM_TIS_STS_TPM_GO);
-+
-+    uint64_t end_time = g_get_monotonic_time() + 50 * G_TIME_SPAN_SECOND;
-+    do {
-+        sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+        if ((sts & TPM_TIS_STS_DATA_AVAILABLE) != 0) {
-+            break;
-+        }
-+    } while (g_get_monotonic_time() < end_time);
-+
-+    sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+    DPRINTF_STS;
-+    g_assert_cmpint(sts & 0xff, == , TPM_TIS_STS_VALID |
-+                                     TPM_TIS_STS_DATA_AVAILABLE);
-+    /* TCG TIS Spec (v1.3) table-15 */
-+    g_test_message("\ttransmit tests, check tpmGo (w) & dataAvail (r)");
-+    bcount = (sts >> 8) & 0xffff;
-+
-+    /* read response */
-+    uint8_t tpm_msg[sizeof(struct tpm_hdr)];
-+    g_assert_cmpint(sizeof(tpm_msg), ==, bcount);
-+
-+    for (i = 0; i < sizeof(tpm_msg); i++) {
-+        tpm_msg[i] = tpm_reg_readb(chip, 0, TPM_TIS_REG_DATA_FIFO);
-+        sts = tpm_reg_readl(chip, 0, TPM_TIS_REG_STS);
-+        DPRINTF_STS;
-+        if (sts & TPM_TIS_STS_DATA_AVAILABLE) {
-+            g_assert_cmpint((sts >> 8) & 0xffff, ==, --bcount);
-+        }
-+    }
-+    g_assert_cmpmem(tpm_msg, sizeof(tpm_msg), s->tpm_msg, sizeof(*s->tpm_msg));
-+
-+    g_test_message("\treceive tests, passed");
-+    /* relinquish use of locality 0 */
-+    tpm_reg_writeb(chip, 0, TPM_TIS_REG_ACCESS, TPM_TIS_ACCESS_ACTIVE_LOCALITY);
-+    access = tpm_reg_readb(chip, 0, TPM_TIS_REG_ACCESS);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    char *args;
-+    GThread *thread;
-+    TPMTestState test;
-+    g_autofree char *tmp_path = g_dir_make_tmp("qemu-tpm-tis-spi-test.XXXXXX",
-+                                                NULL);
-+
-+    module_call_init(MODULE_INIT_QOM);
-+    g_test_init(&argc, &argv, NULL);
-+
-+    test.addr = g_new0(SocketAddress, 1);
-+    test.addr->type = SOCKET_ADDRESS_TYPE_UNIX;
-+    test.addr->u.q_unix.path = g_build_filename(tmp_path, "sock", NULL);
-+    g_mutex_init(&test.data_mutex);
-+    g_cond_init(&test.data_cond);
-+    test.data_cond_signal = false;
-+    test.tpm_version = TPM_VERSION_2_0;
-+
-+    thread = g_thread_new(NULL, tpm_emu_ctrl_thread, &test);
-+    tpm_emu_test_wait_cond(&test);
-+
-+    args = g_strdup_printf("-m 2G -machine powernv10 -smp 2,cores=2,"
-+                      "threads=1 -accel tcg,thread=single -nographic "
-+                      "-serial null -chardev socket,id=chrtpm,path=%s "
-+                      "-tpmdev emulator,id=tpm0,chardev=chrtpm "
-+                      "-device tpm-tis-spi,tpmdev=tpm0,bus=pnv-spi-bus.4",
-+                      test.addr->u.q_unix.path);
-+    qtest_start(args);
-+    qtest_add_data_func("pnv-xscom/tpm-tis-spi/basic_test",
-+                        &test, test_spi_tpm_basic);
-+    qtest_add_data_func("pnv-xscom/tpm-tis-spi/locality_test",
-+                        &test, test_spi_tpm_locality);
-+    qtest_add_data_func("pnv-xscom/tpm-tis-spi/access_seize_test",
-+                        &test, test_spi_tpm_access_seize_test);
-+    qtest_add_data_func("pnv-xscom/tpm-tis-spi/access_release_test",
-+                        &test, test_spi_tpm_access_release_test);
-+    qtest_add_data_func("pnv-xscom/tpm-tis-spi/data_transmit_test",
-+                        &test, test_spi_tpm_transmit_test);
-+    ret = g_test_run();
-+
-+    qtest_end();
-+    g_thread_join(thread);
-+    g_unlink(test.addr->u.q_unix.path);
-+    qapi_free_SocketAddress(test.addr);
-+    g_rmdir(tmp_path);
-+    g_free(args);
-+    return ret;
-+}
-+
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index e8be8b3942..74aa9f57e0 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -177,6 +177,7 @@ qtests_ppc64 = \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['device-plug-test'] : []) +               \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-xscom-test'] : []) +                 \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-spi-seeprom-test'] : []) +           \
-+  (config_all_devices.has_key('CONFIG_POWERNV') ? ['tpm-tis-spi-pnv-test'] : []) +           \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-host-i2c-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['numa-test'] : []) +                      \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['rtas-test'] : []) +                      \
-@@ -348,6 +349,7 @@ qtests = {
-   'tpm-tis-i2c-test': [io, tpmemu_files, 'qtest_aspeed.c'],
-   'tpm-tis-device-swtpm-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-   'tpm-tis-device-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-+  'tpm-tis-spi-pnv-test': [io, tpmemu_files],
-   'virtio-net-failover': files('migration-helpers.c'),
-   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
-   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
 -- 
-2.39.5
-
+Regards,
+Yi Liu
 
