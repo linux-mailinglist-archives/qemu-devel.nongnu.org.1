@@ -2,104 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122299BB967
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 16:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E208E9BB99B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 16:58:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7zOB-0002hj-FO; Mon, 04 Nov 2024 10:53:11 -0500
+	id 1t7zTT-0004Qm-1h; Mon, 04 Nov 2024 10:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1t7zO7-0002g5-7L
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:53:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1t7zO3-00065h-PK
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:53:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730735582;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7mUA65axYf94RHzQ+FsEaE5eP349wKq6vreKY/gkmjE=;
- b=X+Agbtwxe6HdQ8bJHrhPQNtQBmnyHpe39qSdwqZ1Hhv3yZOuVFGS5vj6WQgdl+MFLhWWI5
- y9qR61t91H47Mw2xU1kNEppUauWXpO504lT1LfRzh53WLdZRHAX72zpA7Zjolp7lpTBVSi
- YPMRlOaNiOwbZAGs/eGElcHB6Hcj8Yw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-287-ASk_Tt4GNlaiYJ9IN22ofw-1; Mon, 04 Nov 2024 10:52:59 -0500
-X-MC-Unique: ASk_Tt4GNlaiYJ9IN22ofw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-431673032e6so26534425e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 07:52:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t7zTQ-0004Qb-8x
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:58:36 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t7zTO-0006aX-NV
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:58:36 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5cece886771so3016544a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 07:58:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730735911; x=1731340711; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dYpTSTmX67UUQek/Oo9IY+adan9AthKuCbiNaoIy8Ko=;
+ b=AlsI60v+tVI4zPknu5RJJ6Xg3KQLflCuzTf73GNvIl4rDIP+kkt9VglCTgapK8igF+
+ N6GAwH/sn19T3ZFTKCgkpkZHw4sDOVR8z+4+LzO1JigPX9hJnjR+iyqkgDAJ7kOWYk2g
+ op9RpiQeT8VHE65PttYNZZHtd/9OebZpnw25oDnTuBfnxfyoogJwSDp5/Odb+8Z2aayQ
+ vTKHjREBxdeFrbcvfNwzGnqGY1IKunprbUbIelWmWFo4vB0nWn0BwJP4ff91iDIymiO5
+ frz84ZTGV3+grSO2nZ1hoESL4C/BvCoPa0qdcd4iZY/TluzxUy8Y8J6N2ybv1ZKJhPB2
+ cxYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730735578; x=1731340378;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1730735911; x=1731340711;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7mUA65axYf94RHzQ+FsEaE5eP349wKq6vreKY/gkmjE=;
- b=kb7qe7RD9/xcvEkOUiLQwJk5JquS4mLwmUotFhxkPTvCFC6ciU1bKVLEmK19tydMnR
- QdCw1MF2H4xlZg6ZD8FoVsOAto2UkS8a7RN6bhGgerNhjZflaB+lmCbp4mqSeV4Kv2Sh
- e9xYy6avPeJBVwJvtrdQqhz/AlF3hregW/9F2pehVe034xCdvAoGxbHGKAmrT0mFWjT2
- zdNtFDP+CxdmZhe9Pi/EEPHLhz9hDnrBeHP0r774AuUrmazDTJqpYQavDwWxgsYOqgIe
- EFz58+5QZ31JJefkcT4jeT06KbmnveEF4uNDNBjFVYiQEeDph//RrxiEtF7mNWowE9eF
- F4Ow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvs/MH8O6jfHCNSauXloQik6p7tW4S1KJHt0y5JBeGdBJvqwTKLqzpdC+81+k0cGUPlWHgW84dsW+2@nongnu.org
-X-Gm-Message-State: AOJu0YwqqgW64U5i7sAM8V1/GNya3CxRLNTRH9ywq99BCDCne55HaDOG
- +F+pyZCsuRliIl/nPmELePM4OKTR+Aho3q5L7FvBHiAuPuncOS4Ed+wRb/3lPuyLenFYF/94UcC
- zQ6fPyyRAvsKXooqWcqJrqpN7PJJEoj4Xvr026S6PN7geVVI5fUF+
-X-Received: by 2002:a05:600c:a01:b0:42c:ba83:3f01 with SMTP id
- 5b1f17b1804b1-431bb984e8cmr179170755e9.8.1730735577940; 
- Mon, 04 Nov 2024 07:52:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHM/sgFkPsRHyrJgwZBk+yGqKXTJjw6x9koC6zrD0mNzXVobnNx8Sxn9ebXaRxRRr6GdAwKOw==
-X-Received: by 2002:a05:600c:a01:b0:42c:ba83:3f01 with SMTP id
- 5b1f17b1804b1-431bb984e8cmr179170445e9.8.1730735577520; 
- Mon, 04 Nov 2024 07:52:57 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d698144sm162050515e9.39.2024.11.04.07.52.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Nov 2024 07:52:56 -0800 (PST)
-Message-ID: <0007b45a-0278-4dad-8b8f-a65bd0506dc2@redhat.com>
-Date: Mon, 4 Nov 2024 16:52:53 +0100
+ bh=dYpTSTmX67UUQek/Oo9IY+adan9AthKuCbiNaoIy8Ko=;
+ b=paTWEs0esS366YZ1IdxIJGMIzH83UOwboLqgVvpAo+snUoxgxFmP3zOHZ6rFzRfULw
+ Ap4z0hk6iZax2CyMrjZx+yPaD2mzOa4kz166V766uefk9f8Z9OyhU474NGv+qGBTPdod
+ fjv1tZaoF0Nf6Re4u0ovRvas9UaEw9twJKn0+NHOoC7prENvI4v3Zc0hrs/NnuPga9MU
+ 2QgyJyOFsh7cDNk3ujWjz9jX2NpKKm5xyRGrTCoxg570ax7QfiJEFHCd4UgES1uKT8Lw
+ kr9X0IngafSwD53ExlMpxBgXBRRqgRSpgzO84NkAENA1z37MJGPqMy9iYT/oDRoM/+54
+ RC7A==
+X-Gm-Message-State: AOJu0YwWO1/zzkj2zBLGwxFhO6Znl6rcCOCr0z37FrD/BfOnmYmW7PuT
+ bd0vE0KslEbHL9o1YHSgw2HHhMyEnzCj9rw5doFFTiJ+tESg47QchkWBbk8qiEJLwvm7PzzMsH4
+ gAsvbmyA8a2k+wvsrepsdqglYAEKgItNQjs/xLQ==
+X-Google-Smtp-Source: AGHT+IE6ADf4qVUnF8VoRbeUZzr30kX3CSIZzaR9lsTqfaKSdIgpgnOOhVoh/yUdzSj1lISgC/9jcaVYAvtNSvamO0U=
+X-Received: by 2002:aa7:d490:0:b0:5c5:c2a7:d535 with SMTP id
+ 4fb4d7f45d1cf-5ceabf49e20mr12718651a12.16.1730735911124; Mon, 04 Nov 2024
+ 07:58:31 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 00/21] kvm/arm: Introduce a customizable aarch64 KVM host
- model
-Content-Language: en-US
-To: Kashyap Chamarthy <kchamart@redhat.com>
-Cc: eric.auger.pro@gmail.com, cohuck@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
- richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
- oliver.upton@linux.dev, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
- shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
- pbonzini@redhat.com
-References: <20241025101959.601048-1-eric.auger@redhat.com>
- <ZxuwZw2plMI6dNyE@pinwheel>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <ZxuwZw2plMI6dNyE@pinwheel>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
+ <20241031040426.772604-13-pierrick.bouvier@linaro.org>
+In-Reply-To: <20241031040426.772604-13-pierrick.bouvier@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 4 Nov 2024 15:58:19 +0000
+Message-ID: <CAFEAcA_gNGb4yHvCQf9fOi0gkxn=whVWK8_ztqDBzQ8RcJ-5UA@mail.gmail.com>
+Subject: Re: [PATCH 12/12] docs: add information on how to setup build
+ environments
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, Alexandre Iooss <erdnaxe@crans.org>, 
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,102 +94,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Kashyap,
-On 10/25/24 16:51, Kashyap Chamarthy wrote:
-> On Fri, Oct 25, 2024 at 12:17:19PM +0200, Eric Auger wrote:
+On Thu, 31 Oct 2024 at 04:07, Pierrick Bouvier
+<pierrick.bouvier@linaro.org> wrote:
 >
-> Hi Eric,
+> MacOS and Linux are straightforward, but Windows needs a bit more
+> details.
 >
-> I'm new to Arm, so please bear with my questions :)
->
->> This RFC series introduces a KVM host "custom" model.
-> (a) On terminology: as we know, in the x86 world, QEMU uses these
->     terms[1]:
->
->     - Host passthrough
->     - Named CPU models
->     - Then there's the libvirt abstraction, "host-model", that aims to
->       provide the best of 'host-passthrough' + named CPU models.
->
->     Now I see the term "host 'custom' model" here.  Most
->     management-layer tools and libvirt users are familiar with the
->     classic terms "host-model" or "custom".  If we now say "host
->     'custom' model", it can create confusion.  I hope we can settle on
->     one of the existing terms, or create a new term if need be.
->
->     (I'll share one more thought on how layers above libvirt tend to use
->     the term "custom", as a reply to patch 21/21, "arm/cpu-features:
->     Document custom vcpu model".)
-agreed, as replied earlier, custom terminology most probably will be
-dropped.
->
-> (b) The current CPU features doc[2] for Arm doesn't mention "host
->     passthrough" at all.  It is only implied by the last part of this
->     paragraph, from the section titled "A note about CPU models and
->     KVM"[3]:
->
->       "Named CPU models generally do not work with KVM. There are a few
->       cases that do work [...] but mostly if KVM is enabled the 'host'
->       CPU type must be used."
-indeed
->
->     Related: in your reply[4] to Dan in this series, you write: "Having
->     named models is the next thing".  So named CPU models will be a
->     thing in Arm, too?  Then the above statement in the Arm
->     'cpu-features' will need updating :-)
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Yes named models implementing a baseline are the end goal.
->
-> [...]
->
->> - the QEMU layer does not take care of IDREG field value consistency.
->>   The kernel neither. I imagine this could be the role of the upper
->>   layer to implement a vcpu profile that makes sure settings are
->>   consistent. Here we come to "named" models. What should they look
->>   like on ARM?
-> Are there reasons why they can't be similar to how x86 reports in
-> `qemu-system-x86 -cpu help`?  
->
-> E.g. If it's an NVIDIA "Grace A02" (Neoverse-V2) host, it can report:
->
->     [gracehopper] $> qemu-kvm -cpu help
->     Available CPUs:
->       gracehopper-neoverse-v2
->       cortex-a57 (deprecated)
->       host
->       max
->
-> Or whatever is the preferred nomenclature for ARM.  It also gives users
-> of both x86 and ARM deployments a consistent expectation.  
->
-> Currently on a "Grace A02" ("Neoverse-V2") machine, it reports:
->
->     [gracehopper] $> qemu-kvm -cpu help
->     Available CPUs:
->       cortex-a57 (deprecated)
->       host
->       max
->
-> I see it's because there are no named models yet on ARM :-)
-yes this is definitively because on ARM there is no such named KVM model
-besides cortex-a57 on aarch64.
-on x86 does it return the closest named model?
+We have documentation on the wiki currently about how to
+build on various platforms:
 
-Thanks
+https://wiki.qemu.org/Hosts/Linux
+https://wiki.qemu.org/Hosts/Mac
+https://wiki.qemu.org/Hosts/W32
 
-Eric
->
-> [...]
->
-> [1] https://www.qemu.org/docs/master/system/i386/cpu.html
-> [2] https://www.qemu.org/docs/master/system/arm/cpu-features.html
-> [3] https://www.qemu.org/docs/master/system/arm/cpu-features.html#a-note-about-cpu-models-and-kvm
-> [4] https://lists.nongnu.org/archive/html/qemu-arm/2024-10/msg00891.html
->
->
+I agree that we ought to move this into the main documentation.
+Some of the information in those wiki pages is probably
+out of date, but some of it looks like useful extra detail
+that we could incorporate here.
 
+> ---
+>  docs/about/build-platforms.rst |   4 +-
+>  docs/devel/build-system.rst    | 100 +++++++++++++++++++++++++++++++++
+
+I don't think this is the best place to put this information.
+"How do I build from source?" is a question that most beginning
+developers and some end users will have. The information in
+build-system.rst is mostly about the internals of our
+build system and how to modify it, which is a more niche topic.
+
+I would be inclined to put this in a new file, maybe even
+in docs/about/ rather than docs/devel.
+
+thanks
+-- PMM
 
