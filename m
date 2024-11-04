@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964DE9BBFC3
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 220329BBFBF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:12:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Jb-00071b-7y; Mon, 04 Nov 2024 16:08:47 -0500
+	id 1t84Jp-0007le-7y; Mon, 04 Nov 2024 16:09:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JX-0006ri-MM
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:43 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jj-0007cd-Qv
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JW-0005U0-8e
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:43 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ji-0005VR-3h
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754521;
+ s=mimecast20190719; t=1730754533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2USYzZLIHQIzWKoyt995uWr9ICCZOVYtkrr3QOPenyA=;
- b=Udf5VWHp6RIhgLWosGU1K3cVtlU/wajSN1MCY2AXzts+n/zlBkqtdiYlk6ahJTOLJbFS+R
- m77731yWM5GYFGQLFnfkldhT8zO4tkdCTTe8ytDw6XEAPc7mRgnwkMmkWsFd3qLblIGfRy
- KPX9/ZD0mAAzEwO+sKSWS48Tjb2Qi/g=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=usD4x4c8Ymugs9Gl4cc3YR1/YhQZPAPXFQu0stQIFOc=;
+ b=NY2NVe501OmYhowq9c9voZ2rJIBRoYQcJSwak2Tzi8R1KzIbNkPe25x5jbA9EJrIullMyD
+ qoGRoFQXpOH3kLvKreJzrXlZBqGL4lWF5fkYAXx/RxCbrN+QTDS2Ku7FjD4hpynYYXySLR
+ W+8HYGecQf2mXijcR2DRq7lQM3BC01Q=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-QCQiwaDDPV-CbojRqd2iYg-1; Mon, 04 Nov 2024 16:08:39 -0500
-X-MC-Unique: QCQiwaDDPV-CbojRqd2iYg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-539eb3416cdso4957842e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:38 -0800 (PST)
+ us-mta-73-haK3J3zLNgWxeYIltyGe3A-1; Mon, 04 Nov 2024 16:08:51 -0500
+X-MC-Unique: haK3J3zLNgWxeYIltyGe3A-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d4d51b4efso2041267f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754517; x=1731359317;
+ d=1e100.net; s=20230601; t=1730754528; x=1731359328;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2USYzZLIHQIzWKoyt995uWr9ICCZOVYtkrr3QOPenyA=;
- b=PC1Sbt47/GkZZfCLFHbcGr2vy9Cv8G/l9cz0uc315JxmObSB0bDEB2pdZcEqthljFM
- 9aiz4nXb6Mg5xrbj9UTclArYDMreewl9PWQuU2r8uv+aCchPgc4vPFc1A0dc8URSML+/
- 8B27IaEZQCtpVSVtaja0D1yRkdMWW4I06JslnrNW07d9u4H8PtjXHWRgn0D70IxauVLq
- tzG7Z+SHwWleMePgoZPikXyrJ3CNxu1TGchjsFLZ8qjz/IAgEwg5NlgFlhy2IVwe6ZOq
- 6ACe+d1AhwczxNlvZfopkvMSExd5wN0Nw1/9vcUI2lA/BqQNmOdReMjlCRHef5jzYTzH
- 55/g==
-X-Gm-Message-State: AOJu0Yz8Hbr+BNTcm8pcQVv24N0Re9fscExwUAp85oSu8gZ2J5WPYbc3
- ijMErQMz859yyrSFVjo+N6YW5RzeX753UYSQIGiDv5ztNgtUFJSHdsgJTtB3Ahp3jfErPZ31LGE
- duasS/A1hZAXSmhv2aw8LqmMyeum+WpNfxn0nHqGHEyUQCrnUosk7l4cDxtVDncAlzClTkkrieY
- XeLGNJHIzFvrFA4f1swW+NTMf73FD+aQ==
-X-Received: by 2002:a05:6512:ac5:b0:539:fda6:fa0a with SMTP id
- 2adb3069b0e04-53b348c382bmr16259263e87.9.1730754517099; 
- Mon, 04 Nov 2024 13:08:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZ6ig/RTupJ5PVAb3ZQ4qG5p3//jKxQ/JhZYTkZ5CajGeMpi+3tsxQPgTzG1i4jRUCU/j+FA==
-X-Received: by 2002:a05:6512:ac5:b0:539:fda6:fa0a with SMTP id
- 2adb3069b0e04-53b348c382bmr16259243e87.9.1730754516584; 
- Mon, 04 Nov 2024 13:08:36 -0800 (PST)
+ bh=usD4x4c8Ymugs9Gl4cc3YR1/YhQZPAPXFQu0stQIFOc=;
+ b=qfevMahLRI4uLyZjmnY1sMgXI39PRq6t0NKUA2H5Ru7oY8ae9SoLnNd0MYcUYyXjp3
+ m52VKGdQ3BxNh2Kj9/6HbGuqK15aGXbCI7KVDrqk8zWpXMqmRbpwH3k/Tj0JX/6LirTy
+ PYQIK3NGZ5jinQ15vRiU2b7JgoKBaUTyH8TBfucbYqF4f2hHYzEqvIE/PDzqA/ry+Hko
+ lHFEBf0HKl3ENGOB3VHo79eaZMHlKHKXpy0oXQFkWcrzLfE5ntGJ6qql3Y2Zvf7TVkIE
+ GugdE5JzW2a5F7Wr8rIUpduj02gaHerXS7qbsWeb8EO3ohxmxuVz5YvguPKC/WFsKgZQ
+ HKGg==
+X-Gm-Message-State: AOJu0Yzock4tr2M3yhQrx+JOu1jBmMhpWNXlCmfcOrxvlAAhIJg605oD
+ k1t5iGOKPDhQMR/VM0krJ82dJC1XkOo4/6DOxKEduM1ty2X1mvAephljnJ0/FXs2lMnGdbHCfvN
+ YM3VP2fFXawJMsi0CZ+NG23GtTfrD0+423s4T9kKo9bdq2nE/xqnccAF/Ndu/++X4cvGsIXLmPi
+ cvbuWt55PDZ29T6BGt9xBjvMhK7MPnuw==
+X-Received: by 2002:adf:a29b:0:b0:37d:3f5c:5a83 with SMTP id
+ ffacd0b85a97d-38061128754mr23470787f8f.19.1730754527746; 
+ Mon, 04 Nov 2024 13:08:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGk1F4+4O1FfYKhwBdGgRrar/XWF8+yHFwFWAvh6G0j2HzLPX/vlkVqf2kCsUhD7dRTBNjQ4g==
+X-Received: by 2002:adf:a29b:0:b0:37d:3f5c:5a83 with SMTP id
+ ffacd0b85a97d-38061128754mr23470769f8f.19.1730754527297; 
+ Mon, 04 Nov 2024 13:08:47 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd8e7f33sm194173955e9.6.2024.11.04.13.08.34
+ ffacd0b85a97d-381c113e528sm14260739f8f.78.2024.11.04.13.08.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:35 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:33 -0500
+ Mon, 04 Nov 2024 13:08:47 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:08:44 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 45/65] cxl/cxl-mailbox-utils: Fix size check for
- cmd_firmware_update_get_info
-Message-ID: <0564019bf1d9dd76ee7d212c26cf40e73eb3a00c.1730754238.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 48/65] hw/cxl: Check input includes at least the header in
+ cmd_features_set_feature()
+Message-ID: <91a743bd021a262af61c79cc35f0b634b2fcf3ad.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,40 +101,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-In the function cmd_firmware_update_get_info for handling Get FW info
-command (0x0200h), the vmem, pmem and DC capacity size check were
-incorrect. The size should be aligned to 256MiB, not smaller than
-256MiB.
+A buggy guest might write an insufficiently large message.
+Check the header is present. Whilst zero data after the header is very
+odd it will just result in failure to copy any data.
 
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101132005.26633-2-Jonathan.Cameron@huawei.com>
+Message-Id: <20241101133917.27634-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 5f63099724..8bb0d2dd29 100644
+index 17924410dd..e63140aefe 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -649,9 +649,9 @@ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
-     } QEMU_PACKED *fw_info;
-     QEMU_BUILD_BUG_ON(sizeof(*fw_info) != 0x50);
+@@ -1238,6 +1238,9 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+     CXLType3Dev *ct3d;
+     uint16_t count;
  
--    if ((cxl_dstate->vmem_size < CXL_CAPACITY_MULTIPLIER) ||
--        (cxl_dstate->pmem_size < CXL_CAPACITY_MULTIPLIER) ||
--        (ct3d->dc.total_capacity < CXL_CAPACITY_MULTIPLIER)) {
-+    if (!QEMU_IS_ALIGNED(cxl_dstate->vmem_size, CXL_CAPACITY_MULTIPLIER) ||
-+        !QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER) ||
-+        !QEMU_IS_ALIGNED(ct3d->dc.total_capacity, CXL_CAPACITY_MULTIPLIER)) {
-         return CXL_MBOX_INTERNAL_ERROR;
-     }
++    if (len_in < sizeof(*hdr)) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
  
+     if (!object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
+         return CXL_MBOX_UNSUPPORTED;
 -- 
 MST
 
