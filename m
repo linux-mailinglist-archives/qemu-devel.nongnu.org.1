@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC8C9BBF67
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBD19BBF72
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84JL-0004oE-Va; Mon, 04 Nov 2024 16:08:32 -0500
+	id 1t84JY-0006oD-7a; Mon, 04 Nov 2024 16:08:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JH-0004LF-B1
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JU-0006Zj-K1
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JF-0005T8-Pa
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:27 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JS-0005Tf-Ne
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754504;
+ s=mimecast20190719; t=1730754518;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UlP335cOFsUkS+Xl7GKV9Lv2XyhG9kOzxJJ+GSB6He4=;
- b=MhSfhKPf+bXF2+lvwC2ksMQuISy01C84Ddk80AM53s6o/g+xQH73AE+LjyfoTAMZLBg0w6
- ZfDAUN58iNCN2R4lhq/lIRK64qrams0se02JfY4Zch9UrbqQ5HXLXaftY4rKuX4fKrzi3j
- 5UvVwoQKa3GrseVIPyEuGNBQ/JslIgY=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mdw6lQ9M8p1WeqXba2/OeJnW0hlNdaOFpMUqZq3tSr4=;
+ b=Z4/mvhqWRkBxt6vFZRWSotZBExrte40PtCdbLWDgURIZQ35EndJDBkw0ftO9qg1C5pHBFO
+ 9EQr7qmjYyCDovPCobccNEerU/CXQpmsUQ87Kb7u+Cc//GjETascb41kJQzkFdukZc/l5f
+ 1ZVs61KkFzzH3ha9JZHMN7zVLh9X+SY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-M0viPKqhMaaPsRSHurSqXw-1; Mon, 04 Nov 2024 16:08:23 -0500
-X-MC-Unique: M0viPKqhMaaPsRSHurSqXw-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2fb652f40f1so26110281fa.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:23 -0800 (PST)
+ us-mta-692-iOe0z21GN5ao25qUdaoV4Q-1; Mon, 04 Nov 2024 16:08:35 -0500
+X-MC-Unique: iOe0z21GN5ao25qUdaoV4Q-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43159c07193so39601445e9.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754501; x=1731359301;
+ d=1e100.net; s=20230601; t=1730754514; x=1731359314;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UlP335cOFsUkS+Xl7GKV9Lv2XyhG9kOzxJJ+GSB6He4=;
- b=YBgYXpzDKwdmsbMOfP/UoOTnKgDCDQ/0k0u0fCrUT3IsfU51ITo7eNsY2l7kI0nHQz
- /toazF2gfdELT9p2Ctj0W+lh78Y2ScBkjeyKFKkQYUmaT/GIAhV7SmvbksY0r0Yp8nqB
- MpEwfkjHkNLsQi0D78jaB6jErdgRNsTQ9EBkzkFtEdzuZVvedpz6ICse8O1u1BrGWQOv
- Shr2yYyLzVbwXcw1AK3c9TcLFsDerpfRswbhyBzQtW7cUjZ9ANYwYoGarOn6JdiitPYG
- RkPCCtGpEVYlru5EkhhwD8gXu8o2gqrwKOWLhsbS3MSvX1fdvRtXd4T3LJMOJ6s7t5ci
- h8ng==
-X-Gm-Message-State: AOJu0YxI+33qV9qCb4YgdGx0h91Rmq7F/3JMNVN1ggZLVLc2kkzP6s2O
- rR68hwMsiM2v5bWrSSeJqhEQlo0mUtp+6Yz6d07R0+VrxuMoz15A1RqlEjT5sbjT5R6uflZU0eh
- GJxFWDKxtaOhNLmRIjYhU5bD3h1nJG+N38pwWDlp+HTegd814HsadC002LTMoX40rDQs9p3L5Tg
- BXT9zLAlBeuJNTKPS0cMcsmRWQoCqohA==
-X-Received: by 2002:a05:651c:1988:b0:2fb:65c8:b4ae with SMTP id
- 38308e7fff4ca-2fedb7d910amr67853531fa.31.1730754501278; 
- Mon, 04 Nov 2024 13:08:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmX02BxqSQUkkXcp0eRiwbXtUzuEzLornlj3NSMZHKeONTL8MThiGZsqpsPiVT+DfddNVpvw==
-X-Received: by 2002:a05:651c:1988:b0:2fb:65c8:b4ae with SMTP id
- 38308e7fff4ca-2fedb7d910amr67853271fa.31.1730754500725; 
- Mon, 04 Nov 2024 13:08:20 -0800 (PST)
+ bh=mdw6lQ9M8p1WeqXba2/OeJnW0hlNdaOFpMUqZq3tSr4=;
+ b=SMPzb5Is2W+qdWsPjq/WLUeWUL7rKZ/GXKMZIb7ZR/HLeOIk646UPzfcGNoBR4J1ZI
+ OQRvuL8sculuLSTmG3jQeHoqsyiwHIrAePN3DuwOQQkff0nVK5c2JLxUyMb64NeHbwD+
+ YG2on2wilCtr4qIVv1DsS4Bmp/MoJC9jx/iFD4WKAlOPNQb5HqCclwLvTwJujTg5ecSq
+ Qn5HVswMwnssW5CXiJWtTMN7Sh+adOfkn5if/l1wkXUgko+Cyrm+0QD6F1j60KvlgJVm
+ fPu6JeSa4iF4SAu42ttR0LUaKDCtvqH++DSLOaD2l8DubI5iPnM7KYPVx2qOz5ieJXEY
+ dCiw==
+X-Gm-Message-State: AOJu0Yz4wXf8MW8DuS40Fl92rYyCglcSZ+mvLjn5RWoZSGUvyRhiuBIZ
+ hsXNkEkKnfxjE2LsrPtK3JkUE66SrH6SEIYBa/Md4RD2JbhPT1J3vECtazdN/we/Hmdlusgh+Jt
+ JmRTiQrZZhRBgHKgxDyt1Nio7htU9d9IcGv7j6YHnOrdO6Fwu5kjxuWIiuzD11uAp2avBmGXwv9
+ KOBNT72LcgP5qB0ugYB03io3WPB/vaNg==
+X-Received: by 2002:a05:600c:198e:b0:42a:a6b8:f09f with SMTP id
+ 5b1f17b1804b1-4328327cddamr140621405e9.23.1730754513684; 
+ Mon, 04 Nov 2024 13:08:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFdwE17M97elbwB59Nb4RbWNc5mhpzKi0UFKHyTAEwlPrRXy4FW8eyN8xu8EGH5pGDH5+xQMQ==
+X-Received: by 2002:a05:600c:198e:b0:42a:a6b8:f09f with SMTP id
+ 5b1f17b1804b1-4328327cddamr140621175e9.23.1730754513271; 
+ Mon, 04 Nov 2024 13:08:33 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e687sm14225464f8f.84.2024.11.04.13.08.18
+ ffacd0b85a97d-381c10b7c13sm14339305f8f.13.2024.11.04.13.08.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:20 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:17 -0500
+ Mon, 04 Nov 2024 13:08:32 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:08:29 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 41/65] hw/pci-bridge: Make pxb_dev_realize_common() return if
- it succeeded
-Message-ID: <d4d5212c541f57c339a592bcf1b38bf325940bfd.1730754238.git.mst@redhat.com>
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 44/65] pcie: enable Extended tag field support
+Message-ID: <449dca6ac93afbed1af00b6a29c9729f6cb18c35.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +78,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,78 +103,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-For the CXL PXB there is additional code after pxb_dev_realize_common()
-is called.  If that realize failed (e.g. due to an out of range numa_node)
-we will get a segfault.  Return a bool so the caller can check if the
-pxb_dev_realize_common() succeeded or not without having to poke around
-in the errp.
+>From what I read PCI has 32 transactions, PCI Express devices can handle
+256 with Extended tag enabled (spec mentions also larger values but I
+lack PCIe knowledge).
 
-Fixes: 4f8db8711cbd ("hw/pxb: Allow creation of a CXL PXB (host bridge)")
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241014121902.2146424-8-Jonathan.Cameron@huawei.com>
+QEMU leaves 'Extended tag field' with 0 as value:
+
+Capabilities: [e0] Express (v1) Root Complex Integrated Endpoint, IntMsgNum 0
+        DevCap: MaxPayload 128 bytes, PhantFunc 0
+                ExtTag- RBE+ FLReset- TEE-IO-
+
+SBSA ACS has test 824 which checks for PCIe device capabilities. BSA
+specification [1] (SBSA is on top of BSA) in section F.3.2 lists
+expected values for Device Capabilities Register:
+
+Device Capabilities Register     Requirement
+Role based error reporting       RCEC and RCiEP: Hardwired to 1
+Endpoint L0s acceptable latency  RCEC and RCiEP: Hardwired to 0
+L1 acceptable latency            RCEC and RCiEP: Hardwired to 0
+Captured slot power limit scale  RCEC and RCiEP: Hardwired to 0
+Captured slot power limit value  RCEC and RCiEP: Hardwired to 0
+Max payload size                 value must be compliant with PCIe spec
+Phantom functions                RCEC and RCiEP: Recommendation is to
+                                 hardwire this bit to 0.
+Extended tag field               Hardwired to 1
+
+1. https://developer.arm.com/documentation/den0094/c/
+
+This change enables Extended tag field. All versioned platforms should
+have it disabled for older versions (tested with Arm/virt).
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-Id: <20241023113820.486017-1-marcin.juszkiewicz@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci-bridge/pci_expander_bridge.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ include/hw/pci/pci.h | 2 ++
+ hw/core/machine.c    | 4 +++-
+ hw/pci/pci.c         | 2 ++
+ hw/pci/pcie.c        | 8 +++++++-
+ 4 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index 4578e03024..07d411cff5 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -330,7 +330,7 @@ static gint pxb_compare(gconstpointer a, gconstpointer b)
-            0;
- }
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 35d4fe0bbf..38ffa7bcee 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -214,6 +214,8 @@ enum {
+     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
+ #define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
+     QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
++#define QEMU_PCIE_EXT_TAG_BITNR 13
++    QEMU_PCIE_EXT_TAG = (1 << QEMU_PCIE_EXT_TAG_BITNR),
+ };
  
--static void pxb_dev_realize_common(PCIDevice *dev, enum BusType type,
-+static bool pxb_dev_realize_common(PCIDevice *dev, enum BusType type,
-                                    Error **errp)
- {
-     PXBDev *pxb = PXB_DEV(dev);
-@@ -342,13 +342,13 @@ static void pxb_dev_realize_common(PCIDevice *dev, enum BusType type,
+ typedef struct PCIINTxRoute {
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17eba..8ccc74067a 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -34,7 +34,9 @@
+ #include "hw/virtio/virtio-iommu.h"
+ #include "audio/audio.h"
  
-     if (ms->numa_state == NULL) {
-         error_setg(errp, "NUMA is not supported by this machine-type");
--        return;
-+        return false;
-     }
+-GlobalProperty hw_compat_9_1[] = {};
++GlobalProperty hw_compat_9_1[] = {
++    { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
++};
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
  
-     if (pxb->numa_node != NUMA_NODE_UNASSIGNED &&
-         pxb->numa_node >= ms->numa_state->num_nodes) {
-         error_setg(errp, "Illegal numa node %d", pxb->numa_node);
--        return;
-+        return false;
-     }
- 
-     if (dev->qdev.id && *dev->qdev.id) {
-@@ -394,12 +394,13 @@ static void pxb_dev_realize_common(PCIDevice *dev, enum BusType type,
-     pci_config_set_class(dev->config, PCI_CLASS_BRIDGE_HOST);
- 
-     pxb_dev_list = g_list_insert_sorted(pxb_dev_list, pxb, pxb_compare);
--    return;
-+    return true;
- 
- err_register_bus:
-     object_unref(OBJECT(bds));
-     object_unparent(OBJECT(bus));
-     object_unref(OBJECT(ds));
-+    return false;
- }
- 
- static void pxb_dev_realize(PCIDevice *dev, Error **errp)
-@@ -500,7 +501,9 @@ static void pxb_cxl_dev_realize(PCIDevice *dev, Error **errp)
-         return;
-     }
- 
--    pxb_dev_realize_common(dev, CXL, errp);
-+    if (!pxb_dev_realize_common(dev, CXL, errp)) {
-+        return;
+ GlobalProperty hw_compat_9_0[] = {
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 0b6bdaa0d7..1416ae202c 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -100,6 +100,8 @@ static Property pci_props[] = {
+                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+     DEFINE_PROP_SIZE32("x-max-bounce-buffer-size", PCIDevice,
+                      max_bounce_buffer_size, DEFAULT_MAX_BOUNCE_BUFFER_SIZE),
++    DEFINE_PROP_BIT("x-pcie-ext-tag", PCIDevice, cap_present,
++                    QEMU_PCIE_EXT_TAG_BITNR, true),
+     { .name = "busnr", .info = &prop_pci_busnr },
+     DEFINE_PROP_END_OF_LIST()
+ };
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index 2738dbb28d..0b455c8654 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -86,7 +86,13 @@ pcie_cap_v1_fill(PCIDevice *dev, uint8_t port, uint8_t type, uint8_t version)
+      * Specification, Revision 1.1., or subsequent PCI Express Base
+      * Specification revisions.
+      */
+-    pci_set_long(exp_cap + PCI_EXP_DEVCAP, PCI_EXP_DEVCAP_RBER);
++    uint32_t devcap = PCI_EXP_DEVCAP_RBER;
++
++    if (dev->cap_present & QEMU_PCIE_EXT_TAG) {
++        devcap = PCI_EXP_DEVCAP_RBER | PCI_EXP_DEVCAP_EXT_TAG;
 +    }
-     pxb_cxl_dev_reset(DEVICE(dev));
- }
++
++    pci_set_long(exp_cap + PCI_EXP_DEVCAP, devcap);
  
+     pci_set_long(exp_cap + PCI_EXP_LNKCAP,
+                  (port << PCI_EXP_LNKCAP_PN_SHIFT) |
 -- 
 MST
 
