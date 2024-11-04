@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B519BBF7C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 211E99BBF78
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Jt-0007yQ-Ay; Mon, 04 Nov 2024 16:09:05 -0500
+	id 1t84K3-0008Sa-DK; Mon, 04 Nov 2024 16:09:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jo-0007ra-M9
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:01 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jx-0008In-9E
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jn-0005Vn-6c
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:00 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jv-0005WD-SH
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754538;
+ s=mimecast20190719; t=1730754547;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=X09gUc+uwzieH0F+I0K2aed1PpK5bPTr3a80Rrc3pVA=;
- b=XaZj5gRynQWgkX9M9MvnU6g+6MVFI5fI43glcCwVDUuYjKgR6nvwJGVu4stJ9BBDTUZJHp
- lOHADfKwQLSNU5ELcWFQ3QB1rOJQSim0FhS6N8MS2k2MlyBX8ltbj5JQz5xqKwegcNrnnt
- gSr54wntViDXsncJl+gUbJ69DVehRLw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pofF4pvx4NNxLWVgauC0xOmCFfdwGb52obnY+44wiVY=;
+ b=FO7xu22jclJrv2A7xhdtZ538094w0kmoxKOFngA8Et35oUYcXZFGgKl15utXabZ32peQQ1
+ DS/da9BeMZZRTOA0RV3DHy5Nv+VsayQBEqZcwdEmsW4LSjqanFGnvWAmXa5OgK+k5BY0uW
+ bipdUEFxNbTTCmRJCulZC+fTG3+cQDw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-pgFjJ9rfMfOG_cFQG0Zvpw-1; Mon, 04 Nov 2024 16:08:57 -0500
-X-MC-Unique: pgFjJ9rfMfOG_cFQG0Zvpw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d662dd3c8so2314876f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:57 -0800 (PST)
+ us-mta-588-Dj7pYH-mNQ-RzJ21jjP0yg-1; Mon, 04 Nov 2024 16:09:06 -0500
+X-MC-Unique: Dj7pYH-mNQ-RzJ21jjP0yg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d4af408dcso2149410f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754535; x=1731359335;
+ d=1e100.net; s=20230601; t=1730754544; x=1731359344;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X09gUc+uwzieH0F+I0K2aed1PpK5bPTr3a80Rrc3pVA=;
- b=pf31zBtTOsJgpocQ8MTnCPBHM4Gt5cYsKBQr8GENRnU+g3Nf4Tf9sOWhK/tbaDf+6C
- Zl5f5bWkrYakfqUuVaBLMeT2dYDxKiC/D8YPoXXuxdkUBA7ehc+6xs4voBKa/HEyzIbo
- 4DlaxilDxy0ez59wdNLLIhNUUVWf3ynoYmFzqPrb5zScplZWKwABO9jkyyGZtNCqmjrz
- sE0bZw5w8pXUSQGkbM6NHzD1YF/LgbYrEC8q/nt3TFfarqeOfBJMNOqiGDez93ndzxh7
- Q2QYsvFUCWB08zYxrD/q5+Jg4efy65teSoSXfN0m5kZBV5b2chdOLSJWb97gYfE8dGbF
- S3JA==
-X-Gm-Message-State: AOJu0YwZexb/zqy2CgjDlMu6NJRXlqCeVOIMhTPerVJodvVJsyz4WjAx
- jMg9sYuCQb+Ovmoe62XgN4uxMJ/ezGaSoWu5oUj348QpHxQuIjV1wRzv/6QcK6+zv0486U9tdKa
- 1f6TBNb68mVW/8Xu+CRRVLCeO/t6wWemrjfpo64pOqnoeONbEGvg3MXaOLkbgppnQQed4AT4wAE
- m8p0PGLqsXsLU6nxMscKweJnGWKSRy2w==
-X-Received: by 2002:a05:600c:3547:b0:42c:b16e:7a22 with SMTP id
- 5b1f17b1804b1-431bb9855c0mr199978715e9.12.1730754535468; 
- Mon, 04 Nov 2024 13:08:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGm5vJf2o0XWBZy/5c3IwjKkL01awFnXbFuO3z/oIADmtka9DnnEecgzCw7asA9BGOA7RnEPg==
-X-Received: by 2002:a05:600c:3547:b0:42c:b16e:7a22 with SMTP id
- 5b1f17b1804b1-431bb9855c0mr199978545e9.12.1730754535019; 
- Mon, 04 Nov 2024 13:08:55 -0800 (PST)
+ bh=pofF4pvx4NNxLWVgauC0xOmCFfdwGb52obnY+44wiVY=;
+ b=fOCGavYHhnf0RVLLMtmNaJhukydF73eRI0itektxVAe3yrpoVRqwjGgAVq3nklJeQa
+ c4BjNFLuPhSXjhXPdymRXCQGHoEwpkim1k/nM8KtUGEL2owQp8Lq7LTQ/JuPK4p9YXh9
+ XF/Av4dC76n2C1P2A+QV3jgDsdEgdkGMvigpvdmgxI6v49QkQnnzZd/Q7mPZXymaFG/0
+ 8u75BbsOxtILRK0ag98jOtLlhpKl0E+ksNV9B4tdcWxz/PD14SwCwphoNPzXxNVu3NmH
+ UOVdG5eMRCQmp+a983F2+Z+9iArgFVoaTwNL85VlhjxAuLRy/2826lZyX/rtwzUQMDeY
+ JWCg==
+X-Gm-Message-State: AOJu0YzxJ58vqOMiQf7bFojZe5Ar/wJZ6lpLA9US5zXUByRGzrsB8TrG
+ OG/V0zrBGV04uPkH/xPixzjPQyp23uCozyWAWJQQseepbYaEV+z7WZz+bNiAbdjrO747F5ks5zM
+ W63AGibMO/wrg88GtFHZ7px8KkRC5z6obJMZGSMeJ16DcQ2E/pm/mYciGuuJUTklQFmXQrMie37
+ 4FNi3o7dBteM3h9YuFtsZp0hDgmzENFQ==
+X-Received: by 2002:a05:6000:104a:b0:37d:2de4:d64 with SMTP id
+ ffacd0b85a97d-38061162c32mr22194019f8f.35.1730754544119; 
+ Mon, 04 Nov 2024 13:09:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGY8R5MnEzr3CIWhSoUwKBYsfvLUyOJJSlAUj4Jwu0r5UaN0b5reA1N+nWt+6e+WAJiNlcjOA==
+X-Received: by 2002:a05:6000:104a:b0:37d:2de4:d64 with SMTP id
+ ffacd0b85a97d-38061162c32mr22194005f8f.35.1730754543614; 
+ Mon, 04 Nov 2024 13:09:03 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd9403bfsm194399045e9.21.2024.11.04.13.08.53
+ ffacd0b85a97d-381c113dd8asm14222338f8f.73.2024.11.04.13.09.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:54 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:51 -0500
+ Mon, 04 Nov 2024 13:09:02 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:00 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 50/65] hw/cxl: Check enough data in
- cmd_firmware_update_transfer()
-Message-ID: <a3995360aeec62902f045142840c1fd334e9725f.1730754238.git.mst@redhat.com>
+Subject: [PULL 53/65] hw/cxl: Ensuring enough data to read parameters in
+ cmd_tunnel_management_cmd()
+Message-ID: <c0f122419fbcd1e0bf2bc2a0a3ae6410bb2cda22.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,35 +103,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Buggy guest can write a message that advertises more data that
-is provided. As QEMU internally duplicates the reported message
-size, this may result in an out of bounds access.
-Add sanity checks on the size to avoid this.
+If len_in is less than the minimum spec allowed value, then return
+CXL_MBOX_INVALID_PAYLOAD_LENGTH
 
 Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101133917.27634-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20241101133917.27634-8-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 3cb499a24f..27fadc4fa8 100644
+index 5e571955b6..a40d81219c 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -705,6 +705,10 @@ static CXLRetCode cmd_firmware_update_transfer(const struct cxl_cmd *cmd,
-     } QEMU_PACKED *fw_transfer = (void *)payload_in;
-     size_t offset, length;
+@@ -151,6 +151,9 @@ static CXLRetCode cmd_tunnel_management_cmd(const struct cxl_cmd *cmd,
+     in = (void *)payload_in;
+     out = (void *)payload_out;
  
-+    if (len < sizeof(*fw_transfer)) {
++    if (len_in < sizeof(*in)) {
 +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
 +    }
-+
-     if (fw_transfer->action == CXL_FW_XFER_ACTION_ABORT) {
-         /*
-          * At this point there aren't any on-going transfers
+     /* Enough room for minimum sized message - no payload */
+     if (in->size < sizeof(in->ccimessage)) {
+         return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
 -- 
 MST
 
