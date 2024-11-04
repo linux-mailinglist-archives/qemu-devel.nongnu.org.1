@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211E99BBF78
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111B99BBF9B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84K3-0008Sa-DK; Mon, 04 Nov 2024 16:09:15 -0500
+	id 1t84K7-0000h4-FW; Mon, 04 Nov 2024 16:09:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jx-0008In-9E
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:10 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K4-0000ag-JF
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jv-0005WD-SH
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:09 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K3-0005We-1r
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754547;
+ s=mimecast20190719; t=1730754554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=pofF4pvx4NNxLWVgauC0xOmCFfdwGb52obnY+44wiVY=;
- b=FO7xu22jclJrv2A7xhdtZ538094w0kmoxKOFngA8Et35oUYcXZFGgKl15utXabZ32peQQ1
- DS/da9BeMZZRTOA0RV3DHy5Nv+VsayQBEqZcwdEmsW4LSjqanFGnvWAmXa5OgK+k5BY0uW
- bipdUEFxNbTTCmRJCulZC+fTG3+cQDw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OG4lyvfSQwzgYZmOFt3djPmHvHJCXcfAK3eUcAgOhtk=;
+ b=AfjIFj0XR4lzL6L5EvR8uiCU6zzDl9rankvoXbVUlVUAIyC3/NYASMAfGW0jsX6Bo8aulm
+ gx2AJvYO3lcFBGrWORjq3FaOtyhKg8yHIY/pjVZQ0Ivy0NhJigmaHYfQldI4SjoJ2lOWVs
+ EOsCx4j2IQELynt7CTotynjFsr19vLI=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-Dj7pYH-mNQ-RzJ21jjP0yg-1; Mon, 04 Nov 2024 16:09:06 -0500
-X-MC-Unique: Dj7pYH-mNQ-RzJ21jjP0yg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d4af408dcso2149410f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:05 -0800 (PST)
+ us-mta-442-kE_jAxS1OXCt5dTlSYXQHA-1; Mon, 04 Nov 2024 16:09:13 -0500
+X-MC-Unique: kE_jAxS1OXCt5dTlSYXQHA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2fb55e102b6so29367951fa.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754544; x=1731359344;
+ d=1e100.net; s=20230601; t=1730754551; x=1731359351;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pofF4pvx4NNxLWVgauC0xOmCFfdwGb52obnY+44wiVY=;
- b=fOCGavYHhnf0RVLLMtmNaJhukydF73eRI0itektxVAe3yrpoVRqwjGgAVq3nklJeQa
- c4BjNFLuPhSXjhXPdymRXCQGHoEwpkim1k/nM8KtUGEL2owQp8Lq7LTQ/JuPK4p9YXh9
- XF/Av4dC76n2C1P2A+QV3jgDsdEgdkGMvigpvdmgxI6v49QkQnnzZd/Q7mPZXymaFG/0
- 8u75BbsOxtILRK0ag98jOtLlhpKl0E+ksNV9B4tdcWxz/PD14SwCwphoNPzXxNVu3NmH
- UOVdG5eMRCQmp+a983F2+Z+9iArgFVoaTwNL85VlhjxAuLRy/2826lZyX/rtwzUQMDeY
- JWCg==
-X-Gm-Message-State: AOJu0YzxJ58vqOMiQf7bFojZe5Ar/wJZ6lpLA9US5zXUByRGzrsB8TrG
- OG/V0zrBGV04uPkH/xPixzjPQyp23uCozyWAWJQQseepbYaEV+z7WZz+bNiAbdjrO747F5ks5zM
- W63AGibMO/wrg88GtFHZ7px8KkRC5z6obJMZGSMeJ16DcQ2E/pm/mYciGuuJUTklQFmXQrMie37
- 4FNi3o7dBteM3h9YuFtsZp0hDgmzENFQ==
-X-Received: by 2002:a05:6000:104a:b0:37d:2de4:d64 with SMTP id
- ffacd0b85a97d-38061162c32mr22194019f8f.35.1730754544119; 
- Mon, 04 Nov 2024 13:09:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGY8R5MnEzr3CIWhSoUwKBYsfvLUyOJJSlAUj4Jwu0r5UaN0b5reA1N+nWt+6e+WAJiNlcjOA==
-X-Received: by 2002:a05:6000:104a:b0:37d:2de4:d64 with SMTP id
- ffacd0b85a97d-38061162c32mr22194005f8f.35.1730754543614; 
- Mon, 04 Nov 2024 13:09:03 -0800 (PST)
+ bh=OG4lyvfSQwzgYZmOFt3djPmHvHJCXcfAK3eUcAgOhtk=;
+ b=PeFhjfN96GpsAcySZLbnCv4/aF2tqUYLUX9/0R9FZVt5yBe3/EMTX2bEeXwdPMzoRY
+ D9jBnVkvW0E8Qf8muF2xEieWMDsaLZINM+fd1tONJVTNB4iJxL5wxKnBZN/MViojdoJg
+ kbTArGPTymvuefcLv39uOcbBmaIAtG75vQcpbmLFiCD0oEtTLAldBOTPK2bl/vNV1FXt
+ 1Dq/wa+8n1IdBmk4lhE9KTJBMuyHCPRxLxHTHPv8HCVkVfF6IdhMnino1yGxu5i5d8U/
+ K0wLN6enuMICsIkBMUsequG0CvtuLbbjVH+g3bkv9Y2tVcdVRFrQoaAU0xIHa3BmKJJB
+ 8A7A==
+X-Gm-Message-State: AOJu0YyD2W4piJhZMeX6/5em6Undrd/VOAWQH2ZyvUlmaFa3o+xYFGNg
+ p2KwI5sVoy+Lc6OdmqtBwSrbv978bRE4i4RaCLoLAPJR3UEI2dlbcxIRDl3GwipnVU9yNlcymYT
+ AK4ABcg6fY7ZhYQwtNPbmJN3i2UehyFMg2KLffKqrMuc7NGSY0N3YVMInPdgBafwJ25JmZiORZQ
+ yzVWaBobEaPzmLiYnB6CSabI7DD2jflA==
+X-Received: by 2002:a05:651c:220c:b0:2fb:5014:c998 with SMTP id
+ 38308e7fff4ca-2fedb7d999cmr65342601fa.28.1730754550714; 
+ Mon, 04 Nov 2024 13:09:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG+e6pMijqXqXpcWcgXAU0eEMLqWiYhF7ynvUMIeDGJ9RdNskcsgc0NqCVkb1xHWNVAf49YPg==
+X-Received: by 2002:a05:651c:220c:b0:2fb:5014:c998 with SMTP id
+ 38308e7fff4ca-2fedb7d999cmr65342411fa.28.1730754550224; 
+ Mon, 04 Nov 2024 13:09:10 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113dd8asm14222338f8f.73.2024.11.04.13.09.01
+ ffacd0b85a97d-381c10d4b82sm14153010f8f.43.2024.11.04.13.09.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:02 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:00 -0500
+ Mon, 04 Nov 2024 13:09:09 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:07 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 53/65] hw/cxl: Ensuring enough data to read parameters in
- cmd_tunnel_management_cmd()
-Message-ID: <c0f122419fbcd1e0bf2bc2a0a3ae6410bb2cda22.1730754238.git.mst@redhat.com>
+Subject: [PULL 55/65] hw/cxl: Ensure there is enough data for the header in
+ cmd_ccls_set_lsa()
+Message-ID: <5300bdf5898dda5989215e183bccd555cc782b9a.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,32 +103,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-If len_in is less than the minimum spec allowed value, then return
-CXL_MBOX_INVALID_PAYLOAD_LENGTH
+The properties of the requested set command cannot be established if
+len_in is less than the size of the header.
 
 Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101133917.27634-8-Jonathan.Cameron@huawei.com>
+Message-Id: <20241101133917.27634-10-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 5e571955b6..a40d81219c 100644
+index 078782e8b9..f4a436e172 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -151,6 +151,9 @@ static CXLRetCode cmd_tunnel_management_cmd(const struct cxl_cmd *cmd,
-     in = (void *)payload_in;
-     out = (void *)payload_out;
+@@ -1503,8 +1503,8 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
+     const size_t hdr_len = offsetof(struct set_lsa_pl, data);
  
-+    if (len_in < sizeof(*in)) {
+     *len_out = 0;
+-    if (!len_in) {
+-        return CXL_MBOX_SUCCESS;
++    if (len_in < hdr_len) {
 +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-     /* Enough room for minimum sized message - no payload */
-     if (in->size < sizeof(in->ccimessage)) {
-         return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+     }
+ 
+     if (set_lsa_payload->offset + len_in > cvc->get_lsa_size(ct3d) + hdr_len) {
 -- 
 MST
 
