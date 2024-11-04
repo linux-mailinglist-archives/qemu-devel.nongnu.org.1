@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649A49BA9BE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629069BA9F6
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:29:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kp3-0007Ke-Hc; Sun, 03 Nov 2024 19:19:57 -0500
+	id 1t7kp7-0007Ns-PN; Sun, 03 Nov 2024 19:20:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kp0-0007Ip-HF; Sun, 03 Nov 2024 19:19:54 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1t7kp5-0007Ms-5R; Sun, 03 Nov 2024 19:19:59 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7koy-0002Ji-TO; Sun, 03 Nov 2024 19:19:54 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-71e467c3996so3013871b3a.2; 
- Sun, 03 Nov 2024 16:19:52 -0800 (PST)
+ id 1t7kp3-0002KN-Oq; Sun, 03 Nov 2024 19:19:58 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-71e4244fdc6so2800537b3a.0; 
+ Sun, 03 Nov 2024 16:19:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679591; x=1731284391; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679595; x=1731284395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r8AvT/FnW3aX5+LIUAhqePEJ/QWevxFxm8Hw+y35nEs=;
- b=IEq1C9J3Ar2vDg/6/EPH7fu9nQ0ixl29ogpayZJhCPAD2ZmXs4723K8St1naRkJKbI
- PFlSXmVg+ehmduC8AuFNSUXKHcA94xaQnL+sPTYTy2GNY8g5jZ3Jyvi8Dq8pzJ5RJks2
- WW0i61JuLlesrj9tEXfgBk4zD3iUSUwzQJq19KTrCG1W62cyxjdJ7h12LeIwa+8XopY+
- /WeuUvAOk3BAlonFmRo9UFfAUv32AwauIYCOIfad0ePGylMdw+9HB64QN3HzxWEhS6S+
- S0IJ53yAsvZo0++U2Ese1CqIrgF4V9LttcgUR/eH/IDxV4N3xksB1JhR8+Ce7fPbObTN
- c6iA==
+ bh=vP9Pv6akJ9wvw7JMuu+7UGFu2Y8Q3rLCweqIbGkYo8w=;
+ b=F3mH+JPiETqE28cN7BS9xoA3Z6Djv5obgzYy5hvte1gyf2I5cG52yVpjaXkVz28p6a
+ iYAf2/Da7O2f1CINPTpYnK2uWH8WAS9uV/VCfKgW1AeWA2V3pYgyn+TXXyKgghfSq+w7
+ zJzznobSzNyoCLgFSgWr/dEtD8b1wst9HgHM8L/J/bxZK8ZmXFvPEkbfQ0p3jhrzjb/L
+ SLdb/OZHBsAL9SmM1z6IXEd56TZfy0nCIa0G6ANxHIHa94TDexlvTAliWPSPv+2n4Yyy
+ vWJel5+9JplDtGKFKSiMUWUApSKPVE4it9P57PXrLexi2T/jjupeN6cEJb4GkUKFpV8i
+ hvQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679591; x=1731284391;
+ d=1e100.net; s=20230601; t=1730679595; x=1731284395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r8AvT/FnW3aX5+LIUAhqePEJ/QWevxFxm8Hw+y35nEs=;
- b=bDqwb7uHMhWt6I5G/aFGLTW7MaCmJow0jo5bKysehYgHqL2XPlnURKpMmS4uvn+45J
- /P7Bq1tjLxtdYkpiBTGu6z9ElC2PBDrb53OTV38zr3LVUa5Jyi41kXf4XJrrI4/nLGx2
- q7vAV9ALRZIthq+eiXfcb0iRolX259SI+ScIcV8t0rpa+PRzg1YNTBfvC4HVkW55dm8h
- rM1Ai97DtMYysq95DG09Pc9WtoS7w8HwfEIym15dO18edZVOsnlLZPmBYqyU9cbuCCv8
- FwB41FtMiq89P/iW1gLQqBYVaBrEDiP5X2eynMUe5tF8j0Dl+6jSoVKRYc27QH3g1gF1
- ScqA==
+ bh=vP9Pv6akJ9wvw7JMuu+7UGFu2Y8Q3rLCweqIbGkYo8w=;
+ b=lh20I3GGuZuTNmP5DN6NQ1HnGLRXFWzY1UjhUe/L6AxEwPkiRpniEUNBwRbV/R+MlV
+ iQFQ4BVo/a65UDhi9jNS1HAGUTs7pORufs06fePPjbFzH8VwY3w9310cBI8zDBODmW1B
+ z1kMOAJgGMO2d0UJJmKJZ3b7Y0BU2DPeQ1cwTTIJ+YvtTWJAhexZ/kRyhmLBrYu1hZtq
+ 1h42S1HfNHPTxoOSLFbZ56sNaMA0EjZ7JtEpoqw3tUbluYpjVi4ypF4Fp1lUWbA0X6uP
+ Q95tGUoYwGIZqO9QJASbZMWoMJFd6jirWZETnwlo2KZqiX0EtRRlPNQvBZ0N3FDhCVv5
+ 2hlA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlENpfzqO9b28ZZbtMNi5vgrw4xgC6PODracQPDHa3ogDmX8oeZGmuLmq3N+y4qjdPrzyjr1RKYA==@nongnu.org
-X-Gm-Message-State: AOJu0YyllIBWC9h5Pk0t2IaQIcQe4ohIPXUE+06pbWNKl/vjPgG5AWzO
- 4QKQ6cP6aPVt0nxcjLAcaBXL7rDsmonbui3v7PMnoo3FtVRQ39dhtUSufw==
-X-Google-Smtp-Source: AGHT+IFQSYNsZB2s0veQmbJmGelb6Jh6JBFQWQmm3zie2qMit4AoaOo1F5r8pbg2y/4QgykPIZ5CxA==
-X-Received: by 2002:a05:6a20:2d1f:b0:1d9:18af:d150 with SMTP id
- adf61e73a8af0-1d9a840a299mr42497310637.21.1730679590897; 
- Sun, 03 Nov 2024 16:19:50 -0800 (PST)
+ AJvYcCUbSJlTudbu5AdlFOqvu6s92t1jeJ87INnKx117Qc1k+ZyGJUGeCs2TI1brGsuoVFA+y57+YkMGwWgZTOY=@nongnu.org,
+ AJvYcCXBg3hEJnWyZVSEbqEZoLCzfZrdY2JO45RHIwwvstnAu1jccD941Pbt6TyNomHcKq4kmkBWwQ011w==@nongnu.org
+X-Gm-Message-State: AOJu0Ywj1FSFXr5DsXSMubTFDLqT7iauuJLbzPziv5ozxpTkfo3HG8yQ
+ +Ss3JAXV3sUogGnRZVDRSkwInDN7TbgeAYzcg3v7GlrAWlNDDUIz+/nN6w==
+X-Google-Smtp-Source: AGHT+IHoskG9t740LaqJsduWGHY7u4himZXqnYPo8/hOXH3ClDh4aelVld8CREyNo5l5v3Lf/Y3ACQ==
+X-Received: by 2002:a05:6a21:670f:b0:1d9:266e:8216 with SMTP id
+ adf61e73a8af0-1dba53bf472mr16052635637.22.1730679594691; 
+ Sun, 03 Nov 2024 16:19:54 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.48
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:19:50 -0800 (PST)
+ Sun, 03 Nov 2024 16:19:54 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/67] MAINTAINERS: Cover PowerPC SPI model in PowerNV section
-Date: Mon,  4 Nov 2024 10:18:00 +1000
-Message-ID: <20241104001900.682660-12-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 12/67] hw/ssi/pnv_spi: Match _xfer_buffer_free() with
+ _xfer_buffer_new()
+Date: Mon,  4 Nov 2024 10:18:01 +1000
+Message-ID: <20241104001900.682660-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,31 +98,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-It is unfair to let the PowerNV SPI model to the SSI
-maintainers. Also include the PowerNV ones.
+pnv_spi_xfer_buffer_new() allocates %payload using g_malloc0(),
+and pnv_spi_xfer_buffer_write_ptr() allocates %payload->data
+using g_realloc(). Use the API equivalent g_free() to release
+the buffers.
 
-Fixes: 29318db133 ("hw/ssi: Add SPI model")
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ssi/pnv_spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1e88b5738c..cf39ad4b7c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1505,8 +1505,10 @@ F: hw/ppc/pnv*
- F: hw/intc/pnv*
- F: hw/intc/xics_pnv.c
- F: hw/pci-host/pnv*
-+F: hw/ssi/pnv_spi.c
- F: include/hw/ppc/pnv*
- F: include/hw/pci-host/pnv*
-+F: include/hw/ssi/pnv_spi*
- F: pc-bios/skiboot.lid
- F: tests/qtest/pnv*
- F: tests/functional/test_ppc64_powernv.py
+diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+index 9e7207bf7c..d15a5970b4 100644
+--- a/hw/ssi/pnv_spi.c
++++ b/hw/ssi/pnv_spi.c
+@@ -53,8 +53,8 @@ static PnvXferBuffer *pnv_spi_xfer_buffer_new(void)
+ 
+ static void pnv_spi_xfer_buffer_free(PnvXferBuffer *payload)
+ {
+-    free(payload->data);
+-    free(payload);
++    g_free(payload->data);
++    g_free(payload);
+ }
+ 
+ static uint8_t *pnv_spi_xfer_buffer_write_ptr(PnvXferBuffer *payload,
 -- 
 2.45.2
 
