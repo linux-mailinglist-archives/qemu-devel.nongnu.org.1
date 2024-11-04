@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68589BBFD0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5719BBFCD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84IT-0000CT-NY; Mon, 04 Nov 2024 16:07:38 -0500
+	id 1t84KD-0001HI-LN; Mon, 04 Nov 2024 16:09:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IN-0008V9-4e
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:31 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K8-0000wU-Jk
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IL-0005OF-B1
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:30 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K6-0005Wx-Nr
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754448;
+ s=mimecast20190719; t=1730754557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fOAN2C/Gq+fL1Um9UhAsgi+uFdrVpTy3qKoA3Bihgaw=;
- b=J4VymFBTJGOZLVrzTl8VcgIpPaxMBEvxNk1IqtntYc4SDNAHVRX4UA01vMb/fcTjFI3t+A
- h5W2c0hiEbJgnd8h/XLuhCRGu+UgN5skii3XRzAjAKQWsJM7e+XcBws5YxJvj+Px8R/YDi
- WElJDqOlTLe/8o40j/NZ1IRYZU1FB34=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kPkqbS0KzBZTstIImdMCo6tR4lv6gQtQBT2m2wr8v1o=;
+ b=PKQqahs28VwQZl0sXn98Uj/A3iibLGk10CPbsSdYi6pMkTTKRWLn3gdcpq7WqoDfQoT0gW
+ h+sWXdQvl2d73Wdn2l1DFPdPY/vJ1+CxYcPdrZkyh4LSjGC/Ghthsn7d3q9ZeLsiqqtIPO
+ 4aLs5V0Ha9STx75nznSIqlAuGPVeM5o=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-wj61nPwvNUKen6gzOW__cA-1; Mon, 04 Nov 2024 16:07:27 -0500
-X-MC-Unique: wj61nPwvNUKen6gzOW__cA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4316e2dde9eso39450635e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:27 -0800 (PST)
+ us-mta-335-4kFSM8Q2OB2IQlezImmHRA-1; Mon, 04 Nov 2024 16:07:31 -0500
+X-MC-Unique: 4kFSM8Q2OB2IQlezImmHRA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d5016d21eso2136328f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754446; x=1731359246;
+ d=1e100.net; s=20230601; t=1730754450; x=1731359250;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fOAN2C/Gq+fL1Um9UhAsgi+uFdrVpTy3qKoA3Bihgaw=;
- b=gv2cIk7b1uHcYh2QpLkXjMCTQYUNxuheTG4TWCVLtSsuD/9TmPgZvznN9Jx/KSSgiL
- 7kwNYPhcChqnEYKAz7Ss61a6cp2x1WOhwLhnMq9b4vIAiXzYpzRQYBI7FXzLi95IQYJN
- o8IxdU4318fhIIjiSYSwcYjB5+9mYA0ZGGSAS5Pee3WJLVtVUyNYCHJ+EVUtaXpCOjfh
- 9fkrV+cRZTaRdYSQ/L/w0wubp3g33ML4ixJBP8UuszDOmcp4E0WtWGEyuIWDWwgIp3b5
- 1SRVhdM/YpKkqjeX0AJeTEPUbYpugJ9mQd27hhoe7RXR99u196ESIY3ubcNKAWG2x01o
- Jfcw==
-X-Gm-Message-State: AOJu0YzVRSpax/Qi3Ei4WzDcM6Xd351Y6oJfdG802HzoAW0r7Zbr33uW
- dmxpr5oxKqtm02DDNQw1M330nGeheyhn41zecNekqX6WeVaZb9lcJ6GSF96DZ6QuP8b/pwrU8ty
- XwhvOQrTXM8i6UwX2Un5ExCAvEU391sklNPXPTmlrayQLD0gX9ILJFPFNMahHcAQc68l7RXOpg7
- A+mrkrqfV1JOCcEqG5SutlLBXE9I0AEQ==
-X-Received: by 2002:a05:600c:1d1e:b0:431:604d:b22 with SMTP id
- 5b1f17b1804b1-43283255922mr142591315e9.16.1730754445927; 
- Mon, 04 Nov 2024 13:07:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlrGv0WZaoqpH0W4hZ1y6wxQgnCqJYzwvp1616S+EbVH2J3gP+Boe5naZ4fr6hfPHQxAtdGw==
-X-Received: by 2002:a05:600c:1d1e:b0:431:604d:b22 with SMTP id
- 5b1f17b1804b1-43283255922mr142591085e9.16.1730754445468; 
- Mon, 04 Nov 2024 13:07:25 -0800 (PST)
+ bh=kPkqbS0KzBZTstIImdMCo6tR4lv6gQtQBT2m2wr8v1o=;
+ b=RArsMd4c6HR9KVfZk+hpKWBKD5LIH9xZhkmwsygjbUdVlvbAVKjHt29TtyTrVq4ygk
+ HPu2iLTlB7FhqYu4ja1E+0919UvfwAD9FdcQu5GJLe9PBGk+WRGOFd2Do/3W9qOJqEMs
+ VXQIFFrS666rSBLKvkcb/xhBukeFYMQcoogwgqJDg4DZSe46N709Pa4/Lq+6EPl/n6EN
+ MJ5rwgAD6uJDI6EFa2PRAM3eSjASZqhKVmY1//qdkKgW2YV3xFqRGCZxpqOwHYss6Vxj
+ sRdxFPsgkzVz6AjVte5yORvpmEvpmX5Ae3mcBZv8YCoNrMVXHVzQEfbcDRrqDyzDOSYT
+ Z5/A==
+X-Gm-Message-State: AOJu0YzqtI5KWapFgoR1VVWmCpEFe6pwfIJeKJe0k+xg/q7aL9NqqbRL
+ ay7DbNMyU89jT8UyjeK0ebgBHf2Ethl11ENGANAizVn9puQKZ++ebI1jpXXGusYkNX1btdZbaGX
+ z7ZHflMaXtZ99RWmocy7EZtokjgXYv0IOXduhLhkF3rwfD4k5rVRuXKBUSEOkl+gvOPl3EK53v6
+ 2KamiY9mXoKVqFKLUzoBA7MfJoHgDUqQ==
+X-Received: by 2002:a5d:4a11:0:b0:374:c92e:f6b1 with SMTP id
+ ffacd0b85a97d-380611585f8mr24122078f8f.23.1730754449899; 
+ Mon, 04 Nov 2024 13:07:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGYK+/Sm79EkWZWY4QxUccwt4jIS0yVBLWIwJRdLMHcemcBVhyXJIizUL7Ro2dB2pu7dhBfdg==
+X-Received: by 2002:a5d:4a11:0:b0:374:c92e:f6b1 with SMTP id
+ ffacd0b85a97d-380611585f8mr24122054f8f.23.1730754449343; 
+ Mon, 04 Nov 2024 13:07:29 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5bf225sm163464115e9.11.2024.11.04.13.07.22
+ 5b1f17b1804b1-431bd917fa7sm192135615e9.18.2024.11.04.13.07.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:07:24 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:07:21 -0500
+ Mon, 04 Nov 2024 13:07:28 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:07:25 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
  Santosh Shukla <santosh.shukla@amd.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 28/65] amd_iommu: Rename variable mmio to mr_mmio
-Message-ID: <2e6f051cfc58e69dcb392cd245d8f01b0c2e963f.1730754238.git.mst@redhat.com>
+Subject: [PULL 29/65] amd_iommu: Add support for pass though mode
+Message-ID: <c1f46999ef506d9854534560a94d02cf3cf9edd1.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -108,73 +107,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 
-Rename the MMIO memory region variable 'mmio' to 'mr_mmio'
-so to correctly name align with struct AMDVIState::variable type.
-
-No functional change intended.
+Introduce 'nodma' shared memory region to support PT mode
+so that for each device, we only create an alias to shared memory
+region when DMA-remapping is disabled.
 
 Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
-Message-Id: <20240927172913.121477-2-santosh.shukla@amd.com>
+Message-Id: <20240927172913.121477-3-santosh.shukla@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.h  | 2 +-
- hw/i386/acpi-build.c | 4 ++--
- hw/i386/amd_iommu.c  | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ hw/i386/amd_iommu.h |  2 ++
+ hw/i386/amd_iommu.c | 49 ++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 42 insertions(+), 9 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 73619fe9ea..e5c2ae94f2 100644
+index e5c2ae94f2..be417e51c4 100644
 --- a/hw/i386/amd_iommu.h
 +++ b/hw/i386/amd_iommu.h
-@@ -353,7 +353,7 @@ struct AMDVIState {
-     uint32_t pprlog_head;        /* ppr log head */
+@@ -354,6 +354,8 @@ struct AMDVIState {
      uint32_t pprlog_tail;        /* ppr log tail */
  
--    MemoryRegion mmio;                 /* MMIO region                  */
-+    MemoryRegion mr_mmio;              /* MMIO region                  */
+     MemoryRegion mr_mmio;              /* MMIO region                  */
++    MemoryRegion mr_sys;
++    MemoryRegion mr_nodma;
      uint8_t mmior[AMDVI_MMIO_SIZE];    /* read/write MMIO              */
      uint8_t w1cmask[AMDVI_MMIO_SIZE];  /* read/write 1 clear mask      */
      uint8_t romask[AMDVI_MMIO_SIZE];   /* MMIO read/only mask          */
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 508a6094aa..9fcc2897b8 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2324,7 +2324,7 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-     /* Capability offset */
-     build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-     /* IOMMU base address */
--    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
-     /* PCI Segment Group */
-     build_append_int_noprefix(table_data, 0, 2);
-     /* IOMMU info */
-@@ -2359,7 +2359,7 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-     /* Capability offset */
-     build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-     /* IOMMU base address */
--    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
-     /* PCI Segment Group */
-     build_append_int_noprefix(table_data, 0, 2);
-     /* IOMMU info */
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 464f0b666e..abb64ea507 100644
+index abb64ea507..7c7760c573 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1598,10 +1598,10 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+@@ -60,8 +60,9 @@ struct AMDVIAddressSpace {
+     uint8_t bus_num;            /* bus number                           */
+     uint8_t devfn;              /* device function                      */
+     AMDVIState *iommu_state;    /* AMDVI - one per machine              */
+-    MemoryRegion root;          /* AMDVI Root memory map region */
++    MemoryRegion root;          /* AMDVI Root memory map region         */
+     IOMMUMemoryRegion iommu;    /* Device's address translation region  */
++    MemoryRegion iommu_nodma;   /* Alias of shared nodma memory region  */
+     MemoryRegion iommu_ir;      /* Device's interrupt remapping region  */
+     AddressSpace as;            /* device's corresponding address space */
+ };
+@@ -1412,6 +1413,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     AMDVIState *s = opaque;
+     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
+     int bus_num = pci_bus_num(bus);
++    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
  
-     /* set up MMIO */
--    memory_region_init_io(&s->mmio, OBJECT(s), &mmio_mem_ops, s, "amdvi-mmio",
--                          AMDVI_MMIO_SIZE);
-+    memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
-+                          "amdvi-mmio", AMDVI_MMIO_SIZE);
+     iommu_as = s->address_spaces[bus_num];
+ 
+@@ -1436,13 +1438,13 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+          * Memory region relationships looks like (Address range shows
+          * only lower 32 bits to make it short in length...):
+          *
+-         * |-----------------+-------------------+----------|
+-         * | Name            | Address range     | Priority |
+-         * |-----------------+-------------------+----------+
+-         * | amdvi_root      | 00000000-ffffffff |        0 |
+-         * |  amdvi_iommu    | 00000000-ffffffff |        1 |
+-         * |  amdvi_iommu_ir | fee00000-feefffff |       64 |
+-         * |-----------------+-------------------+----------|
++         * |--------------------+-------------------+----------|
++         * | Name               | Address range     | Priority |
++         * |--------------------+-------------------+----------+
++         * | amdvi-root         | 00000000-ffffffff |        0 |
++         * |  amdvi-iommu_nodma  | 00000000-ffffffff |       0 |
++         * |  amdvi-iommu_ir     | fee00000-feefffff |      64 |
++         * |--------------------+-------------------+----------|
+          */
+         memory_region_init_iommu(&amdvi_dev_as->iommu,
+                                  sizeof(amdvi_dev_as->iommu),
+@@ -1461,7 +1463,25 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                             64);
+         memory_region_add_subregion_overlap(&amdvi_dev_as->root, 0,
+                                             MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                            1);
++                                            0);
++
++        /* Build the DMA Disabled alias to shared memory */
++        memory_region_init_alias(&amdvi_dev_as->iommu_nodma, OBJECT(s),
++                                 "amdvi-sys", &s->mr_sys, 0,
++                                 memory_region_size(&s->mr_sys));
++        memory_region_add_subregion_overlap(&amdvi_dev_as->root, 0,
++                                            &amdvi_dev_as->iommu_nodma,
++                                            0);
++
++        if (!x86_iommu->pt_supported) {
++            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
++            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
++                                      true);
++        } else {
++            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
++                                      false);
++            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
++        }
+     }
+     return &iommu_as[devfn]->as;
+ }
+@@ -1602,6 +1622,17 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+                           "amdvi-mmio", AMDVI_MMIO_SIZE);
      memory_region_add_subregion(get_system_memory(), AMDVI_BASE_ADDR,
--                                &s->mmio);
-+                                &s->mr_mmio);
+                                 &s->mr_mmio);
++
++    /* Create the share memory regions by all devices */
++    memory_region_init(&s->mr_sys, OBJECT(s), "amdvi-sys", UINT64_MAX);
++
++    /* set up the DMA disabled memory region */
++    memory_region_init_alias(&s->mr_nodma, OBJECT(s),
++                             "amdvi-nodma", get_system_memory(), 0,
++                             memory_region_size(get_system_memory()));
++    memory_region_add_subregion_overlap(&s->mr_sys, 0,
++                                        &s->mr_nodma, 0);
++
      pci_setup_iommu(bus, &amdvi_iommu_ops, s);
      amdvi_init(s);
  }
