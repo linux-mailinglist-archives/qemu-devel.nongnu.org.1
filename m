@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A549BB055
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 10:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9429BB050
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 10:54:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7tn1-0002Vl-Jx; Mon, 04 Nov 2024 04:54:27 -0500
+	id 1t7tn2-0002WA-Au; Mon, 04 Nov 2024 04:54:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1t7tmz-0002VC-3l
+ id 1t7tmz-0002VA-0F
  for qemu-devel@nongnu.org; Mon, 04 Nov 2024 04:54:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1t7tmx-0002k2-DR
+ id 1t7tmx-0002jx-DK
  for qemu-devel@nongnu.org; Mon, 04 Nov 2024 04:54:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730714061;
+ s=mimecast20190719; t=1730714060;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1ZCdMFWAW+p9eCpAkQpTmJsY+P5AFLG61GLV7l5sZKw=;
- b=XcW5V4137CTT0pXioAq/YPbyaKoGGZzWD5CCRKotVfoiCh7pSp3ilHZuhq2fpwXJ9xtjii
- 0kTHUDbhhavcnx5xl+6gzABbjjSPLjRzRfRoSC7Ds7elKAydl7xrek6LAK3uN6kvor/Lqu
- h2ttOMSciisWXfp1K9QKOhhL3ocd7TE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FHtrzReOa/j1KY02SZCyfWRb9w55Kdov5F5zFubNRVY=;
+ b=M82NGvVk7UYXtmxRYkmeTiKiNpGBYapfoB13ZaC/DLt4VFqGYRtDQmSFnh/JU4QljkebAi
+ LcJfP1aR7lAL9j0ur/5qQ8aCHEwOElYeA+hu/SSHp3hEFBnt26D0LdlL1qkJz6r9VnI/yW
+ IIqOe9hi99JHXF2sjOm057FkS+M+YVA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-P6wjTqE-PeuIaTtTNHKOXQ-1; Mon,
- 04 Nov 2024 04:54:18 -0500
-X-MC-Unique: P6wjTqE-PeuIaTtTNHKOXQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-ae7mR26WNZ-mueoVNGoICw-1; Mon,
+ 04 Nov 2024 04:54:19 -0500
+X-MC-Unique: ae7mR26WNZ-mueoVNGoICw-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2068A19560AE; Mon,  4 Nov 2024 09:54:17 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 83D3C1955F28; Mon,  4 Nov 2024 09:54:18 +0000 (UTC)
 Received: from moe.brq.redhat.com (unknown [10.43.3.236])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D1FAF3000198; Mon,  4 Nov 2024 09:54:15 +0000 (UTC)
+ id 675A8300018D; Mon,  4 Nov 2024 09:54:17 +0000 (UTC)
 From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com,
 	kkostiuk@redhat.com
-Subject: [PATCH 1/4] qga: Don't access global variable in run_agent_once()
-Date: Mon,  4 Nov 2024 10:54:07 +0100
-Message-ID: <780bf01dec69fa68b8fe5a9c09187b124e0a56ec.1730713917.git.mprivozn@redhat.com>
+Subject: [PATCH 2/4] qga: Invert logic on return value in main()
+Date: Mon,  4 Nov 2024 10:54:08 +0100
+Message-ID: <5182ceb139a43aacaab2c8b833bf52b13279dcf0.1730713917.git.mprivozn@redhat.com>
 In-Reply-To: <cover.1730713917.git.mprivozn@redhat.com>
 References: <cover.1730713917.git.mprivozn@redhat.com>
 MIME-Version: 1.0
@@ -81,31 +81,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The run_agent_once() function is already given GAState via an
-argument. There's no need to access the global ga_state variable
-which points to the argument anyways (thanks to
-initialize_agent()). Worse, some parts of the function use the
-argument and the other use the global variable.  Stick with the
-function argument.
+Current logic on return value ('ret' variable) in main() is error
+prone. The variable is initialized to EXIT_SUCCESS and then set
+to EXIT_FAILURE on error paths. This makes it very easy to forget
+to set the variable to indicate error when adding new error path,
+as is demonstrated by handling of initialize_agent() failure.
+It's simply lacking setting of the variable.
+
+There's just one case where success should be indicated: when
+dumping the config ('-D' cmd line argument).
+
+To resolve this, initialize the variable to failure value and set
+it explicitly to success value in that one specific case.
 
 Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
 ---
- qga/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qga/main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/qga/main.c b/qga/main.c
-index 50186760bf..4a695235f0 100644
+index 4a695235f0..c003aacbe0 100644
 --- a/qga/main.c
 +++ b/qga/main.c
-@@ -1519,7 +1519,7 @@ static int run_agent_once(GAState *s)
-         return EXIT_FAILURE;
+@@ -1579,7 +1579,7 @@ static void stop_agent(GAState *s, bool requested)
+ 
+ int main(int argc, char **argv)
+ {
+-    int ret = EXIT_SUCCESS;
++    int ret = EXIT_FAILURE;
+     GAState *s;
+     GAConfig *config = g_new0(GAConfig, 1);
+     int socket_activation;
+@@ -1607,7 +1607,6 @@ int main(int argc, char **argv)
+     socket_activation = check_socket_activation();
+     if (socket_activation > 1) {
+         g_critical("qemu-ga only supports listening on one socket");
+-        ret = EXIT_FAILURE;
+         goto end;
+     }
+     if (socket_activation) {
+@@ -1631,7 +1630,6 @@ int main(int argc, char **argv)
+ 
+         if (!config->method) {
+             g_critical("unsupported listen fd type");
+-            ret = EXIT_FAILURE;
+             goto end;
+         }
+     } else if (config->channel_path == NULL) {
+@@ -1643,13 +1641,13 @@ int main(int argc, char **argv)
+             config->channel_path = g_strdup(QGA_SERIAL_PATH_DEFAULT);
+         } else {
+             g_critical("must specify a path for this channel");
+-            ret = EXIT_FAILURE;
+             goto end;
+         }
      }
  
--    g_main_loop_run(ga_state->main_loop);
-+    g_main_loop_run(s->main_loop);
+     if (config->dumpconf) {
+         config_dump(config);
++        ret = EXIT_SUCCESS;
+         goto end;
+     }
  
-     if (s->channel) {
-         ga_channel_free(s->channel);
 -- 
 2.45.2
 
