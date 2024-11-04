@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6989BBBE0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DC49BBBDD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:28:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80rr-000585-Fl; Mon, 04 Nov 2024 12:27:55 -0500
+	id 1t80rt-0005A0-Uo; Mon, 04 Nov 2024 12:27:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80ro-00057E-PA
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:53 -0500
+ id 1t80rs-00058u-1N
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80rl-0000DT-OD
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:52 -0500
+ id 1t80ro-0000F4-Ui
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741268;
+ s=mimecast20190719; t=1730741271;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rJNsDbAV50RLo0Vi2FXdvCjsDtZaOavVS7U5n7y+ISs=;
- b=CfBKyELN5Nj0wXVw8S/kjrugdDt1MESfnWGwqH09dlPRahiQ6NAVnx1kla2UMJBW7pBFsh
- 2VTd1PvPna6NJqPqi4lM+TppubdRm400hjymQAtX0rkw63bhor9VpX+mEfbNyCAjXlNQTm
- sAVYyB4CzczHNUT8ubE1LsecKmqzuO8=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mP3j3evq86lhHlL3nhlSwnDw7BkQlXrJv1c8ym7QLnQ=;
+ b=GC5+Xrlu7UxGHa3wtjioCx9SFZnEcWOh7qkA4OYT3+WcEfRanRFqGZ+tyUP4m2N7ErTsSI
+ vDBp/e4WcG1xckqYNDCaKxcp/o0bOgauv3vPHZsZCHj1PO8My7lnMWxdvfLM1MvCzUTbVn
+ +vsx3hmQ4lxXY6S6LUN+4xF3VSqhbEw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-BtnaXuVOPXyFw6v0_s_5aw-1; Mon, 04 Nov 2024 12:27:47 -0500
-X-MC-Unique: BtnaXuVOPXyFw6v0_s_5aw-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-539f7ed336bso2776531e87.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:27:47 -0800 (PST)
+ us-mta-453-dpAiKVBpNYma5k7JJBm-9Q-1; Mon, 04 Nov 2024 12:27:49 -0500
+X-MC-Unique: dpAiKVBpNYma5k7JJBm-9Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4315a0f25afso30782255e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:27:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741265; x=1731346065;
+ d=1e100.net; s=20230601; t=1730741268; x=1731346068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rJNsDbAV50RLo0Vi2FXdvCjsDtZaOavVS7U5n7y+ISs=;
- b=lvWwlcEk0pf4CBxm5Mi4U90WQZ7hDilNCyQQBNbFJLMQXRcQYPV5RMwGcSOWjYhVvO
- qNsnrnJkMWnEpGBJ4eKCrk4dIEyRrZuhNkayFtG13zJXYofwh8lNU7Br5aex5KWODsvH
- ismacY7n+czIbFUtxlMOylz/1C18Bi5uJhuHlqfMnudQlMsKj69oi2qSezRS5vUM9zNo
- r2ICH3ydCfWKzF6uw2esONHVZQ1ses5NkYjekWlYJWO2I9jwxrLmwLnsGo89TdP0PQWm
- /LEXit+6i0SwmNRFQZCO3mZJ+ab8zcrfQ2PJFo/iDK5KpvnlqbJN+/D3nrN7XKuLwYzj
- 3pDA==
-X-Gm-Message-State: AOJu0YyM7FaYpWY1gLQfXJfGPxMtWTYLDTqXG4hB0AqxGNAihz7ucUZO
- ldMdSA7SzMDi6OXw9c8pMxxuaWJcSUJH4hQkqViC12/RBg03WI3J1LMFn44ifX8agsPIErB1y3o
- IYrx596B124WQ20X01bPIWGv1nIMSrO2VtIOZ+qNaNzWytY6XvEeA8I3P5SWBee1ZAG9PPcjbia
- Kfp5IU7ERO9nxBq4Ar7EpW0pcACSDES23qDo1v4ws=
-X-Received: by 2002:a05:6512:10c7:b0:539:fcb2:2ff4 with SMTP id
- 2adb3069b0e04-53b34b373dcmr14278426e87.53.1730741265127; 
- Mon, 04 Nov 2024 09:27:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGlT+hpJ0aCm//XZ3HY8wC27OYoLAW4lEWKXwL/wMigi+xlVsujdyAoJ9FRT1yye+S+1sYI2A==
-X-Received: by 2002:a05:6512:10c7:b0:539:fcb2:2ff4 with SMTP id
- 2adb3069b0e04-53b34b373dcmr14278401e87.53.1730741264614; 
- Mon, 04 Nov 2024 09:27:44 -0800 (PST)
+ bh=mP3j3evq86lhHlL3nhlSwnDw7BkQlXrJv1c8ym7QLnQ=;
+ b=wuj7FARpTPdtJax1iPusjc4oatSBQe5A8zF4bQj06PNCCAav/XtzD9oYYcSwPNPYyq
+ rFWNA0RGoyBj4J/8i15VTFpfWuScMCdNgARSjPk8VVVf6kOrjv7UPHf6m0jb/+dabjhi
+ luNLIGqBGUtOa3VrFQyfS9pZmCCR8+DmqSR2sT2OYoeVojdrRtZJkWMEKfjdoJ+3xoZ3
+ GXVlAF8pj4eBtUua9OCIyJoqPvXZTLkxwybeyABIkTtBfUyMR9WhSSEiMqNhM9LXScxQ
+ faciA3pp4quw+C5ameKmwJG6N5y6Kv/MBm/HVBy4Ce8cxJ+jPpffYod9jNqQvSBQE0Ym
+ op+g==
+X-Gm-Message-State: AOJu0YwV4hZwItZeXSgkZx9EVYEQgoYRDsZcu2t5fcZDTl0TROH/Af7z
+ eScM/SE1MczA8F9HA/cK/VRlLcvS3xzHgns/53FXWb5/IEFIwSVninzduVMhJgmQrczUf96FN91
+ e2U34/7csxpY/R6dfxlK+pAExP8YCw9zxI1qkLwYd4+EyZbi28/OSM5oKy7aAbXJYdjYf1r2Lgd
+ umXwbfAzyYUKxRQdS+Z7gYReVJLrWWSx6PijttyQo=
+X-Received: by 2002:a05:600c:45cd:b0:431:5eeb:2214 with SMTP id
+ 5b1f17b1804b1-4319ad363eamr270835845e9.33.1730741267783; 
+ Mon, 04 Nov 2024 09:27:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDt2bahnHtLFrwePwW6kfkxzDFdriaiVVUuijGKMBoP0pQ6+DQoZl9yA8nDdNn8I5NY8LjKg==
+X-Received: by 2002:a05:600c:45cd:b0:431:5eeb:2214 with SMTP id
+ 5b1f17b1804b1-4319ad363eamr270835565e9.33.1730741267387; 
+ Mon, 04 Nov 2024 09:27:47 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d685308sm157860855e9.33.2024.11.04.09.27.42
+ 5b1f17b1804b1-4327d5ab2aasm159229815e9.6.2024.11.04.09.27.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:27:43 -0800 (PST)
+ Mon, 04 Nov 2024 09:27:45 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 10/40] rust: remove uses of #[no_mangle]
-Date: Mon,  4 Nov 2024 18:26:49 +0100
-Message-ID: <20241104172721.180255-11-pbonzini@redhat.com>
+Subject: [PULL 11/40] rust: modernize link_section usage for ELF platforms
+Date: Mon,  4 Nov 2024 18:26:50 +0100
+Message-ID: <20241104172721.180255-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,129 +104,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mangled symbols do not cause any issue; disabling mangling is only useful if
-C headers reference the Rust function, which is not the case here.
+Some newer ABI implementations do not provide .ctors; and while
+some linkers rewrite .ctors into .init_array, not all of them do.
+Use the newer .init_array ABI, which works more reliably, and
+apply it to all non-Apple, non-Windows platforms.
+
+This is similar to how the ctor crate operates; without this change,
+"#[derive(Object)]" does not work on Fedora 41.
 
 Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       | 4 ----
- rust/hw/char/pl011/src/device_class.rs | 2 --
- rust/hw/char/pl011/src/memory_ops.rs   | 2 --
- rust/qemu-api/src/definitions.rs       | 1 -
- rust/qemu-api/src/device_class.rs      | 2 --
- 5 files changed, 11 deletions(-)
+ rust/qemu-api-macros/src/lib.rs  |  7 +++++--
+ rust/qemu-api/src/definitions.rs | 14 ++++++++++----
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index c7193b41bee..0347a027c5f 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -514,7 +514,6 @@ pub fn update(&self) {
- /// We expect the FFI user of this function to pass a valid pointer, that has
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_can_receive(opaque: *mut c_void) -> c_int {
-     unsafe {
-         debug_assert!(!opaque.is_null());
-@@ -530,7 +529,6 @@ pub fn update(&self) {
- /// readable/writeable from one thread at any time.
- ///
- /// The buffer and size arguments must also be valid.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_receive(
-     opaque: *mut core::ffi::c_void,
-     buf: *const u8,
-@@ -554,7 +552,6 @@ pub fn update(&self) {
- /// We expect the FFI user of this function to pass a valid pointer, that has
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_event(opaque: *mut core::ffi::c_void, event: QEMUChrEvent) {
-     unsafe {
-         debug_assert!(!opaque.is_null());
-@@ -589,7 +586,6 @@ pub fn update(&self) {
- /// We expect the FFI user of this function to pass a valid pointer, that has
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_init(obj: *mut Object) {
-     unsafe {
-         debug_assert!(!obj.is_null());
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index b7ab31af02d..2ad80451e87 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -46,7 +46,6 @@
- /// We expect the FFI user of this function to pass a valid pointer, that has
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_realize(dev: *mut DeviceState, _errp: *mut *mut Error) {
-     unsafe {
-         assert!(!dev.is_null());
-@@ -60,7 +59,6 @@
- /// We expect the FFI user of this function to pass a valid pointer, that has
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
--#[no_mangle]
- pub unsafe extern "C" fn pl011_reset(dev: *mut DeviceState) {
-     unsafe {
-         assert!(!dev.is_null());
-diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
-index 8d066ebf6d0..5a5320e66c3 100644
---- a/rust/hw/char/pl011/src/memory_ops.rs
-+++ b/rust/hw/char/pl011/src/memory_ops.rs
-@@ -22,7 +22,6 @@
-     },
- };
- 
--#[no_mangle]
- unsafe extern "C" fn pl011_read(
-     opaque: *mut core::ffi::c_void,
-     addr: hwaddr,
-@@ -44,7 +43,6 @@
-     }
- }
- 
--#[no_mangle]
- unsafe extern "C" fn pl011_write(
-     opaque: *mut core::ffi::c_void,
-     addr: hwaddr,
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index 59aba592d9a..70e3f920460 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -16,8 +16,11 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
+     let expanded = quote! {
+         #[allow(non_upper_case_globals)]
+         #[used]
+-        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
+-        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
++        #[cfg_attr(
++            not(any(target_vendor = "apple", target_os = "windows")),
++            link_section = ".init_array"
++        )]
++        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
+         #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+         pub static #module_static: extern "C" fn() = {
+             extern "C" fn __register() {
 diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
-index 0b681c593f2..49ac59af123 100644
+index 49ac59af123..3323a665d92 100644
 --- a/rust/qemu-api/src/definitions.rs
 +++ b/rust/qemu-api/src/definitions.rs
-@@ -53,7 +53,6 @@ extern "C" fn __load() {
+@@ -31,8 +31,11 @@ pub trait Class {
+ macro_rules! module_init {
+     ($func:expr, $type:expr) => {
+         #[used]
+-        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
+-        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
++        #[cfg_attr(
++            not(any(target_vendor = "apple", target_os = "windows")),
++            link_section = ".init_array"
++        )]
++        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
          #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
          pub static LOAD_MODULE: extern "C" fn() = {
              extern "C" fn __load() {
--                #[no_mangle]
-                 unsafe extern "C" fn $func() {
-                     $body
-                 }
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index b6b68cf9ce2..2219b9f73d0 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -9,7 +9,6 @@
- #[macro_export]
- macro_rules! device_class_init {
-     ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, legacy_reset_fn => $legacy_reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
--        #[no_mangle]
-         pub unsafe extern "C" fn $func(
-             klass: *mut $crate::bindings::ObjectClass,
-             _: *mut ::core::ffi::c_void,
-@@ -103,7 +102,6 @@ const fn _calc_prop_len() -> usize {
-             ]
-         }
- 
--        #[no_mangle]
-         pub static mut $ident: $crate::device_class::Properties<PROP_LEN> = $crate::device_class::Properties(::std::sync::OnceLock::new(), _make_properties);
-     };
- }
+@@ -48,8 +51,11 @@ extern "C" fn __load() {
+         // NOTE: To have custom identifiers for the ctor func we need to either supply
+         // them directly as a macro argument or create them with a proc macro.
+         #[used]
+-        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
+-        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
++        #[cfg_attr(
++            not(any(target_vendor = "apple", target_os = "windows")),
++            link_section = ".init_array"
++        )]
++        #[cfg_attr(target_vendor = "apple", link_section = "__DATA,__mod_init_func")]
+         #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
+         pub static LOAD_MODULE: extern "C" fn() = {
+             extern "C" fn __load() {
 -- 
 2.47.0
 
