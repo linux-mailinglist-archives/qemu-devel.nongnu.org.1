@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111B99BBF9B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D6F9BBF92
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84K7-0000h4-FW; Mon, 04 Nov 2024 16:09:19 -0500
+	id 1t84KG-0001UP-Aa; Mon, 04 Nov 2024 16:09:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K4-0000ag-JF
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:16 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KB-0001Ed-QJ
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K3-0005We-1r
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:16 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KA-0005XM-8O
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754554;
+ s=mimecast20190719; t=1730754561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OG4lyvfSQwzgYZmOFt3djPmHvHJCXcfAK3eUcAgOhtk=;
- b=AfjIFj0XR4lzL6L5EvR8uiCU6zzDl9rankvoXbVUlVUAIyC3/NYASMAfGW0jsX6Bo8aulm
- gx2AJvYO3lcFBGrWORjq3FaOtyhKg8yHIY/pjVZQ0Ivy0NhJigmaHYfQldI4SjoJ2lOWVs
- EOsCx4j2IQELynt7CTotynjFsr19vLI=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/YkVz0N+ZYz0sOInTQ7tr8J7S7sTGzbncPzAkgRHAQg=;
+ b=NrFJT/aWasH+6HrweUnXBvzfGH3o60/gOW4D7pDBLD7KcenO/XzGTzK8GfETMKVS3ZQc+c
+ v2JXfWAJRHRnZW/I6u9XhKunsjTwhM32ptsidf/9nrgeEc9z1m91Jlqjn5BjochkCpUMJJ
+ pHFqp4EkvRbHEMcMRnePsIC2fvTpkRo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-kE_jAxS1OXCt5dTlSYXQHA-1; Mon, 04 Nov 2024 16:09:13 -0500
-X-MC-Unique: kE_jAxS1OXCt5dTlSYXQHA-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2fb55e102b6so29367951fa.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:12 -0800 (PST)
+ us-mta-462-Flpomyp0PwO6rj1V6DGfjg-1; Mon, 04 Nov 2024 16:09:20 -0500
+X-MC-Unique: Flpomyp0PwO6rj1V6DGfjg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4314f1e0f2bso30703355e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754551; x=1731359351;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OG4lyvfSQwzgYZmOFt3djPmHvHJCXcfAK3eUcAgOhtk=;
- b=PeFhjfN96GpsAcySZLbnCv4/aF2tqUYLUX9/0R9FZVt5yBe3/EMTX2bEeXwdPMzoRY
- D9jBnVkvW0E8Qf8muF2xEieWMDsaLZINM+fd1tONJVTNB4iJxL5wxKnBZN/MViojdoJg
- kbTArGPTymvuefcLv39uOcbBmaIAtG75vQcpbmLFiCD0oEtTLAldBOTPK2bl/vNV1FXt
- 1Dq/wa+8n1IdBmk4lhE9KTJBMuyHCPRxLxHTHPv8HCVkVfF6IdhMnino1yGxu5i5d8U/
- K0wLN6enuMICsIkBMUsequG0CvtuLbbjVH+g3bkv9Y2tVcdVRFrQoaAU0xIHa3BmKJJB
- 8A7A==
-X-Gm-Message-State: AOJu0YyD2W4piJhZMeX6/5em6Undrd/VOAWQH2ZyvUlmaFa3o+xYFGNg
- p2KwI5sVoy+Lc6OdmqtBwSrbv978bRE4i4RaCLoLAPJR3UEI2dlbcxIRDl3GwipnVU9yNlcymYT
- AK4ABcg6fY7ZhYQwtNPbmJN3i2UehyFMg2KLffKqrMuc7NGSY0N3YVMInPdgBafwJ25JmZiORZQ
- yzVWaBobEaPzmLiYnB6CSabI7DD2jflA==
-X-Received: by 2002:a05:651c:220c:b0:2fb:5014:c998 with SMTP id
- 38308e7fff4ca-2fedb7d999cmr65342601fa.28.1730754550714; 
- Mon, 04 Nov 2024 13:09:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG+e6pMijqXqXpcWcgXAU0eEMLqWiYhF7ynvUMIeDGJ9RdNskcsgc0NqCVkb1xHWNVAf49YPg==
-X-Received: by 2002:a05:651c:220c:b0:2fb:5014:c998 with SMTP id
- 38308e7fff4ca-2fedb7d999cmr65342411fa.28.1730754550224; 
- Mon, 04 Nov 2024 13:09:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730754558; x=1731359358;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/YkVz0N+ZYz0sOInTQ7tr8J7S7sTGzbncPzAkgRHAQg=;
+ b=O5eDpYIpDuT3LtskG37wNvqV/dkH383Iz0twubyvLJCE3ijNHs7whZmrUSGHl8nu+X
+ NpzpQJAB5l4w7WRGiD2PQxF6xLuooMAAlXGbclAh3OunNL1wuaoO6ULaUyMWDTriBWIW
+ 2lnqra3DiYq6WpdnN1L9Gz3pNYP4h25vB37WGPjK1aYfNbFoMQwo2t3fApSgYwNNT2th
+ ep167SDlj3ulN87BWIzIfkoWULyAmYZMYbZtRb/2boM0mwRPM0oZfzyV/9wSn+OSWgwx
+ RUT7JNlA421mdHKlH6Ud15wlQJldtw2wsqbwQKfGVzFqArXi65gXanbXxSrQa4yi/gle
+ vzwg==
+X-Gm-Message-State: AOJu0YxrB63nuRa2I16LLUSILRbvOgr6fqdTg5ds1H8azl5QV7EaeBuP
+ mGOJFBibl53O6jjOv8AR1Aatk+T1tSbRMgRZQWWE63QHCQpDnEk3+SzNi4OY9jbry9qaHUqumx7
+ Vpw1nRTAJvocxpDnip2qthM5XaotMsth08KCWt13ISrjT2hvQu0ijSpqimYUkuwldxCC4c5BxQR
+ osvrtvdYUcR6lYH0jKp+yrB5+JXRljIg==
+X-Received: by 2002:a5d:5f43:0:b0:37c:d20d:447c with SMTP id
+ ffacd0b85a97d-381c7a6c758mr12746796f8f.29.1730754558529; 
+ Mon, 04 Nov 2024 13:09:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IET/jpJhQji/8AsjQhEcmZralLsxtrg2HTRhR+3H1CnlSM/YZjQ054ILqxA6EkmvRksv5piyw==
+X-Received: by 2002:a5d:5f43:0:b0:37c:d20d:447c with SMTP id
+ ffacd0b85a97d-381c7a6c758mr12746762f8f.29.1730754558097; 
+ Mon, 04 Nov 2024 13:09:18 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d4b82sm14153010f8f.43.2024.11.04.13.09.08
+ ffacd0b85a97d-381c10b7d2bsm14165387f8f.16.2024.11.04.13.09.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:09 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:07 -0500
+ Mon, 04 Nov 2024 13:09:17 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:15 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 55/65] hw/cxl: Ensure there is enough data for the header in
- cmd_ccls_set_lsa()
-Message-ID: <5300bdf5898dda5989215e183bccd555cc782b9a.1730754238.git.mst@redhat.com>
+ Roque Arcudia Hernandez <roqueh@google.com>,
+ Nabih Estefan <nabihestefan@google.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 57/65] hw/pci: Add parenthesis to PCI_BUILD_BDF macro
+Message-ID: <26f2660bf7a3f0b6e9a939657ba656f4891ff46d.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,35 +104,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Roque Arcudia Hernandez <roqueh@google.com>
 
-The properties of the requested set command cannot be established if
-len_in is less than the size of the header.
+The bus parameter in the macro PCI_BUILD_BDF is not surrounded by
+parenthesis. This can create a compile error when warnings are
+treated as errors or can potentially create runtime errors due to the
+operator precedence.
 
-Reported-by: Esifiel <esifiel@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101133917.27634-10-Jonathan.Cameron@huawei.com>
+For instance:
+
+ file.c:x:32: error: suggest parentheses around '-' inside '<<'
+ [-Werror=parentheses]
+   171 | uint16_t bdf = PCI_BUILD_BDF(a - b, sdev->devfn);
+       |                              ~~^~~
+ include/hw/pci/pci.h:19:41: note: in definition of macro
+ 'PCI_BUILD_BDF'
+    19 | #define PCI_BUILD_BDF(bus, devfn)     ((bus << 8) | (devfn))
+       |                                         ^~~
+ cc1: all warnings being treated as errors
+
+Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
+Reviewed-by: Nabih Estefan <nabihestefan@google.com>
+Message-Id: <20241101215923.3399311-1-roqueh@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 078782e8b9..f4a436e172 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1503,8 +1503,8 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
-     const size_t hdr_len = offsetof(struct set_lsa_pl, data);
- 
-     *len_out = 0;
--    if (!len_in) {
--        return CXL_MBOX_SUCCESS;
-+    if (len_in < hdr_len) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-     }
- 
-     if (set_lsa_payload->offset + len_in > cvc->get_lsa_size(ct3d) + hdr_len) {
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 38ffa7bcee..135695c551 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -16,7 +16,7 @@ extern bool pci_available;
+ #define PCI_BUS_NUM(x)          (((x) >> 8) & 0xff)
+ #define PCI_SLOT(devfn)         (((devfn) >> 3) & 0x1f)
+ #define PCI_FUNC(devfn)         ((devfn) & 0x07)
+-#define PCI_BUILD_BDF(bus, devfn)     ((bus << 8) | (devfn))
++#define PCI_BUILD_BDF(bus, devfn)     (((bus) << 8) | (devfn))
+ #define PCI_BDF_TO_DEVFN(x)     ((x) & 0xff)
+ #define PCI_BUS_MAX             256
+ #define PCI_DEVFN_MAX           256
 -- 
 MST
 
