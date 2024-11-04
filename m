@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6799BA9CB
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA4A9BA9EF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:28:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kpM-0007fx-4X; Sun, 03 Nov 2024 19:20:16 -0500
+	id 1t7kpc-0007pM-3B; Sun, 03 Nov 2024 19:20:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpJ-0007fZ-HV; Sun, 03 Nov 2024 19:20:13 -0500
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ id 1t7kpN-0007ig-DK; Sun, 03 Nov 2024 19:20:17 -0500
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpI-0002ZD-3a; Sun, 03 Nov 2024 19:20:13 -0500
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-3a6af694220so9881845ab.1; 
- Sun, 03 Nov 2024 16:20:11 -0800 (PST)
+ id 1t7kpL-0002Zr-VL; Sun, 03 Nov 2024 19:20:17 -0500
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3e600add5dcso1564002b6e.2; 
+ Sun, 03 Nov 2024 16:20:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679610; x=1731284410; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679614; x=1731284414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dTPOuJL+gEDvzg99HYFtkObHP58qYB3o1L++xvixkVI=;
- b=akslZIp5P2K3gctEg5ZurbB5cBSIOfDzEtMUXZM0ZtuuswacZO6rKzkSiy3ETt/0Fz
- f+b7Az8LpG+WKENYWqVmViQo+7NDldnSDaf3o5CbdUbPyiImk2I/fYtD6OqQsFUemIoh
- ZdOynUbMOcGb26UKDFnbhsHCDUClYpGwM+30JnzyRR6bIIv13HbGUtsDRy1MlJ2d+3ih
- fgZsj9w90LUFN2A2bJJdSD+yElrrfAWYCSDl8HBL0lSAcQpGGIRrD9x3q7ilKj2mpE1x
- CctRbH/2LCnuDakDP2SkqEO/BsrGeg468gFsYCHNVim2D0lNrpbNaxzC2Scjbj0hoFNY
- n7Fg==
+ bh=I5sPzbUGgSsU4x2ABl9K5sldSfgeOH1YuMonG4CNaHQ=;
+ b=DuJnHZK3JELeRsWnIFALa5Hd+g5mghPsf3HuXRdo7SLccx8mQLu+dhW0F+/Ux6bB0T
+ k/fd4GBQ0YHacz1qHplbqTD40EJaTUGncKP9faKjk5LoedffHIfWPhvr3UwqdexhFEV3
+ ZdUqE8yapoSn6I1wOlD08Ci6SxoJznHnmds6qb5kj7ZdDzudZYeJaUazWOPVhxNPH0HR
+ pliT/vVcEh3VCgQqYIHdpxGce804pRhn5crO+W4iDZ0W+6KakcPceJSAfdAPYQJoOeUL
+ wwx4aFmMY36xMGIXp071YYJ1W49jUjupiBRCHhYS/+XT+/ASTRAc9eZs5GHGk4nv1hwb
+ SMIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679610; x=1731284410;
+ d=1e100.net; s=20230601; t=1730679614; x=1731284414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dTPOuJL+gEDvzg99HYFtkObHP58qYB3o1L++xvixkVI=;
- b=D1WWb9TihzLjLIuqhE4JZiZoXbKl9/14N0WyFX7fG+YtPl3zm8tlBtcT0kz7ahxrbq
- nm8eGuZhlbI4zPAuT6wziSnAHJwRwTrndte2PV/2vjcStQGlWh1oWof9+3oaPMdtsS38
- olI/AYQ2NuvSdOaAegZj2u49k30ScnDA+CRfGw8O8432PjoDTFJ5yXzCfZftKU5KoP3e
- aznWnWQwEwPE9vwSMoozMpKuyoA+4sTU01S0Al370b6HY0Em9RFTIH/Og7ibcxTLMeqq
- m+R6fDQQVR2Sr0BoyLIDERdeH5D+e51o+9eDcW+gGAFYp4m9eJFW3NeOI6Ua/KBE60vn
- PHeQ==
+ bh=I5sPzbUGgSsU4x2ABl9K5sldSfgeOH1YuMonG4CNaHQ=;
+ b=Ck+iAzOOIU7c8D3vPAK5k4bGk9+TVI+YG6mpwQbifIAHotbaHch8OtBz3hACnesjxc
+ a6OPlD6Zp5yvfDTPd4cyrftdrT0Wv+BMgvT/GBWB6k07nEuGf+a8o74IIvb22Sl4faqF
+ SWnlZhv4yct4u1TtZWattmnYGwrCT3+xsN4sTDReFls4c7uF+GUXoHBLQOSPiEnFD4rx
+ vh12rXN6a9qrSHZ9ByKJ4D6+q/Uj9W/M94kHaTVdsWWAwf81Xuo4L/TaLDLjvUirzesg
+ xTMPiVYndiV3IB9bB7MD8GcIDXhH4ciLUzQoi2w/UUfz8/0SVtCmo4waMlWOxj1Wwr5N
+ HnMg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWUaeG3YfyfvTTGbfBKq09RKBqHjg2n014aFaXTNml/6iim+S0hHLCKoAomhoOY0evjwfFOws+N5g==@nongnu.org
-X-Gm-Message-State: AOJu0Yy2t2TkwqWqj1knW13jHYzLCFATvIPsww9CMKBF4s/msfb6nglI
- yXptOZRJaMK+F4VxjQ81rcgSy2y5ugxr3W/v9gaKSvb2F0U8oaymQ2oD4A==
-X-Google-Smtp-Source: AGHT+IEateCgHg4ilbu4YSkbnBLgK+EbtZ3L33Np7kbIZG6OAfQu3BBu4eeNV/ij7rzWNp1yeOjAAg==
-X-Received: by 2002:a92:ca4a:0:b0:3a0:9c20:8070 with SMTP id
- e9e14a558f8ab-3a6b03b0c7emr101783335ab.20.1730679610129; 
- Sun, 03 Nov 2024 16:20:10 -0800 (PST)
+ AJvYcCV1FpfHs3gz2ft3FLBevamr+P9lQqWDoG3wi9vsfxN5jZs0G0XALfkWuE6LT1PSIBCnrz5jjLC+2g==@nongnu.org
+X-Gm-Message-State: AOJu0Yz59jigthWszd2PF+bkLuT8TThq6BSS3xMVLF2/3dc7d1wPFL13
+ kYoeDntAvO0nM15yhruspO0xCt3e0nEbL0d8ES1uwQpdSs2j5bEtWLf1gA==
+X-Google-Smtp-Source: AGHT+IH87p294n2CcfhzwQlusQ1FEG2uTgbaXNTUeEZXavl/i6ZNpysioGZhmsFqgSU7Ozel3yqTSQ==
+X-Received: by 2002:a05:6808:2e8b:b0:3e6:ccc:2d91 with SMTP id
+ 5614622812f47-3e758c9d90amr9372381b6e.29.1730679613649; 
+ Sun, 03 Nov 2024 16:20:13 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.06
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:20:09 -0800 (PST)
+ Sun, 03 Nov 2024 16:20:13 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 16/67] hw/ppc: fix decrementer with BookE timers
-Date: Mon,  4 Nov 2024 10:18:05 +1000
-Message-ID: <20241104001900.682660-17-npiggin@gmail.com>
+Subject: [PULL 17/67] ppc/spapr: remove deprecated machine pseries-2.1
+Date: Mon,  4 Nov 2024 10:18:06 +1000
+Message-ID: <20241104001900.682660-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +95,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-The BookE decrementer stops at 0, meaning that it won't decremented
-towards "negative" values. However, the current logic is inverted: decr
-is updated solely when the resulting value would be negative.
+Commit 1392617d3576 intended to tag pseries-2.1 - 2.11 machines as
+deprecated with reasons mentioned in its commit log.
+Removing pseries-2.1 specific code with this patch for now.
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Fixes: 8e0a5ac87800 ("hw/ppc: Avoid decrementer rounding errors")
+Suggested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/ppc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/core/machine.c   | 11 -----------
+ hw/ppc/spapr.c      | 11 -----------
+ include/hw/boards.h |  3 ---
+ 3 files changed, 25 deletions(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index fde4619412..b86b5847de 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -728,7 +728,9 @@ static inline int64_t __cpu_ppc_load_decr(CPUPPCState *env, int64_t now,
-     int64_t decr;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17eba..a41d1dbe26 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -297,17 +297,6 @@ const size_t hw_compat_2_3_len = G_N_ELEMENTS(hw_compat_2_3);
+ GlobalProperty hw_compat_2_2[] = {};
+ const size_t hw_compat_2_2_len = G_N_ELEMENTS(hw_compat_2_2);
  
-     n = ns_to_tb(tb_env->decr_freq, now);
--    if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
-+
-+    /* BookE timers stop when reaching 0.  */
-+    if (next < n && tb_env->flags & PPC_TIMER_BOOKE) {
-         decr = 0;
-     } else {
-         decr = next - n;
+-GlobalProperty hw_compat_2_1[] = {
+-    { "intel-hda", "old_msi_addr", "on" },
+-    { "VGA", "qemu-extended-regs", "off" },
+-    { "secondary-vga", "qemu-extended-regs", "off" },
+-    { "virtio-scsi-pci", "any_layout", "off" },
+-    { "usb-mouse", "usb_version", "1" },
+-    { "usb-kbd", "usb_version", "1" },
+-    { "virtio-pci", "virtio-pci-bus-master-bug-migration", "on" },
+-};
+-const size_t hw_compat_2_1_len = G_N_ELEMENTS(hw_compat_2_1);
+-
+ MachineState *current_machine;
+ 
+ static char *machine_get_kernel(Object *obj, Error **errp)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 2c10a70a48..e9518ff8b3 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -5381,17 +5381,6 @@ static void spapr_machine_2_2_class_options(MachineClass *mc)
+ }
+ DEFINE_SPAPR_MACHINE(2, 2);
+ 
+-/*
+- * pseries-2.1
+- */
+-
+-static void spapr_machine_2_1_class_options(MachineClass *mc)
+-{
+-    spapr_machine_2_2_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_1, hw_compat_2_1_len);
+-}
+-DEFINE_SPAPR_MACHINE(2, 1);
+-
+ static void spapr_machine_register_types(void)
+ {
+     type_register_static(&spapr_machine_info);
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 5966069baa..44d19e1ffc 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -828,7 +828,4 @@ extern const size_t hw_compat_2_3_len;
+ extern GlobalProperty hw_compat_2_2[];
+ extern const size_t hw_compat_2_2_len;
+ 
+-extern GlobalProperty hw_compat_2_1[];
+-extern const size_t hw_compat_2_1_len;
+-
+ #endif
 -- 
 2.45.2
 
