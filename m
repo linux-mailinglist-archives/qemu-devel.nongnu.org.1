@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1309BB004
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 10:43:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8759BAFFD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 10:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7tbG-0004fq-RG; Mon, 04 Nov 2024 04:42:18 -0500
+	id 1t7tbK-0004gj-TX; Mon, 04 Nov 2024 04:42:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1t7tbB-0004eg-N6
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 04:42:13 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1t7tbB-0004es-W1
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 04:42:15 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1t7tb7-0000kV-RO
+ id 1t7tb8-0000l1-Ra
  for qemu-devel@nongnu.org; Mon, 04 Nov 2024 04:42:13 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48fdat008888;
- Mon, 4 Nov 2024 09:41:53 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48fj4H012809;
+ Mon, 4 Nov 2024 09:41:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=corp-2023-11-20; bh=efxZ+pER+q4v74XJIjjsu0KmwnruS
- Bhe+A90aSlQdbo=; b=hLdiW093K/QE38G1v1sC5r12yPvRtmd5+FDKAw+mrqNVD
- 6JiT4wVq6trvsw7yGzONcCUX++YlrHeekSb6KUWTHOv/uNMNsdTv1sklTCzzPwYl
- JSJTTS784rijrhgm0DhcEtFYdjmLiXgY5F5gh9sYSisqx2oF8wuNwP8x/aOb/XHF
- edQlYB7cIOmszSSNdo6h6yMRdjdNnty0gWwLt7spqzFcgkUvY5UoAkDZL267PCzX
- oCRaLzR4aeKevgk7eBRfax+rP6cI+Kyzzvq+mI5HduAsYoYPq5iGBIctdA0x0kTy
- VPwFrjjEhEnadc/z2D6eMMnfFGG+fWnLxsZOGgUWw==
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=corp-2023-11-20; bh=8dj9+
+ Fj2Y7+fcJzsYZdCfnhnZ64eJxfakPqpai/l9Oc=; b=UsR1EPUSgMA/8T3Uj4kdO
+ IOMuRDOvkNtmec6hplYuqak/t05nN03z2SzN7ywRj462Mmg63oZ3g7VWZDBwtG3E
+ fFNgIyI0SNSM5X5RjlrWki5kWOLZEDfMIsaDlityqtvuJoamNgBYvmJSvv6Nqkew
+ 6AEiuTWyABosn7lJ+mXuhOKiEXLgK+2W+hx5Cb6ePcnN8Jtm4CLuQxm+6Y1lihu8
+ 72BnNJe1ctP1YUXea5AmSXlgRUv2sweKIARO6AjWrIIAmJmSVLrp9jNS68HKD4cR
+ EyzZ5AsU7KMp1SkB+R9VLNIn0tIGgVH2wVndFLkYFyBeWsBasnS9XmbwKFMVWpjz
+ A==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nbpsj984-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nanytbxg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Nov 2024 09:41:53 +0000 (GMT)
+ Mon, 04 Nov 2024 09:41:55 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4A49fL0h009833; Mon, 4 Nov 2024 09:41:52 GMT
+ with ESMTP id 4A48fZlX009108; Mon, 4 Nov 2024 09:41:54 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 42nahbt084-1
+ 42nahbt090-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Nov 2024 09:41:52 +0000
+ Mon, 04 Nov 2024 09:41:54 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A49fqfc018519;
- Mon, 4 Nov 2024 09:41:52 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A49fqfe018519;
+ Mon, 4 Nov 2024 09:41:54 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 42nahbt06k-1; Mon, 04 Nov 2024 09:41:52 +0000
+ 42nahbt06k-2; Mon, 04 Nov 2024 09:41:53 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
@@ -59,10 +60,12 @@ Cc: pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
  lyan@digitalocean.com, khorenko@virtuozzo.com,
  alexander.ivanov@virtuozzo.com, den@virtuozzo.com, joe.jin@oracle.com,
  davydov-max@yandex-team.ru
-Subject: [PATCH 0/7] target/i386/kvm/pmu: Enhancement, Bugfix and Cleanup
-Date: Mon,  4 Nov 2024 01:40:15 -0800
-Message-ID: <20241104094119.4131-1-dongli.zhang@oracle.com>
+Subject: [PATCH 1/7] target/i386: disable PerfMonV2 when PERFCORE unavailable
+Date: Mon,  4 Nov 2024 01:40:16 -0800
+Message-ID: <20241104094119.4131-2-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241104094119.4131-1-dongli.zhang@oracle.com>
+References: <20241104094119.4131-1-dongli.zhang@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
@@ -73,10 +76,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  mlxlogscore=999 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2411040085
-X-Proofpoint-ORIG-GUID: DxPDOSl2QbZlB_mlYH2bG4qAi-qYaU3s
-X-Proofpoint-GUID: DxPDOSl2QbZlB_mlYH2bG4qAi-qYaU3s
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: Q3sRATBTcJgcGAcqpnTcqUfqFtcCcV9-
+X-Proofpoint-GUID: Q3sRATBTcJgcGAcqpnTcqUfqFtcCcV9-
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -100,84 +103,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset addresses three bugs related to AMD PMU virtualization.
+When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
+reflected in in guest dmesg.
 
-1. The PerfMonV2 is still available if PERCORE if disabled via
-"-cpu host,-perfctr-core".
+[    0.285136] Performance Events: AMD PMU driver.
 
-2. The second issue is that using "-cpu host,-pmu" does not disable AMD PMU
-virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
-virtualization remains enabled. On the VM's Linux side, you might still
-see:
+However, the guest cpuid indicates the PerfMonV2 is still available.
 
-[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+CPU:
+   Extended Performance Monitoring and Debugging (0x80000022):
+      AMD performance monitoring V2         = true
+      AMD LBR V2                            = false
+      AMD LBR stack & PMC freezing          = false
+      number of core perf ctrs              = 0x6 (6)
+      number of LBR stack entries           = 0x0 (0)
+      number of avail Northbridge perf ctrs = 0x0 (0)
+      number of available UMC PMCs          = 0x0 (0)
+      active UMCs bitmask                   = 0x0
 
-instead of:
+Disable PerfMonV2 in cpuid when PERFCORE is disabled.
 
-[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
-[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+---
+ target/i386/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-To address this, we have introduced a new x86-specific accel/kvm property,
-"pmu-cap-disabled=true", which disables PMU virtualization via
-KVM_PMU_CAP_DISABLE.
-
-Another previous solution to re-use '-cpu host,-pmu':
-https://lore.kernel.org/all/20221119122901.2469-1-dongli.zhang@oracle.com/
-
-
-3. The third issue is that unreclaimed performance events (after a QEMU
-system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
-injected into the VM.
-
-The AMD PMU registers are not reset during QEMU system_reset.
-
-(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
-running "perf top", the PMU registers are not disabled properly.
-
-(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
-does not handle AMD PMU registers, causing some PMU events to remain
-enabled in KVM.
-
-(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
-preventing the reclamation of these events. Consequently, the
-kvm_pmc->perf_event remains active.
-
-(4) After a reboot, the VM kernel may report the following error:
-
-[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
-[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
-
-(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
-NMIs randomly into the VM kernel:
-
-[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
-
-To resolve these issues, we propose resetting AMD PMU registers during the
-VM reset process
-
-
-Dongli Zhang (7):
-  target/i386: disable PerfMonV2 when PERFCORE unavailable
-  target/i386/kvm: introduce 'pmu-cap-disabled' to set KVM_PMU_CAP_DISABLE
-  target/i386/kvm: init PMU information only once
-  target/i386/kvm: rename architectural PMU variables
-  target/i386/kvm: reset AMD PMU registers during VM reset
-  target/i386/kvm: support perfmon-v2 for reset
-  target/i386/kvm: don't stop Intel PMU counters
-
- accel/kvm/kvm-all.c        |   1 +
- include/sysemu/kvm_int.h   |   1 +
- qemu-options.hx            |   9 +-
- target/i386/cpu.c          |   3 +-
- target/i386/cpu.h          |  12 ++
- target/i386/kvm/kvm.c      | 340 ++++++++++++++++++++++++++++++++++------
- target/i386/kvm/kvm_i386.h |   2 +
- 7 files changed, 319 insertions(+), 49 deletions(-)
-
-base-commit: c94bee4cd6693c1c65ba43bb8970cf909dec378b
-
-Thank you very much!
-
-Dongli Zhang
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3baa95481f..4490a7a8d6 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7103,6 +7103,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *eax = *ebx = *ecx = *edx = 0;
+         /* AMD Extended Performance Monitoring and Debug */
+         if (kvm_enabled() && cpu->enable_pmu &&
++            (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_PERFCORE) &&
+             (env->features[FEAT_8000_0022_EAX] & CPUID_8000_0022_EAX_PERFMON_V2)) {
+             *eax |= CPUID_8000_0022_EAX_PERFMON_V2;
+             *ebx |= kvm_arch_get_supported_cpuid(cs->kvm_state, index, count,
+-- 
+2.39.3
 
 
