@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F056A9BBBE1
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3942B9BBBDC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:28:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80re-0004x4-It; Mon, 04 Nov 2024 12:27:42 -0500
+	id 1t80rf-0004zu-Ka; Mon, 04 Nov 2024 12:27:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80rZ-0004ua-C1
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:38 -0500
+ id 1t80rc-0004wb-In
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80rV-0008WV-FJ
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:35 -0500
+ id 1t80rV-000059-HT
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741248;
+ s=mimecast20190719; t=1730741250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G41Gm1r+0jL4g/l3GF6vapafdMpPd/OeL9O59Yu11q4=;
- b=A/FoQApo8Grux92CLl7o4LTWUyrxTDoYlG9nABC9yuxy+PmMQT2WqRcS/NM5MGgC5FUV1Z
- No42eM+NJWaFT/q/cHJtrPL8j+94IpveNEJAckUWP+HAargMZKNY5U/+zrTz7VLFd054Lk
- tesPAefPcOHjGY7uFjewyCU+TyeSM5E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q8T5ohAzgqW97P1xGHDRejf6Ns5stLHojZxuqE9/t5s=;
+ b=H/PYl9AxS65mxzCGZcQaUpMR8Lc/N4cX4y9Ii6Q7QfVaIqVhHP/JLHdg8VqwDrROq8gFel
+ cIpCxsg2sGV7s/uHEHFyIAk8DEZvbaoH1BSXKTDL1EeRfWlSM0Axe+KjZQkfzptSfaY4TL
+ jvfuaPiFIC1ltA+rYSKNX2I5mSBr7Is=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-u0w2FweHMjGCnM4ZIG4QoQ-1; Mon, 04 Nov 2024 12:27:27 -0500
-X-MC-Unique: u0w2FweHMjGCnM4ZIG4QoQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43157cff1d1so33007565e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:27:27 -0800 (PST)
+ us-mta-219-FF1ufoS8P5W7LyJrbyUlWA-1; Mon, 04 Nov 2024 12:27:29 -0500
+X-MC-Unique: FF1ufoS8P5W7LyJrbyUlWA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4315544642eso32998025e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:27:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741245; x=1731346045;
+ d=1e100.net; s=20230601; t=1730741247; x=1731346047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G41Gm1r+0jL4g/l3GF6vapafdMpPd/OeL9O59Yu11q4=;
- b=DApphZGjU76OmFKek01HHs1wOqnTu8TVx6y/ckX61mtazUA0DcI0QVVR0UD/IM25mZ
- rArH/HCPPQsduTJEJbW4pCmEUfk2U9Y/B2RwhP0V3BtWzXwMxHAKvG0qe4L5vwuYzZ7p
- tbki+iWLodpw6FR8XHPt+JBYBXI8nSH4n1ROgqx10+LO7fWIn5iC4lWN+saYGnIwpfTj
- /QH6cHSUjg/ZuZJbFA1KuLUv+ypkGZqkwGk1LPNHDFK7X5GNmG1GWZiuNMQVBvVMJRqh
- o/HYeKAdYiOmYal7J5DAyuLTwIl8uL8wOYRZZpUWBMXFd+xQvu5icS4lrWf2OQG31PFb
- Xxig==
-X-Gm-Message-State: AOJu0Yy2e8hhfl1l2ThUxjCKvvOtr9IXPSuhEeZzyOazjSMoc2F/1zN5
- xcj8xAol2TRALf9XFzmU/HzfHe1DmdcW4GlrfzBIh+EQ4Z771wFVoX2nsrVvHskGNfQ6wMKbBD5
- do+tXzXNU7FzFSlkUvUyY81VgioCRHBU2TGxl/xK+31GQ8eec/gZ/KTHwyZXsi7wvKGlsBCj+y6
- 5BqLhMiYi+VVw9+FOLQ4dtw1JPpAatJq2yg+v3MXk=
-X-Received: by 2002:a05:600c:1c26:b0:432:9fdb:1490 with SMTP id
- 5b1f17b1804b1-4329fdb1571mr13327515e9.7.1730741245437; 
- Mon, 04 Nov 2024 09:27:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFzz9GgleBcTafAicin2kz0iC+UtA+M7wUEwIO6MNw397w0/jl3xahcJZD/4DU2sTYCH3EtjQ==
-X-Received: by 2002:a05:600c:1c26:b0:432:9fdb:1490 with SMTP id
- 5b1f17b1804b1-4329fdb1571mr13327265e9.7.1730741245051; 
- Mon, 04 Nov 2024 09:27:25 -0800 (PST)
+ bh=q8T5ohAzgqW97P1xGHDRejf6Ns5stLHojZxuqE9/t5s=;
+ b=l8lXyW+02AdR8mETh2oRmveqshsL5BjU464k9Fq03w2wwzUzNvx5jbTQrMYYJ5hqHD
+ y/DBiKEMvFpW+pvxAZ+RLhYsLYyaEks0fc9CsxlLRKOXLCfk5YDaGRkaPLijVPYwGsht
+ ZDRIG2KizHCXyq62gGNsfocEKAVCpOwB3D38Lu4NIpvqZVx291paSAPClGJi7sbsmMuL
+ jBIzIJFdGBHGwp+r8jU4jM4skRcpkFPvJPSqiEm7NRzpTJrbmagnvcmdB+YZiWFAU3p1
+ /JFNSAMckpIhiMlSF9s7a6ok/tM7WTQsYcfHQSEoqbqMOwAbmmVYWeyHYqIzluJn/V4e
+ gRbA==
+X-Gm-Message-State: AOJu0YxNZLmVjYDNl3Wv9Z+jMSYDo/wcsm8aw6YvhobeiVYcbo7RzCXZ
+ 6pZhyf2cIGFm1A/ppJZinq4rhhMQOfv3gAaHm/cMnk2OxbdABEM/nN91ZxxUjpR2hy1Atwx+ubt
+ qM+buNdPGWynYt7kw6WaVspw/q3/hftPjeAajFSnpV9wHYL15imlpWO2MAhXT5Xe24VpoQUduBm
+ GPOCmuQy3z8vzrKXm446XamBSZrMo5u47RTWc6TnQ=
+X-Received: by 2002:a05:600c:3b14:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-4327b6f9590mr141504765e9.2.1730741247601; 
+ Mon, 04 Nov 2024 09:27:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHxd5enN/Bvknhn7HAAW4RU8c25hQFA1v7fX1FQJeiIBCFxwfDN0Yse7blmslwYiD8w6zWZzg==
+X-Received: by 2002:a05:600c:3b14:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-4327b6f9590mr141504485e9.2.1730741247161; 
+ Mon, 04 Nov 2024 09:27:27 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d40casm13763407f8f.27.2024.11.04.09.27.23
+ 5b1f17b1804b1-4327d5bf4fdsm158644275e9.17.2024.11.04.09.27.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:27:23 -0800 (PST)
+ Mon, 04 Nov 2024 09:27:25 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 01/40] qdev: make properties array "const"
-Date: Mon,  4 Nov 2024 18:26:40 +0100
-Message-ID: <20241104172721.180255-2-pbonzini@redhat.com>
+Subject: [PULL 02/40] rust/wrapper.h: define memory_order enum
+Date: Mon,  4 Nov 2024 18:26:41 +0100
+Message-ID: <20241104172721.180255-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,183 +104,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Constify all accesses to qdev properties, except for the
-ObjectPropertyAccessor itself.  This makes it possible to place them in
-read-only memory, and also lets Rust bindings switch from "static mut"
-arrays to "static"; which is advantageous, because mutable statics are
-highly discouraged.
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Add stub definition of memory_order enum in wrapper.h.
+
+Creating Rust bindings from C code is done by passing the wrapper.h
+header to `bindgen`. This fails when library dependencies that use
+compiler headers are enabled, and the libclang that bindgen detects does
+not match the expected clang version. So far this has only been observed
+with the memory_order enum symbols from stdatomic.h. If we add the enum
+definition to wrapper.h ourselves, the error does not happen.
+
+Before this commit, if the mismatch happened the following error could
+come up:
+
+  /usr/include/liburing/barrier.h:72:10: error: use of undeclared identifier 'memory_order_release'
+  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
+  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
+  /usr/include/liburing/barrier.h:68:9: error: use of undeclared identifier 'memory_order_relaxed'
+  /usr/include/liburing/barrier.h:65:17: error: use of undeclared identifier 'memory_order_relaxed'
+  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
+  /usr/include/liburing/barrier.h:75:9: error: use of undeclared identifier 'memory_order_acquire'
+  /usr/include/liburing/barrier.h:72:10: error: use of undeclared identifier 'memory_order_release'
+  panicked at [..]/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bindgen-cli-0.70.1/main.rs:45:36:
+  Unable to generate bindings
+
+To fix this (on my system) I would have to export CLANG_PATH and
+LIBCLANG_PATH:
+
+  export CLANG_PATH=/bin/clang-17
+  export LIBCLANG_PATH=/usr/lib/llvm-17/lib
+
+With these changes applied, bindgen is successful with both the
+environment variables set and unset.
+
+Since we're not using those symbols in the bindings (they are only used
+by dependencies) this does not affect the generated bindings in any way.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20241027-rust-wrapper-stdatomic-v2-1-dab27bbf93ea@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/qdev-core.h       |  4 ++--
- include/hw/qdev-properties.h |  4 ++--
- hw/core/qdev-properties.c    | 26 +++++++++++++-------------
- system/qdev-monitor.c        |  2 +-
- 4 files changed, 18 insertions(+), 18 deletions(-)
+ rust/wrapper.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index aa97c34a4be..f9fa291cc63 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -132,7 +132,7 @@ struct DeviceClass {
-      * ensures a compile-time error if someone attempts to assign
-      * dc->props directly.
-      */
--    Property *props_;
-+    const Property *props_;
- 
-     /**
-      * @user_creatable: Can user instantiate with -device / device_add?
-@@ -935,7 +935,7 @@ char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
-  * you attempt to add an existing property defined by a parent class.
-  * To modify an inherited property you need to use????
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index 77e40213efb..285d0eb6ad0 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -30,6 +30,23 @@
+  * in order to generate C FFI compatible Rust bindings.
   */
--void device_class_set_props(DeviceClass *dc, Property *props);
-+void device_class_set_props(DeviceClass *dc, const Property *props);
  
- /**
-  * device_class_set_parent_realize() - set up for chaining realize fns
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 09aa04ca1e2..26ebd230685 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -37,7 +37,7 @@ struct PropertyInfo {
-     int (*print)(Object *obj, Property *prop, char *dest, size_t len);
-     void (*set_default_value)(ObjectProperty *op, const Property *prop);
-     ObjectProperty *(*create)(ObjectClass *oc, const char *name,
--                              Property *prop);
-+                              const Property *prop);
-     ObjectPropertyAccessor *get;
-     ObjectPropertyAccessor *set;
-     ObjectPropertyRelease *release;
-@@ -223,7 +223,7 @@ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
-  * On error, store error in @errp.  Static properties access data in a struct.
-  * The type of the QOM property is derived from prop->info.
-  */
--void qdev_property_add_static(DeviceState *dev, Property *prop);
-+void qdev_property_add_static(DeviceState *dev, const Property *prop);
- 
- /**
-  * qdev_alias_all_properties: Create aliases on source for all target properties
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 86a583574dd..315196bd85a 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -749,7 +749,7 @@ const PropertyInfo qdev_prop_array = {
- 
- /* --- public helpers --- */
- 
--static Property *qdev_prop_walk(Property *props, const char *name)
-+static const Property *qdev_prop_walk(const Property *props, const char *name)
- {
-     if (!props) {
-         return NULL;
-@@ -763,10 +763,10 @@ static Property *qdev_prop_walk(Property *props, const char *name)
-     return NULL;
- }
- 
--static Property *qdev_prop_find(DeviceState *dev, const char *name)
-+static const Property *qdev_prop_find(DeviceState *dev, const char *name)
- {
-     ObjectClass *class;
--    Property *prop;
-+    const Property *prop;
- 
-     /* device properties */
-     class = object_get_class(OBJECT(dev));
-@@ -840,7 +840,7 @@ void qdev_prop_set_string(DeviceState *dev, const char *name, const char *value)
- 
- void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
- {
--    Property *prop;
-+    const Property *prop;
- 
-     prop = qdev_prop_find(dev, name);
-     object_property_set_str(OBJECT(dev), name,
-@@ -956,7 +956,7 @@ const PropertyInfo qdev_prop_size = {
- /* --- object link property --- */
- 
- static ObjectProperty *create_link_property(ObjectClass *oc, const char *name,
--                                            Property *prop)
-+                                            const Property *prop)
- {
-     return object_class_property_add_link(oc, name, prop->link_type,
-                                           prop->offset,
-@@ -969,7 +969,7 @@ const PropertyInfo qdev_prop_link = {
-     .create = create_link_property,
- };
- 
--void qdev_property_add_static(DeviceState *dev, Property *prop)
-+void qdev_property_add_static(DeviceState *dev, const Property *prop)
- {
-     Object *obj = OBJECT(dev);
-     ObjectProperty *op;
-@@ -980,7 +980,7 @@ void qdev_property_add_static(DeviceState *dev, Property *prop)
-                              field_prop_getter(prop->info),
-                              field_prop_setter(prop->info),
-                              prop->info->release,
--                             prop);
-+                             (Property *)prop);
- 
-     object_property_set_description(obj, prop->name,
-                                     prop->info->description);
-@@ -994,7 +994,7 @@ void qdev_property_add_static(DeviceState *dev, Property *prop)
- }
- 
- static void qdev_class_add_property(DeviceClass *klass, const char *name,
--                                    Property *prop)
-+                                    const Property *prop)
- {
-     ObjectClass *oc = OBJECT_CLASS(klass);
-     ObjectProperty *op;
-@@ -1007,7 +1007,7 @@ static void qdev_class_add_property(DeviceClass *klass, const char *name,
-                                        field_prop_getter(prop->info),
-                                        field_prop_setter(prop->info),
-                                        prop->info->release,
--                                       prop);
-+                                       (Property *)prop);
-     }
-     if (prop->set_default) {
-         prop->info->set_default_value(op, prop);
-@@ -1046,7 +1046,7 @@ static void qdev_get_legacy_property(Object *obj, Visitor *v,
-  * Do not use this in new code!  QOM Properties added through this interface
-  * will be given names in the "legacy" namespace.
-  */
--static void qdev_class_add_legacy_property(DeviceClass *dc, Property *prop)
-+static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop)
- {
-     g_autofree char *name = NULL;
- 
-@@ -1058,12 +1058,12 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, Property *prop)
-     name = g_strdup_printf("legacy-%s", prop->name);
-     object_class_property_add(OBJECT_CLASS(dc), name, "str",
-         prop->info->print ? qdev_get_legacy_property : prop->info->get,
--        NULL, NULL, prop);
-+        NULL, NULL, (Property *)prop);
- }
- 
--void device_class_set_props(DeviceClass *dc, Property *props)
-+void device_class_set_props(DeviceClass *dc, const Property *props)
- {
--    Property *prop;
-+    const Property *prop;
- 
-     dc->props_ = props;
-     for (prop = props; prop && prop->name; prop++) {
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 44994ea0e16..c346ea6ae4b 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -751,7 +751,7 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
- 
- #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
- 
--static void qdev_print_props(Monitor *mon, DeviceState *dev, Property *props,
-+static void qdev_print_props(Monitor *mon, DeviceState *dev, const Property *props,
-                              int indent)
- {
-     if (!props)
++#ifndef __CLANG_STDATOMIC_H
++#define __CLANG_STDATOMIC_H
++/*
++ * Fix potential missing stdatomic.h error in case bindgen does not insert the
++ * correct libclang header paths on its own. We do not use stdatomic.h symbols
++ * in QEMU code, so it's fine to declare dummy types instead.
++ */
++typedef enum memory_order {
++  memory_order_relaxed,
++  memory_order_consume,
++  memory_order_acquire,
++  memory_order_release,
++  memory_order_acq_rel,
++  memory_order_seq_cst,
++} memory_order;
++#endif /* __CLANG_STDATOMIC_H */
++
+ #include "qemu/osdep.h"
+ #include "qemu/module.h"
+ #include "qemu-io.h"
 -- 
 2.47.0
 
