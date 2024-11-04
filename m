@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4DB9BBBCD
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BC29BBC11
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:34:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80mM-0003gX-BN; Mon, 04 Nov 2024 12:22:14 -0500
+	id 1t80rh-00051T-HW; Mon, 04 Nov 2024 12:27:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t80mI-0003g2-9t
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:22:10 -0500
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t80rc-0004w0-17
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t80mF-0007uO-N4
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:22:10 -0500
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1t80m6-00000001MWl-2OtE; Mon, 04 Nov 2024 18:21:58 +0100
-Message-ID: <3cdafdcd-570a-45ed-bb4d-f157842fcecb@maciej.szmigiero.name>
-Date: Mon, 4 Nov 2024 18:21:53 +0100
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t80rU-00004t-13
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:27:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730741249;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ofw5lZQCJqe6de3bYM2n2T4sLA9jsMkqsZYUFh5JqWc=;
+ b=KRppUCa1S8RCRMIeier2UDw+xFHtODgvX23vGBZqwvPsRbDtmHX8r3sgw2opkitqqmd/9M
+ M6l3mtU9Ozg0blNmBRppbJ8rRSFsAd/0llB4idq1oZI9MKzG2lidcWSmIZzXoHQnHKJ42b
+ IOJcTMe56iLyDCd18q3MLi3YhysBIjY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-604-bsiHdGdsOQmWMZ7SIOv2ZQ-1; Mon, 04 Nov 2024 12:27:25 -0500
+X-MC-Unique: bsiHdGdsOQmWMZ7SIOv2ZQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-431673032e6so26945425e9.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:27:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730741243; x=1731346043;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ofw5lZQCJqe6de3bYM2n2T4sLA9jsMkqsZYUFh5JqWc=;
+ b=Xk+eqqWLjw5s6AsfvojZslbNnlHRPLZoE4OJidJG62hCFMLJRsb3FG30D1wzQOaLSF
+ qWVmj9NZ4xtNF+UjgbavVy6RNxmHJ7a/llt09IRSAE8k+HrZsre2iiNm7Slppvi9s0f2
+ eJfj3k5ngAoaz3P7cepx34ZY8mq+Ka0MmjpXjpM/Y55DUbu94KByVl9LsQZ8bCj3NUuz
+ K8CUqfBnmXfdOx0phq49VHrflo/qaq25c/OBtYaOYdadRxA++kHAMAWa8lc9DPFTkxXk
+ fYPxGyS1a0AbyhmHlffbesnfQ6/G+Ti7eUZa4dk9mLtwrlluHLZwCygVzZvgEFbPpiwc
+ 0V4g==
+X-Gm-Message-State: AOJu0YzNmJ2m+5668XKmA59WB0D3Ayvat8tLSj4CTeKxhHKSUopuc+NP
+ p5pmjLoDXpwxEdG4gQEkvOGdPFfOxmHsnCoA4k26VYDKiy2Tu5mqSZv5VEPk9vHFKH29kkQQnvn
+ Jmcd6+cV5uvtvBcbbfBglTlJgf8SjxsrqnUfbvvX7brylzk9pSrVhaG9hZ+0lvqvJaXH79c0VI/
+ ZWzWvgEWqQO6nl/8iP/J8WoFSO4qHFLkTGzZOktt0=
+X-Received: by 2002:a05:600c:4753:b0:431:5632:4497 with SMTP id
+ 5b1f17b1804b1-431bb9d1122mr200674645e9.26.1730741243303; 
+ Mon, 04 Nov 2024 09:27:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEpm0KkSRFnky4Ce49/E07LZHFkMgexgqnevE+hS1AWfaU3ShgV0hsIptVhsSyZIVgMS3QjKA==
+X-Received: by 2002:a05:600c:4753:b0:431:5632:4497 with SMTP id
+ 5b1f17b1804b1-431bb9d1122mr200674235e9.26.1730741242785; 
+ Mon, 04 Nov 2024 09:27:22 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.226.83])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4327d5ac387sm164505185e9.1.2024.11.04.09.27.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Nov 2024 09:27:22 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 00/40] Rust changes for QEMU 9.2 soft freeze
+Date: Mon,  4 Nov 2024 18:26:39 +0100
+Message-ID: <20241104172721.180255-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] vfio/migration: Add
- save_{iterate,complete_precopy}_started trace events
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-References: <8fbb9cc40d9db570eff0a02e49104835014a5a4d.1730731549.git.maciej.szmigiero@oracle.com>
- <01c3cab0-75f2-4e36-b39f-00afea6058a9@redhat.com>
-Content-Language: en-US, pl-PL
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <01c3cab0-75f2-4e36-b39f-00afea6058a9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,162 +102,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+The following changes since commit 15195de6a93438be99fdf9a90992c4228527130d:
 
-On 4.11.2024 18:11, Cédric Le Goater wrote:
-> Hello Maciej,
-> 
-> On 11/4/24 15:58, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> This way both the start and end points of migrating a particular VFIO
->> device are known.
->>
->> Add also a vfio_precopy_empty_hit trace event so it is known when
->> there's no more data to send for that device.
-> 
-> Would you mind splitting the patch in 2, one patch for each event flag
-> added ?
+  ci: enable rust in the Fedora system build job (2024-10-30 16:30:56 +0100)
 
-Sure,
-so you'd prefer 3 patches in total then, for 3 trace events added
-or vfio_save_{iterate,complete_precopy}_start* in the first and
-vfio_precopy_empty_hit in the second patch?
+are available in the Git repository at:
 
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->> ---
->>
->> This is just the lone remaining functionality-affecting patch from this
->> series of 4 trivial patches for QEMU 9.2:
->> https://lore.kernel.org/qemu-devel/cover.1730203967.git.maciej.szmigiero@oracle.com/
->> Two other such patches were already queued and the fourth one is only
->> an annotation in a code comment block.
->>
->> Changes from the v1 that was posted as a part of the above series:
->> * Move the vfio_save_iterate_empty_hit trace event to vfio_save_block(),
->> trigger it on ENOMSG errno and rename it to vfio_precopy_empty_hit.
->>
->> * Re-arm the above trace event if we see another data read so not only
->> the first "data present" -> "data not present" edge is logged.
->>
->>   hw/vfio/migration.c           | 17 +++++++++++++++++
->>   hw/vfio/trace-events          |  3 +++
->>   include/hw/vfio/vfio-common.h |  3 +++
->>   3 files changed, 23 insertions(+)
->>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index 992dc3b10257..e7b81f99e595 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -370,6 +370,10 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
->>            * please refer to the Linux kernel VFIO uAPI.
->>            */
->>           if (errno == ENOMSG) {
->> +            if (!migration->precopy_empty_hit) {
->> +                trace_vfio_precopy_empty_hit(migration->vbasedev->name);
-> 
-> 
-> There is a kind of implicit rule that is to keep the name of the
-> routine in the trace event. This is true for this file at least.
-> In this regard, could you please rename the event to :
-> 
->      vfio_save_block_precopy_empty_hit
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream-rust
 
-Okay, will change to the above name.
+for you to fetch changes up to d20feaa9a5af597bd20630d041e5dc7808612be1:
 
-> or
->      vfio_save_block_precopy_empty
-> 
-> as you wish.
-> 
->> +                migration->precopy_empty_hit = true;
->> +            }
->>               return 0;
->>           }
->> @@ -379,6 +383,9 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
->>           return 0;
->>       }
->> +    /* Non-empty read -> re-arm the trace event */
->> +    migration->precopy_empty_hit = false;
->> +
->>       qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE);
->>       qemu_put_be64(f, data_size);
->>       qemu_put_buffer(f, migration->data_buffer, data_size);
->> @@ -472,6 +479,9 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>           return -ENOMEM;
->>       }
->> +    migration->save_iterate_started = false;
->> +    migration->precopy_empty_hit = false;
->> +
->>       if (vfio_precopy_supported(vbasedev)) {
->>           switch (migration->device_state) {
->>           case VFIO_DEVICE_STATE_RUNNING:
->> @@ -602,6 +612,11 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
->>       VFIOMigration *migration = vbasedev->migration;
->>       ssize_t data_size;
->> +    if (!migration->save_iterate_started) {
->> +        trace_vfio_save_iterate_started(vbasedev->name);
->> +        migration->save_iterate_started = true;
->> +    }
->> +
->>       data_size = vfio_save_block(f, migration);
->>       if (data_size < 0) {
->>           return data_size;
->> @@ -630,6 +645,8 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
->>       int ret;
->>       Error *local_err = NULL;
->> +    trace_vfio_save_complete_precopy_started(vbasedev->name);
->> +
->>       /* We reach here with device state STOP or STOP_COPY only */
->>       ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
->>                                      VFIO_DEVICE_STATE_STOP, &local_err);
->> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
->> index 29789e8d276d..d5277cb7697a 100644
->> --- a/hw/vfio/trace-events
->> +++ b/hw/vfio/trace-events
->> @@ -156,11 +156,14 @@ vfio_migration_realize(const char *name) " (%s)"
->>   vfio_migration_set_device_state(const char *name, const char *state) " (%s) state %s"
->>   vfio_migration_set_state(const char *name, const char *new_state, const char *recover_state) " (%s) new state %s, recover state %s"
->>   vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
->> +vfio_precopy_empty_hit(const char *name) " (%s)"
->>   vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
->>   vfio_save_cleanup(const char *name) " (%s)"
->>   vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
->> +vfio_save_complete_precopy_started(const char *name) " (%s)"
->>   vfio_save_device_config_state(const char *name) " (%s)"
->>   vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size %"PRIu64" precopy dirty size %"PRIu64
->> +vfio_save_iterate_started(const char *name) " (%s)"
->>   vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer size %"PRIu64
->>   vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy %"PRIu64" postcopy %"PRIu64" precopy initial size %"PRIu64" precopy dirty size %"PRIu64
->>   vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy %"PRIu64" postcopy %"PRIu64" stopcopy size %"PRIu64" precopy initial size %"PRIu64" precopy dirty size %"PRIu64
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index fed499b199f0..0410111e9868 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -73,6 +73,9 @@ typedef struct VFIOMigration {
->>       uint64_t precopy_init_size;
->>       uint64_t precopy_dirty_size;
->>       bool initial_data_sent;
->> +
->> +    bool save_iterate_started;
->> +    bool precopy_empty_hit;
-> 
-> Additionally, I would add an 'event_' prefix to give some indication
-> of what these new attributes are.
-> 
-> Also, how about replacing 'started' with 'start' ? That's fine if you
-> prefer start.
+  ci: enable rust in the Debian and Ubuntu system build job (2024-10-31 18:39:52 +0100)
 
-Will change it the name suffix to '_start' for consistency with other
-trace events.
+----------------------------------------------------------------
+* rust: cleanups
+* rust: integration tests
+* rust/pl011: add support for migration
+* rust/pl011: add TYPE_PL011_LUMINARY device
+* rust: add support for older compilers and bindgen
+* rust: enable rust in the Debian, Fedora and Ubuntu system build job
 
-> Tomorrow is soft-freeze, let's get these changes in for QEMU 9.2.
-> 
-> Thanks,
-> 
-> C.
+----------------------------------------------------------------
 
-Thanks,
-Maciej
+This pull request enables Rust in QEMU's CI infrastructure, as a
+first step towards collaborative development of Rust features. It matches
+the plan that I mentioned last Thursday at
+https://lore.kernel.org/qemu-devel/CABgObfb7=ZxgiasgB=dE8yV+bhd5-pd51n4qGpP8OFNBS3iMXQ@mail.gmail.com/.
+
+There is a lot of new code in here that is specifically from me.  Because of
+the worry that new Rust code may introduce hidden technical debt, others have
+reviewed all the Rust code in here, with the exception of the mostly trivial
+https://lore.kernel.org/qemu-devel/20241025160209.194307-17-pbonzini@redhat.com/.
+
+The changes focus on CI integration and compilation infrastructure:
+
+* support for older Rust versions as found in QEMU's Debian bookworm and
+  Ubuntu CI targets.  Workarounds for older Rust compiler versions are grouped
+  together for future cleanup.
+
+* passing qtests with --enable-rust testing support: the pl011 code is closer
+  to parity with the C version, though still experimental.
+
+Regarding toolchain compatibility: Michael Tokarev expressed some
+doubts about supporting the old toolchain in Debian bookworm.  However,
+even trixie (currently in "testing") would require workarounds, mostly
+due to lack of stable "offset_of!"  support, so maintaining bookworm
+compatibility seemed reasonable.
+
+I am also working on a documentation patch that explains the more recent
+features that would be nice to have.
+
+Note that the Rust code still contains what is technically undefined
+behavior (also known as "unsound code", i.e. unsafe code that does not
+respect aliasing rules). Fixing this and other aspects will be easier
+with the CI infrastructure in place. For example bindings, static checking
+and improved developer ergonomics (e.g., clippy and rustfmt integration),
+documentation generation would all be valid starting points.
+
+For developers testing locally with --enable-rust, run "meson subprojects
+update --reset" after pulling and before building.  Meson does not do this
+step automatically due to it being potentially destructive.  This should
+only affect this initial stabilization period, but a fix is in progress
+(I first need to check with the Meson folks whether my script is using
+stable interfaces).
+
+Paolo
+
+Junjie Mao (1):
+      rust: introduce alternative implementation of offset_of!
+
+Manos Pitsidianakis (9):
+      rust/wrapper.h: define memory_order enum
+      Revert "rust: add PL011 device model"
+      rust: add PL011 device model
+      rust: add definitions for vmstate
+      rust/pl011: add support for migration
+      rust/pl011: move CLK_NAME static to function scope
+      rust/pl011: add TYPE_PL011_LUMINARY device
+      rust/pl011: remove commented out C code
+      rust/pl011: Use correct masks for IBRD and FBRD
+
+Paolo Bonzini (30):
+      qdev: make properties array "const"
+      meson: import rust module into a global variable
+      meson: remove repeated search for rust_root_crate.sh
+      meson: pass rustc_args when building all crates
+      rust: do not always select X_PL011_RUST
+      rust: do not use --no-size_t-is-usize
+      rust: remove uses of #[no_mangle]
+      rust: modernize link_section usage for ELF platforms
+      rust: build integration test for the qemu_api crate
+      rust: cleanup module_init!, use it from #[derive(Object)]
+      rust: clean up define_property macro
+      rust: make properties array immutable
+      rust: provide safe wrapper for MaybeUninit::zeroed()
+      rust: do not use TYPE_CHARDEV unnecessarily
+      rust/pl011: fix default value for migrate-clock
+      rust: patch bilge-impl to allow compilation with 1.63.0
+      rust: fix cfgs of proc-macro2 for 1.63.0
+      rust: use std::os::raw instead of core::ffi
+      rust: introduce a c_str macro
+      rust: silence unknown warnings for the sake of old compilers
+      rust: synchronize dependencies between subprojects and Cargo.lock
+      rust: create a cargo workspace
+      rust: do not use MaybeUninit::zeroed()
+      rust: clean up detection of the language
+      rust: allow version 1.63.0 of rustc
+      rust: do not use --generate-cstr
+      rust: allow older version of bindgen
+      rust: make rustfmt optional
+      dockerfiles: install bindgen from cargo on Ubuntu 22.04
+      ci: enable rust in the Debian and Ubuntu system build job
+
+
+ docs/about/build-platforms.rst                     |  12 +
+ meson.build                                        | 135 +++++---
+ include/hw/qdev-core.h                             |   4 +-
+ include/hw/qdev-properties.h                       |   4 +-
+ rust/wrapper.h                                     |  17 +
+ hw/core/qdev-properties.c                          |  26 +-
+ system/qdev-monitor.c                              |   2 +-
+ .gitattributes                                     |   2 +
+ .gitlab-ci.d/buildtest.yml                         |   6 +-
+ meson_options.txt                                  |   2 +
+ rust/{hw/char/pl011 => }/Cargo.lock                |   4 +
+ rust/Cargo.toml                                    |   7 +
+ rust/hw/char/Kconfig                               |   1 -
+ rust/hw/char/pl011/Cargo.toml                      |   3 -
+ rust/hw/char/pl011/src/device.rs                   | 162 +++++++---
+ rust/hw/char/pl011/src/device_class.rs             |  80 ++++-
+ rust/hw/char/pl011/src/lib.rs                      |   6 +-
+ rust/hw/char/pl011/src/memory_ops.rs               |  24 +-
+ rust/qemu-api-macros/Cargo.lock                    |  47 ---
+ rust/qemu-api-macros/Cargo.toml                    |   5 +-
+ rust/qemu-api-macros/meson.build                   |   2 +-
+ rust/qemu-api-macros/src/lib.rs                    | 103 ++++--
+ rust/qemu-api/Cargo.lock                           |   7 -
+ rust/qemu-api/Cargo.toml                           |  10 +-
+ rust/qemu-api/build.rs                             |   9 +
+ rust/qemu-api/meson.build                          |  44 ++-
+ rust/qemu-api/src/c_str.rs                         |  53 +++
+ rust/qemu-api/src/definitions.rs                   |  68 ++--
+ rust/qemu-api/src/device_class.rs                  | 114 ++-----
+ rust/qemu-api/src/lib.rs                           |  23 +-
+ rust/qemu-api/src/offset_of.rs                     | 161 +++++++++
+ rust/qemu-api/src/tests.rs                         |  49 ---
+ rust/qemu-api/src/vmstate.rs                       | 360 +++++++++++++++++++++
+ rust/qemu-api/src/zeroable.rs                      |  86 +++++
+ rust/qemu-api/tests/tests.rs                       |  79 +++++
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml   |   1 -
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml     |   1 -
+ scripts/meson-buildoptions.sh                      |   4 +
+ subprojects/bilge-impl-0.2-rs.wrap                 |   1 +
+ subprojects/packagefiles/bilge-impl-1.63.0.patch   |  45 +++
+ .../packagefiles/proc-macro2-1-rs/meson.build      |   4 +-
+ subprojects/packagefiles/syn-2-rs/meson.build      |   1 +
+ tests/docker/dockerfiles/ubuntu2204.docker         |   6 +-
+ tests/lcitool/mappings.yml                         |   4 +
+ tests/lcitool/refresh                              |  11 +-
+ 45 files changed, 1379 insertions(+), 416 deletions(-)
+-- 
+2.47.0
 
 
