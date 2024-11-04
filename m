@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAB79BA9C7
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D309BA9EE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:28:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kq1-0000f8-16; Sun, 03 Nov 2024 19:20:57 -0500
+	id 1t7kq5-000131-Uj; Sun, 03 Nov 2024 19:21:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpz-0000ax-3U; Sun, 03 Nov 2024 19:20:55 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1t7kq2-0000oY-LA; Sun, 03 Nov 2024 19:20:58 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpx-0002dx-Fu; Sun, 03 Nov 2024 19:20:54 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7205b6f51f3so3037947b3a.1; 
- Sun, 03 Nov 2024 16:20:52 -0800 (PST)
+ id 1t7kq1-0002eG-4y; Sun, 03 Nov 2024 19:20:58 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-71e592d7f6eso2831985b3a.3; 
+ Sun, 03 Nov 2024 16:20:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679651; x=1731284451; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679655; x=1731284455; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UEIGqe7PKMmIVL8+XPUOIg+FX1T8unIwew41qiim4B0=;
- b=lht5W6m7j5PltVENZQOheDxVpcHo7thcdHiwuFskioZLS9pr1sNVqe2FMSDSyzoUmF
- mPsn26GvrriTX7irWv1rNYWDdWMrHKYLjNzQbJiQGa03kzoa3EcHIfaiCZNVMoocjxCk
- +pZJJtAsiowWuPWI8w+9SdmII8KO+Gfv8D1qEJ4x+L0wVmrWSJGhS6W+D7XvkBkddMVn
- bENYWddizjgWGUWwe//hJH5b66tpKkdKkwiDGX5ysBdJJtVstnocHPdaa4HLQhcU7df3
- HcaIYpNLomNp6dZFh3ssnvj3TIuSrDyMQfL2XtiFsyKZ0x3V8CWxUd8PVeQYWbRP49gC
- msWQ==
+ bh=l94YX/AReXz7G4uDRXUPyQl8Y+x+XtS8cAUTSBbRCkw=;
+ b=lb3hU0D1WfxLk+uZ1MKKtQ4/aMAp2GfGFFQDCnb9nEnWcJkJdX15r6IkEji5PuRJXg
+ yrHebYwTOAoRFXXGsgCwt107ulVQsDd8pgtvf+7be8vf9C37MiSPDErkD+NJUI8rkUUH
+ wOU/Id5MIIGalp/ieOV2odz9nLiNc2d54a1hwQZstxhcbe7yEZCNBJQL38aKOR8rRyX+
+ yyYc01/ajF3Q5kElkMpKJwZ0SthCvIGvGQc80gGoGvcp3GN9lv5N90kTch4Zg33YDRoH
+ qqxfGVKLmbVLHiH14nM7V+rHTdoLXCGBHVq9qdzhc/9K6mhfIX9Lb6TQe5Jor+ku//vf
+ EY8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679651; x=1731284451;
+ d=1e100.net; s=20230601; t=1730679655; x=1731284455;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UEIGqe7PKMmIVL8+XPUOIg+FX1T8unIwew41qiim4B0=;
- b=Xi9KgKn7njsq/Fyxr9PMCd356vKrsn8De8UAEeUoGfgGRUhbXjyxyNYobXrdcPj1Yl
- s5IHScG22Jah0kkyYs+GT4HjMq25knfjClNE9X4F6G7//HjbrwLhDtrGrmuY6xyPqHwW
- +h7oqWoODM08UShzl0hyHWcF1dJ91wLrHqP7jk/goCDpvr0IGbSQFNQ2/FyGxj+rJj7y
- cbORmgTcSipdA6h+EFVW1x9WnMQOYo0ED9XWYCs13HAQa7NSrV6+il9zrCn7nkCxl3ta
- xZwbpMNKAbj65U7++k/s+oGz+7CzQb05MX4wNGIVybLjo/ULSa9VTBvb5xXuf/kbqQma
- aplQ==
+ bh=l94YX/AReXz7G4uDRXUPyQl8Y+x+XtS8cAUTSBbRCkw=;
+ b=pVearEp1emb/HiF1Lgc6q8AEAWT5zUqqDGVHfQDQKYDvksLQlbDYRHxbUQLSWCLgbE
+ 6sDlj9veJ4eYamwqInkayRiX2vSTHBH3cWBJwsg3k29m07NHCPbGM/d/T7qzuFWtkzvH
+ TC4HEHVKP2p4XTrU4RyrXzqvVcHExVoPmynrVjxKQF1oK9k/1vdHm8aepIowDBFuDPSy
+ GRV7F5iiXrEHT//D3Bp1rKMry4XThPM1ISGlbO8xpqxd7DP6wRxRhDaJjz9a5+kBPvaY
+ QrqNWnFyi2RxzfNXfdv+WT2sufn2iuglOF7ChuMKupBt2BB7GtWcx7nvZM4E6/Iy4Q/J
+ 3E1A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWeHgViAL3nlOAvlpm2Eee3+jsiCj4GpV/ozyR4vF8Ob/Yhv5+MvdEXxHfFMV+gpVLTtiGDJos+Fw==@nongnu.org
-X-Gm-Message-State: AOJu0YzmcFwSmz8Lk9p0iYEp6WTgTXz6bdB0132ErXOhUDFW6VDLH6pY
- ZGTwJ7KkC/43qqf2adb1dkdCSrmcwyGoKkjs3mr12NZoQ5pLH5o87SMX/A==
-X-Google-Smtp-Source: AGHT+IF1B295fl2CzC/fWDQDBmzG+lcgzst2TWlvLZBxqo3PiiNYAHMybGuCQTsXl6vSZC4QlwmAPw==
-X-Received: by 2002:a05:6a21:2d8f:b0:1d9:1dcd:b229 with SMTP id
- adf61e73a8af0-1dba54a4957mr14259161637.33.1730679651309; 
- Sun, 03 Nov 2024 16:20:51 -0800 (PST)
+ AJvYcCXsOEFpVXwxkM8kPaAXtjnCPwqCANOHOHTU/88Cgm99xxhg+YKAdWCnd/cGVpbGrq4BqqDC4iNzwA==@nongnu.org
+X-Gm-Message-State: AOJu0YxKEtluFFyIqKqxMsivU3+7iqoGT9I/wYSiNAE4nBH7xrVs05J3
+ bgDXX2ny8lTf0QMK/blGaMk7nWoJTMxhBDuYrUXGaX0YMEl9/2LrVhljuA==
+X-Google-Smtp-Source: AGHT+IElnLRQgIUblUlRbMaqqTJtnFjL7sQFstDb/FD50U9/cEmA/5j5FSjF57KxsXyJToawiSzw0Q==
+X-Received: by 2002:a05:6a00:1708:b0:71d:f423:e6cc with SMTP id
+ d2e1a72fcca58-720c98d5c3dmr16120103b3a.8.1730679654941; 
+ Sun, 03 Nov 2024 16:20:54 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.47
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:20:50 -0800 (PST)
+ Sun, 03 Nov 2024 16:20:54 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 27/67] ppc/spapr: remove deprecated machine pseries-2.11
-Date: Mon,  4 Nov 2024 10:18:16 +1000
-Message-ID: <20241104001900.682660-28-npiggin@gmail.com>
+Subject: [PULL 28/67] ppc/spapr: remove deprecated machine pseries-2.12-sxxm
+Date: Mon,  4 Nov 2024 10:18:17 +1000
+Message-ID: <20241104001900.682660-29-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,40 +97,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Commit 1392617d3576 intended to tag pseries-2.1 - 2.11 machines as
-deprecated with reasons mentioned in its commit log.
-Removing pseries-2.11 specific code with this patch.
+Commit 0cac0f1b964 marked pseries-2.12 machines as deprecated
+with reasons mentioned in its commit log.
+Removing pseries-2.12-sxxm specific code with this patch.
 
 Suggested-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ hw/ppc/spapr.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 4c76d2841c..faf88a177b 100644
+index faf88a177b..aba0ad26f1 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -5054,21 +5054,6 @@ static void spapr_machine_2_12_sxxm_class_options(MachineClass *mc)
+@@ -4731,8 +4731,6 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
+     DEFINE_SPAPR_MACHINE_IMPL(true, major, minor)
+ #define DEFINE_SPAPR_MACHINE(major, minor) \
+     DEFINE_SPAPR_MACHINE_IMPL(false, major, minor)
+-#define DEFINE_SPAPR_MACHINE_TAGGED(major, minor, tag) \
+-    DEFINE_SPAPR_MACHINE_IMPL(false, major, minor, _, tag)
  
- DEFINE_SPAPR_MACHINE_TAGGED(2, 12, sxxm);
+ /*
+  * pseries-9.2
+@@ -5042,18 +5040,6 @@ static void spapr_machine_2_12_class_options(MachineClass *mc)
  
--/*
-- * pseries-2.11
-- */
--
--static void spapr_machine_2_11_class_options(MachineClass *mc)
+ DEFINE_SPAPR_MACHINE(2, 12);
+ 
+-static void spapr_machine_2_12_sxxm_class_options(MachineClass *mc)
 -{
 -    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
 -
 -    spapr_machine_2_12_class_options(mc);
--    smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
--    compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
+-    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_WORKAROUND;
+-    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_WORKAROUND;
+-    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_FIXED_CCD;
 -}
 -
--DEFINE_SPAPR_MACHINE(2, 11);
+-DEFINE_SPAPR_MACHINE_TAGGED(2, 12, sxxm);
 -
  static void spapr_machine_register_types(void)
  {
