@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7BA9BBBFF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064579BBC08
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:34:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sk-0007ld-Tt; Mon, 04 Nov 2024 12:28:51 -0500
+	id 1t80t7-0008Bj-3F; Mon, 04 Nov 2024 12:29:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80si-0007cA-2N
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:48 -0500
+ id 1t80sr-000869-Bi
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sg-0000RW-8Q
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:47 -0500
+ id 1t80so-0000TH-I2
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741325;
+ s=mimecast20190719; t=1730741333;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w5RpplVRrrCi592oN/VMJy7hw/XAeFSdLKK/OTlMsMs=;
- b=bI/jhC6/uZf6Ey+0q1o8O9F90436oiz3v1w7+F+Gpa/xHWsnW3Hzulu2+bnrrH2ID6I6cU
- 4mbmtERDylYyymvviWC87x88cpYS5F8l3/UN1BhIv8nFuGXz61D+tSdMK73+bPQeq1eaz8
- vUC5TgwpG8JKX8Fylhtjza4UQdeykHQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=d0Yrz32tZ191PDxJl2kf+DfSdg5bbOVpXeDrYos7+QE=;
+ b=FFIQU4UaqsEneX7oDan8T3fAjfNp/iFmMQJPwetwVVyXQz1PF9suQqFJ3bvpqyWvboqNSW
+ jSm6wLWoaU8CcrL86rX4D1v4FzAbHWWIMfd0k/E27tbsUOaHVJXZkMuEQQyg7MQ/W3dCDh
+ LunKzjW0ExD4ljj3eptP6ctTqXf2zss=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-Jme_JV-dMsGPHXW0Aj6Xfw-1; Mon, 04 Nov 2024 12:28:44 -0500
-X-MC-Unique: Jme_JV-dMsGPHXW0Aj6Xfw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315a0f25afso30788895e9.3
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:44 -0800 (PST)
+ us-mta-608-Dp9oAbddMCaOFRDtnQ4k5w-1; Mon, 04 Nov 2024 12:28:47 -0500
+X-MC-Unique: Dp9oAbddMCaOFRDtnQ4k5w-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4316ac69e6dso30915705e9.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741323; x=1731346123;
+ d=1e100.net; s=20230601; t=1730741325; x=1731346125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w5RpplVRrrCi592oN/VMJy7hw/XAeFSdLKK/OTlMsMs=;
- b=rsW94U2rgNQitax0HQAgu73ng7hcUFTXg6I44shKh27whO/2j8G31JswjdmFGt+unv
- cv3XbdKR8pe9p031WsTDZpATP0kwmjuQ+OpK0ESgfa6X0exI+EnQfRI+2ch36dE/lz8L
- GT0JSVvW5BjWsD1uCWc+XXapGcFIHdrVbIYfJ9dOvkCy+0ADlq9v/H1GAqjDzEUwYDYc
- vbFDrlU68iqwI2hzMU/y6XCkMuRtb0NHEwDmy2SdxMmAj6Vck/8kkFpmwwjH9lvO28Qx
- mkv4OiMUJM+oUDuvunJx1eRApKtjf89JB6e9B1+DaWfLZGCnGIzbx4eiKmCvEZwviU+3
- rdpg==
-X-Gm-Message-State: AOJu0YyjV02ITEfHR0DNS9uGTWr/BpScEKvITm2aj0klJAhYW/fLSNT8
- MvloT+oSLnX0uv+lRIiPnzMJj0tz4gksFcte/Uz9+p4vvqpcpjdgnXurf6A2Qj+HGhzKWnr8qFM
- 0OP1VhL4GjOgBCAeYSi6aN7VtFJU56UdltJyGrzreiuhBzTmAPcf+KG/4+MW0n9Q6xvle03Y168
- HrKKxvCni4TxeDz9meN32DiLCqXI2wKHy0cLciPjs=
-X-Received: by 2002:adf:e5c4:0:b0:37d:4846:42c3 with SMTP id
- ffacd0b85a97d-38061137468mr22348763f8f.22.1730741322864; 
- Mon, 04 Nov 2024 09:28:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFHtAkNeyRIqh1r3lg6iKaaRe9U8hIRD60uYR/uFluQbUacO2B4LGcpJjRbpyEBmDRIsijv5Q==
-X-Received: by 2002:adf:e5c4:0:b0:37d:4846:42c3 with SMTP id
- ffacd0b85a97d-38061137468mr22348733f8f.22.1730741322434; 
- Mon, 04 Nov 2024 09:28:42 -0800 (PST)
+ bh=d0Yrz32tZ191PDxJl2kf+DfSdg5bbOVpXeDrYos7+QE=;
+ b=gbZlip/oyhGiLFhot98tdpJs+0PPwa7yROEftc9jrAe8g1KOlM30uEHrR5eLJWKozO
+ LwDdVOhjVqccrPEyQ5a3/BUFoe6dYBCdgy4SCQJaX1ht91BHo2PS6TGydI+XnHD6TP4V
+ d99DhhXx+i2aunl+aGPE2lz55dDMc9aibQWue1dNRyEEdqXrNptH0Q6g5Y5U15DHznJc
+ GlYwNg8H69J9L3+2C8VdntaUe4WO6GLB8AMR+itT1xNDFCg6MQBFeDwixKxh2v4L03K0
+ XF+kGAwsVbZzVMHRFjAG3U/zBHPgu8AR1WfZR9iOx1aV/H2jY7BkPt8sUotkEWFu+HOY
+ QKOQ==
+X-Gm-Message-State: AOJu0Yw6nIeeNPQLhGdROZyjQme0J5cyNUdXUvoguzRaEv8KWzF+YtMi
+ Rm0WaFfi0axFgGb+PeY69p4zSX8Yu8ta3XrNjazbsdMD3WJGB1LvEOJuFPi+VbdSINtD4pb9eNy
+ whGz1rkksa44Tn9EXOFrggOnzSLwIsu/kEdrnNnZvbfKYyFtiNetK9/nyPidRX5lbB+lYC0/KK6
+ wjmBy/etciMqihStPWpc0d3Q+njgMjcptzTW6KAk8=
+X-Received: by 2002:adf:a353:0:b0:37d:5113:cdef with SMTP id
+ ffacd0b85a97d-380611e4e39mr23027189f8f.43.1730741325100; 
+ Mon, 04 Nov 2024 09:28:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2S7aoGcikVlYGzL1mWNK5adpZ+cnW6jlzmaEwlXRLnJXwvLcCBut6nBHOmaPtoisplFZPtw==
+X-Received: by 2002:adf:a353:0:b0:37d:5113:cdef with SMTP id
+ ffacd0b85a97d-380611e4e39mr23027156f8f.43.1730741324541; 
+ Mon, 04 Nov 2024 09:28:44 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d49c9sm13807647f8f.37.2024.11.04.09.28.40
+ ffacd0b85a97d-381c10e747csm13743212f8f.64.2024.11.04.09.28.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:40 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:43 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 36/40] rust: do not use --generate-cstr
-Date: Mon,  4 Nov 2024 18:27:15 +0100
-Message-ID: <20241104172721.180255-37-pbonzini@redhat.com>
+Subject: [PULL 37/40] rust: allow older version of bindgen
+Date: Mon,  4 Nov 2024 18:27:16 +0100
+Message-ID: <20241104172721.180255-38-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,98 +104,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---generate-cstr is a good idea and generally the right thing to do,
-but it is not available in Debian 12 and Ubuntu 22.04.  Work around
-the absence.
+Cope with the old version that is provided in Debian 12.
+
+--size_t-is-usize is needed on bindgen <0.61.0, and it was removed in
+bindgen 0.65.0, so check for it in meson.build.
+
+--merge-extern-blocks was added in 0.61.0.
+
+--formatter rustfmt was added in 0.65.0 and is the default, so remove it.
+
+Apart from Debian 12 and Ubuntu 22.04, all other supported distros have
+version 0.66.x of bindgen or newer (or do not have bindgen at all).
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                       |  4 +++-
- rust/hw/char/pl011/src/device.rs  |  1 +
- rust/qemu-api/src/device_class.rs | 10 ++++++++++
- rust/qemu-api/tests/tests.rs      |  4 ++--
- 4 files changed, 16 insertions(+), 3 deletions(-)
+ docs/about/build-platforms.rst | 12 ++++++++++++
+ meson.build                    | 29 +++++++++++++++++++++++++----
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 8fd7da140a3..ff56091078e 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -107,6 +107,18 @@ Python build dependencies
+   required, it may be necessary to fetch python modules from the Python
+   Package Index (PyPI) via ``pip``, in order to build QEMU.
+ 
++Rust build dependencies
++  QEMU is generally conservative in adding new Rust dependencies, and all
++  of them are included in the distributed tarballs.  One exception is the
++  bindgen tool, which is too big to package and distribute.  The minimum
++  supported version of bindgen is 0.60.x.  For distributions that do not
++  include bindgen or have an older version, it is recommended to install
++  a newer version using ``cargo install bindgen-cli``.
++
++  Developers may want to use Cargo-based tools in the QEMU source tree;
++  this requires Cargo 1.74.0.  Note that Cargo is not required in order
++  to build QEMU.
++
+ Optional build dependencies
+   Build components whose absence does not affect the ability to build
+   QEMU may not be available in distros, or may be too old for QEMU's
 diff --git a/meson.build b/meson.build
-index 95b612e0b77..07f7e5f8f64 100644
+index 07f7e5f8f64..fffdeef8c80 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3955,13 +3955,15 @@ common_all = static_library('common',
-                             dependencies: common_ss.all_dependencies())
+@@ -100,6 +100,21 @@ if have_rust
+   endif
+ endif
  
++bindgen = find_program('bindgen', required: get_option('rust').disable_auto_if(not have_rust))
++if not bindgen.found() or bindgen.version().version_compare('<0.60.0')
++  if get_option('rust').enabled()
++    error('bindgen version ' + bindgen.version() + ' is unsupported. You can install a new version with "cargo install bindgen-cli"')
++  else
++    if bindgen.found()
++      warning('bindgen version ' + bindgen.version() + ' is unsupported, disabling Rust compilation.')
++    else
++      warning('bindgen not found, disabling Rust compilation.')
++    endif
++    message('To use Rust you can install a new version with "cargo install bindgen-cli"')
++    have_rust = false
++  endif
++endif
++
+ dtrace = not_found
+ stap = not_found
+ if 'dtrace' in get_option('trace_backends')
+@@ -3957,15 +3972,13 @@ common_all = static_library('common',
  if have_rust
-+  # We would like to use --generate-cstr, but it is only available
-+  # starting with bindgen 0.66.0.  The oldest supported versions
-+  # are in Ubuntu 22.04 (0.59.1) and Debian 12 (0.60.1).
+   # We would like to use --generate-cstr, but it is only available
+   # starting with bindgen 0.66.0.  The oldest supported versions
+-  # are in Ubuntu 22.04 (0.59.1) and Debian 12 (0.60.1).
++  # is 0.60.x (Debian 12 has 0.60.1) which introduces --allowlist-file.
    bindgen_args = [
      '--disable-header-comment',
      '--raw-line', '// @generated',
      '--ctypes-prefix', 'std::os::raw',
-     '--formatter', 'rustfmt',
+-    '--formatter', 'rustfmt',
      '--generate-block',
--    '--generate-cstr',
      '--impl-debug',
-     '--merge-extern-blocks',
+-    '--merge-extern-blocks',
      '--no-doc-comments',
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index bca727e37f0..2a85960b81f 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -12,6 +12,7 @@
-     bindings::{self, *},
-     c_str,
-     definitions::ObjectImpl,
-+    device_class::TYPE_SYS_BUS_DEVICE,
- };
- 
- use crate::{
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index 56608c7f7fc..0ba798d3e3c 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -2,6 +2,10 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
-+use std::ffi::CStr;
-+
-+use crate::bindings;
-+
- #[macro_export]
- macro_rules! device_class_init {
-     ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, legacy_reset_fn => $legacy_reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
-@@ -62,3 +66,9 @@ macro_rules! declare_properties {
-         ];
-     };
- }
-+
-+// workaround until we can use --generate-cstr in bindgen.
-+pub const TYPE_DEVICE: &CStr =
-+    unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_DEVICE) };
-+pub const TYPE_SYS_BUS_DEVICE: &CStr =
-+    unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_SYS_BUS_DEVICE) };
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 7442f695646..43a4827de12 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -8,7 +8,7 @@
-     bindings::*,
-     c_str, declare_properties, define_property,
-     definitions::{Class, ObjectImpl},
--    device_class_init,
-+    device_class, device_class_init,
-     zeroable::Zeroable,
- };
- 
-@@ -57,7 +57,7 @@ impl ObjectImpl for DummyState {
-         type Class = DummyClass;
-         const TYPE_INFO: qemu_api::bindings::TypeInfo = qemu_api::type_info! { Self };
-         const TYPE_NAME: &'static CStr = c_str!("dummy");
--        const PARENT_TYPE_NAME: Option<&'static CStr> = Some(TYPE_DEVICE);
-+        const PARENT_TYPE_NAME: Option<&'static CStr> = Some(device_class::TYPE_DEVICE);
-         const ABSTRACT: bool = false;
-         const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-         const INSTANCE_POST_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
+     '--with-derive-default',
+     '--no-layout-tests',
+@@ -3974,6 +3987,12 @@ if have_rust
+     '--allowlist-file', meson.project_source_root() + '/.*',
+     '--allowlist-file', meson.project_build_root() + '/.*'
+     ]
++  if bindgen.version().version_compare('<0.61.0')
++    # default in 0.61+
++    bindgen_args += ['--size_t-is-usize']
++  else
++    bindgen_args += ['--merge-extern-blocks']
++  endif
+   c_enums = [
+     'DeviceCategory',
+     'GpioPolarity',
+@@ -4009,7 +4028,7 @@ if have_rust
+     dependencies: common_ss.all_dependencies(),
+     output: 'bindings.rs',
+     include_directories: include_directories('.', 'include'),
+-    bindgen_version: ['>=0.69.4'],
++    bindgen_version: ['>=0.60.0'],
+     args: bindgen_args,
+     )
+   subdir('rust')
+@@ -4475,6 +4494,8 @@ if have_rust
+   summary_info += {'Rust target':     config_host['RUST_TARGET_TRIPLE']}
+   summary_info += {'rustc':           ' '.join(rustc.cmd_array())}
+   summary_info += {'rustc version':   rustc.version()}
++  summary_info += {'bindgen':         bindgen.full_path()}
++  summary_info += {'bindgen version': bindgen.version()}
+ endif
+ option_cflags = (get_option('debug') ? ['-g'] : [])
+ if get_option('optimization') != 'plain'
 -- 
 2.47.0
 
