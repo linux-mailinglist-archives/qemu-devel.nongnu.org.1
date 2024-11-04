@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3964B9BBC04
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2679BBC1B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:36:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80tH-0008PH-Lh; Mon, 04 Nov 2024 12:29:23 -0500
+	id 1t80zr-0000kG-Am; Mon, 04 Nov 2024 12:36:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80ss-00089b-Oq
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sr-0000TW-5v
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741335;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CGWRmX3rMWBrx19dauoWAvIXhk+Rz6c9rIxN6h0dBpU=;
- b=TwgtsqUXExU/5sTO32eeAjhqeThoARY0FDVn/1bjNpWZePY9Th0bXaMfzQjj7ZNy70WK9O
- cW44Yx+j2ZFA1vk3GzT3hNE9QRS+KChFn0llnmJDtYl2OWVjX6ExwvO06mvo8HqC3VTu6Q
- X7UIC5Zsv0aB7W+DYQnZNW8YzN2/f+4=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-IF2r7xVjPWilAdXzkf7O9Q-1; Mon, 04 Nov 2024 12:28:54 -0500
-X-MC-Unique: IF2r7xVjPWilAdXzkf7O9Q-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-539eb3416cdso4699779e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1t80ze-0000ZY-Rv
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:35:59 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1t80zc-0001Gx-L2
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:35:58 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4314c4cb752so39913535e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:35:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1730741753; x=1731346553; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GqDaH8FBkkxPNg8DatpDcuWIhwo3YQN0q5KUjv6axVU=;
+ b=MXjNH5H0E9r1qMRyj42epJ4E95+nDXNT/H4flHOVCnb9lgY+Rd9KgNaNL31U8zB1J+
+ klQ30awFab2NwtaYreWgezB/86wj0ll0ciRmcXK9y/djqdYnxh/yOz/Ya+7n7ufOBNNP
+ ZNo7ZrPaRQAZCjKks9KpO/M0lgcLg5hIPhx4hAXB5tkcH9MkPVS6KswWPnRTIclclowy
+ 5TwWlNsqrYn5dfybigTeTiU9MeNUgegvbNDqSVD9A+1oISRPgXH77SNj4+S7QnODpCL2
+ jxY4yhGgcn0HjpbiyuemU/UAPK0DAxunmQIN602HmZQr9cqJ5HYA1OJYRn0ZuMIVqJFu
+ ToQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741332; x=1731346132;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CGWRmX3rMWBrx19dauoWAvIXhk+Rz6c9rIxN6h0dBpU=;
- b=Djp5W9WWVdIG9hOXBjmptyA8pfWjaYXaR/k3w2M1DojmyAFi/QScbXNSJtbIi5n5IN
- rH7j6/Zffc3iDQwaVKD2vY55zBGCeFPvAwrqGbeKHnVKNTIyDKCdDtoT6kk/sy1ky3jl
- PJ7rBoVpPtHYWefqPJ7vatJlF6AEunSvtBnyvO1QBh7Y2ojcLPr0eqVJvmVWP6Tf6/5F
- 09oEV2FKumxEVUYelYEOBdi6wQJhH4yqVZOu13wfEu/tBUMMS4vvR9fiM/n5iUZnPp8b
- Wl5xh7FGmC91Y/5aqSnVbXMJSuyamkHk8vFFVzWYh4E/LrvNqTp7QiffqmPL4x2PTZBn
- FNeg==
-X-Gm-Message-State: AOJu0Yztwww3osktU1PTCUG2pe0g62RWWJV0X0nbro9dq2hOVKT+q/X2
- 6t/Lm0KdG+mHpDOSlIvw70tWUNdj7a3KMMAc4u8yo1MS/HkeoQajPUuDTXStytqEJAtW7CpbM84
- hDKeb6Gp4UKwTY1CQh6Qq0ZRHir4NuA5ePdew7dSPLT6+hKYXT2SuRxxodLV4DkUiawColq14j1
- UdYNlYcxGsvlE7LM44FLDoQHOhGHYxiVQdoy4ASFY=
-X-Received: by 2002:a05:6512:12d3:b0:539:fb49:c47a with SMTP id
- 2adb3069b0e04-53b348c38b0mr18004264e87.4.1730741331763; 
- Mon, 04 Nov 2024 09:28:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEvXcC5nQC1vtlOzI2/O8BSyCzrrLMkJgRWoPoLQ1i66qToryZaXzmr1qtCNt7nPD7Ov/Nv8A==
-X-Received: by 2002:a05:6512:12d3:b0:539:fb49:c47a with SMTP id
- 2adb3069b0e04-53b348c38b0mr18004212e87.4.1730741330923; 
- Mon, 04 Nov 2024 09:28:50 -0800 (PST)
-Received: from [192.168.10.3] ([151.49.226.83])
+ d=1e100.net; s=20230601; t=1730741753; x=1731346553;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GqDaH8FBkkxPNg8DatpDcuWIhwo3YQN0q5KUjv6axVU=;
+ b=rta1iZfFAoqcrv1NRXBKgkBleRUkPZlplCVRXyMqT2VXRxfHATvW/yzWi9zFYhOPMt
+ 75vurYAZcDdUfZg1qQ4ePrnNDZsYo/0zDmhvC5w8uBbENN0AU4MxnKDWAjTOh6+8McQf
+ OaBNUPAgW5U9F5P8e+wm7s/TJZvIVDXab89GnC+R8dHhjOGqw2B8Mtn2bzU7q3EDTcRW
+ q7Se3mAz5Kw0RzJi9TKAOsfwimAv6XcMWth5Tb93b9yIsSpTiXwnzwwaFbXgI1P4fDH9
+ br/vMG2MXhC78RzLpi4Sbg7FTdeOt65v0p9M2xxHDLxu4488wG6Y5BsacxS+arC9YbVV
+ 6a7g==
+X-Gm-Message-State: AOJu0YwrFuK1eLUO4ef7N3Az5AvqBfkhbJ1AmNo3VZA2a9tFsWI1K7Qd
+ vOEsRkxYEJ/vxe7hq47HzfUW8+Fd4x7W2A3snX8AHl84lXPTTkceFaCtbU3rRnamwiosQPRIIW3
+ 1
+X-Google-Smtp-Source: AGHT+IGNLjSfJDjKIVaaU3cbLo0NlN/k40pHJZkz97N2i+RohIklIxKhAuyH+Jsmw28gcknfrepc5w==
+X-Received: by 2002:a05:600c:3b14:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-4327b6f9590mr141796465e9.2.1730741753590; 
+ Mon, 04 Nov 2024 09:35:53 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e51csm13814117f8f.79.2024.11.04.09.28.49
+ 5b1f17b1804b1-431bd917fa7sm187499735e9.18.2024.11.04.09.35.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:49 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 40/40] ci: enable rust in the Debian and Ubuntu system build job
-Date: Mon,  4 Nov 2024 18:27:19 +0100
-Message-ID: <20241104172721.180255-41-pbonzini@redhat.com>
+ Mon, 04 Nov 2024 09:35:53 -0800 (PST)
+From: Andrew Jones <ajones@ventanamicro.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH] target/riscv/kvm: Fix leak of reg list
+Date: Mon,  4 Nov 2024 18:35:52 +0100
+Message-ID: <20241104173551.125069-2-ajones@ventanamicro.com>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
-References: <20241104172721.180255-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,38 +92,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have fixed all incompatibilities with older versions of rustc
-and bindgen.  Enable Rust on Debian to check that the minimum
-supported version of Rust is indeed 1.63.0, and 0.60.x for bindgen.
+Free the temporary register list.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 608bdebb6075 ("target/riscv/kvm: support KVM_GET_REG_LIST")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index aba65ff833a..8deaf9627cb 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -40,7 +40,7 @@ build-system-ubuntu:
-     job: amd64-ubuntu2204-container
-   variables:
-     IMAGE: ubuntu2204
--    CONFIGURE_ARGS: --enable-docs
-+    CONFIGURE_ARGS: --enable-docs --enable-rust
-     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
-     MAKE_CHECK_ARGS: check-build
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index cbda4596da73..effd8fed815d 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1170,6 +1170,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+     }
  
-@@ -71,7 +71,7 @@ build-system-debian:
-     job: amd64-debian-container
-   variables:
-     IMAGE: debian
--    CONFIGURE_ARGS: --with-coroutine=sigaltstack
-+    CONFIGURE_ARGS: --with-coroutine=sigaltstack --enable-rust
-     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4-softmmu
-       sparc-softmmu xtensa-softmmu
-     MAKE_CHECK_ARGS: check-build
+     kvm_riscv_check_sbi_dbcn_support(cpu, kvmcpu, reglist);
++
++    g_free(reglist);
+ }
+ 
+ static void riscv_init_kvm_registers(Object *cpu_obj)
 -- 
 2.47.0
 
