@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C629BBC14
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C1C9BBC09
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:34:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sY-0006FW-OT; Mon, 04 Nov 2024 12:28:39 -0500
+	id 1t80sc-0006f1-UC; Mon, 04 Nov 2024 12:28:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sU-00065m-RZ
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:35 -0500
+ id 1t80sa-0006VD-51
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sS-0000Or-Rs
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:34 -0500
+ id 1t80sX-0000Q4-Tk
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741312;
+ s=mimecast20190719; t=1730741316;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LdHMmVfohK45Fr50VMfZShEdcQTZfzv07i8pTppE0kM=;
- b=GQY2Hw1ux5HE/piWQFJZoAbU4w9m1kmNPIPYjjj37uJnc3gVslSJD74XpI9+4YHmmCbymb
- bxUzK1AFlNmXeFS2zwC1ZQloUVPAGYGJ32ak6EKsf3AsqBeOoWvY5hWXot+iAEoTK4I3IG
- d91ZEtU7zmJ0it6iFkQpYdR4KLdW+uY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=i5EXyRcUQif7nOV98F3C2ZSKwIXfW163NZDTMaMuIdQ=;
+ b=DxXLjt+BxnzWnrO4WBb6eAXn5R8ydT7hWe5b31/vMA7ABUAgov9qo+f2js9t1oyC2+ihug
+ 4bzIZmH7EV3fpZ2m60j5BP3jX0irCGTayfU0dsm47AXT8YS+f6gNY2Wfu0FnWEyZ8AHPDn
+ heX0FEP2aIJ6/+YOOhxy76K7HEhpWME=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-tW6MRQIuM2Se0cMouWuQVQ-1; Mon, 04 Nov 2024 12:28:30 -0500
-X-MC-Unique: tW6MRQIuM2Se0cMouWuQVQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4316e2dde9eso38309135e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:30 -0800 (PST)
+ us-mta-556-geyZ2jz9N-G6LlupS4zAwg-1; Mon, 04 Nov 2024 12:28:35 -0500
+X-MC-Unique: geyZ2jz9N-G6LlupS4zAwg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-53a0b48e8d4so3103590e87.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741309; x=1731346109;
+ d=1e100.net; s=20230601; t=1730741313; x=1731346113;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LdHMmVfohK45Fr50VMfZShEdcQTZfzv07i8pTppE0kM=;
- b=o3T98bYjx4iE9RF2PRVshqDx40O3tP7YVGfJien5yulvxT+7QXF3jNA6+HS4HqszKD
- SdJondPGLqDnTdYTZ4qaAVvXAcpsSZJ2B0adJ/0w8671xHgvHgHVNeqtMh2yv5uGJeMz
- gHa/+FS0x7XXT6womu6PTOoZZ1BPTAQv/JwSC69nV9gqXr1r6/xHbFBLWap3YVTCRiHT
- O+P94VSiEmmKJRHaW07V+qypzGYUDLHqsKAZeD/U8KkZiNOiyeJ4J/FQSUyg9uwx91ot
- IIyla+xkZkG2De2whbIvGkD1r7YmQPdAcE9QCPzzl4SFbkskHUCUYZ99+JIWp1BAtD9B
- aUdg==
-X-Gm-Message-State: AOJu0YwBgNt12Ez//8bwf+p6aRsRB7p8393Q1OlOnuY2SnseNIgf3Z+b
- h/2Fgd2RvBydFNtYZPk4tFQO6WLv5CnHgo7C8Gw7u15uF8r/zMzD1A6kYFS4SBBI8U//0YzPQnz
- yycXmujoO8ockhCExYIHW74LHZ7tuDXTr+k9AMvhd3n3d2h5XTor+nv/vpmVmUJqGzakLUj2AGs
- m1gyqbnCKejpuyOCEBOYwRJ+3WjhGQMFCefUd3DNk=
-X-Received: by 2002:a05:600c:4f03:b0:431:4847:47c0 with SMTP id
- 5b1f17b1804b1-43283242c79mr132381675e9.7.1730741308732; 
- Mon, 04 Nov 2024 09:28:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3U3PhA9oiqybUevLrWXLbkRca0oltLj3nmErSUOHX/BRWgfJUQgQYWGgKrFO6uWOOYEX+1Q==
-X-Received: by 2002:a05:600c:4f03:b0:431:4847:47c0 with SMTP id
- 5b1f17b1804b1-43283242c79mr132381335e9.7.1730741308303; 
- Mon, 04 Nov 2024 09:28:28 -0800 (PST)
+ bh=i5EXyRcUQif7nOV98F3C2ZSKwIXfW163NZDTMaMuIdQ=;
+ b=LjwMMGYwRgk+CF2FW6u8Vg7PaJRRSdzFn3f1RnZgf92j8sOf8iXZik6fpd2qUUDI7N
+ Nbtona75dvlf4OBcrY3I312TPTVMibnU5uQYhTtOgMnAVDhEcXrZp7OIrBP6AGlCc9fi
+ a4YSMxwr0yXEzu6sl3Mm6iPKwiIxsF/X4frLzmG2aVPF4zvlXdvoWXLZFWSaHlCg6CJE
+ 48uG6/dCBwGOUZwgXdQtWeFceTibKCd3KhYkue6EWriMATj+yhXtXVKHb4TTNRgL9KTZ
+ WIJTbnFmGEx8MmmeFoagIUH+eQnvk8GP+tgIJNh0aHMYCBnKDV5nM2JlV11LT3tUZrYa
+ OkkQ==
+X-Gm-Message-State: AOJu0YzOKtwBWYKqZp/lFjzGvTIedoZuvNcEyOR90CS6dnfL56iIwW0n
+ 6fzVIv/PUzwFoUcxdmMCO4LlsbXJYidM1aVf61cGRcHstt1ohvC1dwigYfyOnl/A1nZ8t25lhiJ
+ 3MY8yqccz0KxmRhE+cMoQ9wmhVv3188KQ1RErqzglTbahSB+z+e3j4YiYOJk4SyJovpBEtruKx7
+ taFQitC5HEI5lu5+BxQ8hHAMF4hE5sPtplLu1K/xM=
+X-Received: by 2002:a05:6512:3c90:b0:539:ea54:8d22 with SMTP id
+ 2adb3069b0e04-53b348d2696mr16218755e87.18.1730741313041; 
+ Mon, 04 Nov 2024 09:28:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+4TF0klWwjC++tT5Q3AKWlPykLZMVYN8aV3eYhr2+pHl/8fFl3HU/EDRIG4tTCgJ1b4yTSQ==
+X-Received: by 2002:a05:6512:3c90:b0:539:ea54:8d22 with SMTP id
+ 2adb3069b0e04-53b348d2696mr16218722e87.18.1730741312508; 
+ Mon, 04 Nov 2024 09:28:32 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5bf225sm158612575e9.11.2024.11.04.09.28.26
+ 5b1f17b1804b1-4327d5ab305sm160311675e9.7.2024.11.04.09.28.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:27 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,10 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 30/40] rust: synchronize dependencies between subprojects and
- Cargo.lock
-Date: Mon,  4 Nov 2024 18:27:09 +0100
-Message-ID: <20241104172721.180255-31-pbonzini@redhat.com>
+Subject: [PULL 31/40] rust: create a cargo workspace
+Date: Mon,  4 Nov 2024 18:27:10 +0100
+Message-ID: <20241104172721.180255-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -105,138 +104,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next commit will introduce a new build.rs dependency for rust/qemu-api,
-version_check.  Before adding it, ensure that all dependencies are
-synchronized between the Meson- and cargo-based build systems.
+Workspaces allows tracking dependencies for multiple crates at once,
+by having a single Cargo.lock file at the top of the rust/ tree.
+Because QEMU's Cargo.lock files have to be synchronized with the versions
+of crates in subprojects/, using a workspace avoids the need to copy
+over the Cargo.lock file when adding a new device (and thus a new crate)
+under rust/hw/.
 
-Note that it's not clear whether in the long term we'll use Cargo for
-anything; it seems that the three main uses (clippy, rustfmt, rustdoc)
-can all be invoked manually---either via glue code in QEMU, or by
-extending Meson to gain the relevant functionality.  However, for
-the time being we're stuck with Cargo so it should at least look at
-the same code as the rest of the build system.
+In addition, workspaces let cargo download and build dependencies just
+once.  While right now we have one leaf crate (hw/char/pl011), this
+will not be the case once more devices are added.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/Cargo.lock   |  3 +++
- rust/qemu-api-macros/Cargo.lock |  8 +++---
- rust/qemu-api/Cargo.lock        | 47 +++++++++++++++++++++++++++++++++
- rust/qemu-api/Cargo.toml        |  1 +
- 4 files changed, 55 insertions(+), 4 deletions(-)
+ rust/{hw/char/pl011 => }/Cargo.lock |  0
+ rust/Cargo.toml                     |  7 ++++
+ rust/hw/char/pl011/Cargo.toml       |  3 --
+ rust/qemu-api-macros/Cargo.lock     | 47 -------------------------
+ rust/qemu-api-macros/Cargo.toml     |  3 --
+ rust/qemu-api/Cargo.lock            | 54 -----------------------------
+ rust/qemu-api/Cargo.toml            |  3 --
+ 7 files changed, 7 insertions(+), 110 deletions(-)
+ rename rust/{hw/char/pl011 => }/Cargo.lock (100%)
+ create mode 100644 rust/Cargo.toml
+ delete mode 100644 rust/qemu-api-macros/Cargo.lock
+ delete mode 100644 rust/qemu-api/Cargo.lock
 
-diff --git a/rust/hw/char/pl011/Cargo.lock b/rust/hw/char/pl011/Cargo.lock
-index b58cebb186e..9f43b33e8b8 100644
---- a/rust/hw/char/pl011/Cargo.lock
-+++ b/rust/hw/char/pl011/Cargo.lock
-@@ -91,6 +91,9 @@ dependencies = [
- [[package]]
- name = "qemu_api"
- version = "0.1.0"
-+dependencies = [
-+ "qemu_api_macros",
+diff --git a/rust/hw/char/pl011/Cargo.lock b/rust/Cargo.lock
+similarity index 100%
+rename from rust/hw/char/pl011/Cargo.lock
+rename to rust/Cargo.lock
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+new file mode 100644
+index 00000000000..0c94d5037da
+--- /dev/null
++++ b/rust/Cargo.toml
+@@ -0,0 +1,7 @@
++[workspace]
++resolver = "2"
++members = [
++    "qemu-api-macros",
++    "qemu-api",
++    "hw/char/pl011",
 +]
- 
- [[package]]
- name = "qemu_api_macros"
+diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
+index b089e3dded6..a373906b9fb 100644
+--- a/rust/hw/char/pl011/Cargo.toml
++++ b/rust/hw/char/pl011/Cargo.toml
+@@ -21,6 +21,3 @@ bilge = { version = "0.2.0" }
+ bilge-impl = { version = "0.2.0" }
+ qemu_api = { path = "../../../qemu-api" }
+ qemu_api_macros = { path = "../../../qemu-api-macros" }
+-
+-# Do not include in any global workspace
+-[workspace]
 diff --git a/rust/qemu-api-macros/Cargo.lock b/rust/qemu-api-macros/Cargo.lock
-index fdc0fce116c..73c334e7ce9 100644
+deleted file mode 100644
+index 73c334e7ce9..00000000000
 --- a/rust/qemu-api-macros/Cargo.lock
-+++ b/rust/qemu-api-macros/Cargo.lock
-@@ -4,9 +4,9 @@ version = 3
- 
- [[package]]
- name = "proc-macro2"
--version = "1.0.86"
-+version = "1.0.84"
- source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77"
-+checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
- dependencies = [
-  "unicode-ident",
- ]
-@@ -31,9 +31,9 @@ dependencies = [
- 
- [[package]]
- name = "syn"
--version = "2.0.72"
-+version = "2.0.66"
- source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "dc4b9b9bf2add8093d3f2c0204471e951b2285580335de42f9d2534f3ae7a8af"
-+checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
- dependencies = [
-  "proc-macro2",
-  "quote",
++++ /dev/null
+@@ -1,47 +0,0 @@
+-# This file is automatically @generated by Cargo.
+-# It is not intended for manual editing.
+-version = 3
+-
+-[[package]]
+-name = "proc-macro2"
+-version = "1.0.84"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
+-dependencies = [
+- "unicode-ident",
+-]
+-
+-[[package]]
+-name = "qemu_api_macros"
+-version = "0.1.0"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn",
+-]
+-
+-[[package]]
+-name = "quote"
+-version = "1.0.36"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
+-dependencies = [
+- "proc-macro2",
+-]
+-
+-[[package]]
+-name = "syn"
+-version = "2.0.66"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "unicode-ident",
+-]
+-
+-[[package]]
+-name = "unicode-ident"
+-version = "1.0.12"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+diff --git a/rust/qemu-api-macros/Cargo.toml b/rust/qemu-api-macros/Cargo.toml
+index 144cc3650fa..f8d6d03609f 100644
+--- a/rust/qemu-api-macros/Cargo.toml
++++ b/rust/qemu-api-macros/Cargo.toml
+@@ -20,6 +20,3 @@ proc-macro = true
+ proc-macro2 = "1"
+ quote = "1"
+ syn = "2"
+-
+-# Do not include in any global workspace
+-[workspace]
 diff --git a/rust/qemu-api/Cargo.lock b/rust/qemu-api/Cargo.lock
-index e9c51a243a8..e407911cdd1 100644
+deleted file mode 100644
+index e407911cdd1..00000000000
 --- a/rust/qemu-api/Cargo.lock
-+++ b/rust/qemu-api/Cargo.lock
-@@ -2,6 +2,53 @@
- # It is not intended for manual editing.
- version = 3
- 
-+[[package]]
-+name = "proc-macro2"
-+version = "1.0.84"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
-+dependencies = [
-+ "unicode-ident",
-+]
-+
- [[package]]
- name = "qemu_api"
- version = "0.1.0"
-+dependencies = [
-+ "qemu_api_macros",
-+]
-+
-+[[package]]
-+name = "qemu_api_macros"
-+version = "0.1.0"
-+dependencies = [
-+ "proc-macro2",
-+ "quote",
-+ "syn",
-+]
-+
-+[[package]]
-+name = "quote"
-+version = "1.0.36"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
-+dependencies = [
-+ "proc-macro2",
-+]
-+
-+[[package]]
-+name = "syn"
-+version = "2.0.66"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
-+dependencies = [
-+ "proc-macro2",
-+ "quote",
-+ "unicode-ident",
-+]
-+
-+[[package]]
-+name = "unicode-ident"
-+version = "1.0.12"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
++++ /dev/null
+@@ -1,54 +0,0 @@
+-# This file is automatically @generated by Cargo.
+-# It is not intended for manual editing.
+-version = 3
+-
+-[[package]]
+-name = "proc-macro2"
+-version = "1.0.84"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ec96c6a92621310b51366f1e28d05ef11489516e93be030060e5fc12024a49d6"
+-dependencies = [
+- "unicode-ident",
+-]
+-
+-[[package]]
+-name = "qemu_api"
+-version = "0.1.0"
+-dependencies = [
+- "qemu_api_macros",
+-]
+-
+-[[package]]
+-name = "qemu_api_macros"
+-version = "0.1.0"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn",
+-]
+-
+-[[package]]
+-name = "quote"
+-version = "1.0.36"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
+-dependencies = [
+- "proc-macro2",
+-]
+-
+-[[package]]
+-name = "syn"
+-version = "2.0.66"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "unicode-ident",
+-]
+-
+-[[package]]
+-name = "unicode-ident"
+-version = "1.0.12"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
 diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
-index 3677def3fe2..db594c64083 100644
+index db594c64083..e092f61e8f3 100644
 --- a/rust/qemu-api/Cargo.toml
 +++ b/rust/qemu-api/Cargo.toml
-@@ -14,6 +14,7 @@ keywords = []
- categories = []
- 
- [dependencies]
-+qemu_api_macros = { path = "../qemu-api-macros" }
- 
- [features]
+@@ -20,8 +20,5 @@ qemu_api_macros = { path = "../qemu-api-macros" }
  default = []
+ allocator = []
+ 
+-# Do not include in any global workspace
+-[workspace]
+-
+ [lints.rust]
+ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)'] }
 -- 
 2.47.0
 
