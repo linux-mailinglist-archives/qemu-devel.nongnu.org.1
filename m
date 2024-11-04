@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC229BBF94
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952B99BBF74
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Jd-0007Bd-DL; Mon, 04 Nov 2024 16:08:49 -0500
+	id 1t84Jk-0007O6-2z; Mon, 04 Nov 2024 16:08:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ja-00072t-HL
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jd-0007Gv-I6
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84JZ-0005Uc-3i
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:46 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jc-0005V8-0f
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:08:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754524;
+ s=mimecast20190719; t=1730754527;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6ga8DS27Sfi7rjz6dDrgfoTT5hS6O0iJNoMqFy2shrM=;
- b=DsxF6axFSRqRzkBOg+gPQe32ZsNxOoh68zTs3MYsnE6xGR8IpsLdDO5pay7NeVZSRPH9lW
- 9O8j6zg6OaKejYiMPhGos/TCYJjQ7QMO5bjfYpaj2tB6O4D/WB4rOX7hDm2DLTrckcQYDV
- pojrHhzyq2WHht/cIpvWHIySamYrERk=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lxMZ/W8THThOjbgDug1/PH8QPzyLrkb73sNiH2Rol0U=;
+ b=P/yx5yRsgXjrwD5LM/qU95UcaBAGaahiqTD8BNWvMOwp74TFOdH3ZHnOgxf9NDwjWgspCP
+ 8V3afRcCB66GB0D+yWkOWqo+5KgK+u68OSdKdf3CbMvdsD9afYf/1T9ENqR8r0PdRWYfQs
+ GBXhK2gCnL2bgkqRG+E81jYk86wbOi8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-YsywGLu4NKyM6y6xT5Pr5g-1; Mon, 04 Nov 2024 16:08:43 -0500
-X-MC-Unique: YsywGLu4NKyM6y6xT5Pr5g-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-539eb3416cdso4957872e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:42 -0800 (PST)
+ us-mta-413-53adzAwKMjW0nH66SXTERw-1; Mon, 04 Nov 2024 16:08:46 -0500
+X-MC-Unique: 53adzAwKMjW0nH66SXTERw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539e91e12bbso3000229e87.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:08:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754521; x=1731359321;
+ d=1e100.net; s=20230601; t=1730754524; x=1731359324;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6ga8DS27Sfi7rjz6dDrgfoTT5hS6O0iJNoMqFy2shrM=;
- b=msLZNbScKG7jU/wcU2rqJVQiXAF693Ljm8BYSIIv3xxFsYrM0rg8PBsze8M49z4hEH
- JAWeAUuDB9MKBy9z/lLu2A/fkpxubrlZ/J1oWI6X2pn4xFpPFaLda0HdpQEc4A2sAd5O
- kemb9dZ3SEUv4+EfHAgX/hYhWovqLV+zcKUoNYXtjEyJBCE1fKcNQbD84bJKcV0Hepnm
- I3vO+N4JArqyQvGkCjGupjX9LhqEmTp6s/OcbikFXGGq2hNIHH/JEjuWLAxS67u3CEtT
- GzEYuzP//jLAUQ7CZUnuvTzDuQfLRepykAhZv1+KRnpPbYR5FmdhAvkpGTWTPOpzISfR
- BNig==
-X-Gm-Message-State: AOJu0Yz2oxuUfF2Nxdz2PRaK98rJnLulriDbUp2OWYJkxgskq2bvCX9q
- uZqkG5t1rk1g2NCJFlUPq/vpY4NOqwPx1qC2QgEZMqcCnITWd3Zf+vtt54PbhzIGCD69PXJuxe2
- g8bUYJpXos00q2m5e50RFqB8FiA4irNU68xToJPT7vHKbjje+1C+LfB/N9pYrvd+EXWgQfIAhy6
- deTfS+8toUiJiJRpSyK4e/KG/rfVxDtw==
-X-Received: by 2002:a05:6512:128b:b0:539:e5e9:2159 with SMTP id
- 2adb3069b0e04-53b348e56eamr17436241e87.31.1730754520611; 
- Mon, 04 Nov 2024 13:08:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFaPFMFEBs1G8FRUdZ8UdrkFfn+kD+IRU9PlCV4/st20rfyjFCmGEwrdwICNtzWTjpayV9JsA==
-X-Received: by 2002:a05:6512:128b:b0:539:e5e9:2159 with SMTP id
- 2adb3069b0e04-53b348e56eamr17436213e87.31.1730754520006; 
- Mon, 04 Nov 2024 13:08:40 -0800 (PST)
+ bh=lxMZ/W8THThOjbgDug1/PH8QPzyLrkb73sNiH2Rol0U=;
+ b=U5VEW4RqRR5w0OXUmcTmEYEFjMahTe/VS5+NUrPRfpOlVkoyEe/uuyphrsPqJUUz9Y
+ HOYqQ8OgwP7WGpaHWDS7IEyoqWnNvKOWia37VbCGaenAoIUv4ug7NupyDC5Ho0VL4pbG
+ kcI1qkH0E/q6wuiHGwlLdVEkg9vYkLZTQI89U8Cwvhx1Bqc4hMk22b9Q2S5pVE40gX9i
+ uHrgIEYShVfUf1bwqTr350nZ5uuP9lI/iVVcyotdUthIziLK9yJQXJnWYnwlX0ejJzlu
+ 0hdz2B6gU/n6Gj7Kol/Zr78j3tGaQLEkMaMvujPgtP5P5tlh+Dd7wd6jzG2VdTLI0Pda
+ d4xA==
+X-Gm-Message-State: AOJu0YyjU7wYfyBlC0woY9m/uZ2GkwMoYQTENE/wChwGofUmZoHF60DB
+ 0E6cumiJP1SGzelfoblJks07uulJUF1i1GK6FZ/2heau1f/jDItTNBkhRRwVdl80oacXqXZtyxM
+ TyGp+mYffP3AFOC+c4dGt8z08Z+d380iN5O7NWUnpMTKbPIbqAv5VCDclENuuGMPHZLI/nVYE6g
+ tAksqpUCI7AoxlDLLQvvVwb0SCXZcWaw==
+X-Received: by 2002:ac2:5f87:0:b0:53d:6b50:f5f9 with SMTP id
+ 2adb3069b0e04-53d6b50fc78mr2974438e87.38.1730754524361; 
+ Mon, 04 Nov 2024 13:08:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFi+xKsxxOAGZXfM92I/OUJw6xP+bBRBhIgIzVkkTnvFy400Q6de84so7y8tldJqXaALuSJPg==
+X-Received: by 2002:ac2:5f87:0:b0:53d:6b50:f5f9 with SMTP id
+ 2adb3069b0e04-53d6b50fc78mr2974423e87.38.1730754523820; 
+ Mon, 04 Nov 2024 13:08:43 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e67csm14150069f8f.75.2024.11.04.13.08.38
+ 5b1f17b1804b1-431bd8e9145sm193342945e9.1.2024.11.04.13.08.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:08:39 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:08:36 -0500
+ Mon, 04 Nov 2024 13:08:43 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:08:40 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 46/65] hw/cxl/cxl-mailbox-util: Fix output buffer index update
- when retrieving DC extents
-Message-ID: <802671c37a6ab4de116866883841bcc8b2318124.1730754238.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 47/65] hw/cxl: Check size of input data to dynamic capacity
+ mailbox commands
+Message-ID: <7edbbff5ee85dd28699c5acd6ea2f2c2e41c37d2.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,35 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-In the function of retrieving DC extents (cmd_dcd_get_dyn_cap_ext_list),
-the output buffer index was not correctly updated while iterating the
-extent list on the device, leaving the extents returned incorrect except for
-the first one.
+cxl_cmd_dcd_release_dyn_cap() and cmd_dcd_add_dyn_cap_rsp() are missing
+input message size checks.  These must be done in the individual
+commands when the command has a variable length input payload.
 
-Fixes: 1c9221f19e62 ("hw/mem/cxl_type3: Add DC extent list representative and get DC extent list mailbox support")
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
+A buggy or malicious guest might send undersized messages via the mailbox.
+As that size is used to take a copy of the mailbox content, each command
+must check there is sufficient data. In this case the first check is that
+there is enough data to read how many extents there are, and the second
+that there is enough for those elements to be accessed.
+
+Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101132005.26633-3-Jonathan.Cameron@huawei.com>
+Message-Id: <20241101133917.27634-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/cxl/cxl-mailbox-utils.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 8bb0d2dd29..97cb8bbcec 100644
+index 97cb8bbcec..17924410dd 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -2227,6 +2227,7 @@ static CXLRetCode cmd_dcd_get_dyn_cap_ext_list(const struct cxl_cmd *cmd,
-             stw_le_p(&out_rec->shared_seq, ent->shared_seq);
+@@ -2465,11 +2465,20 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+     uint64_t dpa, len;
+     CXLRetCode ret;
  
-             record_done++;
-+            out_rec++;
-             if (record_done == record_count) {
-                 break;
-             }
++    if (len_in < sizeof(*in)) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
++
+     if (in->num_entries_updated == 0) {
+         cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
+         return CXL_MBOX_SUCCESS;
+     }
+ 
++    if (len_in <
++        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
++
+     /* Adding extents causes exceeding device's extent tracking ability. */
+     if (in->num_entries_updated + ct3d->dc.total_extent_count >
+         CXL_NUM_EXTENTS_SUPPORTED) {
+@@ -2624,10 +2633,19 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+     uint32_t updated_list_size;
+     CXLRetCode ret;
+ 
++    if (len_in < sizeof(*in)) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
++
+     if (in->num_entries_updated == 0) {
+         return CXL_MBOX_INVALID_INPUT;
+     }
+ 
++    if (len_in <
++        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
++
+     ret = cxl_detect_malformed_extent_list(ct3d, in);
+     if (ret != CXL_MBOX_SUCCESS) {
+         return ret;
 -- 
 MST
 
