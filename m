@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA419BBF80
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0F29BBF4E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84IM-0008J5-2v; Mon, 04 Nov 2024 16:07:30 -0500
+	id 1t84IQ-0008V0-C0; Mon, 04 Nov 2024 16:07:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IF-00081w-B2
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IJ-0008N7-KS
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84ID-0005Nv-Jv
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:22 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84IH-0005O5-5v
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754441;
+ s=mimecast20190719; t=1730754444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=vprvKklVU3XFH5cq7J6dxp5ZuQRvYtysugY4oc0x0dU=;
- b=WEZw2/moKyF6KLHK2Z0gesoaXmU8AAchaRm/jdToLlG/WcOjNFm2DxwEVLlLla3N/C1P9W
- qYy3zQ1PmOU94fodznNPZklseroINkKODoOOqKn6oD+PtlYWwm8R74RMjsj90Pzq1hxy8W
- qIFzSP+BcGrkoCmVJs8KdDV+SW5weI0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mFcIA7Jcyc6ARZWFCnittLNHwswZ/g6kFGbYCyMXGr0=;
+ b=ctHijI4glwx1CI1DM7dw6y1M1aW6k/OgXt9EToweiUcLIFehcGI0zlt7i/XL54Zb5JpX3L
+ piWP+PCg1MGzzurA4SFaTW760hnXkr0XJjOz9dybB/CQM1QtIK2B2/UWVp3P9zVeefwups
+ x2FxgvEb5RWuEAgKIb3xFi+oh9DEg50=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-T20wPS8cM-uDMVXnysvk9w-1; Mon, 04 Nov 2024 16:07:19 -0500
-X-MC-Unique: T20wPS8cM-uDMVXnysvk9w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4317391101aso30654405e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:19 -0800 (PST)
+ us-mta-460-a-yM8tslPZKBbci3jvCgUw-1; Mon, 04 Nov 2024 16:07:23 -0500
+X-MC-Unique: a-yM8tslPZKBbci3jvCgUw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43157cff1d1so34456275e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754438; x=1731359238;
+ d=1e100.net; s=20230601; t=1730754442; x=1731359242;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vprvKklVU3XFH5cq7J6dxp5ZuQRvYtysugY4oc0x0dU=;
- b=s+XwURI4Jew4edrUDob8ujTwKra7Ao1ywnYU267Zl6k8LuxevqEAAKKsdB7BfRTLfM
- Hs7G5HuYJQMT039XkRldI4umbEfpsb0aIu2XFX1QMXkEGTtbFsXAiAOzmRd2IX1lviCK
- Kl00KvWwp9o9ucEp6SxrYZLJgZQixGwIgZiN9ic2DB7FMV3AfkaJjvJx/t13dS5izM4q
- sBe6bVxhoqAVgBqva39+a2TGNVdK9s0WhUK1EAQueadT9WkbNOF8bmncPsm9A3tv49OB
- AaGwqcoRMvDiOyUR57eJOTTZqP9SwZQqDR39tVcnK4454lGpeAR7KLUoi8vZRhb2R9V5
- OXvQ==
-X-Gm-Message-State: AOJu0YzK3E0ramuiwRJi2Fk74GGLMNGngv8zQaRLd3MGZGAOmHt+qQbH
- 36Wn8OG5kaLBdbMWGBR+0S4bF9N8+AVueofHCWnKJt+9aERetERrMHFw044V6WuLArUMcyacAPt
- +IqspjrTOSWiFf8+ZmcAdEJR3nGO8FNTEVg/h6WFyf4FiJyhXSv08pb3v5NPjCvK/lDJ2w3ybc6
- RiSeFI7eoH3nCn+nZ4DQ+rJi+Oyulfbg==
-X-Received: by 2002:a05:600c:1c14:b0:431:57e5:b245 with SMTP id
- 5b1f17b1804b1-4328328492amr109793445e9.23.1730754438222; 
- Mon, 04 Nov 2024 13:07:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFFxAqhEribnYGDcnTMzrSVWxFFC4H2juyyO/DSj5olVabGJGa+Y+9TE73CsxJ5J3tyQe5Fjg==
-X-Received: by 2002:a05:600c:1c14:b0:431:57e5:b245 with SMTP id
- 5b1f17b1804b1-4328328492amr109793105e9.23.1730754437712; 
- Mon, 04 Nov 2024 13:07:17 -0800 (PST)
+ bh=mFcIA7Jcyc6ARZWFCnittLNHwswZ/g6kFGbYCyMXGr0=;
+ b=o8FJfsAsDsymSZdNgTwaOCREsjHyNqTfi5bhM2fGBDpEZj8MH2d9vzL+ziNhWaHiWq
+ AC0OH51aOv8mnLA1ggtChPh8FY98sb66AGv9hDdAnUbjYE7OGEeRbmV0r8lNWXez8ICZ
+ 6oXeayh+a2jut5QNOf0j8vc6DTy3LBouAWI8JR4WY0j1PMk06JegbAwP/0CJ31oMgWJG
+ m2uwrAMEu/ecUeuJpHncTrAvqKSn4Reo7QuUOTCrLz4CtaSzm1GGC0Go59+JN4fk19HM
+ pqchIIUmMbx+KhCiFtdEjOnDd9A5l7PCUKq6IamuyeauX4C/2MTuwwq5iF0s9Kwi3AMz
+ pKXg==
+X-Gm-Message-State: AOJu0YyaQYyx5wvq7CVMU3kjKp2Hli4f6kQrlCH7ZRQj7xCYEk0dBHMa
+ GIKzNf0CENT53fNl+iQDtkiZ9T7RBAy2gZA0NCInhs6/rp2/qyPREACDcorhxho+4mK1i/SMb90
+ Ji1TJTf39JsuipQlOhSSkvGM/dAIyQQD8FdwFRiMPv4fZ6Q7o8TYDZafo8+/fW5s0rl5ipvxMob
+ recvgQP+JVZghd+RRUDMGGUMEZTZmR5w==
+X-Received: by 2002:a05:600c:5115:b0:431:7c78:b885 with SMTP id
+ 5b1f17b1804b1-4327b6f954emr142776215e9.4.1730754441618; 
+ Mon, 04 Nov 2024 13:07:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG11NkyNpnhUMMnlLNStO6rg37Phu1jDmDoMyGTxnzgBqBhNLS2nQ0JIwEz7QIXOUsPQx1nIw==
+X-Received: by 2002:a05:600c:5115:b0:431:7c78:b885 with SMTP id
+ 5b1f17b1804b1-4327b6f954emr142775925e9.4.1730754441111; 
+ Mon, 04 Nov 2024 13:07:21 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd8e853esm198914825e9.8.2024.11.04.13.07.15
+ 5b1f17b1804b1-431bd9479ebsm192427175e9.23.2024.11.04.13.07.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:07:17 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:07:13 -0500
+ Mon, 04 Nov 2024 13:07:20 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:07:17 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ricardo Ribalda <ribalda@chromium.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 26/65] hw/i386/acpi-build: return a non-var package from _PRT()
-Message-ID: <7916bb54319a56be5c5eca0c890a4d2aa22b9bef.1730754238.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 27/65] tests/acpi: pc: update golden masters for DSDT
+Message-ID: <9848a76c0b56172a370640744e99fe78fea4d4c0.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -81,14 +75,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,36 +102,221 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-Windows XP seems to have issues when _PRT() returns a variable package.
-We know in advance the size, so we can return a fixed package instead.
-https://lore.kernel.org/qemu-devel/c82d9331-a8ce-4bb0-b51f-2ee789e27c86@ilande.co.uk/T/#m541190c942676bccf7a7f7fbcb450d94a4e2da53
+Note: since all we did is replace VarPackageOp with PackageOP,
+and both are represented by Package() in ASL, the AML is
+different but ASL is the same.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Fixes: 99cb2c6c7b ("hw/i386/acpi-build: Return a pre-computed _PRT table")
-Closes: https://lore.kernel.org/all/eb11c984-ebe4-4a09-9d71-1e9db7fe7e6f@ilande.co.uk/
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-Id: <20240924132417.739809-3-ribalda@chromium.org>
+Message-Id: <20240924132417.739809-4-ribalda@chromium.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/i386/acpi-build.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |  16 ----------------
+ tests/data/acpi/x86/pc/DSDT                 | Bin 8527 -> 8526 bytes
+ tests/data/acpi/x86/pc/DSDT.acpierst        | Bin 8438 -> 8437 bytes
+ tests/data/acpi/x86/pc/DSDT.acpihmat        | Bin 9852 -> 9851 bytes
+ tests/data/acpi/x86/pc/DSDT.bridge          | Bin 15398 -> 15397 bytes
+ tests/data/acpi/x86/pc/DSDT.cphp            | Bin 8991 -> 8990 bytes
+ tests/data/acpi/x86/pc/DSDT.dimmpxm         | Bin 10181 -> 10180 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbridge        | Bin 8478 -> 8477 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbrroot        | Bin 5034 -> 5033 bytes
+ tests/data/acpi/x86/pc/DSDT.ipmikcs         | Bin 8599 -> 8598 bytes
+ tests/data/acpi/x86/pc/DSDT.memhp           | Bin 9886 -> 9885 bytes
+ tests/data/acpi/x86/pc/DSDT.nohpet          | Bin 8385 -> 8384 bytes
+ tests/data/acpi/x86/pc/DSDT.numamem         | Bin 8533 -> 8532 bytes
+ tests/data/acpi/x86/pc/DSDT.roothp          | Bin 12320 -> 12319 bytes
+ tests/data/acpi/x86/q35/DSDT.cxl            | Bin 13148 -> 13146 bytes
+ tests/data/acpi/x86/q35/DSDT.viot           | Bin 14615 -> 14612 bytes
+ 16 files changed, 16 deletions(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index d01e704162..508a6094aa 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -740,7 +740,8 @@ static Aml *build_prt(bool is_pci0_prt)
-     int pin;
- 
-     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
--    rt_pkg = aml_varpackage(nroutes);
-+    assert(nroutes < 256);
-+    rt_pkg = aml_package(nroutes);
- 
-     for (pin = 0; pin < nroutes; pin++) {
-         Aml *pkg = aml_package(4);
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 6fef8e558b..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,17 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/x86/pc/DSDT",
+-"tests/data/acpi/x86/pc/DSDT.acpierst",
+-"tests/data/acpi/x86/pc/DSDT.acpihmat",
+-"tests/data/acpi/x86/pc/DSDT.bridge",
+-"tests/data/acpi/x86/pc/DSDT.cphp",
+-"tests/data/acpi/x86/pc/DSDT.dimmpxm",
+-"tests/data/acpi/x86/pc/DSDT.hpbridge",
+-"tests/data/acpi/x86/pc/DSDT.hpbrroot",
+-"tests/data/acpi/x86/pc/DSDT.ipmikcs",
+-"tests/data/acpi/x86/pc/DSDT.memhp",
+-"tests/data/acpi/x86/pc/DSDT.nohpet",
+-"tests/data/acpi/x86/pc/DSDT.numamem",
+-"tests/data/acpi/x86/pc/DSDT.roothp",
+-"tests/data/acpi/x86/q35/DSDT.cxl",
+-"tests/data/acpi/x86/q35/DSDT.viot",
+-"tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x",
+diff --git a/tests/data/acpi/x86/pc/DSDT b/tests/data/acpi/x86/pc/DSDT
+index 92225236e717b2e522a2ee00492fb0ded418dc7b..8b8235fe79e2fa08a6f840c8479edb75f5a047b9 100644
+GIT binary patch
+delta 50
+zcmX@_bk2#(CD<jzPmzIvF>@oAE|a9ky!c?JcmeN{0B27F5towqfS?eDB|_fCn**8t
+G$pHX!zYhWc
+
+delta 51
+zcmX@-bl!=}CD<jzUy*@<F>)i9E|Zk!y!c?Jcmbc10B27F5!aIVfS?eDCBi<%T$=-!
+H{>cFVe<%+E
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.acpierst b/tests/data/acpi/x86/pc/DSDT.acpierst
+index 25b39955059409b177870800949eaf937cd39005..06829b9c6c6d726d955dc7c99bc9f42448e22aeb 100644
+GIT binary patch
+delta 50
+zcmez7_|=iiCD<k8s{#W9<ED*Vx=fND^WuY@;sv}*0-QY!L|jVZ1A;;rmI!$lZw_Qy
+GDhB|jb`RtL
+
+delta 51
+zcmezB_|1{aCD<k8n*sv^<D!jRx=d1@^WuY@;stz40-QY!L|jYa1A;;rmI(V4b8QY_
+HS}F$svl<WN
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.acpihmat b/tests/data/acpi/x86/pc/DSDT.acpihmat
+index 73a9ce59e9426b180fea0ec5820c4841ebdb6700..2fe355ebdbb858fa9247d09112e21712e3eddc45 100644
+GIT binary patch
+delta 50
+zcmez4^V^5ZCD<jTT8)8$QEelaE|a9ky!c?JcmeN{0B27F5towqfS?eDB|_fCn**7&
+FRRD#m4w3)>
+
+delta 51
+zcmezE^T&tFCD<jTMvZ}iQEVfZE|Zk!y!c?Jcmbc10B27F5!aIVfS?eDCBi<%T$=-!
+Gv{e9+a1N3H
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.bridge b/tests/data/acpi/x86/pc/DSDT.bridge
+index 4cef454e379e1009141694e0f4036a2a701c80d7..4d4067c182a6625db1e877408eb7436113884b50 100644
+GIT binary patch
+delta 50
+zcmZ2hv9yBACD<iI)rNtAv3w(!E|a9ky!c?JcmeN{0B27F5towqfS?eDB|_fCn**7y
+GS^@xfwGR#e
+
+delta 51
+zcmZ2lv8;m2CD<iI&4z)2F?}PKE|Zk!y!c?Jcmbc10B27F5!aIVfS?eDCBi<%T$=-!
+Hu37>BgE$Wk
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.cphp b/tests/data/acpi/x86/pc/DSDT.cphp
+index 1dc928333d7ae7e4df6bb51d850af5e1cb480158..045a52e75b7fcd4e5f840a758c548231498b96e4 100644
+GIT binary patch
+delta 50
+zcmbR5HqVXACD<iIPMLv$@$5z}T_#D7dGWzc@dDl@0nVNVA}%HI0YM=QON6|OHwQAE
+GQvd*IF%Gf-
+
+delta 51
+zcmbQ|Hs6iQCD<iIUYUV`aqmVhT_!2ddGWzc@d7?20nVNVBCaLz0YM=QON4!jxi$wd
+Hol^h+ba)Q3
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.dimmpxm b/tests/data/acpi/x86/pc/DSDT.dimmpxm
+index 9f71d2e58b1707e733584e38dab7f73f9bda5eb7..205219b99d903555125c4b07fc047c42993eb338 100644
+GIT binary patch
+delta 50
+zcmX@=f5e~5CD<k8h&lrU<IIg*x=fND^WuY@;sv}*0-QY!L|jVZ1A;;rmI!$lZw_QC
+GQ3U{wR1Yx#
+
+delta 51
+zcmX@&f7GALCD<k8s5%1!W9LRLT_!2ddGWzc@d7?20nVNVBCaLz0YM=QON4!jxi$wd
+Hm8b#$nr{y=
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.hpbridge b/tests/data/acpi/x86/pc/DSDT.hpbridge
+index db420593a3c51eced25cd57420353fbb9ccdf63c..8fa8b519ec65bd5099c45f4e1c85b11b47a23845 100644
+GIT binary patch
+delta 50
+zcmbQ|G}npCCD<iIR*`{$aqdPgT_#D7dGWzc@dDl@0nVNVA}%HI0YM=QON6|OHwQAE
+Gl>-1^5)N_z
+
+delta 51
+zcmbR1G|!34CD<iIPLY9uv3DbvE|Zk!y!c?Jcmbc10B27F5!aIVfS?eDCBi<%T$=-!
+H&dLD*Ya9-8
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.hpbrroot b/tests/data/acpi/x86/pc/DSDT.hpbrroot
+index 31b6adb4eb941e5bf0c02ec8c3819c9213adf022..01719462a72fd6d40ce433dac601e4b94eae574c 100644
+GIT binary patch
+delta 49
+zcmZ3bzEYjbCD<ior7!~nWA8++2a+E1;)9*y1-wfFoIMRhTuR~tf<hRU2zeK8W?@_=
+F1ORu)4$=Ss
+
+delta 50
+zcmZ3fzDk|TCD<iol`sPXW9>w)2U4E%;)9*y1$;^ZoIMRhTub5uf<hRU2>TRsZDwX%
+GCIkS3!Vb~^
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.ipmikcs b/tests/data/acpi/x86/pc/DSDT.ipmikcs
+index c2a0330d97d495298889b9e28bde2f90235cea88..0ca664688b16baa3a06b8440181de4f17511c6b0 100644
+GIT binary patch
+delta 50
+zcmbR4Jk6QQCD<ionj!-O<I{~?x=fND^WuY@;sv}*0-QY!L|jVZ1A;;rmI!$lZw_Q~
+GlLr8LI1Zrz
+
+delta 51
+zcmbQ{Jl&bgCD<iox*`Ju<JFB^x=d1@^WuY@;stz40-QY!L|jYa1A;;rmI(V4b8QY_
+Ha+3!Dh4&7j
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.memhp b/tests/data/acpi/x86/pc/DSDT.memhp
+index c15a9fae947bb3929a30c60b7c0f2092705868f8..03ff464ba4e72082fce0921815cfc09ca20b561a 100644
+GIT binary patch
+delta 50
+zcmbQ|JJ*-XCD<iot{MXaWAsKYT_#D7dGWzc@dDl@0nVNVA}%HI0YM=QON6|OHwQBL
+GssI3QI1W(&
+
+delta 51
+zcmbR1JI|NPCD<ioo*DxKqxVKGT_!2ddGWzc@d7?20nVNVBCaLz0YM=QON4!jxi$wd
+H`KkZ_dYcYW
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.nohpet b/tests/data/acpi/x86/pc/DSDT.nohpet
+index dd29f5cb620e5164601e303e37524530ddb12684..b081030f0ed171e52b13e28cfdc8770a04c2806e 100644
+GIT binary patch
+delta 50
+zcmX@;c)*d%CD<k8fC2*pqwz*AT_#D7dGWzc@dDl@0nVNVA}%HI0YM=QON6|OHwQ8m
+G$N>O%X%3M9
+
+delta 51
+zcmX@$c+io{CD<k8paKH}qw+>BT_!2ddGWzc@d7?20nVNVBCaLz0YM=QON4!jxi$wd
+H703Yqg6|HI
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.numamem b/tests/data/acpi/x86/pc/DSDT.numamem
+index 8a6b56fe7da18bf42c339d13b863aabf81780527..2c98cafbff5db04410b35a1151eaf18723a4dad7 100644
+GIT binary patch
+delta 50
+zcmccWbj69wCD<h-M3I4kQFtSlE|a9ky!c?JcmeN{0B27F5towqfS?eDB|_fCn**6x
+F<N;{*4aEQe
+
+delta 51
+zcmccObk&K=CD<h-RFQ#!k$EGRE|Zk!y!c?Jcmbc10B27F5!aIVfS?eDCBi<%T$=-!
+GSmXh88x6$(
+
+diff --git a/tests/data/acpi/x86/pc/DSDT.roothp b/tests/data/acpi/x86/pc/DSDT.roothp
+index a16b0d9d4becec47fa3cf57ed0077ff6cff88908..da018dca9e3102e811107994248719ab5278c505 100644
+GIT binary patch
+delta 50
+zcmZ3GFh7CICD<iI-hhFD@#{t|T_#D7dGWzc@dDl@0nVNVA}%HI0YM=QON6|OHwQAE
+G*98E3GY>2P
+
+delta 51
+zcmbQAupoiUCD<iI!GM8*@##h`T_!2ddGWzc@d7?20nVNVBCaLz0YM=QON4!jxi$wd
+Ho!12bhUO0}
+
+diff --git a/tests/data/acpi/x86/q35/DSDT.cxl b/tests/data/acpi/x86/q35/DSDT.cxl
+index f561750cab8b061c123c041fe2209d74c7a740f1..3c34d4dcab16783abe65f6fa5e64eb69d40795fb 100644
+GIT binary patch
+delta 89
+zcmcbUb}Nm`CD<h-%9w$HF?%DIuq>BTe@uL^Q+#xj=Vo<TD@JaYlK6n25QZf}-o={}
+U)&1Eg?@<j!RwS*4q3Aa^0Nj2Y6aWAK
+
+delta 91
+zcmcbWb|;O?CD<h-#+ZSD(R(A8uq>Bze@uL^Q+#xj*JgEDD@GpIlK6n25QZhfKE+&{
+V<JJAyC+}7bMOG!HhN<c|Hvs;691s8i
+
+diff --git a/tests/data/acpi/x86/q35/DSDT.viot b/tests/data/acpi/x86/q35/DSDT.viot
+index 8d98dd8845a60a08df5aff27097646bea4913b75..4c93dfd5c4b362714d3f9aa606a838d4625b3369 100644
+GIT binary patch
+delta 115
+zcmbPUG^L2kCD<iI#FBx5k#i%Luq>BfLri?IQ+#xj>tuD=rQ9wh@c}_03`>N(i#Okp
+Z4P{4`H&;cKf1!#h@2-m~|3g=v8vqA!B?tfj
+
+delta 127
+zcmbPIG`)z+CD<iI+>(KT@#aP@VOcK!hM4$Zr}*e5x5?_VOL<&N;sb(07?ue86mxC9
+gE*r{@tiVhaLxC6jWCLApWJRvJSQKrxH@(UX0RQ4B(*OVf
+
 -- 
 MST
 
