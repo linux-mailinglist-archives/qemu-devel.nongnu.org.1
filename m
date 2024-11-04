@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53C69BA9D4
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1149BA9C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kqY-0003fs-Ff; Sun, 03 Nov 2024 19:21:30 -0500
+	id 1t7kqa-00042B-19; Sun, 03 Nov 2024 19:21:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqS-0003LX-B4; Sun, 03 Nov 2024 19:21:24 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1t7kqV-0003Z0-3m; Sun, 03 Nov 2024 19:21:27 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqQ-0002gb-Re; Sun, 03 Nov 2024 19:21:24 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7ee51d9ae30so1977861a12.1; 
- Sun, 03 Nov 2024 16:21:22 -0800 (PST)
+ id 1t7kqT-0002gv-LG; Sun, 03 Nov 2024 19:21:26 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-723db2798caso65910b3a.0; 
+ Sun, 03 Nov 2024 16:21:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679681; x=1731284481; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679684; x=1731284484; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1AYuhGepsU7zeG4tt44YiLnEKuxFxxMmBcxIo9aE1no=;
- b=aZsTXWOpxzG15h3c6Pu6iRhH8VNp7cVIan0VrIKqFzDup1VOEoF2bEC3bjLGsUI+s1
- 73joQJ/0JFLQF2IneU+zSHCRV2gC4tTqMsV0aZmxowOYErxCgYGaPflDSS2b+qshEzMB
- 3vZs0sMwrS6nrkXTIdyNIXYsTX8XhixsILS+OsS57oAmBTL1SCTD9jqS0xMYTLHKKe6R
- 1UkyioXlcFtRWhuBxOpQWjTEkYlGUcH30N9wu19YdGU+laJ3QJ+26Bt9tf1sZZiOOqmh
- IlDFgFawfh51EPLvwj/jOLcAnUSaNEYRWS2gaIGz/WSf2r6UOaY9+td0hUtomngHL3x2
- VCzA==
+ bh=D5acwOP9v6mqTwgIgkzY3AX70LRjavmcEjrHnDYPLjA=;
+ b=HkyK9lH1oqkY0NXSVPMa2hqyPeEzaZfzc/5P0wwbssGsmOLK1kBLys0ZXwHkDPGPTi
+ 6BZB829MHzyg9LkR91lq/5KGNNav6jxmQBnRWv+L0eZ46tXCjeddj+528e2WhfOBCmQC
+ AuGlIENd71ARt2RaR6M0uAKINhD9elTGGsjgqgfh0Q3Dwmzwl+IaUHWsMOzylFWCfe/Q
+ tH+QvAFYHonnymFm2cLAIiFNIKIWMIUZjTV5sdvhat6iP332kjuwjpb64ycVJZrY+H5V
+ 0DMS6sT3WA2UnxlIzOI+guqym99a8pExmLFWbOSbvKEphZyKFUD8SKo5dd5f3dTGv339
+ C/yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679681; x=1731284481;
+ d=1e100.net; s=20230601; t=1730679684; x=1731284484;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1AYuhGepsU7zeG4tt44YiLnEKuxFxxMmBcxIo9aE1no=;
- b=nGY6zQ+WAGzNlK73dZSbSXVUFOgE68pPiq5gCpoEwAZzhRiPhrU1PYHJeXHu6fi+Gt
- 3lrkHincpN2KlqYGgE5v9Q6ZT/5Sgv6NNwVyxiU9bog02fBwSKed95uShS9ghUK4Zx8a
- R3XXr8jkxuiB3BKLSB6fnzOtgdfcRnPJKqvwG2tdcdGPI+DHloJm3aDARsk9w48+C24t
- a3z+EIMXYzxWju6KqxEftlkilAX/g9fDiC9DUo4N8qyN2Hng60CWWDY0BN017nwAoBGX
- Tz52apGhOqKIgtrBTlfY9NGfUE3XyaY7SH75Z58mgUc4yASJa7wA1C+Bi1fi/QdnOaqK
- cnag==
+ bh=D5acwOP9v6mqTwgIgkzY3AX70LRjavmcEjrHnDYPLjA=;
+ b=aRf390+KyHOvSHWEQTQOZW+rEgYDzlxRMdu9IufMrB+bTV6OZnAOui/3YyBhF7DoDT
+ I5UsVTW3Boukbs24DZAmp0cJUHM3wue7+IZy0lw9JzRJiG6B6bKAvrBUxTEJu/TtHIps
+ s8KDipD7yJ4kCZrTwgD1a/TdjqOcgRqb/Spf0RrIPx4LH9Nvzro5rel5WjuRRYLDB4hG
+ 1afJzdkSMM3yCaf8MEQH0XeotvtRUOrHlYqSPTFbRVzigORdV5RTmSayU4+1sWw6XpJv
+ 0mKAl0MiHnWcDhmRO4lCNqfu3Xij6Y+Ve9e2QAmMzHfCwQhBS1jwPikYHf/xAELFhLP6
+ wWxA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUreGKBCmTjAHGvAQiYdAO49pOCUTieVpCKAxYOA5wy8CpvJmIhVA8Cs7dQSXlFGdroMdGKLISvGA==@nongnu.org
-X-Gm-Message-State: AOJu0YxdmfJrw4EI6bPy1WBxsdoD2cQn0PLoK5uhLgGsaEWnQuvnDKlj
- 6wSPrminR0TMMZPRYGZTuOe1KHlZ1BriD7IvhBdxVEe0c1/QmSCd2fRadw==
-X-Google-Smtp-Source: AGHT+IFO5jkCvoSHccIrMP4uez9IcyzwXl0bqQttIX9sZ1zgh1eUXXsHI13vTCCdnNqJJDpr9gM9Lg==
-X-Received: by 2002:a05:6a21:78d:b0:1d8:aca7:912 with SMTP id
- adf61e73a8af0-1dba5409a21mr15409643637.28.1730679680765; 
- Sun, 03 Nov 2024 16:21:20 -0800 (PST)
+ AJvYcCV7tJo6pZO/oLzR3EMKRG87wYnbZndPaEqIjYizwZbd+KVc5o71zVs7HIxRZnIddTdSyrz/U8pelQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyjOiwuGbhx5lwqO1QlbWASGTN2ioi7OtQHROQ1MOd5SCl7l1Cf
+ o+/SEjFvwVLtmZcvOI9D2yCcmVYJYd4mqie+2x0sRQS+3tNA1pIGSnzMPA==
+X-Google-Smtp-Source: AGHT+IFKr/EWg0gHaidpnCHmzxm7Rd3iuMQxTpy2lICcjT7z8nVQ0RnlCXk7gfP4XlT9Wq+q954v6w==
+X-Received: by 2002:a05:6a21:6d93:b0:1db:ddde:33e2 with SMTP id
+ adf61e73a8af0-1dbddde33eamr1773122637.29.1730679683729; 
+ Sun, 03 Nov 2024 16:21:23 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.17
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:20 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:23 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 35/67] target/ppc: use locally stored msr and avoid indirect
- access
-Date: Mon,  4 Nov 2024 10:18:24 +1000
-Message-ID: <20241104001900.682660-36-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 36/67] target/ppc: optimize hreg_compute_pmu_hflags_value
+Date: Mon,  4 Nov 2024 10:18:25 +1000
+Message-ID: <20241104001900.682660-37-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,35 +94,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-hreg_compute_hflags_value already stores msr locally to be used in most
-of the logic in the routine however some instances are still using
-env->msr which is unnecessary. Use locally stored value as available.
+Cache env->spr[SPR_POWER_MMCR0] in a local variable as used in multiple
+conditions to avoid multiple indirect accesses.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper_regs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/ppc/helper_regs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 02076e96fb..fe543ab3b8 100644
+index fe543ab3b8..7b23e5ef0e 100644
 --- a/target/ppc/helper_regs.c
 +++ b/target/ppc/helper_regs.c
-@@ -143,10 +143,10 @@ static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
- 
-     if (ppc_flags & POWERPC_FLAG_DE) {
-         target_ulong dbcr0 = env->spr[SPR_BOOKE_DBCR0];
--        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(env->msr, MSR, DE)) {
-+        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(msr, MSR, DE)) {
-             hflags |= 1 << HFLAGS_SE;
-         }
--        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(env->msr, MSR, DE)) {
-+        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(msr, MSR, DE)) {
-             hflags |= 1 << HFLAGS_BE;
-         }
-     } else {
+@@ -83,15 +83,16 @@ static bool hreg_check_bhrb_enable(CPUPPCState *env)
+ static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
+ {
+     uint32_t hflags = 0;
+-
+ #if defined(TARGET_PPC64)
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC0) {
++    target_ulong mmcr0 = env->spr[SPR_POWER_MMCR0];
++
++    if (mmcr0 & MMCR0_PMCC0) {
+         hflags |= 1 << HFLAGS_PMCC0;
+     }
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC1) {
++    if (mmcr0 & MMCR0_PMCC1) {
+         hflags |= 1 << HFLAGS_PMCC1;
+     }
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
++    if (mmcr0 & MMCR0_PMCjCE) {
+         hflags |= 1 << HFLAGS_PMCJCE;
+     }
+     if (hreg_check_bhrb_enable(env)) {
 -- 
 2.45.2
 
