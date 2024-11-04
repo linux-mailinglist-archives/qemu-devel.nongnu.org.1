@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075CB9BBFC4
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FB69BBFCE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84K4-0000Is-QS; Mon, 04 Nov 2024 16:09:17 -0500
+	id 1t84KC-000140-9S; Mon, 04 Nov 2024 16:09:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K0-0008Sz-Ql
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K8-0000wQ-J2
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Jz-0005WO-7w
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:12 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K7-0005X1-2F
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754550;
+ s=mimecast20190719; t=1730754557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+Qw3Qe8wV0ZOH6ROfQpES8yW2OtudwZHXLHI9Pq75U4=;
- b=cjW3YhJo4eMYJc8dhjFEeSxnYITevv6zkIid2w++6xNDT7t3VC1cOZdJpv2pV/RDJh3LFQ
- S4pHJ+f7FHFz3Xt0Q2oRxJ1IjDXHtv4k0PsYh2Ju1p9uTvXyAEGaH5fdS63BVYYYausly8
- +LGYwglQ6ouLntTmpqUtJwTrUZGV4F8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=z8mjCAYRXCtl4i5x731E2QWqLSQ+blqkHsX/35ib1TE=;
+ b=A34QkXLyj7k8va6cXHfioEKBG9kcAsT8pFIo1xBeUhu8wXiqSt2rHGjs0ThOzn5T43yeLq
+ 4Oa9jn4lnOtw9kWHihF5BoJZy46o2CHKwE7cvMwyKNBcb8fjUHsyaxTCcRAf07rF/OI0RU
+ g6UOO/J7WALAMM0k77nc929c8ykXD+c=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-lyK73HrcNHmClx3GtGYq0A-1; Mon, 04 Nov 2024 16:09:09 -0500
-X-MC-Unique: lyK73HrcNHmClx3GtGYq0A-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d4cf04bcfso2340520f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:09 -0800 (PST)
+ us-mta-192-FY0PbRVZNRSO4HWPtcHqQQ-1; Mon, 04 Nov 2024 16:09:16 -0500
+X-MC-Unique: FY0PbRVZNRSO4HWPtcHqQQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4315e8e9b1cso27297275e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754547; x=1731359347;
+ d=1e100.net; s=20230601; t=1730754555; x=1731359355;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+Qw3Qe8wV0ZOH6ROfQpES8yW2OtudwZHXLHI9Pq75U4=;
- b=iibHN5/cfwrUMU6mnczy6VWdOXmDApVDOkOqOwxKm0A54q22tFpbmgOYK5tW5ozitA
- TBzidQklelrZmvaQr84sXSUnI/l8jF52jon7MutHI3U/qpKf23FM5CfY2SmQ/BiMKjzl
- zBjdZF825jr3em0HOxzbM5zhkei4FtDmlH/pQlqFJ4ZmCv3AGaTM92KxcpAjs1uM2rxq
- 14RJOGA0Opp11ZmGucCCK52P8AXBFRb+9cLDMcG5HeRUREPFZnyQHJLUdj5RSU2wBs6S
- 8+6smxJ2GPdHukaXuAehGd6BHaiX1me+jOEo/8Xt838b3H6woViyqv6fHaCMYHu0px5Y
- OjOg==
-X-Gm-Message-State: AOJu0YwxM7gACGtTvPtDSifDJDGDNud5cXr37ELSBG3t3VX5ga0aoJZ9
- k68NjbQRzqZOBQJWqTZUd28gK9uIxG6VpFbTtb/UY9UwtKXeAt/yH3ES5tvbyWB3U0Ec0/v4mN7
- CcqKM9xLU0nZH2jFVus9OCkSbmeb7izam9vmAPMh2C5WXHS1nTPH2C/fWtPwr2gapPDKY9yI3Fb
- FkMCUiNGtLaZ1KVKbcDfAzutP2Isr8YQ==
-X-Received: by 2002:a5d:6c63:0:b0:37d:3973:cb8d with SMTP id
- ffacd0b85a97d-381c7a5e9d5mr10879861f8f.24.1730754547277; 
- Mon, 04 Nov 2024 13:09:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEo6Rpo8Gsz0VvSJGu4BEwEmEsgBRwuTYZz22CLisHkg0ZRK6VwkjSrwpkk48lweqKCbpSQ2g==
-X-Received: by 2002:a5d:6c63:0:b0:37d:3973:cb8d with SMTP id
- ffacd0b85a97d-381c7a5e9d5mr10879838f8f.24.1730754546785; 
- Mon, 04 Nov 2024 13:09:06 -0800 (PST)
+ bh=z8mjCAYRXCtl4i5x731E2QWqLSQ+blqkHsX/35ib1TE=;
+ b=BEcKQDYusjtFS+EXwXjSv2kHqo9hZLU5kIOyMjU6k79aXB/aYsU3TEX6U96JyTXk+2
+ //nYeL0f4y271gFw1Gus8xsvKhGnm8MrO9vmzTCTHUUJYMcUgjuLUpbiAbHU170iMvFS
+ Yd6JjJYtjXCKVrkvFvvEtQkwGYopXArQyf+71PlVK0rrpUp6W8dTg9twE0Oz/d4FBDnA
+ Io8uCtKwTvR5C1Ak0YMhl8w6IztbxfFkevS1oBSFqWMkJiRvsocOG7nA8frjpaIwkJkL
+ ThazhJ40jZZZEtTZ2J42dQuCDXoVc+Ip2SjZutJBeCLf8Om1Wohj4PFe4srGHrr9vPB/
+ xHMA==
+X-Gm-Message-State: AOJu0YxV66czLlIK6bzYRHLbsEQFDUWKk49VfWGhttvbol7lTWbyJ3SK
+ IPAktqFG7rZYgzro5vz8VXmvb4yWfp2TO26N/XIe4heyHiqbQe7IFawcTOgJ28GNwfn8bL8ci2C
+ BMDoqM+1T6ewZ7Bgecyync+GY1I4c5Y+ck90WKCp5tEbxd22X1JOvm2PF7PCxL2/lA1M5ZnLae+
+ 1Cnr64IeO8n/UynXM7w7FjkGOmsQGbbQ==
+X-Received: by 2002:a05:600c:1382:b0:431:5475:3cd1 with SMTP id
+ 5b1f17b1804b1-4327dacc373mr122768585e9.17.1730754554797; 
+ Mon, 04 Nov 2024 13:09:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE9OxVsWEUkkxztFDINuwekKPZehgtJpRIpJYkMWxO6+XhnNGH3YGJU36vfpcI+EJq92UN0+g==
+X-Received: by 2002:a05:600c:1382:b0:431:5475:3cd1 with SMTP id
+ 5b1f17b1804b1-4327dacc373mr122768395e9.17.1730754554404; 
+ Mon, 04 Nov 2024 13:09:14 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10e7392sm14121373f8f.55.2024.11.04.13.09.04
+ 5b1f17b1804b1-4327d5ac002sm164216815e9.5.2024.11.04.13.09.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:06 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:03 -0500
+ Mon, 04 Nov 2024 13:09:13 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:10 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 54/65] hw/cxl: Check that writes do not go beyond end of
- target attributes
-Message-ID: <c1c4d6b38b13952b0a9e2d7393e1ccc70b2615a4.1730754238.git.mst@redhat.com>
+Subject: [PULL 56/65] hw/cxl: Ensure there is enough data to read the input
+ header in cmd_get_physical_port_state()
+Message-ID: <721c99aefcdb311bd41d20678d3935fd11454641.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,48 +103,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-In cmd_features_set_feature() the an offset + data size schemed
-is used to allow for large features.  Ensure this does not write
-beyond the end fo the buffers used to accumulate the full feature
-attribute set.
+If len_in is smaller than the header length then the accessing the
+number of ports will result in an out of bounds access.
+Add a check to avoid this.
 
 Reported-by: Esifiel <esifiel@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101133917.27634-9-Jonathan.Cameron@huawei.com>
+Message-Id: <20241101133917.27634-11-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index a40d81219c..078782e8b9 100644
+index f4a436e172..2d4d62c454 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1292,6 +1292,11 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+@@ -530,6 +530,9 @@ static CXLRetCode cmd_get_physical_port_state(const struct cxl_cmd *cmd,
+     in = (struct cxl_fmapi_get_phys_port_state_req_pl *)payload_in;
+     out = (struct cxl_fmapi_get_phys_port_state_resp_pl *)payload_out;
  
-         ps_set_feature = (void *)payload_in;
-         ps_write_attrs = &ps_set_feature->feat_data;
-+
-+        if ((uint32_t)hdr->offset + bytes_to_copy >
-+            sizeof(ct3d->patrol_scrub_wr_attrs)) {
-+            return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+        }
-         memcpy((uint8_t *)&ct3d->patrol_scrub_wr_attrs + hdr->offset,
-                ps_write_attrs,
-                bytes_to_copy);
-@@ -1314,6 +1319,11 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
- 
-         ecs_set_feature = (void *)payload_in;
-         ecs_write_attrs = ecs_set_feature->feat_data;
-+
-+        if ((uint32_t)hdr->offset + bytes_to_copy >
-+            sizeof(ct3d->ecs_wr_attrs)) {
-+            return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+        }
-         memcpy((uint8_t *)&ct3d->ecs_wr_attrs + hdr->offset,
-                ecs_write_attrs,
-                bytes_to_copy);
++    if (len_in < sizeof(*in)) {
++        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
++    }
+     /* Check if what was requested can fit */
+     if (sizeof(*out) + sizeof(*out->ports) * in->num_ports > cci->payload_max) {
+         return CXL_MBOX_INVALID_INPUT;
 -- 
 MST
 
