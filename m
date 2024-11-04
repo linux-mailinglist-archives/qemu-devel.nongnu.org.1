@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA189BA9CD
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53C69BA9D4
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kqS-00036q-UY; Sun, 03 Nov 2024 19:21:25 -0500
+	id 1t7kqY-0003fs-Ff; Sun, 03 Nov 2024 19:21:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqO-0002uq-ES; Sun, 03 Nov 2024 19:21:20 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1t7kqS-0003LX-B4; Sun, 03 Nov 2024 19:21:24 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqM-0002gB-RV; Sun, 03 Nov 2024 19:21:20 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2113da91b53so4803485ad.3; 
- Sun, 03 Nov 2024 16:21:18 -0800 (PST)
+ id 1t7kqQ-0002gb-Re; Sun, 03 Nov 2024 19:21:24 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7ee51d9ae30so1977861a12.1; 
+ Sun, 03 Nov 2024 16:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679677; x=1731284477; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679681; x=1731284481; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3rCsO8FJ5YATj1kG2TPiwr4tqEmj8/JXNJYFHfroSY0=;
- b=CJaWLkB84OIize0kGnZuxh0zTZFbWV052eXP97Im0Y4NkNuDqC2sah6Oxe2lDaS6Lz
- mjHQzgm2u+Pv1PrVMDgBhIUbJHjctmYp3P0S9eqocARyWD0m/W9WKhnc0rfPDXkIKea0
- p2FH3fcG+TVzeXvzHkFRiH6LklgW9bDTMYJ5hE1eMaF0e/gTa/h13X2bBlY90VefdGux
- UV0DwkECqwUenrHttuV3lKJuTDsJqeYT8LuLsS7mvT7o5Y43rbcdcuKyGuqQcEhMeHgt
- IZ0iQg3PXAmDODCkSXUGH47Pqe8xZsBYWTQ07uL/HX2Xw2ZHK7MeLsbo2VGpFDZh7dV3
- Bg/Q==
+ bh=1AYuhGepsU7zeG4tt44YiLnEKuxFxxMmBcxIo9aE1no=;
+ b=aZsTXWOpxzG15h3c6Pu6iRhH8VNp7cVIan0VrIKqFzDup1VOEoF2bEC3bjLGsUI+s1
+ 73joQJ/0JFLQF2IneU+zSHCRV2gC4tTqMsV0aZmxowOYErxCgYGaPflDSS2b+qshEzMB
+ 3vZs0sMwrS6nrkXTIdyNIXYsTX8XhixsILS+OsS57oAmBTL1SCTD9jqS0xMYTLHKKe6R
+ 1UkyioXlcFtRWhuBxOpQWjTEkYlGUcH30N9wu19YdGU+laJ3QJ+26Bt9tf1sZZiOOqmh
+ IlDFgFawfh51EPLvwj/jOLcAnUSaNEYRWS2gaIGz/WSf2r6UOaY9+td0hUtomngHL3x2
+ VCzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679677; x=1731284477;
+ d=1e100.net; s=20230601; t=1730679681; x=1731284481;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3rCsO8FJ5YATj1kG2TPiwr4tqEmj8/JXNJYFHfroSY0=;
- b=rX4JMJUSHFRC8OexujBcYaGcatJMDtklCbK12Vw87RFwmUC1VdXdeeDOMRXGBvW9Mf
- sqLItnlNEWlbUI4VBz2y+y9f2T6B060N5GSjjHSgBaMN3OVeAU7ZRNcMpAZAK6zTLSyH
- 4z1Ixm71WyTLQeVs/NW8YQkFN/KP4Ld/r+ttlkg4qUxdZbfmSdaMmW4VtObkQuL9O5vH
- xtxIyh9ovnD2PMrNgsKR3xm+/3FCFCvnUlVgQisJncJnpGtpXAoaDvfiA0DUZWiIyHYX
- ZCK/4UQiWIOHOa1mXTEpzXtALubPEYYdnbPRkJd+/wCHWB65psYRTjPqNNgd6i/XZNQk
- aTkw==
+ bh=1AYuhGepsU7zeG4tt44YiLnEKuxFxxMmBcxIo9aE1no=;
+ b=nGY6zQ+WAGzNlK73dZSbSXVUFOgE68pPiq5gCpoEwAZzhRiPhrU1PYHJeXHu6fi+Gt
+ 3lrkHincpN2KlqYGgE5v9Q6ZT/5Sgv6NNwVyxiU9bog02fBwSKed95uShS9ghUK4Zx8a
+ R3XXr8jkxuiB3BKLSB6fnzOtgdfcRnPJKqvwG2tdcdGPI+DHloJm3aDARsk9w48+C24t
+ a3z+EIMXYzxWju6KqxEftlkilAX/g9fDiC9DUo4N8qyN2Hng60CWWDY0BN017nwAoBGX
+ Tz52apGhOqKIgtrBTlfY9NGfUE3XyaY7SH75Z58mgUc4yASJa7wA1C+Bi1fi/QdnOaqK
+ cnag==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVjyZA9e11g+BzVoBqkobFSLutovwOxPSFxIEK5eIQvpxidhcoIyups2cezYjV3ipO64EssWP+c2A==@nongnu.org
-X-Gm-Message-State: AOJu0YzuJpi3gkM3jbIVFM4M+jJ6tc9I/Q/SLYNaU5ipkccxZfk/aTZL
- cvfbwlmLGxULmfHkeOESDULCYAjGt0Ny1Gn+xFqmD7REnV9ul9+1BJWYcA==
-X-Google-Smtp-Source: AGHT+IEZOEakw6vkbz2ZHuR1LmhNcrBL8rVIgn9ONia0MwvUirurq16xAeuBPvyhVqHQK2zLhBiJQg==
-X-Received: by 2002:a17:902:e851:b0:20c:94f6:3e03 with SMTP id
- d9443c01a7336-210c6c6a272mr410061685ad.47.1730679676894; 
- Sun, 03 Nov 2024 16:21:16 -0800 (PST)
+ AJvYcCUreGKBCmTjAHGvAQiYdAO49pOCUTieVpCKAxYOA5wy8CpvJmIhVA8Cs7dQSXlFGdroMdGKLISvGA==@nongnu.org
+X-Gm-Message-State: AOJu0YxdmfJrw4EI6bPy1WBxsdoD2cQn0PLoK5uhLgGsaEWnQuvnDKlj
+ 6wSPrminR0TMMZPRYGZTuOe1KHlZ1BriD7IvhBdxVEe0c1/QmSCd2fRadw==
+X-Google-Smtp-Source: AGHT+IFO5jkCvoSHccIrMP4uez9IcyzwXl0bqQttIX9sZ1zgh1eUXXsHI13vTCCdnNqJJDpr9gM9Lg==
+X-Received: by 2002:a05:6a21:78d:b0:1d8:aca7:912 with SMTP id
+ adf61e73a8af0-1dba5409a21mr15409643637.28.1730679680765; 
+ Sun, 03 Nov 2024 16:21:20 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.13
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:16 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:20 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Aditya Gupta <adityag@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PULL 34/67] ppc/pseries: Add Power11 cpu type
-Date: Mon,  4 Nov 2024 10:18:23 +1000
-Message-ID: <20241104001900.682660-35-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 35/67] target/ppc: use locally stored msr and avoid indirect
+ access
+Date: Mon,  4 Nov 2024 10:18:24 +1000
+Message-ID: <20241104001900.682660-36-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,60 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Add sPAPR CPU Core definition for Power11
+hreg_compute_hflags_value already stores msr locally to be used in most
+of the logic in the routine however some instances are still using
+env->msr which is unnecessary. Use locally stored value as available.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- docs/system/ppc/pseries.rst | 17 +++++++++++++----
- hw/ppc/spapr_cpu_core.c     |  1 +
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ target/ppc/helper_regs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/ppc/pseries.rst b/docs/system/ppc/pseries.rst
-index a876d897b6..bbc51aa7fc 100644
---- a/docs/system/ppc/pseries.rst
-+++ b/docs/system/ppc/pseries.rst
-@@ -14,10 +14,19 @@ virtualization capabilities.
- Supported devices
- =================
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index 02076e96fb..fe543ab3b8 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -143,10 +143,10 @@ static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
  
-- * Multi processor support for many Power processors generations: POWER7,
--   POWER7+, POWER8, POWER8NVL, POWER9, and Power10. Support for POWER5+ exists,
--   but its state is unknown.
-- * Interrupt Controller, XICS (POWER8) and XIVE (POWER9 and Power10)
-+ * Multi processor support for many Power processors generations:
-+   - POWER7, POWER7+
-+   - POWER8, POWER8NVL
-+   - POWER9
-+   - Power10
-+   - Power11
-+   - Support for POWER5+ also exists, works with correct kernel/userspace
-+ * Interrupt Controller
-+    - XICS (POWER8)
-+    - XIVE (Supported by below:)
-+        - POWER9
-+        - Power10
-+        - Power11
-  * vPHB PCIe Host bridge.
-  * vscsi and vnet devices, compatible with the same devices available on a
-    PowerVM hypervisor with VIOS managing LPARs.
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index 1a84345f36..ada439e831 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -405,6 +405,7 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
-     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.0"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.2"),
-     DEFINE_SPAPR_CPU_CORE_TYPE("power10_v2.0"),
-+    DEFINE_SPAPR_CPU_CORE_TYPE("power11_v2.0"),
- #ifdef CONFIG_KVM
-     DEFINE_SPAPR_CPU_CORE_TYPE("host"),
- #endif
+     if (ppc_flags & POWERPC_FLAG_DE) {
+         target_ulong dbcr0 = env->spr[SPR_BOOKE_DBCR0];
+-        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(env->msr, MSR, DE)) {
++        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(msr, MSR, DE)) {
+             hflags |= 1 << HFLAGS_SE;
+         }
+-        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(env->msr, MSR, DE)) {
++        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(msr, MSR, DE)) {
+             hflags |= 1 << HFLAGS_BE;
+         }
+     } else {
 -- 
 2.45.2
 
