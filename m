@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655489BBF90
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA23D9BBF51
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:07:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84IA-00073r-4W; Mon, 04 Nov 2024 16:07:18 -0500
+	id 1t84IB-0007EW-9y; Mon, 04 Nov 2024 16:07:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Hy-0006hg-88
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:07 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84I4-0006sN-NS
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Hv-0005MV-UW
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:06 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84I1-0005Mx-Ek
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754423;
+ s=mimecast20190719; t=1730754428;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Slo8inP3wfhQ8BQeJ7PzLcu289R4kk15rIf298sgC9c=;
- b=PlBrkgp8u/kP15xQP3nI4y8Dsnl7DPmqz90KH6bti/JzZdcim18UXINk6kDyyMEiydUlqH
- ZxirTl69nmbG86RAh07Jdcseb+Se1zbs/UI3cymoh1JiWLvqGKn9L8GA6LE9oamaQDIOrO
- Z1RfUcRij3rnsizbgs0533OP2RXS8Lk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FqQ0aa3x0u9CKa8kr4LeoMUuDzdYhl7I/Bsp+7L/OPI=;
+ b=ZAm9tMipetzAUI/0E56nQHWicWBkV9XGI+c3Mnw6zZ0HNRZPHPsJUfzpWdw/rGgoL2EU+i
+ BGTvvnRGAKTmRYwMqRdGH3kdmszz/NftCra0YR4IVnefx73hrNpyuE21QBkhPATCjZayOl
+ y/sDEGo1bvCMqO+modw+9qRYz2MSnJE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-_VuhjJMEMZqvJSPfUNnqEQ-1; Mon, 04 Nov 2024 16:07:02 -0500
-X-MC-Unique: _VuhjJMEMZqvJSPfUNnqEQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d5a3afa84so2327174f8f.3
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:02 -0800 (PST)
+ us-mta-628-vdaga5M8Os-Wl2SvGbTxKA-1; Mon, 04 Nov 2024 16:07:07 -0500
+X-MC-Unique: vdaga5M8Os-Wl2SvGbTxKA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43157cff1d1so34454505e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754421; x=1731359221;
+ d=1e100.net; s=20230601; t=1730754426; x=1731359226;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Slo8inP3wfhQ8BQeJ7PzLcu289R4kk15rIf298sgC9c=;
- b=Rl9mhcYVVY+rpGM32xwOrSEoqXFSadt/iLrStSlQdakif4tYPI+9XrtUVGs9gs0vJS
- MJScP4EimfZHckyTgi5mwSsspRumMCb84Wdvf+zATvrt7idhd9EVymKJAArGrOqb+ilO
- fH4TjnIM0ynGuH0bkiINyqxAGzJuUBr2K2NCJ9/ezNvcN/5XsFIy6toW0iG3SfxU06ey
- 5L5/wcSVASfNy/UapakuCQsrFHozPCFH6i/93z4np8AOy3xAwc/M9UuxqS74vuskPqGQ
- /z8FOBwJJq0tKHOrNDt8V3ln9H2wBayY2Jvo5U2vlzf0VuM9N/ZSqscUWZjuDj29pmYD
- WXjA==
-X-Gm-Message-State: AOJu0YyYblLELsoQ4v/HlUoqmi3Z1zdK7Y3Z8wVEk2iUmcexdy/a9B+M
- TEMbsH6jLU65jRD/9AOLQ4iEZgmzGrru1grUBLGFZCh57BkwUkqGgib6foq3WsfsxF/ZTgy1S/6
- avBk9Jx2nOuIIbktmuNwYiluQvxppQIw6eSzmUPQV9uNNwkJ1lvV8K5tFz7LoP5xTTyZMHqSpAW
- pVrx6tyf6/jfRxJftF/luNKMy2gjD0Jg==
-X-Received: by 2002:a5d:584b:0:b0:37d:4a2d:6948 with SMTP id
- ffacd0b85a97d-381c7a5f380mr10897305f8f.33.1730754420705; 
- Mon, 04 Nov 2024 13:07:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFc02Gp0IfB70ewwAjdeWFTiRunun32RxFC9DdX3HW1N8jOmhnYvR7tfcMzjXL5ahqZKw2S7A==
-X-Received: by 2002:a5d:584b:0:b0:37d:4a2d:6948 with SMTP id
- ffacd0b85a97d-381c7a5f380mr10897288f8f.33.1730754420212; 
- Mon, 04 Nov 2024 13:07:00 -0800 (PST)
+ bh=FqQ0aa3x0u9CKa8kr4LeoMUuDzdYhl7I/Bsp+7L/OPI=;
+ b=S2cFXX+eye87Hld0n0mKgFWqRFR3FB+gr8qic/M9hK6f9iFp0eMDY11EHyPtAUheUZ
+ 7V//KJ1rM/BO2ZFuQQt2IgcYRXMORdtSdcwszR0VUzT9Lezg6amPfefAYrWgvRbD9uTB
+ vKSbfYyhAOVH4yOm2GKF747zE8/OMTOpcirTAItLNSB6/n1v9FbgFRQ6VUfttXu3/65A
+ MnfYVFpBzm/cDPk+yWoE1vQpA+O1+lCWpqIg/iRoOpwU4fOK7TJ/rlmGfKahjYioFnad
+ IMFRXhcWogOWG5kzTdpC1qkVhCA9cGROc2taYtl9eGyfwRl0Ku2zw+yjjF3fgclqpg2Z
+ ChZQ==
+X-Gm-Message-State: AOJu0Yy4XfcLcBbtfdVYkjq4dIS3s67YZD+kYt9rIjcY5A98CdKF6HGY
+ 1Mz4cphiEZL3JUJcpkKRQMRc64X5b/zutLg70YwWRdFFcmbTvZptw5WmdeuwGJlm6gvcZ2Bd2Go
+ LHaDz0Yg+ANgtMpQZ9FvBfaFccpYBwHNoJQfq6AC5MJh0hyz8qclVjdaxJ4jPS40IDrkFZZVEXK
+ C/3TROztq7datcYbxCZejLh6Pimq9I5A==
+X-Received: by 2002:a05:600c:3b14:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-4327b6f9590mr147925585e9.2.1730754425667; 
+ Mon, 04 Nov 2024 13:07:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGjC15QGZ9Uy0JogRL8BAjsl6HqOej3zVNSKEc+aSuedQkCiBQAURBevu4aSb5UQvVxEm0ItQ==
+X-Received: by 2002:a05:600c:3b14:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-4327b6f9590mr147925265e9.2.1730754425189; 
+ Mon, 04 Nov 2024 13:07:05 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c1167f20sm14109508f8f.90.2024.11.04.13.06.57
+ 5b1f17b1804b1-431bd9ca704sm194495995e9.41.2024.11.04.13.07.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:06:59 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:06:56 -0500
+ Mon, 04 Nov 2024 13:07:04 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:07:00 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Markus Armbruster <armbru@redhat.com>,
  Raphael Norwitz <raphael@enfabrica.net>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 22/65] vhost-user-blk: split vhost_user_blk_sync_config()
-Message-ID: <4dfa12731439c4a3cbfd9d1767acddfbf79549fd.1730754238.git.mst@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Eric Blake <eblake@redhat.com>, qemu-block@nongnu.org
+Subject: [PULL 23/65] qapi: introduce device-sync-config
+Message-ID: <3f98408e2e4fb1792102aed2cd5425aa0e34cc9c.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,71 +109,193 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Split vhost_user_blk_sync_config() out from
-vhost_user_blk_handle_config_change(), to be reused in the following
-commit.
+Add command to sync config from vhost-user backend to the device. It
+may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
+triggered interrupt to the guest or just not available (not supported
+by vhost-user server).
+
+Command result is racy if allow it during migration. Let's not allow
+that.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Acked-by: Raphael Norwitz <raphael@enfabrica.net>
-Message-Id: <20240920094936.450987-3-vsementsov@yandex-team.ru>
+Message-Id: <20240920094936.450987-4-vsementsov@yandex-team.ru>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- hw/block/vhost-user-blk.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ qapi/qdev.json            | 24 ++++++++++++++++++++++++
+ include/hw/qdev-core.h    |  6 ++++++
+ hw/block/vhost-user-blk.c |  1 +
+ hw/virtio/virtio-pci.c    |  9 +++++++++
+ system/qdev-monitor.c     | 38 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 78 insertions(+)
 
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index 53d147c7b4..2a581129c9 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -163,3 +163,27 @@
+ ##
+ { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
+   'data': { '*device': 'str', 'path': 'str' } }
++
++##
++# @device-sync-config:
++#
++# Synchronize device configuration from host to guest part.  First,
++# copy the configuration from the host part (backend) to the guest
++# part (frontend).  Then notify guest software that device
++# configuration changed.
++#
++# The command may be used to notify the guest about block device
++# capcity change.  Currently only vhost-user-blk device supports
++# this.
++#
++# @id: the device's ID or QOM path
++#
++# Features:
++#
++# @unstable: The command is experimental.
++#
++# Since: 9.1
++##
++{ 'command': 'device-sync-config',
++  'features': [ 'unstable' ],
++  'data': {'id': 'str'} }
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index aa97c34a4b..94914858d8 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -95,6 +95,7 @@ typedef void (*DeviceUnrealize)(DeviceState *dev);
+ typedef void (*DeviceReset)(DeviceState *dev);
+ typedef void (*BusRealize)(BusState *bus, Error **errp);
+ typedef void (*BusUnrealize)(BusState *bus);
++typedef int (*DeviceSyncConfig)(DeviceState *dev, Error **errp);
+ 
+ /**
+  * struct DeviceClass - The base class for all devices.
+@@ -103,6 +104,9 @@ typedef void (*BusUnrealize)(BusState *bus);
+  * property is changed to %true.
+  * @unrealize: Callback function invoked when the #DeviceState:realized
+  * property is changed to %false.
++ * @sync_config: Callback function invoked when QMP command device-sync-config
++ * is called. Should synchronize device configuration from host to guest part
++ * and notify the guest about the change.
+  * @hotpluggable: indicates if #DeviceClass is hotpluggable, available
+  * as readonly "hotpluggable" property of #DeviceState instance
+  *
+@@ -162,6 +166,7 @@ struct DeviceClass {
+     DeviceReset legacy_reset;
+     DeviceRealize realize;
+     DeviceUnrealize unrealize;
++    DeviceSyncConfig sync_config;
+ 
+     /**
+      * @vmsd: device state serialisation description for
+@@ -547,6 +552,7 @@ bool qdev_hotplug_allowed(DeviceState *dev, Error **errp);
+  */
+ HotplugHandler *qdev_get_hotplug_handler(DeviceState *dev);
+ void qdev_unplug(DeviceState *dev, Error **errp);
++int qdev_sync_config(DeviceState *dev, Error **errp);
+ void qdev_simple_device_unplug_cb(HotplugHandler *hotplug_dev,
+                                   DeviceState *dev, Error **errp);
+ void qdev_machine_creation_done(void);
 diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 5b7f46bbb0..48b3dabb8d 100644
+index 48b3dabb8d..7996e49821 100644
 --- a/hw/block/vhost-user-blk.c
 +++ b/hw/block/vhost-user-blk.c
-@@ -90,27 +90,39 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
-     s->blkcfg.wce = blkcfg->wce;
+@@ -591,6 +591,7 @@ static void vhost_user_blk_class_init(ObjectClass *klass, void *data)
+ 
+     device_class_set_props(dc, vhost_user_blk_properties);
+     dc->vmsd = &vmstate_vhost_user_blk;
++    dc->sync_config = vhost_user_blk_sync_config;
+     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+     vdc->realize = vhost_user_blk_device_realize;
+     vdc->unrealize = vhost_user_blk_device_unrealize;
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 4d832fe845..c5a809b956 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2385,6 +2385,14 @@ static void virtio_pci_dc_realize(DeviceState *qdev, Error **errp)
+     vpciklass->parent_dc_realize(qdev, errp);
  }
  
-+static int vhost_user_blk_sync_config(DeviceState *dev, Error **errp)
++static int virtio_pci_sync_config(DeviceState *dev, Error **errp)
 +{
-+    int ret;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserBlk *s = VHOST_USER_BLK(vdev);
++    VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
++    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
 +
-+    ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
-+                               vdev->config_len, errp);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-+    memcpy(vdev->config, &s->blkcfg, vdev->config_len);
-+    virtio_notify_config(vdev);
-+
-+    return 0;
++    return qdev_sync_config(DEVICE(vdev), errp);
 +}
 +
- static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
+ static void virtio_pci_class_init(ObjectClass *klass, void *data)
  {
-     int ret;
--    VirtIODevice *vdev = dev->vdev;
--    VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
-     Error *local_err = NULL;
- 
-     if (!dev->started) {
-         return 0;
-     }
- 
--    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
--                               vdev->config_len, &local_err);
-+    ret = vhost_user_blk_sync_config(DEVICE(dev->vdev), &local_err);
-     if (ret < 0) {
-         error_report_err(local_err);
-         return ret;
-     }
- 
--    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
--    virtio_notify_config(dev->vdev);
--
-     return 0;
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -2401,6 +2409,7 @@ static void virtio_pci_class_init(ObjectClass *klass, void *data)
+     device_class_set_parent_realize(dc, virtio_pci_dc_realize,
+                                     &vpciklass->parent_dc_realize);
+     rc->phases.hold = virtio_pci_bus_reset_hold;
++    dc->sync_config = virtio_pci_sync_config;
  }
  
+ static const TypeInfo virtio_pci_info = {
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 6671137a91..127456080b 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -23,6 +23,7 @@
+ #include "monitor/monitor.h"
+ #include "monitor/qdev.h"
+ #include "sysemu/arch_init.h"
++#include "sysemu/runstate.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-qdev.h"
+ #include "qapi/qmp/dispatch.h"
+@@ -977,6 +978,43 @@ void qmp_device_del(const char *id, Error **errp)
+     }
+ }
+ 
++int qdev_sync_config(DeviceState *dev, Error **errp)
++{
++    DeviceClass *dc = DEVICE_GET_CLASS(dev);
++
++    if (!dc->sync_config) {
++        error_setg(errp, "device-sync-config is not supported for '%s'",
++                   object_get_typename(OBJECT(dev)));
++        return -ENOTSUP;
++    }
++
++    return dc->sync_config(dev, errp);
++}
++
++void qmp_device_sync_config(const char *id, Error **errp)
++{
++    DeviceState *dev;
++
++    /*
++     * During migration there is a race between syncing`configuration
++     * and migrating it (if migrate first, that target would get
++     * outdated version), so let's just not allow it.
++     */
++
++    if (migration_is_running()) {
++        error_setg(errp, "Config synchronization is not allowed "
++                   "during migration");
++        return;
++    }
++
++    dev = find_device_state(id, true, errp);
++    if (!dev) {
++        return;
++    }
++
++    qdev_sync_config(dev, errp);
++}
++
+ void hmp_device_add(Monitor *mon, const QDict *qdict)
+ {
+     Error *err = NULL;
 -- 
 MST
 
