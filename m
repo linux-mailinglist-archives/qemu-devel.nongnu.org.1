@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A059BBF45
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA8B9BBF33
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:06:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Ga-0003Hz-SK; Mon, 04 Nov 2024 16:05:42 -0500
+	id 1t84Gk-0003IX-5j; Mon, 04 Nov 2024 16:05:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84GX-0003Hk-Hu
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:37 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ga-0003I3-Iu
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84GV-0005FZ-0P
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:37 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84GY-0005G3-Q5
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754334;
+ s=mimecast20190719; t=1730754338;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YX/D7B50whaD5dkmLdDqxAFvN13ZgCrMqMz4OxLbYGE=;
- b=Svqh8MSXJfXH6XrB02lF5NCJ7QK7L+ItsPa64bEbLiJNjgjVSBfG9Yq0oZRr8Wy+ewHX/D
- mgIeTrWgsj3hOso0xSdBv4Mom+LT8Kax3U9+wXl5wsJ3UU+9fTzsPuhYTeu2+akgh7i4Io
- Fuhr4Z1h4Hv/DYlGUr+pf46XWcr7U2Q=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pO6/xC2LQ7SXQPgMt07W6ylNJnGRBeackbjMBgbgr2Q=;
+ b=MaB2oUb0SQdUj/hMUPnh+RnJt6WX+M2fEzpKZYNooP8wYYKz/HePOyXLygurfm6WRJ5Mkh
+ 7QjkKMC/fh3ZLqSeAUX3Ch6ddugDO5ujW0zzQvYXf5S+2u79jbYQEuzl6p7oD3R1pEHGZI
+ AiefKSJe0bJsmg64A+M0GIG4vsBCoHI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-151-jUoSB_MbMG6abDFILJwilg-1; Mon, 04 Nov 2024 16:05:33 -0500
-X-MC-Unique: jUoSB_MbMG6abDFILJwilg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315afcae6cso27413185e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:05:31 -0800 (PST)
+ us-mta-541-oOFO74lmO2aVHRkwi4xSwQ-1; Mon, 04 Nov 2024 16:05:34 -0500
+X-MC-Unique: oOFO74lmO2aVHRkwi4xSwQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4315eaa3189so39500425e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:05:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754329; x=1731359129;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YX/D7B50whaD5dkmLdDqxAFvN13ZgCrMqMz4OxLbYGE=;
- b=QXYRwmnRB72dmM/MV12wL5jwkccOYosyIkSBoWvsvTnQrJyYpMn7J7gO3je4Kmrlj0
- FSlMevu071XVo1qGXhM5gFEoiVsJ5tiyls3pspJSn2oXrMJhBMRJbWnE63cUWjT/DIin
- BBNxTpNR76O8ElMdQrlxO4RhyyY7lligltdZzE+PdRhPisFvjG+jFJHwKDZEeFl51sAb
- GKk7HdjD/vCDgy+WDH1cSXpt5FuS45T2HSOP+SUtG1CvffDp9YJtlnIv1pTEPr+PkplJ
- kxwJstL03u/Ir0mgCmMY84O+qMUn47S4oVlbYoHUcQ50Sm8iStKf9ySJYMcuS5TbLHOu
- +0zA==
-X-Gm-Message-State: AOJu0YzhFrXp3d/myo7vNKgArvbdqTzL2CT5USdFomwtFAXLt/V/FvWs
- 95OP9YtInKUtc9I//roybjkbqFv7T+3XN9o715/oQYCCnapvM+RJelMr3jv6sgF+Dgad+s3buLe
- zDpZjtYlmAYluE3Nl4/qiCQ7H1cunkpW7xZYcKMxQEIXodp5S7KOuEsTlZHhy4WE3DgvLEVuUV+
- lm1wF+Vt60daxiSR8GIkxkERs15xOrPA==
-X-Received: by 2002:a05:600c:1c16:b0:42c:baf1:4c7 with SMTP id
- 5b1f17b1804b1-43282fd045cmr108612785e9.4.1730754329342; 
- Mon, 04 Nov 2024 13:05:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFVy4H4cIYuDxC4yObC8bmA6ST6u2cVOuLmDa+7YZCS+pUfLWUQIbxbW6tOyqZto3q23IifpA==
-X-Received: by 2002:a05:600c:1c16:b0:42c:baf1:4c7 with SMTP id
- 5b1f17b1804b1-43282fd045cmr108612495e9.4.1730754328849; 
- Mon, 04 Nov 2024 13:05:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730754333; x=1731359133;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pO6/xC2LQ7SXQPgMt07W6ylNJnGRBeackbjMBgbgr2Q=;
+ b=vj1gHMRAulRUYq707K8dK7VtmHSqMciHOiyopXZzRGurzFTSvvuISIAo6NrWYaMJCY
+ 7YEnGegQrBmaLfikVFxeHTVjEhVl49Q/P61L/eiXBdR/3hPOb8Ja6LsaNqINF4Au/Cg2
+ mb0w5vvYe2lFNENggfWk1q/Vl7a4bucU+hPr7uPXsh7OXaUmRZrWFRMO4scQDFbROybH
+ rdA4Hn/70hsNe2ZxDV5idDasBcf0mBAil6YpkRFW9roRjvID+hEYQyjF3nNP11tMYCJO
+ SVy/nZShwkrVJWYww+Mk393vquaB9+2oFXGiol/7hhRBLVSavXNl93k16iarQOPCKQ7H
+ 5WtQ==
+X-Gm-Message-State: AOJu0YzBG2lnIVbI8tvksTAC1tNzyWh2HNSygfBsEO2qZdwAH9eXQaQL
+ 8xyUcGD+QrY6JE7GBtSzfRsL8a+HnsDOqTXA/jfmJAQrrry68UHhgggqSfg+Qb7UaX+fqwNHn9/
+ VGr4JTcxxm+dO4M3Ndr/4bpBJLwDcSm3hLJrSFXgEY+5xpNuNy10ZLOjUgqLQ+s4beIq2DvDu1G
+ xauXl34yhKMsPQHg5NXMZTazxpMe6WKw==
+X-Received: by 2002:a05:600c:3507:b0:426:59fe:ac27 with SMTP id
+ 5b1f17b1804b1-4328327c3d5mr156658635e9.26.1730754332956; 
+ Mon, 04 Nov 2024 13:05:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRY98VI1e4LNpdEUOQ4xrvZTCDqiXNSkMpTVbzWEBYqZySB5e1KqhoeNo6HmbQYElDRF1yTw==
+X-Received: by 2002:a05:600c:3507:b0:426:59fe:ac27 with SMTP id
+ 5b1f17b1804b1-4328327c3d5mr156658345e9.26.1730754332426; 
+ Mon, 04 Nov 2024 13:05:32 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5bf4fdsm163457735e9.17.2024.11.04.13.05.26
+ ffacd0b85a97d-381c10b7d15sm14338176f8f.8.2024.11.04.13.05.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:05:28 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:05:25 -0500
+ Mon, 04 Nov 2024 13:05:31 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:05:29 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Mattias Nissler <mnissler@rivosinc.com>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 01/65] softmmu: Expand comments describing
- max_bounce_buffer_size
-Message-ID: <c3ec57e495b032047ddfef2075792340c407532a.1730754238.git.mst@redhat.com>
+ luzhixing12345 <luzhixing12345@gmail.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL 02/65] docs: fix vhost-user protocol doc
+Message-ID: <b87ea798eb83693286cb2db6606280431e02628d.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -104,58 +102,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mattias Nissler <mnissler@rivosinc.com>
+From: luzhixing12345 <luzhixing12345@gmail.com>
 
-Clarify how the parameter gets configured and how it is used when
-servicing DMA mapping requests targeting indirect memory regions.
+Some editorial tweaks to the doc:
 
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-Message-Id: <20240910213512.843130-1-mnissler@rivosinc.com>
-Acked-by: Peter Xu <peterx@redhat.com>
+Add a ref link to Memory region description and Multiple Memory region
+description.
+
+Descriptions about memory regions are merged into one line.
+
+Add extra type(64 bits) to Log description structure fields
+
+Fix ’s to 's
+
+Signed-off-by: luzhixing12345 <luzhixing12345@gmail.com>
+Message-Id: <20240911060400.3472-1-luzhixing12345@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/memory.h       | 9 ++++++++-
- include/hw/pci/pci_device.h | 6 +++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ docs/interop/vhost-user.rst | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index e5e865d1a9..9458e2801d 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -1104,7 +1104,14 @@ struct AddressSpace {
-     QTAILQ_HEAD(, MemoryListener) listeners;
-     QTAILQ_ENTRY(AddressSpace) address_spaces_link;
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index d8419fd2f1..2e50f2ddfa 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -167,6 +167,8 @@ A vring address description
+ Note that a ring address is an IOVA if ``VIRTIO_F_IOMMU_PLATFORM`` has
+ been negotiated. Otherwise it is a user address.
  
--    /* Maximum DMA bounce buffer size used for indirect memory map requests */
-+    /*
-+     * Maximum DMA bounce buffer size used for indirect memory map requests.
-+     * This limits the total size of bounce buffer allocations made for
-+     * DMA requests to indirect memory regions within this AddressSpace. DMA
-+     * requests that exceed the limit (e.g. due to overly large requested size
-+     * or concurrent DMA requests having claimed too much buffer space) will be
-+     * rejected and left to the caller to handle.
-+     */
-     size_t max_bounce_buffer_size;
-     /* Total size of bounce buffers currently allocated, atomically accessed */
-     size_t bounce_buffer_size;
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index 91df40f989..8eaf0d58bb 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -168,7 +168,11 @@ struct PCIDevice {
-     char *failover_pair_id;
-     uint32_t acpi_index;
++.. _memory_region_description:
++
+ Memory region description
+ ^^^^^^^^^^^^^^^^^^^^^^^^^
  
--    /* Maximum DMA bounce buffer size used for indirect memory map requests */
-+    /*
-+     * Indirect DMA region bounce buffer size as configured for the device. This
-+     * is a configuration parameter that is reflected into bus_master_as when
-+     * realizing the device.
-+     */
-     uint32_t max_bounce_buffer_size;
- };
+@@ -180,7 +182,7 @@ Memory region description
  
+ :user address: a 64-bit user address
+ 
+-:mmap offset: 64-bit offset where region starts in the mapped memory
++:mmap offset: a 64-bit offset where region starts in the mapped memory
+ 
+ When the ``VHOST_USER_PROTOCOL_F_XEN_MMAP`` protocol feature has been
+ successfully negotiated, the memory region description contains two extra
+@@ -190,7 +192,7 @@ fields at the end.
+ | guest address | size | user address | mmap offset | xen mmap flags | domid |
+ +---------------+------+--------------+-------------+----------------+-------+
+ 
+-:xen mmap flags: 32-bit bit field
++:xen mmap flags: a 32-bit bit field
+ 
+ - Bit 0 is set for Xen foreign memory mapping.
+ - Bit 1 is set for Xen grant memory mapping.
+@@ -211,7 +213,7 @@ Single memory region description
+ 
+ :padding: 64-bit
+ 
+-A region is represented by Memory region description.
++:region: region is represented by :ref:`Memory region description <memory_region_description>`.
+ 
+ Multiple Memory regions description
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@@ -224,7 +226,7 @@ Multiple Memory regions description
+ 
+ :padding: 32-bit
+ 
+-A region is represented by Memory region description.
++:regions: regions field contains 8 regions of type :ref:`Memory region description <memory_region_description>`.
+ 
+ Log description
+ ^^^^^^^^^^^^^^^
+@@ -233,9 +235,9 @@ Log description
+ | log size | log offset |
+ +----------+------------+
+ 
+-:log size: size of area used for logging
++:log size: a 64-bit size of area used for logging
+ 
+-:log offset: offset from start of supplied file descriptor where
++:log offset: a 64-bit offset from start of supplied file descriptor where
+              logging starts (i.e. where guest address 0 would be
+              logged)
+ 
+@@ -382,7 +384,7 @@ the kernel implementation.
+ 
+ The communication consists of the *front-end* sending message requests and
+ the *back-end* sending message replies. Most of the requests don't require
+-replies. Here is a list of the ones that do:
++replies, except for the following requests:
+ 
+ * ``VHOST_USER_GET_FEATURES``
+ * ``VHOST_USER_GET_PROTOCOL_FEATURES``
+@@ -1239,11 +1241,11 @@ Front-end message types
+   (*a vring descriptor index for split virtqueues* vs. *vring descriptor
+   indices for packed virtqueues*).
+ 
+-  When and as long as all of a device’s vrings are stopped, it is
++  When and as long as all of a device's vrings are stopped, it is
+   *suspended*, see :ref:`Suspended device state
+   <suspended_device_state>`.
+ 
+-  The request payload’s *num* field is currently reserved and must be
++  The request payload's *num* field is currently reserved and must be
+   set to 0.
+ 
+ ``VHOST_USER_SET_VRING_KICK``
+@@ -1662,7 +1664,7 @@ Front-end message types
+   :reply payload: ``u64``
+ 
+   Front-end and back-end negotiate a channel over which to transfer the
+-  back-end’s internal state during migration.  Either side (front-end or
++  back-end's internal state during migration.  Either side (front-end or
+   back-end) may create the channel.  The nature of this channel is not
+   restricted or defined in this document, but whichever side creates it
+   must create a file descriptor that is provided to the respectively
+@@ -1714,7 +1716,7 @@ Front-end message types
+   :request payload: N/A
+   :reply payload: ``u64``
+ 
+-  After transferring the back-end’s internal state during migration (see
++  After transferring the back-end's internal state during migration (see
+   the :ref:`Migrating back-end state <migrating_backend_state>`
+   section), check whether the back-end was able to successfully fully
+   process the state.
 -- 
 MST
 
