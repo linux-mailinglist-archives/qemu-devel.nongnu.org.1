@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9129BBF98
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 017419BBFA5
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:11:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84KJ-0001oS-97; Mon, 04 Nov 2024 16:09:32 -0500
+	id 1t84L4-0003Nq-0j; Mon, 04 Nov 2024 16:10:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KF-0001Vc-K0
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:27 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KY-0003Ee-Fu
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KD-0005Xr-QY
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:27 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KW-0005Z1-SA
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754565;
+ s=mimecast20190719; t=1730754583;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JLaTzrMhNeOuVYzVJLMqDji715fEATJsG7TwuJVQHzY=;
- b=IlnawCeRB+Y2V+dPw3+O2Y6hOIVdPNAVqF/iMmauKoCwiux8gQlyZoqAbxfMeybPb947Qz
- on1U5+gYNKvxV+N0AY1FO7cnB3lj8t4eXWunvlTRQG+Ryskpn3g9yEN53IG0W6LeqezKQo
- VowwsnUEagKlxwxeN62Dwj6UY+CVpOE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AQTkTMJNMys2h5iun+ZazOJo/CN0SrCjY67C1wqtHGY=;
+ b=LXCZDZ/Uj+xqGE/WzEEvxwzZ+xkse0awsbo9bwmGfMdyW9pwaM53FtYMZFTCLt1nwFaaXg
+ 3b5iWAi4XEcBAgedzDILrBabw4Mx9kKcjXxkKrFpqi1QG9o9d5VV7D+9R4qsZylSgpV7QC
+ vYwHIPNME0ZdLSf0w6aS1a39JjHtpw4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-FFsV4wD_NXqn86kzP5_LUA-1; Mon, 04 Nov 2024 16:09:24 -0500
-X-MC-Unique: FFsV4wD_NXqn86kzP5_LUA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37d4af408dcso2149642f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:24 -0800 (PST)
+ us-mta-587-66NB40E9M1imQR2TFofaKA-1; Mon, 04 Nov 2024 16:09:42 -0500
+X-MC-Unique: 66NB40E9M1imQR2TFofaKA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43151e4ef43so32901025e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754562; x=1731359362;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JLaTzrMhNeOuVYzVJLMqDji715fEATJsG7TwuJVQHzY=;
- b=SgzVXRYpr24srfiYvwc9VcAXp+g7nwX5GyD93L9syVQknTN1GpY8BaJktUgcoAwr3j
- ZwWKGyyO6g3YLSzyloQjWQYXFLeNI6qMQfJeL4KLMdzVdljXDSWsLP2EI19pcnLPvWV3
- KgD0J7SRTW+BfsE3IuWz/lkO4I+b4UBWSu/5CQyeKbXQvCrx+E1UKHx8/dyinxDAivEl
- RPjOj2/3sYKLmnPbWtXhvKm47dkZJfOqElQwNI6gjg6yUlct5dFTzJQPyyA8vI0ddjLn
- +kJ409zY9Yh6Dr4VBCqcxZouS0rgXTZ1XIHceBbWZhlkPlDngplj9OHGkF1ukYUob5RW
- MJmQ==
-X-Gm-Message-State: AOJu0YyCgHI0nd3QWYKfErHIGjnkTpH3wJHek/YQ/Qimv4b99lUpP1bR
- KyKVafNEGDbT/uPokWtDN+hyoSoTC3pbLAHg/XzBMy1fa7PEPQXwSsHDtemYgGTD4ozx51ZV+Ax
- Qs24ZLQUD2+ljfZkJ4vJ9JW5rBUWtgTjUIYFE4QSOsYt8SLjIlyeHDpynbR2aNPH5g3KPvqO1d9
- 34iCjCHmTI9Rd8m8MNFfBdnb7eM4AQow==
-X-Received: by 2002:adf:e5c4:0:b0:37d:4846:42c3 with SMTP id
- ffacd0b85a97d-38061137468mr22927333f8f.22.1730754562330; 
- Mon, 04 Nov 2024 13:09:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGh6uGQg4sQjiRH2nm7vI8Z5aVu33rNI9xMT59ovapS4OR54xYyDqW4DhCGdADN62lWtWNDXQ==
-X-Received: by 2002:adf:e5c4:0:b0:37d:4846:42c3 with SMTP id
- ffacd0b85a97d-38061137468mr22927311f8f.22.1730754561836; 
- Mon, 04 Nov 2024 13:09:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730754581; x=1731359381;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AQTkTMJNMys2h5iun+ZazOJo/CN0SrCjY67C1wqtHGY=;
+ b=AddX/6IgRpdnbn+TrttCW+Sw7UogLni7+yJFefLHk7UcRzw3obUzDLjXNnKa5HjTkj
+ dd+lRWvA7UZ9xehZVYe12ADPHjkNHhBpi8XaxgNIMA5/iCCHCbNuiRFaO0WSnlxZ9GX3
+ Xjkp+h9SioCwllVOrkAixcFMO1vnl0kw0ZCyK/ADZPVSnlqdQucgpR0j8PlmF+RXs4xN
+ mEbfoc4LFn2PuxvRI6MaVewX9TAd9zAeZSjGGPcHAVKOPCIdQWU9d5YHIORlNu9QZLT+
+ OBjXAErbEoDpKwQ1aA86mK4SeMP3UIaErIbT+F7F2VHtaAXi++n9nkGKwZOpg8rNYHJR
+ 3Ksg==
+X-Gm-Message-State: AOJu0Yws0xbpm+3SYYrGtAP6VdygmexGulbQGPIp5+WbOEAaH0SWs3oX
+ cSHGY2P06+P4XF6RSMfdKmLyqiTDi+t+uF9KJGS5T0taMvI125qzN4kj0sOnwNiuvuFvQbGgx9p
+ f/3VpAvdwhaGCLnuxjsXy/w6FtraL5ZhmID1ski9HqvuVkyhenMFePw7M/rya4y12ncPvWCeKpp
+ olFNy90ny7ZBabwoI+2BNsyAAgYS4m3w==
+X-Received: by 2002:a05:600c:a08:b0:431:4a83:2d80 with SMTP id
+ 5b1f17b1804b1-4327b6c1c78mr160758655e9.0.1730754580931; 
+ Mon, 04 Nov 2024 13:09:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE04MBj7tzcnxqiDhI0MsRUr328JQxLz6fQVdxnWS9xfKUi9yWsX/mJKLXgdipZzAPkN8y7XQ==
+X-Received: by 2002:a05:600c:a08:b0:431:4a83:2d80 with SMTP id
+ 5b1f17b1804b1-4327b6c1c78mr160758445e9.0.1730754580468; 
+ Mon, 04 Nov 2024 13:09:40 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d49dfsm14197412f8f.46.2024.11.04.13.09.19
+ 5b1f17b1804b1-431bd8e7d23sm193221125e9.7.2024.11.04.13.09.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:21 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:18 -0500
+ Mon, 04 Nov 2024 13:09:38 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:36 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Salil Mehta <salil.mehta@huawei.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 58/65] hw/acpi: Make CPUs ACPI `presence` conditional during
- vCPU hot-unplug
-Message-ID: <2d6cfbaf174b91dfa9a50065f7494634afb39c23.1730754238.git.mst@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 62/65] hw/acpi: Update GED with vCPU Hotplug VMSD for migration
+Message-ID: <65fb66980d3a918ebe1e665cf6ae4ceb8dea2db1.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -108,92 +102,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Salil Mehta <salil.mehta@huawei.com>
 
-On most architectures, during vCPU hot-plug and hot-unplug actions, the
-firmware or VMM/QEMU can update the OS on vCPU status by toggling the
-ACPI method `_STA.Present` bit. However, certain CPU architectures
-prohibit [1] modifications to a CPU’s `presence` status after the kernel
-has booted.
+The ACPI CPU hotplug states must be migrated along with other vCPU
+hotplug states to the destination VM. Update the GED's VM State
+Description (VMSD) table subsection to conditionally include the CPU
+Hotplug VM State Description (VMSD).
 
-This limitation [2][3] exists because many per-CPU components, such as
-interrupt controllers and various per-CPU features tightly integrated
-with CPUs, may not support reconfiguration once the kernel is
-initialized. Often, these components cannot be powered down, as they may
-belong to an `always-on` power domain. As a result, some architectures
-require all CPUs to remain `_STA.Present` after system initialization.
+Excerpt of GED VMSD State Dump at Source:
 
-Therefore, it is essential to mirror the exact QOM vCPU status through
-ACPI for the Guest kernel. For this, we should determine—via
-architecture-specific code[4]—whether vCPUs must always remain present
-and whether the associated `AcpiCpuStatus::cpu` object should remain
-valid, even following a vCPU hot-unplug operation.
-
-References:
-[1] Check comment 5 in the bugzilla entry
-    Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4481#c5
-[2] KVMForum 2023 Presentation: Challenges Revisited in Supporting Virt CPU Hotplug on
-    architectures that don’t Support CPU Hotplug (like ARM64)
-    a. Kernel Link: https://kvm-forum.qemu.org/2023/KVM-forum-cpu-hotplug_7OJ1YyJ.pdf
-    b. Qemu Link:  https://kvm-forum.qemu.org/2023/Challenges_Revisited_in_Supporting_Virt_CPU_Hotplug_-__ii0iNb3.pdf
-[3] KVMForum 2020 Presentation: Challenges in Supporting Virtual CPU Hotplug on
-    SoC Based Systems (like ARM64)
-    Link: https://kvmforum2020.sched.com/event/eE4m
-[4] Example implementation of architecture-specific CPU persistence hook
-    Link: https://github.com/salil-mehta/qemu/commit/c0b416b11e5af6505e558866f0eb6c9f3709173e
+    "acpi-ged (16)": {
+        "ged_state": {
+            "sel": "0x00000000"
+        },
+        [...]
+        "acpi-ged/cpuhp": {
+            "cpuhp_state": {
+                "selector": "0x00000005",
+                "command": "0x00",
+                "devs": [
+                    {
+                        "is_inserting": false,
+                        "is_removing": false,
+                        "ost_event": "0x00000000",
+                        "ost_status": "0x00000000"
+                    },
+		    [...]
+                    {
+                        "is_inserting": false,
+                        "is_removing": false,
+                        "ost_event": "0x00000000",
+                        "ost_status": "0x00000000"
+                    }
+                ]
+            }
+        }
+    },
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Message-Id: <20241103102419.202225-2-salil.mehta@huawei.com>
+Message-Id: <20241103102419.202225-6-salil.mehta@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/core/cpu.h |  1 +
- hw/acpi/cpu.c         | 15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ hw/acpi/generic_event_device.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index c3ca0babcb..e7de77dc6d 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -158,6 +158,7 @@ struct CPUClass {
-     void (*dump_state)(CPUState *cpu, FILE *, int flags);
-     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
-     int64_t (*get_arch_id)(CPUState *cpu);
-+    bool (*cpu_persistent_status)(CPUState *cpu);
-     void (*set_pc)(CPUState *cpu, vaddr value);
-     vaddr (*get_pc)(CPUState *cpu);
-     int (*gdb_read_register)(CPUState *cpu, GByteArray *buf, int reg);
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 5cb60ca8bc..9b03b4292e 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -233,6 +233,17 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-     memory_region_add_subregion(as, base_addr, &state->ctrl_reg);
- }
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index d00f5a6c1c..663d9cb093 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -331,6 +331,24 @@ static const VMStateDescription vmstate_memhp_state = {
+     }
+ };
  
-+static bool should_remain_acpi_present(DeviceState *dev)
++static bool cpuhp_needed(void *opaque)
 +{
-+    CPUClass *k = CPU_GET_CLASS(dev);
-+    /*
-+     * A system may contain CPUs that are always present on one die, NUMA node,
-+     * or socket, yet may be non-present on another simultaneously. Check from
-+     * architecture specific code.
-+     */
-+    return k->cpu_persistent_status && k->cpu_persistent_status(CPU(dev));
++    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
++
++    return mc->has_hotpluggable_cpus;
 +}
 +
- static AcpiCpuStatus *get_cpu_status(CPUHotplugState *cpu_st, DeviceState *dev)
- {
-     CPUClass *k = CPU_GET_CLASS(dev);
-@@ -289,7 +300,9 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
-         return;
-     }
- 
--    cdev->cpu = NULL;
-+    if (!should_remain_acpi_present(dev)) {
-+        cdev->cpu = NULL;
++static const VMStateDescription vmstate_cpuhp_state = {
++    .name = "acpi-ged/cpuhp",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = cpuhp_needed,
++    .fields      = (VMStateField[]) {
++        VMSTATE_CPU_HOTPLUG(cpuhp_state, AcpiGedState),
++        VMSTATE_END_OF_LIST()
 +    }
- }
- 
- static const VMStateDescription vmstate_cpuhp_sts = {
++};
++
+ static const VMStateDescription vmstate_ged_state = {
+     .name = "acpi-ged-state",
+     .version_id = 1,
+@@ -379,6 +397,7 @@ static const VMStateDescription vmstate_acpi_ged = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_memhp_state,
++        &vmstate_cpuhp_state,
+         &vmstate_ghes_state,
+         NULL
+     }
 -- 
 MST
 
