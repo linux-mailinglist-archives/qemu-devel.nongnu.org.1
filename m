@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BB09BBFC7
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F45E9BBFCF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84L9-0003lI-5P; Mon, 04 Nov 2024 16:10:23 -0500
+	id 1t84LE-0004QM-KT; Mon, 04 Nov 2024 16:10:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ke-0003Lj-6C
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:57 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Kk-0003NE-Nf
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:10:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ka-0005ZU-Tk
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:51 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Kg-0005Zk-T7
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754588;
+ s=mimecast20190719; t=1730754593;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=dEdkjWiHP5L8rCz25+/APfjLDFkHVovlyOsZHlqQfEA=;
- b=LpW2rt4LjHcNsPTylSRWjDMTCoIflwbzyEfjcJJWOTb+o7aOwSnTT4hmsVgqlFuaqgPFmG
- JBIaN4Np30ZcN2Zmkv3JHv3NRzoi0MEtCWERo5rpcpaVic/KPtbnEoKqytP9obEgtHJ45U
- AO7wjydfn5ydE/YYuT8eTOtinAu424k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dzFkROmFdJe52AC5ysZ9LBrP/VNzK7ogDHbPLODaOPM=;
+ b=eA64CMmJCQfNxzUer8CjiUOBZ3uN3NJzjTMQyFIICfa3IDppQIrD4MUu6tDFDLNgMUao1T
+ wZVXwg0E09r5JhWLJHztFuSM2eYJAnXyEi6qGGZMspqx/DAgcR27YcZtF12oDb+hHDwZus
+ 2m0AQU6AAbqLOGwxORcX2/mvLPYB5vo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-skrIC0ZoOcqn3eCL1WwXEA-1; Mon, 04 Nov 2024 16:09:47 -0500
-X-MC-Unique: skrIC0ZoOcqn3eCL1WwXEA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4315f48bd70so32910175e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:47 -0800 (PST)
+ us-mta-249-vxglU6KxOne1YRjEhih7Mw-1; Mon, 04 Nov 2024 16:09:51 -0500
+X-MC-Unique: vxglU6KxOne1YRjEhih7Mw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d4922d8c7so2475376f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754585; x=1731359385;
+ d=1e100.net; s=20230601; t=1730754589; x=1731359389;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dEdkjWiHP5L8rCz25+/APfjLDFkHVovlyOsZHlqQfEA=;
- b=d6IpyC21tyC473I4g4KuSQyTovTx3y9TQUAPY0n5FHac6Utg3tydZzEs5ZecLw5qE4
- K42hRpRd1J04bMoBEA1oFpYtyaKaq2Q5Dct4+GSv4rQ0xMRk+x4weL9gRwPUxYxNPwTs
- Mu8hyLwyVmuEvC8iyo5L1g8KZFb6MVlvKAPy2EIvpnmNEORxgAbm0OCvnFH9VbkSRKtg
- s5kLIyRqCw3aK0Q9Sn2kSvy6ViV4pAR3zz+2XCCOaaNgMfezQFHz07u5pXIujNOvAxci
- gFC+CA7NPFlOWSrlNg0J3yVPBNKPq4ATlodPKEIUU1P/x8zA9iR+uot5Nipxba72qQ2y
- Q5Sg==
-X-Gm-Message-State: AOJu0YzMA+t2BqhoLxvJ/J6MIKe7YBas09JzaxUKIc90+Rt44hXNl0Bz
- HJSaxS+6Fb8uXi6JrdQrNOX3XiDa3FQofvAG5M77AixdjbKKR+2JcExXBoEicKHC4rc0LoyHzsU
- fpxuh96Eq9Kf06KbtQ0sIlUesw8hoftKvE7F1x4S1tDrYgU2kUB55aHiKSWyxj8N5InhyGhQkMN
- tBv2dUzRV0P8wYcLIovoNQYmDkIAw0mw==
-X-Received: by 2002:a05:600c:1c28:b0:431:55af:a22f with SMTP id
- 5b1f17b1804b1-4327b6f950fmr151215135e9.13.1730754585498; 
- Mon, 04 Nov 2024 13:09:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFYUvvajy/IyjMXtvvwGY4IBBvJM8VI3THCroLWnMaQ4x2mCxJfcno+4sD27Iws7y331399Eg==
-X-Received: by 2002:a05:600c:1c28:b0:431:55af:a22f with SMTP id
- 5b1f17b1804b1-4327b6f950fmr151214885e9.13.1730754585030; 
- Mon, 04 Nov 2024 13:09:45 -0800 (PST)
+ bh=dzFkROmFdJe52AC5ysZ9LBrP/VNzK7ogDHbPLODaOPM=;
+ b=s52hXqU7neo4mS9cmhYY6e3zZFA8Fcqrj7M6DtDHv+gufqfKXO54AAHk0vJSiRD4QQ
+ My+omcRELVxJfr1mRJmh80IrUvHWwiiTtv4xxCJjL83AieLSnoWf+0/0vkX6uMuObPY5
+ WjfukpAfgouCIOPq/1SEPp3aGk4uIPoJUvYqFZs6SjgX/IzdzyOVM3XBAcC8NAY4+zWq
+ xuHW/J8hTtv3vJ70iuJ65BuKxSNAtnG7/roYBgy9dLAUqM7KkKof9Jk4VpD42x+I5syg
+ Uj3KpjPK6zqXJGsgFQe5CWe28mGPGviGxOD33KwnwNioJttzpFki3iuM+byoaVpc9jtG
+ 5a7w==
+X-Gm-Message-State: AOJu0Yw25KgjQecEKUSh0zdKvT+zWtly7jhP3q8uhnQxN8e8l9Fesimk
+ P5P1oM6XVSmHk8e9xl0sMDJRbufep1caTKCopohP/zTglGF+QQf9czincsCEcbSbFOBy/c0emM/
+ zlHwSVRoNIHRS6mgd5RH2OmKkVm92KLxjwWMdYhL9jszVEWYEoNept0lqEqciF+q4OBV1h1A/6M
+ ygrcBSrjcfQq4xR2Mz1zX33enCGnBmdw==
+X-Received: by 2002:a05:6000:4817:b0:37d:4fe9:b6a4 with SMTP id
+ ffacd0b85a97d-381c7ab30a6mr11627752f8f.50.1730754588873; 
+ Mon, 04 Nov 2024 13:09:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGE6a+VqcVsRwGLmx5QyvOv9zLiKNfSd7LMWbLEfrC1IWoBqXwZajSOHNqqSb20Jnmc0kpdfA==
+X-Received: by 2002:a05:6000:4817:b0:37d:4fe9:b6a4 with SMTP id
+ ffacd0b85a97d-381c7ab30a6mr11627733f8f.50.1730754588503; 
+ Mon, 04 Nov 2024 13:09:48 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432a27456a0sm512215e9.1.2024.11.04.13.09.41
+ 5b1f17b1804b1-4327d5ab305sm165233995e9.7.2024.11.04.13.09.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:44 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:40 -0500
+ Mon, 04 Nov 2024 13:09:48 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:45 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -71,9 +71,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 63/65] intel_iommu: Send IQE event when setting reserved bit
- in IQT_TAIL
-Message-ID: <e70e83f561c45864eeb0945ae0298caa595262d2.1730754238.git.mst@redhat.com>
+Subject: [PULL 64/65] intel_iommu: Add missed sanity check for 256-bit
+ invalidation queue
+Message-ID: <8e761fb61cafa95f4f41acaf8e86fae7e898b555.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -108,35 +108,174 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-According to VTD spec, Figure 11-22, Invalidation Queue Tail Register,
-"When Descriptor Width (DW) field in Invalidation Queue Address Register
-(IQA_REG) is Set (256-bit descriptors), hardware treats bit-4 as reserved
-and a value of 1 in the bit will result in invalidation queue error."
+According to VTD spec, a 256-bit descriptor will result in an invalid
+descriptor error if submitted in an IQ that is setup to provide hardware
+with 128-bit descriptors (IQA_REG.DW=0). Meanwhile, there are old inv desc
+types (e.g. iotlb_inv_desc) that can be either 128bits or 256bits. If a
+128-bit version of this descriptor is submitted into an IQ that is setup
+to provide hardware with 256-bit descriptors will also result in an invalid
+descriptor error.
 
-Current code missed to send IQE event to guest, fix it.
+The 2nd will be captured by the tail register update. So we only need to
+focus on the 1st.
+
+Because the reserved bit check between different types of invalidation desc
+are common, so introduce a common function vtd_inv_desc_reserved_check()
+to do all the checks and pass the differences as parameters.
+
+With this change, need to replace error_report_once() call with error_report()
+to catch different call sites. This isn't an issue as error_report_once()
+here is mainly used to help debug guest error, but it only dumps once in
+qemu life cycle and doesn't help much, we need error_report() instead.
 
 Fixes: c0c1d351849b ("intel_iommu: add 256 bits qi_desc support")
 Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20241104125536.1236118-2-zhenzhong.duan@intel.com>
+Message-Id: <20241104125536.1236118-3-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/i386/intel_iommu_internal.h |  1 +
+ hw/i386/intel_iommu.c          | 80 ++++++++++++++++++++++++----------
+ 2 files changed, 59 insertions(+), 22 deletions(-)
 
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 2f9bc0147d..75ccd501b0 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -356,6 +356,7 @@ union VTDInvDesc {
+ typedef union VTDInvDesc VTDInvDesc;
+ 
+ /* Masks for struct VTDInvDesc */
++#define VTD_INV_DESC_ALL_ONE            -1ULL
+ #define VTD_INV_DESC_TYPE(val)          ((((val) >> 5) & 0x70ULL) | \
+                                          ((val) & 0xfULL))
+ #define VTD_INV_DESC_CC                 0x1 /* Context-cache Invalidate Desc */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 8612d0917b..1ecfe47963 100644
+index 1ecfe47963..2fc3866433 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -2847,6 +2847,7 @@ static void vtd_handle_iqt_write(IntelIOMMUState *s)
-     if (s->iq_dw && (val & VTD_IQT_QT_256_RSV_BIT)) {
-         error_report_once("%s: RSV bit is set: val=0x%"PRIx64,
-                           __func__, val);
-+        vtd_handle_inv_queue_error(s);
-         return;
+@@ -2532,15 +2532,51 @@ static bool vtd_get_inv_desc(IntelIOMMUState *s,
+     return true;
+ }
+ 
++static bool vtd_inv_desc_reserved_check(IntelIOMMUState *s,
++                                        VTDInvDesc *inv_desc,
++                                        uint64_t mask[4], bool dw,
++                                        const char *func_name,
++                                        const char *desc_type)
++{
++    if (s->iq_dw) {
++        if (inv_desc->val[0] & mask[0] || inv_desc->val[1] & mask[1] ||
++            inv_desc->val[2] & mask[2] || inv_desc->val[3] & mask[3]) {
++            error_report("%s: invalid %s desc val[3]: 0x%"PRIx64
++                         " val[2]: 0x%"PRIx64" val[1]=0x%"PRIx64
++                         " val[0]=0x%"PRIx64" (reserved nonzero)",
++                         func_name, desc_type, inv_desc->val[3],
++                         inv_desc->val[2], inv_desc->val[1],
++                         inv_desc->val[0]);
++            return false;
++        }
++    } else {
++        if (dw) {
++            error_report("%s: 256-bit %s desc in 128-bit invalidation queue",
++                         func_name, desc_type);
++            return false;
++        }
++
++        if (inv_desc->lo & mask[0] || inv_desc->hi & mask[1]) {
++            error_report("%s: invalid %s desc: hi=%"PRIx64", lo=%"PRIx64
++                         " (reserved nonzero)", func_name, desc_type,
++                         inv_desc->hi, inv_desc->lo);
++            return false;
++        }
++    }
++
++    return true;
++}
++
+ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+ {
+-    if ((inv_desc->hi & VTD_INV_DESC_WAIT_RSVD_HI) ||
+-        (inv_desc->lo & VTD_INV_DESC_WAIT_RSVD_LO)) {
+-        error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
+-                          " (reserved nonzero)", __func__, inv_desc->hi,
+-                          inv_desc->lo);
++    uint64_t mask[4] = {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSVD_HI,
++                        VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
++
++    if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
++                                     __func__, "wait")) {
+         return false;
      }
-     s->iq_tail = VTD_IQT_QT(s->iq_dw, val);
++
+     if (inv_desc->lo & VTD_INV_DESC_WAIT_SW) {
+         /* Status Write */
+         uint32_t status_data = (uint32_t)(inv_desc->lo >>
+@@ -2574,13 +2610,14 @@ static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
+                                            VTDInvDesc *inv_desc)
+ {
+     uint16_t sid, fmask;
++    uint64_t mask[4] = {VTD_INV_DESC_CC_RSVD, VTD_INV_DESC_ALL_ONE,
++                        VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
+ 
+-    if ((inv_desc->lo & VTD_INV_DESC_CC_RSVD) || inv_desc->hi) {
+-        error_report_once("%s: invalid cc inv desc: hi=%"PRIx64", lo=%"PRIx64
+-                          " (reserved nonzero)", __func__, inv_desc->hi,
+-                          inv_desc->lo);
++    if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
++                                     __func__, "cc inv")) {
+         return false;
+     }
++
+     switch (inv_desc->lo & VTD_INV_DESC_CC_G) {
+     case VTD_INV_DESC_CC_DOMAIN:
+         trace_vtd_inv_desc_cc_domain(
+@@ -2610,12 +2647,11 @@ static bool vtd_process_iotlb_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+     uint16_t domain_id;
+     uint8_t am;
+     hwaddr addr;
++    uint64_t mask[4] = {VTD_INV_DESC_IOTLB_RSVD_LO, VTD_INV_DESC_IOTLB_RSVD_HI,
++                        VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
+ 
+-    if ((inv_desc->lo & VTD_INV_DESC_IOTLB_RSVD_LO) ||
+-        (inv_desc->hi & VTD_INV_DESC_IOTLB_RSVD_HI)) {
+-        error_report_once("%s: invalid iotlb inv desc: hi=0x%"PRIx64
+-                          ", lo=0x%"PRIx64" (reserved bits unzero)",
+-                          __func__, inv_desc->hi, inv_desc->lo);
++    if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
++                                     __func__, "iotlb inv")) {
+         return false;
+     }
+ 
+@@ -2705,19 +2741,19 @@ static bool vtd_process_device_iotlb_desc(IntelIOMMUState *s,
+     hwaddr addr;
+     uint16_t sid;
+     bool size;
++    uint64_t mask[4] = {VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO,
++                        VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI,
++                        VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
++
++    if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
++                                     __func__, "dev-iotlb inv")) {
++        return false;
++    }
+ 
+     addr = VTD_INV_DESC_DEVICE_IOTLB_ADDR(inv_desc->hi);
+     sid = VTD_INV_DESC_DEVICE_IOTLB_SID(inv_desc->lo);
+     size = VTD_INV_DESC_DEVICE_IOTLB_SIZE(inv_desc->hi);
+ 
+-    if ((inv_desc->lo & VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO) ||
+-        (inv_desc->hi & VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI)) {
+-        error_report_once("%s: invalid dev-iotlb inv desc: hi=%"PRIx64
+-                          ", lo=%"PRIx64" (reserved nonzero)", __func__,
+-                          inv_desc->hi, inv_desc->lo);
+-        return false;
+-    }
+-
+     /*
+      * Using sid is OK since the guest should have finished the
+      * initialization of both the bus and device.
 -- 
 MST
 
