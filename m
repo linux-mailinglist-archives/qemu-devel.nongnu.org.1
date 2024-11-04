@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E208E9BB99B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 16:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C36599BB9B9
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:02:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7zTT-0004Qm-1h; Mon, 04 Nov 2024 10:58:39 -0500
+	id 1t7zVw-00066c-TY; Mon, 04 Nov 2024 11:01:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t7zTQ-0004Qb-8x
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:58:36 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1t7zVp-00066I-Cr
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:01:08 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t7zTO-0006aX-NV
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:58:36 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5cece886771so3016544a12.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 07:58:33 -0800 (PST)
+ id 1t7zVl-0006yP-Go
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:01:04 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5ceca7df7f0so2436886a12.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:01:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730735911; x=1731340711; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730736060; x=1731340860; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dYpTSTmX67UUQek/Oo9IY+adan9AthKuCbiNaoIy8Ko=;
- b=AlsI60v+tVI4zPknu5RJJ6Xg3KQLflCuzTf73GNvIl4rDIP+kkt9VglCTgapK8igF+
- N6GAwH/sn19T3ZFTKCgkpkZHw4sDOVR8z+4+LzO1JigPX9hJnjR+iyqkgDAJ7kOWYk2g
- op9RpiQeT8VHE65PttYNZZHtd/9OebZpnw25oDnTuBfnxfyoogJwSDp5/Odb+8Z2aayQ
- vTKHjREBxdeFrbcvfNwzGnqGY1IKunprbUbIelWmWFo4vB0nWn0BwJP4ff91iDIymiO5
- frz84ZTGV3+grSO2nZ1hoESL4C/BvCoPa0qdcd4iZY/TluzxUy8Y8J6N2ybv1ZKJhPB2
- cxYA==
+ bh=LRUR4NDXOahyqu0wbsy0bO+8UtBTQFHQhRUVXDN+Tco=;
+ b=kVfzzlj/0dMsyz/PiEcE3V3QTpJkx13qfPkqiNupz1UdYdnXFVGQKunHg9823zhiKr
+ d5B57XWLM0Bzng/mILNhp+g8dTbNXRBIwHIFXIEjHXbDse5jJqTl4e3ftIqrsakYShtU
+ BHw+gxKqTXOD7ksO9r5Fh2P1ZM4b28FbZQfr/wlJJfYImJkcTMZYXREshLrA6Tt228dj
+ Rjbovpa+ZSapSIzBc2C0rvx/oljFKk3UgY5aAG/81S+zaLznCanYbiVA1SqATJApC2YH
+ epi614Wf6Xxz0waUkB3dgBiez8h94yVGmWajhAl2JWGGJAaBdZllqZa88SkGWb5MvvJd
+ 6uXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730735911; x=1731340711;
+ d=1e100.net; s=20230601; t=1730736060; x=1731340860;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=dYpTSTmX67UUQek/Oo9IY+adan9AthKuCbiNaoIy8Ko=;
- b=paTWEs0esS366YZ1IdxIJGMIzH83UOwboLqgVvpAo+snUoxgxFmP3zOHZ6rFzRfULw
- Ap4z0hk6iZax2CyMrjZx+yPaD2mzOa4kz166V766uefk9f8Z9OyhU474NGv+qGBTPdod
- fjv1tZaoF0Nf6Re4u0ovRvas9UaEw9twJKn0+NHOoC7prENvI4v3Zc0hrs/NnuPga9MU
- 2QgyJyOFsh7cDNk3ujWjz9jX2NpKKm5xyRGrTCoxg570ax7QfiJEFHCd4UgES1uKT8Lw
- kr9X0IngafSwD53ExlMpxBgXBRRqgRSpgzO84NkAENA1z37MJGPqMy9iYT/oDRoM/+54
- RC7A==
-X-Gm-Message-State: AOJu0YwWO1/zzkj2zBLGwxFhO6Znl6rcCOCr0z37FrD/BfOnmYmW7PuT
- bd0vE0KslEbHL9o1YHSgw2HHhMyEnzCj9rw5doFFTiJ+tESg47QchkWBbk8qiEJLwvm7PzzMsH4
- gAsvbmyA8a2k+wvsrepsdqglYAEKgItNQjs/xLQ==
-X-Google-Smtp-Source: AGHT+IE6ADf4qVUnF8VoRbeUZzr30kX3CSIZzaR9lsTqfaKSdIgpgnOOhVoh/yUdzSj1lISgC/9jcaVYAvtNSvamO0U=
-X-Received: by 2002:aa7:d490:0:b0:5c5:c2a7:d535 with SMTP id
- 4fb4d7f45d1cf-5ceabf49e20mr12718651a12.16.1730735911124; Mon, 04 Nov 2024
- 07:58:31 -0800 (PST)
+ bh=LRUR4NDXOahyqu0wbsy0bO+8UtBTQFHQhRUVXDN+Tco=;
+ b=MuWpqtqYcMYKzeiz6SVz46nqXn/JjacAkZZqJY+0SyxZHUUsVHk93gWpVC5JqfWi9T
+ uNZUydNUjPzeQ3VYosXkS0/oTMBWqLrZygPQnZpo+ocUPkwAb0btiLdBIrFHFDORtLIn
+ x//VeefZRVTK97v8X5Lwk593rFnaq6L1NNrigPVADeWckB+KkBzViMocukwjKfgnswQc
+ IAKlHR8tDSFtyb+ymdMBbm0//gsZ/Ww2yYmJB0wXU/scA/vA0i/1sC/IIYQpgczzOoB2
+ G2fL+XuZo0ehWg943I/G6z/Uxn4zuPzqmCqg8+E+eO7blrzON4DakgN9+H9JZ4jOaBCr
+ QQbQ==
+X-Gm-Message-State: AOJu0YwIK2y36n+RTAnBex1KVGxDQ93B0594O9gO0sXktKktsN6W6BZD
+ tu84vYyDLR1meaApgLBKI39xs/1MbArbufecrVec6U+8pdMYBGrDGTSqOJykkuOuPxmSV8LiYk2
+ bPCWhoh+ijgQz/RScuKJvhbuwO9+Fogrp3R46mA==
+X-Google-Smtp-Source: AGHT+IHOn7y3sA18lNYqE/r+gQDda/HNrBSTIhoaeIuE3CLrs8X1+Y7fC18tpP/+oCiouJwbFYp+LQw77nQEJSdfbfg=
+X-Received: by 2002:a05:6402:5242:b0:5ce:e5dc:69b with SMTP id
+ 4fb4d7f45d1cf-5cee5dc06f8mr564516a12.8.1730736059487; Mon, 04 Nov 2024
+ 08:00:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
- <20241031040426.772604-13-pierrick.bouvier@linaro.org>
-In-Reply-To: <20241031040426.772604-13-pierrick.bouvier@linaro.org>
+References: <20241101134625.2240813-1-peterx@redhat.com>
+In-Reply-To: <20241101134625.2240813-1-peterx@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Nov 2024 15:58:19 +0000
-Message-ID: <CAFEAcA_gNGb4yHvCQf9fOi0gkxn=whVWK8_ztqDBzQ8RcJ-5UA@mail.gmail.com>
-Subject: Re: [PATCH 12/12] docs: add information on how to setup build
- environments
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Alexandre Iooss <erdnaxe@crans.org>, 
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>
+Date: Mon, 4 Nov 2024 16:00:48 +0000
+Message-ID: <CAFEAcA-5-WHyyL9WmS+avWJsS7zKBbk-7V9b6QdazLBvainTRg@mail.gmail.com>
+Subject: Re: [PULL v2 00/18] Migration 20241030 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,39 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Oct 2024 at 04:07, Pierrick Bouvier
-<pierrick.bouvier@linaro.org> wrote:
+On Fri, 1 Nov 2024 at 13:46, Peter Xu <peterx@redhat.com> wrote:
 >
-> MacOS and Linux are straightforward, but Windows needs a bit more
-> details.
+> The following changes since commit ea8ae47bdd2024dc2596f16b27f27fd4dcc08776:
 >
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>   Merge tag 'pull-target-arm-20241029' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-10-31 13:28:57 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/peterx/qemu.git tags/migration-20241030-pull-request
+>
+> for you to fetch changes up to 00b4b216534d84ace7b0583cec70a3aaf256cb25:
+>
+>   migration/multifd: Zero p->flags before starting filling a packet (2024-10-31 15:48:18 -0400)
+>
+> ----------------------------------------------------------------
+> Migration pull request for softfreeze
+>
+> v2:
+> - Patch "migration: Move cpu-throttle.c from system to migration",
+>   fix build on MacOS, and subject spelling
+>
+> NOTE: checkpatch.pl could report a false positive on this branch:
+>
+>   WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+>   #21:
+>    {include/sysemu => migration}/cpu-throttle.h | 0
+>
+> That's covered by "F: migration/" entry.
+>
+> Changelog:
+>
+> - Peter's cleanup patch on migrate_fd_cleanup()
+> - Peter's cleanup patch to introduce thread name macros
+> - Hanna's error path fix for vmstate subsection save()s
+> - Hyman's auto converge enhancement on background dirty sync
+> - Peter's additional tracepoints for save state entries
+> - Thomas's build fix for OpenBSD in dirtyrate.c
+> - Peter's deprecation of query-migrationthreads command
+> - Peter's cleanup/fixes from the "export misc.h" series
+> - Maciej's two small patches from multifd+vfio series
+>
 
-We have documentation on the wiki currently about how to
-build on various platforms:
 
-https://wiki.qemu.org/Hosts/Linux
-https://wiki.qemu.org/Hosts/Mac
-https://wiki.qemu.org/Hosts/W32
+Applied, thanks.
 
-I agree that we ought to move this into the main documentation.
-Some of the information in those wiki pages is probably
-out of date, but some of it looks like useful extra detail
-that we could incorporate here.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
-> ---
->  docs/about/build-platforms.rst |   4 +-
->  docs/devel/build-system.rst    | 100 +++++++++++++++++++++++++++++++++
-
-I don't think this is the best place to put this information.
-"How do I build from source?" is a question that most beginning
-developers and some end users will have. The information in
-build-system.rst is mostly about the internals of our
-build system and how to modify it, which is a more niche topic.
-
-I would be inclined to put this in a new file, maybe even
-in docs/about/ rather than docs/devel.
-
-thanks
 -- PMM
 
