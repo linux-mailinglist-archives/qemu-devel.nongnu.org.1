@@ -2,97 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E329BB906
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 16:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E04B9BB910
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 16:35:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7z2n-00021B-Qm; Mon, 04 Nov 2024 10:31:05 -0500
+	id 1t7z6N-0002sB-6T; Mon, 04 Nov 2024 10:34:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
- id 1t7z2m-00020z-GP; Mon, 04 Nov 2024 10:31:04 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1t7z6J-0002rj-U3
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:34:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
- id 1t7z2k-00039T-Je; Mon, 04 Nov 2024 10:31:04 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4F9oSm006274;
- Mon, 4 Nov 2024 15:30:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=2Qg/wc
- I9bWHL4w6MePdgVA+zjSoWxXyF7uBUkH69k0I=; b=kithfqB5t055b8IsNzBRSr
- 91umtudRGxL7wU7jL9ZqWs1o5jJFxu01Px1VRD4JTwtxPNoukMovPSGS8cw7LETd
- rU2YGYAIZ2Nf307dFK5cL6nk/1Eoob6CaKK5IpekhXcU3g76sUjqwD+yt1LYZJ4I
- xBHJ+14Q+88EEEe4QMKKtNeLeqePswjXoz7JgW3cEPmZKwP9Nvy1D1cU3mB5DdUQ
- qQ9dGm7svDb5rZBKXYjz4axqcgaP47+yGoCDbFVkygYCnKbtbeBE7GJPlzBKKKG3
- Q7QGdAnoyDCRX24bmLA6zcKii2X1AYMFZgpmnYE3QdIf8QQGMXUAQyQxNr4KOwsQ
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42q0nvg3h3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 15:30:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A498xL7032050;
- Mon, 4 Nov 2024 15:30:52 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmjb3v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Nov 2024 15:30:52 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A4FUpFl22151886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Nov 2024 15:30:51 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4D6858053;
- Mon,  4 Nov 2024 15:30:51 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 30E4158043;
- Mon,  4 Nov 2024 15:30:51 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Nov 2024 15:30:51 +0000 (GMT)
-Date: Mon, 04 Nov 2024 09:30:50 -0600
-From: dan tan <dantan@linux.ibm.com>
-To: undisclosed-recipients:;
-Subject: Re: [PATCH v5 3/3] tests/qtest/tpm: add unit test to tis-spi
-In-Reply-To: <1eed1859-4639-4b24-ba6a-347a3b3534fc@linux.ibm.com>
-References: <20241104064334.21468-1-dantan@linux.vnet.ibm.com>
- <20241104064334.21468-4-dantan@linux.vnet.ibm.com>
- <1eed1859-4639-4b24-ba6a-347a3b3534fc@linux.ibm.com>
-Message-ID: <370ea461b2081b5f636dc59d82c5326a@linux.ibm.com>
-X-Sender: dantan@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lPpAdBKdw0ncLP-Eg9hea0iC74E8hX0G
-X-Proofpoint-GUID: lPpAdBKdw0ncLP-Eg9hea0iC74E8hX0G
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1t7z6H-0003Sc-AR
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 10:34:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730734480;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nSzC8fuhrTYfNX2e1clLraq8/0hvYKlTSC3OeLDtmLQ=;
+ b=Ei9Z55JXPIpFHw5HPcqtevndB/cCQSZaKmMQ1Gy0zyOLwbV9rCWDZR6LPu5nlvrSto+JH2
+ aPPCbq86KpftiTu/jbxtRcRgdsTkRII9Wk8q6mZgMTW1WQAYIkO17lxSmxdBcVQe3N5nF7
+ tTh6rjEVU0ZXVG5s0W2VmBK5IaY+nI8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-52-gOTti7e8N5moe3bUtJrOmw-1; Mon, 04 Nov 2024 10:34:38 -0500
+X-MC-Unique: gOTti7e8N5moe3bUtJrOmw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37d47127e69so1842858f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 07:34:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730734477; x=1731339277;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nSzC8fuhrTYfNX2e1clLraq8/0hvYKlTSC3OeLDtmLQ=;
+ b=ZuPhSUpkEjO1q7pTUZlFwDTxUjAoH21zC4JiZDYJ7eEog+c2wYFz+wmRYsWOlPkanD
+ 0bTeKbvACRDhipvuvCtrfEK0O59ySnp5+JhkTDLt6IiM87yaOoZy0ONj/bmTGtOq6qhz
+ S4cD4FNu/+4kOKCGQKqHvNONca6K8vzp4i5iEAcCC1dx6HCsyDWxllsqRP74xXtBM/zV
+ SLeRvCBrwBUUqSKUyXRsRM49yFvtSYDJE8PDxvj0lE0BuOf3JXrHT59/qWTqkz3F1SME
+ emPOwbOA7GTsd5VdPlvVj9AQwatKAtYS6gP7G2Tp8jlSX30J7/fOqMyz4LjieOwcrZiy
+ Jlpw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVl+qzD39R6aMpRibCE0C5gZ39w3hlSDMyk+ZtaWH5EmMi0VBSWlaueR3FVJvBAk22plSBIUzAyKX0Z@nongnu.org
+X-Gm-Message-State: AOJu0Yy28SASYlIcQIWtpUCRjAlQKrqzmy9UKbURglGPZT14EByNknMW
+ DTo2BfPm2UX3LKwgx34BwBpF20TNdoOVJbe7fwYFtxZYciBkdc1GUL0WIIghMH4zmNVGMtX8uvL
+ 5Z6vV2ZW+VnRpLT2fGpOBM/8pl9UuVhnG/RjPiU7U3Mml/dEKGxJ4
+X-Received: by 2002:adf:ebd2:0:b0:37d:3f42:9b59 with SMTP id
+ ffacd0b85a97d-380610f7ea7mr22023338f8f.11.1730734476716; 
+ Mon, 04 Nov 2024 07:34:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHye8TT8MTrXCSMQ9mkus4MGj+FiLhpS9zRuPDmehNe0w/kgz6ZwC8PSbE0EzuU1gXHNIBaJQ==
+X-Received: by 2002:adf:ebd2:0:b0:37d:3f42:9b59 with SMTP id
+ ffacd0b85a97d-380610f7ea7mr22023318f8f.11.1730734476312; 
+ Mon, 04 Nov 2024 07:34:36 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-381c10b7b32sm13547570f8f.18.2024.11.04.07.34.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Nov 2024 07:34:35 -0800 (PST)
+Message-ID: <52690aae-55b6-47d5-a308-dd75475f8377@redhat.com>
+Date: Mon, 4 Nov 2024 16:34:32 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 phishscore=0 impostorscore=0
- clxscore=1015 adultscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411040130
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=dantan@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 21/21] arm/cpu-features: Document custom vcpu model
+Content-Language: en-US
+To: Kashyap Chamarthy <kchamart@redhat.com>
+Cc: eric.auger.pro@gmail.com, cohuck@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com
+References: <20241025101959.601048-1-eric.auger@redhat.com>
+ <20241025101959.601048-22-eric.auger@redhat.com> <Zx__Zi3Zpg1AspnE@pinwheel>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <Zx__Zi3Zpg1AspnE@pinwheel>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,221 +111,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
+Hi Kashyap,
 
-What's the best way to catch these in my own local testing without 
-submitting it to Travis CI?
-
-thank you,
----
-dan tan
-power simulation
-phone:+1.7373.099.138
-email:dantan@linux.ibm.com
-
-
-On 2024-11-04 09:20, Stefan Berger wrote:
-> On 11/4/24 1:43 AM, dan tan wrote:
->> Add qtest cases to exercise main TPM functionality
->> The TPM device emulation is provided by swtpm, which is TCG
->> TPM 2.0, and TCG TPM TIS compliant. See
->> https://trustedcomputinggroup.org/wp-content/uploads/TCG_PC_Client_Platform_TPM_Profile_PTP_2.0_r1.03_v22.pdf
->> https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientTPMInterfaceSpecification_TIS__1-3_27_03212013.pdf
->> The SPI registers are specific to the PowerNV platform
->> architecture
->> 
->> Signed-off-by: dan tan <dantan@linux.vnet.ibm.com>
+On 10/28/24 22:17, Kashyap Chamarthy wrote:
+> On Fri, Oct 25, 2024 at 12:17:40PM +0200, Eric Auger wrote:
+>> From: Cornelia Huck <cohuck@redhat.com>
+>>
+>> Add some documentation for the custom model.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 >> ---
->> 
->> v3:
->> - removed the function prototypes declaration
->> - fixed code format to comply with convention
->> - changed function names and variable names to be the same
->>    as the tpm-tis-i2c test.
->> - change hard coded numbers to #define's with meaningful
->>    names that are identifiable with spec documentation
->> 
->> v4:
->> - git commit amend only
->> 
->> v5:
->> - modified tpm_reg_readl() by
->>    - removing the special case for TPM_TIS_REG_DID_VID.
->>      - however, I did not use the more efficient 32bit access due
->>        to the SPI bus master implementation. The 16bit register
->>        still require special treatment with the SPI RWX bits.
->>    - correcting tpm_reg_readb() with uint16_t reg
->> - tpm_set_verify_loc() added checking for 
->> TPM_TIS_CAPABILITIES_SUPPORTED2_0
->> - test_spi_tpm_transmit_test() added
->>    - TPM_TIS_STS_TPM_FAMILY2_0 check in status register
->>    - TPM responses verification
->> - fixed the PowerNV stdout msg from running 
->> qtest-ppc64/tpm-tis-spi-pnv-test
->> ---
->>   tests/qtest/tpm-tis-spi-pnv-test.c | 713 
->> +++++++++++++++++++++++++++++
->>   tests/qtest/meson.build            |   2 +
->>   2 files changed, 715 insertions(+)
->>   create mode 100644 tests/qtest/tpm-tis-spi-pnv-test.c
->> 
->> diff --git a/tests/qtest/tpm-tis-spi-pnv-test.c 
->> b/tests/qtest/tpm-tis-spi-pnv-test.c
->> new file mode 100644
->> index 0000000000..9eeeea41f7
->> --- /dev/null
->> +++ b/tests/qtest/tpm-tis-spi-pnv-test.c
->> @@ -0,0 +1,713 @@
->> +/*
->> + * QTest testcase for a Nuvoton NPCT75x TPM SPI device
->> + *                      running on the PowerNV machine.
->> + *
->> + * Copyright (c) 2024, IBM Corporation.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +#include "qemu/osdep.h"
->> +#include <glib/gstdio.h>
->> +#include "libqtest-single.h"
->> +#include "hw/acpi/tpm.h"
->> +#include "hw/pci/pci_ids.h"
->> +#include "qtest_aspeed.h"
->> +#include "tpm-emu.h"
->> +#include "hw/ssi/pnv_spi_regs.h"
->> +#include "pnv-xscom.h"
+>>  docs/system/arm/cpu-features.rst | 55 +++++++++++++++++++++++++++-----
+>>  1 file changed, 47 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
+>> index a5fb929243..962a2c6c26 100644
+>> --- a/docs/system/arm/cpu-features.rst
+>> +++ b/docs/system/arm/cpu-features.rst
+>> @@ -2,7 +2,10 @@ Arm CPU Features
+> [...]
+>
+>> +Using the ``host`` type means the guest is provided all the same CPU
+>> +features as the host CPU type has.  And, for this reason, the ``host``
+>> +CPU type should enable all CPU features that the host has by default.
 >> +
->> +#define SPI_TPM_BASE            0xc0080
->> +#define SPI_SHIFT_COUNTER_N1    0x30000000
->> +#define SPI_SHIFT_COUNTER_N2    0x40000000
->> +#define SPI_RWX_OPCODE_SHIFT    56
->> +#define SPI_RWX_ADDR_SHIFT      32
->> +#define SPI_CMD_DATA_SHIFT      56
+>> +In case some features need to be hidden to the guest, ``custom`` model
+>> +shall be used instead. This is especially useful for migration purpose.
 >> +
->> +#define CFG_COUNT_COMPARE_1     0x0000000200000000
->> +#define MM_REG_RDR_MATCH        0x00000000ff01ff00
->> +#define SEQ_OP_REG_BASIC        0x1134416200100000
+>> +The ``custom`` CPU model generally is the better choice if you want more
+>> +flexibility or stability across different machines or with different kernel
+>> +versions. 
+> Does "more flexibility or stability across different machines" also
+> imply "live migration compatiblity across host CPUs"?
+yes that's the goal
+>
+>> However, even the ``custom`` CPU model will not allow configuring
+>> +an arbitrary set of features; the ID registers must describe a subset of the
+>> +host's features, and all differences to the host's configuration must actually
+>> +be supported by the kernel to be deconfigured.
+> [...]
+>
+>> +The ``custom`` CPU model needs to be configured via individual ID register
+>> +field properties, for example::
 >> +
->> +#define TPM_TIS_8BITS_MASK      0xff
->> +#define SPI_TPM_TIS_ADDR        0xd40000
->> +#define SPI_EXTEND              0x03
->> +#define TPM_WRITE_OP            0x0
->> +#define TPM_READ_OP             0x80
->> +
->> +#define SHORT_MAX_RETRIES       5
->> +#define LONG_MAX_RETRIES        10
->> +
->> +static const uint8_t TPM_CMD[12] =
->> +                     
->> "\x80\x01\x00\x00\x00\x0c\x00\x00\x01\x44\x00\x00";
->> +
->> +#define DPRINTF(fmt, ...) do { \
->> +    if (DEBUG_TIS_TEST) { \
->> +        printf(fmt, ## __VA_ARGS__); \
->> +    } \
->> +} while (0)
->> +
->> +#define DEBUG_TIS_TEST 0
->> +
->> +#define DPRINTF_ACCESS \
->> +    DPRINTF("%s: %d: locty=%d l=%d access=0x%02x 
->> pending_request_flag=0x%x\n", \
->> +            __func__, __LINE__, locty, l, access, 
->> pending_request_flag)
->> +
->> +#define DPRINTF_STS \
->> +    DPRINTF("%s: %d: sts = 0x%08x\n", __func__, __LINE__, sts)
->> +
->> +static uint64_t pnv_spi_tpm_read(const PnvChip *chip, uint32_t reg)
->> +{
->> +    uint32_t pcba = SPI_TPM_BASE + reg;
->> +
->> +    return qtest_readq(global_qtest, pnv_xscom_addr(chip, pcba));
->> +}
->> +
->> +static void pnv_spi_tpm_write(const PnvChip *chip,
->> +                              uint32_t reg,
->> +                              uint64_t val)
->> +{
->> +    uint32_t pcba = SPI_TPM_BASE + reg;
->> +
->> +    qtest_writeq(global_qtest, pnv_xscom_addr(chip, pcba), val);
->> +}
->> +
->> +static void spi_op_complete(const PnvChip *chip)
->> +{
->> +    uint64_t cfg_reg;
->> +
->> +    cfg_reg = pnv_spi_tpm_read(chip, SPI_CLK_CFG_REG);
->> +    g_assert_cmpuint(CFG_COUNT_COMPARE_1, ==, cfg_reg);
->> +    pnv_spi_tpm_write(chip, SPI_CLK_CFG_REG, 0);
->> +}
->> +
->> +static void spi_write_reg(const PnvChip *chip, uint64_t val)
->> +{
->> +    int i;
->> +    uint64_t spi_sts;
->> +
->> +    for (i = 0; i < LONG_MAX_RETRIES; i++) {
->> +        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
->> +        if (GETFIELD(SPI_STS_TDR_FULL, spi_sts) == 1) {
->> +            sleep(0.5);
-> 
-> 
-> One of the Travis builds complains about this:
-> 
-> ../tests/qtest/tpm-tis-spi-pnv-test.c:90:19: error: implicit
-> conversion from 'double' to 'unsigned int' changes value from 0.5 to 0
-> [-Werror,-Wliteral-conversion]
-> 
->             sleep(0.5);
-> 
->             ~~~~~ ^~~
-> 
-> ../tests/qtest/tpm-tis-spi-pnv-test.c:104:19: error: implicit
-> conversion from 'double' to 'unsigned int' changes value from 0.1 to 0
-> [-Werror,-Wliteral-conversion]
-> 
->             sleep(0.1);
-> 
->             ~~~~~ ^~~
-> 
-> ../tests/qtest/tpm-tis-spi-pnv-test.c:123:15: error: implicit
-> conversion from 'double' to 'unsigned int' changes value from 0.5 to 0
-> [-Werror,-Wliteral-conversion]
-> 
->         sleep(0.5);
-> 
->         ~~~~~ ^~~
-> 
-> ../tests/qtest/tpm-tis-spi-pnv-test.c:128:19: error: implicit
-> conversion from 'double' to 'unsigned int' changes value from 0.1 to 0
-> [-Werror,-Wliteral-conversion]
-> 
->             sleep(0.1);
-> 
->             ~~~~~ ^~~
-> 
-> You need to use g_usleep() here.
-> 
-> 
-> 
->> +        } else {
->> +            break;
->> +        }
->> +    }
->> +    /* cannot write if SPI_STS_TDR_FULL bit is still set */
->> +    g_assert_cmpuint(0, ==, GETFIELD(SPI_STS_TDR_FULL, spi_sts));
->> +    pnv_spi_tpm_write(chip, SPI_XMIT_DATA_REG, val);
->> +
->> +    for (i = 0; i < SHORT_MAX_RETRIES; i++) {
->> +        spi_sts = pnv_spi_tpm_read(chip, SPI_STS_REG);
->> +        if (GETFIELD(SPI_STS_SHIFTER_FSM, spi_sts) & FSM_DONE) {
->> +            break;
->> +        } else {
->> +            sleep(0.1);
-> 
-> Also here.
+>> +  $ qemu-system-aarch64 -M virt -cpu custom,SYSREG_ID_AA64ISAR0_EL1_DP=0x0
+> If possible, it would be really helpful (and user-friendly) to be able
+> to specify the CPU feature names as you see under /proc/cpuinfo, and be
+> able to turn the flags on or off:
+>     
+>         -M virt -cpu franken,rndr=on,ts=on,fhm=off
+>
+> (... instead of specifying long system register IDs that groups together
+> a bunch of CPU features.  If I understand it correctly, the register
+> "ID_AA64ISAR0_EL1" maps to a set of visible features listed here:
+> https://docs.kernel.org/arch/arm64/cpu-feature-registers.html)
+Not all the writable ID regs are visible through the above technique.
+But indeed I think we converged on the idea to use higher level feature
+names than ID reg field values.
+However we need to study the feasibility and mappings between those high
+level features and ID reg field values.
+The cons is that we need to describe this mapping manually. Besides
+being cumbersome this is also error prone.
+>
+>
+> Next, I prefix the below by noting that I wrote it before seeing
+> Cornelia's reply that the name "custom" is not set in stone:
+> https://lists.nongnu.org/archive/html/qemu-arm/2024-10/msg00987.html.
+>
+> I wonder if the word "custom" is starting to get overloaded; on x86:
+>
+>   - Libvirt itself uses the term "custom" this way, to quote its
+>     documentation[1] for the 'custom' XML attribute:
+>
+>       custom
+>     
+>       In this mode, the 'cpu' element describes the CPU that should be
+>       presented to the guest. This is the default when no 'mode'
+>       attribute is specified. This mode makes it so that a persistent
+>       guest will see the same hardware no matter what host the guest is
+>       booted on.
+>
+>   - Some management tools also follow libvirt and use the term "custom"
+>     to refer to one of two things, (a) a specific named CPU model that
+>     libvirt and QEMU recognize, e.g. "Cascadelake-Server"; or (b) a
+>     named CPU model + extra CPU flags, e.g. this is how OpenStack
+>     uses[2] "custom" to configure CPU models, and flags that can be
+>     enabled or disabled via "+" or "-":
+>
+>       [libvirt]
+>       cpu_mode = custom
+>       cpu_model = IvyBridge-IBRS
+>       cpu_model_extra_flags="ss,+vmx,-pcid [...]"
+>
+>     (Note the "cpu_mode" there: it is referring to the three possible
+>     modes that libvirt and QEMU support today: 'host-passthrough',
+>     'host-model', and named CPU models via "custom".)
+>
+>     The above config translates to this QEMU command-line:
+>
+>         -cpu IvyBridge-IBRS,ss=on,vmx=on,pcid=off [...]
+>
+> Now if QEMU introduces "custom", it is likely to create some confusion.
+> But luckily, as referenced above, it is open to change. :)
+Agreed! Thank you for the references!
+
+Eric
+>
+>     * * *
+>
+> FWIW, I agree with Dan here[3] that it would cause less future pain if
+> Arm's named CPU models also decides on a "baseline that matches some
+> corresponding real world silicon".  I've experienced plenty of such
+> debugging pain in x86-land from years of troubleshooting live migration
+> bugs involving CPU model (in)compatibility.  (Often, with help from
+> DanPB and Jiri Denemark).
+>
+> [1] https://docs.openstack.org/nova/latest/admin/cpu-models.html#cpu-modes
+> [2] https://libvirt.org/formatdomain.html#cpu-model-and-topology
+> [3] https://lists.nongnu.org/archive/html/qemu-arm/2024-10/msg00888.html
+>     — [RFC 21/21] arm/cpu-features: Document custom vcpu model
+>
+> [...]
+>
+
 
