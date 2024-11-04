@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4069BBF83
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BACA9BBF71
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Gv-0003VY-L0; Mon, 04 Nov 2024 16:06:01 -0500
+	id 1t84H1-0003Ws-Tr; Mon, 04 Nov 2024 16:06:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Gr-0003S1-Vb
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:58 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Gz-0003WI-HS
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Gq-0005HU-Bi
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:05:57 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Gx-0005Hp-Ok
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754355;
+ s=mimecast20190719; t=1730754363;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=5o6Iz1/wP5zB957KDr4w2+nYVqYKn/FATzH9r01QwTQ=;
- b=Hw7T8uhPdKy/YfA5FpQBatHSFDaeaGPmzKpccl+h14B+GNY7gkTeK0UVFWOolCPm632bEQ
- IZfv5gpx6+27/rqXF+WQMpvZfLe2rFNgBA/+o45R1VfTDdafQVjTIqkgGKjXLtQAdlNJ6C
- EVhPzE+Le1Efrq2xL8JguhWYmwSqt0k=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SE9pXEMAmep9AJtTJezsr1YC4hkUva7ZKQGQAabu7F0=;
+ b=LaRk4AYYSWhcd6J4XAcEjftmETMyQ8aNVD6uV6/3HsWQtsL42LaRfeTCaEyJ9HkFuxL3kX
+ 8kFIYIpXEU66XRitoMD6SafsDFnu4opEKTZo3yT1uU3tVBk0EzgXdtVIEZptL3o8qkHTp0
+ FylXn6Cz3st/WrZwjAYy1R0ryntxKA8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-jfhwKp3MMxGFBIMGJinqIQ-1; Mon, 04 Nov 2024 16:05:54 -0500
-X-MC-Unique: jfhwKp3MMxGFBIMGJinqIQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5c95b050667so4705633a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:05:54 -0800 (PST)
+ us-mta-294-or7VEbV7MYy4aSq1VzjSFQ-1; Mon, 04 Nov 2024 16:05:59 -0500
+X-MC-Unique: or7VEbV7MYy4aSq1VzjSFQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a9a1828916fso515190466b.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:05:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754353; x=1731359153;
+ d=1e100.net; s=20230601; t=1730754357; x=1731359157;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5o6Iz1/wP5zB957KDr4w2+nYVqYKn/FATzH9r01QwTQ=;
- b=PO704yazaNdATFjxfEtHi/0Hc4dM4nw0rJCKLo0GLqeNdsGXsPtL7U5kyQel5RFR1R
- N+m+A5YMBRokdfisyAZ81h0S3DobLyN3kM+VOwN36IyRMPVSWqM6EKPd2D0NtooKmpu8
- KuOngDLKRJlHOhlRhLhU2gjWF1vd8bQiidXJJx+mOpzV+Librj2a1RliyYqMH/SEy2yl
- kOmAamHf/pp1/4tezcLtnxQ57noC1t7HYFdaHkF9AQTnz7XK6EmdSA6p4hsmafmUp42h
- VuyM8Xy/12OGy5SnK3f8Wvd/qmpov1yN3I7iE4/qZppuC6PgDxfXo5Kfvw+mH1nBuRP8
- Xekg==
-X-Gm-Message-State: AOJu0Yy4b88/CQ5cnNeiWifmXUVZo+yAdApMZBpqhaHkeI8EDeZ7UN5M
- 59pkeiD1LvESk+bHnE+FEqUUa/lSbe8wZFhThZe08e7WkCxIqD6jrvoAhtnZ44qWKVl9GPhgcCy
- JJz+4/oYkWZmNaXkskpvCfwNsZ6aQ/MHSt52Ttm/ZHQ5abW6A5WorG+r+RRI9Bj1JUUCF8mFtev
- yP9rYmqG2vPVlPjW4HG2dEqxzfjU1Dtw==
-X-Received: by 2002:a05:6402:3592:b0:5cd:5732:ecfe with SMTP id
- 4fb4d7f45d1cf-5cea966bd05mr15314543a12.5.1730754353032; 
- Mon, 04 Nov 2024 13:05:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqt9FZqCcmy3VPlZTkcJKX4vYLKJdFxciWf0K/FLe0rmttyz/5F2xzOazkvwO8wp001NhmOg==
-X-Received: by 2002:a05:6402:3592:b0:5cd:5732:ecfe with SMTP id
- 4fb4d7f45d1cf-5cea966bd05mr15314526a12.5.1730754352536; 
- Mon, 04 Nov 2024 13:05:52 -0800 (PST)
+ bh=SE9pXEMAmep9AJtTJezsr1YC4hkUva7ZKQGQAabu7F0=;
+ b=IO0b89IQ1wvfuA5m56q7Uc4hCUc1q4X4wx8X6jMTib2WH5/ksuK909YnS6Uh6KQf+u
+ ykBbqEXMFe81Eop+EgcdlzhwYfyZBlPUhdYBRvjRfFpXRRFLCH+YFkViijvanmFnpP/o
+ 2AZPHbAfAGma3YFyEKW0/e2w3lUa8aGDtrI+L6vuv+4a+4w1ZTxtwQfC8nSQN5yozQS6
+ PPZYpBW74NO6tnmJKrYAurB8yyMz0nsMTlbrlOm1WdFeiltn5UmW2S9czL+zdRv6Af7Q
+ vWLJsS+kCv+FL/mJgociZtaCi4U9gLJ6X/f5PZJLIVtoSmnOqn1/1mCsKGDaIhH80YCO
+ 62Uw==
+X-Gm-Message-State: AOJu0YySvw1HO36AQ2H2MzMug0F3QlGBvRAH/qv3XleICA37fifTGKcz
+ VkrDTvRFiLU+MW/tELiF7VNBrNsYEvmwovhcLEThUsieuuwniJh7ND/TDu1OYz5GSaYaqYmftK2
+ P8vw1Kkur94xb1RQAVIumo9My97f3FBcH9jbMC7n1CixBJ2nlJ4XQOxtntcH1I72qWhtvG7ujoI
+ MTx2hxgI9nVxVYHDdyQ23/YSU5SX12tA==
+X-Received: by 2002:a17:907:1b98:b0:a9e:5747:9019 with SMTP id
+ a640c23a62f3a-a9e57479111mr1089861566b.8.1730754357344; 
+ Mon, 04 Nov 2024 13:05:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGK/zQa2XbXXxffRDFtVN6aR9pgaK0xY0QmNDB/64c01xS8gPQHF5LhMbVQu5iWHu394T/Miw==
+X-Received: by 2002:a17:907:1b98:b0:a9e:5747:9019 with SMTP id
+ a640c23a62f3a-a9e57479111mr1089859766b.8.1730754356931; 
+ Mon, 04 Nov 2024 13:05:56 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cee6aae181sm300645a12.19.2024.11.04.13.05.49
+ a640c23a62f3a-a9eb16d6749sm31263266b.62.2024.11.04.13.05.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:05:51 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:05:48 -0500
+ Mon, 04 Nov 2024 13:05:56 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:05:53 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, "Huang, Ying" <ying.huang@intel.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 06/65] hw/acpi: Rename build_all_acpi_generic_initiators() to
- build_acpi_generic_initiator()
-Message-ID: <a20b6c8f0b279edf370bc20b7845f87c36d03f7a.1730754238.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 07/65] hw/pci: Add a busnr property to pci_props and use for
+ acpi/gi
+Message-ID: <df9ac7254fd943c834f9666969b0852b50e91692.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,41 +104,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Igor noted that this function only builds one instance, so was rather
-misleadingly named. Fix that.
+Using a property allows us to hide the internal details of the PCI device
+from the code to build a SRAT Generic Initiator Affinity Structure with
+PCI Device Handle.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Tested-by: "Huang, Ying" <ying.huang@intel.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240916171017.1841767-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20240916171017.1841767-6-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/acpi/acpi_generic_initiator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/acpi/acpi_generic_initiator.c | 14 +++++++++-----
+ hw/pci/pci.c                     | 14 ++++++++++++++
+ 2 files changed, 23 insertions(+), 5 deletions(-)
 
 diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-index 7665b16107..73bafaaaea 100644
+index 73bafaaaea..365feb527f 100644
 --- a/hw/acpi/acpi_generic_initiator.c
 +++ b/hw/acpi/acpi_generic_initiator.c
-@@ -74,7 +74,7 @@ static void acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
-         acpi_generic_initiator_set_node, NULL, NULL);
- }
+@@ -9,6 +9,7 @@
+ #include "hw/boards.h"
+ #include "hw/pci/pci_device.h"
+ #include "qemu/error-report.h"
++#include "qapi/error.h"
  
--static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
-+static int build_acpi_generic_initiator(Object *obj, void *opaque)
- {
+ typedef struct AcpiGenericInitiatorClass {
+     ObjectClass parent_class;
+@@ -79,7 +80,8 @@ static int build_acpi_generic_initiator(Object *obj, void *opaque)
      MachineState *ms = MACHINE(qdev_get_machine());
      AcpiGenericInitiator *gi;
-@@ -111,6 +111,6 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
- void build_srat_generic_pci_initiator(GArray *table_data)
- {
-     object_child_foreach_recursive(object_get_root(),
--                                   build_all_acpi_generic_initiators,
-+                                   build_acpi_generic_initiator,
-                                    table_data);
+     GArray *table_data = opaque;
+-    PCIDevice *pci_dev;
++    int32_t devfn;
++    uint8_t bus;
+     Object *o;
+ 
+     if (!object_dynamic_cast(obj, TYPE_ACPI_GENERIC_INITIATOR)) {
+@@ -100,10 +102,12 @@ static int build_acpi_generic_initiator(Object *obj, void *opaque)
+         exit(1);
+     }
+ 
+-    pci_dev = PCI_DEVICE(o);
+-    build_srat_pci_generic_initiator(table_data, gi->node, 0,
+-                                     pci_bus_num(pci_get_bus(pci_dev)),
+-                                     pci_dev->devfn);
++    bus = object_property_get_uint(o, "busnr", &error_fatal);
++    devfn = object_property_get_int(o, "addr", &error_fatal);
++    /* devfn is constrained in PCI to be 8 bit but storage is an int32_t */
++    assert(devfn >= 0 && devfn < PCI_DEVFN_MAX);
++
++    build_srat_pci_generic_initiator(table_data, gi->node, 0, bus, devfn);
+ 
+     return 0;
  }
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 87da35ca9b..0b6bdaa0d7 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -67,6 +67,19 @@ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+ static void pcibus_reset_hold(Object *obj, ResetType type);
+ static bool pcie_has_upstream_port(PCIDevice *dev);
+ 
++static void prop_pci_busnr_get(Object *obj, Visitor *v, const char *name,
++                             void *opaque, Error **errp)
++{
++    uint8_t busnr = pci_dev_bus_num(PCI_DEVICE(obj));
++
++    visit_type_uint8(v, name, &busnr, errp);
++}
++
++static const PropertyInfo prop_pci_busnr = {
++    .name = "busnr",
++    .get = prop_pci_busnr_get,
++};
++
+ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+@@ -87,6 +100,7 @@ static Property pci_props[] = {
+                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+     DEFINE_PROP_SIZE32("x-max-bounce-buffer-size", PCIDevice,
+                      max_bounce_buffer_size, DEFAULT_MAX_BOUNCE_BUFFER_SIZE),
++    { .name = "busnr", .info = &prop_pci_busnr },
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
 -- 
 MST
 
