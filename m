@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804379BBC02
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606F09BBC05
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sO-0005UC-TO; Mon, 04 Nov 2024 12:28:28 -0500
+	id 1t80sP-0005UY-Ip; Mon, 04 Nov 2024 12:28:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sL-0005S9-9o
+ id 1t80sL-0005SB-AC
  for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sH-0000Mq-Ao
+ id 1t80sJ-0000Mx-78
  for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741300;
+ s=mimecast20190719; t=1730741301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rJilloWL9v8Cwa9SjhS4DIAn5GcNqvslur8KE0ijG6o=;
- b=X4xrpexINvbFFDL0da4aJr9LvX22u3f+YRIfoDPfMDs7LA8A9x/Z3hyr+ko3DigPh2Yebk
- /NNRI2U+sYtWaiVWQcNcEMyaRyhydFC93fhLd3+v6arpJRjo7Ejz1Wycnf7OjF7rLwQ3te
- 2uQeFPdp9BfgBCCswIZvhoHInaXK508=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3UmgO9fsqdEmWzMoi61XEIn14aScetkmk6rxlD4mFVQ=;
+ b=dLI8b/AQ/hWMRD4qUtTfY00KD+h56omXSk8ktPAKVNudqhwOC+f+5XTwTsSs8L8YpSi7Xm
+ GCyzFUN5JWFtCdhZQWMzOCvXZmBtcfMcDvvn7b+H/kEGTrqdci/AFXKDP73SMjnDXShPUD
+ WWLzA38DmxIqqjkyMoPHHpWhUN1+VkE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-0j2yRt_-OgCveL_uA15gkQ-1; Mon, 04 Nov 2024 12:28:19 -0500
-X-MC-Unique: 0j2yRt_-OgCveL_uA15gkQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-539eb3416cdso4699051e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:18 -0800 (PST)
+ us-mta-308-8pGi4Gn3MGi8B1cLc40y4Q-1; Mon, 04 Nov 2024 12:28:19 -0500
+X-MC-Unique: 8pGi4Gn3MGi8B1cLc40y4Q-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-381d07c377cso1637134f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741296; x=1731346096;
+ d=1e100.net; s=20230601; t=1730741297; x=1731346097;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rJilloWL9v8Cwa9SjhS4DIAn5GcNqvslur8KE0ijG6o=;
- b=EkGAH5XITy13LYgqf0nNcwYG+/i2SS0volPvcNG8bxZhbbxIDDPbcrbZDnHUQzfFVw
- tAJQR0a6awqHAtt1C9t56yGh85QkkXH40WLRddsWQrDLhSXIb2/4FmIRnW9tOlktf9ya
- SqDuY+EIRT/nQ0+A8ffMu0mXaafjiWYAkhmlIKd1/sN/QVhtjNAcfRAZ6SfLgWwmzSZo
- FBqmRbibNPcK5WVosr9myyvFT4dLau2WXLgv3m8jffXD/4bDa+d70q+HWs+btOlv5/jB
- ng/KSQ98V3xMekC7r4eJBFLyGyBT+IH2pEtdzHPr8fdTrKW/u6EIU0kzbkNLZLJx0y4F
- uwcA==
-X-Gm-Message-State: AOJu0YyvKIljqv2HH4WBzQJv2b1S52W+iODbcWaEVBp9loX/X25J+kn6
- 6Ir49rmKF/31I8lGA1UfVFjYQzW6y+aFJWFOfowUL+hAoxx+4Oy2Gpc9/BCZsgXXRf4xgNc9PFj
- C50ubNBm183/uQBCXumA1B9fBsH1KUZPYRd1n/tR5+LLoA7yEKDhsHhiuhiycWU7NaJlTdWztJi
- ldzFFas0EIiGnLJFw1yY7fvhj311EmrUOWVTrG9dk=
-X-Received: by 2002:a05:6512:6ca:b0:539:e88f:2398 with SMTP id
- 2adb3069b0e04-53b34a19082mr15881384e87.39.1730741296178; 
+ bh=3UmgO9fsqdEmWzMoi61XEIn14aScetkmk6rxlD4mFVQ=;
+ b=t5a3cvXqvuzKDAVsSjcRQMq+ySQwbSnUn1WfFMFok+3G6WDFlcCTr9HacbPRn/DDH7
+ CT82JY40BvRvTvmlHxJ5CmR9OWlTgUw6+HkgBD9Nmic/8riaod3a/K+S0RX9CuCVxUlc
+ mNjaHckOJeuGWYBDHbZnk0vKfk37un8D295fOXZnuF/HGHl20L+aFVVaurEkkhpoTAGR
+ t5dhH+F7vXO9q4pb8b+rf6OLB7Q8llpyd6mObRKjDcqyjdFUiRyY6FGRE0okfBvIXkRY
+ 8jczNBFj42C3A1u25l1HBe55TB0qWzDCRC+amM0Hw+ug07qbK1Qgev1ibpbdKT1KqYh8
+ qT8g==
+X-Gm-Message-State: AOJu0YwAg+4LbxSUVrRgZhYXkxba/A5wA/eAoO99R7Juw64NjNvBhlZ7
+ kcfdB4thjm7oFplygMARvFPEwY2ajFkY+ndknAt02BKrPiwcftFIoQggSfaATysmH7pN5PZ/xrX
+ GfYW9yTNthpiAQUEnrpGN5nWHpNqThxT5ivHafFTHBwTNj+oD3waLRLSJ63OO1o4Yfp2+FgfTgE
+ vhow3ogKcCFhBZ/6tZFR7aAqwf9+hDy3AIfRbNmZY=
+X-Received: by 2002:a5d:47ac:0:b0:37d:48f2:e749 with SMTP id
+ ffacd0b85a97d-381c7a4636cmr13690109f8f.10.1730741297402; 
+ Mon, 04 Nov 2024 09:28:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpMPJYcg9oY5gWVVg3kGldS68WlxPrUKLExniUyJ3JWSOfRtU6X6FWHRWIW7Ku9YYH8bymVQ==
+X-Received: by 2002:a5d:47ac:0:b0:37d:48f2:e749 with SMTP id
+ ffacd0b85a97d-381c7a4636cmr13690078f8f.10.1730741296938; 
  Mon, 04 Nov 2024 09:28:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG5/G5lHJETWS/M2/T7irkPpf7iLkrl4EKM+E9y/4r8NpxspclCOoSsZkRoSxKxTKO27xMHtg==
-X-Received: by 2002:a05:6512:6ca:b0:539:e88f:2398 with SMTP id
- 2adb3069b0e04-53b34a19082mr15881347e87.39.1730741295631; 
- Mon, 04 Nov 2024 09:28:15 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d698055sm160636155e9.40.2024.11.04.09.28.14
+ ffacd0b85a97d-381c10b7c08sm13779745f8f.17.2024.11.04.09.28.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:14 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:16 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 24/40] rust/pl011: Use correct masks for IBRD and FBRD
-Date: Mon,  4 Nov 2024 18:27:03 +0100
-Message-ID: <20241104172721.180255-25-pbonzini@redhat.com>
+Subject: [PULL 25/40] rust: patch bilge-impl to allow compilation with 1.63.0
+Date: Mon,  4 Nov 2024 18:27:04 +0100
+Message-ID: <20241104172721.180255-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,37 +104,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Apply a patch that removes "let ... else" constructs, replacing them with
+"if let ... else" or "let ... = match ...".  "let ... else" was stabilized in
+Rust 1.65.0.
 
-Port fix from commit cd247eae16ab1b9ce97fd34c000c1b883feeda45
-"hw/char/pl011: Use correct masks for IBRD and FBRD"
-
-Related issue: <https://gitlab.com/qemu-project/qemu/-/issues/2610>
-
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-9-051e7a25b978@linaro.org
 ---
- rust/hw/char/pl011/src/device.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .gitattributes                                |  2 +
+ subprojects/bilge-impl-0.2-rs.wrap            |  1 +
+ .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 98357db04e8..788b47203b1 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -19,10 +19,10 @@
- };
- 
- /// Integer Baud Rate Divider, `UARTIBRD`
--const IBRD_MASK: u32 = 0x3f;
-+const IBRD_MASK: u32 = 0xffff;
- 
- /// Fractional Baud Rate Divider, `UARTFBRD`
--const FBRD_MASK: u32 = 0xffff;
-+const FBRD_MASK: u32 = 0x3f;
- 
- const DATA_BREAK: u32 = 1 << 10;
- 
+diff --git a/.gitattributes b/.gitattributes
+index 6dc6383d3d1..9ce7a19581a 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -5,3 +5,5 @@
+ *.rs            diff=rust
+ *.rs.inc        diff=rust
+ Cargo.lock      diff=toml merge=binary
++
++*.patch         -text -whitespace
+diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.2-rs.wrap
+index eefb10c36c2..b24c34a9043 100644
+--- a/subprojects/bilge-impl-0.2-rs.wrap
++++ b/subprojects/bilge-impl-0.2-rs.wrap
+@@ -5,3 +5,4 @@ source_filename = bilge-impl-0.2.0.tar.gz
+ source_hash = feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000adb2d8
+ #method = cargo
+ patch_directory = bilge-impl-0.2-rs
++diff_files = bilge-impl-1.63.0.patch
+diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects/packagefiles/bilge-impl-1.63.0.patch
+new file mode 100644
+index 00000000000..987428a6d65
+--- /dev/null
++++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
+@@ -0,0 +1,45 @@
++--- a/src/shared/discriminant_assigner.rs
+++++ b/src/shared/discriminant_assigner.rs
++@@ -26,20 +26,20 @@
++         let discriminant_expr = &discriminant.1;
++         let variant_name = &variant.ident;
++ 
++-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr else {
+++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr {
+++            let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
+++            if discriminant_value > self.max_value() {
+++                abort!(variant, "Value of variant exceeds the given number of bits")
+++            }
+++
+++            Some(discriminant_value)
+++        } else {
++             abort!(
++                 discriminant_expr,
++                 "variant `{}` is not a number", variant_name;
++                 help = "only literal integers currently supported"
++             )
++-        };
++-
++-        let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
++-        if discriminant_value > self.max_value() {
++-            abort!(variant, "Value of variant exceeds the given number of bits")
++         }
++-
++-        Some(discriminant_value)
++     }
++ 
++     fn assign(&mut self, variant: &Variant) -> u128 {
++--- a/src/shared/fallback.rs
+++++ b/src/shared/fallback.rs
++@@ -22,8 +22,9 @@
++             }
++             Unnamed(fields) => {
++                 let variant_fields = fields.unnamed.iter();
++-                let Ok(fallback_value) = variant_fields.exactly_one() else {
++-                    abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
+++                let fallback_value = match variant_fields.exactly_one() {
+++                    Ok(ok) => ok,
+++                    _ => abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
++                 };
++ 
++                 if !is_last_variant {
 -- 
 2.47.0
 
