@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A9F9BA9D6
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F659BA9D5
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7koq-0007BZ-RX; Sun, 03 Nov 2024 19:19:44 -0500
+	id 1t7kot-0007Cd-Kx; Sun, 03 Nov 2024 19:19:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kon-0007Ag-Mo; Sun, 03 Nov 2024 19:19:41 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1t7koq-0007Bc-O1; Sun, 03 Nov 2024 19:19:44 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kol-0002HI-Bw; Sun, 03 Nov 2024 19:19:41 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-71e592d7f6eso2831471b3a.3; 
- Sun, 03 Nov 2024 16:19:38 -0800 (PST)
+ id 1t7kop-0002Hu-8H; Sun, 03 Nov 2024 19:19:44 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-20c70abba48so30758655ad.0; 
+ Sun, 03 Nov 2024 16:19:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679577; x=1731284377; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679581; x=1731284381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J1xac5W5zKwCyt+Affs+nBDH85dTqE+Fj+UGOQD6hfU=;
- b=E8E5I7/C7EKp9MtANFskQdcq9eUInc1v8z8V0YbbObyDPAub3lMJXtzP9i+oTCGlV9
- o1O1+ZMrI6ZclHHiL1PPfqSAEzLqspbpuPSmc3xA4s0KuPKeb39UT79FUWSYDCnMSuvx
- qFdyvvTdmsTPrS+xsWKta10ofqh6BWtOIiv5aBILySJPKVtBZPeDqyXZxyYRtnpYrNwH
- lde/sOentJwsrPon53Yl1Mp+RXMTS9Gvn6f9D2sygvcCwPCX280w8fwIIBmgqj5KwTTf
- cnRAR6i/dnHnW/cBQ7C5olsviwT6u5tlOvSOMGxrhRJUi3A4FWHmeU4oP+KEBboCUOrQ
- ifFw==
+ bh=ySL/GEMA+MP1Yc5YuF/O92O+3rYMxrud3tBnxWGFNSs=;
+ b=I58PWUHvaX9fCGTtvsCR0/ZWikENWj6VqbYKTl+DIL52my7jQTwLq4LIy7Mpm+mwVt
+ bwIOZnpq5C/bQDxqX5bGptmsshKkCFuXxJFr+MyR/KzNqDYDqQTJ3Oj1Xw1GHtPDXII3
+ M/Wtt6f7qzyZsoo2PODQz3zq1jLiUCeun54is37A77gRP2juHQXjKOYBx5OxGXZu+hS1
+ 79mg0w87z8N8z9sJ6h0S5SUgfsZtRds2ZqW3tflSIfBHBuWxxre8PHbgvnOR3ch5Rr5q
+ kv33r27whi2XsgU3aCsz+X1fYUNKCIYP5K6tE4LQqvqxpyhMDZnY53v24ohaLvOkAR9w
+ idlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679577; x=1731284377;
+ d=1e100.net; s=20230601; t=1730679581; x=1731284381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J1xac5W5zKwCyt+Affs+nBDH85dTqE+Fj+UGOQD6hfU=;
- b=m1+gSmrg4zDhU+Id2uSrnhMKIKIlmUrejC5M9abvBQgJs/oAMpbIXoO1lArb8q3H6f
- 7iIYrC0OYTcv/cELZMCL9eUOKhfLe2JRdEZVysHWQENE1Nsi2mcWVUpmEyZz+FmfB/Ct
- Oc26ciTshJ+Zyv1DypAORN8xRtpH017iWTcmLDPpRCl1OTSCCIsIDFnxDAqgAvxhea5N
- w/sSyWjl54n7RHQfRvYMcFH1gMHUucfvsYsEXxb9x16BP4FWpS0DNfLJlBdiavaPgGU7
- b851s2CW8RMnoyeiAyDTtRUP/jt0kE3/QdOsKhrEmG8gKAQCDMJC0UxQRiBGUeJtbYx6
- sFNw==
+ bh=ySL/GEMA+MP1Yc5YuF/O92O+3rYMxrud3tBnxWGFNSs=;
+ b=vEG/8xBhXV7+WZ9nrvLmAWLi5BJaSKXf2e8xQ7sILPYjuyQLrM+/wvakBGlgDTUcpA
+ HKBOhuccAjwqZUZ2zsVoQLzmLmoBq1M4QOHnTgpoIOLVKOni8xhgHPuEieIDmoJpjzhE
+ 9w3WHKeeyz+NnSPiZyvsidB2bc4XHuyw2QJt2fl3Kzz+B+UY7SOjGaPUo6cxDqFp0XN2
+ VW9am6vtiyCX68uMfnzLagQHfm3USwZIjtCnPAbolXZFdKpFrvgpiuZlLKf6+KYmpfeu
+ SMSP4V7tB642drDYTNIy+v8BQFNroYbKxgQ20CikjfLLmL18yqUiF4hxcN+vERvcUelp
+ Znow==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUyOrgBqDW6IHp+ibsSM+IJmJSpdvvF2XdVt9/ixX8owNF3SQXJQq4LP0Oo06G5XV+p7ybO2HVEjA==@nongnu.org
-X-Gm-Message-State: AOJu0YzB+dRoeEFdBx8parjmhkxp0rzevVAU6kz82Uy1VwT8bsMAVpnf
- KiXBmG2dhzbkTHz537ubpo2kdXwECN366ppoDFYF/1Mmx0cZHp0EdxxYuw==
-X-Google-Smtp-Source: AGHT+IH5cHPj72ksc9koh0cETtaxNbETBrj+9kfbgW9UZ2hzjdvV39jCmtTagZVgromXuWKTVmjQXg==
-X-Received: by 2002:a05:6a00:3d4d:b0:71e:108e:9c16 with SMTP id
- d2e1a72fcca58-720c98d51ffmr16913733b3a.12.1730679577430; 
- Sun, 03 Nov 2024 16:19:37 -0800 (PST)
+ AJvYcCUy7ZxHQqoM91+dPkkTAdogHabO3gsjUvFQzVmDc1xn3AmWZu1mQCbVTNzkDLc0UtQENr76MyCCZ7jNP4A=@nongnu.org,
+ AJvYcCWfIInAqEv7Rjevm6kKIC43nLCzvJoMBtXkTeC4qPXUk2VueK8ybO6qE3FSCHVlSOfm4zYn8FYXYQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyvmLG1QP0XQYMMGdSnV/ALujCjq08PhQ6fuhnjc7O77RTUCRZX
+ jVWM6Pxj/6lU7b03cy5ilUk0pmuqpgmCJrn7A3nCRHIlocB0t/sAHdaaFg==
+X-Google-Smtp-Source: AGHT+IF4hphWS1zO/m1NDCH3FoiaVrS423NwVH0O4CwT3O33NhwFddjw26NzSmqzfmErcumezLnvDw==
+X-Received: by 2002:a17:902:cec7:b0:20c:8763:b3f7 with SMTP id
+ d9443c01a7336-2111af3bc88mr148502475ad.17.1730679580849; 
+ Sun, 03 Nov 2024 16:19:40 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.34
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:19:37 -0800 (PST)
+ Sun, 03 Nov 2024 16:19:40 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 07/67] target/ppc: Fix doorbell delivery to threads in powersave
-Date: Mon,  4 Nov 2024 10:17:56 +1000
-Message-ID: <20241104001900.682660-8-npiggin@gmail.com>
+ qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 08/67] target/ppc: Fix HFSCR facility checks
+Date: Mon,  4 Nov 2024 10:17:57 +1000
+Message-ID: <20241104001900.682660-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,69 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doorbell exceptions are not not cleared when they cause a wake from
-powersave state, only when they take the corresponding interrupt.
-The sreset-on-wake logic must avoid clearing the interrupt in this
-case.
+The HFSCR defines were being encoded as bit masks, but the users
+expect (and analogous FSCR defines are) bit numbers.
 
+Cc: qemu-stable@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ target/ppc/cpu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 701abe1b6d..b619a6adde 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2237,7 +2237,9 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
-         powerpc_excp(cpu, POWERPC_EXCP_DECR);
-         break;
-     case PPC_INTERRUPT_DOORBELL:
--        env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
-+        if (!env->resume_as_sreset) {
-+            env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
-+        }
-         if (is_book3s_arch2x(env)) {
-             powerpc_excp(cpu, POWERPC_EXCP_SDOOR);
-         } else {
-@@ -2245,7 +2247,9 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
-         }
-         break;
-     case PPC_INTERRUPT_HDOORBELL:
--        env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
-+        if (!env->resume_as_sreset) {
-+            env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
-+        }
-         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
-         break;
-     case PPC_INTERRUPT_PERFM:
-@@ -2301,6 +2305,7 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index bd32a1a5f8..f7a2da2bbe 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -635,8 +635,8 @@ FIELD(MSR, LE, MSR_LE, 1)
+ #define PSSCR_EC          PPC_BIT(43) /* Exit Criterion */
  
-     case PPC_INTERRUPT_HDECR: /* Hypervisor decrementer exception */
-         /* HDEC clears on delivery */
-+        /* XXX: should not see an HDEC if resume_as_sreset. assert? */
-         env->pending_interrupts &= ~PPC_INTERRUPT_HDECR;
-         powerpc_excp(cpu, POWERPC_EXCP_HDECR);
-         break;
-@@ -2320,11 +2325,15 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
-         powerpc_excp(cpu, POWERPC_EXCP_DECR);
-         break;
-     case PPC_INTERRUPT_DOORBELL:
--        env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
-+        if (!env->resume_as_sreset) {
-+            env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
-+        }
-         powerpc_excp(cpu, POWERPC_EXCP_SDOOR);
-         break;
-     case PPC_INTERRUPT_HDOORBELL:
--        env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
-+        if (!env->resume_as_sreset) {
-+            env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
-+        }
-         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
-         break;
-     case PPC_INTERRUPT_PERFM:
+ /* HFSCR bits */
+-#define HFSCR_MSGP     PPC_BIT(53) /* Privileged Message Send Facilities */
+-#define HFSCR_BHRB     PPC_BIT(59) /* BHRB Instructions */
++#define HFSCR_MSGP     PPC_BIT_NR(53) /* Privileged Message Send Facilities */
++#define HFSCR_BHRB     PPC_BIT_NR(59) /* BHRB Instructions */
+ #define HFSCR_IC_MSGP  0xA
+ 
+ #define DBCR0_ICMP (1 << 27)
 -- 
 2.45.2
 
