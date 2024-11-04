@@ -2,93 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5CD9BB9B8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9E9BB9BA
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:02:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7zW3-00067J-2W; Mon, 04 Nov 2024 11:01:19 -0500
+	id 1t7zWv-0007FL-QQ; Mon, 04 Nov 2024 11:02:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t7zW1-000672-CM
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:01:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t7zWt-0007Ew-C9
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:02:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t7zVy-0006zp-TI
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:01:17 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t7zWr-00074T-Es
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:02:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730736073;
+ s=mimecast20190719; t=1730736128;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=glyKfzkfyvJXA7/ay+ru80n7y82wopZiq4LC3nJhYrU=;
- b=M7DuM4k8H3ht78Hqr5sKBrd93RzN5gzC8MJBJ52UoWfsG+aMh9nSQrmXjFkFc9oRLIULfQ
- VSxGg3ZWKkUQNszVe9b/cUHupbjlkDNN7i3XyWU20ri8YaQQuKKtNZpLGXC0FdcxO9iNp/
- 59YxtN9GRtrq963Ux+BYL9/IsSf4VIE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=qc2IAV67imz/GCu+bgSFt3ii1cTiiWNciz4wmk3XzHI=;
+ b=LeSRcqObkBUSe9FDszFt937SRW/NcPrxn2wwdLxgoklkxq6oXXCmwcAd7yI+J/qSUqTCv4
+ QbNVNg3erBt2cwhiYiyG/8LGA5BY+lJKqRwZOD3J3QMazwrZkY7d+OqqMfDjbmcuyhRE2g
+ EkzP1IL1E6rnL64KU60oiQBmMYoxorY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-sFf5ECgwO4Ka7hk4C7pAcQ-1; Mon, 04 Nov 2024 11:01:12 -0500
-X-MC-Unique: sFf5ECgwO4Ka7hk4C7pAcQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315544642eso32351775e9.3
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:01:11 -0800 (PST)
+ us-mta-464-UYd0vWUfNIOyDYQiLw7Wmw-1; Mon, 04 Nov 2024 11:02:06 -0500
+X-MC-Unique: UYd0vWUfNIOyDYQiLw7Wmw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d4d51b4efso1928447f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:02:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730736069; x=1731340869;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=glyKfzkfyvJXA7/ay+ru80n7y82wopZiq4LC3nJhYrU=;
- b=K42MYTP2zI0uG/1a30UI7U31s35eeJLxIyybIf8Q32H5AdkgcIoZe5CoJ9ZGNBVq1v
- rYhU3Bu3GkT34f1sZ7w/2Kun8nXPpRjix+uvmEdJIzObSprW1EoAE+Spj2RqDVtRmj0n
- SFCXpUuFvjKcoQBcHXIeadAUVuyP7GYtLLEhMmmZQIzGP8xvAYUrWIo4lj5z4/+qM5J7
- bzSFpXgCJSngi2NDtVV8po0+1F4n3RkNVumUxsNRW58FeQgCABP2fhHlR7LP0N6KNzJ4
- VIXAm9145Zgw1Z6JA3wwiPOIwVJ9YKK6lMzIPGIAfw68uZMSGJTfkeaXNU5228hAoV22
- Gn7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVTKkNRqDE3V0ut0b3xXKrFpsjuu9N3O8npYUS2MTR62OkNOKuYh45w918CB4P5ynp4JJWbKEdjpXvM@nongnu.org
-X-Gm-Message-State: AOJu0YxTVzUfwqN10Swd9TOWWuCm3XiDrtS3BJX0T5MCRP9WCQEyl0HV
- KZTijfFIdmgolAbWyl7wuQhPap7iGlE5vCRMktBfDSjDf2AM8CEkJ73Av5Wd/PRlXJh2EN7hdHm
- yZXbO5HC1RmIrLGejMYNbFeIJigd8JLYAtQLTNktOShTsk3vCwszu
-X-Received: by 2002:a05:600c:511f:b0:42f:4f6:f8bc with SMTP id
- 5b1f17b1804b1-4327b6fd459mr145928985e9.9.1730736068628; 
- Mon, 04 Nov 2024 08:01:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF+FtZnSp9FyS3QfLbt5RRa1dgWpqlgrecSI/3rjVwzRzw61tu/+nDVm82KxzMkMNkxbrb3mQ==
-X-Received: by 2002:a05:600c:511f:b0:42f:4f6:f8bc with SMTP id
- 5b1f17b1804b1-4327b6fd459mr145928485e9.9.1730736068142; 
- Mon, 04 Nov 2024 08:01:08 -0800 (PST)
-Received: from redhat.com ([2a02:14f:177:aecb:5a54:cf63:d69d:19ea])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd9a9a53sm186721365e9.30.2024.11.04.08.01.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 08:01:06 -0800 (PST)
-Date: Mon, 4 Nov 2024 11:00:59 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: imammedo@redhat.com, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, ankita@nvidia.com, linuxarm@huawei.com,
- linux-cxl@vger.kernel.org, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, Richard Henderson <richard.henderson@linaro.org>,
- Dave Jiang <dave.jiang@intel.com>, Huang Ying <ying.huang@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, eduardo@habkost.net,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH v6 14/15] bios-tables-test: Add complex SRAT / HMAT test
- for GI GP
-Message-ID: <20241104110025-mutt-send-email-mst@kernel.org>
-References: <20240916171017.1841767-1-Jonathan.Cameron@huawei.com>
- <20240916174449.1843258-1-Jonathan.Cameron@huawei.com>
+ d=1e100.net; s=20230601; t=1730736125; x=1731340925;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qc2IAV67imz/GCu+bgSFt3ii1cTiiWNciz4wmk3XzHI=;
+ b=PR1Le+wkXdCSdR/1398w6qFf/z2cAdoa4H+r4UR7CK2guD2QQ8WToO8nf4KzaPJ+3Q
+ 0T55KEGgy1vGkh3C4YSzK10hsyOLMQ8P6leItVVAaymWfosRcpxq9N3m0qWKUUSI+ipD
+ YlTdE2/BSIsnZLQ7fjB3j50VW2hS9Vn/jvuRnBwH5GlQeRqH6rHRcX0rYoPJq6ngEU0M
+ 8Z7xu9VRXQ5+WsNseMmtQjM1LnfY4RszsGXq0aRraXTQULZHFnMcoeLWFuqkifhzWgNJ
+ 5NyRI+/C8uNJE0bYwiOurplz5BUg1gcTCsliWEfMT/Jh/tSdhJLgY2VGHpUa1zGBYica
+ Mpvw==
+X-Gm-Message-State: AOJu0Yzo608rwnd7LtxpnYOrrz2XSaTrAvQW8MVj1dFUS3JW3065hzjG
+ Rbg4HnzoJjtWvQt337CSzfuVdZdbJN2k/vLjU+9z3s4IayvwaZI2tw0XKFI6yfCCQ/eD4eGkUlO
+ ABmIY5dp64wBetLRVwdgikFrBfcv2xPTLScZZffCjSEoHROvehk2v
+X-Received: by 2002:adf:f18c:0:b0:374:c621:3d67 with SMTP id
+ ffacd0b85a97d-38061137930mr24065254f8f.24.1730736124932; 
+ Mon, 04 Nov 2024 08:02:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExEacbyN3wnpiIofKjtchrXr+OrUS0Uqio1dCbmjFgvoZ+gPwagBLpU2ig0AuSfGD1X4Rf4A==
+X-Received: by 2002:adf:f18c:0:b0:374:c621:3d67 with SMTP id
+ ffacd0b85a97d-38061137930mr24065189f8f.24.1730736124248; 
+ Mon, 04 Nov 2024 08:02:04 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.226.83])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-381c10d4141sm13605880f8f.28.2024.11.04.08.02.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Nov 2024 08:02:03 -0800 (PST)
+Message-ID: <b5f4bb6a-765b-4dce-b0b9-6a2be695d8a5@redhat.com>
+Date: Mon, 4 Nov 2024 17:02:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240916174449.1843258-1-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 15/23] rust: introduce alternative implementation of
+ offset_of!
+To: Junjie Mao <junjie.mao@hotmail.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
+ zhao1.liu@intel.com, berrange@redhat.com
+References: <20241025160209.194307-1-pbonzini@redhat.com>
+ <20241025160209.194307-16-pbonzini@redhat.com>
+ <SY0P300MB1026D525F3022164941671B895502@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <SY0P300MB1026D525F3022164941671B895502@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,141 +141,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 16, 2024 at 06:44:49PM +0100, Jonathan Cameron wrote:
-> Add a test with 6 nodes to exercise most interesting corner cases of SRAT
-> and HMAT generation including the new Generic Initiator and Generic Port
-> Affinity structures.  More details of the set up in the following patch
-> adding the table data.
+On 11/3/24 10:54, Junjie Mao wrote:
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-I could not yet figure out why, but it fails on i686 (32 bit):
-
-https://gitlab.com/mstredhat/qemu/-/jobs/8262608614
-
-any idea?
-
-> ---
->  tests/qtest/bios-tables-test.c | 97 ++++++++++++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
+> Paolo Bonzini <pbonzini@redhat.com> writes:
 > 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index 36e5c0adde..f568c4a21c 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -1910,6 +1910,101 @@ static void test_acpi_q35_tcg_acpi_hmat_noinitiator(void)
->      free_test_data(&data);
->  }
->  
-> +/* Test intended to hit corner cases of SRAT and HMAT */
-> +static void test_acpi_q35_tcg_acpi_hmat_generic_x(void)
-> +{
-> +    test_data data = {};
-> +
-> +    data.machine = MACHINE_Q35;
-> +    data.arch    = "x86";
-> +    data.variant = ".acpihmat-generic-x";
-> +    test_acpi_one(" -machine hmat=on,cxl=on"
-> +                  " -smp 3,sockets=3"
-> +                  " -m 128M,maxmem=384M,slots=2"
-> +                  " -device pcie-root-port,chassis=1,id=pci.1"
-> +                  " -device pci-testdev,bus=pci.1,"
-> +                  "multifunction=on,addr=00.0"
-> +                  " -device pci-testdev,bus=pci.1,addr=00.1"
-> +                  " -device pci-testdev,bus=pci.1,id=gidev,addr=00.2"
-> +                  " -device pxb-cxl,bus_nr=64,bus=pcie.0,id=cxl.1"
-> +                  " -object memory-backend-ram,size=64M,id=ram0"
-> +                  " -object memory-backend-ram,size=64M,id=ram1"
-> +                  " -numa node,nodeid=0,cpus=0,memdev=ram0"
-> +                  " -numa node,nodeid=1"
-> +                  " -object acpi-generic-initiator,id=gi0,pci-dev=gidev,node=1"
-> +                  " -numa node,nodeid=2"
-> +                  " -object acpi-generic-port,id=gp0,pci-bus=cxl.1,node=2"
-> +                  " -numa node,nodeid=3,cpus=1"
-> +                  " -numa node,nodeid=4,memdev=ram1"
-> +                  " -numa node,nodeid=5,cpus=2"
-> +                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=10"
-> +                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=800M"
-> +                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=100"
-> +                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=100"
-> +                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=200"
-> +                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=400M"
-> +                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=500"
-> +                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=100M"
-> +                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=50"
-> +                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=400M"
-> +                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=50"
-> +                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=800M"
-> +                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=500"
-> +                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=100M"
-> +                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=20"
-> +                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=400M"
-> +                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=80"
-> +                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=80"
-> +                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=20"
-> +                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=400M"
-> +                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=20"
-> +                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=400M"
-> +                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=80"
-> +                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=80"
-> +                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=200M"
-> +                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
-> +                  "data-type=access-latency,latency=10"
-> +                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
-> +                  "data-type=access-bandwidth,bandwidth=800M",
-> +                  &data);
-> +    free_test_data(&data);
-> +}
-> +
->  #ifdef CONFIG_POSIX
->  static void test_acpi_erst(const char *machine, const char *arch)
->  {
-> @@ -2388,6 +2483,8 @@ int main(int argc, char *argv[])
->              qtest_add_func("acpi/q35/nohpet", test_acpi_q35_tcg_nohpet);
->              qtest_add_func("acpi/q35/acpihmat-noinitiator",
->                             test_acpi_q35_tcg_acpi_hmat_noinitiator);
-> +            qtest_add_func("acpi/q35/acpihmat-genericx",
-> +                           test_acpi_q35_tcg_acpi_hmat_generic_x);
->  
->              /* i386 does not support memory hotplug */
->              if (strcmp(arch, "i386")) {
-> -- 
-> 2.43.0
+>> From: Junjie Mao <junjie.mao@hotmail.com>
+>>
+>> offset_of! was stabilized in Rust 1.77.0.  Use an alternative implemenation
+>> that was found on the Rust forums, and whose author agreed to license as
+>> MIT for use in QEMU.
+>>
+>> The alternative allows only one level of field access, but apart
+>> from this can be used just by replacing core::mem::offset_of! with
+>> qemu_api::offset_of!.
+>>
+>> The actual implementation of offset_of! is done in a declarative macro,
+>> but for simplicity and to avoid introducing an extra level of indentation,
+>> the trigger is a procedural macro #[derive(offsets)].
+>>
+>> The procedural macro is perhaps a bit overengineered, but it helps
+>> introducing some idioms that will be useful in the future as well.
+>>
+>> Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
+>> Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> 
+> Generally looks good to me. Thanks for integrating this!
+> 
+> It seems Rust does not have builtin support for unit tests expecting
+> compilation failures. There is a crate (named trybuild [1]) for that
+> purpose but it requires introducing a dozen of new dependencies (see
+> below). Do you think it worth the effort? If so, I can take a closer
+> look and cook something for initial review (probably post 9.2).
+> 
+>      trybuild v1.0.101
+>      ├── glob v0.3.1
+>      ├── serde v1.0.210
+>      ├── serde_derive v1.0.210 (proc-macro)
+>      │   ├── proc-macro2 v1.0.84 (*)
+>      │   ├── quote v1.0.36 (*)
+>      │   └── syn v2.0.66 (*)
+>      ├── serde_json v1.0.132
+>      │   ├── itoa v1.0.11
+>      │   ├── memchr v2.7.4
+>      │   ├── ryu v1.0.18
+>      │   └── serde v1.0.210
+>      ├── target-triple v0.1.3
+>      ├── termcolor v1.4.1
+>      └── toml v0.8.19
+>          ├── serde v1.0.210
+>          ├── serde_spanned v0.6.8
+>          │   └── serde v1.0.210
+>          ├── toml_datetime v0.6.8
+>          │   └── serde v1.0.210
+>          └── toml_edit v0.22.22
+>              ├── indexmap v2.6.0
+>              │   ├── equivalent v1.0.1
+>              │   └── hashbrown v0.15.0
+>              ├── serde v1.0.210
+>              ├── serde_spanned v0.6.8 (*)
+>              ├── toml_datetime v0.6.8 (*)
+>              └── winnow v0.6.20
+> 
+> [1] https://docs.rs/trybuild/latest/trybuild/
+> 
+> [snip]
+>> diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+>> index a4bc5d01ee8..c2ea22101e4 100644
+>> --- a/rust/qemu-api-macros/src/lib.rs
+>> +++ b/rust/qemu-api-macros/src/lib.rs
+>> @@ -3,8 +3,34 @@
+>>   // SPDX-License-Identifier: GPL-2.0-or-later
+>>
+>>   use proc_macro::TokenStream;
+>> -use quote::quote;
+>> -use syn::{parse_macro_input, DeriveInput};
+>> +use proc_macro2::Span;
+>> +use quote::{quote, quote_spanned};
+>> +use syn::{
+>> +    parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
+>> +    Fields, Ident, Type, Visibility,
+>> +};
+>> +
+>> +struct CompileError(String, Span);
+>> +
+>> +impl From<CompileError> for proc_macro2::TokenStream {
+>> +    fn from(err: CompileError) -> Self {
+>> +        let CompileError(msg, span) = err;
+>> +        quote_spanned! { span => compile_error!(#msg); }
+> 
+> The documentation [2] says "there should be no space before the =>
+> token" and that is by intention to tell that `span` is "evaluated in the
+> context of proc macro" while those after the arm "in the generated
+> code". Should we follow that convention (even though the extra white
+> space does not impact building)?
+
+I think it'd be a bit too much to add 18 crates (of which 2 for both 
+native and non-native).
+
+Assuming you can make it work at all (because it's a lot of crates, 
+because there might be dependencies on Cargo, and because the toml crate 
+changes MSRV very often), it would increase build time a lot.  Plus, the 
+only time I worked with a crate that used trybuild, it tended to break a 
+lot due to changes in compiler errors.
+
+We're only adding macros for our own convenience, it's not like we're a 
+general purpose crate, so we can live with the limitation.  But thanks 
+for getting such a clear dep tree!
+
+Paolo
 
 
