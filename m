@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461649BBD04
+	by mail.lfdr.de (Postfix) with ESMTPS id D89699BBD05
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 19:15:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t81ap-0001Ba-I4; Mon, 04 Nov 2024 13:14:23 -0500
+	id 1t81av-0001C6-3K; Mon, 04 Nov 2024 13:14:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t81ac-00019g-7I; Mon, 04 Nov 2024 13:14:10 -0500
+ id 1t81ae-0001AT-IF; Mon, 04 Nov 2024 13:14:13 -0500
 Received: from fhigh-b5-smtp.messagingengine.com ([202.12.124.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1t81aa-0004p5-M8; Mon, 04 Nov 2024 13:14:09 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 364EF254012F;
- Mon,  4 Nov 2024 13:14:07 -0500 (EST)
+ id 1t81ac-0004pC-Q4; Mon, 04 Nov 2024 13:14:12 -0500
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal
+ [10.202.2.42])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id 7601D2540146;
+ Mon,  4 Nov 2024 13:14:09 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Mon, 04 Nov 2024 13:14:07 -0500
+ by phl-compute-02.internal (MEProxy); Mon, 04 Nov 2024 13:14:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1730744047; x=
- 1730830447; bh=MpG4NTZT+5UYGt1Sh7x7MRcpMX3wvO7yYEwaQpC2Kmk=; b=Z
- iPuCjQwZu3mNmz09FYZrskoBPZnn7b4Rxq4bxXsYihm5ZPuw55kOiKW2PBQ6h9/2
- vFug9VvvSyI3ylFKxPXA/+O0CUBlWflj2vSlzkcyncDKUlpE2iC7NMbdVHQD5OB3
- 30KtGafVczuKzJD8TeTDdsik2r3OlMWsMJsn8PMyuZZvS15NhuY8GJibBg5YQAI5
- Y1gdIiE0iekTZQNXSR53TB0TrNBFA7xbeM5BSrKmNHeZAZ+gM3pr3HNJAq+W9c5R
- 9YJ+PvRNXn5lKYv0zmPh2hvB5TjmgVscStAkLumTYm2eAkWsBCYe9Hn38sYyYICZ
- +zqddmnQDuiuTZct8IiOA==
+ :reply-to:subject:subject:to:to; s=fm2; t=1730744049; x=
+ 1730830449; bh=RJRcNBQJk++EiHlGSytaI/nqJ+tLHzU7H2CpK0Gr7J4=; b=m
+ ot7IXVQmD53HITaup8UHK6UH5VgPiOFjjqDDE2WKBsZJ2KEUmxw2AM5bPzIo/0hA
+ s3ukjzEQ8zTgVksdJkNA43VmeMxQU1UbqvRuSHceQ6pzhTPEhmCMiU/34yO09XKY
+ ww7sdwhxyAy+agg1IDy+WaAJ8qu3l9IonG6WMB2kRr8S+kDAh56uNPtHOQxFoLoJ
+ oGkTVqKNrqKlwYKmyIxFGYtOkV5bgIkXs3fSzXxVkSMrENY1NzlZCHDBhs46EGc3
+ JHVCjYGX56QfeTUGK9k9lK6havYGPSZYcwfaXR2sdc/mIvDvrN9IMyQDEVpwwSAd
+ ikTWysrRxkg8trWahAb+A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1730744047; x=1730830447; bh=M
- pG4NTZT+5UYGt1Sh7x7MRcpMX3wvO7yYEwaQpC2Kmk=; b=k/GvdYw0Fe7YiQC0k
- H2jrsygLcEv5y7V3CHH9J4OuXK2iFvP9IfMmCvX1y8eNN4OFJbHZTKKOzNh312dt
- Ax8wt7wdCbIiBZb/Hy5xTUVpezaLkOHmH8I4F0+5y0rjviEquqWyrEwo0FRnWqkQ
- 4Yu6KScCqBn3tA7AJA+iju247K8Y8g7cxGTfUs/JZ0mX8nRgTtUXvXPOBmRofvRn
- oM5wW5VfgkLhhwuEB9ORU3QuEOjrHKiWFlnjUsWBCdsFzcrxGVWDILD5cyD66lJY
- gYsDAxf7UCeHP4aIaqSpWbyuZ3Chdck+BP67qCgPv0jsevpwaP8O9u+YkA6VMfSi
- dlaaQ==
-X-ME-Sender: <xms:7g4pZzhNlDhHNXt58Io51nur1b83JLkunu-xVQ4oPkRRJgJV-kNN_g>
- <xme:7g4pZwBNG1w6dPbkckdV7y-wrLdWUORD1jktHd_zZoQZNuo4b-a9k6zurZoEQtj1e
- Mby15Gh4duS-2C09no>
-X-ME-Received: <xmr:7g4pZzEhLrKY32ueS3SkKHJiHpuuHmh4dl6cNRGhWyNoADtX-auTYDloTNoB7Y6RU5h6Q_YQLrcYIiPNI7VUdA>
+ :x-me-sender:x-sasl-enc; s=fm3; t=1730744049; x=1730830449; bh=R
+ JRcNBQJk++EiHlGSytaI/nqJ+tLHzU7H2CpK0Gr7J4=; b=hulsniKugekhh9SHx
+ 0HYB2bz2WoUkWCW2/RCkbibtIJ3c9Jvbr7a0r8QGp7P62x5gRPlD91R9dIBHysBw
+ 8gcxy/c6Iq2Lbbj/LKpZ9DF2me3x0a4PptxmMwUjm/Hkp0BUlc7MFu6d8XAwyeDU
+ Q9u/JgvRhWhYgvsgz5RXd7nHQyJp9RXXTn8z8yhoppXPAgjTzsS/iJB6rxaP+Y35
+ cCLPKvEGzgFUkHn8mmg5cu/3IO1TAa5XthCil/GJ9q/JmlF5wpR6T/4C8sZf+qFJ
+ oQ6kMu19qDfDWpy245rze1xiND/6uW9VTa2ME4XGJf8JeQvajsIO+JxQB7G9gZhq
+ em/tw==
+X-ME-Sender: <xms:8Q4pZ1LCNWPtr66z9x_L_Mwch0M3OvJz6owqn0gxMa5B2S97Q2t2ig>
+ <xme:8Q4pZxKFBxKfVWPHR_N7XH_v6VrQYPwdTZA4LonfQmfg_U11so_w8kSYIeKn6Numw
+ hrnx7ZEsEe5Fs6kVGQ>
+X-ME-Received: <xmr:8Q4pZ9ssuq5yUZvwhEPloAe45nFkjR7HkxMfI9w_eKPRgamgGupo3rwZtp07TRVlC6Cg_lMJzm6rj40iEQErmQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeliedguddtkecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
@@ -58,35 +58,31 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeliedguddtkecutefuodetgg
  drughkqeenucggtffrrghtthgvrhhnpeehfeekgfejjeejjedutdeigeegteefveekudef
  heevjeekieeuffeuleeiheeugeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
  hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhr
- rhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpoh
- huthdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghp
- thhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtoh
- eprgihuhhshhdrmhehheesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehkrdhjvghn
- shgvnhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehksghushgthheskhgvrhhnvg
- hlrdhorhhgpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphht
- thhopehfohhsshesuggvfhhmrggtrhhordhithdprhgtphhtthhopehsthgvfhgrnhhhrg
- esrhgvughhrghtrdgtohhmpdhrtghpthhtohepfhgrmhesvghuphhhohhnrdhnvght
-X-ME-Proxy: <xmx:7g4pZwSUhasiAnOeCrBLbRIIMOsjdQd1-GrXajSvDwBkfrV1JUJv0w>
- <xmx:7g4pZwxizzJunYkKjsRC1AefjjiPhs_9ow_wTPwsrvJKAtDqI_vaYQ>
- <xmx:7g4pZ24jWkA6mHgBVPkeCvnl_-eIZqcI4Nmi9GH8rN6C5MRqdRllAg>
- <xmx:7g4pZ1x7O-I9CADv8sLNNxN-YP4S45vdQC0AAxboZb6N1ohDcpP7mw>
- <xmx:7w4pZ8go6qPXqpV6wbFlKQ4e9kx0uJENUfl0oZUfrL8nYZ6kBZrappIA>
+ rhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouh
+ htpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphht
+ thhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtthhope
+ grrhhunhdrkhhkrgesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehkrdhjvghnshgv
+ nhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehksghushgthheskhgvrhhnvghlrd
+ horhhgpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphhtthho
+ pehfohhsshesuggvfhhmrggtrhhordhithdprhgtphhtthhopehqvghmuhdqsghlohgtkh
+ esnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:8Q4pZ2ZHWTJNFOApf4VuXu1CJq2OMktFa_czVQ7sbpeDeWbDQcJIkQ>
+ <xmx:8Q4pZ8bOdCiYeU3i9FvtCcYMt3SLqj00uD-ZWOmmQG7QkSgNgUiEeA>
+ <xmx:8Q4pZ6CK8P76ZnJwkfDa2kfbFuXZ6ONRfNaQqWRdZ-pkslxIjrFCCg>
+ <xmx:8Q4pZ6ZXFKcugJqyMdlmaXls6KO6UKD_S3HCuyVVgC7HxPKZLTYt1g>
+ <xmx:8Q4pZyMCinzxptj__szxb6d_yvT7FIAre3tc-D6udMzd5b6ahdv0z9R2>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Nov 2024 13:14:04 -0500 (EST)
+ 4 Nov 2024 13:14:07 -0500 (EST)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ayush Mishra <ayush.m55@samsung.com>, Klaus Jensen <k.jensen@samsung.com>,
+ Arun Kumar <arun.kka@samsung.com>, Klaus Jensen <k.jensen@samsung.com>,
  Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 2/3] hw/nvme: add NPDAL/NPDGL
-Date: Mon,  4 Nov 2024 19:13:05 +0100
-Message-ID: <20241104181306.2329-3-its@irrelevant.dk>
+ Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org
+Subject: [PULL 3/3] hw/nvme: remove dead code
+Date: Mon,  4 Nov 2024 19:13:06 +0100
+Message-ID: <20241104181306.2329-4-its@irrelevant.dk>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104181306.2329-1-its@irrelevant.dk>
 References: <20241104181306.2329-1-its@irrelevant.dk>
@@ -117,86 +113,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ayush Mishra <ayush.m55@samsung.com>
+From: Arun Kumar <arun.kka@samsung.com>
 
-Add the NPDGL and NPDAL fields to support large alignment and
-granularities.
+Remove dead code which always returns success, since PRCHK will have a
+value of zero.
 
-Signed-off-by: Ayush Mishra <ayush.m55@samsung.com>
+Signed-off-by: Arun Kumar <arun.kka@samsung.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
-Link: https://lore.kernel.org/r/20241001012833.3551820-1-ayush.m55@samsung.com
-[k.jensen: renamed the enum values]
+Link: https://lore.kernel.org/r/20241022222105.3609223-1-arun.kka@samsung.com
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ns.c         |  5 ++++-
- include/block/nvme.h | 17 ++++++++++++++++-
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ hw/nvme/dif.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
-index 6dbdcb49bfc1..526e15aa8018 100644
---- a/hw/nvme/ns.c
-+++ b/hw/nvme/ns.c
-@@ -30,6 +30,7 @@
- void nvme_ns_init_format(NvmeNamespace *ns)
- {
-     NvmeIdNs *id_ns = &ns->id_ns;
-+    NvmeIdNsNvm *id_ns_nvm = &ns->id_ns_nvm;
-     BlockDriverInfo bdi;
-     int npdg, ret;
-     int64_t nlbas;
-@@ -55,6 +56,8 @@ void nvme_ns_init_format(NvmeNamespace *ns)
-     }
+diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
+index 01b19c33734e..28051284984d 100644
+--- a/hw/nvme/dif.c
++++ b/hw/nvme/dif.c
+@@ -575,11 +575,6 @@ uint16_t nvme_dif_rw(NvmeCtrl *n, NvmeRequest *req)
+             uint8_t *mbuf, *end;
+             int16_t pil = ns->lbaf.ms - nvme_pi_tuple_size(ns);
  
-     id_ns->npda = id_ns->npdg = npdg - 1;
-+    id_ns_nvm->npdal = npdg;
-+    id_ns_nvm->npdgl = npdg;
- }
+-            status = nvme_check_prinfo(ns, prinfo, slba, reftag);
+-            if (status) {
+-                goto err;
+-            }
+-
+             flags = 0;
  
- static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-@@ -73,7 +76,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-     ns->id_ns.dlfeat = 0x1;
- 
-     /* support DULBE and I/O optimization fields */
--    id_ns->nsfeat |= (0x4 | 0x10);
-+    id_ns->nsfeat |= (NVME_ID_NS_NSFEAT_DAE | NVME_ID_NS_NSFEAT_OPTPERF_ALL);
- 
-     if (ns->params.shared) {
-         id_ns->nmic |= NVME_ID_NS_IND_NMIC_SHRNS;
-diff --git a/include/block/nvme.h b/include/block/nvme.h
-index 39955a63455f..f4d108841bf5 100644
---- a/include/block/nvme.h
-+++ b/include/block/nvme.h
-@@ -1418,7 +1418,12 @@ typedef struct QEMU_PACKED NvmeIdNsNvm {
-     uint8_t     pic;
-     uint8_t     rsvd9[3];
-     uint32_t    elbaf[NVME_MAX_NLBAF];
--    uint8_t     rsvd268[3828];
-+    uint32_t    npdgl;
-+    uint32_t    nprg;
-+    uint32_t    npra;
-+    uint32_t    nors;
-+    uint32_t    npdal;
-+    uint8_t     rsvd288[3808];
- } NvmeIdNsNvm;
- 
- typedef struct QEMU_PACKED NvmeIdNsInd {
-@@ -1536,6 +1541,16 @@ enum NvmeIdNsMc {
-     NVME_ID_NS_MC_SEPARATE = 1 << 1,
- };
- 
-+enum NvmeIdNsNsfeat {
-+    NVME_ID_NS_NSFEAT_THINP         = 1 << 0,
-+    NVME_ID_NS_NSFEAT_NSABPNS       = 1 << 1,
-+    NVME_ID_NS_NSFEAT_DAE           = 1 << 2,
-+    NVME_ID_NS_NSFEAT_UIDREUSE      = 1 << 3,
-+    NVME_ID_NS_NSFEAT_OPTPERF_ALL   = 3 << 4,
-+    NVME_ID_NS_NSFEAT_MAM           = 1 << 6,
-+    NVME_ID_NS_NSFEAT_OPTRPERF      = 1 << 7,
-+};
-+
- #define NVME_ID_NS_DPS_TYPE(dps) (dps & NVME_ID_NS_DPS_TYPE_MASK)
- 
- enum NvmePIFormat {
+             ctx->mdata.bounce = g_malloc0(mlen);
 -- 
 2.45.2
 
