@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB719BAA00
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350F59BA9C3
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:21:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kpn-0008Fj-9B; Sun, 03 Nov 2024 19:20:43 -0500
+	id 1t7kpo-0008Je-07; Sun, 03 Nov 2024 19:20:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpY-0007sp-5d; Sun, 03 Nov 2024 19:20:29 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1t7kpb-0007up-LR; Sun, 03 Nov 2024 19:20:32 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpW-0002ba-Ay; Sun, 03 Nov 2024 19:20:27 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-71e953f4e7cso2804359b3a.3; 
- Sun, 03 Nov 2024 16:20:25 -0800 (PST)
+ id 1t7kpZ-0002bx-Nm; Sun, 03 Nov 2024 19:20:30 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-20ce5e3b116so27049085ad.1; 
+ Sun, 03 Nov 2024 16:20:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679624; x=1731284424; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679628; x=1731284428; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ydcmNb8ZVMOpigyLu4GKmE325dcL0UnR4ztZJAQ53/Y=;
- b=V9AW9EVYHgv8jqAEKBDWD1x8HsnClXJVos6oNBnoy6FWohGjXpLc9+lipmIA1vDVKn
- +wWqFlzf7K/PxqNUEJS2rySeF0Pv7zrmd+IutY3oeNZkhLYsS950Bc1E8i8Pzagg4BRc
- R00Pmhy47IN2ZS87WoccKi4MUuTzWeCO1i2YYdTBLVgPZRz2y5RuNkxMEUMzqubhzBR9
- ilsojqJOs46tPnEAaD5kvsR8Uq1Ns2heSDRP/cOhUkByGBVwnIumEZY20+tSOWCLXlLZ
- hDY9YZQSC7qLqrAjKKMb0MqxyDm742Co14z0bbiERCTF8boi8ywEjLajsD7J80Y/AKnB
- WtiA==
+ bh=a32Tkb6cgQgEoNiKG2LmEIL3IAjBbIhO9o5SQGsOa7g=;
+ b=cCGc/UCZ40lLeteUtoJsVEsVZJty6qOxYZYN5ni9Lp+5kMSx6vpiVSB6o5CwwYdcN+
+ oZoodmPKQphd408d1mZjBnCl6UdO8aWPblkbB6WFK/bpRUs3YDNAIE5GXAbgqo6iRwGW
+ glhnAMdUDpUn2ybgYXWjxvt1MPQVVTegqSf3hGX5pIwv2pX9lkFdRp7Wg8vf5VjBBcj7
+ 0qZeiSO+1N4VAzoMZqoDKEnBAIb+o7B8PE/PN0tvygvRFTqlvQdx7BZmJo4CytT+xYci
+ Yn+ZjlTkJferx12/6P4JzBrvp7mLKW2/F+Nc6O014JM/AhZZZ6RgsDMzmzxpP3ZBw4a3
+ QJ4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679624; x=1731284424;
+ d=1e100.net; s=20230601; t=1730679628; x=1731284428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ydcmNb8ZVMOpigyLu4GKmE325dcL0UnR4ztZJAQ53/Y=;
- b=SeLvQGj+GtYjunoLtmEpEwSi9OCs3YAbalqMTJplsMpUaMQstFVc2k4NyDMyw5y3Fe
- yCPzkreGwCtsaY0rkxW9O5tI3oeDcdrfqO+ghGgrTnL2PcfVb6s33Vo9pDMuxc+y6WKQ
- c7AhlILvn/I1JYbvmzPq/EMJWRsc/fE8it6kWXyuHNja3EtuW4xSvSeoapHFDCrFakgm
- vMBR4jKmCaJdRssJ0i6UgjyuAJOmIUb5xc/kIg9Q5gqJAN2xUpGQKr82sD5H+Nkl2Vo7
- 1vw3qO58PHExRorbkgWxu4+jMcC979AS7uu2GycF1tftQwuNsykCqdnamQ/rbaeFCalK
- sTQw==
+ bh=a32Tkb6cgQgEoNiKG2LmEIL3IAjBbIhO9o5SQGsOa7g=;
+ b=kCGxYxyjBSm3acIcq+WnwxaL9yDTWbbUR5iIqnrj60bOvr71b0CMJ7vc8lWsU8QFsl
+ uew7TDzWqXt94Q28828/e9rG/4ar95AaNfho2Y/57z4/BMCmlcxlqKGVoUlfE9ZBwZTd
+ 1+2A+ZTKyQxliE5BCTsyP8k74Xleb5NCt2xazZiUHwq12amwk+A8AfJcSn07nq6fJBY9
+ sFwHaPASNivIsQxrwktYh0L+siOcti02J1+nUkUhEllYrvlHhjU1HXgE55Fez6xxMHMv
+ S1JJrJvaHU6LTa1d7IHgoZndUbzyx/9AxKTpMLha+KMEaMfKUUxUMlOYxBmbN9JouLXO
+ yXag==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlUyhAosav73mjkebvMj7Zl9yiMrKeJm1pemuUZgfCGXuy4NcYan47GAz7iCPGUqarmHIv4hPDuQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yxjxm5ydmrRvkeILDYwlpvonvNN084ykma0/2ufoSpKYSXKFyiD
- TDVYN/N73KLdM8NajncTc1XDQVxSKOKNX20Kx9MfQ031ZNTLIju3jOHNVw==
-X-Google-Smtp-Source: AGHT+IFiTZ86vxB0Q7u6qY+EspfV3Sknr28jftc7QCkP5RgkDAckyWQePfCuzOTmpwg0S413D8H5dQ==
-X-Received: by 2002:a05:6a21:31c8:b0:1d9:a80:bcfe with SMTP id
- adf61e73a8af0-1dba552944cmr15452084637.41.1730679624268; 
- Sun, 03 Nov 2024 16:20:24 -0800 (PST)
+ AJvYcCWQXqoFNvLIPaQ9YSKOAKR3nYnympby3uExbiZVU4KI7FeBGMlL3T9eBx6kCePN2Hne2uND3oe0Fg==@nongnu.org
+X-Gm-Message-State: AOJu0YyL+1oGSZiRyH8VE7OyKyjgX2IeNmo5uXIM6R37pnej/hs3m3mv
+ 6H/KShiYywxfO69z5rN2PisCfEXvExHCaFfAXQIRsW3q4+3QU5gXI+SVIg==
+X-Google-Smtp-Source: AGHT+IHVE2bsLwaI/4osk7AHI9dQFr+yYRHKHw8bcSzkluxoslAou7s/UHLJfuf/3JrZJ+H61EAf1A==
+X-Received: by 2002:a17:902:e849:b0:20c:7485:891c with SMTP id
+ d9443c01a7336-2111b01c70cmr153675705ad.54.1730679627828; 
+ Sun, 03 Nov 2024 16:20:27 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.21
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:20:23 -0800 (PST)
+ Sun, 03 Nov 2024 16:20:27 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 20/67] ppc/spapr: remove deprecated machine pseries-2.4
-Date: Mon,  4 Nov 2024 10:18:09 +1000
-Message-ID: <20241104001900.682660-21-npiggin@gmail.com>
+Subject: [PULL 21/67] ppc/spapr: remove deprecated machine pseries-2.5
+Date: Mon,  4 Nov 2024 10:18:10 +1000
+Message-ID: <20241104001900.682660-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,137 +99,74 @@ From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
 Commit 1392617d3576 intended to tag pseries-2.1 - 2.11 machines as
 deprecated with reasons mentioned in its commit log.
-Removing pseries-2.4 specific code with this patch for now.
+Removing pseries-2.5 specific code with this patch for now.
 
-While at it, also remove SpaprMachineClass::dr_lmb_enabled which is
-now turned useless.
+Also drop sPAPRMachineClass::use_ohci_by_default which is now useless.
 
 Suggested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         | 38 ++++----------------------------------
+ hw/ppc/spapr.c         | 25 +------------------------
  include/hw/ppc/spapr.h |  1 -
- 2 files changed, 4 insertions(+), 35 deletions(-)
+ 2 files changed, 1 insertion(+), 25 deletions(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 599a59910c..4d7705c89f 100644
+index 4d7705c89f..f63843d107 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -682,7 +682,6 @@ static int spapr_dt_dynamic_reconfiguration_memory(SpaprMachineState *spapr,
- static int spapr_dt_memory(SpaprMachineState *spapr, void *fdt)
- {
-     MachineState *machine = MACHINE(spapr);
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     hwaddr mem_start, node_size;
-     int i, nb_nodes = machine->numa_state->num_nodes;
-     NodeInfo *nodes = machine->numa_state->nodes;
-@@ -724,7 +723,6 @@ static int spapr_dt_memory(SpaprMachineState *spapr, void *fdt)
-     if (spapr_ovec_test(spapr->ov5_cas, OV5_DRCONF_MEMORY)) {
-         int ret;
- 
--        g_assert(smc->dr_lmb_enabled);
-         ret = spapr_dt_dynamic_reconfiguration_memory(spapr, fdt);
-         if (ret) {
-             return ret;
-@@ -1307,9 +1305,7 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
-     spapr_dt_cpus(fdt, spapr);
- 
-     /* ibm,drc-indexes and friends */
--    if (smc->dr_lmb_enabled) {
--        root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_LMB;
--    }
-+    root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_LMB;
-     if (smc->dr_phb_enabled) {
-         root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_PHB;
-     }
-@@ -2929,10 +2925,8 @@ static void spapr_machine_init(MachineState *machine)
-     spapr->ov5 = spapr_ovec_new();
-     spapr->ov5_cas = spapr_ovec_new();
- 
--    if (smc->dr_lmb_enabled) {
--        spapr_ovec_set(spapr->ov5, OV5_DRCONF_MEMORY);
--        spapr_validate_node_memory(machine, &error_fatal);
--    }
-+    spapr_ovec_set(spapr->ov5, OV5_DRCONF_MEMORY);
-+    spapr_validate_node_memory(machine, &error_fatal);
- 
-     spapr_ovec_set(spapr->ov5, OV5_FORM1_AFFINITY);
- 
-@@ -3016,9 +3010,7 @@ static void spapr_machine_init(MachineState *machine)
-         machine_memory_devices_init(machine, device_mem_base, device_mem_size);
+@@ -3070,11 +3070,7 @@ static void spapr_machine_init(MachineState *machine)
      }
  
--    if (smc->dr_lmb_enabled) {
--        spapr_create_lmb_dr_connectors(spapr);
--    }
-+    spapr_create_lmb_dr_connectors(spapr);
+     if (machine->usb) {
+-        if (smc->use_ohci_by_default) {
+-            pci_create_simple(phb->bus, -1, "pci-ohci");
+-        } else {
+-            pci_create_simple(phb->bus, -1, "nec-usb-xhci");
+-        }
++        pci_create_simple(phb->bus, -1, "nec-usb-xhci");
  
-     if (mc->nvdimm_supported) {
-         spapr_create_nvdimm_dr_connectors(spapr);
-@@ -3662,7 +3654,6 @@ static void spapr_memory_plug(HotplugHandler *hotplug_dev, DeviceState *dev)
- static void spapr_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-                                   Error **errp)
- {
--    const SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(hotplug_dev);
-     SpaprMachineState *spapr = SPAPR_MACHINE(hotplug_dev);
-     bool is_nvdimm = object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM);
-     PCDIMMDevice *dimm = PC_DIMM(dev);
-@@ -3671,11 +3662,6 @@ static void spapr_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     Object *memdev;
-     hwaddr pagesize;
+         if (has_vga) {
+             USBBus *usb_bus;
+@@ -5300,25 +5296,6 @@ static void spapr_machine_2_6_class_options(MachineClass *mc)
  
--    if (!smc->dr_lmb_enabled) {
--        error_setg(errp, "Memory hotplug not supported for this machine");
--        return;
--    }
--
-     size = memory_device_get_region_size(MEMORY_DEVICE(dimm), &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-@@ -4713,7 +4699,6 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     hc->unplug_request = spapr_machine_device_unplug_request;
-     hc->unplug = spapr_machine_device_unplug;
- 
--    smc->dr_lmb_enabled = true;
-     smc->update_dt_enabled = true;
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     mc->has_hotpluggable_cpus = true;
-@@ -5334,21 +5319,6 @@ static void spapr_machine_2_5_class_options(MachineClass *mc)
- 
- DEFINE_SPAPR_MACHINE(2, 5);
+ DEFINE_SPAPR_MACHINE(2, 6);
  
 -/*
-- * pseries-2.4
+- * pseries-2.5
 - */
 -
--static void spapr_machine_2_4_class_options(MachineClass *mc)
+-static void spapr_machine_2_5_class_options(MachineClass *mc)
 -{
 -    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+-    static GlobalProperty compat[] = {
+-        { "spapr-vlan", "use-rx-buffer-pools", "off" },
+-    };
 -
--    spapr_machine_2_5_class_options(mc);
--    smc->dr_lmb_enabled = false;
--    compat_props_add(mc->compat_props, hw_compat_2_4, hw_compat_2_4_len);
+-    spapr_machine_2_6_class_options(mc);
+-    smc->use_ohci_by_default = true;
+-    compat_props_add(mc->compat_props, hw_compat_2_5, hw_compat_2_5_len);
+-    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
 -}
 -
--DEFINE_SPAPR_MACHINE(2, 4);
+-DEFINE_SPAPR_MACHINE(2, 5);
 -
  static void spapr_machine_register_types(void)
  {
      type_register_static(&spapr_machine_info);
 diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index f6de3e9972..1821ef96c7 100644
+index 1821ef96c7..6e9e62386c 100644
 --- a/include/hw/ppc/spapr.h
 +++ b/include/hw/ppc/spapr.h
-@@ -141,7 +141,6 @@ struct SpaprMachineClass {
-     MachineClass parent_class;
- 
+@@ -143,7 +143,6 @@ struct SpaprMachineClass {
      /*< public >*/
--    bool dr_lmb_enabled;       /* enable dynamic-reconfig/hotplug of LMBs */
      bool dr_phb_enabled;       /* enable dynamic-reconfig/hotplug of PHBs */
      bool update_dt_enabled;    /* enable KVMPPC_H_UPDATE_DT */
-     bool use_ohci_by_default;  /* use USB-OHCI instead of XHCI */
+-    bool use_ohci_by_default;  /* use USB-OHCI instead of XHCI */
+     bool pre_2_10_has_unused_icps;
+     bool legacy_irq_allocation;
+     uint32_t nr_xirqs;
 -- 
 2.45.2
 
