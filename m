@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667599BA9EA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB719BAA00
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:31:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kpl-000857-OP; Sun, 03 Nov 2024 19:20:41 -0500
+	id 1t7kpn-0008Fj-9B; Sun, 03 Nov 2024 19:20:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpW-0007se-6E; Sun, 03 Nov 2024 19:20:28 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1t7kpY-0007sp-5d; Sun, 03 Nov 2024 19:20:29 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kpT-0002bP-EH; Sun, 03 Nov 2024 19:20:25 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-207115e3056so33152875ad.2; 
- Sun, 03 Nov 2024 16:20:22 -0800 (PST)
+ id 1t7kpW-0002ba-Ay; Sun, 03 Nov 2024 19:20:27 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-71e953f4e7cso2804359b3a.3; 
+ Sun, 03 Nov 2024 16:20:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679621; x=1731284421; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679624; x=1731284424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J2ew3CyVLXi8mBOhBcW6uwQfd5spGfa4C9fjmp/PKBQ=;
- b=EeJ/WyGDfdV4hZJw8Kq2jhZOs8Ge9mbo91eLE0mFwPX4I0P00OZCjjLk4o4PxKnuYI
- +yCxb1Pr1ccfzFkcYFuHJULtyxvn7FFinCBBdPNjz2lTHjAtxWpibl0cY0lI6ZEKbBM4
- U48Ipjl1qweOxs89CFjZklv+G1sbo56NddEMhvdcyXrzprq9WjM32QOSOKWfbZDvKVWU
- q+Q0E1CmIUA+Ng1moh9sqNhj8KDOO3FmDbekvM+nTs+DjuJ8lcEFCx9Q6rtp62uvxIXz
- udTEegUgq+Y1polvlUUeAhPIeUNItIDEHxa+ToXZzlxHZdUziZ3V2H4pSEK78eSTIkSm
- UVxg==
+ bh=ydcmNb8ZVMOpigyLu4GKmE325dcL0UnR4ztZJAQ53/Y=;
+ b=V9AW9EVYHgv8jqAEKBDWD1x8HsnClXJVos6oNBnoy6FWohGjXpLc9+lipmIA1vDVKn
+ +wWqFlzf7K/PxqNUEJS2rySeF0Pv7zrmd+IutY3oeNZkhLYsS950Bc1E8i8Pzagg4BRc
+ R00Pmhy47IN2ZS87WoccKi4MUuTzWeCO1i2YYdTBLVgPZRz2y5RuNkxMEUMzqubhzBR9
+ ilsojqJOs46tPnEAaD5kvsR8Uq1Ns2heSDRP/cOhUkByGBVwnIumEZY20+tSOWCLXlLZ
+ hDY9YZQSC7qLqrAjKKMb0MqxyDm742Co14z0bbiERCTF8boi8ywEjLajsD7J80Y/AKnB
+ WtiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679621; x=1731284421;
+ d=1e100.net; s=20230601; t=1730679624; x=1731284424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J2ew3CyVLXi8mBOhBcW6uwQfd5spGfa4C9fjmp/PKBQ=;
- b=Vu8rWj+QUV7w0PQ/Qrvd5k4KbzVYh8c5WwJzpra6aI40TVP51R2V8ZvY6KnY2m0arf
- eepkT1KemEN8PZ//EwuC6IlhFo1m/fMX7nlJ6smFO3AA9g/xhbuC6nW/Y3esd14sGBB0
- FVJjJdxXw3jtPagfr2rwomEff0Fnxp+LpvIqL47Wao762pcqGtar88W615LFOpqtRj4w
- r/iWXf3trMpOLM7Oz1uYF7zlsHM7Mjg8sa/OT2WpDx3oZvl1apBxB51hloi4ILd58gGR
- 6WMpvKI5xnRidyDVNQqg9hmGMtkFmn3tHe4gIR1B9QmVJidayQswysPuks6XmxoMOKNh
- Cp5w==
+ bh=ydcmNb8ZVMOpigyLu4GKmE325dcL0UnR4ztZJAQ53/Y=;
+ b=SeLvQGj+GtYjunoLtmEpEwSi9OCs3YAbalqMTJplsMpUaMQstFVc2k4NyDMyw5y3Fe
+ yCPzkreGwCtsaY0rkxW9O5tI3oeDcdrfqO+ghGgrTnL2PcfVb6s33Vo9pDMuxc+y6WKQ
+ c7AhlILvn/I1JYbvmzPq/EMJWRsc/fE8it6kWXyuHNja3EtuW4xSvSeoapHFDCrFakgm
+ vMBR4jKmCaJdRssJ0i6UgjyuAJOmIUb5xc/kIg9Q5gqJAN2xUpGQKr82sD5H+Nkl2Vo7
+ 1vw3qO58PHExRorbkgWxu4+jMcC979AS7uu2GycF1tftQwuNsykCqdnamQ/rbaeFCalK
+ sTQw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUbKBiyUM+R0Q6U2boY5c1WjO44qAX+ClDx3aEEpvlALoN32TDaWjhKSBNLUCSga/GMfKeEBxClIA==@nongnu.org
-X-Gm-Message-State: AOJu0YwJGBYkfqHRB2fduhBIJCB8yEo+7OYSfwUV0Aal18xaJXkfeclL
- PCrIVDXOIsOHEm2B+nfC7i4aeAA/kleLkjnQNwhahDjzKZls77SQlS2uSQ==
-X-Google-Smtp-Source: AGHT+IEntoyZ6tveFP0+JxzUDcL28RX2zlm0Ic4SBwxfa0c6W6Kq8abe+Em9f37Jbw/rnylKf1fsvw==
-X-Received: by 2002:a17:902:da8c:b0:20b:79cb:492f with SMTP id
- d9443c01a7336-210c6c3446bmr452597295ad.43.1730679620711; 
- Sun, 03 Nov 2024 16:20:20 -0800 (PST)
+ AJvYcCWlUyhAosav73mjkebvMj7Zl9yiMrKeJm1pemuUZgfCGXuy4NcYan47GAz7iCPGUqarmHIv4hPDuQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yxjxm5ydmrRvkeILDYwlpvonvNN084ykma0/2ufoSpKYSXKFyiD
+ TDVYN/N73KLdM8NajncTc1XDQVxSKOKNX20Kx9MfQ031ZNTLIju3jOHNVw==
+X-Google-Smtp-Source: AGHT+IFiTZ86vxB0Q7u6qY+EspfV3Sknr28jftc7QCkP5RgkDAckyWQePfCuzOTmpwg0S413D8H5dQ==
+X-Received: by 2002:a05:6a21:31c8:b0:1d9:a80:bcfe with SMTP id
+ adf61e73a8af0-1dba552944cmr15452084637.41.1730679624268; 
+ Sun, 03 Nov 2024 16:20:24 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.17
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.20.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:20:20 -0800 (PST)
+ Sun, 03 Nov 2024 16:20:23 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 19/67] ppc/spapr: remove deprecated machine pseries-2.3
-Date: Mon,  4 Nov 2024 10:18:08 +1000
-Message-ID: <20241104001900.682660-20-npiggin@gmail.com>
+Subject: [PULL 20/67] ppc/spapr: remove deprecated machine pseries-2.4
+Date: Mon,  4 Nov 2024 10:18:09 +1000
+Message-ID: <20241104001900.682660-21-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,178 +99,137 @@ From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
 Commit 1392617d3576 intended to tag pseries-2.1 - 2.11 machines as
 deprecated with reasons mentioned in its commit log.
-Removing pseries-2.3 specific code with this patch for now.
+Removing pseries-2.4 specific code with this patch for now.
 
-While at it, also remove the dynamic-reconfiguration option which was
-introduced to disable it by default for legacy machines until pseries-2.3.
+While at it, also remove SpaprMachineClass::dr_lmb_enabled which is
+now turned useless.
 
 Suggested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/core/machine.c           | 13 -------------
- hw/ppc/spapr.c              | 15 ---------------
- hw/ppc/spapr_pci.c          | 35 -----------------------------------
- include/hw/boards.h         |  3 ---
- include/hw/pci-host/spapr.h |  1 -
- 5 files changed, 67 deletions(-)
+ hw/ppc/spapr.c         | 38 ++++----------------------------------
+ include/hw/ppc/spapr.h |  1 -
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 2bbfcd1ede..0f10b4f992 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -281,19 +281,6 @@ GlobalProperty hw_compat_2_4[] = {
- };
- const size_t hw_compat_2_4_len = G_N_ELEMENTS(hw_compat_2_4);
- 
--GlobalProperty hw_compat_2_3[] = {
--    { "virtio-blk-pci", "any_layout", "off" },
--    { "virtio-balloon-pci", "any_layout", "off" },
--    { "virtio-serial-pci", "any_layout", "off" },
--    { "virtio-9p-pci", "any_layout", "off" },
--    { "virtio-rng-pci", "any_layout", "off" },
--    { TYPE_PCI_DEVICE, "x-pcie-lnksta-dllla", "off" },
--    { "migration", "send-configuration", "off" },
--    { "migration", "send-section-footer", "off" },
--    { "migration", "store-global-state", "off" },
--};
--const size_t hw_compat_2_3_len = G_N_ELEMENTS(hw_compat_2_3);
--
- MachineState *current_machine;
- 
- static char *machine_get_kernel(Object *obj, Error **errp)
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 34d655d0b3..599a59910c 100644
+index 599a59910c..4d7705c89f 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -5349,21 +5349,6 @@ static void spapr_machine_2_4_class_options(MachineClass *mc)
+@@ -682,7 +682,6 @@ static int spapr_dt_dynamic_reconfiguration_memory(SpaprMachineState *spapr,
+ static int spapr_dt_memory(SpaprMachineState *spapr, void *fdt)
+ {
+     MachineState *machine = MACHINE(spapr);
+-    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
+     hwaddr mem_start, node_size;
+     int i, nb_nodes = machine->numa_state->num_nodes;
+     NodeInfo *nodes = machine->numa_state->nodes;
+@@ -724,7 +723,6 @@ static int spapr_dt_memory(SpaprMachineState *spapr, void *fdt)
+     if (spapr_ovec_test(spapr->ov5_cas, OV5_DRCONF_MEMORY)) {
+         int ret;
  
- DEFINE_SPAPR_MACHINE(2, 4);
+-        g_assert(smc->dr_lmb_enabled);
+         ret = spapr_dt_dynamic_reconfiguration_memory(spapr, fdt);
+         if (ret) {
+             return ret;
+@@ -1307,9 +1305,7 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
+     spapr_dt_cpus(fdt, spapr);
+ 
+     /* ibm,drc-indexes and friends */
+-    if (smc->dr_lmb_enabled) {
+-        root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_LMB;
+-    }
++    root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_LMB;
+     if (smc->dr_phb_enabled) {
+         root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_PHB;
+     }
+@@ -2929,10 +2925,8 @@ static void spapr_machine_init(MachineState *machine)
+     spapr->ov5 = spapr_ovec_new();
+     spapr->ov5_cas = spapr_ovec_new();
+ 
+-    if (smc->dr_lmb_enabled) {
+-        spapr_ovec_set(spapr->ov5, OV5_DRCONF_MEMORY);
+-        spapr_validate_node_memory(machine, &error_fatal);
+-    }
++    spapr_ovec_set(spapr->ov5, OV5_DRCONF_MEMORY);
++    spapr_validate_node_memory(machine, &error_fatal);
+ 
+     spapr_ovec_set(spapr->ov5, OV5_FORM1_AFFINITY);
+ 
+@@ -3016,9 +3010,7 @@ static void spapr_machine_init(MachineState *machine)
+         machine_memory_devices_init(machine, device_mem_base, device_mem_size);
+     }
+ 
+-    if (smc->dr_lmb_enabled) {
+-        spapr_create_lmb_dr_connectors(spapr);
+-    }
++    spapr_create_lmb_dr_connectors(spapr);
+ 
+     if (mc->nvdimm_supported) {
+         spapr_create_nvdimm_dr_connectors(spapr);
+@@ -3662,7 +3654,6 @@ static void spapr_memory_plug(HotplugHandler *hotplug_dev, DeviceState *dev)
+ static void spapr_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+                                   Error **errp)
+ {
+-    const SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(hotplug_dev);
+     SpaprMachineState *spapr = SPAPR_MACHINE(hotplug_dev);
+     bool is_nvdimm = object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM);
+     PCDIMMDevice *dimm = PC_DIMM(dev);
+@@ -3671,11 +3662,6 @@ static void spapr_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+     Object *memdev;
+     hwaddr pagesize;
+ 
+-    if (!smc->dr_lmb_enabled) {
+-        error_setg(errp, "Memory hotplug not supported for this machine");
+-        return;
+-    }
+-
+     size = memory_device_get_region_size(MEMORY_DEVICE(dimm), &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+@@ -4713,7 +4699,6 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+     hc->unplug_request = spapr_machine_device_unplug_request;
+     hc->unplug = spapr_machine_device_unplug;
+ 
+-    smc->dr_lmb_enabled = true;
+     smc->update_dt_enabled = true;
+     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     mc->has_hotpluggable_cpus = true;
+@@ -5334,21 +5319,6 @@ static void spapr_machine_2_5_class_options(MachineClass *mc)
+ 
+ DEFINE_SPAPR_MACHINE(2, 5);
  
 -/*
-- * pseries-2.3
+- * pseries-2.4
 - */
 -
--static void spapr_machine_2_3_class_options(MachineClass *mc)
+-static void spapr_machine_2_4_class_options(MachineClass *mc)
 -{
--    static GlobalProperty compat[] = {
--        { "spapr-pci-host-bridge", "dynamic-reconfiguration", "off" },
--    };
--    spapr_machine_2_4_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_3, hw_compat_2_3_len);
--    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+-    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+-
+-    spapr_machine_2_5_class_options(mc);
+-    smc->dr_lmb_enabled = false;
+-    compat_props_add(mc->compat_props, hw_compat_2_4, hw_compat_2_4_len);
 -}
--DEFINE_SPAPR_MACHINE(2, 3);
+-
+-DEFINE_SPAPR_MACHINE(2, 4);
 -
  static void spapr_machine_register_types(void)
  {
      type_register_static(&spapr_machine_info);
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 5c0024bef9..8f1964ce52 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1237,10 +1237,6 @@ static void add_drcs(SpaprPhbState *phb, PCIBus *bus)
-     int i;
-     uint8_t chassis;
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index f6de3e9972..1821ef96c7 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -141,7 +141,6 @@ struct SpaprMachineClass {
+     MachineClass parent_class;
  
--    if (!phb->dr_enabled) {
--        return;
--    }
--
-     chassis = chassis_from_bus(bus);
- 
-     if (pci_bus_is_root(bus)) {
-@@ -1260,10 +1256,6 @@ static void remove_drcs(SpaprPhbState *phb, PCIBus *bus)
-     int i;
-     uint8_t chassis;
- 
--    if (!phb->dr_enabled) {
--        return;
--    }
--
-     chassis = chassis_from_bus(bus);
- 
-     for (i = PCI_SLOT_MAX * PCI_FUNC_MAX - 1; i >= 0; i--) {
-@@ -1548,17 +1540,6 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
-     PCIBus *bus = PCI_BUS(qdev_get_parent_bus(DEVICE(pdev)));
-     uint32_t slotnr = PCI_SLOT(pdev->devfn);
- 
--    if (!phb->dr_enabled) {
--        /* if this is a hotplug operation initiated by the user
--         * we need to let them know it's not enabled
--         */
--        if (plugged_dev->hotplugged) {
--            error_setg(errp, "Bus '%s' does not support hotplugging",
--                       phb->parent_obj.bus->qbus.name);
--            return;
--        }
--    }
--
-     if (IS_PCI_BRIDGE(plugged_dev)) {
-         if (!bridge_has_valid_chassis_nr(OBJECT(plugged_dev), errp)) {
-             return;
-@@ -1591,14 +1572,6 @@ static void spapr_pci_plug(HotplugHandler *plug_handler,
-     SpaprDrc *drc = drc_from_dev(phb, pdev);
-     uint32_t slotnr = PCI_SLOT(pdev->devfn);
- 
--    /*
--     * If DR is disabled we don't need to do anything in the case of
--     * hotplug or coldplug callbacks.
--     */
--    if (!phb->dr_enabled) {
--        return;
--    }
--
-     g_assert(drc);
- 
-     if (IS_PCI_BRIDGE(plugged_dev)) {
-@@ -1673,12 +1646,6 @@ static void spapr_pci_unplug_request(HotplugHandler *plug_handler,
-     PCIDevice *pdev = PCI_DEVICE(plugged_dev);
-     SpaprDrc *drc = drc_from_dev(phb, pdev);
- 
--    if (!phb->dr_enabled) {
--        error_setg(errp, "Bus '%s' does not support hotplugging",
--                   phb->parent_obj.bus->qbus.name);
--        return;
--    }
--
-     g_assert(drc);
-     g_assert(drc->dev == plugged_dev);
- 
-@@ -2089,8 +2056,6 @@ static Property spapr_phb_properties[] = {
-                        SPAPR_PCI_MEM64_WIN_SIZE),
-     DEFINE_PROP_UINT64("io_win_size", SpaprPhbState, io_win_size,
-                        SPAPR_PCI_IO_WIN_SIZE),
--    DEFINE_PROP_BOOL("dynamic-reconfiguration", SpaprPhbState, dr_enabled,
--                     true),
-     /* Default DMA window is 0..1GB */
-     DEFINE_PROP_UINT64("dma_win_addr", SpaprPhbState, dma_win_addr, 0),
-     DEFINE_PROP_UINT64("dma_win_size", SpaprPhbState, dma_win_size, 0x40000000),
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 7e849bb30d..eea592b720 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -822,7 +822,4 @@ extern const size_t hw_compat_2_5_len;
- extern GlobalProperty hw_compat_2_4[];
- extern const size_t hw_compat_2_4_len;
- 
--extern GlobalProperty hw_compat_2_3[];
--extern const size_t hw_compat_2_3_len;
--
- #endif
-diff --git a/include/hw/pci-host/spapr.h b/include/hw/pci-host/spapr.h
-index 3778aac27b..79187e80fd 100644
---- a/include/hw/pci-host/spapr.h
-+++ b/include/hw/pci-host/spapr.h
-@@ -53,7 +53,6 @@ struct SpaprPhbState {
-     uint32_t index;
-     uint64_t buid;
-     char *dtbusname;
--    bool dr_enabled;
- 
-     MemoryRegion memspace, iospace;
-     hwaddr mem_win_addr, mem_win_size, mem64_win_addr, mem64_win_size;
+     /*< public >*/
+-    bool dr_lmb_enabled;       /* enable dynamic-reconfig/hotplug of LMBs */
+     bool dr_phb_enabled;       /* enable dynamic-reconfig/hotplug of PHBs */
+     bool update_dt_enabled;    /* enable KVMPPC_H_UPDATE_DT */
+     bool use_ohci_by_default;  /* use USB-OHCI instead of XHCI */
 -- 
 2.45.2
 
