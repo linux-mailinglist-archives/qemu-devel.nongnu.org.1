@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1149BA9C8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748BD9BA9EC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:28:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kqa-00042B-19; Sun, 03 Nov 2024 19:21:32 -0500
+	id 1t7kqc-0004HM-D1; Sun, 03 Nov 2024 19:21:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqV-0003Z0-3m; Sun, 03 Nov 2024 19:21:27 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1t7kqY-0003wP-Ge; Sun, 03 Nov 2024 19:21:30 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqT-0002gv-LG; Sun, 03 Nov 2024 19:21:26 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-723db2798caso65910b3a.0; 
- Sun, 03 Nov 2024 16:21:24 -0800 (PST)
+ id 1t7kqX-0002hH-0i; Sun, 03 Nov 2024 19:21:30 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-720cb6ac25aso2512745b3a.3; 
+ Sun, 03 Nov 2024 16:21:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679684; x=1731284484; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679687; x=1731284487; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D5acwOP9v6mqTwgIgkzY3AX70LRjavmcEjrHnDYPLjA=;
- b=HkyK9lH1oqkY0NXSVPMa2hqyPeEzaZfzc/5P0wwbssGsmOLK1kBLys0ZXwHkDPGPTi
- 6BZB829MHzyg9LkR91lq/5KGNNav6jxmQBnRWv+L0eZ46tXCjeddj+528e2WhfOBCmQC
- AuGlIENd71ARt2RaR6M0uAKINhD9elTGGsjgqgfh0Q3Dwmzwl+IaUHWsMOzylFWCfe/Q
- tH+QvAFYHonnymFm2cLAIiFNIKIWMIUZjTV5sdvhat6iP332kjuwjpb64ycVJZrY+H5V
- 0DMS6sT3WA2UnxlIzOI+guqym99a8pExmLFWbOSbvKEphZyKFUD8SKo5dd5f3dTGv339
- C/yw==
+ bh=8tRnHn0imyDgzIBjiEWjpE9f1p8r45aL3qXvb+TAFyY=;
+ b=hUxB8Oo0myL+52D5nNLtn/AWiH7W83P9DrW+Pbq4DGf7OGr/Ej4uZV2D+LxfLT+mtq
+ tLij58Sl0oN4st8/kNy3JmbqaeWU7tJvfN1rOcSgFUiDJiQdrFMi1U1eRlJxa2V5LPSj
+ bxwK6NoKt6s+KXAinWdqardSm6lt5l2jwcQHPrveplg12DH5AQwCgGHR0aQ5wR0Lzclf
+ T526TeE2TXK0Pdw+UK0zcDX/qk2OOq2NceN27OhxeaXMHCCseC2eUjcXqScaf7hGFmgZ
+ nbGL3H9i35n16qOhVunO4GkJS61Mz45SPpb6lg+zB53cr7MfEAL9KEZiIJ8blU1hkGl8
+ eDrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679684; x=1731284484;
+ d=1e100.net; s=20230601; t=1730679687; x=1731284487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D5acwOP9v6mqTwgIgkzY3AX70LRjavmcEjrHnDYPLjA=;
- b=aRf390+KyHOvSHWEQTQOZW+rEgYDzlxRMdu9IufMrB+bTV6OZnAOui/3YyBhF7DoDT
- I5UsVTW3Boukbs24DZAmp0cJUHM3wue7+IZy0lw9JzRJiG6B6bKAvrBUxTEJu/TtHIps
- s8KDipD7yJ4kCZrTwgD1a/TdjqOcgRqb/Spf0RrIPx4LH9Nvzro5rel5WjuRRYLDB4hG
- 1afJzdkSMM3yCaf8MEQH0XeotvtRUOrHlYqSPTFbRVzigORdV5RTmSayU4+1sWw6XpJv
- 0mKAl0MiHnWcDhmRO4lCNqfu3Xij6Y+Ve9e2QAmMzHfCwQhBS1jwPikYHf/xAELFhLP6
- wWxA==
+ bh=8tRnHn0imyDgzIBjiEWjpE9f1p8r45aL3qXvb+TAFyY=;
+ b=snBFRq3QTHtvogaVwy8NjwBhVDYuZYY8l/YMGZ98xgd9MbCW2GCvSOSDyB5/4vOVtf
+ KptAxAQhkAxc/jWiazFAihMOQDF8BYiXisZVwo3x9ZWSBMob/P+cdR/A9grQyP4Lg87k
+ MHRd+5i51A4Bmo/7kk/PvYQT1+cXP9sj8G7T9RrTX0gG7hkkayPkJe3GbKDIvqW4fVM3
+ 5M3XLhUMbSmkK0m+qgEIoxmMvZL2ycVYrLGcpX84TrYc3Og4pjtlWN5bFk8qyJaUl1zA
+ 9+7oX1a5ha14AC5MQLh98UQehE0Y3daz8iD1a5j2CovLKKeETNm9CJ8ZWdm2LoA26LJV
+ Av0g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7tJo6pZO/oLzR3EMKRG87wYnbZndPaEqIjYizwZbd+KVc5o71zVs7HIxRZnIddTdSyrz/U8pelQ==@nongnu.org
-X-Gm-Message-State: AOJu0YyjOiwuGbhx5lwqO1QlbWASGTN2ioi7OtQHROQ1MOd5SCl7l1Cf
- o+/SEjFvwVLtmZcvOI9D2yCcmVYJYd4mqie+2x0sRQS+3tNA1pIGSnzMPA==
-X-Google-Smtp-Source: AGHT+IFKr/EWg0gHaidpnCHmzxm7Rd3iuMQxTpy2lICcjT7z8nVQ0RnlCXk7gfP4XlT9Wq+q954v6w==
-X-Received: by 2002:a05:6a21:6d93:b0:1db:ddde:33e2 with SMTP id
- adf61e73a8af0-1dbddde33eamr1773122637.29.1730679683729; 
- Sun, 03 Nov 2024 16:21:23 -0800 (PST)
+ AJvYcCWcTIuivwwzX3pxLvdygebl5oRGOReYJBR9sL+BDuuAQw6bTYImp+nRKAFf/dFDojG2WJytamdIpA==@nongnu.org
+X-Gm-Message-State: AOJu0Yy4wKkioLyk1PZQl3l0UL0wScM4zRy8kDJhOyG1+ROWMZ//64tu
+ e+DQEL/iZJ8yBNyXV9GRgJJrrq9p5yqBBbxrmVT99B48OFw9+Oa5/Oy1Tw==
+X-Google-Smtp-Source: AGHT+IFWApGiOfcYHz7vbNEMDbivSTmM0vv9xkOlR9XzcOoLYP+i6KY1cIDQoxmrJYGB/BDxqUpFYg==
+X-Received: by 2002:a05:6a21:2d87:b0:1d8:fbf3:a9ac with SMTP id
+ adf61e73a8af0-1d9a83a998cmr43381238637.2.1730679687155; 
+ Sun, 03 Nov 2024 16:21:27 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.21
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:23 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:26 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 36/67] target/ppc: optimize hreg_compute_pmu_hflags_value
-Date: Mon,  4 Nov 2024 10:18:25 +1000
-Message-ID: <20241104001900.682660-37-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 37/67] target/ppc: optimize hreg_compute_pmu_hflags_value
+Date: Mon,  4 Nov 2024 10:18:26 +1000
+Message-ID: <20241104001900.682660-38-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,41 +95,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Cache env->spr[SPR_POWER_MMCR0] in a local variable as used in multiple
-conditions to avoid multiple indirect accesses.
+The second if-condition can be true only if the first one above is true.
+Enclose the latter into the former to avoid un-necessary check if first
+condition fails.
 
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper_regs.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ target/ppc/helper_regs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index fe543ab3b8..7b23e5ef0e 100644
+index 7b23e5ef0e..42c681ca4a 100644
 --- a/target/ppc/helper_regs.c
 +++ b/target/ppc/helper_regs.c
-@@ -83,15 +83,16 @@ static bool hreg_check_bhrb_enable(CPUPPCState *env)
- static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
- {
-     uint32_t hflags = 0;
--
- #if defined(TARGET_PPC64)
--    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC0) {
-+    target_ulong mmcr0 = env->spr[SPR_POWER_MMCR0];
-+
-+    if (mmcr0 & MMCR0_PMCC0) {
-         hflags |= 1 << HFLAGS_PMCC0;
+@@ -102,9 +102,9 @@ static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
+ #ifndef CONFIG_USER_ONLY
+     if (env->pmc_ins_cnt) {
+         hflags |= 1 << HFLAGS_INSN_CNT;
+-    }
+-    if (env->pmc_ins_cnt & 0x1e) {
+-        hflags |= 1 << HFLAGS_PMC_OTHER;
++        if (env->pmc_ins_cnt & 0x1e) {
++            hflags |= 1 << HFLAGS_PMC_OTHER;
++        }
      }
--    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC1) {
-+    if (mmcr0 & MMCR0_PMCC1) {
-         hflags |= 1 << HFLAGS_PMCC1;
-     }
--    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
-+    if (mmcr0 & MMCR0_PMCjCE) {
-         hflags |= 1 << HFLAGS_PMCJCE;
-     }
-     if (hreg_check_bhrb_enable(env)) {
+ #endif
+ #endif
 -- 
 2.45.2
 
