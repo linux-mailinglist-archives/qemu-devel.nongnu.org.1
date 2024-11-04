@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194199BA9DE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E35D69BA9F1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:28:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7ksY-0001lw-4X; Sun, 03 Nov 2024 19:23:34 -0500
+	id 1t7kt7-0002dp-B9; Sun, 03 Nov 2024 19:24:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7ks5-0001As-Sk; Sun, 03 Nov 2024 19:23:06 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1t7ks8-0001N7-9B; Sun, 03 Nov 2024 19:23:08 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7ks3-0002qr-J5; Sun, 03 Nov 2024 19:23:05 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-71e70c32cd7so3328358b3a.1; 
- Sun, 03 Nov 2024 16:23:02 -0800 (PST)
+ id 1t7ks6-0002r6-SE; Sun, 03 Nov 2024 19:23:08 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-720e94d36c8so636969b3a.1; 
+ Sun, 03 Nov 2024 16:23:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679781; x=1731284581; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679785; x=1731284585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UISav0m9vxkk9EM0HaAGMzL4bYfq2w6Ob7g9lExAmmc=;
- b=atVqEOOkZjN370mxzzoEfpRTZ3R81Yky33kX+TTfq57weARecvjn1IqkrUsBe2oiu+
- lc+OLNSGy5TAmKOhRvsGWd17ZUv4waxw7+u40OTqwX3vVAgRI2CvG9lQBFv5krPNTuHB
- bUd5VAeTpoCNj3h/hF68aGkgZS84T/73Z914ZHusvSoeH+bwY/DQo9H7miTKnLffe1a8
- n41kkyzRnI5g+iB6YXxm72wWI7FEMRcMuUMbI6271IxpQVTr3UWjHtwOpwPCYAT0tHi8
- auJ3l23tJ7qSSQNrSE2Dontu41S/yV+kmonnwNGiwi/skmvmoJgyvKWgsBWWXM+yXuzz
- b0QA==
+ bh=6ytsSfhdxBdIAcqYl8as4jIuZNHrehynxTj/kQNDYMQ=;
+ b=SRDMGAKQ74IsvkvaR9iMm5GJZWcoDr6S8m/nqu4I8BKKdaEJNmC7+P+jSnhzfk8MeZ
+ s6UFYYFw1UK/56APDihKzJIrztWZKv8bQLptdRlzo54n1mXSM6Eyi3o5fNlHO6CAbiuA
+ 41vFoAofkm6jOIL/1mV0vGZ3ijvddM0ATZkvqlUvVeB2z2VFZ0AcfRGYZRyUDxK74Kdn
+ u7YgnAutG3sBCluLRkN6IUtt9/0wLQnm3ry9d/t9EalS532tss7kSPubT50oNfDGnLss
+ nKRjoU975E4hmP7WKiL/iQ9SgK1SJmEHQ0oQ0nEjAleCaWyXUKqqlPVV85ODYdM2Azgl
+ HiEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679781; x=1731284581;
+ d=1e100.net; s=20230601; t=1730679785; x=1731284585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UISav0m9vxkk9EM0HaAGMzL4bYfq2w6Ob7g9lExAmmc=;
- b=Lv4Ec21395femmjFXohMCwrAHoHNvrWlbIa/qW5/OZvwa4d4kz2TPt3JSPj8yh3wY4
- 1K4UlI4pcuB2PA4/y/xYjIGGCI7A03RbOMWTZ27o0AZ499A/ToDwX6BCogLmIFqvPMuW
- oaPSR4X4nwTBhcuV+PwBN03jjo87I0+EKgoA5ZWHaSS5Ncz/C6FEqjeSdqfA2/TcIkp4
- OonLSHvgUFyZpmP2En1wMYAcRbK//fogser62cpGEi8hA4Q5KNgPRjHtc4I0Tc+BMj4S
- kliQ4QUr3fD1AOV0zKukHjADMBcHHWgNykC6Pyj9X2oSKMdeYcNna61sJGRvcgxwEeie
- jLcA==
+ bh=6ytsSfhdxBdIAcqYl8as4jIuZNHrehynxTj/kQNDYMQ=;
+ b=hSPRu5r+kq52WrlW3YMIBaR11UOVjlsI2winwZApy3KKnAOVoaeQWhVxjR5A9nIEJq
+ +mjAi87P/cccSD2V1GdvDUtlur1R2AiyQKiOglxQx6DtEvQtdcOnaxUaMYO12gN5hxwq
+ XPFEPsphVay8mUuOI6upamaozJZVpsDkvSfQg2SIdR3YjjEFRfnCl9zOOlC/HpEegla2
+ hDgflCCYyj9h770VeS/T4F+dsvWJzgR1e6Xga1nwhrlMKMLBqccYSZNxjsgGaQEu8OUt
+ ed6Q32F7Qtv66C1adtqBDdPXqmmAEyw4Z2FDpTU3M9P4K3qNcwyMoz77gcvvq31XqtRq
+ UAVg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUIcN/QRzY+Wvimua+L+REhoyKRjBNSiejVPUM8FKnSX873Ibft861qxSxnTfxKYusbtSkuOVYj6g==@nongnu.org
-X-Gm-Message-State: AOJu0YxjxiseB+iQXwpaKE7KXuumVGchX7SJlFvvuINoDWTUybXCn0q1
- vLN5UHBKHqj5Ie+qoav0u+CI4yGI7CRsyKRPjTYva/ad78O/0C2EArm0lQ==
-X-Google-Smtp-Source: AGHT+IG93dvtbRp2pE5dX1FFdwIGWzW9einZsbCE8IlV93W7sLlZOOvmO3P8YLSGG+RCep9sLpKyCw==
-X-Received: by 2002:a05:6a21:3a82:b0:1d9:8275:cd70 with SMTP id
- adf61e73a8af0-1d9a84d0918mr39297932637.40.1730679781479; 
- Sun, 03 Nov 2024 16:23:01 -0800 (PST)
+ AJvYcCXUrto1YFJgJH32HofYZHPVUZVAis0jAaZAZaacWNNvGsZNA9UNJue1eEYPLMwrHtTuwQYownHUbw==@nongnu.org
+X-Gm-Message-State: AOJu0YyQqbDHZLRs7n82xor7whDNqftnaPxREPQLj5CndPspeaPkkQjJ
+ J5/M130DstpAEl2BPVxzua484f0vwWYZnQ2DL+6BVBYFB+LFCX6hRWiK3Q==
+X-Google-Smtp-Source: AGHT+IH5au29n2xLYrzcRRQueELx0Bgf+Qhj9j0oHAy0SzInxfC8CpR2XH/cqLWL17Hh2m7oLaSfPg==
+X-Received: by 2002:a05:6a21:7883:b0:1cf:2d22:564e with SMTP id
+ adf61e73a8af0-1dba4139851mr18406390637.6.1730679784857; 
+ Sun, 03 Nov 2024 16:23:04 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.22.58
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.23.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:23:01 -0800 (PST)
+ Sun, 03 Nov 2024 16:23:04 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 64/67] hw/ppc: Consolidate ppc440 initial mapping creation
- functions
-Date: Mon,  4 Nov 2024 10:18:53 +1000
-Message-ID: <20241104001900.682660-65-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Subject: [PULL 65/67] MAINTAINERS: Remove myself from the PowerNV machines
+Date: Mon,  4 Nov 2024 10:18:54 +1000
+Message-ID: <20241104001900.682660-66-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,223 +94,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Cédric Le Goater <clg@redhat.com>
 
-Add a utility function and use it to replace very similar
-create_initial_mapping functions in 440 based machines.
+It's been an amazing experience working on PowerNV systems all these
+years. Now it's time for IBM to take the lead on the QEMU machine and
+shape its future. I'm stepping back as the maintainer of PowerNV.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Tested-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/ppc440_bamboo.c | 28 +++-----------------------
- hw/ppc/ppc_booke.c     | 10 ++++++++++
- hw/ppc/sam460ex.c      | 45 ++++++++++--------------------------------
- hw/ppc/virtex_ml507.c  | 28 +++-----------------------
- include/hw/ppc/ppc.h   |  2 ++
- 5 files changed, 28 insertions(+), 85 deletions(-)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-index 96d9ce65c2..a55f108434 100644
---- a/hw/ppc/ppc440_bamboo.c
-+++ b/hw/ppc/ppc440_bamboo.c
-@@ -110,29 +110,6 @@ static int bamboo_load_device_tree(MachineState *machine,
-     return 0;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 64b4ffa91c..baf8c9b379 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1495,7 +1495,6 @@ F: tests/functional/test_ppc64_hv.py
+ F: tests/functional/test_ppc64_tuxrun.py
  
--/* Create reset TLB entries for BookE, spanning the 32bit addr space.  */
--static void mmubooke_create_initial_mapping(CPUPPCState *env,
--                                     target_ulong va,
--                                     hwaddr pa)
--{
--    ppcemb_tlb_t *tlb = &env->tlb.tlbe[0];
--
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 1U << 31; /* up to 0x80000000  */
--    tlb->EPN = va & TARGET_PAGE_MASK;
--    tlb->RPN = pa & TARGET_PAGE_MASK;
--    tlb->PID = 0;
--
--    tlb = &env->tlb.tlbe[1];
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 1U << 31; /* up to 0xffffffff  */
--    tlb->EPN = 0x80000000 & TARGET_PAGE_MASK;
--    tlb->RPN = 0x80000000 & TARGET_PAGE_MASK;
--    tlb->PID = 0;
--}
--
- static void main_cpu_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
-@@ -143,8 +120,9 @@ static void main_cpu_reset(void *opaque)
-     env->gpr[3] = FDT_ADDR;
-     env->nip = entry;
- 
--    /* Create a mapping for the kernel.  */
--    mmubooke_create_initial_mapping(env, 0, 0);
-+    /* Create a mapping spanning the 32bit addr space. */
-+    booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1U << 31);
-+    booke_set_tlb(&env->tlb.tlbe[1], 0x80000000, 0x80000000, 1U << 31);
- }
- 
- static void bamboo_init(MachineState *machine)
-diff --git a/hw/ppc/ppc_booke.c b/hw/ppc/ppc_booke.c
-index ca22da196a..c8849e66ff 100644
---- a/hw/ppc/ppc_booke.c
-+++ b/hw/ppc/ppc_booke.c
-@@ -31,6 +31,16 @@
- #include "hw/loader.h"
- #include "kvm_ppc.h"
- 
-+void booke_set_tlb(ppcemb_tlb_t *tlb, target_ulong va, hwaddr pa,
-+                   target_ulong size)
-+{
-+    tlb->attr = 0;
-+    tlb->prot = PAGE_RWX << 4 | PAGE_VALID;
-+    tlb->size = size;
-+    tlb->EPN = va & TARGET_PAGE_MASK;
-+    tlb->RPN = pa & TARGET_PAGE_MASK;
-+    tlb->PID = 0;
-+}
- 
- /* Timer Control Register */
- 
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 1fce093ac8..78e2a46e75 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -213,38 +213,6 @@ static int sam460ex_load_device_tree(MachineState *machine,
-     return fdt_size;
- }
- 
--/* Create reset TLB entries for BookE, mapping only the flash memory.  */
--static void mmubooke_create_initial_mapping_uboot(CPUPPCState *env)
--{
--    ppcemb_tlb_t *tlb = &env->tlb.tlbe[0];
--
--    /* on reset the flash is mapped by a shadow TLB,
--     * but since we don't implement them we need to use
--     * the same values U-Boot will use to avoid a fault.
--     */
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 0x10000000; /* up to 0xffffffff  */
--    tlb->EPN = 0xf0000000 & TARGET_PAGE_MASK;
--    tlb->RPN = (0xf0000000 & TARGET_PAGE_MASK) | 0x4;
--    tlb->PID = 0;
--}
--
--/* Create reset TLB entries for BookE, spanning the 32bit addr space.  */
--static void mmubooke_create_initial_mapping(CPUPPCState *env,
--                                     target_ulong va,
--                                     hwaddr pa)
--{
--    ppcemb_tlb_t *tlb = &env->tlb.tlbe[0];
--
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 1 << 31; /* up to 0x80000000  */
--    tlb->EPN = va & TARGET_PAGE_MASK;
--    tlb->RPN = pa & TARGET_PAGE_MASK;
--    tlb->PID = 0;
--}
--
- static void main_cpu_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
-@@ -253,20 +221,27 @@ static void main_cpu_reset(void *opaque)
- 
-     cpu_reset(CPU(cpu));
- 
--    /* either we have a kernel to boot or we jump to U-Boot */
-+    /*
-+     * On reset the flash is mapped by a shadow TLB, but since we
-+     * don't implement them we need to use the same values U-Boot
-+     * will use to avoid a fault.
-+     * either we have a kernel to boot or we jump to U-Boot
-+     */
-     if (bi->entry != UBOOT_ENTRY) {
-         env->gpr[1] = (16 * MiB) - 8;
-         env->gpr[3] = FDT_ADDR;
-         env->nip = bi->entry;
- 
-         /* Create a mapping for the kernel.  */
--        mmubooke_create_initial_mapping(env, 0, 0);
-+        booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1 << 31);
-         env->gpr[6] = tswap32(EPAPR_MAGIC);
-         env->gpr[7] = (16 * MiB) - 8; /* bi->ima_size; */
- 
-     } else {
-         env->nip = UBOOT_ENTRY;
--        mmubooke_create_initial_mapping_uboot(env);
-+        /* Create a mapping for U-Boot. */
-+        booke_set_tlb(&env->tlb.tlbe[0], 0xf0000000, 0xf0000000, 0x10000000);
-+        env->tlb.tlbe[0].RPN |= 4;
-     }
- }
- 
-diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-index 235281e939..f378e5c4a9 100644
---- a/hw/ppc/virtex_ml507.c
-+++ b/hw/ppc/virtex_ml507.c
-@@ -67,29 +67,6 @@ static struct boot_info
-     void *vfdt;
- } boot_info;
- 
--/* Create reset TLB entries for BookE, spanning the 32bit addr space.  */
--static void mmubooke_create_initial_mapping(CPUPPCState *env,
--                                     target_ulong va,
--                                     hwaddr pa)
--{
--    ppcemb_tlb_t *tlb = &env->tlb.tlbe[0];
--
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 1U << 31; /* up to 0x80000000  */
--    tlb->EPN = va & TARGET_PAGE_MASK;
--    tlb->RPN = pa & TARGET_PAGE_MASK;
--    tlb->PID = 0;
--
--    tlb = &env->tlb.tlbe[1];
--    tlb->attr = 0;
--    tlb->prot = PAGE_VALID | ((PAGE_READ | PAGE_WRITE | PAGE_EXEC) << 4);
--    tlb->size = 1U << 31; /* up to 0xffffffff  */
--    tlb->EPN = 0x80000000 & TARGET_PAGE_MASK;
--    tlb->RPN = 0x80000000 & TARGET_PAGE_MASK;
--    tlb->PID = 0;
--}
--
- static PowerPCCPU *ppc440_init_xilinx(const char *cpu_type, uint32_t sysclk)
- {
-     PowerPCCPU *cpu;
-@@ -139,8 +116,9 @@ static void main_cpu_reset(void *opaque)
-     env->gpr[3] = bi->fdt;
-     env->nip = bi->bootstrap_pc;
- 
--    /* Create a mapping for the kernel.  */
--    mmubooke_create_initial_mapping(env, 0, 0);
-+    /* Create a mapping spanning the 32bit addr space. */
-+    booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1U << 31);
-+    booke_set_tlb(&env->tlb.tlbe[1], 0x80000000, 0x80000000, 1U << 31);
-     env->gpr[6] = tswap32(EPAPR_MAGIC);
-     env->gpr[7] = bi->ima_size;
- }
-diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-index 070524b02e..8a14d623f8 100644
---- a/include/hw/ppc/ppc.h
-+++ b/include/hw/ppc/ppc.h
-@@ -119,6 +119,8 @@ enum {
- #ifndef CONFIG_USER_ONLY
- void booke206_set_tlb(ppcmas_tlb_t *tlb, target_ulong va, hwaddr pa,
-                       hwaddr len);
-+void booke_set_tlb(ppcemb_tlb_t *tlb, target_ulong va, hwaddr pa,
-+                   target_ulong size);
- #endif
- 
- /* ppc_booke.c */
+ PowerNV (Non-Virtualized)
+-M: Cédric Le Goater <clg@kaod.org>
+ M: Nicholas Piggin <npiggin@gmail.com>
+ R: Frédéric Barrat <fbarrat@linux.ibm.com>
+ L: qemu-ppc@nongnu.org
 -- 
 2.45.2
 
