@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709819BBA98
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123D19BBA9A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 17:54:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80KH-0004si-Et; Mon, 04 Nov 2024 11:53:13 -0500
+	id 1t80Kz-00054j-Bx; Mon, 04 Nov 2024 11:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t80KC-0004sN-PE
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t80KA-0004bD-Lo
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730739183;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ipM4JVJ9oifSIpZP3gXnQfEUK0ioCepNz5WE0pEwp8U=;
- b=GWCuc97NVq/IqG4capu0bVkOUc22BS8GZnuLC/9al0CwjBIk28cI3JDy7c1BMLFRN+Pq9y
- +SpIy9RXuDuUM5+3SdnW7Kc12/INm3EQk0rBHrZgahdWQ1G0rkr3egXAF1NHjqhCAKemeK
- EsyHLE0Acv+lqFdecAK0CGC5M4OmDak=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-NLcJ6RxTN5m28gWiwpygTg-1; Mon, 04 Nov 2024 11:53:02 -0500
-X-MC-Unique: NLcJ6RxTN5m28gWiwpygTg-1
-Received: by mail-oa1-f69.google.com with SMTP id
- 586e51a60fabf-29090a98e97so4504875fac.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:53:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t80Kv-00052d-Pd
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:53 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1t80Ku-0004gf-Ev
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 11:53:53 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a9e8522445dso394728166b.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 08:53:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730739231; x=1731344031; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h208FfcvMiJmm0tnJW7SVVNKFW7oPgnIHJ7sZhG3bV0=;
+ b=z5XgqII76qwapFuUFZKeOC/o5p2Cz55HdScA6yvBWXIEfDSraCNv7jKQgeNRkVZkJP
+ qBgPAiGhWVdAgdyu0GhWWN+p2+SxW/9YoHhAManrYUB9j02oo0tHZW0K4U37LKUKAYQm
+ Ho06NRDVBXnJOqAog2DwgahYJ0pri97W3URmFR7uZzBN3qET5/AU+bNNZT4mDU98LzYH
+ aaT8BSCA64Yze6omBUAWtBOdm0XGIu7aVn++S+slVBayRzt8ycOBRJUxTuQ1d+fpUJeH
+ Sjhi6W+orsRet4lkxjm5+Gv8Q5ZPrDAXA7rdHnd9If+0gv39DYFbpJ1z+D2iYY971utN
+ 0USQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730739179; x=1731343979;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ipM4JVJ9oifSIpZP3gXnQfEUK0ioCepNz5WE0pEwp8U=;
- b=OYQN1d+jKi90018zAVnkJCOMDJo6Gin+2KG1gDI6AEaUvtgSsVyU+EFRQRfhBZdOK4
- 6zLXbg1s+2cDBASIzuVgR4dowPFEW17bzs/EqE5ClPb5s6VHYABCoS6NoNwnE6JSPbGE
- xQRWrw8NYn7omVNshXKBUlbM+sT9RPbB6dKy/AGYyv67cljPS8R9HWOPApKJRFC2yGmy
- 6J299wlKjlZRezO7wwh2EJf7RBNIdVC/D/UjS37y3XnjF/EdxHjMZ5wv4Pwa2F8SYnUy
- AaEa9z96AYPqKlGLLQqKmj3bN6y8aOYXXrdyjXzWgIzqKTvTE9ZHa7vVJ1vmCU7cb6+W
- ejOA==
-X-Gm-Message-State: AOJu0YxrOyD6fRJXNFPHKbGBU3/ospsCxUHrBKrQ3ayiQYEBlZFsrLuF
- EL7G5O6qmBAWbaCNEYtXuFvl7809FxDfkQSSIJqtGhLGmqz3EuBJDEegcIl+XQVKz1sRO2wXVVr
- Pdx4p9WmzII8wvs65dWwMt3bfgiXiVK+B5Y1854IzRDOjLgdEWu/Z
-X-Received: by 2002:a05:6870:8294:b0:277:e512:f27a with SMTP id
- 586e51a60fabf-2946470d6a1mr17760166fac.16.1730739179201; 
- Mon, 04 Nov 2024 08:52:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEhyDXK1O1o5rNA8T8+JleeHaDnSpxg5MR4LqXWfpuTxJr+KY/fYlwqQ48DeuuWmuigKcIuSg==
-X-Received: by 2002:a05:6870:8294:b0:277:e512:f27a with SMTP id
- 586e51a60fabf-2946470d6a1mr17760087fac.16.1730739177897; 
- Mon, 04 Nov 2024 08:52:57 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-7189cc7f754sm2078148a34.42.2024.11.04.08.52.56
+ d=1e100.net; s=20230601; t=1730739231; x=1731344031;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h208FfcvMiJmm0tnJW7SVVNKFW7oPgnIHJ7sZhG3bV0=;
+ b=X53KpfL6heKmjEMWYIAI3+iazGAXULyLg3Gv8Z9eY23XuWh8fjE/Z9Jls1h503GhSm
+ rA3kr1ONvrnnjpadFlBSFxU6R46Eg2cxGVXSwDq19H4RSJwFQAAuqALOwICe7wDr8jpT
+ HmikRbKeyO2tZcTw7R4waJBkc+eCgaS99CJ4CKY3JYx79pTOFTuLzOdscA94I4RNPIGn
+ IYGe+ExhuNEbIkA1lNOneDbpq8T646g0fLVAYPVjM34HRxsYl5FqYFQZTYsXwLwNmXDD
+ 8GrHhP6qUJdjOYQ8XKmTbDvTPy1y/ub+vFq6bUV/Vaz1TC301BKObTRPOlbTC6L68VqN
+ xKDg==
+X-Gm-Message-State: AOJu0Yz7FiurGoZc5VVzCiRI6gjvb5DPK2YK7IWPGRU3NZLdmTTYRkts
+ l9qauJj/QDaNKx5cO9o2d04zI+bi1h9ZHUbbNidDtMGAPbK1lW9oDR8tDUoKsuM=
+X-Google-Smtp-Source: AGHT+IH3ZEIcLGUd1wVWXZMoaW7KtSYQhEVEDabRv1QAnSiEO6UclTG2+QNfN8/j+ScWYl4AgaKUMw==
+X-Received: by 2002:a17:906:6a1e:b0:a99:87ea:de57 with SMTP id
+ a640c23a62f3a-a9e6553bc7amr1235008266b.2.1730739230667; 
+ Mon, 04 Nov 2024 08:53:50 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9eb16a30c7sm5090966b.41.2024.11.04.08.53.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 08:52:57 -0800 (PST)
-Date: Mon, 4 Nov 2024 11:52:56 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH 3/5] migration: remove multifd check with postcopy
-Message-ID: <Zyj76Olcwtfs4ndt@x1n>
-References: <20241029150908.1136894-1-ppandit@redhat.com>
- <20241029150908.1136894-4-ppandit@redhat.com>
- <ZyTnWYyHlrJUYQRB@x1n>
- <CAE8KmOzD3L2kO7AucYcyVEbjh-qc5H_1Xc9A2VPxT9mX_8nMGg@mail.gmail.com>
+ Mon, 04 Nov 2024 08:53:49 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 49D6E5F882;
+ Mon,  4 Nov 2024 16:53:48 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/2] virtio-gpu: coverity fixes
+Date: Mon,  4 Nov 2024 16:53:46 +0000
+Message-Id: <20241104165348.2361299-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAE8KmOzD3L2kO7AucYcyVEbjh-qc5H_1Xc9A2VPxT9mX_8nMGg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,41 +92,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 04, 2024 at 05:53:22PM +0530, Prasad Pandit wrote:
-> On Fri, 1 Nov 2024 at 20:06, Peter Xu <peterx@redhat.com> wrote:
-> > > -    return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
-> > > +    return s->capabilities[MIGRATION_CAPABILITY_MULTIFD]
-> > > +            && !migration_in_postcopy();
-> > >  }
-> >
-> > We need to keep this as-is.. I'm afraid.
-> > You can always do proper check with multifd & !postcopy in your use cases.
-> 
-> * Above change simplifies it a lot. Separate checks as
-> migrate_multifd() && !migration_in_postcopy() make it more complicated
-> to follow, because migrate_multifd() is often combined with other
-> checks like migrate_multifd_flush, or migrate_mapped_ram etc. I was
-> hoping to avoid adding one more check to those conditionals. Also,
-> with the above change we don't have to explicitly check where to add
-> !migration_in_postcopy() check.
+Hi Dimitry,
 
-We definitely need a helper like this to simply detect what the user chose
-on the feature.
+I'd already started this before I saw your email so I thought I might
+as well push what I had. Feel free to review/use as a base/ignore as
+you wish ;-)
 
-You can still introduce a new helper, e.g. migrate_multifd_precopy(), if
-that simplifies the code.
+Alex.
 
-Thanks,
+Alex Bennée (2):
+  hw/display: factor out the scanout blob to fb conversion
+  hw/display: check frame buffer can hold blob
 
-> 
-> * Will try to separate them.
-> 
-> Thank you.
-> ---
->   - Prasad
-> 
+ include/hw/virtio/virtio-gpu.h | 15 ++++++++
+ hw/display/virtio-gpu-virgl.c  | 21 +----------
+ hw/display/virtio-gpu.c        | 65 ++++++++++++++++++++++------------
+ 3 files changed, 58 insertions(+), 43 deletions(-)
 
 -- 
-Peter Xu
+2.39.5
 
 
