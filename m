@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F38E9BA9F8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB559BA9ED
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:28:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7krI-0005vB-8Y; Sun, 03 Nov 2024 19:22:16 -0500
+	id 1t7krM-0006Oi-Pr; Sun, 03 Nov 2024 19:22:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kr2-0005Mu-0t; Sun, 03 Nov 2024 19:22:02 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1t7kr3-0005N9-Fy; Sun, 03 Nov 2024 19:22:04 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqy-0002jT-NY; Sun, 03 Nov 2024 19:21:58 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-20cf3e36a76so37722515ad.0; 
- Sun, 03 Nov 2024 16:21:55 -0800 (PST)
+ id 1t7kr1-0002jw-9T; Sun, 03 Nov 2024 19:22:01 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-720cb6ac25aso2512910b3a.3; 
+ Sun, 03 Nov 2024 16:21:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679714; x=1731284514; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679717; x=1731284517; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CcJfhU/kdfOpvzZk2Pu8ysuvtr/X2+No2KDA3lj866Y=;
- b=baoWgxLcJkdePD2Y6e3Pw3g4PU3UE0iCvai0KccXIModoZM/v/pKmSzUQSoQ6M0dBI
- UgEKmv+i98mNNg7Ii5wwDVXg3ZWxfCZh7wwKl5BcgClYEJqn92YfixuSGBt2XdnYb/8g
- Y4isFQ4EOYeoFvEjkHhbOF/BdnJryBfubSp4GSmw7nDW6epJMP1YSxEem+Lx7Bmx0XBr
- EKN+40A0II6YMKHfxpt9r4X5R1Xtax3tdSzDScIfwLD+GqdGaj3jPWh2SxBFbO7CfPYk
- KdE06fgn835/A0UW2Sq+u64Sh7seZooQf3uCTjvGyEWfei0fpPmfcbVlHvd8b6tMRVkM
- uM+w==
+ bh=qjrKzQxSpQ20SJEUNd7c887GiOBsc4dW1KUxIdtg7vI=;
+ b=SnGs5zbu6ZacGjy+8Hu9FtjH2H1L3jJZG4VOqdQswsesS0F8JDl9HYBvS3jNJyBRwJ
+ 1nPMArdFAQrEHvS+NGl0GVTCnJVk2B0dBXPwlsaoGNfMezO2wXdam9LxE+VTRC0FwcBO
+ WtaOa4/IDiQRGrUDfVIH+azJGl9csSG73GvmTeGeitxIpyHkBrA4rGFcqgvGW5D8TK+/
+ NSRmMFqew9YvNPhfTH6gHGzid+sVRQdOYPFIcn2Nr8HYoP+HfCumdFDGrH0YO1mKacfF
+ L2TtXgCm+4T/8U9HWhIFkYwJQshCKxD11Sp/RNnMIhV3PgX845Ldg0p9yW2An/1tQs+c
+ EDKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679714; x=1731284514;
+ d=1e100.net; s=20230601; t=1730679717; x=1731284517;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CcJfhU/kdfOpvzZk2Pu8ysuvtr/X2+No2KDA3lj866Y=;
- b=Fn4gUtCQAlb5+zJIvufL72/vxp+1FxY8y72CKhhDuezZpPayD5clG17JSv4lnplzFZ
- PctE3yoK8qhng1iwckTsNd+sZc4jlNlBW4nHm8K09TPx9F3BAcdU98cloQrNdbWhHyns
- wRuKrFZ5YHwMZaRgEpiCu5BilJ4atAXM7w1MOYMYHU1t6Ertrc/XLdsYt208z2aiMw7B
- xAvfYIU5xChz+VQfsLxLTER+t+XhRePUCXmhQNgtLIhMnIqho6h0DRxXQ40XJL2EmvYM
- aKcXDW7tEQWQD3sjUbraBiZjoK29noeyLBoubBNhYMiWg8JTugBwcaII6WwC1jjf6uy/
- TMRQ==
+ bh=qjrKzQxSpQ20SJEUNd7c887GiOBsc4dW1KUxIdtg7vI=;
+ b=REK/LWt8UXJhb+g9R2M9ZvQD7EHT0iR1AqRMh84bt9wsEKvYI7NRn24MbldetO0zZx
+ 59nQTfsQYi92gfao3+3Hyn5Ipzt9fsXV2L6h2iji3zl+BFLJewcTOV23nQhRVAE4MJ++
+ OhmI/wIqXrJtFK/RS2h8l/oagghY9UYmvTnMGebnFe9Dud6DweOE4S01L4WagXXGrBMA
+ vhcNAaGQoB5yFefIca9kGcDdz4lsSj5XdcJXTNvCXpuKo2KoWqNN8rSLYZuFRkpRfs+C
+ XQpAGWMMSu1O8abRcxPHDEVCShKTBHG05gbRp17lj4eco0OiHkHHolNvX3mcU+k8ANR2
+ FMYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDpTRjN0maltvY4iqyzcovSfl3voWJjEkrsV6WqJtWB3fYeJShHffEikNuP+1gauehsd6Lz3QpjA==@nongnu.org
-X-Gm-Message-State: AOJu0YxVVewcAoZ1wjSAb0uB45d4w3S3DCCnKWaNFf4oIYdBWchUg/Fd
- TWNSNMq050WGt7mK0rLXqgLQVbbfJIPN6dBqK27Y/IePk/XtbowKBMc4tQ==
-X-Google-Smtp-Source: AGHT+IFLJTsKs5H2153MomdXH25od4HS8DPgc+ZaTG8Bz9bkFvI0CKPtGn6hyRU1Qctk5REOmfA4kw==
-X-Received: by 2002:a17:902:f68f:b0:20c:8839:c515 with SMTP id
- d9443c01a7336-21103ca485bmr199758095ad.56.1730679713633; 
- Sun, 03 Nov 2024 16:21:53 -0800 (PST)
+ AJvYcCU5SHiT38/9PC5MHaRdO3Yrokg7MwEx1oW7to453Egyspj/wemlthQNh4Nv838f2ODIWdJJ/qQ25w==@nongnu.org
+X-Gm-Message-State: AOJu0YxtLTVr5N7famX+bU+IMS2bjsx6j6GDbNttI0TrdBIPObNI64O4
+ cBE2e7D5MuaoLzbUYxdG2kwsmUXu6wA1/pYtsZTN55BTQzMcQoLvs9hS1g==
+X-Google-Smtp-Source: AGHT+IG/KHQNSr8NID9bxbR/QYbTbrey8O/A5mNKLYKasroBxemDPgnWuT5T16b054v9I7yCmg9cOA==
+X-Received: by 2002:a05:6a21:1690:b0:1d9:3456:b794 with SMTP id
+ adf61e73a8af0-1d9a84bcdd6mr45310503637.38.1730679716499; 
+ Sun, 03 Nov 2024 16:21:56 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.51
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:53 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:56 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PULL 45/67] spapr: nested: Add Power11 capability support for Nested
- PAPR guests in TCG L0
-Date: Mon,  4 Nov 2024 10:18:34 +1000
-Message-ID: <20241104001900.682660-46-npiggin@gmail.com>
+ Aditya Gupta <adityag@linux.ibm.com>
+Subject: [PULL 46/67] hw/ppc: Implement -dtb support for PowerNV
+Date: Mon,  4 Nov 2024 10:18:35 +1000
+Message-ID: <20241104001900.682660-47-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,84 +92,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-The Power11 architected and raw mode support in Linux was merged via [1]
-and the corresponding support in QEMU is waiting to be added by [2]
-which in V6 currently.
+Currently any device tree passed with -dtb option in QEMU, was ignored
+by the PowerNV code.
 
-Add the Power11 capabilities and the required handling in TCG L0
-implementation of the "Nested PAPR API".
+Read and pass the passed -dtb to the kernel, thus enabling easier
+debugging with custom DTBs.
 
-Note: This patch is based on [2].
+The existing behaviour when -dtb is 'not' passed, is preserved as-is.
 
-[1] https://lore.kernel.org/all/20240221044623.1598642-1-mpe@ellerman.id.au/
-[2] https://lore.kernel.org/all/20240731055022.696051-1-adityag@linux.ibm.com/
+But when a '-dtb' is passed, it completely overrides any dtb nodes or
+changes QEMU might have done, such as '-append' arguments to the kernel
+(which are mentioned in /chosen/bootargs in the dtb), hence add warning
+when -dtb is being used
 
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_nested.c         | 12 +++++++++++-
- include/hw/ppc/spapr_nested.h |  5 ++++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ hw/ppc/pnv.c | 51 ++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 1b41c8fb8b..7def8eb73b 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -771,6 +771,7 @@ static void copy_logical_pvr(void *a, void *b, bool set)
- 
-     if (*pvr_logical_ptr) {
-         switch (*pvr_logical_ptr) {
-+        case CPU_POWERPC_LOGICAL_3_10_P11:
-         case CPU_POWERPC_LOGICAL_3_10:
-             pcr = PCR_COMPAT_3_10 | PCR_COMPAT_3_00;
-             break;
-@@ -1185,6 +1186,12 @@ static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
-         return H_PARAMETER;
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 795acc289f..f0f0d7567d 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -736,21 +736,27 @@ static void pnv_reset(MachineState *machine, ResetType type)
+         }
      }
  
-+    /* P11 capabilities */
-+    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10_P11, 0,
-+        spapr->max_compat_pvr)) {
-+        env->gpr[4] |= H_GUEST_CAPABILITIES_P11_MODE;
+-    fdt = pnv_dt_create(machine);
+-
+-    /* Pack resulting tree */
+-    _FDT((fdt_pack(fdt)));
++    if (machine->fdt) {
++        fdt = machine->fdt;
++    } else {
++        fdt = pnv_dt_create(machine);
++        /* Pack resulting tree */
++        _FDT((fdt_pack(fdt)));
++    }
+ 
+     qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
+     cpu_physical_memory_write(PNV_FDT_ADDR, fdt, fdt_totalsize(fdt));
+ 
+-    /*
+-     * Set machine->fdt for 'dumpdtb' QMP/HMP command. Free
+-     * the existing machine->fdt to avoid leaking it during
+-     * a reset.
+-     */
+-    g_free(machine->fdt);
+-    machine->fdt = fdt;
++    /* Update machine->fdt with latest fdt */
++    if (machine->fdt != fdt) {
++        /*
++         * Set machine->fdt for 'dumpdtb' QMP/HMP command. Free
++         * the existing machine->fdt to avoid leaking it during
++         * a reset.
++         */
++        g_free(machine->fdt);
++        machine->fdt = fdt;
++    }
+ }
+ 
+ static ISABus *pnv_chip_power8_isa_create(PnvChip *chip, Error **errp)
+@@ -952,6 +958,14 @@ static void pnv_init(MachineState *machine)
+         g_free(sz);
+         exit(EXIT_FAILURE);
+     }
++
++    /* checks for invalid option combinations */
++    if (machine->dtb && (strlen(machine->kernel_cmdline) != 0)) {
++        error_report("-append and -dtb cannot be used together, as passed"
++                " command line is ignored in case of custom dtb");
++        exit(EXIT_FAILURE);
 +    }
 +
-     /* P10 capabilities */
-     if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
-         spapr->max_compat_pvr)) {
-@@ -1227,7 +1234,10 @@ static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
-         env->gpr[4] = 1;
+     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
  
-         /* set R5 to the first supported Power Processor Mode */
--        if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
-+        if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10_P11, 0,
-+                             spapr->max_compat_pvr)) {
-+            env->gpr[5] = H_GUEST_CAP_P11_MODE_BMAP;
-+        } else if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
-                              spapr->max_compat_pvr)) {
-             env->gpr[5] = H_GUEST_CAP_P10_MODE_BMAP;
-         } else if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00, 0,
-diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index 3b5cd993c2..e420220484 100644
---- a/include/hw/ppc/spapr_nested.h
-+++ b/include/hw/ppc/spapr_nested.h
-@@ -211,11 +211,14 @@ typedef struct SpaprMachineStateNestedGuest {
- #define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
- #define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
- #define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
--#define H_GUEST_CAP_VALID_MASK        (H_GUEST_CAPABILITIES_P10_MODE | \
-+#define H_GUEST_CAPABILITIES_P11_MODE 0x1000000000000000
-+#define H_GUEST_CAP_VALID_MASK        (H_GUEST_CAPABILITIES_P11_MODE | \
-+                                       H_GUEST_CAPABILITIES_P10_MODE | \
-                                        H_GUEST_CAPABILITIES_P9_MODE)
- #define H_GUEST_CAP_COPY_MEM_BMAP     0
- #define H_GUEST_CAP_P9_MODE_BMAP      1
- #define H_GUEST_CAP_P10_MODE_BMAP     2
-+#define H_GUEST_CAP_P11_MODE_BMAP     3
- #define PAPR_NESTED_GUEST_MAX         4096
- #define H_GUEST_DELETE_ALL_FLAG       0x8000000000000000ULL
- #define PAPR_NESTED_GUEST_VCPU_MAX    2048
+     /*
+@@ -1003,6 +1017,21 @@ static void pnv_init(MachineState *machine)
+         }
+     }
+ 
++    /* load dtb if passed */
++    if (machine->dtb) {
++        int fdt_size;
++
++        warn_report("with manually passed dtb, some options like '-append'"
++                " will get ignored and the dtb passed will be used as-is");
++
++        /* read the file 'machine->dtb', and load it into 'fdt' buffer */
++        machine->fdt = load_device_tree(machine->dtb, &fdt_size);
++        if (!machine->fdt) {
++            error_report("Could not load dtb '%s'", machine->dtb);
++            exit(1);
++        }
++    }
++
+     /* MSIs are supported on this platform */
+     msi_nonbroken = true;
+ 
 -- 
 2.45.2
 
