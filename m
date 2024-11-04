@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4339BBC1A
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 804379BBC02
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sN-0005Tj-AA; Mon, 04 Nov 2024 12:28:27 -0500
+	id 1t80sO-0005UC-TO; Mon, 04 Nov 2024 12:28:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sJ-0005Qy-8w
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:23 -0500
+ id 1t80sL-0005S9-9o
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sD-0000M5-QU
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:22 -0500
+ id 1t80sH-0000Mq-Ao
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741297;
+ s=mimecast20190719; t=1730741300;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CxXq4sNnvBqcxAcyP5/LFmCvhOPA1QvyNHAcrsKDVpE=;
- b=LJlMWePJGepDKB82KZ+NHSLOkMTOZuM1tGPneFDuhcZ8nrIJloMC409DtUUBWEFK5HxfdH
- LUYxi6pftyiJPUJcog+77Kw3VSLi9fo1AYiQiQlTNGxxO9znXcQjnwYrq0v+/IoxXBl2cB
- ZCQzp+dRvYawQA9vtyPHO2UIVoIcuFk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rJilloWL9v8Cwa9SjhS4DIAn5GcNqvslur8KE0ijG6o=;
+ b=X4xrpexINvbFFDL0da4aJr9LvX22u3f+YRIfoDPfMDs7LA8A9x/Z3hyr+ko3DigPh2Yebk
+ /NNRI2U+sYtWaiVWQcNcEMyaRyhydFC93fhLd3+v6arpJRjo7Ejz1Wycnf7OjF7rLwQ3te
+ 2uQeFPdp9BfgBCCswIZvhoHInaXK508=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-6CI_PGD3NmWFV-kTnGmGlg-1; Mon, 04 Nov 2024 12:28:16 -0500
-X-MC-Unique: 6CI_PGD3NmWFV-kTnGmGlg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4314f1e0f2bso29049145e9.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:15 -0800 (PST)
+ us-mta-350-0j2yRt_-OgCveL_uA15gkQ-1; Mon, 04 Nov 2024 12:28:19 -0500
+X-MC-Unique: 0j2yRt_-OgCveL_uA15gkQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539eb3416cdso4699051e87.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741294; x=1731346094;
+ d=1e100.net; s=20230601; t=1730741296; x=1731346096;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CxXq4sNnvBqcxAcyP5/LFmCvhOPA1QvyNHAcrsKDVpE=;
- b=R9NtEwURyAtDTzwGqvWjHGxDSC5rCJWCzaJMBC+OqRmAQHwQgjXwT2EviNH2MniWCV
- tZ8+hbZ53VaUzm0Rk54GQXyCm6NTZLVD5vwqv9D31dusoVE+XkWhFcrWbS7wD4ki3fgg
- yZV2YpmvH7Cb1PCkoFiPi1V3w97xtGG2tAOUkG+irp6pRVvGtt9ngjKtRoXIkmVcj/Jg
- KnBaYs+ys1z174LkRFT5Zoyb/JWj6wyoFbpfQ/hdJSRJRDyg50+cIAEHHbhflfvAdfx+
- PD0xnBfgWa/PQuUxQVnbnUCrbBoXLjztIFQAGQvCQYc9vAo0ZmGyW1AtmdN54GPAT9yJ
- 1FEg==
-X-Gm-Message-State: AOJu0YziHFWCXmm8HTXzlawmgV6V4als4sfIPWaWr3PRGzbPnsHn0ZsH
- cbNwO7JdI3HoTauMTkH1QnkCBBHcUqKXrGiUu831jGfmySRxyeX0Lfzc6mfUeHzv10l5J9UYoah
- u1sDpsNNzpG2m1BPqrY39oSr9kAAGpqmzeYWXKvOUt4mB/8ibeYbR8DUVvCNt+qcliQoUmsOlLY
- CHsVQaNJoJOZEQMtAVxlN7TRyZl4kiojYFWnT9h8k=
-X-Received: by 2002:a05:600c:1d27:b0:431:52a3:d9ea with SMTP id
- 5b1f17b1804b1-432831c1ff1mr118529595e9.0.1730741294030; 
- Mon, 04 Nov 2024 09:28:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMILYGsmvvv+3hE9LiKBc+hzuPrz4wymD4pf61/j3m7fhpdMHMI21QLlirS5Sxm9CcMOSvow==
-X-Received: by 2002:a05:600c:1d27:b0:431:52a3:d9ea with SMTP id
- 5b1f17b1804b1-432831c1ff1mr118529225e9.0.1730741293606; 
- Mon, 04 Nov 2024 09:28:13 -0800 (PST)
+ bh=rJilloWL9v8Cwa9SjhS4DIAn5GcNqvslur8KE0ijG6o=;
+ b=EkGAH5XITy13LYgqf0nNcwYG+/i2SS0volPvcNG8bxZhbbxIDDPbcrbZDnHUQzfFVw
+ tAJQR0a6awqHAtt1C9t56yGh85QkkXH40WLRddsWQrDLhSXIb2/4FmIRnW9tOlktf9ya
+ SqDuY+EIRT/nQ0+A8ffMu0mXaafjiWYAkhmlIKd1/sN/QVhtjNAcfRAZ6SfLgWwmzSZo
+ FBqmRbibNPcK5WVosr9myyvFT4dLau2WXLgv3m8jffXD/4bDa+d70q+HWs+btOlv5/jB
+ ng/KSQ98V3xMekC7r4eJBFLyGyBT+IH2pEtdzHPr8fdTrKW/u6EIU0kzbkNLZLJx0y4F
+ uwcA==
+X-Gm-Message-State: AOJu0YyvKIljqv2HH4WBzQJv2b1S52W+iODbcWaEVBp9loX/X25J+kn6
+ 6Ir49rmKF/31I8lGA1UfVFjYQzW6y+aFJWFOfowUL+hAoxx+4Oy2Gpc9/BCZsgXXRf4xgNc9PFj
+ C50ubNBm183/uQBCXumA1B9fBsH1KUZPYRd1n/tR5+LLoA7yEKDhsHhiuhiycWU7NaJlTdWztJi
+ ldzFFas0EIiGnLJFw1yY7fvhj311EmrUOWVTrG9dk=
+X-Received: by 2002:a05:6512:6ca:b0:539:e88f:2398 with SMTP id
+ 2adb3069b0e04-53b34a19082mr15881384e87.39.1730741296178; 
+ Mon, 04 Nov 2024 09:28:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG5/G5lHJETWS/M2/T7irkPpf7iLkrl4EKM+E9y/4r8NpxspclCOoSsZkRoSxKxTKO27xMHtg==
+X-Received: by 2002:a05:6512:6ca:b0:539:e88f:2398 with SMTP id
+ 2adb3069b0e04-53b34a19082mr15881347e87.39.1730741295631; 
+ Mon, 04 Nov 2024 09:28:15 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd91096asm194447775e9.13.2024.11.04.09.28.12
+ 5b1f17b1804b1-4327d698055sm160636155e9.40.2024.11.04.09.28.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:12 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:14 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 23/40] rust/pl011: remove commented out C code
-Date: Mon,  4 Nov 2024 18:27:02 +0100
-Message-ID: <20241104172721.180255-24-pbonzini@redhat.com>
+Subject: [PULL 24/40] rust/pl011: Use correct masks for IBRD and FBRD
+Date: Mon,  4 Nov 2024 18:27:03 +0100
+Message-ID: <20241104172721.180255-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -106,78 +106,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-This code juxtaposed what should be happening according to the C device
-model but is not needed now that this has been reviewed (I hope) and its
-validity checked against what the C device does (I hope, again).
+Port fix from commit cd247eae16ab1b9ce97fd34c000c1b883feeda45
+"hw/char/pl011: Use correct masks for IBRD and FBRD"
 
-No functional change.
+Related issue: <https://gitlab.com/qemu-project/qemu/-/issues/2610>
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-8-051e7a25b978@linaro.org
+Link: https://lore.kernel.org/r/20241024-rust-round-2-v1-9-051e7a25b978@linaro.org
 ---
- rust/hw/char/pl011/src/device.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 051c59f39ae..98357db04e8 100644
+index 98357db04e8..788b47203b1 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -192,7 +192,6 @@ pub fn read(
-                 0
-             }
-             Ok(DR) => {
--                // s->flags &= ~PL011_FLAG_RXFF;
-                 self.flags.set_receive_fifo_full(false);
-                 let c = self.read_fifo[self.read_pos];
-                 if self.read_count > 0 {
-@@ -200,11 +199,9 @@ pub fn read(
-                     self.read_pos = (self.read_pos + 1) & (self.fifo_depth() - 1);
-                 }
-                 if self.read_count == 0 {
--                    // self.flags |= PL011_FLAG_RXFE;
-                     self.flags.set_receive_fifo_empty(true);
-                 }
-                 if self.read_count + 1 == self.read_trigger {
--                    //self.int_level &= ~ INT_RX;
-                     self.int_level &= !registers::INT_RX;
-                 }
-                 // Update error bits.
-@@ -374,13 +371,6 @@ fn loopback_mdmctrl(&mut self) {
-          * dealt with here.
-          */
+@@ -19,10 +19,10 @@
+ };
  
--        //fr = s->flags & ~(PL011_FLAG_RI | PL011_FLAG_DCD |
--        //                  PL011_FLAG_DSR | PL011_FLAG_CTS);
--        //fr |= (cr & CR_OUT2) ? PL011_FLAG_RI  : 0;
--        //fr |= (cr & CR_OUT1) ? PL011_FLAG_DCD : 0;
--        //fr |= (cr & CR_RTS)  ? PL011_FLAG_CTS : 0;
--        //fr |= (cr & CR_DTR)  ? PL011_FLAG_DSR : 0;
--        //
-         self.flags.set_ring_indicator(self.control.out_2());
-         self.flags.set_data_carrier_detect(self.control.out_1());
-         self.flags.set_clear_to_send(self.control.request_to_send());
-@@ -391,10 +381,6 @@ fn loopback_mdmctrl(&mut self) {
-         let mut il = self.int_level;
+ /// Integer Baud Rate Divider, `UARTIBRD`
+-const IBRD_MASK: u32 = 0x3f;
++const IBRD_MASK: u32 = 0xffff;
  
-         il &= !Interrupt::MS;
--        //il |= (fr & PL011_FLAG_DSR) ? INT_DSR : 0;
--        //il |= (fr & PL011_FLAG_DCD) ? INT_DCD : 0;
--        //il |= (fr & PL011_FLAG_CTS) ? INT_CTS : 0;
--        //il |= (fr & PL011_FLAG_RI)  ? INT_RI  : 0;
+ /// Fractional Baud Rate Divider, `UARTFBRD`
+-const FBRD_MASK: u32 = 0xffff;
++const FBRD_MASK: u32 = 0x3f;
  
-         if self.flags.data_set_ready() {
-             il |= Interrupt::DSR as u32;
-@@ -500,10 +486,8 @@ pub fn put_fifo(&mut self, value: c_uint) {
-         let slot = (self.read_pos + self.read_count) & (depth - 1);
-         self.read_fifo[slot] = value;
-         self.read_count += 1;
--        // s->flags &= ~PL011_FLAG_RXFE;
-         self.flags.set_receive_fifo_empty(false);
-         if self.read_count == depth {
--            //s->flags |= PL011_FLAG_RXFF;
-             self.flags.set_receive_fifo_full(true);
-         }
+ const DATA_BREAK: u32 = 1 << 10;
  
 -- 
 2.47.0
