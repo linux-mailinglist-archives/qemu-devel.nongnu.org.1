@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FB69BBFCE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87EB9BBFCC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:13:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84KC-000140-9S; Mon, 04 Nov 2024 16:09:24 -0500
+	id 1t84KO-0002Jw-Be; Mon, 04 Nov 2024 16:09:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K8-0000wQ-J2
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KK-000255-Pp
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84K7-0005X1-2F
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:20 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84KJ-0005Y2-6W
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:09:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754557;
+ s=mimecast20190719; t=1730754570;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=z8mjCAYRXCtl4i5x731E2QWqLSQ+blqkHsX/35ib1TE=;
- b=A34QkXLyj7k8va6cXHfioEKBG9kcAsT8pFIo1xBeUhu8wXiqSt2rHGjs0ThOzn5T43yeLq
- 4Oa9jn4lnOtw9kWHihF5BoJZy46o2CHKwE7cvMwyKNBcb8fjUHsyaxTCcRAf07rF/OI0RU
- g6UOO/J7WALAMM0k77nc929c8ykXD+c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6x+Legev3Cp2GqMVGf/goAaVdwIyT9f6UX5WvCHt0Bs=;
+ b=gFTjbQVenfc+MCGxsnQBlK1LzIhcfKEZPfMVgorX3UvShAPFd3EyS5Aurp0pxMvJuUlQJD
+ FZzVMT6qRYWJ/uLeN1NAaXrAL2Ki34FHZjwUsVZM1Bnp4/AZps2HUgzxdMh4SgpCP0z9yx
+ Aas9Q9vYviyuQybhabnDcVfNeGff9RM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-FY0PbRVZNRSO4HWPtcHqQQ-1; Mon, 04 Nov 2024 16:09:16 -0500
-X-MC-Unique: FY0PbRVZNRSO4HWPtcHqQQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315e8e9b1cso27297275e9.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:16 -0800 (PST)
+ us-mta-522-KSDLAMRPMOG9zs0rmt4jEQ-1; Mon, 04 Nov 2024 16:09:29 -0500
+X-MC-Unique: KSDLAMRPMOG9zs0rmt4jEQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-431604a3b47so29806865e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:09:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754555; x=1731359355;
+ d=1e100.net; s=20230601; t=1730754567; x=1731359367;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z8mjCAYRXCtl4i5x731E2QWqLSQ+blqkHsX/35ib1TE=;
- b=BEcKQDYusjtFS+EXwXjSv2kHqo9hZLU5kIOyMjU6k79aXB/aYsU3TEX6U96JyTXk+2
- //nYeL0f4y271gFw1Gus8xsvKhGnm8MrO9vmzTCTHUUJYMcUgjuLUpbiAbHU170iMvFS
- Yd6JjJYtjXCKVrkvFvvEtQkwGYopXArQyf+71PlVK0rrpUp6W8dTg9twE0Oz/d4FBDnA
- Io8uCtKwTvR5C1Ak0YMhl8w6IztbxfFkevS1oBSFqWMkJiRvsocOG7nA8frjpaIwkJkL
- ThazhJ40jZZZEtTZ2J42dQuCDXoVc+Ip2SjZutJBeCLf8Om1Wohj4PFe4srGHrr9vPB/
- xHMA==
-X-Gm-Message-State: AOJu0YxV66czLlIK6bzYRHLbsEQFDUWKk49VfWGhttvbol7lTWbyJ3SK
- IPAktqFG7rZYgzro5vz8VXmvb4yWfp2TO26N/XIe4heyHiqbQe7IFawcTOgJ28GNwfn8bL8ci2C
- BMDoqM+1T6ewZ7Bgecyync+GY1I4c5Y+ck90WKCp5tEbxd22X1JOvm2PF7PCxL2/lA1M5ZnLae+
- 1Cnr64IeO8n/UynXM7w7FjkGOmsQGbbQ==
-X-Received: by 2002:a05:600c:1382:b0:431:5475:3cd1 with SMTP id
- 5b1f17b1804b1-4327dacc373mr122768585e9.17.1730754554797; 
- Mon, 04 Nov 2024 13:09:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE9OxVsWEUkkxztFDINuwekKPZehgtJpRIpJYkMWxO6+XhnNGH3YGJU36vfpcI+EJq92UN0+g==
-X-Received: by 2002:a05:600c:1382:b0:431:5475:3cd1 with SMTP id
- 5b1f17b1804b1-4327dacc373mr122768395e9.17.1730754554404; 
- Mon, 04 Nov 2024 13:09:14 -0800 (PST)
+ bh=6x+Legev3Cp2GqMVGf/goAaVdwIyT9f6UX5WvCHt0Bs=;
+ b=sWAiO6xwXHHwrXWjA3fuzKaS+BoGfWwAs8tAfh1pqM+ta53GsPnvEYIPaNSjD7c1va
+ 4NCPkGnu0MiwJGaonLkY7XMp27aqMKLHV7rDZ3RNwivIcr52kxf6xNVzxlf9bGzGEJyG
+ PXqzj96pZklT0bvz4BI6J370kk6Hr32vEJ7EbJKF72ZOvWEllVSwXP9ND8evcGO2Dmy+
+ M+n3NxvTHmdCWqaLyrwz9jYP74kZcrbSh61kqpEobZQNh4Bd3KQ9/4zGN9KiNmw7pecN
+ aXkVsGgMJMvpfrVJfBMiG/2Yk0pipTcI47xyrrnrDuiLdZvR7B7wwH/PVMHkRth0vbuN
+ XRIg==
+X-Gm-Message-State: AOJu0YzBUJ9IYLVbPJyLPy2O8UtJz6ry+8f0A35l6eZ6q7nzJ+PMjZ1A
+ 1nfwQ1ze2FtdxQ+0vAo+yfJP8dXlO2KunaQZva9rosHrf8eSZECjqbE4FmFSk+WpBheeWhS3Vl5
+ yxxX2flZAjImMRQoodWlrE/qyZyJqNv9LeX3bcqQRSmZXnDbvAunZgXRQmZ71Is1bgIf9ACa7io
+ e1ICxPqtIDrE5K9jMNVLRsQXc3ti88ig==
+X-Received: by 2002:adf:cc8f:0:b0:37d:52b5:451e with SMTP id
+ ffacd0b85a97d-3806118aa34mr24572871f8f.33.1730754566768; 
+ Mon, 04 Nov 2024 13:09:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFb/huLCOED1Mr63dAZfR2IURCjoh90EA7yGtOd0mhUxxiWmrHjOkmtwur/UtwThtJJgkiBHw==
+X-Received: by 2002:adf:cc8f:0:b0:37d:52b5:451e with SMTP id
+ ffacd0b85a97d-3806118aa34mr24572851f8f.33.1730754566334; 
+ Mon, 04 Nov 2024 13:09:26 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5ac002sm164216815e9.5.2024.11.04.13.09.11
+ 5b1f17b1804b1-4327d5e7c51sm163221465e9.25.2024.11.04.13.09.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:09:13 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:09:10 -0500
+ Mon, 04 Nov 2024 13:09:25 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:09:22 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 56/65] hw/cxl: Ensure there is enough data to read the input
- header in cmd_get_physical_port_state()
-Message-ID: <721c99aefcdb311bd41d20678d3935fd11454641.1730754238.git.mst@redhat.com>
+ Salil Mehta <salil.mehta@huawei.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 59/65] qtest: allow ACPI DSDT Table changes
+Message-ID: <e98411c2cbbac24ff49992a09226a2662726a031.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,35 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Salil Mehta <salil.mehta@huawei.com>
 
-If len_in is smaller than the header length then the accessing the
-number of ports will result in an out of bounds access.
-Add a check to avoid this.
+list changed files in tests/qtest/bios-tables-test-allowed-diff.h
 
-Reported-by: Esifiel <esifiel@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20241101133917.27634-11-Jonathan.Cameron@huawei.com>
+Reported-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Message-Id: <20241103102419.202225-3-salil.mehta@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 41 +++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index f4a436e172..2d4d62c454 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -530,6 +530,9 @@ static CXLRetCode cmd_get_physical_port_state(const struct cxl_cmd *cmd,
-     in = (struct cxl_fmapi_get_phys_port_state_req_pl *)payload_in;
-     out = (struct cxl_fmapi_get_phys_port_state_resp_pl *)payload_out;
- 
-+    if (len_in < sizeof(*in)) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-     /* Check if what was requested can fit */
-     if (sizeof(*out) + sizeof(*out->ports) * in->num_ports > cci->payload_max) {
-         return CXL_MBOX_INVALID_INPUT;
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..512d40665d 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,42 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT",
++"tests/data/acpi/x86/q35/DSDT.acpierst",
++"tests/data/acpi/x86/q35/DSDT.acpihmat",
++"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
++"tests/data/acpi/x86/q35/DSDT.applesmc",
++"tests/data/acpi/x86/q35/DSDT.bridge",
++"tests/data/acpi/x86/q35/DSDT.core-count",
++"tests/data/acpi/x86/q35/DSDT.core-count2",
++"tests/data/acpi/x86/q35/DSDT.cphp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.dimmpxm",
++"tests/data/acpi/x86/q35/DSDT.ipmibt",
++"tests/data/acpi/x86/q35/DSDT.ipmismbus",
++"tests/data/acpi/x86/q35/DSDT.ivrs",
++"tests/data/acpi/x86/q35/DSDT.memhp",
++"tests/data/acpi/x86/q35/DSDT.mmio64",
++"tests/data/acpi/x86/q35/DSDT.multi-bridge",
++"tests/data/acpi/x86/q35/DSDT.noacpihp",
++"tests/data/acpi/x86/q35/DSDT.nohpet",
++"tests/data/acpi/x86/q35/DSDT.numamem",
++"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
++"tests/data/acpi/x86/q35/DSDT.thread-count",
++"tests/data/acpi/x86/q35/DSDT.thread-count2",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
++"tests/data/acpi/x86/q35/DSDT.type4-count",
++"tests/data/acpi/x86/q35/DSDT.viot",
++"tests/data/acpi/x86/q35/DSDT.xapic",
 -- 
 MST
 
