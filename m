@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA1D9BA9D2
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F38E9BA9F8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:29:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7krJ-00062l-P2; Sun, 03 Nov 2024 19:22:18 -0500
+	id 1t7krI-0005vB-8Y; Sun, 03 Nov 2024 19:22:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqw-0005MI-VN; Sun, 03 Nov 2024 19:21:58 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1t7kr2-0005Mu-0t; Sun, 03 Nov 2024 19:22:02 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqu-0002jE-Ox; Sun, 03 Nov 2024 19:21:54 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-71e7086c231so3039691b3a.0; 
- Sun, 03 Nov 2024 16:21:52 -0800 (PST)
+ id 1t7kqy-0002jT-NY; Sun, 03 Nov 2024 19:21:58 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-20cf3e36a76so37722515ad.0; 
+ Sun, 03 Nov 2024 16:21:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679711; x=1731284511; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679714; x=1731284514; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=diqtDboffH4PVwPLiDsjTddqv3X52rB5uwdlE74AvHo=;
- b=PehCk+KKU6/ry3dOTUKmJIgerpxofXRsiXpIIz7fWMOvUfmbng8Xu1z8n+quFQYeSB
- 5H6w97/HbqdI/RZb9PntCTe8PUxLwRi30mHnUEPOGSUtYgVlU2LPK5HI/7YXT7CeLGxq
- A+2RRoAI5Y2p+n61xZu/XPg+L+gJUUSL2edILQ4Ai2jAjHugwMcYH/xEH0RA9EeY8NP/
- l/Dz/s9kLUETZdJTNgcZ0e+1OzRm9q2A4vyn1BWRDtswQHx+r/Pb6YMIfRch+VeQKzss
- iKN6JY47CPfZlaa9H8DCc0ZuJSfliCuTHG4Wu0VEHYUHFnLtAkk+0Sx3J/xSH3O0/A4o
- wI+Q==
+ bh=CcJfhU/kdfOpvzZk2Pu8ysuvtr/X2+No2KDA3lj866Y=;
+ b=baoWgxLcJkdePD2Y6e3Pw3g4PU3UE0iCvai0KccXIModoZM/v/pKmSzUQSoQ6M0dBI
+ UgEKmv+i98mNNg7Ii5wwDVXg3ZWxfCZh7wwKl5BcgClYEJqn92YfixuSGBt2XdnYb/8g
+ Y4isFQ4EOYeoFvEjkHhbOF/BdnJryBfubSp4GSmw7nDW6epJMP1YSxEem+Lx7Bmx0XBr
+ EKN+40A0II6YMKHfxpt9r4X5R1Xtax3tdSzDScIfwLD+GqdGaj3jPWh2SxBFbO7CfPYk
+ KdE06fgn835/A0UW2Sq+u64Sh7seZooQf3uCTjvGyEWfei0fpPmfcbVlHvd8b6tMRVkM
+ uM+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679711; x=1731284511;
+ d=1e100.net; s=20230601; t=1730679714; x=1731284514;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=diqtDboffH4PVwPLiDsjTddqv3X52rB5uwdlE74AvHo=;
- b=VB91vxd3LIvi1on2FgSHsqehpd0hDYE0AgyjFD8cZltVs5puRJe5GcgFZWHz+HUekw
- B07JCtpAtrQl9GuQAAzASl6mVSjTEuK14/D8K8rHKkDRfnsrn5sYhTqAPdOhRlQDtWJd
- IFdiED0FEH9zNAyJM98ax3xSevwA6XRPHT+25fpXJTT7sof9au2g6qZPCz4scSvPjUg/
- DMozsU6/MbLmm857zIxIH1l4yTrz44hHjJSpUAQefXgOWm1HgOda5WEj3q+7DiURwHH3
- 4usb9WVwN1DjQl2KKa49TBGYh7t4H8M1W7C4VtJlu63ybIE6ZX+1iEMkbSifXiUQwy0x
- /JfQ==
+ bh=CcJfhU/kdfOpvzZk2Pu8ysuvtr/X2+No2KDA3lj866Y=;
+ b=Fn4gUtCQAlb5+zJIvufL72/vxp+1FxY8y72CKhhDuezZpPayD5clG17JSv4lnplzFZ
+ PctE3yoK8qhng1iwckTsNd+sZc4jlNlBW4nHm8K09TPx9F3BAcdU98cloQrNdbWhHyns
+ wRuKrFZ5YHwMZaRgEpiCu5BilJ4atAXM7w1MOYMYHU1t6Ertrc/XLdsYt208z2aiMw7B
+ xAvfYIU5xChz+VQfsLxLTER+t+XhRePUCXmhQNgtLIhMnIqho6h0DRxXQ40XJL2EmvYM
+ aKcXDW7tEQWQD3sjUbraBiZjoK29noeyLBoubBNhYMiWg8JTugBwcaII6WwC1jjf6uy/
+ TMRQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVSZVM9z7SOzVK4UGm8ZVE5tO3h9vSHDdhqcqnyoyWLlnP22FT5m1hGyboQ0oUmVhTTnJ3vLOmyfw==@nongnu.org
-X-Gm-Message-State: AOJu0YxK4f9zHtLamK1Bha9FIM4M7S7Xe1PEsE/GjqdCz4KsyxOT0C8l
- 1y7RtFQQ7RPGVjByR0KaOQr5ITwlPWSdtH1RfasQ32k6mLHtAkOyrBoM8Q==
-X-Google-Smtp-Source: AGHT+IFVRfln4oS+AzrD3B9yMKo0hefucZqEgXWtwrgvrXVY7mg1+C6OOENuBPB47eavqGYpI0dhug==
-X-Received: by 2002:a05:6a00:80c:b0:71e:5d1d:1aa0 with SMTP id
- d2e1a72fcca58-72062f4e529mr41653388b3a.6.1730679710652; 
- Sun, 03 Nov 2024 16:21:50 -0800 (PST)
+ AJvYcCVDpTRjN0maltvY4iqyzcovSfl3voWJjEkrsV6WqJtWB3fYeJShHffEikNuP+1gauehsd6Lz3QpjA==@nongnu.org
+X-Gm-Message-State: AOJu0YxVVewcAoZ1wjSAb0uB45d4w3S3DCCnKWaNFf4oIYdBWchUg/Fd
+ TWNSNMq050WGt7mK0rLXqgLQVbbfJIPN6dBqK27Y/IePk/XtbowKBMc4tQ==
+X-Google-Smtp-Source: AGHT+IFLJTsKs5H2153MomdXH25od4HS8DPgc+ZaTG8Bz9bkFvI0CKPtGn6hyRU1Qctk5REOmfA4kw==
+X-Received: by 2002:a17:902:f68f:b0:20c:8839:c515 with SMTP id
+ d9443c01a7336-21103ca485bmr199758095ad.56.1730679713633; 
+ Sun, 03 Nov 2024 16:21:53 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.47
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:50 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:53 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Amit Machhiwal <amachhiw@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 44/67] spapr: nested: Add support for DPDES SPR in GSB for TCG
- L0
-Date: Mon,  4 Nov 2024 10:18:33 +1000
-Message-ID: <20241104001900.682660-45-npiggin@gmail.com>
+ Amit Machhiwal <amachhiw@linux.ibm.com>
+Subject: [PULL 45/67] spapr: nested: Add Power11 capability support for Nested
+ PAPR guests in TCG L0
+Date: Mon,  4 Nov 2024 10:18:34 +1000
+Message-ID: <20241104001900.682660-46-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,68 +95,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-The DPDES support for doorbell emulation and handling for KVM on PAPR
-guests was added in Linux via [1]. Subsequently, a new GSB (Guest State
-Buffer) element for DPDES was added in Linux; the same has been missing
-in TCG L0 implementation. Add support for DPDES register's APIv2 GSB
-element and required handling in `spapr_nested.c`.
+The Power11 architected and raw mode support in Linux was merged via [1]
+and the corresponding support in QEMU is waiting to be added by [2]
+which in V6 currently.
 
-Currently, booting a KVM guest inside a QEMU TCG guest fails with the
-following crash. The crash occurs while handling the GUEST_RUN_VCPU
-hcall made in TCG L0. In the hcall handling path, map_and_getset_state()
-calls getset_state(), which, in turn, calls guest_state_request_check()
-to validate the GSR (Guest State Request) elements. During this process,
-guest_state_request_check() iterates over the GSR elements and receives
-a NULL return code from guest_state_element_type_find() for the type
-variable corresponding to the DPDES register's elemetn ID (which was
-unknown to TCG L0). Subsequently, getset_state() returns H_P3,
-ultimately leading to the hcall failure and causing the KVM guest to
-crash.
+Add the Power11 capabilities and the required handling in TCG L0
+implementation of the "Nested PAPR API".
 
-  KVM: unknown exit, hardware reason ffffffffffffffea
-  [ ... KVM register dump ... ]
+Note: This patch is based on [2].
 
-Fix this by adding the required support in TCG L0 implementation of
-APIv2.
+[1] https://lore.kernel.org/all/20240221044623.1598642-1-mpe@ellerman.id.au/
+[2] https://lore.kernel.org/all/20240731055022.696051-1-adityag@linux.ibm.com/
 
-[1] https://lore.kernel.org/all/20240605113913.83715-1-gautam@linux.ibm.com/
-
-Fixes: 4a575f9a0567 ("spapr: nested: Initialize the GSB elements lookup table.")
-Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_nested.c         | 1 +
- include/hw/ppc/spapr_nested.h | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/ppc/spapr_nested.c         | 12 +++++++++++-
+ include/hw/ppc/spapr_nested.h |  5 ++++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index c02785756c..1b41c8fb8b 100644
+index 1b41c8fb8b..7def8eb73b 100644
 --- a/hw/ppc/spapr_nested.c
 +++ b/hw/ppc/spapr_nested.c
-@@ -982,6 +982,7 @@ struct guest_state_element_type guest_state_element_types[] = {
-     GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_FSCR,  fscr),
-     GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_PSPB,   pspb),
-     GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_CTRL,  ctrl),
-+    GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_DPDES, dpdes),
-     GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_VRSAVE, vrsave),
-     GUEST_STATE_ELEMENT_ENV_DW(GSB_VCPU_SPR_DAR,   dar),
-     GUEST_STATE_ELEMENT_ENV_W(GSB_VCPU_SPR_DSISR,  dsisr),
+@@ -771,6 +771,7 @@ static void copy_logical_pvr(void *a, void *b, bool set)
+ 
+     if (*pvr_logical_ptr) {
+         switch (*pvr_logical_ptr) {
++        case CPU_POWERPC_LOGICAL_3_10_P11:
+         case CPU_POWERPC_LOGICAL_3_10:
+             pcr = PCR_COMPAT_3_10 | PCR_COMPAT_3_00;
+             break;
+@@ -1185,6 +1186,12 @@ static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
+         return H_PARAMETER;
+     }
+ 
++    /* P11 capabilities */
++    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10_P11, 0,
++        spapr->max_compat_pvr)) {
++        env->gpr[4] |= H_GUEST_CAPABILITIES_P11_MODE;
++    }
++
+     /* P10 capabilities */
+     if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
+         spapr->max_compat_pvr)) {
+@@ -1227,7 +1234,10 @@ static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
+         env->gpr[4] = 1;
+ 
+         /* set R5 to the first supported Power Processor Mode */
+-        if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
++        if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10_P11, 0,
++                             spapr->max_compat_pvr)) {
++            env->gpr[5] = H_GUEST_CAP_P11_MODE_BMAP;
++        } else if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0,
+                              spapr->max_compat_pvr)) {
+             env->gpr[5] = H_GUEST_CAP_P10_MODE_BMAP;
+         } else if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00, 0,
 diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index 93ef14adcc..3b5cd993c2 100644
+index 3b5cd993c2..e420220484 100644
 --- a/include/hw/ppc/spapr_nested.h
 +++ b/include/hw/ppc/spapr_nested.h
-@@ -99,7 +99,8 @@
- #define GSB_VCPU_SPR_HASHKEYR   0x1050
- #define GSB_VCPU_SPR_HASHPKEYR  0x1051
- #define GSB_VCPU_SPR_CTRL       0x1052
--                    /* RESERVED 0x1053 - 0x1FFF */
-+#define GSB_VCPU_SPR_DPDES      0x1053
-+                    /* RESERVED 0x1054 - 0x1FFF */
- #define GSB_VCPU_SPR_CR         0x2000
- #define GSB_VCPU_SPR_PIDR       0x2001
- #define GSB_VCPU_SPR_DSISR      0x2002
+@@ -211,11 +211,14 @@ typedef struct SpaprMachineStateNestedGuest {
+ #define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
+ #define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
+ #define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
+-#define H_GUEST_CAP_VALID_MASK        (H_GUEST_CAPABILITIES_P10_MODE | \
++#define H_GUEST_CAPABILITIES_P11_MODE 0x1000000000000000
++#define H_GUEST_CAP_VALID_MASK        (H_GUEST_CAPABILITIES_P11_MODE | \
++                                       H_GUEST_CAPABILITIES_P10_MODE | \
+                                        H_GUEST_CAPABILITIES_P9_MODE)
+ #define H_GUEST_CAP_COPY_MEM_BMAP     0
+ #define H_GUEST_CAP_P9_MODE_BMAP      1
+ #define H_GUEST_CAP_P10_MODE_BMAP     2
++#define H_GUEST_CAP_P11_MODE_BMAP     3
+ #define PAPR_NESTED_GUEST_MAX         4096
+ #define H_GUEST_DELETE_ALL_FLAG       0x8000000000000000ULL
+ #define PAPR_NESTED_GUEST_VCPU_MAX    2048
 -- 
 2.45.2
 
