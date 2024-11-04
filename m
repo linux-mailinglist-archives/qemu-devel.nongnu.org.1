@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A22A9BBF39
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C829BBF5F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:08:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84H9-0003Z8-WA; Mon, 04 Nov 2024 16:06:16 -0500
+	id 1t84HI-0003zI-BE; Mon, 04 Nov 2024 16:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84H7-0003Y1-9i
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:13 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84HB-0003ns-Pk
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84H5-0005If-O7
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:13 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84HA-0005Iv-9A
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754371;
+ s=mimecast20190719; t=1730754375;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Twycu9LeMPLWhT+3APHxCe65PWhI42c5Tsx7A0KoeC8=;
- b=UMgXrgY47RJzOBmpbkERTNfPip8HZokK4K3ACD9mdfxYgonb613yq3pyMmABI4rvvRDNC6
- bUSQH+mvEGh0oUbYZI6nKpz6b10lQ8EymrjlwnkGuVDiPWgYykyZQfKdwkO0JHn2e5xC5N
- m5Ye4RY13SWEYcStFGVkWLftEGXGvak=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=M3wqy1laOvYaRTXIjGpIu1PJBysiXZhRmeHUFm2/bAI=;
+ b=U83kTbrpz1EwgPPdBGnJ6X/rrQt//Pzft+vyprzwhRFEYDfH1qpR+vF3HcLdAo8ivFCJHB
+ fgVc2HFvQ+RSOvTvFgABnbHhtixBQY6sSdn5vd3ILrX3u8QQA5C+WxU8EbSys9VCatXdxP
+ Ih1aGUHvOoejYlJ4T94bLm3GBUM9gdk=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-hlx8OxVRMRKV95QxZyl2qg-1; Mon, 04 Nov 2024 16:06:08 -0500
-X-MC-Unique: hlx8OxVRMRKV95QxZyl2qg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4315dd8fe7fso39429795e9.3
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:06:08 -0800 (PST)
+ us-mta-580-TJYuk4i_PKyfpRLfbfq5jQ-1; Mon, 04 Nov 2024 16:06:13 -0500
+X-MC-Unique: TJYuk4i_PKyfpRLfbfq5jQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539e5f9df25so2787908e87.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:06:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754366; x=1731359166;
+ d=1e100.net; s=20230601; t=1730754371; x=1731359171;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Twycu9LeMPLWhT+3APHxCe65PWhI42c5Tsx7A0KoeC8=;
- b=qTm7HFLRLF4nBh8WHInEwU+S2D5xIGfOe9VfCXYsFw8eo8l5ZwDRLEPOgjrYEbxK4A
- qaB8kPGyiOZeJ8yJfQqCjYr/wI/bPWKo0jt1lKyZciG4Cfpp3qygdr5REmrIjZDsKHcc
- tnx0AhzaCGkqOsPHN/6MYUvYkA+6uQwDt0X6amWOCR0vH5gXAsEAOa/7SkAMGIlZVm4N
- 4KBMqNrShnGbXzwtfAw4UdsoTCHT1fIMEkFMnr/fZlm8fMhRs8NIdXakQU8oZh2pw24u
- VU69Qg3SKw+2HUtcz/cemBXwK8mrKYb3wuDbTqTntIMVqyM/d9iF1XHwqKcwB6khC+Rf
- lWKQ==
-X-Gm-Message-State: AOJu0YxPtHjamBJLYF93NYznKNz9TneqZG2USbkCp9G3CqjwpEY0u/f+
- V3koeti7XCABusGjK32/nwL+ndvQGfbSLBSNyZhvTdWCY2ntI+EoryxV1o6zpM27uJ/Ue63LJn9
- Y4py2Bxu0DhfKVfC2j3LHfMBvygknB0nPXKjmNtldlRVhDi++W6f/B3WHa1CdEIRryCvhXVMxR7
- LK32LCW34fgMCp43Xpfe22np+Vrq+Ahw==
-X-Received: by 2002:a05:6000:18ac:b0:37d:4f69:c9b with SMTP id
- ffacd0b85a97d-381c7a6ddd1mr15096079f8f.35.1730754366464; 
- Mon, 04 Nov 2024 13:06:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG403upuUw1/pSjERuBZvmBUJAi7cqFgpVdvOeZ8KP70NsIm3W+Y1VjgoyBaw8iAjV1LRramQ==
-X-Received: by 2002:a05:6000:18ac:b0:37d:4f69:c9b with SMTP id
- ffacd0b85a97d-381c7a6ddd1mr15096056f8f.35.1730754366056; 
- Mon, 04 Nov 2024 13:06:06 -0800 (PST)
+ bh=M3wqy1laOvYaRTXIjGpIu1PJBysiXZhRmeHUFm2/bAI=;
+ b=Li4JTDOta8KQ6Yim3QYDjcjXhFhEx77mN4ZR4JnagLT6Dt3DcL0KE6z68obY4Wtdeg
+ Pc5pgg2xNAL0dOtvMPJgfR4McpgGCzq7FsWjQQJC+gMWKPeSxu/idIiUJA3Vo4Z5b4Bk
+ DqPq+hHQCrDgnYntEMFTxxLdtZVJkBgpRUcib0yxt26VZT9UnMWVqFHIZ2UjtswC0r6h
+ l3YlEhJaa30C8nqSw+J5CSfRBBRK3VJt0czKYq3a57tVhWLEpbvt3JC8udHVD7kZ7QS4
+ 1vSdpOBhuGhsaIcF2gR6+fTlCrx5GjQT0ggG8236b4d4aa7X0MfQQZF+jEwG07Tm0L8a
+ QZSw==
+X-Gm-Message-State: AOJu0Yw49k/BEVNZJ9gEVQt+Y/iHP6jUWoYxQZZu+RKO9in6ntqZrXh9
+ xyklAAWN7vzuqNgHvnm7AFUY2o2cvsKsMxEkhPuV8Vd5kvDCaOkmSUIGiQaGkia7msqKRKDN0nt
+ hrW916IXDszIdnoZE7ULSUrXjSzBcBS8G2Bh14L57ZvL9VAuS+n/mMQi/7/cGOp59J2NOw7pjQH
+ Wcw1v/307SpSfe1DMOeXrVjBRktpiXNg==
+X-Received: by 2002:a05:6512:e98:b0:533:3fc8:43ee with SMTP id
+ 2adb3069b0e04-53b348d0d3emr17331355e87.13.1730754371545; 
+ Mon, 04 Nov 2024 13:06:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEP7970synxMt3POaa+uRKLERHLgm2zCMyXwZvmPOKdkSaL1Gx8xe0NbiHTZdZmW+xZJ17cxA==
+X-Received: by 2002:a05:6512:e98:b0:533:3fc8:43ee with SMTP id
+ 2adb3069b0e04-53b348d0d3emr17331324e87.13.1730754371031; 
+ Mon, 04 Nov 2024 13:06:11 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd8e7f33sm194127935e9.6.2024.11.04.13.06.04
+ 5b1f17b1804b1-432a26a7508sm907965e9.0.2024.11.04.13.06.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:06:05 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:06:02 -0500
+ Mon, 04 Nov 2024 13:06:09 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:06:06 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Igor Mammedov <imammedo@redhat.com>, "Huang, Ying" <ying.huang@intel.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 09/65] hw/pci-bridge: Add acpi_uid property to TYPE_PXB_BUS
-Message-ID: <97b9cb066e5f10845b4bc4d2ec657deb1e73f910.1730754238.git.mst@redhat.com>
+Subject: [PULL 10/65] hw/i386/acpi: Use TYPE_PXB_BUS property acpi_uid for DSDT
+Message-ID: <dc907b5cac14ef06f59963d697e81ff2516b9b3f.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,52 +106,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Enable ACPI table creation for PCI Expander Bridges to be independent
-of PCI internals.  Note that the UID is currently the PCI bus number.
-This is motivated by the forthcoming ACPI Generic Port SRAT entries
-which can be made completely independent of PCI internals.
+Rather than relying on PCI internals, use the new acpi_property
+to obtain the ACPI _UID values.  These are still the same
+as the PCI Bus numbers so no functional change.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Tested-by: "Huang, Ying" <ying.huang@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240916171017.1841767-8-Jonathan.Cameron@huawei.com>
+Message-Id: <20240916171017.1841767-9-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci-bridge/pci_expander_bridge.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ hw/i386/acpi-build.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index dfaea6cbf4..3d52ea5867 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -85,12 +85,25 @@ static uint16_t pxb_bus_numa_node(PCIBus *bus)
-     return pxb->numa_node;
- }
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index afb2fa2edc..88227e343e 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1475,6 +1475,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         QLIST_FOREACH(bus, &bus->child, sibling) {
+             uint8_t bus_num = pci_bus_num(bus);
+             uint8_t numa_node = pci_bus_numa_node(bus);
++            uint32_t uid;
  
-+static void prop_pxb_uid_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    uint32_t uid = pci_bus_num(PCI_BUS(obj));
-+
-+    visit_type_uint32(v, name, &uid, errp);
-+}
-+
- static void pxb_bus_class_init(ObjectClass *class, void *data)
- {
-     PCIBusClass *pbc = PCI_BUS_CLASS(class);
+             /* look only for expander root buses */
+             if (!pci_bus_is_root(bus)) {
+@@ -1485,6 +1486,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+                 root_bus_limit = bus_num - 1;
+             }
  
-     pbc->bus_num = pxb_bus_num;
-     pbc->numa_node = pxb_bus_numa_node;
-+
-+    object_class_property_add(class, "acpi_uid", "uint32",
-+                              prop_pxb_uid_get, NULL, NULL, NULL);
-+    object_class_property_set_description(class, "acpi_uid",
-+        "ACPI Unique ID used to distinguish this PCI Host Bridge / ACPI00016");
- }
++            uid = object_property_get_uint(OBJECT(bus), "acpi_uid",
++                                           &error_fatal);
+             scope = aml_scope("\\_SB");
  
- static const TypeInfo pxb_bus_info = {
+             if (pci_bus_is_cxl(bus)) {
+@@ -1492,7 +1495,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+             } else {
+                 dev = aml_device("PC%.02X", bus_num);
+             }
+-            aml_append(dev, aml_name_decl("_UID", aml_int(bus_num)));
++            aml_append(dev, aml_name_decl("_UID", aml_int(uid)));
+             aml_append(dev, aml_name_decl("_BBN", aml_int(bus_num)));
+             if (pci_bus_is_cxl(bus)) {
+                 struct Aml *aml_pkg = aml_package(2);
 -- 
 MST
 
