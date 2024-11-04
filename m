@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606F09BBC05
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E42F9BBC07
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:33:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80sP-0005UY-Ip; Mon, 04 Nov 2024 12:28:29 -0500
+	id 1t80sW-00065v-8K; Mon, 04 Nov 2024 12:28:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sL-0005SB-AC
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:25 -0500
+ id 1t80sS-0005tU-Rh
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:33 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t80sJ-0000Mx-78
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:24 -0500
+ id 1t80sO-0000O7-7A
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:28:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730741301;
+ s=mimecast20190719; t=1730741306;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3UmgO9fsqdEmWzMoi61XEIn14aScetkmk6rxlD4mFVQ=;
- b=dLI8b/AQ/hWMRD4qUtTfY00KD+h56omXSk8ktPAKVNudqhwOC+f+5XTwTsSs8L8YpSi7Xm
- GCyzFUN5JWFtCdhZQWMzOCvXZmBtcfMcDvvn7b+H/kEGTrqdci/AFXKDP73SMjnDXShPUD
- WWLzA38DmxIqqjkyMoPHHpWhUN1+VkE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XKH82Qv7Oy514F5AxGk5rkT73airVJkv+YqHS8mBhzc=;
+ b=OzaDCKdUGYRc9G51U+qcq93ITvfRDEbXFHbIp83qXYXdWlQ3s84C56g3VNTFLUxk7EscLA
+ JIAt5nUL88ZZbEVg/0CSzTBE9YSIuCSrQALZQ+tJPLJlhBhDJ5QmXZz7ecs7dRP1vOI1pD
+ zwFxBWwtGHm6TUPOO8tyFcPACTPbMmo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-8pGi4Gn3MGi8B1cLc40y4Q-1; Mon, 04 Nov 2024 12:28:19 -0500
-X-MC-Unique: 8pGi4Gn3MGi8B1cLc40y4Q-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-381d07c377cso1637134f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:19 -0800 (PST)
+ us-mta-622-vb3FHSVmM5q89lGvqFXEaA-1; Mon, 04 Nov 2024 12:28:22 -0500
+X-MC-Unique: vb3FHSVmM5q89lGvqFXEaA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4315eaa3189so38366125e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:28:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730741297; x=1731346097;
+ d=1e100.net; s=20230601; t=1730741300; x=1731346100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3UmgO9fsqdEmWzMoi61XEIn14aScetkmk6rxlD4mFVQ=;
- b=t5a3cvXqvuzKDAVsSjcRQMq+ySQwbSnUn1WfFMFok+3G6WDFlcCTr9HacbPRn/DDH7
- CT82JY40BvRvTvmlHxJ5CmR9OWlTgUw6+HkgBD9Nmic/8riaod3a/K+S0RX9CuCVxUlc
- mNjaHckOJeuGWYBDHbZnk0vKfk37un8D295fOXZnuF/HGHl20L+aFVVaurEkkhpoTAGR
- t5dhH+F7vXO9q4pb8b+rf6OLB7Q8llpyd6mObRKjDcqyjdFUiRyY6FGRE0okfBvIXkRY
- 8jczNBFj42C3A1u25l1HBe55TB0qWzDCRC+amM0Hw+ug07qbK1Qgev1ibpbdKT1KqYh8
- qT8g==
-X-Gm-Message-State: AOJu0YwAg+4LbxSUVrRgZhYXkxba/A5wA/eAoO99R7Juw64NjNvBhlZ7
- kcfdB4thjm7oFplygMARvFPEwY2ajFkY+ndknAt02BKrPiwcftFIoQggSfaATysmH7pN5PZ/xrX
- GfYW9yTNthpiAQUEnrpGN5nWHpNqThxT5ivHafFTHBwTNj+oD3waLRLSJ63OO1o4Yfp2+FgfTgE
- vhow3ogKcCFhBZ/6tZFR7aAqwf9+hDy3AIfRbNmZY=
-X-Received: by 2002:a5d:47ac:0:b0:37d:48f2:e749 with SMTP id
- ffacd0b85a97d-381c7a4636cmr13690109f8f.10.1730741297402; 
- Mon, 04 Nov 2024 09:28:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpMPJYcg9oY5gWVVg3kGldS68WlxPrUKLExniUyJ3JWSOfRtU6X6FWHRWIW7Ku9YYH8bymVQ==
-X-Received: by 2002:a5d:47ac:0:b0:37d:48f2:e749 with SMTP id
- ffacd0b85a97d-381c7a4636cmr13690078f8f.10.1730741296938; 
- Mon, 04 Nov 2024 09:28:16 -0800 (PST)
+ bh=XKH82Qv7Oy514F5AxGk5rkT73airVJkv+YqHS8mBhzc=;
+ b=ISvmqN3hQ5+NUHVh5zMyJbNK+LCDqwvgXcuSQRybGS1yAnloRs3y1fzFxLhHDWGQtO
+ 20LXHOGPVBGeu3IT//XSGuVicLL8Zau072WzpFjdq2hqWIShJmW7eUjy4EtojSwxbl40
+ 78XJg86MnUTN7rRAGUg6qVlc32Z83et0BthHFQrqaF5TuVdaV/G/3eSlEQWxKZMCBOVC
+ cYY+qL/On667XFm5sRBpGbbwAfLjkrHITvZbUC1ftrvfRiKM8s61k8AVuuqn7/vo4xyR
+ QEauDrLSpJrR2SOW/CJ0WUdzKGnl0NgN/+cU1voJQe1Iq9NTbYp5R15ep/8aenJy8aFc
+ i9YQ==
+X-Gm-Message-State: AOJu0YxF6bTkAR/hNG7oS2HHvyl7W3/TqT8y5rM1vuDRobObJafvWf6a
+ sS5Fb5gSONB3RRDS3eJmm0dbbuy4IHTibGKaA6Ukr1Vg7h7onve1A8lzjAy8Foflk5Z4ZIcHRyo
+ i00iIrKu4YQ3RPW+MopF6x6D1L6KbJQpGhasWmO85+/yjTxjh/lq5TTxmpBuk0BWUZxW6MMxo8/
+ UUj6wDafRIGR9T/4MWZJBX8W0zFTtX1DshoALvRI0=
+X-Received: by 2002:a05:600c:4f8a:b0:42c:ba83:3f00 with SMTP id
+ 5b1f17b1804b1-43283242bbamr141805085e9.1.1730741299982; 
+ Mon, 04 Nov 2024 09:28:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG5aHIxoHJ7zck4IgvTDUbw7/dLCy8G5i0lBS4Fj7R6SagkTPs/9YNojWhckxu034F6CNQECw==
+X-Received: by 2002:a05:600c:4f8a:b0:42c:ba83:3f00 with SMTP id
+ 5b1f17b1804b1-43283242bbamr141804785e9.1.1730741299563; 
+ Mon, 04 Nov 2024 09:28:19 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7c08sm13779745f8f.17.2024.11.04.09.28.16
+ 5b1f17b1804b1-4327d6983ddsm162048755e9.44.2024.11.04.09.28.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 09:28:16 -0800 (PST)
+ Mon, 04 Nov 2024 09:28:17 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -71,9 +71,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 25/40] rust: patch bilge-impl to allow compilation with 1.63.0
-Date: Mon,  4 Nov 2024 18:27:04 +0100
-Message-ID: <20241104172721.180255-26-pbonzini@redhat.com>
+Subject: [PULL 26/40] rust: fix cfgs of proc-macro2 for 1.63.0
+Date: Mon,  4 Nov 2024 18:27:05 +0100
+Message-ID: <20241104172721.180255-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104172721.180255-1-pbonzini@redhat.com>
 References: <20241104172721.180255-1-pbonzini@redhat.com>
@@ -104,90 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apply a patch that removes "let ... else" constructs, replacing them with
-"if let ... else" or "let ... = match ...".  "let ... else" was stabilized in
-Rust 1.65.0.
+Replay the configuration that would be computed by build.rs when compiling
+on a 1.63.0 compiler.
 
 Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitattributes                                |  2 +
- subprojects/bilge-impl-0.2-rs.wrap            |  1 +
- .../packagefiles/bilge-impl-1.63.0.patch      | 45 +++++++++++++++++++
- 3 files changed, 48 insertions(+)
- create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+ subprojects/packagefiles/proc-macro2-1-rs/meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/.gitattributes b/.gitattributes
-index 6dc6383d3d1..9ce7a19581a 100644
---- a/.gitattributes
-+++ b/.gitattributes
-@@ -5,3 +5,5 @@
- *.rs            diff=rust
- *.rs.inc        diff=rust
- Cargo.lock      diff=toml merge=binary
-+
-+*.patch         -text -whitespace
-diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.2-rs.wrap
-index eefb10c36c2..b24c34a9043 100644
---- a/subprojects/bilge-impl-0.2-rs.wrap
-+++ b/subprojects/bilge-impl-0.2-rs.wrap
-@@ -5,3 +5,4 @@ source_filename = bilge-impl-0.2.0.tar.gz
- source_hash = feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000adb2d8
- #method = cargo
- patch_directory = bilge-impl-0.2-rs
-+diff_files = bilge-impl-1.63.0.patch
-diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects/packagefiles/bilge-impl-1.63.0.patch
-new file mode 100644
-index 00000000000..987428a6d65
---- /dev/null
-+++ b/subprojects/packagefiles/bilge-impl-1.63.0.patch
-@@ -0,0 +1,45 @@
-+--- a/src/shared/discriminant_assigner.rs
-++++ b/src/shared/discriminant_assigner.rs
-+@@ -26,20 +26,20 @@
-+         let discriminant_expr = &discriminant.1;
-+         let variant_name = &variant.ident;
-+ 
-+-        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr else {
-++        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr {
-++            let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
-++            if discriminant_value > self.max_value() {
-++                abort!(variant, "Value of variant exceeds the given number of bits")
-++            }
-++
-++            Some(discriminant_value)
-++        } else {
-+             abort!(
-+                 discriminant_expr,
-+                 "variant `{}` is not a number", variant_name;
-+                 help = "only literal integers currently supported"
-+             )
-+-        };
-+-
-+-        let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
-+-        if discriminant_value > self.max_value() {
-+-            abort!(variant, "Value of variant exceeds the given number of bits")
-+         }
-+-
-+-        Some(discriminant_value)
-+     }
-+ 
-+     fn assign(&mut self, variant: &Variant) -> u128 {
-+--- a/src/shared/fallback.rs
-++++ b/src/shared/fallback.rs
-+@@ -22,8 +22,9 @@
-+             }
-+             Unnamed(fields) => {
-+                 let variant_fields = fields.unnamed.iter();
-+-                let Ok(fallback_value) = variant_fields.exactly_one() else {
-+-                    abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
-++                let fallback_value = match variant_fields.exactly_one() {
-++                    Ok(ok) => ok,
-++                    _ => abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
-+                 };
-+ 
-+                 if !is_last_variant {
+diff --git a/subprojects/packagefiles/proc-macro2-1-rs/meson.build b/subprojects/packagefiles/proc-macro2-1-rs/meson.build
+index 818ec59336b..8e601b50ccc 100644
+--- a/subprojects/packagefiles/proc-macro2-1-rs/meson.build
++++ b/subprojects/packagefiles/proc-macro2-1-rs/meson.build
+@@ -15,7 +15,9 @@ _proc_macro2_rs = static_library(
+   rust_abi: 'rust',
+   rust_args: [
+     '--cfg', 'feature="proc-macro"',
+-    '--cfg', 'span_locations',
++    '--cfg', 'no_literal_byte_character',
++    '--cfg', 'no_literal_c_string',
++    '--cfg', 'no_source_text',
+     '--cfg', 'wrap_proc_macro',
+   ],
+   dependencies: [
 -- 
 2.47.0
 
