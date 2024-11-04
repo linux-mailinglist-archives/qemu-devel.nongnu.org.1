@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31C79BA9D3
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A9F9BA9D6
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:25:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kol-00079x-8g; Sun, 03 Nov 2024 19:19:39 -0500
+	id 1t7koq-0007BZ-RX; Sun, 03 Nov 2024 19:19:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7koj-00079S-Nw; Sun, 03 Nov 2024 19:19:37 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1t7kon-0007Ag-Mo; Sun, 03 Nov 2024 19:19:41 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7koi-0002GV-7V; Sun, 03 Nov 2024 19:19:37 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-71e592d7f6eso2831456b3a.3; 
- Sun, 03 Nov 2024 16:19:35 -0800 (PST)
+ id 1t7kol-0002HI-Bw; Sun, 03 Nov 2024 19:19:41 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-71e592d7f6eso2831471b3a.3; 
+ Sun, 03 Nov 2024 16:19:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679574; x=1731284374; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679577; x=1731284377; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OjJKXaqs1iegzxz1bDudDPZPn8CH5RdfS7pWj3NCT6c=;
- b=mdwhBkTX9bdupTqil03ICE++p36e34Kxmw1X0eYY+bGSK6cQw1NTlBzWzp4JeEEW6Q
- a/6Vf44aCVXz3PWx6f0xQYJgUH+iF+4W07IF9ne62qvh0QqBcs5sAMzcmCYBUVdGhXIF
- SuerSkZEZzm76lSyvTisO3IuirfYkbbWSbgqZJGnQJ5Opm+DMAZrO6TV4RruUKxCSWz5
- GWKFi9iaZ1OLFRvN6Qn4+5rDxV1R4TjqCNW8MGkdhHz43b6tutPZk6jP21nogizPAUbq
- xi++zfY8rv6+pwceqZ1EZfqvo6vrJGXWnDi7hOcQqIFf047TkfvGr3EVAGFYqRJ9piYE
- FYAw==
+ bh=J1xac5W5zKwCyt+Affs+nBDH85dTqE+Fj+UGOQD6hfU=;
+ b=E8E5I7/C7EKp9MtANFskQdcq9eUInc1v8z8V0YbbObyDPAub3lMJXtzP9i+oTCGlV9
+ o1O1+ZMrI6ZclHHiL1PPfqSAEzLqspbpuPSmc3xA4s0KuPKeb39UT79FUWSYDCnMSuvx
+ qFdyvvTdmsTPrS+xsWKta10ofqh6BWtOIiv5aBILySJPKVtBZPeDqyXZxyYRtnpYrNwH
+ lde/sOentJwsrPon53Yl1Mp+RXMTS9Gvn6f9D2sygvcCwPCX280w8fwIIBmgqj5KwTTf
+ cnRAR6i/dnHnW/cBQ7C5olsviwT6u5tlOvSOMGxrhRJUi3A4FWHmeU4oP+KEBboCUOrQ
+ ifFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679574; x=1731284374;
+ d=1e100.net; s=20230601; t=1730679577; x=1731284377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OjJKXaqs1iegzxz1bDudDPZPn8CH5RdfS7pWj3NCT6c=;
- b=P7uu7PzT5Kq6P5+Cz5wpY5/o5d4Jn4SKAKPasqGSL4B1fQC53exlGUItGSuytD0fhq
- OQkjIdN2GS0l9jQ7MjbqATh9CCpyAHGCFQusXEDNVApIS4A2kAdG31o1Fnqlq2s0AP29
- bn+raIdXexmtHMKwZd8y3nn+yxr3NZmkXI/JGNsE5ysMjxneSfjbBJLQJzRblu117crV
- evjecgpK1C/MpfLuF3FsoCE8xb91wo+eWjCE2V3Ebo2Lhlb9QNxzOJYZZ5nbFFcNotwZ
- zRvFTOKqz7QrQ2ZrY/RhHDPoRWDo+kXIt2jNvPPy5JkRKHZQANvDL6kjfCBwrmZkNGBW
- EqVw==
+ bh=J1xac5W5zKwCyt+Affs+nBDH85dTqE+Fj+UGOQD6hfU=;
+ b=m1+gSmrg4zDhU+Id2uSrnhMKIKIlmUrejC5M9abvBQgJs/oAMpbIXoO1lArb8q3H6f
+ 7iIYrC0OYTcv/cELZMCL9eUOKhfLe2JRdEZVysHWQENE1Nsi2mcWVUpmEyZz+FmfB/Ct
+ Oc26ciTshJ+Zyv1DypAORN8xRtpH017iWTcmLDPpRCl1OTSCCIsIDFnxDAqgAvxhea5N
+ w/sSyWjl54n7RHQfRvYMcFH1gMHUucfvsYsEXxb9x16BP4FWpS0DNfLJlBdiavaPgGU7
+ b851s2CW8RMnoyeiAyDTtRUP/jt0kE3/QdOsKhrEmG8gKAQCDMJC0UxQRiBGUeJtbYx6
+ sFNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUoI1ADHwffNO2pZ+FuumlCyMz7vOlRB7UBXp4hDsAhKUMWGjDt048O8nc8yZidvZgBRXYVtQpzyA==@nongnu.org
-X-Gm-Message-State: AOJu0YzIcOR/dB3tq0Z9LXtIPQxspPKBVQW5vpPHNqgnwpfWHtvIgrGm
- Ri0U8JTJAI8XIz6KdIsGnHmKYwyrj+PT2pR73Z85mOI3qiYrbW1n5BOPOg==
-X-Google-Smtp-Source: AGHT+IEoVzhlMMyBp9YZXRbcCvsLDWNK9jeXh/6O4VQJBpgF+hfJUUBI9y7GWCoYMVqhF9oEq7HOeA==
-X-Received: by 2002:a05:6a21:78d:b0:1d8:aca7:912 with SMTP id
- adf61e73a8af0-1dba5409a21mr15403489637.28.1730679574367; 
- Sun, 03 Nov 2024 16:19:34 -0800 (PST)
+ AJvYcCUyOrgBqDW6IHp+ibsSM+IJmJSpdvvF2XdVt9/ixX8owNF3SQXJQq4LP0Oo06G5XV+p7ybO2HVEjA==@nongnu.org
+X-Gm-Message-State: AOJu0YzB+dRoeEFdBx8parjmhkxp0rzevVAU6kz82Uy1VwT8bsMAVpnf
+ KiXBmG2dhzbkTHz537ubpo2kdXwECN366ppoDFYF/1Mmx0cZHp0EdxxYuw==
+X-Google-Smtp-Source: AGHT+IH5cHPj72ksc9koh0cETtaxNbETBrj+9kfbgW9UZ2hzjdvV39jCmtTagZVgromXuWKTVmjQXg==
+X-Received: by 2002:a05:6a00:3d4d:b0:71e:108e:9c16 with SMTP id
+ d2e1a72fcca58-720c98d51ffmr16913733b3a.12.1730679577430; 
+ Sun, 03 Nov 2024 16:19:37 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.31
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.19.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:19:33 -0800 (PST)
+ Sun, 03 Nov 2024 16:19:37 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/67] target/ppc: PMIs are level triggered
-Date: Mon,  4 Nov 2024 10:17:55 +1000
-Message-ID: <20241104001900.682660-7-npiggin@gmail.com>
+Subject: [PULL 07/67] target/ppc: Fix doorbell delivery to threads in powersave
+Date: Mon,  4 Nov 2024 10:17:56 +1000
+Message-ID: <20241104001900.682660-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,55 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In Book-S / Power processors, the performance monitor interrupts are
-driven by the MMCR0[PMAO] bit, which is level triggered and not cleared
-by the interrupt.
-
-Others may have different performance monitor architecture, but none of
-those are implemented by QEMU.
+Doorbell exceptions are not not cleared when they cause a wake from
+powersave state, only when they take the corresponding interrupt.
+The sreset-on-wake logic must avoid clearing the interrupt in this
+case.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 4 ----
- 1 file changed, 4 deletions(-)
+ target/ppc/excp_helper.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index f33fc36db2..701abe1b6d 100644
+index 701abe1b6d..b619a6adde 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -2187,7 +2187,6 @@ static void p7_deliver_interrupt(CPUPPCState *env, int interrupt)
+@@ -2237,7 +2237,9 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
          powerpc_excp(cpu, POWERPC_EXCP_DECR);
          break;
-     case PPC_INTERRUPT_PERFM:
--        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
-         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+     case PPC_INTERRUPT_DOORBELL:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
++        if (!env->resume_as_sreset) {
++            env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
++        }
+         if (is_book3s_arch2x(env)) {
+             powerpc_excp(cpu, POWERPC_EXCP_SDOOR);
+         } else {
+@@ -2245,7 +2247,9 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
+         }
          break;
-     case 0:
-@@ -2250,7 +2249,6 @@ static void p8_deliver_interrupt(CPUPPCState *env, int interrupt)
+     case PPC_INTERRUPT_HDOORBELL:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
++        if (!env->resume_as_sreset) {
++            env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
++        }
          powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
          break;
      case PPC_INTERRUPT_PERFM:
--        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
-         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
+@@ -2301,6 +2305,7 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+ 
+     case PPC_INTERRUPT_HDECR: /* Hypervisor decrementer exception */
+         /* HDEC clears on delivery */
++        /* XXX: should not see an HDEC if resume_as_sreset. assert? */
+         env->pending_interrupts &= ~PPC_INTERRUPT_HDECR;
+         powerpc_excp(cpu, POWERPC_EXCP_HDECR);
          break;
-     case PPC_INTERRUPT_EBB: /* EBB exception */
-@@ -2330,7 +2328,6 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+@@ -2320,11 +2325,15 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
+         powerpc_excp(cpu, POWERPC_EXCP_DECR);
+         break;
+     case PPC_INTERRUPT_DOORBELL:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
++        if (!env->resume_as_sreset) {
++            env->pending_interrupts &= ~PPC_INTERRUPT_DOORBELL;
++        }
+         powerpc_excp(cpu, POWERPC_EXCP_SDOOR);
+         break;
+     case PPC_INTERRUPT_HDOORBELL:
+-        env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
++        if (!env->resume_as_sreset) {
++            env->pending_interrupts &= ~PPC_INTERRUPT_HDOORBELL;
++        }
          powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
          break;
      case PPC_INTERRUPT_PERFM:
--        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
-         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
-         break;
-     case PPC_INTERRUPT_EBB: /* EBB exception */
-@@ -2444,7 +2441,6 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
-         powerpc_excp(cpu, POWERPC_EXCP_SDOOR_HV);
-         break;
-     case PPC_INTERRUPT_PERFM:
--        env->pending_interrupts &= ~PPC_INTERRUPT_PERFM;
-         powerpc_excp(cpu, POWERPC_EXCP_PERFM);
-         break;
-     case PPC_INTERRUPT_THERM:  /* Thermal interrupt */
 -- 
 2.45.2
 
