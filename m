@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44579BA9E8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1429BA9E2
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:26:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7krr-0007ry-3y; Sun, 03 Nov 2024 19:22:51 -0500
+	id 1t7krt-0008BT-Ej; Sun, 03 Nov 2024 19:22:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7krN-0006jU-AV; Sun, 03 Nov 2024 19:22:21 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1t7krR-0006z8-Td; Sun, 03 Nov 2024 19:22:31 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7krL-0002mJ-LL; Sun, 03 Nov 2024 19:22:21 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-71e61b47c6cso3273851b3a.2; 
- Sun, 03 Nov 2024 16:22:18 -0800 (PST)
+ id 1t7krP-0002me-EH; Sun, 03 Nov 2024 19:22:25 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-72097a5ca74so3421483b3a.3; 
+ Sun, 03 Nov 2024 16:22:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679738; x=1731284538; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679741; x=1731284541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gO8rc0AL2JsckP0Oo9U10hDIi/2TOJ1ZcNhDVDLVnL0=;
- b=KN2L9S4WAQ4EVzSVWwAhqO6wh/PC5ykxXltyQhDBMqZCe/e3gWfmQpB4fZ4M023Mz2
- 9PAsln3WVEFF+puSyWkI1ko1Qr3fRdBc/djCzxMvxMR5VsHY9UwZvbBFGr7VyZ2gW+aW
- ye61pnm1JNy1xL6MjuMFUry5f9z0s+gQsBn4MnVSZAy/TJIU1EeYCCKSqAfTaLZrsaGi
- FY9kiKM9PLSBMaToCUxET9t+m/nwKapPcOKr2+Lssgzoi32XhffVO/PKKP7zEGsOfVvs
- AJn+ipuDYFO99fh3xDiKBVerNUU49Q4NQWuKRVqrWAnVKmtQ9QIhX3kA4nhQwjDaA6fF
- kcEQ==
+ bh=Bh6b9iqeWevef2cEJe76rh+lALiI/hMsSWHKlE5vZws=;
+ b=RbSN8V9dU0Y7dXdspHTV7elI1MShJtKuopH9yJ5rVu3EBH/7wuxMIjNw0eu9pWF8w0
+ 8LsQMDBriQ/MGpziIA7/XN8NF38eRQePgDASyJ0Zw3I3UDABVOy7gu3GwVyWvW2JdW4B
+ VBVzRMM4sTYyPwqJGqgEhpA45OcF9glBunyyc7kMeqziqJikerleviRLtj8EdmE2OPVN
+ IMFInbO/0BbWzu+irIvzc/XoxQoKzxEWsObd2AbWplO09S8tP+Ke0eGYLjED37UavxHC
+ y6Phnkie5MJTj9PGUi/VXKz9QNlxT2apL6G3bhiRwvReSzpY1esfGas2iH1C6A9QX5eu
+ e1QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679738; x=1731284538;
+ d=1e100.net; s=20230601; t=1730679741; x=1731284541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gO8rc0AL2JsckP0Oo9U10hDIi/2TOJ1ZcNhDVDLVnL0=;
- b=pwlrjsjN8O2DZmRAV1JGchkDW1Jkf9R6C90Jx94fyfhGVWPzO++nunKO2tA71H5Egu
- 3A7o3nSAW85BBQo9QuX1VHBqHE276p8lLzgsh5AOxZE9OoU1Ah6mKKX1EQvdnrufgXSG
- CFikyC0RZ4JXsltZir8GubQWCJENPP5i4AZ1w0y1VwMI9YoBuS92QlJpW1KEyiFXFBCY
- prvNvSe7jyTnPR12qN7FeZRxNh2i+yktv9UzdjUVZqEKTzTUSAFev1zEk/X3h2caHraq
- a3CMZ9mfDO4mWpFfz6lczDen092u7hAKQokR2Sx3fwaLmRt403f8Cfz/7ww6UOhvfoSz
- 41Fg==
+ bh=Bh6b9iqeWevef2cEJe76rh+lALiI/hMsSWHKlE5vZws=;
+ b=nVpUEukq+Gkyvm2HRdfwNxNo8Z/e1NRTvBZKfenBKosssf2KtNfpofOs7TPHIbFKRn
+ UPsBBdpXrZGSN0lTKKpx196DlDvi/CXMu2LG3JFfgZdxkRpee1d4tQmYHB5TDjcoaw7j
+ zhmT442pUvCPZoD9yvmqXhWQ041n4Ym3/5oeXJvhNbzUxBgHP9rEVXswD5pqWAefdDnr
+ b6T1CIDzTqzT8iMrTqXT7trhJUu1Hypg15s2ThxKmJXZ72aPDZRqUmtb/2TF1ysaNPlz
+ smF9kip14xeNZxAtgac2rhVgZFk5fLUjbre4V9pua0Fh2QKpdteIdWXo3/TjFVm8bdNA
+ 9+iw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXGsawjighk7I1YjRnB2mAfBBmpRu5fx/AogtuI4ReCdSQy5PmMpgn7vkQjkZRDJ6IyYih+C+q48Q==@nongnu.org
-X-Gm-Message-State: AOJu0YypDS9EJEMoOUjQZPzmfXaEPDqVokqoal50WuKDvfkeEm8JJlcG
- gscc8ELOGdu3hGsC0t2418Bk7mmKilIEGl+q2tu4wdxL1fPTKGeTT0zyEw==
-X-Google-Smtp-Source: AGHT+IEPJCzPyna2b8fd41adWUeFIeVvICtgUmwrW+oTBIJt1dBwajKV4PdC1+E0fpOd/6XbpVLzVw==
-X-Received: by 2002:a05:6a21:1690:b0:1d9:3456:b794 with SMTP id
- adf61e73a8af0-1d9a84bcdd6mr45311652637.38.1730679737737; 
- Sun, 03 Nov 2024 16:22:17 -0800 (PST)
+ AJvYcCUJJ4AKBT7t9hw2z4bjOMcQRtl31GLw7/XWQm4m1A5eYepbP3NFNBXCGJwZ/+1XmsKlmhvhTi8bVA==@nongnu.org
+X-Gm-Message-State: AOJu0YxlKqfASnMv9lpGoINJk9DCSDnAKDZOZ3Q/LL630zvsLLOVUvPg
+ YH53Bg75LbA3hPfxFWxbsf5s9FMC3nmIzX1DaPIGhHblvl7e5huKoDHSug==
+X-Google-Smtp-Source: AGHT+IH32QBCj49gUkmRjAAfu91xQIKVQqngiDg94k5ihZnRK0gvKy7I1559BbYXvh06Uv9kI7MIbw==
+X-Received: by 2002:a05:6a21:1693:b0:1d9:1dcd:b22c with SMTP id
+ adf61e73a8af0-1dba55734fdmr17159905637.47.1730679741329; 
+ Sun, 03 Nov 2024 16:22:21 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.22.14
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.22.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:22:17 -0800 (PST)
+ Sun, 03 Nov 2024 16:22:20 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Frederic Barrat <fbarrat@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 52/67] ppc/xive2: Dump more NVP state with 'info pic'
-Date: Mon,  4 Nov 2024 10:18:41 +1000
-Message-ID: <20241104001900.682660-53-npiggin@gmail.com>
+Subject: [PULL 53/67] ppc/xive2: Dump the VP-group and crowd tables with 'info
+ pic'
+Date: Mon,  4 Nov 2024 10:18:42 +1000
+Message-ID: <20241104001900.682660-54-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,59 +98,231 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-The 'PGoFirst' field of a Notify Virtual Processor tells if the NVP
-belongs to a VP group.
-
-Also, print the Reporting Cache Line address, if defined.
+The 'info pic' HMP command dumps the state of the interrupt controller.
+Add the dump of the NVG and NVC tables to its output to ease debug.
 
 Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive2.c             | 10 ++++++++--
- include/hw/ppc/xive2_regs.h |  1 +
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ hw/intc/pnv_xive2.c         | 44 +++++++++++++++++++++++++++--
+ hw/intc/xive2.c             | 55 +++++++++++++++++++++++++++++++++++++
+ include/hw/ppc/xive2.h      | 12 ++++++++
+ include/hw/ppc/xive2_regs.h |  6 ++++
+ 4 files changed, 114 insertions(+), 3 deletions(-)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index fbd05aa9f5..ac581fa195 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -161,14 +161,20 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index 78609105a8..834d32287b 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -490,6 +490,23 @@ static int pnv_xive2_write_nvp(Xive2Router *xrtr, uint8_t blk, uint32_t idx,
+                               word_number);
+ }
+ 
++static int pnv_xive2_get_nvgc(Xive2Router *xrtr, bool crowd,
++                              uint8_t blk, uint32_t idx,
++                              Xive2Nvgc *nvgc)
++{
++    return pnv_xive2_vst_read(PNV_XIVE2(xrtr), crowd ? VST_NVC : VST_NVG,
++                              blk, idx, nvgc);
++}
++
++static int pnv_xive2_write_nvgc(Xive2Router *xrtr, bool crowd,
++                                uint8_t blk, uint32_t idx,
++                                Xive2Nvgc *nvgc)
++{
++    return pnv_xive2_vst_write(PNV_XIVE2(xrtr), crowd ? VST_NVC : VST_NVG,
++                               blk, idx, nvgc,
++                               XIVE_VST_WORD_ALL);
++}
++
+ static int pnv_xive2_nxc_to_table_type(uint8_t nxc_type, uint32_t *table_type)
  {
-     uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
-     uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
-+    uint64_t cache_line = xive2_nvp_reporting_addr(nvp);
+     switch (nxc_type) {
+@@ -2407,6 +2424,8 @@ static void pnv_xive2_class_init(ObjectClass *klass, void *data)
+     xrc->write_end = pnv_xive2_write_end;
+     xrc->get_nvp   = pnv_xive2_get_nvp;
+     xrc->write_nvp = pnv_xive2_write_nvp;
++    xrc->get_nvgc   = pnv_xive2_get_nvgc;
++    xrc->write_nvgc = pnv_xive2_write_nvgc;
+     xrc->get_config  = pnv_xive2_get_config;
+     xrc->get_block_id = pnv_xive2_get_block_id;
  
-     if (!xive2_nvp_is_valid(nvp)) {
-         return;
+@@ -2497,8 +2516,9 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf)
+     Xive2Eas eas;
+     Xive2End end;
+     Xive2Nvp nvp;
++    Xive2Nvgc nvgc;
+     int i;
+-    uint64_t xive_nvp_per_subpage;
++    uint64_t entries_per_subpage;
+ 
+     g_string_append_printf(buf, "XIVE[%x] Source %08x .. %08x\n",
+                            blk, srcno0, srcno0 + nr_esbs - 1);
+@@ -2530,10 +2550,28 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf)
+ 
+     g_string_append_printf(buf, "XIVE[%x] #%d NVPT %08x .. %08x\n",
+                            chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
+-    xive_nvp_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVP);
+-    for (i = 0; i < XIVE2_NVP_COUNT; i += xive_nvp_per_subpage) {
++    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVP);
++    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
+         while (!xive2_router_get_nvp(xrtr, blk, i, &nvp)) {
+             xive2_nvp_pic_print_info(&nvp, i++, buf);
+         }
      }
- 
--    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
-+    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x PGoFirst:%02x",
-                            nvp_idx, eq_blk, eq_idx,
--                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
-+                           xive_get_field32(NVP2_W2_IPB, nvp->w2),
-+                           xive_get_field32(NVP2_W0_PGOFIRST, nvp->w0));
-+    if (cache_line) {
-+        g_string_append_printf(buf, "  reporting CL:%016"PRIx64, cache_line);
++
++    g_string_append_printf(buf, "XIVE[%x] #%d NVGT %08x .. %08x\n",
++                           chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
++    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVG);
++    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
++        while (!xive2_router_get_nvgc(xrtr, false, blk, i, &nvgc)) {
++            xive2_nvgc_pic_print_info(&nvgc, i++, buf);
++        }
 +    }
 +
-     /*
-      * When the NVP is HW controlled, more fields are updated
-      */
++    g_string_append_printf(buf, "XIVE[%x] #%d NVCT %08x .. %08x\n",
++                          chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
++    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVC);
++    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
++        while (!xive2_router_get_nvgc(xrtr, true, blk, i, &nvgc)) {
++            xive2_nvgc_pic_print_info(&nvgc, i++, buf);
++        }
++    }
+ }
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index ac581fa195..26b6e72129 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -43,6 +43,26 @@ static uint64_t xive2_nvp_reporting_addr(Xive2Nvp *nvp)
+     return cache_addr;
+ }
+ 
++static uint32_t xive2_nvgc_get_backlog(Xive2Nvgc *nvgc, uint8_t priority)
++{
++    uint32_t val = 0;
++    uint8_t *ptr, i;
++
++    if (priority > 7) {
++        return 0;
++    }
++
++    /*
++     * The per-priority backlog counters are 24-bit and the structure
++     * is stored in big endian
++     */
++    ptr = (uint8_t *)&nvgc->w2 + priority * 3;
++    for (i = 0; i < 3; i++, ptr++) {
++        val = (val << 8) + *ptr;
++    }
++    return val;
++}
++
+ void xive2_eas_pic_print_info(Xive2Eas *eas, uint32_t lisn, GString *buf)
+ {
+     if (!xive2_eas_is_valid(eas)) {
+@@ -189,6 +209,23 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
+     g_string_append_c(buf, '\n');
+ }
+ 
++void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx, GString *buf)
++{
++    uint8_t i;
++
++    if (!xive2_nvgc_is_valid(nvgc)) {
++        return;
++    }
++
++    g_string_append_printf(buf, "  %08x PGoNext:%02x bklog: ", nvgc_idx,
++                           xive_get_field32(NVGC2_W0_PGONEXT, nvgc->w0));
++    for (i = 0; i <= XIVE_PRIORITY_MAX; i++) {
++        g_string_append_printf(buf, "[%d]=0x%x ",
++                               i, xive2_nvgc_get_backlog(nvgc, i));
++    }
++    g_string_append_printf(buf, "\n");
++}
++
+ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
+ {
+     uint64_t qaddr_base = xive2_end_qaddr(end);
+@@ -610,6 +647,24 @@ int xive2_router_write_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
+    return xrc->write_nvp(xrtr, nvp_blk, nvp_idx, nvp, word_number);
+ }
+ 
++int xive2_router_get_nvgc(Xive2Router *xrtr, bool crowd,
++                          uint8_t nvgc_blk, uint32_t nvgc_idx,
++                          Xive2Nvgc *nvgc)
++{
++   Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
++
++   return xrc->get_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, nvgc);
++}
++
++int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
++                            uint8_t nvgc_blk, uint32_t nvgc_idx,
++                            Xive2Nvgc *nvgc)
++{
++   Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
++
++   return xrc->write_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, nvgc);
++}
++
+ /*
+  * The thread context register words are in big-endian format.
+  */
+diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+index 654f485e9b..b7a7c33ddd 100644
+--- a/include/hw/ppc/xive2.h
++++ b/include/hw/ppc/xive2.h
+@@ -53,6 +53,12 @@ typedef struct Xive2RouterClass {
+                    Xive2Nvp *nvp);
+     int (*write_nvp)(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
+                      Xive2Nvp *nvp, uint8_t word_number);
++    int (*get_nvgc)(Xive2Router *xrtr, bool crowd,
++                    uint8_t nvgc_blk, uint32_t nvgc_idx,
++                    Xive2Nvgc *nvgc);
++    int (*write_nvgc)(Xive2Router *xrtr, bool crowd,
++                      uint8_t nvgc_blk, uint32_t nvgc_idx,
++                      Xive2Nvgc *nvgc);
+     uint8_t (*get_block_id)(Xive2Router *xrtr);
+     uint32_t (*get_config)(Xive2Router *xrtr);
+ } Xive2RouterClass;
+@@ -67,6 +73,12 @@ int xive2_router_get_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
+                         Xive2Nvp *nvp);
+ int xive2_router_write_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
+                           Xive2Nvp *nvp, uint8_t word_number);
++int xive2_router_get_nvgc(Xive2Router *xrtr, bool crowd,
++                          uint8_t nvgc_blk, uint32_t nvgc_idx,
++                          Xive2Nvgc *nvgc);
++int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
++                            uint8_t nvgc_blk, uint32_t nvgc_idx,
++                            Xive2Nvgc *nvgc);
+ uint32_t xive2_router_get_config(Xive2Router *xrtr);
+ 
+ void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked);
 diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index 7acf7dccf3..d71a54f9ff 100644
+index d71a54f9ff..99840e88a8 100644
 --- a/include/hw/ppc/xive2_regs.h
 +++ b/include/hw/ppc/xive2_regs.h
-@@ -151,6 +151,7 @@ typedef struct Xive2Nvp {
- #define NVP2_W0_VALID              PPC_BIT32(0)
- #define NVP2_W0_HW                 PPC_BIT32(7)
- #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
-+#define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
-         uint32_t       w1;
- #define NVP2_W1_CO                 PPC_BIT32(13)
- #define NVP2_W1_CO_PRIV            PPC_BITMASK32(14, 15)
+@@ -212,6 +212,7 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
+ typedef struct Xive2Nvgc {
+         uint32_t        w0;
+ #define NVGC2_W0_VALID             PPC_BIT32(0)
++#define NVGC2_W0_PGONEXT           PPC_BITMASK32(26, 31)
+         uint32_t        w1;
+         uint32_t        w2;
+         uint32_t        w3;
+@@ -221,4 +222,9 @@ typedef struct Xive2Nvgc {
+         uint32_t        w7;
+ } Xive2Nvgc;
+ 
++#define xive2_nvgc_is_valid(nvgc)    (be32_to_cpu((nvgc)->w0) & NVGC2_W0_VALID)
++
++void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx,
++                               GString *buf);
++
+ #endif /* PPC_XIVE2_REGS_H */
 -- 
 2.45.2
 
