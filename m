@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BF09BBF59
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:08:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0150D9BBF7B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84HY-0005BC-8m; Mon, 04 Nov 2024 16:06:40 -0500
+	id 1t84Hd-0005Mi-7W; Mon, 04 Nov 2024 16:06:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84HV-000548-Qr
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:38 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Hb-0005I9-16
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84HU-0005KP-DQ
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:37 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84HZ-0005Ke-IX
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:06:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754395;
+ s=mimecast20190719; t=1730754400;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HT4p44lGhUJLiZNcVVDhq7UK1RgS21i7OPit+tLHM+w=;
- b=I3vPxiRIVXLG8uYlDP8e3/nBdEnsRA6VsfmK23WKxOdXnkx7xkxY02lafjo3bH1t75Z18r
- Ms6wOIk58r2RIxX23ODCzYzWd0M7N282wiwwS7CkhwYSY76/pgwz66AJeDDLtGCgWODIi1
- ejHlcZxCSXzh12333nwggYlIeqEEI5Y=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=c7gOmOTj6yO90oCWalWO1gQgHW7kTyMfpeF2Gcy7IQw=;
+ b=Rke2f4etY+DCtydR3m+pUuSEZoUZGqkm2x5Ptweom9U5qZNtjKx9NJXZWA8ln+usHW2hAA
+ ug3Jm/f/UYIqKY07boi2xc1jQ6QWF3Qd0oRjSE9QgBebM9WrvC1KxeKldpQ02YotgtSFo3
+ iklMUwrPc+oTFcMhGky9hTopIwdIlNw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-mLO1yNvdNz6CK4M4SIi5iA-1; Mon, 04 Nov 2024 16:06:34 -0500
-X-MC-Unique: mLO1yNvdNz6CK4M4SIi5iA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d533a484aso2900116f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:06:34 -0800 (PST)
+ us-mta-73-GYkDlQnGMqan9z4OiTD8ew-1; Mon, 04 Nov 2024 16:06:39 -0500
+X-MC-Unique: GYkDlQnGMqan9z4OiTD8ew-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4315a0f25afso32320715e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:06:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754393; x=1731359193;
+ d=1e100.net; s=20230601; t=1730754397; x=1731359197;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HT4p44lGhUJLiZNcVVDhq7UK1RgS21i7OPit+tLHM+w=;
- b=Zc9/DL3Fb9qkQVj3pfw4ul1XlvXrFAnDnrrWl6z/zqm8X1xcq+xLSsljmMq6nmObjT
- zdqTKlId7KsQFU/UU+7JIutzQ2E9WgB22aVDy4J5dZXJQnvjiY2eevssbM5JZCkbliLZ
- ghKz3/RB4NZs+CVEXeUVKOwsXs5umIEnfI8fZWa0H3ZweK0bOldMlSE2VQ0Mb9l78LET
- /uVVXhzG7x3XjOtbtPRldCIKX4jGuMq4C8I/Hvfu24UT+jnbYYvI17X4cVYUT8jxTV6f
- kiXJwZZwsw07jJIy3IGXh7zRjOSe4OvX1VkSXcLHpgHssb/JTUiQzJLArDJorbnul/FZ
- yjXg==
-X-Gm-Message-State: AOJu0YwksL13n7t3Svd1fI0MZ3G2OF62iwz8rL7eL5f0se79MWEjOvBC
- 0IuwcNl2reZsNOQiFQ3hijrsp8uF2TMyJGJUFiuN/nTQJl6BKdR0Y1B9ynjwgwdfTrsdCcpblQa
- 4pvyvI9aTO+gUeablFv81wp6sDUdf8OuLo3eUdEiAP+WFQpZ1lWuNvYTe6PVdcHq1yEzMPLoBBx
- CbMHtuAzDgqCf+oqXZedhAOcuNM9DmfQ==
-X-Received: by 2002:a05:600c:3d8a:b0:431:7ccd:ff8a with SMTP id
- 5b1f17b1804b1-4327dac773dmr132311235e9.14.1730754392854; 
- Mon, 04 Nov 2024 13:06:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHvvO5PPBjV10Kv8z7u+BWa79l2PlmKjn6ASM2It+p19Xst/nk1YGA/irgAlzXrlgakYDU82Q==
-X-Received: by 2002:a05:600c:3d8a:b0:431:7ccd:ff8a with SMTP id
- 5b1f17b1804b1-4327dac773dmr132311055e9.14.1730754392354; 
- Mon, 04 Nov 2024 13:06:32 -0800 (PST)
+ bh=c7gOmOTj6yO90oCWalWO1gQgHW7kTyMfpeF2Gcy7IQw=;
+ b=c6IKtUiqbf8FniyEiiwzcgqtn04MiqBq3en4os4nFTcdOt61ZDBzA7MJfMZ0wzVaVp
+ zOXBnf5Sd1C11tc3ctXT1aBXZw6mdkemC42J9PNXrQx/m3TNpYlmqWfTCkitgO0MhK5/
+ /etLnmZXjVl35RgNjV1pwvq9RJR1yMFfK2LxRFRyaBgkYLkYhhMdyhPN8r/SmnemMg5u
+ Y+cCU7po0M+i17otS65kfN6K9csLej5J+EE7CTv8zS/jMI3JeZBgShBh6p7azx1kZqLp
+ 8xUI3P4/TnMQUa9PX3VuekE48kyRPfq/EHE6dlelziu36WidO3C29fmm2DgeYHR5LrS+
+ 4pTw==
+X-Gm-Message-State: AOJu0YytHnfyMRtPcWiymCvsXqHWiQ/B/qjAy4ZloaUGQkdtM9/eexY1
+ U3r4jdYoioIX/WDLDi8cVO2ZMTXI+TIdMihhFNplmm751vfUQ74F8Md/CmKDfnf/UYOYZuxBp/6
+ vJVfo/8PrmOnnQ3Ps9onuFxfYk7UAJ2UkE+9CVHpzcE+4VZJbsINCH9H5w8a0Qrdf5iu8a4/KWB
+ hq7feKAXxIFyo8p6gnGuZxhLvQWG4gZA==
+X-Received: by 2002:a05:600c:1c82:b0:430:699b:7d22 with SMTP id
+ 5b1f17b1804b1-4319ad14d14mr329164595e9.26.1730754397154; 
+ Mon, 04 Nov 2024 13:06:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPzVRbgvpgcmjZt86LBj4b3pyi5Z95SzLBgi9uVzeT7fwEQ4CfG9C/Ar2N89he1amMfgVC5g==
+X-Received: by 2002:a05:600c:1c82:b0:430:699b:7d22 with SMTP id
+ 5b1f17b1804b1-4319ad14d14mr329164375e9.26.1730754396753; 
+ Mon, 04 Nov 2024 13:06:36 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5e8915sm164244265e9.27.2024.11.04.13.06.30
+ 5b1f17b1804b1-4327d6852efsm164336455e9.30.2024.11.04.13.06.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:06:31 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:06:28 -0500
+ Mon, 04 Nov 2024 13:06:36 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:06:32 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 15/65] hw/pci-bridge/cxl_root_port: Provide x-speed and
- x-width properties.
-Message-ID: <1478b5609022ed4331bff83d06cefed983df82ac.1730754238.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 16/65] hw/pci-bridge/cxl_upstream: Provide x-speed and x-width
+ properties.
+Message-ID: <845f94de78cb6c063234176ff7c0ac8e430d19fe.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,43 +103,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Approach copied from gen_pcie_root_port.c
-Previously the link defaulted to a maximum of 2.5GT/s and 1x.  Enable setting
-it's maximum values.  The actual value after 'training' will depend on the
-downstream device configuration.
+Copied from gen_pcie_root_port.c
+Drop the previous code that ensured a valid value in s->width, s->speed
+as now a default is provided so this will always be set.
+
+Note this changes the default settings but it is unlikely to have a negative
+effect on software as will only affect ports with now downstream device.
+All other ports will use the settings from that device.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240916173518.1843023-2-Jonathan.Cameron@huawei.com>
+Message-Id: <20240916173518.1843023-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
 ---
- hw/pci-bridge/cxl_root_port.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/pci-bridge/cxl_downstream.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/hw/pci-bridge/cxl_root_port.c b/hw/pci-bridge/cxl_root_port.c
-index 2dd10239bd..5e2156d7ba 100644
---- a/hw/pci-bridge/cxl_root_port.c
-+++ b/hw/pci-bridge/cxl_root_port.c
-@@ -24,6 +24,7 @@
- #include "hw/pci/pcie_port.h"
+diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
+index 4b42984360..c347ac06f3 100644
+--- a/hw/pci-bridge/cxl_downstream.c
++++ b/hw/pci-bridge/cxl_downstream.c
+@@ -13,6 +13,8 @@
  #include "hw/pci/msi.h"
- #include "hw/qdev-properties.h"
+ #include "hw/pci/pcie.h"
+ #include "hw/pci/pcie_port.h"
++#include "hw/qdev-properties.h"
 +#include "hw/qdev-properties-system.h"
- #include "hw/sysbus.h"
- #include "qapi/error.h"
  #include "hw/cxl/cxl.h"
-@@ -206,6 +207,10 @@ static Property gen_rp_props[] = {
-                      -1),
-     DEFINE_PROP_SIZE("pref64-reserve", CXLRootPort, res_reserve.mem_pref_64,
-                      -1),
+ #include "qapi/error.h"
+ 
+@@ -210,24 +212,20 @@ static void cxl_dsp_exitfn(PCIDevice *d)
+     pci_bridge_exitfn(d);
+ }
+ 
+-static void cxl_dsp_instance_post_init(Object *obj)
+-{
+-    PCIESlot *s = PCIE_SLOT(obj);
+-
+-    if (!s->speed) {
+-        s->speed = QEMU_PCI_EXP_LNK_2_5GT;
+-    }
+-
+-    if (!s->width) {
+-        s->width = QEMU_PCI_EXP_LNK_X1;
+-    }
+-}
++static Property cxl_dsp_props[] = {
 +    DEFINE_PROP_PCIE_LINK_SPEED("x-speed", PCIESlot,
 +                                speed, PCIE_LINK_SPEED_64),
 +    DEFINE_PROP_PCIE_LINK_WIDTH("x-width", PCIESlot,
-+                                width, PCIE_LINK_WIDTH_32),
-     DEFINE_PROP_END_OF_LIST()
- };
++                                width, PCIE_LINK_WIDTH_16),
++    DEFINE_PROP_END_OF_LIST()
++};
  
+ static void cxl_dsp_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(oc);
+ 
++    device_class_set_props(dc, cxl_dsp_props);
+     k->config_write = cxl_dsp_config_write;
+     k->realize = cxl_dsp_realize;
+     k->exit = cxl_dsp_exitfn;
+@@ -243,7 +241,6 @@ static const TypeInfo cxl_dsp_info = {
+     .name = TYPE_CXL_DSP,
+     .instance_size = sizeof(CXLDownstreamPort),
+     .parent = TYPE_PCIE_SLOT,
+-    .instance_post_init = cxl_dsp_instance_post_init,
+     .class_init = cxl_dsp_class_init,
+     .interfaces = (InterfaceInfo[]) {
+         { INTERFACE_PCIE_DEVICE },
 -- 
 MST
 
