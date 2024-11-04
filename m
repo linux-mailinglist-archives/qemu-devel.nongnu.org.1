@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153F19BBB4F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32B19BBBA1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 18:20:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t80hC-0007NN-3D; Mon, 04 Nov 2024 12:16:54 -0500
+	id 1t80jQ-0000O2-SR; Mon, 04 Nov 2024 12:19:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t80h8-0007Ml-Px
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:16:50 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t80h2-0007FL-B2
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 12:16:50 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-539fe76e802so5236473e87.1
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 09:16:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730740600; x=1731345400; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rFdMFrYFoj15tqQwMYYyirispPzAR+g2+flXApqn9fs=;
- b=pQt9y05zoggMIRq9tAbFA1R/+R8OEk6295YTWZZDG0O+wID6AA4bqqPjeVx2E+J2Fm
- ezF5p/tDR/aoEbj3OayGUGCvcGCGfHpQN1o0JusNpWYCsnuimaMjjWV1sxFoHhjpNJrd
- Eh/K6PW5FS9X725K3E8y2YRIVREpIKHoycCwCdPTkdunlqeKe9BkyZRy8iQIc5aY+jmX
- GVEHpjH2lYWBvuP1NE9KL4G2QfjKAdPRLK+3Cz4sn74qJSrl/syPzMpzpqYSORe3JLJF
- uQOAwtq19HoaLWZwpTnC5nF2asUKIhaYtX6vBn6xMZqk8jiMNZrCPfiguBGbhN2myYdl
- DNkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730740600; x=1731345400;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rFdMFrYFoj15tqQwMYYyirispPzAR+g2+flXApqn9fs=;
- b=TWsCfBmSc7Y5XCJdpSHq79IY8JJUQ2ORTRxcYqyRZiDl9C3yQlfMtNDS5t+mPSt/dQ
- w5S6aw19Sa6U2iPFUizaI9jNNTtBAAQacNZ0QCekPli+pLe947SQ0eICwUzcUEBtJZM/
- AswUpK7O5BDJZuXVpWOpLZdlE+cAV0VPyjlBCaLsRs/SviWSGH19Dbz3S9+6MyoYd79/
- 5jdN061Wfq6sY+l9HlDxaLBcZdSfhLwGBVna3znbq+22tNmOLj8pCO/pXe6NvnBu9e1Z
- Tn3E1E1HA4bOmw3mAwpueVLdP5vCF2XMxKFTOFwzLXX8AbCnyzmBAc7QG1VTCWC02LK5
- Cqfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVes3H/wjAacMh8Ngn94S52WbG2gGtsg9URTuQ3WKJHSxUFh051QwpkZQJqB6+vBT4hpIETOUgDk6Y/@nongnu.org
-X-Gm-Message-State: AOJu0YzUPgXJDvKRbu8P3xA6RQ7D3lUl0CZ+9SksPnhglCiwPqcDmGTC
- l6I8XG83VIa1vJCrb2veVIigGZVLfOXLcbLhMxCeP1+mK9slU51lzzROgRKbzRS9WfjaKzTUlfE
- PiNlaH/xDQA/YdIGYky2twoB1nk/4ZruOMPlCQw==
-X-Google-Smtp-Source: AGHT+IHqc//LHND71HOSioZxH9lExkg8+Iw31TJF5rdqABwfBOuOfwCGbLalw9AOmeFTDEbdLaw1Qkagq/4QeWTPqk4=
-X-Received: by 2002:a2e:be08:0:b0:2fa:d9db:7bac with SMTP id
- 38308e7fff4ca-2fedb757365mr58358051fa.3.1730740598449; Mon, 04 Nov 2024
- 09:16:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t80ir-0008R2-7e; Mon, 04 Nov 2024 12:18:41 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dantan@linux.vnet.ibm.com>)
+ id 1t80im-0007T8-0i; Mon, 04 Nov 2024 12:18:36 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4HAOrg020259;
+ Mon, 4 Nov 2024 17:18:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=MYXiHkEiJsVdF9eAkYfXrOHN5BOCaLIsIvEbIu8Dy
+ 7s=; b=aZykBsZDciqw3mXJ8M5v3E8JumUWXaT1S6itSUlwRj3TmvX7K/Pif09C8
+ In1ZFvPi7wEE79pydCjZu886eh8gsfncYX9any7nLJR/PGblOqQsTot4VjsfRZtJ
+ vUwYuIm/dleD1TFgwuNhiwSyBYcCTexS+3N8jPr6X2DAeNPYDSz2/SEzmQmkU78G
+ /ts3O72kZcjlpKirc7wNOBuAh6nJfVDvXhCyNHvOIcTaskKRKgnfhgAnB/9Q8Sct
+ mO5sq/aKYEBsVZfXMga+6SITcFt0GCE9yZ7SxFF+/Da//HquQbt4ABVVHKKkfa0r
+ klnXnYDfrhk648+cfX1CMQni80l6w==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42q2e3g10w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Nov 2024 17:18:22 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4HFfn9008450;
+ Mon, 4 Nov 2024 17:18:20 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nywk6v80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Nov 2024 17:18:20 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A4HIJhB27525680
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 4 Nov 2024 17:18:20 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D758158056;
+ Mon,  4 Nov 2024 17:18:19 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B56305803F;
+ Mon,  4 Nov 2024 17:18:19 +0000 (GMT)
+Received: from gfwa829.aus.stglabs.ibm.com (unknown [9.3.84.19])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  4 Nov 2024 17:18:19 +0000 (GMT)
+From: dan tan <dantan@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
+ farosas@suse.de, lvivier@redhat.com, clg@kaod.org, dantan@linux.ibm.com
+Subject: [PATCH v6 0/3] TPM TIS SPI Support
+Date: Mon,  4 Nov 2024 11:18:12 -0600
+Message-Id: <20241104171815.13853-1-dantan@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20241025101959.601048-1-eric.auger@redhat.com>
- <20241025101959.601048-19-eric.auger@redhat.com> <ZxuX4i9NjVRizB72@redhat.com>
- <cb6c8f62-c5dc-416d-865f-fbdf96164dac@redhat.com>
- <Zxub7ol4p8P_sWF8@redhat.com>
- <CAFEAcA_wQu17y0PyQwxw0wuf2H5y2VE5aX16nLP2-u7QUP2ggA@mail.gmail.com>
- <Zx-9WxXkmkMuGIlQ@redhat.com>
- <CAFEAcA9w0mb5bcU8p+fScQony-=oqLmNurGWpnL_sBneQCzxUg@mail.gmail.com>
- <Zx_CU9eeQByANMRW@linux.dev> <6c05fc4e-ce14-4000-bb2a-63496bce9e98@redhat.com>
-In-Reply-To: <6c05fc4e-ce14-4000-bb2a-63496bce9e98@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Nov 2024 17:16:26 +0000
-Message-ID: <CAFEAcA_XhkBrco=V3Ky+cgvyp3cwqHXjDkmm+dP7N2B2av03bA@mail.gmail.com>
-Subject: Re: [RFC 18/21] arm/cpu: Introduce a customizable kvm host cpu model
-To: eric.auger@redhat.com
-Cc: Oliver Upton <oliver.upton@linux.dev>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- eric.auger.pro@gmail.com, cohuck@redhat.com, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, richard.henderson@linaro.org, 
- alex.bennee@linaro.org, maz@kernel.org, sebott@redhat.com, 
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com, 
- jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com, 
- philmd@linaro.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KHHKKvMhm5u3DbXiP9LGbBvoGcVA-7Ux
+X-Proofpoint-ORIG-GUID: KHHKKvMhm5u3DbXiP9LGbBvoGcVA-7Ux
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ adultscore=0 phishscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=983 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411040143
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=dantan@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,18 +102,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Nov 2024 at 17:09, Eric Auger <eric.auger@redhat.com> wrote:
-> Was just wondering if all the writable ID reg fields were associated to
-> an official FEAT_ listed in this feature list.
-> Let's take for instance CTR_EL0.DIC. Is it associated to a given
-> extension or is it just implementation defined?
+*** BLURB HERE ***
+Version 6 summary:
+    1/3 tpm/tpm_tis_spi: Support TPM for SPI
+        - amend commit description
+        - amend hw/tpm/tpm_tis_spi.c prolog to reflect the generic nature
+          of the implementation
+        - remove irrelevant define of IBM_PONQ
+        - correct the function names to comply with the convention of
+          beginning with tpm_tis_spi_xxxx()
 
-CTR_EL0.DIC is IMPDEF choice of 0 or 1. There's no associated
-FEAT_* -- as an implementation, you are effectively just
-reporting here what your implementation's properties are.
+    3/3 tests/qtest/tpm: add unit test to tis-spi
+        - changed sleep(0.x) to g_usleep(G_USEC_PER_SEC / y) and adjust the
+          timeouts
 
-(CTR_EL0 is not an ID register in the architectural sense.)
+Version 5 summary:
+    1/3 tpm/tpm_tis_spi: Support TPM for SPI
+        - removed DEFINE_PROP_UINT32("irq", TPMStateSPI, tpm_state.irq_num, 0)
+          from tpm_tis_spi_properties
+        - In tpm.rst document, under section 'The QEMU TPM emulator device',
+          moved the 'PowerNV machine' section to immeidately below 'pSeriese
+          machine'.
+    3/3 tests/qtest/tpm: add unit test to tis-spi
+        - modified tpm_reg_readl() by
+          - removing the special case for TPM_TIS_REG_DID_VID.
+            - however, I did not use the more efficient 32bit access due
+              to the SPI bus master implementation. The 16bit register
+              still require special treatment with the SPI RWX bits.
+          - correcting tpm_reg_readb() with uint16_t reg
+        - tpm_set_verify_loc() added checking for TPM_TIS_CAPABILITIES_SUPPORTED2_0
+        - test_spi_tpm_transmit_test() added
+          - TPM_TIS_STS_TPM_FAMILY2_0 check in status register
+          - TPM responses verification
+        - fixed the PowerNV stdout msg from running qtest-ppc64/tpm-tis-spi-pnv-test
 
-thanks
--- PMM
+Revision 4 summary:
+    - fold v3 commit 4/5 into 1/5
+    - fold v3 commit 5/5 into 3/5
+
+Revision 3 summary:
+  device support:
+    - moved variable tis_addr from TPMStateSPI struct to local
+    - added the VM suspend/resume support:
+      - added vmstate_tpm_tis_spi declaration
+      - added tpm_tis_spi_pre_save() function
+    - fixed trace formatting string
+
+  qtest:
+    - removed the function prototypes declaration
+    - fixed code format to comply with convention
+    - changed function names and variable names to be the same
+      as the tpm-tis-i2c test.
+    - change hard coded numbers to #define's with meaningful
+      names that are identifiable with spec documentation
+
+Version 2 summary,
+    addressed the following review comments:
+    - break up patch into 3 separate commits;
+    - add more details in the commit logs;
+      - I added links to the TCG TPM standard documents as this device
+        model communicates to the TPM device (hw / swtpm) via
+        tpm_tis_commom.c which is standard compliant;
+      - the TPM SPI model implementation in itself is not platform
+        specific. However, the SPI interface is via the PowerNV SPI
+        bus master, thus it is only supported on the PowerNV platform
+    - change all qemu_log() calls to trace events;
+    - move static global variables to the TPMStateSPI struct;
+    - fixed code formatting (verified by scripts/checkpatch.pl);
+    - per requests, make the code more readable by using self-
+      explanatory #defines and adding comments;
+    - added some documentation support (tpm.rst);
+    - beefed up the unit test exercising major supported locality
+      functionality
+
+dan tan (3):
+  tpm/tpm_tis_spi: Support TPM for SPI (Serial Peripheral Interface)
+  tpm/tpm_tis_spi: activation for the PowerNV machines
+  tests/qtest/tpm: add unit test to tis-spi
+
+ docs/specs/tpm.rst                 |  15 +
+ include/sysemu/tpm.h               |   3 +
+ hw/tpm/tpm_tis_spi.c               | 357 +++++++++++++++
+ tests/qtest/tpm-tis-spi-pnv-test.c | 712 +++++++++++++++++++++++++++++
+ hw/ppc/Kconfig                     |   1 +
+ hw/tpm/Kconfig                     |   6 +
+ hw/tpm/meson.build                 |   1 +
+ hw/tpm/trace-events                |   7 +
+ tests/qtest/meson.build            |   2 +
+ 9 files changed, 1104 insertions(+)
+ create mode 100644 hw/tpm/tpm_tis_spi.c
+ create mode 100644 tests/qtest/tpm-tis-spi-pnv-test.c
+
+-- 
+2.39.5
+
 
