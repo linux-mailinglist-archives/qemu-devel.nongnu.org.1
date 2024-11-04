@@ -2,96 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267959BC09E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 23:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757C49BC0AB
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 23:15:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t85GE-00015d-CD; Mon, 04 Nov 2024 17:09:22 -0500
+	id 1t85LE-0003Js-CW; Mon, 04 Nov 2024 17:14:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t85GA-00015P-7t
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 17:09:18 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t85G3-0002aj-8e
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 17:09:17 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-20c805a0753so44217815ad.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 14:09:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730758149; x=1731362949; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yViXbQ+WvUh4bfyB5NhQsb0nG3LCjW3eaqKV1EXoMk8=;
- b=H/+vByaKt/B//o5AEDaSGBF5jdS/0RQcajtXY0U5onk73K5FfPS99cj0bPJAPczYs7
- ICKBQxHzvKhsq6USvU775RF4GJ7TrrPJrgdSzvzVAegpcu4BwHdiWUgGNdqNo8JcMS5n
- qNmmrNSD1ARQDs7RStSKoSVNBa+EO9cDDmoJZqnTx+rgHP5RvqHDO9HW26NxDF2FnZ6p
- N5QX91wB/fgaxBWMC88ZK60CVR3om/Z5FZL5ox7mg3F0cFtkOZor7pZU+JT2+iu9ckV0
- DrPDKjJ68/DI3A5XX6yxj5TLPvWSclNiGr8cEIRyYBSfkaTSBe+gLNoYrnylAmyMOABS
- h0tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730758149; x=1731362949;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yViXbQ+WvUh4bfyB5NhQsb0nG3LCjW3eaqKV1EXoMk8=;
- b=CILpL/6rnbYYDKzcncoZD8aeAQ+kPvSgOkuVSb8h6HlumGXW8h7Rl05AHlq4EhnKIR
- /yItw8MzEXk8xtQyYm+ZQu15Hpvjz5hzphBat4yKJtah2yJXG5ZyPucGbI+obi5QXlbm
- EXPx83TgWQmY7cHvfby/kVDmeP7sXm6ySrSQzDWFIkHDCpHgmu1oRx2zpz8eGh89RIoJ
- tilk8gCyQSSlZA/lnE/CRj0izjgiZ3Kfvvrk/h9E22hI1YyXsYsofhNrjV8Jy6gQXE8e
- ns7dljdFDDXW5zl2qi9wrWl2G3qZ+KVQtmZOMxVUGCdDUsXuywzWYbjWb+u6RTCN1RdC
- JQcw==
-X-Gm-Message-State: AOJu0YywGiHYXzrlZJZqGLkXmACWkMu08WGAQcKb/w1d1FZAfmFOIIeB
- rR4D3IUsmSY5i/HZ9DLqgxsaW8xzr6jSR8gBZ+b9f7SRffVD+tfNGqwy2320wUc=
-X-Google-Smtp-Source: AGHT+IEuh38OZ14yQaYOiSXKrfa+K20PlWRGzB1fJkHI/xbWG2wxqCTy4V8apf7mR5DV94qICJzw7w==
-X-Received: by 2002:a17:903:4404:b0:20c:b810:13a5 with SMTP id
- d9443c01a7336-210c68ca8a8mr383994775ad.21.1730758149454; 
- Mon, 04 Nov 2024 14:09:09 -0800 (PST)
-Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
- [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21105707064sm65589985ad.70.2024.11.04.14.09.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Nov 2024 14:09:08 -0800 (PST)
-Message-ID: <583055e0-9e07-466d-965e-1948fcfecc26@linaro.org>
-Date: Mon, 4 Nov 2024 14:09:07 -0800
+ (Exim 4.90_1) (envelope-from <Stewart.Hildebrand@amd.com>)
+ id 1t85LA-0003Fq-81
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 17:14:28 -0500
+Received: from mail-co1nam11on2081.outbound.protection.outlook.com
+ ([40.107.220.81] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Stewart.Hildebrand@amd.com>)
+ id 1t85L7-00030j-Nc
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 17:14:27 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YsiDcP9oW4pMWesUVfjvU4erIZAL0Isz8tVDAdWDHcUzGOCY6WsWtFR2IcGaFwkCkkk3wU/Ov1YLgT3WUaaktnvPQIFqp2e5sxm5p23Eg8t+d8/GLkG+KZImobsVBF2fVBipADmM1YmiJvdUXx1Y636FzropT1m2IxHf1gL2wG2a5Ors+Z08h1o6JSZrEdbDed9fuJJIiRrLfCynAKsxFWtrTAVUBlNZ4Bh+ckyc1H/ZjIfVYDKl4PfJH8qtV/HK5tHOyTM0Pm1bhQXxD10EnafaFEb+J0dGaJR7lcng0Km46pVV+co6rfXo+vSJrjn55qGQmSXEWi5nh92Psal9dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e+CTe0DuLRxVNwagvnEk52+IwGebyG5Mudi65S8b6hs=;
+ b=k/DBrfGkdMwlAi0kyA9fSMhHnLMIcpxW94i5hWVJvvozKkp55/xT2jTtXCRAnCOYbFp+Ga/BVRD6fyT+8L98YFQ/q66e0TP0MfRWqBjbjWtZkPSPAQWUXzmMOt8+tFMyDCuKmri2LlYybIpaMCFgCSUibT4jFVgIzN3wLQuxZeuojUWh80NiT3QJaejUTXErcvNnn3m4XdILBUo9m5geMpZcM5QRmql8s76kAXfZXvgqhFerl+SuaLezHoGzZA1+90U7mFv1VsJD92nZ3SUIA+jzF1bQpzRhsTUb0/b904x3zHBCxnfk+6dA0FhcYVnLl2FugvsC9ARTsp43vIAMtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e+CTe0DuLRxVNwagvnEk52+IwGebyG5Mudi65S8b6hs=;
+ b=KXLr3a7Zel41mLZ7uoqYiJUSbrqApaOmN+ErVPrKu34KAsSLg4ta+U9o2QtWH8fZrAbkUVW3I25bDbvnYElTHbQNBCVw0pOIUpWLKkbzLVGg64fZOH7qFua6aemeZMATCJHT5FVLICCM909D6ra9S3QKNMZzrDw+XSkAqT91SSY=
+Received: from BLAPR03CA0023.namprd03.prod.outlook.com (2603:10b6:208:32b::28)
+ by DM4PR12MB6134.namprd12.prod.outlook.com (2603:10b6:8:ad::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.24; Mon, 4 Nov
+ 2024 22:09:14 +0000
+Received: from BL02EPF0001A103.namprd05.prod.outlook.com
+ (2603:10b6:208:32b:cafe::33) by BLAPR03CA0023.outlook.office365.com
+ (2603:10b6:208:32b::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30 via Frontend
+ Transport; Mon, 4 Nov 2024 22:09:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BL02EPF0001A103.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8137.17 via Frontend Transport; Mon, 4 Nov 2024 22:09:14 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 4 Nov
+ 2024 16:09:12 -0600
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 4 Nov
+ 2024 16:09:12 -0600
+Received: from [172.25.174.226] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 4 Nov 2024 16:09:10 -0600
+Message-ID: <64d8f920-8dbc-4d98-9b1d-535d1413caf8@amd.com>
+Date: Mon, 4 Nov 2024 17:09:10 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/12] docs: add information on how to setup build
- environments
+Subject: Re: [QEMU PATCH v9] xen/passthrough: use gsi to map pirq when dom0 is
+ PVH
+To: "Chen, Jiqian" <Jiqian.Chen@amd.com>
+CC: Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, "Edgar E . Iglesias"
+ <edgar.iglesias@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Marcel
+ Apfelbaum" <marcel.apfelbaum@gmail.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "xen-devel@lists.xenproject.org"
+ <xen-devel@lists.xenproject.org>, "Huang, Ray" <Ray.Huang@amd.com>
+References: <20241024090629.1944820-1-Jiqian.Chen@amd.com>
+ <356652df-b5b4-4c28-9c5c-4bfc4f36813f@amd.com>
+ <BL1PR12MB584985EF3C4F3D482A3F8E95E7512@BL1PR12MB5849.namprd12.prod.outlook.com>
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Konstantin Kostiuk
- <kkostiuk@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20241031040426.772604-1-pierrick.bouvier@linaro.org>
- <20241031040426.772604-13-pierrick.bouvier@linaro.org>
- <CAFEAcA_gNGb4yHvCQf9fOi0gkxn=whVWK8_ztqDBzQ8RcJ-5UA@mail.gmail.com>
- <20241104110814-mutt-send-email-mst@kernel.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241104110814-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Stewart Hildebrand <stewart.hildebrand@amd.com>
+In-Reply-To: <BL1PR12MB584985EF3C4F3D482A3F8E95E7512@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A103:EE_|DM4PR12MB6134:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7881d0e1-0cef-4a2c-e9fb-08dcfd1d5171
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VW03YytzemVMM0QyMTJib2ZCRFNHYmR2SmNld24xVGY3MFNIQUozYWdMQnVL?=
+ =?utf-8?B?WHYrVVhON0t0OC8ycXVFRm11Z3Y2cHEyOEZFVjJaeEdtZnVJZDgrRFJxQjVW?=
+ =?utf-8?B?NHNPcjJDeFY5VlRYM3RYTmtCUEVOVUIvQlUvUnpVbnQxa1ljaVlGU1YvK01s?=
+ =?utf-8?B?N3BIbzdRRXZBY0MyVnpRa0cvZE9BMWZRVHdnWjFpMjQwSnpGLzBkWUNsNVVs?=
+ =?utf-8?B?enRWMzhMbVJhbzVoeEtibkZac1M0bnVPbGFDd3RmRG1tRmp4L0RrMWl4Ymtl?=
+ =?utf-8?B?ZmVIZ0EvRFVvd1JGcjFPWEN5aTcwRmN5MGlIQ1lXNjJZZGY0OTBJalpRWENZ?=
+ =?utf-8?B?UzZpbEtmOHIwN2ZIanl1MmRML1pnYUNmYkZYZEQxeTQ1SmFhTU96TnZTdFB1?=
+ =?utf-8?B?eFZmZDZTTHd3Z1FWaEVYWi9icFQ4NEtuMEVrSmxIQ3hDVjJUSmtUTmJ0a2dk?=
+ =?utf-8?B?Q3lmS3hSOUp5dWZzcE1YNjJZS0RnemlQVkQ2bUFLZGx3Yk9WUjJmVDZwNStG?=
+ =?utf-8?B?akFSRkxzc3lLTkRucVFKTFNyWks0UzBvNEN2dWl2cHZiZ1dYYzVkWm1CZzh1?=
+ =?utf-8?B?UWYxMFAwMVNKZkE1YWg3M3d1c2FOOXgwUkxpZU1FMjRoSTBFd0Iwb1JIaG5n?=
+ =?utf-8?B?dWJaMW9aWlZEVXh5QzVqRmZLOSs4UUptblpENnhyc2preWg4MHJDdzgxZlFW?=
+ =?utf-8?B?NnRFYXU4cE5sVkRRWjNCdGJxVkp6ZllRR2NpbHRWOTR2M2NYT0RkS0dZaGU3?=
+ =?utf-8?B?eFhDZG1QWklJL1Ryb0syT2lUUGRpbVpQNHZ6VUNwSVpGV1gxRWE4cVp0WWF2?=
+ =?utf-8?B?RTRoOXNzZVVFRE5TRnhzb1lDZWdBbWJjQTRxMmZEVCsrRnJIemRXeXc0c1hi?=
+ =?utf-8?B?WlJMQVJMdXlOcU0wUk9vUTF6U2JKSTVybUg4R0lQbGU2cGV5TU8zMmgwdXp5?=
+ =?utf-8?B?T3ZwZHhuaVNvUm95UkpSU0x5RnNFNUlGd0pYcE5RaHBtZzRpR3JLbTdVZlhJ?=
+ =?utf-8?B?K3EwWjVGRGJ3OE5qaUt1ZmkzM1I3SG0zUDgwWGNyMFRyem1sZ09HZ2dIcXE2?=
+ =?utf-8?B?cjNUakhkUmk0ZWVNeUdYSWludTU3TG5Zemh5L05LNjRsNG5RVlRndklsblVC?=
+ =?utf-8?B?dmlOL0hyUEl2emJITi92ZFRMTTdvdyt0bFhBZU5qamVQM3JqaTl3L0hyT1Fl?=
+ =?utf-8?B?Zm5FZjVvYU5ud1cvNk45b2tUNzJ3TGRYR2grWE9tUGFXSzVOMWVROFVCZjBr?=
+ =?utf-8?B?ZjVJdmVOTXZydjBlOTJNVTZLVWR3NE1MWm9mVGo2SUxVNjBnYzgrNGR5UjY1?=
+ =?utf-8?B?cmMreC81TWwxSU9DbG5obTBHWHQ5OEkxQUc3cTl4bHFzcXVwVnVsem5nbXdG?=
+ =?utf-8?B?RWhvTXBPcm1hMEtnZFQ4OEIraTAyUXFzY2hpOXlOUm9HclRPSXViZjRSbUh2?=
+ =?utf-8?B?bGlnaDRaUFNsdXc0cmlJM0FaZHJxUHY1THZ2elZiSnNiZ2pEK1dNSE1oMjJl?=
+ =?utf-8?B?ZVYxdHRuSmppUzI0WitBd0RxdlFzdDJYUUU1VG5zb3ZsNW52emswaUI2RUV2?=
+ =?utf-8?B?U3NodWI2Nlp4UUlRZnZlZU9BdWU2d1N3cHBNZ09qbWNpeHVRZ0MwUmlOVU5m?=
+ =?utf-8?B?a2lHOVorUDdjejZVN0Z4M3llQ1JsL1hpYytrK2d5WDRxSFkxRmtNajF4Vzhs?=
+ =?utf-8?B?QWVXS0RFdnFLL3ZFQWc1aUl3M2dCOXVaWlUyNWtzOEF0dWF2QlFPNWhXRk9j?=
+ =?utf-8?B?S2JFUHBYNDZKUUwrdmFYVE10emdnSmJibm92ZzB4Y0p3VUJMQnFXSk9jN1lX?=
+ =?utf-8?B?S2l3Zmh2SFNtcnY3TWtwaFhDblQrdlNrbEtqTTZlbStleVZCa24vTk93VExD?=
+ =?utf-8?B?RUJPd1l0MEEvQXFQcmV0TEMrWU45RklPQUkrQjVvNUxnY2c9PQ==?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 22:09:14.1285 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7881d0e1-0cef-4a2c-e9fb-08dcfd1d5171
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A103.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6134
+Received-SPF: permerror client-ip=40.107.220.81;
+ envelope-from=Stewart.Hildebrand@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,56 +166,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/4/24 08:08, Michael S. Tsirkin wrote:
-> On Mon, Nov 04, 2024 at 03:58:19PM +0000, Peter Maydell wrote:
->> On Thu, 31 Oct 2024 at 04:07, Pierrick Bouvier
->> <pierrick.bouvier@linaro.org> wrote:
->>>
->>> MacOS and Linux are straightforward, but Windows needs a bit more
->>> details.
->>>
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+On 11/4/24 01:03, Chen, Jiqian wrote:
+> On 2024/11/1 21:09, Stewart Hildebrand wrote:
+>> On 10/24/24 05:06, Jiqian Chen wrote:
+>>> diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+>>> index 3635d1b39f79..5b10d501d566 100644
+>>> --- a/hw/xen/xen_pt.c
+>>> +++ b/hw/xen/xen_pt.c
+>>> @@ -766,6 +766,50 @@ static void xen_pt_destroy(PCIDevice *d) {
+>>>  }
+>>>  /* init */
+>>>  
+>>> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION >= 42000
+>>> +static bool xen_pt_need_gsi(void)
+>>> +{
+>>> +    FILE *fp;
+>>> +    int len;
+>>> +    char type[10];
 >>
->> We have documentation on the wiki currently about how to
->> build on various platforms:
->>
->> https://wiki.qemu.org/Hosts/Linux
->> https://wiki.qemu.org/Hosts/Mac
->> https://wiki.qemu.org/Hosts/W32
->>
->> I agree that we ought to move this into the main documentation.
->> Some of the information in those wiki pages is probably
->> out of date, but some of it looks like useful extra detail
->> that we could incorporate here.
-> 
-> Also, as that wiki notes:
-> 
-> 32 bit Linux target on a 64 bit Linux host would be useful for build bots
-> 
+>> A brief in-code comment to explain how you arrived at 10 would be
+>> appreciated.
+> The max number of characters in the description of the "guest_type" is 4 ("PVH" plus line break).
+> I set it to 10 to prevent longer description types in the future.
+> Do you have another suggest number?
 
-IMHO, and regarding my previous message, I don't think adding details 
-about cross compilation would help new comers.
-Cross compilation is specific, and most of the people who do it know how 
-to do it. Especially when setting up a build bot.
-In more, we already have a docker container for this use case 
-(debian-i686-cross), without needing to play with host machine.
-
-> 
-> 
->>> ---
->>>   docs/about/build-platforms.rst |   4 +-
->>>   docs/devel/build-system.rst    | 100 +++++++++++++++++++++++++++++++++
->>
->> I don't think this is the best place to put this information.
->> "How do I build from source?" is a question that most beginning
->> developers and some end users will have. The information in
->> build-system.rst is mostly about the internals of our
->> build system and how to modify it, which is a more niche topic.
->>
->> I would be inclined to put this in a new file, maybe even
->> in docs/about/ rather than docs/devel.
->>
->> thanks
->> -- PMM
-> 
+No, I think 10 is a good choice. I'm just looking for the rationale to
+be documented.
 
