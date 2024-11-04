@@ -2,77 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6440B9BB67D
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 14:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83999BB684
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 14:42:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7xJf-0000KZ-2t; Mon, 04 Nov 2024 08:40:23 -0500
+	id 1t7xLA-00016S-FK; Mon, 04 Nov 2024 08:41:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t7xJd-0000Jp-6q
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:40:21 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t7xJa-0002im-5N
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:40:20 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5c95a962c2bso5794906a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 05:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730727616; x=1731332416; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xZzZWomi7E61nalesQ7NCm3j1+4saL0Ju5AYCkvIeAM=;
- b=PFKXvpXLhFqIjQ7yI5VnQzkT+UNYhF61RuO2HQw6pNuwTX2uiEsVThQvrMDmorSzWS
- 0YKhZCPIVm19NPpZ/ZKNmbdBuZgxXoSRMkesqAUvR6Gq/grHCT6HhPSyQrNjTwwTgua2
- ic7w3sX5hgGfNoIRzj6+RQWFh7oVs1UPDiRWjobLKxwrQiC2nIKZZHh9F5uq6FwibGJJ
- 56h7xbWdxMdtsXmsNrT7z4kfwe/evd3GRC7N6WomU3eawcR9/zAu5+8E1u2pSXTcu1zW
- Aj/aEV5kJQ1iSYEGH8c6z4NKOIv2vug68aulviNWa9PT8cfvxY0f0lMq4NyY5v9aHdTt
- qacQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730727616; x=1731332416;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xZzZWomi7E61nalesQ7NCm3j1+4saL0Ju5AYCkvIeAM=;
- b=e2/EN26I3lWjugyq+7Fbl9/ZLv51EmO2XcLIwh1nU6UwSz3R3ivBw2J4qfl+6YhCTA
- Cv67PM/79rr5lrMSBsM41UIC6piilfWilbY5mYCHr3JOtZ0kPheEPzWuntUFouoV7jB8
- 4bTbg61BiUtuJWL1KmtDgJZQMGqss3YmsflUV8FmnfrUO3RsnuLs56N07QeM8jtKjvvi
- Pg/9gwCQ1GtPdISalKQuZGUEC6Jrf/VWJnXHowORWKQLjz4OVULl966BvBXfBF1QBDJA
- dcJZk2XdHJeIZJd248hwvFGO/9GSEefWagJgAKrgHsaKPSHjpZ0u8SAO+JS01b4l+n9A
- FXfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXqr4xbIBmf0iQ3axBuiG02+qQYIekj5eP5mdWqGCV4RzBsY+htRPkKPBROifQn4XjQAUGxuqUwsTz+@nongnu.org
-X-Gm-Message-State: AOJu0Yxeizq8iQ3OgXmt3s04QJxeHoygu92BvPSFTidrXGnsoY4ggxNS
- LxnNOXVnDrhGWZW1dZbYqwwWM49zKmpFCWrte88dBMXw3ZraaiimvCFLoeVdo3Hf4v5QwxSs69E
- 1Xq4irRoDuAIrrYSpBQdwUeLMnMpMXI1ykkphbg==
-X-Google-Smtp-Source: AGHT+IEdNLjWZygoDVHiU6XYwXeyCG28+MtvF7gNTRle8C17j/YCMsYqvKyy2fJ+gua2ePB5m2azI3hyhqNsaIkrdzo=
-X-Received: by 2002:a05:6402:270c:b0:5ce:cffa:41e9 with SMTP id
- 4fb4d7f45d1cf-5cecffa446emr5160611a12.15.1730727616489; Mon, 04 Nov 2024
- 05:40:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1t7xL8-00015r-Cc
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1t7xL5-0002n8-8f
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 08:41:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730727709;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=B8Dw6WD4ZXWPRO3JPmWJZCuQOehqdJF1aNoHmCKQnx8=;
+ b=ByJIkRT6zVXz0jsBA6J+1YY0fCDoux4F3m3K7Uj33EHUpVNTk8fpdfr0wi7uC0IBSahm1N
+ 25S6k0I0WrAbq1o4hf821T08GSNUwWJeb0U2Qxib9clHF0YmeFgh/nG78qDtaRrZx/xyTd
+ ekj8U5vm+7TO7P1d9WH3PT+/fuIKaLA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-pI-jF7-xMmSNoJv9CAhcKA-1; Mon,
+ 04 Nov 2024 08:41:45 -0500
+X-MC-Unique: pI-jF7-xMmSNoJv9CAhcKA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 77EC41955F3B; Mon,  4 Nov 2024 13:41:44 +0000 (UTC)
+Received: from srv1.redhat.com (unknown [10.45.226.47])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8637F1956086; Mon,  4 Nov 2024 13:41:42 +0000 (UTC)
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 0/3] Misc QEMU Guest Agent patches for 2024-11-04
+Date: Mon,  4 Nov 2024 15:41:36 +0200
+Message-ID: <20241104134139.225514-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-References: <20241022013047.830273-1-richard.henderson@linaro.org>
- <8becca82-a708-4a19-9f67-92b4a418b6a3@linaro.org>
-In-Reply-To: <8becca82-a708-4a19-9f67-92b4a418b6a3@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Nov 2024 13:40:05 +0000
-Message-ID: <CAFEAcA-EdpDCfde=zFPnq1uKOBk1qqe7wNh8dp6ziG_79o7vew@mail.gmail.com>
-Subject: Re: [PATCH] disas: Fix build against Capstone v6 (again)
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,42 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2 Nov 2024 at 17:46, Gustavo Romero <gustavo.romero@linaro.org> wrote:
->
-> Hi Richard,
->
-> Sorry, I've missed that one and just found it when doing a
-> check before the soft freeze :)
->
-> On 10/21/24 22:30, Richard Henderson wrote:
-> > Like 9971cbac2f3, which set CAPSTONE_AARCH64_COMPAT_HEADER,
-> > also set CAPSTONE_SYSTEMZ_COMPAT_HEADER.  Fixes the build
-> > against capstone v6-alpha.
-> >
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> > ---
-> >   include/disas/capstone.h | 1 +
-> >   1 file changed, 1 insertion(+)
-> >
-> > diff --git a/include/disas/capstone.h b/include/disas/capstone.h
-> > index a11985151d..c43033f7f6 100644
-> > --- a/include/disas/capstone.h
-> > +++ b/include/disas/capstone.h
-> > @@ -4,6 +4,7 @@
-> >   #ifdef CONFIG_CAPSTONE
-> >
-> >   #define CAPSTONE_AARCH64_COMPAT_HEADER
-> > +#define CAPSTONE_SYSTEMZ_COMPAT_HEADER
-> >   #include <capstone.h>
-> >
-> >   #else
->
->
-> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
->
-> @Peter, would you mind adding this to your queue?
+The following changes since commit c94bee4cd6693c1c65ba43bb8970cf909dec378b:
 
-Sure; applied to target-arm.next, thanks.
+  Merge tag 'for-upstream-i386' of https://gitlab.com/bonzini/qemu into staging (2024-11-02 16:21:38 +0000)
 
--- PMM
+are available in the Git repository at:
+
+  https://github.com/kostyanf14/qemu.git tags/qga-pull-2024-11-4
+
+for you to fetch changes up to 9cfe110d9fc0be88178770a85dc6170eecdf6be1:
+
+  qemu-ga: Fix a SIGSEGV in ga_run_command() helper (2024-11-04 14:16:47 +0200)
+
+----------------------------------------------------------------
+qga-pull-2024-11-4
+
+----------------------------------------------------------------
+Pierrick Bouvier (2):
+      qga: fix -Wsometimes-uninitialized windows warning
+      qga: fix missing static and prototypes windows warnings
+
+Sunil Nimmagadda (1):
+      qemu-ga: Fix a SIGSEGV in ga_run_command() helper
+
+ qga/commands-posix.c        | 2 +-
+ qga/commands-windows-ssh.c  | 2 +-
+ qga/vss-win32/install.cpp   | 6 +++++-
+ qga/vss-win32/provider.cpp  | 5 ++++-
+ qga/vss-win32/requester.cpp | 8 ++++----
+ 5 files changed, 15 insertions(+), 8 deletions(-)
+
+--
+2.47.0
+
 
