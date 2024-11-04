@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E06B9BBF9C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F009BBF8C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 22:10:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t84Ix-0002V8-MH; Mon, 04 Nov 2024 16:08:10 -0500
+	id 1t84J8-00033N-D7; Mon, 04 Nov 2024 16:08:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ie-0002Bf-PO
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:49 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Im-0002hA-LW
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Id-0005PX-8K
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t84Ik-0005Qe-JD
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 16:07:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730754466;
+ s=mimecast20190719; t=1730754473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wlEJlaD4rUuzda7f+a8uqDdCRzttqpEXwtLO90XFWes=;
- b=hECaGtn83+pob7Ae833LUY+dVPS2iJlG/Vrnch8Mr67LDYi7Eetiia1N3pttNKZFF7i7AC
- FW1W3ZlBK/p/p1+tL1iGfE/PzOmyTMy9beCsXApuBCH2U4Bpxyrxpcps+ucIi58Xlje8Ju
- gIqmsbrn0f1+CzKxUTyWP5nZwoRYIpU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SEbzwh5CXMMgSRIskBWVC858+AHstI7QTR6oOdrnG3c=;
+ b=TEUPNb0fX8tD0BBRLmRE9b/2s3LCLjukuY8txZCisbm93dYX1XHcae4fDkrO0OdzKAKM+1
+ GXnPvSDPk01mQHudnx38rr7N9g9bOl4aSwtPQ8qyfuHtZoSEr//WzFJ6fQQxcGzmxx9gDt
+ Nu/m27+Cb4ZJj3SbjfIkUX5VsaqoO04=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-uOmstuEKPYmvZB70NbgKGA-1; Mon, 04 Nov 2024 16:07:45 -0500
-X-MC-Unique: uOmstuEKPYmvZB70NbgKGA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37d59ad50f3so2040294f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:45 -0800 (PST)
+ us-mta-19-eS6HA3PGPlO41o5ByrGXZw-1; Mon, 04 Nov 2024 16:07:51 -0500
+X-MC-Unique: eS6HA3PGPlO41o5ByrGXZw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43152cd2843so27537085e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 13:07:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730754464; x=1731359264;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wlEJlaD4rUuzda7f+a8uqDdCRzttqpEXwtLO90XFWes=;
- b=DS2ifeZ+j4r43u6jNYyGHZbpJFiXbjVJmLtUCuP6bmkDq2HRSmlVoEKdRbNgx+dQvz
- LMK0E/ZqV8jeKfLayJLDN4ge+rtFuyKEHpMRGswPpaFC6Hxm9WyqiyCMS+AJksnNk5Ea
- Stshl56jIL8IqdHciYVA0JDQ5gQJIRZpn0N2FuIGDtFjE8ul2ZXdyJEcSUA60iHF/FbL
- N+bVxBlIbkce1y73PbC5wg9xkEqOTRMoxWxWs11h+NEypAfGZrDTU+YoUBC6ZXkNssmo
- VjAOHPXc457DWSen118En8/sX0mfg9f8wM/KqQicJtNZv4InTjCWzuEEv6vmDDl2KAZ0
- ewJw==
-X-Gm-Message-State: AOJu0YwQDozKlS0b8Ul4p/16QklyU+nCp1b4RShOFQTD3ZNMC4AxAT54
- tA8q9ZXM4To9ekTgfRBMCzwuUXmRCGikA3v8rCfGzI47m5MD/82YgmwbQsdMAQRfhjA/WVMEKa9
- LbTvHkFmesUOorgNprOWi5wuI7pLNcXiX7ysptr7CfH1xD77XteLJQNQt3fZ4BfLpOIw6piyke8
- EIcLzobstK5pCgDh6qyZdvjcQ2Hcqzdg==
-X-Received: by 2002:adf:e84f:0:b0:37d:4956:b0c2 with SMTP id
- ffacd0b85a97d-3806122f97emr23131446f8f.58.1730754463982; 
- Mon, 04 Nov 2024 13:07:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHo0EeQBfWx0HoVLiVSOHZMoydRGICAHX+9E9mzd4tPJCajEwJMtYYqFdptKkUMDdamaW3m/A==
-X-Received: by 2002:adf:e84f:0:b0:37d:4956:b0c2 with SMTP id
- ffacd0b85a97d-3806122f97emr23131427f8f.58.1730754463475; 
- Mon, 04 Nov 2024 13:07:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730754470; x=1731359270;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SEbzwh5CXMMgSRIskBWVC858+AHstI7QTR6oOdrnG3c=;
+ b=ZWTbzUNVSZrOCUAJFmNaozGOi3vkqlgtnMlT6HyeUTmazh8msWIM/pU+khPW8lk5Sp
+ oBn8Mn5ENvDI5X5a6fVmXrEio3HsE1Qcy0h7IwrliSiLz9FypWGiWT6X5N1LD6opM9Kn
+ t2wTfflrQiYxmqGaWKGRi8TbCs/dAlI+eA94n42lshXv3WjrZz98j5sT2UxbJE89Kcdq
+ Z9GFsPRl1Xdf8jXboKPPZI51ShOGqf6dOQVV27R/uUOMz+3ZpmPTT3ldgVUoCwEsqBNH
+ /N6daGDUutmdg+VMPqk8GcSMsn0L8jDMfzWHaUhMVN2eGGEG8Eg3WG0jZvwFJK133HRB
+ UfUA==
+X-Gm-Message-State: AOJu0YzPUazBbV77S737GD7eKWCEKu97IiR+cUw3+J5arMigMPTjS2CA
+ rNaEWnSPRE0RfutfV5J0gqZHuh3ZE40lpWPXDFfXSw/puotu5sQPBi35ukV2WPYAqjLCXjYKIQB
+ o2iLDJGw5ZM9nBq4aybEtxMQY4NycPydBLC63WYolz7gAT1UngDckXSks4llg5n/3kFsAKkJTaq
+ UvRqxoPsCyFP88zkBtnf2rEBEEzvJBzQ==
+X-Received: by 2002:a05:600c:1c94:b0:431:59b2:f0d1 with SMTP id
+ 5b1f17b1804b1-431bb976dd4mr184005015e9.4.1730754469919; 
+ Mon, 04 Nov 2024 13:07:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVb1FEqhrNf0kR3HAjQ/CCgEH/mDlp2ntwv3Bm06ATDPZvsq2zPcCMpuTU7MvM8yx22m9bqQ==
+X-Received: by 2002:a05:600c:1c94:b0:431:59b2:f0d1 with SMTP id
+ 5b1f17b1804b1-431bb976dd4mr184004725e9.4.1730754469429; 
+ Mon, 04 Nov 2024 13:07:49 -0800 (PST)
 Received: from redhat.com ([2.52.14.134]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7bf7sm14347574f8f.9.2024.11.04.13.07.41
+ 5b1f17b1804b1-431bd947c0esm202542105e9.24.2024.11.04.13.07.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 13:07:42 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:07:39 -0500
+ Mon, 04 Nov 2024 13:07:47 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:07:43 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Santosh Shukla <santosh.shukla@amd.com>,
+ Gao Shiyuan <gaoshiyuan@baidu.com>, Zuo Boqun <zuoboqun@baidu.com>,
+ Wang Liang <wangliang44@baidu.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 32/65] amd_iommu: Check APIC ID > 255 for XTSup
-Message-ID: <b12cb3819baf6d9ee8140d4dd6d36fa829e2c6d9.1730754238.git.mst@redhat.com>
+ Alexander Bulekov <alxndr@bu.edu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PULL 33/65] virtio-pci: fix memory_region_find for
+ VirtIOPCIRegion's MR
+Message-ID: <55fa4be6f76a3e1b1caa33a8f0ab4dc217d32e49.1730754238.git.mst@redhat.com>
 References: <cover.1730754238.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1730754238.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -105,50 +110,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+From: Gao Shiyuan <gaoshiyuan@baidu.com>
 
-The XTSup mode enables x2APIC support for AMD IOMMU, which is needed
-to support vcpu w/ APIC ID > 255.
+As shown below, if a virtio PCI device is attached under a pci-bridge, the MR
+of VirtIOPCIRegion does not belong to any address space. So memory_region_find
+cannot be used to search for this MR.
 
-Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
-Message-Id: <20240927172913.121477-6-santosh.shukla@amd.com>
+Introduce the virtio-pci and pci_bridge address spaces to solve this problem.
+
+Before:
+memory-region: pci_bridge_pci
+  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
+    00000000fe840000-00000000fe840fff (prio 1, i/o): virtio-net-pci-msix
+      00000000fe840000-00000000fe84003f (prio 0, i/o): msix-table
+      00000000fe840800-00000000fe840807 (prio 0, i/o): msix-pba
+    0000380000000000-0000380000003fff (prio 1, i/o): virtio-pci
+      0000380000000000-0000380000000fff (prio 0, i/o): virtio-pci-common-virtio-net
+      0000380000001000-0000380000001fff (prio 0, i/o): virtio-pci-isr-virtio-net
+      0000380000002000-0000380000002fff (prio 0, i/o): virtio-pci-device-virtio-net
+      0000380000003000-0000380000003fff (prio 0, i/o): virtio-pci-notify-virtio-net
+
+After:
+address-space: virtio-pci-cfg-mem-as
+  0000380000000000-0000380000003fff (prio 1, i/o): virtio-pci
+    0000380000000000-0000380000000fff (prio 0, i/o): virtio-pci-common-virtio-net
+    0000380000001000-0000380000001fff (prio 0, i/o): virtio-pci-isr-virtio-net
+    0000380000002000-0000380000002fff (prio 0, i/o): virtio-pci-device-virtio-net
+    0000380000003000-0000380000003fff (prio 0, i/o): virtio-pci-notify-virtio-net
+
+address-space: pci_bridge_pci_mem
+  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
+    00000000fe840000-00000000fe840fff (prio 1, i/o): virtio-net-pci-msix
+      00000000fe840000-00000000fe84003f (prio 0, i/o): msix-table
+      00000000fe840800-00000000fe840807 (prio 0, i/o): msix-pba
+    0000380000000000-0000380000003fff (prio 1, i/o): virtio-pci
+      0000380000000000-0000380000000fff (prio 0, i/o): virtio-pci-common-virtio-net
+      0000380000001000-0000380000001fff (prio 0, i/o): virtio-pci-isr-virtio-net
+      0000380000002000-0000380000002fff (prio 0, i/o): virtio-pci-device-virtio-net
+      0000380000003000-0000380000003fff (prio 0, i/o): virtio-pci-notify-virtio-net
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2576
+Fixes: ffa8a3e3b2e6 ("virtio-pci: Add lookup subregion of VirtIOPCIRegion MR")
+Co-developed-by: Zuo Boqun <zuoboqun@baidu.com>
+Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
+Co-developed-by: Wang Liang <wangliang44@baidu.com>
+Signed-off-by: Wang Liang <wangliang44@baidu.com>
+Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
+Message-Id: <20241030131324.34144-1-gaoshiyuan@baidu.com>
+Tested-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/hw/pci/pci_bridge.h            |  2 ++
+ include/hw/virtio/virtio-pci.h         |  3 +++
+ hw/pci/pci_bridge.c                    |  5 ++++
+ hw/virtio/virtio-pci.c                 | 10 +++++++
+ tests/qtest/fuzz-virtio-balloon-test.c | 37 ++++++++++++++++++++++++++
+ tests/qtest/meson.build                |  1 +
+ 6 files changed, 58 insertions(+)
+ create mode 100644 tests/qtest/fuzz-virtio-balloon-test.c
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 38297376e7..13af7211e1 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -32,6 +32,7 @@
- #include "trace.h"
- #include "hw/i386/apic-msidef.h"
- #include "hw/qdev-properties.h"
-+#include "kvm/kvm_i386.h"
+diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+index 5456e24883..b0f5204d80 100644
+--- a/include/hw/pci/pci_bridge.h
++++ b/include/hw/pci/pci_bridge.h
+@@ -72,6 +72,8 @@ struct PCIBridge {
+      */
+     MemoryRegion address_space_mem;
+     MemoryRegion address_space_io;
++    AddressSpace as_mem;
++    AddressSpace as_io;
  
- /* used AMD-Vi MMIO registers */
- const char *amdvi_mmio_low[] = {
-@@ -1651,6 +1652,16 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
-                                         &s->mr_ir, 1);
+     PCIBridgeWindows windows;
  
-+    /* AMD IOMMU with x2APIC mode requires xtsup=on */
-+    if (x86ms->apic_id_limit > 255 && !s->xtsup) {
-+        error_report("AMD IOMMU with x2APIC confguration requires xtsup=on");
-+        exit(EXIT_FAILURE);
-+    }
-+    if (s->xtsup && kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
-+        error_report("AMD IOMMU xtsup=on requires support on the KVM side");
-+        exit(EXIT_FAILURE);
-+    }
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+index 9e67ba38c7..971c5fabd4 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -147,6 +147,9 @@ struct VirtIOPCIProxy {
+     };
+     MemoryRegion modern_bar;
+     MemoryRegion io_bar;
++    /* address space for VirtIOPCIRegions */
++    AddressSpace modern_cfg_mem_as;
++    AddressSpace modern_cfg_io_as;
+     uint32_t legacy_io_bar_idx;
+     uint32_t msix_bar_idx;
+     uint32_t modern_io_bar_idx;
+diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+index 6a4e38856d..2c7bb1a525 100644
+--- a/hw/pci/pci_bridge.c
++++ b/hw/pci/pci_bridge.c
+@@ -380,9 +380,12 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
+     sec_bus->map_irq = br->map_irq ? br->map_irq : pci_swizzle_map_irq_fn;
+     sec_bus->address_space_mem = &br->address_space_mem;
+     memory_region_init(&br->address_space_mem, OBJECT(br), "pci_bridge_pci", UINT64_MAX);
++    address_space_init(&br->as_mem, &br->address_space_mem,
++                       "pci_bridge_pci_mem");
+     sec_bus->address_space_io = &br->address_space_io;
+     memory_region_init(&br->address_space_io, OBJECT(br), "pci_bridge_io",
+                        4 * GiB);
++    address_space_init(&br->as_io, &br->address_space_io, "pci_bridge_pci_io");
+     pci_bridge_region_init(br);
+     QLIST_INIT(&sec_bus->child);
+     QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
+@@ -399,6 +402,8 @@ void pci_bridge_exitfn(PCIDevice *pci_dev)
+     PCIBridge *s = PCI_BRIDGE(pci_dev);
+     assert(QLIST_EMPTY(&s->sec_bus.child));
+     QLIST_REMOVE(&s->sec_bus, sibling);
++    address_space_destroy(&s->as_mem);
++    address_space_destroy(&s->as_io);
+     pci_bridge_region_del(s, &s->windows);
+     pci_bridge_region_cleanup(s, &s->windows);
+     /* object_unparent() is called automatically during device deletion */
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index c5a809b956..5a394821da 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2057,6 +2057,8 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
+         if (modern_pio) {
+             memory_region_init(&proxy->io_bar, OBJECT(proxy),
+                                "virtio-pci-io", 0x4);
++            address_space_init(&proxy->modern_cfg_io_as, &proxy->io_bar,
++                               "virtio-pci-cfg-io-as");
+ 
+             pci_register_bar(&proxy->pci_dev, proxy->modern_io_bar_idx,
+                              PCI_BASE_ADDRESS_SPACE_IO, &proxy->io_bar);
+@@ -2180,6 +2182,9 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+                        /* PCI BAR regions must be powers of 2 */
+                        pow2ceil(proxy->notify.offset + proxy->notify.size));
+ 
++    address_space_init(&proxy->modern_cfg_mem_as, &proxy->modern_bar,
++                       "virtio-pci-cfg-mem-as");
 +
-     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
-     amdvi_init(s);
+     if (proxy->disable_legacy == ON_OFF_AUTO_AUTO) {
+         proxy->disable_legacy = pcie_port ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
+     }
+@@ -2269,12 +2274,17 @@ static void virtio_pci_exit(PCIDevice *pci_dev)
+     VirtIOPCIProxy *proxy = VIRTIO_PCI(pci_dev);
+     bool pcie_port = pci_bus_is_express(pci_get_bus(pci_dev)) &&
+                      !pci_bus_is_root(pci_get_bus(pci_dev));
++    bool modern_pio = proxy->flags & VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY;
+ 
+     msix_uninit_exclusive_bar(pci_dev);
+     if (proxy->flags & VIRTIO_PCI_FLAG_AER && pcie_port &&
+         pci_is_express(pci_dev)) {
+         pcie_aer_exit(pci_dev);
+     }
++    address_space_destroy(&proxy->modern_cfg_mem_as);
++    if (modern_pio) {
++        address_space_destroy(&proxy->modern_cfg_io_as);
++    }
  }
+ 
+ static void virtio_pci_reset(DeviceState *qdev)
+diff --git a/tests/qtest/fuzz-virtio-balloon-test.c b/tests/qtest/fuzz-virtio-balloon-test.c
+new file mode 100644
+index 0000000000..ecb597fbee
+--- /dev/null
++++ b/tests/qtest/fuzz-virtio-balloon-test.c
+@@ -0,0 +1,37 @@
++/*
++ * QTest fuzzer-generated testcase for virtio balloon device
++ *
++ * Copyright (c) 2024 Gao Shiyuan <gaoshiyuan@baidu.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "libqtest.h"
++
++/*
++ * https://gitlab.com/qemu-project/qemu/-/issues/2576
++ * Used to trigger:
++ *   virtio_address_space_lookup: Assertion `mrs.mr' failed.
++ */
++static void oss_fuzz_71649(void)
++{
++    QTestState *s = qtest_init("-device virtio-balloon -machine q35"
++                               " -nodefaults");
++
++    qtest_outl(s, 0xcf8, 0x80000890);
++    qtest_outl(s, 0xcfc, 0x2);
++    qtest_outl(s, 0xcf8, 0x80000891);
++    qtest_inl(s, 0xcfc);
++    qtest_quit(s);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    qtest_add_func("fuzz/virtio/oss_fuzz_71649", oss_fuzz_71649);
++
++    return g_test_run();
++}
++
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 9d51114539..924dc4be57 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -88,6 +88,7 @@ qtests_i386 = \
+   (config_all_devices.has_key('CONFIG_MEGASAS_SCSI_PCI') ? ['fuzz-megasas-test'] : []) +    \
+   (config_all_devices.has_key('CONFIG_LSI_SCSI_PCI') ? ['fuzz-lsi53c895a-test'] : []) +     \
+   (config_all_devices.has_key('CONFIG_VIRTIO_SCSI') ? ['fuzz-virtio-scsi-test'] : []) +     \
++  (config_all_devices.has_key('CONFIG_VIRTIO_BALLOON') ? ['fuzz-virtio-balloon-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_Q35') ? ['q35-test'] : []) +                          \
+   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
+   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
 -- 
 MST
 
