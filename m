@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEADF9BA9DD
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9545B9BA9F9
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Nov 2024 01:29:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t7kqp-0004ry-L1; Sun, 03 Nov 2024 19:21:50 -0500
+	id 1t7krD-0005MT-V8; Sun, 03 Nov 2024 19:22:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqc-0004Vn-4N; Sun, 03 Nov 2024 19:21:34 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1t7kqg-00051B-Vj; Sun, 03 Nov 2024 19:21:39 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t7kqa-0002ha-1X; Sun, 03 Nov 2024 19:21:33 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-720be27db27so2796065b3a.2; 
- Sun, 03 Nov 2024 16:21:31 -0800 (PST)
+ id 1t7kqe-0002i9-0r; Sun, 03 Nov 2024 19:21:37 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-7ea7e250c54so2636875a12.0; 
+ Sun, 03 Nov 2024 16:21:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730679690; x=1731284490; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730679694; x=1731284494; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hk9/ow9qEkX2Sb6yKS/2UXPFU8j93Otp3AOGck8SdW4=;
- b=BrW36wNh2EoP505JfYlI/tflUBrnZ1MiPRWwKo/azcgpoho0LYVNJfzkw8JffW3Qfk
- +ygbyVDEg9utHbD4iwVogkL6X2o2EkCSiH/1ycamSuUvhkPm2uFD+3UE4vntJe4JjfCN
- IzLJVKBUPRx/HhD059jDnhu2lqSXDJNxiYqBOebO2Y7dJDhehH+Iu78zXjCiqljrM4k9
- /V8vEwmKUPEcAxgiqkbCAaOuIphLmIWOggdTFBprBQNXqEszSo6ftj94csUah/ZmntkX
- wsiA+/Sq+BCZI7RUlcFqO1Lr0fJ4Tz03g0upaRgdIJUu6C3ms424vBvQYYhEUTJAOp/3
- q6uw==
+ bh=AJvgzKMs06qUgwXBjWAED/oIYCP+DEyOHDHvbxTpPZw=;
+ b=ZWAnmyF00dF6GgEv+Dwu7TUAECKuWrKKZfbfTsBxkayPb/j87ipJgSS8wcc1GrpzSD
+ 1cBmm9oy66wBPnOnh35vFsE1EwekpoZNdzt+uLDpGn2e11pGjIRq++6R8+Kc3Gi0YPXq
+ BFnfk+2X+Ot3ZlS98qWKq1HMtE/RV/RZO4dPoHrOP/nI0tnPho8bCZ9jAWl4y8Sio6Nh
+ Kn7T59Hove1l/1+6LS+5ymChksat3vu8lN5j368N2ifE1RYLvZT46hM6SgRAusvtFVzX
+ g7fDhakjQHpjI90+Qh3h90QTaNNFEww3Kml1MQUFD2ePAsNbd/QMFOcrPn/wpMn43y/T
+ 9b6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730679690; x=1731284490;
+ d=1e100.net; s=20230601; t=1730679694; x=1731284494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hk9/ow9qEkX2Sb6yKS/2UXPFU8j93Otp3AOGck8SdW4=;
- b=gkJu6WdfMke9Y6L62QhrSIORRN9TvHQFQEa0zHPqGYEbN8uOjFu+def4a2ZNBBncet
- JyCW/9Sa7jN7Bpu/CzR+NNWJXoZrrCKCbBLJXxo4D1MicSo/0JujoL8tVDGQtJvu8ogP
- yu7mvamjEKajEBUsdN4kWkfCI3sYynx6pR7Yq1KWk2SK6CmFudfZutHUgyjoB5Z5ef5l
- 0nYva+MZ37EGNmt6SzYBVoEMRF6j+Mi4dk2R62t8asWp8PxXTnzB70Wr+lVEIDy1h0hn
- PPhOZjbss4hcnU0IyBLpeVPt9/wEUo6jgLDf5JbQJ31h1U3uqgmekULHYVhg5iWVx3DU
- 9Q5g==
+ bh=AJvgzKMs06qUgwXBjWAED/oIYCP+DEyOHDHvbxTpPZw=;
+ b=EeZR7YZIjYXtW4PKOAF8jU9+vnZAZdRdTt22q206rY7gW4Ymf1oTFPgqS6yV14V88x
+ mNA8ycytAfw13c6+oh5klfBJPd8kZ35MAmg+3chuFoSooQwuh9KbY51Bl/FTx/X26dJZ
+ bhyu2POHlJrs31SRgL2SUB0+aQRVJJf7RJt4BmQ3DJJjhGzz6XlLP+KPB1tpWDa5dULz
+ ShU5VO41BXPx7VyoDn1RqU2KGA05q5EXhLXDEEDjUvs0/5F/zREUKrDxsuTho2Tpob7h
+ 4tHGrgksvpamK9YYoen9RncnxlNi9zTkov1aRNzSapECid6F7RLNJNM2civTt61Kvz+1
+ /J+g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVwu4Xq8kUDG2wISEPZs4LM0capyio5ZDEz4eVNagJ6h5XuhhSZaeJqcWAWzcg/uVJECgSbGtjJSA==@nongnu.org
-X-Gm-Message-State: AOJu0YwydZ7NEd62mE7NfNgAfJCG9pM/Wpa5AvmVTZjlnlTiWnrMXgWY
- KecPT/pAMa3WQVELZ0P0J2Gyi/o6dbNou3ShBpaUZ2gWrWlCvge8PPtbDw==
-X-Google-Smtp-Source: AGHT+IEF88Z39pRiQO77pQ+fovJrXNzw36tKehMCLcqaLVSDl/WlJPMiKLscc/I06nLiScH713U4Aw==
-X-Received: by 2002:a05:6a20:1589:b0:1db:d7d2:786d with SMTP id
- adf61e73a8af0-1dbd7d278d1mr3136173637.6.1730679689978; 
- Sun, 03 Nov 2024 16:21:29 -0800 (PST)
+ AJvYcCVQr4+H29sP357dDK3jez3LOpWl5tD8rNsK/8/vXtsRzHtiOQWPyEXuj5N2k/rSv3JODtSJ9E/cMQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyeucGALuT0Nynuc4qrnQirKW1zlzPV342d6ERAQcUebD0qi3QN
+ qYsg6f2FOLQc5jOHF4Ks+fUeMa/4nsXBnW4QcebOxBoVjFnrTrycL/mh3w==
+X-Google-Smtp-Source: AGHT+IGCYsi8B0gdBMr0mbVcdZNTO34nTzzIrz/cN5SnCGy5/9AKPzdx9UvTiIlqUpuJr6vAnvi8KQ==
+X-Received: by 2002:a05:6a20:b182:b0:1d9:237a:2d66 with SMTP id
+ adf61e73a8af0-1dba5620e9bmr13036908637.47.1730679693815; 
+ Sun, 03 Nov 2024 16:21:33 -0800 (PST)
 Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.27
+ 41be03b00d2f7-7ee45a0081esm5900648a12.59.2024.11.03.16.21.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Nov 2024 16:21:29 -0800 (PST)
+ Sun, 03 Nov 2024 16:21:32 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 38/67] target/ppc: optimize p9 exception handling routines
-Date: Mon,  4 Nov 2024 10:18:27 +1000
-Message-ID: <20241104001900.682660-39-npiggin@gmail.com>
+Subject: [PULL 39/67] target/ppc: optimize p8 exception handling routines
+Date: Mon,  4 Nov 2024 10:18:28 +1000
+Message-ID: <20241104001900.682660-40-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104001900.682660-1-npiggin@gmail.com>
 References: <20241104001900.682660-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,82 +94,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Currently, p9 exception handling has multiple if-condition checks where
-it does an indirect access to pending_interrupts and LPCR via env.
-Pass the values during entry to avoid multiple indirect accesses.
+Most of the p8 exception handling accesses env->pending_interrupts and
+env->spr[SPR_LPCR] at multiple places. Passing it directly as local
+variables simplifies the code and avoids multiple indirect accesses.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 72 ++++++++++++++++++++++------------------
- 1 file changed, 39 insertions(+), 33 deletions(-)
+ target/ppc/excp_helper.c | 60 +++++++++++++++++++++-------------------
+ 1 file changed, 32 insertions(+), 28 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 087235bd62..7074e6c894 100644
+index 7074e6c894..38733b7521 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -1872,60 +1872,65 @@ static int p8_next_unmasked_interrupt(CPUPPCState *env)
-      PPC_INTERRUPT_WDT | PPC_INTERRUPT_CDOORBELL | PPC_INTERRUPT_FIT |  \
-      PPC_INTERRUPT_PIT | PPC_INTERRUPT_THERM)
+@@ -1765,39 +1765,42 @@ static int p7_next_unmasked_interrupt(CPUPPCState *env)
+     PPC_INTERRUPT_CEXT | PPC_INTERRUPT_WDT | PPC_INTERRUPT_CDOORBELL |  \
+     PPC_INTERRUPT_FIT | PPC_INTERRUPT_PIT | PPC_INTERRUPT_THERM)
  
--static int p9_interrupt_powersave(CPUPPCState *env)
-+static int p9_interrupt_powersave(CPUPPCState *env,
-+                                  uint32_t pending_interrupts,
+-static int p8_interrupt_powersave(CPUPPCState *env)
++static int p8_interrupt_powersave(uint32_t pending_interrupts,
 +                                  target_ulong lpcr)
  {
-+
-     /* External Exception */
 -    if ((env->pending_interrupts & PPC_INTERRUPT_EXT) &&
--        (env->spr[SPR_LPCR] & LPCR_EEE)) {
--        bool heic = !!(env->spr[SPR_LPCR] & LPCR_HEIC);
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE2)) {
 +    if ((pending_interrupts & PPC_INTERRUPT_EXT) &&
-+        (lpcr & LPCR_EEE)) {
-+        bool heic = !!(lpcr & LPCR_HEIC);
-         if (!heic || !FIELD_EX64_HV(env->msr) ||
-             FIELD_EX64(env->msr, MSR, PR)) {
-             return PPC_INTERRUPT_EXT;
-         }
++        (lpcr & LPCR_P8_PECE2)) {
+         return PPC_INTERRUPT_EXT;
      }
-     /* Decrementer Exception */
 -    if ((env->pending_interrupts & PPC_INTERRUPT_DECR) &&
--        (env->spr[SPR_LPCR] & LPCR_DEE)) {
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE3)) {
 +    if ((pending_interrupts & PPC_INTERRUPT_DECR) &&
-+        (lpcr & LPCR_DEE)) {
++        (lpcr & LPCR_P8_PECE3)) {
          return PPC_INTERRUPT_DECR;
      }
-     /* Machine Check or Hypervisor Maintenance Exception */
--    if (env->spr[SPR_LPCR] & LPCR_OEE) {
--        if (env->pending_interrupts & PPC_INTERRUPT_MCK) {
-+    if (lpcr & LPCR_OEE) {
-+        if (pending_interrupts & PPC_INTERRUPT_MCK) {
-             return PPC_INTERRUPT_MCK;
-         }
--        if (env->pending_interrupts & PPC_INTERRUPT_HMI) {
-+        if (pending_interrupts & PPC_INTERRUPT_HMI) {
-             return PPC_INTERRUPT_HMI;
-         }
+-    if ((env->pending_interrupts & PPC_INTERRUPT_MCK) &&
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE4)) {
++    if ((pending_interrupts & PPC_INTERRUPT_MCK) &&
++        (lpcr & LPCR_P8_PECE4)) {
+         return PPC_INTERRUPT_MCK;
      }
-     /* Privileged Doorbell Exception */
+-    if ((env->pending_interrupts & PPC_INTERRUPT_HMI) &&
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE4)) {
++    if ((pending_interrupts & PPC_INTERRUPT_HMI) &&
++        (lpcr & LPCR_P8_PECE4)) {
+         return PPC_INTERRUPT_HMI;
+     }
 -    if ((env->pending_interrupts & PPC_INTERRUPT_DOORBELL) &&
--        (env->spr[SPR_LPCR] & LPCR_PDEE)) {
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE0)) {
 +    if ((pending_interrupts & PPC_INTERRUPT_DOORBELL) &&
-+        (lpcr & LPCR_PDEE)) {
++        (lpcr & LPCR_P8_PECE0)) {
          return PPC_INTERRUPT_DOORBELL;
      }
-     /* Hypervisor Doorbell Exception */
 -    if ((env->pending_interrupts & PPC_INTERRUPT_HDOORBELL) &&
--        (env->spr[SPR_LPCR] & LPCR_HDEE)) {
+-        (env->spr[SPR_LPCR] & LPCR_P8_PECE1)) {
 +    if ((pending_interrupts & PPC_INTERRUPT_HDOORBELL) &&
-+        (lpcr & LPCR_HDEE)) {
++        (lpcr & LPCR_P8_PECE1)) {
          return PPC_INTERRUPT_HDOORBELL;
-     }
-     /* Hypervisor virtualization exception */
--    if ((env->pending_interrupts & PPC_INTERRUPT_HVIRT) &&
--        (env->spr[SPR_LPCR] & LPCR_HVEE)) {
-+    if ((pending_interrupts & PPC_INTERRUPT_HVIRT) &&
-+        (lpcr & LPCR_HVEE)) {
-         return PPC_INTERRUPT_HVIRT;
      }
 -    if (env->pending_interrupts & PPC_INTERRUPT_RESET) {
 +    if (pending_interrupts & PPC_INTERRUPT_RESET) {
@@ -178,31 +160,19 @@ index 087235bd62..7074e6c894 100644
      return 0;
  }
  
--static int p9_next_unmasked_interrupt(CPUPPCState *env)
-+static int p9_next_unmasked_interrupt(CPUPPCState *env,
+-static int p8_next_unmasked_interrupt(CPUPPCState *env)
++static int p8_next_unmasked_interrupt(CPUPPCState *env,
 +                                      uint32_t pending_interrupts,
 +                                      target_ulong lpcr)
  {
      CPUState *cs = env_cpu(env);
  
-     /* Ignore MSR[EE] when coming out of some power management states */
-     bool msr_ee = FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sreset;
- 
--    assert((env->pending_interrupts & P9_UNUSED_INTERRUPTS) == 0);
-+    assert((pending_interrupts & P9_UNUSED_INTERRUPTS) == 0);
+@@ -1808,18 +1811,18 @@ static int p8_next_unmasked_interrupt(CPUPPCState *env)
  
      if (cs->halted) {
-         if (env->spr[SPR_PSSCR] & PSSCR_EC) {
-@@ -1933,7 +1938,7 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
-              * When PSSCR[EC] is set, LPCR[PECE] controls which interrupts can
-              * wakeup the processor
-              */
--            return p9_interrupt_powersave(env);
-+            return p9_interrupt_powersave(env, pending_interrupts, lpcr);
-         } else {
-             /*
-              * When it's clear, any system-caused exception exits power-saving
-@@ -1944,14 +1949,14 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
+         /* LPCR[PECE] controls which interrupts can exit power-saving mode */
+-        return p8_interrupt_powersave(env);
++        return p8_interrupt_powersave(pending_interrupts, lpcr);
      }
  
      /* Machine check exception */
@@ -220,18 +190,7 @@ index 087235bd62..7074e6c894 100644
          if ((msr_ee || !FIELD_EX64_HV(env->msr)) && hdice) {
              /* HDEC clears on delivery */
              return PPC_INTERRUPT_HDECR;
-@@ -1959,18 +1964,18 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
-     }
- 
-     /* Hypervisor virtualization interrupt */
--    if (env->pending_interrupts & PPC_INTERRUPT_HVIRT) {
-+    if (pending_interrupts & PPC_INTERRUPT_HVIRT) {
-         /* LPCR will be clear when not supported so this will work */
--        bool hvice = !!(env->spr[SPR_LPCR] & LPCR_HVICE);
-+        bool hvice = !!(lpcr & LPCR_HVICE);
-         if ((msr_ee || !FIELD_EX64_HV(env->msr)) && hvice) {
-             return PPC_INTERRUPT_HVIRT;
-         }
+@@ -1827,9 +1830,9 @@ static int p8_next_unmasked_interrupt(CPUPPCState *env)
      }
  
      /* External interrupt can ignore MSR:EE under some circumstances */
@@ -244,7 +203,7 @@ index 087235bd62..7074e6c894 100644
          /* HEIC blocks delivery to the hypervisor */
          if ((msr_ee && !(heic && FIELD_EX64_HV(env->msr) &&
              !FIELD_EX64(env->msr, MSR, PR))) ||
-@@ -1980,20 +1985,20 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
+@@ -1839,20 +1842,20 @@ static int p8_next_unmasked_interrupt(CPUPPCState *env)
      }
      if (msr_ee != 0) {
          /* Decrementer exception */
@@ -270,16 +229,16 @@ index 087235bd62..7074e6c894 100644
              /*
               * EBB exception must be taken in problem state and
               * with BESCR_GE set.
-@@ -2020,7 +2025,8 @@ static int ppc_next_unmasked_interrupt(CPUPPCState *env)
+@@ -2021,7 +2024,8 @@ static int ppc_next_unmasked_interrupt(CPUPPCState *env)
+     case POWERPC_EXCP_POWER7:
+         return p7_next_unmasked_interrupt(env);
+     case POWERPC_EXCP_POWER8:
+-        return p8_next_unmasked_interrupt(env);
++        return p8_next_unmasked_interrupt(env, env->pending_interrupts,
++                                          env->spr[SPR_LPCR]);
      case POWERPC_EXCP_POWER9:
      case POWERPC_EXCP_POWER10:
      case POWERPC_EXCP_POWER11:
--        return p9_next_unmasked_interrupt(env);
-+        return p9_next_unmasked_interrupt(env, env->pending_interrupts,
-+                                          env->spr[SPR_LPCR]);
-     default:
-         break;
-     }
 -- 
 2.45.2
 
