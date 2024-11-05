@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25279BCBB0
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950129BCBD7
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:27:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HbL-0004Vn-9D; Tue, 05 Nov 2024 06:19:59 -0500
+	id 1t8Hih-0006zR-6h; Tue, 05 Nov 2024 06:27:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbI-0004UL-30
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:56 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1t8Hif-0006zH-FH
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:27:33 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbB-00076o-Nb
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:55 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-431616c23b5so33181505e9.0
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:48 -0800 (PST)
+ id 1t8Hid-000825-JF
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:27:33 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a9a0ef5179dso879638366b.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:27:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730805587; x=1731410387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730806050; x=1731410850; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QD6Lc/I6xdPJ52+g1i8fO338zKT4nqacusp7y0oQIcc=;
- b=sicNZKRHrhkfNYHpLjBwqB9ZQjhKlcUGzHxhNqUKAtsbbYWNa9b3WeApzqjknbGVXG
- llqjMzkC2VVvcyRivAwaotIp64S9mVbnGXLhTsvSHGWM+ALei0I/XaBlWBDdtdEUtz11
- FmJYmGSeZDwKLou1t8Vz4gxMshewtF5VkQz7i5DzPSQ1AJNTJbbsXeEZydKS6uPDS4to
- HS6ghoeOqfQFR2w7KeiA/1qzJvrpSGVmHoAbMLmc9f3mKbVJyiUs7CbBRVBe5CIDZUIl
- bgdB72lggi8/0MK/cnTQkGo8gH+LulsUF6LxKq8vrEQdXUqsN8kvZmXK0UXqY07pwdOS
- blGQ==
+ :reply-to; bh=B9iPPGInxZFEJeivG1/w0WhkOP2pUxlITSIJKqo2Kuc=;
+ b=GK0tnZQnTpvnX9vPYj2PH43AIf20eEaqUsfox6UPpfojp9NrSOuKq3M5m/VoZKiLxj
+ na2M1fuPqLe78u6TqQ4t/Wgfloj+Pvzamrz/HT8qvsU0t4zgLelw6ApO02b1vTrhfNxo
+ L804kMPK7VzIlgH7fcyHnVPLf/CQW1LFnDq9VqTYuLDdNCw6hRC8nE0gy5EcvWyAyYAv
+ haO3kAZITXYGrxoDTT/ULhanYE1mcytWMpnqktca0+LWJFky6LsurqjrVNqUrFo5JYYN
+ /ulBoT3wj8nFVeUi6W8RF6RsSXISgK0mlDl72xsrZxVRuRuae0DJyLJ+dH/HEXN/7/5s
+ Ic+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730805587; x=1731410387;
+ d=1e100.net; s=20230601; t=1730806050; x=1731410850;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QD6Lc/I6xdPJ52+g1i8fO338zKT4nqacusp7y0oQIcc=;
- b=V8uKON2o7jA6FgbQzYjDe8XoWm5qsTmljTmSDpAAMk80ScCh1C8F8qg4dgchCiOc/c
- 7cko+PvWIw5NjMyeD7NYf1eAL7/v9Djp6tkXCXmKiGihIoscbbNanvrCQtuk/uZWmls3
- 3Tk7hFW3rPuNdvkH0ulkTgp1GwDCWdZlmBEYBY9bUpNX2M0+Sy+jwDVLwijY9IFkWQ1E
- pQ3NWmvdll9EoUbhrtrfurdpvX37QESkMFhnqsZ8jWAVRjxcJ2iv4bTmhCv4v0Wbs1u7
- /QGC4wl8iTAm0ytwWFgBSNlIacP/DBh7vPVix05E1CmwN7gNDBkznY7+HJDBuW4Ah1lo
- nfJA==
-X-Gm-Message-State: AOJu0Yx9yIYDLSJPZF0sxwjRa6sIGNDUgMMZVA6A96d8DGKbHVoX7JZ/
- EBoAeVWq7/02qRl5w3fBDgifTlLmwEGnfJ737zEeP5QnM8t48xSIzKK100Nb8iNUrIc/yVaGvyu
- O
-X-Google-Smtp-Source: AGHT+IH0FgwKmDhBx+H+hKWmuPuZ6OakkHkQfyaB+B7+3daicMuI3K4jRHZd9d/xh6lWJFyor7dccw==
-X-Received: by 2002:a05:600c:a02:b0:431:15f1:421d with SMTP id
- 5b1f17b1804b1-432830a14b7mr129407135e9.16.1730805586993; 
- Tue, 05 Nov 2024 03:19:46 -0800 (PST)
+ bh=B9iPPGInxZFEJeivG1/w0WhkOP2pUxlITSIJKqo2Kuc=;
+ b=pWtR6IaTODbPFuS+2GKbdTmuuW1I+MUXWNWWdUZwtDBvA27OOHaHsdPwAc+n8QPy14
+ WjfCEOgKUpg7kh1Nu/yBXfABu4ui+fhTpF9YI6gtdEYP6gxLSfluIbn+HMHeISlsZ/UE
+ ocnYM7CiBID9n4hibeShnzEa67tW92BwIEZmfFiXsEZL47TJBOAI7Kq2IIZs6ssl/Mh/
+ 3ylipe84tWzbKDuVjOo7dtnLk1T2ad9VID2mVlKsOpbeHqxm8yH8PhvAD4Ah1CP9vn3G
+ 2Zp1H5hpXiF0mtsQdJuwkufExQm76DtgvnPJrMWnsSmJ5z7LEpA0ZpVJNr+3QRQn5mv+
+ b+2g==
+X-Gm-Message-State: AOJu0YzQNWtZIaXxvbioiNOYZDueY+G04TyoKMDCE4gE+dCj2p8p0rZ4
+ cFDa37FNbpJAjB7sesOVc966wKdgxl6RcRZqWdqUVbzJ2wTH2npZURGFuvMyc09Nnlp2Z9Hwu3h
+ S
+X-Google-Smtp-Source: AGHT+IEn6E7yXEFj50GjefAMjWW/EWcA6sBtcmsJNc9vIQ27FsBd8LCo3FK8/BGcqbS+yVLgSwCTGQ==
+X-Received: by 2002:a05:600c:46c8:b0:42c:b905:2bf9 with SMTP id
+ 5b1f17b1804b1-4319acb17a9mr329518575e9.16.1730805587592; 
+ Tue, 05 Nov 2024 03:19:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.46
+ 5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 03:19:46 -0800 (PST)
+ Tue, 05 Nov 2024 03:19:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/31] target/microblaze: Move setting of float rounding mode
- to reset
-Date: Tue,  5 Nov 2024 11:19:21 +0000
-Message-Id: <20241105111935.2747034-18-peter.maydell@linaro.org>
+Subject: [PULL 18/31] target/microblaze: Explicitly set 2-NaN propagation rule
+Date: Tue,  5 Nov 2024 11:19:22 +0000
+Message-Id: <20241105111935.2747034-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
 References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,53 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although the floating point rounding mode for Microblaze is always
-nearest-even, we cannot set it just once in the CPU initfn.  This is
-because env->fp_status is in the part of the CPU state struct that is
-zeroed on reset.
+Set the NaN propagation rule explicitly for the float_status word
+used in the microblaze target.
 
-Move the call to set_float_rounding_mode() into the reset fn.
-
-(This had no guest-visible effects because it happens that the
-float_round_nearest_even enum value is 0, so when the struct was
-zeroed it didn't corrupt the setting.)
+This is probably not the architecturally correct behaviour,
+but since this is a no-behaviour-change patch, we leave a
+TODO note to that effect.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241025141254.2141506-18-peter.maydell@linaro.org
+Message-id: 20241025141254.2141506-19-peter.maydell@linaro.org
 ---
- target/microblaze/cpu.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/microblaze/cpu.c        | 5 +++++
+ fpu/softfloat-specialize.c.inc | 3 ++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 135947ee800..6329a774331 100644
+index 6329a774331..14286deead9 100644
 --- a/target/microblaze/cpu.c
 +++ b/target/microblaze/cpu.c
-@@ -201,6 +201,8 @@ static void mb_cpu_reset_hold(Object *obj, ResetType type)
- 
+@@ -202,6 +202,11 @@ static void mb_cpu_reset_hold(Object *obj, ResetType type)
      env->pc = cpu->cfg.base_vectors;
  
-+    set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
-+
+     set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
++    /*
++     * TODO: this is probably not the correct NaN propagation rule for
++     * this architecture.
++     */
++    set_float_2nan_prop_rule(float_2nan_prop_x87, &env->fp_status);
+ 
  #if defined(CONFIG_USER_ONLY)
      /* start in user mode with interrupts enabled.  */
-     mb_cpu_write_msr(env, MSR_EE | MSR_IE | MSR_VM | MSR_UM);
-@@ -311,15 +313,12 @@ static void mb_cpu_realizefn(DeviceState *dev, Error **errp)
- static void mb_cpu_initfn(Object *obj)
- {
-     MicroBlazeCPU *cpu = MICROBLAZE_CPU(obj);
--    CPUMBState *env = &cpu->env;
- 
-     gdb_register_coprocessor(CPU(cpu), mb_cpu_gdb_read_stack_protect,
-                              mb_cpu_gdb_write_stack_protect,
-                              gdb_find_static_feature("microblaze-stack-protect.xml"),
-                              0);
- 
--    set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
--
- #ifndef CONFIG_USER_ONLY
-     /* Inbound IRQ and FIR lines */
-     qdev_init_gpio_in(DEVICE(cpu), microblaze_cpu_set_irq, 2);
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index a5c3e2b8de5..40cbb1ab73b 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -406,7 +406,8 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+     || defined(TARGET_LOONGARCH64) || defined(TARGET_HPPA) \
+     || defined(TARGET_S390X) || defined(TARGET_PPC) || defined(TARGET_M68K) \
+     || defined(TARGET_SPARC) || defined(TARGET_XTENSA) \
+-    || defined(TARGET_I386) || defined(TARGET_ALPHA)
++    || defined(TARGET_I386) || defined(TARGET_ALPHA) \
++    || defined(TARGET_MICROBLAZE)
+         g_assert_not_reached();
+ #else
+         rule = float_2nan_prop_x87;
 -- 
 2.34.1
 
