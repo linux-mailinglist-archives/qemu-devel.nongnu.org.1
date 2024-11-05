@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090B49BC5EF
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 305EB9BC5D6
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:44:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DEG-0001ZT-JL; Tue, 05 Nov 2024 01:39:52 -0500
+	id 1t8DDg-0000XA-Ii; Tue, 05 Nov 2024 01:39:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDJ-0007yX-LL
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:55 -0500
+ id 1t8DDN-000896-I8
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:57 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDG-0001vd-LK
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:52 -0500
+ id 1t8DDL-0001w0-F3
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788731; x=1762324731;
+ t=1730788735; x=1762324735;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IFyldM/wkLLjkzgvXirqmq3JCBeSDG+HIbY0Aejj2GY=;
- b=jY5Xol2L2k9Yl/rytxWsgRZPJMHRIXRyWdaDkRFfDvIFukH2usdmTy5j
- xo1NPXyvdodpUe6MiJMplqBJUaORso2qx1ELZmbGQMillglOD8PHeIgt+
- SyC/njbY+tIx7go2Xk0hlYOFLajCE84e4dd1rqv4LqEH0h1ihwKkvPPac
- jAlJO/7AXEYXSUdRnbKZYcmzxOWqihzaf3Icqp0gAPDjCaDZF/VKBRBW1
- f9Iz9zwEuHyE0fkq/PEpcXS5sO0tS38csgqQOOomoy9MBYv+DeloNwkb+
- C2L6OA93U2vHTDlUrNg7mNx8xw846NZYx62wkr4e4PnUC7/00mVAfiphM w==;
-X-CSE-ConnectionGUID: vLbXF8/ASZWx0BbpdUDSXQ==
-X-CSE-MsgGUID: OYsubaVMT2WkfyZmkPCg+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689680"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689680"
+ bh=63P5g04tq2r6PcAIPsWb8iPHQuE0MH+gEuTLFzYddZI=;
+ b=cTAdsF7XPNnZHGt8qt1fk7zeI73w44GZJvRyatd3UqHVVBoSaSsinAw8
+ zsDW5NcoaRE06Pt3KDq+0f6aMRlgj8Z0avJrd8Xqh9uAGJIgYhog9pNoP
+ Y4rnf1brIjgpu1TEjML7oeU6Yq1GDSaCWMC/CxJoDv/V98ehtixH/jnnP
+ 6ibx3Q7ZLwqdAmGv7OmQFF1yVnhc+ylQzMgZDex8BoPdOGtN7bS+cOnGB
+ N5A7lrHKcFYfXspX38laWDnty9IN7Ai534fAMTVutlmQB4HdxGs09GBs7
+ cHDJu04sRUPu4KRkz9xm9I3c7mU8ca3oo69W52a/hs9jrgvoBIH0t8ogH A==;
+X-CSE-ConnectionGUID: CGoGwe+YT8SOJE1XHz5Wzg==
+X-CSE-MsgGUID: 8MqhssINTvuUjlr46ub66g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689689"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689689"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:38:40 -0800
-X-CSE-ConnectionGUID: iuT24egDTnOHJU8nk9k9hQ==
-X-CSE-MsgGUID: 35Pm2IzXRcuowvndLGKt2A==
+ 04 Nov 2024 22:38:45 -0800
+X-CSE-ConnectionGUID: MdCsSwMrQqKD4Co1gmDzvA==
+X-CSE-MsgGUID: KOGn8PVPRDGFMXhDPQsGvQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989208"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989240"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:36 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:40 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 32/60] i386/tdx: implement tdx_cpu_instance_init()
-Date: Tue,  5 Nov 2024 01:23:40 -0500
-Message-Id: <20241105062408.3533704-33-xiaoyao.li@intel.com>
+Subject: [PATCH v6 33/60] i386/cpu: introduce
+ x86_confidenetial_guest_cpu_realizefn()
+Date: Tue,  5 Nov 2024 01:23:41 -0500
+Message-Id: <20241105062408.3533704-34-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,38 +89,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, pmu is not supported for TDX by KVM.
+To execute confidential guest specific cpu realize operations.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-chanegs in v6:
+changes in v6:
  - new patch;
 ---
- target/i386/kvm/tdx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/i386/confidential-guest.h | 12 ++++++++++++
+ target/i386/cpu.c                | 13 ++++++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 394f1d75dc0d..61fb1f184149 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -384,6 +384,11 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
-     return KVM_X86_TDX_VM;
+diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
+index 38169ed68e06..4b7ea91023dc 100644
+--- a/target/i386/confidential-guest.h
++++ b/target/i386/confidential-guest.h
+@@ -40,6 +40,7 @@ struct X86ConfidentialGuestClass {
+     /* <public> */
+     int (*kvm_type)(X86ConfidentialGuest *cg);
+     void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
++    void (*cpu_realizefn)(X86ConfidentialGuest *cg, CPUState *cpu, Error **errp);
+     uint32_t (*mask_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
+                                     int reg, uint32_t value);
+ };
+@@ -70,6 +71,17 @@ static inline void x86_confidential_guest_cpu_instance_init(X86ConfidentialGuest
+     }
  }
  
-+static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
++static inline void x86_confidenetial_guest_cpu_realizefn(X86ConfidentialGuest *cg,
++                                                         CPUState *cpu,
++                                                         Error **errp)
 +{
-+    object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
++    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
++
++    if (klass->cpu_realizefn) {
++        klass->cpu_realizefn(cg, cpu, errp);
++    }
 +}
 +
- static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
- {
-     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
-@@ -727,4 +732,5 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
+ /**
+  * x86_confidential_guest_mask_cpuid_features:
+  *
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index c7d65bbeab9b..1ffbafef03e7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7848,6 +7848,18 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
  
-     klass->kvm_init = tdx_kvm_init;
-     x86_klass->kvm_type = tdx_kvm_type;
-+    x86_klass->cpu_instance_init = tdx_cpu_instance_init;
- }
++#ifndef CONFIG_USER_ONLY
++    MachineState *ms = MACHINE(qdev_get_machine());
++
++    if (ms->cgs) {
++        x86_confidenetial_guest_cpu_realizefn(X86_CONFIDENTIAL_GUEST(ms->cgs),
++                                              cs, &local_err);
++        if (local_err != NULL) {
++            goto out;
++        }
++    }
++#endif
++
+     if (xcc->host_cpuid_required && !accel_uses_host_cpuid()) {
+         g_autofree char *name = x86_cpu_class_get_model_name(xcc);
+         error_setg(&local_err, "CPU model '%s' requires KVM or HVF", name);
+@@ -7972,7 +7984,6 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+ #ifndef CONFIG_USER_ONLY
+-    MachineState *ms = MACHINE(qdev_get_machine());
+     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
+ 
+     if (cpu->env.features[FEAT_1_EDX] & CPUID_APIC || ms->smp.cpus > 1) {
 -- 
 2.34.1
 
