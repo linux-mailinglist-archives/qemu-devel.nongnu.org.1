@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6279BCD66
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 14:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F1C9BCD5D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 14:07:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8JGM-0004kR-V0; Tue, 05 Nov 2024 08:06:26 -0500
+	id 1t8JHA-0006Om-S4; Tue, 05 Nov 2024 08:07:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGJ-0004cl-7M
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:23 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGk-00064L-LF
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:50 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGF-0002aX-5l
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:22 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43161c0068bso46044925e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 05:06:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGh-0002ec-Mw
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:50 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-37d4ac91d97so4578004f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 05:06:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730811977; x=1731416777; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730812006; x=1731416806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ofAZFiczDEOu9xgPawLxt48aoodtpVY0sVqQebDNA74=;
- b=XeSG3ZtHsbO0F6EF9/mYVy/zZKIgeVbGJxqwyoPI5lmtzGuoVr3mAIg8c4LoiLyoHS
- +p8v4B9IXZJEGRxJq/YbjxFGpWQcE/wSHhc1iwvtFjLuGyg7h9lEMOrcSplz55+Zi6YR
- 5b6XpZUYsGoCGGArYTS5WWRGrR1VFQmDnlUnlB1Oc+0izmis8HiLmUElsmsConxNxa5j
- u7lbaeAPtdVHEcZCgH4IKYBxCEQMcGBT+FZlP1PhEDyc/YJFgCZ+KFzRnRhYGqe500zN
- vupHAQCNvokEnfHWo47KtrZSDcv+Del6bnJITDvQDlCuFUD0G/7r7y2PeDt4AaF6nXvT
- QjNQ==
+ bh=2HA1iYoQhge6HN2CHRy7t3YqB3wWBO4DLLl9qjbY1CM=;
+ b=Lpo9L8RkA4YYSK/qvcTHeX06Up0oGGU189jK6IG9s3BkMb+IThDvaeAjn5RfdLUGKN
+ f2VXhFE3fVZDYu3IYU5QqAojUS70baIaahc/IwwM1lfS807lC84wBEDmLI33X9unujm/
+ Fg1oihOaT6YkHb2nIlvv+VTfB6xWvylHbwrJyFJZTGE4jZ4bNyIjcSdDy/qKIYllDOj4
+ yq8W/rkUeLt3mD49yXVnJl2g5Gs/L2H/LzKz0eyOLBdM7/yLgBW3KiF3yTfWlBWRzpNe
+ qqaIFNWhwOMJ52/tHePpYvBPTllS6X4kB3xl8lCovgNFN0KGIwboagxCANvq/kZ9cRxc
+ gpiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730811977; x=1731416777;
+ d=1e100.net; s=20230601; t=1730812006; x=1731416806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ofAZFiczDEOu9xgPawLxt48aoodtpVY0sVqQebDNA74=;
- b=pOVL6ezWUqRcEhNnBfpKj5QvCoivQ/GN0cDt7gO7JZukNhBiFs3wsYynxcx520xWeQ
- e3qGu1T3+10ELmVDW6tiCTu1oC3CXGzIqGxqNtSP01J84NWUS6Q77x7jHDY+WKDMSveM
- l4ttcYOf9JIhxtExdnEKTPaRchKzW/r7Eon8TkEfryU2q4kRjyaQZ8Rgj0oBShPVGiiV
- /PmzajqYEWnrTk0bUIaNPPHGhso7NMWKAd8XjHBN+yO36ThfpffCmFqyVWKlwz/dkq9x
- okM0/jg6wMiRN6IbNzQ0mDpVi8kEW/4Yk4LD6heqBKT58XgTi8JZp6coU4dUxP45w415
- VUYw==
-X-Gm-Message-State: AOJu0Yx0DN98CAs9Ax5OO3HownTg6TGZ6Wth7lI4AEUjAJ3UcKyWqxy0
- i4uD1dKzhp+jrKXeTYhyefFgAJTu47xvO288EPzgOEU5dZkhiUeBf6IRyJoYwlmrFLja4R5Nakf
- kHAQ=
-X-Google-Smtp-Source: AGHT+IF4uaP7NjPFamDGcyl+la1qxC3RIS3oU3RixeHv2G3YBtTX3BECiMTyJmfanvavmJ/rByZK8w==
-X-Received: by 2002:a05:600c:1c15:b0:42f:8fcd:486c with SMTP id
- 5b1f17b1804b1-43283297a37mr131910645e9.33.1730811977415; 
- Tue, 05 Nov 2024 05:06:17 -0800 (PST)
+ bh=2HA1iYoQhge6HN2CHRy7t3YqB3wWBO4DLLl9qjbY1CM=;
+ b=BB0v0nfLoJrpBTuzP9eH5aZQWckwK/inN/TgPjZSreUZiVA9kldvzMstODpdzcffac
+ 7D7BiTrkOS+XOl0mBgMLRBH99+IrWgybzoEqDYnYxMDJnXNmbh8k02yCjIdXNWnC4Opz
+ ZDQD/GwptjTQcrXMauotDSgIoZWlWA03lRz5IY+u2puJfzAfBfY83j8HMxTbEl6xcGfu
+ jTzAX4tfuYiv0/7X30nXcNBs6lwbBAF1SPtvVVPbC46LXAAyVUmE3FoJLIz6VVriqDfI
+ /ZI/vscVK+uRF3l5rA1om8nxLeu3z7pKIaDB+YK0WCW1F1qKPiWvLYaw0LSzoCLzGdO6
+ 1LpQ==
+X-Gm-Message-State: AOJu0YxidGYEAKlYlTsPqRrw7t28VQe0kISJWhLFzF36QRrRpes+hjfY
+ /vegvHVhH4HU6Yx43CkMxkq6/q3fA677DM2nPRxylD6BQCgxjXmiGyD6wl26HWawi4yGPTkQRkm
+ vS0M=
+X-Google-Smtp-Source: AGHT+IHFlOyH7jLqLmVJWiSq5ZAd02Ui4PVZS15kFWcQDOeKoizvayG3iUaxo7TlK8hsaSPPS+Hcow==
+X-Received: by 2002:a05:6000:1a8c:b0:37d:5042:c8de with SMTP id
+ ffacd0b85a97d-381c7a5d4eemr16315520f8f.22.1730812005816; 
+ Tue, 05 Nov 2024 05:06:45 -0800 (PST)
 Received: from localhost.localdomain (86.red-88-29-160.dynamicip.rima-tde.net.
  [88.29.160.86]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5e7c8bsm193062535e9.26.2024.11.05.05.06.12
+ ffacd0b85a97d-381c10d4d1fsm16076930f8f.38.2024.11.05.05.06.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 05:06:16 -0800 (PST)
+ Tue, 05 Nov 2024 05:06:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Anton Johansson <anjo@rev.ng>
@@ -66,17 +66,17 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/19] hw/timer/xilinx_timer: Only expect big-endian accesses
-Date: Tue,  5 Nov 2024 14:04:22 +0100
-Message-ID: <20241105130431.22564-11-philmd@linaro.org>
+Subject: [PATCH 13/19] target/microblaze: Explode MO_TExx -> MO_TE | MO_xx
+Date: Tue,  5 Nov 2024 14:04:25 +0100
+Message-ID: <20241105130431.22564-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105130431.22564-1-philmd@linaro.org>
 References: <20241105130431.22564-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +99,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per the datasheet (reference added in file header, p.10):
-'Register Data Types and Organization':
+Extract the implicit MO_TE definition in order to replace
+it by runtime variable in the next commit.
 
-  "The XPS Timer/Counter registers are organized as big-endian data."
+Mechanical change using:
+
+  $ for n in UW UL UQ UO SW SL SQ; do \
+      sed -i -e "s/MO_TE$n/MO_TE | MO_$n/" \
+           $(git grep -l MO_TE$n target/microblaze); \
+    done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/timer/xilinx_timer.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/microblaze/translate.c | 36 +++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
-index 28ac95edea1..3e272c8bb39 100644
---- a/hw/timer/xilinx_timer.c
-+++ b/hw/timer/xilinx_timer.c
-@@ -3,6 +3,9 @@
-  *
-  * Copyright (c) 2009 Edgar E. Iglesias.
-  *
-+ * DS573: https://docs.amd.com/v/u/en-US/xps_timer
-+ * LogiCORE IP XPS Timer/Counter (v1.02a)
-+ *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-  * in the Software without restriction, including without limitation the rights
-@@ -192,7 +195,7 @@ timer_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps timer_ops = {
-     .read = timer_read,
-     .write = timer_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .impl = {
-         .min_access_size = 4,
-         .max_access_size = 4,
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index 4beaf69e76a..4c25b1e4383 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -779,13 +779,13 @@ static bool trans_lbui(DisasContext *dc, arg_typeb *arg)
+ static bool trans_lhu(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+ }
+ 
+ static bool trans_lhur(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, true);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
+ }
+ 
+ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
+@@ -797,26 +797,26 @@ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
+     return true;
+ #else
+     TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUW, MMU_NOMMU_IDX, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
+ #endif
+ }
+ 
+ static bool trans_lhui(DisasContext *dc, arg_typeb *arg)
+ {
+     TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
+-    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+ }
+ 
+ static bool trans_lw(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+ }
+ 
+ static bool trans_lwr(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, true);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
+ }
+ 
+ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
+@@ -828,14 +828,14 @@ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
+     return true;
+ #else
+     TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
+-    return do_load(dc, arg->rd, addr, MO_TEUL, MMU_NOMMU_IDX, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
+ #endif
+ }
+ 
+ static bool trans_lwi(DisasContext *dc, arg_typeb *arg)
+ {
+     TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
+-    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+ }
+ 
+ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
+@@ -845,7 +845,7 @@ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
+     /* lwx does not throw unaligned access errors, so force alignment */
+     tcg_gen_andi_tl(addr, addr, ~3);
+ 
+-    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index, MO_TEUL);
++    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index, MO_TE | MO_UL);
+     tcg_gen_mov_tl(cpu_res_addr, addr);
+ 
+     if (arg->rd) {
+@@ -929,13 +929,13 @@ static bool trans_sbi(DisasContext *dc, arg_typeb *arg)
+ static bool trans_sh(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+ }
+ 
+ static bool trans_shr(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, true);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
+ }
+ 
+ static bool trans_shea(DisasContext *dc, arg_typea *arg)
+@@ -947,26 +947,26 @@ static bool trans_shea(DisasContext *dc, arg_typea *arg)
+     return true;
+ #else
+     TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUW, MMU_NOMMU_IDX, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
+ #endif
+ }
+ 
+ static bool trans_shi(DisasContext *dc, arg_typeb *arg)
+ {
+     TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
+-    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+ }
+ 
+ static bool trans_sw(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+ }
+ 
+ static bool trans_swr(DisasContext *dc, arg_typea *arg)
+ {
+     TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, true);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
+ }
+ 
+ static bool trans_swea(DisasContext *dc, arg_typea *arg)
+@@ -978,14 +978,14 @@ static bool trans_swea(DisasContext *dc, arg_typea *arg)
+     return true;
+ #else
+     TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
+-    return do_store(dc, arg->rd, addr, MO_TEUL, MMU_NOMMU_IDX, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
+ #endif
+ }
+ 
+ static bool trans_swi(DisasContext *dc, arg_typeb *arg)
+ {
+     TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
+-    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+ }
+ 
+ static bool trans_swx(DisasContext *dc, arg_typea *arg)
+@@ -1014,7 +1014,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
+ 
+     tcg_gen_atomic_cmpxchg_i32(tval, cpu_res_addr, cpu_res_val,
+                                reg_for_write(dc, arg->rd),
+-                               dc->mem_index, MO_TEUL);
++                               dc->mem_index, MO_TE | MO_UL);
+ 
+     tcg_gen_brcond_i32(TCG_COND_NE, cpu_res_val, tval, swx_fail);
+ 
 -- 
 2.45.2
 
