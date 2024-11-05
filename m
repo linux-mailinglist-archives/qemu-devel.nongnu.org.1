@@ -2,95 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A31C9BD163
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA9B9BD1D2
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:11:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Lxs-00060i-Gl; Tue, 05 Nov 2024 10:59:32 -0500
+	id 1t8M7k-0003V6-Ny; Tue, 05 Nov 2024 11:09:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lxq-00060a-LH
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:59:30 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t8M7i-0003U7-Ti
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:09:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lxo-00077y-Rr
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:59:30 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5FeIJD013536;
- Tue, 5 Nov 2024 15:59:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Hsdld+
- N9E6cabUvfrCv0TY4uyedfekpsm/YWCjyf0+M=; b=R7fO+COMc0waZPvQmTmd23
- 47WLCrWf0uWEXXpq8Wz5/Lsxp/ZQ3UZ7sKaB/eg59yshrTZuXunVyAX0CXhFvyVt
- T9SzfoOsqTKpZXCbJp9Q5MqMeXuyYLP/57UzWP/a10kUufHES1Gr5nDiJGA53vpC
- wNHS0h4awWQivgFwivPj3n46msf6ygUs+7L221deVfjkaJ5bzKw51EH62cKQVrf7
- +nsjnYZbB0msnvD4KuabsDJgjSk8aERur6gWAnZ53saLA6LIeMIcgHS3PcrN8P9e
- JMs0VbJJ5hnZE9EZyd0tGVEVC46sMvJZWQw1KT+ld7C4025WR83O3cGMwpS1h5AQ
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qp6x02h3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 15:59:24 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A58NYTj012288;
- Tue, 5 Nov 2024 15:59:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p140vbnv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 15:59:23 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A5FxLId21234036
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2024 15:59:21 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B720120040;
- Tue,  5 Nov 2024 15:59:21 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD67D20049;
- Tue,  5 Nov 2024 15:59:20 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2024 15:59:20 +0000 (GMT)
-Message-ID: <13e848ebce3d673ad48376a3ab14bbd25356549e.camel@linux.ibm.com>
-Subject: Re: [PATCH] linux-user: Fix setreuid and setregid to use direct
- syscalls
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Helge Deller <deller@kernel.org>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, Riku Voipio
- <riku.voipio@linaro.org>, qemu-devel@nongnu.org
-Date: Tue, 05 Nov 2024 16:59:20 +0100
-In-Reply-To: <Zyo2jMKqq8hG8Pkz@p100>
-References: <Zyo2jMKqq8hG8Pkz@p100>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: J9lYoR72SX7MuSEJurNm5gI-nG8StnG6
-X-Proofpoint-GUID: J9lYoR72SX7MuSEJurNm5gI-nG8StnG6
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t8M7g-00005z-Fh
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:09:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730822978;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Uf1LcrljWrwIw9IYsfewYJKOT2mceLI7KFnpYjy8N8g=;
+ b=dETZ4bmbgODrSz/U3mOGdQ/dUgdMc0H2qZYWpHEMkeFZYBW/5jDby2Zknnn7COqmV8zYk9
+ iWqr6VIz2OpEqtoowqtV8MsdGvDKGKbr8Cb9yysM1hR5RuBHAII/IRCZjLqa8EBvH/Yziz
+ r/E7j90xOSnZgYDYxHpJK6mdx6hQBr8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-7xbfcubSNWuBquRr0HeSWA-1; Tue,
+ 05 Nov 2024 11:09:35 -0500
+X-MC-Unique: 7xbfcubSNWuBquRr0HeSWA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C495195608A; Tue,  5 Nov 2024 16:09:32 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.117])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F3E9F19560A2; Tue,  5 Nov 2024 16:09:27 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH] tests/functional: Fix the ppc64_hv and the ppc_40p test for
+ read-only assets
+Date: Tue,  5 Nov 2024 17:09:26 +0100
+Message-ID: <20241105160926.393852-1-thuth@redhat.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011
- priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=675
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050121
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,25 +80,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-11-05 at 16:15 +0100, Helge Deller wrote:
-> The commit fd6f7798ac30 ("linux-user: Use direct syscalls for
-> setuid(),
-> etc") added direct syscall wrappers for setuid(), setgid(), etc since
-> the
-> system calls have different semantics than the libc functions.
->=20
-> Add and use the corresponding wrappers for setreuid and setregid
-> which
-> were missed in that commit.
->=20
-> This fixes the build of the debian package of the uid_wrapper library
-> (https://cwrap.org/uid_wrapper.html) when running linux-user.
->=20
-> Signed-off-by: Helge Deller <deller@gmx.de>
+Since commit 786bc2255256, cached asset files are read-only, so now we've
+got to use "read-only=true" in tests that try to use these files directly.
 
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Fixes: 786bc22552 ("tests/functional: make cached asset files read-only")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/test_ppc64_hv.py | 3 ++-
+ tests/functional/test_ppc_40p.py  | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-I should've checked the other syscalls when fixing setgroups recently.
-Seems like with this patch, linux-user will no longer call glibc
-functions that use INLINE_SETXID_SYSCALL().
+diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/test_ppc64_hv.py
+index 1a6e4b6d07..312248bbfe 100755
+--- a/tests/functional/test_ppc64_hv.py
++++ b/tests/functional/test_ppc64_hv.py
+@@ -99,7 +99,8 @@ def do_start_alpine(self):
+         self.vm.add_args("-kernel", self.vmlinuz)
+         self.vm.add_args("-initrd", self.initramfs)
+         self.vm.add_args("-smp", "4", "-m", "2g")
+-        self.vm.add_args("-drive", f"file={self.iso_path},format=raw,if=none,id=drive0")
++        self.vm.add_args("-drive", f"file={self.iso_path},format=raw,if=none,"
++                                    "id=drive0,read-only=true")
+ 
+         self.vm.launch()
+         wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
+diff --git a/tests/functional/test_ppc_40p.py b/tests/functional/test_ppc_40p.py
+index c64e876c1f..67bcdae53a 100755
+--- a/tests/functional/test_ppc_40p.py
++++ b/tests/functional/test_ppc_40p.py
+@@ -46,7 +46,8 @@ def test_factory_firmware_and_netbsd(self):
+ 
+         self.vm.set_console()
+         self.vm.add_args('-bios', bios_path,
+-                         '-fda', drive_path)
++                         '-drive',
++                         f"file={drive_path},format=raw,if=floppy,read-only=true")
+         self.vm.launch()
+         os_banner = 'NetBSD 4.0 (GENERIC) #0: Sun Dec 16 00:49:40 PST 2007'
+         wait_for_console_pattern(self, os_banner)
+-- 
+2.47.0
+
 
