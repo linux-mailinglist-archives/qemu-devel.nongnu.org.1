@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBA89BD929
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB49BD921
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:52:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SMn-0000Pb-CH; Tue, 05 Nov 2024 17:49:41 -0500
+	id 1t8SNc-0001Dy-HA; Tue, 05 Nov 2024 17:50:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMi-0000BV-N2
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:36 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMo-0000pG-Ou
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:43 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMg-0004Qw-Rw
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:36 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-37d47b38336so4524215f8f.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMm-0004Rs-Uj
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:42 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43161c0068bso50977385e9.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846973; x=1731451773; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846978; x=1731451778; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RfsSAg28LXuScwoije6ppSHZyCgl4l8pk8ov2/9yx6A=;
- b=nkn/tfYcjUpPUAvSpGjMt9WRtLR0xRPd5eLYBukTeOf7uvhSHTybc3/LnV5iXnEE/S
- k4MIcrUHUXnCjaRByFxC36S6QM6zz+0/Zxk0H1ekXYbPfhOzNqBvJkR2Wc+PRL2AojRb
- dnJ5jgbGppIkmHMYuiYFQXmgJZlKd2te7lsmf5hBaMHPwNAtUB2s63X/Uuq69iuacEkq
- 3lh9n090tJlMs4uiQM/idH9QK6XIkxBjGcQFbKuACRNtzmkAaCoJvAEKkmX1NMg+3sAs
- 9l9X0LRh6aVS7cXF5x1up1IUwpV2MEYYjUnr3vHrChTWHM+vMrZm4c2gNOSVyIYyaTSg
- Cx+A==
+ bh=POH9GGPh8eEOywwiqXrYQY7PtUqeDBAiKsSZ852ign4=;
+ b=mgeeHISbJftcn3a5xULqlnrGKJ9MaaWBKY4x6iSfskmIfuwh8MjTVXiq6d0zNDCA4m
+ B3Gr2Jb6cSJ06t+pM93JteSEQEDwIxq2J9v6wAoM+TL1rLE3KlY0QV2bMW8WgvVi8OUp
+ qIU398kgd+71RIK68Opc7OVI0ZWaSnMY/EMIUOdNuSFImfQgVopjDY+74e1TSpTzAD1H
+ OGQDz8PF5NsZuI+HWUR54AaHhC1OAdmXhvvkjPr2YL4oBis8wsEPD3xOPWjUBRO0lnaq
+ Npld8ZNItksaUYbdz09v7UHZPXr7VJ0zRObBL/jRva8lswjp4ZYPIWNhAnDrwTAbP/1J
+ fRzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846973; x=1731451773;
+ d=1e100.net; s=20230601; t=1730846978; x=1731451778;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RfsSAg28LXuScwoije6ppSHZyCgl4l8pk8ov2/9yx6A=;
- b=Mk/tydvfFy36iMqGivvzYDUe7khJ6RJ59Tc70gjNspf8ToPafeNmrd0512M6fbehOd
- aEP3DLHUOxKCCXIgfcSSFDrh06CerqqsPthosaGyWuiec9Zb/CMnK8ydcleARzwUDGYg
- gbDbo/GFmMuafnWGqF/PlxHZFYLfgDbHAA593PlYlRREocmIKB+0y552Zo6oicgxCqP9
- pPhkHsz8mRychc7PtQXOk7O24NRPnLlr0/K1lethSmzkMbb8IXCIOh+ruOH+r1OhbNom
- Rljg6NCQKxPMn0smiXV5pZ77W1PMZMDFEJRtOdokPseKyQaCcgjCQfSKCDKeOLz90hYh
- zhgw==
-X-Gm-Message-State: AOJu0Yyy/GpaTHz/j3Pzoqf03rNT2PCjiqWb308Y+Hlaiw7WEJhudZDL
- lht6GfpFprMyYHO1XZ2Mt9iXXcnYZvbRWAZjonmPmvaRA76T6qH/zJOJP62YlRMKh1whC03Imnq
- IEsQsrg==
-X-Google-Smtp-Source: AGHT+IHbJoMmP6OzSS4qr9eurp7Nh+8iqhBqSHp2oyV1qS7LPCwpLm8dwI+Owg/6azbc640Pe2j7Jg==
-X-Received: by 2002:a05:6000:e88:b0:37d:4f1b:359 with SMTP id
- ffacd0b85a97d-38061220a5emr29787052f8f.53.1730846973087; 
- Tue, 05 Nov 2024 14:49:33 -0800 (PST)
+ bh=POH9GGPh8eEOywwiqXrYQY7PtUqeDBAiKsSZ852ign4=;
+ b=CadkVaSAwKOFqfGo3s3p1TltQXQ5L8uI4rFn/mCDkFo8uND4v9gmpGXp+9/VPvvVPW
+ AifzDnxdVdm9ZK4w1RT17oXPh/Qg+n3oD1BvUb2X04OnHopxdwSupzXxrJe8uRf/NPU7
+ NOPu0Of2VPd0raZq8u34A/mHRyXBgxy1lzF9LK3vObx5vjM6nCA0aVZotex9RbkkTpcl
+ O6XtU0FmYCPCnUqsX7MKifD/6gRWE/wu5qzR7fNsHwXPWHVblvY45pzJl7Uy7yEWCxKE
+ m3o58+Xzu9GMoqx4kUSgNAP6wsFM1VBK4CiulpZtYxxNhxVzdoUJJ75dg2s/1/2lcgdI
+ jSNw==
+X-Gm-Message-State: AOJu0Ywxhl2BWc1WPlZrWWAW00QR8tPSw/6oZQjcyornOmVV/Gu+ws7V
+ rbtdKOBt6IS7yxweASSITZGsnexNKLCq9agMBLkY2d1vz16fc1MiYSEp8A/4dkTYWEQmppfStBH
+ w/rq3hQ==
+X-Google-Smtp-Source: AGHT+IFARDWuIlrD14VldL+JbiDkVHK27OWqNFtXwUVp/JfdO5Zgkq36a+dmvvR09GHJNS3aB2CJpA==
+X-Received: by 2002:adf:e198:0:b0:37d:51bc:3229 with SMTP id
+ ffacd0b85a97d-381c7ac7d79mr14398421f8f.51.1730846978069; 
+ Tue, 05 Nov 2024 14:49:38 -0800 (PST)
 Received: from localhost.localdomain ([154.14.63.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10b7a86sm17294816f8f.22.2024.11.05.14.49.32
+ ffacd0b85a97d-381c10d40d5sm17255398f8f.25.2024.11.05.14.49.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:49:32 -0800 (PST)
+ Tue, 05 Nov 2024 14:49:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/29] hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
-Date: Tue,  5 Nov 2024 22:47:21 +0000
-Message-ID: <20241105224727.53059-24-philmd@linaro.org>
+Subject: [PULL 24/29] hw/sd/sdhci: Prefer DEFINE_TYPES() macro
+Date: Tue,  5 Nov 2024 22:47:22 +0000
+Message-ID: <20241105224727.53059-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,49 +97,112 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-19-shentey@gmail.com>
+Message-ID: <20241103133412.73536-21-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/mpc8544_guts.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/sd/sdhci.c | 62 +++++++++++++++++++++------------------------------
+ 1 file changed, 26 insertions(+), 36 deletions(-)
 
-diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
-index c02b34ccded..e3c51458e69 100644
---- a/hw/ppc/mpc8544_guts.c
-+++ b/hw/ppc/mpc8544_guts.c
-@@ -18,7 +18,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/module.h"
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index ed014993910..dbe5c2340c6 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -37,7 +37,6 @@
+ #include "migration/vmstate.h"
+ #include "sdhci-internal.h"
  #include "qemu/log.h"
- #include "sysemu/runstate.h"
- #include "cpu.h"
-@@ -141,16 +140,13 @@ static void mpc8544_guts_initfn(Object *obj)
-     sysbus_init_mmio(d, &s->iomem);
+-#include "qemu/module.h"
+ #include "trace.h"
+ #include "qom/object.h"
+ 
+@@ -1598,15 +1597,6 @@ static void sdhci_sysbus_class_init(ObjectClass *klass, void *data)
+     sdhci_common_class_init(klass, data);
  }
  
--static const TypeInfo mpc8544_guts_info = {
--    .name          = TYPE_MPC8544_GUTS,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(GutsState),
--    .instance_init = mpc8544_guts_initfn,
-+static const TypeInfo mpc8544_guts_types[] = {
+-static const TypeInfo sdhci_sysbus_info = {
+-    .name = TYPE_SYSBUS_SDHCI,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(SDHCIState),
+-    .instance_init = sdhci_sysbus_init,
+-    .instance_finalize = sdhci_sysbus_finalize,
+-    .class_init = sdhci_sysbus_class_init,
+-};
+-
+ /* --- qdev bus master --- */
+ 
+ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
+@@ -1617,13 +1607,6 @@ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
+     sbc->set_readonly = sdhci_set_readonly;
+ }
+ 
+-static const TypeInfo sdhci_bus_info = {
+-    .name = TYPE_SDHCI_BUS,
+-    .parent = TYPE_SD_BUS,
+-    .instance_size = sizeof(SDBus),
+-    .class_init = sdhci_bus_class_init,
+-};
+-
+ /* --- qdev i.MX eSDHC --- */
+ 
+ #define USDHC_MIX_CTRL                  0x48
+@@ -1882,12 +1865,6 @@ static void imx_usdhc_init(Object *obj)
+     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
+ }
+ 
+-static const TypeInfo imx_usdhc_info = {
+-    .name = TYPE_IMX_USDHC,
+-    .parent = TYPE_SYSBUS_SDHCI,
+-    .instance_init = imx_usdhc_init,
+-};
+-
+ /* --- qdev Samsung s3c --- */
+ 
+ #define S3C_SDHCI_CONTROL2      0x80
+@@ -1946,18 +1923,31 @@ static void sdhci_s3c_init(Object *obj)
+     s->io_ops = &sdhci_s3c_mmio_ops;
+ }
+ 
+-static const TypeInfo sdhci_s3c_info = {
+-    .name = TYPE_S3C_SDHCI  ,
+-    .parent = TYPE_SYSBUS_SDHCI,
+-    .instance_init = sdhci_s3c_init,
++static const TypeInfo sdhci_types[] = {
 +    {
-+        .name          = TYPE_MPC8544_GUTS,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(GutsState),
-+        .instance_init = mpc8544_guts_initfn,
++        .name = TYPE_SDHCI_BUS,
++        .parent = TYPE_SD_BUS,
++        .instance_size = sizeof(SDBus),
++        .class_init = sdhci_bus_class_init,
++    },
++    {
++        .name = TYPE_SYSBUS_SDHCI,
++        .parent = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(SDHCIState),
++        .instance_init = sdhci_sysbus_init,
++        .instance_finalize = sdhci_sysbus_finalize,
++        .class_init = sdhci_sysbus_class_init,
++    },
++    {
++        .name = TYPE_IMX_USDHC,
++        .parent = TYPE_SYSBUS_SDHCI,
++        .instance_init = imx_usdhc_init,
++    },
++    {
++        .name = TYPE_S3C_SDHCI,
++        .parent = TYPE_SYSBUS_SDHCI,
++        .instance_init = sdhci_s3c_init,
 +    },
  };
  
--static void mpc8544_guts_register_types(void)
+-static void sdhci_register_types(void)
 -{
--    type_register_static(&mpc8544_guts_info);
+-    type_register_static(&sdhci_sysbus_info);
+-    type_register_static(&sdhci_bus_info);
+-    type_register_static(&imx_usdhc_info);
+-    type_register_static(&sdhci_s3c_info);
 -}
 -
--type_init(mpc8544_guts_register_types)
-+DEFINE_TYPES(mpc8544_guts_types)
+-type_init(sdhci_register_types)
++DEFINE_TYPES(sdhci_types)
 -- 
 2.45.2
 
