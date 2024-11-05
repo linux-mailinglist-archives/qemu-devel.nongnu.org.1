@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5C99BD04A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598539BD08C
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:35:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8LQI-0004BL-5S; Tue, 05 Nov 2024 10:24:50 -0500
+	id 1t8LW5-0005RV-79; Tue, 05 Nov 2024 10:30:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8LQG-00048a-Bn
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:24:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8LQA-0003Bt-Im
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:24:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730820281;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ujCFgnWL7OQ7Af+nE4CAm3uEY4JOaTrTqK6521SwfBQ=;
- b=bv0ag0vhzJ+5eDUn2nESzhACHM+4LxsyE/+v+KazeeqUWtxU7L2dnRRfBkCJFOM9+v+Joi
- jZ+e3HBDy+6EQLf7cOIll0S5wLYu0ZS2DLVmJNZCZozxUftNY/xWXqO4FuvwZ1HNuCUQkm
- rBiRpVOTJiINXVyJpKuCMKjDfjVHtJg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-UjBWZsk9OkihFyimrb2igQ-1; Tue,
- 05 Nov 2024 10:24:38 -0500
-X-MC-Unique: UjBWZsk9OkihFyimrb2igQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7CF401955D4B; Tue,  5 Nov 2024 15:24:37 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.52])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C9B3A1956086; Tue,  5 Nov 2024 15:24:34 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t8LVz-0005QE-Ps
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:30:44 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t8LVv-0003yB-Ks
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:30:43 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5c903f5bd0eso10380533a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 07:30:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730820637; x=1731425437;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=C1zZqndEjQrRfeARcc9wghPSA3uaiHyYpQLOLBZo4FI=;
+ b=BzjhRjrcnis3eYM6/seeFfkSUlYa+b/qIUEJVawoRuNvT2BSyUPsbRBmlDMkL/DSCD
+ PYYyB9DpnTeDooGCm5JvNnIXkEce53sVnhkpFtvqp6W3GBKSBlqD9I42kaO7l/E+REox
+ OUF46qDXUi5LBysUSDxa0JFCxed/ykEZgZ2AODBeVCfcY5DkZjE5CH1spIG7nFXIvD4m
+ l+wSlUq4lsbQqb6XU+iFNBH4V6g1zZ7dWNM3ePlzcJScyvOzhhIC+a9IaU+ahh9z87Ee
+ inc3PHcn8PjC4OOxHmuv+JBcYf5ePmHKEe+nlCK9ojCrB65wKXXkSwsj6LNnG5thQc2W
+ A4nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730820637; x=1731425437;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=C1zZqndEjQrRfeARcc9wghPSA3uaiHyYpQLOLBZo4FI=;
+ b=ukdq0Q9mHP9PuaWK9y5wFVb0gC7DRhgm+lcfXdOLLBqeHWR1wbKZx4vgX9z+S6cLmW
+ 96h17TSES9Mm2tjPs0YWVpFyOmwRpiW+u/GXIx9xCUmAHDGEMik2ayWgtXHEt2NYh0Ge
+ Ky72SyyCOIp+DtCbDq2WeDujMUeBYXxOyPbi7P4YfoOzI58uZ306FoFO9wlh/Hh1hboY
+ 9GMzpskuvU1kC2D77+ztHtYItWEXez/ZBc1eQH5qxzIDGEqriRu/yVDsR53e1Qs5kypF
+ EmW/uFuOL5g23ILNtE4QWxiS3XS2NE5PTx9Qdky8VMvSo6Ic49f0lKBYHtA+eWFrQzPJ
+ BE9A==
+X-Gm-Message-State: AOJu0Yz79SLTScgjn1I61NRyWX75cZ/zuDUbUR31yDQNezbQmSXWoOQi
+ erlNnBbNzVVwA7QkOrqOtclIAskVu+R6LP+X2VVQ6GoasjOsyMSj6wLytPNo+cF3yc5wVdvdWz9
+ VMg==
+X-Google-Smtp-Source: AGHT+IFeW7viMnXs6zKDYl4nRo3l+k0lC5VNsm3tIc9B3NtMvSX1ZMPQOySAzgEWmN3r8BUkgCjwOQ==
+X-Received: by 2002:a05:6402:2109:b0:5ce:e62e:13bb with SMTP id
+ 4fb4d7f45d1cf-5cee62e1716mr3095838a12.36.1730820636368; 
+ Tue, 05 Nov 2024 07:30:36 -0800 (PST)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5cee6aae3fcsm1419415a12.21.2024.11.05.07.30.33
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 05 Nov 2024 07:30:35 -0800 (PST)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] tests: refresh package lists with latest libvirt-ci
-Date: Tue,  5 Nov 2024 15:24:33 +0000
-Message-ID: <20241105152433.344974-1-berrange@redhat.com>
+Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
+ pbonzini@redhat.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ stefanha@redhat.com, mst@redhat.com, slp@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, gaosong@loongson.cn, jiaxun.yang@flygoat.com,
+ chenhuacai@kernel.org, kwolf@redhat.com, hreitz@redhat.com,
+ philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: [PATCH v7 00/15] macOS PV Graphics and new vmapple machine type
+Date: Tue,  5 Nov 2024 16:30:07 +0100
+Message-Id: <20241105153022.91101-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: neutral client-ip=2a00:1450:4864:20::532;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,489 +101,257 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This updates the libvirt-ci  submodule to pull in various fixes,
-the most notable being
+This patch set introduces a new ARM and macOS HVF specific machine type
+called "vmapple", as well as a family of display devices based on the
+ParavirtualizedGraphics.framework in macOS. One of the display adapter
+variants, apple-gfx-mmio, is required for the new machine type, while
+apple-gfx-pci can be used to enable 3D graphics acceleration with x86-64
+macOS guest OSes.
 
- * Removal of the macos-15 target. Cirrus CI has changed their
-   infra to only permit testing of a single macOS version,
-   currently set to 14. Our attempt to test macOS 15 was being
-   quietly converted into a macOS 14 test, which we already
-   have.
+Previous versions of this patch set were submitted semi-separately:
+the original vmapple patch set by Alexander Graf included a monolithic
+implementation of apple-gfx-mmio. I subsequently reviewed and reworked
+the latter to support the PCI variant of the device as well and submitted
+the result in isolation. As requested in subsequent review, I have now
+recombined this with the original vmapple patch set, which I have updated
+and improved in a few ways as well.
 
- * Reducing native package sets in cross builds. Some packages
-   were mistakenly marked as native, rather than foreign, in
-   libvirt-ci. Fixing this causes our dockerfiles to pick up
-   the cross arch package instead of native one, thus improving
-   our test coverage in a few areas.
+The vmapple machine type approximates the configuration in macOS's own
+Virtualization.framework when running arm64 macOS guests. In addition to
+generic components such as a GICv3 and an XHCI USB controller, it
+includes nonstandard extensions to the virtio block device, a special
+"hardware" aes engine, a configuration device, a pvpanic variant, a
+"backdoor" interface, and of course the apple-gfx paravirtualised display
+adapter.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+There are currently a few limitations to this which aren't intrinsic,
+just imperfect emulation of the VZF, but it's good enough to be just
+about usable for some purposes:
+
+ * macOS 12 guests only. Versions 13+ currently fail during early boot.
+ * macOS 11+ arm64 hosts only, with hvf accel. (Perhaps some differences
+   between Apple M series CPUs and TCG's aarch64 implementation? macOS
+   hosts only because ParavirtualizedGraphics.framework is a black box
+   implementing most of the logic behind the apple-gfx device.)
+ * PCI devices use legacy IRQs, not MSI/MSI-X. As far as I can tell,
+   we'd need to include the GICv3 ITS, but it's unclear to me what
+   exactly needs wiring up.
+ * Due to lack of MSI(-X), event delivery from USB devices to the guest
+   macOS isn't working correctly. My current conclusion is that the
+   OS's XHCI driver simply was never designed to work with legacy IRQs.
+   The upshot is that keyboard and mouse/tablet input is very laggy.
+   The solution would be to implement MSI(-X) support or figure out how
+   to make hcd-xhci-sysbus work with the macOS guest, if at all possible.
+   (EHCI and UHCI/OHCI controllers are not an option as the VMAPPLE
+   guest kernel does not include drivers for these.)
+ * The guest OS must first be provisioned using Virtualization.framework;
+   the disk images can subsequently be used in Qemu. (See docs.)
+
+The apple-gfx device can be used independently from the vmapple machine
+type, at least in the PCI variant. It mainly targets x86-64 macOS guests
+from version 11 on, but also includes a UEFI bootrom for basic
+framebuffer mode. macOS 11 is also required on the host side, as well
+as a GPU that supports the Metal API. On the guest side, this provides
+3D acceleration/GPGPU support with a baseline Metal feature set,
+irrespective of the host GPU's feature set. A few limitations in the
+current integration:
+
+ * Although it works fine with TCG, it does not work correctly
+   cross-architecture: x86-64 guests on arm64 hosts appear to make
+   some boot progress, but rendering is corrupted. I suspect
+   incompatible texture memory layouts; I have no idea if this is
+   fixable.
+ * ParavirtualizedGraphics.framework and the guest driver support
+   multi-headed configurations. The current Qemu integration always
+   connects precisely 1 display.
+ * State serialisation and deserialisation is currently not
+   implemented, though supported in principle by the framework.
+   Both apple-gfx variants thus set up a migration blocker.
+ * Rendering efficiency could be better. The GPU-rendered guest
+   framebuffer is copied to system memory and uses Qemu's usual
+   CPU-based drawing. For maximum efficiency, the Metal texture
+   containing the guest framebuffer could be drawn directly to
+   a Metal view in the host window, staying on the GPU. (Similar
+   to the OpenGL/virgl render path on other platforms.)
+
+My part of this work has been sponsored by Sauce Labs Inc.
+
 ---
- .gitlab-ci.d/cirrus.yml                          | 16 ----------------
- .gitlab-ci.d/cirrus/freebsd-14.vars              |  2 +-
- .gitlab-ci.d/cirrus/macos-15.vars                | 16 ----------------
- .../docker/dockerfiles/debian-amd64-cross.docker |  8 ++++----
- .../docker/dockerfiles/debian-arm64-cross.docker |  8 ++++----
- .../docker/dockerfiles/debian-armhf-cross.docker |  8 ++++----
- .../docker/dockerfiles/debian-i686-cross.docker  |  8 ++++----
- .../dockerfiles/debian-mips64el-cross.docker     |  8 ++++----
- .../dockerfiles/debian-mipsel-cross.docker       |  8 ++++----
- .../dockerfiles/debian-ppc64el-cross.docker      |  8 ++++----
- .../docker/dockerfiles/debian-s390x-cross.docker |  8 ++++----
- .../docker/dockerfiles/fedora-win64-cross.docker |  4 +---
- tests/lcitool/libvirt-ci                         |  2 +-
- tests/lcitool/refresh                            |  1 -
- tests/vm/generated/freebsd.json                  |  2 +-
- 15 files changed, 36 insertions(+), 71 deletions(-)
- delete mode 100644 .gitlab-ci.d/cirrus/macos-15.vars
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 5708c2bbab..3f154908fa 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -75,19 +75,3 @@ aarch64-macos-14-base-build:
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-     CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
--
--aarch64-macos-15-base-build:
--  extends: .cirrus_build_job
--  variables:
--    NAME: macos-15
--    CIRRUS_VM_INSTANCE_TYPE: macos_instance
--    CIRRUS_VM_IMAGE_SELECTOR: image
--    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-sequoia-base:latest
--    CIRRUS_VM_CPUS: 12
--    CIRRUS_VM_RAM: 24G
--    UPDATE_COMMAND: brew update
--    INSTALL_COMMAND: brew install
--    PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
--    PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
--    TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
--    QEMU_JOB_OPTIONAL: 1
-diff --git a/.gitlab-ci.d/cirrus/freebsd-14.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
-index c0655b21e9..5e0491e5d4 100644
---- a/.gitlab-ci.d/cirrus/freebsd-14.vars
-+++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
-@@ -10,7 +10,7 @@ CROSS_PKGS=''
- MAKE='/usr/local/bin/gmake'
- NINJA='/usr/local/bin/ninja'
- PACKAGING_COMMAND='pkg'
--PIP3='/usr/local/bin/pip-3.8'
-+PIP3='/usr/local/bin/pip'
- PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
- PYPI_PKGS=''
- PYTHON='/usr/local/bin/python3'
-diff --git a/.gitlab-ci.d/cirrus/macos-15.vars b/.gitlab-ci.d/cirrus/macos-15.vars
-deleted file mode 100644
-index 23b2c1d22f..0000000000
---- a/.gitlab-ci.d/cirrus/macos-15.vars
-+++ /dev/null
-@@ -1,16 +0,0 @@
--# THIS FILE WAS AUTO-GENERATED
--#
--#  $ lcitool variables macos-15 qemu
--#
--# https://gitlab.com/libvirt/libvirt-ci
--
--CCACHE='/opt/homebrew/bin/ccache'
--CPAN_PKGS=''
--CROSS_PKGS=''
--MAKE='/opt/homebrew/bin/gmake'
--NINJA='/opt/homebrew/bin/ninja'
--PACKAGING_COMMAND='brew'
--PIP3='/opt/homebrew/bin/pip3'
--PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
--PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
--PYTHON='/opt/homebrew/bin/python3'
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index 136c3a79a1..eeadb054e9 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:amd64 \
-                       libgnutls28-dev:amd64 \
-                       libgtk-3-dev:amd64 \
-+                      libgtk-vnc-2.0-dev:amd64 \
-                       libibverbs-dev:amd64 \
-                       libiscsi-dev:amd64 \
-                       libjemalloc-dev:amd64 \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:amd64 \
-                       libnuma-dev:amd64 \
-                       libpam0g-dev:amd64 \
-+                      libpcre2-dev:amd64 \
-                       libpipewire-0.3-dev:amd64 \
-                       libpixman-1-dev:amd64 \
-                       libpmem-dev:amd64 \
-@@ -131,6 +129,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:amd64 \
-                       libslirp-dev:amd64 \
-                       libsnappy-dev:amd64 \
-+                      libsndio-dev:amd64 \
-+                      libspice-protocol-dev:amd64 \
-                       libspice-server-dev:amd64 \
-                       libssh-gcrypt-dev:amd64 \
-                       libsystemd-dev:amd64 \
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 233f6ee1de..27d55ff7ac 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:arm64 \
-                       libgnutls28-dev:arm64 \
-                       libgtk-3-dev:arm64 \
-+                      libgtk-vnc-2.0-dev:arm64 \
-                       libibverbs-dev:arm64 \
-                       libiscsi-dev:arm64 \
-                       libjemalloc-dev:arm64 \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:arm64 \
-                       libnuma-dev:arm64 \
-                       libpam0g-dev:arm64 \
-+                      libpcre2-dev:arm64 \
-                       libpipewire-0.3-dev:arm64 \
-                       libpixman-1-dev:arm64 \
-                       libpng-dev:arm64 \
-@@ -130,6 +128,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:arm64 \
-                       libslirp-dev:arm64 \
-                       libsnappy-dev:arm64 \
-+                      libsndio-dev:arm64 \
-+                      libspice-protocol-dev:arm64 \
-                       libspice-server-dev:arm64 \
-                       libssh-gcrypt-dev:arm64 \
-                       libsystemd-dev:arm64 \
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index f26385e0b9..bd818f3d9c 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:armhf \
-                       libgnutls28-dev:armhf \
-                       libgtk-3-dev:armhf \
-+                      libgtk-vnc-2.0-dev:armhf \
-                       libibverbs-dev:armhf \
-                       libiscsi-dev:armhf \
-                       libjemalloc-dev:armhf \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:armhf \
-                       libnuma-dev:armhf \
-                       libpam0g-dev:armhf \
-+                      libpcre2-dev:armhf \
-                       libpipewire-0.3-dev:armhf \
-                       libpixman-1-dev:armhf \
-                       libpng-dev:armhf \
-@@ -130,6 +128,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:armhf \
-                       libslirp-dev:armhf \
-                       libsnappy-dev:armhf \
-+                      libsndio-dev:armhf \
-+                      libspice-protocol-dev:armhf \
-                       libspice-server-dev:armhf \
-                       libssh-gcrypt-dev:armhf \
-                       libsystemd-dev:armhf \
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index 2328ee1732..dc7b18bff0 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:i386 \
-                       libgnutls28-dev:i386 \
-                       libgtk-3-dev:i386 \
-+                      libgtk-vnc-2.0-dev:i386 \
-                       libibverbs-dev:i386 \
-                       libiscsi-dev:i386 \
-                       libjemalloc-dev:i386 \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:i386 \
-                       libnuma-dev:i386 \
-                       libpam0g-dev:i386 \
-+                      libpcre2-dev:i386 \
-                       libpipewire-0.3-dev:i386 \
-                       libpixman-1-dev:i386 \
-                       libpng-dev:i386 \
-@@ -130,6 +128,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:i386 \
-                       libslirp-dev:i386 \
-                       libsnappy-dev:i386 \
-+                      libsndio-dev:i386 \
-+                      libspice-protocol-dev:i386 \
-                       libspice-server-dev:i386 \
-                       libssh-gcrypt-dev:i386 \
-                       libsystemd-dev:i386 \
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index bfa96cb507..5f298a0f50 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -101,6 +97,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglib2.0-dev:mips64el \
-                       libglusterfs-dev:mips64el \
-                       libgnutls28-dev:mips64el \
-+                      libgtk-vnc-2.0-dev:mips64el \
-                       libibverbs-dev:mips64el \
-                       libiscsi-dev:mips64el \
-                       libjemalloc-dev:mips64el \
-@@ -112,6 +109,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:mips64el \
-                       libnuma-dev:mips64el \
-                       libpam0g-dev:mips64el \
-+                      libpcre2-dev:mips64el \
-                       libpipewire-0.3-dev:mips64el \
-                       libpixman-1-dev:mips64el \
-                       libpng-dev:mips64el \
-@@ -123,6 +121,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:mips64el \
-                       libslirp-dev:mips64el \
-                       libsnappy-dev:mips64el \
-+                      libsndio-dev:mips64el \
-+                      libspice-protocol-dev:mips64el \
-                       libspice-server-dev:mips64el \
-                       libssh-gcrypt-dev:mips64el \
-                       libsystemd-dev:mips64el \
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 4ac314e22e..3bb19e027d 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -105,6 +101,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:mipsel \
-                       libgnutls28-dev:mipsel \
-                       libgtk-3-dev:mipsel \
-+                      libgtk-vnc-2.0-dev:mipsel \
-                       libibverbs-dev:mipsel \
-                       libiscsi-dev:mipsel \
-                       libjemalloc-dev:mipsel \
-@@ -116,6 +113,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:mipsel \
-                       libnuma-dev:mipsel \
-                       libpam0g-dev:mipsel \
-+                      libpcre2-dev:mipsel \
-                       libpipewire-0.3-dev:mipsel \
-                       libpixman-1-dev:mipsel \
-                       libpng-dev:mipsel \
-@@ -129,6 +127,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:mipsel \
-                       libslirp-dev:mipsel \
-                       libsnappy-dev:mipsel \
-+                      libsndio-dev:mipsel \
-+                      libspice-protocol-dev:mipsel \
-                       libspice-server-dev:mipsel \
-                       libssh-gcrypt-dev:mipsel \
-                       libsystemd-dev:mipsel \
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 8c1dcec9cf..f9fa7310f2 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:ppc64el \
-                       libgnutls28-dev:ppc64el \
-                       libgtk-3-dev:ppc64el \
-+                      libgtk-vnc-2.0-dev:ppc64el \
-                       libibverbs-dev:ppc64el \
-                       libiscsi-dev:ppc64el \
-                       libjemalloc-dev:ppc64el \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:ppc64el \
-                       libnuma-dev:ppc64el \
-                       libpam0g-dev:ppc64el \
-+                      libpcre2-dev:ppc64el \
-                       libpipewire-0.3-dev:ppc64el \
-                       libpixman-1-dev:ppc64el \
-                       libpng-dev:ppc64el \
-@@ -130,6 +128,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:ppc64el \
-                       libslirp-dev:ppc64el \
-                       libsnappy-dev:ppc64el \
-+                      libsndio-dev:ppc64el \
-+                      libspice-protocol-dev:ppc64el \
-                       libspice-server-dev:ppc64el \
-                       libssh-gcrypt-dev:ppc64el \
-                       libsystemd-dev:ppc64el \
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 72668e0315..f5dd1a6aca 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -30,10 +30,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -106,6 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:s390x \
-                       libgnutls28-dev:s390x \
-                       libgtk-3-dev:s390x \
-+                      libgtk-vnc-2.0-dev:s390x \
-                       libibverbs-dev:s390x \
-                       libiscsi-dev:s390x \
-                       libjemalloc-dev:s390x \
-@@ -117,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:s390x \
-                       libnuma-dev:s390x \
-                       libpam0g-dev:s390x \
-+                      libpcre2-dev:s390x \
-                       libpipewire-0.3-dev:s390x \
-                       libpixman-1-dev:s390x \
-                       libpng-dev:s390x \
-@@ -130,6 +128,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:s390x \
-                       libslirp-dev:s390x \
-                       libsnappy-dev:s390x \
-+                      libsndio-dev:s390x \
-+                      libspice-protocol-dev:s390x \
-                       libssh-gcrypt-dev:s390x \
-                       libsystemd-dev:s390x \
-                       libtasn1-6-dev:s390x \
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index 6b264d901f..c0a08acb6a 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -34,7 +34,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                git \
-                glib2-devel \
-                glibc-langpack-en \
--               gtk-vnc2-devel \
-                hostname \
-                llvm \
-                make \
-@@ -43,7 +42,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                ninja-build \
-                nmap-ncat \
-                openssh-clients \
--               pcre-static \
-                python3 \
-                python3-PyYAML \
-                python3-numpy \
-@@ -56,7 +54,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                sed \
-                socat \
-                sparse \
--               spice-protocol \
-                swtpm \
-                tar \
-                tesseract \
-@@ -87,6 +84,7 @@ RUN nosync dnf install -y \
-                mingw64-gettext \
-                mingw64-glib2 \
-                mingw64-gnutls \
-+               mingw64-gtk-vnc2 \
-                mingw64-gtk3 \
-                mingw64-libepoxy \
-                mingw64-libgcrypt \
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 6b19006b2c..9ad3f70bde 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 6b19006b2cbe01adea6a857c71860a8e7ba7ddd7
-+Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 0f16f4d525..7cf882cda7 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -229,7 +229,6 @@ try:
-     #
-     generate_cirrus("freebsd-14")
-     generate_cirrus("macos-14")
--    generate_cirrus("macos-15")
- 
-     #
-     # VM packages lists
-diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
-index 1eb2757c95..45e6f74962 100644
---- a/tests/vm/generated/freebsd.json
-+++ b/tests/vm/generated/freebsd.json
-@@ -5,7 +5,7 @@
-   "make": "/usr/local/bin/gmake",
-   "ninja": "/usr/local/bin/ninja",
-   "packaging_command": "pkg",
--  "pip3": "/usr/local/bin/pip-3.8",
-+  "pip3": "/usr/local/bin/pip",
-   "pkgs": [
-     "alsa-lib",
-     "bash",
+v2 -> v3:
+
+ * Merged the apple-gfx and vmapple patchsets.
+ * Squashed a bunch of later apple-gfx patches into the main one.
+   (dGPU support, queried MMIO area size, host GPU picking logic.)
+ * Rebased on latest upstream, fixing any breakages due to internal
+   Qemu API changes.
+ * apple-gfx: Switched to re-entrant MMIO. This is supported by the
+   underlying framework and simplifies the MMIO forwarding code which
+   was previously different on x86-64 vs aarch64.
+ * vmapple: Fixes for minor bugs and comments from the last round of
+   review.
+ * vmapple aes, conf, apple-gfx: Switched reset methods to implement
+   the ResettableClass base's interface.
+ * vmapple: switched from virtio-hid to an XHCI USB controller and
+   USB mouse and tablet devices. macOS does not provide drivers for
+   virtio HID devices, at least not in version 12's vmapple kernel.
+   So input now sort of works (interrupt issues) rather than not
+   at all. Use network-based remote access to the guest OS as a
+   work-around.
+
+v3 -> v4:
+
+ * Complete rework of the mechanism for handling runloop/libdispatch
+   events on the main thread. PV graphics now work with the SDL UI.
+ * Renamed 'apple-gfx-vmapple' device to 'apple-gfx-mmio'
+ * hw/display/apple-gfx: threading model overhaul to be more consistent,
+   safer, and more QEMU-idiomatic.
+ * display-modes property on the apple-gfx devices now uses the
+   native array property mechanism and works on both device variants.
+ * hw/vmapple/aes: Improvements to logging and error handling.
+ * hw/vmapple/cfg: Bug fixes around device property default values.
+ * hw/vmapple/{aes,cfg,virtio-blk/vmapple}: Most header code moved into
+   .c files, only a single vmapple.h now contains the #defines for the
+   vmapple machine model-specific device type names.
+ * hw/block/virtio-blk: New patch for replacing virtio_blk_free_request
+   with g_free. (Optional)
+ * Various smaller changes following comments in v3 code review in
+   apple-gfx, aes, cfg, bdif, virtio-blk-vmapple, and the vmapple
+   machine type itself. See patch-specific v4 change notes for details.
+
+v4 -> v5:
+
+ * Simplified the main thread runloop mechanism. Back to setting
+	 qemu_main directly, but narrowing the scope of what it needs to do,
+	 and it can now be NULL. (Meaning run the QEMU main event loop on
+	 the main thread as is traditional.)
+ * hw/display/apple-gfx: Further improvements to the BH based job code bridging
+   the libdispatch & QEMU thread synchronisation impedance mismatch.
+ * hw/display/apple-gfx: Thread safety and object lifetime improvements.
+ * hw/display/apple-gfx-*: Better buffer and error handling in display mode
+   property setters and getters.
+ * hw/vmapple/aes: More consistent and safer logging/tracing
+ * hw/vmapple/cfg: Better error reporting on overlong property strings.
+ * hw/vmapple/virtio-blk: Fixed theoretically-unaligned write to config buffer.
+ * vmapple machine type: Moved ecam region into machine state, improved device
+   property setting error handling, improved ECID/UUID extraction script and
+   docs.
+ * Various smaller fixes in apple-gfx/-mmio, apple-gfx-pci, vmapple/aes,
+   vmapple/cfg, vmapple/virtio-blk, and vmapple machine type.
+ * Added SPDX license identifiers where they were missing.
+
+v5 -> v6:
+
+ * 01/15 (main/Cocoa/runloop): Combined functions, fixed whitespace
+ * 02/15 (apple-gfx): Further refinement of PVG threading: reduced some callback
+   tasks from BHs to merely acquiring RCU read lock; replaced some libdispatch
+   tasks with BHs; last remaining synchronous BH now uses emphemeral
+   QemuSemaphore.
+ * 02/15 (apple-gfx): Readability improvements and other smaller tweaks
+   (see patch change notes for details)
+ * 04/15 (display modes): Replaced use of alloca() with NSMutableArray.
+
+v6 -> v7:
+
+ * 02/15 (apple-gfx): Use g_ptr_array_find() helper function, coding style tweak
+ * 03/15 (apple-gfx-pci): Removed an unused function parameter
+ * 04/15 (apple-gfx display mode property): Simplified error handling in
+   property parsing.
+ * 10/15 (vmapple/aes): Coding style tweaks.
+ * 12/15 (vmapple/cfg): Changed error messages for overrun of properties with
+   fixed-length strings to be more useful to users than developers.
+ * 15/15 (vmapple machine type): Tiny error handling fix, un-inlined function
+
+
+Alexander Graf (9):
+  hw: Add vmapple subdir
+  hw/misc/pvpanic: Add MMIO interface
+  hvf: arm: Ignore writes to CNTP_CTL_EL0
+  gpex: Allow more than 4 legacy IRQs
+  hw/vmapple/aes: Introduce aes engine
+  hw/vmapple/bdif: Introduce vmapple backdoor interface
+  hw/vmapple/cfg: Introduce vmapple cfg region
+  hw/vmapple/virtio-blk: Add support for apple virtio-blk
+  hw/vmapple/vmapple: Add vmapple machine type
+
+Phil Dennis-Jordan (6):
+  ui & main loop: Redesign of system-specific main thread event handling
+  hw/display/apple-gfx: Introduce ParavirtualizedGraphics.Framework
+    support
+  hw/display/apple-gfx: Adds PCI implementation
+  hw/display/apple-gfx: Adds configurable mode list
+  MAINTAINERS: Add myself as maintainer for apple-gfx, reviewer for HVF
+  hw/block/virtio-blk: Replaces request free function with g_free
+
+ MAINTAINERS                    |  15 +
+ contrib/vmapple/uuid.sh        |   9 +
+ docs/system/arm/vmapple.rst    |  60 +++
+ docs/system/target-arm.rst     |   1 +
+ hw/Kconfig                     |   1 +
+ hw/arm/sbsa-ref.c              |   2 +-
+ hw/arm/virt.c                  |   2 +-
+ hw/block/virtio-blk.c          |  58 ++-
+ hw/display/Kconfig             |  13 +
+ hw/display/apple-gfx-mmio.m    | 289 +++++++++++
+ hw/display/apple-gfx-pci.m     | 155 ++++++
+ hw/display/apple-gfx.h         |  77 +++
+ hw/display/apple-gfx.m         | 868 +++++++++++++++++++++++++++++++++
+ hw/display/meson.build         |   5 +
+ hw/display/trace-events        |  30 ++
+ hw/i386/microvm.c              |   2 +-
+ hw/loongarch/virt.c            |   2 +-
+ hw/meson.build                 |   1 +
+ hw/mips/loongson3_virt.c       |   2 +-
+ hw/misc/Kconfig                |   4 +
+ hw/misc/meson.build            |   1 +
+ hw/misc/pvpanic-mmio.c         |  61 +++
+ hw/openrisc/virt.c             |  12 +-
+ hw/pci-host/gpex.c             |  43 +-
+ hw/riscv/virt.c                |  12 +-
+ hw/vmapple/Kconfig             |  32 ++
+ hw/vmapple/aes.c               | 578 ++++++++++++++++++++++
+ hw/vmapple/bdif.c              | 261 ++++++++++
+ hw/vmapple/cfg.c               | 196 ++++++++
+ hw/vmapple/meson.build         |   5 +
+ hw/vmapple/trace-events        |  21 +
+ hw/vmapple/trace.h             |   1 +
+ hw/vmapple/virtio-blk.c        | 226 +++++++++
+ hw/vmapple/vmapple.c           | 659 +++++++++++++++++++++++++
+ hw/xtensa/virt.c               |   2 +-
+ include/hw/misc/pvpanic.h      |   1 +
+ include/hw/pci-host/gpex.h     |   7 +-
+ include/hw/pci/pci_ids.h       |   1 +
+ include/hw/virtio/virtio-blk.h |  11 +-
+ include/hw/vmapple/vmapple.h   |  25 +
+ include/qemu-main.h            |   3 +-
+ include/qemu/cutils.h          |  15 +
+ include/qemu/typedefs.h        |   1 +
+ meson.build                    |   5 +
+ system/main.c                  |  50 +-
+ target/arm/hvf/hvf.c           |   9 +
+ ui/cocoa.m                     |  54 +-
+ ui/sdl2.c                      |   4 +
+ util/hexdump.c                 |  18 +
+ 49 files changed, 3804 insertions(+), 106 deletions(-)
+ create mode 100755 contrib/vmapple/uuid.sh
+ create mode 100644 docs/system/arm/vmapple.rst
+ create mode 100644 hw/display/apple-gfx-mmio.m
+ create mode 100644 hw/display/apple-gfx-pci.m
+ create mode 100644 hw/display/apple-gfx.h
+ create mode 100644 hw/display/apple-gfx.m
+ create mode 100644 hw/misc/pvpanic-mmio.c
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/aes.c
+ create mode 100644 hw/vmapple/bdif.c
+ create mode 100644 hw/vmapple/cfg.c
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+ create mode 100644 hw/vmapple/trace.h
+ create mode 100644 hw/vmapple/virtio-blk.c
+ create mode 100644 hw/vmapple/vmapple.c
+ create mode 100644 include/hw/vmapple/vmapple.h
+
 -- 
-2.46.0
+2.39.3 (Apple Git-145)
 
 
