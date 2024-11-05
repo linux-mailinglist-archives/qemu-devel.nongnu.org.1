@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463B99BCAB8
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 11:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D507C9BCABB
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 11:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8H2H-00032P-Cg; Tue, 05 Nov 2024 05:43:45 -0500
+	id 1t8H2I-00037b-Vi; Tue, 05 Nov 2024 05:43:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t8H2A-0002xS-GT
+ id 1t8H2A-0002xU-Sn
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:43:40 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1t8H28-0003Qf-Tb
+ id 1t8H29-0003Qh-7Q
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:43:38 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5c9388a00cfso6183206a12.3
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a9a6b4ca29bso683759166b.3
  for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 02:43:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730803415; x=1731408215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PNuzYa5+nZdqvnGVKWFxmNuP1iytRrvncpaN0YbpD8M=;
- b=mTRCD0vSx0l/sTOp/Zq43dapnB4SdZ9JBwyT9BFf3nmP+/3QuLMGfY17USqQxKcnrI
- 1E5nHJw9v8u7nsh8oxRVZjJCK9VHN9Nxnd2K1bJeVqQPB2j2zRiTaBdKdMT2lldrkv4h
- 9EmfNJ78YpqY9xpEu/QaeayFJBwaHFCPy6fIt8q+j/Hl0HBxNzM98UjZgTlQztWQX2z3
- iHUOqpktx0kZjPEN9Kz09Jxddadt+GvXib5eyx8jXRLSQWyG7S4OEShtg3+N1r8Xp/AT
- O3lLqrs5gO0okwHMua3RvwjqVnAQwJwOpNGyJ175zW513541YAxFKo3LTmfxgcTVYWiS
- e5BQ==
+ bh=XKZMku98sdxCTDahr+TLjNAtOni8kkq03uBM5KKnleo=;
+ b=NoXro3/3Ht2iXvyAY3c+jUU8uARqLvKzVfbGuJkvi9j83VeqQ67Fp8zWaZTm41YmlV
+ YfkdyYlkzeHzoq4lRL+q8YqLluKucp8uEK6JV/aV8MphcZtSmBQGUEjldVpgx9MmR2ln
+ uPvOXUtSLqG5lUk1dPw0/RTGyDTnM3nYrJOMg4ZVgtgeyiltbCrOAh1zJt44HrTWhql1
+ UGR1l7EegPbJaOGMzO0IPh+Mqm/Qk1jwwLSQXcsKnJdvCoE4KQXNTBPDiA1PaWecn5Jl
+ tbQyRdjrEoaBg8JgaIOZkFkPgsv0PCrIZHjo+rCs3WdLJGe0RPyrfO3pedbQbFccFctD
+ cgyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730803415; x=1731408215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PNuzYa5+nZdqvnGVKWFxmNuP1iytRrvncpaN0YbpD8M=;
- b=MLT1F5UQibr2KoOMeX49YvhHJWsR/0DKtWm6s0MXcE6Qd8fAQHtCHw3nos+teIYWhM
- Jt9W8A7BEqLe1Tq/mmmzzom3sVwnnt61RF4vyi+2dqArQpcSPc8vjObLfal/aIqAlEii
- oG47H5AEjp425T+fSIjubO3pel912NiNmbiIRes06/gia9URWK1bfB8+yfxc/gOnG0xr
- iKJPsV1UFAbUdUOM6H63hV9NZ0JkRNaK19CG9L3MgxHF1tyV7Xa2CoKmPUe0evNG60jp
- ZV4VgWjUK4hAVbfpfwsF1ko/gnflYXThrJVXXSCivO91H6dxO9jswPgZIi9cotXVjalM
- l+Mg==
-X-Gm-Message-State: AOJu0YwuFPg8k9WhhOVm6urpoyXbDzCacrOnBh33invdZkFvQH1uRBvM
- 0lyh3A++b1q/edQHcKfYivMpHKfZ4xxyjYKavOqAfwpvRkId2NoDmCQF3GL1oF4=
-X-Google-Smtp-Source: AGHT+IGNtRr5h7FKCZw+7WnVCzvyL5E5fYqa/ZQ8UV8o0477NgO5qn1rkowwsD4MxI7t1K6Q/j5oew==
-X-Received: by 2002:a05:6402:1ed2:b0:5ce:cfc4:1f90 with SMTP id
- 4fb4d7f45d1cf-5cecfc42115mr6374979a12.1.1730803415135; 
+ bh=XKZMku98sdxCTDahr+TLjNAtOni8kkq03uBM5KKnleo=;
+ b=O9I3QH81ZuQ4/N/6QPGyIrf0Gryrok3SwxuXDPJ1SnNKS0dvTBbtOHx7fCo0r93wWM
+ idvb0B0KZTHU7LGaW9/wI42fOmb0NA3GRmQqOhhZQ4KEOBfuxYFtkMSkM9uM+PUh1cwG
+ 7tEYbmVBB4XzSatOkfoZ6jMx4VsVnAM2nBB/EYmw9dciDWpF0hjAfrk0A+eYtYTDCqOh
+ UzY0rj8dFpUGoYtsmYzETHW1qIQihEFzVpyzpIQddnAl6YYlDTaBOf2YEtO9NJopK3oi
+ yngeWA/FgHRkPvkUbBOZ2ia7hYl1JUAZi4XeB6W5cWXrVpGn1kiqI08OhoU4L7nDaSWh
+ cevQ==
+X-Gm-Message-State: AOJu0YzHD09xg8GDCtjWb4umOECXcrxry+wuEXL4i2CcdZx5pMDQIjfH
+ 2cCkeGZQryGxIcIFBEP/ed6Zxwv79VwprnVp2wXSI1jTG0xaD67c1VEgVFzutC4=
+X-Google-Smtp-Source: AGHT+IEZxCDTD6nr2VHhfMbRI5ZlFSqsno4SxZFwjLMVcih33SaxLG89VB7REQhimpHqLDzqskYjFQ==
+X-Received: by 2002:a17:906:3755:b0:a9e:65a8:b1fd with SMTP id
+ a640c23a62f3a-a9e65a8b677mr1282945866b.22.1730803415492; 
  Tue, 05 Nov 2024 02:43:35 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cee6ab05casm1121106a12.26.2024.11.05.02.43.34
+ a640c23a62f3a-a9eb16a2fcbsm115912166b.37.2024.11.05.02.43.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 05 Nov 2024 02:43:34 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BA52F5F89E;
+ by draig.lan (Postfix) with ESMTP id D0CF95F8CF;
  Tue,  5 Nov 2024 10:43:33 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 1/3] contrib/plugins/cflow: fix warning
-Date: Tue,  5 Nov 2024 10:43:31 +0000
-Message-Id: <20241105104333.2534823-2-alex.bennee@linaro.org>
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/3] meson: build contrib/plugins with meson
+Date: Tue,  5 Nov 2024 10:43:32 +0000
+Message-Id: <20241105104333.2534823-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241105104333.2534823-1-alex.bennee@linaro.org>
 References: <20241105104333.2534823-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,42 +103,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-contrib/plugins/cflow.c: In function ‘plugin_exit’:
-contrib/plugins/cflow.c:167:19: error: declaration of ‘n’ shadows a previous local [-Werror=shadow=local]
-  167 |         NodeData *n = l->data;
-      |                   ^
-contrib/plugins/cflow.c:139:9: note: shadowed declaration is here
-  139 |     int n = 0;
-      |         ^
+Tried to unify this meson.build with tests/tcg/plugins/meson.build but
+the resulting modules are not output in the right directory.
 
+Originally proposed by Anton Kochkov, thank you!
+
+Solves: https://gitlab.com/qemu-project/qemu/-/issues/1710
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241023212812.1376972-2-pierrick.bouvier@linaro.org>
+Message-Id: <20241023212812.1376972-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/contrib/plugins/cflow.c b/contrib/plugins/cflow.c
-index 6faa55d10d..b39974d1cf 100644
---- a/contrib/plugins/cflow.c
-+++ b/contrib/plugins/cflow.c
-@@ -136,7 +136,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     g_autoptr(GString) result = g_string_new("collected ");
-     GList *data;
-     GCompareFunc sort = &hottest;
--    int n = 0;
-+    int i = 0;
+diff --git a/meson.build b/meson.build
+index c386593c52..2fe34c4462 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3690,6 +3690,10 @@ subdir('accel')
+ subdir('plugins')
+ subdir('ebpf')
  
-     g_mutex_lock(&node_lock);
-     g_string_append_printf(result, "%d control flow nodes in the hash table\n",
-@@ -162,8 +162,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     data = g_list_sort(data, sort);
++if 'CONFIG_TCG' in config_all_accel
++  subdir('contrib/plugins')
++endif
++
+ common_user_inc = []
  
-     for (GList *l = data;
--         l != NULL && n < topn;
--         l = l->next, n++) {
-+         l != NULL && i < topn;
-+         l = l->next, i++) {
-         NodeData *n = l->data;
-         const char *type = n->mid_count ? "sync fault" : "branch";
-         g_string_append_printf(result, "  addr: 0x%"PRIx64 " %s: %s (%s)\n",
+ subdir('common-user')
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+new file mode 100644
+index 0000000000..63a32c2b4f
+--- /dev/null
++++ b/contrib/plugins/meson.build
+@@ -0,0 +1,28 @@
++contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
++                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
++if host_os != 'windows'
++  # lockstep uses socket.h
++  contrib_plugins += 'lockstep'
++endif
++
++t = []
++if get_option('plugins')
++  foreach i : contrib_plugins
++    if host_os == 'windows'
++      t += shared_module(i, files(i + '.c') + 'win32_linker.c',
++                        include_directories: '../../include/qemu',
++                        link_depends: [win32_qemu_plugin_api_lib],
++                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
++                        dependencies: glib)
++    else
++      t += shared_module(i, files(i + '.c'),
++                        include_directories: '../../include/qemu',
++                        dependencies: glib)
++    endif
++  endforeach
++endif
++if t.length() > 0
++  alias_target('contrib-plugins', t)
++else
++  run_target('contrib-plugins', command: find_program('true'))
++endif
 -- 
 2.39.5
 
