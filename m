@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884939BC60A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7F69BC5DB
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:45:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DHY-0006hx-Jh; Tue, 05 Nov 2024 01:43:18 -0500
+	id 1t8DH0-000558-5H; Tue, 05 Nov 2024 01:42:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DEy-0003X1-Mc
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:45 -0500
+ id 1t8DEw-0003X7-LE
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:44 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DEl-0001vd-3i
+ id 1t8DEn-0001w0-OO
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788823; x=1762324823;
+ t=1730788826; x=1762324826;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Cd6UQJeNLnYBe3u2FXzM6iswu2YcXGcY/0+XpTAWb5M=;
- b=HwK/YqSHttvDofiENIUswqt8RkZ09teQZ8gKtTDYCeuGvpreozuesbwG
- SW0MpAUA/s1ow5fRmCW5DvzLLOIIZp8v6xZ8H/Bo0OpHeJRMA4mrANKtc
- 9o3JFdJHy3c+W147Vvaa1DY2VHVDX3xUPswoyhBwbHoxv/+u4HQJnjXiD
- 4tShvjRpPppNzU1pXf9EHn7HZcCMp1PrLvfSiNFRDHmZ++HiW1gbyBvug
- C5IUOzoKdDPTK/H6SpP809EVC91e3xoKOGnACPuT20TH4uS3GPR16d9k/
- Nj8EeOikz0D6KXRBrgGSbN9QQVuUXWnV+2BCXlepdBlo7bSdDMV8Bv3et g==;
-X-CSE-ConnectionGUID: yYQP5rIGRaeiwIxJjkonCA==
-X-CSE-MsgGUID: OwR2/IsQTGyR6dX3SV6i0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689896"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689896"
+ bh=xs0CRmXKoLP85ntSNgfzBFyenj5am27Jk7rZikXTb+4=;
+ b=U36pv/TlOWJa8NB1J4Kz6OzrBI39+xip/fh5irg7mzNU9Xf2yTPgPNdC
+ Pvv8vQ1WCpbreRlMlmLo0hH1uxSbDnU5EcY80MZS/p5/v9SLg6TqhU6pf
+ OnHiqxgkdUb4206yOqk0/iDgeXHQ96gsLxY5zrdAzU9v5ylBwtoaoP2wn
+ fLG7HYhj7cr9IxpPO6WEK+99Md9kKyE8RTv/gVSyhtWlGhAaeJLHn2xQJ
+ RKIvrUjyXIRX8NASFhTBV6FQkVuCrADImfECvD+UZHzoYig+moSxtqPTW
+ fu1fPmV2/UWaxetUaXEdRrdu0OGkiIpI/eHGObY5eSfVLTuY70t7TW/Ty w==;
+X-CSE-ConnectionGUID: yiR6peEyTDC8SG4abNdtXw==
+X-CSE-MsgGUID: mmBd1LWWQOq+6gXqbiBbDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689907"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689907"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:40:09 -0800
-X-CSE-ConnectionGUID: rHLLn7tpR9W0Ru67Q1UL8w==
-X-CSE-MsgGUID: ttu57Bs2RkOUlOsMPVmdKQ==
+ 04 Nov 2024 22:40:14 -0800
+X-CSE-ConnectionGUID: +AXT2kK8SDWa5RYfBzoJxw==
+X-CSE-MsgGUID: xLmUcX+pSb2KsI+RjIq5Og==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989941"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989984"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:40:05 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:40:09 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 53/60] i386/cpu: introduce mark_forced_on_features()
-Date: Tue,  5 Nov 2024 01:24:01 -0500
-Message-Id: <20241105062408.3533704-54-xiaoyao.li@intel.com>
+Subject: [PATCH v6 54/60] i386/cgs: Introduce
+ x86_confidential_guest_check_features()
+Date: Tue,  5 Nov 2024 01:24:02 -0500
+Message-Id: <20241105062408.3533704-55-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,75 +89,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To do cgs specific feature checking. Note the feature checking in
+x86_cpu_filter_features() is valid for non-cgs VMs. For cgs VMs like
+TDX, what features can be supported has more restrictions.
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.c | 29 +++++++++++++++++++++++++++++
- target/i386/cpu.h |  5 +++++
- 2 files changed, 34 insertions(+)
+ target/i386/confidential-guest.h | 13 +++++++++++++
+ target/i386/kvm/kvm.c            |  8 ++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e728fb6b9f10..472ab206d8fe 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5507,6 +5507,35 @@ void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
+diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
+index 2dde29889c23..3018f38e18bf 100644
+--- a/target/i386/confidential-guest.h
++++ b/target/i386/confidential-guest.h
+@@ -43,6 +43,7 @@ struct X86ConfidentialGuestClass {
+     void (*cpu_realizefn)(X86ConfidentialGuest *cg, CPUState *cpu, Error **errp);
+     uint32_t (*adjust_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature,
+                                       uint32_t index, int reg, uint32_t value);
++    int (*check_features)(X86ConfidentialGuest *cg, CPUState *cs);
+ };
+ 
+ /**
+@@ -103,4 +104,16 @@ static inline int x86_confidential_guest_adjust_cpuid_features(X86ConfidentialGu
      }
  }
  
-+void mark_forced_on_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
-+                             const char *verbose_prefix)
++static inline int x86_confidential_guest_check_features(X86ConfidentialGuest *cg,
++                                                        CPUState *cs)
 +{
-+    CPUX86State *env = &cpu->env;
-+    FeatureWordInfo *f = &feature_word_info[w];
-+    int i;
++    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
 +
-+    if (!cpu->force_features) {
-+        env->features[w] |= mask;
++    if (klass->check_features) {
++        return klass->check_features(cg, cs);
 +    }
 +
-+    cpu->forced_on_features[w] |= mask;
-+
-+    if (!verbose_prefix) {
-+        return;
-+    }
-+
-+    for (i = 0; i < 64; ++i) {
-+        if ((1ULL << i) & mask) {
-+            g_autofree char *feat_word_str = feature_word_description(f, i);
-+            warn_report("%s: %s%s%s [bit %d]",
-+                        verbose_prefix,
-+                        feat_word_str,
-+                        f->feat_names[i] ? "." : "",
-+                        f->feat_names[i] ? f->feat_names[i] : "", i);
-+        }
-+    }
++    return 0;
 +}
 +
- static void x86_cpuid_version_get_family(Object *obj, Visitor *v,
-                                          const char *name, void *opaque,
-                                          Error **errp)
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e70e7f5ced4b..b5b1c3917427 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2135,6 +2135,9 @@ struct ArchCPU {
-     /* Features that were filtered out because of missing host capabilities */
-     FeatureWordArray filtered_features;
+ #endif
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index f067961fba43..42dc5b78faf0 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2086,6 +2086,14 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     int r;
+     Error *local_err = NULL;
  
-+    /* Features that are forced enabled by underlying hypervisor, e.g., TDX */
-+    FeatureWordArray forced_on_features;
++    if (current_machine->cgs) {
++        r = x86_confidential_guest_check_features(
++                X86_CONFIDENTIAL_GUEST(current_machine->cgs), cs);
++        if (r < 0) {
++            return r;
++        }
++    }
 +
-     /* Enable PMU CPUID bits. This can't be enabled by default yet because
-      * it doesn't have ABI stability guarantees, as it passes all PMU CPUID
-      * bits returned by GET_SUPPORTED_CPUID (that depend on host CPU and kernel
-@@ -2446,6 +2449,8 @@ void host_cpuid(uint32_t function, uint32_t count,
- bool cpu_has_x2apic_feature(CPUX86State *env);
- void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
-                                const char *verbose_prefix);
-+void mark_forced_on_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
-+                             const char *verbose_prefix);
+     memset(&cpuid_data, 0, sizeof(cpuid_data));
  
- static inline bool x86_has_cpuid_0x1f(X86CPU *cpu)
- {
+     cpuid_i = 0;
 -- 
 2.34.1
 
