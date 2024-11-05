@@ -2,99 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F7F9BD10C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C0E9BD172
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:01:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Lpp-00054M-Ql; Tue, 05 Nov 2024 10:51:13 -0500
+	id 1t8LzL-0006hD-MH; Tue, 05 Nov 2024 11:01:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lpn-000542-9L
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:51:11 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lpj-0006Ql-2i
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:51:10 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5FeJHp013605;
- Tue, 5 Nov 2024 15:50:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=/59eyO
- tyFXbHpV9ZldNtt72zzkOq6Weqg2L6GX+x8jY=; b=Yq/QemNMPtrFG2vySgU6pw
- NG2kAYWCFV33D2BPhhsPQoSBXPKOc89e+tAc+z5pjqADSORrlz9t7IF3JgorkgcT
- IKmAwq0RQus0D/zBfJ/lbOzawm5+LwQ9VfVrDrYjhsNCu4B94BhfupPhvvvHvt5k
- B8KbrRzNCj96/j6/sgPD3ZPFdCufehlAw4rzhoQ0msE++Vj6GySZo5X+xLt4WLrN
- nBbDInwcGXUfPCsBzskplJTTSi0+hvqfXEwN9RZy07RlgROM5Jj6nDGFMlaPC2E7
- VIV+Mt93n60rdh7ja7sg3NFvUDh3YSlfbBTaDBV5EaY2gt1G/qfUWth+iTqGs31g
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qp6x01bd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 15:50:54 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A56JvW0024243;
- Tue, 5 Nov 2024 15:50:53 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42nxds4gap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 15:50:53 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A5Foq8E33817270
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2024 15:50:52 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A17F20043;
- Tue,  5 Nov 2024 15:50:52 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6549F20040;
- Tue,  5 Nov 2024 15:50:51 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2024 15:50:51 +0000 (GMT)
-Message-ID: <74ef513603500e76330c2735803d5e1402406f4a.camel@linux.ibm.com>
-Subject: Re: [PATCH 4/8] user: Introduce host_interrupt_signal
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Warner Losh <imp@bsdimp.com>
-Cc: Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Kyle Evans <kevans@freebsd.org>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, qemu-devel@nongnu.org
-Date: Tue, 05 Nov 2024 16:50:51 +0100
-In-Reply-To: <CANCZdfrhzc-HZabUjkAMTgcHR0+6OQPxNshkQfMYD4wbNcm=wQ@mail.gmail.com>
-References: <20241024200031.80327-1-iii@linux.ibm.com>
- <20241024200031.80327-5-iii@linux.ibm.com>
- <CANCZdfrhzc-HZabUjkAMTgcHR0+6OQPxNshkQfMYD4wbNcm=wQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t8LzG-0006eb-Id
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:00:58 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1t8LzE-0007O4-3h
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:00:58 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5cec7cde922so5362947a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 08:00:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730822453; x=1731427253;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Scb2EKQT3PN3UVGeb/ptW1xx9GSETchLiUtounmX4sM=;
+ b=iM1JZG+D13GZ2InRU1D7dJ02EpMmRhjNyxIYf0gLC5VYLDxGyqRETm2Bl0YLPt+hVl
+ zuzY/gsWbDP8ZTeeHclmBXeUO+MRZ0W/sMJIhnX83oh555N4J2TfzfulYAzcYPLTq4y+
+ RdKCbRPRbeRKr/ytOlj3iUGBsliddt/rb21v83yJfDEyfuiAbaloHpWiNwavHnjpcjNZ
+ IxR1yAdkp0tsnn2A2ViiG53e1mHk4HYnCqArCfQbPL0AvnGq0j3sRguDmIOhwTrJA3S3
+ EKjRIuSbyPJ6Ga42jnxVXL1rkDNDtoLFLrSGYrC2towxXovmTXix0SdaqtmhOH0zouwy
+ TaVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730822453; x=1731427253;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Scb2EKQT3PN3UVGeb/ptW1xx9GSETchLiUtounmX4sM=;
+ b=FJX120HpmcZpyFCFvN/aSt2wWmx9UtXNbQObkDh801Qm9WIuZcKX++uv/ch6j5118Y
+ N7gqjYuPYW9v/dOp4mxcPVgVKudKBaN6RLuNwEBCoQDKqxkl15KsWqP4wZYaNBke+X9O
+ qYLLE3Y2mElwwebjPa6+HvoX8tWKiTR4Mjvm1Kn5rVPBgIj/2K1+eaI/6oV9N/WyMPxu
+ 5ilHFsUsQ71UZuh+lhSuhGSPYusDd5qzy1BCHtbv/3EMcNmmmMNVM2CQOpYe4rVjPzlz
+ ET4IOfqLLcLB3PuI4MOacInqZp79fzBk4CuMGQYbEFvpc4osuQ9pzeBJzxg5s7UHc0rS
+ NaWw==
+X-Gm-Message-State: AOJu0Yw8tpepE72auV/ZOpZ1Yy6skBFFe7pUaxB+KNKVKK3Ji7Fp6Xwb
+ b4DhMujFSb0ucok38i2vGKgAK/mo32biK7OXdoyuoC+rQr1le65WSBW+AZYcP65f5LBInEul7K7
+ 1hQ==
+X-Google-Smtp-Source: AGHT+IHFwFJXrrJEFtJzNJXDIAMnh6oqx02gkIAG+R9PNyGcg92n71Nn56J3tU82TAPVXPbLLgurJQ==
+X-Received: by 2002:a05:6402:27d3:b0:5ce:df56:4e39 with SMTP id
+ 4fb4d7f45d1cf-5cedf564f15mr3588937a12.23.1730822453455; 
+ Tue, 05 Nov 2024 08:00:53 -0800 (PST)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5cee6a9a41bsm1467773a12.14.2024.11.05.08.00.52
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 05 Nov 2024 08:00:52 -0800 (PST)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: dirty@apple.com, rbolshakov@ddn.com, pbonzini@redhat.com,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH 0/5] i386/hvf: x2apic support and some small fixes
+Date: Tue,  5 Nov 2024 16:57:55 +0100
+Message-Id: <20241105155800.5461-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zBI9jWlGR3L5fTC0Fdsa6Sd7cJWyRgak
-X-Proofpoint-GUID: zBI9jWlGR3L5fTC0Fdsa6Sd7cJWyRgak
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=746
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050121
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::52f;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,77 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-11-05 at 08:39 -0700, Warner Losh wrote:
-> On Thu, Oct 24, 2024 at 2:00=E2=80=AFPM Ilya Leoshkevich <iii@linux.ibm.c=
-om>
-> wrote:
-> > Attaching to the gdbstub of a running process requires stopping its
-> > threads. For threads that run on a CPU, cpu_exit() is enough, but
-> > the
-> > only way to grab attention of a thread that is stuck in a long-
-> > running
-> > syscall is to interrupt it with a signal.
-> >=20
-> > Reserve a host realtime signal for this, just like it's already
-> > done
-> > for TARGET_SIGABRT on Linux. This may reduce the number of
-> > available
-> > guest realtime signals by one, but this is acceptable, since there
-> > are
-> > quite a lot of them, and it's unlikely that there are apps that
-> > need
-> > them all.
-> >=20
-> > Set signal_pending for the safe_sycall machinery to prevent
-> > invoking
-> > the syscall. This is a lie, since we don't queue a guest signal,
-> > but
-> > process_pending_signals() can handle the absence of pending
-> > signals.
-> > The syscall returns with QEMU_ERESTARTSYS errno, which arranges for
-> > the automatic restart. This is important, because it helps avoiding
-> > disturbing poorly written guests.
-> >=20
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
-> > =C2=A0bsd-user/signal.c=C2=A0 =C2=A0 =C2=A0| 12 ++++++++++++
-> > =C2=A0include/user/signal.h |=C2=A0 2 ++
-> > =C2=A0linux-user/signal.c=C2=A0 =C2=A0| 11 +++++++++++
-> > =C2=A03 files changed, 25 insertions(+)
-> >=20
-> > diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-> > index a2b11a97131..992736df5c5 100644
-> > --- a/bsd-user/signal.c
-> > +++ b/bsd-user/signal.c
-> > @@ -49,6 +49,8 @@ static inline int sas_ss_flags(TaskState *ts,
-> > unsigned long sp)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0on_sig_stack(ts, sp) ? SS_ONSTACK : 0=
-;
-> > =C2=A0}
-> >=20
-> > +int host_interrupt_signal =3D SIGRTMAX;
-> > +
-> >=20
->=20
->=20
-> I'd be tempted to use SIGRTMAX=C2=A0+ 1 or even TARGET_NSIG. 127 or 128
-> would
-> work and not overflow any arrays (or hit any bounds tests) I'd likely
-> use SIGRTMAX=C2=A0+ 1,
-> though, since it avoids any edge-cases from sig =3D=3D NSIG that might be
-> in the code
-> unnoticed.
->=20
-> Now, having said that, I don't think that there's too many (any?)
-> programs we need
-> to run as bsd-user that have real-time signals, much less one that
-> uses SIGRTMAX,
-> but stranger things have happened. But it is a little wiggle room
-> just in case.
->=20
-> Other than that:
->=20
-> Reviewed-by: Warner Losh <imp@bsdimp.com>
+This is a loose collection of patches against the x86 hvf accel. They
+can be applied/pulled independently from one another.
 
-Thanks for the suggestion, I'll use SIGRTMAX + 1 in v2.
+Patch 1 is a repost of a patch I've submitted a bunch of times already.
+It wires up and enables x2APIC mode in conjunction with HVF - the
+software APIC implementation in QEMU gained the feature earlier this
+year but hvf wasn't included.
+The change typically improves performance with modern SMP guest OSes by
+a 2-digit percentage. (Exact values depend on workload.)
+
+Patch 2 fixes cases of undefined behaviour recently introduced by commit
+7cac7aa which made changes to HVF CPUID XSAVE functionality.
+
+Patch 3 fixes a minor one-off memory leak during hvf startup.
+
+Patch 4 ever so slightly improves APIC correctness under hvf: when
+setting the APICBASE MSR, if the APIC deems the new value invalid,
+we raise an exception (as per spec) rather than silently doing
+nothing. This fixes a failing kvm-unit-tests test case.
+
+Patch 5 removes some unnecessary duplication and type-rechecking in
+HVF's inner loop. (No need to cast the cpu state pointer to X86CPU
+within, the hvf_vcp_exec function already does that once at the top.)
+
+Some of this work has been sponsored by Sauce Labs Inc.
+
+Phil Dennis-Jordan (5):
+  i386/hvf: Integrates x2APIC support with hvf accel
+  i386/hvf: Fix for UB in handling CPUID function 0xD
+  i386/hvf: Fixes startup memory leak (vmcs caps)
+  i386/hvf: Raise exception on error setting APICBASE
+  i386/hvf: Removes duplicate/shadowed variables in hvf_vcpu_exec
+
+ target/i386/hvf/hvf.c       |  7 +++----
+ target/i386/hvf/x86_cpuid.c |  6 +++---
+ target/i386/hvf/x86_emu.c   | 42 +++++++++++++++++++++++++++++++++++--
+ 3 files changed, 46 insertions(+), 9 deletions(-)
+
+-- 
+2.39.3 (Apple Git-145)
+
 
