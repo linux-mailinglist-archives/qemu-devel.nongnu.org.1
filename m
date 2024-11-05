@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5CD9BCB9F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B999E9BCB95
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:22:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HbH-0004To-Cf; Tue, 05 Nov 2024 06:19:55 -0500
+	id 1t8HbQ-0004Ye-5p; Tue, 05 Nov 2024 06:20:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbE-0004T1-7T
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:52 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1t8HbK-0004Vh-A3
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:58 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8Hb9-00075v-Pu
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:51 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4315e62afe0so45658365e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:45 -0800 (PST)
+ id 1t8HbA-000763-Ei
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:57 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43155abaf0bso47185795e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730805584; x=1731410384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nlatDknV/aBfEnJ/+F3868r6flWSi/PVuWVtl184IcQ=;
- b=B/i+lgDjbNc2cmEJ78MGIAZA81rNsG+EwUq4Q8nSDOMdFgmwAH/CW9nTsl9SeBxDhH
- uZYN5CWWYwwW/XqpnOtLsZZGHmVxtj6BEnV++CPdO/LlyStqs+9H0R6AYHIJWGDbbUgJ
- tZqpRCIRi3FkQzIdiOHapJxjxJHhnkgcIyzBwX/O3rc6ldsj0Xu9HNLKabs36Srb42uD
- bxr5UOnxw40peZ0ANgm61Pp4RzcXY45u4zP+PykzMJJrLcAvFWo2oOYfKaKRvMhlDn1N
- a4WafbSZSGy/5enSlkgIsnX6ZByMY1QzaZvf0Na7hMvJ6BMbPuYSRSf9eAgRV+4AkFZw
- XYhA==
+ :reply-to; bh=rw5y8B7P/l3rqEDHkilLI0k4OLMoKZwY9v6CZQNZn3k=;
+ b=xcagPw9ZwkwcCLWHYTk9ps1UZASuNwBR/XsbyFjSHS6CmxuF/PqqLmFBqGZchlNZyE
+ ebnyHPZCRL++F7TcXow6delDrL0lagVFKnOzzATn1KqxSEMwhkovWwObH80M6cOejgUa
+ KGcF+C0YLbaOLuyXbgNu42U0taXcauS3ORhqDbu5h2X6K+5+3OZpYV3Y7T2xGNz+Jsfp
+ 0jLL8QSi5aT237jBIkbOFe6cMQooo1kwJFGr/oaeeukdeX2JJOjVZMrVFIKEBG4E+oc4
+ unBp0iH10R7ZdLeSv7bMp/Y1206tjVzdePTtdh2+iUkUeus3DcK2Kgtmyr1YQSzgX062
+ r2Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730805584; x=1731410384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nlatDknV/aBfEnJ/+F3868r6flWSi/PVuWVtl184IcQ=;
- b=dUgPHArDaDoeHxx5pq76kGumKYUxH1wgpfkLWDI0/CwZ9AgrF60j2fG4DSWG4jODTa
- deFqjzv45FuLX5H9LXDj1/oonfclG9wpEdqhPeZWV6A7V2Ztuk/QOxXeTBo+uh9Ej9hA
- IF8Rk/oVVR6bZHJs1DoksIK7VgLCTO53Dzawg9IDly0+VyyP2gcmknyxBSkNrnzEpZkh
- v3tVBFcQ5hP8A+qtwc1+whd7s2uRmyucsyUcBvfXFXD70ASFMdmxspbzrLn5bK/DAO34
- WuCtQTtmPcShLXdd+Hb2CTul37miOubzy7tL4k0R9nspR3bvtJrqqllCIJih03eCo8Op
- wNeA==
-X-Gm-Message-State: AOJu0YyDsluXQze2ec27NcfGZwQBbe4Zyie00fkRF2+cEMpp7KvIPUhn
- kPGtrDVkGD3PRwZNppPtADljEOEUAQzVAjK7mpI+tFOxAhyV2QewnUH3UlFpUuMRF3f3e1FVjMP
- h
-X-Google-Smtp-Source: AGHT+IHcTsD95yU7AnMAHWb8g4TH1ZOb2S7iALAhpMQMa4BnVpZwzp85YsAe5NLpVVmM3suXCHLtpQ==
-X-Received: by 2002:a05:600c:cc5:b0:432:a36b:d896 with SMTP id
- 5b1f17b1804b1-432a36bd911mr16015845e9.26.1730805583796; 
- Tue, 05 Nov 2024 03:19:43 -0800 (PST)
+ bh=rw5y8B7P/l3rqEDHkilLI0k4OLMoKZwY9v6CZQNZn3k=;
+ b=wbLyj7irjhXOGVXPKiuQZGc3YpI3xwA8kl6yklK2+Qi0J2R1yfBxbjCKB5Y1xEFtF7
+ JXM+6lIHn1a7rlsg+NXHkSX2Ril9N0XmivZhAkKedNzII8hRrkry/Dk3aTMPJlWYp87m
+ 8kH91lnw5i6dnHfMNDCuGsU2sHdznRSnKqA7xqzacqHqww4Qfp7im89OaAVOaH8IctE/
+ y/D1h4leMwjkn80wxTUFy1YoH7b+021qAgEQeAmZnlXEVnNmYs+Tyo8Wggy+Bt/jAhGY
+ 8BBGNzPZWmDObK8UKhBzPx1WDaJ7HUqjauSUz8p+tFtKM0TKyzQCfNa5jo4nb6keGDiX
+ 7dlg==
+X-Gm-Message-State: AOJu0Ywdn6fFLvD011uKbg1AYMl4K5zAyzp/Co4QrFZ61MRMe+EEAvw7
+ FxVsz0Tr3yzD5yP22nFWiZzgBKskPHPo+BiTTzeFxbKjwmmF9tA9+s0f3dYTL/FaOUR+k65z/H+
+ o
+X-Google-Smtp-Source: AGHT+IHVRTEx68Yv7dOqT2OjZM0ciVmoCVF0Ailvkbvd7WM4MZ7B+AiAvvDnIC6MLRXzTXXbLcGHYQ==
+X-Received: by 2002:a05:600c:4e8a:b0:42b:af5a:109 with SMTP id
+ 5b1f17b1804b1-43283284867mr114312475e9.24.1730805584293; 
+ Tue, 05 Nov 2024 03:19:44 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 03:19:43 -0800 (PST)
+ Tue, 05 Nov 2024 03:19:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/31] target/sparc: Move cpu_put_fsr(env, 0) call to reset
-Date: Tue,  5 Nov 2024 11:19:15 +0000
-Message-Id: <20241105111935.2747034-12-peter.maydell@linaro.org>
+Subject: [PULL 12/31] target/sparc: Explicitly set 2-NaN propagation rule
+Date: Tue,  5 Nov 2024 11:19:16 +0000
+Message-Id: <20241105111935.2747034-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
 References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,51 +91,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we call cpu_put_fsr(0) in sparc_cpu_realizefn(), which
-initializes various fields in the CPU struct:
- * fsr_cexc_ftt
- * fcc[]
- * fsr_qne
- * fsr
-It also sets the rounding mode in env->fp_status.
-
-This is largely pointless, because when we later reset the CPU
-this will zero out all the fields up until the "end_reset_fields"
-label, which includes all of these (but not fp_status!)
-
-Move the cpu_put_fsr(env, 0) call to reset, because that expresses
-the logical requirement: we want to reset FSR to 0 on every reset.
-This isn't a behaviour change because the fields are all zero anyway.
+Set the NaN propagation rule explicitly in the float_status
+words we use.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241025141254.2141506-12-peter.maydell@linaro.org
+Message-id: 20241025141254.2141506-13-peter.maydell@linaro.org
 ---
- target/sparc/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/sparc/cpu.c             |  8 ++++++++
+ target/sparc/fop_helper.c      | 10 ++++++++--
+ fpu/softfloat-specialize.c.inc |  6 ++----
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 54cb269e0af..e7f4068a162 100644
+index e7f4068a162..dd7af86de73 100644
 --- a/target/sparc/cpu.c
 +++ b/target/sparc/cpu.c
-@@ -76,6 +76,7 @@ static void sparc_cpu_reset_hold(Object *obj, ResetType type)
-     env->npc = env->pc + 4;
- #endif
-     env->cache_control = 0;
-+    cpu_put_fsr(env, 0);
- }
+@@ -26,6 +26,7 @@
+ #include "hw/qdev-properties.h"
+ #include "qapi/visitor.h"
+ #include "tcg/tcg.h"
++#include "fpu/softfloat.h"
  
- #ifndef CONFIG_USER_ONLY
-@@ -805,7 +806,6 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-     env->version |= env->def.maxtl << 8;
+ //#define DEBUG_FEATURES
+ 
+@@ -807,6 +808,13 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
      env->version |= env->def.nwindows - 1;
  #endif
--    cpu_put_fsr(env, 0);
  
++    /*
++     * Prefer SNaN over QNaN, order B then A. It's OK to do this in realize
++     * rather than reset, because fp_status is after 'end_reset_fields' in
++     * the CPU state struct so it won't get zeroed on reset.
++     */
++    set_float_2nan_prop_rule(float_2nan_prop_s_ba, &env->fp_status);
++
      cpu_exec_realizefn(cs, &local_err);
      if (local_err != NULL) {
+         error_propagate(errp, local_err);
+diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
+index b6692382b3b..6f9ccc008a0 100644
+--- a/target/sparc/fop_helper.c
++++ b/target/sparc/fop_helper.c
+@@ -497,7 +497,10 @@ uint32_t helper_flcmps(float32 src1, float32 src2)
+      * Perform the comparison with a dummy fp environment.
+      */
+     float_status discard = { };
+-    FloatRelation r = float32_compare_quiet(src1, src2, &discard);
++    FloatRelation r;
++
++    set_float_2nan_prop_rule(float_2nan_prop_s_ba, &discard);
++    r = float32_compare_quiet(src1, src2, &discard);
+ 
+     switch (r) {
+     case float_relation_equal:
+@@ -518,7 +521,10 @@ uint32_t helper_flcmps(float32 src1, float32 src2)
+ uint32_t helper_flcmpd(float64 src1, float64 src2)
+ {
+     float_status discard = { };
+-    FloatRelation r = float64_compare_quiet(src1, src2, &discard);
++    FloatRelation r;
++
++    set_float_2nan_prop_rule(float_2nan_prop_s_ba, &discard);
++    r = float64_compare_quiet(src1, src2, &discard);
+ 
+     switch (r) {
+     case float_relation_equal:
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index 226632a4d10..8bc95187178 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -404,11 +404,9 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+     || defined(TARGET_RISCV) || defined(TARGET_SH4) \
+     || defined(TARGET_TRICORE) || defined(TARGET_ARM) || defined(TARGET_MIPS) \
+     || defined(TARGET_LOONGARCH64) || defined(TARGET_HPPA) \
+-    || defined(TARGET_S390X) || defined(TARGET_PPC) || defined(TARGET_M68K)
++    || defined(TARGET_S390X) || defined(TARGET_PPC) || defined(TARGET_M68K) \
++    || defined(TARGET_SPARC)
+         g_assert_not_reached();
+-#elif defined(TARGET_SPARC)
+-        /* Prefer SNaN over QNaN, order B then A. */
+-        rule = float_2nan_prop_s_ba;
+ #elif defined(TARGET_XTENSA)
+         /*
+          * Xtensa has two NaN propagation modes.
 -- 
 2.34.1
 
