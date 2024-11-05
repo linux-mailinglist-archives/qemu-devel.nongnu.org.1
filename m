@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BECC9BC58A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0EE9BC598
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DB0-0004OI-FU; Tue, 05 Nov 2024 01:36:30 -0500
+	id 1t8DB1-0004Oc-BX; Tue, 05 Nov 2024 01:36:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DAy-0004Nw-En
+ id 1t8DAy-0004O9-To
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:28 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DAv-0001nR-JD
+ id 1t8DAx-0001nl-6J
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788586; x=1762324586;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=uwPme6DhVbJbciZbENF5tory5ziwKMfNkooa8T+wyes=;
- b=d1zccKTvG6C/QSi/LLrwlRCLfEKOIY1sSiu2LAMqwVK1Miicbg9taHVh
- T03rbbx/koVfzycz4uYGhTnK2/NXuKaEohnKjJipV8T2KcUSCrbf0ypTa
- ad8VBungfurQ/2E7AM3uqGNmUoIUwywMgDF7tZiawbcjbSnoStsynmBIt
- GpGKnl3mG3XbfjZ6Yc92kQavZCiAEUNnaMuVVFcyIFVJ6Yk4N0A5MM3Ys
- yaWExUpTcl8yS0Gtpj6RINmwiKNc7zc0ndyv5EWqSuEqX3l0Q5BtfRbsT
- mapTGE2VSoi4tCi8GN9TF0jpqb65yOGZi3Jl1PykpY5KtHs4vhjvIFPMp A==;
-X-CSE-ConnectionGUID: Ud7+O7N1QFaZ+at849vDFQ==
-X-CSE-MsgGUID: fI63HKsRT8urr5MMUANVLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689209"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689209"
+ t=1730788587; x=1762324587;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=g+h4bo1XqzDmMZ0LZa6Xv9bp3PCsN0+TI6VIrKIylhs=;
+ b=KKDcGj22k2NUx0kQFfqCUrQiDrOFvg22DEVzDEMovgv7P0NIqxbh/oNg
+ fC5E3NCBElKOVou5/3MXKcAm2HClJExOdLwKcEO/Y1ZxWtbR2T+dI1dDd
+ wN+I+1ufbB9MJQcTYRfnvRaocdRxLt+gpkacj4//NKWzHH5zYWBKTKP1x
+ ZxBXYhCAqHSOULfd1U6Z7OxaXseTQk2fWHO6Az5oGq6sBF95LHzfDkSXh
+ p5cvn9objqh5WMf/c5dwVVRBOipTbu7GvIGrCEhQp84Nxkqp7du3dDgPa
+ 8RFUjQiiZt94lMeEYDe9xL6FiFnjReVChGs+9L5ymSqWqLEYwy+C7bv5Y Q==;
+X-CSE-ConnectionGUID: /uCogON6SlWdl8Pcex5UaA==
+X-CSE-MsgGUID: ShDe38bUSfm5NDOhJNGRBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689213"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689213"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:36:22 -0800
-X-CSE-ConnectionGUID: Uz/eKMZwS4+quOehhpn1TQ==
-X-CSE-MsgGUID: pq/qFX1JQ0KCTysNWX4HUw==
+ 04 Nov 2024 22:36:26 -0800
+X-CSE-ConnectionGUID: dzGKxjZRRju1K3R3NN9uKw==
+X-CSE-MsgGUID: B+woiuUfTM68IGRpM3+trQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988532"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988551"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:36:17 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:36:22 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,10 +55,13 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 00/60] QEMU TDX support
-Date: Tue,  5 Nov 2024 01:23:08 -0500
-Message-Id: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+Subject: [PATCH v6 01/60] *** HACK *** linux-headers: Update headers to pull
+ in TDX API changes
+Date: Tue,  5 Nov 2024 01:23:09 -0500
+Message-Id: <20241105062408.3533704-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
@@ -86,179 +89,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the v6 series of TDX QEMU enabling. The matching KVM is
-https://github.com/intel/tdx/tree/tdx_kvm_dev-2024-10-30
+Pull in recent TDX updates, which are not backwards compatible.
 
-This series is also available in github:
-https://github.com/intel-staging/qemu-tdx/tree/tdx-qemu-upstream-v6.1
+It's just to make this series runnable. It will be updated by script
 
-Note, to boot a TD, it requires 1)TDX module 1.5.06.00.0744[0], or later.
-This is due to removal of the workarounds for the lack of NO_RBP_MOD in
-KVM. 2) OVMF with commit 3a3b12cbdae2 "UefiCpuPkg/MtrrLib:
-MtrrLibIsMtrrSupported always return FALSE in TD-Guest" because KVM
-drops the MTRR related MSR emulation.
+	scripts/update-linux-headers.sh
 
-Patches 52 to 59 are new added in this version. They are aimed to check
-and guarantee the CPU model determined by user input can be satisfied.
+once TDX support is upstreamed in linux kernel
 
-=== future work ===
-- CPU model
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ linux-headers/asm-x86/kvm.h | 70 +++++++++++++++++++++++++++++++++++++
+ linux-headers/linux/kvm.h   |  1 +
+ 2 files changed, 71 insertions(+)
 
-  It now only supports booting TD VM with "-cpu host". It is the only
-  case that not supposed to hit any warning/error.
-
-  When using named CPU model, even the same model as host, it likely
-  hits warning like some feature not supported or some feature enforced
-  on. It's a future work to decide if needs to introduce TDX specific
-  named CPU models.
-
-- Attestation support
-
-  Attestation support is dropped in this version becuase KVM side remove
-  the support of the related user exit. Atttestation support will be
-  submitted separately when KVM regain the support.
-
-- gdb support
-
-  gdb support to debug a TD in off-debug mode is left as future work.
-
-[0] https://github.com/intel/tdx-module/releases/tag/TDX_1.5.06
-
-===
-Changes in v6:
- - Remove the guest memfd patches and some i386 patches because they are
-   already merged;
- - Drop the attestation support since current KVM doesn't support it;
- - Update to use the latest TDX API of KVM;
- - Change to use adjust_cpuid_features() to adjust the supported CPUID
-   features for TDX;
- - Introduce x86_confidential_guest_check_features() to do additinoal
-   feature check;
-
-v5:
-https://lore.kernel.org/qemu-devel/20240229063726.610065-1-xiaoyao.li@intel.com/
-
-Chao Peng (1):
-  i386/tdx: load TDVF for TD guest
-
-Isaku Yamahata (6):
-  i386/tdx: Make sept_ve_disable set by default
-  i386/tdx: Support user configurable mrconfigid/mrowner/mrownerconfig
-  i386/tdvf: Introduce function to parse TDVF metadata
-  i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
-  hw/i386: add option to forcibly report edge trigger in acpi tables
-  i386/tdx: Don't synchronize guest tsc for TDs
-
-Sean Christopherson (1):
-  i386/tdx: Don't get/put guest state for TDX VMs
-
-Xiaoyao Li (52):
-  *** HACK *** linux-headers: Update headers to pull in TDX API changes
-  i386: Introduce tdx-guest object
-  i386/tdx: Implement tdx_kvm_type() for TDX
-  i386/tdx: Implement tdx_kvm_init() to initialize TDX VM context
-  i386/tdx: Get tdx_capabilities via KVM_TDX_CAPABILITIES
-  i386/tdx: Introduce is_tdx_vm() helper and cache tdx_guest object
-  kvm: Introduce kvm_arch_pre_create_vcpu()
-  i386/kvm: Export cpuid_entry_get_reg() and cpuid_find_entry()
-  i386/tdx: Initialize TDX before creating TD vcpus
-  i386/tdx: Add property sept-ve-disable for tdx-guest object
-  i386/tdx: Wire CPU features up with attributes of TD guest
-  i386/tdx: Validate TD attributes
-  i386/tdx: Set APIC bus rate to match with what TDX module enforces
-  i386/tdx: Implement user specified tsc frequency
-  i386/tdx: Parse TDVF metadata for TDX VM
-  i386/tdx: Don't initialize pc.rom for TDX VMs
-  i386/tdx: Track mem_ptr for each firmware entry of TDVF
-  i386/tdx: Track RAM entries for TDX VM
-  headers: Add definitions from UEFI spec for volumes, resources, etc...
-  i386/tdx: Setup the TD HOB list
-  i386/tdx: Call KVM_TDX_INIT_VCPU to initialize TDX vcpu
-  i386/tdx: Finalize TDX VM
-  i386/tdx: Enable user exit on KVM_HC_MAP_GPA_RANGE
-  i386/tdx: Handle KVM_SYSTEM_EVENT_TDX_FATAL
-  i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility
-  i386/cpu: introduce x86_confidential_guest_cpu_instance_init()
-  i386/tdx: implement tdx_cpu_instance_init()
-  i386/cpu: introduce x86_confidenetial_guest_cpu_realizefn()
-  i386/tdx: implement tdx_cpu_realizefn()
-  i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID 0x1f
-  i386/tdx: Force exposing CPUID 0x1f
-  i386/tdx: Set kvm_readonly_mem_enabled to false for TDX VM
-  i386/tdx: Disable SMM for TDX VMs
-  i386/tdx: Disable PIC for TDX VMs
-  hw/i386: add eoi_intercept_unsupported member to X86MachineState
-  i386/tdx: Only configure MSR_IA32_UCODE_REV in kvm_init_msrs() for TDs
-  i386/tdx: Skip kvm_put_apicbase() for TDs
-  i386/cgs: Rename *mask_cpuid_features() to *adjust_cpuid_features()
-  i386/tdx: Implement adjust_cpuid_features() for TDX
-  i386/tdx: Apply TDX fixed0 and fixed1 information to supported CPUIDs
-  i386/tdx: Mask off CPUID bits by unsupported TD Attributes
-  i386/cpu: Move CPUID_XSTATE_XSS_MASK to header file and introduce
-    CPUID_XSTATE_MASK
-  i386/tdx: Mask off CPUID bits by unsupported XFAM
-  i386/cpu: Expose mark_unavailable_features() for TDX
-  i386/cpu: introduce mark_forced_on_features()
-  i386/cgs: Introduce x86_confidential_guest_check_features()
-  i386/tdx: Fetch and validate CPUID of TD guest
-  i386/tdx: Don't treat SYSCALL as unavailable
-  i386/tdx: Make invtsc default on
-  cpu: Introduce qemu_early_init_vcpu()
-  i386/cpu: Set up CPUID_HT in x86_cpu_realizefn() instead of
-    cpu_x86_cpuid()
-  docs: Add TDX documentation
-
- accel/kvm/kvm-all.c                        |   18 +
- accel/tcg/user-exec-stub.c                 |    4 +
- configs/devices/i386-softmmu/default.mak   |    1 +
- docs/system/confidential-guest-support.rst |    1 +
- docs/system/i386/tdx.rst                   |  155 +++
- docs/system/target-i386.rst                |    1 +
- hw/i386/Kconfig                            |    6 +
- hw/i386/acpi-build.c                       |   99 +-
- hw/i386/acpi-common.c                      |   45 +-
- hw/i386/meson.build                        |    1 +
- hw/i386/pc.c                               |   29 +-
- hw/i386/pc_sysfw.c                         |    7 +
- hw/i386/tdvf-hob.c                         |  147 +++
- hw/i386/tdvf-hob.h                         |   24 +
- hw/i386/tdvf.c                             |  201 ++++
- hw/i386/x86-common.c                       |    6 +-
- hw/i386/x86.c                              |    1 +
- include/hw/core/cpu.h                      |    8 +
- include/hw/i386/tdvf.h                     |   58 +
- include/hw/i386/x86.h                      |    1 +
- include/standard-headers/uefi/uefi.h       |  198 ++++
- include/sysemu/kvm.h                       |    1 +
- linux-headers/asm-x86/kvm.h                |   70 ++
- linux-headers/linux/kvm.h                  |    1 +
- qapi/qom.json                              |   35 +
- qapi/run-state.json                        |   31 +-
- system/cpus.c                              |    8 +
- system/runstate.c                          |   58 +
- target/i386/confidential-guest.h           |   56 +-
- target/i386/cpu.c                          |   74 +-
- target/i386/cpu.h                          |   27 +
- target/i386/host-cpu.c                     |    2 +-
- target/i386/host-cpu.h                     |    1 +
- target/i386/kvm/kvm.c                      |  130 ++-
- target/i386/kvm/kvm_i386.h                 |   15 +
- target/i386/kvm/meson.build                |    2 +
- target/i386/kvm/tdx-stub.c                 |   18 +
- target/i386/kvm/tdx.c                      | 1113 ++++++++++++++++++++
- target/i386/kvm/tdx.h                      |   63 ++
- target/i386/sev.c                          |    9 +-
- 40 files changed, 2596 insertions(+), 129 deletions(-)
- create mode 100644 docs/system/i386/tdx.rst
- create mode 100644 hw/i386/tdvf-hob.c
- create mode 100644 hw/i386/tdvf-hob.h
- create mode 100644 hw/i386/tdvf.c
- create mode 100644 include/hw/i386/tdvf.h
- create mode 100644 include/standard-headers/uefi/uefi.h
- create mode 100644 target/i386/kvm/tdx-stub.c
- create mode 100644 target/i386/kvm/tdx.c
- create mode 100644 target/i386/kvm/tdx.h
-
+diff --git a/linux-headers/asm-x86/kvm.h b/linux-headers/asm-x86/kvm.h
+index 4711ef2c3d01..719b9d121dbe 100644
+--- a/linux-headers/asm-x86/kvm.h
++++ b/linux-headers/asm-x86/kvm.h
+@@ -922,5 +922,75 @@ struct kvm_hyperv_eventfd {
+ #define KVM_X86_SEV_VM		2
+ #define KVM_X86_SEV_ES_VM	3
+ #define KVM_X86_SNP_VM		4
++#define KVM_X86_TDX_VM		5
++
++/* Trust Domain eXtension sub-ioctl() commands. */
++enum kvm_tdx_cmd_id {
++	KVM_TDX_CAPABILITIES = 0,
++	KVM_TDX_INIT_VM,
++	KVM_TDX_INIT_VCPU,
++	KVM_TDX_INIT_MEM_REGION,
++	KVM_TDX_FINALIZE_VM,
++	KVM_TDX_GET_CPUID,
++
++	KVM_TDX_CMD_NR_MAX,
++};
++
++struct kvm_tdx_cmd {
++	/* enum kvm_tdx_cmd_id */
++	__u32 id;
++	/* flags for sub-commend. If sub-command doesn't use this, set zero. */
++	__u32 flags;
++	/*
++	 * data for each sub-command. An immediate or a pointer to the actual
++	 * data in process virtual address.  If sub-command doesn't use it,
++	 * set zero.
++	 */
++	__u64 data;
++	/*
++	 * Auxiliary error code.  The sub-command may return TDX SEAMCALL
++	 * status code in addition to -Exxx.
++	 * Defined for consistency with struct kvm_sev_cmd.
++	 */
++	__u64 hw_error;
++};
++
++struct kvm_tdx_capabilities {
++	__u64 supported_attrs;
++	__u64 supported_xfam;
++	__u64 reserved[254];
++	struct kvm_cpuid2 cpuid;
++};
++
++struct kvm_tdx_init_vm {
++	__u64 attributes;
++	__u64 xfam;
++	__u64 mrconfigid[6];	/* sha384 digest */
++	__u64 mrowner[6];	/* sha384 digest */
++	__u64 mrownerconfig[6];	/* sha384 digest */
++
++	/* The total space for TD_PARAMS before the CPUIDs is 256 bytes */
++	__u64 reserved[12];
++
++	/*
++	 * Call KVM_TDX_INIT_VM before vcpu creation, thus before
++	 * KVM_SET_CPUID2.
++	 * This configuration supersedes KVM_SET_CPUID2s for VCPUs because the
++	 * TDX module directly virtualizes those CPUIDs without VMM.  The user
++	 * space VMM, e.g. qemu, should make KVM_SET_CPUID2 consistent with
++	 * those values.  If it doesn't, KVM may have wrong idea of vCPUIDs of
++	 * the guest, and KVM may wrongly emulate CPUIDs or MSRs that the TDX
++	 * module doesn't virtualize.
++	 */
++	struct kvm_cpuid2 cpuid;
++};
++
++#define KVM_TDX_MEASURE_MEMORY_REGION   _BITULL(0)
++
++struct kvm_tdx_init_mem_region {
++	__u64 source_addr;
++	__u64 gpa;
++	__u64 nr_pages;
++};
+ 
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index 49dd1b30ce9e..ebad8e0d10c5 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -369,6 +369,7 @@ struct kvm_run {
+ #define KVM_SYSTEM_EVENT_WAKEUP         4
+ #define KVM_SYSTEM_EVENT_SUSPEND        5
+ #define KVM_SYSTEM_EVENT_SEV_TERM       6
++#define KVM_SYSTEM_EVENT_TDX_FATAL      7
+ 			__u32 type;
+ 			__u32 ndata;
+ 			union {
 -- 
 2.34.1
 
