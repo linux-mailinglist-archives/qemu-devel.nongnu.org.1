@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF2B9BD37E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 18:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D1D9BD405
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:03:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8NT5-00052k-6F; Tue, 05 Nov 2024 12:35:51 -0500
+	id 1t8NsN-0004kF-HM; Tue, 05 Nov 2024 13:01:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8NSu-00052K-1q
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:35:41 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8NSq-0001SF-Vb
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:35:39 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5c937b5169cso40999a12.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 09:35:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730828133; x=1731432933; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lBkNgXMGLims9qs0/w9lPjJDn3qEGKCxXwy34dsDzT0=;
- b=T/nfdoR1Q2JKZR60Rp2jYDVIJeEwbnoaKaHIUDfVnHL8HykKmrCZEwQgE+4Ld7LoXg
- uyf40WBpujcPgxqnbkCNVkNzDaJoiWVC+2jwRvZQdPmpSl0CoJhziqR9HFyBvbqfSW+v
- hHjZXJ0LanfyYAkjzw7TBCDgktFp71gedsRZ2y5WFzo7EoZLOjxXVR4Rkr5dWB2dPSEl
- 2eCbR9HsWX1XuHzdyCy1QDXn6wVR7wtpI3IdCDuUh9zvmoEqmscT4nyY0TVP05Ecn+BR
- HrAwGJipOOPU6U6N4zk+aVVeVapchdhkF4WVTqkMAGbVQ5ao+K1hKj1jRjgAa2qiuIsG
- RRag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730828133; x=1731432933;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lBkNgXMGLims9qs0/w9lPjJDn3qEGKCxXwy34dsDzT0=;
- b=QLAR+G2v+Vj0FZlk65FLweNDBIBVZSJbdcMpEyasMB/JnFQmwYsXT65wRgyi7EtpU9
- GDFyZxWhsq4HPiCn6sDgCxXJqlHGu1MTY/v7vh7yGdqbRsaVIUC1J3JfoyQiGvxZad5D
- SeVwKnBF9FxU6PSOMo8yu1yjTrFbinAqhOfCakEeB1B4l9dOEQAAbvqbQkT/Tz6JCnV3
- +UbnfkSX09YJUMaW2weeNT8+vwjv05+mbuCz9TDDlT/q8usZoBvqT/473kfjcI2g35rA
- 9dphGq48RY0OiLWr0HDvEPxR9nnDBUbk4uoAQjql64L8FY/XgpDCVzbLgFH3coEMcmxT
- rxwg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVAoyw4oAjXMmLM/I508mt0Ym6djIBd1kkPrLa7KHSvcrhcdq6kt68VJZgx5cZbv08xotkk/IY14v4z@nongnu.org
-X-Gm-Message-State: AOJu0YzIrYBlR1UMhlqqhytV9yE+O29rGSRrmhJPXWttFpBSyjpBgLkN
- GIrXXuRKS69RgJfCQhlctilmOTO8Kh/4/TYvdG/izDql7H2EBDHr5+TVb5lDQ0I1qM/SDEPk432
- oMtDjIz7k0LY5x7DIlinJGGdtBwwjTUppEtL4Gw==
-X-Google-Smtp-Source: AGHT+IGL5htrgsFTmBx2FQl6EmfNpCafkcpNFITq6qvXy7lby4rrtCkls29ahdLJnXfq0VDlaSlKkc40FczoaYkvqnk=
-X-Received: by 2002:a05:6402:d4c:b0:5cb:881e:6d3c with SMTP id
- 4fb4d7f45d1cf-5ceabf26e83mr16627763a12.8.1730828133335; Tue, 05 Nov 2024
- 09:35:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20240725235410.451624-1-npiggin@gmail.com>
- <20240725235410.451624-16-npiggin@gmail.com>
- <49b1d57d-e0bf-4b64-b6ef-3cb4e1da5d65@kaod.org>
-In-Reply-To: <49b1d57d-e0bf-4b64-b6ef-3cb4e1da5d65@kaod.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Nov 2024 17:35:21 +0000
-Message-ID: <CAFEAcA869xMGhB+K1x722CL0bD0a55+oWofpsW610HSycz_Yag@mail.gmail.com>
-Subject: Re: [PULL 15/96] ppc/pnv: Implement POWER9 LPC PSI serirq outputs and
- auto-clear function
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, Glenn Miles <milesg@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1t8NsL-0004je-Gv; Tue, 05 Nov 2024 13:01:57 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1t8NsJ-00045e-JA; Tue, 05 Nov 2024 13:01:57 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5HecWw023083;
+ Tue, 5 Nov 2024 18:01:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=dbUUh5
+ TSso3Dypp1NC5ZlxBvs/EIdaIxIpQvfBU7Fws=; b=q3x5cSUbx6j3TTBExjpXc6
+ +906JXob0rIS9Cg7o1kSygpjftZA5QGvK3XaP/sZlAeOG8FwrCHmx5B8YD00WqKx
+ 1by3fqmzB5kRzZYJ/MYcLTuMO6ipp4nHxBLXgtezP1at9zriq/AkhWP0xluDx459
+ Z6CtmYpI/317anq7rhxaXiUZjDzuizREogjvFo1dOlpJ9AAgcv2InSFs7BJ9B521
+ en6xxL1M6pspcL9oGkTn7XG1I11Fv8c2zM/yehx9X8xRh1v6bxCU234UC3p3+kwH
+ KpWxUp8P8I45waebl6U1L3sJ3fAMYMJ9xqFiTWZub0osgQUJzlIKRtCczSnLrOEA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qqy5r2sm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 18:01:51 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A5I1oxZ000861;
+ Tue, 5 Nov 2024 18:01:50 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qqy5r2sh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 18:01:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5CgF5O024314;
+ Tue, 5 Nov 2024 18:01:49 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj4gw4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 18:01:49 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A5I1muR34800326
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 Nov 2024 18:01:48 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 335FA2004B;
+ Tue,  5 Nov 2024 18:01:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CD3F20040;
+ Tue,  5 Nov 2024 18:01:47 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Nov 2024 18:01:47 +0000 (GMT)
+Message-ID: <9c8978b30e9b23c3eeee1a68dd4d61369bbbcc46.camel@linux.ibm.com>
+Subject: Re: [PULL 02/67] target/ppc: Make divd[u] handler method decodetree
+ compatible
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-stable@nongnu.org, Richard Henderson
+ <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Date: Tue, 05 Nov 2024 19:01:47 +0100
+In-Reply-To: <1a73699a-dce6-4197-8132-0d5a16971ef3@tls.msk.ru>
+References: <20241104001900.682660-1-npiggin@gmail.com>
+ <20241104001900.682660-3-npiggin@gmail.com>
+ <1a73699a-dce6-4197-8132-0d5a16971ef3@tls.msk.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: H_JqoxemfdNx1dX6ylQajvvMIGsTC4sA
+X-Proofpoint-GUID: DfmuH5CEMFR_hTzCiLwTobqQToER1KRw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=618 mlxscore=0 phishscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050135
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,89 +118,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 Jul 2024 at 11:11, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> On 7/26/24 01:52, Nicholas Piggin wrote:
-> > The POWER8 LPC ISA device irqs all get combined and reported to the lin=
-e
-> > connected the PSI LPCHC irq. POWER9 changed this so only internal LPC
-> > host controller irqs use that line, and the device irqs get routed to
-> > 4 new lines connected to PSI SERIRQ0-3.
+On Tue, 2024-11-05 at 18:33 +0300, Michael Tokarev wrote:
+> 04.11.2024 03:17, Nicholas Piggin wrote:
+> > From: Ilya Leoshkevich <iii@linux.ibm.com>
+> >=20
+> > This is like commit 86e6202a57b1 ("target/ppc: Make divw[u] handler
+> > method decodetree compatible."), but for gen_op_arith_divd().
+>=20
+> 86e6202a57b1 is v9.0.0-880-g86e6202a57b1, ie, it is in 9.1 only.
+> So I wonder what should we do for older stable series (namely for
+> 8.2 lts and 9.0), -- should we pick this one together with the
+> mentioned 86e6202a57b1, or neither?
+>=20
+> A separate question is whenever it makes sense to pick these for 7.2?
+>=20
+> Thanks,
+>=20
+> /mjt
 
-Ping! It looks like these issues are still floating around...
+Come to think of it, I would recommend only the previous commit
+("target/ppc: Set ctx->opcode for decode_insn32()") for stable. It
+solves the whole class of potential problems like this one, and it
+should apply to 7.2 as well.
 
-> > -static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
-> > +/* Program the POWER9 LPC irq to PSI serirq routing table */
-> > +static void pnv_lpc_eval_serirq_routes(PnvLpcController *lpc)
-> >   {
-> > -    bool lpc_to_opb_irq =3D false;
-> > +    int irq;
-> >
-> > -    /* Update LPC controller to OPB line */
-> > -    if (lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_EN) {
-> > -        uint32_t irqs;
-> > +    if (!lpc->psi_has_serirq) {
-> > +        if ((lpc->opb_irq_route0 & PPC_BITMASK(8, 13)) ||
-> > +            (lpc->opb_irq_route1 & PPC_BITMASK(4, 31))) {
->
->
-> Coverity reports an issue :
->
->      CID 1558829:  Integer handling issues  (CONSTANT_EXPRESSION_RESULT)
->      "lpc->opb_irq_route0 & (70931694131085312ULL /* (0x8000000000000000U=
-LL >> 8) - (0x8000000000000000ULL >> 13) | (0x8000000000000000ULL >> 8) */)=
-" is always 0 regardless of the values of its operands. This occurs as the =
-logical first operand of "||".
->
-> Should the above if use PPC_BITMASK32 instead ?
+The reason we also have this fix in the pull request is that long-term
+the ctx->opcode field will be removed.
 
-Seems likely to me.
-
-> > +            qemu_log_mask(LOG_GUEST_ERROR,
-> > +                "OPB: setting serirq routing on POWER8 system, ignorin=
-g.\n");
-> > +        }
-> > +        return;
-> > +    }
-> >
-> > -        irqs =3D lpc->lpc_hc_irqstat & lpc->lpc_hc_irqmask;
-> > -        lpc_to_opb_irq =3D (irqs !=3D 0);
-> > +    for (irq =3D 0; irq <=3D 13; irq++) {
-> > +        int serirq =3D (lpc->opb_irq_route1 >> (31 - 5 - (irq * 2))) &=
- 0x3;
-> > +        lpc->irq_to_serirq_route[irq] =3D serirq;
-> >       }
-> >
-> > -    /* We don't honor the polarity register, it's pointless and unused
-> > -     * anyway
-> > -     */
-> > -    if (lpc_to_opb_irq) {
-> > -        lpc->opb_irq_input |=3D OPB_MASTER_IRQ_LPC;
-> > -    } else {
-> > -        lpc->opb_irq_input &=3D ~OPB_MASTER_IRQ_LPC;
-> > +    for (irq =3D 14; irq < ISA_NUM_IRQS; irq++) {
-> > +        int serirq =3D (lpc->opb_irq_route0 >> (31 - 9 - (irq * 2))) &=
- 0x3;
->
->
-> Coverity reports an issue :
->
->      CID 1558828:    (BAD_SHIFT)
->      In expression "lpc->opb_irq_route0 >> 22 - irq * 2", shifting by a n=
-egative amount has undefined behavior.  The shift amount, "22 - irq * 2", i=
-s -8.
->
-> The shift value (irq * 2) seems incorrect. should it be ((irq - 14) * 2) =
-?
-
-You can also detect this one by doing a clang undefined-sanitizer
-build: we try to do a negative shift on startup:
-
-$ ./build/clang/qemu-system-ppc64 -M powernv9
-../../hw/ppc/pnv_lpc.c:444:43: runtime error: shift exponent -6 is negative
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
-../../hw/ppc/pnv_lpc.c:444:43 in
-
-thanks
--- PMM
+[...]
 
