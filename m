@@ -2,104 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2929BC20F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 01:35:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DE59BC30D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 03:17:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t87Vp-0001k5-Bj; Mon, 04 Nov 2024 19:33:37 -0500
+	id 1t897U-0002D9-Ao; Mon, 04 Nov 2024 21:16:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1t87Vm-0001je-HC
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 19:33:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t897S-0002Bl-AW
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:16:34 -0500
+Received: from mail-me3aus01olkn2066.outbound.protection.outlook.com
+ ([40.92.63.66] helo=AUS01-ME3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1t87Vk-0007ur-9a
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 19:33:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730766811;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R8xFmH8UJN8b0VX2UnKbE8j74yN2twaQ/6rPHnaBTwk=;
- b=aPEGY7/d4nrBRj/gx/gmBgRoi2xj3tuSYQqQEkZw/J2aQ3xh3cDr4uqcTStHY/sRMfJNem
- mdJZ6zfel8Sj5XPB/zv5WMsiHjjMsfRkYmwixLFSgfVGLOeBsvhkt/PS4Dsdenu9jNGwgG
- fC7PIxrICQLuFBb7w56jXwHGDjYy4fM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-53fS7k-oOVO-Mhl4-MpdgA-1; Mon, 04 Nov 2024 19:33:28 -0500
-X-MC-Unique: 53fS7k-oOVO-Mhl4-MpdgA-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-20cc1fddb87so49262065ad.0
- for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 16:33:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730766808; x=1731371608;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R8xFmH8UJN8b0VX2UnKbE8j74yN2twaQ/6rPHnaBTwk=;
- b=ootHbiOOUsekwpeWYV8gbJG5mqgS8MizM2Kg7A7ONGqgubniHFuB4UyG3B9sKWob/8
- LtyN6bDzLBPhIl28GPbO6Y292DShc9vLmx86CoOcskBc/cqXJBqawLAGb20/RNGtq9un
- MzAR3PygkKhqlCinPeuHjvbtZqqzf5TtKEXxgmMMVQ6233NB3yv4xSEyPJPLCv0WZJbW
- NjfJNj5oLIfxdadrHbqysv6NjRK8gwOQLY/1CntR2nr3W4C4GTqrwoWJ0cLW9vejJR1K
- 6Jnv0d7szkagEDBPN7kSAvXet/4hI2E6CUYMxYpjtYWuelXb7ehWCGn4Iay1UdNun0TH
- Fwlw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX+c629t399WFeioa0A/IwbPkq78aBr16hv3dl6HpowCS0WhyCeIWxbO+aZkFRo5tl2UgvzsOeDQt1r@nongnu.org
-X-Gm-Message-State: AOJu0Yw2140dGgD55rGpgABs0HcQIapYVG9Q+rrXG/XUPHLv39k4DY5q
- 6od7QhZNIRWfawYHURCOQdeLw0GlDs1uX4iFoB0CQeo+i8ncUtbtID0YMvOoxjejTB99XzPPg68
- K7AP3nIfgff+MvjD2PO3cpGZ8kew7DETsllNAy1XiaQx9lEVs8h7/
-X-Received: by 2002:a17:902:ecc5:b0:20e:552c:53ee with SMTP id
- d9443c01a7336-21103b04ec4mr242140355ad.24.1730766807804; 
- Mon, 04 Nov 2024 16:33:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHX+7cv1aZ7k3LRdQsKhcQYYG/UL2K2q3Bt7w2z2msJFlYbz4mZAbKca+D/U/1caWF0pV2svQ==
-X-Received: by 2002:a17:902:ecc5:b0:20e:552c:53ee with SMTP id
- d9443c01a7336-21103b04ec4mr242139715ad.24.1730766807293; 
- Mon, 04 Nov 2024 16:33:27 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.129])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211057c1608sm66684265ad.228.2024.11.04.16.33.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Nov 2024 16:33:26 -0800 (PST)
-Message-ID: <1ad74261-c8db-4689-a7a9-83cd95d126b2@redhat.com>
-Date: Tue, 5 Nov 2024 10:33:13 +1000
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1t897Q-0001HM-La
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:16:34 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yS2AfFYJKCxjWqIwC6B+CrxHQ4mgJqKZbsGc3m/DdSzyB4sWKTZe5/zk1qfmVv7/X4/YUhgWtAFApjQ1DamhrinNXA2UnfbWDm5f8Q7pA0g4aYqfkkkprQFhYYXvdli9boXzVX50ygNOLs27MrN2Q7PFPLVG3n71evGdnXCoQKwXZZQHRhLg+2G8AyAYBEaUDWmwpNCiU7QVjBTvkC53dxG5bmK1PR1FlW3zkYI2h0D4kYNg4wShSU3YnqVzuxhI9VNRXycDbDDa60rWSmIUNJX1gkhQ0PfnnrByI4vzYxBjgiwx1MlGFm4v7mQR3D18UNcIOCOB75QM7GZLAg6Lew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZcIJjVhtX3JACp9/VcBgHRyGlg0ORRVAe6dCXtYjx1I=;
+ b=Ez/MhR41lUL/0jhyoV8tjDD6qTJ4xOwxUTBPHHPrA4r80E9gmOpJwy5bQmaCdbvbCia4b9LwyeqBFFa+lMrodFeHU7fU7dLH7bM19XJopn+0lB0YvL4oTsjvN5ZMND8kOdZwPPHhuWLGk7AwcRxrRWTJ9G9QPky8xQBaPv/xBhkvdAsLdRJIc+heBxjmnbOiUHuMeqPOQKN3OXmUnbEJhGGPNLaoKgw+B0QbBkNo6VlaSxJqosY/7KF1pyTltgaOeB5aUaGF3+3MM4eag8rn8F3OukDLqjSZMjAQOITbJFzrKmQTtC36n/Koz4caU6IvVnJljL91/i04cMYYDNyHSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZcIJjVhtX3JACp9/VcBgHRyGlg0ORRVAe6dCXtYjx1I=;
+ b=uDZ6WT09sl/nuCxsoQGfgMiqnmgiAl9zqMB1BkWKgtVNC0kjIyD37u57cT/DsREt1tENOtD/CoFFybBf1VzkYOWi7AWCd5nM0/rjpU9r1tgT4BjVp4rTAoPTnpqpaOINgY3DdseAviGVyLGQzoL+qkRF7ZT7G3HYPhaqC2m92bNjuLXJfwLuYzDx3/UJt5MC8lLayV1PM/KtX/sEwRtBhgQpfDNHXprEbIFsGbRXajn7Gu+XgIqC7MKrD+rOSGZUbY79ZsCOw5ZN1y2nE3hZqbyWrJjmr1a5kUCww7Bl0bgKnfBNHZx6kteSIvYHhNkPoe5v2hwNH2sWHmjyKBcdKQ==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY0P300MB0673.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:27f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Tue, 5 Nov
+ 2024 02:11:13 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8114.031; Tue, 5 Nov 2024
+ 02:11:13 +0000
+References: <20241025160209.194307-1-pbonzini@redhat.com>
+ <20241025160209.194307-16-pbonzini@redhat.com>
+ <SY0P300MB1026D525F3022164941671B895502@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+ <6f20610a-a9ab-48fc-83ae-1c0de791bd8d@redhat.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org,
+ zhao1.liu@intel.com, berrange@redhat.com
+Subject: Re: [PATCH 15/23] rust: introduce alternative implementation of
+ offset_of!
+Date: Tue, 05 Nov 2024 10:07:48 +0800
+In-reply-to: <6f20610a-a9ab-48fc-83ae-1c0de791bd8d@redhat.com>
+Message-ID: <SY0P300MB102635C63F850E89687D0A5E95522@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0002.apcprd04.prod.outlook.com
+ (2603:1096:4:197::17) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <87cyjatop9.fsf@hotmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm/virt: Extract common code to wire GICC<->vCPU IRQs
- for reuse
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, richard.henderson@linaro.org,
- peter.maydell@linaro.org
-Cc: jonathan.cameron@huawei.com, alex.bennee@linaro.org, imammedo@redhat.com, 
- pbonzini@redhat.com, maz@kernel.org, will@kernel.org,
- oliver.upton@linux.dev, jean-philippe@linaro.org, lpieralisi@kernel.org,
- david@redhat.com, philmd@linaro.org, andrew.jones@linux.dev,
- eric.auger@redhat.com, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- shahuang@redhat.com, zhao1.liu@intel.com, linuxarm@huawei.com,
- gustavo.romero@linaro.org
-References: <20241103152455.202462-1-salil.mehta@huawei.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20241103152455.202462-1-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 9
-X-Spam_score: 0.9
-X-Spam_bar: /
-X-Spam_report: (0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SBL_CSS=3.335,
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY0P300MB0673:EE_
+X-MS-Office365-Filtering-Correlation-Id: 534a1df1-36b8-44e5-e53e-08dcfd3f1f55
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199028|19110799003|5072599009|15080799006|7092599003|8060799006|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Lf0qhVt0OTMhxz9ZTeKBxLspc8HVEihzt/IK3l61vMH/x/V9kc7paBBkg2xh?=
+ =?us-ascii?Q?SMeye/oLApE1eLEF1PBWZ6xQCUqP7waE/M3jbMWwYEUt0LdBqE4MFw3Kz6ZH?=
+ =?us-ascii?Q?CZR9lQ/eF62O4jy5YfmuVGXXraRK99ZBe/45yznwjI3TAWAf+aFb5bSx8Oid?=
+ =?us-ascii?Q?iffkgbAH4e02jidwOOibH9Oo2CIqcSTit9BAd83BOTQwvT296Mqkm5zMitSC?=
+ =?us-ascii?Q?bqOi1F2QQOrIA1Vg9qUdNckIbc67+iAquz7aHyLqimBOvAsCiDPEtnbarjGg?=
+ =?us-ascii?Q?Xcz/6SQCgLfQWtvteHWSprPFYfjeNMgiw8y2avLYkPl/8QWkUrzZxuI2/klb?=
+ =?us-ascii?Q?GdToSLT3Kp/6sIQ/+G5LT43Xt8UvBauFI45h8cvfAPyjEt4Rr4qH+TFrgyp9?=
+ =?us-ascii?Q?9MeCeKDj0Q7EvPCMzbiJb6/jcKOtXbdRrwKFWRfnrOScZ5zmgk4OaFFtp6Sh?=
+ =?us-ascii?Q?ULbFd48AjN5Ly2rOhrk2ACJ6T+IQ8owqc4KM5yJgWbxalqnIu0GG8BmmXWXp?=
+ =?us-ascii?Q?X4hJG6WdcNY720JCd2LnE75HL92EfgaFtIhlfW9cXi8pbLbvwR6/KGSrN5Wf?=
+ =?us-ascii?Q?/0KTHrqvNLK8vpEWg4B2XrDdznhGa+srHXFQDdU3s+HAA99oDPE93pNbkHfV?=
+ =?us-ascii?Q?YbvQvZZZmrilYEw6aZ2krYN5YOBqQjHmGVvS/iP54Qj6wj60K/0UGqeoyqmZ?=
+ =?us-ascii?Q?CAAz6idUtwY8qNYGhcbLLFp01UPEgRqKigqTLMTy3Pqk0V5v7fEtODnNfa1Q?=
+ =?us-ascii?Q?ao+o3ZsoHZ5Q7BwRrblPA8I73zYwQh0UBVHqDnOJubAmp3SrMXr4ZK4sfMlH?=
+ =?us-ascii?Q?wDcgbp5hJy0I9gTFVJh+2inSe3skZLQ5D36CQB9oSaP+umjA4aU3HWbKNado?=
+ =?us-ascii?Q?ZBtYUqrHuPkcFV/fd9OjT3IaTpEKcoUpJrNem37QFBbVhXsjKUHS6RIGw2ix?=
+ =?us-ascii?Q?Zrvz3efnp5uE3hR0+ulg7h1s4oELquAf8LsSk5xIeJdoec6Gge9xXMtrVY7d?=
+ =?us-ascii?Q?I2eJECvCZTJR+TQTh9PZxZ6BwDXBoMDPkSeANozppRIIoiY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?N0imwlTO+BGxC7utx6KnFQ8Ll/BO13PvCemkoYQ3Wrob+IoHk6OSck3D4TZd?=
+ =?us-ascii?Q?fTPGRJ4NZBDIZVIDWiWhLolmGD6nI3IkicMeuIyeLCgB6YNJbXt0NpyqsUCV?=
+ =?us-ascii?Q?uivD5JZD0PYJNYNjLavpxmjWfoSAUiTgHDzpt64HgU7BzFFM/bD/Dqw6BA/N?=
+ =?us-ascii?Q?IBSKFLozmSUKqwqgpbc2IFKVHC3QplDbfThfQUmdhO8wCPRfvAZqRo5h6aaa?=
+ =?us-ascii?Q?rfbSwFBD8B6HzUnbpInUHmQ9sDfDpe2fRCNbCciacj3u/6YiWZfvR+YuQKzp?=
+ =?us-ascii?Q?qrI+NlwN/YIXq9LWssWie9yBT9n7Ah9BqMlDrIUJ+9B1zqPmdbjTqpKkcdMe?=
+ =?us-ascii?Q?0ZjooLoOIiBcGk4RLHW2iuo29P6D0KiRTb9vlpEMskRCLuo+atdjTTnEKH1o?=
+ =?us-ascii?Q?XwGxgoA1Fq63ijCvc0c/XysUnvO9DKnNyNQrPvarrs0cyviWqUxkIvMmN9vk?=
+ =?us-ascii?Q?5KjmUMxkTjuAGjnnofV94Wscd34M1RcAwokwJol1a5grvbxHrz5h+lI3E0fF?=
+ =?us-ascii?Q?lhrAUA8h0a1XdW9iCuP+7nEk7xPNiH9xF4jXwZOS2TvQarlTpH9YOctp2QdT?=
+ =?us-ascii?Q?vTF3bZZAvZOhR66gDRle976qVuTDgif42jkVxRQoVl9VJ+w6w3Oy2TYCnBe0?=
+ =?us-ascii?Q?0xDecU26zIRcOq+XirUHhjM4yCbzcsoLbkxvYSDlUY0qwwuDMK8sczkcvCX7?=
+ =?us-ascii?Q?GwihMDbQF+OqqM8xDckwoNKNq/Si1Ac0BxiHb/sh+a4MZz6ydE8BFjeqQOXn?=
+ =?us-ascii?Q?4D5wEJVqDSGpRitxG7zFgVvLjkCkCi7kEzap0CwRmr6E5oPFURw8ieZ9u5nV?=
+ =?us-ascii?Q?nmWCnYatxvuZjk3MXaFk6K/yJ7uwplR+z2z9Ul3Ha7eE4y/eIK4SbMmt2TQZ?=
+ =?us-ascii?Q?j53B17i1DhqFp76ejSIinxWhmp6GSrnlx4zZsa7RaiKXTTk+hhnct2nw2RDG?=
+ =?us-ascii?Q?KYW8Me59CJBSxLoUNtUWs1kBXuF/EHMPmNTMO6NoUQVNyLGNXzh0sXki+IAl?=
+ =?us-ascii?Q?SlpsoISQ7jd2Kb6gKfUyCx9LkcJwMaLkL5qxS4qVdsNmfFUfTLv6/+MpcJup?=
+ =?us-ascii?Q?ALuWZavZ5VIjA5KTAUW1I6Ub5R4MNFqLB4oSaEl9EeWxgzG9231cNHrrgceZ?=
+ =?us-ascii?Q?8bWlry5+XMeU1Eg92s3v1Y6DYCYp1p4FyaiPpMOLxBWwZJOTIKf87+t3on32?=
+ =?us-ascii?Q?oP/4P1Upkbl88lmnulQef1Xm4OVXopH646eKnjKggK0zSV9RbPeGVT1CGTk?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 534a1df1-36b8-44e5-e53e-08dcfd3f1f55
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 02:11:13.3805 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0P300MB0673
+Received-SPF: pass client-ip=40.92.63.66; envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,177 +142,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/4/24 1:24 AM, Salil Mehta wrote:
-> Extract common GIC and CPU interrupt wiring code to improve code
-> readability and modularity, supporting reuse in future patch sets. This
-> refactor is benign and introduces *no* functional changes.
-> 
-> Note: This patch has been isolated from a larger patch set to facilitate
-> early merging and reduce the complexity of the original set, as it
-> operates independently. All original tags and author contributions are
-> retained.
-> 
-> [!] Please note, this is a purely cosmetic change. No functional change.
-> 
-> Reported-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> [4/05/2024: Issue with total number of PPI available during create GIC]
-> Suggested-by: Miguel Luis <miguel.luis@oracle.com>
-> [5/05/2024: Fix the total number of PPIs available as per ARM BSA to avoid overflow]
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> ---
->   hw/arm/virt.c | 108 ++++++++++++++++++++++++++++----------------------
->   1 file changed, 60 insertions(+), 48 deletions(-)
-> 
 
-With the following nitpicks addressed:
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+> On 11/3/24 10:54, Junjie Mao wrote:
+>> Paolo Bonzini <pbonzini@redhat.com> writes:
+>>
+>>> diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+>>> index a4bc5d01ee8..c2ea22101e4 100644
+>>> --- a/rust/qemu-api-macros/src/lib.rs
+>>> +++ b/rust/qemu-api-macros/src/lib.rs
+>>> @@ -3,8 +3,34 @@
+>>>   // SPDX-License-Identifier: GPL-2.0-or-later
+>>>
+>>>   use proc_macro::TokenStream;
+>>> -use quote::quote;
+>>> -use syn::{parse_macro_input, DeriveInput};
+>>> +use proc_macro2::Span;
+>>> +use quote::{quote, quote_spanned};
+>>> +use syn::{
+>>> +    parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
+>>> +    Fields, Ident, Type, Visibility,
+>>> +};
+>>> +
+>>> +struct CompileError(String, Span);
+>>> +
+>>> +impl From<CompileError> for proc_macro2::TokenStream {
+>>> +    fn from(err: CompileError) -> Self {
+>>> +        let CompileError(msg, span) = err;
+>>> +        quote_spanned! { span => compile_error!(#msg); }
+>> The documentation [2] says "there should be no space before the =>
+>> token" and that is by intention to tell that `span` is "evaluated in the
+>> context of proc macro" while those after the arm "in the generated
+>> code". Should we follow that convention (even though the extra white
+>> space does not impact building)?
+>
+> Ah, forgot to reply about this.  Personally I think it's clear enough with the
+> space around both sides of "=>", but if there's agreement on removing the space
+> I don't oppose it.
+>
+> Paolo
 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index a0d3bef875..d6892b0266 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -761,6 +761,65 @@ static bool gicv3_nmi_present(VirtMachineState *vms)
->              (vms->gic_version != VIRT_GIC_VERSION_2);
->   }
->   
-> +/*
-> + * Mapping from the output timer irq lines from the CPU to the GIC PPI inputs
-> + * we use for the virt board.
-> + */
-> +const int timer_irq[] = {
-> +    [GTIMER_PHYS] = ARCH_TIMER_NS_EL1_IRQ,
-> +    [GTIMER_VIRT] = ARCH_TIMER_VIRT_IRQ,
-> +    [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
-> +    [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
-> +    [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
-> +};
-> +
+I don't have any preference, either. I think we can keep it as is and
+make sure future calls to quote_spanned! have consistent style. Thanks.
 
-'static' is needed at least since it's a file-scoped array.
-
-> +static void wire_gic_cpu_irqs(VirtMachineState *vms, CPUState *cs)
-> +{
-> +    SysBusDevice *gicbusdev = SYS_BUS_DEVICE(vms->gic);
-> +    unsigned int smp_cpus = MACHINE(vms)->smp.cpus;
-> +    DeviceState *cpudev = DEVICE(cs);
-> +    int i = CPU(cs)->cpu_index;
-> +    int intidbase, irqn;
-> +
-> +    intidbase = NUM_IRQS + i * GIC_INTERNAL;
-> +
-
-The function name wire_gic_cpu_irqs() looks not standard enough. How about to
-rename it to virt_set_cpu_irqs(), or virt_connect_cpu_irqs() since we already
-had virt_set_cpu_properties()? The subject and changelog need to be adjusted
-accordingly.
-
-Lets make some of the variant's names a bit meaningful, and CPU() isn't needed
-since @cs is already CPUState?
-
-     int index = cs->cpu_index;
-     int n, intidbase = NUM_IRQS + i * GIC_INTERNAL;
-
-> +    for (irqn = 0; irqn < ARRAY_SIZE(timer_irq); irqn++) {
-> +        qdev_connect_gpio_out(cpudev, irqn,
-> +                              qdev_get_gpio_in(vms->gic,
-> +                                               intidbase + timer_irq[irqn]));
-> +    }
-> +
-> +
-> +    if (vms->gic_version != VIRT_GIC_VERSION_2) {
-> +        qemu_irq irq = qdev_get_gpio_in(vms->gic,
-> +                                        intidbase + ARCH_GIC_MAINT_IRQ);
-> +        qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt",
-> +                                    0, irq);
-> +    } else if (vms->virt) {
-> +        qemu_irq irq = qdev_get_gpio_in(vms->gic,
-> +                                        intidbase + ARCH_GIC_MAINT_IRQ);
-> +        sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus, irq);
-> +    }
-> +
-> +    qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
-> +                                qdev_get_gpio_in(vms->gic, intidbase
-> +                                                  + VIRTUAL_PMU_IRQ));
-> +
-> +    sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-> +    sysbus_connect_irq(gicbusdev, i + smp_cpus,
-> +                       qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-> +    sysbus_connect_irq(gicbusdev, i + 2 * smp_cpus,
-> +                       qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
-> +    sysbus_connect_irq(gicbusdev, i + 3 * smp_cpus,
-> +                       qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
-> +    if (vms->gic_version != VIRT_GIC_VERSION_2) {
-> +        sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus,
-> +                           qdev_get_gpio_in(cpudev, ARM_CPU_NMI));
-> +        sysbus_connect_irq(gicbusdev, i + 5 * smp_cpus,
-> +                           qdev_get_gpio_in(cpudev, ARM_CPU_VINMI));
-> +    }
-> +}
-> +
->   static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->   {
->       MachineState *ms = MACHINE(vms);
-> @@ -862,54 +921,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->        * CPU's inputs.
->        */
->       for (i = 0; i < smp_cpus; i++) {
-> -        DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
-> -        int intidbase = NUM_IRQS + i * GIC_INTERNAL;
-> -        /* Mapping from the output timer irq lines from the CPU to the
-> -         * GIC PPI inputs we use for the virt board.
-> -         */
-> -        const int timer_irq[] = {
-> -            [GTIMER_PHYS] = ARCH_TIMER_NS_EL1_IRQ,
-> -            [GTIMER_VIRT] = ARCH_TIMER_VIRT_IRQ,
-> -            [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
-> -            [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
-> -            [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
-> -        };
-> -
-> -        for (unsigned irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
-> -            qdev_connect_gpio_out(cpudev, irq,
-> -                                  qdev_get_gpio_in(vms->gic,
-> -                                                   intidbase + timer_irq[irq]));
-> -        }
-> -
-> -        if (vms->gic_version != VIRT_GIC_VERSION_2) {
-> -            qemu_irq irq = qdev_get_gpio_in(vms->gic,
-> -                                            intidbase + ARCH_GIC_MAINT_IRQ);
-> -            qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt",
-> -                                        0, irq);
-> -        } else if (vms->virt) {
-> -            qemu_irq irq = qdev_get_gpio_in(vms->gic,
-> -                                            intidbase + ARCH_GIC_MAINT_IRQ);
-> -            sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus, irq);
-> -        }
-> -
-> -        qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
-> -                                    qdev_get_gpio_in(vms->gic, intidbase
-> -                                                     + VIRTUAL_PMU_IRQ));
-> -
-> -        sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-> -        sysbus_connect_irq(gicbusdev, i + smp_cpus,
-> -                           qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-> -        sysbus_connect_irq(gicbusdev, i + 2 * smp_cpus,
-> -                           qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
-> -        sysbus_connect_irq(gicbusdev, i + 3 * smp_cpus,
-> -                           qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
-> -
-> -        if (vms->gic_version != VIRT_GIC_VERSION_2) {
-> -            sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus,
-> -                               qdev_get_gpio_in(cpudev, ARM_CPU_NMI));
-> -            sysbus_connect_irq(gicbusdev, i + 5 * smp_cpus,
-> -                               qdev_get_gpio_in(cpudev, ARM_CPU_VINMI));
-> -        }
-> +        wire_gic_cpu_irqs(vms, qemu_get_cpu(i));
->       }
->   
->       fdt_add_gic_node(vms);
-
-Thanks,
-Gavin
-
+--
+Best Regards
+Junjie Mao
 
