@@ -2,69 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CD49BD30B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 18:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4509BD2F0
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:56:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Mwz-0001ni-Rj; Tue, 05 Nov 2024 12:02:42 -0500
+	id 1t8Mqm-00040S-Ki; Tue, 05 Nov 2024 11:56:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t8Mww-0001f3-CS
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:02:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
+ id 1t8MqV-0003sE-Pf; Tue, 05 Nov 2024 11:56:00 -0500
+Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t8Mwt-0005si-0j
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:02:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730826153;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pcSD8D0A1jUOrgR7TmdU9oL1/rBS5lIAGlGLO3nzwnc=;
- b=KOBL3agWZuBCnOISfX779uCbzxmmBe+jXftJcNKw+8XiWxQKF7cCCD3ZylK1jMxKKUWDfF
- GF2MhDc1CQ5CWbCDOaEIlT0CGvWLo6z/kCJaoo1nSCDnqU+2GzAIXBlHsx2MOiVP78Ivuu
- RgjQXCSEedShDSnQ9oW9+83sqaKLwAk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-qZJRSIKdOXCMCvc0M_hl3A-1; Tue,
- 05 Nov 2024 11:58:49 -0500
-X-MC-Unique: qZJRSIKdOXCMCvc0M_hl3A-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDA6A1955EE8; Tue,  5 Nov 2024 16:58:48 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.193.244])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9FBC9300018D; Tue,  5 Nov 2024 16:58:47 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PULL 2/2] vfio/migration: Add vfio_save_block_precopy_empty_hit
- trace event
-Date: Tue,  5 Nov 2024 17:58:41 +0100
-Message-ID: <20241105165841.3086136-3-clg@redhat.com>
-In-Reply-To: <20241105165841.3086136-1-clg@redhat.com>
-References: <20241105165841.3086136-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
+ id 1t8MqU-0005Hm-6o; Tue, 05 Nov 2024 11:55:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=7CKjqAyN4II26sBBzl0STl1rV2DP/sxxmN7LCkahJfY=; b=FZY5gwTwy3aeyqJ
+ 7BdapXVubL4unqbwWnj9r39Os5fGAiw54+I7fN7bioOyCw5/g6WJU/o/mICXE2eY7vejS8irfG7tn
+ kmSsm5ZU+N2Ew2X/dmRk1SD3M/rcIi+diVBns+egIc87sacrHs0BQ9sbqLLP3RP7RTeZad6Bl/vDP
+ Gg=;
+Date: Tue, 5 Nov 2024 17:58:42 +0100
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, devel@lists.libvirt.org, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 10/19] hw/timer/xilinx_timer: Only expect big-endian
+ accesses
+Message-ID: <3o2ikzpqgx6m3tdpyx6pz46dddzq3xw75ptpickzrmo6qbnwgv@m6mcmtg457tg>
+References: <20241105130431.22564-1-philmd@linaro.org>
+ <20241105130431.22564-11-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+In-Reply-To: <20241105130431.22564-11-philmd@linaro.org>
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,79 +66,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On 05/11/24, Philippe Mathieu-Daudé wrote:
+> Per the datasheet (reference added in file header, p.10):
+> 'Register Data Types and Organization':
+> 
+>   "The XPS Timer/Counter registers are organized as big-endian data."
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/timer/xilinx_timer.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-This way it is clearly known when there's no more data to send for that
-device.
-
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- include/hw/vfio/vfio-common.h | 1 +
- hw/vfio/migration.c           | 8 ++++++++
- hw/vfio/trace-events          | 1 +
- 3 files changed, 10 insertions(+)
-
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 282eadf4ebf5a27a3f7168868fbc2a20d94252c0..e0ce6ec3a9b3245e36811a3383f1d642c5536f3d 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -75,6 +75,7 @@ typedef struct VFIOMigration {
-     bool initial_data_sent;
- 
-     bool event_save_iterate_started;
-+    bool event_precopy_empty_hit;
- } VFIOMigration;
- 
- struct VFIOGroup;
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 87ddc210578f4ecbaf30fa5d8816ce182cbcbcb0..01aa11013e42b06696e6af28068f8048d5bfe29a 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -370,6 +370,10 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
-          * please refer to the Linux kernel VFIO uAPI.
-          */
-         if (errno == ENOMSG) {
-+            if (!migration->event_precopy_empty_hit) {
-+                trace_vfio_save_block_precopy_empty_hit(migration->vbasedev->name);
-+                migration->event_precopy_empty_hit = true;
-+            }
-             return 0;
-         }
- 
-@@ -379,6 +383,9 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
-         return 0;
-     }
- 
-+    /* Non-empty read: re-arm the trace event */
-+    migration->event_precopy_empty_hit = false;
-+
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE);
-     qemu_put_be64(f, data_size);
-     qemu_put_buffer(f, migration->data_buffer, data_size);
-@@ -473,6 +480,7 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-     }
- 
-     migration->event_save_iterate_started = false;
-+    migration->event_precopy_empty_hit = false;
- 
-     if (vfio_precopy_supported(vbasedev)) {
-         switch (migration->device_state) {
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 032a51a10592fdab3dd9b2be6506d034275678e7..cab1cf1de0a2955efbcf4390d6881fa628eb3f14 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -157,6 +157,7 @@ vfio_migration_set_device_state(const char *name, const char *state) " (%s) stat
- vfio_migration_set_state(const char *name, const char *new_state, const char *recover_state) " (%s) new state %s, recover state %s"
- vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
- vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
-+vfio_save_block_precopy_empty_hit(const char *name) " (%s)"
- vfio_save_cleanup(const char *name) " (%s)"
- vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
- vfio_save_complete_precopy_start(const char *name) " (%s)"
--- 
-2.47.0
-
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
