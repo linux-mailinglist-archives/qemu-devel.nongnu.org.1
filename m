@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C39BD933
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5999BD936
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:55:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SSX-00049l-Ga; Tue, 05 Nov 2024 17:55:37 -0500
+	id 1t8SSa-0004SL-8g; Tue, 05 Nov 2024 17:55:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1t8SRw-0003px-4F; Tue, 05 Nov 2024 17:55:00 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1t8SRu-0005uG-Fx; Tue, 05 Nov 2024 17:54:59 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43193678216so51492675e9.0; 
- Tue, 05 Nov 2024 14:54:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730847296; x=1731452096; darn=nongnu.org;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=JtorxFxi8QafuwEeSohCjGPr73xJUw13HrFaS46b8SY=;
- b=TZjUzZpv6Lpeowy0t4DBPwqYTa8ik2c/jW9SOsLPQ2IhghD3h/X18GaTyJbzilTXYM
- LUV6F/xPd72fkkGsjAgFqNeg+jfVNTUYYviEe+Jvq0Xy1fj/Lf1ibl4Y8MGn3Kf5sVtA
- xDL6WC0/3jRq2MXem1bqkQyAd2DHBsHYPV/Im+K2F39RisfFHdabMui23wKhbHNClihL
- CmRg8kiEtRdxeGuttmtac8/mymIHtoJLRWjU9UMllu6cesAaiAohNv/z5xy15ZNB2uZu
- Qw7gB9VExMzevi8G+5gstz72E75Kq76RqrwpXiu3KiChGVBZuCJhewtWrjBHw1Lh3f+h
- tKUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730847296; x=1731452096;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JtorxFxi8QafuwEeSohCjGPr73xJUw13HrFaS46b8SY=;
- b=i8NTVZM/jK+pcgMdSCdw/cdMbXYH+J/jUYx4GJyzibexK+1UhRl4Fhja95/mo1ZYmS
- Ao0hgDmy9gR2HIWkighF90gZ+iNos4RbQ6jcG/XMq9wkFu+sUMFJ9ZCFlk6j+ZyJanKj
- ox+GkNJxcb7QWGbCo3LRx7sNgodJhFcsy3zZ8bs3vRN6BGXnYES3Pg05aEHmkT6XPJQk
- xCsztIbq1+7fzaHlog9cRVZmAs89QMJGwJqGn2txYkmA8Cb6uPjrSaQ0riFNYETKgOMX
- bMtRhHxXsNZs5XJ9GJu1PCSe+7k4gpfVvxyUUmgWD/IIKwz1djsv0ebthJvu1ISH9jaT
- iV4w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXjSxDRX3tJ0XeYQ4lN9yopKn9c9jB7xBu1G4D9lVxMoNaOy5p6QUA7E/qoeLhOfsyrGA3OdvlpvQ==@nongnu.org
-X-Gm-Message-State: AOJu0YzUYH/5m91ykN69KF38Tmmy08CLKANvYAGl4OMGIDAGusgTGKUg
- I3WKplyOg3LgClB9wktksYQqo/A4EWrKZbEe3yWThrrvt2CmnuliZ1N5rgwUV1I=
-X-Google-Smtp-Source: AGHT+IE9knTGbwa76qg1fPyMtT8vHHrgHPwY7cIgO3CGZjxKnw8yFpMJWyP/tdMXv3raoLj0y3biCg==
-X-Received: by 2002:a05:600c:cc5:b0:432:a36b:d896 with SMTP id
- 5b1f17b1804b1-432a36bd911mr35433335e9.26.1730847295694; 
- Tue, 05 Nov 2024 14:54:55 -0800 (PST)
-Received: from gmail.com ([89.101.60.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432a267dfadsm33940665e9.0.2024.11.05.14.54.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 14:54:54 -0800 (PST)
-Date: Tue, 5 Nov 2024 23:54:54 +0100
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
- devel@lists.libvirt.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 01/19] target/microblaze: Rename CPU endianness property
- as 'little-endian'
-Message-ID: <ZyqiPrf2wjP1yAPz@zapote>
-References: <20241105130431.22564-1-philmd@linaro.org>
- <20241105130431.22564-2-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t8SSA-00046F-AW
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:55:17 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t8SS7-00067e-SP
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:55:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=jxLKK1uuAOV2nzNtzzSG6I3MhJcU3L2MdPz4hfmB14g=; b=OapPC6DMaj6vMsmUFfqiAl+FmJ
+ nqoE035tq40tl3YlvZ8naPrNfJ9QRPAIR3mAtXsC396kKz7WvSAI7l7fiBy/phCmwgOWI3inT2BEv
+ F1Uj838LVehOJFzF7QSUK/BghwfOCWvPOmCdEYDU47KslpRolPqyynSqNlXs7DQWiq9JlQiRn0qzc
+ ZWxfaDW59ehpv+dEBLpxJ8aY2CvXrVx1mS6Sz4y1b0ot8+P5Jy0GYBX0gxRkXbWcTGYMSvxqwCea6
+ htsOOOqX6HIrRqRz3RcaNxVONTRCPiTFN9/jPh7X5QXgrp930E4xmCa0UMRhr23q8NiLPzqAHvhxJ
+ 4vY2Y1dS01tal9NUJNx+6ECE91bdzuT4NpGcx4EHeqBo8M4ftMlG5Dco9y3VK6MJ3dkls/7/AC3A8
+ 9pv0EZ99Mr//Kc9hDJ03djAIePGMJJovwMFmMGXpt2JtNAPZNIv414PnIgNkhqVhld/tzhaOJkhdb
+ obRK3bKPwvsJZ/y0oGAhrr517mx2/72cuVlIOJOUsxrR9X9uqc7pPj1bT9mzIyh11OXevwQaDTWje
+ eit4y4bva+ZsGpDoi0A+uUhWrlAt6UJKYK05uemPtulp74ztW6si0qK0YALOH6Yr486xEJAFT7dVK
+ tkHXuNuBg/MTVIFI64tySrJqYMoLwtkCo6wKHCvK4=;
+Received: from [2a00:23c4:8bb8:f600:73fa:5593:d3ba:8410]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1t8SRe-0003qk-L2; Tue, 05 Nov 2024 22:54:46 +0000
+Message-ID: <cc832858-9161-466e-ab52-9909f120fb12@ilande.co.uk>
+Date: Tue, 5 Nov 2024 22:54:58 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241105130431.22564-2-philmd@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-wm1-x32e.google.com
+User-Agent: Mozilla Thunderbird
+To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Jan Kiszka <jan.kiszka@siemens.com>,
+ Eduard Vlad <evlad@amazon.de>
+References: <20240921085712.28902-1-graf@amazon.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240921085712.28902-1-graf@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:f600:73fa:5593:d3ba:8410
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3] target-i386: Walk NPT in guest real mode
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,76 +104,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 05, 2024 at 02:04:13PM +0100, Philippe Mathieu-Daudé wrote:
-> Rename the 'endian' property as 'little-endian' because the 'ENDI'
-> bit is set when the endianness is in little order, and unset in
-> big order.
+On 21/09/2024 09:57, Alexander Graf wrote:
 
-Hi Phil,
-
-Unfortunately, these properties are not only QEMU internal these got named
-from the bindings Xilinx choose way back in time.
-
-This will likely break many of the Xilinx flows with automatic dts to
-qemu property conversions so I don't think it's a good idea to rename it.
-If you like to clarify things perhaps we could keep an alias for the old
-one?
-
-For example:
-https://github.com/torvalds/linux/blob/master/arch/microblaze/boot/dts/system.dts#L73
-
-Cheers,
-Edgar
-
-
+> When translating virtual to physical address with a guest CPU that
+> supports nested paging (NPT), we need to perform every page table walk
+> access indirectly through the NPT, which we correctly do.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> However, we treat real mode (no page table walk) special: In that case,
+> we currently just skip any walks and translate VA -> PA. With NPT
+> enabled, we also need to then perform NPT walk to do GVA -> GPA -> HPA
+> which we fail to do so far.
+> 
+> The net result of that is that TCG VMs with NPT enabled that execute
+> real mode code (like SeaBIOS) end up with GPA==HPA mappings which means
+> the guest accesses host code and data. This typically shows as failure
+> to boot guests.
+> 
+> This patch changes the page walk logic for NPT enabled guests so that we
+> always perform a GVA -> GPA translation and then skip any logic that
+> requires an actual PTE.
+> 
+> That way, all remaining logic to walk the NPT stays and we successfully
+> walk the NPT in real mode.
+> 
+> Fixes: fe441054bb3f0 ("target-i386: Add NPT support")
+> 
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> Reported-by: Eduard Vlad <evlad@amazon.de>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
 > ---
->  hw/microblaze/petalogix_ml605_mmu.c | 2 +-
->  hw/microblaze/xlnx-zynqmp-pmu.c     | 2 +-
->  target/microblaze/cpu.c             | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-> index b4183c5267d..df808ac323e 100644
-> --- a/hw/microblaze/petalogix_ml605_mmu.c
-> +++ b/hw/microblaze/petalogix_ml605_mmu.c
-> @@ -90,7 +90,7 @@ petalogix_ml605_init(MachineState *machine)
->      object_property_set_int(OBJECT(cpu), "use-fpu", 1, &error_abort);
->      object_property_set_bool(OBJECT(cpu), "dcache-writeback", true,
->                               &error_abort);
-> -    object_property_set_bool(OBJECT(cpu), "endianness", true, &error_abort);
-> +    object_property_set_bool(OBJECT(cpu), "little-endian", true, &error_abort);
->      qdev_realize(DEVICE(cpu), NULL, &error_abort);
->  
->      /* Attach emulated BRAM through the LMB.  */
-> diff --git a/hw/microblaze/xlnx-zynqmp-pmu.c b/hw/microblaze/xlnx-zynqmp-pmu.c
-> index 1bfc9641d29..43608c2dca4 100644
-> --- a/hw/microblaze/xlnx-zynqmp-pmu.c
-> +++ b/hw/microblaze/xlnx-zynqmp-pmu.c
-> @@ -90,7 +90,7 @@ static void xlnx_zynqmp_pmu_soc_realize(DeviceState *dev, Error **errp)
->      object_property_set_bool(OBJECT(&s->cpu), "use-pcmp-instr", true,
->                               &error_abort);
->      object_property_set_bool(OBJECT(&s->cpu), "use-mmu", false, &error_abort);
-> -    object_property_set_bool(OBJECT(&s->cpu), "endianness", true,
-> +    object_property_set_bool(OBJECT(&s->cpu), "little-endian", true,
->                               &error_abort);
->      object_property_set_str(OBJECT(&s->cpu), "version", "8.40.b",
->                              &error_abort);
-> diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-> index 135947ee800..e9f98806274 100644
-> --- a/target/microblaze/cpu.c
-> +++ b/target/microblaze/cpu.c
-> @@ -368,7 +368,7 @@ static Property mb_properties[] = {
->      DEFINE_PROP_UINT8("use-non-secure", MicroBlazeCPU, cfg.use_non_secure, 0),
->      DEFINE_PROP_BOOL("dcache-writeback", MicroBlazeCPU, cfg.dcache_writeback,
->                       false),
-> -    DEFINE_PROP_BOOL("endianness", MicroBlazeCPU, cfg.endi, false),
-> +    DEFINE_PROP_BOOL("little-endian", MicroBlazeCPU, cfg.endi, false),
->      /* Enables bus exceptions on failed data accesses (load/stores).  */
->      DEFINE_PROP_BOOL("dopb-bus-exception", MicroBlazeCPU,
->                       cfg.dopb_bus_exception, false),
-> -- 
-> 2.45.2
+> v1 -> v2:
 > 
+>    - Remove hack where we fake a PTE and instead just set the
+>      corresponding resolved variables and jump straight to the
+>      stage2 code.
+> 
+> v2 -> v3:
+> 
+>    - Fix comment
+> ---
+>   target/i386/tcg/sysemu/excp_helper.c | 14 ++++++++++++--
+>   1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+> index 8fb05b1f53..24dd6935f9 100644
+> --- a/target/i386/tcg/sysemu/excp_helper.c
+> +++ b/target/i386/tcg/sysemu/excp_helper.c
+> @@ -298,7 +298,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+>           /* combine pde and pte nx, user and rw protections */
+>           ptep &= pte ^ PG_NX_MASK;
+>           page_size = 4096;
+> -    } else {
+> +    } else if (pg_mode) {
+>           /*
+>            * Page table level 2
+>            */
+> @@ -343,6 +343,15 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+>           ptep &= pte | PG_NX_MASK;
+>           page_size = 4096;
+>           rsvd_mask = 0;
+> +    } else {
+> +        /*
+> +         * No paging (real mode), let's tentatively resolve the address as 1:1
+> +         * here, but conditionally still perform an NPT walk on it later.
+> +         */
+> +        page_size = 0x40000000;
+> +        paddr = in->addr;
+> +        prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+> +        goto stage2;
+>       }
+>   
+>   do_check_protect:
+> @@ -420,6 +429,7 @@ do_check_protect_pse36:
+>   
+>       /* merge offset within page */
+>       paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
+> +stage2:
+>   
+>       /*
+>        * Note that NPT is walked (for both paging structures and final guest
+> @@ -562,7 +572,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+>               addr = (uint32_t)addr;
+>           }
+>   
+> -        if (likely(env->cr[0] & CR0_PG_MASK)) {
+> +        if (likely(env->cr[0] & CR0_PG_MASK || use_stage2)) {
+>               in.cr3 = env->cr[3];
+>               in.mmu_idx = mmu_idx;
+>               in.ptw_idx = use_stage2 ? MMU_NESTED_IDX : MMU_PHYS_IDX;
+
+Hi Alex,
+
+This commit appears to break my WinXP boot test: with this patch applied, attempting 
+to boot WinXP from CDROM fails with SeaBIOS getting stuck early in a boot loop. It is 
+possible to reproduce the issue easily with:
+
+   ./build/qemu-system-x86_64 -cdrom winxp.iso -boot d
+
+
+ATB,
+
+Mark.
+
 
