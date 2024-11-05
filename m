@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BE79BD910
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66949BD923
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:52:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SMi-0008Ke-Gh; Tue, 05 Nov 2024 17:49:36 -0500
+	id 1t8SMl-0000Ay-7J; Tue, 05 Nov 2024 17:49:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMX-0007RO-TD
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:26 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMd-0007ye-D4
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:31 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMW-0004Ov-AT
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:25 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43155abaf0bso53246935e9.0
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMb-0004Pu-Qm
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:31 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-431695fa98bso47258595e9.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846963; x=1731451763; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846968; x=1731451768; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aEfnTilVurA0fFYJxE8yf9x0TGhAiI0Ndz7fmD4ll1I=;
- b=ADWKX29WiXKWf1Hwg5l+q5lkmqq6uVvaMuiyUEBMTnYgaQDG16dMhRL7NiU54q544U
- CWuKne+HKW4l1YrhQ4S4v3hlvK6XEVvIzjvDNEqRlnYYViMQEOJIU6hTuMQOL6tHOO2J
- 8xXLYx+GdhxvnZZ9xephqvfFaWZ4XQOOmtPyzJft4OVpWxO2K79Zrc17tn+3pXa4N9yi
- gOSg0Bl/qXt80DRVU0Sj99MG26mRQMzec+uPro1lduqdSjX6SV+ibYCpn0NsxkJ1gXl3
- YcrkTqgA/4lUF98x0evMKkHIOPjHoDkMoP16NQcRSVhRe8haqEySFPEz1F1Nfe5rjb+e
- ziPA==
+ bh=14SbIx3o26YQ4yyKbflKXIgXTVgVzW1mc5iHdybl3Tg=;
+ b=DXtdmUIiC+O0+3wktHSyAFZj19s1Uw5X292qQw/4bQ094OLpnvSBEyj4ex/73TbpDE
+ +A3OZhQTu8DHy3vgXbPL2rAZppxycuoiezSdEqCiybiuGJTxfsCVhiPXJtsOE50lCAEB
+ uGD1Yqn+T94xI4BzIITBZLIhbZLE6VeWfAhEKBF7yRbQc3xCrLFHRuRCuKXWPXHDueQU
+ LPgeuyKuclaacu3PJH35hR6xUeo9hEU0t3LGK8MPaJ6lUhZIUzpwMLrMVDOOKm04NF91
+ HiwqwTPJG9HRXvKDQ0n/nDmIoYz9Hb4voWpgRkRLzjZhi6XFa8XPqAD10pMWdEWidtj9
+ GCIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846963; x=1731451763;
+ d=1e100.net; s=20230601; t=1730846968; x=1731451768;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aEfnTilVurA0fFYJxE8yf9x0TGhAiI0Ndz7fmD4ll1I=;
- b=eLnoarm08tDKlrkSk2suMt96spoVHfJxLV4n0UCGTI52Dl4mNW6pwzlbgSWExOqEBm
- 1kilPHwlOvJoLz5w0cIcp1FWhxthSpqFEK/kgVQ25SjeZ6zBL6pAynWizCiBR4nh7pmZ
- MCHjo0wRZp808RIbDoqY9SKgQngvu+PuNmpIea9/9pYZeCgKJ8mQPmQF9ykD3mDpqGFZ
- IXYczd35+Gv60q2BkjC31mvb+lc0RMV5oO6ay0BXZ80dqyPKPF256OJMEAJPiIeKJGgk
- QkU/vSgiGB/tw0qNEtfnerHIqPTwHachALY5hPH161gzN4T11QcKYH1U4VAm7ZhcMZKU
- XIrw==
-X-Gm-Message-State: AOJu0YyhfU1JBu+jjwKUvvC5wJEKwKkKgeCfJYH4DyXTX1asKHxrr0Hx
- sZoKXF8hMJOYOeFLTrL1JSO/oBzBSq1WWgVsKr2Ln9PJlPnxToIGqdTcO9lRX7dIqWkA2x5kk+k
- iuYnmww==
-X-Google-Smtp-Source: AGHT+IHG40mqTDyX7dcM7kL0xBQs2LjsF8jZ8oFrrSxKKma+rKjJD481cfHTMRHDzQ+2Le7sfjmCWw==
-X-Received: by 2002:a05:600c:3b8d:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-43283255a89mr139364135e9.19.1730846962660; 
- Tue, 05 Nov 2024 14:49:22 -0800 (PST)
-Received: from localhost.localdomain ([89.101.241.141])
+ bh=14SbIx3o26YQ4yyKbflKXIgXTVgVzW1mc5iHdybl3Tg=;
+ b=Xb1iVeW8nW5R89v7Ut5+NmtoctOcxO53fwRZA6mqZGPwuwOFB6vUk8rpLqXqzxZ2Fs
+ Jt1lN6vpkzCRHYhW8fjOyCvUiPNl1M7n8FXTgqGtVDf9WUm8/2QtzLkmsXru4E0OTHb7
+ C3dKrzzKaGwxyZVCY+TyU14ZwLN15mKGoWVnCrGokpG6VB7fvauRbZcHHK1+jLeV0wcv
+ Kd3Z4dmWbx7cZrVoo1G4rpCx8lpni78iO0Oa6/calh292gxXB+ifzl+jHHkHHYTuD9bu
+ wNNScLpbcK4wX8+M8OKxnDHRwUBCKNtlSsm2u3DzG8j0yLeAsdKiQgwRhSiS22gxXS9T
+ 3juw==
+X-Gm-Message-State: AOJu0Yx988bzl4GGLEBKezQem7GX9mg5s5PykSjp0bT+fJIOizdaYDxj
+ poidlQ7FqJ1RrPIQMQdOGwMONsX38Oo1hXnyUVOsIxVmshVwi83B5W5f1wUNYtoqdvh2QqHyNKK
+ rcmiOUg==
+X-Google-Smtp-Source: AGHT+IH9ulny6mFUU+mR96Tgwa3r6i5UsRpzFDx6QwS/OdH7cjueFk41++dH2s6XDT8OlaowHLmF3w==
+X-Received: by 2002:a05:600c:511c:b0:42c:a580:71cf with SMTP id
+ 5b1f17b1804b1-4319ad24423mr331876465e9.30.1730846968140; 
+ Tue, 05 Nov 2024 14:49:28 -0800 (PST)
+Received: from localhost.localdomain ([154.14.63.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa523a0esm1358135e9.0.2024.11.05.14.49.21
+ 5b1f17b1804b1-432aa6b3505sm1098555e9.15.2024.11.05.14.49.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:49:21 -0800 (PST)
+ Tue, 05 Nov 2024 14:49:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 21/29] hw/net/fsl_etsec/etsec: Prefer DEFINE_TYPES() macro
-Date: Tue,  5 Nov 2024 22:47:19 +0000
-Message-ID: <20241105224727.53059-22-philmd@linaro.org>
+Subject: [PULL 22/29] hw/gpio/mpc8xxx: Prefer DEFINE_TYPES() macro
+Date: Tue,  5 Nov 2024 22:47:20 +0000
+Message-ID: <20241105224727.53059-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,51 +97,51 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-17-shentey@gmail.com>
+Message-ID: <20241103133412.73536-18-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/fsl_etsec/etsec.c | 22 +++++++++-------------
+ hw/gpio/mpc8xxx.c | 22 +++++++++-------------
  1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
-index 3fdd16ef2ee..d8076e7be48 100644
---- a/hw/net/fsl_etsec/etsec.c
-+++ b/hw/net/fsl_etsec/etsec.c
-@@ -36,7 +36,6 @@
- #include "registers.h"
- #include "qapi/error.h"
- #include "qemu/log.h"
+diff --git a/hw/gpio/mpc8xxx.c b/hw/gpio/mpc8xxx.c
+index 63b7a5c881d..a3c1d2fbf4c 100644
+--- a/hw/gpio/mpc8xxx.c
++++ b/hw/gpio/mpc8xxx.c
+@@ -23,7 +23,6 @@
+ #include "hw/irq.h"
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
 -#include "qemu/module.h"
+ #include "qom/object.h"
  
- /* #define HEX_DUMP */
- /* #define DEBUG_REGISTER */
-@@ -431,17 +430,14 @@ static void etsec_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = true;
+ #define TYPE_MPC8XXX_GPIO "mpc8xxx_gpio"
+@@ -208,17 +207,14 @@ static void mpc8xxx_gpio_class_init(ObjectClass *klass, void *data)
+     device_class_set_legacy_reset(dc, mpc8xxx_gpio_reset);
  }
  
--static const TypeInfo etsec_info = {
--    .name                  = TYPE_ETSEC_COMMON,
--    .parent                = TYPE_SYS_BUS_DEVICE,
--    .instance_size         = sizeof(eTSEC),
--    .class_init            = etsec_class_init,
--    .instance_init         = etsec_instance_init,
-+static const TypeInfo etsec_types[] = {
+-static const TypeInfo mpc8xxx_gpio_info = {
+-    .name          = TYPE_MPC8XXX_GPIO,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(MPC8XXXGPIOState),
+-    .instance_init = mpc8xxx_gpio_initfn,
+-    .class_init    = mpc8xxx_gpio_class_init,
++static const TypeInfo mpc8xxx_gpio_types[] = {
 +    {
-+        .name          = TYPE_ETSEC_COMMON,
++        .name          = TYPE_MPC8XXX_GPIO,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(eTSEC),
-+        .class_init    = etsec_class_init,
-+        .instance_init = etsec_instance_init,
++        .instance_size = sizeof(MPC8XXXGPIOState),
++        .instance_init = mpc8xxx_gpio_initfn,
++        .class_init    = mpc8xxx_gpio_class_init,
 +    },
  };
  
--static void etsec_register_types(void)
+-static void mpc8xxx_gpio_register_types(void)
 -{
--    type_register_static(&etsec_info);
+-    type_register_static(&mpc8xxx_gpio_info);
 -}
 -
--type_init(etsec_register_types)
-+DEFINE_TYPES(etsec_types)
+-type_init(mpc8xxx_gpio_register_types)
++DEFINE_TYPES(mpc8xxx_gpio_types)
 -- 
 2.45.2
 
