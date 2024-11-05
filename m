@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2583E9BCB8D
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7D79BCBAF
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:24:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HbK-0004Va-Vp; Tue, 05 Nov 2024 06:19:59 -0500
+	id 1t8HbG-0004T5-2V; Tue, 05 Nov 2024 06:19:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbH-0004UA-Dj
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:55 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1t8HbC-0004Rl-8X
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:50 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8Hb7-00075V-1o
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:55 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43167ff0f91so47252225e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:43 -0800 (PST)
+ id 1t8Hb7-00075a-TD
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:49 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4315baa51d8so47350065e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730805582; x=1731410382; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730805583; x=1731410383; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gAa7nG8JV8MJXxE6NvLX8mZwE6oSHiLMecKFbVo5vN8=;
- b=mDfpy8dqOX5pF47aDLTTstM4YdSQ3aNKJ0V1Ybe8oZ7yciAW7eC9KkCiWTDJZ20h6o
- mmZ/q5lGkiwkXIn+keq/0lZcbt1FKYTPADdJP5cjG5n5VkC/ow7brjRZJ6gUe5CziZ1B
- /5zjtWdmHJodEAVCx5LNv341pq0jWBG+gaU2MZU4JEN5Ur9mm+RyHzVSUIhBj+haEHnX
- 42myPRqBOKv4gOgGkf63BWdhWy5OP5px9D77OkcHuQD8Dn1pzZtNmLJTwfoApU6Sp9BX
- VHn9asWPBN/LVYheZabpQ5hemKeRJpJaMQYh1VIO6NBF00Ii/8oJYW7fTeWnx5NAPSoq
- 0i8g==
+ :reply-to; bh=T+YjZ1qgd1ODXhl25u0D0zFyemAxEawOWnnVFrkVnTc=;
+ b=v9C/XmfwYWZrPP3vQGqCAN5kIW66xGsiAJjZvG4hAmd27yXveoM/slkdRYVj1pPKg1
+ TY7nfD9JtBnNbZlYR1b+ED1TYdKHbcrL9VCd2mUYr5SdtmtIxwe43wLcf3cBfGOeKFCn
+ rG2GpCe6Jg7howRTLm0VUkgtxA5yohSTRYH8BovM+malQiRKSjxpBNZrji2OA0GIwqxI
+ d5Kp2gjXv8O4hBIxkkpq6FbuFlR8/rmBPI5yS+pDnRLPMBmQOtqz9AzBfs6f3GBtH/jd
+ 0Fn71ecE3zHngo6la/qFEYqt1c0Wk3AZ2MaEcFRvASAk2AC6WgI4q/khipw+K1hf7B1I
+ bkYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730805582; x=1731410382;
+ d=1e100.net; s=20230601; t=1730805583; x=1731410383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gAa7nG8JV8MJXxE6NvLX8mZwE6oSHiLMecKFbVo5vN8=;
- b=P2b60Xd7GzI/E3S2M4v4JGgLmA8SUgEh+yfjZDugOSGJqYDzH+owwAIXzWJlbhRwrP
- MvSc5g7LDQFynY3ZLKEcfdHuQ51CWEt1GzecEANBOgluQDJc5RX2hl1m6luSZPqy6gVt
- FNw3/VsdFhI/mQah0rubafSS/bBjCYss8VB+4Yfg2R3SAGJ8rgLuN/6I/2Sx+J/wZMov
- HF1dfts1KZRobMeTR35QRYkNDJacuNEwatAZIvF61PyFD+/4fRldwgrEhWmz0C8Nd/Fj
- jvZqhrf1/im90MqtbOeaSyto6Kjq5POU0MxnRjCvsbUSApgPIodA0MWIgex7nTbbHS1r
- j8tQ==
-X-Gm-Message-State: AOJu0YwkiqxMjJtNsM7hP2jkTmVIEmBJnlYe5XQPA1vt+jXuOBvnz7F/
- DggOQuo0T63XhQ8mds/Io7R979YB8onDzhzEvSbVCOi67od5lvM2IBkTbbrm7PgYdxhE1yxAAxL
- v
-X-Google-Smtp-Source: AGHT+IHXIIGyjst7XGFfiW0Ea4gyGocZoKmL2KYpzBNPmBZY2ErKMll3qufKEtQonbTmnHu+7Oy1Zg==
-X-Received: by 2002:a05:600c:190f:b0:431:6153:a246 with SMTP id
- 5b1f17b1804b1-4327b6fd999mr166925635e9.13.1730805582193; 
+ bh=T+YjZ1qgd1ODXhl25u0D0zFyemAxEawOWnnVFrkVnTc=;
+ b=c/cyc0ovJNsnwFVzpOXifu8hIoWyN2M6bPxUdt/UZV1rUfRvco3p4aoF2O4Ya3aoFR
+ 0diTiTxGN+h/U+CGdWqnFmRZnxLvyZQfUmAPkb7azLcySDo5wqtVW1ZU8xUHL22soWUB
+ jtE4aibR0KhabKgK5AoTiiICEoV8DF/8qdXVux92dDZWRaasS3P5fz32uZjySPTL8nOv
+ tde5S8jjKpeHEG6um8JI9Fo7UiqgE70GkdA4AHdZSve0xnSU+0UXnQyproONQCnn4CbD
+ lrFlAXhJyeUTr6ROWjcg9CUFZ9ADHwdkXkUtH+bmh85D52gUHDYX3i1/UF8avu7i3hc4
+ MAXA==
+X-Gm-Message-State: AOJu0YxjI9RLfaW35Zv3XOU0iTS978zVdXbAbJqTB/gWeIXLZvOnQRhO
+ tlmALqZi346AtNd9yPqhGzMb344STqQ/qsQSMvKCDomykUlaF7PdjZxSM5cJzO89ZEGhAhuBLRV
+ 3
+X-Google-Smtp-Source: AGHT+IHwrg9/dhQDo8hV/3gW9tZ45xk6dy0K7clBx7fWWazjBZJOU7dHGEE8k8YF5iPtb28RgcU3qg==
+X-Received: by 2002:a05:600c:4f8a:b0:431:51e5:2316 with SMTP id
+ 5b1f17b1804b1-4327b822402mr163588725e9.34.1730805582733; 
  Tue, 05 Nov 2024 03:19:42 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.41
+ 5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 03:19:41 -0800 (PST)
+ Tue, 05 Nov 2024 03:19:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/31] target/ppc: Explicitly set 2-NaN propagation rule
-Date: Tue,  5 Nov 2024 11:19:12 +0000
-Message-Id: <20241105111935.2747034-9-peter.maydell@linaro.org>
+Subject: [PULL 09/31] target/m68k: Explicitly set 2-NaN propagation rule
+Date: Tue,  5 Nov 2024 11:19:13 +0000
+Message-Id: <20241105111935.2747034-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
 References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,58 +92,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the 2-NaN propagation rule explicitly in env->fp_status
-and env->vec_status.
+Explicitly set the 2-NaN propagation rule on env->fp_status
+and on the temporary fp_status that we use in frem (since
+we pass that to a division operation function).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241025141254.2141506-9-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu_init.c          |  8 ++++++++
- fpu/softfloat-specialize.c.inc | 10 ++--------
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ target/m68k/cpu.c              | 16 ++++++++++++++++
+ target/m68k/fpu_helper.c       |  1 +
+ fpu/softfloat-specialize.c.inc | 19 +------------------
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 23881d09e9f..5c9dcd1f857 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7326,6 +7326,14 @@ static void ppc_cpu_reset_hold(Object *obj, ResetType type)
-     /* tininess for underflow is detected before rounding */
-     set_float_detect_tininess(float_tininess_before_rounding,
-                               &env->fp_status);
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 1d49f4cb238..5fe335558aa 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -93,6 +93,22 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
+         env->fregs[i].d = nan;
+     }
+     cpu_m68k_set_fpcr(env, 0);
 +    /*
-+     * PowerPC propagation rules:
-+     *  1. A if it sNaN or qNaN
-+     *  2. B if it sNaN or qNaN
-+     * A signaling NaN is always silenced before returning it.
++     * M68000 FAMILY PROGRAMMER'S REFERENCE MANUAL
++     * 3.4 FLOATING-POINT INSTRUCTION DETAILS
++     * If either operand, but not both operands, of an operation is a
++     * nonsignaling NaN, then that NaN is returned as the result. If both
++     * operands are nonsignaling NaNs, then the destination operand
++     * nonsignaling NaN is returned as the result.
++     * If either operand to an operation is a signaling NaN (SNaN), then the
++     * SNaN bit is set in the FPSR EXC byte. If the SNaN exception enable bit
++     * is set in the FPCR ENABLE byte, then the exception is taken and the
++     * destination is not modified. If the SNaN exception enable bit is not
++     * set, setting the SNaN bit in the operand to a one converts the SNaN to
++     * a nonsignaling NaN. The operation then continues as described in the
++     * preceding paragraph for nonsignaling NaNs.
 +     */
 +    set_float_2nan_prop_rule(float_2nan_prop_ab, &env->fp_status);
-+    set_float_2nan_prop_rule(float_2nan_prop_ab, &env->vec_status);
+     env->fpsr = 0;
  
-     for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
-         ppc_spr_t *spr = &env->spr_cb[i];
+     /* TODO: We should set PC from the interrupt vector.  */
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index 8314791f504..a605162b71f 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -620,6 +620,7 @@ void HELPER(frem)(CPUM68KState *env, FPReg *res, FPReg *val0, FPReg *val1)
+         int sign;
+ 
+         /* Calculate quotient directly using round to nearest mode */
++        set_float_2nan_prop_rule(float_2nan_prop_ab, &fp_status);
+         set_float_rounding_mode(float_round_nearest_even, &fp_status);
+         set_floatx80_rounding_precision(
+             get_floatx80_rounding_precision(&env->fp_status), &fp_status);
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index a0c740e544d..8e3124c11a6 100644
+index 8e3124c11a6..226632a4d10 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -404,15 +404,9 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+@@ -404,25 +404,8 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
      || defined(TARGET_RISCV) || defined(TARGET_SH4) \
      || defined(TARGET_TRICORE) || defined(TARGET_ARM) || defined(TARGET_MIPS) \
      || defined(TARGET_LOONGARCH64) || defined(TARGET_HPPA) \
--    || defined(TARGET_S390X)
-+    || defined(TARGET_S390X) || defined(TARGET_PPC)
+-    || defined(TARGET_S390X) || defined(TARGET_PPC)
++    || defined(TARGET_S390X) || defined(TARGET_PPC) || defined(TARGET_M68K)
          g_assert_not_reached();
--#elif defined(TARGET_PPC) || defined(TARGET_M68K)
+-#elif defined(TARGET_M68K)
 -        /*
--         * PowerPC propagation rules:
--         *  1. A if it sNaN or qNaN
--         *  2. B if it sNaN or qNaN
--         * A signaling NaN is always silenced before returning it.
+-         * M68000 FAMILY PROGRAMMER'S REFERENCE MANUAL
+-         * 3.4 FLOATING-POINT INSTRUCTION DETAILS
+-         * If either operand, but not both operands, of an operation is a
+-         * nonsignaling NaN, then that NaN is returned as the result. If both
+-         * operands are nonsignaling NaNs, then the destination operand
+-         * nonsignaling NaN is returned as the result.
+-         * If either operand to an operation is a signaling NaN (SNaN), then the
+-         * SNaN bit is set in the FPSR EXC byte. If the SNaN exception enable bit
+-         * is set in the FPCR ENABLE byte, then the exception is taken and the
+-         * destination is not modified. If the SNaN exception enable bit is not
+-         * set, setting the SNaN bit in the operand to a one converts the SNaN to
+-         * a nonsignaling NaN. The operation then continues as described in the
+-         * preceding paragraph for nonsignaling NaNs.
 -         */
-+#elif defined(TARGET_M68K)
-         /*
-          * M68000 FAMILY PROGRAMMER'S REFERENCE MANUAL
-          * 3.4 FLOATING-POINT INSTRUCTION DETAILS
+-        rule = float_2nan_prop_ab;
+ #elif defined(TARGET_SPARC)
+         /* Prefer SNaN over QNaN, order B then A. */
+         rule = float_2nan_prop_s_ba;
 -- 
 2.34.1
 
