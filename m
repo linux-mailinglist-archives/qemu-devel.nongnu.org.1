@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5459BC307
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 03:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECF79BC313
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 03:20:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t892l-0000au-1F; Mon, 04 Nov 2024 21:11:43 -0500
+	id 1t89AQ-0002ul-5l; Mon, 04 Nov 2024 21:19:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1t892h-0000aU-V1
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:11:40 -0500
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <kuba@kernel.org>) id 1t89AN-0002uZ-VY
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:19:35 -0500
+Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1t892e-0000aZ-4f
- for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:11:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730772696; x=1762308696;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=FGLY++qk3h6l1yvhDRbUMzqAFGoYNV6mNXSuhxvTMVM=;
- b=nPbvR2OSWs4FvuCj8KbKgRxmJvgsUqkus04lvA98aOBJzRot7b3M9OGz
- rLOeob7c+Z0RW3TJ+v8qPd63hVsUzArZHHOxWh3c/6v2zzsHHWFAzvtno
- 6saOcmIfuddOLTcfbcsHeQg8ODGMqVAOhuIHaOS5+vlETlRymkMXigcQf
- +7ns4bExgliZt41Fb5sd8pAo66YjUJyYRG5FNBaSXeKrInYX1Hq8yoZjk
- yLhkVIDpL6/bJn9/fIZpTBE5sEOHwO5lnCbfpfbaGPmp/RZwpXaCSS9UJ
- 487RV8t1dcrTs69fg5csTtIlZwcIgsuaYonAr78wpkz+ozb4i7/T0hBs2 g==;
-X-CSE-ConnectionGUID: uDJ+v+DZSxuY5CdMUuF3zw==
-X-CSE-MsgGUID: E/O+Aj95SA2jTyz0HXh2hQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="30613131"
-X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; d="scan'208";a="30613131"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 18:11:31 -0800
-X-CSE-ConnectionGUID: tXQUA1CvSn2zp93F1Anu5w==
-X-CSE-MsgGUID: y6v8JBRDQMq4FKHgs95nuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; d="scan'208";a="83950167"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by fmviesa008.fm.intel.com with ESMTP; 04 Nov 2024 18:11:32 -0800
-From: dongwon.kim@intel.com
-To: qemu-devel@nongnu.org
-Subject: [PATCH] ui/gtk: Consider the scaling factor when getting the root
- coordinates
-Date: Mon,  4 Nov 2024 18:09:29 -0800
-Message-Id: <20241105020929.3982540-1-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <kuba@kernel.org>) id 1t89AL-0001N7-W4
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 21:19:35 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id C3518A41CC3;
+ Tue,  5 Nov 2024 02:17:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEF3C4CECE;
+ Tue,  5 Nov 2024 02:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1730773169;
+ bh=i6G8GnDsiZTal/kkKMwzZHQjeFYe+c86hf3Q7lJ2aY8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=FMRW/P58uN3mjJ8SrWdDP0mhFAfKK7zPrETFDHL/9n22NRSWbbkb54D9u7+HF4wk/
+ NnGBXCkXXHWsHcYTTnclYG3vSbzPZeck/T+vGPEyDKh48tE1Rtrrj+c1454rH6IVrc
+ esV5TZESlpDGbIZUf3ipGTbUjCD676m7dllKj20mPee64zmCQi5oUAPjQ1VXn/X47c
+ 1Bm9TZcqR9Xii+7aZ97dLV18H/6CDvMC8YasuD9JVfUHVxTpUDPfxbpxr0EzihWMW8
+ hyZN2V6OMjt8fwZWs3kUFpSLIpIHvUwIdFtQoZy0UMYvDtr2hPu8mqyD+0A3dpzh/c
+ QYXLEeDMTTDSA==
+Date: Mon, 4 Nov 2024 18:19:27 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Richard Cochran <richardcochran@gmail.com>, Peter Hilber
+ <peter.hilber@opensynergy.com>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-rtc@vger.kernel.org, "Ridoux, Julien" <ridouxj@amazon.com>,
+ virtio-dev@lists.linux.dev, "Luu, Ryan" <rluu@amazon.com>, "Chashper,
+ David" <chashper@amazon.com>, "Mohamed Abuelfotoh, Hazem"
+ <abuehaze@amazon.com>, Paolo Abeni <pabeni@redhat.com>, "Christopher S .
+ Hall" <christopher.s.hall@intel.com>, Jason Wang <jasowang@redhat.com>,
+ John Stultz <jstultz@google.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ netdev@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Marc Zyngier
+ <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Daniel Lezcano
+ <daniel.lezcano@linaro.org>, Alessandro Zummo <a.zummo@towertech.it>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, qemu-devel
+ <qemu-devel@nongnu.org>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next] ptp: Remove 'default y' for VMCLOCK PTP device
+Message-ID: <20241104181927.05a9485a@kernel.org>
+In-Reply-To: <89955b74d225129d6e3d79b53aa8d81d1b50560f.camel@infradead.org>
+References: <89955b74d225129d6e3d79b53aa8d81d1b50560f.camel@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=dongwon.kim@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=147.75.193.91; envelope-from=kuba@kernel.org;
+ helo=nyc.source.kernel.org
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,34 +80,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+On Sat, 02 Nov 2024 16:52:17 -0500 David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> The VMCLOCK device gives support for accurate timekeeping even across 
+> live migration, unlike the KVM PTP clock. To help ensure that users can
+> always use ptp_vmclock where it's available in preference to ptp_kvm,
+> set it to 'default PTP_1588_CLOCK_VMCLOCK' instead of 'default y'.
 
-Since gdk_window_get_root_coords() expects a position within the window,
-we need to translate Guest's cooridinates to window local coordinates
-by multiplying them with the scaling factor.
-
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
----
- ui/gtk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 8e14c2ac81..5009db59eb 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -459,7 +459,8 @@ static void gd_mouse_set(DisplayChangeListener *dcl,
- 
-     dpy = gtk_widget_get_display(vc->gfx.drawing_area);
-     gdk_window_get_root_coords(gtk_widget_get_window(vc->gfx.drawing_area),
--                               x, y, &x_root, &y_root);
-+                               x * vc->gfx.scale_x, y * vc->gfx.scale_y,
-+                               &x_root, &y_root);
-     gdk_device_warp(gd_get_pointer(dpy),
-                     gtk_widget_get_screen(vc->gfx.drawing_area),
-                     x_root, y_root);
--- 
-2.34.1
-
+Good enough for me, let's see if it's good enough for the main guy :)
+Thanks!
 
