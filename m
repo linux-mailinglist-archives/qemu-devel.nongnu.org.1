@@ -2,117 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E99F9BC894
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 10:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A829BC89C
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 10:05:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8FTl-0000t6-3s; Tue, 05 Nov 2024 04:04:01 -0500
+	id 1t8FVR-0003FI-VV; Tue, 05 Nov 2024 04:05:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8FTg-0000sZ-T0
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 04:03:57 -0500
+ id 1t8FVP-0003F2-3P
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 04:05:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8FTc-000230-Lk
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 04:03:54 -0500
+ id 1t8FVM-0002Tl-BT
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 04:05:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730797428;
+ s=mimecast20190719; t=1730797539;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Lz50M2A2GIkWB2y4TtgpejEf420SK5ILiQtnvKv0AW8=;
- b=ZUSfa8N7/1CSam7AuJQCbMHXNrY946DcXq741FajWzKr2xieeM7P7+2YaIT1KBKOzBBPEm
- hOLaWHBzOjenjGYF8A1itQbvgEvFzsoyAWPNt/YLTS3QDqstSo1wb8ql20V2AlYIkWrjeq
- zKpru8v6dTo5rId/iwlx1iuHl+rtA7E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=XwuZzBbIYKMV8ZFmcEFg42G8DeQkh3gaGdAvu0VnIc8SkEdAsZY0jDNf0djehs8CdhthbM
+ 3inScf1BDLnEp2oVXejHJsMD5LqMWM5AzpKDJRR0TqK983ppqcgbkfgfp4DpfpiblMtobT
+ /LqaCBCVs2swDPitLBsankfRRquK+Q8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-Z11AAkfCPci7xUNTXuvuAw-1; Tue, 05 Nov 2024 04:03:45 -0500
-X-MC-Unique: Z11AAkfCPci7xUNTXuvuAw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315c1b5befso33016225e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 01:03:45 -0800 (PST)
+ us-mta-385-gJZRY6XKMACoe90FBnIKOA-1; Tue, 05 Nov 2024 04:04:31 -0500
+X-MC-Unique: gJZRY6XKMACoe90FBnIKOA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-431518ae047so34042815e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 01:04:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730797423; x=1731402223;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:cc:to:from:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Lz50M2A2GIkWB2y4TtgpejEf420SK5ILiQtnvKv0AW8=;
- b=wTSNGdHhgBRBXsp+IBxqCbMREBwv2GlHCf+QewVXkfbEfvj2jehwaodFfVi8PriJs3
- W1dytCgim3/8FhuntCf30o7+bhVuPP8CpafUpBITzzgtqsNJJCY1HIWL33HOYZ3rgIDT
- cklbwoJAc6WXMtCAZBU9URFst91qCuzm/F9KAbJ6dzEIWtSoIH/uEkkcJVhLg5ASqCrr
- 3mRDelgXVzDeBjfxPEK2RKAgMMK/ibMftOa/+CTzeCQjzwyUh5WjZY1E6KSGP+YWYYW9
- fDA868UzuzBEZXyo7YYAngPctX38jEjconiwD6K0XGZ2MWFamZXBUVag5W2LBB1vhaFx
- +RaQ==
-X-Gm-Message-State: AOJu0YxJmLR16ZkCwsV0EKgSMtGcw2wHHabroqu6PKYnowf9iEA3e/38
- 25yW5Wagau/vx+YF9Ko/eNoTGsXlloM4LLnLv8H1cNY5ZWYe6KEZB2QkxF6FVU7A0443KSM3EYF
- yvmFqDcEKIg8Ejvq27Srt36FRVuarh0k+KZ/SqRWk1Em1qsSeCv4mng2ahPpVq06gwRyMuXhJyh
- 89AN1L2tGhz9jevJiTv6BcQCoPavz3jJyOzHJ7qXs=
-X-Received: by 2002:a05:600c:1c01:b0:431:9a68:ec84 with SMTP id
- 5b1f17b1804b1-4319ad04780mr277847915e9.23.1730797423185; 
- Tue, 05 Nov 2024 01:03:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWYyICTyRk4tWd37EARxQrXkEpEWe5Z4WSZX2A2Fz+l9edpX+TnO8vjcYaw7OO9PIFP5ihiw==
-X-Received: by 2002:a05:600c:1c01:b0:431:9a68:ec84 with SMTP id
- 5b1f17b1804b1-4319ad04780mr277847605e9.23.1730797422694; 
- Tue, 05 Nov 2024 01:03:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730797470; x=1731402270;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=GosH3rEzmEJBqQ6tBRXhZmxGS6w97UPiCmIpHRaI9ff0i9ajt66MWOmFTuDqV36jrd
+ DMAVPS9S5iXdJTUodcX5RpYrdiIkHic3qBxj/uG0HCAyO8HdL2rZatA5ZmbEcQAsMO9P
+ +XCBMojjol0Iq+94oDt0LqzcpuLipA1x+6A1Ep8o0seg5BoF0qNNnk/PoUaKVXnHVdp/
+ kTPatQlWhIqz6fvNf/IgzHuNEJrGUg6CkfcKxpZ27ETMTbWM8S1ugrq9bEEP8aPq4QeG
+ GLm76wkA4kO9YvCymQGM88NALhYXyKwmx+RQ3vExP4bogxB90IrT3D3x7ca7KkgCVGKg
+ ZB8A==
+X-Gm-Message-State: AOJu0YzS67JxKmwUDfRTEex7l18C9Wwz18zSSKWzCjB/VbviDTpA2xJp
+ yf1MTn2MkTgU8pZwTCo1UvCNQAN7kGBQVuJqSbGJJni4Nar7GOTsmawLB09gN0d2o5KTADZ7Q/3
+ lOm3WA/rBt5NhIaZO/F9iafVapStJP9XTYY3kM6SAtuaospWQS+d+
+X-Received: by 2002:a05:600c:3150:b0:431:3b80:6ca7 with SMTP id
+ 5b1f17b1804b1-432830849dfmr130609815e9.13.1730797470260; 
+ Tue, 05 Nov 2024 01:04:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGODrEWT0Ao6ft3tOCtL23Sc4QARV7FK85RwzZnjBda+O3PB4DhqpbrUlX3skus8z7Rpy36xg==
+X-Received: by 2002:a05:600c:3150:b0:431:3b80:6ca7 with SMTP id
+ 5b1f17b1804b1-432830849dfmr130609555e9.13.1730797469933; 
+ Tue, 05 Nov 2024 01:04:29 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-4327d698405sm183968225e9.41.2024.11.05.01.03.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Nov 2024 01:03:41 -0800 (PST)
-Message-ID: <eccc3999-2ee9-4e55-a4ea-6921eaecb5bd@redhat.com>
-Date: Tue, 5 Nov 2024 10:03:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: add avx-vnni-int16 feature
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4327d6852d9sm180678675e9.37.2024.11.05.01.04.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Nov 2024 01:04:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: tao1.su@linux.intel.com
-References: <20241105082848.230020-1-pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20241105082848.230020-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, pbonzini@redhat.com,
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>
+Subject: Re: [PATCH] target/i386/hvf: fix clang compilation warning
+Date: Tue,  5 Nov 2024 10:04:26 +0100
+Message-ID: <20241105090427.235762-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241104222102.1522688-1-pierrick.bouvier@linaro.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -138,34 +100,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/5/24 09:28, Paolo Bonzini wrote:
-> SHA512, SM3, SM4 (CPUID[EAX=7,ECX=1).EAX bits 0 to 2) is supported by
-> Clearwater Forest processor, add it to QEMU as it does not need any
-> specific enablement.
-> 
-> See https://lore.kernel.org/kvm/20241105054825.870939-1-tao1.su@linux.intel.com/
-> for reference.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   target/i386/cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 3baa95481fb..ae5b85f4e8e 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -1113,7 +1113,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->       [FEAT_7_1_EAX] = {
->           .type = CPUID_FEATURE_WORD,
->           .feat_names = {
-> -            NULL, NULL, NULL, NULL,
-> +            "sha512", "sm3", "sm4", NULL,
->               "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
->               NULL, NULL, "fzrm", "fsrs",
->               "fsrc", NULL, NULL, NULL,
-
-Obviously the subject is wrong, sorry about that.
+Queued, thanks.
 
 Paolo
 
