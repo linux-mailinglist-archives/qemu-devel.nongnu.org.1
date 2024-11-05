@@ -2,83 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B709BD170
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A31C9BD163
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:00:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8LzS-0006kL-F1; Tue, 05 Nov 2024 11:01:10 -0500
+	id 1t8Lxs-00060i-Gl; Tue, 05 Nov 2024 10:59:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t8LzN-0006jO-MA
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:01:05 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t8LzK-0007PD-Fy
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:01:04 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c9850ae22eso7060995a12.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 08:01:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730822460; x=1731427260;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DQ/wvxuTvQaiavS01m+IKLgZecmKu0OzwEWLUO9nnOE=;
- b=Vqo0vDH9t/KURVAkXBf8BLXu5Lz5li8CDz83hjyZFlfWdWdym+GLQpcjEfiPiNCbrB
- 2XnbguiKdJIGP/j5TiiD/OYOdVhWmyYmMFYhYkX1k+MG8L6Zs8vMkd4zSeBTP14OxHYx
- UXDkTgUOytNp+b0vd+L3fx+v2uqspyvTQZKCZsCBgsBCM5YbtjkYta1ngbvtwMARFIJH
- E1cjtfYqEeIxmUmzxKheV+VQSzqW1jw+/KyB0JhLrc51p/z5ORgTL+AHou47n0t9cS+v
- aFzviT/RDahsAeVvJCVNLImfkaFCoB5KAkzfIXutaTPtaLKFXUqIalXi6HkNUEFp9c9G
- KXnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730822460; x=1731427260;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DQ/wvxuTvQaiavS01m+IKLgZecmKu0OzwEWLUO9nnOE=;
- b=cYLxygq4qlldDn1JxHUAyFy4TmBgXfoHcUkaBoLv29ICo8RG1Z0PfTblXNvh0T92Du
- x77KiVNJoOixG/H8Dxne5ge55ffuqNOnfM0Nm6Ll5CMrc0eZViswSlO91zFzOhY3iVJb
- 3E9u9Zv1qvFUBMNaerj4zgyWFPvfHtSsCMgdqqpFcwkoJGPpwM6tJz1Gg7hi3kKd5MM0
- axej4Cz8CQAQPFtP8/vD4SlxUIkxeS5T8zY1jeHLgA9B1RX/JfkHQFlyIXy91g0hajd4
- jJIi9jDnCc0pxj9TYRqBjCso5Zx7samkdr3btVs1HAMTlQZ6aGHQuDM3mX+bLHs9t24E
- iKPw==
-X-Gm-Message-State: AOJu0Yw64iikJBhnJdQnzkkQGiT99Yaq6eDqijuJFlwBvFKL2cnhy2XY
- yh3/8Tt9w5D4Kib+sKaBmgQjK/Jwaezkf10vHQuX93P1FgaZwnj71a2rlk8fTspVFopKam2yiGC
- cgA==
-X-Google-Smtp-Source: AGHT+IFsoc5ezJdzFbA8gnVMPniGejHymxh15nQc4VaY5FOXNpE7dnw+gMN0f03Ms4QRpg5zJy7LSg==
-X-Received: by 2002:a05:6402:4405:b0:5ce:df98:a609 with SMTP id
- 4fb4d7f45d1cf-5cedf98a716mr4504664a12.27.1730822458271; 
- Tue, 05 Nov 2024 08:00:58 -0800 (PST)
-Received: from localhost.localdomain (h082218084190.host.wavenet.at.
- [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cee6a9a41bsm1467773a12.14.2024.11.05.08.00.57
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 08:00:57 -0800 (PST)
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-To: qemu-devel@nongnu.org
-Cc: dirty@apple.com, rbolshakov@ddn.com, pbonzini@redhat.com,
- Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 5/5] i386/hvf: Removes duplicate/shadowed variables in
- hvf_vcpu_exec
-Date: Tue,  5 Nov 2024 16:58:00 +0100
-Message-Id: <20241105155800.5461-6-phil@philjordan.eu>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
-In-Reply-To: <20241105155800.5461-1-phil@philjordan.eu>
-References: <20241105155800.5461-1-phil@philjordan.eu>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lxq-00060a-LH
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:59:30 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8Lxo-00077y-Rr
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:59:30 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5FeIJD013536;
+ Tue, 5 Nov 2024 15:59:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Hsdld+
+ N9E6cabUvfrCv0TY4uyedfekpsm/YWCjyf0+M=; b=R7fO+COMc0waZPvQmTmd23
+ 47WLCrWf0uWEXXpq8Wz5/Lsxp/ZQ3UZ7sKaB/eg59yshrTZuXunVyAX0CXhFvyVt
+ T9SzfoOsqTKpZXCbJp9Q5MqMeXuyYLP/57UzWP/a10kUufHES1Gr5nDiJGA53vpC
+ wNHS0h4awWQivgFwivPj3n46msf6ygUs+7L221deVfjkaJ5bzKw51EH62cKQVrf7
+ +nsjnYZbB0msnvD4KuabsDJgjSk8aERur6gWAnZ53saLA6LIeMIcgHS3PcrN8P9e
+ JMs0VbJJ5hnZE9EZyd0tGVEVC46sMvJZWQw1KT+ld7C4025WR83O3cGMwpS1h5AQ
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qp6x02h3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 15:59:24 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A58NYTj012288;
+ Tue, 5 Nov 2024 15:59:23 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p140vbnv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 15:59:23 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A5FxLId21234036
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 Nov 2024 15:59:21 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B720120040;
+ Tue,  5 Nov 2024 15:59:21 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD67D20049;
+ Tue,  5 Nov 2024 15:59:20 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Nov 2024 15:59:20 +0000 (GMT)
+Message-ID: <13e848ebce3d673ad48376a3ab14bbd25356549e.camel@linux.ibm.com>
+Subject: Re: [PATCH] linux-user: Fix setreuid and setregid to use direct
+ syscalls
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Helge Deller <deller@kernel.org>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, Riku Voipio
+ <riku.voipio@linaro.org>, qemu-devel@nongnu.org
+Date: Tue, 05 Nov 2024 16:59:20 +0100
+In-Reply-To: <Zyo2jMKqq8hG8Pkz@p100>
+References: <Zyo2jMKqq8hG8Pkz@p100>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: J9lYoR72SX7MuSEJurNm5gI-nG8StnG6
+X-Proofpoint-GUID: J9lYoR72SX7MuSEJurNm5gI-nG8StnG6
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::52b;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011
+ priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=675
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050121
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,36 +108,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pointers to the x86 CPU state already exist at the function scope,
-no need to re-obtain them in individual exit reason cases.
+On Tue, 2024-11-05 at 16:15 +0100, Helge Deller wrote:
+> The commit fd6f7798ac30 ("linux-user: Use direct syscalls for
+> setuid(),
+> etc") added direct syscall wrappers for setuid(), setgid(), etc since
+> the
+> system calls have different semantics than the libc functions.
+>=20
+> Add and use the corresponding wrappers for setreuid and setregid
+> which
+> were missed in that commit.
+>=20
+> This fixes the build of the debian package of the uid_wrapper library
+> (https://cwrap.org/uid_wrapper.html) when running linux-user.
+>=20
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
----
- target/i386/hvf/hvf.c | 3 ---
- 1 file changed, 3 deletions(-)
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 8527bce6eef..c5d025d5576 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -586,8 +586,6 @@ int hvf_vcpu_exec(CPUState *cpu)
-             break;
-         }
-         case EXIT_REASON_XSETBV: {
--            X86CPU *x86_cpu = X86_CPU(cpu);
--            CPUX86State *env = &x86_cpu->env;
-             uint32_t eax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
-             uint32_t ecx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
-             uint32_t edx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
-@@ -644,7 +642,6 @@ int hvf_vcpu_exec(CPUState *cpu)
-                 break;
-             }
-             case 8: {
--                X86CPU *x86_cpu = X86_CPU(cpu);
-                 if (exit_qual & 0x10) {
-                     RRX(env, reg) = cpu_get_apic_tpr(x86_cpu->apic_state);
-                 } else {
--- 
-2.39.3 (Apple Git-145)
-
+I should've checked the other syscalls when fixing setgroups recently.
+Seems like with this patch, linux-user will no longer call glibc
+functions that use INLINE_SETXID_SYSCALL().
 
