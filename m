@@ -2,97 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E459F9BD30A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 18:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 699AE9BD2AC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:42:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8MxK-0002gB-Q0; Tue, 05 Nov 2024 12:03:02 -0500
+	id 1t8McW-0006Ao-Vq; Tue, 05 Nov 2024 11:41:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t8MxH-0002fL-QK; Tue, 05 Nov 2024 12:02:59 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t8McT-0006AZ-Ds
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:41:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t8MxF-0005v2-UJ; Tue, 05 Nov 2024 12:02:59 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5GeMmh017989;
- Tue, 5 Nov 2024 17:02:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=0G8rQh
- 32is91C3M1CMRGfNPAYsQASDlPrceKxCGihus=; b=VAoYBHZK2BZXqzbxDdbFKo
- ygdTxjpsAFifCfocg7XZvhahuw601DS8zwe+zpaFZExIOryLaVFpwyArpXlCIKLP
- qvGBum7aV7LpEQro8jHnfYWlzdIfwEwo5DbTNZ8JeG2TRGGt+fzWGu3A748qTlnC
- UuJ4bTQVT3EYg9G7rI6x9nrZW54XZcJUD2Gq6qkpQeQIoMEiA9/w85sxduNDmlIp
- vB9a3mlW7HDJTOyAEyCKmBjElC8K5Icyz6dN6Dd1HyFankYRVR7fx2s4Hmq1AQGr
- 22SDIi1PIk6CPWr07CDEBjH16RvDBLgw+mYP/jNHp6LNTZ5S7OxxMQJ6oM2jfmNg
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qq338321-3
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 17:02:54 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A572Wfs032050;
- Tue, 5 Nov 2024 16:35:47 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmmftk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 16:35:47 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A5GZkDp35389742
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2024 16:35:47 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ADA615805E;
- Tue,  5 Nov 2024 16:35:46 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5964058052;
- Tue,  5 Nov 2024 16:35:46 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2024 16:35:46 +0000 (GMT)
-Message-ID: <91c2ac92-66b2-45c8-b4fe-e8f8587b0e9c@linux.ibm.com>
-Date: Tue, 5 Nov 2024 11:35:46 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t8McR-0003hc-69
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:41:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730824885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f3ip2nYKth2PEdXSfE3aRQW4q4Rkyvz2xu0u8v85oaw=;
+ b=IYEdAwW+vtx3aSulBWllZTzRin18A4IwL2A0JPsrIHc/E2GTI6W31GKRMbqs8JRL2x0RpB
+ PQo27pT+Oezzw0PkxkzVYaCxnqAZKhMwu3AZgedUzE9tYA5hRHwhnBsY9KVvpL1P81ppCL
+ iIjYhHJjyY7fMi0wb4UxK1YukkncoAA=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-E6hxKpwwOi-mnvWOm07JMQ-1; Tue, 05 Nov 2024 11:41:23 -0500
+X-MC-Unique: E6hxKpwwOi-mnvWOm07JMQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-460b8f4bab8so115174561cf.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 08:41:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730824883; x=1731429683;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f3ip2nYKth2PEdXSfE3aRQW4q4Rkyvz2xu0u8v85oaw=;
+ b=qsY/ErwvWU1dQY6Uxq4HTk7BSlBEU7vMeEdepy0hsChdPVW0uStkzqL5fJLWe24NUI
+ AVCK0tmO+ie5oU5Tnu6wnFK4sj/Vc1e9Nxbfyxh8w/IARhkqFw8/Yw7aEdzX4IffRfU1
+ 6IWvS6U3A1/owwyfG+yh3Q/QPhmDKa+d52aDquzCoLbkqSJcWHUHkXrxRKfmauYTwPPf
+ VO2amnMlVtKL/Lu4eTIU1X/C5DCl6qhLumZ9amxMhO3U0eJd90HjYR00aszmMrmPBT/P
+ oQTaACGL2nnCf4gTlsP8wXWel6Dd5Lbsq5Y2SXwu7CUgxIeJJQc9q1l6SrV7/pSaU1w7
+ 3Yjw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWdZF1uV1XMuK/H1L1JNUq2WKY6BEDQd3svT90yIhx7e0ynxl09Nliflvhc7FV58rTVutK4+8Nkcz/y@nongnu.org
+X-Gm-Message-State: AOJu0YwwFUQoYIXZttgzslk0f0v/W0asU4GLhaW7b1wI/YZHErbgr1/6
+ a/Iuoan8XWr8ophi6BPA7DgUYaT+QhV5kiBvR9YIhxwJaBiGbcbDCZh2bnlpkEoxAGHDprEuW8q
+ 8kERMkZnp18bGayYpjdVt2U7Mz8FAlJkuuThSlpTVVnetFbefn/5x
+X-Received: by 2002:a05:622a:1b8b:b0:461:39ce:2218 with SMTP id
+ d75a77b69052e-4613c1c9f98mr570115641cf.57.1730824882704; 
+ Tue, 05 Nov 2024 08:41:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH29zbhGNpSWjC9aiVSzvnyRkvPCynbl187Lfam/AKo3nxxDtZ5Dchu0NZzne3JFORjM/Ce9w==
+X-Received: by 2002:a05:622a:1b8b:b0:461:39ce:2218 with SMTP id
+ d75a77b69052e-4613c1c9f98mr570115261cf.57.1730824882271; 
+ Tue, 05 Nov 2024 08:41:22 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-462ad0ae823sm61248451cf.33.2024.11.05.08.41.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Nov 2024 08:41:21 -0800 (PST)
+Date: Tue, 5 Nov 2024 11:41:18 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: test regression - qemu:block-slow+slow / io-raw-055
+Message-ID: <ZypKrpbo28zrEamP@x1n>
+References: <b8806360-a2b6-4608-83a3-db67e264c733@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 10/17] tests/functional: Convert most Aspeed machine tests
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>
-References: <20241024063507.1585765-1-clg@redhat.com>
- <20241024063507.1585765-11-clg@redhat.com>
- <CAFEAcA8A=kWLtTZ+nua-MpzqkaEjW5srOYZruZnE2tB6vmoMig@mail.gmail.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CAFEAcA8A=kWLtTZ+nua-MpzqkaEjW5srOYZruZnE2tB6vmoMig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Rx-I2AlFrS8dg34q4sO6rlJt85e6h0gq
-X-Proofpoint-GUID: Rx-I2AlFrS8dg34q4sO6rlJt85e6h0gq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- mlxlogscore=999 clxscore=1011 bulkscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
- suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050128
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <b8806360-a2b6-4608-83a3-db67e264c733@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,102 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Nov 04, 2024 at 07:41:44PM -0800, Pierrick Bouvier wrote:
+> Hi,
+> 
+> this test was recently broken by 34a889 (migration: Drop
+> migration_is_idle()).
+> 
+> Reproduce with:
+> meson test -C build -t 1 --setup slow  --num-processes 1 --print-errorlogs
+> io-raw-055 --verbose
+> 
+> 1/1 qemu:block-slow+slow / io-raw-055        RUNNING
+> >>> ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1
+> MALLOC_PERTURB_=29 MESON_TEST_ITERATION=1
+> PYTHON=/home/user/.work/qemu/build/pyvenv/bin/python3 G_TEST_SLOW=1
+> SPEED=slow MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1
+> /home/user/.work/qemu/build/pyvenv/bin/python3
+> /home/user/.work/qemu/build/../tests/qemu-iotests/check -tap -raw 055
+> --source-dir /home/user/.work/qemu/tests/qemu-iotests --build-dir
+> /home/user/.work/qemu/build/tests/qemu-iotests
+> ▶ 1/1 raw 055                                FAIL
+> 1/1 qemu:block-slow+slow / io-raw-055        ERROR           11.06s exit
+> status 1
+> ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+> ✀ ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+> stderr:
+> --- /home/user/.work/qemu/tests/qemu-iotests/055.out
+> +++ /home/user/.work/qemu/build/scratch/raw-file-055/055.out.bad
+> @@ -1,5 +1,215 @@
+> -........................................
+> +......ERROR:qemu.qmp.qmp_client.qemu-1856388:Failed to receive Greeting:
+> EOFError
+> +ERROR:qemu.qmp.qmp_client.qemu-1856388:Failed to establish session:
+> EOFError
+
+Thanks for the report.
+
+I don't know how this was triggered, looks like current_migration wasn't
+set at all for some reason..
+
+Could you try below change to see whether it can fix there too (it worked
+here)?
+
+===8<===
+From d33ad33854d36c04260150ee817b984f48da46c6 Mon Sep 17 00:00:00 2001
+From: Peter Xu <peterx@redhat.com>
+Date: Tue, 5 Nov 2024 11:29:07 -0500
+Subject: [PATCH] migration: Check current_migration in migration_is_running()
+
+Report shows that commit 34a8892dec broke iotest 055:
+
+https://lore.kernel.org/r/b8806360-a2b6-4608-83a3-db67e264c733@linaro.org
+
+When replacing migration_is_idle() with "!migration_is_running()", it was
+overlooked that the idle helper also checks for current_migration being
+available first.
+
+The check would be there if the whole series was applied, but since the
+last patches in the previous series rely on some other patches to land
+first, we need to recover the behavior of migration_is_idle() first before
+that whole set will be merged.
+
+I left migration_is_active / migration_is_device alone, as I don't think
+it's possible for them to hit his case (current_migration not initialized).
+Also they're prone to removal soon from VFIO side.
+
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>
+Fixes: 34a8892dec ("migration: Drop migration_is_idle()")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/migration/migration.c b/migration/migration.c
+index aedf7f0751..8c5bd0a75c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1117,6 +1117,10 @@ bool migration_is_running(void)
+ {
+     MigrationState *s = current_migration;
+ 
++    if (!s) {
++        return false;
++    }
++
+     switch (s->state) {
+     case MIGRATION_STATUS_ACTIVE:
+     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+-- 
+2.45.0
 
 
-On 11/5/24 11:14 AM, Peter Maydell wrote:
-> On Thu, 24 Oct 2024 at 07:39, Cédric Le Goater <clg@redhat.com> wrote:
->>
->> This is a simple conversion of the tests with some cleanups and
->> adjustments to match the new test framework. Replace the zephyr image
->> MD5 hashes with SHA256 hashes while at it.
-> 
-> (ccing Stefan Berger for possible insight into swtpm)
-> 
-> Hi; I find that this swtpm-using test fails for me on my
-> local system due to an apparmor/swtpm problem...
-> 
->> +    @skipUnless(*has_cmd('swtpm'))
->> +    def test_arm_ast2600_evb_buildroot_tpm(self):
->> +        self.set_machine('ast2600-evb')
->> +
->> +        image_path = self.ASSET_BR2_202302_AST2600_TPM_FLASH.fetch()
->> +
->> +        socket_dir = tempfile.TemporaryDirectory(prefix="qemu_")
->> +        socket = os.path.join(socket_dir.name, 'swtpm-socket')
->> +
->> +        subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
->> +                        '--tpmstate', f'dir={self.vm.temp_dir}',
->> +                        '--ctrl', f'type=unixio,path={socket}'])
->> +
->> +        self.vm.add_args('-chardev', f'socket,id=chrtpm,path={socket}')
->> +        self.vm.add_args('-tpmdev', 'emulator,id=tpm0,chardev=chrtpm')
->> +        self.vm.add_args('-device',
->> +                         'tpm-tis-i2c,tpmdev=tpm0,bus=aspeed.i2c.bus.12,address=0x2e')
->> +        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
->> +
->> +        exec_command_and_wait_for_pattern(self,
->> +            'echo tpm_tis_i2c 0x2e > /sys/bus/i2c/devices/i2c-12/new_device',
->> +            'tpm_tis_i2c 12-002e: 2.0 TPM (device-id 0x1, rev-id 1)');
->> +        exec_command_and_wait_for_pattern(self,
->> +            'cat /sys/class/tpm/tpm0/pcr-sha256/0',
->> +            'B804724EA13F52A9072BA87FE8FDCC497DFC9DF9AA15B9088694639C431688E0');
->> +
->> +        self.do_test_arm_aspeed_buildroot_poweroff()
-> 
-> The test fails like this:
-> 
-> qemu-system-arm: tpm-emulator: TPM result for CMD_INIT: 0x9 operation failed
-> 
-> Adding extra logging to swtpm (--log file=/tmp/swtpm.log,level=20)
-> reveals:
-> 
-> SWTPM_NVRAM_Lock_Lockfile: Could not open lockfile: Permission denied
-> Error: Could not initialize libtpms.
-> Error: Could not initialize the TPM
-> 
-> Checking the system logs, this is because apparmor has denied it:
-> 
-> Nov  5 16:01:14 e104462 kernel: [946406.489088] audit: type=1400
-> audit(1730822474.384:446): apparmor="DENIED" operation="mknod"
-> profile="swtpm"
-> name="/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/tests/functional/arm/test_arm_aspeed.AST2x00Machine.test_arm_ast2600_evb_buildroot_tpm/qemu-machine-hhuvwytc/.lock"
-> pid=2820156 comm="swtpm" requested_mask="c" denied_mask="c" fsuid=1000
-> ouid=1000
-> 
-> 
-> 
-> Q1: why is apparmor forbidding swtpm from doing something that
-> it needs to do to work?
-
-What distro and version is this?
-
-The profile may be too strict and not reflecting all the paths needed 
-for running the test cases. Ubuntu for example would have to update 
-their profile in such a case.
-
-> 
-> Q2: is there a way to run swtpm such that it is not
-> confined by apparmor, for purposes of running it in a test case?
-
-Try either one:
-- sudo aa-complain /usr/bin/swtpm
-- sudo aa-disable /usr/bin/swtpm
-
-> 
-> Q3: if not, is there a way to at least detect that swtpm is
-> broken on this system so we can skip the test case?
-
-It's not swtpm that is broken but the AppArmor profile is too strict. 
-Above command lines should work.
-
-> 
-> (I note that there is a thing in the apparmor config
-> "owner @{HOME}/** rwk" which I think means you only run into
-> this if you happen to be building/testing QEMU somewhere other
-> than your own home directory -- but that's hardly an
-> unreasonable configuration...)
-> 
-> thanks
-> -- PMM
+-- 
+Peter Xu
 
 
