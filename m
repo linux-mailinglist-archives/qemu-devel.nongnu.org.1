@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7AFB9BD88F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7129BD8A6
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:28:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Rzc-0003G9-Cr; Tue, 05 Nov 2024 17:25:44 -0500
+	id 1t8S1T-0004Kx-AQ; Tue, 05 Nov 2024 17:27:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8RzZ-0003Fd-2U; Tue, 05 Nov 2024 17:25:41 -0500
-Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8S1Q-0004KY-Kr
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:27:36 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8RzX-0000KZ-KD; Tue, 05 Nov 2024 17:25:40 -0500
-Received: by mail-ua1-x936.google.com with SMTP id
- a1e0cc1a2514c-84fe1bc5284so2276471241.0; 
- Tue, 05 Nov 2024 14:25:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8S1O-0000Xl-Ri
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:27:36 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4315c1c7392so53014485e9.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:27:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730845538; x=1731450338; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rHggrVLdK90aIRJ3MiUpg0/17iirYyZWzPNt0PsNzC4=;
- b=Rb9OX6ZFj2qiU4eGKScGlfonTp16aXpc4dnTR+PujHNZ3QyMEvyF7ZqOGBeKB4Zl1X
- nZGHlDje7kaYiDZ6AmziIeafhBVHyoRcFXjJ0oe5r7KW/KvMp4o2qjMoVlxJLepV7emZ
- uqjFBzF50YiMoqk85mlewf4htRpppMpdIUYQuKwwfPerJnHJTBdhTgiFQEDtOa3+pzRp
- n9dHBNZwBqiQm68KzuxVUEcYpiL4WBSwqU5/R+QJwerKcYHM+uIrPvjQ2StiPvrY8THY
- AmEjYJypFjC/zB27+S/p1pEzzT79T1OuISc/buJAWFi1qY2DaZ/60WPO7Xmlte+MHTij
- xbzg==
+ d=linaro.org; s=google; t=1730845653; x=1731450453; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=dS7DqOk42IR7Q3ggcn47HYVbUQ2mkCMr5O7xqKxOcNA=;
+ b=B0rzV86oRh4ml9SUzOnn9AXd7Uh8dEUeskBuXtUabxlQVS3iFvRWXoOTUNWUENQpjz
+ 45E6t/i0LSuM/UUjj30YyaNypw11YQLy7uVCfewyRKXOHerLbxqhS9GEWD2l1+BeNzjc
+ AIek8YUANtMutjiCddNj1i6bRl75vJLvrF5Ez7Mrj0SIXqODxoWIqJRf303gf1ncuHW8
+ 63+X3acax5it2ecdhyhWHhthAC/Xbyl5l7oV92oO8+4IEtIBbguRpIGKxOwI3KhXyiIv
+ HQYOC8OJebVen9XqJ4/fHzE9iUmQ/XTsJjXXG2Q0ALXiJjARwa7Hc0FV5X170j8PQ8JT
+ JZbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730845538; x=1731450338;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rHggrVLdK90aIRJ3MiUpg0/17iirYyZWzPNt0PsNzC4=;
- b=YR4KzCyLkfzLHf8qbmiTG1Xf1phTc2zXx7imTNyXT/GCWvlWdsB8Y/FHxW1y4OpS0S
- LKze55AOzhZ6/lzK38evn5O+BtPUYFq+OMK/SB++47qzaXdHjrGJtHIi67hGxJKNYLsa
- HOE08zr3tAhudIrd9gFqSJeuTmvAL0Qu6CZ2wpknbYdANG9uTWmpFG07kPQKh5z3GAIZ
- m3nePSYeSSa0svT9V1LZKo/2Y76ZCJrCUIfiv7jB6eGaNuKFsERklh+zQ3KQvui/K1mg
- WQ62f4gpeXZ7EHSxtdDqx79k4rjKD2+Xv2RGl4RtJ2mX18Wrq0f45X1SoqqWbn+/SJtl
- Oxtw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCURouHXM6gEtLobveH6P9L+fpLKnU1Y9RqKMtZV4d2KnKXoP/kbHlnynB9bVjp68sKiRRABYt+l6g==@nongnu.org
-X-Gm-Message-State: AOJu0YwDHVGMC2bTYHyzE5du+lrrVaxFZdXnohrUISvTQCFDrjjXuAd4
- LcSdL21m7vO7xtFPJbEyMgmZgLLxCmV6Dty4hYLKUZbiLjlDdOqdcOgLCA2VfilnErDauMu5RiQ
- c9HFn9tJQwcLfRB1d0nFXn4TFrBI=
-X-Google-Smtp-Source: AGHT+IHmTViU500WUTSip9R8LrHUYP+z28R6h4cSPAI8g0iw5VRMZID61qaONdOnQ0xpUsgfvMXAfWJIs86CPZVkUX4=
-X-Received: by 2002:a05:6102:3909:b0:4a5:c74b:66a7 with SMTP id
- ada2fe7eead31-4a962f3bd39mr16750535137.19.1730845537820; Tue, 05 Nov 2024
- 14:25:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730845653; x=1731450453;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dS7DqOk42IR7Q3ggcn47HYVbUQ2mkCMr5O7xqKxOcNA=;
+ b=uvQuAS74U3zsT3ahgj+bPTUHHYQotvGPQdawzQNHhudHSbB55Y/hwrqXkUZKRYZvSG
+ gQ/MLzg64pc1pLgFEsaQSac2dxRTiURa195jH0ROr49l1xXLFTlOwoiNC/XqwKhpsaSr
+ DFG3aufYDzHqpmbV6Y+GNsleztj6vkcm3QzKaSNbDAWJA5le+NpZxYElyFdBz5wGEFpl
+ o0Rnu6uZlYqQfWBP8MeCrV0hJEhx/aFeLiZJe9L5tskw8hYLHAawnZaYf6ooiGu5Y8WP
+ 81X1Rx3TjRucZGYd9zXfpalS3sX/n5xOIdJTCPqovYSCguuCKMnPuaqOwbWEzgks7XG+
+ Y3fg==
+X-Gm-Message-State: AOJu0Yx7CEgXmrGvy2Z8v//6xGHIuRCoIB57ADpvWLg0cQVtRzmRVw80
+ N93MQ8MFUlpA3QWwKCiSe5JtX1B6PxG2xVcslGSASqpLXlm3D3Xx8UqMglamaFxBzG2hkIYQAy0
+ WvxRz7Q==
+X-Google-Smtp-Source: AGHT+IF/YctqBqSU/6ys2RiadKR+V6bGyiriPh2dCQ0FIgIsS/6XY2cjtr4nGcWUVeMb0FxyHEci3Q==
+X-Received: by 2002:a05:600c:3b8d:b0:426:6edf:6597 with SMTP id
+ 5b1f17b1804b1-43283255a89mr138982045e9.19.1730845653118; 
+ Tue, 05 Nov 2024 14:27:33 -0800 (PST)
+Received: from [172.20.143.32] ([89.101.241.141])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa5b5e56sm680635e9.2.2024.11.05.14.27.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Nov 2024 14:27:32 -0800 (PST)
+Message-ID: <b15d094f-8d69-4d2f-a79d-11502e8baebf@linaro.org>
+Date: Tue, 5 Nov 2024 22:27:31 +0000
 MIME-Version: 1.0
-References: <20241105130431.22564-1-philmd@linaro.org>
- <20241105130431.22564-12-philmd@linaro.org>
-In-Reply-To: <20241105130431.22564-12-philmd@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Nov 2024 08:25:11 +1000
-Message-ID: <CAKmqyKNrr0g6a1yA33TdvYkJFJdNSKP7nNhhb3H5pQtpPHc=_A@mail.gmail.com>
-Subject: Re: [PATCH 11/19] hw/timer/xilinx_timer: Allow down to 8-bit memory
- access
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/19] hw/microblaze: Restrict MemoryRegionOps are
+ implemented as 32-bit
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>, Thomas Huth <thuth@redhat.com>,
  qemu-arm@nongnu.org, devel@lists.libvirt.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20241105130431.22564-1-philmd@linaro.org>
+ <20241105130431.22564-8-philmd@linaro.org>
+ <21b166ef-258c-4497-abf2-135022eb4f0e@linaro.org>
+Content-Language: en-US
+In-Reply-To: <21b166ef-258c-4497-abf2-135022eb4f0e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,42 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 5, 2024 at 11:07=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> Allow down to 8-bit access, per the datasheet (reference added
-> in previous commit):
->
->  "Timer Counter registers are accessed as one of the following types:
->   =E2=80=A2 Byte (8 bits)
->   =E2=80=A2 Half word (2 bytes)
->   =E2=80=A2 Word (4 bytes)"
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On 5/11/24 23:24, Philippe Mathieu-Daudé wrote:
+> On 5/11/24 14:04, Philippe Mathieu-Daudé wrote:
+>> All these MemoryRegionOps read() and write() handlers are
+>> implemented expecting 32-bit accesses. Clarify that setting
+>> .impl.min/max_access_size fields.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/char/xilinx_uartlite.c | 4 ++++
+>>   hw/intc/xilinx_intc.c     | 4 ++++
+>>   hw/net/xilinx_ethlite.c   | 4 ++++
+>>   hw/timer/xilinx_timer.c   | 4 ++++
+>>   4 files changed, 16 insertions(+)
+>>
+>> diff --git a/hw/char/xilinx_uartlite.c b/hw/char/xilinx_uartlite.c
+>> index a69ad769cc4..892efe81fee 100644
+>> --- a/hw/char/xilinx_uartlite.c
+>> +++ b/hw/char/xilinx_uartlite.c
+>> @@ -170,6 +170,10 @@ static const MemoryRegionOps uart_ops = {
+>>       .read = uart_read,
+>>       .write = uart_write,
+>>       .endianness = DEVICE_NATIVE_ENDIAN,
+>> +    .impl = {
+>> +        .min_access_size = 4,
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Odd. The change makes the qtests pass, but here I'm modifying .impl,
+not .valid... Since .valid.min_access_size = 1, SBI is a valid
+opcode, no need to use SWI.
 
-Alistair
-
+>> +        .max_access_size = 4,
+>> +    },
+>>       .valid = {
+>>           .min_access_size = 1,
+>>           .max_access_size = 4,
+> 
+> To have qtests working I need to squash:
+> 
+> -- >8 --
+> diff --git a/tests/qtest/boot-serial-test.c 
+> b/tests/qtest/boot-serial-test.c
+> index 3b92fa5d506..6d9291c8ae2 100644
+> --- a/tests/qtest/boot-serial-test.c
+> +++ b/tests/qtest/boot-serial-test.c
+> @@ -57,7 +57,7 @@ static const uint8_t kernel_pls3adsp1800[] = {
+>       0xb0, 0x00, 0x84, 0x00,                 /* imm   0x8400 */
+>       0x30, 0x60, 0x00, 0x04,                 /* addik r3,r0,4 */
+>       0x30, 0x80, 0x00, 0x54,                 /* addik r4,r0,'T' */
+> -    0xf0, 0x83, 0x00, 0x00,                 /* sbi   r4,r3,0 */
+> +    0xf8, 0x83, 0x00, 0x00,                 /* swi   r4,r3,0 */
+>       0xb8, 0x00, 0xff, 0xfc                  /* bri   -4  loop */
+>   };
+> 
+> @@ -65,7 +65,7 @@ static const uint8_t kernel_plml605[] = {
+>       0xe0, 0x83, 0x00, 0xb0,                 /* imm   0x83e0 */
+>       0x00, 0x10, 0x60, 0x30,                 /* addik r3,r0,0x1000 */
+>       0x54, 0x00, 0x80, 0x30,                 /* addik r4,r0,'T' */
+> -    0x00, 0x00, 0x83, 0xf0,                 /* sbi   r4,r3,0 */
+> +    0x00, 0x00, 0x83, 0xf8,                 /* swi   r4,r3,0 */
+>       0xfc, 0xff, 0x00, 0xb8                  /* bri   -4  loop */
+>   };
 > ---
->  hw/timer/xilinx_timer.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
-> index 3e272c8bb39..e9498fc7eec 100644
-> --- a/hw/timer/xilinx_timer.c
-> +++ b/hw/timer/xilinx_timer.c
-> @@ -201,7 +201,7 @@ static const MemoryRegionOps timer_ops =3D {
->          .max_access_size =3D 4,
->      },
->      .valid =3D {
-> -        .min_access_size =3D 4,
-> +        .min_access_size =3D 1,
->          .max_access_size =3D 4,
->      },
->  };
-> --
-> 2.45.2
->
->
+> 
+> to access the uart by 32-bit instead of 8-bit.
+
 
