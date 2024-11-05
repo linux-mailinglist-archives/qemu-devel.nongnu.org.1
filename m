@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A866F9BC3F5
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 04:39:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F0E9BC402
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 04:44:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8AOj-0001BR-JW; Mon, 04 Nov 2024 22:38:29 -0500
+	id 1t8ATW-0002at-AO; Mon, 04 Nov 2024 22:43:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8AOh-0001Ay-VL; Mon, 04 Nov 2024 22:38:28 -0500
-Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1t8ATT-0002ae-UF
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 22:43:24 -0500
+Received: from mail-io1-xd43.google.com ([2607:f8b0:4864:20::d43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8AOg-0000Ut-DF; Mon, 04 Nov 2024 22:38:27 -0500
-Received: by mail-vk1-xa31.google.com with SMTP id
- 71dfb90a1353d-50d32d82bd8so1543891e0c.1; 
- Mon, 04 Nov 2024 19:38:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1t8ATS-0000zu-0O
+ for qemu-devel@nongnu.org; Mon, 04 Nov 2024 22:43:23 -0500
+Received: by mail-io1-xd43.google.com with SMTP id
+ ca18e2360f4ac-83abc039b25so197422539f.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Nov 2024 19:43:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730777905; x=1731382705; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PZSgRnzBOZa/Qscj4ZeSqmsdXbQm+WfJ6DPvRjrBho4=;
- b=TSbzQOG80rxBrmqmS+OkaJUvNZGVsgNNNtOTQylp9ij6IfSbGW+oq+cG/bB3FxsDnl
- wvuWzY+cvKWS5Qq3GV2NaySI28Elhup6LNCVvfk44NS+Q5asRyN4G+QffZ4R8TojDkjL
- Nswe70NUC8QC+Yj+spJ3u+upxEi3bI9nxkssRZ+LGS9XsJc3aSA2KCOugREs6TqH2fgo
- fUpF0stZFTqlsfjx2FZnHFLbVjFYd46Cn5snTTgMJPKAkhwXnuQjKgn7cRmh/ZhTfcFt
- W0TRkT0sAooGNJ69VN73KUir23Nze0d53LI7dsjQ+Z0rK7DaEMXLfvTlAlSVxVtmLXfO
- idOg==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1730778200; x=1731383000;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eYDuXKXX17/hYaQjSmGzkWh5AA9mf4cKGn+ZKOMQRSQ=;
+ b=VCpy1MmhB4HCuwrVUFKU0ukhco/Sq/2uhbnpN+6W3eF9nF55Swq3N6Rq9ZzT6p4ywJ
+ OWlVF3TWR6IZQ/pO+bScUeiBpeWyPkwwthYGf99Uq/kC8OGXaUEw46s+dEQoc/qhDnIL
+ sS+/JNeodnoJu06XJHD3H172oSmjCzdcqgwVAZ/wd2Ccz9JZ9PXYkUXwtBJ+NRWrJVfT
+ GATDLjn6j6XmLXgUU7SShjXSLF8wE4uj2ndn0YooFIZZeXAEnVVWOFlq6PRd9chDCaqJ
+ RYl0TEkGaorsRSzp988cCDypCHE9D6jFJeYN9/dxXKnEJp/fLtoiQErGsH2RiuIYpBQf
+ i/cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730777905; x=1731382705;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PZSgRnzBOZa/Qscj4ZeSqmsdXbQm+WfJ6DPvRjrBho4=;
- b=u4JfkVAZExwaBbuHNYrXsJ3f2G1mWjqdxMJRj58U7ve6WluzVXSxubCpA8OXSatSeT
- sbzc72+MXVR9+HpfAxJl7zvQ5nQDN9WM+6OXByNitkvsJbqQriQ9Nxvi9gk3vSvG91hG
- 7XzOjqJDR46NF5sklmLoHx+MwDQiKId3zdDZjEyw+kmSFaKOFy/OixkfO2Dgs5IO5otJ
- dRi7bJFZtONI4+bQPkff7louInzJNtfeN3jGvwPXBKc9iRTD4u0dIhWBX7/gzbXFZ91x
- dKDnYj+Rov9Wn8lL1TFcKEhiI88VFmTLKODJ8iSqHz9M3op10Jwk5ppxzDBPb1U/yMfa
- solw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoVzP0dJTRNGY4fdsDl1rrzyOViyBut1JRjTXTw1Sx5KpOK2zTKeqbHnqULCWWFpNAxvp6e/QWxcWP@nongnu.org
-X-Gm-Message-State: AOJu0YzSu3JA9lgj33ZETcR95jeB/MliaZVyXJDqDc/xk92Xv3iyV2R4
- 5zz07HAWo1VQ/9j+XtIPmBo6eXrCT5Vv4xgGJfbxMqe5PeXF3M+KdUW6q4/DYLrI6CISnZNYhGm
- /zsuOdovGxtqorykIqvK108YW/Z8=
-X-Google-Smtp-Source: AGHT+IGgIcMLF/qjTuCKISpFFleDGiCMEy/TyP1D4SE0rUWfeBRx07/SLEgkvspsz60dY6eTNa1UmvqAU/fmyqBLJ0Y=
-X-Received: by 2002:a05:6122:1d4c:b0:50d:a31c:678c with SMTP id
- 71dfb90a1353d-5106ae6d944mr17639708e0c.2.1730777904530; Mon, 04 Nov 2024
- 19:38:24 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730778200; x=1731383000;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eYDuXKXX17/hYaQjSmGzkWh5AA9mf4cKGn+ZKOMQRSQ=;
+ b=UPtX3tS0VWmbCKmG49/RV106pKgXs0CuM89UG/ZC7XUSb4fWqyKxrmZrDIUdp32rvb
+ H39oYIkrg4eF2krTjaylplHuVM/Iy0/X1oMqJQUWfOuHYo6Vuile739AL8ZxzdHCs5UK
+ Lw6j/+DOfem5iUXHRsl/ZEcBoOjUtv22R2FDkCx//Inial9w1rkwL9phWTHKCeFNAGd9
+ CQa6sXQisdA25dJ0m2Ep3a2Gq+YQpB2/peaD78YakJ3NiwxEbbvzAj3l9BJvtESzhNZU
+ C6NI+mDjSGR4sEXhoRmuypqGd8kf0t3t1e5kx1weXHpaMwjGjSTtSEmsPzfV0SpMoAPZ
+ zsaw==
+X-Gm-Message-State: AOJu0YyJ5ejM+Ny+OfbAoq7tLgo1Y4zuDTfWDPq2t7t5cddEp1yNk5pb
+ yk0l282Ms7xYuC+ZlAPE53KoJDLg6Ja5qrfrcfHC1syQAyYn4O9A55W5aV83q8Cp2WQjSQtHh73
+ BFUce2cZZ
+X-Google-Smtp-Source: AGHT+IFtJtc0IqYeVYm6maUbYp/PtH8vxi6yZN+wetJ8jhZ6vN9nqT7t+amMDNpSiTC8c04fJ9MGaA==
+X-Received: by 2002:a05:6e02:1707:b0:3a4:da7a:15a2 with SMTP id
+ e9e14a558f8ab-3a6b0219e07mr127702355ab.5.1730778199763; 
+ Mon, 04 Nov 2024 19:43:19 -0800 (PST)
+Received: from dune.bsdimp.com ([50.253.99.174])
+ by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3a6bddcdcd8sm17162665ab.37.2024.11.04.19.43.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Nov 2024 19:43:18 -0800 (PST)
+From: Warner Losh <imp@bsdimp.com>
+To: qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>, Jessica Clarke <jrtc27@jrtc27.com>,
+ Kyle Evans <kevans@freebsd.org>
+Subject: [PULL 0/3] Bsd user 2024q4 patches
+Date: Mon,  4 Nov 2024 20:40:36 -0700
+Message-ID: <20241105034039.31143-1-imp@bsdimp.com>
+X-Mailer: git-send-email 2.46.1
 MIME-Version: 1.0
-References: <20240918171412.150107-1-max.chou@sifive.com>
-In-Reply-To: <20240918171412.150107-1-max.chou@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 5 Nov 2024 13:37:58 +1000
-Message-ID: <CAKmqyKML3BnmcNXNRmxAbwFzbTeC+4x+kwqtOhQCzVRcnDqytw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/7] Improve the performance of RISC-V vector
- unit-stride/whole register ld/st instructions
-To: Max Chou <max.chou@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- richard.henderson@linaro.org, negge@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::d43;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd43.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,109 +89,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 3:15=E2=80=AFAM Max Chou <max.chou@sifive.com> wrot=
-e:
->
-> Hi,
->
-> This version fixes several issues in v5
-> - The cross page bound checking issue
-> - The mismatch vl comparison in the early exit checking of vext_ldst_us
-> - The endian issue when host is big endian
->
-> Thank for Richard Henderson's suggestions that this version unrolled the
-> loop in helper functions of unmasked vector unit-stride load/store
-> instructions, etc.
->
-> And this version also extends the optimizations to the unmasked vector
-> fault-only-first load instruction.
->
-> Some performance result of this version
-> 1. Test case provided in
->     https://gitlab.com/qemu-project/qemu/-/issues/2137#note_1757501369
->     - QEMU user mode (vlen=3D128):
->         - Original:   ~11.8 sec
->         - v5:          ~1.3 sec
->         - v6:          ~1.2 sec
->     - QEMU system mode (vlen=3D128):
->         - Original:   ~29.4 sec
->         - v5:          ~1.6 sec
->         - v6:          ~1.6 sec
-> 2. SPEC CPU2006 INT (test input)
->     - QEMU user mode (vlen=3D128)
->         - Original:  ~459.1 sec
->         - v5:        ~300.0 sec
->         - v6:        ~280.6 sec
-> 3. SPEC CPU2017 intspeed (test input)
->     - QEMU user mode (vlen=3D128)
->         - Original: ~2475.9 sec
->         - v5:       ~1702.6 sec
->         - v6:       ~1663.4 sec
->
->
-> This version is based on the riscv-to-apply.next branch(commit 90d5d3c).
->
-> Changes from v5:
-> - patch 2
->     - Replace the VSTART_CHECK_EARLY_EXIT function by checking the
->       correct evl in vext_ldst_us.
-> - patch 3
->     - Unroll the memory load/store loop
->     - Fix the bound checking issue in cross page elements
->     - Fix the endian issue in GEN_VEXT_LD_ELEM/GEN_VEXT_ST_ELEM
->     - Pass in mmu_index for vext_page_ldst_us
->     - Reduce the flag & host checking
-> - patch 4
->     - Unroll the memory load/store loop
->     - Fix the bound checking issue in cross page elements
-> - patch 5
->     - Extend optimizations to unmasked vector fault-only-first load
->       instruction
-> - patch 6
->     - Switch to memcpy only when doing byte load/store
-> - patch 7
->     - Inline the vext_page_ldst_us function
->
-> Previous versions:
-> - v1: https://lore.kernel.org/all/20240215192823.729209-1-max.chou@sifive=
-.com/
-> - v2: https://lore.kernel.org/all/20240531174504.281461-1-max.chou@sifive=
-.com/
-> - v3: https://lore.kernel.org/all/20240613141906.1276105-1-max.chou@sifiv=
-e.com/
-> - v4: https://lore.kernel.org/all/20240613175122.1299212-1-max.chou@sifiv=
-e.com/
-> - v5: https://lore.kernel.org/all/20240717133936.713642-1-max.chou@sifive=
-.com/
->
-> Max Chou (7):
->   target/riscv: Set vdata.vm field for vector load/store whole register
->     instructions
->   target/riscv: rvv: Replace VSTART_CHECK_EARLY_EXIT in vext_ldst_us
->   target/riscv: rvv: Provide a fast path using direct access to host ram
->     for unmasked unit-stride load/store
->   target/riscv: rvv: Provide a fast path using direct access to host ram
->     for unit-stride whole register load/store
->   target/riscv: rvv: Provide a fast path using direct access to host ram
->     for unit-stride load-only-first load instructions
->   target/riscv: rvv: Provide group continuous ld/st flow for unit-stride
->     ld/st instructions
->   target/riscv: Inline unit-stride ld/st and corresponding functions for
->     performance
+The following changes since commit daaf51001a13da007d7dde72e1ed3b06bc490791:
 
-Thanks!
+  Merge tag 'seabios-hppa-v17-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2024-11-04 16:01:23 +0000)
 
-Applied to riscv-to-apply.next
+are available in the Git repository at:
 
-Alistair
+  git@gitlab.com:bsdimp/qemu.git tags/bsd-user-2024q4-pull-request
 
->
->  target/riscv/insn_trans/trans_rvv.c.inc |   3 +
->  target/riscv/vector_helper.c            | 598 ++++++++++++++++--------
->  2 files changed, 400 insertions(+), 201 deletions(-)
->
-> --
-> 2.34.1
->
->
+for you to fetch changes up to 52a523af71448f62e8523ed002447c95170381e9:
+
+  bsd-user: Set TaskState ts_tid for initial threads (2024-11-04 20:26:40 -0700)
+
+----------------------------------------------------------------
+bsd-user: Minor fixes
+
+These patches have been in my queue pending too long (I have a bunch of others
+that haven't been reviewd, but those will be done clsoe to the end of the
+release to not get in the way of the release).
+
+The patches align the stack properly on x86_64, implements setting the tb-size
+and properly setting the ts_tid for initial threads. They have all been
+reviewed.
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
+
+iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmcpkl0ACgkQbBzRKH2w
+EQADmRAAl301TtPNsGmrjq74qHgFWPNHc4SSQlK8oIIBgM2Mco/sva5N8ZsCIo4K
+G6uHRbDn3AXUzi7N72ZRKFxQMDQfthtQDskGvsg3zD96pYXkWF6dB3FwSs0Kg0QW
+ow3jj7qiP8NWlbAnMq4fXdtkLGD7S1Og606BYUvk13ILHLY6kwvSWJv53Cq+lDXg
+IQkHGWckG5Xvn/OY3KoLbw77APBCn/fbH6e2yAnBgS8STzEPf2I8xWEiwP6gMpc/
+/BdWkEmqJn5hM//Nf+Yz0uTVMh7egwP8+NjTqYMzWCU3kV0Gtk1cTvpJX3wyzZvZ
+exLOMjL4C+BClA7EJtBvsRrnvv+8ytxn7F3VCeqFR5nAZiU4L3+WfpSjVe8oYCAw
+DL8LYKQA0Abwt6F8EPHwxPxO7HWAKJ4Wxrwlz66juA8gOyuRp+ueVH11ztds6yeh
+rWEgwdXMBOuBcNCGgkuTOajFTRK8hmQNcf/okwODMa5Gj2ayyNmFTnD/bFPe7CbA
+GzJERU+Xtz1wFg+c5LRqqrOnDqD3wDXDrcOuHRhdRWbAl0rLCdH1CLORXZ3XTuF4
+m9JxmaRiCs++a5XswRrSzxb6BM6hKmKX3baGZUeVW6lKyGyyqvY+uUVKkv4U8KqP
+jLPPHE4dicl0/1QbGHZY52gkLYRFXdKa/xKhc8NHXtaWSFACzmo=
+=8H2C
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Ilya Leoshkevich (2):
+  bsd-user/x86_64/target_arch_thread.h: Align stack
+  bsd-user/main: Allow setting tb-size
+
+Jessica Clarke (1):
+  bsd-user: Set TaskState ts_tid for initial threads
+
+ bsd-user/main.c                      | 10 ++++++++++
+ bsd-user/x86_64/target_arch_thread.h |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+-- 
+2.46.1
+
 
