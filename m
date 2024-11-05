@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374E39BD005
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734759BD002
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:04:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8L6O-0000rW-FU; Tue, 05 Nov 2024 10:04:16 -0500
+	id 1t8L6P-0000re-0F; Tue, 05 Nov 2024 10:04:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8L67-0000qO-E5
+ id 1t8L67-0000qP-No
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:04:01 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8L64-0000sK-SV
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:03:58 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-431695fa98bso44018095e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 07:03:56 -0800 (PST)
+ id 1t8L65-0000sY-Ut
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:03:59 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43193678216so47929655e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 07:03:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730819035; x=1731423835; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730819036; x=1731423836; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eaNGgA/3s4B5UQl+uW6P+WyGFlnv2zD4SxX8VdqUOa8=;
- b=ZUkIs3VaUAJ+KUEx1dzh4PFyO4K9fk0L8XR0ZAUm/Dsl0gb71GIhEkxtcsaPfdAeow
- TfTZk7SvII0Dto4uP7KHtR7X4+dWH8WN7tHwEZEvNrZKHUt0PVWrhamsGJQgHwrog25M
- sP6yj+yvhG5yMIG4F9ZY+lqHZQWzBpdzpWCXPa1jwdbuIYRPpILAl47IvBkZtNyN82zS
- 4E3a19ld7zGi/XhxhjDdfEPO2I6ip4lMCzwSRWs38L6z3Tqf13dwuFv10aS55ArqD/0m
- Y6EIVHk/2DKRULNg4u1142ijmFy01Jb1ANkC5VlCBVIqEqCxshMiKU0YrLDf3t1hvGXN
- +Sjw==
+ bh=SQYS0DlDBWW5TkKFH2M/YnaXSSYT19q0Qc+ybblli20=;
+ b=pmlHLf8gJChHXGGiHXvQtUF0FHiLMxXQnaHMt6t09DqRKiQF+bEVuKsjrhJuC0OQpa
+ RuIP8YtvlADxs1FIbLGVciTYkxtD0qK8tDGjmqQ36RucYb06NDfa9XruwuhoxNQg4+PI
+ V2uhwmjMvUdUnAdrE5G10+BnArJgpTs07sPgq4wW3baAvVjzGlmjXzJ66I0NgfezAs+c
+ N2X2R2Z0JForzZXW7VllmhQhIQ6wvDwKsXa28X2Ag0CowGeljIF9Ze9BiF+leIlO0jXi
+ KS2FZLCpXg7UzEbe3cztmRvwzdXG02od5l9h4NFdBxFQPqc5hbmvBveSruYzoUoNtUYY
+ qK3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730819035; x=1731423835;
+ d=1e100.net; s=20230601; t=1730819036; x=1731423836;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eaNGgA/3s4B5UQl+uW6P+WyGFlnv2zD4SxX8VdqUOa8=;
- b=iH4q7HNV9rPH7Kx2kUL+XIi9l6OGpb5WKNVgA0rVTkg2Xqd4LtcwxOgjzUFKaHKDAr
- 1B6XkpPljg2AVnp72dBJxK6AKFgI01Xgjla3edn8K279vg5fWDUR8NRsr3+FT0Gd0jZH
- Xg81MNi2bpnnyG+I1xJtAnsSq5fAji5ziRRMPBgrV3yAp3WQyJSxMHskvz+dt9QHa8MT
- piVwr/Mmm5bXoPZfuBTDgAFRkWkFZqx/VOsO3DBsAeq7UcUjg3wAnhIa6kGw3qhKmiI2
- f0FK8svTQFfKdLH1QAvIXaATzz7P7+1qiB+QmTBONpGkakiU5Rap2/KRM6V93SpPzWU2
- im6g==
-X-Gm-Message-State: AOJu0Ywqhdng/EftJnbi1hfttJjXDV/knD1ewywfj2d7WccwuqbLjLd7
- HNUWvCU/p5ecScjpwrtmKI2gkthu+bUawV0XGFQ4/YOBi7RRhUDG9EYM6dHeOQyRLDxImd/gGdL
- aKhk=
-X-Google-Smtp-Source: AGHT+IHWzIAbZlSVxFFHjnOHHu3cNfBisF0ErxpPhWoiB/fPLIOqz8ohemA3I9CH1vAIv2VSj8I3FA==
-X-Received: by 2002:a05:600c:3b14:b0:426:8884:2c58 with SMTP id
- 5b1f17b1804b1-4319ac6fb0amr306289915e9.4.1730819034911; 
- Tue, 05 Nov 2024 07:03:54 -0800 (PST)
+ bh=SQYS0DlDBWW5TkKFH2M/YnaXSSYT19q0Qc+ybblli20=;
+ b=fZY+HyKplZkNEht7GIfVYyzv9Pg1BzYftL/Rs9pAn2hDA7Up5OMmCDvASb1im9XmuG
+ NamkM2hUFMv+sSXrsLLFUf92npwCfSEusWAVxXHes11x4PTwaUd7nAHvDShdBLS6ZsFj
+ W7cGi0zpBMRT/E9EoqRgsp56LqqkKKoZXvaFd9Du+PcRDrhAq4XtTHQvVUv2UsBSISxk
+ 2wT4HmdaCKs9BRLepGPQjMduhOV8Vl7maiTvLO1oT2PD8KC1V2aKOm/HGkHI/4JURlS5
+ YEvqHBkPgeLwUvjgr+t2i4VNX3AbwsDegDoE8SQOFiioqLOIyjZiF+8QACjIzJDen1i0
+ 0Pkw==
+X-Gm-Message-State: AOJu0YxaKu/8O6FLLwqJA8zmf4iWWpTRuEAqLd2dyvNNxGbJQsP4nFeV
+ oPskPRM0/Km4SEXHzRUdcihbwc5KghECZlAiMQxW5bTty739IxMimS37kpuuLkGt9jJq7/fmNOw
+ oy+s=
+X-Google-Smtp-Source: AGHT+IHfs0QLAR/HgRKbdDddYcw1+vZL+Io3azI+3PGkpBJGEPgyiHIpc47AqMmCQ54YV1/HlZhQNw==
+X-Received: by 2002:a05:600c:458e:b0:42c:baf9:bee7 with SMTP id
+ 5b1f17b1804b1-4328250f211mr168768985e9.12.1730819035876; 
+ Tue, 05 Nov 2024 07:03:55 -0800 (PST)
 Received: from stoup.. ([154.14.63.34]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd9ca6f8sm221301855e9.39.2024.11.05.07.03.54
+ 5b1f17b1804b1-431bd9ca6f8sm221301855e9.39.2024.11.05.07.03.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 07:03:54 -0800 (PST)
+ Tue, 05 Nov 2024 07:03:55 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 3/4] linux-user: Allow custom rt signal mappings
-Date: Tue,  5 Nov 2024 15:03:47 +0000
-Message-ID: <20241105150348.446982-4-richard.henderson@linaro.org>
+Subject: [PULL 4/4] tests/tcg: Add SIGRTMIN/SIGRTMAX test
+Date: Tue,  5 Nov 2024 15:03:48 +0000
+Message-ID: <20241105150348.446982-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241105150348.446982-1-richard.henderson@linaro.org>
 References: <20241105150348.446982-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,288 +93,118 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Some applications want to use low priority realtime signals (e.g.,
-SIGRTMAX). Currently QEMU cannot map all target realtime signals to
-host realtime signals, and chooses to sacrifice the end of the target
-realtime signal range.
-
-Allow users to choose how to map target realtime signals to host
-realtime signals using the new -t option, the new QEMU_RTSIG_MAP
-environment variable, and the new -Drtsig_map=\"...\" meson flag.
-To simplify things, the meson flag is not per-target, because the
-intended use case is app-specific qemu-user builds.
-
-The mapping is specified using the "tsig hsig count[,...]" syntax.
-Target realtime signals [tsig,tsig+count) are mapped to host realtime
-signals [hsig,hsig+count). Care is taken to avoid double and
-out-of-range mappings.
+Test the lowest and the highest real-time signals. This requires
+configuring the real-time signal mapping, and therefore some knowledge
+about the host. To this end, pass the emulator path in the QEMU
+environment variable to all tests (this should not disturb the existing
+ones), and assume that all hosts have signals 36-39 available.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241029232211.206766-2-iii@linux.ibm.com>
+Message-ID: <20241029232211.206766-3-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal-common.h    |   2 +-
- linux-user/main.c             |  12 +++-
- linux-user/signal.c           | 108 +++++++++++++++++++++++++++-------
- meson.build                   |   3 +-
- meson_options.txt             |   2 +
- scripts/meson-buildoptions.sh |   2 +
- 6 files changed, 106 insertions(+), 23 deletions(-)
+ tests/tcg/multiarch/linux/linux-sigrtminmax.c | 74 +++++++++++++++++++
+ tests/tcg/Makefile.target                     |  4 +-
+ 2 files changed, 76 insertions(+), 2 deletions(-)
+ create mode 100644 tests/tcg/multiarch/linux/linux-sigrtminmax.c
 
-diff --git a/linux-user/signal-common.h b/linux-user/signal-common.h
-index f4cbe6185e..8584d9ecc2 100644
---- a/linux-user/signal-common.h
-+++ b/linux-user/signal-common.h
-@@ -56,7 +56,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-                     target_sigset_t *set, CPUArchState *env);
- 
- void process_pending_signals(CPUArchState *cpu_env);
--void signal_init(void);
-+void signal_init(const char *rtsig_map);
- void queue_signal(CPUArchState *env, int sig, int si_type,
-                   target_siginfo_t *info);
- void host_to_target_siginfo(target_siginfo_t *tinfo, const siginfo_t *info);
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 8143a0d4b0..b09af8d436 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -412,6 +412,13 @@ static void handle_arg_reserved_va(const char *arg)
-     reserved_va = val ? val - 1 : 0;
- }
- 
-+static const char *rtsig_map = CONFIG_QEMU_RTSIG_MAP;
+diff --git a/tests/tcg/multiarch/linux/linux-sigrtminmax.c b/tests/tcg/multiarch/linux/linux-sigrtminmax.c
+new file mode 100644
+index 0000000000..a7059aacd9
+--- /dev/null
++++ b/tests/tcg/multiarch/linux/linux-sigrtminmax.c
+@@ -0,0 +1,74 @@
++/*
++ * Test the lowest and the highest real-time signals.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
 +
-+static void handle_arg_rtsig_map(const char *arg)
++/* For hexagon and microblaze. */
++#ifndef __SIGRTMIN
++#define __SIGRTMIN 32
++#endif
++
++extern char **environ;
++
++static bool seen_sigrtmin, seen_sigrtmax;
++
++static void handle_signal(int sig)
 +{
-+    rtsig_map = arg;
++    if (sig == SIGRTMIN) {
++        seen_sigrtmin = true;
++    } else if (sig == SIGRTMAX) {
++        seen_sigrtmax = true;
++    } else {
++        _exit(1);
++    }
 +}
 +
- static void handle_arg_one_insn_per_tb(const char *arg)
- {
-     opt_one_insn_per_tb = true;
-@@ -494,6 +501,9 @@ static const struct qemu_argument arg_table[] = {
-      "address",    "set guest_base address to 'address'"},
-     {"R",          "QEMU_RESERVED_VA", true,  handle_arg_reserved_va,
-      "size",       "reserve 'size' bytes for guest virtual address space"},
-+    {"t",          "QEMU_RTSIG_MAP",   true,  handle_arg_rtsig_map,
-+     "tsig hsig n[,...]",
-+                   "map target rt signals [tsig,tsig+n) to [hsig,hsig+n]"},
-     {"d",          "QEMU_LOG",         true,  handle_arg_log,
-      "item[,...]", "enable logging of specified items "
-      "(use '-d help' for a list of items)"},
-@@ -1002,7 +1012,7 @@ int main(int argc, char **argv, char **envp)
- 
-     target_set_brk(info->brk);
-     syscall_init();
--    signal_init();
-+    signal_init(rtsig_map);
- 
-     /* Now that we've loaded the binary, GUEST_BASE is fixed.  Delay
-        generating the prologue until now so that the prologue can take
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 63ac2df53b..9b6d772882 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -18,6 +18,7 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/bitops.h"
-+#include "qemu/cutils.h"
- #include "gdbstub/user.h"
- #include "exec/page-protection.h"
- #include "hw/core/tcg-cpu-ops.h"
-@@ -513,20 +514,81 @@ static int core_dump_signal(int sig)
-     }
- }
- 
--static void signal_table_init(void)
-+static void signal_table_init(const char *rtsig_map)
- {
-     int hsig, tsig, count;
- 
-+    if (rtsig_map) {
-+        /*
-+         * Map host RT signals to target RT signals according to the
-+         * user-provided specification.
-+         */
-+        const char *s = rtsig_map;
++int main(int argc, char **argv)
++{
++    char *qemu = getenv("QEMU");
++    struct sigaction act;
 +
-+        while (true) {
-+            int i;
++    assert(qemu);
 +
-+            if (qemu_strtoi(s, &s, 10, &tsig) || *s++ != ' ') {
-+                fprintf(stderr, "Malformed target signal in QEMU_RTSIG_MAP\n");
-+                exit(EXIT_FAILURE);
-+            }
-+            if (qemu_strtoi(s, &s, 10, &hsig) || *s++ != ' ') {
-+                fprintf(stderr, "Malformed host signal in QEMU_RTSIG_MAP\n");
-+                exit(EXIT_FAILURE);
-+            }
-+            if (qemu_strtoi(s, &s, 10, &count) || (*s && *s != ',')) {
-+                fprintf(stderr, "Malformed signal count in QEMU_RTSIG_MAP\n");
-+                exit(EXIT_FAILURE);
-+            }
++    if (!getenv("QEMU_RTSIG_MAP")) {
++        char **new_argv = malloc((argc + 2) + sizeof(char *));
++        int tsig1, hsig1, count1, tsig2, hsig2, count2;
++        char rt_sigmap[64];
 +
-+            for (i = 0; i < count; i++, tsig++, hsig++) {
-+                if (tsig < TARGET_SIGRTMIN || tsig > TARGET_NSIG) {
-+                    fprintf(stderr, "%d is not a target rt signal\n", tsig);
-+                    exit(EXIT_FAILURE);
-+                }
-+                if (hsig < SIGRTMIN || hsig > SIGRTMAX) {
-+                    fprintf(stderr, "%d is not a host rt signal\n", hsig);
-+                    exit(EXIT_FAILURE);
-+                }
-+                if (host_to_target_signal_table[hsig]) {
-+                    fprintf(stderr, "%d already maps %d\n",
-+                            hsig, host_to_target_signal_table[hsig]);
-+                    exit(EXIT_FAILURE);
-+                }
-+                host_to_target_signal_table[hsig] = tsig;
-+            }
-+
-+            if (*s) {
-+                s++;
-+            } else {
-+                break;
-+            }
-+        }
-+    } else {
-+        /*
-+         * Default host-to-target RT signal mapping.
-+         *
-+         * Signals are supported starting from TARGET_SIGRTMIN and going up
-+         * until we run out of host realtime signals.  Glibc uses the lower 2
-+         * RT signals and (hopefully) nobody uses the upper ones.
-+         * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
-+         * To fix this properly we would need to do manual signal delivery
-+         * multiplexed over a single host signal.
-+         * Attempts for configure "missing" signals via sigaction will be
-+         * silently ignored.
-+         *
-+         * Reserve one signal for internal usage (see below).
-+         */
-+
-+        hsig = SIGRTMIN + 1;
-+        for (tsig = TARGET_SIGRTMIN;
-+             hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
-+             hsig++, tsig++) {
-+            host_to_target_signal_table[hsig] = tsig;
-+        }
++        /* Re-exec with a mapping that includes SIGRTMIN and SIGRTMAX. */
++        new_argv[0] = qemu;
++        memcpy(&new_argv[1], argv, (argc + 1) * sizeof(char *));
++        tsig1 = __SIGRTMIN;
++        /* The host must have a few signals starting from this one. */
++        hsig1 = 36;
++        count1 = SIGRTMIN - __SIGRTMIN + 1;
++        tsig2 = SIGRTMAX;
++        hsig2 = hsig1 + count1;
++        count2 = 1;
++        snprintf(rt_sigmap, sizeof(rt_sigmap), "%d %d %d,%d %d %d",
++                 tsig1, hsig1, count1, tsig2, hsig2, count2);
++        setenv("QEMU_RTSIG_MAP", rt_sigmap, 0);
++        assert(execve(new_argv[0], new_argv, environ) == 0);
++        return EXIT_FAILURE;
 +    }
 +
-     /*
--     * Signals are supported starting from TARGET_SIGRTMIN and going up
--     * until we run out of host realtime signals.  Glibc uses the lower 2
--     * RT signals and (hopefully) nobody uses the upper ones.
--     * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
--     * To fix this properly we would need to do manual signal delivery
--     * multiplexed over a single host signal.
--     * Attempts for configure "missing" signals via sigaction will be
--     * silently ignored.
--     *
-      * Remap the target SIGABRT, so that we can distinguish host abort
-      * from guest abort.  When the guest registers a signal handler or
-      * calls raise(SIGABRT), the host will raise SIG_RTn.  If the guest
-@@ -536,21 +598,27 @@ static void signal_table_init(void)
-      * parent sees the correct mapping from wait status.
-      */
++    memset(&act, 0, sizeof(act));
++    act.sa_handler = handle_signal;
++    assert(sigaction(SIGRTMIN, &act, NULL) == 0);
++    assert(sigaction(SIGRTMAX, &act, NULL) == 0);
++
++    assert(kill(getpid(), SIGRTMIN) == 0);
++    assert(seen_sigrtmin);
++    assert(kill(getpid(), SIGRTMAX) == 0);
++    assert(seen_sigrtmax);
++
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 9722145b97..95ff76ea44 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -179,10 +179,10 @@ run-plugin-%-with-libmem.so: PLUGIN_ARGS=$(COMMA)inline=true
  
--    hsig = SIGRTMIN;
-     host_to_target_signal_table[SIGABRT] = 0;
--    host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
--
--    for (tsig = TARGET_SIGRTMIN;
--         hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
--         hsig++, tsig++) {
--        host_to_target_signal_table[hsig] = tsig;
-+    for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
-+        if (!host_to_target_signal_table[hsig]) {
-+            host_to_target_signal_table[hsig] = TARGET_SIGABRT;
-+            break;
-+        }
-+    }
-+    if (hsig > SIGRTMAX) {
-+        fprintf(stderr, "No rt signals left for SIGABRT mapping\n");
-+        exit(EXIT_FAILURE);
-     }
+ ifeq ($(filter %-softmmu, $(TARGET)),)
+ run-%: %
+-	$(call run-test, $<, $(QEMU) $(QEMU_OPTS) $<)
++	$(call run-test, $<, env QEMU=$(QEMU) $(QEMU) $(QEMU_OPTS) $<)
  
-     /* Invert the mapping that has already been assigned. */
-     for (hsig = 1; hsig < _NSIG; hsig++) {
-         tsig = host_to_target_signal_table[hsig];
-         if (tsig) {
--            assert(target_to_host_signal_table[tsig] == 0);
-+            if (target_to_host_signal_table[tsig]) {
-+                fprintf(stderr, "%d is already mapped to %d\n",
-+                        tsig, target_to_host_signal_table[tsig]);
-+                exit(EXIT_FAILURE);
-+            }
-             target_to_host_signal_table[tsig] = hsig;
-         }
-     }
-@@ -573,13 +641,13 @@ static void signal_table_init(void)
-     trace_signal_table_init(count);
- }
- 
--void signal_init(void)
-+void signal_init(const char *rtsig_map)
- {
-     TaskState *ts = get_task_state(thread_cpu);
-     struct sigaction act, oact;
- 
-     /* initialize signal conversion tables */
--    signal_table_init();
-+    signal_table_init(rtsig_map);
- 
-     /* Set the signal mask from the host mask. */
-     sigprocmask(0, 0, &ts->signal_mask);
-diff --git a/meson.build b/meson.build
-index c386593c52..9fa9d059ff 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3178,7 +3178,8 @@ foreach target : target_dirs
-     config_target += {
-       'CONFIG_USER_ONLY': 'y',
-       'CONFIG_QEMU_INTERP_PREFIX':
--        get_option('interp_prefix').replace('%M', config_target['TARGET_NAME'])
-+        get_option('interp_prefix').replace('%M', config_target['TARGET_NAME']),
-+      'CONFIG_QEMU_RTSIG_MAP': get_option('rtsig_map'),
-     }
-   endif
- 
-diff --git a/meson_options.txt b/meson_options.txt
-index 24bf009056..ac4887a622 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -27,6 +27,8 @@ option('block_drv_ro_whitelist', type : 'string', value : '',
-        description: 'set block driver read-only whitelist (by default affects only QEMU, not tools like qemu-img)')
- option('interp_prefix', type : 'string', value : '/usr/gnemul/qemu-%M',
-        description: 'where to find shared libraries etc., use %M for cpu name')
-+option('rtsig_map', type : 'string', value : 'NULL',
-+       description: 'default value of QEMU_RTSIG_MAP')
- option('fuzzing_engine', type : 'string', value : '',
-        description: 'fuzzing engine library for OSS-Fuzz')
- option('trace_file', type: 'string', value: 'trace',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 6f2bb08ecd..51ed46e46a 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -72,6 +72,7 @@ meson_options_help() {
-   printf "%s\n" '                           "manufacturer" name for qemu-ga registry entries'
-   printf "%s\n" '                           [QEMU]'
-   printf "%s\n" '  --qemu-ga-version=VALUE  version number for qemu-ga installer'
-+  printf "%s\n" '  --rtsig-map=VALUE        default value of QEMU_RTSIG_MAP [NULL]'
-   printf "%s\n" '  --smbd=VALUE             Path to smbd for slirp networking'
-   printf "%s\n" '  --sysconfdir=VALUE       Sysconf data directory [etc]'
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-@@ -460,6 +461,7 @@ _meson_option_parse() {
-     --disable-replication) printf "%s" -Dreplication=disabled ;;
-     --enable-rng-none) printf "%s" -Drng_none=true ;;
-     --disable-rng-none) printf "%s" -Drng_none=false ;;
-+    --rtsig-map=*) quote_sh "-Drtsig_map=$2" ;;
-     --enable-rust) printf "%s" -Drust=enabled ;;
-     --disable-rust) printf "%s" -Drust=disabled ;;
-     --enable-rutabaga-gfx) printf "%s" -Drutabaga_gfx=enabled ;;
+ run-plugin-%:
+-	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
++	$(call run-test, $@, env QEMU=$(QEMU) $(QEMU) $(QEMU_OPTS) \
+ 		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
+ 		-d plugin -D $*.pout \
+ 		 $(call strip-plugin,$<))
 -- 
 2.43.0
 
