@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB49BD921
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D521E9BD92C
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:54:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SNc-0001Dy-HA; Tue, 05 Nov 2024 17:50:32 -0500
+	id 1t8SNe-0001Vs-Lw; Tue, 05 Nov 2024 17:50:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMo-0000pG-Ou
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:43 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMu-000154-R8
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:50 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMm-0004Rs-Uj
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:42 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43161c0068bso50977385e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMs-0004Sp-Me
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:48 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4315eac969aso1513495e9.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846978; x=1731451778; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846984; x=1731451784; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=POH9GGPh8eEOywwiqXrYQY7PtUqeDBAiKsSZ852ign4=;
- b=mgeeHISbJftcn3a5xULqlnrGKJ9MaaWBKY4x6iSfskmIfuwh8MjTVXiq6d0zNDCA4m
- B3Gr2Jb6cSJ06t+pM93JteSEQEDwIxq2J9v6wAoM+TL1rLE3KlY0QV2bMW8WgvVi8OUp
- qIU398kgd+71RIK68Opc7OVI0ZWaSnMY/EMIUOdNuSFImfQgVopjDY+74e1TSpTzAD1H
- OGQDz8PF5NsZuI+HWUR54AaHhC1OAdmXhvvkjPr2YL4oBis8wsEPD3xOPWjUBRO0lnaq
- Npld8ZNItksaUYbdz09v7UHZPXr7VJ0zRObBL/jRva8lswjp4ZYPIWNhAnDrwTAbP/1J
- fRzw==
+ bh=i3NX0+cSAzGYRrfL4oLem/VlulSkEhLXyoePR+dn9LQ=;
+ b=iCSFID4kc0TpR5ePsB+O6Qk6RoNauEWfnYaLYjqiO6s64u/YDYqJQIT7/F+cQa4URO
+ KLl+wu1Ylkgx+YveDAsl0dj+fgEM/nyxdcxeO0FXzFh1XywYLoDnFAsXMYLbTKznWqyN
+ sTFN7uc3pspl+fje0z6cL4dVK7S+dO316hJETgwYbuMrr5sVwq/wp5mBcfdNdjceZ1il
+ ukdTVrE/vy6QkUtbqD14ESdBqBpck8ABDkbEWlZp/6RotWQx9DnCmp9cSm6BbMJKC8vV
+ 8XXCLmWCOK2WMxN5/ZQSpr/3kHOPfx6k5TPoDgvJB0VIHZU5oD6kOnTYdnyRGDXKX+rw
+ hMEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846978; x=1731451778;
+ d=1e100.net; s=20230601; t=1730846984; x=1731451784;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=POH9GGPh8eEOywwiqXrYQY7PtUqeDBAiKsSZ852ign4=;
- b=CadkVaSAwKOFqfGo3s3p1TltQXQ5L8uI4rFn/mCDkFo8uND4v9gmpGXp+9/VPvvVPW
- AifzDnxdVdm9ZK4w1RT17oXPh/Qg+n3oD1BvUb2X04OnHopxdwSupzXxrJe8uRf/NPU7
- NOPu0Of2VPd0raZq8u34A/mHRyXBgxy1lzF9LK3vObx5vjM6nCA0aVZotex9RbkkTpcl
- O6XtU0FmYCPCnUqsX7MKifD/6gRWE/wu5qzR7fNsHwXPWHVblvY45pzJl7Uy7yEWCxKE
- m3o58+Xzu9GMoqx4kUSgNAP6wsFM1VBK4CiulpZtYxxNhxVzdoUJJ75dg2s/1/2lcgdI
- jSNw==
-X-Gm-Message-State: AOJu0Ywxhl2BWc1WPlZrWWAW00QR8tPSw/6oZQjcyornOmVV/Gu+ws7V
- rbtdKOBt6IS7yxweASSITZGsnexNKLCq9agMBLkY2d1vz16fc1MiYSEp8A/4dkTYWEQmppfStBH
- w/rq3hQ==
-X-Google-Smtp-Source: AGHT+IFARDWuIlrD14VldL+JbiDkVHK27OWqNFtXwUVp/JfdO5Zgkq36a+dmvvR09GHJNS3aB2CJpA==
-X-Received: by 2002:adf:e198:0:b0:37d:51bc:3229 with SMTP id
- ffacd0b85a97d-381c7ac7d79mr14398421f8f.51.1730846978069; 
- Tue, 05 Nov 2024 14:49:38 -0800 (PST)
-Received: from localhost.localdomain ([154.14.63.34])
+ bh=i3NX0+cSAzGYRrfL4oLem/VlulSkEhLXyoePR+dn9LQ=;
+ b=NNblvdSIsscIyN/e9ww67FSGAoRTGLJzxHhgagKapazykwgPAd0O0UssuzbEXJoMST
+ 2vOW3JtYuDJWMxUvao+8fEnU+ZYRgCUgnpysl+Gbydv4q/3ckqga0RFIWxymuAuKbcSS
+ DuF+1qmAq5/1woRXnn7xoZhitrQzhQOt3x+o0sOcRo6/nQqwHPSFYdTXT0K7z1wTBY3l
+ U58FmYmBEaK1qWyiV2QHEAiYD0RYf9jHxLjmcMRGF8cXGz/fs9BfkcuUrePoZOxdSEbn
+ HSwQ5hT+2nsoqCM3FOBEZ76ZFKL3R3+vhqEZIAonTX2mpCcmZOg8DpJiDoEM/f9Fc1BX
+ /oGg==
+X-Gm-Message-State: AOJu0YxNpZ4hx9g1vqSGsvIkij3RBlYN0yo1U9AJkmRYUX5aThnQrarX
+ cFmV9WMjJfk464BxsrN71Pa6jjJs5IxanSYPMUzVIsW3yIRxwtp711KFLTqcYJqf7abAGJFEJEq
+ n2pwyIQ==
+X-Google-Smtp-Source: AGHT+IGdpEbm7TpMArpemwMROqUAziy3iEBBEVtr6QW8X6RH2WK/5bTQJjlsNVPGoA6HLjlTtQqHnA==
+X-Received: by 2002:a05:600c:1f17:b0:42c:b8c9:16c8 with SMTP id
+ 5b1f17b1804b1-432a9aaa8d5mr3137565e9.10.1730846984188; 
+ Tue, 05 Nov 2024 14:49:44 -0800 (PST)
+Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d40d5sm17255398f8f.25.2024.11.05.14.49.37
+ ffacd0b85a97d-381c10e7365sm17187368f8f.54.2024.11.05.14.49.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:49:37 -0800 (PST)
+ Tue, 05 Nov 2024 14:49:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 24/29] hw/sd/sdhci: Prefer DEFINE_TYPES() macro
-Date: Tue,  5 Nov 2024 22:47:22 +0000
-Message-ID: <20241105224727.53059-25-philmd@linaro.org>
+Subject: [PULL 25/29] hw/block/pflash_cfi01: Prefer DEFINE_TYPES() macro
+Date: Tue,  5 Nov 2024 22:47:23 +0000
+Message-ID: <20241105224727.53059-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,113 +97,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-21-shentey@gmail.com>
+Message-ID: <20241103133412.73536-22-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci.c | 62 +++++++++++++++++++++------------------------------
- 1 file changed, 26 insertions(+), 36 deletions(-)
+ hw/block/pflash_cfi01.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index ed014993910..dbe5c2340c6 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -37,7 +37,6 @@
- #include "migration/vmstate.h"
- #include "sdhci-internal.h"
+diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+index 7b6ec644426..21a81b44f03 100644
+--- a/hw/block/pflash_cfi01.c
++++ b/hw/block/pflash_cfi01.c
+@@ -47,7 +47,6 @@
+ #include "qemu/bitops.h"
+ #include "qemu/host-utils.h"
  #include "qemu/log.h"
 -#include "qemu/module.h"
- #include "trace.h"
- #include "qom/object.h"
- 
-@@ -1598,15 +1597,6 @@ static void sdhci_sysbus_class_init(ObjectClass *klass, void *data)
-     sdhci_common_class_init(klass, data);
+ #include "qemu/option.h"
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
+@@ -947,20 +946,16 @@ static void pflash_cfi01_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
  }
  
--static const TypeInfo sdhci_sysbus_info = {
--    .name = TYPE_SYSBUS_SDHCI,
--    .parent = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(SDHCIState),
--    .instance_init = sdhci_sysbus_init,
--    .instance_finalize = sdhci_sysbus_finalize,
--    .class_init = sdhci_sysbus_class_init,
--};
 -
- /* --- qdev bus master --- */
- 
- static void sdhci_bus_class_init(ObjectClass *klass, void *data)
-@@ -1617,13 +1607,6 @@ static void sdhci_bus_class_init(ObjectClass *klass, void *data)
-     sbc->set_readonly = sdhci_set_readonly;
- }
- 
--static const TypeInfo sdhci_bus_info = {
--    .name = TYPE_SDHCI_BUS,
--    .parent = TYPE_SD_BUS,
--    .instance_size = sizeof(SDBus),
--    .class_init = sdhci_bus_class_init,
--};
--
- /* --- qdev i.MX eSDHC --- */
- 
- #define USDHC_MIX_CTRL                  0x48
-@@ -1882,12 +1865,6 @@ static void imx_usdhc_init(Object *obj)
-     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
- }
- 
--static const TypeInfo imx_usdhc_info = {
--    .name = TYPE_IMX_USDHC,
--    .parent = TYPE_SYSBUS_SDHCI,
--    .instance_init = imx_usdhc_init,
--};
--
- /* --- qdev Samsung s3c --- */
- 
- #define S3C_SDHCI_CONTROL2      0x80
-@@ -1946,18 +1923,31 @@ static void sdhci_s3c_init(Object *obj)
-     s->io_ops = &sdhci_s3c_mmio_ops;
- }
- 
--static const TypeInfo sdhci_s3c_info = {
--    .name = TYPE_S3C_SDHCI  ,
--    .parent = TYPE_SYSBUS_SDHCI,
--    .instance_init = sdhci_s3c_init,
-+static const TypeInfo sdhci_types[] = {
+-static const TypeInfo pflash_cfi01_info = {
+-    .name           = TYPE_PFLASH_CFI01,
+-    .parent         = TYPE_SYS_BUS_DEVICE,
+-    .instance_size  = sizeof(PFlashCFI01),
+-    .class_init     = pflash_cfi01_class_init,
++static const TypeInfo pflash_cfi01_types[] = {
 +    {
-+        .name = TYPE_SDHCI_BUS,
-+        .parent = TYPE_SD_BUS,
-+        .instance_size = sizeof(SDBus),
-+        .class_init = sdhci_bus_class_init,
-+    },
-+    {
-+        .name = TYPE_SYSBUS_SDHCI,
-+        .parent = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(SDHCIState),
-+        .instance_init = sdhci_sysbus_init,
-+        .instance_finalize = sdhci_sysbus_finalize,
-+        .class_init = sdhci_sysbus_class_init,
-+    },
-+    {
-+        .name = TYPE_IMX_USDHC,
-+        .parent = TYPE_SYSBUS_SDHCI,
-+        .instance_init = imx_usdhc_init,
-+    },
-+    {
-+        .name = TYPE_S3C_SDHCI,
-+        .parent = TYPE_SYSBUS_SDHCI,
-+        .instance_init = sdhci_s3c_init,
++        .name           = TYPE_PFLASH_CFI01,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(PFlashCFI01),
++        .class_init     = pflash_cfi01_class_init,
 +    },
  };
  
--static void sdhci_register_types(void)
+-static void pflash_cfi01_register_types(void)
 -{
--    type_register_static(&sdhci_sysbus_info);
--    type_register_static(&sdhci_bus_info);
--    type_register_static(&imx_usdhc_info);
--    type_register_static(&sdhci_s3c_info);
+-    type_register_static(&pflash_cfi01_info);
 -}
 -
--type_init(sdhci_register_types)
-+DEFINE_TYPES(sdhci_types)
+-type_init(pflash_cfi01_register_types)
++DEFINE_TYPES(pflash_cfi01_types)
+ 
+ PFlashCFI01 *pflash_cfi01_register(hwaddr base,
+                                    const char *name,
 -- 
 2.45.2
 
