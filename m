@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B15A9BC608
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53ECF9BC5E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:47:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DEK-0001uu-5x; Tue, 05 Nov 2024 01:39:57 -0500
+	id 1t8DEG-0001eh-Ug; Tue, 05 Nov 2024 01:39:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDT-0000MC-5S
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:39:03 -0500
+ id 1t8DDX-0000di-E9
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:39:09 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDR-0001vj-9W
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:39:02 -0500
+ id 1t8DDU-0001vd-0j
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:39:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788741; x=1762324741;
+ t=1730788744; x=1762324744;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nkZUZZFxnGCMa4wnPLMg+4QnO1QTfXvDpRrYii+EGk0=;
- b=kjIASGDBiB3jX6OEp8se78ITLHZ+/0e2zkI/YYKtxoyvOhJE/qKFIsFs
- YTL2BU8VUMEyNDbF3YEg2IDyn+DCetbwr8m1I7IFn/L+DKtrZUpJ84Z7e
- kf446b6mC/bJDnsMU6b6J29TBChTmcfYpkWgyLBOgvhBj0wfvfbAFi8so
- EJC1j5m35r6/EWIFDViF7z8FeUV3jLoT371klREQg/90NTNVIGDramkZF
- YwgSSwH3TVWmTUrybILrdkINttMDbEZpv2PC0ejE8hk+xy2U/4JVv6pej
- /yycUmedsxQCm4D4j8uu9jubi+iRH3QPZnsJch166fLFLhjoVx4/6ohvL Q==;
-X-CSE-ConnectionGUID: IKnvWhBVS/qAtC3vwurVLw==
-X-CSE-MsgGUID: YSPcJQOlQumSJaBQXKYDng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689700"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689700"
+ bh=kqZuabcZCeMEwxC/J0aE7gtHFhAE9jCqlqQdO5TnUDc=;
+ b=mBaOQdBNm18Q4ztGGACoeKGRpp+oj+Uq1gkREZ6KMFrFUJYHy+Adn8BD
+ IWPAFiYxT1jSPyWiLdCzLuVPdDjf+2mPz+5RgnMu1kAZIhIIWprTwKntW
+ 3idgma6w8oifflRBalFv4svbUjs9MHpaYu21a6vQ/EftP7CJi0gtPSYq2
+ 2MCJ42IW6zUP5wjpFxxJJKKORoyNyJyEoQsxkNT4gcmVi3e5LpJRGykGX
+ krBMobzlY/jZoS/kNkeBIKiuM7UDRMlqgrquGb3W2PxPfgI0SX5sRFCzq
+ gA8iII49s3MbGUcT+GlmOZ3ma5rqrlbiOxhmMxkzPI4RUSB/+dcUsm3xS w==;
+X-CSE-ConnectionGUID: 3OXVvn4TRHSm2IxceGvD5w==
+X-CSE-MsgGUID: rQb05ET7Rre2TdcAlbpnzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689709"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689709"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:38:49 -0800
-X-CSE-ConnectionGUID: tBqCUn3tQC6VO3jLGAIGQg==
-X-CSE-MsgGUID: Ion8spsGRbqXdvTLwF6aBA==
+ 04 Nov 2024 22:38:53 -0800
+X-CSE-ConnectionGUID: djoKb6XrSbaa0uJJNx7iyQ==
+X-CSE-MsgGUID: Y6K1GjKyTai+AQIU8Wqo/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989310"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989366"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:44 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:49 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 34/60] i386/tdx: implement tdx_cpu_realizefn()
-Date: Tue,  5 Nov 2024 01:23:42 -0500
-Message-Id: <20241105062408.3533704-35-xiaoyao.li@intel.com>
+Subject: [PATCH v6 35/60] i386/cpu: Introduce enable_cpuid_0x1f to force
+ exposing CPUID 0x1f
+Date: Tue,  5 Nov 2024 01:23:43 -0500
+Message-Id: <20241105062408.3533704-36-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,88 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For TDX guest, KVM doesn't allow phys_bits configuration and the
-phys_bits can only be native/host value.
+Currently, QEMU exposes CPUID 0x1f to guest only when necessary, i.e.,
+when topology level that cannot be enumerated by leaf 0xB, e.g., die or
+module level, are configured for the guest, e.g., -smp xx,dies=2.
 
-Add the logic to set cpu->phys_bits to host value when user doesn't
-give a explicit one and error out when user desires a different one
-than host value.
+However, TDX architecture forces to require CPUID 0x1f to configure CPU
+topology.
+
+Introduce a bool flag, enable_cpuid_0x1f, in CPU for the case that
+requires CPUID leaf 0x1f to be exposed to guest.
+
+Introduce a new function x86_has_cpuid_0x1f(), which is the warpper of
+cpu->enable_cpuid_0x1f and x86_has_extended_topo() to check if it needs
+to enable cpuid leaf 0x1f for the guest.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v6:
- - new patches;
----
- target/i386/host-cpu.c |  2 +-
- target/i386/host-cpu.h |  1 +
- target/i386/kvm/tdx.c  | 17 +++++++++++++++++
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ target/i386/cpu.c     | 4 ++--
+ target/i386/cpu.h     | 9 +++++++++
+ target/i386/kvm/kvm.c | 2 +-
+ 3 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
-index 03b9d1b169a5..e2c59e5ae288 100644
---- a/target/i386/host-cpu.c
-+++ b/target/i386/host-cpu.c
-@@ -15,7 +15,7 @@
- #include "sysemu/sysemu.h"
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1ffbafef03e7..119b38bcb0c1 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6731,7 +6731,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         break;
+     case 0x1F:
+         /* V2 Extended Topology Enumeration Leaf */
+-        if (!x86_has_extended_topo(env->avail_cpu_topo)) {
++        if (!x86_has_cpuid_0x1f(cpu)) {
+             *eax = *ebx = *ecx = *edx = 0;
+             break;
+         }
+@@ -7588,7 +7588,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+          * cpu->vendor_cpuid_only has been unset for compatibility with older
+          * machine types.
+          */
+-        if (x86_has_extended_topo(env->avail_cpu_topo) &&
++        if (x86_has_cpuid_0x1f(cpu) &&
+             (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1F);
+         }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 59959b8b7a4d..dcc673262c06 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2171,6 +2171,9 @@ struct ArchCPU {
+     /* Compatibility bits for old machine types: */
+     bool enable_cpuid_0xb;
  
- /* Note: Only safe for use on x86(-64) hosts */
--static uint32_t host_cpu_phys_bits(void)
-+uint32_t host_cpu_phys_bits(void)
- {
-     uint32_t eax;
-     uint32_t host_phys_bits;
-diff --git a/target/i386/host-cpu.h b/target/i386/host-cpu.h
-index 6a9bc918baa4..b97ec01c9bec 100644
---- a/target/i386/host-cpu.h
-+++ b/target/i386/host-cpu.h
-@@ -10,6 +10,7 @@
- #ifndef HOST_CPU_H
- #define HOST_CPU_H
- 
-+uint32_t host_cpu_phys_bits(void);
- void host_cpu_instance_init(X86CPU *cpu);
- void host_cpu_max_instance_init(X86CPU *cpu);
- bool host_cpu_realizefn(CPUState *cs, Error **errp);
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 61fb1f184149..289722a129ce 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -23,6 +23,8 @@
- 
- #include <linux/kvm_para.h>
- 
-+#include "cpu.h"
-+#include "host-cpu.h"
- #include "hw/i386/e820_memory_layout.h"
- #include "hw/i386/x86.h"
- #include "hw/i386/tdvf.h"
-@@ -389,6 +391,20 @@ static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
-     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
- }
- 
-+static void tdx_cpu_realizefn(X86ConfidentialGuest *cg, CPUState *cs,
-+                              Error **errp)
-+{
-+    X86CPU *cpu = X86_CPU(cs);
-+    uint32_t host_phys_bits = host_cpu_phys_bits();
++    /* Force to enable cpuid 0x1f */
++    bool enable_cpuid_0x1f;
 +
-+    if (!cpu->phys_bits) {
-+        cpu->phys_bits = host_phys_bits;
-+    } else if (cpu->phys_bits != host_phys_bits) {
-+        error_setg(errp, "TDX only supports host physical bits (%u)",
-+                   host_phys_bits);
-+    }
+     /* Enable auto level-increase for all CPUID leaves */
+     bool full_cpuid_auto_level;
+ 
+@@ -2431,6 +2434,12 @@ void host_cpuid(uint32_t function, uint32_t count,
+                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx);
+ bool cpu_has_x2apic_feature(CPUX86State *env);
+ 
++static inline bool x86_has_cpuid_0x1f(X86CPU *cpu)
++{
++    return cpu->enable_cpuid_0x1f ||
++           x86_has_extended_topo(cpu->env.avail_cpu_topo);
 +}
 +
- static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
- {
-     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
-@@ -733,4 +749,5 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
-     klass->kvm_init = tdx_kvm_init;
-     x86_klass->kvm_type = tdx_kvm_type;
-     x86_klass->cpu_instance_init = tdx_cpu_instance_init;
-+    x86_klass->cpu_realizefn = tdx_cpu_realizefn;
- }
+ /* helper.c */
+ void x86_cpu_set_a20(X86CPU *cpu, int a20_state);
+ void cpu_sync_avx_hflag(CPUX86State *env);
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index dea0f83370d5..022809bad36e 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1874,7 +1874,7 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
+             break;
+         }
+         case 0x1f:
+-            if (!x86_has_extended_topo(env->avail_cpu_topo)) {
++            if (!x86_has_cpuid_0x1f(env_archcpu(env))) {
+                 cpuid_i--;
+                 break;
+             }
 -- 
 2.34.1
 
