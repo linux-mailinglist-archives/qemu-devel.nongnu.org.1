@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999239BC606
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 090B49BC5EF
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:48:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DED-0001Cl-7X; Tue, 05 Nov 2024 01:39:49 -0500
+	id 1t8DEG-0001ZT-JL; Tue, 05 Nov 2024 01:39:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDG-0007xo-UT
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:53 -0500
+ id 1t8DDJ-0007yX-LL
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:55 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DDF-0001vj-9n
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:50 -0500
+ id 1t8DDG-0001vd-LK
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788729; x=1762324729;
+ t=1730788731; x=1762324731;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PjQf7e/17C3WWdlE56nodz232TMn447UvRVBPAlFKX4=;
- b=nAg6lAzF8wis5CFbO1FR1Gcr5K/dF7EwQdAu18/4WXYuEeEs+c3wtqgK
- /zjMDjF7gFE+r00eTQa3OFfIIg0HGugZp0CZChvM6IVd46OfRU2ZtypM8
- s1YX901uB9IKT7u4nY354K009mi0hK5vYPzyYN4QoifM9l26V/sGy30ZP
- lY8Lds474OcE2qqOcoZ7cI91QDkCLHqJPO5N92/VOfr6wf8Yyr3cw4OxX
- YFrfJg9FctDEtB6mTpnvu2PiTY9EhpMHlVvXSYdsoApJ7POeSjcuyMkMJ
- JjM9+8JP5e9V775NHOMcCh0NTXoYdC1xjF7wXBd9I+JfcnC7fJs1hXEgO g==;
-X-CSE-ConnectionGUID: I2M16RwaSU64L2Js+ffg0Q==
-X-CSE-MsgGUID: rz6ubgvoTI+JYiU3KKg5zw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689667"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689667"
+ bh=IFyldM/wkLLjkzgvXirqmq3JCBeSDG+HIbY0Aejj2GY=;
+ b=jY5Xol2L2k9Yl/rytxWsgRZPJMHRIXRyWdaDkRFfDvIFukH2usdmTy5j
+ xo1NPXyvdodpUe6MiJMplqBJUaORso2qx1ELZmbGQMillglOD8PHeIgt+
+ SyC/njbY+tIx7go2Xk0hlYOFLajCE84e4dd1rqv4LqEH0h1ihwKkvPPac
+ jAlJO/7AXEYXSUdRnbKZYcmzxOWqihzaf3Icqp0gAPDjCaDZF/VKBRBW1
+ f9Iz9zwEuHyE0fkq/PEpcXS5sO0tS38csgqQOOomoy9MBYv+DeloNwkb+
+ C2L6OA93U2vHTDlUrNg7mNx8xw846NZYx62wkr4e4PnUC7/00mVAfiphM w==;
+X-CSE-ConnectionGUID: vLbXF8/ASZWx0BbpdUDSXQ==
+X-CSE-MsgGUID: OYsubaVMT2WkfyZmkPCg+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689680"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689680"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:38:36 -0800
-X-CSE-ConnectionGUID: HBu2ooFlQVmCgAlxAclJfw==
-X-CSE-MsgGUID: YoO5oAvySVuB4CPn/mfq7w==
+ 04 Nov 2024 22:38:40 -0800
+X-CSE-ConnectionGUID: iuT24egDTnOHJU8nk9k9hQ==
+X-CSE-MsgGUID: 35Pm2IzXRcuowvndLGKt2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989162"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989208"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:32 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:36 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,10 +55,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 31/60] i386/cpu: introduce
- x86_confidential_guest_cpu_instance_init()
-Date: Tue,  5 Nov 2024 01:23:39 -0500
-Message-Id: <20241105062408.3533704-32-xiaoyao.li@intel.com>
+Subject: [PATCH v6 32/60] i386/tdx: implement tdx_cpu_instance_init()
+Date: Tue,  5 Nov 2024 01:23:40 -0500
+Message-Id: <20241105062408.3533704-33-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -89,74 +88,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To allow execute confidential guest specific cpu init operations.
+Currently, pmu is not supported for TDX by KVM.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v6:
+chanegs in v6:
  - new patch;
 ---
- target/i386/confidential-guest.h | 11 +++++++++++
- target/i386/cpu.c                | 10 ++++++++++
- 2 files changed, 21 insertions(+)
+ target/i386/kvm/tdx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index 7342d2843aa5..38169ed68e06 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -39,6 +39,7 @@ struct X86ConfidentialGuestClass {
- 
-     /* <public> */
-     int (*kvm_type)(X86ConfidentialGuest *cg);
-+    void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
-     uint32_t (*mask_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
-                                     int reg, uint32_t value);
- };
-@@ -59,6 +60,16 @@ static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
-     }
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 394f1d75dc0d..61fb1f184149 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -384,6 +384,11 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_TDX_VM;
  }
  
-+static inline void x86_confidential_guest_cpu_instance_init(X86ConfidentialGuest *cg,
-+                                                            CPUState *cpu)
++static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
 +{
-+    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
-+
-+    if (klass->cpu_instance_init) {
-+        klass->cpu_instance_init(cg, cpu);
-+    }
++    object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
 +}
 +
- /**
-  * x86_confidential_guest_mask_cpuid_features:
-  *
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3baa95481fbc..c7d65bbeab9b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -35,6 +35,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/i386/topology.h"
- #ifndef CONFIG_USER_ONLY
-+#include "confidential-guest.h"
- #include "sysemu/reset.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "exec/address-spaces.h"
-@@ -8157,6 +8158,15 @@ static void x86_cpu_post_initfn(Object *obj)
-     }
+ static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
+ {
+     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
+@@ -727,4 +732,5 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
  
-     accel_cpu_instance_init(CPU(obj));
-+
-+#ifndef CONFIG_USER_ONLY
-+    MachineState *ms = MACHINE(object_dynamic_cast(qdev_get_machine(),
-+                                                   TYPE_MACHINE));
-+    if (ms && ms->cgs) {
-+        x86_confidential_guest_cpu_instance_init(X86_CONFIDENTIAL_GUEST(ms->cgs),
-+                                                 (CPU(obj)));
-+    }
-+#endif
+     klass->kvm_init = tdx_kvm_init;
+     x86_klass->kvm_type = tdx_kvm_type;
++    x86_klass->cpu_instance_init = tdx_cpu_instance_init;
  }
- 
- static void x86_cpu_init_default_topo(X86CPU *cpu)
 -- 
 2.34.1
 
