@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961D59BD001
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2789BD006
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:05:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8L3r-00008r-PI; Tue, 05 Nov 2024 10:01:39 -0500
+	id 1t8L6O-0000rY-KC; Tue, 05 Nov 2024 10:04:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8L3g-00007w-4m
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:01:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8L3b-0000gi-MJ
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:01:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730818881;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Al8uMIy4idSHQy73devQTh7tjClJ9L57DftFqIg+cU8=;
- b=NtAzZwyTjAl7Jc5h1z2+Z5wu4BJggSP6aK5KU+BVnB3suo3rBjX3cs+xJ8ruBvNglWCAsO
- lghU/j+dI3Zb0ouC655aWJ8jXrbqD9i5/R2+1l7JEpx1dOtULrQi8Ja25paBHXqI1QaNJI
- py9smF7KBx5kA+N71BEMLuYrps2mG/k=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-ke3du5JlMHGbgLKaXHxhHg-1; Tue,
- 05 Nov 2024 10:01:19 -0500
-X-MC-Unique: ke3du5JlMHGbgLKaXHxhHg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CEEB61954B1C; Tue,  5 Nov 2024 15:01:18 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.52])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2ED5119560AE; Tue,  5 Nov 2024 15:01:16 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8L65-0000qK-JY
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:04:00 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8L63-0000s0-9I
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:03:57 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-431688d5127so44173625e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 07:03:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730819033; x=1731423833; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fr8JSjUR0Ji31zxPhKxMjPDmK3OctYTUrg0Kr6+wxVU=;
+ b=wI3v+xD29ZKux3JzCrw6YpFDzkLwrc74b5SBiloMIpnCJX7CQtP2zyghYprw1iBUSS
+ FxqFvOu2YrPeLCHzTVvOSM+te+El2pAJRG8BB7jNBzl/+wIVRm9oKCc7ilDmuApPDWoZ
+ ywHeEGc5/7BTu8kbxSKAmgZ6ImnIqY1NMDn6hUKbZ8eZHvIB0HjAZptsZH2pWOjsJIgr
+ W3DKIewiIrQw4tWz4HF/BvWLNDGAzjPxydfMX1dUl0u9I+SgjV1FHarpUoDLlWaSEpwN
+ 7vc0DJY6Zg4sGD4g8+a824rjgMOph43wr2RMbKize42bcX6IAY5hO0kFieS8YZWV70mQ
+ PtoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730819033; x=1731423833;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fr8JSjUR0Ji31zxPhKxMjPDmK3OctYTUrg0Kr6+wxVU=;
+ b=rFJ/HWrJqXsSVYsXhhjVlgDWfnauYfujkHUXoWm8cwJaViF/OAJOusYcwn+dytXOZw
+ iNACGKY1dVZVf4Pu2dbVAUSQca6UOTL7FrChWHgg4SIEf52LUJRPxgJat5A9I8/nefJP
+ LBhKPWvO41u2AU40Q0JAW7vNXlPBgY8aSbytNBX+nS1kq1+powN+54yWqtKCaS3zq/50
+ PZd0tJBcnUKwEdCkmn1cT0nRvTv90GUk9SErLb3RQ33kYwswO4Hs7Bk1rOSwGHOVpJ0J
+ 1bTIZQelxSG/IbqXn2cdVWY1KZyIQ4oZrWGm932CvR/3URMfnQv9BFpu9O5qV+Wve5n7
+ ubuQ==
+X-Gm-Message-State: AOJu0Yy7e33iA/fbDiwJEoC2Fu0C60RvFQBvLbR4+vF++gHL3Ljb+QdC
+ KlZD7g8g92I+BM15/XkLJDU0Q6D5kEEgTDkpeGbGGHmNNuvySKX1PrEpR9UXeUmpQ3dg7W5gj81
+ l6k4=
+X-Google-Smtp-Source: AGHT+IE8eGnseX6XGUVaDrYpWM7HyfuNeUeFAqPWzACtXWae0eDiSd0c9S4c90IPUb/OXU1f4Dz3iw==
+X-Received: by 2002:a05:600c:1d01:b0:42c:a6da:a149 with SMTP id
+ 5b1f17b1804b1-4319ad048cdmr338947385e9.25.1730819030801; 
+ Tue, 05 Nov 2024 07:03:50 -0800 (PST)
+Received: from stoup.. ([154.14.63.34]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-431bd9ca6f8sm221301855e9.39.2024.11.05.07.03.50
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Nov 2024 07:03:50 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] meson: explain more verbosely why we forbid Clang on Windows
-Date: Tue,  5 Nov 2024 15:01:14 +0000
-Message-ID: <20241105150114.334985-1-berrange@redhat.com>
+Subject: [PULL 0/4] linux-user patch queue
+Date: Tue,  5 Nov 2024 15:03:44 +0000
+Message-ID: <20241105150348.446982-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,60 +88,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Contributors are repeatedly sending patches to remove the blockage of
-clang on Windows, ignoring that we need 'gcc_struct' support. Put some
-more explicit comments in the code to discourage people from doing
-this.
+The following changes since commit 11b8920ed2093848f79f93d106afe8a69a61a523:
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- include/qemu/compiler.h |  7 +++++++
- meson.build             | 11 ++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+  Merge tag 'pull-request-2024-11-04' of https://gitlab.com/thuth/qemu into staging (2024-11-04 17:37:59 +0000)
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c06954ccb4..38ed8997ca 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -22,6 +22,13 @@
- #define QEMU_EXTERN_C extern
- #endif
- 
-+/*
-+ * QEMU requires 'gcc_struct' on Windows for correct guest ABI.
-+ * meson.build checks for 'gcc_struct' and blocks use of CLang
-+ * on Windows, pending a fix for:
-+ *
-+ *   https://github.com/llvm/llvm-project/issues/24757
-+ */
- #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
- # define QEMU_PACKED __attribute__((gcc_struct, packed))
- #else
-diff --git a/meson.build b/meson.build
-index 2c9086a3fe..37b7daa758 100644
---- a/meson.build
-+++ b/meson.build
-@@ -330,9 +330,18 @@ elif host_os == 'sunos'
- elif host_os == 'haiku'
-   qemu_common_flags += ['-DB_USE_POSITIVE_POSIX_ERRORS', '-D_BSD_SOURCE', '-fPIC']
- elif host_os == 'windows'
-+    # Clang is blocked, pending impl of 'gcc_struct' support:
-+    #
-+    #  https://gitlab.com/qemu-project/qemu/-/issues/2476
-+    #  https://github.com/llvm/llvm-project/issues/24757
-+    #  https://github.com/llvm/llvm-project/pull/71148
-+    #
-+    # Once the above is available this check should "do the right thing".
-+    # This check can then eventually be removed once the CLang minimum
-+    # version checked 50 lines earlier guarantees support
-   if not compiler.compiles('struct x { int y; } __attribute__((gcc_struct));',
-                            args: '-Werror')
--    error('Your compiler does not support __attribute__((gcc_struct)) - please use GCC instead of Clang')
-+    error('Your compiler does not support __attribute__((gcc_struct)) - please use GCC instead of Clang (https://github.com/llvm/llvm-project/issues/24757)')
-   endif
- endif
- 
--- 
-2.46.0
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-lu-20241105
+
+for you to fetch changes up to 6f58b090328f5b47ee688c77542bf20d521239a2:
+
+  tests/tcg: Add SIGRTMIN/SIGRTMAX test (2024-11-05 10:36:08 +0000)
+
+----------------------------------------------------------------
+tests/tcg: Replace -mpower8-vector with -mcpu=power8
+linux-user: Fix GDB complaining about system-supplied DSO string table index
+linux-user: Allow custom rt signal mappings
+
+----------------------------------------------------------------
+Ilya Leoshkevich (4):
+      tests/tcg: Replace -mpower8-vector with -mcpu=power8
+      linux-user: Fix GDB complaining about system-supplied DSO string table index
+      linux-user: Allow custom rt signal mappings
+      tests/tcg: Add SIGRTMIN/SIGRTMAX test
+
+ linux-user/signal-common.h                    |   2 +-
+ linux-user/gen-vdso.c                         |  40 +++++-----
+ linux-user/main.c                             |  12 ++-
+ linux-user/signal.c                           | 108 +++++++++++++++++++++-----
+ tests/tcg/multiarch/linux/linux-sigrtminmax.c |  74 ++++++++++++++++++
+ linux-user/gen-vdso-elfn.c.inc                |  98 +++++++++++++++--------
+ meson.build                                   |   3 +-
+ meson_options.txt                             |   2 +
+ scripts/meson-buildoptions.sh                 |   2 +
+ tests/tcg/Makefile.target                     |   4 +-
+ tests/tcg/ppc64/Makefile.target               |  10 +--
+ 11 files changed, 274 insertions(+), 81 deletions(-)
+ create mode 100644 tests/tcg/multiarch/linux/linux-sigrtminmax.c
 
