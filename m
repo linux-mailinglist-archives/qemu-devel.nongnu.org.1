@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BC39BD431
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:10:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 589009BD445
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:13:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8O0F-0005nj-P1; Tue, 05 Nov 2024 13:10:09 -0500
+	id 1t8O03-0005Kq-4d; Tue, 05 Nov 2024 13:09:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8Nzr-0005DB-VQ
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:09:44 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8Nzu-0005Fk-Gm
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:09:46 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8Nzq-0004zc-3K
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:09:43 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8Nzs-0004zx-O3
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:09:46 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id F29C81F7FB;
- Tue,  5 Nov 2024 18:09:40 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 86E4B1F813;
+ Tue,  5 Nov 2024 18:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1730830181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1730830183; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eAN1npPbhKKqBsB93svAI3+THRscfnYq3oeLTQttcN4=;
- b=OFAd/+y1vF1RF5LM3sSw26E9LWZyZ1PRCSqrWL8fh6UTdoZEsKNK4TaGobOTARXPgaluQV
- af6Uei+ZSkEHwPs+G9JYIWy2JM3WIZj5sZG9b91RLpDJKPbnae2sycIIqtVEA0kDudUTSi
- UAsNxTdT2f8vh05I011Avx56eemvngw=
+ bh=X7cZvXr9mgO3mi+chDAZ8Q5UtS/xgVMI/8eZ8HgMGIQ=;
+ b=yOjs8SiOgCQI5ymInNzkhXaF7m3u6mrXfDQ2MuoenwGAUMdLI6sKrt2dsXGoWCKkftBMIc
+ TJIM5r/Ecc8sDS4mBfe+u5guGnX6p3QH2IcdMxvMUfFZRcmWNxMAbQV6+0SYG9JUiWeN78
+ C30+SkCuQ/02q8624aK1Oj8vQJHWpNg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1730830181;
+ s=susede2_ed25519; t=1730830183;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eAN1npPbhKKqBsB93svAI3+THRscfnYq3oeLTQttcN4=;
- b=pQpUwfyKcmSxm+hhE7CcyqcTdcH2Ulb9xpJoqhBUhxvWa5qwDm0MHLWt5SoM7etAXTLwYj
- fCqUMlHzUd35E3Aw==
+ bh=X7cZvXr9mgO3mi+chDAZ8Q5UtS/xgVMI/8eZ8HgMGIQ=;
+ b=dQQUzKFDqskqOyRvvO2qQNMvLMN75GK528Rm9i551m4Uocaja8pb6lZwCnYO0w/5oRrpmv
+ 5os/c1FJy922awBA==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1730830181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1730830183; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eAN1npPbhKKqBsB93svAI3+THRscfnYq3oeLTQttcN4=;
- b=OFAd/+y1vF1RF5LM3sSw26E9LWZyZ1PRCSqrWL8fh6UTdoZEsKNK4TaGobOTARXPgaluQV
- af6Uei+ZSkEHwPs+G9JYIWy2JM3WIZj5sZG9b91RLpDJKPbnae2sycIIqtVEA0kDudUTSi
- UAsNxTdT2f8vh05I011Avx56eemvngw=
+ bh=X7cZvXr9mgO3mi+chDAZ8Q5UtS/xgVMI/8eZ8HgMGIQ=;
+ b=yOjs8SiOgCQI5ymInNzkhXaF7m3u6mrXfDQ2MuoenwGAUMdLI6sKrt2dsXGoWCKkftBMIc
+ TJIM5r/Ecc8sDS4mBfe+u5guGnX6p3QH2IcdMxvMUfFZRcmWNxMAbQV6+0SYG9JUiWeN78
+ C30+SkCuQ/02q8624aK1Oj8vQJHWpNg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1730830181;
+ s=susede2_ed25519; t=1730830183;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eAN1npPbhKKqBsB93svAI3+THRscfnYq3oeLTQttcN4=;
- b=pQpUwfyKcmSxm+hhE7CcyqcTdcH2Ulb9xpJoqhBUhxvWa5qwDm0MHLWt5SoM7etAXTLwYj
- fCqUMlHzUd35E3Aw==
+ bh=X7cZvXr9mgO3mi+chDAZ8Q5UtS/xgVMI/8eZ8HgMGIQ=;
+ b=dQQUzKFDqskqOyRvvO2qQNMvLMN75GK528Rm9i551m4Uocaja8pb6lZwCnYO0w/5oRrpmv
+ 5os/c1FJy922awBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E29301394A;
- Tue,  5 Nov 2024 18:09:38 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7351D1394A;
+ Tue,  5 Nov 2024 18:09:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uO/YKWJfKmeCZwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 05 Nov 2024 18:09:38 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id sJWrDmVfKmeCZwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 05 Nov 2024 18:09:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 20/22] tests/qtest/migration: Pick smoke tests
-Date: Tue,  5 Nov 2024 15:08:35 -0300
-Message-Id: <20241105180837.5990-21-farosas@suse.de>
+Subject: [PATCH 21/22] tests/qtest: Add support for check-qtest-<subsystem>
+Date: Tue,  5 Nov 2024 15:08:36 -0300
+Message-Id: <20241105180837.5990-22-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20241105180837.5990-1-farosas@suse.de>
 References: <20241105180837.5990-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -97,14 +97,15 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]
 X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,197 +122,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Choose a few tests per group and move them from the full set to the
-smoke set.
+Allow qtests to be ran by subsystem. Some subsystems, such as
+migration, have a large number of tests and we could benefit from
+being able to access them from make check without having to run the
+full set of qtests.
+
+This adds the following make check targets:
+
+make check-qtest-migration
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/compression-tests.c |  7 +++----
- tests/qtest/migration/cpr-tests.c         |  3 ++-
- tests/qtest/migration/misc-tests.c        | 12 ++++++------
- tests/qtest/migration/postcopy-tests.c    | 15 ++++++++-------
- tests/qtest/migration/precopy-tests.c     | 19 +++++++++----------
- tests/qtest/migration/tls-tests.c         |  7 ++++---
- 6 files changed, 32 insertions(+), 31 deletions(-)
+I did not include check-qtest-<arch>-<subsys> because meson generates a
+long line that affects readability.
+---
+ tests/qtest/meson.build | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
-index 87629e3b44..df13db9ac7 100644
---- a/tests/qtest/migration/compression-tests.c
-+++ b/tests/qtest/migration/compression-tests.c
-@@ -207,7 +207,9 @@ static void test_multifd_tcp_zlib(void)
- void migration_test_add_compression_smoke(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
--    /* TODO: add smoke tests */
-+
-+    migration_test_add("/migration/multifd/tcp/plain/zlib",
-+                       test_multifd_tcp_zlib);
- }
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 806af512d0..e0ba858f5b 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -36,6 +36,13 @@ if enable_modules
+   qtests_generic += [ 'modules-test' ]
+ endif
  
- void migration_test_add_compression(MigrationTestEnv *env)
-@@ -238,7 +240,4 @@ void migration_test_add_compression(MigrationTestEnv *env)
-         migration_test_add("/migration/precopy/unix/xbzrle",
-                            test_precopy_unix_xbzrle);
-     }
--
--    migration_test_add("/migration/multifd/tcp/plain/zlib",
--                       test_multifd_tcp_zlib);
- }
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 905b74f8dc..0edf7011e3 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -46,7 +46,8 @@ static void test_mode_reboot(void)
- void migration_test_add_cpr_smoke(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
--    /* TODO: add smoke tests */
-+
-+    /* none for now */
- }
- 
- void migration_test_add_cpr(MigrationTestEnv *env)
-diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
-index 12736e4184..81bd3db610 100644
---- a/tests/qtest/migration/misc-tests.c
-+++ b/tests/qtest/migration/misc-tests.c
-@@ -252,14 +252,9 @@ static void test_validate_uri_channels_none_set(void)
- void migration_test_add_misc_smoke(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
--    /* TODO: add smoke tests */
--}
--
--void migration_test_add_misc(MigrationTestEnv *env)
--{
--    migration_test_add_misc_smoke(env);
- 
-     migration_test_add("/migration/bad_dest", test_baddest);
-+
- #ifndef _WIN32
-     migration_test_add("/migration/analyze-script", test_analyze_script);
- #endif
-@@ -278,3 +273,8 @@ void migration_test_add_misc(MigrationTestEnv *env)
-     migration_test_add("/migration/validate_uri/channels/none_set",
-                        test_validate_uri_channels_none_set);
- }
-+
-+void migration_test_add_misc(MigrationTestEnv *env)
-+{
-+    migration_test_add_misc_smoke(env);
-+}
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
-index d08b61f12f..3860266570 100644
---- a/tests/qtest/migration/postcopy-tests.c
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -81,19 +81,20 @@ static void test_postcopy_preempt_recovery(void)
- 
- void migration_test_add_postcopy_smoke(MigrationTestEnv *env)
- {
--    /* TODO: add smoke tests */
--}
--
--void migration_test_add_postcopy(MigrationTestEnv *env)
--{
--    migration_test_add_postcopy_smoke(env);
--
-     if (env->has_uffd) {
-         migration_test_add("/migration/postcopy/plain", test_postcopy);
-         migration_test_add("/migration/postcopy/recovery/plain",
-                            test_postcopy_recovery);
-         migration_test_add("/migration/postcopy/preempt/plain",
-                            test_postcopy_preempt);
-+    }
++qtest_subsystems = {
++  'migration-test-smoke': ['migration'],
++  'migration-test': ['migration'],
++  'cdrom-test': ['block'],
++  'ahci-test': ['block'],
 +}
 +
-+void migration_test_add_postcopy(MigrationTestEnv *env)
-+{
-+    migration_test_add_postcopy_smoke(env);
+ qtests_pci = \
+   (config_all_devices.has_key('CONFIG_VGA') ? ['display-vga-test'] : []) +                  \
+   (config_all_devices.has_key('CONFIG_IVSHMEM_DEVICE') ? ['ivshmem-test'] : [])
+@@ -431,6 +438,12 @@ foreach dir : target_dirs
+         test: executable(test, src, dependencies: deps)
+       }
+     endif
 +
-+    if (env->has_uffd) {
-         migration_test_add("/migration/postcopy/preempt/recovery/plain",
-                            test_postcopy_preempt_recovery);
-         migration_test_add("/migration/postcopy/recovery/double-failures/handshake",
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 743ecf281b..711aa1df79 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -942,12 +942,6 @@ static void test_dirty_limit(void)
- void migration_test_add_precopy_smoke(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
--    /* TODO: add smoke tests */
--}
--
--void migration_test_add_precopy(MigrationTestEnv *env)
--{
--    migration_test_add_precopy_smoke(env);
- 
-     if (env->is_x86) {
-         migration_test_add("/migration/precopy/unix/suspend/live",
-@@ -960,6 +954,15 @@ void migration_test_add_precopy(MigrationTestEnv *env)
-                        test_precopy_unix_plain);
- 
-     migration_test_add("/migration/precopy/tcp/plain", test_precopy_tcp_plain);
-+    migration_test_add("/migration/multifd/tcp/uri/plain/none",
-+                       test_multifd_tcp_uri_none);
-+    migration_test_add("/migration/multifd/tcp/plain/cancel",
-+                       test_multifd_tcp_cancel);
-+}
++    suites = ['qtest', 'qtest-' + target_base]
++    foreach subsys: qtest_subsystems.get(test, [])
++      suites += ['qtest-' + subsys]
++    endforeach
 +
-+void migration_test_add_precopy(MigrationTestEnv *env)
-+{
-+    migration_test_add_precopy_smoke(env);
- 
-     migration_test_add("/migration/precopy/tcp/plain/switchover-ack",
-                        test_precopy_tcp_switchover_ack);
-@@ -983,16 +986,12 @@ void migration_test_add_precopy(MigrationTestEnv *env)
-                                test_dirty_limit);
-         }
-     }
--    migration_test_add("/migration/multifd/tcp/uri/plain/none",
--                       test_multifd_tcp_uri_none);
-     migration_test_add("/migration/multifd/tcp/channels/plain/none",
-                        test_multifd_tcp_channels_none);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/legacy",
-                        test_multifd_tcp_zero_page_legacy);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
-                        test_multifd_tcp_no_zero_page);
--    migration_test_add("/migration/multifd/tcp/plain/cancel",
--                       test_multifd_tcp_cancel);
-     if (g_str_equal(env->arch, "x86_64") && env->has_kvm && env->has_dirty_ring) {
-         migration_test_add("/migration/dirty_ring",
-                            test_precopy_unix_dirty_ring);
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index e923edbe7b..175217f7d2 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -724,12 +724,15 @@ static void test_multifd_tcp_tls_x509_reject_anon_client(void)
- void migration_test_add_tls_smoke(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
--    /* TODO: add smoke tests */
-+
-+    migration_test_add("/migration/precopy/tcp/tls/psk/match",
-+                       test_precopy_tcp_tls_psk_match);
- }
- 
- void migration_test_add_tls(MigrationTestEnv *env)
- {
-     migration_test_add_tls_smoke(env);
-+
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
- 
-@@ -755,8 +758,6 @@ void migration_test_add_tls(MigrationTestEnv *env)
-                        test_precopy_unix_tls_x509_override_host);
- #endif /* CONFIG_TASN1 */
- 
--    migration_test_add("/migration/precopy/tcp/tls/psk/match",
--                       test_precopy_tcp_tls_psk_match);
-     migration_test_add("/migration/precopy/tcp/tls/psk/mismatch",
-                        test_precopy_tcp_tls_psk_mismatch);
- #ifdef CONFIG_TASN1
+     test('qtest-@0@/@1@'.format(target_base, test),
+          qtest_executables[test],
+          depends: [test_deps, qtest_emulator, emulator_modules],
+@@ -439,6 +452,6 @@ foreach dir : target_dirs
+          protocol: 'tap',
+          timeout: slow_qtests.get(test, 60),
+          priority: slow_qtests.get(test, 60),
+-         suite: ['qtest', 'qtest-' + target_base])
++         suite: suites)
+   endforeach
+ endforeach
 -- 
 2.35.3
 
