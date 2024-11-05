@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFE39BCB12
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 11:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4F69BCB1C
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 11:59:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HCD-0001Sm-8t; Tue, 05 Nov 2024 05:54:01 -0500
+	id 1t8HGi-0004E1-3h; Tue, 05 Nov 2024 05:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8HCB-0001SW-OE
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:53:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8HC9-0004K5-Kg
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:53:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730804036;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=DIJJbGCFmGjzScRcqhQhqxPwcgLRUbIGY02auMsPAsU=;
- b=S67JsyqhW72AP6Yk5JM4tICdynVrzpvHswVNFsE2NnTq3poUTbryO3qeKw13Z9VVVPybKw
- ihPttiPM0pNNrx4buSFw8R7s5/uaxJcO3ABo79AcGjl7uDeuc9PnxEBJt4SGLgrBHSRl60
- ZMHI40CqlalOiJKOeomSz0qRv9n8Zws=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-Iw1GF3hNP-2tKEyKBw7L2Q-1; Tue,
- 05 Nov 2024 05:53:53 -0500
-X-MC-Unique: Iw1GF3hNP-2tKEyKBw7L2Q-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC3F01956096; Tue,  5 Nov 2024 10:53:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 432F519560A2; Tue,  5 Nov 2024 10:53:44 +0000 (UTC)
-Date: Tue, 5 Nov 2024 10:53:41 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 30/60] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
- GuestPanic facility
-Message-ID: <Zyn5Nbz9XaBhtPoX@redhat.com>
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-31-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8HGf-0004DV-A2
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:58:37 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8HGd-0004kO-9f
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 05:58:36 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5cec93719ccso3910219a12.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 02:58:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730804313; x=1731409113; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J9GnUD19XuJDeQQIfLrDDAiu6StgkP/Y+HkPPKYKdjU=;
+ b=GuEb6lXgvdZ1SMvoMVZOxCyWkGAPGb+65TeSWlCo9ydsvuHDPPkqq8B9ZAHyD6e7KT
+ PYaIFSinOvazuuPTIMCXQc2Sx9ikTuKwOS0RMtck3Oh9PZxTUee/H9gVirnaqj6T7R5n
+ MODw8SOHozevh7vHQb5garklFKL8kWOgXESeP4OumwKZ/3olAn2Seohnh9tmkObNtIka
+ Gj9uYMorScQCBQY6qvMIX9nL0uROEhz7gvR8aOFzQyfDBo2Z+/vzV+8OYtJW/CrPDcms
+ HHz/dReCVG/TB4DdFp/qeFLms497Nejuwyf9nF7i2MInIhgFQr+Avmi+OUGU+iKBkhBI
+ 6H/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730804313; x=1731409113;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J9GnUD19XuJDeQQIfLrDDAiu6StgkP/Y+HkPPKYKdjU=;
+ b=rMlmfZM5cADf1yjQwMSFW9R/BWouM9gK2m+k19R8RohVqDymaww09ecqkPvnMFu5Hb
+ UoZQd2z69FW3JDQgc2ucSysknxdEeojbnq0LHsJ7wq/boSAWK6DSYJWEtuSXtDoJpKaU
+ AOtO42c9kYg1RFPMLbUaQ+zgZre5SPZ+HWNxJZ3gdo+o363sYzuEP2fGTonV17P2Jk/C
+ nhGLu1JtooBNJwoJ4Tu7PBSzXfRVI1OWSuvxlXjfNzAUYM3LYly4P942xvHsXJTj9tYX
+ vT/E96tJ+9mT34GELFMkBJaSZQOwQMd8VW0ae/5859TkACHik80Bw3QCzwsqM2sh4uIE
+ 0D3w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUPKfB5/ogl9T+oHePZ9kL3zu43uqBD63sMtvnXPf5R85L87JAmGzwVBfi91Zswfn2wWEbrMbPwuwCu@nongnu.org
+X-Gm-Message-State: AOJu0YyJFIH1WR5xrhGpC/DwyMu+YSVrayTgxTINhtfqA8YrU0J6tYYW
+ /tEUkYLK60LkgDVt7w4Sv8rMkyWe+G9ncyEjT25vDd6eCwaChsebrC69AIbcmVs=
+X-Google-Smtp-Source: AGHT+IG4u5jLuQo/JFxrOgpTL9mob9GX8RXpRItSc2yE90kzuCAzEUG6YxMsEH/uzuTDtVvBbVjsVQ==
+X-Received: by 2002:a17:906:6a12:b0:a99:f746:385 with SMTP id
+ a640c23a62f3a-a9e3a573d11mr2472258666b.1.1730804313009; 
+ Tue, 05 Nov 2024 02:58:33 -0800 (PST)
+Received: from [192.168.21.227] ([154.14.63.34])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9eb171550esm116909266b.88.2024.11.05.02.58.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Nov 2024 02:58:32 -0800 (PST)
+Message-ID: <12e5b415-a80a-49b3-b98a-33a398ebf56d@linaro.org>
+Date: Tue, 5 Nov 2024 10:58:30 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241105062408.3533704-31-xiaoyao.li@intel.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] target/riscv: Add support for Control Transfer
+ Records Ext.
+To: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ atishp@rivosinc.com, apatel@ventanamicro.com, beeman@rivosinc.com,
+ tech-control-transfer-records@lists.riscv.org, jason.chien@sifive.com,
+ frank.chang@sifive.com
+References: <20241104-b4-ctr_upstream_v3-v3-0-32fd3c48205f@rivosinc.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241104-b4-ctr_upstream_v3-v3-0-32fd3c48205f@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,199 +98,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 05, 2024 at 01:23:38AM -0500, Xiaoyao Li wrote:
-> Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
-> 
-> Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Changes in v6:
-> - change error_code of GuestPanicInformationTdx from uint64_t to
->   uint32_t, to only contains the bit 31:0 returned in r12.
-> 
-> Changes in v5:
-> - mention additional error information in gpa when it presents;
-> - refine the documentation; (Markus)
-> 
-> Changes in v4:
-> - refine the documentation; (Markus)
-> 
-> Changes in v3:
-> - Add docmentation of new type and struct; (Daniel)
-> - refine the error message handling; (Daniel)
-> ---
->  qapi/run-state.json   | 31 +++++++++++++++++++++--
->  system/runstate.c     | 58 +++++++++++++++++++++++++++++++++++++++++++
->  target/i386/kvm/tdx.c | 24 +++++++++++++++++-
->  3 files changed, 110 insertions(+), 3 deletions(-)
-> 
-> diff --git a/qapi/run-state.json b/qapi/run-state.json
-> index ce95cfa46b73..c5b0b747b30d 100644
-> --- a/qapi/run-state.json
-> +++ b/qapi/run-state.json
-> @@ -501,10 +501,12 @@
->  #
->  # @s390: s390 guest panic information type (Since: 2.12)
->  #
-> +# @tdx: tdx guest panic information type (Since: 9.0)
-> +#
->  # Since: 2.9
->  ##
->  { 'enum': 'GuestPanicInformationType',
-> -  'data': [ 'hyper-v', 's390' ] }
-> +  'data': [ 'hyper-v', 's390', 'tdx' ] }
->  
->  ##
->  # @GuestPanicInformation:
-> @@ -519,7 +521,8 @@
->   'base': {'type': 'GuestPanicInformationType'},
->   'discriminator': 'type',
->   'data': {'hyper-v': 'GuestPanicInformationHyperV',
-> -          's390': 'GuestPanicInformationS390'}}
-> +          's390': 'GuestPanicInformationS390',
-> +          'tdx' : 'GuestPanicInformationTdx'}}
->  
->  ##
->  # @GuestPanicInformationHyperV:
-> @@ -598,6 +601,30 @@
->            'psw-addr': 'uint64',
->            'reason': 'S390CrashReason'}}
->  
-> +##
-> +# @GuestPanicInformationTdx:
-> +#
-> +# TDX Guest panic information specific to TDX, as specified in the
-> +# "Guest-Hypervisor Communication Interface (GHCI) Specification",
-> +# section TDG.VP.VMCALL<ReportFatalError>.
-> +#
-> +# @error-code: TD-specific error code
-> +#
-> +# @message: Human-readable error message provided by the guest. Not
-> +#     to be trusted.
-> +#
-> +# @gpa: guest-physical address of a page that contains more verbose
-> +#     error information, as zero-terminated string.  Present when the
-> +#     "GPA valid" bit (bit 63) is set in @error-code.
-> +#
-> +#
-> +# Since: 9.0
+On 11/4/24 21:51, Rajnesh Kanwal wrote:
+>   target/riscv/cpu.c                             |  26 ++-
+>   target/riscv/cpu.h                             |  13 ++
+>   target/riscv/cpu_bits.h                        |  94 ++++++++
+>   target/riscv/cpu_cfg.h                         |   2 +
+>   target/riscv/cpu_helper.c                      | 266 ++++++++++++++++++++++
+>   target/riscv/csr.c                             | 294 ++++++++++++++++++++++++-
+>   target/riscv/helper.h                          |   9 +-
+>   target/riscv/insn32.decode                     |   2 +-
+>   target/riscv/insn_trans/trans_privileged.c.inc |  22 +-
+>   target/riscv/insn_trans/trans_rvi.c.inc        |  31 +++
+>   target/riscv/insn_trans/trans_rvzce.c.inc      |  20 ++
+>   target/riscv/op_helper.c                       | 155 ++++++++++++-
+>   target/riscv/tcg/tcg-cpu.c                     |  11 +
+>   target/riscv/translate.c                       |  10 +
+>   14 files changed, 941 insertions(+), 14 deletions(-)
 
-This is very outdated. Change to 10.0 as the next possible release
-it could land it.
+You're missing code in machine.c to migrate the new state.
 
-> +##
-> +{'struct': 'GuestPanicInformationTdx',
-> + 'data': {'error-code': 'uint32',
-> +          'message': 'str',
-> +          '*gpa': 'uint64'}}
-> +
->  ##
->  # @MEMORY_FAILURE:
->  #
-> diff --git a/system/runstate.c b/system/runstate.c
-> index c2c9afa905a6..9bb8162eb28f 100644
-> --- a/system/runstate.c
-> +++ b/system/runstate.c
-> @@ -565,6 +565,52 @@ static void qemu_system_wakeup(void)
->      }
->  }
->  
-> +static char *tdx_parse_panic_message(char *message)
-> +{
-> +    bool printable = false;
-> +    char *buf = NULL;
-> +    int len = 0, i;
-> +
-> +    /*
-> +     * Although message is defined as a json string, we shouldn't
-> +     * unconditionally treat it as is because the guest generated it and
-> +     * it's not necessarily trustable.
-> +     */
-> +    if (message) {
-> +        /* The caller guarantees the NUL-terminated string. */
-> +        len = strlen(message);
-> +
-> +        printable = len > 0;
-> +        for (i = 0; i < len; i++) {
-> +            if (!(0x20 <= message[i] && message[i] <= 0x7e)) {
-> +                printable = false;
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    if (!printable && len) {
-> +        /* 3 = length of "%02x " */
-> +        buf = g_malloc(len * 3);
 
-....allocating memory
-
-> +        for (i = 0; i < len; i++) {
-> +            if (message[i] == '\0') {
-> +                break;
-> +            } else {
-> +                sprintf(buf + 3 * i, "%02x ", message[i]);
-> +            }
-> +        }
-> +        if (i > 0)
-> +            /* replace the last ' '(space) to NUL */
-> +            buf[i * 3 - 1] = '\0';
-> +        else
-> +            buf[0] = '\0';
-> +
-> +        return buf;
-
-....returning alllocated memory
-
-> +    }
-> +
-> +    return message;
-
-....returning a pointer that came from a struct field
-
-> +}
-
-This is a bad design - we should require the caller to always
-free memory, or never free memory - not a mix.
-
-> +
->  void qemu_system_guest_panicked(GuestPanicInformation *info)
->  {
->      qemu_log_mask(LOG_GUEST_ERROR, "Guest crashed");
-> @@ -606,7 +652,19 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
->                            S390CrashReason_str(info->u.s390.reason),
->                            info->u.s390.psw_mask,
->                            info->u.s390.psw_addr);
-> +        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "\nTDX guest reports fatal error:"
-> +                          " error code: 0x%" PRIx32 " error message:\"%s\"\n",
-> +                          info->u.tdx.error_code,
-> +                          tdx_parse_panic_message(info->u.tdx.message));
-
-This is a leak in the case where tdx_parse_panic_message() returned
-allocated memory.
-
-> +            if (info->u.tdx.gpa != -1ull) {
-> +                qemu_log_mask(LOG_GUEST_ERROR, "Additional error information "
-> +                              "can be found at gpa page: 0x%" PRIx64 "\n",
-> +                              info->u.tdx.gpa);
-> +            }
->          }
-> +
->          qapi_free_GuestPanicInformation(info);
->      }
->  }
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+r~
 
