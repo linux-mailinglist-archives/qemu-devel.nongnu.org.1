@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3E49BD0EC
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1431F9BD010
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 16:07:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8LlA-0001la-9q; Tue, 05 Nov 2024 10:46:24 -0500
+	id 1t8L9W-00059C-SE; Tue, 05 Nov 2024 10:07:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>)
- id 1t8Ll0-0001lF-Qe; Tue, 05 Nov 2024 10:46:14 -0500
-Received: from smtpout4.mo529.mail-out.ovh.net ([217.182.185.173])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8L9U-00058G-2D
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:07:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>)
- id 1t8Lkw-0005zj-Gl; Tue, 05 Nov 2024 10:46:13 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.108.17.92])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4XjXk40mwnz105G;
- Tue,  5 Nov 2024 15:46:04 +0000 (UTC)
-Received: from kaod.org (37.59.142.110) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 5 Nov
- 2024 16:46:03 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-110S0041ecec86e-c3b9-4250-a135-900b05e68133,
- C95E100A97937737B80BEC9A66A832088BBE6DDA) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 88.179.9.154
-Date: Tue, 5 Nov 2024 13:13:14 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>
-CC: <qemu-devel@nongnu.org>, Akihiro Suda <suda.kyoto@gmail.com>,
- <jan.dubois@suse.com>, <anders.f.bjorklund@gmail.com>,
- <qemu-stable@nongnu.org>, Balaji Vijayakumar <kuttibalaji.v6@gmail.com>
-Subject: Re: [PATCH] 9pfs: fix crash on 'Treaddir' request
-Message-ID: <20241105123803.0923c22e@bahia>
-In-Reply-To: <E1t8GnN-002RS8-E2@kylie.crudebyte.com>
-References: <E1t8GnN-002RS8-E2@kylie.crudebyte.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8L9Q-0001S8-5W
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 10:07:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730819241;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YDOCs9AzKFq/5DyCUiVzD2R0kPMRzr6ywh8PyNjLNGA=;
+ b=YHep06ILSVY9M3AwwJQpm5NBn60c/8k+atFUMtL0ctWs+rM+rYA/UQiG/rhowNC7tPRUAt
+ wYDo/FAsx8nUkD1bBkXnc2JOSRyuQZI5sTzPbGaK9l5vRBMUt7eULUHaP2ibSXD9DqmfI6
+ f6aJ5snR1ANx1lIH2y5RjoJodcXT2/Y=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-2-Z4q-zZTjMiqHQ4ncP5Hghg-1; Tue,
+ 05 Nov 2024 10:07:20 -0500
+X-MC-Unique: Z4q-zZTjMiqHQ4ncP5Hghg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 19EAA1955F29
+ for <qemu-devel@nongnu.org>; Tue,  5 Nov 2024 15:07:18 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 64BA919560AD; Tue,  5 Nov 2024 15:07:15 +0000 (UTC)
+Date: Tue, 5 Nov 2024 15:07:11 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH] crypto: purge 'loaded' property that was documented as
+ already removed
+Message-ID: <Zyo0n0pJY1BI4-TT@redhat.com>
+References: <20241030084718.2980247-1-berrange@redhat.com>
+ <874j4nzagr.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.110]
-X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: 6dae6638-5ccc-4f49-b1ea-c4a3f97bec9b
-X-Ovh-Tracer-Id: 4448430533422258537
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefuddrtddtgdehudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegffevudduleetgeeftefhtddtkeeludeuudevtdeuhfdvffeggfevfeefkedtkeenucffohhmrghinhepughirhdrshhtrhgvrghmnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdduuddtpdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhnsggprhgtphhtthhopeejpdhrtghpthhtohepqhgvmhhupghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehsuhgurgdrkhihohhtohesghhmrghilhdrtghomhdprhgtphhtthhopehjrghnrdguuhgsohhishesshhushgvrdgtohhmpdhrtghpthhtoheprghnuggvrhhsrdhfrdgsjhhorhhklhhunhgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepqhgvmhhuqd
- hsthgrsghlvgesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepkhhuthhtihgsrghlrghjihdrvheisehgmhgrihhlrdgtohhmpdfovfetjfhoshhtpehmohehvdelmgdpmhhouggvpehsmhhtphhouhht
-DKIM-Signature: a=rsa-sha256; bh=Idlo+TpZqxumuwn40MHDGxg665Zn+q4F3p8uTXi/J3g=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1730821564; v=1;
- b=gu7jEIrl2TPSaZ7tbrp3cMVfiKJtPkES/BFOvVuBIs+bSnMp//LZeh6AzwPFHxIHL9SZmY0G
- sA8O6kt66Xph+9jVdQBnfIng2a+Dro6famlkr3WMxHmNqdajVnkbI0VvvM5LYJQAoNF4UI6a3ms
- iCS2kHxujaDZgrLL5o/jtUXdI2i8CuxsirnUAv89qsEGszoTcZg5HHiLtzB1WPIOw749KeKO1qw
- RwJnrqtq3N4KnwMyJ9LCZ8Tv/yXsjeGP3RtFupPi1EZ9yexeS8UrD5B6H02QTDnhPV+DjWupe0m
- WY9bRWIAHY9mv2Pal/wkW85e20ldv4qFs0OLtSN6GJxOQ==
-Received-SPF: pass client-ip=217.182.185.173; envelope-from=groug@kaod.org;
- helo=smtpout4.mo529.mail-out.ovh.net
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <874j4nzagr.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,74 +85,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Nov 2024 11:25:26 +0100
-Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
-
-> A bad (broken or malicious) 9p client (guest) could cause QEMU host to
-> crash by sending a 9p 'Treaddir' request with a numeric file ID (FID) that
-> was previously opened for a file instead of an expected directory:
+On Mon, Nov 04, 2024 at 09:09:40AM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
->   #0  0x0000762aff8f4919 in __GI___rewinddir (dirp=0xf) at
->     ../sysdeps/unix/sysv/linux/rewinddir.c:29
->   #1  0x0000557b7625fb40 in do_readdir_many (pdu=0x557bb67d2eb0,
->     fidp=0x557bb67955b0, entries=0x762afe9fff58, offset=0, maxsize=131072,
->     dostat=<optimized out>) at ../hw/9pfs/codir.c:101
->   #2  v9fs_co_readdir_many (pdu=pdu@entry=0x557bb67d2eb0,
->     fidp=fidp@entry=0x557bb67955b0, entries=entries@entry=0x762afe9fff58,
->     offset=0, maxsize=131072, dostat=false) at ../hw/9pfs/codir.c:226
->   #3  0x0000557b7625c1f9 in v9fs_do_readdir (pdu=0x557bb67d2eb0,
->     fidp=0x557bb67955b0, offset=<optimized out>,
->     max_count=<optimized out>) at ../hw/9pfs/9p.c:2488
->   #4  v9fs_readdir (opaque=0x557bb67d2eb0) at ../hw/9pfs/9p.c:2602
+> > The 'loaded' property on TLS creds and secret objects was marked as
+> > deprected in 6.0.0 and then marked as removed in 7.1.0.
 > 
-> That's because V9fsFidOpenState was declared as union type. So the
-> same memory region is used for either an open POSIX file handle (int),
-> or a POSIX DIR* pointer, etc., so 9p server incorrectly used the
-> previously opened (valid) POSIX file handle (0xf) as DIR* pointer,
-> eventually causing a crash in glibc's rewinddir() function.
+> deprecated
 > 
-> Root cause was therefore a missing check in 9p server's 'Treaddir'
-> request handler, which must ensure that the client supplied FID was
-> really opened as directory stream before trying to access the
-> aforementioned union and its DIR* member.
+> Regarding "marked as removed": not quite.  Its entry was moved from
+> docs/about/deprecated.rst to docs/about/removed-features.rst, but the
+> text there is "should simply be removed."
 > 
-> Cc: qemu-stable@nongnu.org
-> Fixes: d62dbb51f7 ("virtio-9p: Add fidtype so that we can do type ...")
-> Reported-by: Akihiro Suda <suda.kyoto@gmail.com>
-> Tested-by: Akihiro Suda <suda.kyoto@gmail.com>
-> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> ---
->  hw/9pfs/9p.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> >
+> > Except it wasn't actually removed, it was just made read-only, while
+> > claiming it was removed. Finish the long overdue removal job.
+> >
+> > Fixes: 0310641c06dd5f7ea031b2b6170cb2edc63e4cea
+> 
+> I'm not sure it fixes something that was broken.  Commit 0310641c06d
+> (crypto: make loaded property read-only) did what it said on the tin.
+> What it did was unusual, and maybe a bad idea.
+
+I'm re-wording the commit message to:
+
+  The 'loaded' property on TLS creds and secret objects was marked as
+  deprecated in 6.0.0. In 7.1.0 the deprecation info was moved into
+  the 'removed-features.rst' file, but the property was not actually
+  removed, just made read-only. This was a highly unusual practice,
+  so finish the long overdue removal job.
+
+and removing the "Fixes" tag
+
+> 
+> Anyway, not important now.
+> 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
 > 
 
-Wow ! And this is there since pretty much always... I'm amazed how
-it went unnoticed for so long :-)
-
-Reviewed-by: Greg Kurz <groug@kaod.org>
-
-> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-> index af636cfb2d..9a291d1b51 100644
-> --- a/hw/9pfs/9p.c
-> +++ b/hw/9pfs/9p.c
-> @@ -2587,6 +2587,11 @@ static void coroutine_fn v9fs_readdir(void *opaque)
->          retval = -EINVAL;
->          goto out_nofid;
->      }
-> +    if (fidp->fid_type != P9_FID_DIR) {
-> +        warn_report_once("9p: bad client: T_readdir on non-directory stream");
-> +        retval = -ENOTDIR;
-> +        goto out;
-> +    }
->      if (!fidp->fs.dir.stream) {
->          retval = -EINVAL;
->          goto out;
-
-
-
+With regards,
+Daniel
 -- 
-Greg
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
