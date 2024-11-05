@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80EA69BC5FD
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600AD9BC5EE
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:48:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DDV-0000AM-0E; Tue, 05 Nov 2024 01:39:09 -0500
+	id 1t8DE4-0000ef-Oo; Tue, 05 Nov 2024 01:39:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DD6-0007lN-1U
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:44 -0500
+ id 1t8DDB-0007uW-3w
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:51 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DD4-0001vd-4c
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:39 -0500
+ id 1t8DD9-0001w0-2x
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788718; x=1762324718;
+ t=1730788723; x=1762324723;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hTO3AoGf1nt//dmP+tTmzwZEz/P9eM+x0h2usNJWysY=;
- b=N0wHGTlVj39h8rYeXfY4lBAWb9ljfncyRfaDFsK1pgy7jFoA4lAhlzLY
- qRLBQmV3N8qthzLAebQ1uVhZU9efTpr9DMtSq+uCGEIhHAwQ1GjXn02jW
- sJIC0pltZw/6nkkRxFwS+TAs2dO7EM0kt5MRbp8GqGfoas3VLORwvurot
- YIG81UDVQJtTqYJdliIVxzbu3KVKlZtJNqevxgQ/BKYMecsd25aJYvVZm
- EQ3PP1xB9xIO5tvzc5CJ6km4lHh1w2F45hW3YtuSO6vRVLNNX2MGiDsTm
- FSAGXpBFNeI27bCVKEdEcqrXjqyRqhsSfCQ9R8XIP9f5GZ7Zl5qPNCPPn A==;
-X-CSE-ConnectionGUID: Be/x2GTEQoug2BbLuYyeow==
-X-CSE-MsgGUID: C3ZQI1AzSoq3O7PSdW8lCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689634"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689634"
+ bh=6uInE5yDbMnbDX6d9fyJjDXgIoMCCobDyV6ItNz4Zao=;
+ b=UuQFuDBQVGTCq7SLg8jQDgR1t1MOIpyj/GpmU4BGBrjoGH1mHnuz21jp
+ Eq33agUO7xykpLbL5JqEzdX2BITv1J3vOWddwcJc4hxdSmU6MAfGubCwJ
+ g7fTOzneckZNaaMB5v0raxhoKym0F64cqAprP2PgAOIrpVBUvkm6o+LdE
+ ie0e3PmJm1MLMbQmTI7Vg7l86ozekrEddcrNJKhoYgLtnMAtt5uA75iUm
+ XoWW8OsfXkmfOyKCRh5yzKVLZlYOXp5Ie6tqMPSr3aU9Bc2NlAwBYyq5i
+ EGX9ax8IL/XEiBwODxGCi2VSopObfS9K5d0RJJXul2L5GZwL9E+uBEt1x Q==;
+X-CSE-ConnectionGUID: hycp3DhGQvCfF4VPkoNKvA==
+X-CSE-MsgGUID: fjoXKwBrSeSNtUGiaL/I0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689652"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689652"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:38:27 -0800
-X-CSE-ConnectionGUID: 6+S6bBOERHqqKH31mEtJoA==
-X-CSE-MsgGUID: 0k0dK/97R56/U3RTPqjZig==
+ 04 Nov 2024 22:38:32 -0800
+X-CSE-ConnectionGUID: svLfrtNRRe2nzq6dLY2BYA==
+X-CSE-MsgGUID: iUPoEBAiSDGKObyzPN4S6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989108"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989128"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:23 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:38:27 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 29/60] i386/tdx: Handle KVM_SYSTEM_EVENT_TDX_FATAL
-Date: Tue,  5 Nov 2024 01:23:37 -0500
-Message-Id: <20241105062408.3533704-30-xiaoyao.li@intel.com>
+Subject: [PATCH v6 30/60] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
+ GuestPanic facility
+Date: Tue,  5 Nov 2024 01:23:38 -0500
+Message-Id: <20241105062408.3533704-31-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,113 +89,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TD guest can use TDG.VP.VMCALL<REPORT_FATAL_ERROR> to request
-termination. KVM translates such request into KVM_EXIT_SYSTEM_EVENT with
-type of KVM_SYSTEM_EVENT_TDX_FATAL.
+Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
 
-Add hanlder for such exit. Parse and print the error message, and
-terminate the TD guest in the handler.
-
+Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
 Changes in v6:
- - replace the patch " i386/tdx: Handle TDG.VP.VMCALL<REPORT_FATAL_ERROR>"
-   in v5;
----
- target/i386/kvm/kvm.c      | 10 ++++++++++
- target/i386/kvm/tdx-stub.c |  5 +++++
- target/i386/kvm/tdx.c      | 24 ++++++++++++++++++++++++
- target/i386/kvm/tdx.h      |  2 ++
- 4 files changed, 41 insertions(+)
+- change error_code of GuestPanicInformationTdx from uint64_t to
+  uint32_t, to only contains the bit 31:0 returned in r12.
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4fafc003e9a7..dea0f83370d5 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6116,6 +6116,16 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-     case KVM_EXIT_HYPERCALL:
-         ret = kvm_handle_hypercall(run);
-         break;
-+    case KVM_EXIT_SYSTEM_EVENT:
-+        switch (run->system_event.type) {
-+        case KVM_SYSTEM_EVENT_TDX_FATAL:
-+            ret = tdx_handle_report_fatal_error(cpu, run);
-+            break;
-+        default:
-+            ret = -1;
-+            break;
-+        }
-+        break;
-     default:
-         fprintf(stderr, "KVM: unknown exit reason %d\n", run->exit_reason);
-         ret = -1;
-diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-index a064d583d393..b5cb6d56c46a 100644
---- a/target/i386/kvm/tdx-stub.c
-+++ b/target/i386/kvm/tdx-stub.c
-@@ -11,3 +11,8 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
- {
-     return -EINVAL;
- }
+Changes in v5:
+- mention additional error information in gpa when it presents;
+- refine the documentation; (Markus)
+
+Changes in v4:
+- refine the documentation; (Markus)
+
+Changes in v3:
+- Add docmentation of new type and struct; (Daniel)
+- refine the error message handling; (Daniel)
+---
+ qapi/run-state.json   | 31 +++++++++++++++++++++--
+ system/runstate.c     | 58 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/kvm/tdx.c | 24 +++++++++++++++++-
+ 3 files changed, 110 insertions(+), 3 deletions(-)
+
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index ce95cfa46b73..c5b0b747b30d 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -501,10 +501,12 @@
+ #
+ # @s390: s390 guest panic information type (Since: 2.12)
+ #
++# @tdx: tdx guest panic information type (Since: 9.0)
++#
+ # Since: 2.9
+ ##
+ { 'enum': 'GuestPanicInformationType',
+-  'data': [ 'hyper-v', 's390' ] }
++  'data': [ 'hyper-v', 's390', 'tdx' ] }
+ 
+ ##
+ # @GuestPanicInformation:
+@@ -519,7 +521,8 @@
+  'base': {'type': 'GuestPanicInformationType'},
+  'discriminator': 'type',
+  'data': {'hyper-v': 'GuestPanicInformationHyperV',
+-          's390': 'GuestPanicInformationS390'}}
++          's390': 'GuestPanicInformationS390',
++          'tdx' : 'GuestPanicInformationTdx'}}
+ 
+ ##
+ # @GuestPanicInformationHyperV:
+@@ -598,6 +601,30 @@
+           'psw-addr': 'uint64',
+           'reason': 'S390CrashReason'}}
+ 
++##
++# @GuestPanicInformationTdx:
++#
++# TDX Guest panic information specific to TDX, as specified in the
++# "Guest-Hypervisor Communication Interface (GHCI) Specification",
++# section TDG.VP.VMCALL<ReportFatalError>.
++#
++# @error-code: TD-specific error code
++#
++# @message: Human-readable error message provided by the guest. Not
++#     to be trusted.
++#
++# @gpa: guest-physical address of a page that contains more verbose
++#     error information, as zero-terminated string.  Present when the
++#     "GPA valid" bit (bit 63) is set in @error-code.
++#
++#
++# Since: 9.0
++##
++{'struct': 'GuestPanicInformationTdx',
++ 'data': {'error-code': 'uint32',
++          'message': 'str',
++          '*gpa': 'uint64'}}
 +
-+int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
+ ##
+ # @MEMORY_FAILURE:
+ #
+diff --git a/system/runstate.c b/system/runstate.c
+index c2c9afa905a6..9bb8162eb28f 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -565,6 +565,52 @@ static void qemu_system_wakeup(void)
+     }
+ }
+ 
++static char *tdx_parse_panic_message(char *message)
 +{
-+    return -EINVAL;
++    bool printable = false;
++    char *buf = NULL;
++    int len = 0, i;
++
++    /*
++     * Although message is defined as a json string, we shouldn't
++     * unconditionally treat it as is because the guest generated it and
++     * it's not necessarily trustable.
++     */
++    if (message) {
++        /* The caller guarantees the NUL-terminated string. */
++        len = strlen(message);
++
++        printable = len > 0;
++        for (i = 0; i < len; i++) {
++            if (!(0x20 <= message[i] && message[i] <= 0x7e)) {
++                printable = false;
++                break;
++            }
++        }
++    }
++
++    if (!printable && len) {
++        /* 3 = length of "%02x " */
++        buf = g_malloc(len * 3);
++        for (i = 0; i < len; i++) {
++            if (message[i] == '\0') {
++                break;
++            } else {
++                sprintf(buf + 3 * i, "%02x ", message[i]);
++            }
++        }
++        if (i > 0)
++            /* replace the last ' '(space) to NUL */
++            buf[i * 3 - 1] = '\0';
++        else
++            buf[0] = '\0';
++
++        return buf;
++    }
++
++    return message;
 +}
++
+ void qemu_system_guest_panicked(GuestPanicInformation *info)
+ {
+     qemu_log_mask(LOG_GUEST_ERROR, "Guest crashed");
+@@ -606,7 +652,19 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
+                           S390CrashReason_str(info->u.s390.reason),
+                           info->u.s390.psw_mask,
+                           info->u.s390.psw_addr);
++        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "\nTDX guest reports fatal error:"
++                          " error code: 0x%" PRIx32 " error message:\"%s\"\n",
++                          info->u.tdx.error_code,
++                          tdx_parse_panic_message(info->u.tdx.message));
++            if (info->u.tdx.gpa != -1ull) {
++                qemu_log_mask(LOG_GUEST_ERROR, "Additional error information "
++                              "can be found at gpa page: 0x%" PRIx64 "\n",
++                              info->u.tdx.gpa);
++            }
+         }
++
+         qapi_free_GuestPanicInformation(info);
+     }
+ }
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index b34707e93f4d..3f44dfbf6585 100644
+index 3f44dfbf6585..394f1d75dc0d 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -574,6 +574,30 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
+@@ -17,6 +17,7 @@
+ #include "qemu/mmap-alloc.h"
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
++#include "sysemu/runstate.h"
+ #include "sysemu/sysemu.h"
+ #include "exec/ramblock.h"
+ 
+@@ -574,10 +575,25 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
      return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
  }
  
-+int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
++static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
++                                        char *message, uint64_t gpa)
 +{
-+    uint64_t error_code = run->system_event.data[0];
-+    char *message = NULL;
++    GuestPanicInformation *panic_info;
 +
-+    if (error_code & 0xffff) {
-+        error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%lx",
-+                     error_code);
-+        return -1;
-+    }
++    panic_info = g_new0(GuestPanicInformation, 1);
++    panic_info->type = GUEST_PANIC_INFORMATION_TYPE_TDX;
++    panic_info->u.tdx.error_code = (uint32_t) error_code;
++    panic_info->u.tdx.message = message;
++    panic_info->u.tdx.gpa = gpa;
 +
-+    /* It has optional message */
-+    if (run->system_event.data[2]) {
-+#define TDX_FATAL_MESSAGE_MAX        64
-+        message = g_malloc0(TDX_FATAL_MESSAGE_MAX + 1);
-+
-+        memcpy(message, &run->system_event.data[2], TDX_FATAL_MESSAGE_MAX);
-+        message[TDX_FATAL_MESSAGE_MAX] = '\0';
-+    }
-+
-+    error_report("TD guest reports fatal error. %s", message ? : "");
-+    return -1;
++    qemu_system_guest_panicked(panic_info);
 +}
 +
- static bool tdx_guest_get_sept_ve_disable(Object *obj, Error **errp)
+ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
  {
-     TdxGuest *tdx = TDX_GUEST(obj);
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index c669e0d0daca..7222a5d31359 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -6,6 +6,7 @@
- #endif
+     uint64_t error_code = run->system_event.data[0];
+     char *message = NULL;
++    uint64_t gpa = -1ull;
  
- #include "confidential-guest.h"
-+#include "cpu.h"
- #include "hw/i386/tdvf.h"
+     if (error_code & 0xffff) {
+         error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%lx",
+@@ -594,7 +610,13 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
+         message[TDX_FATAL_MESSAGE_MAX] = '\0';
+     }
  
- #define TYPE_TDX_GUEST "tdx-guest"
-@@ -57,5 +58,6 @@ bool is_tdx_vm(void);
- int tdx_pre_create_vcpu(CPUState *cpu, Error **errp);
- void tdx_set_tdvf_region(MemoryRegion *tdvf_mr);
- int tdx_parse_tdvf(void *flash_ptr, int size);
-+int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run);
+-    error_report("TD guest reports fatal error. %s", message ? : "");
++#define TDX_REPORT_FATAL_ERROR_GPA_VALID    BIT_ULL(63)
++    if (error_code & TDX_REPORT_FATAL_ERROR_GPA_VALID) {
++        gpa = run->system_event.data[1];
++    }
++
++    tdx_panicked_on_fatal_error(cpu, error_code, message, gpa);
++
+     return -1;
+ }
  
- #endif /* QEMU_I386_TDX_H */
 -- 
 2.34.1
 
