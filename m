@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3369BC5FF
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E62C19BC587
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DBQ-0004T6-4C; Tue, 05 Nov 2024 01:36:56 -0500
+	id 1t8DBT-0004Tt-K8; Tue, 05 Nov 2024 01:36:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DBO-0004Sk-5i
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:54 -0500
+ id 1t8DBR-0004TS-Ji
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:57 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DBM-0001qk-Jf
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:53 -0500
+ id 1t8DBQ-0001qk-0m
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788613; x=1762324613;
+ t=1730788616; x=1762324616;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=A6C88ZryYnZ5BmBKN8njc0C6s0vxQGqEOftEOyDrLG0=;
- b=eM5fV5Resi++m5THlBN8K+yJH3DJIR8AY9CanMVhpG4g9wO3BE7kfhT3
- IIAX33PaQJqknisSmTonM4KuqzzL50T9maFPkOO4NvXoZ6gkYZQbegV92
- ilm6WbLY2jGrO2zMAK86k4H9d6wi87n/B4915nuHFHb/Ax5D2ReQ/bOyV
- stAi84Yp0UHIPEIY6YBA8KNgzYbAgbScuDWr2MtKOiVdYVQzWcTfUqd9r
- j8k4ousGLO4GzdzKW99Yxhqv65I0S2gG0MCnXtcNNnvWxAjaa2zJA4zt7
- g2jMI1HaBnnou2OD8fn90IHVWIC7nE2HFqGSZAOOgBdZVIoxjXINs2j+D g==;
-X-CSE-ConnectionGUID: 8gBahJBdQP6rKQEd0veI3w==
-X-CSE-MsgGUID: ny2wMlY1Q3W1fKAnrKF0bA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689318"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689318"
+ bh=EMCLkioz6PKqWrBweYilnMeVfCok800taR5KSHSziyM=;
+ b=ex7fURO97IP1Mnie9L9kaek2P6LE2N3bBmsgV40PoZ3slT5V0HZobbFk
+ OHT/uGJS8NvuQFleHu9FXitG8Bw/a6y0jdFVjx6JuoLC2WXLKOotPDCnN
+ lCQumcZQzuxSAOqqk/47sLKyTz/Cz1Hw0/mTqlRj4Og7MVrncHH+YKt8d
+ mpjfb+8pkbWH++0KrTo+UhDkmfrmhzrZy6v5ubeQ52aTVXb/Tw/kHfKlc
+ rdJRN0XvqchV00YG+MrEr+EaKBfdYOpFdKIwS/eMQPhwR4Q6rl9S6ah+B
+ DLTOxF0ljV53TqBO6zH+gOKNHtWFuqATETSwgmdGEnLXWjrMRWsEzdP3t A==;
+X-CSE-ConnectionGUID: EgG+jOotSNqpzsvQeUJ0vA==
+X-CSE-MsgGUID: GdAGFcRNR9uw+qDFV2sr1Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689337"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689337"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:36:51 -0800
-X-CSE-ConnectionGUID: W+heuwoAQZOjmJ+rdV79Pw==
-X-CSE-MsgGUID: sN9Xd87dRTyBfJlJhz4auA==
+ 04 Nov 2024 22:36:55 -0800
+X-CSE-ConnectionGUID: /mqITyi7TM+2Y+yCpFQ9lQ==
+X-CSE-MsgGUID: mzsjznpqSTuIPYeKU0/kIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988636"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988646"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:36:47 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:36:51 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 07/60] kvm: Introduce kvm_arch_pre_create_vcpu()
-Date: Tue,  5 Nov 2024 01:23:15 -0500
-Message-Id: <20241105062408.3533704-8-xiaoyao.li@intel.com>
+Subject: [PATCH v6 08/60] i386/kvm: Export cpuid_entry_get_reg() and
+ cpuid_find_entry()
+Date: Tue,  5 Nov 2024 01:23:16 -0500
+Message-Id: <20241105062408.3533704-9-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,59 +89,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
-work prior to create any vcpu. This is for i386 TDX because it needs
-call TDX_INIT_VM before creating any vcpu.
-
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-Changes in v3:
-- pass @errp to kvm_arch_pre_create_vcpu(); (Per Daniel)
----
- accel/kvm/kvm-all.c  | 10 ++++++++++
- include/sysemu/kvm.h |  1 +
- 2 files changed, 11 insertions(+)
+ target/i386/kvm/kvm.c      | 8 ++++----
+ target/i386/kvm/kvm_i386.h | 4 ++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 930a5bfed58f..1732fa1adecd 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -523,6 +523,11 @@ void kvm_destroy_vcpu(CPUState *cpu)
-     }
- }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index b843de7f2379..afbf67a7fdaa 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -395,7 +395,7 @@ static bool host_tsx_broken(void)
  
-+int __attribute__ ((weak)) kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_init_vcpu(CPUState *cpu, Error **errp)
+ /* Returns the value for a specific register on the cpuid entry
+  */
+-static uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg)
++uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg)
  {
-     KVMState *s = kvm_state;
-@@ -531,6 +536,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+     uint32_t ret = 0;
+     switch (reg) {
+@@ -417,9 +417,9 @@ static uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg)
  
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ /* Find matching entry for function/index on kvm_cpuid2 struct
+  */
+-static struct kvm_cpuid_entry2 *cpuid_find_entry(struct kvm_cpuid2 *cpuid,
+-                                                 uint32_t function,
+-                                                 uint32_t index)
++struct kvm_cpuid_entry2 *cpuid_find_entry(struct kvm_cpuid2 *cpuid,
++                                          uint32_t function,
++                                          uint32_t index)
+ {
+     int i;
+     for (i = 0; i < cpuid->nent; ++i) {
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index 7ac4c3a91171..efb0883bd968 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -67,6 +67,10 @@ bool kvm_has_waitpkg(void);
+ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address);
+ void kvm_update_msi_routes_all(void *private, bool global,
+                                uint32_t index, uint32_t mask);
++uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg);
++struct kvm_cpuid_entry2 *cpuid_find_entry(struct kvm_cpuid2 *cpuid,
++                                          uint32_t function,
++                                          uint32_t index);
  
-+    ret = kvm_arch_pre_create_vcpu(cpu, errp);
-+    if (ret < 0) {
-+        goto err;
-+    }
-+
-     ret = kvm_create_vcpu(cpu);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret,
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c3a60b28909a..643ca4950543 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -374,6 +374,7 @@ int kvm_arch_get_default_type(MachineState *ms);
- 
- int kvm_arch_init(MachineState *ms, KVMState *s);
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
+ #endif /* CONFIG_KVM */
  
 -- 
 2.34.1
