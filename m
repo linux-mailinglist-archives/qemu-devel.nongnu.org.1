@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799799BC59B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833009BC60F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:52:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DCA-0005J7-GI; Tue, 05 Nov 2024 01:37:42 -0500
+	id 1t8DC8-00058Z-4l; Tue, 05 Nov 2024 01:37:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DBk-0004qC-Aj
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:16 -0500
+ id 1t8DBn-0004x8-Ac
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:22 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DBi-0001tE-6o
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:15 -0500
+ id 1t8DBl-0001tE-Ln
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788634; x=1762324634;
+ t=1730788638; x=1762324638;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oOcXPFYjwedzTDjXBfJ22esNNNhA5wHUGcb1V46w02g=;
- b=VV3xb79CzkDt/Rtpf0eay1lb9Vay9tB19a51pHRhxtPWMG/6HGgy0ahs
- zMxLhJw1OoFPqO+OXk3RNJANpOBvLm03xEeNRVvPZqyS750R6i0UdzKWy
- CH1LdfUzX6t5MMOA8rdoSTIlJUMM9ZpqkvetbaNbHplbavYde+USKXpph
- 8Xxr8TyDQU2gxJ8owa0WKzS1EO9+M86li0B07q+AxNN2hfjaq0byg8AYi
- 3UAJX3HQfglY8cqzpaWCpT+EhcxaRAJ6RO4pczTHlhjpkumtlVPQ1Ype3
- LESKIXGWItKyo2vibQRmnxx5AbSMnkBLhzrAfX9le0D15uaHgXkWIU3TS w==;
-X-CSE-ConnectionGUID: B2Bj6vXeRBi0BRoHFQTq+Q==
-X-CSE-MsgGUID: ofcSbq+FQI+VD0n1aqUmgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689405"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689405"
+ bh=/c6iKYuArYsGCvrbLnQoYffE/JqYul3IweXytxDmZNY=;
+ b=RldKdVscHrrfupkBzDTvBRpWCPS1jRd7EBSgnFTv5felInNnHZ6/D+yu
+ ynbh/iyrYy3H8btFiJRmrFFG/2I4H2UqNIrIzDwHWIOGH0bKQ9dKmL/wO
+ 9WCzPffMY73Jws7yp45XB3QfIHEs/yDVTK3Vpp2eC3NUGskM+OTMgeS7Q
+ Gj3Uxk50gN742F8SlAKs0hFjv8Z5RIBXZBrVXxvyie4LrVkQnROJEFE5M
+ ktc2mVhoIR3eiNUmcIjhDVVPlvBDoP0C1+EWBdFI6lvo4Zhlk5ZPclMNR
+ hDDKDzovWRufTmY/iKm5enviUKunsrPMb13zGiZBhZrWkfqGRBEERX1lX Q==;
+X-CSE-ConnectionGUID: Q6JxRguiQ92QoEHlKAy65A==
+X-CSE-MsgGUID: 0nmEqxVDQGmRX13O1961QA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689423"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689423"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:37:13 -0800
-X-CSE-ConnectionGUID: S/SrZVnbRye6tYey39q1gQ==
-X-CSE-MsgGUID: gPwWQciUSUSPcF3ezm7Hdw==
+ 04 Nov 2024 22:37:17 -0800
+X-CSE-ConnectionGUID: L6eSPwevRTCTpTItmtpCDQ==
+X-CSE-MsgGUID: bP+aULKLSei0fDyQJ6ZDzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988765"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988794"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:37:09 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:37:13 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,10 +55,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 12/60] i386/tdx: Wire CPU features up with attributes of TD
- guest
-Date: Tue,  5 Nov 2024 01:23:20 -0500
-Message-Id: <20241105062408.3533704-13-xiaoyao.li@intel.com>
+Subject: [PATCH v6 13/60] i386/tdx: Validate TD attributes
+Date: Tue,  5 Nov 2024 01:23:21 -0500
+Message-Id: <20241105062408.3533704-14-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -89,58 +88,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For QEMU VMs,
-  - PKS is configured via CPUID_7_0_ECX_PKS, e.g., -cpu xxx,+pks  and
-  - PMU is configured by x86cpu->enable_pmu, e.g., -cpu xxx,pmu=on
+Validate TD attributes with tdx_caps that fixed-0 bits must be zero and
+fixed-1 bits must be set.
 
-While the bit 30 (PKS) and bit 63 (PERFMON) of TD's attributes are also
-used to configure the PKS and PERFMON/PMU of TD, reuse the existing
-configuration interfaces of 'cpu' for TD's attributes.
+Besides, sanity check the attribute bits that have not been supported by
+QEMU yet. e.g., debug bit, it will be allowed in the future when debug
+TD support lands in QEMU.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+
 ---
- target/i386/kvm/tdx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Changes in v3:
+- using error_setg() for error report; (Daniel)
+---
+ target/i386/kvm/tdx.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index e8fd5c7d49e7..6cf81f788fe0 100644
+index 6cf81f788fe0..5a9ce2ada89d 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -21,6 +21,8 @@
+@@ -20,6 +20,7 @@
+ #include "kvm_i386.h"
  #include "tdx.h"
  
++#define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
  #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
-+#define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
-+#define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
- 
- static TdxGuest *tdx_guest;
- 
-@@ -139,6 +141,15 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+ #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
+ #define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
+@@ -141,13 +142,33 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
      return KVM_X86_TDX_VM;
  }
  
-+static void setup_td_guest_attributes(X86CPU *x86cpu)
+-static void setup_td_guest_attributes(X86CPU *x86cpu)
++static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
 +{
-+    CPUX86State *env = &x86cpu->env;
++    if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
++            error_setg(errp, "Invalid attributes 0x%lx for TDX VM "
++                       "(supported: 0x%llx)",
++                       tdx->attributes, tdx_caps->supported_attrs);
++            return -1;
++    }
 +
-+    tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
-+                             TDX_TD_ATTRIBUTES_PKS : 0;
-+    tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
++    if (tdx->attributes & TDX_TD_ATTRIBUTES_DEBUG) {
++        error_setg(errp, "Current QEMU doesn't support attributes.debug[bit 0] "
++                         "for TDX VM");
++        return -1;
++    }
++
++    return 0;
 +}
 +
- static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
++static int setup_td_guest_attributes(X86CPU *x86cpu, Error **errp)
  {
      CPUX86State *env = &x86cpu->env;
-@@ -200,6 +211,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+ 
+     tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
+                              TDX_TD_ATTRIBUTES_PKS : 0;
+     tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
++
++    return tdx_validate_attributes(tdx_guest, errp);
+ }
+ 
+ static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
+@@ -211,7 +232,10 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
      init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
                          sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
  
-+    setup_td_guest_attributes(x86cpu);
-+
+-    setup_td_guest_attributes(x86cpu);
++    r = setup_td_guest_attributes(x86cpu, errp);
++    if (r) {
++        return r;
++    }
+ 
      r = setup_td_xfam(x86cpu, errp);
      if (r) {
-         return r;
 -- 
 2.34.1
 
