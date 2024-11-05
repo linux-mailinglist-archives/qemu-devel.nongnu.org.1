@@ -2,83 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9700B9BD44A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E69BD47F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:25:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8O3E-0004OG-7w; Tue, 05 Nov 2024 13:13:12 -0500
+	id 1t8OE2-0002jG-A8; Tue, 05 Nov 2024 13:24:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8O36-0003ru-LV
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:13:06 -0500
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8O34-0005I0-Mo
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:13:04 -0500
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2fb5014e2daso53488451fa.0
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 10:13:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730830380; x=1731435180; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=i4iFBCLEUgPbb26jFvoQiHfJuFqpt/9yb1HmtpIZzNI=;
- b=ABwXSqc/deReJuuAn7IfWbhoHItq5sv7VcZR5pJZARQV63QUKSHNkM7KnvoedxdwrC
- 6478pNqVUYmJtjylnaBI2GY+qpVoSvfrVM4lbsHoFzDxJO3LIqq9/VhBi8qQeEeUgsZU
- BjbTfYWWIx+Kv+tp/fjKDSJ6X9cYUPBvCsXh7QPZy5PX2FvzEdU9ZHJipj+c3hnKRJpQ
- gkmdTMn4XVs+otx/A+T76JaQNpWKOcjigJ7A0ynh2rzxQ9g+ld3LzZgEO8DNZ0V14kXN
- 1zpLrQ2gVejj77AYKRYaPxY9Z/EjFhIGv3hnJ4cM5bbeKOEqkrE1QD0qC9zBNsHJcUrU
- dxKA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t8ODr-0002il-N6
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:24:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t8ODp-0006Ge-F8
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:24:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730831047;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=nT6o0alT//o5rIREHqaPOaXSA4kw6GIk7ibzPprxVsI=;
+ b=fWEToQ+P2W+tDgChm7/J+b+ZV0pgIbnLgaluo6Ytt+bWkfV10ZNx2ONo9WkirG5s6dza86
+ Bj1YFzM+qLoGIcTq3NLo0Vxl9TuZRBu/3dWUV8mtt+K+KWtrlaBDD6RJDyNmY8QaoPug6j
+ tG8jTC5u52umhBM88HaR00Jge5j8vhg=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-zB2w61lkO-2wJbM6qdsavg-1; Tue, 05 Nov 2024 13:24:06 -0500
+X-MC-Unique: zB2w61lkO-2wJbM6qdsavg-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-5eb85572083so4428588eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 10:24:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730830380; x=1731435180;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1730831045; x=1731435845;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=i4iFBCLEUgPbb26jFvoQiHfJuFqpt/9yb1HmtpIZzNI=;
- b=cWlu7RYgvo03lJsrtYijF01x27kv6wOMKPyC8n476/ALMHl/Q8vOAoY4ItryWseqNG
- Hhh64+6rotHW5PEEEeZ8WvfusIKt9PwD05g65u00VpxIGFL9KiUavHqp+j+gvlATILCy
- u5aNElQTn5b+cStqQ+ph6KYCKvA4BfPXnfuH4Y0kL/gKPM/oKI9u7J16MfJLb3x4QXWG
- tn4bGX9zqL9DNy/as8POm1LiQaR9XtfYc/UO8uLIU1Z3v3EG18Ezf+lO487pNXRr2jMH
- gV93FZugI0pDzrVontdbpe9FGYGSJbSNs6ngQP8UXLH8EKYy9/DIIYd1loAoHaDSrHO/
- jYFg==
+ bh=nT6o0alT//o5rIREHqaPOaXSA4kw6GIk7ibzPprxVsI=;
+ b=dEaKMvrdL1tYNcSkgSYucm4eFgLT6CRB/ZAWNN7JYzSwQRlT4eQ9pPn2mZVNfgqVW9
+ OfcJxSpVyoRmBuUCpO/aOgZeHLarN/KglfMGwHHH510DJYO8qg016+WPpdATn35R6yZB
+ 7KpNCY9bIKs6VJg5yO9MkNulg/++G5MrjL1BUs4ANlmtKYaYWuq07bACwx2o5ByHqrSs
+ rcz15IWmRMPcT8kh3ppfNRkCKn3ktTw04qmdMHI0RQdEahfkYUTPAifI1KiCmTBypBXF
+ 5VH0S2JL64uwqjAlTc2JsdLCWZP4G+Gc5ITaRR0VaAMWKHtKJ7RknXonsMN2MNN2pYE4
+ IJtw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/zahm0DA1slV/eUIPfwFuM2yET3eZqNE+RQxye935rvHDY7dOxBNKCkNv+6Yb6nclKbk4r5t02BYK@nongnu.org
-X-Gm-Message-State: AOJu0Yyakyjxq1OEtn5zmcOack4EHQojpSLFUNhiUKG4kVrqkiQe5vhs
- halfs6SGPTlqZi4AEwQ3fbW+zgO55Hjbi2AoRD+oHfS85AwQjZU6t5+y8kNrkLnS3W5v47paJPX
- FGNucC9wzDtUtCjAgcnpV7Br+2Maea+snxkFg1Q==
-X-Google-Smtp-Source: AGHT+IEOowS4jxGGEvqiPjLdUhmDdx929bUWqrsZaUvJytV+br485HXeJjYzwYN8T503z6Jwym0X2rdtcgJJ0qPZYqo=
-X-Received: by 2002:a05:651c:b20:b0:2fb:597e:28d9 with SMTP id
- 38308e7fff4ca-2fedb771588mr79232231fa.14.1730830380345; Tue, 05 Nov 2024
- 10:13:00 -0800 (PST)
+ AJvYcCWEh0vejgSgL6tWDoljMFeS0HF8hDxU/iDJMOOrsHpfI1yso9XgXOjRzmokm0/b1FcKU2X7kdMH9zYT@nongnu.org
+X-Gm-Message-State: AOJu0YwSFYydgOtKO145tMUo18cdSCf5Y5y2k4Kl4BqkFdSTMKlD1bQO
+ eGNyy3McTa1qL5xlCprFijR30HbaMQvEmY3GaNzzbf9M9n4F4JoIJXnSs3nhmB5Xp6gEkIOhL94
+ tymIWxTD/aOo3DCPpBvN347ULvIm6Mhhb6JXhPwRUzNqrxTP0lahm
+X-Received: by 2002:a05:6820:1c93:b0:5e7:caf5:ae03 with SMTP id
+ 006d021491bc7-5ede631771amr11026167eaf.2.1730831045687; 
+ Tue, 05 Nov 2024 10:24:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFZZtiiLlt0oK0VXNjSKnmQ63m74Whk5LxYeGDlhfmpHWWXioBhgqqVsX5UrTW6af2IWWi9Nw==
+X-Received: by 2002:a05:6820:1c93:b0:5e7:caf5:ae03 with SMTP id
+ 006d021491bc7-5ede631771amr11026155eaf.2.1730831045381; 
+ Tue, 05 Nov 2024 10:24:05 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-55.web.vodafone.de. [109.42.51.55])
+ by smtp.gmail.com with ESMTPSA id
+ 006d021491bc7-5ec706077b9sm2306506eaf.36.2024.11.05.10.24.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Nov 2024 10:24:05 -0800 (PST)
+Message-ID: <88b9cd13-a5e1-4924-a413-eedf92f7285a@redhat.com>
+Date: Tue, 5 Nov 2024 19:24:01 +0100
 MIME-Version: 1.0
-References: <20241024063507.1585765-1-clg@redhat.com>
- <20241024063507.1585765-11-clg@redhat.com>
- <CAFEAcA8A=kWLtTZ+nua-MpzqkaEjW5srOYZruZnE2tB6vmoMig@mail.gmail.com>
- <91c2ac92-66b2-45c8-b4fe-e8f8587b0e9c@linux.ibm.com>
- <CAFEAcA84hhWu2ouirfDPbCpq_=QLQxAf3k47h0Pij8iEnOVj+A@mail.gmail.com>
- <2491bc60-9a0b-486a-8f6d-2c4c94332756@linux.ibm.com>
-In-Reply-To: <2491bc60-9a0b-486a-8f6d-2c4c94332756@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Nov 2024 18:12:48 +0000
-Message-ID: <CAFEAcA85g2nX3MU5RzmBvAHT8Kis1JHhiEaBvnFFbEQkG+0OxQ@mail.gmail.com>
-Subject: Re: [PULL 10/17] tests/functional: Convert most Aspeed machine tests
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- "Daniel P. Berrange" <berrange@redhat.com>, lena.voytek@canonical.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tests: refresh package lists with latest libvirt-ci
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20241105162002.359227-1-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20241105162002.359227-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,68 +147,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Nov 2024 at 18:02, Stefan Berger <stefanb@linux.ibm.com> wrote:
->
->
->
-> On 11/5/24 12:13 PM, Peter Maydell wrote:
-> > On Tue, 5 Nov 2024 at 17:02, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> >> On 11/5/24 11:14 AM, Peter Maydell wrote:
-> >>> Q1: why is apparmor forbidding swtpm from doing something that
-> >>> it needs to do to work?
-> >>
-> >> What distro and version is this?
-> >>
-> >> The profile may be too strict and not reflecting all the paths needed
-> >> for running the test cases. Ubuntu for example would have to update
-> >> their profile in such a case.
-> >
-> > This is Ubuntu 22.04 "jammy" (with swtpm 0.6.3-0ubuntu3.3).
-> >
-> >>> Q2: is there a way to run swtpm such that it is not
-> >>> confined by apparmor, for purposes of running it in a test case?
-> >>
-> >> Try either one:
-> >> - sudo aa-complain /usr/bin/swtpm
-> >> - sudo aa-disable /usr/bin/swtpm
-> >
-> > We don't have root access from QEMU's 'make check',
-> > though (and shouldn't be globally disabling apparmor
-> > even if we could). I had in mind more a way that an
-> > individual user can say "run this swtpm process but don't
-> > apply the apparmor profile to it".
->
-> So the problem is that the avocado tests are using /var/tmp but we only
-> have AppArmor rules for /tmp/
+On 05/11/2024 17.20, Daniel P. Berrangé wrote:
+> This updates the libvirt-ci  submodule to pull in various fixes,
+> the most notable reducing native package sets in cross builds.
+> Some packages were mistakenly marked as native, rather than
+> foreign, in libvirt-ci. Fixing this causes our dockerfiles to
+> pick up the cross arch package instead of native one, thus
+> improving our test coverage in a few areas.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   .gitlab-ci.d/cirrus/freebsd-14.vars                   | 2 +-
+>   tests/docker/dockerfiles/debian-amd64-cross.docker    | 8 ++++----
+>   tests/docker/dockerfiles/debian-arm64-cross.docker    | 8 ++++----
+>   tests/docker/dockerfiles/debian-armhf-cross.docker    | 8 ++++----
+>   tests/docker/dockerfiles/debian-i686-cross.docker     | 8 ++++----
+>   tests/docker/dockerfiles/debian-mips64el-cross.docker | 8 ++++----
+>   tests/docker/dockerfiles/debian-mipsel-cross.docker   | 8 ++++----
+>   tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 8 ++++----
+>   tests/docker/dockerfiles/debian-s390x-cross.docker    | 8 ++++----
+>   tests/docker/dockerfiles/fedora-win64-cross.docker    | 4 +---
+>   tests/lcitool/libvirt-ci                              | 2 +-
+>   tests/vm/generated/freebsd.json                       | 2 +-
+>   12 files changed, 36 insertions(+), 38 deletions(-)
 
-The file AppArmor gives the error for is not in /var/tmp:
-it's in a local directory inside QEMU's build dir:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Nov  5 16:01:14 e104462 kernel: [946406.489088] audit: type=1400
-audit(1730822474.384:446): apparmor="DENIED" operation="mknod"
-profile="swtpm"
-name="/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/tests/functional/arm/test_arm_aspeed.AST2x00Machine.test_arm_ast2600_evb_buildroot_tpm/qemu-machine-hhuvwytc/.lock"
-pid=2820156 comm="swtpm" requested_mask="c" denied_mask="c" fsuid=1000
-ouid=1000
-> The following solutions should work:
-> - do not install swtpm at all
-> - sudo cp /usr/bin/swtpm  /usr/local/bin/swtpm
-> - as root: echo "include <abstractions/user-tmp>" >>
-> /etc/apparmor.d/local/usr.bin.swtpm && apparmor_parser -r
-> /etc/apparmor.d/usr.bin.swtpm
-
-Is there no way to just have apparmor not apply at all
-here? I can see why you might want it to apply for the
-case of "I'm using it as part of a sandboxed VM setup",
-but in this scenario I am a local user running this binary
-which is not setuid root and it is accessing a file in a
-directory which my user owns and has permissions for.
-This should not be being rejected: there is no security
-boundary involved and swtpm is not doing anything
-that I could not directly do myself anyway (as you
-can tell from the fact that copying the swtpm binary
-to a different location and running it works).
-
-thanks
--- PMM
 
