@@ -2,57 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DD79BD2E8
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFE09BD300
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:59:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Mpz-0003K6-1f; Tue, 05 Nov 2024 11:55:27 -0500
+	id 1t8MtK-0007mD-Nj; Tue, 05 Nov 2024 11:58:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1t8Mpq-0003Ip-QQ; Tue, 05 Nov 2024 11:55:19 -0500
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t8MtI-0007lu-Pk
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:58:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1t8Mpp-000540-Ah; Tue, 05 Nov 2024 11:55:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=o9KT9HnK2XpE6H2lyV0rXRzM4Ed3eCUdhr1THmFdYD8=; b=bLX5BZzFhkL9xh9
- f7fg7yqexBJJILeVurKb7SCy9ZKBi90v53/A5VSjhEYMIwo0Plp+yd5FhhBO5+RKxKFV23ZE2acQU
- nk271p2z1HOs2eB59+Ic9KzOaKZ5Xip2OQBLJxB5JEOSHVDBqB6uNkGlGCldNuW9MWmJHFLtfdYNA
- SE=;
-Date: Tue, 5 Nov 2024 17:58:00 +0100
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>, 
- Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, devel@lists.libvirt.org, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 09/19] hw/intc/xilinx_intc: Only expect big-endian accesses
-Message-ID: <rzyrvz7j3wjphbjssy4g4ihbwlbx5qybpxye6auzz7a6fs6hlo@fkwqtleldotl>
-References: <20241105130431.22564-1-philmd@linaro.org>
- <20241105130431.22564-10-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1t8MtH-0005Rp-7V
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:58:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730825929;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mRysqN2ZKZTsN0Ey1O3pgZe0Le1xAbMn8pyz5TE3RS0=;
+ b=czhMwXTFWsF33hi+odwljULYpRSRAyvHs556riN0qqe3KgsUI9FO3JllmAIwGNW10pU1xj
+ eQ3YNVug7aT/xfJn6WEVJvs8o19q4AmRQXHWFqbYqOqmWgIZx3xDH3bVf2q9BLTycYup7R
+ /qON9oJl/N2xkRCxtVYzYIL508mdl/0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-AJamMkhgOGGe12sFylrCuw-1; Tue,
+ 05 Nov 2024 11:58:46 -0500
+X-MC-Unique: AJamMkhgOGGe12sFylrCuw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3B68B19560A2
+ for <qemu-devel@nongnu.org>; Tue,  5 Nov 2024 16:58:45 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.193.244])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 83884300018D; Tue,  5 Nov 2024 16:58:43 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 0/2] vfio queue
+Date: Tue,  5 Nov 2024 17:58:39 +0100
+Message-ID: <20241105165841.3086136-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241105130431.22564-10-philmd@linaro.org>
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,21 +75,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/11/24, Philippe Mathieu-Daudé wrote:
-> Per the datasheet (reference added in file header, p.9)
-> 'Programming Model' -> 'Register Data Types and Organization':
-> 
->     "The XPS INTC registers are read as big-endian data"
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  hw/intc/xilinx_intc.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+The following changes since commit 9a7b0a8618b1293d589a631183e80791ad7bf552:
 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+  Merge tag 'pull-aspeed-20241104' of https://github.com/legoater/qemu into staging (2024-11-05 10:06:08 +0000)
+
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20241105
+
+for you to fetch changes up to 89b516152777a8b54b117d90690ed9be62ba1177:
+
+  vfio/migration: Add vfio_save_block_precopy_empty_hit trace event (2024-11-05 15:51:14 +0100)
+
+----------------------------------------------------------------
+vfio queue:
+
+* Added migration trace events
+
+----------------------------------------------------------------
+Maciej S. Szmigiero (2):
+      vfio/migration: Add save_{iterate, complete_precopy}_start trace events
+      vfio/migration: Add vfio_save_block_precopy_empty_hit trace event
+
+ include/hw/vfio/vfio-common.h |  3 +++
+ hw/vfio/migration.c           | 17 +++++++++++++++++
+ hw/vfio/trace-events          |  3 +++
+ 3 files changed, 23 insertions(+)
+
 
