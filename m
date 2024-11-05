@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF00F9BD17C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4447B9BD166
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 17:01:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8LzM-0006j7-N9; Tue, 05 Nov 2024 11:01:04 -0500
+	id 1t8LzM-0006j6-Mg; Tue, 05 Nov 2024 11:01:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t8LzI-0006ge-27
+ id 1t8LzI-0006hC-PD
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:01:00 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t8LzF-0007OK-7m
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:00:59 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5cebcf96fabso5244401a12.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 08:00:56 -0800 (PST)
+ id 1t8LzH-0007OR-0k
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 11:01:00 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5cedf5fe237so2457159a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 08:00:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730822456; x=1731427256;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1730822457; x=1731427257;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HyCrwL3QUsP9ACprYAhuYoLh1NHjzeMYZLQmtIO85Lg=;
- b=dHbsWXwdFKash0sWTIlyqDtuDHyM5SCenig2CiFfiTGVhhgvMGbaKO8P+bfGRyrZlX
- SLR3f2ScRcpEyexllDU3nf/jLOvHBi1bvNCUbLaSmYiykm50icMkH+Wn8vp9XvGwzSsx
- emm7NwZWFyTy1iTM5aQcjfO/3myqM8frj/qqb9sGwAoBct1NJXIqydq0vulxuviPNKSt
- eGn7eg1pH8kmyrG3h+/2Q9JsOueHe0c92d1T7156g8TIe5/2lLghLNfIkDnkE7XK+MRd
- DRmv2P5dzTW2L3woe/vRpsKIOxPVD3b4DK4Barf+ml4HoboZCkGK+FLApmZXoEndN8WK
- 7SEQ==
+ bh=ULV6js8+Kl+ICVkJYfpF5H1/0wNopvSfTu+wRnziPlo=;
+ b=Sa2Ap5SrILV86YGcDEz124rmfRbnp+h2RWWfkomzJfBEwXC+Dfxlp4PZNeoIkoJAUb
+ 3wQ7nZPAhrZDGjn23EpvEjlSpbGOyJvvONXDQH7oJFQctAUy0/yoLKBCYoD9k1xUGV6j
+ eE0fepTAKYsxFJl0j+j98SS87991iVzMbvf1gfQ0TmREeTWwcITYk5+KVfX/KBQKadGz
+ 0xPZDuM/0eDLaJ1mWkcZ0CGfwtwVEDqDUjVPr75pSmB46tQrdIbEwGGlP/zWLJgt13Dq
+ ++8pI9VnqOJit/AEzP/QQ6W6Gc6ucvkJWGg7Zr8gMt7mUxpp3DWSV7BhqoLYRM2kqUI+
+ litQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730822456; x=1731427256;
+ d=1e100.net; s=20230601; t=1730822457; x=1731427257;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HyCrwL3QUsP9ACprYAhuYoLh1NHjzeMYZLQmtIO85Lg=;
- b=xEMlSiA+QzxPmHoYBTEPh6jpqTm9sMqxWG4tNvIkNWiN97Zg9v5LrQs/IeBZ4Mrrob
- tzZgmrludRv7PL82vFIRvGg/MEifcrpulIYgXPTvi59usWvJ8MThckwPemmQnFU050b/
- 5/VJgibIuEVQgS1qqmUd9M1vtEQN22id0W8WC9tf+edUgTDYBmjLE1/nf9MROIpdWop4
- 9DoZS1AVQrcjFSCCYY6STfHhKGp9Xn5II64uff0JeuTQao9whmdE6Klggo1ThOd7k1NX
- DRxYoMmxVnJChXPbmWVXwUbrDO021aAEHucNL2Ln5YFo9pyWApeM0466uRMYdOqtuN0m
- LKNw==
-X-Gm-Message-State: AOJu0YzyJxEyo3wVZxVLMLuQqLKAzqjxoPgEfQXkfufe8CB3isRj/dpr
- bDhVzNxiQzCdePoOTdb9OQB878aMqnjWpTBgBkeJiZSB5YmnuZGTKEbux4rDKSjke5RAHeeUO6S
- FOQ==
-X-Google-Smtp-Source: AGHT+IGVrjrX1vlRd2uG7oRQwie7RyQ5UOTKHCjgIWdFbAeyGVFShvSMO95vZxX6XL1f+wTeBj1FJg==
-X-Received: by 2002:a05:6402:4405:b0:5ce:df46:7087 with SMTP id
- 4fb4d7f45d1cf-5cedf4670a0mr4390457a12.4.1730822455509; 
- Tue, 05 Nov 2024 08:00:55 -0800 (PST)
+ bh=ULV6js8+Kl+ICVkJYfpF5H1/0wNopvSfTu+wRnziPlo=;
+ b=ttUhXSQl0aHs/k3yPhBSs7A0IJjVrKqGntyFF3nKtqa+EzDCXGwKaP56GxNO+gXHbi
+ B9XaGJoqQvb/gBLQchCkhsxmT4b2M3CkIhPZ7xJ2DsvNcAu6ZTczGyXNoqf0QNXpo6hC
+ CZv9YHSKivnQpRLvwJ3kVZ/1vyH4t9fFMynrpjvUzXFUef0btUKnnJuNXzRPoV/PAIh3
+ vPwj/4F0lt1mM81UVJZzSfjiXeUriOkJc+3oN8h7cqSPEbiKTzdDSSoTuJD78vnRmA/l
+ DwVijSIbkmOSxwOPNgyj11Hr3dCX0/0jqcMcAKzPfUnzBD7WCD/1mtwDiMWSN2w1WMyj
+ LJ3w==
+X-Gm-Message-State: AOJu0YxtNXJxqjupxyG3+itTxBi4ZEKl1AcjZbit4lLtwz2Rnmi9ASJK
+ qTF4h2tQ86uCG0vucCqGvPfTXE2CnQfoEVS40WykAjmJdqjbIvHHuc+inJ/sZ6atEIi4RytGCsy
+ IMQ==
+X-Google-Smtp-Source: AGHT+IF0I962jVv//zYvrqp12V/bHhVuDuGOk3Ch/xohzHRVWmFkfNO6iaUpeA3ISojmbyMxKOWhMQ==
+X-Received: by 2002:a05:6402:3491:b0:5c9:1d7f:4fd9 with SMTP id
+ 4fb4d7f45d1cf-5ceb9263cacmr13559835a12.8.1730822456465; 
+ Tue, 05 Nov 2024 08:00:56 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cee6a9a41bsm1467773a12.14.2024.11.05.08.00.54
+ 4fb4d7f45d1cf-5cee6a9a41bsm1467773a12.14.2024.11.05.08.00.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 08:00:55 -0800 (PST)
+ Tue, 05 Nov 2024 08:00:56 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, pbonzini@redhat.com,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 2/5] i386/hvf: Fix for UB in handling CPUID function 0xD
-Date: Tue,  5 Nov 2024 16:57:57 +0100
-Message-Id: <20241105155800.5461-3-phil@philjordan.eu>
+Subject: [PATCH 3/5] i386/hvf: Fixes startup memory leak (vmcs caps)
+Date: Tue,  5 Nov 2024 16:57:58 +0100
+Message-Id: <20241105155800.5461-4-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 In-Reply-To: <20241105155800.5461-1-phil@philjordan.eu>
 References: <20241105155800.5461-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::52e;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x52e.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::52d;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -93,37 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The handling for CPUID function 0xD (supported XSAVE features) was
-improved in a recent patch. Unfortunately, this appears to have
-introduced undefined behaviour for cases where ecx > 30, as the result
-of (1 << idx) is undefined if idx > 30.
-
-Per Intel SDM section 13.2, the behaviour for ecx values up to and
-including 62 are specified. This change therefore specifically sets
-all registers returned by the CPUID instruction to 0 for 63 and higher.
-Furthermore, the bit shift uses uint64_t, where behaviour for the entire
-range of 2..62 is safe and correct.
+The hvf_caps data structure only exists once as part of the hvf accelerator
+state, but it is initialised during vCPU initialisation. This change therefore
+adds a check to ensure memory for it is only allocated once.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/x86_cpuid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index ac922d7fd16..9d9ccaa815d 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -119,8 +119,8 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-         eax = 0;
-         break;
-     case 0xD:
--        if (!supported_xcr0 ||
--            (idx > 1 && !(supported_xcr0 & (1 << idx)))) {
-+        if (!supported_xcr0 || idx >= 63 ||
-+            (idx > 1 && !(supported_xcr0 & (UINT64_C(1) << idx)))) {
-             eax = ebx = ecx = edx = 0;
-             break;
-         }
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 68dc5d9cf75..8527bce6eef 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -239,7 +239,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+     init_emu();
+     init_decoder();
+ 
+-    hvf_state->hvf_caps = g_new0(struct hvf_vcpu_caps, 1);
++    if (hvf_state->hvf_caps == NULL) {
++        hvf_state->hvf_caps = g_new0(struct hvf_vcpu_caps, 1);
++    }
+     env->hvf_mmio_buf = g_new(char, 4096);
+ 
+     if (x86cpu->vmware_cpuid_freq) {
 -- 
 2.39.3 (Apple Git-145)
 
