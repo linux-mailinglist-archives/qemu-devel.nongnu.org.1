@@ -2,79 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842E59BD406
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D989BD404
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:03:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Nsb-0004t8-OS; Tue, 05 Nov 2024 13:02:13 -0500
+	id 1t8Nt2-0005K3-4r; Tue, 05 Nov 2024 13:02:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8Nsa-0004sV-1I
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:02:12 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8NsY-000471-70
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:02:11 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-539f72c913aso9337328e87.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 10:02:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730829728; x=1731434528; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=B4flybjr/SUPciu6LlWIVGp3hVpYokY/O9EWZxZ1nKY=;
- b=hl/MlsIukO9HzmbggaVSmTBmsx3uv2hShWztEhIp10LIQCqCpL3+oVCynkqWV3nAef
- 4VlWGnLmmW0usRP9Bw83HvbSzc7g6PDTLiFvFxBi0g7HdaZEfleewOOsbmDSGukuf8rQ
- PEF9HU00HQmjKMWyoYmTbaRkJWwXEEDjP6hW1stf3gyvfi/l6FHF1xC5JcjnoMIrhcsf
- cR76ogDQk+r21RlhtwZvMUKOK/4hXQZaXzKCXrXhcElbNfkK/UG3kHPawQnR/NvmFBO7
- s5apfTCBreE8ubUJbYkcLFC/85UuEhBESRd1oKZJH+Qyl7SzRoFn/o4fi8bo2bITIwf6
- PF9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730829728; x=1731434528;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B4flybjr/SUPciu6LlWIVGp3hVpYokY/O9EWZxZ1nKY=;
- b=A7qxI1nmTmtzofP8QYIRqBs9QT36CSnSKtLRMU3zuzu+TJzV8QmwzVMfnIK1mduV+D
- LHT3e4zw7wtsJK3ptzDPlfrWZj/W8Xlr060SGlOLkOWsiDFcc0seyG1Nref/3j6NT2vR
- DMmfc/ofx/FiIL9S7FeT5KEF0Brbvz4FCCnZ/M1sG/SGSplM748UHd4deh7pnhf1yVzO
- uPEo2t3USkQDqjlVS4Ehpeih3LXBSAc/dg/DJpsoMfIEGBfSvqaUqkMNRwrKUw9y2C3k
- C1qEge46NAqplqsw52CN/g18C/79B6V3Ml2iUIcygiwropOPKodqafyKY9/ZHS8BnMm1
- Hv6w==
-X-Gm-Message-State: AOJu0YwRPrpQhTmnplfmWK3KYbwUPh5PRtnDH/BmG9FNZVw55Z9LnHMh
- 3Vpq/mwjEa6qAspvGBG0Nuyf+e7gYGGvVj0sUGZeaPd9vlsBNegvYfvoCyJHqcxYDlnSdMv2ibn
- d
-X-Google-Smtp-Source: AGHT+IE+f/2GzHdryF4uYYeTb0KUG9ynh6Pq1lkQ+4MaA6yzUaGmaUlgsBis5RAxhwEygeuqP9UILQ==
-X-Received: by 2002:a05:6512:318c:b0:53b:1f14:e11a with SMTP id
- 2adb3069b0e04-53b348d0d32mr19003740e87.15.1730829727533; 
- Tue, 05 Nov 2024 10:02:07 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-431bd9a9a3bsm223969275e9.36.2024.11.05.10.02.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 10:02:06 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH] hw/intc/openpic: Avoid taking address of out-of-bounds array
- index
-Date: Tue,  5 Nov 2024 18:02:05 +0000
-Message-Id: <20241105180205.3074071-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1t8Nsz-0005Hq-LM; Tue, 05 Nov 2024 13:02:37 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1t8Nsy-0004Bh-3J; Tue, 05 Nov 2024 13:02:37 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5HeMBh022429;
+ Tue, 5 Nov 2024 18:02:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Q1ZXtI
+ szTL0ij5xZwWpRms3SWOKXettJqRoH6LbYAgY=; b=PcSmgIi7Cog0A5z6NQccmh
+ 1g5QyORnQbuKwVHWIE73i7BecrdY7Zq8QqR4p70M9RFNqWLnUiRBHlCn380xkjID
+ 3+MZEuGG50xmRGDST/f4aoaYl5I0oi+ivcmWtVCsSS6deijmafn/0XOJKG6cna4x
+ Nae8iBEE3W+iFIJK4ORyyUHzUtL+mDlBnbGJEBAbQKnJ7VSEKd2CVkHI0jLvrAkr
+ 818fiOy8A8TNs8vwQxlrPpVmcDHQsHOg1acLEaab3PlRuI7Ty/22HDq6KtDZhBR6
+ a0ykhrSgfedTgJmh3Mzo1kKIz2oCqYjiac+G2YsRFiOMpisetRh7Ou7xxeEct5pA
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qqy5r2v7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 18:02:31 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5H1jK4023919;
+ Tue, 5 Nov 2024 18:02:30 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nxsyaypg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2024 18:02:30 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A5I2TWC54919626
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 Nov 2024 18:02:30 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DAF2058052;
+ Tue,  5 Nov 2024 18:02:29 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 84D3C58056;
+ Tue,  5 Nov 2024 18:02:29 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Nov 2024 18:02:29 +0000 (GMT)
+Message-ID: <2491bc60-9a0b-486a-8f6d-2c4c94332756@linux.ibm.com>
+Date: Tue, 5 Nov 2024 13:02:29 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 10/17] tests/functional: Convert most Aspeed machine tests
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>, lena.voytek@canonical.com
+References: <20241024063507.1585765-1-clg@redhat.com>
+ <20241024063507.1585765-11-clg@redhat.com>
+ <CAFEAcA8A=kWLtTZ+nua-MpzqkaEjW5srOYZruZnE2tB6vmoMig@mail.gmail.com>
+ <91c2ac92-66b2-45c8-b4fe-e8f8587b0e9c@linux.ibm.com>
+ <CAFEAcA84hhWu2ouirfDPbCpq_=QLQxAf3k47h0Pij8iEnOVj+A@mail.gmail.com>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CAFEAcA84hhWu2ouirfDPbCpq_=QLQxAf3k47h0Pij8iEnOVj+A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xlIJmz_ao9sJL686FeUtR_P5elNvKOmI
+X-Proofpoint-GUID: xlIJmz_ao9sJL686FeUtR_P5elNvKOmI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050135
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,58 +112,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The clang sanitizer complains about the code in the EOI handling
-of openpic_cpu_write_internal():
 
-UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1 ./build/clang/qemu-system-ppc -M mac99,graphics=off -display none -kernel day15/invaders.elf
-../../hw/intc/openpic.c:1034:16: runtime error: index -1 out of bounds for type 'IRQSource[264]' (aka 'struct IRQSource[264]')
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/intc/openpic.c:1034:16 in
 
-This is because we do
-  src = &opp->src[n_IRQ];$
-when n_IRQ may be -1.  This is in practice harmless because if n_IRQ
-is -1 then we don't do anything with the src pointer, but it is
-undefined behaviour. (This has been present since this device
-was first added to QEMU.)
+On 11/5/24 12:13 PM, Peter Maydell wrote:
+> On Tue, 5 Nov 2024 at 17:02, Stefan Berger <stefanb@linux.ibm.com> wrote:
+>> On 11/5/24 11:14 AM, Peter Maydell wrote:
+>>> Q1: why is apparmor forbidding swtpm from doing something that
+>>> it needs to do to work?
+>>
+>> What distro and version is this?
+>>
+>> The profile may be too strict and not reflecting all the paths needed
+>> for running the test cases. Ubuntu for example would have to update
+>> their profile in such a case.
+> 
+> This is Ubuntu 22.04 "jammy" (with swtpm 0.6.3-0ubuntu3.3).
+> 
+>>> Q2: is there a way to run swtpm such that it is not
+>>> confined by apparmor, for purposes of running it in a test case?
+>>
+>> Try either one:
+>> - sudo aa-complain /usr/bin/swtpm
+>> - sudo aa-disable /usr/bin/swtpm
+> 
+> We don't have root access from QEMU's 'make check',
+> though (and shouldn't be globally disabling apparmor
+> even if we could). I had in mind more a way that an
+> individual user can say "run this swtpm process but don't
+> apply the apparmor profile to it".
 
-Rearrange the code so we only do the array index when n_IRQ is not -1.
+So the problem is that the avocado tests are using /var/tmp but we only 
+have AppArmor rules for /tmp/
 
-Cc: qemu-stable@nongnu.org
-Fixes: e9df014c0b ("Implement embedded IRQ controller for PowerPC 6xx/740 & 75")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Arguable whether it's worth the stable backport or not...
----
- hw/intc/openpic.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+The following solutions should work:
+- do not install swtpm at all
+- sudo cp /usr/bin/swtpm  /usr/local/bin/swtpm
+- as root: echo "include <abstractions/user-tmp>" >> 
+/etc/apparmor.d/local/usr.bin.swtpm && apparmor_parser -r 
+/etc/apparmor.d/usr.bin.swtpm
 
-diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
-index cd3d87768e0..2ead4b9ba00 100644
---- a/hw/intc/openpic.c
-+++ b/hw/intc/openpic.c
-@@ -1031,13 +1031,14 @@ static void openpic_cpu_write_internal(void *opaque, hwaddr addr,
-         s_IRQ = IRQ_get_next(opp, &dst->servicing);
-         /* Check queued interrupts. */
-         n_IRQ = IRQ_get_next(opp, &dst->raised);
--        src = &opp->src[n_IRQ];
--        if (n_IRQ != -1 &&
--            (s_IRQ == -1 ||
--             IVPR_PRIORITY(src->ivpr) > dst->servicing.priority)) {
--            DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
--                    idx, n_IRQ);
--            qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
-+        if (n_IRQ != -1) {
-+            src = &opp->src[n_IRQ];
-+            if (s_IRQ == -1 ||
-+                IVPR_PRIORITY(src->ivpr) > dst->servicing.priority) {
-+                DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
-+                        idx, n_IRQ);
-+                qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
-+            }
-         }
-         break;
-     default:
--- 
-2.34.1
+
+Lena, it looks like we would need the following additional line in the 
+profile:
+
+include <abstractions/user-tmp>
+
+> 
+>>> Q3: if not, is there a way to at least detect that swtpm is
+>>> broken on this system so we can skip the test case?
+>>
+>> It's not swtpm that is broken but the AppArmor profile is too strict.
+>> Above command lines should work.
+> 
+> But this is a widely deployed distro in its default
+> configuration. We have to either work with it or detect
+> that it's broken so we can skip the test.
+
+Cc'in Lena from Ubuntu.
+
+> 
+> thanks
+> -- PMM
 
 
