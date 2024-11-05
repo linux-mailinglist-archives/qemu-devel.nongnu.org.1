@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A019BC60B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39209BC601
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DHH-0006X4-VK; Tue, 05 Nov 2024 01:43:00 -0500
+	id 1t8DHf-00075b-78; Tue, 05 Nov 2024 01:43:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DF7-0003YW-Vc
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:51 -0500
+ id 1t8DFq-0003v8-Mb
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:41:31 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DF3-0001vj-HP
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:44 -0500
+ id 1t8DFF-0001vd-Nc
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:41:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788842; x=1762324842;
+ t=1730788854; x=1762324854;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NKlDvzzDpP7N59sc27fzM1CZSPqI8zTcm+9UeKAwP8w=;
- b=QHNbqLuucstjHcOy9UV3xOmCHuLTv2HR54BYmBJ15nyrFQGfxsmlTnKr
- 0MdozpaIJFm3u8bmp094ac0ePm8eYXdsmjxNPpzz/yh2W8hZv4go3NvcT
- YOMcpBIyB3qGH2W4e1DHbA78E9lU0uMTUr+CpNXXhjRRaOanVncsZUipd
- ztk0gH+aldGW+0JRGif3VNEr+2C4qXIvnBBpono6zwCb9Q5o7dm/LPEmX
- SBeBdvzWa1yWakWSbIdNBbO+hRmRoqBe+NKILxIgz8mqECcTYkFQxcrmU
- 299jNcd/qXN9h1mjflFnTRV3REfLYkYfD/PQUDfZxY2W9CK16gzZd/3A1 Q==;
-X-CSE-ConnectionGUID: mIuGk7wWQPy6T81yX22kLQ==
-X-CSE-MsgGUID: 2eUyQLRiTmehAmyapHM+Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689936"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689936"
+ bh=Pfq6Mcq11nNik95S/q8D/VnbY9hYdtshEgdTuCa1i80=;
+ b=QChRkxRZwNrq8GCwW26Ax5FxR1z34sxbilHz0/rblbNLqD+By90An9Pl
+ CtQxhE7c1F8PxoRRD8nQ2eQ9qCYWrrtoueOFPr8T/2ZbfsOt2vst3Srrs
+ ibSO2Vt5/F1uL/NaKTMzdQi3l+78k78UI3kjGy1st9Ji8mG3xq09y2AIA
+ BFd1NPB9WGcXpXhXc1ewQJ2NPg2VboUgmA3ooxydO7vavZ9Wl/N5AENV8
+ aa8wNccZMhSJstqLPJWVSMVNYAQlHldw3p08JFp9i8sYRuIHMYTmZM7v3
+ wcmDMoSu9pw5WaKN0zQP0hCUnXjGAqpa9An9kIbW+q4DWPyNbxUKs4Qtm Q==;
+X-CSE-ConnectionGUID: Hggi8ScXS+KUluoimmC5og==
+X-CSE-MsgGUID: 0H4ma58zSvG3z3sB1gKUHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689951"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689951"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:40:26 -0800
-X-CSE-ConnectionGUID: fMooDLw8TVGkCNYMWGss5g==
-X-CSE-MsgGUID: Is1f+4fSQ9Kp08bHbbfQaw==
+ 04 Nov 2024 22:40:31 -0800
+X-CSE-ConnectionGUID: 1JcGSuUsQHiwhLm+UNgIxA==
+X-CSE-MsgGUID: 7h2gpC2BS6GDQQ3w3SMvwg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83990085"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83990113"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:40:22 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:40:26 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 57/60] i386/tdx: Make invtsc default on
-Date: Tue,  5 Nov 2024 01:24:05 -0500
-Message-Id: <20241105062408.3533704-58-xiaoyao.li@intel.com>
+Subject: [PATCH v6 58/60] cpu: Introduce qemu_early_init_vcpu()
+Date: Tue,  5 Nov 2024 01:24:06 -0500
+Message-Id: <20241105062408.3533704-59-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,27 +88,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because it's fixed1 bit that enforced by TDX module.
+Currently cpu->nr_cores and cpu->nr_threads are initialized in
+qemu_init_vcpu(), which is called a bit late in *cpu_realizefn() for
+each ARCHes.
+
+x86 arch would like to set CPUID_HT in env->features[FEAT_1_EDX] based
+on the value of cpu->nr_threads * cpu->nr_cores. It requires nr_cores
+and nr_threads being initialized earlier.
+
+Introdue qemu_early_init_vcpu() for this purpose.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/tdx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ accel/tcg/user-exec-stub.c | 4 ++++
+ include/hw/core/cpu.h      | 8 ++++++++
+ system/cpus.c              | 8 ++++++++
+ 3 files changed, 20 insertions(+)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 05475edf72bd..4cb1f4ac3479 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -430,6 +430,9 @@ static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
- 
-     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
- 
-+    /* invtsc is fixed1 for TD guest */
-+    object_property_set_bool(OBJECT(cpu), "invtsc", true, &error_abort);
-+
-     x86cpu->enable_cpuid_0x1f = true;
+diff --git a/accel/tcg/user-exec-stub.c b/accel/tcg/user-exec-stub.c
+index 4fbe2dbdc883..64baf917b55c 100644
+--- a/accel/tcg/user-exec-stub.c
++++ b/accel/tcg/user-exec-stub.c
+@@ -10,6 +10,10 @@ void cpu_remove_sync(CPUState *cpu)
+ {
  }
  
++void qemu_early_init_vcpu(CPUState *cpu)
++{
++}
++
+ void qemu_init_vcpu(CPUState *cpu)
+ {
+ }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c3ca0babcb3f..854b244e1ad6 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1063,6 +1063,14 @@ void start_exclusive(void);
+  */
+ void end_exclusive(void);
+ 
++/**
++ * qemu_early_init_vcpu:
++ * @cpu: The vCPU to initialize.
++ *
++ * Early initializes a vCPU.
++ */
++void qemu_early_init_vcpu(CPUState *cpu);
++
+ /**
+  * qemu_init_vcpu:
+  * @cpu: The vCPU to initialize.
+diff --git a/system/cpus.c b/system/cpus.c
+index 1c818ff6828c..98cb8aafa50b 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -662,6 +662,14 @@ const AccelOpsClass *cpus_get_accel(void)
+     return cpus_accel;
+ }
+ 
++void qemu_early_init_vcpu(CPUState *cpu)
++{
++    MachineState *ms = MACHINE(qdev_get_machine());
++
++    cpu->nr_cores = machine_topo_get_cores_per_socket(ms);
++    cpu->nr_threads =  ms->smp.threads;
++}
++
+ void qemu_init_vcpu(CPUState *cpu)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
 -- 
 2.34.1
 
