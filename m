@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9546A9BCB8F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B137F9BCBB9
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:25:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Hbd-0004iS-4h; Tue, 05 Nov 2024 06:20:17 -0500
+	id 1t8HbY-0004d6-Df; Tue, 05 Nov 2024 06:20:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbX-0004dP-Il
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:11 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1t8HbV-0004bV-DH
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:09 -0500
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbJ-00078t-W4
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:11 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-539e8607c2aso5782586e87.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:56 -0800 (PST)
+ id 1t8HbL-000794-IH
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:09 -0500
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-539ebb5a20aso5667352e87.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730805595; x=1731410395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+LP6S0HiqT0UnMi7xLzb+PtlWN4r3AjuiB9iv2CEHDk=;
- b=d8VbeaQ4MT9hGxedcDzrl/vAGU4hHDVtQkPT7x0ifi16jeAKYhxZdt3C+h2ppUTGy0
- gldSknjfMETiiglrsPap/js07emz7xg4ZzqC5LYguGBzKvVxrj5Gjlftf8+fZ3Q24/LM
- Lvm6DaDtEy2zxWd0rH7Dm9fAJzj6WVz+wdklSdtWiuvJ9scPmVL+3lXjouOK5zkVH/AO
- PRVoqK4JndasdHvI/iTJWXRM5ifpmsFmxnLORMhT1rc1vZ5bQSTBDVHv8qOk34koMXmW
- PjrwPu4tWHMF9H512XyPsUHA9LAoX4ZBcT67cBjne1To/k00oVJRFjl/bjG8qHsE6Ku5
- U2Ag==
+ :reply-to; bh=ig5jYCKBIJw18wNceoQVbcha/Skyw92dmimUEm0U7I4=;
+ b=Adys6tJZaGaEy0d/jZ6yyNvMlmxUme4Y+upNA86KvMDSvuniG4AwnDgbTtLJ9qSclk
+ 4GYFTKKw1nmqIGhap4f8LJEikxxYnvshx434Ln1Wa6OzDX7KLq4zIV4USDlnRKW2hs9i
+ E3p2xMOzq+uhUnV8k0Wo8wioOFK1fXTsA92uqBzdnvhjKOwhT71AcPY/h0TKkz5vAVBY
+ 6sJgSYrJ160CdzouV945aFryzQrW1e8ZtSDd568ikaIJnJH5EuXgDePDPViwzWuPfAd8
+ 2bQ+zOPP8Jcm8d5TuiOjOAKJ60Wp5chHLkqPeR6F+KzwtSSA606BKE/XYZQST/fRlJJK
+ n+9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730805595; x=1731410395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+LP6S0HiqT0UnMi7xLzb+PtlWN4r3AjuiB9iv2CEHDk=;
- b=iwKeDJ+CJttPBTfnGqGFUVOagNcFJQi5UROtLg2NB1g22VDRHYeqhJpGmmbsOOlGjF
- PEMtDfU4i9qB2Dfp86c+TR1+l7LQdrI99OfSL/tsJAX9q/ehpqIWzWG9ObWhBhlGxxNr
- M/7VrmU+nP+ngvn/DKm160zWQI6FfXF42RKeM+GRI8MLKKEIlBrMliSNpKeiRsTcp7f4
- dJGc9jjeZcg0DF1Xop68I6NC3YUhU/RBc9dr7jxFHz/WrhfXE6H8xtfpHxFxSsMxZ/hZ
- gsmXf02UBuWINEeSO4f2pK4YPSa5mebsnODDQW3MwnZ4OV99Iuwrfz8UkrLEalR300OG
- BJIg==
-X-Gm-Message-State: AOJu0YzfNKkHcFsxjPtUCin/8LZWgUAzm1FLinehMx1Fq7WnXI6KY1cX
- sjT83s+OcBIQI/cZO2QnRE7wdRwrqzVeIiTmySUPHQpZtpmc/sT8YeipzXbSYN+8PAuDc8GyLG6
- C
-X-Google-Smtp-Source: AGHT+IH+jt9pf6glwrjI/CSmL/UEVVRPPBvrv69vQpRcyYmmm3sZz0u52YpddYr4YWl9AC6Sm6bCfQ==
-X-Received: by 2002:ac2:4e06:0:b0:52c:fd46:bf07 with SMTP id
- 2adb3069b0e04-53b34a2e4d0mr15730991e87.49.1730805594825; 
- Tue, 05 Nov 2024 03:19:54 -0800 (PST)
+ bh=ig5jYCKBIJw18wNceoQVbcha/Skyw92dmimUEm0U7I4=;
+ b=sTOkRTfRJ4rqmR4hR7WAiKeiiIdlbLD6dvkb4CrHtPaBiQ8rLMoN0vxLvcrnQ9wKJR
+ u/fmR4d82QVmQOWXUilA3w+jLRxpUD1YEHLGv9wecubIX7AADC/v7P7ZbKlWSTozS2iu
+ cxRbrwOEQ63LiykswEYZShf/DPDQF6xcnM0CD4EUzkpstIsLEY5AR823neYNCJxcBEIc
+ /GOU7AYZrcMCfb+WrG0ucOYnrrUG2lLl4lw/1h9wGpM3VObIKvmDQAwMr/mt/KVvRFZO
+ wJqQcMLU62JwsMql7a5/5sb2Vq8FFeY5iuVM+gkKYVugYoiSLdCc3rpwTNmTYRObSsVA
+ JnIA==
+X-Gm-Message-State: AOJu0YzBqjCxffWOkpn4B40LHmfmlZ7zRkBkY/DrklKfllKFIj0g6vKR
+ dsU2Eu0ONrUS7mr5B5I8NzopFymECUv9k9bOcG7EVEptzCvm9JYwSlZSafWDKTnCZnMQe9Wa+La
+ 1
+X-Google-Smtp-Source: AGHT+IGHKv9lPoqlRuwROu+4s1YMXLfJ9ALfOFBPZEN1JxS3OcGsmNE1xtTTKk7setNZ95I1GLa7RQ==
+X-Received: by 2002:a05:6512:3403:b0:52e:7448:e137 with SMTP id
+ 2adb3069b0e04-53d65dd0e30mr9080197e87.6.1730805595401; 
+ Tue, 05 Nov 2024 03:19:55 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 03:19:54 -0800 (PST)
+ Tue, 05 Nov 2024 03:19:55 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/31] hw/net/npcm_gmac: Change error log to trace event
-Date: Tue,  5 Nov 2024 11:19:34 +0000
-Message-Id: <20241105111935.2747034-31-peter.maydell@linaro.org>
+Subject: [PULL 31/31] target/arm: Enable FEAT_CMOW for -cpu max
+Date: Tue,  5 Nov 2024 11:19:35 +0000
+Message-Id: <20241105111935.2747034-32-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
 References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,52 +91,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Convert the LOG_GUEST_ERROR for the "tx descriptor is owned
-by software" to a trace message. This condition is normal
-when there is there is nothing to transmit, and we would
-otherwise spam the logs with it in that situation.
+FEAT_CMOW introduces support for controlling cache maintenance
+instructions executed in EL0/1 and is mandatory from Armv8.8.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241014184847.1594056-1-roqueh@google.com
-[PMM: tweaked commit message]
+On real hardware, the main use for this feature is to prevent processes
+from invalidating or flushing cache lines for addresses they only have
+read permission, which can impact the performance of other processes.
+
+QEMU implements all cache instructions as NOPs, and, according to rule
+[1], which states that generating any Permission fault when a cache
+instruction is implemented as a NOP is implementation-defined, no
+Permission fault is generated for any cache instruction when it lacks
+read and write permissions.
+
+QEMU does not model any cache topology, so the PoU and PoC are before
+any cache, and rules [2] apply. These rules state that generating any
+MMU fault for cache instructions in this topology is also
+implementation-defined. Therefore, for FEAT_CMOW, we do not generate any
+MMU faults either, instead, we only advertise it in the feature
+register.
+
+[1] Rule R_HGLYG of section D8.14.3, Arm ARM K.a.
+[2] Rules R_MZTNR and R_DNZYL of section D8.14.3, Arm ARM K.a.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20241104142606.941638-1-gustavo.romero@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/net/npcm_gmac.c  | 5 ++---
- hw/net/trace-events | 1 +
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/cpu-features.h     | 5 +++++
+ target/arm/cpu.h              | 1 +
+ target/arm/helper.c           | 5 +++++
+ target/arm/tcg/cpu64.c        | 1 +
+ 5 files changed, 13 insertions(+)
 
-diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index 6fa6bece61f..685905f9e27 100644
---- a/hw/net/npcm_gmac.c
-+++ b/hw/net/npcm_gmac.c
-@@ -546,9 +546,8 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 35f52a54b1c..a2a388f0919 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -26,6 +26,7 @@ the following architecture extensions:
+ - FEAT_BF16 (AArch64 BFloat16 instructions)
+ - FEAT_BTI (Branch Target Identification)
+ - FEAT_CCIDX (Extended cache index)
++- FEAT_CMOW (Control for cache maintenance permission)
+ - FEAT_CRC32 (CRC32 instructions)
+ - FEAT_Crypto (Cryptographic Extension)
+ - FEAT_CSV2 (Cache speculation variant 2)
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 04ce2818263..e806f138b8f 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -802,6 +802,11 @@ static inline bool isar_feature_aa64_tidcp1(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, TIDCP1) != 0;
+ }
  
-         /* 1 = DMA Owned, 0 = Software Owned */
-         if (!(tx_desc.tdes0 & TX_DESC_TDES0_OWN)) {
--            qemu_log_mask(LOG_GUEST_ERROR,
--                          "TX Descriptor @ 0x%x is owned by software\n",
--                          desc_addr);
-+            trace_npcm_gmac_tx_desc_owner(DEVICE(gmac)->canonical_path,
-+                                          desc_addr);
-             gmac->regs[R_NPCM_DMA_STATUS] |= NPCM_DMA_STATUS_TU;
-             gmac_dma_set_state(gmac, NPCM_DMA_STATUS_TX_PROCESS_STATE_SHIFT,
-                 NPCM_DMA_STATUS_TX_SUSPENDED_STATE);
-diff --git a/hw/net/trace-events b/hw/net/trace-events
-index 91a3d0c0548..d0f1d8c0fbe 100644
---- a/hw/net/trace-events
-+++ b/hw/net/trace-events
-@@ -478,6 +478,7 @@ npcm_gmac_packet_received(const char* name, uint32_t len) "%s: Reception finishe
- npcm_gmac_packet_sent(const char* name, uint16_t len) "%s: TX packet sent!, length: 0x%04" PRIX16
- npcm_gmac_debug_desc_data(const char* name, void* addr, uint32_t des0, uint32_t des1, uint32_t des2, uint32_t des3)"%s: Address: %p Descriptor 0: 0x%04" PRIX32 " Descriptor 1: 0x%04" PRIX32 "Descriptor 2: 0x%04" PRIX32 " Descriptor 3: 0x%04" PRIX32
- npcm_gmac_packet_tx_desc_data(const char* name, uint32_t tdes0, uint32_t tdes1) "%s: Tdes0: 0x%04" PRIX32 " Tdes1: 0x%04" PRIX32
-+npcm_gmac_tx_desc_owner(const char* name, uint32_t desc_addr) "%s: TX Descriptor @0x%04" PRIX32 " is owned by software"
++static inline bool isar_feature_aa64_cmow(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, CMOW) != 0;
++}
++
+ static inline bool isar_feature_aa64_hafs(const ARMISARegisters *id)
+ {
+     return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, HAFDBS) != 0;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index fb0f217b196..d86e641280d 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1367,6 +1367,7 @@ void pmu_init(ARMCPU *cpu);
+ #define SCTLR_EnIB    (1U << 30) /* v8.3, AArch64 only */
+ #define SCTLR_EnIA    (1U << 31) /* v8.3, AArch64 only */
+ #define SCTLR_DSSBS_32 (1U << 31) /* v8.5, AArch32 only */
++#define SCTLR_CMOW    (1ULL << 32) /* FEAT_CMOW */
+ #define SCTLR_MSCEN   (1ULL << 33) /* FEAT_MOPS */
+ #define SCTLR_BT0     (1ULL << 35) /* v8.5-BTI */
+ #define SCTLR_BT1     (1ULL << 36) /* v8.5-BTI */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8c4f86f475a..f38eb054c06 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6229,6 +6229,11 @@ static void hcrx_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     if (cpu_isar_feature(aa64_nmi, cpu)) {
+         valid_mask |= HCRX_TALLINT | HCRX_VINMI | HCRX_VFNMI;
+     }
++    /* FEAT_CMOW adds CMOW */
++
++    if (cpu_isar_feature(aa64_cmow, cpu)) {
++        valid_mask |= HCRX_CMOW;
++    }
  
- # npcm_pcs.c
- npcm_pcs_reg_read(const char *name, uint16_t indirect_access_baes, uint64_t offset, uint16_t value) "%s: IND: 0x%02" PRIx16 " offset: 0x%04" PRIx64 " value: 0x%04" PRIx16
+     /* Clear RES0 bits.  */
+     env->cp15.hcrx_el2 = value & valid_mask;
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 01689208286..2963d7510f3 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1218,6 +1218,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64MMFR1, ETS, 2);      /* FEAT_ETS2 */
+     t = FIELD_DP64(t, ID_AA64MMFR1, HCX, 1);      /* FEAT_HCX */
+     t = FIELD_DP64(t, ID_AA64MMFR1, TIDCP1, 1);   /* FEAT_TIDCP1 */
++    t = FIELD_DP64(t, ID_AA64MMFR1, CMOW, 1);     /* FEAT_CMOW */
+     cpu->isar.id_aa64mmfr1 = t;
+ 
+     t = cpu->isar.id_aa64mmfr2;
 -- 
 2.34.1
 
