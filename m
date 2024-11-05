@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB66E9BD34E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 18:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9649BD3C0
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 18:50:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8NGc-0002eB-Pe; Tue, 05 Nov 2024 12:22:58 -0500
+	id 1t8Nfo-0008Sr-NO; Tue, 05 Nov 2024 12:49:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8NGZ-0002dt-MF
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:22:55 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <payton@privy.io>) id 1t8NPB-0004iu-Rp
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:31:49 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8NGY-0008Ht-1c
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:22:55 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-539e6c754bdso5780898e87.2
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 09:22:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <payton@privy.io>) id 1t8NP9-0000y4-Ol
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 12:31:49 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-539f53973fdso13705e87.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 09:31:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730827372; x=1731432172; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=b77jNcoN5Lqa6JoDxxgFu+lPjcOAGWcdE2d6nlYtWhQ=;
- b=uOANJ+hwpZAuCF7XZtngKSz4aXcsnResq/1TyfuNqKAWWTRduy5hQj4VrAw9TZ1Spo
- CWzdJh/ryZ19vb2vgPH13vBbBfSxpl2YlYll9B61YWvoyasWtK0qSR8LhoAGbE2LZh3h
- psQdlPufEbYP4rMfjF3hYaX5OGN7jPDQMfTTvo6vLX/0pNr2/qkT6q8OIsgnI2OyScuA
- n9pNFjfgvMQ2OqJxgIxBgnlS81A5XgRBRsoIThmOOVLEUZ57v3XN0Lu2QD8eHwTjBv3F
- IeHOIu7qdC/MJC875NmIQpfkMmHh8Elru9o6ePmnaEtvwb5zTZhEQc3U5SzP0hbUo+3p
- nIAQ==
+ d=privy.io; s=google; t=1730827904; x=1731432704; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=YIqUIpuVpT0RSKhVs3pELyL47iWrVPf3o4E2AOLkMNE=;
+ b=BcIelbd4S3nF/j98LEFX32cOElWeftYMfFB57ih/BWCYuRvOPnaFOxWfH8wSqCIAo8
+ 3Jz2OPyBeqn1/TL/x/XPLu4xTaPu+auWkgodPGjSV8uMx1gtueoTgGnoq5sN5hO9fpX5
+ fgI3+chdFv5pIP4DkddERR4RNadmzmM6sp3xSR3AUm7R63yhu4cqcZOjPGFxYm3Cb8I9
+ gFbNaUbk2hKXUx/7YW6WnIUw9St+IvcQBci1/aybaKFSdnx+kqNcWxHMhokFa0IS/Z8H
+ pAzEibJ1KBsSVTd96YBysVU6+Y+v5BS0apXHqrj8nmVjfi8Um7BoTM43lYVtHkQ/la20
+ ZRFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730827372; x=1731432172;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=b77jNcoN5Lqa6JoDxxgFu+lPjcOAGWcdE2d6nlYtWhQ=;
- b=HhP5yeVCvJudZ29MC70bt3xKl3iapR7onZccVERFhy73K55QdmCXvafEhjYJJGsTpK
- mZREA0pkPio32Db6ftO+pzNsO4kuG6BDgIyOSH+h2TDqvb5PivZCPEDJ4UynEy2XpqsD
- MZpW5LUTeSkp3rq52LtnLQNEft5ZkfsBUWOFQpc6QLj0c/ZcoFnp56cFso9osqBkKMa+
- uwlxzYBvEbzRxHaZr9oAzEacXmAwgRIaFFqRp0TIEaWXdQmdCEPxqoJVObKCBeD4341t
- 6UEXoKb6MIkcl+dR5nNN0G9NXsUxX5+IJSVVtqEfGbGOHnL3LpoC0rIjMi0gQn2wZb1I
- W6uQ==
-X-Gm-Message-State: AOJu0Ywi2uJftiWjrX4m3RNx+2fNHX3aGcU+i3Ow5rf+eT50qO6iqegJ
- LeMH8K483Y33VVIGB4rBc8wvIQndwpH20re+Nt6PlmT0sQWzWAeMdBVkD2UQA0q6lTa/KUNw+sm
- yylT2w2A8KpenjOwN9gMZl9vw4swiq9ed1fUH7kl7ctZWtqhk
-X-Google-Smtp-Source: AGHT+IEnMJLuZdGAUaoCrgxE/vEfnLDqizjkR9Ki8/xPrYmeYhBcKasR60Orr7XzewQ70GHr2RtrVgkW7BfDZ/ndVY0=
-X-Received: by 2002:a05:6512:ac3:b0:536:56d8:24b4 with SMTP id
- 2adb3069b0e04-53c79e15746mr9628524e87.5.1730827371746; Tue, 05 Nov 2024
- 09:22:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730827904; x=1731432704;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YIqUIpuVpT0RSKhVs3pELyL47iWrVPf3o4E2AOLkMNE=;
+ b=tydeKeUufMToPj+LaJ/HmVBd3iDLvkPGemF1xZ/sh34dhbC7/nTgByHzDC2UNDh9Fz
+ WlOHsQamDpHDq7XG7LKLCz0h6bAOwu79k4T4bOkBogdWWkN623ab+GewP1nYpoCF+86/
+ uUIpnql67ime4JAc5/Va+7OBtl3GamWa8kHYtaShz4w6JAgGsb0gv1AZOktJFzwYYd5u
+ 2NP9vZaLvU5LIWGmheztRrT9GIhdtJ+8/AUqDfdyJPTP0EsAUwdpoZFqnanlPo3OVyvs
+ g0RtrH0VqvtD30IqwO+GOUrw64CYiO2VP7tGz4Z+RnSY1lR/k/ZsJNudJsuLejf4WnUG
+ xSKg==
+X-Gm-Message-State: AOJu0YyU3vu9asBcF763sSAigKK3raPbg8jSuS84TBtAH6W5QJK/nVcQ
+ EDe+hG/kJLi6JWRSMX1NGomEmGzlAX1Vvdo8timvXG2xHvdouDcTN/U0D+pVGJjpm9unBvh67M4
+ ygyVx/WXFHpRv+Lg1j8ipQ5tZTe2hPi2G6hQEEUdCqNCXdQdgtSg=
+X-Google-Smtp-Source: AGHT+IGvUFGjNWBQkQ0p0bmDCYtIEJr25E50sLdCBeRK217x2gx59jhyQw6hxBH6ufY0SJxtfjH3ZYE/1texyNqQL/c=
+X-Received: by 2002:a19:6902:0:b0:53b:205c:e9ac with SMTP id
+ 2adb3069b0e04-53c7bc08ae4mr5815764e87.20.1730827904050; Tue, 05 Nov 2024
+ 09:31:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20241105171813.3031969-1-peter.maydell@linaro.org>
-In-Reply-To: <20241105171813.3031969-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 5 Nov 2024 17:22:40 +0000
-Message-ID: <CAFEAcA_H3oGCs1FgyZ-tjZp7+4AW4qvi=7smK9vJgQ4Vjm7k-g@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386/pc: Don't try to init PCI NICs if there is no PCI
- bus
+From: Payton Garland <payton@privy.io>
+Date: Tue, 5 Nov 2024 12:31:32 -0500
+Message-ID: <CADVAEoB-UoTtdFDfbBAeRGB0TKTw51G59-EpZ7un4vjET4329Q@mail.gmail.com>
+Subject: QEMU Nitro Enclave Emulation on macOS
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>, graf@amazon.com, 
+ "pbonzini@redhat.com" <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000063856c06262dc672"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=payton@privy.io; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 05 Nov 2024 12:48:50 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,40 +82,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Nov 2024 at 17:18, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> The 'isapc' machine type has no PCI bus, but pc_nic_init() still
-> calls pci_init_nic_devices() passing it a NULL bus pointer.  This
-> causes the clang sanitizer to complain:
->
-> $ ./build/clang/qemu-system-i386 -M isapc
-> ../../hw/pci/pci.c:1866:39: runtime error: member access within null pointer of type 'PCIBus' (aka 'struct PCIBus')
-> SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/pci/pci.c:1866:39 in
->
-> This is because pci_init_nic_devices() does
->  &bus->qbus
-> which is undefined behaviour on a NULL pointer even though we're not
-> actually dereferencing the pointer. (We don't actually crash as
-> a result, so if you aren't running a sanitizer build then there
-> are no user-visible effects.)
->
-> Make pc_nic_init() avoid trying to initialize PCI NICs on a non-PCI
-> system.
->
-> Cc: qemu-stable@nongnu.org
-> Fixes: 8d39f9ba14d64 ("hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> This shows up if you run "make check" on a ubsan build.
+--00000000000063856c06262dc672
+Content-Type: text/plain; charset="UTF-8"
 
-Incidentally, if pci_init_nic_devices() had done the
-more standard way to do "get a BusState* from a PCIBus*",
-i.e. use the QOM cast macro "BUS(bus)", that would also
-have avoided the UB (because QOM cast macros on NULL
-are valid and return NULL). But I figured not passing NULL
-in the first place was probably the intention rather
-than quietly handling NULL.
+Hello all,
 
-thanks
--- PMM
+I have been watching the Nitro Enclave Emulation patch
+<https://patchwork.kernel.org/project/qemu-devel/cover/20241008211727.49088-1-dorjoychy111@gmail.com/>.
+This would be a huge win for developer experience in Nitro Enclave
+development.
+
+I ran into some hardware issues and am curious if there are any known
+workarounds. I was messaging with @Dorjoy Chowdhury <dorjoychy111@gmail.com> on
+this issue and they suggested this group may have some ideas / definitive
+answers.
+
+*Goal*:
+*emulate AWS Nitro Enclaves locally running on macOS with Apple silicon*
+
+*Attempt*: *built vhost-device-vsock
+<https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock> and
+qemu
+<https://gitlab.com/dorjoy03/qemu/-/commit/fe4ddb4e5b99136c948e687b8b18a505decc57bf>
+(on *@Dorjoy Chowdhury <dorjoychy111@gmail.com>* 's branch) in an alpine
+Docker image and attempted to run both with this script
+<https://gist.github.com/payton/4ec0a08e618888adafb4b9a888513d91>*
+
+*Problem*: *enclave emulation requires KVM support per the latest
+documentation
+<https://gitlab.com/dorjoy03/qemu/-/commit/fe4ddb4e5b99136c948e687b8b18a505decc57bf>,
+which is specific to Linux, so even running Docker with privileged access
+does not help because there is no KVM on macOS*
+
+*Question:** is there a known way to get Nitro Enclave emulation working on
+macOS with Apple silicon? One option that comes to mind is Apple's
+hypervisor framework, but it's unclear to me if that can be a viable
+replacement for enclave emulation.*
+
+Thank you all for the support.
+
+Best,
+Payton
+
+--00000000000063856c06262dc672
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello all,<div><br></div><div>I have been watching the <a =
+href=3D"https://patchwork.kernel.org/project/qemu-devel/cover/2024100821172=
+7.49088-1-dorjoychy111@gmail.com/">Nitro Enclave Emulation patch</a>. This =
+would be a huge win for developer experience in Nitro Enclave development.<=
+/div><div><br></div><div>I ran into some hardware issues and am curious if =
+there are any known workarounds. I was messaging with=C2=A0<a class=3D"gmai=
+l_plusreply" id=3D"plusReplyChip-0" href=3D"mailto:dorjoychy111@gmail.com" =
+tabindex=3D"-1">@Dorjoy Chowdhury</a>=C2=A0on this issue and they suggested=
+ this group may have some ideas / definitive answers.</div><div><br></div><=
+div><b>Goal</b>: <i>emulate AWS Nitro Enclaves locally running on macOS wit=
+h Apple silicon<br></i></div><div><br></div><div><b>Attempt</b>: <i>built <=
+a href=3D"https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-v=
+sock">vhost-device-vsock</a> and <a href=3D"https://gitlab.com/dorjoy03/qem=
+u/-/commit/fe4ddb4e5b99136c948e687b8b18a505decc57bf">qemu</a> (on=C2=A0</i>=
+<a class=3D"gmail_plusreply" id=3D"plusReplyChip-1" href=3D"mailto:dorjoych=
+y111@gmail.com" tabindex=3D"-1" style=3D"">@Dorjoy Chowdhury</a><i>=C2=A0&#=
+39;s branch) in an alpine Docker image and attempted to run both <a href=3D=
+"https://gist.github.com/payton/4ec0a08e618888adafb4b9a888513d91">with this=
+ script</a></i></div><div><br></div><div><div><b>Problem</b>: <i>enclave em=
+ulation requires KVM support <a href=3D"https://gitlab.com/dorjoy03/qemu/-/=
+commit/fe4ddb4e5b99136c948e687b8b18a505decc57bf">per the latest documentati=
+on</a>, which is specific to Linux, so even running Docker with privileged =
+access does not help because there is no KVM on macOS</i></div><div><i><br>=
+</i></div><div><b>Question:</b><i> is there a known way to get Nitro Enclav=
+e emulation working on macOS with Apple silicon? One option that comes to m=
+ind is Apple&#39;s hypervisor framework, but it&#39;s unclear to me if that=
+ can be a viable replacement=C2=A0for enclave emulation.</i></div><div><br>=
+</div><div>Thank you all for the support.</div><div><br></div><div>Best,</d=
+iv><div>Payton</div><br></div></div>
+
+--00000000000063856c06262dc672--
 
