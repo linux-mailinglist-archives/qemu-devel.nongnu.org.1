@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533FF9BD90D
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F0B9BD90E
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:49:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SMP-0006or-6i; Tue, 05 Nov 2024 17:49:20 -0500
+	id 1t8SMW-00073U-Ig; Tue, 05 Nov 2024 17:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SLu-0006JP-Mu
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:47 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SM1-0006SG-PN
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:53 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SLt-0004HU-8q
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:46 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43161e7bb25so46634695e9.2
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:48:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SM0-0004IY-6t
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:53 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-37d462c91a9so3532446f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:48:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846923; x=1731451723; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846930; x=1731451730; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NPiTbeFUpLsDNifMMkKjkFMgZkCHLSWYVGMZNdH6EJE=;
- b=nHXOKXbQdxTw2tHi9ATxjS44zFmaAXgw2omsAsZ32kJju9QJXwHGEbixGf1sIIjEJd
- Ne/46rw0ez6awleQe6mjDOslPHkokukksqjuXByIHAKN450zwSxXptTiFZ/piF/jAZTQ
- J74EyuWLirOB0b1dj6uQBMpnAdVKOChmgafaBOjZsjlXdyp8doBgzctReoaKgoeC8IFW
- kKryqaNf7qv0cV6LRCU2V6XaqXruflHgSQJEepMzcSiWr4bcj4TIryG3/QFfUX2+Ck4g
- G7i+ebzFqBQ1bO36GmaQx9fYGK0bLL6wiA36Ufn68fWkcFWujNnZJo5aZZg1Ko6vh6t/
- 1VsA==
+ bh=91J1Pmqo5K4jBxzGOzPgUYEJwXRFG7jqGcshP1OZFFs=;
+ b=GmHZ3gN2plB58Y59W26nKsE5LnzvE6AsLtRpn5t2H+0iPnY2FMxzZ6aTUP9PZwivnq
+ obuMDDTNyTgN7YaiZGCCGSoC+3c2q45U7KsIWVOmXZiYqp1yswpMa3mxpEJshsRRr4EY
+ jEmKSypHeNsM2TAclAYoVqeafdQd409zdsS2x8x3dtZ3kVwjoSogpDqKX8f58ZJQs0Ey
+ cTpa0WVh2ItagUbCEa2f2RcuRvq9CkAP3np6anYTpR/SuU6cab/6TFfqx5/4+mcrG64c
+ LgWC7UGD3Yy79FrSa+7JWb/tjlCKnvH+eoJKnfbP6FGUUvIOB8MVItLmbHo/Jw6GcbHP
+ KUwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846923; x=1731451723;
+ d=1e100.net; s=20230601; t=1730846930; x=1731451730;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NPiTbeFUpLsDNifMMkKjkFMgZkCHLSWYVGMZNdH6EJE=;
- b=b4q0qZDXm3pT0Rwghic2HbGP3290nHD6kEa0VwG+cqoPzY8a24oibT1tnMqOWHrkSm
- trIcq7DA6z0HwzloNCGIBmL09RgyU1491dEnHrCZBuiuz+zIiQy6HRvTnWmH9CC7Jm+f
- qHPArOkoRUnKYvwJ4DPsGtGn+M+JqFpUdDZrkkWO0e3y0VWR2UdHDuHTXaQpWWnGoVBg
- t5S7irYOibdw8FRnwnzKDqtctuxi8vsIdcKws2EWefXd0zOoJIycWcn5KKcj1NGBAg95
- o/UJMKeJgDSb9sNHGuGOoQqb+we4szjYzELNLSfWsWHZeJJOSVmvLt8XO48Cg+h26Ze2
- 05Tw==
-X-Gm-Message-State: AOJu0YwjZyAhjswqMf4mKGTZjsOdpEARy5bGcVfWQKbG5qfiwNR64eDo
- n2Xuc4PBmKosiCRuy033a2TvQeZSQ8heW2K7CTDK6BcS27asciivuAW4S7kwonAgFjnxclbWX6c
- RD2Q0CQ==
-X-Google-Smtp-Source: AGHT+IGgFv2AHyZsYpvVbFA3qfqouUD+2wnBvxKK6SnaOzJ+4Wi+Yo5/t8Le/8/A/5ypzZfSsZcZ4g==
-X-Received: by 2002:a05:600c:4753:b0:431:5632:4497 with SMTP id
- 5b1f17b1804b1-431bb9d1122mr246178075e9.26.1730846923577; 
- Tue, 05 Nov 2024 14:48:43 -0800 (PST)
+ bh=91J1Pmqo5K4jBxzGOzPgUYEJwXRFG7jqGcshP1OZFFs=;
+ b=Ep+u7dTkYRUuyOQZLZTAFHUYWGUZiPRgXOLZSmfrQikfoCJlfLFDNECVajjNUExTK4
+ zJ5KuECFwGA/1RYzkpCKhL9aECcWuqjsnO2Y7I1w9RNYHmmZ1I/z5RIiMa44GU1MBOVi
+ of2ARNI8IfORNbrb1ntmMT09EvmKvQJ5Mrp0NW8DqIbYcUXlOVvrJFlTDY6xELdYhtQa
+ F8zdysC1oDx+qvNJA8pJC6O92aHHvQIwHkvOLE0xNmgIqPv981+qyymjxEyOtTkw/AgC
+ UzigKddMo06MO+07uBG4ZLsaPGeYwqFUvQ+SQevce0YTAnc3+F2XLQcTBvP4/GY1jUBw
+ QYTA==
+X-Gm-Message-State: AOJu0YzhN8WcbKBRy35WywSpQeR6uQrG5s4zSncoCBExs6fhDT5n2DDJ
+ onQGhFzaYzEjvTJK/JpaYgJXNAeqaoS8QHozfV0CKwgtnAz8sWBRBZVtHze8WVqDkvaXV+9rCcc
+ 2VlqJoA==
+X-Google-Smtp-Source: AGHT+IFIkHO6lS6kvacPLcUi7hzihPQdYqDYKH7CI/SZn04GHJixikybpfASfCmXK7jsFe7YQToxXw==
+X-Received: by 2002:a5d:4d82:0:b0:371:8319:4dcc with SMTP id
+ ffacd0b85a97d-381b705764fmr19431851f8f.2.1730846930202; 
+ Tue, 05 Nov 2024 14:48:50 -0800 (PST)
 Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa523a0esm1344825e9.0.2024.11.05.14.48.41
+ ffacd0b85a97d-381c10b7b97sm17588206f8f.2.2024.11.05.14.48.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:48:42 -0800 (PST)
+ Tue, 05 Nov 2024 14:48:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/29] hw/ppc/e500: Add missing device tree properties to i2c
- controller node
-Date: Tue,  5 Nov 2024 22:47:12 +0000
-Message-ID: <20241105224727.53059-15-philmd@linaro.org>
+Subject: [PULL 15/29] hw/ppc/mpc8544_guts: Populate POR PLL ratio status
+ register
+Date: Tue,  5 Nov 2024 22:47:13 +0000
+Message-ID: <20241105224727.53059-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,35 +95,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-When compiling a decompiled device tree blob created with dumpdtb, dtc complains
-with:
+Populate this read-only register with some arbitrary values which avoids
+U-Boot's get_clocks() to hang().
 
-  /soc@e0000000/i2c@3000: incorrect #address-cells for I2C bus
-  /soc@e0000000/i2c@3000: incorrect #size-cells for I2C bus
-
-Fix this by adding the missing device tree properties.
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-6-shentey@gmail.com>
+Message-ID: <20241103133412.73536-11-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ppc/mpc8544_guts.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index d4d3a927968..46261223f3c 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -203,6 +203,8 @@ static void dt_i2c_create(void *fdt, const char *soc, const char *mpic,
-     qemu_fdt_setprop_cells(fdt, i2c, "cell-index", 0);
-     qemu_fdt_setprop_cells(fdt, i2c, "interrupts", irq0, 0x2);
-     qemu_fdt_setprop_phandle(fdt, i2c, "interrupt-parent", mpic);
-+    qemu_fdt_setprop_cell(fdt, i2c, "#size-cells", 0);
-+    qemu_fdt_setprop_cell(fdt, i2c, "#address-cells", 1);
-     qemu_fdt_setprop_string(fdt, "/aliases", alias, i2c);
+diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
+index e3540b02816..c02b34ccded 100644
+--- a/hw/ppc/mpc8544_guts.c
++++ b/hw/ppc/mpc8544_guts.c
+@@ -29,6 +29,12 @@
+ #define MPC8544_GUTS_RSTCR_RESET      0x02
  
-     g_free(i2c);
+ #define MPC8544_GUTS_ADDR_PORPLLSR    0x00
++REG32(GUTS_PORPLLSR, 0x00)
++    FIELD(GUTS_PORPLLSR, E500_1_RATIO, 24, 6)
++    FIELD(GUTS_PORPLLSR, E500_0_RATIO, 16, 6)
++    FIELD(GUTS_PORPLLSR, DDR_RATIO, 9, 5)
++    FIELD(GUTS_PORPLLSR, PLAT_RATIO, 1, 5)
++
+ #define MPC8544_GUTS_ADDR_PORBMSR     0x04
+ #define MPC8544_GUTS_ADDR_PORIMPSCR   0x08
+ #define MPC8544_GUTS_ADDR_PORDEVSR    0x0C
+@@ -75,6 +81,12 @@ static uint64_t mpc8544_guts_read(void *opaque, hwaddr addr,
+ 
+     addr &= MPC8544_GUTS_MMIO_SIZE - 1;
+     switch (addr) {
++    case MPC8544_GUTS_ADDR_PORPLLSR:
++        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_1_RATIO, 6); /* 3:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_0_RATIO, 6); /* 3:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, DDR_RATIO, 12); /* 12:1 */
++        value = FIELD_DP32(value, GUTS_PORPLLSR, PLAT_RATIO, 6); /* 6:1 */
++        break;
+     case MPC8544_GUTS_ADDR_PVR:
+         value = env->spr[SPR_PVR];
+         break;
 -- 
 2.45.2
 
