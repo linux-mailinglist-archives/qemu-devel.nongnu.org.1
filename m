@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0281B9BCBC6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A504A9BCBFF
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:39:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Hh5-0003NT-01; Tue, 05 Nov 2024 06:25:55 -0500
+	id 1t8Hss-0000BJ-Cg; Tue, 05 Nov 2024 06:38:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8Hgy-00033p-ON
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:25:50 -0500
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8Hgl-0007vZ-04
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:25:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730805935; x=1762341935;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=s1wswE6/InO1G4xUqdts8qxxRWQM31X334rkUkdhdgU=;
- b=IHqnDDScRkhwTCeeT0sr/2SqXJTtMR9hRd4JPIDsB/4GNj9NJC5m/LLt
- 9PXInqrtphBj8yskQMgPQcBYLFRKz5BElmswicdDBltSTgtctVsZLzAhC
- YeMDowkuX6gc3jQzN1N6RtDVQ5DklNApLUCfIZnoLgBMOlrd/CFcCqAdx
- lrWqayGDfjRZ68QRRuwT+Ie5sf03QYar1dOnOXgiXKa062bq6cdPH0lgZ
- XEg20qqvlOZZKJbbLXdB74TBZ++27+pMhb9NgIUg5U6IZQ0Pg/NZU7MWI
- nZWqur0N9cTNSGKqKTlKZhtphxfqV3nYHwdFZnKcqjF67yBvDaE7dOLeu A==;
-X-CSE-ConnectionGUID: 95VwWKIUQdmRvCy9MzP8YQ==
-X-CSE-MsgGUID: ONw8q8yBSvWSt3kW95e2pA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30503044"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30503044"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 03:25:23 -0800
-X-CSE-ConnectionGUID: DKTS63VqThuubrGE6o9gdg==
-X-CSE-MsgGUID: vLe/cltnQ9e0hJSfCrxoqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="84092452"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 03:25:20 -0800
-Message-ID: <e5d02d7f-a989-4484-b0c1-3d7ac804ec73@intel.com>
-Date: Tue, 5 Nov 2024 19:25:15 +0800
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8Hsp-0000B4-Gv
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:38:03 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1t8Hsn-0000es-IB
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:38:03 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-431695fa98bso42164905e9.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:37:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730806678; x=1731411478; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZIrpEp7lbrsPu6jUWphu9qix+JffP6XhCldRgQExn+M=;
+ b=ozV/yboRIecIyq0IW5IlRze+yvlnwKHqQv89uoIEPf5W7Ale01mKgML15GYFCjN/+Q
+ ZHq0EVfk4qzd/8v6gC9lNATWx4LhnuU5lPPZSVyYYA7Mfgbtk74dCoEXIJxj8zocUEtO
+ UWIRKTU8re7qK8E5Dec6P2wwJKFbjVziEggx1406Bn6K1Nx03dF5OlZv4q2STSKaGgSp
+ RvYDQ3ZxmehurYUgSFkonCORjbWjZq3P2WcBlZMzmJciX4PKc162ZIU+q+d5FOhH00v7
+ Ost4sVJg7u2y4UYeNpHCNS7Z5hNvSBD6ufZzevXs3DUJJT2R857HPHWmucPBmIcIjost
+ jeQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730806678; x=1731411478;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZIrpEp7lbrsPu6jUWphu9qix+JffP6XhCldRgQExn+M=;
+ b=KRQLv9yQgjafMDqInNY07hk9Gckvf9ZuoncfE7YWYt+KJh63V3QJwyO0RO2P1uFknx
+ KK2zWcJKRascPPnh+IQEwOEp1MtSxTtId2XlI9vM5oOhShJBMmaLUg8YPzZk1yzjvdcL
+ rSQ683P4rxKb3A3/CJXaPqbftIZqKQ2JbYDcibZmQ8mv58J87U2GzvVVuXhfkQLW6rhj
+ LpZcec9YXYYLzkn6jjskAYJVdrDY0FsyuEmREDPNBIdhhCmJCPG5zBl/sXN0htgon4q2
+ K40G9AK5CV0pUJlpsCUDvfjwDOhDVw2jJRjoSa44B3eT1LPN59jkIbfLhYfhWHTbLyoJ
+ 96qA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcgSFLoq6iIAFQCKj6GtqULpwBy2FxoYX3Nd8io1kci5zAekbwqy+gBxhcFfgovMbBrxwWwpnl4X51@nongnu.org
+X-Gm-Message-State: AOJu0YzTUDIQVgGD7kWVQm0xZn1OF6k8d04IiaLTexlDvQrplYVsxqVx
+ k2HRIUmJuQ1wUChOUX8OOXTG1FRuJMVp6rrdxxT4wswnji/JABfJHWFZ4Lm+/WxXeviXPiw6yUJ
+ doZA=
+X-Google-Smtp-Source: AGHT+IE3Cm80smxT21vu/1KVnFUMCskgFl3bxH3Xzajpd/R00UacTBR5gB+OoWBdR1xaJtiuOfqJWw==
+X-Received: by 2002:a05:600c:46d4:b0:427:ff3b:7a20 with SMTP id
+ 5b1f17b1804b1-4319ad049a8mr293026685e9.27.1730806678146; 
+ Tue, 05 Nov 2024 03:37:58 -0800 (PST)
+Received: from [192.168.21.227] ([89.101.134.25])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4327d6848b5sm184186365e9.32.2024.11.05.03.37.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Nov 2024 03:37:57 -0800 (PST)
+Message-ID: <000c9ef8-c610-4f2a-b191-04b84455d89c@linaro.org>
+Date: Tue, 5 Nov 2024 11:37:55 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 45/60] i386/tdx: Don't get/put guest state for TDX VMs
-To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-46-xiaoyao.li@intel.com>
- <8cd78103-5f49-4cbd-814d-a03a82a59231@redhat.com>
+Subject: Re: linux-user: Add option to run `execve`d programs through QEMU
+To: Noah Goldstein <goldstein.w.n@gmail.com>, qemu-devel@nongnu.org
+Cc: iii@linux.ibm.com, laurent@vivier.eu
+References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
+ <20241030141037.375897-1-goldstein.w.n@gmail.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <8cd78103-5f49-4cbd-814d-a03a82a59231@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241030141037.375897-1-goldstein.w.n@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.781, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,70 +97,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/5/2024 5:55 PM, Paolo Bonzini wrote:
-> On 11/5/24 07:23, Xiaoyao Li wrote:
->> From: Sean Christopherson <sean.j.christopherson@intel.com>
->>
->> Don't get/put state of TDX VMs since accessing/mutating guest state of
->> production TDs is not supported.
->>
->> Note, it will be allowed for a debug TD. Corresponding support will be
->> introduced when debug TD support is implemented in the future.
->>
->> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+On 10/30/24 14:10, Noah Goldstein wrote:
+> The new option '-qemu-children' makes it so that on `execve` the child
+> process will be launch by the same `qemu` executable that is currently
+> running along with its current commandline arguments.
 > 
-> This should be unnecessary now that QEMU has 
-> kvm_mark_guest_state_protected().
-
-Reverting this patch, we get:
-
-tdx: tdx: error: failed to set MSR 0x174 to 0x0
-tdx: ../../../go/src/tdx/tdx-qemu/target/i386/kvm/kvm.c:3859: 
-kvm_buf_set_msrs: Assertion `ret == cpu->kvm_msr_buf->nmsrs' failed.
-error: failed to set MSR 0x174 to 0x0
-tdx: ../../../go/src/tdx/tdx-qemu/target/i386/kvm/kvm.c:3859: 
-kvm_buf_set_msrs: Assertion `ret == cpu->kvm_msr_buf->nmsrs' failed.
-
-> Paolo
+> The motivation for the change is to make it so that plugins running
+> through `qemu` can continue to run on children.  Why not just
+> `binfmt`?: Plugins can be desirable regardless of system/architecture
+> emulation, and can sometimes be useful for elf files that can run
+> natively. Enabling `binfmt` for all natively runnable elf files may
+> not be desirable.
 > 
->> ---
->>   target/i386/kvm/kvm.c | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->> index c39e879a77e9..e47aa32233e6 100644
->> --- a/target/i386/kvm/kvm.c
->> +++ b/target/i386/kvm/kvm.c
->> @@ -5254,6 +5254,11 @@ int kvm_arch_put_registers(CPUState *cpu, int 
->> level, Error **errp)
->>       assert(cpu_is_stopped(cpu) || qemu_cpu_is_self(cpu));
->> +    /* TODO: Allow accessing guest state for debug TDs. */
->> +    if (is_tdx_vm()) {
->> +        return 0;
->> +    }
->> +
->>       /*
->>        * Put MSR_IA32_FEATURE_CONTROL first, this ensures the VM gets 
->> out of VMX
->>        * root operation upon vCPU reset. kvm_put_msr_feature_control() 
->> should also
->> @@ -5368,6 +5373,12 @@ int kvm_arch_get_registers(CPUState *cs, Error 
->> **errp)
->>           error_setg_errno(errp, -ret, "Failed to get MP state");
->>           goto out;
->>       }
->> +
->> +    /* TODO: Allow accessing guest state for debug TDs. */
->> +    if (is_tdx_vm()) {
->> +        return 0;
->> +    }
->> +
->>       ret = kvm_getput_regs(cpu, 0);
->>       if (ret < 0) {
->>           error_setg_errno(errp, -ret, "Failed to get general purpose 
->> registers");
+> Signed-off-by: Noah Goldstein <goldstein.w.n@gmail.com>
+> ---
+>   linux-user/main.c                             | 21 ++++++
+>   linux-user/syscall.c                          | 21 ++++--
+>   linux-user/user-internals.h                   |  4 ++
+>   tests/tcg/multiarch/Makefile.target           |  8 +++
+>   .../linux/linux-execve-qemu-children.c        | 68 +++++++++++++++++++
+>   5 files changed, 117 insertions(+), 5 deletions(-)
+>   create mode 100644 tests/tcg/multiarch/linux/linux-execve-qemu-children.c
 > 
+> diff --git a/linux-user/main.c b/linux-user/main.c
+> index 8143a0d4b0..5e3d41dc2b 100644
+> --- a/linux-user/main.c
+> +++ b/linux-user/main.c
+> @@ -81,6 +81,10 @@ unsigned long mmap_min_addr;
+>   uintptr_t guest_base;
+>   bool have_guest_base;
+>   
+> +bool qemu_dup_for_children;
+> +int qemu_argc;
+> +char **qemu_argv;
+> +
+>   /*
+>    * Used to implement backwards-compatibility for the `-strace`, and
+>    * QEMU_STRACE options. Without this, the QEMU_LOG can be overwritten by
+> @@ -451,6 +455,11 @@ static void handle_arg_jitdump(const char *arg)
+>       perf_enable_jitdump();
+>   }
+>   
+> +static void handle_arg_qemu_children(const char *arg)
+> +{
+> +    qemu_dup_for_children = true;
+> +}
+> +
+>   static QemuPluginList plugins = QTAILQ_HEAD_INITIALIZER(plugins);
+>   
+>   #ifdef CONFIG_PLUGIN
+> @@ -526,6 +535,10 @@ static const struct qemu_argument arg_table[] = {
+>        "",           "Generate a /tmp/perf-${pid}.map file for perf"},
+>       {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
+>        "",           "Generate a jit-${pid}.dump file for perf"},
+> +    {"qemu-children",
+> +                   "QEMU_CHILDREN",    false, handle_arg_qemu_children,
+> +     "",           "Run child processes (created with execve) with qemu "
+> +                   "(as instantiated for the parent)"},
+>       {NULL, NULL, false, NULL, NULL, NULL}
+>   };
+>   
+> @@ -729,6 +742,14 @@ int main(int argc, char **argv, char **envp)
+>   
+>       optind = parse_args(argc, argv);
+>   
+> +    if (qemu_dup_for_children) {
+> +        qemu_argc = optind;
+> +        qemu_argv = g_new0(char *, qemu_argc);
+> +        for (i = 0; i < optind; ++i) {
+> +            qemu_argv[i] = strdup(argv[i]);
 
+g_strdup.
+
+> +    bool through_qemu = dirfd == AT_FDCWD && qemu_dup_for_children;
+
+Why is this limited to AT_FDCWD?  Why not for execvat too?
+
+> @@ -8628,9 +8631,16 @@ static int do_execv(CPUArchState *cpu_env, int dirfd,
+>       }
+>   
+>       const char *exe = p;
+> -    if (is_proc_myself(p, "exe")) {
+> +    if (through_qemu) {
+> +        int i;
+> +        for (i = 0; i < argp_offset; ++i) {
+> +            argp[i] = qemu_argv[i];
+> +        }
+> +        exe = qemu_argv[0];
+> +    } else if (is_proc_myself(p, "exe")) {
+>           exe = exec_path;
+>       }
+> +
+
+You still need to handle is_proc_myself, for the guest binary.
+
+I wonder if those two cases are related.  Do we need to also add an argument so that we 
+can pass the executable to the next qemu via file descriptor?  I.e. execvat becomes
+
+     f = openat()
+     execv(qemu, "-execfd", f)
+
+and is_proc_myself uses execfd, which we already have open.
+
+
+r~
 
