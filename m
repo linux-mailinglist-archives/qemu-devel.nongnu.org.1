@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35B49BCBA3
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC459BCBA2
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:23:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HbM-0004X9-Sq; Tue, 05 Nov 2024 06:20:00 -0500
+	id 1t8HbO-0004YY-Os; Tue, 05 Nov 2024 06:20:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1t8HbJ-0004VK-GL
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t8HbK-0004VZ-0i
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:58 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t8HbD-00077F-JD
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1t8HbC-00076z-CG
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:19:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730805588;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gGZzqk9PebDSovSkijiespfOsuVvaBw8WYB4xrFjFNI=;
- b=EdYGjTewUX56gWJ9/QqslVKgWYP/KonjR51waF/+uxHO0bEYlis+A+JmnJd3gqZzWqX7/3
- nXBjEYGdRJoZ1eq6B4OPvJYiIOg0eF+8kzIknS/ILqUiKsSx3puM7SH2Q2/Jils4CpbvJu
- +oF6EAgF7B+FnKb1JZFFoCs8pz1WK/U=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-Dih-djIhNkCOMQ5wI9ETmA-1; Tue, 05 Nov 2024 06:19:46 -0500
-X-MC-Unique: Dih-djIhNkCOMQ5wI9ETmA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d49887a2cso2867440f8f.0
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:46 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4314b316495so45502685e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730805589; x=1731410389; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=c8Sl2WdMeznJ3O6Hl+0ANVSekrp0/KXuiL2fAiYWe7Y=;
+ b=EotC5W3wV5nQVA1Ke8WpTF007lOMb1cWooXAsyiANAhkKjC4umHkDzBMrzgZgRIWHE
+ uBJ5msPmXvQlWzhQhnJ39grrI0UMQ4mn0ApbByFAfIFrtrIehQp9oEfMA5lhiXat5g/0
+ Ma78ALUfxlWvoz8FgGjVstqHA/arFdBG3XXA5EN8ZSVfaZ3vEMQEmo9MnA8Mr6XPdTas
+ V2Fy+DvROddHLGUOLUTsPejxhMBxH0l4FBJkycYUVyHeIJL9mkVhM6a+GkJOnyLeewYR
+ Pd50XEmL4ngFUQPxlsUqOFleWb0A0VmTSwdhLRG1aBLxiaCLd7M1ubW6xbHMauWEOZEO
+ bnoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730805584; x=1731410384;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gGZzqk9PebDSovSkijiespfOsuVvaBw8WYB4xrFjFNI=;
- b=Dkn9BZU5jzR6ndWY4S/QLbqjkuPheu5blTU2UMJkDz5KTQrrm2ovtGbnY8NjPI8REc
- 3OfXW9W7fPNBmQcf8dHwl0O4LgaRsrtBkkTBP/OnJ2VB1u4ZdOSYUzyFTI/KFSdunc/M
- c29IjjDFJ14DKeaftSZjYgMp4KbLoJ7E0BVKWq9YSqeTHiBmjs+Zafrh93uGw5NQjs/P
- mRowsvEMprCBv7RzrbucwfMtdBuiGpMkt1/+BoJ6V2Ft07Ztbkfo/Oa9jjQHRL5q9O6w
- 0wgwiLxaRRXrw02OgQLhg2VVeOo3CBnSH2ebTZCFfkhnbfPffRno+faYkcA6GdgF9Fbo
- iyyQ==
-X-Gm-Message-State: AOJu0YwwtlERZ9EslYOpuafUD1+AI9mDniZy71NfdVqO4uKRGFRmYbN7
- DstOmnoYdi/dd8jcIGquupKHEbnNSKrB6Va7dcj7ouLz1pvMKJPWKUQ4pIAYa3B5hoeRzmXnJRC
- xUePTn1EjsUx5SbYRrWrX5p7gcvlZZImn6EqQYM6YCWlH5bIga7pFwUaisutBdM46glGOOrjQhG
- gBMM9KC1/7zRw0992ShZlm+sWFjqwtM2m8M0U=
-X-Received: by 2002:a5d:6d0e:0:b0:379:5c8:33fa with SMTP id
- ffacd0b85a97d-381c7866580mr13622626f8f.0.1730805581191; 
- Tue, 05 Nov 2024 03:19:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgp4I6nxfY6FvtXDHYpjjSXUdcoxlFzAVPbyv2yNttU5oSa5wehT7tWI8O/O5aP/qTe3TSk6CNFlK3pvhFHXE=
-X-Received: by 2002:a5d:6d0e:0:b0:379:5c8:33fa with SMTP id
- ffacd0b85a97d-381c7866580mr13622553f8f.0.1730805579858; Tue, 05 Nov 2024
- 03:19:39 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730805589; x=1731410389;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=c8Sl2WdMeznJ3O6Hl+0ANVSekrp0/KXuiL2fAiYWe7Y=;
+ b=rHYCHEjGkv1uc2pigdWC4qh1FPO5cEjxiT0i5UXMCQ7eoJVcNxCGhglgjNmV00oa0U
+ m7/182SC4GqmEf1HEw50wUcvFvBxDAfhgeu0r2iH5a7B74cRGT+hFpl6zCNDaBnfaIJS
+ SnOgIKvbjyPRnAcSl2ySBV1917XMskmCjGJ1PC8Ubma+3Cy/6WWiJ7bZJZ7omETAKk2D
+ TOdntrC438aDzZr8TGstDRm87qkDjyPa2S+HAQCp/BiU0M48/fo+jvviJK/PabNipEoK
+ oFQBBn1uinPVbrbnVxf/EedEyPcD0/nHsQdSX4nwk3jzY2gL56zRyCvYlQAsOq1HLBYG
+ 0gRg==
+X-Gm-Message-State: AOJu0Yxd8YqagAehR4RnOKLPKjUT0BFFFlgkXTAKKvdltw6naW2oR5V7
+ QukvXcezM0Hoyj4dY6RKK0IkXUInhQwvGXBWKfeYGJFgVT6PPtvnAAkhnti2V+9Wf2PgEoeOzo2
+ 3
+X-Google-Smtp-Source: AGHT+IHeeZkES+0Ju2dE+HLTNR5HPuj11tiMMZi4a6APqWtBjhuH1PkSALEwUqxAWmI8Pc5a+yxT3w==
+X-Received: by 2002:a05:600c:3591:b0:431:680e:95d9 with SMTP id
+ 5b1f17b1804b1-4327b7eac4emr165388775e9.22.1730805588717; 
+ Tue, 05 Nov 2024 03:19:48 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.48
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Nov 2024 03:19:48 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 20/31] target/rx: Explicitly set 2-NaN propagation rule
+Date: Tue,  5 Nov 2024 11:19:24 +0000
+Message-Id: <20241105111935.2747034-21-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
+References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-References: <20241029150908.1136894-1-ppandit@redhat.com>
- <20241029150908.1136894-3-ppandit@redhat.com>
- <ZyTnBwpOwXcHGGPJ@x1n>
- <CAE8KmOyzWRqpGDOyAK7V2X8+SWVt_kR1897tiFm7vdBNRRE2QA@mail.gmail.com>
- <ZykB3voFw_-ByWfh@x1n>
-In-Reply-To: <ZykB3voFw_-ByWfh@x1n>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 5 Nov 2024 16:49:23 +0530
-Message-ID: <CAE8KmOzuGxdU7zp+vsf1yY_FP8bf-KTv7UJ+8h6bfmkE=0H-bA@mail.gmail.com>
-Subject: Re: [PATCH 2/5] migration/postcopy: magic value for postcopy channel
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- Prasad Pandit <pjp@fedoraproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Nov 2024 at 22:48, Peter Xu <peterx@redhat.com> wrote:
-> Firstly, we'll need a way to tell mgmt that the new qemu binary supports
-> enablement of both multifd + postcopy feature.  That can be done with a
->
->   "features": [ "postcopy-with-multifd-precopy" ]
->
-> Flag attached to the QMP "migrate" command.
+Set the NaN propagation rule explicitly for the float_status word
+used in the rx target.
 
-* IIUC, currently virsh(1)/libvirtd(8) sends the migration command to
-the destination to inform it of the migration features to use, whether
-to use multifd or postcopy or none etc. Based on that the destination
-QEMU prepares to accept incoming VM. Not sure how/what above flag
-shall benefit.
+This not the architecturally correct behaviour, but since this is a
+no-behaviour-change patch, we leave a TODO note to that effect.
 
-> Then, I think we don't need a magic for preempt channel, because new qemu
-> binaries (after 7.2) have no issue on out-of-order connections between main
-> / preempt channel.  Preempt channel is always connected later than main.
->
-> It means in the test logic of "which channel is which", it should be:
->
->   - If it's a multifd channel (check multifd header match), it's a multifd
->     channel, otherwise,
->
->     - if main channel is not present yet, it must be the main channel (and
->       we can double check the main channel magic), otherwise,
->
->     - it's the preempt channel
->
-> With that, I think we can drop the new magic sent here.
-
-* Sending magic value on the postcopy channel only makes it consistent
-with other channels. There's no harm in sending it. Explicitly
-defining/sending the magic value is better than leaving it for the
-code/reader to figure it out. Is there a compelling reason to drop it?
-IMO, we should either define/send the magic value for all channels or
-none. Both ways are consistent. Defining it for few and not for others
-does not seem right.
-
-Thank you.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20241025141254.2141506-21-peter.maydell@linaro.org
 ---
-  - Prasad
+ target/rx/cpu.c                | 7 +++++++
+ fpu/softfloat-specialize.c.inc | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 36d2a6f1890..65a74ce720f 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -93,6 +93,13 @@ static void rx_cpu_reset_hold(Object *obj, ResetType type)
+     env->fpsw = 0;
+     set_flush_to_zero(1, &env->fp_status);
+     set_flush_inputs_to_zero(1, &env->fp_status);
++    /*
++     * TODO: this is not the correct NaN propagation rule for this
++     * architecture. The "RX Family User's Manual: Software" table 1.6
++     * defines the propagation rules as "prefer SNaN over QNaN;
++     * then prefer dest over source", which is float_2nan_prop_s_ab.
++     */
++    set_float_2nan_prop_rule(float_2nan_prop_x87, &env->fp_status);
+ }
+ 
+ static ObjectClass *rx_cpu_class_by_name(const char *cpu_model)
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index ee5c73cad46..254bbd67168 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -407,7 +407,8 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+     || defined(TARGET_S390X) || defined(TARGET_PPC) || defined(TARGET_M68K) \
+     || defined(TARGET_SPARC) || defined(TARGET_XTENSA) \
+     || defined(TARGET_I386) || defined(TARGET_ALPHA) \
+-    || defined(TARGET_MICROBLAZE) || defined(TARGET_OPENRISC)
++    || defined(TARGET_MICROBLAZE) || defined(TARGET_OPENRISC) \
++    || defined(TARGET_RX)
+         g_assert_not_reached();
+ #else
+         rule = float_2nan_prop_x87;
+-- 
+2.34.1
 
 
