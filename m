@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3A59BCBA0
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072FF9BCB96
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 12:22:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8HbW-0004bW-LA; Tue, 05 Nov 2024 06:20:10 -0500
+	id 1t8Hbb-0004gX-AJ; Tue, 05 Nov 2024 06:20:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbR-0004Zv-Vh
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:06 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1t8HbU-0004aT-6D
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:08 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t8HbI-00078b-HF
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:04 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4316f3d3c21so41103405e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:55 -0800 (PST)
+ id 1t8HbJ-00078j-CF
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 06:20:06 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-37d3ecad390so4013025f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 03:19:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1730805594; x=1731410394; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=38EGQ1h0hACahyl0oXRU0siZ/g2UnItojGbOd1JPD7Q=;
- b=i6e5NRehCJxmnSjFWwSLXKIJrD4siRw4xkRkhikCByF99GypWIALo1P0Mn+3V0aeSM
- Ow/Ey/nsS0rjhgFtUJAq+07/xgH2wyAMnWjwv5mflMh1Ow8HOblp5wgem0SvJJh+HIrM
- 49Zymotv/qeLEGtrzOOpYGoQzyWWa91CpYs1nuxt/lhTbQqz1LT/C0G5q+NJB1h5s46D
- IQphFIe530Hwgv1Kf0+l5bzGC5ipT0tvnmZoIAdphL8d+WozCPmr273Rm3XPJfuD3nm1
- RHZ84kNh+JbV/ghNo0N2wRXGgrUT1wfJufHB2sHc/LpQILnVFKQn+iBHJ86XlsWFul/C
- VFew==
+ :reply-to; bh=pRL4mDTjVw9mfjbMMniJd6QkIPpIN0o0sYfT9bqu/h8=;
+ b=jbrBQsMz/bC0OTpKA684iLmiDZ/n3zmiJ+zivdVCA2TRoAZv6/dOQ/UIhaZAAhKOOp
+ 9OnGaJT/EPQKM+utUtmhsTmJFSZHH+BE5OVmPigdw8QJyfglgUjg1u/4Gh5o060tDYAU
+ sujBt7NYPqpa7mzeZ4Cd8edW62e2azkZWamMlaNcXCjFIfsbXrmHciPkFazPEOHSTMMb
+ XM0tgOO8vOicDazORs6JRkcMopQkTo6NoY+1/7jZ5K7534BW71uOzqX1PMoAT8clcULt
+ dOozyHsE3Gw/tyucvGgOvddwqbCz7oqeQZqcScXssD8hAph7Qsv98r/UQDhf5tdghbuz
+ WZMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1730805594; x=1731410394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=38EGQ1h0hACahyl0oXRU0siZ/g2UnItojGbOd1JPD7Q=;
- b=SVJd/QtjO4Yaou73Sbu6z3H6U7+F7XHF6nb/1pXcq1/I6UI0YgO/zgMg0UgsX8sjvs
- K5cs/qYhM8MXZy392TPVdyV9a1G2dOxhhVt0iMZ8SfeZUC2ekI3UJmunG7Wwb5K7s4VP
- A83y7gV9LNNn4Q+ug+k+3OTsl2CjHsaeseDEp4PPJzuFGBalGEW88SNhjaOWjPF0kQqE
- x2aUeUfsxo7+XV/0mhhCADhGKkjS6xm7L4NxO+/Ou9R614CXkhI8jL0Npzo5smbV7g3b
- Ly03LDjeBOVkG7te/neJ3REPf8FpPlC/QGJMDc1u9iWc4gYsQT7mGyn0ZbIExKCEfOTT
- lB5g==
-X-Gm-Message-State: AOJu0Yy+XP4wD+SZdOXrrFp8PMO5tTbqpL6YOzn7oGt8c4H7CasgC7LL
- 1N4JcAEKI9UhVXEyr3eipkk/5axhA+q5e3gsDmb/s4Jr453RorbRe+Ex+trtU5GilYCGwgIVq0s
- c
-X-Google-Smtp-Source: AGHT+IEOEY22p5fkqapkj0FyVSZMonZpdg4ChxlBjpbkRwYEFlKQpRc9hA4UV0bj1PAmLjNJb3ThlQ==
-X-Received: by 2002:a05:600c:1385:b0:42c:ae30:fc4d with SMTP id
- 5b1f17b1804b1-431bb977328mr197556815e9.7.1730805593793; 
- Tue, 05 Nov 2024 03:19:53 -0800 (PST)
+ bh=pRL4mDTjVw9mfjbMMniJd6QkIPpIN0o0sYfT9bqu/h8=;
+ b=mirSX+ct+YsBxrtf4zl8uQ3Ji05/yjdIvPWVvlPHzRFk3JL7Xx6iYUWJINwJBGH0x7
+ g1mcA2EJvju3UIo/EF82vpQitV1EumRhU+ciAIfFw+CIdOftDYdeKxw9dcr2hAGn11e8
+ nqAMEi6j5EWsa+HzYJ5p3bfOTm2lw22Y0POHESoEuVv8+V8AIZJAC99b2MjhfNhgGZ2q
+ 2+V4wOIPdfLMYCnfCnedeletTDnfoZaj3JJ4okLoYOogPs95IKWCT3BD4qbb5GY1XUXY
+ Z4cRVY+FZnbVIZBwzBy8pf9mBxHgI0NZX51zHao8oCqogo9sWZvSUF8EX5MxhQ70N2MN
+ bJWQ==
+X-Gm-Message-State: AOJu0YyAH4wpNuj1FPrPerXgy8plf2OrUe7pWT+HxQdhp9vRDEiM6+0N
+ kWbt5PY3WFZHtd80utVHujrfFCIr6wvwTgdkGRtOVlePiP77COYbDR/0YhQDEIf0L3ECxZoPgBn
+ L
+X-Google-Smtp-Source: AGHT+IFb3FOnBV06+RbQjkiLVZv8rfrPX1f7EbPVHyQbnki3LFjpC+3mPkHtdGcZ+eu5ud7EZe3XYg==
+X-Received: by 2002:a5d:6da2:0:b0:374:b6e4:16a7 with SMTP id
+ ffacd0b85a97d-381c7974c6cmr13763013f8f.8.1730805594301; 
+ Tue, 05 Nov 2024 03:19:54 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-432a3688813sm16354555e9.1.2024.11.05.03.19.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Nov 2024 03:19:53 -0800 (PST)
+ Tue, 05 Nov 2024 03:19:54 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/31] hw/watchdog/wdt_imx2: Remove redundant assignment
-Date: Tue,  5 Nov 2024 11:19:32 +0000
-Message-Id: <20241105111935.2747034-29-peter.maydell@linaro.org>
+Subject: [PULL 29/31] hw/sensor/tmp105: Convert printf() to trace event,
+ add tracing for read/write access
+Date: Tue,  5 Nov 2024 11:19:33 +0000
+Message-Id: <20241105111935.2747034-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105111935.2747034-1-peter.maydell@linaro.org>
 References: <20241105111935.2747034-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,30 +95,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The same statement is executed unconditionally right before the if statement.
+printf() unconditionally prints to the console which disturbs `-serial stdio`.
+Fix that by converting into a trace event. While at it, add some tracing for
+read and write access.
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 7e7c5e4c1ba5 "Nokia N800 machine support (ARM)."
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241103143330.123596-4-shentey@gmail.com
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241103143330.123596-5-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/watchdog/wdt_imx2.c | 1 -
- 1 file changed, 1 deletion(-)
+ meson.build            | 1 +
+ hw/sensor/trace.h      | 1 +
+ hw/sensor/tmp105.c     | 7 ++++++-
+ hw/sensor/trace-events | 6 ++++++
+ 4 files changed, 14 insertions(+), 1 deletion(-)
+ create mode 100644 hw/sensor/trace.h
+ create mode 100644 hw/sensor/trace-events
 
-diff --git a/hw/watchdog/wdt_imx2.c b/hw/watchdog/wdt_imx2.c
-index be63d421da1..8162d58afaf 100644
---- a/hw/watchdog/wdt_imx2.c
-+++ b/hw/watchdog/wdt_imx2.c
-@@ -39,7 +39,6 @@ static void imx2_wdt_expired(void *opaque)
+diff --git a/meson.build b/meson.build
+index c386593c527..4262e1e84a9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3484,6 +3484,7 @@ if have_system
+     'hw/s390x',
+     'hw/scsi',
+     'hw/sd',
++    'hw/sensor',
+     'hw/sh4',
+     'hw/sparc',
+     'hw/sparc64',
+diff --git a/hw/sensor/trace.h b/hw/sensor/trace.h
+new file mode 100644
+index 00000000000..e4721560b03
+--- /dev/null
++++ b/hw/sensor/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_sensor.h"
+diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
+index 9d7b911f596..ef2824f3e1b 100644
+--- a/hw/sensor/tmp105.c
++++ b/hw/sensor/tmp105.c
+@@ -27,6 +27,7 @@
+ #include "qapi/visitor.h"
+ #include "qemu/module.h"
+ #include "hw/registerfields.h"
++#include "trace.h"
  
-     /* Perform watchdog action if watchdog is enabled */
-     if (s->wcr & IMX2_WDT_WCR_WDE) {
--        s->wrsr = IMX2_WDT_WRSR_TOUT;
-         watchdog_perform_action();
+ FIELD(CONFIG, SHUTDOWN_MODE,        0, 1)
+ FIELD(CONFIG, THERMOSTAT_MODE,      1, 1)
+@@ -150,17 +151,21 @@ static void tmp105_read(TMP105State *s)
+         s->buf[s->len++] = ((uint16_t) s->limit[1]) >> 0;
+         break;
      }
++
++    trace_tmp105_read(s->i2c.address, s->pointer);
  }
+ 
+ static void tmp105_write(TMP105State *s)
+ {
++    trace_tmp105_write(s->i2c.address, s->pointer);
++
+     switch (s->pointer & 3) {
+     case TMP105_REG_TEMPERATURE:
+         break;
+ 
+     case TMP105_REG_CONFIG:
+         if (FIELD_EX8(s->buf[0] & ~s->config, CONFIG, SHUTDOWN_MODE)) {
+-            printf("%s: TMP105 shutdown\n", __func__);
++            trace_tmp105_write_shutdown(s->i2c.address);
+         }
+         s->config = FIELD_DP8(s->buf[0], CONFIG, ONE_SHOT, 0);
+         s->faults = tmp105_faultq[FIELD_EX8(s->config, CONFIG, FAULT_QUEUE)];
+diff --git a/hw/sensor/trace-events b/hw/sensor/trace-events
+new file mode 100644
+index 00000000000..a3fe54fa6dc
+--- /dev/null
++++ b/hw/sensor/trace-events
+@@ -0,0 +1,6 @@
++# See docs/devel/tracing.rst for syntax documentation.
++
++# tmp105.c
++tmp105_read(uint8_t dev, uint8_t addr) "device: 0x%02x, addr: 0x%02x"
++tmp105_write(uint8_t dev, uint8_t addr) "device: 0x%02x, addr 0x%02x"
++tmp105_write_shutdown(uint8_t dev) "device: 0x%02x"
 -- 
 2.34.1
 
