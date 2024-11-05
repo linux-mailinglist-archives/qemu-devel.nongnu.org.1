@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D521E9BD92C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14539BD920
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:52:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SNe-0001Vs-Lw; Tue, 05 Nov 2024 17:50:35 -0500
+	id 1t8SNd-0001TF-TI; Tue, 05 Nov 2024 17:50:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMu-000154-R8
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:50 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SN2-00018a-Lj
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:50:01 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMs-0004Sp-Me
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:48 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4315eac969aso1513495e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMy-0004Tc-Ly
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:55 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4315e9e9642so51825585e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846984; x=1731451784; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846990; x=1731451790; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i3NX0+cSAzGYRrfL4oLem/VlulSkEhLXyoePR+dn9LQ=;
- b=iCSFID4kc0TpR5ePsB+O6Qk6RoNauEWfnYaLYjqiO6s64u/YDYqJQIT7/F+cQa4URO
- KLl+wu1Ylkgx+YveDAsl0dj+fgEM/nyxdcxeO0FXzFh1XywYLoDnFAsXMYLbTKznWqyN
- sTFN7uc3pspl+fje0z6cL4dVK7S+dO316hJETgwYbuMrr5sVwq/wp5mBcfdNdjceZ1il
- ukdTVrE/vy6QkUtbqD14ESdBqBpck8ABDkbEWlZp/6RotWQx9DnCmp9cSm6BbMJKC8vV
- 8XXCLmWCOK2WMxN5/ZQSpr/3kHOPfx6k5TPoDgvJB0VIHZU5oD6kOnTYdnyRGDXKX+rw
- hMEw==
+ bh=wSzSjRbSrc4AxjVgNC6KJMNU1HPmiTPaRC0XOlem+rM=;
+ b=M5buZuA0XdRM5wwoKyhzeLttcpx5XPOjPRLZNHK+lwdnLQVtqNkNttNF7iyXUECIRX
+ SPfrU/sgXKF+eUwOONEGu/vTi/kVqSqQOcySRB1T2soBPeVO7EEtY8PLCotiFerRF/o4
+ kHXJguVR8DA7lXFy8jU0pqcb7ob6IgWTXr3O9An4Yf7ibMvu8sMOhBEMB3AsfxG6nITV
+ drRbfmUJL/T2vBNP7y9ij848SoFxQWDoWeKxzb6V2SeAnmp7AZQBX7v/s23AYS2ojYDQ
+ aRcVRX0CSzPCtZb+vI4VQjEn6DArF5vXWNjT9W/rKzpYOcbxvEhC7+XXogogfuTV89DR
+ P2cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846984; x=1731451784;
+ d=1e100.net; s=20230601; t=1730846990; x=1731451790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i3NX0+cSAzGYRrfL4oLem/VlulSkEhLXyoePR+dn9LQ=;
- b=NNblvdSIsscIyN/e9ww67FSGAoRTGLJzxHhgagKapazykwgPAd0O0UssuzbEXJoMST
- 2vOW3JtYuDJWMxUvao+8fEnU+ZYRgCUgnpysl+Gbydv4q/3ckqga0RFIWxymuAuKbcSS
- DuF+1qmAq5/1woRXnn7xoZhitrQzhQOt3x+o0sOcRo6/nQqwHPSFYdTXT0K7z1wTBY3l
- U58FmYmBEaK1qWyiV2QHEAiYD0RYf9jHxLjmcMRGF8cXGz/fs9BfkcuUrePoZOxdSEbn
- HSwQ5hT+2nsoqCM3FOBEZ76ZFKL3R3+vhqEZIAonTX2mpCcmZOg8DpJiDoEM/f9Fc1BX
- /oGg==
-X-Gm-Message-State: AOJu0YxNpZ4hx9g1vqSGsvIkij3RBlYN0yo1U9AJkmRYUX5aThnQrarX
- cFmV9WMjJfk464BxsrN71Pa6jjJs5IxanSYPMUzVIsW3yIRxwtp711KFLTqcYJqf7abAGJFEJEq
- n2pwyIQ==
-X-Google-Smtp-Source: AGHT+IGdpEbm7TpMArpemwMROqUAziy3iEBBEVtr6QW8X6RH2WK/5bTQJjlsNVPGoA6HLjlTtQqHnA==
-X-Received: by 2002:a05:600c:1f17:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-432a9aaa8d5mr3137565e9.10.1730846984188; 
- Tue, 05 Nov 2024 14:49:44 -0800 (PST)
+ bh=wSzSjRbSrc4AxjVgNC6KJMNU1HPmiTPaRC0XOlem+rM=;
+ b=kePTx/19UQxvBUO3SdUsw6S35/GrDk2xL4URweG3zhcujGam6/ZYWJH5AyZGh7ch0j
+ cYPSUIKQ5fyjmTF9BxhymcWA6Pr/ma2/PXK3G9/rTYTD/FRbwVMWzv3sMNwLMUzvajAK
+ P05hZYr5XcajaA3LWMVGlRhMBTY2a8oeorRYkNONflT3RVJdnh4DbheQ6IzhF7JBgThX
+ PWcrivla9dHPqJbRL3Rpbq2CotEd+whhAY1/3Hq+P4u0cyB34HWQ1vPH7n/sZMoc1Vij
+ sxbsuNLNmFCpmSbdHNo4wMVkuDll25g8UZyUsJ4S0OCQqJQItJRGFd9CYRrrAitmwXPq
+ GM4Q==
+X-Gm-Message-State: AOJu0Yz+TzoBIfcvB5Tk8QCcC7+Gyk3Ay0flflxJPNl39cgg09ES0jE7
+ LPFpSbHQDrMoQGc8fto8J/VNkJT71Wxpcow2ZgkfKeVhyBnrIsY/HXI+xin7d1v/YDfcs6fpNVy
+ arXo2Ew==
+X-Google-Smtp-Source: AGHT+IEbdBeEOBalhredLU0mQN8CejK9bqxeLfb6mwEjTOrw5jfb7p7wjEPECjG4PFk9XrhIco663w==
+X-Received: by 2002:a05:600c:3591:b0:431:680e:95d9 with SMTP id
+ 5b1f17b1804b1-4327b7eac4emr184483205e9.22.1730846990329; 
+ Tue, 05 Nov 2024 14:49:50 -0800 (PST)
 Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10e7365sm17187368f8f.54.2024.11.05.14.49.41
+ 5b1f17b1804b1-432aa6da939sm1053395e9.31.2024.11.05.14.49.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:49:43 -0800 (PST)
+ Tue, 05 Nov 2024 14:49:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>,
+ Corey Minyard <cminyard@mvista.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 25/29] hw/block/pflash_cfi01: Prefer DEFINE_TYPES() macro
-Date: Tue,  5 Nov 2024 22:47:23 +0000
-Message-ID: <20241105224727.53059-26-philmd@linaro.org>
+Subject: [PULL 26/29] hw/i2c/smbus_eeprom: Prefer DEFINE_TYPES() macro
+Date: Tue,  5 Nov 2024 22:47:24 +0000
+Message-ID: <20241105224727.53059-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +97,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-22-shentey@gmail.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
+Message-ID: <20241103133412.73536-23-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/pflash_cfi01.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ hw/i2c/smbus_eeprom.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index 7b6ec644426..21a81b44f03 100644
---- a/hw/block/pflash_cfi01.c
-+++ b/hw/block/pflash_cfi01.c
-@@ -47,7 +47,6 @@
- #include "qemu/bitops.h"
- #include "qemu/host-utils.h"
- #include "qemu/log.h"
--#include "qemu/module.h"
- #include "qemu/option.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
-@@ -947,20 +946,16 @@ static void pflash_cfi01_class_init(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+diff --git a/hw/i2c/smbus_eeprom.c b/hw/i2c/smbus_eeprom.c
+index 9e62c27a1a5..e3e96d4a2d6 100644
+--- a/hw/i2c/smbus_eeprom.c
++++ b/hw/i2c/smbus_eeprom.c
+@@ -151,19 +151,16 @@ static void smbus_eeprom_class_initfn(ObjectClass *klass, void *data)
+     dc->user_creatable = false;
  }
  
--
--static const TypeInfo pflash_cfi01_info = {
--    .name           = TYPE_PFLASH_CFI01,
--    .parent         = TYPE_SYS_BUS_DEVICE,
--    .instance_size  = sizeof(PFlashCFI01),
--    .class_init     = pflash_cfi01_class_init,
-+static const TypeInfo pflash_cfi01_types[] = {
+-static const TypeInfo smbus_eeprom_info = {
+-    .name          = TYPE_SMBUS_EEPROM,
+-    .parent        = TYPE_SMBUS_DEVICE,
+-    .instance_size = sizeof(SMBusEEPROMDevice),
+-    .class_init    = smbus_eeprom_class_initfn,
++static const TypeInfo smbus_eeprom_types[] = {
 +    {
-+        .name           = TYPE_PFLASH_CFI01,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(PFlashCFI01),
-+        .class_init     = pflash_cfi01_class_init,
++        .name          = TYPE_SMBUS_EEPROM,
++        .parent        = TYPE_SMBUS_DEVICE,
++        .instance_size = sizeof(SMBusEEPROMDevice),
++        .class_init    = smbus_eeprom_class_initfn,
 +    },
  };
  
--static void pflash_cfi01_register_types(void)
+-static void smbus_eeprom_register_types(void)
 -{
--    type_register_static(&pflash_cfi01_info);
+-    type_register_static(&smbus_eeprom_info);
 -}
 -
--type_init(pflash_cfi01_register_types)
-+DEFINE_TYPES(pflash_cfi01_types)
+-type_init(smbus_eeprom_register_types)
++DEFINE_TYPES(smbus_eeprom_types)
  
- PFlashCFI01 *pflash_cfi01_register(hwaddr base,
-                                    const char *name,
+ void smbus_eeprom_init_one(I2CBus *smbus, uint8_t address, uint8_t *eeprom_buf)
+ {
 -- 
 2.45.2
 
