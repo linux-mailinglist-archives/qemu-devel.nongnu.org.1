@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2999BD930
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D29BD9BD911
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:49:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SMX-00079I-G8; Tue, 05 Nov 2024 17:49:25 -0500
+	id 1t8SMZ-0007NU-G3; Tue, 05 Nov 2024 17:49:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SM6-0006fm-OX
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:59 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SMB-0006st-Eb
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:03 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SM5-0004JT-4X
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:48:58 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-431548bd1b4so50892425e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:48:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SM9-0004KA-NM
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:49:03 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4315baec69eso53093965e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:49:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730846935; x=1731451735; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730846940; x=1731451740; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Sfn7cm81gRHlzMkLVCOGrjRL5gmP+m5CKJ7vqtP/iic=;
- b=ATRx8l5pKW0PgFupOjzjzh6P0af7g5/gpWeYUlztUxck+iOCt4zjAvPBww0DrFmy3D
- blMiCHzfjnnQfe/IbRSgh1FmEqqyqHYQKCnRAkyEhol1fI6o+9rglVzct3I++CHiAbiy
- 9iufu3JbT2TJjr7izV52mUV/zFEkkngrwmitOy2cqJgGXxLs7p8d9AhfqSN+wfznsuMi
- L+E47g6WY12+tVqZipgihnYMX9tH6guq1y9IXj+9Djg4kMzOKlixChxjRFdqBHxJQOkE
- ay8rjVkK3Og7Anu3aqtrMygX/1Gi9simJ6VWYinR5N9gOCvfjGabjTKwKyoZxHqj45oC
- bCXA==
+ bh=WiFCK6mS6/8rd1MrkryQ84V1Hk6dwbxGPMWFO5fXrcw=;
+ b=OhCL+EoImfbNDCjfMue4sC8gaBBfRYzi/6KCLIv2jv+VQOPfWVTj6Mjy/9z75hW5sW
+ Eh9p1KIUYgoyscKt65KmjVzOFCamx9yprHm5Lx4sugs54NsNSsQ2DzEFjh+nuQC83CPR
+ FluXEPbLW3eP3VxhtybS4LS4k5L1T+MSaQfoQy5Egm49RZANyrAuuqc+3CdJQ48NHtQB
+ +nNhocPJ/S60tXBp/g2xJt0774CBiESTcRZ2lpt/uBoqdB+zAKp8P/yjJbN239qRrSOy
+ qPnMI9CCOedGJ3dm4EexOAM3J7rezdPv/CGdu9DuscCkGtDJZCY5uEqKfHC6lvFYvDqH
+ 9WLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730846935; x=1731451735;
+ d=1e100.net; s=20230601; t=1730846940; x=1731451740;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Sfn7cm81gRHlzMkLVCOGrjRL5gmP+m5CKJ7vqtP/iic=;
- b=reuRFUep8/ODGgdugIsFJMDOvJXgEXI2UXi4kgf9itg6IgDGviKEYMXWLDUHW9DEe/
- CVr4oBxwzIbOe/JByrasLMEK4RBop5+hdOe+KK9O/Rskx3O/iQyKuwYLe/jCiSWDXFXB
- nu+Gu5p3h6tzF0NLKOllyMsMSDXaUgP37xVF3ksSDKC/IpuK3phd1qL024jvfHFLM4gH
- rEWhk1/rjUaEJCiMqBVNdojNhuD5j2qGYzJL3vzfDBArbvzhses/NMGem6CAiD2mfpbX
- nD06F56wkKMRlRbVvLjrzMmm5NRIIRMVNUDdBS1VPoMer5+B+I2taRSPoo3TUHwMcPoN
- Ii3Q==
-X-Gm-Message-State: AOJu0YypivYzFMBStF78G/PFtp0hDcpn3cjOOPbD1B0r49OUAipwm1nD
- 72hfO+x2l7yXEmxdWU/lkaHazeK3BeFYqlUGSg5Nv7mfhhB7K7LXo8jxlVOEh0S7mB8IC7CgwEu
- Fal04pg==
-X-Google-Smtp-Source: AGHT+IGLhqVLULf0uTm19kAkS4b1LNyC7QEysjsXOfRy4ryVfHBH9xx0Wn8nwrGi6XeMywu8amoCtQ==
-X-Received: by 2002:a05:6000:788:b0:37d:4cee:55b with SMTP id
- ffacd0b85a97d-381c7ae3095mr13007244f8f.59.1730846935423; 
- Tue, 05 Nov 2024 14:48:55 -0800 (PST)
+ bh=WiFCK6mS6/8rd1MrkryQ84V1Hk6dwbxGPMWFO5fXrcw=;
+ b=leGxU9yYLZQgZuBLslvayQkjZo7UMZ5ZnuPcv96TiseT0GY2JGSGZ0izs/5SBU+Xl4
+ mqBS7nQFOi6EV6tAW3TUJVuf4sLqWngnjUkLzlCiIdWM8ye1iVZWddJMggCqfvISOjjr
+ tNW5WfjWETaDshFquTfKK2NmPOtyrue3clzAasJcimhNyw0A40EcPSZFQilgQmpWPWne
+ UidseQP1G3qXYvuAXLGv9CkbLvZn7JzkBCV9bjdDL47cT2y7bfVIXQvcUM1bBElZ3udH
+ 9cnHLcm/oLoI/p0TZrFLpY01GviGzQlgLtFMhpTnv6KxK4xMuavjGZ5QFwUfbTTHD6Mk
+ 0sFA==
+X-Gm-Message-State: AOJu0YxC6UHYTeuBg6BEYWheWkQoJiNwWbzxNNYmFt9gS45DUvoxFp3p
+ aRjA2V890EWIzeDS+qKVALS8MX77ZyhiXVVtxZCI46mpxc46tPB8nzb+IJu9KRvo9CquDgDieRJ
+ aFpYUjg==
+X-Google-Smtp-Source: AGHT+IEMR6UCCaCBihJ5GbwlZbpTSMJmfUDu+znkKP5fGC6UBSrONbxQzjj5WJ/mp3QMHiisK3kmGQ==
+X-Received: by 2002:a05:600c:19d3:b0:431:54d9:da57 with SMTP id
+ 5b1f17b1804b1-43283297d9fmr139729375e9.30.1730846939867; 
+ Tue, 05 Nov 2024 14:48:59 -0800 (PST)
 Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d49dfsm17451083f8f.46.2024.11.05.14.48.53
+ 5b1f17b1804b1-432a267dfadsm33828605e9.0.2024.11.05.14.48.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:48:54 -0800 (PST)
+ Tue, 05 Nov 2024 14:48:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Corey Minyard <cminyard@mvista.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/29] hw/i2c/mpc_i2c: Convert DPRINTF to trace events for
- register access
-Date: Tue,  5 Nov 2024 22:47:14 +0000
-Message-ID: <20241105224727.53059-17-philmd@linaro.org>
+Subject: [PULL 17/29] hw/i2c/mpc_i2c: Prefer DEFINE_TYPES() macro
+Date: Tue,  5 Nov 2024 22:47:15 +0000
+Message-ID: <20241105224727.53059-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,65 +97,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Acked-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-12-shentey@gmail.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
+Message-ID: <20241103133412.73536-13-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i2c/mpc_i2c.c    | 9 +++++----
- hw/i2c/trace-events | 5 +++++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ hw/i2c/mpc_i2c.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
 diff --git a/hw/i2c/mpc_i2c.c b/hw/i2c/mpc_i2c.c
-index 2467d1a9aa2..3d79c156531 100644
+index 3d79c156531..913d044ac1b 100644
 --- a/hw/i2c/mpc_i2c.c
 +++ b/hw/i2c/mpc_i2c.c
-@@ -24,6 +24,7 @@
+@@ -20,7 +20,6 @@
+ #include "qemu/osdep.h"
+ #include "hw/i2c/i2c.h"
+ #include "hw/irq.h"
+-#include "qemu/module.h"
  #include "hw/sysbus.h"
  #include "migration/vmstate.h"
  #include "qom/object.h"
-+#include "trace.h"
- 
- /* #define DEBUG_I2C */
- 
-@@ -224,8 +225,8 @@ static uint64_t mpc_i2c_read(void *opaque, hwaddr addr, unsigned size)
-         break;
-     }
- 
--    DPRINTF("%s: addr " HWADDR_FMT_plx " %02" PRIx32 "\n", __func__,
--                                         addr, value);
-+    trace_mpc_i2c_read(addr, value);
-+
-     return (uint64_t)value;
+@@ -345,16 +344,13 @@ static void mpc_i2c_class_init(ObjectClass *klass, void *data)
+     dc->desc = "MPC I2C Controller";
  }
  
-@@ -234,8 +235,8 @@ static void mpc_i2c_write(void *opaque, hwaddr addr,
- {
-     MPCI2CState *s = opaque;
+-static const TypeInfo mpc_i2c_type_info = {
+-    .name          = TYPE_MPC_I2C,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(MPCI2CState),
+-    .class_init    = mpc_i2c_class_init,
++static const TypeInfo mpc_i2c_types[] = {
++    {
++        .name          = TYPE_MPC_I2C,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(MPCI2CState),
++        .class_init    = mpc_i2c_class_init,
++    },
+ };
  
--    DPRINTF("%s: addr " HWADDR_FMT_plx " val %08" PRIx64 "\n", __func__,
--                                             addr, value);
-+    trace_mpc_i2c_write(addr, value);
-+
-     switch (addr) {
-     case MPC_I2C_ADR:
-         s->adr = value & CADR_MASK;
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index 6900e06edad..f708a7ace18 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -35,6 +35,11 @@ aspeed_i2c_bus_write(uint32_t busid, uint64_t offset, unsigned size, uint64_t va
- aspeed_i2c_bus_send(const char *mode, int i, int count, uint8_t byte) "%s send %d/%d 0x%02x"
- aspeed_i2c_bus_recv(const char *mode, int i, int count, uint8_t byte) "%s recv %d/%d 0x%02x"
- 
-+# mpc_i2c.c
-+
-+mpc_i2c_read(uint64_t addr, uint32_t value) "[0x%" PRIx64 "] -> 0x%02" PRIx32
-+mpc_i2c_write(uint64_t addr, uint32_t value) "[0x%" PRIx64 "] <- 0x%02" PRIx32
-+
- # npcm7xx_smbus.c
- 
- npcm7xx_smbus_read(const char *id, uint64_t offset, uint64_t value, unsigned size) "%s offset: 0x%04" PRIx64 " value: 0x%02" PRIx64 " size: %u"
+-static void mpc_i2c_register_types(void)
+-{
+-    type_register_static(&mpc_i2c_type_info);
+-}
+-
+-type_init(mpc_i2c_register_types)
++DEFINE_TYPES(mpc_i2c_types)
 -- 
 2.45.2
 
