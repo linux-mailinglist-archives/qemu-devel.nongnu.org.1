@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAE79BC5D5
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 541C09BC5DE
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:46:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DHB-0005lK-O8; Tue, 05 Nov 2024 01:42:54 -0500
+	id 1t8DHB-0005lW-Ox; Tue, 05 Nov 2024 01:42:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DEh-0003Ul-F3
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:28 -0500
+ id 1t8DEy-0003XE-F7
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:37 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DEa-0001w0-9p
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:13 -0500
+ id 1t8DEj-0001vj-Uy
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:40:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788812; x=1762324812;
+ t=1730788822; x=1762324822;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+RyN2ozpNF9/qWmSSJyynxhc2IsEJ+Gu8thAMTAlGko=;
- b=bpMcBrIaEuS8eG15sHJprjKq2P/bCUlxHliBH1377vHEKWzclQGFzWG9
- 7Ho8OFrRnFFRiiBCIfwe3U0yNXFvizn3yb9m2WViIzN8op0T5DsWs+BV6
- mlvWTBOsdFHRn3hiMk+z7H3ArsxWUBBVBZZAizMWrb1ghYKI3kGjU6P1Y
- dPcb+PjEBM++Aqhv3hk8n93NbJstzuccIrs9GjK7U1YoWThq0trdyT+VL
- US1muR3I2LtqWNFMrk/M1G0I79eAu1PiAKlDFsSA7tZitLKWey9kVqRUy
- VqkdKRyTFKirWAKP/7Xqo26QlGFOY/QYGzR4f29DZmnmhWQLBJREDqrTJ Q==;
-X-CSE-ConnectionGUID: DIy7Jf1WQEmj/lS1URSlxg==
-X-CSE-MsgGUID: +y/VQ/3PQ62KA4QHNm9KtQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689872"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689872"
+ bh=P5Dpgnlq8pIkngj4xnDuBRfdAfvVDs1AjzLSgYZekNU=;
+ b=hFQEwAiXqQKHSHvdCVtZDyi9zjvcHquIZ5uNuqBZ13qb0DbfV0H9IQlq
+ aEoA7jlIzNVy+WZWzgrIUZF1K0i9qTUSAMy7B5/XOqJGOSRafhaVfTW+c
+ C5JX5PqEbzRLuLt/1UhARBUcIrxv7l+NAb5AmME66qZASYmPKfGejuiJu
+ n3nq5YPd8D6FKOHkXQamgnfDSV/DewUTY31HoAAbTkBtyiHWQ8AjcaNG2
+ Rshw6krVem6LkNHUmv4glasP0APDxMZcw4HH9+n++Kzxnc72yRtIMzAmj
+ Nw1Nsc3d6us90KMzI66cyi2PLLQvyzB7prUdXkMtKdA7oVROh+bRIJvbN A==;
+X-CSE-ConnectionGUID: ogY3fIsVRC2g10wYBKtYvA==
+X-CSE-MsgGUID: C4FHXc3vSI25WJ2dcJtwAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689884"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689884"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:40:01 -0800
-X-CSE-ConnectionGUID: 5jqpsLxmSO+hY5dQHtlrcg==
-X-CSE-MsgGUID: fhbU8dw3QlKkdGhUX6WkBg==
+ 04 Nov 2024 22:40:05 -0800
+X-CSE-ConnectionGUID: c9TSTQY7QYKD76jrtTi9Dw==
+X-CSE-MsgGUID: zpSR5Yn5SvKva1MN49xPSA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989877"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83989906"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:39:57 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:40:01 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 51/60] i386/tdx: Mask off CPUID bits by unsupported XFAM
-Date: Tue,  5 Nov 2024 01:23:59 -0500
-Message-Id: <20241105062408.3533704-52-xiaoyao.li@intel.com>
+Subject: [PATCH v6 52/60] i386/cpu: Expose mark_unavailable_features() for TDX
+Date: Tue,  5 Nov 2024 01:24:00 -0500
+Message-Id: <20241105062408.3533704-53-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,78 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mask off the CPUID bits as unsupported if its matched XFAM bit is
-not supported. Otherwise, it might fail the check in setup_td_xfam() as
-unsupported XFAM being requested.
+Expose mark_unavailable_features() out of cpu.c so that it can be used
+by TDX when features are masked off.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/tdx.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ target/i386/cpu.c | 4 ++--
+ target/i386/cpu.h | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 5ac5f93907ca..e7e0f073dfc9 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -24,6 +24,7 @@
- #include <linux/kvm_para.h>
- 
- #include "cpu.h"
-+#include "cpu-internal.h"
- #include "host-cpu.h"
- #include "hw/i386/e820_memory_layout.h"
- #include "hw/i386/x86.h"
-@@ -585,6 +586,42 @@ static void tdx_mask_cpuid_by_attrs(uint32_t feature, uint32_t index,
-     }
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 8c507ad406e7..e728fb6b9f10 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5479,8 +5479,8 @@ static bool x86_cpu_have_filtered_features(X86CPU *cpu)
+     return false;
  }
  
-+static void tdx_mask_cpuid_by_xfam(uint32_t feature, uint32_t index,
-+                                          int reg, uint32_t *value)
-+{
-+    const FeatureWordInfo *f;
-+    const ExtSaveArea *esa;
-+    uint64_t unavail = 0;
-+    int i;
-+
-+    assert(tdx_caps);
-+
-+    for (i = 0; i < ARRAY_SIZE(x86_ext_save_areas); i++) {
-+        if ((1ULL << i) & tdx_caps->supported_xfam) {
-+            continue;
-+        }
-+
-+        if (!((1ULL << i) & CPUID_XSTATE_MASK)) {
-+            continue;
-+        }
-+
-+        esa = &x86_ext_save_areas[i];
-+        f = &feature_word_info[esa->feature];
-+        assert(f->type == CPUID_FEATURE_WORD);
-+        if (f->cpuid.eax != feature ||
-+            (f->cpuid.needs_ecx && f->cpuid.ecx != index) ||
-+            f->cpuid.reg != reg) {
-+            continue;
-+        }
-+
-+        unavail |= esa->bits;
-+    }
-+
-+    if (unavail) {
-+        *value &= ~unavail;
-+    }
-+}
-+
- static uint32_t tdx_adjust_cpuid_features(X86ConfidentialGuest *cg,
-                                           uint32_t feature, uint32_t index,
-                                           int reg, uint32_t value)
-@@ -619,6 +656,7 @@ static uint32_t tdx_adjust_cpuid_features(X86ConfidentialGuest *cg,
-     }
+-static void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
+-                                      const char *verbose_prefix)
++void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
++                               const char *verbose_prefix)
+ {
+     CPUX86State *env = &cpu->env;
+     FeatureWordInfo *f = &feature_word_info[w];
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 0cc88c470dfb..e70e7f5ced4b 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2444,6 +2444,8 @@ void cpu_set_apic_feature(CPUX86State *env);
+ void host_cpuid(uint32_t function, uint32_t count,
+                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx);
+ bool cpu_has_x2apic_feature(CPUX86State *env);
++void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
++                               const char *verbose_prefix);
  
-     tdx_mask_cpuid_by_attrs(feature, index, reg, &value);
-+    tdx_mask_cpuid_by_xfam(feature, index, reg, &value);
- 
-     e = cpuid_find_entry(&tdx_fixed0_bits.cpuid, feature, index);
-     if (e) {
+ static inline bool x86_has_cpuid_0x1f(X86CPU *cpu)
+ {
 -- 
 2.34.1
 
