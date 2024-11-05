@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C4D9BD4FE
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA0F9BD4FC
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:42:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8OUx-0001hA-OZ; Tue, 05 Nov 2024 13:41:51 -0500
+	id 1t8OUx-0001hD-OU; Tue, 05 Nov 2024 13:41:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8OUl-0001Yw-5M
+ id 1t8OUm-0001aG-TE
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:41:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8OUi-0008IR-JM
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:41:38 -0500
+ id 1t8OUk-0008Ie-Do
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:41:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730832095;
+ s=mimecast20190719; t=1730832097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jmAEJjKHImXdIuMhOYcu0dP56GFvs45X63xs96aNs14=;
- b=gVIvL/iuHTR3MECAZ2yJCqW5H5JedDDcVSDiDBDSpUSUiTE1z7tRL1+0vjTKHs/ci2om+K
- dI8m+kmJy0YzhTzSRVSO8rnVFNV5PghoVKdO090O0VEDzTeGpsy+Gcxm/bioB7okbioPzW
- AnMht1KlPkWz4ToF4PwX79B5pGD9gbs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=MJ6Z0szKx6L5vCZfW8ecoUItF23p16W3gTxV5UL2PgU=;
+ b=VImLix8pakIv9nPpQEpFWKS/luo+/Ba9oHTWjVrZ/KQ0Q+9JZY7F0IX8mhuWlnV+sDij9Z
+ 8Fm9HjSuHYMMdreQZ5eE+To0CpCvVZyxPqphldvzpLRx8ArJWcLNrbnvf6DJFZQwiOpd3g
+ REGedoEP72vYceSBsh9y4msy725MaOc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-NRuyJ3WEPyyK11Bzyn8SIQ-1; Tue,
- 05 Nov 2024 13:41:32 -0500
-X-MC-Unique: NRuyJ3WEPyyK11Bzyn8SIQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-lke3qSwVPTiZRo6FeWTUhg-1; Tue,
+ 05 Nov 2024 13:41:36 -0500
+X-MC-Unique: lke3qSwVPTiZRo6FeWTUhg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 58C3F1954B2F; Tue,  5 Nov 2024 18:41:31 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7001219560B4; Tue,  5 Nov 2024 18:41:35 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.52])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DA13619560A2; Tue,  5 Nov 2024 18:41:26 +0000 (UTC)
+ id E891D19560A2; Tue,  5 Nov 2024 18:41:31 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -51,9 +51,10 @@ Cc: Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 3/4] crypto: fix error check on gcry_md_open
-Date: Tue,  5 Nov 2024 18:41:14 +0000
-Message-ID: <20241105184115.381511-4-berrange@redhat.com>
+Subject: [PULL 4/4] crypto: perform runtime check for hash/hmac support in
+ gcrypt
+Date: Tue,  5 Nov 2024 18:41:15 +0000
+Message-ID: <20241105184115.381511-5-berrange@redhat.com>
 In-Reply-To: <20241105184115.381511-1-berrange@redhat.com>
 References: <20241105184115.381511-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -85,38 +86,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gcrypt does not return negative values on error, it returns non-zero
-values. This caused QEMU not to detect failure to open an unsupported
-hash, resulting in a later crash trying to use a NULL context.
+gcrypto has the ability to dynamically disable hash/hmac algorithms
+at runtime, so QEMU must perform a runtime check.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/hash-gcrypt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/hash-gcrypt.c | 2 +-
+ crypto/hmac-gcrypt.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/crypto/hash-gcrypt.c b/crypto/hash-gcrypt.c
-index f04a9f553c..476b748195 100644
+index 476b748195..af61c4e75d 100644
 --- a/crypto/hash-gcrypt.c
 +++ b/crypto/hash-gcrypt.c
-@@ -52,7 +52,7 @@ static
- QCryptoHash *qcrypto_gcrypt_hash_new(QCryptoHashAlgo alg, Error **errp)
+@@ -43,7 +43,7 @@ gboolean qcrypto_hash_supports(QCryptoHashAlgo alg)
  {
-     QCryptoHash *hash;
--    int ret;
-+    gcry_error_t ret;
+     if (alg < G_N_ELEMENTS(qcrypto_hash_alg_map) &&
+         qcrypto_hash_alg_map[alg] != GCRY_MD_NONE) {
+-        return true;
++        return gcry_md_test_algo(qcrypto_hash_alg_map[alg]) == 0;
+     }
+     return false;
+ }
+diff --git a/crypto/hmac-gcrypt.c b/crypto/hmac-gcrypt.c
+index 090fe01c1e..5273086eb9 100644
+--- a/crypto/hmac-gcrypt.c
++++ b/crypto/hmac-gcrypt.c
+@@ -40,7 +40,7 @@ bool qcrypto_hmac_supports(QCryptoHashAlgo alg)
+ {
+     if (alg < G_N_ELEMENTS(qcrypto_hmac_alg_map) &&
+         qcrypto_hmac_alg_map[alg] != GCRY_MAC_NONE) {
+-        return true;
++        return gcry_mac_test_algo(qcrypto_hmac_alg_map[alg]) == 0;
+     }
  
-     hash = g_new(QCryptoHash, 1);
-     hash->alg = alg;
-@@ -60,7 +60,7 @@ QCryptoHash *qcrypto_gcrypt_hash_new(QCryptoHashAlgo alg, Error **errp)
- 
-     ret = gcry_md_open((gcry_md_hd_t *) hash->opaque,
-                        qcrypto_hash_alg_map[alg], 0);
--    if (ret < 0) {
-+    if (ret != 0) {
-         error_setg(errp,
-                    "Unable to initialize hash algorithm: %s",
-                    gcry_strerror(ret));
+     return false;
 -- 
 2.46.0
 
