@@ -2,205 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2895B9BC548
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BECC9BC58A
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Cns-00004s-4I; Tue, 05 Nov 2024 01:12:36 -0500
+	id 1t8DB0-0004OI-FU; Tue, 05 Nov 2024 01:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1t8Cnq-0008WM-AA
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:12:34 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t8DAy-0004Nw-En
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:28 -0500
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1t8Cnm-00086r-Bc
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:12:34 -0500
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t8DAv-0001nR-JD
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:36:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730787151; x=1762323151;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=FAC9ieKz6gkH1flSgxTvl6ZKN3WmLbK80gL6YDjtJQQ=;
- b=BYDveP5k7VxS3Tw99S4jCTStl3cEirqGCVZTAYdVZop88iQrHhuvO9x/
- WwFAfJhUQIE+xThLIewzgVsLCh0rO9vOlRghTiJspWLkJ2PcHMFWvvRzV
- ctTFFbs9Mi5k/WuuRgP6vmShu6V8tpEKGYyXBptjjbolUsvanjQrpu5/J
- ti4JU1CfK9LSMGDI+7lMIqwOlfSLm+As6pAm3mgpqp/FSlqR/i00xqLih
- JoIrJWmextrmxO9+yF6lsKnhPPRNGgkvzEtedUD1wdwvUFqkooWJisb9T
- XQKiff1g33171Im0T6yYslg13sUxwFs/QzGVnw+ujjG0dXHWtW7nEh8PB Q==;
-X-CSE-ConnectionGUID: npVp2ccyQpW12PKQjT70qQ==
-X-CSE-MsgGUID: /U1G85ZeSDelZmRd5sggcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="47978154"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="47978154"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:12:28 -0800
-X-CSE-ConnectionGUID: LDRymN6WRPOHoM6tR8ZJSQ==
-X-CSE-MsgGUID: 6M7u/WzHQvW0TEHQS9V+Zw==
+ t=1730788586; x=1762324586;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uwPme6DhVbJbciZbENF5tory5ziwKMfNkooa8T+wyes=;
+ b=d1zccKTvG6C/QSi/LLrwlRCLfEKOIY1sSiu2LAMqwVK1Miicbg9taHVh
+ T03rbbx/koVfzycz4uYGhTnK2/NXuKaEohnKjJipV8T2KcUSCrbf0ypTa
+ ad8VBungfurQ/2E7AM3uqGNmUoIUwywMgDF7tZiawbcjbSnoStsynmBIt
+ GpGKnl3mG3XbfjZ6Yc92kQavZCiAEUNnaMuVVFcyIFVJ6Yk4N0A5MM3Ys
+ yaWExUpTcl8yS0Gtpj6RINmwiKNc7zc0ndyv5EWqSuEqX3l0Q5BtfRbsT
+ mapTGE2VSoi4tCi8GN9TF0jpqb65yOGZi3Jl1PykpY5KtHs4vhjvIFPMp A==;
+X-CSE-ConnectionGUID: Ud7+O7N1QFaZ+at849vDFQ==
+X-CSE-MsgGUID: fI63HKsRT8urr5MMUANVLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689209"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689209"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2024 22:36:22 -0800
+X-CSE-ConnectionGUID: Uz/eKMZwS4+quOehhpn1TQ==
+X-CSE-MsgGUID: pq/qFX1JQ0KCTysNWX4HUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83830582"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 04 Nov 2024 22:12:27 -0800
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 4 Nov 2024 22:12:26 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 4 Nov 2024 22:12:26 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.45) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 4 Nov 2024 22:12:26 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ytd0R+y2Y8GvG+Te2+KE3P6qu/zEKTlLTZIZ6w9fHf8OawRUiicrzL+lIn38JDU7Rby3MaGRv0jGhmHCqsjxfFURaTYySMD+5TIHiJ1qK57fLpW2AQ2rIVDrXzcBanYSkkiTLnjDYY0Hhdp/0xpKS6JAwjY9LAzfyueUGhehtud5UidUyiZS/E7SbUmj0oibh8hdr8we53Pj/dgU/mAuizDGnYXtkVHzv9Ew6rMId0+UQp3+GPrEltWCLAYLRjz1BFA7Ra+SpwYgR1PFSUUkDDwQpPdl0bRxvMq+3tfPopR4cbaaVuo86R6rSyqC7EFHWipM0ABsCm+VY0lwIEy0qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FAC9ieKz6gkH1flSgxTvl6ZKN3WmLbK80gL6YDjtJQQ=;
- b=YHBC4L41yDt7iodQR4wm+171NgYnKaQNpe/UTzBvpVBCwpHnOZI4bRPhbRy/cDmTDSqAeb5ClqXr7hHg0wJeHYVDNCti/4m+ntyIlthKPowxTkpQQWoel3TAA0R+36NpXjJsa1FkFCL5yBGKRZScGx0JZZu1z8dI0xf+XmcUXgAsGTzZDIWu87Vk31fZRRaZ5Q2WkFAlNwf2Kj6hLolTIaSeSP8LIUxirGWnG4aJBVlSkDaeo7Fp6PQLMp7ih2vv95xkPXlE1hheTowxYDvCH3HMy96G7MhVYAKmC3DrrlwB7tKO4gc5u0CAnYUfNWg4cRpoSQ9Q7Od12UYQXFHYTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH7PR11MB7596.namprd11.prod.outlook.com (2603:10b6:510:27e::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Tue, 5 Nov
- 2024 06:12:23 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091%5]) with mapi id 15.20.8114.028; Tue, 5 Nov 2024
- 06:12:22 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "Liu, Yi L" <yi.l.liu@intel.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "clement.mathieu--drif@eviden.com"
- <clement.mathieu--drif@eviden.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: RE: [PATCH 2/3] intel_iommu: Add missed sanity check for 256-bit
- invalidation queue
-Thread-Topic: [PATCH 2/3] intel_iommu: Add missed sanity check for 256-bit
- invalidation queue
-Thread-Index: AQHbLrllsz/Poj6ktkWylIhCzxfopbKoIyaAgAAQvkA=
-Date: Tue, 5 Nov 2024 06:12:22 +0000
-Message-ID: <SJ0PR11MB6744D1EA9FCE89F58E83F7B692522@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20241104125536.1236118-1-zhenzhong.duan@intel.com>
- <20241104125536.1236118-3-zhenzhong.duan@intel.com>
- <0e8716db-9a3a-4007-823b-6b0ef5ad455b@intel.com>
-In-Reply-To: <0e8716db-9a3a-4007-823b-6b0ef5ad455b@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH7PR11MB7596:EE_
-x-ms-office365-filtering-correlation-id: f532cac9-ca73-42b7-db60-08dcfd60d00e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?UzFIMXdjbDVaNTZVbk1zREhBMXVja0t1NGFMYVA0OU9qN2ZaZUlaRDZ5RXhz?=
- =?utf-8?B?Q0szYnI4dytxSmV0dmhod2lhRVlGQmxySmgzaDRzM3VPSitJc3ZlVGpWSHda?=
- =?utf-8?B?emJIaEltTUprRW5wWWZGS3YrSWxzMEI5OU03cURqUkRSSG0xaEF5bld1Uzlv?=
- =?utf-8?B?bWh2MVpnSkVOUFhmZDA5NVJwZ2JHZ1VHS2hiOVlRR3E5R2pkV1hBRU1haUxm?=
- =?utf-8?B?YkFsbUdjZDF5R0NXaTk5YXJ3eUxSUEk1Z3c2Nk9pQUZNckNrNmFBOWN1L0dp?=
- =?utf-8?B?VldmOWFLY1ZRdFc4c0ErejBYWmxxbytzSFpCVGFKbnBsWUc1amFuTmlhNHJI?=
- =?utf-8?B?bUVyWWdmR21SWmJpL1VtRHZrVHAzVzdyclk5eGdLVnlYN1hHQUFWdkgxMUli?=
- =?utf-8?B?ZzdhcldzSU15YjZSSWdYSjVudUY5RXVrUlZzN200OGRFVHpZaHdjWmN2bTZ2?=
- =?utf-8?B?MmhVL1YvZmRmRWYrT3ZWRkVWMlRRaHZGS0xXSStuMldEclhTYlRwcEM2RExR?=
- =?utf-8?B?U3NIRjhzcFhnb0hKS0pQWnlncnBnTmRueEtDTFNFYnZBS3FqTGNseXd4WGN0?=
- =?utf-8?B?UzJsa0pxM3BLTUVoQ2lFNTN5Nkl2TTlJeHRpZWp3Y293VmpjZlJMb2JDaVBN?=
- =?utf-8?B?eDRwVHNBUysxdVYrY25YaUQyN3R1ZW5FRS96ZlRWSVdNczVQbENVeEJjdWUz?=
- =?utf-8?B?d3dka254N253aFVHZ1Z3V2E0U2lSMW9CbUsvWExtUkU1VmJ3My9XRzE1dDRx?=
- =?utf-8?B?VXh4TngrRjhRMnEwMFBGQVU2RWNobWVzeHlMV2kxeXZyS0tRMEJxeUVGTUwx?=
- =?utf-8?B?S1dCdkJYVlozb0M5QWgreHZVNEpMLzZMd09PRVVpRWZ4aDRFQm9vZUdtMC9j?=
- =?utf-8?B?ZTgvVzVvckxTTU1hcFk0cEMva0dyWGg3R3lWNWZHNXVHcTJUcEZOUllmM0h6?=
- =?utf-8?B?U0J0R0JjYjYzRDE0MmNXeXg3WURXTXZLcG9hQldZbDFRNU95czVvMzV0dUtx?=
- =?utf-8?B?VjhDaW1zQ2NvTjNXNzZYV0FvSmNveXJoQVNFN0pCMVhmcHhVNFluK3Bpb00v?=
- =?utf-8?B?SHZNUUpEeGtCK0J0U0ordENETDFValFBMDNQUWxpYlpLY01FZG84SHUzc0pS?=
- =?utf-8?B?QVJWMnRpTXBaamxUQVZnUW9maVFVcVNETWVpZkdwOXIzRnJZMDVGK0JKcUZU?=
- =?utf-8?B?emRneTRJYWhuMnNvMU5Gem1HSXg1ZG9zNWxhL2RteGR3Tm05YkR0RTFuUXdk?=
- =?utf-8?B?YWZUVk00VEVMSUgyODNMSW9JemZwYmdUcmlkVWtEL2Y2NWVUNzJvTkJpVzBa?=
- =?utf-8?B?a0pJVU9RcXBNMVlmc1lUaUxnMGc4anBFbFg1ZmM2aEIxUUhRVk1QczNheU9C?=
- =?utf-8?B?djlNQlIxZjUwQXRvS0R4WStQelh2YmYxV0E2V0lQeDZIWGd3VW0rQUZITEtP?=
- =?utf-8?B?KzdqOFB0LzhCTnJKank0RkJkUXgvdElHVWpzNmx0R0lOK09aT3hydTFYcWZD?=
- =?utf-8?B?ZWlXbjdleGJIWUY1eUJmVXJLSStaN2VOaEhnMzJwa3JySS9zZEMxTWNxK294?=
- =?utf-8?B?Q3ZpVFdxWjI4NXVaRGFCOVI2VEx0ZnFqL3B0M1czZnFYOXpqejVCdGNsNGJ6?=
- =?utf-8?B?R3VwNkkwM0x0WW1xRzVpOTIvN1JrcENsZ2FaQTA1RkM0Qkhnenc5QzlRek9t?=
- =?utf-8?B?Qlg1VTYxRnNtdExoNXNOY1hGVEtIa2dNRW00MEhCaTAyaEJIL0M4NVFnRURW?=
- =?utf-8?B?REU3cEhTN3lkYlJCQi9jTWV6U3o2VDMraWkxTVZocFh5OTVVdk1ucGFra2F2?=
- =?utf-8?Q?P2lIQ9qGNuTwD7e3aw0nR2Dmm25oXVNoX7EhI=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aGtOV0dkbHZiZWx5RlB5YUl6a1ZNd3UyL2ZRY0JPdVRGRDhiR0ZRcDlhbHBB?=
- =?utf-8?B?QytYL1dzeEd4aFY1NWdMQi8rajlKNGk4K1U5WlJGZnpxS0lPRlZacGxBRm5v?=
- =?utf-8?B?NklBZHl4Wlg2S0JFWVBlUDBpaDVtck1VNUl4clgrM1NoZWJONkhwR3Uwc0VB?=
- =?utf-8?B?SVlRcWRFZlBkODdhMjVKY2s3OWg5QlN3VnF4TnJHQzFRVFBLZ3ZtYTJuVEdk?=
- =?utf-8?B?U3ZWdVZqdzBHWCtibDFUTWRqcGhzOVhWbDF5YlY3NG80YW9hM2ExMlJyYjhm?=
- =?utf-8?B?dlNyOG4wU1J6Z25HYWZEOFp5NTg3amdWOFZRT0huYjJiMlN4Z25KYjhHMldR?=
- =?utf-8?B?eExlOHI5Z290dWxtVHd0TDcvL3NNWnhFSWtYS3ZGbUplWDEzRTNLc2txV3Ix?=
- =?utf-8?B?bDE5ZFNKRWxSYytvYzFHUTM4WjBjYjVvQzlsYThQRTVGMnN3NEw0ZFVjSG1P?=
- =?utf-8?B?bFFUR2M5TUhITlBXRENzUEJqT09WNHV3clVJMDlaU2p4Yk5aQyt1dmFQZkRq?=
- =?utf-8?B?Mkt6aWZ6M3V1MWRJWC9YSS80ZWNid0N2MWxad0ZyN3pRZkhqak93N3BGU3d4?=
- =?utf-8?B?aENVMGNJYmZQMHBKVXg2Z2pMZ2h5NEpiZUtiemRTV1dwT3lCcXgvVDJmWXhK?=
- =?utf-8?B?TXdqMUFXbGwxWDdhQXZjV1FQMmd4VzA1VnJGbGZxQjF5bmVySzhhV3NPZith?=
- =?utf-8?B?SUk4L3ZCRTFoemRObnF6Nk1uUXRJQWZ0ZHVFMGN5dU52QWhYb3EvVGlhRkJ5?=
- =?utf-8?B?RG96cEM4a0tydU1WajZvN1ljVDhqSktvL0thV0RUa0pPeC9WRFJZd3l6M2ds?=
- =?utf-8?B?V2dtVDdhMzVxVjRJazJ3d2l3SU50RkNRVE5pQWFDM0oyK3phbno1bXdHbnMy?=
- =?utf-8?B?aDZ2SWNzVTM0MFRXSkJCSHlocFM0ejJSZzY4RVdLS1U2ZkxzRG5MQVljVXNw?=
- =?utf-8?B?YjgzV1Q4OExoUUZoNDlrazZNdnVXS1RSUFdPYVBHVGNmZ2gzYWYrRWxTZ0JJ?=
- =?utf-8?B?SndWTU1ySlBNY0p5QVNKZUpWcVBmMlFLTE5peUxGY2hReGFIZG4rU3VyeCti?=
- =?utf-8?B?enN5QXlmUUxpMkFLREhrS0Yyd3NNY00ydHpUdnRlMHA4cVR0V1V2ekpLYlRL?=
- =?utf-8?B?T1E2VGluc0pNd2JMZUI2Z0ozeXFVdG9UWkNnakt2UzZXZjI5QzlwakRRU0l3?=
- =?utf-8?B?SXR6M05sc2c2SEs2NUZqR3JCRVpkNGF5WmFHZEZRYk9iZnBVVGFQamtIZFpY?=
- =?utf-8?B?aFZiMVlFMjlSTnAweFRrVUtjY3FuMlpXVEl6ZzBCQU1ERkhqV3ovRXpndWsw?=
- =?utf-8?B?enNteG9BWTgvNzJKWFpQNlUvZWNEbFRxSkJvM1pKcHo4SldXNlMzNEdOSmFn?=
- =?utf-8?B?S3Q0NGhjcytNVnY5Wk0vRU11TmRsN0pySDVuQVFXWDF1MG4yMC9SNnp1Z2tK?=
- =?utf-8?B?TmkrSjNrZ0E5UXdTZkltNXZSczlIWGMremNkdG05WU1Pdit0eDloUlZXMFpz?=
- =?utf-8?B?cE1Sc1IxVS9xNFlIRFVVZHlyQ0MvM3ViZURGdE5PR1hSSEE0OTdBTXhFaEVR?=
- =?utf-8?B?NDk5L0tuejdoUXFyZ01FS3U3cHZLSXZjWTRZS2lSaDR5RkdQbWpyd256bjRh?=
- =?utf-8?B?Q29aVzJLQ0RybEJ2b3pPNC9Hd1BkeERCSFB2VEVzbWdsSUNNZzYxNC9WOTZa?=
- =?utf-8?B?ZTYrb0dEVlQ0OXE3MzRyRERUMFgreXN3WUJvQ29TZGQrTzE3QmlWUExpd3dT?=
- =?utf-8?B?T3ZCOEV1T2haTmlwWTdET2N6aDU4NDNCaCtKQTdwVWp3N3dHekN3TStNL1cv?=
- =?utf-8?B?dnNraUVhU0dNSGZPTitnNERvMzZhUW5lY2JpZGdZbGlwUXVuRktjYnJ4bDgz?=
- =?utf-8?B?ZU5hOFI1N09McUs1dVRYdUpzY1JIK3ZGbldyZU9qd1NUSXFwN2VxenFEMklw?=
- =?utf-8?B?K3F3ZWdJb21PUTNRbGVDZHZEWHZSVHV3dE1WUWlKQjVOMWRxWTg2Y2dFaG56?=
- =?utf-8?B?WG1NbnVGVEhUQ0xiVWk4SDVnQmFVTllVKzhFU3NpOFZ1am1hb3k1Y2RYa2Q1?=
- =?utf-8?B?Q2pIUTh1L3h0Q3l2dk52MFlESXpYZloxTnZCdGw3WEthSW1vUHpNc1h4T1Np?=
- =?utf-8?Q?ss+oGQt4SnchEQdFIm12DOwCm?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988532"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:36:17 -0800
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
+ kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
+Subject: [PATCH v6 00/60] QEMU TDX support
+Date: Tue,  5 Nov 2024 01:23:08 -0500
+Message-Id: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f532cac9-ca73-42b7-db60-08dcfd60d00e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2024 06:12:22.8995 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Hy6lKR4tdMiCuB6s3r+YnN408Ea+6YROfGkrtWlHvTLRtY5TZ5TnPgJ17zTnD2fbDR/TDRTwXwFjcGOlwKy+zkydzfySObOsjAwMgRYZfsk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7596
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.10;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.781, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -216,84 +86,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IExpdSwgWWkgTCA8eWkubC5s
-aXVAaW50ZWwuY29tPg0KPlNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDUsIDIwMjQgMTowNSBQTQ0K
-PlN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8zXSBpbnRlbF9pb21tdTogQWRkIG1pc3NlZCBzYW5pdHkg
-Y2hlY2sgZm9yIDI1Ni1iaXQNCj5pbnZhbGlkYXRpb24gcXVldWUNCj4NCj5PbiAyMDI0LzExLzQg
-MjA6NTUsIFpoZW56aG9uZyBEdWFuIHdyb3RlOg0KPj4gQWNjb3JkaW5nIHRvIFZURCBzcGVjLCBh
-IDI1Ni1iaXQgZGVzY3JpcHRvciB3aWxsIHJlc3VsdCBpbiBhbiBpbnZhbGlkDQo+PiBkZXNjcmlw
-dG9yIGVycm9yIGlmIHN1Ym1pdHRlZCBpbiBhbiBJUSB0aGF0IGlzIHNldHVwIHRvIHByb3ZpZGUg
-aGFyZHdhcmUNCj4+IHdpdGggMTI4LWJpdCBkZXNjcmlwdG9ycyAoSVFBX1JFRy5EVz0wKS4gTWVh
-bndoaWxlLCB0aGVyZSBhcmUgb2xkIGludiBkZXNjDQo+PiB0eXBlcyAoZS5nLiBpb3RsYl9pbnZf
-ZGVzYykgdGhhdCBjYW4gYmUgZWl0aGVyIDEyOGJpdHMgb3IgMjU2Yml0cy4gSWYgYQ0KPj4gMTI4
-LWJpdCB2ZXJzaW9uIG9mIHRoaXMgZGVzY3JpcHRvciBpcyBzdWJtaXR0ZWQgaW50byBhbiBJUSB0
-aGF0IGlzIHNldHVwDQo+PiB0byBwcm92aWRlIGhhcmR3YXJlIHdpdGggMjU2LWJpdCBkZXNjcmlw
-dG9ycyB3aWxsIGFsc28gcmVzdWx0IGluIGFuIGludmFsaWQNCj4+IGRlc2NyaXB0b3IgZXJyb3Iu
-DQo+Pg0KPj4gVGhlIDJuZCB3aWxsIGJlIGNhcHR1cmVkIGJ5IHRoZSB0YWlsIHJlZ2lzdGVyIHVw
-ZGF0ZS4gU28gd2Ugb25seSBuZWVkIHRvDQo+PiBmb2N1cyBvbiB0aGUgMXN0Lg0KPj4NCj4+IEJl
-Y2F1c2UgdGhlIHJlc2VydmVkIGJpdCBjaGVjayBiZXR3ZWVuIGRpZmZlcmVudCB0eXBlcyBvZiBp
-bnZhbGlkYXRpb24gZGVzYw0KPj4gYXJlIGNvbW1vbiwgc28gaW50cm9kdWNlIGEgY29tbW9uIGZ1
-bmN0aW9uIHZ0ZF9pbnZfZGVzY19yZXNlcnZlZF9jaGVjaygpDQo+PiB0byBkbyBhbGwgdGhlIGNo
-ZWNrcyBhbmQgcGFzcyB0aGUgZGlmZmVyZW5jZXMgYXMgcGFyYW1ldGVycy4NCj4+DQo+PiBXaXRo
-IHRoaXMgY2hhbmdlLCBuZWVkIHRvIHJlcGxhY2UgZXJyb3JfcmVwb3J0X29uY2UoKSBjYWxsIHdp
-dGggZXJyb3JfcmVwb3J0KCkNCj4+IHRvIGNhdGNoIGRpZmZlcmVudCBjYWxsIHNpdGVzLiBUaGlz
-IGlzbid0IGFuIGlzc3VlIGFzIGVycm9yX3JlcG9ydF9vbmNlKCkNCj4+IGhlcmUgaXMgbWFpbmx5
-IHVzZWQgdG8gaGVscCBkZWJ1ZyBndWVzdCBlcnJvciwgYnV0IGl0IG9ubHkgZHVtcHMgb25jZSBp
-bg0KPj4gcWVtdSBsaWZlIGN5Y2xlIGFuZCBkb2Vzbid0IGhlbHAgbXVjaCwgd2UgbmVlZCBlcnJv
-cl9yZXBvcnQoKSBpbnN0ZWFkLg0KPj4NCj4+IEZpeGVzOiBjMGMxZDM1MTg0OWIgKCJpbnRlbF9p
-b21tdTogYWRkIDI1NiBiaXRzIHFpX2Rlc2Mgc3VwcG9ydCIpDQo+PiBTdWdnZXN0ZWQtYnk6IFlp
-IExpdSA8eWkubC5saXVAaW50ZWwuY29tPg0KPj4gU2lnbmVkLW9mZi1ieTogWmhlbnpob25nIER1
-YW4gPHpoZW56aG9uZy5kdWFuQGludGVsLmNvbT4NCj4+IC0tLQ0KPj4gICBody9pMzg2L2ludGVs
-X2lvbW11X2ludGVybmFsLmggfCAgMSArDQo+PiAgIGh3L2kzODYvaW50ZWxfaW9tbXUuYyAgICAg
-ICAgICB8IDgwICsrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4+ICAgMiBmaWxl
-cyBjaGFuZ2VkLCA1OSBpbnNlcnRpb25zKCspLCAyMiBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZm
-IC0tZ2l0IGEvaHcvaTM4Ni9pbnRlbF9pb21tdV9pbnRlcm5hbC5oIGIvaHcvaTM4Ni9pbnRlbF9p
-b21tdV9pbnRlcm5hbC5oDQo+PiBpbmRleCAyZjliYzAxNDdkLi43NWNjZDUwMWIwIDEwMDY0NA0K
-Pj4gLS0tIGEvaHcvaTM4Ni9pbnRlbF9pb21tdV9pbnRlcm5hbC5oDQo+PiArKysgYi9ody9pMzg2
-L2ludGVsX2lvbW11X2ludGVybmFsLmgNCj4+IEBAIC0zNTYsNiArMzU2LDcgQEAgdW5pb24gVlRE
-SW52RGVzYyB7DQo+PiAgIHR5cGVkZWYgdW5pb24gVlRESW52RGVzYyBWVERJbnZEZXNjOw0KPj4N
-Cj4+ICAgLyogTWFza3MgZm9yIHN0cnVjdCBWVERJbnZEZXNjICovDQo+PiArI2RlZmluZSBWVERf
-SU5WX0RFU0NfQUxMX09ORSAgICAgICAgICAgIC0xVUxMDQo+PiAgICNkZWZpbmUgVlREX0lOVl9E
-RVNDX1RZUEUodmFsKSAgICAgICAgICAoKCgodmFsKSA+PiA1KSAmIDB4NzBVTEwpIHwgXA0KPj4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgodmFsKSAmIDB4ZlVM
-TCkpDQo+PiAgICNkZWZpbmUgVlREX0lOVl9ERVNDX0NDICAgICAgICAgICAgICAgICAweDEgLyog
-Q29udGV4dC1jYWNoZSBJbnZhbGlkYXRlIERlc2MgKi8NCj4+IGRpZmYgLS1naXQgYS9ody9pMzg2
-L2ludGVsX2lvbW11LmMgYi9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+IGluZGV4IDFlY2ZlNDc5
-NjMuLjJmYzM4NjY0MzMgMTAwNjQ0DQo+PiAtLS0gYS9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+
-ICsrKyBiL2h3L2kzODYvaW50ZWxfaW9tbXUuYw0KPj4gQEAgLTI1MzIsMTUgKzI1MzIsNTEgQEAg
-c3RhdGljIGJvb2wgdnRkX2dldF9pbnZfZGVzYyhJbnRlbElPTU1VU3RhdGUgKnMsDQo+PiAgICAg
-ICByZXR1cm4gdHJ1ZTsNCj4+ICAgfQ0KPj4NCj4+ICtzdGF0aWMgYm9vbCB2dGRfaW52X2Rlc2Nf
-cmVzZXJ2ZWRfY2hlY2soSW50ZWxJT01NVVN0YXRlICpzLA0KPj4gKyAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBWVERJbnZEZXNjICppbnZfZGVzYywNCj4+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdWludDY0X3QgbWFza1s0XSwgYm9vbCBk
-dywNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hh
-ciAqZnVuY19uYW1lLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBjb25zdCBjaGFyICpkZXNjX3R5cGUpDQo+PiArew0KPj4gKyAgICBpZiAocy0+aXFfZHcpIHsN
-Cj4+ICsgICAgICAgIGlmIChpbnZfZGVzYy0+dmFsWzBdICYgbWFza1swXSB8fCBpbnZfZGVzYy0+
-dmFsWzFdICYgbWFza1sxXSB8fA0KPj4gKyAgICAgICAgICAgIGludl9kZXNjLT52YWxbMl0gJiBt
-YXNrWzJdIHx8IGludl9kZXNjLT52YWxbM10gJiBtYXNrWzNdKSB7DQo+PiArICAgICAgICAgICAg
-ZXJyb3JfcmVwb3J0KCIlczogaW52YWxpZCAlcyBkZXNjIHZhbFszXTogMHglIlBSSXg2NA0KPj4g
-KyAgICAgICAgICAgICAgICAgICAgICAgICAiIHZhbFsyXTogMHglIlBSSXg2NCIgdmFsWzFdPTB4
-JSJQUkl4NjQNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgIiB2YWxbMF09MHglIlBSSXg2
-NCIgKHJlc2VydmVkIG5vbnplcm8pIiwNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgZnVu
-Y19uYW1lLCBkZXNjX3R5cGUsIGludl9kZXNjLT52YWxbM10sDQo+PiArICAgICAgICAgICAgICAg
-ICAgICAgICAgIGludl9kZXNjLT52YWxbMl0sIGludl9kZXNjLT52YWxbMV0sDQo+PiArICAgICAg
-ICAgICAgICAgICAgICAgICAgIGludl9kZXNjLT52YWxbMF0pOw0KPj4gKyAgICAgICAgICAgIHJl
-dHVybiBmYWxzZTsNCj4+ICsgICAgICAgIH0NCj4+ICsgICAgfSBlbHNlIHsNCj4+ICsgICAgICAg
-IGlmIChkdykgew0KPj4gKyAgICAgICAgICAgIGVycm9yX3JlcG9ydCgiJXM6IDI1Ni1iaXQgJXMg
-ZGVzYyBpbiAxMjgtYml0IGludmFsaWRhdGlvbiBxdWV1ZSIsDQo+PiArICAgICAgICAgICAgICAg
-ICAgICAgICAgIGZ1bmNfbmFtZSwgZGVzY190eXBlKTsNCj4+ICsgICAgICAgICAgICByZXR1cm4g
-ZmFsc2U7DQo+PiArICAgICAgICB9DQo+PiArDQo+DQo+SWYgYSByZXNwaW4gaXMgbWFkZSwgSSdk
-IHByZWZlciB0byBtb3ZlIHRoaXMgY2hlY2sgb3V0IG9mIHRoaXMgaGVscGVyIHNpbmNlDQo+aXQn
-cyBub3QgYWJvdXQgcmVzZXJ2ZWQgYml0IGNoZWNrLiBBbm90aGVyIHJlYXNvbiBpcyB5b3UgY2Fu
-bm90IGZpbmQgYSBnb29kDQo+bmFtaW5nIGZvciB0aGUgQGR3IHBhcmFtZXRlci4gSXQncyBjb25m
-dXNpbmcgYXMgcy0+aXFfZHcgaXMgY2hlY2tlZCBhcw0KPndlbGwuIFNvIHB1dCB0aGlzIGNoZWNr
-IG91dCBvZiB0aGlzIGhlbHBlciBtYXkgYmUgYmV0dGVyLg0KDQpJIHNlZSwgQGR3IGhpbnRzIGlu
-diBkZXNjIHNpemUsIHMtPmlxX2R3IGhpbnRzIHRoZSBpbnYgcXVldWUgZWxlbWVudCBzaXplLg0K
-TW92aW5nIHRoYXQgY2hlY2sgb3V0IHdpbGwgcHJvZHVjZSBkdXBsaWNhdGUgY29kZSBmb3IgVlRE
-X0lOVl9ERVNDX1BDLA0KVlREX0lOVl9ERVNDX1BJT1RMQiBhbmQgVlREX0lOVl9ERVNDX0RFVl9Q
-SU9UTEIgaGFuZGxlcnMuDQpNYXliZSBzLyB2dGRfaW52X2Rlc2NfcmVzZXJ2ZWRfY2hlY2svIHZ0
-ZF9pbnZfZGVzY19zYW5pdHlfY2hlY2s/DQoNCk1pY2hhZWwsIGxldCBtZSBrbm93IGlmIGl0J3Mg
-dmlhYmxlIHRvIHNlbmQgYSB2MiBhZnRlciBwdWxsIHJlcXVlc3QuDQoNClRoYW5rcw0KWmhlbnpo
-b25nDQo=
+This is the v6 series of TDX QEMU enabling. The matching KVM is
+https://github.com/intel/tdx/tree/tdx_kvm_dev-2024-10-30
+
+This series is also available in github:
+https://github.com/intel-staging/qemu-tdx/tree/tdx-qemu-upstream-v6.1
+
+Note, to boot a TD, it requires 1)TDX module 1.5.06.00.0744[0], or later.
+This is due to removal of the workarounds for the lack of NO_RBP_MOD in
+KVM. 2) OVMF with commit 3a3b12cbdae2 "UefiCpuPkg/MtrrLib:
+MtrrLibIsMtrrSupported always return FALSE in TD-Guest" because KVM
+drops the MTRR related MSR emulation.
+
+Patches 52 to 59 are new added in this version. They are aimed to check
+and guarantee the CPU model determined by user input can be satisfied.
+
+=== future work ===
+- CPU model
+
+  It now only supports booting TD VM with "-cpu host". It is the only
+  case that not supposed to hit any warning/error.
+
+  When using named CPU model, even the same model as host, it likely
+  hits warning like some feature not supported or some feature enforced
+  on. It's a future work to decide if needs to introduce TDX specific
+  named CPU models.
+
+- Attestation support
+
+  Attestation support is dropped in this version becuase KVM side remove
+  the support of the related user exit. Atttestation support will be
+  submitted separately when KVM regain the support.
+
+- gdb support
+
+  gdb support to debug a TD in off-debug mode is left as future work.
+
+[0] https://github.com/intel/tdx-module/releases/tag/TDX_1.5.06
+
+===
+Changes in v6:
+ - Remove the guest memfd patches and some i386 patches because they are
+   already merged;
+ - Drop the attestation support since current KVM doesn't support it;
+ - Update to use the latest TDX API of KVM;
+ - Change to use adjust_cpuid_features() to adjust the supported CPUID
+   features for TDX;
+ - Introduce x86_confidential_guest_check_features() to do additinoal
+   feature check;
+
+v5:
+https://lore.kernel.org/qemu-devel/20240229063726.610065-1-xiaoyao.li@intel.com/
+
+Chao Peng (1):
+  i386/tdx: load TDVF for TD guest
+
+Isaku Yamahata (6):
+  i386/tdx: Make sept_ve_disable set by default
+  i386/tdx: Support user configurable mrconfigid/mrowner/mrownerconfig
+  i386/tdvf: Introduce function to parse TDVF metadata
+  i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
+  hw/i386: add option to forcibly report edge trigger in acpi tables
+  i386/tdx: Don't synchronize guest tsc for TDs
+
+Sean Christopherson (1):
+  i386/tdx: Don't get/put guest state for TDX VMs
+
+Xiaoyao Li (52):
+  *** HACK *** linux-headers: Update headers to pull in TDX API changes
+  i386: Introduce tdx-guest object
+  i386/tdx: Implement tdx_kvm_type() for TDX
+  i386/tdx: Implement tdx_kvm_init() to initialize TDX VM context
+  i386/tdx: Get tdx_capabilities via KVM_TDX_CAPABILITIES
+  i386/tdx: Introduce is_tdx_vm() helper and cache tdx_guest object
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+  i386/kvm: Export cpuid_entry_get_reg() and cpuid_find_entry()
+  i386/tdx: Initialize TDX before creating TD vcpus
+  i386/tdx: Add property sept-ve-disable for tdx-guest object
+  i386/tdx: Wire CPU features up with attributes of TD guest
+  i386/tdx: Validate TD attributes
+  i386/tdx: Set APIC bus rate to match with what TDX module enforces
+  i386/tdx: Implement user specified tsc frequency
+  i386/tdx: Parse TDVF metadata for TDX VM
+  i386/tdx: Don't initialize pc.rom for TDX VMs
+  i386/tdx: Track mem_ptr for each firmware entry of TDVF
+  i386/tdx: Track RAM entries for TDX VM
+  headers: Add definitions from UEFI spec for volumes, resources, etc...
+  i386/tdx: Setup the TD HOB list
+  i386/tdx: Call KVM_TDX_INIT_VCPU to initialize TDX vcpu
+  i386/tdx: Finalize TDX VM
+  i386/tdx: Enable user exit on KVM_HC_MAP_GPA_RANGE
+  i386/tdx: Handle KVM_SYSTEM_EVENT_TDX_FATAL
+  i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility
+  i386/cpu: introduce x86_confidential_guest_cpu_instance_init()
+  i386/tdx: implement tdx_cpu_instance_init()
+  i386/cpu: introduce x86_confidenetial_guest_cpu_realizefn()
+  i386/tdx: implement tdx_cpu_realizefn()
+  i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID 0x1f
+  i386/tdx: Force exposing CPUID 0x1f
+  i386/tdx: Set kvm_readonly_mem_enabled to false for TDX VM
+  i386/tdx: Disable SMM for TDX VMs
+  i386/tdx: Disable PIC for TDX VMs
+  hw/i386: add eoi_intercept_unsupported member to X86MachineState
+  i386/tdx: Only configure MSR_IA32_UCODE_REV in kvm_init_msrs() for TDs
+  i386/tdx: Skip kvm_put_apicbase() for TDs
+  i386/cgs: Rename *mask_cpuid_features() to *adjust_cpuid_features()
+  i386/tdx: Implement adjust_cpuid_features() for TDX
+  i386/tdx: Apply TDX fixed0 and fixed1 information to supported CPUIDs
+  i386/tdx: Mask off CPUID bits by unsupported TD Attributes
+  i386/cpu: Move CPUID_XSTATE_XSS_MASK to header file and introduce
+    CPUID_XSTATE_MASK
+  i386/tdx: Mask off CPUID bits by unsupported XFAM
+  i386/cpu: Expose mark_unavailable_features() for TDX
+  i386/cpu: introduce mark_forced_on_features()
+  i386/cgs: Introduce x86_confidential_guest_check_features()
+  i386/tdx: Fetch and validate CPUID of TD guest
+  i386/tdx: Don't treat SYSCALL as unavailable
+  i386/tdx: Make invtsc default on
+  cpu: Introduce qemu_early_init_vcpu()
+  i386/cpu: Set up CPUID_HT in x86_cpu_realizefn() instead of
+    cpu_x86_cpuid()
+  docs: Add TDX documentation
+
+ accel/kvm/kvm-all.c                        |   18 +
+ accel/tcg/user-exec-stub.c                 |    4 +
+ configs/devices/i386-softmmu/default.mak   |    1 +
+ docs/system/confidential-guest-support.rst |    1 +
+ docs/system/i386/tdx.rst                   |  155 +++
+ docs/system/target-i386.rst                |    1 +
+ hw/i386/Kconfig                            |    6 +
+ hw/i386/acpi-build.c                       |   99 +-
+ hw/i386/acpi-common.c                      |   45 +-
+ hw/i386/meson.build                        |    1 +
+ hw/i386/pc.c                               |   29 +-
+ hw/i386/pc_sysfw.c                         |    7 +
+ hw/i386/tdvf-hob.c                         |  147 +++
+ hw/i386/tdvf-hob.h                         |   24 +
+ hw/i386/tdvf.c                             |  201 ++++
+ hw/i386/x86-common.c                       |    6 +-
+ hw/i386/x86.c                              |    1 +
+ include/hw/core/cpu.h                      |    8 +
+ include/hw/i386/tdvf.h                     |   58 +
+ include/hw/i386/x86.h                      |    1 +
+ include/standard-headers/uefi/uefi.h       |  198 ++++
+ include/sysemu/kvm.h                       |    1 +
+ linux-headers/asm-x86/kvm.h                |   70 ++
+ linux-headers/linux/kvm.h                  |    1 +
+ qapi/qom.json                              |   35 +
+ qapi/run-state.json                        |   31 +-
+ system/cpus.c                              |    8 +
+ system/runstate.c                          |   58 +
+ target/i386/confidential-guest.h           |   56 +-
+ target/i386/cpu.c                          |   74 +-
+ target/i386/cpu.h                          |   27 +
+ target/i386/host-cpu.c                     |    2 +-
+ target/i386/host-cpu.h                     |    1 +
+ target/i386/kvm/kvm.c                      |  130 ++-
+ target/i386/kvm/kvm_i386.h                 |   15 +
+ target/i386/kvm/meson.build                |    2 +
+ target/i386/kvm/tdx-stub.c                 |   18 +
+ target/i386/kvm/tdx.c                      | 1113 ++++++++++++++++++++
+ target/i386/kvm/tdx.h                      |   63 ++
+ target/i386/sev.c                          |    9 +-
+ 40 files changed, 2596 insertions(+), 129 deletions(-)
+ create mode 100644 docs/system/i386/tdx.rst
+ create mode 100644 hw/i386/tdvf-hob.c
+ create mode 100644 hw/i386/tdvf-hob.h
+ create mode 100644 hw/i386/tdvf.c
+ create mode 100644 include/hw/i386/tdvf.h
+ create mode 100644 include/standard-headers/uefi/uefi.h
+ create mode 100644 target/i386/kvm/tdx-stub.c
+ create mode 100644 target/i386/kvm/tdx.c
+ create mode 100644 target/i386/kvm/tdx.h
+
+-- 
+2.34.1
+
 
