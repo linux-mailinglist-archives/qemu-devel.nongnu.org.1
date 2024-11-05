@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1472E9BC596
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A6A9BC59A
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 07:38:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8DCV-0006In-BL; Tue, 05 Nov 2024 01:38:03 -0500
+	id 1t8DCX-0006ZN-2A; Tue, 05 Nov 2024 01:38:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DCQ-00066H-VS
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:59 -0500
+ id 1t8DCT-0006IC-3A
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:01 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1t8DCO-0001vj-CP
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:37:58 -0500
+ id 1t8DCR-0001vd-F2
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 01:38:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730788676; x=1762324676;
+ t=1730788679; x=1762324679;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Uv4z8mL1bvbBNMAeIE2zAJ1MiSnqSKEkHnSLrWnImks=;
- b=bwOx2qc2iq7Xfw37v+gjCKnrEQKGMkf+fTIYYVb8eGW/7Py43z04rZTm
- 8Ra0YmQx12qEhHMlt3GFMhUh0RkHjolUkSyXaseHF0pvF6jY5QWNGjR+G
- DtpkB9tAyFVvoilPPPruJQiLVbvO1oJOH0Nt/sZvMPyrWl83GUTMfuZGb
- NF0ekyPqJXfUQ+3M8gA9Kz+8lfuM1AYjGhpCYtRjvwZlSjw13lWhrqkT0
- UZub8Dm8KCcvcKfy+EvZaNDrEDwNMPng5JktleXSts6SWNNjawEhzM7/P
- 9hScXbPelvEeNvOdrs80UTSaQNCHYW95Zm1UJfjNDn9RBgYGIU4qRv9sc w==;
-X-CSE-ConnectionGUID: u+vxIyeBTGyKMlO9dFyIww==
-X-CSE-MsgGUID: 5EVdNcIcS8S8PF35UaHLSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689497"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689497"
+ bh=UOhXpmceQkEx8s4Oa9vrgi40TyS418oe+WG7+rZTz0Q=;
+ b=NRha1ua7Ozst4Om2qAcCu/C0Oiys4vNhjx6jH79KedQCNosPPMxmxQX9
+ x+Llj7K04aietu0BRsdVOtUJ6j9LzQX4eGChzfauErEWC/aipXVr8mCDU
+ bWrGL0ql2mzKULs553UfGI5+IdGF0PW2Iia2mQvUOkw/3pev4pM+9DeEE
+ vTq8szha6zUlSPsLwTu3xnuAolSeFwZtTHbd9q/s3qy64ojUu57LlwwWL
+ Sq0LkOQJ2SCiTwi+9LzVdmJgszSSNpOGQt53T+c4pQ5IyBsNuOyHB/G2J
+ 0m8umwABdkuhf+F9Bd24A5plr6Xc6MNIOV2mZvFf8Du7FFSUVDN6g3x+1 g==;
+X-CSE-ConnectionGUID: 3frwkflJRCetIJE+3FsAiw==
+X-CSE-MsgGUID: Iim5R/PZShmVVbz1a37ZIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30689518"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30689518"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:37:44 -0800
-X-CSE-ConnectionGUID: uLi/5UJcRZuoX2fSx3LoXg==
-X-CSE-MsgGUID: uLUYXO3NRLOALI68fRxdFg==
+ 04 Nov 2024 22:37:49 -0800
+X-CSE-ConnectionGUID: EWYM0303ShenTTql/6GbMg==
+X-CSE-MsgGUID: Nr3+H8eZQYORr8CJ9auVUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988934"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83988959"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:37:40 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 04 Nov 2024 22:37:44 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -55,9 +55,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: [PATCH v6 19/60] i386/tdx: Parse TDVF metadata for TDX VM
-Date: Tue,  5 Nov 2024 01:23:27 -0500
-Message-Id: <20241105062408.3533704-20-xiaoyao.li@intel.com>
+Subject: [PATCH v6 20/60] i386/tdx: Don't initialize pc.rom for TDX VMs
+Date: Tue,  5 Nov 2024 01:23:28 -0500
+Message-Id: <20241105062408.3533704-21-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105062408.3533704-1-xiaoyao.li@intel.com>
 References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
@@ -88,97 +88,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After TDVF is loaded to bios MemoryRegion, it needs parse TDVF metadata.
+For TDX, the address below 1MB are entirely general RAM. No need to
+initialize pc.rom memory region for TDs.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/i386/pc_sysfw.c         | 7 +++++++
- target/i386/kvm/tdx-stub.c | 5 +++++
- target/i386/kvm/tdx.c      | 5 +++++
- target/i386/kvm/tdx.h      | 3 +++
- 4 files changed, 20 insertions(+)
+This is more as a workaround of the issue that for q35 machine type, the
+real memslot update (which requires memslot deletion )for pc.rom happens
+after tdx_init_memory_region. It leads to the private memory ADD'ed
+before get lost. I haven't work out a good solution to resolve the
+order issue. So just skip the pc.rom setup to avoid memslot deletion.
+---
+ hw/i386/pc.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index ef80281d28bb..5a373bf129a1 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -37,6 +37,7 @@
- #include "hw/block/flash.h"
- #include "sysemu/kvm.h"
- #include "sev.h"
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2047633e4cf7..4a23856aed47 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -43,6 +43,7 @@
+ #include "sysemu/xen.h"
+ #include "sysemu/reset.h"
+ #include "kvm/kvm_i386.h"
 +#include "kvm/tdx.h"
+ #include "hw/xen/xen.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/error-report.h"
+@@ -966,21 +967,23 @@ void pc_memory_init(PCMachineState *pcms,
+     /* Initialize PC system firmware */
+     pc_system_firmware_init(pcms, rom_memory);
  
- #define FLASH_SECTOR_SIZE 4096
- 
-@@ -280,5 +281,11 @@ void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
+-    option_rom_mr = g_malloc(sizeof(*option_rom_mr));
+-    if (machine_require_guest_memfd(machine)) {
+-        memory_region_init_ram_guest_memfd(option_rom_mr, NULL, "pc.rom",
+-                                           PC_ROM_SIZE, &error_fatal);
+-    } else {
+-        memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
+-                               &error_fatal);
+-        if (pcmc->pci_enabled) {
+-            memory_region_set_readonly(option_rom_mr, true);
++    if (!is_tdx_vm()) {
++        option_rom_mr = g_malloc(sizeof(*option_rom_mr));
++        if (machine_require_guest_memfd(machine)) {
++            memory_region_init_ram_guest_memfd(option_rom_mr, NULL, "pc.rom",
++                                            PC_ROM_SIZE, &error_fatal);
++        } else {
++            memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
++                                &error_fatal);
++            if (pcmc->pci_enabled) {
++                memory_region_set_readonly(option_rom_mr, true);
++            }
          }
- 
-         sev_encrypt_flash(gpa, ptr, size, &error_fatal);
-+    } else if (is_tdx_vm()) {
-+        ret = tdx_parse_tdvf(ptr, size);
-+        if (ret) {
-+            error_report("failed to parse TDVF for TDX VM");
-+            exit(1);
-+        }
++        memory_region_add_subregion_overlap(rom_memory,
++                                            PC_ROM_MIN_VGA,
++                                            option_rom_mr,
++                                            1);
      }
- }
-diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-index b614b46d3f4a..a064d583d393 100644
---- a/target/i386/kvm/tdx-stub.c
-+++ b/target/i386/kvm/tdx-stub.c
-@@ -6,3 +6,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
- {
-     return -EINVAL;
- }
-+
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return -EINVAL;
-+}
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index d5ebc2430fd1..334dbe95cc77 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -338,6 +338,11 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
+-    memory_region_add_subregion_overlap(rom_memory,
+-                                        PC_ROM_MIN_VGA,
+-                                        option_rom_mr,
+-                                        1);
  
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
-+}
-+
- static bool tdx_guest_get_sept_ve_disable(Object *obj, Error **errp)
- {
-     TdxGuest *tdx = TDX_GUEST(obj);
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index e5d836805385..6b7926be3efe 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -6,6 +6,7 @@
- #endif
- 
- #include "confidential-guest.h"
-+#include "hw/i386/tdvf.h"
- 
- #define TYPE_TDX_GUEST "tdx-guest"
- #define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
-@@ -30,6 +31,7 @@ typedef struct TdxGuest {
-     char *mrownerconfig;    /* base64 encoded sha348 digest */
- 
-     MemoryRegion *tdvf_mr;
-+    TdxFirmware tdvf;
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
-@@ -40,5 +42,6 @@ bool is_tdx_vm(void);
- 
- int tdx_pre_create_vcpu(CPUState *cpu, Error **errp);
- void tdx_set_tdvf_region(MemoryRegion *tdvf_mr);
-+int tdx_parse_tdvf(void *flash_ptr, int size);
- 
- #endif /* QEMU_I386_TDX_H */
+     fw_cfg = fw_cfg_arch_create(machine,
+                                 x86ms->boot_cpus, x86ms->apic_id_limit);
 -- 
 2.34.1
 
