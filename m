@@ -2,107 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D1D9BD405
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4DB9BD407
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 19:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8NsN-0004kF-HM; Tue, 05 Nov 2024 13:01:59 -0500
+	id 1t8Nsn-0005Fg-2F; Tue, 05 Nov 2024 13:02:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t8NsL-0004je-Gv; Tue, 05 Nov 2024 13:01:57 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1t8NsJ-00045e-JA; Tue, 05 Nov 2024 13:01:57 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5HecWw023083;
- Tue, 5 Nov 2024 18:01:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=dbUUh5
- TSso3Dypp1NC5ZlxBvs/EIdaIxIpQvfBU7Fws=; b=q3x5cSUbx6j3TTBExjpXc6
- +906JXob0rIS9Cg7o1kSygpjftZA5QGvK3XaP/sZlAeOG8FwrCHmx5B8YD00WqKx
- 1by3fqmzB5kRzZYJ/MYcLTuMO6ipp4nHxBLXgtezP1at9zriq/AkhWP0xluDx459
- Z6CtmYpI/317anq7rhxaXiUZjDzuizREogjvFo1dOlpJ9AAgcv2InSFs7BJ9B521
- en6xxL1M6pspcL9oGkTn7XG1I11Fv8c2zM/yehx9X8xRh1v6bxCU234UC3p3+kwH
- KpWxUp8P8I45waebl6U1L3sJ3fAMYMJ9xqFiTWZub0osgQUJzlIKRtCczSnLrOEA
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qqy5r2sm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 18:01:51 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A5I1oxZ000861;
- Tue, 5 Nov 2024 18:01:50 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qqy5r2sh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 18:01:50 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5CgF5O024314;
- Tue, 5 Nov 2024 18:01:49 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj4gw4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Nov 2024 18:01:49 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A5I1muR34800326
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2024 18:01:48 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 335FA2004B;
- Tue,  5 Nov 2024 18:01:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CD3F20040;
- Tue,  5 Nov 2024 18:01:47 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2024 18:01:47 +0000 (GMT)
-Message-ID: <9c8978b30e9b23c3eeee1a68dd4d61369bbbcc46.camel@linux.ibm.com>
-Subject: Re: [PULL 02/67] target/ppc: Make divd[u] handler method decodetree
- compatible
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-stable@nongnu.org, Richard Henderson
- <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>
-Date: Tue, 05 Nov 2024 19:01:47 +0100
-In-Reply-To: <1a73699a-dce6-4197-8132-0d5a16971ef3@tls.msk.ru>
-References: <20241104001900.682660-1-npiggin@gmail.com>
- <20241104001900.682660-3-npiggin@gmail.com>
- <1a73699a-dce6-4197-8132-0d5a16971ef3@tls.msk.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1t8Nsk-0005Dz-AM
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:02:22 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1t8Nsh-00047j-SN
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 13:02:22 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3e5ffbc6acbso3086026b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 10:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730829736; x=1731434536; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gtHAX6e1gVp4XzhgXtLPhaxyRzN6pXwJugKNF4diKms=;
+ b=T2cMojiIJARH27rLw/xwTIxKuU6NiRKkTtdBkM/pGsoLxOqBXyHr7VQvWVVVbZx55U
+ Gy1OtOV4AA5AH4LQdY3EmPfCoo5AV+loqE4qC7WTxZRdEGtIwOtN7NR9ZPZaIfT5LQo1
+ 3lHIEgdtHpkVcztNrTWGQE78H8B77IPPpLQDhewfJhA5/pc39E9B/2NUamOJcXrAfu1d
+ 2YP5Nxdcx63SI59UaA4epSy+QV0tQ+PNsoypsz3h63R2R9somg03WmDc7RpZ6pwgdV4O
+ fsKgpInDkslM/1QBTfqB5x56OlrW8ildugiVq/WPUh2SJOKwyZh7DT19jzg03gq+zl3R
+ CfHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730829736; x=1731434536;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gtHAX6e1gVp4XzhgXtLPhaxyRzN6pXwJugKNF4diKms=;
+ b=jiPZLt6Zmj0Qi9+ypcXzvOJvl6L/vSOO/xEmeW2H9PTCC3KI2uxBB8m2xLJzZGmWbI
+ OIWykX7R8C2sXyz5zzGtv0ayW8CJiexq6WpJG/mx+SjY7e7z7uP11ui3N5+E9wbtydUV
+ JHYOsbT4FePrvRKWmtLMdrdepmA72ts3R6onOOSDRzKOpQJfw6GY2I68V/3o2MyZuSIc
+ 1nrye4zsR1y0zTFfnelA3eYFnM5OH+aLRSSQrP69+mMXKIfzlbuN4qXQNfi4B9UjrdqT
+ AZKGYJRD9DlmqN/bX1v+otUOQgoUuylORNmjf45LvM1BGPKfunAm36CnEZ+Et7t3xaW7
+ IlWQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXbggfB4q/FTUP9icP4J8eCIj0PXvKokKe+7Hsv90Jq+gjv0aPvM4aTxGk01w56ej7UbHQCVHITXkZU@nongnu.org
+X-Gm-Message-State: AOJu0YzjNJwWnlnm0a2f/ZKOv+ucgVvgfIRDwBaO/guFhaJIL6KpByZF
+ 5RkyRmCVwIwqzBw61svsydWa+/OUHyLT+/MNpDahe4LqlEdUYNkQ
+X-Google-Smtp-Source: AGHT+IExTdeGw8aLpG72eeW9Aj6hyRgVSH5StOOqnMPdPcgbLC7hQF38iw0EtfAfIhxkTbAQk2Yokg==
+X-Received: by 2002:a05:6808:152c:b0:3e0:42ba:c59b with SMTP id
+ 5614622812f47-3e758cb6ec1mr15776664b6e.40.1730829735661; 
+ Tue, 05 Nov 2024 10:02:15 -0800 (PST)
+Received: from fan ([50.205.20.42]) by smtp.gmail.com with ESMTPSA id
+ 3f1490d57ef6-e30e8aa2076sm2663139276.39.2024.11.05.10.02.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Nov 2024 10:02:15 -0800 (PST)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Tue, 5 Nov 2024 10:01:53 -0800
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, mst@redhat.com, qemu-devel@nongnu.org,
+ Esifiel <esifiel@gmail.com>, linuxarm@huawei.com
+Subject: Re: [PATCH qemu 01/10] hw/cxl: Check size of input data to dynamic
+ capacity mailbox commands
+Message-ID: <ZypdkVE5uD-0nCb2@fan>
+References: <20241101133917.27634-1-Jonathan.Cameron@huawei.com>
+ <20241101133917.27634-2-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: H_JqoxemfdNx1dX6ylQajvvMIGsTC4sA
-X-Proofpoint-GUID: DfmuH5CEMFR_hTzCiLwTobqQToER1KRw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=618 mlxscore=0 phishscore=0 adultscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050135
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101133917.27634-2-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-oi1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,31 +95,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-11-05 at 18:33 +0300, Michael Tokarev wrote:
-> 04.11.2024 03:17, Nicholas Piggin wrote:
-> > From: Ilya Leoshkevich <iii@linux.ibm.com>
-> >=20
-> > This is like commit 86e6202a57b1 ("target/ppc: Make divw[u] handler
-> > method decodetree compatible."), but for gen_op_arith_divd().
->=20
-> 86e6202a57b1 is v9.0.0-880-g86e6202a57b1, ie, it is in 9.1 only.
-> So I wonder what should we do for older stable series (namely for
-> 8.2 lts and 9.0), -- should we pick this one together with the
-> mentioned 86e6202a57b1, or neither?
->=20
-> A separate question is whenever it makes sense to pick these for 7.2?
->=20
-> Thanks,
->=20
-> /mjt
+On Fri, Nov 01, 2024 at 01:39:08PM +0000, Jonathan Cameron wrote:
+> cxl_cmd_dcd_release_dyn_cap() and cmd_dcd_add_dyn_cap_rsp() are missing
+> input message size checks.  These must be done in the individual
+> commands when the command has a variable length input payload.
+> 
+> A buggy or malicious guest might send undersized messages via the mailbox.
+> As that size is used to take a copy of the mailbox content, each command
+> must check there is sufficient data. In this case the first check is that
+> there is enough data to read how many extents there are, and the second
+> that there is enough for those elements to be accessed.
+> 
+> Reported-by: Esifiel <esifiel@gmail.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Come to think of it, I would recommend only the previous commit
-("target/ppc: Set ctx->opcode for decode_insn32()") for stable. It
-solves the whole class of potential problems like this one, and it
-should apply to 7.2 as well.
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-The reason we also have this fix in the pull request is that long-term
-the ctx->opcode field will be removed.
+> ---
+>  hw/cxl/cxl-mailbox-utils.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 97cb8bbcec..17924410dd 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -2465,11 +2465,20 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+>      uint64_t dpa, len;
+>      CXLRetCode ret;
+>  
+> +    if (len_in < sizeof(*in)) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+> +
+>      if (in->num_entries_updated == 0) {
+>          cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
+>          return CXL_MBOX_SUCCESS;
+>      }
+>  
+> +    if (len_in <
+> +        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+> +
+>      /* Adding extents causes exceeding device's extent tracking ability. */
+>      if (in->num_entries_updated + ct3d->dc.total_extent_count >
+>          CXL_NUM_EXTENTS_SUPPORTED) {
+> @@ -2624,10 +2633,19 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+>      uint32_t updated_list_size;
+>      CXLRetCode ret;
+>  
+> +    if (len_in < sizeof(*in)) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+> +
+>      if (in->num_entries_updated == 0) {
+>          return CXL_MBOX_INVALID_INPUT;
+>      }
+>  
+> +    if (len_in <
+> +        sizeof(*in) + sizeof(*in->updated_entries) * in->num_entries_updated) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+> +
+>      ret = cxl_detect_malformed_extent_list(ct3d, in);
+>      if (ret != CXL_MBOX_SUCCESS) {
+>          return ret;
+> -- 
+> 2.43.0
+> 
 
-[...]
+-- 
+Fan Ni
 
