@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F1C9BCD5D
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 14:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8B69BCD5E
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 14:07:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8JHA-0006Om-S4; Tue, 05 Nov 2024 08:07:17 -0500
+	id 1t8JHG-0006t0-7D; Tue, 05 Nov 2024 08:07:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGk-00064L-LF
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:50 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGw-0006Ux-Hw
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:07:05 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGh-0002ec-Mw
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:06:50 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-37d4ac91d97so4578004f8f.2
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 05:06:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8JGs-0002fU-HX
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 08:07:02 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-37d70df0b1aso3496430f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 05:06:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730812006; x=1731416806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730812015; x=1731416815; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2HA1iYoQhge6HN2CHRy7t3YqB3wWBO4DLLl9qjbY1CM=;
- b=Lpo9L8RkA4YYSK/qvcTHeX06Up0oGGU189jK6IG9s3BkMb+IThDvaeAjn5RfdLUGKN
- f2VXhFE3fVZDYu3IYU5QqAojUS70baIaahc/IwwM1lfS807lC84wBEDmLI33X9unujm/
- Fg1oihOaT6YkHb2nIlvv+VTfB6xWvylHbwrJyFJZTGE4jZ4bNyIjcSdDy/qKIYllDOj4
- yq8W/rkUeLt3mD49yXVnJl2g5Gs/L2H/LzKz0eyOLBdM7/yLgBW3KiF3yTfWlBWRzpNe
- qqaIFNWhwOMJ52/tHePpYvBPTllS6X4kB3xl8lCovgNFN0KGIwboagxCANvq/kZ9cRxc
- gpiA==
+ bh=HyHIXr57KAvT5hBpjPnN9Ar0+PrPE9jeXHrn1Pe661M=;
+ b=Sq3D5JRIQyVTZIYsnK5pKoTFj5Sv/LE5CCAuJ0AoNOfr8oze+0DcNs7LX0B8+QM+dy
+ T1UyLXuSI9zICSfiRJzzFZklVz52gZnR4lX0OtaeRFuWQ3giJFa93v3PAtzhUlyHEJ8K
+ HUizoKR/Euh2edSospuzeVPpD9wMMp0botVgdfw14FC9/c+RVNnmqkI+++lZ5WlHjH8O
+ RW5GeWjbXoyYGzrzwDIrKbO5H6M0Ro0NipJMc3hEb2lvfdxW1JSB41OlyQfjPv728NGm
+ 1QHd/LhXPEmCyJwz/NQX2WenI/0XIhzDDMv18SmKTc+/LJvCOu1pe25rCfkIAX4hDY/d
+ M5Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730812006; x=1731416806;
+ d=1e100.net; s=20230601; t=1730812015; x=1731416815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2HA1iYoQhge6HN2CHRy7t3YqB3wWBO4DLLl9qjbY1CM=;
- b=BB0v0nfLoJrpBTuzP9eH5aZQWckwK/inN/TgPjZSreUZiVA9kldvzMstODpdzcffac
- 7D7BiTrkOS+XOl0mBgMLRBH99+IrWgybzoEqDYnYxMDJnXNmbh8k02yCjIdXNWnC4Opz
- ZDQD/GwptjTQcrXMauotDSgIoZWlWA03lRz5IY+u2puJfzAfBfY83j8HMxTbEl6xcGfu
- jTzAX4tfuYiv0/7X30nXcNBs6lwbBAF1SPtvVVPbC46LXAAyVUmE3FoJLIz6VVriqDfI
- /ZI/vscVK+uRF3l5rA1om8nxLeu3z7pKIaDB+YK0WCW1F1qKPiWvLYaw0LSzoCLzGdO6
- 1LpQ==
-X-Gm-Message-State: AOJu0YxidGYEAKlYlTsPqRrw7t28VQe0kISJWhLFzF36QRrRpes+hjfY
- /vegvHVhH4HU6Yx43CkMxkq6/q3fA677DM2nPRxylD6BQCgxjXmiGyD6wl26HWawi4yGPTkQRkm
- vS0M=
-X-Google-Smtp-Source: AGHT+IHFlOyH7jLqLmVJWiSq5ZAd02Ui4PVZS15kFWcQDOeKoizvayG3iUaxo7TlK8hsaSPPS+Hcow==
-X-Received: by 2002:a05:6000:1a8c:b0:37d:5042:c8de with SMTP id
- ffacd0b85a97d-381c7a5d4eemr16315520f8f.22.1730812005816; 
- Tue, 05 Nov 2024 05:06:45 -0800 (PST)
+ bh=HyHIXr57KAvT5hBpjPnN9Ar0+PrPE9jeXHrn1Pe661M=;
+ b=nTnk33mI1dnXJ3DIvGPotzvnq5/4uk3jvdXLFe/f59uKaX9RqG4siHrpa72XyVKETy
+ 9g9ep4begoTS8GH4oa/oDTWGEZYjEBuUPE08PoNg8XmZsN7vJOk3EfjNiDMp9KMoHAzB
+ pxpxA5FGf7MnCvoTDi2t187SwbLNJDIoX1jWkkbkDqOqHHdZp2dYWF/k7tVmHDLPNKWO
+ yUtIRBGNjzQrZKYT7A6shOnZK7UTV5gZJkE663JqBzvVWdU+5R1jNVvvEAEJJTYv2Jms
+ /Nt9yZNCG5FgO8uGaYOb1PD4vwaqHFCJtuiwWyCtRQN5uDE0kN05hZczNC8mGUBFBVy4
+ eLOQ==
+X-Gm-Message-State: AOJu0Yw9+qMqFt0vMQsEeNzAPsvRmLM9+TfW7yIwX8SNAH0JqWb/V9f3
+ NXOD3dZtgDqTdHFUT/NpeN+I76GRkHcUX1UcT+ghQOwHLU3RvU0pSF9KhkMltpaceaY5NlN/GtC
+ f2b0=
+X-Google-Smtp-Source: AGHT+IEi0THYTfgK6ACr69bEca5gCtZ/VPrJleGn8VybsMmCUvxYnoMfiFeXUDtXdlEu2NdRuNmFRA==
+X-Received: by 2002:adf:fc8b:0:b0:37d:5026:f787 with SMTP id
+ ffacd0b85a97d-380611e10f1mr23213351f8f.38.1730812015049; 
+ Tue, 05 Nov 2024 05:06:55 -0800 (PST)
 Received: from localhost.localdomain (86.red-88-29-160.dynamicip.rima-tde.net.
  [88.29.160.86]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10d4d1fsm16076930f8f.38.2024.11.05.05.06.42
+ ffacd0b85a97d-381c113e51csm16313213f8f.79.2024.11.05.05.06.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 05:06:45 -0800 (PST)
+ Tue, 05 Nov 2024 05:06:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Anton Johansson <anjo@rev.ng>
@@ -66,24 +66,25 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/19] target/microblaze: Explode MO_TExx -> MO_TE | MO_xx
-Date: Tue,  5 Nov 2024 14:04:25 +0100
-Message-ID: <20241105130431.22564-14-philmd@linaro.org>
+Subject: [PATCH 14/19] target/microblaze: Set MO_TE once in do_load() /
+ do_store()
+Date: Tue,  5 Nov 2024 14:04:26 +0100
+Message-ID: <20241105130431.22564-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105130431.22564-1-philmd@linaro.org>
 References: <20241105130431.22564-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,171 +100,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract the implicit MO_TE definition in order to replace
-it by runtime variable in the next commit.
-
-Mechanical change using:
-
-  $ for n in UW UL UQ UO SW SL SQ; do \
-      sed -i -e "s/MO_TE$n/MO_TE | MO_$n/" \
-           $(git grep -l MO_TE$n target/microblaze); \
-    done
+All callers of do_load() / do_store() set MO_TE flag.
+Set it once in the callees.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/microblaze/translate.c | 36 +++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ target/microblaze/translate.c | 36 +++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
 diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 4beaf69e76a..4c25b1e4383 100644
+index 4c25b1e4383..86f3c196189 100644
 --- a/target/microblaze/translate.c
 +++ b/target/microblaze/translate.c
-@@ -779,13 +779,13 @@ static bool trans_lbui(DisasContext *dc, arg_typeb *arg)
+@@ -712,6 +712,8 @@ static bool do_load(DisasContext *dc, int rd, TCGv addr, MemOp mop,
+ {
+     MemOp size = mop & MO_SIZE;
+ 
++    mop |= MO_TE;
++
+     /*
+      * When doing reverse accesses we need to do two things.
+      *
+@@ -779,13 +781,13 @@ static bool trans_lbui(DisasContext *dc, arg_typeb *arg)
  static bool trans_lhu(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_UW, dc->mem_index, false);
  }
  
  static bool trans_lhur(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, true);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
++    return do_load(dc, arg->rd, addr, MO_UW, dc->mem_index, true);
  }
  
  static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
-@@ -797,26 +797,26 @@ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
+@@ -797,26 +799,26 @@ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
      return true;
  #else
      TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUW, MMU_NOMMU_IDX, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
++    return do_load(dc, arg->rd, addr, MO_UW, MMU_NOMMU_IDX, false);
  #endif
  }
  
  static bool trans_lhui(DisasContext *dc, arg_typeb *arg)
  {
      TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
--    return do_load(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_UW, dc->mem_index, false);
  }
  
  static bool trans_lw(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_UL, dc->mem_index, false);
  }
  
  static bool trans_lwr(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, true);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
++    return do_load(dc, arg->rd, addr, MO_UL, dc->mem_index, true);
  }
  
  static bool trans_lwea(DisasContext *dc, arg_typea *arg)
-@@ -828,14 +828,14 @@ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
+@@ -828,14 +830,14 @@ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
      return true;
  #else
      TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
--    return do_load(dc, arg->rd, addr, MO_TEUL, MMU_NOMMU_IDX, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
++    return do_load(dc, arg->rd, addr, MO_UL, MMU_NOMMU_IDX, false);
  #endif
  }
  
  static bool trans_lwi(DisasContext *dc, arg_typeb *arg)
  {
      TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
--    return do_load(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
-+    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+-    return do_load(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
++    return do_load(dc, arg->rd, addr, MO_UL, dc->mem_index, false);
  }
  
  static bool trans_lwx(DisasContext *dc, arg_typea *arg)
-@@ -845,7 +845,7 @@ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
-     /* lwx does not throw unaligned access errors, so force alignment */
-     tcg_gen_andi_tl(addr, addr, ~3);
+@@ -862,6 +864,8 @@ static bool do_store(DisasContext *dc, int rd, TCGv addr, MemOp mop,
+ {
+     MemOp size = mop & MO_SIZE;
  
--    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index, MO_TEUL);
-+    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index, MO_TE | MO_UL);
-     tcg_gen_mov_tl(cpu_res_addr, addr);
- 
-     if (arg->rd) {
-@@ -929,13 +929,13 @@ static bool trans_sbi(DisasContext *dc, arg_typeb *arg)
++    mop |= MO_TE;
++
+     /*
+      * When doing reverse accesses we need to do two things.
+      *
+@@ -929,13 +933,13 @@ static bool trans_sbi(DisasContext *dc, arg_typeb *arg)
  static bool trans_sh(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_UW, dc->mem_index, false);
  }
  
  static bool trans_shr(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, true);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, true);
++    return do_store(dc, arg->rd, addr, MO_UW, dc->mem_index, true);
  }
  
  static bool trans_shea(DisasContext *dc, arg_typea *arg)
-@@ -947,26 +947,26 @@ static bool trans_shea(DisasContext *dc, arg_typea *arg)
+@@ -947,26 +951,26 @@ static bool trans_shea(DisasContext *dc, arg_typea *arg)
      return true;
  #else
      TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUW, MMU_NOMMU_IDX, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, MMU_NOMMU_IDX, false);
++    return do_store(dc, arg->rd, addr, MO_UW, MMU_NOMMU_IDX, false);
  #endif
  }
  
  static bool trans_shi(DisasContext *dc, arg_typeb *arg)
  {
      TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
--    return do_store(dc, arg->rd, addr, MO_TEUW, dc->mem_index, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UW, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_UW, dc->mem_index, false);
  }
  
  static bool trans_sw(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_UL, dc->mem_index, false);
  }
  
  static bool trans_swr(DisasContext *dc, arg_typea *arg)
  {
      TCGv addr = compute_ldst_addr_typea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, true);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, true);
++    return do_store(dc, arg->rd, addr, MO_UL, dc->mem_index, true);
  }
  
  static bool trans_swea(DisasContext *dc, arg_typea *arg)
-@@ -978,14 +978,14 @@ static bool trans_swea(DisasContext *dc, arg_typea *arg)
+@@ -978,14 +982,14 @@ static bool trans_swea(DisasContext *dc, arg_typea *arg)
      return true;
  #else
      TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
--    return do_store(dc, arg->rd, addr, MO_TEUL, MMU_NOMMU_IDX, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, MMU_NOMMU_IDX, false);
++    return do_store(dc, arg->rd, addr, MO_UL, MMU_NOMMU_IDX, false);
  #endif
  }
  
  static bool trans_swi(DisasContext *dc, arg_typeb *arg)
  {
      TCGv addr = compute_ldst_addr_typeb(dc, arg->ra, arg->imm);
--    return do_store(dc, arg->rd, addr, MO_TEUL, dc->mem_index, false);
-+    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
+-    return do_store(dc, arg->rd, addr, MO_TE | MO_UL, dc->mem_index, false);
++    return do_store(dc, arg->rd, addr, MO_UL, dc->mem_index, false);
  }
  
  static bool trans_swx(DisasContext *dc, arg_typea *arg)
-@@ -1014,7 +1014,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
- 
-     tcg_gen_atomic_cmpxchg_i32(tval, cpu_res_addr, cpu_res_val,
-                                reg_for_write(dc, arg->rd),
--                               dc->mem_index, MO_TEUL);
-+                               dc->mem_index, MO_TE | MO_UL);
- 
-     tcg_gen_brcond_i32(TCG_COND_NE, cpu_res_val, tval, swx_fail);
- 
 -- 
 2.45.2
 
