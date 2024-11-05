@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589549BCFAA
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 15:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 030879BCFB8
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 15:49:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8Kog-00050p-JG; Tue, 05 Nov 2024 09:45:58 -0500
+	id 1t8KsC-0006O9-0S; Tue, 05 Nov 2024 09:49:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8KoW-00050g-8s
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 09:45:48 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1t8Ks5-0006NM-Cz
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 09:49:29 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8KoU-0007bD-LL
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 09:45:48 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4316cce103dso65556975e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 06:45:45 -0800 (PST)
+ id 1t8Ks3-0007li-Re
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 09:49:29 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43159c9f617so43859955e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 06:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730817944; x=1731422744; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730818166; x=1731422966; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=W9+zn0+XH2HvGM0xnnw6O5PqR05Y0CvqX4wE7j4ylc8=;
- b=dFJ+8wcfbK1nyZ2MQtqXNsD9StNjgVXkB2zChDi7TxvyX+VqxKx2Jeqlkavs0RTXLN
- ngzqAloft9UcIBemVCl0bd4RBQbHSzpiAfF3xL8yQ/yltfjSVUg/H+vqdqZomFzOTGsw
- 13XNBDvf3dordevnDiWpTnuf6PcShUbPLXoUxDECHKEtVGzKHTz/ySs1Ra2Oh2jP4is5
- QBjGYfVUU/hy29XloOkWHpvbBpg2mlRlxrU99C+8ibI2MiW4B7Kb+k2Acbs7BzzL6+iz
- DLh6wIrGV8sskSYIFgZCcdh6sAFlFj2WrfNC+5GjschmA7phRFL6Mig4lhzgcEUduWBW
- uv+A==
+ bh=mX+AUT7H1Epn/JgIn3upkdb4Wok+TH2lCVVC7q4I4BA=;
+ b=XesvGVc7KD3Qrc2I3nqRjnhcGo6gH+XPL3rSqDQmm66ADjI48wNE+esrBozK9McjBT
+ /mFdOc1s4IO+OEZfner124RszpBYQLO13yybisDnQmSlOBRZrZTc79xkKLOWYw5Z5bLZ
+ ph8F498vc8IHdtmhe8Pn3OtUtbZ9IP+r93kz40BmnIl4ke4qwqOwu2Q5wPuglG47dafu
+ x2TaqhjycdGYvfmEZkdL1U9Nm/MAszepR372Aw14dmk4HtgPbUvqhb42ZJ+D3iLH0ec0
+ h6aw5q8cXuqNTw/aIFzAjcfckRvOxUNZ9DvuJAcScfSCoeCWU9bndpzfU2L3A/uFacbn
+ toRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730817944; x=1731422744;
+ d=1e100.net; s=20230601; t=1730818166; x=1731422966;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W9+zn0+XH2HvGM0xnnw6O5PqR05Y0CvqX4wE7j4ylc8=;
- b=DbO1rAkAwCegKp2MwAgNQGcr+Ck7ggmRiwTY+NEzVsrQNJ7WqGbl66OCQtF95i2Zjw
- TSAKoBsEuusu99XszceH/QVHdEWjKdTJiLLLhOtQWfq8jvSJJo0TD3Yvhv3tsj7Cy+sN
- 4Gr2juvkmZ+kvbQC41hPyPThxNDwSiiU94xoukWs1Sa/2gmc/rQoGrDpdF8ITZvAk2eQ
- njeHfEpCZQHxjBtAJZeZSE8CbUn1s3QRgmAPwrBRzm9hNqUXbf7d8vo/qOtu0oaRWEil
- jEfb7klF6ldtLgxtyIsG/pdFuPWdJBUb6s2nWy5ElVPPSRJg057Kmaw7RCO0z8KEn7e6
- 0w4g==
+ bh=mX+AUT7H1Epn/JgIn3upkdb4Wok+TH2lCVVC7q4I4BA=;
+ b=IATcpoP5Spxeqaelq0rmbKd7CQ1X9XiAg2M7ExFofGdZ95dWEEQSnTau//PFADE0fx
+ tVgMxm9XSA+TqmL6b/jTF1sQ0V4mGcH/GjcnF8IfW7LSV4fFjZY8DcoZxU9J8o96NqBj
+ 7DtYmAmcEDipwIh7eBV+59gByhzscYJ1N0VBSCqOQv2iyoDr8huvlJ4e4HllWpfPbmov
+ Z7r84a5Q4cda/N8HcE7dnGwn9qnVsdqVwx3Je6Mbcyo8Zu3lDxzlsjnuv0TEKuWxgMI9
+ EXfLybzajEV4lnVNuc2MznEWZzrMbReAWAO1EvUDDmfJd+AZQDMCA3ukhpDO+nLAOS7H
+ 3BVg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW6k49TMwkHngeFDS/qJZ2RrvG7BOBlom6H5nDhOankOCqbgSkxVYLTg9vft1IkBqEtxz+KqU6ADTDb@nongnu.org
-X-Gm-Message-State: AOJu0YxnGX0niSmR0ZO746w+qxnm+fZcpqPfH9TlS5qzGjX38rfx2jow
- H21M6NOAwCcprPzOgRJpHyp/JoTEUW5putqxJcdwPAyL8s8JqYqDqU5gHpFG7uY=
-X-Google-Smtp-Source: AGHT+IEy7oq8KLhWci1W3xz+y5fTW58CICW9bhnvou1Gts2SU3oOBFTMLKjd2AjK+fVrbQgu4TaLTw==
-X-Received: by 2002:a05:600c:1f88:b0:431:59b2:f0c4 with SMTP id
- 5b1f17b1804b1-4328324ace3mr170822295e9.8.1730817943854; 
- Tue, 05 Nov 2024 06:45:43 -0800 (PST)
+ AJvYcCV0EXDNMNTanXOqnAcKsmm1v9p6W0tvhFVYyO4+Lp0TXDs2L6sVP3+mNkVrsHbLGJGEvj4azkmx1lOj@nongnu.org
+X-Gm-Message-State: AOJu0YwZ/xhfGVf5H+0NdnKCvrTcj4I/Xsnf4TDbfsBRU6KYEyS8Rgau
+ iERygy9pNMY8W2oP4NCwri+veqqnm9yTYghchs92vMy36aAEBwO+lZtL5p7/4oc=
+X-Google-Smtp-Source: AGHT+IF7NKbu8gC5f/g247NEUMP98IakFzj+CFCmPI9KJHs+3tKFIS/LJcq3J35MuSi/6UUlgK/uLQ==
+X-Received: by 2002:a05:600c:354e:b0:431:547e:81d0 with SMTP id
+ 5b1f17b1804b1-4319ac9ad43mr307257745e9.11.1730818165779; 
+ Tue, 05 Nov 2024 06:49:25 -0800 (PST)
 Received: from [192.168.21.227] ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4327d5ac37csm191726315e9.10.2024.11.05.06.45.42
+ 5b1f17b1804b1-431bd9a9faesm220732145e9.35.2024.11.05.06.49.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Nov 2024 06:45:43 -0800 (PST)
-Message-ID: <299dcf20-b10f-40c9-bffb-19939ad8fd56@linaro.org>
-Date: Tue, 5 Nov 2024 14:45:41 +0000
+ Tue, 05 Nov 2024 06:49:25 -0800 (PST)
+Message-ID: <97f0a5ab-0925-4377-8b86-b76e527c5ee3@linaro.org>
+Date: Tue, 5 Nov 2024 14:49:23 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] user: Introduce host_interrupt_signal
+Subject: Re: [PATCH 5/8] osdep: Introduce qemu_kill_thread()
 To: Ilya Leoshkevich <iii@linux.ibm.com>, Warner Losh <imp@bsdimp.com>,
  Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>,
  Paolo Bonzini <pbonzini@redhat.com>
@@ -70,14 +70,14 @@ Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20241024200031.80327-1-iii@linux.ibm.com>
- <20241024200031.80327-5-iii@linux.ibm.com>
+ <20241024200031.80327-6-iii@linux.ibm.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241024200031.80327-5-iii@linux.ibm.com>
+In-Reply-To: <20241024200031.80327-6-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,30 +101,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/24/24 20:59, Ilya Leoshkevich wrote:
-> Attaching to the gdbstub of a running process requires stopping its
-> threads. For threads that run on a CPU, cpu_exit() is enough, but the
-> only way to grab attention of a thread that is stuck in a long-running
-> syscall is to interrupt it with a signal.
-> 
-> Reserve a host realtime signal for this, just like it's already done
-> for TARGET_SIGABRT on Linux. This may reduce the number of available
-> guest realtime signals by one, but this is acceptable, since there are
-> quite a lot of them, and it's unlikely that there are apps that need
-> them all.
-> 
-> Set signal_pending for the safe_sycall machinery to prevent invoking
-> the syscall. This is a lie, since we don't queue a guest signal, but
-> process_pending_signals() can handle the absence of pending signals.
-> The syscall returns with QEMU_ERESTARTSYS errno, which arranges for
-> the automatic restart. This is important, because it helps avoiding
-> disturbing poorly written guests.
+> Add a function for sending signals to individual threads. It does not make
+> sense on Windows, so do not provide an implementation, so that if someone
+> uses it by accident, they will get a linker error.
 > 
 > Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
 > ---
->   bsd-user/signal.c     | 12 ++++++++++++
->   include/user/signal.h |  2 ++
->   linux-user/signal.c   | 11 +++++++++++
->   3 files changed, 25 insertions(+)
+>   include/qemu/osdep.h |  9 +++++++++
+>   util/oslib-posix.c   | 15 +++++++++++++++
+>   2 files changed, 24 insertions(+)
+
+I am annoyed that musl does not have tgkill in <signal.h>.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
