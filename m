@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9008C9BD922
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875439BD927
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Nov 2024 23:53:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8SNh-0001ql-Th; Tue, 05 Nov 2024 17:50:38 -0500
+	id 1t8SO6-0002mK-61; Tue, 05 Nov 2024 17:51:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SNC-0001GM-2d
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:50:11 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SNF-0001Nh-Up
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:50:15 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SNA-0004Vf-5k
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:50:05 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43159c9f617so47277835e9.2
- for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:50:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8SNE-0004hv-3X
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 17:50:09 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4314b316495so51667775e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Nov 2024 14:50:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730847001; x=1731451801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730847006; x=1731451806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FZBNgReI8SUv50NFFndKDx8AuBJGKT1IeMS1OHe8BPE=;
- b=qYuKo+8VQDMN4lRAVZAnDH+U6yf3Frod8t5C9Bj4n0rHRhD38FKev/CKE9eEnGQBNO
- wqF65WXc+CZAmgUPHEFTFwL5bI91AqnDyLxAMYt69VQmBW53M6dlYXoD5DzaDk9jJ94n
- lcRt7q78Ayb6kYjbJrmlK0BXmZmOtdAdSkPrqvBRzsmdY4zUCpTyAQJy22pY/o/UizCa
- e1gCZuOxR2XCKa4RMLWSZfZEFFykuhpMjr9rAN9FrfeBKO8kfxZ1sV39XcSX2odVDxZ1
- uYqmJLq1Oi2hQHQQA+abLi2/B8yUpjqB5SA2vhKdk4o4aPkJEjhqKMT1EO4R84U42onX
- 902Q==
+ bh=TbSSd/840jPsVgWX0pStPW0nEJn+X/GCmpvm44win24=;
+ b=EECfkcwkAxNCMR/MiHY3N0aJlXQsRYlUAph1wFlbcDVKJRmZ3cg53oOVen73UOk6I9
+ uTetepSB2EbH/voDpoyoV4RQR9EzUifcNo9gTX8EmghoBBIFYegLamLiQ0gyauvDzpJv
+ Z6/YfwKPWStxeXBBXKcIYJCGRZ3saroxIKZxbQdI9e4uLDw7ALKn1hz5J6eQJvR5kH10
+ 8FvGd34kBk5Hw/ZKORpQlkILuHgk0/LslFMuYG2Iw1kOrO8Dor9GOTGTyPOrWST+KLVz
+ grYFc9ZCth6JqXeiLrh63JDdzrS82HUi3pN0tixefiqI9h01rCfv5V2y+hCtVqy2agNM
+ nDYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730847001; x=1731451801;
+ d=1e100.net; s=20230601; t=1730847006; x=1731451806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FZBNgReI8SUv50NFFndKDx8AuBJGKT1IeMS1OHe8BPE=;
- b=sUEhlrT5lg/nmlTZNC2Pc29eqbf9NvJl3W7/MFDoVYTg8Y0s0HuaQ5DHhv9lrntab8
- jlwtRyyQOieGzCZFCGR96f6smk9a+Z2pO5xrl/RRsKr2u9JrKKUAhRZy+TJ0HeRak/Cp
- o50fJ/C1S14aZb16PFSZAkm1s6sG2BudeqE0YlhzoJF4roo3mHiGN+1LebIK1sdQQ0On
- wLELugS7Mq+EruAC+b38k43YYwIYYlpf57AYQl9OPh6xC2ObBYe1WffgQk2eyS861WL6
- i4SsgOdHBThZNATY5O4lyQHjspewrdBCLRA+uGi8+5Fnm2twEUHSUjEW+40PQVkAx63Y
- 40vw==
-X-Gm-Message-State: AOJu0YzqbmfAaxDQHXhxW7d0MfkMI2bYqCB2/yVUu+GWOBUprGn1ZbGh
- vAgITCrWaYsBIGMQDAWLUKPr5igCOG5YFpOzKTAMcvxnU/+21rPaERRQdXEEC8OAeVBIPcccfK0
- X9FqlRQ==
-X-Google-Smtp-Source: AGHT+IHG+aGkTksvzwhpNcCEZ2DioZMrm8mtadoSVauStNEXoQM/F7FVnFcbHTKaaaUkZY4ZP4acBA==
-X-Received: by 2002:a5d:4bc4:0:b0:37d:528d:b8ad with SMTP id
- ffacd0b85a97d-380610f830cmr27452621f8f.6.1730847001241; 
- Tue, 05 Nov 2024 14:50:01 -0800 (PST)
-Received: from localhost.localdomain ([154.14.63.34])
+ bh=TbSSd/840jPsVgWX0pStPW0nEJn+X/GCmpvm44win24=;
+ b=ap1SOo0EkHAXdUdNs55HMG0HIwvCEJhxcWzVjuiyxv8yz9jyPtlFeYvhJsCBVAhQor
+ qEg4pERot+TBQUQXnyqjuQPEjPU+fKDQdNiUM4U6fLKC6r4AEVrrRk57fo6V5zm6NYvo
+ E/tln6u0ytt4k2S5iNqO9MvR00kVDxF+7YCx88NVslK9XNkf6n4IYBO36XAA2idj9nfy
+ yKvU2ymNXEYH8/bVSfDXmKP9ZVb4UaeJAi5algAFUH9DlfUdctdqSqxS8OTLFtw7XcIg
+ vNN4T3q9BzlRJFzNv9l3XOeGqErsNBBPTFcfuIy7hE5KpuFiVQIhEzMi27t1AdyesopM
+ S7zw==
+X-Gm-Message-State: AOJu0YyMTm6lZeyoEk4xsTo/RrN4ovTTv5wcpxlSbmzmFQbhVAp4JOLY
+ Mw75yvARYbkb1ynC6lOzfbgPGAVhk247oWUSkdESP31PZB5Sw/SByqJtuWnCkNLujUzmH6Pcuch
+ omgE+dw==
+X-Google-Smtp-Source: AGHT+IE0QnRg8tJh19IChvu2LEOfF69pmeuNDGgYY85CMiegX36PG+Ty5YBayIz6STykUCqThONM6g==
+X-Received: by 2002:a05:600c:548d:b0:431:60ac:9b0c with SMTP id
+ 5b1f17b1804b1-4327b6fd376mr175516275e9.20.1730847005796; 
+ Tue, 05 Nov 2024 14:50:05 -0800 (PST)
+Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e5cbsm17470035f8f.80.2024.11.05.14.49.59
+ ffacd0b85a97d-381c10b7e2dsm17338602f8f.11.2024.11.05.14.50.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Nov 2024 14:50:00 -0800 (PST)
+ Tue, 05 Nov 2024 14:50:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/29] hw/usb/hcd-ehci-sysbus: Prefer DEFINE_TYPES() macro
-Date: Tue,  5 Nov 2024 22:47:26 +0000
-Message-ID: <20241105224727.53059-29-philmd@linaro.org>
+Subject: [PULL 29/29] hw/riscv/iommu: fix build error with clang
+Date: Tue,  5 Nov 2024 22:47:27 +0000
+Message-ID: <20241105224727.53059-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241105224727.53059-1-philmd@linaro.org>
 References: <20241105224727.53059-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,202 +94,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-The naming of the TypeInfo array is inspired by hcd-ohci-sysbus.
+Introduced in 0c54acb8243, "hw/riscv: add RISC-V IOMMU base emulation".
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20241103133412.73536-25-shentey@gmail.com>
+../hw/riscv/riscv-iommu.c:187:17: error: redefinition of '_pext_u64'
+
+  187 | static uint64_t _pext_u64(uint64_t val, uint64_t ext)
+
+      |                 ^
+
+D:/a/_temp/msys64/clang64/lib/clang/18/include/bmi2intrin.h:217:1: note: previous definition is here
+
+  217 | _pext_u64(unsigned long long __X, unsigned long long __Y)
+
+      | ^
+
+After a conversation on the mailing list, it was decided to rename and
+add a comment for this function.
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241104222225.1523751-1-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/hcd-ehci-sysbus.c | 118 +++++++++++++++++----------------------
- 1 file changed, 50 insertions(+), 68 deletions(-)
+ hw/riscv/riscv-iommu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
-index 2b1652f7a8b..eb7df93ac2d 100644
---- a/hw/usb/hcd-ehci-sysbus.c
-+++ b/hw/usb/hcd-ehci-sysbus.c
-@@ -19,7 +19,6 @@
- #include "hw/qdev-properties.h"
- #include "hw/usb/hcd-ehci.h"
- #include "migration/vmstate.h"
--#include "qemu/module.h"
- 
- static const VMStateDescription vmstate_ehci_sysbus = {
-     .name        = "ehci-sysbus",
-@@ -97,17 +96,6 @@ static void ehci_sysbus_class_init(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index feb650549ac..12f01a75f5d 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -183,8 +183,25 @@ static void riscv_iommu_pri(RISCVIOMMUState *s,
+     }
  }
  
--static const TypeInfo ehci_type_info = {
--    .name          = TYPE_SYS_BUS_EHCI,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(EHCISysBusState),
--    .instance_init = ehci_sysbus_init,
--    .instance_finalize = ehci_sysbus_finalize,
--    .abstract      = true,
--    .class_init    = ehci_sysbus_class_init,
--    .class_size    = sizeof(SysBusEHCIClass),
--};
--
- static void ehci_platform_class_init(ObjectClass *oc, void *data)
+-/* Portable implementation of pext_u64, bit-mask extraction. */
+-static uint64_t _pext_u64(uint64_t val, uint64_t ext)
++/*
++ * Discards all bits from 'val' whose matching bits in the same
++ * positions in the mask 'ext' are zeros, and packs the remaining
++ * bits from 'val' contiguously at the least-significant end of the
++ * result, keeping the same bit order as 'val' and filling any
++ * other bits at the most-significant end of the result with zeros.
++ *
++ * For example, for the following 'val' and 'ext', the return 'ret'
++ * will be:
++ *
++ * val = a b c d e f g h
++ * ext = 1 0 1 0 0 1 1 0
++ * ret = 0 0 0 0 a c f g
++ *
++ * This function, taken from the riscv-iommu 1.0 spec, section 2.3.3
++ * "Process to translate addresses of MSIs", is similar to bit manip
++ * function PEXT (Parallel bits extract) from x86.
++ */
++static uint64_t riscv_iommu_pext_u64(uint64_t val, uint64_t ext)
  {
-     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
-@@ -118,12 +106,6 @@ static void ehci_platform_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
+     uint64_t ret = 0;
+     uint64_t rot = 1;
+@@ -528,7 +545,7 @@ static MemTxResult riscv_iommu_msi_write(RISCVIOMMUState *s,
+     int cause;
  
--static const TypeInfo ehci_platform_type_info = {
--    .name          = TYPE_PLATFORM_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_platform_class_init,
--};
--
- static void ehci_exynos4210_class_init(ObjectClass *oc, void *data)
- {
-     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
-@@ -134,12 +116,6 @@ static void ehci_exynos4210_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_exynos4210_type_info = {
--    .name          = TYPE_EXYNOS4210_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_exynos4210_class_init,
--};
--
- static void ehci_aw_h3_class_init(ObjectClass *oc, void *data)
- {
-     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
-@@ -150,12 +126,6 @@ static void ehci_aw_h3_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_aw_h3_type_info = {
--    .name          = TYPE_AW_H3_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_aw_h3_class_init,
--};
--
- static void ehci_npcm7xx_class_init(ObjectClass *oc, void *data)
- {
-     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
-@@ -168,12 +138,6 @@ static void ehci_npcm7xx_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_npcm7xx_type_info = {
--    .name          = TYPE_NPCM7XX_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_npcm7xx_class_init,
--};
--
- static void ehci_tegra2_class_init(ObjectClass *oc, void *data)
- {
-     SysBusEHCIClass *sec = SYS_BUS_EHCI_CLASS(oc);
-@@ -184,12 +148,6 @@ static void ehci_tegra2_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_tegra2_type_info = {
--    .name          = TYPE_TEGRA2_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_tegra2_class_init,
--};
--
- static void ehci_ppc4xx_init(Object *o)
- {
-     EHCISysBusState *s = SYS_BUS_EHCI(o);
-@@ -207,13 +165,6 @@ static void ehci_ppc4xx_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_ppc4xx_type_info = {
--    .name          = TYPE_PPC4xx_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .class_init    = ehci_ppc4xx_class_init,
--    .instance_init = ehci_ppc4xx_init,
--};
--
- /*
-  * Faraday FUSBH200 USB 2.0 EHCI
-  */
-@@ -282,24 +233,55 @@ static void fusbh200_ehci_class_init(ObjectClass *oc, void *data)
-     set_bit(DEVICE_CATEGORY_USB, dc->categories);
- }
- 
--static const TypeInfo ehci_fusbh200_type_info = {
--    .name          = TYPE_FUSBH200_EHCI,
--    .parent        = TYPE_SYS_BUS_EHCI,
--    .instance_size = sizeof(FUSBH200EHCIState),
--    .instance_init = fusbh200_ehci_init,
--    .class_init    = fusbh200_ehci_class_init,
-+static const TypeInfo ehci_sysbus_types[] = {
-+    {
-+        .name          = TYPE_SYS_BUS_EHCI,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(EHCISysBusState),
-+        .instance_init = ehci_sysbus_init,
-+        .instance_finalize = ehci_sysbus_finalize,
-+        .abstract      = true,
-+        .class_init    = ehci_sysbus_class_init,
-+        .class_size    = sizeof(SysBusEHCIClass),
-+    },
-+    {
-+        .name          = TYPE_PLATFORM_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_platform_class_init,
-+    },
-+    {
-+        .name          = TYPE_EXYNOS4210_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_exynos4210_class_init,
-+    },
-+    {
-+        .name          = TYPE_AW_H3_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_aw_h3_class_init,
-+    },
-+    {
-+        .name          = TYPE_NPCM7XX_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_npcm7xx_class_init,
-+    },
-+    {
-+        .name          = TYPE_TEGRA2_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_tegra2_class_init,
-+    },
-+    {
-+        .name          = TYPE_PPC4xx_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .class_init    = ehci_ppc4xx_class_init,
-+        .instance_init = ehci_ppc4xx_init,
-+    },
-+    {
-+        .name          = TYPE_FUSBH200_EHCI,
-+        .parent        = TYPE_SYS_BUS_EHCI,
-+        .instance_size = sizeof(FUSBH200EHCIState),
-+        .instance_init = fusbh200_ehci_init,
-+        .class_init    = fusbh200_ehci_class_init,
-+    },
- };
- 
--static void ehci_sysbus_register_types(void)
--{
--    type_register_static(&ehci_type_info);
--    type_register_static(&ehci_platform_type_info);
--    type_register_static(&ehci_exynos4210_type_info);
--    type_register_static(&ehci_aw_h3_type_info);
--    type_register_static(&ehci_npcm7xx_type_info);
--    type_register_static(&ehci_tegra2_type_info);
--    type_register_static(&ehci_ppc4xx_type_info);
--    type_register_static(&ehci_fusbh200_type_info);
--}
--
--type_init(ehci_sysbus_register_types)
-+DEFINE_TYPES(ehci_sysbus_types)
+     /* Interrupt File Number */
+-    intn = _pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
++    intn = riscv_iommu_pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
+     if (intn >= 256) {
+         /* Interrupt file number out of range */
+         res = MEMTX_ACCESS_ERROR;
 -- 
 2.45.2
 
