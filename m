@@ -2,76 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022FD9BE8D8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 13:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEE99BE8B7
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 13:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8f8U-0007C7-Do; Wed, 06 Nov 2024 07:27:46 -0500
+	id 1t8f7L-0006Zd-4N; Wed, 06 Nov 2024 07:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t8f8O-0007Bn-Ad; Wed, 06 Nov 2024 07:27:40 -0500
-Received: from mgamail.intel.com ([192.198.163.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1t8f8M-0005Kf-6D; Wed, 06 Nov 2024 07:27:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730896058; x=1762432058;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Q5mAGqr6fBZa46ptlj0c2tOjO/AVkSYXS7mLE8kdevc=;
- b=BO4oV4TRmOlxdEGhfx7vEzhVMATX/z91btwasq63n/gtyZknXJbe8KQo
- 9aO+z6junRNO62r/63O7/ofT70R6BWDKhXa8XwZ6mMAutiBjWxkOcj3Nc
- YJDBvY5VRaEbaaZP7j9FkeIu5BUELLKMsuV9m4SsUm+cIrWC44XVAZm+W
- IiDKN4KvT7xdoVVL0470XwLP6++Mlne8TsDrX8yPYRhVlTTe5mOt2TuSK
- 7MWoJBLRZDIT/Rput5aC2GY0xB+XWhfZXdXXu/CdKe4vNV9/TI7h4/F8e
- E8yOWBeM1dO/UFJRJ8JgLhMOz+HvOkdN7JGtYek+U5HhapAiZbpsW/DPz A==;
-X-CSE-ConnectionGUID: 0NGXSYmbS9KOBXNxIV1F6w==
-X-CSE-MsgGUID: YJGIaQ2LS127E17VVe3OeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="30117916"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="30117916"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 04:27:34 -0800
-X-CSE-ConnectionGUID: pcgVXOXpTwKtm7Qqb+LBAw==
-X-CSE-MsgGUID: oEPzkh84Qme5i7cGVAyMIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; d="scan'208";a="89635785"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2024 04:27:30 -0800
-Date: Wed, 6 Nov 2024 20:22:23 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>,
- Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-stable@nongnu.org
-Subject: Re: [PATCH v5 01/11 for v9.2?] i386/cpu: Mark avx10_version filtered
- when prefix is NULL
-Message-ID: <Zytffxz6DMfQSv0G@linux.bj.intel.com>
-References: <20241106030728.553238-1-zhao1.liu@intel.com>
- <20241106030728.553238-2-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8f7H-0006ZE-NX
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:26:31 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1t8f7F-0004dK-2H
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:26:30 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8111521B5A;
+ Wed,  6 Nov 2024 12:26:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1730895987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SO/NQmfXrbSFdFIGg74In/vjx/28U2h7dmVirLIwqjQ=;
+ b=UfHSvWXwc5eqQuyghyL/KwlwRhnYeLWlDs34MKoVDQ16fdsUn1Ly3PxsPYpEXrdflgMhcC
+ 9fVSkWBqmTkbcXM7RMFgzSxw8wnmZ8rovvxYkFp6PA9Vi4fE3KF2ZvqvA4CWcJceYMFDDT
+ TMZ25JoDwcjAMNIogUttrcfX9CMxFv4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1730895987;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SO/NQmfXrbSFdFIGg74In/vjx/28U2h7dmVirLIwqjQ=;
+ b=1csRu/SY/v4MjTlP3ZDMsufxSn/ZpYwWoJw3EtrJNRwlykiae5rniU9XnvO3vIn68433P3
+ Zdr23ApXVSWWFVAA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UfHSvWXw;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="1csRu/SY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1730895987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SO/NQmfXrbSFdFIGg74In/vjx/28U2h7dmVirLIwqjQ=;
+ b=UfHSvWXwc5eqQuyghyL/KwlwRhnYeLWlDs34MKoVDQ16fdsUn1Ly3PxsPYpEXrdflgMhcC
+ 9fVSkWBqmTkbcXM7RMFgzSxw8wnmZ8rovvxYkFp6PA9Vi4fE3KF2ZvqvA4CWcJceYMFDDT
+ TMZ25JoDwcjAMNIogUttrcfX9CMxFv4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1730895987;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SO/NQmfXrbSFdFIGg74In/vjx/28U2h7dmVirLIwqjQ=;
+ b=1csRu/SY/v4MjTlP3ZDMsufxSn/ZpYwWoJw3EtrJNRwlykiae5rniU9XnvO3vIn68433P3
+ Zdr23ApXVSWWFVAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0AB2D137C4;
+ Wed,  6 Nov 2024 12:26:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id lr/aMHJgK2e6DgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 06 Nov 2024 12:26:26 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Laurent
+ Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 11/22] tests/qtest/migration: Move common test code
+In-Reply-To: <ZytNb_nTrePsYabA@redhat.com>
+References: <20241105180837.5990-1-farosas@suse.de>
+ <20241105180837.5990-12-farosas@suse.de> <ZytNb_nTrePsYabA@redhat.com>
+Date: Wed, 06 Nov 2024 09:26:24 -0300
+Message-ID: <87ttck1rbj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106030728.553238-2-zhao1.liu@intel.com>
-Received-SPF: none client-ip=192.198.163.18;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8111521B5A
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ MISSING_XM_UA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,44 +132,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 06, 2024 at 11:07:18AM +0800, Zhao Liu wrote:
-> In x86_cpu_filter_features(), if host doesn't support AVX10, the
-> configured avx10_version should be marked as filtered regardless of
-> whether prefix is NULL or not.
-> 
-> Check prefix before warn_report() instead of checking for
-> have_filtered_features.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: commit bccfb846fd52 ("target/i386: add AVX10 feature and AVX10 version property")
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Reviewed-by: Tao Su <tao1.su@linux.intel.com>
+> On Tue, Nov 05, 2024 at 03:08:26PM -0300, Fabiano Rosas wrote:
+>> Put the common test code in a separate file. Leave only individual
+>> test functions and their static helpers in migration-test.c.
+>>=20
+>> This moves the shared:
+>>=20
+>>  test_postcopy_common
+>>  test_postcopy_recovery_common
+>>  test_precopy_common
+>>  test_file_common
+>>  migrate_precopy_tcp_multifd_start_common
+>>  migrate_start
+>>  migrate_end
+>>  migration_get_env
+>>  migration_env_clean
+>>=20
+>> and some of their static helpers to migrate-common.c.
+>>=20
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  tests/qtest/meson.build                  |    1 +
+>>  tests/qtest/migration-test.c             | 1124 +---------------------
+>>  tests/qtest/migration/bootfile.c         |    2 +-
+>>  tests/qtest/migration/bootfile.h         |    2 +-
+>>  tests/qtest/migration/migration-common.c |  963 ++++++++++++++++++
+>>  tests/qtest/migration/migration-common.h |  214 ++++
+>>  tests/qtest/migration/migration-util.h   |   13 -
+>
+> Looking at these I guess I'd ask the question of what is the rule for
+> deciding whether to put something in -common vs in -util ?
+>
+> Both names sounds like being a general "bag of bits", so it isn't
+> obvious to me what their distinct roles are.
+>
 
-> ---
-> v5: new commit.
-> ---
->  target/i386/cpu.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 3baa95481fbc..77c1233daa13 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7711,8 +7711,10 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
->              env->avx10_version = version;
->              have_filtered_features = true;
->          }
-> -    } else if (env->avx10_version && prefix) {
-> -        warn_report("%s: avx10.%d.", prefix, env->avx10_version);
-> +    } else if (env->avx10_version) {
-> +        if (prefix) {
-> +            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
-> +        }
->          have_filtered_features = true;
->      }
->  
-> -- 
-> 2.34.1
-> 
+The idea was to make -util the general bag of bits just like
+migration-helpers is currently.
+
+-common should be the more "important" migration-specific functions,
+code that we spend more time reading and that are actually responsible
+for the results of the tests. Consider:
+
+static void test_multifd_file_mapped_ram_fdset_dio(void)
+{
+    ...
+    if (!probe_o_direct_support(tmpfs)) {          <--- just a helper
+        g_test_skip("Filesystem does not support O_DIRECT");
+        return;
+    }
+
+    test_file_common(&args, true);  <--- actually doing the heavy-lifting
+}
+
+We could to some renaming and restructuring, but I think the distinction
+is important. We already have it today, what is -common is all stuffed
+into migration-test.c and the rest is in migration-helpers.c.
+
+>>  7 files changed, 1193 insertions(+), 1126 deletions(-)
+>>  create mode 100644 tests/qtest/migration/migration-common.c
+>>  create mode 100644 tests/qtest/migration/migration-common.h
+>>=20
+>
+> With regards,
+> Daniel
 
