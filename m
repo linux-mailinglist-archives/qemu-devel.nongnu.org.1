@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8029BEF23
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AB39BEF29
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:36:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8gBS-0001oc-7b; Wed, 06 Nov 2024 08:34:54 -0500
+	id 1t8gCg-0003Pu-Od; Wed, 06 Nov 2024 08:36:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t8gBL-0001lD-Gc
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:34:51 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t8gBI-0001cl-L4
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:34:46 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-71e61b47c6cso5933033b3a.2
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 05:34:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1730900082; x=1731504882; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vd7uhK27iZe8oGBrkgQRn9OqHPo3B4lI9DZBvvRNQAw=;
- b=ED6dm29JhmItjFuKV6GGt3d82psMLkklaDgjBkidusGR0UAG76JEdfVHRm9IZss2TC
- xeDN6V57nmqtymDp2vm19ZZ+fwc+dK2bQx8jyGv+gefgFUSlMoGlcmSVKGC3E/ho3uTr
- cKCx6h6Hjqa9GUOx2B/Pbu5odwaVz6b0rWO1AjaEo5OfWpQ6YwjfCDraxNxKC9w9pjNr
- aXONisjd4QQX3AICNOvq+aYQarO+WEWBmW1PushUI1XvhmfejzeiMLBBHhWQI0+wJpSH
- dtBKLjvCYUP63LXSwneOjQBnNzVu7v2jybtBTKiMhHbsS8Kre0/eLLIU+YHy5qj3MZYA
- XiqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730900082; x=1731504882;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vd7uhK27iZe8oGBrkgQRn9OqHPo3B4lI9DZBvvRNQAw=;
- b=GS1cXzGrXi5dy9nBkqjveL/5/kARGknHaBE/ExkhfogI12p0hgOjkIXMYc7JTVGQVM
- pCSP4MLh7Gi9C8zxS/Wst49sCksjJtgrB0jzhM7JBfRMxdOeyIn1VhWamJC0y2dUfoS2
- wCM2GOTC1y+TNlovJV5FLyz2YGFvv8CM7/3acUkFnyjOzdpYWVfmkwFl1GVxNZjbsn6y
- SfiZjFK4+KhNojvEUowz5uaVCdzKzes7dhou/lzh/WSiqBRliHDmigl6/ThYZn0semef
- 3ifrmp+B5K2s513QZDL9lOKgj8a2duAHkYkMcPeskR3kC0NMUdIo90d7L0T+QsAIekpE
- XMiw==
-X-Gm-Message-State: AOJu0YwbV9OrIpwOl9Th5Cz1eOZsw7oTIGqhp0JN1VYFS99sBrVccBWF
- in72R8y7bShkOqigrGXbqToPdc9VFjsmyDRYaLaKw4gy0VjxqrMJuR5Ru1z3V1hM4lEA0Yzn2an
- e
-X-Google-Smtp-Source: AGHT+IEZKfSgSVAVgJgnMiXagw99BIg7rWlohlX9ZyOP82KF7HOyFN5o02dadtm82Nn9O2VsmgZWoA==
-X-Received: by 2002:a05:6a00:1303:b0:71e:4df3:b1d3 with SMTP id
- d2e1a72fcca58-72062f80b4cmr58116023b3a.4.1730900082498; 
- Wed, 06 Nov 2024 05:34:42 -0800 (PST)
-Received: from grind.. ([189.79.22.174]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-720bc2eb64esm11749765b3a.168.2024.11.06.05.34.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 05:34:42 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-10.0 7/7] docs/specs: add riscv-iommu-sys information
-Date: Wed,  6 Nov 2024 10:34:07 -0300
-Message-ID: <20241106133407.604587-8-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241106133407.604587-1-dbarboza@ventanamicro.com>
-References: <20241106133407.604587-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8gCb-0003FL-Gx
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:36:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8gCX-0001uH-6V
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:36:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730900159;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RDWX1LYw/Pz3vBWhwXN+HCr8uUfQhX7EsB2eRVWOEf4=;
+ b=FWzWb6qUzASfArQ3EhvYtvoxJiMdXVbOlF+FrFPvJge08gH3s9xP1yqmjWEBdmVVYfD9BS
+ YdZsjImE2e6IyUiEBZTgYasbYCDaLuYzF+syNZTC+w+mEYw3elz3OiTo69pPUCeU629Z/9
+ TD6P1qrYPDM3ncLsDIEnv6kQJ5Bd/Vg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-qSlWHftRNueeMy4ajNhtrA-1; Wed,
+ 06 Nov 2024 08:35:56 -0500
+X-MC-Unique: qSlWHftRNueeMy4ajNhtrA-1
+X-Mimecast-MFC-AGG-ID: qSlWHftRNueeMy4ajNhtrA
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2A11A1955DC9; Wed,  6 Nov 2024 13:35:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.180])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 519831944CD1; Wed,  6 Nov 2024 13:35:46 +0000 (UTC)
+Date: Wed, 6 Nov 2024 13:35:42 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Dehan Meng <demeng@redhat.com>
+Cc: qemu-devel@nongnu.org, kkostiuk@redhat.com, michael.roth@amd.com,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH v5 1/3] qemu-ga: Add 'Null' check and Redefine 'route'
+Message-ID: <ZytwrvtfR6AxpkYZ@redhat.com>
+References: <20241106084134.1133061-1-demeng@redhat.com>
+ <20241106084134.1133061-2-demeng@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20241106084134.1133061-2-demeng@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,92 +84,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- docs/specs/riscv-iommu.rst | 30 +++++++++++++++++++++++++++---
- docs/system/riscv/virt.rst | 10 ++++++++++
- 2 files changed, 37 insertions(+), 3 deletions(-)
+On Wed, Nov 06, 2024 at 04:41:32PM +0800, Dehan Meng wrote:
+> sscanf return values are checked and add 'Null' check for
+> mandatory parameters. And merged redundant route and
+> networkroute variables.
+> 
+> Signed-off-by: Dehan Meng <demeng@redhat.com>
+> ---
+>  qga/commands-linux.c | 86 +++++++++++++++++++++++---------------------
+>  1 file changed, 45 insertions(+), 41 deletions(-)
 
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-index 463f4cffb6..b1538c9ead 100644
---- a/docs/specs/riscv-iommu.rst
-+++ b/docs/specs/riscv-iommu.rst
-@@ -6,9 +6,9 @@ RISC-V IOMMU support for RISC-V machines
- QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
- version 1.0 `iommu1.0`_.
- 
--The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
--RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
--device.
-+The emulation includes a PCI reference device (riscv-iommu-pci) and a platform
-+bus device (riscv-iommu-sys) that QEMU RISC-V boards can use.  The 'virt'
-+RISC-V machine is compatible with both devices.
- 
- riscv-iommu-pci reference device
- --------------------------------
-@@ -83,6 +83,30 @@ Several options are available to control the capabilities of the device, namely:
- - "s-stage": enable s-stage support
- - "g-stage": enable g-stage support
- 
-+riscv-iommu-sys device
-+----------------------
-+
-+This device implements the RISC-V IOMMU emulation as a platform bus device that
-+RISC-V boards can use.
-+
-+For the 'virt' board the device is disabled by default.  To enable it use the
-+'iommu-sys' machine option:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
-+
-+There is no options to configure the capabilities of this device in the 'virt'
-+board using the QEMU command line.  The device is configured with the following
-+riscv-iommu options:
-+
-+- "ioatc-limit": default value (2Mb)
-+- "intremap": enabled
-+- "ats": enabled
-+- "off": on (DMA disabled)
-+- "s-stage": enabled
-+- "g-stage": enabled
-+
- .. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
- 
- .. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index 8e9a2e4dda..537aac0340 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -94,6 +94,12 @@ command line:
- 
-   $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
- 
-+It also has support for the riscv-iommu-sys platform device:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
-+
- Refer to :ref:`riscv-iommu` for more information on how the RISC-V IOMMU support
- works.
- 
-@@ -129,6 +135,10 @@ The following machine-specific options are supported:
-   having AIA IMSIC (i.e. "aia=aplic-imsic" selected). When not specified,
-   the default number of per-HART VS-level AIA IMSIC pages is 0.
- 
-+- iommu-sys=[on|off]
-+
-+  Enables the riscv-iommu-sys platform device. Defaults to 'off'.
-+
- Running Linux kernel
- --------------------
- 
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+With regards,
+Daniel
 -- 
-2.45.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
