@@ -2,63 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382359BF4F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967429BF511
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:18:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8kXN-0006uO-Rc; Wed, 06 Nov 2024 13:13:49 -0500
+	id 1t8kas-0008SZ-BQ; Wed, 06 Nov 2024 13:17:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t8kXK-0006uF-D4
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:13:46 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t8kap-0008Ry-D0
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:17:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t8kXI-0008GQ-9K
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:13:46 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XkCth6k3fz6K7CK;
- Thu,  7 Nov 2024 02:10:52 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id DF968140A77;
- Thu,  7 Nov 2024 02:13:40 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 6 Nov
- 2024 19:13:40 +0100
-Date: Wed, 6 Nov 2024 18:13:38 +0000
-To: <imammedo@redhat.com>, <mst@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, <qemu-devel@nongnu.org>, <ankita@nvidia.com>,
- <linuxarm@huawei.com>
-CC: <linux-cxl@vger.kernel.org>, <marcel.apfelbaum@gmail.com>,
- <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>, "Dave
- Jiang" <dave.jiang@intel.com>, Huang Ying <ying.huang@intel.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, <eduardo@habkost.net>, Michael Roth
- <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH v6 10/15] hw/acpi: Generic Port Affinity Structure support
-Message-ID: <20241106181338.00003c37@Huawei.com>
-In-Reply-To: <20240916174122.1843197-1-Jonathan.Cameron@huawei.com>
-References: <20240916171017.1841767-1-Jonathan.Cameron@huawei.com>
- <20240916174122.1843197-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t8kan-0002HX-AL
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:17:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730917039;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=3ORgoLF8DWAt8xYGodiEPtR0gXshyg2JjHPypSuGXlg=;
+ b=KG66lTwRqYHllADbtP/OyGPt8Sawh1JDuFC4hASimrWQH2iE7TYOB2O5icDBSXWM1++CmU
+ KzlV56/NYMxgH1LNQhhj9b3/V1W5jAFglXqdmY0aqasHfKe9xJuHEKqaByEnbrAkbIYKWB
+ zVjWxY4cZvXsR/tavc1wbzI9CufTnAA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-161-eWXpq9fZOv2U5MQDRz6Onw-1; Wed, 06 Nov 2024 13:17:18 -0500
+X-MC-Unique: eWXpq9fZOv2U5MQDRz6Onw-1
+X-Mimecast-MFC-AGG-ID: eWXpq9fZOv2U5MQDRz6Onw
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37d5116f0a6so22437f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:17:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730917037; x=1731521837;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3ORgoLF8DWAt8xYGodiEPtR0gXshyg2JjHPypSuGXlg=;
+ b=uFTUsnapBpn9tK4BwAcH1kQYBlDDQc5L1uCnakAI1GcD3Wva0uARwo2Nzch1CrsArq
+ v6OlxUUT0LrSTlaZahEp1ECy3kWu92Woc/itMOziAeCoedKACFmCSh8uw9mBV6N/6D2C
+ RgqhYyClp+WrU7+iDedOCgnoFeEHHDMTdVgwl44iFTEf9qu/Iq5rYELtG/VwY0f3JvQq
+ mFj2GBh6/A6LEEEPZNb6BFXeEXizPLu2gidkUohUF9Fs3OmdUdoneNt/V9B7tZZYWrBe
+ 42x/i6OItkV7qa7Y2LJN/In4B7NLKdzr6ujM5aY+6nWQnt7nyhBGSTH3YtN9+bTL17ZZ
+ D1CQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUS0ZyMdG6IPULUT1ybZy9WfaxOKcwP279fpCZKTYAN7dd4vyB1R5MsR8S1KFHb1xP0tTp6iPjU+jlg@nongnu.org
+X-Gm-Message-State: AOJu0YxBoDW4hpCZVIzqfmfzspBcucn8wnE99NKMid5WhP1ZoGVMfYgA
+ oBrXc+P1eDB5rJpu/ycR15jB+ZOZoXTUCsECGqRsoV7dKSSsr9ohU8yKCQu+sJ1Q0Szj9U4rkIC
+ FkL2feOt68kJO4lat8TqQqORleiRoqbXdorWPSCMv1EgzLm6QMF0E
+X-Received: by 2002:a05:6000:186f:b0:37d:4e74:689 with SMTP id
+ ffacd0b85a97d-381c7ab293amr16853492f8f.47.1730917036931; 
+ Wed, 06 Nov 2024 10:17:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEb5E4/KT4maHUJy1KoiW6NtprjxY/9ZAh88vYMPc1pPt4MH7mSCw6aY2N6zyri1Oi7YIJS6g==
+X-Received: by 2002:a05:6000:186f:b0:37d:4e74:689 with SMTP id
+ ffacd0b85a97d-381c7ab293amr16853483f8f.47.1730917036591; 
+ Wed, 06 Nov 2024 10:17:16 -0800 (PST)
+Received: from redhat.com ([2a02:14f:179:39a6:9751:f8aa:307a:2952])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-381c116ad6fsm19724115f8f.98.2024.11.06.10.17.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 10:17:15 -0800 (PST)
+Date: Wed, 6 Nov 2024 13:17:10 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, raphael@enfabrica.net, sgarzare@redhat.com,
+ kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, eblake@redhat.com,
+ armbru@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v7 0/3] vhost-user-blk: live resize additional APIs
+Message-ID: <20241106131649-mutt-send-email-mst@kernel.org>
+References: <20241106111837.115820-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106111837.115820-1-vsementsov@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,44 +99,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-> index 968b654e58..4aa4debf44 100644
-> --- a/hw/acpi/aml-build.c
-> +++ b/hw/acpi/aml-build.c
-> @@ -1955,6 +1955,19 @@ static void build_append_srat_pci_device_handle(GArray *table_data,
->      build_append_int_noprefix(table_data, 0, 12);
->  }
->  
-> +static void build_append_srat_acpi_device_handle(GArray *table_data,
-> +                                                 const char *hid,
-> +                                                 uint32_t uid)
-> +{
-> +    assert(strlen(hid) == 8);
-> +    /* Device Handle - ACPI */
-> +    for (int i = 0; i < sizeof(hid); i++) {
-
-Here is the bug that is tripping the test on a 32 bit host.
-That sizeof(hid) is garbage (I'm guessing a result of messed up
-factoring out of this code from where it was an array of
-characters).
-
-Should just be 8. 
-
-I'll run tests and send out fix by end of week.
-
-Jonathan
+On Wed, Nov 06, 2024 at 02:18:34PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> v7: update QAPI version 9.1 -> 9.2
 
 
 
-> +        build_append_int_noprefix(table_data, hid[i], 1);
-> +    }
-> +    build_append_int_noprefix(table_data, uid, 4);
-> +    build_append_int_noprefix(table_data, 0, 4);
-> +}
+Not like this. ypur patches are merged, pls post a fix patch on top.
+Thanks!
+
+> Vladimir Sementsov-Ogievskiy (3):
+>   qdev-monitor: add option to report GenericError from find_device_state
+>   vhost-user-blk: split vhost_user_blk_sync_config()
+>   qapi: introduce device-sync-config
+> 
+>  hw/block/vhost-user-blk.c | 27 ++++++++++++++------
+>  hw/virtio/virtio-pci.c    |  9 +++++++
+>  include/hw/qdev-core.h    |  6 +++++
+>  qapi/qdev.json            | 24 ++++++++++++++++++
+>  system/qdev-monitor.c     | 53 ++++++++++++++++++++++++++++++++++++---
+>  5 files changed, 108 insertions(+), 11 deletions(-)
+> 
+> -- 
+> 2.34.1
+
 
