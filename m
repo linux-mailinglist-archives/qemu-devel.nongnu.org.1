@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BAD9BEE8D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA1B9BEF2A
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:36:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8fvL-0005yT-5L; Wed, 06 Nov 2024 08:18:15 -0500
+	id 1t8gB2-0001f5-RF; Wed, 06 Nov 2024 08:34:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t8fvH-0005vu-Th; Wed, 06 Nov 2024 08:18:11 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1t8fvF-0006dv-AY; Wed, 06 Nov 2024 08:18:11 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xk5Lz6CkLz6JBSG;
- Wed,  6 Nov 2024 21:16:27 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
- by mail.maildlp.com (Postfix) with ESMTPS id 4425214011D;
- Wed,  6 Nov 2024 21:18:05 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 6 Nov 2024 14:18:05 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Wed, 6 Nov 2024 14:18:05 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "mst@redhat.com" <mst@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>, "alex.bennee@linaro.org"
- <alex.bennee@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "gshan@redhat.com"
- <gshan@redhat.com>, "maz@kernel.org" <maz@kernel.org>, "will@kernel.org"
- <will@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "npiggin@gmail.com" <npiggin@gmail.com>,
- "harshpb@linux.ibm.com" <harshpb@linux.ibm.com>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>, "shahuang@redhat.com"
- <shahuang@redhat.com>, "zhao1.liu@intel.com" <zhao1.liu@intel.com>, Linuxarm
- <linuxarm@huawei.com>, "gustavo.romero@linaro.org"
- <gustavo.romero@linaro.org>
-Subject: RE: [PATCH] arm/virt: Extract common code to wire GICC<->vCPU IRQs
- for reuse
-Thread-Topic: [PATCH] arm/virt: Extract common code to wire GICC<->vCPU IRQs
- for reuse
-Thread-Index: AQHbLgSbwU64kgKDNkuiSDBIJV8mp7KnDaaAgAI3n/CAAOW0gIAAFNFQ
-Date: Wed, 6 Nov 2024 13:18:04 +0000
-Message-ID: <34aa0c9efb3144ab80a444144810b264@huawei.com>
-References: <20241103152455.202462-1-salil.mehta@huawei.com>
- <CAFEAcA91DoU4dAHYy6OOeMjEQ+0LGZX8KM-rKsCh89UnFS4yTQ@mail.gmail.com>
- <7d27ceab963441dc8355d06e6bc4b88d@huawei.com>
- <CAFEAcA9Jhz9a-X0B_bW++3kUePzTENJfq520A0CEst1o+QES4Q@mail.gmail.com>
-In-Reply-To: <CAFEAcA9Jhz9a-X0B_bW++3kUePzTENJfq520A0CEst1o+QES4Q@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.170.112]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t8gB0-0001dr-9o
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:34:26 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1t8gAx-0001ZX-Os
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:34:26 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7203c431f93so5672139b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 05:34:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1730900062; x=1731504862; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6bdbdz8vU0Bbihl18UjLAjwVvI21BGXXW+x8R30xk2M=;
+ b=eDBbFTdxnflfsC6Yt4E3bXlm9gaAxsfQINXdRImj7x8472GCPwcqOpWHx3MpMc6ARk
+ SfeasvRYTw83ZFCHOZw+jGcSCINPNDDVtkj3Sfoz/2ieRr22HtLWUmMEdB3+BEFQ5hPt
+ 8Eyes+ep/X2o+Dsq769ipnpqYuIhnd/vYbcaBmvg+z9XyEV4R9KhC3Ik66HiHS9Sn7+P
+ i9sDEJ0lZlUaG/itCHqQ8c4h3tPqaQIyvqEHlNrPisOmLc/qfr3M6D9uVFGsSTNfMYYD
+ Whpo1oW6221KWtOGP+SWIfsspn+OqYL3wpPS8sIwU31ihpxMlLTIgh+Ul+06x7VNrbOf
+ 21Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730900062; x=1731504862;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6bdbdz8vU0Bbihl18UjLAjwVvI21BGXXW+x8R30xk2M=;
+ b=l/vDmeNUtnD4S2xud9Z/Pxa84P0bUkjCK9Y/OBLixoxSUIjjfTyvXVtbTLh7YpTR2s
+ jqd3pa+xye2q9+NWwQOvGb4gujqMxs8hECjcUWy6GhqKfYQowr4GDoquHvFBbBulYw6I
+ ZBWl7aZyWCG9HNpiMK120Hsg2w5z5PIvbI7fSxPPJvJMwx/KBkSZNLwcBLXdwjVytLOI
+ ENIr8pi8pJCjWkZ6TbnX4eXK3hUtVCkeyWe7YN8aMSmMSQllE+kg8jiHamr+zCHzgmTF
+ w3//NmgCaoFQv8AlrE0QoDY/m5k+7cl0L0SHR9Zo/0Kqyzrk+P0wcqP3WbZVNCJPvpvH
+ Nvxg==
+X-Gm-Message-State: AOJu0YxQMhVzkB89v2w4wWMItqOtehJ78JxhNtdHg5QMKEz5oyLvW9mT
+ XVlXj26biMQC4P/rX7XdEf9oU5pRRyEDH7C2WWnnRbIUEhwRrytqZG2wZoZXSv1jrOPfI97nvw/
+ m
+X-Google-Smtp-Source: AGHT+IFFgz97DkAlOq5csTvhDrpBAGsm2N8BS5PnUS3m9dNi3TvNz/r1V4Za1oYBXe7wlAZrg0wmKw==
+X-Received: by 2002:a05:6a00:cc3:b0:71e:744a:3fbc with SMTP id
+ d2e1a72fcca58-720b9d9490fmr31457555b3a.21.1730900061698; 
+ Wed, 06 Nov 2024 05:34:21 -0800 (PST)
+Received: from grind.. ([189.79.22.174]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-720bc2eb64esm11749765b3a.168.2024.11.06.05.34.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 05:34:21 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-10.0 0/7] hw/riscv: riscv-iommu-sys device
+Date: Wed,  6 Nov 2024 10:34:00 -0300
+Message-ID: <20241106133407.604587-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,41 +87,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SEkgUGV0ZXIsDQoNCj4gIEZyb206IFBldGVyIE1heWRlbGwgPHBldGVyLm1heWRlbGxAbGluYXJv
-Lm9yZz4NCj4gIFNlbnQ6IFdlZG5lc2RheSwgTm92ZW1iZXIgNiwgMjAyNCAxOjAxIFBNDQo+ICBU
-bzogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ICANCj4gIE9uIFR1ZSwg
-NSBOb3YgMjAyNCBhdCAyMjoyMCwgU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+
-IHdyb3RlOg0KPiAgPg0KPiAgPiBISSBQZXRlciwNCj4gID4NCj4gID4gPiAgRnJvbTogUGV0ZXIg
-TWF5ZGVsbCA8cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPg0KPiAgPiA+ICBTZW50OiBNb25kYXks
-IE5vdmVtYmVyIDQsIDIwMjQgMToyNyBQTQ0KPiAgPiA+ICBUbzogU2FsaWwgTWVodGEgPHNhbGls
-Lm1laHRhQGh1YXdlaS5jb20+DQo+ICA+ID4NCj4gID4gPiAgT24gU3VuLCAzIE5vdiAyMDI0IGF0
-IDE1OjI1LCBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gIHdyb3RlOg0K
-PiAgPiA+ICA+DQo+ICA+ID4gID4gRXh0cmFjdCBjb21tb24gR0lDIGFuZCBDUFUgaW50ZXJydXB0
-IHdpcmluZyBjb2RlIHRvIGltcHJvdmUgY29kZQ0KPiAgPiA+ID4gcmVhZGFiaWxpdHkgYW5kIG1v
-ZHVsYXJpdHksIHN1cHBvcnRpbmcgcmV1c2UgaW4gZnV0dXJlIHBhdGNoIHNldHMuDQo+ICA+ID4g
-ID4gVGhpcyByZWZhY3RvciBpcyBiZW5pZ24gYW5kIGludHJvZHVjZXMgKm5vKiBmdW5jdGlvbmFs
-IGNoYW5nZXMuDQo+ICA+ID4gID4NCj4gID4gPiAgPiBOb3RlOiBUaGlzIHBhdGNoIGhhcyBiZWVu
-IGlzb2xhdGVkIGZyb20gYSBsYXJnZXIgcGF0Y2ggc2V0IHRvICA+DQo+ICA+ID4gZmFjaWxpdGF0
-ZSBlYXJseSBtZXJnaW5nIGFuZCByZWR1Y2UgdGhlIGNvbXBsZXhpdHkgb2YgdGhlIG9yaWdpbmFs
-DQo+ICA+ID4gPiBzZXQsIGFzIGl0IG9wZXJhdGVzIGluZGVwZW5kZW50bHkuIEFsbCBvcmlnaW5h
-bCB0YWdzIGFuZCBhdXRob3IgID4NCj4gID4gPiBjb250cmlidXRpb25zIGFyZSByZXRhaW5lZC4N
-Cj4gID4gPg0KPiAgPiA+ICBJIHdvdWxkIHByZWZlciB0byBzZWUgcmVmYWN0b3JpbmcgcGF0Y2hl
-cyBpbiB0aGUgY29udGV4dCBvZiB0aGUNCj4gID4gPiBzZXJpZXMgdGhhdCAgbWFrZXMgdGhlbSBu
-ZWNlc3NhcnkuIEFzIGl0IHN0YW5kcywgdGhlcmUgZG9lc24ndA0KPiAgPiA+IHJlYWxseSBzZWVt
-IHRvIGJlIG11Y2ggIGJlbmVmaXQgdG8gdGhpcyBjaGFuZ2UuDQo+ICA+DQo+ICA+DQo+ICA+IE9r
-IG5vIGlzc3Vlcy4gSnVzdCB0byBjb25maXJtLCB5b3VyIGFib3ZlIGNvbW1lbnQgaXMganVzdCBz
-cGVjaWZpYyB0bw0KPiAgPiB0aGlzIHBhdGNoIG9yIGFsbCB0aGUgMyBpbmRpdmlkdWFsIHBhdGNo
-ZXMgSSBoYWQgc2VudCBmb3IgcmV2aWV3Pw0KPiAgDQo+ICBJdCBhcHBsaWVzIHRvIGFsbCBvZiB0
-aGVtIChhbmQgYXMgYSBnZW5lcmFsIHByaW5jaXBsZSkuDQoNCg0KR290IGl0LiBJIHRob3VnaHQg
-Y2hhbmdlcyBpbiBiZWxvdyBwYXRjaGVzIHdlcmUgaW4gYW55IGNhc2UgdXNlZnVsIGFzIHRoZXkg
-d2VyZQ0KaW1wcm92aW5nIHRoZSBjb2RlPw0KDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9xZW11
-LWRldmVsLzIwMjQxMTAzMTUyMjU2LjIwMjQ0NC0xLXNhbGlsLm1laHRhQGh1YXdlaS5jb20vDQpo
-dHRwczovL2xvcmUua2VybmVsLm9yZy9xZW11LWRldmVsLzIwMjQxMTAzMTUyNjM5LjIwMjQ4MC0x
-LXNhbGlsLm1laHRhQGh1YXdlaS5jb20vDQoNClRoYW5rcw0KDQo+ICANCj4gIHRoYW5rcw0KPiAg
-LS0gUE1NDQo=
+Hi,
+
+Now that we have merged the base IOMMU support we can re-introduce
+the riscv-iommu-sys platform device that was taken away from the initial
+posting.
+
+Aside from adding support for the device in the 'virt' machine we're
+also adding MSI support for it, something that we weren't doing before.
+The Linux driver is then free to choose either MSI or WSI to use the
+device.
+
+Patches based on master.
+
+Daniel Henrique Barboza (5):
+  hw/riscv/riscv-iommu.c: add riscv_iommu_instance_init()
+  hw/riscv/riscv-iommu: parametrize CAP.IGS
+  hw/riscv/virt.c, riscv-iommu-sys.c: add MSIx support
+  hw/riscv/riscv-iommu: implement reset protocol
+  docs/specs: add riscv-iommu-sys information
+
+Sunil V L (1):
+  hw/riscv/virt: Add IOMMU as platform device if the option is set
+
+Tomasz Jeznach (1):
+  hw/riscv: add riscv-iommu-sys platform device
+
+ docs/specs/riscv-iommu.rst  |  30 ++++-
+ docs/system/riscv/virt.rst  |  10 ++
+ hw/riscv/meson.build        |   2 +-
+ hw/riscv/riscv-iommu-bits.h |   6 +
+ hw/riscv/riscv-iommu-pci.c  |  21 +++
+ hw/riscv/riscv-iommu-sys.c  | 256 ++++++++++++++++++++++++++++++++++++
+ hw/riscv/riscv-iommu.c      | 114 +++++++++++-----
+ hw/riscv/riscv-iommu.h      |   5 +
+ hw/riscv/trace-events       |   4 +
+ hw/riscv/virt.c             | 108 ++++++++++++++-
+ include/hw/riscv/iommu.h    |  10 +-
+ include/hw/riscv/virt.h     |   6 +-
+ 12 files changed, 530 insertions(+), 42 deletions(-)
+ create mode 100644 hw/riscv/riscv-iommu-sys.c
+
+-- 
+2.45.2
+
 
