@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D279BDD3D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 03:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7D99BDD45
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 03:51:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8W7e-00076T-R4; Tue, 05 Nov 2024 21:50:18 -0500
+	id 1t8W7g-00077M-8v; Tue, 05 Nov 2024 21:50:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t8W7T-00071K-8L
+ id 1t8W7W-00073n-Ny
  for qemu-devel@nongnu.org; Tue, 05 Nov 2024 21:50:11 -0500
 Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1t8W7R-0003OA-Hk
- for qemu-devel@nongnu.org; Tue, 05 Nov 2024 21:50:07 -0500
+ id 1t8W7U-0003OA-DN
+ for qemu-devel@nongnu.org; Tue, 05 Nov 2024 21:50:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730861406; x=1762397406;
+ t=1730861409; x=1762397409;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JcVwYkgHmlLrfByBJgICNQrNbswie+WUwEU7n23xvn8=;
- b=e4vprRTVDRh1eGfGCpsGg51FxVivho78uArRoghZYd6HbyfM1LT5gFyR
- 38GwwRmww/uNZe/1R91pi6pGJNromznYeZqrDTuJvJZSD7j0h2a0HDfkw
- nhCVTPkdskC4mv1Z6w3nMhC2ZbTr7y3ioySQzVd1RyXn070C5dBQNF46c
- +D99O6rc4w/pG8c0j46ZglW715Hu7zl6LsJ+MartGGacGhYMTdk4T1R7d
- KDg8WNsNWu3P7p/1/2DJdeSU/R3SU0zK6YizqLipoL2CeanM/9Yigj9zU
- 48uajstJEzb1/Y446b1epRFNEqGWYJnoctgb3Digk2lN1IzFTottPdOqS A==;
-X-CSE-ConnectionGUID: t2q2nvOISXaTSIBS114ovw==
-X-CSE-MsgGUID: R0K1VOrvRKqP6Zqb3kaIKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30492271"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30492271"
+ bh=M4sDt9QkECcSbT07XJdCv1wUJiDP78YRHjt03Sbegi4=;
+ b=PBan4D1SFHGJqtNk545ZGjXuA+Qt6a6AO9KA4y6QOW1wBmS39M4o2e+Y
+ kK+YgceX2Pjq1qCnX0aK+XA97z35qGMyWxj0Or5yqWVI+LyrWg7CUuJHW
+ /qpXFyk+XseKJeCHNJykHS/3kj4mvk4q4g9qQs6tTyJiIjJY+Qu1u3oVN
+ 7ZLua78s/7yvklbi8sZJA6gKfrWpJleOv3SrhFiR1b826Mx1U2o9uxZph
+ 8NnLOpSAUC2Kub/HTO6bWHhSMQ1L3JGbEXe101txXwH/WnDCNTiSja9Wh
+ OStVsBnndWA8Dc7l/lDg+sqKaAcIufJZ536d9MfTM4jKLesIqGUPcWwlU A==;
+X-CSE-ConnectionGUID: 5uQBzY+sTFiDMCJuQFfC1g==
+X-CSE-MsgGUID: mErn08xcR3yr0dpHjyUPkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30492281"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30492281"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 18:50:05 -0800
-X-CSE-ConnectionGUID: T5TLU2G+Su6PkrVLoalTGw==
-X-CSE-MsgGUID: YSLwJp0WSqyljdTgl/zOVA==
+ 05 Nov 2024 18:50:08 -0800
+X-CSE-ConnectionGUID: Ynv9OBZpTo6N0P/HesUs/Q==
+X-CSE-MsgGUID: +GUGd9ljSzuNoTo1fYV/8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; d="scan'208";a="115077998"
+X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; d="scan'208";a="115078006"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 05 Nov 2024 18:50:02 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 05 Nov 2024 18:50:05 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 05/11] target/i386/kvm: Save/load MSRs of kvmclock2
- (KVM_FEATURE_CLOCKSOURCE2)
-Date: Wed,  6 Nov 2024 11:07:22 +0800
-Message-Id: <20241106030728.553238-6-zhao1.liu@intel.com>
+Subject: [PATCH v5 06/11] target/i386/kvm: Drop workaround for
+ KVM_X86_DISABLE_EXITS_HTL typo
+Date: Wed,  6 Nov 2024 11:07:23 +0800
+Message-Id: <20241106030728.553238-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241106030728.553238-1-zhao1.liu@intel.com>
 References: <20241106030728.553238-1-zhao1.liu@intel.com>
@@ -87,72 +87,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MSR_KVM_SYSTEM_TIME_NEW and MSR_KVM_WALL_CLOCK_NEW are bound to
-kvmclock2 (KVM_FEATURE_CLOCKSOURCE2).
+The KVM_X86_DISABLE_EXITS_HTL typo has been fixed in commit
+77d361b13c19 ("linux-headers: Update to kernel mainline commit
+b357bf602").
 
-Add the save/load support for these 2 MSRs just like kvmclock MSRs.
+Drop the related workaround.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Zide Chen <zide.chen@intel.com>
 ---
- target/i386/cpu.h     |  2 ++
- target/i386/kvm/kvm.c | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+)
+ target/i386/kvm/kvm.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c4ec64e0078f..79c28a48eb70 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1886,6 +1886,8 @@ typedef struct CPUArchState {
- 
-     uint64_t system_time_msr;
-     uint64_t wall_clock_msr;
-+    uint64_t system_time_new_msr;
-+    uint64_t wall_clock_new_msr;
-     uint64_t steal_time_msr;
-     uint64_t async_pf_en_msr;
-     uint64_t async_pf_int_msr;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4aba034865bb..b175cd4a4bcb 100644
+index b175cd4a4bcb..1fb4bd19fcf7 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -3962,6 +3962,12 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-             kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, env->system_time_msr);
-             kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, env->wall_clock_msr);
-         }
-+        if (env->features[FEAT_KVM] & CPUID_KVM_CLOCK2) {
-+            kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME_NEW,
-+                              env->system_time_new_msr);
-+            kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK_NEW,
-+                              env->wall_clock_new_msr);
-+        }
-         if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
-             kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, env->async_pf_int_msr);
-         }
-@@ -4442,6 +4448,10 @@ static int kvm_get_msrs(X86CPU *cpu)
-         kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, 0);
-         kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, 0);
-     }
-+    if (env->features[FEAT_KVM] & CPUID_KVM_CLOCK2) {
-+        kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
-+        kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK_NEW, 0);
-+    }
-     if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
-         kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, 0);
-     }
-@@ -4708,6 +4718,12 @@ static int kvm_get_msrs(X86CPU *cpu)
-         case MSR_KVM_WALL_CLOCK:
-             env->wall_clock_msr = msrs[i].data;
-             break;
-+        case MSR_KVM_SYSTEM_TIME_NEW:
-+            env->system_time_new_msr = msrs[i].data;
-+            break;
-+        case MSR_KVM_WALL_CLOCK_NEW:
-+            env->wall_clock_new_msr = msrs[i].data;
-+            break;
-         case MSR_MCG_STATUS:
-             env->mcg_status = msrs[i].data;
-             break;
+@@ -3085,10 +3085,7 @@ static int kvm_vm_set_tss_addr(KVMState *s, uint64_t tss_base)
+ static int kvm_vm_enable_disable_exits(KVMState *s)
+ {
+     int disable_exits = kvm_check_extension(s, KVM_CAP_X86_DISABLE_EXITS);
+-/* Work around for kernel header with a typo. TODO: fix header and drop. */
+-#if defined(KVM_X86_DISABLE_EXITS_HTL) && !defined(KVM_X86_DISABLE_EXITS_HLT)
+-#define KVM_X86_DISABLE_EXITS_HLT KVM_X86_DISABLE_EXITS_HTL
+-#endif
++
+     if (disable_exits) {
+         disable_exits &= (KVM_X86_DISABLE_EXITS_MWAIT |
+                           KVM_X86_DISABLE_EXITS_HLT |
 -- 
 2.34.1
 
