@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AE49BEF40
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A5C9BEF64
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:45:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8gFU-0006ir-Rm; Wed, 06 Nov 2024 08:39:06 -0500
+	id 1t8gL3-0004Z9-8B; Wed, 06 Nov 2024 08:44:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8gEe-0006SN-UQ
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:38:14 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1t8gKt-0004YB-RR
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:44:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8gEd-0002Dk-7w
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:38:12 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1t8gKq-0004E6-8n
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:44:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730900290;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1730900674;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2hGrf3fII06QoHmh3BU1YIto9BWksH8zn36duqj8pTs=;
- b=Ujsn0waQf3InUWJfaRHb4zwG5oOHBeVe5uhm2lgTSL3UI+000hjvCEaB/ykA3+xipxs8Ti
- EA75Rd5NBVMwSmehB0agi6t3d1uyMZObzKt7TbZgfAqc6N343suTihKBiG+b0ndiGh+cXU
- cK5Fqxfq7hVMmQIHY2cb7yxctviVEi8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-KiBD3CEwOdOkMtXqXDcqCQ-1; Wed,
- 06 Nov 2024 08:38:09 -0500
-X-MC-Unique: KiBD3CEwOdOkMtXqXDcqCQ-1
-X-Mimecast-MFC-AGG-ID: KiBD3CEwOdOkMtXqXDcqCQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 14E891954B0F; Wed,  6 Nov 2024 13:38:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.180])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 376441956088; Wed,  6 Nov 2024 13:38:05 +0000 (UTC)
-Date: Wed, 6 Nov 2024 13:38:02 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Dehan Meng <demeng@redhat.com>
-Cc: qemu-devel@nongnu.org, kkostiuk@redhat.com, michael.roth@amd.com,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v5 3/3] qemu-ga: Avoiding freeing line prematurely
-Message-ID: <ZytxOoOft042eG1z@redhat.com>
-References: <20241106084134.1133061-1-demeng@redhat.com>
- <20241106084134.1133061-4-demeng@redhat.com>
+ bh=CXaqAZwvApsDWLaa72JlzC5oGvwJVA5zQvF73LU0Ii8=;
+ b=G2dA+R6VKaaPAdEf5MGkWbWQHquT+bH62IdrOxJsC5DtQbvhABQVw6Da9rnDEs4xiTaXfA
+ 8OermvQ951ndAAhuv6e4B69cwsWF8y3su6/flq1KqKAfTihSTFiZpZSq8m+EZswu+0nxmf
+ u9iiWmwi8owIz9liGcuyaQtC42lYc9M=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-672-1HWysyfoN5W-le6Q7MKD_g-1; Wed, 06 Nov 2024 08:44:31 -0500
+X-MC-Unique: 1HWysyfoN5W-le6Q7MKD_g-1
+X-Mimecast-MFC-AGG-ID: 1HWysyfoN5W-le6Q7MKD_g
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4315e8e9b1cso5561565e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 05:44:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730900670; x=1731505470;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CXaqAZwvApsDWLaa72JlzC5oGvwJVA5zQvF73LU0Ii8=;
+ b=FqDNIBnD/NPbSwVrWhJ15oE5P/xJcpYrkqVS8McPGEvp846eqdBuTW0C8sqqamt624
+ yKO45CU+G7YBCQvU9YQvFYgFwuHAKdbzH1ToHa45861IbxFIvi6CMzC0F3/Tz2l8SUWO
+ z/6XDSIofoUKAeBL2hHLRq2zppjfDQjHkXVLTVdGhSIcVQ5jVOdUMlbG2LqkMQD7HHsg
+ 9gZM4cpWs+h9UGlxKsELUyuIjn0nLQmqBs7UuHybmni2SFvJehMaMlJx7oO6m/6eukbQ
+ c9G1ZFAFOOsdOXP2Dob50IMcn2cLdJdrCBEPC7dTxRRFC011Jndxkacy8DNvVKQ+rYKs
+ h7eA==
+X-Gm-Message-State: AOJu0YxEWZroNClhycJI9sWLR3wI0n+91IcMZuuuwS6oDxtoDcUhTG8V
+ R39bqbXBI2RCdsJO4rwJvXl9zuW3zYfbSpo9U0NekvGQvk88gnv658pntMQqEka7uGAWdqYiulQ
+ jtH9NUXHcOwio51NjibQpVYiXOdb2jTa51HXCf1eh7rrKzKr0dTAG
+X-Received: by 2002:a05:600c:4e94:b0:431:5226:1633 with SMTP id
+ 5b1f17b1804b1-432a9a8d278mr23799365e9.6.1730900669959; 
+ Wed, 06 Nov 2024 05:44:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEGPkwseivCgpsihYoSZVC1rFa96TSrZRjmqAahocokVA0FNj3trwHOXY6djAutd5BRk465zA==
+X-Received: by 2002:a05:600c:4e94:b0:431:5226:1633 with SMTP id
+ 5b1f17b1804b1-432a9a8d278mr23798815e9.6.1730900668652; 
+ Wed, 06 Nov 2024 05:44:28 -0800 (PST)
+Received: from sgarzare-redhat ([5.77.86.226])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa70a1d8sm24052645e9.27.2024.11.06.05.44.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 05:44:26 -0800 (PST)
+Date: Wed, 6 Nov 2024 14:44:21 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Prasad Pandit <pjp@fedoraproject.org>, Jason Wang <jasowang@redhat.com>, 
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
+Subject: Re: [PATCH] vhost: fail device start if iotlb update fails
+Message-ID: <oulj7a7lh35ffh5qbm5idq4vtawhps4ixknauvfkjicjsvjhbr@rfr6ttpvfjwy>
+References: <20241105060053.61973-1-ppandit@redhat.com>
+ <a664pk3wefui7tyvs6rjln2tm2fxwir6yvshffwkjypksechjj@3amhddyqxwiz>
+ <CAE8KmOxHTx=ZxTWype-YVizogDEVVXVg=jRdYU8eRtHP7ngr9w@mail.gmail.com>
+ <kxiffscfbs4njd6cfuebstpm5yrp7jdkgulcwbsmsyyxfowixw@yrhyrmhaj7da>
+ <CAE8KmOwWDw7fxbLcVLo1BwkLYfi4X_9mKP73MaZz177LNgaaJg@mail.gmail.com>
+ <ez2fb2yg7zha6ccdey47zxhaxcgwim7f6p4zzj4ucrgjnbavyk@mrnhs47uyx5e>
+ <CAE8KmOy48HPqW4VLJmf+ofZq+K1nM3tza3Sp4nX6sAreV0bxOg@mail.gmail.com>
+ <p4ryblk3o63lao45cplo2ws6l5thcmt52phue63benvwhjrdud@53ta327k6mhj>
+ <CAE8KmOy+VM6o7F08vgkCs3HQK5_j8dW-wbLz-4tew6UqoSVRFg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241106084134.1133061-4-demeng@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <CAE8KmOy+VM6o7F08vgkCs3HQK5_j8dW-wbLz-4tew6UqoSVRFg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -84,26 +106,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 06, 2024 at 04:41:34PM +0800, Dehan Meng wrote:
-> It's now only freed at the end of the function.
-> 
-> Signed-off-by: Dehan Meng <demeng@redhat.com>
-> ---
->  qga/commands-linux.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+On Wed, Nov 06, 2024 at 06:04:59PM +0530, Prasad Pandit wrote:
+>On Wed, 6 Nov 2024 at 17:31, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> For vhost_set_iotlb_callback() that is true because for now we go to
+>> that label only if the callback is defined, but this is not the case for
+>> hdev->vhost_ops->vhost_dev_start().
+>>
+>> Anyway if in the future we add a new step that need to go on that label
+>> we may forgot to remember that, so since it's not a hot path, I'd add
+>> both checks as we do in vhost_dev_stop().
+>
+>* Okay.
+>
+>> IIUC in vhost_dev_stop() we already call both of them with a 'false'
+>> parameter, so that functions should be already prepared or am I missing
+>> something?
+>===
+>static int vhost_user_dev_start(struct vhost_dev *dev, bool started)
+>{
+>    ...
+>    if (started) {
+>        return vhost_user_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+>                                          VIRTIO_CONFIG_S_DRIVER |
+>                                          VIRTIO_CONFIG_S_DRIVER_OK);
+>    } else {
+>        return 0;
+>    }
+>}
+>static void vhost_user_set_iotlb_callback(struct vhost_dev *dev, int enabled)
+>{
+>    /* No-op as the receive channel is not dedicated to IOTLB messages. */
+>}
+>===
+>
+>* vhost_user_dev_start and vhost_user_set_iotlb_callback() don't seem
+>to do much when called with 'false' parameter.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+I think we should be agnostic here about what a specific backend does.
+For example VHOST_BACKEND_TYPE_KERNEL doesn't even define that callback, 
+but IMHO we have to call it anyway here, like we already do in 
+vhost_dev_stop().
 
+If we miss something in that callbacks, when they are called with 
+`false`, then it's another problem that we need to fix regardless of 
+this patch.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Thanks,
+Stefano
 
 
