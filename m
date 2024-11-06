@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28649BF960
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 23:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 550DF9BF95D
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 23:37:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8ods-0005Jw-2i; Wed, 06 Nov 2024 17:36:48 -0500
+	id 1t8oeG-0005My-DD; Wed, 06 Nov 2024 17:37:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odp-0005IK-6d
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:45 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8oeA-0005MQ-4p
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:37:06 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odn-0005PK-A7
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:44 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8oe8-0005Oh-5z
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:37:05 -0500
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6MAEfq022224;
- Wed, 6 Nov 2024 22:36:36 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6MA6d8022158;
+ Wed, 6 Nov 2024 22:36:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=oU0k4LAccvrPVSmV/
- W7wyDvbF5c9/bZzJHsUJI81FIE=; b=bor22oICjLGxB2jSMSvdOLJ4EkqAAz2L1
- 3HwMDZWwwOJMkZl5LOHzQg6onUHSGnHk6MU8A8EbfyxQk+Kx93/xrmhPLXQUsJ+/
- gOneURnWWbiI4mWvOdmH6Gn5Xwaw/END4hIAyhKFycyW7ic4PKGNVgBvX0c+OF70
- b0LlQ703DdT2SeHMJaizyfz6dTlaIJUCgQtXO44XEIBv1qpIDTXlU//E93Jzn03i
- fshn2zl9BMuaEHAM2PdPfJMNfp2pu+jWBJRqwCwtC3fYKD8U1ajmvX/rw2pfpy3Q
- iNcyc5BEULw0BI7xr2Ja1M9eJVaFpi4kdLPwaDasUdleYYMARNFIg==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rh0rg3b5-1
+ :mime-version:references:subject:to; s=pp1; bh=TXEDPvrPW+KpzpgVg
+ WZBv+7ZlGIxTLrvq9RB5xDFys4=; b=MHE/0xWtq7y2pmDNlBJnQGexQ+by42xvD
+ jqp61CaKsXk7Hw4EuVos25xZL9Lw4nMt0oPp+IBsipnEnCJIe+wzTuppflgfHYWD
+ DsBZGEmC0NJmRKeRGpfbo4m6UDdQpauPqo7z5A5+/aBHtyC2+wbUf9ht+PFw6tCm
+ oS2S8kopM/fi+8bctlYrNF9TiFuX0LjUCNpe8TB5uZ9SqDNf4G8L1rIu/mx6ZwLU
+ H5xgWbRv4lHafXYiyhZ2jfZyCby2hkFZybksDRFFps42nZvXZjBhil9TmSjs9EV8
+ +jnH2Gz51U85e5K+Icd0rCAurBjOOr/fjLNF67Lss+GL+wO7WtZmg==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rh0rg3bc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2024 22:36:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6FGni3019085;
- Wed, 6 Nov 2024 22:36:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj71ed-1
+ Wed, 06 Nov 2024 22:36:36 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6GhLkA012249;
+ Wed, 6 Nov 2024 22:36:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p140y16r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 06 Nov 2024 22:36:35 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A6MaXiB56623576
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A6MaYRm29557232
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2024 22:36:33 GMT
+ Wed, 6 Nov 2024 22:36:34 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 70BAE20043;
+ by IMSVA (Postfix) with ESMTP id 31FFA20043;
+ Wed,  6 Nov 2024 22:36:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D61C20040;
  Wed,  6 Nov 2024 22:36:33 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C394220040;
- Wed,  6 Nov 2024 22:36:32 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.88.240])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  6 Nov 2024 22:36:32 +0000 (GMT)
+ Wed,  6 Nov 2024 22:36:33 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -62,24 +62,24 @@ To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 3/8] user: Introduce user/signal.h
-Date: Wed,  6 Nov 2024 23:31:02 +0100
-Message-ID: <20241106223629.2608-4-iii@linux.ibm.com>
+Subject: [PATCH v2 4/8] user: Introduce host_interrupt_signal
+Date: Wed,  6 Nov 2024 23:31:03 +0100
+Message-ID: <20241106223629.2608-5-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106223629.2608-1-iii@linux.ibm.com>
 References: <20241106223629.2608-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1nK1FEDvbNRMFk1CA_lrT0obFEEg1sl5
-X-Proofpoint-GUID: 1nK1FEDvbNRMFk1CA_lrT0obFEEg1sl5
+X-Proofpoint-ORIG-GUID: 7MRRCHTA6vOfuEN8L9QWIqcr_R4d1G2f
+X-Proofpoint-GUID: 7MRRCHTA6vOfuEN8L9QWIqcr_R4d1G2f
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 phishscore=0
  spamscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 mlxscore=0 mlxlogscore=950
+ priorityscore=1501 malwarescore=0 clxscore=1015 mlxscore=0 mlxlogscore=983
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
  definitions=main-2411060174
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
@@ -107,111 +107,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gdbstub needs target_to_host_signal(), so move its declaration to a
-public header.
+Attaching to the gdbstub of a running process requires stopping its
+threads. For threads that run on a CPU, cpu_exit() is enough, but the
+only way to grab attention of a thread that is stuck in a long-running
+syscall is to interrupt it with a signal.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reserve a host realtime signal for this, just like it's already done
+for TARGET_SIGABRT on Linux. This may reduce the number of available
+guest realtime signals by one, but this is acceptable, since there are
+quite a lot of them, and it's unlikely that there are apps that need
+them all.
+
+Set signal_pending for the safe_sycall machinery to prevent invoking
+the syscall. This is a lie, since we don't queue a guest signal, but
+process_pending_signals() can handle the absence of pending signals.
+The syscall returns with QEMU_ERESTARTSYS errno, which arranges for
+the automatic restart. This is important, because it helps avoiding
+disturbing poorly written guests.
+
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- bsd-user/signal-common.h   |  1 -
- bsd-user/signal.c          |  1 +
- include/user/signal.h      | 23 +++++++++++++++++++++++
- linux-user/signal-common.h |  1 -
- linux-user/signal.c        |  1 +
- linux-user/syscall.c       |  1 +
- 6 files changed, 26 insertions(+), 2 deletions(-)
- create mode 100644 include/user/signal.h
+ bsd-user/signal.c     | 12 ++++++++++++
+ include/user/signal.h |  2 ++
+ linux-user/signal.c   | 25 ++++++++++++++++++++-----
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/bsd-user/signal-common.h b/bsd-user/signal-common.h
-index 77d7c7a78b7..4e634e04a30 100644
---- a/bsd-user/signal-common.h
-+++ b/bsd-user/signal-common.h
-@@ -42,7 +42,6 @@ void process_pending_signals(CPUArchState *env);
- void queue_signal(CPUArchState *env, int sig, int si_type,
-                   target_siginfo_t *info);
- void signal_init(void);
--int target_to_host_signal(int sig);
- void target_to_host_sigset(sigset_t *d, const target_sigset_t *s);
- 
- /*
 diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index da49b9bffc1..a2b11a97131 100644
+index a2b11a97131..992736df5c5 100644
 --- a/bsd-user/signal.c
 +++ b/bsd-user/signal.c
-@@ -22,6 +22,7 @@
- #include "qemu/log.h"
- #include "qemu.h"
- #include "exec/page-protection.h"
-+#include "user/signal.h"
- #include "user/tswap-target.h"
- #include "gdbstub/user.h"
- #include "signal-common.h"
+@@ -49,6 +49,8 @@ static inline int sas_ss_flags(TaskState *ts, unsigned long sp)
+         on_sig_stack(ts, sp) ? SS_ONSTACK : 0;
+ }
+ 
++int host_interrupt_signal = SIGRTMAX;
++
+ /*
+  * The BSD ABIs use the same signal numbers across all the CPU architectures, so
+  * (unlike Linux) these functions are just the identity mapping. This might not
+@@ -489,6 +491,12 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
+     uintptr_t pc = 0;
+     bool sync_sig = false;
+ 
++    if (host_sig == host_interrupt_signal) {
++        ts->signal_pending = 1;
++        cpu_exit(thread_cpu);
++        return;
++    }
++
+     /*
+      * Non-spoofed SIGSEGV and SIGBUS are synchronous, and need special
+      * handling wrt signal blocking and unwinding.
+@@ -852,6 +860,9 @@ void signal_init(void)
+ 
+     for (i = 1; i <= TARGET_NSIG; i++) {
+         host_sig = target_to_host_signal(i);
++        if (host_sig == host_interrupt_signal) {
++            continue;
++        }
+         sigaction(host_sig, NULL, &oact);
+         if (oact.sa_sigaction == (void *)SIG_IGN) {
+             sigact_table[i - 1]._sa_handler = TARGET_SIG_IGN;
+@@ -870,6 +881,7 @@ void signal_init(void)
+             sigaction(host_sig, &act, NULL);
+         }
+     }
++    sigaction(host_interrupt_signal, &act, NULL);
+ }
+ 
+ static void handle_pending_signal(CPUArchState *env, int sig,
 diff --git a/include/user/signal.h b/include/user/signal.h
-new file mode 100644
-index 00000000000..19b6b9e5ddc
---- /dev/null
+index 19b6b9e5ddc..7fa33b05d91 100644
+--- a/include/user/signal.h
 +++ b/include/user/signal.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Signal-related declarations.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef USER_SIGNAL_H
-+#define USER_SIGNAL_H
+@@ -20,4 +20,6 @@
+  */
+ int target_to_host_signal(int sig);
+ 
++extern int host_interrupt_signal;
 +
-+#ifndef CONFIG_USER_ONLY
-+#error Cannot include this header from system emulation
-+#endif
-+
-+/**
-+ * target_to_host_signal:
-+ * @sig: target signal.
-+ *
-+ * On success, return the host signal between 0 (inclusive) and NSIG
-+ * (exclusive) corresponding to the target signal @sig. Return any other value
-+ * on failure.
-+ */
-+int target_to_host_signal(int sig);
-+
-+#endif
-diff --git a/linux-user/signal-common.h b/linux-user/signal-common.h
-index 8584d9ecc2a..196d2406f86 100644
---- a/linux-user/signal-common.h
-+++ b/linux-user/signal-common.h
-@@ -61,7 +61,6 @@ void queue_signal(CPUArchState *env, int sig, int si_type,
-                   target_siginfo_t *info);
- void host_to_target_siginfo(target_siginfo_t *tinfo, const siginfo_t *info);
- void target_to_host_siginfo(siginfo_t *info, const target_siginfo_t *tinfo);
--int target_to_host_signal(int sig);
- int host_to_target_signal(int sig);
- long do_sigreturn(CPUArchState *env);
- long do_rt_sigreturn(CPUArchState *env);
+ #endif
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 9b6d772882d..b1c468cf5c3 100644
+index b1c468cf5c3..551c6bb1448 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -34,6 +34,7 @@
- #include "signal-common.h"
- #include "host-signal.h"
- #include "user/safe-syscall.h"
-+#include "user/signal.h"
- #include "tcg/tcg.h"
+@@ -515,6 +515,8 @@ static int core_dump_signal(int sig)
+     }
+ }
  
- /* target_siginfo_t must fit in gdbstub's siginfo save area. */
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 59b2080b980..ae106905f63 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -136,6 +136,7 @@
- #include "loader.h"
- #include "user-mmap.h"
- #include "user/safe-syscall.h"
-+#include "user/signal.h"
- #include "qemu/guest-random.h"
- #include "qemu/selfmap.h"
- #include "user/syscall-trace.h"
++int host_interrupt_signal;
++
+ static void signal_table_init(const char *rtsig_map)
+ {
+     int hsig, tsig, count;
+@@ -578,10 +580,10 @@ static void signal_table_init(const char *rtsig_map)
+          * Attempts for configure "missing" signals via sigaction will be
+          * silently ignored.
+          *
+-         * Reserve one signal for internal usage (see below).
++         * Reserve two signals for internal usage (see below).
+          */
+ 
+-        hsig = SIGRTMIN + 1;
++        hsig = SIGRTMIN + 2;
+         for (tsig = TARGET_SIGRTMIN;
+              hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
+              hsig++, tsig++) {
+@@ -602,12 +604,17 @@ static void signal_table_init(const char *rtsig_map)
+     host_to_target_signal_table[SIGABRT] = 0;
+     for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
+         if (!host_to_target_signal_table[hsig]) {
+-            host_to_target_signal_table[hsig] = TARGET_SIGABRT;
+-            break;
++            if (host_interrupt_signal) {
++                host_to_target_signal_table[hsig] = TARGET_SIGABRT;
++                break;
++            } else {
++                host_interrupt_signal = hsig;
++            }
+         }
+     }
+     if (hsig > SIGRTMAX) {
+-        fprintf(stderr, "No rt signals left for SIGABRT mapping\n");
++        fprintf(stderr,
++                "No rt signals left for interrupt and SIGABRT mapping\n");
+         exit(EXIT_FAILURE);
+     }
+ 
+@@ -687,6 +694,8 @@ void signal_init(const char *rtsig_map)
+         }
+         sigact_table[tsig - 1]._sa_handler = thand;
+     }
++
++    sigaction(host_interrupt_signal, &act, NULL);
+ }
+ 
+ /* Force a synchronously taken signal. The kernel force_sig() function
+@@ -1034,6 +1043,12 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
+     bool sync_sig = false;
+     void *sigmask;
+ 
++    if (host_sig == host_interrupt_signal) {
++        ts->signal_pending = 1;
++        cpu_exit(thread_cpu);
++        return;
++    }
++
+     /*
+      * Non-spoofed SIGSEGV and SIGBUS are synchronous, and need special
+      * handling wrt signal blocking and unwinding.  Non-spoofed SIGILL,
 -- 
 2.47.0
 
