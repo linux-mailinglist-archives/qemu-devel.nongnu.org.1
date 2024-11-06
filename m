@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61C89BF4E8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061009BF4F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:14:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8kVx-0006Jb-82; Wed, 06 Nov 2024 13:12:21 -0500
+	id 1t8kXH-0006u6-SC; Wed, 06 Nov 2024 13:13:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8kVv-0006JN-Q3
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:12:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8kVu-00085A-2E
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:12:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730916736;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=OOuaO0FdvnRx8m0yCTGELCVtD8jtIom4riAwRaaG5gI=;
- b=V3NbT9b2GsF9tW0HSPYGu++7ndmnRcjhRIB1uEyU7fQtELAyfL6ux6PvQoeLFQLC4QxaD3
- m2ffEx69TN7dSmxZV6/BqVXDmBqiFuotpoSwC0hg4K96YJZ2xkPeps7VjmWPHpl8G1X27o
- 4Ts4Q99jXYelX4HMx9E/QKTJhStUjNk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-lX7jz8IpOqG-jhs4Zodc1w-1; Wed, 06 Nov 2024 13:12:15 -0500
-X-MC-Unique: lX7jz8IpOqG-jhs4Zodc1w-1
-X-Mimecast-MFC-AGG-ID: lX7jz8IpOqG-jhs4Zodc1w
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4315cefda02so760095e9.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:12:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <goldstein.w.n@gmail.com>)
+ id 1t8kXF-0006ti-29
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:13:41 -0500
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <goldstein.w.n@gmail.com>)
+ id 1t8kXD-0008Fl-EU
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:13:40 -0500
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5ebc52deca0so34417eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:13:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730916818; x=1731521618; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=j+jFSWZIm5vjDa3MFBh/X7wuoN4A+dDxKPBCZ9XsL2w=;
+ b=LAxebsCauCx8eN/rOfHgtwJnwl8PREu7ryEWRU0JJP7Rk1zhGs8kBwiE8LzG9Lr9IN
+ Y02sYbDP8DEE1pd4plKLqs6t9EK5dmHJaS/nmUsb+khodsot71GO4G/r5n5nJQ4OGGEH
+ uZyk5diTkYfPJvz8NoqzC999ezEm8xl6wr766NB7GJRGihI3KVNXvX9mxqDHY/05wAVj
+ TtMigVm6FyWh+80wIIZCciFbfLYVGrQRFNjvdpTlXg3GHmx34iSoPVSUSnuFB27bPQvN
+ gSVPakFhn+D0ccdOxwlTSzuyw/HrP2g8NwUE0BZYImKdtaMjG6IsKlirJoVAkQKdpHc0
+ Qe2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730916734; x=1731521534;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OOuaO0FdvnRx8m0yCTGELCVtD8jtIom4riAwRaaG5gI=;
- b=ODVPWmMCwi2IrgCzS9FYNP42OI0qjNHcjCSL7C6obTFqcsgHEzrrwGnPKA1XjFgMQb
- 19J4D9Maz7lTfeV7j+cQRGWSsKQJf+cfwV0WO9C326L0/NStHj5h3wbYniiIu1wFuUCD
- sZ61wAE0fS9VvJDsGhIr5wxAufeD8KlPhGVAMxlUMjpFXlnZcu5OUshId1nnMh3FWYRT
- pWnTKcsaxqfUNPtap/pX5zImHanx88j4Euy7yNZdQ0Fk52mwllakiegxh/fJe1Y3R1/q
- lYnAzSShUl9p7YjgXHUOBXWPXCT93waOV/iBE5RfgH8ufF4pMvN/mNnVsgJz+/yAPFJg
- jk1A==
-X-Gm-Message-State: AOJu0Ywm/uMxpEW8Q6xdA2ycDv4yHlHhd0HQcYIqaZvyYSbFQwAL8c/L
- f9NL3pFsy8m8hoaqyL76JUIuV0XO9Mk+vKmJbxkEYG8TcDJ7h8rIof4WmFSUmgIugsIPg8UkH8o
- ebUqG+rfrO4f5jESODuUCwtxYPs7GC68S6k6lFv/0rm0521xCyuZMmJJfollKr3twcsDiWnOLtl
- YGPzNvUg2l5KDnzW0g7r4Cz5qetszcf+9TGEx8QXg=
-X-Received: by 2002:a05:600c:4f04:b0:42c:acb0:dda5 with SMTP id
- 5b1f17b1804b1-4327b6f9574mr211921275e9.1.1730916734011; 
- Wed, 06 Nov 2024 10:12:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGIb6ja5Lux+H7hHmYiaXag3lSFCwvfBe/dXrcv5/+egTyfvEQ9Jmxp2XIBCPZGoBp76QcHzA==
-X-Received: by 2002:a05:600c:4f04:b0:42c:acb0:dda5 with SMTP id
- 5b1f17b1804b1-4327b6f9574mr211921015e9.1.1730916733551; 
- Wed, 06 Nov 2024 10:12:13 -0800 (PST)
-Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6bee9asm34130755e9.19.2024.11.06.10.12.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 10:12:13 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Subject: [PATCH v2] eif: cope with huge section offsets
-Date: Wed,  6 Nov 2024 19:12:11 +0100
-Message-ID: <20241106181211.568775-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
+ d=1e100.net; s=20230601; t=1730916818; x=1731521618;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=j+jFSWZIm5vjDa3MFBh/X7wuoN4A+dDxKPBCZ9XsL2w=;
+ b=HF28GYSXDXLf/hqzlofDyOXYEzJiIoail+xVHjFYO+/mb4aqQlpGokz2hW1Zmvc58v
+ QpbYIYM3EVvrDAnvsEJnsWnkeyP+QbJKiCEfj7QL60tAjk3XBO/XTXl7sq6Jkx21xYrI
+ 4BXpAKp4smK0TqPCbbosqUykYGjqGIV5mBS9xsqq7n51U7HfKJkLBoXa/vDJy7iLrmle
+ BTT7yqk2steTAT3TMaGbDE9PqDGIXOAJepcK3iFGHg9M4G9TWdhb7iCJX6beRPRbVQ/X
+ AK5lPaWUINwI0IRkNI+btvC6Lmwg6tGz2IR7lMCP1SOVe4psYV0i8lP3DI46u4XVyGng
+ e12g==
+X-Gm-Message-State: AOJu0Yzfne7TepEf12f2NEbjEhcyGsFH+vf+p64a9arffvh03TOhS6TP
+ vvFX3Gagg1mcjFIScF19WgJMoPxycYWzyGR6semk01DXNnwygjYxTKd8YWqHpHAe6k95xXsFpXa
+ jqZARjnh7Rxd8IB81XmwlUEVucGEkea7lQqY=
+X-Google-Smtp-Source: AGHT+IFnoT55fzvPeh0y3bniCsSJkX1kOvO4tJnWTw09/DFI5VaaTxw4uZfNDlxBS9rVIszJtOvA8PR6hjKTNE+pBr8=
+X-Received: by 2002:a05:6820:1512:b0:5ee:56d:69f8 with SMTP id
+ 006d021491bc7-5ee056d7549mr10362919eaf.7.1730916818052; Wed, 06 Nov 2024
+ 10:13:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
+ <20241030141037.375897-1-goldstein.w.n@gmail.com>
+ <000c9ef8-c610-4f2a-b191-04b84455d89c@linaro.org>
+ <CAFUsyfKkmSid=LVTbG+WHZA_=MAGdf+TU5vGtNE1GGx8WDheOQ@mail.gmail.com>
+ <CAFUsyfKfM-X_qGN4Dy8DhES7zRi66s6yVZ3+_KmNM4f2GhBG+Q@mail.gmail.com>
+ <f21fe153-6239-4c93-bf60-994976a9dbea@linaro.org>
+ <CAFUsyfLhPkSMrm50RAAvir2-WoRS4_jbtZf1WWR_WZvm=BOr6g@mail.gmail.com>
+ <e63cd5f6-8387-4c39-98e4-5e1c180934bc@linaro.org>
+ <CAFUsyf+8sJLX+qqzPEj1E1QPQpoP4n56uU5U9aksq8JEx_52gA@mail.gmail.com>
+In-Reply-To: <CAFUsyf+8sJLX+qqzPEj1E1QPQpoP4n56uU5U9aksq8JEx_52gA@mail.gmail.com>
+From: Noah Goldstein <goldstein.w.n@gmail.com>
+Date: Wed, 6 Nov 2024 12:13:27 -0600
+Message-ID: <CAFUsyf+xVXamR+5gtu62vFXjYScrJu0Arvhk62QXYa359UCHsg@mail.gmail.com>
+Subject: Re: linux-user: Add option to run `execve`d programs through QEMU
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, iii@linux.ibm.com, laurent@vivier.eu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=goldstein.w.n@gmail.com; helo=mail-oo1-xc29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +95,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check for overflow to avoid that fseek() receives a sign-extended value.
+On Wed, Nov 6, 2024 at 11:53=E2=80=AFAM Noah Goldstein <goldstein.w.n@gmail=
+.com> wrote:
+>
+> On Wed, Nov 6, 2024 at 11:26=E2=80=AFAM Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+> >
+> > On 11/6/24 17:03, Noah Goldstein wrote:
+> > > On Wed, Nov 6, 2024 at 3:38=E2=80=AFAM Richard Henderson
+> > > <richard.henderson@linaro.org> wrote:
+> > >>
+> > >> On 11/5/24 23:54, Noah Goldstein wrote:
+> > >>>>> You still need to handle is_proc_myself, for the guest binary.
+> > >>>
+> > >>> Would this by handled by basically do:
+> > >>>
+> > >>> ```
+> > >>> if (is_proc_myself(p, "exe")) {
+> > >>>           exe =3D exec_path;
+> > >>>           if (through_qemu)
+> > >>>               argp[argp_offset] =3D exec_path;
+> > >>> }
+> > >>> ```
+> > >>> Or am I missing something?
+> > >>
+> > >> Something like that, yes.
+> > >>
+> > >>>>> I wonder if those two cases are related.  Do we need to also add =
+an argument so that we
+> > >>>>> can pass the executable to the next qemu via file descriptor?  I.=
+e. execvat becomes
+> > >>>>>
+> > >>>>>        f =3D openat()
+> > >>>>>        execv(qemu, "-execfd", f)
+> > >>>>>
+> > >>>>> and is_proc_myself uses execfd, which we already have open.
+> > >>>
+> > >>> How does passing a fd from one process to another work?
+> > >> As long as the fd is not marked O_CLOEXEC, it stays open in the new =
+process.  Providing
+> > >> the number via command-line, or whatever, is sufficient for the new =
+process to know what
+> > >> is going on.
+> > >
+> > > Err I guess I was thinking its a bit weird having an option that is
+> > > only really applicable
+> > > if qemu is a child process. I.e the `-execfd` argument is not usable
+> > > from commandline.
+> >
+> > qemu-foo -execfd 3 3< /some/file
+> >
+> > Or perhaps opened via other tooling.
+> >
+> > >> I now realize this is necessary for the AT_EMPTY_PATH flag, where we=
+ only have the file
+> > >> descriptor.
+> > >
+> > > We could also do something along the lines of:
+> > >
+> > > ```
+> > > fd =3D openat(dirfd, exe);
+> > > char new_exe[PATH_MAX];
+> > > char fd_path[PATH_MAX];
+> > > sprintf(fd_path, "/proc/self/fd/%d", fd);
+> > > readlink(fd_path, new_exe, PATH_MAX);
+> >
+> > Reading the link doesn't always work.
+> > Reading or passing the link means AT_SYMLINK_NOFOLLOW isn't honored.
+>
+> Okay, fair enough, I will get started on adding `-execfd`
 
-Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/qemu/osdep.h | 4 ++++
- hw/core/eif.c        | 4 ++++
- 2 files changed, 8 insertions(+)
+Question about impl regarding handling of `-execfd` with/without a program =
+name.
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index fe7c3c5f673..fdff07fd992 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -297,6 +297,10 @@ void QEMU_ERROR("code path is reachable")
- #error building with G_DISABLE_ASSERT is not supported
- #endif
- 
-+#ifndef OFF_MAX
-+#define OFF_MAX (sizeof (off_t) == 8 ? INT64_MAX : INT32_MAX)
-+#endif
-+
- #ifndef O_LARGEFILE
- #define O_LARGEFILE 0
- #endif
-diff --git a/hw/core/eif.c b/hw/core/eif.c
-index 7f3b2edc9a7..61329aacfe1 100644
---- a/hw/core/eif.c
-+++ b/hw/core/eif.c
-@@ -466,6 +466,10 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
-         EifSectionHeader hdr;
-         uint16_t section_type;
- 
-+        if (eif_header.section_offsets[i] > OFF_MAX) {
-+            error_setg(errp, "Invalid EIF image. Section offset out of bounds");
-+            goto cleanup;
-+        }
-         if (fseek(f, eif_header.section_offsets[i], SEEK_SET) != 0) {
-             error_setg_errno(errp, errno, "Failed to offset to %" PRIu64 " in EIF file",
-                              eif_header.section_offsets[i]);
--- 
-2.47.0
+1) `-execfd` + program name ie: `qemu -execfd <some_fd> ls -a`.
+2) `-execfd` without program name i.e: `qemu -execfd <some_fd> -a`.
 
+Do you want to allow both of these? If you want to allow (1), what should
+we use for `argv[0]`/`exec_path`. The program pass ("ls") or
+`readlink(<some_fd>)`?
 
