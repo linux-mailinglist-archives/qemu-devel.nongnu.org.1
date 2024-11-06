@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A39F9BE2DB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 10:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EE99BE2F3
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 10:44:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8cVF-0006CL-GO; Wed, 06 Nov 2024 04:39:05 -0500
+	id 1t8cZm-0007vh-Hq; Wed, 06 Nov 2024 04:43:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8cVE-0006Bv-07
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 04:39:04 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8cVB-0002gJ-DS
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 04:39:03 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-37ec4e349f4so4204852f8f.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 01:39:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730885939; x=1731490739; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=d3MYGvK6ylPEPKTamct27rF3fI6gYcrO0cE++scIUYE=;
- b=LuYR9y/wp8dX6hPpFRsdFxM8mBjDhS2KO7uX3Sp2dUZnmgUehrzYtIdbsngcf4Kqq9
- eI8kKTfczioFHEUOJhhd6KETyQ5n0MFOh3RsxsL6886bgY9BLb00akt2xCciNIjcRRa/
- Nuk6mGQDqme8KJL3MDyYsQsNDX9KHrOIZ4Sv5XqrDik3xrj/0F5DouM/v3Q7oKc18BGj
- ctszJRFE1L2T+3sxt/ltrGY5bqce37TJ8gkIAD9RYEuFhZXDjJamc19bLnMUHmr4RQXR
- /ip+ueI1zqTHWptKJyXMOKVH15vyD1bJJLTt9LHCXakBhOVnpEdG8lJ881EzckPyZB4a
- AnaQ==
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t8cZa-0007ui-Kx
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 04:43:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t8cZX-0005rY-UN
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 04:43:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730886198;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0E8XGB/Vf+JIU/bYlakdzQ0jUr3RFs2ddl+F7Ct7ZWI=;
+ b=hluc0M5myilOY4+ANt25DkSZUP2G/MOk1DGdjY0ZiFvztTFZH3kzchg8m//jlXU8uksLCA
+ 2EyP9Bn4/nnh+5SdwK1qFX0LwEl02WQoETiy3gAPgUU83/L9zr86X2e9/qPqGDrU+R1W1k
+ RydkQ8yoQaiiiz2YpMWnjYXp5jkM0zw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-0dXkqqfoOP6d9N3L-YCjjA-1; Wed, 06 Nov 2024 04:43:17 -0500
+X-MC-Unique: 0dXkqqfoOP6d9N3L-YCjjA-1
+X-Mimecast-MFC-AGG-ID: 0dXkqqfoOP6d9N3L-YCjjA
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a9a194d672bso490305066b.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 01:43:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730885939; x=1731490739;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d3MYGvK6ylPEPKTamct27rF3fI6gYcrO0cE++scIUYE=;
- b=i9aYsmZadbFbJzZwI8qCvgbOkCiNic2pcwVQgzyvM1ust9YCrK9ksP7V3VqLahCDCx
- ExJ+fUV6nH2oLG6Sz9jS6CnqBDS8wP+hVJMejTsTr8jxiRZcpOHlg1b9UPNHxFJin/gi
- vKLthrE2lTsbd7Cly/0c6TX8U25rWkI1EY6i7XFjGQG9zZuZgMRyp5sNtI4r0ZFvkx29
- o5BAwfNnUk5Vfhk8PXRCkDNNpgzpexyzdy5rtQJV5wYTSl+8UPNxuZ/+hhYOZGNsfjSn
- 6PxWhhW3en2lTCJ27MM6GnUnGS6F/mPeBBPehnSEsdb1pP6mRGU/xEgIwIxWxLxfTKqL
- syiA==
-X-Gm-Message-State: AOJu0YyI0a9Ft8WXoMILhzApkCh/MlyeJOXTBYpkV8kdXiVStZOn2Z+P
- Ju44cbIDS2GWrukpeshnxElHSTLhumGvzIsSobDKK6PkoEB5dN47o5B9Dn83qiymaOEOydCh3tx
- 6f8I=
-X-Google-Smtp-Source: AGHT+IG5S3Gdm1Qys2lpk2EfHq8YgeAIia/GYC4fyp+MNmQL6E2eOrYTDM31SaGtTPxyeFbVPPZqdQ==
-X-Received: by 2002:a05:6000:1f8c:b0:374:ba23:4b3f with SMTP id
- ffacd0b85a97d-381c7a484e7mr17594102f8f.9.1730885939254; 
- Wed, 06 Nov 2024 01:38:59 -0800 (PST)
-Received: from [172.16.23.118] ([89.101.134.25])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c10e7387sm18457417f8f.51.2024.11.06.01.38.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Nov 2024 01:38:58 -0800 (PST)
-Message-ID: <f21fe153-6239-4c93-bf60-994976a9dbea@linaro.org>
-Date: Wed, 6 Nov 2024 09:38:55 +0000
+ d=1e100.net; s=20230601; t=1730886195; x=1731490995;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0E8XGB/Vf+JIU/bYlakdzQ0jUr3RFs2ddl+F7Ct7ZWI=;
+ b=kmVqVDpjym0ZtEcOzcik7s7JLQ0xBjIxsUk4dS8yRLnnGC/AZjEjzzX4pgxnlAMcy9
+ oswNmGo1AnzX5mwK5Yd3K3iMcc+kXJiRzkIu0ZMW0o1CR2J9rjNaGIgMOo3iQ6EKfPDk
+ YQt9KhhAsApyIgT52dJ3UZQx98n6WuZbUxy0Ri82W9Hsymjm4EShLeb8MeYa3Wi7yCbB
+ NehdwoBy5ilBI9zndf13LEkr/GBFJj1ZQD+IpP8HZFSDN8+ZLGZdpTPGPy3XmVZZGlwg
+ riRpJnrYRrGmECDKYsu17sY2ApD6y5frC6G+hhPhU5+QqSu0Rbt9WpH+IuKYAfa6oN93
+ V+NA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVdTUpOp9+e/ci1erMashbDEYv1XHA+aNS3orVZNJSJjOTUKSRjlFGF5Dswc53o3xchfYylxEOQRu0F@nongnu.org
+X-Gm-Message-State: AOJu0Yy9ZCikZCTv0xpre63g071n194n+NXzz2Yr5iH5anO6gD+93MRn
+ 8K4GJjJgTBvUGyUxopivOuDoHeQEHkMiKcNkRU2ouhSn20wsid7eDJCeedHgHZMuGYQ/AtjaxT1
+ UCHu2NGdb/iukiLokj/oFaT/ndkDfnIkmDGWMqbVPJTjdMQbvcP8hpfC5ERqPnKF7YbUHxejlOz
+ tKa81FgWCIi4Q1MDnYBMvhBYnuHv69+uWjVMxwrw==
+X-Received: by 2002:a17:907:c0b:b0:a9e:c267:78c5 with SMTP id
+ a640c23a62f3a-a9ec267b85emr250780966b.55.1730886194768; 
+ Wed, 06 Nov 2024 01:43:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUhmOTNdnjRkVrIHpAhxAMBXwUW0ZDytAFu7LAw3yjv4dyyGYO5ajkYkifPossP8frdoLZpgXlw4uT/YoHgdI=
+X-Received: by 2002:a17:907:c0b:b0:a9e:c267:78c5 with SMTP id
+ a640c23a62f3a-a9ec267b85emr250779166b.55.1730886194399; Wed, 06 Nov 2024
+ 01:43:14 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-user: Add option to run `execve`d programs through QEMU
-To: Noah Goldstein <goldstein.w.n@gmail.com>
-Cc: qemu-devel@nongnu.org, iii@linux.ibm.com, laurent@vivier.eu
-References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
- <20241030141037.375897-1-goldstein.w.n@gmail.com>
- <000c9ef8-c610-4f2a-b191-04b84455d89c@linaro.org>
- <CAFUsyfKkmSid=LVTbG+WHZA_=MAGdf+TU5vGtNE1GGx8WDheOQ@mail.gmail.com>
- <CAFUsyfKfM-X_qGN4Dy8DhES7zRi66s6yVZ3+_KmNM4f2GhBG+Q@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFUsyfKfM-X_qGN4Dy8DhES7zRi66s6yVZ3+_KmNM4f2GhBG+Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20241026080121.461781-1-lulu@redhat.com>
+ <20241026080121.461781-2-lulu@redhat.com>
+ <20241106042219-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20241106042219-mutt-send-email-mst@kernel.org>
+From: Cindy Lu <lulu@redhat.com>
+Date: Wed, 6 Nov 2024 17:42:37 +0800
+Message-ID: <CACLfguV2g7=g6=tz79RM1x0PFDxi8U6LuSUdJeQkJ1gw6c_bGg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] vhost_vdpa : Add a new parameter to enable check
+ mac address
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: jasowang@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lulu@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +99,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/5/24 23:54, Noah Goldstein wrote:
->>> You still need to handle is_proc_myself, for the guest binary.
-> 
-> Would this by handled by basically do:
-> 
-> ```
-> if (is_proc_myself(p, "exe")) {
->          exe = exec_path;
->          if (through_qemu)
->              argp[argp_offset] = exec_path;
-> }
-> ```
-> Or am I missing something?
+On Wed, Nov 6, 2024 at 5:25=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>
+> On Sat, Oct 26, 2024 at 03:59:59PM +0800, Cindy Lu wrote:
+> > When using a VDPA device, it's important to ensure that the MAC
+> > address is correctly set.
+> > Add a new parameter in qemu cmdline to enable this check, default value
+> > is false
+> >
+> > The usage is:
+> > ....
+> > -netdev type=3Dvhost-vdpa,vhostdev=3D/dev/vhost-vdpa-0,id=3Dvhost-vdpa0=
+,macstrickcheck=3Dtrue\
+>
+> typos in command line are not welcome.
+> you should also separate words e.g. by dashes.
+> Are there more options than strict?
+> Also if not strict, should we still warn?
+>
+There is no other check for this, Thank you, Michael. I will change
+this to a new name.
+Thanks
+Cindy
+>
+> > -device virtio-net-pci,netdev=3Dvhost-vdpa0\
+> > ....
+> >
+> > Signed-off-by: Cindy Lu <lulu@redhat.com>
+> > ---
+> >  include/net/net.h | 1 +
+> >  net/vhost-vdpa.c  | 4 ++++
+> >  qapi/net.json     | 5 +++++
+> >  3 files changed, 10 insertions(+)
+> >
+> > diff --git a/include/net/net.h b/include/net/net.h
+> > index c8f679761b..e00651a97b 100644
+> > --- a/include/net/net.h
+> > +++ b/include/net/net.h
+> > @@ -112,6 +112,7 @@ struct NetClientState {
+> >      bool is_netdev;
+> >      bool do_not_pad; /* do not pad to the minimum ethernet frame lengt=
+h */
+> >      bool is_datapath;
+> > +    bool check_mac;
+> >      QTAILQ_HEAD(, NetFilterState) filters;
+> >  };
+> >
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index 46b02c50be..071c3ff065 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -1860,6 +1860,8 @@ int net_init_vhost_vdpa(const Netdev *netdev, con=
+st char *name,
+> >                                       iova_range, features, shared, err=
+p);
+> >          if (!ncs[i])
+> >              goto err;
+> > +
+> > +        ncs[i]->check_mac =3D opts->macstrickcheck;
+> >      }
+> >
+> >      if (has_cvq) {
+> > @@ -1872,6 +1874,8 @@ int net_init_vhost_vdpa(const Netdev *netdev, con=
+st char *name,
+> >                                   errp);
+> >          if (!nc)
+> >              goto err;
+> > +
+> > +        nc->check_mac =3D opts->macstrickcheck;
+> >      }
+> >
+> >      return 0;
+> > diff --git a/qapi/net.json b/qapi/net.json
+> > index 87fc0d0b28..7d75119858 100644
+> > --- a/qapi/net.json
+> > +++ b/qapi/net.json
+> > @@ -510,6 +510,10 @@
+> >  # @queues: number of queues to be created for multiqueue vhost-vdpa
+> >  #     (default: 1)
+> >  #
+> > +# @macstrickcheck: Enable the check for whether the device's MAC addre=
+ss
+> > +#     and the MAC in QEMU command line are acceptable for booting.
+> > +#     (default: false)
+> > +#
+> >  # @x-svq: Start device with (experimental) shadow virtqueue.  (Since
+> >  #     7.1) (default: false)
+> >  #
+> > @@ -524,6 +528,7 @@
+> >      '*vhostdev':     'str',
+> >      '*vhostfd':      'str',
+> >      '*queues':       'int',
+> > +    '*macstrickcheck':    'bool',
+> >      '*x-svq':        {'type': 'bool', 'features' : [ 'unstable'] } } }
+> >
+> >  ##
+> > --
+> > 2.45.0
+>
 
-Something like that, yes.
-
->>> I wonder if those two cases are related.  Do we need to also add an argument so that we
->>> can pass the executable to the next qemu via file descriptor?  I.e. execvat becomes
->>>
->>>       f = openat()
->>>       execv(qemu, "-execfd", f)
->>>
->>> and is_proc_myself uses execfd, which we already have open.
-> 
-> How does passing a fd from one process to another work?
-As long as the fd is not marked O_CLOEXEC, it stays open in the new process.  Providing 
-the number via command-line, or whatever, is sufficient for the new process to know what 
-is going on.
-
-I now realize this is necessary for the AT_EMPTY_PATH flag, where we only have the file 
-descriptor.
-
-
-r~
 
