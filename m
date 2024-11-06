@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86AA9BE13A
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:42:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928659BE139
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:42:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8bc8-0005Uz-H5; Wed, 06 Nov 2024 03:42:08 -0500
+	id 1t8bcA-0005WD-Tu; Wed, 06 Nov 2024 03:42:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc2-0005Uj-R4
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc7-0005VM-9S
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc1-0007U2-4i
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:02 -0500
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc5-0007Uj-LF
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730882520;
+ s=mimecast20190719; t=1730882524;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GVXTpK/mspqiOPCZlz7gscB3TB7EwyQVYzQzxIcTB30=;
- b=HHxGHkTJTtw8TohhL2YxfjsXP6ibMlDVWlI3uhzEqiwitDWG86A5SzbKYWcpql/PbqvbKL
- brK+b/ld1/5pWl2AqqTs9UwvJo5lGhcRpGSqo+tJWt2VZ7OPlOGD8vlLawz6hKmrILeu49
- lj0RqNqzIZE7W6ewV0bdgqdC/FN0hnc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DuKheEd+RIhCNNVlsfYRfvUtD5CnI0aqPx70+3FcBsM=;
+ b=gweZJbfjhh8tu35cPXxzdsmreO46nyS7mXaLWtYW2AoRQ4UFZLQF4IeCtT8p9Bso7aBmYD
+ 8hkB576bLyZBHXeeFij6iroswgFl7Qc6j43KXsS+lUttbNLvEP94Psi5n+6s4K7+y7ZODL
+ A/EVf7GQjJ6rb/0zRFcygKy56J22Qqw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-434-FWSKpz0KNH21jCUCnzOs3w-1; Wed,
- 06 Nov 2024 03:41:55 -0500
-X-MC-Unique: FWSKpz0KNH21jCUCnzOs3w-1
-X-Mimecast-MFC-AGG-ID: FWSKpz0KNH21jCUCnzOs3w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-eDi7X9LaOWWCVs0cCHKRgQ-1; Wed,
+ 06 Nov 2024 03:41:59 -0500
+X-MC-Unique: eDi7X9LaOWWCVs0cCHKRgQ-1
+X-Mimecast-MFC-AGG-ID: eDi7X9LaOWWCVs0cCHKRgQ
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 557941955F43; Wed,  6 Nov 2024 08:41:54 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 76AC71955F3E; Wed,  6 Nov 2024 08:41:58 +0000 (UTC)
 Received: from fedora.nay.redhat.com (unknown [10.66.57.68])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D6E541955F40; Wed,  6 Nov 2024 08:41:50 +0000 (UTC)
+ id 1C9861955F40; Wed,  6 Nov 2024 08:41:54 +0000 (UTC)
 From: Dehan Meng <demeng@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
  peter.maydell@linaro.org, berrange@redhat.com
-Subject: [PATCH v5 2/3] qemu-ga: Optimize var declaration and definition
-Date: Wed,  6 Nov 2024 16:41:33 +0800
-Message-Id: <20241106084134.1133061-3-demeng@redhat.com>
+Subject: [PATCH v5 3/3] qemu-ga: Avoiding freeing line prematurely
+Date: Wed,  6 Nov 2024 16:41:34 +0800
+Message-Id: <20241106084134.1133061-4-demeng@redhat.com>
 In-Reply-To: <20241106084134.1133061-1-demeng@redhat.com>
 References: <20241106084134.1133061-1-demeng@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=demeng@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=demeng@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,108 +80,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Variable declarations moved to the beginning of blocks
-Followed the coding style of using snake_case for variable names.
-Proper initialization of param 'size_t n' to '0' for
+It's now only freed at the end of the function.
 
 Signed-off-by: Dehan Meng <demeng@redhat.com>
 ---
- qga/commands-linux.c | 43 +++++++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 24 deletions(-)
+ qga/commands-linux.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 495de74b31..55c35bfc8f 100644
+index 55c35bfc8f..70020621bf 100644
 --- a/qga/commands-linux.c
 +++ b/qga/commands-linux.c
-@@ -2094,12 +2094,12 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
-     return head;
- }
+@@ -2138,8 +2138,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+         is_ipv6 = (i == 1);
+         fp = fopen(routeFiles[i], "r");
+         if (fp == NULL) {
+-            error_setg_errno(errp, errno, "open(\"%s\")", routeFiles[i]);
+-            free(line);
++            error_setg_errno(errp, errno, "open(\"%s\")", route_files[i]);
+             continue;
+         }
  
--static char *hexToIPAddress(const void *hexValue, int is_ipv6)
-+static char *hex_to_ip_address(const void *hex_value, int is_ipv6)
- {
-     if (is_ipv6) {
-         char addr[INET6_ADDRSTRLEN];
-         struct in6_addr in6;
--        const char *hexStr = (const char *)hexValue;
-+        const char *hex_str = (const char *)hex_value;
-         int i;
- 
-         for (i = 0; i < 16; i++) {
-@@ -2111,11 +2111,11 @@ static char *hexToIPAddress(const void *hexValue, int is_ipv6)
- 
-         return g_strdup(addr);
-     } else {
--        unsigned int hexInt = *(unsigned int *)hexValue;
--        unsigned int byte1 = (hexInt >> 24) & 0xFF;
--        unsigned int byte2 = (hexInt >> 16) & 0xFF;
--        unsigned int byte3 = (hexInt >> 8) & 0xFF;
--        unsigned int byte4 = hexInt & 0xFF;
-+        unsigned int hex_int = *(unsigned int *)hex_value;
-+        unsigned int byte1 = (hex_int >> 24) & 0xFF;
-+        unsigned int byte2 = (hex_int >> 16) & 0xFF;
-+        unsigned int byte3 = (hex_int >> 8) & 0xFF;
-+        unsigned int byte4 = hex_int & 0xFF;
- 
-         return g_strdup_printf("%u.%u.%u.%u", byte4, byte3, byte2, byte1);
-     }
-@@ -2126,11 +2126,12 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-     GuestNetworkRouteList *head = NULL, **tail = &head;
-     const char *routeFiles[] = {"/proc/net/route", "/proc/net/ipv6_route"};
-     FILE *fp;
--    size_t n;
-+    size_t n = 0;
-     char *line = NULL;
-     int firstLine;
-     int is_ipv6;
-     int i;
-+    char iface[IFNAMSIZ];
- 
-     for (i = 0; i < 2; i++) {
-         firstLine = 1;
-@@ -2147,18 +2148,14 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+@@ -2148,7 +2147,6 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
                  firstLine = 0;
                  continue;
              }
--            GuestNetworkRoute *route = NULL;
--            GuestNetworkRoute *networkroute;
--            char Iface[IFNAMSIZ];
-+            
+-            
              if (is_ipv6) {
--                char Destination[33], Source[33], NextHop[33];
--                int DesPrefixlen, SrcPrefixlen, Metric, RefCnt, Use, Flags;
--
--                /* Parse the line and extract the values */
-+                char destination[33], source[33], next_hop[33];
-+                int des_prefixlen, src_prefixlen, metric, refcnt, use, flags;
-                 if (sscanf(line, "%32s %x %32s %x %32s %x %x %x %x %s",
--                           Destination, &DesPrefixlen, Source,
--                           &SrcPrefixlen, NextHop, &Metric, &RefCnt,
--                           &Use, &Flags, Iface) != 10) {
-+                           destination, &des_prefixlen, source,
-+                           &src_prefixlen, next_hop, &metric, &refcnt,
-+                           &use, &flags, iface) != 10) {
-                     continue;
-                 }
+                 char destination[33], source[33], next_hop[33];
+                 int des_prefixlen, src_prefixlen, metric, refcnt, use, flags;
+@@ -2215,9 +2213,8 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
+             QAPI_LIST_APPEND(tail, route);
+         }
  
-@@ -2182,13 +2179,11 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-                 route->use = use;
-                 route->version = 6;
-             } else {
--                unsigned int Destination, Gateway, Mask, Flags;
--                int RefCnt, Use, Metric, MTU, Window, IRTT;
+-        free(line);
+         fclose(fp);
+     }
 -
--                /* Parse the line and extract the values */
-+                unsigned int destination, gateway, mask, flags;
-+                int refcnt, use, metric, mtu, window, irtt;
-                 if (sscanf(line, "%s %X %X %x %d %d %d %X %d %d %d",
--                           Iface, &Destination, &Gateway, &Flags, &RefCnt,
--                           &Use, &Metric, &Mask, &MTU, &Window, &IRTT) != 11) {
-+                           iface, &destination, &gateway, &flags, &refcnt,
-+                           &use, &metric, &mask, &mtu, &window, &irtt) != 11) {
-                     continue;
-                 }
- 
++    free(line);
+     return head;
+ }
 -- 
 2.40.1
 
