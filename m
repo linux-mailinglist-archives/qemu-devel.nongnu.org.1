@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C029BF95A
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA3D9BF95B
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 23:37:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8ods-0005K9-If; Wed, 06 Nov 2024 17:36:48 -0500
+	id 1t8odw-0005LI-5Q; Wed, 06 Nov 2024 17:36:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odq-0005Iy-1g
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:46 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odu-0005L3-Ic
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:50 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odo-0005PZ-3S
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:45 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6M9s8u021145;
- Wed, 6 Nov 2024 22:36:38 GMT
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odt-0005Qa-4Q
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:50 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6MA7IR014437;
+ Wed, 6 Nov 2024 22:36:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=fzIUgV8O5DqbUpc2H
- hiYKtlbdjXFebdeV2FyB0y2TRs=; b=NLoT+LMa4lFO+lnfleHLkTabppBa6IT6X
- nhEh+tlu/XAf/QqWhvxZ+Pxf2il+9L1JIf42D4sOQp+W5ijDA8Sw+/Az+JtCK6z4
- U/pC6lNdliRAdBBEU22YmhwuBBWkeuS/mQIJPNhSv7CKxdAdiMw10FNOoDmGkTde
- fd4jDrFVwPEYgn8A5rrLgqezg+U7i+FuxeCf6yyg5kt7D1GoN2QI7zzclKOMG8+q
- 9lAm3PgkgbFqg8SxE915TWZgnOZIzEIQnp9MtPE97bXGjF1Q5pLRKctJdUPGqe+T
- pXhJDQjSiJmZpctxBVNvPQaWVyyT2LU/b0wSjzsthUEXF0n6NcijA==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rh0rg3bm-1
+ :mime-version:references:subject:to; s=pp1; bh=Se34UJbSAm7knMK9G
+ dPXRPLBkRePgsZraHe1d8+JSrA=; b=XCZ9LsY/VVgV3HXHQTR1Av8gStG7y/iW2
+ U0FNV4fBIf2IBcYqNES8cea75b4SfOn5aDMuVfqg0z+/qD0nFbyCbi2U8Gn7IEUf
+ wz3pUyvnJN0DVE2nOPvAVv31WeXg9YGzhriURiFLAQ2G5iytCQiSt6vtXWAWK1FH
+ fFrPMw3rST8cVlriQKo89CmKv+Qaldvto++yeqzZ8DEBeXwvQ6XSjWuTPuTkLPZc
+ DK4zzaQ1h8zbyMVGBkb4btR98E3t/z43C3nLamL2xW6EVf15qH3+gkEZ9HulhCol
+ RX/k6tbPeOqlQBNUJ/eui7F0qd85TA5wLnsKXtFGdDfrQ9tsiPIjQ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rh0qg401-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2024 22:36:38 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6GB6Mn019503;
- Wed, 6 Nov 2024 22:36:37 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj71em-1
+ Wed, 06 Nov 2024 22:36:39 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6FEjrv031516;
+ Wed, 6 Nov 2024 22:36:38 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmq45q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2024 22:36:37 +0000
+ Wed, 06 Nov 2024 22:36:38 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A6MaZgj56557936
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A6MaaQ354460832
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2024 22:36:35 GMT
+ Wed, 6 Nov 2024 22:36:36 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B45F420043;
- Wed,  6 Nov 2024 22:36:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 794DD20043;
+ Wed,  6 Nov 2024 22:36:36 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18B3A20040;
+ by IMSVA (Postfix) with ESMTP id D102220040;
  Wed,  6 Nov 2024 22:36:35 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.88.240])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -62,28 +62,29 @@ To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 6/8] gdbstub: Allow late attachment
-Date: Wed,  6 Nov 2024 23:31:05 +0100
-Message-ID: <20241106223629.2608-7-iii@linux.ibm.com>
+Subject: [PATCH v2 7/8] docs/user: Document the %d placeholder and suspend=n
+ QEMU_GDB features
+Date: Wed,  6 Nov 2024 23:31:06 +0100
+Message-ID: <20241106223629.2608-8-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106223629.2608-1-iii@linux.ibm.com>
 References: <20241106223629.2608-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Pd0WIqBad5pROjemBrtsV0jNWjowu75N
-X-Proofpoint-GUID: Pd0WIqBad5pROjemBrtsV0jNWjowu75N
+X-Proofpoint-GUID: TVqr5wY1WLXTPWHXimcAAosLHrDQaSSn
+X-Proofpoint-ORIG-GUID: TVqr5wY1WLXTPWHXimcAAosLHrDQaSSn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- spamscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 mlxscore=0 mlxlogscore=776
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411060174
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ lowpriorityscore=0
+ clxscore=1015 mlxscore=0 mlxlogscore=994 suspectscore=0 phishscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060174
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -107,210 +108,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow debugging individual processes in multi-process applications by
-starting them with export QEMU_GDB=/tmp/qemu-%d.sock,suspend=n.
-Currently one would have to attach to every process to ensure the app
-makes progress.
-
-In case suspend=n is not specified, the flow remains unchanged. If it
-is specified, then accepting the client connection is delegated to a
-thread. In the future this machinery may be reused for handling
-reconnections and interruptions.
-
-On accepting a connection, the thread schedules gdb_handlesig() on the
-first CPU and wakes it up with host_interrupt_signal. Note that the
-result of this gdb_handlesig() invocation is handled, as opposed to
-many other existing call sites. These other call sites probably need to
-be fixed separately.
-
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- bsd-user/main.c   |   1 -
- gdbstub/user.c    | 120 ++++++++++++++++++++++++++++++++++++++++++----
- linux-user/main.c |   1 -
- 3 files changed, 110 insertions(+), 12 deletions(-)
+ docs/user/main.rst | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 61ca73c4781..ca4773a3f40 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -628,7 +628,6 @@ int main(int argc, char **argv)
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 7a126ee8093..8dcb1d90a8b 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -50,7 +50,7 @@ Command line options
  
-     if (gdbstub) {
-         gdbserver_start(gdbstub);
--        gdb_handlesig(cpu, 0, NULL, NULL, 0);
-     }
-     cpu_loop(env);
-     /* never exits */
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index c900d0a52fe..6ada0d687b9 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -10,6 +10,7 @@
-  */
+ ::
  
- #include "qemu/osdep.h"
-+#include <sys/syscall.h>
- #include "qemu/bitops.h"
- #include "qemu/cutils.h"
- #include "qemu/sockets.h"
-@@ -21,6 +22,7 @@
- #include "gdbstub/user.h"
- #include "gdbstub/enums.h"
- #include "hw/core/cpu.h"
-+#include "user/signal.h"
- #include "trace.h"
- #include "internals.h"
+-   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g port] [-B offset] [-R size] program [arguments...]
++   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g endpoint] [-B offset] [-R size] program [arguments...]
  
-@@ -416,11 +418,101 @@ static int gdbserver_open_port(int port)
-     return fd;
- }
+ ``-h``
+    Print the help
+@@ -87,8 +87,18 @@ Debug options:
+    Activate logging of the specified items (use '-d help' for a list of
+    log items)
  
--int gdbserver_start(const char *port_or_path)
-+static bool gdbserver_accept(int port, int gdb_fd, const char *port_or_path)
- {
--    int port = g_ascii_strtoull(port_or_path, NULL, 10);
-+    bool ret;
+-``-g port``
+-   Wait gdb connection to port
++``-g endpoint``
++   Wait gdb connection to a port (e.g., ``1234``) or a unix socket (e.g.,
++   ``/tmp/qemu.sock``).
 +
-+    if (port > 0) {
-+        ret = gdb_accept_tcp(gdb_fd);
-+    } else {
-+        ret = gdb_accept_socket(gdb_fd);
-+        if (ret) {
-+            gdbserver_user_state.socket_path = g_strdup(port_or_path);
-+        }
-+    }
++   If a unix socket path contains single ``%d`` placeholder (e.g.,
++   ``/tmp/qemu-%d.sock``), it is replaced by the emulator PID, which is useful
++   when passing this option via the ``QEMU_GDB`` environment variable to a
++   multi-process application.
 +
-+    if (!ret) {
-+        close(gdb_fd);
-+    }
-+
-+    return ret;
-+}
-+
-+struct {
-+    int port;
-     int gdb_fd;
-+    char *port_or_path;
-+} gdbserver_args;
-+
-+static void do_gdb_handlesig(CPUState *cs, run_on_cpu_data arg)
-+{
-+    int sig;
-+
-+    sig = target_to_host_signal(gdb_handlesig(cs, 0, NULL, NULL, 0));
-+    if (sig >= 1 && sig < NSIG) {
-+        qemu_kill_thread(gdb_get_cpu_index(cs), sig);
-+    }
-+}
-+
-+static void *gdbserver_accept_thread(void *arg)
-+{
-+    if (gdbserver_accept(gdbserver_args.port, gdbserver_args.gdb_fd,
-+                         gdbserver_args.port_or_path)) {
-+        CPUState *cs = first_cpu;
-+
-+        async_safe_run_on_cpu(cs, do_gdb_handlesig, RUN_ON_CPU_NULL);
-+        qemu_kill_thread(gdb_get_cpu_index(cs), host_interrupt_signal);
-+    }
-+
-+    g_free(gdbserver_args.port_or_path);
-+
-+    return NULL;
-+}
-+
-+__attribute__((__format__(__printf__, 1, 2)))
-+static void print_usage(const char *format, ...)
-+{
-+    va_list ap;
-+
-+    va_start(ap, format);
-+    vfprintf(stderr, format, ap);
-+    va_end(ap);
-+    fprintf(stderr, "Usage: -g {port|path}[,suspend={y|n}]\n");
-+}
-+
-+#define SUSPEND "suspend="
-+
-+int gdbserver_start(const char *args)
-+{
-+    g_auto(GStrv) argv = g_strsplit(args, ",", 0);
-+    const char *port_or_path = NULL;
-+    bool suspend = true;
-+    int gdb_fd, port;
-+    GStrv arg;
++   If the endpoint address is followed by ``,suspend=n`` (e.g.,
++   ``1234,suspend=n``), then the emulated program starts without waiting for a
++   connection, which can be established at any later point in time.
  
-+    for (arg = argv; *arg; arg++) {
-+        if (g_str_has_prefix(*arg, SUSPEND)) {
-+            const char *val = *arg + strlen(SUSPEND);
-+
-+            suspend = (strcmp(val, "y") == 0);
-+            if (!suspend && (strcmp(val, "n") != 0)) {
-+                print_usage("Bad option value: %s", *arg);
-+                return -1;
-+            }
-+        } else {
-+            if (port_or_path) {
-+                print_usage("Unknown option: %s", *arg);
-+                return -1;
-+            }
-+            port_or_path = *arg;
-+        }
-+    }
-+    if (!port_or_path) {
-+        print_usage("Port or path not specified");
-+        return -1;
-+    }
-+
-+    port = g_ascii_strtoull(port_or_path, NULL, 10);
-     if (port > 0) {
-         gdb_fd = gdbserver_open_port(port);
-     } else {
-@@ -431,16 +523,24 @@ int gdbserver_start(const char *port_or_path)
-         return -1;
-     }
- 
--    if (port > 0 && gdb_accept_tcp(gdb_fd)) {
--        return 0;
--    } else if (gdb_accept_socket(gdb_fd)) {
--        gdbserver_user_state.socket_path = g_strdup(port_or_path);
-+    if (suspend) {
-+        if (gdbserver_accept(port, gdb_fd, port_or_path)) {
-+            gdb_handlesig(first_cpu, 0, NULL, NULL, 0);
-+            return 0;
-+        } else {
-+            return -1;
-+        }
-+    } else {
-+        QemuThread thread;
-+
-+        gdbserver_args.port = port;
-+        gdbserver_args.gdb_fd = gdb_fd;
-+        gdbserver_args.port_or_path = g_strdup(port_or_path);
-+        qemu_thread_create(&thread, "gdb-accept",
-+                           &gdbserver_accept_thread, NULL,
-+                           QEMU_THREAD_DETACHED);
-         return 0;
-     }
--
--    /* gone wrong */
--    close(gdb_fd);
--    return -1;
- }
- 
- void gdbserver_fork_start(void)
-diff --git a/linux-user/main.c b/linux-user/main.c
-index b09af8d4365..97245ab37c2 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -1027,7 +1027,6 @@ int main(int argc, char **argv, char **envp)
-                     gdbstub);
-             exit(EXIT_FAILURE);
-         }
--        gdb_handlesig(cpu, 0, NULL, NULL, 0);
-     }
- 
- #ifdef CONFIG_SEMIHOSTING
+ ``-one-insn-per-tb``
+    Run the emulation with one guest instruction per translation block.
 -- 
 2.47.0
 
