@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CB09BF4C0
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500489BF4C6
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8kLb-0008U7-Do; Wed, 06 Nov 2024 13:01:39 -0500
+	id 1t8kNY-0000i2-4S; Wed, 06 Nov 2024 13:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t8kLX-0008Te-Db
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:01:35 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1t8kLV-0004Cl-Ji
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:01:35 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-37d4c1b1455so8709f8f.3
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730916091; x=1731520891; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y8C08c0CPdhXWq3j6o58B0Sg8LTBvoeIkrJl1JpkVyQ=;
- b=aYz+h5yoJXJmUIsrB6Z0CjdXcDPsmufCvyME6E6LD4do2QFowqRtslg1osV7VDtNyV
- +kzmop/tqvB/Cf7cl46JavoZfyhCOFuezkVwZk5wnjy1KKhznldFZOrofMMBTOgrawOq
- pBeLGm4cH8oEb55w43QQmspA1bvvRa3FYGTt62J8Kg4ffAEjwuYdefw/p05h8j8hgDDg
- pf2k8V6Eg7Ymyaiq8KaJHOjzCTAX3xq6gSAFq6/xnB00/Qb6bvgIpAfpA40Drk7NlGXv
- ofMglYhqudqA9dZnrsB5MYopvI7jCC6x0xXZCSikTSFtnBauu55s580DEuqsPR11MeEn
- o2pg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8kNW-0000hc-0x
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:03:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8kNS-0004gc-21
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:03:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730916212;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2vgNv1ztVv+J1anMKGsMpjPS04ULnMmc/GKiexbl4KQ=;
+ b=SALkCCck9zwVPk+LsW/n4Wk+KhRYM29KUGzsX23LNLH7/znq09f0YlPTRsRo/mUsYxYVhP
+ kL4Wyac0z++9A3jKaf0SYDrla0saKuZtD8dLPa5RWeyO3/+oHly6ZbZNVzRJii6EEs5yZr
+ W0QhShYmDNo7mgPexMDJryWgQwu3zKU=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-ReINN9W1NUeUCLegYbUa4A-1; Wed, 06 Nov 2024 13:03:30 -0500
+X-MC-Unique: ReINN9W1NUeUCLegYbUa4A-1
+X-Mimecast-MFC-AGG-ID: ReINN9W1NUeUCLegYbUa4A
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539e4b7c8f4so5191085e87.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:03:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730916091; x=1731520891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y8C08c0CPdhXWq3j6o58B0Sg8LTBvoeIkrJl1JpkVyQ=;
- b=b8j9fWbeTwLSaEfu/d0TmKgm44aTVs7/zhGbqFq6icHpa9gMPLInnVhSTfDfuU+143
- JI+jXh+mIe68GAUIn0fYNKC1fV98U//fSeoHkXtRcZU2Uh4OYPUEHQRoPKDbpI1Q5WTL
- Dn0CMQyWnhn5WMPn5ooLvQtjDxITHi48x04U9rg+/M8PXqt0xFFQnaaelg2pUtHfTNLK
- ai7cJ9qGiSvfP7eWn9OaZ1PAe485MUQfhm23GFCLI8APy4hVU3yum6BUabPmpsDyqA8n
- tjIZc+3gPJ6o/A92waDC2x/0fDN0nt/0e4bKWHrlBsEG+Lj1sKhrQgQS810LjoubEPdw
- pIWw==
-X-Gm-Message-State: AOJu0YwBoBGoLeGmb740Ch0Yte0BBNZW42V0lcY/oKqaT42qwqcbBr6Z
- ytFCw6+UPENMX1FnxnqSE4IgOW40ce+S/VQPs7HB6aTXDPnaysMIvdLc82xysBw=
-X-Google-Smtp-Source: AGHT+IFVnuWqv8qdKmqSJtMrsurVAAW8yDIqZSTrl+PCVh+/5bwf9A5pZ6VTb+I/gg8maMBSBAElPQ==
-X-Received: by 2002:adf:f6d1:0:b0:37d:4332:e91d with SMTP id
- ffacd0b85a97d-381b710f7f1mr21038163f8f.52.1730916091239; 
- Wed, 06 Nov 2024 10:01:31 -0800 (PST)
-Received: from [10.134.195.192] ([193.32.126.165])
+ d=1e100.net; s=20230601; t=1730916209; x=1731521009;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2vgNv1ztVv+J1anMKGsMpjPS04ULnMmc/GKiexbl4KQ=;
+ b=JRiQia3vDGIbVghHpwb53wjBEJMMPdjjTgxVFYMM7Gq5TJEhhkQKIWp/YiJ3Jun9+s
+ mS2dpz8i0JDtUbpQMPhEkQ7tyA+IeR+OJSgLJBmihq/dTFTOkh4qsAuS/9hwOcuVlH9N
+ PzI1RJPGFQILv6n+QpgBOCErRdpZlbrW7BeCxVHszMYDkU1R35lJvdwZBlPNXw6i3QEG
+ 4bquX63u0nyJ1eJTMeCgR9ikwW/jxnz2j6cVjS/+SWTPp1fbNfXzK9YrKxyjZI/Whp6m
+ gDipkwE5Og8PxwKJde18MfasS8dLxpv7mw+MWyvohaCG9hbFX7vpQVfyfmj/gJ6dRVBN
+ b0fg==
+X-Gm-Message-State: AOJu0Yzq+6w3u0Sx3vflzjPxrs0MYtzT4mLsYsL49AzWIx8IgnHPVIuh
+ i0tg2Wze71/63jys2J4xc05PDCuQfw7r0S2oWKVMNFVB1QLXVrRXn+Y47k08xfeWuce9TEoH8iK
+ gGsQB5B0zo6AeulQC6bEaABeM22/63gl9Pu4C9XkkF4LdtaPC53Z83JsQ34dd5cx2w4lO/w1KGt
+ 7BVSxpqtdhME03ajbdHG5EzYg71ULBhK96E4NPdwI=
+X-Received: by 2002:a05:6512:3e25:b0:52f:2ea:499f with SMTP id
+ 2adb3069b0e04-53b3490eab7mr21711378e87.24.1730916208717; 
+ Wed, 06 Nov 2024 10:03:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFaGK9FIFVGaOmwtheOT7cg8FKGNgs5AFwtoTNaFYxTgWmNtCWjfLRyXo8TSgx3fbrjquZLJQ==
+X-Received: by 2002:a05:6512:3e25:b0:52f:2ea:499f with SMTP id
+ 2adb3069b0e04-53b3490eab7mr21711329e87.24.1730916207921; 
+ Wed, 06 Nov 2024 10:03:27 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381c113e687sm20043607f8f.84.2024.11.06.10.01.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Nov 2024 10:01:30 -0800 (PST)
-Message-ID: <0c612f91-3699-48b4-bbe9-eea2298ff3fe@linaro.org>
-Date: Wed, 6 Nov 2024 10:01:27 -0800
+ 5b1f17b1804b1-432aa6eb003sm33691255e9.37.2024.11.06.10.03.26
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 10:03:27 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/39] Rust changes for QEMU 9.2 soft freeze
+Date: Wed,  6 Nov 2024 19:03:24 +0100
+Message-ID: <20241106180325.566170-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional: Bump timeouts of functional tests
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-References: <20241106170946.990731-1-thuth@redhat.com>
- <c233a6b5-bfea-4d5e-9b1f-5bc3a467e17d@linaro.org>
- <CAFEAcA-MVg2EU2cKJz+drZp3=GBCPJXqbP7iNimg8fs0NYfhOQ@mail.gmail.com>
- <235c9cc1-aba0-4612-ba19-32885cb4b138@linaro.org>
- <f1e324ed-e086-4f8b-8027-be2323383665@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <f1e324ed-e086-4f8b-8027-be2323383665@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,49 +97,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/24 09:40, Thomas Huth wrote:
-> On 06/11/2024 18.30, Pierrick Bouvier wrote:
->> On 11/6/24 09:26, Peter Maydell wrote:
->>> On Wed, 6 Nov 2024 at 17:21, Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>> I noticed by --enable-debug in configure is a combination of enabling
->>>> checks (enable-debug-tcg + graph + mutex), and deactivating optimizations.
->>>>
->>>> Would it be worth keeping the optimizations and runtime checks instead?
->>>> This way, there would be no more "timeout" issue.
->>>>
->>>> I'm not sure which added value we get from O0, except for debugging
->>>> locally QEMU.
->>>
->>> "Debugging locally QEMU" is exactly what --enable-debug is intended for...
->>>
->>
->> Yes...
->> but it seems like we take it for "enable debug checks" in CI as well and it
->> impacts runtime, because optimizations are deactivated. I think I've not
->> been the only one confused about this.
->>
->> So my point is that we should maybe differentiate the two use cases at
->> configure level.
->>
->> --enable-debug and
->> --enable-runtime-checks (or something more explicit)
-> 
-> Would that really help? I guess people still want to be able to run "make
-> check" when they compiled with --enable-debug, so we still need to be
-> prepared to run the checks with a slow QEMU.
-> 
+The following changes since commit 11b8920ed2093848f79f93d106afe8a69a61a523:
 
-Makes sense, even though it seems to indicate we have a wrong default 
-semantic here.
+  Merge tag 'pull-request-2024-11-04' of https://gitlab.com/thuth/qemu into staging (2024-11-04 17:37:59 +0000)
 
-> But I wonder whether we could maybe use -Og instead of -O0 nowadays?
-> 
+are available in the Git repository at:
 
-It would not hurt, but I'm not sure it's enough to avoid hitting those 
-timeout/perf difference issues.
+  tags/for-upstream-rust 
 
->    Thomas
-> 
+for you to fetch changes up to 951f71ad67bd474aba6925529daf45b747aac86e:
+
+  dockerfiles: install bindgen from cargo on Ubuntu 22.04 (2024-11-06 17:12:17 +0100)
+
+----------------------------------------------------------------
+v1->v2: wrap bindgen check with "if have_rust"
+	drop ci enablement
+
+Junjie Mao (1):
+      rust: introduce alternative implementation of offset_of!
+
+Manos Pitsidianakis (9):
+      rust/wrapper.h: define memory_order enum
+      Revert "rust: add PL011 device model"
+      rust: add PL011 device model
+      rust: add definitions for vmstate
+      rust/pl011: add support for migration
+      rust/pl011: move CLK_NAME static to function scope
+      rust/pl011: add TYPE_PL011_LUMINARY device
+      rust/pl011: remove commented out C code
+      rust/pl011: Use correct masks for IBRD and FBRD
+
+Paolo Bonzini (29):
+      qdev: make properties array "const"
+      meson: import rust module into a global variable
+      meson: remove repeated search for rust_root_crate.sh
+      meson: pass rustc_args when building all crates
+      rust: do not always select X_PL011_RUST
+      rust: do not use --no-size_t-is-usize
+      rust: remove uses of #[no_mangle]
+      rust: modernize link_section usage for ELF platforms
+      rust: build integration test for the qemu_api crate
+      rust: cleanup module_init!, use it from #[derive(Object)]
+      rust: clean up define_property macro
+      rust: make properties array immutable
+      rust: provide safe wrapper for MaybeUninit::zeroed()
+      rust: do not use TYPE_CHARDEV unnecessarily
+      rust/pl011: fix default value for migrate-clock
+      rust: patch bilge-impl to allow compilation with 1.63.0
+      rust: fix cfgs of proc-macro2 for 1.63.0
+      rust: use std::os::raw instead of core::ffi
+      rust: introduce a c_str macro
+      rust: silence unknown warnings for the sake of old compilers
+      rust: synchronize dependencies between subprojects and Cargo.lock
+      rust: create a cargo workspace
+      rust: do not use MaybeUninit::zeroed()
+      rust: clean up detection of the language
+      rust: allow version 1.63.0 of rustc
+      rust: do not use --generate-cstr
+      rust: allow older version of bindgen
+      rust: make rustfmt optional
+      dockerfiles: install bindgen from cargo on Ubuntu 22.04
+
+ docs/about/build-platforms.rst                     |  12 +
+ meson.build                                        | 137 +++++---
+ include/hw/qdev-core.h                             |   4 +-
+ include/hw/qdev-properties.h                       |   4 +-
+ rust/wrapper.h                                     |  17 +
+ hw/core/qdev-properties.c                          |  26 +-
+ system/qdev-monitor.c                              |   2 +-
+ .gitattributes                                     |   2 +
+ .gitlab-ci.d/buildtest.yml                         |   2 +-
+ meson_options.txt                                  |   2 +
+ rust/{hw/char/pl011 => }/Cargo.lock                |   4 +
+ rust/Cargo.toml                                    |   7 +
+ rust/hw/char/Kconfig                               |   1 -
+ rust/hw/char/pl011/Cargo.toml                      |   3 -
+ rust/hw/char/pl011/src/device.rs                   | 162 +++++++---
+ rust/hw/char/pl011/src/device_class.rs             |  80 ++++-
+ rust/hw/char/pl011/src/lib.rs                      |   6 +-
+ rust/hw/char/pl011/src/memory_ops.rs               |  24 +-
+ rust/qemu-api-macros/Cargo.lock                    |  47 ---
+ rust/qemu-api-macros/Cargo.toml                    |   5 +-
+ rust/qemu-api-macros/meson.build                   |   2 +-
+ rust/qemu-api-macros/src/lib.rs                    | 103 ++++--
+ rust/qemu-api/Cargo.lock                           |   7 -
+ rust/qemu-api/Cargo.toml                           |  10 +-
+ rust/qemu-api/build.rs                             |   9 +
+ rust/qemu-api/meson.build                          |  44 ++-
+ rust/qemu-api/src/c_str.rs                         |  53 +++
+ rust/qemu-api/src/definitions.rs                   |  68 ++--
+ rust/qemu-api/src/device_class.rs                  | 114 ++-----
+ rust/qemu-api/src/lib.rs                           |  23 +-
+ rust/qemu-api/src/offset_of.rs                     | 161 +++++++++
+ rust/qemu-api/src/tests.rs                         |  49 ---
+ rust/qemu-api/src/vmstate.rs                       | 360 +++++++++++++++++++++
+ rust/qemu-api/src/zeroable.rs                      |  86 +++++
+ rust/qemu-api/tests/tests.rs                       |  79 +++++
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml   |   1 -
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml     |   1 -
+ scripts/meson-buildoptions.sh                      |   4 +
+ subprojects/bilge-impl-0.2-rs.wrap                 |   1 +
+ subprojects/packagefiles/bilge-impl-1.63.0.patch   |  45 +++
+ .../packagefiles/proc-macro2-1-rs/meson.build      |   4 +-
+ subprojects/packagefiles/syn-2-rs/meson.build      |   1 +
+ tests/docker/dockerfiles/ubuntu2204.docker         |   6 +-
+ tests/lcitool/mappings.yml                         |   4 +
+ tests/lcitool/refresh                              |  11 +-
+ 45 files changed, 1379 insertions(+), 414 deletions(-)
+ rename rust/{hw/char/pl011 => }/Cargo.lock (98%)
+ create mode 100644 rust/Cargo.toml
+ delete mode 100644 rust/qemu-api-macros/Cargo.lock
+ delete mode 100644 rust/qemu-api/Cargo.lock
+ create mode 100644 rust/qemu-api/src/c_str.rs
+ create mode 100644 rust/qemu-api/src/offset_of.rs
+ delete mode 100644 rust/qemu-api/src/tests.rs
+ create mode 100644 rust/qemu-api/src/vmstate.rs
+ create mode 100644 rust/qemu-api/src/zeroable.rs
+ create mode 100644 rust/qemu-api/tests/tests.rs
+ create mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+-- 
+2.47.0
 
 
