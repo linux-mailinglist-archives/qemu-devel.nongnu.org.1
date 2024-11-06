@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791629BF597
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EAC9BF5B3
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:52:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8l3I-0000IT-84; Wed, 06 Nov 2024 13:46:48 -0500
+	id 1t8l87-0004FI-93; Wed, 06 Nov 2024 13:51:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8l3E-0000GD-T5
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:46:44 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8l3D-0000xY-9o
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:46:44 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-539ee1acb86so60977e87.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:46:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730918801; x=1731523601; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MkGkfKVgrldMieE36JppEsQQQbpaD8YlgbmPxpDRAVA=;
- b=osv6OU1HWBee3MMmvMD60DrfReffFfr36fmC2BoZHr+p+1MRjX/LOR0DQ9MhXNEMnS
- 1PW7ON0HuxuQJOiNDMIgx5QLsf6kMh82X3olvoZRkTjLQ2b2sqmfr9FDY5FZuR5H1Mbc
- GPshzs6H0E4Z4NeJLI1L1vBMHwFMHN7D80+Yb0Qgstbu3kKA2MWbOmHCDsJGWcWQZ430
- /x98iiUTjIzLkNMmoF9vGsuSSEf9IArrvwBZWtQaMnc4v2gbRjd1KppDN59AUwv6H8l4
- FKzSZS2GQWZ2AFOqcfTLTT1D503/BOvoYf4MRvAeCedIiFNIyx2i8dVcypZdfN8F8qGt
- JF9A==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8l85-0004Em-1A
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:51:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8l82-0001mH-PS
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:51:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730919101;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aWbcRlvcsSCaANOTCyprU0nkMdLErPbdZul48Z+M1PQ=;
+ b=Vq6/4YO+saXTAqQXLM5KWWZbev43RFIdE/Dpgry3B3EmduDkwx4PFNLhbnsxVrSvep/r9E
+ C1c5Z5uUIMBNmz2uyviyUPYXLrhUG0VERVlppfj2IXsGz4nEYWFgBp2xDGRL3z6tRRTNIm
+ lkNrfi997bbZM0c7k+Gx+651cJsDEjA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-373-QbKFPgSgOxmMGUsomyrFIA-1; Wed, 06 Nov 2024 13:51:40 -0500
+X-MC-Unique: QbKFPgSgOxmMGUsomyrFIA-1
+X-Mimecast-MFC-AGG-ID: QbKFPgSgOxmMGUsomyrFIA
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4327bd6bd60so763065e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:51:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730918801; x=1731523601;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MkGkfKVgrldMieE36JppEsQQQbpaD8YlgbmPxpDRAVA=;
- b=VYOZ+p626y8VBHdFaYXtViKt4WZRLn0lyl3T/XclRHvhGNWXQhLH+TONMEUyaJFtHT
- QUrahuf31oMVb6Kyr3dMTvefH5MzyWBz8URGvmObTS72gHLi92Nlrfi26ORWvYqKnyB1
- qDLFLZiMFl8b4PBc8pEpXwT4Sg6tEpb2YzrvNmwUy/AVP7Rg+IPQcXsT+bj/+jRTjupP
- tLz25UdW1htrWxwFNDORJsd5myC2f0TAuKF4zn0fzdiJmO6i7Qp/87Q/zP8mNqc+egDN
- iJD08wYeq8OWp2Wd74fps6Ty+wYM3uMP9p1gTnpPdOiPjKx0xuckfEnd/WZ5yExYWbkv
- xn0A==
-X-Gm-Message-State: AOJu0YwvjqnspmI5LXezWfgkVQhkbDvDwIdoa/FksxY7mRjTI0Wnxqnx
- 8Vdrdc+6B6dVTSGNJLJ7INYlTLBK9/LYGaT+PrYvCW/qqr6W/y0I8tyYDVhKeZbZNl5wSkKdehK
- A
-X-Google-Smtp-Source: AGHT+IGZ7yhvC/Wx3siWVWtSGdKVwGW9oG3YHsndXh771V6dpEgTCitAC2JnhInj+huJT/sEjeTvSw==
-X-Received: by 2002:a05:6512:3c96:b0:530:aa09:b6bf with SMTP id
- 2adb3069b0e04-53d65df7628mr10283658e87.24.1730918800919; 
- Wed, 06 Nov 2024 10:46:40 -0800 (PST)
-Received: from localhost.localdomain ([89.101.134.25])
+ d=1e100.net; s=20230601; t=1730919098; x=1731523898;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aWbcRlvcsSCaANOTCyprU0nkMdLErPbdZul48Z+M1PQ=;
+ b=gtgNbdfR2jvtabGXMJbVDh0DWJlSjZvVm64tPi0KN1ARTbf3zC4bpoZdFA8eFmvbzH
+ MExcf3XCavS1wexFR0l4dNE7A+rL6x9kQY5X/g53lROhFK0v7lm3x8ZknhHcQ6LHdJQ8
+ ehVNXjaZKvqufpHHTSfrYaMxTyn9JSLu2ywJppjXi28Ol2DkgieJTGU6tdvtM2TAY41R
+ g64Dox3oto8ASrvR/tttyKrek+jPc952qT0SACbli57V3GJJEzSHOEI4qDwCzadiUZEd
+ GzJjL1brgkG5ElnOxwGGI1j/E7YgKozNeZzWhviDp4FYGF1Aw2u1g6CVK+AxGOBM0/cQ
+ pNnQ==
+X-Gm-Message-State: AOJu0YxMiNSXymsyOtyq0982DYonsJllw/OjC1X8z8C2qe4KbSjQ7gqK
+ ADMaVA9ib7GDZUeyQFiEST4YS83JPTiJcUs1cwKuGEUven1m03eTlLbJM+kqlbLRbe7dCBEw0wB
+ d5mcYQqNpwDt/1Q0bW2Em7cbQCTaHZHj6QDQnUUIwaO68ZOMKWpgsrqN5t0PK3VTW1QRNCZf+Fk
+ bMoL/KYXH2zNZxcOIsedIWoEHIzVLzpm5/VxoPLd0=
+X-Received: by 2002:a05:600c:4f83:b0:42c:c28c:e477 with SMTP id
+ 5b1f17b1804b1-4319ad089b0mr320431765e9.23.1730919098329; 
+ Wed, 06 Nov 2024 10:51:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECbc9TLWnQE3rBH5Hmb3hkfezInGqr1McJVamDLzJQ9VET0dyAPw2qwNnpwxLtKS2N/fX8Fw==
+X-Received: by 2002:a05:600c:4f83:b0:42c:c28c:e477 with SMTP id
+ 5b1f17b1804b1-4319ad089b0mr320431505e9.23.1730919097928; 
+ Wed, 06 Nov 2024 10:51:37 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.226.83])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9eb16a7dc6sm314521266b.7.2024.11.06.10.46.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 06 Nov 2024 10:46:40 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ 5b1f17b1804b1-432aa70a1f8sm35156835e9.30.2024.11.06.10.51.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 10:51:37 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- xen-devel@lists.xenproject.org, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Anthony PERARD <anthony@xenproject.org>,
- Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <huth@tuxfamily.org>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Paul Durrant <paul@xen.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] hw/sparc: Mark devices as big-endian
-Date: Wed,  6 Nov 2024 18:46:12 +0000
-Message-ID: <20241106184612.71897-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241106184612.71897-1-philmd@linaro.org>
-References: <20241106184612.71897-1-philmd@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH] rust: pl011: fix device id matching
+Date: Wed,  6 Nov 2024 19:51:36 +0100
+Message-ID: <20241106185136.582198-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,45 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These devices are only used by the SPARC targets, which are
-only built as big-endian. Therefore the DEVICE_NATIVE_ENDIAN
-definition expand to DEVICE_BIG_ENDIAN (besides, the
-DEVICE_LITTLE_ENDIAN case isn't tested). Simplify directly
-using DEVICE_BIG_ENDIAN.
+The offset that is compared against 0x3f8..0x400 is not shifted right.
+Adjust the pattern matching.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/sparc/sun4m_iommu.c | 2 +-
- hw/sparc64/sun4u.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
-index 6f765e97e4..4486508e3b 100644
---- a/hw/sparc/sun4m_iommu.c
-+++ b/hw/sparc/sun4m_iommu.c
-@@ -238,7 +238,7 @@ static void iommu_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps iommu_mem_ops = {
-     .read = iommu_mem_read,
-     .write = iommu_mem_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 541c7f74fa..9d7aebf632 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -254,7 +254,7 @@ static void power_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps power_mem_ops = {
-     .read = power_mem_read,
-     .write = power_mem_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 2a85960b81f..6556865fc22 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -182,7 +182,7 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+         use RegisterOffset::*;
+ 
+         std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset) {
+-            Err(v) if (0x3f8..0x400).contains(&v) => {
++            Err(v) if (0xfe0..=0xffc).contains(&v) => {
+                 u64::from(self.device_id[(offset - 0xfe0) >> 2])
+             }
+             Err(_) => {
 -- 
-2.45.2
+2.47.0
 
 
