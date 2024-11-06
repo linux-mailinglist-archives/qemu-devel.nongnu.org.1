@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483189BEF38
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AE49BEF40
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 14:40:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8gDm-0005CR-CG; Wed, 06 Nov 2024 08:37:20 -0500
+	id 1t8gFU-0006ir-Rm; Wed, 06 Nov 2024 08:39:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8gD4-0004vP-2z
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:36:38 -0500
+ id 1t8gEe-0006SN-UQ
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:38:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t8gD2-0001wv-GS
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:36:33 -0500
+ id 1t8gEd-0002Dk-7w
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 08:38:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730900191;
+ s=mimecast20190719; t=1730900290;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eqQ6qew3aYnmLjGNs75LevqgkhSi0/5xM5L9xd/D6H8=;
- b=JWAFwY29nSlrbyR6CKRsJV6D94/HGaYENYg1jTA6VR6++2YaKZEopOezPlahFrWk8q96ly
- O+LfayFlZLTZhthS0DsGsrRtvr+FarX26WlWK9/rV0KRvzjE7eBtD9dSwfBu5yE47uKAg0
- p9AE2H4XPDaiokAaLT6+VvhVmkx1iUE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2hGrf3fII06QoHmh3BU1YIto9BWksH8zn36duqj8pTs=;
+ b=Ujsn0waQf3InUWJfaRHb4zwG5oOHBeVe5uhm2lgTSL3UI+000hjvCEaB/ykA3+xipxs8Ti
+ EA75Rd5NBVMwSmehB0agi6t3d1uyMZObzKt7TbZgfAqc6N343suTihKBiG+b0ndiGh+cXU
+ cK5Fqxfq7hVMmQIHY2cb7yxctviVEi8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-0Fr5aIgcOTiPCq7rLwBCkw-1; Wed,
- 06 Nov 2024 08:36:30 -0500
-X-MC-Unique: 0Fr5aIgcOTiPCq7rLwBCkw-1
-X-Mimecast-MFC-AGG-ID: 0Fr5aIgcOTiPCq7rLwBCkw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-KiBD3CEwOdOkMtXqXDcqCQ-1; Wed,
+ 06 Nov 2024 08:38:09 -0500
+X-MC-Unique: KiBD3CEwOdOkMtXqXDcqCQ-1
+X-Mimecast-MFC-AGG-ID: KiBD3CEwOdOkMtXqXDcqCQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12C111954B1C; Wed,  6 Nov 2024 13:36:29 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 14E891954B0F; Wed,  6 Nov 2024 13:38:08 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.180])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0E2E1195607C; Wed,  6 Nov 2024 13:36:25 +0000 (UTC)
-Date: Wed, 6 Nov 2024 13:36:22 +0000
+ id 376441956088; Wed,  6 Nov 2024 13:38:05 +0000 (UTC)
+Date: Wed, 6 Nov 2024 13:38:02 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Dehan Meng <demeng@redhat.com>
 Cc: qemu-devel@nongnu.org, kkostiuk@redhat.com, michael.roth@amd.com,
  peter.maydell@linaro.org
-Subject: Re: [PATCH v5 2/3] qemu-ga: Optimize var declaration and definition
-Message-ID: <Zytw1kwZhKb_zX5S@redhat.com>
+Subject: Re: [PATCH v5 3/3] qemu-ga: Avoiding freeing line prematurely
+Message-ID: <ZytxOoOft042eG1z@redhat.com>
 References: <20241106084134.1133061-1-demeng@redhat.com>
- <20241106084134.1133061-3-demeng@redhat.com>
+ <20241106084134.1133061-4-demeng@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241106084134.1133061-3-demeng@redhat.com>
+In-Reply-To: <20241106084134.1133061-4-demeng@redhat.com>
 User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -88,15 +88,13 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 06, 2024 at 04:41:33PM +0800, Dehan Meng wrote:
-> Variable declarations moved to the beginning of blocks
-> Followed the coding style of using snake_case for variable names.
-> Proper initialization of param 'size_t n' to '0' for
+On Wed, Nov 06, 2024 at 04:41:34PM +0800, Dehan Meng wrote:
+> It's now only freed at the end of the function.
 > 
 > Signed-off-by: Dehan Meng <demeng@redhat.com>
 > ---
->  qga/commands-linux.c | 43 +++++++++++++++++++------------------------
->  1 file changed, 19 insertions(+), 24 deletions(-)
+>  qga/commands-linux.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
