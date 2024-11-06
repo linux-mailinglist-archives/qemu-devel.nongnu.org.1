@@ -2,60 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928659BE139
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 567B29BE153
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:52:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8bcA-0005WD-Tu; Wed, 06 Nov 2024 03:42:10 -0500
+	id 1t8blM-0002tH-LU; Wed, 06 Nov 2024 03:51:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc7-0005VM-9S
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:07 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1t8bl3-0002sn-V4
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:51:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bc5-0007Uj-LF
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:42:06 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1t8bl1-0000u9-6G
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:51:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730882524;
+ s=mimecast20190719; t=1730883077;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=DuKheEd+RIhCNNVlsfYRfvUtD5CnI0aqPx70+3FcBsM=;
- b=gweZJbfjhh8tu35cPXxzdsmreO46nyS7mXaLWtYW2AoRQ4UFZLQF4IeCtT8p9Bso7aBmYD
- 8hkB576bLyZBHXeeFij6iroswgFl7Qc6j43KXsS+lUttbNLvEP94Psi5n+6s4K7+y7ZODL
- A/EVf7GQjJ6rb/0zRFcygKy56J22Qqw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-eDi7X9LaOWWCVs0cCHKRgQ-1; Wed,
- 06 Nov 2024 03:41:59 -0500
-X-MC-Unique: eDi7X9LaOWWCVs0cCHKRgQ-1
-X-Mimecast-MFC-AGG-ID: eDi7X9LaOWWCVs0cCHKRgQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76AC71955F3E; Wed,  6 Nov 2024 08:41:58 +0000 (UTC)
-Received: from fedora.nay.redhat.com (unknown [10.66.57.68])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C9861955F40; Wed,  6 Nov 2024 08:41:54 +0000 (UTC)
-From: Dehan Meng <demeng@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
- peter.maydell@linaro.org, berrange@redhat.com
-Subject: [PATCH v5 3/3] qemu-ga: Avoiding freeing line prematurely
-Date: Wed,  6 Nov 2024 16:41:34 +0800
-Message-Id: <20241106084134.1133061-4-demeng@redhat.com>
-In-Reply-To: <20241106084134.1133061-1-demeng@redhat.com>
-References: <20241106084134.1133061-1-demeng@redhat.com>
+ bh=zmCVtkqnKZ9iejApJRsva49FK5IJvx3oSfkMQfqfXmU=;
+ b=do5sz6c48oHqYNR4BHxju4UurUaTRNA3CVdBGwZVdOWDMRZj5kIY+h+esAPk7ieZnCNFG2
+ 5N2AAS50+k4G2Y9EKtpIQJHAseh+c0YBqMtDpSRRK20KeZBRi0cw0xU1QpcqJCkxyk8QC5
+ KduQh+EnZgC4+nm9vBrvAdEWSHJ/s3w=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-481-07hpw3mCOGSblHnlIszrKA-1; Wed, 06 Nov 2024 03:51:16 -0500
+X-MC-Unique: 07hpw3mCOGSblHnlIszrKA-1
+X-Mimecast-MFC-AGG-ID: 07hpw3mCOGSblHnlIszrKA
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7b15659b098so865931585a.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 00:51:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730883075; x=1731487875;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zmCVtkqnKZ9iejApJRsva49FK5IJvx3oSfkMQfqfXmU=;
+ b=H5Hd8hRzxWuboDfxn4N8OYwBqygf6dwb5iasR/mcul8P5GRXsJHGiY0oogFn+jNyoE
+ QByh8e7aoYkSzHFEo2o3E2LP3L6LJHAgvr222RzzYAQuucKIhkw8/1KNXC3yHSaLAHlZ
+ NwFl3+nKa9rl9yzkaqcB0xfdp/jkSTuiTzlnXHjdnm2n8WKXSHNYosDcq5OMWlny/shs
+ KH1XJpcAywKNhn0pY1DZlOEYQf+B7Y3YyGJyd5D1OS/Kgb9kSq7T58TOqLT59tkkZdbk
+ ddmdOzntQ8KXOO4WEr8Se23rW2b4t+TCeVNI1sehh/gcHs5vDO6ZTMMblZ+LlTvaTluZ
+ 5YhA==
+X-Gm-Message-State: AOJu0YznJf6TtvXnIbhPXflJ0YWGODavYlRxc+rKOGUwbtInl9grcF0b
+ YaL5Ezq4agYxLRHbTxpW8JlzTGus8cfWXoLCYZatqsqyo+UBgDCPKNRjuJ08OVcQr0elkc5P/F9
+ RVuAVi/AxgJCOcdZeDDsyf7Mi3h55j610MV9SdnVk9pcD+Oap+d1p
+X-Received: by 2002:a05:620a:4084:b0:7b1:559f:eee with SMTP id
+ af79cd13be357-7b2f2551229mr3243905585a.53.1730883075709; 
+ Wed, 06 Nov 2024 00:51:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE6GFQ+jUuu6McpY1YGh53io7z1of5oEz5lozFkNzD+Vr8rwwf1wwb1LPqW9l/gVgqneZ5c5g==
+X-Received: by 2002:a05:620a:4084:b0:7b1:559f:eee with SMTP id
+ af79cd13be357-7b2f2551229mr3243903885a.53.1730883075341; 
+ Wed, 06 Nov 2024 00:51:15 -0800 (PST)
+Received: from sgarzare-redhat ([5.77.86.226])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b2f3a0c199sm606838285a.64.2024.11.06.00.51.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2024 00:51:14 -0800 (PST)
+Date: Wed, 6 Nov 2024 09:51:07 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH] vhost: fail device start if iotlb update fails
+Message-ID: <kxiffscfbs4njd6cfuebstpm5yrp7jdkgulcwbsmsyyxfowixw@yrhyrmhaj7da>
+References: <20241105060053.61973-1-ppandit@redhat.com>
+ <a664pk3wefui7tyvs6rjln2tm2fxwir6yvshffwkjypksechjj@3amhddyqxwiz>
+ <CAE8KmOxHTx=ZxTWype-YVizogDEVVXVg=jRdYU8eRtHP7ngr9w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=demeng@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAE8KmOxHTx=ZxTWype-YVizogDEVVXVg=jRdYU8eRtHP7ngr9w@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -80,47 +102,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's now only freed at the end of the function.
+On Wed, Nov 06, 2024 at 01:20:31PM +0530, Prasad Pandit wrote:
+>On Tue, 5 Nov 2024 at 16:19, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> VHOST_OPS_DEBUG() is usually used in the error path when calling a
+>> `dev->vhost_ops` callback. In addition vhost_device_iotlb_miss() is
+>> already reporting error through error_report() in the error path, so I
+>> think we can remove this line.
+>
+>* Okay.
+>
+>> Should we add a new label in the error path and call
+>> `hdev->vhost_ops->vhost_dev_start` with `false`?
+>>
+>> Maybe we need to call also `hdev->vhost_ops->vhost_set_iotlb_callback`
+>> with `false`.
+>===
+>diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>index a70b7422b5..089eff438e 100644
+>--- a/hw/virtio/vhost.c
+>+++ b/hw/virtio/vhost.c
+>@@ -2137,15 +2137,18 @@ int vhost_dev_start(struct vhost_dev *hdev,
+>VirtIODevice *vdev, bool vrings)
+>             goto fail_log;
+>         }
+>     }
+>+
+>+    bool start = true;
+>+dev_restart:
+>     if (hdev->vhost_ops->vhost_dev_start) {
+>-        r = hdev->vhost_ops->vhost_dev_start(hdev, true);
+>+        r = hdev->vhost_ops->vhost_dev_start(hdev, start);
+>         if (r) {
+>             goto fail_start;
+>         }
+>     }
+>     if (vhost_dev_has_iommu(hdev) &&
+>         hdev->vhost_ops->vhost_set_iotlb_callback) {
+>-            hdev->vhost_ops->vhost_set_iotlb_callback(hdev, true);
+>+            hdev->vhost_ops->vhost_set_iotlb_callback(hdev, start);
+>
+>         /* Update used ring information for IOTLB to work correctly,
+>          * vhost-kernel code requires for this.*/
+>@@ -2154,7 +2157,8 @@ int vhost_dev_start(struct vhost_dev *hdev,
+>VirtIODevice *vdev, bool vrings)
+>             r = vhost_device_iotlb_miss(hdev, vq->used_phys, true);
+>             if (r) {
+>                 VHOST_OPS_DEBUG(r, "vhost_device_iotlb_miss failed");
+>-                goto fail_start;
+>+                start = false;
+>+                goto dev_restart;
+>             }
+>         }
+>     }
+>===
+>
+>* Something like above?
 
-Signed-off-by: Dehan Meng <demeng@redhat.com>
----
- qga/commands-linux.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+mmm, I would avoid goto to go backwards, since we could generate 
+infinite loops, plus I think we should call that functions in the 
+reverse order, so just add them in the error path, as we already do for 
+other calls.
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 55c35bfc8f..70020621bf 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -2138,8 +2138,7 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-         is_ipv6 = (i == 1);
-         fp = fopen(routeFiles[i], "r");
-         if (fp == NULL) {
--            error_setg_errno(errp, errno, "open(\"%s\")", routeFiles[i]);
--            free(line);
-+            error_setg_errno(errp, errno, "open(\"%s\")", route_files[i]);
-             continue;
-         }
- 
-@@ -2148,7 +2147,6 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-                 firstLine = 0;
-                 continue;
-             }
--            
-             if (is_ipv6) {
-                 char destination[33], source[33], next_hop[33];
-                 int des_prefixlen, src_prefixlen, metric, refcnt, use, flags;
-@@ -2215,9 +2213,8 @@ GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
-             QAPI_LIST_APPEND(tail, route);
-         }
- 
--        free(line);
-         fclose(fp);
-     }
--
-+    free(line);
-     return head;
- }
--- 
-2.40.1
+Another option is somehow call vhost_dev_stop() and just do the steps we 
+need to, but that seems more complicated to me.
+
+Thanks,
+Stefano
+
+>
+>===
+>static int vhost_user_dev_start(struct vhost_dev *dev, bool started)
+>{
+>    ...
+>    if (started) {
+>        return vhost_user_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+>                                          VIRTIO_CONFIG_S_DRIVER |
+>                                          VIRTIO_CONFIG_S_DRIVER_OK);
+>    } else {
+>        return 0;
+>    }
+>}
+>
+>static void vhost_user_set_iotlb_callback(struct vhost_dev *dev, int enabled)
+>{
+>    /* No-op as the receive channel is not dedicated to IOTLB messages. */
+>}
+>===
+>
+>* Calling vhost_user_dev_start() and vhost_user_set_iotlb_callback()
+>with 'false' does not seem to do much. Not sure how'll that help. If
+>we 'goto fail_start;', libvirtd(8) might restart the guest and thus
+>start the vhost device again.
+>
+>...wdyt?
+>
+>Thank you.
+>---
+>  - Prasad
+>
 
 
