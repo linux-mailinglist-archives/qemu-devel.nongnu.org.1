@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C549BF881
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 22:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA499BF95F
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 23:38:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8nbv-000343-Mt; Wed, 06 Nov 2024 16:30:43 -0500
+	id 1t8odq-0005Ix-Bs; Wed, 06 Nov 2024 17:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <goldstein.w.n@gmail.com>)
- id 1t8nbt-00033r-TX
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 16:30:42 -0500
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <goldstein.w.n@gmail.com>)
- id 1t8nbs-0004bf-5R
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 16:30:41 -0500
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3e601b6a33aso222825b6e.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 13:30:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730928638; x=1731533438; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JqXsIZtuGIOuW5Gn43DKmDnsK7qTSNWkCXc4v8P485Y=;
- b=OVijuyvsD5hu/A88fbR9fRQzeiQLFNj2CQY9GOxV6u3CuEEK3v8fMLIjWfbt2BFs2c
- YfzVMgs9qVdcxUQ9WwyDE1VxPX1DY8vJwCqj7l5ORDrxHdaXXzEXhfMbeDlf+mnM3Mhz
- +VCQFdl92YpQtpQdAoD5mw/2g+DCdEjVBVD8EnK5ee2SYhiMNiZB69NikVtnut36sQAL
- /rsdNg4KVASEVJDbMuX5UfyaFFstZlh4PawHVVp1CPhbOIcOFTnbkRndflvWkM1m62JV
- D9/sILer0Z+nvYR+PsslPpi+Zb7Fs0aGQWNqc0bEK7R7RZ3FixLmdiH1i7Lkuk2A8fjW
- llbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730928638; x=1731533438;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JqXsIZtuGIOuW5Gn43DKmDnsK7qTSNWkCXc4v8P485Y=;
- b=P43qcdoOVZjp2H/ZacW/TKVwrNH5RF/fLalrwEkReQP6Rf7E3IyzTq5cP1OJO6PVUi
- 2RYupR/GvhBEb1Jkr80qwHf6n2bRVT/O5At3D1iftRW0AsME6hfBXtQT5cO3CHwzAeib
- CvxSfmom6eEwMuxupgNLF9ftL6jzSvc6engbtyzidu+wjH01JsTKoJLAC9VMfuYeOURh
- pCizpJZwfgh+b1jb6511bbYgaP4tKEjyBxE0KnvfR/8frkjP4gQmieVr4aGkr1lh1YbO
- 6su4eXCXwWdahRrbBlTK9Nmc9bwWZgclLWQa04kzyCxgCJmbd6f3580W2YpO92kJuSwS
- vU5A==
-X-Gm-Message-State: AOJu0YzARQzD644xr/d4ZUFNshqfvLCdqxd8TdoouixpnkzbddP0owjG
- W3XsWtb9fOP9+A50DI9NQeTPsGuqrp+iaDaTOhi+NRov9ApOsATZZqpHS/V3B+Zk2TyVrggx9GZ
- N/Tb5rcna+RCvP24amfLou3az2So=
-X-Google-Smtp-Source: AGHT+IEz7T94iHR/Q7B1nR0yV1pX9EXa1wdQaXsM80l9RYv9581ebtVRAUh5CpIqa6iQEeCeFSyspGL+iDubWi4iLXQ=
-X-Received: by 2002:a05:6808:15a5:b0:3e6:4f27:5c7e with SMTP id
- 5614622812f47-3e6608d66f9mr23239248b6e.21.1730928638637; Wed, 06 Nov 2024
- 13:30:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odp-0005II-4e
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:45 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t8odn-0005PL-9w
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 17:36:44 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6M9whS021178;
+ Wed, 6 Nov 2024 22:36:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=kzP/BVkZ83DBEJfcayiQu7tszhbaJmfOFMveuXREE
+ Go=; b=RkG35W8+VPtjL7PpxLI8Y2nmNy6ZMm1nIYlCumGLUzsLJyn7NCh5X3rBy
+ 4Cw9hquEdW5R5PIrUZ2UOceprVlzPIbGjBAe3kagilNH8tIGeM//xl+VwBgTgyDe
+ 3v5q8Oz2EQCkfmct3tqmMHzvn9n6lxJUaRQxKc3WWMIr4A70dYB65jyqAaKfduUi
+ C3eCEzT3LwduCEGfsZxxG5nZIgfJmE0ebZit6WuoucP/dhvgplDb/YmhDSrSPKL9
+ RKzAy8FFc1Rsoux4V0lotB+h/+sSj2jVIdCk2Y6SyUxSQd8/2Xc9xgk6fBAl9+R7
+ Lw0QVCM3PxXesaNgBWJoD91knUc1g==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rh0rg3ap-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2024 22:36:34 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6KoYZp023983;
+ Wed, 6 Nov 2024 22:36:33 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nxsyrg3v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2024 22:36:33 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A6MaVov43450628
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Nov 2024 22:36:31 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CD912004B;
+ Wed,  6 Nov 2024 22:36:31 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 714FA20043;
+ Wed,  6 Nov 2024 22:36:30 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.88.240])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Nov 2024 22:36:30 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/8] gdbstub: Allow late attachment
+Date: Wed,  6 Nov 2024 23:30:59 +0100
+Message-ID: <20241106223629.2608-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 1CZ2w-etX8bt3FszA6BG9KZWowTEOyMG
+X-Proofpoint-GUID: 1CZ2w-etX8bt3FszA6BG9KZWowTEOyMG
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
- <20241030141037.375897-1-goldstein.w.n@gmail.com>
- <000c9ef8-c610-4f2a-b191-04b84455d89c@linaro.org>
- <CAFUsyfKkmSid=LVTbG+WHZA_=MAGdf+TU5vGtNE1GGx8WDheOQ@mail.gmail.com>
- <CAFUsyfKfM-X_qGN4Dy8DhES7zRi66s6yVZ3+_KmNM4f2GhBG+Q@mail.gmail.com>
- <f21fe153-6239-4c93-bf60-994976a9dbea@linaro.org>
- <CAFUsyfLhPkSMrm50RAAvir2-WoRS4_jbtZf1WWR_WZvm=BOr6g@mail.gmail.com>
- <e63cd5f6-8387-4c39-98e4-5e1c180934bc@linaro.org>
- <CAFUsyf+8sJLX+qqzPEj1E1QPQpoP4n56uU5U9aksq8JEx_52gA@mail.gmail.com>
- <CAFUsyf+xVXamR+5gtu62vFXjYScrJu0Arvhk62QXYa359UCHsg@mail.gmail.com>
- <d23ea679-9c21-44da-86cf-ae97d0214b86@linaro.org>
-In-Reply-To: <d23ea679-9c21-44da-86cf-ae97d0214b86@linaro.org>
-From: Noah Goldstein <goldstein.w.n@gmail.com>
-Date: Wed, 6 Nov 2024 15:30:27 -0600
-Message-ID: <CAFUsyfL=QfvtMb6TiWVa2cEyeYQobh_3zfYpnPEb7bq6FH1k1A@mail.gmail.com>
-Subject: Re: linux-user: Add option to run `execve`d programs through QEMU
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, iii@linux.ibm.com, laurent@vivier.eu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=goldstein.w.n@gmail.com; helo=mail-oi1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ spamscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 mlxscore=0 mlxlogscore=610
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411060174
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,36 +106,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 6, 2024 at 3:10=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 11/6/24 18:13, Noah Goldstein wrote:
-> > Question about impl regarding handling of `-execfd` with/without a prog=
-ram name.
-> >
-> > 1) `-execfd` + program name ie: `qemu -execfd <some_fd> ls -a`.
-> > 2) `-execfd` without program name i.e: `qemu -execfd <some_fd> -a`.
-> >
-> > Do you want to allow both of these? If you want to allow (1), what shou=
-ld
-> > we use for `argv[0]`/`exec_path`. The program pass ("ls") or
-> > `readlink(<some_fd>)`?
->
-> The canonical response is, examine the kernel source.
-> We're not implementing this in a vacuum, you're replicating execveat(2).
->
-> I suspect the answer is (1), to be compared with
->
->      syscall(__NR_execveat, some_fd, "", &["ls", "-a"], env, AT_EMPTY_PAT=
-H);
+v1: https://lore.kernel.org/qemu-devel/20241024200031.80327-1-iii@linux.ibm.com/
+v1 -> v2: Rebase, fix conflicts with the QEMU_RTSIG_MAP patch.
+          Use qemu_get_thread_id() for %d (Helge, Richard, Warner).
+          Add R-bs, except for the Richard's one on 4/8, since
+          conflict resolution caused a noticeable change.
+          Patches that need review:
+          - [PATCH 2/8] gdbstub: Try unlinking the unix socket before binding
+          - [PATCH 4/8] user: Introduce host_interrupt_signal  # linux part
+          - [PATCH 6/8] gdbstub: Allow late attachment
+          - [PATCH 7/8] docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+          - [PATCH 8/8] tests/tcg: Add late gdbstub attach test
 
-Err, I think the reference for '-execfd' is `fexecve`:
-https://man7.org/linux/man-pages/man3/fexecve.3.html
+Hi,
 
-Which doesn't take a path. So I guess we just interpret the "ls" as
-argv[0] but not
-as "exec_path".
->
->
-> r~
+This series adds the ability to attach GDB to a running qemu-user
+instance. This is useful for debugging multi-process apps.
+
+Patches 1 and 2 implement a small related feature: the ability to
+create individual UNIX sockets for each child process.
+
+Patches 3-5 add the required infrastructure. In particular, we need
+to reserve a host signal for waking up threads, as discussed in [1].
+By the way, the problem with atomicity of checking for pending signals
+and invoking syscalls that I'm describing in that thread seems to
+have already been solved by the safe_syscall infrastructure, so the
+changes are fairly simple.
+
+If this series is accepted, I will rebase the all-stop series on top
+of it.
+
+Patch 6 is the implementation, patch 7 is a documentation update,
+patch 8 is a test. I tested this series on Linux and only
+compile-tested on the BSDs.
+
+Best regards,
+Ilya
+
+[1] https://lore.kernel.org/qemu-devel/94ebebf2-e775-4fd2-8fcf-921610261a7e@linaro.org/
+
+Ilya Leoshkevich (8):
+  gdbstub: Allow the %d placeholder in the socket path
+  gdbstub: Try unlinking the unix socket before binding
+  user: Introduce user/signal.h
+  user: Introduce host_interrupt_signal
+  osdep: Introduce qemu_kill_thread()
+  gdbstub: Allow late attachment
+  docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+  tests/tcg: Add late gdbstub attach test
+
+ bsd-user/main.c                            |   1 -
+ bsd-user/signal-common.h                   |   1 -
+ bsd-user/signal.c                          |  13 ++
+ docs/user/main.rst                         |  16 ++-
+ gdbstub/user.c                             | 131 +++++++++++++++++++--
+ include/qemu/osdep.h                       |   9 ++
+ include/user/signal.h                      |  25 ++++
+ linux-user/main.c                          |   1 -
+ linux-user/signal-common.h                 |   1 -
+ linux-user/signal.c                        |  26 +++-
+ linux-user/syscall.c                       |   1 +
+ tests/guest-debug/run-test.py              |  15 ++-
+ tests/tcg/multiarch/Makefile.target        |   9 +-
+ tests/tcg/multiarch/gdbstub/late-attach.py |  28 +++++
+ tests/tcg/multiarch/late-attach.c          |  41 +++++++
+ util/oslib-posix.c                         |  15 +++
+ 16 files changed, 308 insertions(+), 25 deletions(-)
+ create mode 100644 include/user/signal.h
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+ create mode 100644 tests/tcg/multiarch/late-attach.c
+
+-- 
+2.47.0
+
 
