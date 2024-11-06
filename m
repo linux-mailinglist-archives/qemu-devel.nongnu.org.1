@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3195A9BE12E
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6758F9BE136
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 09:42:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8bZH-00041M-4F; Wed, 06 Nov 2024 03:39:11 -0500
+	id 1t8bc4-0005UJ-08; Wed, 06 Nov 2024 03:42:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t8bZD-00040f-TR
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:39:08 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1t8bZB-00061A-Hi
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:39:07 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7ede6803585so482676a12.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 00:39:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1730882344; x=1731487144; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9iQwRWQz3sbPdtuIOsuxjy5ZLO5E38CiwHVxyC/5QA8=;
- b=iYF12NGH4F4RxptZq5JttFWHMQOwWSsNXulaWYjDo0cY3FPJXWEB1sdt4zDn7ou7lY
- CHPaTR977hyZ0guc7tK0MS61gD3x8EZjeueISXkVK+JZHyYULqzZSuAZmcNX1Cq2o246
- 8+EkASlM+T8Qo6UT732Gf9Oe80FWlrBTNmvpnzqmDde2+FxE/SbewDkx5S6MdFK0iPdV
- 9PHG4uAI43r531X4VfMWJgVSkp18MblxBTs0Yv+/UPRKb7hXzTzMVuK8qjLKLBsewXXX
- rHRGCH6k7VMBircgjsh+V6yVf3omhGWz2Ni1jnEcvDXfp45EXPWBPyVXMnv0OjtXQ60s
- PeFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730882344; x=1731487144;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9iQwRWQz3sbPdtuIOsuxjy5ZLO5E38CiwHVxyC/5QA8=;
- b=YYVYYJtVjXLYhpRmQCAFuSkhJcKM18w7YXKIqe2LWTgKPS4SfQVrD1iYigDnI6Q/OG
- e9V0wlqPNkqMxqikF0XI+HUww7MqviBGYj1frcwfio55eu/iEopwKwQoXcEZFs2/48wH
- FhCiqOnPqRbGaVQQWxfX00hrSyO5WDmYZmh8+lEK6eSE5JAmRRniaokDztUYleE0TVL/
- LRHMJNI8H1dW57M6swHoUnjHkYj5akQTMvxwBXJmUyYu4uy0HvNZUOT4koVXdT00bn6b
- L7ap+18SLrKSzND0A3S8O8bIz3151H3BNUo5MAL7vYp1InWTcqSZTWj7gCE6zXnHdSA0
- ddTA==
-X-Gm-Message-State: AOJu0YwPpdcUN9yvhbLwYmpNnm11OotmwJzqqeir63anMq9ZKUx8kafi
- jT8lF4WdPGAI8YfdSnUgw4abi77xkIb8Hx5ysQNEto/UplXxV48oH6mBlPjFYrw=
-X-Google-Smtp-Source: AGHT+IE5qNex3nAU1KXW3Pi2fD8QAtSoakel3K9q+isu8f/DGh3d6nw+AybAmKBp1v2+U+SJIN09Gw==
-X-Received: by 2002:a17:90b:4f90:b0:2e2:b94c:d6a2 with SMTP id
- 98e67ed59e1d1-2e99956d0bemr2928933a91.0.1730882343842; 
- Wed, 06 Nov 2024 00:39:03 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.22.174])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e99a62bf50sm905084a91.51.2024.11.06.00.38.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Nov 2024 00:39:03 -0800 (PST)
-Message-ID: <4bb3fbf2-7f0b-48fa-9b9c-39108e261d31@ventanamicro.com>
-Date: Wed, 6 Nov 2024 05:38:56 -0300
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bbu-0005Tm-JG
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:41:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1t8bbs-0007T4-SF
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 03:41:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730882510;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N4s8Nsaz/rNN9cXVSQLv2q58RDMa1/Zn0BfkgqkMeLs=;
+ b=YKs7t1/ypRuwF9tH2GXCjJ1ubqWYibZyYFkLCwbKGtOgMThlp4brVr9ykP/8kieW6LH3L9
+ VUk0mLwa+kIn2piSurXrTyOZ5wm+3BVqnatCqWB+8ve60w9y5e4dYnfvM+OrXv1vd6W4cb
+ iDUzsT4xKlbhGlZsHV/OLKYU3ixOC+M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-z4bo-9jjMhOPrUcU3Grj4g-1; Wed,
+ 06 Nov 2024 03:41:46 -0500
+X-MC-Unique: z4bo-9jjMhOPrUcU3Grj4g-1
+X-Mimecast-MFC-AGG-ID: z4bo-9jjMhOPrUcU3Grj4g
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B2C4E195608C; Wed,  6 Nov 2024 08:41:45 +0000 (UTC)
+Received: from fedora.nay.redhat.com (unknown [10.66.57.68])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4CD231955F22; Wed,  6 Nov 2024 08:41:41 +0000 (UTC)
+From: Dehan Meng <demeng@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: demeng@redhat.com, kkostiuk@redhat.com, michael.roth@amd.com,
+ peter.maydell@linaro.org, berrange@redhat.com
+Subject: [PATCH v5 0/3] qemu-ga: Summarize and merge commits
+Date: Wed,  6 Nov 2024 16:41:31 +0800
+Message-Id: <20241106084134.1133061-1-demeng@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/riscv: fix build error with clang
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Bin Meng <bmeng.cn@gmail.com>, tjeznach@rivosinc.com, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, pbonzini@redhat.com,
- peter.maydell@linaro.org, Cameron Esfahani <dirty@apple.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20241104222225.1523751-1-pierrick.bouvier@linaro.org>
- <CAKmqyKN+mYMRqA7=Tb+-qNr_b7TQ8rapaB_YDPqjgKWAggeygA@mail.gmail.com>
- <a9c03f45-13d5-49ef-9c26-f3ab81c5932f@linaro.org>
- <edcb0654-bb2d-4b39-9a7d-8c4d5f384618@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <edcb0654-bb2d-4b39-9a7d-8c4d5f384618@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=demeng@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,48 +77,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v4:
+Handle g_autoptr() to simplify code and memory leak
 
+v3:
+Modify commits message and do some minor update.
 
-On 11/5/24 7:55 PM, Philippe Mathieu-Daudé wrote:
-> On 5/11/24 05:29, Pierrick Bouvier wrote:
->> Thanks for the review.
->> Feel free to pull the patch in your next PR, so it can be available for release 9.2.
->>
->> Regards,
->> Pierrick
->>
->> On 11/4/24 18:37, Alistair Francis wrote:
->>> On Tue, Nov 5, 2024 at 8:23 AM Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>>
->>>> Introduced in 0c54ac, "hw/riscv: add RISC-V IOMMU base emulation"
->>>>
->>>> ../hw/riscv/riscv-iommu.c:187:17: error: redefinition of '_pext_u64'
->>>>
->>>>    187 | static uint64_t _pext_u64(uint64_t val, uint64_t ext)
->>>>
->>>>        |                 ^
->>>>
->>>> D:/a/_temp/msys64/clang64/lib/clang/18/include/bmi2intrin.h:217:1: note: previous definition is here
->>>>
->>>>    217 | _pext_u64(unsigned long long __X, unsigned long long __Y)
->>>>
->>>>        | ^
->>>>
->>>> After a conversation on the mailing list, it was decided to rename and
->>>> add a comment for this function.
->>>>
->>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>
->>> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> 
-> Fix queued via hw-misc tree.
+v2:
+Split v1 up to separate commits for each logically independent change
 
-Do you fancy taking the riscv-iommu Coverity fixes as well? They're somewhat trivial and it'll
-spare Alistair from making a PR with just a handful of patches.
+Dehan Meng (3):
+  qemu-ga: Add 'Null' check and Redefine 'route'
+  qemu-ga: Optimize var declaration and definition
+  qemu-ga: Avoiding freeing line prematurely
 
+Signed-off-by: Dehan Meng <demeng@redhat.com>
 
-Thanks,
+ qga/commands-linux.c | 134 +++++++++++++++++++++----------------------
+ 1 file changed, 65 insertions(+), 69 deletions(-)
 
-Daniel
+-- 
+2.40.1
+
 
