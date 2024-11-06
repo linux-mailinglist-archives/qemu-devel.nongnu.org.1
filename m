@@ -2,65 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821E09BE8D9
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 13:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D319BE977
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 13:34:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8f8A-00075F-Rs; Wed, 06 Nov 2024 07:27:26 -0500
+	id 1t8fEU-0000LA-3b; Wed, 06 Nov 2024 07:33:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t8f85-00072Y-Jh
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:27:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8fER-0000Kr-LR
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:33:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t8f82-0004hn-OW
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:27:21 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xk4DD13bWz6JBGf;
- Wed,  6 Nov 2024 20:25:32 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 62C9D140B2F;
- Wed,  6 Nov 2024 20:27:09 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 6 Nov
- 2024 13:27:08 +0100
-Date: Wed, 6 Nov 2024 12:27:07 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: <imammedo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- <qemu-devel@nongnu.org>, <ankita@nvidia.com>, <linuxarm@huawei.com>,
- <linux-cxl@vger.kernel.org>, <marcel.apfelbaum@gmail.com>,
- <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>, Dave
- Jiang <dave.jiang@intel.com>, Huang Ying <ying.huang@intel.com>, Paolo
- Bonzini <pbonzini@redhat.com>, <eduardo@habkost.net>, Michael Roth
- <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH v6 14/15] bios-tables-test: Add complex SRAT / HMAT test
- for GI GP
-Message-ID: <20241106122707.00007552@Huawei.com>
-In-Reply-To: <20241104110025-mutt-send-email-mst@kernel.org>
-References: <20240916171017.1841767-1-Jonathan.Cameron@huawei.com>
- <20240916174449.1843258-1-Jonathan.Cameron@huawei.com>
- <20241104110025-mutt-send-email-mst@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1t8fEP-0006yV-93
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 07:33:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730896431;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IO4nlZ6s1n3xt6RwATVUcayq/uzIrzBm8DYn1oeNtWI=;
+ b=QSCsa1o2RXIJ4adQmnR2ZSVtjMc8vVgp3sLn2fPnlj1GQ69k3q3q1SWc2jryJIYUffTDMr
+ nOV96eL3fWoVKVY85U95YN/k0ZpOrToUXZRDyudsx5pDIKQsfIf5N55j1yOtw/RBTiz9Rr
+ W3b3dRUxakiRGinDfsmJj1ALuGi1KG4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-ux7ePtWGM8WQQghVycA1xQ-1; Wed,
+ 06 Nov 2024 07:33:48 -0500
+X-MC-Unique: ux7ePtWGM8WQQghVycA1xQ-1
+X-Mimecast-MFC-AGG-ID: ux7ePtWGM8WQQghVycA1xQ
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B2EE1954B22; Wed,  6 Nov 2024 12:33:47 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.180])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 682A51955F42; Wed,  6 Nov 2024 12:33:43 +0000 (UTC)
+Date: Wed, 6 Nov 2024 12:33:40 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 11/22] tests/qtest/migration: Move common test code
+Message-ID: <ZytiJKjygOQyruy6@redhat.com>
+References: <20241105180837.5990-1-farosas@suse.de>
+ <20241105180837.5990-12-farosas@suse.de>
+ <ZytNb_nTrePsYabA@redhat.com> <87ttck1rbj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ttck1rbj.fsf@suse.de>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,158 +87,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Nov 2024 11:00:59 -0500
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+On Wed, Nov 06, 2024 at 09:26:24AM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Tue, Nov 05, 2024 at 03:08:26PM -0300, Fabiano Rosas wrote:
+> >> Put the common test code in a separate file. Leave only individual
+> >> test functions and their static helpers in migration-test.c.
+> >> 
+> >> This moves the shared:
+> >> 
+> >>  test_postcopy_common
+> >>  test_postcopy_recovery_common
+> >>  test_precopy_common
+> >>  test_file_common
+> >>  migrate_precopy_tcp_multifd_start_common
+> >>  migrate_start
+> >>  migrate_end
+> >>  migration_get_env
+> >>  migration_env_clean
+> >> 
+> >> and some of their static helpers to migrate-common.c.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >> ---
+> >>  tests/qtest/meson.build                  |    1 +
+> >>  tests/qtest/migration-test.c             | 1124 +---------------------
+> >>  tests/qtest/migration/bootfile.c         |    2 +-
+> >>  tests/qtest/migration/bootfile.h         |    2 +-
+> >>  tests/qtest/migration/migration-common.c |  963 ++++++++++++++++++
+> >>  tests/qtest/migration/migration-common.h |  214 ++++
+> >>  tests/qtest/migration/migration-util.h   |   13 -
+> >
+> > Looking at these I guess I'd ask the question of what is the rule for
+> > deciding whether to put something in -common vs in -util ?
+> >
+> > Both names sounds like being a general "bag of bits", so it isn't
+> > obvious to me what their distinct roles are.
+> >
+> 
+> The idea was to make -util the general bag of bits just like
+> migration-helpers is currently.
+> 
+> -common should be the more "important" migration-specific functions,
+> code that we spend more time reading and that are actually responsible
+> for the results of the tests. Consider:
+> 
+> static void test_multifd_file_mapped_ram_fdset_dio(void)
+> {
+>     ...
+>     if (!probe_o_direct_support(tmpfs)) {          <--- just a helper
+>         g_test_skip("Filesystem does not support O_DIRECT");
+>         return;
+>     }
+> 
+>     test_file_common(&args, true);  <--- actually doing the heavy-lifting
+> }
+> 
+> We could to some renaming and restructuring, but I think the distinction
+> is important. We already have it today, what is -common is all stuffed
+> into migration-test.c and the rest is in migration-helpers.c.
 
-> On Mon, Sep 16, 2024 at 06:44:49PM +0100, Jonathan Cameron wrote:
-> > Add a test with 6 nodes to exercise most interesting corner cases of SRAT
-> > and HMAT generation including the new Generic Initiator and Generic Port
-> > Affinity structures.  More details of the set up in the following patch
-> > adding the table data.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-Was traveling for last few days, sorry for delay!
-> 
-> I could not yet figure out why, but it fails on i686 (32 bit):
-> 
-> https://gitlab.com/mstredhat/qemu/-/jobs/8262608614
-> 
-> any idea?
-
-Nothing immediately comes to mind. 
-I'll see what I can figure out from the generated binaries. 
-
-Jonathan
+Ah ok, perhaps "migration/test-framework.{c,h}" is a more descriptive
+name for this ?
 
 > 
-> > ---
-> >  tests/qtest/bios-tables-test.c | 97 ++++++++++++++++++++++++++++++++++
-> >  1 file changed, 97 insertions(+)
-> > 
-> > diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> > index 36e5c0adde..f568c4a21c 100644
-> > --- a/tests/qtest/bios-tables-test.c
-> > +++ b/tests/qtest/bios-tables-test.c
-> > @@ -1910,6 +1910,101 @@ static void test_acpi_q35_tcg_acpi_hmat_noinitiator(void)
-> >      free_test_data(&data);
-> >  }
-> >  
-> > +/* Test intended to hit corner cases of SRAT and HMAT */
-> > +static void test_acpi_q35_tcg_acpi_hmat_generic_x(void)
-> > +{
-> > +    test_data data = {};
-> > +
-> > +    data.machine = MACHINE_Q35;
-> > +    data.arch    = "x86";
-> > +    data.variant = ".acpihmat-generic-x";
-> > +    test_acpi_one(" -machine hmat=on,cxl=on"
-> > +                  " -smp 3,sockets=3"
-> > +                  " -m 128M,maxmem=384M,slots=2"
-> > +                  " -device pcie-root-port,chassis=1,id=pci.1"
-> > +                  " -device pci-testdev,bus=pci.1,"
-> > +                  "multifunction=on,addr=00.0"
-> > +                  " -device pci-testdev,bus=pci.1,addr=00.1"
-> > +                  " -device pci-testdev,bus=pci.1,id=gidev,addr=00.2"
-> > +                  " -device pxb-cxl,bus_nr=64,bus=pcie.0,id=cxl.1"
-> > +                  " -object memory-backend-ram,size=64M,id=ram0"
-> > +                  " -object memory-backend-ram,size=64M,id=ram1"
-> > +                  " -numa node,nodeid=0,cpus=0,memdev=ram0"
-> > +                  " -numa node,nodeid=1"
-> > +                  " -object acpi-generic-initiator,id=gi0,pci-dev=gidev,node=1"
-> > +                  " -numa node,nodeid=2"
-> > +                  " -object acpi-generic-port,id=gp0,pci-bus=cxl.1,node=2"
-> > +                  " -numa node,nodeid=3,cpus=1"
-> > +                  " -numa node,nodeid=4,memdev=ram1"
-> > +                  " -numa node,nodeid=5,cpus=2"
-> > +                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=10"
-> > +                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=800M"
-> > +                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=100"
-> > +                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=100"
-> > +                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=200"
-> > +                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=400M"
-> > +                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=500"
-> > +                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=100M"
-> > +                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=50"
-> > +                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=400M"
-> > +                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=50"
-> > +                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=800M"
-> > +                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=500"
-> > +                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=100M"
-> > +                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=20"
-> > +                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=400M"
-> > +                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=80"
-> > +                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=80"
-> > +                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=20"
-> > +                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=400M"
-> > +                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=20"
-> > +                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=400M"
-> > +                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=80"
-> > +                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=80"
-> > +                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=200M"
-> > +                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
-> > +                  "data-type=access-latency,latency=10"
-> > +                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
-> > +                  "data-type=access-bandwidth,bandwidth=800M",
-> > +                  &data);
-> > +    free_test_data(&data);
-> > +}
-> > +
-> >  #ifdef CONFIG_POSIX
-> >  static void test_acpi_erst(const char *machine, const char *arch)
-> >  {
-> > @@ -2388,6 +2483,8 @@ int main(int argc, char *argv[])
-> >              qtest_add_func("acpi/q35/nohpet", test_acpi_q35_tcg_nohpet);
-> >              qtest_add_func("acpi/q35/acpihmat-noinitiator",
-> >                             test_acpi_q35_tcg_acpi_hmat_noinitiator);
-> > +            qtest_add_func("acpi/q35/acpihmat-genericx",
-> > +                           test_acpi_q35_tcg_acpi_hmat_generic_x);
-> >  
-> >              /* i386 does not support memory hotplug */
-> >              if (strcmp(arch, "i386")) {
-> > -- 
-> > 2.43.0  
+> >>  7 files changed, 1193 insertions(+), 1126 deletions(-)
+> >>  create mode 100644 tests/qtest/migration/migration-common.c
+> >>  create mode 100644 tests/qtest/migration/migration-common.h
+> >> 
+> >
+> > With regards,
+> > Daniel
 > 
-> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
