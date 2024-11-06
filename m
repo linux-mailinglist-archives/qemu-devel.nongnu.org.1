@@ -2,90 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E789BF4D5
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1509BF4D6
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Nov 2024 19:08:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8kRr-0003Uj-8Q; Wed, 06 Nov 2024 13:08:07 -0500
+	id 1t8kRx-0003sl-1e; Wed, 06 Nov 2024 13:08:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8kRc-0003J2-Dz
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:07:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.vnet.ibm.com>)
+ id 1t8kRv-0003rV-1i
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:08:11 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t8kRZ-0005jL-Uz
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:07:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730916469;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eQzwz0VQqbTllaUoC2jABc9VHmk6FSE8vpq4QKQeiLc=;
- b=Pn5mixXtSRG+hivlFzfQ7xpZtST2Z3CYykuchFuuWo9QJr2qHNVMNAXZYRwooWqC4C9qTM
- NVXuVCBuwRDbqq1AyH3GyS+M8kftmK5D8CzBuV70/STSnozCc8yyA1zGIbXyKacmCiPQS5
- Mh8ZuOFla4DIDVDfE3fIJFYrcmBo8+Q=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-BmM5agsmP1uN2_6x3JlyMw-1; Wed, 06 Nov 2024 13:07:47 -0500
-X-MC-Unique: BmM5agsmP1uN2_6x3JlyMw-1
-X-Mimecast-MFC-AGG-ID: BmM5agsmP1uN2_6x3JlyMw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4314c6ca114so643015e9.1
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 10:07:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730916466; x=1731521266;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eQzwz0VQqbTllaUoC2jABc9VHmk6FSE8vpq4QKQeiLc=;
- b=g1GHEZjIz67pOdBEiafDqrsayF4VQ187XtNJ+0kObmlmgnt2UtCHFZWRY1OkXO7Gy0
- 091I9uwoI6s8T3LjjKoU46WpkhgmVe70V0N/yZJr/z0GxX1WjxjwLWKPaSlCmiYic31f
- rj0Jw69d7PyznAdzmHy/Gpdkk1WJE+6LvCTyX72n7hijF+5XFp+NIHcNI03cKPt1SKX1
- m9aYb5ctQWTlWFhSwtR5xZit1MPRwOC+FaTYMeBAuHPg7r55hyNQl6ajrTkkPLOCmnA5
- dOAdVGKbVMEDIzlgHk/h3JMQXFJR68Opw5G7snAoqXQBA3sOWA5e/TEUo1fmH2O4jZzV
- csww==
-X-Gm-Message-State: AOJu0YzlRcp7cpSCZlr34zqmRCAF5zTeF0onL/3Sqkwu6b36bxiQiYmj
- MdTIcfKsYeG7yLuSV7HzWVSxhaCNqM7GP04xAqzI/Gn1uqMnLcWhVWAe+DgeS9gO+om/4DV202C
- 8Gdhf50732gCpKYYlSaUcLPMPMHRAcyIPpTSMEfLrxYw7ky244bz/oHJgimAJKSzERanGBIG8Rr
- ZVrRW8oQHJacspjIZ6sJGallz4od85b86Nd+kBqFU=
-X-Received: by 2002:a05:600c:3ca8:b0:431:52b7:a499 with SMTP id
- 5b1f17b1804b1-4327b7019ddmr199419425e9.20.1730916466238; 
- Wed, 06 Nov 2024 10:07:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHkuz/C6McPxVJo64sr3lxncd4/S7mSKL7dCmK53LYNFTfTAYDx3Cq4S9EA5nF8PNTRM+5eKw==
-X-Received: by 2002:a05:600c:3ca8:b0:431:52b7:a499 with SMTP id
- 5b1f17b1804b1-4327b7019ddmr199419195e9.20.1730916465723; 
- Wed, 06 Nov 2024 10:07:45 -0800 (PST)
-Received: from [192.168.10.3] ([151.49.226.83])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6c1205sm33933515e9.26.2024.11.06.10.07.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 10:07:45 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL v3 37/39] rust: allow older version of bindgen
-Date: Wed,  6 Nov 2024 19:07:42 +0100
-Message-ID: <20241106180742.567076-2-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.vnet.ibm.com>)
+ id 1t8kRt-0005mI-8G
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 13:08:10 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6HA9hZ013161;
+ Wed, 6 Nov 2024 18:08:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=JFWnUsYDG6ff4mPzZQxPOJnYWH2mF3xog+FuGn1rF
+ QM=; b=kzV98o5BUaOds8rvuD7eRF4JwQ9oApeE/jT6nsKCoMCOXG9bmww9ioT+Z
+ lXI4N3vcmevxMnF93Jg3gftLxDG56qvfWupoHvCYQtwpeFhD7CBVW+awjSwJPn6I
+ CcU3Cs47ruNSdrMh1wnVWLVyZElx2CB7AA2PwqLTahIW0DaBnv+qLD6pCdsEHFCU
+ Vdd1fasIRG5mjlKQ2Prx91tKA8waGskCZs9+bbe/p0S3tPMFMoBqexgf5JSM4USi
+ NEgVo7tsZnVJTl8EnIys9YPE9TON6IZo6MtNdp7oHw48lYEA7cOeIPsNfE6pwsmn
+ i9pmogcKiSHCERqITEiPhUZThkA7g==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rcm3gb6c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2024 18:08:03 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A6I82gS001218;
+ Wed, 6 Nov 2024 18:08:03 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rcm3gb67-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2024 18:08:02 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6GB6sL019503;
+ Wed, 6 Nov 2024 18:08:02 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj6mek-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2024 18:08:02 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A6I81CJ18678442
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Nov 2024 18:08:01 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3EA3D58063;
+ Wed,  6 Nov 2024 18:08:01 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95D1D58055;
+ Wed,  6 Nov 2024 18:08:00 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Nov 2024 18:08:00 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.vnet.ibm.com>
+To: peter.maydell@linaro.org, qemu-devel@nongnu.org
+Cc: marcandre.lureau@gmail.com, clg@redhat.com, lena.voytek@canonical.com,
+ Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH] tests: Adjust path for swtpm state to use path under /var/tmp/
+Date: Wed,  6 Nov 2024 13:07:51 -0500
+Message-ID: <20241106180751.6859-1-stefanb@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106180742.567076-1-pbonzini@redhat.com>
-References: <20241106180742.567076-1-pbonzini@redhat.com>
-MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: jQY8kr9-L3a--Ft4HpIau6cZby3TRSjl
+X-Proofpoint-ORIG-GUID: mijDPM4hfiXsLZy04kVjHHhv1za7mCLJ
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1011
+ adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=839 spamscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060141
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=stefanb@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,124 +112,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cope with the old version that is provided in Debian 12.
+From: Stefan Berger <stefanb@linux.ibm.com>
 
---size_t-is-usize is needed on bindgen <0.61.0, and it was removed in
-bindgen 0.65.0, so check for it in meson.build.
+To avoid AppArmor-related test failures when functional test are run from
+somewhere under /mnt, adjust the path to swtpm's state to use an AppArmor-
+supported path, such as /var/tmp, which is provided by the python function
+tempfile.TemporaryDirectory().
 
---merge-extern-blocks was added in 0.61.0.
+An update to swtpm's AppArmor profile is also being done to support /var/tmp.
 
---formatter rustfmt was added in 0.65.0 and is the default, so remove it.
-
-Apart from Debian 12 and Ubuntu 22.04, all other supported distros have
-version 0.66.x of bindgen or newer (or do not have bindgen at all).
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/CAFEAcA8A=kWLtTZ+nua-MpzqkaEjW5srOYZruZnE2tB6vmoMig@mail.gmail.com/
+Link: https://github.com/stefanberger/swtpm/pull/944
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 ---
- docs/about/build-platforms.rst | 12 ++++++++++++
- meson.build                    | 31 +++++++++++++++++++++++++++----
- 2 files changed, 39 insertions(+), 4 deletions(-)
+ tests/functional/test_arm_aspeed.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
-index b779eb54934..6102f00aec0 100644
---- a/docs/about/build-platforms.rst
-+++ b/docs/about/build-platforms.rst
-@@ -107,6 +107,18 @@ Python build dependencies
-   required, it may be necessary to fetch python modules from the Python
-   Package Index (PyPI) via ``pip``, in order to build QEMU.
+diff --git a/tests/functional/test_arm_aspeed.py b/tests/functional/test_arm_aspeed.py
+index 9761fc06a4..a574b1e521 100644
+--- a/tests/functional/test_arm_aspeed.py
++++ b/tests/functional/test_arm_aspeed.py
+@@ -227,11 +227,11 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
  
-+Rust build dependencies
-+  QEMU is generally conservative in adding new Rust dependencies, and all
-+  of them are included in the distributed tarballs.  One exception is the
-+  bindgen tool, which is too big to package and distribute.  The minimum
-+  supported version of bindgen is 0.60.x.  For distributions that do not
-+  include bindgen or have an older version, it is recommended to install
-+  a newer version using ``cargo install bindgen-cli``.
-+
-+  Developers may want to use Cargo-based tools in the QEMU source tree;
-+  this requires Cargo 1.74.0.  Note that Cargo is not required in order
-+  to build QEMU.
-+
- Optional build dependencies
-   Build components whose absence does not affect the ability to build
-   QEMU may not be available in distros, or may be too old for QEMU's
-diff --git a/meson.build b/meson.build
-index 5b85d4275bb..11958c67b5f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -100,6 +100,23 @@ if have_rust
-   endif
- endif
+         image_path = self.ASSET_BR2_202302_AST2600_TPM_FLASH.fetch()
  
-+if have_rust
-+  bindgen = find_program('bindgen', required: get_option('rust'))
-+  if not bindgen.found() or bindgen.version().version_compare('<0.60.0')
-+    if get_option('rust').enabled()
-+      error('bindgen version ' + bindgen.version() + ' is unsupported. You can install a new version with "cargo install bindgen-cli"')
-+    else
-+      if bindgen.found()
-+        warning('bindgen version ' + bindgen.version() + ' is unsupported, disabling Rust compilation.')
-+      else
-+        warning('bindgen not found, disabling Rust compilation.')
-+      endif
-+      message('To use Rust you can install a new version with "cargo install bindgen-cli"')
-+      have_rust = false
-+    endif
-+  endif
-+endif
-+
- dtrace = not_found
- stap = not_found
- if 'dtrace' in get_option('trace_backends')
-@@ -3963,15 +3980,13 @@ common_all = static_library('common',
- if have_rust
-   # We would like to use --generate-cstr, but it is only available
-   # starting with bindgen 0.66.0.  The oldest supported versions
--  # are in Ubuntu 22.04 (0.59.1) and Debian 12 (0.60.1).
-+  # is 0.60.x (Debian 12 has 0.60.1) which introduces --allowlist-file.
-   bindgen_args = [
-     '--disable-header-comment',
-     '--raw-line', '// @generated',
-     '--ctypes-prefix', 'std::os::raw',
--    '--formatter', 'rustfmt',
-     '--generate-block',
-     '--impl-debug',
--    '--merge-extern-blocks',
-     '--no-doc-comments',
-     '--with-derive-default',
-     '--no-layout-tests',
-@@ -3980,6 +3995,12 @@ if have_rust
-     '--allowlist-file', meson.project_source_root() + '/.*',
-     '--allowlist-file', meson.project_build_root() + '/.*'
-     ]
-+  if bindgen.version().version_compare('<0.61.0')
-+    # default in 0.61+
-+    bindgen_args += ['--size_t-is-usize']
-+  else
-+    bindgen_args += ['--merge-extern-blocks']
-+  endif
-   c_enums = [
-     'DeviceCategory',
-     'GpioPolarity',
-@@ -4015,7 +4036,7 @@ if have_rust
-     dependencies: common_ss.all_dependencies(),
-     output: 'bindings.rs',
-     include_directories: include_directories('.', 'include'),
--    bindgen_version: ['>=0.69.4'],
-+    bindgen_version: ['>=0.60.0'],
-     args: bindgen_args,
-     )
-   subdir('rust')
-@@ -4481,6 +4502,8 @@ if have_rust
-   summary_info += {'Rust target':     config_host['RUST_TARGET_TRIPLE']}
-   summary_info += {'rustc':           ' '.join(rustc.cmd_array())}
-   summary_info += {'rustc version':   rustc.version()}
-+  summary_info += {'bindgen':         bindgen.full_path()}
-+  summary_info += {'bindgen version': bindgen.version()}
- endif
- option_cflags = (get_option('debug') ? ['-g'] : [])
- if get_option('optimization') != 'plain'
+-        socket_dir = tempfile.TemporaryDirectory(prefix="qemu_")
+-        socket = os.path.join(socket_dir.name, 'swtpm-socket')
++        tpmstate_dir = tempfile.TemporaryDirectory(prefix="qemu_")
++        socket = os.path.join(tpmstate_dir.name, 'swtpm-socket')
+ 
+         subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
+-                        '--tpmstate', f'dir={self.vm.temp_dir}',
++                        '--tpmstate', f'dir={tpmstate_dir.name}',
+                         '--ctrl', f'type=unixio,path={socket}'])
+ 
+         self.vm.add_args('-chardev', f'socket,id=chrtpm,path={socket}')
 -- 
-2.47.0
+2.34.1
 
 
