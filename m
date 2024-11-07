@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46609C0121
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 10:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D359C0158
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 10:43:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8ypU-0000iM-1O; Thu, 07 Nov 2024 04:29:28 -0500
+	id 1t8z27-0003Hi-Do; Thu, 07 Nov 2024 04:42:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8ypR-0000hn-GZ
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:29:25 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1t8z25-0003HZ-My
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:42:30 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1t8ypP-0000T4-Pl
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:29:25 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43161c0068bso6386405e9.1
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 01:29:22 -0800 (PST)
+ id 1t8z23-0002Q9-VS
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:42:29 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-539f0f9ee49so669723e87.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 01:42:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730971759; x=1731576559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730972545; x=1731577345; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=HQsppEOwcAXIELgXkg7wouYMnqnAPS7rl3YfFuwv3gM=;
- b=TfviJWGjvVZEe0397IX61JNFVGFUDxoZi6WBtUeqkv4SdibGzxpM27TKtK6AOq0I95
- bAnU8E9WcX9OciCF/GhHrd1qCqCWxuFfu07psv+q/lskUiA6k+LtBiP8u+/kenFrMjes
- z8o/tz+p7YmMrDNqVd1rfyZGPBKBDuN8mY3C1MKhXOrGczW1nuRVBqtlR449ap3EkXgq
- GPlbOuuoJPbSMQff/+ZbwQKQ/UkLcndJGpQRXpgi+vXH9UVkafL3M+MbACwe7fIi+XHQ
- zBdxhqAljl1VG31oPSAYHTZvM8Gzv3EaTn1ODSRrLcnUDqp/Hu/tBz9qhOwCWZdypCBv
- rkJw==
+ bh=ThMRTQ/XPqy+vSyXSmpkie3xVOcQ6Acy87XnLwDvPFQ=;
+ b=uRqYhWEjaza0bm8iWRmnm1vtTuQisnxza6kah91SERkklPGq1wHI9yfKfiJ7t+xeC1
+ xwhBLplnwYd8dP0QlU/RiTpcyHdahrTID0hgn3tW2H0r5LFdMmU4N53xk7GiPMiHXuZM
+ 6aGXX68e3hidMa1aCe8BqIaoluvAMMDKHHF1EtzbgEdw2lHmBJnsZYfJj9nb0GtMzqwU
+ QHSTD6YAGeQPx55EMr+ZsRBvg8ACyRKxCqoObwi3Ofv4s6kuFBXynzadWDgeUh5ygC8E
+ l3S2bvoAI0mrI0X8CBOwXxpA5Z3AVv7+I/SrkRVgvXdEvKLpPcPYLqiegS84Errxb4Ne
+ hwDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730971759; x=1731576559;
+ d=1e100.net; s=20230601; t=1730972545; x=1731577345;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HQsppEOwcAXIELgXkg7wouYMnqnAPS7rl3YfFuwv3gM=;
- b=ejiwA/p34fbjPG9ss2BfwfGs+V1MVxNDBpmRnGj6q6UqK+pnpFvhWjwMTS4sk3RjKK
- GV407TzEAv+psZhoCrQidRb5hZV0T3f0yKrstxklsXGfo2a5sZ/ZYJAEDvjMcZ1Syu9L
- oS8Uz1bYy4YtxfHo5GTTWiY2QkUQifI2O4Wzk71k0qyKVQOAs0wRt7Bts3Ag7MAB3yoG
- W44i8DGiZGz99Fynaa15mkcttqpzif8SoZCwsvL/F8PbRDw9Reloj/iU+Jy8OKLNtU7+
- bwr7eR4Vz1qBUlvByojkTX3s/2Qj7fL6JECltV59+1vkQvjRC7giyqSYzISD2gcllMU+
- eu3g==
-X-Gm-Message-State: AOJu0Yw28W3UwglUGqU8j//S7kvIMdEy8yaMuTvybBhRMPqpCz9OPGst
- KXdQHpUGFWBTaKfCxaX1/+LRKf5qGiFL3mM+fBRdZnkW/8HXsPkLp5w22iDO8Xw=
-X-Google-Smtp-Source: AGHT+IG2puM7TkZ1q+DCfHgFHdeIkE8xzR8Xd2Kp6gsiUKJH33GIr1T3c4P3lh/bjiL2KbHpdZ+r5A==
-X-Received: by 2002:a05:6000:2c8:b0:37c:d1bc:2666 with SMTP id
- ffacd0b85a97d-381c7a472f7mr21554261f8f.4.1730971759496; 
- Thu, 07 Nov 2024 01:29:19 -0800 (PST)
+ bh=ThMRTQ/XPqy+vSyXSmpkie3xVOcQ6Acy87XnLwDvPFQ=;
+ b=CnaMkDnwyx3DULVWzmZQVqB1CkX1xJS7g3chyfBepPbZF5Eb0Y1lNUtz4Uan26zxEK
+ HXAZv3xJLoAPtUpgISmPRTmcQ6zaxyuHavxN0/HCQManJ1OSvTQW7gkJIOVtsa9zoiv3
+ FuWaWD50w+PCHqe8GxePnkMcXWJLt1Q1XATvTi3bL/XFJasIF74yeF7jJUBZM6HGS2N1
+ TJnq7C3j4rBwJCnGAvnQSWMIBVbQL6KevPRVq4D5R6dv6hzQIwDH0TnrsiCKUErUN9kk
+ bCS8ut+bpmwV/qAzxYKzScnxDTpuSK2EDYeCQie+RRI29nSlnyzF/JJzcM8lXJFcmSzH
+ HO6g==
+X-Gm-Message-State: AOJu0YyqRRXLYx2xAfMtKOEz5kJFCiGMb52bVqKr+bsnzibiTCBejS9D
+ P8IJ84hCGPRse2OCSWmGI2dpZM3Soyuye51IsMghZBLd6rYrN/MdLxTieaYziEo=
+X-Google-Smtp-Source: AGHT+IFM6E5E0Hy9mDc4SQFlg52LztduH7+Xo4eTJbH+ezrX6g0rGTZfw5JIJnRaufV1Y0OsSVntvQ==
+X-Received: by 2002:a05:6512:2311:b0:539:edbe:ac86 with SMTP id
+ 2adb3069b0e04-53b348b7e1dmr23000230e87.10.1730972545347; 
+ Thu, 07 Nov 2024 01:42:25 -0800 (PST)
 Received: from [172.16.23.118] ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381eda03e42sm1200606f8f.89.2024.11.07.01.29.18
+ 5b1f17b1804b1-432b05305a4sm17254015e9.5.2024.11.07.01.42.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Nov 2024 01:29:18 -0800 (PST)
-Message-ID: <87228a75-eeea-496c-a414-03eed9b4fc94@linaro.org>
-Date: Thu, 7 Nov 2024 09:29:16 +0000
+ Thu, 07 Nov 2024 01:42:24 -0800 (PST)
+Message-ID: <5d8ecf29-aed5-4e3e-9b4c-f3b5e5bcdef8@linaro.org>
+Date: Thu, 7 Nov 2024 09:42:22 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: linux-user: Add option to run `execve`d programs through QEMU
@@ -75,13 +75,14 @@ References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
  <CAFUsyf+xVXamR+5gtu62vFXjYScrJu0Arvhk62QXYa359UCHsg@mail.gmail.com>
  <d23ea679-9c21-44da-86cf-ae97d0214b86@linaro.org>
  <CAFUsyfL=QfvtMb6TiWVa2cEyeYQobh_3zfYpnPEb7bq6FH1k1A@mail.gmail.com>
+ <CAFUsyf+OjfFVJ80ZwL8SovH80nTA4qpNyr2Nh7uUW90jZifSGQ@mail.gmail.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFUsyfL=QfvtMb6TiWVa2cEyeYQobh_3zfYpnPEb7bq6FH1k1A@mail.gmail.com>
+In-Reply-To: <CAFUsyf+OjfFVJ80ZwL8SovH80nTA4qpNyr2Nh7uUW90jZifSGQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,40 +105,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/24 21:30, Noah Goldstein wrote:
-> On Wed, Nov 6, 2024 at 3:10 PM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
+On 11/6/24 23:49, Noah Goldstein wrote:
+> On Wed, Nov 6, 2024 at 3:30 PM Noah Goldstein <goldstein.w.n@gmail.com> wrote:
 >>
->> On 11/6/24 18:13, Noah Goldstein wrote:
->>> Question about impl regarding handling of `-execfd` with/without a program name.
+>> On Wed, Nov 6, 2024 at 3:10 PM Richard Henderson
+>> <richard.henderson@linaro.org> wrote:
 >>>
->>> 1) `-execfd` + program name ie: `qemu -execfd <some_fd> ls -a`.
->>> 2) `-execfd` without program name i.e: `qemu -execfd <some_fd> -a`.
+>>> On 11/6/24 18:13, Noah Goldstein wrote:
+>>>> Question about impl regarding handling of `-execfd` with/without a program name.
+>>>>
+>>>> 1) `-execfd` + program name ie: `qemu -execfd <some_fd> ls -a`.
+>>>> 2) `-execfd` without program name i.e: `qemu -execfd <some_fd> -a`.
+>>>>
+>>>> Do you want to allow both of these? If you want to allow (1), what should
+>>>> we use for `argv[0]`/`exec_path`. The program pass ("ls") or
+>>>> `readlink(<some_fd>)`?
 >>>
->>> Do you want to allow both of these? If you want to allow (1), what should
->>> we use for `argv[0]`/`exec_path`. The program pass ("ls") or
->>> `readlink(<some_fd>)`?
+>>> The canonical response is, examine the kernel source.
+>>> We're not implementing this in a vacuum, you're replicating execveat(2).
+>>>
+>>> I suspect the answer is (1), to be compared with
+>>>
+>>>       syscall(__NR_execveat, some_fd, "", &["ls", "-a"], env, AT_EMPTY_PATH);
 >>
->> The canonical response is, examine the kernel source.
->> We're not implementing this in a vacuum, you're replicating execveat(2).
+>> Err, I think the reference for '-execfd' is `fexecve`:
+>> https://man7.org/linux/man-pages/man3/fexecve.3.html
 >>
->> I suspect the answer is (1), to be compared with
->>
->>       syscall(__NR_execveat, some_fd, "", &["ls", "-a"], env, AT_EMPTY_PATH);
+>> Which doesn't take a path. So I guess we just interpret the "ls" as
+>> argv[0] but not
+>> as "exec_path".
 > 
-> Err, I think the reference for '-execfd' is `fexecve`:
-> https://man7.org/linux/man-pages/man3/fexecve.3.html
+> One more point, what should the behavior be if we have
+> AT_EXECFD from binfmt-misc?
 
-No, fexecve(3) is a glibc function which (nowadays) uses the execveat(2) syscall that we 
-want to emulate.
+You mean precedence of AT_EXECFD vs the command-line option?
 
-> Which doesn't take a path...
+Arbitrary, since it would be a usage error to have both.  You'd have to do something silly 
+with the binfmt-misc rule for that to happen.
 
-... corresponding to the "" and AT_EMPTY_PATH above.
+Perhaps
 
-> So I guess we just interpret the "ls" as argv[0] but not as "exec_path".
+static int execfd = -1;
+// option processing
+// main
 
-But your conclusion is correct.
+     if (execfd < 0) {
+         errno = 0;
+         execfd = qemu_getauxval(AT_EXECFD);
+         if (errno != 0) {
+             execfd = open(...);
+         }
+     }
+
+just because that's a simple change to what's currently present.
 
 
 r~
