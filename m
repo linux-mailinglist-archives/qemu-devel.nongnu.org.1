@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2D59BFD33
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 512059BFD37
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8tqv-0006Bf-At; Wed, 06 Nov 2024 23:10:37 -0500
+	id 1t8tqy-0006CZ-Re; Wed, 06 Nov 2024 23:10:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqp-0006BN-I8
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:31 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1t8tqv-0006C6-89
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:37 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqm-0004xX-HZ
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:30 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-20ce5e3b116so5033325ad.1
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:27 -0800 (PST)
+ id 1t8tqp-0004xn-BW
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:33 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-20cbca51687so5258525ad.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730952626; x=1731557426; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yKQRmFlXQB54R6KSXDPbh6494wRwtiAyZG5t6rtn6mA=;
- b=Mr6as8ClA4I05uRuE86eJmeQui7QJcrwpYA0aTi9+8XMMqQ+uu9GICjq/x4urfuKx9
- uB5bbER3I7JOjG9lOqGMKW3HGOTJGf46Tue3In592jotYomcfqqejl+1sCRU/hbBB0Uc
- Uh7HLQ1Dmy4zg6I7InfLQ7Oj7ymeoeDqpLIgTwQk9tVj3x+8DOIJcj2JYdEKJzlsTOR1
- xOztUiiqLdoX2KSZapb/dnLEM/1lThu7HpWGby037QbOPeVYZtE1HWO58muT+G2E1AWY
- 7/UII0IiZvpvaoivczuOq6FvJvSIdJTHMgjt9fGRZ76Xqw1r8uTNt9w9AuviIVH8+2ut
- O7Gw==
+ d=gmail.com; s=20230601; t=1730952630; x=1731557430; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MyuwYGB8wMZUxgeUT+ckknuz3vZLk8MowszNge3L2/U=;
+ b=ld1f9EKKXxd8mo5YXQjnBKWof2LH8GvL14ki8C/4EBBq3Hb0drsHXtvxxhxeVpxfUK
+ cjTYho5MnkAVpCzKUGxX+jYbM3NsKzlGfMZAWuCx6HrkPPDsreE1/ZePqXwDa/IXBmep
+ ZUAqmUfQiIwyqhoSqJZBwyz6bWb7ByYSLb0JZuR0yodZkdnSbx6sxUHgI35FHDQGwnam
+ yj6vUOtsI8ZHkKfx+plN5yFN3+U1dF5h3czrQ7U8BkdTFiJzVFuNKzoXwZZI09Hir+Rb
+ shBt1m6kET+UEpMI/sRCp6kpC8Y13rYAPBlJ3HpfDvOJNBw7tocwkmqJ8gQUzU4qNjT/
+ G08Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730952626; x=1731557426;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yKQRmFlXQB54R6KSXDPbh6494wRwtiAyZG5t6rtn6mA=;
- b=VKXb1US16UcSDNaRNSY/JjuULcp2xEaRPFPa81AnTCYwdL9tn3J/9BhNv7/upu06mh
- TpJHOB0/SVIPy9V/vvaGKzv66znG6R1rk8Wj4fmTG5x5co0Y80mXRJh8LRUvqDxiWIcp
- 6g49RL94Pw2p86Ntb3RFZZUni78LpzKZGfFUXPSAs1oe++2OSvZOM7DNEE0dujbgS/pv
- sZdVk4UyIj44L8jY8m0Sit/uL7tWO/fXV2q9zkF+pCePAEmunnaSqh08eKuVhVyLtcd/
- THrvf43hkcXARjrKD1yoloj6Bh58ngCMLgl3iZ4zcXdtglFYJ/h0qGwQVwRdCxJufA4F
- +T/w==
-X-Gm-Message-State: AOJu0YxNAqV75iPKVdVWoGFOZ9JTBxGO46CTc8DzLcQWE30HtuQs7oAN
- iKjUdv5keszpLY0gZwBIRO+SDWHAk9m0oZ0rRJC9fBMeYT3CtAu3bCW9ng==
-X-Google-Smtp-Source: AGHT+IG32cG57nq/rMdVPrdDONPcqVGePsqJcJ8OpU6DJZU8REJYOpB+kCCOxft7MTqqBHseqnHJfQ==
-X-Received: by 2002:a17:902:e5cd:b0:20f:aee9:d8b8 with SMTP id
- d9443c01a7336-2111af419f0mr262875015ad.20.1730952626396; 
- Wed, 06 Nov 2024 20:10:26 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730952630; x=1731557430;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MyuwYGB8wMZUxgeUT+ckknuz3vZLk8MowszNge3L2/U=;
+ b=HNStgZ8KNYzEVofHcNDmVeQs1REo2SKwjTXPnJ2wasnq/e8FkIq+QxqeKqzg6a17FQ
+ zA2oRknmX9AMo3VHJbgCVhzXRD6lIBL5WljrZLU4+gdZmTEPjkLlpK5v42vhGJFI3gd8
+ ey9fHZRDyiamiQJYahMt54/689jicOdBlG1K+OefaH50o9Pe2bOhVKdWvm1oWClQVy+z
+ jJP89xaA5GK1ffBwSW1ojCwRFxq8wHwsH5Y+pp+tj2HZ4OKlcQPeKowHohLd44x9TqTh
+ sVZE408NVu/b5ZRozUpOYteSozFV8pYr5ZJ3JiMJYpodezG4drfk/cvb1c99RyNroL3e
+ OhIQ==
+X-Gm-Message-State: AOJu0YyNiHhSfnqYBgNj0tZCq8uY3Rd3LLVsc7ipXQrQRAoSzu8eeNZG
+ p8zCA5aEvkUtvPLUQRc7H5CSHeOe/Wl9Uy/UKmzW61pCmMcZECbpn/e2pw==
+X-Google-Smtp-Source: AGHT+IEhYZK/ALjQOp+R94DkKKM6PY+sKzDaIAxORGXtDbl9Myw4D7mzInDpDRe64THebGfvKSmVOg==
+X-Received: by 2002:a17:902:9009:b0:20c:968e:4dcd with SMTP id
+ d9443c01a7336-2111aec8494mr233076385ad.7.1730952629704; 
+ Wed, 06 Nov 2024 20:10:29 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.24
+ d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 20:10:25 -0800 (PST)
+ Wed, 06 Nov 2024 20:10:29 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 00/12] riscv-to-apply queue
-Date: Thu,  7 Nov 2024 14:10:04 +1000
-Message-ID: <20241107041016.40800-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/12] hw/char/sifive_uart: Fix broken UART on big endian hosts
+Date: Thu,  7 Nov 2024 14:10:05 +1000
+Message-ID: <20241107041016.40800-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241107041016.40800-1-alistair.francis@wdc.com>
+References: <20241107041016.40800-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,54 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 63dc36944383f70f1c7a20f6104966d8560300fa:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'hw-misc-20241105' of https://github.com/philmd/qemu into staging (2024-11-06 17:28:45 +0000)
+Casting a "uint32_t *" to a "uint8_t *" to get to the lowest 8-bit
+part of the value does not work on big endian hosts. We've got to
+take the proper detour through an 8-bit variable.
 
-are available in the Git repository at:
+Fixes: 53c1557b23 ("hw/char: sifive_uart: Print uart characters async")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241104163504.305955-1-thuth@redhat.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ hw/char/sifive_uart.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20241107
+diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
+index aeb45d3601..5ae2a29ed6 100644
+--- a/hw/char/sifive_uart.c
++++ b/hw/char/sifive_uart.c
+@@ -174,10 +174,11 @@ sifive_uart_write(void *opaque, hwaddr addr,
+ {
+     SiFiveUARTState *s = opaque;
+     uint32_t value = val64;
++    uint8_t ch = value;
+ 
+     switch (addr) {
+     case SIFIVE_UART_TXFIFO:
+-        sifive_uart_write_tx_fifo(s, (uint8_t *) &value, 1);
++        sifive_uart_write_tx_fifo(s, &ch, 1);
+         return;
+     case SIFIVE_UART_IE:
+         s->ie = val64;
+-- 
+2.47.0
 
-for you to fetch changes up to 27652f9ca9d831c67dd447346c6ee953669255f0:
-
-  tests/functional: Convert the RV32-on-RV64 riscv test (2024-11-07 13:12:58 +1000)
-
-----------------------------------------------------------------
-RISC-V PR for 9.2
-
-* Fix broken SiFive UART on big endian hosts
-* Fix IOMMU Coverity issues
-* Improve the performance of vector unit-stride/whole register ld/st instructions
-* Update kvm exts to Linux v6.11
-* Convert the RV32-on-RV64 riscv test
-
-----------------------------------------------------------------
-Daniel Henrique Barboza (2):
-      hw/riscv/riscv-iommu: change 'depth' to int
-      hw/riscv/riscv-iommu: fix riscv_iommu_validate_process_ctx() check
-
-Max Chou (7):
-      target/riscv: Set vdata.vm field for vector load/store whole register instructions
-      target/riscv: rvv: Replace VSTART_CHECK_EARLY_EXIT in vext_ldst_us
-      target/riscv: rvv: Provide a fast path using direct access to host ram for unmasked unit-stride load/store
-      target/riscv: rvv: Provide a fast path using direct access to host ram for unit-stride whole register load/store
-      target/riscv: rvv: Provide a fast path using direct access to host ram for unit-stride load-only-first load instructions
-      target/riscv: rvv: Provide group continuous ld/st flow for unit-stride ld/st instructions
-      target/riscv: Inline unit-stride ld/st and corresponding functions for performance
-
-Quan Zhou (1):
-      target/riscv/kvm: Update kvm exts to Linux v6.11
-
-Thomas Huth (2):
-      hw/char/sifive_uart: Fix broken UART on big endian hosts
-      tests/functional: Convert the RV32-on-RV64 riscv test
-
- hw/char/sifive_uart.c                   |   3 +-
- hw/riscv/riscv-iommu.c                  |   4 +-
- target/riscv/kvm/kvm-cpu.c              |   7 +
- target/riscv/vector_helper.c            | 598 +++++++++++++++++++++-----------
- target/riscv/insn_trans/trans_rvv.c.inc |   3 +
- tests/avocado/tuxrun_baselines.py       |  16 -
- tests/functional/test_riscv64_tuxrun.py |  13 +
- 7 files changed, 424 insertions(+), 220 deletions(-)
 
