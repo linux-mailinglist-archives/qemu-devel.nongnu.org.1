@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EE89BFB63
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 02:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2629BFB66
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 02:25:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8rFf-0006BU-Ap; Wed, 06 Nov 2024 20:24:00 -0500
+	id 1t8rFl-0006bp-Jx; Wed, 06 Nov 2024 20:24:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8rFR-0005xB-Jc
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 20:23:45 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8rFY-00066q-DX
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 20:23:52 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8rFP-0003CX-Cy
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 20:23:45 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4314c4cb752so3897475e9.2
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 17:23:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t8rFW-0003Dh-Pa
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 20:23:52 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4314f38d274so5083455e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 17:23:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730942622; x=1731547422; darn=nongnu.org;
+ d=linaro.org; s=google; t=1730942628; x=1731547428; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0DIqtFDNKbWcFtV6kDPh5+cEk8GapRiCMoHMQdui5B4=;
- b=UD+kb1jFo2rYPBChAU716C1OJSU1iCMbZn4AxJF7S8p9pHZ+PWBcHJGyUK5RcqN7Jn
- zBSkOEf+4JsGgaP39lcG/Gsq4+8ZqTbee4SVM0WsBi7YD6GEC6C3NGNWfQ+TeuBiHKJr
- qfIAOQZquyXPeJNzpx4DPvWOn9FOG/EBcZuGFaNVV5j7R4dU7BcoqOFm9y1b4qyvHIng
- TJXd9C8QjEPVs8ZJXjIUUw0vl4XwbnrHGn6RX5vA2Oj7dPFN8n7ReerdshJQa2UVY69Q
- 4sArj90fK9vJ+nZ478OKHcizZGV9RifjfCsJJpNjFMxcsXBVhNefFY3Evf9ra7UQg4RO
- aCDw==
+ bh=zZt7LLYaGK4gLd7N4XPj6yKOClYWTX3p+vA4olh24GE=;
+ b=CRaKcrwRj4RAj+0F/2CEgcl+aT3D2pKjqJGyElq60dHOniSdP9FVZQhJlE3P1zpn1o
+ 5PMPlsj9PIr+qyFCYFgWeVaHhKXwdCQf5R9SemDCjrgkZuAk1PxN2VFYBBH2nz/FO98a
+ oxrOVnGakfbUB1TVsjloiPzMN4/HCzdlDZ898rvxNOD/zPByDvik2wWeJrroUBQGaVX1
+ JN+mGEZkxuqKsky8IZksXYkVGL9Bisqtjz/VQQI83h0IDSBK2mSAS8A86IG9k3LuHXa2
+ 1fdSstUULYhHn8q472zLCbmUvQQniayh50+FwUn826Za/5kRmZbTY8kyRjubu5pAl28r
+ Bcjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730942622; x=1731547422;
+ d=1e100.net; s=20230601; t=1730942628; x=1731547428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0DIqtFDNKbWcFtV6kDPh5+cEk8GapRiCMoHMQdui5B4=;
- b=PyEjXCCdee8dqjrv9i6i4DBBTyC3SZuyr1Vqc7990lK3ODOe715Zlj7Ui5yk3uReRh
- N1YBp0vjyXrWWK0KzsoC3oZkMNTLvHUIfAYBcCcJWplXI2xlQwsuVnoCnZDkF8Cye9bj
- h8X4E1nyiTP9hSnXFVyB8BT6cc2YI7pwgdtQyBOZzE94x2TAAuBVCVOCqkGCb3SsDoat
- 2fND7lRCGz3P0Wtjr6KnZpCao12yGJ4nh8CnDTj6iQnrVE3n6iRunxAGhdn3cHb65amH
- oCdpR/CkK3vMVS9LqyI5HZEfwCfOTtotsaOSiR7505rrcz7NkabZEQulUdHslrA7ALIB
- gJBw==
+ bh=zZt7LLYaGK4gLd7N4XPj6yKOClYWTX3p+vA4olh24GE=;
+ b=ARfCGJJFuIByW6RcU3eCawmVzKfhD4AVGujNerLK/WYumAJ3wh3N60ZHBPRJCRGe59
+ OHsF7RKWSuzgdDDG3acr6bgfr1KkHRNyqd/XoFlxBM/9qF7ADJcT0yKQ05BmuzkZ34pv
+ Iz7/fJpDuzsmJJvW+PlmJCbp6DU1YDOg5d9sgo7kdMfx3zrfebXs4ro5k0OpXuF6Lyqs
+ 5SVIHBubbFOr6qBeLR9SPbLKbQc5vQ/0EJi/THZeTEaiTfZG3Jwv/A+udbEQsycevPI4
+ Y6MozKvl8736NlZOiAYQqDdnPD+Av/eqCupm9ktA5Pf/jSJclb/tdlmLKGw3aMEU8O05
+ tyJw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXOUldQivcCuJbh6my+UmZXlHCwPf79G/s3bYuYIB/G4oIXQUFDUtaVge/zGEYqGv0IoeYbig2B8kV7@nongnu.org
-X-Gm-Message-State: AOJu0Yw47VOxYNO1iHhkCdvI7Wa5W7ZOOhyqoDoZMV4LcxovcBZ07lYV
- EZgCtNyMWcSoCFOEq6c1fWgLFBHsj2ceKPGiL3S/89PUaIFowhUr5he3luhKAnE=
-X-Google-Smtp-Source: AGHT+IFqQVOX0QXQUtvAo/aPSZVwGuGf/R1rAanN2Va4/kYCr+X5vqws/Aoae1EFTO8R/lryuU+4ZQ==
-X-Received: by 2002:a05:600c:4e90:b0:431:7c78:b885 with SMTP id
- 5b1f17b1804b1-432b14b8c40mr1462805e9.4.1730942621980; 
- Wed, 06 Nov 2024 17:23:41 -0800 (PST)
+ AJvYcCUXfwkmuE5fRHetaT+aY4g1+AkWY2nIbNV18OtYdN6V+rfQI4R+xDGL5QFGHZKXHqoVpeNbJIRKuyTy@nongnu.org
+X-Gm-Message-State: AOJu0YzEKhtmBPjXcqsm/Rg011ratziZDlZGlxIdEtJU0/TMNFTIP/jM
+ M+mzCTsP8SnQp8NjL+u/q7e9PSqfFUuWQtjISf6h0S2TmUqBNkXPygs1eFW5neQ=
+X-Google-Smtp-Source: AGHT+IFXRN6WiTFqa/Fk6PNQ8NtZ1elwOEpHVd30Gs3pwhNy0Jl534sNWnkZH71cgPByFyQl1tDOig==
+X-Received: by 2002:a5d:64a7:0:b0:37c:cfdc:19ba with SMTP id
+ ffacd0b85a97d-381c7a6bc70mr22195725f8f.28.1730942628446; 
+ Wed, 06 Nov 2024 17:23:48 -0800 (PST)
 Received: from localhost.localdomain ([154.14.63.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6c1205sm43977185e9.26.2024.11.06.17.23.39
+ ffacd0b85a97d-381ed970d05sm249897f8f.1.2024.11.06.17.23.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 06 Nov 2024 17:23:41 -0800 (PST)
+ Wed, 06 Nov 2024 17:23:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Anton Johansson <anjo@rev.ng>,
 	qemu-devel@nongnu.org
@@ -67,17 +67,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 12/16] target/microblaze: Introduce mo_endian() helper
-Date: Thu,  7 Nov 2024 01:22:18 +0000
-Message-ID: <20241107012223.94337-13-philmd@linaro.org>
+Subject: [PATCH v2 13/16] target/microblaze: Consider endianness while
+ translating code
+Date: Thu,  7 Nov 2024 01:22:19 +0000
+Message-ID: <20241107012223.94337-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241107012223.94337-1-philmd@linaro.org>
 References: <20241107012223.94337-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,65 +101,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mo_endian() returns the target endianness, currently static.
+Consider the CPU ENDI bit, swap instructions when the CPU
+endianness doesn't match the binary one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/translate.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ target/microblaze/cpu.h       | 7 +++++++
+ target/microblaze/translate.c | 5 +++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 86f3c19618..0b466db694 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -707,12 +707,17 @@ static void record_unaligned_ess(DisasContext *dc, int rd,
- }
- #endif
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index 3e5a3e5c60..6d540713eb 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -412,6 +412,13 @@ void mb_tcg_init(void);
+ /* Ensure there is no overlap between the two masks. */
+ QEMU_BUILD_BUG_ON(MSR_TB_MASK & IFLAGS_TB_MASK);
  
-+static inline MemOp mo_endian(DisasContext *dc)
++static inline bool mb_cpu_is_big_endian(CPUState *cs)
 +{
-+    return MO_TE;
++    MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
++
++    return !cpu->cfg.endi;
 +}
 +
+ static inline void cpu_get_tb_cpu_state(CPUMBState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index 0b466db694..5595ae4fad 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -709,7 +709,7 @@ static void record_unaligned_ess(DisasContext *dc, int rd,
+ 
+ static inline MemOp mo_endian(DisasContext *dc)
+ {
+-    return MO_TE;
++    return dc->cfg->endi ? MO_LE : MO_BE;
+ }
+ 
  static bool do_load(DisasContext *dc, int rd, TCGv addr, MemOp mop,
-                     int mem_index, bool rev)
- {
-     MemOp size = mop & MO_SIZE;
+@@ -1646,7 +1646,8 @@ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
  
--    mop |= MO_TE;
-+    mop |= mo_endian(dc);
+     dc->tb_flags_to_set = 0;
  
-     /*
-      * When doing reverse accesses we need to do two things.
-@@ -847,7 +852,8 @@ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
-     /* lwx does not throw unaligned access errors, so force alignment */
-     tcg_gen_andi_tl(addr, addr, ~3);
- 
--    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index, MO_TE | MO_UL);
-+    tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index,
-+                        mo_endian(dc) | MO_UL);
-     tcg_gen_mov_tl(cpu_res_addr, addr);
- 
-     if (arg->rd) {
-@@ -864,7 +870,7 @@ static bool do_store(DisasContext *dc, int rd, TCGv addr, MemOp mop,
- {
-     MemOp size = mop & MO_SIZE;
- 
--    mop |= MO_TE;
-+    mop |= mo_endian(dc);
- 
-     /*
-      * When doing reverse accesses we need to do two things.
-@@ -1018,7 +1024,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
- 
-     tcg_gen_atomic_cmpxchg_i32(tval, cpu_res_addr, cpu_res_val,
-                                reg_for_write(dc, arg->rd),
--                               dc->mem_index, MO_TE | MO_UL);
-+                               dc->mem_index, mo_endian(dc) | MO_UL);
- 
-     tcg_gen_brcond_i32(TCG_COND_NE, cpu_res_val, tval, swx_fail);
- 
+-    ir = translator_ldl(cpu_env(cs), &dc->base, dc->base.pc_next);
++    ir = translator_ldl_swap(cpu_env(cs), &dc->base, dc->base.pc_next,
++                             mb_cpu_is_big_endian(cs) != TARGET_BIG_ENDIAN);
+     if (!decode(dc, ir)) {
+         trap_illegal(dc, true);
+     }
 -- 
 2.45.2
 
