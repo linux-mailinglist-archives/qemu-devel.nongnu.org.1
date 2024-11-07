@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306029BFD39
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7C69BFD3E
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8trK-0006H2-5j; Wed, 06 Nov 2024 23:11:02 -0500
+	id 1t8trN-0006Lu-TZ; Wed, 06 Nov 2024 23:11:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8trH-0006Gr-Vb
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:59 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1t8trL-0006HR-64
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:11:03 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8trG-00050o-DP
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:59 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-20c803787abso4930365ad.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:58 -0800 (PST)
+ id 1t8trJ-00051D-Np
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:11:02 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-20e6981ca77so6403855ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:11:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730952657; x=1731557457; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730952660; x=1731557460; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lH5GO7G9PC7qoCbAKl94qNlYtwmp9Vy76+NSbGNno7g=;
- b=EqmSpeitiHO0FE655k85i8EoFjOrsl7b9lhlHSbfFUvvscFfcZe9yQQqnV3lZotueo
- i6Z/uQNiSOCpFG7MpBoBsUQZy4/5eYVKv0zOdCSc7nuuKDSgS417CygYSJj4/w2B0T4W
- Oveni/xn6lA+PfVFt/jYOt2IpF0SrxRmcEBTz+1dUpVw7uOUHbTPBHeZ/Hjw3QHN0xEk
- UfNOkCwBCeIa8Z88XULePijBJduiv++TNBO/UURVInZT2tw2I0L9zP+vvTSB+42RNulI
- QnmCYvf0vTCDRLkO46zr0X5fy16Y2WS3n3/BnwxUpIY9114RSg1OKVpfHsfHzJJ8xPLi
- NrrA==
+ bh=NIhg5dboa4x/xyN0s29uEbsoGSKibvfs1Cx1DxBIl+s=;
+ b=JRYk+doEjgho0Sr0DjrU434/uclv3TzwoAOE2FG9D7bXOLY4BBqEcmNxhioKRx3T1B
+ tOi4rcU5BFflZZKxdlTXxN7RHhiYG6qxWZpEVEiH7BoGE0PQr1EsCbgKLwR5ZxrQPYMH
+ hvAzkk0JkvMpcKHZpo2QwU/P5jPWhz0xBjyDtxJmG+cPePcC0HL8jgmkC8VPqfA3bTci
+ m5w6ojzFcSXNx4Ihap1P8+Aryu5JE0Dsterfpgn6tNA5zMLnPPKP1bh3/OaMMaeeGWAe
+ FsaD3tcFlq0Km4SxvYekjSfC020DPZtM/w6I7c8V4ueW+Hf2ZZFOOU3KT61pnIjLoNjY
+ YyiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730952657; x=1731557457;
+ d=1e100.net; s=20230601; t=1730952660; x=1731557460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lH5GO7G9PC7qoCbAKl94qNlYtwmp9Vy76+NSbGNno7g=;
- b=B1MPDGRVgeHDnNG077AwpfFxlWW/Ts3w2IIMD1dbysYEW3zGhAlgRhxwLVbAQWVUIV
- u6r4Ou6oz3dMJ8ujQnIJJwTLB37wr6n4p15RPUAERe5xta1W38o4cuybaNffhQqqZadO
- cdgskNQHTunTVZM/XTF0N3hyngY1ZeQUzcfWL/fKQYQO6mLYpi6jWbZ0hd0z1sp6PJw6
- 5jAwbQfMjHpt+Nb4S4lKBFGPVBUo/DDkEX8JJjzwtUxPuxmXa/NhdV8fpp+DL9ow2p8E
- cQpAvhF4YaV7gZNIFsb1iSZwbiY2wFvG/LhVyvUR+g/0u3+NS5MbyjwshOSPW3fGmZf2
- LFGA==
-X-Gm-Message-State: AOJu0Yx0w4DFieyBzqF2Yy2+U2hGN2iluDRYiCCq/G8/LfMaQ2RvnIXW
- cdqdGZZH9WyvlG4Sx4AlvzoC9/HPyhUQg0PHogIeKtxUCSH7n1KhQRmlKw==
-X-Google-Smtp-Source: AGHT+IEak4JzKJKrOrwuHzo+IMDpbsYSUuFba/nuYTvv+vb1LQihVvRBbKI6NV8Z7iv7bWh/PU+big==
-X-Received: by 2002:a17:902:fb0b:b0:20c:d71d:69c5 with SMTP id
- d9443c01a7336-21175c13bd8mr25771775ad.4.1730952656655; 
- Wed, 06 Nov 2024 20:10:56 -0800 (PST)
+ bh=NIhg5dboa4x/xyN0s29uEbsoGSKibvfs1Cx1DxBIl+s=;
+ b=DZZPOk61ModsPWfcfBbscAjiScZw5l+CBIqllUBR+kqbz8CK3eFeuTocOqAc8CD+Yn
+ Kn6X9nYTdyUgVQO/kjxRYaUsNCMe+/VxFffMdzzAQaYWtxZUEZb/k9WzRdA0USgKnZsU
+ x7GNkxEXU8wbP122B9l69bZb5OA+6g88Mq27eBQ1/WBXoZcmCyJyIgK1ASj3C9fyAtue
+ qxkMDv8WziZRkEVw69ToYaIHfzeR5d/ExNgF0LjH+vIeUFsDc4kQGP5Gt0wA6k1i4CnE
+ zBZ9MPdswOeeSmBhWzS94W2FTExWuleFVOLgBUfzFibiarJNCsaVl29cj2EuhCtTwNfB
+ jnKA==
+X-Gm-Message-State: AOJu0Ywkxh4f9tnks8mEUcIH5Pq9+6F7k89QqQASUTbJelhmmoGEYqra
+ YIZSMXObk4AqQnmla3jK8vTqj/wGIseTEPib8zbviUHhgV+RsSneUsAbOA==
+X-Google-Smtp-Source: AGHT+IEq54ZxHSFX5UqXrP8NxUvl+5zcP8RxqBHvdwIBsvDPWIenHv9GeJkYDCWGkA7epcSN2TmDVQ==
+X-Received: by 2002:a17:902:f541:b0:20c:ee48:94f3 with SMTP id
+ d9443c01a7336-211785e38b8mr6694515ad.14.1730952659908; 
+ Wed, 06 Nov 2024 20:10:59 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.53
+ d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 20:10:56 -0800 (PST)
+ Wed, 06 Nov 2024 20:10:59 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Quan Zhou <zhouquan@iscas.ac.cn>,
+ Andrew Jones <ajones@ventanamicro.com>, Jim Shu <jim.shu@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 10/12] target/riscv: Inline unit-stride ld/st and corresponding
- functions for performance
-Date: Thu,  7 Nov 2024 14:10:14 +1000
-Message-ID: <20241107041016.40800-11-alistair.francis@wdc.com>
+Subject: [PULL 11/12] target/riscv/kvm: Update kvm exts to Linux v6.11
+Date: Thu,  7 Nov 2024 14:10:15 +1000
+Message-ID: <20241107041016.40800-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241107041016.40800-1-alistair.francis@wdc.com>
 References: <20241107041016.40800-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,91 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Quan Zhou <zhouquan@iscas.ac.cn>
 
-In the vector unit-stride load/store helper functions. the vext_ldst_us
-& vext_ldst_whole functions corresponding most of the execution time.
-Inline the functions can avoid the function call overhead to improve the
-helper function performance.
+Add support for a few Zc* extensions, Zimop, Zcmop and Zawrs.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240918171412.150107-8-max.chou@sifive.com>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Message-ID: <ada40759a79c0728652ace59579aa843cb7bf53f.1727164986.git.zhouquan@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 3d10ff94cd..a85dd1d200 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -153,14 +153,16 @@ typedef void vext_ldst_elem_fn_tlb(CPURISCVState *env, abi_ptr addr,
- typedef void vext_ldst_elem_fn_host(void *vd, uint32_t idx, void *host);
- 
- #define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)             \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,    \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,           \
-                 uint32_t idx, void *vd, uintptr_t retaddr)  \
- {                                                           \
-     ETYPE *cur = ((ETYPE *)vd + H(idx));                    \
-     *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);       \
- }                                                           \
-                                                             \
--static void NAME##_host(void *vd, uint32_t idx, void *host) \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_host(void *vd, uint32_t idx, void *host)        \
- {                                                           \
-     ETYPE *cur = ((ETYPE *)vd + H(idx));                    \
-     *cur = (ETYPE)LDSUF##_p(host);                          \
-@@ -172,14 +174,16 @@ GEN_VEXT_LD_ELEM(lde_w, uint32_t, H4, ldl)
- GEN_VEXT_LD_ELEM(lde_d, uint64_t, H8, ldq)
- 
- #define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)             \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,    \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,           \
-                 uint32_t idx, void *vd, uintptr_t retaddr)  \
- {                                                           \
-     ETYPE data = *((ETYPE *)vd + H(idx));                   \
-     cpu_##STSUF##_data_ra(env, addr, data, retaddr);        \
- }                                                           \
-                                                             \
--static void NAME##_host(void *vd, uint32_t idx, void *host) \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_host(void *vd, uint32_t idx, void *host)        \
- {                                                           \
-     ETYPE data = *((ETYPE *)vd + H(idx));                   \
-     STSUF##_p(host, data);                                  \
-@@ -318,7 +322,7 @@ GEN_VEXT_ST_STRIDE(vsse64_v, int64_t, ste_d_tlb)
-  */
- 
- /* unmasked unit-stride load and store operation */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-                   uint32_t elems, uint32_t nf, uint32_t max_elems,
-                   uint32_t log2_esz, bool is_load, int mmu_index,
-@@ -370,7 +374,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     }
- }
- 
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              vext_ldst_elem_fn_tlb *ldst_tlb,
-              vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
-@@ -757,7 +761,7 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb, lde_d_host)
- /*
-  * load and store whole register instructions
-  */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-                 vext_ldst_elem_fn_tlb *ldst_tlb,
-                 vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index cbda4596da..c53ca1f76b 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -281,7 +281,10 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zihintntl", ext_zihintntl, KVM_RISCV_ISA_EXT_ZIHINTNTL),
+     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
++    KVM_EXT_CFG("zimop", ext_zimop, KVM_RISCV_ISA_EXT_ZIMOP),
++    KVM_EXT_CFG("zcmop", ext_zcmop, KVM_RISCV_ISA_EXT_ZCMOP),
+     KVM_EXT_CFG("zacas", ext_zacas, KVM_RISCV_ISA_EXT_ZACAS),
++    KVM_EXT_CFG("zawrs", ext_zawrs, KVM_RISCV_ISA_EXT_ZAWRS),
+     KVM_EXT_CFG("zfa", ext_zfa, KVM_RISCV_ISA_EXT_ZFA),
+     KVM_EXT_CFG("zfh", ext_zfh, KVM_RISCV_ISA_EXT_ZFH),
+     KVM_EXT_CFG("zfhmin", ext_zfhmin, KVM_RISCV_ISA_EXT_ZFHMIN),
+@@ -292,6 +295,10 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zbkc", ext_zbkc, KVM_RISCV_ISA_EXT_ZBKC),
+     KVM_EXT_CFG("zbkx", ext_zbkx, KVM_RISCV_ISA_EXT_ZBKX),
+     KVM_EXT_CFG("zbs", ext_zbs, KVM_RISCV_ISA_EXT_ZBS),
++    KVM_EXT_CFG("zca", ext_zca, KVM_RISCV_ISA_EXT_ZCA),
++    KVM_EXT_CFG("zcb", ext_zcb, KVM_RISCV_ISA_EXT_ZCB),
++    KVM_EXT_CFG("zcd", ext_zcd, KVM_RISCV_ISA_EXT_ZCD),
++    KVM_EXT_CFG("zcf", ext_zcf, KVM_RISCV_ISA_EXT_ZCF),
+     KVM_EXT_CFG("zknd", ext_zknd, KVM_RISCV_ISA_EXT_ZKND),
+     KVM_EXT_CFG("zkne", ext_zkne, KVM_RISCV_ISA_EXT_ZKNE),
+     KVM_EXT_CFG("zknh", ext_zknh, KVM_RISCV_ISA_EXT_ZKNH),
 -- 
 2.47.0
 
