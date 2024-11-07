@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F749BFD38
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BAB9BFD7C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 06:01:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8trQ-0006Rq-L4; Wed, 06 Nov 2024 23:11:08 -0500
+	id 1t8ucp-0000VT-C5; Thu, 07 Nov 2024 00:00:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8trO-0006Pv-F3
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:11:06 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1t8ucn-0000U9-4k
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 00:00:05 -0500
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8trM-00051b-Ma
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:11:06 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2e2ed59a35eso437536a91.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:11:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1t8uck-0006Ec-Gl
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 00:00:04 -0500
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-7181b86a749so299287a34.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 21:00:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730952663; x=1731557463; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zJit+aB1hSEY7Z10W4rtdeM1AjZpq2DQ/M5egNktBGY=;
- b=d4wj0lB1icjmUm0xr//8jtTO0/1HoU3NlDYhBjSIAoD4mEyIRV+Xj9mFDqD6I3GA1E
- onzZjVqn298IPVHyMHeuf7+H97FUEUUU6zaxkKxey0nMoip5wSzt56P1kQWEJQi3LWLr
- IlM9UmbhxUd3kqO2niIFQYfQUarxPb5ivS9zih0/3u5qu+FPw3ErUh26/FSUFD4Xytdg
- kOGcMfqzOgf5CDU2+W+jsDFFjCN+yIAm51spYMiAYqzqfV/yrr3sNidI3/LY7TCA8J+p
- /x8z5sbDogO/1jNAo9xppLT2o8ufa27UOpP3JCB+WFZBWIHXclJTxv07kt8HvMG0PbRB
- Lvwg==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1730955600; x=1731560400;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CR9dQFSd9mLM/+/pqi5uPtiGA6rgSVROGDApZjnCZdc=;
+ b=wZgmxPLSKJ4o8JaEip+j61D64lqmxnD3xrdSNjh2rIH51egAg79crOAL+0fP4qiJwU
+ 02iONGB9IjKUdeOJcRKv7ZO4MwL330P0OLz4MCrrAvT5bLYSufZfvmWwwK/dTXzgXLwp
+ CwtUH3j5wdfQeEkK76KPgq7AppA2EMElKRbBEh2S+0pjnAiVV/xOKG0xVKxf4ryy1Hgk
+ ZGf9+Q2x7bbV8g43lrMJE6k+808LW9C8GkbaHxAnr55vLI3zhij2XhTrocgLmwYpwdUv
+ Z/781YQ/4d3ZfBHZ/WolkZAhaypwyU4eEZ7iUP1zOP/bX8QFxiQXCYM5wWFhZ2V7erv9
+ DlJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730952663; x=1731557463;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zJit+aB1hSEY7Z10W4rtdeM1AjZpq2DQ/M5egNktBGY=;
- b=tyHctCgX17LYX5vmhS0vrDDXMRo8fUSO8AeEevTBp+1jgex0k0c2pBjxbBRyzaey1s
- N/zBFlOZJbx8RS8lXIHdh4IzC9VPHFnnuMbAbrzWIMti/0SBSn9qZa7ngi47ubARrwWZ
- wVVDCoh9E3dkGva7LFmr9ohEmV5lvmeYF7+q6DBj0sxH7LGtnGKKmo9ccQUWZu4bimVd
- QeFcdLaRz9c4ibDTh6ApX0stAs7//jEgsYq8Uy6Dc/7H4xryiyZWIyWyVZOUleWA5qQ4
- 9clEFle3HUGlfkvQqIk/uTEv58r6P/5Kinv4vaJ8csOfHT93ZV4no84xIRsBSbGS2Duu
- deTA==
-X-Gm-Message-State: AOJu0YxBoWtTBNEbVUmi/fUH4/JDTbr3fqSZvlnNF6M3HIoolVlhHHDZ
- jRyfkF9jWYIG721apk/DdUEBDYa0AlnmP6osZYUCToaAgDMUsT2UtQKv8w==
-X-Google-Smtp-Source: AGHT+IH/UQCq6y7TUDAwiEg6MJpScbUOExO/H+J9oKNDVL0DrEN7pB+pBbzpmtX3r+hHng+GENzv4w==
-X-Received: by 2002:a17:902:e890:b0:20c:8abc:733a with SMTP id
- d9443c01a7336-210c6ca8b77mr597730125ad.53.1730952662904; 
- Wed, 06 Nov 2024 20:11:02 -0800 (PST)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ d=1e100.net; s=20230601; t=1730955600; x=1731560400;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CR9dQFSd9mLM/+/pqi5uPtiGA6rgSVROGDApZjnCZdc=;
+ b=XjeLMHHLD1tnE2y0BTwbgZFB+EHRS8+jberDV+9tC9mccERIrfvI4aSnMQstdQVmqV
+ O8WLtgdATRnl2SYMRmJmF8JQfjZTOdIsEps7jHbhNPyvWIAilso8Zw0NOCFrGJaMyeB0
+ hUfBQuxt4d/rCvZZTcHx0pGk2j3R3Zbp9UNfW41Dl7DrFkzKwGHbxfhLo4ayYFUjS2YI
+ 5d+wLtb8rDNOuYhFjl0A6Z09hGw4Zo/bdgZfUJU/U6TxsRPmlqV8slbI1vZ8QjEQpQHz
+ hWoKuccMDuH8gp/P04zDz5NswzCvSI3JO7Ti497o7XMd+brdoUm0jWq44E20/y+I/ERl
+ cmTw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUYWKQx6CJQP4t2qd3//dAl45sCXA0M4fYfa4CsMtxQhMt7/DuOkDQucGkHA/DJo+NeTZ2eXxCgWZ16@nongnu.org
+X-Gm-Message-State: AOJu0YyZq9uj1Qv3xGVhRhaUFJkesUUqYptUE66jsqQdSTL1sT1cg/4J
+ HqqRLEOnhftWk5/MeZXh4X2WKLfiV1KwCZHYu73Q/MNtFPHdM+mF0CPFB2TakpA=
+X-Google-Smtp-Source: AGHT+IEItlXl6V+5IEBTXWxLsGHSJ/dkZMK6og2lOpA9dFYVAMK1sXzcRFXZxAzodQczXRkzX04Blw==
+X-Received: by 2002:a05:6830:44a5:b0:718:9d91:6a17 with SMTP id
+ 46e09a7af769-719ca192061mr23540011a34.11.1730955600345; 
+ Wed, 06 Nov 2024 21:00:00 -0800 (PST)
+Received: from [157.82.207.107] ([157.82.207.107])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.11.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 20:11:02 -0800 (PST)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL 12/12] tests/functional: Convert the RV32-on-RV64 riscv test
-Date: Thu,  7 Nov 2024 14:10:16 +1000
-Message-ID: <20241107041016.40800-13-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241107041016.40800-1-alistair.francis@wdc.com>
-References: <20241107041016.40800-1-alistair.francis@wdc.com>
+ 41be03b00d2f7-7f41f65d758sm426039a12.69.2024.11.06.20.59.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Nov 2024 20:59:59 -0800 (PST)
+Message-ID: <77a7268f-06c7-4e2f-ace2-14290f16f2b6@daynix.com>
+Date: Thu, 7 Nov 2024 13:59:56 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RFT] cocoa: Remove deprecated
+ CVDisplayLinkCreateWithCGDisplay() calls
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20241106175051.561352-2-pbonzini@redhat.com>
+ <c78fe9ea-11e6-4f3f-858b-7fe5f6331c58@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <c78fe9ea-11e6-4f3f-858b-7fe5f6331c58@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1029.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: none client-ip=2607:f8b0:4864:20::332;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,77 +100,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On 2024/11/07 7:59, Philippe Mathieu-Daudé wrote:
+> +Phil & Akihiko
+> 
+> On 6/11/24 17:50, Paolo Bonzini wrote:
+>> When building on macOS 15 we get:
+>>
+>> ../../ui/cocoa.m:662:14: error: 'CVDisplayLinkCreateWithCGDisplay' is 
+>> deprecated:
+>>      first deprecated in macOS 15.0
+>>      - use NSView.displayLink(target:selector:), 
+>> NSWindow.displayLink(target:selector:),
+>>        or NSScreen.displayLink(target:selector:)
+>>      [-Werror,-Wdeprecated-declarations]
+>>    662 |         if (!CVDisplayLinkCreateWithCGDisplay(display, 
+>> &displayLink)) {
+>>        |              ^
+>>
+>> Instead get the refresh rate from either CGDisplayModeGetRefreshRate 
+>> or IOKit,
+>> following the model of https://github.com/gwm17/glfw/commit/4ec7daf3e92.
 
-A straggler that has been added to the Avocado framework while the
-conversion to the functional framework was already in progress...
-Move it over now, too!
+It looks complicated. We can use [-NSScreen maximumFramesPerSecond] and 
+[-NSScreen minimumRefreshInterval] instead as they are available since 
+macOS 12.0 and cover all versions we support.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20241105103519.341304-1-thuth@redhat.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- tests/avocado/tuxrun_baselines.py       | 16 ----------------
- tests/functional/test_riscv64_tuxrun.py | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 16 deletions(-)
-
-diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index 366c262e32..38064840da 100644
---- a/tests/avocado/tuxrun_baselines.py
-+++ b/tests/avocado/tuxrun_baselines.py
-@@ -222,19 +222,3 @@ def test_arm64be(self):
-                  "rootfs.ext4.zst" :
-                  "e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7"}
-         self.common_tuxrun(csums=sums)
--
--    def test_riscv64_rv32(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:virt
--        :avocado: tags=tuxboot:riscv32
--        :avocado: tags=cpu:rv32
--        """
--        sums = { "Image" :
--                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a3d6deccbd5",
--                 "fw_jump.elf" :
--                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b18936676985",
--                 "rootfs.ext4.zst" :
--                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31bb13108cba" }
--
--        self.common_tuxrun(csums=sums)
-diff --git a/tests/functional/test_riscv64_tuxrun.py b/tests/functional/test_riscv64_tuxrun.py
-index 13501628f9..4e2449539c 100755
---- a/tests/functional/test_riscv64_tuxrun.py
-+++ b/tests/functional/test_riscv64_tuxrun.py
-@@ -23,6 +23,13 @@ class TuxRunRiscV64Test(TuxRunBaselineTest):
-         'https://storage.tuxboot.com/20230331/riscv64/rootfs.ext4.zst',
-         'b18e3a3bdf27be03da0b285e84cb71bf09eca071c3a087b42884b6982ed679eb')
- 
-+    ASSET_RISCV32_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/riscv32/Image',
-+        '89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a3d6deccbd5')
-+    ASSET_RISCV32_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/riscv32/rootfs.ext4.zst',
-+        '7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31bb13108cba')
-+
-     def test_riscv64(self):
-         self.set_machine('virt')
-         self.common_tuxrun(kernel_asset=self.ASSET_RISCV64_KERNEL,
-@@ -34,5 +41,11 @@ def test_riscv64_maxcpu(self):
-         self.common_tuxrun(kernel_asset=self.ASSET_RISCV64_KERNEL,
-                            rootfs_asset=self.ASSET_RISCV64_ROOTFS)
- 
-+    def test_riscv64_rv32(self):
-+        self.set_machine('virt')
-+        self.cpu='rv32'
-+        self.common_tuxrun(kernel_asset=self.ASSET_RISCV32_KERNEL,
-+                           rootfs_asset=self.ASSET_RISCV32_ROOTFS)
-+
- if __name__ == '__main__':
-     TuxRunBaselineTest.main()
--- 
-2.47.0
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2575
+>> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>> v1->v2: use kIOMainPortDefault
+>>
+>>   meson.build |  2 +-
+>>   ui/cocoa.m  | 90 ++++++++++++++++++++++++++++++++++++++++++++++-------
+>>   2 files changed, 79 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/meson.build b/meson.build
+>> index c386593c527..b12ccc12223 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -1135,7 +1135,7 @@ if get_option('attr').allowed()
+>>   endif
+>>   cocoa = dependency('appleframeworks',
+>> -                   modules: ['Cocoa', 'CoreVideo', 'QuartzCore'],
+>> +                   modules: ['Cocoa', 'IOKit', 'QuartzCore'],
+>>                      required: get_option('cocoa'))
+>>   vmnet = dependency('appleframeworks', modules: 'vmnet', required: 
+>> get_option('vmnet'))
+>> diff --git a/ui/cocoa.m b/ui/cocoa.m
+>> index 4c2dd335323..c3fa55477fd 100644
+>> --- a/ui/cocoa.m
+>> +++ b/ui/cocoa.m
+>> @@ -25,6 +25,7 @@
+>>   #include "qemu/osdep.h"
+>>   #import <Cocoa/Cocoa.h>
+>> +#import <IOKit/IOKitLib.h>
+>>   #import <QuartzCore/QuartzCore.h>
+>>   #include <crt_externs.h>
+>> @@ -292,6 +293,75 @@ static void handleAnyDeviceErrors(Error * err)
+>>       }
+>>   }
+>> +static bool get_fallback_refresh_rate(CGDirectDisplayID displayID, 
+>> double *p_rate)
+>> +{
+>> +    bool found = false;
+>> +    io_iterator_t it;
+>> +    io_service_t service;
+>> +    CFNumberRef indexRef, clockRef, countRef;
+>> +    uint32_t clock, count;
+>> +
+>> +    if (IOServiceGetMatchingServices(kIOMainPortDefault,
+>> +                                     IOServiceMatching("IOFramebuffer"),
+>> +                                     &it) != 0) {
+>> +        return false;
+>> +    }
+>> +    while ((service = IOIteratorNext(it)) != 0) {
+>> +        uint32_t index;
+>> +        bool found_display_id;
+>> +        indexRef = IORegistryEntryCreateCFProperty(service,
+>> +                                                   
+>> CFSTR("IOFramebufferOpenGLIndex"),
+>> +                                                   kCFAllocatorDefault,
+>> +                                                   kNilOptions);
+>> +        if (!indexRef) {
+>> +            continue;
+>> +        }
+>> +        found_display_id =
+>> +            CFNumberGetValue(indexRef, kCFNumberIntType, &index) &&
+>> +            CGOpenGLDisplayMaskToDisplayID(1 << index) == displayID;
+>> +        CFRelease(indexRef);
+>> +        if (found_display_id) {
+>> +            break;
+>> +        }
+>> +    }
+>> +    if (!service) {
+>> +        goto out;
+>> +    }
+>> +
+>> +    clockRef = IORegistryEntryCreateCFProperty(service,
+>> +                                               
+>> CFSTR("IOFBCurrentPixelClock"),
+>> +                                               kCFAllocatorDefault,
+>> +                                               kNilOptions);
+>> +    if (!clockRef) {
+>> +        goto out;
+>> +    }
+>> +    if (!CFNumberGetValue(clockRef, kCFNumberIntType, &clock) || ! 
+>> clock) {
+>> +        goto out_clock_ref;
+>> +    }
+>> +
+>> +    countRef = IORegistryEntryCreateCFProperty(service,
+>> +                                               
+>> CFSTR("IOFBCurrentPixelCount"),
+>> +                                               kCFAllocatorDefault,
+>> +                                               kNilOptions);
+>> +    if (!countRef) {
+>> +        goto out_clock_ref;
+>> +    }
+>> +    if (!CFNumberGetValue(countRef, kCFNumberIntType, &count) || ! 
+>> count) {
+>> +        goto out_count_ref;
+>> +    }
+>> +
+>> +    *p_rate = clock / (double) count;
+>> +    found = true;
+>> +
+>> +out_count_ref:
+>> +    CFRelease(countRef);
+>> +out_clock_ref:
+>> +    CFRelease(clockRef);
+>> +out:
+>> +    IOObjectRelease(it);
+>> +    return found;
+>> +}
+>> +
+>>   /*
+>>    ------------------------------------------------------
+>>       QemuCocoaView
+>> @@ -655,20 +725,16 @@ - (void) updateUIInfoLocked
+>>           NSSize screenSize = [[[self window] screen] frame].size;
+>>           CGSize screenPhysicalSize = CGDisplayScreenSize(display);
+>>           bool isFullscreen = ([[self window] styleMask] & 
+>> NSWindowStyleMaskFullScreen) != 0;
+>> -        CVDisplayLinkRef displayLink;
+>> +        CGDisplayModeRef mode = CGDisplayCopyDisplayMode(display);
+>> +        double rate = CGDisplayModeGetRefreshRate(mode);
+>> +
+>> +        if (rate != 0.0 || get_fallback_refresh_rate(display, &rate)) {
+>> +            update_displaychangelistener(&dcl, 1000 / rate);
+>> +            info.refresh_rate = (int64_t)1000 * rate;
+>> +        }
+>> +        CGDisplayModeRelease(mode);
+>>           frameSize = isFullscreen ? [self screenSafeAreaSize] : [self 
+>> frame].size;
+>> -
+>> -        if (!CVDisplayLinkCreateWithCGDisplay(display, &displayLink)) {
+>> -            CVTime period = 
+>> CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
+>> -            CVDisplayLinkRelease(displayLink);
+>> -            if (!(period.flags & kCVTimeIsIndefinite)) {
+>> -                update_displaychangelistener(&dcl,
+>> -                                             1000 * 
+>> period.timeValue / period.timeScale);
+>> -                info.refresh_rate = (int64_t)1000 * 
+>> period.timeScale / period.timeValue;
+>> -            }
+>> -        }
+>> -
+>>           info.width_mm = frameSize.width / screenSize.width * 
+>> screenPhysicalSize.width;
+>>           info.height_mm = frameSize.height / screenSize.height * 
+>> screenPhysicalSize.height;
+>>       } else {
+> 
 
 
