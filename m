@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C019C0ECF
+	by mail.lfdr.de (Postfix) with ESMTPS id D33129C0ECE
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:21:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t983S-00043R-Q5; Thu, 07 Nov 2024 14:20:30 -0500
+	id 1t983R-000424-Mv; Thu, 07 Nov 2024 14:20:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983Q-000426-UF
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:28 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983P-00041W-CT
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:27 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983O-0006zN-SV
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:28 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5cefc36c5d4so1753092a12.0
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:20:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983N-0006z0-Q9
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:27 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5c9362c26d8so4266789a12.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:20:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731007225; x=1731612025; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1731007223; x=1731612023; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M7qB6cTr1EQKh/19ie9g+7eI+JmDWu3AdbjcYuZlOfI=;
- b=WwgjRaHhm/6VrN6t0DJRSO03UxhMxkANeiggijaEhlDw/HJaw8la6W5Nttvx+P5JN5
- ihFhbx4M01oggjNP4xM87S4L9OcjKsHbP92XXbEi8ONJffisHS8gJqn4pstT/oLEwFR0
- 59lT3ziduQ8MQvAZWJXr1xZ837Zp2LTKnb7tTgCK+TGRdNxRUU6Lsvl35I4ceJrOiR9Y
- yyJwTkyvbH4EaLtBsnbb7wTl2/OkaHVoYpjDjvPp+6Oav/V0fUN7sS+w8kJSOMFGsTIo
- Rtm0HNdDUV3IqAHuuR5eRzJn59bthQqiKOCJ4gqTPXrM2+tRvoQZdHI9H6n4CrstvCT+
- Grgg==
+ bh=Tnmv9SFJw1SUFlGYxGK1BED1KHIqRINi7Fka102FEDM=;
+ b=BEOebeUd+Z2af4JO+YPpQaHxxlxLwoXvT2AKgZ0wjfZ5nFQda+npKGjciXUyMlabVV
+ T+sHfsEcXQcApBHJrCkOnzaYLu2mFej2T3Yx3LrTFxs3cPq8pH4fSoVQSPHFRBgD47gf
+ 768xGhebwvP6ieCcbgQtU3FWZWGtuuPjhkMCPeR3ySuBdpTltr1qYA21vOsTluOsZQ8d
+ Lu8csYGngML6zKoGbxqo1xh64xbTxVnZT7FY/pSDaC3BBLw0rZ7W+G0PCvEytA/3DDTO
+ HjqKDhKlHDay0QcPbyFOmPGgNrcGBkeVfn62iXxZ9d/dYyR66/MN25w4/fYKZVloCkjg
+ wfUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731007225; x=1731612025;
+ d=1e100.net; s=20230601; t=1731007223; x=1731612023;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M7qB6cTr1EQKh/19ie9g+7eI+JmDWu3AdbjcYuZlOfI=;
- b=A/le7n9EksvMddbf0yiQiTDPcI1s5CzIkWwjlq17SRzxrK+4r4BGCl5A44xFJqnub0
- ED9k9OGnAJF/iEooOLj2B71MI8eIY5e6hbENHvywYopkBcRTCXKwLgCy1f8SF8aF4Byu
- xCIyUkwkHnlqqcsAgmg+ue8ShzdVVenrcwCFXcqS4JDr9csLnfbEw0DrWECTuSejj1rC
- b7uJWWqlwT7QWimLrD21KVgpXhbNGqERSanG2OGIZAcY8by4tvAcjCFaB66P0jaLoJTe
- sKWdTfULTIkiUiJgi6wRwasmOhFZ03WMpGyjkdR+oHapJtl9uov+B/QAe9aofHdjYphc
- geAQ==
-X-Gm-Message-State: AOJu0Yy/+L/HUx9q8/+CW8Z7QXz//45lCXpu3qGzbf/5uWmaGdTZH+pQ
- p6srOe6nlmuEuhcE55GVbDgVOrD9/jLUr3aGn9rr7MhoRfIQE/8gMOlK4Q==
-X-Google-Smtp-Source: AGHT+IF0lBYQnbixiDcdL+5rljH5UJJlSxU9QzRLBZvg+epJtuJlWLT7whjgxM2ErliGMo46iup/Rg==
-X-Received: by 2002:a17:906:8415:b0:a9e:c940:d154 with SMTP id
- a640c23a62f3a-a9ec940d1ebmr541637366b.17.1731007224388; 
- Thu, 07 Nov 2024 11:20:24 -0800 (PST)
-Received: from [127.0.0.1] ([62.214.191.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9ee0abea92sm133616366b.85.2024.11.07.11.20.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ bh=Tnmv9SFJw1SUFlGYxGK1BED1KHIqRINi7Fka102FEDM=;
+ b=s7ToGbDLtF9V2fLI2rLGhNBKcNS3/osAfz2fo40R0ViNAU3oxWmJhhYAg9tpWDChnr
+ 2y9xVTKA93/Aemo2qOHPp7W80Q0EGemz3i9iuxceI9F+ba+gQTWzfzHskY5W3jXF/8ha
+ Fn0f15fIyqSi6YD+EVhq8cIYMF8aolkJhDpWDCgFFiIadxnu7KLCVYS2+gZRXiVUVyXo
+ L20dlRkrDXgtSzJ+ISbYeJhLwSxdDdPj1lyPdQC/Lh2u3RlMVQALJj7nAqF+2SJLtzIp
+ oC+xZ7kf+103oUyTT6BaB2S7O1VIZ/GRSbajzM7gF/h7sDtJuIYiVMoJP7gAbGsCyJFD
+ uwiQ==
+X-Gm-Message-State: AOJu0YwvAoa3Yyejqu/08TRZlgQ6R4faug/d+50nsxpms9BSugu48wEu
+ iWSzJEUffKv71eiwWiEloDfCi10VeX9kPewKmBJzRxRFEF+HoXe/zd1u4A==
+X-Google-Smtp-Source: AGHT+IFYJA/crYi2Fjc6QNDW64l8sv4aDwY572GcD22ScduoVgPBFVSfOOctnavgDQO09fkR6djhBQ==
+X-Received: by 2002:a17:907:3f86:b0:a9d:e1db:de8b with SMTP id
+ a640c23a62f3a-a9eec9cf18bmr74323766b.16.1731007223209; 
  Thu, 07 Nov 2024 11:20:23 -0800 (PST)
-Date: Thu, 07 Nov 2024 19:09:20 +0000
+Received: from [127.0.0.1] ([62.214.191.67]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9ee0a4a7d3sm134876366b.70.2024.11.07.11.20.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Nov 2024 11:20:22 -0800 (PST)
+Date: Thu, 07 Nov 2024 19:09:24 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Dmitry Frolov <frolov@swemel.ru>,
- pbonzini@redhat.com, Peter Maydell <peter.maydell@linaro.org>
-CC: sdl.qemu@linuxtesting.org
-Subject: Re: [PATCH] hw/i386: fix NULL-dereference
-In-Reply-To: <384458DB-F470-44E9-8C16-7D35DDDE4CBF@gmail.com>
-References: <20241107070415.694662-2-frolov@swemel.ru>
- <384458DB-F470-44E9-8C16-7D35DDDE4CBF@gmail.com>
-Message-ID: <5CFC2282-CD55-470A-AA65-C5299F26F1A4@gmail.com>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+CC: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/i386/pc=3A_Don=27t_try_to?=
+ =?US-ASCII?Q?_init_PCI_NICs_if_there_is_no_PCI_bus?=
+In-Reply-To: <20241105171813.3031969-1-peter.maydell@linaro.org>
+References: <20241105171813.3031969-1-peter.maydell@linaro.org>
+Message-ID: <BA0D6E03-7273-4707-8AE3-236FD0AF83AD@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,57 +94,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 7=2E November 2024 09:19:05 UTC schrieb Bernhard Beschow <shentey@gmail=
-=2Ecom>:
+Am 5=2E November 2024 17:18:13 UTC schrieb Peter Maydell <peter=2Emaydell@=
+linaro=2Eorg>:
+>The 'isapc' machine type has no PCI bus, but pc_nic_init() still
+>calls pci_init_nic_devices() passing it a NULL bus pointer=2E  This
+>causes the clang sanitizer to complain:
 >
+>$ =2E/build/clang/qemu-system-i386 -M isapc
+>=2E=2E/=2E=2E/hw/pci/pci=2Ec:1866:39: runtime error: member access within=
+ null pointer of type 'PCIBus' (aka 'struct PCIBus')
+>SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior =2E=2E/=2E=2E/hw/=
+pci/pci=2Ec:1866:39 in
 >
->Am 7=2E November 2024 07:04:10 UTC schrieb Dmitry Frolov <frolov@swemel=
-=2Eru>:
->>If pcmc->pci_enabled is false, pcms->pcibus is NULL and is passed
->>to pc_nic_init() where it is being dereferenced=2E
->>
->>Found making check with enabled sanitizers=2E
->>
->>Signed-off-by: Dmitry Frolov <frolov@swemel=2Eru>
->>---
->> hw/i386/pc_piix=2Ec | 6 +++---
->> 1 file changed, 3 insertions(+), 3 deletions(-)
->>
->>diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
->>index 2bf6865d40=2E=2E2a92d2dbb7 100644
->>--- a/hw/i386/pc_piix=2Ec
->>+++ b/hw/i386/pc_piix=2Ec
->>@@ -313,9 +313,9 @@ static void pc_init1(MachineState *machine, const ch=
-ar *pci_type)
->>     /* init basic PC hardware */
->>     pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
->>                          !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
->>-
->>-    pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->>-
->>+    if (pcmc->pci_enabled) {
->>+        pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->>+    }
+>This is because pci_init_nic_devices() does
+> &bus->qbus
+>which is undefined behaviour on a NULL pointer even though we're not
+>actually dereferencing the pointer=2E (We don't actually crash as
+>a result, so if you aren't running a sanitizer build then there
+>are no user-visible effects=2E)
 >
->Since pc_nic_init() is passed both an ISA and a PCI bus I think the NULL =
-dereference should be fixed there=2E Moreover, if pc_nic_init() is only inv=
-oked when there is a PCI bus, the "isapc" machine won't have a nic at all=
-=2E
+>Make pc_nic_init() avoid trying to initialize PCI NICs on a non-PCI
+>system=2E
 >
->How is this patch related to https://patchew=2Eorg/QEMU/20241105171813=2E=
-3031969-1-peter=2Emaydell@linaro=2Eorg ? That is, do we need both patches t=
-o really fix the issue?
+>Cc: qemu-stable@nongnu=2Eorg
+>Fixes: 8d39f9ba14d64 ("hw/i386/pc: use qemu_get_nic_info() and pci_init_n=
+ic_devices()")
+>Signed-off-by: Peter Maydell <peter=2Emaydell@linaro=2Eorg>
+>---
+>This shows up if you run "make check" on a ubsan build=2E
+>---
+> hw/i386/pc=2Ec | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
+>index 2047633e4cf=2E=2E1af1a1a1823 100644
+>--- a/hw/i386/pc=2Ec
+>+++ b/hw/i386/pc=2Ec
+>@@ -1251,7 +1251,9 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_=
+bus, PCIBus *pci_bus)
+>     }
+>=20
+>     /* Anything remaining should be a PCI NIC */
+>-    pci_init_nic_devices(pci_bus, mc->default_nic);
+>+    if (pci_bus) {
+>+        pci_init_nic_devices(pci_bus, mc->default_nic);
+>+    }
 
-I've had a closer look at the code and Peter's patch nails the problem=2E
+Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
 
-Best regards,
-Bernhard
-
->
->Best regards,
->Bernhard
->
->> #ifdef CONFIG_IDE_ISA
->>     if (!pcmc->pci_enabled) {
->>         DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
+>=20
+>     rom_reset_order_override();
+> }
 
