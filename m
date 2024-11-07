@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A245E9C07DA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 14:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B069C07F9
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 14:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t92nk-0000jC-27; Thu, 07 Nov 2024 08:43:56 -0500
+	id 1t92rR-0003R6-Gc; Thu, 07 Nov 2024 08:47:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1t92ne-0000ig-Jx
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:43:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t92rP-0003Qw-O0
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:47:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1t92nb-0006TH-PO
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:43:49 -0500
+ id 1t92rN-0007fE-Ii
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:47:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730987024;
+ s=mimecast20190719; t=1730987259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OXxEpkdVgQx0YQCx+x11vO9gxACac1E+91avTNKTTGo=;
- b=G3ehHT29duAR3cCXhJgbUombRF6Xe9G6bC6HUFiukO7KksRgpuOV1kcCkTkm0HOJ5TvO65
- NnB2wV4Ewdyz7QGG7JZHs435oj7njGiNJ4khrZPXxFZ20/U2OZt1nGMhG1Yc1ipK/y8yT2
- v/CsOD9gGlIsqwjd0ChrhXXiq9kGI4I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7bpuD4VXkRzZcC/uI2Sky0yj4/IHhJSciFTJcd/wXic=;
+ b=e5rQY2cM7+nmoJZYytHxScaYa2nWnzZ0A4dS7J0sXlz3KusmbMrvO3+TeeK2j0UuExkPJY
+ CDn7EGx+lWPxhOtiSEYSJgbSlT26N4b484cIi4z2xM2JkdUbJNjOrkDpeValSEf4SFSxBS
+ eCtbvjTmg7hxbajQjHmZfOS5rT8nxLQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-xrHbphUiPiy34pW8J0R7Og-1; Thu, 07 Nov 2024 08:43:43 -0500
-X-MC-Unique: xrHbphUiPiy34pW8J0R7Og-1
-X-Mimecast-MFC-AGG-ID: xrHbphUiPiy34pW8J0R7Og
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-431673032e6so6369435e9.0
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 05:43:42 -0800 (PST)
+ us-mta-582-EzhBn071OtebnwSGZFwHog-1; Thu, 07 Nov 2024 08:47:36 -0500
+X-MC-Unique: EzhBn071OtebnwSGZFwHog-1
+X-Mimecast-MFC-AGG-ID: EzhBn071OtebnwSGZFwHog
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43152cd2843so6262935e9.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 05:47:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730987022; x=1731591822;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OXxEpkdVgQx0YQCx+x11vO9gxACac1E+91avTNKTTGo=;
- b=eSjEFj9b8wmd4zMccNDnsHbcKihH4QNrmNVjVAgPOuChV2n5aU0IUP9XfBQMjjUK5/
- jjBzIq/64tb7j8Y5+q4/L3SJjKC5lYYK1Du5FLtlp3lVkOGEFO1iDWEJ8T3TcGzOV7DH
- rkmS9DY43jUakbybfXiFgOu2Ez0wvSODCumE7Odx04o0XCPjfq9+0kPmQG2xkDPI52WS
- xm/NIo5+7a3Dy7QGUGiWvnJme4DVSCrqmULOhwuMUcc5JJjMohQy1DoKp4Ajj1kdodef
- Iu9+hFadN7jykVWXfxGKCy75iHBQ+mE/2RuHOhW6EDPBDDktdr9l0XOADbY/Nec7XtnK
- g5EQ==
-X-Gm-Message-State: AOJu0YzlmU5NuF0tsywGjJY++kC50izgYmjbqFUl7aL95Upu+sHnXSgu
- NZz6qYfYgglIOXljOqaRzQhAkHSnjihODRFMIJcjylzfOkBkWhs/vH6f+0kYQPdAL1lQdiIwHvN
- ZP3qA+q81xKo4vDFaudS0pbOdwvjodJWXc8qRVYrQ5MA9zxpw+a8F
-X-Received: by 2002:a05:600c:190e:b0:42c:a905:9384 with SMTP id
- 5b1f17b1804b1-432b308d52cmr11768505e9.20.1730987021907; 
- Thu, 07 Nov 2024 05:43:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEEjjFzRJRM12WNMOY6YRS+zzB1P3vLd/lol9somq6huzjMCInmTabEoODuyQU+E3i16KjWJA==
-X-Received: by 2002:a05:600c:190e:b0:42c:a905:9384 with SMTP id
- 5b1f17b1804b1-432b308d52cmr11768235e9.20.1730987021213; 
- Thu, 07 Nov 2024 05:43:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730987255; x=1731592055;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7bpuD4VXkRzZcC/uI2Sky0yj4/IHhJSciFTJcd/wXic=;
+ b=foMyeP+2tihAQhPA/+PnAwoLaMdcpc1ll+WlMtHeLKB9o7K9lRecqttDCwEvWt0Ku8
+ JzdTj6G749epPACcFH5FIjz4pKE6OowNiPgyRV2eMBhKM3eC0qeYgwiH7s/Z4JFEtfq+
+ XTwLbbmBj2mHc2QjG45ZSY3tU6KS5+pGlC3A2w3E3Gb1nIda0q687lhpWauZNXUwOtTS
+ kRMr7XZ12Sj4mQgDF6IrhdzxeUFIyUltExHus2IWUODI57W2ULI8fBX+aTV77y45rXtu
+ KtgRRf/pBmC/tch3L5qx2JszIzw1uYBT2AI4z8ohvEyIXz9sfwlb4m/+vpWjAmAxlog+
+ o3jw==
+X-Gm-Message-State: AOJu0YwiA2LDidwKRNF20MgcyGeNKCZPwJPjI3GvCaO+mVJU60iTQzoi
+ ctnqU1RCMYEyRYrZYj43fVZupc1Y56W0BR0a9flO52L3xRT671N5i42hlPAmMYhVdJv2+T4OZYd
+ /QReNQF8nZvwO1sKJ+uG4haHWqrWraX6gGsFLCi4Yb2aIZ2570IFt
+X-Received: by 2002:a05:600c:1c8f:b0:431:5e53:2dc4 with SMTP id
+ 5b1f17b1804b1-432b5f93d9bmr256385e9.6.1730987255216; 
+ Thu, 07 Nov 2024 05:47:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3/Btq0ZegC5t9NN+8ihRYRTa48qraBwmfQZUyttvfUUd7bKcd7QBCY2EhF3soQJVrqSvj0g==
+X-Received: by 2002:a05:600c:1c8f:b0:431:5e53:2dc4 with SMTP id
+ 5b1f17b1804b1-432b5f93d9bmr256065e9.6.1730987254486; 
+ Thu, 07 Nov 2024 05:47:34 -0800 (PST)
 Received: from sgarzare-redhat ([5.77.70.124])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6bee9asm64162175e9.19.2024.11.07.05.43.40
+ 5b1f17b1804b1-432aa74abb9sm62382075e9.42.2024.11.07.05.47.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Nov 2024 05:43:40 -0800 (PST)
-Date: Thu, 7 Nov 2024 14:43:33 +0100
+ Thu, 07 Nov 2024 05:47:33 -0800 (PST)
+Date: Thu, 7 Nov 2024 14:47:29 +0100
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Dorinda Bassey <dbassey@redhat.com>
 Cc: qemu-devel@nongnu.org, aesteve@redhat.com, marcandre.lureau@redhat.com
 Subject: Re: [PATCH] virtio-dmabuf: Ensure UUID persistence for hash table
  insertion
-Message-ID: <2lsvukkntdselhhjw726kmnixmp7yue5sojhosyaqre5mwrlyq@7x4vwbniwulv>
+Message-ID: <CAGxU2F5L5GBpk19aPDazYRFCDupa6+4FKk7Vjq9QNsFp0tu_kg@mail.gmail.com>
 References: <20241107125201.1640759-1-dbassey@redhat.com>
+ <2lsvukkntdselhhjw726kmnixmp7yue5sojhosyaqre5mwrlyq@7x4vwbniwulv>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241107125201.1640759-1-dbassey@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2lsvukkntdselhhjw726kmnixmp7yue5sojhosyaqre5mwrlyq@7x4vwbniwulv>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,60 +103,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 07, 2024 at 01:52:01PM +0100, Dorinda Bassey wrote:
->In `virtio_add_resource` function, the UUID used as a key for
->`g_hash_table_insert` was temporary, which could lead to
->invalid lookups when accessed later. This patch ensures that
->the UUID remains valid by duplicating it into a newly allocated
->memory space (persistent_uuid). The value is then inserted into
->the hash table with this persistent UUID key to ensure that the
->key stored in the hash table remains valid as long as the hash
->table entry exists.
+On Thu, Nov 7, 2024 at 2:43 PM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>
+> On Thu, Nov 07, 2024 at 01:52:01PM +0100, Dorinda Bassey wrote:
+> >In `virtio_add_resource` function, the UUID used as a key for
+> >`g_hash_table_insert` was temporary, which could lead to
+> >invalid lookups when accessed later. This patch ensures that
+> >the UUID remains valid by duplicating it into a newly allocated
+> >memory space (persistent_uuid). The value is then inserted into
+> >the hash table with this persistent UUID key to ensure that the
+> >key stored in the hash table remains valid as long as the hash
+> >table entry exists.
+>
+> It's a fix right, so maybe better to add a Fixes tag:
+>
+> Fixes: faefdba847 ("hw/display: introduce virtio-dmabuf")
+>
+> >
+> >Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+> >---
+> > hw/display/virtio-dmabuf.c | 7 ++++++-
+> > 1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+> >index 3dba4577ca7..4353970bc87 100644
+> >--- a/hw/display/virtio-dmabuf.c
+> >+++ b/hw/display/virtio-dmabuf.c
+> >@@ -39,7 +39,12 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
+> >                                                g_free);
+> >     }
+> >     if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
+> >-        g_hash_table_insert(resource_uuids, uuid, value);
+> >+        QemuUUID *persistent_uuid = g_memdup2(uuid, sizeof(QemuUUID));
+>
+> Since now we allocate memory for the key, we should provide the
+> `key_destroy_func` when calling g_hash_table_new_full(), otherwise
+> this new memory will not be de-allocated.
+>
+> >+        if (persistent_uuid == NULL) {
+>
+> IIUC it can be null, only if `uuid` was null since glib memory
+> API usually terminates the application if memory allocation fails,
+> see https://docs.gtk.org/glib/memory.html
+>
+> So maybe we can just do:
+>            g_hash_table_insert(resource_uuids, g_memdup2(uuid, sizeof(QemuUUID)),
+>                                value);
 
-It's a fix right, so maybe better to add a Fixes tag:
+Or even better:
+             g_hash_table_insert(resource_uuids, g_memdup2(uuid, sizeof(*uuid)),
+                                 value);
 
-Fixes: faefdba847 ("hw/display: introduce virtio-dmabuf")
+Thanks,
+Stefano
 
 >
->Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
->---
-> hw/display/virtio-dmabuf.c | 7 ++++++-
-> 1 file changed, 6 insertions(+), 1 deletion(-)
->
->diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
->index 3dba4577ca7..4353970bc87 100644
->--- a/hw/display/virtio-dmabuf.c
->+++ b/hw/display/virtio-dmabuf.c
->@@ -39,7 +39,12 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
->                                                g_free);
->     }
->     if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
->-        g_hash_table_insert(resource_uuids, uuid, value);
->+        QemuUUID *persistent_uuid = g_memdup2(uuid, sizeof(QemuUUID));
-
-Since now we allocate memory for the key, we should provide the
-`key_destroy_func` when calling g_hash_table_new_full(), otherwise
-this new memory will not be de-allocated.
-
->+        if (persistent_uuid == NULL) {
-
-IIUC it can be null, only if `uuid` was null since glib memory
-API usually terminates the application if memory allocation fails,
-see https://docs.gtk.org/glib/memory.html
-
-So maybe we can just do:
-           g_hash_table_insert(resource_uuids, g_memdup2(uuid, sizeof(QemuUUID)),
-                               value);
-
->+            result = false;
->+        } else {
->+            g_hash_table_insert(resource_uuids, persistent_uuid, value);
->+        }
->     } else {
->         result = false;
->     }
->-- 
->2.47.0
->
+> >+            result = false;
+> >+        } else {
+> >+            g_hash_table_insert(resource_uuids, persistent_uuid, value);
+> >+        }
+> >     } else {
+> >         result = false;
+> >     }
+> >--
+> >2.47.0
+> >
 
 
