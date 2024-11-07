@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F5E9C0ED0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 640719C0F72
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t983R-00041y-H5; Thu, 07 Nov 2024 14:20:29 -0500
+	id 1t98av-0001TX-UA; Thu, 07 Nov 2024 14:55:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983P-00041V-C4
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:27 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from
+ <3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com>)
+ id 1t98at-0001Qt-5h
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:03 -0500
+Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t983N-0006yy-NS
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:20:27 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-539e5c15fd3so1265782e87.3
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:20:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com>)
+ id 1t98aq-0003K0-A2
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:01 -0500
+Received: by mail-yb1-xb4a.google.com with SMTP id
+ 3f1490d57ef6-e30ceaa5feeso2484651276.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:54:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731007223; x=1731612023; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/Zz5kL6y/wDLJt2CKn+1xpDRHFWuR0Y8dtAbpAyWGLA=;
- b=LynK4rZmlS6hLSilopSjDplvmbUOLkb5mnAG7DFXJEiW1y6vq+85/DqtjN7A3NBlDR
- 263shM8A+M/Dbn25JM5Vo4WXhY+SI2mHFzzCDTcSKf2V0Y+TvgLU5OSRQJvkeOGZ90Du
- FwVrQBazNzOnf52Zum9nqUrzSpDgEbZfod0PnPo34gumlPXRjHjbVgCTqPA+Bs69UmU/
- W198TWkqgRNj1A/YF7uulLXITiw1W/0eYMYWHZjJ6YOPYtWN/aMATyoFymr6K9WM6Q0O
- IQvFbrtGurMWDmQfo7ThaJhB7gkZ3b7lj0o30gPNLdJYcXlE4ts2H4bno077afqp6x8q
- fj7Q==
+ d=google.com; s=20230601; t=1731009297; x=1731614097; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Jzv6DPkMq+AatJ9bE5NP8pF1sQdsh9cAVnptctptWRA=;
+ b=h1QWR4dmkZbMAaofqSXG9Y/s3OBcZ10KT4BSI62Vtoihrws1tiNiGfmui22DtlBq54
+ eWeISE2e8HQgPh/sB7UzpeaalnCuOtxSQkorabzb6a4hbnBAjNeLR6ejwU6r4Q1rO9L5
+ LpnUyDh6HlbCpGMEWKpdvJ+8cQNh2xE9XvUHEwo/sjwLYELg4/H73kYOtuCJJGUGw9xj
+ ZG//Mo4sw22ravpGTZk1M1WlYTYVAat5VOqNp+agprDsYCPUMhFFZ9PfZJS0M9tp7ES3
+ mAXwPok+WmuyHkl4lAqxRE67Hm8NsZrVkN4179bm389ElCjGGxwe5tRxA4SQZaw66+46
+ 4z/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731007223; x=1731612023;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/Zz5kL6y/wDLJt2CKn+1xpDRHFWuR0Y8dtAbpAyWGLA=;
- b=oBGcYFxeigNb5tatv5Hr5tNVnsf7+6epYDkJMElVcn4UtsdSXkXMcg8ZBFIT6vQZC5
- L/FyW2OS9nV16zahziHxvLGNe98qgQ/DEwYEMDNXJUPnOzGwBbnCKWikelqcEn47Jah3
- BJPkEhFjjz4j1wjOhFE4i4ffb7S+G6hWiE78IdJZth105AsyEDEbqZ9P+Chl232sXZMu
- 7f5i/mbAS9OeXRRKp3hYTkS1qoo2YkSEnlaG4yj4pS/5zTUT8q4dMxcKHsdLoR1lkVEA
- bY8G5Er+JzIXQD5t7eglf1U7WfkI30ddguvo9psH8ZKSi/o5Pmaxmu5dAGF+uLMt4tSO
- OD7Q==
-X-Gm-Message-State: AOJu0YzjjKtljyuIyT3OatzupcCk+CCX9DGqoEf3Ftn1G22NTU2/K4YP
- olBoPx42k4WWp3+w6u9XOQwBDv7i8b3Tct4LfGIJiWFwMkzK1hE/zbi71Q==
-X-Google-Smtp-Source: AGHT+IFJMDyWLJ+ixKxbe6JQCpn3lMXwBkhWcfevEdm46300QrEyVr/8wqb8hU7h4Jp1l+yK5+zL1w==
-X-Received: by 2002:a05:6512:3185:b0:539:e761:c21a with SMTP id
- 2adb3069b0e04-53d862f7a62mr133791e87.48.1731007222231; 
- Thu, 07 Nov 2024 11:20:22 -0800 (PST)
-Received: from [127.0.0.1] ([62.214.191.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9ee0dc49cesm135843566b.126.2024.11.07.11.20.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Nov 2024 11:20:21 -0800 (PST)
-Date: Thu, 07 Nov 2024 19:10:53 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Dmitry Frolov <frolov@swemel.ru>
-CC: pbonzini@redhat.com, sdl.qemu@linuxtesting.org,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH] hw/i386: fix NULL-dereference
-In-Reply-To: <ZyyCkFQX548AgEye@intel.com>
-References: <20241107070415.694662-2-frolov@swemel.ru>
- <ZyyCkFQX548AgEye@intel.com>
-Message-ID: <81E75394-83C1-4882-9F1A-E64BC92CE26A@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1731009297; x=1731614097;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Jzv6DPkMq+AatJ9bE5NP8pF1sQdsh9cAVnptctptWRA=;
+ b=aYjrwCm2ZRhGiCGpCO4gTQVbn2aXiIZIfJhFP7M/XWiif1FrhFW5ddvpKGYZwgAdmw
+ iKSUNKpsUiMZdOCdR/avQdM5hBUmqRHfUaV45kmYYw/wFdmWEgO9vvD0hkcJHfdzXJEB
+ I/IsWO4YCFSG/waN2KnwahOzbCLIpfHjG1b2w/w7OD6ldAFCYMd9YTsO/e5p2A3paXu+
+ SZ8oxTK9x4Rc0ANqsPP9zfypRQjpv6qJwc5a+qPEDYyIrPeVjU4zshxDBpk+Vkhr/89x
+ seqMnIqe/AtLzAY7D6STn86SykH3oj1KXNKu1vkJuJGEs/hspIw1xRKNKplw6B+kRO0N
+ +4PQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUkjLiA6ZTpv9etcH6ntaXYzSTvY3hgI9uW0Yuig8LPh/bAJS+P8X0ILCzt4dahgExia6cojt/hUHkJ@nongnu.org
+X-Gm-Message-State: AOJu0YwiPYzVjTJsrw/Uce3mOagGfSnNk1MhOpUAwPbK3DAOtN+cbC5J
+ eIs/9oO8dgXpmkrC9D0BG33p41VSXJzAtAsUZgjdk8LBFIS9NveXKccx9MQLuO/cNmEUedDiCX1
+ TCQ==
+X-Google-Smtp-Source: AGHT+IGiyA+yueDTMpEZ1QZ1cl7ZuslQI8OOpAYHv7YNk2TU8FvE5FXXjRKoEjfYhIf8p3t3LOTc6G/UDRY=
+X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:dc:567e:c0a8:e14])
+ (user=titusr job=sendgmr) by 2002:a25:2d10:0:b0:e33:4850:b1bd with
+ SMTP id
+ 3f1490d57ef6-e337f843c12mr621276.1.1731009297594; Thu, 07 Nov 2024 11:54:57
+ -0800 (PST)
+Date: Thu,  7 Nov 2024 19:54:47 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
+Message-ID: <20241107195453.2684138-1-titusr@google.com>
+Subject: [PATCH 0/6] Add Quanta GSZ BMC machine and PCA I2C GPIO expanders
+From: Titus Rwantare <titusr@google.com>
+To: peter.maydell@linaro.org, minyard@acm.org, clg@redhat.com
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
+ venture@google.com, wuhaotsh@google.com, milesg@linux.vnet.ibm.com, 
+ Titus Rwantare <titusr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
+ envelope-from=3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com;
+ helo=mail-yb1-xb4a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch series bundles the GPIO sensors previously sent for review:
+https://lore.kernel.org/all/20230206194936.168843-1-titusr@google.com
 
+and the GSZ board commit sent here:
+https://lore.kernel.org/all/20241007171700.1594342-1-titusr@google.com/
 
-Am 7=2E November 2024 09:04:16 UTC schrieb Zhao Liu <zhao1=2Eliu@intel=2Ec=
-om>:
->+Philippe for ISAPC
->
->On Thu, Nov 07, 2024 at 10:04:10AM +0300, Dmitry Frolov wrote:
->> Date: Thu,  7 Nov 2024 10:04:10 +0300
->> From: Dmitry Frolov <frolov@swemel=2Eru>
->> Subject: [PATCH] hw/i386: fix NULL-dereference
->>=20
->> If pcmc->pci_enabled is false, pcms->pcibus is NULL and is passed
->> to pc_nic_init() where it is being dereferenced=2E
->>=20
->> Found making check with enabled sanitizers=2E
->>=20
->> Signed-off-by: Dmitry Frolov <frolov@swemel=2Eru>
->> ---
->>  hw/i386/pc_piix=2Ec | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
->> index 2bf6865d40=2E=2E2a92d2dbb7 100644
->> --- a/hw/i386/pc_piix=2Ec
->> +++ b/hw/i386/pc_piix=2Ec
->> @@ -313,9 +313,9 @@ static void pc_init1(MachineState *machine, const c=
-har *pci_type)
->>      /* init basic PC hardware */
->>      pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
->>                           !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
->> -
->> -    pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->> -
->> +    if (pcmc->pci_enabled) {
->> +        pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->> +    }
->>  #ifdef CONFIG_IDE_ISA
->>      if (!pcmc->pci_enabled) {
->>          DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
->
->In principle, I think the fix is right=2E Currently only ISAPC's
->pci_enabled is false=2E
->
->I think ISAPC shouldn't need nic, so it's safe=2E Is this right, Phil? :)
+The Quanta GSZ a current Google machine of the day. This machine will be used as a platform to enable features such as the PECI bmc interface, and Intel eSPI virtual wire interface in QEMU.
 
-The isapc machine has an ne2k_isa nic by default=2E I'd rather preserve th=
-at behavior, especially as we have Peter's fix which does that=2E
+This patch series also contains a set of i2c GPIO expanders, with support for 4, 8, and 16 GPIO connections.
 
-Best regards,
-Bernhard
+The devices are configured as GPIO inputs by default, but can have pins configured to be inputs with qmp commands.
 
->
->The potential issue lies in pci_init_nic_devices() with "&bus->qbus"=2E
->Although "bus" (which is pcibus here) is NULL, the compiler seems to
->optimize this, making &bus->qbus also NULL=2E Therefore, I did not
->encounter any errors when attempting to start ISAPC=2E
->
->Thanks,
->Zhao
->
->
->
+These sensors and machine are maintained and used in CI daily within Google.
+
+Titus Rwantare (6):
+  bitops.h: add deposit16 function
+  hw/gpio: add PCA953x i2c GPIO expanders
+  hw/gpio: add PCA9536 i2c gpio expander
+  hw/i2c: add canonical path to i2c event traces
+  hw/arm: imply I2C_DEVICES on NPCM7xx
+  hw/arm: add Quanta GSZ bmc machine
+
+ hw/arm/Kconfig                  |   1 +
+ hw/arm/npcm7xx_boards.c         | 160 +++++++++++++
+ hw/gpio/Kconfig                 |   5 +
+ hw/gpio/meson.build             |   1 +
+ hw/gpio/pca_i2c_gpio.c          | 409 ++++++++++++++++++++++++++++++++
+ hw/gpio/trace-events            |   5 +
+ hw/i2c/core.c                   |   8 +-
+ hw/i2c/trace-events             |   2 +-
+ include/hw/gpio/pca_i2c_gpio.h  |  70 ++++++
+ include/qemu/bitops.h           |  26 ++
+ tests/qtest/meson.build         |   1 +
+ tests/qtest/pca_i2c_gpio-test.c | 188 +++++++++++++++
+ 12 files changed, 872 insertions(+), 4 deletions(-)
+ create mode 100644 hw/gpio/pca_i2c_gpio.c
+ create mode 100644 include/hw/gpio/pca_i2c_gpio.h
+ create mode 100644 tests/qtest/pca_i2c_gpio-test.c
+
+-- 
+2.47.0.277.g8800431eea-goog
+
 
