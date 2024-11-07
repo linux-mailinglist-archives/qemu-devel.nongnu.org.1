@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B71B9C0148
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 10:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6329C011A
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 10:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8ywI-0002ER-AK; Thu, 07 Nov 2024 04:36:30 -0500
+	id 1t8ymh-0007v8-5y; Thu, 07 Nov 2024 04:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t8ywG-0002EC-7m
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:36:28 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1t8ywE-0001X2-JV
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:36:28 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a9a16b310f5so111890866b.0
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 01:36:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730972185; x=1731576985; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aZvG6aBkbWZ+bnVNroE61Td4iPH6vg6y6QxprlX6zVc=;
- b=doouQ9Szm75kO7jn2lzu/njy6VsDYy231AivLYpGWn0pBiD6wguQd2mcXNR4XgxF+G
- MSRKxl3ZEuc9Htuuqp7oc4YDAYrTxVpJz1fwdGd7jmRr2rIcJqN/tHzAWLDGqwjobgq8
- O+zEn/fxSH7o+xVmebhku0fNEZkWS2bWYApZTBIYrMuACOA35oL/Ju9KQrnQ8w/zoCkE
- rjfoLMAu4AALBIuzVbHsuolU/54tDzOBKH96E+sABN3NsGcCLxD4FUOj9CwSGLcT+L+v
- NX+xum7fVdsb6ES31TUdhHaqE7IyJjd3BPW+tVw7plgRe25ao04ckFiOS08OSkvaAVdv
- 11Mg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8yme-0007um-BA
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:26:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t8ymc-00008s-FG
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 04:26:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730971588;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gloDiZsev+qeLiAcYf877fjEGq6AiDQGQT3TP28xZ1c=;
+ b=NoMkqTs56BdelTNxfuhSThM++6Z7d9ws7ePw+bLjXnNLGP3iRpAGqOy7E6dNpHJW5pYTHV
+ f8YJZCCbjaHRf67spawU5nOCpSyIdBjYsr/QsGbjYFunMTZOA5fxPb3Wsd5XFiS3OcPB7t
+ wuSHyBPacAiAsI/jgwb/OtJhpPCxbNU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-t3RXetkYNmWUtvS9sCRlAA-1; Thu, 07 Nov 2024 04:26:26 -0500
+X-MC-Unique: t3RXetkYNmWUtvS9sCRlAA-1
+X-Mimecast-MFC-AGG-ID: t3RXetkYNmWUtvS9sCRlAA
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43159603c92so5054085e9.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 01:26:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730972185; x=1731576985;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aZvG6aBkbWZ+bnVNroE61Td4iPH6vg6y6QxprlX6zVc=;
- b=YknXOco4QHOyvbZmX1AKktK2mfHdjLBRj3j2we6DJ67ckK12p86HesvZzgT02r9kLB
- ha+HexhI2dOQNpNMPx3JaF9PdUWHHX4OuFMavxgD0jkGkUxVmhMbQiSNixs1+Xxb13r+
- rX2iZxdPFiSbP7bjUJs8gBArUGk6Dxpik9N5sIHMs6meA/bvHTlELHkmTe98FIMJjhpQ
- S2cjEl6i4fVyVRUbRc3/26xMjAJWQcjOAvbMITb/4G0vAGGGpUjQg98HCcmXn/O9ygUJ
- sXZi9siqK+0c5rZXG5Np/+5fgsNcFaenZKJamRSwePiEK3uQdbOhP6/EvGblPAH0umnj
- Vwtg==
-X-Gm-Message-State: AOJu0YxTpoaT+BaXA7lGsh0IDEoxye7QjBWFQ15Stss87cLtfu/4iDow
- B2heOOQHYbWoaMit1GLf/+xGVUUvhWpkWGXdjfTQXknHa6M6TQx2BHYY4w==
-X-Google-Smtp-Source: AGHT+IHg40u48Ji4R1SfrhQGkG1ebsdKyq7wG86C+iBMI257dg04GkxwJJLzuihZ+2/+rDKbRjvdRw==
-X-Received: by 2002:a17:907:1c11:b0:a9a:c57f:9666 with SMTP id
- a640c23a62f3a-a9ee7479893mr29225566b.2.1730972184375; 
- Thu, 07 Nov 2024 01:36:24 -0800 (PST)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9ee0dedc3dsm66756066b.133.2024.11.07.01.36.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Nov 2024 01:36:23 -0800 (PST)
-Date: Thu, 07 Nov 2024 09:19:05 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Dmitry Frolov <frolov@swemel.ru>,
- pbonzini@redhat.com, Peter Maydell <peter.maydell@linaro.org>
-CC: sdl.qemu@linuxtesting.org
-Subject: Re: [PATCH] hw/i386: fix NULL-dereference
-In-Reply-To: <20241107070415.694662-2-frolov@swemel.ru>
-References: <20241107070415.694662-2-frolov@swemel.ru>
-Message-ID: <384458DB-F470-44E9-8C16-7D35DDDE4CBF@gmail.com>
+ d=1e100.net; s=20230601; t=1730971585; x=1731576385;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gloDiZsev+qeLiAcYf877fjEGq6AiDQGQT3TP28xZ1c=;
+ b=i7olIlCo5oUyw/CivpCjvYkKcKT1MJfhhyjcaX4/iNMv9qQWI9hIKcFFm1Dsu5oBy3
+ hV3PhujYAS1FiqTaxEDXplMWmE/f1HW1ud4H6+rTXqneb08zz8vCJ0tG24DT6cMbSzMc
+ pvyBHyGf/MwdAHnvthoibLDDqRY4LFRwLvCRjy2+7UU2ZTcqx8g7Zt5J8e53p7s4Hx9v
+ FRp/wkxnz+D0LHEvAfct7rAdAhwiWzdufUb9KTB+7Gai8db+OqvulDD2U46Qo1lT4T/S
+ c7EtffbjUobP7jrUJ5FCudNZaf2SFxzJZvSiPdM7jXhsMIboGnTtQX2jKSYx8rMJMkBP
+ o5TA==
+X-Gm-Message-State: AOJu0YzSUrpAqM+c1jBpF9LI9Lo1bTDZfw1DCvJvyGsZXlG8nm88ftiV
+ GW3/JLNxx51FQcu3xzkfRoeI4tQfo54L4hALS8yyMk3AhG3MwShQisKQaKyy7S9hUEORtkSWt0a
+ 66MK2sLX/bVLZI1DtJZm+AV7TGnHPmdETUrsVlLm0+A5ZejjrzNYw+FNa8Op3JDH6datHaYUoe5
+ vQPBnRZe5UUX08mjC/jV3uX9QIIBphC2bKgtPzEk0=
+X-Received: by 2002:a05:600c:5493:b0:431:5533:8f0c with SMTP id
+ 5b1f17b1804b1-43285649fe6mr182706375e9.29.1730971584879; 
+ Thu, 07 Nov 2024 01:26:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJ6tk8YbV61GCHYtUaBVReRcDW0Vj9Q7U+PENXRHKjUL9exVYz/9oUuqqOzvR5riOuXT7Dtw==
+X-Received: by 2002:a05:600c:5493:b0:431:5533:8f0c with SMTP id
+ 5b1f17b1804b1-43285649fe6mr182706175e9.29.1730971584365; 
+ Thu, 07 Nov 2024 01:26:24 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.84.243])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b04753d5sm17430075e9.0.2024.11.07.01.26.23
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Nov 2024 01:26:23 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] rust: qemu-api-macros: always process subprojects before
+ dependencies
+Date: Thu,  7 Nov 2024 10:26:22 +0100
+Message-ID: <20241107092622.616487-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,48 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Avoid looking for Rust dependencies via cmake.
 
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/qemu-api-macros/meson.build | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Am 7=2E November 2024 07:04:10 UTC schrieb Dmitry Frolov <frolov@swemel=2E=
-ru>:
->If pcmc->pci_enabled is false, pcms->pcibus is NULL and is passed
->to pc_nic_init() where it is being dereferenced=2E
->
->Found making check with enabled sanitizers=2E
->
->Signed-off-by: Dmitry Frolov <frolov@swemel=2Eru>
->---
-> hw/i386/pc_piix=2Ec | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
->
->diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
->index 2bf6865d40=2E=2E2a92d2dbb7 100644
->--- a/hw/i386/pc_piix=2Ec
->+++ b/hw/i386/pc_piix=2Ec
->@@ -313,9 +313,9 @@ static void pc_init1(MachineState *machine, const cha=
-r *pci_type)
->     /* init basic PC hardware */
->     pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
->                          !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
->-
->-    pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->-
->+    if (pcmc->pci_enabled) {
->+        pc_nic_init(pcmc, isa_bus, pcms->pcibus);
->+    }
+diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
+index 24325dea5c2..6f94a4bb3c2 100644
+--- a/rust/qemu-api-macros/meson.build
++++ b/rust/qemu-api-macros/meson.build
+@@ -1,3 +1,7 @@
++subproject('proc-macro2-1-rs', required: true)
++subproject('quote-1-rs', required: true)
++subproject('syn-2-rs', required: true)
++
+ quote_dep = dependency('quote-1-rs', native: true)
+ syn_dep = dependency('syn-2-rs', native: true)
+ proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
+-- 
+2.47.0
 
-Since pc_nic_init() is passed both an ISA and a PCI bus I think the NULL d=
-ereference should be fixed there=2E Moreover, if pc_nic_init() is only invo=
-ked when there is a PCI bus, the "isapc" machine won't have a nic at all=2E
-
-How is this patch related to https://patchew=2Eorg/QEMU/20241105171813=2E3=
-031969-1-peter=2Emaydell@linaro=2Eorg ? That is, do we need both patches to=
- really fix the issue?
-
-Best regards,
-Bernhard
-
-> #ifdef CONFIG_IDE_ISA
->     if (!pcmc->pci_enabled) {
->         DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
 
