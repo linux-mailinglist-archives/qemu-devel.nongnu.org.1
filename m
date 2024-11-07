@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A8E9BFD3A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 496969BFD3C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8tr4-0006D9-JZ; Wed, 06 Nov 2024 23:10:46 -0500
+	id 1t8tr7-0006E6-7H; Wed, 06 Nov 2024 23:10:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqx-0006CK-6R
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:39 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1t8tr0-0006DA-ON
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:43 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqu-0004y9-Qg
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:38 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20e576dbc42so6178765ad.0
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:36 -0800 (PST)
+ id 1t8tqx-0004yc-No
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:42 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-20c7ee8fe6bso5530305ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730952635; x=1731557435; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730952638; x=1731557438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t3xiDZGW84+HFKspjqejAIoAcK1hZiO7AmVUxpMLLxQ=;
- b=h9wWqwozIT8nfwS2rqBJOjgf49mdH4bD77w7ZC3ZxA08w2JqeJNtLD0irTlZtMwHnf
- YwzTGEBiAqgrn5Ns4TtvQBh+txC45GjSkOwf3tPsTxlRV6PQvAisNDjs0oApG/NX7KQb
- mAxlnynvrPLHjMl+DS5Va1GbMA39ywhCrwoZbFpdrOsUCOYMQiZ0PgW/eBnYwimeLnlw
- fLDGm7Jf13yx0VMtMAEjX2J3zftquwEj+93qasrEyjGznDtONSOzLjcXMymPCQ5wojWl
- RD8hL2Mr8ULZ0PALHDpxUNiVWyf70MYhSXVNdUHI+kFXONXHBK7foWjaowV0P2/MZOYl
- ZiWg==
+ bh=6OVUWWYTa0NKHAvdg4I8AkMOGiy68upct5dHn8LNb0Q=;
+ b=Lpq+dFqJMPWySeR1ubhymx/Pdrf06BmsI2jUbTqYjswVO2aeSIJBjL9iqYv0WnHJf3
+ 64/oX2oBLiBRLhkTWuWkNsn0FgAwDNmMjJTDSgEw4LCb7HBcwsnaev3Yg7mpBlz3UzcK
+ +mmwGHvTZeWMjqjuVuEh60VZW66mRTyCEyRgnmGCD1rREmb7fZ7sN21m0Dm+0zbNVtIj
+ O99RvTA1BrcFAKOlqsQ+Qo/hjWXl5q8xk1YmIvMTpOXT3hfhg2yz6uO6yUAl5dR4VH8J
+ CpoGWzBdwcKRBRrSFPwEtVcAyoev+M88cw/VnVoJQCutSKZ1vwxuP+alNYF12Y0fXWAW
+ NKyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730952635; x=1731557435;
+ d=1e100.net; s=20230601; t=1730952638; x=1731557438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t3xiDZGW84+HFKspjqejAIoAcK1hZiO7AmVUxpMLLxQ=;
- b=oW9Hxc5uQUD6syqy18H30Zg8a35X0vkfGZWFT5uO/PDOLf+yP2O5G6uMgbXkl36Puh
- D3Fa4zGhk0+PaqVSY2obA0qYEIyShBNwgl8s6vjuPUyTIT8+wEdGqJoMiBJapY2EciZC
- 05qFR9tcBGvPCxekwhGf1ZDW4P9cOwM3EuKnkd8ulQhMAuEhwkBWnwcxodCU38fYPlpG
- cFQ5UpKOqYJn95up4yZWKWrVdoSKmWxHozCb96xAXkxR4NgFaT65B+jteaEBQwLYNszk
- lCpIzwDEyMmMTqPc1ifO3txWQXNrbpcruQgBHrfBUjL7HtYs2GAP6yCWJBlzugBj9INL
- TJ8A==
-X-Gm-Message-State: AOJu0YzA0bSC1X5E3WWMjC0AdLM6HbLdONjURbDX6IsTnsEhnRIlFvsj
- VpL9MFaq4NA1HW8JJ0X9rVfspaeDNgOKP9mBgF8SLiqd44j/ATDw179gfQ==
-X-Google-Smtp-Source: AGHT+IHNtvT9BL398Vx9Mk4YZwkeLLxbH4aNbndbbTcyzuwjHRO70WUCcZcI8QWdJxzoBRWMyZmXGw==
-X-Received: by 2002:a17:903:2308:b0:20c:d469:ba95 with SMTP id
- d9443c01a7336-211785e3373mr6790915ad.16.1730952635067; 
- Wed, 06 Nov 2024 20:10:35 -0800 (PST)
+ bh=6OVUWWYTa0NKHAvdg4I8AkMOGiy68upct5dHn8LNb0Q=;
+ b=UIN8ngnmHmPAjMq+B8XnvZo/LuP75j77OJwUXNz1hDrrrkQ8YtVW12snJh+YpFRgCn
+ R5Y/eaewudhnx2PiFDm7UiPS9yivOfZ33UMXke/wRS2adGRKgvMkrpZlv+sa349aEQzm
+ e8krFZkVLKLSDlObGb48khIekcfxxiK5bpNo7bXQGwlAtHO3XhoEWiX1x+0unr5sFwip
+ ru2+93Y528GGdLmf9tceTtwWO1CNjKSaJKmq9puGJ5h7qT4/9kcrwYMVmt9nkuh0ZEmr
+ ccIygL7MauP6rhdAWtfiqossEVFAPoRR+fUFXCM/AXLGI7q2AqKRYc6iPXR742moVcw8
+ De6Q==
+X-Gm-Message-State: AOJu0YzGMfqbMvQAdibpFNAQUapMO+CrDFn4FiaF+E/Fv/J50vl6d+dB
+ Q/Ad6L95SLMLG2ORZK1Hrqc+K5bWdnyHZjO/SyVaZGEIzwrkj27eqA/31A==
+X-Google-Smtp-Source: AGHT+IESrTLBjfjlsmwT5Mwqxsai/EgRym8tMyNUxLgASNvGqtewLyKbdTSokNldcGxMTJyoyuwXrQ==
+X-Received: by 2002:a17:902:d2c1:b0:211:6b37:7e66 with SMTP id
+ d9443c01a7336-2116b37879amr70392065ad.17.1730952638110; 
+ Wed, 06 Nov 2024 20:10:38 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.32
+ d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 20:10:34 -0800 (PST)
+ Wed, 06 Nov 2024 20:10:37 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 03/12] hw/riscv/riscv-iommu: fix
- riscv_iommu_validate_process_ctx() check
-Date: Thu,  7 Nov 2024 14:10:07 +1000
-Message-ID: <20241107041016.40800-4-alistair.francis@wdc.com>
+Subject: [PULL 04/12] target/riscv: Set vdata.vm field for vector load/store
+ whole register instructions
+Date: Thu,  7 Nov 2024 14:10:08 +1000
+Message-ID: <20241107041016.40800-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241107041016.40800-1-alistair.francis@wdc.com>
 References: <20241107041016.40800-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,38 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Max Chou <max.chou@sifive.com>
 
-'mode' will never be RISCV_IOMMU_CAP_SV32. We are erroring out in the
-'switch' right before it if 'mode' isn't 0, 8, 9 or 10.
+The vm field of the vector load/store whole register instruction's
+encoding is 1.
+The helper function of the vector load/store whole register instructions
+may need the vdata.vm field to do some optimizations.
 
-'mode' should be check with RISCV_IOMMU_DC_FSC_IOSATP_MODE_SV32.
-
-Reported by Coverity via a "DEADCODE" ticket.
-
-Resolves: Coverity CID 1564781
-Fixes: 0c54acb8243 ("hw/riscv: add RISC-V IOMMU base emulation")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241104123839.533442-3-dbarboza@ventanamicro.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20240918171412.150107-2-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/riscv-iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index 164a7160fd..bbc95425b3 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -820,7 +820,7 @@ static bool riscv_iommu_validate_process_ctx(RISCVIOMMUState *s,
-     }
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index f8928c44a8..b9883a5d32 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -770,6 +770,7 @@ static bool ld_us_mask_op(DisasContext *s, arg_vlm_v *a, uint8_t eew)
+     /* Mask destination register are always tail-agnostic */
+     data = FIELD_DP32(data, VDATA, VTA, s->cfg_vta_all_1s);
+     data = FIELD_DP32(data, VDATA, VMA, s->vma);
++    data = FIELD_DP32(data, VDATA, VM, 1);
+     return ldst_us_trans(a->rd, a->rs1, data, fn, s, false);
+ }
  
-     if (ctx->tc & RISCV_IOMMU_DC_TC_SXL) {
--        if (mode == RISCV_IOMMU_CAP_SV32 &&
-+        if (mode == RISCV_IOMMU_DC_FSC_IOSATP_MODE_SV32 &&
-             !(s->cap & RISCV_IOMMU_CAP_SV32)) {
-                 return false;
-         }
+@@ -787,6 +788,7 @@ static bool st_us_mask_op(DisasContext *s, arg_vsm_v *a, uint8_t eew)
+     /* EMUL = 1, NFIELDS = 1 */
+     data = FIELD_DP32(data, VDATA, LMUL, 0);
+     data = FIELD_DP32(data, VDATA, NF, 1);
++    data = FIELD_DP32(data, VDATA, VM, 1);
+     return ldst_us_trans(a->rd, a->rs1, data, fn, s, true);
+ }
+ 
+@@ -1106,6 +1108,7 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+     TCGv_i32 desc;
+ 
+     uint32_t data = FIELD_DP32(0, VDATA, NF, nf);
++    data = FIELD_DP32(data, VDATA, VM, 1);
+     dest = tcg_temp_new_ptr();
+     desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,
+                                       s->cfg_ptr->vlenb, data));
 -- 
 2.47.0
 
