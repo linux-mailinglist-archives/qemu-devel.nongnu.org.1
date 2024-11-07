@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F27B9C05ED
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 13:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D899C05F2
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 13:38:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t91lA-0006Kf-CB; Thu, 07 Nov 2024 07:37:12 -0500
+	id 1t91m6-0007ly-SJ; Thu, 07 Nov 2024 07:38:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t91l7-0006KN-Ua
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 07:37:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t91ld-0007WF-Kp
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 07:37:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t91l6-0001lM-Fu
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 07:37:09 -0500
+ id 1t91lc-0001ng-2J
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 07:37:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730983027;
+ s=mimecast20190719; t=1730983058;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gSRAqJqgOkr3ORV6nsc9XHT238l0/IqIzVAGO/Jx/4M=;
- b=faOJ/R7eYRR7OehydKEC7cg2LSGYB9w3/MQ+BBa1BGlAWnbsVsrgjCzFtmoSg9lG1OSY9q
- IViHPPc37qvhfJRzpziyTI3+RBTH3kZ0NmxibOfpMspMEq1pTbpdYuV8nR1nA4JIymzeBw
- SayoCSAnCDQcqWf5EalrZzXghl7o83g=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=RSUHPbcKUVNJvL6t6Q5hRuzA9DbD8Fvq1Po2mmk/RrA=;
+ b=d7jarlaN0ynSDAVH1QaONtjL9DcI+ku7biZklFTa6C3DNapkZcwso5POvXsKVdhZM1Udqe
+ 2F4maj2IzzZ6CzZtFM6IyzZY07cl72JpG69rzy1VkAUQyOPcQoEsZwV57hMW5w0o7CWy+t
+ Vo8GoI253funq7SeyAdVlcCDu1fpyOQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-yGgaeSMrMie7_59Oqv8law-1; Thu,
- 07 Nov 2024 07:37:04 -0500
-X-MC-Unique: yGgaeSMrMie7_59Oqv8law-1
-X-Mimecast-MFC-AGG-ID: yGgaeSMrMie7_59Oqv8law
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-wRO2nGO7OhOLWt0oQI0UTQ-1; Thu,
+ 07 Nov 2024 07:37:37 -0500
+X-MC-Unique: wRO2nGO7OhOLWt0oQI0UTQ-1
+X-Mimecast-MFC-AGG-ID: wRO2nGO7OhOLWt0oQI0UTQ
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2DB7F19541AE; Thu,  7 Nov 2024 12:37:03 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CF2DF1955BC9; Thu,  7 Nov 2024 12:37:35 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.55])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EDBCB1956054; Thu,  7 Nov 2024 12:36:59 +0000 (UTC)
-Date: Thu, 7 Nov 2024 12:36:56 +0000
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D50BE3003B78; Thu,  7 Nov 2024 12:37:33 +0000 (UTC)
+Date: Thu, 7 Nov 2024 12:37:30 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: "Michael S . Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
  linuxarm@huawei.com
-Subject: Re: [PATCH 2/5] qapi/qom: Change Since entry for
- AcpiGenericPortProperties to 9.2
-Message-ID: <Zyy0aKzmLyt2Ymvc@redhat.com>
+Subject: Re: [PATCH 1/5] hw/acpi: Fix size of HID in
+ build_append_srat_acpi_device_handle()
+Message-ID: <Zyy0iqyMMPhjUwgh@redhat.com>
 References: <20241107123446.902801-1-Jonathan.Cameron@huawei.com>
- <20241107123446.902801-3-Jonathan.Cameron@huawei.com>
+ <20241107123446.902801-2-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241107123446.902801-3-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20241107123446.902801-2-Jonathan.Cameron@huawei.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,15 +89,16 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 07, 2024 at 12:34:43PM +0000, Jonathan Cameron wrote:
-> This feature was only applied during the 9.2 cycle, so reflect
-> that rather than 9.1.
+On Thu, Nov 07, 2024 at 12:34:42PM +0000, Jonathan Cameron wrote:
+> The size should always be 8 so hard code that. By coincidience the
+> incorrect use of sizeof(char *) is 8 on 64 bit hosts, but was caught
+> by CI testing with i686 as the host.
 > 
-> Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-> Closes: https://lore.kernel.org/qemu-devel/ZyngEiwmYeZ-DvCy@redhat.com/
+> Reported-by: Michael S. Tsirkin <mst@redhat.com>
+> Closes: https://lore.kernel.org/qemu-devel/20241104110025-mutt-send-email-mst@kernel.org/
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  qapi/qom.json | 2 +-
+>  hw/acpi/aml-build.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
