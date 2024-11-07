@@ -2,77 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A476F9C07A4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 14:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E4D9C07E6
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 14:45:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t92g7-0007Ch-6Q; Thu, 07 Nov 2024 08:36:03 -0500
+	id 1t92oZ-00014x-7W; Thu, 07 Nov 2024 08:44:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t92g2-0007CL-OM
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:35:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t92oE-0000w5-N9
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:44:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1t92g0-0005Am-Uh
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:35:58 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t92oD-0006Wx-Dp
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 08:44:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1730986556;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1730987064;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6/aR6y2tjJL6IXlIhnTJKHhulJoqcqRwdo+yRMUw40I=;
- b=iIFsxPQQmIkqk2GV2PpjR/RHk6g3Lwyf2iB/p1toECKORJbK4Zylq4qbGKsHpX9oxz/G3U
- fAcDdJ+UBlOnH9rLIyHLs/+jKUMZQZNeLsplm0WVNhW8LZ6iOoTN2vdGXs/XavbzYD3ttZ
- 4BUZfxrvQWgyv8aZnVgSy85fdJGRCh4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-155-WRFoXci-MvKwtuQG-dhHOA-1; Thu,
- 07 Nov 2024 08:35:53 -0500
-X-MC-Unique: WRFoXci-MvKwtuQG-dhHOA-1
-X-Mimecast-MFC-AGG-ID: WRFoXci-MvKwtuQG-dhHOA
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5966619776D2
- for <qemu-devel@nongnu.org>; Thu,  7 Nov 2024 13:35:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 53D4C196BC17; Thu,  7 Nov 2024 13:35:49 +0000 (UTC)
-Date: Thu, 7 Nov 2024 13:35:45 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>,
- Victor Toso <victortoso@redhat.com>, qemu-devel@nongnu.org,
- Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: Re: [RFC PATCH v2 0/8] qapi: add generator for Golang interface
-Message-ID: <ZyzCMVYHM2F72oMa@redhat.com>
-References: <20220617121932.249381-1-victortoso@redhat.com>
- <ZyyZugciNAYmVjeP@redhat.com> <87r07njk4e.fsf@pond.sub.org>
- <Zyy7XGTRuCS0yGgI@redhat.com>
+ bh=91Mv1TKI/oOdkPWqganNptuMP3HOdJhdTaI2uqLDwi4=;
+ b=VjHZBDYPKR4R6N0c3xA2mdCd98sVBQkF4C/7OYgm/O0bhpvJbWnMHAEADdhBt2DE9sdocg
+ wpcMJp0YMt7zWlmKydQKulH3lIXmhNYrFL3QNM7WxD2/aEMmCqR/F8MRQFsPBYY7QcyFec
+ 4ZqehaDlvAF5E07TzYfBUFsvp5XzpW8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-568-Z2cfpldxPD2KUMxjozdmpA-1; Thu, 07 Nov 2024 08:44:22 -0500
+X-MC-Unique: Z2cfpldxPD2KUMxjozdmpA-1
+X-Mimecast-MFC-AGG-ID: Z2cfpldxPD2KUMxjozdmpA
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a9a1be34c68so78401966b.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 05:44:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730987061; x=1731591861;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=91Mv1TKI/oOdkPWqganNptuMP3HOdJhdTaI2uqLDwi4=;
+ b=erJ97bFAu6XIJHwVEVUXMO/d3N/+kc2sWP0uXBFuy7N9my/4FqOK59LJn2Cjw6SqIp
+ REKMAAiCR+otJ26Vpb+qXt5ZUpu/WR3+483H8vpvCwgqMOvXZ/v5iC7V5wa/33dgEXUM
+ NyU/sA1NCnX6jBw7Z+/lYLLX6Sg8NnrYyg+VDbwfplD9csjdSwHPhX1t26CiN4WLk6JE
+ +1LZjfZAw83pWdec6KqcQqzOYsWx1/99nLbwH4xFeE3sQYcuRks5AgUKUtOBTUX4xznL
+ bTZlkg1j3FWZ9FtIaA8lQFDwyXp03N1A3tVAJXT16jqrPdohAb9pO/RSHVo1tsD7q8sP
+ 0Z2w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVuv+aSBrxn9RLcOrNWmMtuJMsiuPtNKE5P8DPX4QqhD+YUa9DYHSrgWj5ZHjVjaAHUlutw7uuZrBJy@nongnu.org
+X-Gm-Message-State: AOJu0YxJUMTv/DZ9QugAAUWzGK6dOJOzmMv9tY4Nzhkte6fjqrp//6h6
+ qubBqixIeSogOCZ8y5dEjDp+2ootuLqvs6bPyh9Ii4XWTdFh6NuDahgktKT6/V9z5qj+1uovhDv
+ 8+/NBhteuiKyAYABDrIOEq0H9oZH8afm7iRmjzm4KTpRVQ0ESSYtv
+X-Received: by 2002:a05:6512:220c:b0:539:f5b3:f87c with SMTP id
+ 2adb3069b0e04-53d8596f4a9mr4852e87.46.1730986636204; 
+ Thu, 07 Nov 2024 05:37:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHj/8CDbtU3MhsV0pFE6UC+1dS5e3L84Sig/BPrAuhGxvfT9eQzZbP4QWyS+pPBn2rPkVgpqA==
+X-Received: by 2002:a05:6512:220c:b0:539:f5b3:f87c with SMTP id
+ 2adb3069b0e04-53d8596f4a9mr4834e87.46.1730986635799; 
+ Thu, 07 Nov 2024 05:37:15 -0800 (PST)
+Received: from redhat.com ([2a02:14f:179:39a6:9751:f8aa:307a:2952])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa70a2ccsm64283225e9.31.2024.11.07.05.37.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Nov 2024 05:37:15 -0800 (PST)
+Date: Thu, 7 Nov 2024 08:37:06 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
+Cc: Dorinda Bassey <dbassey@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, mhrica@redhat.com
+Subject: Re: [PATCH v2] virtio-gpu: Add definition for resource_uuid feature
+Message-ID: <20241107083549-mutt-send-email-mst@kernel.org>
+References: <20241007070013.3350752-1-dbassey@redhat.com>
+ <CAJ+F1C+xoof_ZWkyi1Qrx4=9NsAq_v8tLrV0PHpwWapprkA2ng@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zyy7XGTRuCS0yGgI@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <CAJ+F1C+xoof_ZWkyi1Qrx4=9NsAq_v8tLrV0PHpwWapprkA2ng@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,91 +101,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 07, 2024 at 01:06:36PM +0000, Daniel P. Berrangé wrote:
-> On Thu, Nov 07, 2024 at 01:36:49PM +0100, Markus Armbruster wrote:
-> > Daniel P. Berrangé <berrange@redhat.com> writes:
-> > 
-> > > Bringing this thread back from the dead, since I had an in-person
-> > > discussion on a key question below at KVM Forum this year and want
-> > > to record it here.
-> > 
-> > [...]
-> > 
-> > > To recap the situation
-> > >
-> > >  * The license of the code generator itself does not determine the
-> > >    license of the output generated code
-> > 
-> > For instance, GNU Bison is GPLv3+, but the parts the generator emits
-> > (the parser skeleton) come with a special exception.
-> > 
-> > Such exceptions need to be granted by the copyright holder.  As long as
-> > the code generating Go is not a derived work, the copyright holder
-> > situation should be simple enough to make this practical.
-> > 
-> > >  * The license of the inputs to the code generator, may or may
-> > >    not, determine the license of the output generated code depending
-> > >    on use context
-> > >
-> > > The primary input to the code generator is the QAPI schema, which is part
-> > > of QEMU and thus licensed GPL-2.0-or-later.
-> > >
-> > > The QAPI schema includes both the API definitions AND the API documentation
-> > > text.
-> > >
-> > > We can make the case that as the QEMU public interface, consuming the
-> > > API definitions in the QAPI schema for the purpose of generating code
-> > > is "fair use", and thus the output generated code does NOT need to
-> > > match the GPL-2.0-or-later license of the QAPI schema. We can choose
-> > > the code license, and a maximally permissive license looks appropriate.
-> > 
-> > Having this argument confirmed by an actual expert seems advisable.
+On Thu, Nov 07, 2024 at 05:09:28PM +0400, Marc-Andr� Lureau wrote:
+> Hi Michael, Alex,
 > 
-> IANAL, but .... :-)
+> Any of you could take this in the next virtio-related PR?
+> 
+> thanks
 
-> My proposition is that, in most cases, comments are not used by
-> the "compilation", or "code generation" phase. They are seen by
-> the "parsing" phase only and thus dont contribute to the contents
-> of the output binary code.
-
-
-> None the less, we have raised this position/viewpoint with experts
-> for a second opinion.
-
-Another thought or two...
-
-From a QEMU community POV we have no license problem no matter what,
-so from a legal POV this risk free for us.
-
-The licensing question is purely one for application developers consuming
-our work who want to avoid GPL for some reason.
-
-Lets say my interpretation is wrong, or even that it is right, but the
-app developers disagree, or are none the less unhappy in some way. What
-impact would this have for QEMU ?
-
-Code generation is practically free once the generator is written, so we
-just run it twice, storing the output in git on different branches with
-parallel tags, once with comments and once without. eg
-
-The "main" branch (and associated versioned vX.Y.Z tags) in qemu-go-qapi.git
-provide the full QAPI go source + copied QAPI comments under MIT-0 AND
-GPL-2.0-or-later
-
-The "minimal" branch (and associated vX.Y.Z-minimal tags) in qemu-go-qapi.git
-provide only the  QAPI go source, without any comments under MIT-0 only.
-
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Sorry, we are past soft freeze. So not unless this is a bugfix.
 
 
