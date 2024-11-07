@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9658C9C0F74
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F159C0F77
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:56:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t98b2-0001ao-Ld; Thu, 07 Nov 2024 14:55:12 -0500
+	id 1t98b4-0001cH-DN; Thu, 07 Nov 2024 14:55:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3FhstZwYKCkEwlwxvujrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--titusr.bounces.google.com>)
- id 1t98ax-0001VI-8j
+ <3FxstZwYKCkIxmxywvksskpi.gsquiqy-hiziprsrkry.svk@flex--titusr.bounces.google.com>)
+ id 1t98ax-0001VF-2a
  for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:07 -0500
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3FhstZwYKCkEwlwxvujrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--titusr.bounces.google.com>)
- id 1t98at-0003L7-RH
+ <3FxstZwYKCkIxmxywvksskpi.gsquiqy-hiziprsrkry.svk@flex--titusr.bounces.google.com>)
+ id 1t98au-0003Ld-KH
  for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:06 -0500
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-e02fff66a83so2308645276.0
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:55:02 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-6ea7cfb6e0fso27083097b3.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1731009302; x=1731614102; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=Dhx3Bv91IwsNiKrqW6EopdF6ygF7pLBG+NH0I9FnnMU=;
- b=HJOq6v5rhqbMrcftI+/LxDpc/WkswW27a69yG2M7nZz6OT0iG2Fcghlv3gPFVjQr3z
- 1HNV4wvzOms03U5fvZ/i6GQlAL/Pn7sUjpEGvhtXfQxErjHXZD7s4/IxUE3VdJNG+8+J
- gttdY/1hSxQlIr4objVtIODodZSwZn6NPCgUoncVn6KcfZiKtNazC1MC/47wjDUWwhW1
- eJCoUwVuPv4ehiBASv2PC3i4AK1hhMCYlKbsc0Q/ixvjFhn2t3j4EWfh8r2Oah9mZIDK
- 6dFsO0p7LyBqYwmV+ESDnNGEMdRZAeoiR5JSB94Eta9OaNjqLjz4tOMHr0HS2tjlAZ/z
- fcAw==
+ d=google.com; s=20230601; t=1731009303; x=1731614103; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=7hncGgySUr3tVJodOoCwhdjUjxWooLQLxe671zubbZI=;
+ b=ubMBkcOCjnrX0yitE9Y2cAHiuTPQo9TFSy6y3II2qBSL0svu73jRx6Lu8XsMpBNc3N
+ L7iFepWWwQ/ehdD0gCtk8fU5/QR76DrzUx/RiInSOWhL6ScgLrF5BrXIxEv5GpkaC9km
+ gU/P/PHkh9pjTwqY68DJXdgANQNcFH5QIZ9X4t+CTTtiC3LyUkxGAwFtZdzj32pGkpm5
+ OD+UipxJ12TRtd6sczEf8oEnwd46lVnHRDgItqqkvs63IK964kA3qUWrjXdatDH61JOL
+ YS+2FPI53uLE1oAspMtdFQvEdheIBJzlrsB3mNjuhmEJP08VNTDlo11noAaXd1V13n29
+ Q/HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731009302; x=1731614102;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Dhx3Bv91IwsNiKrqW6EopdF6ygF7pLBG+NH0I9FnnMU=;
- b=uxaC8iDK7cy7y5PUpdOQChqBVxAXJjor2EGRrvCpOh5PKP5oMjcsjzO/fd9zIGp48Q
- GEugi6So/q4sjcbtfaRNSxxpyGHWjCET06lsy+m8Tlu0HuhjLHTGMSZZ1fSdduDRopQf
- fdFTIG9jefhjSvIHcdMrLFLtovQ8tuDpvw3WH/EPadSbdvUCVyM7qawxW12TscwYevxo
- XIGaxSsz5KvB3nwbLOK5JIejlxB8SgEJud3Hz8cikMIONGUwUD+KbxGkWhIj5qlbJt/c
- fYbYmnMicDAxsjqAfgwrSa0Ha/ZPJI8qbhM3qQOlf0GAQxgX+34efAE+9pdVOECDQwmJ
- LjfA==
+ d=1e100.net; s=20230601; t=1731009303; x=1731614103;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7hncGgySUr3tVJodOoCwhdjUjxWooLQLxe671zubbZI=;
+ b=s7u4lK6vk2SqN4CL8076XnTdwurBq866cp+RYaFGMv/otQPOpYDYx997wiMZigI6GN
+ 9y/rmevDFvc8/5mN4M46VbU1qHUT4NY9SeaLtS8rgrEtlHKt2BCRHMkos45TjVm/OZpE
+ 2IM5Ez9T/+E45yJ5RZcHIvpIpG1+3aUQGUPAFVaE3TK69FlSq9SQbHH7h4+KlYnbaotD
+ vEhVjehCSUgPb/XL+QmuMoYN/1X59QjoB7Aq9kTXmAkkNOwHnAYExjgNfgVeYzwKLlSa
+ U8qEOHqJc1+MU2MiqZINLqB+xrAbWc9sIS3LUGEkBrPHDlsJ4o4U7+lS6RYXRd2MOnJ7
+ KtGQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVmf+exFdEpBwqFP72sHnizfMGPlMWxmgqjLksdpLOHLOMymJ1El/fNDISMe7prmyAGDtcoxvw/djax@nongnu.org
-X-Gm-Message-State: AOJu0YwVbuV4ydTXrs/tiC3Kx4cbewTGpcicWuYrH/7A+8z2yY49bLku
- iRfgePd24h2kT7cw2IllybQ2ihgwrEE21TD7clN9cQqvy2pg+cIWydp5JPbnjmJdarxS8qSEbIK
- gTg==
-X-Google-Smtp-Source: AGHT+IEmlFuTkhdwv2WvBWxO94zsQ4xYCaZCgfhNKEGamC4qH1sUe3agkHFV+x8p66IVVRphgRWtEAm1cNo=
+ AJvYcCWWZXGC4O1IlMwg1pkZbZWmWbeD3JWDcBfBSNIq2Xmlh87QZp4LMwB4XiJvSJNE9sW2B5gYQGxKPyIQ@nongnu.org
+X-Gm-Message-State: AOJu0Yx/PPwgb6m1xoJBnJeJ1JFd7ebsps0lBhL3WIgtqWqW+0p7k7S0
+ +0pMpjUUYx02gvjgX8x2jDY6WJuKhYbw78sTrx9f+uN5IBchfuqMyLFNnTm9wCLIY1cfwyQ4bQk
+ mtQ==
+X-Google-Smtp-Source: AGHT+IG/BBbjNIb+sHx+VtZ8fCT9DJ18NOQeJo8RTwkKJK1ExhcusVN0vYb9C/DWHhCHULHbKC5LPEovtFM=
 X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:dc:567e:c0a8:e14])
- (user=titusr job=sendgmr) by 2002:a25:aac4:0:b0:e2b:da82:f695 with
+ (user=titusr job=sendgmr) by 2002:a5b:acd:0:b0:e30:d561:dad4 with
  SMTP id
- 3f1490d57ef6-e337f8c1754mr158276.6.1731009302052; Thu, 07 Nov 2024 11:55:02
+ 3f1490d57ef6-e337f8417bemr3381276.2.1731009303114; Thu, 07 Nov 2024 11:55:03
  -0800 (PST)
-Date: Thu,  7 Nov 2024 19:54:51 +0000
+Date: Thu,  7 Nov 2024 19:54:52 +0000
 In-Reply-To: <20241107195453.2684138-1-titusr@google.com>
 Mime-Version: 1.0
 References: <20241107195453.2684138-1-titusr@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241107195453.2684138-5-titusr@google.com>
-Subject: [PATCH 4/6] hw/i2c: add canonical path to i2c event traces
+Message-ID: <20241107195453.2684138-6-titusr@google.com>
+Subject: [PATCH 5/6] hw/arm: imply I2C_DEVICES on NPCM7xx
 From: Titus Rwantare <titusr@google.com>
 To: peter.maydell@linaro.org, minyard@acm.org, clg@redhat.com
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
  venture@google.com, wuhaotsh@google.com, milesg@linux.vnet.ibm.com, 
  Titus Rwantare <titusr@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3FhstZwYKCkEwlwxvujrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--titusr.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3FxstZwYKCkIxmxywvksskpi.gsquiqy-hiziprsrkry.svk@flex--titusr.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,67 +94,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 Signed-off-by: Titus Rwantare <titusr@google.com>
 ---
- hw/i2c/core.c       | 8 +++++---
- hw/i2c/trace-events | 2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ hw/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i2c/core.c b/hw/i2c/core.c
-index 4cf30b2c86..d238311776 100644
---- a/hw/i2c/core.c
-+++ b/hw/i2c/core.c
-@@ -161,7 +161,8 @@ static int i2c_do_start_transfer(I2CBus *bus, uint8_t a=
-ddress,
-            start condition.  */
-=20
-         if (sc->event) {
--            trace_i2c_event(event =3D=3D I2C_START_SEND ? "start" : "start=
-_async",
-+            trace_i2c_event(DEVICE(s)->canonical_path,
-+                            event =3D=3D I2C_START_SEND ? "start" : "start=
-_async",
-                             s->address);
-             rv =3D sc->event(s, event);
-             if (rv && !bus->broadcast) {
-@@ -244,7 +245,7 @@ void i2c_end_transfer(I2CBus *bus)
-         I2CSlave *s =3D node->elt;
-         sc =3D I2C_SLAVE_GET_CLASS(s);
-         if (sc->event) {
--            trace_i2c_event("finish", s->address);
-+            trace_i2c_event(DEVICE(s)->canonical_path, "finish", s->addres=
-s);
-             sc->event(s, I2C_FINISH);
-         }
-         QLIST_REMOVE(node, next);
-@@ -321,7 +322,8 @@ void i2c_nack(I2CBus *bus)
-     QLIST_FOREACH(node, &bus->current_devs, next) {
-         sc =3D I2C_SLAVE_GET_CLASS(node->elt);
-         if (sc->event) {
--            trace_i2c_event("nack", node->elt->address);
-+            trace_i2c_event(DEVICE(node->elt)->canonical_path,
-+                            "nack", node->elt->address);
-             sc->event(node->elt, I2C_NACK);
-         }
-     }
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index f708a7ace1..e5f2dc643e 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -9,7 +9,7 @@ bitbang_i2c_data(unsigned clk, unsigned dat, unsigned old_o=
-ut, unsigned new_out)
-=20
- # core.c
-=20
--i2c_event(const char *event, uint8_t address) "%s(addr:0x%02x)"
-+i2c_event(const char *id, const char *event, uint8_t address) "%s: %s(addr=
-:0x%02x)"
- i2c_send(uint8_t address, uint8_t data) "send(addr:0x%02x) data:0x%02x"
- i2c_send_async(uint8_t address, uint8_t data) "send_async(addr:0x%02x) dat=
-a:0x%02x"
- i2c_recv(uint8_t address, uint8_t data) "recv(addr:0x%02x) data:0x%02x"
---=20
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 1b25e73578..30480dad7b 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -465,6 +465,7 @@ config NPCM7XX
+     bool
+     default y
+     depends on TCG && ARM
++    imply I2C_DEVICES
+     select A9MPCORE
+     select ADM1266
+     select ADM1272
+-- 
 2.47.0.277.g8800431eea-goog
 
 
