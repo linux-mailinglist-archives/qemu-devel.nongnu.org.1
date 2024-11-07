@@ -2,214 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3229C0BDC
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 17:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B1F9C0C10
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 17:58:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t95ZK-0003Lq-81; Thu, 07 Nov 2024 11:41:15 -0500
+	id 1t95p3-0005qi-Et; Thu, 07 Nov 2024 11:57:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t95ZG-0003LY-L3
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 11:41:10 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1t95p0-0005qP-MV
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 11:57:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1t95ZB-0005lD-QM
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 11:41:10 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7GMYpb000710;
- Thu, 7 Nov 2024 16:41:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=xPD6T4UKDyUO0CAq1f7cR0/PjCWeCDhKoUeYGYUUXqg=; b=
- GaxTleqtuuC2uwqVg3tjKEuC+IbknK/g6fT5IX4gG6yDuKeZYIjA9drI2mwfNWpk
- 3quo58HSLj62UYzLiwGDOTN9boevXU3CwH+rMRZgYDiGnLR9jFsk82ylpKFAi+Jz
- 3yuQ5xNmxrx942nAWSeLJ4unLkpsjkqtKnysEje7VBDowLRRGA9x5Wlj0qw1F+YY
- CEGX+nqMbfm/jBZm6pnKGveCqrgxAYKDRQs0mCKnnwOJjEhVSLrwob13PDVr67rM
- AowB2cNtbwvRSKXINupofdLHeAIfBic6Z1bcOcfuWqriuKvGARJH+qJjwcFXc67J
- Sk+e1GqvOPa0a8MErNcdSg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nagcb0kg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Nov 2024 16:41:01 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4A7FY6jM036479; Thu, 7 Nov 2024 16:41:01 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 42nahgkb3u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Nov 2024 16:41:01 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R2CJdUFnMZLPNtlpVOCrKPfPSmPqkHro7eS2WhDedFbwJo+aXHQZ3yEcS70xKXDSOZ8PUszplP7T3nT77EHBaLdIAJ6H/CACpE+U2V8cHMePuKZJdlV1d1vSTmTWzQYOGtBoStPUDRqe7kkCggg+JxY/ZNPNp6mKo+SSpOswI9R7Y6YofVGQADN9RqMFFtVsFKIjeVWo2iWO98jvwaIe5AElui2a6YqEv+4jDNeMwK9e4PSS42mEJfQYKljAUConPoi8Yr6W4QZ9mHCyXN+qlILkKEPFW7h2kw/eup1NSqhmI1n6r2JyhQ3J0cAWcF1OMcOTgICG0fe3iB+EhjDNhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xPD6T4UKDyUO0CAq1f7cR0/PjCWeCDhKoUeYGYUUXqg=;
- b=GmTzssnpu916xBEPuhlhZb7HnZqmXuDmKrZ70g4YIece/tYVzWJrcZsRINxPGc6SBnaQ8tTf4+Nb6DpKCBtwowx6lVTgGk1RwvUz1Vqic+NvLJEKARqNToREQiTxtvNT91HYrpWTzGQ3I+fQU5yOWA7RQhLKNP/7T1X8q0i3egDvAoFt2L1aU32yeNVYrBMmlDlZgk04WDB0LpuynwEeuYCM9f7GoVTP9w/k5uCHiIBvpj9qPP9/+xyebVUNFA7I6Uzt5vnmHht2Zm7DnNQWpxZkO6LSrlq+9kQqSgrsO2SmqkQmAmfIv7bQH2b7N0mPhIAvZ5YGwLNswsFxhyrj/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xPD6T4UKDyUO0CAq1f7cR0/PjCWeCDhKoUeYGYUUXqg=;
- b=kQgHjlKMpd54mWqhAzDAm0dU8ZbpnbNiRDzzEog4RZNcMuGO9fUGoYbnJpb6FEQIsT6+gYykAg4B8tmx5j6VitseYjZic9g6J1Hno7A7UakktCX9hAkR2ypGiYDCEK6ILtzWRcYJ2+MOc8ILxHFhRwR9JeWWl5VntPs1XGC8/Ss=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by CH0PR10MB5035.namprd10.prod.outlook.com (2603:10b6:610:c2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
- 2024 16:40:58 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 16:40:57 +0000
-Message-ID: <00261b15-3eef-439a-8501-574e3bb50d95@oracle.com>
-Date: Thu, 7 Nov 2024 11:40:56 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 01/16] machine: anon-alloc option
-To: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-References: <1730468875-249970-1-git-send-email-steven.sistare@oracle.com>
- <1730468875-249970-2-git-send-email-steven.sistare@oracle.com>
- <78fa25f1-03dc-400c-a604-998c53e4fbce@redhat.com>
- <45ea8a8a-928d-4703-b698-d5f910e6a224@oracle.com>
- <1f1a2742-0429-47d5-958f-b37575c1e4ba@redhat.com>
- <c2ca740b-0178-463b-8262-b149841b8def@redhat.com>
- <bcc4cd7e-3532-475a-8989-211e80bf3eab@oracle.com>
- <09701693-436c-4e1a-8206-03eb26cacab5@redhat.com>
- <66c05a06-dbb7-49ec-b58e-ccd917d098ea@oracle.com>
- <053dd9b6-e4f7-41c8-abe9-ed02214f0639@redhat.com>
- <cce158c4-3bb1-4771-b2c5-f3ae8a2285d5@oracle.com>
- <5b192b5e-943c-4b2f-ab40-ef54ea578363@redhat.com>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <5b192b5e-943c-4b2f-ab40-ef54ea578363@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL0PR02CA0111.namprd02.prod.outlook.com
- (2603:10b6:208:35::16) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1t95ox-000864-HD
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 11:57:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1730998640;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rrCTtWuu+7TAJvD8VFDy9NKfEB2Ww99Dp+mj3g6wArE=;
+ b=M6K9u2xWozfSCg2Re4UerdCQ4sogJn+0QtDJHX/7QxkkbkpnLIZ1lSfoRb0X6ibfWLBYj2
+ 7btBx5bj0kFunkLaNVYo6gH2fUwO1gRqyD6XUgPcxlUwbFc6GWTQst7OSnXzIpZR3OUcMG
+ HKG1vzNTeL1Ne6v07v4saVzrp93FXR8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-nOcgCK92O16c-4AgirMf2A-1; Thu, 07 Nov 2024 11:57:19 -0500
+X-MC-Unique: nOcgCK92O16c-4AgirMf2A-1
+X-Mimecast-MFC-AGG-ID: nOcgCK92O16c-4AgirMf2A
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43159603c92so7905945e9.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 08:57:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730998638; x=1731603438;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rrCTtWuu+7TAJvD8VFDy9NKfEB2Ww99Dp+mj3g6wArE=;
+ b=dz+BnfP0+9ZRCgdai8nOxLBwD7bS2tj0/r11DbGGqJGEUWOR44uyioxHGbEoU7wh20
+ wm+Vwc1JI1H0vt67qUOKUZZOixE4qUKUSb+mTCFhFQjerf+gy4mXlULHMWkQlkI+o48H
+ NoGEuegBzHmzcfdNTc6aPhPn4fJpndbt+xCVUIRJU6hqmwXECtkReXZ1ps7FZ7UPkDMu
+ CEQSlWN3DoruqFL3Zca4X7f35Sx4JqwCMe/kAKOmK6yVXJ+7mKKZHI8jiyB4un4Zdqd8
+ SONOeqp08ITlOK2CbUNi5HDb2zjkZe52H5VmNCgvQKY/j6RcJdn7mu8Kac/QBI740owZ
+ X/aQ==
+X-Gm-Message-State: AOJu0YwtjqH1u2OTaXReuzCzd6ud19IMMTblvIVSPUZusRH1SgLG80jj
+ AB45eWz2J4mz5baeEnJELprl5xIV4ja8KIub91ya5j5xrFVM6Mq6B2EK1xPDxathJY+zZsK1sRx
+ vKKBym0rdQczmVr7g2d/VrrZ4wh+UBBNNKK1A2bRZiyEKUl70ZAWO
+X-Received: by 2002:a05:600c:3d8a:b0:431:57e5:b251 with SMTP id
+ 5b1f17b1804b1-4328327e6d2mr182011945e9.28.1730998638155; 
+ Thu, 07 Nov 2024 08:57:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGt87q4fr9JkRJuJWURsxi6+B7b9KWmB1jInFj8n3mFsLEr5xphNcAWS0KY/DPgM76FCEqwRQ==
+X-Received: by 2002:a05:600c:3d8a:b0:431:57e5:b251 with SMTP id
+ 5b1f17b1804b1-4328327e6d2mr182011635e9.28.1730998637732; 
+ Thu, 07 Nov 2024 08:57:17 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa70a1f8sm70293115e9.30.2024.11.07.08.57.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Nov 2024 08:57:16 -0800 (PST)
+Date: Thu, 7 Nov 2024 17:57:15 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "mst@redhat.com" <mst@redhat.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "anisinha@redhat.com"
+ <anisinha@redhat.com>, "eduardo@habkost.net" <eduardo@habkost.net>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ "david@redhat.com" <david@redhat.com>, "philmd@linaro.org"
+ <philmd@linaro.org>, "peterx@redhat.com" <peterx@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "gshan@redhat.com"
+ <gshan@redhat.com>, "borntraeger@linux.ibm.com"
+ <borntraeger@linux.ibm.com>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>,
+ "miguel.luis@oracle.com" <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net"
+ <salil.mehta@opnsrc.net>, zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng
+ (C)" <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "zhao1.liu@intel.com" <zhao1.liu@intel.com>, Linuxarm
+ <linuxarm@huawei.com>, "gustavo.romero@linaro.org"
+ <gustavo.romero@linaro.org>
+Subject: Re: [PATCH 2/3] Fix: Reverse CPUs presence check logic for x86
+ backward compatability
+Message-ID: <20241107175715.4f07ae22@imammedo.users.ipa.redhat.com>
+In-Reply-To: <2bb1abda0787405b95af0233940e3df7@huawei.com>
+References: <20241106130331.205020-1-salil.mehta@huawei.com>
+ <20241106130331.205020-3-salil.mehta@huawei.com>
+ <20241106145635.77332d7c@imammedo.users.ipa.redhat.com>
+ <28a19ad7554e4b70819e1435669eeba3@huawei.com>
+ <20241106170734.0c7a5adb@imammedo.users.ipa.redhat.com>
+ <2bb1abda0787405b95af0233940e3df7@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CH0PR10MB5035:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68103f1b-85ee-4ee5-bdce-08dcff4af4ab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SXF4OXJIU1Jtc1lqRk5OT2tlRWlUR0ZCMS85NSs4NXlmUVlabmMyb2tXbDNs?=
- =?utf-8?B?MExudXJhcmd3am9VcmVNd1lzeUVWTDJ2SW5TNzE0czgrZkZEWmE4ZVdHSUJ3?=
- =?utf-8?B?M1Y4Z2xQcHAwbXhtdFI2d014d21iZTIyaWNGK0NFQmw1bG5jaURKNEh5QnBD?=
- =?utf-8?B?c0IwYmRCVzN6R0NQK1BCTFBpaVBhb0R3ZWlDWXF1dTg2M0dweDFhcWRvdzdG?=
- =?utf-8?B?U21xd1pSREk5K1RjWkFYdkFWbFVWT2x3ald1enArZEYwTHk4bUYzMEt0b3Rw?=
- =?utf-8?B?VWtucVdaMEN1dnM2TWRjZnVpMUJwZkRqVEJzdlRRMlBZNEw3RWZ2RUVNdGR2?=
- =?utf-8?B?eCtaWllUQmVCSVMwektFOEhBUU9ERExZaS85WGYvL2ZLWUlsc1hIYnp4QTU3?=
- =?utf-8?B?NW00eXEzSDU2dTQ0Y3NYdzVJSzJBaVF1VFh4dFF6VkZrUldOdzJRcHRQWU0v?=
- =?utf-8?B?VTcvSG94WDNWa3o4SHlIVENFZ0FXQi8wUXYvN1pmelQ1OUhGUU9Rbzh5UWI4?=
- =?utf-8?B?STVhOEF4RmRpcFBmVnRIZlJMVDZnK282dkR0ZFBnaTFFMGM1YkZNOHpQYUFH?=
- =?utf-8?B?QjB2S1orOGxKU3o0aStKbEtsWk03aDY5Yy9TS1NucEd2VTVIMndXNEFZeFIv?=
- =?utf-8?B?SDkydWJISU1EM09hc1gyRGkxM2hTZ01vTk9LRTFCYnY3VVBxVkZ5Ynlyb1Jw?=
- =?utf-8?B?bDF3TnZRRlArZWR0ZXJ1SWc1bmsyMnlQeUZ0VUJBdkpRTnJRVnd4MXBabVNl?=
- =?utf-8?B?bkxXc1VXNnhEbWRYNEV6RkkyVG9rV1haMDlPRGFQSDA4Rk1MS2VvcU5MV3gy?=
- =?utf-8?B?dTM5dGtidU5LU294OG9VVW5hOWpaTUxjb1pHY0lzRFozdWpaRE1weGFJVFBv?=
- =?utf-8?B?dE55M0xqRklzOWNPUXRBTG1iQzF3QTBrNmFhM3kycTlYdkNzSlFrSXZTNUNF?=
- =?utf-8?B?VlhtV0hIMTA3WDBPQVFqVzhIRzFpVW83NkZSOFBBZ0NBWXNuUDdrc2VGeWNv?=
- =?utf-8?B?aVpQVGhkbVlQRzQ5ZU55NkF2RjBmT1lOSVdpMW1uWlFkMktMckpLVnVpWHlD?=
- =?utf-8?B?bHVsR2RUcm9OK2xLVUpOYUZTbnk4VXJOSmhpZzJGYXpMVmRYb0pYbkFidWlj?=
- =?utf-8?B?TUN1SlRXS3pKOVN2S2NVOFJwb29ra1E1cFFqNllOeE9OU2ttVXJ1K0llTWsv?=
- =?utf-8?B?anh5OWdWSUFhM1B6dHl1U0cwOEd3U04zdGlWMmNwd2l0QnhQWStXWm1OeWo4?=
- =?utf-8?B?cjlzR0ljSUtvTHdvaDkzRWQ4ZFRyYjQ0NGZmbm1rVjczY01HNXNtS2ZXbjFw?=
- =?utf-8?B?ZDFnWUJscXROVEQ3cS9tOTBQQjN3WkVvMDN2SmJ4bE16ODZQRi84aThOd0Rm?=
- =?utf-8?B?cTFpbVJSUHZKOUI2d2xnbzA3a3VpUjVkeENKVU5Ea1NPdDJybWZrSlRCZE9x?=
- =?utf-8?B?SmtybjBFUGkralpCY2NubWtHY1p5RUpHaUtPWkM0d2dLS2ljb1g0d2RRTzhY?=
- =?utf-8?B?a2tCSzZIcjNLRlY1bHo0S3VPOWFRcTEwdHloVWQzVVhnMm1hcTVwajdmK3BM?=
- =?utf-8?B?Wkp6WTFwNTBJcXBBVC92YzZkVm1Ya1VIanhEWE85bzZzQnp0ZjdDVHRNSkYy?=
- =?utf-8?B?SVg3dnVyUG5VQXUya2JtK1FpTGNaZDM5V3JyVUFOdEdZNUh3RENMTFdjYXFq?=
- =?utf-8?B?bUQ4bEtoY1F1TDBOL2djUUZycXh6QU9VQkc1MGdlNVVpU3dGYVZKcWJlYUM4?=
- =?utf-8?Q?QqGllLP/4d3WBqU/WhQecAUREMCZ/7WlWFuw6tU?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(7416014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M2Jmb3dneWtoL2w3MlJaUVlHU0lZVDllaXdRTWo2ZG9Lb1dXWjBlVDRMUUk1?=
- =?utf-8?B?Nmx6Q1FBM2RocW1abWtrMmpKL3ZMNkUvOXQ2bHhnektPMUFaaXk2K0NHTm1h?=
- =?utf-8?B?Z2gvK1pBMFRDaDRoVjV4Wk5Zek9vVjc0WU1aS3hwc2VwMDc1bEM4M3UwRkxr?=
- =?utf-8?B?em5HV2ZFK0hyOUNGaVFIS3dCM1RQYzh4Sm42Y2ZmMW1OcWhSWDlKME5PSGhk?=
- =?utf-8?B?dWVydndOQWFwb2RJakk1TE04SUErTk9OSG1sQWFmWlY5RFhpWGtkb20xUlV3?=
- =?utf-8?B?WHdzUTY0cDB6VTBHcWFMb1RibXBQS0djYVBhQUVYSWQ3UWF3Mk1SQlZtak5a?=
- =?utf-8?B?eHJNQnN6ZVJvdG5tbG9NVXhERGUvSVV3ZDBDK3A4eE43MXIxOGRkdWRoc3BF?=
- =?utf-8?B?SjhDaEJVRCtJUXRzNjNjaTFoVFgzQjJvb1k4L04yT0tDWk9QMFZHeEhKaUho?=
- =?utf-8?B?TU9aaFFudzNla0svMFlucjg4Z1BSM2p4ZDRFc1NWZEZPUUNadHNYWmEreklJ?=
- =?utf-8?B?ZmJaeFhUaDRWQjFYWERCay9sdnJ4R2FTZWZzaDJzK3dFYW1lODdVZnJPclps?=
- =?utf-8?B?R0ZPbVgzWU9nMklQMzViMkJKMnJnelFxMHV2SmlFckp3aUYvTnBtbHBoZE8r?=
- =?utf-8?B?NklMQ3E0Zm9hZm9lNVUwWWNSTlp1elN5L20yNGhjZFljMWhuZ25tMURwbmxw?=
- =?utf-8?B?MkdpcUx4UWMrZ2pzdDBiYXhkN1o5N1JXTU4vWE1tNGVtYWdyZUdGZmViYUU1?=
- =?utf-8?B?WUVtNUt1b3ZuRU1mZXdnQlBWcmVUajVLbnFSY0EwTnl3VUxjMEhJNFlSbWFs?=
- =?utf-8?B?ZXc5dXVGMVlFRzFWQXpqUkw0QWdFN05kNVE1VWNnQVhpa09IWUF3NTJ0eUlV?=
- =?utf-8?B?Ykt1T01qaXNUUTRKa1VwVVE5VHYwQ2paRis0WnhrUXBoSGcwS1dqYjZvblRB?=
- =?utf-8?B?cGhNVFc4YzFJbW9oR1BldjlmcHhHRHVNV05tbGt1aGo0dkMrcW50OFBDME44?=
- =?utf-8?B?NGQreVhBcFpTTWlxbkNLL0ZRMldQVk1yN1BiOWxNQWpBaTNUUTc2dHpBRjNl?=
- =?utf-8?B?UnhPSk1QelZTSVZVOENsZTN4R3kzajJ3c25LN2N3N25GbkRhdS9qb2JRMklX?=
- =?utf-8?B?YWJ2czRrQUs0Uzc2OURyTkFXVldpcXVKZis3a0QwY21Wd3k3YytQRXJBWGNE?=
- =?utf-8?B?VjRQWndpN09JcENUYWxGbFIwdVN1YURkcDZ2dFM0TnkvV0xPbHRaNUU2bmN1?=
- =?utf-8?B?R1F6NE5idlVWeVdMMUY3U0VhUWRRNG9kMG8yWHZMbXQ3Q0xqNmtNK1luYk14?=
- =?utf-8?B?eGM2VnJYWkFVbFZLS1dLT0RxeFBXL3RJN1pnSFhRYnJQMjJjbUhCOGpSQmQr?=
- =?utf-8?B?QlI1Ujd6a1VPSVBZREtSNE5UZjdMcU5vRElzVkxlR2hRR0pHTCtmbUlXUmtP?=
- =?utf-8?B?VHdJQVAzSUtYM1VrQmJXS055UkNQQWNrdGhObytvZ0dlYUhNdXZlQ1BzVnhC?=
- =?utf-8?B?eWNVVDNtZ2FQRTlRVkd2aUhmeGd6ejZDS2NnVitzUHJsR2l1SHAwSmMvUk5m?=
- =?utf-8?B?ekg4UU5oWlZ5dHkwT2JEVnBnQ0hpRkpPdDBHWVA1OHR4aHJFOXp1aFJYbFI1?=
- =?utf-8?B?V2poaG0vM0VUSU0xbHNFeHl2dnhORUNzMnhSK1FJK2FhSndSM3lGVnVSakY4?=
- =?utf-8?B?V2QrSlRwUmhXS3Q5bG1HekJDSG5UeGF5Slk5S2xwOGd0UGtLakkrOG5jNnlh?=
- =?utf-8?B?NjhxU1dZRUc2b3FkK0RFZGFPUFhlWTNaN0RCQ3pzUTdZT2FyS0hydWlBM0pz?=
- =?utf-8?B?SFVCZkVqa0JzZktJMnM4ZmVUSEtjSDJqUXkvdDVqL3EwNXVlSldJT2UxR3c1?=
- =?utf-8?B?M0tiV2RsMVBrUS9SOUE5WS9UVUdIUndNY1lzTTJHaUx1akNpOFlNM09oenhH?=
- =?utf-8?B?UGF1TFRaU1VMMWdGWjVLa2lXcituZkxaeTFlQ1JMaTIrUkQ4MmkzU0UrK0lh?=
- =?utf-8?B?YlBZMlZRMEZYYUNicFAzektQeVc5T2ZyT0xuTHFxK3NRRDljb29pSlpBckJU?=
- =?utf-8?B?TjFsQU9IQnZTTGlFSVVPUHZpUmhpckNzVE5lVlE2NGJxdm8zK2pra2xvdDVs?=
- =?utf-8?B?cUZxRFhOc1czZzYvZDVXT2I0RXBxK0hHZ0RVWWhMcjl1L3FwOEN1NjlxS2pp?=
- =?utf-8?B?V0E9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: xTI8PkI0ACNFScL4Xh0zaDoHkRIeQNod9V27IUYhvNUXYecponTF2OnaWe2KbEFfaNYTfqrNmq3Gwzii+y0BEBuPltQd1FkfBRb1GI42ICtdUa2FW7m2xNCeXKDuY+g/+gBsukYgY5hunojx8P+Yyih8bXx7OWnlqM9y48Fbj3hLLowwn/N8/JV+B59hI6NbMcQqxgLF2UeyS1k796uQwhCZJd7peZHfxN0KVaxNhCbUU6SZc6fy7ei7fFQx/KyUR+u0AINCjIvfFwHuxXYi62NND1uf4EoDZEArJ+Ug6lKMDJugI+dWhIsK6MJQJF/gki/bk9BM2u+/9ePgkaa08YFdb9OwrdAHx/29zcLSAZ9PAnynSUNGIksf2duu0+Ty5Q7ZiNQ9QxPi7M51Yf3Q7EefMKjSVhj+AtA7C7YJxJDMT019IZm8b79fpB4cOKzm78yR8CkX+DxqHNw4FN1aoNVq/r1/sElx7lAjeO7l45L/KltZsh8QPcHEjMlhLIec9ipqmoQ+e3CQKe578+Z/qGOVhwurXflQ1BfKSDaMTrVKYPyfB+ATUO86U4siBCpHlGsntczliibYnDLQGo6R4W9lQCSp0UJIcf3wYJHcR5M=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68103f1b-85ee-4ee5-bdce-08dcff4af4ab
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 16:40:57.8704 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7OJ4TGnwlXOy820fyOUgGlgvDVavBMlRM84m1KZ7TMwczR2h0SzdC/mvLEPisiGz/HvuSJ7WaTRf/T6IO+xrNyJ985Dq6xbCpq9f+XKEYhg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5035
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-07_07,2024-11-07_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411070130
-X-Proofpoint-ORIG-GUID: 4FzLS_Ffo210QUksdxwv82yYWrM3VKRu
-X-Proofpoint-GUID: 4FzLS_Ffo210QUksdxwv82yYWrM3VKRu
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -227,211 +129,306 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/2024 11:26 AM, David Hildenbrand wrote:
-> On 07.11.24 17:02, Steven Sistare wrote:
->> On 11/7/2024 8:23 AM, David Hildenbrand wrote:
->>> On 06.11.24 21:12, Steven Sistare wrote:
->>>> On 11/4/2024 4:36 PM, David Hildenbrand wrote:
->>>>> On 04.11.24 21:56, Steven Sistare wrote:
->>>>>> On 11/4/2024 3:15 PM, David Hildenbrand wrote:
->>>>>>> On 04.11.24 20:51, David Hildenbrand wrote:
->>>>>>>> On 04.11.24 18:38, Steven Sistare wrote:
->>>>>>>>> On 11/4/2024 5:39 AM, David Hildenbrand wrote:
->>>>>>>>>> On 01.11.24 14:47, Steve Sistare wrote:
->>>>>>>>>>> Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
->>>>>>>>>>> on the value of the anon-alloc machine property.  This option applies to
->>>>>>>>>>> memory allocated as a side effect of creating various devices. It does
->>>>>>>>>>> not apply to memory-backend-objects, whether explicitly specified on
->>>>>>>>>>> the command line, or implicitly created by the -m command line option.
->>>>>>>>>>>
->>>>>>>>>>> The memfd option is intended to support new migration modes, in which the
->>>>>>>>>>> memory region can be transferred in place to a new QEMU process, by sending
->>>>>>>>>>> the memfd file descriptor to the process.  Memory contents are preserved,
->>>>>>>>>>> and if the mode also transfers device descriptors, then pages that are
->>>>>>>>>>> locked in memory for DMA remain locked.  This behavior is a pre-requisite
->>>>>>>>>>> for supporting vfio, vdpa, and iommufd devices with the new modes.
->>>>>>>>>>
->>>>>>>>>> A more portable, non-Linux specific variant of this will be using shm,
->>>>>>>>>> similar to backends/hostmem-shm.c.
->>>>>>>>>>
->>>>>>>>>> Likely we should be using that instead of memfd, or try hiding the
->>>>>>>>>> details. See below.
->>>>>>>>>
->>>>>>>>> For this series I would prefer to use memfd and hide the details.  It's a
->>>>>>>>> concise (and well tested) solution albeit linux only.  The code you supply
->>>>>>>>> for posix shm would be a good follow on patch to support other unices.
->>>>>>>>
->>>>>>>> Unless there is reason to use memfd we should start with the more
->>>>>>>> generic POSIX variant that is available even on systems without memfd.
->>>>>>>> Factoring stuff out as I drafted does look quite compelling.
->>>>>>>>
->>>>>>>> I can help with the rework, and send it out separately, so you can focus
->>>>>>>> on the "machine toggle" as part of this series.
->>>>>>>>
->>>>>>>> Of course, if we find out we need the memfd internally instead under
->>>>>>>> Linux for whatever reason later, we can use that instead.
->>>>>>>>
->>>>>>>> But IIUC, the main selling point for memfd are additional features
->>>>>>>> (hugetlb, memory sealing) that you aren't even using.
->>>>>>>
->>>>>>> FWIW, I'm looking into some details, and one difference is that shmem_open() under Linux (glibc) seems to go to /dev/shmem and memfd/SYSV go to the internal tmpfs mount. There is not a big difference, but there can be some difference (e.g., sizing of the /dev/shm mount).
->>>>>>
->>>>>> Sizing is a non-trivial difference.  One can by default allocate all memory using memfd_create.
->>>>>> To do so using shm_open requires configuration on the mount.  One step harder to use.
->>>>>
->>>>> Yes.
->>>>>
->>>>>>
->>>>>> This is a real issue for memory-backend-ram, and becomes an issue for the internal RAM
->>>>>> if memory-backend-ram has hogged all the memory.
->>>>>>
->>>>>>> Regarding memory-backend-ram,share=on, I assume we can use memfd if available, but then fallback to shm_open().
->>>>>>
->>>>>> Yes, and if that is a good idea, then the same should be done for internal RAM
->>>>>> -- memfd if available and fallback to shm_open.
->>>>>
->>>>> Yes.
->>>>>
->>>>>>
->>>>>>> I'm hoping we can find a way where it just all is rather intuitive, like
->>>>>>>
->>>>>>> "default-ram-share=on": behave for internal RAM just like "memory-backend-ram,share=on"
->>>>>>>
->>>>>>> "memory-backend-ram,share=on": use whatever mechanism we have to give us "anonymous" memory that can be shared using an fd with another process.
->>>>>>>
->>>>>>> Thoughts?
->>>>>>
->>>>>> Agreed, though I thought I had already landed at the intuitive specification in my patch.
->>>>>> The user must explicitly configure memory-backend-* to be usable with CPR, and anon-alloc
->>>>>> controls everything else.  Now we're just riffing on the details: memfd vs shm_open, spelling
->>>>>> of options and words to describe them.
->>>>>
->>>>> Well, yes, and making it all a bit more consistent and the "machine option" behave just like "memory-backend-ram,share=on".
->>>>
->>>> Hi David and Peter,
->>>>
->>>> I have implemented and tested the following, for both qemu_memfd_create
->>>> and qemu_shm_alloc.  This is pseudo-code, with error conditions omitted
->>>> for simplicity.
->>>>
->>>> Any comments before I submit a complete patch?
->>>>
->>>> ----
->>>> qemu-options.hx:
->>>>        ``aux-ram-share=on|off``
->>>>            Allocate auxiliary guest RAM as an anonymous file that is
->>>>            shareable with an external process.  This option applies to
->>>>            memory allocated as a side effect of creating various devices.
->>>>            It does not apply to memory-backend-objects, whether explicitly
->>>>            specified on the command line, or implicitly created by the -m
->>>>            command line option.
->>>>
->>>>            Some migration modes require aux-ram-share=on.
->>>>
->>>> qapi/migration.json:
->>>>        @cpr-transfer:
->>>>             ...
->>>>             Memory-backend objects must have the share=on attribute, but
->>>>             memory-backend-epc is not supported.  The VM must be started
->>>>             with the '-machine aux-ram-share=on' option.
->>>>
->>>> Define RAM_PRIVATE
->>>>
->>>> Define qemu_shm_alloc(), from David's tmp patch
->>>>
->>>> ram_backend_memory_alloc()
->>>>        ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
->>>>        memory_region_init_ram_flags_nomigrate(ram_flags)
->>>>
->>>> qemu_ram_alloc_internal()
->>>>        ...
->>>>        if (!host && !(ram_flags & RAM_PRIVATE) && current_machine->aux_ram_share)
->>>>            new_block->flags |= RAM_SHARED;
->>>>
->>>>        if (!host && (new_block->flags & RAM_SHARED)) {
->>>>            qemu_ram_alloc_shared(new_block);
->>>>        } else
->>>>            new_block->fd = -1;
->>>>            new_block->host = host;
->>>>        }
->>>>        ram_block_add(new_block);
->>>>
->>>> qemu_ram_alloc_shared()
->>>>        if qemu_memfd_check()
->>>>            new_block->fd = qemu_memfd_create()
->>>>        else
->>>>            new_block->fd = qemu_shm_alloc()
->>>
->>> Yes, that way "memory-backend-ram,share=on" will just mean "give me the best shared memory for RAM to be shared with other processes, I don't care about the details", and it will work on Linux kernels even before we had memfds.
->>>
->>> memory-backend-ram should be available on all architectures, and under Windows. qemu_anon_ram_alloc() under Linux just does nothing special, not even bail out.
->>>
->>> MAP_SHARED|MAP_ANON was always weird, because it meant "give me memory I can share only with subprocesses", but then, *there are not subprocesses for QEMU*. I recall there was a trick to obtain the fd under Linux for these regions using /proc/self/fd/, but it's very Linux specific ...
->>>
->>> So nobody would *actually* use that shared memory and it was only a hack for RDMA. Now we can do better.
->>>
->>>
->>> We'll have to decide if we simply fallback to qemu_anon_ram_alloc() if no shared memory can be created (unavailable), like we do on Windows.
->>>
->>> So maybe something like
->>>
->>> qemu_ram_alloc_shared()
->>>       fd = -1;
->>>
->>>       if (qemu_memfd_avilable()) {
->>>           fd = qemu_memfd_create();
->>>           if (fd < 0)
->>>               ... error
->>>       } else if (qemu_shm_available())
->>>           fd = qemu_shm_alloc();
->>>           if (fd < 0)
->>>               ... error
->>>       } else {
->>>           /*
->>>            * Old behavior: try fd-less shared memory. We might
->>>            * just end up with non-shared memory on Windows, but
->>>            * nobody can make sure of this shared memory either way
->>>            * ... should we just use non-shared memory? Or should
->>>            * we simply bail out? But then, if there is no shared
->>>            * memory nobody could possible use it.
->>>            */
->>>           qemu_anon_ram_alloc(share=true)
->>>       }
->>
->> Good catch.  We need that fallback for backwards compatibility.  Even with
->> no use case for memory-backend-ram,share=on since the demise of rdma, users
->> may specify it on windows, for no particular reason, but it works, and should
->> continue to work after this series.  CPR would be blocked.
+On Wed, 6 Nov 2024 19:05:15 +0000
+Salil Mehta <salil.mehta@huawei.com> wrote:
+
+> Hi Igor,
 > 
-> Yes, we should keep Windows working in the weird way it is working right now.
+> Thanks for replying back and the reviews. Please find my replies
+> inline.
 > 
->  > > More generally for backwards compatibility for share=on for no particular reason,
->> should we fallback if qemu_shm_alloc fails?  If /dev/shm is mounted with default
->> options and more than half of ram is requested, it will fail, whereas current qemu
->> succeeds using MAP_SHARED|MAP_ANON.
+> >  From: Igor Mammedov <imammedo@redhat.com>
+> >  Sent: Wednesday, November 6, 2024 4:08 PM
+> >  To: Salil Mehta <salil.mehta@huawei.com>
+> >  
+> >  On Wed, 6 Nov 2024 14:45:42 +0000
+> >  Salil Mehta <salil.mehta@huawei.com> wrote:
+> >    
+> >  > Hi Igor,
+> >  >  
+> >  > >  From: qemu-arm-bounces+salil.mehta=huawei.com@nongnu.org  
+> >  <qemu-  
+> >  > > arm-bounces+salil.mehta=huawei.com@nongnu.org> On Behalf Of Igor
+> >  > > Mammedov
+> >  > >  Sent: Wednesday, November 6, 2024 1:57 PM
+> >  > >  To: Salil Mehta <salil.mehta@huawei.com>
+> >  > >
+> >  > >  On Wed, 6 Nov 2024 13:03:30 +0000
+> >  > >  Salil Mehta <salil.mehta@huawei.com> wrote:
+> >  > >  
+> >  > >  > Checking `is_present` first can break x86 migration from new Qemu
+> >  > > > version to old Qemu. This is because CPRS Bit is not defined in  
+> >  > > the  > older Qemu register block and will always be 0 resulting in
+> >  > > check  > always failing. Reversing the logic to first check
+> >  > > `is_enabled` can  > alleviate below problem:  
+> >  > >  >
+> >  > >  > -                If ((\_SB.PCI0.PRES.CPEN == One))
+> >  > >  > -                {
+> >  > >  > -                    Local0 = 0x0F
+> >  > >  > +                If ((\_SB.PCI0.PRES.CPRS == One))
+> >  > >  > +                {
+> >  > >  > +                    If ((\_SB.PCI0.PRES.CPEN == One))
+> >  > >  > +                    {
+> >  > >  > +                        Local0 = 0x0F
+> >  > >  > +                    }
+> >  > >  > +                    Else
+> >  > >  > +                    {
+> >  > >  > +                        Local0 = 0x0D
+> >  > >  > +                    }
+> >  > >  >                  }
+> >  > >  >
+> >  > >  > Suggested-by: Igor Mammedov <imammedo@redhat.com>  
+> >  'Reported-by'  
+> >  > > maybe, but certainly not suggested.  
+> >  >
+> >  >
+> >  > No issues. I can change.
+> >  >
+> >  >  
+> >  > >
+> >  > >  After more thinking and given presence is system wide that doesn't
+> >  > > change  at runtime, I don't see any reason for introducing presence
+> >  > > bit as ABI (and  undocumented on top of that).  
+> >  >
+> >  >
+> >  > This is a wrong assumption. Presence bit can change in future. We have
+> >  > taken into account this aspect by design in the kernel code as well.
+> >  > Both virtual  
+> >  
+> >  Above does imply that support for really hotpluggable CPUs might be
+> >  implemented in the future.
+> >  Can you point to relevant kernel code/patches?  
 > 
-> Only on Linux without memfd, of course. Maybe we should just warn when qemu_shm_alloc() fails (and comment that we continue for compat reasons only) and fallback to the stupid qemu_anon_ram_alloc(share=true). We could implement a fallback to shmget() but ... let's not go down that path.
 > 
-> But we should not fallback to qemu_shm_alloc()/MAP_SHARED|MAP_ANON if memfd is available and that allocating the memfd failed. Failing to allocate a memfd might highlight a bigger problem.
+> Let me make it clear so that there is no confusion, there is no support of
+> physical "CPU" hot-plug on ARM platforms right now and nor will there be
+> any in future as it does not makes sense to have. The point I made in the
+> patches is about hot-plug was at different granularity which has not been
+> denied by ARM.
 
-Agreed on all.
+_STA and ACPI cphp registers are per logical CPU and can't be anything else
+per spec.
 
-One more opinion from you please, if you will.
+how different granularity is relevant here?
 
-RAM_PRIVATE is only checked in qemu_ram_alloc_internal, and only needs to be
-set in
-   ram_backend_memory_alloc -> ... -> qemu_ram_alloc_internal
+> 
+> >    
+> >  > and physical CPU hot plug can co-exists or entirely as sole features.
+> >  > This is a requirement.  
+> >  
+> >  
+> >  I don't see any _must_ requirements here whatsoever. If/when ARM
+> >  reaches point where standby and hotplug cpus are mixed within VM
+> >  instance, we might have to expose presence bit to guest dynamically but it
+> >  is totally not needed within observable future and premature.  
+> 
+> 
+> >  Your cpu class presence check also works target-wise just with more boiler
+> >  code
+> >  + not needed presence bit ABI for guest side,
+> >  The same as my suggestion only from other side.
+> >  
+> >  But regardless of that as long as machine has doesn't mix always present
+> >  CPUs with hotpluggable ones within the same instance, changing AML side
+> >  as I've just suggested works.  
+> 
+> 
+> Sure, I'm not disagreeing. It will work by adding the flag you've suggested
+> but it will work even by not adding any flag and not defining a `persistent`
+> hook for any architecture.
 
-None of the other backends reach qemu_ram_alloc_internal.
+hook is more complicated and hidden way, than directly passing down
+configuration data to routine that builds AML where it is needed,
+but that's cosmetics in the end.
 
-To be future proof, do you prefer I also set MAP_PRIVATE in the other backends,
-everywhere MAP_SHARED may be set, eg:
-     file_backend_memory_alloc()
-           ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
+However there is more to your hook approach, it exposes is_present bit
+in cphp flag register which is ABI to guest which we will have to
+maintain forever and guest will do not necessary round-trip to QEMU
+to query it, while alternative is much simpler AML change without any
+ABI changes to care about.
 
-Or omit RAM_PRIVATE in those cases where it will not be checked, to minimize
-exposure of this new flag?
+The point is we shouldn't add new ABI unless we have to.
+In this case new ABI (is_presence flag) is not _must_,
+and much simpler static AML change is sufficient. 
 
-- Steve
+> >  
+> >  If ARM ever gets real cpu hotplug as your comment above hints, my
+> >  suggestion also works fine. With only difference that board code would turn
+> >  off always_present_cpus if hotpluggable CPUs are used instead of standby.  
+> 
+> 
+> Sure, but is it necessary to define a new flag when you can do even without it?
+> Having few lines of extra code (literally 2-3 only) should not be a major cause of
+> worry, especially, if it makes design more clear and easy to understand. This is
+> not a performance code either.
+>
+> Again, I appreciate your compact logic. I'm not disagreeing with it.
+> 
+> 
+> >  > >  Instead changing AML code to account for it would be better,
+> >  > > something like
+> >  > >  this:
+> >  > >
+> >  > >  diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h index
+> >  > >  32654dc274..4a3e591120 100644
+> >  > >  --- a/include/hw/acpi/cpu.h
+> >  > >  +++ b/include/hw/acpi/cpu.h
+> >  > >  @@ -55,6 +55,7 @@ void cpu_hotplug_hw_init(MemoryRegion *as,  
+> >  Object  
+> >  > > *owner,  typedef struct CPUHotplugFeatures {
+> >  > >       bool acpi_1_compatible;
+> >  > >       bool has_legacy_cphp;
+> >  > >  +    bool always_present_cpus;  
+> >  >
+> >  >
+> >  > This has to be fetched from architecture code. Please see other
+> >  > changes in the V3 patch-set.  
+> >  
+> >  I've seen, that and it doesn't have to be fetched dynamically.  
+> 
+> 
+> Agreed, it is not necessary to be fetched. Hence, if you do not define the
+> hook. In later case, it assumes the existing logic, which x86 has been following.
+> It will work.
+
+It is better to get rid of not necessary hook altogether, and
+replace it with a simple AML change.
+
+> >  In my opinion the series was not ready to be merged (Michael probably
+> >  picked it by mistake).
+> >  
+> >  We don't really need this in 9.2 as it is only ARM cpu 'hotplug'
+> >  related, and the later is not ready for 9.2.
+> >  I'd prefer the series being reverted and we continue improving series,
+> >  instead of rushing it and fixing broken thing up.
+> >  
+> >    
+> >  >
+> >  >  
+> >  > >       bool fw_unplugs_cpu;
+> >  > >       const char *smi_path;
+> >  > >   } CPUHotplugFeatures;
+> >  > >  diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c index
+> >  > > 5cb60ca8bc..2bcce2b31c
+> >  > >  100644
+> >  > >  --- a/hw/acpi/cpu.c
+> >  > >  +++ b/hw/acpi/cpu.c
+> >  > >  @@ -452,15 +452,16 @@ void build_cpus_aml(Aml *table,  
+> >  MachineState  
+> >  > > *machine, CPUHotplugFeatures opts,
+> >  > >
+> >  > >           method = aml_method(CPU_STS_METHOD, 1, AML_SERIALIZED);
+> >  > >           {
+> >  > >  +            uint8_t default_sta = opts.always_present_cpus?0xd:0;
+> >  > >               Aml *idx = aml_arg(0);
+> >  > >  -            Aml *sta = aml_local(0);
+> >  > >  +            Aml *sta = aml_local(default_sta);
+> >  > >
+> >  > >               aml_append(method, aml_acquire(ctrl_lock, 0xFFFF));
+> >  > >               aml_append(method, aml_store(idx, cpu_selector));
+> >  > >               aml_append(method, aml_store(zero, sta));
+> >  > >               ifctx = aml_if(aml_equal(is_enabled, one));
+> >  > >               {
+> >  > >  -                aml_append(ifctx, aml_store(aml_int(0xF), sta));
+> >  > >  +                aml_append(ifctx, aml_or(aml_int(0xF), sta, sta));
+> >  > >               }
+> >  > >               aml_append(method, ifctx);
+> >  > >               aml_append(method, aml_release(ctrl_lock))
+> >  > >
+> >  > >  then for ARM set
+> >  > >   CPUHotplugFeatures::always_present_cpus = true to get present flag
+> >  > > always enabled  
+> >  >
+> >  >
+> >  > We MUST fetch this from architecture code as this can dynamically
+> >  > change in future and hence, we need to keep that flexibility  
+> >  
+> >  CPUHotplugFeatures::always_present_cpus can be set dynamically per VM
+> >  instance or per Machine type.  
+> 
+> 
+> Yes, but you need a code for that and I'm not sure what is being saved by
+> introducing an extra flag then?
+
+beside snippet, I've suggested. You need to delete all is_present callback
+related logic, than it save quite a bit, and not only on lines of code.
+
+I guess, I need to send a patch to get point across.
+
+> 
+> 
+> >  > >  After that revert _all_ other presence bit related changes that
+> >  > > were just  merged.
+> >  > >  (I did ask to get rid of that in previous reviews but it came back
+> >  > > again for no  good reason).  
+> >  >
+> >  >
+> >  > The CPUs AML in the V2 patch-set would have broken the x86  
+> >  functionality.
+> >  
+> >  Frankly speaking, I don't see much progress. All that happens on respins is
+> >  flipping between what I asked to remove before to some earlier concept.  
+> 
+> 
+> I think then you've missed the code which addressed one of your key concerns
+> in the V1 patch-set that would have broken x86 migration i.e. presence of the
+> `is_enabled` state in the CPU Hot-plug VMSD. That has been removed. Maybe
+> you would like to go through the change log of the V3 patch-set
+> 
+> https://lore.kernel.org/qemu-devel/20241018163118.0ae01a84@imammedo.users.ipa.redhat.com/
+> 
+> Below is the relevant excerpt from your many comments:
+> 
+> [...]
+> >      .fields = (const VMStateField[]) {
+> >          VMSTATE_BOOL(is_inserting, AcpiCpuStatus),
+> >          VMSTATE_BOOL(is_removing, AcpiCpuStatus),
+> > +        VMSTATE_BOOL(is_present, AcpiCpuStatus),
+> > +        VMSTATE_BOOL(is_enabled, AcpiCpuStatus),  
+> 
+> that's likely will break x86 migration,
+> but before bothering peterx, maybe we won't need this hunk if
+> is_enabled is migrated as part of vCPU state.
+> 
+
+what has been done in v3 is moving is_present/is_enabled,
+elsewhere (callbacks in this case). While argument was that
+both are not necessary to begin with.
+
+> [...]
+> 
+> 
+> >  And all of that for the purpose to workaround/accommodate fake cpu
+> >  hotplug hacks.  
+> 
+> 
+> I've to respectfully disagree on this. This is your assumption which is far from
+> reality. The accompanying main series of this will never have vCPUs which are
+> *not* present.
+
+Reality of your last posted main series (v5), disagrees with what you are saying here
+
+ [PATCH RFC V5 12/30] arm/virt: Release objects for *disabled* possible vCPUs after init
+  https://patchew.org/QEMU/20241015100012.254223-1-salil.mehta@huawei.com/20241015100012.254223-13-salil.mehta@huawei.com/
+
+after this patch, new is_present hook would let you bury the lie
+about CPU being present inside ARM specific code.
+
+> BTW, these changes have been tested by Oracle folks with that
+> series and are known to work.
+> 
+> https://lore.kernel.org/qemu-devel/C4FEC9E7-69DB-428A-A85F-30170F98814B@oracle.com/
+
+One can write anything and it can even work somehow,
+that however doesn't mean it's something merge-able,
+maintainable, ...whatever else come to mind...
+
+> 
+> Thanks!
+> 
+> Best regards
+> Salil.
+> 
+> 
 
 
