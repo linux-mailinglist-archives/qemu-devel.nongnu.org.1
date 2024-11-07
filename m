@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512059BFD37
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BC89BFD36
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 05:12:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t8tqy-0006CZ-Re; Wed, 06 Nov 2024 23:10:40 -0500
+	id 1t8tr0-0006Cr-BC; Wed, 06 Nov 2024 23:10:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqv-0006C6-89
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:37 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1t8tqx-0006CL-6R
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:39 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1t8tqp-0004xn-BW
- for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:33 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-20cbca51687so5258525ad.1
- for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:30 -0800 (PST)
+ id 1t8tqt-0004y3-8J
+ for qemu-devel@nongnu.org; Wed, 06 Nov 2024 23:10:38 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20ca388d242so5626455ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Nov 2024 20:10:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730952630; x=1731557430; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1730952632; x=1731557432; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MyuwYGB8wMZUxgeUT+ckknuz3vZLk8MowszNge3L2/U=;
- b=ld1f9EKKXxd8mo5YXQjnBKWof2LH8GvL14ki8C/4EBBq3Hb0drsHXtvxxhxeVpxfUK
- cjTYho5MnkAVpCzKUGxX+jYbM3NsKzlGfMZAWuCx6HrkPPDsreE1/ZePqXwDa/IXBmep
- ZUAqmUfQiIwyqhoSqJZBwyz6bWb7ByYSLb0JZuR0yodZkdnSbx6sxUHgI35FHDQGwnam
- yj6vUOtsI8ZHkKfx+plN5yFN3+U1dF5h3czrQ7U8BkdTFiJzVFuNKzoXwZZI09Hir+Rb
- shBt1m6kET+UEpMI/sRCp6kpC8Y13rYAPBlJ3HpfDvOJNBw7tocwkmqJ8gQUzU4qNjT/
- G08Q==
+ bh=5hHHOLYy9BpCbJ2LJQ8FMJDmoRyMrhml0DVZAtMtK1o=;
+ b=NUmOu5xZxKggmnxNNAVZ84xsKirxJ46XSth4UtchNrcRun6M8kLuCC7LKzU0Lo+UMf
+ SdvW3QAIZ++qbnfh6UKMu1qiFjvMpTY6vAy50Zk2XvTjTpAFDbxgY1SoMKst/pPv53gM
+ Bls9EIq4CX028d37v8Nf8DKxeJ3RP7tzQSNzKm7rQ1KG4FYCN3tb50Z3Tn3HuvQi4ejJ
+ YAPijew57d6BcMHdCIylJ6LSoGFMx9rRbJ4P4UemMAdSrGqi1c30ngwyF08c/9MlCZN+
+ j6MtxB3wjVNTW1DFZtyq5VM4OzIwrs/vaVp1Ny0xF97NcJsQEnU21S54yrUSZeEPDEuh
+ PQMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730952630; x=1731557430;
+ d=1e100.net; s=20230601; t=1730952632; x=1731557432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MyuwYGB8wMZUxgeUT+ckknuz3vZLk8MowszNge3L2/U=;
- b=HNStgZ8KNYzEVofHcNDmVeQs1REo2SKwjTXPnJ2wasnq/e8FkIq+QxqeKqzg6a17FQ
- zA2oRknmX9AMo3VHJbgCVhzXRD6lIBL5WljrZLU4+gdZmTEPjkLlpK5v42vhGJFI3gd8
- ey9fHZRDyiamiQJYahMt54/689jicOdBlG1K+OefaH50o9Pe2bOhVKdWvm1oWClQVy+z
- jJP89xaA5GK1ffBwSW1ojCwRFxq8wHwsH5Y+pp+tj2HZ4OKlcQPeKowHohLd44x9TqTh
- sVZE408NVu/b5ZRozUpOYteSozFV8pYr5ZJ3JiMJYpodezG4drfk/cvb1c99RyNroL3e
- OhIQ==
-X-Gm-Message-State: AOJu0YyNiHhSfnqYBgNj0tZCq8uY3Rd3LLVsc7ipXQrQRAoSzu8eeNZG
- p8zCA5aEvkUtvPLUQRc7H5CSHeOe/Wl9Uy/UKmzW61pCmMcZECbpn/e2pw==
-X-Google-Smtp-Source: AGHT+IEhYZK/ALjQOp+R94DkKKM6PY+sKzDaIAxORGXtDbl9Myw4D7mzInDpDRe64THebGfvKSmVOg==
-X-Received: by 2002:a17:902:9009:b0:20c:968e:4dcd with SMTP id
- d9443c01a7336-2111aec8494mr233076385ad.7.1730952629704; 
- Wed, 06 Nov 2024 20:10:29 -0800 (PST)
+ bh=5hHHOLYy9BpCbJ2LJQ8FMJDmoRyMrhml0DVZAtMtK1o=;
+ b=s970aKvVLAUSWncAiZf2t/k1sMGu0i40/ck/wH4pJBQyZNnofW+edf/3l0aS4h2nsp
+ zaSt7elKgVLWNJCtkkHdYqZhtXaZXpiaYm9qXxsX9JooXOahn6lGLjYO/+MET2kzfHkQ
+ 7DoHgD/nQCEXqlNoU9jv10/Su2l4dbtS/GZTUQ0FwxraoykWkB+m/epvXUDKvYrUSeIS
+ GeIZRwNthtlX1XGHlgOiy67ueeNJiq4uc7nb4+Rv87d0YejyBcpzoqFBBejwHv8FDtX/
+ ViWS9UlnheCknNrlqd8GBDo/8QU0S3tHmcmNJz8XrZt/80OVIH5alJ+HDFb6AdDCGyc1
+ G1Vg==
+X-Gm-Message-State: AOJu0YyJOCHyE5yr/+Uohl1t2B8yxhAvXNkS70tRBnd8RA9yDcPfrXlH
+ sp7w3zxtc2npaIi1/gXl9ta3wibnSSc/ILjc8jHGkUFqNxQIgzvQQ3Ksog==
+X-Google-Smtp-Source: AGHT+IGt2MJkJ3c2IedVRvhIPptfLTTZOrKiaf6qmG/tV64EPNMGSQFZCki+Ry9pCY2nOgkPMaopLA==
+X-Received: by 2002:a17:902:d2d0:b0:20f:c292:6662 with SMTP id
+ d9443c01a7336-2111b00a439mr302068825ad.51.1730952632373; 
+ Wed, 06 Nov 2024 20:10:32 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.26
+ d9443c01a7336-21177dc3f12sm2789105ad.9.2024.11.06.20.10.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2024 20:10:29 -0800 (PST)
+ Wed, 06 Nov 2024 20:10:31 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/12] hw/char/sifive_uart: Fix broken UART on big endian hosts
-Date: Thu,  7 Nov 2024 14:10:05 +1000
-Message-ID: <20241107041016.40800-2-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 02/12] hw/riscv/riscv-iommu: change 'depth' to int
+Date: Thu,  7 Nov 2024 14:10:06 +1000
+Message-ID: <20241107041016.40800-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241107041016.40800-1-alistair.francis@wdc.com>
 References: <20241107041016.40800-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,40 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Casting a "uint32_t *" to a "uint8_t *" to get to the lowest 8-bit
-part of the value does not work on big endian hosts. We've got to
-take the proper detour through an 8-bit variable.
+Coverity reports an unsigned overflow when doing:
 
-Fixes: 53c1557b23 ("hw/char: sifive_uart: Print uart characters async")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+    for (; depth-- > 0; ) {
+
+When depth = 0 inside riscv_iommu_ctx_fetch().
+
+Building it with a recent GCC the code doesn't actually break with depth
+= 0, i.e. the comparison "0-- > 0" will exit the loop instead of
+proceeding,  but 'depth' will retain the overflow value afterwards.
+
+This behavior can be compiler dependent, so change 'depth' to int to
+remove this potential ambiguity.
+
+Resolves: Coverity CID 1564783
+Fixes: 0c54acb8243 ("hw/riscv: add RISC-V IOMMU base emulation")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241104163504.305955-1-thuth@redhat.com>
+Message-ID: <20241104123839.533442-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/char/sifive_uart.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/riscv/riscv-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index aeb45d3601..5ae2a29ed6 100644
---- a/hw/char/sifive_uart.c
-+++ b/hw/char/sifive_uart.c
-@@ -174,10 +174,11 @@ sifive_uart_write(void *opaque, hwaddr addr,
- {
-     SiFiveUARTState *s = opaque;
-     uint32_t value = val64;
-+    uint8_t ch = value;
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index 12f01a75f5..164a7160fd 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -863,7 +863,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+     /* Device Context format: 0: extended (64 bytes) | 1: base (32 bytes) */
+     const int dc_fmt = !s->enable_msi;
+     const size_t dc_len = sizeof(dc) >> dc_fmt;
+-    unsigned depth;
++    int depth;
+     uint64_t de;
  
-     switch (addr) {
-     case SIFIVE_UART_TXFIFO:
--        sifive_uart_write_tx_fifo(s, (uint8_t *) &value, 1);
-+        sifive_uart_write_tx_fifo(s, &ch, 1);
-         return;
-     case SIFIVE_UART_IE:
-         s->ie = val64;
+     switch (mode) {
 -- 
 2.47.0
 
