@@ -2,70 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E0B9C03E4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 12:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F6E9C0402
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 12:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t90eO-0002Iq-M7; Thu, 07 Nov 2024 06:26:08 -0500
+	id 1t90hy-0003WK-8g; Thu, 07 Nov 2024 06:29:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1t90eL-0002Ii-L6
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 06:26:05 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1t90eD-0005XW-Ri
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 06:26:04 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8DxGeG4oyxnK0Q3AA--.43899S3;
- Thu, 07 Nov 2024 19:25:44 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMDxvke2oyxnqOVJAA--.726S3;
- Thu, 07 Nov 2024 19:25:44 +0800 (CST)
-Subject: Re: [PATCH] hw/loongarch/virt: Add reset interface for virt-machine
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Bibo Mao <maobibo@loongson.cn>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20241031065418.3111892-1-maobibo@loongson.cn>
- <971b47d0-949b-4454-884b-28ec070f9365@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <68dd5927-1b5b-131e-b2f3-1a55630fe034@loongson.cn>
-Date: Thu, 7 Nov 2024 19:26:47 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t90hu-0003R4-02
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 06:29:46 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1t90hp-0005wU-Pl
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 06:29:45 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4315e62afe0so7600645e9.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 03:29:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730978978; x=1731583778; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=+puGA2uN6J/lObB0BPsnZXs24/0YdCvAa4VE59xRAKk=;
+ b=Z7BgViOvCXKSu+yuoutoLkVxw7bJeHnjA8D7Gqvu8y7B/FwfGWpLNjXx6HzKYMHbTv
+ 0qxJp8OMEF/87qq8qAKTQJer13pp5PL4UwdPOtJ+QfE7wW7C95R9Zb4J0efNe3rSRJaD
+ kvddpsyWK45E0v3MfRQm4/pBI62POiJMIKByVmjQFWrrjnxpxh8YIAAm8GySYeq/i9Ed
+ /FmYrSSg4s921ix10qp2NcD2g2uTf5+AYm20NuOnMV3j1XtLWgAQOC6qjwZMNs6DhzzE
+ NPF4z46QBLUOsrC3+BrKL9icbQPFQ+ISkXxyDfYRB6Xs+ZKQFwjuSrzuLrkF7CNoip57
+ Fn6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730978978; x=1731583778;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+puGA2uN6J/lObB0BPsnZXs24/0YdCvAa4VE59xRAKk=;
+ b=rbEuYvVYbnk+6nNLIu4r0qy3yYWwcCtn3POptG1Elz4WiK9ZyelhjCy7vvIQDvewH6
+ +9Kh+kM/YDF7cP1JgYzlo9mmVGkRtZNQ9dc3mYtTXsr2pL2yj/gDDT2LwlTbcD4nBi7C
+ TS2L9+qn2Ek0ym/jfClScs7cxKA8Gee3vi8KDnMsQGTcWRtV2+FU7c3zdot259SMZWJH
+ yksbLhaQDPq3cMEEnGOt+6eiLq5Vzi0iPl0TCIRCrR35Ycpb3gXLENVNDxPknDZTqHF0
+ GUovWTvZYfro7iZvNBwrvIinWrJzeG4lrg5VDpseefBoGnDTOkUmbaeRC1nSYaMAk2He
+ XN3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCULWsAGxZdJVjebYS9seMlFzFDQh4N/DTDrSH8LIHSySJxz9S3m9/eBS0jjA3CHKygxdQZPz/rWA1jn@nongnu.org
+X-Gm-Message-State: AOJu0YxViKnCVaiLsig2vWS7FYQK/+3+Q2/B9HoFK/auBKlULctt4vtk
+ /geDq8OWqygtL4dPpLmdHQh6gRwWy8brvnAjGqAQKSORAYKoPKN62sY9v4Zvk+8=
+X-Google-Smtp-Source: AGHT+IFAjd6onAV6HundDVR1IIsQWEMoGWoeWmPLdw6kgYrU30+WalKpgaWFuVANOO5+CNMUrc7EmQ==
+X-Received: by 2002:a05:600c:4e46:b0:430:52ec:1e2b with SMTP id
+ 5b1f17b1804b1-4319ad2b89emr397550625e9.29.1730978977900; 
+ Thu, 07 Nov 2024 03:29:37 -0800 (PST)
+Received: from meli-email.org ([89.101.134.25])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b054b34csm21158275e9.14.2024.11.07.03.29.37
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 07 Nov 2024 03:29:37 -0800 (PST)
+Date: Thu, 07 Nov 2024 11:28:14 +0000
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PULL 32/40] rust: introduce alternative implementation of
+ offset_of!
+User-Agent: meli 0.8.7
+References: <20241104172721.180255-1-pbonzini@redhat.com>
+ <20241104172721.180255-33-pbonzini@redhat.com>
+In-Reply-To: <20241104172721.180255-33-pbonzini@redhat.com>
+Message-ID: <mkvxc.kptyckk1ksc@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <971b47d0-949b-4454-884b-28ec070f9365@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMDxvke2oyxnqOVJAA--.726S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3XFy5ZryxtF4kKw1UGFWrtFc_yoW7CrWUpr
- 97AFW5JrWkGrn7Xw47J34UuFyDXr1xKanIvF1IqFy0kF4DWryjqr4jqr9I9F1DA395WF1Y
- vr1kXw17ZF47X3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Ek
- sDUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.588,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,140 +99,552 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2024/11/1 上午12:16, Philippe Mathieu-Daudé 写道:
-> Cc'ing Peter who is working on the Reset API.
+On Mon, 04 Nov 2024 17:27, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>From: Junjie Mao <junjie.mao@hotmail.com>
 >
-> On 31/10/24 03:54, Bibo Mao wrote:
->> With generic cpu reset interface, pc register is entry of FLASH for
->> UEFI BIOS. However with direct kernel booting requirement, there is
->> little different, pc register of primary cpu is entry address of ELF
->> file.
->>
->> At the same time with requirement of cpu hotplug, hot-added CPU should
->> register reset interface for this cpu object. Now reset callback is
->> not registered for hot-added CPU.
->>
->> With this patch reset callback for CPU is register when CPU instance
->> is created, and reset interface is added for virt-machine board. In
->> reset interface of virt-machine, reset for direct kernel booting
->> requirement is called.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   hw/loongarch/boot.c         |  9 +--------
->>   hw/loongarch/virt.c         | 14 ++++++++++++++
->>   include/hw/loongarch/boot.h |  1 +
->>   target/loongarch/cpu.c      | 10 ++++++++++
->>   4 files changed, 26 insertions(+), 8 deletions(-)
->>
-Acked-by: Song Gao <gaosong@loongson.cn>
+>offset_of! was stabilized in Rust 1.77.0.  Use an alternative implemenation
+>that was found on the Rust forums, and whose author agreed to license as
+>MIT for use in QEMU.
+>
+>The alternative allows only one level of field access, but apart
+>from this can be used just by replacing core::mem::offset_of! with
+>qemu_api::offset_of!.
+>
+>The actual implementation of offset_of! is done in a declarative macro,
+>but for simplicity and to avoid introducing an extra level of indentation,
+>the trigger is a procedural macro #[derive(offsets)].
+>
+>The procedural macro is perhaps a bit overengineered, but it helps
+>introducing some idioms that will be useful in the future as well.
+>
+>Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
+>Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+>Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>---
+> rust/Cargo.lock                               |   1 +
+> rust/hw/char/pl011/src/device.rs              |   2 +-
+> rust/qemu-api-macros/Cargo.toml               |   2 +-
+> rust/qemu-api-macros/src/lib.rs               |  75 +++++++-
+> rust/qemu-api/Cargo.toml                      |   6 +-
+> rust/qemu-api/build.rs                        |   9 +
+> rust/qemu-api/meson.build                     |  12 +-
+> rust/qemu-api/src/device_class.rs             |   8 +-
+> rust/qemu-api/src/lib.rs                      |   4 +
+> rust/qemu-api/src/offset_of.rs                | 161 ++++++++++++++++++
+> rust/qemu-api/src/vmstate.rs                  |  10 +-
+> rust/qemu-api/tests/tests.rs                  |   1 +
+> subprojects/packagefiles/syn-2-rs/meson.build |   1 +
+> 13 files changed, 274 insertions(+), 18 deletions(-)
+> create mode 100644 rust/qemu-api/src/offset_of.rs
+>
+>diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+>index 9f43b33e8b8..c0c6069247a 100644
+>--- a/rust/Cargo.lock
+>+++ b/rust/Cargo.lock
+>@@ -93,6 +93,7 @@ name = "qemu_api"
+> version = "0.1.0"
+> dependencies = [
+>  "qemu_api_macros",
+>+ "version_check",
+> ]
+> 
+> [[package]]
+>diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+>index 2d225d544de..bca727e37f0 100644
+>--- a/rust/hw/char/pl011/src/device.rs
+>+++ b/rust/hw/char/pl011/src/device.rs
+>@@ -55,7 +55,7 @@ impl DeviceId {
+> }
+> 
+> #[repr(C)]
+>-#[derive(Debug, qemu_api_macros::Object)]
+>+#[derive(Debug, qemu_api_macros::Object, qemu_api_macros::offsets)]
+> /// PL011 Device Model in QEMU
+> pub struct PL011State {
+>     pub parent_obj: SysBusDevice,
+>diff --git a/rust/qemu-api-macros/Cargo.toml b/rust/qemu-api-macros/Cargo.toml
+>index f8d6d03609f..a8f7377106b 100644
+>--- a/rust/qemu-api-macros/Cargo.toml
+>+++ b/rust/qemu-api-macros/Cargo.toml
+>@@ -19,4 +19,4 @@ proc-macro = true
+> [dependencies]
+> proc-macro2 = "1"
+> quote = "1"
+>-syn = "2"
+>+syn = { version = "2", features = ["extra-traits"] }
+>diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+>index a4bc5d01ee8..cf99ac04b8f 100644
+>--- a/rust/qemu-api-macros/src/lib.rs
+>+++ b/rust/qemu-api-macros/src/lib.rs
+>@@ -3,8 +3,34 @@
+> // SPDX-License-Identifier: GPL-2.0-or-later
+> 
+> use proc_macro::TokenStream;
+>-use quote::quote;
+>-use syn::{parse_macro_input, DeriveInput};
+>+use proc_macro2::Span;
+>+use quote::{quote, quote_spanned};
+>+use syn::{
+>+    parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
+>+    Fields, Ident, Type, Visibility,
+>+};
+>+
+>+struct CompileError(String, Span);
+>+
+>+impl From<CompileError> for proc_macro2::TokenStream {
+>+    fn from(err: CompileError) -> Self {
+>+        let CompileError(msg, span) = err;
+>+        quote_spanned! { span => compile_error!(#msg); }
+>+    }
+>+}
+>+
+>+fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), CompileError> {
+>+    let expected = parse_quote! { #[repr(C)] };
+>+
+>+    if input.attrs.iter().any(|attr| attr == &expected) {
+>+        Ok(())
+>+    } else {
+>+        Err(CompileError(
+>+            format!("#[repr(C)] required for {}", msg),
+>+            input.ident.span(),
+>+        ))
+>+    }
+>+}
+> 
+> #[proc_macro_derive(Object)]
+> pub fn derive_object(input: TokenStream) -> TokenStream {
+>@@ -21,3 +47,48 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
+> 
+>     TokenStream::from(expanded)
+> }
+>+
+>+fn get_fields(input: &DeriveInput) -> Result<&Punctuated<Field, Comma>, CompileError> {
+>+    if let Data::Struct(s) = &input.data {
+>+        if let Fields::Named(fs) = &s.fields {
+>+            Ok(&fs.named)
+>+        } else {
+>+            Err(CompileError(
+>+                "Cannot generate offsets for unnamed fields.".to_string(),
+>+                input.ident.span(),
+>+            ))
+>+        }
+>+    } else {
+>+        Err(CompileError(
+>+            "Cannot generate offsets for union or enum.".to_string(),
+>+            input.ident.span(),
+>+        ))
+>+    }
+>+}
+>+
+>+#[rustfmt::skip::macros(quote)]
+>+fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
+>+    is_c_repr(&input, "#[derive(offsets)]")?;
+>+
+>+    let name = &input.ident;
+>+    let fields = get_fields(&input)?;
+>+    let field_names: Vec<&Ident> = fields.iter().map(|f| f.ident.as_ref().unwrap()).collect();
+>+    let field_types: Vec<&Type> = fields.iter().map(|f| &f.ty).collect();
+>+    let field_vis: Vec<&Visibility> = fields.iter().map(|f| &f.vis).collect();
+>+
+>+    Ok(quote! {
+>+	::qemu_api::with_offsets! {
+>+	    struct #name {
+>+		#(#field_vis #field_names: #field_types,)*
+>+	    }
+>+	}
+>+    })
+>+}
+>+
+>+#[proc_macro_derive(offsets)]
+>+pub fn derive_offsets(input: TokenStream) -> TokenStream {
+>+    let input = parse_macro_input!(input as DeriveInput);
+>+    let expanded = derive_offsets_or_error(input).unwrap_or_else(Into::into);
+>+
+>+    TokenStream::from(expanded)
+>+}
+>diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+>index e092f61e8f3..cc716d75d46 100644
+>--- a/rust/qemu-api/Cargo.toml
+>+++ b/rust/qemu-api/Cargo.toml
+>@@ -16,9 +16,13 @@ categories = []
+> [dependencies]
+> qemu_api_macros = { path = "../qemu-api-macros" }
+> 
+>+[build-dependencies]
+>+version_check = "~0.9"
+>+
+> [features]
+> default = []
+> allocator = []
+> 
+> [lints.rust]
+>-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)'] }
+>+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)',
+>+                                                 'cfg(has_offset_of)'] }
+>diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+>index 419b154c2d2..20f8f718b90 100644
+>--- a/rust/qemu-api/build.rs
+>+++ b/rust/qemu-api/build.rs
+>@@ -4,6 +4,8 @@
+> 
+> use std::path::Path;
+> 
+>+use version_check as rustc;
+>+
+> fn main() {
+>     if !Path::new("src/bindings.rs").exists() {
+>         panic!(
+>@@ -11,4 +13,11 @@ fn main() {
+>              (`ninja bindings.rs`) and copy them to src/bindings.rs, or build through meson."
+>         );
+>     }
+>+
+>+    // Check for available rustc features
+>+    if rustc::is_min_version("1.77.0").unwrap_or(false) {
+>+        println!("cargo:rustc-cfg=has_offset_of");
+>+    }
+>+
+>+    println!("cargo:rerun-if-changed=build.rs");
+> }
+>diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+>index c950b008d59..6f637af7b1b 100644
+>--- a/rust/qemu-api/meson.build
+>+++ b/rust/qemu-api/meson.build
+>@@ -1,3 +1,9 @@
+>+_qemu_api_cfg = ['--cfg', 'MESON']
+>+# _qemu_api_cfg += ['--cfg', 'feature="allocator"']
+>+if rustc.version().version_compare('>=1.77.0')
+>+  _qemu_api_cfg += ['--cfg', 'has_offset_of']
+>+endif
+>+
+> _qemu_api_rs = static_library(
+>   'qemu_api',
+>   structured_sources(
+>@@ -6,6 +12,7 @@ _qemu_api_rs = static_library(
+>       'src/c_str.rs',
+>       'src/definitions.rs',
+>       'src/device_class.rs',
+>+      'src/offset_of.rs',
+>       'src/vmstate.rs',
+>       'src/zeroable.rs',
+>     ],
+>@@ -13,10 +20,7 @@ _qemu_api_rs = static_library(
+>   ),
+>   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+>   rust_abi: 'rust',
+>-  rust_args: [
+>-    '--cfg', 'MESON',
+>-    # '--cfg', 'feature="allocator"',
+>-  ],
+>+  rust_args: _qemu_api_cfg,
+> )
+> 
+> rust.test('rust-qemu-api-tests', _qemu_api_rs,
+>diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+>index cb4573ca6ef..56608c7f7fc 100644
+>--- a/rust/qemu-api/src/device_class.rs
+>+++ b/rust/qemu-api/src/device_class.rs
+>@@ -23,23 +23,23 @@ macro_rules! device_class_init {
+> 
+> #[macro_export]
+> macro_rules! define_property {
+>-    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
+>+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
+>         $crate::bindings::Property {
+>             // use associated function syntax for type checking
+>             name: ::std::ffi::CStr::as_ptr($name),
+>             info: $prop,
+>-            offset: ::core::mem::offset_of!($state, $field) as isize,
+>+            offset: $crate::offset_of!($state, $field) as isize,
+>             set_default: true,
+>             defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
+>             ..$crate::zeroable::Zeroable::ZERO
+>         }
+>     };
+>-    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr$(,)*) => {
+>+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr$(,)*) => {
+>         $crate::bindings::Property {
+>             // use associated function syntax for type checking
+>             name: ::std::ffi::CStr::as_ptr($name),
+>             info: $prop,
+>-            offset: ::core::mem::offset_of!($state, $field) as isize,
+>+            offset: $crate::offset_of!($state, $field) as isize,
+>             set_default: false,
+>             ..$crate::zeroable::Zeroable::ZERO
+>         }
+>diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+>index e6bd953e10b..aa8d16ec94b 100644
+>--- a/rust/qemu-api/src/lib.rs
+>+++ b/rust/qemu-api/src/lib.rs
+>@@ -32,6 +32,7 @@ unsafe impl Sync for bindings::VMStateInfo {}
+> pub mod c_str;
+> pub mod definitions;
+> pub mod device_class;
+>+pub mod offset_of;
+> pub mod vmstate;
+> pub mod zeroable;
+> 
+>@@ -169,3 +170,6 @@ unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+>         }
+>     }
+> }
+>+
+>+#[cfg(has_offset_of)]
+>+pub use core::mem::offset_of;
+>diff --git a/rust/qemu-api/src/offset_of.rs b/rust/qemu-api/src/offset_of.rs
+>new file mode 100644
+>index 00000000000..075e98f986b
+>--- /dev/null
+>+++ b/rust/qemu-api/src/offset_of.rs
+>@@ -0,0 +1,161 @@
+>+// SPDX-License-Identifier: MIT
+>+
+>+/// This macro provides the same functionality as `core::mem::offset_of`,
+>+/// except that only one level of field access is supported.  The declaration
+>+/// of the struct must be wrapped with `with_offsets! { }`.
+>+///
+>+/// It is needed because `offset_of!` was only stabilized in Rust 1.77.
+>+#[cfg(not(has_offset_of))]
+>+#[macro_export]
+>+macro_rules! offset_of {
+>+    ($Container:ty, $field:ident) => {
+>+        <$Container>::OFFSET_TO__.$field
+>+    };
+>+}
+>+
+>+/// A wrapper for struct declarations, that allows using `offset_of!` in
+>+/// versions of Rust prior to 1.77
+>+#[macro_export]
+>+macro_rules! with_offsets {
+>+    // This method to generate field offset constants comes from:
+>+    //
+>+    //     https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=10a22a9b8393abd7b541d8fc844bc0df
+>+    //
+>+    // used under MIT license with permission of Yandros aka Daniel Henry-Mantilla
+>+    (
+>+        $(#[$struct_meta:meta])*
+>+        $struct_vis:vis
+>+        struct $StructName:ident {
+>+            $(
+>+                $(#[$field_meta:meta])*
+>+                $field_vis:vis
+>+                $field_name:ident : $field_ty:ty
+>+            ),*
+>+            $(,)?
+>+        }
+>+    ) => (
+>+        #[cfg(not(has_offset_of))]
+>+        const _: () = {
+>+            struct StructOffsetsHelper<T>(std::marker::PhantomData<T>);
+>+            const END_OF_PREV_FIELD: usize = 0;
+>+
+>+            // populate StructOffsetsHelper<T> with associated consts,
+>+            // one for each field
+>+            $crate::with_offsets! {
+>+                @struct $StructName
+>+                @names [ $($field_name)* ]
+>+                @tys [ $($field_ty ,)*]
+>+            }
+>+
+>+            // now turn StructOffsetsHelper<T>'s consts into a single struct,
+>+            // applying field visibility.  This provides better error messages
+>+            // than if offset_of! used StructOffsetsHelper::<T> directly.
+>+            pub
+>+            struct StructOffsets {
+>+                $(
+>+                    $field_vis
+>+                    $field_name: usize,
+>+                )*
+>+            }
+>+            impl $StructName {
+>+                pub
+>+                const OFFSET_TO__: StructOffsets = StructOffsets {
+>+                    $(
+>+                        $field_name: StructOffsetsHelper::<$StructName>::$field_name,
+>+                    )*
+>+                };
+>+            }
+>+        };
+>+    );
+>+
+>+    (
+>+        @struct $StructName:ident
+>+        @names []
+>+        @tys []
+>+    ) => ();
+>+
+>+    (
+>+        @struct $StructName:ident
+>+        @names [$field_name:ident $($other_names:tt)*]
+>+        @tys [$field_ty:ty , $($other_tys:tt)*]
+>+    ) => (
+>+        #[allow(non_local_definitions)]
+>+        #[allow(clippy::modulo_one)]
+>+        impl StructOffsetsHelper<$StructName> {
+>+            #[allow(nonstandard_style)]
+>+            const $field_name: usize = {
+>+                const ALIGN: usize = std::mem::align_of::<$field_ty>();
+>+                const TRAIL: usize = END_OF_PREV_FIELD % ALIGN;
+>+                END_OF_PREV_FIELD + (if TRAIL == 0 { 0usize } else { ALIGN - TRAIL })
+>+            };
+>+        }
+>+        const _: () = {
+>+            const END_OF_PREV_FIELD: usize =
+>+                StructOffsetsHelper::<$StructName>::$field_name +
+>+                std::mem::size_of::<$field_ty>()
+>+            ;
+>+            $crate::with_offsets! {
+>+                @struct $StructName
+>+                @names [$($other_names)*]
+>+                @tys [$($other_tys)*]
+>+            }
+>+        };
+>+    );
+>+}
+>+
+>+#[cfg(test)]
+>+mod tests {
+>+    use crate::offset_of;
+>+
+>+    #[repr(C)]
+>+    struct Foo {
+>+        a: u16,
+>+        b: u32,
+>+        c: u64,
+>+        d: u16,
+>+    }
+>+
+>+    #[repr(C)]
+>+    struct Bar {
+>+        pub a: u16,
+>+        pub b: u64,
+>+        c: Foo,
+>+        d: u64,
+>+    }
+>+
+>+    crate::with_offsets! {
+>+        #[repr(C)]
+>+        struct Bar {
+>+            pub a: u16,
+>+            pub b: u64,
+>+            c: Foo,
+>+            d: u64,
+>+        }
+>+    }
+>+
+>+    #[repr(C)]
+>+    pub struct Baz {
+>+        b: u32,
+>+        a: u8,
+>+    }
+>+    crate::with_offsets! {
+>+        #[repr(C)]
+>+        pub struct Baz {
+>+            b: u32,
+>+            a: u8,
+>+        }
+>+    }
+>+
+>+    #[test]
+>+    fn test_offset_of() {
+>+        const OFFSET_TO_C: usize = offset_of!(Bar, c);
+>+
+>+        assert_eq!(offset_of!(Bar, a), 0);
+>+        assert_eq!(offset_of!(Bar, b), 8);
+>+        assert_eq!(OFFSET_TO_C, 16);
+>+        assert_eq!(offset_of!(Bar, d), 40);
+>+
+>+        assert_eq!(offset_of!(Baz, b), 0);
+>+        assert_eq!(offset_of!(Baz, a), 4);
+>+    }
+>+}
+>diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+>index 9c252ce18ef..bedcf1e8f39 100644
+>--- a/rust/qemu-api/src/vmstate.rs
+>+++ b/rust/qemu-api/src/vmstate.rs
+>@@ -58,7 +58,7 @@ macro_rules! vmstate_single_test {
+>                 .as_bytes()
+>                 .as_ptr() as *const ::std::os::raw::c_char,
+>             err_hint: ::core::ptr::null(),
+>-            offset: ::core::mem::offset_of!($struct_name, $field_name),
+>+            offset: $crate::offset_of!($struct_name, $field_name),
+>             size: $size,
+>             start: 0,
+>             num: 0,
+>@@ -135,7 +135,7 @@ macro_rules! vmstate_array {
+>                 .as_bytes()
+>                 .as_ptr() as *const ::std::os::raw::c_char,
+>             err_hint: ::core::ptr::null(),
+>-            offset: ::core::mem::offset_of!($struct_name, $field_name),
+>+            offset: $crate::offset_of!($struct_name, $field_name),
+>             size: $size,
+>             start: 0,
+>             num: $length as _,
+>@@ -183,7 +183,7 @@ macro_rules! vmstate_struct_pointer_v {
+>                 .as_bytes()
+>                 .as_ptr() as *const ::std::os::raw::c_char,
+>             err_hint: ::core::ptr::null(),
+>-            offset: ::core::mem::offset_of!($struct_name, $field_name),
+>+            offset: $crate::offset_of!($struct_name, $field_name),
+>             size: ::core::mem::size_of::<*const $type>(),
+>             start: 0,
+>             num: 0,
+>@@ -212,7 +212,7 @@ macro_rules! vmstate_array_of_pointer {
+>             info: unsafe { $info },
+>             size: ::core::mem::size_of::<*const $type>(),
+>             flags: VMStateFlags(VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0),
+>-            offset: ::core::mem::offset_of!($struct_name, $field_name),
+>+            offset: $crate::offset_of!($struct_name, $field_name),
+>             err_hint: ::core::ptr::null(),
+>             start: 0,
+>             num_offset: 0,
+>@@ -241,7 +241,7 @@ macro_rules! vmstate_array_of_pointer_to_struct {
+>                     | VMStateFlags::VMS_STRUCT.0
+>                     | VMStateFlags::VMS_ARRAY_OF_POINTER.0,
+>             ),
+>-            offset: ::core::mem::offset_of!($struct_name, $field_name),
+>+            offset: $crate::offset_of!($struct_name, $field_name),
+>             err_hint: ::core::ptr::null(),
+>             start: 0,
+>             num_offset: 0,
+>diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+>index 381ac84657b..7442f695646 100644
+>--- a/rust/qemu-api/tests/tests.rs
+>+++ b/rust/qemu-api/tests/tests.rs
+>@@ -21,6 +21,7 @@ fn test_device_decl_macros() {
+>         ..Zeroable::ZERO
+>     };
+> 
+>+    #[derive(qemu_api_macros::offsets)]
+>     #[repr(C)]
+>     #[derive(qemu_api_macros::Object)]
+>     pub struct DummyState {
+>diff --git a/subprojects/packagefiles/syn-2-rs/meson.build b/subprojects/packagefiles/syn-2-rs/meson.build
+>index a53335f3092..9f56ce1c24d 100644
+>--- a/subprojects/packagefiles/syn-2-rs/meson.build
+>+++ b/subprojects/packagefiles/syn-2-rs/meson.build
+>@@ -24,6 +24,7 @@ _syn_rs = static_library(
+>     '--cfg', 'feature="printing"',
+>     '--cfg', 'feature="clone-impls"',
+>     '--cfg', 'feature="proc-macro"',
+>+    '--cfg', 'feature="extra-traits"',
+>   ],
+>   dependencies: [
+>     quote_dep,
+>-- 
+>2.47.0
+>
 
-Thanks.
-Song Gao
->> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
->> index cb668703bd..cbb4e3737d 100644
->> --- a/hw/loongarch/boot.c
->> +++ b/hw/loongarch/boot.c
->> @@ -216,12 +216,11 @@ static int64_t load_kernel_info(struct 
->> loongarch_boot_info *info)
->>       return kernel_entry;
->>   }
->>   -static void reset_load_elf(void *opaque)
->> +void reset_load_elf(void *opaque)
->>   {
->>       LoongArchCPU *cpu = opaque;
->>       CPULoongArchState *env = &cpu->env;
->>   -    cpu_reset(CPU(cpu));
->>       if (env->load_elf) {
->>       if (cpu == LOONGARCH_CPU(first_cpu)) {
->>               env->gpr[4] = env->boot_info->a0;
->> @@ -320,12 +319,6 @@ static void loongarch_direct_kernel_boot(struct 
->> loongarch_boot_info *info)
->>   void loongarch_load_kernel(MachineState *ms, struct 
->> loongarch_boot_info *info)
->>   {
->>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
->> -    int i;
->> -
->> -    /* register reset function */
->> -    for (i = 0; i < ms->smp.cpus; i++) {
->> -        qemu_register_reset(reset_load_elf, 
->> LOONGARCH_CPU(qemu_get_cpu(i)));
->> -    }
->>         info->kernel_filename = ms->kernel_filename;
->>       info->kernel_cmdline = ms->kernel_cmdline;
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index 9a635d1d3d..80680d178c 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -1434,6 +1434,19 @@ static int64_t 
->> virt_get_default_cpu_node_id(const MachineState *ms, int idx)
->>       }
->>   }
->>   +static void virt_reset(MachineState *machine, ResetType type)
->> +{
->> +    CPUState *cs;
->> +
->> +    /* Reset all devices including CPU devices */
->> +    qemu_devices_reset(type);
->> +
->> +    /* Reset PC and register context for kernel direct booting 
->> method */
->> +    CPU_FOREACH(cs) {
->> +        reset_load_elf(LOONGARCH_CPU(cs));
->> +    }
->> +}
->> +
->>   static void virt_class_init(ObjectClass *oc, void *data)
->>   {
->>       MachineClass *mc = MACHINE_CLASS(oc);
->> @@ -1457,6 +1470,7 @@ static void virt_class_init(ObjectClass *oc, 
->> void *data)
->>       mc->auto_enable_numa_with_memdev = true;
->>       mc->get_hotplug_handler = virt_get_hotplug_handler;
->>       mc->default_nic = "virtio-net-pci";
->> +    mc->reset = virt_reset;
->>       hc->plug = virt_device_plug_cb;
->>       hc->pre_plug = virt_device_pre_plug;
->>       hc->unplug_request = virt_device_unplug_request;
->> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
->> index b3b870df1f..c7020ec9bb 100644
->> --- a/include/hw/loongarch/boot.h
->> +++ b/include/hw/loongarch/boot.h
->> @@ -115,5 +115,6 @@ struct memmap_entry {
->>   };
->>     void loongarch_load_kernel(MachineState *ms, struct 
->> loongarch_boot_info *info);
->> +void reset_load_elf(void *opaque);
->>     #endif /* HW_LOONGARCH_BOOT_H */
->> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->> index 7212fb5f8f..f7f8fcc024 100644
->> --- a/target/loongarch/cpu.c
->> +++ b/target/loongarch/cpu.c
->> @@ -592,6 +592,13 @@ static void 
->> loongarch_cpu_disas_set_info(CPUState *s, disassemble_info *info)
->>       info->print_insn = print_insn_loongarch;
->>   }
->>   +#ifndef CONFIG_USER_ONLY
->> +static void loongarch_cpu_reset_cb(void *opaque)
->> +{
->> +    cpu_reset((CPUState *) opaque);
->> +}
->> +#endif
->> +
->>   static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->>   {
->>       CPUState *cs = CPU(dev);
->> @@ -607,6 +614,9 @@ static void loongarch_cpu_realizefn(DeviceState 
->> *dev, Error **errp)
->>       loongarch_cpu_register_gdb_regs_for_features(cs);
->>         cpu_reset(cs);
->> +#ifndef CONFIG_USER_ONLY
->> +    qemu_register_reset(loongarch_cpu_reset_cb, dev);
->> +#endif
->>       qemu_init_vcpu(cs);
->>         lacc->parent_realize(dev, errp);
->>
->> base-commit: 58d49b5895f2e0b5cfe4b2901bf24f3320b74f29
+Compilation fails for me, on macos / rustc 1.80.1 
 
+  error[E0369]: binary operation `==` cannot be applied to type 
+    `&Attribute`
+    --> ../rust/qemu-api-macros/src/lib.rs:25:43
+     |
+  25 |     if input.attrs.iter().any(|attr| attr == &expected) {
+     |                                      ---- ^^ --------- &_
+     |                                      |
+     |                                      &Attribute
+
+  error: aborting due to 1 previous error
 
