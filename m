@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640719C0F72
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B487D9C0F75
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Nov 2024 20:56:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t98av-0001TX-UA; Thu, 07 Nov 2024 14:55:05 -0500
+	id 1t98ay-0001Vs-NB; Thu, 07 Nov 2024 14:55:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com>)
- id 1t98at-0001Qt-5h
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:03 -0500
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ <3EhstZwYKCj0shstrqfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--titusr.bounces.google.com>)
+ id 1t98av-0001Tk-F6
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:05 -0500
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com>)
- id 1t98aq-0003K0-A2
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:01 -0500
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-e30ceaa5feeso2484651276.2
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:54:58 -0800 (PST)
+ <3EhstZwYKCj0shstrqfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--titusr.bounces.google.com>)
+ id 1t98as-0003KH-TQ
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 14:55:05 -0500
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-6ea258fe4b6so25991107b3.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 11:54:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1731009297; x=1731614097; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Jzv6DPkMq+AatJ9bE5NP8pF1sQdsh9cAVnptctptWRA=;
- b=h1QWR4dmkZbMAaofqSXG9Y/s3OBcZ10KT4BSI62Vtoihrws1tiNiGfmui22DtlBq54
- eWeISE2e8HQgPh/sB7UzpeaalnCuOtxSQkorabzb6a4hbnBAjNeLR6ejwU6r4Q1rO9L5
- LpnUyDh6HlbCpGMEWKpdvJ+8cQNh2xE9XvUHEwo/sjwLYELg4/H73kYOtuCJJGUGw9xj
- ZG//Mo4sw22ravpGTZk1M1WlYTYVAat5VOqNp+agprDsYCPUMhFFZ9PfZJS0M9tp7ES3
- mAXwPok+WmuyHkl4lAqxRE67Hm8NsZrVkN4179bm389ElCjGGxwe5tRxA4SQZaw66+46
- 4z/Q==
+ d=google.com; s=20230601; t=1731009299; x=1731614099; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Z/XclSmqT8Xhgqma+tYcLYhVDFwTbVxhxPc4Sd2yjI=;
+ b=ipc96J9GZq6QWQsckbNsetr6naEEjQigxVOuz7XCBliSo/UT9yHMg/k+oSmB9R2JEf
+ 3QmUSn8bgMw/k2UiZQbbO55srT2vMWfpJLYnK0//mR/raGdyx908XIXi0hrNqttvxHwc
+ KheWPVoRS/sKdjXxb3hwj3K5UQjCBrJ4gTINDcCuoreqz/nTBJfUNTlGEzpsm7+DpBC4
+ bA+ttdBe2bMU/HRmgNgciroWrBzdlhAOvHJSgMQS1YHwujW5JZKWLlPcocto4t3JSWNm
+ Ikl/sWa2LXVYbW33RMU3+r5j85OHB/Gdix9SXStLw7dF+dWaYVlsgcdrrxRopou48k3r
+ 40Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731009297; x=1731614097;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Jzv6DPkMq+AatJ9bE5NP8pF1sQdsh9cAVnptctptWRA=;
- b=aYjrwCm2ZRhGiCGpCO4gTQVbn2aXiIZIfJhFP7M/XWiif1FrhFW5ddvpKGYZwgAdmw
- iKSUNKpsUiMZdOCdR/avQdM5hBUmqRHfUaV45kmYYw/wFdmWEgO9vvD0hkcJHfdzXJEB
- I/IsWO4YCFSG/waN2KnwahOzbCLIpfHjG1b2w/w7OD6ldAFCYMd9YTsO/e5p2A3paXu+
- SZ8oxTK9x4Rc0ANqsPP9zfypRQjpv6qJwc5a+qPEDYyIrPeVjU4zshxDBpk+Vkhr/89x
- seqMnIqe/AtLzAY7D6STn86SykH3oj1KXNKu1vkJuJGEs/hspIw1xRKNKplw6B+kRO0N
- +4PQ==
+ d=1e100.net; s=20230601; t=1731009299; x=1731614099;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Z/XclSmqT8Xhgqma+tYcLYhVDFwTbVxhxPc4Sd2yjI=;
+ b=flQKYCuuWh2r6twVBFs8mbl01EbLt8sUy/SxgVmajqFAGqWuPO7BA0bcuQUj0qvyNZ
+ 23nzOInty8hQr25Apb65sfQ/XCWZv0Eark/vLdwODlMu1VtK3boxlL7xXqU5Rj5eSZT7
+ cbOK8fD/VZxWVLCSR7PIIoWtRXCeGNbim/eWnfQAMEsFrwNWNcXauqJuzQP/20F8sXNm
+ WvQQ9MOPuY0y6NORKnqPeWmnotreHTaD2aASjOCtVUFBMIjqUEA3IHpadGRNcSTgKavb
+ UohuMIPfyZGkFqYq5lMwiPQdl37D2DoqeYXoj6KDQmV51zdXNRVNnOYXbN9jmB3TAJnC
+ 17bw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUkjLiA6ZTpv9etcH6ntaXYzSTvY3hgI9uW0Yuig8LPh/bAJS+P8X0ILCzt4dahgExia6cojt/hUHkJ@nongnu.org
-X-Gm-Message-State: AOJu0YwiPYzVjTJsrw/Uce3mOagGfSnNk1MhOpUAwPbK3DAOtN+cbC5J
- eIs/9oO8dgXpmkrC9D0BG33p41VSXJzAtAsUZgjdk8LBFIS9NveXKccx9MQLuO/cNmEUedDiCX1
- TCQ==
-X-Google-Smtp-Source: AGHT+IGiyA+yueDTMpEZ1QZ1cl7ZuslQI8OOpAYHv7YNk2TU8FvE5FXXjRKoEjfYhIf8p3t3LOTc6G/UDRY=
+ AJvYcCWw6lAy4Pq0ix2k/9w5AYdO0uiNu2Eg5HrXNPrFEUjrKDr9X0fkAhSTNuF9aogVjydIpbisYiDSvy/I@nongnu.org
+X-Gm-Message-State: AOJu0YybEafvi/XtvZbU386hO53wT0bZs7WU3UlxTjxZ+pdFockg48iT
+ QajXrv5+Y8+rVwm/pSQmZz+4u8zUDLIFKmgcJtO1IX+8lMTEA6sjl9qkc/zza3RO558T2wTwwOz
+ 0mg==
+X-Google-Smtp-Source: AGHT+IEoKLOtlze2ZJ2kJ2E+JQup5sz1gQfCuIsdgKc4JKTWxtcEwo2hpMqv8+7yB3w6Ijy1AVirAR//sig=
 X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:dc:567e:c0a8:e14])
- (user=titusr job=sendgmr) by 2002:a25:2d10:0:b0:e33:4850:b1bd with
- SMTP id
- 3f1490d57ef6-e337f843c12mr621276.1.1731009297594; Thu, 07 Nov 2024 11:54:57
+ (user=titusr job=sendgmr) by 2002:a05:690c:887:b0:6b2:6cd4:7f9a
+ with SMTP id
+ 00721157ae682-6eaddff31bcmr1577b3.8.1731009298680; Thu, 07 Nov 2024 11:54:58
  -0800 (PST)
-Date: Thu,  7 Nov 2024 19:54:47 +0000
+Date: Thu,  7 Nov 2024 19:54:48 +0000
+In-Reply-To: <20241107195453.2684138-1-titusr@google.com>
 Mime-Version: 1.0
+References: <20241107195453.2684138-1-titusr@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241107195453.2684138-1-titusr@google.com>
-Subject: [PATCH 0/6] Add Quanta GSZ BMC machine and PCA I2C GPIO expanders
+Message-ID: <20241107195453.2684138-2-titusr@google.com>
+Subject: [PATCH 1/6] bitops.h: add deposit16 function
 From: Titus Rwantare <titusr@google.com>
 To: peter.maydell@linaro.org, minyard@acm.org, clg@redhat.com
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
  venture@google.com, wuhaotsh@google.com, milesg@linux.vnet.ibm.com, 
  Titus Rwantare <titusr@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3ERstZwYKCjwrgrsqpemmejc.amkocks-bctcjlmlels.mpe@flex--titusr.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3EhstZwYKCj0shstrqfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--titusr.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,45 +94,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series bundles the GPIO sensors previously sent for review:
-https://lore.kernel.org/all/20230206194936.168843-1-titusr@google.com
+Makes it more explicit that 16 bit values are being used
 
-and the GSZ board commit sent here:
-https://lore.kernel.org/all/20241007171700.1594342-1-titusr@google.com/
+Signed-off-by: Titus Rwantare <titusr@google.com>
+---
+ include/qemu/bitops.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-The Quanta GSZ a current Google machine of the day. This machine will be used as a platform to enable features such as the PECI bmc interface, and Intel eSPI virtual wire interface in QEMU.
-
-This patch series also contains a set of i2c GPIO expanders, with support for 4, 8, and 16 GPIO connections.
-
-The devices are configured as GPIO inputs by default, but can have pins configured to be inputs with qmp commands.
-
-These sensors and machine are maintained and used in CI daily within Google.
-
-Titus Rwantare (6):
-  bitops.h: add deposit16 function
-  hw/gpio: add PCA953x i2c GPIO expanders
-  hw/gpio: add PCA9536 i2c gpio expander
-  hw/i2c: add canonical path to i2c event traces
-  hw/arm: imply I2C_DEVICES on NPCM7xx
-  hw/arm: add Quanta GSZ bmc machine
-
- hw/arm/Kconfig                  |   1 +
- hw/arm/npcm7xx_boards.c         | 160 +++++++++++++
- hw/gpio/Kconfig                 |   5 +
- hw/gpio/meson.build             |   1 +
- hw/gpio/pca_i2c_gpio.c          | 409 ++++++++++++++++++++++++++++++++
- hw/gpio/trace-events            |   5 +
- hw/i2c/core.c                   |   8 +-
- hw/i2c/trace-events             |   2 +-
- include/hw/gpio/pca_i2c_gpio.h  |  70 ++++++
- include/qemu/bitops.h           |  26 ++
- tests/qtest/meson.build         |   1 +
- tests/qtest/pca_i2c_gpio-test.c | 188 +++++++++++++++
- 12 files changed, 872 insertions(+), 4 deletions(-)
- create mode 100644 hw/gpio/pca_i2c_gpio.c
- create mode 100644 include/hw/gpio/pca_i2c_gpio.h
- create mode 100644 tests/qtest/pca_i2c_gpio-test.c
-
+diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
+index 2c0a2fe751..05179e3ded 100644
+--- a/include/qemu/bitops.h
++++ b/include/qemu/bitops.h
+@@ -459,6 +459,32 @@ static inline int64_t sextract64(uint64_t value, int start, int length)
+     return ((int64_t)(value << (64 - length - start))) >> (64 - length);
+ }
+ 
++/**
++ * deposit16:
++ * @value: initial value to insert bit field into
++ * @start: the lowest bit in the bit field (numbered from 0)
++ * @length: the length of the bit field
++ * @fieldval: the value to insert into the bit field
++ *
++ * Deposit @fieldval into the 16 bit @value at the bit field specified
++ * by the @start and @length parameters, and return the modified
++ * @value. Bits of @value outside the bit field are not modified.
++ * Bits of @fieldval above the least significant @length bits are
++ * ignored. The bit field must lie entirely within the 16 bit word.
++ * It is valid to request that all 16 bits are modified (ie @length
++ * 16 and @start 0).
++ *
++ * Returns: the modified @value.
++ */
++static inline uint16_t deposit16(uint16_t value, int start, int length,
++                                 uint16_t fieldval)
++{
++    uint16_t mask;
++    assert(start >= 0 && length > 0 && length <= 16 - start);
++    mask = (~0U >> (16 - length)) << start;
++    return (value & ~mask) | ((fieldval << start) & mask);
++}
++
+ /**
+  * deposit32:
+  * @value: initial value to insert bit field into
 -- 
 2.47.0.277.g8800431eea-goog
 
