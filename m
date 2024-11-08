@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAF39C13FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 03:20:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 770BE9C13EA
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 03:16:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9EbX-0008RP-Vm; Thu, 07 Nov 2024 21:20:08 -0500
+	id 1t9EWD-0006sS-HE; Thu, 07 Nov 2024 21:14:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t9EbV-0008QS-Cr; Thu, 07 Nov 2024 21:20:05 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1t9EbT-00085n-P5; Thu, 07 Nov 2024 21:20:05 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-210e5369b7dso17528375ad.3; 
- Thu, 07 Nov 2024 18:20:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731032401; x=1731637201; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=o6ypjtB4Ce9/9kar+pxYobz2T5pYe4mcIKmiMbFih/8=;
- b=g74VikVWGK0lLeJAqUwzb2qLaQSxhlNcqMs7CHgzniajtGCOfZVxh0+vXlI8fF5HWd
- 4AHD1dqMQ+UQbd4ekirxkWNZFq5QwPs32J6xMh9Svwm9O+dY/XQVR8AsUMotvQAs112d
- uFb6wJzeheawNbZPgzIr5EangK/O8VxPvJXPhMPJm940JaP4D7eB/KYGJe6jP8cQpVQU
- ksdm9CW1a3opQnTmOe9TNpwFPqBcyuSe6JMZ/5Sk4n4LhTJGCDsOxTaqybtw0io7qcb0
- ME1GhuaOoryhDBOy512H6dLS5XU/M8r6wA12ar6/x7TNdqOCXI4FesSr+PzwfaT5e7BV
- oElw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731032401; x=1731637201;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=o6ypjtB4Ce9/9kar+pxYobz2T5pYe4mcIKmiMbFih/8=;
- b=WH6eeXNF2gkT6owxIn2MOhwZoJEI63abbhYH/ev6SQZSjXKAcHZXlUXNt8C/aUQRnX
- dGGyu2jVbu9CSHJ8nkmpWrfPa+wMpcAzmaiJmDi0JCYKh9k/jaq/1XMC4HlQq8jZ4C9H
- r6GRnUATNS03kFxj1OVAKqUPvHUIcjzdjcwOAzeetBs20VsSM5OIZSFDIER4r1hpkdKr
- aQVzsA39LGn+LMBN/KyWu6ogOJqeKWbcg3/Cosl3+3ZSPQuPr4PJycM4kNtY1Ib8mL1Q
- d92CwV0Bp7ef6PXwJXw5bRjW76W25MOv0icVFN6RjwuEtaNNrNA3UIwXzpBAsjXExxJM
- ymww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXWMMbjUgg8UpC5+0AqEUI0rubcQM2oXEbUn7gEYpP3HLdhJHulzkS84o+zhLS76vTu9zTErV2On6Np@nongnu.org
-X-Gm-Message-State: AOJu0YzPVNQcElHdwNeKuyF5C1ZFTU6IC5FEaUsqMte2DQApJw1ReE/h
- FWxtjxZp+2keuSXb/xg3qEf6hSX96S+YqPwGvjVF/KgKG4j7uBgFGJ+EMw==
-X-Google-Smtp-Source: AGHT+IG6HD4Dst/dDgt74HMbAZSAxV3gzKIHOmvjH6k/tjYYBw107uqOqaMmyAB/K3YCHgXtrg0zlw==
-X-Received: by 2002:a17:90b:2ec5:b0:2e0:8e36:132 with SMTP id
- 98e67ed59e1d1-2e9b16ea926mr1798465a91.3.1731032401518; 
- Thu, 07 Nov 2024 18:20:01 -0800 (PST)
-Received: from localhost (124-171-217-17.tpgi.com.au. [124.171.217.17])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e99a62bd09sm4361235a91.46.2024.11.07.18.19.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Nov 2024 18:20:01 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 08 Nov 2024 12:19:56 +1000
-Message-Id: <D5GFRSOQDWYJ.2WQBSSB5WHJ83@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>,
- =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>, "Peter Maydell"
- <peter.maydell@linaro.org>
-Subject: Re: [PATCH] tests/functional: Fix the ppc64_hv and the ppc_40p test
- for read-only assets
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.18.2
-References: <20241105160926.393852-1-thuth@redhat.com>
-In-Reply-To: <20241105160926.393852-1-thuth@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t9EW5-0006sH-Hr
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 21:14:29 -0500
+Received: from mgamail.intel.com ([192.198.163.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1t9EW3-0007Ll-1x
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 21:14:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731032067; x=1762568067;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=wrPKQ+gKJ4UWg0JoASdk8oJV1qGe96BO6ocY9KOW9Ew=;
+ b=fl8mi41PMuhN/nnmIkzqojkHWtmiZoM+iOASdjICfVtM/RpFL+wuFnxD
+ ah+zONgE1qJwh9+M61KhR7GyIxVPM3dbUV8mAG8gay6BeuvxtJ8CooccZ
+ tuBGpDMEGL4sey3XXKr0mXOEL6oFXQhFLz+C4JFQiIYVh6mueZ1O7Hjx5
+ HJGJ8SDXNSA6G++EetDGsteORu7WdkJU7BcQKFYA6/3LhVxcShIeZi15y
+ m78JxZ2oR4N865W+S/mNSC23zQQnB5y9U4U8s9kdZjyev6+k5GU4gqeBu
+ BSlTYplD7FzCyuFRy9UmzSP7groCeGKlU4z5rBJvRy51b7LJllGw/Bz6n g==;
+X-CSE-ConnectionGUID: +oNI//ISRKmLdENuJJvpeA==
+X-CSE-MsgGUID: 9tU2zna4SZmJ4Suk19UYRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="18533088"
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="18533088"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 18:14:24 -0800
+X-CSE-ConnectionGUID: HMIoyGIBTOGnYXw5b6XWLQ==
+X-CSE-MsgGUID: 6glL6PAMT46/P50Op3Uq+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; d="scan'208";a="85324973"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 07 Nov 2024 18:14:19 -0800
+Date: Fri, 8 Nov 2024 10:32:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: dongli.zhang@oracle.com
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+ mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
+ likexu@tencent.com, like.xu.linux@gmail.com,
+ zhenyuw@linux.intel.com, groug@kaod.org, lyan@digitalocean.com,
+ khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, joe.jin@oracle.com, davydov-max@yandex-team.ru,
+ dapeng1.mi@linux.intel.com, zide.chen@intel.com
+Subject: Re: [PATCH 2/7] target/i386/kvm: introduce 'pmu-cap-disabled' to set
+ KVM_PMU_CAP_DISABLE
+Message-ID: <Zy14MDBuiFuyj0YS@intel.com>
+References: <20241104094119.4131-1-dongli.zhang@oracle.com>
+ <20241104094119.4131-3-dongli.zhang@oracle.com>
+ <ZyxxygVaufOntpZJ@intel.com>
+ <57b4b74d-67d2-4fcf-aa59-c788afc93619@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <57b4b74d-67d2-4fcf-aa59-c788afc93619@oracle.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,56 +90,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Nov 6, 2024 at 2:09 AM AEST, Thomas Huth wrote:
-> Since commit 786bc2255256, cached asset files are read-only, so now we've
-> got to use "read-only=3Dtrue" in tests that try to use these files direct=
-ly.
->
-> Fixes: 786bc22552 ("tests/functional: make cached asset files read-only")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> I will wait for a day or maybe the weekend. I am going to switch to the previous
+> solution in v2 if there isn't any further objection with a more valid reason.
+> 
+> Thank you very much for the feedback!
+> 
 
-LGTM
+Welcome. It's now v9.2 soft frozen. I'm also continuing to review your
+remaining patches.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-> ---
->  tests/functional/test_ppc64_hv.py | 3 ++-
->  tests/functional/test_ppc_40p.py  | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/test_pp=
-c64_hv.py
-> index 1a6e4b6d07..312248bbfe 100755
-> --- a/tests/functional/test_ppc64_hv.py
-> +++ b/tests/functional/test_ppc64_hv.py
-> @@ -99,7 +99,8 @@ def do_start_alpine(self):
->          self.vm.add_args("-kernel", self.vmlinuz)
->          self.vm.add_args("-initrd", self.initramfs)
->          self.vm.add_args("-smp", "4", "-m", "2g")
-> -        self.vm.add_args("-drive", f"file=3D{self.iso_path},format=3Draw=
-,if=3Dnone,id=3Ddrive0")
-> +        self.vm.add_args("-drive", f"file=3D{self.iso_path},format=3Draw=
-,if=3Dnone,"
-> +                                    "id=3Ddrive0,read-only=3Dtrue")
-> =20
->          self.vm.launch()
->          wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
-> diff --git a/tests/functional/test_ppc_40p.py b/tests/functional/test_ppc=
-_40p.py
-> index c64e876c1f..67bcdae53a 100755
-> --- a/tests/functional/test_ppc_40p.py
-> +++ b/tests/functional/test_ppc_40p.py
-> @@ -46,7 +46,8 @@ def test_factory_firmware_and_netbsd(self):
-> =20
->          self.vm.set_console()
->          self.vm.add_args('-bios', bios_path,
-> -                         '-fda', drive_path)
-> +                         '-drive',
-> +                         f"file=3D{drive_path},format=3Draw,if=3Dfloppy,=
-read-only=3Dtrue")
->          self.vm.launch()
->          os_banner =3D 'NetBSD 4.0 (GENERIC) #0: Sun Dec 16 00:49:40 PST =
-2007'
->          wait_for_console_pattern(self, os_banner)
+Regards,
+Zhao
 
 
