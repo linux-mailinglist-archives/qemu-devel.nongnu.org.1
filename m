@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC569C22E3
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6599C2378
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:39:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Siv-0000oL-CX; Fri, 08 Nov 2024 12:24:42 -0500
+	id 1t9SwS-0003cb-Sz; Fri, 08 Nov 2024 12:38:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1t9Sit-0000o5-0u
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:24:39 -0500
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1t9Sir-0005ld-1z
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:24:38 -0500
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-5ee3e12b191so1062596eaf.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:24:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731086675; x=1731691475; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vuc8Go6O6cgUUfDO/jgvBT2D0c3rxLhpYWq+3fQCZgY=;
- b=EiNwBwI9v6lIQY1GXYt3lJ4OI4Tj3htguNY/bMySSJ5pfBvzbmtIaHibP0HK0UgHlc
- xGc0rYhKijL5pnhDpOWlHNjW3SscPV8MelsDvzRYcRs2bmDaYdvE/IUYgKmf9F0ldrHC
- eODYvSl03yhXf3NdvLfc3JP+2lg0eBZYli+L8a2NRDQiQKerNDcBwAzQVa9DN4GBmZXq
- lSNjBgroO6P21yAN37eC1Zn8UEZ0izJYObkjj6VtR8oRncHMmaH55HPLmyAjqherULoN
- 9IZt+q3iM0RVGbVrCeh6oBetHBTWvmuw+5/NwrFP5i7CUyuEw0qIrRYIDeFAi7FCbrzn
- bjMA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t9SwP-0003az-25
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t9SwM-0007ZL-Pu
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731087513;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HRQlLEKuUjdRqZQeOMskkxAI/jdXKEPQv2oog1DAxk4=;
+ b=ZF2/UzcAw1uapfzkJKMhfQI730XZZrtE8GNFA6B72YoAm3sqL8hyH0N3sikI1i1U6Pjk9j
+ 3J7WZOyuTCjv3NNPBD6arbLr0QN+k4w+F2aXf2WH067aB0ooY9H0YOvRjoDCRYumdWZTZI
+ yNSM3G7R7lTYNzTSPgfcmdnwoPQEXp4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-CoAulT4DOACgrYycv0arwA-1; Fri, 08 Nov 2024 12:38:31 -0500
+X-MC-Unique: CoAulT4DOACgrYycv0arwA-1
+X-Mimecast-MFC-AGG-ID: CoAulT4DOACgrYycv0arwA
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-431ad45828aso16426505e9.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731086675; x=1731691475;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vuc8Go6O6cgUUfDO/jgvBT2D0c3rxLhpYWq+3fQCZgY=;
- b=DLzHm3R0FDL83r+F+lSFDmWOyUPiVA+nih7FDi4FNq/nICqpgCb9F1th7C0OvErPLb
- 4MvXrqvjkpZHAUOvUXsFeuhEbj796iooBVqzFhE9MBhImH43i1BUU2KNPYAQ7oE0bzsl
- mQCTGnaE0kbKBYgfIqAeK/loiWQf4kenJfxqfO2Hfc2neJoyZV1NrbQuV6PD7W38iHXo
- 8njeWwEtn8SAa6zYnwUl++hrjYRmHuAgL7hfJq6q8Excpv/VNXO3E7V7ikKlRlnUS0sx
- C0o+lFR17Io+2LAaHCGhjs4stq98su6c9uGGL5nnc0LqWq+jjO7FT7/R/P9mhxps8uP5
- nxag==
-X-Gm-Message-State: AOJu0Yyf4O1Hoz136iwvPAAun37/1yG9ZRSnQWk71WtybI5n3zZ6RWZm
- wiSvA7uHGdHzppN4vbaZziKfyXmXDMMid+hs2LIUV3f2gKi8eCYU1aZsOA3+D3knSBogVFXhb+6
- tQiAZFJSWB1E96bY7p5c6v2kAVEU=
-X-Google-Smtp-Source: AGHT+IEIPyk+Sbg58zyZwow9jV6c330NIVvw0HPgXKactC9KQknYMkbMj5Tl8zowyonvVc+vfdh5/AU7L0+/vCM4pDE=
-X-Received: by 2002:a05:6218:280a:b0:1c3:89d4:e888 with SMTP id
- e5c5f4694b2df-1c641f40665mr304741855d.20.1731086674864; Fri, 08 Nov 2024
- 09:24:34 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731087510; x=1731692310;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HRQlLEKuUjdRqZQeOMskkxAI/jdXKEPQv2oog1DAxk4=;
+ b=VrRkYaVJAaMV+w7fj1iPYZ+PlQCqqBVvEgRxXCDGw2Ff5o0xuUNYCZ0jsyPCmFWoSj
+ h0M31SRrNSNvXfw3IZ/Bk6k6qN7uV4fi/TWFid7RnGt9h6nCKBY7qkAAPchABf7H+Ht0
+ /8XIysMtjRR8Tb2R+8I5KXFwgGgpGSlJXOOj5aLrBGByMCSgeNZLEvKRJ4lxKBO720bS
+ 2TbucKBqFHoSJQ6naty33QtvJu7AqFU+kKR9RC20k8GJ4YRXrtX1CexIIfEPq33hhlKK
+ pxrCDuZNsJA69mqTt0Mkd+M9z3eEig6H23lAn6ri6wf1GJ2hAb9kEnOXNCW0/hlrvyw0
+ ocPQ==
+X-Gm-Message-State: AOJu0YySUoFN3IlDbDQdgf7jlwSY86ndYunJ1Bc3+WEICeogZkbuW055
+ E4+Hi45AnFcU0yAxqZ//DxzSQ8INyhapK3HEuK/9NobZDBF1wdax6oKI9x1ZaHySNSfWL0TjFn7
+ 2jKDMc6Zcy8oFEkis/q8N8RSFb9sT1yOuKc5RjHt7+IOZdodL4dww8v7F72GGk/d0fU3G4H1gXC
+ ce+ToSk5Zw6v8WL2gAny1vw2q1mK02lw313Z3BkOI=
+X-Received: by 2002:a05:600c:4e8b:b0:431:44f6:566f with SMTP id
+ 5b1f17b1804b1-432b7501d2bmr32193285e9.13.1731087510329; 
+ Fri, 08 Nov 2024 09:38:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEVk8s8yAyZbaWLjWrX71eAYu/c7IcfPeUNALqEO+JpqvE8rTudrNifKVYSzA3muT+rr8ofg==
+X-Received: by 2002:a05:600c:4e8b:b0:431:44f6:566f with SMTP id
+ 5b1f17b1804b1-432b7501d2bmr32193045e9.13.1731087509724; 
+ Fri, 08 Nov 2024 09:38:29 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.84.243])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b053ff08sm79183555e9.10.2024.11.08.09.38.29
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 09:38:29 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/13] (Almost entirely) bugfix changes for QEMU 9.2 hard freeze
+Date: Fri,  8 Nov 2024 18:38:15 +0100
+Message-ID: <20241108173828.111454-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-References: <20241106174443.557557-1-pbonzini@redhat.com>
-In-Reply-To: <20241106174443.557557-1-pbonzini@redhat.com>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Fri, 8 Nov 2024 23:24:37 +0600
-Message-ID: <CAFfO_h5R0_iLLk3N=VJfXKPpYzYEvg2swk49PzVo1yoR4Auc3Q@mail.gmail.com>
-Subject: Re: [PATCH] eif: cope with huge section sizes
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=dorjoychy111@gmail.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,96 +98,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 6, 2024 at 11:44=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> Check for overflow as well as allocation failure.  Resolves Coverity CID =
-1564859.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  hw/core/eif.c | 48 +++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 41 insertions(+), 7 deletions(-)
->
-> diff --git a/hw/core/eif.c b/hw/core/eif.c
-> index cbcd80de58b..25f2aedf3fa 100644
-> --- a/hw/core/eif.c
-> +++ b/hw/core/eif.c
-> @@ -123,6 +123,10 @@ static bool read_eif_header(FILE *f, EifHeader *head=
-er, uint32_t *crc,
->
->      for (int i =3D 0; i < MAX_SECTIONS; ++i) {
->          header->section_sizes[i] =3D be64_to_cpu(header->section_sizes[i=
-]);
-> +        if (header->section_sizes[i] > SSIZE_MAX) {
-> +            error_setg(errp, "Invalid EIF image. Section size out of bou=
-nds");
-> +            return false;
-> +        }
->      }
->
->      header->unused =3D be32_to_cpu(header->unused);
-> @@ -282,7 +286,12 @@ static bool get_signature_fingerprint_sha384(FILE *e=
-if, uint64_t size,
->      struct cbor_load_result result;
->      bool ret =3D false;
->
-> -    sig =3D g_malloc(size);
-> +    sig =3D g_try_malloc(size);
-> +    if (!sig) {
-> +        error_setg(errp, "Out of memory reading signature section");
-> +        goto cleanup;
-> +    }
-> +
->      got =3D fread(sig, 1, size, eif);
->      if ((uint64_t) got !=3D size) {
->          error_setg(errp, "Failed to read EIF signature section data");
-> @@ -324,7 +333,12 @@ static bool get_signature_fingerprint_sha384(FILE *e=
-if, uint64_t size,
->          error_setg(errp, "Invalid signature CBOR");
->          goto cleanup;
->      }
-> -    cert =3D g_malloc(len);
-> +    cert =3D g_try_malloc(len);
-> +    if (!cert) {
-> +        error_setg(errp, "Out of memory reading signature section");
-> +        goto cleanup;
-> +    }
-> +
->      for (int i =3D 0; i < len; ++i) {
->          cbor_item_t *tmp =3D cbor_array_get(pair->value, i);
->          if (!tmp) {
-> @@ -503,7 +517,11 @@ bool read_eif_file(const char *eif_path, const char =
-*machine_initrd,
->                  goto cleanup;
->              }
->
-> -            ptr =3D g_malloc(hdr.section_size);
-> +            ptr =3D g_try_malloc(hdr.section_size);
-> +            if (!ptr) {
-> +                error_setg(errp, "Out of memory reading kernel section")=
-;
-> +                goto cleanup;
-> +            }
->
->              iov_ptr =3D g_malloc(sizeof(struct iovec));
->              iov_ptr->iov_base =3D ptr;
-> @@ -528,7 +546,11 @@ bool read_eif_file(const char *eif_path, const char =
-*machine_initrd,
->                  goto cleanup;
->              }
->              size =3D hdr.section_size;
-> -            *cmdline =3D g_malloc(size + 1);
-> +            *cmdline =3D g_try_malloc(size + 1);
-> +            if (!cmdline) {
-> +                error_setg(errp, "Out of memory reading command line sec=
-tion");
-> +                goto cleanup;
-> +            }
+The following changes since commit a1dacb66915eb7d08a0596cc97068a37c39930d3:
 
-I was looking into doing some changes on top of this patch and this
-check above should be if (!(*cmdline)), right?
+  Merge tag 'for-upstream-rust' of https://gitlab.com/bonzini/qemu into staging (2024-11-06 21:27:47 +0000)
 
-Regards,
-Dorjoy
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 37d729ee75fd035b1a8995b51b4e0d182c909c0b:
+
+  hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus (2024-11-08 09:24:52 +0100)
+
+----------------------------------------------------------------
+* i386: fix -M isapc with ubsan
+* i386: add sha512, sm3, sm4 feature bits
+* eif: fix Coverity issues
+* i386/hvf: x2APIC support
+* i386/hvf: fixes
+* i386/tcg: fix 2-stage page walk
+* eif: fix coverity issues
+* rust: fix subproject warnings with new rust, avoid useless cmake fallback
+----------------------------------------------------------------
+
+The x2APIC support is not a bugfix, but it's small and it was posted well in
+advance of soft freeze.
+
+Paolo
+
+Alexander Graf (1):
+      target/i386: Fix legacy page table walk
+
+Paolo Bonzini (5):
+      target/i386: add sha512, sm3, sm4 feature bits
+      rust: add meson_version to all subprojects
+      eif: cope with huge section offsets
+      eif: cope with huge section sizes
+      rust: qemu-api-macros: always process subprojects before dependencies
+
+Peter Maydell (1):
+      hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus
+
+Phil Dennis-Jordan (5):
+      i386/hvf: Integrates x2APIC support with hvf accel
+      i386/hvf: Fix for UB in handling CPUID function 0xD
+      i386/hvf: Fixes startup memory leak (vmcs caps)
+      i386/hvf: Raise exception on error setting APICBASE
+      i386/hvf: Removes duplicate/shadowed variables in hvf_vcpu_exec
+
+Pierrick Bouvier (1):
+      target/i386/hvf: fix clang compilation warning
+
+ include/qemu/osdep.h                               |  4 ++
+ target/i386/cpu.h                                  |  1 +
+ hw/core/eif.c                                      | 52 +++++++++++++++++++---
+ hw/i386/pc.c                                       |  4 +-
+ target/i386/cpu.c                                  |  2 +-
+ target/i386/hvf/hvf.c                              |  7 ++-
+ target/i386/hvf/x86_cpuid.c                        |  8 ++--
+ target/i386/hvf/x86_emu.c                          | 42 ++++++++++++++++-
+ target/i386/tcg/seg_helper.c                       |  2 +-
+ target/i386/tcg/sysemu/excp_helper.c               |  2 +-
+ rust/qemu-api-macros/meson.build                   |  4 ++
+ .../packagefiles/arbitrary-int-1-rs/meson.build    |  1 +
+ subprojects/packagefiles/bilge-0.2-rs/meson.build  |  1 +
+ .../packagefiles/bilge-impl-0.2-rs/meson.build     |  1 +
+ subprojects/packagefiles/either-1-rs/meson.build   |  1 +
+ .../packagefiles/itertools-0.11-rs/meson.build     |  1 +
+ .../packagefiles/proc-macro-error-1-rs/meson.build |  1 +
+ .../proc-macro-error-attr-1-rs/meson.build         |  1 +
+ .../packagefiles/proc-macro2-1-rs/meson.build      |  1 +
+ subprojects/packagefiles/quote-1-rs/meson.build    |  1 +
+ subprojects/packagefiles/syn-2-rs/meson.build      |  1 +
+ .../packagefiles/unicode-ident-1-rs/meson.build    |  1 +
+ 22 files changed, 118 insertions(+), 21 deletions(-)
+-- 
+2.47.0
+
 
