@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A319C238A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0301E9C238C
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Swn-00044z-MQ; Fri, 08 Nov 2024 12:39:01 -0500
+	id 1t9Swq-00046E-E7; Fri, 08 Nov 2024 12:39:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9Swl-00044P-RN
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:59 -0500
+ id 1t9Swp-00045y-4D
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:39:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9Swk-0007fB-Fx
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:59 -0500
+ id 1t9Swn-0007fU-Ip
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:39:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731087537;
+ s=mimecast20190719; t=1731087540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tMydD67TS3FVaRTLFXvf1upIIs0DeRvxwW2NfVrOwOE=;
- b=L9CZe/qSZ/7Ur02E6EAjh/IOJoPBnL/6Qc6E54l38HJjN55D0ya//ZI4lQ67/tNEBahUVO
- s+Vnkk64vtG9lOfl4ZIdxpfD1+PMpYmtUxr5eiLOvCajoMT9pkkfileU5NZ+zZTqd01dKl
- rhMvno5iEb5V6YcWU5O159Ju2NsjosQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WlWrYmpsyykMxq9th+UoPeQpQpPsd/MHm4v4chl35/U=;
+ b=IJ46+vg8NhabJ03RIqUoRj+5XOWfCSS3/6K7DEYZUVXiG5nZD1fQTF7wLg8GBHA7mqE6B/
+ 6R3fo/HSnexkmpReF5PNnkhwkedk4tc9+3p1ktOh9r2RyDMDxMElob3Jygn7Gk7xjUksfw
+ cwvYpU9rFCd+10DzONGh4r9gHjpTxUA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-F240E565MzShn3nGOO0Ajw-1; Fri, 08 Nov 2024 12:38:56 -0500
-X-MC-Unique: F240E565MzShn3nGOO0Ajw-1
-X-Mimecast-MFC-AGG-ID: F240E565MzShn3nGOO0Ajw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43157e3521dso16345855e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:56 -0800 (PST)
+ us-mta-664-fyS9gj-dOTCIl269Gq-AJA-1; Fri, 08 Nov 2024 12:38:59 -0500
+X-MC-Unique: fyS9gj-dOTCIl269Gq-AJA-1
+X-Mimecast-MFC-AGG-ID: fyS9gj-dOTCIl269Gq-AJA
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37d5a3afa84so1406148f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731087535; x=1731692335;
+ d=1e100.net; s=20230601; t=1731087537; x=1731692337;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tMydD67TS3FVaRTLFXvf1upIIs0DeRvxwW2NfVrOwOE=;
- b=ODBlLnGbuXQOqKy42PQEkKgcRLhQbExGNCsgEUT8DZUUFFVmYuGyb1MigJXkv3mrqg
- bNA/3byJplbxBpER3wpvU0ac3lxe3rnquu7ikVWSSZ3/ElIRTC79/ALcfm2RL+cjS42E
- sRKWD2X35qE4tWmMxRrO14UwL1FTbjJEDjoN/VKKxCl9Jh68mQAH2kreu/Kw6woGfatx
- CzHpsBnrmAfuHQ9Dpr58BOxdW6BSKeQzb4hBWupfZVZfrfOVRy53ZdbbixFL3zuaWGlS
- HfQMvSNJmVSaqTL/I8zVBZPgdEb7KqaP+Y9jT6/Vgh0XVViEYZY/0GAWATJgT525JhyE
- 9a7Q==
-X-Gm-Message-State: AOJu0YxtbECLZ/+eHO5T+VOy03JDpPqpgxVIwHU+f5Q6yS8jCX+Xto/a
- 9hVB/IWklyMZkcz/B6x3qSrikXHmOxCPXQ68g0FveSd21Om0dDjS8+0fraUgcwwR62g9YV2R+OJ
- TNB30VhoqwLGRr/XDGl8G4XGXCIxF1DXVp4zMCq0VRfVeJuUxnFYYGg66XZJXGwhN25L4Q0vKhe
- P81nPkw1R4SnrIYCzlsZglwl8bWsNKekB4oCFVqIA=
-X-Received: by 2002:a05:600c:1f88:b0:425:80d5:b8b2 with SMTP id
- 5b1f17b1804b1-432b7509ac4mr31020665e9.16.1731087535142; 
- Fri, 08 Nov 2024 09:38:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEN9FMRbFsDqdMxJjSSglanGAhsCZ3iuZV+Lv7D43fWnr/HvyU6eyYnhK07zBA2gjP6O3BN6A==
-X-Received: by 2002:a05:600c:1f88:b0:425:80d5:b8b2 with SMTP id
- 5b1f17b1804b1-432b7509ac4mr31020435e9.16.1731087534734; 
- Fri, 08 Nov 2024 09:38:54 -0800 (PST)
+ bh=WlWrYmpsyykMxq9th+UoPeQpQpPsd/MHm4v4chl35/U=;
+ b=chhZaqN8h1NoaEICdRTZNm7oJ2DD9ZQwWDn18XhxwzuxZId69jLwPncNWJJAflzx0E
+ pIjqPhPnPQeabuR2hfwcWBSGS/iUbwKMTz6W6lL/gaNkjP+Wz7fHFr4Av/HzL2x4kUTs
+ vCK3ARYban6DEmyvVrg+KKLGxD1DrGYVVclCY+/iGdPjenQbq3uofvZos6npseXDYYaB
+ 54NTyIMlWU+4iGheRf8P/xkt73uNlHfJVZUN0s0WHRRVmy4bsXbq+X5r4+kFo+aasm8q
+ VGtcu6XcD/b60VVnhLZRmJ1i7NbTNlObZO4yr/raTWBSYE0rJXCVTfj2emu2x95Xhw6V
+ l6KQ==
+X-Gm-Message-State: AOJu0Yxdb70aGVW0+DPEUkPJUGqHzM6syYRckJgVv+RrrKZlpSMf2U26
+ 9pUCS1sdCsXCEg3cU+6iY9aRs5wvcn0SgWGS9LLJOfze1jzVAhJMbdpKNnrOQhQn28sHGzEAaVH
+ OIx7AXNpv3ueBceuIrf1NoRVJglQTNrq6wUmO9FmkknOeTxTfKGpw+7n0xB1fiVRwovlHukdAAE
+ hLbv7a6aooiqe/HFosgzHgGAJI99xZEDtSVwJ5L6U=
+X-Received: by 2002:a05:6000:4023:b0:37d:4c8f:2e1 with SMTP id
+ ffacd0b85a97d-381f1867325mr3146506f8f.22.1731087536765; 
+ Fri, 08 Nov 2024 09:38:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEx8CrCxzlxcJsOQLJoFo5ikdm+yDSZfYlCcpxVndLPdK1JWBMOTR+XdiTz8PJn0pyif0XQUQ==
+X-Received: by 2002:a05:6000:4023:b0:37d:4c8f:2e1 with SMTP id
+ ffacd0b85a97d-381f1867325mr3146487f8f.22.1731087536371; 
+ Fri, 08 Nov 2024 09:38:56 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b05c1a13sm77239735e9.29.2024.11.08.09.38.53
+ ffacd0b85a97d-381eda0604bsm5460304f8f.105.2024.11.08.09.38.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 09:38:53 -0800 (PST)
+ Fri, 08 Nov 2024 09:38:55 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PULL 12/13] rust: qemu-api-macros: always process subprojects before
- dependencies
-Date: Fri,  8 Nov 2024 18:38:27 +0100
-Message-ID: <20241108173828.111454-13-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-stable@nongnu.org
+Subject: [PULL 13/13] hw/i386/pc: Don't try to init PCI NICs if there is no
+ PCI bus
+Date: Fri,  8 Nov 2024 18:38:28 +0100
+Message-ID: <20241108173828.111454-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108173828.111454-1-pbonzini@redhat.com>
 References: <20241108173828.111454-1-pbonzini@redhat.com>
@@ -102,26 +103,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid looking for Rust dependencies via cmake.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+The 'isapc' machine type has no PCI bus, but pc_nic_init() still
+calls pci_init_nic_devices() passing it a NULL bus pointer.  This
+causes the clang sanitizer to complain:
+
+$ ./build/clang/qemu-system-i386 -M isapc
+../../hw/pci/pci.c:1866:39: runtime error: member access within null pointer of type 'PCIBus' (aka 'struct PCIBus')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/pci/pci.c:1866:39 in
+
+This is because pci_init_nic_devices() does
+ &bus->qbus
+which is undefined behaviour on a NULL pointer even though we're not
+actually dereferencing the pointer. (We don't actually crash as
+a result, so if you aren't running a sanitizer build then there
+are no user-visible effects.)
+
+Make pc_nic_init() avoid trying to initialize PCI NICs on a non-PCI
+system.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 8d39f9ba14d64 ("hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/r/20241105171813.3031969-1-peter.maydell@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/meson.build | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/i386/pc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
-index 24325dea5c2..6f94a4bb3c2 100644
---- a/rust/qemu-api-macros/meson.build
-+++ b/rust/qemu-api-macros/meson.build
-@@ -1,3 +1,7 @@
-+subproject('proc-macro2-1-rs', required: true)
-+subproject('quote-1-rs', required: true)
-+subproject('syn-2-rs', required: true)
-+
- quote_dep = dependency('quote-1-rs', native: true)
- syn_dep = dependency('syn-2-rs', native: true)
- proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 830614d9303..f9147fecbdc 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1252,7 +1252,9 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
+     }
+ 
+     /* Anything remaining should be a PCI NIC */
+-    pci_init_nic_devices(pci_bus, mc->default_nic);
++    if (pci_bus) {
++        pci_init_nic_devices(pci_bus, mc->default_nic);
++    }
+ 
+     rom_reset_order_override();
+ }
 -- 
 2.47.0
 
