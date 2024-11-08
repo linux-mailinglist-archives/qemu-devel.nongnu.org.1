@@ -2,60 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8649C1FAD
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 15:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 522849C1FBC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 15:54:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9QI7-0007Fk-EG; Fri, 08 Nov 2024 09:48:51 -0500
+	id 1t9QLy-0007Hj-Ec; Fri, 08 Nov 2024 09:52:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t9QHS-0004zY-3h
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:48:12 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t9QLv-00079Q-Os
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:52:47 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1t9QHP-0005Q0-DM
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:48:09 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XlMDG5yMKz6J7DD;
- Fri,  8 Nov 2024 22:45:02 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id B8FC8140A9C;
- Fri,  8 Nov 2024 22:47:56 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 8 Nov
- 2024 15:47:56 +0100
-Date: Fri, 8 Nov 2024 14:47:54 +0000
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <linux-cxl@vger.kernel.org>, <mst@redhat.com>, <qemu-devel@nongnu.org>,
- Esifiel <esifiel@gmail.com>, Fan Ni <fan.ni@samsung.com>,
- <linuxarm@huawei.com>
-Subject: Re: [PATCH qemu 08/10] hw/cxl: Check that writes do not go beyond
- end of target attributes
-Message-ID: <20241108144754.00003a92@huawei.com>
-In-Reply-To: <CAFEAcA8LB3t0n_BqjBeEejfmVVYMbQ1rT9qwEbsNEoUDbkym9A@mail.gmail.com>
-References: <20241101133917.27634-1-Jonathan.Cameron@huawei.com>
- <20241101133917.27634-9-Jonathan.Cameron@huawei.com>
- <CAFEAcA8LB3t0n_BqjBeEejfmVVYMbQ1rT9qwEbsNEoUDbkym9A@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1t9QLt-000647-Vt
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:52:47 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8E9nT1021329;
+ Fri, 8 Nov 2024 14:52:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=7zNE31OFoIEFomuSOi2xW6DvBEuBHXXNZqlNw22a3
+ aQ=; b=dcQMziYD2qM4y1ArFzFUwNpoV/SOD5NisoJyOkdmctpzM/BffqvNJoFgl
+ w7196YdEXtJdl0ldyXdx/mlJgdApkZqYEApNKUHRRKTIEHEYXVvH0qeqFofXAz6m
+ slwk8Mns8gSwrX1zjnsrqSZh3hgYYa914m/4zR6LyIpyfzkGxI+ScnQAi0wB+yRb
+ G8sUs+x4ParOZ1EwknG2F8DilFhrgKV3f9n/PGnljVbvteaUdXHZeXUfjxqqIXXq
+ OVaqzW3ZaXSnzANPVPX6KDmjsspzPFLKWrXhu86t8QhpnAygn8EZVw/GBz/4KPWs
+ Kl8hkKiG3+IQlnBiVmjrFs9WR6ySg==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42sm5q0amu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Nov 2024 14:52:42 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8A3JPM024200;
+ Fri, 8 Nov 2024 14:52:41 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42nxdsaevq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Nov 2024 14:52:41 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4A8Eqdtd54264066
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 8 Nov 2024 14:52:39 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9AC0620040;
+ Fri,  8 Nov 2024 14:52:39 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 37E3A20043;
+ Fri,  8 Nov 2024 14:52:39 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.28.129])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  8 Nov 2024 14:52:39 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/1] tests/tcg: Test that sigreturn() does not corrupt the
+ signal mask
+Date: Fri,  8 Nov 2024 15:50:03 +0100
+Message-ID: <20241108145237.37377-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 7UjB51xFQNA2DWq5ceSZSBxyckpBizBj
+X-Proofpoint-GUID: 7UjB51xFQNA2DWq5ceSZSBxyckpBizBj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=886 mlxscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411080122
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,81 +101,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Nov 2024 15:39:13 +0000
-Peter Maydell <peter.maydell@linaro.org> wrote:
+v1: https://lore.kernel.org/qemu-devel/20241017125811.447961-1-iii@linux.ibm.com/
+v1 -> v2: Drop patch 1, since it's merged.
+          Add -pthread to the test (Richard).
 
-> On Fri, 1 Nov 2024 at 13:43, Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
-> >
-> > In cmd_features_set_feature() the an offset + data size schemed
-> > is used to allow for large features.  Ensure this does not write
-> > beyond the end fo the buffers used to accumulate the full feature
-> > attribute set.
-> >
-> > Reported-by: Esifiel <esifiel@gmail.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index a40d81219c..078782e8b9 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -1292,6 +1292,11 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-> >
-> >          ps_set_feature = (void *)payload_in;
-> >          ps_write_attrs = &ps_set_feature->feat_data;
-> > +
-> > +        if ((uint32_t)hdr->offset + bytes_to_copy >
-> > +            sizeof(ct3d->patrol_scrub_wr_attrs)) {
-> > +            return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> > +        }  
-> 
-> Coverity complains about this code (CID 1564900, 1564901).
-> Essentially it does not like that this check permits
-> the memcpy for the case where hdr->offset is 2 and
-> bytes_to_copy is 0, because memcpy(invalid_dest, src, 0)
-> is still UB even though you might logically expect it
-> to do nothing.
-Huh.  Something new I learned today ;)
+Hi,
 
-Anyhow, it makes little sense to have a set feature with zero length payload
-so I can check for this before we even know what type of payload this is,
-thus catching both cases here.
+I noticed that while the sigreturn fix was merged, the test wasn't.
+Richard noticed that -pthread was missing, so I'm resending the test
+with this issue fixed.
 
-I'll spin a patch shortly.
-
-thanks
-
-Jonathan
+Best regards,
+Ilya
 
 
-> 
-> >          memcpy((uint8_t *)&ct3d->patrol_scrub_wr_attrs + hdr->offset,
-> >                 ps_write_attrs,
-> >                 bytes_to_copy);  
-> 
-> > @@ -1314,6 +1319,11 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-> >
-> >          ecs_set_feature = (void *)payload_in;
-> >          ecs_write_attrs = ecs_set_feature->feat_data;
-> > +
-> > +        if ((uint32_t)hdr->offset + bytes_to_copy >
-> > +            sizeof(ct3d->ecs_wr_attrs)) {
-> > +            return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> > +        }
-> >          memcpy((uint8_t *)&ct3d->ecs_wr_attrs + hdr->offset,
-> >                 ecs_write_attrs,
-> >                 bytes_to_copy);  
-> 
-> Similarly here.
-> 
-> thanks
-> -- PMM
+
+Ilya Leoshkevich (1):
+  tests/tcg: Test that sigreturn() does not corrupt the signal mask
+
+ tests/tcg/multiarch/Makefile.target     |  3 ++
+ tests/tcg/multiarch/sigreturn-sigmask.c | 51 +++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 tests/tcg/multiarch/sigreturn-sigmask.c
+
+-- 
+2.47.0
 
 
