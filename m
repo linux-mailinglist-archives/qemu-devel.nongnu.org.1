@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C2F9C1E83
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 14:51:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C98C9C1EA3
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 14:56:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9PNW-0005PI-Bn; Fri, 08 Nov 2024 08:50:22 -0500
+	id 1t9PSL-00074I-Do; Fri, 08 Nov 2024 08:55:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t9PNU-0005P8-Nd
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:50:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1t9PNS-0004t9-2W
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:50:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731073816;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N7IIHp2htkATktS74xh5+MpR42+z5btxMLC9PgzQKio=;
- b=S4hn9olmusbSNeUE0I+JtOTbtkF5BbGonDaWXrPqmwzPOU6HRk+LJDouigVkgZPwtbIqlJ
- lk+j0OWGibJg3PyxSAhvAMj7VBce+F3dcaSweKSl4Ud0NsC+6qexiHLhzH0Nwqv5dxGtHA
- UUu1UPVAUXJ/kRfy5CD3YbN6zJlu+Lg=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-cpo4APmWOjuIk2q-nj-DrQ-1; Fri, 08 Nov 2024 08:50:15 -0500
-X-MC-Unique: cpo4APmWOjuIk2q-nj-DrQ-1
-X-Mimecast-MFC-AGG-ID: cpo4APmWOjuIk2q-nj-DrQ
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3e60970ed1dso2481603b6e.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 05:50:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t9PSJ-00073y-FD
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:55:19 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1t9PSH-0005ai-Kz
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:55:19 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43163667f0eso19228255e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 05:55:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731074116; x=1731678916; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PKVpwzw1sWKF3ABfu6LZIFLN7WX7HAK9O/JR+vxGyVk=;
+ b=DFAFKNIqTfFO4FUPov7u5NmQWeo1D6OJc+9nrpKFSV49v3i2BEmRj554EYQQk6D6eN
+ EoqregCxooiV22uryZGqMjQQjatCO4AmyV48GxiI/KPjhPmkKB9THEsc6JvgyCy0gu4o
+ vQIV57FYVIwU6/jYMzKO4TlrdsH54qhcLlr8RXtTK3gMBAFL5/Bh0GfwR3xm1++1nmM/
+ VtoPy/b8MTx8AcE5dkzWI7PGjTQxxE2srNFTwM6/RW8dG1vjB7dmAbBNIIrIdNY8HBQC
+ f5FRsW1o2ARPbSDg4SLzkHRoLasP9wXhAo1B4/4gwB1BHWoDLRjRgnDhkxg3J1+zsww4
+ tsvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731073814; x=1731678614;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N7IIHp2htkATktS74xh5+MpR42+z5btxMLC9PgzQKio=;
- b=fzkJPVKrC9lHxgerKKwfKuIPLoftEPvkZtNVEHM/83B2Fzd/3EEcpLCNrARdtmrm+k
- fSM4F3crLDGcUbxF/oCfcqtToSadoDmOwe6D+vWLlOfVbcH6kwYm7vbzTL/rTgIoGRoh
- 7KOy5r03cbOZJb35EFkTMXpRlzV8fWE6A3Zoyjzj5RkcO3C5la3xIQ+fg+z0ndaMGMb9
- RCBQoYuH1mp2umtG6JwDzFcvuPsJtD4d1ONYg1DhKbhwBVvzay2p7t+b+/U9zcUlOYaa
- 9TA77cd29tSqJInY5A0tBo6BHbPYjXuGxwm48M5Mfi3IDXR7qnBZRfsmiN1HSXTkbjdG
- r6XA==
-X-Gm-Message-State: AOJu0Yw/auXk6+2W/W67XpBshjEzqFRouDQIJ6k7B4Zlw6U3DwVx1izs
- /9Q3Y1ufsol6EFi48DxvUB1m8Dp6DWv06Z5m6REz0dQEavA25AN6OLk5skBPzvB2XjUgrD1fYTc
- wmQ4c7q+8TIIP0ArPmNMRbvfCv5uqkO2AfTQ4OYCoCoNHsqn/Gi9L
-X-Received: by 2002:a05:6808:21a7:b0:3db:1cd1:cadd with SMTP id
- 5614622812f47-3e79467a5d7mr3359863b6e.18.1731073814384; 
- Fri, 08 Nov 2024 05:50:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBhCjEW6nL8iwDazYmZ/uBcmMGHAGJvlnMb8G4Focx5WTa9aH1KnoF1owLkHzr3CW3IYFgPQ==
-X-Received: by 2002:a05:6808:21a7:b0:3db:1cd1:cadd with SMTP id
- 5614622812f47-3e79467a5d7mr3359850b6e.18.1731073813971; 
- Fri, 08 Nov 2024 05:50:13 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3e78ccbdf63sm702000b6e.30.2024.11.08.05.50.12
+ d=1e100.net; s=20230601; t=1731074116; x=1731678916;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PKVpwzw1sWKF3ABfu6LZIFLN7WX7HAK9O/JR+vxGyVk=;
+ b=sMiIkF4v72dQDgsmaG5RwZ2/8eHCPUPqWfIG6dHtUdd1P278JUiiCx4APXzMKM7UAv
+ 2mhFF/xCDCLdtvqnhAe30f6PM4sgudHew2/3gYKypNdk/kCt8XxEQvpjlrK1RbrHy+gj
+ wtKartTkiSvZOsHL/XvznV6/RLBfBT+yrtn6bGaCbvREMvpMegfOMBIdJmMnvYC52X9R
+ maatvpfkru+RoIuCRH+k2lIDN1YSL6Yu5X0saSD4iZGvDB848NNOtzSSXk/2GFi+hMvm
+ nLOhU+dgO7O/sWf4dEquENYv1DrPv5Um5Q7+KLRiDhNLKK3iq1wfc5DsUJzRB4vfQ/1p
+ LlMQ==
+X-Gm-Message-State: AOJu0YyNjeZv1+FzK9Z1TWo+Rq2IFv3y65CH1ozm32xF/QXFnYHMhnHm
+ uGiPublg5kelxgRK8cieZNUVSc88mbifQYtUG4ODn0Z4N4uCouNhTHiuhqe0ERj46teXBOeBmtI
+ F
+X-Google-Smtp-Source: AGHT+IFFtL5LGAzm0Yc2/UE/Zc/9NG7MIrPUvIOJUy2pMRb0W8f3Aq2qYM6zprkffJ/5pSKu7Qb5Bg==
+X-Received: by 2002:a05:600c:3ca4:b0:431:251a:9dc9 with SMTP id
+ 5b1f17b1804b1-432b7518f97mr24925755e9.25.1731074115899; 
+ Fri, 08 Nov 2024 05:55:15 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa70a2ccsm110082855e9.31.2024.11.08.05.55.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 05:50:12 -0800 (PST)
-Date: Fri, 8 Nov 2024 08:50:10 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Yong Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] migration: Do not perform RAMBlock dirty sync during the
- first iteration
-Message-ID: <Zy4XEjI2JIagxsyB@x1n>
-References: <ad543bac0eb9e7113eaec266add58c19f9f6eda0.1730973055.git.yong.huang@smartx.com>
- <ZyzqosT0uE6_G4as@x1n>
- <CAK9dgmZCZp3scJTAGJc=KF9dgaftxD=V3uUADeyyYqFc_yGhkA@mail.gmail.com>
+ Fri, 08 Nov 2024 05:55:15 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 0/3] hw/intc/loongarch_extioi: Fix undefined behaviour with
+ bit array APIs
+Date: Fri,  8 Nov 2024 13:55:11 +0000
+Message-Id: <20241108135514.4006953-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK9dgmZCZp3scJTAGJc=KF9dgaftxD=V3uUADeyyYqFc_yGhkA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,135 +91,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 08, 2024 at 02:03:47PM +0800, Yong Huang wrote:
-> On Fri, Nov 8, 2024 at 12:28 AM Peter Xu <peterx@redhat.com> wrote:
-> 
-> > On Thu, Nov 07, 2024 at 05:56:50PM +0800, yong.huang@smartx.com wrote:
-> > > From: Hyman Huang <yong.huang@smartx.com>
-> > >
-> > > The first iteration's RAMBlock dirty sync can be omitted because QEMU
-> > > always initializes the RAMBlock's bmap to all 1s by default.
-> > >
-> > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> > > ---
-> > >  migration/cpu-throttle.c |  2 +-
-> > >  migration/ram.c          | 19 ++++++++++++++++---
-> > >  2 files changed, 17 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/migration/cpu-throttle.c b/migration/cpu-throttle.c
-> > > index 5179019e33..674dc2004e 100644
-> > > --- a/migration/cpu-throttle.c
-> > > +++ b/migration/cpu-throttle.c
-> > > @@ -141,7 +141,7 @@ void cpu_throttle_dirty_sync_timer_tick(void *opaque)
-> > >       * effect on guest performance, therefore omit it to avoid
-> > >       * paying extra for the sync penalty.
-> > >       */
-> > > -    if (sync_cnt <= 1) {
-> > > +    if (!sync_cnt) {
-> > >          goto end;
-> > >      }
-> > >
-> > > diff --git a/migration/ram.c b/migration/ram.c
-> > > index 05ff9eb328..a0123eb93e 100644
-> > > --- a/migration/ram.c
-> > > +++ b/migration/ram.c
-> > > @@ -2718,7 +2718,7 @@ static void ram_list_init_bitmaps(void)
-> > >  {
-> > >      MigrationState *ms = migrate_get_current();
-> > >      RAMBlock *block;
-> > > -    unsigned long pages;
-> > > +    unsigned long pages, clear_bmap_pages;
-> > >      uint8_t shift;
-> > >
-> > >      /* Skip setting bitmap if there is no RAM */
-> > > @@ -2736,6 +2736,7 @@ static void ram_list_init_bitmaps(void)
-> > >
-> > >          RAMBLOCK_FOREACH_NOT_IGNORED(block) {
-> > >              pages = block->max_length >> TARGET_PAGE_BITS;
-> > > +            clear_bmap_pages = clear_bmap_size(pages, shift);
-> > >              /*
-> > >               * The initial dirty bitmap for migration must be set with
-> > all
-> > >               * ones to make sure we'll migrate every guest RAM page to
-> > > @@ -2751,7 +2752,12 @@ static void ram_list_init_bitmaps(void)
-> > >                  block->file_bmap = bitmap_new(pages);
-> > >              }
-> > >              block->clear_bmap_shift = shift;
-> > > -            block->clear_bmap = bitmap_new(clear_bmap_size(pages,
-> > shift));
-> > > +            block->clear_bmap = bitmap_new(clear_bmap_pages);
-> > > +            /*
-> > > +             * Set clear_bmap to 1 unconditionally, as we always set
-> > bmap
-> > > +             * to all 1s by default.
-> > > +             */
-> > > +            bitmap_set(block->clear_bmap, 0, clear_bmap_pages);
-> > >          }
-> > >      }
-> > >  }
-> > > @@ -2771,6 +2777,7 @@ static void
-> > migration_bitmap_clear_discarded_pages(RAMState *rs)
-> > >
-> > >  static bool ram_init_bitmaps(RAMState *rs, Error **errp)
-> > >  {
-> > > +    Error *local_err = NULL;
-> > >      bool ret = true;
-> > >
-> > >      qemu_mutex_lock_ramlist();
-> > > @@ -2783,7 +2790,13 @@ static bool ram_init_bitmaps(RAMState *rs, Error
-> > **errp)
-> > >              if (!ret) {
-> > >                  goto out_unlock;
-> > >              }
-> > > -            migration_bitmap_sync_precopy(false);
-> > > +            /*
-> > > +             * Bypass the RAMBlock dirty sync and still publish the
-> > > +             * notification.
-> >
-> > Hmm.. Why should QEMU notify AFTER_BITMAP_SYNC if the sync didn't happen?
-> >
-> 
-> Indeed, logically, we should not make the notification.
-> 
-> Some features, like VIRTIO_BALLOON_F_FREE_PAGE_HINT, use this notification
-> to indirectly detect whether the RAMBlock's bmap has been updated. This
-> allows the
-> free page optimization to begin clearing parts of the bitmap that contain
-> free pages.
-> 
-> virtio_balloon_free_page_hint_notify
-> ......
->     switch (pnd->reason) {
->     case PRECOPY_NOTIFY_BEFORE_BITMAP_SYNC:
->         virtio_balloon_free_page_stop(dev);
->         break;
->     case PRECOPY_NOTIFY_AFTER_BITMAP_SYNC:
->         if (vdev->vm_running) {
->             virtio_balloon_free_page_start(dev);
->             break;
->         }
-> 
-> The free page optimization may miss the first time window to execute if we
-> don't
-> send out a notification after starting the migration and initializing the
-> bmap with all 1s.
-> 
-> May we change the old behavior of optimization?
+The primary aim of this series is to fix some undefined behaviour in
+loongarch_extioi which you can see if you run the functional test
+loongarch64-virt with a QEMU built with the clang undefined-behaviour
+sanitizer:
 
-I see.
+include/qemu/bitops.h:41:5: runtime error: store to misaligned address 0x555559745d9c for type 'unsigned long', which requires 8 byte alignment
+0x555559745d9c: note: pointer points here
+  ff ff ff ff 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+              ^
+    #0 0x555556fb81c4 in set_bit include/qemu/bitops.h:41:9
+    #1 0x555556fb81c4 in extioi_setirq hw/intc/loongarch_extioi.c:65:9
+    #2 0x555556fb6e90 in pch_pic_irq_handler hw/intc/loongarch_pch_pic.c:75:5
+    #3 0x555556710265 in serial_ioport_write hw/char/serial.c
+                                                                
+The underlying cause of this is a mismatch between our bit array APIs
+in bitops.h and what QEMU devices tend to want. The bit array APIs are
+historically based on those from the Linux kernel; they work with
+underlying storage that is an array of 'unsigned long'. This is fine
+for the kernel, but awkward for QEMU devices because the 'unsigned
+long' type varies in size between hosts. That means that you can't use
+it for a data structure that needs to be migrated between devices and
+it's awkward for devices where the bit array is visible to the guest
+(e.g. via a set of registers).
 
-It looks like an abuse to me so far to use AFTER_BITMAP_SYNC as start of
-free page hinting.  There's no guarantee a sync is needed when start
-migration.
+In the Arm GICv3 device I worked around this mismatch by implementing
+a set of local functions which were like the bitops.h APIs but used a
+uint32_t array. The loongarch_extioi code attempts to use the stock
+bitops.h functions by casting the uint32_t* to an unsigned long* when
+calling them. This doesn't work for two reasons:
+ * the alignment of uint32_t is less than that of unsigned long,
+   so the pointer isn't guaranteed to be sufficiently aligned;
+   this is the cause of the sanitizer UB error
+ * on a big-endian host we will get the wrong results because the
+   two halves of the unsigned long will be the opposite way round
 
-I think we may want a pre-requisite patch to enable free page hinting
-during PRECOPY_NOTIFY_SETUP too, like PRECOPY_NOTIFY_AFTER_BITMAP_SYNC.
-That patch (if you agree) will need to copy David Hildenbrand and Wei Wang
-(original author).
+In this series I fix this by creating new functions set_bit32(),
+clear_bit32(), etc in bitops.h which are like the existing ones but
+work with a bit array whose underlying storage is a uint32_t array.
+Then we can use these both in the GICv3 (where this is just a
+cleanup) and in loongarch_extioi (where it fixes the bug).
 
-Thanks,
+(There are other uses of set_bit() in the loongarch_extioi code but
+I have left those alone because they define the bitmaps as
+arrays of unsigned long so they are at least consistent. I do
+wonder if it's really OK not to migrate those bitmaps, though.)
+
+thanks
+-- PMM
+
+Peter Maydell (3):
+  bitops.h: Define bit operations on 'uint32_t' arrays
+  hw/intc/arm_gicv3: Use bitops.h uint32_t bit array functions
+  hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() for s->isr
+
+ include/hw/intc/arm_gicv3_common.h |  54 +++------
+ include/qemu/bitmap.h              |   8 ++
+ include/qemu/bitops.h              | 172 ++++++++++++++++++++++++++++-
+ hw/intc/loongarch_extioi.c         |  11 +-
+ 4 files changed, 194 insertions(+), 51 deletions(-)
 
 -- 
-Peter Xu
+2.34.1
 
 
