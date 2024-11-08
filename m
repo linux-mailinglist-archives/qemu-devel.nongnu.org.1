@@ -2,71 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEEB9C1AF2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC8C9C1AFE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:46:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9MT3-0004SY-5M; Fri, 08 Nov 2024 05:43:53 -0500
+	id 1t9MVg-0001zW-SN; Fri, 08 Nov 2024 05:46:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MT0-0004JF-9u
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1t9MVc-0001yc-Uf
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:46:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSy-0006AY-Rd
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:50 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1t9MVb-0006V5-5y
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:46:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731062628;
+ s=mimecast20190719; t=1731062790;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6c5wzWMg3XjLmnrwtyn9xG6b8XAmz8J+k1Ev/R8hHVE=;
- b=Syyipb1vz21V+RAZNu6pXL8h//NR86/62+rZ2RWtfpJi7rrLylrpXD5v7teYgOMpG+7QtC
- s7i4lRl3xnaFfAV3TwNFmhU20nOYYopiv1sb5Qn3fzkqHKQOm+SSjG7BUoU8oT31CQ73t5
- 8y8KwMuKF7VpxkOS9gkK+H/jPbnRqv0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-uSyQJIEFN5ewbtTbN9L11w-1; Fri,
- 08 Nov 2024 05:43:46 -0500
-X-MC-Unique: uSyQJIEFN5ewbtTbN9L11w-1
-X-Mimecast-MFC-AGG-ID: uSyQJIEFN5ewbtTbN9L11w
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5DEC71955F45; Fri,  8 Nov 2024 10:43:45 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.118])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4C81A1953882; Fri,  8 Nov 2024 10:43:43 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/10] ui/input-legacy.c: remove unused legacy
- qemu_add_kbd_event_handler() function
-Date: Fri,  8 Nov 2024 11:43:10 +0100
-Message-ID: <20241108104312.534448-11-thuth@redhat.com>
-In-Reply-To: <20241108104312.534448-1-thuth@redhat.com>
-References: <20241108104312.534448-1-thuth@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=qnxwZvxkA8DGXve9fKwYa3BT/n8jjMQMME9h8AbkUvc=;
+ b=PfA2S91qi5RnzZzN0BkOceoN2hFhUn3IYJAYlbdBB2t2FPSENpsfkp2KV0PAJqTV0+V8Nd
+ sbv0chX+9YBcvWdBCSZpbaISLhrYntTjEirZp393CmaZlaS4WBl7arJkDh4wXas9hcVdrZ
+ KAsHZhVCTW2PWb6lX3e3wFHJlOyqECI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-397-zuaGe4_4OfeLLkZjK3_kyQ-1; Fri, 08 Nov 2024 05:46:29 -0500
+X-MC-Unique: zuaGe4_4OfeLLkZjK3_kyQ-1
+X-Mimecast-MFC-AGG-ID: zuaGe4_4OfeLLkZjK3_kyQ
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d4a211177so970274f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 02:46:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731062788; x=1731667588;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=qnxwZvxkA8DGXve9fKwYa3BT/n8jjMQMME9h8AbkUvc=;
+ b=ecrU/zSHVIAePQbsGlTPrnNSR06g9k8MyCuki+eJXsmAL3m4KtvtoeAsyVL2G3DN+p
+ LWGdqeqTfR5apNUv0VjPV4koWPjCwK/6ByoeXmX6ATnxcJp/H5IGUZ75QI5twnD4suCm
+ zyfAblNwlSlO6+F0390s8brkLo93d5b+P2IiCqcuHWbVdOG2149huLx/LdBSPC0g5Qx1
+ cwMJYtPMrKAtpCEQBkrFowABoYovEdm7/h4jTGAlLDvY/TiVn1XSpruIFPMh8tRx6UbQ
+ LselI0JSEfyvOnaomQTMCW7kk+v3uVx8lcEj5P0qaQMF/NhmRC6d5KwCdKKtPR3tN89Q
+ dHYg==
+X-Gm-Message-State: AOJu0YwDay2Igz0UZTPKiI0RxFnQ4NbE+KEUabdaJmoWy/YSQIpvlLya
+ PX2jWmTrqxgAAY5krJ6LyMIAo2dJowF6nRbcNCK0w5klqtgdBpeKCid4lVYlw+YzocXXUzKbb64
+ OrIErs7LC3roDtnyCeLgSwK8SC71xQimSPbfetUj9TfjYkpwDVwfXXGH4JC7f7rOOoQllflFcse
+ dxDDYOJaEeFGL0AQOfLYlgYZfrRwMK+eqD
+X-Received: by 2002:a05:6000:1564:b0:37d:4d21:350c with SMTP id
+ ffacd0b85a97d-381f186cc7fmr1901824f8f.13.1731062788103; 
+ Fri, 08 Nov 2024 02:46:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG0lZUDSbIg+r9uYf9TqYgALSa2cKia8QDM+H81Cjwc6lY34z0jtAht/y3JN/Q/0B1syAIShg==
+X-Received: by 2002:a05:6000:1564:b0:37d:4d21:350c with SMTP id
+ ffacd0b85a97d-381f186cc7fmr1901808f8f.13.1731062787626; 
+ Fri, 08 Nov 2024 02:46:27 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70f:b600:4a55:861a:f768:72a8?
+ (p200300cbc70fb6004a55861af76872a8.dip0.t-ipconnect.de.
+ [2003:cb:c70f:b600:4a55:861a:f768:72a8])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-381eda03e42sm4286141f8f.89.2024.11.08.02.46.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Nov 2024 02:46:26 -0800 (PST)
+Message-ID: <0b5272b4-7c2a-487d-9028-9be4d242070b@redhat.com>
+Date: Fri, 8 Nov 2024 11:46:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] virtio-mem: unplug memory only during system resets,
+ not device resets
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juraj Marcin <jmarcin@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20241025104103.342188-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241025104103.342188-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,84 +151,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+On 25.10.24 12:41, David Hildenbrand wrote:
+> We recently converted from the LegacyReset to the new reset framework
+> in commit c009a311e939 ("virtio-mem: Use new Resettable framework instead
+> of LegacyReset") to be able to use the ResetType to filter out wakeup
+> resets.
+> 
+> However, this change had an undesired implications: as we override the
+> Resettable interface methods in VirtIOMEMClass, the reset handler will
+> not only get called during system resets (i.e., qemu_devices_reset())
+> but also during any direct or indirect device rests (e.g.,
+> device_cold_reset()).
+> 
+> Further, we might now receive two reset callbacks during
+> qemu_devices_reset(), first when reset by a parent and later when reset
+> directly.
+> 
+> The memory state of virtio-mem devices is rather special: it's supposed to
+> be persistent/unchanged during most resets (similar to resetting a hard
+> disk will not destroy the data), unless actually cold-resetting the whole
+> system (different to a hard disk where a reboot will not destroy the data):
+> ripping out system RAM is something guest OSes don't particularly enjoy,
+> but we want to detect when rebooting to an OS that does not support
+> virtio-mem and wouldn't be able to detect+use the memory -- and we want
+> to force-defragment hotplugged memory to also shrink the usable device
+> memory region. So we rally want to catch system resets to do that.
+> 
+> On supported targets (e.g., x86), getting a cold reset on the
+> device/parent triggers is not that easy (but looks like PCI code
+> might trigger it), so this implication went unnoticed.
+> 
+> However, with upcoming s390x support it is problematic: during
+> kdump, s390x triggers a subsystem reset, ending up in
+> s390_machine_reset() and calling only subsystem_reset() instead of
+> qemu_devices_reset() -- because it's not a full system reset.
+> 
+> In subsystem_reset(), s390x performs a device_cold_reset() of any
+> TYPE_VIRTUAL_CSS_BRIDGE device, which ends up resetting all children,
+> including the virtio-mem device. Consequently, we wrongly detect a system
+> reset and unplug all device memory, resulting in hotplugged memory not
+> getting included in the crash dump -- undesired.
+> 
+> We really must not mess with hotplugged memory state during simple
+> device resets. To fix, create+register a new reset object that will only
+> get triggered during qemu_devices_reset() calls, but not during any other
+> resets as it is logically not the child of any other object.
+> 
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Juraj Marcin <jmarcin@redhat.com>
+> Cc: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
 
-Since the last keyboard device has now been converted over to use
-qemu_input_handler_register(), the legacy qemu_add_kbd_event_handler() function
-is now unused and can be removed.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241106120928.242443-3-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/ui/console.h |  2 --
- ui/input-legacy.c    | 37 -------------------------------------
- 2 files changed, 39 deletions(-)
+If there are no further comments, I'll queue this as a preparation for 
+s390x virtio-mem support.
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 5832d52a8a..46b3128185 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -70,8 +70,6 @@ typedef struct QEMUPutMouseEntry QEMUPutMouseEntry;
- typedef struct QEMUPutKbdEntry QEMUPutKbdEntry;
- typedef struct QEMUPutLEDEntry QEMUPutLEDEntry;
- 
--QEMUPutKbdEntry *qemu_add_kbd_event_handler(QEMUPutKBDEvent *func,
--                                            void *opaque);
- QEMUPutMouseEntry *qemu_add_mouse_event_handler(QEMUPutMouseEvent *func,
-                                                 void *opaque, int absolute,
-                                                 const char *name);
-diff --git a/ui/input-legacy.c b/ui/input-legacy.c
-index 210ae5eaca..ca4bccb411 100644
---- a/ui/input-legacy.c
-+++ b/ui/input-legacy.c
-@@ -109,43 +109,6 @@ void qmp_send_key(KeyValueList *keys, bool has_hold_time, int64_t hold_time,
-     g_free(up);
- }
- 
--static void legacy_kbd_event(DeviceState *dev, QemuConsole *src,
--                             InputEvent *evt)
--{
--    QEMUPutKbdEntry *entry = (QEMUPutKbdEntry *)dev;
--    int scancodes[3], i, count;
--    InputKeyEvent *key = evt->u.key.data;
--
--    if (!entry || !entry->put_kbd) {
--        return;
--    }
--    count = qemu_input_key_value_to_scancode(key->key,
--                                             key->down,
--                                             scancodes);
--    for (i = 0; i < count; i++) {
--        entry->put_kbd(entry->opaque, scancodes[i]);
--    }
--}
--
--static const QemuInputHandler legacy_kbd_handler = {
--    .name  = "legacy-kbd",
--    .mask  = INPUT_EVENT_MASK_KEY,
--    .event = legacy_kbd_event,
--};
--
--QEMUPutKbdEntry *qemu_add_kbd_event_handler(QEMUPutKBDEvent *func, void *opaque)
--{
--    QEMUPutKbdEntry *entry;
--
--    entry = g_new0(QEMUPutKbdEntry, 1);
--    entry->put_kbd = func;
--    entry->opaque = opaque;
--    entry->s = qemu_input_handler_register((DeviceState *)entry,
--                                           &legacy_kbd_handler);
--    qemu_input_handler_activate(entry->s);
--    return entry;
--}
--
- static void legacy_mouse_event(DeviceState *dev, QemuConsole *src,
-                                InputEvent *evt)
- {
 -- 
-2.47.0
+Cheers,
+
+David / dhildenb
 
 
