@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB929C2213
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 17:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E439C2265
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 17:48:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Rrc-0008Vx-Sl; Fri, 08 Nov 2024 11:29:36 -0500
+	id 1t9S8o-0007lP-7s; Fri, 08 Nov 2024 11:47:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9RrP-0008UH-Va
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 11:29:24 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1t9S8j-0007kr-LV
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 11:47:18 -0500
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9RrG-0003rI-W4
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 11:29:17 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4315baec69eso21060545e9.2
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 08:29:13 -0800 (PST)
+ id 1t9S8h-0007G6-Vj
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 11:47:17 -0500
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-539e13375d3so2931396e87.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 08:47:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731083353; x=1731688153; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TXACTNjW7XQDDQR5ql26mWd2hLljWGI/IOPLLCh6Itc=;
- b=mn8AZG7XUiSSj4cuE2KzxLf2ESUpsC3E0YnVxELYevxX/wZFPSeb3C0Ht5YkKj1iB0
- vvTOTIkvNqaE9nhruIbWMIZyOTM6i6BnsoSAhubPxENPKos62HhSB5SSqr40txOZdgb6
- oETKQ82khSWAz8mK6wdzfUf1tENRp2gm1UO69OWnt/6ln1lmyUb4IZA5epL9LElRegFh
- Z2wMBBwFpSaT/2appLQFvkNLsOgF2mXOcy0x9diTg0IFuw/SHqb3r4KgRnB9phxgbCxz
- 3a911xK/DwofiD74vkL+qk7RU/ibcwVvad9dNNa78vQn4ft4blbPz07lsc0XWgkZ4ugw
- KRGg==
+ d=linaro.org; s=google; t=1731084433; x=1731689233; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=R8zGb2dhUd3CPvTZFvmjRInsJcZ7jyLj7QqnuR/5rPI=;
+ b=zeusT1/V2u41oukGYSfPERlax77H7YO5cP5ja+XkZGidjZfmwjqJwEtAgK5UuOTrin
+ c/zsVJOJaX0x4dUdlWqP/Hevn9h6OqBxvSS1OUnMGJmreIAJKCQDcvfmnlF6mXqNN1zT
+ xDKGgHZ2XBMtIw/3EnQKuRoWL9dUoMtcY/J/Ys/UOjr4qGQVl05qh49OHZzw1thlkI4s
+ 50kv8GFsNWhyfb2+1D606WlBt3lPHFETG1KMXkjQnw3IlDK4Fj2K0TtcWVdzZyD6oFCJ
+ Bf1Rn5tQblh8EOWvK7xjAzsBZ6V0tEEqE22v0ppjKTjMiqAx24fQ+wbunPs6rGzJ4f8N
+ Q0pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731083353; x=1731688153;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TXACTNjW7XQDDQR5ql26mWd2hLljWGI/IOPLLCh6Itc=;
- b=O9/4fu8HAyt1pXN3nVhWm/yzFp71zJ3dnk1YiLKuTrFDAmlQXK/Tv2WOS8nvdRkBRr
- fUqSXrk09XqZ/FDlX5ALbYXP2/ItaF4wGTTm92eNk8cSagfCJP7SmYQD/T/bKljwwK2O
- puyWnh5RBQW4ymlrmIGOkC+CHOqERMd3BNaLQR2t3mL8/755cFf5CzaQhsfDxyUzgF7i
- 08cYUwJqu3oV/2yXW4sgtzNIgLYoQf+HvzThCyIYol5MzGu4mzj7IKTAMrIr0ECPRDZ/
- xxYLYevwQLSVi2MQOEFDdtdpmjeTfpV0/gl3AsJmkM7CG4wlKFRytyumR58Pij+5QvzO
- JhGQ==
-X-Gm-Message-State: AOJu0YxpP1KPvumxBRUQCX5XaaYb1RGl5wtzBrtEz/NkrqTHnvSYC/gi
- FnT2KS9PmbtB+orIvG3V2YmJQjx2d18KkEXJ0AFOuU+7NrArQTnvviprt26MQAmhafWA36Afehe
- l
-X-Google-Smtp-Source: AGHT+IE2c8SbrKfSxULUWrKMTy4exzFPF89kpI6EOyOdxYLONu8pHg33po8YpJ6v5OpUfZnr+pTvrw==
-X-Received: by 2002:a5d:5f54:0:b0:37d:4cd5:ffec with SMTP id
- ffacd0b85a97d-381f18632f7mr2919213f8f.2.1731083352960; 
- Fri, 08 Nov 2024 08:29:12 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b0530599sm78109135e9.1.2024.11.08.08.29.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 08:29:12 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH 3/3] trace: Don't include trace-root.h in control.c or
- control-target.c
-Date: Fri,  8 Nov 2024 16:29:09 +0000
-Message-Id: <20241108162909.4080314-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241108162909.4080314-1-peter.maydell@linaro.org>
-References: <20241108162909.4080314-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1731084433; x=1731689233;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=R8zGb2dhUd3CPvTZFvmjRInsJcZ7jyLj7QqnuR/5rPI=;
+ b=X/WNNRykyEYomS8x0YnuBWDMiJbYrqJeeUhqtyNoFVSBr9BJmZjokDH4xsdN7noTLT
+ JHi5phnbU8AZlCP2qR5SSHcvCsrVmrDZ/4tsz//hDzRHkcIhcPLBHPkkI9NWpClFw53x
+ mu8HsJ7REz4t1OBdOPdRzAVj1+O/J+h3po7Toyngo0uXbEVtMsPVrG5aMDsR/FbNFIwj
+ YocUqcyUvsVHhgZ8sifOG5bHd2iz/XYsa//xsZ3/vNCPSmFEsAFfLKtrwWLmCzRTrnxr
+ /IFzbmtmd4ZzdCu6bFjI3sdbAj7woRKxDQFnaVhp7HFznva5MVRuNp+CQcJJwvLY6syj
+ uoMQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUkSc5+qxlorlaump0tzrsuYWv4s/3F5UUblI+UaoCoju5RA2yblxqqhbceAWLQF8psLY1vgX1Jrn9j@nongnu.org
+X-Gm-Message-State: AOJu0Yy+ZNjou8p+wWP2klPsckjMuc4R1NwuhLqXvOoyzToA5aZ42Bcw
+ 0V1relgv7Iut2AcNw1q9qUF4GSQKj7Hi8sUMOqC8K7R7/38y0meZVM9BaNvKb3n8XgnSZeFVLxG
+ a9kbVKTxPGQPh8b15Cqi45F82ysfaD6MAeMc/Lw==
+X-Google-Smtp-Source: AGHT+IEQ3IeQKRBoR4BldOHAat+zBcEbAV9rh0r1K6v71PYynqkWIMBRL387bJcTVCQbHjPV8g6zQX+vE8Y0rUjWEZc=
+X-Received: by 2002:a2e:be9b:0:b0:2fa:d604:e525 with SMTP id
+ 38308e7fff4ca-2ff20225bbdmr20236071fa.28.1731084433203; Fri, 08 Nov 2024
+ 08:47:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+References: <20241106083801.219578-2-frolov@swemel.ru>
+In-Reply-To: <20241106083801.219578-2-frolov@swemel.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Nov 2024 16:47:02 +0000
+Message-ID: <CAFEAcA9joGGX46UnkVvapvhyFr7ryhMeczWdT7D+wJLfR4wyCA@mail.gmail.com>
+Subject: Re: [PATCH] hw/timer: fix possible int overflow
+To: Dmitry Frolov <frolov@swemel.ru>
+Cc: i.mitsyanko@gmail.com, sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +87,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The trace-root.h file has the definitions of trace events for
-the top-level trace-events file (i.e. for those events which are
-used in source files in the root of the source tree). There's
-no particular need for trace/control.c or trace/control-target.c
-to include this.
+On Wed, 6 Nov 2024 at 08:38, Dmitry Frolov <frolov@swemel.ru> wrote:
+>
+> The product "icnto * s->tcntb" may overflow uint32_t.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> ---
+>  hw/timer/exynos4210_mct.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/timer/exynos4210_mct.c b/hw/timer/exynos4210_mct.c
+> index e807fe2de9..5c6e139b20 100644
+> --- a/hw/timer/exynos4210_mct.c
+> +++ b/hw/timer/exynos4210_mct.c
+> @@ -815,7 +815,7 @@ static uint32_t exynos4210_ltick_cnt_get_cnto(struct tick_timer *s)
+>          /* Both are counting */
+>          icnto = remain / s->tcntb;
+>          if (icnto) {
+> -            tcnto = remain % (icnto * s->tcntb);
+> +            tcnto = remain % ((uint64_t)icnto * s->tcntb);
+>          } else {
+>              tcnto = remain % s->tcntb;
+>          }
+> --
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- trace/control-target.c | 1 -
- trace/control.c        | 1 -
- 2 files changed, 2 deletions(-)
 
-diff --git a/trace/control-target.c b/trace/control-target.c
-index 97f21e476d2..d58e84f6dd8 100644
---- a/trace/control-target.c
-+++ b/trace/control-target.c
-@@ -10,7 +10,6 @@
- #include "qemu/osdep.h"
- #include "qemu/lockable.h"
- #include "cpu.h"
--#include "trace/trace-root.h"
- #include "trace/control.h"
- 
- 
-diff --git a/trace/control.c b/trace/control.c
-index ef107829ac0..1c8c50064af 100644
---- a/trace/control.c
-+++ b/trace/control.c
-@@ -27,7 +27,6 @@
- #include "qemu/error-report.h"
- #include "qemu/config-file.h"
- #include "monitor/monitor.h"
--#include "trace/trace-root.h"
- 
- int trace_events_enabled_count;
- 
--- 
-2.34.1
 
+Applied to target-arm.next, thanks.
+
+-- PMM
 
