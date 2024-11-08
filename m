@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7581B9C2393
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30D89C2388
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:40:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Swa-0003th-21; Fri, 08 Nov 2024 12:38:48 -0500
+	id 1t9Swe-00040C-SA; Fri, 08 Nov 2024 12:38:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9SwX-0003rL-MO
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:45 -0500
+ id 1t9Swc-0003zF-DM
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9SwW-0007aS-6o
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:45 -0500
+ id 1t9Swa-0007au-K1
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731087523;
+ s=mimecast20190719; t=1731087525;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OOuaO0FdvnRx8m0yCTGELCVtD8jtIom4riAwRaaG5gI=;
- b=b0MQtUWJ/0ftQAFeou7C0wPU1GWoaNv+dAlE70JBuPKIqaQsvaAPvZqFccb6Qd3850mu67
- 3eXLCeK2/aqnrfLbl7aKxOlEo3kqZKk7juegqeWfVLfN8MxhTmH/BfRc0Cwiu5bmsXnlI9
- PIMWQQxZsb5775kAwzSwAX9KQYzsDk4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lupvEcmnHg1GtHFHOuqV3Po9cXi+wkOo2DQJpTtu0xI=;
+ b=IYgH2R+07600fnauoVqoE6QP3bAJyhc+2qxuxCQQ2/yJuPjmmObHbRIgWjldthp41Y7dbQ
+ iky3x6Sz2D6BNzjr2lTbkUhkaUqjA16E5Dz94ucmdkOR3+TVfiBf8xtHehxgs6xl2WcEjc
+ 070UAsydb5LWhfd5lj3OBvrY7edQnpg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-oR9gy0dnMOyUxBW2a7O00w-1; Fri, 08 Nov 2024 12:38:42 -0500
-X-MC-Unique: oR9gy0dnMOyUxBW2a7O00w-1
-X-Mimecast-MFC-AGG-ID: oR9gy0dnMOyUxBW2a7O00w
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-539e13b8143so2979650e87.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:42 -0800 (PST)
+ us-mta-279-8xmObHcCNx-OTh9CQhgHBg-1; Fri, 08 Nov 2024 12:38:44 -0500
+X-MC-Unique: 8xmObHcCNx-OTh9CQhgHBg-1
+X-Mimecast-MFC-AGG-ID: 8xmObHcCNx-OTh9CQhgHBg
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4316e350d6aso16728265e9.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731087520; x=1731692320;
+ d=1e100.net; s=20230601; t=1731087522; x=1731692322;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OOuaO0FdvnRx8m0yCTGELCVtD8jtIom4riAwRaaG5gI=;
- b=gfWcpeSA9hOMJNplXUgjWuBSI4fm5hA3N9/7Noi8JdwIAe43OlyqQDlg+vzSYkzvci
- 6vbYVbwWzkZ/mryigJdJ0bbJ139dmVbfW6DN+Uum3ruRFGiaolJD1xFiMub9l4dEmg9/
- QdZaaBLwf2vNpGFoWM/k1x4q2xEzEPBvqdVHrgM5x3kVTIT07WcDfpLnbePiMMA6N7Ka
- 2//3yce4WWb046fU/s6pG60hDGSoxYGpbNiSz0J22y7GpkKILvpsMDPbleCKQ+6qd991
- ZipQyvOQ5KsICN8JrC2jA+5t10KpAq5eJ9bYZ/aJ8Gyp/zVwUqUD7SJDmoGjS2hzVKzu
- JkdQ==
-X-Gm-Message-State: AOJu0YwvXBzOzRoa9pHWAvdWIllTWtkQASBoN2Oe4uvRGmOiBZNZMvEK
- izMRJ1Vdflxjax6pmqveNFjZvOj2mRi+ZbUaZ0xdqtk2T5SxMAG18Z6PUAS+lepD3JUOMRFLszr
- AnHZ75CFSb+RmSzsD36Rc7nqFRCDSz5px/P9z5ZiUHWyAaeAY0sht27jMBml53/Pf0tunUl/bsD
- IqaJR3Mf5UiLMOWOhOErOqKZAo7pie6r9gFCXGY6c=
-X-Received: by 2002:a05:6512:3f11:b0:539:ec87:bc7f with SMTP id
- 2adb3069b0e04-53d86231c05mr2301740e87.19.1731087520101; 
- Fri, 08 Nov 2024 09:38:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEURCbPWZePcBUxBqf+BhJAXgcO4dIpMQe7YfMvJTTFIa9Fkc6VU4CzzjhFrfmbltHyPivQ2g==
-X-Received: by 2002:a05:6512:3f11:b0:539:ec87:bc7f with SMTP id
- 2adb3069b0e04-53d86231c05mr2301721e87.19.1731087519625; 
- Fri, 08 Nov 2024 09:38:39 -0800 (PST)
+ bh=lupvEcmnHg1GtHFHOuqV3Po9cXi+wkOo2DQJpTtu0xI=;
+ b=BWUnbansXL20mOh+/I5c4C/bY3YSfrUqbaxZ2yXALOvOPa4xsy3kH/AtZn+2js3HcX
+ jJrvbft5zXe/kWWnjW0yk+i1g7izCH1zmkEV9jzhGUYIo9URekaQszc3xu+61N/TzPyz
+ aeQnJT+QJVyqzOkjejgeyvFfBuAMBfeSvCvcaiKOfudnTerINOImbBdoVQSWb0KWJfFm
+ rmCzKCMn+Xr6b2ik1P5n2jAtio7PeJNrPeAR1tczYXNHGt4gZx5EECu9j2PrX09n+9bt
+ iwBuUyKElzhyP7jEHshImBgq3Blsy0bB5ofsa86js6hftH1Gvr0kCspyi3gWzUl8/Bhu
+ p/Ug==
+X-Gm-Message-State: AOJu0YxDMuhgV0wn6prE2OHkMvLjkugsyRoccFtDY73i5/W/5d5hsHwA
+ Gz4fOhK/8+cdcrypwP72AZFxk02hIFpDPfeq9pB2mGjifcbn8RsEkV0A4SL3z87N0zAMh1dr3Rh
+ tlo+UzJ4NAerXRC3wfzuwRHJljkAUxFufro97feULocYuJfble8pyoXHMmf9RTz8ujNnIUbHqpU
+ VFlYgqGa6IBgSqRT5NHRXhGWVUwx/MhO6SzSreiPc=
+X-Received: by 2002:a05:600c:4f12:b0:431:5503:43ca with SMTP id
+ 5b1f17b1804b1-432b751f53cmr28912525e9.28.1731087522190; 
+ Fri, 08 Nov 2024 09:38:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHjZBCpKV8EvP6UY4bia8y8dsG6cswhaoAsM7kqVutlF2kYfFPjAPlUoQXWfwKLsN9b107XgQ==
+X-Received: by 2002:a05:600c:4f12:b0:431:5503:43ca with SMTP id
+ 5b1f17b1804b1-432b751f53cmr28912315e9.28.1731087521791; 
+ Fri, 08 Nov 2024 09:38:41 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b05c1f56sm75960955e9.34.2024.11.08.09.38.38
+ 5b1f17b1804b1-432aa73a2d8sm109798375e9.41.2024.11.08.09.38.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 09:38:38 -0800 (PST)
+ Fri, 08 Nov 2024 09:38:40 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Subject: [PULL 05/13] eif: cope with huge section offsets
-Date: Fri,  8 Nov 2024 18:38:20 +0100
-Message-ID: <20241108173828.111454-6-pbonzini@redhat.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Subject: [PULL 06/13] eif: cope with huge section sizes
+Date: Fri,  8 Nov 2024 18:38:21 +0100
+Message-ID: <20241108173828.111454-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108173828.111454-1-pbonzini@redhat.com>
 References: <20241108173828.111454-1-pbonzini@redhat.com>
@@ -101,45 +102,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check for overflow to avoid that fseek() receives a sign-extended value.
+Check for overflow as well as allocation failure.  Resolves Coverity CID 1564859.
 
-Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/osdep.h | 4 ++++
- hw/core/eif.c        | 4 ++++
- 2 files changed, 8 insertions(+)
+ hw/core/eif.c | 48 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 41 insertions(+), 7 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index fe7c3c5f673..fdff07fd992 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -297,6 +297,10 @@ void QEMU_ERROR("code path is reachable")
- #error building with G_DISABLE_ASSERT is not supported
- #endif
- 
-+#ifndef OFF_MAX
-+#define OFF_MAX (sizeof (off_t) == 8 ? INT64_MAX : INT32_MAX)
-+#endif
-+
- #ifndef O_LARGEFILE
- #define O_LARGEFILE 0
- #endif
 diff --git a/hw/core/eif.c b/hw/core/eif.c
-index 7f3b2edc9a7..61329aacfe1 100644
+index 61329aacfe1..7a8c657f23a 100644
 --- a/hw/core/eif.c
 +++ b/hw/core/eif.c
-@@ -466,6 +466,10 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
-         EifSectionHeader hdr;
-         uint16_t section_type;
+@@ -119,6 +119,10 @@ static bool read_eif_header(FILE *f, EifHeader *header, uint32_t *crc,
  
-+        if (eif_header.section_offsets[i] > OFF_MAX) {
-+            error_setg(errp, "Invalid EIF image. Section offset out of bounds");
+     for (int i = 0; i < MAX_SECTIONS; ++i) {
+         header->section_sizes[i] = be64_to_cpu(header->section_sizes[i]);
++        if (header->section_sizes[i] > SSIZE_MAX) {
++            error_setg(errp, "Invalid EIF image. Section size out of bounds");
++            return false;
++        }
+     }
+ 
+     header->unused = be32_to_cpu(header->unused);
+@@ -278,7 +282,12 @@ static bool get_signature_fingerprint_sha384(FILE *eif, uint64_t size,
+     struct cbor_load_result result;
+     bool ret = false;
+ 
+-    sig = g_malloc(size);
++    sig = g_try_malloc(size);
++    if (!sig) {
++        error_setg(errp, "Out of memory reading signature section");
++        goto cleanup;
++    }
++
+     got = fread(sig, 1, size, eif);
+     if ((uint64_t) got != size) {
+         error_setg(errp, "Failed to read EIF signature section data");
+@@ -320,7 +329,12 @@ static bool get_signature_fingerprint_sha384(FILE *eif, uint64_t size,
+         error_setg(errp, "Invalid signature CBOR");
+         goto cleanup;
+     }
+-    cert = g_malloc(len);
++    cert = g_try_malloc(len);
++    if (!cert) {
++        error_setg(errp, "Out of memory reading signature section");
++        goto cleanup;
++    }
++
+     for (int i = 0; i < len; ++i) {
+         cbor_item_t *tmp = cbor_array_get(pair->value, i);
+         if (!tmp) {
+@@ -503,7 +517,11 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
+                 goto cleanup;
+             }
+ 
+-            ptr = g_malloc(hdr.section_size);
++            ptr = g_try_malloc(hdr.section_size);
++            if (!ptr) {
++                error_setg(errp, "Out of memory reading kernel section");
++                goto cleanup;
++            }
+ 
+             iov_ptr = g_malloc(sizeof(struct iovec));
+             iov_ptr->iov_base = ptr;
+@@ -528,7 +546,11 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
+                 goto cleanup;
+             }
+             size = hdr.section_size;
+-            *cmdline = g_malloc(size + 1);
++            *cmdline = g_try_malloc(size + 1);
++            if (!cmdline) {
++                error_setg(errp, "Out of memory reading command line section");
++                goto cleanup;
++            }
+             if (!read_eif_cmdline(f, size, *cmdline, &crc, errp)) {
+                 goto cleanup;
+             }
+@@ -567,7 +589,11 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
+                 }
+             }
+ 
+-            ptr = g_malloc(hdr.section_size);
++            ptr = g_try_malloc(hdr.section_size);
++            if (!ptr) {
++                error_setg(errp, "Out of memory reading initrd section");
++                goto cleanup;
++            }
+ 
+             iov_ptr = g_malloc(sizeof(struct iovec));
+             iov_ptr->iov_base = ptr;
+@@ -606,7 +632,11 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
+             uint8_t *buf;
+             size_t got;
+             uint64_t size = hdr.section_size;
+-            buf = g_malloc(size);
++            buf = g_try_malloc(size);
++            if (!buf) {
++                error_setg(errp, "Out of memory reading unknown section");
++                goto cleanup;
++            }
+             got = fread(buf, 1, size, f);
+             if ((uint64_t) got != size) {
+                 g_free(buf);
+@@ -662,7 +692,11 @@ bool read_eif_file(const char *eif_path, const char *machine_initrd,
+             goto cleanup;
+         }
+ 
+-        ptr = g_malloc(machine_initrd_size);
++        ptr = g_try_malloc(machine_initrd_size);
++        if (!ptr) {
++            error_setg(errp, "Out of memory reading initrd file");
 +            goto cleanup;
 +        }
-         if (fseek(f, eif_header.section_offsets[i], SEEK_SET) != 0) {
-             error_setg_errno(errp, errno, "Failed to offset to %" PRIu64 " in EIF file",
-                              eif_header.section_offsets[i]);
+ 
+         iov_ptr = g_malloc(sizeof(struct iovec));
+         iov_ptr->iov_base = ptr;
 -- 
 2.47.0
 
