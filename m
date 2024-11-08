@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE89C1AFA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E15FB9C1AF5
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:44:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9MT1-0004JG-9b; Fri, 08 Nov 2024 05:43:51 -0500
+	id 1t9MT2-0004Op-TL; Fri, 08 Nov 2024 05:43:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSy-0004GP-J5
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSy-0004GH-23
  for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSw-0006A8-1p
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSw-0006AC-7M
  for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731062624;
+ s=mimecast20190719; t=1731062625;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yrwbrJBfVhg5F0YRFXEx/6wRAGDgph59Y9fKu3YGllg=;
- b=bHSMh4n4FaNRh9Wg72TnVFOKkfQKj3zO1aoaANvkFXGmXOVNSs/VrmcI6/YIFp2ajacpp7
- J+pIbC8XZnFfLkryFwMTP9PyydcKQ2X9douht+U+tRGddIsji4XZnEHC1Dk87MRzwCYG6u
- Bjxi3viGdIkrPlZjNO9bOPOxPZJ+dNM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wJOS9Ag53Kv/GbDr7S6/91HkLwymBcQX1jpDo1XmfPQ=;
+ b=RNq8Bgz/Cjghq87yApNbvhMsTAbg+Ot6CKxUYrgysfDtRAgY8vILrXZ63E7uxdRbWy5NDf
+ u3TF2UcbmTZstntBLLMz/PZfjDq+MnkvapdoFvSVKEtpZjaeSSTPyOOgvqAz5UKY+zoTBV
+ Ew6ocube3Zle7ssn/ELMQEMO9fSZsmA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-H66RbiLIPuC1z8BR4vfCFw-1; Fri,
- 08 Nov 2024 05:43:41 -0500
-X-MC-Unique: H66RbiLIPuC1z8BR4vfCFw-1
-X-Mimecast-MFC-AGG-ID: H66RbiLIPuC1z8BR4vfCFw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-382--9fu7frRP1SMi8sFx9MnxA-1; Fri,
+ 08 Nov 2024 05:43:44 -0500
+X-MC-Unique: -9fu7frRP1SMi8sFx9MnxA-1
+X-Mimecast-MFC-AGG-ID: -9fu7frRP1SMi8sFx9MnxA
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12F41195609E; Fri,  8 Nov 2024 10:43:40 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C98D51955DC1; Fri,  8 Nov 2024 10:43:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.118])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AD46F1953883; Fri,  8 Nov 2024 10:43:38 +0000 (UTC)
+ id 918451953880; Fri,  8 Nov 2024 10:43:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 08/10] tests: refresh package lists with latest libvirt-ci
-Date: Fri,  8 Nov 2024 11:43:08 +0100
-Message-ID: <20241108104312.534448-9-thuth@redhat.com>
+Subject: [PULL 09/10] next-kbd: convert to use qemu_input_handler_register()
+Date: Fri,  8 Nov 2024 11:43:09 +0100
+Message-ID: <20241108104312.534448-10-thuth@redhat.com>
 In-Reply-To: <20241108104312.534448-1-thuth@redhat.com>
 References: <20241108104312.534448-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,429 +83,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-This updates the libvirt-ci  submodule to pull in various fixes,
-the most notable reducing native package sets in cross builds.
-Some packages were mistakenly marked as native, rather than
-foreign, in libvirt-ci. Fixing this causes our dockerfiles to
-pick up the cross arch package instead of native one, thus
-improving our test coverage in a few areas.
+Convert the next-kbd device from the legacy UI qemu_add_kbd_event_handler()
+function to use qemu_input_handler_register().
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20241106123525.511491-1-berrange@redhat.com>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20241106120928.242443-2-mark.cave-ayland@ilande.co.uk>
+[thuth: Removed the NEXTKBD_NO_KEY definition - replaced by 0 now]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/cirrus/freebsd-14.vars                   | 2 +-
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 8 ++++----
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 8 ++++----
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 8 ++++----
- tests/docker/dockerfiles/debian-i686-cross.docker     | 8 ++++----
- tests/docker/dockerfiles/debian-mips64el-cross.docker | 7 +++----
- tests/docker/dockerfiles/debian-mipsel-cross.docker   | 8 ++++----
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 8 ++++----
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 8 ++++----
- tests/docker/dockerfiles/fedora-win64-cross.docker    | 4 +---
- tests/lcitool/libvirt-ci                              | 2 +-
- tests/lcitool/mappings.yml                            | 3 +++
- tests/vm/generated/freebsd.json                       | 2 +-
- 13 files changed, 38 insertions(+), 38 deletions(-)
+ hw/m68k/next-kbd.c | 158 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 103 insertions(+), 55 deletions(-)
 
-diff --git a/.gitlab-ci.d/cirrus/freebsd-14.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
-index 044cec7c14..0a7ac5e0e1 100644
---- a/.gitlab-ci.d/cirrus/freebsd-14.vars
-+++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
-@@ -10,7 +10,7 @@ CROSS_PKGS=''
- MAKE='/usr/local/bin/gmake'
- NINJA='/usr/local/bin/ninja'
- PACKAGING_COMMAND='pkg'
--PIP3='/usr/local/bin/pip-3.8'
-+PIP3='/usr/local/bin/pip'
- PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
- PYPI_PKGS=''
- PYTHON='/usr/local/bin/python3'
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index d3b58c3e90..644fd3734d 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:amd64 \
-                       libgnutls28-dev:amd64 \
-                       libgtk-3-dev:amd64 \
-+                      libgtk-vnc-2.0-dev:amd64 \
-                       libibverbs-dev:amd64 \
-                       libiscsi-dev:amd64 \
-                       libjemalloc-dev:amd64 \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:amd64 \
-                       libnuma-dev:amd64 \
-                       libpam0g-dev:amd64 \
-+                      libpcre2-dev:amd64 \
-                       libpipewire-0.3-dev:amd64 \
-                       libpixman-1-dev:amd64 \
-                       libpmem-dev:amd64 \
-@@ -134,6 +132,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:amd64 \
-                       libslirp-dev:amd64 \
-                       libsnappy-dev:amd64 \
-+                      libsndio-dev:amd64 \
-+                      libspice-protocol-dev:amd64 \
-                       libspice-server-dev:amd64 \
-                       libssh-gcrypt-dev:amd64 \
-                       libsystemd-dev:amd64 \
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 4a6785bf5b..060da53796 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:arm64 \
-                       libgnutls28-dev:arm64 \
-                       libgtk-3-dev:arm64 \
-+                      libgtk-vnc-2.0-dev:arm64 \
-                       libibverbs-dev:arm64 \
-                       libiscsi-dev:arm64 \
-                       libjemalloc-dev:arm64 \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:arm64 \
-                       libnuma-dev:arm64 \
-                       libpam0g-dev:arm64 \
-+                      libpcre2-dev:arm64 \
-                       libpipewire-0.3-dev:arm64 \
-                       libpixman-1-dev:arm64 \
-                       libpng-dev:arm64 \
-@@ -133,6 +131,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:arm64 \
-                       libslirp-dev:arm64 \
-                       libsnappy-dev:arm64 \
-+                      libsndio-dev:arm64 \
-+                      libspice-protocol-dev:arm64 \
-                       libspice-server-dev:arm64 \
-                       libssh-gcrypt-dev:arm64 \
-                       libsystemd-dev:arm64 \
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index 52e8831326..a481fc9695 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:armhf \
-                       libgnutls28-dev:armhf \
-                       libgtk-3-dev:armhf \
-+                      libgtk-vnc-2.0-dev:armhf \
-                       libibverbs-dev:armhf \
-                       libiscsi-dev:armhf \
-                       libjemalloc-dev:armhf \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:armhf \
-                       libnuma-dev:armhf \
-                       libpam0g-dev:armhf \
-+                      libpcre2-dev:armhf \
-                       libpipewire-0.3-dev:armhf \
-                       libpixman-1-dev:armhf \
-                       libpng-dev:armhf \
-@@ -133,6 +131,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:armhf \
-                       libslirp-dev:armhf \
-                       libsnappy-dev:armhf \
-+                      libsndio-dev:armhf \
-+                      libspice-protocol-dev:armhf \
-                       libspice-server-dev:armhf \
-                       libssh-gcrypt-dev:armhf \
-                       libsystemd-dev:armhf \
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index 1326e8a5ca..61bc361e85 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:i386 \
-                       libgnutls28-dev:i386 \
-                       libgtk-3-dev:i386 \
-+                      libgtk-vnc-2.0-dev:i386 \
-                       libibverbs-dev:i386 \
-                       libiscsi-dev:i386 \
-                       libjemalloc-dev:i386 \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:i386 \
-                       libnuma-dev:i386 \
-                       libpam0g-dev:i386 \
-+                      libpcre2-dev:i386 \
-                       libpipewire-0.3-dev:i386 \
-                       libpixman-1-dev:i386 \
-                       libpng-dev:i386 \
-@@ -133,6 +131,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:i386 \
-                       libslirp-dev:i386 \
-                       libsnappy-dev:i386 \
-+                      libsndio-dev:i386 \
-+                      libspice-protocol-dev:i386 \
-                       libspice-server-dev:i386 \
-                       libssh-gcrypt-dev:i386 \
-                       libsystemd-dev:i386 \
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index 0ba542112e..c09a8da890 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -115,6 +111,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:mips64el \
-                       libnuma-dev:mips64el \
-                       libpam0g-dev:mips64el \
-+                      libpcre2-dev:mips64el \
-                       libpipewire-0.3-dev:mips64el \
-                       libpixman-1-dev:mips64el \
-                       libpng-dev:mips64el \
-@@ -126,6 +123,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:mips64el \
-                       libslirp-dev:mips64el \
-                       libsnappy-dev:mips64el \
-+                      libsndio-dev:mips64el \
-+                      libspice-protocol-dev:mips64el \
-                       libspice-server-dev:mips64el \
-                       libssh-gcrypt-dev:mips64el \
-                       libsystemd-dev:mips64el \
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 59b5d2655b..2e979111e0 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -108,6 +104,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:mipsel \
-                       libgnutls28-dev:mipsel \
-                       libgtk-3-dev:mipsel \
-+                      libgtk-vnc-2.0-dev:mipsel \
-                       libibverbs-dev:mipsel \
-                       libiscsi-dev:mipsel \
-                       libjemalloc-dev:mipsel \
-@@ -119,6 +116,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:mipsel \
-                       libnuma-dev:mipsel \
-                       libpam0g-dev:mipsel \
-+                      libpcre2-dev:mipsel \
-                       libpipewire-0.3-dev:mipsel \
-                       libpixman-1-dev:mipsel \
-                       libpng-dev:mipsel \
-@@ -132,6 +130,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:mipsel \
-                       libslirp-dev:mipsel \
-                       libsnappy-dev:mipsel \
-+                      libsndio-dev:mipsel \
-+                      libspice-protocol-dev:mipsel \
-                       libspice-server-dev:mipsel \
-                       libssh-gcrypt-dev:mipsel \
-                       libsystemd-dev:mipsel \
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 8680b35c5a..8ee450dba0 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:ppc64el \
-                       libgnutls28-dev:ppc64el \
-                       libgtk-3-dev:ppc64el \
-+                      libgtk-vnc-2.0-dev:ppc64el \
-                       libibverbs-dev:ppc64el \
-                       libiscsi-dev:ppc64el \
-                       libjemalloc-dev:ppc64el \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:ppc64el \
-                       libnuma-dev:ppc64el \
-                       libpam0g-dev:ppc64el \
-+                      libpcre2-dev:ppc64el \
-                       libpipewire-0.3-dev:ppc64el \
-                       libpixman-1-dev:ppc64el \
-                       libpng-dev:ppc64el \
-@@ -133,6 +131,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:ppc64el \
-                       libslirp-dev:ppc64el \
-                       libsnappy-dev:ppc64el \
-+                      libsndio-dev:ppc64el \
-+                      libspice-protocol-dev:ppc64el \
-                       libspice-server-dev:ppc64el \
-                       libssh-gcrypt-dev:ppc64el \
-                       libsystemd-dev:ppc64el \
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 384a2b425e..f451a07c4c 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -31,10 +31,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       git \
-                       hostname \
-                       libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
-                       llvm \
-                       locales \
-                       make \
-@@ -109,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libglusterfs-dev:s390x \
-                       libgnutls28-dev:s390x \
-                       libgtk-3-dev:s390x \
-+                      libgtk-vnc-2.0-dev:s390x \
-                       libibverbs-dev:s390x \
-                       libiscsi-dev:s390x \
-                       libjemalloc-dev:s390x \
-@@ -120,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libnfs-dev:s390x \
-                       libnuma-dev:s390x \
-                       libpam0g-dev:s390x \
-+                      libpcre2-dev:s390x \
-                       libpipewire-0.3-dev:s390x \
-                       libpixman-1-dev:s390x \
-                       libpng-dev:s390x \
-@@ -133,6 +131,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libselinux1-dev:s390x \
-                       libslirp-dev:s390x \
-                       libsnappy-dev:s390x \
-+                      libsndio-dev:s390x \
-+                      libspice-protocol-dev:s390x \
-                       libssh-gcrypt-dev:s390x \
-                       libsystemd-dev:s390x \
-                       libtasn1-6-dev:s390x \
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index 3ba62b55ad..7dc3eb03f5 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -35,7 +35,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                git \
-                glib2-devel \
-                glibc-langpack-en \
--               gtk-vnc2-devel \
-                hostname \
-                llvm \
-                make \
-@@ -44,7 +43,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                ninja-build \
-                nmap-ncat \
-                openssh-clients \
--               pcre-static \
-                python3 \
-                python3-PyYAML \
-                python3-numpy \
-@@ -58,7 +56,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                sed \
-                socat \
-                sparse \
--               spice-protocol \
-                swtpm \
-                tar \
-                tesseract \
-@@ -89,6 +86,7 @@ RUN nosync dnf install -y \
-                mingw64-gettext \
-                mingw64-glib2 \
-                mingw64-gnutls \
-+               mingw64-gtk-vnc2 \
-                mingw64-gtk3 \
-                mingw64-libepoxy \
-                mingw64-libgcrypt \
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 6b19006b2c..9ad3f70bde 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 6b19006b2cbe01adea6a857c71860a8e7ba7ddd7
-+Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index c90b23a00f..f8186b0e69 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -17,6 +17,9 @@ mappings:
-   libepoxy:
-     mips64el-deb:
+diff --git a/hw/m68k/next-kbd.c b/hw/m68k/next-kbd.c
+index bc67810f31..dacc26413f 100644
+--- a/hw/m68k/next-kbd.c
++++ b/hw/m68k/next-kbd.c
+@@ -68,7 +68,6 @@ struct NextKBDState {
+     uint16_t shift;
+ };
  
-+  gtk-vnc:
-+    mips64el-deb:
+-static void queue_code(void *opaque, int code);
+ 
+ /* lots of magic numbers here */
+ static uint32_t kbd_read_byte(void *opaque, hwaddr addr)
+@@ -166,68 +165,70 @@ static const MemoryRegionOps kbd_ops = {
+     .endianness = DEVICE_NATIVE_ENDIAN,
+ };
+ 
+-static void nextkbd_event(void *opaque, int ch)
+-{
+-    /*
+-     * Will want to set vars for caps/num lock
+-     * if (ch & 0x80) -> key release
+-     * there's also e0 escaped scancodes that might need to be handled
+-     */
+-    queue_code(opaque, ch);
+-}
+-
+-static const unsigned char next_keycodes[128] = {
+-    0x00, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x50, 0x4F,
+-    0x4E, 0x1E, 0x1F, 0x20, 0x1D, 0x1C, 0x1B, 0x00,
+-    0x42, 0x43, 0x44, 0x45, 0x48, 0x47, 0x46, 0x06,
+-    0x07, 0x08, 0x00, 0x00, 0x2A, 0x00, 0x39, 0x3A,
+-    0x3B, 0x3C, 0x3D, 0x40, 0x3F, 0x3E, 0x2D, 0x2C,
+-    0x2B, 0x26, 0x00, 0x00, 0x31, 0x32, 0x33, 0x34,
+-    0x35, 0x37, 0x36, 0x2e, 0x2f, 0x30, 0x00, 0x00,
+-    0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++static const int qcode_to_nextkbd_keycode[] = {
++    [Q_KEY_CODE_ESC]           = 0x49,
++    [Q_KEY_CODE_1]             = 0x4a,
++    [Q_KEY_CODE_2]             = 0x4b,
++    [Q_KEY_CODE_3]             = 0x4c,
++    [Q_KEY_CODE_4]             = 0x4d,
++    [Q_KEY_CODE_5]             = 0x50,
++    [Q_KEY_CODE_6]             = 0x4f,
++    [Q_KEY_CODE_7]             = 0x4e,
++    [Q_KEY_CODE_8]             = 0x1e,
++    [Q_KEY_CODE_9]             = 0x1f,
++    [Q_KEY_CODE_0]             = 0x20,
++    [Q_KEY_CODE_MINUS]         = 0x1d,
++    [Q_KEY_CODE_EQUAL]         = 0x1c,
++    [Q_KEY_CODE_BACKSPACE]     = 0x1b,
 +
-   mesa-libgbm:
-     mips64el-deb:
++    [Q_KEY_CODE_Q]             = 0x42,
++    [Q_KEY_CODE_W]             = 0x43,
++    [Q_KEY_CODE_E]             = 0x44,
++    [Q_KEY_CODE_R]             = 0x45,
++    [Q_KEY_CODE_T]             = 0x48,
++    [Q_KEY_CODE_Y]             = 0x47,
++    [Q_KEY_CODE_U]             = 0x46,
++    [Q_KEY_CODE_I]             = 0x06,
++    [Q_KEY_CODE_O]             = 0x07,
++    [Q_KEY_CODE_P]             = 0x08,
++    [Q_KEY_CODE_RET]           = 0x2a,
++    [Q_KEY_CODE_A]             = 0x39,
++    [Q_KEY_CODE_S]             = 0x3a,
++
++    [Q_KEY_CODE_D]             = 0x3b,
++    [Q_KEY_CODE_F]             = 0x3c,
++    [Q_KEY_CODE_G]             = 0x3d,
++    [Q_KEY_CODE_H]             = 0x40,
++    [Q_KEY_CODE_J]             = 0x3f,
++    [Q_KEY_CODE_K]             = 0x3e,
++    [Q_KEY_CODE_L]             = 0x2d,
++    [Q_KEY_CODE_SEMICOLON]     = 0x2c,
++    [Q_KEY_CODE_APOSTROPHE]    = 0x2b,
++    [Q_KEY_CODE_GRAVE_ACCENT]  = 0x26,
++    [Q_KEY_CODE_Z]             = 0x31,
++    [Q_KEY_CODE_X]             = 0x32,
++    [Q_KEY_CODE_C]             = 0x33,
++    [Q_KEY_CODE_V]             = 0x34,
++
++    [Q_KEY_CODE_B]             = 0x35,
++    [Q_KEY_CODE_N]             = 0x37,
++    [Q_KEY_CODE_M]             = 0x36,
++    [Q_KEY_CODE_COMMA]         = 0x2e,
++    [Q_KEY_CODE_DOT]           = 0x2f,
++    [Q_KEY_CODE_SLASH]         = 0x30,
++
++    [Q_KEY_CODE_SPC]           = 0x38,
+ };
  
-diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
-index 5da8d30bcd..3cb7fb7060 100644
---- a/tests/vm/generated/freebsd.json
-+++ b/tests/vm/generated/freebsd.json
-@@ -5,7 +5,7 @@
-   "make": "/usr/local/bin/gmake",
-   "ninja": "/usr/local/bin/ninja",
-   "packaging_command": "pkg",
--  "pip3": "/usr/local/bin/pip-3.8",
-+  "pip3": "/usr/local/bin/pip",
-   "pkgs": [
-     "alsa-lib",
-     "bash",
+-static void queue_code(void *opaque, int code)
++static void nextkbd_put_keycode(NextKBDState *s, int keycode)
+ {
+-    NextKBDState *s = NEXTKBD(opaque);
+     KBDQueue *q = &s->queue;
+-    int key = code & KD_KEYMASK;
+-    int release = code & 0x80;
+-    static int ext;
+-
+-    if (code == 0xE0) {
+-        ext = 1;
+-    }
+-
+-    if (code == 0x2A || code == 0x1D || code == 0x36) {
+-        if (code == 0x2A) {
+-            s->shift = KD_LSHIFT;
+-        } else if (code == 0x36) {
+-            s->shift = KD_RSHIFT;
+-            ext = 0;
+-        } else if (code == 0x1D && !ext) {
+-            s->shift = KD_LCOMM;
+-        } else if (code == 0x1D && ext) {
+-            ext = 0;
+-            s->shift = KD_RCOMM;
+-        }
+-        return;
+-    } else if (code == (0x2A | 0x80) || code == (0x1D | 0x80) ||
+-               code == (0x36 | 0x80)) {
+-        s->shift = 0;
+-        return;
+-    }
+ 
+     if (q->count >= KBD_QUEUE_SIZE) {
+         return;
+     }
+ 
+-    q->data[q->wptr] = next_keycodes[key] | release;
+-
++    q->data[q->wptr] = keycode;
+     if (++q->wptr == KBD_QUEUE_SIZE) {
+         q->wptr = 0;
+     }
+@@ -241,6 +242,53 @@ static void queue_code(void *opaque, int code)
+     /* s->update_irq(s->update_arg, 1); */
+ }
+ 
++static void nextkbd_event(DeviceState *dev, QemuConsole *src, InputEvent *evt)
++{
++    NextKBDState *s = NEXTKBD(dev);
++    int qcode, keycode;
++    bool key_down = evt->u.key.data->down;
++
++    qcode = qemu_input_key_value_to_qcode(evt->u.key.data->key);
++    if (qcode >= ARRAY_SIZE(qcode_to_nextkbd_keycode)) {
++        return;
++    }
++
++    /* Shift key currently has no keycode, so handle separately */
++    if (qcode == Q_KEY_CODE_SHIFT) {
++        if (key_down) {
++            s->shift |= KD_LSHIFT;
++        } else {
++            s->shift &= ~KD_LSHIFT;
++        }
++    }
++
++    if (qcode == Q_KEY_CODE_SHIFT_R) {
++        if (key_down) {
++            s->shift |= KD_RSHIFT;
++        } else {
++            s->shift &= ~KD_RSHIFT;
++        }
++    }
++
++    keycode = qcode_to_nextkbd_keycode[qcode];
++    if (!keycode) {
++        return;
++    }
++
++    /* If key release event, create keyboard break code */
++    if (!key_down) {
++        keycode |= 0x80;
++    }
++
++    nextkbd_put_keycode(s, keycode);
++}
++
++static const QemuInputHandler nextkbd_handler = {
++    .name  = "QEMU NeXT Keyboard",
++    .mask  = INPUT_EVENT_MASK_KEY,
++    .event = nextkbd_event,
++};
++
+ static void nextkbd_reset(DeviceState *dev)
+ {
+     NextKBDState *nks = NEXTKBD(dev);
+@@ -256,7 +304,7 @@ static void nextkbd_realize(DeviceState *dev, Error **errp)
+     memory_region_init_io(&s->mr, OBJECT(dev), &kbd_ops, s, "next.kbd", 0x1000);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mr);
+ 
+-    qemu_add_kbd_event_handler(nextkbd_event, s);
++    qemu_input_handler_register(dev, &nextkbd_handler);
+ }
+ 
+ static const VMStateDescription nextkbd_vmstate = {
 -- 
 2.47.0
 
