@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAC79C14A5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 04:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 369AE9C14A9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 04:31:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Fhd-0008Ue-7j; Thu, 07 Nov 2024 22:30:29 -0500
+	id 1t9Fhn-00004t-UU; Thu, 07 Nov 2024 22:30:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1t9Fha-0008U0-US
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:26 -0500
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1t9Fhh-0008VJ-Jn
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:33 -0500
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1t9FhY-0001Hn-Vm
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:26 -0500
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3e5fef69f2eso1056233b6e.3
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 19:30:24 -0800 (PST)
+ id 1t9Fhd-0001Ir-6z
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:33 -0500
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-71850708dc9so1220339a34.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 19:30:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1731036624; x=1731641424;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1731036628; x=1731641428;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZEmXhN0e4yofB9St5S3+HcVTsbiOBljTRevzyH0DrDI=;
- b=ory0/elUCxf/vrmGSKz3hnclJvn+NPb/1/iI8JCJJebzR3on0zZvaFADOl9bXQeX2B
- sJOLjvlY3nT6+wWiUj/rM/A9GPH6kPNMRDHQ5dDd8ubKPsmeuXSaeALKHv03x676pUe0
- b5Znba2osYTzI/UWtRP1mWbVIxXIUUeIPWhkA1D1L7adXMj71PdT811qwYEdk3LnHljP
- fyQhpHiIsazzXGjEEMgFrol/Ukj7W90JNAA/ZQFo6E9/jJE7+hyOY/O7CpL4wzbKKGGb
- dXji5kAsVhP495/Ri8GHXlxuQTim22D25e2CnTALSmsm5Eg5il1CvuEZ1JTCo1djYG3H
- daJg==
+ bh=55iqCS8kiLmLFUNlZbRqBM9OdxuIQ62bUAj7d4iMUOA=;
+ b=IwY4s38aOoZbhoHRBhO8f/UIEf53xoDz/nguaSwPa0O7isa9QfXtUWPAzTAiQvky+i
+ lIhc5lHYUldxQR4JiU0KV6cFRzCq8YkYvMNZJkwdHp6ClSrpi0v2Jxd9zoUBXzAv3UBh
+ EJRKnEMmyeSpR4wQ2e0KD7Jd+9NF2M8JbD5oHQg9APDZ/0A9scfMN0wgnRERTkDtXl96
+ ZyRbIC9OI3BOnNJKm6RW8OeXkgw0lseXokcxbbPv2+SXtBF2VHHWIPI2kKrM+weCrjqp
+ 71FeOoIWsnegWk3h57nv1+JbFd5auNexQKLKoF4VBnaoQwDZ+ACL/uRH8toFnFRzc8F/
+ Lqdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731036624; x=1731641424;
+ d=1e100.net; s=20230601; t=1731036628; x=1731641428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZEmXhN0e4yofB9St5S3+HcVTsbiOBljTRevzyH0DrDI=;
- b=tuPelUvjmIkOrX4aBSP9dy8f6ghGBHvv7GSBv1RkXmI0ORuny/MY4jfG53od/4zA52
- R4AsEuvCOrWfCcA9tlPC7iEJvsZZkQrhLgT6zwOekI2xm/o87hV62v/WkJYT6REffzW0
- VT3KuaWtRhnCDP5ImKR7nrLcZ6bqEkroV7y/BexiztYQ8wVx7zHPrBZj9m2ygguxAdA5
- f9apvOQrRF0iooZlyBsy/JE4g1mYJHtfsO4NXRxmpa2V12ZZ3XqreUqQFhI0zItQRgdk
- 7LkjL7al8h3n/vlF5CG2EK4Fpdx0uY0Lhf++YzYba85WTdm3RKqbVLfvXglhcXLLmIJa
- n3bw==
-X-Gm-Message-State: AOJu0Yy0r6cDtIr3pSo/1T88xWJqLEsyt1OEfzesdF5ywslPiwKAsAjQ
- F4HoNiW27/gHMtCECe5QS2Vmtz4yT1bK0/taor2+apidWYvU3FGMlu/9DkxT0ZIqbY3zk49iTo9
- kN7Q=
-X-Google-Smtp-Source: AGHT+IH8Cu8BmQ2H1pYCF1MhqZHlWXBnPlF4+KiVNOByoEJ9C4HHxEoU0/lhjDRoVgya92wPthhJcA==
-X-Received: by 2002:a05:6808:118c:b0:3e6:5f3:dadb with SMTP id
- 5614622812f47-3e794705982mr1776028b6e.39.1731036623668; 
- Thu, 07 Nov 2024 19:30:23 -0800 (PST)
+ bh=55iqCS8kiLmLFUNlZbRqBM9OdxuIQ62bUAj7d4iMUOA=;
+ b=bl+5Qy1Xayjo9HeE++Jmkn0xiQpYhM+tAfU8yE/ARU8hwaUULhBXRHKdQrC0yuQQX+
+ u3AuKYq859VJSyZnYzZQRQL1fmucbIV9eLI5IO/nk1kM9VVo65dYY2D6sj2TNTnt5FyL
+ PZ4k7s+anvQDzglDYnAan2Wv6CKCG7fR10sMFPs1tyzwTwcDDg0E6DUefjkrVv84zQZ/
+ aJ6IetbTX+korFqmXeMrePXDZoYgjgU63h6iBg0/S3zCHvHaKNjimp2O4H9ZhmbdPx0T
+ +89pKvtJjqT3RKzWIwpOROD3LO7DBpD92tcRXVF9frkCcYh/xNrZ/m+cQ2GH7/NM9wLI
+ bp9A==
+X-Gm-Message-State: AOJu0YxYOjIk8lpnK8Mng4xfd2k4azpOhD5aJZ5/btS2fnANXo0u7UxI
+ +Qn7jhkPeFpNrGd5v3x4uJzof0kUVf7bHJWe3JByuX7/F8463barSnPSc4Lgz+fzB+2aQmoagd3
+ 5Z0U=
+X-Google-Smtp-Source: AGHT+IG9VNwX5kqsMfd5bRck6seSoYmA/uLyg9tqS4gc62BQDKbBkd+4wmhGNxOurxJOdJObAlZY4A==
+X-Received: by 2002:a05:6830:388a:b0:718:ce7:9b62 with SMTP id
+ 46e09a7af769-71a1c0e9d2dmr1947114a34.0.1731036627197; 
+ Thu, 07 Nov 2024 19:30:27 -0800 (PST)
 Received: from ThinkPad-T14-hirose.hq.igel.co.jp (napt.igel.co.jp.
  [219.106.231.132]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7f41f65d358sm2326435a12.84.2024.11.07.19.30.20
+ 41be03b00d2f7-7f41f65d358sm2326435a12.84.2024.11.07.19.30.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Nov 2024 19:30:23 -0800 (PST)
+ Thu, 07 Nov 2024 19:30:26 -0800 (PST)
 From: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
 To: qemu-devel@nongnu.org
 Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/5] system/memory: support unaligned access
-Date: Fri,  8 Nov 2024 12:29:46 +0900
-Message-ID: <20241108032952.56692-3-tomoyuki.hirose@igel.co.jp>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH 3/5] hw/misc: add test device for memory access
+Date: Fri,  8 Nov 2024 12:29:47 +0900
+Message-ID: <20241108032952.56692-4-tomoyuki.hirose@igel.co.jp>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241108032952.56692-1-tomoyuki.hirose@igel.co.jp>
 References: <20241108032952.56692-1-tomoyuki.hirose@igel.co.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,242 +93,2171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous code ignored 'impl.unaligned' and handled unaligned
-accesses as is. But this implementation could not emulate specific
-registers of some devices that allow unaligned access such as xHCI
-Host Controller Capability Registers.
-
-This commit emulates an unaligned access with multiple aligned
-accesses. Additionally, the overwriting of the max access size is
-removed to retrive the actual max access size.
+This commit adds a test device for checking memory access. The test
+device generates memory regions that covers all the parameter
+patterns. With this device, we can check the handling of
+reading/writing the MemoryRegion is correct.
 
 Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
 ---
- system/memory.c  | 147 ++++++++++++++++++++++++++++++++++++++---------
- system/physmem.c |   8 ---
- 2 files changed, 119 insertions(+), 36 deletions(-)
+ hw/misc/Kconfig                         |    4 +
+ hw/misc/memaccess-testdev.c             |  197 +++
+ hw/misc/meson.build                     |    1 +
+ include/hw/misc/memaccess-testdev.h     |   42 +
+ include/hw/misc/memaccess-testdev.h.inc | 1864 +++++++++++++++++++++++
+ 5 files changed, 2108 insertions(+)
+ create mode 100644 hw/misc/memaccess-testdev.c
+ create mode 100644 include/hw/misc/memaccess-testdev.h
+ create mode 100644 include/hw/misc/memaccess-testdev.h.inc
 
-diff --git a/system/memory.c b/system/memory.c
-index 85f6834cb3..c2164e6478 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -518,27 +518,118 @@ static MemTxResult memory_region_write_with_attrs_accessor(MemoryRegion *mr,
-     return mr->ops->write_with_attrs(mr->opaque, addr, tmp, size, attrs);
- }
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 1f1baa5dde..b90b91dc25 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -25,6 +25,10 @@ config PCI_TESTDEV
+     default y if TEST_DEVICES
+     depends on PCI
  
-+typedef MemTxResult (*MemoryRegionAccessFn)(MemoryRegion *mr,
-+                                            hwaddr addr,
-+                                            uint64_t *value,
-+                                            unsigned size,
-+                                            signed shift,
-+                                            uint64_t mask,
-+                                            MemTxAttrs attrs);
++config MEMACCESS_TESTDEV
++    bool
++    default y if TEST_DEVICES
 +
-+static MemTxResult access_emulation(hwaddr addr,
-+                                    uint64_t *value,
-+                                    unsigned int size,
-+                                    unsigned int access_size_min,
-+                                    unsigned int access_size_max,
-+                                    MemoryRegion *mr,
-+                                    MemTxAttrs attrs,
-+                                    MemoryRegionAccessFn access_fn_read,
-+                                    MemoryRegionAccessFn access_fn_write,
-+                                    bool is_write)
+ config EDU
+     bool
+     default y if TEST_DEVICES
+diff --git a/hw/misc/memaccess-testdev.c b/hw/misc/memaccess-testdev.c
+new file mode 100644
+index 0000000000..8282bd3035
+--- /dev/null
++++ b/hw/misc/memaccess-testdev.c
+@@ -0,0 +1,197 @@
++/*
++ * QEMU memory access test device
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (c) 2024 IGEL Co., Ltd.
++ * Author: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
++ */
++/*
++ * This device is used to test memory acccess, like:
++ *
++ *     qemu-system-x86_64 -device memaccess-testdev,address=0x10000000
++ */
++
++#include "qemu/osdep.h"
++#include "exec/address-spaces.h"
++#include "exec/memory.h"
++#include "hw/qdev-core.h"
++#include "hw/qdev-properties.h"
++#include "qapi/error.h"
++#include "qemu/typedefs.h"
++#include "qom/object.h"
++
++#include "hw/misc/memaccess-testdev.h"
++
++typedef struct MrOpsList {
++    const char *name;
++    const MemoryRegionOps *ops_array;
++    const size_t ops_array_len;
++    const size_t offset_idx;
++} MrOpsList;
++
++static void testdev_init_memory_region(MemoryRegion *mr,
++                                       Object *owner,
++                                       const MemoryRegionOps *ops,
++                                       void *opaque,
++                                       const char *name,
++                                       uint64_t size,
++                                       MemoryRegion *container,
++                                       hwaddr container_offset)
 +{
-+    hwaddr a;
-+    uint8_t *d;
-+    uint64_t v;
-+    MemTxResult r = MEMTX_OK;
-+    bool is_big_endian = memory_region_big_endian(mr);
-+    void (*store)(void *, int, uint64_t) = is_big_endian ? stn_be_p : stn_le_p;
-+    uint64_t (*load)(const void *, int) = is_big_endian ? ldn_be_p : ldn_le_p;
-+    size_t access_size = MAX(MIN(size, access_size_max), access_size_min);
-+    uint64_t access_mask = MAKE_64BIT_MASK(0, access_size * 8);
-+    hwaddr round_down = mr->ops->impl.unaligned && addr + size <= mr->size ?
-+        0 : addr % access_size;
-+    hwaddr start = addr - round_down;
-+    hwaddr tail = addr + size <= mr->size ? addr + size : mr->size;
-+    uint8_t data[16] = {0};
-+    g_assert(size <= 8);
-+
-+    for (a = start, d = data, v = 0; a < tail;
-+         a += access_size, d += access_size, v = 0) {
-+        r |= access_fn_read(mr, a, &v, access_size, 0, access_mask,
-+                            attrs);
-+        store(d, access_size, v);
-+    }
-+    if (is_write) {
-+        stn_he_p(&data[round_down], size, load(value, size));
-+        for (a = start, d = data; a < tail;
-+             a += access_size, d += access_size) {
-+            v = load(d, access_size);
-+            r |= access_fn_write(mr, a, &v, access_size, 0, access_mask,
-+                                 attrs);
-+        }
-+    } else {
-+        store(value, size, ldn_he_p(&data[round_down], size));
-+    }
-+
-+    return r;
++    memory_region_init_io(mr, owner, ops, opaque, name, size);
++    memory_region_add_subregion(container, container_offset, mr);
 +}
 +
-+static bool is_access_fastpath(hwaddr addr,
-+                               unsigned int size,
-+                               unsigned int access_size_min,
-+                               unsigned int access_size_max,
-+                               MemoryRegion *mr)
++static void testdev_init_from_mr_ops_list(MemAccessTestDev *testdev,
++                                          const MrOpsList *l)
 +{
-+    size_t access_size = MAX(MIN(size, access_size_max), access_size_min);
-+    hwaddr round_down = mr->ops->impl.unaligned && addr + size <= mr->size ?
-+        0 : addr % access_size;
-+
-+    return round_down == 0 && access_size <= size;
++    for (size_t i = 0; i < l->ops_array_len; i++) {
++        g_autofree gchar *name = g_strdup_printf("%s-%ld", l->name, i);
++        testdev_init_memory_region(&testdev->memory_regions[l->offset_idx + i],
++                                   OBJECT(testdev), &l->ops_array[i],
++                                   testdev->mr_data[l->offset_idx + i],
++                                   name,
++                                   MEMACCESS_TESTDEV_REGION_SIZE,
++                                   &testdev->container,
++                                   MEMACCESS_TESTDEV_REGION_SIZE *
++                                   (l->offset_idx + i));
++    }
 +}
 +
-+static MemTxResult access_fastpath(hwaddr addr,
-+                                   uint64_t *value,
-+                                   unsigned int size,
-+                                   unsigned int access_size_min,
-+                                   unsigned int access_size_max,
-+                                   MemoryRegion *mr,
-+                                   MemTxAttrs attrs,
-+                                   MemoryRegionAccessFn fastpath)
-+{
-+    MemTxResult r = MEMTX_OK;
-+    size_t access_size = MAX(MIN(size, access_size_max), access_size_min);
-+    uint64_t access_mask = MAKE_64BIT_MASK(0, access_size * 8);
-+
-+    if (memory_region_big_endian(mr)) {
-+        for (size_t i = 0; i < size; i += access_size) {
-+            r |= fastpath(mr, addr + i, value, access_size,
-+                          (size - access_size - i) * 8, access_mask, attrs);
-+        }
-+    } else {
-+        for (size_t i = 0; i < size; i += access_size) {
-+            r |= fastpath(mr, addr + i, value, access_size,
-+                          i * 8, access_mask, attrs);
-+        }
++#define _DEFINE_MR_OPS_LIST(_n, _a, _l, _o)                            \
++    {                                                                  \
++        .name = (_n),                                                  \
++            .ops_array = (_a),                                         \
++            .ops_array_len = (_l),                                     \
++            .offset_idx = (_o),                                        \
 +    }
 +
-+    return r;
++static const MrOpsList mr_ops_list[] = {
++    _DEFINE_MR_OPS_LIST("little-b-valid",
++                        ops_list_little_b_valid,
++                        N_OPS_LIST_LITTLE_B_VALID,
++                        OFF_IDX_OPS_LIST_LITTLE_B_VALID),
++    _DEFINE_MR_OPS_LIST("little-b-invalid",
++                        ops_list_little_b_invalid,
++                        N_OPS_LIST_LITTLE_B_INVALID,
++                        OFF_IDX_OPS_LIST_LITTLE_B_INVALID),
++    _DEFINE_MR_OPS_LIST("little-w-valid",
++                        ops_list_little_w_valid,
++                        N_OPS_LIST_LITTLE_W_VALID,
++                        OFF_IDX_OPS_LIST_LITTLE_W_VALID),
++    _DEFINE_MR_OPS_LIST("little-w-invalid",
++                        ops_list_little_w_invalid,
++                        N_OPS_LIST_LITTLE_W_INVALID,
++                        OFF_IDX_OPS_LIST_LITTLE_W_INVALID),
++    _DEFINE_MR_OPS_LIST("little-l-valid",
++                        ops_list_little_l_valid,
++                        N_OPS_LIST_LITTLE_L_VALID,
++                        OFF_IDX_OPS_LIST_LITTLE_L_VALID),
++    _DEFINE_MR_OPS_LIST("little-l-invalid",
++                        ops_list_little_l_invalid,
++                        N_OPS_LIST_LITTLE_L_INVALID,
++                        OFF_IDX_OPS_LIST_LITTLE_L_INVALID),
++    _DEFINE_MR_OPS_LIST("little-q-valid",
++                        ops_list_little_q_valid,
++                        N_OPS_LIST_LITTLE_Q_VALID,
++                        OFF_IDX_OPS_LIST_LITTLE_Q_VALID),
++    _DEFINE_MR_OPS_LIST("little-q-invalid",
++                        ops_list_little_q_invalid,
++                        N_OPS_LIST_LITTLE_Q_INVALID,
++                        OFF_IDX_OPS_LIST_LITTLE_Q_INVALID),
++    _DEFINE_MR_OPS_LIST("big-b-valid",
++                        ops_list_big_b_valid,
++                        N_OPS_LIST_BIG_B_VALID,
++                        OFF_IDX_OPS_LIST_BIG_B_VALID),
++    _DEFINE_MR_OPS_LIST("big-b-invalid",
++                        ops_list_big_b_invalid,
++                        N_OPS_LIST_BIG_B_INVALID,
++                        OFF_IDX_OPS_LIST_BIG_B_INVALID),
++    _DEFINE_MR_OPS_LIST("big-w-valid",
++                        ops_list_big_w_valid,
++                        N_OPS_LIST_BIG_W_VALID,
++                        OFF_IDX_OPS_LIST_BIG_W_VALID),
++    _DEFINE_MR_OPS_LIST("big-w-invalid",
++                        ops_list_big_w_invalid,
++                        N_OPS_LIST_BIG_W_INVALID,
++                        OFF_IDX_OPS_LIST_BIG_W_INVALID),
++    _DEFINE_MR_OPS_LIST("big-l-valid",
++                        ops_list_big_l_valid,
++                        N_OPS_LIST_LITTLE_L_VALID,
++                        OFF_IDX_OPS_LIST_BIG_L_VALID),
++    _DEFINE_MR_OPS_LIST("big-l-invalid",
++                        ops_list_big_l_invalid,
++                        N_OPS_LIST_BIG_L_INVALID,
++                        OFF_IDX_OPS_LIST_BIG_L_INVALID),
++    _DEFINE_MR_OPS_LIST("big-q-valid",
++                        ops_list_big_q_valid,
++                        N_OPS_LIST_BIG_Q_VALID,
++                        OFF_IDX_OPS_LIST_BIG_Q_VALID),
++    _DEFINE_MR_OPS_LIST("big-q-invalid",
++                        ops_list_big_q_invalid,
++                        N_OPS_LIST_BIG_Q_INVALID,
++                        OFF_IDX_OPS_LIST_BIG_Q_INVALID),
++};
++#define N_MR_OPS_LIST (sizeof(mr_ops_list) / sizeof(MrOpsList))
++
++static void init_testdev(MemAccessTestDev *testdev)
++{
++    memory_region_init(&testdev->container, OBJECT(testdev), "memtest-regions",
++                       MEMACCESS_TESTDEV_REGION_SIZE * N_OPS_LIST);
++    testdev->mr_data = g_malloc(MEMACCESS_TESTDEV_MR_DATA_SIZE);
++
++    for (size_t i = 0; i < N_MR_OPS_LIST; i++) {
++        testdev_init_from_mr_ops_list(testdev, &mr_ops_list[i]);
++    }
++
++    memory_region_add_subregion(get_system_memory(), testdev->base,
++                                &testdev->container);
 +}
 +
- static MemTxResult access_with_adjusted_size(hwaddr addr,
-                                       uint64_t *value,
-                                       unsigned size,
-                                       unsigned access_size_min,
-                                       unsigned access_size_max,
--                                      MemTxResult (*access_fn)
--                                                  (MemoryRegion *mr,
--                                                   hwaddr addr,
--                                                   uint64_t *value,
--                                                   unsigned size,
--                                                   signed shift,
--                                                   uint64_t mask,
--                                                   MemTxAttrs attrs),
-+                                      MemoryRegionAccessFn access_fn_read,
-+                                      MemoryRegionAccessFn access_fn_write,
-+                                      bool is_write,
-                                       MemoryRegion *mr,
-                                       MemTxAttrs attrs)
- {
--    uint64_t access_mask;
--    unsigned access_size;
--    unsigned i;
-     MemTxResult r = MEMTX_OK;
-     bool reentrancy_guard_applied = false;
-+    MemoryRegionAccessFn access_fn_fastpath =
-+        is_write ? access_fn_write : access_fn_read;
- 
-     if (!access_size_min) {
-         access_size_min = 1;
-@@ -560,20 +651,16 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-         reentrancy_guard_applied = true;
-     }
- 
--    /* FIXME: support unaligned access? */
--    access_size = MAX(MIN(size, access_size_max), access_size_min);
--    access_mask = MAKE_64BIT_MASK(0, access_size * 8);
--    if (memory_region_big_endian(mr)) {
--        for (i = 0; i < size; i += access_size) {
--            r |= access_fn(mr, addr + i, value, access_size,
--                        (size - access_size - i) * 8, access_mask, attrs);
--        }
-+    if (is_access_fastpath(addr, size, access_size_min, access_size_max, mr)) {
-+        r |= access_fastpath(addr, value, size,
-+                             access_size_min, access_size_max, mr, attrs,
-+                             access_fn_fastpath);
-     } else {
--        for (i = 0; i < size; i += access_size) {
--            r |= access_fn(mr, addr + i, value, access_size, i * 8,
--                        access_mask, attrs);
--        }
-+        r |= access_emulation(addr, value, size,
-+                              access_size_min, access_size_max, mr, attrs,
-+                              access_fn_read, access_fn_write, is_write);
-     }
++static void memaccess_testdev_realize(DeviceState *dev, Error **errp)
++{
++    MemAccessTestDev *d = MEM_ACCESS_TEST_DEV(dev);
 +
-     if (mr->dev && reentrancy_guard_applied) {
-         mr->dev->mem_reentrancy_guard.engaged_in_io = false;
-     }
-@@ -1459,13 +1546,15 @@ static MemTxResult memory_region_dispatch_read1(MemoryRegion *mr,
-                                          mr->ops->impl.min_access_size,
-                                          mr->ops->impl.max_access_size,
-                                          memory_region_read_accessor,
--                                         mr, attrs);
-+                                         memory_region_write_accessor,
-+                                         false, mr, attrs);
-     } else {
-         return access_with_adjusted_size(addr, pval, size,
-                                          mr->ops->impl.min_access_size,
-                                          mr->ops->impl.max_access_size,
-                                          memory_region_read_with_attrs_accessor,
--                                         mr, attrs);
-+                                         memory_region_write_with_attrs_accessor,
-+                                         false, mr, attrs);
-     }
- }
- 
-@@ -1553,15 +1642,17 @@ MemTxResult memory_region_dispatch_write(MemoryRegion *mr,
-         return access_with_adjusted_size(addr, &data, size,
-                                          mr->ops->impl.min_access_size,
-                                          mr->ops->impl.max_access_size,
--                                         memory_region_write_accessor, mr,
--                                         attrs);
-+                                         memory_region_read_accessor,
-+                                         memory_region_write_accessor,
-+                                         true, mr, attrs);
-     } else {
-         return
-             access_with_adjusted_size(addr, &data, size,
-                                       mr->ops->impl.min_access_size,
-                                       mr->ops->impl.max_access_size,
-+                                      memory_region_read_with_attrs_accessor,
-                                       memory_region_write_with_attrs_accessor,
--                                      mr, attrs);
-+                                      true, mr, attrs);
-     }
- }
- 
-diff --git a/system/physmem.c b/system/physmem.c
-index dc1db3a384..ff444140a8 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2693,14 +2693,6 @@ int memory_access_size(MemoryRegion *mr, unsigned l, hwaddr addr)
-         access_size_max = 4;
-     }
- 
--    /* Bound the maximum access by the alignment of the address.  */
--    if (!mr->ops->impl.unaligned) {
--        unsigned align_size_max = addr & -addr;
--        if (align_size_max != 0 && align_size_max < access_size_max) {
--            access_size_max = align_size_max;
--        }
--    }
--
-     /* Don't attempt accesses larger than the maximum.  */
-     if (l > access_size_max) {
-         l = access_size_max;
++    if (d->base == UINT64_MAX) {
++        error_setg(errp, "base address is not assigned");
++        return;
++    }
++
++    init_testdev(d);
++}
++
++static void memaccess_testdev_unrealize(DeviceState *dev)
++{
++    MemAccessTestDev *d = MEM_ACCESS_TEST_DEV(dev);
++    g_free(d->mr_data);
++}
++
++static Property memaccess_testdev_props[] = {
++    DEFINE_PROP_UINT64("address", MemAccessTestDev, base, UINT64_MAX),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void memaccess_testdev_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->realize = memaccess_testdev_realize;
++    dc->unrealize = memaccess_testdev_unrealize;
++    device_class_set_props(dc, memaccess_testdev_props);
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++}
++
++static const TypeInfo memaccess_testdev_info = {
++    .name = TYPE_MEM_ACCESS_TEST_DEV,
++    .parent = TYPE_DEVICE,
++    .instance_size = sizeof(MemAccessTestDev),
++    .class_init = memaccess_testdev_class_init,
++};
++
++static void memaccess_testdev_register_types(void)
++{
++    type_register_static(&memaccess_testdev_info);
++}
++
++type_init(memaccess_testdev_register_types)
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index d02d96e403..28054c5337 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -4,6 +4,7 @@ system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('vmcoreinfo.c'))
+ system_ss.add(when: 'CONFIG_ISA_DEBUG', if_true: files('debugexit.c'))
+ system_ss.add(when: 'CONFIG_ISA_TESTDEV', if_true: files('pc-testdev.c'))
+ system_ss.add(when: 'CONFIG_PCI_TESTDEV', if_true: files('pci-testdev.c'))
++system_ss.add(when: 'CONFIG_MEMACCESS_TESTDEV', if_true: files('memaccess-testdev.c'))
+ system_ss.add(when: 'CONFIG_UNIMP', if_true: files('unimp.c'))
+ system_ss.add(when: 'CONFIG_EMPTY_SLOT', if_true: files('empty_slot.c'))
+ system_ss.add(when: 'CONFIG_LED', if_true: files('led.c'))
+diff --git a/include/hw/misc/memaccess-testdev.h b/include/hw/misc/memaccess-testdev.h
+new file mode 100644
+index 0000000000..1909e40931
+--- /dev/null
++++ b/include/hw/misc/memaccess-testdev.h
+@@ -0,0 +1,42 @@
++/*
++ * QEMU memory access test device header
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (c) 2024 IGEL Co., Ltd.
++ * Author: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
++ */
++
++#ifndef HW_MISC_MEMACCESS_TESTDEV_H
++#define HW_MISC_MEMACCESS_TESTDEV_H
++
++#include "qemu/osdep.h"
++#include "exec/memory.h"
++#include "hw/qdev-core.h"
++
++#define TYPE_MEM_ACCESS_TEST_DEV "memaccess-testdev"
++
++#include "hw/misc/memaccess-testdev.h.inc"
++
++typedef uint8_t MrData[MEMACCESS_TESTDEV_REGION_SIZE];
++#define MEMACCESS_TESTDEV_MR_DATA_SIZE (sizeof(MrData) * N_OPS_LIST)
++
++typedef DeviceClass MemAccessTestDevClass;
++typedef struct MemAccessTestDev {
++    /* Private */
++    DeviceState parent_obj;
++    /* Public */
++    MemoryRegion container;
++    MemoryRegion memory_regions[N_OPS_LIST]; /* test memory regions */
++    uint64_t base;                           /* map base address */
++    MrData *mr_data;                         /* memory region data array */
++} MemAccessTestDev;
++
++#define MEM_ACCESS_TEST_DEV_GET_CLASS(obj)                              \
++    OBJECT_GET_CLASS(MemAccessTestDevClass, obj, TYPE_MEM_ACCESS_TEST_DEV)
++#define MEM_ACCESS_TEST_DEV_CLASS(klass)                                \
++    OBJECT_CLASS_CHECK(MemAccessTestDevClass, klass, TYPE_MEM_ACCESS_TEST_DEV)
++#define MEM_ACCESS_TEST_DEV(obj)                                    \
++    OBJECT_CHECK(MemAccessTestDev, obj, TYPE_MEM_ACCESS_TEST_DEV)
++
++#endif
+diff --git a/include/hw/misc/memaccess-testdev.h.inc b/include/hw/misc/memaccess-testdev.h.inc
+new file mode 100644
+index 0000000000..d6105a7263
+--- /dev/null
++++ b/include/hw/misc/memaccess-testdev.h.inc
+@@ -0,0 +1,1864 @@
++/*
++ * QEMU memory access test device functions
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (c) 2024 IGEL Co., Ltd.
++ * Author: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
++ */
++
++#ifndef HW_MISC_MEMACCESS_TESTDEV_H_INC
++#define HW_MISC_MEMACCESS_TESTDEV_H_INC
++
++#include "qemu/osdep.h"
++#include "exec/memory.h"
++
++#define MEMACCESS_TESTDEV_REGION_SIZE (32)
++
++static uint64_t memaccess_testdev_read_little(void *opaque, hwaddr addr,
++                                              unsigned int size)
++{
++    g_assert(addr + size < MEMACCESS_TESTDEV_REGION_SIZE);
++    void *s = (uint8_t *)opaque + addr;
++    return ldn_le_p(s, size);
++}
++
++static void memaccess_testdev_write_little(void *opaque, hwaddr addr,
++                                           uint64_t data, unsigned int size)
++{
++    g_assert(addr + size < MEMACCESS_TESTDEV_REGION_SIZE);
++    void *d = (uint8_t *)opaque + addr;
++    stn_le_p(d, size, data);
++}
++
++static uint64_t memaccess_testdev_read_big(void *opaque, hwaddr addr,
++                                           unsigned int size)
++{
++    g_assert(addr + size < MEMACCESS_TESTDEV_REGION_SIZE);
++    void *s = (uint8_t *)opaque + addr;
++    return ldn_be_p(s, size);
++}
++
++static void memaccess_testdev_write_big(void *opaque, hwaddr addr,
++                                        uint64_t data, unsigned int size)
++{
++    g_assert(addr + size < MEMACCESS_TESTDEV_REGION_SIZE);
++    void *d = (uint8_t *)opaque + addr;
++    stn_be_p(d, size, data);
++}
++
++#define __JOIN6(a, b, c, d, e, f) __JOIN6_AGAIN(a, b, c, d, e, f)
++#define __JOIN6_AGAIN(a, b, c, d, e, f) a##b##c##d##e##f
++#define __JOIN2(a, b) __JOIN2_AGAIN(a, b)
++#define __JOIN2_AGAIN(a, b) a##b
++#define __STR(x) __STR_AGAIN(x)
++#define __STR_AGAIN(x) #x
++
++#define NAME_OPS_LITTLE(valid_max, valid_min, valid_unaligned,          \
++                        impl_max, impl_min, impl_unaligned)             \
++    __JOIN2(ops_little,                                                 \
++            __JOIN6(valid_max, valid_min, valid_unaligned,              \
++                    impl_max, impl_min, impl_unaligned))
++
++#define NAME_OPS_BIG(valid_max, valid_min, valid_unaligned,             \
++                     impl_max, impl_min, impl_unaligned)                \
++    __JOIN2(ops_big,                                                    \
++            __JOIN6(valid_max, valid_min, valid_unaligned,              \
++                    impl_max, impl_min, impl_unaligned))
++
++#define GEN_OPS_LITTLE(valid_max,                                       \
++                       valid_min,                                       \
++                       valid_unaligned,                                 \
++                       impl_max,                                        \
++                       impl_min,                                        \
++                       impl_unaligned)                                  \
++    static const MemoryRegionOps                                        \
++    NAME_OPS_LITTLE(valid_max, valid_min, valid_unaligned,              \
++                    impl_max, impl_min, impl_unaligned)                 \
++    = {                                                                 \
++        .read = memaccess_testdev_read_little,                          \
++        .write = memaccess_testdev_write_little,                        \
++        .endianness = DEVICE_LITTLE_ENDIAN,                             \
++        .valid = {                                                      \
++            .max_access_size = valid_max,                               \
++            .min_access_size = valid_min,                               \
++            .unaligned = valid_unaligned,                               \
++        },                                                              \
++        .impl = {                                                       \
++            .max_access_size = impl_max,                                \
++            .min_access_size = impl_min,                                \
++            .unaligned = impl_unaligned,                                \
++        },                                                              \
++    };
++
++#define GEN_OPS_BIG(valid_max,                                          \
++                    valid_min,                                          \
++                    valid_unaligned,                                    \
++                    impl_max,                                           \
++                    impl_min,                                           \
++                    impl_unaligned)                                     \
++    static const MemoryRegionOps                                        \
++    NAME_OPS_BIG(valid_max, valid_min, valid_unaligned,                 \
++                 impl_max, impl_min, impl_unaligned)                    \
++    = {                                                                 \
++        .read = memaccess_testdev_read_big,                             \
++        .write = memaccess_testdev_write_big,                           \
++        .endianness = DEVICE_BIG_ENDIAN,                                \
++        .valid = {                                                      \
++            .max_access_size = valid_max,                               \
++            .min_access_size = valid_min,                               \
++            .unaligned = valid_unaligned,                               \
++        },                                                              \
++        .impl = {                                                       \
++            .max_access_size = impl_max,                                \
++            .min_access_size = impl_min,                                \
++            .unaligned = impl_unaligned,                                \
++        },                                                              \
++    };
++
++GEN_OPS_LITTLE(1, 1,  true, 1, 1,  true)
++GEN_OPS_LITTLE(1, 1,  true, 2, 1,  true)
++GEN_OPS_LITTLE(1, 1,  true, 4, 1,  true)
++GEN_OPS_LITTLE(1, 1,  true, 8, 1,  true)
++GEN_OPS_LITTLE(1, 1,  true, 2, 2,  true)
++GEN_OPS_LITTLE(1, 1,  true, 4, 2,  true)
++GEN_OPS_LITTLE(1, 1,  true, 8, 2,  true)
++GEN_OPS_LITTLE(1, 1,  true, 4, 4,  true)
++GEN_OPS_LITTLE(1, 1,  true, 8, 4,  true)
++GEN_OPS_LITTLE(1, 1,  true, 8, 8,  true)
++GEN_OPS_LITTLE(1, 1,  true, 1, 1, false)
++GEN_OPS_LITTLE(1, 1,  true, 2, 1, false)
++GEN_OPS_LITTLE(1, 1,  true, 4, 1, false)
++GEN_OPS_LITTLE(1, 1,  true, 8, 1, false)
++GEN_OPS_LITTLE(1, 1,  true, 2, 2, false)
++GEN_OPS_LITTLE(1, 1,  true, 4, 2, false)
++GEN_OPS_LITTLE(1, 1,  true, 8, 2, false)
++GEN_OPS_LITTLE(1, 1,  true, 4, 4, false)
++GEN_OPS_LITTLE(1, 1,  true, 8, 4, false)
++GEN_OPS_LITTLE(1, 1,  true, 8, 8, false)
++GEN_OPS_LITTLE(2, 1,  true, 1, 1,  true)
++GEN_OPS_LITTLE(2, 1,  true, 2, 1,  true)
++GEN_OPS_LITTLE(2, 1,  true, 4, 1,  true)
++GEN_OPS_LITTLE(2, 1,  true, 8, 1,  true)
++GEN_OPS_LITTLE(2, 1,  true, 2, 2,  true)
++GEN_OPS_LITTLE(2, 1,  true, 4, 2,  true)
++GEN_OPS_LITTLE(2, 1,  true, 8, 2,  true)
++GEN_OPS_LITTLE(2, 1,  true, 4, 4,  true)
++GEN_OPS_LITTLE(2, 1,  true, 8, 4,  true)
++GEN_OPS_LITTLE(2, 1,  true, 8, 8,  true)
++GEN_OPS_LITTLE(2, 1,  true, 1, 1, false)
++GEN_OPS_LITTLE(2, 1,  true, 2, 1, false)
++GEN_OPS_LITTLE(2, 1,  true, 4, 1, false)
++GEN_OPS_LITTLE(2, 1,  true, 8, 1, false)
++GEN_OPS_LITTLE(2, 1,  true, 2, 2, false)
++GEN_OPS_LITTLE(2, 1,  true, 4, 2, false)
++GEN_OPS_LITTLE(2, 1,  true, 8, 2, false)
++GEN_OPS_LITTLE(2, 1,  true, 4, 4, false)
++GEN_OPS_LITTLE(2, 1,  true, 8, 4, false)
++GEN_OPS_LITTLE(2, 1,  true, 8, 8, false)
++GEN_OPS_LITTLE(4, 1,  true, 1, 1,  true)
++GEN_OPS_LITTLE(4, 1,  true, 2, 1,  true)
++GEN_OPS_LITTLE(4, 1,  true, 4, 1,  true)
++GEN_OPS_LITTLE(4, 1,  true, 8, 1,  true)
++GEN_OPS_LITTLE(4, 1,  true, 2, 2,  true)
++GEN_OPS_LITTLE(4, 1,  true, 4, 2,  true)
++GEN_OPS_LITTLE(4, 1,  true, 8, 2,  true)
++GEN_OPS_LITTLE(4, 1,  true, 4, 4,  true)
++GEN_OPS_LITTLE(4, 1,  true, 8, 4,  true)
++GEN_OPS_LITTLE(4, 1,  true, 8, 8,  true)
++GEN_OPS_LITTLE(4, 1,  true, 1, 1, false)
++GEN_OPS_LITTLE(4, 1,  true, 2, 1, false)
++GEN_OPS_LITTLE(4, 1,  true, 4, 1, false)
++GEN_OPS_LITTLE(4, 1,  true, 8, 1, false)
++GEN_OPS_LITTLE(4, 1,  true, 2, 2, false)
++GEN_OPS_LITTLE(4, 1,  true, 4, 2, false)
++GEN_OPS_LITTLE(4, 1,  true, 8, 2, false)
++GEN_OPS_LITTLE(4, 1,  true, 4, 4, false)
++GEN_OPS_LITTLE(4, 1,  true, 8, 4, false)
++GEN_OPS_LITTLE(4, 1,  true, 8, 8, false)
++GEN_OPS_LITTLE(8, 1,  true, 1, 1,  true)
++GEN_OPS_LITTLE(8, 1,  true, 2, 1,  true)
++GEN_OPS_LITTLE(8, 1,  true, 4, 1,  true)
++GEN_OPS_LITTLE(8, 1,  true, 8, 1,  true)
++GEN_OPS_LITTLE(8, 1,  true, 2, 2,  true)
++GEN_OPS_LITTLE(8, 1,  true, 4, 2,  true)
++GEN_OPS_LITTLE(8, 1,  true, 8, 2,  true)
++GEN_OPS_LITTLE(8, 1,  true, 4, 4,  true)
++GEN_OPS_LITTLE(8, 1,  true, 8, 4,  true)
++GEN_OPS_LITTLE(8, 1,  true, 8, 8,  true)
++GEN_OPS_LITTLE(8, 1,  true, 1, 1, false)
++GEN_OPS_LITTLE(8, 1,  true, 2, 1, false)
++GEN_OPS_LITTLE(8, 1,  true, 4, 1, false)
++GEN_OPS_LITTLE(8, 1,  true, 8, 1, false)
++GEN_OPS_LITTLE(8, 1,  true, 2, 2, false)
++GEN_OPS_LITTLE(8, 1,  true, 4, 2, false)
++GEN_OPS_LITTLE(8, 1,  true, 8, 2, false)
++GEN_OPS_LITTLE(8, 1,  true, 4, 4, false)
++GEN_OPS_LITTLE(8, 1,  true, 8, 4, false)
++GEN_OPS_LITTLE(8, 1,  true, 8, 8, false)
++GEN_OPS_LITTLE(2, 2,  true, 1, 1,  true)
++GEN_OPS_LITTLE(2, 2,  true, 2, 1,  true)
++GEN_OPS_LITTLE(2, 2,  true, 4, 1,  true)
++GEN_OPS_LITTLE(2, 2,  true, 8, 1,  true)
++GEN_OPS_LITTLE(2, 2,  true, 2, 2,  true)
++GEN_OPS_LITTLE(2, 2,  true, 4, 2,  true)
++GEN_OPS_LITTLE(2, 2,  true, 8, 2,  true)
++GEN_OPS_LITTLE(2, 2,  true, 4, 4,  true)
++GEN_OPS_LITTLE(2, 2,  true, 8, 4,  true)
++GEN_OPS_LITTLE(2, 2,  true, 8, 8,  true)
++GEN_OPS_LITTLE(2, 2,  true, 1, 1, false)
++GEN_OPS_LITTLE(2, 2,  true, 2, 1, false)
++GEN_OPS_LITTLE(2, 2,  true, 4, 1, false)
++GEN_OPS_LITTLE(2, 2,  true, 8, 1, false)
++GEN_OPS_LITTLE(2, 2,  true, 2, 2, false)
++GEN_OPS_LITTLE(2, 2,  true, 4, 2, false)
++GEN_OPS_LITTLE(2, 2,  true, 8, 2, false)
++GEN_OPS_LITTLE(2, 2,  true, 4, 4, false)
++GEN_OPS_LITTLE(2, 2,  true, 8, 4, false)
++GEN_OPS_LITTLE(2, 2,  true, 8, 8, false)
++GEN_OPS_LITTLE(4, 2,  true, 1, 1,  true)
++GEN_OPS_LITTLE(4, 2,  true, 2, 1,  true)
++GEN_OPS_LITTLE(4, 2,  true, 4, 1,  true)
++GEN_OPS_LITTLE(4, 2,  true, 8, 1,  true)
++GEN_OPS_LITTLE(4, 2,  true, 2, 2,  true)
++GEN_OPS_LITTLE(4, 2,  true, 4, 2,  true)
++GEN_OPS_LITTLE(4, 2,  true, 8, 2,  true)
++GEN_OPS_LITTLE(4, 2,  true, 4, 4,  true)
++GEN_OPS_LITTLE(4, 2,  true, 8, 4,  true)
++GEN_OPS_LITTLE(4, 2,  true, 8, 8,  true)
++GEN_OPS_LITTLE(4, 2,  true, 1, 1, false)
++GEN_OPS_LITTLE(4, 2,  true, 2, 1, false)
++GEN_OPS_LITTLE(4, 2,  true, 4, 1, false)
++GEN_OPS_LITTLE(4, 2,  true, 8, 1, false)
++GEN_OPS_LITTLE(4, 2,  true, 2, 2, false)
++GEN_OPS_LITTLE(4, 2,  true, 4, 2, false)
++GEN_OPS_LITTLE(4, 2,  true, 8, 2, false)
++GEN_OPS_LITTLE(4, 2,  true, 4, 4, false)
++GEN_OPS_LITTLE(4, 2,  true, 8, 4, false)
++GEN_OPS_LITTLE(4, 2,  true, 8, 8, false)
++GEN_OPS_LITTLE(8, 2,  true, 1, 1,  true)
++GEN_OPS_LITTLE(8, 2,  true, 2, 1,  true)
++GEN_OPS_LITTLE(8, 2,  true, 4, 1,  true)
++GEN_OPS_LITTLE(8, 2,  true, 8, 1,  true)
++GEN_OPS_LITTLE(8, 2,  true, 2, 2,  true)
++GEN_OPS_LITTLE(8, 2,  true, 4, 2,  true)
++GEN_OPS_LITTLE(8, 2,  true, 8, 2,  true)
++GEN_OPS_LITTLE(8, 2,  true, 4, 4,  true)
++GEN_OPS_LITTLE(8, 2,  true, 8, 4,  true)
++GEN_OPS_LITTLE(8, 2,  true, 8, 8,  true)
++GEN_OPS_LITTLE(8, 2,  true, 1, 1, false)
++GEN_OPS_LITTLE(8, 2,  true, 2, 1, false)
++GEN_OPS_LITTLE(8, 2,  true, 4, 1, false)
++GEN_OPS_LITTLE(8, 2,  true, 8, 1, false)
++GEN_OPS_LITTLE(8, 2,  true, 2, 2, false)
++GEN_OPS_LITTLE(8, 2,  true, 4, 2, false)
++GEN_OPS_LITTLE(8, 2,  true, 8, 2, false)
++GEN_OPS_LITTLE(8, 2,  true, 4, 4, false)
++GEN_OPS_LITTLE(8, 2,  true, 8, 4, false)
++GEN_OPS_LITTLE(8, 2,  true, 8, 8, false)
++GEN_OPS_LITTLE(4, 4,  true, 1, 1,  true)
++GEN_OPS_LITTLE(4, 4,  true, 2, 1,  true)
++GEN_OPS_LITTLE(4, 4,  true, 4, 1,  true)
++GEN_OPS_LITTLE(4, 4,  true, 8, 1,  true)
++GEN_OPS_LITTLE(4, 4,  true, 2, 2,  true)
++GEN_OPS_LITTLE(4, 4,  true, 4, 2,  true)
++GEN_OPS_LITTLE(4, 4,  true, 8, 2,  true)
++GEN_OPS_LITTLE(4, 4,  true, 4, 4,  true)
++GEN_OPS_LITTLE(4, 4,  true, 8, 4,  true)
++GEN_OPS_LITTLE(4, 4,  true, 8, 8,  true)
++GEN_OPS_LITTLE(4, 4,  true, 1, 1, false)
++GEN_OPS_LITTLE(4, 4,  true, 2, 1, false)
++GEN_OPS_LITTLE(4, 4,  true, 4, 1, false)
++GEN_OPS_LITTLE(4, 4,  true, 8, 1, false)
++GEN_OPS_LITTLE(4, 4,  true, 2, 2, false)
++GEN_OPS_LITTLE(4, 4,  true, 4, 2, false)
++GEN_OPS_LITTLE(4, 4,  true, 8, 2, false)
++GEN_OPS_LITTLE(4, 4,  true, 4, 4, false)
++GEN_OPS_LITTLE(4, 4,  true, 8, 4, false)
++GEN_OPS_LITTLE(4, 4,  true, 8, 8, false)
++GEN_OPS_LITTLE(8, 4,  true, 1, 1,  true)
++GEN_OPS_LITTLE(8, 4,  true, 2, 1,  true)
++GEN_OPS_LITTLE(8, 4,  true, 4, 1,  true)
++GEN_OPS_LITTLE(8, 4,  true, 8, 1,  true)
++GEN_OPS_LITTLE(8, 4,  true, 2, 2,  true)
++GEN_OPS_LITTLE(8, 4,  true, 4, 2,  true)
++GEN_OPS_LITTLE(8, 4,  true, 8, 2,  true)
++GEN_OPS_LITTLE(8, 4,  true, 4, 4,  true)
++GEN_OPS_LITTLE(8, 4,  true, 8, 4,  true)
++GEN_OPS_LITTLE(8, 4,  true, 8, 8,  true)
++GEN_OPS_LITTLE(8, 4,  true, 1, 1, false)
++GEN_OPS_LITTLE(8, 4,  true, 2, 1, false)
++GEN_OPS_LITTLE(8, 4,  true, 4, 1, false)
++GEN_OPS_LITTLE(8, 4,  true, 8, 1, false)
++GEN_OPS_LITTLE(8, 4,  true, 2, 2, false)
++GEN_OPS_LITTLE(8, 4,  true, 4, 2, false)
++GEN_OPS_LITTLE(8, 4,  true, 8, 2, false)
++GEN_OPS_LITTLE(8, 4,  true, 4, 4, false)
++GEN_OPS_LITTLE(8, 4,  true, 8, 4, false)
++GEN_OPS_LITTLE(8, 4,  true, 8, 8, false)
++GEN_OPS_LITTLE(8, 8,  true, 1, 1,  true)
++GEN_OPS_LITTLE(8, 8,  true, 2, 1,  true)
++GEN_OPS_LITTLE(8, 8,  true, 4, 1,  true)
++GEN_OPS_LITTLE(8, 8,  true, 8, 1,  true)
++GEN_OPS_LITTLE(8, 8,  true, 2, 2,  true)
++GEN_OPS_LITTLE(8, 8,  true, 4, 2,  true)
++GEN_OPS_LITTLE(8, 8,  true, 8, 2,  true)
++GEN_OPS_LITTLE(8, 8,  true, 4, 4,  true)
++GEN_OPS_LITTLE(8, 8,  true, 8, 4,  true)
++GEN_OPS_LITTLE(8, 8,  true, 8, 8,  true)
++GEN_OPS_LITTLE(8, 8,  true, 1, 1, false)
++GEN_OPS_LITTLE(8, 8,  true, 2, 1, false)
++GEN_OPS_LITTLE(8, 8,  true, 4, 1, false)
++GEN_OPS_LITTLE(8, 8,  true, 8, 1, false)
++GEN_OPS_LITTLE(8, 8,  true, 2, 2, false)
++GEN_OPS_LITTLE(8, 8,  true, 4, 2, false)
++GEN_OPS_LITTLE(8, 8,  true, 8, 2, false)
++GEN_OPS_LITTLE(8, 8,  true, 4, 4, false)
++GEN_OPS_LITTLE(8, 8,  true, 8, 4, false)
++GEN_OPS_LITTLE(8, 8,  true, 8, 8, false)
++GEN_OPS_LITTLE(1, 1, false, 1, 1,  true)
++GEN_OPS_LITTLE(1, 1, false, 2, 1,  true)
++GEN_OPS_LITTLE(1, 1, false, 4, 1,  true)
++GEN_OPS_LITTLE(1, 1, false, 8, 1,  true)
++GEN_OPS_LITTLE(1, 1, false, 2, 2,  true)
++GEN_OPS_LITTLE(1, 1, false, 4, 2,  true)
++GEN_OPS_LITTLE(1, 1, false, 8, 2,  true)
++GEN_OPS_LITTLE(1, 1, false, 4, 4,  true)
++GEN_OPS_LITTLE(1, 1, false, 8, 4,  true)
++GEN_OPS_LITTLE(1, 1, false, 8, 8,  true)
++GEN_OPS_LITTLE(1, 1, false, 1, 1, false)
++GEN_OPS_LITTLE(1, 1, false, 2, 1, false)
++GEN_OPS_LITTLE(1, 1, false, 4, 1, false)
++GEN_OPS_LITTLE(1, 1, false, 8, 1, false)
++GEN_OPS_LITTLE(1, 1, false, 2, 2, false)
++GEN_OPS_LITTLE(1, 1, false, 4, 2, false)
++GEN_OPS_LITTLE(1, 1, false, 8, 2, false)
++GEN_OPS_LITTLE(1, 1, false, 4, 4, false)
++GEN_OPS_LITTLE(1, 1, false, 8, 4, false)
++GEN_OPS_LITTLE(1, 1, false, 8, 8, false)
++GEN_OPS_LITTLE(2, 1, false, 1, 1,  true)
++GEN_OPS_LITTLE(2, 1, false, 2, 1,  true)
++GEN_OPS_LITTLE(2, 1, false, 4, 1,  true)
++GEN_OPS_LITTLE(2, 1, false, 8, 1,  true)
++GEN_OPS_LITTLE(2, 1, false, 2, 2,  true)
++GEN_OPS_LITTLE(2, 1, false, 4, 2,  true)
++GEN_OPS_LITTLE(2, 1, false, 8, 2,  true)
++GEN_OPS_LITTLE(2, 1, false, 4, 4,  true)
++GEN_OPS_LITTLE(2, 1, false, 8, 4,  true)
++GEN_OPS_LITTLE(2, 1, false, 8, 8,  true)
++GEN_OPS_LITTLE(2, 1, false, 1, 1, false)
++GEN_OPS_LITTLE(2, 1, false, 2, 1, false)
++GEN_OPS_LITTLE(2, 1, false, 4, 1, false)
++GEN_OPS_LITTLE(2, 1, false, 8, 1, false)
++GEN_OPS_LITTLE(2, 1, false, 2, 2, false)
++GEN_OPS_LITTLE(2, 1, false, 4, 2, false)
++GEN_OPS_LITTLE(2, 1, false, 8, 2, false)
++GEN_OPS_LITTLE(2, 1, false, 4, 4, false)
++GEN_OPS_LITTLE(2, 1, false, 8, 4, false)
++GEN_OPS_LITTLE(2, 1, false, 8, 8, false)
++GEN_OPS_LITTLE(4, 1, false, 1, 1,  true)
++GEN_OPS_LITTLE(4, 1, false, 2, 1,  true)
++GEN_OPS_LITTLE(4, 1, false, 4, 1,  true)
++GEN_OPS_LITTLE(4, 1, false, 8, 1,  true)
++GEN_OPS_LITTLE(4, 1, false, 2, 2,  true)
++GEN_OPS_LITTLE(4, 1, false, 4, 2,  true)
++GEN_OPS_LITTLE(4, 1, false, 8, 2,  true)
++GEN_OPS_LITTLE(4, 1, false, 4, 4,  true)
++GEN_OPS_LITTLE(4, 1, false, 8, 4,  true)
++GEN_OPS_LITTLE(4, 1, false, 8, 8,  true)
++GEN_OPS_LITTLE(4, 1, false, 1, 1, false)
++GEN_OPS_LITTLE(4, 1, false, 2, 1, false)
++GEN_OPS_LITTLE(4, 1, false, 4, 1, false)
++GEN_OPS_LITTLE(4, 1, false, 8, 1, false)
++GEN_OPS_LITTLE(4, 1, false, 2, 2, false)
++GEN_OPS_LITTLE(4, 1, false, 4, 2, false)
++GEN_OPS_LITTLE(4, 1, false, 8, 2, false)
++GEN_OPS_LITTLE(4, 1, false, 4, 4, false)
++GEN_OPS_LITTLE(4, 1, false, 8, 4, false)
++GEN_OPS_LITTLE(4, 1, false, 8, 8, false)
++GEN_OPS_LITTLE(8, 1, false, 1, 1,  true)
++GEN_OPS_LITTLE(8, 1, false, 2, 1,  true)
++GEN_OPS_LITTLE(8, 1, false, 4, 1,  true)
++GEN_OPS_LITTLE(8, 1, false, 8, 1,  true)
++GEN_OPS_LITTLE(8, 1, false, 2, 2,  true)
++GEN_OPS_LITTLE(8, 1, false, 4, 2,  true)
++GEN_OPS_LITTLE(8, 1, false, 8, 2,  true)
++GEN_OPS_LITTLE(8, 1, false, 4, 4,  true)
++GEN_OPS_LITTLE(8, 1, false, 8, 4,  true)
++GEN_OPS_LITTLE(8, 1, false, 8, 8,  true)
++GEN_OPS_LITTLE(8, 1, false, 1, 1, false)
++GEN_OPS_LITTLE(8, 1, false, 2, 1, false)
++GEN_OPS_LITTLE(8, 1, false, 4, 1, false)
++GEN_OPS_LITTLE(8, 1, false, 8, 1, false)
++GEN_OPS_LITTLE(8, 1, false, 2, 2, false)
++GEN_OPS_LITTLE(8, 1, false, 4, 2, false)
++GEN_OPS_LITTLE(8, 1, false, 8, 2, false)
++GEN_OPS_LITTLE(8, 1, false, 4, 4, false)
++GEN_OPS_LITTLE(8, 1, false, 8, 4, false)
++GEN_OPS_LITTLE(8, 1, false, 8, 8, false)
++GEN_OPS_LITTLE(2, 2, false, 1, 1,  true)
++GEN_OPS_LITTLE(2, 2, false, 2, 1,  true)
++GEN_OPS_LITTLE(2, 2, false, 4, 1,  true)
++GEN_OPS_LITTLE(2, 2, false, 8, 1,  true)
++GEN_OPS_LITTLE(2, 2, false, 2, 2,  true)
++GEN_OPS_LITTLE(2, 2, false, 4, 2,  true)
++GEN_OPS_LITTLE(2, 2, false, 8, 2,  true)
++GEN_OPS_LITTLE(2, 2, false, 4, 4,  true)
++GEN_OPS_LITTLE(2, 2, false, 8, 4,  true)
++GEN_OPS_LITTLE(2, 2, false, 8, 8,  true)
++GEN_OPS_LITTLE(2, 2, false, 1, 1, false)
++GEN_OPS_LITTLE(2, 2, false, 2, 1, false)
++GEN_OPS_LITTLE(2, 2, false, 4, 1, false)
++GEN_OPS_LITTLE(2, 2, false, 8, 1, false)
++GEN_OPS_LITTLE(2, 2, false, 2, 2, false)
++GEN_OPS_LITTLE(2, 2, false, 4, 2, false)
++GEN_OPS_LITTLE(2, 2, false, 8, 2, false)
++GEN_OPS_LITTLE(2, 2, false, 4, 4, false)
++GEN_OPS_LITTLE(2, 2, false, 8, 4, false)
++GEN_OPS_LITTLE(2, 2, false, 8, 8, false)
++GEN_OPS_LITTLE(4, 2, false, 1, 1,  true)
++GEN_OPS_LITTLE(4, 2, false, 2, 1,  true)
++GEN_OPS_LITTLE(4, 2, false, 4, 1,  true)
++GEN_OPS_LITTLE(4, 2, false, 8, 1,  true)
++GEN_OPS_LITTLE(4, 2, false, 2, 2,  true)
++GEN_OPS_LITTLE(4, 2, false, 4, 2,  true)
++GEN_OPS_LITTLE(4, 2, false, 8, 2,  true)
++GEN_OPS_LITTLE(4, 2, false, 4, 4,  true)
++GEN_OPS_LITTLE(4, 2, false, 8, 4,  true)
++GEN_OPS_LITTLE(4, 2, false, 8, 8,  true)
++GEN_OPS_LITTLE(4, 2, false, 1, 1, false)
++GEN_OPS_LITTLE(4, 2, false, 2, 1, false)
++GEN_OPS_LITTLE(4, 2, false, 4, 1, false)
++GEN_OPS_LITTLE(4, 2, false, 8, 1, false)
++GEN_OPS_LITTLE(4, 2, false, 2, 2, false)
++GEN_OPS_LITTLE(4, 2, false, 4, 2, false)
++GEN_OPS_LITTLE(4, 2, false, 8, 2, false)
++GEN_OPS_LITTLE(4, 2, false, 4, 4, false)
++GEN_OPS_LITTLE(4, 2, false, 8, 4, false)
++GEN_OPS_LITTLE(4, 2, false, 8, 8, false)
++GEN_OPS_LITTLE(8, 2, false, 1, 1,  true)
++GEN_OPS_LITTLE(8, 2, false, 2, 1,  true)
++GEN_OPS_LITTLE(8, 2, false, 4, 1,  true)
++GEN_OPS_LITTLE(8, 2, false, 8, 1,  true)
++GEN_OPS_LITTLE(8, 2, false, 2, 2,  true)
++GEN_OPS_LITTLE(8, 2, false, 4, 2,  true)
++GEN_OPS_LITTLE(8, 2, false, 8, 2,  true)
++GEN_OPS_LITTLE(8, 2, false, 4, 4,  true)
++GEN_OPS_LITTLE(8, 2, false, 8, 4,  true)
++GEN_OPS_LITTLE(8, 2, false, 8, 8,  true)
++GEN_OPS_LITTLE(8, 2, false, 1, 1, false)
++GEN_OPS_LITTLE(8, 2, false, 2, 1, false)
++GEN_OPS_LITTLE(8, 2, false, 4, 1, false)
++GEN_OPS_LITTLE(8, 2, false, 8, 1, false)
++GEN_OPS_LITTLE(8, 2, false, 2, 2, false)
++GEN_OPS_LITTLE(8, 2, false, 4, 2, false)
++GEN_OPS_LITTLE(8, 2, false, 8, 2, false)
++GEN_OPS_LITTLE(8, 2, false, 4, 4, false)
++GEN_OPS_LITTLE(8, 2, false, 8, 4, false)
++GEN_OPS_LITTLE(8, 2, false, 8, 8, false)
++GEN_OPS_LITTLE(4, 4, false, 1, 1,  true)
++GEN_OPS_LITTLE(4, 4, false, 2, 1,  true)
++GEN_OPS_LITTLE(4, 4, false, 4, 1,  true)
++GEN_OPS_LITTLE(4, 4, false, 8, 1,  true)
++GEN_OPS_LITTLE(4, 4, false, 2, 2,  true)
++GEN_OPS_LITTLE(4, 4, false, 4, 2,  true)
++GEN_OPS_LITTLE(4, 4, false, 8, 2,  true)
++GEN_OPS_LITTLE(4, 4, false, 4, 4,  true)
++GEN_OPS_LITTLE(4, 4, false, 8, 4,  true)
++GEN_OPS_LITTLE(4, 4, false, 8, 8,  true)
++GEN_OPS_LITTLE(4, 4, false, 1, 1, false)
++GEN_OPS_LITTLE(4, 4, false, 2, 1, false)
++GEN_OPS_LITTLE(4, 4, false, 4, 1, false)
++GEN_OPS_LITTLE(4, 4, false, 8, 1, false)
++GEN_OPS_LITTLE(4, 4, false, 2, 2, false)
++GEN_OPS_LITTLE(4, 4, false, 4, 2, false)
++GEN_OPS_LITTLE(4, 4, false, 8, 2, false)
++GEN_OPS_LITTLE(4, 4, false, 4, 4, false)
++GEN_OPS_LITTLE(4, 4, false, 8, 4, false)
++GEN_OPS_LITTLE(4, 4, false, 8, 8, false)
++GEN_OPS_LITTLE(8, 4, false, 1, 1,  true)
++GEN_OPS_LITTLE(8, 4, false, 2, 1,  true)
++GEN_OPS_LITTLE(8, 4, false, 4, 1,  true)
++GEN_OPS_LITTLE(8, 4, false, 8, 1,  true)
++GEN_OPS_LITTLE(8, 4, false, 2, 2,  true)
++GEN_OPS_LITTLE(8, 4, false, 4, 2,  true)
++GEN_OPS_LITTLE(8, 4, false, 8, 2,  true)
++GEN_OPS_LITTLE(8, 4, false, 4, 4,  true)
++GEN_OPS_LITTLE(8, 4, false, 8, 4,  true)
++GEN_OPS_LITTLE(8, 4, false, 8, 8,  true)
++GEN_OPS_LITTLE(8, 4, false, 1, 1, false)
++GEN_OPS_LITTLE(8, 4, false, 2, 1, false)
++GEN_OPS_LITTLE(8, 4, false, 4, 1, false)
++GEN_OPS_LITTLE(8, 4, false, 8, 1, false)
++GEN_OPS_LITTLE(8, 4, false, 2, 2, false)
++GEN_OPS_LITTLE(8, 4, false, 4, 2, false)
++GEN_OPS_LITTLE(8, 4, false, 8, 2, false)
++GEN_OPS_LITTLE(8, 4, false, 4, 4, false)
++GEN_OPS_LITTLE(8, 4, false, 8, 4, false)
++GEN_OPS_LITTLE(8, 4, false, 8, 8, false)
++GEN_OPS_LITTLE(8, 8, false, 1, 1,  true)
++GEN_OPS_LITTLE(8, 8, false, 2, 1,  true)
++GEN_OPS_LITTLE(8, 8, false, 4, 1,  true)
++GEN_OPS_LITTLE(8, 8, false, 8, 1,  true)
++GEN_OPS_LITTLE(8, 8, false, 2, 2,  true)
++GEN_OPS_LITTLE(8, 8, false, 4, 2,  true)
++GEN_OPS_LITTLE(8, 8, false, 8, 2,  true)
++GEN_OPS_LITTLE(8, 8, false, 4, 4,  true)
++GEN_OPS_LITTLE(8, 8, false, 8, 4,  true)
++GEN_OPS_LITTLE(8, 8, false, 8, 8,  true)
++GEN_OPS_LITTLE(8, 8, false, 1, 1, false)
++GEN_OPS_LITTLE(8, 8, false, 2, 1, false)
++GEN_OPS_LITTLE(8, 8, false, 4, 1, false)
++GEN_OPS_LITTLE(8, 8, false, 8, 1, false)
++GEN_OPS_LITTLE(8, 8, false, 2, 2, false)
++GEN_OPS_LITTLE(8, 8, false, 4, 2, false)
++GEN_OPS_LITTLE(8, 8, false, 8, 2, false)
++GEN_OPS_LITTLE(8, 8, false, 4, 4, false)
++GEN_OPS_LITTLE(8, 8, false, 8, 4, false)
++GEN_OPS_LITTLE(8, 8, false, 8, 8, false)
++
++GEN_OPS_BIG(1, 1,  true, 1, 1,  true)
++GEN_OPS_BIG(1, 1,  true, 2, 1,  true)
++GEN_OPS_BIG(1, 1,  true, 4, 1,  true)
++GEN_OPS_BIG(1, 1,  true, 8, 1,  true)
++GEN_OPS_BIG(1, 1,  true, 2, 2,  true)
++GEN_OPS_BIG(1, 1,  true, 4, 2,  true)
++GEN_OPS_BIG(1, 1,  true, 8, 2,  true)
++GEN_OPS_BIG(1, 1,  true, 4, 4,  true)
++GEN_OPS_BIG(1, 1,  true, 8, 4,  true)
++GEN_OPS_BIG(1, 1,  true, 8, 8,  true)
++GEN_OPS_BIG(1, 1,  true, 1, 1, false)
++GEN_OPS_BIG(1, 1,  true, 2, 1, false)
++GEN_OPS_BIG(1, 1,  true, 4, 1, false)
++GEN_OPS_BIG(1, 1,  true, 8, 1, false)
++GEN_OPS_BIG(1, 1,  true, 2, 2, false)
++GEN_OPS_BIG(1, 1,  true, 4, 2, false)
++GEN_OPS_BIG(1, 1,  true, 8, 2, false)
++GEN_OPS_BIG(1, 1,  true, 4, 4, false)
++GEN_OPS_BIG(1, 1,  true, 8, 4, false)
++GEN_OPS_BIG(1, 1,  true, 8, 8, false)
++GEN_OPS_BIG(2, 1,  true, 1, 1,  true)
++GEN_OPS_BIG(2, 1,  true, 2, 1,  true)
++GEN_OPS_BIG(2, 1,  true, 4, 1,  true)
++GEN_OPS_BIG(2, 1,  true, 8, 1,  true)
++GEN_OPS_BIG(2, 1,  true, 2, 2,  true)
++GEN_OPS_BIG(2, 1,  true, 4, 2,  true)
++GEN_OPS_BIG(2, 1,  true, 8, 2,  true)
++GEN_OPS_BIG(2, 1,  true, 4, 4,  true)
++GEN_OPS_BIG(2, 1,  true, 8, 4,  true)
++GEN_OPS_BIG(2, 1,  true, 8, 8,  true)
++GEN_OPS_BIG(2, 1,  true, 1, 1, false)
++GEN_OPS_BIG(2, 1,  true, 2, 1, false)
++GEN_OPS_BIG(2, 1,  true, 4, 1, false)
++GEN_OPS_BIG(2, 1,  true, 8, 1, false)
++GEN_OPS_BIG(2, 1,  true, 2, 2, false)
++GEN_OPS_BIG(2, 1,  true, 4, 2, false)
++GEN_OPS_BIG(2, 1,  true, 8, 2, false)
++GEN_OPS_BIG(2, 1,  true, 4, 4, false)
++GEN_OPS_BIG(2, 1,  true, 8, 4, false)
++GEN_OPS_BIG(2, 1,  true, 8, 8, false)
++GEN_OPS_BIG(4, 1,  true, 1, 1,  true)
++GEN_OPS_BIG(4, 1,  true, 2, 1,  true)
++GEN_OPS_BIG(4, 1,  true, 4, 1,  true)
++GEN_OPS_BIG(4, 1,  true, 8, 1,  true)
++GEN_OPS_BIG(4, 1,  true, 2, 2,  true)
++GEN_OPS_BIG(4, 1,  true, 4, 2,  true)
++GEN_OPS_BIG(4, 1,  true, 8, 2,  true)
++GEN_OPS_BIG(4, 1,  true, 4, 4,  true)
++GEN_OPS_BIG(4, 1,  true, 8, 4,  true)
++GEN_OPS_BIG(4, 1,  true, 8, 8,  true)
++GEN_OPS_BIG(4, 1,  true, 1, 1, false)
++GEN_OPS_BIG(4, 1,  true, 2, 1, false)
++GEN_OPS_BIG(4, 1,  true, 4, 1, false)
++GEN_OPS_BIG(4, 1,  true, 8, 1, false)
++GEN_OPS_BIG(4, 1,  true, 2, 2, false)
++GEN_OPS_BIG(4, 1,  true, 4, 2, false)
++GEN_OPS_BIG(4, 1,  true, 8, 2, false)
++GEN_OPS_BIG(4, 1,  true, 4, 4, false)
++GEN_OPS_BIG(4, 1,  true, 8, 4, false)
++GEN_OPS_BIG(4, 1,  true, 8, 8, false)
++GEN_OPS_BIG(8, 1,  true, 1, 1,  true)
++GEN_OPS_BIG(8, 1,  true, 2, 1,  true)
++GEN_OPS_BIG(8, 1,  true, 4, 1,  true)
++GEN_OPS_BIG(8, 1,  true, 8, 1,  true)
++GEN_OPS_BIG(8, 1,  true, 2, 2,  true)
++GEN_OPS_BIG(8, 1,  true, 4, 2,  true)
++GEN_OPS_BIG(8, 1,  true, 8, 2,  true)
++GEN_OPS_BIG(8, 1,  true, 4, 4,  true)
++GEN_OPS_BIG(8, 1,  true, 8, 4,  true)
++GEN_OPS_BIG(8, 1,  true, 8, 8,  true)
++GEN_OPS_BIG(8, 1,  true, 1, 1, false)
++GEN_OPS_BIG(8, 1,  true, 2, 1, false)
++GEN_OPS_BIG(8, 1,  true, 4, 1, false)
++GEN_OPS_BIG(8, 1,  true, 8, 1, false)
++GEN_OPS_BIG(8, 1,  true, 2, 2, false)
++GEN_OPS_BIG(8, 1,  true, 4, 2, false)
++GEN_OPS_BIG(8, 1,  true, 8, 2, false)
++GEN_OPS_BIG(8, 1,  true, 4, 4, false)
++GEN_OPS_BIG(8, 1,  true, 8, 4, false)
++GEN_OPS_BIG(8, 1,  true, 8, 8, false)
++GEN_OPS_BIG(2, 2,  true, 1, 1,  true)
++GEN_OPS_BIG(2, 2,  true, 2, 1,  true)
++GEN_OPS_BIG(2, 2,  true, 4, 1,  true)
++GEN_OPS_BIG(2, 2,  true, 8, 1,  true)
++GEN_OPS_BIG(2, 2,  true, 2, 2,  true)
++GEN_OPS_BIG(2, 2,  true, 4, 2,  true)
++GEN_OPS_BIG(2, 2,  true, 8, 2,  true)
++GEN_OPS_BIG(2, 2,  true, 4, 4,  true)
++GEN_OPS_BIG(2, 2,  true, 8, 4,  true)
++GEN_OPS_BIG(2, 2,  true, 8, 8,  true)
++GEN_OPS_BIG(2, 2,  true, 1, 1, false)
++GEN_OPS_BIG(2, 2,  true, 2, 1, false)
++GEN_OPS_BIG(2, 2,  true, 4, 1, false)
++GEN_OPS_BIG(2, 2,  true, 8, 1, false)
++GEN_OPS_BIG(2, 2,  true, 2, 2, false)
++GEN_OPS_BIG(2, 2,  true, 4, 2, false)
++GEN_OPS_BIG(2, 2,  true, 8, 2, false)
++GEN_OPS_BIG(2, 2,  true, 4, 4, false)
++GEN_OPS_BIG(2, 2,  true, 8, 4, false)
++GEN_OPS_BIG(2, 2,  true, 8, 8, false)
++GEN_OPS_BIG(4, 2,  true, 1, 1,  true)
++GEN_OPS_BIG(4, 2,  true, 2, 1,  true)
++GEN_OPS_BIG(4, 2,  true, 4, 1,  true)
++GEN_OPS_BIG(4, 2,  true, 8, 1,  true)
++GEN_OPS_BIG(4, 2,  true, 2, 2,  true)
++GEN_OPS_BIG(4, 2,  true, 4, 2,  true)
++GEN_OPS_BIG(4, 2,  true, 8, 2,  true)
++GEN_OPS_BIG(4, 2,  true, 4, 4,  true)
++GEN_OPS_BIG(4, 2,  true, 8, 4,  true)
++GEN_OPS_BIG(4, 2,  true, 8, 8,  true)
++GEN_OPS_BIG(4, 2,  true, 1, 1, false)
++GEN_OPS_BIG(4, 2,  true, 2, 1, false)
++GEN_OPS_BIG(4, 2,  true, 4, 1, false)
++GEN_OPS_BIG(4, 2,  true, 8, 1, false)
++GEN_OPS_BIG(4, 2,  true, 2, 2, false)
++GEN_OPS_BIG(4, 2,  true, 4, 2, false)
++GEN_OPS_BIG(4, 2,  true, 8, 2, false)
++GEN_OPS_BIG(4, 2,  true, 4, 4, false)
++GEN_OPS_BIG(4, 2,  true, 8, 4, false)
++GEN_OPS_BIG(4, 2,  true, 8, 8, false)
++GEN_OPS_BIG(8, 2,  true, 1, 1,  true)
++GEN_OPS_BIG(8, 2,  true, 2, 1,  true)
++GEN_OPS_BIG(8, 2,  true, 4, 1,  true)
++GEN_OPS_BIG(8, 2,  true, 8, 1,  true)
++GEN_OPS_BIG(8, 2,  true, 2, 2,  true)
++GEN_OPS_BIG(8, 2,  true, 4, 2,  true)
++GEN_OPS_BIG(8, 2,  true, 8, 2,  true)
++GEN_OPS_BIG(8, 2,  true, 4, 4,  true)
++GEN_OPS_BIG(8, 2,  true, 8, 4,  true)
++GEN_OPS_BIG(8, 2,  true, 8, 8,  true)
++GEN_OPS_BIG(8, 2,  true, 1, 1, false)
++GEN_OPS_BIG(8, 2,  true, 2, 1, false)
++GEN_OPS_BIG(8, 2,  true, 4, 1, false)
++GEN_OPS_BIG(8, 2,  true, 8, 1, false)
++GEN_OPS_BIG(8, 2,  true, 2, 2, false)
++GEN_OPS_BIG(8, 2,  true, 4, 2, false)
++GEN_OPS_BIG(8, 2,  true, 8, 2, false)
++GEN_OPS_BIG(8, 2,  true, 4, 4, false)
++GEN_OPS_BIG(8, 2,  true, 8, 4, false)
++GEN_OPS_BIG(8, 2,  true, 8, 8, false)
++GEN_OPS_BIG(4, 4,  true, 1, 1,  true)
++GEN_OPS_BIG(4, 4,  true, 2, 1,  true)
++GEN_OPS_BIG(4, 4,  true, 4, 1,  true)
++GEN_OPS_BIG(4, 4,  true, 8, 1,  true)
++GEN_OPS_BIG(4, 4,  true, 2, 2,  true)
++GEN_OPS_BIG(4, 4,  true, 4, 2,  true)
++GEN_OPS_BIG(4, 4,  true, 8, 2,  true)
++GEN_OPS_BIG(4, 4,  true, 4, 4,  true)
++GEN_OPS_BIG(4, 4,  true, 8, 4,  true)
++GEN_OPS_BIG(4, 4,  true, 8, 8,  true)
++GEN_OPS_BIG(4, 4,  true, 1, 1, false)
++GEN_OPS_BIG(4, 4,  true, 2, 1, false)
++GEN_OPS_BIG(4, 4,  true, 4, 1, false)
++GEN_OPS_BIG(4, 4,  true, 8, 1, false)
++GEN_OPS_BIG(4, 4,  true, 2, 2, false)
++GEN_OPS_BIG(4, 4,  true, 4, 2, false)
++GEN_OPS_BIG(4, 4,  true, 8, 2, false)
++GEN_OPS_BIG(4, 4,  true, 4, 4, false)
++GEN_OPS_BIG(4, 4,  true, 8, 4, false)
++GEN_OPS_BIG(4, 4,  true, 8, 8, false)
++GEN_OPS_BIG(8, 4,  true, 1, 1,  true)
++GEN_OPS_BIG(8, 4,  true, 2, 1,  true)
++GEN_OPS_BIG(8, 4,  true, 4, 1,  true)
++GEN_OPS_BIG(8, 4,  true, 8, 1,  true)
++GEN_OPS_BIG(8, 4,  true, 2, 2,  true)
++GEN_OPS_BIG(8, 4,  true, 4, 2,  true)
++GEN_OPS_BIG(8, 4,  true, 8, 2,  true)
++GEN_OPS_BIG(8, 4,  true, 4, 4,  true)
++GEN_OPS_BIG(8, 4,  true, 8, 4,  true)
++GEN_OPS_BIG(8, 4,  true, 8, 8,  true)
++GEN_OPS_BIG(8, 4,  true, 1, 1, false)
++GEN_OPS_BIG(8, 4,  true, 2, 1, false)
++GEN_OPS_BIG(8, 4,  true, 4, 1, false)
++GEN_OPS_BIG(8, 4,  true, 8, 1, false)
++GEN_OPS_BIG(8, 4,  true, 2, 2, false)
++GEN_OPS_BIG(8, 4,  true, 4, 2, false)
++GEN_OPS_BIG(8, 4,  true, 8, 2, false)
++GEN_OPS_BIG(8, 4,  true, 4, 4, false)
++GEN_OPS_BIG(8, 4,  true, 8, 4, false)
++GEN_OPS_BIG(8, 4,  true, 8, 8, false)
++GEN_OPS_BIG(8, 8,  true, 1, 1,  true)
++GEN_OPS_BIG(8, 8,  true, 2, 1,  true)
++GEN_OPS_BIG(8, 8,  true, 4, 1,  true)
++GEN_OPS_BIG(8, 8,  true, 8, 1,  true)
++GEN_OPS_BIG(8, 8,  true, 2, 2,  true)
++GEN_OPS_BIG(8, 8,  true, 4, 2,  true)
++GEN_OPS_BIG(8, 8,  true, 8, 2,  true)
++GEN_OPS_BIG(8, 8,  true, 4, 4,  true)
++GEN_OPS_BIG(8, 8,  true, 8, 4,  true)
++GEN_OPS_BIG(8, 8,  true, 8, 8,  true)
++GEN_OPS_BIG(8, 8,  true, 1, 1, false)
++GEN_OPS_BIG(8, 8,  true, 2, 1, false)
++GEN_OPS_BIG(8, 8,  true, 4, 1, false)
++GEN_OPS_BIG(8, 8,  true, 8, 1, false)
++GEN_OPS_BIG(8, 8,  true, 2, 2, false)
++GEN_OPS_BIG(8, 8,  true, 4, 2, false)
++GEN_OPS_BIG(8, 8,  true, 8, 2, false)
++GEN_OPS_BIG(8, 8,  true, 4, 4, false)
++GEN_OPS_BIG(8, 8,  true, 8, 4, false)
++GEN_OPS_BIG(8, 8,  true, 8, 8, false)
++GEN_OPS_BIG(1, 1, false, 1, 1,  true)
++GEN_OPS_BIG(1, 1, false, 2, 1,  true)
++GEN_OPS_BIG(1, 1, false, 4, 1,  true)
++GEN_OPS_BIG(1, 1, false, 8, 1,  true)
++GEN_OPS_BIG(1, 1, false, 2, 2,  true)
++GEN_OPS_BIG(1, 1, false, 4, 2,  true)
++GEN_OPS_BIG(1, 1, false, 8, 2,  true)
++GEN_OPS_BIG(1, 1, false, 4, 4,  true)
++GEN_OPS_BIG(1, 1, false, 8, 4,  true)
++GEN_OPS_BIG(1, 1, false, 8, 8,  true)
++GEN_OPS_BIG(1, 1, false, 1, 1, false)
++GEN_OPS_BIG(1, 1, false, 2, 1, false)
++GEN_OPS_BIG(1, 1, false, 4, 1, false)
++GEN_OPS_BIG(1, 1, false, 8, 1, false)
++GEN_OPS_BIG(1, 1, false, 2, 2, false)
++GEN_OPS_BIG(1, 1, false, 4, 2, false)
++GEN_OPS_BIG(1, 1, false, 8, 2, false)
++GEN_OPS_BIG(1, 1, false, 4, 4, false)
++GEN_OPS_BIG(1, 1, false, 8, 4, false)
++GEN_OPS_BIG(1, 1, false, 8, 8, false)
++GEN_OPS_BIG(2, 1, false, 1, 1,  true)
++GEN_OPS_BIG(2, 1, false, 2, 1,  true)
++GEN_OPS_BIG(2, 1, false, 4, 1,  true)
++GEN_OPS_BIG(2, 1, false, 8, 1,  true)
++GEN_OPS_BIG(2, 1, false, 2, 2,  true)
++GEN_OPS_BIG(2, 1, false, 4, 2,  true)
++GEN_OPS_BIG(2, 1, false, 8, 2,  true)
++GEN_OPS_BIG(2, 1, false, 4, 4,  true)
++GEN_OPS_BIG(2, 1, false, 8, 4,  true)
++GEN_OPS_BIG(2, 1, false, 8, 8,  true)
++GEN_OPS_BIG(2, 1, false, 1, 1, false)
++GEN_OPS_BIG(2, 1, false, 2, 1, false)
++GEN_OPS_BIG(2, 1, false, 4, 1, false)
++GEN_OPS_BIG(2, 1, false, 8, 1, false)
++GEN_OPS_BIG(2, 1, false, 2, 2, false)
++GEN_OPS_BIG(2, 1, false, 4, 2, false)
++GEN_OPS_BIG(2, 1, false, 8, 2, false)
++GEN_OPS_BIG(2, 1, false, 4, 4, false)
++GEN_OPS_BIG(2, 1, false, 8, 4, false)
++GEN_OPS_BIG(2, 1, false, 8, 8, false)
++GEN_OPS_BIG(4, 1, false, 1, 1,  true)
++GEN_OPS_BIG(4, 1, false, 2, 1,  true)
++GEN_OPS_BIG(4, 1, false, 4, 1,  true)
++GEN_OPS_BIG(4, 1, false, 8, 1,  true)
++GEN_OPS_BIG(4, 1, false, 2, 2,  true)
++GEN_OPS_BIG(4, 1, false, 4, 2,  true)
++GEN_OPS_BIG(4, 1, false, 8, 2,  true)
++GEN_OPS_BIG(4, 1, false, 4, 4,  true)
++GEN_OPS_BIG(4, 1, false, 8, 4,  true)
++GEN_OPS_BIG(4, 1, false, 8, 8,  true)
++GEN_OPS_BIG(4, 1, false, 1, 1, false)
++GEN_OPS_BIG(4, 1, false, 2, 1, false)
++GEN_OPS_BIG(4, 1, false, 4, 1, false)
++GEN_OPS_BIG(4, 1, false, 8, 1, false)
++GEN_OPS_BIG(4, 1, false, 2, 2, false)
++GEN_OPS_BIG(4, 1, false, 4, 2, false)
++GEN_OPS_BIG(4, 1, false, 8, 2, false)
++GEN_OPS_BIG(4, 1, false, 4, 4, false)
++GEN_OPS_BIG(4, 1, false, 8, 4, false)
++GEN_OPS_BIG(4, 1, false, 8, 8, false)
++GEN_OPS_BIG(8, 1, false, 1, 1,  true)
++GEN_OPS_BIG(8, 1, false, 2, 1,  true)
++GEN_OPS_BIG(8, 1, false, 4, 1,  true)
++GEN_OPS_BIG(8, 1, false, 8, 1,  true)
++GEN_OPS_BIG(8, 1, false, 2, 2,  true)
++GEN_OPS_BIG(8, 1, false, 4, 2,  true)
++GEN_OPS_BIG(8, 1, false, 8, 2,  true)
++GEN_OPS_BIG(8, 1, false, 4, 4,  true)
++GEN_OPS_BIG(8, 1, false, 8, 4,  true)
++GEN_OPS_BIG(8, 1, false, 8, 8,  true)
++GEN_OPS_BIG(8, 1, false, 1, 1, false)
++GEN_OPS_BIG(8, 1, false, 2, 1, false)
++GEN_OPS_BIG(8, 1, false, 4, 1, false)
++GEN_OPS_BIG(8, 1, false, 8, 1, false)
++GEN_OPS_BIG(8, 1, false, 2, 2, false)
++GEN_OPS_BIG(8, 1, false, 4, 2, false)
++GEN_OPS_BIG(8, 1, false, 8, 2, false)
++GEN_OPS_BIG(8, 1, false, 4, 4, false)
++GEN_OPS_BIG(8, 1, false, 8, 4, false)
++GEN_OPS_BIG(8, 1, false, 8, 8, false)
++GEN_OPS_BIG(2, 2, false, 1, 1,  true)
++GEN_OPS_BIG(2, 2, false, 2, 1,  true)
++GEN_OPS_BIG(2, 2, false, 4, 1,  true)
++GEN_OPS_BIG(2, 2, false, 8, 1,  true)
++GEN_OPS_BIG(2, 2, false, 2, 2,  true)
++GEN_OPS_BIG(2, 2, false, 4, 2,  true)
++GEN_OPS_BIG(2, 2, false, 8, 2,  true)
++GEN_OPS_BIG(2, 2, false, 4, 4,  true)
++GEN_OPS_BIG(2, 2, false, 8, 4,  true)
++GEN_OPS_BIG(2, 2, false, 8, 8,  true)
++GEN_OPS_BIG(2, 2, false, 1, 1, false)
++GEN_OPS_BIG(2, 2, false, 2, 1, false)
++GEN_OPS_BIG(2, 2, false, 4, 1, false)
++GEN_OPS_BIG(2, 2, false, 8, 1, false)
++GEN_OPS_BIG(2, 2, false, 2, 2, false)
++GEN_OPS_BIG(2, 2, false, 4, 2, false)
++GEN_OPS_BIG(2, 2, false, 8, 2, false)
++GEN_OPS_BIG(2, 2, false, 4, 4, false)
++GEN_OPS_BIG(2, 2, false, 8, 4, false)
++GEN_OPS_BIG(2, 2, false, 8, 8, false)
++GEN_OPS_BIG(4, 2, false, 1, 1,  true)
++GEN_OPS_BIG(4, 2, false, 2, 1,  true)
++GEN_OPS_BIG(4, 2, false, 4, 1,  true)
++GEN_OPS_BIG(4, 2, false, 8, 1,  true)
++GEN_OPS_BIG(4, 2, false, 2, 2,  true)
++GEN_OPS_BIG(4, 2, false, 4, 2,  true)
++GEN_OPS_BIG(4, 2, false, 8, 2,  true)
++GEN_OPS_BIG(4, 2, false, 4, 4,  true)
++GEN_OPS_BIG(4, 2, false, 8, 4,  true)
++GEN_OPS_BIG(4, 2, false, 8, 8,  true)
++GEN_OPS_BIG(4, 2, false, 1, 1, false)
++GEN_OPS_BIG(4, 2, false, 2, 1, false)
++GEN_OPS_BIG(4, 2, false, 4, 1, false)
++GEN_OPS_BIG(4, 2, false, 8, 1, false)
++GEN_OPS_BIG(4, 2, false, 2, 2, false)
++GEN_OPS_BIG(4, 2, false, 4, 2, false)
++GEN_OPS_BIG(4, 2, false, 8, 2, false)
++GEN_OPS_BIG(4, 2, false, 4, 4, false)
++GEN_OPS_BIG(4, 2, false, 8, 4, false)
++GEN_OPS_BIG(4, 2, false, 8, 8, false)
++GEN_OPS_BIG(8, 2, false, 1, 1,  true)
++GEN_OPS_BIG(8, 2, false, 2, 1,  true)
++GEN_OPS_BIG(8, 2, false, 4, 1,  true)
++GEN_OPS_BIG(8, 2, false, 8, 1,  true)
++GEN_OPS_BIG(8, 2, false, 2, 2,  true)
++GEN_OPS_BIG(8, 2, false, 4, 2,  true)
++GEN_OPS_BIG(8, 2, false, 8, 2,  true)
++GEN_OPS_BIG(8, 2, false, 4, 4,  true)
++GEN_OPS_BIG(8, 2, false, 8, 4,  true)
++GEN_OPS_BIG(8, 2, false, 8, 8,  true)
++GEN_OPS_BIG(8, 2, false, 1, 1, false)
++GEN_OPS_BIG(8, 2, false, 2, 1, false)
++GEN_OPS_BIG(8, 2, false, 4, 1, false)
++GEN_OPS_BIG(8, 2, false, 8, 1, false)
++GEN_OPS_BIG(8, 2, false, 2, 2, false)
++GEN_OPS_BIG(8, 2, false, 4, 2, false)
++GEN_OPS_BIG(8, 2, false, 8, 2, false)
++GEN_OPS_BIG(8, 2, false, 4, 4, false)
++GEN_OPS_BIG(8, 2, false, 8, 4, false)
++GEN_OPS_BIG(8, 2, false, 8, 8, false)
++GEN_OPS_BIG(4, 4, false, 1, 1,  true)
++GEN_OPS_BIG(4, 4, false, 2, 1,  true)
++GEN_OPS_BIG(4, 4, false, 4, 1,  true)
++GEN_OPS_BIG(4, 4, false, 8, 1,  true)
++GEN_OPS_BIG(4, 4, false, 2, 2,  true)
++GEN_OPS_BIG(4, 4, false, 4, 2,  true)
++GEN_OPS_BIG(4, 4, false, 8, 2,  true)
++GEN_OPS_BIG(4, 4, false, 4, 4,  true)
++GEN_OPS_BIG(4, 4, false, 8, 4,  true)
++GEN_OPS_BIG(4, 4, false, 8, 8,  true)
++GEN_OPS_BIG(4, 4, false, 1, 1, false)
++GEN_OPS_BIG(4, 4, false, 2, 1, false)
++GEN_OPS_BIG(4, 4, false, 4, 1, false)
++GEN_OPS_BIG(4, 4, false, 8, 1, false)
++GEN_OPS_BIG(4, 4, false, 2, 2, false)
++GEN_OPS_BIG(4, 4, false, 4, 2, false)
++GEN_OPS_BIG(4, 4, false, 8, 2, false)
++GEN_OPS_BIG(4, 4, false, 4, 4, false)
++GEN_OPS_BIG(4, 4, false, 8, 4, false)
++GEN_OPS_BIG(4, 4, false, 8, 8, false)
++GEN_OPS_BIG(8, 4, false, 1, 1,  true)
++GEN_OPS_BIG(8, 4, false, 2, 1,  true)
++GEN_OPS_BIG(8, 4, false, 4, 1,  true)
++GEN_OPS_BIG(8, 4, false, 8, 1,  true)
++GEN_OPS_BIG(8, 4, false, 2, 2,  true)
++GEN_OPS_BIG(8, 4, false, 4, 2,  true)
++GEN_OPS_BIG(8, 4, false, 8, 2,  true)
++GEN_OPS_BIG(8, 4, false, 4, 4,  true)
++GEN_OPS_BIG(8, 4, false, 8, 4,  true)
++GEN_OPS_BIG(8, 4, false, 8, 8,  true)
++GEN_OPS_BIG(8, 4, false, 1, 1, false)
++GEN_OPS_BIG(8, 4, false, 2, 1, false)
++GEN_OPS_BIG(8, 4, false, 4, 1, false)
++GEN_OPS_BIG(8, 4, false, 8, 1, false)
++GEN_OPS_BIG(8, 4, false, 2, 2, false)
++GEN_OPS_BIG(8, 4, false, 4, 2, false)
++GEN_OPS_BIG(8, 4, false, 8, 2, false)
++GEN_OPS_BIG(8, 4, false, 4, 4, false)
++GEN_OPS_BIG(8, 4, false, 8, 4, false)
++GEN_OPS_BIG(8, 4, false, 8, 8, false)
++GEN_OPS_BIG(8, 8, false, 1, 1,  true)
++GEN_OPS_BIG(8, 8, false, 2, 1,  true)
++GEN_OPS_BIG(8, 8, false, 4, 1,  true)
++GEN_OPS_BIG(8, 8, false, 8, 1,  true)
++GEN_OPS_BIG(8, 8, false, 2, 2,  true)
++GEN_OPS_BIG(8, 8, false, 4, 2,  true)
++GEN_OPS_BIG(8, 8, false, 8, 2,  true)
++GEN_OPS_BIG(8, 8, false, 4, 4,  true)
++GEN_OPS_BIG(8, 8, false, 8, 4,  true)
++GEN_OPS_BIG(8, 8, false, 8, 8,  true)
++GEN_OPS_BIG(8, 8, false, 1, 1, false)
++GEN_OPS_BIG(8, 8, false, 2, 1, false)
++GEN_OPS_BIG(8, 8, false, 4, 1, false)
++GEN_OPS_BIG(8, 8, false, 8, 1, false)
++GEN_OPS_BIG(8, 8, false, 2, 2, false)
++GEN_OPS_BIG(8, 8, false, 4, 2, false)
++GEN_OPS_BIG(8, 8, false, 8, 2, false)
++GEN_OPS_BIG(8, 8, false, 4, 4, false)
++GEN_OPS_BIG(8, 8, false, 8, 4, false)
++GEN_OPS_BIG(8, 8, false, 8, 8, false)
++
++const MemoryRegionOps ops_list_little_b_valid[] = {
++    NAME_OPS_LITTLE(1, 1,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(1, 1,  true, 1, 1, false),
++    NAME_OPS_LITTLE(1, 1,  true, 2, 1, false),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 1, false),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 1, false),
++    NAME_OPS_LITTLE(1, 1,  true, 2, 2, false),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 2, false),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 2, false),
++    NAME_OPS_LITTLE(1, 1,  true, 4, 4, false),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 4, false),
++    NAME_OPS_LITTLE(1, 1,  true, 8, 8, false),
++    NAME_OPS_LITTLE(2, 1,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(2, 1,  true, 1, 1, false),
++    NAME_OPS_LITTLE(2, 1,  true, 2, 1, false),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 1, false),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 1, false),
++    NAME_OPS_LITTLE(2, 1,  true, 2, 2, false),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 2, false),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 2, false),
++    NAME_OPS_LITTLE(2, 1,  true, 4, 4, false),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 4, false),
++    NAME_OPS_LITTLE(2, 1,  true, 8, 8, false),
++    NAME_OPS_LITTLE(4, 1,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 1,  true, 1, 1, false),
++    NAME_OPS_LITTLE(4, 1,  true, 2, 1, false),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 1, false),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 1, false),
++    NAME_OPS_LITTLE(4, 1,  true, 2, 2, false),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 2, false),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 2, false),
++    NAME_OPS_LITTLE(4, 1,  true, 4, 4, false),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 4, false),
++    NAME_OPS_LITTLE(4, 1,  true, 8, 8, false),
++    NAME_OPS_LITTLE(8, 1,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 1,  true, 1, 1, false),
++    NAME_OPS_LITTLE(8, 1,  true, 2, 1, false),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 1, false),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 1, false),
++    NAME_OPS_LITTLE(8, 1,  true, 2, 2, false),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 2, false),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 2, false),
++    NAME_OPS_LITTLE(8, 1,  true, 4, 4, false),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 4, false),
++    NAME_OPS_LITTLE(8, 1,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_b_invalid[] = {
++    NAME_OPS_LITTLE(1, 1, false, 1, 1,  true),
++    NAME_OPS_LITTLE(1, 1, false, 2, 1,  true),
++    NAME_OPS_LITTLE(1, 1, false, 4, 1,  true),
++    NAME_OPS_LITTLE(1, 1, false, 8, 1,  true),
++    NAME_OPS_LITTLE(1, 1, false, 2, 2,  true),
++    NAME_OPS_LITTLE(1, 1, false, 4, 2,  true),
++    NAME_OPS_LITTLE(1, 1, false, 8, 2,  true),
++    NAME_OPS_LITTLE(1, 1, false, 4, 4,  true),
++    NAME_OPS_LITTLE(1, 1, false, 8, 4,  true),
++    NAME_OPS_LITTLE(1, 1, false, 8, 8,  true),
++    NAME_OPS_LITTLE(1, 1, false, 1, 1, false),
++    NAME_OPS_LITTLE(1, 1, false, 2, 1, false),
++    NAME_OPS_LITTLE(1, 1, false, 4, 1, false),
++    NAME_OPS_LITTLE(1, 1, false, 8, 1, false),
++    NAME_OPS_LITTLE(1, 1, false, 2, 2, false),
++    NAME_OPS_LITTLE(1, 1, false, 4, 2, false),
++    NAME_OPS_LITTLE(1, 1, false, 8, 2, false),
++    NAME_OPS_LITTLE(1, 1, false, 4, 4, false),
++    NAME_OPS_LITTLE(1, 1, false, 8, 4, false),
++    NAME_OPS_LITTLE(1, 1, false, 8, 8, false),
++    NAME_OPS_LITTLE(2, 1, false, 1, 1,  true),
++    NAME_OPS_LITTLE(2, 1, false, 2, 1,  true),
++    NAME_OPS_LITTLE(2, 1, false, 4, 1,  true),
++    NAME_OPS_LITTLE(2, 1, false, 8, 1,  true),
++    NAME_OPS_LITTLE(2, 1, false, 2, 2,  true),
++    NAME_OPS_LITTLE(2, 1, false, 4, 2,  true),
++    NAME_OPS_LITTLE(2, 1, false, 8, 2,  true),
++    NAME_OPS_LITTLE(2, 1, false, 4, 4,  true),
++    NAME_OPS_LITTLE(2, 1, false, 8, 4,  true),
++    NAME_OPS_LITTLE(2, 1, false, 8, 8,  true),
++    NAME_OPS_LITTLE(2, 1, false, 1, 1, false),
++    NAME_OPS_LITTLE(2, 1, false, 2, 1, false),
++    NAME_OPS_LITTLE(2, 1, false, 4, 1, false),
++    NAME_OPS_LITTLE(2, 1, false, 8, 1, false),
++    NAME_OPS_LITTLE(2, 1, false, 2, 2, false),
++    NAME_OPS_LITTLE(2, 1, false, 4, 2, false),
++    NAME_OPS_LITTLE(2, 1, false, 8, 2, false),
++    NAME_OPS_LITTLE(2, 1, false, 4, 4, false),
++    NAME_OPS_LITTLE(2, 1, false, 8, 4, false),
++    NAME_OPS_LITTLE(2, 1, false, 8, 8, false),
++    NAME_OPS_LITTLE(4, 1, false, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 1, false, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 1, false, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 1, false, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 1, false, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 1, false, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 1, false, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 1, false, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 1, false, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 1, false, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 1, false, 1, 1, false),
++    NAME_OPS_LITTLE(4, 1, false, 2, 1, false),
++    NAME_OPS_LITTLE(4, 1, false, 4, 1, false),
++    NAME_OPS_LITTLE(4, 1, false, 8, 1, false),
++    NAME_OPS_LITTLE(4, 1, false, 2, 2, false),
++    NAME_OPS_LITTLE(4, 1, false, 4, 2, false),
++    NAME_OPS_LITTLE(4, 1, false, 8, 2, false),
++    NAME_OPS_LITTLE(4, 1, false, 4, 4, false),
++    NAME_OPS_LITTLE(4, 1, false, 8, 4, false),
++    NAME_OPS_LITTLE(4, 1, false, 8, 8, false),
++    NAME_OPS_LITTLE(8, 1, false, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 1, false, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 1, false, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 1, false, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 1, false, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 1, false, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 1, false, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 1, false, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 1, false, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 1, false, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 1, false, 1, 1, false),
++    NAME_OPS_LITTLE(8, 1, false, 2, 1, false),
++    NAME_OPS_LITTLE(8, 1, false, 4, 1, false),
++    NAME_OPS_LITTLE(8, 1, false, 8, 1, false),
++    NAME_OPS_LITTLE(8, 1, false, 2, 2, false),
++    NAME_OPS_LITTLE(8, 1, false, 4, 2, false),
++    NAME_OPS_LITTLE(8, 1, false, 8, 2, false),
++    NAME_OPS_LITTLE(8, 1, false, 4, 4, false),
++    NAME_OPS_LITTLE(8, 1, false, 8, 4, false),
++    NAME_OPS_LITTLE(8, 1, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_w_valid[] = {
++    NAME_OPS_LITTLE(2, 2,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(2, 2,  true, 1, 1, false),
++    NAME_OPS_LITTLE(2, 2,  true, 2, 1, false),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 1, false),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 1, false),
++    NAME_OPS_LITTLE(2, 2,  true, 2, 2, false),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 2, false),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 2, false),
++    NAME_OPS_LITTLE(2, 2,  true, 4, 4, false),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 4, false),
++    NAME_OPS_LITTLE(2, 2,  true, 8, 8, false),
++    NAME_OPS_LITTLE(4, 2,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 2,  true, 1, 1, false),
++    NAME_OPS_LITTLE(4, 2,  true, 2, 1, false),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 1, false),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 1, false),
++    NAME_OPS_LITTLE(4, 2,  true, 2, 2, false),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 2, false),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 2, false),
++    NAME_OPS_LITTLE(4, 2,  true, 4, 4, false),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 4, false),
++    NAME_OPS_LITTLE(4, 2,  true, 8, 8, false),
++    NAME_OPS_LITTLE(8, 2,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 2,  true, 1, 1, false),
++    NAME_OPS_LITTLE(8, 2,  true, 2, 1, false),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 1, false),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 1, false),
++    NAME_OPS_LITTLE(8, 2,  true, 2, 2, false),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 2, false),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 2, false),
++    NAME_OPS_LITTLE(8, 2,  true, 4, 4, false),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 4, false),
++    NAME_OPS_LITTLE(8, 2,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_w_invalid[] = {
++    NAME_OPS_LITTLE(2, 2, false, 1, 1,  true),
++    NAME_OPS_LITTLE(2, 2, false, 2, 1,  true),
++    NAME_OPS_LITTLE(2, 2, false, 4, 1,  true),
++    NAME_OPS_LITTLE(2, 2, false, 8, 1,  true),
++    NAME_OPS_LITTLE(2, 2, false, 2, 2,  true),
++    NAME_OPS_LITTLE(2, 2, false, 4, 2,  true),
++    NAME_OPS_LITTLE(2, 2, false, 8, 2,  true),
++    NAME_OPS_LITTLE(2, 2, false, 4, 4,  true),
++    NAME_OPS_LITTLE(2, 2, false, 8, 4,  true),
++    NAME_OPS_LITTLE(2, 2, false, 8, 8,  true),
++    NAME_OPS_LITTLE(2, 2, false, 1, 1, false),
++    NAME_OPS_LITTLE(2, 2, false, 2, 1, false),
++    NAME_OPS_LITTLE(2, 2, false, 4, 1, false),
++    NAME_OPS_LITTLE(2, 2, false, 8, 1, false),
++    NAME_OPS_LITTLE(2, 2, false, 2, 2, false),
++    NAME_OPS_LITTLE(2, 2, false, 4, 2, false),
++    NAME_OPS_LITTLE(2, 2, false, 8, 2, false),
++    NAME_OPS_LITTLE(2, 2, false, 4, 4, false),
++    NAME_OPS_LITTLE(2, 2, false, 8, 4, false),
++    NAME_OPS_LITTLE(2, 2, false, 8, 8, false),
++    NAME_OPS_LITTLE(4, 2, false, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 2, false, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 2, false, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 2, false, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 2, false, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 2, false, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 2, false, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 2, false, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 2, false, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 2, false, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 2, false, 1, 1, false),
++    NAME_OPS_LITTLE(4, 2, false, 2, 1, false),
++    NAME_OPS_LITTLE(4, 2, false, 4, 1, false),
++    NAME_OPS_LITTLE(4, 2, false, 8, 1, false),
++    NAME_OPS_LITTLE(4, 2, false, 2, 2, false),
++    NAME_OPS_LITTLE(4, 2, false, 4, 2, false),
++    NAME_OPS_LITTLE(4, 2, false, 8, 2, false),
++    NAME_OPS_LITTLE(4, 2, false, 4, 4, false),
++    NAME_OPS_LITTLE(4, 2, false, 8, 4, false),
++    NAME_OPS_LITTLE(4, 2, false, 8, 8, false),
++    NAME_OPS_LITTLE(8, 2, false, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 2, false, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 2, false, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 2, false, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 2, false, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 2, false, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 2, false, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 2, false, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 2, false, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 2, false, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 2, false, 1, 1, false),
++    NAME_OPS_LITTLE(8, 2, false, 2, 1, false),
++    NAME_OPS_LITTLE(8, 2, false, 4, 1, false),
++    NAME_OPS_LITTLE(8, 2, false, 8, 1, false),
++    NAME_OPS_LITTLE(8, 2, false, 2, 2, false),
++    NAME_OPS_LITTLE(8, 2, false, 4, 2, false),
++    NAME_OPS_LITTLE(8, 2, false, 8, 2, false),
++    NAME_OPS_LITTLE(8, 2, false, 4, 4, false),
++    NAME_OPS_LITTLE(8, 2, false, 8, 4, false),
++    NAME_OPS_LITTLE(8, 2, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_l_valid[] = {
++    NAME_OPS_LITTLE(4, 4,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 4,  true, 1, 1, false),
++    NAME_OPS_LITTLE(4, 4,  true, 2, 1, false),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 1, false),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 1, false),
++    NAME_OPS_LITTLE(4, 4,  true, 2, 2, false),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 2, false),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 2, false),
++    NAME_OPS_LITTLE(4, 4,  true, 4, 4, false),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 4, false),
++    NAME_OPS_LITTLE(4, 4,  true, 8, 8, false),
++    NAME_OPS_LITTLE(8, 4,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 4,  true, 1, 1, false),
++    NAME_OPS_LITTLE(8, 4,  true, 2, 1, false),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 1, false),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 1, false),
++    NAME_OPS_LITTLE(8, 4,  true, 2, 2, false),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 2, false),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 2, false),
++    NAME_OPS_LITTLE(8, 4,  true, 4, 4, false),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 4, false),
++    NAME_OPS_LITTLE(8, 4,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_l_invalid[] = {
++    NAME_OPS_LITTLE(4, 4, false, 1, 1,  true),
++    NAME_OPS_LITTLE(4, 4, false, 2, 1,  true),
++    NAME_OPS_LITTLE(4, 4, false, 4, 1,  true),
++    NAME_OPS_LITTLE(4, 4, false, 8, 1,  true),
++    NAME_OPS_LITTLE(4, 4, false, 2, 2,  true),
++    NAME_OPS_LITTLE(4, 4, false, 4, 2,  true),
++    NAME_OPS_LITTLE(4, 4, false, 8, 2,  true),
++    NAME_OPS_LITTLE(4, 4, false, 4, 4,  true),
++    NAME_OPS_LITTLE(4, 4, false, 8, 4,  true),
++    NAME_OPS_LITTLE(4, 4, false, 8, 8,  true),
++    NAME_OPS_LITTLE(4, 4, false, 1, 1, false),
++    NAME_OPS_LITTLE(4, 4, false, 2, 1, false),
++    NAME_OPS_LITTLE(4, 4, false, 4, 1, false),
++    NAME_OPS_LITTLE(4, 4, false, 8, 1, false),
++    NAME_OPS_LITTLE(4, 4, false, 2, 2, false),
++    NAME_OPS_LITTLE(4, 4, false, 4, 2, false),
++    NAME_OPS_LITTLE(4, 4, false, 8, 2, false),
++    NAME_OPS_LITTLE(4, 4, false, 4, 4, false),
++    NAME_OPS_LITTLE(4, 4, false, 8, 4, false),
++    NAME_OPS_LITTLE(4, 4, false, 8, 8, false),
++    NAME_OPS_LITTLE(8, 4, false, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 4, false, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 4, false, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 4, false, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 4, false, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 4, false, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 4, false, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 4, false, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 4, false, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 4, false, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 4, false, 1, 1, false),
++    NAME_OPS_LITTLE(8, 4, false, 2, 1, false),
++    NAME_OPS_LITTLE(8, 4, false, 4, 1, false),
++    NAME_OPS_LITTLE(8, 4, false, 8, 1, false),
++    NAME_OPS_LITTLE(8, 4, false, 2, 2, false),
++    NAME_OPS_LITTLE(8, 4, false, 4, 2, false),
++    NAME_OPS_LITTLE(8, 4, false, 8, 2, false),
++    NAME_OPS_LITTLE(8, 4, false, 4, 4, false),
++    NAME_OPS_LITTLE(8, 4, false, 8, 4, false),
++    NAME_OPS_LITTLE(8, 4, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_q_valid[] = {
++    NAME_OPS_LITTLE(8, 8,  true, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 8,  true, 1, 1, false),
++    NAME_OPS_LITTLE(8, 8,  true, 2, 1, false),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 1, false),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 1, false),
++    NAME_OPS_LITTLE(8, 8,  true, 2, 2, false),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 2, false),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 2, false),
++    NAME_OPS_LITTLE(8, 8,  true, 4, 4, false),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 4, false),
++    NAME_OPS_LITTLE(8, 8,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_little_q_invalid[] = {
++    NAME_OPS_LITTLE(8, 8, false, 1, 1,  true),
++    NAME_OPS_LITTLE(8, 8, false, 2, 1,  true),
++    NAME_OPS_LITTLE(8, 8, false, 4, 1,  true),
++    NAME_OPS_LITTLE(8, 8, false, 8, 1,  true),
++    NAME_OPS_LITTLE(8, 8, false, 2, 2,  true),
++    NAME_OPS_LITTLE(8, 8, false, 4, 2,  true),
++    NAME_OPS_LITTLE(8, 8, false, 8, 2,  true),
++    NAME_OPS_LITTLE(8, 8, false, 4, 4,  true),
++    NAME_OPS_LITTLE(8, 8, false, 8, 4,  true),
++    NAME_OPS_LITTLE(8, 8, false, 8, 8,  true),
++    NAME_OPS_LITTLE(8, 8, false, 1, 1, false),
++    NAME_OPS_LITTLE(8, 8, false, 2, 1, false),
++    NAME_OPS_LITTLE(8, 8, false, 4, 1, false),
++    NAME_OPS_LITTLE(8, 8, false, 8, 1, false),
++    NAME_OPS_LITTLE(8, 8, false, 2, 2, false),
++    NAME_OPS_LITTLE(8, 8, false, 4, 2, false),
++    NAME_OPS_LITTLE(8, 8, false, 8, 2, false),
++    NAME_OPS_LITTLE(8, 8, false, 4, 4, false),
++    NAME_OPS_LITTLE(8, 8, false, 8, 4, false),
++    NAME_OPS_LITTLE(8, 8, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_b_valid[] = {
++    NAME_OPS_BIG(1, 1,  true, 1, 1,  true),
++    NAME_OPS_BIG(1, 1,  true, 2, 1,  true),
++    NAME_OPS_BIG(1, 1,  true, 4, 1,  true),
++    NAME_OPS_BIG(1, 1,  true, 8, 1,  true),
++    NAME_OPS_BIG(1, 1,  true, 2, 2,  true),
++    NAME_OPS_BIG(1, 1,  true, 4, 2,  true),
++    NAME_OPS_BIG(1, 1,  true, 8, 2,  true),
++    NAME_OPS_BIG(1, 1,  true, 4, 4,  true),
++    NAME_OPS_BIG(1, 1,  true, 8, 4,  true),
++    NAME_OPS_BIG(1, 1,  true, 8, 8,  true),
++    NAME_OPS_BIG(1, 1,  true, 1, 1, false),
++    NAME_OPS_BIG(1, 1,  true, 2, 1, false),
++    NAME_OPS_BIG(1, 1,  true, 4, 1, false),
++    NAME_OPS_BIG(1, 1,  true, 8, 1, false),
++    NAME_OPS_BIG(1, 1,  true, 2, 2, false),
++    NAME_OPS_BIG(1, 1,  true, 4, 2, false),
++    NAME_OPS_BIG(1, 1,  true, 8, 2, false),
++    NAME_OPS_BIG(1, 1,  true, 4, 4, false),
++    NAME_OPS_BIG(1, 1,  true, 8, 4, false),
++    NAME_OPS_BIG(1, 1,  true, 8, 8, false),
++    NAME_OPS_BIG(2, 1,  true, 1, 1,  true),
++    NAME_OPS_BIG(2, 1,  true, 2, 1,  true),
++    NAME_OPS_BIG(2, 1,  true, 4, 1,  true),
++    NAME_OPS_BIG(2, 1,  true, 8, 1,  true),
++    NAME_OPS_BIG(2, 1,  true, 2, 2,  true),
++    NAME_OPS_BIG(2, 1,  true, 4, 2,  true),
++    NAME_OPS_BIG(2, 1,  true, 8, 2,  true),
++    NAME_OPS_BIG(2, 1,  true, 4, 4,  true),
++    NAME_OPS_BIG(2, 1,  true, 8, 4,  true),
++    NAME_OPS_BIG(2, 1,  true, 8, 8,  true),
++    NAME_OPS_BIG(2, 1,  true, 1, 1, false),
++    NAME_OPS_BIG(2, 1,  true, 2, 1, false),
++    NAME_OPS_BIG(2, 1,  true, 4, 1, false),
++    NAME_OPS_BIG(2, 1,  true, 8, 1, false),
++    NAME_OPS_BIG(2, 1,  true, 2, 2, false),
++    NAME_OPS_BIG(2, 1,  true, 4, 2, false),
++    NAME_OPS_BIG(2, 1,  true, 8, 2, false),
++    NAME_OPS_BIG(2, 1,  true, 4, 4, false),
++    NAME_OPS_BIG(2, 1,  true, 8, 4, false),
++    NAME_OPS_BIG(2, 1,  true, 8, 8, false),
++    NAME_OPS_BIG(4, 1,  true, 1, 1,  true),
++    NAME_OPS_BIG(4, 1,  true, 2, 1,  true),
++    NAME_OPS_BIG(4, 1,  true, 4, 1,  true),
++    NAME_OPS_BIG(4, 1,  true, 8, 1,  true),
++    NAME_OPS_BIG(4, 1,  true, 2, 2,  true),
++    NAME_OPS_BIG(4, 1,  true, 4, 2,  true),
++    NAME_OPS_BIG(4, 1,  true, 8, 2,  true),
++    NAME_OPS_BIG(4, 1,  true, 4, 4,  true),
++    NAME_OPS_BIG(4, 1,  true, 8, 4,  true),
++    NAME_OPS_BIG(4, 1,  true, 8, 8,  true),
++    NAME_OPS_BIG(4, 1,  true, 1, 1, false),
++    NAME_OPS_BIG(4, 1,  true, 2, 1, false),
++    NAME_OPS_BIG(4, 1,  true, 4, 1, false),
++    NAME_OPS_BIG(4, 1,  true, 8, 1, false),
++    NAME_OPS_BIG(4, 1,  true, 2, 2, false),
++    NAME_OPS_BIG(4, 1,  true, 4, 2, false),
++    NAME_OPS_BIG(4, 1,  true, 8, 2, false),
++    NAME_OPS_BIG(4, 1,  true, 4, 4, false),
++    NAME_OPS_BIG(4, 1,  true, 8, 4, false),
++    NAME_OPS_BIG(4, 1,  true, 8, 8, false),
++    NAME_OPS_BIG(8, 1,  true, 1, 1,  true),
++    NAME_OPS_BIG(8, 1,  true, 2, 1,  true),
++    NAME_OPS_BIG(8, 1,  true, 4, 1,  true),
++    NAME_OPS_BIG(8, 1,  true, 8, 1,  true),
++    NAME_OPS_BIG(8, 1,  true, 2, 2,  true),
++    NAME_OPS_BIG(8, 1,  true, 4, 2,  true),
++    NAME_OPS_BIG(8, 1,  true, 8, 2,  true),
++    NAME_OPS_BIG(8, 1,  true, 4, 4,  true),
++    NAME_OPS_BIG(8, 1,  true, 8, 4,  true),
++    NAME_OPS_BIG(8, 1,  true, 8, 8,  true),
++    NAME_OPS_BIG(8, 1,  true, 1, 1, false),
++    NAME_OPS_BIG(8, 1,  true, 2, 1, false),
++    NAME_OPS_BIG(8, 1,  true, 4, 1, false),
++    NAME_OPS_BIG(8, 1,  true, 8, 1, false),
++    NAME_OPS_BIG(8, 1,  true, 2, 2, false),
++    NAME_OPS_BIG(8, 1,  true, 4, 2, false),
++    NAME_OPS_BIG(8, 1,  true, 8, 2, false),
++    NAME_OPS_BIG(8, 1,  true, 4, 4, false),
++    NAME_OPS_BIG(8, 1,  true, 8, 4, false),
++    NAME_OPS_BIG(8, 1,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_b_invalid[] = {
++    NAME_OPS_BIG(1, 1, false, 1, 1,  true),
++    NAME_OPS_BIG(1, 1, false, 2, 1,  true),
++    NAME_OPS_BIG(1, 1, false, 4, 1,  true),
++    NAME_OPS_BIG(1, 1, false, 8, 1,  true),
++    NAME_OPS_BIG(1, 1, false, 2, 2,  true),
++    NAME_OPS_BIG(1, 1, false, 4, 2,  true),
++    NAME_OPS_BIG(1, 1, false, 8, 2,  true),
++    NAME_OPS_BIG(1, 1, false, 4, 4,  true),
++    NAME_OPS_BIG(1, 1, false, 8, 4,  true),
++    NAME_OPS_BIG(1, 1, false, 8, 8,  true),
++    NAME_OPS_BIG(1, 1, false, 1, 1, false),
++    NAME_OPS_BIG(1, 1, false, 2, 1, false),
++    NAME_OPS_BIG(1, 1, false, 4, 1, false),
++    NAME_OPS_BIG(1, 1, false, 8, 1, false),
++    NAME_OPS_BIG(1, 1, false, 2, 2, false),
++    NAME_OPS_BIG(1, 1, false, 4, 2, false),
++    NAME_OPS_BIG(1, 1, false, 8, 2, false),
++    NAME_OPS_BIG(1, 1, false, 4, 4, false),
++    NAME_OPS_BIG(1, 1, false, 8, 4, false),
++    NAME_OPS_BIG(1, 1, false, 8, 8, false),
++    NAME_OPS_BIG(2, 1, false, 1, 1,  true),
++    NAME_OPS_BIG(2, 1, false, 2, 1,  true),
++    NAME_OPS_BIG(2, 1, false, 4, 1,  true),
++    NAME_OPS_BIG(2, 1, false, 8, 1,  true),
++    NAME_OPS_BIG(2, 1, false, 2, 2,  true),
++    NAME_OPS_BIG(2, 1, false, 4, 2,  true),
++    NAME_OPS_BIG(2, 1, false, 8, 2,  true),
++    NAME_OPS_BIG(2, 1, false, 4, 4,  true),
++    NAME_OPS_BIG(2, 1, false, 8, 4,  true),
++    NAME_OPS_BIG(2, 1, false, 8, 8,  true),
++    NAME_OPS_BIG(2, 1, false, 1, 1, false),
++    NAME_OPS_BIG(2, 1, false, 2, 1, false),
++    NAME_OPS_BIG(2, 1, false, 4, 1, false),
++    NAME_OPS_BIG(2, 1, false, 8, 1, false),
++    NAME_OPS_BIG(2, 1, false, 2, 2, false),
++    NAME_OPS_BIG(2, 1, false, 4, 2, false),
++    NAME_OPS_BIG(2, 1, false, 8, 2, false),
++    NAME_OPS_BIG(2, 1, false, 4, 4, false),
++    NAME_OPS_BIG(2, 1, false, 8, 4, false),
++    NAME_OPS_BIG(2, 1, false, 8, 8, false),
++    NAME_OPS_BIG(4, 1, false, 1, 1,  true),
++    NAME_OPS_BIG(4, 1, false, 2, 1,  true),
++    NAME_OPS_BIG(4, 1, false, 4, 1,  true),
++    NAME_OPS_BIG(4, 1, false, 8, 1,  true),
++    NAME_OPS_BIG(4, 1, false, 2, 2,  true),
++    NAME_OPS_BIG(4, 1, false, 4, 2,  true),
++    NAME_OPS_BIG(4, 1, false, 8, 2,  true),
++    NAME_OPS_BIG(4, 1, false, 4, 4,  true),
++    NAME_OPS_BIG(4, 1, false, 8, 4,  true),
++    NAME_OPS_BIG(4, 1, false, 8, 8,  true),
++    NAME_OPS_BIG(4, 1, false, 1, 1, false),
++    NAME_OPS_BIG(4, 1, false, 2, 1, false),
++    NAME_OPS_BIG(4, 1, false, 4, 1, false),
++    NAME_OPS_BIG(4, 1, false, 8, 1, false),
++    NAME_OPS_BIG(4, 1, false, 2, 2, false),
++    NAME_OPS_BIG(4, 1, false, 4, 2, false),
++    NAME_OPS_BIG(4, 1, false, 8, 2, false),
++    NAME_OPS_BIG(4, 1, false, 4, 4, false),
++    NAME_OPS_BIG(4, 1, false, 8, 4, false),
++    NAME_OPS_BIG(4, 1, false, 8, 8, false),
++    NAME_OPS_BIG(8, 1, false, 1, 1,  true),
++    NAME_OPS_BIG(8, 1, false, 2, 1,  true),
++    NAME_OPS_BIG(8, 1, false, 4, 1,  true),
++    NAME_OPS_BIG(8, 1, false, 8, 1,  true),
++    NAME_OPS_BIG(8, 1, false, 2, 2,  true),
++    NAME_OPS_BIG(8, 1, false, 4, 2,  true),
++    NAME_OPS_BIG(8, 1, false, 8, 2,  true),
++    NAME_OPS_BIG(8, 1, false, 4, 4,  true),
++    NAME_OPS_BIG(8, 1, false, 8, 4,  true),
++    NAME_OPS_BIG(8, 1, false, 8, 8,  true),
++    NAME_OPS_BIG(8, 1, false, 1, 1, false),
++    NAME_OPS_BIG(8, 1, false, 2, 1, false),
++    NAME_OPS_BIG(8, 1, false, 4, 1, false),
++    NAME_OPS_BIG(8, 1, false, 8, 1, false),
++    NAME_OPS_BIG(8, 1, false, 2, 2, false),
++    NAME_OPS_BIG(8, 1, false, 4, 2, false),
++    NAME_OPS_BIG(8, 1, false, 8, 2, false),
++    NAME_OPS_BIG(8, 1, false, 4, 4, false),
++    NAME_OPS_BIG(8, 1, false, 8, 4, false),
++    NAME_OPS_BIG(8, 1, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_w_valid[] = {
++    NAME_OPS_BIG(2, 2,  true, 1, 1,  true),
++    NAME_OPS_BIG(2, 2,  true, 2, 1,  true),
++    NAME_OPS_BIG(2, 2,  true, 4, 1,  true),
++    NAME_OPS_BIG(2, 2,  true, 8, 1,  true),
++    NAME_OPS_BIG(2, 2,  true, 2, 2,  true),
++    NAME_OPS_BIG(2, 2,  true, 4, 2,  true),
++    NAME_OPS_BIG(2, 2,  true, 8, 2,  true),
++    NAME_OPS_BIG(2, 2,  true, 4, 4,  true),
++    NAME_OPS_BIG(2, 2,  true, 8, 4,  true),
++    NAME_OPS_BIG(2, 2,  true, 8, 8,  true),
++    NAME_OPS_BIG(2, 2,  true, 1, 1, false),
++    NAME_OPS_BIG(2, 2,  true, 2, 1, false),
++    NAME_OPS_BIG(2, 2,  true, 4, 1, false),
++    NAME_OPS_BIG(2, 2,  true, 8, 1, false),
++    NAME_OPS_BIG(2, 2,  true, 2, 2, false),
++    NAME_OPS_BIG(2, 2,  true, 4, 2, false),
++    NAME_OPS_BIG(2, 2,  true, 8, 2, false),
++    NAME_OPS_BIG(2, 2,  true, 4, 4, false),
++    NAME_OPS_BIG(2, 2,  true, 8, 4, false),
++    NAME_OPS_BIG(2, 2,  true, 8, 8, false),
++    NAME_OPS_BIG(4, 2,  true, 1, 1,  true),
++    NAME_OPS_BIG(4, 2,  true, 2, 1,  true),
++    NAME_OPS_BIG(4, 2,  true, 4, 1,  true),
++    NAME_OPS_BIG(4, 2,  true, 8, 1,  true),
++    NAME_OPS_BIG(4, 2,  true, 2, 2,  true),
++    NAME_OPS_BIG(4, 2,  true, 4, 2,  true),
++    NAME_OPS_BIG(4, 2,  true, 8, 2,  true),
++    NAME_OPS_BIG(4, 2,  true, 4, 4,  true),
++    NAME_OPS_BIG(4, 2,  true, 8, 4,  true),
++    NAME_OPS_BIG(4, 2,  true, 8, 8,  true),
++    NAME_OPS_BIG(4, 2,  true, 1, 1, false),
++    NAME_OPS_BIG(4, 2,  true, 2, 1, false),
++    NAME_OPS_BIG(4, 2,  true, 4, 1, false),
++    NAME_OPS_BIG(4, 2,  true, 8, 1, false),
++    NAME_OPS_BIG(4, 2,  true, 2, 2, false),
++    NAME_OPS_BIG(4, 2,  true, 4, 2, false),
++    NAME_OPS_BIG(4, 2,  true, 8, 2, false),
++    NAME_OPS_BIG(4, 2,  true, 4, 4, false),
++    NAME_OPS_BIG(4, 2,  true, 8, 4, false),
++    NAME_OPS_BIG(4, 2,  true, 8, 8, false),
++    NAME_OPS_BIG(8, 2,  true, 1, 1,  true),
++    NAME_OPS_BIG(8, 2,  true, 2, 1,  true),
++    NAME_OPS_BIG(8, 2,  true, 4, 1,  true),
++    NAME_OPS_BIG(8, 2,  true, 8, 1,  true),
++    NAME_OPS_BIG(8, 2,  true, 2, 2,  true),
++    NAME_OPS_BIG(8, 2,  true, 4, 2,  true),
++    NAME_OPS_BIG(8, 2,  true, 8, 2,  true),
++    NAME_OPS_BIG(8, 2,  true, 4, 4,  true),
++    NAME_OPS_BIG(8, 2,  true, 8, 4,  true),
++    NAME_OPS_BIG(8, 2,  true, 8, 8,  true),
++    NAME_OPS_BIG(8, 2,  true, 1, 1, false),
++    NAME_OPS_BIG(8, 2,  true, 2, 1, false),
++    NAME_OPS_BIG(8, 2,  true, 4, 1, false),
++    NAME_OPS_BIG(8, 2,  true, 8, 1, false),
++    NAME_OPS_BIG(8, 2,  true, 2, 2, false),
++    NAME_OPS_BIG(8, 2,  true, 4, 2, false),
++    NAME_OPS_BIG(8, 2,  true, 8, 2, false),
++    NAME_OPS_BIG(8, 2,  true, 4, 4, false),
++    NAME_OPS_BIG(8, 2,  true, 8, 4, false),
++    NAME_OPS_BIG(8, 2,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_w_invalid[] = {
++    NAME_OPS_BIG(2, 2, false, 1, 1,  true),
++    NAME_OPS_BIG(2, 2, false, 2, 1,  true),
++    NAME_OPS_BIG(2, 2, false, 4, 1,  true),
++    NAME_OPS_BIG(2, 2, false, 8, 1,  true),
++    NAME_OPS_BIG(2, 2, false, 2, 2,  true),
++    NAME_OPS_BIG(2, 2, false, 4, 2,  true),
++    NAME_OPS_BIG(2, 2, false, 8, 2,  true),
++    NAME_OPS_BIG(2, 2, false, 4, 4,  true),
++    NAME_OPS_BIG(2, 2, false, 8, 4,  true),
++    NAME_OPS_BIG(2, 2, false, 8, 8,  true),
++    NAME_OPS_BIG(2, 2, false, 1, 1, false),
++    NAME_OPS_BIG(2, 2, false, 2, 1, false),
++    NAME_OPS_BIG(2, 2, false, 4, 1, false),
++    NAME_OPS_BIG(2, 2, false, 8, 1, false),
++    NAME_OPS_BIG(2, 2, false, 2, 2, false),
++    NAME_OPS_BIG(2, 2, false, 4, 2, false),
++    NAME_OPS_BIG(2, 2, false, 8, 2, false),
++    NAME_OPS_BIG(2, 2, false, 4, 4, false),
++    NAME_OPS_BIG(2, 2, false, 8, 4, false),
++    NAME_OPS_BIG(2, 2, false, 8, 8, false),
++    NAME_OPS_BIG(4, 2, false, 1, 1,  true),
++    NAME_OPS_BIG(4, 2, false, 2, 1,  true),
++    NAME_OPS_BIG(4, 2, false, 4, 1,  true),
++    NAME_OPS_BIG(4, 2, false, 8, 1,  true),
++    NAME_OPS_BIG(4, 2, false, 2, 2,  true),
++    NAME_OPS_BIG(4, 2, false, 4, 2,  true),
++    NAME_OPS_BIG(4, 2, false, 8, 2,  true),
++    NAME_OPS_BIG(4, 2, false, 4, 4,  true),
++    NAME_OPS_BIG(4, 2, false, 8, 4,  true),
++    NAME_OPS_BIG(4, 2, false, 8, 8,  true),
++    NAME_OPS_BIG(4, 2, false, 1, 1, false),
++    NAME_OPS_BIG(4, 2, false, 2, 1, false),
++    NAME_OPS_BIG(4, 2, false, 4, 1, false),
++    NAME_OPS_BIG(4, 2, false, 8, 1, false),
++    NAME_OPS_BIG(4, 2, false, 2, 2, false),
++    NAME_OPS_BIG(4, 2, false, 4, 2, false),
++    NAME_OPS_BIG(4, 2, false, 8, 2, false),
++    NAME_OPS_BIG(4, 2, false, 4, 4, false),
++    NAME_OPS_BIG(4, 2, false, 8, 4, false),
++    NAME_OPS_BIG(4, 2, false, 8, 8, false),
++    NAME_OPS_BIG(8, 2, false, 1, 1,  true),
++    NAME_OPS_BIG(8, 2, false, 2, 1,  true),
++    NAME_OPS_BIG(8, 2, false, 4, 1,  true),
++    NAME_OPS_BIG(8, 2, false, 8, 1,  true),
++    NAME_OPS_BIG(8, 2, false, 2, 2,  true),
++    NAME_OPS_BIG(8, 2, false, 4, 2,  true),
++    NAME_OPS_BIG(8, 2, false, 8, 2,  true),
++    NAME_OPS_BIG(8, 2, false, 4, 4,  true),
++    NAME_OPS_BIG(8, 2, false, 8, 4,  true),
++    NAME_OPS_BIG(8, 2, false, 8, 8,  true),
++    NAME_OPS_BIG(8, 2, false, 1, 1, false),
++    NAME_OPS_BIG(8, 2, false, 2, 1, false),
++    NAME_OPS_BIG(8, 2, false, 4, 1, false),
++    NAME_OPS_BIG(8, 2, false, 8, 1, false),
++    NAME_OPS_BIG(8, 2, false, 2, 2, false),
++    NAME_OPS_BIG(8, 2, false, 4, 2, false),
++    NAME_OPS_BIG(8, 2, false, 8, 2, false),
++    NAME_OPS_BIG(8, 2, false, 4, 4, false),
++    NAME_OPS_BIG(8, 2, false, 8, 4, false),
++    NAME_OPS_BIG(8, 2, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_l_valid[] = {
++    NAME_OPS_BIG(4, 4,  true, 1, 1,  true),
++    NAME_OPS_BIG(4, 4,  true, 2, 1,  true),
++    NAME_OPS_BIG(4, 4,  true, 4, 1,  true),
++    NAME_OPS_BIG(4, 4,  true, 8, 1,  true),
++    NAME_OPS_BIG(4, 4,  true, 2, 2,  true),
++    NAME_OPS_BIG(4, 4,  true, 4, 2,  true),
++    NAME_OPS_BIG(4, 4,  true, 8, 2,  true),
++    NAME_OPS_BIG(4, 4,  true, 4, 4,  true),
++    NAME_OPS_BIG(4, 4,  true, 8, 4,  true),
++    NAME_OPS_BIG(4, 4,  true, 8, 8,  true),
++    NAME_OPS_BIG(4, 4,  true, 1, 1, false),
++    NAME_OPS_BIG(4, 4,  true, 2, 1, false),
++    NAME_OPS_BIG(4, 4,  true, 4, 1, false),
++    NAME_OPS_BIG(4, 4,  true, 8, 1, false),
++    NAME_OPS_BIG(4, 4,  true, 2, 2, false),
++    NAME_OPS_BIG(4, 4,  true, 4, 2, false),
++    NAME_OPS_BIG(4, 4,  true, 8, 2, false),
++    NAME_OPS_BIG(4, 4,  true, 4, 4, false),
++    NAME_OPS_BIG(4, 4,  true, 8, 4, false),
++    NAME_OPS_BIG(4, 4,  true, 8, 8, false),
++    NAME_OPS_BIG(8, 4,  true, 1, 1,  true),
++    NAME_OPS_BIG(8, 4,  true, 2, 1,  true),
++    NAME_OPS_BIG(8, 4,  true, 4, 1,  true),
++    NAME_OPS_BIG(8, 4,  true, 8, 1,  true),
++    NAME_OPS_BIG(8, 4,  true, 2, 2,  true),
++    NAME_OPS_BIG(8, 4,  true, 4, 2,  true),
++    NAME_OPS_BIG(8, 4,  true, 8, 2,  true),
++    NAME_OPS_BIG(8, 4,  true, 4, 4,  true),
++    NAME_OPS_BIG(8, 4,  true, 8, 4,  true),
++    NAME_OPS_BIG(8, 4,  true, 8, 8,  true),
++    NAME_OPS_BIG(8, 4,  true, 1, 1, false),
++    NAME_OPS_BIG(8, 4,  true, 2, 1, false),
++    NAME_OPS_BIG(8, 4,  true, 4, 1, false),
++    NAME_OPS_BIG(8, 4,  true, 8, 1, false),
++    NAME_OPS_BIG(8, 4,  true, 2, 2, false),
++    NAME_OPS_BIG(8, 4,  true, 4, 2, false),
++    NAME_OPS_BIG(8, 4,  true, 8, 2, false),
++    NAME_OPS_BIG(8, 4,  true, 4, 4, false),
++    NAME_OPS_BIG(8, 4,  true, 8, 4, false),
++    NAME_OPS_BIG(8, 4,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_l_invalid[] = {
++    NAME_OPS_BIG(4, 4, false, 1, 1,  true),
++    NAME_OPS_BIG(4, 4, false, 2, 1,  true),
++    NAME_OPS_BIG(4, 4, false, 4, 1,  true),
++    NAME_OPS_BIG(4, 4, false, 8, 1,  true),
++    NAME_OPS_BIG(4, 4, false, 2, 2,  true),
++    NAME_OPS_BIG(4, 4, false, 4, 2,  true),
++    NAME_OPS_BIG(4, 4, false, 8, 2,  true),
++    NAME_OPS_BIG(4, 4, false, 4, 4,  true),
++    NAME_OPS_BIG(4, 4, false, 8, 4,  true),
++    NAME_OPS_BIG(4, 4, false, 8, 8,  true),
++    NAME_OPS_BIG(4, 4, false, 1, 1, false),
++    NAME_OPS_BIG(4, 4, false, 2, 1, false),
++    NAME_OPS_BIG(4, 4, false, 4, 1, false),
++    NAME_OPS_BIG(4, 4, false, 8, 1, false),
++    NAME_OPS_BIG(4, 4, false, 2, 2, false),
++    NAME_OPS_BIG(4, 4, false, 4, 2, false),
++    NAME_OPS_BIG(4, 4, false, 8, 2, false),
++    NAME_OPS_BIG(4, 4, false, 4, 4, false),
++    NAME_OPS_BIG(4, 4, false, 8, 4, false),
++    NAME_OPS_BIG(4, 4, false, 8, 8, false),
++    NAME_OPS_BIG(8, 4, false, 1, 1,  true),
++    NAME_OPS_BIG(8, 4, false, 2, 1,  true),
++    NAME_OPS_BIG(8, 4, false, 4, 1,  true),
++    NAME_OPS_BIG(8, 4, false, 8, 1,  true),
++    NAME_OPS_BIG(8, 4, false, 2, 2,  true),
++    NAME_OPS_BIG(8, 4, false, 4, 2,  true),
++    NAME_OPS_BIG(8, 4, false, 8, 2,  true),
++    NAME_OPS_BIG(8, 4, false, 4, 4,  true),
++    NAME_OPS_BIG(8, 4, false, 8, 4,  true),
++    NAME_OPS_BIG(8, 4, false, 8, 8,  true),
++    NAME_OPS_BIG(8, 4, false, 1, 1, false),
++    NAME_OPS_BIG(8, 4, false, 2, 1, false),
++    NAME_OPS_BIG(8, 4, false, 4, 1, false),
++    NAME_OPS_BIG(8, 4, false, 8, 1, false),
++    NAME_OPS_BIG(8, 4, false, 2, 2, false),
++    NAME_OPS_BIG(8, 4, false, 4, 2, false),
++    NAME_OPS_BIG(8, 4, false, 8, 2, false),
++    NAME_OPS_BIG(8, 4, false, 4, 4, false),
++    NAME_OPS_BIG(8, 4, false, 8, 4, false),
++    NAME_OPS_BIG(8, 4, false, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_q_valid[] = {
++    NAME_OPS_BIG(8, 8,  true, 1, 1,  true),
++    NAME_OPS_BIG(8, 8,  true, 2, 1,  true),
++    NAME_OPS_BIG(8, 8,  true, 4, 1,  true),
++    NAME_OPS_BIG(8, 8,  true, 8, 1,  true),
++    NAME_OPS_BIG(8, 8,  true, 2, 2,  true),
++    NAME_OPS_BIG(8, 8,  true, 4, 2,  true),
++    NAME_OPS_BIG(8, 8,  true, 8, 2,  true),
++    NAME_OPS_BIG(8, 8,  true, 4, 4,  true),
++    NAME_OPS_BIG(8, 8,  true, 8, 4,  true),
++    NAME_OPS_BIG(8, 8,  true, 8, 8,  true),
++    NAME_OPS_BIG(8, 8,  true, 1, 1, false),
++    NAME_OPS_BIG(8, 8,  true, 2, 1, false),
++    NAME_OPS_BIG(8, 8,  true, 4, 1, false),
++    NAME_OPS_BIG(8, 8,  true, 8, 1, false),
++    NAME_OPS_BIG(8, 8,  true, 2, 2, false),
++    NAME_OPS_BIG(8, 8,  true, 4, 2, false),
++    NAME_OPS_BIG(8, 8,  true, 8, 2, false),
++    NAME_OPS_BIG(8, 8,  true, 4, 4, false),
++    NAME_OPS_BIG(8, 8,  true, 8, 4, false),
++    NAME_OPS_BIG(8, 8,  true, 8, 8, false),
++};
++
++const MemoryRegionOps ops_list_big_q_invalid[] = {
++    NAME_OPS_BIG(8, 8, false, 1, 1,  true),
++    NAME_OPS_BIG(8, 8, false, 2, 1,  true),
++    NAME_OPS_BIG(8, 8, false, 4, 1,  true),
++    NAME_OPS_BIG(8, 8, false, 8, 1,  true),
++    NAME_OPS_BIG(8, 8, false, 2, 2,  true),
++    NAME_OPS_BIG(8, 8, false, 4, 2,  true),
++    NAME_OPS_BIG(8, 8, false, 8, 2,  true),
++    NAME_OPS_BIG(8, 8, false, 4, 4,  true),
++    NAME_OPS_BIG(8, 8, false, 8, 4,  true),
++    NAME_OPS_BIG(8, 8, false, 8, 8,  true),
++    NAME_OPS_BIG(8, 8, false, 1, 1, false),
++    NAME_OPS_BIG(8, 8, false, 2, 1, false),
++    NAME_OPS_BIG(8, 8, false, 4, 1, false),
++    NAME_OPS_BIG(8, 8, false, 8, 1, false),
++    NAME_OPS_BIG(8, 8, false, 2, 2, false),
++    NAME_OPS_BIG(8, 8, false, 4, 2, false),
++    NAME_OPS_BIG(8, 8, false, 8, 2, false),
++    NAME_OPS_BIG(8, 8, false, 4, 4, false),
++    NAME_OPS_BIG(8, 8, false, 8, 4, false),
++    NAME_OPS_BIG(8, 8, false, 8, 8, false),
++};
++
++#define N_OPS_LIST_LITTLE_B_VALID \
++    (sizeof(ops_list_little_b_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_W_VALID \
++    (sizeof(ops_list_little_w_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_L_VALID \
++    (sizeof(ops_list_little_l_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_Q_VALID \
++    (sizeof(ops_list_little_q_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_B_INVALID \
++    (sizeof(ops_list_little_b_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_W_INVALID \
++    (sizeof(ops_list_little_w_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_L_INVALID \
++    (sizeof(ops_list_little_l_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_LITTLE_Q_INVALID \
++    (sizeof(ops_list_little_q_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_B_VALID \
++    (sizeof(ops_list_big_b_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_W_VALID \
++    (sizeof(ops_list_big_w_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_L_VALID \
++    (sizeof(ops_list_big_l_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_Q_VALID \
++    (sizeof(ops_list_big_q_valid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_B_INVALID \
++    (sizeof(ops_list_big_b_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_W_INVALID \
++    (sizeof(ops_list_big_w_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_L_INVALID \
++    (sizeof(ops_list_big_l_invalid) / sizeof(MemoryRegionOps))
++#define N_OPS_LIST_BIG_Q_INVALID \
++    (sizeof(ops_list_big_q_invalid) / sizeof(MemoryRegionOps))
++
++#define N_OPS_LIST                              \
++    (N_OPS_LIST_LITTLE_B_VALID +                \
++     N_OPS_LIST_LITTLE_B_INVALID +              \
++     N_OPS_LIST_LITTLE_W_VALID +                \
++     N_OPS_LIST_LITTLE_W_INVALID +              \
++     N_OPS_LIST_LITTLE_L_VALID +                \
++     N_OPS_LIST_LITTLE_L_INVALID +              \
++     N_OPS_LIST_LITTLE_Q_VALID +                \
++     N_OPS_LIST_LITTLE_Q_INVALID +              \
++     N_OPS_LIST_BIG_B_VALID +                   \
++     N_OPS_LIST_BIG_B_INVALID +                 \
++     N_OPS_LIST_BIG_W_VALID +                   \
++     N_OPS_LIST_BIG_W_INVALID +                 \
++     N_OPS_LIST_BIG_L_VALID +                   \
++     N_OPS_LIST_BIG_L_INVALID +                 \
++     N_OPS_LIST_BIG_Q_VALID +                   \
++     N_OPS_LIST_BIG_Q_INVALID)
++
++#define OFF_IDX_OPS_LIST_LITTLE_B_VALID \
++    (0)
++#define OFF_IDX_OPS_LIST_LITTLE_B_INVALID \
++    (OFF_IDX_OPS_LIST_LITTLE_B_VALID + N_OPS_LIST_LITTLE_B_VALID)
++#define OFF_IDX_OPS_LIST_LITTLE_W_VALID \
++    (OFF_IDX_OPS_LIST_LITTLE_B_INVALID + N_OPS_LIST_LITTLE_B_INVALID)
++#define OFF_IDX_OPS_LIST_LITTLE_W_INVALID \
++    (OFF_IDX_OPS_LIST_LITTLE_W_VALID + N_OPS_LIST_LITTLE_W_VALID)
++#define OFF_IDX_OPS_LIST_LITTLE_L_VALID \
++    (OFF_IDX_OPS_LIST_LITTLE_W_INVALID + N_OPS_LIST_LITTLE_W_INVALID)
++#define OFF_IDX_OPS_LIST_LITTLE_L_INVALID \
++    (OFF_IDX_OPS_LIST_LITTLE_L_VALID + N_OPS_LIST_LITTLE_L_VALID)
++#define OFF_IDX_OPS_LIST_LITTLE_Q_VALID \
++    (OFF_IDX_OPS_LIST_LITTLE_L_INVALID + N_OPS_LIST_LITTLE_L_INVALID)
++#define OFF_IDX_OPS_LIST_LITTLE_Q_INVALID \
++    (OFF_IDX_OPS_LIST_LITTLE_Q_VALID + N_OPS_LIST_LITTLE_Q_VALID)
++#define OFF_IDX_OPS_LIST_BIG_B_VALID \
++    (OFF_IDX_OPS_LIST_LITTLE_Q_INVALID + N_OPS_LIST_LITTLE_Q_INVALID)
++#define OFF_IDX_OPS_LIST_BIG_B_INVALID \
++    (OFF_IDX_OPS_LIST_BIG_B_VALID + N_OPS_LIST_BIG_B_VALID)
++#define OFF_IDX_OPS_LIST_BIG_W_VALID \
++    (OFF_IDX_OPS_LIST_BIG_B_INVALID + N_OPS_LIST_BIG_B_INVALID)
++#define OFF_IDX_OPS_LIST_BIG_W_INVALID \
++    (OFF_IDX_OPS_LIST_BIG_W_VALID + N_OPS_LIST_BIG_W_VALID)
++#define OFF_IDX_OPS_LIST_BIG_L_VALID \
++    (OFF_IDX_OPS_LIST_BIG_W_INVALID + N_OPS_LIST_BIG_W_INVALID)
++#define OFF_IDX_OPS_LIST_BIG_L_INVALID \
++    (OFF_IDX_OPS_LIST_BIG_L_VALID + N_OPS_LIST_BIG_L_VALID)
++#define OFF_IDX_OPS_LIST_BIG_Q_VALID \
++    (OFF_IDX_OPS_LIST_BIG_L_INVALID + N_OPS_LIST_BIG_L_INVALID)
++#define OFF_IDX_OPS_LIST_BIG_Q_INVALID \
++    (OFF_IDX_OPS_LIST_BIG_Q_VALID + N_OPS_LIST_BIG_Q_VALID)
++
++#undef GEN_OPS_LITTLE
++#undef GEN_OPS_BIG
++#undef NAME_OPS_LITTLE
++#undef NAME_OPS_BIG
++#undef __JOIN2
++#undef __JOIN2_AGAIN
++#undef __JOIN6
++#undef __JOIN6_AGAIN
++#undef __STR
++#undef __STR_AGAIN
++
++#endif
 -- 
 2.43.0
 
