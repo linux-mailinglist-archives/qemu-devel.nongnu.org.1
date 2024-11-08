@@ -2,59 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D970B9C1AF4
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0231E9C1AF1
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:43:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9MSu-0004Bo-6N; Fri, 08 Nov 2024 05:43:44 -0500
+	id 1t9MSw-0004CH-1Z; Fri, 08 Nov 2024 05:43:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSq-0004Ba-FJ
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:40 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSs-0004Bl-EW
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSn-00069V-MO
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:38 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSq-00069m-BG
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731062616;
+ s=mimecast20190719; t=1731062619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uI0Jru7fi/KTrKAQWqFfneZS7CgSgPA0N/dGLf3k7Tk=;
- b=EU9iczDXJk4nAu2K8G44sSrGuSkd8wihUrTRP4lyfq5rQnHZgAscU61wXGDdyCpSW9hs5/
- 0YdNbw2Kv6iVxw6ZZBpv0K5/iZ7CGGZTlN1ayTiPKDxoeiazVPd7KsMZHs0+IV4bbV4GDU
- rwhiTrJg5+IvIxodTHLGLUkG5a5UJwc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HBGPkZk1ktmp19zaI2s+liTCJGu1Z+WSQxotdz7+skk=;
+ b=hvoLc0G6T1xff1WWgDlpNDNDNGc82qafnieNRaBlrW+sSl83507qrleql1KpEKbewzYvsS
+ xgsjNAMC19oZ4RgzAub5EBSay2q3F3TEQkH2VX9Izse8Y1SHy+kUZuPnZDtX4S4vWVSv8W
+ /9l9p+fTvFs6vLxIS9C1Sob2Dn9tZKk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-aN9jFqA3OeinSRMCJDnHiw-1; Fri,
- 08 Nov 2024 05:43:33 -0500
-X-MC-Unique: aN9jFqA3OeinSRMCJDnHiw-1
-X-Mimecast-MFC-AGG-ID: aN9jFqA3OeinSRMCJDnHiw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-FP_oS8qVMmSCan5XmGIfTA-1; Fri,
+ 08 Nov 2024 05:43:36 -0500
+X-MC-Unique: FP_oS8qVMmSCan5XmGIfTA-1
+X-Mimecast-MFC-AGG-ID: FP_oS8qVMmSCan5XmGIfTA
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5EC4C1955F41; Fri,  8 Nov 2024 10:43:32 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 698661956089; Fri,  8 Nov 2024 10:43:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.118])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C2CE01953880; Fri,  8 Nov 2024 10:43:30 +0000 (UTC)
+ id 065591953880; Fri,  8 Nov 2024 10:43:32 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/10] tests/functional: Provide the user with hints where to
- find more log files
-Date: Fri,  8 Nov 2024 11:43:05 +0100
-Message-ID: <20241108104312.534448-6-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 06/10] tests/functional: Bump timeouts of functional tests
+Date: Fri,  8 Nov 2024 11:43:06 +0100
+Message-ID: <20241108104312.534448-7-thuth@redhat.com>
 In-Reply-To: <20241108104312.534448-1-thuth@redhat.com>
 References: <20241108104312.534448-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -82,66 +79,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the base.log and console.log files are not referenced from the
-meson test logs yet, they might be hard to find for the casual users.
-Thus let's print some hints in case a test case failed. For this we
-have to run unittest.main() with exit=False to get the results of the
-testing. Then we can iterate through the failed test cases to print
-out the information accordingly.
+When building QEMU with "--enable-debug" and running the tests
+in parallel with "make -j$(nproc) check-functional", many tests are
+still timing out due to our conservative timeout settings. Bump
+the timeouts of the problematic tests and also increase the default
+timeout to 90 seconds (from 60 seconds) to be on the safe side.
 
-Message-ID: <20241105123849.359391-1-thuth@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Tested-by: Cédric Le Goater <clg@redhat.com>
+Message-ID: <20241106170946.990731-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tests/functional/meson.build | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index aa0146265a..411978b5ef 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -45,10 +45,10 @@ def setUp(self, bin_prefix):
-         os.makedirs(self.workdir, exist_ok=True)
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index b5691f9a97..2f134f178c 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -11,24 +11,26 @@ endif
  
-         self.logdir = self.workdir
-+        self.log_filename = os.path.join(self.logdir, 'base.log')
-         self.log = logging.getLogger('qemu-test')
-         self.log.setLevel(logging.DEBUG)
--        self._log_fh = logging.FileHandler(os.path.join(self.logdir,
--                                                        'base.log'), mode='w')
-+        self._log_fh = logging.FileHandler(self.log_filename, mode='w')
-         self._log_fh.setLevel(logging.DEBUG)
-         fileFormatter = logging.Formatter(
-             '%(asctime)s - %(levelname)s: %(message)s')
-@@ -68,7 +68,14 @@ def main():
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
+-  'aarch64_raspi4' : 120,
++  'aarch64_raspi4' : 480,
+   'aarch64_sbsaref' : 600,
+-  'aarch64_virt' : 360,
+-  'acpi_bits' : 240,
++  'aarch64_virt' : 720,
++  'acpi_bits' : 420,
+   'arm_aspeed' : 600,
+-  'arm_bpim2u' : 360,
++  'arm_bpim2u' : 500,
++  'arm_collie' : 180,
+   'arm_orangepi' : 540,
+   'arm_raspi2' : 120,
+-  'arm_tuxrun' : 120,
++  'arm_tuxrun' : 240,
+   'arm_sx1' : 360,
+   'mips_malta' : 120,
+   'netdev_ethtool' : 180,
+   'ppc_40p' : 240,
+   'ppc64_hv' : 1000,
+-  'ppc64_powernv' : 240,
+-  'ppc64_pseries' : 240,
+-  'ppc64_tuxrun' : 240,
+-  's390x_ccw_virtio' : 240,
++  'ppc64_powernv' : 480,
++  'ppc64_pseries' : 480,
++  'ppc64_tuxrun' : 420,
++  'riscv64_tuxrun' : 120,
++  's390x_ccw_virtio' : 420,
+ }
  
-         tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
-                                    test_output_log = pycotap.LogMode.LogToError)
--        unittest.main(module = None, testRunner = tr, argv=["__dummy__", path])
-+        res = unittest.main(module = None, testRunner = tr, exit = False,
-+                            argv=["__dummy__", path])
-+        for (test, message) in res.result.errors + res.result.failures:
-+            print('More information on ' + test.id() + ' could be found here:'
-+                  '\n %s' % test.log_filename, file=sys.stderr)
-+            if hasattr(test, 'console_log_name'):
-+                print(' %s' % test.console_log_name, file=sys.stderr)
-+        sys.exit(not res.result.wasSuccessful())
- 
- 
- class QemuUserTest(QemuBaseTest):
-@@ -101,8 +108,9 @@ def setUp(self):
- 
-         console_log = logging.getLogger('console')
-         console_log.setLevel(logging.DEBUG)
--        self._console_log_fh = logging.FileHandler(os.path.join(self.workdir,
--                                                   'console.log'), mode='w')
-+        self.console_log_name = os.path.join(self.workdir, 'console.log')
-+        self._console_log_fh = logging.FileHandler(self.console_log_name,
-+                                                   mode='w')
-         self._console_log_fh.setLevel(logging.DEBUG)
-         fileFormatter = logging.Formatter('%(asctime)s: %(message)s')
-         self._console_log_fh.setFormatter(fileFormatter)
+ tests_generic_system = [
+@@ -281,8 +283,8 @@ foreach speed : ['quick', 'thorough']
+            env: test_env,
+            args: [testpath],
+            protocol: 'tap',
+-           timeout: test_timeouts.get(test, 60),
+-           priority: test_timeouts.get(test, 60),
++           timeout: test_timeouts.get(test, 90),
++           priority: test_timeouts.get(test, 90),
+            suite: suites)
+     endforeach
+   endforeach
 -- 
 2.47.0
 
