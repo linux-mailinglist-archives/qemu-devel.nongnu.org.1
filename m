@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84169C16BE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 08:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FF09C16F9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 08:20:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9J3Y-0008Vh-VO; Fri, 08 Nov 2024 02:05:20 -0500
+	id 1t9JGl-0006NL-71; Fri, 08 Nov 2024 02:18:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1t9J3S-0008TN-Jz
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 02:05:15 -0500
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1t9J3P-0006Lt-S7
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 02:05:14 -0500
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7f12ba78072so1413116a12.2
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 23:05:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1731049509; x=1731654309; darn=nongnu.org;
- h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=imX3pkNiDootTp+f5+lxB0xVp8x8ZcJGe7afU7mIDS8=;
- b=Mypfv6QsakUw48LRpSMxy/b5Gc7ZLmLB6x0/WIJg+AxTVlS4sXX8XY92C4WFbW4260
- zA4lsIrAYj11UnmfMZfkIZhW72WetD+SIhp6LUPrf2oZ/CK9ri0bZ7YoiUlSHNQzaxjM
- fEPydAnIyf9gnLx1myaOGqSQVyoOZaW/ASocHRzI7ILe7lXK8I5Jn9I1sbkbFAADH/I/
- r1oBgedgFa8ZNnfbMYC969tsKTX4tSBSJS0A8W+wqxu3l+qeMfosLicfOPgoR+EORV+m
- wMj66IemGySOssrMQCpGmWnGrG0qFiYGghOlHGeXl9TfIqlku6Zmsbl1XgUe6Onl9pZO
- gCGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731049509; x=1731654309;
- h=references:in-reply-to:message-id:date:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=imX3pkNiDootTp+f5+lxB0xVp8x8ZcJGe7afU7mIDS8=;
- b=Aoi4le+w0f00qFhF/FhjcKgHPD121BEFGsREqut8gQ0GY+ICwTFv+exn0SnZEbIIle
- ujh8NSAkLYZZUZYXnS1TT1PwcsTkj2sChMU362auSGcf2qA+kv+a0AoST7SBL1uWzxBQ
- 1H1uhiMF8efiGwt+ENDyKX+skrkdEz2v8jmU8TgRnnFDSEY73Zbze2Fvfkw4djmDA1tD
- dscfYc2lZ8Aelorni4UOOc6zVjEdkbbvP9iLbHxNwz1+FaJ0LrE2qX3QAyWKOfyf2fAg
- G8zepg4JDqSeYS/MMHs8IdPR2Hp8NDqDk5oxaGw3Pe/4t3plYysvcMm3hijF0M4s43JK
- D5GA==
-X-Gm-Message-State: AOJu0Yzs5o89rNxYKbU4KowbSr1nLhQ4lFB7PAJNy/hiYz9N3LYwd/S/
- /mlQK94qjUAgXG8vdIu1ZGl6ohoNHI/BP5ugyvGeIBH/A7ArIEDp41e7wa1GnFtL2zH304KmGsu
- ZMPPNbCWaoT6hacenDwPYS+uVipIumUkaQgegXsd8kHwW6YP4vJGHX/ZUE72MfkQAKiqkFPtN3t
- gIgG1+V4UuSBCkybUnhnZL50CNesY/7M60JHRi
-X-Google-Smtp-Source: AGHT+IGK2+1pyilqknTNwGbcvMwDh5DpkoKN4ktGxfzPVUWUlxXegB7cg0E6ZVCseR3ScO9QOOPzaw==
-X-Received: by 2002:a05:6a20:43a0:b0:1dc:2365:a114 with SMTP id
- adf61e73a8af0-1dc2365a23dmr2409704637.24.1731049509129; 
- Thu, 07 Nov 2024 23:05:09 -0800 (PST)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-724078a9058sm2900715b3a.77.2024.11.07.23.05.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Nov 2024 23:05:08 -0800 (PST)
-From: Jim Shu <jim.shu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t9JGT-0006Kd-LT
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 02:18:42 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1t9JGQ-0007P1-5O
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 02:18:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731050318; x=1762586318;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=EjMkmMq28G1fu7H7c97qD2aJHg4qvw2ZYKp2HV0OHXE=;
+ b=F9PfGp+helRPcQM4yHQyCLZZRnnzRhFeajh0GKpsIKbc+QT5aj0f7zPZ
+ Lo7vX4z4em9tz7YdagvB1D5fUcbF3avoMhHguD7dkjCwcjMuvh7jMjksj
+ KDYkX/el8Fz5Ou+B7O4qpUCj5u+gVpNheff0lUVRhyZlalECjxvgB6fTb
+ lMkaBzq3uShhKqy536FjYVor2IFpvDYixc/rZIA35/TQOLoNOm/qGjtzK
+ wI4ARDtqUNQU95kpr+WGuWl6z2E5wP3nzGVyCFOtnZHmSi8sJxf2OzTSO
+ 1Y/uKZkui8AsOU03SW0MSRB/FaWEEzlWDPAEIfL4FWOicG3/wzLqHo2Px A==;
+X-CSE-ConnectionGUID: H6OIb6V3QkKkFVq2qjTT3g==
+X-CSE-MsgGUID: +v/1V0L8TRiHsvgZwHDbJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31082898"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31082898"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2024 23:18:33 -0800
+X-CSE-ConnectionGUID: ZG5oLrExRPKmKeYI6O8VNA==
+X-CSE-MsgGUID: zrNHz+E2TP6SonziVUEO0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; d="scan'208";a="86240911"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa008.jf.intel.com with ESMTP; 07 Nov 2024 23:18:29 -0800
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>, Brian Cain <bcain@quicinc.com>,
+ Song Gao <gaosong@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v3 3/3] hw/riscv: Add the checking if DTB overlaps to kernel
- or initrd
-Date: Fri,  8 Nov 2024 15:04:54 +0800
-Message-Id: <20241108070454.12699-4-jim.shu@sifive.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20241108070454.12699-1-jim.shu@sifive.com>
-References: <20241108070454.12699-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=jim.shu@sifive.com; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
+ xiaoyao.li@intel.com
+Subject: [PATCH v1 0/4] Initialize nr_cores and nr_threads early and related
+ clearup
+Date: Fri,  8 Nov 2024 02:06:05 -0500
+Message-Id: <20241108070609.3653085-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.781, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,94 +89,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DTB is placed to the end of memory, so we will check if the start
-address of DTB overlaps to the address of kernel/initrd.
+This series is extracted from TDX QEMU v6[1] series per Paolo's request.
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
----
- hw/riscv/boot.c         | 25 ++++++++++++++++++++++++-
- include/hw/riscv/boot.h |  3 +++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+It is originally motivated by x86 TDX to track CPUID_HT in env->features[]
+which requires nr_cores and nr_cores being initialized earlier than in
+qemu_init_vcpu().
 
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index c7478d2365..d22d240854 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -70,6 +70,7 @@ char *riscv_plic_hart_config_string(int hart_count)
- void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts)
- {
-     info->kernel_size = 0;
-+    info->initrd_size = 0;
-     info->is_32bit = riscv_is_32bit(harts);
- }
- 
-@@ -213,6 +214,9 @@ static void riscv_load_initrd(MachineState *machine, RISCVBootInfo *info)
-         }
-     }
- 
-+    info->initrd_start = start;
-+    info->initrd_size = size;
-+
-     /* Some RISC-V machines (e.g. opentitan) don't have a fdt. */
-     if (fdt) {
-         end = start + size;
-@@ -309,6 +313,7 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-     int ret = fdt_pack(ms->fdt);
-     hwaddr dram_end, temp;
-     int fdtsize;
-+    uint64_t dtb_start, dtb_start_limit;
- 
-     /* Should only fail if we've built a corrupted tree */
-     g_assert(ret == 0);
-@@ -319,6 +324,17 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-         exit(1);
-     }
- 
-+    if (info->initrd_size) {
-+        /* If initrd is successfully loaded, place DTB after it. */
-+        dtb_start_limit = info->initrd_start + info->initrd_size;
-+    } else if (info->kernel_size) {
-+        /* If only kernel is successfully loaded, place DTB after it. */
-+        dtb_start_limit = info->image_high_addr;
-+    } else {
-+        /* Otherwise, do not check DTB overlapping */
-+        dtb_start_limit = 0;
-+    }
-+
-     /*
-      * A dram_size == 0, usually from a MemMapEntry[].size element,
-      * means that the DRAM block goes all the way to ms->ram_size.
-@@ -338,7 +354,14 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-         temp = (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) : dram_end;
-     }
- 
--    return QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
-+    dtb_start = QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
-+
-+    if (dtb_start_limit && (dtb_start < dtb_start_limit)) {
-+        error_report("No enough memory to place DTB after kernel/initrd");
-+        exit(1);
-+    }
-+
-+    return dtb_start;
- }
- 
- /*
-diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
-index 719ee1fe5f..e309cc1a7f 100644
---- a/include/hw/riscv/boot.h
-+++ b/include/hw/riscv/boot.h
-@@ -32,6 +32,9 @@ typedef struct RISCVBootInfo {
-     uint64_t image_low_addr;
-     uint64_t image_high_addr;
- 
-+    hwaddr initrd_start;
-+    ssize_t initrd_size;
-+
-     bool is_32bit;
- } RISCVBootInfo;
- 
+Initialize of nr_cores and nr_threads earlier in x86's cpu_realizefn()
+can make it work for x86 but it's duplicated with the initialization in
+qemu_init_vcpu() which are used by all the ARCHes. Since initialize them
+earlier also work for other ARCHes, introduce qemu_init_early_vcpu() to
+hold the initialization of nr_cores and nr_threads and call it at the
+beginning in realizefn() for each ARCH.
+
+Note, I only tested it for x86 ARCH. Please help test on other ARCHes.
+
+The following patch 2 - 4 are x86 specific.
+
+[1] https://lore.kernel.org/qemu-devel/CABgObfZVxaQL4FSJX396kAJ67Qp=XhEWwcmv+NQZCbdpfbV9xg@mail.gmail.com/
+
+Xiaoyao Li (4):
+  cpu: Introduce qemu_early_init_vcpu() to initialize nr_cores and
+    nr_threads inside it
+  i386/cpu: Set up CPUID_HT in x86_cpu_expand_features() instead of
+    cpu_x86_cpuid()
+  i386/cpu: Set and track CPUID_EXT3_CMP_LEG in
+    env->features[FEAT_8000_0001_ECX]
+  i386/cpu: Rectify the comment on order dependency on qemu_init_vcpu()
+
+ accel/tcg/user-exec-stub.c |  4 +++
+ hw/core/cpu-common.c       |  2 +-
+ include/hw/core/cpu.h      |  8 +++++
+ system/cpus.c              |  6 +++-
+ target/alpha/cpu.c         |  2 ++
+ target/arm/cpu.c           |  2 ++
+ target/avr/cpu.c           |  2 ++
+ target/hexagon/cpu.c       |  2 ++
+ target/hppa/cpu.c          |  2 ++
+ target/i386/cpu.c          | 61 +++++++++++++++++++-------------------
+ target/loongarch/cpu.c     |  2 ++
+ target/m68k/cpu.c          |  2 ++
+ target/microblaze/cpu.c    |  2 ++
+ target/mips/cpu.c          |  2 ++
+ target/openrisc/cpu.c      |  2 ++
+ target/ppc/cpu_init.c      |  2 ++
+ target/riscv/cpu.c         |  2 ++
+ target/rx/cpu.c            |  2 ++
+ target/s390x/cpu.c         |  2 ++
+ target/sh4/cpu.c           |  2 ++
+ target/sparc/cpu.c         |  2 ++
+ target/tricore/cpu.c       |  2 ++
+ target/xtensa/cpu.c        |  2 ++
+ 23 files changed, 85 insertions(+), 32 deletions(-)
+
 -- 
-2.17.1
+2.34.1
 
 
