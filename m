@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DD49C1EA2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 14:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B65D79C1EA7
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 14:57:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9PSY-00077M-6a; Fri, 08 Nov 2024 08:55:34 -0500
+	id 1t9PSP-00076N-6w; Fri, 08 Nov 2024 08:55:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9PSM-00075A-AP
+ id 1t9PSM-00075C-JM
  for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:55:22 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9PSJ-0005aw-6m
+ id 1t9PSJ-0005b6-Uy
  for qemu-devel@nongnu.org; Fri, 08 Nov 2024 08:55:22 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4315baa51d8so18945015e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 05:55:18 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-37d47eff9acso1330959f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 05:55:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731074117; x=1731678917; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731074118; x=1731678918; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W9HEmAt5PwpOdPxQx3Mt4EnQUNxTYqpsNGqlaKkatdo=;
- b=gJ/ZFid3p9GBlG5b9ZsQA9mVoH5iCxSq5tkiOAgDRcpE5iILrWF7bVunLFMV6XatSj
- JqmxGEbTMkTSztEvFlDKg6lOfyDCKaaSaoPzkJ/3Tt7Onnyla6URXK551IBx72YNns49
- +9Q+Oi3sJHbgqvTAoz5kpNP31KBGgpcFj58qOfEkFYbvXWgjBZCFsMIm+1/34uF+7uGo
- yvQVSfk/7RpvbUdD+L44ZvA7wC18+szJgX74eJe6Gte3p9tiLs5qloZpIXtKv+ubYHDU
- OWwDf7oN89dhvtVK4SV0M884wksz1L2H2qHk9JYf+MaRpAaln9R969pczufHKUbQR/VI
- FWQQ==
+ bh=8mUw/2j0GVZe2OEKmbmEYrGKzq5ifsNFVXkG4rgChXM=;
+ b=TgtuWIfJbN6f2ho9mcUnpMm5plv0m6bT0F74KnpTvWeiByjwDO/I6hk35LE4D3gK+g
+ 5/1UxSC/CzSPeRdE+JIDVv1n99ldaqog8BKfYG+MmKeISWSZExtpXCrlYy091HkyMiNC
+ QiuHLptPv0jn9D6zQ2nCYkOHU8acJQ6V8JK6TfBi02lxFNe6rlmrPJj9/Gy80DHaqQGx
+ ljvtPBSuGBCZb6TKNyB3VREtzeZ9W52p+DpiulHiDQqLEIIQbgbHGVjRxh483/DGHz1m
+ YHy3g8YbZkxOgnSZMCWnoVbcSYAYNZuZE7HYr+ul+scCh9lnUiFWrVIGL8K8WU21Os+J
+ 83ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731074117; x=1731678917;
+ d=1e100.net; s=20230601; t=1731074118; x=1731678918;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W9HEmAt5PwpOdPxQx3Mt4EnQUNxTYqpsNGqlaKkatdo=;
- b=f3CeECnSg/8druyEHFDNUlehtw8v3d5Jq981nIticVvwuOPg8jNpcnT4WMVFGyv9aH
- BYgX6J5jjAjr9ajg/jt1PxLQROiX6g5d1TUpCMEo3KbAp0xbIgMGJ2mkoPmxClxsECO+
- dvY12RoBgTHIXUnMfqYjpZf8uNgm/79MZBPV+nh01Gp3SPjYfteiPha5DmDiVKA+TVIy
- UB4WM4F0R3EESwWWSQsAXVtPlTq1t0mK/S+ByFD15PiZql2dnSm2S+9D8iA5DQnEMT0W
- IEspJNaFNUI5btO5V6+bCL8IwRfJ2dPLtv+odo3Kfh7+i/jyAU4DYFKQqOj+iI/ClD1A
- CkzQ==
-X-Gm-Message-State: AOJu0Ywo1D/as2aOCCLFHggoAPvJ2f7b5yhkPQnIRASkrnPeGW7VVWt4
- X8UWL1Xgq5b65UxVHZIr66fouGfuoNA2Qo1zSUS6nHVeyYglcrcBtaYBqpnij4+6agQX1hI/RT3
- q
-X-Google-Smtp-Source: AGHT+IFx9amY3L1g31TYcovcX2/zmSMf7J09PjsD9fEqdcbWZyR6XR3rN0ulOxvQODBkLi1a0NP/WA==
-X-Received: by 2002:a05:6000:4027:b0:37d:4e59:549a with SMTP id
- ffacd0b85a97d-381f17212c7mr2324020f8f.16.1731074117196; 
- Fri, 08 Nov 2024 05:55:17 -0800 (PST)
+ bh=8mUw/2j0GVZe2OEKmbmEYrGKzq5ifsNFVXkG4rgChXM=;
+ b=UcaLsea1ry/y4BFsRtBwXeRmr/omtLcxk9MzD303ERlvb5O/ppWooHFZ7pldDFZdTO
+ Md5kxO02EHP1CTa4q4E2aZRE6A/nfqJSmnD7Ek212H6FsHAmFlvQ/L+EGRkN6OTOWP1X
+ KiNiv+DZTnA1NY4U+4J07RwoIVQt3CBSc+ymKVTz1T4CX/fY/c+qoWMQRn6NH1R7ampU
+ R/I1hr/O4WQ7Qtw8sdgQfBFJGBwr5MyiZUN9OZHn3pb+XcaVQBIVTyxa1ohFQhjWt6uc
+ WdStOVwA6eb+c5iLLa2WBNdURubL4Bhbn+4c0+Tav0w/6eorJFsVdABtSD7cfezJgzz8
+ q0Rg==
+X-Gm-Message-State: AOJu0YxUJXMbYv2zUWffs5Xp9Ra92163aaXwJrtM9oSJVW5heuK573Al
+ Ex1HCJualA5RLj62I8SZA7hA8QfVbpgxumqCTqShGky/uHA0mLvy1SesKu7YVkbxzaZV/4ItF4q
+ c
+X-Google-Smtp-Source: AGHT+IH/dEDW/BnSvrqHRRh1OTyQfwW3/+O3HzMHmdTiFZBa118G1ZjiAXv/xRsJzhOXjWFvg3hHsA==
+X-Received: by 2002:a5d:648f:0:b0:37d:46fa:d1d3 with SMTP id
+ ffacd0b85a97d-381f186d11amr2571930f8f.34.1731074118140; 
+ Fri, 08 Nov 2024 05:55:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa70a2ccsm110082855e9.31.2024.11.08.05.55.16
+ 5b1f17b1804b1-432aa70a2ccsm110082855e9.31.2024.11.08.05.55.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 05:55:16 -0800 (PST)
+ Fri, 08 Nov 2024 05:55:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 2/3] hw/intc/arm_gicv3: Use bitops.h uint32_t bit array
- functions
-Date: Fri,  8 Nov 2024 13:55:13 +0000
-Message-Id: <20241108135514.4006953-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/3] hw/intc/loongarch_extioi: Use set_bit32() and
+ clear_bit32() for s->isr
+Date: Fri,  8 Nov 2024 13:55:14 +0000
+Message-Id: <20241108135514.4006953-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241108135514.4006953-1-peter.maydell@linaro.org>
 References: <20241108135514.4006953-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,113 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we have official uint32_t bit array functions in bitops.h, use
-them instead of the hand-rolled local versions.
+In extioi_setirq() we try to operate on a bit array stored as an
+array of uint32_t using the set_bit() and clear_bit() functions
+by casting the pointer to 'unsigned long *'.
+This has two problems:
+ * the alignment of 'uint32_t' is less than that of 'unsigned long'
+   so we pass an insufficiently aligned pointer, which is
+   undefined behaviour
+ * on big-endian hosts the 64-bit 'unsigned long' will have
+   its two halves the wrong way around, and we will produce
+   incorrect results
 
-We retain gic_bmp_replace_bit() because bitops doesn't provide that
-specific functionality.
+The undefined behaviour is shown by the clang undefined-behaviour
+sanitizer when running the loongarch64-virt functional test:
 
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/qemu/bitops.h:41:5: runtime error: store to misaligned address 0x555559745d9c for type 'unsigned long', which requires 8 byte alignment
+0x555559745d9c: note: pointer points here
+  ff ff ff ff 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+              ^
+    #0 0x555556fb81c4 in set_bit /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/qemu/bitops.h:41:9
+    #1 0x555556fb81c4 in extioi_setirq /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../hw/intc/loongarch_extioi.c:65:9
+    #2 0x555556fb6e90 in pch_pic_irq_handler /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../hw/intc/loongarch_pch_pic.c:75:5
+    #3 0x555556710265 in serial_ioport_write /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../hw/char/serial.c
+
+Fix these problems by using set_bit32() and clear_bit32(),
+which work with bit arrays stored as an array of uint32_t.
+
+Cc: qemu-stable@nongnu.org
+Fixes: cbff2db1e92f8759 ("hw/intc: Add LoongArch extioi interrupt controller(EIOINTC)")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/intc/arm_gicv3_common.h | 54 ++++++++----------------------
- 1 file changed, 14 insertions(+), 40 deletions(-)
+ hw/intc/loongarch_extioi.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index cd09bee3bc4..a3d6a0e5077 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -51,13 +51,13 @@
- /* Maximum number of list registers (architectural limit) */
- #define GICV3_LR_MAX 16
- 
--/* For some distributor fields we want to model the array of 32-bit
-+/*
-+ * For some distributor fields we want to model the array of 32-bit
-  * register values which hold various bitmaps corresponding to enabled,
-- * pending, etc bits. These macros and functions facilitate that; the
-- * APIs are generally modelled on the generic bitmap.h functions
-- * (which are unsuitable here because they use 'unsigned long' as the
-- * underlying storage type, which is very awkward when you need to
-- * access the data as 32-bit values.)
-+ * pending, etc bits. We use the set_bit32() etc family of functions
-+ * from bitops.h for this. For a few cases we need to implement some
-+ * extra operations.
-+ *
-  * Each bitmap contains a bit for each interrupt. Although there is
-  * space for the PPIs and SGIs, those bits (the first 32) are never
-  * used as that state lives in the redistributor. The unused bits are
-@@ -65,39 +65,13 @@
-  * avoids bugs where we forget to subtract GIC_INTERNAL from an
-  * interrupt number.
-  */
--#define GICV3_BMP_SIZE DIV_ROUND_UP(GICV3_MAXIRQ, 32)
--
--#define GIC_DECLARE_BITMAP(name) \
--    uint32_t name[GICV3_BMP_SIZE]
--
--#define GIC_BIT_MASK(nr) (1U << ((nr) % 32))
--#define GIC_BIT_WORD(nr) ((nr) / 32)
--
--static inline void gic_bmp_set_bit(int nr, uint32_t *addr)
--{
--    uint32_t mask = GIC_BIT_MASK(nr);
--    uint32_t *p = addr + GIC_BIT_WORD(nr);
--
--    *p |= mask;
--}
--
--static inline void gic_bmp_clear_bit(int nr, uint32_t *addr)
--{
--    uint32_t mask = GIC_BIT_MASK(nr);
--    uint32_t *p = addr + GIC_BIT_WORD(nr);
--
--    *p &= ~mask;
--}
--
--static inline int gic_bmp_test_bit(int nr, const uint32_t *addr)
--{
--    return 1U & (addr[GIC_BIT_WORD(nr)] >> (nr & 31));
--}
-+#define GIC_DECLARE_BITMAP(name) DECLARE_BITMAP32(name, GICV3_MAXIRQ)
-+#define GICV3_BMP_SIZE BITS_TO_U32S(GICV3_MAXIRQ)
- 
- static inline void gic_bmp_replace_bit(int nr, uint32_t *addr, int val)
- {
--    uint32_t mask = GIC_BIT_MASK(nr);
--    uint32_t *p = addr + GIC_BIT_WORD(nr);
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
- 
-     *p &= ~mask;
-     *p |= (val & 1U) << (nr % 32);
-@@ -106,7 +80,7 @@ static inline void gic_bmp_replace_bit(int nr, uint32_t *addr, int val)
- /* Return a pointer to the 32-bit word containing the specified bit. */
- static inline uint32_t *gic_bmp_ptr32(uint32_t *addr, int nr)
- {
--    return addr + GIC_BIT_WORD(nr);
-+    return addr + BIT32_WORD(nr);
+diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
+index 02dc4e6db3b..97d1af5ccc2 100644
+--- a/hw/intc/loongarch_extioi.c
++++ b/hw/intc/loongarch_extioi.c
+@@ -57,14 +57,9 @@ static void extioi_setirq(void *opaque, int irq, int level)
+     LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
+     trace_loongarch_extioi_setirq(irq, level);
+     if (level) {
+-        /*
+-         * s->isr should be used in vmstate structure,
+-         * but it not support 'unsigned long',
+-         * so we have to switch it.
+-         */
+-        set_bit(irq, (unsigned long *)s->isr);
++        set_bit32(irq, s->isr);
+     } else {
+-        clear_bit(irq, (unsigned long *)s->isr);
++        clear_bit32(irq, s->isr);
+     }
+     extioi_update_irq(s, irq, level);
  }
+@@ -154,7 +149,7 @@ static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
+             continue;
+         }
  
- typedef struct GICv3State GICv3State;
-@@ -301,15 +275,15 @@ struct GICv3State {
- #define GICV3_BITMAP_ACCESSORS(BMP)                                     \
-     static inline void gicv3_gicd_##BMP##_set(GICv3State *s, int irq)   \
-     {                                                                   \
--        gic_bmp_set_bit(irq, s->BMP);                                   \
-+        set_bit32(irq, s->BMP);                                         \
-     }                                                                   \
-     static inline int gicv3_gicd_##BMP##_test(GICv3State *s, int irq)   \
-     {                                                                   \
--        return gic_bmp_test_bit(irq, s->BMP);                           \
-+        return test_bit32(irq, s->BMP);                                 \
-     }                                                                   \
-     static inline void gicv3_gicd_##BMP##_clear(GICv3State *s, int irq) \
-     {                                                                   \
--        gic_bmp_clear_bit(irq, s->BMP);                                 \
-+        clear_bit32(irq, s->BMP);                                       \
-     }                                                                   \
-     static inline void gicv3_gicd_##BMP##_replace(GICv3State *s,        \
-                                                   int irq, int value)   \
+-        if (notify && test_bit(irq + i, (unsigned long *)s->isr)) {
++        if (notify && test_bit32(irq + i, s->isr)) {
+             /*
+              * lower irq at old cpu and raise irq at new cpu
+              */
 -- 
 2.34.1
 
