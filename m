@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3248A9C239E
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6019C23A0
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:41:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Swj-00043c-By; Fri, 08 Nov 2024 12:38:57 -0500
+	id 1t9Swj-00043a-4E; Fri, 08 Nov 2024 12:38:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9Swh-00042w-EF
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:55 -0500
+ id 1t9Swg-00042X-BV
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9Swb-0007cY-Mx
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:55 -0500
+ id 1t9Swe-0007e0-JB
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731087528;
+ s=mimecast20190719; t=1731087531;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0PsIDDY16NboYx8h/JucmIPxHaWOUWJZI19U2mvWFn4=;
- b=FNW/EI2DpN7Q30c/glpGJZS2HIO6IiPmxjfo7dEPk6psI0iBl9hDvPT6Uhxaj+QAQFQNfl
- 0TX6NS/D+oGmT21Mw453i9lb0W4fU3XZJem2Cmo+SyeUrrmr141GdQvnDSvnW9+/9hmEMK
- ZSB/8kgNhSG/zkSz5f9//2TvY8PBqcM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3GXeQjTNaAPfh0xkQIuz07mE5z10C7JXikWrLJP9TQA=;
+ b=Q/9p/L97xoFshEaCSrfO4ALKHkGgyeLcoiLoBMIUfPW6atlz/vb6Cz3Rq8lTFanVU0IEN3
+ u0ovhaJJb0iga8Z4f7JQpcFBUiL2vXfxou5EyhYO/1QOkISytoUvbm0OhVHY82Yy884lFK
+ TBSDPV5kBJZq+HNOOUyCsD61a3bNxKc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-4ADrDa3nPCuGDPcqyc7auw-1; Fri, 08 Nov 2024 12:38:47 -0500
-X-MC-Unique: 4ADrDa3nPCuGDPcqyc7auw-1
-X-Mimecast-MFC-AGG-ID: 4ADrDa3nPCuGDPcqyc7auw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43163a40ee0so16536585e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:47 -0800 (PST)
+ us-mta-669-zQWRrsupPve4QVJTf6FJFg-1; Fri, 08 Nov 2024 12:38:50 -0500
+X-MC-Unique: zQWRrsupPve4QVJTf6FJFg-1
+X-Mimecast-MFC-AGG-ID: zQWRrsupPve4QVJTf6FJFg
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43163a40ee0so16536875e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731087526; x=1731692326;
+ d=1e100.net; s=20230601; t=1731087528; x=1731692328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0PsIDDY16NboYx8h/JucmIPxHaWOUWJZI19U2mvWFn4=;
- b=hnySQg+ypiroTOgAkyea1SpaxkKxl4Mpr4j6v/KRwV8dFpOdB2ufEWdU+m92TnJmWz
- AQr1T/yStX5b+1VF3kXolc07xnKv5naJTF/o3aEhQZM2BBrRnzAZm5MOqsa/GlDE+sB2
- yk2MeiMZks+7KnKvZh6aRXUIFxvZ3Sf+MHKDEOiXGdgd/hJqHW9O35ijZ45eTSH/z8Q9
- CqpFtQLn6J7aV5sgXXKXTHJlz/m4lPcaJn98vIlKnHnn9Me3uVeIAmjDzUY3aYFGuDVI
- fmao29fMWZonQVOU3+AZvPTZ/dLVjoFzlcC+ly2fyZnTkio5EdwvoZF05AtVGcgpZwbn
- 3wUw==
-X-Gm-Message-State: AOJu0YyhKluWJ4+/J0U1egZCC3SJ9iWTnr2NLiRWfAZDDUIDUF42OtF9
- 8BHhLyiOEWfORVbCMq0rHhQa38tm3ehqFuBU0nb/jSyjK6qQEMNpBJago8jHYk/ZLE+gVtTMOzx
- jXkgje6NzYkyfJZExNn2nTz5At/V+rbJ4HmpEK03q51pELVvoXXsav7zTICVHcGGlVY0tp3SUgp
- VISFf92hrI9DMqJjNH6nL/Rn8PABwVI34dkbnMPU8=
-X-Received: by 2002:a05:600c:8715:b0:431:93d8:e1a1 with SMTP id
- 5b1f17b1804b1-432b751bcc2mr30817415e9.27.1731087525928; 
- Fri, 08 Nov 2024 09:38:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHRrXhlmPJ0n37QsRSInR5hhbtG4RSaFgNZqEa/TDwSmqv4aMq5b6+AU/3Qn/on13osz6JQaA==
-X-Received: by 2002:a05:600c:8715:b0:431:93d8:e1a1 with SMTP id
- 5b1f17b1804b1-432b751bcc2mr30817225e9.27.1731087525438; 
- Fri, 08 Nov 2024 09:38:45 -0800 (PST)
+ bh=3GXeQjTNaAPfh0xkQIuz07mE5z10C7JXikWrLJP9TQA=;
+ b=bNafdDMPXzm2LNjjiljRa+FrBBOOdqPNw0CYV8Tuwu8kMhuyvTeAPDBmSw+P1bmkIH
+ iLiymJCMCeODO4ZxRU2kZCtwTcG1J1OpN70jOJTKCE/aJD+38uHhS+Sc+lcbxyFH91wg
+ mc2DnLupiR1poRrr+ICd7P+RpyhvUQd419OCRIaSNY6giUgl3EtakD/6qzeP0SJGcZkh
+ 6e/Hvn2XC9xMK98w6LjYkY84+C2Cq6mRZNveaDycr3TaZloRwJy88lSvPuOBpW1OXpII
+ HS3WdrKF6TRc052NcMX9KdwnkK6BXG998yjseG+/jHKMUhq+8seSvqWU+wzmgeGnS00n
+ lgSQ==
+X-Gm-Message-State: AOJu0YzIHClrgQfRqSvaq5qdBNKRYClQrIpFIV/J4G0gh1I4hQ06RBrU
+ gv5gCiW2GRp/LOLWUIm5KuI8BlaQZA123esPD/2SyA0GoQsCu4c27lriIPwSGAYDEjzZ3kPYSk4
+ Fr27Hg7KUUFt89cxz+l+B32tT9roThGRSuX9AFaef/q2ReCHW3Yg/OakS61vdGaAov2/7Og4vpa
+ mFWEBpUJ5736ZcUsVA68+E7ANlb+s9+q9n8BvGP0c=
+X-Received: by 2002:a05:600c:5488:b0:431:9397:9ac9 with SMTP id
+ 5b1f17b1804b1-432b7507c16mr27491735e9.15.1731087528395; 
+ Fri, 08 Nov 2024 09:38:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHlkz4ZEgRzi4wK+Q6KLKZwoggSXe4KyLkGIoJFHOM0+9y3TVeg6ZrI/S7YZ15hK7ln/pjxVg==
+X-Received: by 2002:a05:600c:5488:b0:431:9397:9ac9 with SMTP id
+ 5b1f17b1804b1-432b7507c16mr27491535e9.15.1731087527956; 
+ Fri, 08 Nov 2024 09:38:47 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed9707bdsm5666540f8f.4.2024.11.08.09.38.44
+ ffacd0b85a97d-381ed9707d3sm5468676f8f.19.2024.11.08.09.38.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 09:38:44 -0800 (PST)
+ Fri, 08 Nov 2024 09:38:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
  Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PULL 08/13] i386/hvf: Fix for UB in handling CPUID function 0xD
-Date: Fri,  8 Nov 2024 18:38:23 +0100
-Message-ID: <20241108173828.111454-9-pbonzini@redhat.com>
+Subject: [PULL 09/13] i386/hvf: Fixes startup memory leak (vmcs caps)
+Date: Fri,  8 Nov 2024 18:38:24 +0100
+Message-ID: <20241108173828.111454-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108173828.111454-1-pbonzini@redhat.com>
 References: <20241108173828.111454-1-pbonzini@redhat.com>
@@ -104,40 +104,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-The handling for CPUID function 0xD (supported XSAVE features) was
-improved in a recent patch. Unfortunately, this appears to have
-introduced undefined behaviour for cases where ecx > 30, as the result
-of (1 << idx) is undefined if idx > 30.
-
-Per Intel SDM section 13.2, the behaviour for ecx values up to and
-including 62 are specified. This change therefore specifically sets
-all registers returned by the CPUID instruction to 0 for 63 and higher.
-Furthermore, the bit shift uses uint64_t, where behaviour for the entire
-range of 2..62 is safe and correct.
+The hvf_caps data structure only exists once as part of the hvf accelerator
+state, but it is initialised during vCPU initialisation. This change therefore
+adds a check to ensure memory for it is only allocated once.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Link: https://lore.kernel.org/r/20241105155800.5461-3-phil@philjordan.eu
+Link: https://lore.kernel.org/r/20241105155800.5461-4-phil@philjordan.eu
 Reviewed-by: Roman Bolshakov <r.bolshakov@yadro.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/x86_cpuid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index 3f16b0f363d..af9ee17a111 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -119,8 +119,8 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-         eax = 0;
-         break;
-     case 0xD:
--        if (!supported_xcr0 ||
--            (idx > 1 && !(supported_xcr0 & (1 << idx)))) {
-+        if (!supported_xcr0 || idx >= 63 ||
-+            (idx > 1 && !(supported_xcr0 & (UINT64_C(1) << idx)))) {
-             eax = ebx = ecx = edx = 0;
-             break;
-         }
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 68dc5d9cf75..8527bce6eef 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -239,7 +239,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+     init_emu();
+     init_decoder();
+ 
+-    hvf_state->hvf_caps = g_new0(struct hvf_vcpu_caps, 1);
++    if (hvf_state->hvf_caps == NULL) {
++        hvf_state->hvf_caps = g_new0(struct hvf_vcpu_caps, 1);
++    }
+     env->hvf_mmio_buf = g_new(char, 4096);
+ 
+     if (x86cpu->vmware_cpuid_freq) {
 -- 
 2.47.0
 
