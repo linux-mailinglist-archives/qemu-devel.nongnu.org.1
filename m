@@ -1,74 +1,73 @@
 Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
-Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C909C255C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 20:11:45 +0100 (CET)
+Received: from lists.gnu.org (unknown [209.51.188.17])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0709C2574
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 20:18:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9UNq-0000kh-3B; Fri, 08 Nov 2024 14:11:02 -0500
+	id 1t9UTk-00063t-0m; Fri, 08 Nov 2024 14:17:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9UNn-0000kI-6f
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 14:10:59 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1t9UTh-00063k-8w
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 14:17:05 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9UNk-0002TO-UW
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 14:10:58 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5cacb76e924so3604257a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 11:10:55 -0800 (PST)
+ id 1t9UTf-0002yF-GB
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 14:17:05 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2fb57f97d75so23032561fa.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 11:17:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731093054; x=1731697854; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731093421; x=1731698221; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dR3SDW0OY04sCEG+HjS6jImjgxhdQrsKkV1oU1OuXFY=;
- b=mzbhmsAYAGFCPt4pIJz5y090sbThzuYMcdolOsDHlpixgZFgcdSZvcU2eRborNt4De
- mvwOskrJgWqYesIjUHxJuMc9FrUAfIYegn0aSZfAc5LlJxBeqeZsjc7n7DgsFMGia7AT
- ZAz3FqHescKdjfM0h4nukzr/3je5esceggIReXf0LH6KHg86Rdr8dO4ldygsoMtqtt+4
- WA1FhQUd4SWOSEsQrrU6jt8nX8+twW5r98G1Zi6/E5Uv46FhZBPmCym46qZ4mHh03/ef
- bp7vxY2mvD+kT15HccLMsGRcRe9DH9ktb4mRKy14QOXWhgKUeI+ne4kvW6Cq8YGRsEsg
- bFQw==
+ bh=BLkvLi6d/hz4FITtyuiiowJydG/I4Z7ZrZc2CNtKris=;
+ b=X3AA3aVCG8sqhaXXjbUoE0ntSFLaKfC43GBMjqyqQA/kbXdLapcSC06o5daZsFukh+
+ oMl2NL7VcI2050l3vIzlt1NkiDR8DxpYWVGfHbsgf9jzSYpD+ILzc90EegRLOTaflGUA
+ d9+3N5nGHJLlyXLKpsLtlOWowHAgg+OZgrMpv0X5r1HTHWtJYVL0TT9QI7RFJ5/u5Yj7
+ UNbUW4VlEXW/lNW0HZvCc84nef5RDONSk+PVHZ7xYCdWIPwuW5XLlj3ohbbH6X58VBvu
+ vLsZ7veJTusUNT3bIRYMh0T5DSKcU+hCqPSicRffg3Y5BQMtEN0ipeFSpOJk10waS7Xd
+ zXEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731093054; x=1731697854;
+ d=1e100.net; s=20230601; t=1731093421; x=1731698221;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dR3SDW0OY04sCEG+HjS6jImjgxhdQrsKkV1oU1OuXFY=;
- b=g5YBf/iSwAj2fGWbo1MDvJRi45P2of7FSwEaEaScoYTGVnyHfmWUu8BDMAjZT4Ijj0
- AXlWVbEhzHUAAUYROBtK1alHH/MFeDkq/eXDP0YBpzucNLawJSzfhn1Ew60Saz/081B5
- 5h9Vn/IcGdstU2+N+rjzzDG3DTvbOkxmg67PmATnMxAp6cyHMwTfYln03AODOwuF157E
- eBYQLtgaFImSTx9VW/2KAX0YVRiNHTHbeSO5NbuWC7jLrYCfDnTDETWxTkdySghI+3iF
- k5ChhlMzCByku1nZE7TPU/Rlr4nrLKNKtjk6x1gMOJ5b4nmCX4H4PYfAmfX+x2GVDGxc
- PqSA==
-X-Gm-Message-State: AOJu0YyiBfV61/e/9ZLCNJn/WGPOb7sy6CZOPP3juDrdBV1MNT6wY1/I
- KwH9O0d+xz/9+nipfgN3uelgVYiOiH1/XSIn2jxmtQJ5o/KKKRm4qIJbgzclwy6r2In85ubRP/R
- ISWzXTIDNxdj7Jt4MPotmXv9gdpAoITkoguH1bw==
-X-Google-Smtp-Source: AGHT+IG0n5f7Ygjh5Qi+Ygyh6S5Pt7WYhDDazblR4bxQLsB4LJq/RYUejjg2FkZw1RmwVPaZK5uvm502ic8v9wVrqAY=
-X-Received: by 2002:a05:6402:2690:b0:5c9:39d8:58b3 with SMTP id
- 4fb4d7f45d1cf-5cf0a447552mr3043126a12.23.1731093053600; Fri, 08 Nov 2024
- 11:10:53 -0800 (PST)
+ bh=BLkvLi6d/hz4FITtyuiiowJydG/I4Z7ZrZc2CNtKris=;
+ b=WZop5TsywOTPnjrFW2nNsKTWvawGN2Q6SBVAZKfhcctLQ4iGEfsDzBCKnWdy0r6bSI
+ 8QsW74oECc0IrG6aDNm7DhC1xoZxiNoNiZsFLmHSY/Z+SWNuuGliDZypUi+IdnTKaG5z
+ nDO47r9nZ04vycZ+Gg20voDJMhCYOvijTMBK8h0k56nCXqIsWPrTW4qftoKSoHEtMrSX
+ 4NuYQ8AwkYrbTYh/w0o+Kjovz2yz9yhfzHIJQvt6h6f3Y+EtI+8U6UUXKUyU4zpY26Jv
+ ClcNBpNaTIvF24W+n/k7B6OMVZf7EDobMAWChEdcE6mJ/SboPPJ9g9M6dCxvV8ylBuEW
+ JhzA==
+X-Gm-Message-State: AOJu0YySYiSe22APO//7u3R+aev/iiJr8v7kEAF+p1/WTs6PY1pW/ox9
+ IXpVAiFGmZS8Jqxms9UgCbHECSP0MLHl3Qa+VrpeEfJgUUGGH3tyycUr9BC8pU6PiLTKfSzz3Xt
+ KRLryG5Pq1cMV6iXYrFLfCBssh/AcEhTnvsjhIQ==
+X-Google-Smtp-Source: AGHT+IECrx16xd2YQa7y6IM1uItbaNKgcj/dplvq9tRh9ldwQsOu80L/qa9zd4NO6+KuXZH6NFqqHeIbanZfifIsnJ8=
+X-Received: by 2002:a2e:a541:0:b0:2fa:c8d1:224 with SMTP id
+ 38308e7fff4ca-2ff20152518mr23065761fa.2.1731093421108; Fri, 08 Nov 2024
+ 11:17:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20241105224727.53059-1-philmd@linaro.org>
- <20241105224727.53059-10-philmd@linaro.org>
-In-Reply-To: <20241105224727.53059-10-philmd@linaro.org>
+ <20241105224727.53059-11-philmd@linaro.org>
+In-Reply-To: <20241105224727.53059-11-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Nov 2024 19:10:42 +0000
-Message-ID: <CAFEAcA_+ZSZF1VYFcPRq1AD+i4=nT2RsdVhhaj7wiL4xD=R_-A@mail.gmail.com>
-Subject: Re: [PULL 09/29] qapi/qom: Define cache enumeration and properties
- for machine
+Date: Fri, 8 Nov 2024 19:16:50 +0000
+Message-ID: <CAFEAcA-6e-o480iPeesKPnvcBtjVwWsL=zYOuNNddPNZu7Uc6g@mail.gmail.com>
+Subject: Re: [PULL 10/29] hw/core: Check smp cache topology support for machine
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, 
- "Daniel P . Berrange" <berrange@redhat.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,62 +95,57 @@ On Tue, 5 Nov 2024 at 22:49, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 >
 > From: Zhao Liu <zhao1.liu@intel.com>
 >
-> The x86 and ARM need to allow user to configure cache properties
-> (current only topology):
->  * For x86, the default cache topology model (of max/host CPU) does not
->    always match the Host's real physical cache topology. Performance can
->    increase when the configured virtual topology is closer to the
->    physical topology than a default topology would be.
->  * For ARM, QEMU can't get the cache topology information from the CPU
->    registers, then user configuration is necessary. Additionally, the
->    cache information is also needed for MPAM emulation (for TCG) to
->    build the right PPTT.
+> Add cache_supported flags in SMPCompatProps to allow machines to
+> configure various caches support.
 >
+> And check the compatibility of the cache properties with the
+> machine support in machine_parse_smp_cache().
 
-Hi; Coverity points out an issue with this change (CID 1565389):
+Hi; Coverity points out an issue in this code (CID 1565391):
 
-> diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-> index 5d8d7edcbd3..c6d90cd6d41 100644
-> --- a/hw/core/machine-smp.c
-> +++ b/hw/core/machine-smp.c
-> @@ -261,6 +261,31 @@ void machine_parse_smp_config(MachineState *ms,
+>  bool machine_parse_smp_cache(MachineState *ms,
+>                               const SmpCachePropertiesList *caches,
+>                               Error **errp)
+>  {
+> +    MachineClass *mc =3D MACHINE_GET_CLASS(ms);
+>      const SmpCachePropertiesList *node;
+>      DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
+>
+> @@ -283,6 +305,25 @@ bool machine_parse_smp_cache(MachineState *ms,
+>          set_bit(node->value->cache, caches_bitmap);
 >      }
->  }
 >
-> +bool machine_parse_smp_cache(MachineState *ms,
-> +                             const SmpCachePropertiesList *caches,
-> +                             Error **errp)
-> +{
-> +    const SmpCachePropertiesList *node;
-> +    DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
-
-DECLARE_BITMAP() defines the caches_bitmap bitmap, but it
-does not initialize it...
-
+> +    for (int i =3D 0; i < CACHE_LEVEL_AND_TYPE__MAX; i++) {
+> +        const SmpCacheProperties *props =3D &ms->smp_cache.props[i];
 > +
-> +    for (node =3D caches; node; node =3D node->next) {
-> +        /* Prohibit users from repeating settings. */
-> +        if (test_bit(node->value->cache, caches_bitmap)) {
-
-...so here we are reading the variable when it is uninitialized.
-
-If you want to zero-initialize the bitmap you can use
-   bitmap_zero(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
-
+> +        /*
+> +         * Reject non "default" topology level if the cache isn't
+> +         * supported by the machine.
+> +         */
+> +        if (props->topology !=3D CPU_TOPOLOGY_LEVEL_DEFAULT &&
+> +            !mc->smp_props.cache_supported[props->cache]) {
 > +            error_setg(errp,
-> +                       "Invalid cache properties: %s. "
-> +                       "The cache properties are duplicated",
+> +                       "%s cache topology not supported by this machine"=
+,
 > +                       CacheLevelAndType_str(node->value->cache));
+
+This error message looks at "node", but "node" was the iteration
+variable in the first loop in this function, so generally at
+this point it will be NULL because that is the loop termination
+condition.
+
+The code looks like it ought to be reporting an error relating
+to the 'props' variable, not 'node' ?
+
 > +            return false;
 > +        }
 > +
-> +        machine_set_cache_topo_level(ms, node->value->cache,
-> +                                     node->value->topology);
-> +        set_bit(node->value->cache, caches_bitmap);
+> +        if (!machine_check_topo_support(ms, props->topology, errp)) {
+> +            return false;
+> +        }
 > +    }
-> +
-> +    return true;
-> +}
+>      return true;
+>  }
 
 thanks
 -- PMM
