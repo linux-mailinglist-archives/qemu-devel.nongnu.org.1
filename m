@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D309C1FA4
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 15:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54ACE9C1FA1
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 15:49:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9QHG-0004Mn-BL; Fri, 08 Nov 2024 09:48:05 -0500
+	id 1t9QHk-0005Tc-1D; Fri, 08 Nov 2024 09:48:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t9QGl-0004Cf-TD
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:47:29 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1t9QGo-0004G9-V4
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:47:31 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1t9QGj-0005HN-WD
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:47:27 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a99e3b3a411so562299666b.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 06:47:25 -0800 (PST)
+ id 1t9QGm-0005I9-Bp
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 09:47:30 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5cedf5fe237so2637352a12.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 06:47:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1731077244; x=1731682044;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1731077247; x=1731682047;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dpaGWOL1qCixuwh7dSG/JDouTW8eM8K/0qL8NGiv7/w=;
- b=TIaAZcc4xjFOQpyqChUk0cAdzZNMm3MfUi63JftZQSrXWHMYa0CD42LyOJgUeaWVkx
- odfbW1VvCkp7wxHawNGNXSbyQJeVnQlTZTdPD9AZ6YbKZYzcUXyggGjltqhNZMyimKC6
- t7WIQn5Ckhhw4VNqKUgcuTB2ZRuNY+QwnhSglpJ4YWm5x5U86BCfdG6ITmTuPZOiBkAm
- 38h850/DR7ofJNUDru02wjo4mKztsdnQ2bKF9KCpZ9KGU/ySQ/yUxmGbIidux+Uw8hUg
- yJa8EP9WSwgAAVIbS9gFA50rZMz7iGyLz9r1w8KE0xYF57/lm4VbyvbjkCQBggnbFehr
- jAgg==
+ bh=ZZ8buFGNGDVzIwaiKgReCm9PHRcVjEFBh4AjmHdE9sc=;
+ b=F/80URn2Hu5AVDBiDrKrt1dkcysJPBxwsuK1yC2UA056oVB5sJt0zc4iE4GjtXK0aF
+ EzLUJQSod5yCLqfHTiyG8NVpq5PMKzVxye+rIWt2rT7+AA2njyzsLm+hMe9ne9WPNiLA
+ WOLmnf0dfRAVMAXHcNudiNfDmxhGyHh9l3qVOOdlUZEtQyppXjOBOPYdOr47Sk+zCb4O
+ wU5/g2gvhH+e6UJEQ0z5aFwbLqag0MEpRaI9yihtF/ARKA94E0YImVNbXiASpSHQDBg9
+ Kl/PDxbI1/igNH8wdjvbzWzNNHOE0TnobszdUtbXxvMOfJT9/o+jlvgpcp5vJUrhX/H3
+ R/mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731077244; x=1731682044;
+ d=1e100.net; s=20230601; t=1731077247; x=1731682047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dpaGWOL1qCixuwh7dSG/JDouTW8eM8K/0qL8NGiv7/w=;
- b=QJTWqV9jtVZYEwN5Os8UPosBtQBIfptwOIlrFm7YBtDuWQyznOYUGGCVcFn7H8xa0+
- 7IUXeWSVTdY17APydigcAybpZJ+cH+yoJCRbhApL402b3qRB3NkKxdWO2GvO+jQ/KWoJ
- BSvoEaj9ml+dZSsLB1BlUf3r7e9Cq/aYO4JecSttpBUrtwh3WlAGgH6umrX3ek1O6g7r
- qiPR4tQC4oKkgYJgqv4KeiWbmzRqUn2G7a2pYB1tv85/Stf0YVLfMviirYuaXbErfAuz
- 3ToSC/MvxSnlu5fciDBUsVX9FSYQEYmMPGMZxfY6wQI5GFE9ZHuZ4JAFAzamaFsLAMv8
- Qg9g==
-X-Gm-Message-State: AOJu0YxEShzE4ydkRHkFvPZ0GHKt+o6YEQLPDbWdRx3f5li2uK/priMA
- rFOwO+beVe7x3LGbhJeyWdCyfncjY/HIG5TzrahGRFFdH/Xv11LE8+pnrNCNo7SYvShnYyhw4iQ
- zmw==
-X-Google-Smtp-Source: AGHT+IH/u+IHKjLSuv4D+AFrAyRbQrYspXAWYyLv6Q4INQ1hrHhDWbPmTCFuaHPWPdIg/f6sErf7ww==
-X-Received: by 2002:a17:906:f598:b0:a9e:b174:9cf7 with SMTP id
- a640c23a62f3a-a9eefeb4df1mr273562866b.13.1731077244225; 
- Fri, 08 Nov 2024 06:47:24 -0800 (PST)
+ bh=ZZ8buFGNGDVzIwaiKgReCm9PHRcVjEFBh4AjmHdE9sc=;
+ b=MjNYK2d2juKVTD8Mt4fL37B+HgAEjRHT0HQC5oW8Ek8wxhiV1+hObsoBpuObQwS7V4
+ Py6WKdPN+Kq9Yqn99vi0rNE+P6dAnagaHmIsL+AjSGkhr3Hal6tiMJgiDtxauTLApq4N
+ oAEEubXSpukWjc1EizliSFbgfdD+XgYnb+088BJvJa7qoscgnD2HdVotExWnExC8zAyE
+ wflCHEDDCGum7aI4pzYRGpQQIPgXYpWOpQo9fnhEi0E1qOzYABF3dv0PhsB9lN683E2G
+ oRtQuntqiT3X2EPPikwDBhuC7qw4ofnt1B1vjC7oj15L5ge3Xu8dm0Ycto9/7F5OjuFd
+ fCmw==
+X-Gm-Message-State: AOJu0Ywaxgb/SR2PQpXO0KTI/fylxVRaCUHRtzm6XzR5V4zcjw4dK+2N
+ RbsY6DowktqaelBLypXncFz2s0vh9NKyqjIXNaZtWpof19UlmiREJaMiDDSzUbTsgeogSu2dyA0
+ p9A==
+X-Google-Smtp-Source: AGHT+IFO3j3ydiDpZ9XTq2UH8Xx9cy6UOvV0SnTM9fSNZUY9lrrTxE8b32PKnEp6sYLYbwnN15Wz9w==
+X-Received: by 2002:a17:906:f595:b0:a9a:17fb:4c40 with SMTP id
+ a640c23a62f3a-a9eeff25c5emr277977166b.26.1731077246610; 
+ Fri, 08 Nov 2024 06:47:26 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9ee0a4a9b1sm240534066b.52.2024.11.08.06.47.22
+ a640c23a62f3a-a9ee0a4a9b1sm240534066b.52.2024.11.08.06.47.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Nov 2024 06:47:23 -0800 (PST)
+ Fri, 08 Nov 2024 06:47:26 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
@@ -71,19 +71,17 @@ Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- qemu-riscv@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v8 05/15] MAINTAINERS: Add myself as maintainer for apple-gfx,
- reviewer for HVF
-Date: Fri,  8 Nov 2024 15:46:59 +0100
-Message-Id: <20241108144709.95498-6-phil@philjordan.eu>
+ qemu-riscv@nongnu.org, Alexander Graf <graf@amazon.com>
+Subject: [PATCH v8 06/15] hw: Add vmapple subdir
+Date: Fri,  8 Nov 2024 15:47:00 +0100
+Message-Id: <20241108144709.95498-7-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 In-Reply-To: <20241108144709.95498-1-phil@philjordan.eu>
 References: <20241108144709.95498-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62a;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62a.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::531;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -105,56 +103,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm happy to take responsibility for the macOS PV graphics code. As
-HVF patches don't seem to get much attention at the moment, I'm also
-adding myself as designated reviewer for HVF and x86 HVF to try and
-improve that.
+From: Alexander Graf <graf@amazon.com>
 
-I anticipate that the resulting workload should be covered by the
-funding I'm receiving for improving Qemu in combination with macOS. As
-of right now this runs out at the end of 2024; I expect the workload on
-apple-gfx should be relatively minor and manageable in my spare time
-beyond that. I may have to remove myself from more general HVF duties
-once the contract runs out if it's more than I can manage.
+We will introduce a number of devices that are specific to the vmapple
+target machine. To keep them all tidily together, let's put them into
+a single target directory.
 
+Signed-off-by: Alexander Graf <graf@amazon.com>
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Roman Bolshakov <rbolshakov@ddn.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ MAINTAINERS             | 7 +++++++
+ hw/Kconfig              | 1 +
+ hw/meson.build          | 1 +
+ hw/vmapple/Kconfig      | 1 +
+ hw/vmapple/meson.build  | 0
+ hw/vmapple/trace-events | 2 ++
+ hw/vmapple/trace.h      | 1 +
+ meson.build             | 1 +
+ 8 files changed, 14 insertions(+)
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+ create mode 100644 hw/vmapple/trace.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0844f5da196..c7964ab784b 100644
+index c7964ab784b..9d0d26cb65f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -506,6 +506,7 @@ F: target/arm/hvf/
- X86 HVF CPUs
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
-+R: Phil Dennis-Jordan <phil@philjordan.eu>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: target/i386/hvf/
-@@ -513,6 +514,7 @@ F: target/i386/hvf/
- HVF
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
-+R: Phil Dennis-Jordan <phil@philjordan.eu>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: accel/hvf/
-@@ -2608,6 +2610,11 @@ F: hw/display/edid*
- F: include/hw/display/edid.h
- F: qemu-edid.c
+@@ -2761,6 +2761,13 @@ F: hw/hyperv/hv-balloon*.h
+ F: include/hw/hyperv/dynmem-proto.h
+ F: include/hw/hyperv/hv-balloon.h
  
-+macOS PV Graphics (apple-gfx)
-+M: Phil Dennis-Jordan <phil@philjordan.eu>
++VMapple
++M: Alexander Graf <agraf@csgraf.de>
++R: Phil Dennis-Jordan <phil@philjordan.eu>
 +S: Maintained
-+F: hw/display/apple-gfx*
++F: hw/vmapple/*
++F: include/hw/vmapple/*
 +
- PIIX4 South Bridge (i82371AB)
- M: Hervé Poussineau <hpoussin@reactos.org>
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ Subsystems
+ ----------
+ Overall Audio backends
+diff --git a/hw/Kconfig b/hw/Kconfig
+index 1b4e9bb07f7..2871784cfdc 100644
+--- a/hw/Kconfig
++++ b/hw/Kconfig
+@@ -41,6 +41,7 @@ source ufs/Kconfig
+ source usb/Kconfig
+ source virtio/Kconfig
+ source vfio/Kconfig
++source vmapple/Kconfig
+ source xen/Kconfig
+ source watchdog/Kconfig
+ 
+diff --git a/hw/meson.build b/hw/meson.build
+index b827c82c5d7..9c4f6d0d636 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -39,6 +39,7 @@ subdir('ufs')
+ subdir('usb')
+ subdir('vfio')
+ subdir('virtio')
++subdir('vmapple')
+ subdir('watchdog')
+ subdir('xen')
+ subdir('xenpv')
+diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
+new file mode 100644
+index 00000000000..8b137891791
+--- /dev/null
++++ b/hw/vmapple/Kconfig
+@@ -0,0 +1 @@
++
+diff --git a/hw/vmapple/meson.build b/hw/vmapple/meson.build
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/hw/vmapple/trace-events b/hw/vmapple/trace-events
+new file mode 100644
+index 00000000000..9ccc5790487
+--- /dev/null
++++ b/hw/vmapple/trace-events
+@@ -0,0 +1,2 @@
++# See docs/devel/tracing.rst for syntax documentation.
++
+diff --git a/hw/vmapple/trace.h b/hw/vmapple/trace.h
+new file mode 100644
+index 00000000000..572adbefe04
+--- /dev/null
++++ b/hw/vmapple/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_vmapple.h"
+diff --git a/meson.build b/meson.build
+index 427e3f61190..f363771f802 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3592,6 +3592,7 @@ if have_system
+     'hw/usb',
+     'hw/vfio',
+     'hw/virtio',
++    'hw/vmapple',
+     'hw/watchdog',
+     'hw/xen',
+     'hw/gpio',
 -- 
 2.39.3 (Apple Git-145)
 
