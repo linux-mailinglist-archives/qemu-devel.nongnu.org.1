@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1E89C2482
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:03:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568739C249A
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9TJJ-000224-DL; Fri, 08 Nov 2024 13:02:17 -0500
+	id 1t9TJO-00028f-9V; Fri, 08 Nov 2024 13:02:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJE-0001wS-RI
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:13 -0500
+ id 1t9TJG-0001yC-Gu
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJB-0001xJ-65
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:12 -0500
+ id 1t9TJE-0001xW-Ka
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731088928;
+ s=mimecast20190719; t=1731088930;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yguWnQXG15f2x+f4QNRnXEOFJJORIkMpafNaeGv6vH0=;
- b=CqECri+hqeXvWkaICgd2V3sFrPZ2pxuon8uqa78nHxw4EM/UUIRKuVEQS1sRWLLTa0n61O
- rzAQt1HpD+D0HzqjumIalHo7LQOKABiBjpLvcxtEm6q42GWeqHU0RgcS0bf5mqBaZRcsnr
- +aLsoQtFCU6bF5HwXZZPIb2kWLx8Bo0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Hz7vl/ta7wDz7MWKeB1ZugqNvFL2k59T4+vboRZ4+nc=;
+ b=SvkWkm6cQMlfDdxokW6spIJ+RzM5jiLSDKBRbre09MyEpXA5KZZ7A/giGigsEJb3RFGjQ0
+ ejNG5lCjOCKMHJVE6gikPiHjeCAGOctwQGjsw5pJRI5mWS/9a+hAJop/lnfaqftLbAKvng
+ QGM2YfZMvn9OVqRolwFaB11AGBiXv9A=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-QdOMtPJ3NEuQr7td3br4jQ-1; Fri, 08 Nov 2024 13:02:07 -0500
-X-MC-Unique: QdOMtPJ3NEuQr7td3br4jQ-1
-X-Mimecast-MFC-AGG-ID: QdOMtPJ3NEuQr7td3br4jQ
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43159603c92so16424105e9.2
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:02:07 -0800 (PST)
+ us-mta-690-kECcr5GJM7ePn3Pr94tGgw-1; Fri, 08 Nov 2024 13:02:09 -0500
+X-MC-Unique: kECcr5GJM7ePn3Pr94tGgw-1
+X-Mimecast-MFC-AGG-ID: kECcr5GJM7ePn3Pr94tGgw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4315af466d9so16410575e9.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:02:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731088926; x=1731693726;
+ d=1e100.net; s=20230601; t=1731088928; x=1731693728;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yguWnQXG15f2x+f4QNRnXEOFJJORIkMpafNaeGv6vH0=;
- b=VC5Gahk84xYvcrUiB85QXD/GxPoOrzRvkxgR4IrIhoSlZASQ1/Ly/e5t2cHzYw9dRE
- G9rpYuaCascW6ncsUht7mwQcBQhD/tTEsEDDfaFYgDTg/7aoguJ00FQSfYe6ePTzTmIv
- 2ojeszryw4Ngh6cPcOQXtpKQ8fD9/vOfKUN0czVDtbBR2kW2Vne3tkfghLCiRqeamo2V
- gmEAWFkN1e/jqA4o4A5fMg6aC4UXSSgj9qBG+yMLH2srWayly1PWim+HT6YNaEAuLOwk
- rJXy5LSa7jkB3lAz+SFFk2aeVLigsviI0IOv7hMmaEXbkq5aL2LhK4EW6H2k2KtNJsdj
- Z+UA==
-X-Gm-Message-State: AOJu0YwH2KDldrQdErDzmczj3Qg48gFq0sY0L0A8h8jPF4j2bCG28P45
- tDn0aiIRFNbf5KQvy1XVqoGowtghidOlafZQLlmwSrQmaIESHWCq/qnfebghSx0cr/kvovvTrz1
- V8aJxuBAatulOr2ynJDtTR07jxtKAeORs+qXMpMe2vcKW3YiPRHnzaZL5O77atjmOtRXzaB+ZZw
- 2FBJEjmDdnh2lpT4VU3hcoP2DsYGosQePFW2TW1+E=
-X-Received: by 2002:a05:6000:1869:b0:381:f0ce:d09e with SMTP id
- ffacd0b85a97d-381f18635f4mr3179841f8f.7.1731088925924; 
- Fri, 08 Nov 2024 10:02:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHI1VHnlt4sb0wupEKO0ihKDfs7+WzKbqgIge8H1VNg5+78Gte/1/HoI29L4264/OuICIyW1A==
-X-Received: by 2002:a05:6000:1869:b0:381:f0ce:d09e with SMTP id
- ffacd0b85a97d-381f18635f4mr3179788f8f.7.1731088925418; 
- Fri, 08 Nov 2024 10:02:05 -0800 (PST)
+ bh=Hz7vl/ta7wDz7MWKeB1ZugqNvFL2k59T4+vboRZ4+nc=;
+ b=XOJZ6T5xmLZsnZm3rMrZe4KfCC8RX8va5seFVPcC0+v0sP/cW/w8RLLcMtBIu0hc9b
+ 1a0GbgzmQnNKD/7cZYgBMMHCskUbdDkRInyTGDVAYcSfE7Seu2yiXcpPM5rsyFoVYa3l
+ S5u0BTC0UDRbQ7r53/u4Yc02EE2bhbkcOScho55ZekjH5gb89QF7QfgJoIGoxr0pSTtZ
+ 9iup1LdBBwuxk4BYmFbzcz/VmN6ZbaohVG5DMr25cVleXcM2XnqdNMKhTDEAuQ81695L
+ +CvqoQDL1b8DP1H3lfFMYxiFXfr/WcwDDzXvXTvadlOPQd77AOIjtIXTFMN0WqOVFSbT
+ imNw==
+X-Gm-Message-State: AOJu0YyjZDerlgQIRs3kUnS1EDNIDFeoVkXWH+dSB5jupkcTQ6bOYY0u
+ Qdrs29gv+VpqNlv+bZ28CHN06DJt2fGkPUQSVKgn33sN+CL5RQl5Rqh1Q6Yuy9VEc2wEGcPyNaR
+ pwjyMUACHXAZQn/4lsBwde+SnG4I5Iai+uoWLa407mAQBPDJ77dDl9pE9SAttqlhUzuctNcLqar
+ JX4Pk9kN5LXU+c9cGGUedtNO5v+MSVXpHHCLXjsLg=
+X-Received: by 2002:a05:600c:4f83:b0:42a:a6d2:3270 with SMTP id
+ 5b1f17b1804b1-432b7517aa4mr30347085e9.21.1731088927894; 
+ Fri, 08 Nov 2024 10:02:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFhgB0HgK/Kfy8Dc2UtI0nUDMgVvzXK7o0cV9tPZ48JounXGUUudIS5GShYGA0zbj9l50H0QA==
+X-Received: by 2002:a05:600c:4f83:b0:42a:a6d2:3270 with SMTP id
+ 5b1f17b1804b1-432b7517aa4mr30346575e9.21.1731088927412; 
+ Fri, 08 Nov 2024 10:02:07 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed99a34bsm5458399f8f.54.2024.11.08.10.02.04
+ 5b1f17b1804b1-432aa6b35b3sm109272695e9.18.2024.11.08.10.02.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 10:02:05 -0800 (PST)
+ Fri, 08 Nov 2024 10:02:06 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, kwolf@redhat.com, junjie.mao@hotmail.com,
  zhao1.liu@intel.com, qemu-rust@nondevel.org
-Subject: [RFC PATCH 09/11] rust: build: add "make clippy", "make rustfmt"
-Date: Fri,  8 Nov 2024 19:01:37 +0100
-Message-ID: <20241108180139.117112-10-pbonzini@redhat.com>
+Subject: [RFC PATCH 10/11] rust: fix doc test syntax
+Date: Fri,  8 Nov 2024 19:01:38 +0100
+Message-ID: <20241108180139.117112-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108180139.117112-1-pbonzini@redhat.com>
 References: <20241108180139.117112-1-pbonzini@redhat.com>
@@ -102,59 +102,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Abstract common invocations of "cargo", that do not require copying
-the generated bindgen file or setting up MESON_BUILD_ROOT.
-
-In the future these could also do completely without cargo and invoke
-the underlying programs directly.
+Allow "cargo test --doc" to pass.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build       | 14 ++++++++++++++
- rust/qemu-api/build.rs |  8 ++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/zeroable.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/meson.build b/rust/meson.build
-index def77389cdd..6fa0fd54527 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -2,3 +2,17 @@ subdir('qemu-api-macros')
- subdir('qemu-api')
- 
- subdir('hw')
-+
-+cargo = find_program('cargo')
-+
-+run_target('clippy',
-+  command: [config_host['MESON'], 'devenv',
-+            '--workdir', '@CURRENT_SOURCE_DIR@',
-+            cargo, 'clippy', '--tests'],
-+  depends: bindings_rs)
-+
-+run_target('rustfmt',
-+  command: [config_host['MESON'], 'devenv',
-+            '--workdir', '@CURRENT_SOURCE_DIR@',
-+            cargo, 'fmt'],
-+  depends: bindings_rs)
-diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
-index e4eab718553..d7b6d76828b 100644
---- a/rust/qemu-api/build.rs
-+++ b/rust/qemu-api/build.rs
-@@ -15,8 +15,12 @@ fn main() {
-     let file = format!("{}/bindings.rs.inc", path);
-     if !Path::new(&file).exists() {
-         panic!(concat!(
--            "No generated C bindings found! If you want to run `cargo`, start a subshell\n",
--            "with `meson devenv`, or point MESON_BUILD_ROOT to the top of the build tree."
-+            "\n",
-+            "    No generated C bindings found! To run clippy or rustfmt, you can use\n",
-+            "    `make clippy` or `make rustfmt`.\n",
-+            "\n",
-+            "    For other uses of `cargo`, start a subshell with `meson devenv`, or\n",
-+            "    point MESON_BUILD_ROOT to the top of the build tree."
-         ));
-     }
- 
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
+index 13cdb2ccba5..6125aeed8b4 100644
+--- a/rust/qemu-api/src/zeroable.rs
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -7,9 +7,9 @@
+ /// behavior.  This trait in principle could be implemented as just:
+ ///
+ /// ```
+-///     const ZERO: Self = unsafe {
+-///         ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init()
+-///     },
++/// pub unsafe trait Zeroable: Default {
++///     const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
++/// }
+ /// ```
+ ///
+ /// The need for a manual implementation is only because `zeroed()` cannot
 -- 
 2.47.0
 
