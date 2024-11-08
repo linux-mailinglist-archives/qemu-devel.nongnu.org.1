@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CBC9C2494
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0459C2495
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:04:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9TJL-00024w-A9; Fri, 08 Nov 2024 13:02:19 -0500
+	id 1t9TJM-00027G-Ot; Fri, 08 Nov 2024 13:02:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJ7-0001w0-Ro
+ id 1t9TJB-0001wG-CR
  for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJ6-0001wa-2h
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:05 -0500
+ id 1t9TJ9-0001x9-9s
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731088923;
+ s=mimecast20190719; t=1731088926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XeSGVNmsvm8LjvUgxmz8ceo62A+bkZyrWMrM+uvspEY=;
- b=BS6KwieEI2L6fksuG3MsAXkqkk6CLvhumZ5jCjZwOYeZefqwvOZsZHR041b0A+9W4sA+dB
- aBM2tL7M2rbYxrlhD7C91x/rBYmM6esViJu29tU5CVtXTfxCzIumgdzgKTbQyZjB3UvTlU
- QSJQEX9Puv3GIdT+NrScob9totVWbHw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hRie6B2XwMU0zHx1ZvLnYMj1lxmNXlFqwCtyK6n296w=;
+ b=gb5OtWoZUZAmm6LnplGKp4Vqmuv3yYq9IIDGjr2yKFjxbQP/O9iAMeiacUM4eXcUXp/dor
+ dczz7yy7JdfkN+jYzbNAqgl1R5SAQg8elnXrUsZ9blEEmBWwZG9ktdN0aLKJPNDTSEM2g7
+ JrrOd56NalB6q5Ez5/Q8gfIddvSyQxg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-nRwnEMYJOHe6mJE1LV9HFQ-1; Fri, 08 Nov 2024 13:02:02 -0500
-X-MC-Unique: nRwnEMYJOHe6mJE1LV9HFQ-1
-X-Mimecast-MFC-AGG-ID: nRwnEMYJOHe6mJE1LV9HFQ
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43157e3521dso16472315e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:02:02 -0800 (PST)
+ us-mta-689-H_q54tkUOLmHzzD-dEF6yA-1; Fri, 08 Nov 2024 13:02:05 -0500
+X-MC-Unique: H_q54tkUOLmHzzD-dEF6yA-1
+X-Mimecast-MFC-AGG-ID: H_q54tkUOLmHzzD-dEF6yA
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4315e8e9b1cso14056755e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:02:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731088921; x=1731693721;
+ d=1e100.net; s=20230601; t=1731088924; x=1731693724;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XeSGVNmsvm8LjvUgxmz8ceo62A+bkZyrWMrM+uvspEY=;
- b=ThjLFBBr11BsHlNJw1wJ6f9MbU+T84/VP5BKXP5M6OH/YCRTUce94UwujQ+qV04iFe
- Ag/Ds3zY3Sry5aefb7MKwyHn6HrN2ftcLf1+pllV4uAyGGhwhZfp4WNaZ/s/fIiqXn1l
- F8fAdGC/fXF/ztviuP9sieubSew4Cdg0HcghXwC0ABo6tH2dleajfF0mSJohqfd8lCOT
- GGJ/yb+fShSkCsrdy02aac1kfvuvf28EfNtbnNli3zueG9nCM2J2iQ2D62u0NLHepYfK
- 6mLCp52f6ER9w2kU44HHw8lWD6IGVuWAddAVOB+wVrFKhYrMy421WjaaHZ8aQVhR6pn0
- eRcQ==
-X-Gm-Message-State: AOJu0YydUeRLSdZVU7BtlR51tdDVZDzuApe/3KSN9o+/+WltFfuA5JTs
- GI1KQuHqmix9MCp28slnEH3SxfF9J9+PtEzW0uGyUJ7ChOn230oQdChDUkZRo6xULiNLE8q02OU
- 60KfqypwvRf+FgzBaARjkxRHBT9Xi8HG/ZvSmV8tQuPl+viQjde4OZ7kGaEJUtXM1QRFMamwse0
- rm5sFRrcIAjnzIqWKfMnAAzEx+VZGCbRCbq6ZSpCs=
-X-Received: by 2002:a5d:5f54:0:b0:37d:4cd5:ffec with SMTP id
- ffacd0b85a97d-381f18632f7mr3182738f8f.2.1731088920709; 
- Fri, 08 Nov 2024 10:02:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE6MqM3XTfMyjxqmlzETlnQUy/HeyRMRGH1cmQXnh4xpMFRmbqcFDS5aOLRww384l+1I8Gakw==
-X-Received: by 2002:a5d:5f54:0:b0:37d:4cd5:ffec with SMTP id
- ffacd0b85a97d-381f18632f7mr3182685f8f.2.1731088920024; 
- Fri, 08 Nov 2024 10:02:00 -0800 (PST)
+ bh=hRie6B2XwMU0zHx1ZvLnYMj1lxmNXlFqwCtyK6n296w=;
+ b=kWQVCRR3blvwIp8FlwUBYMBTpCowt5ZGDfhJxHpV1W2bGqmqLhJvEcRo/fKUm9QfH6
+ 22rBOIHQReY804N+knChxYvPvOej2dC5jb61cL6VelHV6/2GfARrn4y2OE/i0qo9NxEl
+ ONlxcTd3qF+GC4RRb9maYF7Ce5CIi7koyFXctwzObh+ToZLb4h3X35u2anQ9rKNqn/Gb
+ mmvsOcynoRJg4okGeYpqynsMhD4C5EwRqtrg/k+DaALRRNrqRU51w5JbNOKKKSHqA8jP
+ GiP2UXPjWe8KHLLObB1XAPoUIPzRzarW9wF/Gea+kAH30Bg/I4r97yA1qZNL1XhcjIHy
+ 9PGg==
+X-Gm-Message-State: AOJu0YwDgrK1YC4ancHFufY2MyC1wFsCo0K9hbX/Kg3SwRURWsiMKiW/
+ UCCDMwll2+nno0k5G9JkF58tQOA8uMMObBxztpFxGWiorWWqp6XJ0Qh7lHXn+WYpqhjs12Sxq4S
+ 9+azKAhj9NjW79mOPekLd5zekGli8hcaLb9lmv3Y2CW66mjjvPciYy0S9+nRwy7vFBPm+JkCKOV
+ 1ARcoVifXUwxPjyeXZ6o+qb3ubIfAGw1g2a7Vw4cQ=
+X-Received: by 2002:a05:600c:4ecf:b0:431:7ccd:ff8a with SMTP id
+ 5b1f17b1804b1-432b74ce3d1mr30667225e9.14.1731088923547; 
+ Fri, 08 Nov 2024 10:02:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEM866rkMICirYWcCwnUjyUaInIOr2ho1v2OsM8Rf6FAwsNub8IXTuUByiv9YwghmNglIabqA==
+X-Received: by 2002:a05:600c:4ecf:b0:431:7ccd:ff8a with SMTP id
+ 5b1f17b1804b1-432b74ce3d1mr30666585e9.14.1731088922821; 
+ Fri, 08 Nov 2024 10:02:02 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed97c976sm5513147f8f.28.2024.11.08.10.01.59
+ ffacd0b85a97d-381ed9707d3sm5523154f8f.19.2024.11.08.10.02.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 10:01:59 -0800 (PST)
+ Fri, 08 Nov 2024 10:02:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, kwolf@redhat.com, junjie.mao@hotmail.com,
  zhao1.liu@intel.com, qemu-rust@nondevel.org
-Subject: [RFC PATCH 07/11] rust: fix a couple style issues from clippy
-Date: Fri,  8 Nov 2024 19:01:35 +0100
-Message-ID: <20241108180139.117112-8-pbonzini@redhat.com>
+Subject: [RFC PATCH 08/11] rust: build: establish a baseline of lints across
+ all crates
+Date: Fri,  8 Nov 2024 19:01:36 +0100
+Message-ID: <20241108180139.117112-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108180139.117112-1-pbonzini@redhat.com>
 References: <20241108180139.117112-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,66 +103,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are reported as clippy::semicolon_inside_block and clippy::as_ptr_cast_mut.
+Many lints that default to allow can be helpful in detecting bugs or
+keeping the code style homogeneous.  Add them liberally, though perhaps
+not as liberally as in hw/char/pl011/src/lib.rs.  In particular, enabling
+entire groups can be problematic because of bitrot when new links are
+added in the future.
+
+For Clippy, this is actually a feature that is only present in Cargo
+1.74.0 but, since we are not using Cargo to *build* QEMU, only developers
+will need a new-enough cargo and only to run tools such as clippy.
+The requirement does not apply to distros that are building QEMU.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs     | 6 ++++--
- rust/hw/char/pl011/src/memory_ops.rs | 4 +++-
- rust/qemu-api/tests/tests.rs         | 2 +-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ rust/Cargo.toml               | 66 +++++++++++++++++++++++++++++++++++
+ rust/hw/char/pl011/src/lib.rs | 18 ++--------
+ rust/qemu-api/src/bindings.rs |  6 ++--
+ 3 files changed, 71 insertions(+), 19 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 2a85960b81f..7f40e7f71fa 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -499,7 +499,9 @@ pub fn update(&self) {
-         let flags = self.int_level & self.int_enabled;
-         for (irq, i) in self.interrupts.iter().zip(IRQMASK) {
-             // SAFETY: self.interrupts have been initialized in init().
--            unsafe { qemu_set_irq(*irq, i32::from(flags & i != 0)) };
-+            unsafe {
-+                qemu_set_irq(*irq, i32::from(flags & i != 0));
-+            }
-         }
-     }
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 1ff8f5c2781..43cca33a8d8 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -19,3 +19,69 @@ unknown_lints = "allow"
  
-@@ -601,7 +603,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
-         let sysbus: *mut SysBusDevice = dev.cast::<SysBusDevice>();
+ # Prohibit code that is forbidden in Rust 2024
+ unsafe_op_in_unsafe_fn = "deny"
++
++[workspace.lints.rustdoc]
++broken_intra_doc_links = "deny"
++invalid_html_tags = "deny"
++invalid_rust_codeblocks = "deny"
++bare_urls = "deny"
++unescaped_backticks = "deny"
++redundant_explicit_links = "deny"
++
++[workspace.lints.clippy]
++# default-warn lints
++result_unit_err = "allow"
++too_many_arguments = "allow"
++upper_case_acronyms = "allow"
++
++# default-allow lints
++as_ptr_cast_mut = "deny"
++as_underscore = "deny"
++assertions_on_result_states = "deny"
++bool_to_int_with_if = "deny"
++borrow_as_ptr = "deny"
++cast_lossless = "deny"
++dbg_macro = "deny"
++debug_assert_with_mut_call = "deny"
++derive_partial_eq_without_eq = "deny"
++doc_markdown = "deny"
++empty_structs_with_brackets = "deny"
++ignored_unit_patterns = "deny"
++implicit_clone = "deny"
++macro_use_imports = "deny"
++missing_const_for_fn = "deny"
++missing_safety_doc = "deny"
++multiple_crate_versions = "deny"
++mut_mut = "deny"
++needless_bitwise_bool = "deny"
++needless_pass_by_ref_mut = "deny"
++no_effect_underscore_binding = "deny"
++option_option = "deny"
++or_fun_call = "deny"
++ptr_as_ptr = "deny"
++ptr_cast_constness = "deny"
++pub_underscore_fields = "deny"
++redundant_clone = "deny"
++redundant_closure_for_method_calls = "deny"
++redundant_else = "deny"
++redundant_pub_crate = "deny"
++ref_binding_to_reference = "deny"
++ref_option_ref = "deny"
++return_self_not_must_use = "deny"
++same_name_method = "deny"
++semicolon_inside_block = "deny"
++significant_drop_in_scrutinee = "deny"
++significant_drop_tightening = "deny"
++suspicious_operation_groupings = "deny"
++transmute_ptr_to_ptr = "deny"
++transmute_undefined_repr = "deny"
++type_repetition_in_bounds = "deny"
++unused_self = "deny"
++used_underscore_binding = "deny"
++
++# nice to have, but cannot be enabled yet
++#wildcard_imports = "deny"
++
++# these may have false positives
++#option_if_let_else = "deny"
++cognitive_complexity = "deny"
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index cd0a49acb91..3fa178cded0 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -14,28 +14,14 @@
+ //! the [`registers`] module for register types.
  
-         qdev_prop_set_chr(dev, c_str!("chardev").as_ptr(), chr);
--        sysbus_realize_and_unref(sysbus, addr_of!(error_fatal) as *mut *mut Error);
-+        sysbus_realize_and_unref(sysbus, addr_of!(error_fatal).cast_mut());
-         sysbus_mmio_map(sysbus, 0, addr);
-         sysbus_connect_irq(sysbus, 0, irq);
-         dev
-diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
-index 169d485a4d2..c4e8599ba43 100644
---- a/rust/hw/char/pl011/src/memory_ops.rs
-+++ b/rust/hw/char/pl011/src/memory_ops.rs
-@@ -33,7 +33,9 @@
-             // SAFETY: self.char_backend is a valid CharBackend instance after it's been
-             // initialized in realize().
-             let cb_ptr = unsafe { core::ptr::addr_of_mut!(state.as_mut().char_backend) };
--            unsafe { qemu_chr_fe_accept_input(cb_ptr) };
-+            unsafe {
-+                qemu_chr_fe_accept_input(cb_ptr);
-+            }
+ #![deny(
+-    rustdoc::broken_intra_doc_links,
+-    rustdoc::redundant_explicit_links,
+     clippy::correctness,
+     clippy::suspicious,
+     clippy::complexity,
+     clippy::perf,
+     clippy::cargo,
+     clippy::nursery,
+-    clippy::style,
+-    // restriction group
+-    clippy::dbg_macro,
+-    clippy::as_underscore,
+-    clippy::assertions_on_result_states,
+-    // pedantic group
+-    clippy::doc_markdown,
+-    clippy::borrow_as_ptr,
+-    clippy::cast_lossless,
+-    clippy::option_if_let_else,
+-    clippy::missing_const_for_fn,
+-    clippy::cognitive_complexity,
+-    clippy::missing_safety_doc,
+-    )]
++    clippy::style
++)]
+ #![allow(clippy::result_unit_err)]
  
-             val
-         }
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 43a4827de12..925f5a3c77b 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -74,6 +74,6 @@ impl Class for DummyClass {
- 
-     unsafe {
-         module_call_init(module_init_type::MODULE_INIT_QOM);
--        object_unref(object_new(DummyState::TYPE_NAME.as_ptr()) as *mut _);
-+        object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
-     }
- }
+ extern crate bilge;
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 1dac310594d..972b1f1ee90 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -7,10 +7,10 @@
+     non_snake_case,
+     non_upper_case_globals,
+     unsafe_op_in_unsafe_fn,
++    clippy::pedantic,
++    clippy::restriction,
++    clippy::style,
+     clippy::missing_const_for_fn,
+-    clippy::too_many_arguments,
+-    clippy::approx_constant,
+-    clippy::use_self,
+     clippy::useless_transmute,
+     clippy::missing_safety_doc
+ )]
 -- 
 2.47.0
 
