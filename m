@@ -2,98 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22C49C20BA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A69CD9C20D8
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:43:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9R40-0000r0-PF; Fri, 08 Nov 2024 10:38:21 -0500
+	id 1t9R8F-0002Az-7n; Fri, 08 Nov 2024 10:42:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t9R3v-0000pU-Ji; Fri, 08 Nov 2024 10:38:15 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1t9R3t-0004HY-VI; Fri, 08 Nov 2024 10:38:15 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8EeQBU021857;
- Fri, 8 Nov 2024 15:38:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=HTOsbM
- NL6YjLC+6mB7xJjh/MvMVZsvNyFiwoad07DH8=; b=DwassQY/8UkTAo2o7Uw4HD
- 8HxYWr+DEukJARwB4oM+DAC6vef6y9E43Vf4CQBCTPtKm6ihd6ly8+9Z+N9ObYrJ
- 8YpoSnO82riSwU4RwDMfOGpENdmmaWW27IfLCS8/9gHY56yznv10r/x2KPc/DUYg
- RuZXW//t25m2NEwIP4kIJWSjwdCVjKIiuLXGWVd66e2BIUGnzwEaUp5zbPKeFNZl
- JbUTUNSi+/RzQCRwXVt0KV5FY779rAgPG4OjQNzF5D4K+h9AnElw2132bsbAfxn3
- Zgepo7hsRPf0iGaLJ7uBtdQ1lIlQUilAQwjlvcnvzeO3ZiOzwWfYmuQhjatQuMxw
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42smkxgc6s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Nov 2024 15:38:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8BH29P012288;
- Fri, 8 Nov 2024 15:38:02 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p1412cqt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Nov 2024 15:38:02 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4A8Fc1AQ56623496
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Nov 2024 15:38:01 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96EAE58063;
- Fri,  8 Nov 2024 15:38:01 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1575B58056;
- Fri,  8 Nov 2024 15:38:01 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Nov 2024 15:38:00 +0000 (GMT)
-Message-ID: <c54deb74-b5b4-44f2-bc6b-b514ac0a2356@linux.ibm.com>
-Date: Fri, 8 Nov 2024 10:38:00 -0500
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1t9R8D-0002Aq-HG
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:42:41 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1t9R8C-0005DS-1D
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:42:41 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-720c286bcd6so2055077b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 07:42:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1731080558; x=1731685358; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=biGDhBmGK55tF+cZ37cJs3bTmgP/oOfYxgwHavYr8PU=;
+ b=LhLwkBqL1vSY16UFKJWVg1h5PyK6TmsRFFLJybhQ/axefMkzZsgmvZl5W7qV3Nwc4o
+ /+LTzPzCGyFsQo+PpDhV/zTspTMruVBrZYTsmXyNkxsrzN+k+/EJWjYPje6cWpRwvRwm
+ HlmLcvVgnXLDk6r7+lkf2PLZIl8MJll1lJ2Fs3rx7MhX/U89XNDZQsAw8PhhydAhNxVF
+ qVJPv7fOcMStQHGsoLSlFaia6cWKmYTHVqYER3MNH8AhgT4+vUn/Xp0ladptEuK6JBKl
+ Gy85uKSir1BKeVdQjnBiBbSZrnfIsB8IMBNigEDBrVilcE6uX0v+JNcmZwUbmDfcxckz
+ wWSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731080558; x=1731685358;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=biGDhBmGK55tF+cZ37cJs3bTmgP/oOfYxgwHavYr8PU=;
+ b=s5wZIzsx2tUvyI4kUeBGHYTIwX71Rcm/HMr3BxFdGzLEsjhHgOR7kU+TB+izKxgtY6
+ VugOvfbiGB4aQxAZIY5shlnCI6ZPJ+/r5AefrnvZ/Sc/wPS7Acwu/qh4jYXkQliIBCcr
+ g7gO30i6izcvXIiK/BJy76aVtOdRGc6ZYsagD77vUcm5V/3aPA5gOI0DuWMN3PsF+yX5
+ T87VJKWj5u+wnQuLKK4LXtcoFuqOzyT9KRTZtP+vzvGjNrbgmfd3OzhMk1t8nqhYOJ+R
+ gwz3lEgnr9+bL7Wyn9pdZ4h0ov9ydgZvp/RXD5N2mYAGZs/oHkUihCtguKgjsl/NGC5G
+ 4drw==
+X-Gm-Message-State: AOJu0YytsNWXIss/dCzETfO876vVH6uSDnr4aw6KsSmdRHUW/aKffrIy
+ i88wH8RQkaLiVzM/iWV7FjqFb3lf6C48Tgzqyy2+ZiFf72AyRaqIJgZ6uA==
+X-Google-Smtp-Source: AGHT+IEeh1bu33Xy31A9tSkHLufzU6fX0YCasVaNF48obNly1YIRKYfImjjSPxTle/N7qorQLrCTiw==
+X-Received: by 2002:a05:6a20:3943:b0:1db:eecb:f7a1 with SMTP id
+ adf61e73a8af0-1dc229c96bcmr4130504637.17.1731080557836; 
+ Fri, 08 Nov 2024 07:42:37 -0800 (PST)
+Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7f41f48d32bsm3110444a12.17.2024.11.08.07.42.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 07:42:37 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [RFC PATCH 0/5] Add XHCI TR NOOP support, plus PCI, MSIX changes
+Date: Sat,  9 Nov 2024 01:42:23 +1000
+Message-ID: <20241108154229.263097-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] tpm/tpm_tis_spi: Support TPM for SPI (Serial
- Peripheral Interface)
-To: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
- farosas@suse.de, lvivier@redhat.com, clg@kaod.org, dantan@linux.ibm.com
-References: <20241104171815.13853-1-dantan@linux.vnet.ibm.com>
- <20241104171815.13853-2-dantan@linux.vnet.ibm.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20241104171815.13853-2-dantan@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: g4g3Sftj9mf-dxbFtI1pAlTSVHDUFhXe
-X-Proofpoint-GUID: g4g3Sftj9mf-dxbFtI1pAlTSVHDUFhXe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 mlxscore=0 adultscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 phishscore=0 mlxlogscore=999
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411080130
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,82 +89,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+This RFC is wide-ranging for such a simple addition of XHCI TR NOOP
+command, because adding qtests for it caught up some PCI/MSIX issues.
 
-On 11/4/24 12:18 PM, dan tan wrote:
-> Implement support for TPM via SPI interface. The SPI bus master
-> is provided by PowerNV SPI device which is an SSI peripheral.
-> It can uses the tpm_emulator driver backend with the external
-> swtpm.
-> 
-> Signed-off-by: dan tan <dantan@linux.ibm.com>
-> ---
-> 
+Firstly, the XHCI host shares a BAR between device registers and MSIX
+space, which is not handled by qtest/pci. Keeping track of BAR mappings
+in qtest and allowing MSIX to use an existing mapping seems to work.
 
-> diff --git a/hw/tpm/tpm_tis_spi.c b/hw/tpm/tpm_tis_spi.c
-> new file mode 100644
-> index 0000000000..079972de03
-> --- /dev/null
-> +++ b/hw/tpm/tpm_tis_spi.c
-> @@ -0,0 +1,357 @@
-> +/*
-> + * QEMU SPI TPM 2.0 model
-> + *
-> + * Copyright (c) 2024, IBM Corporation.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/acpi/tpm.h"
-> +#include "tpm_prop.h"
-> +#include "qemu/log.h"
-> +#include "trace.h"
-> +#include "tpm_tis.h"
-> +#include "hw/ssi/ssi.h"
-> +#include "migration/vmstate.h"
-> +
-> +typedef struct TPMStateSPI {
-> +    /*< private >*/
-> +    SSIPeripheral parent_object;
-> +
-> +    uint8_t     byte_offset;     /* byte offset in transfer */
-> +    uint8_t     wait_state_cnt;  /* wait state counter */
+For XHCI qtest, I added a MSIX check to ensure interrupts are working
+correctly. As part of that I need to dequeue masked interrupts which
+seems to require PBA writes to clear them, but I could be way off
+base here. Adding that does cause e1000e qtest to break, because it
+doesn't like clear pending via PBA.
 
-#define NUM_WAIT_STATES 1
+The XHCI model change gets AIX's XHCI driver working, so that's another
+data point beyond the simple qtest for it added here. Unfortunately it
+is not so easy to independently test.
 
-Are 4 wait states actually needed? I ran the test with 1. More wait 
-states just have impact on performance and I don't think we need to be 
-emulating the real hardware entirely.
+Any guidance or input would be welcome.
 
-@@ -236,9 +237,9 @@ static uint32_t tpm_tis_spi_transfer(SSIPeripheral 
-*ss, uint32_t tx)
-              trace_tpm_tis_spi_transfer_addr("reg_addr", spist->reg_addr);
-              break;
-          default:    /* data bytes */
--            if (spist->wait_state_cnt < 4) {
-+            if (spist->wait_state_cnt < NUM_WAIT_STATES) {
-                  spist->wait_state_cnt++;
--                if (spist->wait_state_cnt == 4) {
-+                if (spist->wait_state_cnt == NUM_WAIT_STATES) {
-                      trace_tpm_tis_spi_transfer_data("wait complete, 
-count",
-  
-spist->wait_state_cnt);
-                      rx = rx | (0x01 << (24 - offset * 8));
-@@ -274,7 +275,8 @@ static uint32_t tpm_tis_spi_transfer(SSIPeripheral 
-*ss, uint32_t tx)
-              }
-              break;
-          }
--        if ((spist->wait_state_cnt == 0) || (spist->wait_state_cnt == 4)) {
-+        if ((spist->wait_state_cnt == 0) ||
-+            (spist->wait_state_cnt == NUM_WAIT_STATES)) {
-              offset++;
-              spist->byte_offset++;
-          } else {
+Thanks,
+Nick
 
+Nicholas Piggin (5):
+  qtest/pci: Enforce balanced iomap/unmap
+  qtest/libqos/pci: Fix msix_enable sharing bar0
+  pci/msix: Implement PBA writes
+  qtest/xhci: Add controller and device setup and ring tests
+  hw/usb: Support XHCI TR NOOP commands
+
+ tests/qtest/libqos/ahci.h       |   1 +
+ tests/qtest/libqos/pci.h        |   4 +
+ tests/qtest/libqos/virtio-pci.h |   1 +
+ tests/qtest/usb-hcd-xhci-test.h | 232 ++++++++++++++
+ hw/pci/msix.c                   |  16 +
+ hw/usb/hcd-xhci.c               |  28 +-
+ tests/qtest/ahci-test.c         |   2 +
+ tests/qtest/libqos/ahci.c       |   6 +
+ tests/qtest/libqos/pci.c        |  75 ++++-
+ tests/qtest/libqos/virtio-pci.c |   6 +-
+ tests/qtest/usb-hcd-xhci-test.c | 540 +++++++++++++++++++++++++++++++-
+ 11 files changed, 893 insertions(+), 18 deletions(-)
+ create mode 100644 tests/qtest/usb-hcd-xhci-test.h
+
+-- 
+2.45.2
 
 
