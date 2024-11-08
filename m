@@ -2,51 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385019C17AD
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 09:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB369C17DD
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 09:26:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9KCd-0001ki-DH; Fri, 08 Nov 2024 03:18:47 -0500
+	id 1t9KJ8-0000Aq-HV; Fri, 08 Nov 2024 03:25:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1t9KCb-0001kK-KC
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:18:45 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1t9KCR-0005oo-A1
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:18:45 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxUa8NyS1nsC85AA--.47248S3;
- Fri, 08 Nov 2024 16:17:17 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMDxxsAIyS1nea9MAA--.4604S12;
- Fri, 08 Nov 2024 16:17:17 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 10/10] hw/intc/loongarch_extioi: Code cleanup about
- loongarch_extioi
-Date: Fri,  8 Nov 2024 16:17:12 +0800
-Message-Id: <20241108081712.632890-11-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20241108081712.632890-1-maobibo@loongson.cn>
-References: <20241108081712.632890-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t9KJ4-0000Ah-4Y
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:25:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1t9KJ1-0006cZ-DI
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:25:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731054321;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=CVUCM2xbUnaVfwneuFZj0i2oTN1m/l/C8sTJi5Jalt8QqhO1wD6YA61PrZSgh4BkPXuKmN
+ OO8vMjYvXaMnB1NT6PdZ+7LkgrQ7TKrRoHX02vO+ZZ2KvHLs2ZzAOAiN61zAbbKtN+Zti6
+ tvuLlnihF0b50W0OIBN+oU94NqFyB7U=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-401-AYs2W2hgPIS6jEFjytNUZg-1; Fri, 08 Nov 2024 03:25:18 -0500
+X-MC-Unique: AYs2W2hgPIS6jEFjytNUZg-1
+X-Mimecast-MFC-AGG-ID: AYs2W2hgPIS6jEFjytNUZg
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-53a246ecb7bso1011941e87.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 00:25:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731054317; x=1731659117;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=JDZufmLn7R+eveIv5K5AZ7xk1jMzsHaJOaEAPqOAsOnN2nRNeSHAMNmOepQgiQZ+Of
+ YcliI189cyAWCBZVXbLz2iVKP6e51SXlWzHE0F6dmMtDK0tRJAbj+Ngn+l+QMB3U8UCK
+ A0oql4OlXOby70Ioj5tUqr9TKQ3TVfvy8ZjtYrgSZbOg8pScawlJPmuTvRKD+F8TGMUF
+ ht+KxA8E83/vm6XvUd+kewFwBN5gOKrkS4VKkpyDeZTATvQ2TxMt+R7pWgYnOfrMfogy
+ JsZyb2vqdUeyKNznPGSWgul0wNpXJrIqVAuCjJo2izN0PwC28SlDaKRH0bbFdS+wuf41
+ su2Q==
+X-Gm-Message-State: AOJu0YxXRGJLwrHc3BJEbrRdED+pDUDZoAIdZkFPJpuA1D/OHHyAEXC1
+ PJGRc//+vh8JnS2T1py/BWkBMg7fCNNsK17KsQCvE/3UwV4OEFSrjpOjeUFnc9Bo1PVSNrWE9XR
+ 8rxXGcCoaYKDyfFiczuaTnJ4BVlNnouSVIrbUipFRral5t22zB0An
+X-Received: by 2002:a05:6512:304e:b0:539:e2cc:d380 with SMTP id
+ 2adb3069b0e04-53d8623e163mr915326e87.27.1731054317229; 
+ Fri, 08 Nov 2024 00:25:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkEIkkqdKrl+MKpIO76uIpzPayk4EwYtHyujME8ZgzhQNsEzI123hRVphqSvbooFf2GCkMcg==
+X-Received: by 2002:a05:6512:304e:b0:539:e2cc:d380 with SMTP id
+ 2adb3069b0e04-53d8623e163mr915307e87.27.1731054316712; 
+ Fri, 08 Nov 2024 00:25:16 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.84.243])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b053047dsm54154885e9.3.2024.11.08.00.25.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 00:25:16 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: Re: [PATCH] hw/i386/pc: Don't try to init PCI NICs if there is no PCI
+ bus
+Date: Fri,  8 Nov 2024 09:25:14 +0100
+Message-ID: <20241108082514.71664-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241105171813.3031969-1-peter.maydell@linaro.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxxsAIyS1nea9MAA--.4604S12
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -64,152 +103,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove definition about LoongArchExtIOI and LOONGARCH_EXTIOI, and
-replace them with LoongArchExtIOICommonState and macro
-LOONGARCH_EXTIOI_COMMON separately. Also remove unnecessary header
-files.
+Queued, thanks.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/intc/loongarch_extioi.c         | 31 ++++++++++++++----------------
- include/hw/intc/loongarch_extioi.h |  2 --
- 2 files changed, 14 insertions(+), 19 deletions(-)
-
-diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index adaf9dc2c5..e4b05d4363 100644
---- a/hw/intc/loongarch_extioi.c
-+++ b/hw/intc/loongarch_extioi.c
-@@ -10,16 +10,13 @@
- #include "qemu/log.h"
- #include "qapi/error.h"
- #include "hw/irq.h"
--#include "hw/sysbus.h"
- #include "hw/loongarch/virt.h"
--#include "hw/qdev-properties.h"
- #include "exec/address-spaces.h"
- #include "hw/intc/loongarch_extioi.h"
--#include "migration/vmstate.h"
- #include "trace.h"
- 
- 
--static void extioi_update_irq(LoongArchExtIOI *s, int irq, int level)
-+static void extioi_update_irq(LoongArchExtIOICommonState *s, int irq, int level)
- {
-     int ipnum, cpu, found, irq_index, irq_mask;
- 
-@@ -54,7 +51,7 @@ static void extioi_update_irq(LoongArchExtIOI *s, int irq, int level)
- 
- static void extioi_setirq(void *opaque, int irq, int level)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     trace_loongarch_extioi_setirq(irq, level);
-     if (level) {
-         /*
-@@ -72,7 +69,7 @@ static void extioi_setirq(void *opaque, int irq, int level)
- static MemTxResult extioi_readw(void *opaque, hwaddr addr, uint64_t *data,
-                                 unsigned size, MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     unsigned long offset = addr & 0xffff;
-     uint32_t index, cpu;
- 
-@@ -111,7 +108,7 @@ static MemTxResult extioi_readw(void *opaque, hwaddr addr, uint64_t *data,
-     return MEMTX_OK;
- }
- 
--static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
-+static inline void extioi_enable_irq(LoongArchExtIOICommonState *s, int index,\
-                                      uint32_t mask, int level)
- {
-     uint32_t val;
-@@ -130,8 +127,8 @@ static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
-     }
- }
- 
--static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
--                                            uint64_t val, bool notify)
-+static inline void extioi_update_sw_coremap(LoongArchExtIOICommonState *s,
-+                                            int irq, uint64_t val, bool notify)
- {
-     int i, cpu;
- 
-@@ -167,8 +164,8 @@ static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
-     }
- }
- 
--static inline void extioi_update_sw_ipmap(LoongArchExtIOI *s, int index,
--                                          uint64_t val)
-+static inline void extioi_update_sw_ipmap(LoongArchExtIOICommonState *s,
-+                                          int index, uint64_t val)
- {
-     int i;
-     uint8_t ipnum;
-@@ -191,7 +188,7 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
-                           uint64_t val, unsigned size,
-                           MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     int cpu, index, old_data, irq;
-     uint32_t offset;
- 
-@@ -271,7 +268,7 @@ static const MemoryRegionOps extioi_ops = {
- static MemTxResult extioi_virt_readw(void *opaque, hwaddr addr, uint64_t *data,
-                                      unsigned size, MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
- 
-     switch (addr) {
-     case EXTIOI_VIRT_FEATURES:
-@@ -291,7 +288,7 @@ static MemTxResult extioi_virt_writew(void *opaque, hwaddr addr,
-                           uint64_t val, unsigned size,
-                           MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
- 
-     switch (addr) {
-     case EXTIOI_VIRT_FEATURES:
-@@ -370,21 +367,21 @@ static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
- 
- static void loongarch_extioi_unrealize(DeviceState *dev)
- {
--    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI(dev);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(dev);
- 
-     g_free(s->cpu);
- }
- 
- static void loongarch_extioi_reset(DeviceState *d)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(d);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(d);
- 
-     s->status = 0;
- }
- 
- static int vmstate_extioi_post_load(void *opaque, int version_id)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     int i, start_irq;
- 
-     for (i = 0; i < (EXTIOI_IRQS / 4); i++) {
-diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
-index cc160c52dc..351f18afcf 100644
---- a/include/hw/intc/loongarch_extioi.h
-+++ b/include/hw/intc/loongarch_extioi.h
-@@ -24,6 +24,4 @@ struct LoongArchExtIOIClass {
-     DeviceUnrealize parent_unrealize;
- };
- 
--#define LoongArchExtIOI         LoongArchExtIOICommonState
--#define LOONGARCH_EXTIOI(obj)   ((LoongArchExtIOICommonState *)obj)
- #endif /* LOONGARCH_EXTIOI_H */
--- 
-2.39.3
+Paolo
 
 
