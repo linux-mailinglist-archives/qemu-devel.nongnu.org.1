@@ -2,54 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3299C1AC7
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D389C19B9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:00:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9MNA-0002Pa-NH; Fri, 08 Nov 2024 05:37:48 -0500
+	id 1t9LlM-0003Wl-TT; Fri, 08 Nov 2024 04:58:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <042b4ebfd2298ae01553844124f27d651cdb1071@kylie.crudebyte.com>)
- id 1t9MN5-0002PL-TJ; Fri, 08 Nov 2024 05:37:43 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <042b4ebfd2298ae01553844124f27d651cdb1071@kylie.crudebyte.com>)
- id 1t9MN3-0005bF-NO; Fri, 08 Nov 2024 05:37:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=Y2sYtKZduLLC2e1R1hX/xjMEglvdUjKcDnQtYov+6qA=; b=XktEs
- J8rM0zlzhNBBRVUXtTVVKCj1Ce8wuhA/peUgjMwkXmdDdwtlNqJi1q3unUR62jP9/Eik2qvOqc3bp
- EK+cAnkreTpGKpsktRC89GgvxTaspW3li3QnZpXd0fmi1leyFeFZzFz84AHKKHknrg64jOz5BvSUf
- 9tfTeyOhvaQ3vqIg56aCYs8GTelI0d0SW17WmhPH+QohxRwdT4Nn2M0y5ZgetvAwSmAVa2nSTIfYe
- XQN4hI6b7YuUXEG8QZCPmf/z6eDw1DyBCKlhV+fDk5qg7Oe2HZ3pds2EPpAl2fD2S22mgpQfYYIWv
- SFx3TgxADmjbverpu96TOg9gx56OMvhkrd9khItyZjdfjWU3kRx1IQ03AiMXFyMU0nO7E3bh7RZdh
- ePaWk3ju5XlvcoG24eJar1AG4FUydb1VGFCTG2q0slrOvEXZROmSP0E2bhI4do3OJx0fw9PUblaDa
- VD3i/7smlYmaqBDRTrv8tiNa+d89nPoyfJkQoL7l3tAWXr1omngzkbfnN1YRqgHNTWZo70m4EL5Pj
- PCQ9iStGv8gdGUnnAArMmuWqnwqEViZKxRq8IIzxjjKZeoC4+qhV0CUSPL2+Fjokc2NVesA3PTwc7
- RlYQlbl98nuPIR4KZQnZHzqPphfpKQPbP2fd++35KwaU/YXfn2ih8kiPPx267Y=;
-Message-Id: <cover.1731059803.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Fri, 08 Nov 2024 10:56:43 +0100
-Subject: [PULL for-9.2 0/1] 9p queue 2024-11-08
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1t9Ll3-0003VY-DH
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 04:58:26 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1t9Ll0-0000Ye-Hw
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 04:58:24 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3e60fca5350so1168177b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 01:58:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1731059897; x=1731664697; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0I8aoUlEkn+5l/C9mzxATF2jKl/Dppz12Ocsq4mXed8=;
+ b=l78C+N9tmwxhHmR+duTtfRZnpcBUYm/VCYhH1m/FNKgfWzKXIPS5BNCW6o6bCeDrR7
+ SK6NLsCdXeIfoZt52Epxp2ZwbmY6oKMSg/grXytN690lkId32dXmyPQDD5MFJQ6aMs8i
+ kwCLlaqZpUnW6yp6xJaMosURGIQF1h47gYxlOOfysjiy5X3kNJIpxaq6rAsyW9zC18JG
+ yDr4tK8mlmw7D+sCOvQwkPveuOuPF44vfS/fMNMCSdPPRq/6JdiHr74CYSB2j5r7Izmt
+ 2ktCKXJljmajhubRKMTf0MsttRgSsDiy1rAScVlVSFxONUIjfWzxdZdzDGoACNg+hQEZ
+ RqUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731059897; x=1731664697;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0I8aoUlEkn+5l/C9mzxATF2jKl/Dppz12Ocsq4mXed8=;
+ b=lGtsWNz33A8DmlLurYEQE5QzlDzRzD+PdtRELCJHHM++44XC3WQlfP7RQkE7OlLbz9
+ LLE/2n2H0sZYAmLitR2qFuOiTyhPHjnJsC0teZTpy+tqqRKkHwdKVa9vbOcC+B9mKGSO
+ m5cX6rIi3X+kpjvsPIbCgEX+lYe3XV9oQdu5R71A8SJdyTK5op4gzckubd7QYGKMMgRq
+ 67OLmTMd65kqcbTpr8NCFtUmAUTFgNRcczGZSl2jOjh1ZiwK5N2gqshOdZTQ+KK0CiHP
+ 6uS7eeHsehbKtehe/KbwJT/KTYTkMLzt+GDSB2qx8tDXjsFLSNW3zexO0ABv+ms5qPRY
+ i0QQ==
+X-Gm-Message-State: AOJu0Yw4J1qTxPi1sw30mG+6FhvvNgbYVobG1DZPAFo3dWcX3hjF2NBx
+ p3KVFd16F5ti0/R3xa4kPXOtrUdRE08c84Ua7ryvr0wqoUgSYLyHSUk+9w8lsm0VGTErSX0sHjW
+ GA0LcBIPpx4jrohdUr7s31v7LC5OmVP7aOM9B5sO92EK3vGl9nIKCInUJxJIwSU2JALG9talEJl
+ hxkr3RMRYKmj9o0ApOVJoZgLi6cpAijFeA4Ry7bGs=
+X-Google-Smtp-Source: AGHT+IEMXftf5a3ldVzV0EMgSNrtvIIiTREVmf0fgdfdouQluiPW+3pjktiM4LlNZbwAdtwOCpz0Ug==
+X-Received: by 2002:a05:6808:2117:b0:3e7:644e:3ca2 with SMTP id
+ 5614622812f47-3e794716b1amr2856614b6e.29.1731059897483; 
+ Fri, 08 Nov 2024 01:58:17 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7f41f4890d2sm3014723a12.14.2024.11.08.01.58.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 01:58:16 -0800 (PST)
+From: Jason Chien <jason.chien@sifive.com>
 To: qemu-devel@nongnu.org,
-    Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org, Greg Kurz <groug@kaod.org>,
- Akihiro Suda <suda.kyoto@gmail.com>, jan.dubois@suse.com,
- anders.f.bjorklund@gmail.com, Balaji Vijayakumar <kuttibalaji.v6@gmail.com>
-Received-SPF: none client-ip=5.189.157.229;
- envelope-from=042b4ebfd2298ae01553844124f27d651cdb1071@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Jason Chien <jason.chien@sifive.com>
+Subject: [PATCH 1/1] hw/riscv/riscv-iommu.c: Correct the validness check of
+ iova
+Date: Fri,  8 Nov 2024 17:57:53 +0800
+Message-ID: <20241108095753.12166-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.43.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=jason.chien@sifive.com; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,25 +98,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit feef1866d1366d651e6a3cb8c9cf1a9aabb81395:
+From RISCV IOMMU spec section 2.1.3:
+When SXL is 1, the following rules apply:
+- If the first-stage is not Bare, then a page fault corresponding to the
+riginal access type occurs if the IOVA has bits beyond bit 31 set to 1.
+- If the second-stage is not Bare, then a guest page fault corresponding
+o the original access type occurs if the incoming GPA has bits beyond bit
+33 set to 1.
 
-  Merge tag 'pull-riscv-to-apply-20241107' of https://github.com/alistair23/qemu into staging (2024-11-07 15:08:05 +0000)
+From RISCV IOMMU spec section 2.3 step 17:
+Use the process specified in Section "Two-Stage Address Translation" of
+the RISC-V Privileged specification to determine the GPA accessed by the
+transaction.
 
-are available in the Git repository at:
+From RISCV IOMMU spec section 2.3 step 19:
+Use the second-stage address translation process specified in Section
+"Two-Stage Address Translation" of the RISC-V Privileged specification
+to translate the GPA A to determine the SPA accessed by the transaction.
 
-  https://github.com/cschoenebeck/qemu.git tags/pull-9p-20241108
+This commit adds the iova check with the following rules:
+- For Sv32, Sv32x4, Sv39x4, Sv48x4 and Sv57x4, the iova must be zero
+extended.
+- For Sv39, Sv48 and Sv57, the iova must be signed extended with most
+significant bit.
 
-for you to fetch changes up to 042b4ebfd2298ae01553844124f27d651cdb1071:
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+---
+ hw/riscv/riscv-iommu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-  9pfs: fix crash on 'Treaddir' request (2024-11-08 10:38:12 +0100)
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index bbc95425b3..ff9deefe37 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -392,9 +392,26 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+ 
+         /* Address range check before first level lookup */
+         if (!sc[pass].step) {
+-            const uint64_t va_mask = (1ULL << (va_skip + va_bits)) - 1;
+-            if ((addr & va_mask) != addr) {
+-                return RISCV_IOMMU_FQ_CAUSE_DMA_DISABLED;
++            const uint64_t va_len = va_skip + va_bits;
++            const uint64_t va_mask = (1ULL << va_len) - 1;
++
++            if (pass == S_STAGE && va_len > 32) {
++                target_ulong mask, masked_msbs;
++
++                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
++                masked_msbs = (addr >> (va_len - 1)) & mask;
++
++                if (masked_msbs != 0 && masked_msbs != mask) {
++                    return (iotlb->perm & IOMMU_WO) ?
++                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_S :
++                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_S;
++                }
++            } else {
++                if ((addr & va_mask) != addr) {
++                    return (iotlb->perm & IOMMU_WO) ?
++                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_VS :
++                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_VS;
++                }
+             }
+         }
+ 
+-- 
+2.43.2
 
-----------------------------------------------------------------
-* Fix crash with a bad 9p client.
-
-----------------------------------------------------------------
-Christian Schoenebeck (1):
-      9pfs: fix crash on 'Treaddir' request
-
- hw/9pfs/9p.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
