@@ -2,162 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108329C1C41
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 12:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DA09C1C7F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 12:57:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9NHu-0004Lt-Pt; Fri, 08 Nov 2024 06:36:26 -0500
+	id 1t9NbX-0001Fs-Cv; Fri, 08 Nov 2024 06:56:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1t9NHs-0004LV-3x; Fri, 08 Nov 2024 06:36:24 -0500
-Received: from mail-db8eur05on2072d.outbound.protection.outlook.com
- ([2a01:111:f403:2614::72d]
- helo=EUR05-DB8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t9NbV-0001FU-7E
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 06:56:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1t9NHq-0003q8-1u; Fri, 08 Nov 2024 06:36:23 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f8AWzzVi6JMyK/8cQdRy74TUydqrj20m3nHra0/fVH53QhEUDHf+rAbZL7Ww6ed70mZg6sP2k9VnNrr6jl5OMLqsFfL2qQCuTm9QJmtEV26Zj/nh7bzxCZgzfj6PFsyd17Yx9xyZ8RBTN+g7gQLxMxiVaTPwl9nZmVPHIEyviPurt2RtD7fK3w5bJjjU86RXHjLvGt0EDmkM1/GfZxw4bEeCEUT5+OsJSXqBMQ9x4LDI5Wjbu/TYPDa/sI5Yl840wZbAlLKhr2jBviLqRudK7M70YcYKuLFUPkZ4u0DlodSvt78NI3Z6G/D/fyQ5sHTJi27dZad2Ki20uaY94HFybA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SI2/xStgOnHCn7iqdnDIqJTywuT9E6YNBAiLxTUaIPo=;
- b=OAU95Zr7eXpVMLtDeFKISs9q9Hg55MQdtfS76DTlIlVrDntaBBVFYJ0JhYUP5y9qi+j6i6JSF6wYs3ClnC1wzimIMBmTT2ij5e/p/kLVXBl7dKsxpNJ3ry31OhvkID5qscAalovpuMhpX3AVnVm6erNa2/P5sze48Wmj2CzGrXR37usfF4Bu210ukqhfxf1Gt5z1YmbG1pjmMPdtvuFD+xhON/1NOLUgP/R0xbDU9SO0XLSITiA87nSVlTMhzwDixu0e1I2qFYiGBKVi9Y4eV8pC7Zi+zPY5uBx9b84Lmzz9+SncWrrPJDLeVBWsMzLyHF+pbJsAUxIhPQogEiolbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SI2/xStgOnHCn7iqdnDIqJTywuT9E6YNBAiLxTUaIPo=;
- b=vq8zgJd8+CNj50pn0gjkgw/+CsS6wkiU2SxQAa5YXYPcCwKzU5K0XD4zeDqgfnLym0Ytp1zsb7BH2WsNQA+/tHYsTuEQoP9wghjkZwMBlr01pFGM+xi0AOoc6+CQcb/yro+uOlsz1sy8hq9Ml/HhePIyQfcG5zPrTGHQ9QTezHtLdw7V/D9nXgmqp8DBV6Rg8buBoDaEkn1NeYnzYmwKKPufigOn2Qe41u3GXEC1i+HbeHxm4LUQbFxV1GB69fH/ZQFiI0Msy+/EFA6SMUIIen7kYBjaxZJfnEHMdP4n9zMDJFWlwuvKd2lWzPh94mqbrZJPMlD9dIiJPkXsQ9Vetw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by DU0PR08MB9300.eurprd08.prod.outlook.com (2603:10a6:10:41f::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.34; Fri, 8 Nov
- 2024 11:36:16 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::59be:830c:8078:65d1]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::59be:830c:8078:65d1%7]) with mapi id 15.20.8137.019; Fri, 8 Nov 2024
- 11:36:16 +0000
-Message-ID: <7894af7b-d0e4-41f4-8c6e-f4f6de5f25aa@virtuozzo.com>
-Date: Fri, 8 Nov 2024 12:36:15 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: fix possible int overflow
-To: Kevin Wolf <kwolf@redhat.com>, Dmitry Frolov <frolov@swemel.ru>
-Cc: stefanha@redhat.com, den@openvz.org, sdl.qemu@linuxtesting.org,
- qemu-devel@nongnu.org, qemu-block@nongnu.org
-References: <20241106080521.219255-2-frolov@swemel.ru>
- <Zys8tLcKjADMtkqn@redhat.com>
-Content-Language: en-US
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <Zys8tLcKjADMtkqn@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR08CA0253.eurprd08.prod.outlook.com
- (2603:10a6:803:dc::26) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1t9NbQ-00064r-Pw
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 06:56:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731066994;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g5+zS2G6ieENEX3UjuW+69kgAap4LT5/IDTQOKv3fTI=;
+ b=A92y2JnZx0ttgSJ/gjeMUvBlSu4PF1HCFwj67CFZao/N8A0IiHjWcHyJyVmzvSkhcQMddm
+ 03jhJ6xnYZu7TM6srnSSpgXQ/NN6SSrepa+zyHt0bL6IgH5ljv4n+GoPk7lqY/RD1VrRVx
+ 2qdqPt1s8wrhROU5X/C0nHP4mm651lo=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-HF0zfx1CMImUckb4klp0nw-1; Fri, 08 Nov 2024 06:56:33 -0500
+X-MC-Unique: HF0zfx1CMImUckb4klp0nw-1
+X-Mimecast-MFC-AGG-ID: HF0zfx1CMImUckb4klp0nw
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-53d86e159e7so498691e87.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 03:56:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731066992; x=1731671792;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g5+zS2G6ieENEX3UjuW+69kgAap4LT5/IDTQOKv3fTI=;
+ b=TUxQxFOsC2mmS7+pQJeSuJQTD2zvuOcmF74qrsI2lsZyOYOaysxy+M5RkmAoHEJT7d
+ 65lN9IXC0BtoSdWJsFO7eKCOVhxFTidXrNfugIccuSV/My71b2qkJ2aedDI3u+mHJOnX
+ Sv3DpGcIAIO1ZPNXRg4PJSkrUqCfLs0LjDpzr3TFr4DR3tAzXqolwxDSktIm0s9vykpB
+ hAqU/Wb0/0b84FOg7tR02ap75u9GZusZVtlk74ToVW+fbOQaF9RfdZTIecLieh3Z3I5u
+ aydC+mF68ANtrwF3Ijn2m+/tHLGdjEnlVILbiAW+1TKKhmsCXSgizdeRHCv6/904eE48
+ uQPw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVyQgCYPlrBvNqsT3xL8i3/rsQehe544HWfT1wlxkY0TG0Tj4XRwTI99p68h95pMWi+z1IYLAXgCsOl@nongnu.org
+X-Gm-Message-State: AOJu0YzxHIro50HwT7k8WR3K7eL2ZC8hxX4npUj4cPjVilJTimnGQ/xt
+ x+xmo/Auim0ZImcm1RzFIDrfYF3yZNZ/JMsM8xuINetZyTG4eGkzCgfdoAZXyoZBhnKmb9ZgBTp
+ sWs0Gbh6YXroQHSppTBfEgZPuQILIh7GsWgsskWpaRL86NOPE9As6
+X-Received: by 2002:a17:906:c112:b0:a8a:6c5d:63b2 with SMTP id
+ a640c23a62f3a-a9eeff0dccamr213461466b.18.1731066618886; 
+ Fri, 08 Nov 2024 03:50:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF71jCWx7FbQM9FfTFOhIuHVJAQg1wATIoRyrDWPnvlInfbfpUKcIYGpoAOX+AXw4TseCi2HQ==
+X-Received: by 2002:a17:906:c112:b0:a8a:6c5d:63b2 with SMTP id
+ a640c23a62f3a-a9eeff0dccamr213459666b.18.1731066618497; 
+ Fri, 08 Nov 2024 03:50:18 -0800 (PST)
+Received: from redhat.com ([2a02:14f:179:39a6:9751:f8aa:307a:2952])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5cf03b5d787sm1895241a12.2.2024.11.08.03.50.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 03:50:17 -0800 (PST)
+Date: Fri, 8 Nov 2024 06:50:12 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org, eblake@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, qemu-devel@nongnu.org
+Subject: Re: [PATCH] qapi: fix device-sync-config since-version
+Message-ID: <20241108065004-mutt-send-email-mst@kernel.org>
+References: <20241108071957.727286-1-vsementsov@yandex-team.ru>
+ <87v7wydsxv.fsf@pond.sub.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|DU0PR08MB9300:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed829880-918d-4f05-865a-08dcffe98e8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZHFtZ0puUnh5azRxYkxIek00M3JLMlFzcW1mOTUwckl6OHpuT3h5WmF0WTd3?=
- =?utf-8?B?aVdkdUhvZlY5b3RzOGFXcjVNSVBxSjFFQU5MamxHWmI2Ynp0WXJJK0xmeWE0?=
- =?utf-8?B?Smh2WkROa1piYXFadExvTDJwQXQ4Q04wenBHMG9CbWxZN09BR1BCVG9MamtH?=
- =?utf-8?B?OGxVR21QcUFqaHNHTytEeU9DVzNueG9EUWs0YnhNY0dYM010L0ZQZjd4S0NI?=
- =?utf-8?B?dHBscFJGeWdsVFpxbjVhc2oycENSVjgvTDJ3RXZYZ29YdjJwUU1RZ3FjN3ho?=
- =?utf-8?B?RTBwVWtsd09zNS9qQ0FPckVIaGpkNGt0REM0SFpabmlYQ2o1UmNjOTFIekJw?=
- =?utf-8?B?RllqMFBLdm9IU1EvYVhrbTg1UzJCTmlqNU0rdHVjSVJqMUg2Vlp1KzhSMlFS?=
- =?utf-8?B?OWtMUXU4dTJQVExIM1FpWHdHcWxmejlLV0dlT0w2UkZMd1NkVUsyaFY1OTI0?=
- =?utf-8?B?MzFTM0dJUDBQUjhOeWxHcnZWTmdrdERqUXQyVWNYK1QzTnBsRlYxMzZtSHhp?=
- =?utf-8?B?VG9rcUxFVitzUytibWozRVhrMGhNTmJ6SSttS3hWQUt0VTdXM1gweU5NcHE2?=
- =?utf-8?B?Y2tDRDA5TUFkMlpYb2VTZW5zU21wMUdyQ0RaQWVxMkt1MWVSQTBUSHBGclRr?=
- =?utf-8?B?a3gvMkZxNHlROVdla0dHMU5iVUJuSnh3L0xhTmdnYlcyMzRHdTJ6RFp1OEx3?=
- =?utf-8?B?ZHlEZDVnb3loY1VrbTFCWXVHK2RCbEV0cWRzTzMybFFTRmM2RmpSdmU2dTdh?=
- =?utf-8?B?UXkrdjZLbUdrYjBUVDZ3cDgrK1JHdU5zMlFRL3FLaHFJYVp4WEI0b2JQc1Jw?=
- =?utf-8?B?S3pDNEpHdDBVUmhxdjV5Y3cxOTFZSEZBbVVnMjM1d29jV3NEcUZ2RElFVERQ?=
- =?utf-8?B?aGVsZmxUeGVmUHdoS0twRnJIKzIrSnlZRUZHdGVFN2tudkFWZjFsNlg2RGFY?=
- =?utf-8?B?TURQSENaYjNLLzlTZFMwN3VGL0Vha1grQ2M2bVJyeVh4NTYyMGJLTDRhSk1l?=
- =?utf-8?B?aldCaHdKV0ZwNnZ6cHhRN2hGT3o4WDBUcG9vZ1Y2NDIrMWExM1VTcWVEem0y?=
- =?utf-8?B?UFVNQTI3ZkJjMHBxT0hrbXhKVTVqR05WRlhEVk5XSkx2WW54bWtIaEduMnp4?=
- =?utf-8?B?ZFk2aW1LYk9VSVBiU1JrcCtLRGlZVE5uYnkrVlpvTlpwVTdFY1hiWFBvSzd4?=
- =?utf-8?B?eVltVU9PU1F3TmF3blR6MVRLT3hpVlpFTEFzWnJjOXYxbFFLbkx5Ym9OQm1U?=
- =?utf-8?B?UFljM2dYWG95UUUrbFEyYU1CYmFaanN3SHQ4TVFuUzAwR0Z5bjBWWmZEUitO?=
- =?utf-8?B?THZWZWwxNWtDMThqTFdQNGxDOFhNdm5Udm5WSDF0NytBTkZpSDYyS1JhNCtB?=
- =?utf-8?B?TUpLWWw5a3NHQ3lXa2Fydm8vR0wrbnlSU2diZGJmM1MzWVcwalhVczA2dmU2?=
- =?utf-8?B?Nm56ZGxNOUJxWm5sc2ZtY3lDTWtvTk9DemowVnV2VlBXeXU1cHJuMXlpYWRi?=
- =?utf-8?B?QzFVVlJRN3huUjVOeG9MQms1a253VWRkbU5FQlVjd2pBRU1NT2xONXpGdXQ3?=
- =?utf-8?B?VGtVQ2RBWkZyWjdHdkRVeEpWalAyR09WbFBFQWhHUjRwSUZjS1NWYVR0bGlw?=
- =?utf-8?B?VWt2ZXN4eU9ld0ZENGgweG1Hek4vZFdOL2tXbXlvVDhzMFFSRy9TSXo1NHky?=
- =?utf-8?B?NklyRElFNXRkTEN5WlpZWm9mU0tzajZic3RxL0hIYUNZeWovamFpRUl0QWxJ?=
- =?utf-8?Q?JWyyNNRZvqG1T/xBW0=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a3ZDRGZ3aDZ5V255QW1XNHVXQjBsNW1MSXhNOGlFeWFKTmFNejY4KzRMbk1B?=
- =?utf-8?B?c3lPNGdNazlXL1p4ZDZIbGkvOFZSOTgvR2ZodjhlKy9VTnlseWRPSVlRWW8y?=
- =?utf-8?B?SXVTdW01MGNQVWFqNVg0Y29hb0xBbHlOTis2ZHJuM3VBL2J3bThqWVVwZ0RX?=
- =?utf-8?B?TXlVM1lEZDZwUlcxdFI0anQ3dzJTWmlUWDhPV3lsMGQzTVRhKzI4WG8zNytI?=
- =?utf-8?B?c2NxMnZQQXUzV0tvcnM2Mkc4R3NIZWpYWFVHSG9qcno3emtjWUVQaW1PL0Nn?=
- =?utf-8?B?anRLM1FEenlaMjJ6aWozNlg2YUh3MTVDNUZGTThPYmNOTXJRZ21MTlYrVFI0?=
- =?utf-8?B?TG14VXhWNWJQazY2MU0zM2dpWFJ2RGk5Nml0anc4WTB2M1N6NFRtRUFHZktr?=
- =?utf-8?B?UVdScEU3cTZxVXNCYWZUODBzb3ZpamxtMzNvMlJiSlpTQ0djTkZkbjRQeVN4?=
- =?utf-8?B?VHgzWklUZG95MTBLaXlvVXdaK3JWbUpRNENNYkZIM3FRc043dTBlKzNPb2Q4?=
- =?utf-8?B?WVNPVmozT1ZkMmF0WHRHMkUzMk9LdU5NcXJBUXUxTnNmUURNKzRpYWVzOG9W?=
- =?utf-8?B?d2syRGpWQnBrdGdYVENVY0RHYkwvVTFuQ0VZT3E3MGU4VmdiWTNTOGdkaUFJ?=
- =?utf-8?B?ZmNGMlN5aTE5ODFpb0Z0ck9SOUdmeGV5a2F3UzhpSkFqOXI0aW0zUk5ZYS9R?=
- =?utf-8?B?ekhDZEJaVkdHSlRkdk0rTmVzZFdXeUxraDlSeGgrM3ZzUXUwNHNzM0xvQkEr?=
- =?utf-8?B?dGp2MVV5V2orOTRmeXpYZ25QTXVHdXR6cTdXSXEyYlRnVkZEeGVrL2M2bWx5?=
- =?utf-8?B?Ui9iYUpua1N5U1VHMWdvakw4OHdvbHZKUDBRTlZVOTNjelFVQlF1Z2VkNmR5?=
- =?utf-8?B?V2JRZEh2cVppVWoyb1NzNWdSOEdwRXdXOUUwZzFCVkwrcEMzbk1OL290Vjlj?=
- =?utf-8?B?RjhFYTF1MXRGQTUySlNmQTBOdjdkR3VVNWR4eVVURTV0dG1GcHE3QXFtM2d2?=
- =?utf-8?B?NUdyUS9lK1k5U2ljNjRIQklxMDgzclppT3c1cHo5clZNYk1RVlZFeCtkTU5y?=
- =?utf-8?B?SXR4c2hpenNTSHlnS2JEeG5JOUhwRjUwS1JsZW4yalBHaERaTloydGNRaDB1?=
- =?utf-8?B?TUtrU0JsNHJLNmFiVkE2d0JxK2ptNFo5KzcyQldZRmdKUXo3WEdqTzdWS0tI?=
- =?utf-8?B?OENmZWppd2pMN0xLR2w3RFZFT3hqbk1saWkvNUlqeW1iRWVvbFlhMHlTZlVL?=
- =?utf-8?B?L1VaRWJYeHdMaEl2ZDZITHJrNzEyNk9MTCttUEhEcGJ2eUo2N2JSQlErNEY2?=
- =?utf-8?B?bTczVkk2SnVKU0FnRi9OaXFmdzZqcEVBZk9DSEZVbFJpbnlVYnhQamRLMkwv?=
- =?utf-8?B?SzdQSC9jblN6Y0VkQmt3L2xUeXY4K094RnpNcXZXRnArb0FWUEY0elJkMmFE?=
- =?utf-8?B?RFRTaW5qN1V6MkJqQ05MSE5sYTVEOWIzcFdBN0xSRW1Pc0hISXRRZytwVWZU?=
- =?utf-8?B?MXFEdE9Iend1VEhUazVHR1ZOeDJ1Tk12bGR2bVZOWGl5WGRLVnU5WWhJVUw4?=
- =?utf-8?B?dHIvU2czNFhsV3JZNnVtK2UrTE9ZK0FrcXp6dVRCSjZWcDhjTVNmWXBLTXhp?=
- =?utf-8?B?TEtyRUMzVW5RNUtEZ0F4NnM3azBpeWFtbi9UdGI1VUE5ZXBRbzErRDdUMUxD?=
- =?utf-8?B?NWhoTC9BdEozU0JVTW04bUdZbjBYa3VJSHVkczZva3ZIaXZCc1dPWk1tWGhJ?=
- =?utf-8?B?NjVrUWM3bFZJQVkrMUVQZlIxaTlMaGlxdXZtdVJnWWgxVjhRVWZuL0F4emRh?=
- =?utf-8?B?cmk3bHJhMHF3dzh4ZEtHUHBhcEtTZXdSZ0s0aUFTRFp3b0M0OHQyK0tPbGU3?=
- =?utf-8?B?a3V1SS85NE51N0ttaU9XakpQMXhLZnZkTmlXV3A3a3gzenh2anlUcllMOG1V?=
- =?utf-8?B?SGRFUCtXSE83SER1MUM1d2JVMDBnUG5IaWxlZ2ZNcVlkR0c2aUZyckh5L0d3?=
- =?utf-8?B?clA5cmI2Y01mMVU2SnNONWVCVnMrMnZCRjlLcEh2VjdGWUpBR0hnYnFRNGI2?=
- =?utf-8?B?b2JTWkJSdzdidU1xN0QxbFBOWDcwcFhPU2dRQnphL1ExWUdJRklsQW1kMkZ3?=
- =?utf-8?Q?5jheDyQjGxqlO8IlK851m8O2+?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed829880-918d-4f05-865a-08dcffe98e8d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 11:36:16.5305 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LecnfaZ8MQm5SNw6LSU3AADkD8qrL4FGSSAUVHYokffX2F1vaw077OeUk8l1rIfywyKqyLBQZqo8MtpkOus9Pg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9300
-Received-SPF: pass client-ip=2a01:111:f403:2614::72d;
- envelope-from=den@virtuozzo.com;
- helo=EUR05-DB8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7wydsxv.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,39 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/24 10:53, Kevin Wolf wrote:
-> [ Cc: qemu-block ]
->
-> Am 06.11.2024 um 09:04 hat Dmitry Frolov geschrieben:
->> The sum "cluster_index + count" may overflow uint32_t.
->>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>
->> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-> Thanks, applied to the block branch.
->
-> While trying to check if this can be triggered in practice, I found this
-> line in parallels_fill_used_bitmap():
->
->      s->used_bmap_size = DIV_ROUND_UP(payload_bytes, s->cluster_size);
->
-> s->used_bmap_size is unsigned long, payload_bytes is the int64_t result
-> of bdrv_getlength() for the image file, which could certainly be made
-> more than 4 GB * cluster_size. I think we need an overflow check there,
-> too.
->
-> When allocate_clusters() calculates new_usedsize, it doesn't seem to
-> consider the overflow case either.
->
-> Denis, can you take a look?
->
-> Kevin
->
-We definitely have more places inside the code and I'll take a look.
+On Fri, Nov 08, 2024 at 09:35:08AM +0100, Markus Armbruster wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+> 
+> > Actually it comes in 9.2, not 9.1.
+> >
+> > Fixes: 3f98408e2e ("qapi: introduce device-sync-config")
+> > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > ---
+> >  qapi/qdev.json | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/qapi/qdev.json b/qapi/qdev.json
+> > index 2a581129c9..25cbcf977b 100644
+> > --- a/qapi/qdev.json
+> > +++ b/qapi/qdev.json
+> > @@ -182,7 +182,7 @@
+> >  #
+> >  # @unstable: The command is experimental.
+> >  #
+> > -# Since: 9.1
+> > +# Since: 9.2
+> >  ##
+> >  { 'command': 'device-sync-config',
+> >    'features': [ 'unstable' ],
+> 
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> 
+> Michael, can you take this through your tree?
 
-Speaking about this particular change - this will not work. In general
-we should signal corruption when the cluster number is overflowed.
-This data would not be accessible due to format restrictions.
+Tagged, thanks!
 
-Den
 
