@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2520D9C20DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAEE9C2102
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:49:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9R9Z-0003sx-6b; Fri, 08 Nov 2024 10:44:05 -0500
+	id 1t9R9h-0004kt-Jd; Fri, 08 Nov 2024 10:44:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R9G-00035a-87
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:46 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R9J-0003Aq-Eo
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:52 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R9C-0005S9-Bw
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:45 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4315df7b43fso19453735e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 07:43:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R9G-0005Tm-OD
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:49 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-37d8901cb98so2046590f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 07:43:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731080620; x=1731685420; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731080624; x=1731685424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jztEo/+GQMsNL+O6RII0AfRvEqFktG+ZuY9PKLU7Y+w=;
- b=YdfIhHtMCTkN3S9XNqE9VoZDJlZs3SJFoUBSGx3kCaavt8VsZ5Yo4YnJjpT1eYQljF
- IPKaUgW1ab4iONYSlDbtYBaggPR6hKulDdSCUj/1y4kxq0IFd1qLjBzMlPHKOOjK9UwQ
- bfbRkrYt6Cn0GSC9ZLfSJ6UYiZdb1wAHy2nAmRWLkD/UzUP8jSPqxTxP5bqeffonVVqZ
- +87eSjFBM88VkBDVc0RyOCbP2x61ShBHrhsebAdV9c7nd9tNE06jPeKvYGsN25CGocv9
- BIRIqxTF+APM5eVji3lUPwTqCrhwkuYIuBpJjRqyLmwqXe1raNqpKJ0U6vsmfaLX1E4u
- rwUw==
+ bh=uljKpTWKHfIbJ0MtlmY9PWC2nyD8V11sN9kOWSbXIe4=;
+ b=jNiSK+B+ol6C+dqCcQiyAoqgAqDGQHqvWlv+Zw1XMNegjM6DqodZxkKLzEVDwhJZ3f
+ 2gfFdLMkMrvuyqemBqc/tWhPTd1p5W40X4y0BE+aj46kIlf/yktjEB/R2CsM/2WeFVCG
+ cAM1DxizECc6Y6bWBvfa70Uy1pqdhIGRWLIEzaHDlkj7auj/JaWb8EZyeab9yF9Vc5oq
+ 4zHghJBFcTJMgA0kv4g+UhaTKbGJV2PSvMyhIHAFI0wBtNxaPMK81BYZtSAckTw9hPFu
+ wOMXhKzVUjWOlg3oh0/+Z+h55ZTACUtAP28kO36IZ/2afxLNea/NDn232ZwCBTDMqvq2
+ 9U5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731080620; x=1731685420;
+ d=1e100.net; s=20230601; t=1731080624; x=1731685424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jztEo/+GQMsNL+O6RII0AfRvEqFktG+ZuY9PKLU7Y+w=;
- b=Q3Jnw942Fv7LA9fETmUUmmGY/KF/mbZQNzF5UUXRn6JltI7Ca4vTjv5x0fVLPjF+mf
- gc3trD8OPKnC8AQsuu1fWIWYOyC7zPLtkS/B0qlR31nUbk/dUysUZz8MvBy4Hhy+w/+I
- 6vgoU+V0+z07D32y5RXbA9H7b9+cv0KxcelkOc672BRBdDjBaO/Ie30PYrgdvZJxStqW
- LXb3HfkFeBIT8iiB1h6h1TeUMiAat1y62O2rWTyDK+wFmKqlK0mCufd/oo3IFzTMKnn2
- bYJOw651skY1TILCCKKt1w5cg33rtjIVTExPTACd0Pveb0cVJguaHX+4OnxxXG7zraCM
- wa/g==
-X-Gm-Message-State: AOJu0Yw8BxeqyGfO/sIyg34jmhx4kC/keONmJ46pq1iXtmzwkAhQEKs8
- h5HgRrfzg+pZ6Jiosgnm0R++r25Gs5Mz32MuvOY+EXYTREh/ve21ZdFaZKgS0VMvq7Q2gzvjJ0M
- T
-X-Google-Smtp-Source: AGHT+IF4Ugi9i4ohYJ6/e/reb5mP7ZkKvdFRLOQDtGNOw2OnU1DRbDqdGn8AVX3iYc0JeXIcm9zFdA==
-X-Received: by 2002:a05:600c:8715:b0:426:602d:a246 with SMTP id
- 5b1f17b1804b1-432b75199famr24760155e9.32.1731080619895; 
- Fri, 08 Nov 2024 07:43:39 -0800 (PST)
-Received: from localhost.localdomain ([154.14.63.34])
+ bh=uljKpTWKHfIbJ0MtlmY9PWC2nyD8V11sN9kOWSbXIe4=;
+ b=Dle9PzceZCa9DcZTJAvLyb4JbjvTN/NQ14SmU3UeqX3a8Lx/VdEkIEmpgL8J7ou0IG
+ qvr2dPivNzLFFXn/mxLtHmuARdnEXDTNx4fe/m8eEwJOHE+m8uE+h4tFyKq/FzdUAWMB
+ +Jspjuk2EnTSOBdtR0kPnESD44E5jG0380CLmUpjR0DnoxgOegWXuRetblZbYJJemhsH
+ SOLXN4CpsHqVRBX0rf+OWPYn2W3wriYlxQ8UnYVB6gVJlcdDLmF552WwuR5sbnyAFpTg
+ jHelpE+27zA+5RcAfVkTo+KFsWuWRiOlYLICC58MNDF2X4BKVbTkDVSL/ksvYrSYQtOL
+ FIvA==
+X-Gm-Message-State: AOJu0YwZaWAgvjkA9ep9gkm/NJgcXXxPuDns3dd0Lx370/IuJQABYWDn
+ iPMbXfIa1JboRTfM12qh3WcpIOW4e4qsNGeTY2Qvx3V3TMZrFZsaiu70L79JYeZ8TOQhAK+JjgV
+ 8
+X-Google-Smtp-Source: AGHT+IGGEfF/rUyqe5DFJJORPox6p+y0DDitfZCJPKPsvIOyG37YnM05K5XRC0GsGdbfvvWeW/M6oQ==
+X-Received: by 2002:a5d:59a7:0:b0:37d:2d6f:3284 with SMTP id
+ ffacd0b85a97d-381f1a6ca9bmr2971832f8f.9.1731080624624; 
+ Fri, 08 Nov 2024 07:43:44 -0800 (PST)
+Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381eda0411csm5171097f8f.95.2024.11.08.07.43.38
+ ffacd0b85a97d-381eda04ad0sm5235518f8f.100.2024.11.08.07.43.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Nov 2024 07:43:39 -0800 (PST)
+ Fri, 08 Nov 2024 07:43:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Anton Johansson <anjo@rev.ng>
@@ -65,19 +65,21 @@ Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v3 04/17] hw/net/xilinx_ethlite: Simplify by having
- configurable endianness
-Date: Fri,  8 Nov 2024 15:43:04 +0000
-Message-ID: <20241108154317.12129-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>
+Subject: [RFC PATCH v3 05/17] hw/timer/xilinx_timer: Allow down to 8-bit
+ memory access
+Date: Fri,  8 Nov 2024 15:43:05 +0000
+Message-ID: <20241108154317.12129-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241108154317.12129-1-philmd@linaro.org>
 References: <20241108154317.12129-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,159 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Xilinx 'ethlite' device was added in commit b43848a100
-("xilinx: Add ethlite emulation"), being only built back
-then for a big-endian MicroBlaze target (see commit 72b675caac
-"microblaze: Hook into the build-system").
+Allow down to 8-bit access, per the datasheet (reference added
+in previous commit):
 
-I/O endianness access was then clarified in commit d48751ed4f
-("xilinx-ethlite: Simplify byteswapping to/from brams"). Here
-the 'fix' was to use tswap32(). Since the machine was built as
-big-endian target, tswap32() use means the fix was for a little
-endian host. While the datasheet (reference added in file header)
-is not precise about it, we interpret such change as the device
-expects accesses in big-endian order.
-
-Instead of having a double swapping, one in the core memory layer
-due to DEVICE_NATIVE_ENDIAN and a second one with the tswap calls,
-allow the machine code to select the proper endianness desired,
-removing the need of tswap().
-
-Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair of
-DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
-Add the "little-endian" property to select the device endianness,
-defaulting to little endian.
-Set the proper endianness on the single machine using the device.
+ "Timer Counter registers are accessed as one of the following types:
+  • Byte (8 bits)
+  • Half word (2 bytes)
+  • Word (4 bytes)"
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
-RFC until I digest Paolo's review from v1:
-https://lore.kernel.org/qemu-devel/34f6fe2f-06e0-4e2a-a361-2d662f6814b5@redhat.com/
+RFC: This breaks the UART qtest, instead of having TX register
+receiving 'T' = 0x54, it receives 0x54000000, converted to '\0'
+char. It works if we use SWI instead of SBI (storing 32-bit).
 ---
- hw/microblaze/petalogix_s3adsp1800_mmu.c |  1 +
- hw/net/xilinx_ethlite.c                  | 44 +++++++++++++++---------
- 2 files changed, 28 insertions(+), 17 deletions(-)
+ hw/timer/xilinx_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-index af949196d3..f02d343e29 100644
---- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-+++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -121,6 +121,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
- 
-     dev = qdev_new("xlnx.xps-ethernetlite");
-+    qdev_prop_set_bit(dev, "little-endian", !TARGET_BIG_ENDIAN);
-     qemu_configure_nic_device(dev, true, NULL);
-     qdev_prop_set_uint32(dev, "tx-ping-pong", 0);
-     qdev_prop_set_uint32(dev, "rx-ping-pong", 0);
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index e84b4cdd35..5c27f1250d 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -3,6 +3,9 @@
-  *
-  * Copyright (c) 2009 Edgar E. Iglesias.
-  *
-+ * DS580: https://docs.amd.com/v/u/en-US/xps_ethernetlite
-+ * LogiCORE IP XPS Ethernet Lite Media Access Controller
-+ *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-  * in the Software without restriction, including without limitation the rights
-@@ -25,7 +28,6 @@
- #include "qemu/osdep.h"
- #include "qemu/module.h"
- #include "qom/object.h"
--#include "exec/tswap.h"
- #include "hw/sysbus.h"
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
-@@ -60,6 +62,7 @@ struct xlx_ethlite
- {
-     SysBusDevice parent_obj;
- 
-+    bool little_endian_model;
-     MemoryRegion mmio;
-     qemu_irq irq;
-     NICState *nic;
-@@ -103,9 +106,10 @@ eth_read(void *opaque, hwaddr addr, unsigned int size)
-             break;
- 
-         default:
--            r = tswap32(s->regs[addr]);
-+            r = s->regs[addr];
-             break;
-     }
-+
-     return r;
- }
- 
-@@ -161,23 +165,26 @@ eth_write(void *opaque, hwaddr addr,
-             break;
- 
-         default:
--            s->regs[addr] = tswap32(value);
-+            s->regs[addr] = value;
-             break;
-     }
- }
- 
--static const MemoryRegionOps eth_ops = {
--    .read = eth_read,
--    .write = eth_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
--    .impl = {
--        .min_access_size = 4,
--        .max_access_size = 4,
-+static const MemoryRegionOps eth_ops[2] = {
-+    [0 ... 1] = {
-+        .read = eth_read,
-+        .write = eth_write,
-+        .impl = {
-+            .min_access_size = 4,
-+            .max_access_size = 4,
-+        },
-+        .valid = {
-+            .min_access_size = 4,
-+            .max_access_size = 4,
-+        },
+diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
+index 383fc8b3c8..c117bff225 100644
+--- a/hw/timer/xilinx_timer.c
++++ b/hw/timer/xilinx_timer.c
+@@ -198,7 +198,7 @@ static const MemoryRegionOps timer_ops = {
+         .max_access_size = 4,
      },
--    .valid = {
+     .valid = {
 -        .min_access_size = 4,
--        .max_access_size = 4
--    }
-+    [0].endianness = DEVICE_BIG_ENDIAN,
-+    [1].endianness = DEVICE_LITTLE_ENDIAN,
++        .min_access_size = 1,
+         .max_access_size = 4
+     }
  };
- 
- static bool eth_can_rx(NetClientState *nc)
-@@ -237,6 +244,10 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
- {
-     struct xlx_ethlite *s = XILINX_ETHLITE(dev);
- 
-+    memory_region_init_io(&s->mmio, OBJECT(dev),
-+                          &eth_ops[s->little_endian_model], s,
-+                          "xlnx.xps-ethernetlite", R_MAX * 4);
-+
-     qemu_macaddr_default_if_unset(&s->conf.macaddr);
-     s->nic = qemu_new_nic(&net_xilinx_ethlite_info, &s->conf,
-                           object_get_typename(OBJECT(dev)), dev->id,
-@@ -249,13 +260,12 @@ static void xilinx_ethlite_init(Object *obj)
-     struct xlx_ethlite *s = XILINX_ETHLITE(obj);
- 
-     sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
--
--    memory_region_init_io(&s->mmio, obj, &eth_ops, s,
--                          "xlnx.xps-ethernetlite", R_MAX * 4);
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
- }
- 
- static Property xilinx_ethlite_properties[] = {
-+    DEFINE_PROP_BOOL("little-endian", struct xlx_ethlite,
-+                     little_endian_model, true),
-     DEFINE_PROP_UINT32("tx-ping-pong", struct xlx_ethlite, c_tx_pingpong, 1),
-     DEFINE_PROP_UINT32("rx-ping-pong", struct xlx_ethlite, c_rx_pingpong, 1),
-     DEFINE_NIC_PROPERTIES(struct xlx_ethlite, conf),
 -- 
 2.45.2
 
