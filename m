@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2539C248C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:03:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CBC9C2494
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 19:04:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9TJH-0001y0-Vh; Fri, 08 Nov 2024 13:02:16 -0500
+	id 1t9TJL-00024w-A9; Fri, 08 Nov 2024 13:02:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJ5-0001us-Vi
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1t9TJ7-0001w0-Ro
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9TJ4-0001wN-3P
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:03 -0500
+ id 1t9TJ6-0001wa-2h
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 13:02:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731088921;
+ s=mimecast20190719; t=1731088923;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PdoMcphvzb4FCO/Yj14yAl+KR/E0sA02B9InmeKS0lc=;
- b=gD6FYhYpmCPVlEv6EYSctpjFRt4m26VQcbIyzOJe0nUjpw4h1jE1L1Y59FNqnTuZA0BVyG
- rHLvcopQMjPgdeCPZxk2FUMCsq9Z/d3L1ZO/fV6keYoKEYuH92It0dRxE1wtiaHmLEPdpc
- LUS2GpRh7Q+F/n9NfOnVmgg7shV7OFA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XeSGVNmsvm8LjvUgxmz8ceo62A+bkZyrWMrM+uvspEY=;
+ b=BS6KwieEI2L6fksuG3MsAXkqkk6CLvhumZ5jCjZwOYeZefqwvOZsZHR041b0A+9W4sA+dB
+ aBM2tL7M2rbYxrlhD7C91x/rBYmM6esViJu29tU5CVtXTfxCzIumgdzgKTbQyZjB3UvTlU
+ QSJQEX9Puv3GIdT+NrScob9totVWbHw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-T429-Gt2PomWSXnhWknRDA-1; Fri, 08 Nov 2024 13:02:00 -0500
-X-MC-Unique: T429-Gt2PomWSXnhWknRDA-1
-X-Mimecast-MFC-AGG-ID: T429-Gt2PomWSXnhWknRDA
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315afcae6cso14197195e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:01:59 -0800 (PST)
+ us-mta-556-nRwnEMYJOHe6mJE1LV9HFQ-1; Fri, 08 Nov 2024 13:02:02 -0500
+X-MC-Unique: nRwnEMYJOHe6mJE1LV9HFQ-1
+X-Mimecast-MFC-AGG-ID: nRwnEMYJOHe6mJE1LV9HFQ
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43157e3521dso16472315e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 10:02:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731088918; x=1731693718;
+ d=1e100.net; s=20230601; t=1731088921; x=1731693721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PdoMcphvzb4FCO/Yj14yAl+KR/E0sA02B9InmeKS0lc=;
- b=AmEFwom3yMzZyIn17eIY/1tHD7eZgTJs8wpPH/NxcgsWgp/lK7rstIh51WwIgPrIjD
- 34TRD5ig9ckXfQmXjbQ38X3b5AIoDGsdKraBV6DqJySKzVNSqvJs92AeAqYAf3ijl55S
- vzYlF31UPjKZzdem6zYCDX+v7uxqR5b4xD40nEvKHpCTK7Q06ocepl5kuIe9VefLO+Uh
- i25A+Ok3PQZJqw1KoSR+EcTr9t0QRB2wGRIeL11XgaaXglM1DdqCze6bHZzb1CF7e4Im
- 2qBYZSbC5O9TlIi05gbI6tOoReMnnSjo+SJEAHooC+m7e89sCQL4SvC6jFMjz7j/Q/Tq
- lwFw==
-X-Gm-Message-State: AOJu0YzvIv62XlryS5dcfYtjl4bly2kfMb9zK6OBJ5HT4Z6bUktARE6m
- 8RXB30mRQ7YDaQ2aCRbySjZ1XXFDTstErTHEOOJdZgtK48SC7U7JYT7RA0sgFKIYKyBdk0S/YaP
- ZMju56vjbTpwa6OfLyJiJfy4KQG5gVlaaeb+esVy6UVhStgN8/P9t75FjfYAktjjhL0RlP4M2AM
- K2sDJwAsrCw2rznRo5Wy37VB76aOqQ6zL9vLsmRNI=
-X-Received: by 2002:a05:600c:1f93:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-432b74c0f85mr31658965e9.10.1731088917893; 
- Fri, 08 Nov 2024 10:01:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGj7aT8Q063crw88yC0aKXCGIzp0hTxGWu1PxRM4J+7kfe0o9SCGejKh0ylEFebChKsFXkwqg==
-X-Received: by 2002:a05:600c:1f93:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-432b74c0f85mr31658365e9.10.1731088917317; 
- Fri, 08 Nov 2024 10:01:57 -0800 (PST)
+ bh=XeSGVNmsvm8LjvUgxmz8ceo62A+bkZyrWMrM+uvspEY=;
+ b=ThjLFBBr11BsHlNJw1wJ6f9MbU+T84/VP5BKXP5M6OH/YCRTUce94UwujQ+qV04iFe
+ Ag/Ds3zY3Sry5aefb7MKwyHn6HrN2ftcLf1+pllV4uAyGGhwhZfp4WNaZ/s/fIiqXn1l
+ F8fAdGC/fXF/ztviuP9sieubSew4Cdg0HcghXwC0ABo6tH2dleajfF0mSJohqfd8lCOT
+ GGJ/yb+fShSkCsrdy02aac1kfvuvf28EfNtbnNli3zueG9nCM2J2iQ2D62u0NLHepYfK
+ 6mLCp52f6ER9w2kU44HHw8lWD6IGVuWAddAVOB+wVrFKhYrMy421WjaaHZ8aQVhR6pn0
+ eRcQ==
+X-Gm-Message-State: AOJu0YydUeRLSdZVU7BtlR51tdDVZDzuApe/3KSN9o+/+WltFfuA5JTs
+ GI1KQuHqmix9MCp28slnEH3SxfF9J9+PtEzW0uGyUJ7ChOn230oQdChDUkZRo6xULiNLE8q02OU
+ 60KfqypwvRf+FgzBaARjkxRHBT9Xi8HG/ZvSmV8tQuPl+viQjde4OZ7kGaEJUtXM1QRFMamwse0
+ rm5sFRrcIAjnzIqWKfMnAAzEx+VZGCbRCbq6ZSpCs=
+X-Received: by 2002:a5d:5f54:0:b0:37d:4cd5:ffec with SMTP id
+ ffacd0b85a97d-381f18632f7mr3182738f8f.2.1731088920709; 
+ Fri, 08 Nov 2024 10:02:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE6MqM3XTfMyjxqmlzETlnQUy/HeyRMRGH1cmQXnh4xpMFRmbqcFDS5aOLRww384l+1I8Gakw==
+X-Received: by 2002:a5d:5f54:0:b0:37d:4cd5:ffec with SMTP id
+ ffacd0b85a97d-381f18632f7mr3182685f8f.2.1731088920024; 
+ Fri, 08 Nov 2024 10:02:00 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b053069fsm80657835e9.4.2024.11.08.10.01.55
+ ffacd0b85a97d-381ed97c976sm5513147f8f.28.2024.11.08.10.01.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 10:01:56 -0800 (PST)
+ Fri, 08 Nov 2024 10:01:59 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, kwolf@redhat.com, junjie.mao@hotmail.com,
  zhao1.liu@intel.com, qemu-rust@nondevel.org
-Subject: [RFC PATCH 06/11] rust: build: move strict lints handling to
- rustc_args.py
-Date: Fri,  8 Nov 2024 19:01:34 +0100
-Message-ID: <20241108180139.117112-7-pbonzini@redhat.com>
+Subject: [RFC PATCH 07/11] rust: fix a couple style issues from clippy
+Date: Fri,  8 Nov 2024 19:01:35 +0100
+Message-ID: <20241108180139.117112-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108180139.117112-1-pbonzini@redhat.com>
 References: <20241108180139.117112-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,122 +102,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make Cargo use unknown_lints = "allow" as well.  This is more future
-proof as we might add new lints to rust/Cargo.toml that are not supported
-by older versions of rustc or clippy.
+These are reported as clippy::semicolon_inside_block and clippy::as_ptr_cast_mut.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                | 12 ++++--------
- rust/Cargo.toml            |  6 ++++++
- scripts/rust/rustc_args.py | 19 ++++++++++++++++---
- 3 files changed, 26 insertions(+), 11 deletions(-)
+ rust/hw/char/pl011/src/device.rs     | 6 ++++--
+ rust/hw/char/pl011/src/memory_ops.rs | 4 +++-
+ rust/qemu-api/tests/tests.rs         | 2 +-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 5726135b324..1239f5c48c1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -122,20 +122,16 @@ endif
- if have_rust
-   rustc_args = [find_program('scripts/rust/rustc_args.py'),
-     '--workspace', meson.project_source_root() / 'rust']
-+  if get_option('strict_rust_lints')
-+    rustc_args += ['--strict-lints']
-+  endif
-+
-   rustfmt = find_program('rustfmt', required: false)
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 2a85960b81f..7f40e7f71fa 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -499,7 +499,9 @@ pub fn update(&self) {
+         let flags = self.int_level & self.int_enabled;
+         for (irq, i) in self.interrupts.iter().zip(IRQMASK) {
+             // SAFETY: self.interrupts have been initialized in init().
+-            unsafe { qemu_set_irq(*irq, i32::from(flags & i != 0)) };
++            unsafe {
++                qemu_set_irq(*irq, i32::from(flags & i != 0));
++            }
+         }
+     }
  
-   rustc_lint_args = run_command(rustc_args,
-      '--lints', files('rust/Cargo.toml'),
-      capture: true, check: true).stdout().strip().splitlines()
+@@ -601,7 +603,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
+         let sysbus: *mut SysBusDevice = dev.cast::<SysBusDevice>();
  
--  # Occasionally, we may need to silence warnings and clippy lints that
--  # were only introduced in newer Rust compiler versions.  Do not croak
--  # in that case; a CI job with rust_strict_lints == true ensures that
--  # we do not have misspelled allow() attributes.
--  if not get_option('strict_rust_lints')
--    rustc_lint_args += ['-A', 'unknown_lints']
--  endif
--
-   # Apart from procedural macros, our Rust executables will often link
-   # with C code, so include all the libraries that C code needs.  This
-   # is safe; https://github.com/rust-lang/rust/pull/54675 says that
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 0230b92a9fa..1ff8f5c2781 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -11,5 +11,11 @@ unexpected_cfgs = { level = "warn", check-cfg = [
-     'cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)',
-     'cfg(has_offset_of)'] }
+         qdev_prop_set_chr(dev, c_str!("chardev").as_ptr(), chr);
+-        sysbus_realize_and_unref(sysbus, addr_of!(error_fatal) as *mut *mut Error);
++        sysbus_realize_and_unref(sysbus, addr_of!(error_fatal).cast_mut());
+         sysbus_mmio_map(sysbus, 0, addr);
+         sysbus_connect_irq(sysbus, 0, irq);
+         dev
+diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
+index 169d485a4d2..c4e8599ba43 100644
+--- a/rust/hw/char/pl011/src/memory_ops.rs
++++ b/rust/hw/char/pl011/src/memory_ops.rs
+@@ -33,7 +33,9 @@
+             // SAFETY: self.char_backend is a valid CharBackend instance after it's been
+             // initialized in realize().
+             let cb_ptr = unsafe { core::ptr::addr_of_mut!(state.as_mut().char_backend) };
+-            unsafe { qemu_chr_fe_accept_input(cb_ptr) };
++            unsafe {
++                qemu_chr_fe_accept_input(cb_ptr);
++            }
  
-+# Occasionally, we may need to silence warnings and clippy lints that
-+# were only introduced in newer Rust compiler versions.  Do not croak
-+# in that case; a CI job with rust_strict_lints == true disables this
-+# and ensures that we do not have misspelled allow() attributes.
-+unknown_lints = "allow"
-+
- # Prohibit code that is forbidden in Rust 2024
- unsafe_op_in_unsafe_fn = "deny"
-diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
-index 26733439ed4..1f8b05b8001 100644
---- a/scripts/rust/rustc_args.py
-+++ b/scripts/rust/rustc_args.py
-@@ -35,6 +35,8 @@
- except ImportError:
-     import tomli as tomllib
+             val
+         }
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 43a4827de12..925f5a3c77b 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -74,6 +74,6 @@ impl Class for DummyClass {
  
-+STRICT_LINTS = {"unknown_lints", "warnings"}
-+
- 
- class CargoTOML:
-     tomldata: Mapping[Any, Any]
-@@ -77,7 +79,7 @@ class LintFlag:
-     priority: int
- 
- 
--def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
-+def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[str]:
-     """Converts Cargo.toml lints to rustc -A/-D/-F/-W flags."""
- 
-     toml_lints = cargo_toml.lints
-@@ -102,9 +104,13 @@ def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
-             # This may change if QEMU ever invokes clippy-driver or rustdoc by
-             # hand.  For now, check the syntax but do not add non-rustc lints to
-             # the command line.
--            if k == "rust":
-+            if k == "rust" and not (strict_lints and lint in STRICT_LINTS):
-                 lint_list.append(LintFlag(flags=[flag, prefix + lint], priority=priority))
- 
-+    if strict_lints:
-+        for lint in STRICT_LINTS:
-+            lint_list.append(LintFlag(flags=["-D", lint], priority=1000000))
-+
-     lint_list.sort(key=lambda x: x.priority)
-     for lint in lint_list:
-         yield from lint.flags
-@@ -181,6 +187,13 @@ def main() -> None:
-         required=False,
-         default="1.0.0",
-     )
-+    parser.add_argument(
-+        "--strict-lints",
-+        action="store_true",
-+        dest="strict_lints",
-+        help="apply stricter checks (for nightly Rust)",
-+        default=False,
-+    )
-     args = parser.parse_args()
-     if args.verbose:
-         logging.basicConfig(level=logging.DEBUG)
-@@ -194,7 +207,7 @@ def main() -> None:
-         cargo_toml = CargoTOML(args.cargo_toml, None)
- 
-     if args.lints:
--        for tok in generate_lint_flags(cargo_toml):
-+        for tok in generate_lint_flags(cargo_toml, args.strict_lints):
-             print(tok)
- 
-     if rustc_version >= (1, 80):
+     unsafe {
+         module_call_init(module_init_type::MODULE_INIT_QOM);
+-        object_unref(object_new(DummyState::TYPE_NAME.as_ptr()) as *mut _);
++        object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
+     }
+ }
 -- 
 2.47.0
 
