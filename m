@@ -2,59 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CDB9C16EB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 08:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953C59C16FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 08:20:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9JB4-0003eJ-Dm; Fri, 08 Nov 2024 02:13:06 -0500
+	id 1t9JIC-00012b-Ir; Fri, 08 Nov 2024 02:20:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1t9JB1-0003cz-SK; Fri, 08 Nov 2024 02:13:03 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1t9JI7-0000uK-Pk; Fri, 08 Nov 2024 02:20:24 -0500
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1t9JAx-0006wp-2y; Fri, 08 Nov 2024 02:13:03 -0500
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:2e8b:0:640:9795:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id AFCD260BC6;
- Fri,  8 Nov 2024 10:12:51 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:7225::1:3] (unknown
- [2a02:6b8:b081:7225::1:3])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id nCdbYB1TwOs0-Bufmx2xa; Fri, 08 Nov 2024 10:12:50 +0300
+ id 1t9JI3-0007gp-Fe; Fri, 08 Nov 2024 02:20:23 -0500
+Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:3f48:0:640:7695:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 5A9FF609BC;
+ Fri,  8 Nov 2024 10:20:14 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7225::1:3])
+ by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id wJdUqF13NOs0-dL5UYYmt; Fri, 08 Nov 2024 10:20:13 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1731049970;
- bh=WY3Mpq3QU1ts4bH6/H5NP4XFM7VVEdfpYA+SmpBsWoc=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=n3A2ceRIowVBTx5IvkqoPQyuvMBYv3QVVW0Av4zrjIojR2xyrHtDOtGOh/4G1w1IQ
- NtI1i+c4hHpBqDJZxsL5i+LAmk/stHIu5/sJe4P7pvuPvxhddHwfTDNJauHz+KE6s0
- ymdkntmsyA4WEtNq2HEwd5gI8tCtPnbIDJ1xhPjo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ s=default; t=1731050413;
+ bh=3rL96KwqJYlha1xyaTisrV9ADibtad8EnXNhOHcV6FI=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=jqr+//EzN7g8V0Dx96WUwplH7MMYUClJRm1d+Cs1LczZy81uUteRdzzaUqjUnjNgd
+ wzxrgsNegpoSijosYuVvd38i0K2B3cvtn4+KyswBsiZ1W4nYNQXkKCwi3spzO3EzIm
+ DdJ+/L2ne9uiqSLqCwVdUZuzltqmkqjuaDTUU+w0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <9a5b8568-0e27-48d4-a5be-c7395597f4f5@yandex-team.ru>
-Date: Fri, 8 Nov 2024 10:12:49 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/3] vhost-user-blk: live resize additional APIs
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-block@nongnu.org, raphael@enfabrica.net, sgarzare@redhat.com,
- kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, eblake@redhat.com,
- armbru@redhat.com, qemu-devel@nongnu.org
-References: <20241106111837.115820-1-vsementsov@yandex-team.ru>
- <20241106131649-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20241106131649-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+To: mst@redhat.com,
+	qemu-block@nongnu.org
+Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, qemu-devel@nongnu.org,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH] qapi: fix device-sync-config since-version
+Date: Fri,  8 Nov 2024 10:19:57 +0300
+Message-Id: <20241108071957.727286-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -76,36 +70,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.11.24 21:17, Michael S. Tsirkin wrote:
-> On Wed, Nov 06, 2024 at 02:18:34PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> v7: update QAPI version 9.1 -> 9.2
-> 
-> 
-> 
-> Not like this. ypur patches are merged, pls post a fix patch on top.
-> Thanks!
+Actually it comes in 9.2, not 9.1.
 
-Ah, missed this. Ok.
+Fixes: 3f98408e2e ("qapi: introduce device-sync-config")
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ qapi/qdev.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
->> Vladimir Sementsov-Ogievskiy (3):
->>    qdev-monitor: add option to report GenericError from find_device_state
->>    vhost-user-blk: split vhost_user_blk_sync_config()
->>    qapi: introduce device-sync-config
->>
->>   hw/block/vhost-user-blk.c | 27 ++++++++++++++------
->>   hw/virtio/virtio-pci.c    |  9 +++++++
->>   include/hw/qdev-core.h    |  6 +++++
->>   qapi/qdev.json            | 24 ++++++++++++++++++
->>   system/qdev-monitor.c     | 53 ++++++++++++++++++++++++++++++++++++---
->>   5 files changed, 108 insertions(+), 11 deletions(-)
->>
->> -- 
->> 2.34.1
-> 
-
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index 2a581129c9..25cbcf977b 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -182,7 +182,7 @@
+ #
+ # @unstable: The command is experimental.
+ #
+-# Since: 9.1
++# Since: 9.2
+ ##
+ { 'command': 'device-sync-config',
+   'features': [ 'unstable' ],
 -- 
-Best regards,
-Vladimir
+2.34.1
 
 
