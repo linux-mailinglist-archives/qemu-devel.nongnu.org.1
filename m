@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BE49C14A4
+	by mail.lfdr.de (Postfix) with ESMTPS id 500049C14A7
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 04:31:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9Fhc-0008Tx-1R; Thu, 07 Nov 2024 22:30:28 -0500
+	id 1t9Fhc-0008U1-3W; Thu, 07 Nov 2024 22:30:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1t9FhZ-0008T7-0S
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:25 -0500
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ id 1t9Fha-0008TH-0D
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:26 -0500
+Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1t9FhX-0001H4-3x
- for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:24 -0500
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3e601b6a33aso1095972b6e.0
- for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 19:30:17 -0800 (PST)
+ id 1t9FhX-0001HH-06
+ for qemu-devel@nongnu.org; Thu, 07 Nov 2024 22:30:25 -0500
+Received: by mail-il1-x12a.google.com with SMTP id
+ e9e14a558f8ab-3a6adaee7acso6158955ab.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Nov 2024 19:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1731036616; x=1731641416;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1731036620; x=1731641420;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BGrNE/4XrgF8H9uZdF9RiVAPVCxcieNEKbR2LP4ytJQ=;
- b=f0VWlR4alOF7DlzKD2tx+Z6BXkbbP+qbjyAwlOqe8TN0PUCqruMkr1Esf2d+2RfwDy
- HAV30kQwlG50BQSJqB5djvWAjLJgYM5/AlkWg2QXMS1xRQMQZ9l37fK+S0eBzOOVbtLi
- r+0yG3ZJZcaCsHdu1CeA1Hlsdzz44TnX1bO71xWxnitrF9JpiwnZyzyHIf7rM5KyJxGy
- rIC5ztZ1z8qK0JZyejL8mPjJSOY3rn6oY3X86EILu6FJDJZyvUvMokjFgYp6LGTUNSrY
- e7bpdqIItVsx9z0rZFSVSCo9LCCN8AaeVxnvw8VFBDVInPtlKaJBuw79/NuPYnQYTkB+
- DutA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NCrerRQTXGrD00ddnS/Hilq6giLmAcGDIEPH6vUua6s=;
+ b=yf7edY8nuNvwnjwDbIv2YMBf7odxM99ZxDWOuxSTFoZsaFcxLWiesKjte/2taylpFP
+ jkI9QaUOYrXDIOdRWg6Rs3Eebv2Rwy/F6kQfB0Fn/TrX/nMotpJ/xpoBXiY+1YrHuoR8
+ MzvF7vOwruXln6j3PyPnUTiftJUDv4u7it+viQPi0dxyH6nshKqy8IqGTrPIgHkHonxb
+ sz99qWbsAcpLTgudZUglG4t8tVUEBVquX9pVeO7u06jirs0VOWfJDTi5thtTg1DDMfI/
+ Y5LE6ZZRkJysFAaLkyrtxXPSc3/G1LstrOAcgm5wiBXYPtbZX6PDUmLLjZ0QC5KsP2eI
+ 9XUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731036616; x=1731641416;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BGrNE/4XrgF8H9uZdF9RiVAPVCxcieNEKbR2LP4ytJQ=;
- b=shufqtIfxgrnY2YvWDZUSmOCV8k+h4CR3gdbT/kPPL1aiKzjOQ8Rur25b7KL9+fcW8
- 5ijFx9CVr4qAWP1V+07GgZVEdt1NU2amKr193uzQlCKYawo2ij/rZ2aPedHpfTBu8pqW
- qQym++erjmbuMZIFUeaeBMKu9L7Ynr/aYxK/k6e3IdptF7nb4UDUuPzjWh75QgSqE4Nu
- plFyVyvHbebjRlNJ9l4rw+7WEJbx7GArhAo0b+GpvoJsmStQSLDhY8xKIECvYUWA2E5e
- Ujn2oK/s+v7Iz01Z59V9gLNMZMpljKpTaqSKx2LzMIwPrQSobOLfkJR3rYWzIsHilbSG
- CLPQ==
-X-Gm-Message-State: AOJu0YyRpCquBMrMVy9TBQ1RFeyXxkQfFEAkaDU7FS2BuothRPa2/Bys
- hrYxaCI0NQR7tLx4nepxyzbyAFeqcrNMUdZxQs4Xjwnmn42mJWGhaafXPnRsFTE7ghr7xMcPuNR
- L534=
-X-Google-Smtp-Source: AGHT+IHTB8VbFQuEgVGCEzanvwDY1h4gCDZiKTU9EeDLo+kbnDLVRYCi+MmXJYybCPMYj2WbXQR5bg==
-X-Received: by 2002:a05:6808:300c:b0:3e6:37f7:5a3a with SMTP id
- 5614622812f47-3e794737a5fmr1849168b6e.41.1731036616276; 
- Thu, 07 Nov 2024 19:30:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731036620; x=1731641420;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NCrerRQTXGrD00ddnS/Hilq6giLmAcGDIEPH6vUua6s=;
+ b=xMd03D41GmCM+31yRVkjaHDKvIedHKr7L7PHQo34rY6HH1jDRjdy5gRUf7/01x7+qs
+ w4QVvTdVeyw2jEvPWqO3yzb3/zk8bzd6mVIwbPQAf1r6iqWUQ2Dd1nsk3Y3idSI31Cp5
+ fXdAw0FAZL5y8tfCSFRSjZu4ykpk95JAlR1KCs2RfqebzVS79ufpEVPqKmDA1NpZ8Ax5
+ ID8RiE2O+Iwqt1oMHd/05mYg1K/G/MBySYaB39Q3cbU8Vec/n4XstBMtABXvtJn0UbZb
+ mq2WzmAHgZm0yE1DvNbzkoLmwaPUhMLCY3FPIgDS6Kt5yFAzXpissEIq4ZWS0i+mtfrn
+ 9JuQ==
+X-Gm-Message-State: AOJu0YxBlFqr/cq3MlR3Fj5klke6zmAsb/8XFLq3MT662xt2BMK3Vosg
+ QD1hwhkum2vvEyAjm44Tc8Yz10UKkJQOQB9r/ltFt3DiINUytxCB3zM10hKN7PJANFSXrAkCaKe
+ W
+X-Google-Smtp-Source: AGHT+IHuAnySDLoX4U4V6syOdK8a1Qm+ZKR4pIxN3TRjyI4qCO35oUlg7cbch09RdEhXS4e3TMF1/w==
+X-Received: by 2002:a05:6e02:190e:b0:3a3:9471:8967 with SMTP id
+ e9e14a558f8ab-3a6f19e43cbmr19854955ab.11.1731036619986; 
+ Thu, 07 Nov 2024 19:30:19 -0800 (PST)
 Received: from ThinkPad-T14-hirose.hq.igel.co.jp (napt.igel.co.jp.
  [219.106.231.132]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7f41f65d358sm2326435a12.84.2024.11.07.19.30.14
+ 41be03b00d2f7-7f41f65d358sm2326435a12.84.2024.11.07.19.30.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Nov 2024 19:30:15 -0800 (PST)
+ Thu, 07 Nov 2024 19:30:19 -0800 (PST)
 From: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
 To: qemu-devel@nongnu.org
-Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
-Subject: [RFC PATCH 0/5] support unaligned access to xHCI Capability
-Date: Fri,  8 Nov 2024 12:29:44 +0900
-Message-ID: <20241108032952.56692-1-tomoyuki.hirose@igel.co.jp>
+Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org (open list:nvme)
+Subject: [RFC PATCH 1/5] hw/nvme/ctrl: specify the 'valid' field in
+ MemoryRegionOps
+Date: Fri,  8 Nov 2024 12:29:45 +0900
+Message-ID: <20241108032952.56692-2-tomoyuki.hirose@igel.co.jp>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241108032952.56692-1-tomoyuki.hirose@igel.co.jp>
+References: <20241108032952.56692-1-tomoyuki.hirose@igel.co.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-oi1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
+ envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-il1-x12a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,47 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set aims to support unaligned access to xHCI Capability
-Registers.
+'valid' field in MemoryRegionOps struct indicates how the MemoryRegion
+can be accessed by the guest. In the previous code, the 'valid' field
+was not specified explicitly. As a result, the CMB area could only be
+accessed in units of 4 bytes.
 
-To achieve this, we introduce the emulation of an unaligned access
-through multiple aligned accesses. This patch set also adds a test
-device and several tests using this device to verify that the
-emulation functions correctly.
+This commit specifies the 'valid' field in MemoryRegionOps of CMB and
+the CMB area can be accessed in units of 8 bytes.
 
-Using these changes, unaligned access to xHCI Capability Registers is
-now supported.
+Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
+---
+ hw/nvme/ctrl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-During development, I required a lot of 'MemoryRegionOps' structs with
-its own read/write functions for tests. In the QEMU project, a large
-number of similar functions or structs are often written in '.inc'
-files. I followed this approach for the test functions but would
-appreciate feedback on whether this is appropriate.
-
-Tomoyuki HIROSE (5):
-  hw/nvme/ctrl: specify the 'valid' field in MemoryRegionOps
-  system/memory: support unaligned access
-  hw/misc: add test device for memory access
-  tests/qtest: add test for memory region access
-  hw/usb/hcd-xhci: allow unaligned access to Capability Registers
-
- hw/misc/Kconfig                         |    4 +
- hw/misc/memaccess-testdev.c             |  197 +++
- hw/misc/meson.build                     |    1 +
- hw/nvme/ctrl.c                          |    5 +
- hw/usb/hcd-xhci.c                       |    4 +-
- include/hw/misc/memaccess-testdev.h     |   42 +
- include/hw/misc/memaccess-testdev.h.inc | 1864 +++++++++++++++++++++++
- system/memory.c                         |  147 +-
- system/physmem.c                        |    8 -
- tests/qtest/memaccess-test.c            |  598 ++++++++
- tests/qtest/meson.build                 |    9 +
- 11 files changed, 2842 insertions(+), 37 deletions(-)
- create mode 100644 hw/misc/memaccess-testdev.c
- create mode 100644 include/hw/misc/memaccess-testdev.h
- create mode 100644 include/hw/misc/memaccess-testdev.h.inc
- create mode 100644 tests/qtest/memaccess-test.c
-
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 8e4612e035..acbd10628f 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8166,6 +8166,11 @@ static const MemoryRegionOps nvme_cmb_ops = {
+         .min_access_size = 1,
+         .max_access_size = 8,
+     },
++    .valid = {
++        .unaligned = true,
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
+ };
+ 
+ static bool nvme_check_params(NvmeCtrl *n, Error **errp)
 -- 
 2.43.0
 
