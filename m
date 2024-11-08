@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6599C2378
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6649C237E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 18:39:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9SwS-0003cb-Sz; Fri, 08 Nov 2024 12:38:40 -0500
+	id 1t9SwT-0003fl-Rx; Fri, 08 Nov 2024 12:38:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9SwP-0003az-25
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:37 -0500
+ id 1t9SwP-0003b8-Em
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1t9SwM-0007ZL-Pu
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:36 -0500
+ id 1t9SwN-0007ZT-Va
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 12:38:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731087513;
+ s=mimecast20190719; t=1731087515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=HRQlLEKuUjdRqZQeOMskkxAI/jdXKEPQv2oog1DAxk4=;
- b=ZF2/UzcAw1uapfzkJKMhfQI730XZZrtE8GNFA6B72YoAm3sqL8hyH0N3sikI1i1U6Pjk9j
- 3J7WZOyuTCjv3NNPBD6arbLr0QN+k4w+F2aXf2WH067aB0ooY9H0YOvRjoDCRYumdWZTZI
- yNSM3G7R7lTYNzTSPgfcmdnwoPQEXp4=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=C3j3uR+M0eiiYaHcDXQAkcIVQRaqZMJIdRPVYO66kVA=;
+ b=gwNqVS8da9tFGEQQey0zrA5/NjnaV95do3txQeYuWKM7CdHdGoEaU3ElT3YqY7Svmt9KE2
+ +c9aCshJa4JKoIFgy+Syrord+apWvfNd6qimGCmRkgTd+WCOb9XgJx18utaw1cjnU98rdX
+ k09LD/gUM3Sjq1gS6VG5LTULY7ZLk9I=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-CoAulT4DOACgrYycv0arwA-1; Fri, 08 Nov 2024 12:38:31 -0500
-X-MC-Unique: CoAulT4DOACgrYycv0arwA-1
-X-Mimecast-MFC-AGG-ID: CoAulT4DOACgrYycv0arwA
+ us-mta-335-0z64-qD2MSeuLj8qtp1TfA-1; Fri, 08 Nov 2024 12:38:33 -0500
+X-MC-Unique: 0z64-qD2MSeuLj8qtp1TfA-1
+X-Mimecast-MFC-AGG-ID: 0z64-qD2MSeuLj8qtp1TfA
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-431ad45828aso16426505e9.3
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:31 -0800 (PST)
+ 5b1f17b1804b1-43159c07193so21146895e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 09:38:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731087510; x=1731692310;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HRQlLEKuUjdRqZQeOMskkxAI/jdXKEPQv2oog1DAxk4=;
- b=VrRkYaVJAaMV+w7fj1iPYZ+PlQCqqBVvEgRxXCDGw2Ff5o0xuUNYCZ0jsyPCmFWoSj
- h0M31SRrNSNvXfw3IZ/Bk6k6qN7uV4fi/TWFid7RnGt9h6nCKBY7qkAAPchABf7H+Ht0
- /8XIysMtjRR8Tb2R+8I5KXFwgGgpGSlJXOOj5aLrBGByMCSgeNZLEvKRJ4lxKBO720bS
- 2TbucKBqFHoSJQ6naty33QtvJu7AqFU+kKR9RC20k8GJ4YRXrtX1CexIIfEPq33hhlKK
- pxrCDuZNsJA69mqTt0Mkd+M9z3eEig6H23lAn6ri6wf1GJ2hAb9kEnOXNCW0/hlrvyw0
- ocPQ==
-X-Gm-Message-State: AOJu0YySUoFN3IlDbDQdgf7jlwSY86ndYunJ1Bc3+WEICeogZkbuW055
- E4+Hi45AnFcU0yAxqZ//DxzSQ8INyhapK3HEuK/9NobZDBF1wdax6oKI9x1ZaHySNSfWL0TjFn7
- 2jKDMc6Zcy8oFEkis/q8N8RSFb9sT1yOuKc5RjHt7+IOZdodL4dww8v7F72GGk/d0fU3G4H1gXC
- ce+ToSk5Zw6v8WL2gAny1vw2q1mK02lw313Z3BkOI=
-X-Received: by 2002:a05:600c:4e8b:b0:431:44f6:566f with SMTP id
- 5b1f17b1804b1-432b7501d2bmr32193285e9.13.1731087510329; 
- Fri, 08 Nov 2024 09:38:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEVk8s8yAyZbaWLjWrX71eAYu/c7IcfPeUNALqEO+JpqvE8rTudrNifKVYSzA3muT+rr8ofg==
-X-Received: by 2002:a05:600c:4e8b:b0:431:44f6:566f with SMTP id
- 5b1f17b1804b1-432b7501d2bmr32193045e9.13.1731087509724; 
- Fri, 08 Nov 2024 09:38:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731087512; x=1731692312;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=C3j3uR+M0eiiYaHcDXQAkcIVQRaqZMJIdRPVYO66kVA=;
+ b=fJPX1UZnbv3wb9mSHxGU4M1/lInI08yt9otEBchULi+1pYHMh7qU02kmEiRHCQ2LXo
+ q37CQl8IFvzS9RvBUasYvJBNpy7Be0fHT1kaN/D47gQeMaxlBG65gOESPFiA7EinGzND
+ PhjYbHkwE0SMAQ7/oSWSv8nZGihP6DqDUybwEEyeOPCCYuX3MnvqXDsXKcDfTjUDa6b1
+ kk+Q+eUc5Qx2HJNjYhy2p9lcYaD7TnhXMiJ32yv1mZHGXxCOoCr15LGstr7a9fhNI0yM
+ ipeiZzU0DoR8zwX6H3pPgHbZgFfDd0A1sQ3anRHPXscnleoJiKJ+1KmZmANM3zmGJEsM
+ B7Ig==
+X-Gm-Message-State: AOJu0YwUwm/6u2PqPlruRbcBFX9pfw/Qkml7hw28sFiFNj/AnKw+/FWH
+ KH03s9Dd0KUowZq/d2XcSvXNgwWYpXc3NMVNn6BCy4gVSaDgRJADvX/4CLtKvdnHVpgrql2Noqu
+ l1meY8jpmNM78dH6RRQsjfMXyGqSiF4cbhOMaqUMkUXjs5hj8uOc28iV8Pxt9r0wMjqQ6ZcnLS2
+ U/aE7zjKX7PhnXMe59lzU0OokOeYF34YqJZVnuD0o=
+X-Received: by 2002:a05:600c:4f10:b0:431:52a3:d9d5 with SMTP id
+ 5b1f17b1804b1-432b74a07femr40750045e9.0.1731087511933; 
+ Fri, 08 Nov 2024 09:38:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGL2ZuGMOzQc75VMbDAu2OWqMHT7eHW/IK7Wjlg1rN3JEfZibnsSCnF26IyddJPMvhIbXUrkA==
+X-Received: by 2002:a05:600c:4f10:b0:431:52a3:d9d5 with SMTP id
+ 5b1f17b1804b1-432b74a07femr40749845e9.0.1731087511571; 
+ Fri, 08 Nov 2024 09:38:31 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b053ff08sm79183555e9.10.2024.11.08.09.38.29
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-381ed9a9c2dsm5498347f8f.60.2024.11.08.09.38.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 09:38:29 -0800 (PST)
+ Fri, 08 Nov 2024 09:38:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/13] (Almost entirely) bugfix changes for QEMU 9.2 hard freeze
-Date: Fri,  8 Nov 2024 18:38:15 +0100
-Message-ID: <20241108173828.111454-1-pbonzini@redhat.com>
+Cc: Tao Su <tao1.su@linux.intel.com>
+Subject: [PULL 01/13] target/i386: add sha512, sm3, sm4 feature bits
+Date: Fri,  8 Nov 2024 18:38:16 +0100
+Message-ID: <20241108173828.111454-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241108173828.111454-1-pbonzini@redhat.com>
+References: <20241108173828.111454-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -98,80 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a1dacb66915eb7d08a0596cc97068a37c39930d3:
+SHA512, SM3, SM4 (CPUID[EAX=7,ECX=1).EAX bits 0 to 2) is supported by
+Clearwater Forest processor, add it to QEMU as it does not need any
+specific enablement.
 
-  Merge tag 'for-upstream-rust' of https://gitlab.com/bonzini/qemu into staging (2024-11-06 21:27:47 +0000)
+See https://lore.kernel.org/kvm/20241105054825.870939-1-tao1.su@linux.intel.com/
+for reference.
 
-are available in the Git repository at:
+Reviewed-by: Tao Su <tao1.su@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to 37d729ee75fd035b1a8995b51b4e0d182c909c0b:
-
-  hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus (2024-11-08 09:24:52 +0100)
-
-----------------------------------------------------------------
-* i386: fix -M isapc with ubsan
-* i386: add sha512, sm3, sm4 feature bits
-* eif: fix Coverity issues
-* i386/hvf: x2APIC support
-* i386/hvf: fixes
-* i386/tcg: fix 2-stage page walk
-* eif: fix coverity issues
-* rust: fix subproject warnings with new rust, avoid useless cmake fallback
-----------------------------------------------------------------
-
-The x2APIC support is not a bugfix, but it's small and it was posted well in
-advance of soft freeze.
-
-Paolo
-
-Alexander Graf (1):
-      target/i386: Fix legacy page table walk
-
-Paolo Bonzini (5):
-      target/i386: add sha512, sm3, sm4 feature bits
-      rust: add meson_version to all subprojects
-      eif: cope with huge section offsets
-      eif: cope with huge section sizes
-      rust: qemu-api-macros: always process subprojects before dependencies
-
-Peter Maydell (1):
-      hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus
-
-Phil Dennis-Jordan (5):
-      i386/hvf: Integrates x2APIC support with hvf accel
-      i386/hvf: Fix for UB in handling CPUID function 0xD
-      i386/hvf: Fixes startup memory leak (vmcs caps)
-      i386/hvf: Raise exception on error setting APICBASE
-      i386/hvf: Removes duplicate/shadowed variables in hvf_vcpu_exec
-
-Pierrick Bouvier (1):
-      target/i386/hvf: fix clang compilation warning
-
- include/qemu/osdep.h                               |  4 ++
- target/i386/cpu.h                                  |  1 +
- hw/core/eif.c                                      | 52 +++++++++++++++++++---
- hw/i386/pc.c                                       |  4 +-
- target/i386/cpu.c                                  |  2 +-
- target/i386/hvf/hvf.c                              |  7 ++-
- target/i386/hvf/x86_cpuid.c                        |  8 ++--
- target/i386/hvf/x86_emu.c                          | 42 ++++++++++++++++-
- target/i386/tcg/seg_helper.c                       |  2 +-
- target/i386/tcg/sysemu/excp_helper.c               |  2 +-
- rust/qemu-api-macros/meson.build                   |  4 ++
- .../packagefiles/arbitrary-int-1-rs/meson.build    |  1 +
- subprojects/packagefiles/bilge-0.2-rs/meson.build  |  1 +
- .../packagefiles/bilge-impl-0.2-rs/meson.build     |  1 +
- subprojects/packagefiles/either-1-rs/meson.build   |  1 +
- .../packagefiles/itertools-0.11-rs/meson.build     |  1 +
- .../packagefiles/proc-macro-error-1-rs/meson.build |  1 +
- .../proc-macro-error-attr-1-rs/meson.build         |  1 +
- .../packagefiles/proc-macro2-1-rs/meson.build      |  1 +
- subprojects/packagefiles/quote-1-rs/meson.build    |  1 +
- subprojects/packagefiles/syn-2-rs/meson.build      |  1 +
- .../packagefiles/unicode-ident-1-rs/meson.build    |  1 +
- 22 files changed, 118 insertions(+), 21 deletions(-)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 58c96eafea9..3725dbbc4b3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1116,7 +1116,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+     [FEAT_7_1_EAX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+-            NULL, NULL, NULL, NULL,
++            "sha512", "sm3", "sm4", NULL,
+             "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
+             NULL, NULL, "fzrm", "fsrs",
+             "fsrc", NULL, NULL, NULL,
 -- 
 2.47.0
 
