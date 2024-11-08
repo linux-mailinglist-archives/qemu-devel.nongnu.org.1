@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302239C2110
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3D59C20DF
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 16:45:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9R9D-0002lA-0s; Fri, 08 Nov 2024 10:43:44 -0500
+	id 1t9R9S-0003TD-E7; Fri, 08 Nov 2024 10:43:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R8w-0002fK-Rh
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:28 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R91-0002ju-KZ
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:31 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R8s-0005MW-1t
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:25 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-37d3ecad390so1998723f8f.1
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 07:43:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1t9R8y-0005Ou-Ax
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 10:43:30 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-37d4b0943c7so1298793f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 07:43:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731080600; x=1731685400; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OGYYu9uDLFU2RYpWoNuF1bsweDbG4J7PO3OV7GstpRk=;
- b=pCOsmtL+3JT6YiiGrRaQuqjRP/lgpYpWHnDMN1i3K2/p+M1mseYn3j01IeseoYLJJb
- OWhij6TLI4zPLcivqv4SAlFWnLyqO45XOfagpwWzLOkPmOexCAPRxgx/9FSDRIe+kChk
- 2fKP3HQTWmdiptCAZBLBo57UTb4FLtopPlvXajtaOUsKRhU7tXbc5WxoU0D7rv2RQph0
- 7J0MG1WAzdrHQJxpHkhMNKfAhQ6X6+45Gk9kgFERNLJ98nXyBVsMJSGijU6UXpQj5Nq0
- ZTme9ZTGJNfvFQ5vCSxuh+kBw2+NBMMoy9zQE+VtzxViaRQSpzElhmZyzdTQnXf6SBG+
- 2anQ==
+ d=linaro.org; s=google; t=1731080605; x=1731685405; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eC842Nuh9R0vJWP6nw94dy+XXPWkmXcFTwUalIOdql8=;
+ b=u/qYz+0b70/OpBOeLNZVtF5uu97AxZBPFbM0NBurBqEtH0mOLcSBSz3vaZQYPmRild
+ 1lnCB931y1LjoQtAAufaREhw4nxf4zy42tB9cSGj58RpX9bBS6+xHj9GGIIJK2uh2T9O
+ kZgJBN2AS1ZNOwvFzF1XNdLK52sNq1RfEgs+Q8Zc96WS8OfUj/di69fCGdL4grd3mA8b
+ gC8jhPdvUjOrPHyZzguV1jBtLYd/lpYFIFtTfNfL0tXzCuURlrf+h8rwWZspvCa2azy/
+ M8f1i6u+3v1/ZNCfB+vja38lWiLutGJsSleft5ClcpoSDpaYG6+McyCijPArTWkScw9f
+ IgFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731080600; x=1731685400;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OGYYu9uDLFU2RYpWoNuF1bsweDbG4J7PO3OV7GstpRk=;
- b=ChuaUeUDQvifyl88AdE3wQFwTsX2loku+AOzviIx40fSSZLrc6jY194QBBiwFEMod2
- USuQYApzt0RKxdMzyvaS9v3XrrF4no4Tc2Ravw3MCVy2Ahe5b/AAWikBKBHccefIpY9v
- KU57jito2VRarldF/JVdekf/LjrxMXdH4nEdnOtr2QXIABxEfcrrSepdRE4dOxIaUmI/
- KhYskSpWB234+TObZ/npLkG5qjwRoUB2tM4M8sKK9FIEajVWcRRrzIKz/AZAq4RwpaPk
- EVmylBchrTYqFzPhheHIZTwcQw6JW5wVckYfFytdc505dpd0WriAdHSgZDNFatvioX1y
- UJ+g==
-X-Gm-Message-State: AOJu0Yz0uZQw4bs9U1r5v759KTakeVsicPaGI5SnYisAyLyVlV5oIMe9
- o4BZVcqfV1seSi2MY1mUhHE9ZTZDhACw+Yp8ioIRCVWoUvclCMbNZGJEzQ7OafGFLOGyEWyEh5N
- 4
-X-Google-Smtp-Source: AGHT+IGig41p4mOhXnnD7LpETtXZpc4o+31r9+lZ7XyqpufHHUdZqZ4eB1q4asbKjOQc/j5duWi3cg==
-X-Received: by 2002:a05:6000:1548:b0:37e:c4e3:f14b with SMTP id
- ffacd0b85a97d-381f1c83bf0mr2695037f8f.23.1731080600315; 
- Fri, 08 Nov 2024 07:43:20 -0800 (PST)
-Received: from localhost.localdomain ([154.14.63.34])
+ d=1e100.net; s=20230601; t=1731080605; x=1731685405;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eC842Nuh9R0vJWP6nw94dy+XXPWkmXcFTwUalIOdql8=;
+ b=XCtv4lcNyHXIWXLK/C6B9Y990My1Cqx7v5Ykxr1v1ppVmBC0eviOU+xfRwjVGR/9Qb
+ 9GrZ1yRaFy2Cx28S6OzibLTJdhtjzIyntpVvtSsTerH3U8tyjOc7p52chB8OENmSOU8F
+ 4w/bJ5vnreYZL3XmwDhuwNHH/5mkspgsmHibI7ooyhIynF1FkAA/HZf0yFdsPRgMPYaS
+ mOSl29/diiFFaLql3cy+crrZyIVOvY6eyYJFjcxl8eiZVKJwRXJJ508BJCaMobjm/tIy
+ i2tOihCVa6xE21uLBn8Z0hcYNGve3BXdQ0yIjc2hhYIko3VtLS6okv7J2y3BqCX2CdYk
+ ebWA==
+X-Gm-Message-State: AOJu0YxOa1yrHBff6iWczaBcdrZHSqAibUrlVNcRwlEKlkrqOQ5MIxiE
+ NVjj545O2DEujZOySMcL6IBAY2wtOhU+4b/4+KOeUVoDppXR/2n3KopyQ5V1y0KueKfRGBd1l0s
+ H
+X-Google-Smtp-Source: AGHT+IGAElG22aKzSYKrj+eNfrCLffdIe/pfQfqbUp0syVG5L6v9ESVGO9YfefTQCqI0i+XERYA+/A==
+X-Received: by 2002:a05:6000:2588:b0:381:c8fe:20b1 with SMTP id
+ ffacd0b85a97d-381f18855b8mr2960779f8f.42.1731080605051; 
+ Fri, 08 Nov 2024 07:43:25 -0800 (PST)
+Received: from localhost.localdomain ([89.101.134.25])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed9ea7c3sm5381722f8f.80.2024.11.08.07.43.18
+ ffacd0b85a97d-381eda0411csm5170510f8f.95.2024.11.08.07.43.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Nov 2024 07:43:19 -0800 (PST)
+ Fri, 08 Nov 2024 07:43:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Anton Johansson <anjo@rev.ng>
@@ -65,15 +66,18 @@ Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 00/17] hw/microblaze: Allow running cross-endian vCPUs
-Date: Fri,  8 Nov 2024 15:43:00 +0000
-Message-ID: <20241108154317.12129-1-philmd@linaro.org>
+Subject: [PATCH v3 01/17] hw/microblaze: Restrict MemoryRegionOps are
+ implemented as 32-bit
+Date: Fri,  8 Nov 2024 15:43:01 +0000
+Message-ID: <20241108154317.12129-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241108154317.12129-1-philmd@linaro.org>
+References: <20241108154317.12129-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,78 +100,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 4 (new) & 10
+All these MemoryRegionOps read() and write() handlers are
+implemented expecting 32-bit accesses. Clarify that setting
+.impl.min/max_access_size fields.
 
-Since v2:
-- Addressed Richard's review comments
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20241105130431.22564-8-philmd@linaro.org>
+---
+ hw/char/xilinx_uartlite.c | 4 ++++
+ hw/intc/xilinx_intc.c     | 4 ++++
+ hw/net/xilinx_ethlite.c   | 4 ++++
+ hw/timer/xilinx_timer.c   | 4 ++++
+ 4 files changed, 16 insertions(+)
 
-Since v1:
-- Make device endianness configurable (Edgar)
-- Convert more Xilinx devices
-- Avoid preprocessor #if (Richard)
-- Add R-b tags
-
-Make machines endianness-agnostic, allowing to run a big-endian vCPU
-on the little-endian 'qemu-system-microblazeel' binary, and a little
-endian one on the big-endian 'qemu-system-microblaze' binary.
-
-Tests added, following combinations covered:
-- little-endian vCPU using little-endian binary (in-tree)
-- little-endian vCPU using big-endian binary (new)
-- big-endian vCPU using little-endian binary (new)
-- big-endian vCPU using big-endian binary (in-tree)
-
-To make a target endian-agnostic we need to remove the MO_TE uses.
-In order to do that, we propagate the MemOp from earlier in the
-call stack, or we extract it from the vCPU env (on MicroBlaze the
-CPU endianness is exposed by the 'ENDI' bit).
-
-Next step: Look at unifying binaries.
-
-Please review,
-
-Phil.
-
-Philippe Mathieu-Daudé (17):
-  hw/microblaze: Restrict MemoryRegionOps are implemented as 32-bit
-  hw/microblaze: Propagate CPU endianness to microblaze_load_kernel()
-  hw/intc/xilinx_intc: Make device endianness configurable
-  RFC hw/net/xilinx_ethlite: Simplify by having configurable endianness
-  RFC hw/timer/xilinx_timer: Allow down to 8-bit memory access
-  hw/timer/xilinx_timer: Make device endianness configurable
-  hw/char/xilinx_uartlite: Make device endianness configurable
-  hw/ssi/xilinx_spi: Make device endianness configurable
-  hw/ssi/xilinx_spips: Make device endianness configurable
-  hw/arm/xlnx-zynqmp: Use &error_abort for programming errors
-  target/microblaze: Explode MO_TExx -> MO_TE | MO_xx
-  target/microblaze: Set MO_TE once in do_load() / do_store()
-  target/microblaze: Introduce mo_endian() helper
-  target/microblaze: Consider endianness while translating code
-  hw/microblaze: Support various endianness for s3adsp1800 machines
-  tests/functional: Explicit endianness of microblaze assets
-  tests/functional: Add microblaze cross-endianness tests
-
- hw/microblaze/boot.h                          |  4 +-
- include/hw/ssi/xilinx_spips.h                 |  1 +
- target/microblaze/cpu.h                       |  7 +++
- hw/arm/xilinx_zynq.c                          |  1 +
- hw/arm/xlnx-zynqmp.c                          | 40 +++++--------
- hw/char/xilinx_uartlite.c                     | 31 ++++++----
- hw/intc/xilinx_intc.c                         | 50 ++++++++++++----
- hw/microblaze/boot.c                          |  8 +--
- hw/microblaze/petalogix_ml605_mmu.c           |  4 +-
- hw/microblaze/petalogix_s3adsp1800_mmu.c      | 58 ++++++++++++++++---
- hw/microblaze/xlnx-zynqmp-pmu.c               |  2 +-
- hw/net/xilinx_ethlite.c                       | 42 +++++++++-----
- hw/ppc/virtex_ml507.c                         |  1 +
- hw/ssi/xilinx_spi.c                           | 24 +++++---
- hw/ssi/xilinx_spips.c                         | 36 +++++++-----
- hw/timer/xilinx_timer.c                       | 33 +++++++----
- target/microblaze/translate.c                 | 49 ++++++++++------
- .../functional/test_microblaze_s3adsp1800.py  | 27 ++++++++-
- .../test_microblazeel_s3adsp1800.py           | 25 +++++++-
- 19 files changed, 309 insertions(+), 134 deletions(-)
-
+diff --git a/hw/char/xilinx_uartlite.c b/hw/char/xilinx_uartlite.c
+index f325084f8b..3022b3d8ef 100644
+--- a/hw/char/xilinx_uartlite.c
++++ b/hw/char/xilinx_uartlite.c
+@@ -170,6 +170,10 @@ static const MemoryRegionOps uart_ops = {
+     .read = uart_read,
+     .write = uart_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4
+diff --git a/hw/intc/xilinx_intc.c b/hw/intc/xilinx_intc.c
+index 6e5012e66e..8fb6b4f1a5 100644
+--- a/hw/intc/xilinx_intc.c
++++ b/hw/intc/xilinx_intc.c
+@@ -144,6 +144,10 @@ static const MemoryRegionOps pic_ops = {
+     .read = pic_read,
+     .write = pic_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
+index bd81290808..e84b4cdd35 100644
+--- a/hw/net/xilinx_ethlite.c
++++ b/hw/net/xilinx_ethlite.c
+@@ -170,6 +170,10 @@ static const MemoryRegionOps eth_ops = {
+     .read = eth_read,
+     .write = eth_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
+index 32a9df69e0..383fc8b3c8 100644
+--- a/hw/timer/xilinx_timer.c
++++ b/hw/timer/xilinx_timer.c
+@@ -193,6 +193,10 @@ static const MemoryRegionOps timer_ops = {
+     .read = timer_read,
+     .write = timer_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
 -- 
 2.45.2
 
