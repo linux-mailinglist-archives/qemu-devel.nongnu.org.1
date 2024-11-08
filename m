@@ -2,74 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08C39C1A5A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7EE9C1AFB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 11:45:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9M8g-0007ju-Lc; Fri, 08 Nov 2024 05:22:50 -0500
+	id 1t9MSm-00049x-3T; Fri, 08 Nov 2024 05:43:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9M8c-0007ig-8F
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:22:48 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9M8a-0003Wl-Mp
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:22:46 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5cefa22e9d5so2179836a12.3
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 02:22:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731061362; x=1731666162; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=E50wz7jykj+ROZV5+dUA4vRjqLfB8DXoxy+H41uGIRI=;
- b=yZnlzXtN5wxe6tX2l6BIa1R/xLeS4S0juKaOUCvbKt4ZfCCyoiNT8xiSr7QQ5W+yKf
- 0HOHLQf7nz55tlGdNS78uzfM94YUWl5K5R931yr7KwF5ESEqs6c2+kEt5YRC2xkY/jwO
- vNlMezpKZNf5/Al6mfy16dMCtPGZuUHfwiNVdX2bTmAnggnEgYkk/88vaezmZojSjedc
- d6kD9+uHCaqa3qMNn4Qc3DeQJlmbjtC96jGV4auD3J6HDk4hhuetb6C6joIyyilAZ/d8
- kW0ZZdJskYmHoeoQITAJV7kXiXD736W1UbC3wME4AGxSMxlB6H8vgP1zCFny/zzv3kym
- M8Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731061362; x=1731666162;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E50wz7jykj+ROZV5+dUA4vRjqLfB8DXoxy+H41uGIRI=;
- b=E9aDiudSOJqxpvYZGibMXavr0fk4/0A3GYiiJ3GS8TJzbN1P0UqzpL31uthMQ5uGaf
- U0X0sQt+YafSCXocTeM8LlwkNmGaPEaC0fwqFihQBhElLv//I9AF8/z2rzxag5eDkSHd
- dj9o1AUosvRNjpVjUq5B9OSHzykVokiWx/T+czNoSRcrAnsDE/SkPQuNVTmtmcUIrBms
- p7WQ+91I+WDWFmpcstIdnthq8p8eUhNbu7Tpw3UXA4hmVwgVxsTyr3MNa/IN5WzWTMkk
- OSZWgLU8eyDkb5OhsNBfvBgFXIwGNMqu4hpHszu9zKJca+xDjksz+fVWtGfux9aBsehf
- h2HQ==
-X-Gm-Message-State: AOJu0YyLhyTk9WtSdltrY+ZpuUzfLfOoRR/yHpyjMHh1Y5Q63tR5c3u1
- 6UI1yYt9anUA9AkDj22rT2lgrqTjGEuBtXG3/ueXAmuMzOddMNBcm+0M7l49TotZRJ/FHm3yrTB
- u0ZkqsIyxcov8MqK/elOqA98ELAKoMldonaH8FIRkQA2od6fz
-X-Google-Smtp-Source: AGHT+IFWSWWH8NfKVyFOAWuLMkK7bNYIVGzfZ86PY6PzPWXZCkpT+ZhUOisPcKTyX5p4p+TBNYpPSaS0n7A18J1uN2c=
-X-Received: by 2002:a05:6402:5213:b0:5ce:fc3c:3c3 with SMTP id
- 4fb4d7f45d1cf-5cf0a45c690mr1747029a12.28.1731061362370; Fri, 08 Nov 2024
- 02:22:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSj-00049a-7a
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1t9MSh-00068s-DL
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 05:43:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731062609;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4Wn/SU29qjPGoDuvuKwnDYxy4am62rNvT1IhX7LQqR8=;
+ b=fS+SCv91mWi75mdCacfzlllRFPay5oe7HA7whrmb+2P5eqRT4LdSI90F1hcTuoQnGh6XN/
+ tXiMLqn5apxmkzYtCdjof6G/q7zoocyUpbsOPhywBHqNplPxtqvA8+nKbeuRsEFsSFe/nE
+ pjU9UrA201pj0pGZRnlxQE28Evt3Kyo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-Zi2L6gMfPJWDBALj4lv2ZQ-1; Fri,
+ 08 Nov 2024 05:43:24 -0500
+X-MC-Unique: Zi2L6gMfPJWDBALj4lv2ZQ-1
+X-Mimecast-MFC-AGG-ID: Zi2L6gMfPJWDBALj4lv2ZQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE61F1956048; Fri,  8 Nov 2024 10:43:18 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.118])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A489D1953880; Fri,  8 Nov 2024 10:43:16 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/10] Functional test fixes & next-cube cleanup
+Date: Fri,  8 Nov 2024 11:43:00 +0100
+Message-ID: <20241108104312.534448-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20241107150534.38651-1-stefanb@linux.ibm.com>
-In-Reply-To: <20241107150534.38651-1-stefanb@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Nov 2024 10:22:31 +0000
-Message-ID: <CAFEAcA8J-SrhhAVnwygrgvntf5KEWgpqm3M9MZ0jn5Z9qHdk2Q@mail.gmail.com>
-Subject: Re: [PULL v2 0/1] Merge Aspeed TPM test 2024/11/07 v2
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,41 +77,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Nov 2024 at 15:05, Stefan Berger <stefanb@linux.ibm.com> wrote:
->
-> Hello!
->
->  This PR fixes the path used by swtpm to store its state and now uses a
-> path under /var/tmp rather than a path local to the test. We ran into
-> issues on Ubuntu when that path was under /mnt and therefore not
-> supported by the AppArmor profile of swtpm.
->
->    Stefan
->
-> The following changes since commit 63dc36944383f70f1c7a20f6104966d8560300fa:
->
->   Merge tag 'hw-misc-20241105' of https://github.com/philmd/qemu into staging (2024-11-06 17:28:45 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/stefanberger/qemu-tpm.git pull-tpm-2024-11-07-2
->
-> for you to fetch changes up to e3edada526f3ac28f71dc8ae7a0acbc76f8e2050:
->
->   tests: Adjust path for swtpm state to use path under /var/tmp/ (2024-11-07 09:57:20 -0500)
->
-> v2:
->  - Added missing comment into test file; generalized it a bit from Peter's
->    suggestion
->
-> Stefan Berger (1):
->   tests: Adjust path for swtpm state to use path under /var/tmp/
+ Hi Peter!
 
+The following changes since commit feef1866d1366d651e6a3cb8c9cf1a9aabb81395:
 
-Applied, thanks.
+  Merge tag 'pull-riscv-to-apply-20241107' of https://github.com/alistair23/qemu into staging (2024-11-07 15:08:05 +0000)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
+are available in the Git repository at:
 
--- PMM
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-11-08
+
+for you to fetch changes up to e7e76150a2e9642adf6763bcd8ca9a2a5d3b74b3:
+
+  ui/input-legacy.c: remove unused legacy qemu_add_kbd_event_handler() function (2024-11-08 11:06:42 +0100)
+
+----------------------------------------------------------------
+* Various fixes and improvements for the functional tests
+* Refresh CI container files with the latest changes from libvirt-ci
+* Clean up keyboard code of the next-cube machine to get rid of a legacy API
+  (I know, the kbd patches are a little bit borderline for soft-freeze
+  already, but since the next-cube machine is experimental anyway, I
+  still opted for including them here)
+
+----------------------------------------------------------------
+Cédric Le Goater (1):
+      test/functional: Fix Aspeed buildroot tests
+
+Daniel P. Berrangé (1):
+      tests: refresh package lists with latest libvirt-ci
+
+Mark Cave-Ayland (2):
+      next-kbd: convert to use qemu_input_handler_register()
+      ui/input-legacy.c: remove unused legacy qemu_add_kbd_event_handler() function
+
+Phil Dennis-Jordan (1):
+      scripts/checkpatch.pl: Ignore ObjC #import lines for operator spacing
+
+Thomas Huth (5):
+      tests/functional: Convert the riscv_opensbi avocado test into a standalone test
+      tests/functional: Fix the ppc64_hv and the ppc_40p test for read-only assets
+      tests/functional: Provide the user with hints where to find more log files
+      tests/functional: Bump timeouts of functional tests
+      tests/functional: Split the test_aarch64_sbsaref test
+
+ MAINTAINERS                                        |   3 +-
+ include/ui/console.h                               |   2 -
+ hw/m68k/next-kbd.c                                 | 158 +++++++++++++-------
+ ui/input-legacy.c                                  |  37 -----
+ .gitlab-ci.d/cirrus/freebsd-14.vars                |   2 +-
+ scripts/checkpatch.pl                              |   2 +-
+ tests/avocado/riscv_opensbi.py                     |  63 --------
+ tests/docker/dockerfiles/debian-amd64-cross.docker |   8 +-
+ tests/docker/dockerfiles/debian-arm64-cross.docker |   8 +-
+ tests/docker/dockerfiles/debian-armhf-cross.docker |   8 +-
+ tests/docker/dockerfiles/debian-i686-cross.docker  |   8 +-
+ .../dockerfiles/debian-mips64el-cross.docker       |   7 +-
+ .../docker/dockerfiles/debian-mipsel-cross.docker  |   8 +-
+ .../docker/dockerfiles/debian-ppc64el-cross.docker |   8 +-
+ tests/docker/dockerfiles/debian-s390x-cross.docker |   8 +-
+ tests/docker/dockerfiles/fedora-win64-cross.docker |   4 +-
+ tests/functional/meson.build                       |  41 ++++--
+ tests/functional/qemu_test/testcase.py             |  18 ++-
+ tests/functional/test_aarch64_sbsaref.py           | 159 +++++----------------
+ tests/functional/test_aarch64_sbsaref_alpine.py    |  64 +++++++++
+ tests/functional/test_aarch64_sbsaref_freebsd.py   |  66 +++++++++
+ tests/functional/test_arm_aspeed.py                |   2 +-
+ tests/functional/test_ppc64_hv.py                  |   3 +-
+ tests/functional/test_ppc_40p.py                   |   3 +-
+ tests/functional/test_riscv_opensbi.py             |  36 +++++
+ tests/lcitool/libvirt-ci                           |   2 +-
+ tests/lcitool/mappings.yml                         |   3 +
+ tests/vm/generated/freebsd.json                    |   2 +-
+ 28 files changed, 392 insertions(+), 341 deletions(-)
+ delete mode 100644 tests/avocado/riscv_opensbi.py
+ create mode 100755 tests/functional/test_aarch64_sbsaref_alpine.py
+ create mode 100755 tests/functional/test_aarch64_sbsaref_freebsd.py
+ mode change 100644 => 100755 tests/functional/test_arm_aspeed.py
+ create mode 100755 tests/functional/test_riscv_opensbi.py
+
 
