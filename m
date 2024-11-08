@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EE39C186B
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 09:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB099C1867
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Nov 2024 09:51:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9KhS-0004jG-IS; Fri, 08 Nov 2024 03:50:39 -0500
+	id 1t9Kh6-0004bq-9w; Fri, 08 Nov 2024 03:50:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t9KhI-0004iA-0I
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:50:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1t9KhB-0000y8-MN
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:50:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731055819;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=stJBe69Mt/u0FCu2SJhIuKYQI1SCyTHVih+yC29SfMc=;
- b=K+q8S+WBPOUiXZ8mz1uN4NugGshfFuam8x8/jNn4x13YcjamHtEDPORwAxXkMkH+ILq3qh
- EAT55s8g092S6QJIbfiius2QbXaJhj7NoQPDyL2MePQ8/wZJH5irgEKaj+y5oTe/+2uVR2
- k5rQ0v+u5fzc8SBS8o5Xwvz0FzzzIXo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-24M-jVI3PkG8TnJgyHMzdw-1; Fri,
- 08 Nov 2024 03:50:17 -0500
-X-MC-Unique: 24M-jVI3PkG8TnJgyHMzdw-1
-X-Mimecast-MFC-AGG-ID: 24M-jVI3PkG8TnJgyHMzdw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4C843195395B; Fri,  8 Nov 2024 08:50:16 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.150])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 94D8C1953885; Fri,  8 Nov 2024 08:50:15 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4423B21E6A28; Fri,  8 Nov 2024 09:50:13 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Igor Mammedov
- <imammedo@redhat.com>,  Juraj Marcin <jmarcin@redhat.com>,  "Michael S .
- Tsirkin" <mst@redhat.com>,  "Dr . David Alan Gilbert" <dave@treblig.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Alex
- Williamson <alex.williamson@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/4] x86/iommu: Make x86-iommu a singleton object
-In-Reply-To: <Zyzc4kSQ6zuRePsF@x1n> (Peter Xu's message of "Thu, 7 Nov 2024
- 10:29:38 -0500")
-References: <20241024165627.1372621-1-peterx@redhat.com>
- <20241024165627.1372621-3-peterx@redhat.com>
- <87jzdwlekc.fsf@pond.sub.org> <ZxwT79JG0NzsDmPn@x1n>
- <ZxwYBeLGDLkTL0PJ@x1n> <87jzdfl2lx.fsf@pond.sub.org>
- <Zyzc4kSQ6zuRePsF@x1n>
-Date: Fri, 08 Nov 2024 09:50:13 +0100
-Message-ID: <87pln6ds8q.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1t9Kh4-0004bR-Qz
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:50:14 -0500
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1t9Kh3-0000wa-53
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 03:50:14 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2e2e88cb0bbso1469256a91.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 00:50:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1731055811; x=1731660611; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=40bvvcKOltQHXpA3nRcAP1ayEBgymgbTXX5iRDTQQM0=;
+ b=EmZ2rjzh//7C0DzrDpl0a7X+uaSZPrxic1ab6sKCp5nqf3pV4fUan9yfoZbpWFEfzG
+ ZJOQQ26+r66LTi1lOUpvrjZBMjUAloO4ePLoxonnF6xJdJutRjXitYimf+uW34T8OLpe
+ bgftnP06Jdb7wawWzWRjn7QEDbV2QDk7emlT0QlANd2IJzJ8yDMCayCgb7j5h6z2CAv6
+ f0Tm2f82ocSsT2mHaFSs5mcydImReBJCL/shSLWeAy3c/0jqRc/t76jBi1zT79qNGPqG
+ YRMKsGQv7w16qpF6tvQWsa02uzkCAAGxqIUb45nyFZfkAl8pJAbFaWCz3M/+I4oiHgbP
+ pZog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731055811; x=1731660611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=40bvvcKOltQHXpA3nRcAP1ayEBgymgbTXX5iRDTQQM0=;
+ b=fxJsc48awGVqqq+qzP9GBWHlHNVOchbrgeV0IDHUXYmACuZZBiQL8EIttJy5p2eZ2T
+ hLWdjaWmvXQZZIkET6T9FxMMA5nuk+86whXM9XdOX7pms1uQCRfSWbIAfJK1Pgre1as6
+ Q86Cz2a8vXFkJGTLD5zx5X0tN+OBip9pc3eEM6HgvT8EDun8CkZXINBr+miyVmgDBiyh
+ 515OBsIuTlxxN0GrcHRZmtBI+AwLLG9PHAMGlo6xqAUxKH3ZUC8VhNQApwUWV9B1R2Lg
+ EIJ/BYrfhCts/m1v/jMxTT0Yb28Mr0VWekVi7kZSEzruSJw9Hucj1pZgZEKq3yxykKkg
+ I4lA==
+X-Gm-Message-State: AOJu0YzNmDRqc8znGvB8OpEeZkibBXpS46JParq06Wd1KonB2HtSHqc8
+ JswweIMvEJy/nZUlL+jZjBRdF3p/U/pcIMkmIt/GsujexJZ6dHdqjIHLKgiUQ6B21HhTxixlQ6f
+ ZC0+4VzJ2oYew0/dmoGNTcXcbDuxoCLvKHnRvvGkcGvTGNcbb61R3dRo6+J5aUbbSApUwsXCygo
+ ooqfO8ax2CvZ3RgRAm9kJJyVVWaLFwHiOxxEY=
+X-Google-Smtp-Source: AGHT+IGqRbQFFLTkxljwJ/ns9tZybsbm+verNlltpFg/ImoorWUQHMidDh/ZZdt0r/1BbwK36CM1xA==
+X-Received: by 2002:a17:90b:4acb:b0:2e2:d5fc:2847 with SMTP id
+ 98e67ed59e1d1-2e9b177fe40mr2896451a91.30.1731055810653; 
+ Fri, 08 Nov 2024 00:50:10 -0800 (PST)
+Received: from hsinchu36-syssw02.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2e99a541da0sm5540135a91.13.2024.11.08.00.50.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 00:50:09 -0800 (PST)
+From: "Fea.Wang" <fea.wang@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, "Fea.Wang" <fea.wang@sifive.com>
+Subject: [PATCH v2 0/5] Introduce svukte ISA extension
+Date: Fri,  8 Nov 2024 16:52:34 +0800
+Message-Id: <20241108085239.2927152-1-fea.wang@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=fea.wang@sifive.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,199 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+The Svukte ISA extension has been approved for fast-track development.
+https://lf-riscv.atlassian.net/browse/RVS-2977 
+And there are Linux patches for the Svukte that are under review.
+https://lore.kernel.org/kvm/20240920-dev-maxh-svukte-rebase-v1-0-7864a88a62bd@sifive.com/T/#mf70fcb22cd2987ad268c0efee9b8583197d3cb4f
 
-> On Thu, Nov 07, 2024 at 12:12:10PM +0100, Markus Armbruster wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Fri, Oct 25, 2024 at 05:55:59PM -0400, Peter Xu wrote:
->> >> On Fri, Oct 25, 2024 at 11:25:23AM +0200, Markus Armbruster wrote:
->> >> > Peter Xu <peterx@redhat.com> writes:
->> >> > 
->> >> > > X86 IOMMUs cannot be created more than one on a system yet.  Make it a
->> >> > > singleton so it guards the system from accidentally create yet another
->> >> > > IOMMU object when one already presents.
->> >> > >
->> >> > > Now if someone tries to create more than one, e.g., via:
->> >> > >
->> >> > >   ./qemu -M q35 -device intel-iommu -device intel-iommu
->> >> > >
->> >> > > The error will change from:
->> >> > >
->> >> > >   qemu-system-x86_64: -device intel-iommu: QEMU does not support multiple vIOMMUs for x86 yet.
->> >> > >
->> >> > > To:
->> >> > >
->> >> > >   qemu-system-x86_64: -device intel-iommu: Class 'intel-iommu' only supports one instance
->> >> > >
->> >> > > Unfortunately, yet we can't remove the singleton check in the machine
->> >> > > hook (pc_machine_device_pre_plug_cb), because there can also be
->> >> > > virtio-iommu involved, which doesn't share a common parent class yet.
->> >> > >
->> >> > > But with this, it should be closer to reach that goal to check singleton by
->> >> > > QOM one day.
->> >> > >
->> >> > > Signed-off-by: Peter Xu <peterx@redhat.com>
->> >> > 
->> >> > $ qemu-system-x86_64 -device amd-iommu,help
->> >> > /work/armbru/qemu/include/hw/boards.h:24:MACHINE: Object 0x56473906f960 is not an instance of type machine
->> >> > Aborted (core dumped)
->> 
->> [...]
->> 
->> >> Thanks for the report!
->> >> 
->> >> It turns out that qdev_get_machine() cannot be invoked too early, and the
->> >> singleton code can make it earlier..
->> >> 
->> >> We may want a pre-requisite patch to allow qdev_get_machine() to be invoked
->> >> anytime, like:
->> >> 
->> >> ===8<===
->> >> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
->> >> index db36f54d91..7ceae47139 100644
->> >> --- a/hw/core/qdev.c
->> >> +++ b/hw/core/qdev.c
->> >> @@ -831,6 +831,16 @@ Object *qdev_get_machine(void)
->> >>  {
->> >>      static Object *dev;
->> >>  
->> >> +    if (!phase_check(PHASE_MACHINE_CREATED)) {
->> >> +        /*
->> >> +         * When the machine is not created, below can wrongly create
->> >> +         * /machine to be a container.. this enables qdev_get_machine() to
->> >> +         * be used at any time and return NULL properly when machine is not
->> >> +         * created.
->> >> +         */
->> >> +        return NULL;
->> >> +    }
->> >> +
->> >>      if (dev == NULL) {
->> >>          dev = container_get(object_get_root(), "/machine");
->> >>      }
->> >> ===8<===
->> >> 
->> >> I hope it makes sense on its own.
->> >
->> > My apologies, spoke too soon here.  This helper is used too after machine
->> > is created, but right before switching to PHASE_MACHINE_CREATE stage..
->> 
->> container_get() is a trap.
->
-> I had the same feeling..  Though I'd confess I'm not familiar enough with
-> this part of code.
->
->> 
->> When the object to be gotten is always "container", it merely
->> complicates container creation: it's implicitly created on first get.
->> Which of the calls creates may be less than obvious.
->> 
->> When the object to be gotten is something else, such as a machine,
->> container_get() before creation is *wrong*, and will lead to trouble
->> later.
->> 
->> In my opinion:
->> 
->> * Hiding creation in getters is a bad idea unless creation has no
->>   material side effects.
->> 
->> * Getting anything but a container with container_get() is in bad taste.
->
-> Agreed.
->
-> IMHO container_get() interface might still be ok to implicitly create
-> containers,
+Svukte provides a means to make user-mode accesses to supervisor memory
+raise page faults in constant time, mitigating attacks that attempt to
+discover the supervisor software's address-space layout.
 
-Creation on demand is fine when we want to create the thing only when
-there is demand.
+Refer to the draft of svukte extension from:
+https://github.com/riscv/riscv-isa-manual/pull/1564
 
-I guess it can also be okay when we want to create it always, but don't
-want to decide when exactly (must be before first use), although I
-suspect that's just lazy more often than not.
+* Refactor the code
 
->             but only if it will: (1) always make sure what it walks is a
-> container along the way, and (2) never return any non-container.
+base-commit: 27652f9ca9d831c67dd447346c6ee953669255f0
 
-Yes.  Anything else invites abuse.
+[v1]
+* Add svukte extension
 
->> > So we need another way, like:
->> >
->> > ===8<===
->> >
->> > diff --git a/hw/core/qdev.c b/hw/core/qdev.c
->> > index db36f54d91..36a9fdb428 100644
->> > --- a/hw/core/qdev.c
->> > +++ b/hw/core/qdev.c
->> > @@ -832,7 +832,13 @@ Object *qdev_get_machine(void)
->> >      static Object *dev;
->> >  
->> >      if (dev == NULL) {
->> > -        dev = container_get(object_get_root(), "/machine");
->> > +        /*
->> > +         * NOTE: dev can keep being NULL if machine is not yet created!
->> > +         * In which case the function will properly return NULL.
->> > +         *
->> > +         * Whenever machine object is created and found once, we cache it.
->> > +         */
->> > +        dev = object_resolve_path_component(object_get_root(), "machine");
->> >      }
->> >  
->> >      return dev;
->> 
->> Now returns null instead of a bogus container when called before machine
->> creation.  Improvement of sorts.  But none of the callers expect null...
->> shouldn't we assert(dev) here?
->> 
->> Hmm, below you add a caller that checks for null.
->> 
->> Another nice mess.
->
-> I plan to put aside the application of singletons to x86-iommu as of now,
-> due to the fact that qdev complexity may better be done separately.
->
-> IOW, before that, I wonder whether we should clean up the container_get()
-> as you discussed: it doesn't sound like a good interface to return
-> non-container objects.
->
-> I had a quick look, I only see two outliers of such, and besides the
-> "abuse" in qdev_get_machine(), the only other one is
-> e500_pcihost_bridge_realize():
->
-> *** hw/core/qdev.c:
-> qdev_get_machine[820]          dev = container_get(object_get_root(), "/machine");
->
-> *** hw/pci-host/ppce500.c:
-> e500_pcihost_bridge_realize[422] PPCE500CCSRState *ccsr = CCSR(container_get(qdev_get_machine(),
-                                                                "/e500-ccsr"));
+Fea.Wang (5):
+  target/riscv: Add svukte extension capability variable
+  target/riscv: Support senvcfg[UKTE] bit when svukte extension is
+    enabled
+  target/riscv: Support hstatus[HUKTE] bit when svukte extension is
+    enabled
+  target/riscv: Check memory access to meet svuket rule
+  target/riscv: Expose svukte ISA extension
 
-Yes, this abuses container_get() to get an "e500-ccsr", which is a
-device, not a container.
+ target/riscv/cpu.c        |  2 ++
+ target/riscv/cpu_bits.h   |  2 ++
+ target/riscv/cpu_cfg.h    |  1 +
+ target/riscv/cpu_helper.c | 57 +++++++++++++++++++++++++++++++++++++++
+ target/riscv/csr.c        |  7 +++++
+ 5 files changed, 69 insertions(+)
 
-By the way, intentation is confusing here.
-
-> If any of us thinks this is the right way to go, I can try to clean it up
-> (for 10.0).  qdev_get_machine() may still need to be able to return NULL
-> when singleton applies to IOMMUs, but that can be for later.  Before that,
-> we can still assert(qdev), I think.
-
-I think it's worthwhile.
-
-> Just to mention I've posted rfcv2 for this series, again feel free to
-> ignore patch 3-5 as of now:
->
-> [PATCH RFC v2 0/7] QOM: Singleton interface
-> https://lore.kernel.org/r/20241029211607.2114845-1-peterx@redhat.com
->
-> I think the plan is Dan may keep collecting feedbacks on his other rfc:
->
-> [RFC 0/5] RFC: require error handling for dynamically created objects
-> https://lore.kernel.org/r/20241031155350.3240361-1-berrange@redhat.com
->
-> Then after Dan's lands, I'll rebase my rfcv2 on top of his, dropping
-> iommu/qdev changes.
->
-> Thanks,
-
-Makes sense.  Thanks!
+-- 
+2.34.1
 
 
