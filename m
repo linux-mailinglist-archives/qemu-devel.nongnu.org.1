@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672E59C2CED
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BEF9C2D04
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kRC-0001ve-R0; Sat, 09 Nov 2024 07:19:35 -0500
+	id 1t9kRb-0002C1-Sx; Sat, 09 Nov 2024 07:20:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQE-0007dJ-Py; Sat, 09 Nov 2024 07:18:35 -0500
+ id 1t9kQH-0007u1-Sh; Sat, 09 Nov 2024 07:18:38 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQA-0005LR-Iy; Sat, 09 Nov 2024 07:18:33 -0500
+ id 1t9kQG-0005Ls-2N; Sat, 09 Nov 2024 07:18:37 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D4BC7A164C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E2F2CA164D;
  Sat,  9 Nov 2024 15:08:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9C6D9167FD2;
+ by tsrv.corpit.ru (Postfix) with SMTP id AA7D9167FD3;
  Sat,  9 Nov 2024 15:09:03 +0300 (MSK)
-Received: (nullmailer pid 3296232 invoked by uid 1000);
+Received: (nullmailer pid 3296235 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 34/58] target/riscv/kvm: set 'aia_mode' to default in
- error path
-Date: Sat,  9 Nov 2024 15:08:35 +0300
-Message-Id: <20241109120901.3295995-34-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 35/58] target/riscv/kvm: clarify how 'riscv-aia'
+ default works
+Date: Sat,  9 Nov 2024 15:08:36 +0300
+Message-Id: <20241109120901.3295995-35-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -62,71 +62,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-When failing to set the selected AIA mode, 'aia_mode' is left untouched.
-This means that 'aia_mode' will not reflect the actual AIA mode,
-retrieved in 'default_aia_mode',
+We do not have control in the default 'riscv-aia' default value. We can
+try to set it to a specific value, in this case 'auto', but there's no
+guarantee that the host will accept it.
 
-This is benign for now, but it will impact QMP query commands that will
-expose the 'aia_mode' value, retrieving the wrong value.
+Couple with this we're always doing a 'qemu_log' to inform whether we're
+ended up using the host default or if we managed to set the AIA mode to
+the QEMU default we wanted to set.
 
-Set 'aia_mode' to 'default_aia_mode' if we fail to change the AIA mode
-in KVM.
-
-While we're at it, rework the log/warning messages to be a bit less
-verbose. Instead of:
-
-KVM AIA: default mode is emul
-qemu-system-riscv64: warning: KVM AIA: failed to set KVM AIA mode
-
-We can use a single warning message:
-
-qemu-system-riscv64: warning: KVM AIA: failed to set KVM AIA mode 'auto', using default host mode 'emul'
+Change the 'riscv-aia' description to better reflect how the option
+works, and remove the two informative 'qemu_log' that are now unneeded:
+if no message shows, riscv-aia was set to the default or uset-set value.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241028182037.290171-2-dbarboza@ventanamicro.com>
+Message-ID: <20241028182037.290171-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit d201a127e164b1683df5e7c93c6d42a74122db99)
+(cherry picked from commit fd16cfb2995e9196b579d8885145c4247dfa6058)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index f6e3156b8d..b264760752 100644
+index b264760752..210bee936a 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1710,18 +1710,26 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-         error_report("KVM AIA: failed to get current KVM AIA mode");
+@@ -1676,9 +1676,9 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
+     object_class_property_add_str(oc, "riscv-aia", riscv_get_kvm_aia,
+                                   riscv_set_kvm_aia);
+     object_class_property_set_description(oc, "riscv-aia",
+-                                          "Set KVM AIA mode. Valid values are "
+-                                          "emul, hwaccel, and auto. Default "
+-                                          "is auto.");
++        "Set KVM AIA mode. Valid values are 'emul', 'hwaccel' and 'auto'. "
++        "Changing KVM AIA modes relies on host support. Defaults to 'auto' "
++        "if the host supports it");
+     object_property_set_default_str(object_class_property_find(oc, "riscv-aia"),
+                                     "auto");
+ }
+@@ -1711,10 +1711,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
          exit(1);
      }
--    qemu_log("KVM AIA: default mode is %s\n",
--             kvm_aia_mode_str(default_aia_mode));
  
--    if (default_aia_mode != aia_mode) {
-+    if (default_aia_mode == aia_mode) {
-+        qemu_log("KVM AIA: using default host mode '%s'\n",
-+                  kvm_aia_mode_str(default_aia_mode));
-+    } else {
+-    if (default_aia_mode == aia_mode) {
+-        qemu_log("KVM AIA: using default host mode '%s'\n",
+-                  kvm_aia_mode_str(default_aia_mode));
+-    } else {
++    if (default_aia_mode != aia_mode) {
          ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
                                  KVM_DEV_RISCV_AIA_CONFIG_MODE,
                                  &aia_mode, true, NULL);
--        if (ret < 0)
--            warn_report("KVM AIA: failed to set KVM AIA mode");
--        else
--            qemu_log("KVM AIA: set current mode to %s\n",
-+        if (ret < 0) {
-+            warn_report("KVM AIA: failed to set KVM AIA mode '%s', using "
-+                        "default host mode '%s'",
-+                        kvm_aia_mode_str(aia_mode),
-+                        kvm_aia_mode_str(default_aia_mode));
-+
-+            /* failed to change AIA mode, use default */
-+            aia_mode = default_aia_mode;
-+        } else {
-+            qemu_log("KVM AIA: setting current mode to %s\n",
-                      kvm_aia_mode_str(aia_mode));
-+        }
+@@ -1726,9 +1723,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+ 
+             /* failed to change AIA mode, use default */
+             aia_mode = default_aia_mode;
+-        } else {
+-            qemu_log("KVM AIA: setting current mode to %s\n",
+-                     kvm_aia_mode_str(aia_mode));
+         }
      }
  
-     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
 -- 
 2.39.5
 
