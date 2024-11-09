@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079E39C2CE7
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B901D9C2CEC
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:26:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kTw-0005kl-IG; Sat, 09 Nov 2024 07:22:24 -0500
+	id 1t9kU0-0005qX-4u; Sat, 09 Nov 2024 07:22:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRp-0002y2-QZ; Sat, 09 Nov 2024 07:20:17 -0500
+ id 1t9kRt-00031a-90; Sat, 09 Nov 2024 07:20:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRn-0005mj-Gl; Sat, 09 Nov 2024 07:20:13 -0500
+ id 1t9kRr-0005nZ-Gz; Sat, 09 Nov 2024 07:20:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB32BA165C;
+ by isrv.corpit.ru (Postfix) with ESMTP id EA1DDA165D;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A06BC167FE2;
+ by tsrv.corpit.ru (Postfix) with SMTP id B09A7167FE3;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296283 invoked by uid 1000);
+Received: (nullmailer pid 3296286 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, "Huang, Ying" <ying.huang@intel.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 50/58] hw/acpi: Fix ordering of BDF in Generic
- Initiator PCI Device Handle.
-Date: Sat,  9 Nov 2024 15:08:51 +0300
-Message-Id: <20241109120901.3295995-50-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Igor Mammedov <imammedo@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 51/58] acpi/disassemle-aml.sh: fix up after dir reorg
+Date: Sat,  9 Nov 2024 15:08:52 +0300
+Message-Id: <20241109120901.3295995-51-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -61,40 +60,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: "Michael S. Tsirkin" <mst@redhat.com>
 
-The ordering in ACPI specification [1] has bus number in the lowest byte.
-As ACPI tables are little endian this is the reverse of the ordering
-used by PCI_BUILD_BDF().  As a minimal fix split the QEMU BDF up
-into bus and devfn and write them as single bytes in the correct
-order.
+We moved expected files around, fix up the disassembler script.
 
-[1] ACPI Spec 6.3, Table 5.80
-
-Fixes: 0a5b5acdf2d8 ("hw/acpi: Implement the SRAT GI affinity structure")
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Tested-by: "Huang, Ying" <ying.huang@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240916171017.1841767-2-Jonathan.Cameron@huawei.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 7c08eefcaf ("tests/data/acpi: Move x86 ACPI tables under x86/${machine} path")
+Fixes: 7434f90467 ("tests/data/acpi/virt: Move ARM64 ACPI tables under aarch64/${machine} path")
+Cc: "Sunil V L" <sunilvl@ventanamicro.com>
+Message-ID: <ce456091058734b7f765617ac5dfeebcb366d4a9.1730729695.git.mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 16c687d84574a1139a6475c33e3b9191f7932ac0)
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+(cherry picked from commit feb58e3b261db503ade94c5f43ccedeee4eac41f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-index 17b9a052f5..3d2b567999 100644
---- a/hw/acpi/acpi_generic_initiator.c
-+++ b/hw/acpi/acpi_generic_initiator.c
-@@ -92,7 +92,8 @@ build_srat_generic_pci_initiator_affinity(GArray *table_data, int node,
+diff --git a/tests/data/acpi/disassemle-aml.sh b/tests/data/acpi/disassemle-aml.sh
+index 253b7620a0..89561d233d 100755
+--- a/tests/data/acpi/disassemle-aml.sh
++++ b/tests/data/acpi/disassemle-aml.sh
+@@ -14,7 +14,7 @@ while getopts "o:" arg; do
+   esac
+ done
  
-     /* Device Handle - PCI */
-     build_append_int_noprefix(table_data, handle->segment, 2);
--    build_append_int_noprefix(table_data, handle->bdf, 2);
-+    build_append_int_noprefix(table_data, PCI_BUS_NUM(handle->bdf), 1);
-+    build_append_int_noprefix(table_data, PCI_BDF_TO_DEVFN(handle->bdf), 1);
-     for (index = 0; index < 12; index++) {
-         build_append_int_noprefix(table_data, 0, 1);
-     }
+-for machine in tests/data/acpi/*
++for machine in tests/data/acpi/*/*
+ do
+     if [[ ! -d "$machine" ]];
+     then
 -- 
 2.39.5
 
