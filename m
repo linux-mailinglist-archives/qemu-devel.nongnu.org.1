@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198309C2D0A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFD39C2D03
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kTR-00056z-8u; Sat, 09 Nov 2024 07:21:53 -0500
+	id 1t9kS9-0003Kv-TJ; Sat, 09 Nov 2024 07:20:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQt-0001nQ-Ml; Sat, 09 Nov 2024 07:19:17 -0500
+ id 1t9kQw-0001nu-G9; Sat, 09 Nov 2024 07:19:20 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQs-0005Up-11; Sat, 09 Nov 2024 07:19:15 -0500
+ id 1t9kQu-0005V9-W4; Sat, 09 Nov 2024 07:19:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3D30BA1652;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4BDAFA1653;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 03FB5167FD8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 12D1C167FD9;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296250 invoked by uid 1000);
+Received: (nullmailer pid 3296254 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 40/58] ppc/pnv: Fix LPC POWER8 register sanity check
-Date: Sat,  9 Nov 2024 15:08:41 +0300
-Message-Id: <20241109120901.3295995-40-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 41/58] target/ppc: Fix mtDPDES targeting SMT siblings
+Date: Sat,  9 Nov 2024 15:08:42 +0300
+Message-Id: <20241109120901.3295995-41-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -64,39 +64,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-POWER8 does not have the ISA IRQ -> SERIRQ routing system of later
-CPUs, instead all ISA IRQs are sent to the CPU via a single PSI
-interrupt. There is a sanity check in the POWER8 case to ensure the
-routing bits have not been set, because that would indicate a
-programming error.
-
-Those bits were incorrectly specified because of ppc bit numbering
-fun. Coverity detected this as an always-zero expression.
+A typo in the loop over SMT threads to set irq level for doorbells
+when storing to DPDES meant everything was aimed at the CPU executing
+the instruction.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Cédric Le Goater <clg@redhat.com>
-Resolves: Coverity CID 1558829 (partially)
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Fixes: d24e80b2ae ("target/ppc: Add msgsnd/p and DPDES SMT support")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 84416e262ea1218026a8567ed9ea31c16d77edea)
+(cherry picked from commit 0324d236d2918c18a9ad4a1081b1083965a1433b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index 80b79dfbbc..8c203d2059 100644
---- a/hw/ppc/pnv_lpc.c
-+++ b/hw/ppc/pnv_lpc.c
-@@ -427,8 +427,8 @@ static void pnv_lpc_eval_serirq_routes(PnvLpcController *lpc)
-     int irq;
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index 1b83971375..f0ca80153b 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -288,7 +288,7 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+         PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+         uint32_t thread_id = ppc_cpu_tir(ccpu);
  
-     if (!lpc->psi_has_serirq) {
--        if ((lpc->opb_irq_route0 & PPC_BITMASK(8, 13)) ||
--            (lpc->opb_irq_route1 & PPC_BITMASK(4, 31))) {
-+        if ((lpc->opb_irq_route0 & PPC_BITMASK32(8, 13)) ||
-+            (lpc->opb_irq_route1 & PPC_BITMASK32(4, 31))) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                 "OPB: setting serirq routing on POWER8 system, ignoring.\n");
-         }
+-        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
++        ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
+     }
+     bql_unlock();
+ }
 -- 
 2.39.5
 
