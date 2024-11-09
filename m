@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8571B9C2D27
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A5B9C2CF3
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:29:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kTy-0005nx-0P; Sat, 09 Nov 2024 07:22:26 -0500
+	id 1t9kU0-0005tO-Nn; Sat, 09 Nov 2024 07:22:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRZ-0002bf-VB; Sat, 09 Nov 2024 07:19:59 -0500
+ id 1t9kRd-0002eU-I9; Sat, 09 Nov 2024 07:20:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRY-0005X4-CK; Sat, 09 Nov 2024 07:19:57 -0500
+ id 1t9kRb-0005YP-Q0; Sat, 09 Nov 2024 07:20:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 99603A1658;
+ by isrv.corpit.ru (Postfix) with ESMTP id A96E4A1659;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5E5D4167FDE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6EC7C167FDF;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296269 invoked by uid 1000);
+Received: (nullmailer pid 3296273 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Chalapathi V <chalapathi.v@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 46/58] hw/ssi/pnv_spi: Fixes Coverity CID 1558831
-Date: Sat,  9 Nov 2024 15:08:47 +0300
-Message-Id: <20241109120901.3295995-46-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 47/58] tests/tcg: Replace -mpower8-vector with
+ -mcpu=power8
+Date: Sat,  9 Nov 2024 15:08:48 +0300
+Message-Id: <20241109120901.3295995-47-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -62,37 +63,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-In this commit the following coverity scan defect has been fixed
-CID 1558831:  Resource leaks  (RESOURCE_LEAK)
-  Variable "rsp_payload" going out of scope leaks the storage it
-  points to.
+[1] deprecated -mpower8-vector, resulting in:
+
+    powerpc64-linux-gnu-gcc: warning: switch '-mpower8-vector' is no longer supported
+    qemu/tests/tcg/ppc64/vsx_f2i_nan.c:4:15: error: expected ';' before 'float'
+        4 | typedef vector float vsx_float32_vec_t;
+          |               ^~~~~~
+
+Use -mcpu=power8 instead. In order to properly verify that this works,
+one needs a big-endian (the minimum supported CPU for 64-bit
+little-endian is power8 anyway) GCC configured with --enable-checking
+(see GCC commit e154242724b0 ("[RS6000] Don't pass -many to the
+assembler").
+
+[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109987
 
 Cc: qemu-stable@nongnu.org
-Fixes: Coverity CID 1558831
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-Fixes: b4cb930e40 ("hw/ssi: Extend SPI model")
-[PMD: Rebased on previous commit (returning earlier)]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 031324472eee57bce9bd4a0231aa9b137494d8a1)
+(cherry picked from commit ddf4dd46e5c31bd223f2e867f2cae43bfd41dfb9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index 05e6afc11e..eadc36fa86 100644
---- a/hw/ssi/pnv_spi.c
-+++ b/hw/ssi/pnv_spi.c
-@@ -239,6 +239,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
-         }
-     }
-     spi_response(s, s->N1_bits, rsp_payload);
-+    pnv_spi_xfer_buffer_free(rsp_payload);
- }
+diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
+index 509a20be2b..102a2cefef 100644
+--- a/tests/tcg/ppc64/Makefile.target
++++ b/tests/tcg/ppc64/Makefile.target
+@@ -6,7 +6,7 @@ VPATH += $(SRC_PATH)/tests/tcg/ppc64
  
- static inline uint8_t get_seq_index(PnvSpi *s)
+ config-cc.mak: Makefile
+ 	$(quiet-@)( \
+-	    $(call cc-option,-mpower8-vector,   CROSS_CC_HAS_POWER8_VECTOR); \
++	    $(call cc-option,-mcpu=power8,      CROSS_CC_HAS_CPU_POWER8); \
+ 	    $(call cc-option,-mpower10,         CROSS_CC_HAS_POWER10)) 3> config-cc.mak
+ 
+ -include config-cc.mak
+@@ -23,15 +23,15 @@ run-threadcount: threadcount
+ run-plugin-threadcount-with-%:
+ 	$(call skip-test, $<, "BROKEN (flaky with clang) ")
+ 
+-ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)
++ifneq ($(CROSS_CC_HAS_CPU_POWER8),)
+ PPC64_TESTS=bcdsub non_signalling_xscv
+ endif
+-$(PPC64_TESTS): CFLAGS += -mpower8-vector
++$(PPC64_TESTS): CFLAGS += -mcpu=power8
+ 
+-ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)
++ifneq ($(CROSS_CC_HAS_CPU_POWER8),)
+ PPC64_TESTS += vsx_f2i_nan
+ endif
+-vsx_f2i_nan: CFLAGS += -mpower8-vector -I$(SRC_PATH)/include
++vsx_f2i_nan: CFLAGS += -mcpu=power8 -I$(SRC_PATH)/include
+ 
+ PPC64_TESTS += mtfsf
+ PPC64_TESTS += mffsce
 -- 
 2.39.5
 
