@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2737A9C2D1C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEA99C2CDE
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:23:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kTq-0005bn-M1; Sat, 09 Nov 2024 07:22:18 -0500
+	id 1t9kTr-0005cv-EI; Sat, 09 Nov 2024 07:22:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kR9-0001yG-Jh; Sat, 09 Nov 2024 07:19:31 -0500
+ id 1t9kRC-0002DB-Ua; Sat, 09 Nov 2024 07:19:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kR5-0005WH-0v; Sat, 09 Nov 2024 07:19:28 -0500
+ id 1t9kRB-0005Wk-1q; Sat, 09 Nov 2024 07:19:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7ACC8A1656;
+ by isrv.corpit.ru (Postfix) with ESMTP id 88987A1657;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4039F167FDC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5086C167FDD;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296263 invoked by uid 1000);
+Received: (nullmailer pid 3296266 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 44/58] hw/ssi/pnv_spi: Match _xfer_buffer_free() with
- _xfer_buffer_new()
-Date: Sat,  9 Nov 2024 15:08:45 +0300
-Message-Id: <20241109120901.3295995-44-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 45/58] hw/ssi/pnv_spi: Return early in transfer()
+Date: Sat,  9 Nov 2024 15:08:46 +0300
+Message-Id: <20241109120901.3295995-45-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -65,33 +63,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-pnv_spi_xfer_buffer_new() allocates %payload using g_malloc0(),
-and pnv_spi_xfer_buffer_write_ptr() allocates %payload->data
-using g_realloc(). Use the API equivalent g_free() to release
-the buffers.
+Return early to simplify next commit.
+No logical change intended.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 65f53702d2e4bd045ce16ca874469cdd1e1ef4e4)
+(cherry picked from commit 3feabc18ad4d4bdc178a205b986353a54dbfcf20)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index c1297ab733..13a47f07e7 100644
+index 13a47f07e7..05e6afc11e 100644
 --- a/hw/ssi/pnv_spi.c
 +++ b/hw/ssi/pnv_spi.c
-@@ -53,8 +53,8 @@ static PnvXferBuffer *pnv_spi_xfer_buffer_new(void)
+@@ -217,6 +217,9 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
+     PnvXferBuffer *rsp_payload = NULL;
  
- static void pnv_spi_xfer_buffer_free(PnvXferBuffer *payload)
- {
--    free(payload->data);
--    free(payload);
-+    g_free(payload->data);
-+    g_free(payload);
+     rsp_payload = pnv_spi_xfer_buffer_new();
++    if (!rsp_payload) {
++        return;
++    }
+     for (int offset = 0; offset < payload->len; offset += s->transfer_len) {
+         tx = 0;
+         for (int i = 0; i < s->transfer_len; i++) {
+@@ -235,9 +238,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
+                     (rx >> (8 * (s->transfer_len - 1) - i * 8)) & 0xFF;
+         }
+     }
+-    if (rsp_payload != NULL) {
+-        spi_response(s, s->N1_bits, rsp_payload);
+-    }
++    spi_response(s, s->N1_bits, rsp_payload);
  }
  
- static uint8_t *pnv_spi_xfer_buffer_write_ptr(PnvXferBuffer *payload,
+ static inline uint8_t get_seq_index(PnvSpi *s)
 -- 
 2.39.5
 
