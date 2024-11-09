@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684549C2D2D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7839C2CE2
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kN4-00030D-Tb; Sat, 09 Nov 2024 07:15:18 -0500
+	id 1t9kN0-0002kG-Ix; Sat, 09 Nov 2024 07:15:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMq-0002Pp-QQ; Sat, 09 Nov 2024 07:15:05 -0500
+ id 1t9kMu-0002dw-MJ; Sat, 09 Nov 2024 07:15:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMo-0004mN-RN; Sat, 09 Nov 2024 07:15:04 -0500
+ id 1t9kMs-0004xf-CE; Sat, 09 Nov 2024 07:15:08 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D5B93A162C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E35F9A162E;
  Sat,  9 Nov 2024 15:08:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9D5A7167FB4;
+ by tsrv.corpit.ru (Postfix) with SMTP id AB313167FB5;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296138 invoked by uid 1000);
+Received: (nullmailer pid 3296141 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Tom Dohrmann <erbse.13@gmx.de>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 04/58] accel/kvm: check for KVM_CAP_READONLY_MEM on VM
-Date: Sat,  9 Nov 2024 15:08:05 +0300
-Message-Id: <20241109120901.3295995-4-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 05/58] target/i386: Use only 16 and 32-bit operands for
+ IN/OUT
+Date: Sat,  9 Nov 2024 15:08:06 +0300
+Message-Id: <20241109120901.3295995-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -59,38 +60,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tom Dohrmann <erbse.13@gmx.de>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-KVM_CAP_READONLY_MEM used to be a global capability, but with the
-introduction of AMD SEV-SNP confidential VMs, this extension is not
-always available on all VM types [1,2].
+The REX.W prefix is ignored for these instructions.
+Mirror the solution already used for INS/OUTS: X86_SIZE_z.
 
-Query the extension on the VM level instead of on the KVM level.
-
-[1] https://patchwork.kernel.org/project/kvm/patch/20240809190319.1710470-2-seanjc@google.com/
-[2] https://patchwork.kernel.org/project/kvm/patch/20240902144219.3716974-1-erbse.13@gmx.de/
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Tom Dohrmann <erbse.13@gmx.de>
-Link: https://lore.kernel.org/r/20240903062953.3926498-1-erbse.13@gmx.de
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2581
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-stable@nongnu.org
+Link: https://lore.kernel.org/r/20241015004144.2111817-1-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 64e0e63ea16aa0122dc0c41a0679da0ae4616208)
+(cherry picked from commit 15d955975bd484c2c66af0d6daaa02a7d04d2256)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 4db866f0ca..8c5e71f20c 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2660,7 +2660,7 @@ static int kvm_init(MachineState *ms)
-     }
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 30be9237c3..429ed87bb6 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1627,9 +1627,9 @@ static const X86OpEntry opcodes_root[256] = {
+     [0xE2] = X86_OP_ENTRYr(LOOP,   J,b), /* implicit: CX with aflag size */
+     [0xE3] = X86_OP_ENTRYr(JCXZ,   J,b), /* implicit: CX with aflag size */
+     [0xE4] = X86_OP_ENTRYwr(IN,    0,b, I_unsigned,b), /* AL */
+-    [0xE5] = X86_OP_ENTRYwr(IN,    0,v, I_unsigned,b), /* AX/EAX */
++    [0xE5] = X86_OP_ENTRYwr(IN,    0,z, I_unsigned,b), /* AX/EAX */
+     [0xE6] = X86_OP_ENTRYrr(OUT,   0,b, I_unsigned,b), /* AL */
+-    [0xE7] = X86_OP_ENTRYrr(OUT,   0,v, I_unsigned,b), /* AX/EAX */
++    [0xE7] = X86_OP_ENTRYrr(OUT,   0,z, I_unsigned,b), /* AX/EAX */
  
-     kvm_readonly_mem_allowed =
--        (kvm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
-+        (kvm_vm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
+     [0xF1] = X86_OP_ENTRY0(INT1,   svm(ICEBP)),
+     [0xF4] = X86_OP_ENTRY0(HLT,    chk(cpl0) svm(HLT)),
+@@ -1761,9 +1761,9 @@ static const X86OpEntry opcodes_root[256] = {
+     [0xEA] = X86_OP_ENTRYrr(JMPF,  I_unsigned,p, I_unsigned,w, chk(i64)),
+     [0xEB] = X86_OP_ENTRYr(JMP,    J,b),
+     [0xEC] = X86_OP_ENTRYwr(IN,    0,b, 2,w), /* AL, DX */
+-    [0xED] = X86_OP_ENTRYwr(IN,    0,v, 2,w), /* AX/EAX, DX */
++    [0xED] = X86_OP_ENTRYwr(IN,    0,z, 2,w), /* AX/EAX, DX */
+     [0xEE] = X86_OP_ENTRYrr(OUT,   0,b, 2,w), /* DX, AL */
+-    [0xEF] = X86_OP_ENTRYrr(OUT,   0,v, 2,w), /* DX, AX/EAX */
++    [0xEF] = X86_OP_ENTRYrr(OUT,   0,z, 2,w), /* DX, AX/EAX */
  
-     kvm_resamplefds_allowed =
-         (kvm_check_extension(s, KVM_CAP_IRQFD_RESAMPLE) > 0);
+     [0xF8] = X86_OP_ENTRY0(CLC),
+     [0xF9] = X86_OP_ENTRY0(STC),
 -- 
 2.39.5
 
