@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5719C2CF1
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0EB9C2D31
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:42:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kPI-0006Cj-GA; Sat, 09 Nov 2024 07:17:37 -0500
+	id 1t9kOx-0005DS-0M; Sat, 09 Nov 2024 07:17:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNY-0003zJ-2K; Sat, 09 Nov 2024 07:15:49 -0500
+ id 1t9kNv-0004St-3K; Sat, 09 Nov 2024 07:16:13 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNW-000557-AW; Sat, 09 Nov 2024 07:15:47 -0500
+ id 1t9kNt-00055M-FQ; Sat, 09 Nov 2024 07:16:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 569DFA1634;
+ by isrv.corpit.ru (Postfix) with ESMTP id 65AFEA1635;
  Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 10476167FBB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2C2E0167FBC;
  Sat,  9 Nov 2024 15:09:02 +0300 (MSK)
-Received: (nullmailer pid 3296160 invoked by uid 1000);
+Received: (nullmailer pid 3296163 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alexander Graf <graf@amazon.com>,
- Eduard Vlad <evlad@amazon.de>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 11/58] target/i386: Walk NPT in guest real mode
-Date: Sat,  9 Nov 2024 15:08:12 +0300
-Message-Id: <20241109120901.3295995-11-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 12/58] target/i386: Use probe_access_full_mmu in
+ ptw_translate
+Date: Sat,  9 Nov 2024 15:08:13 +0300
+Message-Id: <20241109120901.3295995-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,102 +63,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Graf <graf@amazon.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-When translating virtual to physical address with a guest CPU that
-supports nested paging (NPT), we need to perform every page table walk
-access indirectly through the NPT, which we correctly do.
-
-However, we treat real mode (no page table walk) special: In that case,
-we currently just skip any walks and translate VA -> PA. With NPT
-enabled, we also need to then perform NPT walk to do GVA -> GPA -> HPA
-which we fail to do so far.
-
-The net result of that is that TCG VMs with NPT enabled that execute
-real mode code (like SeaBIOS) end up with GPA==HPA mappings which means
-the guest accesses host code and data. This typically shows as failure
-to boot guests.
-
-This patch changes the page walk logic for NPT enabled guests so that we
-always perform a GVA -> GPA translation and then skip any logic that
-requires an actual PTE.
-
-That way, all remaining logic to walk the NPT stays and we successfully
-walk the NPT in real mode.
+The probe_access_full_mmu function was designed for this purpose,
+and does not report the memory operation event to plugins.
 
 Cc: qemu-stable@nongnu.org
-Fixes: fe441054bb3f0 ("target-i386: Add NPT support")
-Signed-off-by: Alexander Graf <graf@amazon.com>
-Reported-by: Eduard Vlad <evlad@amazon.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240921085712.28902-1-graf@amazon.com>
+Fixes: 6d03226b422 ("plugins: force slow path when plugins instrument memory ops")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit b56617bbcb473c25815d1bf475e326f84563b1de)
+Message-ID: <20241013184733.1423747-3-richard.henderson@linaro.org>
+(cherry picked from commit 115ade42d50144c15b74368d32dc734ea277d853)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 8fb05b1f53..8cb0d80177 100644
+index 8cb0d80177..8b046ee4be 100644
 --- a/target/i386/tcg/sysemu/excp_helper.c
 +++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -150,6 +150,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-     uint32_t pkr;
-     int page_size;
-     int error_code;
-+    int prot;
+@@ -62,12 +62,11 @@ typedef struct PTETranslate {
  
-  restart_all:
-     rsvd_mask = ~MAKE_64BIT_MASK(0, env_archcpu(env)->phys_bits);
-@@ -298,7 +299,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /* combine pde and pte nx, user and rw protections */
-         ptep &= pte ^ PG_NX_MASK;
-         page_size = 4096;
--    } else {
-+    } else if (pg_mode) {
-         /*
-          * Page table level 2
-          */
-@@ -343,6 +344,15 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         ptep &= pte | PG_NX_MASK;
-         page_size = 4096;
-         rsvd_mask = 0;
-+    } else {
-+        /*
-+         * No paging (real mode), let's tentatively resolve the address as 1:1
-+         * here, but conditionally still perform an NPT walk on it later.
-+         */
-+        page_size = 0x40000000;
-+        paddr = in->addr;
-+        prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
-+        goto stage2;
-     }
+ static bool ptw_translate(PTETranslate *inout, hwaddr addr, uint64_t ra)
+ {
+-    CPUTLBEntryFull *full;
+     int flags;
  
- do_check_protect:
-@@ -358,7 +368,7 @@ do_check_protect_pse36:
-         goto do_fault_protect;
-     }
+     inout->gaddr = addr;
+-    flags = probe_access_full(inout->env, addr, 0, MMU_DATA_STORE,
+-                              inout->ptw_idx, true, &inout->haddr, &full, ra);
++    flags = probe_access_full_mmu(inout->env, addr, 0, MMU_DATA_STORE,
++                                  inout->ptw_idx, &inout->haddr, NULL);
  
--    int prot = 0;
-+    prot = 0;
-     if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
-         prot |= PAGE_READ;
-         if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
-@@ -420,6 +430,7 @@ do_check_protect_pse36:
+     if (unlikely(flags & TLB_INVALID_MASK)) {
+         TranslateFault *err = inout->err;
+@@ -440,9 +439,8 @@ do_check_protect_pse36:
+         CPUTLBEntryFull *full;
+         int flags, nested_page_size;
  
-     /* merge offset within page */
-     paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
-+ stage2:
- 
-     /*
-      * Note that NPT is walked (for both paging structures and final guest
-@@ -562,7 +573,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
-             addr = (uint32_t)addr;
-         }
- 
--        if (likely(env->cr[0] & CR0_PG_MASK)) {
-+        if (likely(env->cr[0] & CR0_PG_MASK || use_stage2)) {
-             in.cr3 = env->cr[3];
-             in.mmu_idx = mmu_idx;
-             in.ptw_idx = use_stage2 ? MMU_NESTED_IDX : MMU_PHYS_IDX;
+-        flags = probe_access_full(env, paddr, 0, access_type,
+-                                  MMU_NESTED_IDX, true,
+-                                  &pte_trans.haddr, &full, 0);
++        flags = probe_access_full_mmu(env, paddr, 0, access_type,
++                                      MMU_NESTED_IDX, &pte_trans.haddr, &full);
+         if (unlikely(flags & TLB_INVALID_MASK)) {
+             *err = (TranslateFault){
+                 .error_code = env->error_code,
 -- 
 2.39.5
 
