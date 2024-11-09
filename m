@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B079C2B9F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C219C2BAF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iVp-0005Ma-7Q; Sat, 09 Nov 2024 05:16:13 -0500
+	id 1t9iX5-00073y-Ic; Sat, 09 Nov 2024 05:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUk-00048D-86; Sat, 09 Nov 2024 05:15:06 -0500
+ id 1t9iV4-0004Zq-Fb; Sat, 09 Nov 2024 05:15:28 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUg-0007YM-Vf; Sat, 09 Nov 2024 05:15:05 -0500
+ id 1t9iV2-0007Yj-R2; Sat, 09 Nov 2024 05:15:26 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9674EA13EE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9F3F1A13EF;
  Sat,  9 Nov 2024 13:13:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 432D0167EDA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4B746167EDB;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 10/49] linux-user: Fix parse_elf_properties GNU0_MAGIC
- check
-Date: Sat,  9 Nov 2024 13:14:01 +0300
-Message-Id: <20241109101443.312701-10-mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 11/49] tcg/ppc: Use TCG_REG_TMP2 for scratch
+ tcg_out_qemu_st
+Date: Sat,  9 Nov 2024 13:14:02 +0300
+Message-Id: <20241109101443.312701-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,58 +60,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Comparing a string of 4 bytes only works in little-endian.
+In the fallback when STDBRX is not available, avoid clobbering
+TCG_REG_TMP1, which might be h.base, which is still in use.
+Use TCG_REG_TMP2 instead.
 
-Adjust bulk bswap to only apply to the note payload.
-Perform swapping of the note header manually; the magic
-is defined so that it does not need a runtime swap.
-
-Fixes: 83f990eb5adb ("linux-user/elfload: Parse NT_GNU_PROPERTY_TYPE_0 notes")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2596
+Cc: qemu-stable@nongnu.org
+Fixes: 01a112e2e9 ("tcg/ppc: Reorg tcg_out_tlb_read")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 2884596f5f385b5712c356310dd4125a089888a8)
+Tested-By: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 4cabcb89b101942346aebff081aa1453e958fe7f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 7cc8d9685e..d11842cb94 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3203,11 +3203,11 @@ static bool parse_elf_properties(const ImageSource *src,
-     }
- 
-     /*
--     * The contents of a valid PT_GNU_PROPERTY is a sequence
--     * of uint32_t -- swap them all now.
-+     * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
-+     * Swap most of them now, beyond the header and namesz.
-      */
- #ifdef BSWAP_NEEDED
--    for (int i = 0; i < n / 4; i++) {
-+    for (int i = 4; i < n / 4; i++) {
-         bswap32s(note.data + i);
-     }
- #endif
-@@ -3217,15 +3217,15 @@ static bool parse_elf_properties(const ImageSource *src,
-      * immediately follows nhdr and is thus at the 4th word.  Further, all
-      * of the inputs to the kernel's round_up are multiples of 4.
-      */
--    if (note.nhdr.n_type != NT_GNU_PROPERTY_TYPE_0 ||
--        note.nhdr.n_namesz != NOTE_NAME_SZ ||
-+    if (tswap32(note.nhdr.n_type) != NT_GNU_PROPERTY_TYPE_0 ||
-+        tswap32(note.nhdr.n_namesz) != NOTE_NAME_SZ ||
-         note.data[3] != GNU0_MAGIC) {
-         error_setg(errp, "Invalid note in PT_GNU_PROPERTY");
-         return false;
-     }
-     off = sizeof(note.nhdr) + NOTE_NAME_SZ;
- 
--    datasz = note.nhdr.n_descsz + off;
-+    datasz = tswap32(note.nhdr.n_descsz) + off;
-     if (datasz > n) {
-         error_setg(errp, "Invalid note size in PT_GNU_PROPERTY");
-         return false;
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 54816967bc..192bb2120f 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2556,9 +2556,9 @@ static void tcg_out_qemu_st(TCGContext *s, TCGReg datalo, TCGReg datahi,
+         uint32_t insn = qemu_stx_opc[opc & (MO_BSWAP | MO_SIZE)];
+         if (!have_isa_2_06 && insn == STDBRX) {
+             tcg_out32(s, STWBRX | SAB(datalo, h.base, h.index));
+-            tcg_out32(s, ADDI | TAI(TCG_REG_TMP1, h.index, 4));
++            tcg_out32(s, ADDI | TAI(TCG_REG_TMP2, h.index, 4));
+             tcg_out_shri64(s, TCG_REG_R0, datalo, 32);
+-            tcg_out32(s, STWBRX | SAB(TCG_REG_R0, h.base, TCG_REG_TMP1));
++            tcg_out32(s, STWBRX | SAB(TCG_REG_R0, h.base, TCG_REG_TMP2));
+         } else {
+             tcg_out32(s, insn | SAB(datalo, h.base, h.index));
+         }
 -- 
 2.39.5
 
