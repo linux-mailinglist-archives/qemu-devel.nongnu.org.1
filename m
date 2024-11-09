@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA559C2BA9
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 071339C2BAE
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iYO-0001m2-Kq; Sat, 09 Nov 2024 05:18:53 -0500
+	id 1t9iXu-00018q-Lq; Sat, 09 Nov 2024 05:18:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iW3-00060P-7U; Sat, 09 Nov 2024 05:16:34 -0500
+ id 1t9iW6-00060e-Jo; Sat, 09 Nov 2024 05:16:34 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iW1-0007wH-Mx; Sat, 09 Nov 2024 05:16:26 -0500
+ id 1t9iW4-0007yi-0v; Sat, 09 Nov 2024 05:16:30 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6F4F7A13FA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 80C0FA13FC;
  Sat,  9 Nov 2024 13:13:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 07F50167EE6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2CAB4167EE7;
  Sat,  9 Nov 2024 13:14:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 22/49] tcg: Reset data_gen_ptr correctly
-Date: Sat,  9 Nov 2024 13:14:13 +0300
-Message-Id: <20241109101443.312701-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexander Graf <graf@amazon.com>,
+ Eduard Vlad <evlad@amazon.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 23/49] target/i386: Walk NPT in guest real mode
+Date: Sat,  9 Nov 2024 13:14:14 +0300
+Message-Id: <20241109101443.312701-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
@@ -59,40 +59,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Alexander Graf <graf@amazon.com>
 
-This pointer needs to be reset after overflow just like
-code_buf and code_ptr.
+When translating virtual to physical address with a guest CPU that
+supports nested paging (NPT), we need to perform every page table walk
+access indirectly through the NPT, which we correctly do.
+
+However, we treat real mode (no page table walk) special: In that case,
+we currently just skip any walks and translate VA -> PA. With NPT
+enabled, we also need to then perform NPT walk to do GVA -> GPA -> HPA
+which we fail to do so far.
+
+The net result of that is that TCG VMs with NPT enabled that execute
+real mode code (like SeaBIOS) end up with GPA==HPA mappings which means
+the guest accesses host code and data. This typically shows as failure
+to boot guests.
+
+This patch changes the page walk logic for NPT enabled guests so that we
+always perform a GVA -> GPA translation and then skip any logic that
+requires an actual PTE.
+
+That way, all remaining logic to walk the NPT stays and we successfully
+walk the NPT in real mode.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 57a269469db ("tcg: Infrastructure for managing constant pools")
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Fixes: fe441054bb3f0 ("target-i386: Add NPT support")
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Reported-by: Eduard Vlad <evlad@amazon.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240921085712.28902-1-graf@amazon.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit a7cfd751fb269de4a93bf1658cb13911c7ac77cc)
+(cherry picked from commit b56617bbcb473c25815d1bf475e326f84563b1de)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index e2c38f6d11..7d07a1166b 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1410,7 +1410,6 @@ TranslationBlock *tcg_tb_alloc(TCGContext *s)
-         goto retry;
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 7a57b7dd10..319b23762c 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -149,6 +149,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+     uint32_t pkr;
+     int page_size;
+     int error_code;
++    int prot;
+ 
+  restart_all:
+     rsvd_mask = ~MAKE_64BIT_MASK(0, env_archcpu(env)->phys_bits);
+@@ -297,7 +298,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+         /* combine pde and pte nx, user and rw protections */
+         ptep &= pte ^ PG_NX_MASK;
+         page_size = 4096;
+-    } else {
++    } else if (pg_mode) {
+         /*
+          * Page table level 2
+          */
+@@ -342,6 +343,15 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+         ptep &= pte | PG_NX_MASK;
+         page_size = 4096;
+         rsvd_mask = 0;
++    } else {
++        /*
++         * No paging (real mode), let's tentatively resolve the address as 1:1
++         * here, but conditionally still perform an NPT walk on it later.
++         */
++        page_size = 0x40000000;
++        paddr = in->addr;
++        prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        goto stage2;
      }
-     qatomic_set(&s->code_gen_ptr, next);
--    s->data_gen_ptr = NULL;
-     return tb;
- }
  
-@@ -6114,6 +6113,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-      */
-     s->code_buf = tcg_splitwx_to_rw(tb->tc.ptr);
-     s->code_ptr = s->code_buf;
-+    s->data_gen_ptr = NULL;
+ do_check_protect:
+@@ -357,7 +367,7 @@ do_check_protect_pse36:
+         goto do_fault_protect;
+     }
  
- #ifdef TCG_TARGET_NEED_LDST_LABELS
-     QSIMPLEQ_INIT(&s->ldst_labels);
+-    int prot = 0;
++    prot = 0;
+     if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
+         prot |= PAGE_READ;
+         if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
+@@ -419,6 +429,7 @@ do_check_protect_pse36:
+ 
+     /* merge offset within page */
+     paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
++ stage2:
+ 
+     /*
+      * Note that NPT is walked (for both paging structures and final guest
+@@ -561,7 +572,7 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+             addr = (uint32_t)addr;
+         }
+ 
+-        if (likely(env->cr[0] & CR0_PG_MASK)) {
++        if (likely(env->cr[0] & CR0_PG_MASK || use_stage2)) {
+             in.cr3 = env->cr[3];
+             in.mmu_idx = mmu_idx;
+             in.ptw_idx = use_stage2 ? MMU_NESTED_IDX : MMU_PHYS_IDX;
 -- 
 2.39.5
 
