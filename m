@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E519C2A2A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 06:00:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644B69C2A2B
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 06:01:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9dZl-0006Nj-QR; Fri, 08 Nov 2024 23:59:58 -0500
+	id 1t9dZn-0006O8-Fw; Fri, 08 Nov 2024 23:59:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t9dZj-0006NB-It
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 23:59:55 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1t9dZm-0006Ny-Hb
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 23:59:58 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1t9dZh-0000fL-W8
- for qemu-devel@nongnu.org; Fri, 08 Nov 2024 23:59:55 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-71e4244fdc6so2489947b3a.0
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 20:59:53 -0800 (PST)
+ id 1t9dZk-0000ff-Um
+ for qemu-devel@nongnu.org; Fri, 08 Nov 2024 23:59:58 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-723f37dd76cso3030168b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 20:59:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1731128392; x=1731733192;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1731128395; x=1731733195;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pe8SBHoLAZphIXqOGJa/qUqOysZpgdOltfKYUVIh7vA=;
- b=mi4rh9b1A0EaYEidZw+/gVjtd8bCYvvBLngH1Z0ton6mUTDGKqreUqy2NFGI/NPpzd
- mausE8xtDvLS7I6pJe4afXS72Yz3cF4guia5CCmeolcZWOueY/mZM4MXFCvzJfVeFDa+
- cyoenFbaBrtTAYcK+ST6T/ecrWgmg1ImcrKQOKfsePXhf68QQGA5e4Firh6DNGTmkWV0
- h+ww4gTWXdzouJPgiJkUcad/fxcvUYWYwwB9LaUh4Gp0XHN1Mfr92wyTa23F5ODa+uIR
- RMN4Ax3mXQyvDWP0HY5x4nMpgNsm4/SaOh4WnkzJeT2zWibM34Mzc3DtqFqoCZkGatZS
- f8RA==
+ bh=9gZ+IPpDpfPOMn4j4HmQOIMp3Etb7MIoneItHhCKeWk=;
+ b=Vupv9Iis3qaZo7dkpZdQnmvS5IbskqA3l8d4q42EayJj3aCmtlpbzXV9B3/AGRQSIy
+ 5d/KQAdXc/8UoEorkyBWfQaBljM63vbgDZNKsXaWP1O17Xy4zhJroKA7msXnRzn6/Cpq
+ 8r67I/Ivk61N1d6A+Nmodmdyr0hAgSKI+r/o2WlpfCCc3HbP+DHLCs1ZUCg/dMz+7ewx
+ SPhhICLEX4wfi7TmSCICloQo+5x3XbSQW3Gwir7PVFENEevlbpR/kufJAKvVArs1vDuG
+ u5sfDS6bEYwvk3iqlh31Nwd/t5q5L5AU5DtQ4GMP0//mxHgoPUJf/8CyjzWnGr1BqSti
+ KSbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731128392; x=1731733192;
+ d=1e100.net; s=20230601; t=1731128395; x=1731733195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pe8SBHoLAZphIXqOGJa/qUqOysZpgdOltfKYUVIh7vA=;
- b=F6zPqeG0ypk9YHq6HzZV+ZcUZiZ2bmlm3ErRdAVj+ZHqfMINrs/GBmGFFXI6XJK6U0
- q+mG3FG1lbfoD2h+vcJEZ2QRtliFk9DW/AccV9lMAABYBUzHGYv0Y51uL9suPK0EaLoB
- uarrOW8nIvJv4nlCFHleFvOCQxKiP25fFiOYxklkJOSGACjqEBtuFcYjxPQ60lDjec/d
- ssTgIFPOGPpKIFD2qlaqtwIwNpUDac5BoZpTKFZAUv2734zrVHBYET6HkS+cLoLw5+C2
- 13vRHKRrq69wuFPAwjjGWoreG3QcmscpSdeV7jiXUNFoV7yPqIdngDG3IpiVyd76h5rX
- qOCA==
-X-Gm-Message-State: AOJu0YwpQj6xVqloSImSRoRmv76KLBpRolOi5dgorRb+jGGZNBzXbB5o
- oRWi0z+hTERe1TKI/QnZhFkDP5qn2NTqPNRXgkW5ySk6ks6vg86AJIcfugFSKTPSBHk1i6OCoIw
- kiOhoUg==
-X-Google-Smtp-Source: AGHT+IH/ANoqO6TccTq1Rf0TFJt6/rfvYZpMFW6aa9hhhY1MLru+b8FZD280aWa38aayNYJz6tENzQ==
-X-Received: by 2002:a05:6a00:3c95:b0:71d:f15e:d023 with SMTP id
- d2e1a72fcca58-724132c7aeemr7007968b3a.11.1731128391786; 
- Fri, 08 Nov 2024 20:59:51 -0800 (PST)
+ bh=9gZ+IPpDpfPOMn4j4HmQOIMp3Etb7MIoneItHhCKeWk=;
+ b=Q4i+RqpTUnF0PltIbR4JHs19M8wiIte0UaVf3DlBaW3qOASnJRS/RYY5WV0LkrAyQQ
+ aBNKix+C5PHqv1Xvd9ONAnRCXckcglCa8LLXpyMfS2HMcbQD0AYmsxlFHuTvLqYy043r
+ 6liXuktLmoIBYp601wbaxShVkTY+Axth0bkplKexTNRTqu74wPxaB1QVXGZV3T8N7YRM
+ BZ5V61/MGVvnK7zpGDyfiVRFomgsG3YPeoMTIOHV9GXKUssLevdYLY0kW3zftR5j8tfF
+ 9U6Q016q50ded6lDT9ZAYAOrAWFkL7GS7WOYio5SM+SNegANzyikbX7d3O5nTr2fG/EX
+ c8EQ==
+X-Gm-Message-State: AOJu0YylW4+xHBHE11cuv/d9anu1Tmv/tmGOQdUyxOY6QzVIU2tODxZN
+ vBZ62kGjK4kXWN+LfV3hTWXdM6P4wqpHJzVS1/94u2Ku/uHBuDvRYjz686vaUgc8V/A3lheRP7G
+ p6PRTqw==
+X-Google-Smtp-Source: AGHT+IEYRMb8PSniLyEY2Zm2c9vYRGR0BcNWSXnvN8o37e612lhZkpx5cn+khrUzc8vMT0QM4DoneQ==
+X-Received: by 2002:a05:6a21:8cca:b0:1db:df7b:471a with SMTP id
+ adf61e73a8af0-1dc22b9162amr7666446637.43.1731128394606; 
+ Fri, 08 Nov 2024 20:59:54 -0800 (PST)
 Received: from localhost.localdomain ([118.114.63.54])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-724078a9ac8sm4718365b3a.79.2024.11.08.20.59.49
+ d2e1a72fcca58-724078a9ac8sm4718365b3a.79.2024.11.08.20.59.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 20:59:51 -0800 (PST)
+ Fri, 08 Nov 2024 20:59:54 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Wei Wang <wei.w.wang@intel.com>, David Hildenbrand <david@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v1 1/2] virtio-balloon: Enable free page hinting during
- PRECOPY_NOTIFY_SETUP
-Date: Sat,  9 Nov 2024 12:59:41 +0800
-Message-Id: <c799b1f96e55c5eb9c07e5a70a51b8ba67e7bcc9.1731128180.git.yong.huang@smartx.com>
+Subject: [PATCH v1 2/2] migration: Do not perform RAMBlock dirty sync during
+ the first iteration
+Date: Sat,  9 Nov 2024 12:59:42 +0800
+Message-Id: <c25abae360ac204321acc5010a745a8e594f24bd.1731128180.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1731128180.git.yong.huang@smartx.com>
 References: <cover.1731128180.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,37 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PRECOPY_NOTIFY_AFTER_BITMAP_SYNC was interpreted by free page hinting
-optimization as an indication to begin freeing pages. But there's no
-assurance that a sync is required when beginning a migration. Therefore,
-during PRECOPY_NOTIFY_SETUP, as well as PRECOPY_NOTIFY_AFTER_BITMAP_SYNC,
-enable free page hinting.
+The first iteration's RAMBlock dirty sync can be omitted because QEMU
+always initializes the RAMBlock's bmap to all 1s by default.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- hw/virtio/virtio-balloon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/cpu-throttle.c |  2 +-
+ migration/ram.c          | 11 ++++++++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index 609e39a821..2f1e086cd8 100644
---- a/hw/virtio/virtio-balloon.c
-+++ b/hw/virtio/virtio-balloon.c
-@@ -663,6 +663,7 @@ virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data,
-     case PRECOPY_NOTIFY_BEFORE_BITMAP_SYNC:
-         virtio_balloon_free_page_stop(dev);
-         break;
-+    case PRECOPY_NOTIFY_SETUP:
-     case PRECOPY_NOTIFY_AFTER_BITMAP_SYNC:
-         if (vdev->vm_running) {
-             virtio_balloon_free_page_start(dev);
-@@ -679,7 +680,6 @@ virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data,
-          */
-         virtio_balloon_free_page_done(dev);
-         break;
--    case PRECOPY_NOTIFY_SETUP:
-     case PRECOPY_NOTIFY_COMPLETE:
-         break;
-     default:
+diff --git a/migration/cpu-throttle.c b/migration/cpu-throttle.c
+index 5179019e33..674dc2004e 100644
+--- a/migration/cpu-throttle.c
++++ b/migration/cpu-throttle.c
+@@ -141,7 +141,7 @@ void cpu_throttle_dirty_sync_timer_tick(void *opaque)
+      * effect on guest performance, therefore omit it to avoid
+      * paying extra for the sync penalty.
+      */
+-    if (sync_cnt <= 1) {
++    if (!sync_cnt) {
+         goto end;
+     }
+ 
+diff --git a/migration/ram.c b/migration/ram.c
+index 05ff9eb328..571dba10b7 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -2718,7 +2718,7 @@ static void ram_list_init_bitmaps(void)
+ {
+     MigrationState *ms = migrate_get_current();
+     RAMBlock *block;
+-    unsigned long pages;
++    unsigned long pages, clear_bmap_pages;
+     uint8_t shift;
+ 
+     /* Skip setting bitmap if there is no RAM */
+@@ -2736,6 +2736,7 @@ static void ram_list_init_bitmaps(void)
+ 
+         RAMBLOCK_FOREACH_NOT_IGNORED(block) {
+             pages = block->max_length >> TARGET_PAGE_BITS;
++            clear_bmap_pages = clear_bmap_size(pages, shift);
+             /*
+              * The initial dirty bitmap for migration must be set with all
+              * ones to make sure we'll migrate every guest RAM page to
+@@ -2751,7 +2752,12 @@ static void ram_list_init_bitmaps(void)
+                 block->file_bmap = bitmap_new(pages);
+             }
+             block->clear_bmap_shift = shift;
+-            block->clear_bmap = bitmap_new(clear_bmap_size(pages, shift));
++            block->clear_bmap = bitmap_new(clear_bmap_pages);
++            /*
++             * Set clear_bmap to 1 unconditionally, as we always set bmap
++             * to all 1s by default.
++             */
++            bitmap_set(block->clear_bmap, 0, clear_bmap_pages);
+         }
+     }
+ }
+@@ -2783,7 +2789,6 @@ static bool ram_init_bitmaps(RAMState *rs, Error **errp)
+             if (!ret) {
+                 goto out_unlock;
+             }
+-            migration_bitmap_sync_precopy(false);
+         }
+     }
+ out_unlock:
 -- 
 2.39.1
 
