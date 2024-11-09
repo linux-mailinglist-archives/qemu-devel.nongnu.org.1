@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8829C2CE9
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0749C2CCF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:17:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kLs-0006D7-Df; Sat, 09 Nov 2024 07:14:04 -0500
+	id 1t9kLw-0006ti-6T; Sat, 09 Nov 2024 07:14:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kLO-0005Ht-7P; Sat, 09 Nov 2024 07:13:35 -0500
+ id 1t9kLl-0005xl-9O; Sat, 09 Nov 2024 07:13:57 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kLM-0004fa-NZ; Sat, 09 Nov 2024 07:13:33 -0500
+ id 1t9kLj-0004fm-Ip; Sat, 09 Nov 2024 07:13:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BE515A1619;
+ by isrv.corpit.ru (Postfix) with ESMTP id CAF2DA161A;
  Sat,  9 Nov 2024 15:07:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 84BD2167FA7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 93CAA167FA8;
  Sat,  9 Nov 2024 15:08:04 +0300 (MSK)
-Received: (nullmailer pid 3295404 invoked by uid 1000);
+Received: (nullmailer pid 3295407 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 49/57] target/ppc: Fix mtDPDES targeting SMT siblings
-Date: Sat,  9 Nov 2024 15:07:51 +0300
-Message-Id: <20241109120801.3295120-49-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 50/57] ppc/xive: Fix ESB length overflow on 32-bit hosts
+Date: Sat,  9 Nov 2024 15:07:52 +0300
+Message-Id: <20241109120801.3295120-50-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,30 +61,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-A typo in the loop over SMT threads to set irq level for doorbells
-when storing to DPDES meant everything was aimed at the CPU executing
-the instruction.
+The length of this region can be > 32-bits, which overflows size_t on
+32-bit hosts. Change to uint64_t.
 
-Cc: qemu-stable@nongnu.org
-Fixes: d24e80b2ae ("target/ppc: Add msgsnd/p and DPDES SMT support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 0324d236d2918c18a9ad4a1081b1083965a1433b)
+(cherry picked from commit 07f2770503e24889720028ddf9ef54788ddf3b6d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 58e808dc96..45ab8e4416 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -280,7 +280,7 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
-         PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-         uint32_t thread_id = ppc_cpu_tir(ccpu);
+diff --git a/hw/intc/spapr_xive_kvm.c b/hw/intc/spapr_xive_kvm.c
+index 5789062379..7a86197fc9 100644
+--- a/hw/intc/spapr_xive_kvm.c
++++ b/hw/intc/spapr_xive_kvm.c
+@@ -720,7 +720,7 @@ int kvmppc_xive_connect(SpaprInterruptController *intc, uint32_t nr_servers,
+ {
+     SpaprXive *xive = SPAPR_XIVE(intc);
+     XiveSource *xsrc = &xive->source;
+-    size_t esb_len = xive_source_esb_len(xsrc);
++    uint64_t esb_len = xive_source_esb_len(xsrc);
+     size_t tima_len = 4ull << TM_SHIFT;
+     CPUState *cs;
+     int fd;
+@@ -824,7 +824,7 @@ void kvmppc_xive_disconnect(SpaprInterruptController *intc)
+ {
+     SpaprXive *xive = SPAPR_XIVE(intc);
+     XiveSource *xsrc;
+-    size_t esb_len;
++    uint64_t esb_len;
  
--        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-+        ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-     }
-     bql_unlock();
+     assert(xive->fd != -1);
+ 
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 057b308ae9..38cb98b0f7 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -1238,7 +1238,7 @@ static void xive_source_reset(void *dev)
+ static void xive_source_realize(DeviceState *dev, Error **errp)
+ {
+     XiveSource *xsrc = XIVE_SOURCE(dev);
+-    size_t esb_len = xive_source_esb_len(xsrc);
++    uint64_t esb_len = xive_source_esb_len(xsrc);
+ 
+     assert(xsrc->xive);
+ 
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index f120874e0f..00023c0233 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -218,7 +218,7 @@ static inline bool xive_source_esb_has_2page(XiveSource *xsrc)
+         xsrc->esb_shift == XIVE_ESB_4K_2PAGE;
+ }
+ 
+-static inline size_t xive_source_esb_len(XiveSource *xsrc)
++static inline uint64_t xive_source_esb_len(XiveSource *xsrc)
+ {
+     return (1ull << xsrc->esb_shift) * xsrc->nr_irqs;
  }
 -- 
 2.39.5
