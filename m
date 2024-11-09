@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE989C2D32
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:44:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FDA9C2CE6
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:24:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kS4-0003IW-Ov; Sat, 09 Nov 2024 07:20:32 -0500
+	id 1t9kSi-0003xN-RF; Sat, 09 Nov 2024 07:21:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQQ-0008OC-H4; Sat, 09 Nov 2024 07:18:47 -0500
+ id 1t9kQT-00005Z-Jv; Sat, 09 Nov 2024 07:18:49 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kQO-0005N5-Ky; Sat, 09 Nov 2024 07:18:46 -0500
+ id 1t9kQR-0005OX-Rv; Sat, 09 Nov 2024 07:18:49 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0E9D6A164F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1EC56A1650;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C80EA167FD5;
+ by tsrv.corpit.ru (Postfix) with SMTP id D88F7167FD6;
  Sat,  9 Nov 2024 15:09:03 +0300 (MSK)
-Received: (nullmailer pid 3296241 invoked by uid 1000);
+Received: (nullmailer pid 3296244 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,9 +30,10 @@ Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 37/58] target/ppc: Set ctx->opcode for decode_insn32()
-Date: Sat,  9 Nov 2024 15:08:38 +0300
-Message-Id: <20241109120901.3295995-37-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 38/58] target/ppc: Make divd[u] handler method
+ decodetree compatible
+Date: Sat,  9 Nov 2024 15:08:39 +0300
+Message-Id: <20241109120901.3295995-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -64,48 +65,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-divdu (without a dot) sometimes updates cr0, even though it shouldn't.
-The reason is that gen_op_arith_divd() checks Rc(ctx->opcode), which is
-not initialized. This field is initialized only for instructions that
-go through decode_legacy(), and not decodetree.
-
-There already was a similar issue fixed in commit 86e6202a57b1
-("target/ppc: Make divw[u] handler method decodetree compatible.").
-
-It's not immediately clear what else may access the uninitialized
-ctx->opcode, so instead of playing whack-a-mole and changing the check
-to compute_rc0, simply initialize ctx->opcode.
+This is like commit 86e6202a57b1 ("target/ppc: Make divw[u] handler
+method decodetree compatible."), but for gen_op_arith_divd().
 
 Cc: qemu-stable@nongnu.org
-Fixes: 99082815f17f ("target/ppc: Add infrastructure for prefixed insns")
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit c9b8a13a8841e0e23901e57e24ea98eeef16cf91)
+(cherry picked from commit 7b4820a3e1dfba2b81f2354e7c748fc04b275dba)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 71513ba964..02c810e884 100644
+index 02c810e884..5a352cdad1 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -6426,8 +6426,6 @@ static bool decode_legacy(PowerPCCPU *cpu, DisasContext *ctx, uint32_t insn)
-     opc_handler_t **table, *handler;
-     uint32_t inval;
+@@ -1823,7 +1823,7 @@ static inline void gen_op_arith_divd(DisasContext *ctx, TCGv ret,
+         tcg_gen_or_tl(cpu_so, cpu_so, cpu_ov);
+     }
  
--    ctx->opcode = insn;
--
-     LOG_DISAS("translate opcode %08x (%02x %02x %02x %02x) (%s)\n",
-               insn, opc1(insn), opc2(insn), opc3(insn), opc4(insn),
-               ctx->le_mode ? "little" : "big");
-@@ -6561,6 +6559,7 @@ static void ppc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     ctx->base.pc_next = pc += 4;
- 
-     if (!is_prefix_insn(ctx, insn)) {
-+        ctx->opcode = insn;
-         ok = (decode_insn32(ctx, insn) ||
-               decode_legacy(cpu, ctx, insn));
-     } else if ((pc & 63) == 0) {
+-    if (unlikely(Rc(ctx->opcode) != 0)) {
++    if (unlikely(compute_rc0)) {
+         gen_set_Rc0(ctx, ret);
+     }
+ }
 -- 
 2.39.5
 
