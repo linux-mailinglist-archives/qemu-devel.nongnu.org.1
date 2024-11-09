@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DA99C2BC6
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3699C2BBA
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:26:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9icJ-0007KC-BP; Sat, 09 Nov 2024 05:22:58 -0500
+	id 1t9icE-00071g-SX; Sat, 09 Nov 2024 05:22:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iXM-0007gf-B2; Sat, 09 Nov 2024 05:17:49 -0500
+ id 1t9iXR-0007nF-Fk; Sat, 09 Nov 2024 05:17:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iXK-000896-0p; Sat, 09 Nov 2024 05:17:48 -0500
+ id 1t9iXP-00089O-QO; Sat, 09 Nov 2024 05:17:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2693AA1407;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3088AA1408;
  Sat,  9 Nov 2024 13:13:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C6717167EF2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id CFD86167EF3;
  Sat,  9 Nov 2024 13:14:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ido Plat <ido.plat1@ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 34/49] target/arm: Fix arithmetic underflow in SETM
- instruction
-Date: Sat,  9 Nov 2024 13:14:25 +0300
-Message-Id: <20241109101443.312701-34-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ Evgenii Prokopiev <evgenii.prokopiev@syntacore.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 35/49] target/riscv/csr.c: Fix an access to VXSAT
+Date: Sat,  9 Nov 2024 13:14:26 +0300
+Message-Id: <20241109101443.312701-35-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
@@ -59,35 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ido Plat <ido.plat1@ibm.com>
+From: Evgenii Prokopiev <evgenii.prokopiev@syntacore.com>
 
-Pass the stage size to step function callback, otherwise do_setm
-would hang when size is larger then page size because stage size
-would underflow.  This fix changes do_setm to be more inline with
-do_setp.
+The register VXSAT should be RW only to the first bit.
+The remaining bits should be 0.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 0e92818887dee ("target/arm: Implement the SET* instructions")
-Signed-off-by: Ido Plat <ido.plat1@ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241025024909.799989-1-ido.plat1@ibm.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit bab209af35037b33f7eb1b8a3737085935bec3a3)
+The RISC-V Instruction Set Manual Volume I: Unprivileged Architecture
+
+The vxsat CSR has a single read-write least-significant bit (vxsat[0])
+that indicates if a fixed-point instruction has had to saturate an output
+value to fit into a destination format. Bits vxsat[XLEN-1:1]
+should be written as zeros.
+
+Signed-off-by: Evgenii Prokopiev <evgenii.prokopiev@syntacore.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241002084436.89347-1-evgenii.prokopiev@syntacore.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 5a60026cad4e9dba929cab4f63229e4b9110cf0a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 8ad84623d3..8335505a06 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -1330,7 +1330,7 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     /* Do the actual memset: we leave the last partial page to SETE */
-     stagesetsize = setsize & TARGET_PAGE_MASK;
-     while (stagesetsize > 0) {
--        step = stepfn(env, toaddr, setsize, data, memidx, &mtedesc, ra);
-+        step = stepfn(env, toaddr, stagesetsize, data, memidx, &mtedesc, ra);
-         toaddr += step;
-         setsize -= step;
-         stagesetsize -= step;
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index c50a33397c..3d9ea0c316 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -704,7 +704,7 @@ static RISCVException write_vxrm(CPURISCVState *env, int csrno,
+ static RISCVException read_vxsat(CPURISCVState *env, int csrno,
+                                  target_ulong *val)
+ {
+-    *val = env->vxsat;
++    *val = env->vxsat & BIT(0);
+     return RISCV_EXCP_NONE;
+ }
+ 
+@@ -714,7 +714,7 @@ static RISCVException write_vxsat(CPURISCVState *env, int csrno,
+ #if !defined(CONFIG_USER_ONLY)
+     env->mstatus |= MSTATUS_VS;
+ #endif
+-    env->vxsat = val;
++    env->vxsat = val & BIT(0);
+     return RISCV_EXCP_NONE;
+ }
+ 
 -- 
 2.39.5
 
