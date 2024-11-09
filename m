@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A5B9C2CF3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967539C2D44
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:45:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kU0-0005tO-Nn; Sat, 09 Nov 2024 07:22:28 -0500
+	id 1t9kU5-0005xe-7z; Sat, 09 Nov 2024 07:22:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRd-0002eU-I9; Sat, 09 Nov 2024 07:20:02 -0500
+ id 1t9kRi-0002nP-SB; Sat, 09 Nov 2024 07:20:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kRb-0005YP-Q0; Sat, 09 Nov 2024 07:20:01 -0500
+ id 1t9kRf-0005Yb-3O; Sat, 09 Nov 2024 07:20:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A96E4A1659;
+ by isrv.corpit.ru (Postfix) with ESMTP id BA357A165A;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6EC7C167FDF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7EF90167FE0;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296273 invoked by uid 1000);
+Received: (nullmailer pid 3296276 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 47/58] tests/tcg: Replace -mpower8-vector with
- -mcpu=power8
-Date: Sat,  9 Nov 2024 15:08:48 +0300
-Message-Id: <20241109120901.3295995-47-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jan Luebbe <jlu@pengutronix.de>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 48/58] hw/sd/sdcard: Fix calculation of size when using
+ eMMC boot partitions
+Date: Sat,  9 Nov 2024 15:08:49 +0300
+Message-Id: <20241109120901.3295995-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -63,64 +64,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Jan Luebbe <jlu@pengutronix.de>
 
-[1] deprecated -mpower8-vector, resulting in:
+The sd_bootpart_offset() function calculates the *runtime* offset which
+changes as the guest switches between accessing the main user data area
+and the boot partitions by writing to the EXT_CSD_PART_CONFIG_ACC_MASK
+bits, so it shouldn't be used to calculate the main user data area size.
 
-    powerpc64-linux-gnu-gcc: warning: switch '-mpower8-vector' is no longer supported
-    qemu/tests/tcg/ppc64/vsx_f2i_nan.c:4:15: error: expected ';' before 'float'
-        4 | typedef vector float vsx_float32_vec_t;
-          |               ^~~~~~
+Instead, subtract the boot_part_size directly (twice, as there are two
+identical boot partitions defined by the eMMC spec).
 
-Use -mcpu=power8 instead. In order to properly verify that this works,
-one needs a big-endian (the minimum supported CPU for 64-bit
-little-endian is power8 anyway) GCC configured with --enable-checking
-(see GCC commit e154242724b0 ("[RS6000] Don't pass -many to the
-assembler").
-
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109987
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit ddf4dd46e5c31bd223f2e867f2cae43bfd41dfb9)
+Suggested-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Fixes: c8cb19876d3e ("hw/sd/sdcard: Support boot area in emmc image")
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit c078298301a8c72fe12da85d94372689196628bc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
-index 509a20be2b..102a2cefef 100644
---- a/tests/tcg/ppc64/Makefile.target
-+++ b/tests/tcg/ppc64/Makefile.target
-@@ -6,7 +6,7 @@ VPATH += $(SRC_PATH)/tests/tcg/ppc64
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index e96181385f..a639ff674c 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -834,7 +834,9 @@ static void sd_reset(DeviceState *dev)
+         sect = 0;
+     }
+     size = sect << HWBLOCK_SHIFT;
+-    size -= sd_bootpart_offset(sd);
++    if (sd_is_emmc(sd)) {
++        size -= sd->boot_part_size * 2;
++    }
  
- config-cc.mak: Makefile
- 	$(quiet-@)( \
--	    $(call cc-option,-mpower8-vector,   CROSS_CC_HAS_POWER8_VECTOR); \
-+	    $(call cc-option,-mcpu=power8,      CROSS_CC_HAS_CPU_POWER8); \
- 	    $(call cc-option,-mpower10,         CROSS_CC_HAS_POWER10)) 3> config-cc.mak
+     sect = sd_addr_to_wpnum(size) + 1;
  
- -include config-cc.mak
-@@ -23,15 +23,15 @@ run-threadcount: threadcount
- run-plugin-threadcount-with-%:
- 	$(call skip-test, $<, "BROKEN (flaky with clang) ")
- 
--ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)
-+ifneq ($(CROSS_CC_HAS_CPU_POWER8),)
- PPC64_TESTS=bcdsub non_signalling_xscv
- endif
--$(PPC64_TESTS): CFLAGS += -mpower8-vector
-+$(PPC64_TESTS): CFLAGS += -mcpu=power8
- 
--ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)
-+ifneq ($(CROSS_CC_HAS_CPU_POWER8),)
- PPC64_TESTS += vsx_f2i_nan
- endif
--vsx_f2i_nan: CFLAGS += -mpower8-vector -I$(SRC_PATH)/include
-+vsx_f2i_nan: CFLAGS += -mcpu=power8 -I$(SRC_PATH)/include
- 
- PPC64_TESTS += mtfsf
- PPC64_TESTS += mffsce
 -- 
 2.39.5
 
