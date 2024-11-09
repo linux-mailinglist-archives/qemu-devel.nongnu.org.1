@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2232A9C2BA6
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0AAE9C2BAD
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iXm-0000Vb-Kn; Sat, 09 Nov 2024 05:18:15 -0500
+	id 1t9iaT-0004KC-Hp; Sat, 09 Nov 2024 05:21:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVg-0005K2-7K; Sat, 09 Nov 2024 05:16:04 -0500
+ id 1t9iW2-00060K-Jq; Sat, 09 Nov 2024 05:16:33 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVe-0007vK-GC; Sat, 09 Nov 2024 05:16:03 -0500
+ id 1t9iW0-0007vZ-Og; Sat, 09 Nov 2024 05:16:26 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 43232A13F8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5321AA13F9;
  Sat,  9 Nov 2024 13:13:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E33C8167EE4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EC4C1167EE5;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 20/49] tests/qemu-iotests/211.out: Update to expect
- MapEntry 'compressed' field
-Date: Sat,  9 Nov 2024 13:14:11 +0300
-Message-Id: <20241109101443.312701-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 21/49] raw-format: Fix error message for invalid
+ offset/size
+Date: Sat,  9 Nov 2024 13:14:12 +0300
+Message-Id: <20241109101443.312701-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,59 +60,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Kevin Wolf <kwolf@redhat.com>
 
-In commit 52b10c9c0c68e90f in 2023 the QAPI MapEntry struct was
-updated to add a 'compressed' field. That commit updated a number
-of iotest expected-output files, but missed 211, which is vdi
-specific. The result is that
- ./check -vdi
-and more specifically
- ./check -vdi 211
-fails because the expected and actual output don't match.
+s->offset and s->size are only set at the end of the function and still
+contain the old values when formatting the error message. Print the
+parameters with the new values that we actually checked instead.
 
-Update the reference output.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 52b10c9c0c68e90f ("qemu-img: map: report compressed data blocks")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20241008164708.2966400-4-peter.maydell@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Fixes: 500e2434207d ('raw-format: Split raw_read_options()')
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit d60bd080e783107cb876a6f16561fe03f9dcbca7)
+Message-ID: <20240829185527.47152-1-kwolf@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 04bbc3ee52b32ac465547bb40c1f090a1b8f315a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qemu-iotests/211.out b/tests/qemu-iotests/211.out
-index f02c75409c..ff9f9a6913 100644
---- a/tests/qemu-iotests/211.out
-+++ b/tests/qemu-iotests/211.out
-@@ -17,7 +17,7 @@ file format: IMGFMT
- virtual size: 128 MiB (134217728 bytes)
- cluster_size: 1048576
+diff --git a/block/raw-format.c b/block/raw-format.c
+index 1111dffd54..8195ed87cc 100644
+--- a/block/raw-format.c
++++ b/block/raw-format.c
+@@ -111,7 +111,7 @@ raw_apply_options(BlockDriverState *bs, BDRVRawState *s, uint64_t offset,
+     if (offset > real_size) {
+         error_setg(errp, "Offset (%" PRIu64 ") cannot be greater than "
+                    "size of the containing file (%" PRId64 ")",
+-                   s->offset, real_size);
++                   offset, real_size);
+         return -EINVAL;
+     }
  
--[{"data": false, "depth": 0, "length": 134217728, "present": true, "start": 0, "zero": true}]
-+[{"compressed": false, "data": false, "depth": 0, "length": 134217728, "present": true, "start": 0, "zero": true}]
- === Successful image creation (explicit defaults) ===
+@@ -119,7 +119,7 @@ raw_apply_options(BlockDriverState *bs, BDRVRawState *s, uint64_t offset,
+         error_setg(errp, "The sum of offset (%" PRIu64 ") and size "
+                    "(%" PRIu64 ") has to be smaller or equal to the "
+                    " actual size of the containing file (%" PRId64 ")",
+-                   s->offset, s->size, real_size);
++                   offset, size, real_size);
+         return -EINVAL;
+     }
  
- {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "file", "filename": "TEST_DIR/PID-t.vdi", "size": 0}}}
-@@ -35,7 +35,7 @@ file format: IMGFMT
- virtual size: 64 MiB (67108864 bytes)
- cluster_size: 1048576
- 
--[{"data": false, "depth": 0, "length": 67108864, "present": true, "start": 0, "zero": true}]
-+[{"compressed": false, "data": false, "depth": 0, "length": 67108864, "present": true, "start": 0, "zero": true}]
- === Successful image creation (with non-default options) ===
- 
- {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "file", "filename": "TEST_DIR/PID-t.vdi", "size": 0}}}
-@@ -53,7 +53,7 @@ file format: IMGFMT
- virtual size: 32 MiB (33554432 bytes)
- cluster_size: 1048576
- 
--[{"data": true, "depth": 0, "length": 3072, "offset": 1024, "present": true, "start": 0, "zero": false}, {"data": true, "depth": 0, "length": 33551360, "offset": 4096, "present": true, "start": 3072, "zero": true}]
-+[{"compressed": false, "data": true, "depth": 0, "length": 3072, "offset": 1024, "present": true, "start": 0, "zero": false}, {"compressed": false, "data": true, "depth": 0, "length": 33551360, "offset": 4096, "present": true, "start": 3072, "zero": true}]
- === Invalid BlockdevRef ===
- 
- {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "vdi", "file": "this doesn't exist", "size": 33554432}}}
 -- 
 2.39.5
 
