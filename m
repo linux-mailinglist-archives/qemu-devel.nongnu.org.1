@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB039C2D2C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCFD9C2CF4
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:29:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kOE-0004Rb-Ne; Sat, 09 Nov 2024 07:16:33 -0500
+	id 1t9kNt-00045d-BM; Sat, 09 Nov 2024 07:16:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNL-0003pM-Al; Sat, 09 Nov 2024 07:15:37 -0500
+ id 1t9kNO-0003pz-Oo; Sat, 09 Nov 2024 07:15:39 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNJ-00052l-Kq; Sat, 09 Nov 2024 07:15:35 -0500
+ id 1t9kNM-000549-Kd; Sat, 09 Nov 2024 07:15:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0D289A1630;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1B68FA1631;
  Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C7D3F167FB7;
+ by tsrv.corpit.ru (Postfix) with SMTP id D6E33167FB8;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296147 invoked by uid 1000);
+Received: (nullmailer pid 3296151 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 07/58] Revert "hw/sh4/r2d: Realize IDE controller
- before accessing it"
-Date: Sat,  9 Nov 2024 15:08:08 +0300
-Message-Id: <20241109120901.3295995-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 08/58] tests/qemu-iotests/211.out: Update to expect
+ MapEntry 'compressed' field
+Date: Sat,  9 Nov 2024 15:08:09 +0300
+Message-Id: <20241109120901.3295995-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,39 +60,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-This reverts commit 3c5f86a22686ef475a8259c0d8ee714f61c770c9.
+In commit 52b10c9c0c68e90f in 2023 the QAPI MapEntry struct was
+updated to add a 'compressed' field. That commit updated a number
+of iotest expected-output files, but missed 211, which is vdi
+specific. The result is that
+ ./check -vdi
+and more specifically
+ ./check -vdi 211
+fails because the expected and actual output don't match.
 
-Changing the order here caused a regression with the "tuxrun"
-kernels (from https://storage.tuxboot.com/20230331/) - ATA commands
-fail with a "ata1: lost interrupt (Status 0x58)" message.
-Apparently we need to wire the interrupt here first before
-realizing the device, so revert the change to the original
-behavior.
+Update the reference output.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241011131937.377223-17-thuth@redhat.com>
-(cherry picked from commit 68ad89b75ad2bb5f38abea815a50ec17a142565a)
+Cc: qemu-stable@nongnu.org
+Fixes: 52b10c9c0c68e90f ("qemu-img: map: report compressed data blocks")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20241008164708.2966400-4-peter.maydell@linaro.org>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit d60bd080e783107cb876a6f16561fe03f9dcbca7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index e5ac6751bd..7eecd79fcc 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -286,9 +286,9 @@ static void r2d_init(MachineState *machine)
-     dinfo = drive_get(IF_IDE, 0, 0);
-     dev = qdev_new("mmio-ide");
-     busdev = SYS_BUS_DEVICE(dev);
-+    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
-     qdev_prop_set_uint32(dev, "shift", 1);
-     sysbus_realize_and_unref(busdev, &error_fatal);
--    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
-     sysbus_mmio_map(busdev, 0, 0x14001000);
-     sysbus_mmio_map(busdev, 1, 0x1400080c);
-     mmio_ide_init_drives(dev, dinfo, NULL);
+diff --git a/tests/qemu-iotests/211.out b/tests/qemu-iotests/211.out
+index f02c75409c..ff9f9a6913 100644
+--- a/tests/qemu-iotests/211.out
++++ b/tests/qemu-iotests/211.out
+@@ -17,7 +17,7 @@ file format: IMGFMT
+ virtual size: 128 MiB (134217728 bytes)
+ cluster_size: 1048576
+ 
+-[{"data": false, "depth": 0, "length": 134217728, "present": true, "start": 0, "zero": true}]
++[{"compressed": false, "data": false, "depth": 0, "length": 134217728, "present": true, "start": 0, "zero": true}]
+ === Successful image creation (explicit defaults) ===
+ 
+ {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "file", "filename": "TEST_DIR/PID-t.vdi", "size": 0}}}
+@@ -35,7 +35,7 @@ file format: IMGFMT
+ virtual size: 64 MiB (67108864 bytes)
+ cluster_size: 1048576
+ 
+-[{"data": false, "depth": 0, "length": 67108864, "present": true, "start": 0, "zero": true}]
++[{"compressed": false, "data": false, "depth": 0, "length": 67108864, "present": true, "start": 0, "zero": true}]
+ === Successful image creation (with non-default options) ===
+ 
+ {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "file", "filename": "TEST_DIR/PID-t.vdi", "size": 0}}}
+@@ -53,7 +53,7 @@ file format: IMGFMT
+ virtual size: 32 MiB (33554432 bytes)
+ cluster_size: 1048576
+ 
+-[{"data": true, "depth": 0, "length": 3072, "offset": 1024, "present": true, "start": 0, "zero": false}, {"data": true, "depth": 0, "length": 33551360, "offset": 4096, "present": true, "start": 3072, "zero": true}]
++[{"compressed": false, "data": true, "depth": 0, "length": 3072, "offset": 1024, "present": true, "start": 0, "zero": false}, {"compressed": false, "data": true, "depth": 0, "length": 33551360, "offset": 4096, "present": true, "start": 3072, "zero": true}]
+ === Invalid BlockdevRef ===
+ 
+ {"execute": "blockdev-create", "arguments": {"job-id": "job0", "options": {"driver": "vdi", "file": "this doesn't exist", "size": 33554432}}}
 -- 
 2.39.5
 
