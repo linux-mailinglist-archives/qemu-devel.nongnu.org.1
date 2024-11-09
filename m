@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0D09C2AD2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279629C2AC8
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:42:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f8R-0003Jm-FA; Sat, 09 Nov 2024 01:39:51 -0500
+	id 1t9f8S-0003NC-Ol; Sat, 09 Nov 2024 01:39:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f85-00031H-Pl; Sat, 09 Nov 2024 01:39:31 -0500
+ id 1t9f87-00034A-Vr; Sat, 09 Nov 2024 01:39:32 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f7z-0001yF-ST; Sat, 09 Nov 2024 01:39:28 -0500
+ id 1t9f85-0001zF-Rs; Sat, 09 Nov 2024 01:39:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AD29CA12EC;
+ by isrv.corpit.ru (Postfix) with ESMTP id BB164A12ED;
  Sat,  9 Nov 2024 09:38:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 24B65167DD0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3159F167DD1;
  Sat,  9 Nov 2024 09:39:04 +0300 (MSK)
-Received: (nullmailer pid 3272506 invoked by uid 1000);
+Received: (nullmailer pid 3272509 invoked by uid 1000);
  Sat, 09 Nov 2024 06:39:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 05/33] tracetool: avoid invalid escape in Python string
-Date: Sat,  9 Nov 2024 09:38:31 +0300
-Message-Id: <20241109063903.3272404-5-mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 06/33] linux-user/flatload: Take mmap_lock in
+ load_flt_binary()
+Date: Sat,  9 Nov 2024 09:38:32 +0300
+Message-Id: <20241109063903.3272404-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,60 +63,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This is an error in Python 3.12; fix it by using a raw string literal.
+load_flt_binary() calls load_flat_file() -> page_set_flags().
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e6d8e5e6e366ab4c9ed7d8ed1572f98c6ad6a38e)
+page_set_flags() must be called with the mmap_lock held,
+otherwise it aborts:
+
+  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
+  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
+  Aborted (core dumped)
+
+Fix by taking the lock in load_flt_binary().
+
+Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit a9ee641bd46f5462eeed183ac3c3760bddfc2600)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index cd46e7597c..e31aaedcbb 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -223,12 +223,12 @@ class Event(object):
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index e99570ca18..7f243500b3 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -747,7 +747,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     stack_len += (bprm->envc + 1) * 4; /* the envp array */
  
-     """
  
--    _CRE = re.compile("((?P<props>[\w\s]+)\s+)?"
--                      "(?P<name>\w+)"
--                      "\((?P<args>[^)]*)\)"
--                      "\s*"
--                      "(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
--                      "\s*")
-+    _CRE = re.compile(r"((?P<props>[\w\s]+)\s+)?"
-+                      r"(?P<name>\w+)"
-+                      r"\((?P<args>[^)]*)\)"
-+                      r"\s*"
-+                      r"(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
-+                      r"\s*")
- 
-     _VALID_PROPS = set(["disable", "vcpu"])
- 
-@@ -339,7 +339,7 @@ def __repr__(self):
-                                           fmt)
-     # Star matching on PRI is dangerous as one might have multiple
-     # arguments with that format, hence the non-greedy version of it.
--    _FMT = re.compile("(%[\d\.]*\w+|%.*?PRI\S+)")
-+    _FMT = re.compile(r"(%[\d\.]*\w+|%.*?PRI\S+)")
- 
-     def formats(self):
-         """List conversion specifiers in the argument print format string."""
-diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
-index 0b6549d534..b49afababd 100644
---- a/scripts/tracetool/format/log_stap.py
-+++ b/scripts/tracetool/format/log_stap.py
-@@ -83,7 +83,7 @@ def c_fmt_to_stap(fmt):
-     # and "%ll" is not valid at all. Similarly the size_t
-     # based "%z" size qualifier is not valid. We just
-     # strip all size qualifiers for sanity.
--    fmt = re.sub("%(\d*)(l+|z)(x|u|d)", "%\\1\\3", "".join(bits))
-+    fmt = re.sub(r"%(\d*)(l+|z)(x|u|d)", r"%\1\3", "".join(bits))
-     return fmt
- 
- def generate(events, backend, group):
++    mmap_lock();
+     res = load_flat_file(bprm, libinfo, 0, &stack_len);
++    mmap_unlock();
++
+     if (is_error(res)) {
+             return res;
+     }
 -- 
 2.39.5
 
