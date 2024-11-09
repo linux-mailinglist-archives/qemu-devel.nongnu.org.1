@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4A09C2CC2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C79D9C2CF2
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:29:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kKS-0000Vi-8K; Sat, 09 Nov 2024 07:12:36 -0500
+	id 1t9kKh-0001mY-Bl; Sat, 09 Nov 2024 07:12:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kKL-0000Cx-7R; Sat, 09 Nov 2024 07:12:30 -0500
+ id 1t9kKO-0000Qd-5X; Sat, 09 Nov 2024 07:12:32 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kKJ-0004aN-6k; Sat, 09 Nov 2024 07:12:28 -0500
+ id 1t9kKM-0004aw-JJ; Sat, 09 Nov 2024 07:12:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D3A3EA160B;
+ by isrv.corpit.ru (Postfix) with ESMTP id E3159A160C;
  Sat,  9 Nov 2024 15:07:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 987F7167F99;
+ by tsrv.corpit.ru (Postfix) with SMTP id A91AA167F9A;
  Sat,  9 Nov 2024 15:08:03 +0300 (MSK)
-Received: (nullmailer pid 3295360 invoked by uid 1000);
+Received: (nullmailer pid 3295363 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ Zhang Chen <chen.zhang@intel.com>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 35/57] dockerfiles: fix default targets for
- debian-loongarch-cross
-Date: Sat,  9 Nov 2024 15:07:37 +0300
-Message-Id: <20241109120801.3295120-35-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 36/57] Fix calculation of minimum in colo_compare_tcp
+Date: Sat,  9 Nov 2024 15:07:38 +0300
+Message-Id: <20241109120801.3295120-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,37 +60,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Stefan Weil <sw@weilnetz.de>
 
-fix system target name, and remove --disable-system (which deactivates
-system target).
+GitHub's CodeQL reports a critical error which is fixed by using the MIN macro:
 
-Found using: make docker-test-build@debian-loongarch-cross V=1
+    Unsigned difference expression compared to zero
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241020213759.2168248-1-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-10-alex.bennee@linaro.org>
-(cherry picked from commit 24be5341fbeea341cca38b59d4c0928a8cf5fac1)
+Signed-off-by: Stefan Weil <sw@weilnetz.de>
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit e29bc931e1699a98959680f6776b48673825762b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-index 6a9197528b..576e35972f 100644
---- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
-+++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-@@ -42,8 +42,8 @@ RUN curl -#SL https://github.com/loongson/build-tools/releases/download/2023.08.
- ENV PATH $PATH:/opt/cross-tools/bin
- ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib:$LD_LIBRARY_PATH
+diff --git a/net/colo-compare.c b/net/colo-compare.c
+index c4ad0ab71f..39f90c4065 100644
+--- a/net/colo-compare.c
++++ b/net/colo-compare.c
+@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s, Connection *conn)
+      * can ensure that the packet's payload is acknowledged by
+      * primary and secondary.
+     */
+-    uint32_t min_ack = conn->pack - conn->sack > 0 ?
+-                       conn->sack : conn->pack;
++    uint32_t min_ack = MIN(conn->pack, conn->sack);
  
--ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
--ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
-+ENV QEMU_CONFIGURE_OPTS --disable-docs --disable-tools
-+ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch64-softmmu
- ENV MAKE /usr/bin/make
- 
- # As a final step configure the user (if env is defined)
+ pri:
+     if (g_queue_is_empty(&conn->primary_list)) {
 -- 
 2.39.5
 
