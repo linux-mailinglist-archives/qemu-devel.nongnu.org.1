@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6659C2B95
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D928E9C2B97
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:18:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iUm-00048p-E1; Sat, 09 Nov 2024 05:15:12 -0500
+	id 1t9iWH-0005ZA-HE; Sat, 09 Nov 2024 05:16:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUZ-0003tP-KL; Sat, 09 Nov 2024 05:14:58 -0500
+ id 1t9iUc-0003uF-F9; Sat, 09 Nov 2024 05:14:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUX-0007Wo-PQ; Sat, 09 Nov 2024 05:14:55 -0500
+ id 1t9iUa-0007X9-OQ; Sat, 09 Nov 2024 05:14:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E322A13E9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 67A23A13EA;
  Sat,  9 Nov 2024 13:13:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0A111167ED5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 133BB167ED6;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 05/49] block/reqlist: allow adding overlapping requests
-Date: Sat,  9 Nov 2024 13:13:56 +0300
-Message-Id: <20241109101443.312701-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 06/49] target/arm: Avoid target_ulong for physical
+ address lookups
+Date: Sat,  9 Nov 2024 13:13:57 +0300
+Message-Id: <20241109101443.312701-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
@@ -58,107 +60,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Allow overlapping request by removing the assert that made it
-impossible. There are only two callers:
+target_ulong is typedef'ed as a 32-bit integer when building the
+qemu-system-arm target, and this is smaller than the size of an
+intermediate physical address when LPAE is being used.
 
-1. block_copy_task_create()
+Given that Linux may place leaf level user page tables in high memory
+when built for LPAE, the kernel will crash with an external abort as
+soon as it enters user space when running with more than ~3 GiB of
+system RAM.
 
-It already asserts the very same condition before calling
-reqlist_init_req().
+So replace target_ulong with vaddr in places where it may carry an
+address value that is not representable in 32 bits.
 
-2. cbw_snapshot_read_lock()
-
-There is no need to have read requests be non-overlapping in
-copy-before-write when used for snapshot-access. In fact, there was no
-protection against two callers of cbw_snapshot_read_lock() calling
-reqlist_init_req() with overlapping ranges and this could lead to an
-assertion failure [1].
-
-In particular, with the reproducer script below [0], two
-cbw_co_snapshot_block_status() callers could race, with the second
-calling reqlist_init_req() before the first one finishes and removes
-its conflicting request.
-
-[0]:
-
-> #!/bin/bash -e
-> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
-> ./qemu-img create /tmp/fleecing.raw -f raw 1G
-> (
-> ./qemu-system-x86_64 --qmp stdio \
-> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
-> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
-> <<EOF
-> {"execute": "qmp_capabilities"}
-> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
-> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
-> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
-> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
-> EOF
-> ) &
-> sleep 5
-> while true; do
-> ./qemu-nbd -d /dev/nbd0
-> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
-> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
-> done
-
-[1]:
-
-> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
-> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
-> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
-> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
-> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
-> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
-> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
-> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
-> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
-> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
-> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
-> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
-> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
-> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
-> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
-
+Fixes: f3639a64f602ea ("target/arm: Use softmmu tlbs for page table walking")
 Cc: qemu-stable@nongnu.org
-Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-Id: <20240712140716.517911-1-f.ebner@proxmox.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-(cherry picked from commit 6475155d519209c80fdda53e05130365aa769838)
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Message-id: 20240927071051.1444768-1-ardb+git@google.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 67d762e716a7127ecc114e9708254316dd521911)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index 13972879b1..fd2f4c517e 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -65,7 +65,8 @@ typedef struct BDRVCopyBeforeWriteState {
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 8342f4651f..0aa49a0b42 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1217,7 +1217,7 @@ typedef struct GetPhysAddrResult {
+  *  * for PSMAv5 based systems we don't bother to return a full FSR format
+  *    value.
+  */
+-bool get_phys_addr(CPUARMState *env, target_ulong address,
++bool get_phys_addr(CPUARMState *env, vaddr address,
+                    MMUAccessType access_type, ARMMMUIdx mmu_idx,
+                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+     __attribute__((nonnull));
+@@ -1236,7 +1236,7 @@ bool get_phys_addr(CPUARMState *env, target_ulong address,
+  * Similar to get_phys_addr, but use the given security space and don't perform
+  * a Granule Protection Check on the resulting address.
+  */
+-bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
++bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+                                     MMUAccessType access_type,
+                                     ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+                                     GetPhysAddrResult *result,
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 1762b058ae..177488053e 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -73,13 +73,13 @@ typedef struct S1Translate {
+ } S1Translate;
  
-     /*
-      * @frozen_read_reqs: current read requests for fleecing user in bs->file
--     * node. These areas must not be rewritten by guest.
-+     * node. These areas must not be rewritten by guest. There can be multiple
-+     * overlapping read requests.
-      */
-     BlockReqList frozen_read_reqs;
+ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+-                                target_ulong address,
++                                vaddr address,
+                                 MMUAccessType access_type,
+                                 GetPhysAddrResult *result,
+                                 ARMMMUFaultInfo *fi);
  
-diff --git a/block/reqlist.c b/block/reqlist.c
-index 08cb57cfa4..098e807378 100644
---- a/block/reqlist.c
-+++ b/block/reqlist.c
-@@ -20,8 +20,6 @@
- void reqlist_init_req(BlockReqList *reqs, BlockReq *req, int64_t offset,
-                       int64_t bytes)
+ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+-                              target_ulong address,
++                              vaddr address,
+                               MMUAccessType access_type,
+                               GetPhysAddrResult *result,
+                               ARMMMUFaultInfo *fi);
+@@ -3083,7 +3083,7 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
+  */
+ static bool get_phys_addr_disabled(CPUARMState *env,
+                                    S1Translate *ptw,
+-                                   target_ulong address,
++                                   vaddr address,
+                                    MMUAccessType access_type,
+                                    GetPhysAddrResult *result,
+                                    ARMMMUFaultInfo *fi)
+@@ -3166,7 +3166,7 @@ static bool get_phys_addr_disabled(CPUARMState *env,
+ }
+ 
+ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+-                                   target_ulong address,
++                                   vaddr address,
+                                    MMUAccessType access_type,
+                                    GetPhysAddrResult *result,
+                                    ARMMMUFaultInfo *fi)
+@@ -3271,7 +3271,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+ }
+ 
+ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+-                                      target_ulong address,
++                                      vaddr address,
+                                       MMUAccessType access_type,
+                                       GetPhysAddrResult *result,
+                                       ARMMMUFaultInfo *fi)
+@@ -3408,7 +3408,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+ }
+ 
+ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+-                              target_ulong address,
++                              vaddr address,
+                               MMUAccessType access_type,
+                               GetPhysAddrResult *result,
+                               ARMMMUFaultInfo *fi)
+@@ -3424,7 +3424,7 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+     return false;
+ }
+ 
+-bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
++bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+                                     MMUAccessType access_type,
+                                     ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+                                     GetPhysAddrResult *result,
+@@ -3437,7 +3437,7 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
+     return get_phys_addr_nogpc(env, &ptw, address, access_type, result, fi);
+ }
+ 
+-bool get_phys_addr(CPUARMState *env, target_ulong address,
++bool get_phys_addr(CPUARMState *env, vaddr address,
+                    MMUAccessType access_type, ARMMMUIdx mmu_idx,
+                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
  {
--    assert(!reqlist_find_conflict(reqs, offset, bytes));
--
-     *req = (BlockReq) {
-         .offset = offset,
-         .bytes = bytes,
 -- 
 2.39.5
 
