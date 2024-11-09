@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C79D9C2CF2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6339C2CC7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:15:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kKh-0001mY-Bl; Sat, 09 Nov 2024 07:12:52 -0500
+	id 1t9kKx-0002VZ-NK; Sat, 09 Nov 2024 07:13:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kKO-0000Qd-5X; Sat, 09 Nov 2024 07:12:32 -0500
+ id 1t9kKR-0000jc-Ab; Sat, 09 Nov 2024 07:12:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kKM-0004aw-JJ; Sat, 09 Nov 2024 07:12:31 -0500
+ id 1t9kKP-0004bH-Kg; Sat, 09 Nov 2024 07:12:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E3159A160C;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2237A160D;
  Sat,  9 Nov 2024 15:07:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A91AA167F9A;
+ by tsrv.corpit.ru (Postfix) with SMTP id B96F4167F9B;
  Sat,  9 Nov 2024 15:08:03 +0300 (MSK)
-Received: (nullmailer pid 3295363 invoked by uid 1000);
+Received: (nullmailer pid 3295367 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefan Weil <sw@weilnetz.de>,
- Zhang Chen <chen.zhang@intel.com>, Jason Wang <jasowang@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 36/57] Fix calculation of minimum in colo_compare_tcp
-Date: Sat,  9 Nov 2024 15:07:38 +0300
-Message-Id: <20241109120801.3295120-36-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 37/57] net: fix build when libbpf is disabled,
+ but libxdp is enabled
+Date: Sat,  9 Nov 2024 15:07:39 +0300
+Message-Id: <20241109120801.3295120-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,33 +62,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil <sw@weilnetz.de>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-GitHub's CodeQL reports a critical error which is fixed by using the MIN macro:
+The net/af-xdp.c code is enabled when the libxdp library is present,
+however, it also has direct API calls to bpf_xdp_query_id &
+bpf_xdp_detach which are provided by the libbpf library.
 
-    Unsigned difference expression compared to zero
+As a result if building with --disable-libbpf, but libxdp gets
+auto-detected, we'll fail to link QEMU
 
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+  /usr/bin/ld: libcommon.a.p/net_af-xdp.c.o: undefined reference to symbol 'bpf_xdp_query_id@@LIBBPF_0.7.0'
+
+There are two bugs here
+
+ * Since we have direct libbpf API calls, when building
+   net/af-xdp.c, we must tell meson that libbpf is a
+   dependancy, so that we directly link to it, rather
+   than relying on indirect linkage.
+
+ * When must skip probing for libxdp at all, when libbpf
+   is not found, raising an error if --enable-libxdp was
+   given explicitly.
+
+Fixes: cb039ef3d9e3112da01e1ecd9b136ac9809ef733
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit e29bc931e1699a98959680f6776b48673825762b)
+(cherry picked from commit 1f37280b37dbf85f36748f359a9f8802c8fe7ccd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/colo-compare.c b/net/colo-compare.c
-index c4ad0ab71f..39f90c4065 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s, Connection *conn)
-      * can ensure that the packet's payload is acknowledged by
-      * primary and secondary.
-     */
--    uint32_t min_ack = conn->pack - conn->sack > 0 ?
--                       conn->sack : conn->pack;
-+    uint32_t min_ack = MIN(conn->pack, conn->sack);
+diff --git a/meson.build b/meson.build
+index 7a56772136..5cfd7bb2cc 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2033,8 +2033,14 @@ endif
+ # libxdp
+ libxdp = not_found
+ if not get_option('af_xdp').auto() or have_system
+-    libxdp = dependency('libxdp', required: get_option('af_xdp'),
+-                        version: '>=1.4.0', method: 'pkg-config')
++    if libbpf.found()
++        libxdp = dependency('libxdp', required: get_option('af_xdp'),
++                            version: '>=1.4.0', method: 'pkg-config')
++    else
++        if get_option('af_xdp').enabled()
++            error('libxdp requested, but libbpf is not available')
++        endif
++    endif
+ endif
  
- pri:
-     if (g_queue_is_empty(&conn->primary_list)) {
+ # libdw
+diff --git a/net/meson.build b/net/meson.build
+index 9432a588e4..a15855e909 100644
+--- a/net/meson.build
++++ b/net/meson.build
+@@ -37,7 +37,7 @@ if have_netmap
+   system_ss.add(files('netmap.c'))
+ endif
+ 
+-system_ss.add(when: libxdp, if_true: files('af-xdp.c'))
++system_ss.add(when: [libxdp, libbpf], if_true: files('af-xdp.c'))
+ 
+ if have_vhost_net_user
+   system_ss.add(when: 'CONFIG_VIRTIO_NET', if_true: files('vhost-user.c'), if_false: files('vhost-user-stub.c'))
 -- 
 2.39.5
 
