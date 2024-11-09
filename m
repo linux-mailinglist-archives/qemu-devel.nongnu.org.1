@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E90A9C2CD7
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE32E9C2CD8
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:20:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kPw-0006uW-Mx; Sat, 09 Nov 2024 07:18:16 -0500
+	id 1t9kQL-0007s7-1V; Sat, 09 Nov 2024 07:18:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOh-0005GJ-JR; Sat, 09 Nov 2024 07:17:01 -0500
+ id 1t9kOk-0005Hb-F3; Sat, 09 Nov 2024 07:17:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOf-0005Co-QZ; Sat, 09 Nov 2024 07:16:59 -0500
+ id 1t9kOi-0005D9-VV; Sat, 09 Nov 2024 07:17:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E0830A163D;
+ by isrv.corpit.ru (Postfix) with ESMTP id EFAA9A163E;
  Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A628F167FC4;
+ by tsrv.corpit.ru (Postfix) with SMTP id B645F167FC5;
  Sat,  9 Nov 2024 15:09:02 +0300 (MSK)
-Received: (nullmailer pid 3296188 invoked by uid 1000);
+Received: (nullmailer pid 3296191 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+Cc: qemu-stable@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ Zhang Chen <chen.zhang@intel.com>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 20/58] net: Check if nc is NULL in
- qemu_get_vnet_hdr_len()
-Date: Sat,  9 Nov 2024 15:08:21 +0300
-Message-Id: <20241109120901.3295995-20-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 21/58] Fix calculation of minimum in colo_compare_tcp
+Date: Sat,  9 Nov 2024 15:08:22 +0300
+Message-Id: <20241109120901.3295995-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -62,37 +60,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Stefan Weil <sw@weilnetz.de>
 
-A netdev may not have a peer specified, resulting in NULL. We should
-make it behave like /dev/null in such a case instead of letting it
-cause segmentatin fault.
+GitHub's CodeQL reports a critical error which is fixed by using the MIN macro:
 
-Fixes: 4b52d63249a5 ("tap: Remove qemu_using_vnet_hdr()")
+    Unsigned difference expression compared to zero
+
+Signed-off-by: Stefan Weil <sw@weilnetz.de>
 Cc: qemu-stable@nongnu.org
-Reported-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by; Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Zhang Chen <chen.zhang@intel.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 76240dd2a37c7b361740616a7d6080beafdb8a71)
+(cherry picked from commit e29bc931e1699a98959680f6776b48673825762b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/net.c b/net/net.c
-index fc1125111c..264c4e9c5c 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -542,6 +542,10 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+diff --git a/net/colo-compare.c b/net/colo-compare.c
+index c4ad0ab71f..39f90c4065 100644
+--- a/net/colo-compare.c
++++ b/net/colo-compare.c
+@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s, Connection *conn)
+      * can ensure that the packet's payload is acknowledged by
+      * primary and secondary.
+     */
+-    uint32_t min_ack = conn->pack - conn->sack > 0 ?
+-                       conn->sack : conn->pack;
++    uint32_t min_ack = MIN(conn->pack, conn->sack);
  
- int qemu_get_vnet_hdr_len(NetClientState *nc)
- {
-+    if (!nc) {
-+        return 0;
-+    }
-+
-     return nc->vnet_hdr_len;
- }
- 
+ pri:
+     if (g_queue_is_empty(&conn->primary_list)) {
 -- 
 2.39.5
 
