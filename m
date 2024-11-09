@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD0F9C2D05
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7133A9C2CE3
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kMv-0002Ri-B4; Sat, 09 Nov 2024 07:15:09 -0500
+	id 1t9kMz-0002gM-U6; Sat, 09 Nov 2024 07:15:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMj-0001si-DV; Sat, 09 Nov 2024 07:14:57 -0500
+ id 1t9kMn-0002DQ-6y; Sat, 09 Nov 2024 07:15:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMh-0004lf-3y; Sat, 09 Nov 2024 07:14:57 -0500
+ id 1t9kMk-0004m0-Tf; Sat, 09 Nov 2024 07:15:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B77FAA162A;
+ by isrv.corpit.ru (Postfix) with ESMTP id C7CF7A162B;
  Sat,  9 Nov 2024 15:08:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7A5B6167FB2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8CFDD167FB3;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296132 invoked by uid 1000);
+Received: (nullmailer pid 3296135 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
- Zhiyi Guo <zhguo@redhat.com>, David Hildenbrand <david@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Robert R . Henry" <rrh.henry@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 02/58] KVM: Dynamic sized kvm memslots array
-Date: Sat,  9 Nov 2024 15:08:03 +0300
-Message-Id: <20241109120901.3295995-2-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 03/58] target/i386/tcg: Use DPL-level accesses for
+ interrupts and call gates
+Date: Sat,  9 Nov 2024 15:08:04 +0300
+Message-Id: <20241109120901.3295995-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -61,239 +62,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Zhiyi reported an infinite loop issue in VFIO use case.  The cause of that
-was a separate discussion, however during that I found a regression of
-dirty sync slowness when profiling.
+Stack accesses should be explicit and use the privilege level of the
+target stack.  This ensures that SMAP is not applied when the target
+stack is in ring 3.
 
-Each KVMMemoryListerner maintains an array of kvm memslots.  Currently it's
-statically allocated to be the max supported by the kernel.  However after
-Linux commit 4fc096a99e ("KVM: Raise the maximum number of user memslots"),
-the max supported memslots reported now grows to some number large enough
-so that it may not be wise to always statically allocate with the max
-reported.
+This fixes a bug wherein i386/tcg assumed that an interrupt return, or a
+far call using the CALL or JMP instruction, was always going from kernel
+or user mode to kernel mode when using a call gate. This assumption is
+violated if the call gate has a DPL that is greater than 0.
 
-What's worse, QEMU kvm code still walks all the allocated memslots entries
-to do any form of lookups.  It can drastically slow down all memslot
-operations because each of such loop can run over 32K times on the new
-kernels.
-
-Fix this issue by making the memslots to be allocated dynamically.
-
-Here the initial size was set to 16 because it should cover the basic VM
-usages, so that the hope is the majority VM use case may not even need to
-grow at all (e.g. if one starts a VM with ./qemu-system-x86_64 by default
-it'll consume 9 memslots), however not too large to waste memory.
-
-There can also be even better way to address this, but so far this is the
-simplest and should be already better even than before we grow the max
-supported memslots.  For example, in the case of above issue when VFIO was
-attached on a 32GB system, there are only ~10 memslots used.  So it could
-be good enough as of now.
-
-In the above VFIO context, measurement shows that the precopy dirty sync
-shrinked from ~86ms to ~3ms after this patch applied.  It should also apply
-to any KVM enabled VM even without VFIO.
-
-NOTE: we don't have a FIXES tag for this patch because there's no real
-commit that regressed this in QEMU. Such behavior existed for a long time,
-but only start to be a problem when the kernel reports very large
-nr_slots_max value.  However that's pretty common now (the kernel change
-was merged in 2021) so we attached cc:stable because we'll want this change
-to be backported to stable branches.
-
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Reported-by: Zhiyi Guo <zhguo@redhat.com>
-Tested-by: Zhiyi Guo <zhguo@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240917163835.194664-2-peterx@redhat.com
+Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 5504a8126115d173687b37e657312a8ffe29fc0c)
+(cherry picked from commit e136648c5c95ee4ea233cccf999c07e065bef26d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 75d11a07b2..4db866f0ca 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -69,6 +69,9 @@
- #define KVM_GUESTDBG_BLOCKIRQ 0
- #endif
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index 3b8fd827e1..02ae6a0d1f 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -695,7 +695,6 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
  
-+/* Default num of memslots to be allocated when VM starts */
-+#define  KVM_MEMSLOTS_NR_ALLOC_DEFAULT                      16
-+
- struct KVMParkedVcpu {
-     unsigned long vcpu_id;
-     int kvm_fd;
-@@ -165,6 +168,57 @@ void kvm_resample_fd_notify(int gsi)
-     }
- }
+     sa.env = env;
+     sa.ra = 0;
+-    sa.mmu_index = cpu_mmu_index_kernel(env);
  
-+/**
-+ * kvm_slots_grow(): Grow the slots[] array in the KVMMemoryListener
-+ *
-+ * @kml: The KVMMemoryListener* to grow the slots[] array
-+ * @nr_slots_new: The new size of slots[] array
-+ *
-+ * Returns: True if the array grows larger, false otherwise.
-+ */
-+static bool kvm_slots_grow(KVMMemoryListener *kml, unsigned int nr_slots_new)
-+{
-+    unsigned int i, cur = kml->nr_slots_allocated;
-+    KVMSlot *slots;
-+
-+    if (nr_slots_new > kvm_state->nr_slots) {
-+        nr_slots_new = kvm_state->nr_slots;
-+    }
-+
-+    if (cur >= nr_slots_new) {
-+        /* Big enough, no need to grow, or we reached max */
-+        return false;
-+    }
-+
-+    if (cur == 0) {
-+        slots = g_new0(KVMSlot, nr_slots_new);
-+    } else {
-+        assert(kml->slots);
-+        slots = g_renew(KVMSlot, kml->slots, nr_slots_new);
-+        /*
-+         * g_renew() doesn't initialize extended buffers, however kvm
-+         * memslots require fields to be zero-initialized. E.g. pointers,
-+         * memory_size field, etc.
-+         */
-+        memset(&slots[cur], 0x0, sizeof(slots[0]) * (nr_slots_new - cur));
-+    }
-+
-+    for (i = cur; i < nr_slots_new; i++) {
-+        slots[i].slot = i;
-+    }
-+
-+    kml->slots = slots;
-+    kml->nr_slots_allocated = nr_slots_new;
-+    trace_kvm_slots_grow(cur, nr_slots_new);
-+
-+    return true;
-+}
-+
-+static bool kvm_slots_double(KVMMemoryListener *kml)
-+{
-+    return kvm_slots_grow(kml, kml->nr_slots_allocated * 2);
-+}
-+
- unsigned int kvm_get_max_memslots(void)
- {
-     KVMState *s = KVM_STATE(current_accel());
-@@ -193,15 +247,26 @@ unsigned int kvm_get_free_memslots(void)
- /* Called with KVMMemoryListener.slots_lock held */
- static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
- {
--    KVMState *s = kvm_state;
-+    unsigned int n;
-     int i;
- 
--    for (i = 0; i < s->nr_slots; i++) {
-+    for (i = 0; i < kml->nr_slots_allocated; i++) {
-         if (kml->slots[i].memory_size == 0) {
-             return &kml->slots[i];
+     if (type == 5) {
+         /* task gate */
+@@ -705,7 +704,9 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
          }
+         shift = switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
+         if (has_error_code) {
+-            /* push the error code */
++            /* push the error code on the destination stack */
++            cpl = env->hflags & HF_CPL_MASK;
++            sa.mmu_index = x86_mmu_index_pl(env, cpl);
+             if (env->segs[R_SS].flags & DESC_B_MASK) {
+                 sa.sp_mask = 0xffffffff;
+             } else {
+@@ -750,6 +751,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+     if (e2 & DESC_C_MASK) {
+         dpl = cpl;
      }
++    sa.mmu_index = x86_mmu_index_pl(env, dpl);
+     if (dpl < cpl) {
+         /* to inner privilege */
+         uint32_t esp;
+@@ -1001,7 +1003,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
  
-+    /*
-+     * If no free slots, try to grow first by doubling.  Cache the old size
-+     * here to avoid another round of search: if the grow succeeded, it
-+     * means slots[] now must have the existing "n" slots occupied,
-+     * followed by one or more free slots starting from slots[n].
-+     */
-+    n = kml->nr_slots_allocated;
-+    if (kvm_slots_double(kml)) {
-+        return &kml->slots[n];
-+    }
-+
-     return NULL;
- }
+     sa.env = env;
+     sa.ra = 0;
+-    sa.mmu_index = cpu_mmu_index_kernel(env);
++    sa.mmu_index = x86_mmu_index_pl(env, dpl);
+     sa.sp_mask = -1;
+     sa.ss_base = 0;
+     if (dpl < cpl || ist != 0) {
+@@ -1135,7 +1137,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
+     sa.sp = env->regs[R_ESP];
+     sa.sp_mask = 0xffff;
+     sa.ss_base = env->segs[R_SS].base;
+-    sa.mmu_index = cpu_mmu_index_kernel(env);
++    sa.mmu_index = x86_mmu_index_pl(env, 0);
  
-@@ -222,10 +287,9 @@ static KVMSlot *kvm_lookup_matching_slot(KVMMemoryListener *kml,
-                                          hwaddr start_addr,
-                                          hwaddr size)
- {
--    KVMState *s = kvm_state;
-     int i;
+     if (is_int) {
+         old_eip = next_eip;
+@@ -1599,7 +1601,7 @@ void helper_lcall_real(CPUX86State *env, uint32_t new_cs, uint32_t new_eip,
+     sa.sp = env->regs[R_ESP];
+     sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.ss_base = env->segs[R_SS].base;
+-    sa.mmu_index = cpu_mmu_index_kernel(env);
++    sa.mmu_index = x86_mmu_index_pl(env, 0);
  
--    for (i = 0; i < s->nr_slots; i++) {
-+    for (i = 0; i < kml->nr_slots_allocated; i++) {
-         KVMSlot *mem = &kml->slots[i];
+     if (shift) {
+         pushl(&sa, env->segs[R_CS].selector);
+@@ -1639,9 +1641,9 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
  
-         if (start_addr == mem->start_addr && size == mem->memory_size) {
-@@ -267,7 +331,7 @@ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram,
-     int i, ret = 0;
+     sa.env = env;
+     sa.ra = GETPC();
+-    sa.mmu_index = cpu_mmu_index_kernel(env);
  
-     kvm_slots_lock();
--    for (i = 0; i < s->nr_slots; i++) {
-+    for (i = 0; i < kml->nr_slots_allocated; i++) {
-         KVMSlot *mem = &kml->slots[i];
+     if (e2 & DESC_S_MASK) {
++        /* "normal" far call, no stack switch possible */
+         if (!(e2 & DESC_CS_MASK)) {
+             raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, GETPC());
+         }
+@@ -1665,6 +1667,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
+             raise_exception_err_ra(env, EXCP0B_NOSEG, new_cs & 0xfffc, GETPC());
+         }
  
-         if (ram >= mem->ram && ram < mem->ram + mem->memory_size) {
-@@ -1071,7 +1135,7 @@ static int kvm_physical_log_clear(KVMMemoryListener *kml,
++        sa.mmu_index = x86_mmu_index_pl(env, cpl);
+ #ifdef TARGET_X86_64
+         /* XXX: check 16/32 bit cases in long mode */
+         if (shift == 2) {
+@@ -1792,6 +1795,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
  
-     kvm_slots_lock();
- 
--    for (i = 0; i < s->nr_slots; i++) {
-+    for (i = 0; i < kml->nr_slots_allocated; i++) {
-         mem = &kml->slots[i];
-         /* Discard slots that are empty or do not overlap the section */
-         if (!mem->memory_size ||
-@@ -1719,12 +1783,8 @@ static void kvm_log_sync_global(MemoryListener *l, bool last_stage)
-     /* Flush all kernel dirty addresses into KVMSlot dirty bitmap */
-     kvm_dirty_ring_flush();
- 
--    /*
--     * TODO: make this faster when nr_slots is big while there are
--     * only a few used slots (small VMs).
--     */
-     kvm_slots_lock();
--    for (i = 0; i < s->nr_slots; i++) {
-+    for (i = 0; i < kml->nr_slots_allocated; i++) {
-         mem = &kml->slots[i];
-         if (mem->memory_size && mem->flags & KVM_MEM_LOG_DIRTY_PAGES) {
-             kvm_slot_sync_dirty_pages(mem);
-@@ -1839,12 +1899,9 @@ void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
- {
-     int i;
- 
--    kml->slots = g_new0(KVMSlot, s->nr_slots);
-     kml->as_id = as_id;
- 
--    for (i = 0; i < s->nr_slots; i++) {
--        kml->slots[i].slot = i;
--    }
-+    kvm_slots_grow(kml, KVM_MEMSLOTS_NR_ALLOC_DEFAULT);
- 
-     QSIMPLEQ_INIT(&kml->transaction_add);
-     QSIMPLEQ_INIT(&kml->transaction_del);
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index 37626c1ac5..ad2ae6fca5 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -36,3 +36,4 @@ kvm_io_window_exit(void) ""
- kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index %d, system_even_type %"PRIu32
- kvm_convert_memory(uint64_t start, uint64_t size, const char *msg) "start 0x%" PRIx64 " size 0x%" PRIx64 " %s"
- kvm_memory_fault(uint64_t start, uint64_t size, uint64_t flags) "start 0x%" PRIx64 " size 0x%" PRIx64 " flags 0x%" PRIx64
-+kvm_slots_grow(unsigned int old, unsigned int new) "%u -> %u"
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index 1d8fb1473b..48e496b3d4 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -46,6 +46,7 @@ typedef struct KVMMemoryListener {
-     MemoryListener listener;
-     KVMSlot *slots;
-     unsigned int nr_used_slots;
-+    unsigned int nr_slots_allocated;
-     int as_id;
-     QSIMPLEQ_HEAD(, KVMMemoryUpdate) transaction_add;
-     QSIMPLEQ_HEAD(, KVMMemoryUpdate) transaction_del;
+         if (!(e2 & DESC_C_MASK) && dpl < cpl) {
+             /* to inner privilege */
++            sa.mmu_index = x86_mmu_index_pl(env, dpl);
+ #ifdef TARGET_X86_64
+             if (shift == 2) {
+                 ss = dpl;  /* SS = NULL selector with RPL = new CPL */
+@@ -1870,6 +1874,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
+             new_stack = 1;
+         } else {
+             /* to same privilege */
++            sa.mmu_index = x86_mmu_index_pl(env, cpl);
+             sa.sp = env->regs[R_ESP];
+             sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+             sa.ss_base = env->segs[R_SS].base;
 -- 
 2.39.5
 
