@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AED9C2AC3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C22D79C2ACF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:44:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f9e-00058R-Q8; Sat, 09 Nov 2024 01:41:09 -0500
+	id 1t9f9y-0005Ux-1r; Sat, 09 Nov 2024 01:41:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f8m-0003yI-V5; Sat, 09 Nov 2024 01:40:14 -0500
+ id 1t9f8o-0003zX-4q; Sat, 09 Nov 2024 01:40:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f8k-0002Qx-5x; Sat, 09 Nov 2024 01:40:11 -0500
+ id 1t9f8k-0002RY-Rg; Sat, 09 Nov 2024 01:40:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5F819A12F6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6D8A0A12F7;
  Sat,  9 Nov 2024 09:38:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C6A58167DDA;
+ by tsrv.corpit.ru (Postfix) with SMTP id D7E0E167DDB;
  Sat,  9 Nov 2024 09:39:04 +0300 (MSK)
-Received: (nullmailer pid 3272537 invoked by uid 1000);
+Received: (nullmailer pid 3272540 invoked by uid 1000);
  Sat, 09 Nov 2024 06:39:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 15/33] tcg: Reset data_gen_ptr correctly
-Date: Sat,  9 Nov 2024 09:38:41 +0300
-Message-Id: <20241109063903.3272404-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 16/33] target/i386: Avoid unreachable variable
+ declaration in mmu_translate()
+Date: Sat,  9 Nov 2024 09:38:42 +0300
+Message-Id: <20241109063903.3272404-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
@@ -61,40 +60,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-This pointer needs to be reset after overflow just like
-code_buf and code_ptr.
+Coverity complains (CID 1507880) that the declaration "int error_code;"
+in mmu_translate() is unreachable code. Since this is only a declaration,
+this isn't actually a bug, but:
+ * it's a bear-trap for future changes, because if it was changed to
+   include an initialization 'int error_code = foo;' then the
+   initialization wouldn't actually happen (being dead code)
+ * it's against our coding style, which wants declarations to be
+   at the start of blocks
+ * it means that anybody reading the code has to go and look up
+   exactly what the C rules are for skipping over variable declarations
+   using a goto
 
-Cc: qemu-stable@nongnu.org
-Fixes: 57a269469db ("tcg: Infrastructure for managing constant pools")
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit a7cfd751fb269de4a93bf1658cb13911c7ac77cc)
+Move the declaration to the top of the function.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230406155946.3362077-1-peter.maydell@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 987b63f24afe027a09b1c549c05a032a477f7e96)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: cherry-pick this for stable-7.2 so that the next patch applies cleanly)
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 436fcf6ebd..e7aa02c447 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -716,7 +716,6 @@ TranslationBlock *tcg_tb_alloc(TCGContext *s)
-         goto retry;
-     }
-     qatomic_set(&s->code_gen_ptr, next);
--    s->data_gen_ptr = NULL;
-     return tb;
- }
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 5f13252d68..eb78fcba11 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -146,6 +146,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+     hwaddr pte_addr, paddr;
+     uint32_t pkr;
+     int page_size;
++    int error_code;
  
-@@ -4249,6 +4248,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, target_ulong pc_start)
-      */
-     s->code_buf = tcg_splitwx_to_rw(tb->tc.ptr);
-     s->code_ptr = s->code_buf;
-+    s->data_gen_ptr = NULL;
+  restart_all:
+     rsvd_mask = ~MAKE_64BIT_MASK(0, env_archcpu(env)->phys_bits);
+@@ -464,7 +465,6 @@ do_check_protect_pse36:
+     out->page_size = page_size;
+     return true;
  
- #ifdef TCG_TARGET_NEED_LDST_LABELS
-     QSIMPLEQ_INIT(&s->ldst_labels);
+-    int error_code;
+  do_fault_rsvd:
+     error_code = PG_ERROR_RSVD_MASK;
+     goto do_fault_cont;
 -- 
 2.39.5
 
