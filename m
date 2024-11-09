@@ -2,36 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15E29C2ABC
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 240519C2ABA
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:39:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f8H-00030o-9s; Sat, 09 Nov 2024 01:39:41 -0500
+	id 1t9f85-0002ur-NW; Sat, 09 Nov 2024 01:39:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f7t-0002u4-BU; Sat, 09 Nov 2024 01:39:17 -0500
+ id 1t9f7s-0002rg-91; Sat, 09 Nov 2024 01:39:16 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f7q-0001vY-Jn; Sat, 09 Nov 2024 01:39:17 -0500
+ id 1t9f7q-0001vZ-1i; Sat, 09 Nov 2024 01:39:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5ACAEA12E7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 66671A12E8;
  Sat,  9 Nov 2024 09:38:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C32D5167DCB;
+ by tsrv.corpit.ru (Postfix) with SMTP id CF0A2167DCC;
  Sat,  9 Nov 2024 09:39:03 +0300 (MSK)
-Received: (nullmailer pid 3272489 invoked by uid 1000);
+Received: (nullmailer pid 3272494 invoked by uid 1000);
  Sat, 09 Nov 2024 06:39:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 v1 00/33] Patch Round-up for stable 7.2.15,
- freeze on 2024-11-18
-Date: Sat,  9 Nov 2024 09:38:26 +0300
-Message-Id: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "Fea.Wang" <fea.wang@sifive.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 01/33] softmmu/physmem.c: Keep transaction attribute
+ in address_space_map()
+Date: Sat,  9 Nov 2024 09:38:27 +0300
+Message-Id: <20241109063903.3272404-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
+References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -58,89 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.15:
+From: "Fea.Wang" <fea.wang@sifive.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+The follow-up transactions may use the data in the attribution, so keep
+the value of attribution from the function parameter just as
+flatview_translate() above.
 
-Patch freeze is 2024-11-18, and the release is planned for 2024-11-20:
+Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+Cc: qemu-stable@nongnu.org
+Fixes: f26404fbee ("Make address_space_map() take a MemTxAttrs argument")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20240912070404.2993976-2-fea.wang@sifive.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit d8d5ca40048b04750de5a0ae0b2b9f153a391951)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fix due to lack of
+ v9.1.0-134-g637b0aa13956 "softmmu: Support concurrent bounce buffers"
+ v9.0.0-564-g69e78f1b3484 "system/physmem: Per-AddressSpace bounce buffering")
 
-  https://wiki.qemu.org/Planning/7.2
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 5b176581f6..b96534ea16 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -3245,7 +3245,7 @@ void *address_space_map(AddressSpace *as,
+         memory_region_ref(mr);
+         bounce.mr = mr;
+         if (!is_write) {
+-            flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
++            flatview_read(fv, addr, attrs,
+                                bounce.buffer, l);
+         }
+ 
+-- 
+2.39.5
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 d8d5ca40048b Fea.Wang:
-   softmmu/physmem.c: Keep transaction attribute in address_space_map()
-02 8bded2e73e80 Fabiano Rosas:
-   target/ppc: Fix lxvx/stxvx facility check
-03 6475155d5192 Fiona Ebner:
-   block/reqlist: allow adding overlapping requests
-04 3e964275d65b Alexander Bulekov:
-   fuzz: disable leak-detection for oss-fuzz builds
-05 e6d8e5e6e366 Paolo Bonzini:
-   tracetool: avoid invalid escape in Python string
-06 a9ee641bd46f Philippe Mathieu-Daudé:
-   linux-user/flatload: Take mmap_lock in load_flt_binary()
-07 2884596f5f38 Richard Henderson:
-   linux-user: Fix parse_elf_properties GNU0_MAGIC check
-08 9472083e642b Stefano Garzarella:
-   scsi: fetch unit attention when creating the request
-09 3db74afec3ca Alexandra Diupina:
-   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
-10 f27206ceedbe Marc-André Lureau:
-   hw/audio/hda: free timer on exit
-11 5504a8126115 Peter Xu:
-   KVM: Dynamic sized kvm memslots array
-12 64e0e63ea16a Tom Dohrmann:
-   accel/kvm: check for KVM_CAP_READONLY_MEM on VM
-13 d9280ea31747 Stefan Berger:
-   tests: Wait for migration completion on destination QEMU to avoid failures
-14 04bbc3ee52b3 Kevin Wolf:
-   raw-format: Fix error message for invalid offset/size
-15 a7cfd751fb26 Richard Henderson:
-   tcg: Reset data_gen_ptr correctly
-16 987b63f24afe Peter Maydell:
-   target/i386: Avoid unreachable variable declaration in mmu_translate()
-17 b56617bbcb47 Alexander Graf:
-   target/i386: Walk NPT in guest real mode
-18 8704132805cf Ilya Leoshkevich:
-   linux-user/ppc: Fix sigmask endianness issue in sigreturn
-19 97f116f9c6fd Alex Bennée:
-   gitlab: make check-[dco|patch] a little more verbose
-20 e29bc931e169 Stefan Weil:
-   Fix calculation of minimum in colo_compare_tcp
-21 75fe36b4e8a9 Bernhard Beschow:
-   net/tap-win32: Fix gcc 14 format truncation errors
-22 1505b651fdbd Peter Maydell:
-   target/arm: Don't assert in regime_is_user() for E10 mmuidx values
-23 5a60026cad4e Evgenii Prokopiev:
-   target/riscv/csr.c: Fix an access to VXSAT
-24 929e4277c128 TANG Tiancheng:
-   target/riscv: Correct SXL return value for RV32 in RV64 QEMU
-25 a84be2baa9ec Sergey Makarov:
-   hw/intc: Don't clear pending bits on IRQ lowering
-26 f8c1f36a2e3d Rob Bradford:
-   target/riscv: Set vtype.vill on CPU reset
-27 0678e9f29c23 Anup Patel:
-   hw/intc/riscv_aplic: Fix in_clrip[x] read emulation
-28 2ae6cca1d338 Yong-Xuan Wang:
-   hw/intc/riscv_aplic: Check and update pending when write sourcecfg
-29 c128d39edeff Anton Blanchard:
-   target/riscv: Fix vcompress with rvv_ta_all_1s
-30 c9b8a13a8841 Ilya Leoshkevich:
-   target/ppc: Set ctx->opcode for decode_insn32()
-31 e6b2fa1b81ac Peter Maydell:
-   target/arm: Fix SVE SDOT/UDOT/USDOT (4-way, indexed)
-32 9529aa6bb4d1 Klaus Jensen:
-   hw/nvme: fix handling of over-committed queues
-33 042b4ebfd229 Christian Schoenebeck:
-   9pfs: fix crash on 'Treaddir' request
 
