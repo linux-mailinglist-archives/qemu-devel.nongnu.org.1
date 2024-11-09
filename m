@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7839C2CE2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:24:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C229C2D07
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kN0-0002kG-Ix; Sat, 09 Nov 2024 07:15:14 -0500
+	id 1t9kNl-0003sq-Lj; Sat, 09 Nov 2024 07:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMu-0002dw-MJ; Sat, 09 Nov 2024 07:15:08 -0500
+ id 1t9kNI-0003ni-0B; Sat, 09 Nov 2024 07:15:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMs-0004xf-CE; Sat, 09 Nov 2024 07:15:08 -0500
+ id 1t9kNG-0004yK-7Z; Sat, 09 Nov 2024 07:15:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E35F9A162E;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2412A162F;
  Sat,  9 Nov 2024 15:08:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AB313167FB5;
+ by tsrv.corpit.ru (Postfix) with SMTP id B8EAD167FB6;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296141 invoked by uid 1000);
+Received: (nullmailer pid 3296144 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 05/58] target/i386: Use only 16 and 32-bit operands for
- IN/OUT
-Date: Sat,  9 Nov 2024 15:08:06 +0300
-Message-Id: <20241109120901.3295995-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 06/58] tests: Wait for migration completion on
+ destination QEMU to avoid failures
+Date: Sat,  9 Nov 2024 15:08:07 +0300
+Message-Id: <20241109120901.3295995-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,47 +63,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-The REX.W prefix is ignored for these instructions.
-Mirror the solution already used for INS/OUTS: X86_SIZE_z.
+Rather than waiting for the completion of migration on the source side,
+wait for it on the destination QEMU side to avoid accessing the TPM TIS
+memory mapped registers before QEMU could restore their state. This
+error condition could be triggered on busy systems where the destination
+QEMU did not have enough time to restore the TIS state while the test case
+was already reading its registers. The test case was for example reading
+the STS register and received an unexpected value (0xffffffff), which
+lead to a segmentation fault later on due to trying to read 0xffff bytes
+from the TIS into a buffer.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2581
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-stable@nongnu.org
-Link: https://lore.kernel.org/r/20241015004144.2111817-1-richard.henderson@linaro.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 15d955975bd484c2c66af0d6daaa02a7d04d2256)
+Cc:  <qemu-stable@nongnu.org>
+Reported-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+(cherry picked from commit d9280ea3174700170d39c4cdd3f587f260757711)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 30be9237c3..429ed87bb6 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1627,9 +1627,9 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xE2] = X86_OP_ENTRYr(LOOP,   J,b), /* implicit: CX with aflag size */
-     [0xE3] = X86_OP_ENTRYr(JCXZ,   J,b), /* implicit: CX with aflag size */
-     [0xE4] = X86_OP_ENTRYwr(IN,    0,b, I_unsigned,b), /* AL */
--    [0xE5] = X86_OP_ENTRYwr(IN,    0,v, I_unsigned,b), /* AX/EAX */
-+    [0xE5] = X86_OP_ENTRYwr(IN,    0,z, I_unsigned,b), /* AX/EAX */
-     [0xE6] = X86_OP_ENTRYrr(OUT,   0,b, I_unsigned,b), /* AL */
--    [0xE7] = X86_OP_ENTRYrr(OUT,   0,v, I_unsigned,b), /* AX/EAX */
-+    [0xE7] = X86_OP_ENTRYrr(OUT,   0,z, I_unsigned,b), /* AX/EAX */
+diff --git a/tests/qtest/tpm-tests.c b/tests/qtest/tpm-tests.c
+index fb94496bbd..197714f8d9 100644
+--- a/tests/qtest/tpm-tests.c
++++ b/tests/qtest/tpm-tests.c
+@@ -114,7 +114,7 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
+                      sizeof(tpm_pcrread_resp));
  
-     [0xF1] = X86_OP_ENTRY0(INT1,   svm(ICEBP)),
-     [0xF4] = X86_OP_ENTRY0(HLT,    chk(cpl0) svm(HLT)),
-@@ -1761,9 +1761,9 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xEA] = X86_OP_ENTRYrr(JMPF,  I_unsigned,p, I_unsigned,w, chk(i64)),
-     [0xEB] = X86_OP_ENTRYr(JMP,    J,b),
-     [0xEC] = X86_OP_ENTRYwr(IN,    0,b, 2,w), /* AL, DX */
--    [0xED] = X86_OP_ENTRYwr(IN,    0,v, 2,w), /* AX/EAX, DX */
-+    [0xED] = X86_OP_ENTRYwr(IN,    0,z, 2,w), /* AX/EAX, DX */
-     [0xEE] = X86_OP_ENTRYrr(OUT,   0,b, 2,w), /* DX, AL */
--    [0xEF] = X86_OP_ENTRYrr(OUT,   0,v, 2,w), /* DX, AX/EAX */
-+    [0xEF] = X86_OP_ENTRYrr(OUT,   0,z, 2,w), /* DX, AX/EAX */
+     tpm_util_migrate(src_qemu, uri);
+-    tpm_util_wait_for_migration_complete(src_qemu);
++    tpm_util_wait_for_migration_complete(dst_qemu);
  
-     [0xF8] = X86_OP_ENTRY0(CLC),
-     [0xF9] = X86_OP_ENTRY0(STC),
+     tpm_util_pcrread(dst_qemu, tx, tpm_pcrread_resp,
+                      sizeof(tpm_pcrread_resp));
 -- 
 2.39.5
 
