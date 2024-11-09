@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932059C2CBE
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661769C2C84
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:09:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kGM-0008AO-OM; Sat, 09 Nov 2024 07:08:23 -0500
+	id 1t9kGL-00088x-Cs; Sat, 09 Nov 2024 07:08:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGC-00085D-G4; Sat, 09 Nov 2024 07:08:12 -0500
+ id 1t9kGD-00085z-Py; Sat, 09 Nov 2024 07:08:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGA-0003bL-QC; Sat, 09 Nov 2024 07:08:12 -0500
+ id 1t9kGB-0003c8-W7; Sat, 09 Nov 2024 07:08:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AAF7DA15EA;
+ by isrv.corpit.ru (Postfix) with ESMTP id BB1C7A15EB;
  Sat,  9 Nov 2024 15:07:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 70976167F78;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7FFF9167F79;
  Sat,  9 Nov 2024 15:08:01 +0300 (MSK)
-Received: (nullmailer pid 3295255 invoked by uid 1000);
+Received: (nullmailer pid 3295258 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+Cc: qemu-stable@nongnu.org, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 02/57] target/arm: Correct ID_AA64ISAR1_EL1 value for
- neoverse-v1
-Date: Sat,  9 Nov 2024 15:07:04 +0300
-Message-Id: <20241109120801.3295120-2-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 03/57] tcg: Fix iteration step in 32-bit gvec operation
+Date: Sat,  9 Nov 2024 15:07:05 +0300
+Message-Id: <20241109120801.3295120-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,37 +63,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
-The Neoverse-V1 TRM is a bit confused about the layout of the
-ID_AA64ISAR1_EL1 register, and so its table 3-6 has the wrong value
-for this ID register.  Trust instead section 3.2.74's list of which
-fields are set.
-
-This means that we stop incorrectly reporting FEAT_XS as present, and
-now report the presence of FEAT_BF16.
+The loop in the 32-bit case of the vector compare operation
+was incorrectly incrementing by 8 bytes per iteration instead
+of 4 bytes. This caused the function to process only half of
+the intended elements.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 9622c697d1 (tcg: Add gvec compare with immediate and scalar operand)
+Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240917161337.3012188-1-peter.maydell@linaro.org
-(cherry picked from commit 8676007eff04bb4e454bcdf92fab3f855bcc59b3)
+Message-ID: <20240904142739.854-2-zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 9d8d5a5b9078a16b4c0862fe54248c5cc8435648)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 9f7a9f3d2c..de7a147557 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -678,7 +678,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
-     cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
-     cpu->isar.id_aa64dfr1 = 0x00000000;
-     cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
--    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
-+    cpu->isar.id_aa64isar1 = 0x0011100001211032ull;
-     cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
-     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
-     cpu->isar.id_aa64mmfr2 = 0x0220011102101011ull;
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index bb88943f79..566fd6eef7 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -3925,7 +3925,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
+         uint32_t i;
+ 
+         tcg_gen_extrl_i64_i32(t1, c);
+-        for (i = 0; i < oprsz; i += 8) {
++        for (i = 0; i < oprsz; i += 4) {
+             tcg_gen_ld_i32(t0, tcg_env, aofs + i);
+             tcg_gen_negsetcond_i32(cond, t0, t0, t1);
+             tcg_gen_st_i32(t0, tcg_env, dofs + i);
 -- 
 2.39.5
 
