@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABD09C2CC6
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BE59C2D28
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:38:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kKK-00080F-3V; Sat, 09 Nov 2024 07:12:28 -0500
+	id 1t9kfb-00063U-7Z; Sat, 09 Nov 2024 07:34:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kIb-0004Aa-4p; Sat, 09 Nov 2024 07:10:42 -0500
+ id 1t9kfU-0005vY-Fw; Sat, 09 Nov 2024 07:34:21 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kIZ-0004Ki-Ih; Sat, 09 Nov 2024 07:10:40 -0500
+ id 1t9kfS-0007KS-0w; Sat, 09 Nov 2024 07:34:19 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
  by isrv.corpit.ru (Postfix) with ESMTP id 988C2A1607;
  Sat,  9 Nov 2024 15:07:08 +0300 (MSK)
@@ -47,7 +47,7 @@ X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
