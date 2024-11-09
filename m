@@ -2,37 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D70A9C2BA0
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EE89C2BB2
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iXi-0008FN-1k; Sat, 09 Nov 2024 05:18:10 -0500
+	id 1t9iZ5-0002s0-Uc; Sat, 09 Nov 2024 05:19:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVc-00051v-VC; Sat, 09 Nov 2024 05:16:01 -0500
+ id 1t9iVe-0005AI-AR; Sat, 09 Nov 2024 05:16:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVa-0007uh-Ve; Sat, 09 Nov 2024 05:16:00 -0500
+ id 1t9iVc-0007ux-Ky; Sat, 09 Nov 2024 05:16:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2A098A13F6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 33DCAA13F7;
  Sat,  9 Nov 2024 13:13:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BFE74167EE2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D3417167EE3;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Tom Dohrmann <erbse.13@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 18/49] accel/kvm: check for KVM_CAP_READONLY_MEM on VM
-Date: Sat,  9 Nov 2024 13:14:09 +0300
-Message-Id: <20241109101443.312701-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 19/49] tests: Wait for migration completion on
+ destination QEMU to avoid failures
+Date: Sat,  9 Nov 2024 13:14:10 +0300
+Message-Id: <20241109101443.312701-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,38 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tom Dohrmann <erbse.13@gmx.de>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-KVM_CAP_READONLY_MEM used to be a global capability, but with the
-introduction of AMD SEV-SNP confidential VMs, this extension is not
-always available on all VM types [1,2].
+Rather than waiting for the completion of migration on the source side,
+wait for it on the destination QEMU side to avoid accessing the TPM TIS
+memory mapped registers before QEMU could restore their state. This
+error condition could be triggered on busy systems where the destination
+QEMU did not have enough time to restore the TIS state while the test case
+was already reading its registers. The test case was for example reading
+the STS register and received an unexpected value (0xffffffff), which
+lead to a segmentation fault later on due to trying to read 0xffff bytes
+from the TIS into a buffer.
 
-Query the extension on the VM level instead of on the KVM level.
-
-[1] https://patchwork.kernel.org/project/kvm/patch/20240809190319.1710470-2-seanjc@google.com/
-[2] https://patchwork.kernel.org/project/kvm/patch/20240902144219.3716974-1-erbse.13@gmx.de/
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Tom Dohrmann <erbse.13@gmx.de>
-Link: https://lore.kernel.org/r/20240903062953.3926498-1-erbse.13@gmx.de
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 64e0e63ea16aa0122dc0c41a0679da0ae4616208)
+Cc:  <qemu-stable@nongnu.org>
+Reported-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+(cherry picked from commit d9280ea3174700170d39c4cdd3f587f260757711)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 6a9d10b1af..a103ae2ae8 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2589,7 +2589,7 @@ static int kvm_init(MachineState *ms)
-     }
+diff --git a/tests/qtest/tpm-tests.c b/tests/qtest/tpm-tests.c
+index fb94496bbd..197714f8d9 100644
+--- a/tests/qtest/tpm-tests.c
++++ b/tests/qtest/tpm-tests.c
+@@ -114,7 +114,7 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
+                      sizeof(tpm_pcrread_resp));
  
-     kvm_readonly_mem_allowed =
--        (kvm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
-+        (kvm_vm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
+     tpm_util_migrate(src_qemu, uri);
+-    tpm_util_wait_for_migration_complete(src_qemu);
++    tpm_util_wait_for_migration_complete(dst_qemu);
  
-     kvm_resamplefds_allowed =
-         (kvm_check_extension(s, KVM_CAP_IRQFD_RESAMPLE) > 0);
+     tpm_util_pcrread(dst_qemu, tx, tpm_pcrread_resp,
+                      sizeof(tpm_pcrread_resp));
 -- 
 2.39.5
 
