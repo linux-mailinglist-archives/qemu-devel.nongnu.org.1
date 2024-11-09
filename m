@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EFD9C2ADE
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FB59C2ADC
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:46:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9fC5-0001zh-Ip; Sat, 09 Nov 2024 01:43:37 -0500
+	id 1t9fC1-0001VI-9r; Sat, 09 Nov 2024 01:43:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9fAW-0006aV-7p; Sat, 09 Nov 2024 01:42:04 -0500
+ id 1t9fAX-0006aX-LW; Sat, 09 Nov 2024 01:42:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9fAU-0002dH-8t; Sat, 09 Nov 2024 01:41:59 -0500
+ id 1t9fAV-0002dR-8a; Sat, 09 Nov 2024 01:42:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 82D2DA1308;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9D2C6A1309;
  Sat,  9 Nov 2024 09:38:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E1945167DEA;
- Sat,  9 Nov 2024 09:39:05 +0300 (MSK)
-Received: (nullmailer pid 3272587 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 06F45167DEB;
+ Sat,  9 Nov 2024 09:39:06 +0300 (MSK)
+Received: (nullmailer pid 3272590 invoked by uid 1000);
  Sat, 09 Nov 2024 06:39:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Waldemar Kozaczuk <jwkozaczuk@gmail.com>, Keith Busch <kbusch@kernel.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 31/33] target/arm: Fix SVE SDOT/UDOT/USDOT (4-way,
- indexed)
-Date: Sat,  9 Nov 2024 09:38:57 +0300
-Message-Id: <20241109063903.3272404-31-mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 32/33] hw/nvme: fix handling of over-committed queues
+Date: Sat,  9 Nov 2024 09:38:58 +0300
+Message-Id: <20241109063903.3272404-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
@@ -61,69 +60,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Our implementation of the indexed version of SVE SDOT/UDOT/USDOT got
-the calculation of the inner loop terminator wrong.  Although we
-correctly account for the element size when we calculate the
-terminator for the first iteration:
-   intptr_t segend = MIN(16 / sizeof(TYPED), opr_sz_n);
-we don't do that when we move it forward after the first inner loop
-completes.  The intention is that we process the vector in 128-bit
-segments, which for a 64-bit element size should mean (1, 2), (3, 4),
-(5, 6), etc.  This bug meant that we would iterate (1, 2), (3, 4, 5,
-6), (7, 8, 9, 10) etc and apply the wrong indexed element to some of
-the operations, and also index off the end of the vector.
+If a host chooses to use the SQHD "hint" in the CQE to know if there is
+room in the submission queue for additional commands, it may result in a
+situation where there are not enough internal resources (struct
+NvmeRequest) available to process the command. For a lack of a better
+term, the host may "over-commit" the device (i.e., it may have more
+inflight commands than the queue size).
 
-You don't see this bug if the vector length is small enough that we
-don't need to iterate the outer loop, i.e.  if it is only 128 bits,
-or if it is the 64-bit special case from AA32/AA64 AdvSIMD.  If the
-vector length is 256 bits then we calculate the right results for the
-elements in the vector but do index off the end of the vector. Vector
-lengths greater than 256 bits see wrong answers. The instructions
-that produce 32-bit results behave correctly.
+For example, assume a queue with N entries. The host submits N commands
+and all are picked up for processing, advancing the head and emptying
+the queue. Regardless of which of these N commands complete first, the
+SQHD field of that CQE will indicate to the host that the queue is
+empty, which allows the host to issue N commands again. However, if the
+device has not posted CQEs for all the previous commands yet, the device
+will have less than N resources available to process the commands, so
+queue processing is suspended.
 
-Fix the recalculation of 'segend' for subsequent iterations, and
-restore a version of the comment that was lost in the refactor of
-commit 7020ffd656a5 that explains why we only need to clamp segend to
-opr_sz_n for the first iteration, not the later ones.
+And here lies an 11 year latent bug. In the absense of any additional
+tail updates on the submission queue, we never schedule the processing
+bottom-half again unless we observe a head update on an associated full
+completion queue. This has been sufficient to handle N-to-1 SQ/CQ setups
+(in the absense of over-commit of course). Incidentially, that "kick all
+associated SQs" mechanism can now be killed since we now just schedule
+queue processing when we return a processing resource to a non-empty
+submission queue, which happens to cover both edge cases. However, we
+must retain kicking the CQ if it was previously full.
 
+So, apparently, no previous driver tested with hw/nvme has ever used
+SQHD (e.g., neither the Linux NVMe driver or SPDK uses it). But then OSv
+shows up with the driver that actually does. I salute you.
+
+Fixes: f3c507adcd7b ("NVMe: Initial commit for new storage interface")
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2595
-Fixes: 7020ffd656a5 ("target/arm: Macroize helper_gvec_{s,u}dot_idx_{b,h}")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241101185544.2130972-1-peter.maydell@linaro.org
-(cherry picked from commit e6b2fa1b81ac6b05c4397237c846a295a9857920)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2388
+Reported-by: Waldemar Kozaczuk <jwkozaczuk@gmail.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit 9529aa6bb4d18763f5b4704cb4198bd25cbbee31)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/vec_helper.c b/target/arm/vec_helper.c
-index 859366e264..77678aca78 100644
---- a/target/arm/vec_helper.c
-+++ b/target/arm/vec_helper.c
-@@ -691,6 +691,13 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
- {                                                                         \
-     intptr_t i = 0, opr_sz = simd_oprsz(desc);                            \
-     intptr_t opr_sz_n = opr_sz / sizeof(TYPED);                           \
-+    /*                                                                    \
-+     * Special case: opr_sz == 8 from AA64/AA32 advsimd means the         \
-+     * first iteration might not be a full 16 byte segment. But           \
-+     * for vector lengths beyond that this must be SVE and we know        \
-+     * opr_sz is a multiple of 16, so we need not clamp segend            \
-+     * to opr_sz_n when we advance it at the end of the loop.             \
-+     */                                                                   \
-     intptr_t segend = MIN(16 / sizeof(TYPED), opr_sz_n);                  \
-     intptr_t index = simd_data(desc);                                     \
-     TYPED *d = vd, *a = va;                                               \
-@@ -708,7 +715,7 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
-                     n[i * 4 + 2] * m2 +                                   \
-                     n[i * 4 + 3] * m3);                                   \
-         } while (++i < segend);                                           \
--        segend = i + 4;                                                   \
-+        segend = i + (16 / sizeof(TYPED));                                \
-     } while (i < opr_sz_n);                                               \
-     clear_tail(d, opr_sz, simd_maxsz(desc));                              \
- }
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index ed56ad40b3..5710392e30 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -1385,9 +1385,16 @@ static void nvme_post_cqes(void *opaque)
+             stl_le_p(&n->bar.csts, NVME_CSTS_FAILED);
+             break;
+         }
++
+         QTAILQ_REMOVE(&cq->req_list, req, entry);
++
+         nvme_inc_cq_tail(cq);
+         nvme_sg_unmap(&req->sg);
++
++        if (QTAILQ_EMPTY(&sq->req_list) && !nvme_sq_empty(sq)) {
++            qemu_bh_schedule(sq->bh);
++        }
++
+         QTAILQ_INSERT_TAIL(&sq->req_list, req, entry);
+     }
+     if (cq->tail != cq->head) {
+@@ -6792,7 +6799,6 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+         /* Completion queue doorbell write */
+ 
+         uint16_t new_head = val & 0xffff;
+-        int start_sqs;
+         NvmeCQueue *cq;
+ 
+         qid = (addr - (0x1000 + (1 << 2))) >> 3;
+@@ -6843,19 +6849,16 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+ 
+         trace_pci_nvme_mmio_doorbell_cq(cq->cqid, new_head);
+ 
+-        start_sqs = nvme_cq_full(cq) ? 1 : 0;
++        /* scheduled deferred cqe posting if queue was previously full */
++        if (nvme_cq_full(cq)) {
++            qemu_bh_schedule(cq->bh);
++        }
++
+         cq->head = new_head;
+         if (!qid && n->dbbuf_enabled) {
+             pci_dma_write(&n->parent_obj, cq->db_addr, &cq->head,
+                           sizeof(cq->head));
+         }
+-        if (start_sqs) {
+-            NvmeSQueue *sq;
+-            QTAILQ_FOREACH(sq, &cq->sq_list, entry) {
+-                qemu_bh_schedule(sq->bh);
+-            }
+-            qemu_bh_schedule(cq->bh);
+-        }
+ 
+         if (cq->tail == cq->head) {
+             if (cq->irq_enabled) {
 -- 
 2.39.5
 
