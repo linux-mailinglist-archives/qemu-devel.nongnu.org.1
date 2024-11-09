@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0BA9C2B8F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:15:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0565B9C2B90
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iUh-0003pw-1j; Sat, 09 Nov 2024 05:15:03 -0500
+	id 1t9iV2-0004Bd-RJ; Sat, 09 Nov 2024 05:15:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUT-0003n8-Ap; Sat, 09 Nov 2024 05:14:49 -0500
+ id 1t9iUW-0003q1-9j; Sat, 09 Nov 2024 05:14:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iUQ-0007Vi-Id; Sat, 09 Nov 2024 05:14:49 -0500
+ id 1t9iUU-0007WF-NS; Sat, 09 Nov 2024 05:14:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2FEC6A13E5;
+ by isrv.corpit.ru (Postfix) with ESMTP id 38AFAA13E6;
  Sat,  9 Nov 2024 13:13:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C4053167ED1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D8D10167ED2;
  Sat,  9 Nov 2024 13:14:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Fea.Wang" <fea.wang@sifive.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 01/49] softmmu/physmem.c: Keep transaction attribute in
- address_space_map()
-Date: Sat,  9 Nov 2024 13:13:52 +0300
-Message-Id: <20241109101443.312701-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 02/49] target/arm: Correct ID_AA64ISAR1_EL1 value for
+ neoverse-v1
+Date: Sat,  9 Nov 2024 13:13:53 +0300
+Message-Id: <20241109101443.312701-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,37 +60,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Fea.Wang" <fea.wang@sifive.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-The follow-up transactions may use the data in the attribution, so keep
-the value of attribution from the function parameter just as
-flatview_translate() above.
+The Neoverse-V1 TRM is a bit confused about the layout of the
+ID_AA64ISAR1_EL1 register, and so its table 3-6 has the wrong value
+for this ID register.  Trust instead section 3.2.74's list of which
+fields are set.
 
-Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+This means that we stop incorrectly reporting FEAT_XS as present, and
+now report the presence of FEAT_BF16.
+
 Cc: qemu-stable@nongnu.org
-Fixes: f26404fbee ("Make address_space_map() take a MemTxAttrs argument")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20240912070404.2993976-2-fea.wang@sifive.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit d8d5ca40048b04750de5a0ae0b2b9f153a391951)
+Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240917161337.3012188-1-peter.maydell@linaro.org
+(cherry picked from commit 8676007eff04bb4e454bcdf92fab3f855bcc59b3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fix due to lack of
- v9.1.0-134-g637b0aa13956 "softmmu: Support concurrent bounce buffers"
- v9.0.0-564-g69e78f1b3484 "system/physmem: Per-AddressSpace bounce buffering")
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 073e6c6124..e25c12d267 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3146,7 +3146,7 @@ void *address_space_map(AddressSpace *as,
-         memory_region_ref(mr);
-         bounce.mr = mr;
-         if (!is_write) {
--            flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
-+            flatview_read(fv, addr, attrs,
-                                bounce.buffer, l);
-         }
- 
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index fcda99e158..dfc0ebb796 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -678,7 +678,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
+     cpu->isar.id_aa64dfr1 = 0x00000000;
+     cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
+-    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
++    cpu->isar.id_aa64isar1 = 0x0011100001211032ull;
+     cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
+     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
+     cpu->isar.id_aa64mmfr2 = 0x0220011102101011ull;
 -- 
 2.39.5
 
