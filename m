@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152429C2BB3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C699C2BB4
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:24:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iXl-00009r-Gm; Sat, 09 Nov 2024 05:18:13 -0500
+	id 1t9iYH-0001eb-Nf; Sat, 09 Nov 2024 05:18:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVB-0004eR-Qf; Sat, 09 Nov 2024 05:15:37 -0500
+ id 1t9iVD-0004fO-NF; Sat, 09 Nov 2024 05:15:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iV9-0007oc-C8; Sat, 09 Nov 2024 05:15:32 -0500
+ id 1t9iVA-0007p9-Ry; Sat, 09 Nov 2024 05:15:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D5F01A13F2;
+ by isrv.corpit.ru (Postfix) with ESMTP id E995CA13F3;
  Sat,  9 Nov 2024 13:13:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 79A9F167EDE;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8ACDE167EDF;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 14/49] hw/intc/arm_gicv3_cpuif: Add cast to match the
- documentation
-Date: Sat,  9 Nov 2024 13:14:05 +0300
-Message-Id: <20241109101443.312701-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 15/49] hw/audio/hda: free timer on exit
+Date: Sat,  9 Nov 2024 13:14:06 +0300
+Message-Id: <20241109101443.312701-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,38 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
-When cast to uint64_t (for further bitwise OR), the 32 most
-significant bits will be filled with 1s. However, the documentation
-states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
+Fixes: 280c1e1cd ("audio/hda: create millisecond timers that handle IO")
 
-Add an explicit cast to match the documentation.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: qemu-stable@nongnu.org
-Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 3db74afec3ca87f81fbdf5918ed1e21d837fbfab)
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-ID: <20241008125028.1177932-2-marcandre.lureau@redhat.com>
+(cherry picked from commit f27206ceedbe2efae37c8d143c5eb2db05251508)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 3364f6b706..8eacf4101c 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -753,7 +753,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
-     int regno = aprbit / 32;
-     int regbit = aprbit % 32;
- 
--    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
-+    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
-     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
- }
- 
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index 0bc20d49f6..19f401cabe 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -751,7 +751,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
+             continue;
+         }
+         if (a->use_timer) {
+-            timer_del(st->buft);
++            timer_free(st->buft);
+         }
+         if (st->output) {
+             AUD_close_out(&a->card, st->voice.out);
 -- 
 2.39.5
 
