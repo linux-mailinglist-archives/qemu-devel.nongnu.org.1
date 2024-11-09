@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3EE9C2C86
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C5D9C2CBF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:13:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kGp-0000Je-RB; Sat, 09 Nov 2024 07:08:52 -0500
+	id 1t9kGt-0000Pg-MS; Sat, 09 Nov 2024 07:08:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGm-0000B8-Hr; Sat, 09 Nov 2024 07:08:48 -0500
+ id 1t9kGp-0000LP-Pt; Sat, 09 Nov 2024 07:08:51 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGk-0003mx-SC; Sat, 09 Nov 2024 07:08:48 -0500
+ id 1t9kGn-0003pL-R8; Sat, 09 Nov 2024 07:08:51 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4D3C0A15F3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5B41DA15F4;
  Sat,  9 Nov 2024 15:07:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 14BB1167F81;
+ by tsrv.corpit.ru (Postfix) with SMTP id 22E12167F82;
  Sat,  9 Nov 2024 15:08:02 +0300 (MSK)
-Received: (nullmailer pid 3295283 invoked by uid 1000);
+Received: (nullmailer pid 3295286 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 11/57] linux-user/flatload: Take mmap_lock in
- load_flt_binary()
-Date: Sat,  9 Nov 2024 15:07:13 +0300
-Message-Id: <20241109120801.3295120-11-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 12/57] linux-user: Fix parse_elf_properties GNU0_MAGIC
+ check
+Date: Sat,  9 Nov 2024 15:07:14 +0300
+Message-Id: <20241109120801.3295120-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
@@ -63,44 +62,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-load_flt_binary() calls load_flat_file() -> page_set_flags().
+Comparing a string of 4 bytes only works in little-endian.
 
-page_set_flags() must be called with the mmap_lock held,
-otherwise it aborts:
+Adjust bulk bswap to only apply to the note payload.
+Perform swapping of the note header manually; the magic
+is defined so that it does not need a runtime swap.
 
-  $ qemu-arm -L stm32/lib/ stm32/bin/busybox
-  qemu-arm: ../accel/tcg/user-exec.c:505: page_set_flags: Assertion `have_mmap_lock()' failed.
-  Aborted (core dumped)
-
-Fix by taking the lock in load_flt_binary().
-
-Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2525
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240822095045.72643-3-philmd@linaro.org>
+Fixes: 83f990eb5adb ("linux-user/elfload: Parse NT_GNU_PROPERTY_TYPE_0 notes")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2596
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit a9ee641bd46f5462eeed183ac3c3760bddfc2600)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 2884596f5f385b5712c356310dd4125a089888a8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 5b62aa0a2b..6278655574 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -747,7 +747,10 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
-     stack_len += (bprm->envc + 1) * 4; /* the envp array */
- 
- 
-+    mmap_lock();
-     res = load_flat_file(bprm, libinfo, 0, &stack_len);
-+    mmap_unlock();
-+
-     if (is_error(res)) {
-             return res;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 0e00683dd2..a343fb5ad0 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3209,11 +3209,11 @@ static bool parse_elf_properties(const ImageSource *src,
      }
+ 
+     /*
+-     * The contents of a valid PT_GNU_PROPERTY is a sequence
+-     * of uint32_t -- swap them all now.
++     * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
++     * Swap most of them now, beyond the header and namesz.
+      */
+ #ifdef BSWAP_NEEDED
+-    for (int i = 0; i < n / 4; i++) {
++    for (int i = 4; i < n / 4; i++) {
+         bswap32s(note.data + i);
+     }
+ #endif
+@@ -3223,15 +3223,15 @@ static bool parse_elf_properties(const ImageSource *src,
+      * immediately follows nhdr and is thus at the 4th word.  Further, all
+      * of the inputs to the kernel's round_up are multiples of 4.
+      */
+-    if (note.nhdr.n_type != NT_GNU_PROPERTY_TYPE_0 ||
+-        note.nhdr.n_namesz != NOTE_NAME_SZ ||
++    if (tswap32(note.nhdr.n_type) != NT_GNU_PROPERTY_TYPE_0 ||
++        tswap32(note.nhdr.n_namesz) != NOTE_NAME_SZ ||
+         note.data[3] != GNU0_MAGIC) {
+         error_setg(errp, "Invalid note in PT_GNU_PROPERTY");
+         return false;
+     }
+     off = sizeof(note.nhdr) + NOTE_NAME_SZ;
+ 
+-    datasz = note.nhdr.n_descsz + off;
++    datasz = tswap32(note.nhdr.n_descsz) + off;
+     if (datasz > n) {
+         error_setg(errp, "Invalid note size in PT_GNU_PROPERTY");
+         return false;
 -- 
 2.39.5
 
