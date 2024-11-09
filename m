@@ -2,49 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4DF9C2AD3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DF29C2AC9
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:43:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9fCw-0005Dr-3x; Sat, 09 Nov 2024 01:44:30 -0500
+	id 1t9f8O-0003Fj-Jv; Sat, 09 Nov 2024 01:39:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9fAZ-0006c0-Cq; Sat, 09 Nov 2024 01:42:10 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9fAX-0002fP-Ml; Sat, 09 Nov 2024 01:42:03 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AC187A130A;
- Sat,  9 Nov 2024 09:38:11 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 217F7167DEC;
- Sat,  9 Nov 2024 09:39:06 +0300 (MSK)
-Received: (nullmailer pid 3272593 invoked by uid 1000);
- Sat, 09 Nov 2024 06:39:04 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Akihiro Suda <suda.kyoto@gmail.com>, Greg Kurz <groug@kaod.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 33/33] 9pfs: fix crash on 'Treaddir' request
-Date: Sat,  9 Nov 2024 09:38:59 +0300
-Message-Id: <20241109063903.3272404-33-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
-References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f7x-0002wO-TM
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:39:23 -0500
+Received: from mail-wr1-f53.google.com ([209.85.221.53])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f7u-0001xT-MG
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:39:19 -0500
+Received: by mail-wr1-f53.google.com with SMTP id
+ ffacd0b85a97d-37d4ac91d97so2567582f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 22:39:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731134357; x=1731739157;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=v0bCOe3u0gtgRNy9hKRvSdASo+/BgARCB/z16A9uSDU=;
+ b=m+69z4B7lAcwVooyx+cvVFfWu1XFwWjJAPNP/V1arazGOXYjMu+J8ZPPA1ToAMi0hR
+ QCK+hqzpYjt02uXb4Cnm1egvX/kXD0RexjIWUjP+rxpjL4r4uqbJj931jutQ0AfwQ5OG
+ Qs5s6s7Ukk0Totz+fIf1s+E3aLWzFcODJCTs+cnnfZMouv7PWmh0Ntt9yO++yKN9zIC2
+ Od3C8Naht3QHa5b5Ol85DyLQ3zuHrf+dQvdaaSfT0LPZbiWA1fTHzxrgZ96wzy61OzKZ
+ iYTTPAiqh1VEPdmlreTylXseAeyHwlhcbkmHlLdJUHC3HZp91QPh7VlwvPh7VEVxSrMD
+ c4ww==
+X-Gm-Message-State: AOJu0YyonJfVtpKGgU4CKVtdoiKk+trzPpMnNQEGBfIabFJi9Gk3byx8
+ qLkQOrEOoD/F4Kju3293YeknyM5vHOo49+nZDUhuBa9DqgZ3MC3L
+X-Google-Smtp-Source: AGHT+IGzVbwX9id1Pl7vidS2UUBLfPO0kJyH3hRsr2sBMlSE6+jJdE0A7qwElRUZVOCsCCSoj+zjZQ==
+X-Received: by 2002:a5d:5886:0:b0:37d:5130:b380 with SMTP id
+ ffacd0b85a97d-381f186cbbemr5239484f8f.23.1731134355294; 
+ Fri, 08 Nov 2024 22:39:15 -0800 (PST)
+Received: from tpx1 (ip-109-42-51-55.web.vodafone.de. [109.42.51.55])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9ee0deef4bsm324372866b.138.2024.11.08.22.39.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 22:39:14 -0800 (PST)
+Date: Sat, 9 Nov 2024 07:39:12 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Richard Henderson
+ <richard.henderson@linaro.org>, xen-devel@lists.xenproject.org, Paolo
+ Bonzini <pbonzini@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, Bastian Koppelmann
+ <kbastian@mail.uni-paderborn.de>, Anthony PERARD <anthony@xenproject.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Jia Liu <proljc@gmail.com>, Stafford
+ Horne <shorne@gmail.com>, Paul Durrant <paul@xen.org>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 1/5] hw/i386: Mark devices as little-endian
+Message-ID: <20241109073912.711357a8@tpx1>
+In-Reply-To: <20241106184612.71897-2-philmd@linaro.org>
+References: <20241106184612.71897-1-philmd@linaro.org>
+ <20241106184612.71897-2-philmd@linaro.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.221.53; envelope-from=th.huth@gmail.com;
+ helo=mail-wr1-f53.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,63 +90,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Am Wed,  6 Nov 2024 18:46:08 +0000
+schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
 
-A bad (broken or malicious) 9p client (guest) could cause QEMU host to
-crash by sending a 9p 'Treaddir' request with a numeric file ID (FID) that
-was previously opened for a file instead of an expected directory:
+> These devices are only used by the X86 targets, which are only
+> built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
+> definition expand to DEVICE_LITTLE_ENDIAN (besides, the
+> DEVICE_BIG_ENDIAN case isn't tested). Simplify directly using
+> DEVICE_LITTLE_ENDIAN.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/i386/kvm/apic.c         | 2 +-
+>  hw/i386/pc.c               | 4 ++--
+>  hw/i386/vapic.c            | 2 +-
+>  hw/i386/xen/xen_apic.c     | 2 +-
+>  hw/i386/xen/xen_platform.c | 2 +-
+>  5 files changed, 6 insertions(+), 6 deletions(-)
 
-  #0  0x0000762aff8f4919 in __GI___rewinddir (dirp=0xf) at
-    ../sysdeps/unix/sysv/linux/rewinddir.c:29
-  #1  0x0000557b7625fb40 in do_readdir_many (pdu=0x557bb67d2eb0,
-    fidp=0x557bb67955b0, entries=0x762afe9fff58, offset=0, maxsize=131072,
-    dostat=<optimized out>) at ../hw/9pfs/codir.c:101
-  #2  v9fs_co_readdir_many (pdu=pdu@entry=0x557bb67d2eb0,
-    fidp=fidp@entry=0x557bb67955b0, entries=entries@entry=0x762afe9fff58,
-    offset=0, maxsize=131072, dostat=false) at ../hw/9pfs/codir.c:226
-  #3  0x0000557b7625c1f9 in v9fs_do_readdir (pdu=0x557bb67d2eb0,
-    fidp=0x557bb67955b0, offset=<optimized out>,
-    max_count=<optimized out>) at ../hw/9pfs/9p.c:2488
-  #4  v9fs_readdir (opaque=0x557bb67d2eb0) at ../hw/9pfs/9p.c:2602
-
-That's because V9fsFidOpenState was declared as union type. So the
-same memory region is used for either an open POSIX file handle (int),
-or a POSIX DIR* pointer, etc., so 9p server incorrectly used the
-previously opened (valid) POSIX file handle (0xf) as DIR* pointer,
-eventually causing a crash in glibc's rewinddir() function.
-
-Root cause was therefore a missing check in 9p server's 'Treaddir'
-request handler, which must ensure that the client supplied FID was
-really opened as directory stream before trying to access the
-aforementioned union and its DIR* member.
-
-Cc: qemu-stable@nongnu.org
-Fixes: d62dbb51f7 ("virtio-9p: Add fidtype so that we can do type ...")
-Reported-by: Akihiro Suda <suda.kyoto@gmail.com>
-Tested-by: Akihiro Suda <suda.kyoto@gmail.com>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <E1t8GnN-002RS8-E2@kylie.crudebyte.com>
-(cherry picked from commit 042b4ebfd2298ae01553844124f27d651cdb1071)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 072cf67956..51ad5bfb11 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -2596,6 +2596,11 @@ static void coroutine_fn v9fs_readdir(void *opaque)
-         retval = -EINVAL;
-         goto out_nofid;
-     }
-+    if (fidp->fid_type != P9_FID_DIR) {
-+        warn_report_once("9p: bad client: T_readdir on non-directory stream");
-+        retval = -ENOTDIR;
-+        goto out;
-+    }
-     if (!fidp->fs.dir.stream) {
-         retval = -EINVAL;
-         goto out;
--- 
-2.39.5
-
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
