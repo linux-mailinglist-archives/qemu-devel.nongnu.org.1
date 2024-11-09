@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3319C2CEB
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63ED39C2D1E
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:36:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kR0-0001ak-I8; Sat, 09 Nov 2024 07:19:23 -0500
+	id 1t9kQf-0000wc-Lj; Sat, 09 Nov 2024 07:19:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kPd-0006Wl-S5; Sat, 09 Nov 2024 07:17:58 -0500
+ id 1t9kPg-0006bz-TM; Sat, 09 Nov 2024 07:18:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kPa-0005Gs-4t; Sat, 09 Nov 2024 07:17:56 -0500
+ id 1t9kPf-0005HK-9G; Sat, 09 Nov 2024 07:18:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8EF52A1648;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9D0D3A1649;
  Sat,  9 Nov 2024 15:08:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 55C4B167FCE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 64D4B167FCF;
  Sat,  9 Nov 2024 15:09:03 +0300 (MSK)
-Received: (nullmailer pid 3296219 invoked by uid 1000);
+Received: (nullmailer pid 3296222 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+Cc: qemu-stable@nongnu.org, Sergey Makarov <s.makarov@syntacore.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 30/58] target/riscv: Correct SXL return value for RV32
- in RV64 QEMU
-Date: Sat,  9 Nov 2024 15:08:31 +0300
-Message-Id: <20241109120901.3295995-30-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 31/58] hw/intc: Don't clear pending bits on IRQ lowering
+Date: Sat,  9 Nov 2024 15:08:32 +0300
+Message-Id: <20241109120901.3295995-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -61,37 +59,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+From: Sergey Makarov <s.makarov@syntacore.com>
 
-Ensure that riscv_cpu_sxl returns MXL_RV32 when runningRV32 in an
-RV64 QEMU.
+According to PLIC specification (chapter 5), there
+is only one case, when interrupt is claimed. Fix
+PLIC controller to match this behavior.
 
-Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Fixes: 05e6ca5e156 ("target/riscv: Ignore reserved bits in PTE for RV64")
-Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Sergey Makarov <s.makarov@syntacore.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240919055048.562-4-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240918140229.124329-3-s.makarov@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 929e4277c128772bad41cc795995f754cb9991af)
+(cherry picked from commit a84be2baa9eca8bc500f866ad943b8f63dc99adf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1619c3acb6..a63a29744c 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -709,8 +709,11 @@ static inline RISCVMXL riscv_cpu_sxl(CPURISCVState *env)
- #ifdef CONFIG_USER_ONLY
-     return env->misa_mxl;
- #else
--    return get_field(env->mstatus, MSTATUS64_SXL);
-+    if (env->misa_mxl != MXL_RV32) {
-+        return get_field(env->mstatus, MSTATUS64_SXL);
-+    }
- #endif
-+    return MXL_RV32;
- }
- #endif
+diff --git a/hw/intc/sifive_plic.c b/hw/intc/sifive_plic.c
+index e559f11805..ca4c2de494 100644
+--- a/hw/intc/sifive_plic.c
++++ b/hw/intc/sifive_plic.c
+@@ -349,8 +349,10 @@ static void sifive_plic_irq_request(void *opaque, int irq, int level)
+ {
+     SiFivePLICState *s = opaque;
  
+-    sifive_plic_set_pending(s, irq, level > 0);
+-    sifive_plic_update(s);
++    if (level > 0) {
++        sifive_plic_set_pending(s, irq, true);
++        sifive_plic_update(s);
++    }
+ }
+ 
+ static void sifive_plic_realize(DeviceState *dev, Error **errp)
 -- 
 2.39.5
 
