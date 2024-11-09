@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C229C2D07
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB039C2D2C
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kNl-0003sq-Lj; Sat, 09 Nov 2024 07:16:03 -0500
+	id 1t9kOE-0004Rb-Ne; Sat, 09 Nov 2024 07:16:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNI-0003ni-0B; Sat, 09 Nov 2024 07:15:35 -0500
+ id 1t9kNL-0003pM-Al; Sat, 09 Nov 2024 07:15:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kNG-0004yK-7Z; Sat, 09 Nov 2024 07:15:31 -0500
+ id 1t9kNJ-00052l-Kq; Sat, 09 Nov 2024 07:15:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F2412A162F;
- Sat,  9 Nov 2024 15:08:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D289A1630;
+ Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B8EAD167FB6;
+ by tsrv.corpit.ru (Postfix) with SMTP id C7D3F167FB7;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296144 invoked by uid 1000);
+Received: (nullmailer pid 3296147 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 06/58] tests: Wait for migration completion on
- destination QEMU to avoid failures
-Date: Sat,  9 Nov 2024 15:08:07 +0300
-Message-Id: <20241109120901.3295995-6-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 07/58] Revert "hw/sh4/r2d: Realize IDE controller
+ before accessing it"
+Date: Sat,  9 Nov 2024 15:08:08 +0300
+Message-Id: <20241109120901.3295995-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -63,38 +63,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
 
-Rather than waiting for the completion of migration on the source side,
-wait for it on the destination QEMU side to avoid accessing the TPM TIS
-memory mapped registers before QEMU could restore their state. This
-error condition could be triggered on busy systems where the destination
-QEMU did not have enough time to restore the TIS state while the test case
-was already reading its registers. The test case was for example reading
-the STS register and received an unexpected value (0xffffffff), which
-lead to a segmentation fault later on due to trying to read 0xffff bytes
-from the TIS into a buffer.
+This reverts commit 3c5f86a22686ef475a8259c0d8ee714f61c770c9.
 
-Cc:  <qemu-stable@nongnu.org>
-Reported-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-(cherry picked from commit d9280ea3174700170d39c4cdd3f587f260757711)
+Changing the order here caused a regression with the "tuxrun"
+kernels (from https://storage.tuxboot.com/20230331/) - ATA commands
+fail with a "ata1: lost interrupt (Status 0x58)" message.
+Apparently we need to wire the interrupt here first before
+realizing the device, so revert the change to the original
+behavior.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20241011131937.377223-17-thuth@redhat.com>
+(cherry picked from commit 68ad89b75ad2bb5f38abea815a50ec17a142565a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qtest/tpm-tests.c b/tests/qtest/tpm-tests.c
-index fb94496bbd..197714f8d9 100644
---- a/tests/qtest/tpm-tests.c
-+++ b/tests/qtest/tpm-tests.c
-@@ -114,7 +114,7 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
-                      sizeof(tpm_pcrread_resp));
- 
-     tpm_util_migrate(src_qemu, uri);
--    tpm_util_wait_for_migration_complete(src_qemu);
-+    tpm_util_wait_for_migration_complete(dst_qemu);
- 
-     tpm_util_pcrread(dst_qemu, tx, tpm_pcrread_resp,
-                      sizeof(tpm_pcrread_resp));
+diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
+index e5ac6751bd..7eecd79fcc 100644
+--- a/hw/sh4/r2d.c
++++ b/hw/sh4/r2d.c
+@@ -286,9 +286,9 @@ static void r2d_init(MachineState *machine)
+     dinfo = drive_get(IF_IDE, 0, 0);
+     dev = qdev_new("mmio-ide");
+     busdev = SYS_BUS_DEVICE(dev);
++    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
+     qdev_prop_set_uint32(dev, "shift", 1);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+-    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
+     sysbus_mmio_map(busdev, 0, 0x14001000);
+     sysbus_mmio_map(busdev, 1, 0x1400080c);
+     mmio_ide_init_drives(dev, dinfo, NULL);
 -- 
 2.39.5
 
