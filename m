@@ -2,79 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5E49C2AB8
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C15E29C2ABC
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:40:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f78-0002Iy-Fc; Sat, 09 Nov 2024 01:38:30 -0500
+	id 1t9f8H-00030o-9s; Sat, 09 Nov 2024 01:39:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f74-0002II-Cd
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:38:26 -0500
-Received: from mail-ed1-f51.google.com ([209.85.208.51])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f71-0001s3-5e
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:38:25 -0500
-Received: by mail-ed1-f51.google.com with SMTP id
- 4fb4d7f45d1cf-5c96b2a10e1so4039346a12.2
- for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 22:38:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731134302; x=1731739102;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Yh9OIV9oZswSsFPCTF0kPB7VF1ucoQK7O4BeLuZMrcY=;
- b=H8Z4nFZcKztIkQxXs4v892Je8GUoxUpS2c0tgdsg9b+boV+jBtUaUDRTHMuBNlvjc7
- PHd3xq87pykefTJVhBrrCgLO+HiBKPH8jW2AMI5C2vUQKq4wndZ8jnZmHoKhkqrAVXxJ
- iC1HTLNnhrGIuEqbW/FbJTMsIEW4i2C4REFpXiIUOvK3APkJ+KrM0/78Q8tC3v763WQJ
- n3uwz8bInfmc4h+/YasrWIA6RN6xZqJYaxqQwxxteGvu2xzM0mrw6gy3QodzRV5f5OMg
- 1h4dLju/fG2vCbL97S9NoX57TupVhedzVSyFCuXiuWPnpvjuU4GfmG2WCeDTMhuGNr8R
- DaUw==
-X-Gm-Message-State: AOJu0YxPTGiXVLtSdGCsz6paORoz73tl1pAvc3XKfpmgloBC3hl211Gi
- aHd8D5kK4IkV8ta08RQrY4ZphLGVFXTTVBgTl4IEZ87LRbdL/6UM
-X-Google-Smtp-Source: AGHT+IHPajL9uDCipqaoWRFvEDIWChGJwvUQQ3wq/EqOC6SQN31/8hSCkCC0GORuyRX1TGgUbym+oA==
-X-Received: by 2002:a05:6402:1ed4:b0:5ca:14f3:2883 with SMTP id
- 4fb4d7f45d1cf-5cf0a2faec8mr4822397a12.4.1731134301339; 
- Fri, 08 Nov 2024 22:38:21 -0800 (PST)
-Received: from tpx1 (ip-109-42-51-55.web.vodafone.de. [109.42.51.55])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cf03b7e803sm2718538a12.22.2024.11.08.22.38.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2024 22:38:20 -0800 (PST)
-Date: Sat, 9 Nov 2024 07:38:17 +0100
-From: Thomas Huth <huth@tuxfamily.org>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>, Stefano
- Stabellini <sstabellini@kernel.org>, Richard Henderson
- <richard.henderson@linaro.org>, xen-devel@lists.xenproject.org, Paolo
- Bonzini <pbonzini@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, Anthony PERARD <anthony@xenproject.org>,
- Eduardo Habkost <eduardo@habkost.net>, Jia Liu <proljc@gmail.com>, Stafford
- Horne <shorne@gmail.com>, Paul Durrant <paul@xen.org>, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH 2/5] hw/tricore: Mark devices as little-endian
-Message-ID: <20241109073817.40177d87@tpx1>
-In-Reply-To: <20241106184612.71897-3-philmd@linaro.org>
-References: <20241106184612.71897-1-philmd@linaro.org>
- <20241106184612.71897-3-philmd@linaro.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t9f7t-0002u4-BU; Sat, 09 Nov 2024 01:39:17 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1t9f7q-0001vY-Jn; Sat, 09 Nov 2024 01:39:17 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5ACAEA12E7;
+ Sat,  9 Nov 2024 09:38:09 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id C32D5167DCB;
+ Sat,  9 Nov 2024 09:39:03 +0300 (MSK)
+Received: (nullmailer pid 3272489 invoked by uid 1000);
+ Sat, 09 Nov 2024 06:39:03 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 v1 00/33] Patch Round-up for stable 7.2.15,
+ freeze on 2024-11-18
+Date: Sat,  9 Nov 2024 09:38:26 +0300
+Message-Id: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.208.51; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f51.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,19 +58,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed,  6 Nov 2024 18:46:09 +0000
-schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
+The following patches are queued for QEMU stable v7.2.15:
 
-> These devices are only used by the TriCore target, which is
-> only built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
-> definition expand to DEVICE_LITTLE_ENDIAN (besides, the
-> DEVICE_BIG_ENDIAN case isn't tested). Simplify directly using
-> DEVICE_LITTLE_ENDIAN.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/tricore/tricore_testdevice.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Patch freeze is 2024-11-18, and the release is planned for 2024-11-20:
+
+  https://wiki.qemu.org/Planning/7.2
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 d8d5ca40048b Fea.Wang:
+   softmmu/physmem.c: Keep transaction attribute in address_space_map()
+02 8bded2e73e80 Fabiano Rosas:
+   target/ppc: Fix lxvx/stxvx facility check
+03 6475155d5192 Fiona Ebner:
+   block/reqlist: allow adding overlapping requests
+04 3e964275d65b Alexander Bulekov:
+   fuzz: disable leak-detection for oss-fuzz builds
+05 e6d8e5e6e366 Paolo Bonzini:
+   tracetool: avoid invalid escape in Python string
+06 a9ee641bd46f Philippe Mathieu-Daudé:
+   linux-user/flatload: Take mmap_lock in load_flt_binary()
+07 2884596f5f38 Richard Henderson:
+   linux-user: Fix parse_elf_properties GNU0_MAGIC check
+08 9472083e642b Stefano Garzarella:
+   scsi: fetch unit attention when creating the request
+09 3db74afec3ca Alexandra Diupina:
+   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
+10 f27206ceedbe Marc-André Lureau:
+   hw/audio/hda: free timer on exit
+11 5504a8126115 Peter Xu:
+   KVM: Dynamic sized kvm memslots array
+12 64e0e63ea16a Tom Dohrmann:
+   accel/kvm: check for KVM_CAP_READONLY_MEM on VM
+13 d9280ea31747 Stefan Berger:
+   tests: Wait for migration completion on destination QEMU to avoid failures
+14 04bbc3ee52b3 Kevin Wolf:
+   raw-format: Fix error message for invalid offset/size
+15 a7cfd751fb26 Richard Henderson:
+   tcg: Reset data_gen_ptr correctly
+16 987b63f24afe Peter Maydell:
+   target/i386: Avoid unreachable variable declaration in mmu_translate()
+17 b56617bbcb47 Alexander Graf:
+   target/i386: Walk NPT in guest real mode
+18 8704132805cf Ilya Leoshkevich:
+   linux-user/ppc: Fix sigmask endianness issue in sigreturn
+19 97f116f9c6fd Alex Bennée:
+   gitlab: make check-[dco|patch] a little more verbose
+20 e29bc931e169 Stefan Weil:
+   Fix calculation of minimum in colo_compare_tcp
+21 75fe36b4e8a9 Bernhard Beschow:
+   net/tap-win32: Fix gcc 14 format truncation errors
+22 1505b651fdbd Peter Maydell:
+   target/arm: Don't assert in regime_is_user() for E10 mmuidx values
+23 5a60026cad4e Evgenii Prokopiev:
+   target/riscv/csr.c: Fix an access to VXSAT
+24 929e4277c128 TANG Tiancheng:
+   target/riscv: Correct SXL return value for RV32 in RV64 QEMU
+25 a84be2baa9ec Sergey Makarov:
+   hw/intc: Don't clear pending bits on IRQ lowering
+26 f8c1f36a2e3d Rob Bradford:
+   target/riscv: Set vtype.vill on CPU reset
+27 0678e9f29c23 Anup Patel:
+   hw/intc/riscv_aplic: Fix in_clrip[x] read emulation
+28 2ae6cca1d338 Yong-Xuan Wang:
+   hw/intc/riscv_aplic: Check and update pending when write sourcecfg
+29 c128d39edeff Anton Blanchard:
+   target/riscv: Fix vcompress with rvv_ta_all_1s
+30 c9b8a13a8841 Ilya Leoshkevich:
+   target/ppc: Set ctx->opcode for decode_insn32()
+31 e6b2fa1b81ac Peter Maydell:
+   target/arm: Fix SVE SDOT/UDOT/USDOT (4-way, indexed)
+32 9529aa6bb4d1 Klaus Jensen:
+   hw/nvme: fix handling of over-committed queues
+33 042b4ebfd229 Christian Schoenebeck:
+   9pfs: fix crash on 'Treaddir' request
 
