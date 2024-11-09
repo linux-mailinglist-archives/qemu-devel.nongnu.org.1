@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BECD9C2D1D
+	by mail.lfdr.de (Postfix) with ESMTPS id 2737A9C2D1C
 	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:36:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kTT-0005By-Mh; Sat, 09 Nov 2024 07:21:56 -0500
+	id 1t9kTq-0005bn-M1; Sat, 09 Nov 2024 07:22:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kR3-0001uw-LS; Sat, 09 Nov 2024 07:19:26 -0500
+ id 1t9kR9-0001yG-Jh; Sat, 09 Nov 2024 07:19:31 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kR1-0005Vv-SU; Sat, 09 Nov 2024 07:19:25 -0500
+ id 1t9kR5-0005WH-0v; Sat, 09 Nov 2024 07:19:28 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6A922A1655;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7ACC8A1656;
  Sat,  9 Nov 2024 15:08:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 324B3167FDB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4039F167FDC;
  Sat,  9 Nov 2024 15:09:04 +0300 (MSK)
-Received: (nullmailer pid 3296260 invoked by uid 1000);
+Received: (nullmailer pid 3296263 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 43/58] ppc/pnv: ADU fix possible buffer overrun with
- invalid size
-Date: Sat,  9 Nov 2024 15:08:44 +0300
-Message-Id: <20241109120901.3295995-43-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 44/58] hw/ssi/pnv_spi: Match _xfer_buffer_free() with
+ _xfer_buffer_new()
+Date: Sat,  9 Nov 2024 15:08:45 +0300
+Message-Id: <20241109120901.3295995-44-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -62,52 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The ADU LPC transfer-size field is 7 bits, but the supported sizes for
-LPC access via ADU appear to be 1, 2, 4, 8. The data buffer could
-overrun if firmware set an invalid size field, so add checks to reject
-them with a message.
+pnv_spi_xfer_buffer_new() allocates %payload using g_malloc0(),
+and pnv_spi_xfer_buffer_write_ptr() allocates %payload->data
+using g_realloc(). Use the API equivalent g_free() to release
+the buffers.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Cédric Le Goater <clg@redhat.com>
-Resolves: Coverity CID 1558830
-Fixes: 24bd283bccb33 ("ppc/pnv: Implement ADU access to LPC space")
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit ddd2a060a0da41000ddca31e329ab1d54e37fedb)
+(cherry picked from commit 65f53702d2e4bd045ce16ca874469cdd1e1ef4e4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/pnv_adu.c b/hw/ppc/pnv_adu.c
-index 81b7d6e526..f636dedf79 100644
---- a/hw/ppc/pnv_adu.c
-+++ b/hw/ppc/pnv_adu.c
-@@ -116,6 +116,12 @@ static void pnv_adu_xscom_write(void *opaque, hwaddr addr, uint64_t val,
-             uint32_t lpc_size = lpc_cmd_size(adu);
-             uint64_t data = 0;
+diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+index c1297ab733..13a47f07e7 100644
+--- a/hw/ssi/pnv_spi.c
++++ b/hw/ssi/pnv_spi.c
+@@ -53,8 +53,8 @@ static PnvXferBuffer *pnv_spi_xfer_buffer_new(void)
  
-+            if (!is_power_of_2(lpc_size) || lpc_size > sizeof(data)) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "ADU: Unsupported LPC access "
-+                                               "size:%" PRId32 "\n", lpc_size);
-+                break;
-+            }
-+
-             pnv_lpc_opb_read(adu->lpc, lpc_addr, (void *)&data, lpc_size);
+ static void pnv_spi_xfer_buffer_free(PnvXferBuffer *payload)
+ {
+-    free(payload->data);
+-    free(payload);
++    g_free(payload->data);
++    g_free(payload);
+ }
  
-             /*
-@@ -135,6 +141,12 @@ static void pnv_adu_xscom_write(void *opaque, hwaddr addr, uint64_t val,
-             uint32_t lpc_size = lpc_cmd_size(adu);
-             uint64_t data;
- 
-+            if (!is_power_of_2(lpc_size) || lpc_size > sizeof(data)) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "ADU: Unsupported LPC access "
-+                                               "size:%" PRId32 "\n", lpc_size);
-+                break;
-+            }
-+
-             data = cpu_to_be64(val) >> ((lpc_addr & 7) * 8); /* See above */
-             pnv_lpc_opb_write(adu->lpc, lpc_addr, (void *)&data, lpc_size);
-         }
+ static uint8_t *pnv_spi_xfer_buffer_write_ptr(PnvXferBuffer *payload,
 -- 
 2.39.5
 
